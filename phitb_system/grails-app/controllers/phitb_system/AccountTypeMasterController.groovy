@@ -1,27 +1,27 @@
 package phitb_system
 
-import grails.converters.JSON
+import grails.converters.*
 import grails.web.servlet.mvc.GrailsParameterMap
 import org.grails.web.json.JSONObject
 import phbit_system.Exception.BadRequestException
 import phbit_system.Exception.ResourceNotFoundException
 
-class AccountModesMasterController {
+class AccountTypeMasterController {
     static responseFormats = ['json', 'xml']
     static allowedMethods = [index: "GET", show: "GET", save: "POST", update: "PUT", delete: "DELETE", dataTable: "GET"]
 
-    AccountModesMasterService accountModesMasterService
+    AccountTypeMasterService accountTypeMasterService
     /**
-     * Gets all account modes
+     * Gets all account types
      * @param query
      * @param offset
      * @param limit
-     * @return list of account modes
+     * @return list of account types
      */
     def index() {
 
         try {
-            respond accountModesMasterService.getAll(params.limit, params.offset, params.query)
+            respond accountTypeMasterService.getAll(params.limit, params.offset, params.query)
         }
         catch (Exception ex) {
             System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
@@ -29,15 +29,15 @@ class AccountModesMasterController {
     }
 
     /**
-     * Get requested account mode
+     * Get requested account type
      * @param id
-     * @return get requested account mode
+     * @return get requested account type
      */
     def show() {
         try {
             String id = params.id
             if (id) {
-                respond accountModesMasterService.get(id)
+                respond accountTypeMasterService.get(id)
             }
         }
         catch (ResourceNotFoundException ex)
@@ -56,14 +56,14 @@ class AccountModesMasterController {
     }
 
     /**
-     * Save new account mode
-     * @param mode
-     * @return saved account mode
+     * Save new account type
+     * @param account type
+     * @return saved account type
      */
     def save() {
         try {
             JSONObject jsonObject = JSON.parse(request.reader.text) as JSONObject
-            respond accountModesMasterService.save(jsonObject)
+            respond accountTypeMasterService.save(jsonObject)
         }
         catch (ResourceNotFoundException ex)
         {
@@ -81,16 +81,16 @@ class AccountModesMasterController {
     }
 
     /**
-     * Update existing account mode
+     * Update existing account type
      * @param id
-     * @param mode
-     * @return updated account modes
+     * @param account type
+     * @return updated account types
      */
     def update() {
         try {
             String id = params.id
             JSONObject jsonObject = JSON.parse(request.reader.text) as JSONObject
-            respond accountModesMasterService.update(jsonObject,id)
+            respond accountTypeMasterService.update(jsonObject,id)
         }
         catch (ResourceNotFoundException ex)
         {
@@ -108,14 +108,14 @@ class AccountModesMasterController {
     }
 
     /**
-     * Delete selected account mode
+     * Delete selected account type
      * @param id
      * @return returns status code 200
      */
     def delete() {
         try {
             String id = params.id
-            accountModesMasterService.delete(id)
+            accountTypeMasterService.delete(id)
         }
         catch (ResourceNotFoundException ex)
         {
@@ -133,8 +133,8 @@ class AccountModesMasterController {
     }
 
     /**
-     * Gets all account modes in datatables format
-     * @return list of account modes
+     * Gets all account types in datatables format
+     * @return list of account types
      */
     def dataTable() {
         try {
@@ -142,7 +142,7 @@ class AccountModesMasterController {
             String length = params.length
             GrailsParameterMap parameterMap = getParams()
             JSONObject paramsJsonObject = new JSONObject(parameterMap.params)
-            respond accountModesMasterService.dataTables(paramsJsonObject, start, length)
+            respond accountTypeMasterService.dataTables(paramsJsonObject, start, length)
         }
         catch (ResourceNotFoundException ex)
         {
