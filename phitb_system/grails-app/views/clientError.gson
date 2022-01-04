@@ -1,0 +1,6 @@
+response.status 400
+
+json {    
+    message "Improper request format, please check parameters that you are sending."
+    error 400
+}
