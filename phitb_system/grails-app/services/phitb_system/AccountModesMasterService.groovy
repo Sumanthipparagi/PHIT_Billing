@@ -100,6 +100,7 @@ class AccountModesMasterService {
         if (id) {
             AccountModesMaster accountModesMaster = AccountModesMaster.findById(Long.parseLong(id))
             if (accountModesMaster) {
+                accountModesMaster.isUpdatable = true
                 accountModesMaster.delete()
             } else {
                 throw new ResourceNotFoundException()

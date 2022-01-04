@@ -100,6 +100,7 @@ class AccountTypeMasterService {
         if (id) {
             AccountTypeMaster accountTypeMaster = AccountTypeMaster.findById(Long.parseLong(id))
             if (accountTypeMaster) {
+                accountTypeMaster.isUpdatable = true
                 accountTypeMaster.delete()
             } else {
                 throw new ResourceNotFoundException()
