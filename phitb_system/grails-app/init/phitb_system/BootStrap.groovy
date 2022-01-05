@@ -15,7 +15,7 @@ class BootStrap {
             return it?.format("HH:mm:ss")
         }
 
-        JSON.registerObjectMarshaller(AccountModesMaster)
+        JSON.registerObjectMarshaller(AccountModeMaster)
         {
             def returnArray = [:]
             returnArray['id'] = it.id

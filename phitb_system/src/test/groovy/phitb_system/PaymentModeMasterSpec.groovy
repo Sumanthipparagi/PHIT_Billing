@@ -3,7 +3,7 @@ package phitb_system
 import grails.testing.gorm.DomainUnitTest
 import spock.lang.Specification
 
-class AccountModesMasterSpec extends Specification implements DomainUnitTest<AccountModesMaster> {
+class PaymentModeMasterSpec extends Specification implements DomainUnitTest<PaymentModeMaster> {
 
     def setup() {
     }

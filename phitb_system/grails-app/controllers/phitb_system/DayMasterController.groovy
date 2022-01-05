@@ -6,22 +6,21 @@ import org.grails.web.json.JSONObject
 import phbit_system.Exception.BadRequestException
 import phbit_system.Exception.ResourceNotFoundException
 
-class AccountModesMasterController {
-    static responseFormats = ['json', 'xml']
-    static allowedMethods = [index: "GET", show: "GET", save: "POST", update: "PUT", delete: "DELETE", dataTable: "GET"]
+class DayMasterController {
+	static responseFormats = ['json', 'xml']
 
-    AccountModesMasterService accountModesMasterService
+    DayMasterService dayMasterService
     /**
-     * Gets all account modes
+     * Gets all days
      * @param query
      * @param offset
      * @param limit
-     * @return list of account modes
+     * @return list of days
      */
     def index() {
 
         try {
-            respond accountModesMasterService.getAll(params.limit, params.offset, params.query)
+            respond dayMasterService.getAll(params.limit, params.offset, params.query)
         }
         catch (Exception ex) {
             System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
@@ -29,15 +28,15 @@ class AccountModesMasterController {
     }
 
     /**
-     * Get requested account mode
+     * Get requested day
      * @param id
-     * @return get requested account mode
+     * @return get requested day
      */
     def show() {
         try {
             String id = params.id
             if (id) {
-                respond accountModesMasterService.get(id)
+                respond dayMasterService.get(id)
             }
         }
         catch (ResourceNotFoundException ex)
@@ -56,14 +55,14 @@ class AccountModesMasterController {
     }
 
     /**
-     * Save new account mode
-     * @param mode
-     * @return saved account mode
+     * Save new day
+     * @param day
+     * @return saved day
      */
     def save() {
         try {
             JSONObject jsonObject = JSON.parse(request.reader.text) as JSONObject
-            respond accountModesMasterService.save(jsonObject)
+            respond dayMasterService.save(jsonObject)
         }
         catch (ResourceNotFoundException ex)
         {
@@ -81,16 +80,16 @@ class AccountModesMasterController {
     }
 
     /**
-     * Update existing account mode
+     * Update existing day
      * @param id
-     * @param mode
-     * @return updated account modes
+     * @param day
+     * @return updated days
      */
     def update() {
         try {
             String id = params.id
             JSONObject jsonObject = JSON.parse(request.reader.text) as JSONObject
-            respond accountModesMasterService.update(jsonObject,id)
+            respond dayMasterService.update(jsonObject,id)
         }
         catch (ResourceNotFoundException ex)
         {
@@ -108,15 +107,14 @@ class AccountModesMasterController {
     }
 
     /**
-     * Delete selected account mode
+     * Delete selected day
      * @param id
      * @return returns status code 200
      */
     def delete() {
         try {
             String id = params.id
-            accountModesMasterService.delete(id)
-            response.status = 200
+            dayMasterService.delete(id)
         }
         catch (ResourceNotFoundException ex)
         {
@@ -134,8 +132,8 @@ class AccountModesMasterController {
     }
 
     /**
-     * Gets all account modes in datatables format
-     * @return list of account modes
+     * Gets all days in datatables format
+     * @return list of days
      */
     def dataTable() {
         try {
@@ -143,7 +141,7 @@ class AccountModesMasterController {
             String length = params.length
             GrailsParameterMap parameterMap = getParams()
             JSONObject paramsJsonObject = new JSONObject(parameterMap.params)
-            respond accountModesMasterService.dataTables(paramsJsonObject, start, length)
+            respond dayMasterService.dataTables(paramsJsonObject, start, length)
         }
         catch (ResourceNotFoundException ex)
         {

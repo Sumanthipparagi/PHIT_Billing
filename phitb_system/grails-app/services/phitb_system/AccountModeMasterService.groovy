@@ -6,7 +6,7 @@ import phbit_system.Exception.BadRequestException
 import phbit_system.Exception.ResourceNotFoundException
 
 @Transactional
-class AccountTypeMasterService {
+class AccountModeMasterService {
 
     def getAll(String limit, String offset, String query) {
 
@@ -14,13 +14,13 @@ class AccountTypeMasterService {
         Integer l = limit ? Integer.parseInt(limit.toString()) : 100
 
         if (!query)
-            return AccountTypeMaster.findAll([sort: 'id', max: l, offset: o, order: 'desc'])
+            return AccountModeMaster.findAll([sort: 'id', max: l, offset: o, order: 'desc'])
         else
-            return AccountTypeMaster.findAllByAccountTypeIlike("%" + query + "%", [sort: 'id', max: l, offset: o, order: 'desc'])
+            return AccountModeMaster.findAllByModeIlike("%" + query + "%", [sort: 'id', max: l, offset: o, order: 'desc'])
     }
 
-    AccountTypeMaster get(String id) {
-        return AccountTypeMaster.findById(Long.parseLong(id))
+    AccountModeMaster get(String id) {
+        return AccountModeMaster.findById(Long.parseLong(id))
     }
 
     JSONObject dataTables(JSONObject paramsJsonObject, String start, String length)
@@ -35,41 +35,41 @@ class AccountTypeMasterService {
                 orderColumn = "id"
                 break;
             case '1':
-                orderColumn = "accountType"
+                orderColumn = "mode"
                 break;
         }
 
         Integer offset = start ? Integer.parseInt(start.toString()) : 0
         Integer max = length ? Integer.parseInt(length.toString()) : 100
 
-        def accountTypeMasterCriteria = AccountTypeMaster.createCriteria()
-        def accountTypeMasterArrayList = accountTypeMasterCriteria.list(max: max, offset: offset) {
+        def accountModesMasterCriteria = AccountModeMaster.createCriteria()
+        def accountModesMasterArrayList = accountModesMasterCriteria.list(max: max, offset: offset) {
             or {
                 if (searchTerm != "") {
-                    ilike('accountType', '%' + searchTerm + '%')
+                    ilike('mode', '%' + searchTerm + '%')
                 }
             }
             eq('deleted', false)
             order(orderColumn, orderDir)
         }
 
-        def recordsTotal = accountTypeMasterArrayList.totalCount
+        def recordsTotal = accountModesMasterArrayList.totalCount
         JSONObject jsonObject = new JSONObject()
         jsonObject.put("draw", paramsJsonObject.draw)
         jsonObject.put("recordsTotal", recordsTotal)
         jsonObject.put("recordsFiltered", recordsTotal)
-        jsonObject.put("data", accountTypeMasterArrayList)
+        jsonObject.put("data", accountModesMasterArrayList)
         return jsonObject
     }
 
-    AccountTypeMaster save(JSONObject jsonObject) {
-        String accountType = jsonObject.get("accountType")
-        if (accountType) {
-            AccountTypeMaster accountTypeMaster = new AccountTypeMaster()
-            accountTypeMaster.accountType = accountType
-            accountTypeMaster.save(flush: true)
-            if (!accountTypeMaster.hasErrors())
-                return accountTypeMaster
+    AccountModeMaster save(JSONObject jsonObject) {
+        String mode = jsonObject.get("mode")
+        if (mode) {
+            AccountModeMaster accountModesMaster = new AccountModeMaster()
+            accountModesMaster.mode = mode
+            accountModesMaster.save(flush: true)
+            if (!accountModesMaster.hasErrors())
+                return accountModesMaster
             else
                 throw new BadRequestException()
         } else {
@@ -77,16 +77,16 @@ class AccountTypeMasterService {
         }
     }
 
-    AccountTypeMaster update(JSONObject jsonObject, String id) {
-        String accountType = jsonObject.get("accountType")
-        if (accountType && id) {
-            AccountTypeMaster accountTypeMaster = AccountTypeMaster.findById(Long.parseLong(id))
-            if (accountTypeMaster) {
-                accountTypeMaster.isUpdatable = true
-                accountTypeMaster.accountType = accountType
-                accountTypeMaster.save(flush: true)
-                if (!accountTypeMaster.hasErrors())
-                    return accountTypeMaster
+    AccountModeMaster update(JSONObject jsonObject, String id) {
+        String mode = jsonObject.get("mode")
+        if (mode && id) {
+            AccountModeMaster accountModesMaster = AccountModeMaster.findById(Long.parseLong(id))
+            if (accountModesMaster) {
+                accountModesMaster.isUpdatable = true
+                accountModesMaster.mode = mode
+                accountModesMaster.save(flush: true)
+                if (!accountModesMaster.hasErrors())
+                    return accountModesMaster
                 else
                     throw new BadRequestException()
             } else
@@ -98,10 +98,10 @@ class AccountTypeMasterService {
 
     void delete(String id) {
         if (id) {
-            AccountTypeMaster accountTypeMaster = AccountTypeMaster.findById(Long.parseLong(id))
-            if (accountTypeMaster) {
-                accountTypeMaster.isUpdatable = true
-                accountTypeMaster.delete()
+            AccountModeMaster accountModesMaster = AccountModeMaster.findById(Long.parseLong(id))
+            if (accountModesMaster) {
+                accountModesMaster.isUpdatable = true
+                accountModesMaster.delete()
             } else {
                 throw new ResourceNotFoundException()
             }

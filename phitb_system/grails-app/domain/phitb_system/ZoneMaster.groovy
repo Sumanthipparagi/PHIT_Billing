@@ -2,15 +2,15 @@ package phitb_system
 
 import gorm.logical.delete.LogicalDelete
 
-class AccountModesMaster implements LogicalDelete<AccountModesMaster> {
+class ZoneMaster implements LogicalDelete<ZoneMaster> {
 
-    String mode
+    String name
 
     Date dateCreated
     Date lastUpdated
 
     static constraints = {
-        mode maxSize: 50
+        name maxSize: 50
     }
 
 
@@ -21,12 +21,12 @@ class AccountModesMaster implements LogicalDelete<AccountModesMaster> {
 
         if (!this.isUpdatable)
         {
-            System.out.println("AccountModesMaster Domain update Prevented " + new Date().toString() + " ,id: " + this.id)
+            System.out.println("ZoneMaster Domain update Prevented " + new Date().toString() + " ,id: " + this.id)
             return false
         }
         else
         {
-            System.out.println("AccountModesMaster domain Updated " + new Date().toString() + " ,id: " + this.id)
+            System.out.println("ZoneMaster domain Updated " + new Date().toString() + " ,id: " + this.id)
         }
     }
 }

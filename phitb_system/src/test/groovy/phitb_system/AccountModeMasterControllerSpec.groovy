@@ -3,7 +3,7 @@ package phitb_system
 import grails.testing.web.controllers.ControllerUnitTest
 import spock.lang.Specification
 
-class AccountModesMasterControllerSpec extends Specification implements ControllerUnitTest<AccountModesMasterController> {
+class AccountModeMasterControllerSpec extends Specification implements ControllerUnitTest<AccountModeMasterController> {
 
     def setup() {
     }

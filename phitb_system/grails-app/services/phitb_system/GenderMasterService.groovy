@@ -6,7 +6,7 @@ import phbit_system.Exception.BadRequestException
 import phbit_system.Exception.ResourceNotFoundException
 
 @Transactional
-class AccountTypeMasterService {
+class GenderMasterService {
 
     def getAll(String limit, String offset, String query) {
 
@@ -14,13 +14,13 @@ class AccountTypeMasterService {
         Integer l = limit ? Integer.parseInt(limit.toString()) : 100
 
         if (!query)
-            return AccountTypeMaster.findAll([sort: 'id', max: l, offset: o, order: 'desc'])
+            return GenderMaster.findAll([sort: 'id', max: l, offset: o, order: 'desc'])
         else
-            return AccountTypeMaster.findAllByAccountTypeIlike("%" + query + "%", [sort: 'id', max: l, offset: o, order: 'desc'])
+            return GenderMaster.findAllByNameIlike("%" + query + "%", [sort: 'id', max: l, offset: o, order: 'desc'])
     }
 
-    AccountTypeMaster get(String id) {
-        return AccountTypeMaster.findById(Long.parseLong(id))
+    GenderMaster get(String id) {
+        return GenderMaster.findById(Long.parseLong(id))
     }
 
     JSONObject dataTables(JSONObject paramsJsonObject, String start, String length)
@@ -35,41 +35,41 @@ class AccountTypeMasterService {
                 orderColumn = "id"
                 break;
             case '1':
-                orderColumn = "accountType"
+                orderColumn = "name"
                 break;
         }
 
         Integer offset = start ? Integer.parseInt(start.toString()) : 0
         Integer max = length ? Integer.parseInt(length.toString()) : 100
 
-        def accountTypeMasterCriteria = AccountTypeMaster.createCriteria()
-        def accountTypeMasterArrayList = accountTypeMasterCriteria.list(max: max, offset: offset) {
+        def dayMasterCriteria = GenderMaster.createCriteria()
+        def dayMasterArrayList = dayMasterCriteria.list(max: max, offset: offset) {
             or {
                 if (searchTerm != "") {
-                    ilike('accountType', '%' + searchTerm + '%')
+                    ilike('name', '%' + searchTerm + '%')
                 }
             }
             eq('deleted', false)
             order(orderColumn, orderDir)
         }
 
-        def recordsTotal = accountTypeMasterArrayList.totalCount
+        def recordsTotal = dayMasterArrayList.totalCount
         JSONObject jsonObject = new JSONObject()
         jsonObject.put("draw", paramsJsonObject.draw)
         jsonObject.put("recordsTotal", recordsTotal)
         jsonObject.put("recordsFiltered", recordsTotal)
-        jsonObject.put("data", accountTypeMasterArrayList)
+        jsonObject.put("data", dayMasterArrayList)
         return jsonObject
     }
 
-    AccountTypeMaster save(JSONObject jsonObject) {
-        String accountType = jsonObject.get("accountType")
-        if (accountType) {
-            AccountTypeMaster accountTypeMaster = new AccountTypeMaster()
-            accountTypeMaster.accountType = accountType
-            accountTypeMaster.save(flush: true)
-            if (!accountTypeMaster.hasErrors())
-                return accountTypeMaster
+    GenderMaster save(JSONObject jsonObject) {
+        String name = jsonObject.get("name")
+        if (name) {
+            GenderMaster genderMaster = new GenderMaster()
+            genderMaster.name = name
+            genderMaster.save(flush: true)
+            if (!genderMaster.hasErrors())
+                return genderMaster
             else
                 throw new BadRequestException()
         } else {
@@ -77,16 +77,16 @@ class AccountTypeMasterService {
         }
     }
 
-    AccountTypeMaster update(JSONObject jsonObject, String id) {
-        String accountType = jsonObject.get("accountType")
-        if (accountType && id) {
-            AccountTypeMaster accountTypeMaster = AccountTypeMaster.findById(Long.parseLong(id))
-            if (accountTypeMaster) {
-                accountTypeMaster.isUpdatable = true
-                accountTypeMaster.accountType = accountType
-                accountTypeMaster.save(flush: true)
-                if (!accountTypeMaster.hasErrors())
-                    return accountTypeMaster
+    GenderMaster update(JSONObject jsonObject, String id) {
+        String name = jsonObject.get("name")
+        if (name && id) {
+            GenderMaster genderMaster = GenderMaster.findById(Long.parseLong(id))
+            if (genderMaster) {
+                genderMaster.isUpdatable = true
+                genderMaster.name = name
+                genderMaster.save(flush: true)
+                if (!genderMaster.hasErrors())
+                    return genderMaster
                 else
                     throw new BadRequestException()
             } else
@@ -98,10 +98,10 @@ class AccountTypeMasterService {
 
     void delete(String id) {
         if (id) {
-            AccountTypeMaster accountTypeMaster = AccountTypeMaster.findById(Long.parseLong(id))
-            if (accountTypeMaster) {
-                accountTypeMaster.isUpdatable = true
-                accountTypeMaster.delete()
+            GenderMaster genderMaster = GenderMaster.findById(Long.parseLong(id))
+            if (genderMaster) {
+                genderMaster.isUpdatable = true
+                genderMaster.delete()
             } else {
                 throw new ResourceNotFoundException()
             }

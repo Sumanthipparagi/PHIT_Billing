@@ -3,7 +3,7 @@ package phitb_system
 import grails.testing.services.ServiceUnitTest
 import spock.lang.Specification
 
-class AccountModesMasterServiceSpec extends Specification implements ServiceUnitTest<AccountModesMasterService>{
+class CountryMasterServiceSpec extends Specification implements ServiceUnitTest<CountryMasterService>{
 
     def setup() {
     }
