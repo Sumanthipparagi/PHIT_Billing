@@ -115,6 +115,7 @@ class ZoneMasterController {
         try {
             String id = params.id
             zoneMasterService.delete(id)
+            response.status = 200
         }
         catch (ResourceNotFoundException ex)
         {

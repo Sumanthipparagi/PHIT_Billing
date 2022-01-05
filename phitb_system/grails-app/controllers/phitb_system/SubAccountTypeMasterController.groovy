@@ -115,6 +115,7 @@ class SubAccountTypeMasterController {
         try {
             String id = params.id
             subAccountTypeMasterService.delete(id)
+            response.status = 200
         }
         catch (ResourceNotFoundException ex)
         {

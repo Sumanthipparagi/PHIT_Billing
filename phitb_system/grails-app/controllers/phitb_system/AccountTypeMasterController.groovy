@@ -116,6 +116,7 @@ class AccountTypeMasterController {
         try {
             String id = params.id
             accountTypeMasterService.delete(id)
+            response.status = 200
         }
         catch (ResourceNotFoundException ex)
         {

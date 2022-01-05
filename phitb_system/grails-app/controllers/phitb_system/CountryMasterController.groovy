@@ -117,6 +117,7 @@ class CountryMasterController {
         try {
             String id = params.id
             countryMasterService.delete(id)
+            response.status = 200
         }
         catch (ResourceNotFoundException ex)
         {

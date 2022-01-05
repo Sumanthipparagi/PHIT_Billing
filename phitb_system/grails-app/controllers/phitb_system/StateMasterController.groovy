@@ -115,6 +115,7 @@ class StateMasterController {
         try {
             String id = params.id
             stateMasterService.delete(id)
+            response.status = 200
         }
         catch (ResourceNotFoundException ex)
         {

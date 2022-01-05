@@ -115,6 +115,7 @@ class CityMasterController {
         try {
             String id = params.id
             dayMasterService.delete(id)
+            response.status = 200
         }
         catch (ResourceNotFoundException ex)
         {

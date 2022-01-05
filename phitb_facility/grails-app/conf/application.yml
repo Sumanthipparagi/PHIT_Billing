@@ -78,13 +78,13 @@ dataSource:
     pooled: true
     jmxExport: true
     driverClassName: com.mysql.cj.jdbc.Driver
-    username: phitb_facility
+    username: phitb_user
     password: 'zsTEM2%9%3'
 
 environments:
     development:
         dataSource:
-            dbCreate: create-drop
+            dbCreate: update
             url: jdbc:mysql://172.16.17.10:3306/phitb_facility?useSSL=false&autoReconnect=true&useUnicode=true&characterEncoding=UTF-8&serverTimezone=UTC
     test:
         dataSource:
@@ -92,7 +92,7 @@ environments:
             url: jdbc:mysql://172.16.17.10:3306/phitb_facility?useSSL=false&autoReconnect=true&useUnicode=true&characterEncoding=UTF-8&serverTimezone=UTC
     production:
         dataSource:
-            dbCreate: none
+            dbCreate: update
             url: jdbc:mysql://172.16.17.10:3306/phitb_facility?useSSL=false&autoReconnect=true&useUnicode=true&characterEncoding=UTF-8&serverTimezone=UTC
             properties:
                 jmxEnabled: true

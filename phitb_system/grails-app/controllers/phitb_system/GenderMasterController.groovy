@@ -115,6 +115,7 @@ class GenderMasterController {
         try {
             String id = params.id
             genderMasterService.delete(id)
+            response.status = 200
         }
         catch (ResourceNotFoundException ex)
         {

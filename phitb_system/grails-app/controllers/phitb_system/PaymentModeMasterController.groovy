@@ -115,6 +115,7 @@ class PaymentModeMasterController {
         try {
             String id = params.id
             paymentModeMasterService.delete(id)
+            response.status = 200
         }
         catch (ResourceNotFoundException ex)
         {

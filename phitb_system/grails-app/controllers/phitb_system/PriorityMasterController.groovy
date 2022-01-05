@@ -115,6 +115,7 @@ class PriorityMasterController {
         try {
             String id = params.id
             priorityMasterService.delete(id)
+            response.status = 200
         }
         catch (ResourceNotFoundException ex)
         {
