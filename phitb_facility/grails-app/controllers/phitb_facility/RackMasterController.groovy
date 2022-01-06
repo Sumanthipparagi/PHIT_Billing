@@ -1,27 +1,29 @@
-package phitb_system
+package phitb_facility
 
-import grails.converters.JSON
+
+import grails.rest.*
+import grails.converters.*
 import grails.web.servlet.mvc.GrailsParameterMap
 import org.grails.web.json.JSONObject
-import phbit_system.Exception.BadRequestException
-import phbit_system.Exception.ResourceNotFoundException
+import phitb_facility.Exception.BadRequestException
+import phitb_facility.Exception.ResourceNotFoundException
 
-class PaymentModeMasterController {
+class RackMasterController {
 	static responseFormats = ['json', 'xml']
     static allowedMethods = [index: "GET", show: "GET", save: "POST", update: "PUT", delete: "DELETE", dataTable: "GET"]
-
-    PaymentModeMasterService paymentModeMasterService
+    
+    RackMasterService rackMasterService
     /**
-     * Gets all Payment Modes
+     * Gets all racks
      * @param query
      * @param offset
      * @param limit
-     * @return list of Payment Modes
+     * @return list of racks
      */
     def index() {
 
         try {
-            respond paymentModeMasterService.getAll(params.limit, params.offset, params.query)
+            respond rackMasterService.getAll(params.limit, params.offset, params.query)
         }
         catch (Exception ex) {
             System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
@@ -29,15 +31,15 @@ class PaymentModeMasterController {
     }
 
     /**
-     * Get requested Payment Mode
+     * Get requested rack
      * @param id
-     * @return get requested Payment Mode
+     * @return get requested rack
      */
     def show() {
         try {
             String id = params.id
             if (id) {
-                respond paymentModeMasterService.get(id)
+                respond rackMasterService.get(id)
             }
         }
         catch (ResourceNotFoundException ex)
@@ -56,14 +58,14 @@ class PaymentModeMasterController {
     }
 
     /**
-     * Save new Payment Mode
-     * @param Payment Mode
-     * @return saved Payment Mode
+     * Save new rack
+     * @param rack
+     * @return saved rack
      */
     def save() {
         try {
             JSONObject jsonObject = JSON.parse(request.reader.text) as JSONObject
-            respond paymentModeMasterService.save(jsonObject)
+            respond rackMasterService.save(jsonObject)
         }
         catch (ResourceNotFoundException ex)
         {
@@ -81,16 +83,16 @@ class PaymentModeMasterController {
     }
 
     /**
-     * Update existing Payment Mode
+     * Update existing rack
      * @param id
-     * @param Payment Mode
-     * @return updated Payment Modes
+     * @param rack
+     * @return updated racks
      */
     def update() {
         try {
             String id = params.id
             JSONObject jsonObject = JSON.parse(request.reader.text) as JSONObject
-            respond paymentModeMasterService.update(jsonObject,id)
+            respond rackMasterService.update(jsonObject,id)
         }
         catch (ResourceNotFoundException ex)
         {
@@ -108,14 +110,14 @@ class PaymentModeMasterController {
     }
 
     /**
-     * Delete selected Payment Mode
+     * Delete selected rack
      * @param id
      * @return returns status code 200
      */
     def delete() {
         try {
             String id = params.id
-            paymentModeMasterService.delete(id)
+            rackMasterService.delete(id)
             response.status = 200
         }
         catch (ResourceNotFoundException ex)
@@ -134,8 +136,8 @@ class PaymentModeMasterController {
     }
 
     /**
-     * Gets all Payment Modes in datatables format
-     * @return list of Payment Modes
+     * Gets all racks in datatables format
+     * @return list of racks
      */
     def dataTable() {
         try {
@@ -143,7 +145,7 @@ class PaymentModeMasterController {
             String length = params.length
             GrailsParameterMap parameterMap = getParams()
             JSONObject paramsJsonObject = new JSONObject(parameterMap.params)
-            respond paymentModeMasterService.dataTables(paramsJsonObject, start, length)
+            respond rackMasterService.dataTables(paramsJsonObject, start, length)
         }
         catch (ResourceNotFoundException ex)
         {

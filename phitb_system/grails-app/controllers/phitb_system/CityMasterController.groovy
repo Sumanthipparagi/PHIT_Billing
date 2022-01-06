@@ -8,14 +8,15 @@ import phbit_system.Exception.ResourceNotFoundException
 
 class CityMasterController {
 	static responseFormats = ['json', 'xml']
+    static allowedMethods = [index: "GET", show: "GET", save: "POST", update: "PUT", delete: "DELETE", dataTable: "GET"]
 
     DayMasterService dayMasterService
     /**
-     * Gets all days
+     * Gets all cities
      * @param query
      * @param offset
      * @param limit
-     * @return list of days
+     * @return list of cities
      */
     def index() {
 
@@ -28,9 +29,9 @@ class CityMasterController {
     }
 
     /**
-     * Get requested day
+     * Get requested city
      * @param id
-     * @return get requested day
+     * @return get requested city
      */
     def show() {
         try {
@@ -55,9 +56,9 @@ class CityMasterController {
     }
 
     /**
-     * Save new day
-     * @param day
-     * @return saved day
+     * Save new city
+     * @param city
+     * @return saved city
      */
     def save() {
         try {
@@ -80,10 +81,10 @@ class CityMasterController {
     }
 
     /**
-     * Update existing day
+     * Update existing city
      * @param id
-     * @param day
-     * @return updated days
+     * @param city
+     * @return updated cities
      */
     def update() {
         try {
@@ -107,7 +108,7 @@ class CityMasterController {
     }
 
     /**
-     * Delete selected day
+     * Delete selected city
      * @param id
      * @return returns status code 200
      */
@@ -133,8 +134,8 @@ class CityMasterController {
     }
 
     /**
-     * Gets all days in datatables format
-     * @return list of days
+     * Gets all cities in datatables format
+     * @return list of cities
      */
     def dataTable() {
         try {

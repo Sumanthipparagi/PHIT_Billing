@@ -4,8 +4,8 @@ import gorm.logical.delete.LogicalDelete
 
 class CcmRegister implements LogicalDelete<CcmRegister> {
     
-    String kit_name
-    String kit_number
+    String kitName
+    String kitNumber
     FridgeMaster fridge
     Date purchaseDate
     Date expiryDate

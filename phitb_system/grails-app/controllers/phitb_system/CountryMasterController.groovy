@@ -10,6 +10,7 @@ import phbit_system.Exception.ResourceNotFoundException
 
 class CountryMasterController {
 	static responseFormats = ['json', 'xml']
+    static allowedMethods = [index: "GET", show: "GET", save: "POST", update: "PUT", delete: "DELETE", dataTable: "GET"]
 
     CountryMasterService countryMasterService
     /**

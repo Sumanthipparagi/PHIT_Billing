@@ -8,6 +8,7 @@ import phbit_system.Exception.ResourceNotFoundException
 
 class PriorityMasterController {
 	static responseFormats = ['json', 'xml']
+    static allowedMethods = [index: "GET", show: "GET", save: "POST", update: "PUT", delete: "DELETE", dataTable: "GET"]
 
     PriorityMasterService priorityMasterService
     /**

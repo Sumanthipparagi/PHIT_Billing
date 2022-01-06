@@ -1,27 +1,27 @@
-package phitb_system
+package phitb_facility
 
 import grails.converters.JSON
 import grails.web.servlet.mvc.GrailsParameterMap
 import org.grails.web.json.JSONObject
-import phbit_system.Exception.BadRequestException
-import phbit_system.Exception.ResourceNotFoundException
+import phitb_facility.Exception.BadRequestException
+import phitb_facility.Exception.ResourceNotFoundException
 
-class PaymentModeMasterController {
+class GodownRegisterController {
 	static responseFormats = ['json', 'xml']
     static allowedMethods = [index: "GET", show: "GET", save: "POST", update: "PUT", delete: "DELETE", dataTable: "GET"]
 
-    PaymentModeMasterService paymentModeMasterService
+    GodownRegisterService godownRegisterService
     /**
-     * Gets all Payment Modes
+     * Gets all Godowns
      * @param query
      * @param offset
      * @param limit
-     * @return list of Payment Modes
+     * @return list of Godowns
      */
     def index() {
 
         try {
-            respond paymentModeMasterService.getAll(params.limit, params.offset, params.query)
+            respond godownRegisterService.getAll(params.limit, params.offset, params.query)
         }
         catch (Exception ex) {
             System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
@@ -29,15 +29,15 @@ class PaymentModeMasterController {
     }
 
     /**
-     * Get requested Payment Mode
+     * Get requested Godown
      * @param id
-     * @return get requested Payment Mode
+     * @return get requested Godown
      */
     def show() {
         try {
             String id = params.id
             if (id) {
-                respond paymentModeMasterService.get(id)
+                respond godownRegisterService.get(id)
             }
         }
         catch (ResourceNotFoundException ex)
@@ -56,14 +56,14 @@ class PaymentModeMasterController {
     }
 
     /**
-     * Save new Payment Mode
-     * @param Payment Mode
-     * @return saved Payment Mode
+     * Save new Godown
+     * @param Godown
+     * @return saved Godown
      */
     def save() {
         try {
             JSONObject jsonObject = JSON.parse(request.reader.text) as JSONObject
-            respond paymentModeMasterService.save(jsonObject)
+            respond godownRegisterService.save(jsonObject)
         }
         catch (ResourceNotFoundException ex)
         {
@@ -81,16 +81,16 @@ class PaymentModeMasterController {
     }
 
     /**
-     * Update existing Payment Mode
+     * Update existing Godown
      * @param id
-     * @param Payment Mode
-     * @return updated Payment Modes
+     * @param Godown
+     * @return updated Godowns
      */
     def update() {
         try {
             String id = params.id
             JSONObject jsonObject = JSON.parse(request.reader.text) as JSONObject
-            respond paymentModeMasterService.update(jsonObject,id)
+            respond godownRegisterService.update(jsonObject,id)
         }
         catch (ResourceNotFoundException ex)
         {
@@ -108,14 +108,14 @@ class PaymentModeMasterController {
     }
 
     /**
-     * Delete selected Payment Mode
+     * Delete selected Godown
      * @param id
      * @return returns status code 200
      */
     def delete() {
         try {
             String id = params.id
-            paymentModeMasterService.delete(id)
+            godownRegisterService.delete(id)
             response.status = 200
         }
         catch (ResourceNotFoundException ex)
@@ -134,8 +134,8 @@ class PaymentModeMasterController {
     }
 
     /**
-     * Gets all Payment Modes in datatables format
-     * @return list of Payment Modes
+     * Gets all Godowns in datatables format
+     * @return list of Godowns
      */
     def dataTable() {
         try {
@@ -143,7 +143,7 @@ class PaymentModeMasterController {
             String length = params.length
             GrailsParameterMap parameterMap = getParams()
             JSONObject paramsJsonObject = new JSONObject(parameterMap.params)
-            respond paymentModeMasterService.dataTables(paramsJsonObject, start, length)
+            respond godownRegisterService.dataTables(paramsJsonObject, start, length)
         }
         catch (ResourceNotFoundException ex)
         {
