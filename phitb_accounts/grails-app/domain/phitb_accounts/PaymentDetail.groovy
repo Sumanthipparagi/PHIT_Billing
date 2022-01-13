@@ -2,28 +2,27 @@ package phitb_accounts
 
 import gorm.logical.delete.LogicalDelete
 
-class ReceiptDetail implements LogicalDelete<ReceiptDetail> {
-    
-    String receiptId
+
+class PaymentDetail implements LogicalDelete<PaymentDetail> {
+
+    long finId
     Date date
-    long paymentModeId
     long accountModeId
-    String receivedFrom
-    String depositTo
-    double amountPaid
+    long paymentModeId
+    String transfer_from
+    String payment_to
+    long amount_paid
     String narration
-    long cardNumber
-    Date paymentDate
+    String cardNumber
+    String payment_date
     String transId
-    long employeeReceived
+    long employeeName
     double commission
+    double cardAmount
     long totalNotes
     String chequeNumber
     BankRegister bank
     WalletMaster wallet
-    long lockStatus
-    long approvedBy
-    Date approvedDate
     String financialYear
     long status
     long syncStatus
@@ -34,7 +33,6 @@ class ReceiptDetail implements LogicalDelete<ReceiptDetail> {
 
     Date dateCreated
     Date lastUpdated
-
 
     static constraints = {
     }
@@ -50,12 +48,12 @@ class ReceiptDetail implements LogicalDelete<ReceiptDetail> {
 
         if (!this.isUpdatable)
         {
-            System.out.println("ReceiptDetail Domain update Prevented " + new Date().toString() + " ,id: " + this.id)
+            System.out.println("PaymentDetail Domain update Prevented " + new Date().toString() + " ,id: " + this.id)
             return false
         }
         else
         {
-            System.out.println("ReceiptDetail domain Updated " + new Date().toString() + " ,id: " + this.id)
+            System.out.println("PaymentDetail domain Updated " + new Date().toString() + " ,id: " + this.id)
         }
     }
 }
