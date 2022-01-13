@@ -19,14 +19,14 @@ class UrlMappings {
 
         group "/api/v1.0", {
             //Purchase Bill Detail
-            "/purchase/billdetail(.$format)?"(controller: 'stockActivity') { action = [GET: 'index', POST: 'save'] }
-            "/purchase/billdetail/datatable(.$format)?"(controller: 'stockActivity') { action = [GET: 'dataTable'] }
-            "/purchase/billdetail/$id(.$format)?"(controller: 'stockActivity') { action = [GET: 'show', PUT: 'update', DELETE: 'delete'] }
+            "/purchase/billdetail(.$format)?"(controller: 'purchaseBillDetail') { action = [GET: 'index', POST: 'save'] }
+            "/purchase/billdetail/datatable(.$format)?"(controller: 'purchaseBillDetail') { action = [GET: 'dataTable'] }
+            "/purchase/billdetail/$id(.$format)?"(controller: 'purchaseBillDetail') { action = [GET: 'show', PUT: 'update', DELETE: 'delete'] }
 
             //Purchase Bill Detail
-            "/purchase/purchaseorder(.$format)?"(controller: 'stockActivity') { action = [GET: 'index', POST: 'save'] }
-            "/purchase/purchaseorder/datatable(.$format)?"(controller: 'stockActivity') { action = [GET: 'dataTable'] }
-            "/purchase/purchaseorder/$id(.$format)?"(controller: 'stockActivity') { action = [GET: 'show', PUT: 'update', DELETE: 'delete'] }
+            "/purchase/purchaseorder(.$format)?"(controller: 'purchaseOrder') { action = [GET: 'index', POST: 'save'] }
+            "/purchase/purchaseorder/datatable(.$format)?"(controller: 'purchaseOrder') { action = [GET: 'dataTable'] }
+            "/purchase/purchaseorder/$id(.$format)?"(controller: 'purchaseOrder') { action = [GET: 'show', PUT: 'update', DELETE: 'delete'] }
 
         }
     }
