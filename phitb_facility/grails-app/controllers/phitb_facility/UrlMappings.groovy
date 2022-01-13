@@ -1,5 +1,8 @@
 package phitb_facility
 
+import phitb_facility.Exception.BadRequestException
+import phitb_facility.Exception.ResourceNotFoundException
+
 class UrlMappings {
 
     static mappings = {

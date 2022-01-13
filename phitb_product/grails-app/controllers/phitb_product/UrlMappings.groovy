@@ -1,17 +1,24 @@
 package phitb_product
 
+import phitb_product.Exception.BadRequestException
+import phitb_product.Exception.ResourceNotFoundException
+
 class UrlMappings {
 
     static mappings = {
-        delete "/$controller/$id(.$format)?"(action:"delete")
-        get "/$controller(.$format)?"(action:"index")
-        get "/$controller/$id(.$format)?"(action:"show")
-        post "/$controller(.$format)?"(action:"save")
-        put "/$controller/$id(.$format)?"(action:"update")
-        patch "/$controller/$id(.$format)?"(action:"patch")
+        //delete "/$controller/$id(.$format)?"(action: "delete")
+        //post "/$controller(.$format)?"(action: "save")
+        //get "/$controller(.$format)?"(action: "index")
+        //get "/$controller/$id(.$format)?"(action: "show")
+        //put "/$controller/$id(.$format)?"(action: "update")
 
-        "/"(controller: 'application', action:'index')
+        "/"(controller: 'application', action: 'index')
         "500"(view: '/error')
-        "404"(view: '/notFound')
+        "404"(controller: "error", action: "error404", exception: ResourceNotFoundException)
+        "400"(controller: "error", action: "error400", exception: BadRequestException)
+
+        group "/api/v1.0", {
+
+        }
     }
 }
