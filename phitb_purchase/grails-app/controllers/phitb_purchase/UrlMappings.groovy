@@ -23,6 +23,11 @@ class UrlMappings {
             "/purchase/billdetail/datatable(.$format)?"(controller: 'stockActivity') { action = [GET: 'dataTable'] }
             "/purchase/billdetail/$id(.$format)?"(controller: 'stockActivity') { action = [GET: 'show', PUT: 'update', DELETE: 'delete'] }
 
+            //Purchase Bill Detail
+            "/purchase/purchaseorder(.$format)?"(controller: 'stockActivity') { action = [GET: 'index', POST: 'save'] }
+            "/purchase/purchaseorder/datatable(.$format)?"(controller: 'stockActivity') { action = [GET: 'dataTable'] }
+            "/purchase/purchaseorder/$id(.$format)?"(controller: 'stockActivity') { action = [GET: 'show', PUT: 'update', DELETE: 'delete'] }
+
         }
     }
 }
