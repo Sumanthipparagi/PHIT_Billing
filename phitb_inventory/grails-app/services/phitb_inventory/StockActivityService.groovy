@@ -35,7 +35,7 @@ class StockActivityService {
                 orderColumn = "id"
                 break;
             case '1':
-                orderColumn = "godownName"
+                orderColumn = "batch"
                 break;
         }
 
