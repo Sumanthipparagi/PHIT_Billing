@@ -42,8 +42,8 @@ class StockActivityService {
         Integer offset = start ? Integer.parseInt(start.toString()) : 0
         Integer max = length ? Integer.parseInt(length.toString()) : 100
 
-        def dayMasterCriteria = StockActivity.createCriteria()
-        def dayMasterArrayList = dayMasterCriteria.list(max: max, offset: offset) {
+        def StockActivityMasterCriteria = StockActivity.createCriteria()
+        def StockActivityMasterArrayList = StockActivityMasterCriteria.list(max: max, offset: offset) {
             or {
                 if (searchTerm != "") {
                     ilike('batch', '%' + searchTerm + '%')
@@ -53,12 +53,12 @@ class StockActivityService {
             order(orderColumn, orderDir)
         }
 
-        def recordsTotal = dayMasterArrayList.totalCount
+        def recordsTotal = StockActivityMasterArrayList.totalCount
         JSONObject jsonObject = new JSONObject()
         jsonObject.put("draw", paramsJsonObject.draw)
         jsonObject.put("recordsTotal", recordsTotal)
         jsonObject.put("recordsFiltered", recordsTotal)
-        jsonObject.put("data", dayMasterArrayList)
+        jsonObject.put("data", StockActivityMasterArrayList)
         return jsonObject
     }
 
