@@ -18,6 +18,10 @@ class UrlMappings {
         "400"(controller: "error", action: "error400", exception: BadRequestException)
 
         group "/api/v1.0", {
+            //Purchase Bill Detail
+            "/purchase/billdetail(.$format)?"(controller: 'stockActivity') { action = [GET: 'index', POST: 'save'] }
+            "/purchase/billdetail/datatable(.$format)?"(controller: 'stockActivity') { action = [GET: 'dataTable'] }
+            "/purchase/billdetail/$id(.$format)?"(controller: 'stockActivity') { action = [GET: 'show', PUT: 'update', DELETE: 'delete'] }
 
         }
     }

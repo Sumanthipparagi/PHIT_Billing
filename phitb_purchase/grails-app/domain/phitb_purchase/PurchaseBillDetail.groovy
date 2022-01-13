@@ -43,8 +43,8 @@ class PurchaseBillDetail implements LogicalDelete<PurchaseBillDetail> {
     String gstStatus
     long syncStatus
     long lockStatus
-    double  addAmount
-    double  lessAmount
+    double addAmount
+    double lessAmount
     String financialYear
     long entityTypeId
     long entityId
