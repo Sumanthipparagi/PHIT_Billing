@@ -9,14 +9,14 @@ class PaymentDetail implements LogicalDelete<PaymentDetail> {
     Date date
     long accountModeId
     long paymentModeId
-    String transfer_from
-    String payment_to
-    long amount_paid
+    String transferFrom
+    String paymentTo
+    long amountPaid
     String narration
     String cardNumber
-    String payment_date
+    String paymentDate
     String transId
-    long employeeName
+    String employeeName
     double commission
     double cardAmount
     long totalNotes

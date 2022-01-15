@@ -11,7 +11,7 @@ class DebitJv implements LogicalDelete<DebitJv> {
     Date transactionDate
     String referenceId
     Date finalSubmissionDate
-    String financialYea
+    String financialYear
     long status
     long syncStatus
     long entityTypeId

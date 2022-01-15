@@ -2,7 +2,7 @@ package phitb_accounts
 
 import gorm.logical.delete.LogicalDelete
 
-class DebitjvTransactionDetail implements LogicalDelete<DebitjvTransactionDetail> {
+class CreditJvTransactionDetail implements LogicalDelete<CreditJvTransactionDetail> {
 
     long finId
     String transactionId
@@ -11,8 +11,8 @@ class DebitjvTransactionDetail implements LogicalDelete<DebitjvTransactionDetail
     String deductFrom
     double amount
     double balance
-    double crAdjAmount
-    String creditIds
+    double dbAdjAmount
+    String debitIds
     String note
     String paid
     String financialYear
@@ -22,7 +22,7 @@ class DebitjvTransactionDetail implements LogicalDelete<DebitjvTransactionDetail
 
     Date dateCreated
     Date lastUpdated
-
+    
     static constraints = {
     }
 
@@ -33,12 +33,12 @@ class DebitjvTransactionDetail implements LogicalDelete<DebitjvTransactionDetail
 
         if (!this.isUpdatable)
         {
-            System.out.println("DebitjvTransactionDetail Domain update Prevented " + new Date().toString() + " ,id: " + this.id)
+            System.out.println("CreditJvTransactionDetail Domain update Prevented " + new Date().toString() + " ,id: " + this.id)
             return false
         }
         else
         {
-            System.out.println("DebitjvTransactionDetail domain Updated " + new Date().toString() + " ,id: " + this.id)
+            System.out.println("CreditJvTransactionDetail domain Updated " + new Date().toString() + " ,id: " + this.id)
         }
     }
 }

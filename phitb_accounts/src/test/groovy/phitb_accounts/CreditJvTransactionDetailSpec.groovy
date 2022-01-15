@@ -3,7 +3,7 @@ package phitb_accounts
 import grails.testing.gorm.DomainUnitTest
 import spock.lang.Specification
 
-class CreditjvTansactionDetailSpec extends Specification implements DomainUnitTest<CreditjvTansactionDetail> {
+class CreditJvTransactionDetailSpec extends Specification implements DomainUnitTest<CreditJvTransactionDetail> {
 
     def setup() {
     }
