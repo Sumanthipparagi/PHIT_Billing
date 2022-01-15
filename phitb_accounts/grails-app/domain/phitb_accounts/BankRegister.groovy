@@ -29,12 +29,12 @@ class BankRegister implements LogicalDelete<BankRegister> {
 
         if (!this.isUpdatable)
         {
-            System.out.println("BankRegister Domain update Prevented " + new Date().toString() + " ,id: " + this.id)
+            System.out.println("BankRegisterService Domain update Prevented " + new Date().toString() + " ,id: " + this.id)
             return false
         }
         else
         {
-            System.out.println("BankRegister domain Updated " + new Date().toString() + " ,id: " + this.id)
+            System.out.println("BankRegisterService domain Updated " + new Date().toString() + " ,id: " + this.id)
         }
     }
 }

@@ -19,6 +19,11 @@ class UrlMappings {
 
         group "/api/v1.0", {
 
+            //bank register
+            "/accounts/bankregister(.$format)?"(controller: 'bankRegister') { action = [GET: 'index', POST: 'save'] }
+            "/accounts/bankregister/datatable(.$format)?"(controller: 'bankRegister') { action = [GET: 'dataTable'] }
+            "/accounts/bankregister/$id(.$format)?"(controller: 'bankRegister') { action = [GET: 'show', PUT: 'update', DELETE: 'delete'] }
+
         }
     }
 }
