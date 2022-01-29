@@ -9,7 +9,7 @@ class SeriesMaster {
     long returnId
     long orderId
     long status
-    int syncStatus
+    long syncStatus
     long entityTypeId
     long entityId
     long createdUser

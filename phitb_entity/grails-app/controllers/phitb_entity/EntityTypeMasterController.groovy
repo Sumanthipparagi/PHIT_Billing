@@ -30,7 +30,6 @@ class EntityTypeMasterController {
             System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
         }
     }
-
     /**
      * Get requested entity type master
      * @param id
@@ -57,7 +56,6 @@ class EntityTypeMasterController {
             System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
         }
     }
-
 
     /**
      * Save new entity type master
@@ -111,7 +109,6 @@ class EntityTypeMasterController {
         }
     }
 
-
     /**
      * Delete selected account register
      * @param id
@@ -137,7 +134,6 @@ class EntityTypeMasterController {
             System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
         }
     }
-
 
     /**
      * Gets all bank register in datatables format

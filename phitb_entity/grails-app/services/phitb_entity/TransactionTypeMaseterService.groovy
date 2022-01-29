@@ -8,7 +8,7 @@ import phitb_entity.Exception.ResourceNotFoundException
 import java.text.SimpleDateFormat
 
 @Transactional
-class EntityTypeMasterService {
+class TransactionTypeMaseterService {
 
     SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss")
 
@@ -18,13 +18,13 @@ class EntityTypeMasterService {
         Integer l = limit ? Integer.parseInt(limit.toString()) : 100
 
         if (!query)
-            return EntityTypeMaster.findAll([sort: 'id', max: l, offset: o, order: 'desc'])
+            return TransactionTypeMaster.findAll([sort: 'id', max: l, offset: o, order: 'desc'])
         else
-            return EntityTypeMaster.findAllByNameIlike("%" + query + "%", [sort: 'id', max: l, offset: o, order: 'desc'])
+            return TransactionTypeMaster.findAllByTransactionName("%" + query + "%", [sort: 'id', max: l, offset: o, order: 'desc'])
     }
 
-    EntityTypeMaster get(String id) {
-        return EntityTypeMaster.findById(Long.parseLong(id))
+    TransactionTypeMaster get(String id) {
+        return TransactionTypeMaster.findById(Long.parseLong(id))
     }
 
     JSONObject dataTables(JSONObject paramsJsonObject, String start, String length) {
@@ -35,58 +35,51 @@ class EntityTypeMasterService {
         String orderColumn = "id"
         switch (orderColumnId) {
             case '0':
-                orderColumn = "walletName"
+                orderColumn = "id"
                 break;
             case '1':
-                orderColumn = "entityId"
+                orderColumn = "transactionName"
                 break;
         }
-
         Integer offset = start ? Integer.parseInt(start.toString()) : 0
         Integer max = length ? Integer.parseInt(length.toString()) : 100
-
-        def walletMasterCriteria = EntityTypeMaster.createCriteria()
-        def walletMasterArrayList = walletMasterCriteria.list(max: max, offset: offset) {
+        def transctionTypeMasterCriteria = TransactionTypeMaster.createCriteria()
+        def transctionTypeMasterArrayList = transctionTypeMasterCriteria.list(max: max, offset: offset) {
             or {
                 if (searchTerm != "") {
-                    ilike('walletName', '%' + searchTerm + '%')
+                    ilike('transactionName', '%' + searchTerm + '%')
                 }
             }
             eq('deleted', false)
             order(orderColumn, orderDir)
         }
-
-        def recordsTotal = walletMasterArrayList.totalCount
+        def recordsTotal = transctionTypeMasterArrayList.totalCount
         JSONObject jsonObject = new JSONObject()
         jsonObject.put("draw", paramsJsonObject.draw)
         jsonObject.put("recordsTotal", recordsTotal)
         jsonObject.put("recordsFiltered", recordsTotal)
-        jsonObject.put("data", walletMasterArrayList)
+        jsonObject.put("data", transctionTypeMasterArrayList)
         return jsonObject
     }
 
-    EntityTypeMaster save(JSONObject jsonObject) {
-        EntityTypeMaster entityTypeMaster = new EntityTypeMaster()
-        entityTypeMaster.name = jsonObject.get("name").toString()
-        entityTypeMaster.description = Long.parseLong(jsonObject.get("description").toString())
-        entityTypeMaster.save(flush: true)
-        if (!entityTypeMaster.hasErrors())
-            return entityTypeMaster
+    TransactionTypeMaster save(JSONObject jsonObject) {
+        TransactionTypeMaster transactionTypeMaster = new TransactionTypeMaster()
+        transactionTypeMaster.transactionName = jsonObject.get("transactionName").toString()
+        transactionTypeMaster.save(flush: true)
+        if (!transactionTypeMaster.hasErrors())
+            return transactionTypeMaster
         else
             throw new BadRequestException()
-
     }
 
-    EntityTypeMaster update(JSONObject jsonObject, String id) {
-
-        EntityTypeMaster entityTypeMaster = EntityTypeMaster.findById(Long.parseLong(id))
-        if (entityTypeMaster) {
-            entityTypeMaster.isUpdatable = true
-            entityTypeMaster.name = jsonObject.get("name").toString()
-            entityTypeMaster.description = Long.parseLong(jsonObject.get("description").toString())
-            entityTypeMaster.save(flush: true)
-            if (!entityTypeMaster.hasErrors())
-                return entityTypeMaster
+    TransactionTypeMaster update(JSONObject jsonObject, String id) {
+        TransactionTypeMaster transactionTypeMaster = TransactionTypeMaster.findById(Long.parseLong(id))
+        if (transactionTypeMaster) {
+            transactionTypeMaster.isUpdatable = true
+            transactionTypeMaster.transactionName = jsonObject.get("transactionName").toString()
+            transactionTypeMaster.save(flush: true)
+            if (!transactionTypeMaster.hasErrors())
+                return transactionTypeMaster
             else
                 throw new BadRequestException()
         } else
@@ -95,10 +88,10 @@ class EntityTypeMasterService {
 
     void delete(String id) {
         if (id) {
-            EntityTypeMaster entityTypeMaster = EntityTypeMaster.findById(Long.parseLong(id))
-            if (entityTypeMaster) {
-                entityTypeMaster.isUpdatable = true
-                entityTypeMaster.delete()
+            TransactionTypeMaster transactionTypeMaster = TransactionTypeMaster.findById(Long.parseLong(id))
+            if (transactionTypeMaster) {
+                transactionTypeMaster.isUpdatable = true
+                transactionTypeMaster.delete()
             } else {
                 throw new ResourceNotFoundException()
             }
@@ -107,5 +100,3 @@ class EntityTypeMasterService {
         }
     }
 }
-
-
