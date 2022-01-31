@@ -8,8 +8,8 @@ class DepartmentMaster implements LogicalDelete<DepartmentMaster> {
     String description
     long entityTypeId
     long entityId
-    UserRegister createdUser
-    UserRegister modifiedUser
+    long createdUser
+    long modifiedUser
 
     static constraints = {
         name maxSize: 500

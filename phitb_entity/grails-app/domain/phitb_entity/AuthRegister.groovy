@@ -4,7 +4,7 @@ import gorm.logical.delete.LogicalDelete
 
 class AuthRegister implements LogicalDelete<AuthRegister> {
 
-    UserRegister user
+    long user
     String password
     String username
 

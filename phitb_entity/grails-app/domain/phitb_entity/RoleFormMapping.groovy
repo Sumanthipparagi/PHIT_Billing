@@ -25,12 +25,12 @@ class RoleFormMapping {
 
         if (!this.isUpdatable)
         {
-            System.out.println("SeriesMaster Domain update Prevented " + new Date().toString() + " ,id: " + this.id)
+            System.out.println("RoleFormMapping Domain update Prevented " + new Date().toString() + " ,id: " + this.id)
             return false
         }
         else
         {
-            System.out.println("SeriesMaster domain Updated " + new Date().toString() + " ,id: " + this.id)
+            System.out.println("RoleFormMapping domain Updated " + new Date().toString() + " ,id: " + this.id)
         }
     }
 }

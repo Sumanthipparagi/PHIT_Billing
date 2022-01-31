@@ -25,7 +25,6 @@ class AccountRegister implements LogicalDelete<AccountRegister> {
     static constraints = {
         accountName maxSize: 500
     }
-
     boolean isUpdatable
     static transients = ['isUpdatable']
     def beforeUpdate()
@@ -33,12 +32,12 @@ class AccountRegister implements LogicalDelete<AccountRegister> {
 
         if (!this.isUpdatable)
         {
-            System.out.println("UserRegister Domain update Prevented " + new Date().toString() + " ,id: " + this.id)
+            System.out.println("AccountRegister Domain update Prevented " + new Date().toString() + " ,id: " + this.id)
             return false
         }
         else
         {
-            System.out.println("UserRegister domain Updated " + new Date().toString() + " ,id: " + this.id)
+            System.out.println("AccountRegister domain Updated " + new Date().toString() + " ,id: " + this.id)
         }
     }
 }

@@ -31,12 +31,12 @@ class RouteRegister {
 
         if (!this.isUpdatable)
         {
-            System.out.println("SeriesMaster Domain update Prevented " + new Date().toString() + " ,id: " + this.id)
+            System.out.println("RouteRegister Domain update Prevented " + new Date().toString() + " ,id: " + this.id)
             return false
         }
         else
         {
-            System.out.println("SeriesMaster domain Updated " + new Date().toString() + " ,id: " + this.id)
+            System.out.println("RouteRegister domain Updated " + new Date().toString() + " ,id: " + this.id)
         }
     }
 }

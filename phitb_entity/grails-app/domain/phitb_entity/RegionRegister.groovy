@@ -29,12 +29,12 @@ class RegionRegister {
 
         if (!this.isUpdatable)
         {
-            System.out.println("SeriesMaster Domain update Prevented " + new Date().toString() + " ,id: " + this.id)
+            System.out.println("RegionRegister Domain update Prevented " + new Date().toString() + " ,id: " + this.id)
             return false
         }
         else
         {
-            System.out.println("SeriesMaster domain Updated " + new Date().toString() + " ,id: " + this.id)
+            System.out.println("RegionRegister domain Updated " + new Date().toString() + " ,id: " + this.id)
         }
     }
 }

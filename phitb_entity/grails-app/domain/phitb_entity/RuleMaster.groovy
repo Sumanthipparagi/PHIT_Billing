@@ -27,12 +27,12 @@ class RuleMaster {
 
         if (!this.isUpdatable)
         {
-            System.out.println("SeriesMaster Domain update Prevented " + new Date().toString() + " ,id: " + this.id)
+            System.out.println("RuleMaster Domain update Prevented " + new Date().toString() + " ,id: " + this.id)
             return false
         }
         else
         {
-            System.out.println("SeriesMaster domain Updated " + new Date().toString() + " ,id: " + this.id)
+            System.out.println("RuleMaster domain Updated " + new Date().toString() + " ,id: " + this.id)
         }
     }
 }
