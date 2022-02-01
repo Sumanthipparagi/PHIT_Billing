@@ -14,7 +14,7 @@ class RuleMasterService {
         if (!query)
             return RuleMaster.findAll([sort: 'id', max: l, offset: o, order: 'desc'])
         else
-            return RuleMaster.findAllByCheckDate("%" + query + "%", [sort: 'id', max: l, offset: o, order: 'desc'])
+            return RuleMaster.findAllByCheckDateIlike("%" + query + "%", [sort: 'id', max: l, offset: o, order: 'desc'])
     }
 
     RuleMaster get(String id) {
@@ -65,10 +65,10 @@ class RuleMasterService {
         ruleMaster.creditGraceCheck = Long.parseLong(jsonObject.get("creditGraceCheck").toString())
         ruleMaster.scheme = Long.parseLong(jsonObject.get("scheme").toString())
         ruleMaster.syncStatus = Long.parseLong(jsonObject.get("syncStatus").toString())
-        ruleMaster.entityTypeId = Long.parseLong(jsonObject.get("entityTypeId").toString())
-        ruleMaster.entityId = Long.parseLong(jsonObject.get("entityId").toString())
-        ruleMaster.createdUser = Long.parseLong(jsonObject.get("createdUser").toString())
-        ruleMaster.modifiedUser = Long.parseLong(jsonObject.get("modifiedUser").toString())
+        ruleMaster.entityType = EntityTypeMaster.findById(Long.parseLong(jsonObject.get("entityType").toString()))
+        ruleMaster.entity = EntityRegister.findById(Long.parseLong(jsonObject.get("entity").toString()))
+        ruleMaster.createdUser = UserRegister.findById(Long.parseLong(jsonObject.get("createdUser").toString()))
+        ruleMaster.modifiedUser = UserRegister.findById(Long.parseLong(jsonObject.get("modifiedUser").toString()))
         ruleMaster.save(flush: true)
         if (!ruleMaster.hasErrors())
             return ruleMaster
@@ -87,10 +87,10 @@ class RuleMasterService {
             ruleMaster.creditGraceCheck = Long.parseLong(jsonObject.get("creditGraceCheck").toString())
             ruleMaster.scheme = Long.parseLong(jsonObject.get("scheme").toString())
             ruleMaster.syncStatus = Long.parseLong(jsonObject.get("syncStatus").toString())
-            ruleMaster.entityTypeId = Long.parseLong(jsonObject.get("entityTypeId").toString())
-            ruleMaster.entityId = Long.parseLong(jsonObject.get("entityId").toString())
-            ruleMaster.createdUser = Long.parseLong(jsonObject.get("createdUser").toString())
-            ruleMaster.modifiedUser = Long.parseLong(jsonObject.get("modifiedUser").toString())
+            ruleMaster.entityType = EntityTypeMaster.findById(Long.parseLong(jsonObject.get("entityType").toString()))
+            ruleMaster.entity = EntityRegister.findById(Long.parseLong(jsonObject.get("entity").toString()))
+            ruleMaster.createdUser = UserRegister.findById(Long.parseLong(jsonObject.get("createdUser").toString()))
+            ruleMaster.modifiedUser = UserRegister.findById(Long.parseLong(jsonObject.get("modifiedUser").toString()))
             ruleMaster.save(flush: true)
             if (!ruleMaster.hasErrors())
                 return ruleMaster

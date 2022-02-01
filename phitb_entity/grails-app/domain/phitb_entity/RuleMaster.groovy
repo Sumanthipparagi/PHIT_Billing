@@ -9,10 +9,10 @@ class RuleMaster {
     String checkDate
     long scheme
     long syncStatus
-    long entityTypeId
-    long entityId
-    long createdUser
-    long modifiedUser
+    EntityTypeMaster entityType
+    EntityRegister entity
+    UserRegister createdUser
+    UserRegister modifiedUser
 
     Date dateCreated
     Date lastUpdated

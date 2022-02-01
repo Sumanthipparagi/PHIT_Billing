@@ -18,9 +18,10 @@ class AccountRegisterService {
         Integer l = limit ? Integer.parseInt(limit.toString()) : 100
 
         if (!query)
-            return BankRegister.findAll([sort: 'id', max: l, offset: o, order: 'desc'])
+            return AccountRegister.findAll([sort: 'id', max: l, offset: o, order: 'desc'])
         else
-            return BankRegister.findAllByBankNameIlike("%" + query + "%", [sort: 'id', max: l, offset: o, order: 'desc'])
+            return AccountRegister.findAllByAccountNameIlike("%" + query + "%", [sort: 'id', max: l, offset: o, order:
+                    'desc'])
     }
 
     AccountRegister get(String id) {
@@ -68,7 +69,6 @@ class AccountRegisterService {
 
     AccountRegister save(JSONObject jsonObject) {
         AccountRegister accountRegister = new AccountRegister()
-        accountRegister.isUpdatable = true
         accountRegister.generalId = Long.parseLong(jsonObject.get("generalId").toString())
         accountRegister.accountName = jsonObject.get("accountName").toString()
         accountRegister.accountStatus = Long.parseLong(jsonObject.get("accountStatus").toString())
@@ -79,16 +79,15 @@ class AccountRegisterService {
         accountRegister.yearlyBudget = jsonObject.get("yearlyBudget").toString()
         accountRegister.balance = Long.parseLong(jsonObject.get("balance").toString())
         accountRegister.syncStatus = Long.parseLong(jsonObject.get("syncStatus").toString())
-        accountRegister.entityTypeId = Long.parseLong(jsonObject.get("entityTypeId").toString())
-        accountRegister.entityId = Long.parseLong(jsonObject.get("entityId").toString())
-        accountRegister.modifiedUser = Long.parseLong(jsonObject.get("modifiedUser").toString())
-        accountRegister.createdUser = Long.parseLong(jsonObject.get("createdUser").toString())
+        accountRegister.entityType =  EntityTypeMaster.findById(Long.parseLong(jsonObject.get("entityType").toString()))
+        accountRegister.entity = EntityRegister.findById(Long.parseLong(jsonObject.get("entity").toString()))
+        accountRegister.modifiedUser = UserRegister.findById(Long.parseLong(jsonObject.get("modifiedUser").toString()))
+        accountRegister.createdUser =  UserRegister.findById(Long.parseLong(jsonObject.get("createdUser").toString()))
         accountRegister.save(flush: true)
         if (!accountRegister.hasErrors())
             return accountRegister
         else
             throw new BadRequestException()
-
     }
 
     AccountRegister update(JSONObject jsonObject, String id) {
@@ -106,10 +105,10 @@ class AccountRegisterService {
             accountRegister.yearlyBudget = jsonObject.get("yearlyBudget").toString()
             accountRegister.balance = Long.parseLong(jsonObject.get("balance").toString())
             accountRegister.syncStatus = Long.parseLong(jsonObject.get("syncStatus").toString())
-            accountRegister.entityTypeId = Long.parseLong(jsonObject.get("entityTypeId").toString())
-            accountRegister.entityId = Long.parseLong(jsonObject.get("entityId").toString())
-            accountRegister.modifiedUser = Long.parseLong(jsonObject.get("modifiedUser").toString())
-            accountRegister.createdUser = Long.parseLong(jsonObject.get("createdUser").toString())
+            accountRegister.entityType =  EntityTypeMaster.findById(Long.parseLong(jsonObject.get("entityType").toString()))
+            accountRegister.entity = EntityRegister.findById(Long.parseLong(jsonObject.get("entity").toString()))
+            accountRegister.modifiedUser = UserRegister.findById(Long.parseLong(jsonObject.get("modifiedUser").toString()))
+            accountRegister.createdUser =  UserRegister.findById(Long.parseLong(jsonObject.get("createdUser").toString()))
             accountRegister.save(flush: true)
             if (!accountRegister.hasErrors())
                 return accountRegister

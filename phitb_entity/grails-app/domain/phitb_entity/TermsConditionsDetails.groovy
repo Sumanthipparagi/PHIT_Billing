@@ -1,13 +1,9 @@
 package phitb_entity
 
-class SeriesMaster {
+class TermsConditionsDetails {
 
-    String seriesCode
-    String seriesName
-    long mode
-    long saleId
-    long returnId
-    long orderId
+    long formId
+    String termCondition
     long status
     long syncStatus
     EntityTypeMaster entityType
@@ -21,6 +17,9 @@ class SeriesMaster {
 
     static constraints = {
     }
+    static mapping = {
+        termCondition sqlType: "longText"
+    }
 
     boolean isUpdatable
     static transients = ['isUpdatable']
@@ -29,12 +28,12 @@ class SeriesMaster {
 
         if (!this.isUpdatable)
         {
-            System.out.println("SeriesMaster Domain update Prevented " + new Date().toString() + " ,id: " + this.id)
+            System.out.println("TermsConditionsDetails Domain update Prevented " + new Date().toString() + " ,id: " + this.id)
             return false
         }
         else
         {
-            System.out.println("SeriesMaster domain Updated " + new Date().toString() + " ,id: " + this.id)
+            System.out.println("TermsConditionsDetails domain Updated " + new Date().toString() + " ,id: " + this.id)
         }
     }
 }

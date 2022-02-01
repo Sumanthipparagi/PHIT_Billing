@@ -8,22 +8,22 @@ import org.grails.web.json.JSONObject
 import phitb_entity.Exception.BadRequestException
 import phitb_entity.Exception.ResourceNotFoundException
 
-class AccountRegisterController {
+class TerritoryRegisterController {
 	static responseFormats = ['json', 'xml']
     static allowedMethods = [index: "GET", show: "GET", save: "POST", update: "PUT", delete: "DELETE", dataTable: "GET"]
 
-    AccountRegisterService accountRegisterService
+   TerritoryRegisterService territoryRegisterService
     /**
-     * Gets all account register
+     * Gets all territory register
      * @param query
      * @param offset
      * @param limit
-     * @return list of account register
+     * @return list of territory register
      */
     def index() {
 
         try {
-            respond accountRegisterService.getAll(params.limit, params.offset, params.query)
+            respond territoryRegisterService.getAll(params.limit, params.offset, params.query)
         }
         catch (Exception ex) {
             System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
@@ -31,15 +31,15 @@ class AccountRegisterController {
     }
 
     /**
-     * Get requested account register
+     * Get requested territory register
      * @param id
-     * @return get requested account register
+     * @return get requested territory register
      */
     def show() {
         try {
             String id = params.id
             if (id) {
-                respond accountRegisterService.get(id)
+                respond territoryRegisterService.get(id)
             }
         }
         catch (ResourceNotFoundException ex)
@@ -59,14 +59,14 @@ class AccountRegisterController {
 
 
     /**
-     * Save new account register
-     * @param account register
-     * @return saved account register
+     * Save new territory register
+     * @param territory register
+     * @return saved territory register
      */
     def save() {
         try {
             JSONObject jsonObject = JSON.parse(request.reader.text) as JSONObject
-            respond accountRegisterService.save(jsonObject)
+            respond territoryRegisterService.save(jsonObject)
         }
         catch (ResourceNotFoundException ex)
         {
@@ -84,16 +84,16 @@ class AccountRegisterController {
     }
 
     /**
-     * Update existing account register
+     * Update existing territory register
      * @param id
-     * @param account register
-     * @return updated account register
+     * @param territory register
+     * @return updated territory register
      */
     def update() {
         try {
             String id = params.id
             JSONObject jsonObject = JSON.parse(request.reader.text) as JSONObject
-            respond accountRegisterService.update(jsonObject,id)
+            respond territoryRegisterService.update(jsonObject,id)
         }
         catch (ResourceNotFoundException ex)
         {
@@ -111,14 +111,14 @@ class AccountRegisterController {
     }
 
     /**
-     * Delete selected account register
+     * Delete selected territory register
      * @param id
      * @return returns status code 200
      */
     def delete() {
         try {
             String id = params.id
-            accountRegisterService.delete(id)
+            territoryRegisterService.delete(id)
             response.status = 200
         }
         catch (ResourceNotFoundException ex)
@@ -137,8 +137,8 @@ class AccountRegisterController {
     }
 
     /**
-     * Gets all bank register in datatables format
-     * @return list of bank register
+     * Gets all territory register in datatables format
+     * @return list of territory register
      */
     def dataTable() {
         try {
@@ -146,7 +146,7 @@ class AccountRegisterController {
             String length = params.length
             GrailsParameterMap parameterMap = getParams()
             JSONObject paramsJsonObject = new JSONObject(parameterMap.params)
-            respond accountRegisterService.dataTables(paramsJsonObject, start, length)
+            respond territoryRegisterService.dataTables(paramsJsonObject, start, length)
         }
         catch (ResourceNotFoundException ex)
         {

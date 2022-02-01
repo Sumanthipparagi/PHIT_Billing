@@ -8,22 +8,22 @@ import org.grails.web.json.JSONObject
 import phitb_entity.Exception.BadRequestException
 import phitb_entity.Exception.ResourceNotFoundException
 
-class AccountRegisterController {
+class RuleMasterController {
 	static responseFormats = ['json', 'xml']
     static allowedMethods = [index: "GET", show: "GET", save: "POST", update: "PUT", delete: "DELETE", dataTable: "GET"]
 
-    AccountRegisterService accountRegisterService
+   RuleMasterService ruleMasterService
     /**
-     * Gets all account register
+     * Gets all rule master
      * @param query
      * @param offset
      * @param limit
-     * @return list of account register
+     * @return list of rule master
      */
     def index() {
 
         try {
-            respond accountRegisterService.getAll(params.limit, params.offset, params.query)
+            respond ruleMasterService.getAll(params.limit, params.offset, params.query)
         }
         catch (Exception ex) {
             System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
@@ -31,15 +31,15 @@ class AccountRegisterController {
     }
 
     /**
-     * Get requested account register
+     * Get requested rule master
      * @param id
-     * @return get requested account register
+     * @return get requested rule master
      */
     def show() {
         try {
             String id = params.id
             if (id) {
-                respond accountRegisterService.get(id)
+                respond ruleMasterService.get(id)
             }
         }
         catch (ResourceNotFoundException ex)
@@ -59,14 +59,14 @@ class AccountRegisterController {
 
 
     /**
-     * Save new account register
-     * @param account register
-     * @return saved account register
+     * Save new rule master
+     * @param rule master
+     * @return saved rule master
      */
     def save() {
         try {
             JSONObject jsonObject = JSON.parse(request.reader.text) as JSONObject
-            respond accountRegisterService.save(jsonObject)
+            respond ruleMasterService.save(jsonObject)
         }
         catch (ResourceNotFoundException ex)
         {
@@ -93,7 +93,7 @@ class AccountRegisterController {
         try {
             String id = params.id
             JSONObject jsonObject = JSON.parse(request.reader.text) as JSONObject
-            respond accountRegisterService.update(jsonObject,id)
+            respond ruleMasterService.update(jsonObject,id)
         }
         catch (ResourceNotFoundException ex)
         {
@@ -111,14 +111,14 @@ class AccountRegisterController {
     }
 
     /**
-     * Delete selected account register
+     * Delete selected rule master
      * @param id
      * @return returns status code 200
      */
     def delete() {
         try {
             String id = params.id
-            accountRegisterService.delete(id)
+            ruleMasterService.delete(id)
             response.status = 200
         }
         catch (ResourceNotFoundException ex)
@@ -137,8 +137,8 @@ class AccountRegisterController {
     }
 
     /**
-     * Gets all bank register in datatables format
-     * @return list of bank register
+     * Gets all rule master in datatables format
+     * @return list of rule master
      */
     def dataTable() {
         try {
@@ -146,7 +146,7 @@ class AccountRegisterController {
             String length = params.length
             GrailsParameterMap parameterMap = getParams()
             JSONObject paramsJsonObject = new JSONObject(parameterMap.params)
-            respond accountRegisterService.dataTables(paramsJsonObject, start, length)
+            respond ruleMasterService.dataTables(paramsJsonObject, start, length)
         }
         catch (ResourceNotFoundException ex)
         {

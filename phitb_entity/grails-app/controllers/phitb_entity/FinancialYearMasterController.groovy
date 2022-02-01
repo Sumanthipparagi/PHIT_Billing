@@ -8,13 +8,12 @@ import org.grails.web.json.JSONObject
 import phitb_entity.Exception.BadRequestException
 import phitb_entity.Exception.ResourceNotFoundException
 
-class AccountRegisterController {
+class FinancialYearMasterController {
 	static responseFormats = ['json', 'xml']
-    static allowedMethods = [index: "GET", show: "GET", save: "POST", update: "PUT", delete: "DELETE", dataTable: "GET"]
 
-    AccountRegisterService accountRegisterService
+    FinancialYearMasterService financialYearMasterService
     /**
-     * Gets all account register
+     * Gets all financial year master
      * @param query
      * @param offset
      * @param limit
@@ -23,7 +22,7 @@ class AccountRegisterController {
     def index() {
 
         try {
-            respond accountRegisterService.getAll(params.limit, params.offset, params.query)
+            respond financialYearMasterService.getAll(params.limit, params.offset, params.query)
         }
         catch (Exception ex) {
             System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
@@ -31,15 +30,15 @@ class AccountRegisterController {
     }
 
     /**
-     * Get requested account register
+     * Get requested financial year master
      * @param id
-     * @return get requested account register
+     * @return get requested financial year master
      */
     def show() {
         try {
             String id = params.id
             if (id) {
-                respond accountRegisterService.get(id)
+                respond financialYearMasterService.get(id)
             }
         }
         catch (ResourceNotFoundException ex)
@@ -59,14 +58,14 @@ class AccountRegisterController {
 
 
     /**
-     * Save new account register
-     * @param account register
-     * @return saved account register
+     * Save new financial year master
+     * @param financial year master
+     * @return saved financial year master
      */
     def save() {
         try {
             JSONObject jsonObject = JSON.parse(request.reader.text) as JSONObject
-            respond accountRegisterService.save(jsonObject)
+            respond financialYearMasterService.save(jsonObject)
         }
         catch (ResourceNotFoundException ex)
         {
@@ -86,14 +85,14 @@ class AccountRegisterController {
     /**
      * Update existing account register
      * @param id
-     * @param account register
-     * @return updated account register
+     * @param financial year master
+     * @return updated financial year master
      */
     def update() {
         try {
             String id = params.id
             JSONObject jsonObject = JSON.parse(request.reader.text) as JSONObject
-            respond accountRegisterService.update(jsonObject,id)
+            respond financialYearMasterService.update(jsonObject,id)
         }
         catch (ResourceNotFoundException ex)
         {
@@ -111,14 +110,14 @@ class AccountRegisterController {
     }
 
     /**
-     * Delete selected account register
+     * Delete selected financial year master
      * @param id
      * @return returns status code 200
      */
     def delete() {
         try {
             String id = params.id
-            accountRegisterService.delete(id)
+            financialYearMasterService.delete(id)
             response.status = 200
         }
         catch (ResourceNotFoundException ex)
@@ -137,8 +136,8 @@ class AccountRegisterController {
     }
 
     /**
-     * Gets all bank register in datatables format
-     * @return list of bank register
+     * Gets all financial year master in datatables format
+     * @return list of financial year master
      */
     def dataTable() {
         try {
@@ -146,7 +145,7 @@ class AccountRegisterController {
             String length = params.length
             GrailsParameterMap parameterMap = getParams()
             JSONObject paramsJsonObject = new JSONObject(parameterMap.params)
-            respond accountRegisterService.dataTables(paramsJsonObject, start, length)
+            respond financialYearMasterService.dataTables(paramsJsonObject, start, length)
         }
         catch (ResourceNotFoundException ex)
         {
@@ -162,5 +161,4 @@ class AccountRegisterController {
             System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
         }
     }
-
 }

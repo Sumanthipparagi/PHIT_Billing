@@ -3,7 +3,7 @@ package phitb_entity
 class EntityRegister {
 
     String entityName
-    long entityTypeId
+    EntityTypeMaster entityType
     long affiliateId
     String addressLine1
     String addressLine2
@@ -56,8 +56,8 @@ class EntityRegister {
     long zoneId
     String contactDob
     String entityId
-    long createdUser
-    long modifiedUser
+    UserRegister createdUser
+    UserRegister modifiedUser
 
 
     Date dateCreated

@@ -8,7 +8,8 @@ import phitb_entity.Exception.ResourceNotFoundException
 import java.text.SimpleDateFormat
 
 @Transactional
-class TransactionTypeMaseterService {
+class TransactionTypeMasterService
+{
 
     SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss")
 

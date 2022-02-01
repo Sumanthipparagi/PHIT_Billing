@@ -6,10 +6,10 @@ class FinancialYearMaster {
     String endDate
     long status
     long syncStatus
-    long entityTypeId
-    long entityId
-    long createdUser
-    long modifiedUser
+    EntityTypeMaster entityType
+    EntityRegister entity
+    UserRegister createdUser
+    UserRegister modifiedUser
 
     Date dateCreated
     Date lastUpdated

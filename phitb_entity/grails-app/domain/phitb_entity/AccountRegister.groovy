@@ -1,6 +1,7 @@
 package phitb_entity
 
 import gorm.logical.delete.LogicalDelete
+import grails.gorm.Entity
 
 class AccountRegister implements LogicalDelete<AccountRegister> {
 
@@ -14,10 +15,10 @@ class AccountRegister implements LogicalDelete<AccountRegister> {
     String yearlyBudget
     String balance
     long syncStatus
-    long entityTypeId
-    long entityId
-    long createdUser
-    long modifiedUser
+    EntityTypeMaster entityType
+    Entity entity
+    UserRegister createdUser
+    UserRegister modifiedUser
 
     Date dateCreated
     Date lastUpdated

@@ -1,21 +1,24 @@
 package phitb_entity
 
-class RoleFormMapping {
-    long roleId
-    long formIds
+class UserLogInfo {
+
+    long userId
+    String loginId
+    String ipAddress
+    String formId
+    Date loginTime
+    Date logoutTime
     EntityTypeMaster entityType
     EntityRegister entity
-    UserRegister createdUser
-    UserRegister modifiedUser
 
     Date dateCreated
     Date lastUpdated
-
     static constraints = {
+
     }
 
     static mapping = {
-        formIds sqlType: "longText"
+        formId sqlType: "longText"
     }
 
     boolean isUpdatable
@@ -25,12 +28,12 @@ class RoleFormMapping {
 
         if (!this.isUpdatable)
         {
-            System.out.println("RoleFormMapping Domain update Prevented " + new Date().toString() + " ,id: " + this.id)
+            System.out.println("UserLogInfo Domain update Prevented " + new Date().toString() + " ,id: " + this.id)
             return false
         }
         else
         {
-            System.out.println("RoleFormMapping domain Updated " + new Date().toString() + " ,id: " + this.id)
+            System.out.println("UserLogInfo domain Updated " + new Date().toString() + " ,id: " + this.id)
         }
     }
 }
