@@ -3,7 +3,6 @@ package phitb_entity
 import gorm.logical.delete.LogicalDelete
 
 class UserRegister implements LogicalDelete<UserRegister> {
-
     String userName
     String mobileNumber
     String contactNumber

@@ -1,6 +1,9 @@
 package phitb_entity
 
-class TermsConditionsDetails {
+import gorm.logical.delete.LogicalDelete
+
+class TermsConditionsDetails implements LogicalDelete<TermsConditionsDetails>
+{
 
     long formId
     String termCondition

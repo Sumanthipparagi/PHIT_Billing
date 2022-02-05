@@ -1,6 +1,8 @@
 package phitb_entity
 
-class TerritoryRegister
+import gorm.logical.delete.LogicalDelete
+
+class TerritoryRegister implements LogicalDelete<TerritoryRegister>
 {
     String territoryName
     String shortName

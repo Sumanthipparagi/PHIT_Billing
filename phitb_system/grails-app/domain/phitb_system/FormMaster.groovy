@@ -8,6 +8,7 @@ class FormMaster implements LogicalDelete<FormMaster> {
     String formButtonName
     String configAllowed
     long entityType
+    long entityId
     long entityTypeId
     Date dateCreated
     Date lastUpdated

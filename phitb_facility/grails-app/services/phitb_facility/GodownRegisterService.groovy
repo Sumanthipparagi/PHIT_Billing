@@ -67,7 +67,6 @@ class GodownRegisterService {
 
     GodownRegister save(JSONObject jsonObject) {
         GodownRegister godownRegister = new GodownRegister()
-
         godownRegister.godownName = jsonObject.get("godownName")
         godownRegister.premises = Long.parseLong(jsonObject.get("premises").toString())
         godownRegister.ccmEnabled = Long.parseLong(jsonObject.get("ccmEnabled").toString())
@@ -88,6 +87,7 @@ class GodownRegisterService {
     GodownRegister update(JSONObject jsonObject, String id) {
 
         if (id) {
+
             GodownRegister godownRegister = GodownRegister.findById(Long.parseLong(id))
             if (godownRegister) {
                 godownRegister.isUpdatable = true

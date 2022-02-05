@@ -1,7 +1,9 @@
 package phitb_entity
 
-class EntityRegister {
+import gorm.logical.delete.LogicalDelete
 
+class EntityRegister implements LogicalDelete<EntityRegister>
+{
     String entityName
     EntityTypeMaster entityType
     long affiliateId

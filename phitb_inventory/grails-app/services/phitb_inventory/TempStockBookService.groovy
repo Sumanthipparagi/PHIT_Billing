@@ -23,6 +23,25 @@ class TempStockBookService {
             return TempStockBook.findAllByBatchNumberIlike("%" + query + "%", [sort: 'id', max: l, offset: o, order: 'desc'])
     }
 
+    def getAllByEntity(long limit, long offset, long entityId) {
+        Integer o = offset ? Integer.parseInt(offset.toString()) : 0
+        Integer l = limit ? Integer.parseInt(limit.toString()) : 100
+        if (!entityId)
+            return TempStockBook.findAll([sort: 'id', max: l, offset: o, order: 'desc'])
+        else
+            return TempStockBook.findAllByEntityId(entityId, [sort: 'id', max: l, offset: o, order: 'desc'])
+    }
+
+    def getAllByProduct(long limit, long offset, long productId) {
+
+        Integer o = offset ? Integer.parseInt(offset.toString()) : 0
+        Integer l = limit ? Integer.parseInt(limit.toString()) : 100
+        if (!productId)
+            return TempStockBook.findAll([sort: 'id', max: l, offset: o, order: 'desc'])
+        else
+            return TempStockBook.findAllByProductId(productId, [sort: 'id', max: l, offset: o, order: 'desc'])
+    }
+
     TempStockBook get(String id) {
         return TempStockBook.findById(Long.parseLong(id))
     }

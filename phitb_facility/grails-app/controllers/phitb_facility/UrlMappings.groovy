@@ -19,6 +19,7 @@ class UrlMappings {
         "400"(controller: "error", action: "error400", exception: BadRequestException)
 
         group "/api/v1.0", {
+
             //Racks
             "/facility/rack(.$format)?"(controller: 'rackMaster') { action = [GET: 'index', POST: 'save'] }
             "/facility/rack(.$format)/$query/$value"(controller: 'rackMaster') { action = [GET: 'index', POST: 'save'] }

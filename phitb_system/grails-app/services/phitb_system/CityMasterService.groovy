@@ -23,6 +23,16 @@ class CityMasterService {
         return CityMaster.findById(Long.parseLong(id))
     }
 
+    def getAllByEntityId(long limit, long offset, long entityId) {
+
+        Integer o = offset ? Integer.parseInt(offset.toString()) : 0
+        Integer l = limit ? Integer.parseInt(limit.toString()) : 100
+        if (!entityId)
+            return CityMaster.findAll([sort: 'id', max: l, offset: o, order: 'desc'])
+        else
+            return CityMaster.findAllByEntityId(entityId,[sort: 'id', max: l, offset: o, order: 'desc'])
+    }
+
     JSONObject dataTables(JSONObject paramsJsonObject, String start, String length)
     {
         String searchTerm = paramsJsonObject.get("search[value]")

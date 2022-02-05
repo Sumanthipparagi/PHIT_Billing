@@ -1,0 +1,8 @@
+{
+  "properties": [
+    {
+      "name": "grails.mime.disable.accept.header.userAgents",
+      "type": "java.lang.String",
+      "description": "Description for grails.mime.disable.accept.header.userAgents."
+  }
+] }

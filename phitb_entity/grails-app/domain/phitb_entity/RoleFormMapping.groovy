@@ -1,6 +1,9 @@
 package phitb_entity
 
-class RoleFormMapping {
+import gorm.logical.delete.LogicalDelete
+
+class RoleFormMapping implements LogicalDelete<RoleFormMapping>
+{
     long roleId
     long formIds
     EntityTypeMaster entityType

@@ -23,6 +23,17 @@ class GenderMasterService {
         return GenderMaster.findById(Long.parseLong(id))
     }
 
+    def getAllByEntityId(long limit, long offset, long entityId) {
+
+        Integer o = offset ? Integer.parseInt(offset.toString()) : 0
+        Integer l = limit ? Integer.parseInt(limit.toString()) : 100
+
+        if (!entityId)
+            return GenderMaster.findAll([sort: 'id', max: l, offset: o, order: 'desc'])
+        else
+            return GenderMaster.findAllByEntityId(entityId,[sort: 'id', max: l, offset: o, order: 'desc'])
+    }
+
     JSONObject dataTables(JSONObject paramsJsonObject, String start, String length)
     {
         String searchTerm = paramsJsonObject.get("search[value]")

@@ -59,6 +59,60 @@ class TempStockBookController {
     }
 
     /**
+     * Get requested Stock Book
+     * @param id
+     * @return get requested Stock Book
+     */
+    def getByEntityId() {
+        try {
+            long id = params.id
+            if (id) {
+                respond tempStockBookService.getAllByEntity(0,0,id)
+            }
+        }
+        catch (ResourceNotFoundException ex)
+        {
+            System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
+            response.status = 404
+        }
+        catch (BadRequestException ex)
+        {
+            System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
+            response.status = 400
+        }
+        catch (Exception ex) {
+            System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
+        }
+    }
+
+    /**
+     * Get requested Stock Book
+     * @param id
+     * @return get requested Stock Book
+     */
+    def getByProductId() {
+        try {
+            long id = params.id
+            if (id) {
+                respond tempStockBookService.getAllByProduct(0,0,id)
+            }
+        }
+        catch (ResourceNotFoundException ex)
+        {
+            System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
+            response.status = 404
+        }
+        catch (BadRequestException ex)
+        {
+            System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
+            response.status = 400
+        }
+        catch (Exception ex) {
+            System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
+        }
+    }
+
+    /**
      * Save new Temp Stock Book
      * @param Temp Stock Book
      * @return saved Temp Stock Book

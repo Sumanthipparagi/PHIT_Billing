@@ -1,6 +1,9 @@
 package phitb_entity
 
-class SeriesMaster {
+import gorm.logical.delete.LogicalDelete
+
+class SeriesMaster implements LogicalDelete<SeriesMaster>
+{
 
     String seriesCode
     String seriesName

@@ -1,6 +1,9 @@
 package phitb_entity
 
-class FinancialYearMaster {
+import gorm.logical.delete.LogicalDelete
+
+class FinancialYearMaster implements LogicalDelete<FinancialYearMaster>
+{
 
     String startDate
     String endDate

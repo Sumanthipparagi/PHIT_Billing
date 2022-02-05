@@ -1,6 +1,9 @@
 package phitb_entity
 
-class RouteRegister {
+import gorm.logical.delete.LogicalDelete
+
+class RouteRegister implements LogicalDelete<RouteRegister>
+{
 
     String routeName
     long cityId

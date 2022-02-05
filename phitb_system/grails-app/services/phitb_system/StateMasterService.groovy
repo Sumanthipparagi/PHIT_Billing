@@ -6,23 +6,40 @@ import phbit_system.Exception.BadRequestException
 import phbit_system.Exception.ResourceNotFoundException
 
 @Transactional
-class StateMasterService {
+class StateMasterService
+{
 
-    def getAll(String limit, String offset, String query) {
+    def getAll(String limit, String offset, String query)
+    {
 
         Integer o = offset ? Integer.parseInt(offset.toString()) : 0
         Integer l = limit ? Integer.parseInt(limit.toString()) : 100
 
         if (!query)
+        {
             return StateMaster.findAll([sort: 'id', max: l, offset: o, order: 'desc'])
+        }
         else
+        {
             return StateMaster.findAllByNameIlike("%" + query + "%", [sort: 'id', max: l, offset: o, order: 'desc'])
+        }
     }
 
-    StateMaster get(String id) {
+    StateMaster get(String id)
+    {
         return StateMaster.findById(Long.parseLong(id))
     }
 
+    def getAllByEntityId(long limit, long offset, long entityId) {
+
+        Integer o = offset ? Integer.parseInt(offset.toString()) : 0
+        Integer l = limit ? Integer.parseInt(limit.toString()) : 100
+
+        if (!entityId)
+            return StateMaster.findAll([sort: 'id', max: l, offset: o, order: 'desc'])
+        else
+            return StateMaster.findAllByEntityId(entityId,[sort: 'id', max: l, offset: o, order: 'desc'])
+    }
     JSONObject dataTables(JSONObject paramsJsonObject, String start, String length)
     {
         String searchTerm = paramsJsonObject.get("search[value]")
@@ -30,7 +47,8 @@ class StateMasterService {
         String orderDir = paramsJsonObject.get("order[0][dir]")
 
         String orderColumn = "id"
-        switch (orderColumnId) {
+        switch (orderColumnId)
+        {
             case '0':
                 orderColumn = "id"
                 break;
@@ -45,7 +63,8 @@ class StateMasterService {
         def dayMasterCriteria = StateMaster.createCriteria()
         def dayMasterArrayList = dayMasterCriteria.list(max: max, offset: offset) {
             or {
-                if (searchTerm != "") {
+                if (searchTerm != "")
+                {
                     ilike('name', '%' + searchTerm + '%')
                     zoneMaster {
                         ilike('name', '%' + searchTerm + '%')
@@ -68,48 +87,74 @@ class StateMasterService {
         return jsonObject
     }
 
-    StateMaster save(JSONObject jsonObject) {
+    StateMaster save(JSONObject jsonObject)
+    {
         StateMaster stateMaster = new StateMaster()
         stateMaster.name = jsonObject.get("name")
-        stateMaster.zone = ZoneMaster.findById(Long.parseLong(jsonObject.get("zoneId").toString()))
-        stateMaster.country = CountryMaster.findById(Long.parseLong(jsonObject.get("countryId").toString()))
+        ZoneMaster zoneMaster = ZoneMaster.findById(Long.parseLong(jsonObject.get("zoneId").toString()))
+        CountryMaster countryMaster = CountryMaster.findById(Long.parseLong(jsonObject.get("countryId").toString()))
+        stateMaster.zone = zoneMaster
+        stateMaster.country = countryMaster
         stateMaster.save(flush: true)
         if (!stateMaster.hasErrors())
+        {
             return stateMaster
+        }
         else
+        {
             throw new BadRequestException()
+        }
     }
 
-    StateMaster update(JSONObject jsonObject, String id) {
-        if (id) {
+    StateMaster update(JSONObject jsonObject, String id)
+    {
+        if (id)
+        {
             StateMaster stateMaster = StateMaster.findById(Long.parseLong(id))
-            if (stateMaster) {
+            if (stateMaster)
+            {
                 stateMaster.isUpdatable = true
                 stateMaster.name = jsonObject.get("name")
                 stateMaster.zone = ZoneMaster.findById(Long.parseLong(jsonObject.get("zoneId").toString()))
                 stateMaster.country = CountryMaster.findById(Long.parseLong(jsonObject.get("countryId").toString()))
                 stateMaster.save(flush: true)
                 if (!stateMaster.hasErrors())
+                {
                     return stateMaster
+                }
                 else
+                {
                     throw new BadRequestException()
-            } else
+                }
+            }
+            else
+            {
                 throw new ResourceNotFoundException()
-        } else {
+            }
+        }
+        else
+        {
             throw new BadRequestException()
         }
     }
 
-    void delete(String id) {
-        if (id) {
+    void delete(String id)
+    {
+        if (id)
+        {
             StateMaster stateMaster = StateMaster.findById(Long.parseLong(id))
-            if (stateMaster) {
+            if (stateMaster)
+            {
                 stateMaster.isUpdatable = true
                 stateMaster.delete()
-            } else {
+            }
+            else
+            {
                 throw new ResourceNotFoundException()
             }
-        } else {
+        }
+        else
+        {
             throw new BadRequestException()
         }
     }

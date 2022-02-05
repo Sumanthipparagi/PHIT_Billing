@@ -6,6 +6,7 @@ class SubAccountTypeMaster implements LogicalDelete<SubAccountTypeMaster> {
 
     String name
     AccountTypeMaster accountType
+    long entityId
 
     Date dateCreated
     Date lastUpdated

@@ -5,8 +5,8 @@ import gorm.logical.delete.LogicalDelete
 class ProductCostRange implements Serializable, LogicalDelete<ProductCostRange> {
 
     String priceType
-    String minimumRate
-    String maximumRate
+    double minimumRate
+    double maximumRate
 
     long status
     long syncStatus

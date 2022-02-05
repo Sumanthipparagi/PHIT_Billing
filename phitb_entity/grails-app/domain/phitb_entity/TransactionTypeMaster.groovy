@@ -1,6 +1,9 @@
 package phitb_entity
 
-class TransactionTypeMaster {
+import gorm.logical.delete.LogicalDelete
+
+class TransactionTypeMaster implements LogicalDelete<TransactionTypeMaster>
+{
 
     String transactionName
 

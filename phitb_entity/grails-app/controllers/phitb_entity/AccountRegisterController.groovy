@@ -57,7 +57,6 @@ class AccountRegisterController {
         }
     }
 
-
     /**
      * Save new account register
      * @param account register

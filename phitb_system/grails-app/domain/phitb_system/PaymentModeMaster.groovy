@@ -6,6 +6,7 @@ class PaymentModeMaster implements LogicalDelete<PaymentModeMaster> {
 
     String name
     AccountModeMaster accountMode
+    long entityId
     Date dateCreated
     Date lastUpdated
 

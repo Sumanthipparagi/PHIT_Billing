@@ -2,10 +2,11 @@ package phitb_system
 
 import gorm.logical.delete.LogicalDelete
 
-class StateMaster implements LogicalDelete<ZoneMaster> {
+class StateMaster implements LogicalDelete<StateMaster> {
 
     String name
     CountryMaster country
+    long entityId
     ZoneMaster zone
 
     Date dateCreated

@@ -1,6 +1,9 @@
 package phitb_entity
 
-class RuleMaster {
+import gorm.logical.delete.LogicalDelete
+
+class RuleMaster implements LogicalDelete<RuleMaster>
+{
 
     long dlExpired
     long foodLicenseExpired

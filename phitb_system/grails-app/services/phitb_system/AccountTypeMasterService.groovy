@@ -19,6 +19,17 @@ class AccountTypeMasterService {
             return AccountTypeMaster.findAllByAccountTypeIlike("%" + query + "%", [sort: 'id', max: l, offset: o, order: 'desc'])
     }
 
+    def getAllByEntityId(long limit, long offset, long entityId) {
+
+        Integer o = offset ? Integer.parseInt(offset.toString()) : 0
+        Integer l = limit ? Integer.parseInt(limit.toString()) : 100
+
+        if (!entityId)
+            return AccountTypeMaster.findAll([sort: 'id', max: l, offset: o, order: 'desc'])
+        else
+            return AccountTypeMaster.findAllByEntityId(entityId,[sort: 'id', max: l, offset: o, order: 'desc'])
+    }
+
     AccountTypeMaster get(String id) {
         return AccountTypeMaster.findById(Long.parseLong(id))
     }

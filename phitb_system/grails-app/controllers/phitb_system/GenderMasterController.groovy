@@ -56,6 +56,32 @@ class GenderMasterController {
     }
 
     /**
+     * Get requested account mode
+     * @param id
+     * @return get requested account mode
+     */
+    def getAllByEntityId() {
+        try {
+            String id = params.id
+            if (id) {
+                respond genderMasterService.getAllByEntityId(0,0,Long.parseLong(id))
+            }
+        }
+        catch (ResourceNotFoundException ex)
+        {
+            System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
+            response.status = 404
+        }
+        catch (BadRequestException ex)
+        {
+            System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
+            response.status = 400
+        }
+        catch (Exception ex) {
+            System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
+        }
+    }
+    /**
      * Save new gender
      * @param gender
      * @return saved gender

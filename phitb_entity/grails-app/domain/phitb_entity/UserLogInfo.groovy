@@ -1,6 +1,9 @@
 package phitb_entity
 
-class UserLogInfo {
+import gorm.logical.delete.LogicalDelete
+
+class UserLogInfo implements LogicalDelete<UserLogInfo>
+{
 
     long userId
     String loginId

@@ -5,8 +5,9 @@ import gorm.logical.delete.LogicalDelete
 class PriorityMaster implements LogicalDelete<PriorityMaster> {
 
     String priority
+    long entityId
     Date dateCreated
-    Date lastupdated
+    Date lastUpdated
 
     static constraints = {
         priority maxSize: 50

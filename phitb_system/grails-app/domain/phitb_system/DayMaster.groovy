@@ -5,7 +5,7 @@ import gorm.logical.delete.LogicalDelete
 class DayMaster implements LogicalDelete<DayMaster> {
 
     String name
-
+    long entityId
     Date dateCreated
     Date lastUpdated
 

@@ -5,6 +5,7 @@ import gorm.logical.delete.LogicalDelete
 class AccountTypeMaster implements LogicalDelete<AccountTypeMaster> {
 
     String accountType
+    long entityId
     Date dateCreated
     Date lastUpdated
 

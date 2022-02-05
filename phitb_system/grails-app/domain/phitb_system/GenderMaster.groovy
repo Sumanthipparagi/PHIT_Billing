@@ -5,7 +5,7 @@ import gorm.logical.delete.LogicalDelete
 class GenderMaster implements LogicalDelete<GenderMaster> {
 
     String name
-
+    long entityId
     Date dateCreated
     Date lastUpdated
 

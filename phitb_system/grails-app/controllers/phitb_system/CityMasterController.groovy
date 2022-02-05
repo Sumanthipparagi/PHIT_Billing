@@ -10,7 +10,7 @@ class CityMasterController {
 	static responseFormats = ['json', 'xml']
     static allowedMethods = [index: "GET", show: "GET", save: "POST", update: "PUT", delete: "DELETE", dataTable: "GET"]
 
-    DayMasterService dayMasterService
+    CityMasterService cityMasterService
     /**
      * Gets all cities
      * @param query
@@ -21,7 +21,7 @@ class CityMasterController {
     def index() {
 
         try {
-            respond dayMasterService.getAll(params.limit, params.offset, params.query)
+            respond cityMasterService.getAll(params.limit, params.offset, params.query)
         }
         catch (Exception ex) {
             System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
@@ -37,7 +37,7 @@ class CityMasterController {
         try {
             String id = params.id
             if (id) {
-                respond dayMasterService.get(id)
+                respond cityMasterService.get(id)
             }
         }
         catch (ResourceNotFoundException ex)
@@ -56,6 +56,34 @@ class CityMasterController {
     }
 
     /**
+     * Get requested account mode
+     * @param id
+     * @return get requested account mode
+     */
+    def getAllByEntityId() {
+        try {
+            String id = params.id
+            if (id) {
+                respond cityMasterService.getAllByEntityId(0,0,Long.parseLong(id))
+            }
+        }
+        catch (ResourceNotFoundException ex)
+        {
+            System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
+            response.status = 404
+        }
+        catch (BadRequestException ex)
+        {
+            System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
+            response.status = 400
+        }
+        catch (Exception ex) {
+            System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
+        }
+    }
+
+
+    /**
      * Save new city
      * @param city
      * @return saved city
@@ -63,7 +91,7 @@ class CityMasterController {
     def save() {
         try {
             JSONObject jsonObject = JSON.parse(request.reader.text) as JSONObject
-            respond dayMasterService.save(jsonObject)
+            respond cityMasterService.save(jsonObject)
         }
         catch (ResourceNotFoundException ex)
         {
@@ -90,7 +118,7 @@ class CityMasterController {
         try {
             String id = params.id
             JSONObject jsonObject = JSON.parse(request.reader.text) as JSONObject
-            respond dayMasterService.update(jsonObject,id)
+            respond cityMasterService.update(jsonObject,id)
         }
         catch (ResourceNotFoundException ex)
         {
@@ -115,7 +143,7 @@ class CityMasterController {
     def delete() {
         try {
             String id = params.id
-            dayMasterService.delete(id)
+            cityMasterService.delete(id)
             response.status = 200
         }
         catch (ResourceNotFoundException ex)
@@ -143,7 +171,7 @@ class CityMasterController {
             String length = params.length
             GrailsParameterMap parameterMap = getParams()
             JSONObject paramsJsonObject = new JSONObject(parameterMap.params)
-            respond dayMasterService.dataTables(paramsJsonObject, start, length)
+            respond cityMasterService.dataTables(paramsJsonObject, start, length)
         }
         catch (ResourceNotFoundException ex)
         {

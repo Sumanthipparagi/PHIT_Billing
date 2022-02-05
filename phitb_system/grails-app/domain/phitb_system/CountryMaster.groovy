@@ -5,7 +5,7 @@ import gorm.logical.delete.LogicalDelete
 class CountryMaster implements LogicalDelete<CountryMaster> {
 
     String name
-
+    long entityId
     Date dateCreated
     Date lastUpdated
 

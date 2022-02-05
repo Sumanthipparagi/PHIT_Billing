@@ -2,15 +2,15 @@ package phitb_entity
 
 class TaxRegister {
     String taxName
-    long taxValue
+    Double taxValue
     String salesTaxType
-    long salesSgst
-    long salesCgst
+    Double salesSgst
+    Double salesCgst
     String purchaseTaxType
-    long purchaseSgst
-    long purchaseCgst
-    long salesIgst
-    long purchaseIgst
+    Double purchaseSgst
+    Double purchaseCgst
+    Double salesIgst
+    Double purchaseIgst
     String gstOnMrpSales
     String gstOnSchemeValueSales
     String gstOnMrpPur

@@ -6,6 +6,7 @@ class CityMaster implements LogicalDelete<CityMaster> {
 
     String name
     StateMaster state
+    long entityId
 
     Date dateCreated
     Date lastUpdated

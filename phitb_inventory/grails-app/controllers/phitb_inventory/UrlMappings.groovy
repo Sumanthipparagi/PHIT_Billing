@@ -27,11 +27,15 @@ class UrlMappings {
             "/inventory/stockbook(.$format)?"(controller: 'stockBook') { action = [GET: 'index', POST: 'save'] }
             "/inventory/stockbook/datatable(.$format)?"(controller: 'stockBook') { action = [GET: 'dataTable'] }
             "/inventory/stockbook/$id(.$format)?"(controller: 'stockBook') { action = [GET: 'show', PUT: 'update', DELETE: 'delete'] }
+            "/inventory/stockbookbyentity/$id(.$format)?"(controller: 'stockBook') { action = [GET: 'getByEntityId'] }
+            "/inventory/stockbookbyproduct/$id(.$format)?"(controller: 'stockBook') { action = [GET: 'getByProductId'] }
 
             //Temp Stock Book
             "/inventory/tempstockbook(.$format)?"(controller: 'tempStockBook') { action = [GET: 'index', POST: 'save'] }
             "/inventory/tempstockbook/datatable(.$format)?"(controller: 'tempStockBook') { action = [GET: 'dataTable'] }
             "/inventory/tempstockbook/$id(.$format)?"(controller: 'tempStockBook') { action = [GET: 'show', PUT: 'update', DELETE: 'delete'] }
+            "/inventory/tempstockbookbyentity/$id(.$format)?"(controller: 'tempStockBook') { action = [GET: 'getByEntityId'] }
+            "/inventory/tempstockbookbyproduct/$id(.$format)?"(controller: 'tempStockBook') { action = [GET: 'getByProductId'] }
 
 
         }

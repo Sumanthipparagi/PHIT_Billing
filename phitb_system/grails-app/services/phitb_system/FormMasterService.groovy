@@ -23,6 +23,17 @@ class FormMasterService {
         return FormMaster.findById(Long.parseLong(id))
     }
 
+    def getAllByEntityId(long limit, long offset, long entityId) {
+
+        Integer o = offset ? Integer.parseInt(offset.toString()) : 0
+        Integer l = limit ? Integer.parseInt(limit.toString()) : 100
+
+        if (!entityId)
+            return FormMaster.findAll([sort: 'id', max: l, offset: o, order: 'desc'])
+        else
+            return FormMaster.findAllByEntityId(entityId,[sort: 'id', max: l, offset: o, order: 'desc'])
+    }
+
     JSONObject dataTables(JSONObject paramsJsonObject, String start, String length)
     {
         String searchTerm = paramsJsonObject.get("search[value]")
@@ -62,13 +73,13 @@ class FormMasterService {
         return jsonObject
     }
 
-    String formName
-    String formButtonName
-    String configAllowed
-    long entityType
-    long entityTypeId
-    long createdUser
-    long modifiedUser
+//    String formName
+//    String formButtonName
+//    String configAllowed
+//    long entityType
+//    long entityTypeId
+//    long createdUser
+//    long modifiedUser
 
 
     FormMaster save(JSONObject jsonObject) {
