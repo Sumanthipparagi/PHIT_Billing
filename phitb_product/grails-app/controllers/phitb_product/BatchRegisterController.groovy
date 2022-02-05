@@ -92,7 +92,6 @@ class BatchRegisterController {
      */
     def getAllByProduct() {
         try {
-            long id = params.id
             if (params.id) {
                 respond batchRegisterService.getAllByProduct(0,0,Long.parseLong(params.id))
             }

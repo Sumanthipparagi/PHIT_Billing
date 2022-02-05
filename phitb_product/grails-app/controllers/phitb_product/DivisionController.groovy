@@ -66,7 +66,7 @@ class DivisionController {
     def getAllEntityId() {
         try {
             long id = params.id
-            if (id) {
+                if (id) {
                 respond divisionService.getAllByEntity(0,0,id)
             }
         }
