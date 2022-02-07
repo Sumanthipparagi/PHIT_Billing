@@ -21,6 +21,24 @@ class TerritoryRegisterService {
             return TerritoryRegister.findAllByTerritoryName("%" + query + "%", [sort: 'id', max: l, offset: o, order: 'desc'])
     }
 
+    def getAllByEntity(String limit, String offset, long entityId)
+    {
+        Integer o = offset ? Integer.parseInt(offset.toString()) : 0
+        Integer l = limit ? Integer.parseInt(limit.toString()) : 100
+        if (!entityId)
+        {
+            return TerritoryRegister.findAll([sort: 'id', max: l, offset: o, order: 'desc'])
+        }
+        else
+        {
+            return TerritoryRegister.createCriteria().list(max: l,offset:o){
+                entity{
+                    eq('id',entityId)
+                }
+            }
+        }
+    }
+
     TerritoryRegister get(String id) {
         return TerritoryRegister.findById(Long.parseLong(id))
     }

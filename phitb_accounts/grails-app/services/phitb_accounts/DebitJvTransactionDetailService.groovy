@@ -23,6 +23,15 @@ class DebitJvTransactionDetailService {
             return DebitJvTransactionDetail.findAllByTransactionIdIlike("%" + query + "%", [sort: 'id', max: l, offset: o, order: 'desc'])
     }
 
+    def getAllByEntity(String limit, String offset, long entityId) {
+        Integer o = offset ? Integer.parseInt(offset.toString()) : 0
+        Integer l = limit ? Integer.parseInt(limit.toString()) : 100
+        if (!entityId)
+            return DebitJvTransactionDetail.findAll([sort: 'id', max: l, offset: o, order: 'desc'])
+        else
+            return DebitJvTransactionDetail.findAllByEntityId(entityId, [sort: 'id', max: l, offset: o, order: 'desc'])
+    }
+
     DebitJvTransactionDetail get(String id) {
         return DebitJvTransactionDetail.findById(Long.parseLong(id))
     }

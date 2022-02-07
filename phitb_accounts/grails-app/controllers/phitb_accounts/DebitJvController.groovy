@@ -10,7 +10,7 @@ class DebitJvController {
 	static responseFormats = ['json', 'xml']
     static allowedMethods = [index: "GET", show: "GET", save: "POST", update: "PUT", delete: "DELETE", dataTable: "GET"]
 
-    CreditJvService creditJvService
+    DebitJvService debitJvService
     /**
      * Gets all credit journal voucher
      * @param query
@@ -21,7 +21,7 @@ class DebitJvController {
     def index() {
 
         try {
-            respond creditJvService.getAll(params.limit, params.offset, params.query)
+            respond debitJvService.getAll(params.limit, params.offset, params.query)
         }
         catch (Exception ex) {
             System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
@@ -37,7 +37,61 @@ class DebitJvController {
         try {
             String id = params.id
             if (id) {
-                respond creditJvService.get(id)
+                respond debitJvService.get(id)
+            }
+        }
+        catch (ResourceNotFoundException ex)
+        {
+            System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
+            response.status = 404
+        }
+        catch (BadRequestException ex)
+        {
+            System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
+            response.status = 400
+        }
+        catch (Exception ex) {
+            System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
+        }
+    }
+
+    /**
+     * Get requested Stock Book
+     * @param id
+     * @return get requested Stock Book
+     */
+    def getByEntityId() {
+        try {
+
+            if (params.id) {
+                respond debitJvService.getAllByEntity(params.limit, params.offset,Long.parseLong(params.id))
+            }
+        }
+        catch (ResourceNotFoundException ex)
+        {
+            System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
+            response.status = 404
+        }
+        catch (BadRequestException ex)
+        {
+            System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
+            response.status = 400
+        }
+        catch (Exception ex) {
+            System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
+        }
+    }
+
+    /**
+     * Get requested Credit Debit Details
+     * @param id
+     * @return get requested Credit Debit Details
+     */
+    def getAllByDays() {
+        try {
+            String days = params.days
+            if (days) {
+                respond debitJvService.getAllByNoOfDays(params.limit, params.offset, days)
             }
         }
         catch (ResourceNotFoundException ex)
@@ -63,7 +117,7 @@ class DebitJvController {
     def save() {
         try {
             JSONObject jsonObject = JSON.parse(request.reader.text) as JSONObject
-            respond creditJvService.save(jsonObject)
+            respond debitJvService.save(jsonObject)
         }
         catch (ResourceNotFoundException ex)
         {
@@ -90,7 +144,7 @@ class DebitJvController {
         try {
             String id = params.id
             JSONObject jsonObject = JSON.parse(request.reader.text) as JSONObject
-            respond creditJvService.update(jsonObject,id)
+            respond debitJvService.update(jsonObject,id)
         }
         catch (ResourceNotFoundException ex)
         {
@@ -115,7 +169,7 @@ class DebitJvController {
     def delete() {
         try {
             String id = params.id
-            creditJvService.delete(id)
+            debitJvService.delete(id)
             response.status = 200
         }
         catch (ResourceNotFoundException ex)
@@ -143,7 +197,7 @@ class DebitJvController {
             String length = params.length
             GrailsParameterMap parameterMap = getParams()
             JSONObject paramsJsonObject = new JSONObject(parameterMap.params)
-            respond creditJvService.dataTables(paramsJsonObject, start, length)
+            respond debitJvService.dataTables(paramsJsonObject, start, length)
         }
         catch (ResourceNotFoundException ex)
         {

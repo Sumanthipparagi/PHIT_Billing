@@ -23,6 +23,15 @@ class FinanceTransactionLogService {
             return FinanceTransactionLog.findAllByAccountIdIlike("%" + query + "%", [sort: 'id', max: l, offset: o, order: 'desc'])
     }
 
+    def getAllByEntity(String limit, String offset, long entityId) {
+        Integer o = offset ? Integer.parseInt(offset.toString()) : 0
+        Integer l = limit ? Integer.parseInt(limit.toString()) : 100
+        if (!entityId)
+            return FinanceTransactionLog.findAll([sort: 'id', max: l, offset: o, order: 'desc'])
+        else
+            return FinanceTransactionLog.findAllByEntityId(entityId, [sort: 'id', max: l, offset: o, order: 'desc'])
+    }
+
     FinanceTransactionLog get(String id) {
         return FinanceTransactionLog.findById(Long.parseLong(id))
     }

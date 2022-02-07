@@ -66,7 +66,7 @@ class ProductRegisterController
     def getAllByEntityId() {
         try {
             if (params.id) {
-                respond productRegisterService.getAllByEntity(0,0,Long.parseLong(params.id))
+                respond productRegisterService.getAllByEntity(params.limit, params.offset,Long.parseLong(params.id))
             }
         }
         catch (ResourceNotFoundException ex)

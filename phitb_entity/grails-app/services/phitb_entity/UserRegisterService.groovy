@@ -27,6 +27,16 @@ class UserRegisterService
         }
     }
 
+    def getAllByDivision(String limit, String offset, long divisionId) {
+        Integer o = offset ? Integer.parseInt(offset.toString()) : 0
+        Integer l = limit ? Integer.parseInt(limit.toString()) : 100
+        if (!divisionId)
+            return UserRegister.findAll([sort: 'id', max: l, offset: o, order: 'desc'])
+        else
+            return UserRegister.findAllByDivisionId(divisionId, [sort: 'id', max: l, offset: o, order: 'desc'])
+    }
+
+
     UserRegister get(String id)
     {
         return UserRegister.findById(Long.parseLong(id))

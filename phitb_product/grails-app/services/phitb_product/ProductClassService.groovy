@@ -22,7 +22,7 @@ class ProductClassService {
                     'desc'])
     }
 
-    def getAllByEntity(int limit, int offset, long entityId)
+    def getAllByEntity(String limit, String offset, long entityId)
     {
         Integer o = offset ? Integer.parseInt(offset.toString()) : 0
         Integer l = limit ? Integer.parseInt(limit.toString()) : 100

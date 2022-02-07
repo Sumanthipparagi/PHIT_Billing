@@ -23,6 +23,16 @@ class BankRegisterService {
             return BankRegister.findAllByBankNameIlike("%" + query + "%", [sort: 'id', max: l, offset: o, order: 'desc'])
     }
 
+    def getAllByEntity(String limit, String offset, long entityId) {
+        Integer o = offset ? Integer.parseInt(offset.toString()) : 0
+        Integer l = limit ? Integer.parseInt(limit.toString()) : 100
+        if (!entityId)
+            return BankRegister.findAll([sort: 'id', max: l, offset: o, order: 'desc'])
+        else
+            return BankRegister.findAllByEntityId(entityId, [sort: 'id', max: l, offset: o, order: 'desc'])
+    }
+
+
     BankRegister get(String id) {
         return BankRegister.findById(Long.parseLong(id))
     }

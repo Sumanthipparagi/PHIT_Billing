@@ -67,7 +67,7 @@ class ProductCategoryMasterController {
         try {
 
             if (params.id) {
-                respond productCategoryMasterService.getAllByEntity(0,0,Long.parseLong(params.id))
+                respond productCategoryMasterService.getAllByEntity(params.limit, params.offset, Long.parseLong(params.id))
             }
         }
         catch (ResourceNotFoundException ex)

@@ -50,7 +50,9 @@ class UrlMappings
                 action = [GET: 'show', PUT: 'update', DELETE:
                         'delete']
             }
-
+            "/entity/customergroupregisterbyentity/$id(.$format)?"(controller: 'customerGroupRegister') {
+                action = [GET: 'getAllByEntityId']
+            }
 
             //Day End Master
             "/entity/dayendmaster(.$format)?"(controller: 'dayEndMaster') {
@@ -61,6 +63,9 @@ class UrlMappings
             "/entity/dayendmaster/$id(.$format)?"(controller: 'dayEndMaster') {
                 action = [GET: 'show', PUT: 'update', DELETE:
                         'delete']
+            }
+            "/entity/dayendmasterbyentity/$id(.$format)?"(controller: 'dayEndMaster') {
+                action = [GET: 'getAllByEntityId']
             }
 
             //Department Master
@@ -85,16 +90,8 @@ class UrlMappings
                 action = [GET: 'show', PUT: 'update', DELETE:
                         'delete']
             }
-
-            //Entity Type master
-            "/entity/entityregister(.$format)?"(controller: 'entityRegister') {
-                action = [GET: 'index', POST:
-                        'save']
-            }
-            "/entity/entityregister/datatable(.$format)?"(controller: 'entityRegister') {action = [GET: 'dataTable']}
-            "/entity/entityregister/$id(.$format)?"(controller: 'entityRegister') {
-                action = [GET: 'show', PUT: 'update', DELETE:
-                        'delete']
+            "/entity/entityregisterbyentitytype/$id(.$format)?"(controller: 'entityRegister') {
+                action = [GET: 'getAllByEntityId']
             }
 
 
@@ -110,16 +107,7 @@ class UrlMappings
             }
 
 
-            //Entity Type Master
-            "/entity/entitytypemaster(.$format)?"(controller: 'entityTypeMaster') {
-                action = [GET: 'index', POST:
-                        'save']
-            }
-            "/entity/entitytypemaster/datatable(.$format)?"(controller: 'entityTypeMaster') {action = [GET: 'dataTable']}
-            "/entity/entitytypemaster/$id(.$format)?"(controller: 'entityTypeMaster') {
-                action = [GET: 'show', PUT: 'update', DELETE:
-                        'delete']
-            }
+
 
             //Financial Year Master
             "/entity/financialyearmaster(.$format)?"(controller: 'financialYearMaster') {
@@ -131,6 +119,9 @@ class UrlMappings
                 action = [GET: 'show', PUT: 'update', DELETE:
                         'delete']
             }
+            "/entity/financialyearmasterbyentity/$id(.$format)?"(controller: 'financialYearMaster') {
+                action = [GET: 'getAllByEntityId']
+            }
 
             //Region Register
             "/entity/regionregister(.$format)?"(controller: 'regionRegister') {
@@ -141,6 +132,9 @@ class UrlMappings
             "/entity/regionregister/$id(.$format)?"(controller: 'regionRegister') {
                 action = [GET: 'show', PUT: 'update', DELETE:
                         'delete']
+            }
+            "/entity/regionregisterbyentity/$id(.$format)?"(controller: 'regionRegister') {
+                action = [GET: 'getAllByEntityId']
             }
 
             //Role Form Mapping
@@ -164,18 +158,11 @@ class UrlMappings
                 action = [GET: 'show', PUT: 'update', DELETE:
                         'delete']
             }
+            "/entity/rolemasterbyentity/$id(.$format)?"(controller: 'roleMaster') {
+                action = [GET: 'getAllByEntityId']
+            }
 
 
-            //Route Register Controller
-            "/entity/rolemaster(.$format)?"(controller: 'roleMaster') {
-                action = [GET: 'index', POST:
-                        'save']
-            }
-            "/entity/rolemaster/datatable(.$format)?"(controller: 'roleMaster') {action = [GET: 'dataTable']}
-            "/entity/rolemaster/$id(.$format)?"(controller: 'roleMaster') {
-                action = [GET: 'show', PUT: 'update', DELETE:
-                        'delete']
-            }
 
 
             //Route register Controller
@@ -188,6 +175,9 @@ class UrlMappings
                 action = [GET: 'show', PUT: 'update', DELETE:
                         'delete']
             }
+            "/entity/routeregisterbyentity/$id(.$format)?"(controller: 'routeRegister') {
+                action = [GET: 'getAllByEntityId']
+            }
 
             //Rule Master Controller
             "/entity/rulemaster(.$format)?"(controller: 'ruleMaster') {
@@ -198,6 +188,9 @@ class UrlMappings
             "/entity/rulemaster/$id(.$format)?"(controller: 'ruleMaster') {
                 action = [GET: 'show', PUT: 'update', DELETE:
                         'delete']
+            }
+            "/entity/rulemasterbyentity/$id(.$format)?"(controller: 'ruleMaster') {
+                action = [GET: 'getAllByEntityId']
             }
 
             //Series Master
@@ -210,6 +203,10 @@ class UrlMappings
                 action = [GET: 'show', PUT: 'update', DELETE:
                         'delete']
             }
+            "/entity/seriesmasterbyentity/$id(.$format)?"(controller: 'seriesMaster') {
+                action = [GET: 'getAllByEntityId']
+            }
+
 
             //Tax Register
             "/entity/taxregister(.$format)?"(controller: 'taxRegister') {
@@ -221,6 +218,10 @@ class UrlMappings
                 action = [GET: 'show', PUT: 'update', DELETE:
                         'delete']
             }
+            "/entity/taxregisterbyentity/$id(.$format)?"(controller: 'taxRegister') {
+                action = [GET: 'getAllByEntityId']
+            }
+
 
 
             //Terms Condition Details
@@ -232,6 +233,9 @@ class UrlMappings
             "/entity/termconditiondetails/$id(.$format)?"(controller: 'termsConditionDetails') {
                 action = [GET: 'show', PUT: 'update', DELETE:
                         'delete']
+            }
+            "/entity/termconditiondetailsbyentity/$id(.$format)?"(controller: 'termsConditionDetails') {
+                action = [GET: 'getAllByEntityId']
             }
 
 
@@ -278,6 +282,9 @@ class UrlMappings
             "/entity/userregister/$id(.$format)?"(controller: 'userRegister') {
                 action = [GET: 'show', PUT: 'update', DELETE:
                         'delete']
+            }
+            "/entity/userregisterbydivision/$id(.$format)?"(controller: 'userRegister') {
+                action = [GET: 'getAllByDivision']
             }
 
         }

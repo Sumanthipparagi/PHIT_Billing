@@ -27,13 +27,12 @@ class StockBookService {
         return StockBook.findById(Long.parseLong(id))
     }
 
-    def getAllByEntity(long limit, long offset, long entityId) {
+    def getAllByEntity(String limit, String offset, long entityId) {
         Integer o = offset ? Integer.parseInt(offset.toString()) : 0
         Integer l = limit ? Integer.parseInt(limit.toString()) : 100
         if (!entityId)
             return StockBook.findAll([sort: 'id', max: l, offset: o, order: 'desc'])
         else
-
             return StockBook.findAllByEntityId(entityId, [sort: 'id', max: l, offset: o, order: 'desc'])
     }
 

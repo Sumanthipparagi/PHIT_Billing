@@ -8,32 +8,59 @@ import phitb_entity.Exception.ResourceNotFoundException
 import java.text.SimpleDateFormat
 
 @Transactional
-class RouteRegisterService {
+class RouteRegisterService
+{
 
     SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss")
 
-    def getAll(String limit, String offset, String query) {
+    def getAll(String limit, String offset, String query)
+    {
 
         Integer o = offset ? Integer.parseInt(offset.toString()) : 0
         Integer l = limit ? Integer.parseInt(limit.toString()) : 100
 
         if (!query)
+        {
             return RouteRegister.findAll([sort: 'id', max: l, offset: o, order: 'desc'])
+        }
         else
+        {
             return RouteRegister.findAllByRouteNameIlike("%" + query + "%", [sort: 'id', max: l, offset: o, order: 'desc'])
+        }
     }
 
-    RouteRegister get(String id) {
+    def getAllByEntity(String limit, String offset, long entityId)
+    {
+        Integer o = offset ? Integer.parseInt(offset.toString()) : 0
+        Integer l = limit ? Integer.parseInt(limit.toString()) : 100
+        if (!entityId)
+        {
+            return RouteRegister.findAll([sort: 'id', max: l, offset: o, order: 'desc'])
+        }
+        else
+        {
+            return RouteRegister.createCriteria().list(max: l,offset:o){
+                entity{
+                    eq('id',entityId)
+                }
+            }
+        }
+    }
+
+    RouteRegister get(String id)
+    {
         return RouteRegister.findById(Long.parseLong(id))
     }
 
-    JSONObject dataTables(JSONObject paramsJsonObject, String start, String length) {
+    JSONObject dataTables(JSONObject paramsJsonObject, String start, String length)
+    {
         String searchTerm = paramsJsonObject.get("search[value]")
         String orderColumnId = paramsJsonObject.get("order[0][column]")
         String orderDir = paramsJsonObject.get("order[0][dir]")
 
         String orderColumn = "id"
-        switch (orderColumnId) {
+        switch (orderColumnId)
+        {
             case '0':
                 orderColumn = "id"
                 break;
@@ -46,7 +73,8 @@ class RouteRegisterService {
         def routeRegisterCriteria = RouteRegister.createCriteria()
         def routeRegisterArrayList = routeRegisterCriteria.list(max: max, offset: offset) {
             or {
-                if (searchTerm != "") {
+                if (searchTerm != "")
+                {
                     ilike('routeName', '%' + searchTerm + '%')
                 }
             }
@@ -62,10 +90,11 @@ class RouteRegisterService {
         return jsonObject
     }
 
-    RouteRegister save(JSONObject jsonObject) {
+    RouteRegister save(JSONObject jsonObject)
+    {
         RouteRegister routeRegister = new RouteRegister()
         routeRegister.routeName = jsonObject.get("routeName").toString()
-        routeRegister.cityId= Long.parseLong(jsonObject.get("cityId").toString())
+        routeRegister.cityId = Long.parseLong(jsonObject.get("cityId").toString())
         routeRegister.stateId = Long.parseLong(jsonObject.get("stateId").toString())
         routeRegister.countryId = Long.parseLong(jsonObject.get("countryId").toString())
         routeRegister.salesman = Long.parseLong(jsonObject.get("salesman").toString())
@@ -82,17 +111,23 @@ class RouteRegisterService {
         routeRegister.modifiedUser = UserRegister.findById(Long.parseLong(jsonObject.get("modifiedUser").toString()))
         routeRegister.save(flush: true)
         if (!routeRegister.hasErrors())
+        {
             return routeRegister
+        }
         else
+        {
             throw new BadRequestException()
+        }
     }
 
-    RouteRegister update(JSONObject jsonObject, String id) {
+    RouteRegister update(JSONObject jsonObject, String id)
+    {
         RouteRegister routeRegister = RouteRegister.findById(Long.parseLong(id))
-        if (routeRegister) {
+        if (routeRegister)
+        {
             routeRegister.isUpdatable = true
             routeRegister.routeName = jsonObject.get("routeName").toString()
-            routeRegister.cityId= Long.parseLong(jsonObject.get("cityId").toString())
+            routeRegister.cityId = Long.parseLong(jsonObject.get("cityId").toString())
             routeRegister.stateId = Long.parseLong(jsonObject.get("stateId").toString())
             routeRegister.countryId = Long.parseLong(jsonObject.get("countryId").toString())
             routeRegister.salesman = Long.parseLong(jsonObject.get("salesman").toString())
@@ -109,23 +144,37 @@ class RouteRegisterService {
             routeRegister.modifiedUser = UserRegister.findById(Long.parseLong(jsonObject.get("modifiedUser").toString()))
             routeRegister.save(flush: true)
             if (!routeRegister.hasErrors())
+            {
                 return routeRegister
+            }
             else
+            {
                 throw new BadRequestException()
-        } else
+            }
+        }
+        else
+        {
             throw new ResourceNotFoundException()
+        }
     }
 
-    void delete(String id) {
-        if (id) {
+    void delete(String id)
+    {
+        if (id)
+        {
             RouteRegister routeRegister = RouteRegister.findById(Long.parseLong(id))
-            if (routeRegister) {
+            if (routeRegister)
+            {
                 routeRegister.isUpdatable = true
                 routeRegister.delete()
-            } else {
+            }
+            else
+            {
                 throw new ResourceNotFoundException()
             }
-        } else {
+        }
+        else
+        {
             throw new BadRequestException()
         }
     }

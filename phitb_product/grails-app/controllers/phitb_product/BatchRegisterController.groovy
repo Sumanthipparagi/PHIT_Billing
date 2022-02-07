@@ -66,7 +66,7 @@ class BatchRegisterController {
     def getAllByEntityId() {
         try {
             if (params.id) {
-                respond batchRegisterService.getAllByEntity(0,0,Long.parseLong(params.id))
+                respond batchRegisterService.getAllByEntity(params.limit, params.offset,Long.parseLong(params.id))
             }
         }
         catch (ResourceNotFoundException ex)

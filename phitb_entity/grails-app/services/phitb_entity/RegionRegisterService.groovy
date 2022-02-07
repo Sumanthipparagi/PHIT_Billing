@@ -17,6 +17,25 @@ class RegionRegisterService {
             return RegionRegister.findAllByRegionName("%" + query + "%", [sort: 'id', max: l, offset: o, order: 'desc'])
     }
 
+    def getAllByEntity(String limit, String offset, long entityId)
+    {
+        Integer o = offset ? Integer.parseInt(offset.toString()) : 0
+        Integer l = limit ? Integer.parseInt(limit.toString()) : 100
+        if (!entityId)
+        {
+            return RegionRegister.findAll([sort: 'id', max: l, offset: o, order: 'desc'])
+        }
+        else
+        {
+            return RegionRegister.createCriteria().list(max: l,offset:o){
+                entity{
+                    eq('id',entityId)
+                }
+            }
+        }
+    }
+
+
     RegionRegister get(String id) {
         return RegionRegister.findById(Long.parseLong(id))
     }

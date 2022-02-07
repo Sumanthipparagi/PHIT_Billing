@@ -64,7 +64,7 @@ class CcmRegisterController {
         try {
 
             if (params.id) {
-                respond ccmRegisterService.getAllByEntity(0,0,Long.parseLong(params.id))
+                respond ccmRegisterService.getAllByEntity(params.limit, params.offset,Long.parseLong(params.id))
             }
         }
         catch (ResourceNotFoundException ex)

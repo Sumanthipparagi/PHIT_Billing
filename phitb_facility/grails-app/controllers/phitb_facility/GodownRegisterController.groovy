@@ -65,7 +65,7 @@ class GodownRegisterController {
         try {
 
             if (params.id) {
-                respond godownRegisterService.getAllByEntity(0,0,Long.parseLong(params.id))
+                respond godownRegisterService.getAllByEntity(params.limit, params.offset,Long.parseLong(params.id))
             }
         }
         catch (ResourceNotFoundException ex)

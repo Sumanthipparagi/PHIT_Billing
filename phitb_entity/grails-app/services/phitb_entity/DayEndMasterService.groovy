@@ -30,6 +30,25 @@ class DayEndMasterService
         }
     }
 
+    def getAllByEntity(String limit, String offset, long entityId)
+    {
+        Integer o = offset ? Integer.parseInt(offset.toString()) : 0
+        Integer l = limit ? Integer.parseInt(limit.toString()) : 100
+        if (!entityId)
+        {
+            return DayEndMaster.findAll([sort: 'id', max: l, offset: o, order: 'desc'])
+        }
+        else
+        {
+            return DayEndMaster.createCriteria().list(max: l,offset:o){
+                entity{
+                    eq('id',entityId)
+                }
+            }
+        }
+    }
+
+
     DayEndMaster get(String id)
     {
         return DayEndMaster.findById(Long.parseLong(id))

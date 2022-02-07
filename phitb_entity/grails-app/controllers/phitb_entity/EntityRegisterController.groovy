@@ -57,6 +57,33 @@ class EntityRegisterController {
         }
     }
 
+    /**
+     * Get requested customerGroup register
+     * @param id
+     * @return get requested customerGroup register
+     */
+    def getAllByEntityTypeId() {
+        try {
+            if (params.id) {
+                respond entityRegisterService.getAllByEntityType(params.limit, params.offset,  Long.parseLong(params.id))
+            }
+        }
+        catch (ResourceNotFoundException ex)
+        {
+            System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
+            response.status = 404
+        }
+        catch (BadRequestException ex)
+        {
+            System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
+            response.status = 400
+        }
+        catch (Exception ex) {
+            System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
+        }
+    }
+
+
 
     /**
      * Save new entity register

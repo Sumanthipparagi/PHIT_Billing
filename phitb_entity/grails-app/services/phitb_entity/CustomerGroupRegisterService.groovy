@@ -30,6 +30,25 @@ class CustomerGroupRegisterService
         }
     }
 
+    def getAllByEntity(String limit, String offset, long entityId)
+    {
+        Integer o = offset ? Integer.parseInt(offset.toString()) : 0
+        Integer l = limit ? Integer.parseInt(limit.toString()) : 100
+        if (!entityId)
+        {
+            return CustomerGroupRegister.findAll([sort: 'id', max: l, offset: o, order: 'desc'])
+        }
+        else
+        {
+            return CustomerGroupRegister.createCriteria().list(max: l,offset:o){
+                entity{
+                    eq('id',entityId)
+                }
+            }
+        }
+    }
+
+
     CustomerGroupRegister get(String id)
     {
         return CustomerGroupRegister.findById(Long.parseLong(id))

@@ -17,6 +17,25 @@ class FinancialYearMasterService {
             return FinancialYearMaster.findAllByStartDate("%" + query + "%", [sort: 'id', max: l, offset: o, order: 'desc'])
     }
 
+    def getAllByEntity(String limit, String offset, long entityId)
+    {
+        Integer o = offset ? Integer.parseInt(offset.toString()) : 0
+        Integer l = limit ? Integer.parseInt(limit.toString()) : 100
+        if (!entityId)
+        {
+            return FinancialYearMaster.findAll([sort: 'id', max: l, offset: o, order: 'desc'])
+        }
+        else
+        {
+            return FinancialYearMaster.createCriteria().list(max: l,offset:o){
+                entity{
+                    eq('id',entityId)
+                }
+            }
+        }
+    }
+
+
     FinancialYearMaster get(String id) {
         return FinancialYearMaster.findById(Long.parseLong(id))
     }

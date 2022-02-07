@@ -27,7 +27,7 @@ class EntityRegisterService {
         }
     }
 
-    def getAllByEntityType(long limit, long offset, long entityTypeId)
+    def getAllByEntityType(String limit, String offset, long entityTypeId)
     {
         Integer o = offset ? Integer.parseInt(offset.toString()) : 0
         Integer l = limit ? Integer.parseInt(limit.toString()) : 100
@@ -44,6 +44,7 @@ class EntityRegisterService {
             }
         }
     }
+
 
     EntityRegister get(String id)
     {

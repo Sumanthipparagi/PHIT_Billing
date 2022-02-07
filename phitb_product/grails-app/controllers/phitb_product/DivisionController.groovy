@@ -67,7 +67,7 @@ class DivisionController {
         try {
 
                 if (params.id) {
-                respond divisionService.getAllByEntity(0,0,Long.parseLong(params.id))
+                respond divisionService.getAllByEntity(params.limit, params.offset,Long.parseLong(params.id))
             }
         }
         catch (ResourceNotFoundException ex)

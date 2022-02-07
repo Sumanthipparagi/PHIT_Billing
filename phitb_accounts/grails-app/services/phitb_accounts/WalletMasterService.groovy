@@ -23,6 +23,16 @@ class WalletMasterService {
             return WalletMaster.findAllByWalletNameIlike("%" + query + "%", [sort: 'id', max: l, offset: o, order: 'desc'])
     }
 
+    def getAllByEntity(String limit, String offset, long entityId) {
+        Integer o = offset ? Integer.parseInt(offset.toString()) : 0
+        Integer l = limit ? Integer.parseInt(limit.toString()) : 100
+        if (!entityId)
+            return WalletMaster.findAll([sort: 'id', max: l, offset: o, order: 'desc'])
+        else
+            return WalletMaster.findAllByEntityId(entityId, [sort: 'id', max: l, offset: o, order: 'desc'])
+    }
+
+
     WalletMaster get(String id) {
         return WalletMaster.findById(Long.parseLong(id))
     }

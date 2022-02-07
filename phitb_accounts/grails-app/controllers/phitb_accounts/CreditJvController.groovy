@@ -55,6 +55,61 @@ class CreditJvController {
         }
     }
 
+
+    /**
+     * Get requested Stock Book
+     * @param id
+     * @return get requested Stock Book
+     */
+    def getByEntityId() {
+        try {
+
+            if (params.id) {
+                respond creditJvService.getAllByEntity(params.limit, params.offset,Long.parseLong(params.id))
+            }
+        }
+        catch (ResourceNotFoundException ex)
+        {
+            System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
+            response.status = 404
+        }
+        catch (BadRequestException ex)
+        {
+            System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
+            response.status = 400
+        }
+        catch (Exception ex) {
+            System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
+        }
+    }
+
+    /**
+     * Get requested Credit Debit Details
+     * @param id
+     * @return get requested Credit Debit Details
+     */
+    def getAllByDays() {
+        try {
+            String days = params.days
+            if (days) {
+                respond creditJvService.getAllByNoOfDays(params.limit, params.offset, days)
+            }
+        }
+        catch (ResourceNotFoundException ex)
+        {
+            System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
+            response.status = 404
+        }
+        catch (BadRequestException ex)
+        {
+            System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
+            response.status = 400
+        }
+        catch (Exception ex) {
+            System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
+        }
+    }
+
     /**
      * Save new credit journal voucher
      * @param credit journal voucher

@@ -67,7 +67,7 @@ class TempStockBookController {
         try {
 
             if (params.id) {
-                respond tempStockBookService.getAllByEntity(0,0,Long.parseLong(params.id))
+                respond tempStockBookService.getAllByEntity(params.limit, params.offset,Long.parseLong(params.id))
             }
         }
         catch (ResourceNotFoundException ex)

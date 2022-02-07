@@ -66,7 +66,7 @@ class RackMasterController {
         try {
 
             if (params.id) {
-                respond rackMasterService.getAllByEntity(0,0,Long.parseLong(params.id))
+                respond rackMasterService.getAllByEntity(params.limit, params.offset,Long.parseLong(params.id))
             }
         }
         catch (ResourceNotFoundException ex)

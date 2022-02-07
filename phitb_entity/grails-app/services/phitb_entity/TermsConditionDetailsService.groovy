@@ -22,6 +22,23 @@ class TermsConditionDetailsService {
                                                                                       order: 'desc'])
     }
 
+    def getAllByEntity(String limit, String offset, long entityId)
+    {
+        Integer o = offset ? Integer.parseInt(offset.toString()) : 0
+        Integer l = limit ? Integer.parseInt(limit.toString()) : 100
+        if (!entityId)
+        {
+            return TermsConditionsDetails.findAll([sort: 'id', max: l, offset: o, order: 'desc'])
+        }
+        else
+        {
+            return TermsConditionsDetails.createCriteria().list(max: l,offset:o){
+                entity{
+                    eq('id',entityId)
+                }
+            }
+        }
+    }
     TermsConditionsDetails get(String id) {
         return TermsConditionsDetails.findById(Long.parseLong(id))
     }

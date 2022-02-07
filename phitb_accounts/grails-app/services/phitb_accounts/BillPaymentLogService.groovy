@@ -23,6 +23,7 @@ class BillPaymentLogService {
             return BillPaymentLog.findAllByBillTypeIlike("%" + query + "%", [sort: 'id', max: l, offset: o, order: 'desc'])
     }
 
+
     BillPaymentLog get(String id) {
         return BillPaymentLog.findById(Long.parseLong(id))
     }

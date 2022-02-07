@@ -6,6 +6,7 @@ class RoleMaster implements LogicalDelete<RoleMaster> {
 
     String name
     String description
+    EntityRegister entity
 
     Date dateCreated
     Date lastUpdated

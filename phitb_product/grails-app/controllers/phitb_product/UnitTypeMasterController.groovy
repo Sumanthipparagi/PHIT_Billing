@@ -66,7 +66,7 @@ class UnitTypeMasterController {
         try {
 
             if (params.id) {
-                respond unitTypeMasterService.getAllByEntity(0,0,Long.parseLong(params.id))
+                respond unitTypeMasterService.getAllByEntity(params.limit, params.offset,Long.parseLong(params.id))
             }
         }
         catch (ResourceNotFoundException ex)

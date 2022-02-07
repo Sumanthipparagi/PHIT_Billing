@@ -10,7 +10,7 @@ class DebitJvTransactionDetailController {
 	static responseFormats = ['json', 'xml']
     static allowedMethods = [index: "GET", show: "GET", save: "POST", update: "PUT", delete: "DELETE", dataTable: "GET"]
 
-    CreditJvTransactionDetailService creditJvTransactionDetailService
+    DebitJvTransactionDetailService debitJvTransactionDetailService
     /**
      * Gets all credit journal voucher transaction detail
      * @param query
@@ -21,7 +21,7 @@ class DebitJvTransactionDetailController {
     def index() {
 
         try {
-            respond creditJvTransactionDetailService.getAll(params.limit, params.offset, params.query)
+            respond debitJvTransactionDetailService.getAll(params.limit, params.offset, params.query)
         }
         catch (Exception ex) {
             System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
@@ -37,7 +37,7 @@ class DebitJvTransactionDetailController {
         try {
             String id = params.id
             if (id) {
-                respond creditJvTransactionDetailService.get(id)
+                respond debitJvTransactionDetailService.get(id)
             }
         }
         catch (ResourceNotFoundException ex)
@@ -55,6 +55,8 @@ class DebitJvTransactionDetailController {
         }
     }
 
+
+
     /**
      * Save new credit journal voucher transaction detail
      * @param credit journal voucher transaction detail
@@ -63,7 +65,7 @@ class DebitJvTransactionDetailController {
     def save() {
         try {
             JSONObject jsonObject = JSON.parse(request.reader.text) as JSONObject
-            respond creditJvTransactionDetailService.save(jsonObject)
+            respond debitJvTransactionDetailService.save(jsonObject)
         }
         catch (ResourceNotFoundException ex)
         {
@@ -90,7 +92,7 @@ class DebitJvTransactionDetailController {
         try {
             String id = params.id
             JSONObject jsonObject = JSON.parse(request.reader.text) as JSONObject
-            respond creditJvTransactionDetailService.update(jsonObject,id)
+            respond debitJvTransactionDetailService.update(jsonObject,id)
         }
         catch (ResourceNotFoundException ex)
         {
@@ -115,7 +117,7 @@ class DebitJvTransactionDetailController {
     def delete() {
         try {
             String id = params.id
-            creditJvTransactionDetailService.delete(id)
+            debitJvTransactionDetailService.delete(id)
             response.status = 200
         }
         catch (ResourceNotFoundException ex)
@@ -143,7 +145,7 @@ class DebitJvTransactionDetailController {
             String length = params.length
             GrailsParameterMap parameterMap = getParams()
             JSONObject paramsJsonObject = new JSONObject(parameterMap.params)
-            respond creditJvTransactionDetailService.dataTables(paramsJsonObject, start, length)
+            respond debitJvTransactionDetailService.dataTables(paramsJsonObject, start, length)
         }
         catch (ResourceNotFoundException ex)
         {

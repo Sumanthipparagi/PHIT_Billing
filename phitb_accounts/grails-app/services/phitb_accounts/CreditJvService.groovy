@@ -23,6 +23,37 @@ class CreditJvService {
             return CreditJv.findAllByTransIdIlike("%" + query + "%", [sort: 'id', max: l, offset: o, order: 'desc'])
     }
 
+    def getAllByEntity(String limit, String offset, long entityId) {
+        Integer o = offset ? Integer.parseInt(offset.toString()) : 0
+        Integer l = limit ? Integer.parseInt(limit.toString()) : 100
+        if (!entityId)
+            return CreditJv.findAll([sort: 'id', max: l, offset: o, order: 'desc'])
+        else
+            return CreditJv.findAllByEntityId(entityId, [sort: 'id', max: l, offset: o, order: 'desc'])
+    }
+
+
+    def getAllByNoOfDays(String limit, String offset, String days)
+    {
+        Integer o = offset ? Integer.parseInt(offset.toString()) : 0
+        Integer l = limit ? Integer.parseInt(limit.toString()) : 100
+        if (!days)
+        {
+            return CreditJv.findAll([sort: 'id', max: l, offset: o, order: 'desc'])
+        }
+        else
+        {
+            Date today = new Date()
+            Calendar cal = new GregorianCalendar()
+            cal.setTime(today)
+            cal.add(Calendar.DAY_OF_MONTH, - Integer.parseInt(days))
+            Date transactionDate = cal.getTime()
+            return CreditJv.createCriteria().list {
+                gt("transactionDate",transactionDate)
+            }
+        }
+    }
+
     CreditJv get(String id) {
         return CreditJv.findById(Long.parseLong(id))
     }

@@ -23,6 +23,37 @@ class PaymentDetailService {
             return PaymentDetail.findAllByNarrationIlike("%" + query + "%", [sort: 'id', max: l, offset: o, order: 'desc'])
     }
 
+    def getAllByEntity(String limit, String offset, long entityId) {
+        Integer o = offset ? Integer.parseInt(offset.toString()) : 0
+        Integer l = limit ? Integer.parseInt(limit.toString()) : 100
+        if (!entityId)
+            return PaymentDetail.findAll([sort: 'id', max: l, offset: o, order: 'desc'])
+        else
+            return PaymentDetail.findAllByEntityId(entityId, [sort: 'id', max: l, offset: o, order: 'desc'])
+    }
+
+    def getAllByNoOfDays(String limit, String offset, String days)
+    {
+        Integer o = offset ? Integer.parseInt(offset.toString()) : 0
+        Integer l = limit ? Integer.parseInt(limit.toString()) : 100
+        if (!days)
+        {
+            return PaymentDetail.findAll([sort: 'id', max: l, offset: o, order: 'desc'])
+        }
+        else
+        {
+            Date today = new Date()
+            Calendar cal = new GregorianCalendar()
+            cal.setTime(today)
+            cal.add(Calendar.DAY_OF_MONTH, - Integer.parseInt(days))
+            Date date = cal.getTime()
+            return PaymentDetail.createCriteria().list {
+                gt("date",date)
+            }
+        }
+    }
+
+
     PaymentDetail get(String id) {
         return PaymentDetail.findById(Long.parseLong(id))
     }

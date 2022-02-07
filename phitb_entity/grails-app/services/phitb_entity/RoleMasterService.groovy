@@ -19,6 +19,20 @@ class RoleMasterService {
             return RoleMaster.findAllByName("%" + query + "%", [sort: 'id', max: l, offset: o, order: 'desc'])
     }
 
+    def getAllByEntity(String limit, String offset, long entityId) {
+        Integer o = offset ? Integer.parseInt(offset.toString()) : 0
+        Integer l = limit ? Integer.parseInt(limit.toString()) : 100
+        if (!entityId)
+            return RoleMaster.findAll([sort: 'id', max: l, offset: o, order: 'desc'])
+        else
+            return RoleMaster.createCriteria().list(max: l,offset:o){
+                entity{
+                    eq('id',entityId)
+                }
+            }
+    }
+
+
     RoleMaster get(String id) {
         return RoleMaster.findById(Long.parseLong(id))
     }
