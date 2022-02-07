@@ -63,11 +63,10 @@ class ProductRegisterController
      * @param id
      * @return get requested Stock Activity
      */
-    def getAllByEntity() {
+    def getAllByEntityId() {
         try {
-            long id = params.id
-            if (id) {
-                respond productRegisterService.getAllByEntity(0,0,id)
+            if (params.id) {
+                respond productRegisterService.getAllByEntity(0,0,Long.parseLong(params.id))
             }
         }
         catch (ResourceNotFoundException ex)
@@ -92,9 +91,8 @@ class ProductRegisterController
      */
     def getAllByDivision() {
         try {
-            long id = params.id
-            if (id) {
-                respond productRegisterService.getAllByDivision(0,0,id)
+            if (params.id) {
+                respond productRegisterService.getAllByDivision(0,0,Long.parseLong(params.id))
             }
         }
         catch (ResourceNotFoundException ex)

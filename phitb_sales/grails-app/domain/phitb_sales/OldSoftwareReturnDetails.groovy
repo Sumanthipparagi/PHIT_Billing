@@ -10,9 +10,9 @@ class OldSoftwareReturnDetails implements Serializable, LogicalDelete<OldSoftwar
     String date
     long userId
     long customerId
-    long netAmount
-    long balance
-    long dbAdjamount
+    double netAmount
+    double balance
+    double dbAdjamount
     long debitIds
     long adjustmentStatus
     String financialYear

@@ -28,6 +28,27 @@ class OldSoftwareSaleDetailsService
         }
     }
 
+    def getAllByNoOfDays(String limit, String offset, String days)
+    {
+        Integer o = offset ? Integer.parseInt(offset.toString()) : 0
+        Integer l = limit ? Integer.parseInt(limit.toString()) : 100
+        if (!days)
+        {
+            return CreditDebitDetails.findAll([sort: 'id', max: l, offset: o, order: 'desc'])
+        }
+        else
+        {
+            Date today = new Date()
+            Calendar cal = new GregorianCalendar()
+            cal.setTime(today)
+            cal.add(Calendar.DAY_OF_MONTH, - Integer.parseInt(days))
+            Date dateCreated = cal.getTime()
+            return CreditDebitDetails.createCriteria().list {
+                gt("dateCreated",dateCreated)
+            }
+        }
+    }
+
     OldSoftwareSaleDetails get(String id)
     {
         return OldSoftwareSaleDetails.findById(Long.parseLong(id))

@@ -29,6 +29,9 @@ class UrlMappings {
                 action = [GET: 'show', PUT: 'update', DELETE:
                         'delete']
             }
+            "/sales/creditdebitdetailsbydays/$days(.$format)?"(controller: 'creditDebitDetails') {
+                action = [GET: 'getAllByDays']
+            }
 
             //Credit Debit Settlement
             "/sales/creditdebitsettlement(.$format)?"(controller: 'creditDebitSettlement') {
@@ -39,6 +42,9 @@ class UrlMappings {
             "/sales/creditdebitsettlement/$id(.$format)?"(controller: 'creditDebitSettlement') {
                 action = [GET: 'show', PUT: 'update', DELETE:
                         'delete']
+            }
+            "/sales/creditdebitsettlementbydays/$days(.$format)?"(controller: 'creditDebitSettlement') {
+                action = [GET: 'getAllByDays']
             }
 
             //Old Software Return Details
@@ -51,8 +57,11 @@ class UrlMappings {
                 action = [GET: 'show', PUT: 'update', DELETE:
                         'delete']
             }
+            "/sales/oldsoftwarereturndetailsbydays/$days(.$format)?"(controller: 'oldSoftwareReturnDetails') {
+                action = [GET: 'getAllByDays']
+            }
 
-            //Old Software Return Details
+            //Old Software sale Details
             "/sales/oldsoftwaresaledetails(.$format)?"(controller: 'oldSoftwareSaleDetails') {
                 action = [GET: 'index', POST:
                         'save']
@@ -62,6 +71,9 @@ class UrlMappings {
             "/sales/oldsoftwaresaledetails/$id(.$format)?"(controller: 'oldSoftwareSaleDetails') {
                 action = [GET: 'show', PUT: 'update', DELETE:
                         'delete']
+            }
+            "/sales/oldsoftwaresaledetailsbydays/$days(.$format)?"(controller: 'oldSoftwareSaleDetails') {
+                action = [GET: 'getAllByDays']
             }
 
             //Reason Master
@@ -74,6 +86,9 @@ class UrlMappings {
                 action = [GET: 'show', PUT: 'update', DELETE:
                         'delete']
             }
+            "/sales/reasonmasterbydays/$days(.$format)?"(controller: 'reasonMaster') {
+                action = [GET: 'getAllByDays']
+            }
 
             //Sale Bill Details
             "/sales/salebilldetails(.$format)?"(controller: 'saleBillDetails') {
@@ -84,6 +99,9 @@ class UrlMappings {
             "/sales/salebilldetails/$id(.$format)?"(controller: 'saleBillDetails') {
                 action = [GET: 'show', PUT: 'update', DELETE:
                         'delete']
+            }
+            "/sales/salebilldetailsbydays/$days(.$format)?"(controller: 'saleBillDetails') {
+                action = [GET: 'getAllByDays']
             }
 
             //Sale Order entry Controller
@@ -96,6 +114,9 @@ class UrlMappings {
                 action = [GET: 'show', PUT: 'update', DELETE:
                         'delete']
             }
+            "/sales/salebilldetailsbydays/$days(.$format)?"(controller: 'saleBillDetails') {
+                action = [GET: 'getAllByDays']
+            }
 
             //Sale Product Details
             "/sales/saleproductdetails(.$format)?"(controller: 'saleProductDetails') {
@@ -107,6 +128,9 @@ class UrlMappings {
                 action = [GET: 'show', PUT: 'update', DELETE:
                         'delete']
             }
+            "/sales/saleproductdetailsbydays/$days(.$format)?"(controller: 'saleProductDetails') {
+                action = [GET: 'getAllByDays']
+            }
 
             //Sale Transaction Log
             "/sales/saletransactionlog(.$format)?"(controller: 'saleTransactionLog') {
@@ -116,6 +140,9 @@ class UrlMappings {
             "/sales/saletransactionlog/$id(.$format)?"(controller: 'saleTransactionLog') {
                 action = [GET: 'show', PUT: 'update', DELETE:
                         'delete']
+            }
+            "/sales/saletransactionlogbydays/$days(.$format)?"(controller: 'saleTransactionLog') {
+                action = [GET: 'getAllByDays']
             }
 
             //Sale Transportation Details
@@ -127,7 +154,9 @@ class UrlMappings {
                 action = [GET: 'show', PUT: 'update', DELETE:
                         'delete']
             }
-
+            "/sales/saletransportationdetailsbydays/$days(.$format)?"(controller: 'saleTransportationDetails') {
+                action = [GET: 'getAllByDays']
+            }
             //Sample Conversion Details
             "/sales/sampleconversiondetails(.$format)?"(controller:'sampleConversionDetails') {
                 action = [GET: 'index', POST: 'save']
@@ -136,6 +165,9 @@ class UrlMappings {
             "/sales/sampleconversiondetails/$id(.$format)?"(controller:'sampleConversionDetails') {
                 action = [GET: 'show', PUT: 'update', DELETE:
                         'delete']
+            }
+            "/sales/sampleconversiondetailsbydays/$days(.$format)?"(controller: 'sampleConversionDetails') {
+                action = [GET: 'getAllByDays']
             }
 
             //Scheme Configuration
@@ -147,6 +179,9 @@ class UrlMappings {
                 action = [GET: 'show', PUT: 'update', DELETE:
                         'delete']
             }
+            "/sales/schemeconfigurationbydays/$days(.$format)?"(controller: 'schemeConfiguration') {
+                action = [GET: 'getAllByDays']
+            }
 
             //Temp User Log
             "/sales/tempuserlog(.$format)?"(controller:'tempUserLog') {
@@ -156,6 +191,9 @@ class UrlMappings {
             "/sales/tempuserlog/$id(.$format)?"(controller:'tempUserLog') {
                 action = [GET: 'show', PUT: 'update', DELETE:
                         'delete']
+            }
+            "/sales/tempuserlogbydays/$days(.$format)?"(controller: 'tempUserLog') {
+                action = [GET: 'getAllByDays']
             }
         }
     }

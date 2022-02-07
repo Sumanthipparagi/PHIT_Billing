@@ -25,24 +25,28 @@ class UrlMappings {
             "/facility/rack(.$format)/$query/$value"(controller: 'rackMaster') { action = [GET: 'index', POST: 'save'] }
             "/facility/rack/datatable(.$format)?"(controller: 'rackMaster') { action = [GET: 'dataTable'] }
             "/facility/rack/$id(.$format)?"(controller: 'rackMaster') { action = [GET: 'show', PUT: 'update', DELETE: 'delete'] }
+            "/facility/rackbyentity/$id(.$format)?"(controller: 'rackMaster') { action = [GET: 'getByEntityId'] }
 
             //Fridges
             "/facility/fridge(.$format)?"(controller: 'fridgeMaster') { action = [GET: 'index', POST: 'save'] }
             "/facility/fridge(.$format)/$query/$value"(controller: 'fridgeMaster') { action = [GET: 'index', POST: 'save'] }
             "/facility/fridge/datatable(.$format)?"(controller: 'fridgeMaster') { action = [GET: 'dataTable'] }
             "/facility/fridge/$id(.$format)?"(controller: 'fridgeMaster') { action = [GET: 'show', PUT: 'update', DELETE: 'delete'] }
+            "/facility/fridgebyentity/$id(.$format)?"(controller: 'rackMaster') { action = [GET: 'getByEntityId'] }
 
             //CCM Register
             "/facility/ccmregister(.$format)?"(controller: 'ccmRegister') { action = [GET: 'index', POST: 'save'] }
             "/facility/ccmregister(.$format)/$query/$value"(controller: 'ccmRegister') { action = [GET: 'index', POST: 'save'] }
             "/facility/ccmregister/datatable(.$format)?"(controller: 'ccmRegister') { action = [GET: 'dataTable'] }
             "/facility/ccmregister/$id(.$format)?"(controller: 'ccmRegister') { action = [GET: 'show', PUT: 'update', DELETE: 'delete'] }
+            "/facility/ccmregisterbyentity/$id(.$format)?"(controller: 'rackMaster') { action = [GET: 'getByEntityId'] }
 
             //Godown
             "/facility/godown(.$format)?"(controller: 'godownRegister') { action = [GET: 'index', POST: 'save'] }
             "/facility/godown(.$format)/$query/$value"(controller: 'godownRegister') { action = [GET: 'index', POST: 'save'] }
             "/facility/godown/datatable(.$format)?"(controller: 'godownRegister') { action = [GET: 'dataTable'] }
             "/facility/godown/$id(.$format)?"(controller: 'godownRegister') { action = [GET: 'show', PUT: 'update', DELETE: 'delete'] }
+            "/facility/godownbyentity/$id(.$format)?"(controller: 'rackMaster') { action = [GET: 'getByEntityId'] }
         }
     }
 }

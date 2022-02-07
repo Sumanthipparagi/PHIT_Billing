@@ -10,9 +10,9 @@ class OldSoftwareSaleDetails implements Serializable, LogicalDelete<OldSoftwareS
     String date
     long userId
     long customerId
-    long netAmount
-    long balance
-    long crAdjAmount
+    double netAmount
+    double balance
+    double crAdjAmount
     long creditIds
     String financialYear
     String status

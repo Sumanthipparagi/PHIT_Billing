@@ -57,6 +57,34 @@ class SampleConversionDetailsController {
     }
 
     /**
+     * Get requested Credit Debit Details
+     * @param id
+     * @return get requested Credit Debit Details
+     */
+    def getAllByDays() {
+        try {
+            String days = params.days
+            if (days) {
+                respond sampleConversionDetailsService.getAllByNoOfDays(params.limit, params.offset, days)
+            }
+        }
+        catch (ResourceNotFoundException ex)
+        {
+            System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
+            response.status = 404
+        }
+        catch (BadRequestException ex)
+        {
+            System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
+            response.status = 400
+        }
+        catch (Exception ex) {
+            System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
+        }
+    }
+
+
+    /**
      * Save new Sample Conversion Details
      * @param Sample Conversion Details
      * @return saved Sample Conversion Details

@@ -27,6 +27,26 @@ class SaleTransportationDetailsService
         }
     }
 
+    def getAllByNoOfDays(String limit, String offset, String days)
+    {
+        Integer o = offset ? Integer.parseInt(offset.toString()) : 0
+        Integer l = limit ? Integer.parseInt(limit.toString()) : 100
+        if (!days)
+        {
+            return SaleTransportationDetails.findAll([sort: 'id', max: l, offset: o, order: 'desc'])
+        }
+        else
+        {
+            Date today = new Date()
+            Calendar cal = new GregorianCalendar()
+            cal.setTime(today)
+            cal.add(Calendar.DAY_OF_MONTH, - Integer.parseInt(days))
+            Date dateCreated = cal.getTime()
+            return SaleTransportationDetails.createCriteria().list {
+                gt("dateCreated",dateCreated)
+            }
+        }
+    }
     SaleTransportationDetails get(String id)
     {
         return SaleTransportationDetails.findById(Long.parseLong(id))

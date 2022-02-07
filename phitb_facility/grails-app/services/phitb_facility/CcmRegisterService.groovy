@@ -22,6 +22,15 @@ class CcmRegisterService {
             return CcmRegister.findAllByKitNameIlike("%" + query + "%", [sort: 'id', max: l, offset: o, order: 'desc'])
     }
 
+    def getAllByEntity(long limit, long offset, long entityId) {
+        Integer o = offset ? Integer.parseInt(offset.toString()) : 0
+        Integer l = limit ? Integer.parseInt(limit.toString()) : 100
+        if (!entityId)
+            return CcmRegister.findAll([sort: 'id', max: l, offset: o, order: 'desc'])
+        else
+            return CcmRegister.findAllByEntityId(entityId, [sort: 'id', max: l, offset: o, order: 'desc'])
+    }
+
     CcmRegister get(String id) {
         return CcmRegister.findById(Long.parseLong(id))
     }

@@ -22,7 +22,7 @@ class ProductClassService {
                     'desc'])
     }
 
-    def getAllByEntity(long limit, long offset, long entityId)
+    def getAllByEntity(int limit, int offset, long entityId)
     {
         Integer o = offset ? Integer.parseInt(offset.toString()) : 0
         Integer l = limit ? Integer.parseInt(limit.toString()) : 100
@@ -81,8 +81,8 @@ class ProductClassService {
 
     ProductClass save(JSONObject jsonObject) {
         ProductClass productClass = new ProductClass()
-        productClass.productClassName = jsonObject.get("box").toString()
-        productClass.shortName = jsonObject.get("box").toString()
+        productClass.productClassName = jsonObject.get("productClassName").toString()
+        productClass.shortName = jsonObject.get("shortName").toString()
         productClass.status =  Long.parseLong(jsonObject.get("status").toString())
         productClass.syncStatus =  Long.parseLong(jsonObject.get("syncStatus").toString())
         productClass.entityTypeId =  Long.parseLong(jsonObject.get("entityTypeId").toString())
@@ -100,8 +100,8 @@ class ProductClassService {
         ProductClass productClass = ProductClass.findById(Long.parseLong(id))
         if (productClass) {
             productClass.isUpdatable = true
-            productClass.productClassName = jsonObject.get("box").toString()
-            productClass.shortName = jsonObject.get("box").toString()
+            productClass.productClassName = jsonObject.get("productClassName").toString()
+            productClass.shortName = jsonObject.get("shortName").toString()
             productClass.status =  Long.parseLong(jsonObject.get("status").toString())
             productClass.syncStatus =  Long.parseLong(jsonObject.get("syncStatus").toString())
             productClass.entityTypeId =  Long.parseLong(jsonObject.get("entityTypeId").toString())

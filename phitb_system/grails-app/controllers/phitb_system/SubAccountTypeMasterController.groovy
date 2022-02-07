@@ -64,7 +64,7 @@ class SubAccountTypeMasterController {
         try {
             String id = params.id
             if (id) {
-                respond subAccountTypeMasterService.getAllByEntityId(0,0,Long.parseLong(id))
+                respond subAccountTypeMasterService.getAllByEntityId(params.limit, params.offset,Long.parseLong(id))
             }
         }
         catch (ResourceNotFoundException ex)

@@ -65,9 +65,9 @@ class TempStockBookController {
      */
     def getByEntityId() {
         try {
-            long id = params.id
-            if (id) {
-                respond tempStockBookService.getAllByEntity(0,0,id)
+
+            if (params.id) {
+                respond tempStockBookService.getAllByEntity(0,0,Long.parseLong(params.id))
             }
         }
         catch (ResourceNotFoundException ex)

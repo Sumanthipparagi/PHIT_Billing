@@ -64,7 +64,7 @@ class StateMasterController {
         try {
             String id = params.id
             if (id) {
-                respond stateMasterService.getAllByEntityId(0,0,Long.parseLong(id))
+                respond stateMasterService.getAllByEntityId(params.limit, params.offset,Long.parseLong(id))
             }
         }
         catch (ResourceNotFoundException ex)

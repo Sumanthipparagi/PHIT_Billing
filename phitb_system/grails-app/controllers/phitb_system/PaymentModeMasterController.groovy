@@ -63,7 +63,7 @@ class PaymentModeMasterController {
         try {
             String id = params.id
             if (id) {
-                respond paymentModeMasterService.getAllByEntityId(0,0,Long.parseLong(id))
+                respond paymentModeMasterService.getAllByEntityId(params.limit, params.offset,Long.parseLong(id))
             }
         }
         catch (ResourceNotFoundException ex)

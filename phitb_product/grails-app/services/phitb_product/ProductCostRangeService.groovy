@@ -27,7 +27,6 @@ class ProductCostRangeService {
     {
         Integer o = offset ? Integer.parseInt(offset.toString()) : 0
         Integer l = limit ? Integer.parseInt(limit.toString()) : 100
-
         if (!entityId)
         {
             return ProductCostRange.findAll([sort: 'id', max: l, offset: o, order: 'desc'])
@@ -84,8 +83,8 @@ class ProductCostRangeService {
     ProductCostRange save(JSONObject jsonObject) {
         ProductCostRange productCostRange = new ProductCostRange()
         productCostRange.priceType = jsonObject.get("priceType").toString()
-        productCostRange.minimumRate = jsonObject.get("minimumRate").toString()
-        productCostRange.maximumRate =  Long.parseLong(jsonObject.get("maximumRate").toString())
+        productCostRange.minimumRate = Double.parseDouble(jsonObject.get("minimumRate").toString())
+        productCostRange.maximumRate =  Double.parseDouble(jsonObject.get("maximumRate").toString())
         productCostRange.syncStatus =  Long.parseLong(jsonObject.get("syncStatus").toString())
         productCostRange.entityTypeId =  Long.parseLong(jsonObject.get("entityTypeId").toString())
         productCostRange.entityId =  Long.parseLong(jsonObject.get("entityId").toString())
@@ -101,9 +100,10 @@ class ProductCostRangeService {
     ProductCostRange update(JSONObject jsonObject, String id) {
         ProductCostRange productCostRange = ProductCostRange.findById(Long.parseLong(id))
         if (productCostRange) {
+            productCostRange.isUpdatable = true
             productCostRange.priceType = jsonObject.get("priceType").toString()
-            productCostRange.minimumRate = jsonObject.get("minimumRate").toString()
-            productCostRange.maximumRate =  Long.parseLong(jsonObject.get("maximumRate").toString())
+            productCostRange.minimumRate = Double.parseDouble(jsonObject.get("minimumRate").toString())
+            productCostRange.maximumRate =  Double.parseDouble(jsonObject.get("maximumRate").toString())
             productCostRange.syncStatus =  Long.parseLong(jsonObject.get("syncStatus").toString())
             productCostRange.entityTypeId =  Long.parseLong(jsonObject.get("entityTypeId").toString())
             productCostRange.entityId =  Long.parseLong(jsonObject.get("entityId").toString())

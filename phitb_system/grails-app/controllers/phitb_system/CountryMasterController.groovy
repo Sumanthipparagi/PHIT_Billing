@@ -67,7 +67,7 @@ class CountryMasterController {
         try {
             String id = params.id
             if (id) {
-                respond countryMasterService.getAllByEntityId(0,0,Long.parseLong(id))
+                respond countryMasterService.getAllByEntityId(params.limit, params.offset,Long.parseLong(id))
             }
         }
         catch (ResourceNotFoundException ex)

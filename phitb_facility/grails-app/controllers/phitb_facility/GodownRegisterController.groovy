@@ -55,6 +55,33 @@ class GodownRegisterController {
         }
     }
 
+
+    /**
+     * Get requested Stock Book
+     * @param id
+     * @return get requested Stock Book
+     */
+    def getByEntityId() {
+        try {
+
+            if (params.id) {
+                respond godownRegisterService.getAllByEntity(0,0,Long.parseLong(params.id))
+            }
+        }
+        catch (ResourceNotFoundException ex)
+        {
+            System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
+            response.status = 404
+        }
+        catch (BadRequestException ex)
+        {
+            System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
+            response.status = 400
+        }
+        catch (Exception ex) {
+            System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
+        }
+    }
     /**
      * Save new Godown
      * @param Godown

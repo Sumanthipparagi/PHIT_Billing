@@ -24,7 +24,7 @@ class ProductCategoryMasterService {
                     'desc'])
     }
 
-    def getAllByEntity(long limit, long offset, long entityId)
+    def getAllByEntity(int limit, int offset, long entityId)
     {
         Integer o = offset ? Integer.parseInt(offset.toString()) : 0
         Integer l = limit ? Integer.parseInt(limit.toString()) : 100

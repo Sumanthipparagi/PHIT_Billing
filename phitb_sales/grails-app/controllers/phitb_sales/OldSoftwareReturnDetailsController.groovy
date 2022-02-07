@@ -11,7 +11,7 @@ import phitb_sales.Exception.BadRequestException
 class OldSoftwareReturnDetailsController {
 	static responseFormats = ['json', 'xml']
     static allowedMethods = [index: "GET", show: "GET", save: "POST", update: "PUT", delete: "DELETE", dataTable: "GET"]
-    OldSoftwareSaleDetailsService oldSoftwareSaleDetailsService
+    OldSoftwareReturnDetailsService oldSoftwareReturnDetailsService
     /**
      * Gets all Old Software Return Details
      * @param query
@@ -22,7 +22,7 @@ class OldSoftwareReturnDetailsController {
     def index() {
 
         try {
-            respond oldSoftwareSaleDetailsService.getAll(params.limit, params.offset, params.query)
+            respond oldSoftwareReturnDetailsService.getAll(params.limit, params.offset, params.query)
         }
         catch (Exception ex) {
             System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
@@ -38,7 +38,34 @@ class OldSoftwareReturnDetailsController {
         try {
             String id = params.id
             if (id) {
-                respond oldSoftwareSaleDetailsService.get(id)
+                respond oldSoftwareReturnDetailsService.get(id)
+            }
+        }
+        catch (ResourceNotFoundException ex)
+        {
+            System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
+            response.status = 404
+        }
+        catch (BadRequestException ex)
+        {
+            System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
+            response.status = 400
+        }
+        catch (Exception ex) {
+            System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
+        }
+    }
+
+    /**
+     * Get requested Credit Debit Details
+     * @param id
+     * @return get requested Credit Debit Details
+     */
+    def getAllByDays() {
+        try {
+            String days = params.days
+            if (days) {
+                respond oldSoftwareReturnDetailsService.getAllByNoOfDays(params.limit, params.offset, days)
             }
         }
         catch (ResourceNotFoundException ex)
@@ -64,7 +91,7 @@ class OldSoftwareReturnDetailsController {
     def save() {
         try {
             JSONObject jsonObject = JSON.parse(request.reader.text) as JSONObject
-            respond oldSoftwareSaleDetailsService.save(jsonObject)
+            respond oldSoftwareReturnDetailsService.save(jsonObject)
         }
         catch (ResourceNotFoundException ex)
         {
@@ -91,7 +118,7 @@ class OldSoftwareReturnDetailsController {
         try {
             String id = params.id
             JSONObject jsonObject = JSON.parse(request.reader.text) as JSONObject
-            respond oldSoftwareSaleDetailsService.update(jsonObject,id)
+            respond oldSoftwareReturnDetailsService.update(jsonObject,id)
         }
         catch (ResourceNotFoundException ex)
         {
@@ -144,7 +171,7 @@ class OldSoftwareReturnDetailsController {
             String length = params.length
             GrailsParameterMap parameterMap = getParams()
             JSONObject paramsJsonObject = new JSONObject(parameterMap.params)
-            respond oldSoftwareSaleDetailsService.dataTables(paramsJsonObject, start, length)
+            respond oldSoftwareReturnDetailsService.dataTables(paramsJsonObject, start, length)
         }
         catch (ResourceNotFoundException ex)
         {

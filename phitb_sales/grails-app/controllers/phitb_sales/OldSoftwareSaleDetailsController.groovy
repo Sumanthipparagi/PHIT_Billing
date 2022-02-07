@@ -58,6 +58,33 @@ class OldSoftwareSaleDetailsController {
     }
 
     /**
+     * Get requested Credit Debit Details
+     * @param id
+     * @return get requested Credit Debit Details
+     */
+    def getAllByDays() {
+        try {
+            String days = params.days
+            if (days) {
+                respond oldSoftwareSaleDetailsService.getAllByNoOfDays(params.limit, params.offset, days)
+            }
+        }
+        catch (ResourceNotFoundException ex)
+        {
+            System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
+            response.status = 404
+        }
+        catch (BadRequestException ex)
+        {
+            System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
+            response.status = 400
+        }
+        catch (Exception ex) {
+            System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
+        }
+    }
+
+    /**
      * Save new Old Software Sale Details
      * @param Old Software Sale Details
      * @return saved Old Software Sale Details

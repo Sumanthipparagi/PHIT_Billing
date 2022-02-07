@@ -19,6 +19,16 @@ class RackMasterService {
             return RackMaster.findAllByRackNameIlike("%" + query + "%", [sort: 'id', max: l, offset: o, order: 'desc'])
     }
 
+    def getAllByEntity(long limit, long offset, long entityId) {
+        Integer o = offset ? Integer.parseInt(offset.toString()) : 0
+        Integer l = limit ? Integer.parseInt(limit.toString()) : 100
+        if (!entityId)
+            return RackMaster.findAll([sort: 'id', max: l, offset: o, order: 'desc'])
+        else
+            return RackMaster.findAllByEntityId(entityId, [sort: 'id', max: l, offset: o, order: 'desc'])
+    }
+
+
     RackMaster get(String id) {
         return RackMaster.findById(Long.parseLong(id))
     }

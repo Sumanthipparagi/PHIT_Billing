@@ -64,7 +64,7 @@ class PriorityMasterController {
         try {
             String id = params.id
             if (id) {
-                respond priorityMasterService.getAllByEntityId(0,0,Long.parseLong(id))
+                respond priorityMasterService.getAllByEntityId(params.limit, params.offset,Long.parseLong(id))
             }
         }
         catch (ResourceNotFoundException ex)

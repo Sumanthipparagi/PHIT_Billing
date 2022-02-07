@@ -23,15 +23,20 @@ class BatchRegisterService {
                     'desc'])
     }
 
-    def getAllByEntity(long limit, long offset, long entityId) {
+    def getAllByEntity(int limit, int offset, long entityId)
+    {
         Integer o = offset ? Integer.parseInt(offset.toString()) : 0
         Integer l = limit ? Integer.parseInt(limit.toString()) : 100
 
         if (!entityId)
+        {
             return BatchRegister.findAll([sort: 'id', max: l, offset: o, order: 'desc'])
+        }
         else
+        {
             return BatchRegister.findAllByEntityId(entityId, [sort: 'id', max: l, offset: o, order:
                     'desc'])
+        }
     }
 
     def getAllByProduct(long limit, long offset, long productId) {
@@ -125,13 +130,14 @@ class BatchRegisterService {
             batchRegister.product = ProductRegister.findById(Long.parseLong(jsonObject.get("product").toString()))
             batchRegister.manfDate = sdf.parse(jsonObject.get("manfDate").toString())
             batchRegister.expiryDate = sdf.parse(jsonObject.get("expiryDate").toString())
-            batchRegister.purchaseRate = Double.parseDouble(jsonObject.get("expiryDate").toString())
+            batchRegister.purchaseRate = Double.parseDouble(jsonObject.get("purchaseRate").toString())
             batchRegister.saleRate = Double.parseDouble(jsonObject.get("saleRate").toString())
             batchRegister.ptr = Double.parseDouble(jsonObject.get("ptr").toString())
             batchRegister.mrp = Double.parseDouble(jsonObject.get("mrp").toString())
             batchRegister.qty = Long.parseLong(jsonObject.get("qty").toString())
             batchRegister.box = Long.parseLong(jsonObject.get("box").toString())
             batchRegister.caseWt = jsonObject.get("caseWt").toString()
+            batchRegister.batchNumber = jsonObject.get("batchNumber").toString()
             batchRegister.productCat = ProductCategoryMaster.findById(Long.parseLong(jsonObject.get("productCat").toString()))
             batchRegister.status =  Long.parseLong(jsonObject.get("status").toString())
             batchRegister.syncStatus =  Long.parseLong(jsonObject.get("syncStatus").toString())

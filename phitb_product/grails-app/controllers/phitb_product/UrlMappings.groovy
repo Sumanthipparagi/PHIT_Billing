@@ -18,8 +18,6 @@ class UrlMappings {
         "400"(controller: "error", action: "error400", exception: BadRequestException)
 
         group "/api/v1.0", {
-
-
             //Batch Register
             "/product/batchregister(.$format)?"(controller: 'batchRegister') {
                 action = [GET: 'index', POST:
@@ -31,7 +29,7 @@ class UrlMappings {
                         'delete']
             }
             "/product/batchregisterbyentity/$id(.$format)?"(controller: 'batchRegister') {
-                action = [GET: 'show']
+                action = [GET: 'getAllByEntityId']
             }
 
             "/product/batchregisterbyproduct/$id(.$format)?"(controller: 'batchRegister') {
@@ -59,6 +57,10 @@ class UrlMappings {
                 action = [GET: 'show', PUT: 'update', DELETE:
                         'delete']
             }
+            "/product/divisionbyentity/$id(.$format)?"(controller: 'division') {
+                action = [GET: 'getAllByEntityId']
+            }
+
 
             //Division group Register
             "/product/divisiongroupregister(.$format)?"(controller: 'divisionGroupRegister') {
@@ -70,7 +72,9 @@ class UrlMappings {
                 action = [GET: 'show', PUT: 'update', DELETE:
                         'delete']
             }
-
+            "/product/divisiongroupregisterbyentity/$id(.$format)?"(controller: 'divisionGroupRegister') {
+                action = [GET: 'getAllByEntityId']
+            }
 
             //Product Category Master
             "/product/productcategorymaster(.$format)?"(controller: 'productCategoryMaster') {
@@ -81,6 +85,9 @@ class UrlMappings {
             "/product/productcategorymaster/$id(.$format)?"(controller: 'productCategoryMaster') {
                 action = [GET: 'show', PUT: 'update', DELETE:
                         'delete']
+            }
+            "/product/productcategorymasterbyentity/$id(.$format)?"(controller: 'productCategoryMaster') {
+                action = [GET: 'getAllByEntityId']
             }
 
             //Product Class
@@ -93,6 +100,10 @@ class UrlMappings {
                 action = [GET: 'show', PUT: 'update', DELETE:
                         'delete']
             }
+            "/product/productclassbyentity/$id(.$format)?"(controller: 'productCategoryMaster') {
+                action = [GET: 'getAllByEntityId']
+            }
+
 
             //Product Cost Range
             "/product/productcostrange(.$format)?"(controller: 'productCostRange') {
@@ -104,6 +115,10 @@ class UrlMappings {
                 action = [GET: 'show', PUT: 'update', DELETE:
                         'delete']
             }
+            "/product/productcostrangebyentity/$id(.$format)?"(controller: 'productCostRange') {
+                action = [GET: 'getAllByEntityId']
+            }
+
 
             //Product Group Master
             "/product/productgroupmaster(.$format)?"(controller: 'productGroupMaster') {
@@ -115,17 +130,8 @@ class UrlMappings {
                 action = [GET: 'show', PUT: 'update', DELETE:
                         'delete']
             }
-
-            //Product Group Master
-            "/product/productgroupmaster(.$format)?"(controller: 'productGroupMaster') {
-                action = [GET: 'index', POST:
-                        'save']
-            }
-            "/product/productgroupmaster/datatable(.$format)?"(controller: 'productGroupMaster') {action = [GET:
-                                                                                                               'dataTable']}
-            "/product/productgroupmaster/$id(.$format)?"(controller: 'productGroupMaster') {
-                action = [GET: 'show', PUT: 'update', DELETE:
-                        'delete']
+            "/product/productgroupmasterbyentity/$id(.$format)?"(controller: 'productGroupMaster') {
+                action = [GET: 'getAllByEntityId']
             }
 
             //Product Register
@@ -139,6 +145,12 @@ class UrlMappings {
                 action = [GET: 'show', PUT: 'update', DELETE:
                         'delete']
             }
+            "/product/productregisterbyentity/$id(.$format)?"(controller: 'productRegister') {
+                action = [GET: 'getAllByEntityId']
+            }
+            "/product/productregisterbydivision/$id(.$format)?"(controller: 'productRegister') {
+                action = [GET: 'getAllByDivision']
+            }
 
             //Product Schedule Master
             "/product/productschdulemaster(.$format)?"(controller: 'productScheduleMaster') {
@@ -151,6 +163,11 @@ class UrlMappings {
                 action = [GET: 'show', PUT: 'update', DELETE:
                         'delete']
             }
+            "/product/productschdulemasterbyentity/$id(.$format)?"(controller: 'productScheduleMaster') {
+                action = [GET: 'getAllByEntityId']
+            }
+
+
 
 
             //Product Type Master
@@ -163,6 +180,10 @@ class UrlMappings {
                 action = [GET: 'show', PUT: 'update', DELETE:
                         'delete']
             }
+            "/product/producttypemasterbyentity/$id(.$format)?"(controller: 'productTypeMaster') {
+                action = [GET: 'getAllByEntityId']
+            }
+
 
 
             //Unit Type Master
@@ -174,6 +195,9 @@ class UrlMappings {
             "/product/unittypemaster/$id(.$format)?"(controller: 'unitTypeMaster') {
                 action = [GET: 'show', PUT: 'update', DELETE:
                         'delete']
+            }
+            "/product/unittypemasterbyentity/$id(.$format)?"(controller: 'unitTypeMaster') {
+                action = [GET: 'getAllByEntityId']
             }
         }
     }

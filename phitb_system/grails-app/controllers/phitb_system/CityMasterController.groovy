@@ -64,7 +64,7 @@ class CityMasterController {
         try {
             String id = params.id
             if (id) {
-                respond cityMasterService.getAllByEntityId(0,0,Long.parseLong(id))
+                respond cityMasterService.getAllByEntityId(params.limit, params.offset,Long.parseLong(id))
             }
         }
         catch (ResourceNotFoundException ex)

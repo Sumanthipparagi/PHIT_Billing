@@ -64,7 +64,7 @@ class AccountModeMasterController {
         try {
             String id = params.id
             if (id) {
-                respond accountModeMasterService.getAllByEntityId(0,0,Long.parseLong(id))
+                respond accountModeMasterService.getAllByEntityId(params.limit, params.offset,Long.parseLong(id))
             }
         }
         catch (ResourceNotFoundException ex)

@@ -64,7 +64,7 @@ class ZoneMasterController {
         try {
             String id = params.id
             if (id) {
-                respond zoneMasterService.getAllByEntityId(0,0,Long.parseLong(id))
+                respond zoneMasterService.getAllByEntityId(params.limit, params.offset,Long.parseLong(id))
             }
         }
         catch (ResourceNotFoundException ex)

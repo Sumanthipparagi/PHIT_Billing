@@ -27,6 +27,27 @@ class OldSoftwareReturnDetailsService {
         }
     }
 
+    def getAllByNoOfDays(String limit, String offset, String days)
+    {
+        Integer o = offset ? Integer.parseInt(offset.toString()) : 0
+        Integer l = limit ? Integer.parseInt(limit.toString()) : 100
+        if (!days)
+        {
+            return OldSoftwareSaleDetails.findAll([sort: 'id', max: l, offset: o, order: 'desc'])
+        }
+        else
+        {
+            Date today = new Date()
+            Calendar cal = new GregorianCalendar()
+            cal.setTime(today)
+            cal.add(Calendar.DAY_OF_MONTH, - Integer.parseInt(days))
+            Date dateCreated = cal.getTime()
+            return OldSoftwareSaleDetails.createCriteria().list {
+                gt("dateCreated",dateCreated)
+            }
+        }
+    }
+
     OldSoftwareReturnDetails get(String id)
     {
         return OldSoftwareReturnDetails.findById(Long.parseLong(id))
@@ -78,9 +99,9 @@ class OldSoftwareReturnDetailsService {
         oldSoftwareReturnDetails.date = jsonObject.get("date").toString()
         oldSoftwareReturnDetails.userId = Long.parseLong(jsonObject.get("userId").toString())
         oldSoftwareReturnDetails.customerId = Long.parseLong(jsonObject.get("customerId").toString())
-        oldSoftwareReturnDetails.netAmount = Long.parseLong(jsonObject.get("netAmount").toString())
-        oldSoftwareReturnDetails.balance = Long.parseLong(jsonObject.get("balance").toString())
-        oldSoftwareReturnDetails.dbAdjamount = Long.parseLong(jsonObject.get("dbAdjamount").toString())
+        oldSoftwareReturnDetails.netAmount = Double.parseDouble(jsonObject.get("netAmount").toString())
+        oldSoftwareReturnDetails.balance = Double.parseDouble(jsonObject.get("balance").toString())
+        oldSoftwareReturnDetails.dbAdjamount = Double.parseDouble(jsonObject.get("dbAdjamount").toString())
         oldSoftwareReturnDetails.debitIds = Long.parseLong(jsonObject.get("debitIds").toString())
         oldSoftwareReturnDetails.adjustmentStatus = Long.parseLong(jsonObject.get("adjustmentStatus").toString())
         oldSoftwareReturnDetails.financialYear = jsonObject.get("financialYear").toString()
@@ -110,9 +131,9 @@ class OldSoftwareReturnDetailsService {
             oldSoftwareReturnDetails.date = jsonObject.get("date").toString()
             oldSoftwareReturnDetails.userId = Long.parseLong(jsonObject.get("userId").toString())
             oldSoftwareReturnDetails.customerId = Long.parseLong(jsonObject.get("customerId").toString())
-            oldSoftwareReturnDetails.netAmount = Long.parseLong(jsonObject.get("netAmount").toString())
-            oldSoftwareReturnDetails.balance = Long.parseLong(jsonObject.get("balance").toString())
-            oldSoftwareReturnDetails.dbAdjamount = Long.parseLong(jsonObject.get("dbAdjamount").toString())
+            oldSoftwareReturnDetails.netAmount = Double.parseDouble(jsonObject.get("netAmount").toString())
+            oldSoftwareReturnDetails.balance = Double.parseDouble(jsonObject.get("balance").toString())
+            oldSoftwareReturnDetails.dbAdjamount = Double.parseDouble(jsonObject.get("dbAdjamount").toString())
             oldSoftwareReturnDetails.debitIds = Long.parseLong(jsonObject.get("debitIds").toString())
             oldSoftwareReturnDetails.adjustmentStatus = Long.parseLong(jsonObject.get("adjustmentStatus").toString())
             oldSoftwareReturnDetails.financialYear = jsonObject.get("financialYear").toString()

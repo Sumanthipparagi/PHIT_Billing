@@ -63,11 +63,11 @@ class DivisionController {
      * @param id
      * @return get requested Stock Activity
      */
-    def getAllEntityId() {
+    def getAllByEntityId() {
         try {
-            long id = params.id
-                if (id) {
-                respond divisionService.getAllByEntity(0,0,id)
+
+                if (params.id) {
+                respond divisionService.getAllByEntity(0,0,Long.parseLong(params.id))
             }
         }
         catch (ResourceNotFoundException ex)

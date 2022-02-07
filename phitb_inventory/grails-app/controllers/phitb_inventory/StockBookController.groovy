@@ -65,9 +65,8 @@ class StockBookController {
      */
     def getByEntityId() {
         try {
-            long id = params.id
-            if (id) {
-                respond stockBookService.getAllByEntity(0,0,id)
+            if (params.id) {
+                respond stockBookService.getAllByEntity(0,0,Long.parseLong(params.id))
             }
         }
         catch (ResourceNotFoundException ex)
@@ -92,9 +91,8 @@ class StockBookController {
      */
     def getByProductId() {
         try {
-            long id = params.id
-            if (id) {
-                respond stockBookService.getAllByProduct(0,0,id)
+            if (params.id) {
+                respond stockBookService.getAllByProduct(0,0,Long.parseLong(params.id))
             }
         }
         catch (ResourceNotFoundException ex)

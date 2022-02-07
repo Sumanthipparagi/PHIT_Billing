@@ -64,7 +64,7 @@ class GenderMasterController {
         try {
             String id = params.id
             if (id) {
-                respond genderMasterService.getAllByEntityId(0,0,Long.parseLong(id))
+                respond genderMasterService.getAllByEntityId(params.limit, params.offset,Long.parseLong(id))
             }
         }
         catch (ResourceNotFoundException ex)

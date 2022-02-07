@@ -63,11 +63,10 @@ class ProductCostRangeController {
      * @param id
      * @return get requested Product Cost Range
      */
-    def getallByEntityId() {
+    def getAllByEntityId() {
         try {
-            long id = params.id
-            if (id) {
-                respond productCostRangeService.getAllByEntity(0,0,id)
+            if (params.id) {
+                respond productCostRangeService.getAllByEntity(0,0,Long.parseLong(params.id))
             }
         }
         catch (ResourceNotFoundException ex)

@@ -65,7 +65,7 @@ class FormMasterController {
         try {
             String id = params.id
             if (id) {
-                respond formMasterService.getAllByEntityId(0,0,Long.parseLong(id))
+                respond formMasterService.getAllByEntityId(params.limit, params.offset,Long.parseLong(id))
             }
         }
         catch (ResourceNotFoundException ex)
