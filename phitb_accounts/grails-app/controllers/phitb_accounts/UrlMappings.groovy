@@ -42,7 +42,7 @@ class UrlMappings {
             "/accounts/creditjv/datatable(.$format)?"(controller: 'creditJv') { action = [GET: 'dataTable'] }
             "/accounts/creditjv/$id(.$format)?"(controller: 'creditJv') { action = [GET: 'show', PUT: 'update', DELETE: 'delete'] }
             "/accountscreditjvbyentity/$id(.$format)?"(controller: 'creditJv') { action = [GET: 'getByEntityId'] }
-            "/accounts/creditjvbydays/$id(.$format)?"(controller: 'creditJv') { action = [GET: 'getAllByDays'] }
+            "/accounts/creditjvbydays/$days(.$format)?"(controller: 'creditJv') { action = [GET: 'getAllByDays'] }
 
             //credit jv transaction detail
             "/accounts/creditjvtransactiondetail(.$format)?"(controller: 'creditJvTransactionDetail') { action = [GET: 'index', POST: 'save'] }
@@ -57,7 +57,7 @@ class UrlMappings {
             "/accounts/debitjv/datatable(.$format)?"(controller: 'debitJv') { action = [GET: 'dataTable'] }
             "/accounts/debitjv/$id(.$format)?"(controller: 'debitJv') { action = [GET: 'show', PUT: 'update', DELETE: 'delete'] }
             "/accounts/debitjvbyentity/$id(.$format)?"(controller: 'debitJv') { action = [GET: 'getByEntityId'] }
-            "/accounts/debitjvbydays/$id(.$format)?"(controller: 'debitJv') { action = [GET: 'getAllByDays'] }
+            "/accounts/debitjvbydays/$days(.$format)?"(controller: 'debitJv') { action = [GET: 'getAllByDays'] }
 
             //debit jv transaction detail
             "/accounts/debitjvtransactiondetail(.$format)?"(controller: 'debitJvTransactionDetail') { action = [GET: 'index', POST: 'save'] }
@@ -78,7 +78,8 @@ class UrlMappings {
             "/accounts/paymentdetails/$id(.$format)?"(controller: 'paymentDetail') { action = [GET: 'show', PUT: 'update', DELETE: 'delete'] }
             "/accounts/paymentdetailsbyentity/$id(.$format)?"(controller: 'paymentDetail') { action = [GET:
                                                                                                           'getByEntityId'] }
-            "/accounts/paymentdetailsbydays/$id(.$format)?"(controller: 'paymentDetail') { action = [GET: 'getAllByDays'] }
+            "/accounts/paymentdetailsbydays/$days(.$format)?"(controller: 'paymentDetail') { action = [GET:
+                                                                                                            'getAllByDays'] }
 
 
 
@@ -87,7 +88,8 @@ class UrlMappings {
             "/accounts/receiptdetails/datatable(.$format)?"(controller: 'receiptDetail') { action = [GET: 'dataTable'] }
             "/accounts/receiptdetails/$id(.$format)?"(controller: 'receiptDetail') { action = [GET: 'show', PUT: 'update', DELETE: 'delete'] }
             "/accounts/receiptdetailsbyentity/$id(.$format)?"(controller: 'receiptDetail') { action = [GET: 'getByEntityId'] }
-            "/accounts/receiptdetailsbydays/$id(.$format)?"(controller: 'receiptDetail') { action = [GET: 'getAllByDays'] }
+            "/accounts/receiptdetailsbydays/$days(.$format)?"(controller: 'receiptDetail') { action = [GET:
+                                                                                                            'getAllByDays'] }
 
 
             //wallet master

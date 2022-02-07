@@ -11,7 +11,6 @@ import java.text.SimpleDateFormat
 class CreditJvService {
 
     SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss")
-
     def getAll(String limit, String offset, String query) {
 
         Integer o = offset ? Integer.parseInt(offset.toString()) : 0
