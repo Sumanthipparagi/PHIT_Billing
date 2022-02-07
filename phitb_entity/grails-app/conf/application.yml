@@ -1,3 +1,4 @@
+---
 grails:
   profile: rest-api
   codegen:
@@ -79,7 +80,6 @@ dataSource:
   driverClassName: com.mysql.cj.jdbc.Driver
   username: phitb_user
   password: 'zsTEM2%9%3'
-
 environments:
   development:
     dataSource:

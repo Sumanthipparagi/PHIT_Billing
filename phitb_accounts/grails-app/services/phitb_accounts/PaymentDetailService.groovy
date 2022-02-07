@@ -124,7 +124,6 @@ class PaymentDetailService {
         paymentDetail.entityId = Long.parseLong(jsonObject.get("entityId").toString())
         paymentDetail.modifiedUser = Long.parseLong(jsonObject.get("modifiedUser").toString())
         paymentDetail.createdUser = Long.parseLong(jsonObject.get("createdUser").toString())
-
         paymentDetail.save(flush: true)
         if (!paymentDetail.hasErrors())
             return paymentDetail
@@ -138,7 +137,6 @@ class PaymentDetailService {
         PaymentDetail paymentDetail = PaymentDetail.findById(Long.parseLong(id))
         if (paymentDetail) {
             paymentDetail.isUpdatable = true
-
             paymentDetail.finId = Long.parseLong(jsonObject.get("finId").toString())
             paymentDetail.date = sdf.parse(jsonObject.get("date").toString())
             paymentDetail.accountModeId = Long.parseLong(jsonObject.get("accountModeId").toString())
@@ -164,7 +162,6 @@ class PaymentDetailService {
             paymentDetail.entityId = Long.parseLong(jsonObject.get("entityId").toString())
             paymentDetail.modifiedUser = Long.parseLong(jsonObject.get("modifiedUser").toString())
             paymentDetail.createdUser = Long.parseLong(jsonObject.get("createdUser").toString())
-
             paymentDetail.save(flush: true)
             if (!paymentDetail.hasErrors())
                 return paymentDetail

@@ -68,8 +68,7 @@ class UrlMappings {
             "/accounts/financetransactionlog(.$format)?"(controller: 'financeTransactionLog') { action = [GET: 'index', POST: 'save'] }
             "/accounts/financetransactionlog/datatable(.$format)?"(controller: 'financeTransactionLog') { action = [GET: 'dataTable'] }
             "/accounts/financetransactionlog/$id(.$format)?"(controller: 'financeTransactionLog') { action = [GET: 'show', PUT: 'update', DELETE: 'delete'] }
-            "/accounts/financetransactionlogbyentity/$id(.$format)?"(controller: 'financeTransactionLog') { action = [GET:
-                                                                                                           'getByEntityId'] }
+            "/accounts/financetransactionlogbyentity/$id(.$format)?"(controller: 'financeTransactionLog') { action = [GET: 'getByEntityId'] }
 
 
             //payment details

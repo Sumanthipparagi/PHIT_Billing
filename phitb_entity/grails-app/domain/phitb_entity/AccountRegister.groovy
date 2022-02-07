@@ -1,7 +1,6 @@
 package phitb_entity
 
 import gorm.logical.delete.LogicalDelete
-import grails.gorm.Entity
 
 class AccountRegister implements LogicalDelete<AccountRegister> {
 
@@ -16,7 +15,7 @@ class AccountRegister implements LogicalDelete<AccountRegister> {
     String balance
     long syncStatus
     EntityTypeMaster entityType
-    Entity entity
+    EntityRegister entity
     UserRegister createdUser
     UserRegister modifiedUser
 
