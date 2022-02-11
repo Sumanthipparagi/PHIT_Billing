@@ -2,7 +2,7 @@ package phitb_system
 
 import gorm.logical.delete.LogicalDelete
 
-class ZoneMaster implements LogicalDelete<ZoneMaster> {
+class ZoneMaster implements  Serializable, LogicalDelete<ZoneMaster> {
 
     String name
     long entityId

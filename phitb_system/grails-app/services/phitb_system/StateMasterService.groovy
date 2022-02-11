@@ -86,6 +86,7 @@ class StateMasterService
             def apires = showStateByEntityId(it.entityId.toString())
             names.push(apires)
         }
+
         def recordsTotal = stateMasterArrayList.totalCount
         JSONObject jsonObject = new JSONObject()
         jsonObject.put("draw", paramsJsonObject.draw)
