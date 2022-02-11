@@ -1,6 +1,7 @@
 package phitb_system
 
 import grails.gorm.transactions.Transactional
+import groovy.json.JsonSlurper
 import org.grails.web.json.JSONObject
 import phbit_system.Exception.BadRequestException
 import phbit_system.Exception.ResourceNotFoundException
@@ -40,6 +41,8 @@ class StateMasterService
         else
             return StateMaster.findAllByEntityId(entityId,[sort: 'id', max: l, offset: o, order: 'desc'])
     }
+
+
     JSONObject dataTables(JSONObject paramsJsonObject, String start, String length)
     {
         String searchTerm = paramsJsonObject.get("search[value]")
@@ -60,16 +63,16 @@ class StateMasterService
         Integer offset = start ? Integer.parseInt(start.toString()) : 0
         Integer max = length ? Integer.parseInt(length.toString()) : 100
 
-        def dayMasterCriteria = StateMaster.createCriteria()
-        def dayMasterArrayList = dayMasterCriteria.list(max: max, offset: offset) {
+        def stateMasterCriteria = StateMaster.createCriteria()
+        def stateMasterArrayList = stateMasterCriteria.list(max: max, offset: offset) {
             or {
                 if (searchTerm != "")
                 {
                     ilike('name', '%' + searchTerm + '%')
-                    zoneMaster {
+                    zone {
                         ilike('name', '%' + searchTerm + '%')
                     }
-                    countryMaster {
+                    country {
                         ilike('name', '%' + searchTerm + '%')
                     }
                 }
@@ -77,13 +80,19 @@ class StateMasterService
             eq('deleted', false)
             order(orderColumn, orderDir)
         }
-
-        def recordsTotal = dayMasterArrayList.totalCount
+        def names = []
+        stateMasterArrayList.each {
+            println(it.entityId)
+            def apires = showStateByEntityId(it.entityId.toString())
+            names.push(apires)
+        }
+        def recordsTotal = stateMasterArrayList.totalCount
         JSONObject jsonObject = new JSONObject()
         jsonObject.put("draw", paramsJsonObject.draw)
         jsonObject.put("recordsTotal", recordsTotal)
+        jsonObject.put("names", names)
         jsonObject.put("recordsFiltered", recordsTotal)
-        jsonObject.put("data", dayMasterArrayList)
+        jsonObject.put("data", stateMasterArrayList)
         return jsonObject
     }
 
@@ -156,6 +165,23 @@ class StateMasterService
         else
         {
             throw new BadRequestException()
+        }
+    }
+
+
+    def showStateByEntityId(String id)
+    {
+        try
+        {
+            def url = "http://localhost/api/v1.0/entity/entityregister/"+id
+            URL apiUrl = new URL(url)
+            def entity = new JsonSlurper().parseText(apiUrl.text)
+            return entity
+        }
+        catch (Exception ex)
+        {
+            System.err.println('Service :showAccountModesByEntityId , action :  show  , Ex:' + ex)
+            log.error('Service :showAccountModesByEntityId , action :  show  , Ex:' + ex)
         }
     }
 }

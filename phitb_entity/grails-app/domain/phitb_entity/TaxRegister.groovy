@@ -1,6 +1,9 @@
 package phitb_entity
 
-class TaxRegister {
+import gorm.logical.delete.LogicalDelete
+
+class TaxRegister implements LogicalDelete<TaxRegister>
+{
     String taxName
     Double taxValue
     String salesTaxType

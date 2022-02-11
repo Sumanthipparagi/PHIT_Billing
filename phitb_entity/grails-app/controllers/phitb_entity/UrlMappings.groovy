@@ -87,11 +87,10 @@ class UrlMappings
             }
             "/entity/entityregister/datatable(.$format)?"(controller: 'entityRegister') {action = [GET: 'dataTable']}
             "/entity/entityregister/$id(.$format)?"(controller: 'entityRegister') {
-                action = [GET: 'show', PUT: 'update', DELETE:
-                        'delete']
+                action = [GET: 'show', PUT: 'update', DELETE: 'delete']
             }
             "/entity/entityregisterbyentitytype/$id(.$format)?"(controller: 'entityRegister') {
-                action = [GET: 'getAllByEntityId']
+                action = [GET: 'getAllByEntityTypeId']
             }
 
 
@@ -161,8 +160,6 @@ class UrlMappings
             "/entity/rolemasterbyentity/$id(.$format)?"(controller: 'roleMaster') {
                 action = [GET: 'getAllByEntityId']
             }
-
-
 
 
             //Route register Controller

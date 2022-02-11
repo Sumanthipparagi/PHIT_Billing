@@ -81,6 +81,7 @@ class SeriesMasterService {
     SeriesMaster save(JSONObject jsonObject) {
         SeriesMaster seriesMaster = new SeriesMaster()
         seriesMaster.seriesName = jsonObject.get("seriesName").toString()
+        seriesMaster.seriesCode = jsonObject.get("seriesCode").toString()
         seriesMaster.mode = Long.parseLong(jsonObject.get("mode").toString())
         seriesMaster.saleId = Long.parseLong(jsonObject.get("saleId").toString())
         seriesMaster.returnId = Long.parseLong(jsonObject.get("returnId").toString())
@@ -103,6 +104,7 @@ class SeriesMasterService {
         if (seriesMaster) {
             seriesMaster.isUpdatable = true
             seriesMaster.seriesName = jsonObject.get("seriesName").toString()
+            seriesMaster.seriesCode = jsonObject.get("seriesCode").toString()
             seriesMaster.mode = Long.parseLong(jsonObject.get("mode").toString())
             seriesMaster.saleId = Long.parseLong(jsonObject.get("saleId").toString())
             seriesMaster.returnId = Long.parseLong(jsonObject.get("returnId").toString())

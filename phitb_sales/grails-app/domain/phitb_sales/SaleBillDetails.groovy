@@ -29,7 +29,7 @@ class SaleBillDetails implements Serializable, LogicalDelete<SaleBillDetails>
     double totalAmount
     double invoiceTotal
     double totalGst
-    double userId
+    long userId
     double balance
     double grossAmount
     double taxable

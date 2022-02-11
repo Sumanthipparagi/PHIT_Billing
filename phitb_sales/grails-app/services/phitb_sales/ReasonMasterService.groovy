@@ -94,8 +94,8 @@ class ReasonMasterService {
     ReasonMaster save(JSONObject jsonObject)
     {
         ReasonMaster reasonMaster = new ReasonMaster()
-        reasonMaster.reasonName =  jsonObject.get("billId").toString()
-        reasonMaster.reasonCode = jsonObject.get("series").toString()
+        reasonMaster.reasonName =  jsonObject.get("reasonName").toString()
+        reasonMaster.reasonCode = jsonObject.get("reasonCode").toString()
         reasonMaster.save(flush: true)
         if (!reasonMaster.hasErrors())
         {
@@ -113,8 +113,8 @@ class ReasonMasterService {
         if (reasonMaster)
         {
             reasonMaster.isUpdatable = true
-            reasonMaster.reasonName =  jsonObject.get("billId").toString()
-            reasonMaster.reasonCode = jsonObject.get("series").toString()
+            reasonMaster.reasonName =  jsonObject.get("reasonName").toString()
+            reasonMaster.reasonCode = jsonObject.get("reasonCode").toString()
             reasonMaster.save(flush: true)
             if (!reasonMaster.hasErrors())
             {

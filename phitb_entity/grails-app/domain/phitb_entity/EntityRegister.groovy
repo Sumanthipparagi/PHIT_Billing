@@ -57,9 +57,9 @@ class EntityRegister implements LogicalDelete<EntityRegister>
     String password
     long zoneId
     String contactDob
-    String entityId
-    UserRegister createdUser
-    UserRegister modifiedUser
+    long entityId
+    long createdUser
+    long modifiedUser
 
 
     Date dateCreated

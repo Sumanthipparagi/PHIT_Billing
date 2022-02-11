@@ -25,7 +25,8 @@ endpoints:
   enabled: false
   jmx:
     enabled: true
-
+server:
+  port: 8082
 ---
 grails:
   mime:
@@ -59,14 +60,11 @@ grails:
       maxsize: 1000
   controllers:
     defaultScope: singleton
-    upload:
-      maxFileSize: 100000000
-      maxRequestSize: 100000000
   converters:
     encoding: UTF-8
     json:
       default:
-        deep: true
+      deep: true
 
 ---
 hibernate:

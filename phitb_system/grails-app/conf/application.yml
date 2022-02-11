@@ -25,7 +25,8 @@ endpoints:
     enabled: false
     jmx:
         enabled: true
-
+server:
+    port: 8081
 ---
 grails:
     mime:
@@ -39,34 +40,32 @@ grails:
                         - Trident
         types:
             json:
-              - application/json
-              - text/json   
+                - application/json
+                - text/json
             hal:
-              - application/hal+json
-              - application/hal+xml  
+                - application/hal+json
+                - application/hal+xml
             xml:
-              - text/xml
-              - application/xml                                 
+                - text/xml
+                - application/xml
             atom: application/atom+xml
             css: text/css
             csv: text/csv
             js: text/javascript
             rss: application/rss+xml
             text: text/plain
-            all: '*/*'            
+            all: '*/*'
     urlmapping:
         cache:
             maxsize: 1000
     controllers:
         defaultScope: singleton
-        upload:
-            maxFileSize: 100000000
-            maxRequestSize: 100000000
     converters:
         encoding: UTF-8
         json:
             default:
-                deep: true
+            deep: true
+
 
 ---
 hibernate:

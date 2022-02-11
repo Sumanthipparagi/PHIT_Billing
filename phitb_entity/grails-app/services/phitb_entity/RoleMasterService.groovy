@@ -72,10 +72,10 @@ class RoleMasterService {
     }
 
     RoleMaster save(JSONObject jsonObject) {
-
         RoleMaster roleMaster = new RoleMaster()
         roleMaster.name = jsonObject.get("name").toString()
         roleMaster.description = jsonObject.get("description").toString()
+        roleMaster.entity = EntityRegister.findById( Long.parseLong(jsonObject.get("entity").toString()))
         roleMaster.save(flush: true)
         if (!roleMaster.hasErrors())
             return roleMaster
@@ -89,6 +89,7 @@ class RoleMasterService {
             roleMaster.isUpdatable = true
             roleMaster.name = jsonObject.get("name").toString()
             roleMaster.description = jsonObject.get("description").toString()
+            roleMaster.entity = EntityRegister.findById( Long.parseLong(jsonObject.get("entity").toString()))
             roleMaster.save(flush: true)
             if (!roleMaster.hasErrors())
                 return roleMaster

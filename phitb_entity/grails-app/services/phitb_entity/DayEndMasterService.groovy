@@ -96,6 +96,7 @@ class DayEndMasterService
     {
         DayEndMaster dayEndMaster = new DayEndMaster()
         dayEndMaster.date = jsonObject.get("date").toString()
+        dayEndMaster.endTime = jsonObject.get("endTime").toString()
         dayEndMaster.status = Integer.parseInt(jsonObject.get("status").toString())
         dayEndMaster.entity = EntityRegister.findById(Long.parseLong(jsonObject.get("entity").toString()))
         dayEndMaster.entityType = EntityTypeMaster.findById(Long.parseLong(jsonObject.get("entityType").toString()))
@@ -119,6 +120,7 @@ class DayEndMasterService
         {
             dayEndMaster.isUpdatable = true
             dayEndMaster.date = jsonObject.get("date").toString()
+            dayEndMaster.endTime = jsonObject.get("endTime").toString()
             dayEndMaster.status = Integer.parseInt(jsonObject.get("status").toString())
             dayEndMaster.entity = EntityRegister.findById(Long.parseLong(jsonObject.get("entity").toString()))
             dayEndMaster.entityType = EntityTypeMaster.findById(Long.parseLong(jsonObject.get("entityType").toString()))

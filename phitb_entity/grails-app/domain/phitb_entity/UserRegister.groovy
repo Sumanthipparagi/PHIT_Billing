@@ -43,8 +43,8 @@ class UserRegister implements LogicalDelete<UserRegister> {
     RoleMaster role
     EntityTypeMaster entityType
     EntityRegister entity
-    UserRegister createdUser
-    UserRegister modifiedUser
+    long createdUser
+    long modifiedUser
 
     Date dateCreated
     Date lastUpdated

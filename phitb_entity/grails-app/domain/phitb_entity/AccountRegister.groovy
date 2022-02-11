@@ -16,8 +16,8 @@ class AccountRegister implements LogicalDelete<AccountRegister> {
     long syncStatus
     EntityTypeMaster entityType
     EntityRegister entity
-    UserRegister createdUser
-    UserRegister modifiedUser
+    long createdUser
+    long modifiedUser
 
     Date dateCreated
     Date lastUpdated

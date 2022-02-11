@@ -68,7 +68,7 @@ class EntityTypeMasterService {
     EntityTypeMaster save(JSONObject jsonObject) {
         EntityTypeMaster entityTypeMaster = new EntityTypeMaster()
         entityTypeMaster.name = jsonObject.get("name").toString()
-        entityTypeMaster.description = Long.parseLong(jsonObject.get("description").toString())
+        entityTypeMaster.description = jsonObject.get("description").toString()
         entityTypeMaster.save(flush: true)
         if (!entityTypeMaster.hasErrors())
             return entityTypeMaster
@@ -83,7 +83,7 @@ class EntityTypeMasterService {
         if (entityTypeMaster) {
             entityTypeMaster.isUpdatable = true
             entityTypeMaster.name = jsonObject.get("name").toString()
-            entityTypeMaster.description = Long.parseLong(jsonObject.get("description").toString())
+            entityTypeMaster.description = jsonObject.get("description").toString()
             entityTypeMaster.save(flush: true)
             if (!entityTypeMaster.hasErrors())
                 return entityTypeMaster

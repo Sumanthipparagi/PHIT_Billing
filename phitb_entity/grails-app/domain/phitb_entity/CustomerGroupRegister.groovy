@@ -1,6 +1,9 @@
 package phitb_entity
 
-class CustomerGroupRegister {
+import gorm.logical.delete.LogicalDelete
+
+class CustomerGroupRegister implements LogicalDelete<CustomerGroupRegister>
+{
 
     String customerGroupName
     String shortName

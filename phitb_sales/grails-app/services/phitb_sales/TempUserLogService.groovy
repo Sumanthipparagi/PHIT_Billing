@@ -96,7 +96,7 @@ class TempUserLogService
     {
         TempUserLog tempUserLog = new TempUserLog()
         tempUserLog.userId = Long.parseLong(jsonObject.get("userId").toString())
-        tempUserLog.billId = jsonObject.get("serBillId").toString()
+        tempUserLog.billId = jsonObject.get("billId").toString()
         tempUserLog.billType = jsonObject.get("billType").toString()
         tempUserLog.serBillId = jsonObject.get("serBillId").toString()
         tempUserLog.entityTypeId = Long.parseLong(jsonObject.get("entityTypeId").toString())
@@ -119,7 +119,7 @@ class TempUserLogService
         {
             tempUserLog.isUpdatable = true
             tempUserLog.userId = Long.parseLong(jsonObject.get("userId").toString())
-            tempUserLog.billId = jsonObject.get("serBillId").toString()
+            tempUserLog.billId = jsonObject.get("billId").toString()
             tempUserLog.billType = jsonObject.get("billType").toString()
             tempUserLog.serBillId = jsonObject.get("serBillId").toString()
             tempUserLog.entityTypeId = Long.parseLong(jsonObject.get("entityTypeId").toString())

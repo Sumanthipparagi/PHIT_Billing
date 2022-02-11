@@ -1,7 +1,10 @@
 package phitb_entity
 
+import gorm.logical.delete.LogicalDelete
 
-class DayEndMaster {
+
+class DayEndMaster implements LogicalDelete<DayEndMaster>
+{
 
     String date
     int status

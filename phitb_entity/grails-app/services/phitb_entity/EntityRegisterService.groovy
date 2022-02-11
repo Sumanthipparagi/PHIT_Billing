@@ -147,8 +147,8 @@ class EntityRegisterService {
         entityRegister.password = jsonObject.get("password").toString()
         entityRegister.zoneId = Long.parseLong(jsonObject.get("zoneId").toString())
         entityRegister.contactDob = jsonObject.get("contactDob").toString()
-        entityRegister.createdUser = UserRegister.findById(Long.parseLong(jsonObject.get("createdUser").toString()))
-        entityRegister.modifiedUser = UserRegister.findById(Long.parseLong(jsonObject.get("modifiedUser").toString()))
+        entityRegister.createdUser = Long.parseLong(jsonObject.get("createdUser").toString())
+        entityRegister.modifiedUser =Long.parseLong(jsonObject.get("modifiedUser").toString())
         entityRegister.save(flush: true)
         if (!entityRegister.hasErrors())
         {
@@ -221,8 +221,8 @@ class EntityRegisterService {
             entityRegister.password = jsonObject.get("password").toString()
             entityRegister.zoneId = Long.parseLong(jsonObject.get("zoneId").toString())
             entityRegister.contactDob = jsonObject.get("contactDob").toString()
-            entityRegister.createdUser = UserRegister.findById(Long.parseLong(jsonObject.get("createdUser").toString()))
-            entityRegister.modifiedUser = UserRegister.findById(Long.parseLong(jsonObject.get("modifiedUser").toString()))
+            entityRegister.createdUser = Long.parseLong(jsonObject.get("createdUser").toString())
+            entityRegister.modifiedUser =Long.parseLong(jsonObject.get("modifiedUser").toString())
             entityRegister.save(flush: true)
             if (!entityRegister.hasErrors())
             {

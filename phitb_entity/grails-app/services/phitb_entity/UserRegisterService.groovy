@@ -122,8 +122,8 @@ class UserRegisterService
         userRegister.role = RoleMaster.findById(Long.parseLong(jsonObject.get("role").toString()))
         userRegister.entityType = EntityTypeMaster.findById(Long.parseLong(jsonObject.get("entityType").toString()))
         userRegister.entity = EntityRegister.findById(Long.parseLong(jsonObject.get("entity").toString()))
-        userRegister.createdUser = UserRegister.findById(Long.parseLong(jsonObject.get("createdUser").toString()))
-        userRegister.modifiedUser = UserRegister.findById(Long.parseLong(jsonObject.get("modifiedUser").toString()))
+        userRegister.createdUser = Long.parseLong(jsonObject.get("createdUser").toString())
+        userRegister.modifiedUser = Long.parseLong(jsonObject.get("modifiedUser").toString())
         userRegister.save(flush: true)
         if (!userRegister.hasErrors())
         {
@@ -180,8 +180,8 @@ class UserRegisterService
             userRegister.role = RoleMaster.findById(Long.parseLong(jsonObject.get("role").toString()))
             userRegister.entityType = EntityTypeMaster.findById(Long.parseLong(jsonObject.get("entityType").toString()))
             userRegister.entity = EntityRegister.findById(Long.parseLong(jsonObject.get("entity").toString()))
-            userRegister.createdUser = UserRegister.findById(Long.parseLong(jsonObject.get("createdUser").toString()))
-            userRegister.modifiedUser = UserRegister.findById(Long.parseLong(jsonObject.get("modifiedUser").toString()))
+            userRegister.createdUser = Long.parseLong(jsonObject.get("createdUser").toString())
+            userRegister.modifiedUser = Long.parseLong(jsonObject.get("modifiedUser").toString())
             userRegister.save(flush: true)
             if (!userRegister.hasErrors())
             {

@@ -81,7 +81,7 @@ class TerritoryRegisterService {
     TerritoryRegister save(JSONObject jsonObject) {
         TerritoryRegister territoryRegister = new TerritoryRegister()
         territoryRegister.territoryName = jsonObject.get("territoryName").toString()
-        territoryRegister.shortName = Long.parseLong(jsonObject.get("shortName").toString())
+        territoryRegister.shortName = jsonObject.get("shortName").toString()
         territoryRegister.territoryHq = Long.parseLong(jsonObject.get("territoryHq").toString())
         territoryRegister.cityIds = Long.parseLong(jsonObject.get("cityIds").toString())
         territoryRegister.stateId = Long.parseLong(jsonObject.get("stateId").toString())
@@ -102,7 +102,7 @@ class TerritoryRegisterService {
         if (territoryRegister) {
             territoryRegister.isUpdatable = true
             territoryRegister.territoryName = jsonObject.get("territoryName").toString()
-            territoryRegister.shortName = Long.parseLong(jsonObject.get("shortName").toString())
+            territoryRegister.shortName = jsonObject.get("shortName").toString()
             territoryRegister.territoryHq = Long.parseLong(jsonObject.get("territoryHq").toString())
             territoryRegister.cityIds = Long.parseLong(jsonObject.get("cityIds").toString())
             territoryRegister.stateId = Long.parseLong(jsonObject.get("stateId").toString())

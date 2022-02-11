@@ -66,10 +66,10 @@ class DepartmentMasterService {
         DepartmentMaster departmentMaster = new DepartmentMaster()
         departmentMaster.name = jsonObject.get("name").toString()
         departmentMaster.description = jsonObject.get("description").toString()
-        departmentMaster.entity = EntityRegister.findById(Long.parseLong(jsonObject.get("entityId").toString()))
+        departmentMaster.entity = EntityRegister.findById(Long.parseLong(jsonObject.get("entity").toString()))
         departmentMaster.entityType = EntityTypeMaster.findById(Long.parseLong(jsonObject.get("entityType").toString()))
-        departmentMaster.createdUser = UserRegister.findById(Long.parseLong(jsonObject.get("createdUser").toString()))
-        departmentMaster.modifiedUser = UserRegister.findById(Long.parseLong(jsonObject.get("modifiedUser").toString()))
+        departmentMaster.createdUser = Long.parseLong(jsonObject.get("createdUser").toString())
+        departmentMaster.modifiedUser = Long.parseLong(jsonObject.get("modifiedUser").toString())
         departmentMaster.save(flush: true)
         if (!departmentMaster.hasErrors())
             return departmentMaster
@@ -83,10 +83,10 @@ class DepartmentMasterService {
             departmentMaster.isUpdatable = true
             departmentMaster.name = jsonObject.get("name").toString()
             departmentMaster.description = jsonObject.get("description").toString()
-            departmentMaster.entity = EntityRegister.findById(Long.parseLong(jsonObject.get("entityId").toString()))
+            departmentMaster.entity = EntityRegister.findById(Long.parseLong(jsonObject.get("entity").toString()))
             departmentMaster.entityType = EntityTypeMaster.findById(Long.parseLong(jsonObject.get("entityType").toString()))
-            departmentMaster.createdUser = UserRegister.findById(Long.parseLong(jsonObject.get("createdUser").toString()))
-            departmentMaster.modifiedUser = UserRegister.findById(Long.parseLong(jsonObject.get("modifiedUser").toString()))
+            departmentMaster.createdUser = Long.parseLong(jsonObject.get("createdUser").toString())
+            departmentMaster.modifiedUser = Long.parseLong(jsonObject.get("modifiedUser").toString())
             departmentMaster.save(flush: true)
             if (!departmentMaster.hasErrors())
                 return departmentMaster
