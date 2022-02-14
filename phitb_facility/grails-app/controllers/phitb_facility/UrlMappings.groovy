@@ -18,7 +18,7 @@ class UrlMappings {
         "404"(controller: "error", action: "error404", exception: ResourceNotFoundException)
         "400"(controller: "error", action: "error400", exception: BadRequestException)
 
-        group "/api/v1.0", {
+        group "/api/v1.0/facility", {
 
             //Racks
             "/rack(.$format)?"(controller: 'rackMaster') { action = [GET: 'index', POST: 'save'] }

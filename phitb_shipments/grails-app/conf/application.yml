@@ -28,7 +28,7 @@ endpoints:
 
 server:
     port: 8082
-    contextPath: "/shipment"
+#    contextPath: "/shipment"
 
 ---
 grails:

@@ -17,7 +17,7 @@ class UrlMappings {
         "404"(controller: "error", action: "error404", exception: ResourceNotFoundException)
         "400"(controller: "error", action: "error400", exception: BadRequestException)
 
-        group "/api/v1.0", {
+        group "/api/v1.0/purchase", {
             //Purchase Bill Detail
             "/billdetail(.$format)?"(controller: 'purchaseBillDetail') { action = [GET: 'index', POST: 'save'] }
             "/billdetail/datatable(.$format)?"(controller: 'purchaseBillDetail') { action = [GET: 'dataTable'] }

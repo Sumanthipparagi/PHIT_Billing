@@ -27,7 +27,7 @@ endpoints:
         enabled: true
 server:
     port: 8086
-    contextPath: "/inventory"
+#    contextPath: "/inventory"
 ---
 grails:
     mime:

@@ -27,7 +27,7 @@ endpoints:
     enabled: true
 server:
   port: 8088
-  contextPath: "/entity"
+#  contextPath: "/entity"
 ---
 grails:
   mime:

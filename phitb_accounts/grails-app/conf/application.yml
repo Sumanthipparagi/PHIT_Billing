@@ -27,7 +27,7 @@ endpoints:
         enabled: true
 server:
     port: 8089
-    contextPath: "/account"
+#    contextPath: "/account"
 ---
 grails:
     mime:

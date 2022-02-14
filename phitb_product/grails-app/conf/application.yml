@@ -27,7 +27,7 @@ endpoints:
         enabled: true
 server:
     port: 8085
-    contextPath: "/product"
+#    contextPath: "/product"
 ---
 grails:
     mime:

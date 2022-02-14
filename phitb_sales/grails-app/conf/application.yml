@@ -28,7 +28,7 @@ endpoints:
 
 server:
     port: 8083
-    contextPath: "/sale"
+#    contextPath: "/sale"
 ---
 grails:
     mime:

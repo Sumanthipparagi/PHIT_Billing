@@ -17,7 +17,7 @@ class UrlMappings {
         "404"(controller: "error", action: "error404", exception: ResourceNotFoundException)
         "400"(controller: "error", action: "error400", exception: BadRequestException)
 
-        group "/api/v1.0", {
+        group "/api/v1.0/shipments", {
             //Transport Type
             "/transporttype(.$format)?"(controller: 'transportType') { action = [GET: 'index', POST: 'save'] }
             "/transporttype/datatable(.$format)?"(controller: 'transportType') { action = [GET: 'dataTable'] }
