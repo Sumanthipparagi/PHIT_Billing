@@ -2,6 +2,8 @@ package system
 
 import groovy.json.JsonSlurper
 import org.grails.web.json.JSONObject
+import phitb_ui.Constants
+import phitb_ui.Links
 import phitb_ui.SystemService
 
 
@@ -11,8 +13,8 @@ class AccountModeController
     def index()
     {
 
-        def url = "http://localhost/api/v1.0/entity/entityregister"
-
+        def url = Links.PHITB_SYSTEM_API+Links.ENTITY_REGISTER_SHOW
+        println(url)
         URL apiUrl = new URL(url)
         def entity = new JsonSlurper().parseText(apiUrl.text)
         render(view: '/system/accountMode/accountmodes',model: [entity:entity])

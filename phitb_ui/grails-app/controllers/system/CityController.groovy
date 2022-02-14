@@ -31,7 +31,7 @@ class CityController {
         try
         {
             JSONObject jsonObject = new JSONObject(params)
-            def apiResponse = new SystemService().showForm(jsonObject)
+            def apiResponse = new SystemService().showCity(jsonObject)
             if (apiResponse.status == 200)
             {
                 JSONObject responseObject = new JSONObject(apiResponse.readEntity(String.class))
