@@ -6,7 +6,7 @@
     <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
     <meta name="description" content="Responsive Bootstrap 4 and web Application ui kit.">
 
-    <title>:: PharmIt ::  State Master</title>
+    <title>:: PharmIt ::  City</title>
     <link rel="icon" type="image/x-icon" href="${assetPath(src: '/themeassets/images/favicon.ico')}"/>
     <!-- Favicon-->
     <asset:stylesheet rel="stylesheet" src="/themeassets/plugins/bootstrap/css/bootstrap.min.css"/>
@@ -35,10 +35,10 @@
         <div class="block-header">
             <div class="row clearfix">
                 <div class="col-lg-5 col-md-5 col-sm-12">
-                    <h2>State Master</h2>
+                    <h2>Country Master</h2>
                     <ul class="breadcrumb padding-0">
                         <li class="breadcrumb-item"><a href="index.html"><i class="zmdi zmdi-home"></i></a></li>
-                        <li class="breadcrumb-item active">State Master</li>
+                        <li class="breadcrumb-item active">Country Master</li>
                     </ul>
                 </div>
                 <div class="col-lg-7 col-md-7 col-sm-12">
@@ -72,18 +72,16 @@
                     %{--                    </div>--}%
                     <div class="header">
                         <button type="button" class="btn btn-round btn-primary m-t-15 addbtn" data-toggle="modal"
-                                data-target="#addStateModal"><font style="vertical-align: inherit;"><font
-                                style="vertical-align: inherit;">Add State</font></font></button>
+                                data-target="#addCountryModal"><font style="vertical-align: inherit;"><font
+                                style="vertical-align: inherit;">Add Country</font></font></button>
                     </div>
                     <div class="body">
                         <div class="table-responsive">
-                            <table class="table table-bordered table-striped table-hover stateTable dataTable">
+                            <table class="table table-bordered table-striped table-hover countryTable dataTable">
                                 <thead>
                                 <tr>
                                     <th style="width: 20%">ID</th>
                                     <th style="width: 20%">Name</th>
-                                    <th style="width: 20%">Zone</th>
-                                    <th style="width: 20%">Country</th>
                                     <th style="width: 20%">Entity</th>
                                     <th style="width: 20%">Action</th>
                                 </tr>
@@ -109,7 +107,7 @@
     </div>
 </section>
 
-<g:include view="controls/add-state.gsp"/>
+<g:include view="controls/add-country.gsp"/>
 <g:include view="controls/delete-modal.gsp"/>
 
 <!-- Jquery Core Js -->
@@ -130,15 +128,15 @@
 
 <script>
 
-    var statetable;
+    var countrytable;
     var id = null;
     $(function () {
-       stateTable();
+        countryTable();
     });
 
-    function stateTable() {
+    function countryTable() {
 
-        statetable = $(".stateTable").DataTable({
+        countrytable = $(".countryTable").DataTable({
             "order": [[0, "desc"]],
             sPaginationType: "simple_numbers",
             responsive: {
@@ -152,11 +150,11 @@
             processing: true,
             serverSide: true,
             language: {
-                searchPlaceholder: "Search State"
+                searchPlaceholder: "Search Country"
             },
             ajax: {
                 type: 'GET',
-                url: '/state/datatable',
+                url: '/country/datatable',
                 dataType: 'json',
                 dataSrc: function (json) {
                     var return_data = [];
@@ -164,17 +162,12 @@
                         var editbtn = '<button type="button" data-id="' + json.data[i].id +
                             '" data-name="' + json.data[i].name + '"' +
                             '" data-entity="' + json.data[i].entityId + '"' +
-                            '" data-zoneId="' + json.data[i].zone.id + '"' +
-                            '" data-countryId="' + json.data[i].country.id + '"' +
-                            ' class="editbtn btn btn-warning  editbtn" data-toggle="modal" data-target="#addStateModal"><i class="material-icons"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">edit</font></font></i></button>'
+                            ' class="editbtn btn btn-warning  editbtn" data-toggle="modal" data-target="#addCountryModal"><i class="material-icons"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">edit</font></font></i></button>'
                         var deletebtn = '<button type="button" data-id="' + json.data[i].id +
                             '" class="btn btn-danger deletebtn" data-toggle="modal" data-target=".deleteModal"><i class="material-icons"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">delete</font></font></i></button>'
-                        console.log(json.data[i].zone.id)
                         return_data.push({
                             'id': json.data[i].id,
                             'name': json.data[i].name,
-                            'zone': json.data[i].zone.name,
-                            'country': json.data[i].country.name,
                             'entity': json.names[i].entityName,
                             'action': editbtn + ' ' + deletebtn
                         });
@@ -185,30 +178,27 @@
             columns: [
                 {'data': 'id', 'width': '20%'},
                 {'data': 'name', 'width': '20%'},
-                {'data': 'zone', 'width': '20%'},
-                {'data': 'country', 'width': '20%'},
                 {'data': 'entity', 'width': '20%'},
                 {'data': 'action', 'width': '20%'}
             ]
         });
     }
 
-    $(".stateForm").submit(function (event) {
+    $(".countryForm").submit(function (event) {
 
         //disable the default form submission
         event.preventDefault();
 
         //grab all form data
         var formData = new FormData(this);
-        console.log(formData)
 
         var url = '';
         var type = '';
         if (id) {
-            url = '/state/update/' + id;
+            url = '/country/update/' + id;
             type = 'POST'
         } else {
-            url = '/state';
+            url = '/country';
             type = 'POST'
         }
 
@@ -221,10 +211,9 @@
             contentType: false,
             processData: false,
             success: function () {
-
-                swal("Success!", "State Submitted Successfully", "success");
-                stateTable();
-                $('#addStateModal').modal('hide');
+                swal("Success!", "Country Submitted Successfully", "success");
+                countryTable();
+                $('#addCountryModal').modal('hide');
             },
             error: function () {
                 swal("Error!", "Something went wrong", "error");
@@ -234,8 +223,8 @@
     });
 
     $(document).on("click", ".addbtn", function () {
-        $(".stateTitle").text("Add State Master")
-        $(".stateForm")[0].reset();
+        $(".countryTitle").text("Add Country")
+        $(".countryForm")[0].reset();
         id = null
     });
 
@@ -243,29 +232,26 @@
         id = $(this).data('id');
         $(".name").val($(this).data('name'));
         $("#entity").val($(this).data('entity')).change()
-        $("#zone").val($(this).attr('data-zoneId')).change()
-        $("#country").val($(this).attr('data-countryId')).change()
-        $(".stateTitle").text("Update State Master");
+        $("#state").val($(this).attr('data-state')).change()
+        $(".cityTitle").text("Update City");
     });
-
-
 
 
     $(document).on("click", ".deletebtn", function () {
         id = $(this).data('id');
-        $("#myModalLabel").text("Delete State ?");
+        $("#myModalLabel").text("Delete Country?");
 
     });
 
     function deleteData() {
         $.ajax({
             type: 'POST',
-            url: '/state/delete/' + id,
+            url: '/country/delete/' + id,
             dataType: 'json',
             success: function () {
                 $('.deleteModal').modal('hide');
-                stateTable();
-                swal("Success!", "State Deleted Successfully", "success");
+                countryTable();
+                swal("Success!", "Country Deleted Successfully", "success");
             }, error: function () {
                 swal("Error!", "Something went wrong", "error");
             }

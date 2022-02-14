@@ -137,29 +137,35 @@
     function accountmodeTable() {
 
         accountmodetable = $(".accountmodeTable").DataTable({
+            "order": [[0, "desc"]],
+            sPaginationType: "simple_numbers",
+            responsive: {
+                details: false
+            },
             destroy: true,
             autoWidth: false,
-            sPaginationType: "simple_numbers",
             bJQueryUI: true,
             sScrollX: "100%",
             info: true,
             processing: true,
             serverSide: true,
-            order: [[0, "desc"]],
+            language: {
+                searchPlaceholder: "Search State"
+            },
             ajax: {
                 type: 'GET',
                 url: '/accountmodes/datatable',
                 dataType: 'json',
                 dataSrc: function (json) {
+                    console.log(json)
                     var return_data = [];
                     for (var i = 0; i < json.data.length; i++) {
                         var editbtn = '<button type="button" data-id="' + json.data[i].id +
                             '" data-mode="' + json.data[i].mode + '"' +
                             '" data-entity="' + json.data[i].entityId + '"' +
-                            ' class="editbtn btn btn-warning  editbtn" data-toggle="modal" data-target="#addAccountModeModal"><i class="fa fa-edit"></i> Edit</button>'
+                            ' class="editbtn btn btn-warning  editbtn" data-toggle="modal" data-target="#addAccountModeModal"><i class="material-icons"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">edit</font></font></i></button>'
                         var deletebtn = '<button type="button" data-id="' + json.data[i].id +
-                            '" class="btn btn-danger deletebtn" data-toggle="modal" data-target=".deleteModal"><i class="fa fa-trash"></i> Delete</button>'
-
+                            '" class="btn btn-danger deletebtn" data-toggle="modal" data-target=".deleteModal"><i class="material-icons"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">delete</font></font></i></button>'
                         return_data.push({
                             'id': json.data[i].id,
                             'name': json.data[i].mode,

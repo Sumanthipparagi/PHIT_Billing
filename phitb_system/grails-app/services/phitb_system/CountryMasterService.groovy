@@ -1,6 +1,7 @@
 package phitb_system
 
 import grails.gorm.transactions.Transactional
+import groovy.json.JsonSlurper
 import org.grails.web.json.JSONObject
 import phbit_system.Exception.BadRequestException
 import phbit_system.Exception.ResourceNotFoundException
@@ -61,12 +62,18 @@ class CountryMasterService {
             eq('deleted', false)
             order(orderColumn, orderDir)
         }
-
+        def names = []
+        countryMasterArrayList.each {
+            println(it.entityId)
+            def apires = showCountryByEntityId(it.entityId.toString())
+            names.push(apires)
+        }
         def recordsTotal = countryMasterArrayList.totalCount
         JSONObject jsonObject = new JSONObject()
         jsonObject.put("draw", paramsJsonObject.draw)
         jsonObject.put("recordsTotal", recordsTotal)
         jsonObject.put("recordsFiltered", recordsTotal)
+        jsonObject.put("names", names)
         jsonObject.put("data", countryMasterArrayList)
         return jsonObject
     }
@@ -76,6 +83,7 @@ class CountryMasterService {
         if (name) {
             CountryMaster countryMaster = new CountryMaster()
             countryMaster.name = name
+            countryMaster.entityId = Long.parseLong(jsonObject.get("entityId").toString())
             countryMaster.save(flush: true)
             if (!countryMaster.hasErrors())
                 return countryMaster
@@ -93,6 +101,7 @@ class CountryMasterService {
             if (countryMaster) {
                 countryMaster.isUpdatable = true
                 countryMaster.name = name
+                countryMaster.entityId = Long.parseLong(jsonObject.get("entityId").toString())
                 countryMaster.save(flush: true)
                 if (!countryMaster.hasErrors())
                     return countryMaster
@@ -116,6 +125,22 @@ class CountryMasterService {
             }
         } else {
             throw new BadRequestException()
+        }
+    }
+
+    def showCountryByEntityId(String id)
+    {
+        try
+        {
+            def url = "http://localhost/api/v1.0/entity/entityregister/"+id
+            URL apiUrl = new URL(url)
+            def entity = new JsonSlurper().parseText(apiUrl.text)
+            return entity
+        }
+        catch (Exception ex)
+        {
+            System.err.println('Service :CountryMaster , action :  show  , Ex:' + ex)
+            log.error('Service :CountryMaster , action :  show  , Ex:' + ex)
         }
     }
 }

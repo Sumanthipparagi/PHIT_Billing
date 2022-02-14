@@ -9,7 +9,6 @@
                         <input type="text" class="form-control" placeholder="Search...">
                         <span class="input-group-addon">
                             <i class="zmdi zmdi-search"></i>
-                        </span>
                     </div>
                 </div>
             </div>
@@ -548,28 +547,16 @@
                 <li class="header">MAIN</li>
                 <li class="active open"><a href="index.html"><i class="zmdi zmdi-home"></i><span>Dashboard</span></a>
                 </li>
-                <li><a href="index.html"><i class="zmdi zmdi-home"></i><span>Accounts</span></a>
-                <li><a href="index.html"><i class="zmdi zmdi-home"></i><span>Entity</span></a>
-                </li>
-                <li><a href="index.html"><i class="zmdi zmdi-home"></i><span>Facility</span></a></li>
-                <li><a href="index.html"><i class="zmdi zmdi-home"></i><span>Inventory</span></a></li>
-                <li><a href="index.html"><i class="zmdi zmdi-home"></i><span>Product</span></a></li>
-                <li><a href="index.html"><i class="zmdi zmdi-home"></i><span>Purchase</span></a></li>
-                <li><a href="index.html"><i class="zmdi zmdi-home"></i><span>Sales</span></a></li>
-                <li><a href="index.html"><i class="zmdi zmdi-home"></i><span>Shipments</span></a></li>
-                <li><a href="index.html"><i class="zmdi zmdi-home"></i><span>System</span></a></li>
+
 
                 <li><a href="javascript:void(0);" class="menu-toggle"><i
-                        class="zmdi zmdi-apps"></i><span>App</span> <span
-                        class="badge badge-success float-right">7</span></a>
+                        class="zmdi zmdi-apps"></i><span>System</span> <span
+                        class="badge badge-success float-right">4</span></a>
                     <ul class="ml-menu">
-                        <li><a href="mail-inbox.html">Inbox</a></li>
-                        <li><a href="chat.html">Chat</a></li>
-                        <li><a href="events.html">Calendar</a></li>
-                        <li><a href="file-dashboard.html">File Manager</a></li>
-                        <li><a href="contact.html">Contact list</a></li>
-                        <li><a href="blog-dashboard.html">Blog</a></li>
-                        <li><a href="app-ticket.html">Support Ticket</a></li>
+                        <li><a href="/state">State</a></li>
+                        <li><a href="/city">City</a></li>
+                        <li><a href="/country">Country</a></li>
+                        <li><a href="/form">Form</a></li>
                     </ul>
                 </li>
                 <li><a href="javascript:void(0);" class="menu-toggle"><i

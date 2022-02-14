@@ -4,9 +4,10 @@ import grails.converters.JSON
 
 import java.sql.Time
 
-class BootStrap {
+class BootStrap
+{
 
-    def init = { servletContext ->
+    def init = {servletContext ->
         JSON.registerObjectMarshaller(Date) {
             return it?.format("dd/MM/yyyy HH:mm:ss")
         }
@@ -17,40 +18,40 @@ class BootStrap {
         }
 
         JSON.registerObjectMarshaller(AccountModeMaster)
-        {
-            def returnArray = [:]
-            returnArray['id'] = it.id
-            returnArray['mode'] = it.mode
-            returnArray['dateCreated'] = it.dateCreated
-            returnArray['lastUpdated'] = it.lastUpdated
-            return returnArray
-        }
+                {
+                    def accountmodeMaster = [:]
+                    accountmodeMaster['id'] = it.id
+                    accountmodeMaster['mode'] = it.mode
+                    accountmodeMaster['dateCreated'] = it.dateCreated
+                    accountmodeMaster['lastUpdated'] = it.lastUpdated
+                    return accountmodeMaster
+                }
 
 
         JSON.registerObjectMarshaller(StateMaster) {
-                    def returnArray = [:]
-                    returnArray['id'] = it.id
-                    returnArray['name'] = it.name
-                    returnArray['entityId'] = it.entityId
-                    returnArray['zone'] = it.zone
-                    returnArray['country'] = it.country
-                    return returnArray
-                }
+            def stateMaster = [:]
+            stateMaster['id'] = it.id
+            stateMaster['name'] = it.name
+            stateMaster['entityId'] = it.entityId
+            stateMaster['zone'] = it.zone
+            stateMaster['country'] = it.country
+            return stateMaster
+        }
 
         JSON.registerObjectMarshaller(ZoneMaster) {
-            def returnArray = [:]
-            returnArray['id'] = it.id
-            returnArray['name'] = it.name
-            returnArray['entityId'] = it.entityId
-            return returnArray
+            def zoneMaster = [:]
+            zoneMaster['id'] = it.id
+            zoneMaster['name'] = it.name
+            zoneMaster['entityId'] = it.entityId
+            return zoneMaster
         }
 
         JSON.registerObjectMarshaller(CountryMaster) {
-            def returnArray = [:]
-            returnArray['id'] = it.id
-            returnArray['name'] = it.name
-            returnArray['entityId'] = it.entityId
-            return returnArray
+            def countryMaster = [:]
+            countryMaster['id'] = it.id
+            countryMaster['name'] = it.name
+            countryMaster['entityId'] = it.entityId
+            return countryMaster
         }
 
 

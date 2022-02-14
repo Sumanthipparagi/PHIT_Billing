@@ -1,22 +1,22 @@
 package system
 
 import groovy.json.JsonSlurper
-import org.grails.web.json.JSONArray
 import org.grails.web.json.JSONObject
 import phitb_ui.SystemService
 
-class StateController {
+class FormController {
 
     def index()
     {
         try
         {
             def entityurl = "http://localhost/api/v1.0/entity/entityregister"
-            URL apiUrl = new URL(entityurl)
-            def entity = new JsonSlurper().parseText(apiUrl.text)
-            ArrayList<String> zoneArrayList = new ZoneController().show()
-            ArrayList<String> countryArrayList = new CountryController().show()
-            render(view: '/system/state/state',model: [entity:entity,zoneArrayList:zoneArrayList,countryArrayList:countryArrayList])
+            def entitytypeurl = "http://localhost/api/v1.0/entity/entitytypemaster"
+            URL api1Url = new URL(entityurl)
+            URL api3Url = new URL(entitytypeurl)
+            def entity = new JsonSlurper().parseText(api1Url.text)
+            def entitytype = new JsonSlurper().parseText(api3Url.text)
+            render(view: '/system/form/formmaster',model: [entity:entity,entitytype:entitytype])
         }
         catch (Exception ex)
         {
@@ -32,7 +32,7 @@ class StateController {
         try
         {
             JSONObject jsonObject = new JSONObject(params)
-            def apiResponse = new SystemService().showState(jsonObject)
+            def apiResponse = new SystemService().showForm(jsonObject)
             if (apiResponse.status == 200)
             {
                 JSONObject responseObject = new JSONObject(apiResponse.readEntity(String.class))
@@ -56,7 +56,7 @@ class StateController {
         try
         {
             JSONObject jsonObject = new JSONObject(params)
-            def apiResponse = new SystemService().saveStateMaster(jsonObject)
+            def apiResponse = new SystemService().saveForm(jsonObject)
             if (apiResponse?.status == 200)
             {
                 JSONObject obj = new JSONObject(apiResponse.readEntity(String.class))
@@ -75,37 +75,13 @@ class StateController {
         }
     }
 
-    def show()
-    {
-        try
-        {
-            def apiResponse = new SystemService().getStateList()
-            if (apiResponse?.status == 200)
-            {
-                JSONArray jsonArray = new JSONArray(apiResponse.readEntity(String.class));
-                ArrayList<String> arrayList = new ArrayList<>(jsonArray)
-                return arrayList
-            }
-            else
-            {
-                return []
-            }
-        }
-        catch (Exception ex)
-        {
-            System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
-            log.error('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
-            response.status = 400
-        }
-    }
-
     def update()
     {
         try
         {
             println(params)
             JSONObject jsonObject = new JSONObject(params)
-            def apiResponse = new SystemService().putState(jsonObject)
+            def apiResponse = new SystemService().putForm(jsonObject)
             if (apiResponse.status == 200)
             {
                 JSONObject obj = new JSONObject(apiResponse.readEntity(String.class))
@@ -129,7 +105,7 @@ class StateController {
         try
         {
             JSONObject jsonObject = new JSONObject(params)
-            def apiResponse = new SystemService().deleteState(jsonObject)
+            def apiResponse = new SystemService().deleteForm(jsonObject)
             if (apiResponse.status == 200)
             {
                 JSONObject data = new JSONObject()
@@ -148,4 +124,5 @@ class StateController {
             response.status = 400
         }
     }
+
 }

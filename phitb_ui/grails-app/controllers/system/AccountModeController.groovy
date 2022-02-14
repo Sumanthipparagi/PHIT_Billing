@@ -10,7 +10,9 @@ class AccountModeController
 
     def index()
     {
+
         def url = "http://localhost/api/v1.0/entity/entityregister"
+
         URL apiUrl = new URL(url)
         def entity = new JsonSlurper().parseText(apiUrl.text)
         render(view: '/system/accountMode/accountmodes',model: [entity:entity])
@@ -49,6 +51,7 @@ class AccountModeController
             if (apiResponse.status == 200)
             {
                 JSONObject responseObject = new JSONObject(apiResponse.readEntity(String.class))
+
                 respond responseObject, formats: ['json'], status: 200
             }
             else

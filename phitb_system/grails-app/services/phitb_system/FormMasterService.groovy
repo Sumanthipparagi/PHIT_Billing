@@ -1,6 +1,7 @@
 package phitb_system
 
 import grails.gorm.transactions.Transactional
+import groovy.json.JsonSlurper
 import org.grails.web.json.JSONObject
 import phbit_system.Exception.BadRequestException
 import phbit_system.Exception.ResourceNotFoundException
@@ -57,37 +58,57 @@ class FormMasterService {
         def formMasterArrayList = formMasterCriteria.list(max: max, offset: offset) {
             or {
                 if (searchTerm != "") {
-                    ilike('name', '%' + searchTerm + '%')
+                    ilike('formName', '%' + searchTerm + '%')
                 }
             }
             eq('deleted', false)
             order(orderColumn, orderDir)
         }
-
+        def entity = []
+        formMasterArrayList.each {
+            println(it.entityId)
+            def apires1 = showFormByEntityId(it.entityId.toString())
+            entity.push(apires1)
+        }
+        def entityType = []
+        formMasterArrayList.each {
+            println(it.entityTypeId)
+            def apires2 = showFormByEntityTypeId(it.entityTypeId.toString())
+            entityType.push(apires2)
+        }
+        def createduser = []
+        formMasterArrayList.each {
+            println(it.createdUser)
+            def apires3 = showFormBycreatedUser(it.createdUser.toString())
+            createduser.push(apires3)
+        }
+        def modifieduser = []
+        formMasterArrayList.each {
+            println(it.modifiedUser)
+            def apires4 = showFormBymodifiedUser(it.modifiedUser.toString())
+            modifieduser.push(apires4)
+        }
         def recordsTotal = formMasterArrayList.totalCount
         JSONObject jsonObject = new JSONObject()
         jsonObject.put("draw", paramsJsonObject.draw)
         jsonObject.put("recordsTotal", recordsTotal)
         jsonObject.put("recordsFiltered", recordsTotal)
         jsonObject.put("data", formMasterArrayList)
+        jsonObject.put("entity", entity)
+        jsonObject.put("entityType", entityType)
+        jsonObject.put("createduser", createduser)
+        jsonObject.put("modifieduser", modifieduser)
         return jsonObject
     }
 
-//    String formName
-//    String formButtonName
-//    String configAllowed
-//    long entityType
-//    long entityTypeId
-//    long createdUser
-//    long modifiedUser
 
 
     FormMaster save(JSONObject jsonObject) {
         FormMaster formMaster = new FormMaster()
-        formMaster.formName = jsonObject.get("formName")
-        formMaster.formButtonName = jsonObject.get("formButtonName")
-        formMaster.configAllowed = jsonObject.get("configAllowed")
-        formMaster.entityType = Long.parseLong(jsonObject.get("entityType").toString())
+        formMaster.formName = jsonObject.get("formName").toString()
+        formMaster.formButtonName = jsonObject.get("formButtonName").toString()
+        formMaster.configAllowed = jsonObject.get("configAllowed").toString()
+        formMaster.entityId = Long.parseLong(jsonObject.get("entityId").toString())
         formMaster.entityTypeId = Long.parseLong(jsonObject.get("entityTypeId").toString())
         formMaster.createdUser = Long.parseLong(jsonObject.get("createdUser").toString())
         formMaster.modifiedUser = Long.parseLong(jsonObject.get("modifiedUser").toString())
@@ -106,7 +127,7 @@ class FormMasterService {
                 formMaster.formName = jsonObject.get("formName").toString()
                 formMaster.formButtonName = jsonObject.get("formButtonName").toString()
                 formMaster.configAllowed = jsonObject.get("configAllowed").toString()
-                formMaster.entityType = Long.parseLong(jsonObject.get("entityType").toString())
+                formMaster.entityId = Long.parseLong(jsonObject.get("entityId").toString())
                 formMaster.entityTypeId = Long.parseLong(jsonObject.get("entityTypeId").toString())
                 formMaster.createdUser = Long.parseLong(jsonObject.get("createdUser").toString())
                 formMaster.modifiedUser = Long.parseLong(jsonObject.get("modifiedUser").toString())
@@ -133,6 +154,70 @@ class FormMasterService {
             }
         } else {
             throw new BadRequestException()
+        }
+    }
+
+    def showFormByEntityId(String id)
+    {
+        try
+        {
+            def url = "http://localhost/api/v1.0/entity/entityregister/"+id
+            URL apiUrl = new URL(url)
+            def entity = new JsonSlurper().parseText(apiUrl.text)
+            return entity
+        }
+        catch (Exception ex)
+        {
+            System.err.println('Service :CountryMaster , action :  show  , Ex:' + ex)
+            log.error('Service :CountryMaster , action :  show  , Ex:' + ex)
+        }
+    }
+
+    def showFormByEntityTypeId(String id)
+    {
+        try
+        {
+            def url = "http://localhost/api/v1.0/entity/entitytypemaster/"+id
+            URL apiUrl = new URL(url)
+            def entity = new JsonSlurper().parseText(apiUrl.text)
+            return entity
+        }
+        catch (Exception ex)
+        {
+            System.err.println('Service :CountryMaster , action :  show  , Ex:' + ex)
+            log.error('Service :CountryMaster , action :  show  , Ex:' + ex)
+        }
+    }
+
+    def showFormBycreatedUser(String id)
+    {
+        try
+        {
+            def url = "http://localhost/api/v1.0/entity/userregister/"+id
+            URL apiUrl = new URL(url)
+            def entity = new JsonSlurper().parseText(apiUrl.text)
+            return entity
+        }
+        catch (Exception ex)
+        {
+            System.err.println('Service :CountryMaster , action :  show  , Ex:' + ex)
+            log.error('Service :CountryMaster , action :  show  , Ex:' + ex)
+        }
+    }
+
+    def showFormBymodifiedUser(String id)
+    {
+        try
+        {
+            def url = "http://localhost/api/v1.0/entity/userregister/"+id
+            URL apiUrl = new URL(url)
+            def entity = new JsonSlurper().parseText(apiUrl.text)
+            return entity
+        }
+        catch (Exception ex)
+        {
+            System.err.println('Service :CountryMaster , action :  show  , Ex:' + ex)
+            log.error('Service :CountryMaster , action :  show  , Ex:' + ex)
         }
     }
 }

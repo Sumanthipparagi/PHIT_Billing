@@ -1,6 +1,7 @@
 package phitb_system
 
 import grails.gorm.transactions.Transactional
+import groovy.json.JsonSlurper
 import org.grails.web.json.JSONObject
 import phbit_system.Exception.BadRequestException
 import phbit_system.Exception.ResourceNotFoundException
@@ -52,8 +53,8 @@ class CityMasterService {
         Integer offset = start ? Integer.parseInt(start.toString()) : 0
         Integer max = length ? Integer.parseInt(length.toString()) : 100
 
-        def dayMasterCriteria = CityMaster.createCriteria()
-        def dayMasterArrayList = dayMasterCriteria.list(max: max, offset: offset) {
+        def cityMasterCriteria = CityMaster.createCriteria()
+        def cityMasterArrayList = cityMasterCriteria.list(max: max, offset: offset) {
             or {
                 if (searchTerm != "") {
                     ilike('name', '%' + searchTerm + '%')
@@ -66,12 +67,20 @@ class CityMasterService {
             order(orderColumn, orderDir)
         }
 
-        def recordsTotal = dayMasterArrayList.totalCount
+        def names = []
+        cityMasterArrayList.each {
+            println(it.entityId)
+            def apires = showCityByEntityId(it.entityId.toString())
+            names.push(apires)
+        }
+
+        def recordsTotal = cityMasterArrayList.totalCount
         JSONObject jsonObject = new JSONObject()
         jsonObject.put("draw", paramsJsonObject.draw)
         jsonObject.put("recordsTotal", recordsTotal)
         jsonObject.put("recordsFiltered", recordsTotal)
-        jsonObject.put("data", dayMasterArrayList)
+        jsonObject.put("data", cityMasterArrayList)
+        jsonObject.put("names", names)
         return jsonObject
     }
 
@@ -79,6 +88,7 @@ class CityMasterService {
         CityMaster cityMaster = new CityMaster()
         cityMaster.name = jsonObject.get("name")
         cityMaster.state = StateMaster.findById(Long.parseLong(jsonObject.get("stateId").toString()))
+        cityMaster.entityId = Long.parseLong(jsonObject.get("entityId").toString())
         cityMaster.save(flush: true)
         if (!cityMaster.hasErrors())
             return cityMaster
@@ -93,6 +103,7 @@ class CityMasterService {
                 cityMaster.isUpdatable = true
                 cityMaster.name = jsonObject.get("name")
                 cityMaster.state = StateMaster.findById(Long.parseLong(jsonObject.get("stateId").toString()))
+                cityMaster.entityId = Long.parseLong(jsonObject.get("entityId").toString())
                 cityMaster.save(flush: true)
                 if (!cityMaster.hasErrors())
                     return cityMaster
@@ -116,6 +127,22 @@ class CityMasterService {
             }
         } else {
             throw new BadRequestException()
+        }
+    }
+
+    def showCityByEntityId(String id)
+    {
+        try
+        {
+            def url = "http://localhost/api/v1.0/entity/entityregister/"+id
+            URL apiUrl = new URL(url)
+            def entity = new JsonSlurper().parseText(apiUrl.text)
+            return entity
+        }
+        catch (Exception ex)
+        {
+            System.err.println('Service :CityMaster , action :  showCityByEntityId  , Ex:' + ex)
+            log.error('Service :CityMaster , action :  showCityByEntityId  , Ex:' + ex)
         }
     }
 }

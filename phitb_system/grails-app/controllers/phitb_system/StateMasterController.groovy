@@ -21,7 +21,9 @@ class StateMasterController {
     def index() {
 
         try {
-            respond stateMasterService.getAll(params.limit, params.offset, params.query)
+            respond stateMasterService.getAll(params.limit, params.offset, params.query),[deep:true];
+
+
         }
         catch (Exception ex) {
             System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)

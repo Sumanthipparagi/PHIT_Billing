@@ -5,6 +5,8 @@ import groovy.json.JsonSlurper
 import org.grails.web.json.JSONObject
 import phbit_system.Exception.BadRequestException
 import phbit_system.Exception.ResourceNotFoundException
+import grails.rest.*
+
 
 @Transactional
 class StateMasterService
@@ -18,6 +20,7 @@ class StateMasterService
 
         if (!query)
         {
+
             return StateMaster.findAll([sort: 'id', max: l, offset: o, order: 'desc'])
         }
         else
@@ -105,6 +108,7 @@ class StateMasterService
         CountryMaster countryMaster = CountryMaster.findById(Long.parseLong(jsonObject.get("countryId").toString()))
         stateMaster.zone = zoneMaster
         stateMaster.country = countryMaster
+        stateMaster.entityId = Long.parseLong(jsonObject.get("entityId").toString())
         stateMaster.save(flush: true)
         if (!stateMaster.hasErrors())
         {
@@ -125,8 +129,11 @@ class StateMasterService
             {
                 stateMaster.isUpdatable = true
                 stateMaster.name = jsonObject.get("name")
-                stateMaster.zone = ZoneMaster.findById(Long.parseLong(jsonObject.get("zoneId").toString()))
-                stateMaster.country = CountryMaster.findById(Long.parseLong(jsonObject.get("countryId").toString()))
+                ZoneMaster zoneMaster = ZoneMaster.findById(Long.parseLong(jsonObject.get("zoneId").toString()))
+                CountryMaster countryMaster = CountryMaster.findById(Long.parseLong(jsonObject.get("countryId").toString()))
+                stateMaster.zone = zoneMaster
+                stateMaster.country = countryMaster
+                stateMaster.entityId = Long.parseLong(jsonObject.get("entityId").toString())
                 stateMaster.save(flush: true)
                 if (!stateMaster.hasErrors())
                 {

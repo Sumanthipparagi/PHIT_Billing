@@ -33,8 +33,37 @@ class UrlMappings {
             action = [GET: 'index', POST: 'save']
         }
         "/state/datatable"(controller: "state", action: 'dataTable')
+        "/state/update/$id"(controller: "state",action:"update")
+        "/state/delete/$id"(controller: "state",action:"delete")
+
+        /*<-------------------------------------------City ------------------------------------------------->*/
+
+        "/city"(controller: "city") {
+            action = [GET: 'index', POST: 'save']
+        }
+        "/city/datatable"(controller: "city", action: 'dataTable')
+        "/city/update/$id"(controller: "city",action:"update")
+        "/city/delete/$id"(controller: "city",action:"delete")
 
 
 
+        /*<-------------------------------------------Country ------------------------------------------------->*/
+
+        "/country"(controller: "country") {
+            action = [GET: 'index', POST: 'save']
+        }
+        "/country/datatable"(controller: "country", action: 'dataTable')
+        "/country/update/$id"(controller: "country",action:"update")
+        "/country/delete/$id"(controller: "country",action:"delete")
+
+
+        /*<-------------------------------------------Form Master ------------------------------------------------->*/
+
+        "/form"(controller: "form") {
+            action = [GET: 'index', POST: 'save']
+        }
+        "/form/datatable"(controller: "form", action: 'dataTable')
+        "/form/update/$id"(controller: "form",action:"update")
+        "/form/delete/$id"(controller: "form",action:"delete")
     }
 }
