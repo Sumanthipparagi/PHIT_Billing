@@ -3,6 +3,7 @@ package system
 import groovy.json.JsonSlurper
 import org.grails.web.json.JSONArray
 import org.grails.web.json.JSONObject
+import phitb_ui.Links
 import phitb_ui.SystemService
 
 class CountryController {
@@ -26,7 +27,7 @@ class CountryController {
     {
         try
         {
-            def entityurl = "http://localhost/api/v1.0/entity/entityregister"
+            def entityurl = Links.PHITB_SYSTEM_API+Links.ENTITY_REGISTER_SHOW
             URL apiUrl = new URL(entityurl)
             def entity = new JsonSlurper().parseText(apiUrl.text)
             ArrayList<String> stateArrayList = new StateController().show() as ArrayList<String>

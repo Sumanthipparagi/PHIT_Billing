@@ -21,86 +21,86 @@ class UrlMappings
         group "/api/v1.0", {
 
             //Account register
-            "/entity/accountregister(.$format)?"(controller: 'accountRegister') {
+            "/accountregister(.$format)?"(controller: 'accountRegister') {
                 action = [GET: 'index', POST:
                         'save']
             }
-            "/entity/accountregister/datatable(.$format)?"(controller: 'accountRegister') {action = [GET: 'dataTable']}
-            "/entity/accountregister/$id(.$format)?"(controller: 'accountRegister') {
+            "/accountregister/datatable(.$format)?"(controller: 'accountRegister') {action = [GET: 'dataTable']}
+            "/accountregister/$id(.$format)?"(controller: 'accountRegister') {
                 action = [GET: 'show', PUT: 'update', DELETE:
                         'delete']
             }
 
 
             //Auth register
-            "/entity/authregister(.$format)?"(controller: 'authRegister') {action = [GET: 'index', POST: 'save']}
-            "/entity/authregister/datatable(.$format)?"(controller: 'authRegister') {action = [GET: 'dataTable']}
-            "/entity/authregister/$id(.$format)?"(controller: 'authRegister') {
+            "/authregister(.$format)?"(controller: 'authRegister') {action = [GET: 'index', POST: 'save']}
+            "/authregister/datatable(.$format)?"(controller: 'authRegister') {action = [GET: 'dataTable']}
+            "/authregister/$id(.$format)?"(controller: 'authRegister') {
                 action = [GET: 'show', PUT: 'update', DELETE:
                         'delete']
             }
 
             //Customer Group register
-            "/entity/customergroupregister(.$format)?"(controller: 'customerGroupRegister') {
+            "/customergroupregister(.$format)?"(controller: 'customerGroupRegister') {
                 action = [GET: 'index', POST:
                         'save']
             }
-            "/entity/customergroupregister/datatable(.$format)?"(controller: 'customerGroupRegister') {action = [GET: 'dataTable']}
-            "/entity/customergroupregister/$id(.$format)?"(controller: 'customerGroupRegister') {
+            "/customergroupregister/datatable(.$format)?"(controller: 'customerGroupRegister') {action = [GET: 'dataTable']}
+            "/customergroupregister/$id(.$format)?"(controller: 'customerGroupRegister') {
                 action = [GET: 'show', PUT: 'update', DELETE:
                         'delete']
             }
-            "/entity/customergroupregisterbyentity/$id(.$format)?"(controller: 'customerGroupRegister') {
+            "/customergroupregisterbyentity/$id(.$format)?"(controller: 'customerGroupRegister') {
                 action = [GET: 'getAllByEntityId']
             }
 
             //Day End Master
-            "/entity/dayendmaster(.$format)?"(controller: 'dayEndMaster') {
+            "/dayendmaster(.$format)?"(controller: 'dayEndMaster') {
                 action = [GET: 'index', POST:
                         'save']
             }
-            "/entity/dayendmaster/datatable(.$format)?"(controller: 'dayEndMaster') {action = [GET: 'dataTable']}
-            "/entity/dayendmaster/$id(.$format)?"(controller: 'dayEndMaster') {
+            "/dayendmaster/datatable(.$format)?"(controller: 'dayEndMaster') {action = [GET: 'dataTable']}
+            "/dayendmaster/$id(.$format)?"(controller: 'dayEndMaster') {
                 action = [GET: 'show', PUT: 'update', DELETE:
                         'delete']
             }
-            "/entity/dayendmasterbyentity/$id(.$format)?"(controller: 'dayEndMaster') {
+            "/dayendmasterbyentity/$id(.$format)?"(controller: 'dayEndMaster') {
                 action = [GET: 'getAllByEntityId']
             }
 
             //Department Master
-            "/entity/departmentmaster(.$format)?"(controller: 'departmentMaster') {
+            "/departmentmaster(.$format)?"(controller: 'departmentMaster') {
                 action = [GET: 'index', POST:
                         'save']
             }
-            "/entity/departmentmaster/datatable(.$format)?"(controller: 'departmentMaster') {action = [GET: 'dataTable']}
-            "/entity/departmentmaster/$id(.$format)?"(controller: 'departmentMaster') {
+            "/departmentmaster/datatable(.$format)?"(controller: 'departmentMaster') {action = [GET: 'dataTable']}
+            "/departmentmaster/$id(.$format)?"(controller: 'departmentMaster') {
                 action = [GET: 'show', PUT: 'update', DELETE:
                         'delete']
             }
 
 
             //Entity register
-            "/entity/entityregister(.$format)?"(controller: 'entityRegister') {
+            "/entityregister(.$format)?"(controller: 'entityRegister') {
                 action = [GET: 'index', POST:
                         'save']
             }
-            "/entity/entityregister/datatable(.$format)?"(controller: 'entityRegister') {action = [GET: 'dataTable']}
-            "/entity/entityregister/$id(.$format)?"(controller: 'entityRegister') {
+            "/entityregister/datatable(.$format)?"(controller: 'entityRegister') {action = [GET: 'dataTable']}
+            "/entityregister/$id(.$format)?"(controller: 'entityRegister') {
                 action = [GET: 'show', PUT: 'update', DELETE: 'delete']
             }
-            "/entity/entityregisterbyentitytype/$id(.$format)?"(controller: 'entityRegister') {
+            "/entityregisterbyentitytype/$id(.$format)?"(controller: 'entityRegister') {
                 action = [GET: 'getAllByEntityTypeId']
             }
 
 
             //Entity Type Master
-            "/entity/entitytypemaster(.$format)?"(controller: 'entityTypeMaster') {
+            "/entitytypemaster(.$format)?"(controller: 'entityTypeMaster') {
                 action = [GET: 'index', POST:
                         'save']
             }
-            "/entity/entitytypemaster/datatable(.$format)?"(controller: 'entityTypeMaster') {action = [GET: 'dataTable']}
-            "/entity/entitytypemaster/$id(.$format)?"(controller: 'entityTypeMaster') {
+            "/entitytypemaster/datatable(.$format)?"(controller: 'entityTypeMaster') {action = [GET: 'dataTable']}
+            "/entitytypemaster/$id(.$format)?"(controller: 'entityTypeMaster') {
                 action = [GET: 'show', PUT: 'update', DELETE:
                         'delete']
             }
@@ -109,178 +109,179 @@ class UrlMappings
 
 
             //Financial Year Master
-            "/entity/financialyearmaster(.$format)?"(controller: 'financialYearMaster') {
+            "/financialyearmaster(.$format)?"(controller: 'financialYearMaster') {
                 action = [GET: 'index', POST:
                         'save']
             }
-            "/entity/financialyearmaster/datatable(.$format)?"(controller: 'financialYearMaster') {action = [GET: 'dataTable']}
-            "/entity/financialyearmaster/$id(.$format)?"(controller: 'financialYearMaster') {
+            "/financialyearmaster/datatable(.$format)?"(controller: 'financialYearMaster') {action = [GET:
+                                                                                                                'dataTable']}
+            "/financialyearmaster/$id(.$format)?"(controller: 'financialYearMaster') {
                 action = [GET: 'show', PUT: 'update', DELETE:
                         'delete']
             }
-            "/entity/financialyearmasterbyentity/$id(.$format)?"(controller: 'financialYearMaster') {
+            "/financialyearmasterbyentity/$id(.$format)?"(controller: 'financialYearMaster') {
                 action = [GET: 'getAllByEntityId']
             }
 
             //Region Register
-            "/entity/regionregister(.$format)?"(controller: 'regionRegister') {
+            "/regionregister(.$format)?"(controller: 'regionRegister') {
                 action = [GET: 'index', POST:
                         'save']
             }
-            "/entity/regionregister/datatable(.$format)?"(controller: 'regionRegister') {action = [GET: 'dataTable']}
-            "/entity/regionregister/$id(.$format)?"(controller: 'regionRegister') {
+            "/regionregister/datatable(.$format)?"(controller: 'regionRegister') {action = [GET: 'dataTable']}
+            "/regionregister/$id(.$format)?"(controller: 'regionRegister') {
                 action = [GET: 'show', PUT: 'update', DELETE:
                         'delete']
             }
-            "/entity/regionregisterbyentity/$id(.$format)?"(controller: 'regionRegister') {
+            "/regionregisterbyentity/$id(.$format)?"(controller: 'regionRegister') {
                 action = [GET: 'getAllByEntityId']
             }
 
             //Role Form Mapping
-            "/entity/roleformmapping(.$format)?"(controller: 'roleFormMapping') {
+            "/roleformmapping(.$format)?"(controller: 'roleFormMapping') {
                 action = [GET: 'index', POST:
                         'save']
             }
-            "/entity/roleformmapping/datatable(.$format)?"(controller: 'roleFormMapping') {action = [GET: 'dataTable']}
-            "/entity/roleformmapping/$id(.$format)?"(controller: 'roleFormMapping') {
+            "/roleformmapping/datatable(.$format)?"(controller: 'roleFormMapping') {action = [GET: 'dataTable']}
+            "/roleformmapping/$id(.$format)?"(controller: 'roleFormMapping') {
                 action = [GET: 'show', PUT: 'update', DELETE:
                         'delete']
             }
 
             //Role Master
-            "/entity/rolemaster(.$format)?"(controller: 'roleMaster') {
+            "/rolemaster(.$format)?"(controller: 'roleMaster') {
                 action = [GET: 'index', POST:
                         'save']
             }
-            "/entity/rolemaster/datatable(.$format)?"(controller: 'roleMaster') {action = [GET: 'dataTable']}
-            "/entity/rolemaster/$id(.$format)?"(controller: 'roleMaster') {
+            "/rolemaster/datatable(.$format)?"(controller: 'roleMaster') {action = [GET: 'dataTable']}
+            "/rolemaster/$id(.$format)?"(controller: 'roleMaster') {
                 action = [GET: 'show', PUT: 'update', DELETE:
                         'delete']
             }
-            "/entity/rolemasterbyentity/$id(.$format)?"(controller: 'roleMaster') {
+            "/rolemasterbyentity/$id(.$format)?"(controller: 'roleMaster') {
                 action = [GET: 'getAllByEntityId']
             }
 
 
             //Route register Controller
-            "/entity/routeregister(.$format)?"(controller: 'routeRegister') {
+            "/routeregister(.$format)?"(controller: 'routeRegister') {
                 action = [GET: 'index', POST:
                         'save']
             }
-            "/entity/routeregister/datatable(.$format)?"(controller: 'routeRegister') {action = [GET: 'dataTable']}
-            "/entity/routeregister/$id(.$format)?"(controller: 'routeRegister') {
+            "/routeregister/datatable(.$format)?"(controller: 'routeRegister') {action = [GET: 'dataTable']}
+            "/routeregister/$id(.$format)?"(controller: 'routeRegister') {
                 action = [GET: 'show', PUT: 'update', DELETE:
                         'delete']
             }
-            "/entity/routeregisterbyentity/$id(.$format)?"(controller: 'routeRegister') {
+            "/routeregisterbyentity/$id(.$format)?"(controller: 'routeRegister') {
                 action = [GET: 'getAllByEntityId']
             }
 
             //Rule Master Controller
-            "/entity/rulemaster(.$format)?"(controller: 'ruleMaster') {
+            "/rulemaster(.$format)?"(controller: 'ruleMaster') {
                 action = [GET: 'index', POST:
                         'save']
             }
-            "/entity/rulemaster/datatable(.$format)?"(controller: 'ruleMaster') {action = [GET: 'dataTable']}
-            "/entity/rulemaster/$id(.$format)?"(controller: 'ruleMaster') {
+            "/rulemaster/datatable(.$format)?"(controller: 'ruleMaster') {action = [GET: 'dataTable']}
+            "/rulemaster/$id(.$format)?"(controller: 'ruleMaster') {
                 action = [GET: 'show', PUT: 'update', DELETE:
                         'delete']
             }
-            "/entity/rulemasterbyentity/$id(.$format)?"(controller: 'ruleMaster') {
+            "/rulemasterbyentity/$id(.$format)?"(controller: 'ruleMaster') {
                 action = [GET: 'getAllByEntityId']
             }
 
             //Series Master
-            "/entity/seriesmaster(.$format)?"(controller: 'seriesMaster') {
+            "/seriesmaster(.$format)?"(controller: 'seriesMaster') {
                 action = [GET: 'index', POST:
                         'save']
             }
-            "/entity/seriesmaster/datatable(.$format)?"(controller: 'seriesMaster') {action = [GET: 'dataTable']}
-            "/entity/seriesmaster/$id(.$format)?"(controller: 'seriesMaster') {
+            "/seriesmaster/datatable(.$format)?"(controller: 'seriesMaster') {action = [GET: 'dataTable']}
+            "/seriesmaster/$id(.$format)?"(controller: 'seriesMaster') {
                 action = [GET: 'show', PUT: 'update', DELETE:
                         'delete']
             }
-            "/entity/seriesmasterbyentity/$id(.$format)?"(controller: 'seriesMaster') {
+            "/seriesmasterbyentity/$id(.$format)?"(controller: 'seriesMaster') {
                 action = [GET: 'getAllByEntityId']
             }
 
 
             //Tax Register
-            "/entity/taxregister(.$format)?"(controller: 'taxRegister') {
+            "/taxregister(.$format)?"(controller: 'taxRegister') {
                 action = [GET: 'index', POST:
                         'save']
             }
-            "/entity/taxregister/datatable(.$format)?"(controller: 'taxRegister') {action = [GET: 'dataTable']}
-            "/entity/taxregister/$id(.$format)?"(controller: 'taxRegister') {
+            "/taxregister/datatable(.$format)?"(controller: 'taxRegister') {action = [GET: 'dataTable']}
+            "/taxregister/$id(.$format)?"(controller: 'taxRegister') {
                 action = [GET: 'show', PUT: 'update', DELETE:
                         'delete']
             }
-            "/entity/taxregisterbyentity/$id(.$format)?"(controller: 'taxRegister') {
+            "/taxregisterbyentity/$id(.$format)?"(controller: 'taxRegister') {
                 action = [GET: 'getAllByEntityId']
             }
 
 
 
             //Terms Condition Details
-            "/entity/termconditiondetails(.$format)?"(controller: 'termsConditionDetails') {
+            "/termconditiondetails(.$format)?"(controller: 'termsConditionDetails') {
                 action = [GET: 'index', POST:
                         'save']
             }
-            "/entity/termconditiondetails/datatable(.$format)?"(controller: 'termsConditionDetails') {action = [GET: 'dataTable']}
-            "/entity/termconditiondetails/$id(.$format)?"(controller: 'termsConditionDetails') {
+            "/termconditiondetails/datatable(.$format)?"(controller: 'termsConditionDetails') {action = [GET: 'dataTable']}
+            "/termconditiondetails/$id(.$format)?"(controller: 'termsConditionDetails') {
                 action = [GET: 'show', PUT: 'update', DELETE:
                         'delete']
             }
-            "/entity/termconditiondetailsbyentity/$id(.$format)?"(controller: 'termsConditionDetails') {
+            "/termconditiondetailsbyentity/$id(.$format)?"(controller: 'termsConditionDetails') {
                 action = [GET: 'getAllByEntityId']
             }
 
 
             //Territory Register
-            "/entity/territoryregister(.$format)?"(controller: 'territoryRegister') {
+            "/territoryregister(.$format)?"(controller: 'territoryRegister') {
                 action = [GET: 'index', POST:
                         'save']
             }
-            "/entity/territoryregister/datatable(.$format)?"(controller: 'territoryRegister') {action = [GET: 'dataTable']}
-            "/entity/territoryregister/$id(.$format)?"(controller: 'territoryRegister') {
+            "/territoryregister/datatable(.$format)?"(controller: 'territoryRegister') {action = [GET: 'dataTable']}
+            "/territoryregister/$id(.$format)?"(controller: 'territoryRegister') {
                 action = [GET: 'show', PUT: 'update', DELETE:
                         'delete']
             }
 
             //Transaction Type Master
-            "/entity/transactiontype(.$format)?"(controller: 'transactionTypeMaster') {
+            "/transactiontype(.$format)?"(controller: 'transactionTypeMaster') {
                 action = [GET: 'index', POST:
                         'save']
             }
-            "/entity/transactiontype/datatable(.$format)?"(controller: 'transactionTypeMaster') {action = [GET: 'dataTable']}
-            "/entity/transactiontype/$id(.$format)?"(controller: 'transactionTypeMaster') {
+            "/transactiontype/datatable(.$format)?"(controller: 'transactionTypeMaster') {action = [GET: 'dataTable']}
+            "/transactiontype/$id(.$format)?"(controller: 'transactionTypeMaster') {
                 action = [GET: 'show', PUT: 'update', DELETE:
                         'delete']
             }
 
             //User Log Info
-            "/entity/userloginfo(.$format)?"(controller: 'userLogInfo') {
+            "/userloginfo(.$format)?"(controller: 'userLogInfo') {
                 action = [GET: 'index', POST:
                         'save']
             }
-            "/entity/userloginfo/datatable(.$format)?"(controller: 'userLogInfo') {action = [GET: 'dataTable']}
-            "/entity/userloginfo/$id(.$format)?"(controller: 'userLogInfo') {
+            "/userloginfo/datatable(.$format)?"(controller: 'userLogInfo') {action = [GET: 'dataTable']}
+            "/userloginfo/$id(.$format)?"(controller: 'userLogInfo') {
                 action = [GET: 'show', PUT: 'update', DELETE:
                         'delete']
             }
 
 
             //User Register
-            "/entity/userregister(.$format)?"(controller: 'userRegister') {
+            "/userregister(.$format)?"(controller: 'userRegister') {
                 action = [GET: 'index', POST:
                         'save']
             }
-            "/entity/userregister/datatable(.$format)?"(controller: 'userRegister') {action = [GET: 'dataTable']}
-            "/entity/userregister/$id(.$format)?"(controller: 'userRegister') {
+            "/userregister/datatable(.$format)?"(controller: 'userRegister') {action = [GET: 'dataTable']}
+            "/userregister/$id(.$format)?"(controller: 'userRegister') {
                 action = [GET: 'show', PUT: 'update', DELETE:
                         'delete']
             }
-            "/entity/userregisterbydivision/$id(.$format)?"(controller: 'userRegister') {
+            "/userregisterbydivision/$id(.$format)?"(controller: 'userRegister') {
                 action = [GET: 'getAllByDivision']
             }
 

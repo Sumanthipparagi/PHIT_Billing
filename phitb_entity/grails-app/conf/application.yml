@@ -26,7 +26,8 @@ endpoints:
   jmx:
     enabled: true
 server:
-  port: 8082
+  port: 8088
+  contextPath: "/entity"
 ---
 grails:
   mime:

@@ -25,7 +25,9 @@ endpoints:
     enabled: false
     jmx:
         enabled: true
-
+server:
+    port: 8084
+    contextPath: "/purchase"
 ---
 grails:
     mime:

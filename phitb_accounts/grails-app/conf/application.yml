@@ -25,7 +25,9 @@ endpoints:
     enabled: false
     jmx:
         enabled: true
-
+server:
+    port: 8089
+    contextPath: "/account"
 ---
 grails:
     mime:

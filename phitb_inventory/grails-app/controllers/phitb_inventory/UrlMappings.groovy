@@ -19,23 +19,23 @@ class UrlMappings {
 
         group "/api/v1.0", {
             //Stock Activity
-            "/inventory/stockactivity(.$format)?"(controller: 'stockActivity') { action = [GET: 'index', POST: 'save'] }
-            "/inventory/stockactivity/datatable(.$format)?"(controller: 'stockActivity') { action = [GET: 'dataTable'] }
-            "/inventory/stockactivity/$id(.$format)?"(controller: 'stockActivity') { action = [GET: 'show', PUT: 'update', DELETE: 'delete'] }
+            "/stockactivity(.$format)?"(controller: 'stockActivity') { action = [GET: 'index', POST: 'save'] }
+            "/stockactivity/datatable(.$format)?"(controller: 'stockActivity') { action = [GET: 'dataTable'] }
+            "/stockactivity/$id(.$format)?"(controller: 'stockActivity') { action = [GET: 'show', PUT: 'update', DELETE: 'delete'] }
 
             //Stock Book
-            "/inventory/stockbook(.$format)?"(controller: 'stockBook') { action = [GET: 'index', POST: 'save'] }
-            "/inventory/stockbook/datatable(.$format)?"(controller: 'stockBook') { action = [GET: 'dataTable'] }
-            "/inventory/stockbook/$id(.$format)?"(controller: 'stockBook') { action = [GET: 'show', PUT: 'update', DELETE: 'delete'] }
-            "/inventory/stockbookbyentity/$id(.$format)?"(controller: 'stockBook') { action = [GET: 'getByEntityId'] }
-            "/inventory/stockbookbyproduct/$id(.$format)?"(controller: 'stockBook') { action = [GET: 'getByProductId'] }
+            "/stockbook(.$format)?"(controller: 'stockBook') { action = [GET: 'index', POST: 'save'] }
+            "/stockbook/datatable(.$format)?"(controller: 'stockBook') { action = [GET: 'dataTable'] }
+            "/stockbook/$id(.$format)?"(controller: 'stockBook') { action = [GET: 'show', PUT: 'update', DELETE: 'delete'] }
+            "/stockbookbyentity/$id(.$format)?"(controller: 'stockBook') { action = [GET: 'getByEntityId'] }
+            "/stockbookbyproduct/$id(.$format)?"(controller: 'stockBook') { action = [GET: 'getByProductId'] }
 
             //Temp Stock Book
-            "/inventory/tempstockbook(.$format)?"(controller: 'tempStockBook') { action = [GET: 'index', POST: 'save'] }
-            "/inventory/tempstockbook/datatable(.$format)?"(controller: 'tempStockBook') { action = [GET: 'dataTable'] }
-            "/inventory/tempstockbook/$id(.$format)?"(controller: 'tempStockBook') { action = [GET: 'show', PUT: 'update', DELETE: 'delete'] }
-            "/inventory/tempstockbookbyentity/$id(.$format)?"(controller: 'tempStockBook') { action = [GET: 'getByEntityId'] }
-            "/inventory/tempstockbookbyproduct/$id(.$format)?"(controller: 'tempStockBook') { action = [GET: 'getByProductId'] }
+            "/tempstockbook(.$format)?"(controller: 'tempStockBook') { action = [GET: 'index', POST: 'save'] }
+            "/tempstockbook/datatable(.$format)?"(controller: 'tempStockBook') { action = [GET: 'dataTable'] }
+            "/tempstockbook/$id(.$format)?"(controller: 'tempStockBook') { action = [GET: 'show', PUT: 'update', DELETE: 'delete'] }
+            "/tempstockbookbyentity/$id(.$format)?"(controller: 'tempStockBook') { action = [GET: 'getByEntityId'] }
+            "/tempstockbookbyproduct/$id(.$format)?"(controller: 'tempStockBook') { action = [GET: 'getByProductId'] }
 
 
         }

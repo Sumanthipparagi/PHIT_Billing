@@ -19,14 +19,14 @@ class UrlMappings {
 
         group "/api/v1.0", {
             //Transport Type
-            "/system/transporttype(.$format)?"(controller: 'transportType') { action = [GET: 'index', POST: 'save'] }
-            "/system/transporttype/datatable(.$format)?"(controller: 'transportType') { action = [GET: 'dataTable'] }
-            "/system/transporttype/$id(.$format)?"(controller: 'transportType') { action = [GET: 'show', PUT: 'update', DELETE: 'delete'] }
+            "/transporttype(.$format)?"(controller: 'transportType') { action = [GET: 'index', POST: 'save'] }
+            "/transporttype/datatable(.$format)?"(controller: 'transportType') { action = [GET: 'dataTable'] }
+            "/transporttype/$id(.$format)?"(controller: 'transportType') { action = [GET: 'show', PUT: 'update', DELETE: 'delete'] }
 
             //Vehicle Detail
-            "/system/vehicledetail(.$format)?"(controller: 'vehicleDetail') { action = [GET: 'index', POST: 'save'] }
-            "/system/vehicledetail/datatable(.$format)?"(controller: 'vehicleDetail') { action = [GET: 'dataTable'] }
-            "/system/vehicledetail/$id(.$format)?"(controller: 'vehicleDetail') { action = [GET: 'show', PUT: 'update', DELETE: 'delete'] }
+            "/vehicledetail(.$format)?"(controller: 'vehicleDetail') { action = [GET: 'index', POST: 'save'] }
+            "/vehicledetail/datatable(.$format)?"(controller: 'vehicleDetail') { action = [GET: 'dataTable'] }
+            "/vehicledetail/$id(.$format)?"(controller: 'vehicleDetail') { action = [GET: 'show', PUT: 'update', DELETE: 'delete'] }
 
         }
     }

@@ -23,147 +23,147 @@ class UrlMappings {
                 action = [GET: 'index', POST:
                         'save']
             }
-            "/product/batchregister/datatable(.$format)?"(controller: 'batchRegister') {action = [GET: 'dataTable']}
-            "/product/batchregister/$id(.$format)?"(controller: 'batchRegister') {
+            "/batchregister/datatable(.$format)?"(controller: 'batchRegister') {action = [GET: 'dataTable']}
+            "/batchregister/$id(.$format)?"(controller: 'batchRegister') {
                 action = [GET: 'show', PUT: 'update', DELETE:
                         'delete']
             }
-            "/product/batchregisterbyentity/$id(.$format)?"(controller: 'batchRegister') {
+            "/batchregisterbyentity/$id(.$format)?"(controller: 'batchRegister') {
                 action = [GET: 'getAllByEntityId']
             }
 
-            "/product/batchregisterbyproduct/$id(.$format)?"(controller: 'batchRegister') {
+            "/batchregisterbyproduct/$id(.$format)?"(controller: 'batchRegister') {
                 action = [GET: 'getAllByProduct']
             }
 
             //Composition Master Register
-            "/product/compositionmasterregister(.$format)?"(controller: 'compositionMaster') {
+            "/compositionmasterregister(.$format)?"(controller: 'compositionMaster') {
                 action = [GET: 'index', POST:
                         'save']
             }
-            "/product/compositionmasterregister/datatable(.$format)?"(controller: 'compositionMaster') {action = [GET: 'dataTable']}
-            "/product/compositionmasterregister/$id(.$format)?"(controller: 'compositionMaster') {
+            "/compositionmasterregister/datatable(.$format)?"(controller: 'compositionMaster') {action = [GET: 'dataTable']}
+            "/compositionmasterregister/$id(.$format)?"(controller: 'compositionMaster') {
                 action = [GET: 'show', PUT: 'update', DELETE:
                         'delete']
             }
 
             //Division
-            "/product/division(.$format)?"(controller: 'division') {
+            "/division(.$format)?"(controller: 'division') {
                 action = [GET: 'index', POST:
                         'save']
             }
-            "/product/division/datatable(.$format)?"(controller: 'division') {action = [GET: 'dataTable']}
-            "/product/division/$id(.$format)?"(controller: 'division') {
+            "/division/datatable(.$format)?"(controller: 'division') {action = [GET: 'dataTable']}
+            "/division/$id(.$format)?"(controller: 'division') {
                 action = [GET: 'show', PUT: 'update', DELETE:
                         'delete']
             }
-            "/product/divisionbyentity/$id(.$format)?"(controller: 'division') {
+            "/divisionbyentity/$id(.$format)?"(controller: 'division') {
                 action = [GET: 'getAllByEntityId']
             }
 
 
             //Division group Register
-            "/product/divisiongroupregister(.$format)?"(controller: 'divisionGroupRegister') {
+            "/divisiongroupregister(.$format)?"(controller: 'divisionGroupRegister') {
                 action = [GET: 'index', POST:
                         'save']
             }
-            "/product/divisiongroupregister/datatable(.$format)?"(controller: 'divisionGroupRegister') {action = [GET: 'dataTable']}
-            "/product/divisiongroupregister/$id(.$format)?"(controller: 'divisionGroupRegister') {
+            "/divisiongroupregister/datatable(.$format)?"(controller: 'divisionGroupRegister') {action = [GET: 'dataTable']}
+            "/divisiongroupregister/$id(.$format)?"(controller: 'divisionGroupRegister') {
                 action = [GET: 'show', PUT: 'update', DELETE:
                         'delete']
             }
-            "/product/divisiongroupregisterbyentity/$id(.$format)?"(controller: 'divisionGroupRegister') {
+            "/divisiongroupregisterbyentity/$id(.$format)?"(controller: 'divisionGroupRegister') {
                 action = [GET: 'getAllByEntityId']
             }
 
             //Product Category Master
-            "/product/productcategorymaster(.$format)?"(controller: 'productCategoryMaster') {
+            "/productcategorymaster(.$format)?"(controller: 'productCategoryMaster') {
                 action = [GET: 'index', POST:
                         'save']
             }
-            "/product/productcategorymaster/datatable(.$format)?"(controller: 'productCategoryMaster') {action = [GET: 'dataTable']}
-            "/product/productcategorymaster/$id(.$format)?"(controller: 'productCategoryMaster') {
+            "categorymaster/datatable(.$format)?"(controller: 'productCategoryMaster') {action = [GET: 'dataTable']}
+            "categorymaster/$id(.$format)?"(controller: 'productCategoryMaster') {
                 action = [GET: 'show', PUT: 'update', DELETE:
                         'delete']
             }
-            "/product/productcategorymasterbyentity/$id(.$format)?"(controller: 'productCategoryMaster') {
+            "categorymasterbyentity/$id(.$format)?"(controller: 'productCategoryMaster') {
                 action = [GET: 'getAllByEntityId']
             }
 
             //Product Class
-            "/product/productclass(.$format)?"(controller: 'productClass') {
+            "/productclass(.$format)?"(controller: 'productClass') {
                 action = [GET: 'index', POST:
                         'save']
             }
-            "/product/productclass/datatable(.$format)?"(controller: 'productClass') {action = [GET: 'dataTable']}
-            "/product/productclass/$id(.$format)?"(controller: 'productClass') {
+            "/productclass/datatable(.$format)?"(controller: 'productClass') {action = [GET: 'dataTable']}
+            "/productclass/$id(.$format)?"(controller: 'productClass') {
                 action = [GET: 'show', PUT: 'update', DELETE:
                         'delete']
             }
-            "/product/productclassbyentity/$id(.$format)?"(controller: 'productCategoryMaster') {
+            "/productclassbyentity/$id(.$format)?"(controller: 'productCategoryMaster') {
                 action = [GET: 'getAllByEntityId']
             }
 
 
             //Product Cost Range
-            "/product/productcostrange(.$format)?"(controller: 'productCostRange') {
+            "/productcostrange(.$format)?"(controller: 'productCostRange') {
                 action = [GET: 'index', POST:
                         'save']
             }
-            "/product/productcostrange/datatable(.$format)?"(controller: 'productCostRange') {action = [GET: 'dataTable']}
-            "/product/productcostrange/$id(.$format)?"(controller: 'productCostRange') {
+            "/productcostrange/datatable(.$format)?"(controller: 'productCostRange') {action = [GET: 'dataTable']}
+            "/productcostrange/$id(.$format)?"(controller: 'productCostRange') {
                 action = [GET: 'show', PUT: 'update', DELETE:
                         'delete']
             }
-            "/product/productcostrangebyentity/$id(.$format)?"(controller: 'productCostRange') {
+            "/productcostrangebyentity/$id(.$format)?"(controller: 'productCostRange') {
                 action = [GET: 'getAllByEntityId']
             }
 
 
             //Product Group Master
-            "/product/productgroupmaster(.$format)?"(controller: 'productGroupMaster') {
+            "/productgroupmaster(.$format)?"(controller: 'productGroupMaster') {
                 action = [GET: 'index', POST:
                         'save']
             }
-            "/product/productgroupmaster/datatable(.$format)?"(controller: 'productGroupMaster') {action = [GET: 'dataTable']}
-            "/product/productgroupmaster/$id(.$format)?"(controller: 'productGroupMaster') {
+            "/productgroupmaster/datatable(.$format)?"(controller: 'productGroupMaster') {action = [GET: 'dataTable']}
+            "/productgroupmaster/$id(.$format)?"(controller: 'productGroupMaster') {
                 action = [GET: 'show', PUT: 'update', DELETE:
                         'delete']
             }
-            "/product/productgroupmasterbyentity/$id(.$format)?"(controller: 'productGroupMaster') {
+            "/productgroupmasterbyentity/$id(.$format)?"(controller: 'productGroupMaster') {
                 action = [GET: 'getAllByEntityId']
             }
 
             //Product Register
-            "/product/productregister(.$format)?"(controller: 'productRegister') {
+            "/productregister(.$format)?"(controller: 'productRegister') {
                 action = [GET: 'index', POST:
                         'save']
             }
-            "/product/productregister/datatable(.$format)?"(controller: 'productRegister') {action = [GET:
+            "/productregister/datatable(.$format)?"(controller: 'productRegister') {action = [GET:
                                                                                                              'dataTable']}
-            "/product/productregister/$id(.$format)?"(controller: 'productRegister') {
+            "/productregister/$id(.$format)?"(controller: 'productRegister') {
                 action = [GET: 'show', PUT: 'update', DELETE:
                         'delete']
             }
-            "/product/productregisterbyentity/$id(.$format)?"(controller: 'productRegister') {
+            "/productregisterbyentity/$id(.$format)?"(controller: 'productRegister') {
                 action = [GET: 'getAllByEntityId']
             }
-            "/product/productregisterbydivision/$id(.$format)?"(controller: 'productRegister') {
+            "/productregisterbydivision/$id(.$format)?"(controller: 'productRegister') {
                 action = [GET: 'getAllByDivision']
             }
 
             //Product Schedule Master
-            "/product/productschdulemaster(.$format)?"(controller: 'productScheduleMaster') {
+            "/productschdulemaster(.$format)?"(controller: 'productScheduleMaster') {
                 action = [GET: 'index', POST:
                         'save']
             }
-            "/product/productschdulemaster/datatable(.$format)?"(controller: 'productScheduleMaster') {action = [GET:
+            "/productschdulemaster/datatable(.$format)?"(controller: 'productScheduleMaster') {action = [GET:
                                                                                                              'dataTable']}
-            "/product/productschdulemaster/$id(.$format)?"(controller: 'productScheduleMaster') {
+            "/productschdulemaster/$id(.$format)?"(controller: 'productScheduleMaster') {
                 action = [GET: 'show', PUT: 'update', DELETE:
                         'delete']
             }
-            "/product/productschdulemasterbyentity/$id(.$format)?"(controller: 'productScheduleMaster') {
+            "/productschdulemasterbyentity/$id(.$format)?"(controller: 'productScheduleMaster') {
                 action = [GET: 'getAllByEntityId']
             }
 
@@ -171,32 +171,32 @@ class UrlMappings {
 
 
             //Product Type Master
-            "/product/producttypemaster(.$format)?"(controller: 'productTypeMaster') {
+            "/producttypemaster(.$format)?"(controller: 'productTypeMaster') {
                 action = [GET: 'index', POST:
                         'save']
             }
-            "/product/producttypemaster/datatable(.$format)?"(controller: 'productTypeMaster') {action = [GET: 'dataTable']}
-            "/product/producttypemaster/$id(.$format)?"(controller: 'productTypeMaster') {
+            "/producttypemaster/datatable(.$format)?"(controller: 'productTypeMaster') {action = [GET: 'dataTable']}
+            "/producttypemaster/$id(.$format)?"(controller: 'productTypeMaster') {
                 action = [GET: 'show', PUT: 'update', DELETE:
                         'delete']
             }
-            "/product/producttypemasterbyentity/$id(.$format)?"(controller: 'productTypeMaster') {
+            "/producttypemasterbyentity/$id(.$format)?"(controller: 'productTypeMaster') {
                 action = [GET: 'getAllByEntityId']
             }
 
 
 
             //Unit Type Master
-            "/product/unittypemaster(.$format)?"(controller: 'unitTypeMaster') {
+            "/unittypemaster(.$format)?"(controller: 'unitTypeMaster') {
                 action = [GET: 'index', POST:
                         'save']
             }
-            "/product/unittypemaster/datatable(.$format)?"(controller: 'unitTypeMaster') {action = [GET: 'dataTable']}
-            "/product/unittypemaster/$id(.$format)?"(controller: 'unitTypeMaster') {
+            "/unittypemaster/datatable(.$format)?"(controller: 'unitTypeMaster') {action = [GET: 'dataTable']}
+            "/unittypemaster/$id(.$format)?"(controller: 'unitTypeMaster') {
                 action = [GET: 'show', PUT: 'update', DELETE:
                         'delete']
             }
-            "/product/unittypemasterbyentity/$id(.$format)?"(controller: 'unitTypeMaster') {
+            "/unittypemasterbyentity/$id(.$format)?"(controller: 'unitTypeMaster') {
                 action = [GET: 'getAllByEntityId']
             }
         }

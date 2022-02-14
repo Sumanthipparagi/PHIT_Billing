@@ -19,41 +19,41 @@ class UrlMappings {
 
         group "/api/v1.0", {
             //Purchase Bill Detail
-            "/purchase/billdetail(.$format)?"(controller: 'purchaseBillDetail') { action = [GET: 'index', POST: 'save'] }
-            "/purchase/billdetail/datatable(.$format)?"(controller: 'purchaseBillDetail') { action = [GET: 'dataTable'] }
-            "/purchase/billdetail/$id(.$format)?"(controller: 'purchaseBillDetail') { action = [GET: 'show', PUT: 'update', DELETE: 'delete'] }
+            "/billdetail(.$format)?"(controller: 'purchaseBillDetail') { action = [GET: 'index', POST: 'save'] }
+            "/billdetail/datatable(.$format)?"(controller: 'purchaseBillDetail') { action = [GET: 'dataTable'] }
+            "/billdetail/$id(.$format)?"(controller: 'purchaseBillDetail') { action = [GET: 'show', PUT: 'update', DELETE: 'delete'] }
 
             //Purchase Order
-            "/purchase/purchaseorder(.$format)?"(controller: 'purchaseOrder') { action = [GET: 'index', POST: 'save'] }
-            "/purchase/purchaseorder/datatable(.$format)?"(controller: 'purchaseOrder') { action = [GET: 'dataTable'] }
-            "/purchase/purchaseorder/$id(.$format)?"(controller: 'purchaseOrder') { action = [GET: 'show', PUT: 'update', DELETE: 'delete'] }
-            "/purchase/purchaseorderbydays/$days(.$format)?"(controller: 'purchaseOrder') { action = [GET: 'getAllByDays'] }
+            "/purchaseorder(.$format)?"(controller: 'purchaseOrder') { action = [GET: 'index', POST: 'save'] }
+            "/purchaseorder/datatable(.$format)?"(controller: 'purchaseOrder') { action = [GET: 'dataTable'] }
+            "/purchaseorder/$id(.$format)?"(controller: 'purchaseOrder') { action = [GET: 'show', PUT: 'update', DELETE: 'delete'] }
+            "/purchaseorderbydays/$days(.$format)?"(controller: 'purchaseOrder') { action = [GET: 'getAllByDays'] }
 
             //Purchase Product Detail
-            "/purchase/productdetail(.$format)?"(controller: 'purchaseProductDetail') { action = [GET: 'index', POST: 'save'] }
-            "/purchase/productdetail/datatable(.$format)?"(controller: 'purchaseProductDetail') { action = [GET: 'dataTable'] }
-            "/purchase/productdetail/$id(.$format)?"(controller: 'purchaseProductDetail') { action = [GET: 'show', PUT: 'update', DELETE: 'delete'] }
+            "/productdetail(.$format)?"(controller: 'purchaseProductDetail') { action = [GET: 'index', POST: 'save'] }
+            "/productdetail/datatable(.$format)?"(controller: 'purchaseProductDetail') { action = [GET: 'dataTable'] }
+            "/productdetail/$id(.$format)?"(controller: 'purchaseProductDetail') { action = [GET: 'show', PUT: 'update', DELETE: 'delete'] }
 
             //Purchase Return Detail
-            "/purchase/returndetail(.$format)?"(controller: 'purchaseReturnDetail') { action = [GET: 'index', POST: 'save'] }
-            "/purchase/returndetail/datatable(.$format)?"(controller: 'purchaseReturnDetail') { action = [GET: 'dataTable'] }
-            "/purchase/returndetail/$id(.$format)?"(controller: 'purchaseReturnDetail') { action = [GET: 'show', PUT: 'update', DELETE: 'delete'] }
-            "/purchase/returndetailbydays/$days(.$format)?"(controller: 'purchaseReturnDetail') { action = [GET: 'getAllByDays'] }
+            "/returndetail(.$format)?"(controller: 'purchaseReturnDetail') { action = [GET: 'index', POST: 'save'] }
+            "/returndetail/datatable(.$format)?"(controller: 'purchaseReturnDetail') { action = [GET: 'dataTable'] }
+            "/returndetail/$id(.$format)?"(controller: 'purchaseReturnDetail') { action = [GET: 'show', PUT: 'update', DELETE: 'delete'] }
+            "/returndetailbydays/$days(.$format)?"(controller: 'purchaseReturnDetail') { action = [GET: 'getAllByDays'] }
 
             //Purchase Transaction log
-            "/purchase/transactionlog(.$format)?"(controller: 'purchaseTransactionLog') { action = [GET: 'index', POST: 'save'] }
-            "/purchase/transactionlog/datatable(.$format)?"(controller: 'purchaseTransactionLog') { action = [GET: 'dataTable'] }
-            "/purchase/transactionlog/$id(.$format)?"(controller: 'purchaseTransactionLog') { action = [GET: 'show', PUT: 'update', DELETE: 'delete'] }
+            "/transactionlog(.$format)?"(controller: 'purchaseTransactionLog') { action = [GET: 'index', POST: 'save'] }
+            "/transactionlog/datatable(.$format)?"(controller: 'purchaseTransactionLog') { action = [GET: 'dataTable'] }
+            "/transactionlog/$id(.$format)?"(controller: 'purchaseTransactionLog') { action = [GET: 'show', PUT: 'update', DELETE: 'delete'] }
 
             //Purchase Transportation Detail
-            "/purchase/transportationdetail(.$format)?"(controller: 'purchaseTransportationDetail') { action = [GET: 'index', POST: 'save'] }
-            "/purchase/transportationdetail/datatable(.$format)?"(controller: 'purchaseTransportationDetail') { action = [GET: 'dataTable'] }
-            "/purchase/transportationdetail/$id(.$format)?"(controller: 'purchaseTransportationDetail') { action = [GET: 'show', PUT: 'update', DELETE: 'delete'] }
+            "/transportationdetail(.$format)?"(controller: 'purchaseTransportationDetail') { action = [GET: 'index', POST: 'save'] }
+            "/transportationdetail/datatable(.$format)?"(controller: 'purchaseTransportationDetail') { action = [GET: 'dataTable'] }
+            "/transportationdetail/$id(.$format)?"(controller: 'purchaseTransportationDetail') { action = [GET: 'show', PUT: 'update', DELETE: 'delete'] }
 
             //Temp User Log
-            "/purchase/tempuserlog(.$format)?"(controller: 'tempUserLog') { action = [GET: 'index', POST: 'save'] }
-            "/purchase/tempuserlog/datatable(.$format)?"(controller: 'tempUserLog') { action = [GET: 'dataTable'] }
-            "/purchase/tempuserlog/$id(.$format)?"(controller: 'tempUserLog') { action = [GET: 'show', PUT: 'update', DELETE: 'delete'] }
+            "/tempuserlog(.$format)?"(controller: 'tempUserLog') { action = [GET: 'index', POST: 'save'] }
+            "/tempuserlog/datatable(.$format)?"(controller: 'tempUserLog') { action = [GET: 'dataTable'] }
+            "/tempuserlog/$id(.$format)?"(controller: 'tempUserLog') { action = [GET: 'show', PUT: 'update', DELETE: 'delete'] }
 
 
         }

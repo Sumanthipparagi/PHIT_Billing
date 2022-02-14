@@ -26,6 +26,10 @@ endpoints:
     jmx:
         enabled: true
 
+server:
+    port: 8082
+    contextPath: "/shipment"
+
 ---
 grails:
     mime:

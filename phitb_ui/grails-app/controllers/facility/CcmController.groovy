@@ -1,23 +1,22 @@
-package system
+package facility
 
 import groovy.json.JsonSlurper
 import org.grails.web.json.JSONObject
 import phitb_ui.Links
 import phitb_ui.SystemService
+import system.StateController
 
-class FormController {
+class CcmController {
 
     def index()
     {
         try
         {
             def entityurl = Links.PHITB_SYSTEM_API+Links.ENTITY_REGISTER_SHOW
-            def entitytypeurl = Links.PHITB_SYSTEM_API+Links.ENTITY_TYPE_MASTER_SHOW
-            URL api1Url = new URL(entityurl)
-            URL api3Url = new URL(entitytypeurl)
-            def entity = new JsonSlurper().parseText(api1Url.text)
-            def entitytype = new JsonSlurper().parseText(api3Url.text)
-            render(view: '/system/form/formmaster',model: [entity:entity,entitytype:entitytype])
+            URL apiUrl = new URL(entityurl)
+            def entity = new JsonSlurper().parseText(apiUrl.text)
+            ArrayList<String> stateArrayList = new StateController().show() as ArrayList<String>
+            render(view: '/system/city/city',model: [entity:entity,stateArrayList:stateArrayList])
         }
         catch (Exception ex)
         {
@@ -33,7 +32,7 @@ class FormController {
         try
         {
             JSONObject jsonObject = new JSONObject(params)
-            def apiResponse = new SystemService().showForm(jsonObject)
+            def apiResponse = new SystemService().showCity(jsonObject)
             if (apiResponse.status == 200)
             {
                 JSONObject responseObject = new JSONObject(apiResponse.readEntity(String.class))
@@ -57,7 +56,7 @@ class FormController {
         try
         {
             JSONObject jsonObject = new JSONObject(params)
-            def apiResponse = new SystemService().saveForm(jsonObject)
+            def apiResponse = new SystemService().saveCity(jsonObject)
             if (apiResponse?.status == 200)
             {
                 JSONObject obj = new JSONObject(apiResponse.readEntity(String.class))
@@ -82,7 +81,7 @@ class FormController {
         {
             println(params)
             JSONObject jsonObject = new JSONObject(params)
-            def apiResponse = new SystemService().putForm(jsonObject)
+            def apiResponse = new SystemService().putCity(jsonObject)
             if (apiResponse.status == 200)
             {
                 JSONObject obj = new JSONObject(apiResponse.readEntity(String.class))
@@ -106,7 +105,7 @@ class FormController {
         try
         {
             JSONObject jsonObject = new JSONObject(params)
-            def apiResponse = new SystemService().deleteForm(jsonObject)
+            def apiResponse = new SystemService().deleteCity(jsonObject)
             if (apiResponse.status == 200)
             {
                 JSONObject data = new JSONObject()
