@@ -110,4 +110,7 @@ class EntityService {
             log.error('Service :systemService , action :  delete  , Ex:' + ex)
         }
     }
+
+
+
 }

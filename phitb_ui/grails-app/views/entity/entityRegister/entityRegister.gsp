@@ -85,7 +85,7 @@
                     <div class="header">
                         <button type="button" class="btn btn-round btn-primary m-t-15 addbtn" data-toggle="modal"
                                 data-target="#addRackModal"><font style="vertical-align: inherit;"><font
-                                style="vertical-align: inherit;">Add Rack</font></font></button>
+                                style="vertical-align: inherit;">Add Entity Regsiter</font></font></button>
                     </div>
                     <div class="body">
                         <div class="table-responsive">

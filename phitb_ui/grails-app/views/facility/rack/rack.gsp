@@ -99,8 +99,8 @@
                                     <th style="width: 20%">Genaral Info</th>
                                     <th style="width: 20%">Companies</th>
                                     <th style="width: 20%">Floor Number</th>
-                                    <th style="width: 20%">entityRegister</th>
-                                    <th style="width: 20%">entityRegister Type</th>
+                                    <th style="width: 20%">Entity</th>
+                                    <th style="width: 20%">Entity Type</th>
                                     <th style="width: 20%">Action</th>
                                 </tr>
                                 </thead>
