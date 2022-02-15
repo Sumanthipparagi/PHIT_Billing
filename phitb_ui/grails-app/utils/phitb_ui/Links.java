@@ -46,17 +46,6 @@ public class Links
     public static String CITY_MASTER_DELETE = "api/v1.0/system/city/{id}";
 
 
-    //    Entity
-    public static String ENTITY_REGISTER_SHOW = "api/v1.0/entity/entityregister";
-
-
-    //    Entity Type
-    public static String ENTITY_TYPE_MASTER_SHOW = "api/v1.0/entity/entitytypemaster";
-
-
-    //    User register
-    public static String USER_REGISTER_SHOW = "api/v1.0/entity/userregister";
-
     /*<-------------------------------------------Facility ------------------------------------------------->*/
 
 
@@ -89,4 +78,15 @@ public class Links
     public static String RACK_DELETE = "api/v1.0/facility/rack/{id}";
 
     /*<-------------------------------------------Entity ------------------------------------------------->*/
+    public static String USER_REGISTER_SHOW = "api/v1.0/entity/userregister";
+    public static String ENTITY_TYPE_MASTER_SHOW = "api/v1.0/entity/entitytypemaster";
+
+
+    //Entity Register
+    public static String ENTITY_REGISTER_SHOW = "api/v1.0/entity/entityregister";
+    public static String ENTITY_REGISTER_SAVE = "api/v1.0/entity/entityregister";
+    public static String ENTITY_REGISTER_DATATABLE = "api/v1.0/entity/entityregister/datatable";
+    public static String ENTITY_REGISTER_UPDATE = "api/v1.0/entity/entityregister/{id}";
+    public static String ENTITY_REGISTER_DELETE = "api/v1.0/entity/entityregister/{id}";
+
 }

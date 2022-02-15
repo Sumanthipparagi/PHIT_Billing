@@ -82,7 +82,7 @@
                                 <tr>
                                     <th style="width: 20%">ID</th>
                                     <th style="width: 20%">Name</th>
-                                    <th style="width: 20%">Entity</th>
+                                    <th style="width: 20%">entityRegister</th>
                                     <th style="width: 20%">Action</th>
                                 </tr>
                                 </thead>
@@ -90,7 +90,7 @@
                                 %{--                                <tr>--}%
                                 %{--                                    <th>ID</th>--}%
                                 %{--                                    <th>Name</th>--}%
-                                %{--                                    <th>Entity ID</th>--}%
+                                %{--                                    <th>entityRegister ID</th>--}%
                                 %{--                                    <th>Action</th>--}%
                                 %{--                                </tr>--}%
                                 %{--                                </tfoot>--}%
@@ -161,7 +161,7 @@
                     for (var i = 0; i < json.data.length; i++) {
                         var editbtn = '<button type="button" data-id="' + json.data[i].id +
                             '" data-name="' + json.data[i].name + '"' +
-                            '" data-entity="' + json.data[i].entityId + '"' +
+                            '" data-entityRegister="' + json.data[i].entityId + '"' +
                             ' class="editbtn btn btn-warning  editbtn" data-toggle="modal" data-target="#addCountryModal"><i class="material-icons"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">edit</font></font></i></button>'
                         var deletebtn = '<button type="button" data-id="' + json.data[i].id +
                             '" class="btn btn-danger deletebtn" data-toggle="modal" data-target=".deleteModal"><i class="material-icons"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">delete</font></font></i></button>'
@@ -231,7 +231,7 @@
     $(document).on("click", ".editbtn", function () {
         id = $(this).data('id');
         $(".name").val($(this).data('name'));
-        $("#entity").val($(this).data('entity')).change()
+        $("#entityRegister").val($(this).data('entity')).change()
         $("#state").val($(this).attr('data-state')).change()
         $(".cityTitle").text("Update City");
     });

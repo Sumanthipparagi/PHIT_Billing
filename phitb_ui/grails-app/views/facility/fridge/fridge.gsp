@@ -84,8 +84,8 @@
                                 <tr>
                                     <th style="width: 20%">ID</th>
                                     <th style="width: 20%">Fridge Name</th>
-                                    <th style="width: 20%">Entity</th>
-                                    <th style="width: 20%">Entity Type</th>
+                                    <th style="width: 20%">entityRegister</th>
+                                    <th style="width: 20%">entityRegister Type</th>
                                     <th style="width: 20%">Date of purchase</th>
                                     <th style="width: 20%">Machine Part Number</th>
                                     <th style="width: 20%">Floor</th>
@@ -96,7 +96,7 @@
                                 %{--                                <tr>--}%
                                 %{--                                    <th>ID</th>--}%
                                 %{--                                    <th>Name</th>--}%
-                                %{--                                    <th>Entity ID</th>--}%
+                                %{--                                    <th>entityRegister ID</th>--}%
                                 %{--                                    <th>Action</th>--}%
                                 %{--                                </tr>--}%
                                 %{--                                </tfoot>--}%
@@ -177,7 +177,7 @@
                         var dateOfPur = new Date(json.data[i].dateOfPurchase);
                         var editbtn = '<button type="button" data-id="' + json.data[i].id +
                             '" data-fridgeName="' + json.data[i].fridgeName + '"' +
-                            '" data-entity="' + json.data[i].entityId + '"' +
+                            '" data-entityRegister="' + json.data[i].entityId + '"' +
                             '" data-floor="' + json.data[i].floor + '"' +
                             '" data-entitytype="' + json.data[i].entityTypeId + '"' +
                             '" data-machinePartNumber="' + json.data[i].machinePartNumber + '"' +
@@ -263,8 +263,8 @@
         $(".fridgeName").val($(this).attr('data-fridgeName'));
         $(".floor").val($(this).attr('data-floor'));
         $(".machinePartNumber").val($(this).attr('data-machinePartNumber'));
-        $(".entity").val($(this).attr('data-entity'));
-        $("#entity").val($(this).data('entity')).change()
+        $(".entityRegister").val($(this).attr('data-entity'));
+        $("#entityRegister").val($(this).data('entity')).change()
         $(".entityType").val($(this).attr('data-entitytype')).change()
         $('.datetimepicker').bootstrapMaterialDatePicker('setDate',$(this).attr('data-dateOfPurchase'));
         $(".formTitle").text("Update Fridge");

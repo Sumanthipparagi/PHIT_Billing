@@ -99,8 +99,8 @@
                                     <th style="width: 20%">Genaral Info</th>
                                     <th style="width: 20%">Companies</th>
                                     <th style="width: 20%">Floor Number</th>
-                                    <th style="width: 20%">Entity</th>
-                                    <th style="width: 20%">Entity Type</th>
+                                    <th style="width: 20%">entityRegister</th>
+                                    <th style="width: 20%">entityRegister Type</th>
                                     <th style="width: 20%">Action</th>
                                 </tr>
                                 </thead>
@@ -108,7 +108,7 @@
                                 %{--                                <tr>--}%
                                 %{--                                    <th>ID</th>--}%
                                 %{--                                    <th>Name</th>--}%
-                                %{--                                    <th>Entity ID</th>--}%
+                                %{--                                    <th>entityRegister ID</th>--}%
                                 %{--                                    <th>Action</th>--}%
                                 %{--                                </tr>--}%
                                 %{--                                </tfoot>--}%
@@ -188,7 +188,7 @@
                         console.log(json)
                         var editbtn = '<button type="button" data-id="' + json.data[i].id +
                             '" data-rackName="' + json.data[i].rackName + '"' +
-                            '" data-entity="' + json.data[i].entityId + '"' +
+                            '" data-entityRegister="' + json.data[i].entityId + '"' +
                             '" data-floorNumber="' + json.data[i].floorNumber + '"' +
                             '" data-entitytype="' + json.data[i].entityTypeId + '"' +
                             '" data-generalInfo="' + json.data[i].generalInfo + '"' +
@@ -281,8 +281,8 @@
         $(".rackCodeName").val($(this).attr('data-rackCodeName'));
         $(".companies").val($(this).attr('data-companies'));
         $(".ccmEnabled").val($(this).attr('data-cccEnabled'));
-        $(".entity").val($(this).attr('data-entity'));
-        $("#entity").val($(this).attr('data-entity')).change()
+        $(".entityRegister").val($(this).attr('data-entity'));
+        $("#entityRegister").val($(this).attr('data-entity')).change()
         $(".entityType").val($(this).attr('data-entitytype')).change()
         $(".rackTitle").text("Update Rack");
     });

@@ -6,7 +6,7 @@
     <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
     <meta name="description" content="Responsive Bootstrap 4 and web Application ui kit.">
 
-    <title>:: PharmIt ::  State Master</title>
+    <title>:: PharmIt :: Entity Register</title>
     <link rel="icon" type="image/x-icon" href="${assetPath(src: '/themeassets/images/favicon.ico')}"/>
     <!-- Favicon-->
     <asset:stylesheet rel="stylesheet" src="/themeassets/plugins/bootstrap/css/bootstrap.min.css"/>
@@ -17,21 +17,19 @@
     <asset:stylesheet rel="stylesheet" href="/themeassets/css/color_skins.css"/>
     <asset:stylesheet rel="stylesheet" href="/themeassets/plugins/sweetalert/sweetalert.css"/>
     <asset:stylesheet  src="/themeassets/plugins/bootstrap-select/css/bootstrap-select.css" rel="stylesheet" />
+    <asset:stylesheet  src="/themeassets/js/pages/forms/basic-form-elements.js" rel="stylesheet" />
+    <asset:stylesheet  src="/themeassets/plugins/bootstrap-material-datetimepicker/css/bootstrap-material-datetimepicker.css" rel="stylesheet" />
 
     <style>
 
-div.dataTables_scrollBody table tbody  td {
-    border-top: none;
-    padding: 0.9px;
-    width: 5%;
-    text-align: center;
+    div.dataTables_scrollBody table tbody  td {
+        border-top: none;
+        padding: 0.9px;
+        text-align: center;
 
-}
+    }
 
-
-
-
-</style>
+    </style>
 
 </head>
 <body class="theme-black">
@@ -49,10 +47,10 @@ div.dataTables_scrollBody table tbody  td {
         <div class="block-header">
             <div class="row clearfix">
                 <div class="col-lg-5 col-md-5 col-sm-12">
-                    <h2>State Master</h2>
+                    <h2>Rack</h2>
                     <ul class="breadcrumb padding-0">
                         <li class="breadcrumb-item"><a href="index.html"><i class="zmdi zmdi-home"></i></a></li>
-                        <li class="breadcrumb-item active">State Master</li>
+                        <li class="breadcrumb-item active">Entity Register</li>
                     </ul>
                 </div>
                 <div class="col-lg-7 col-md-7 col-sm-12">
@@ -86,19 +84,24 @@ div.dataTables_scrollBody table tbody  td {
                     %{--                    </div>--}%
                     <div class="header">
                         <button type="button" class="btn btn-round btn-primary m-t-15 addbtn" data-toggle="modal"
-                                data-target="#addStateModal"><font style="vertical-align: inherit;"><font
-                                style="vertical-align: inherit;">Add State</font></font></button>
+                                data-target="#addRackModal"><font style="vertical-align: inherit;"><font
+                                style="vertical-align: inherit;">Add Rack</font></font></button>
                     </div>
                     <div class="body">
                         <div class="table-responsive">
-                            <table class="table table-bordered table-striped table-hover stateTable dataTable">
+                            <table class="table table-bordered table-striped table-hover rackTable dataTable">
                                 <thead>
                                 <tr>
-                                    <th>Name</th>
-                                    <th>Zone</th>
-                                    <th>Country</th>
-                                    <th>entityRegister</th>
-                                    <th>Action</th>
+                                    %{--                                    <th style="width: 20%">ID</th>--}%
+                                    <th style="width: 20%">Rack Name</th>
+                                    <th style="width: 20%">Rack Code Name</th>
+                                    <th style="width: 20%">CCM Enabled</th>
+                                    <th style="width: 20%">Genaral Info</th>
+                                    <th style="width: 20%">Companies</th>
+                                    <th style="width: 20%">Floor Number</th>
+                                    <th style="width: 20%">entityRegister</th>
+                                    <th style="width: 20%">entityRegister Type</th>
+                                    <th style="width: 20%">Action</th>
                                 </tr>
                                 </thead>
                                 %{--                                <tfoot>--}%
@@ -122,12 +125,15 @@ div.dataTables_scrollBody table tbody  td {
     </div>
 </section>
 
-<g:include view="controls/add-state.gsp"/>
+
+<g:include view="controls/add-rack.gsp"/>
 <g:include view="controls/delete-modal.gsp"/>
 
 <!-- Jquery Core Js -->
 <asset:javascript src="/themeassets/bundles/libscripts.bundle.js"/>
 <asset:javascript src="/themeassets/bundles/vendorscripts.bundle.js"/>
+<asset:javascript src="/themeassets/plugins/bootstrap-colorpicker/js/bootstrap-colorpicker.js"/>
+<asset:javascript src="/themeassets/plugins/multi-select/js/jquery.multi-select.js"/>
 <asset:javascript src="/themeassets/bundles/datatablescripts.bundle.js"/>
 <asset:javascript src="/themeassets/plugins/jquery-datatable/buttons/dataTables.buttons.min.js"/>
 <asset:javascript src="/themeassets/plugins/jquery-datatable/buttons/buttons.bootstrap4.min.js"/>
@@ -138,20 +144,25 @@ div.dataTables_scrollBody table tbody  td {
 <asset:javascript src="/themeassets/js/pages/tables/jquery-datatable.js"/>
 <asset:javascript src="/themeassets/js/pages/ui/dialogs.js"/>
 <asset:javascript src="/themeassets/plugins/sweetalert/sweetalert.min.js"/>
-
-
+<asset:javascript src="/themeassets/plugins/jquery-inputmask/jquery.inputmask.bundle.js"/>
+<asset:javascript src="/themeassets/plugins/momentjs/moment.js"/>
+<asset:javascript src="/themeassets/plugins/bootstrap-material-datetimepicker/js/bootstrap-material-datetimepicker.js"/>
+<asset:javascript src="/themeassets/js/pages/forms/basic-form-elements.js"/>
 
 <script>
 
-    var statetable;
+    var racktable;
     var id = null;
     $(function () {
-       stateTable();
+        rackTable();
+        // var $demoMaskedInput = $('.demo-masked-input');
+        // $demoMaskedInput.find('.datetime').inputmask('d/m/y h:m:s', { placeholder: '__/__/____ __:__:__:__', alias:
+        //         "datetime", hourFormat: '12' });
+
     });
 
-    function stateTable() {
-
-        statetable = $(".stateTable").DataTable({
+    function rackTable() {
+        racktable = $(".rackTable").DataTable({
             "order": [[0, "desc"]],
             sPaginationType: "simple_numbers",
             responsive: {
@@ -165,30 +176,38 @@ div.dataTables_scrollBody table tbody  td {
             processing: true,
             serverSide: true,
             language: {
-                searchPlaceholder: "Search State"
+                searchPlaceholder: "Search Rack"
             },
             ajax: {
                 type: 'GET',
-                url: '/state/datatable',
+                url: '/rack/datatable',
                 dataType: 'json',
                 dataSrc: function (json) {
                     var return_data = [];
                     for (var i = 0; i < json.data.length; i++) {
+                        console.log(json)
                         var editbtn = '<button type="button" data-id="' + json.data[i].id +
-                            '" data-name="' + json.data[i].name + '"' +
+                            '" data-rackName="' + json.data[i].rackName + '"' +
                             '" data-entityRegister="' + json.data[i].entityId + '"' +
-                            '" data-zoneId="' + json.data[i].zone.id + '"' +
-                            '" data-countryId="' + json.data[i].country.id + '"' +
-                            ' class="editbtn btn btn-sm btn-warning  editbtn" data-toggle="modal" data-target="#addStateModal"><i class="material-icons"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">edit</font></font></i></button>'
+                            '" data-floorNumber="' + json.data[i].floorNumber + '"' +
+                            '" data-entitytype="' + json.data[i].entityTypeId + '"' +
+                            '" data-generalInfo="' + json.data[i].generalInfo + '"' +
+                            '" data-rackCodeName="' + json.data[i].rackCodeName + '"' +
+                            '" data-companies="' + json.data[i].companies + '"' +
+                            '" data-cccEnabled="' + json.data[i].cccEnabled + '"' +
+                            ' class="editbtn btn btn-sm btn-warning  editbtn" data-toggle="modal" data-target="#addRackModal"><i class="material-icons"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">edit</font></font></i></button>'
                         var deletebtn = '<button type="button" data-id="' + json.data[i].id +
                             '" class="btn btn-sm btn-danger deletebtn" data-toggle="modal" data-target=".deleteModal"><i class="material-icons"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">delete</font></font></i></button>'
-                        console.log(json.data[i].zone.id)
                         return_data.push({
                             'id': json.data[i].id,
-                            'name': json.data[i].name,
-                            'zone': json.data[i].zone.name,
-                            'country': json.data[i].country.name,
-                            'entity': json.names[i].entityName,
+                            'rackName': json.data[i].rackName,
+                            'floorNumber': json.data[i].floorNumber,
+                            'generalInfo': json.data[i].generalInfo,
+                            'rackCodeName': json.data[i].rackCodeName,
+                            'companies': json.data[i].companies,
+                            'cccEnabled': json.data[i].cccEnabled,
+                            'entity': json.entity[i].entityName,
+                            'entitytype': json.entityType[i].name,
                             'action': editbtn + ' ' + deletebtn
                         });
                     }
@@ -196,47 +215,50 @@ div.dataTables_scrollBody table tbody  td {
                 }
             },
             columns: [
-                {'data': 'name', 'width': '5%'},
-                {'data': 'zone', 'width': '5%'},
-                {'data': 'country', 'width': '5%'},
-                {'data': 'entity', 'width': '5%'},
-                {'data': 'action', 'width': '5%'}
+                // {'data': 'id', 'width': '20%'},
+                {'data': 'rackName', 'width': '20%'},
+                {'data': 'rackCodeName', 'width': '20%'},
+                {'data': 'cccEnabled', 'width': '20%'},
+                {'data': 'generalInfo', 'width': '20%'},
+                {'data': 'companies', 'width': '20%'},
+                {'data': 'floorNumber', 'width': '20%'},
+                {'data': 'entity', 'width': '20%'},
+                {'data': 'entitytype', 'width': '20%'},
+                {'data': 'action', 'width': '20%'}
             ]
         });
     }
 
-    $(".stateForm").submit(function (event) {
+    $(".rackForm").submit(function (event) {
 
         //disable the default form submission
         event.preventDefault();
 
         //grab all form data
         var formData = new FormData(this);
-        console.log(formData)
+        console.log(formData);
 
         var url = '';
         var type = '';
         if (id) {
-            url = '/state/update/' + id;
+            url = '/rack/update/' + id;
             type = 'POST'
         } else {
-            url = '/state';
+            url = '/rack';
             type = 'POST'
         }
 
-        console.log(type)
+        console.log(type);
         $.ajax({
-
             url: url,
             type: type,
             data: formData,
             contentType: false,
             processData: false,
             success: function () {
-
-                swal("Success!", "State Submitted Successfully", "success");
-                stateTable();
-                $('#addStateModal').modal('hide');
+                swal("Success!", "Rack Submitted Successfully", "success");
+                rackTable();
+                $('#addRackModal').modal('hide');
             },
             error: function () {
                 swal("Error!", "Something went wrong", "error");
@@ -246,18 +268,23 @@ div.dataTables_scrollBody table tbody  td {
     });
 
     $(document).on("click", ".addbtn", function () {
-        $(".stateTitle").text("Add State Master")
-        $(".stateForm")[0].reset();
+        $(".rackTitle").text("Add Rack")
+        $(".rackForm")[0].reset();
         id = null
     });
 
     $(document).on("click", ".editbtn", function () {
         id = $(this).data('id');
-        $(".name").val($(this).data('name'));
-        $("#entityRegister").val($(this).data('entity')).change()
-        $("#zone").val($(this).attr('data-zoneId')).change()
-        $("#country").val($(this).attr('data-countryId')).change()
-        $(".stateTitle").text("Update State Master");
+        $(".rackName").val($(this).attr('data-rackName'));
+        $(".floorNumber").val($(this).attr('data-floorNumber'));
+        $(".generalInfo").val($(this).attr('data-generalInfo'));
+        $(".rackCodeName").val($(this).attr('data-rackCodeName'));
+        $(".companies").val($(this).attr('data-companies'));
+        $(".ccmEnabled").val($(this).attr('data-cccEnabled'));
+        $(".entityRegister").val($(this).attr('data-entity'));
+        $("#entityRegister").val($(this).attr('data-entity')).change()
+        $(".entityType").val($(this).attr('data-entitytype')).change()
+        $(".rackTitle").text("Update Rack");
     });
 
 
@@ -265,19 +292,19 @@ div.dataTables_scrollBody table tbody  td {
 
     $(document).on("click", ".deletebtn", function () {
         id = $(this).data('id');
-        $("#myModalLabel").text("Delete State ?");
+        $("#myModalLabel").text("Delete Rack?");
 
     });
 
     function deleteData() {
         $.ajax({
             type: 'POST',
-            url: '/state/delete/' + id,
+            url: '/rack/delete/' + id,
             dataType: 'json',
             success: function () {
                 $('.deleteModal').modal('hide');
-                stateTable();
-                swal("Success!", "State Deleted Successfully", "success");
+                rackTable();
+                swal("Success!", "Rack Deleted Successfully", "success");
             }, error: function () {
                 swal("Error!", "Something went wrong", "error");
             }
@@ -286,5 +313,7 @@ div.dataTables_scrollBody table tbody  td {
 
 
 </script>
+
+
 </body>
 </html>

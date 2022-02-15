@@ -290,7 +290,7 @@ Version 4.1.10 (2015-05-05)
 	Fixed bug where the dirty state wasn't properly updated when typing using the shift or alt+ctrl modifiers.
 	Fixed bug where an error would be thrown if an autofocused editor was destroyed quickly after its initialization. Patch provided by thorn0.
 	Fixed issue with dirty state not being properly updated on redo operation.
-	Fixed issue with entity decoder not handling incorrectly written numeric entities.
+	Fixed issue with entityRegister decoder not handling incorrectly written numeric entities.
 	Fixed issue where some PI element values wouldn't be properly encoded.
 Version 4.1.9 (2015-03-10)
 	Fixed bug where indentation wouldn't work properly for non list elements.

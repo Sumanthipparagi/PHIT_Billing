@@ -88,8 +88,8 @@
                                     <th style="width: 20%">Fridge Name</th>
                                     <th style="width: 20%">Expiry Date</th>
                                     <th style="width: 20%">Purchase Date</th>
-                                    <th style="width: 20%">Entity Type</th>
-                                    <th style="width: 20%">Entity</th>
+                                    <th style="width: 20%">entityRegister Type</th>
+                                    <th style="width: 20%">entityRegister</th>
                                     <th style="width: 20%">Action</th>
                                 </tr>
                                 </thead>
@@ -97,7 +97,7 @@
                                 %{--                                <tr>--}%
                                 %{--                                    <th>ID</th>--}%
                                 %{--                                    <th>Name</th>--}%
-                                %{--                                    <th>Entity ID</th>--}%
+                                %{--                                    <th>entityRegister ID</th>--}%
                                 %{--                                    <th>Action</th>--}%
                                 %{--                                </tr>--}%
                                 %{--                                </tfoot>--}%
@@ -177,7 +177,7 @@
 
                         var editbtn = '<button type="button" data-id="' + json.data[i].id +
                             '" data-kitName="' + json.data[i].kitName + '"' +
-                            '" data-entity="' + json.data[i].entityId + '"' +
+                            '" data-entityRegister="' + json.data[i].entityId + '"' +
                             '" data-kitNumber="' + json.data[i].kitNumber + '"' +
                             '" data-entitytype="' + json.data[i].entityTypeId + '"' +
                             '" data-expiryDate="' + moment(purDate).format('DD/MM/YYYY hh:mm A') + '"' +
@@ -264,8 +264,8 @@
         $(".kitName").val($(this).attr('data-kitName'));
         $(".kitNumber").val($(this).attr('data-kitNumber'));
         $(".machinePartNumber").val($(this).attr('data-machinePartNumber'));
-        $(".entity").val($(this).attr('data-entity'));
-        $("#entity").val($(this).data('entity')).change()
+        $(".entityRegister").val($(this).attr('data-entity'));
+        $("#entityRegister").val($(this).data('entity')).change()
         $(".entityType").val($(this).attr('data-entitytype')).change()
         $('.purchaseDate').bootstrapMaterialDatePicker('setDate',$(this).attr('data-purchaseDate'));
         $('.expiryDate').bootstrapMaterialDatePicker('setDate',$(this).attr('data-expiryDate'));

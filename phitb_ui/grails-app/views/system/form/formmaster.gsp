@@ -89,8 +89,8 @@ div.dataTables_scrollBody table tbody tr td {
                                     <th style="width: 20%">Form Name</th>
                                     <th style="width: 20%">Form button Name</th>
                                     <th style="width: 20%">Config Allowed</th>
-%{--                                    <th style="width: 20%">Entity Type</th>--}%
-%{--                                    <th style="width: 20%">Entity</th>--}%
+%{--                                    <th style="width: 20%">entityRegister Type</th>--}%
+%{--                                    <th style="width: 20%">entityRegister</th>--}%
                                     <th style="width: 20%">Created User</th>
                                     <th style="width: 20%">Modified User</th>
                                     <th style="width: 20%">Action</th>
@@ -100,7 +100,7 @@ div.dataTables_scrollBody table tbody tr td {
                                 %{--                                <tr>--}%
                                 %{--                                    <th>ID</th>--}%
                                 %{--                                    <th>Name</th>--}%
-                                %{--                                    <th>Entity ID</th>--}%
+                                %{--                                    <th>entityRegister ID</th>--}%
                                 %{--                                    <th>Action</th>--}%
                                 %{--                                </tr>--}%
                                 %{--                                </tfoot>--}%
@@ -168,7 +168,7 @@ div.dataTables_scrollBody table tbody tr td {
                     for (var i = 0; i < json.data.length; i++) {
                         var editbtn = '<button type="button" data-id="' + json.data[i].id +
                             '" data-formName="' + json.data[i].formName + '"' +
-                            '" data-entity="' + json.data[i].entityId + '"' +
+                            '" data-entityRegister="' + json.data[i].entityId + '"' +
                             '" data-entitytype="' + json.data[i].entitytype + '"' +
                             '" data-createduser="' + json.data[i].createduser + '"' +
                             '" data-modifieduser="' + json.data[i].modifieduser + '"' +
@@ -256,10 +256,10 @@ div.dataTables_scrollBody table tbody tr td {
         id = $(this).data('id');
         $(".formName").val($(this).attr('data-formName'));
         $(".formButtonName").val($(this).attr('data-formButtonName'));
-        $(".entity").val($(this).attr('data-entity'));
+        $(".entityRegister").val($(this).attr('data-entity'));
         $(".entitytype").val($(this).attr('data-entitytype'));
         $("#configAllowed").val($(this).attr('data-configAllowed'));
-        $("#entity").val($(this).data('entity')).change()
+        $("#entityRegister").val($(this).data('entity')).change()
         $(".formTitle").text("Update State Master");
     });
 

@@ -69,7 +69,7 @@
 
                             <div class="col-lg-6 form-group  form-float">
                                 <label for="entity">
-                                    Entity
+                                    entityRegister
                                 </label>
                                 <select class="form-control show-tick entity" name="entityId" id="entity">
                                     <g:each var="e" in="${entity}">
@@ -81,7 +81,7 @@
 
                             <div class="col-lg-6 form-group  form-float">
                                 <label for="entityTypeId">
-                                    Entity Type
+                                    entityRegister Type
                                 </label>
                                 <select class="form-control show-tick entityType" name="entityTypeId" id="entityTypeId">
                                     <g:each var="et" in="${entitytype}">

@@ -28,7 +28,7 @@ class UrlMappings {
         "/accountmodes/update/$id"(controller: "accountMode",action:"update")
         "/accountmodes/delete/$id"(controller: "accountMode",action:"delete")
 
-        /*<-------------------------------------------State ------------------------------------------------->*/
+//        State
         "/state"(controller: "state") {
             action = [GET: 'index', POST: 'save']
         }
@@ -36,8 +36,7 @@ class UrlMappings {
         "/state/update/$id"(controller: "state",action:"update")
         "/state/delete/$id"(controller: "state",action:"delete")
 
-        /*<-------------------------------------------City ------------------------------------------------->*/
-
+//      City
         "/city"(controller: "city") {
             action = [GET: 'index', POST: 'save']
         }
@@ -47,8 +46,7 @@ class UrlMappings {
 
 
 
-        /*<-------------------------------------------Country ------------------------------------------------->*/
-
+//      Country
         "/country"(controller: "country") {
             action = [GET: 'index', POST: 'save']
         }
@@ -57,8 +55,7 @@ class UrlMappings {
         "/country/delete/$id"(controller: "country",action:"delete")
 
 
-        /*<-------------------------------------------Form Master ------------------------------------------------->*/
-
+//      Form Master
         "/form"(controller: "form") {
             action = [GET: 'index', POST: 'save']
         }
@@ -67,7 +64,8 @@ class UrlMappings {
         "/form/delete/$id"(controller: "form",action:"delete")
 
         /*<-------------------------------------------Facility ------------------------------------------------->*/
-        /*<-------------------------------------------Fridge ------------------------------------------------->*/
+
+//        Fridge
         "/fridge"(controller: "fridge") {
             action = [GET: 'index', POST: 'save']
         }
@@ -95,13 +93,21 @@ class UrlMappings {
 
 
         //        Rack
-
         "/rack"(controller: "rack") {
             action = [GET: 'index', POST: 'save']
         }
         "/rack/datatable"(controller: "rack", action: 'dataTable')
         "/rack/update/$id"(controller:"rack",action:"update")
         "/rack/delete/$id"(controller: "rack",action:"delete")
+
+        /*<-------------------------------------------Entity ------------------------------------------------->*/
+
+        "/entity-register"(controller: "entityRegister") {
+            action = [GET: 'index', POST: 'save']
+        }
+        "/entity-register/datatable"(controller: "entityRegister", action: 'dataTable')
+        "/entity-register/update/$id"(controller:"entityRegister",action:"update")
+        "/entity-register/delete/$id"(controller: "entityRegister",action:"delete")
 
     }
 }
