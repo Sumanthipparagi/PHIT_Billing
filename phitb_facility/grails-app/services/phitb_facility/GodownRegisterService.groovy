@@ -1,6 +1,7 @@
 package phitb_facility
 
 import grails.gorm.transactions.Transactional
+import groovy.json.JsonSlurper
 import org.grails.web.json.JSONObject
 import phitb_facility.Exception.BadRequestException
 import phitb_facility.Exception.ResourceNotFoundException
@@ -54,24 +55,45 @@ class GodownRegisterService {
         Integer offset = start ? Integer.parseInt(start.toString()) : 0
         Integer max = length ? Integer.parseInt(length.toString()) : 100
 
-        def dayMasterCriteria = GodownRegister.createCriteria()
-        def dayMasterArrayList = dayMasterCriteria.list(max: max, offset: offset) {
+        def godownMasterCriteria = GodownRegister.createCriteria()
+        def godownMasterArrayList = godownMasterCriteria.list(max: max, offset: offset) {
             or {
                 if (searchTerm != "") {
                     ilike('godownName', '%' + searchTerm + '%')
-                    ilike('premises', '%' + searchTerm + '%')
                 }
             }
             eq('deleted', false)
             order(orderColumn, orderDir)
         }
 
-        def recordsTotal = dayMasterArrayList.totalCount
+        def entity = []
+        godownMasterArrayList.each {
+            println(it.entityId)
+            def apires1 = showFormByEntityId(it.entityId.toString())
+            entity.push(apires1)
+        }
+        def entityType = []
+        godownMasterArrayList.each {
+            println(it.entityTypeId)
+            def apires2 = showFormByEntityTypeId(it.entityTypeId.toString())
+            entityType.push(apires2)
+        }
+
+        def manager = []
+        godownMasterArrayList.each {
+            println(it.managerId)
+            def apires3 = showGodownByManager(it.managerId.toString())
+            manager.push(apires3)
+        }
+        def recordsTotal = godownMasterArrayList.totalCount
         JSONObject jsonObject = new JSONObject()
         jsonObject.put("draw", paramsJsonObject.draw)
         jsonObject.put("recordsTotal", recordsTotal)
         jsonObject.put("recordsFiltered", recordsTotal)
-        jsonObject.put("data", dayMasterArrayList)
+        jsonObject.put("entity", entity)
+        jsonObject.put("manager", manager)
+        jsonObject.put("entityType", entityType)
+        jsonObject.put("data", godownMasterArrayList)
         return jsonObject
     }
 
@@ -134,6 +156,71 @@ class GodownRegisterService {
             }
         } else {
             throw new BadRequestException()
+        }
+    }
+
+
+    def showFormByEntityId(String id)
+    {
+        try
+        {
+            def url = "http://localhost/api/v1.0/entity/entityregister/"+id
+            URL apiUrl = new URL(url)
+            def entity = new JsonSlurper().parseText(apiUrl.text)
+            return entity
+        }
+        catch (Exception ex)
+        {
+            System.err.println('Service :CountryMaster , action :  show  , Ex:' + ex)
+            log.error('Service :CountryMaster , action :  show  , Ex:' + ex)
+        }
+    }
+
+    def showFormByEntityTypeId(String id)
+    {
+        try
+        {
+            def url = "http://localhost/api/v1.0/entity/entitytypemaster/"+id
+            URL apiUrl = new URL(url)
+            def entity = new JsonSlurper().parseText(apiUrl.text)
+            return entity
+        }
+        catch (Exception ex)
+        {
+            System.err.println('Service :CountryMaster , action :  show  , Ex:' + ex)
+            log.error('Service :CountryMaster , action :  show  , Ex:' + ex)
+        }
+    }
+
+    def showGodownByManager(String id)
+    {
+        try
+        {
+            def url = "http://localhost/api/v1.0/entity/userregister/"+id
+            URL apiUrl = new URL(url)
+            def entity = new JsonSlurper().parseText(apiUrl.text)
+            return entity
+        }
+        catch (Exception ex)
+        {
+            System.err.println('Service :GodownRegister , action :  show  , Ex:' + ex)
+            log.error('Service :GodownRegister , action :  show  , Ex:' + ex)
+        }
+    }
+
+    def showFormBymodifiedUser(String id)
+    {
+        try
+        {
+            def url = "http://localhost/api/v1.0/entity/userregister/"+id
+            URL apiUrl = new URL(url)
+            def entity = new JsonSlurper().parseText(apiUrl.text)
+            return entity
+        }
+        catch (Exception ex)
+        {
+            System.err.println('Service :CountryMaster , action :  show  , Ex:' + ex)
+            log.error('Service :CountryMaster , action :  show  , Ex:' + ex)
         }
     }
 }

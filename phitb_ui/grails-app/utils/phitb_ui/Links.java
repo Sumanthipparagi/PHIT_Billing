@@ -50,4 +50,38 @@ public class Links
 
     //    Entity Type
     public static String ENTITY_TYPE_MASTER_SHOW = "api/v1.0/entity/entitytypemaster";
+
+
+    //    Entity Type
+    public static String USER_REGISTER_SHOW = "api/v1.0/entity/userregister";
+
+
+
+    //Fridge
+    public static String FRIDGE_SHOW = "api/v1.0/facility/fridge";
+    public static String FRIDGE_SAVE = "api/v1.0/facility/fridge";
+    public static String FRIDGE_DATATABLE = "api/v1.0/facility/fridge/datatable";
+    public static String FRIDGE_UPDATE = "api/v1.0/facility/fridge/{id}";
+    public static String FRIDGE_DELETE = "api/v1.0/facility/fridge/{id}";
+
+    //CCM
+    public static String CCM_SHOW = "api/v1.0/facility/ccmregister";
+    public static String CCM_SAVE = "api/v1.0/facility/ccmregister";
+    public static String CCM_DATATABLE = "api/v1.0/facility/ccmregister/datatable";
+    public static String CCM_UPDATE = "api/v1.0/facility/ccmregister/{id}";
+    public static String CCM_DELETE = "api/v1.0/facility/ccmregister/{id}";
+
+    //godown
+    public static String GODOWN_SHOW = "api/v1.0/facility/godown";
+    public static String GODOWN_SAVE = "api/v1.0/facility/godown";
+    public static String GODOWN_DATATABLE = "api/v1.0/facility/godown/datatable";
+    public static String GODOWN_UPDATE = "api/v1.0/facility/godown/{id}";
+    public static String GODOWN_DELETE = "api/v1.0/facility/godown/{id}";
+
+    //rack
+    public static String RACK_SHOW = "api/v1.0/facility/rack";
+    public static String RACK_SAVE = "api/v1.0/facility/rack";
+    public static String RACK_DATATABLE = "api/v1.0/facility/rack/datatable";
+    public static String RACK_UPDATE = "api/v1.0/facility/rack/{id}";
+    public static String RACK_DELETE = "api/v1.0/facility/rack/{id}";
 }

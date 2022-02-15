@@ -1,6 +1,7 @@
 package phitb_facility
 
 import grails.gorm.transactions.Transactional
+import groovy.json.JsonSlurper
 import org.grails.web.json.JSONObject
 import phitb_facility.Exception.BadRequestException
 import phitb_facility.Exception.ResourceNotFoundException
@@ -10,7 +11,7 @@ import java.text.SimpleDateFormat
 @Transactional
 class CcmRegisterService {
 
-    SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss")
+    SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy hh:mm")
     def getAll(String limit, String offset, String query) {
 
         Integer o = offset ? Integer.parseInt(offset.toString()) : 0
@@ -54,8 +55,8 @@ class CcmRegisterService {
         Integer offset = start ? Integer.parseInt(start.toString()) : 0
         Integer max = length ? Integer.parseInt(length.toString()) : 100
 
-        def dayMasterCriteria = CcmRegister.createCriteria()
-        def dayMasterArrayList = dayMasterCriteria.list(max: max, offset: offset) {
+        def ccmMasterCriteria = CcmRegister.createCriteria()
+        def ccmMasterArrayList = ccmMasterCriteria.list(max: max, offset: offset) {
             or {
                 if (searchTerm != "") {
                     ilike('kitName', '%' + searchTerm + '%')
@@ -69,12 +70,27 @@ class CcmRegisterService {
             order(orderColumn, orderDir)
         }
 
-        def recordsTotal = dayMasterArrayList.totalCount
+        def entity = []
+        ccmMasterArrayList.each {
+            println(it.entityId)
+            def apires1 = showFormByEntityId(it.entityId.toString())
+            entity.push(apires1)
+        }
+        def entityType = []
+        ccmMasterArrayList.each {
+            println(it.entityTypeId)
+            def apires2 = showFormByEntityTypeId(it.entityTypeId.toString())
+            entityType.push(apires2)
+        }
+
+        def recordsTotal = ccmMasterArrayList.totalCount
         JSONObject jsonObject = new JSONObject()
         jsonObject.put("draw", paramsJsonObject.draw)
         jsonObject.put("recordsTotal", recordsTotal)
         jsonObject.put("recordsFiltered", recordsTotal)
-        jsonObject.put("data", dayMasterArrayList)
+        jsonObject.put("entity", entity)
+        jsonObject.put("entityType", entityType)
+        jsonObject.put("data", ccmMasterArrayList)
         return jsonObject
     }
 
@@ -132,6 +148,71 @@ class CcmRegisterService {
             }
         } else {
             throw new BadRequestException()
+        }
+    }
+
+
+    def showFormByEntityId(String id)
+    {
+        try
+        {
+            def url = "http://localhost/api/v1.0/entity/entityregister/"+id
+            URL apiUrl = new URL(url)
+            def entity = new JsonSlurper().parseText(apiUrl.text)
+            return entity
+        }
+        catch (Exception ex)
+        {
+            System.err.println('Service :CountryMaster , action :  show  , Ex:' + ex)
+            log.error('Service :CountryMaster , action :  show  , Ex:' + ex)
+        }
+    }
+
+    def showFormByEntityTypeId(String id)
+    {
+        try
+        {
+            def url = "http://localhost/api/v1.0/entity/entitytypemaster/"+id
+            URL apiUrl = new URL(url)
+            def entity = new JsonSlurper().parseText(apiUrl.text)
+            return entity
+        }
+        catch (Exception ex)
+        {
+            System.err.println('Service :CountryMaster , action :  show  , Ex:' + ex)
+            log.error('Service :CountryMaster , action :  show  , Ex:' + ex)
+        }
+    }
+
+    def showFormBycreatedUser(String id)
+    {
+        try
+        {
+            def url = "http://localhost/api/v1.0/entity/userregister/"+id
+            URL apiUrl = new URL(url)
+            def entity = new JsonSlurper().parseText(apiUrl.text)
+            return entity
+        }
+        catch (Exception ex)
+        {
+            System.err.println('Service :CountryMaster , action :  show  , Ex:' + ex)
+            log.error('Service :CountryMaster , action :  show  , Ex:' + ex)
+        }
+    }
+
+    def showFormBymodifiedUser(String id)
+    {
+        try
+        {
+            def url = "http://localhost/api/v1.0/entity/userregister/"+id
+            URL apiUrl = new URL(url)
+            def entity = new JsonSlurper().parseText(apiUrl.text)
+            return entity
+        }
+        catch (Exception ex)
+        {
+            System.err.println('Service :CountryMaster , action :  show  , Ex:' + ex)
+            log.error('Service :CountryMaster , action :  show  , Ex:' + ex)
         }
     }
 }

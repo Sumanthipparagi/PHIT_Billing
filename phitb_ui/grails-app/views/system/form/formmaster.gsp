@@ -17,8 +17,13 @@
     <asset:stylesheet rel="stylesheet" href="/themeassets/css/color_skins.css"/>
     <asset:stylesheet rel="stylesheet" href="/themeassets/plugins/sweetalert/sweetalert.css"/>
     <asset:stylesheet  src="/themeassets/plugins/bootstrap-select/css/bootstrap-select.css" rel="stylesheet" />
+    <style>
 
-
+div.dataTables_scrollBody table tbody tr td {
+    border-top: none;
+    padding: 1px;
+}
+</style>
 </head>
 <body class="theme-black">
 <!-- Page Loader -->
@@ -84,8 +89,8 @@
                                     <th style="width: 20%">Form Name</th>
                                     <th style="width: 20%">Form button Name</th>
                                     <th style="width: 20%">Config Allowed</th>
-                                    <th style="width: 20%">Entity Type</th>
-                                    <th style="width: 20%">Entity</th>
+%{--                                    <th style="width: 20%">Entity Type</th>--}%
+%{--                                    <th style="width: 20%">Entity</th>--}%
                                     <th style="width: 20%">Created User</th>
                                     <th style="width: 20%">Modified User</th>
                                     <th style="width: 20%">Action</th>
@@ -170,9 +175,9 @@
                             '" data-formButtonName="' + json.data[i].formButtonName + '"' +
                             '" data-formname="' + json.data[i].formName + '"' +
                             '" data-configAllowed="' + json.data[i].configAllowed + '"' +
-                            ' class="editbtn btn btn-warning  editbtn" data-toggle="modal" data-target="#addFormModal"><i class="material-icons"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">edit</font></font></i></button>'
+                            ' class="editbtn btn btn-sm btn-warning  editbtn" data-toggle="modal" data-target="#addFormModal"><i class="material-icons"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">edit</font></font></i></button>'
                         var deletebtn = '<button type="button" data-id="' + json.data[i].id +
-                            '" class="btn btn-danger deletebtn" data-toggle="modal" data-target=".deleteModal"><i class="material-icons"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">delete</font></font></i></button>'
+                            '" class="btn btn-sm btn-danger deletebtn" data-toggle="modal" data-target=".deleteModal"><i class="material-icons"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">delete</font></font></i></button>'
                         return_data.push({
                             'id': json.data[i].id,
                             'formname': json.data[i].formName,
@@ -195,8 +200,8 @@
                 {'data': 'confallowed', 'width': '20%'},
                 {'data': 'entitytype', 'width': '20%'},
                 {'data': 'entity', 'width': '20%'},
-                {'data': 'createduser', 'width': '20%'},
-                {'data': 'modifieduser', 'width': '20%'},
+                // {'data': 'createduser', 'width': '20%'},
+                // {'data': 'modifieduser', 'width': '20%'},
                 {'data': 'action', 'width': '20%'}
             ]
         });

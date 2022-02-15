@@ -1,6 +1,7 @@
 package phitb_facility
 
 import grails.gorm.transactions.Transactional
+import groovy.json.JsonSlurper
 import org.grails.web.json.JSONObject
 import phitb_facility.Exception.BadRequestException
 import phitb_facility.Exception.ResourceNotFoundException
@@ -52,8 +53,8 @@ class RackMasterService {
         Integer offset = start ? Integer.parseInt(start.toString()) : 0
         Integer max = length ? Integer.parseInt(length.toString()) : 100
 
-        def dayMasterCriteria = RackMaster.createCriteria()
-        def dayMasterArrayList = dayMasterCriteria.list(max: max, offset: offset) {
+        def rackMasterCriteria = RackMaster.createCriteria()
+        def rackMasterArrayList = rackMasterCriteria.list(max: max, offset: offset) {
             or {
                 if (searchTerm != "") {
                     ilike('rackName', '%' + searchTerm + '%')
@@ -64,12 +65,27 @@ class RackMasterService {
             order(orderColumn, orderDir)
         }
 
-        def recordsTotal = dayMasterArrayList.totalCount
+        def entity = []
+        rackMasterArrayList.each {
+            println(it.entityId)
+            def apires1 = showFormByEntityId(it.entityId.toString())
+            entity.push(apires1)
+        }
+        def entityType = []
+        rackMasterArrayList.each {
+            println(it.entityTypeId)
+            def apires2 = showFormByEntityTypeId(it.entityTypeId.toString())
+            entityType.push(apires2)
+        }
+
+        def recordsTotal = rackMasterArrayList.totalCount
         JSONObject jsonObject = new JSONObject()
         jsonObject.put("draw", paramsJsonObject.draw)
         jsonObject.put("recordsTotal", recordsTotal)
         jsonObject.put("recordsFiltered", recordsTotal)
-        jsonObject.put("data", dayMasterArrayList)
+        jsonObject.put("data", rackMasterArrayList)
+        jsonObject.put("entity", entity)
+        jsonObject.put("entityType", entityType)
         return jsonObject
     }
 
@@ -136,4 +152,37 @@ class RackMasterService {
             throw new BadRequestException()
         }
     }
+
+    def showFormByEntityId(String id)
+    {
+        try
+        {
+            def url = "http://localhost/api/v1.0/entity/entityregister/"+id
+            URL apiUrl = new URL(url)
+            def entity = new JsonSlurper().parseText(apiUrl.text)
+            return entity
+        }
+        catch (Exception ex)
+        {
+            System.err.println('Service :CountryMaster , action :  show  , Ex:' + ex)
+            log.error('Service :CountryMaster , action :  show  , Ex:' + ex)
+        }
+    }
+
+    def showFormByEntityTypeId(String id)
+    {
+        try
+        {
+            def url = "http://localhost/api/v1.0/entity/entitytypemaster/"+id
+            URL apiUrl = new URL(url)
+            def entity = new JsonSlurper().parseText(apiUrl.text)
+            return entity
+        }
+        catch (Exception ex)
+        {
+            System.err.println('Service :CountryMaster , action :  show  , Ex:' + ex)
+            log.error('Service :CountryMaster , action :  show  , Ex:' + ex)
+        }
+    }
+
 }

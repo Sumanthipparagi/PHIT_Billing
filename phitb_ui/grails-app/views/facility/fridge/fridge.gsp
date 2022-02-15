@@ -6,7 +6,7 @@
     <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
     <meta name="description" content="Responsive Bootstrap 4 and web Application ui kit.">
 
-    <title>:: PharmIt ::  State Master</title>
+    <title>:: PharmIt :: Fridge</title>
     <link rel="icon" type="image/x-icon" href="${assetPath(src: '/themeassets/images/favicon.ico')}"/>
     <!-- Favicon-->
     <asset:stylesheet rel="stylesheet" src="/themeassets/plugins/bootstrap/css/bootstrap.min.css"/>
@@ -17,6 +17,8 @@
     <asset:stylesheet rel="stylesheet" href="/themeassets/css/color_skins.css"/>
     <asset:stylesheet rel="stylesheet" href="/themeassets/plugins/sweetalert/sweetalert.css"/>
     <asset:stylesheet  src="/themeassets/plugins/bootstrap-select/css/bootstrap-select.css" rel="stylesheet" />
+    <asset:stylesheet  src="/themeassets/js/pages/forms/basic-form-elements.js" rel="stylesheet" />
+    <asset:stylesheet  src="/themeassets/plugins/bootstrap-material-datetimepicker/css/bootstrap-material-datetimepicker.css" rel="stylesheet" />
 
 
 </head>
@@ -35,10 +37,10 @@
         <div class="block-header">
             <div class="row clearfix">
                 <div class="col-lg-5 col-md-5 col-sm-12">
-                    <h2>State Master</h2>
+                    <h2>Fridge</h2>
                     <ul class="breadcrumb padding-0">
                         <li class="breadcrumb-item"><a href="index.html"><i class="zmdi zmdi-home"></i></a></li>
-                        <li class="breadcrumb-item active">State Master</li>
+                        <li class="breadcrumb-item active">Fridge</li>
                     </ul>
                 </div>
                 <div class="col-lg-7 col-md-7 col-sm-12">
@@ -72,12 +74,12 @@
                     %{--                    </div>--}%
                     <div class="header">
                         <button type="button" class="btn btn-round btn-primary m-t-15 addbtn" data-toggle="modal"
-                                data-target="#addStateModal"><font style="vertical-align: inherit;"><font
-                                style="vertical-align: inherit;">Add State</font></font></button>
+                                data-target="#addFridgeModal"><font style="vertical-align: inherit;"><font
+                                style="vertical-align: inherit;">Add Fridge</font></font></button>
                     </div>
                     <div class="body">
                         <div class="table-responsive">
-                            <table class="table table-bordered table-striped table-hover stateTable dataTable">
+                            <table class="table table-bordered table-striped table-hover fridgeTable dataTable">
                                 <thead>
                                 <tr>
                                     <th style="width: 20%">ID</th>
@@ -85,7 +87,7 @@
                                     <th style="width: 20%">Entity</th>
                                     <th style="width: 20%">Entity Type</th>
                                     <th style="width: 20%">Date of purchase</th>
-                                    <th style="width: 20%">Status</th>
+                                    <th style="width: 20%">Machine Part Number</th>
                                     <th style="width: 20%">Floor</th>
                                     <th style="width: 20%">Action</th>
                                 </tr>
@@ -111,12 +113,15 @@
     </div>
 </section>
 
-<g:include view="controls/add-state.gsp"/>
+
+<g:include view="controls/add-fridge.gsp"/>
 <g:include view="controls/delete-modal.gsp"/>
 
 <!-- Jquery Core Js -->
 <asset:javascript src="/themeassets/bundles/libscripts.bundle.js"/>
 <asset:javascript src="/themeassets/bundles/vendorscripts.bundle.js"/>
+<asset:javascript src="/themeassets/plugins/bootstrap-colorpicker/js/bootstrap-colorpicker.js"/>
+<asset:javascript src="/themeassets/plugins/multi-select/js/jquery.multi-select.js"/>
 <asset:javascript src="/themeassets/bundles/datatablescripts.bundle.js"/>
 <asset:javascript src="/themeassets/plugins/jquery-datatable/buttons/dataTables.buttons.min.js"/>
 <asset:javascript src="/themeassets/plugins/jquery-datatable/buttons/buttons.bootstrap4.min.js"/>
@@ -127,20 +132,25 @@
 <asset:javascript src="/themeassets/js/pages/tables/jquery-datatable.js"/>
 <asset:javascript src="/themeassets/js/pages/ui/dialogs.js"/>
 <asset:javascript src="/themeassets/plugins/sweetalert/sweetalert.min.js"/>
-
-
+<asset:javascript src="/themeassets/plugins/jquery-inputmask/jquery.inputmask.bundle.js"/>
+<asset:javascript src="/themeassets/plugins/momentjs/moment.js"/>
+<asset:javascript src="/themeassets/plugins/bootstrap-material-datetimepicker/js/bootstrap-material-datetimepicker.js"/>
+<asset:javascript src="/themeassets/js/pages/forms/basic-form-elements.js"/>
 
 <script>
 
-    var statetable;
+    var fridgetable;
     var id = null;
     $(function () {
-        stateTable();
+        fridgeTable();
+        // var $demoMaskedInput = $('.demo-masked-input');
+        // $demoMaskedInput.find('.datetime').inputmask('d/m/y h:m:s', { placeholder: '__/__/____ __:__:__:__', alias:
+        //         "datetime", hourFormat: '12' });
+
     });
 
-    function stateTable() {
-
-        statetable = $(".stateTable").DataTable({
+    function fridgeTable() {
+        fridgetable = $(".fridgeTable").DataTable({
             "order": [[0, "desc"]],
             sPaginationType: "simple_numbers",
             responsive: {
@@ -154,30 +164,37 @@
             processing: true,
             serverSide: true,
             language: {
-                searchPlaceholder: "Search Fridge"
+                searchPlaceholder: "Search Form"
             },
             ajax: {
                 type: 'GET',
-                url: '/state/datatable',
+                url: '/fridge/datatable',
                 dataType: 'json',
                 dataSrc: function (json) {
                     var return_data = [];
                     for (var i = 0; i < json.data.length; i++) {
+                        console.log(json)
+                        var dateOfPur = new Date(json.data[i].dateOfPurchase);
                         var editbtn = '<button type="button" data-id="' + json.data[i].id +
-                            '" data-name="' + json.data[i].name + '"' +
+                            '" data-fridgeName="' + json.data[i].fridgeName + '"' +
                             '" data-entity="' + json.data[i].entityId + '"' +
-                            '" data-zoneId="' + json.data[i].zone.id + '"' +
-                            '" data-countryId="' + json.data[i].country.id + '"' +
-                            ' class="editbtn btn btn-warning  editbtn" data-toggle="modal" data-target="#addStateModal"><i class="material-icons"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">edit</font></font></i></button>'
+                            '" data-floor="' + json.data[i].floor + '"' +
+                            '" data-entitytype="' + json.data[i].entityTypeId + '"' +
+                            '" data-machinePartNumber="' + json.data[i].machinePartNumber + '"' +
+                            '" data-dateOfPurchase="' + moment(dateOfPur).format('DD/MM/YYYY hh:mm A') + '"' +
+                            '" data-status="' + json.data[i].status + '"' +
+                            ' class="editbtn btn btn-warning  editbtn" data-toggle="modal" data-target="#addFridgeModal"><i class="material-icons"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">edit</font></font></i></button>'
                         var deletebtn = '<button type="button" data-id="' + json.data[i].id +
                             '" class="btn btn-danger deletebtn" data-toggle="modal" data-target=".deleteModal"><i class="material-icons"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">delete</font></font></i></button>'
-                        console.log(json.data[i].zone.id)
                         return_data.push({
                             'id': json.data[i].id,
-                            'name': json.data[i].name,
-                            'zone': json.data[i].zone.name,
-                            'country': json.data[i].country.name,
-                            'entity': json.names[i].entityName,
+                            'fridgename': json.data[i].fridgeName,
+                            'floor': json.data[i].floor,
+                            'machinePartNumber': json.data[i].machinePartNumber,
+                            'dateOfPurchase': moment(dateOfPur).format('DD/MM/YYYY hh:mm A'),
+                            'entity': json.entity[i].entityName,
+                            'status': json.data[i].status,
+                            'entitytype': json.entityType[i].name,
                             'action': editbtn + ' ' + deletebtn
                         });
                     }
@@ -186,49 +203,47 @@
             },
             columns: [
                 {'data': 'id', 'width': '20%'},
-                {'data': 'fridgeName', 'width': '20%'},
-                {'data': 'entity', 'width': '20%'},
+                {'data': 'fridgename', 'width': '20%'},
                 {'data': 'entitytype', 'width': '20%'},
-                {'data': 'dateofpurchase', 'width': '20%'},
-                {'data': 'status', 'width': '20%'},
+                {'data': 'entity', 'width': '20%'},
+                {'data': 'dateOfPurchase', 'width': '20%'},
+                {'data': 'machinePartNumber', 'width': '20%'},
                 {'data': 'floor', 'width': '20%'},
                 {'data': 'action', 'width': '20%'}
             ]
         });
     }
 
-    $(".stateForm").submit(function (event) {
+    $(".fridgeForm").submit(function (event) {
 
         //disable the default form submission
         event.preventDefault();
 
         //grab all form data
         var formData = new FormData(this);
-        console.log(formData)
+        console.log(formData);
 
         var url = '';
         var type = '';
         if (id) {
-            url = '/state/update/' + id;
+            url = '/fridge/update/' + id;
             type = 'POST'
         } else {
-            url = '/state';
+            url = '/fridge';
             type = 'POST'
         }
 
-        console.log(type)
+        console.log(type);
         $.ajax({
-
             url: url,
             type: type,
             data: formData,
             contentType: false,
             processData: false,
             success: function () {
-
-                swal("Success!", "State Submitted Successfully", "success");
-                stateTable();
-                $('#addStateModal').modal('hide');
+                swal("Success!", "Fridge Submitted Successfully", "success");
+                fridgeTable();
+                $('#addFridgeModal').modal('hide');
             },
             error: function () {
                 swal("Error!", "Something went wrong", "error");
@@ -238,18 +253,21 @@
     });
 
     $(document).on("click", ".addbtn", function () {
-        $(".stateTitle").text("Add State Master")
-        $(".stateForm")[0].reset();
+        $(".fridgeTitle").text("Add Fridge")
+        $(".fridgeForm")[0].reset();
         id = null
     });
 
     $(document).on("click", ".editbtn", function () {
         id = $(this).data('id');
-        $(".name").val($(this).data('name'));
+        $(".fridgeName").val($(this).attr('data-fridgeName'));
+        $(".floor").val($(this).attr('data-floor'));
+        $(".machinePartNumber").val($(this).attr('data-machinePartNumber'));
+        $(".entity").val($(this).attr('data-entity'));
         $("#entity").val($(this).data('entity')).change()
-        $("#zone").val($(this).attr('data-zoneId')).change()
-        $("#country").val($(this).attr('data-countryId')).change()
-        $(".stateTitle").text("Update State Master");
+        $(".entityType").val($(this).attr('data-entitytype')).change()
+        $('.datetimepicker').bootstrapMaterialDatePicker('setDate',$(this).attr('data-dateOfPurchase'));
+        $(".formTitle").text("Update Fridge");
     });
 
 
@@ -257,19 +275,19 @@
 
     $(document).on("click", ".deletebtn", function () {
         id = $(this).data('id');
-        $("#myModalLabel").text("Delete State ?");
+        $("#myModalLabel").text("Delete Fridge?");
 
     });
 
     function deleteData() {
         $.ajax({
             type: 'POST',
-            url: '/state/delete/' + id,
+            url: '/fridge/delete/' + id,
             dataType: 'json',
             success: function () {
                 $('.deleteModal').modal('hide');
-                stateTable();
-                swal("Success!", "State Deleted Successfully", "success");
+                fridgeTable();
+                swal("Success!", "Fridge Deleted Successfully", "success");
             }, error: function () {
                 swal("Error!", "Something went wrong", "error");
             }
@@ -278,5 +296,7 @@
 
 
 </script>
+
+
 </body>
 </html>

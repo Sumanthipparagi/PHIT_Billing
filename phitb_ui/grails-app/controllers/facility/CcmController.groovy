@@ -2,6 +2,7 @@ package facility
 
 import groovy.json.JsonSlurper
 import org.grails.web.json.JSONObject
+import phitb_ui.FacilityService
 import phitb_ui.Links
 import phitb_ui.SystemService
 import system.StateController
@@ -13,10 +14,14 @@ class CcmController {
         try
         {
             def entityurl = Links.PHITB_SYSTEM_API+Links.ENTITY_REGISTER_SHOW
-            URL apiUrl = new URL(entityurl)
-            def entity = new JsonSlurper().parseText(apiUrl.text)
-            ArrayList<String> stateArrayList = new StateController().show() as ArrayList<String>
-            render(view: '/system/city/city',model: [entity:entity,stateArrayList:stateArrayList])
+            def entitytypeurl = Links.PHITB_SYSTEM_API+Links.ENTITY_TYPE_MASTER_SHOW
+            URL apiUrl1 = new URL(entityurl)
+            URL apiUrl2 = new URL(entitytypeurl)
+            def entity = new JsonSlurper().parseText(apiUrl1.text)
+            def entitytype = new JsonSlurper().parseText(apiUrl2.text)
+            ArrayList<String> fridgeArrayList = new FridgeController().show() as ArrayList<String>
+            render(view: '/facility/ccm/ccm',model: [entity:entity,fridgeArrayList:fridgeArrayList,
+                                                     entitytype:entitytype])
         }
         catch (Exception ex)
         {
@@ -32,7 +37,7 @@ class CcmController {
         try
         {
             JSONObject jsonObject = new JSONObject(params)
-            def apiResponse = new SystemService().showCity(jsonObject)
+            def apiResponse = new FacilityService().showCcm(jsonObject)
             if (apiResponse.status == 200)
             {
                 JSONObject responseObject = new JSONObject(apiResponse.readEntity(String.class))
@@ -56,7 +61,7 @@ class CcmController {
         try
         {
             JSONObject jsonObject = new JSONObject(params)
-            def apiResponse = new SystemService().saveCity(jsonObject)
+            def apiResponse = new FacilityService().saveCcm(jsonObject)
             if (apiResponse?.status == 200)
             {
                 JSONObject obj = new JSONObject(apiResponse.readEntity(String.class))
@@ -81,7 +86,7 @@ class CcmController {
         {
             println(params)
             JSONObject jsonObject = new JSONObject(params)
-            def apiResponse = new SystemService().putCity(jsonObject)
+            def apiResponse = new FacilityService().putCCm(jsonObject)
             if (apiResponse.status == 200)
             {
                 JSONObject obj = new JSONObject(apiResponse.readEntity(String.class))
@@ -105,7 +110,7 @@ class CcmController {
         try
         {
             JSONObject jsonObject = new JSONObject(params)
-            def apiResponse = new SystemService().deleteCity(jsonObject)
+            def apiResponse = new FacilityService().deleteCcm(jsonObject)
             if (apiResponse.status == 200)
             {
                 JSONObject data = new JSONObject()

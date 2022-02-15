@@ -6,7 +6,7 @@
     <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
     <meta name="description" content="Responsive Bootstrap 4 and web Application ui kit.">
 
-    <title>:: PharmIt ::  State Master</title>
+    <title>:: PharmIt :: Godown</title>
     <link rel="icon" type="image/x-icon" href="${assetPath(src: '/themeassets/images/favicon.ico')}"/>
     <!-- Favicon-->
     <asset:stylesheet rel="stylesheet" src="/themeassets/plugins/bootstrap/css/bootstrap.min.css"/>
@@ -17,20 +17,17 @@
     <asset:stylesheet rel="stylesheet" href="/themeassets/css/color_skins.css"/>
     <asset:stylesheet rel="stylesheet" href="/themeassets/plugins/sweetalert/sweetalert.css"/>
     <asset:stylesheet  src="/themeassets/plugins/bootstrap-select/css/bootstrap-select.css" rel="stylesheet" />
+    <asset:stylesheet  src="/themeassets/js/pages/forms/basic-form-elements.js" rel="stylesheet" />
+    <asset:stylesheet  src="/themeassets/plugins/bootstrap-material-datetimepicker/css/bootstrap-material-datetimepicker.css" rel="stylesheet" />
 
     <style>
 
 div.dataTables_scrollBody table tbody  td {
     border-top: none;
     padding: 0.9px;
-    width: 5%;
     text-align: center;
 
 }
-
-
-
-
 </style>
 
 </head>
@@ -49,10 +46,10 @@ div.dataTables_scrollBody table tbody  td {
         <div class="block-header">
             <div class="row clearfix">
                 <div class="col-lg-5 col-md-5 col-sm-12">
-                    <h2>State Master</h2>
+                    <h2>Godown</h2>
                     <ul class="breadcrumb padding-0">
                         <li class="breadcrumb-item"><a href="index.html"><i class="zmdi zmdi-home"></i></a></li>
-                        <li class="breadcrumb-item active">State Master</li>
+                        <li class="breadcrumb-item active">Godown</li>
                     </ul>
                 </div>
                 <div class="col-lg-7 col-md-7 col-sm-12">
@@ -86,19 +83,22 @@ div.dataTables_scrollBody table tbody  td {
                     %{--                    </div>--}%
                     <div class="header">
                         <button type="button" class="btn btn-round btn-primary m-t-15 addbtn" data-toggle="modal"
-                                data-target="#addStateModal"><font style="vertical-align: inherit;"><font
-                                style="vertical-align: inherit;">Add State</font></font></button>
+                                data-target="#addGodownModal"><font style="vertical-align: inherit;"><font
+                                style="vertical-align: inherit;">Add Godown</font></font></button>
                     </div>
                     <div class="body">
                         <div class="table-responsive">
-                            <table class="table table-bordered table-striped table-hover stateTable dataTable">
+                            <table class="table table-bordered table-striped table-hover godownTable dataTable">
                                 <thead>
                                 <tr>
-                                    <th>Name</th>
-                                    <th>Zone</th>
-                                    <th>Country</th>
-                                    <th>Entity</th>
-                                    <th>Action</th>
+%{--                                    <th style="width: 20%">ID</th>--}%
+                                    <th style="width: 20%">Godown Name</th>
+                                    <th style="width: 20%">CCM Enabled</th>
+                                    <th style="width: 20%">Premises</th>
+                                    <th style="width: 20%">Manager</th>
+                                    <th style="width: 20%">Entity</th>
+                                    <th style="width: 20%">Entity Type</th>
+                                    <th style="width: 20%">Action</th>
                                 </tr>
                                 </thead>
                                 %{--                                <tfoot>--}%
@@ -122,12 +122,15 @@ div.dataTables_scrollBody table tbody  td {
     </div>
 </section>
 
-<g:include view="controls/add-state.gsp"/>
+
+<g:include view="controls/add-godown.gsp"/>
 <g:include view="controls/delete-modal.gsp"/>
 
 <!-- Jquery Core Js -->
 <asset:javascript src="/themeassets/bundles/libscripts.bundle.js"/>
 <asset:javascript src="/themeassets/bundles/vendorscripts.bundle.js"/>
+<asset:javascript src="/themeassets/plugins/bootstrap-colorpicker/js/bootstrap-colorpicker.js"/>
+<asset:javascript src="/themeassets/plugins/multi-select/js/jquery.multi-select.js"/>
 <asset:javascript src="/themeassets/bundles/datatablescripts.bundle.js"/>
 <asset:javascript src="/themeassets/plugins/jquery-datatable/buttons/dataTables.buttons.min.js"/>
 <asset:javascript src="/themeassets/plugins/jquery-datatable/buttons/buttons.bootstrap4.min.js"/>
@@ -138,20 +141,25 @@ div.dataTables_scrollBody table tbody  td {
 <asset:javascript src="/themeassets/js/pages/tables/jquery-datatable.js"/>
 <asset:javascript src="/themeassets/js/pages/ui/dialogs.js"/>
 <asset:javascript src="/themeassets/plugins/sweetalert/sweetalert.min.js"/>
-
-
+<asset:javascript src="/themeassets/plugins/jquery-inputmask/jquery.inputmask.bundle.js"/>
+<asset:javascript src="/themeassets/plugins/momentjs/moment.js"/>
+<asset:javascript src="/themeassets/plugins/bootstrap-material-datetimepicker/js/bootstrap-material-datetimepicker.js"/>
+<asset:javascript src="/themeassets/js/pages/forms/basic-form-elements.js"/>
 
 <script>
 
-    var statetable;
+    var godowntable;
     var id = null;
     $(function () {
-       stateTable();
+        godownTable();
+        // var $demoMaskedInput = $('.demo-masked-input');
+        // $demoMaskedInput.find('.datetime').inputmask('d/m/y h:m:s', { placeholder: '__/__/____ __:__:__:__', alias:
+        //         "datetime", hourFormat: '12' });
+
     });
 
-    function stateTable() {
-
-        statetable = $(".stateTable").DataTable({
+    function godownTable() {
+        godowntable = $(".godownTable").DataTable({
             "order": [[0, "desc"]],
             sPaginationType: "simple_numbers",
             responsive: {
@@ -165,30 +173,34 @@ div.dataTables_scrollBody table tbody  td {
             processing: true,
             serverSide: true,
             language: {
-                searchPlaceholder: "Search State"
+                searchPlaceholder: "Search Godown"
             },
             ajax: {
                 type: 'GET',
-                url: '/state/datatable',
+                url: '/godown/datatable',
                 dataType: 'json',
                 dataSrc: function (json) {
                     var return_data = [];
                     for (var i = 0; i < json.data.length; i++) {
+                        console.log(json)
                         var editbtn = '<button type="button" data-id="' + json.data[i].id +
-                            '" data-name="' + json.data[i].name + '"' +
+                            '" data-godownName="' + json.data[i].godownName + '"' +
                             '" data-entity="' + json.data[i].entityId + '"' +
-                            '" data-zoneId="' + json.data[i].zone.id + '"' +
-                            '" data-countryId="' + json.data[i].country.id + '"' +
-                            ' class="editbtn btn btn-sm btn-warning  editbtn" data-toggle="modal" data-target="#addStateModal"><i class="material-icons"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">edit</font></font></i></button>'
+                            '" data-ccmEnabled="' + json.data[i].ccmEnabled + '"' +
+                            '" data-entitytype="' + json.data[i].entityTypeId + '"' +
+                            '" data-premises="' + json.data[i].premises + '"' +
+                            '" data-managerId="' + json.data[i].managerId + '"' +
+                            ' class="editbtn btn btn-sm btn-warning  editbtn" data-toggle="modal" data-target="#addGodownModal"><i class="material-icons"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">edit</font></font></i></button>'
                         var deletebtn = '<button type="button" data-id="' + json.data[i].id +
                             '" class="btn btn-sm btn-danger deletebtn" data-toggle="modal" data-target=".deleteModal"><i class="material-icons"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">delete</font></font></i></button>'
-                        console.log(json.data[i].zone.id)
                         return_data.push({
                             'id': json.data[i].id,
-                            'name': json.data[i].name,
-                            'zone': json.data[i].zone.name,
-                            'country': json.data[i].country.name,
-                            'entity': json.names[i].entityName,
+                            'godownName': json.data[i].godownName,
+                            'ccmEnabled': json.data[i].ccmEnabled,
+                            'premises': json.data[i].premises,
+                            'managerId': json.manager[i].userName,
+                            'entity': json.entity[i].entityName,
+                            'entitytype': json.entityType[i].name,
                             'action': editbtn + ' ' + deletebtn
                         });
                     }
@@ -196,47 +208,48 @@ div.dataTables_scrollBody table tbody  td {
                 }
             },
             columns: [
-                {'data': 'name', 'width': '5%'},
-                {'data': 'zone', 'width': '5%'},
-                {'data': 'country', 'width': '5%'},
-                {'data': 'entity', 'width': '5%'},
-                {'data': 'action', 'width': '5%'}
+                // {'data': 'id', 'width': '20%'},
+                {'data': 'godownName', 'width': '20%'},
+                {'data': 'ccmEnabled', 'width': '20%'},
+                {'data': 'premises', 'width': '20%'},
+                {'data': 'managerId', 'width': '20%'},
+                {'data': 'entitytype', 'width': '20%'},
+                {'data': 'entity', 'width': '20%'},
+                {'data': 'action', 'width': '20%'}
             ]
         });
     }
 
-    $(".stateForm").submit(function (event) {
+    $(".godownForm").submit(function (event) {
 
         //disable the default form submission
         event.preventDefault();
 
         //grab all form data
         var formData = new FormData(this);
-        console.log(formData)
+        console.log(formData);
 
         var url = '';
         var type = '';
         if (id) {
-            url = '/state/update/' + id;
+            url = '/godown/update/' + id;
             type = 'POST'
         } else {
-            url = '/state';
+            url = '/godown';
             type = 'POST'
         }
 
-        console.log(type)
+        console.log(type);
         $.ajax({
-
             url: url,
             type: type,
             data: formData,
             contentType: false,
             processData: false,
             success: function () {
-
-                swal("Success!", "State Submitted Successfully", "success");
-                stateTable();
-                $('#addStateModal').modal('hide');
+                swal("Success!", "Godown Submitted Successfully", "success");
+                godownTable();
+                $('#addGodownModal').modal('hide');
             },
             error: function () {
                 swal("Error!", "Something went wrong", "error");
@@ -246,18 +259,22 @@ div.dataTables_scrollBody table tbody  td {
     });
 
     $(document).on("click", ".addbtn", function () {
-        $(".stateTitle").text("Add State Master")
-        $(".stateForm")[0].reset();
+        $(".godownTitle").text("Add Godown")
+        $(".godownForm")[0].reset();
         id = null
     });
 
     $(document).on("click", ".editbtn", function () {
         id = $(this).data('id');
-        $(".name").val($(this).data('name'));
-        $("#entity").val($(this).data('entity')).change()
-        $("#zone").val($(this).attr('data-zoneId')).change()
-        $("#country").val($(this).attr('data-countryId')).change()
-        $(".stateTitle").text("Update State Master");
+        $(".godownName").val($(this).attr('data-godownName'));
+        $(".ccmEnabled").val($(this).attr('data-ccmEnabled'));
+        $(".premises").val($(this).attr('data-premises'));
+        $(".entity").val($(this).attr('data-entity'));
+        $("#entity").val($(this).attr('data-entity')).change()
+        $(".managerId").val($(this).attr('data-managerId')).change()
+        $(".entityType").val($(this).attr('data-entitytype')).change()
+        $('.datetimepicker').bootstrapMaterialDatePicker('setDate',moment($(this).attr('data-dateOfPurchase')));
+        $(".godownTitle").text("Update Godown");
     });
 
 
@@ -265,19 +282,19 @@ div.dataTables_scrollBody table tbody  td {
 
     $(document).on("click", ".deletebtn", function () {
         id = $(this).data('id');
-        $("#myModalLabel").text("Delete State ?");
+        $("#myModalLabel").text("Delete Godowm?");
 
     });
 
     function deleteData() {
         $.ajax({
             type: 'POST',
-            url: '/state/delete/' + id,
+            url: '/godown/delete/' + id,
             dataType: 'json',
             success: function () {
                 $('.deleteModal').modal('hide');
-                stateTable();
-                swal("Success!", "State Deleted Successfully", "success");
+                godownTable();
+                swal("Success!", "Godown Deleted Successfully", "success");
             }, error: function () {
                 swal("Error!", "Something went wrong", "error");
             }
@@ -286,5 +303,7 @@ div.dataTables_scrollBody table tbody  td {
 
 
 </script>
+
+
 </body>
 </html>

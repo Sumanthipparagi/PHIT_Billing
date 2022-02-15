@@ -65,5 +65,43 @@ class UrlMappings {
         "/form/datatable"(controller: "form", action: 'dataTable')
         "/form/update/$id"(controller: "form",action:"update")
         "/form/delete/$id"(controller: "form",action:"delete")
+
+        /*<-------------------------------------------Facility ------------------------------------------------->*/
+        /*<-------------------------------------------Fridge ------------------------------------------------->*/
+        "/fridge"(controller: "fridge") {
+            action = [GET: 'index', POST: 'save']
+        }
+        "/fridge/datatable"(controller: "fridge", action: 'dataTable')
+        "/fridge/update/$id"(controller: "fridge",action:"update")
+        "/fridge/delete/$id"(controller: "fridge",action:"delete")
+
+//        ccm
+
+        "/ccm"(controller: "ccm") {
+            action = [GET: 'index', POST: 'save']
+        }
+        "/ccm/datatable"(controller: "ccm", action: 'dataTable')
+        "/ccm/update/$id"(controller: "ccm",action:"update")
+        "/cmm/delete/$id"(controller: "ccm",action:"delete")
+
+        //        godown
+
+        "/godown"(controller: "godown") {
+            action = [GET: 'index', POST: 'save']
+        }
+        "/godown/datatable"(controller: "godown", action: 'dataTable')
+        "/godown/update/$id"(controller: "godown",action:"update")
+        "/godown/delete/$id"(controller: "godown",action:"delete")
+
+
+        //        Rack
+
+        "/rack"(controller: "rack") {
+            action = [GET: 'index', POST: 'save']
+        }
+        "/rack/datatable"(controller: "rack", action: 'dataTable')
+        "/rack/update/$id"(controller:"rack",action:"update")
+        "/rack/delete/$id"(controller: "rack",action:"delete")
+
     }
 }

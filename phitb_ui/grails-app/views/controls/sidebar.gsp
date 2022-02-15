@@ -8,8 +8,9 @@
                     <div class="input-group m-b-0">
                         <input type="text" class="form-control" placeholder="Search...">
                         <span class="input-group-addon">
-                            <i class="zmdi zmdi-search"></i>
+                            <i class="zmdi zmdi-search"></i></span>
                     </div>
+
                 </div>
             </div>
 
@@ -557,6 +558,17 @@
                         <li><a href="/city">City</a></li>
                         <li><a href="/country">Country</a></li>
                         <li><a href="/form">Form</a></li>
+                    </ul>
+                </li>
+
+                <li><a href="javascript:void(0);" class="menu-toggle"><i
+                        class="zmdi zmdi-apps"></i><span>Facility</span> <span
+                        class="badge badge-success float-right">4</span></a>
+                    <ul class="ml-menu">
+                        <li><a href="/ccm">CCM</a></li>
+                        <li><a href="/rack">Rack</a></li>
+                        <li><a href="/fridge">Fridge</a></li>
+                        <li><a href="/godown">Godown</a></li>
                     </ul>
                 </li>
                 <li><a href="javascript:void(0);" class="menu-toggle"><i
