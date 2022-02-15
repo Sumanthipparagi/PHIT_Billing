@@ -18,7 +18,7 @@ class FacilityService {
     def saveFridge(JSONObject jsonObject)
     {
         Client client = ClientBuilder.newClient();
-        WebTarget target = client.target(new Links().PHITB_SYSTEM_API);
+        WebTarget target = client.target(new Links().API_GATEWAY);
         GrailsHttpSession session = WebUtils.retrieveGrailsWebRequest().session
         try
         {
@@ -46,7 +46,7 @@ class FacilityService {
     def showFridge(JSONObject jsonObject)
     {
         Client client = ClientBuilder.newClient();
-        WebTarget target = client.target(new Links().PHITB_SYSTEM_API);
+        WebTarget target = client.target(new Links().API_GATEWAY);
         GrailsHttpSession session = WebUtils.retrieveGrailsWebRequest().session
         try
         {
@@ -68,7 +68,7 @@ class FacilityService {
     def putFridge(JSONObject jsonObject)
     {
         Client client = ClientBuilder.newClient();
-        WebTarget target = client.target(new Links().PHITB_SYSTEM_API);
+        WebTarget target = client.target(new Links().API_GATEWAY);
         GrailsHttpSession session = WebUtils.retrieveGrailsWebRequest().session
         try
         {
@@ -95,7 +95,7 @@ class FacilityService {
     def deleteFridge(JSONObject jsonObject)
     {
         Client client = ClientBuilder.newClient();
-        WebTarget target = client.target(new Links().PHITB_SYSTEM_API);
+        WebTarget target = client.target(new Links().API_GATEWAY);
         GrailsHttpSession session = WebUtils.retrieveGrailsWebRequest().session
         try
         {
@@ -116,7 +116,7 @@ class FacilityService {
     def getFridgeList()
     {
         Client client = ClientBuilder.newClient();
-        WebTarget target = client.target(new Links().PHITB_SYSTEM_API);
+        WebTarget target = client.target(new Links().API_GATEWAY);
         GrailsHttpSession session = WebUtils.retrieveGrailsWebRequest().session
         try
         {
@@ -139,7 +139,7 @@ class FacilityService {
     def saveCcm(JSONObject jsonObject)
     {
         Client client = ClientBuilder.newClient();
-        WebTarget target = client.target(new Links().PHITB_SYSTEM_API);
+        WebTarget target = client.target(new Links().API_GATEWAY);
         GrailsHttpSession session = WebUtils.retrieveGrailsWebRequest().session
         try
         {
@@ -167,7 +167,7 @@ class FacilityService {
     def showCcm(JSONObject jsonObject)
     {
         Client client = ClientBuilder.newClient();
-        WebTarget target = client.target(new Links().PHITB_SYSTEM_API);
+        WebTarget target = client.target(new Links().API_GATEWAY);
         GrailsHttpSession session = WebUtils.retrieveGrailsWebRequest().session
         try
         {
@@ -189,7 +189,7 @@ class FacilityService {
     def putCCm(JSONObject jsonObject)
     {
         Client client = ClientBuilder.newClient();
-        WebTarget target = client.target(new Links().PHITB_SYSTEM_API);
+        WebTarget target = client.target(new Links().API_GATEWAY);
         GrailsHttpSession session = WebUtils.retrieveGrailsWebRequest().session
         try
         {
@@ -216,7 +216,7 @@ class FacilityService {
     def deleteCcm(JSONObject jsonObject)
     {
         Client client = ClientBuilder.newClient();
-        WebTarget target = client.target(new Links().PHITB_SYSTEM_API);
+        WebTarget target = client.target(new Links().API_GATEWAY);
         GrailsHttpSession session = WebUtils.retrieveGrailsWebRequest().session
         try
         {
@@ -240,7 +240,7 @@ class FacilityService {
     def saveGodown(JSONObject jsonObject)
     {
         Client client = ClientBuilder.newClient();
-        WebTarget target = client.target(new Links().PHITB_SYSTEM_API);
+        WebTarget target = client.target(new Links().API_GATEWAY);
         GrailsHttpSession session = WebUtils.retrieveGrailsWebRequest().session
         try
         {
@@ -268,7 +268,7 @@ class FacilityService {
     def showGodown(JSONObject jsonObject)
     {
         Client client = ClientBuilder.newClient();
-        WebTarget target = client.target(new Links().PHITB_SYSTEM_API);
+        WebTarget target = client.target(new Links().API_GATEWAY);
         GrailsHttpSession session = WebUtils.retrieveGrailsWebRequest().session
         try
         {
@@ -290,7 +290,7 @@ class FacilityService {
     def putGodown(JSONObject jsonObject)
     {
         Client client = ClientBuilder.newClient();
-        WebTarget target = client.target(new Links().PHITB_SYSTEM_API);
+        WebTarget target = client.target(new Links().API_GATEWAY);
         GrailsHttpSession session = WebUtils.retrieveGrailsWebRequest().session
         try
         {
@@ -317,7 +317,7 @@ class FacilityService {
     def deleteGodown(JSONObject jsonObject)
     {
         Client client = ClientBuilder.newClient();
-        WebTarget target = client.target(new Links().PHITB_SYSTEM_API);
+        WebTarget target = client.target(new Links().API_GATEWAY);
         GrailsHttpSession session = WebUtils.retrieveGrailsWebRequest().session
         try
         {
@@ -341,7 +341,7 @@ class FacilityService {
     def saveRack(JSONObject jsonObject)
     {
         Client client = ClientBuilder.newClient();
-        WebTarget target = client.target(new Links().PHITB_SYSTEM_API);
+        WebTarget target = client.target(new Links().API_GATEWAY);
         GrailsHttpSession session = WebUtils.retrieveGrailsWebRequest().session
         try
         {
@@ -369,7 +369,7 @@ class FacilityService {
     def showRack(JSONObject jsonObject)
     {
         Client client = ClientBuilder.newClient();
-        WebTarget target = client.target(new Links().PHITB_SYSTEM_API);
+        WebTarget target = client.target(new Links().API_GATEWAY);
         GrailsHttpSession session = WebUtils.retrieveGrailsWebRequest().session
         try
         {
@@ -391,7 +391,7 @@ class FacilityService {
     def putRack(JSONObject jsonObject)
     {
         Client client = ClientBuilder.newClient();
-        WebTarget target = client.target(new Links().PHITB_SYSTEM_API);
+        WebTarget target = client.target(new Links().API_GATEWAY);
         GrailsHttpSession session = WebUtils.retrieveGrailsWebRequest().session
         try
         {
@@ -418,7 +418,7 @@ class FacilityService {
     def deleteRack(JSONObject jsonObject)
     {
         Client client = ClientBuilder.newClient();
-        WebTarget target = client.target(new Links().PHITB_SYSTEM_API);
+        WebTarget target = client.target(new Links().API_GATEWAY);
         GrailsHttpSession session = WebUtils.retrieveGrailsWebRequest().session
         try
         {

@@ -11,8 +11,6 @@ import javax.ws.rs.client.ClientBuilder
 import javax.ws.rs.client.WebTarget
 import grails.web.servlet.mvc.GrailsHttpSession
 import org.grails.web.util.WebUtils
-import javax.ws.rs.core.Form
-
 
 @Transactional
 class SystemService
@@ -26,7 +24,7 @@ class SystemService
     def saveAccountModes(JSONObject jsonObject)
     {
         Client client = ClientBuilder.newClient();
-        WebTarget target = client.target(new Links().PHITB_SYSTEM_API);
+        WebTarget target = client.target(new Links().API_GATEWAY);
         GrailsHttpSession session = WebUtils.retrieveGrailsWebRequest().session
         try
         {
@@ -54,7 +52,7 @@ class SystemService
     def putAccountMode(JSONObject jsonObject)
     {
         Client client = ClientBuilder.newClient();
-        WebTarget target = client.target(new Links().PHITB_SYSTEM_API);
+        WebTarget target = client.target(new Links().API_GATEWAY);
         GrailsHttpSession session = WebUtils.retrieveGrailsWebRequest().session
         try
         {
@@ -81,7 +79,7 @@ class SystemService
     def showAccountModes(JSONObject jsonObject)
     {
         Client client = ClientBuilder.newClient();
-        WebTarget target = client.target(new Links().PHITB_SYSTEM_API);
+        WebTarget target = client.target(new Links().API_GATEWAY);
         GrailsHttpSession session = WebUtils.retrieveGrailsWebRequest().session
         try
         {
@@ -107,7 +105,7 @@ class SystemService
     def deleteAccountModes(JSONObject jsonObject)
     {
         Client client = ClientBuilder.newClient();
-        WebTarget target = client.target(new Links().PHITB_SYSTEM_API);
+        WebTarget target = client.target(new Links().API_GATEWAY);
         GrailsHttpSession session = WebUtils.retrieveGrailsWebRequest().session
         try
         {
@@ -133,7 +131,7 @@ class SystemService
     def saveStateMaster(JSONObject jsonObject)
     {
         Client client = ClientBuilder.newClient();
-        WebTarget target = client.target(new Links().PHITB_SYSTEM_API);
+        WebTarget target = client.target(new Links().API_GATEWAY);
         GrailsHttpSession session = WebUtils.retrieveGrailsWebRequest().session
         try
         {
@@ -161,7 +159,7 @@ class SystemService
     def showState(JSONObject jsonObject)
     {
         Client client = ClientBuilder.newClient();
-        WebTarget target = client.target(new Links().PHITB_SYSTEM_API);
+        WebTarget target = client.target(new Links().API_GATEWAY);
         GrailsHttpSession session = WebUtils.retrieveGrailsWebRequest().session
         try
         {
@@ -187,7 +185,7 @@ class SystemService
     def putState(JSONObject jsonObject)
     {
         Client client = ClientBuilder.newClient();
-        WebTarget target = client.target(new Links().PHITB_SYSTEM_API);
+        WebTarget target = client.target(new Links().API_GATEWAY);
         GrailsHttpSession session = WebUtils.retrieveGrailsWebRequest().session
         try
         {
@@ -214,7 +212,7 @@ class SystemService
     def deleteState(JSONObject jsonObject)
     {
         Client client = ClientBuilder.newClient();
-        WebTarget target = client.target(new Links().PHITB_SYSTEM_API);
+        WebTarget target = client.target(new Links().API_GATEWAY);
         GrailsHttpSession session = WebUtils.retrieveGrailsWebRequest().session
         try
         {
@@ -236,7 +234,7 @@ class SystemService
     def getZoneList()
     {
         Client client = ClientBuilder.newClient();
-        WebTarget target = client.target(new Links().PHITB_SYSTEM_API);
+        WebTarget target = client.target(new Links().API_GATEWAY);
         GrailsHttpSession session = WebUtils.retrieveGrailsWebRequest().session
         try
         {
@@ -258,7 +256,7 @@ class SystemService
     def getCountryList()
     {
         Client client = ClientBuilder.newClient();
-        WebTarget target = client.target(new Links().PHITB_SYSTEM_API);
+        WebTarget target = client.target(new Links().API_GATEWAY);
         GrailsHttpSession session = WebUtils.retrieveGrailsWebRequest().session
         try
         {
@@ -278,7 +276,7 @@ class SystemService
     def getStateList()
     {
         Client client = ClientBuilder.newClient();
-        WebTarget target = client.target(new Links().PHITB_SYSTEM_API);
+        WebTarget target = client.target(new Links().API_GATEWAY);
         GrailsHttpSession session = WebUtils.retrieveGrailsWebRequest().session
         try
         {
@@ -302,7 +300,7 @@ class SystemService
     def saveCity(JSONObject jsonObject)
     {
         Client client = ClientBuilder.newClient();
-        WebTarget target = client.target(new Links().PHITB_SYSTEM_API);
+        WebTarget target = client.target(new Links().API_GATEWAY);
         GrailsHttpSession session = WebUtils.retrieveGrailsWebRequest().session
         try
         {
@@ -324,7 +322,7 @@ class SystemService
     def putCity(JSONObject jsonObject)
     {
         Client client = ClientBuilder.newClient();
-        WebTarget target = client.target(new Links().PHITB_SYSTEM_API);
+        WebTarget target = client.target(new Links().API_GATEWAY);
         GrailsHttpSession session = WebUtils.retrieveGrailsWebRequest().session
         try
         {
@@ -351,7 +349,7 @@ class SystemService
     def showCity(JSONObject jsonObject)
     {
         Client client = ClientBuilder.newClient();
-        WebTarget target = client.target(new Links().PHITB_SYSTEM_API);
+        WebTarget target = client.target(new Links().API_GATEWAY);
         GrailsHttpSession session = WebUtils.retrieveGrailsWebRequest().session
         try
         {
@@ -377,7 +375,7 @@ class SystemService
     def deleteCity(JSONObject jsonObject)
     {
         Client client = ClientBuilder.newClient();
-        WebTarget target = client.target(new Links().PHITB_SYSTEM_API);
+        WebTarget target = client.target(new Links().API_GATEWAY);
         GrailsHttpSession session = WebUtils.retrieveGrailsWebRequest().session
         try
         {
@@ -400,7 +398,7 @@ class SystemService
     def saveCountry(JSONObject jsonObject)
     {
         Client client = ClientBuilder.newClient();
-        WebTarget target = client.target(new Links().PHITB_SYSTEM_API);
+        WebTarget target = client.target(new Links().API_GATEWAY);
         GrailsHttpSession session = WebUtils.retrieveGrailsWebRequest().session
         try
         {
@@ -427,7 +425,7 @@ class SystemService
     def showCountry(JSONObject jsonObject)
     {
         Client client = ClientBuilder.newClient();
-        WebTarget target = client.target(new Links().PHITB_SYSTEM_API);
+        WebTarget target = client.target(new Links().API_GATEWAY);
         GrailsHttpSession session = WebUtils.retrieveGrailsWebRequest().session
         try
         {
@@ -448,7 +446,7 @@ class SystemService
     def putCountry(JSONObject jsonObject)
     {
         Client client = ClientBuilder.newClient();
-        WebTarget target = client.target(new Links().PHITB_SYSTEM_API);
+        WebTarget target = client.target(new Links().API_GATEWAY);
         GrailsHttpSession session = WebUtils.retrieveGrailsWebRequest().session
         try
         {
@@ -475,7 +473,7 @@ class SystemService
     def deleteCountry(JSONObject jsonObject)
     {
         Client client = ClientBuilder.newClient();
-        WebTarget target = client.target(new Links().PHITB_SYSTEM_API);
+        WebTarget target = client.target(new Links().API_GATEWAY);
         GrailsHttpSession session = WebUtils.retrieveGrailsWebRequest().session
         try
         {
@@ -504,7 +502,7 @@ class SystemService
     def showForm(JSONObject jsonObject)
     {
         Client client = ClientBuilder.newClient();
-        WebTarget target = client.target(new Links().PHITB_SYSTEM_API);
+        WebTarget target = client.target(new Links().API_GATEWAY);
         GrailsHttpSession session = WebUtils.retrieveGrailsWebRequest().session
         try
         {
@@ -526,7 +524,7 @@ class SystemService
     def saveForm(JSONObject jsonObject)
     {
         Client client = ClientBuilder.newClient();
-        WebTarget target = client.target(new Links().PHITB_SYSTEM_API);
+        WebTarget target = client.target(new Links().API_GATEWAY);
         GrailsHttpSession session = WebUtils.retrieveGrailsWebRequest().session
         try
         {
@@ -549,7 +547,7 @@ class SystemService
     def putForm(JSONObject jsonObject)
     {
         Client client = ClientBuilder.newClient();
-        WebTarget target = client.target(new Links().PHITB_SYSTEM_API);
+        WebTarget target = client.target(new Links().API_GATEWAY);
         GrailsHttpSession session = WebUtils.retrieveGrailsWebRequest().session
         try
         {
@@ -576,7 +574,7 @@ class SystemService
     def deleteForm(JSONObject jsonObject)
     {
         Client client = ClientBuilder.newClient();
-        WebTarget target = client.target(new Links().PHITB_SYSTEM_API);
+        WebTarget target = client.target(new Links().API_GATEWAY);
         GrailsHttpSession session = WebUtils.retrieveGrailsWebRequest().session
         try
         {

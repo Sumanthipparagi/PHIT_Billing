@@ -2,7 +2,9 @@ package phitb_ui;
 
 public class Links
 {
-    public static String PHITB_SYSTEM_API = new Constants().PHITB_SYSTEM_API;
+    public static String API_GATEWAY = new Constants().API_GATEWAY;
+
+    /*<-------------------------------------------System------------------------------------------------->*/
 
     //    Account modes
     public static String ACCOUNT_MODES_SAVE = "api/v1.0/system/accountmodes";
@@ -52,9 +54,10 @@ public class Links
     public static String ENTITY_TYPE_MASTER_SHOW = "api/v1.0/entity/entitytypemaster";
 
 
-    //    Entity Type
+    //    User register
     public static String USER_REGISTER_SHOW = "api/v1.0/entity/userregister";
 
+    /*<-------------------------------------------Facility ------------------------------------------------->*/
 
 
     //Fridge
@@ -84,4 +87,6 @@ public class Links
     public static String RACK_DATATABLE = "api/v1.0/facility/rack/datatable";
     public static String RACK_UPDATE = "api/v1.0/facility/rack/{id}";
     public static String RACK_DELETE = "api/v1.0/facility/rack/{id}";
+
+    /*<-------------------------------------------Entity ------------------------------------------------->*/
 }

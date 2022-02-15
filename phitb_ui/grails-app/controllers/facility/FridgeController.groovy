@@ -5,8 +5,6 @@ import org.grails.web.json.JSONArray
 import org.grails.web.json.JSONObject
 import phitb_ui.FacilityService
 import phitb_ui.Links
-import phitb_ui.SystemService
-
 
 class FridgeController {
 
@@ -14,8 +12,8 @@ class FridgeController {
     {
         try
         {
-            def entityurl = Links.PHITB_SYSTEM_API+Links.ENTITY_REGISTER_SHOW
-            def entitytypeurl = Links.PHITB_SYSTEM_API+Links.ENTITY_TYPE_MASTER_SHOW
+            def entityurl = Links.API_GATEWAY+Links.ENTITY_REGISTER_SHOW
+            def entitytypeurl = Links.API_GATEWAY+Links.ENTITY_TYPE_MASTER_SHOW
             URL api1Url = new URL(entityurl)
             URL api3Url = new URL(entitytypeurl)
             def entity = new JsonSlurper().parseText(api1Url.text)

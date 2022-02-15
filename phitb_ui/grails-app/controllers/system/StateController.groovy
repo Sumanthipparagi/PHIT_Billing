@@ -12,7 +12,7 @@ class StateController {
     {
         try
         {
-            def entityurl = Links.PHITB_SYSTEM_API+Links.ENTITY_REGISTER_SHOW
+            def entityurl = Links.API_GATEWAY+Links.ENTITY_REGISTER_SHOW
             URL apiUrl = new URL(entityurl)
             def entity = new JsonSlurper().parseText(apiUrl.text)
             ArrayList<String> zoneArrayList = new ZoneController().show()
