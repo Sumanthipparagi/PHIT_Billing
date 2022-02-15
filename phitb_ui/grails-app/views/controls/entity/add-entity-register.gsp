@@ -7,7 +7,7 @@
                         <span aria-hidden="true">&times;</span></button>
                     <h4 class="accountModeTitle"></h4>
                 </div>
-                <form action="" id="form_validation" method="post" role="form" class="accountModeForm"
+                <form action="" id="form_validation" method="post" role="form" class="entityRegisterForm"
                       enctype="multipart/form-data">
                     <div class="modal-body">
                         <div class="row">

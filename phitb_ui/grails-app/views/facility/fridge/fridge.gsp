@@ -267,7 +267,7 @@
         $("#entityRegister").val($(this).data('entity')).change()
         $(".entityType").val($(this).attr('data-entitytype')).change()
         $('.datetimepicker').bootstrapMaterialDatePicker('setDate',$(this).attr('data-dateOfPurchase'));
-        $(".formTitle").text("Update Fridge");
+        $(".fridgeTitle").text("Update Fridge");
     });
 
 

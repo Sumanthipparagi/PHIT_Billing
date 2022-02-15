@@ -151,18 +151,18 @@
 
 <script>
 
-    var racktable;
+    var entityregister;
     var id = null;
     $(function () {
-        rackTable();
+        entityRegisterTable();
         // var $demoMaskedInput = $('.demo-masked-input');
         // $demoMaskedInput.find('.datetime').inputmask('d/m/y h:m:s', { placeholder: '__/__/____ __:__:__:__', alias:
         //         "datetime", hourFormat: '12' });
 
     });
 
-    function rackTable() {
-        racktable = $(".rackTable").DataTable({
+    function entityRegisterTable() {
+        entityregister = $(".entityRegisterTable").DataTable({
             "order": [[0, "desc"]],
             sPaginationType: "simple_numbers",
             responsive: {
@@ -229,7 +229,7 @@
         });
     }
 
-    $(".rackForm").submit(function (event) {
+    $(".entityRegister").submit(function (event) {
 
         //disable the default form submission
         event.preventDefault();
@@ -258,7 +258,7 @@
             success: function () {
                 swal("Success!", "Rack Submitted Successfully", "success");
                 rackTable();
-                $('#addRackModal').modal('hide');
+                $('#addEntityRegisterModal').modal('hide');
             },
             error: function () {
                 swal("Error!", "Something went wrong", "error");
@@ -268,8 +268,8 @@
     });
 
     $(document).on("click", ".addbtn", function () {
-        $(".rackTitle").text("Add Rack")
-        $(".rackForm")[0].reset();
+        $(".entityRegisterTitle").text("Add Rack")
+        $(".entityRegisterForm")[0].reset();
         id = null
     });
 
@@ -288,8 +288,6 @@
     });
 
 
-
-
     $(document).on("click", ".deletebtn", function () {
         id = $(this).data('id');
         $("#myModalLabel").text("Delete Rack?");
@@ -303,7 +301,7 @@
             dataType: 'json',
             success: function () {
                 $('.deleteModal').modal('hide');
-                rackTable();
+                entityRegisterTable();
                 swal("Success!", "Rack Deleted Successfully", "success");
             }, error: function () {
                 swal("Error!", "Something went wrong", "error");
