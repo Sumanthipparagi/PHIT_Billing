@@ -207,7 +207,7 @@
                                         Referred By
                                     </label>
                                     <input type="text" id="referredBy" class="form-control referredBy"
-                                           name="nationality" placeholder="Referred By"
+                                           name="referredBy" placeholder="Referred By"
                                            required/>
                                 </div>
 
@@ -216,7 +216,7 @@
                                         Reference Relation
                                     </label>
                                     <input type="text" id="referenceRelation" class="form-control referenceRelation"
-                                           name="nationality" placeholder="Reference Relation"
+                                           name="referenceRelation" placeholder="Reference Relation"
                                            required/>
                                 </div>
 
@@ -225,7 +225,7 @@
                                         Pincode
                                     </label>
                                     <input type="text" id="pincode" class="form-control pincode"
-                                           name="nationality" placeholder="pincode"
+                                           name="pincode" placeholder="pincode"
                                            required/>
                                 </div>
 
@@ -236,17 +236,17 @@
                                         Joining Date
                                     </label>
                                     <input type="text" id="joiningDate" class="form-control joiningDate"
-                                           name="nationality" placeholder="Joining Date"
+                                           name="joiningDate" placeholder="Joining Date"
                                            required/>
                                 </div>
 
 
                                 <div class="col-lg-6 form-group  form-float">
                                     <label for="department">
-                                        Joining Date
+                                       Department
                                     </label>
                                     <input type="text" id="department" class="form-control department"
-                                           name="department" placeholder="department"
+                                           name="department" placeholder="Department"
                                            required/>
                                 </div>
 
@@ -258,7 +258,7 @@
                                         Permissions
                                     </label>
                                     <input type="text" id="permissions" class="form-control permissions"
-                                           name="department" placeholder="Permissions"
+                                           name="permissions" placeholder="Permissions"
                                            required/>
                                 </div>
 
@@ -276,7 +276,7 @@
                                         Anniversary Date
                                     </label>
                                     <input type="text" id="anniversaryDate" class="form-control anniversaryDate"
-                                           name="dob" placeholder="Anniversary Date"
+                                           name="anniversaryDate" placeholder="Anniversary Date"
                                            required/>
                                 </div>
 
@@ -384,11 +384,11 @@
 
 
                                 <div class="col-lg-6 form-group  form-float">
-                                    <label for="division">
+                                    <label for="divisionId">
                                         Division
                                     </label>
-                                    <input type="text" id="division" class="form-control division"
-                                           name="division" placeholder="Division"
+                                    <input type="text" id="divisionId" class="form-control divisionId"
+                                           name="divisionId" placeholder="Division"
                                            required/>
                                 </div>
 
@@ -430,6 +430,7 @@
                                 <input type="hidden" name="entityId" value="1">
                                 <input type="hidden" name="status" value="1">
                                 <input type="hidden" name="syncStatus" value="1">
+                                <input type="hidden" name="lastLoginDate" value="12/02/2020">
                                 <input type="hidden" name="createdUser" value="1">
                                 <input type="hidden" name="modifiedUser" value="1">
                                 <div class="col-lg-12">
