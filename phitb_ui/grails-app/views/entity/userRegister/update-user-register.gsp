@@ -37,11 +37,11 @@
         <div class="block-header">
             <div class="row">
                 <div class="col-lg-5 col-md-5 col-sm-12">
-                    <h2>Add User Register</h2>
+                    <h2>Update User Register</h2>
                     <ul class="breadcrumb padding-0">
-                        <li class="breadcrumb-item"><a href="index.html"><i class="zmdi zmdi-home"></i></a></li>
-                        <li class="breadcrumb-item"><a href="/entity-register">User Register</a></li>
-                        <li class="breadcrumb-item active">Add User Register</li>
+                        <li class="breadcrumb-item"><a href="/"><i class="zmdi zmdi-home"></i></a></li>
+                        <li class="breadcrumb-item"><a href="/user-register">User Register</a></li>
+                        <li class="breadcrumb-item active">Update User Register</li>
                     </ul>
                 </div>
                 <div class="col-lg-7 col-md-7 col-sm-12">
@@ -74,7 +74,8 @@
                     %{--                        </ul>--}%
                     %{--                    </div>--}%
                     <div class="body">
-                        <form action="/entity-register" id="form_validation" method="POST" role="form"
+                        <form action="/user-register/update/${userregisterbyId.id}" id="form_validation" method="POST"
+                              role="form"
                               class="entityRegisterForm" enctype="multipart/form-data">
                             <div class="row clearfix">
                                 <div class="col-lg-6 form-group  form-float">
@@ -82,7 +83,7 @@
                                         User Name
                                     </label>
                                     <input type="text" id="userName" class="form-control userName" name="userName"
-                                           placeholder="User Name"
+                                           placeholder="User Name" value="${userregisterbyId.userName}"
                                            required/>
                                 </div>
 
@@ -91,7 +92,7 @@
                                         Mobile Number
                                     </label>
                                     <input type="text" id="mobileNumber" class="form-control mobileNumber" name="mobileNumber"
-                                           placeholder="Mobile Number"
+                                           placeholder="Mobile Number" value="${userregisterbyId.mobileNumber}"
                                            required/>
                                 </div>
 
@@ -100,7 +101,7 @@
                                         Contact Number
                                     </label>
                                     <input type="text" id="contactNumber" class="form-control contactNumber" name="contactNumber"
-                                           placeholder="Contact Number"
+                                           placeholder="Contact Number"  value="${userregisterbyId.contactNumber}"
                                            required/>
                                 </div>
 
@@ -109,7 +110,7 @@
                                         Aadhar Id
                                     </label>
                                     <input type="text" id="aadharId" class="form-control aadharId" name="aadharId"
-                                           placeholder="Aadhar Id"
+                                           placeholder="Aadhar Id"  value="${userregisterbyId.aadharId}"
                                            required/>
                                 </div>
 
@@ -118,9 +119,12 @@
                                     <label for="reportTo">
                                         Report To
                                     </label>
-                                    <input type="text" id="reportTo" class="form-control reportTo" name="reportTo"
-                                           placeholder="Report To"
-                                           required/>
+                                    <select class="form-control show-tick reportTo" name="reportTo" id="reportTo">
+                                        <g:each var="u" in="${userregister}">
+                                            <option value="${u.id}"
+                                                    <g:if test="${u.id == userregisterbyId.reportTo}">selected</g:if>>${u.userName}</option>
+                                        </g:each>
+                                    </select>
                                 </div>
 
                                 <div class="col-lg-6 form-group  form-float">
@@ -128,7 +132,7 @@
                                         Email
                                     </label>
                                     <input type="email" id="email" class="form-control email"
-                                           name="email" placeholder="Email"
+                                           name="email" placeholder="Email" value="${userregisterbyId.email}"
                                            required/>
                                 </div>
 
@@ -137,26 +141,29 @@
                                     <label for="genderId">
                                         Gender
                                     </label>
-                                    <input type="text" id="genderId" class="form-control genderId"
-                                           name="genderId" placeholder="Gender"
-                                           required/>
+                                    <select class="form-control show-tick genderId" name="genderId" id="genderId">
+                                        <g:each var="g" in="${gender}">
+                                            <option value="${g.id}" <g:if
+                                                    test="${g.id == userregisterbyId.genderId}">selected</g:if>>${g.name}</option>
+                                        </g:each>
+                                    </select>
                                 </div>
 
                                 <div class="col-lg-6 form-group  form-float">
-                                    <label for="genderId">
+                                    <label for="photo">
                                         Photo
                                     </label>
                                     <input type="text" id="photo" class="form-control photo"
-                                           name="photo" placeholder="Photo"
+                                           name="photo" placeholder="Photo" value="${userregisterbyId.photo}"
                                            required/>
                                 </div>
 
                                 <div class="col-lg-6 form-group  form-float">
-                                    <label for="genderId">
+                                    <label for="nationality">
                                         Nationality
                                     </label>
                                     <input type="text" id="nationality" class="form-control nationality"
-                                           name="nationality" placeholder="Nationality"
+                                           name="nationality" placeholder="Nationality"  value="${userregisterbyId.nationality}"
                                            required/>
                                 </div>
 
@@ -165,7 +172,7 @@
                                         Address
                                     </label>
                                     <input type="text" id="address" class="form-control address"
-                                           name="address" placeholder="Address"
+                                           name="address" placeholder="Address" value="${userregisterbyId.address}"
                                            required/>
                                 </div>
 
@@ -175,7 +182,7 @@
                                     </label>
                                     <select class="form-control show-tick countryId" name="countryId" id="countryId">
                                         <g:each var="country" in="${countrylist}">
-                                            <option value="${country.id}">${country.name}</option>
+                                            <option value="${country.id}"  <g:if test="${country.id == userregisterbyId.countryId}">selected</g:if>>${country.name}</option>
                                         </g:each>
                                     </select>
                                 </div>
@@ -186,7 +193,7 @@
                                     </label>
                                     <select class="form-control show-tick stateId" name="stateId" id="stateId">
                                         <g:each var="state" in="${statelist}">
-                                            <option value="${state.id}">${state.name}</option>
+                                            <option value="${state.id}"  <g:if test="${state.id == userregisterbyId.stateId}">selected</g:if>   >${state.name}</option>
                                         </g:each>
                                     </select>
                                 </div>
@@ -197,7 +204,7 @@
                                     </label>
                                     <select class="form-control show-tick cityId" name="cityId" id="cityId">
                                         <g:each var="city" in="${citylist}">
-                                            <option value="${city.id}">${city.name}</option>
+                                            <option value="${city.id}" <g:if test="${city.id == userregisterbyId.cityId}">selected</g:if> >${city.name}</option>
                                         </g:each>
                                     </select>
                                 </div>
@@ -206,9 +213,11 @@
                                     <label for="referredBy">
                                         Referred By
                                     </label>
-                                    <input type="text" id="referredBy" class="form-control referredBy"
-                                           name="nationality" placeholder="Referred By"
-                                           required/>
+                                    <select class="form-control show-tick referredBy" name="referredBy" id="referredBy">
+                                        <g:each var="u" in="${userregister}">
+                                            <option value="${u.id}" <g:if test="${u.id == userregisterbyId.referredBy}">selected</g:if> >${u.userName}</option>
+                                        </g:each>
+                                    </select>
                                 </div>
 
                                 <div class="col-lg-6 form-group  form-float">
@@ -216,55 +225,44 @@
                                         Reference Relation
                                     </label>
                                     <input type="text" id="referenceRelation" class="form-control referenceRelation"
-                                           name="nationality" placeholder="Reference Relation"
+                                           name="referenceRelation" placeholder="Reference Relation" value="${userregisterbyId.referenceRelation}"
                                            required/>
                                 </div>
 
                                 <div class="col-lg-6 form-group  form-float">
                                     <label for="pincode">
-                                        pincode
+                                        Pincode
                                     </label>
                                     <input type="text" id="pincode" class="form-control pincode"
-                                           name="nationality" placeholder="pincode"
+                                           name="pincode" placeholder="pincode"  value="${userregisterbyId.pincode}"
                                            required/>
                                 </div>
 
-                                <div class="col-lg-6 form-group  form-float">
-                                    <label for="pincode">
-                                        pincode
-                                    </label>
-                                    <input type="text" id="pincode" class="form-control pincode"
-                                           name="nationality" placeholder="pincode"
-                                           required/>
-                                </div>
+
 
                                 <div class="col-lg-6 form-group  form-float">
                                     <label for="joiningDate">
                                         Joining Date
                                     </label>
                                     <input type="text" id="joiningDate" class="form-control joiningDate"
-                                           name="nationality" placeholder="pincode"
+                                           name="joiningDate" placeholder="Joining Date"
                                            required/>
                                 </div>
 
 
                                 <div class="col-lg-6 form-group  form-float">
                                     <label for="department">
-                                        Joining Date
+                                        Department
                                     </label>
-                                    <input type="text" id="department" class="form-control department"
-                                           name="department" placeholder="department"
-                                           required/>
+                                    <select class="form-control show-tick department" name="department" id="department">
+                                        <g:each var="d" in="${department}">
+                                            <option value="${d.id}" <g:if
+                                                    test="${d.id == userregisterbyId.department}">selected</g:if>>${d.name}</option>
+                                        </g:each>
+                                    </select>
                                 </div>
 
-                                <div class="col-lg-6 form-group  form-float">
-                                    <label for="department">
-                                        Joining Date
-                                    </label>
-                                    <input type="text" id="department" class="form-control department"
-                                           name="department" placeholder="department"
-                                           required/>
-                                </div>
+
 
 
                                 <div class="col-lg-6 form-group  form-float">
@@ -272,7 +270,7 @@
                                         Permissions
                                     </label>
                                     <input type="text" id="permissions" class="form-control permissions"
-                                           name="department" placeholder="Permissions"
+                                           name="permissions" placeholder="Permissions" value="${userregisterbyId.permissions}"
                                            required/>
                                 </div>
 
@@ -286,11 +284,11 @@
                                 </div>
 
                                 <div class="col-lg-6 form-group  form-float">
-                                    <label for="dob">
+                                    <label for="anniversaryDate">
                                         Anniversary Date
                                     </label>
                                     <input type="text" id="anniversaryDate" class="form-control anniversaryDate"
-                                           name="dob" placeholder="Anniversary Date"
+                                           name="anniversaryDate" placeholder="Anniversary Date"
                                            required/>
                                 </div>
 
@@ -299,7 +297,7 @@
                                         Approved Salary
                                     </label>
                                     <input type="number" id="approvedSalary" class="form-control approvedSalary"
-                                           name="approvedSalary" placeholder="Anniversary Date"
+                                           name="approvedSalary" placeholder="Approved Salary" value="${userregisterbyId.approvedSalary}"
                                            required/>
                                 </div>
 
@@ -309,7 +307,7 @@
                                         Designation Salary
                                     </label>
                                     <input type="number" id="designationSalary" class="form-control designationSalary"
-                                           name="designationSalary" placeholder="Designation Salary"
+                                           name="designationSalary" placeholder="Designation Salary" value="${userregisterbyId.designationSalary}"
                                            required/>
                                 </div>
 
@@ -318,7 +316,7 @@
                                     <label for="lastPaidDate">
                                         Last Paid Date
                                     </label>
-                                    <input type="number" id="lastPaidDate" class="form-control lastPaidDate"
+                                    <input type="text" id="lastPaidDate" class="form-control lastPaidDate"
                                            name="lastPaidDate" placeholder="Last Paid Date"
                                            required/>
                                 </div>
@@ -328,7 +326,7 @@
                                         Payment Id
                                     </label>
                                     <input type="text" id="paymentModeId" class="form-control paymentModeId"
-                                           name="paymentModeId" placeholder="Payment Id"
+                                           name="paymentModeId" placeholder="Payment Id" value="${userregisterbyId.paymentModeId}"
                                            required/>
                                 </div>
 
@@ -337,7 +335,7 @@
                                         Bank Account
                                     </label>
                                     <input type="text" id="bankAccount" class="form-control bankAccount"
-                                           name="bankAccount" placeholder="Bank Account"
+                                           name="bankAccount" placeholder="Bank Account" value="${userregisterbyId.bankAccount}"
                                            required/>
                                 </div>
 
@@ -345,9 +343,13 @@
                                     <label for="bankId">
                                         Bank
                                     </label>
-                                    <input type="text" id="bankId" class="form-control bankId"
-                                           name="bankId" placeholder="Bank Account"
-                                           required/>
+                                    <select class="form-control show-tick bankId" name="bankId" id="bankId">
+                                        <g:each var="b" in="${bank}">
+                                            <option value="${b.id}"
+                                                    <g:if test="${b.id == userregisterbyId.bankId}">selected</g:if>
+                                            >${b.bankName}</option>
+                                        </g:each>
+                                    </select>
                                 </div>
 
 
@@ -356,8 +358,7 @@
                                         Assigned Holidays
                                     </label>
                                     <input type="text" id="assignedHolidays" class="form-control assignedHolidays"
-                                           name="assignedHolidays" placeholder="Assigned Holidays"
-                                           required/>
+                                           name="assignedHolidays" placeholder="Assigned Holidays" value="${userregisterbyId.assignedHolidays}" required/>
                                 </div>
 
                                 <div class="col-lg-6 form-group  form-float">
@@ -365,7 +366,7 @@
                                         Specialization
                                     </label>
                                     <input type="text" id="specialization" class="form-control specialization"
-                                           name="specialization" placeholder="Specialization"
+                                           name="specialization" placeholder="Specialization" value="${userregisterbyId.specialization}"
                                            required/>
                                 </div>
 
@@ -374,7 +375,7 @@
                                         Licence Number
                                     </label>
                                     <input type="text" id="licenceNumber" class="form-control licenceNumber"
-                                           name="licenceNumber" placeholder="Licence Number"
+                                           name="licenceNumber" placeholder="Licence Number" value="${userregisterbyId.licenceNumber}"
                                            required/>
                                 </div>
 
@@ -382,28 +383,40 @@
                                     <label for="account">
                                         Account
                                     </label>
-                                    <input type="text" id="account" class="form-control account"
-                                           name="account" placeholder="Licence Number"
-                                           required/>
+                                    <select class="form-control show-tick account" name="account" id="account">
+                                        <g:each var="a" in="${account}">
+                                            <option value="${a.id}"
+                                                    <g:if test="${a.id == userregisterbyId.account.id}">selected</g:if>
+                                            >${a.accountName}</option>
+                                        </g:each>
+                                    </select>
                                 </div>
 
                                 <div class="col-lg-6 form-group  form-float">
                                     <label for="role">
                                         Role
                                     </label>
-                                    <input type="text" id="role" class="form-control role"
-                                           name="role" placeholder="Role"
-                                           required/>
+                                    <select class="form-control show-tick role" name="role" id="role">
+                                        <g:each var="r" in="${role}">
+                                            <option value="${r.id}"
+                                                    <g:if test="${r.id == userregisterbyId.role.id}">selected</g:if>
+                                            >${r.name}</option>
+                                        </g:each>
+                                    </select>
                                 </div>
 
 
                                 <div class="col-lg-6 form-group  form-float">
-                                    <label for="division">
+                                    <label for="divisionId">
                                         Division
                                     </label>
-                                    <input type="text" id="division" class="form-control division"
-                                           name="division" placeholder="Division"
-                                           required/>
+                                    <select class="form-control show-tick divisionId" name="divisionId" id="divisionId">
+                                        <g:each var="d" in="${division}">
+                                            <option value="${d.id}"
+                                                    <g:if test="${d.id == userregisterbyId.division}">selected</g:if>
+                                            >${d.divisionName}</option>
+                                        </g:each>
+                                    </select>
                                 </div>
 
                                 <div class="col-lg-6 form-group  form-float">
@@ -412,7 +425,20 @@
                                     </label>
                                     <select class="form-control show-tick entityType" name="entityType" id="entityType">
                                         <g:each var="et" in="${entitytype}">
-                                            <option value="${et.id}">${et.name}</option>
+                                            <option value="${et.id}"  <g:if
+                                                    test="${et.id == userregisterbyId.entityType}">selected</g:if> >${et.name}</option>
+                                        </g:each>
+                                    </select>
+                                </div>
+
+                                <div class="col-lg-6 form-group  form-float">
+                                    <label for="entity">
+                                        Entity
+                                    </label>
+                                    <select class="form-control show-tick entity" name="entity" id="entity">
+                                        <g:each var="e" in="${entity}">
+                                            <option value="${e.id}" <g:if
+                                                    test="${e.id == userregisterbyId.entity}">selected</g:if> >${e.entityName}</option>
                                         </g:each>
                                     </select>
                                 </div>
@@ -424,7 +450,7 @@
                                     </label>
                                     <select class="form-control show-tick zoneId" name="zoneId" id="zoneId">
                                         <g:each var="zone" in="${zoneList}">
-                                            <option value="${zone.id}">${zone.name}</option>
+                                            <option value="${zone.id}" <g:if test="${zone.id == userregisterbyId.zoneId}">selected</g:if> >${zone.name}</option>
                                         </g:each>
                                     </select>
                                 </div>
@@ -433,6 +459,7 @@
                                 <input type="hidden" name="entityId" value="1">
                                 <input type="hidden" name="status" value="1">
                                 <input type="hidden" name="syncStatus" value="1">
+                                <input type="hidden" name="lastLoginDate" value="12/02/2020">
                                 <input type="hidden" name="createdUser" value="1">
                                 <input type="hidden" name="modifiedUser" value="1">
                                 <div class="col-lg-12">
@@ -479,8 +506,43 @@
 <script>
 
     $(function () {
+
+        var dob = new Date('${userregisterbyId.dob}');
+        $('.dob').val(moment(dob).format('DD/MM/YYYY'));
+
         //Datetimepicker plugin
-        $('.contactDob').bootstrapMaterialDatePicker({
+        $('.dob').bootstrapMaterialDatePicker({
+            format: 'DD/MM/YYYY',
+            clearButton: true,
+            time: false,
+            weekStart: 1
+        });
+
+        var joiningDate = new Date('${userregisterbyId.joiningDate}');
+        $('.joiningDate').val(moment(joiningDate).format('DD/MM/YYYY'));
+
+
+        $('.joiningDate').bootstrapMaterialDatePicker({
+            format: 'DD/MM/YYYY',
+            clearButton: true,
+            time: false,
+            weekStart: 1
+        });
+
+        var lastPaidDate = new Date('${userregisterbyId.lastPaidDate}');
+        $('.lastPaidDate').val(moment(lastPaidDate).format('DD/MM/YYYY'));
+
+        $('.lastPaidDate').bootstrapMaterialDatePicker({
+            format: 'DD/MM/YYYY',
+            clearButton: true,
+            time: false,
+            weekStart: 1
+        });
+
+        var anniversaryDate = new Date('${userregisterbyId.anniversaryDate}');
+        $('.anniversaryDate').val(moment(anniversaryDate).format('DD/MM/YYYY'));
+
+        $('.anniversaryDate').bootstrapMaterialDatePicker({
             format: 'DD/MM/YYYY',
             clearButton: true,
             time: false,

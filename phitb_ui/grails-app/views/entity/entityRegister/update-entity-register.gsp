@@ -322,12 +322,16 @@
 
                                 <div class="col-lg-6 form-group  form-float">
                                     <label for="bankId">
-                                        Bank Id
+                                        Bank
                                     </label>
-                                    <input type="number" id="bankId" class="form-control calculateOn"
-                                           name="bankId" placeholder="Bank Id" value="${entity.bankId}"
-                                           required/>
+                                    <select class="form-control show-tick bankId" name="bankId" id="bankId">
+                                        <g:each var="b" in="${bank}">
+                                            <option value="${b.id}" <g:if test="${b.id == entity.bankId}">selected</g:if>
+                                            >${b.bankName}</option>
+                                        </g:each>
+                                    </select>
                                 </div>
+
 
                                 <div class="col-lg-6 form-group  form-float">
                                     <label for="accountNo">

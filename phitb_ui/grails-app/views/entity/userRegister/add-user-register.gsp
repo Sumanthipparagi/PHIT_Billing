@@ -40,7 +40,7 @@
                     <h2>Add User Register</h2>
                     <ul class="breadcrumb padding-0">
                         <li class="breadcrumb-item"><a href="index.html"><i class="zmdi zmdi-home"></i></a></li>
-                        <li class="breadcrumb-item"><a href="/entity-register">User Register</a></li>
+                        <li class="breadcrumb-item"><a href="/user-register">User Register</a></li>
                         <li class="breadcrumb-item active">Add User Register</li>
                     </ul>
                 </div>
@@ -118,9 +118,11 @@
                                     <label for="reportTo">
                                         Report To
                                     </label>
-                                    <input type="text" id="reportTo" class="form-control reportTo" name="reportTo"
-                                           placeholder="Report To"
-                                           required/>
+                                    <select class="form-control show-tick reportTo" name="reportTo" id="reportTo">
+                                        <g:each var="u" in="${userregister}">
+                                            <option value="${u.id}">${u.userName}</option>
+                                        </g:each>
+                                    </select>
                                 </div>
 
                                 <div class="col-lg-6 form-group  form-float">
@@ -137,9 +139,11 @@
                                     <label for="genderId">
                                         Gender
                                     </label>
-                                    <input type="text" id="genderId" class="form-control genderId"
-                                           name="genderId" placeholder="Gender"
-                                           required/>
+                                    <select class="form-control show-tick genderId" name="genderId" id="genderId">
+                                        <g:each var="g" in="${gender}">
+                                            <option value="${g.id}">${g.name}</option>
+                                        </g:each>
+                                    </select>
                                 </div>
 
                                 <div class="col-lg-6 form-group  form-float">
@@ -206,9 +210,11 @@
                                     <label for="referredBy">
                                         Referred By
                                     </label>
-                                    <input type="text" id="referredBy" class="form-control referredBy"
-                                           name="referredBy" placeholder="Referred By"
-                                           required/>
+                                    <select class="form-control show-tick referredBy" name="referredBy" id="referredBy">
+                                        <g:each var="u" in="${userregister}">
+                                            <option value="${u.id}">${u.userName}</option>
+                                        </g:each>
+                                    </select>
                                 </div>
 
                                 <div class="col-lg-6 form-group  form-float">
@@ -245,9 +251,11 @@
                                     <label for="department">
                                        Department
                                     </label>
-                                    <input type="text" id="department" class="form-control department"
-                                           name="department" placeholder="Department"
-                                           required/>
+                                    <select class="form-control show-tick department" name="department" id="department">
+                                        <g:each var="d" in="${department}">
+                                            <option value="${d.id}">${d.name}</option>
+                                        </g:each>
+                                    </select>
                                 </div>
 
 
@@ -272,7 +280,7 @@
                                 </div>
 
                                 <div class="col-lg-6 form-group  form-float">
-                                    <label for="dob">
+                                    <label for="anniversaryDate">
                                         Anniversary Date
                                     </label>
                                     <input type="text" id="anniversaryDate" class="form-control anniversaryDate"
@@ -285,7 +293,7 @@
                                         Approved Salary
                                     </label>
                                     <input type="number" id="approvedSalary" class="form-control approvedSalary"
-                                           name="approvedSalary" placeholder="Anniversary Date"
+                                           name="approvedSalary" placeholder="Approved Salary"
                                            required/>
                                 </div>
 
@@ -331,9 +339,11 @@
                                     <label for="bankId">
                                         Bank
                                     </label>
-                                    <input type="text" id="bankId" class="form-control bankId"
-                                           name="bankId" placeholder="Bank Account"
-                                           required/>
+                                    <select class="form-control show-tick bankId" name="bankId" id="bankId">
+                                        <g:each var="b" in="${bank}">
+                                            <option value="${b.id}">${b.bankName}</option>
+                                        </g:each>
+                                    </select>
                                 </div>
 
 
@@ -368,18 +378,22 @@
                                     <label for="account">
                                         Account
                                     </label>
-                                    <input type="text" id="account" class="form-control account"
-                                           name="account" placeholder="Licence Number"
-                                           required/>
+                                    <select class="form-control show-tick account" name="account" id="account">
+                                        <g:each var="a" in="${account}">
+                                            <option value="${a.id}">${a.accountName}</option>
+                                        </g:each>
+                                    </select>
                                 </div>
 
                                 <div class="col-lg-6 form-group  form-float">
                                     <label for="role">
                                         Role
                                     </label>
-                                    <input type="text" id="role" class="form-control role"
-                                           name="role" placeholder="Role"
-                                           required/>
+                                    <select class="form-control show-tick role" name="role" id="role">
+                                        <g:each var="r" in="${role}">
+                                            <option value="${r.id}">${r.name}</option>
+                                        </g:each>
+                                    </select>
                                 </div>
 
 
@@ -387,9 +401,11 @@
                                     <label for="divisionId">
                                         Division
                                     </label>
-                                    <input type="text" id="divisionId" class="form-control divisionId"
-                                           name="divisionId" placeholder="Division"
-                                           required/>
+                                    <select class="form-control show-tick divisionId" name="divisionId" id="divisionId">
+                                        <g:each var="d" in="${division}">
+                                            <option value="${d.id}">${d.divisionName}</option>
+                                        </g:each>
+                                    </select>
                                 </div>
 
                                 <div class="col-lg-6 form-group  form-float">
@@ -478,7 +494,28 @@
 
     $(function () {
         //Datetimepicker plugin
-        $('.contactDob').bootstrapMaterialDatePicker({
+        $('.dob').bootstrapMaterialDatePicker({
+            format: 'DD/MM/YYYY',
+            clearButton: true,
+            time: false,
+            weekStart: 1
+        });
+
+        $('.joiningDate').bootstrapMaterialDatePicker({
+            format: 'DD/MM/YYYY',
+            clearButton: true,
+            time: false,
+            weekStart: 1
+        });
+
+        $('.lastPaidDate').bootstrapMaterialDatePicker({
+            format: 'DD/MM/YYYY',
+            clearButton: true,
+            time: false,
+            weekStart: 1
+        });
+
+        $('.anniversaryDate').bootstrapMaterialDatePicker({
             format: 'DD/MM/YYYY',
             clearButton: true,
             time: false,

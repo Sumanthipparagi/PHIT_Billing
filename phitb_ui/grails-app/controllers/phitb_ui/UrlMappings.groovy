@@ -122,5 +122,45 @@ class UrlMappings {
         "/user-register/update/$id"(controller:"userRegister",action:"update")
         "/user-register/delete/$id"(controller: "userRegister",action:"delete")
 
+
+        //      Customer Group register
+        "/customer-group-register"(controller: "customerGroup") {
+            action = [GET: 'index', POST: 'save']
+        }
+//        "/customer-group-register/add-customer-group"(controller: "customerGroup", action: 'addUser')
+//        "/customer-group-register/update-customer-group/$id"(controller: "userRegister", action: 'updateUser')
+        "/customer-group-register/datatable"(controller: "customerGroup", action: 'dataTable')
+        "/customer-group-register/update/$id"(controller:"customerGroup",action:"update")
+        "/customer-group-register/delete/$id"(controller: "customerGroup",action:"delete")
+
+
+        //     Day End Master
+        "/day-end-master"(controller: "dayEnd") {
+            action = [GET: 'index', POST: 'save']
+        }
+//        "/customer-group-register/add-customer-group"(controller: "customerGroup", action: 'addUser')
+//        "/customer-group-register/update-customer-group/$id"(controller: "userRegister", action: 'updateUser')
+        "/day-end-master/datatable"(controller: "dayEnd", action: 'dataTable')
+        "/day-end-master/update/$id"(controller:"dayEnd",action:"update")
+        "/day-end-master/delete/$id"(controller: "dayEnd",action:"delete")
+
+
+        //    Financial Year Master
+        "/financial-year-master"(controller: "financialYear") {
+            action = [GET: 'index', POST: 'save']
+        }
+        "/financial-year-master/datatable"(controller: "financialYear", action: 'dataTable')
+        "/financial-year-master/update/$id"(controller:"financialYear",action:"update")
+        "/financial-year-master/delete/$id"(controller: "financialYear",action:"delete")
+
+        //   Region Register
+        "/region-master"(controller: "regionMaster") {
+            action = [GET: 'index', POST: 'save']
+        }
+        "/region-master/datatable"(controller: "regionMaster", action: 'dataTable')
+        "/region-master/update/$id"(controller:"regionMaster",action:"update")
+        "/region-master/delete/$id"(controller: "regionMaster",action:"delete")
+
+
     }
 }

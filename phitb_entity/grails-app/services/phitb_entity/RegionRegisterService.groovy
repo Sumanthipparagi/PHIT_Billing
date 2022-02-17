@@ -1,6 +1,7 @@
 package phitb_entity
 
 import grails.gorm.transactions.Transactional
+import groovy.json.JsonSlurper
 import org.grails.web.json.JSONObject
 import phitb_entity.Exception.BadRequestException
 import phitb_entity.Exception.ResourceNotFoundException
@@ -66,11 +67,19 @@ class RegionRegisterService {
             eq('deleted', false)
             order(orderColumn, orderDir)
         }
+
+        def countries = []
+        regionRegisterCriteriaArrayList.each {
+            println(it.countryId)
+            def apires = showCountryById(it.countryId.toString())
+            countries.push(apires)
+        }
         def recordsTotal = regionRegisterCriteriaArrayList.totalCount
         JSONObject jsonObject = new JSONObject()
         jsonObject.put("draw", paramsJsonObject.draw)
         jsonObject.put("recordsTotal", recordsTotal)
         jsonObject.put("recordsFiltered", recordsTotal)
+        jsonObject.put("countries", countries)
         jsonObject.put("data", regionRegisterCriteriaArrayList)
         return jsonObject
     }
@@ -124,6 +133,23 @@ class RegionRegisterService {
             }
         } else {
             throw new BadRequestException()
+        }
+    }
+
+
+    def showCountryById(String id)
+    {
+        try
+        {
+            def url = Constants.API_GATEWAY+Constants.COUNTRY_MASTER_SHOW+"/"+id
+            URL apiUrl = new URL(url)
+            def card = new JsonSlurper().parseText(apiUrl.text)
+            return card
+        }
+        catch (Exception ex)
+        {
+            System.err.println('Service :showCountryById , action :  show  , Ex:' + ex)
+            log.error('Service :showCountryById , action :  show  , Ex:' + ex)
         }
     }
 }

@@ -82,6 +82,12 @@ public class Links
 
     public static String ENTITY_TYPE_MASTER_SHOW = "api/v1.0/entity/entitytypemaster";
     public static String ROUTE_REGISTER_SHOW = "api/v1.0/entity/routeregister";
+    public static String DEPARTMENT_MASTER_SHOW = "api/v1.0/entity/departmentmaster";
+    public static String BANK_REGISTER_SHOW = "api/v1.0/accounts/bankregister";
+    public static String ROLE_MASTER_SHOW = "api/v1.0/entity/rolemaster";
+    public static String ACCOUNT_REGISTER_SHOW = "api/v1.0/entity/accountregister";
+    public static String DIVISION_SHOW = "api/v1.0/product/division";
+    public static String GENDER_SHOW = "api/v1.0/system/gender";
 
     //Entity Register
     public static String ENTITY_REGISTER_SHOW = "api/v1.0/entity/entityregister";
@@ -99,5 +105,33 @@ public class Links
     public static String USER_REGISTER_DELETE = "api/v1.0/entity/userregister/{id}";
 
 
+    //Customer Group Register
+    public static String CUSTOMER_GROUP_REGISTER_SHOW = "api/v1.0/entity/customergroupregister";
+    public static String CUSTOMER_GROUP_REGISTER_SAVE = "api/v1.0/entity/customergroupregister";
+    public static String CUSTOMER_GROUP_REGISTER_DATATABLE = "api/v1.0/entity/customergroupregister/datatable";
+    public static String CUSTOMER_GROUP_REGISTER_UPDATE = "api/v1.0/entity/customergroupregister/{id}";
+    public static String CUSTOMER_GROUP_REGISTER_DELETE = "api/v1.0/entity/customergroupregister/{id}";
 
+    //Day End Master
+    public static String DAY_END_MASTER_SHOW = "api/v1.0/entity/dayendmaster";
+    public static String DAY_END_MASTER_SAVE = "api/v1.0/entity/dayendmaster";
+    public static String DAY_END_MASTER_DATATABLE = "api/v1.0/entity/dayendmaster/datatable";
+    public static String DAY_END_MASTER_UPDATE = "api/v1.0/entity/dayendmaster/{id}";
+    public static String DAY_END_MASTER_DELETE = "api/v1.0/entity/dayendmaster/{id}";
+
+
+    //Financial Year master
+    public static String FINANCIAL_YEAR_SHOW = "api/v1.0/entity/financialyearmaster";
+    public static String FINANCIAL_YEAR_SAVE = "api/v1.0/entity/financialyearmaster";
+    public static String FINANCIAL_YEAR_DATATABLE = "api/v1.0/entity/financialyearmaster/datatable";
+    public static String FINANCIAL_YEAR_UPDATE = "api/v1.0/entity/financialyearmaster/{id}";
+    public static String FINANCIAL_YEAR_DELETE = "api/v1.0/entity/financialyearmaster/{id}";
+
+
+    //Region Register
+    public static String REGION_REGISTER_SHOW = "api/v1.0/entity/regionregister";
+    public static String REGION_REGISTER_SAVE = "api/v1.0/entity/regionregister";
+    public static String REGION_REGISTER_DATATABLE = "api/v1.0/entity/regionregister/datatable";
+    public static String REGION_REGISTER_UPDATE = "api/v1.0/entity/regionregister/{id}";
+    public static String REGION_REGISTER_DELETE = "api/v1.0/entity/regionregister/{id}";
 }
