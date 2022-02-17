@@ -74,7 +74,7 @@
                     %{--                        </ul>--}%
                     %{--                    </div>--}%
                     <div class="body">
-                        <form action="/user-register" id="form_validation" method="POST" role="form"
+                        <form action="/entity-register" id="form_validation" method="POST" role="form"
                               class="entityRegisterForm" enctype="multipart/form-data">
                             <div class="row clearfix">
                                 <div class="col-lg-6 form-group  form-float">
@@ -304,7 +304,7 @@
                                     <label for="lastPaidDate">
                                         Last Paid Date
                                     </label>
-                                    <input type="number" id="lastPaidDate" class="form-control lastPaidDate"
+                                    <input type="text" id="lastPaidDate" class="form-control lastPaidDate"
                                            name="lastPaidDate" placeholder="Last Paid Date"
                                            required/>
                                 </div>
