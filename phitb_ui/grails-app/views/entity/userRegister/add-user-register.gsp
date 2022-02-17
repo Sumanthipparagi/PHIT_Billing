@@ -74,7 +74,7 @@
                     %{--                        </ul>--}%
                     %{--                    </div>--}%
                     <div class="body">
-                        <form action="/entity-register" id="form_validation" method="POST" role="form"
+                        <form action="/user-register" id="form_validation" method="POST" role="form"
                               class="entityRegisterForm" enctype="multipart/form-data">
                             <div class="row clearfix">
                                 <div class="col-lg-6 form-group  form-float">

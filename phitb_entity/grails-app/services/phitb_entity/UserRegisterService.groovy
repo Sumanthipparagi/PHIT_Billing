@@ -11,7 +11,7 @@ import java.text.SimpleDateFormat
 class UserRegisterService
 {
 
-    SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss")
+    SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy")
 
     def getAll(String limit, String offset, String query)
     {
