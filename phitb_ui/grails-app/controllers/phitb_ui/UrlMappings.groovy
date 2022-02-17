@@ -105,9 +105,22 @@ class UrlMappings {
         "/entity-register"(controller: "entityRegister") {
             action = [GET: 'index', POST: 'save']
         }
+        "/entity-register/add-entity-register"(controller: "entityRegister", action: 'addEntity')
+        "/entity-register/update-entity-register/$id"(controller: "entityRegister", action: 'updateEntity')
         "/entity-register/datatable"(controller: "entityRegister", action: 'dataTable')
         "/entity-register/update/$id"(controller:"entityRegister",action:"update")
         "/entity-register/delete/$id"(controller: "entityRegister",action:"delete")
+
+
+//      User Register
+        "/user-register"(controller: "userRegister") {
+            action = [GET: 'index', POST: 'save']
+        }
+        "/user-register/add-user-register"(controller: "userRegister", action: 'addUser')
+        "/user-register/update-user-register/$id"(controller: "userRegister", action: 'updateUser')
+        "/user-register/datatable"(controller: "userRegister", action: 'dataTable')
+        "/user-register/update/$id"(controller:"userRegister",action:"update")
+        "/user-register/delete/$id"(controller: "userRegister",action:"delete")
 
     }
 }

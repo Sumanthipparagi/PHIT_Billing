@@ -1,6 +1,7 @@
 package phitb_entity
 
 import gorm.logical.delete.LogicalDelete
+import org.apache.catalina.User
 
 class EntityRegister implements LogicalDelete<EntityRegister>
 {
@@ -26,25 +27,25 @@ class EntityRegister implements LogicalDelete<EntityRegister>
     String drugLicence2
     String drugLicenceValidity
     String foodLicenceValidity
-    long salesBalanceLimit
+    double salesBalanceLimit
     long noOfCrDays
     long noOfGraceDays
     long calculateOn
     long bankId
     String accountNo
     String upiId
-    long openingBalance
-    long currentBalance
-    long discount
-    long bankCommision
+    double openingBalance
+    double currentBalance
+    double discount
+    double bankCommision
     long transportTypeId
-    long defaultCharge
+    double defaultCharge
     long careTaker
     String contact
     String terms
     long salesman
     long manager
-    long salesmanCommission
+    double salesmanCommission
     long status
     long syncStatus
     long routeId
@@ -57,11 +58,8 @@ class EntityRegister implements LogicalDelete<EntityRegister>
     String password
     long zoneId
     String contactDob
-    long entityId
     long createdUser
     long modifiedUser
-
-
     Date dateCreated
     Date lastUpdated
 

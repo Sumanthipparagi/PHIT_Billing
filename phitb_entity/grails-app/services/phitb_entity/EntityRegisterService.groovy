@@ -1,6 +1,7 @@
 package phitb_entity
 
 import grails.gorm.transactions.Transactional
+import groovy.json.JsonSlurper
 import org.grails.web.json.JSONObject
 import phitb_entity.Exception.BadRequestException
 import phitb_entity.Exception.ResourceNotFoundException
@@ -80,11 +81,27 @@ class EntityRegisterService {
             eq('deleted', false)
             order(orderColumn, orderDir)
         }
+
+        def manager = []
+        entityRegisterArrayList.each {
+            println(it.manager)
+            def apires1 = getAllByUser(it.manager.toString())
+            manager.push(apires1)
+        }
+
+        def salesman = []
+        entityRegisterArrayList.each {
+            println(it.salesman)
+            def apires2 = getAllByUser(it.salesman.toString())
+            salesman.push(apires2)
+        }
         def recordsTotal = entityRegisterArrayList.totalCount
         JSONObject jsonObject = new JSONObject()
         jsonObject.put("draw", paramsJsonObject.draw)
         jsonObject.put("recordsTotal", recordsTotal)
         jsonObject.put("recordsFiltered", recordsTotal)
+        jsonObject.put("salesman", salesman)
+        jsonObject.put("manager", manager)
         jsonObject.put("data", entityRegisterArrayList)
         return jsonObject
     }
@@ -114,28 +131,27 @@ class EntityRegisterService {
         entityRegister.drugLicence2 = jsonObject.get("drugLicence2").toString()
         entityRegister.drugLicenceValidity = jsonObject.get("drugLicenceValidity").toString()
         entityRegister.foodLicenceValidity = jsonObject.get("foodLicenceValidity").toString()
-        entityRegister.salesBalanceLimit = Long.parseLong(jsonObject.get("salesBalanceLimit").toString())
+        entityRegister.salesBalanceLimit = Double.parseDouble(jsonObject.get("salesBalanceLimit").toString())
         entityRegister.noOfCrDays = Long.parseLong(jsonObject.get("noOfCrDays").toString())
         entityRegister.noOfGraceDays = Long.parseLong(jsonObject.get("noOfGraceDays").toString())
         entityRegister.calculateOn = Long.parseLong(jsonObject.get("calculateOn").toString())
         entityRegister.bankId = Long.parseLong(jsonObject.get("bankId").toString())
-        entityRegister.bankId = Long.parseLong(jsonObject.get("bankId").toString())
         entityRegister.accountNo = jsonObject.get("accountNo").toString()
         entityRegister.upiId = jsonObject.get("upiId").toString()
         entityRegister.noOfCrDays = Long.parseLong(jsonObject.get("noOfCrDays").toString())
-        entityRegister.openingBalance = Long.parseLong(jsonObject.get("openingBalance").toString())
-        entityRegister.currentBalance = Long.parseLong(jsonObject.get("currentBalance").toString())
-        entityRegister.discount = Long.parseLong(jsonObject.get("discount").toString())
-        entityRegister.bankCommision = Long.parseLong(jsonObject.get("bankCommision").toString())
+        entityRegister.openingBalance = Double.parseDouble(jsonObject.get("openingBalance").toString())
+        entityRegister.currentBalance = Double.parseDouble(jsonObject.get("currentBalance").toString())
+        entityRegister.discount = Double.parseDouble(jsonObject.get("discount").toString())
+        entityRegister.bankCommision = Double.parseDouble(jsonObject.get("bankCommision").toString())
         entityRegister.transportTypeId = Long.parseLong(jsonObject.get("transportTypeId").toString())
-        entityRegister.defaultCharge = Long.parseLong(jsonObject.get("defaultCharge").toString())
+        entityRegister.defaultCharge = Double.parseDouble(jsonObject.get("defaultCharge").toString())
         entityRegister.careTaker = Long.parseLong(jsonObject.get("careTaker").toString())
         entityRegister.contact = jsonObject.get("contact").toString()
         entityRegister.terms = jsonObject.get("terms").toString()
         entityRegister.salesman = Long.parseLong(jsonObject.get("salesman").toString())
         entityRegister.manager = Long.parseLong(jsonObject.get("manager").toString())
         entityRegister.status = Long.parseLong(jsonObject.get("status").toString())
-        entityRegister.salesmanCommission = Long.parseLong(jsonObject.get("salesmanCommission").toString())
+        entityRegister.salesmanCommission = Double.parseDouble(jsonObject.get("salesmanCommission").toString())
         entityRegister.syncStatus = Long.parseLong(jsonObject.get("syncStatus").toString())
         entityRegister.routeId = Long.parseLong(jsonObject.get("routeId").toString())
         entityRegister.accountId = jsonObject.get("accountId").toString()
@@ -188,28 +204,27 @@ class EntityRegisterService {
             entityRegister.drugLicence2 = jsonObject.get("drugLicence2").toString()
             entityRegister.drugLicenceValidity = jsonObject.get("drugLicenceValidity").toString()
             entityRegister.foodLicenceValidity = jsonObject.get("foodLicenceValidity").toString()
-            entityRegister.salesBalanceLimit = Long.parseLong(jsonObject.get("salesBalanceLimit").toString())
+            entityRegister.salesBalanceLimit = Double.parseDouble(jsonObject.get("salesBalanceLimit").toString())
             entityRegister.noOfCrDays = Long.parseLong(jsonObject.get("noOfCrDays").toString())
             entityRegister.noOfGraceDays = Long.parseLong(jsonObject.get("noOfGraceDays").toString())
             entityRegister.calculateOn = Long.parseLong(jsonObject.get("calculateOn").toString())
             entityRegister.bankId = Long.parseLong(jsonObject.get("bankId").toString())
-            entityRegister.bankId = Long.parseLong(jsonObject.get("bankId").toString())
             entityRegister.accountNo = jsonObject.get("accountNo").toString()
             entityRegister.upiId = jsonObject.get("upiId").toString()
             entityRegister.noOfCrDays = Long.parseLong(jsonObject.get("noOfCrDays").toString())
-            entityRegister.openingBalance = Long.parseLong(jsonObject.get("openingBalance").toString())
-            entityRegister.currentBalance = Long.parseLong(jsonObject.get("currentBalance").toString())
-            entityRegister.discount = Long.parseLong(jsonObject.get("discount").toString())
-            entityRegister.bankCommision = Long.parseLong(jsonObject.get("bankCommision").toString())
+            entityRegister.openingBalance = Double.parseDouble(jsonObject.get("openingBalance").toString())
+            entityRegister.currentBalance = Double.parseDouble(jsonObject.get("currentBalance").toString())
+            entityRegister.discount = Double.parseDouble(jsonObject.get("discount").toString())
+            entityRegister.bankCommision = Double.parseDouble(jsonObject.get("bankCommision").toString())
             entityRegister.transportTypeId = Long.parseLong(jsonObject.get("transportTypeId").toString())
-            entityRegister.defaultCharge = Long.parseLong(jsonObject.get("defaultCharge").toString())
+            entityRegister.defaultCharge = Double.parseDouble(jsonObject.get("defaultCharge").toString())
             entityRegister.careTaker = Long.parseLong(jsonObject.get("careTaker").toString())
             entityRegister.contact = jsonObject.get("contact").toString()
             entityRegister.terms = jsonObject.get("terms").toString()
             entityRegister.salesman = Long.parseLong(jsonObject.get("salesman").toString())
             entityRegister.manager = Long.parseLong(jsonObject.get("manager").toString())
             entityRegister.status = Long.parseLong(jsonObject.get("status").toString())
-            entityRegister.salesmanCommission = Long.parseLong(jsonObject.get("salesmanCommission").toString())
+            entityRegister.salesmanCommission = Double.parseDouble(jsonObject.get("salesmanCommission").toString())
             entityRegister.syncStatus = Long.parseLong(jsonObject.get("syncStatus").toString())
             entityRegister.routeId = Long.parseLong(jsonObject.get("routeId").toString())
             entityRegister.accountId = jsonObject.get("accountId").toString()
@@ -259,4 +274,21 @@ class EntityRegisterService {
             throw new BadRequestException()
         }
     }
+
+    def getAllByUser(String id)
+    {
+        try
+        {
+            def url = Constants.API_GATEWAY+Constants.USER_REGISTER_SHOW+"/"+id
+            URL apiUrl = new URL(url)
+            def card = new JsonSlurper().parseText(apiUrl.text)
+            return card
+        }
+        catch (Exception ex)
+        {
+            System.err.println('Service :EntityRegisterService , action :  getAllByUser  , Ex:' + ex)
+            log.error('Service :EntityRegisterService , action :  getAllByUser  , Ex:' + ex)
+        }
+    }
 }
+

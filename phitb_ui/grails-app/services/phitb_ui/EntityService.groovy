@@ -24,7 +24,7 @@ class EntityService {
         {
             println(jsonObject)
             Response apiResponse = target
-                    .path(new Links().FRIDGE_SAVE)
+                    .path(new Links().ENTITY_REGISTER_SAVE)
                     .request(MediaType.APPLICATION_JSON_TYPE)
                     .post(Entity.entity(jsonObject.toString(),MediaType.APPLICATION_JSON_TYPE))
             println(apiResponse)
@@ -50,7 +50,7 @@ class EntityService {
         try
         {
             Response apiResponse = target
-                    .path(new Links().FRIDGE_DATATABLE)
+                    .path(new Links().ENTITY_REGISTER_DATATABLE)
                     .queryParam("params", URLEncoder.encode(jsonObject.toString(), "UTF-8"))
                     .request(MediaType.APPLICATION_JSON_TYPE)
                     .get()
@@ -71,7 +71,7 @@ class EntityService {
         try
         {
             Response apiResponse = target
-                    .path(new Links().FRIDGE_UPDATE)
+                    .path(new Links().ENTITY_REGISTER_UPDATE)
                     .resolveTemplate("id", jsonObject.id)
                     .request(MediaType.APPLICATION_JSON_TYPE)
                     .put(Entity.entity(jsonObject.toString(),MediaType.APPLICATION_JSON_TYPE))
@@ -98,7 +98,7 @@ class EntityService {
         try
         {
             Response apiResponse = target
-                    .path(new Links().FRIDGE_DELETE)
+                    .path(new Links().ENTITY_REGISTER_DELETE)
                     .resolveTemplate("id", jsonObject.id)
                     .request(MediaType.APPLICATION_JSON_TYPE)
                     .delete()
@@ -112,5 +112,101 @@ class EntityService {
     }
 
 
+//User Register
+    def saveUser(JSONObject jsonObject)
+    {
+        Client client = ClientBuilder.newClient();
+        WebTarget target = client.target(new Links().API_GATEWAY);
+        GrailsHttpSession session = WebUtils.retrieveGrailsWebRequest().session
+        try
+        {
+            println(jsonObject)
+            Response apiResponse = target
+                    .path(new Links().USER_REGISTER_SAVE)
+                    .request(MediaType.APPLICATION_JSON_TYPE)
+                    .post(Entity.entity(jsonObject.toString(),MediaType.APPLICATION_JSON_TYPE))
+            println(apiResponse)
+            return apiResponse
+        }
+        catch (Exception ex)
+        {
+            System.err.println('Service :saveStateMaster , action :  save  , Ex:' + ex)
+            log.error('Service :saveStateMaster , action :  save  , Ex:' + ex)
+        }
+    }
+
+    /**
+     *
+     * @param jsonObject
+     * @return
+     */
+    def showUser(JSONObject jsonObject)
+    {
+        Client client = ClientBuilder.newClient();
+        WebTarget target = client.target(new Links().API_GATEWAY);
+        GrailsHttpSession session = WebUtils.retrieveGrailsWebRequest().session
+        try
+        {
+            Response apiResponse = target
+                    .path(new Links().USER_REGISTER_DATATABLE)
+                    .queryParam("params", URLEncoder.encode(jsonObject.toString(), "UTF-8"))
+                    .request(MediaType.APPLICATION_JSON_TYPE)
+                    .get()
+            return apiResponse
+        }
+        catch (Exception ex)
+        {
+            System.err.println('Service :getAccountModes , action :  show  , Ex:' + ex)
+            log.error('Service :getAccountModes , action :  show  , Ex:' + ex)
+        }
+    }
+
+    def putUser(JSONObject jsonObject)
+    {
+        Client client = ClientBuilder.newClient();
+        WebTarget target = client.target(new Links().API_GATEWAY);
+        GrailsHttpSession session = WebUtils.retrieveGrailsWebRequest().session
+        try
+        {
+            Response apiResponse = target
+                    .path(new Links().USER_REGISTER_UPDATE)
+                    .resolveTemplate("id", jsonObject.id)
+                    .request(MediaType.APPLICATION_JSON_TYPE)
+                    .put(Entity.entity(jsonObject.toString(),MediaType.APPLICATION_JSON_TYPE))
+            println(jsonObject)
+            return apiResponse
+        }
+        catch (Exception ex)
+        {
+            System.err.println('Service : , action :  put  , Ex:' + ex)
+            log.error('Service :putAccountMode , action :  put  , Ex:' + ex)
+        }
+    }
+
+    /**
+     *
+     * @param jsonObject
+     * @return
+     */
+    def deleteUser(JSONObject jsonObject)
+    {
+        Client client = ClientBuilder.newClient();
+        WebTarget target = client.target(new Links().API_GATEWAY);
+        GrailsHttpSession session = WebUtils.retrieveGrailsWebRequest().session
+        try
+        {
+            Response apiResponse = target
+                    .path(new Links().USER_REGISTER_DELETE)
+                    .resolveTemplate("id", jsonObject.id)
+                    .request(MediaType.APPLICATION_JSON_TYPE)
+                    .delete()
+            return apiResponse
+        }
+        catch (Exception ex)
+        {
+            System.err.println('Service :systemService , action :  delete  , Ex:' + ex)
+            log.error('Service :systemService , action :  delete  , Ex:' + ex)
+        }
+    }
 
 }

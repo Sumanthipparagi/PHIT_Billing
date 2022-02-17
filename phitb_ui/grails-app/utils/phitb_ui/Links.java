@@ -41,6 +41,7 @@ public class Links
 
     //    City Master
     public static String CITY_MASTER_SAVE = "api/v1.0/system/city";
+    public static String CITY_MASTER_SHOW = "api/v1.0/system/city";
     public static String CITY_MASTER_DATATABLE = "api/v1.0/system/city/datatable";
     public static String CITY_MASTER_UPDATE = "api/v1.0/system/city/{id}";
     public static String CITY_MASTER_DELETE = "api/v1.0/system/city/{id}";
@@ -78,9 +79,9 @@ public class Links
     public static String RACK_DELETE = "api/v1.0/facility/rack/{id}";
 
     /*<-------------------------------------------Entity ------------------------------------------------->*/
-    public static String USER_REGISTER_SHOW = "api/v1.0/entity/userregister";
-    public static String ENTITY_TYPE_MASTER_SHOW = "api/v1.0/entity/entitytypemaster";
 
+    public static String ENTITY_TYPE_MASTER_SHOW = "api/v1.0/entity/entitytypemaster";
+    public static String ROUTE_REGISTER_SHOW = "api/v1.0/entity/routeregister";
 
     //Entity Register
     public static String ENTITY_REGISTER_SHOW = "api/v1.0/entity/entityregister";
@@ -88,5 +89,15 @@ public class Links
     public static String ENTITY_REGISTER_DATATABLE = "api/v1.0/entity/entityregister/datatable";
     public static String ENTITY_REGISTER_UPDATE = "api/v1.0/entity/entityregister/{id}";
     public static String ENTITY_REGISTER_DELETE = "api/v1.0/entity/entityregister/{id}";
+
+
+    //User Register
+    public static String USER_REGISTER_SHOW = "api/v1.0/entity/userregister";
+    public static String USER_REGISTER_SAVE = "api/v1.0/entity/userregister";
+    public static String USER_REGISTER_DATATABLE = "api/v1.0/entity/userregister/datatable";
+    public static String USER_REGISTER_UPDATE = "api/v1.0/entity/userregister/{id}";
+    public static String USER_REGISTER_DELETE = "api/v1.0/entity/userregister/{id}";
+
+
 
 }

@@ -273,6 +273,26 @@ class SystemService
         }
     }
 
+    def getCityList()
+    {
+        Client client = ClientBuilder.newClient();
+        WebTarget target = client.target(new Links().API_GATEWAY);
+        GrailsHttpSession session = WebUtils.retrieveGrailsWebRequest().session
+        try
+        {
+            Response apiResponse = target
+                    .path(new Links().CITY_MASTER_SHOW)
+                    .request(MediaType.APPLICATION_JSON_TYPE)
+                    .get()
+            return apiResponse
+        }
+        catch (Exception ex)
+        {
+            System.err.println('Service :systemService , action :  getCountryList  , Ex:' + ex)
+            log.error('Service :systemService , action :  getCountryList  , Ex:' + ex)
+        }
+    }
+
     def getStateList()
     {
         Client client = ClientBuilder.newClient();

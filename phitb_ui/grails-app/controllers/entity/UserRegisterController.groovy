@@ -3,15 +3,13 @@ package entity
 import groovy.json.JsonSlurper
 import org.grails.web.json.JSONObject
 import phitb_ui.EntityService
-import phitb_ui.FacilityService
 import phitb_ui.Links
 import system.CityController
 import system.CountryController
 import system.StateController
 import system.ZoneController
 
-class EntityRegisterController
-{
+class UserRegisterController {
 
     def index()
     {
@@ -44,8 +42,7 @@ class EntityRegisterController
                     salesmanList.add(it)
                 }
             }
-
-            render(view: '/entity/entityRegister/entityRegister',model: [entity:entity, entitytype:entitytype,
+            render(view: '/entity/userRegister/userRegister',model: [entity:entity, entitytype:entitytype,
                                                                          statelist:statelist,countrylist:countrylist,
                                                                          citylist:citylist,salesmanList:salesmanList,
                                                                          managerList:managerList,zoneList:zoneList])
@@ -58,7 +55,7 @@ class EntityRegisterController
         }
     }
 
-    def addEntity()
+    def addUser()
     {
         try
         {
@@ -92,7 +89,7 @@ class EntityRegisterController
                     salesmanList.add(it)
                 }
             }
-            render(view: '/entity/entityRegister/add-entity-register',model: [entity:entity, entitytype:entitytype,
+            render(view: '/entity/userRegister/add-user-register',model: [entity:entity, entitytype:entitytype,
                                                                               statelist:statelist,countrylist:countrylist,
                                                                               citylist:citylist,salesmanList:salesmanList,
                                                                               managerList:managerList,
@@ -106,7 +103,7 @@ class EntityRegisterController
         }
     }
 
-    def updateEntity()
+    def updateUser()
     {
         try
         {
@@ -155,13 +152,12 @@ class EntityRegisterController
         }
     }
 
-
     def dataTable()
     {
         try
         {
             JSONObject jsonObject = new JSONObject(params)
-            def apiResponse = new EntityService().showEntity(jsonObject)
+            def apiResponse = new EntityService().showUser(jsonObject)
             if (apiResponse.status == 200)
             {
                 JSONObject responseObject = new JSONObject(apiResponse.readEntity(String.class))
@@ -185,7 +181,7 @@ class EntityRegisterController
         try
         {
             JSONObject jsonObject = new JSONObject(params)
-            def apiResponse = new EntityService().saveEntity(jsonObject)
+            def apiResponse = new EntityService().saveUser(jsonObject)
             if (apiResponse?.status == 200)
             {
                 JSONObject obj = new JSONObject(apiResponse.readEntity(String.class))

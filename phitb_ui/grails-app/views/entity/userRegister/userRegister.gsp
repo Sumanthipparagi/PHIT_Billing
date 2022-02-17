@@ -6,7 +6,7 @@
     <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
     <meta name="description" content="Responsive Bootstrap 4 and web Application ui kit.">
 
-    <title>:: PharmIt :: Entity Register</title>
+    <title>:: PharmIt :: User Register</title>
     <link rel="icon" type="image/x-icon" href="${assetPath(src: '/themeassets/images/favicon.ico')}"/>
     <!-- Favicon-->
     <asset:stylesheet rel="stylesheet" src="/themeassets/plugins/bootstrap/css/bootstrap.min.css"/>
@@ -26,7 +26,20 @@
         border-top: none;
         padding: 0.9px;
         text-align: center;
+        border-collapse: unset!important;
+    }
 
+    .editbtn
+    {
+        padding: 1px 9px;
+    }
+    .deletebtn
+    {
+        padding: 1px 9px;
+    }
+
+    tbody td {
+        padding: 0px;
     }
 
     </style>
@@ -47,10 +60,10 @@
         <div class="block-header">
             <div class="row clearfix">
                 <div class="col-lg-5 col-md-5 col-sm-12">
-                    <h2>Entity Register</h2>
+                    <h2>User Register</h2>
                     <ul class="breadcrumb padding-0">
                         <li class="breadcrumb-item"><a href="index.html"><i class="zmdi zmdi-home"></i></a></li>
-                        <li class="breadcrumb-item active">Entity Register</li>
+                        <li class="breadcrumb-item active">User Register</li>
                     </ul>
                 </div>
                 <div class="col-lg-7 col-md-7 col-sm-12">
@@ -83,20 +96,21 @@
                     %{--                        </ul>--}%
                     %{--                    </div>--}%
                     <div class="header">
-                      <a href="/entity-register/add-entity-register">  <button type="button" class="btn btn-round btn-primary m-t-15 addbtn" data-toggle="modal"><font style="vertical-align: inherit;"><font
-                                  style="vertical-align: inherit;">Add Entity Regsiter</font></font></button></a>
+                        <a href="/user-register/add-user-register">  <button type="button"
+                                                                            class="btn btn-round btn-primary m-t-15 addbtn" data-toggle="modal"><font style="vertical-align: inherit;"><font
+                                style="vertical-align: inherit;">Add User Regsiter</font></font></button></a>
                     </div>
                     <div class="body">
                         <div class="table-responsive">
-                            <table class="table table-bordered table-striped table-hover entityRegisterTable dataTable">
+                            <table
+                                    class="table table-bordered table-striped table-hover userRegisterTable dataTable">
                                 <thead>
                                 <tr>
                                     %{--                                    <th style="width: 20%">ID</th>--}%
-                                    <th style="width: 20%">Entity Name</th>
-                                    <th style="width: 20%">Entity Type</th>
-                                    <th style="width: 20%">Rep Name</th>
-                                    <th style="width: 20%">Manager</th>
-                                    <th style="width: 20%">Salesman</th>
+                                    <th style="width: 20%">Username</th>
+                                    <th style="width: 20%">Address</th>
+                                    <th style="width: 20%">Role</th>
+                                    <th style="width: 20%">Entity</th>
                                     <th style="width: 20%">Action</th>
                                 </tr>
                                 </thead>
@@ -147,22 +161,22 @@
 
 <script>
 
-    var entityregister;
+    var userregister;
     var id = null;
     $(function () {
-        entityRegisterTable();
+        userRegisterTable();
         // var $demoMaskedInput = $('.demo-masked-input');
         // $demoMaskedInput.find('.datetime').inputmask('d/m/y h:m:s', { placeholder: '__/__/____ __:__:__:__', alias:
         //         "datetime", hourFormat: '12' });
 
     });
 
-    function entityRegisterTable() {
-        entityregister = $(".entityRegisterTable").DataTable({
+    function userRegisterTable() {
+        userregister = $(".userRegisterTable").DataTable({
             "order": [[0, "desc"]],
             sPaginationType: "simple_numbers",
             responsive: {
-                details: false
+                details: true
             },
             destroy: true,
             autoWidth: false,
@@ -172,28 +186,27 @@
             processing: true,
             serverSide: true,
             language: {
-                searchPlaceholder: "Search Entity Register"
+                searchPlaceholder: "Search User Register"
             },
             ajax: {
                 type: 'GET',
-                url: '/entity-register/datatable',
+                url: '/user-register/datatable',
                 dataType: 'json',
                 dataSrc: function (json) {
                     var return_data = [];
                     for (var i = 0; i < json.data.length; i++) {
-                        console.log(json)
+                        console.log(json);
                         var editbtn =
-                            '<a href="/entity-register/update-entity-register/' + json.data[i].id +'"><button type="button" data-id="' + json.data[i].id +'"class="editbtn btn btn-sm btn-warning  editbtn"><i class="material-icons"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">edit</font></font></i></button></a>'
+                            '<a href="/user-register/update-user-register/' + json.data[i].id
+                            +'"><button type="button" data-id="' + json.data[i].id +'"class="editbtn btn btn-sm btn-warning  editbtn"><i class="material-icons"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">edit</font></font></i></button></a>'
                         var deletebtn = '<button type="button" data-id="' + json.data[i].id +
                             '" class="btn btn-sm btn-danger deletebtn" data-toggle="modal" data-target=".deleteModal"><i class="material-icons"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">delete</font></font></i></button>'
                         return_data.push({
                             'id': json.data[i].id,
-                            'entityName': json.data[i].entityName,
-                            'entityType': json.data[i].entityType.name,
-                            'repName': json.data[i].repName,
-                            'manager': json.manager[i].userName,
-                            'salesman': json.salesman[i].userName,
-                            'currentBalance': json.data[i].currentBalance,
+                            'userName': json.data[i].userName,
+                            'address': json.data[i].address,
+                            'role': json.data[i].role.name,
+                            'entity': json.data[i].entity.entityName,
                             'action': editbtn + ' ' + deletebtn
                         });
                     }
@@ -202,11 +215,10 @@
             },
             columns: [
                 // {'data': 'id', 'width': '20%'},
-                {'data': 'entityName', 'width': '20%'},
-                {'data': 'entityType', 'width': '20%'},
-                {'data': 'repName', 'width': '20%'},
-                {'data': 'manager', 'width': '20%'},
-                {'data': 'salesman', 'width': '20%'},
+                {'data': 'userName', 'width': '20%'},
+                {'data': 'address', 'width': '20%'},
+                {'data': 'role', 'width': '20%'},
+                {'data': 'entity', 'width': '20%'},
                 {'data': 'action', 'width': '20%'}
             ]
         });
@@ -224,10 +236,10 @@
         var url = '';
         var type = '';
         if (id) {
-            url = '/entity-register/update/' + id;
+            url = '/user-register/update/' + id;
             type = 'POST'
         } else {
-            url = '/entity-register';
+            url = '/user-register';
             type = 'POST'
         }
 
@@ -239,7 +251,7 @@
             contentType: false,
             processData: false,
             success: function () {
-                swal("Success!", "Rack Submitted Successfully", "success");
+                swal("Success!", "User Register Submitted Successfully", "success");
                 rackTable();
                 $('#addEntityRegisterModal').modal('hide');
             },
@@ -251,7 +263,7 @@
     });
 
     $(document).on("click", ".addbtn", function () {
-        $(".entityRegisterTitle").text("Add Entity Register")
+        $(".entityRegisterTitle").text("Add User Register")
         $(".entityRegisterForm")[0].reset();
         id = null
     });
@@ -267,25 +279,25 @@
         $(".entityRegister").val($(this).attr('data-entity'));
         $("#entityRegister").val($(this).attr('data-entity')).change()
         $(".entityType").val($(this).attr('data-entitytype')).change()
-        $(".rackTitle").text("Update Rack");
+        $(".rackTitle").text("Update User");
     });
 
 
     $(document).on("click", ".deletebtn", function () {
         id = $(this).data('id');
-        $("#myModalLabel").text("Delete Entity Register?");
+        $("#myModalLabel").text("Delete User Register?");
 
     });
 
     function deleteData() {
         $.ajax({
             type: 'POST',
-            url: '/entity-register/delete/' + id,
+            url: '/user-register/delete/' + id,
             dataType: 'json',
             success: function () {
                 $('.deleteModal').modal('hide');
-                entityRegisterTable();
-                swal("Success!", "Entity Register Deleted Successfully", "success");
+                userRegisterTable();
+                swal("Success!", "User Register Deleted Successfully", "success");
             }, error: function () {
                 swal("Error!", "Something went wrong", "error");
             }

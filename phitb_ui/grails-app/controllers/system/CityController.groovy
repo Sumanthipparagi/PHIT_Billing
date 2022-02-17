@@ -1,6 +1,7 @@
 package system
 
 import groovy.json.JsonSlurper
+import org.grails.web.json.JSONArray
 import org.grails.web.json.JSONObject
 import phitb_ui.Links
 import phitb_ui.SystemService
@@ -24,6 +25,21 @@ class CityController {
             response.status = 400
         }
 
+    }
+
+    def show()
+    {
+        def apiResponse = new SystemService().getCityList()
+        if (apiResponse?.status == 200)
+        {
+            JSONArray jsonArray = new JSONArray(apiResponse.readEntity(String.class));
+            ArrayList<String> arrayList = new ArrayList<>(jsonArray)
+            return arrayList
+        }
+        else
+        {
+            return []
+        }
     }
 
     def dataTable()
