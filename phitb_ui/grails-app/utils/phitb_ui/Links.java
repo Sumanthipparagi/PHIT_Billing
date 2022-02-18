@@ -81,7 +81,6 @@ public class Links
     /*<-------------------------------------------Entity ------------------------------------------------->*/
 
     public static String ENTITY_TYPE_MASTER_SHOW = "api/v1.0/entity/entitytypemaster";
-    public static String ROUTE_REGISTER_SHOW = "api/v1.0/entity/routeregister";
     public static String DEPARTMENT_MASTER_SHOW = "api/v1.0/entity/departmentmaster";
     public static String BANK_REGISTER_SHOW = "api/v1.0/accounts/bankregister";
     public static String ROLE_MASTER_SHOW = "api/v1.0/entity/rolemaster";
@@ -134,4 +133,11 @@ public class Links
     public static String REGION_REGISTER_DATATABLE = "api/v1.0/entity/regionregister/datatable";
     public static String REGION_REGISTER_UPDATE = "api/v1.0/entity/regionregister/{id}";
     public static String REGION_REGISTER_DELETE = "api/v1.0/entity/regionregister/{id}";
+
+    //Route Register
+    public static String ROUTE_REGISTER_SHOW = "api/v1.0/entity/routeregister";
+    public static String ROUTE_REGISTER_SAVE = "api/v1.0/entity/routeregister";
+    public static String ROUTE_REGISTER_DATATABLE = "api/v1.0/entity/routeregister/datatable";
+    public static String ROUTE_REGISTER_UPDATE = "api/v1.0/entity/routeregister/{id}";
+    public static String ROUTE_REGISTER_DELETE = "api/v1.0/entity/routeregister/{id}";
 }

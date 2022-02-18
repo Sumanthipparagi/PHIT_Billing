@@ -162,5 +162,12 @@ class UrlMappings {
         "/region-master/delete/$id"(controller: "regionMaster",action:"delete")
 
 
+        //   Route Register
+        "/route-regitser"(controller: "route") {
+            action = [GET: 'index', POST: 'save']
+        }
+        "/route-regitser/datatable"(controller: "route", action: 'dataTable')
+        "/route-regitser/update/$id"(controller:"route",action:"update")
+        "/route-regitser/delete/$id"(controller: "route",action:"delete")
     }
 }

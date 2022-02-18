@@ -9,12 +9,12 @@ class RouteRegister implements LogicalDelete<RouteRegister>
     long cityId
     long stateId
     long countryId
-    long areaManager
-    String salesman
+    UserRegister areaManager
+    UserRegister salesman
     long ccmEnabled
     String daysOfWeek
     String ccmId
-    long apprExpense
+    double apprExpense
     String status
     long syncStatus
     EntityTypeMaster entityType

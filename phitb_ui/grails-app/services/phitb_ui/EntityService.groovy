@@ -603,4 +603,102 @@ class EntityService {
     }
 
 
+    //Region Master
+    def saveRoute(JSONObject jsonObject)
+    {
+        Client client = ClientBuilder.newClient();
+        WebTarget target = client.target(new Links().API_GATEWAY);
+        GrailsHttpSession session = WebUtils.retrieveGrailsWebRequest().session
+        try
+        {
+            println(jsonObject)
+            Response apiResponse = target
+                    .path(new Links().ROUTE_REGISTER_SAVE)
+                    .request(MediaType.APPLICATION_JSON_TYPE)
+                    .post(Entity.entity(jsonObject.toString(),MediaType.APPLICATION_JSON_TYPE))
+            println(apiResponse)
+            return apiResponse
+        }
+        catch (Exception ex)
+        {
+            System.err.println('Service :saveStateMaster , action :  save  , Ex:' + ex)
+            log.error('Service :saveStateMaster , action :  save  , Ex:' + ex)
+        }
+    }
+
+    /**
+     *
+     * @param jsonObject
+     * @return
+     */
+    def showRoute(JSONObject jsonObject)
+    {
+        Client client = ClientBuilder.newClient();
+        WebTarget target = client.target(new Links().API_GATEWAY);
+        GrailsHttpSession session = WebUtils.retrieveGrailsWebRequest().session
+        try
+        {
+            Response apiResponse = target
+                    .path(new Links().ROUTE_REGISTER_DATATABLE)
+                    .queryParam("params", URLEncoder.encode(jsonObject.toString(), "UTF-8"))
+                    .request(MediaType.APPLICATION_JSON_TYPE)
+                    .get()
+            return apiResponse
+        }
+        catch (Exception ex)
+        {
+            System.err.println('Service :getAccountModes , action :  show  , Ex:' + ex)
+            log.error('Service :getAccountModes , action :  show  , Ex:' + ex)
+        }
+    }
+
+    def putRoute(JSONObject jsonObject)
+    {
+        Client client = ClientBuilder.newClient();
+        WebTarget target = client.target(new Links().API_GATEWAY);
+        GrailsHttpSession session = WebUtils.retrieveGrailsWebRequest().session
+        try
+        {
+            Response apiResponse = target
+                    .path(new Links().ROUTE_REGISTER_UPDATE)
+                    .resolveTemplate("id", jsonObject.id)
+                    .request(MediaType.APPLICATION_JSON_TYPE)
+                    .put(Entity.entity(jsonObject.toString(),MediaType.APPLICATION_JSON_TYPE))
+            println(jsonObject)
+            return apiResponse
+        }
+        catch (Exception ex)
+        {
+            System.err.println('Service : , action :  put  , Ex:' + ex)
+            log.error('Service :putAccountMode , action :  put  , Ex:' + ex)
+        }
+    }
+
+    /**
+     *
+     * @param jsonObject
+     * @return
+     */
+    def deleteRoute(JSONObject jsonObject)
+    {
+        Client client = ClientBuilder.newClient();
+        WebTarget target = client.target(new Links().API_GATEWAY);
+        GrailsHttpSession session = WebUtils.retrieveGrailsWebRequest().session
+        try
+        {
+            Response apiResponse = target
+                    .path(new Links().ROUTE_REGISTER_DELETE)
+                    .resolveTemplate("id", jsonObject.id)
+                    .request(MediaType.APPLICATION_JSON_TYPE)
+                    .delete()
+            return apiResponse
+        }
+        catch (Exception ex)
+        {
+            System.err.println('Service :systemService , action :  delete  , Ex:' + ex)
+            log.error('Service :systemService , action :  delete  , Ex:' + ex)
+        }
+    }
+
+
 }

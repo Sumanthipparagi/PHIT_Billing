@@ -6,7 +6,7 @@
     <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
     <meta name="description" content="Responsive Bootstrap 4 and web Application ui kit.">
 
-    <title>:: PharmIt :: Region Master</title>
+    <title>:: PharmIt :: Route Register</title>
     <link rel="icon" type="image/x-icon" href="${assetPath(src: '/themeassets/images/favicon.ico')}"/>
     <!-- Favicon-->
     <asset:stylesheet rel="stylesheet" src="/themeassets/plugins/bootstrap/css/bootstrap.min.css"/>
@@ -60,10 +60,10 @@
         <div class="block-header">
             <div class="row clearfix">
                 <div class="col-lg-5 col-md-5 col-sm-12">
-                    <h2> Region Master</h2>
+                    <h2> Route Register</h2>
                     <ul class="breadcrumb padding-0">
                         <li class="breadcrumb-item"><a href="index.html"><i class="zmdi zmdi-home"></i></a></li>
-                        <li class="breadcrumb-item active"> Region Master</li>
+                        <li class="breadcrumb-item active">Route Register</li>
                     </ul>
                 </div>
                 <div class="col-lg-7 col-md-7 col-sm-12">
@@ -97,8 +97,8 @@
                     %{--                    </div>--}%
                     <div class="header">
                         <button type="button" class="btn btn-round btn-primary m-t-15 addbtn" data-toggle="modal"
-                                data-target="#addregionModal"><font style="vertical-align: inherit;"><font
-                                style="vertical-align: inherit;">Add Region</font></font></button>
+                                data-target="#addrouteModal"><font style="vertical-align: inherit;"><font
+                                style="vertical-align: inherit;">Add Route</font></font></button>
                     </div>
                     <div class="body">
                         <div class="table-responsive">
@@ -106,9 +106,10 @@
                                 <thead>
                                 <tr>
                                     %{--                                    <th style="width: 20%">ID</th>--}%
-                                    <th style="width: 20%">Region Name</th>
-                                    <th style="width: 20%">Short Name</th>
-                                    <th style="width: 20%">Country</th>
+                                    <th style="width: 20%">Route Name</th>
+                                    <th style="width: 20%">Appr Expense</th>
+                                    <th style="width: 20%">Salesman</th>
+                                    <th style="width: 20%">Manager</th>
                                     <th style="width: 20%">Entity Type</th>
                                     <th style="width: 20%">Entity</th>
                                     <th style="width: 20%">Action</th>
@@ -136,7 +137,7 @@
 </section>
 
 
-<g:include view="controls/entity/add-region.gsp"/>
+<g:include view="controls/entity/add-route.gsp"/>
 <g:include view="controls/delete-modal.gsp"/>
 
 <!-- Jquery Core Js -->
@@ -164,11 +165,11 @@
     var regiontable;
     var id = null;
     $(function () {
-        regionTable();
+        routeTable();
 
     });
 
-    function regionTable() {
+    function routeTable() {
         regiontable = $(".regionTable").DataTable({
             "order": [[0, "desc"]],
             sPaginationType: "simple_numbers",
@@ -183,31 +184,39 @@
             processing: true,
             serverSide: true,
             language: {
-                searchPlaceholder: "Search Region"
+                searchPlaceholder: "Search Route"
             },
             ajax: {
                 type: 'GET',
-                url: '/region-master/datatable',
+                url: '/route-regitser/datatable',
                 dataType: 'json',
                 dataSrc: function (json) {
                     var return_data = [];
                     for (var i = 0; i < json.data.length; i++) {
                         console.log(json)
                         var editbtn = '<button type="button" data-id="' + json.data[i].id +
-                            '" data-regionName="' + json.data[i].regionName + '"' +
-                            '" data-shortName="' + json.data[i].shortName + '"' +
+                            '" data-routeName="' + json.data[i].routeName + '"' +
+                            '" data-cityId="' + json.data[i].cityId + '"' +
                             '" data-countryId="' + json.data[i].countryId + '"' +
+                            '" data-stateId="' + json.data[i].stateId + '"' +
+                            '" data-salesman="' + json.data[i].salesman.id + '"' +
+                            '" data-areaManager="' + json.data[i].areaManager.id + '"' +
+                            '" data-ccmEnabled="' + json.data[i].ccmEnabled + '"' +
+                            '" data-daysOfWeek="' + json.data[i].daysOfWeek + '"' +
+                            '" data-ccmId="' + json.data[i].ccmId + '"' +
+                            '" data-apprExpense="' + json.data[i].apprExpense + '"' +
                             '" data-entitytype="' + json.data[i].entityType.id + '"' +
                             '" data-entityRegister="' + json.data[i].entity.id + '"' +
                             '"' +
-                            ' class="editbtn btn btn-sm btn-warning  editbtn" data-toggle="modal" data-target="#addregionModal"><i class="material-icons"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">edit</font></font></i></button>'
+                            ' class="editbtn btn btn-sm btn-warning  editbtn" data-toggle="modal" data-target="#addrouteModal"><i class="material-icons"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">edit</font></font></i></button>'
                         var deletebtn = '<button type="button" data-id="' + json.data[i].id +
                             '" class="btn btn-sm btn-danger deletebtn" data-toggle="modal" data-target=".deleteModal"><i class="material-icons"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">delete</font></font></i></button>'
                         return_data.push({
                             'id': json.data[i].id,
-                            'regionName': json.data[i].regionName,
-                            'shortName': json.data[i].shortName,
-                            'country': json.countries[i].name,
+                            'routeName': json.data[i].routeName,
+                            'apprExpense': json.data[i].apprExpense,
+                            'salesman': json.data[i].salesman.userName,
+                            'areaManager': json.data[i].areaManager.userName,
                             'entity': json.data[i].entity.entityName,
                             'entitytype': json.data[i].entityType.name,
                             'action': editbtn + ' ' + deletebtn
@@ -218,9 +227,10 @@
             },
             columns: [
                 // {'data': 'id', 'width': '20%'},
-                {'data': 'regionName', 'width': '20%'},
-                {'data': 'shortName', 'width': '20%'},
-                {'data': 'country', 'width': '20%'},
+                {'data': 'routeName', 'width': '20%'},
+                {'data': 'apprExpense', 'width': '20%'},
+                {'data': 'salesman', 'width': '20%'},
+                {'data': 'areaManager', 'width': '20%'},
                 {'data': 'entity', 'width': '20%'},
                 {'data': 'entitytype', 'width': '20%'},
                 {'data': 'action', 'width': '20%'}
@@ -230,7 +240,7 @@
 
 
 
-    $(".regionForm").submit(function (event) {
+    $(".routeForm").submit(function (event) {
 
         //disable the default form submission
         event.preventDefault();
@@ -242,10 +252,10 @@
         var url = '';
         var type = '';
         if (id) {
-            url = '/region-master/update/' + id;
+            url = '/route-regitser/update/' + id;
             type = 'POST'
         } else {
-            url = '/region-master';
+            url = '/route-regitser';
             type = 'POST'
         }
 
@@ -257,9 +267,9 @@
             contentType: false,
             processData: false,
             success: function () {
-                swal("Success!", "Region Submitted Successfully", "success");
-                regionTable();
-                $('#addregionModal').modal('hide');
+                swal("Success!", "Route Submitted Successfully", "success");
+                routeTable();
+                $('#addrouteModal').modal('hide');
             },
             error: function () {
                 swal("Error!", "Something went wrong", "error");
@@ -269,39 +279,42 @@
     });
 
     $(document).on("click", ".addbtn", function () {
-        $(".regionTitle").text("Add Region")
-        $(".regionForm")[0].reset();
+        $(".routeTitle").text("Add Route")
+        $(".routeForm")[0].reset();
         id = null
     });
 
     $(document).on("click", ".editbtn", function () {
         id = $(this).data('id');
-        $(".regionName").val($(this).attr('data-regionName'));
-        $(".shortName").val($(this).attr('data-shortName'));
-        $(".entity").val($(this).attr('data-entityRegister'));
-        $("#entityTypeId").val($(this).attr('data-entitytype')).change();
+        $(".routeName").val($(this).attr('data-routeName'));
+        $(".apprExpense").val($(this).attr('data-apprExpense'));
+        $(".ccmEnabled").val($(this).attr('data-ccmEnabled')).change();
+        $(".cityId").val($(this).attr('data-cityId')).change();
+        $(".stateId").val($(this).attr('data-stateId')).change();
         $(".countryId").val($(this).attr('data-countryId')).change();
-        $(".regionTitle").text("Update Region");
+        $(".ccmId").val($(this).attr('data-ccmId')).change();
+        $(".daysOfWeek").val($(this).attr('data-daysOfWeek')).change();
+        $(".entity").val($(this).attr('data-entityRegister')).change();
+        $("#entityTypeId").val($(this).attr('data-entitytype')).change();
+        $(".routeTitle").text("Update Region");
     });
-
-
 
 
     $(document).on("click", ".deletebtn", function () {
         id = $(this).data('id');
-        $("#myModalLabel").text("Delete Region ?");
+        $("#myModalLabel").text("Delete Route ?");
 
     });
 
     function deleteData() {
         $.ajax({
             type: 'POST',
-            url: '/region-master/delete/' + id,
+            url: '/route-regitser/delete/' + id,
             dataType: 'json',
             success: function () {
                 $('.deleteModal').modal('hide');
-                regionTable();
-                swal("Success!", "Region  Deleted Successfully", "success");
+                routeTable();
+                swal("Success!", "Route  Deleted Successfully", "success");
             }, error: function () {
                 swal("Error!", "Something went wrong", "error");
             }
