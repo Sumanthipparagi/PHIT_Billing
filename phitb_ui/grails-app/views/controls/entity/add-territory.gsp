@@ -1,57 +1,48 @@
 <div class="example-modal">
-    <div class="modal fade" id="addrouteModal">
+    <div class="modal fade" id="addterritoryModal">
         <div class="modal-dialog modal-lg">
             <div class="modal-content">
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span></button>
-                    <h4 class="routeTitle"></h4>
+                    <h4 class="territoryTitle"></h4>
                 </div>
-                <form action="" id="form_validation" method="post" role="form" class="routeForm"
+                <form action="" id="form_validation" method="post" role="form" class="territoryForm"
                       enctype="multipart/form-data">
                     <div class="modal-body">
                         <div class="row">
                             <div class="col-lg-6 form-group  form-float">
-                                <label for="routeName">
-                                    Route Name
+                                <label for="territoryName">
+                                    Territory Name
                                 </label>
-                                <input type="text" id="routeName" class="form-control routeName" name="routeName"
-                                       placeholder="Route Name"
+                                <input type="text" id="territoryName" class="form-control territoryName" name="territoryName"
+                                       placeholder="Territory Name"
                                        required/>
                             </div>
 
                             <div class="col-lg-6 form-group  form-float">
-                                <label for="apprExpense">
-                                   Appr expense
+                                <label for="shortName">
+                                    Short Name
                                 </label>
-                                <input type="number" id="apprExpense" class="form-control apprExpense" name="apprExpense"
-                                       placeholder="Appr expense"
+                                <input type="text" id="shortName" class="form-control shortName" name="shortName"
+                                       placeholder="Short Name"
                                        required/>
                             </div>
 
                             <div class="col-lg-6 form-group  form-float">
-                                <label for="daysOfWeek">
-                                    Days Of Week
+                                <label for="territoryHq">
+                                    Territory Hq
                                 </label>
-                                <input type="text" id="daysOfWeek" class="form-control daysOfWeek" name="daysOfWeek"
-                                       placeholder="Days Of Week"
+                                <input type="number" id="territoryHq" class="form-control territoryHq" name="territoryHq"
+                                       placeholder="Territory Hq"
                                        required/>
                             </div>
 
-                            <div class="col-lg-6 form-group  form-float">
-                                <label for="ccmEnabled">
-                                    CCM Enabled
-                                </label>
-                                <select class="form-control show-tick ccmEnabled" name="ccmEnabled" id="ccmEnabled">
-                                        <option value="1">YES</option>
-                                        <option value="0">NO</option>
-                                </select>
-                            </div>
                             <div class="col-lg-6 form-group  form-float">
                                 <label for="cityId">
                                     City
                                 </label>
-                                <select class="form-control show-tick cityId" name="cityId" id="cityId">
+                                <select class="form-control show-tick cityId" name="cityIds" id="cityId">
                                     <g:each var="city" in="${citylist}">
                                         <option value="${city.id}">${city.name}</option>
                                     </g:each>
@@ -78,39 +69,6 @@
                                 <select class="form-control show-tick stateId" name="stateId" id="stateId">
                                     <g:each var="state" in="${statelist}">
                                         <option value="${state.id}">${state.name}</option>
-                                    </g:each>
-                                </select>
-                            </div>
-
-                            <div class="col-lg-6 form-group  form-float">
-                                <label for="areaManager">
-                                    Area Manager
-                                </label>
-                                <select class="form-control show-tick areaManager" name="areaManager" id="areaManager">
-                                    <g:each var="manager" in="${managerList}">
-                                        <option value="${manager.id}">${manager.userName}</option>
-                                    </g:each>
-                                </select>
-                            </div>
-
-                            <div class="col-lg-6 form-group  form-float">
-                                <label for="salesman">
-                                    Salesman
-                                </label>
-                                <select class="form-control show-tick salesman" name="salesman" id="salesman">
-                                    <g:each var="salesman" in="${salesmanList}">
-                                        <option value="${salesman.id}">${salesman.userName}</option>
-                                    </g:each>
-                                </select>
-                            </div>
-
-                            <div class="col-lg-6 form-group  form-float">
-                                <label for="ccmId">
-                                    CCM
-                                </label>
-                                <select class="form-control show-tick ccmId" name="ccmId" id="ccmId">
-                                    <g:each var="cc" in="${ccm}">
-                                        <option value="${cc.id}">${cc.kitName}</option>
                                     </g:each>
                                 </select>
                             </div>

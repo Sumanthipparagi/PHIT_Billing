@@ -154,6 +154,7 @@ class UrlMappings
                         'save']
             }
             "/rolemaster/datatable(.$format)?"(controller: 'roleMaster') {action = [GET: 'dataTable']}
+
             "/rolemaster/$id(.$format)?"(controller: 'roleMaster') {
                 action = [GET: 'show', PUT: 'update', DELETE:
                         'delete']
@@ -285,6 +286,17 @@ class UrlMappings
                 action = [GET: 'getAllByDivision']
             }
 
+
+            //service Type
+            "/servicetype(.$format)?"(controller: 'serviceTypeRegister') {
+                action = [GET: 'index', POST:
+                        'save']
+            }
+            "/servicetype/datatable(.$format)?"(controller: 'serviceTypeRegister') {action = [GET: 'dataTable']}
+            "/servicetype/$id(.$format)?"(controller: 'serviceTypeRegister') {
+                action = [GET: 'show', PUT: 'update', DELETE:
+                        'delete']
+            }
         }
     }
 }

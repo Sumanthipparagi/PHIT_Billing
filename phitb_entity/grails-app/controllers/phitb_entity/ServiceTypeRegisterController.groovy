@@ -8,11 +8,11 @@ import org.grails.web.json.JSONObject
 import phitb_entity.Exception.BadRequestException
 import phitb_entity.Exception.ResourceNotFoundException
 
-class TermsConditionDetailsController {
+class ServiceTypeRegisterController {
 	static responseFormats = ['json', 'xml']
     static allowedMethods = [index: "GET", show: "GET", save: "POST", update: "PUT", delete: "DELETE", dataTable: "GET"]
 
-  TermsConditionDetailsService termsConditionDetailsService
+    ServiceTypeRegisterService serviceTypeRegisterService
     /**
      * Gets all tax register
      * @param query
@@ -23,7 +23,7 @@ class TermsConditionDetailsController {
     def index() {
 
         try {
-            respond termsConditionDetailsService.getAll(params.limit, params.offset, params.query)
+            respond serviceTypeRegisterService.getAll(params.limit, params.offset, params.query)
         }
         catch (Exception ex) {
             System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
@@ -39,7 +39,7 @@ class TermsConditionDetailsController {
         try {
             String id = params.id
             if (id) {
-                respond termsConditionDetailsService.get(id)
+                respond serviceTypeRegisterService.get(id)
             }
         }
         catch (ResourceNotFoundException ex)
@@ -65,7 +65,7 @@ class TermsConditionDetailsController {
     def getAllByEntityId() {
         try {
             if (params.id) {
-                respond termsConditionDetailsService.getAllByEntity(params.limit, params.offset, Long.parseLong(params.id))
+                respond serviceTypeRegisterService.getAllByEntity(params.limit, params.offset, Long.parseLong(params.id))
             }
         }
         catch (ResourceNotFoundException ex)
@@ -92,7 +92,7 @@ class TermsConditionDetailsController {
     def save() {
         try {
             JSONObject jsonObject = JSON.parse(request.reader.text) as JSONObject
-            respond termsConditionDetailsService.save(jsonObject)
+            respond serviceTypeRegisterService.save(jsonObject)
         }
         catch (ResourceNotFoundException ex)
         {
@@ -119,7 +119,7 @@ class TermsConditionDetailsController {
         try {
             String id = params.id
             JSONObject jsonObject = JSON.parse(request.reader.text) as JSONObject
-            respond termsConditionDetailsService.update(jsonObject,id)
+            respond serviceTypeRegisterService.update(jsonObject,id)
         }
         catch (ResourceNotFoundException ex)
         {
@@ -144,7 +144,7 @@ class TermsConditionDetailsController {
     def delete() {
         try {
             String id = params.id
-            termsConditionDetailsService.delete(id)
+            serviceTypeRegisterService.delete(id)
             response.status = 200
         }
         catch (ResourceNotFoundException ex)
@@ -172,7 +172,7 @@ class TermsConditionDetailsController {
             String length = params.length
             GrailsParameterMap parameterMap = getParams()
             JSONObject paramsJsonObject = new JSONObject(parameterMap.params)
-            respond termsConditionDetailsService.dataTables(paramsJsonObject, start, length)
+            respond serviceTypeRegisterService.dataTables(paramsJsonObject, start, length)
         }
         catch (ResourceNotFoundException ex)
         {
@@ -188,7 +188,5 @@ class TermsConditionDetailsController {
             System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
         }
     }
-
-
 
 }

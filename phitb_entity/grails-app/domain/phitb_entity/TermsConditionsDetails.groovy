@@ -14,7 +14,6 @@ class TermsConditionsDetails implements LogicalDelete<TermsConditionsDetails>
     UserRegister createdUser
     UserRegister modifiedUser
 
-
     Date dateCreated
     Date lastUpdated
 

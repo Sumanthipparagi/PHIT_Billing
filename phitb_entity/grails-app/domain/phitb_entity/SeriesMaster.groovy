@@ -9,8 +9,11 @@ class SeriesMaster implements LogicalDelete<SeriesMaster>
     String seriesName
     long mode
     long saleId
-    long returnId
-    long orderId
+    long purId
+    long saleReturnId
+    long saleOrderId
+    long purchaseReturnId
+    long purchaseOrderId
     long status
     long syncStatus
     EntityTypeMaster entityType
@@ -23,6 +26,13 @@ class SeriesMaster implements LogicalDelete<SeriesMaster>
     Date lastUpdated
 
     static constraints = {
+        saleId nullable:true
+        purId nullable:true
+        saleReturnId nullable:true
+        saleOrderId nullable:true
+        purchaseReturnId nullable:true
+        purchaseOrderId nullable:true
+        mode nullable:true
     }
 
     boolean isUpdatable

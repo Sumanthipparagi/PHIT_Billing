@@ -83,7 +83,6 @@ public class Links
     public static String ENTITY_TYPE_MASTER_SHOW = "api/v1.0/entity/entitytypemaster";
     public static String DEPARTMENT_MASTER_SHOW = "api/v1.0/entity/departmentmaster";
     public static String BANK_REGISTER_SHOW = "api/v1.0/accounts/bankregister";
-    public static String ROLE_MASTER_SHOW = "api/v1.0/entity/rolemaster";
     public static String ACCOUNT_REGISTER_SHOW = "api/v1.0/entity/accountregister";
     public static String DIVISION_SHOW = "api/v1.0/product/division";
     public static String GENDER_SHOW = "api/v1.0/system/gender";
@@ -140,4 +139,58 @@ public class Links
     public static String ROUTE_REGISTER_DATATABLE = "api/v1.0/entity/routeregister/datatable";
     public static String ROUTE_REGISTER_UPDATE = "api/v1.0/entity/routeregister/{id}";
     public static String ROUTE_REGISTER_DELETE = "api/v1.0/entity/routeregister/{id}";
+
+    //Role Master
+    public static String ROLE_MASTER_SHOW = "api/v1.0/entity/rolemaster";
+    public static String ROLE_MASTER_SAVE = "api/v1.0/entity/rolemaster";
+    public static String ROLE_MASTER_DATATABLE = "api/v1.0/entity/rolemaster/datatable";
+    public static String ROLE_MASTER_UPDATE = "api/v1.0/entity/rolemaster/{id}";
+    public static String ROLE_MASTER_DELETE = "api/v1.0/entity/rolemaster/{id}";
+
+
+    //Rule Master
+    public static String RULE_MASTER_SHOW = "api/v1.0/entity/rulemaster";
+    public static String RULE_MASTER_SAVE = "api/v1.0/entity/rulemaster";
+    public static String RULE_MASTER_DATATABLE = "api/v1.0/entity/rulemaster/datatable";
+    public static String RULE_MASTER_UPDATE = "api/v1.0/entity/rulemaster/{id}";
+    public static String RULE_MASTER_DELETE = "api/v1.0/entity/rulemaster/{id}";
+
+    //Tax Register
+    public static String TAX_MASTER_SHOW = "api/v1.0/entity/taxregister";
+    public static String TAX_MASTER_SAVE = "api/v1.0/entity/taxregister";
+    public static String TAX_MASTER_DATATABLE = "api/v1.0/entity/taxregister/datatable";
+    public static String TAX_MASTER_UPDATE = "api/v1.0/entity/taxregister/{id}";
+    public static String TAX_MASTER_DELETE = "api/v1.0/entity/taxregister/{id}";
+
+
+    //Territory
+    public static String TERRITORY_MASTER_SHOW = "api/v1.0/entity/territoryregister";
+    public static String TERRITORY_MASTER_SAVE = "api/v1.0/entity/territoryregister";
+    public static String TERRITORY_MASTER_DATATABLE = "api/v1.0/entity/territoryregister/datatable";
+    public static String TERRITORY_MASTER_UPDATE = "api/v1.0/entity/territoryregister/{id}";
+    public static String TERRITORY_MASTER_DELETE = "api/v1.0/entity/territoryregister/{id}";
+
+    //Terms and Conditions
+    public static String TC_MASTER_SHOW = "api/v1.0/entity/termconditiondetails";
+    public static String TC_MASTER_SAVE = "api/v1.0/entity/termconditiondetails";
+    public static String TC_MASTER_DATATABLE = "api/v1.0/entity/termconditiondetails/datatable";
+    public static String TC_MASTER_UPDATE = "api/v1.0/entity/termconditiondetails/{id}";
+    public static String TC_MASTER_DELETE = "api/v1.0/entity/termconditiondetails/{id}";
+
+    //Series Master
+    public static String SERIES_MASTER_SHOW = "api/v1.0/entity/seriesmaster";
+    public static String SERIES_MASTER_SAVE = "api/v1.0/entity/seriesmaster";
+    public static String SERIES_MASTER_DATATABLE = "api/v1.0/entity/seriesmaster/datatable";
+    public static String SERIES_MASTER_UPDATE = "api/v1.0/entity/seriesmaster/{id}";
+    public static String SERIES_MASTER_DELETE = "api/v1.0/entity/seriesmaster/{id}";
+
+
+    //Series Master
+    public static String SERVICE_TYPE_SHOW = "api/v1.0/entity/servicetype";
+    public static String SERVICE_TYPE_SAVE = "api/v1.0/entity/servicetype";
+    public static String SERVICE_TYPE_DATATABLE = "api/v1.0/entity/servicetype/datatable";
+    public static String SERVICE_TYPE_UPDATE = "api/v1.0/entity/servicetype/{id}";
+    public static String SERVICE_TYPE_DELETE = "api/v1.0/entity/servicetype/{id}";
+
+
 }

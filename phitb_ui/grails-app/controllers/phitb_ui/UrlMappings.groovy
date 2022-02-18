@@ -169,5 +169,66 @@ class UrlMappings {
         "/route-regitser/datatable"(controller: "route", action: 'dataTable')
         "/route-regitser/update/$id"(controller:"route",action:"update")
         "/route-regitser/delete/$id"(controller: "route",action:"delete")
+
+
+        //   Role
+        "/role"(controller: "role") {
+            action = [GET: 'index', POST: 'save']
+        }
+        "/role/datatable"(controller: "role", action: 'dataTable')
+        "/role/update/$id"(controller:"role",action:"update")
+        "/role/delete/$id"(controller: "role",action:"delete")
+
+        //   Rule
+        "/rule"(controller: "rule") {
+            action = [GET: 'index', POST: 'save']
+        }
+        "/rule/datatable"(controller: "rule", action: 'dataTable')
+        "/rule/update/$id"(controller:"rule",action:"update")
+        "/rule/delete/$id"(controller: "rule",action:"delete")
+
+
+        //   Tax
+        "/tax"(controller: "tax") {
+            action = [GET: 'index', POST: 'save']
+        }
+        "/tax/datatable"(controller: "tax", action: 'dataTable')
+        "/tax/update/$id"(controller:"tax",action:"update")
+        "/tax/delete/$id"(controller: "tax",action:"delete")
+
+
+        //   Territory
+        "/territory"(controller: "territory") {
+            action = [GET: 'index', POST: 'save']
+        }
+        "/territory/datatable"(controller: "territory", action: 'dataTable')
+        "/territory/update/$id"(controller:"territory",action:"update")
+        "/territory/delete/$id"(controller: "territory",action:"delete")
+
+        //   Terms Conditions
+        "/terms-conditions"(controller: "termsCondition") {
+            action = [GET: 'index', POST: 'save']
+        }
+        "/terms-conditions/datatable"(controller: "termsCondition", action: 'dataTable')
+        "/terms-conditions/update/$id"(controller:"termsCondition",action:"update")
+        "/terms-conditions/delete/$id"(controller: "termsCondition",action:"delete")
+
+
+        //   Series
+        "/series"(controller: "series") {
+            action = [GET: 'index', POST: 'save']
+        }
+        "/series/datatable"(controller: "series", action: 'dataTable')
+        "/series/update/$id"(controller:"series",action:"update")
+        "/series/delete/$id"(controller: "series",action:"delete")
+
+
+        //   Service type
+        "/service-type"(controller: "serviceType") {
+            action = [GET: 'index', POST: 'save']
+        }
+        "/service-type/datatable"(controller: "serviceType", action: 'dataTable')
+        "/service-type/update/$id"(controller:"serviceType",action:"update")
+        "/service-type/delete/$id"(controller: "serviceType",action:"delete")
     }
 }

@@ -1,6 +1,7 @@
 package phitb_entity
 
 import grails.gorm.transactions.Transactional
+import groovy.json.JsonSlurper
 import org.grails.web.json.JSONObject
 import phitb_entity.Exception.BadRequestException
 import phitb_entity.Exception.ResourceNotFoundException
@@ -69,11 +70,18 @@ class TermsConditionDetailsService {
             eq('deleted', false)
             order(orderColumn, orderDir)
         }
+        def form = []
+        termConditionDetailsArrayList.each {
+            println(it.formId)
+            def apires = showFormById(it.formId.toString())
+            form.push(apires)
+        }
         def recordsTotal = termConditionDetailsArrayList.totalCount
         JSONObject jsonObject = new JSONObject()
         jsonObject.put("draw", paramsJsonObject.draw)
         jsonObject.put("recordsTotal", recordsTotal)
         jsonObject.put("recordsFiltered", recordsTotal)
+        jsonObject.put("form", form)
         jsonObject.put("data", termConditionDetailsArrayList)
         return jsonObject
     }
@@ -127,6 +135,22 @@ class TermsConditionDetailsService {
             }
         } else {
             throw new BadRequestException()
+        }
+    }
+
+    def showFormById(String id)
+    {
+        try
+        {
+            def url = Constants.API_GATEWAY+Constants.FORM_MASTER_SHOW+"/"+id
+            URL apiUrl = new URL(url)
+            def card = new JsonSlurper().parseText(apiUrl.text)
+            return card
+        }
+        catch (Exception ex)
+        {
+            System.err.println('Service :showFormById , action :  show  , Ex:' + ex)
+            log.error('Service :showFormById , action :  show  , Ex:' + ex)
         }
     }
 }
