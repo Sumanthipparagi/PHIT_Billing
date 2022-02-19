@@ -230,5 +230,16 @@ class UrlMappings {
         "/service-type/datatable"(controller: "serviceType", action: 'dataTable')
         "/service-type/update/$id"(controller:"serviceType",action:"update")
         "/service-type/delete/$id"(controller: "serviceType",action:"delete")
+
+        /*<-------------------------------------------Product------------------------------------------------->*/
+//      Product Register
+        "/product"(controller: "product") {
+            action = [GET: 'index', POST: 'save']
+        }
+        "/product/add"(controller: "product", action: 'addUser')
+        "/product/update/$id"(product: "productRegister", action: 'updateUser')
+        "/product/datatable"(controller: "product", action: 'dataTable')
+        "/product/update/$id"(controller:"product",action:"update")
+        "/product/delete/$id"(controller: "product",action:"delete")
     }
 }

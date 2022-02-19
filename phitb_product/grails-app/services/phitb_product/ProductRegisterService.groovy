@@ -2,8 +2,8 @@ package phitb_product
 
 import grails.gorm.transactions.Transactional
 import org.grails.web.json.JSONObject
-import org.springframework.boot.context.config.ResourceNotFoundException
 import phitb_product.Exception.BadRequestException
+import phitb_product.Exception.ResourceNotFoundException
 
 import java.text.SimpleDateFormat
 
@@ -97,8 +97,8 @@ class ProductRegisterService {
         productRegister.hsnCode = jsonObject.get("hsnCode").toString()
         productRegister.rackId = Long.parseLong(jsonObject.get("rackId").toString())
         productRegister.division = Division.findById(Long.parseLong(jsonObject.get("division").toString()))
-        productRegister.compositionId = Long.parseLong(jsonObject.get("compositionId").toString())
-        productRegister.costRangeId = Long.parseLong(jsonObject.get("costRangeId").toString())
+        productRegister.composition = CompositionMaster.findById(Long.parseLong(jsonObject.get("composition").toString()))
+        productRegister.costRange = ProductCostRange.findById(Long.parseLong(jsonObject.get("costRange").toString()))
         productRegister.productType = ProductTypeMaster.findById(Long.parseLong(jsonObject.get("productType").toString()))
         productRegister.unit = UnitTypeMaster.findById(Long.parseLong(jsonObject.get("unit").toString()))
         productRegister.unitPacking = jsonObject.get("unitPacking").toString()
@@ -155,8 +155,8 @@ class ProductRegisterService {
             productRegister.hsnCode = jsonObject.get("hsnCode").toString()
             productRegister.rackId = Long.parseLong(jsonObject.get("rackId").toString())
             productRegister.division = Division.findById(Long.parseLong(jsonObject.get("division").toString()))
-            productRegister.compositionId = Long.parseLong(jsonObject.get("compositionId").toString())
-            productRegister.costRangeId = Long.parseLong(jsonObject.get("costRangeId").toString())
+            productRegister.composition = CompositionMaster.findById(Long.parseLong(jsonObject.get("composition").toString()))
+            productRegister.costRange = ProductCostRange.findById(Long.parseLong(jsonObject.get("costRange").toString()))
             productRegister.productType = ProductTypeMaster.findById(Long.parseLong(jsonObject.get("productType").toString()))
             productRegister.unit = UnitTypeMaster.findById(Long.parseLong(jsonObject.get("unit").toString()))
             productRegister.unitPacking = jsonObject.get("unitPacking").toString()

@@ -11,8 +11,8 @@ class ProductRegister implements Serializable, LogicalDelete<ProductRegister> {
     String hsnCode
     long rackId
     Division division
-    long compositionId
-    long costRangeId
+    CompositionMaster composition
+    ProductCostRange costRange
     ProductTypeMaster productType
     UnitTypeMaster unit
     String unitPacking

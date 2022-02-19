@@ -192,5 +192,54 @@ public class Links
     public static String SERVICE_TYPE_UPDATE = "api/v1.0/entity/servicetype/{id}";
     public static String SERVICE_TYPE_DELETE = "api/v1.0/entity/servicetype/{id}";
 
+    /*<-------------------------------------------Product ------------------------------------------------->*/
+    //Product Register
+    public static String PRODUCT_REGISTER_SHOW = "api/v1.0/product/productregister";
+    public static String PRODUCT_REGISTER_SAVE = "api/v1.0/product/productregister";
+    public static String PRODUCT_REGISTER_DATATABLE = "api/v1.0/product/productregister/datatable";
+    public static String PRODUCT_REGISTER_UPDATE = "api/v1.0/product/productregister/{id}";
+    public static String PRODUCT_REGISTER_DELETE = "api/v1.0/product/productregister/{id}";
+
+    //Product TYPE
+    public static String PRODUCT_TYPE_SHOW = "api/v1.0/product/producttypemaster";
+    public static String PRODUCT_TYPE_SAVE = "api/v1.0/product/producttypemaster";
+    public static String PRODUCT_TYPE_DATATABLE = "api/v1.0/product/producttypemaster/datatable";
+    public static String PRODUCT_TYPE_UPDATE = "api/v1.0/product/producttypemaster/{id}";
+    public static String PRODUCT_TYPE_DELETE = "api/v1.0/product/producttypemaster/{id}";
+
+    //Product Group
+    public static String PRODUCT_GROUP_SHOW = "api/v1.0/product/productgroupmaster";
+    public static String PRODUCT_GROUP_SAVE = "api/v1.0/product/productgroupmaster";
+    public static String PRODUCT_GROUP_DATATABLE = "api/v1.0/product/productgroupmaster/datatable";
+    public static String PRODUCT_GROUP_UPDATE = "api/v1.0/product/productgroupmaster/{id}";
+    public static String PRODUCT_GROUP_DELETE = "api/v1.0/product/productgroupmaster/{id}";
+
+    //division
+//    public static String DIVISION_SHOW = "api/v1.0/product/division";
+    public static String DIVISION_SAVE = "api/v1.0/product/division";
+    public static String DIVISION_DATATABLE = "api/v1.0/product/division/datatable";
+    public static String DIVISION_UPDATE = "api/v1.0/product/division/{id}";
+    public static String DIVISION_DELETE = "api/v1.0/product/division/{id}";
+
+    //Product Category
+    public static String PRODUCT_CATEGORY_SHOW = "api/v1.0/product/productcategorymaster";
+    public static String PRODUCT_CATEGORY_SAVE = "api/v1.0/product/productcategorymaster";
+    public static String PRODUCT_CATEGORY_DATATABLE = "api/v1.0/product/categorymaster/datatable";
+    public static String PRODUCT_CATEGORY_UPDATE = "api/v1.0/product/categorymaster/{id}";
+    public static String PRODUCT_CATEGORY_DELETE = "api/v1.0/product/categorymaster/{id}";
+
+    //Product Schedule
+    public static String PRODUCT_SCHEDULE_SHOW = "api/v1.0/product/productschdulemaster";
+    public static String PRODUCT_SCHEDULE_SAVE = "api/v1.0/product/productschdulemaster";
+    public static String PRODUCT_SCHEDULE_DATATABLE = "api/v1.0/product/productschdulemaster/datatable";
+    public static String PRODUCT_SCHEDULE_UPDATE = "api/v1.0/product/productschdulemaster/{id}";
+    public static String PRODUCT_SCHEDULE_DELETE = "api/v1.0/product/productschdulemaster/{id}";
+
+    //Product Composition
+    public static String PRODUCT_COMPOSITION_SHOW = "api/v1.0/product/compositionmasterregister";
+    public static String PRODUCT_COMPOSITION_SAVE = "api/v1.0/product/compositionmasterregister";
+    public static String PRODUCT_COMPOSITION_DATATABLE = "api/v1.0/product/compositionmasterregister/datatable";
+    public static String PRODUCT_COMPOSITION_UPDATE = "api/v1.0/product/compositionmasterregister/{id}";
+    public static String PRODUCT_COMPOSITION_DELETE = "api/v1.0/product/compositionmasterregister/{id}";
 
 }
