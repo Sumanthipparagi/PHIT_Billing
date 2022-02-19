@@ -2,6 +2,7 @@ package phitb_entity
 
 import grails.gorm.transactions.Transactional
 import org.grails.web.json.JSONObject
+import org.springframework.web.multipart.MultipartFile
 import phitb_entity.Exception.BadRequestException
 import phitb_entity.Exception.ResourceNotFoundException
 
@@ -219,3 +220,4 @@ class UserRegisterService
         }
     }
 }
+

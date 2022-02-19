@@ -19,7 +19,7 @@
     <asset:stylesheet  src="/themeassets/plugins/bootstrap-select/css/bootstrap-select.css" rel="stylesheet" />
     <asset:stylesheet  src="/themeassets/js/pages/forms/basic-form-elements.js" rel="stylesheet" />
     <asset:stylesheet  src="/themeassets/plugins/bootstrap-material-datetimepicker/css/bootstrap-material-datetimepicker.css" rel="stylesheet" />
-
+    <asset:stylesheet src="/themeassets/plugins/dropify/dist/css/dropify.min.css"/>
 
 </head>
 <body class="theme-black">
@@ -147,12 +147,16 @@
                                 </div>
 
                                 <div class="col-lg-6 form-group  form-float">
-                                    <label for="genderId">
+                                    <label for="photo">
                                         Photo
                                     </label>
-                                    <input type="text" id="photo" class="form-control photo"
-                                           name="photo" placeholder="Photo"
-                                           required/>
+%{--                                    <input type="file" id="input-file-now photo" class="dropify"--}%
+%{--                                           data-default-file=""--}%
+%{--                                           name="photo"  accept="image/png, image/gif, image/jpeg"/>--}%
+
+                                    <input type="text" id="input-file-now photo" class="dropify"
+                                           data-default-file=""
+                                           name="photo"  accept="image/png, image/gif, image/jpeg"/>
                                 </div>
 
                                 <div class="col-lg-6 form-group  form-float">
@@ -489,6 +493,7 @@
 <asset:javascript src="/themeassets/plugins/momentjs/moment.js"/>
 <asset:javascript src="/themeassets/plugins/bootstrap-material-datetimepicker/js/bootstrap-material-datetimepicker.js"/>
 <asset:javascript src="/themeassets/js/pages/forms/basic-form-elements.js"/>
+<asset:javascript src="/themeassets/plugins/dropify/dist/js/dropify.min.js"/>
 
 <script>
 
@@ -522,7 +527,51 @@
             weekStart: 1
         });
     });
+
+
+    $(document).ready(function() {
+        // Basic
+        $('.dropify').dropify();
+
+        // Translated
+        $('.dropify-fr').dropify({
+            messages: {
+                default: 'Glissez-déposez un fichier ici ou cliquez',
+                replace: 'Glissez-déposez un fichier ou cliquez pour remplacer',
+                remove: 'Supprimer',
+                error: 'Désolé, le fichier trop volumineux'
+            }
+        });
+
+        // Used events
+        var drEvent = $('#input-file-events').dropify();
+
+        drEvent.on('dropify.beforeClear', function(event, element) {
+            return confirm("Do you really want to delete \"" + element.file.name + "\" ?");
+        });
+
+        drEvent.on('dropify.afterClear', function(event, element) {
+            alert('File deleted');
+        });
+
+        drEvent.on('dropify.errors', function(event, element) {
+            console.log('Has Errors');
+        });
+
+        var drDestroy = $('#input-file-to-destroy').dropify();
+        drDestroy = drDestroy.data('dropify')
+        $('#toggleDropify').on('click', function(e) {
+            e.preventDefault();
+            if (drDestroy.isDropified()) {
+                drDestroy.destroy();
+            } else {
+                drDestroy.init();
+            }
+        })
+    });
+
 </script>
+
 
 </body>
 </html>
