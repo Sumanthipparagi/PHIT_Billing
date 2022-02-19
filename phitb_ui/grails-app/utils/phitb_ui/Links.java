@@ -215,7 +215,6 @@ public class Links
     public static String PRODUCT_GROUP_DELETE = "api/v1.0/product/productgroupmaster/{id}";
 
     //division
-//    public static String DIVISION_SHOW = "api/v1.0/product/division";
     public static String DIVISION_SAVE = "api/v1.0/product/division";
     public static String DIVISION_DATATABLE = "api/v1.0/product/division/datatable";
     public static String DIVISION_UPDATE = "api/v1.0/product/division/{id}";
