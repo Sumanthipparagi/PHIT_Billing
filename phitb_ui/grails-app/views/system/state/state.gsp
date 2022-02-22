@@ -20,18 +20,28 @@
 
     <style>
 
-div.dataTables_scrollBody table tbody  td {
-    border-top: none;
-    padding: 0.9px;
-    width: 5%;
-    text-align: center;
+    div.dataTables_scrollBody table tbody  td {
+        border-top: none;
+        padding: 0.9px;
+        text-align: center;
+        border-collapse: unset!important;
+    }
 
-}
+    .editbtn
+    {
+        padding: 1px 9px;
+    }
+    .deletebtn
+    {
+        padding: 1px 9px;
+    }
 
+    tbody td {
+        padding: 0px;
+    }
 
+    </style>
 
-
-</style>
 
 </head>
 <body class="theme-black">
