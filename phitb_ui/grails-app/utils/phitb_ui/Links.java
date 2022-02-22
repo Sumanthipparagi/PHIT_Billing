@@ -185,7 +185,7 @@ public class Links
     public static String SERIES_MASTER_DELETE = "api/v1.0/entity/seriesmaster/{id}";
 
 
-    //Series Master
+    //Service Type Master
     public static String SERVICE_TYPE_SHOW = "api/v1.0/entity/servicetype";
     public static String SERVICE_TYPE_SAVE = "api/v1.0/entity/servicetype";
     public static String SERVICE_TYPE_DATATABLE = "api/v1.0/entity/servicetype/datatable";
@@ -214,6 +214,13 @@ public class Links
     public static String PRODUCT_GROUP_UPDATE = "api/v1.0/product/productgroupmaster/{id}";
     public static String PRODUCT_GROUP_DELETE = "api/v1.0/product/productgroupmaster/{id}";
 
+    //unit type
+    public static String UNIT_TYPE_SHOW = "api/v1.0/product/unittypemaster";
+    public static String UNIT_TYPE_SAVE = "api/v1.0/product/unittypemaster";
+    public static String UNIT_TYPE_DATATABLE = "api/v1.0/product/unittypemaster/datatable";
+    public static String UNIT_TYPE_UPDATE = "api/v1.0/product/unittypemaster/{id}";
+    public static String UNIT_TYPE_DELETE = "api/v1.0/product/unittypemaster/{id}";
+
     //division
     public static String DIVISION_SAVE = "api/v1.0/product/division";
     public static String DIVISION_DATATABLE = "api/v1.0/product/division/datatable";
@@ -223,9 +230,9 @@ public class Links
     //Product Category
     public static String PRODUCT_CATEGORY_SHOW = "api/v1.0/product/productcategorymaster";
     public static String PRODUCT_CATEGORY_SAVE = "api/v1.0/product/productcategorymaster";
-    public static String PRODUCT_CATEGORY_DATATABLE = "api/v1.0/product/categorymaster/datatable";
-    public static String PRODUCT_CATEGORY_UPDATE = "api/v1.0/product/categorymaster/{id}";
-    public static String PRODUCT_CATEGORY_DELETE = "api/v1.0/product/categorymaster/{id}";
+    public static String PRODUCT_CATEGORY_DATATABLE = "api/v1.0/product/productcategorymaster/datatable";
+    public static String PRODUCT_CATEGORY_UPDATE = "api/v1.0/product/productcategorymaster/{id}";
+    public static String PRODUCT_CATEGORY_DELETE = "api/v1.0/product/productcategorymaster/{id}";
 
     //Product Schedule
     public static String PRODUCT_SCHEDULE_SHOW = "api/v1.0/product/productschdulemaster";
@@ -240,5 +247,6 @@ public class Links
     public static String PRODUCT_COMPOSITION_DATATABLE = "api/v1.0/product/compositionmasterregister/datatable";
     public static String PRODUCT_COMPOSITION_UPDATE = "api/v1.0/product/compositionmasterregister/{id}";
     public static String PRODUCT_COMPOSITION_DELETE = "api/v1.0/product/compositionmasterregister/{id}";
+
 
 }

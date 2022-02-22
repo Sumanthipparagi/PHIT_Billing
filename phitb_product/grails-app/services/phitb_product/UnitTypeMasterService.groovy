@@ -1,6 +1,7 @@
 package phitb_product
 
 import grails.gorm.transactions.Transactional
+import groovy.json.JsonSlurper
 import org.grails.web.json.JSONObject
 import org.springframework.boot.context.config.ResourceNotFoundException
 import phitb_product.Exception.BadRequestException
@@ -71,12 +72,26 @@ class UnitTypeMasterService {
             order(orderColumn, orderDir)
         }
 
+        def entity = []
+        unitTypeMasterArrayList.each {
+            println(it.entityId)
+            def apires1 = showUnitTypeByEntityId(it.entityId.toString())
+            entity.push(apires1)
+        }
+        def entityType = []
+        unitTypeMasterArrayList.each {
+            def apires2 = showUnitTypeByEntityTypeId(it.entityTypeId.toString())
+            entityType.push(apires2)
+        }
+
         def recordsTotal = unitTypeMasterArrayList.totalCount
         JSONObject jsonObject = new JSONObject()
         jsonObject.put("draw", paramsJsonObject.draw)
         jsonObject.put("recordsTotal", recordsTotal)
         jsonObject.put("recordsFiltered", recordsTotal)
-        jsonObject.put("data", batchRegisterArrayList)
+        jsonObject.put("data", unitTypeMasterArrayList)
+        jsonObject.put("entity", entity)
+        jsonObject.put("entityType", entityType)
         return jsonObject
     }
 
@@ -128,6 +143,38 @@ class UnitTypeMasterService {
             }
         } else {
             throw new BadRequestException()
+        }
+    }
+
+    def showUnitTypeByEntityId(String id)
+    {
+        try
+        {
+            def url = Constants.API_GATEWAY+Constants.ENTITY_REGISTER_SHOW+"/"+id
+            URL apiUrl = new URL(url)
+            def entity = new JsonSlurper().parseText(apiUrl.text)
+            return entity
+        }
+        catch (Exception ex)
+        {
+            System.err.println('Service :CountryMaster , action :  show  , Ex:' + ex)
+            log.error('Service :CountryMaster , action :  show  , Ex:' + ex)
+        }
+    }
+
+    def showUnitTypeByEntityTypeId(String id)
+    {
+        try
+        {
+            def url = Constants.API_GATEWAY+Constants.ENTITY_TYPE_SHOW+"/"+id
+            URL apiUrl = new URL(url)
+            def entity = new JsonSlurper().parseText(apiUrl.text)
+            return entity
+        }
+        catch (Exception ex)
+        {
+            System.err.println('Service :CountryMaster , action :  show  , Ex:' + ex)
+            log.error('Service :CountryMaster , action :  show  , Ex:' + ex)
         }
     }
 }

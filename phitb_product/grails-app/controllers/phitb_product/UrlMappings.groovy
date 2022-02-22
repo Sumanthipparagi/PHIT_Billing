@@ -81,12 +81,13 @@ class UrlMappings {
                 action = [GET: 'index', POST:
                         'save']
             }
-            "categorymaster/datatable(.$format)?"(controller: 'productCategoryMaster') {action = [GET: 'dataTable']}
-            "categorymaster/$id(.$format)?"(controller: 'productCategoryMaster') {
+            "/productcategorymaster/datatable(.$format)?"(controller: 'productCategoryMaster') {action = [GET:
+                                                                                                                  'dataTable']}
+            "/productcategorymaster/$id(.$format)?"(controller: 'productCategoryMaster') {
                 action = [GET: 'show', PUT: 'update', DELETE:
                         'delete']
             }
-            "categorymasterbyentity/$id(.$format)?"(controller: 'productCategoryMaster') {
+            "/productcategorymasterbyentity/$id(.$format)?"(controller: 'productCategoryMaster') {
                 action = [GET: 'getAllByEntityId']
             }
 

@@ -2,6 +2,8 @@ package phitb_product
 
 import com.sun.org.apache.xpath.internal.operations.Div
 import grails.gorm.transactions.Transactional
+import groovy.json.JsonSlurper
+import org.apache.commons.lang.StringUtils
 import org.grails.web.json.JSONObject
 import org.springframework.boot.context.config.ResourceNotFoundException
 import phitb_product.Exception.BadRequestException
@@ -83,12 +85,33 @@ class DivisionService
             order(orderColumn, orderDir)
         }
 
+        def entity = []
+        divisionArrayList.each {
+            println(it.entityId)
+            def apires1 = showDivisionByEntityId(it.entityId.toString())
+            entity.push(apires1)
+        }
+        def entityType = []
+        divisionArrayList.each {
+            def apires2 = showDivisionByEntityTypeId(it.entityTypeId.toString())
+            entityType.push(apires2)
+        }
+        def manager = []
+        divisionArrayList.each {
+            println(it.managerId)
+            def apires3 = showDivisionManagerId(it.managerId.toString())
+            manager.push(apires3)
+        }
+
         def recordsTotal = divisionArrayList.totalCount
         JSONObject jsonObject = new JSONObject()
         jsonObject.put("draw", paramsJsonObject.draw)
         jsonObject.put("recordsTotal", recordsTotal)
         jsonObject.put("recordsFiltered", recordsTotal)
         jsonObject.put("data", divisionArrayList)
+        jsonObject.put("entity", entity)
+        jsonObject.put("entityType", entityType)
+        jsonObject.put("manager", manager)
         return jsonObject
     }
 
@@ -97,12 +120,12 @@ class DivisionService
         Division division = new Division()
         division.divisionName = jsonObject.get("divisionName").toString()
         division.divisionShortName = jsonObject.get("divisionShortName").toString()
-        division.zoneIds = jsonObject.get("zoneIds").toString()
-        division.stateIds = jsonObject.get("stateIds").toString()
-        division.cityIds = jsonObject.get("cityIds").toString()
+        division.zoneIds =   StringUtils.join(jsonObject.get("zoneIds"), ",")
+        division.stateIds =  StringUtils.join(jsonObject.get("stateIds"), ",")
+        division.cityIds =  StringUtils.join(jsonObject.get("cityIds") , ",")
         division.seriesId = Long.parseLong(jsonObject.get("seriesId").toString())
         division.managerId = Long.parseLong(jsonObject.get("managerId").toString())
-        division.customerIds = jsonObject.get("customerIds").toString()
+        division.customerIds = StringUtils.join(jsonObject.get("customerIds"), ",")
         division.status = Long.parseLong(jsonObject.get("status").toString())
         division.syncStatus = Long.parseLong(jsonObject.get("syncStatus").toString())
         division.entityTypeId = Long.parseLong(jsonObject.get("entityTypeId").toString())
@@ -128,12 +151,12 @@ class DivisionService
             division.isUpdatable = true
             division.divisionName = jsonObject.get("divisionName").toString()
             division.divisionShortName = jsonObject.get("divisionShortName").toString()
-            division.zoneIds = jsonObject.get("zoneIds").toString()
-            division.stateIds = jsonObject.get("stateIds").toString()
-            division.cityIds = jsonObject.get("cityIds").toString()
+            division.zoneIds =   StringUtils.join(jsonObject.get("zoneIds"), ",")
+            division.stateIds =  StringUtils.join(jsonObject.get("stateIds"), ",")
+            division.cityIds =  StringUtils.join(jsonObject.get("cityIds") , ",")
             division.seriesId = Long.parseLong(jsonObject.get("seriesId").toString())
             division.managerId = Long.parseLong(jsonObject.get("managerId").toString())
-            division.customerIds = jsonObject.get("customerIds").toString()
+            division.customerIds = StringUtils.join(jsonObject.get("customerIds"), ",")
             division.status = Long.parseLong(jsonObject.get("status").toString())
             division.syncStatus = Long.parseLong(jsonObject.get("syncStatus").toString())
             division.entityTypeId = Long.parseLong(jsonObject.get("entityTypeId").toString())
@@ -176,4 +199,56 @@ class DivisionService
             throw new BadRequestException()
         }
     }
+
+
+    def showDivisionByEntityId(String id)
+    {
+        try
+        {
+            def url = Constants.API_GATEWAY+Constants.ENTITY_REGISTER_SHOW+"/"+id
+            URL apiUrl = new URL(url)
+            def entity = new JsonSlurper().parseText(apiUrl.text)
+            return entity
+        }
+        catch (Exception ex)
+        {
+            System.err.println('Service :CountryMaster , action :  show  , Ex:' + ex)
+            log.error('Service :CountryMaster , action :  show  , Ex:' + ex)
+        }
+    }
+
+    def showDivisionByEntityTypeId(String id)
+    {
+        try
+        {
+            def url = Constants.API_GATEWAY+Constants.ENTITY_TYPE_SHOW+"/"+id
+            URL apiUrl = new URL(url)
+            def entity = new JsonSlurper().parseText(apiUrl.text)
+            return entity
+        }
+        catch (Exception ex)
+        {
+            System.err.println('Service :CountryMaster , action :  show  , Ex:' + ex)
+            log.error('Service :CountryMaster , action :  show  , Ex:' + ex)
+        }
+    }
+
+
+    def showDivisionManagerId(String id)
+    {
+        try
+        {
+            def url = Constants.API_GATEWAY+Constants.USER_REGISTER_SHOW+"/"+id
+            URL apiUrl = new URL(url)
+            def mananger = new JsonSlurper().parseText(apiUrl.text)
+            return mananger
+        }
+        catch (Exception ex)
+        {
+            System.err.println('Service :CountryMaster , action :  show  , Ex:' + ex)
+            log.error('Service :CountryMaster , action :  show  , Ex:' + ex)
+        }
+    }
+
+
 }

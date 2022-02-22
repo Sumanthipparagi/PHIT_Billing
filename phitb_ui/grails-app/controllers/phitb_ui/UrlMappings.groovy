@@ -241,5 +241,66 @@ class UrlMappings {
         "/product/datatable"(controller: "product", action: 'dataTable')
         "/product/update/$id"(controller:"product",action:"update")
         "/product/delete/$id"(controller: "product",action:"delete")
+
+
+        //      Division
+        "/division"(controller: "division") {
+            action = [GET: 'index', POST: 'save']
+        }
+        "/division/datatable"(controller: "division", action: 'dataTable')
+        "/division/update/$id"(controller:"division",action:"update")
+        "/division/delete/$id"(controller: "division",action:"delete")
+
+
+        // Product Category
+        "/product-category"(controller: "productCategory") {
+            action = [GET: 'index', POST: 'save']
+        }
+        "/product-category/datatable"(controller: "productCategory", action: 'dataTable')
+        "/product-category/update/$id"(controller:"productCategory",action:"update")
+        "/product-category/delete/$id"(controller: "productCategory",action:"delete")
+
+        // Product Schedule
+        "/product-schedule"(controller: "productSchedule") {
+            action = [GET: 'index', POST: 'save']
+        }
+        "/product-schedule/datatable"(controller: "productSchedule", action: 'dataTable')
+        "/product-schedule/update/$id"(controller:"productSchedule",action:"update")
+        "/product-schedule/delete/$id"(controller: "productSchedule",action:"delete")
+
+
+        // Product Composition
+        "/product-composition"(controller: "composition") {
+            action = [GET: 'index', POST: 'save']
+        }
+        "/product-composition/datatable"(controller: "composition", action: 'dataTable')
+        "/product-composition/update/$id"(controller:"composition",action:"update")
+        "/product-composition/delete/$id"(controller: "composition",action:"delete")
+
+
+        // Product Type
+        "/product-type"(controller: "productType") {
+            action = [GET: 'index', POST: 'save']
+        }
+        "/product-type/datatable"(controller: "productType", action: 'dataTable')
+        "/product-type/update/$id"(controller:"productType",action:"update")
+        "/product-type/delete/$id"(controller: "productType",action:"delete")
+
+
+        // Product group
+        "/product-group"(controller: "productGroup") {
+            action = [GET: 'index', POST: 'save']
+        }
+        "/product-group/datatable"(controller: "productGroup", action: 'dataTable')
+        "/product-group/update/$id"(controller:"productGroup",action:"update")
+        "/product-group/delete/$id"(controller: "productGroup",action:"delete")
+
+        //Unit Type
+        "/unit-type"(controller: "unitType") {
+            action = [GET: 'index', POST: 'save']
+        }
+        "/unit-type/datatable"(controller: "unitType", action: 'dataTable')
+        "/unit-type/update/$id"(controller:"unitType",action:"update")
+        "/unit-type/delete/$id"(controller: "unitType",action:"delete")
     }
 }
