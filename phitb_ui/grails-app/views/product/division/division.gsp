@@ -186,7 +186,7 @@
             processing: true,
             serverSide: true,
             language: {
-                searchPlaceholder: "Search Form"
+                searchPlaceholder: "Search Division"
             },
             ajax: {
                 type: 'GET',

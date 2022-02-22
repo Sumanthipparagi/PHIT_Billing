@@ -19,6 +19,7 @@ class ProductController {
             ArrayList<String> productCategories = new ProductCategoryController().show() as ArrayList<String>
             ArrayList<String> productSchedules = new ProductScheduleController().show() as ArrayList<String>
             ArrayList<String> racks = new RackController().show() as ArrayList<String>
+            println(racks)
             ArrayList<String> compositions = new CompositionController().show() as ArrayList<String>
             render(view: '/product/productRegister/index', model: [productTypes: productTypes,
                                                                    productGroups:productGroups,
