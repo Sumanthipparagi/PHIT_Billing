@@ -254,5 +254,20 @@ public class Links
     public static String PRODUCT_COMPOSITION_UPDATE = "api/v1.0/product/compositionmasterregister/{id}";
     public static String PRODUCT_COMPOSITION_DELETE = "api/v1.0/product/compositionmasterregister/{id}";
 
+    //Product Class
+    public static String PRODUCT_CLASS_SHOW = "api/v1.0/product/productclass";
+    public static String PRODUCT_CLASS_SAVE = "api/v1.0/product/productclass";
+    public static String PRODUCT_CLASS_DATATABLE = "api/v1.0/product/productclass/datatable";
+    public static String PRODUCT_CLASS_UPDATE = "api/v1.0/product/productclass/{id}";
+    public static String PRODUCT_CLASS_DELETE = "api/v1.0/product/productclass/{id}";
+
+
+    //Product Cost
+    public static String PRODUCT_COST_SHOW = "api/v1.0/product/productcostrange";
+    public static String PRODUCT_COST_SAVE = "api/v1.0/product/productcostrange";
+    public static String PRODUCT_COST_DATATABLE = "api/v1.0/product/productcostrange/datatable";
+    public static String PRODUCT_COST_UPDATE = "api/v1.0/product/productcostrange/{id}";
+    public static String PRODUCT_COST_DELETE = "api/v1.0/product/productcostrange/{id}";
+
 
 }

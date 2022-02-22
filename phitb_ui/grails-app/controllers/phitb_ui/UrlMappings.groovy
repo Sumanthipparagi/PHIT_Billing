@@ -295,6 +295,7 @@ class UrlMappings {
         "/product-group/update/$id"(controller:"productGroup",action:"update")
         "/product-group/delete/$id"(controller: "productGroup",action:"delete")
 
+
         //Unit Type
         "/unit-type"(controller: "unitType") {
             action = [GET: 'index', POST: 'save']
@@ -311,5 +312,24 @@ class UrlMappings {
         "/division-group/datatable"(controller: "divisionGroup", action: 'dataTable')
         "/division-group/update/$id"(controller:"divisionGroup",action:"update")
         "/division-group/delete/$id"(controller: "divisionGroup",action:"delete")
+
+
+        //Product Class
+        "/product-class"(controller: "productClass") {
+            action = [GET: 'index', POST: 'save']
+        }
+        "/product-class/datatable"(controller: "productClass", action: 'dataTable')
+        "/product-class/update/$id"(controller:"productClass",action:"update")
+        "/product-class/delete/$id"(controller: "productClass",action:"delete")
+
+
+
+        //Product cost range
+        "/product-cost-range"(controller: "productCostRange") {
+            action = [GET: 'index', POST: 'save']
+        }
+        "/product-cost-range/datatable"(controller: "productCostRange", action: 'dataTable')
+        "/product-cost-range/update/$id"(controller:"productCostRange",action:"update")
+        "/product-cost-range/delete/$id"(controller: "productCostRange",action:"delete")
     }
 }

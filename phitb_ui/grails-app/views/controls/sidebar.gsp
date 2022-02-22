@@ -605,6 +605,8 @@
                         <li><a href="/product-composition">Product Compostion</a></li>
                         <li><a href="/product-type">Product Type</a></li>
                         <li><a href="/division-group">Division Group</a></li>
+                        <li><a href="/product-class">Product Class</a></li>
+                        <li><a href="/product-cost-range">Product Cost Range</a></li>
                     </ul>
                 </li>
                 <li><a href="javascript:void(0);" class="menu-toggle"><i

@@ -97,6 +97,43 @@ class ProductService {
         }
     }
 
+    def getProductClass() {
+        Client client = ClientBuilder.newClient();
+        WebTarget target = client.target(new Links().API_GATEWAY);
+        GrailsHttpSession session = WebUtils.retrieveGrailsWebRequest().session
+        try {
+
+            Response apiResponse = target
+                    .path(new Links().PRODUCT_CLASS_SHOW)
+                    .request(MediaType.APPLICATION_JSON_TYPE)
+                    .get()
+
+            return apiResponse
+        }
+        catch (Exception ex) {
+            System.err.println('Service :ProductService , action :  getProducts  , Ex:' + ex)
+            log.error('Service :ProductService , action :  getProducts  , Ex:' + ex)
+        }
+    }
+
+    def getProductCost() {
+        Client client = ClientBuilder.newClient();
+        WebTarget target = client.target(new Links().API_GATEWAY);
+        GrailsHttpSession session = WebUtils.retrieveGrailsWebRequest().session
+        try {
+
+            Response apiResponse = target
+                    .path(new Links().PRODUCT_COST_SHOW)
+                    .request(MediaType.APPLICATION_JSON_TYPE)
+                    .get()
+            return apiResponse
+        }
+        catch (Exception ex) {
+            System.err.println('Service :ProductService , action :  getProducts  , Ex:' + ex)
+            log.error('Service :ProductService , action :  getProducts  , Ex:' + ex)
+        }
+    }
+
     def getProductCategories() {
         Client client = ClientBuilder.newClient();
         WebTarget target = client.target(new Links().API_GATEWAY);
@@ -978,5 +1015,203 @@ class ProductService {
             log.error('Service :systemService , action :  delete  , Ex:' + ex)
         }
     }
+
+    //    Product Class
+    def saveProductClass(JSONObject jsonObject)
+    {
+        Client client = ClientBuilder.newClient().register(JacksonFeature.class)
+        WebTarget target = client.target(new Links().API_GATEWAY);
+        GrailsHttpSession session = WebUtils.retrieveGrailsWebRequest().session
+        try
+        {
+            println(jsonObject)
+            Response apiResponse = target
+                    .path(new Links().PRODUCT_CLASS_SAVE)
+                    .request(MediaType.APPLICATION_JSON_TYPE)
+                    .post(Entity.entity(jsonObject,MediaType.APPLICATION_JSON_TYPE))
+            println(apiResponse)
+            return apiResponse
+        }
+        catch (Exception ex)
+        {
+            System.err.println('Service :Product , action :  save  , Ex:' + ex)
+            log.error('Service :Product , action :  save  , Ex:' + ex)
+        }
+    }
+
+    /**
+     *
+     * @param jsonObject
+     * @return
+     */
+    def showProductClass(JSONObject jsonObject)
+    {
+        Client client = ClientBuilder.newClient();
+        WebTarget target = client.target(new Links().API_GATEWAY);
+        GrailsHttpSession session = WebUtils.retrieveGrailsWebRequest().session
+        try
+        {
+            Response apiResponse = target
+                    .path(new Links().PRODUCT_CLASS_DATATABLE)
+                    .queryParam("params", URLEncoder.encode(jsonObject.toString(), "UTF-8"))
+                    .request(MediaType.APPLICATION_JSON_TYPE)
+                    .get()
+            return apiResponse
+        }
+        catch (Exception ex)
+        {
+            System.err.println('Service :getAccountModes , action :  show  , Ex:' + ex)
+            log.error('Service :getAccountModes , action :  show  , Ex:' + ex)
+        }
+    }
+
+    def putProductClass(JSONObject jsonObject)
+    {
+        Client client = ClientBuilder.newClient().register(JacksonFeature.class)
+        WebTarget target = client.target(new Links().API_GATEWAY);
+        GrailsHttpSession session = WebUtils.retrieveGrailsWebRequest().session
+        try
+        {
+            Response apiResponse = target
+                    .path(new Links().PRODUCT_CLASS_UPDATE)
+                    .resolveTemplate("id", jsonObject.id)
+                    .request(MediaType.APPLICATION_JSON_TYPE)
+                    .put(Entity.entity(jsonObject,MediaType.APPLICATION_JSON_TYPE))
+            println(jsonObject)
+            return apiResponse
+        }
+        catch (Exception ex)
+        {
+            System.err.println('Service : putProductCategory , action :  put  , Ex:' + ex)
+            log.error('Service :putProductCategory , action :  put  , Ex:' + ex)
+        }
+    }
+
+    /**
+     *
+     * @param jsonObject
+     * @return
+     */
+    def deleteProductClass(JSONObject jsonObject)
+    {
+        Client client = ClientBuilder.newClient().register(JacksonFeature.class)
+        WebTarget target = client.target(new Links().API_GATEWAY);
+        GrailsHttpSession session = WebUtils.retrieveGrailsWebRequest().session
+        try
+        {
+            Response apiResponse = target
+                    .path(new Links().PRODUCT_CLASS_DELETE)
+                    .resolveTemplate("id", jsonObject.id)
+                    .request(MediaType.APPLICATION_JSON_TYPE)
+                    .delete()
+            return apiResponse
+        }
+        catch (Exception ex)
+        {
+            System.err.println('Service :systemService , action :  delete  , Ex:' + ex)
+            log.error('Service :systemService , action :  delete  , Ex:' + ex)
+        }
+    }
+
+
+    //    Product Cost Range
+    def saveProductCost(JSONObject jsonObject)
+    {
+        Client client = ClientBuilder.newClient().register(JacksonFeature.class)
+        WebTarget target = client.target(new Links().API_GATEWAY);
+        GrailsHttpSession session = WebUtils.retrieveGrailsWebRequest().session
+        try
+        {
+            println(jsonObject)
+            Response apiResponse = target
+                    .path(new Links().PRODUCT_COST_SAVE)
+                    .request(MediaType.APPLICATION_JSON_TYPE)
+                    .post(Entity.entity(jsonObject,MediaType.APPLICATION_JSON_TYPE))
+            println(apiResponse)
+            return apiResponse
+        }
+        catch (Exception ex)
+        {
+            System.err.println('Service :Product , action :  save  , Ex:' + ex)
+            log.error('Service :Product , action :  save  , Ex:' + ex)
+        }
+    }
+
+    /**
+     *
+     * @param jsonObject
+     * @return
+     */
+    def showProductCost(JSONObject jsonObject)
+    {
+        Client client = ClientBuilder.newClient();
+        WebTarget target = client.target(new Links().API_GATEWAY);
+        GrailsHttpSession session = WebUtils.retrieveGrailsWebRequest().session
+        try
+        {
+            Response apiResponse = target
+                    .path(new Links().PRODUCT_COST_DATATABLE)
+                    .queryParam("params", URLEncoder.encode(jsonObject.toString(), "UTF-8"))
+                    .request(MediaType.APPLICATION_JSON_TYPE)
+                    .get()
+            return apiResponse
+        }
+        catch (Exception ex)
+        {
+            System.err.println('Service :getAccountModes , action :  show  , Ex:' + ex)
+            log.error('Service :getAccountModes , action :  show  , Ex:' + ex)
+        }
+    }
+
+    def putProductCost(JSONObject jsonObject)
+    {
+        Client client = ClientBuilder.newClient().register(JacksonFeature.class)
+        WebTarget target = client.target(new Links().API_GATEWAY);
+        GrailsHttpSession session = WebUtils.retrieveGrailsWebRequest().session
+        try
+        {
+            Response apiResponse = target
+                    .path(new Links().PRODUCT_COST_UPDATE)
+                    .resolveTemplate("id", jsonObject.id)
+                    .request(MediaType.APPLICATION_JSON_TYPE)
+                    .put(Entity.entity(jsonObject,MediaType.APPLICATION_JSON_TYPE))
+            println(jsonObject)
+            return apiResponse
+        }
+        catch (Exception ex)
+        {
+            System.err.println('Service : putProductCategory , action :  put  , Ex:' + ex)
+            log.error('Service :putProductCategory , action :  put  , Ex:' + ex)
+        }
+    }
+
+    /**
+     *
+     * @param jsonObject
+     * @return
+     */
+    def deleteProductCost(JSONObject jsonObject)
+    {
+        Client client = ClientBuilder.newClient().register(JacksonFeature.class)
+        WebTarget target = client.target(new Links().API_GATEWAY);
+        GrailsHttpSession session = WebUtils.retrieveGrailsWebRequest().session
+        try
+        {
+            Response apiResponse = target
+                    .path(new Links().PRODUCT_COST_DELETE)
+                    .resolveTemplate("id", jsonObject.id)
+                    .request(MediaType.APPLICATION_JSON_TYPE)
+                    .delete()
+            return apiResponse
+        }
+        catch (Exception ex)
+        {
+            System.err.println('Service :systemService , action :  delete  , Ex:' + ex)
+            log.error('Service :systemService , action :  delete  , Ex:' + ex)
+        }
+    }
+
+
+
 
 }
