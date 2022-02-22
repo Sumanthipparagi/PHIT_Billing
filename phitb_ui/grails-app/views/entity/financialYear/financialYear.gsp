@@ -294,8 +294,6 @@
     });
 
 
-
-
     $(document).on("click", ".deletebtn", function () {
         id = $(this).data('id');
         $("#myModalLabel").text("Delete Financial year ?");
