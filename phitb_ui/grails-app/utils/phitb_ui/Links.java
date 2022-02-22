@@ -227,6 +227,12 @@ public class Links
     public static String DIVISION_UPDATE = "api/v1.0/product/division/{id}";
     public static String DIVISION_DELETE = "api/v1.0/product/division/{id}";
 
+    //division group
+    public static String DIVISION_GROUP_SAVE = "api/v1.0/product/divisiongroupregister";
+    public static String DIVISION_GROUP_DATATABLE = "api/v1.0/product/divisiongroupregister/datatable";
+    public static String DIVISION_GROUP_UPDATE = "api/v1.0/product/divisiongroupregister/{id}";
+    public static String DIVISION_GROUP_DELETE = "api/v1.0/product/divisiongroupregister/{id}";
+
     //Product Category
     public static String PRODUCT_CATEGORY_SHOW = "api/v1.0/product/productcategorymaster";
     public static String PRODUCT_CATEGORY_SAVE = "api/v1.0/product/productcategorymaster";

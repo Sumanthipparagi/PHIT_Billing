@@ -73,8 +73,8 @@
                                     Series
                                 </label>
                                 <select class="form-control show-tick seriesId" name="seriesId" id="seriesId">
-                                    <g:each var="z" in="${zoneList}">
-                                        <option value="${z.id}">${z.name}</option>
+                                    <g:each var="s" in="${series}">
+                                        <option value="${s.id}">${s.seriesName}</option>
                                     </g:each>
                                 </select>
                             </div>

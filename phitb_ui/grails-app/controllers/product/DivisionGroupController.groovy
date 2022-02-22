@@ -1,34 +1,38 @@
-package entity
+package product
 
+import entity.CustomerGroupController
+import entity.EntityRegisterController
+import entity.UserRegisterController
 import groovy.json.JsonSlurper
 import org.grails.web.json.JSONArray
 import org.grails.web.json.JSONObject
+import org.hibernate.type.EntityType
 import phitb_ui.Constants
 import phitb_ui.EntityService
 import phitb_ui.Links
 import phitb_ui.ProductService
-import phitb_ui.SystemService
 import system.CityController
 import system.CountryController
 import system.StateController
 import system.ZoneController
 
-class CustomerGroupController {
+class DivisionGroupController {
 
     def index()
     {
         try
         {
-            def entityurl = Links.API_GATEWAY+Links.ENTITY_REGISTER_SHOW
             def entitytypeurl = Links.API_GATEWAY+Links.ENTITY_TYPE_MASTER_SHOW
-            def userregisterurl = Links.API_GATEWAY + Links.USER_REGISTER_SHOW
-            URL apiUrl1 = new URL(entityurl)
+            def seriesurl = Links.API_GATEWAY + Links.SERIES_MASTER_SHOW
             URL apiUrl2 = new URL(entitytypeurl)
-            URL apiUrl3 = new URL(userregisterurl)
-            def entity = new JsonSlurper().parseText(apiUrl1.text)
+            URL apiUrl5 = new URL(seriesurl)
             def entitytype = new JsonSlurper().parseText(apiUrl2.text)
-            def userregister = new JsonSlurper().parseText(apiUrl3.text)
+            def series = new JsonSlurper().parseText(apiUrl5.text)
             ArrayList<String> statelist = new StateController().show() as ArrayList<String>
+            ArrayList<String> divisionList = new DivisionController().show() as ArrayList<String>
+            ArrayList<String> userregister = new UserRegisterController().show() as ArrayList<String>
+            ArrayList<String> entity = new EntityRegisterController().show() as ArrayList<String>
+            ArrayList<String> customer = new CustomerGroupController().show() as ArrayList<String>
             ArrayList<String> countrylist = new CountryController().show() as ArrayList<String>
             ArrayList<String> citylist = new CityController().show() as ArrayList<String>
             ArrayList<String> zoneList = new ZoneController().show() as ArrayList<String>
@@ -39,18 +43,11 @@ class CustomerGroupController {
                     managerList.add(it)
                 }
             }
-            ArrayList<String> salesmanList = []
-            userregister.each {
-                if (it.role.name.toString().equalsIgnoreCase(Constants.ROLE_SALESMAN))
-                {
-                    salesmanList.add(it)
-                }
-            }
-
-            render(view: '/entity/customerGroup/customerGroup',model: [entity:entity, entitytype:entitytype,
-                                                                         statelist:statelist,countrylist:countrylist,
-                                                                         citylist:citylist,salesmanList:salesmanList,
-                                                                         managerList:managerList,zoneList:zoneList])
+            render(view: '/product/divisionGroup/divisionGroup',model: [entity:entity,statelist:statelist,
+                                                              countrylist:countrylist,citylist:citylist,
+                                                              zoneList:zoneList,
+                                                              entitytype:entitytype,customer:customer,series:series,
+                                                              managerList:managerList,divisionList:divisionList])
         }
         catch (Exception ex)
         {
@@ -58,6 +55,7 @@ class CustomerGroupController {
             log.error('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
             response.status = 400
         }
+
     }
 
     def dataTable()
@@ -65,7 +63,7 @@ class CustomerGroupController {
         try
         {
             JSONObject jsonObject = new JSONObject(params)
-            def apiResponse = new EntityService().showCustomerGroup(jsonObject)
+            def apiResponse = new ProductService().showDivisionGroup(jsonObject)
             if (apiResponse.status == 200)
             {
                 JSONObject responseObject = new JSONObject(apiResponse.readEntity(String.class))
@@ -89,12 +87,11 @@ class CustomerGroupController {
         try
         {
             JSONObject jsonObject = new JSONObject(params)
-            def apiResponse = new EntityService().saveCustomerGroup(jsonObject)
+            def apiResponse = new ProductService().saveDivisionGroup(jsonObject)
             if (apiResponse?.status == 200)
             {
                 JSONObject obj = new JSONObject(apiResponse.readEntity(String.class))
-                render(view: '/entity/entityRegister/add-entity-register')
-//                respond obj, formats: ['json'], status: 200
+                respond obj, formats: ['json'], status: 200
             }
             else
             {
@@ -115,12 +112,11 @@ class CustomerGroupController {
         {
             println(params)
             JSONObject jsonObject = new JSONObject(params)
-            def apiResponse = new EntityService().putCustomerGroup(jsonObject)
+            def apiResponse = new ProductService().putDivisionGroup(jsonObject)
             if (apiResponse.status == 200)
             {
                 JSONObject obj = new JSONObject(apiResponse.readEntity(String.class))
-                redirect(uri:"/entity-register")
-//                respond obj, formats: ['json'], status: 200
+                respond obj, formats: ['json'], status: 200
             }
             else
             {
@@ -140,7 +136,7 @@ class CustomerGroupController {
         try
         {
             JSONObject jsonObject = new JSONObject(params)
-            def apiResponse = new EntityService().deleteCustomerGroup(jsonObject)
+            def apiResponse = new ProductService().deleteDivisionGroup(jsonObject)
             if (apiResponse.status == 200)
             {
                 JSONObject data = new JSONObject()
@@ -164,7 +160,7 @@ class CustomerGroupController {
     {
         try
         {
-            def apiResponse = new ProductService().getCustomerGroup()
+            def apiResponse = new ProductService().getDivisions()
             if (apiResponse?.status == 200)
             {
                 JSONArray jsonArray = new JSONArray(apiResponse.readEntity(String.class));
@@ -183,5 +179,4 @@ class CustomerGroupController {
             response.status = 400
         }
     }
-
 }

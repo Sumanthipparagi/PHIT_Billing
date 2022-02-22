@@ -11,5 +11,6 @@ class Constants
     public static String FORM_MASTER_SHOW = "api/v1.0/system/form";
     public static String ENTITY_REGISTER_SHOW = "api/v1.0/entity/entityregister";
     public static String ENTITY_TYPE_SHOW = "api/v1.0/entity/entitytypemaster";
+    public static String DIVISION_MASTER = "api/v1.0/product/division";
 
 }

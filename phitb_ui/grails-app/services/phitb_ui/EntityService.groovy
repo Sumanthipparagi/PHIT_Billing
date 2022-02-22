@@ -1384,4 +1384,62 @@ class EntityService {
             log.error('Service :systemService , action :  delete  , Ex:' + ex)
         }
     }
+
+
+    def getEntity() {
+        Client client = ClientBuilder.newClient();
+        WebTarget target = client.target(new Links().API_GATEWAY);
+        GrailsHttpSession session = WebUtils.retrieveGrailsWebRequest().session
+        try {
+
+            Response apiResponse = target
+                    .path(new Links().ENTITY_REGISTER_SHOW)
+                    .request(MediaType.APPLICATION_JSON_TYPE)
+                    .get()
+
+            return apiResponse
+        }
+        catch (Exception ex) {
+            System.err.println('Service :ProductService , action :  getProducts  , Ex:' + ex)
+            log.error('Service :ProductService , action :  getProducts  , Ex:' + ex)
+        }
+    }
+
+    def getEntityType() {
+        Client client = ClientBuilder.newClient();
+        WebTarget target = client.target(new Links().API_GATEWAY);
+        GrailsHttpSession session = WebUtils.retrieveGrailsWebRequest().session
+        try {
+
+            Response apiResponse = target
+                    .path(new Links().ENTITY_TYPE_MASTER_SHOW)
+                    .request(MediaType.APPLICATION_JSON_TYPE)
+                    .get()
+
+            return apiResponse
+        }
+        catch (Exception ex) {
+            System.err.println('Service :ProductService , action :  getProducts  , Ex:' + ex)
+            log.error('Service :ProductService , action :  getProducts  , Ex:' + ex)
+        }
+    }
+
+    def getUserRegister() {
+        Client client = ClientBuilder.newClient();
+        WebTarget target = client.target(new Links().API_GATEWAY);
+        GrailsHttpSession session = WebUtils.retrieveGrailsWebRequest().session
+        try {
+
+            Response apiResponse = target
+                    .path(new Links().USER_REGISTER_SHOW)
+                    .request(MediaType.APPLICATION_JSON_TYPE)
+                    .get()
+
+            return apiResponse
+        }
+        catch (Exception ex) {
+            System.err.println('Service :ProductService , action :  getProducts  , Ex:' + ex)
+            log.error('Service :ProductService , action :  getProducts  , Ex:' + ex)
+        }
+    }
 }

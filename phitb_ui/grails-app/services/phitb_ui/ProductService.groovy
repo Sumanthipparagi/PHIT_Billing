@@ -116,6 +116,25 @@ class ProductService {
         }
     }
 
+
+    def getDivisionGroups() {
+        Client client = ClientBuilder.newClient();
+        WebTarget target = client.target(new Links().API_GATEWAY);
+        GrailsHttpSession session = WebUtils.retrieveGrailsWebRequest().session
+        try {
+
+            Response apiResponse = target
+                    .path(new Links().DIVISION_SHOW)
+                    .request(MediaType.APPLICATION_JSON_TYPE)
+                    .get()
+
+            return apiResponse
+        }
+        catch (Exception ex) {
+            System.err.println('Service :ProductService , action :  getProducts  , Ex:' + ex)
+            log.error('Service :ProductService , action :  getProducts  , Ex:' + ex)
+        }
+    }
     /**
      *
      * @param jsonObject
@@ -160,6 +179,24 @@ class ProductService {
     }
 
 
+    def getCustomerGroup() {
+        Client client = ClientBuilder.newClient();
+        WebTarget target = client.target(new Links().API_GATEWAY);
+        GrailsHttpSession session = WebUtils.retrieveGrailsWebRequest().session
+        try {
+
+            Response apiResponse = target
+                    .path(new Links().CUSTOMER_GROUP_REGISTER_SHOW)
+                    .request(MediaType.APPLICATION_JSON_TYPE)
+                    .get()
+
+            return apiResponse
+        }
+        catch (Exception ex) {
+            System.err.println('Service :ProductService , action :  getProducts  , Ex:' + ex)
+            log.error('Service :ProductService , action :  getProducts  , Ex:' + ex)
+        }
+    }
 
 //    Division
     def saveDivision(JSONObject jsonObject)
@@ -747,7 +784,6 @@ class ProductService {
         }
     }
 
-
     //    Unit Type
     def saveUnitType(JSONObject jsonObject)
     {
@@ -845,5 +881,102 @@ class ProductService {
         }
     }
 
+
+    //    Division group
+    def saveDivisionGroup(JSONObject jsonObject)
+    {
+        Client client = ClientBuilder.newClient().register(JacksonFeature.class)
+        WebTarget target = client.target(new Links().API_GATEWAY);
+        GrailsHttpSession session = WebUtils.retrieveGrailsWebRequest().session
+        try
+        {
+            println(jsonObject)
+            Response apiResponse = target
+                    .path(new Links().DIVISION_GROUP_SAVE)
+                    .request(MediaType.APPLICATION_JSON_TYPE)
+                    .post(Entity.entity(jsonObject,MediaType.APPLICATION_JSON_TYPE))
+            println(apiResponse)
+            return apiResponse
+        }
+        catch (Exception ex)
+        {
+            System.err.println('Service :Product , action :  save  , Ex:' + ex)
+            log.error('Service :Product , action :  save  , Ex:' + ex)
+        }
+    }
+
+    /**
+     *
+     * @param jsonObject
+     * @return
+     */
+    def showDivisionGroup(JSONObject jsonObject)
+    {
+        Client client = ClientBuilder.newClient();
+        WebTarget target = client.target(new Links().API_GATEWAY);
+        GrailsHttpSession session = WebUtils.retrieveGrailsWebRequest().session
+        try
+        {
+            Response apiResponse = target
+                    .path(new Links().DIVISION_GROUP_DATATABLE)
+                    .queryParam("params", URLEncoder.encode(jsonObject.toString(), "UTF-8"))
+                    .request(MediaType.APPLICATION_JSON_TYPE)
+                    .get()
+            return apiResponse
+        }
+        catch (Exception ex)
+        {
+            System.err.println('Service :getAccountModes , action :  show  , Ex:' + ex)
+            log.error('Service :getAccountModes , action :  show  , Ex:' + ex)
+        }
+    }
+
+    def putDivisionGroup(JSONObject jsonObject)
+    {
+        Client client = ClientBuilder.newClient().register(JacksonFeature.class)
+        WebTarget target = client.target(new Links().API_GATEWAY);
+        GrailsHttpSession session = WebUtils.retrieveGrailsWebRequest().session
+        try
+        {
+            Response apiResponse = target
+                    .path(new Links().DIVISION_GROUP_UPDATE)
+                    .resolveTemplate("id", jsonObject.id)
+                    .request(MediaType.APPLICATION_JSON_TYPE)
+                    .put(Entity.entity(jsonObject,MediaType.APPLICATION_JSON_TYPE))
+            println(jsonObject)
+            return apiResponse
+        }
+        catch (Exception ex)
+        {
+            System.err.println('Service : putProductCategory , action :  put  , Ex:' + ex)
+            log.error('Service :putProductCategory , action :  put  , Ex:' + ex)
+        }
+    }
+
+    /**
+     *
+     * @param jsonObject
+     * @return
+     */
+    def deleteDivisionGroup(JSONObject jsonObject)
+    {
+        Client client = ClientBuilder.newClient().register(JacksonFeature.class)
+        WebTarget target = client.target(new Links().API_GATEWAY);
+        GrailsHttpSession session = WebUtils.retrieveGrailsWebRequest().session
+        try
+        {
+            Response apiResponse = target
+                    .path(new Links().DIVISION_GROUP_DELETE)
+                    .resolveTemplate("id", jsonObject.id)
+                    .request(MediaType.APPLICATION_JSON_TYPE)
+                    .delete()
+            return apiResponse
+        }
+        catch (Exception ex)
+        {
+            System.err.println('Service :systemService , action :  delete  , Ex:' + ex)
+            log.error('Service :systemService , action :  delete  , Ex:' + ex)
+        }
+    }
 
 }

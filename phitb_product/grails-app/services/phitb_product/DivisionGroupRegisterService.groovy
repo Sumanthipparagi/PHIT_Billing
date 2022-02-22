@@ -1,6 +1,8 @@
 package phitb_product
 
 import grails.gorm.transactions.Transactional
+import groovy.json.JsonSlurper
+import org.apache.commons.lang.StringUtils
 import org.grails.web.json.JSONObject
 import org.springframework.boot.context.config.ResourceNotFoundException
 import phitb_product.Exception.BadRequestException
@@ -62,7 +64,7 @@ class DivisionGroupRegisterService {
         Integer offset = start ? Integer.parseInt(start.toString()) : 0
         Integer max = length ? Integer.parseInt(length.toString()) : 100
 
-        def divisiongroupRegisterCriteria = BatchRegister.createCriteria()
+        def divisiongroupRegisterCriteria = DivisionGroupRegister.createCriteria()
         def divisiongroupRegisterArrayList = divisiongroupRegisterCriteria.list(max: max, offset: offset) {
             or {
                 if (searchTerm != "") {
@@ -73,12 +75,32 @@ class DivisionGroupRegisterService {
             order(orderColumn, orderDir)
         }
 
+        def division= []
+        divisiongroupRegisterArrayList.each {
+            def id = it.divisionIds
+            def apires3 = showDivisionGroupByDivisionIds(id.toString().split(",") as List<String>)
+            println(apires3)
+            division.push(apires3)
+        }
+        def entity = []
+        divisiongroupRegisterArrayList.each {
+            def apires1 = showDivisionGroupByEntityId(it.entityId.toString())
+            entity.push(apires1)
+        }
+        def entityType = []
+        divisiongroupRegisterArrayList.each {
+            def apires2 = showDivisionGroupByEntityTypeId(it.entityTypeId.toString())
+            entityType.push(apires2)
+        }
         def recordsTotal = divisiongroupRegisterArrayList.totalCount
         JSONObject jsonObject = new JSONObject()
         jsonObject.put("draw", paramsJsonObject.draw)
         jsonObject.put("recordsTotal", recordsTotal)
         jsonObject.put("recordsFiltered", recordsTotal)
         jsonObject.put("data", divisiongroupRegisterArrayList)
+        jsonObject.put("entity", entity)
+        jsonObject.put("division", division)
+        jsonObject.put("entityType", entityType)
         return jsonObject
     }
 
@@ -86,7 +108,7 @@ class DivisionGroupRegisterService {
         DivisionGroupRegister divisionGroupRegister = new DivisionGroupRegister()
         divisionGroupRegister.divisionGroupName = jsonObject.get("divisionGroupName").toString()
         divisionGroupRegister.divGroupShortName = jsonObject.get("divGroupShortName").toString()
-        divisionGroupRegister.divisionIds = jsonObject.get("divisionIds").toString()
+        divisionGroupRegister.divisionIds = StringUtils.join(jsonObject.get("divisionIds"),",")
         divisionGroupRegister.status =  Long.parseLong(jsonObject.get("status").toString())
         divisionGroupRegister.syncStatus =  Long.parseLong(jsonObject.get("syncStatus").toString())
         divisionGroupRegister.entityTypeId =  Long.parseLong(jsonObject.get("entityTypeId").toString())
@@ -106,7 +128,7 @@ class DivisionGroupRegisterService {
             divisionGroupRegister.isUpdatable = true
             divisionGroupRegister.divisionGroupName = jsonObject.get("divisionGroupName").toString()
             divisionGroupRegister.divGroupShortName = jsonObject.get("divGroupShortName").toString()
-            divisionGroupRegister.divisionIds = jsonObject.get("divisionIds").toString()
+            divisionGroupRegister.divisionIds = StringUtils.join(jsonObject.get("divisionIds"),",")
             divisionGroupRegister.status =  Long.parseLong(jsonObject.get("status").toString())
             divisionGroupRegister.syncStatus =  Long.parseLong(jsonObject.get("syncStatus").toString())
             divisionGroupRegister.entityTypeId =  Long.parseLong(jsonObject.get("entityTypeId").toString())
@@ -135,4 +157,55 @@ class DivisionGroupRegisterService {
             throw new BadRequestException()
         }
     }
+
+    def showDivisionGroupByEntityId(String id)
+    {
+        try
+        {
+            def url = Constants.API_GATEWAY+Constants.ENTITY_REGISTER_SHOW+"/"+id
+            URL apiUrl = new URL(url)
+            def entity = new JsonSlurper().parseText(apiUrl.text)
+            return entity
+        }
+        catch (Exception ex)
+        {
+            System.err.println('Service :CountryMaster , action :  show  , Ex:' + ex)
+            log.error('Service :CountryMaster , action :  show  , Ex:' + ex)
+        }
+    }
+
+    def showDivisionGroupByEntityTypeId(String id)
+    {
+        try
+        {
+            def url = Constants.API_GATEWAY+Constants.ENTITY_TYPE_SHOW+"/"+id
+            URL apiUrl = new URL(url)
+            def entity = new JsonSlurper().parseText(apiUrl.text)
+            return entity
+        }
+        catch (Exception ex)
+        {
+            System.err.println('Service :CountryMaster , action :  show  , Ex:' + ex)
+            log.error('Service :CountryMaster , action :  show  , Ex:' + ex)
+        }
+    }
+
+    def showDivisionGroupByDivisionIds(List<String> ids)
+    {
+        try
+        {
+            ids.eachWithIndex { it,index->
+                def url = Constants.API_GATEWAY + Constants.DIVISION_MASTER + "/" + it
+                URL apiUrl = new URL(url)
+                def divisionGroup = new JsonSlurper().parseText(apiUrl.text)
+                return divisionGroup
+            }
+        }
+        catch (Exception ex)
+        {
+            System.err.println('Service :DivisionGroup , action :  show  , Ex:' + ex)
+            log.error('Service :DivisionGroup , action :  show  , Ex:' + ex)
+        }
+    }
+
 }

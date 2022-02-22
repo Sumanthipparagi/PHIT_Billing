@@ -571,6 +571,42 @@
                         <li><a href="/godown">Godown</a></li>
                     </ul>
                 </li>
+
+
+                <li><a href="javascript:void(0);" class="menu-toggle"><i
+                        class="zmdi zmdi-apps"></i><span>Entity</span> <span
+                        class="badge badge-success float-right">4</span></a>
+                    <ul class="ml-menu">
+                        <li><a href="/entity-register">Entity Register</a></li>
+                        <li><a href="/user-register">User Register</a></li>
+                        <li><a href="/customer-group-register">Customer Group Register</a></li>
+                        <li><a href="/day-end-master">Day End Master</a></li>
+                        <li><a href="/financial-year-master">Financial Year Master</a></li>
+                        <li><a href="/region-master">Region Master</a></li>
+                        <li><a href="/route-regitser">Route Register</a></li>
+                        <li><a href="/role">Role</a></li>
+                        <li><a href="/rule">Rule Master</a></li>
+                        <li><a href="/tax">Tax Register</a></li>
+                        <li><a href="/territory">Territory</a></li>
+                        <li><a href="/terms-conditions">Terms and Conditions</a></li>
+                        <li><a href="/series">Series</a></li>
+                        <li><a href="/service-type">Service Type</a></li>
+                    </ul>
+                </li>
+
+                <li><a href="javascript:void(0);" class="menu-toggle"><i
+                        class="zmdi zmdi-apps"></i><span>Product</span> <span
+                        class="badge badge-success float-right">4</span></a>
+                    <ul class="ml-menu">
+                        <li><a href="/product">Product Register</a></li>
+                        <li><a href="/division">Division</a></li>
+                        <li><a href="/product-category">Product Category</a></li>
+                        <li><a href="/product-schedule">Product Schedule</a></li>
+                        <li><a href="/product-composition">Product Compostion</a></li>
+                        <li><a href="/product-type">Product Type</a></li>
+                        <li><a href="/division-group">Division Group</a></li>
+                    </ul>
+                </li>
                 <li><a href="javascript:void(0);" class="menu-toggle"><i
                         class="zmdi zmdi-swap-alt"></i><span>UI Elements</span> <span
                         class="badge badge-default float-right">15</span></a>

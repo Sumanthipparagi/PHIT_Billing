@@ -302,5 +302,14 @@ class UrlMappings {
         "/unit-type/datatable"(controller: "unitType", action: 'dataTable')
         "/unit-type/update/$id"(controller:"unitType",action:"update")
         "/unit-type/delete/$id"(controller: "unitType",action:"delete")
+
+
+        //Division Group register
+        "/division-group"(controller: "divisionGroup") {
+            action = [GET: 'index', POST: 'save']
+        }
+        "/division-group/datatable"(controller: "divisionGroup", action: 'dataTable')
+        "/division-group/update/$id"(controller:"divisionGroup",action:"update")
+        "/division-group/delete/$id"(controller: "divisionGroup",action:"delete")
     }
 }
