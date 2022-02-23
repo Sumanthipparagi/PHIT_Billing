@@ -1,8 +1,10 @@
 package phitb_product
 
+import grails.converters.JSON
 import grails.gorm.transactions.Transactional
 import groovy.json.JsonSlurper
 import org.apache.commons.lang.StringUtils
+import org.grails.web.json.JSONArray
 import org.grails.web.json.JSONObject
 import org.springframework.boot.context.config.ResourceNotFoundException
 import phitb_product.Exception.BadRequestException
@@ -75,13 +77,14 @@ class DivisionGroupRegisterService {
             order(orderColumn, orderDir)
         }
 
-        def division= []
+        JSONArray division= []
         divisiongroupRegisterArrayList.each {
             def id = it.divisionIds
             def apires3 = showDivisionGroupByDivisionIds(id.toString().split(",") as List<String>)
             println(apires3)
-            division.push(apires3)
+            division.add(apires3 as String)
         }
+
         def entity = []
         divisiongroupRegisterArrayList.each {
             def apires1 = showDivisionGroupByEntityId(it.entityId.toString())
@@ -92,6 +95,8 @@ class DivisionGroupRegisterService {
             def apires2 = showDivisionGroupByEntityTypeId(it.entityTypeId.toString())
             entityType.push(apires2)
         }
+
+
         def recordsTotal = divisiongroupRegisterArrayList.totalCount
         JSONObject jsonObject = new JSONObject()
         jsonObject.put("draw", paramsJsonObject.draw)
@@ -192,14 +197,17 @@ class DivisionGroupRegisterService {
 
     def showDivisionGroupByDivisionIds(List<String> ids)
     {
+
         try
         {
+            ArrayList<JSONObject> d =[]
             ids.eachWithIndex { it,index->
                 def url = Constants.API_GATEWAY + Constants.DIVISION_MASTER + "/" + it
                 URL apiUrl = new URL(url)
                 def divisionGroup = new JsonSlurper().parseText(apiUrl.text)
-                return divisionGroup
+                d.add(divisionGroup as JSONObject)
             }
+            return d
         }
         catch (Exception ex)
         {

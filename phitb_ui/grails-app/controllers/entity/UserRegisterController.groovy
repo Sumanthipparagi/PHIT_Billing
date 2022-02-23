@@ -134,7 +134,6 @@ class UserRegisterController
     {
         try
         {
-            println(params)
             def entityurl = Links.API_GATEWAY + Links.ENTITY_REGISTER_SHOW
             def entitytypeurl = Links.API_GATEWAY + Links.ENTITY_TYPE_MASTER_SHOW
             def userregisterbyidurl = Links.API_GATEWAY + Links.USER_REGISTER_SHOW+"/"+params.id

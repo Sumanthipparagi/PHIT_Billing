@@ -19,7 +19,7 @@ class UrlMappings {
 
         group "/api/v1.0/product", {
             //Batch Register
-            "/product/batchregister(.$format)?"(controller: 'batchRegister') {
+            "/batchregister(.$format)?"(controller: 'batchRegister') {
                 action = [GET: 'index', POST:
                         'save']
             }

@@ -236,8 +236,8 @@ class UrlMappings {
         "/product"(controller: "product") {
             action = [GET: 'index', POST: 'save']
         }
-        "/product/add"(controller: "product", action: 'addUser')
-        "/product/update/$id"(product: "productRegister", action: 'updateUser')
+        "/product/add-product"(controller: "product", action: 'addProduct')
+        "/product/update-product/$id"(controller: "product", action: 'updateProduct')
         "/product/datatable"(controller: "product", action: 'dataTable')
         "/product/update/$id"(controller:"product",action:"update")
         "/product/delete/$id"(controller: "product",action:"delete")
@@ -331,5 +331,14 @@ class UrlMappings {
         "/product-cost-range/datatable"(controller: "productCostRange", action: 'dataTable')
         "/product-cost-range/update/$id"(controller:"productCostRange",action:"update")
         "/product-cost-range/delete/$id"(controller: "productCostRange",action:"delete")
+
+
+        //Batch register
+        "/batch-register"(controller: "batchRegister") {
+            action = [GET: 'index', POST: 'save']
+        }
+        "/batch-register/datatable"(controller: "batchRegister", action: 'dataTable')
+        "/batch-register/update/$id"(controller:"batchRegister",action:"update")
+        "/batch-register/delete/$id"(controller: "batchRegister",action:"delete")
     }
 }

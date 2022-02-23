@@ -92,7 +92,7 @@ class ProductRegisterService {
         ProductRegister productRegister = new ProductRegister()
         productRegister.productCode = jsonObject.get("productCode").toString()
         productRegister.productName = jsonObject.get("productName").toString()
-        productRegister.manufacturerId = Long.parseLong(jsonObject.get("productName").toString())
+        productRegister.manufacturerId = Long.parseLong(jsonObject.get("manufacturerId").toString())
         productRegister.mktCompanyId = Long.parseLong(jsonObject.get("mktCompanyId").toString())
         productRegister.hsnCode = jsonObject.get("hsnCode").toString()
         productRegister.rackId = Long.parseLong(jsonObject.get("rackId").toString())

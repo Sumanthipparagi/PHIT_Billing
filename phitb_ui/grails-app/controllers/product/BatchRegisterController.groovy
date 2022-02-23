@@ -1,11 +1,9 @@
 package product
 
-import facility.FridgeController
 import groovy.json.JsonSlurper
 import org.grails.web.json.JSONArray
 import org.grails.web.json.JSONObject
 import phitb_ui.Constants
-import phitb_ui.FacilityService
 import phitb_ui.Links
 import phitb_ui.ProductService
 import system.CityController
@@ -13,7 +11,7 @@ import system.CountryController
 import system.StateController
 import system.ZoneController
 
-class DivisionController {
+class BatchRegisterController {
 
     def index()
     {
@@ -34,6 +32,8 @@ class DivisionController {
             def userregister = new JsonSlurper().parseText(apiUrl3.text)
             def customer = new JsonSlurper().parseText(apiUrl4.text)
             def series = new JsonSlurper().parseText(apiUrl5.text)
+            ArrayList<String> productlist = new ProductController().show() as ArrayList<String>
+            ArrayList<String> productcatList = new ProductCategoryController().show() as ArrayList<String>
             ArrayList<String> statelist = new StateController().show() as ArrayList<String>
             ArrayList<String> countrylist = new CountryController().show() as ArrayList<String>
             ArrayList<String> citylist = new CityController().show() as ArrayList<String>
@@ -45,11 +45,12 @@ class DivisionController {
                     managerList.add(it)
                 }
             }
-            render(view: '/product/division/division',model: [entity:entity,statelist:statelist,
-                                                              countrylist:countrylist,citylist:citylist,
-                                                              zoneList:zoneList,
-                                                     entitytype:entitytype,customer:customer,series:series,
-                                                              managerList:managerList])
+            render(view: '/product/batchRegister/batchRegister',model: [entity:entity,statelist:statelist,
+                                                                                  countrylist:countrylist,citylist:citylist,
+                                                                                  zoneList:zoneList,
+                                                                                  entitytype:entitytype,customer:customer,series:series,
+                                                                                  managerList:managerList,
+                                                                        productlist:productlist,productcatList:productcatList])
         }
         catch (Exception ex)
         {
@@ -65,7 +66,7 @@ class DivisionController {
         try
         {
             JSONObject jsonObject = new JSONObject(params)
-            def apiResponse = new ProductService().showDivisoion(jsonObject)
+            def apiResponse = new ProductService().showBatchRegister(jsonObject)
             if (apiResponse.status == 200)
             {
                 JSONObject responseObject = new JSONObject(apiResponse.readEntity(String.class))
@@ -89,7 +90,7 @@ class DivisionController {
         try
         {
             JSONObject jsonObject = new JSONObject(params)
-            def apiResponse = new ProductService().saveDivision(jsonObject)
+            def apiResponse = new ProductService().saveBatchRegister(jsonObject)
             if (apiResponse?.status == 200)
             {
                 JSONObject obj = new JSONObject(apiResponse.readEntity(String.class))
@@ -114,7 +115,7 @@ class DivisionController {
         {
             println(params)
             JSONObject jsonObject = new JSONObject(params)
-            def apiResponse = new ProductService().putDivision(jsonObject)
+            def apiResponse = new ProductService().putBatchRegister(jsonObject)
             if (apiResponse.status == 200)
             {
                 JSONObject obj = new JSONObject(apiResponse.readEntity(String.class))
@@ -138,7 +139,7 @@ class DivisionController {
         try
         {
             JSONObject jsonObject = new JSONObject(params)
-            def apiResponse = new ProductService().deleteDivision(jsonObject)
+            def apiResponse = new ProductService().deleteBatchRegister(jsonObject)
             if (apiResponse.status == 200)
             {
                 JSONObject data = new JSONObject()
@@ -162,7 +163,7 @@ class DivisionController {
     {
         try
         {
-            def apiResponse = new ProductService().getDivisions()
+            def apiResponse = new ProductService().getBatchRegister()
             if (apiResponse?.status == 200)
             {
                 JSONArray jsonArray = new JSONArray(apiResponse.readEntity(String.class));
@@ -181,8 +182,4 @@ class DivisionController {
             response.status = 400
         }
     }
-
-
-
-
 }

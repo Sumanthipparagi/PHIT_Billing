@@ -269,5 +269,12 @@ public class Links
     public static String PRODUCT_COST_UPDATE = "api/v1.0/product/productcostrange/{id}";
     public static String PRODUCT_COST_DELETE = "api/v1.0/product/productcostrange/{id}";
 
+    //Batch Register
+    public static String BATCH_REGISTER_SHOW = "api/v1.0/product/batchregister";
+    public static String BATCH_REGISTER_SAVE = "api/v1.0/product/batchregister";
+    public static String BATCH_REGISTER_DATATABLE = "api/v1.0/product/batchregister/datatable";
+    public static String BATCH_REGISTER_UPDATE = "api/v1.0/product/batchregister/{id}";
+    public static String BATCH_REGISTER_DELETE = "api/v1.0/product/batchregister/{id}";
+
 
 }

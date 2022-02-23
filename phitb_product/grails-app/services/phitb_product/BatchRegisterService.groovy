@@ -10,7 +10,7 @@ import java.text.SimpleDateFormat
 @Transactional
 class BatchRegisterService {
 
-    SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss")
+    SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy")
 
     def getAll(String limit, String offset, String query) {
         Integer o = offset ? Integer.parseInt(offset.toString()) : 0

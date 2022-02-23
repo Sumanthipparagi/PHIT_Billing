@@ -13,7 +13,6 @@ import system.ZoneController
 
 class CompositionController {
 
-
     def index()
     {
         try
@@ -64,7 +63,7 @@ class CompositionController {
         try
         {
             JSONObject jsonObject = new JSONObject(params)
-            def apiResponse = new ProductService().showProductComposition(jsonObject)
+            def apiResponse = new ProductService().showBatchRegister(jsonObject)
             if (apiResponse.status == 200)
             {
                 JSONObject responseObject = new JSONObject(apiResponse.readEntity(String.class))
@@ -88,7 +87,7 @@ class CompositionController {
         try
         {
             JSONObject jsonObject = new JSONObject(params)
-            def apiResponse = new ProductService().saveProductComposition(jsonObject)
+            def apiResponse = new ProductService().saveBatchRegister(jsonObject)
             if (apiResponse?.status == 200)
             {
                 JSONObject obj = new JSONObject(apiResponse.readEntity(String.class))
@@ -113,7 +112,7 @@ class CompositionController {
         {
             println(params)
             JSONObject jsonObject = new JSONObject(params)
-            def apiResponse = new ProductService().putProductComposition(jsonObject)
+            def apiResponse = new ProductService().putBatchRegister(jsonObject)
             if (apiResponse.status == 200)
             {
                 JSONObject obj = new JSONObject(apiResponse.readEntity(String.class))
@@ -137,7 +136,7 @@ class CompositionController {
         try
         {
             JSONObject jsonObject = new JSONObject(params)
-            def apiResponse = new ProductService().deleteProductComposition(jsonObject)
+            def apiResponse = new ProductService().deleteBatchRegister(jsonObject)
             if (apiResponse.status == 200)
             {
                 JSONObject data = new JSONObject()

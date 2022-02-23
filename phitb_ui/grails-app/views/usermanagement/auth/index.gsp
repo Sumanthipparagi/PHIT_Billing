@@ -22,8 +22,8 @@
                     <div class="company_detail">
                         <h4 class="logo"><img src="${assetPath(src: '/themeassets/images/logo.svg')}" alt="">PharmIT
                         Billing</h4>
-                        <h3>The ultimate <strong>Bootstrap 4</strong> Admin Dashboard</h3>
-                        <p>Alpino is fully based on HTML5 + CSS3 Standards. Is fully responsive and clean on every device and every browser</p>
+%{--                        <h3>The ultimate <strong>Bootstrap 4</strong> Admin Dashboard</h3>--}%
+%{--                        <p>Alpino is fully based on HTML5 + CSS3 Standards. Is fully responsive and clean on every device and every browser</p>--}%
                         <div class="footer">
                             <ul  class="social_link list-unstyled">
                                 <li><a href="https://thememakker.com" title="ThemeMakker"><i class="zmdi zmdi-globe"></i></a></li>
