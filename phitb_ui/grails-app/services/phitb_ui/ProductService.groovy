@@ -261,7 +261,7 @@ class ProductService {
         try {
 
             Response apiResponse = target
-                    .path(new Links().BATCH_REGISTER_SHOW)
+                    .path(new Links().UNIT_TYPE_SHOW)
                     .request(MediaType.APPLICATION_JSON_TYPE)
                     .get()
 

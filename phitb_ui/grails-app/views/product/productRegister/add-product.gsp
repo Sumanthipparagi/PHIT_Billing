@@ -40,7 +40,7 @@
                     <h2>Add Products</h2>
                     <ul class="breadcrumb padding-0">
                         <li class="breadcrumb-item"><a href="index.html"><i class="zmdi zmdi-home"></i></a></li>
-                        <li class="breadcrumb-item"><a href="/user-register">User Register</a></li>
+                        <li class="breadcrumb-item"><a href="/product">Product</a></li>
                         <li class="breadcrumb-item active">Add Products</li>
                     </ul>
                 </div>
@@ -183,10 +183,14 @@
                                     <label for="unit">
                                         Unit
                                     </label>
-                                    <input type="number" id="unit" class="form-control unit" name="unit"
-                                           placeholder="Unit"
-                                           required/>
+                                    <select class="form-control show-tick unit" name="unit" id="unit">
+                                        <g:each var="u" in="${unittype}">
+                                            <option value="${u.id}" >${u.unitName}</option>
+                                        </g:each>
+                                    </select>
+
                                 </div>
+
 
 
                                 <div class="col-lg-6 form-group  form-float">
@@ -381,12 +385,12 @@
                                     <label for="taxId">
                                         Tax
                                     </label>
-                                    <input type="number" id="taxId"
-                                           class="form-control grossProfitPercentage" name="taxId"
-                                           placeholder="Tax"
-                                           required/>
+                                    <select class="form-control show-tick taxId" name="taxId" id="taxId">
+                                        <g:each var="t" in="${tax}">
+                                            <option value="${t.id}">${t.taxName}</option>
+                                        </g:each>
+                                    </select>
                                 </div>
-
                                 <div class="col-lg-6 form-group  form-float">
                                     <label for="thresholdLevel">
                                         Threshold Level

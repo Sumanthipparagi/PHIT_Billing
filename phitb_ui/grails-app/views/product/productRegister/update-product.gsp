@@ -74,7 +74,6 @@
                     %{--                        </ul>--}%
                     %{--                    </div>--}%
 
-                    ${productregsiter}
                     <div class="body">
                         <form action="/product/update/${productregsiter.id}" id="form_validation" method="POST"
                               role="form"
@@ -128,7 +127,7 @@
 
                                 <div class="col-lg-6 form-group  form-float">
                                     <label for="rackId">
-                                        Rack Id
+                                        Rack
                                     </label>
                                     <select class="form-control show-tick rackId" name="rackId" id="rackId">
                                         <g:each var="r" in="${racks}">
@@ -193,12 +192,12 @@
                                     <label for="unit">
                                         Unit
                                     </label>
-                                    <input type="number" id="unit" class="form-control unit" name="unit"
-                                           placeholder="Unit" value="${productregsiter.unit.id}"
-                                           required/>
-                                    <g:each var="c" in="${producttype}">
-                                        <option value="${c.id}"   <g:if test="${c.id == productregsiter.productType.id}">selected</g:if>>${c.productType}</option>
-                                    </g:each>
+                                    <select class="form-control show-tick unit" name="unit" id="unit">
+                                        <g:each var="u" in="${unittype}">
+                                            <option value="${u.id}" <g:if test="${u.id == productregsiter.unit.id}">selected</g:if> >${u.unitName}</option>
+                                        </g:each>
+                                    </select>
+
                                 </div>
 
 
@@ -394,10 +393,12 @@
                                     <label for="taxId">
                                         Tax
                                     </label>
-                                    <input type="number" id="taxId"
-                                           class="form-control grossProfitPercentage" name="taxId"
-                                           placeholder="Tax" value="${productregsiter.taxId}"
-                                           required/>
+                                    <select class="form-control show-tick taxId" name="taxId" id="taxId">
+                                        <g:each var="t" in="${tax}">
+                                            <option value="${t.id}"
+                                                    <g:if test="${t.id == productregsiter.taxId}">selected</g:if> >${t.taxName}</option>
+                                        </g:each>
+                                    </select>
                                 </div>
 
                                 <div class="col-lg-6 form-group  form-float">

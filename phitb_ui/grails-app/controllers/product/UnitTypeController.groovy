@@ -160,7 +160,7 @@ class UnitTypeController {
     {
         try
         {
-            def apiResponse = new ProductService().getProductRegister()
+            def apiResponse = new ProductService().getUnitType()
             if (apiResponse?.status == 200)
             {
                 JSONArray jsonArray = new JSONArray(apiResponse.readEntity(String.class));
