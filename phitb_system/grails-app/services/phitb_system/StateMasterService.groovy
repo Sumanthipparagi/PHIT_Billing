@@ -181,7 +181,7 @@ class StateMasterService
     {
         try
         {
-            def url = "http://localhost/api/v1.0/entity/entityregister/"+id
+            def url = Constants.API_GATEWAY+Constants.ENTITY_REGISTER_SHOW+"/"+id
             URL apiUrl = new URL(url)
             def entity = new JsonSlurper().parseText(apiUrl.text)
             return entity
