@@ -95,16 +95,7 @@ class SaleBillDetailsService
     SaleBillDetails save(JSONObject jsonObject)
     {
         SaleBillDetails saleBillDetails = new SaleBillDetails()
-        Iterator<String> keys = jsonObject.keys();
-        def n
-        while(keys.hasNext()) {
-            String key = keys.next();
-            if (jsonObject.isNull(key)) {
-               println(key)
-            }
-        }
-        if (keys)
-        {
+
             saleBillDetails.serBillId = Long.parseLong(jsonObject.get("json[SeriesBillId]").toString())
             saleBillDetails.seriesId = Long.parseLong(jsonObject.get("json[Series]").toString())
             saleBillDetails.paymentStatus = Long.parseLong(jsonObject.get("json[PaymentStatus]").toString())
@@ -150,7 +141,6 @@ class SaleBillDetailsService
             saleBillDetails.entityTypeId = Long.parseLong("1")
             saleBillDetails.entityId = Long.parseLong("1")
             saleBillDetails.save(flush: true)
-        }
             if (!saleBillDetails.hasErrors())
             {
                 return saleBillDetails

@@ -346,7 +346,13 @@
                 // console.log(rId);
                 // console.log(value);
 
-
+                const isNullish = Object.values(obj).every(value =>  {
+                    if (value === null || value === undefined || value === '') {
+                        return true;
+                    }
+                    return false;
+                });
+                console.log(isNullish)
 
                 var url = '';
                 var type = '';
