@@ -1,9 +1,9 @@
-package phitb_entity
+package sales
 
 import grails.testing.web.controllers.ControllerUnitTest
 import spock.lang.Specification
 
-class ServiceTypeRegisterControllerSpec extends Specification implements ControllerUnitTest<ServiceTypeRegisterController> {
+class SalesOrderEntryControllerSpec extends Specification implements ControllerUnitTest<SalesOrderEntryController> {
 
     def setup() {
     }
@@ -13,6 +13,6 @@ class ServiceTypeRegisterControllerSpec extends Specification implements Control
 
     void "test something"() {
         expect:"fix me"
-        true == false
+            true == false
     }
 }

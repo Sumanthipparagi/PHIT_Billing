@@ -7,6 +7,7 @@ public class Links
     /*<-------------------------------------------System------------------------------------------------->*/
 
     //    Account modes
+    public static String ACCOUNT_MODES_SHOW = "api/v1.0/system/accountmodes";
     public static String ACCOUNT_MODES_SAVE = "api/v1.0/system/accountmodes";
     public static String ACCOUNT_MODES_DATATABLE = "api/v1.0/system/accountmodes/datatable";
     public static String ACCOUNT_MODES_UPDATE = "api/v1.0/system/accountmodes/{id}";
@@ -275,6 +276,14 @@ public class Links
     public static String BATCH_REGISTER_DATATABLE = "api/v1.0/product/batchregister/datatable";
     public static String BATCH_REGISTER_UPDATE = "api/v1.0/product/batchregister/{id}";
     public static String BATCH_REGISTER_DELETE = "api/v1.0/product/batchregister/{id}";
+
+    /*<--------------------------------------------Sale Bill ------------------------------------------------->*/
+    //Sale Bill Details
+    public static String SALE_BILL_SHOW = "api/v1.0/sales/salebilldetails";
+    public static String SALE_BILL_SAVE = "api/v1.0/sales/salebilldetails";
+    public static String SALE_BILL_DATATABLE = "api/v1.0/sales/salebilldetails/datatable";
+    public static String SALE_BILL_UPDATE = "api/v1.0/sales/salebilldetails/{id}";
+    public static String SALE_BILL_DELETE = "api/v1.0/sales/salebilldetails/{id}";
 
 
 }

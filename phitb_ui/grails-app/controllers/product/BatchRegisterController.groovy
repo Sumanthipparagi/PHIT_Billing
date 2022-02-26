@@ -6,6 +6,7 @@ import org.grails.web.json.JSONObject
 import phitb_ui.Constants
 import phitb_ui.Links
 import phitb_ui.ProductService
+import phitb_ui.SalesService
 import system.CityController
 import system.CountryController
 import system.StateController
@@ -115,7 +116,7 @@ class BatchRegisterController {
         {
             println(params)
             JSONObject jsonObject = new JSONObject(params)
-            def apiResponse = new ProductService().putBatchRegister(jsonObject)
+            def apiResponse = new SalesService().putSaleBill(jsonObject)
             if (apiResponse.status == 200)
             {
                 JSONObject obj = new JSONObject(apiResponse.readEntity(String.class))

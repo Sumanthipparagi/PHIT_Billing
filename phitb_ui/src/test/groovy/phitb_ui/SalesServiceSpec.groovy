@@ -1,9 +1,9 @@
-package phitb_entity
+package phitb_ui
 
 import grails.testing.services.ServiceUnitTest
 import spock.lang.Specification
 
-class FileManagementServiceSpec extends Specification implements ServiceUnitTest<FileManagementService>{
+class SalesServiceSpec extends Specification implements ServiceUnitTest<SalesService>{
 
     def setup() {
     }

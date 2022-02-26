@@ -1,6 +1,7 @@
 package phitb_ui
 
 import grails.gorm.transactions.Transactional
+import org.grails.web.json.JSONArray
 
 import javax.ws.rs.client.Entity
 import javax.ws.rs.core.MediaType
@@ -609,6 +610,25 @@ class SystemService
         {
             System.err.println('Service :systemService , action :  delete  , Ex:' + ex)
             log.error('Service :systemService , action :  delete  , Ex:' + ex)
+        }
+    }
+
+    def getAccountmodes() {
+        Client client = ClientBuilder.newClient();
+        WebTarget target = client.target(new Links().API_GATEWAY);
+        GrailsHttpSession session = WebUtils.retrieveGrailsWebRequest().session
+        try {
+
+            Response apiResponse = target
+                    .path(new Links().ACCOUNT_MODES_SHOW)
+                    .request(MediaType.APPLICATION_JSON_TYPE)
+                    .get()
+
+            return apiResponse
+        }
+        catch (Exception ex) {
+            System.err.println('Service :ProductService , action :  getProducts  , Ex:' + ex)
+            log.error('Service :ProductService , action :  getProducts  , Ex:' + ex)
         }
     }
 
