@@ -346,8 +346,8 @@
                 // console.log(rId);
                 // console.log(value);
 
-                const isNullish = Object.values(obj).every(value =>  {
-                    if (value === null || value === undefined || value === '') {
+                const isNullish = Object.values(json).every(value =>  {
+                    if (!value) {
                         return true;
                     }
                     return false;
