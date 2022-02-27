@@ -340,6 +340,7 @@ class UrlMappings {
         "/batch-register/datatable"(controller: "batchRegister", action: 'dataTable')
         "/batch-register/update/$id"(controller:"batchRegister",action:"update")
         "/batch-register/delete/$id"(controller: "batchRegister",action:"delete")
+        "/batch-register/product/$id"(controller: "batchRegister",action:"getByProduct")
 
 
         /*<-------------------------------------------Sales------------------------------------------------->*/
@@ -352,6 +353,9 @@ class UrlMappings {
 //        "/sale-entry/datatable"(controller: "batchRegister", action: 'dataTable')
 
 //        "/sale-entry/delete/$id"(controller: "batchRegister",action:"delete")
+
+        //Inventory
+        "/stockbook/product/$id"(controller: "stockBook",action:"getStocksOfProduct")
 
     }
 }

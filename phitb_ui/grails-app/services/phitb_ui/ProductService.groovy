@@ -255,6 +255,26 @@ class ProductService {
         }
     }
 
+    def getBatchesOfProduct(String id) {
+        Client client = ClientBuilder.newClient();
+        WebTarget target = client.target(new Links().API_GATEWAY);
+        GrailsHttpSession session = WebUtils.retrieveGrailsWebRequest().session
+        try {
+
+            Response apiResponse = target
+                    .path(new Links().GET_BATCH_BY_PRODUCT + "/" + id)
+                    .request(MediaType.APPLICATION_JSON_TYPE)
+                    .get()
+
+            return apiResponse
+        }
+        catch (Exception ex) {
+            System.err.println('Service :ProductService , action :  getBatchesOfProduct  , Ex:' + ex)
+            log.error('Service :ProductService , action :  getBatchesOfProduct  , Ex:' + ex)
+        }
+    }
+
+
     def getUnitType() {
         Client client = ClientBuilder.newClient();
         WebTarget target = client.target(new Links().API_GATEWAY);

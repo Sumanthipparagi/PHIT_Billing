@@ -86,7 +86,9 @@
                         <div class="form-group">
                             <select class="form-control" id="customerSelect">
                                 <g:each in="${entity}" var="en">
+                                    <g:if test="${en.id != session.getAttribute("entityId")}">
                                     <option value="${en.id}">${en.entityName}</option>
+                                    </g:if>
                                 </g:each>
                             </select>
                         </div>
@@ -103,11 +105,11 @@
                             <div id="saleTable" style="width:100%;"></div>
                         </div>
                     </div>
-                    %{--<div class="header" style="padding: 1px;">
+                    <div class="header" style="padding: 1px;">
                         <button type="button" class="btn btn-round btn-primary m-t-15 addbtn" data-toggle="modal"
                                 data-target="#addAccountModeModal"><span
                                 class="glyphicon glyphicon-save-file"></span> Save</button>
-                    </div>--}%
+                    </div>
                 </div>
             </div>
         </div>
@@ -131,8 +133,9 @@
     </div>
 </section>
 
-<g:include view="controls/add-account-mode.gsp"/>
+<g:include view="controls/sales/batch-detail.gsp"/>
 <g:include view="controls/delete-modal.gsp"/>
+
 
 <!-- Jquery Core Js -->
 <asset:javascript src="/themeassets/bundles/libscripts.bundle.js"/>
@@ -198,20 +201,28 @@
     </g:each>
 
     var headerRow = [
-        'Item',
-        'HSN Code',
-        'Packing',
-        'Div',
-        'Qty',
-        'Sale Rt',
-        'Amount'];
+        '<strong>Series</strong>',
+        '<strong>Item</strong>',
+        '<strong>Batch</strong>',
+        '<strong>HSN Code</strong>',
+        '<strong>Exp Dt</strong>',
+        '<strong>Sale Qty</strong>',
+        '<strong>Free Qty</strong>',
+        '<strong>Total Qty</strong>',
+        '<strong>Sale Rate</strong>',
+        '<strong>CGST</strong>',
+        '<strong>IGST</strong>',
+        '<strong>Total GST</strong>',
+        '<strong>Value</strong>',
+        '<strong>Discount</strong>',
+        '<strong>MRP</strong>'];
 
 
     $(document).ready(function () {
         const container = document.getElementById('saleTable');
         const hot = new Handsontable(container, {
             data: data,
-            minRows: 10,
+            minRows: 8,
             height: '250',
             width: 'auto',
             rowHeights: 25,
@@ -224,28 +235,37 @@
             columns: [
                 {
                     editor: 'select2',
+                    renderer: seriesDropdownRenderer,
+                    select2Options: {
+                        data: series,
+                        dropdownAutoWidth: true,
+                        allowClear: true,
+                        width: 'auto'
+                    }
+                },
+                {
+                    editor: 'select2',
                     renderer: productsDropdownRenderer,
                     select2Options: {
                         data: products,
                         dropdownAutoWidth: true,
                         allowClear: true,
-                        width: '80'
+                        width: 'auto'
                     }
                 },
                 {type: 'text'},
-                {type: 'numeric'},
-                {
-                    editor: 'select2',
-                    renderer: accountModeDropdownRenderer,
-                    select2Options: {
-                        data: accountMode,
-                        dropdownAutoWidth: true,
-                        allowClear: true,
-                        width: 'resolve'
-                    }
-                },
+                {type: 'text'},
                 {type: 'numeric'},
                 {type: 'numeric'},
+                {type: 'numeric'},
+                {type: 'numeric'},
+                {type: 'numeric'},
+                {type: 'numeric'},
+                {type: 'numeric'},
+                {type: 'numeric'},
+                {type: 'numeric'},
+                {type: 'numeric'},
+                {type: 'numeric'}
             ],
             minSpareRows: 1,
             fixedColumnsLeft: 0,
@@ -326,9 +346,59 @@
                 }
             }
             Handsontable.TextCell.renderer.apply(this, arguments);
+            batchSelection(selectedId, value)
             // $('#selectedId').text(selectedId);
         }
 
+        function batchSelection(selectedId, value, row)
+        {
+            //
+            $("#batchTableBody").html("");
+            if(selectedId != null) {
+                var url = "/stockbook/product/"+selectedId;
+
+                $.ajax({
+                    type: "GET",
+                    url: url,
+                    dataType: 'json',
+                    success: function (data) {
+                        if(data)
+                        {
+                            var tableData = "";
+                            for(var i = 0; i < data.length; i++)
+                            {
+                                tableData += "<tr>" +
+                                    "<td><a onclick='updateCell(hot, selectedId, value, row)' href='#' class='btn btn-info' id='batchTable"+i+"'>Select</a> </td>" +
+                                    "<td>"+data[i].batchNumber+"</td>" +
+                                    "<td>"+data[i].expDate+"</td>" +
+                                    "<td>"+data[i].remainingQty+"</td>" +
+                                    "<td>"+data[i].remainingFreeQty+"</td>" +
+                                    "<td>"+data[i].purchaseRate+"</td>" +
+                                    "<td>"+data[i].saleRate+"</td>" +
+                                    "<td>-</td>" +
+                                    "</tr>"
+                            }
+
+                            $("#batchTableBody").html(tableData);
+                            $("#batchTable1").focus();
+                        }
+                    },
+                    error: function (data) {
+                        console.log("Failed");
+                    }
+                });
+
+                $("#productNameTitle").text(value);
+                $("#batchSelectModal").modal("toggle");
+            }
+        }
+
+        function updateCell(hot, selectedId, value, row)
+        {
+            hot.setDataAtCell(row, 2, value);
+            $("#productNameTitle").text("");
+            $("#batchSelectModal").modal("toggle");
+        }
 
         //    Series Dropdown
         function seriesDropdownRenderer(instance, td, row, col, prop, value, cellProperties) {

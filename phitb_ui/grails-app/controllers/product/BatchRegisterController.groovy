@@ -183,4 +183,29 @@ class BatchRegisterController {
             response.status = 400
         }
     }
+
+
+    def getByProduct()
+    {
+        try
+        {
+            String id = params.id
+            def apiResponse = new ProductService().getBatchesOfProduct(id)
+            if (apiResponse?.status == 200)
+            {
+                JSONArray jsonArray = new JSONArray(apiResponse.readEntity(String.class));
+                respond jsonArray, formats: ['json']
+            }
+            else
+            {
+                response.status = apiResponse?.status
+            }
+        }
+        catch (Exception ex)
+        {
+            System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
+            log.error('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
+            response.status = 400
+        }
+    }
 }
