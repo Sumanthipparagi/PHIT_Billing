@@ -196,6 +196,7 @@ public class Links
     /*<-------------------------------------------Product ------------------------------------------------->*/
     //Product Register
     public static String PRODUCT_REGISTER_SHOW = "api/v1.0/product/productregister";
+    public static String PRODUCT_REGISTER_BY_ENTITY = "api/v1.0/product/productregisterbyentity";
     public static String PRODUCT_REGISTER_SAVE = "api/v1.0/product/productregister";
     public static String PRODUCT_REGISTER_DATATABLE = "api/v1.0/product/productregister/datatable";
     public static String PRODUCT_REGISTER_UPDATE = "api/v1.0/product/productregister/{id}";

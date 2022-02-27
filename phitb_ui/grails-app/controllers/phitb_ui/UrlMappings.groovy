@@ -345,7 +345,7 @@ class UrlMappings {
         /*<-------------------------------------------Sales------------------------------------------------->*/
 
         //Sale Entry
-        "/sale-entry"(controller: "salebillDetails") {
+        "/sale-entry"(controller: "saleEntry") {
             action = [GET: 'index', POST: 'save']
         }
         "/sale-entry/update/$id"(controller:"batchRegister",action:"update")

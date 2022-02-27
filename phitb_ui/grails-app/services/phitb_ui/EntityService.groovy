@@ -135,6 +135,33 @@ class EntityService {
         }
     }
 
+    def getUser(String id)
+    {
+        Client client = ClientBuilder.newClient();
+        WebTarget target = client.target(new Links().API_GATEWAY);
+        GrailsHttpSession session = WebUtils.retrieveGrailsWebRequest().session
+        try
+        {
+            Response apiResponse = target
+                    .path(new Links().USER_REGISTER_SHOW + "/"+id)
+                    .request(MediaType.APPLICATION_JSON_TYPE)
+                    .get()
+            if (apiResponse?.status == 200)
+            {
+                JSONObject obj = new JSONObject(apiResponse.readEntity(String.class))
+                return obj
+            }
+            else
+            {
+                return null
+            }
+        }
+        catch (Exception ex)
+        {
+            System.err.println('Service :EntityService , action :  getUser  , Ex:' + ex)
+            log.error('Service :EntityService , action :  getUser  , Ex:' + ex)
+        }
+    }
     /**
      *
      * @param jsonObject
