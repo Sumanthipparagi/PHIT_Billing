@@ -196,6 +196,7 @@
                         var editbtn = '<button type="button" data-id="' + json.data[i].id +
                             '" data-regionName="' + json.data[i].regionName + '"' +
                             '" data-shortName="' + json.data[i].shortName + '"' +
+                            '" data-regionStateIds="' + json.data[i].regionStateIds + '"' +
                             '" data-countryId="' + json.data[i].countryId + '"' +
                             '" data-entitytype="' + json.data[i].entityType.id + '"' +
                             '" data-entityRegister="' + json.data[i].entity.id + '"' +
@@ -281,6 +282,8 @@
         $(".entity").val($(this).attr('data-entityRegister'));
         $("#entityTypeId").val($(this).attr('data-entitytype')).change();
         $(".countryId").val($(this).attr('data-countryId')).change();
+        var regionStateIds = $(this).attr('data-regionStateIds');
+        $(".regionStateIds").val(regionStateIds.split(",")).change();
         $(".regionTitle").text("Update Region");
     });
 

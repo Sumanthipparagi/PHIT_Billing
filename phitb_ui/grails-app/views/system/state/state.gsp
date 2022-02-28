@@ -107,7 +107,7 @@
                                     <th>Name</th>
                                     <th>Zone</th>
                                     <th>Country</th>
-                                    <th>entityRegister</th>
+                                    <th>Entity</th>
                                     <th>Action</th>
                                 </tr>
                                 </thead>

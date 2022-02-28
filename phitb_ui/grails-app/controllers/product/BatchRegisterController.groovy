@@ -116,7 +116,7 @@ class BatchRegisterController {
         {
             println(params)
             JSONObject jsonObject = new JSONObject(params)
-            def apiResponse = new SalesService().putSaleBill(jsonObject)
+            def apiResponse = new ProductService().putBatchRegister(jsonObject)
             if (apiResponse.status == 200)
             {
                 JSONObject obj = new JSONObject(apiResponse.readEntity(String.class))

@@ -111,8 +111,8 @@
                                     <th style="width: 20%">CCM Enabled</th>
                                     <th style="width: 20%">Premises</th>
                                     <th style="width: 20%">Manager</th>
-                                    <th style="width: 20%">entityRegister</th>
-                                    <th style="width: 20%">entityRegister Type</th>
+                                    <th style="width: 20%">Entity</th>
+                                    <th style="width: 20%">Entity Type</th>
                                     <th style="width: 20%">Action</th>
                                 </tr>
                                 </thead>
@@ -209,9 +209,9 @@
                         var deletebtn = '<button type="button" data-id="' + json.data[i].id +
                             '" class="btn btn-sm btn-danger deletebtn" data-toggle="modal" data-target=".deleteModal"><i class="material-icons"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">delete</font></font></i></button>'
                         return_data.push({
-                            'id': json.data[i].id,
+                            // 'id': json.data[i].id,
                             'godownName': json.data[i].godownName,
-                            'ccmEnabled': json.data[i].ccmEnabled,
+                            'ccmEnabled': (json.data[i].ccmEnabled == 1) ?  "YES" : "NO",
                             'premises': json.data[i].premises,
                             'managerId': json.manager[i].userName,
                             'entity': json.entity[i].entityName,
@@ -282,7 +282,7 @@
     $(document).on("click", ".editbtn", function () {
         id = $(this).data('id');
         $(".godownName").val($(this).attr('data-godownName'));
-        $(".ccmEnabled").val($(this).attr('data-ccmEnabled'));
+        $(".ccmEnabled").val($(this).attr('data-ccmEnabled')).change();
         $(".premises").val($(this).attr('data-premises'));
         $(".entityRegister").val($(this).attr('data-entity'));
         $("#entityRegister").val($(this).attr('data-entity')).change()

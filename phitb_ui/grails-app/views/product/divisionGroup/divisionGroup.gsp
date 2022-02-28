@@ -196,7 +196,10 @@
                     var return_data = [];
 
                     for (var i = 0; i < json.data.length; i++) {
-                        console.log(JSON.stringify(json.division));
+                        var divarray =  "`"+json.division.join().replace(/\[/g, '{').replace(/]/g, '}').slice(1, -1)+"`"
+                        var regEx = new RegExp("/^[ \\t]+([a-zA-Z0-9_]*):/mg", "g");
+                        var replaced = divarray.replace(regEx, '"$1":')
+                        console.log(replaced)
                         var editbtn = '<button type="button" data-id="' + json.data[i].id +
                             '" data-divisionGroupName="' + json.data[i].divisionGroupName + '"' +
                             '" data-divGroupShortName="' + json.data[i].divGroupShortName + '"' +

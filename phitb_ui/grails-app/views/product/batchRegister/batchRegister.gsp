@@ -336,7 +336,7 @@
         $(".productCat").val($(this).attr('data-productCat')).change();
         $(".entityId").val($(this).attr('data-entityId')).change();
         $(".entityType").val($(this).attr('data-entityType')).change();
-        $(".divisionTitle").text("Update Batch Register");
+        $(".batchTitle").text("Update Batch Register");
     });
 
 

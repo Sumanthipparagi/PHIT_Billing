@@ -231,7 +231,7 @@ class ProductController {
 
     def show() {
         try {
-            def apiResponse = new ProductService().getUnitType()
+            def apiResponse = new ProductService().getProducts()
             if (apiResponse?.status == 200) {
                 JSONArray jsonArray = new JSONArray(apiResponse.readEntity(String.class));
                 ArrayList<String> arrayList = new ArrayList<>(jsonArray)

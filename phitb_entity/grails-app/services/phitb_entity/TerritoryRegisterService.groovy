@@ -1,6 +1,7 @@
 package phitb_entity
 
 import grails.gorm.transactions.Transactional
+import org.apache.commons.lang.StringUtils
 import org.grails.web.json.JSONObject
 import phitb_entity.Exception.BadRequestException
 import phitb_entity.Exception.ResourceNotFoundException
@@ -83,7 +84,7 @@ class TerritoryRegisterService {
         territoryRegister.territoryName = jsonObject.get("territoryName").toString()
         territoryRegister.shortName = jsonObject.get("shortName").toString()
         territoryRegister.territoryHq = Long.parseLong(jsonObject.get("territoryHq").toString())
-        territoryRegister.cityIds = Long.parseLong(jsonObject.get("cityIds").toString())
+        territoryRegister.cityIds = StringUtils.join(jsonObject.get("cityIds") , ",")
         territoryRegister.stateId = Long.parseLong(jsonObject.get("stateId").toString())
         territoryRegister.countryId = Long.parseLong(jsonObject.get("countryId").toString())
         territoryRegister.entityType = EntityTypeMaster.findById(Long.parseLong(jsonObject.get("entityType").toString()))
@@ -104,7 +105,7 @@ class TerritoryRegisterService {
             territoryRegister.territoryName = jsonObject.get("territoryName").toString()
             territoryRegister.shortName = jsonObject.get("shortName").toString()
             territoryRegister.territoryHq = Long.parseLong(jsonObject.get("territoryHq").toString())
-            territoryRegister.cityIds = Long.parseLong(jsonObject.get("cityIds").toString())
+            territoryRegister.cityIds = StringUtils.join(jsonObject.get("cityIds") , ",")
             territoryRegister.stateId = Long.parseLong(jsonObject.get("stateId").toString())
             territoryRegister.countryId = Long.parseLong(jsonObject.get("countryId").toString())
             territoryRegister.entityType = EntityTypeMaster.findById(Long.parseLong(jsonObject.get("entityType").toString()))

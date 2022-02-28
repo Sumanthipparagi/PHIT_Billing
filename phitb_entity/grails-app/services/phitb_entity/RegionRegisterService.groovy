@@ -2,6 +2,7 @@ package phitb_entity
 
 import grails.gorm.transactions.Transactional
 import groovy.json.JsonSlurper
+import org.apache.commons.lang.StringUtils
 import org.grails.web.json.JSONObject
 import phitb_entity.Exception.BadRequestException
 import phitb_entity.Exception.ResourceNotFoundException
@@ -89,7 +90,7 @@ class RegionRegisterService {
         regionRegister.regionName = jsonObject.get("regionName").toString()
         regionRegister.shortName = jsonObject.get("shortName").toString()
         regionRegister.countryId = Long.parseLong(jsonObject.get("countryId").toString())
-        regionRegister.regionStateIds = Long.parseLong(jsonObject.get("regionStateIds").toString())
+        regionRegister.regionStateIds = StringUtils.join(jsonObject.get("regionStateIds"),",")
         regionRegister.entityType = EntityTypeMaster.findById( Long.parseLong(jsonObject.get("entityType").toString()))
         regionRegister.entity = EntityRegister.findById( Long.parseLong(jsonObject.get("entity").toString()))
         regionRegister.createdUser = UserRegister.findById(Long.parseLong(jsonObject.get("createdUser").toString()))
@@ -108,8 +109,8 @@ class RegionRegisterService {
             regionRegister.regionName = jsonObject.get("regionName").toString()
             regionRegister.shortName = jsonObject.get("shortName").toString()
             regionRegister.countryId = Long.parseLong(jsonObject.get("countryId").toString())
-            regionRegister.regionStateIds = Long.parseLong(jsonObject.get("regionStateIds").toString())
-            regionRegister.entityType = EntityTypeMaster.findById( Long.parseLong(jsonObject.get("entityType").toString()))
+            regionRegister.regionStateIds = StringUtils.join(jsonObject.get("regionStateIds"),",")
+            regionRegister.entityType = EntityTypeMaster.findById(Long.parseLong(jsonObject.get("entityType").toString()))
             regionRegister.entity = EntityRegister.findById( Long.parseLong(jsonObject.get("entity").toString()))
             regionRegister.createdUser = UserRegister.findById(Long.parseLong(jsonObject.get("createdUser").toString()))
             regionRegister.modifiedUser = UserRegister.findById(Long.parseLong(jsonObject.get("modifiedUser").toString()))

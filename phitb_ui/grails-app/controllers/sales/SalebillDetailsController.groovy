@@ -6,8 +6,6 @@ import entity.UserRegisterController
 import org.grails.web.json.JSONArray
 import org.grails.web.json.JSONObject
 import phitb_ui.Constants
-import phitb_ui.EntityService
-import phitb_ui.ProductService
 import phitb_ui.SalesService
 import system.AccountModeController
 import system.StateController

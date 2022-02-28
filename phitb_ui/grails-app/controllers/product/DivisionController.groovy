@@ -1,5 +1,6 @@
 package product
 
+import entity.EntityRegisterController
 import facility.FridgeController
 import groovy.json.JsonSlurper
 import org.grails.web.json.JSONArray
@@ -19,36 +20,41 @@ class DivisionController {
     {
         try
         {
-            def entityurl = Links.API_GATEWAY+Links.ENTITY_REGISTER_SHOW
             def entitytypeurl = Links.API_GATEWAY+Links.ENTITY_TYPE_MASTER_SHOW
             def userregisterurl = Links.API_GATEWAY + Links.USER_REGISTER_SHOW
-            def customergroupurl = Links.API_GATEWAY + Links.CUSTOMER_GROUP_REGISTER_SHOW
             def seriesurl = Links.API_GATEWAY + Links.SERIES_MASTER_SHOW
-            URL apiUrl1 = new URL(entityurl)
             URL apiUrl2 = new URL(entitytypeurl)
             URL apiUrl3 = new URL(userregisterurl)
-            URL apiUrl4 = new URL(customergroupurl)
             URL apiUrl5 = new URL(seriesurl)
-            def entity = new JsonSlurper().parseText(apiUrl1.text)
             def entitytype = new JsonSlurper().parseText(apiUrl2.text)
             def userregister = new JsonSlurper().parseText(apiUrl3.text)
-            def customer = new JsonSlurper().parseText(apiUrl4.text)
             def series = new JsonSlurper().parseText(apiUrl5.text)
             ArrayList<String> statelist = new StateController().show() as ArrayList<String>
+            ArrayList<String> entitylist = new EntityRegisterController().show() as ArrayList<String>
             ArrayList<String> countrylist = new CountryController().show() as ArrayList<String>
             ArrayList<String> citylist = new CityController().show() as ArrayList<String>
             ArrayList<String> zoneList = new ZoneController().show() as ArrayList<String>
             ArrayList<String> managerList = []
+            ArrayList<String> customerList = []
             userregister.each {
                 if (it.role.name.toString().equalsIgnoreCase(Constants.ROLE_MANAGER))
                 {
                     managerList.add(it)
                 }
             }
-            render(view: '/product/division/division',model: [entity:entity,statelist:statelist,
+            entitylist.each {
+                if(it.entityType.name.toString().equalsIgnoreCase(Constants.ENTITY_CUSTOMER))
+                {
+                    println(it)
+                    customerList.add(it)
+                }
+            }
+
+
+            render(view: '/product/division/division',model: [entitylist:entitylist,statelist:statelist,
                                                               countrylist:countrylist,citylist:citylist,
                                                               zoneList:zoneList,
-                                                     entitytype:entitytype,customer:customer,series:series,
+                                                     entitytype:entitytype,customerList:customerList,series:series,
                                                               managerList:managerList])
         }
         catch (Exception ex)
