@@ -346,13 +346,7 @@
                 // console.log(rId);
                 // console.log(value);
 
-                const isNullish = Object.values(json).every(value =>  {
-                    if (!value) {
-                        return true;
-                    }
-                    return false;
-                });
-                console.log(isNullish)
+                console.log(json['AccountMode'])
 
                 var url = '';
                 var type = '';
@@ -372,7 +366,7 @@
                         json:json
                     },
                     success: function (data) {
-                        console.log("data loaded");
+                       swal("data loaded");
                     },
                     error: function (data) {
                         console.log("Failed");
