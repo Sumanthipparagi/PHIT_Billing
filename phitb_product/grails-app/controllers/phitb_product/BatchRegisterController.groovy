@@ -92,7 +92,9 @@ class BatchRegisterController {
     def getAllByProduct() {
         try {
             if (params.id) {
-                respond batchRegisterService.getAllByProduct(0,0,Long.parseLong(params.id))
+                String limit = params.limit
+                String offset = params.offset
+                respond batchRegisterService.getAllByProduct(limit,offset,Long.parseLong(params.id))
             }
         }
         catch (ResourceNotFoundException ex)

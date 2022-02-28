@@ -340,18 +340,22 @@ class UrlMappings {
         "/batch-register/datatable"(controller: "batchRegister", action: 'dataTable')
         "/batch-register/update/$id"(controller:"batchRegister",action:"update")
         "/batch-register/delete/$id"(controller: "batchRegister",action:"delete")
+        "/batch-register/product/$id"(controller: "batchRegister",action:"getByProduct")
 
 
         /*<-------------------------------------------Sales------------------------------------------------->*/
 
         //Sale Entry
-        "/sale-entry"(controller: "salebillDetails") {
+        "/sale-entry"(controller: "saleEntry") {
             action = [GET: 'index', POST: 'save']
         }
         "/sale-entry/update/$id"(controller:"batchRegister",action:"update")
 //        "/sale-entry/datatable"(controller: "batchRegister", action: 'dataTable')
 
 //        "/sale-entry/delete/$id"(controller: "batchRegister",action:"delete")
+
+        //Inventory
+        "/stockbook/product/$id"(controller: "stockBook",action:"getStocksOfProduct")
 
     }
 }

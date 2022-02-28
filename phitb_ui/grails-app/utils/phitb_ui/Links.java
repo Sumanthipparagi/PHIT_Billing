@@ -196,6 +196,7 @@ public class Links
     /*<-------------------------------------------Product ------------------------------------------------->*/
     //Product Register
     public static String PRODUCT_REGISTER_SHOW = "api/v1.0/product/productregister";
+    public static String PRODUCT_REGISTER_BY_ENTITY = "api/v1.0/product/productregisterbyentity";
     public static String PRODUCT_REGISTER_SAVE = "api/v1.0/product/productregister";
     public static String PRODUCT_REGISTER_DATATABLE = "api/v1.0/product/productregister/datatable";
     public static String PRODUCT_REGISTER_UPDATE = "api/v1.0/product/productregister/{id}";
@@ -272,6 +273,7 @@ public class Links
 
     //Batch Register
     public static String BATCH_REGISTER_SHOW = "api/v1.0/product/batchregister";
+    public static String GET_BATCH_BY_PRODUCT = "api/v1.0/product/batchregisterbyproduct";
     public static String BATCH_REGISTER_SAVE = "api/v1.0/product/batchregister";
     public static String BATCH_REGISTER_DATATABLE = "api/v1.0/product/batchregister/datatable";
     public static String BATCH_REGISTER_UPDATE = "api/v1.0/product/batchregister/{id}";
@@ -284,6 +286,10 @@ public class Links
     public static String SALE_BILL_DATATABLE = "api/v1.0/sales/salebilldetails/datatable";
     public static String SALE_BILL_UPDATE = "api/v1.0/sales/salebilldetails/{id}";
     public static String SALE_BILL_DELETE = "api/v1.0/sales/salebilldetails/{id}";
+
+    //Inventory
+    public static String GET_STOCKS_OF_PRODUCT = "api/v1.0/inventory/stockbookbyproduct";
+
 
 
 }

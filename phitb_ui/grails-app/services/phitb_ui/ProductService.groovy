@@ -3,6 +3,7 @@ package phitb_ui
 import grails.gorm.transactions.Transactional
 import grails.web.servlet.mvc.GrailsHttpSession
 import org.glassfish.jersey.jackson.JacksonFeature
+import org.grails.web.json.JSONArray
 import org.grails.web.json.JSONObject
 import org.grails.web.util.WebUtils
 
@@ -253,6 +254,26 @@ class ProductService {
             log.error('Service :ProductService , action :  getProducts  , Ex:' + ex)
         }
     }
+
+    def getBatchesOfProduct(String id) {
+        Client client = ClientBuilder.newClient();
+        WebTarget target = client.target(new Links().API_GATEWAY);
+        GrailsHttpSession session = WebUtils.retrieveGrailsWebRequest().session
+        try {
+
+            Response apiResponse = target
+                    .path(new Links().GET_BATCH_BY_PRODUCT + "/" + id)
+                    .request(MediaType.APPLICATION_JSON_TYPE)
+                    .get()
+
+            return apiResponse
+        }
+        catch (Exception ex) {
+            System.err.println('Service :ProductService , action :  getBatchesOfProduct  , Ex:' + ex)
+            log.error('Service :ProductService , action :  getBatchesOfProduct  , Ex:' + ex)
+        }
+    }
+
 
     def getUnitType() {
         Client client = ClientBuilder.newClient();
@@ -1370,6 +1391,35 @@ class ProductService {
 
 
     //   Product Register
+
+    def getProductsByEntityId(String id)
+    {
+        Client client = ClientBuilder.newClient();
+        WebTarget target = client.target(new Links().API_GATEWAY);
+        GrailsHttpSession session = WebUtils.retrieveGrailsWebRequest().session
+        try
+        {
+            Response apiResponse = target
+                    .path(new Links().PRODUCT_REGISTER_BY_ENTITY + "/"+id)
+                    .request(MediaType.APPLICATION_JSON_TYPE)
+                    .get()
+            if (apiResponse?.status == 200)
+            {
+                def txt = apiResponse.readEntity(String.class)
+                JSONArray obj = new JSONArray(txt)
+                return obj
+            }
+            else
+            {
+                return null
+            }
+        }
+        catch (Exception ex)
+        {
+            System.err.println('Service :ProductService , action :  getProductByEntityId  , Ex:' + ex)
+            log.error('Service :ProductService , action :  getProductByEntityId  , Ex:' + ex)
+        }
+    }
 
     def saveProductRegister(JSONObject jsonObject)
     {
