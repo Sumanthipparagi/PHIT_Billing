@@ -3810,7 +3810,7 @@ QUnit.diff = ( function() {
 					k2Offset = vOffset + delta - k1;
 					if ( k2Offset >= 0 && k2Offset < vLength && v2[ k2Offset ] !== -1 ) {
 
-						// Mirror x2 onto top-left coordinate system.
+						// Mirror x2 onto top-left coordinate phitb_ui.system.
 						x2 = text1Length - v2[ k2Offset ];
 						if ( x1 >= x2 ) {
 
@@ -3851,7 +3851,7 @@ QUnit.diff = ( function() {
 						x1 = v1[ k1Offset ];
 						y1 = vOffset + x1 - k1Offset;
 
-						// Mirror x2 onto top-left coordinate system.
+						// Mirror x2 onto top-left coordinate phitb_ui.system.
 						x2 = text1Length - x2;
 						if ( x1 >= x2 ) {
 

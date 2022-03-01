@@ -1067,12 +1067,12 @@
               n = mathfloor(rem0 / yc0);
 
               //  Algorithm:
-              //  product = divisor multiplied by trial digit (n).
-              //  Compare product and remainder.
-              //  If product is greater than remainder:
-              //    Subtract divisor from product, decrement trial digit.
-              //  Subtract product from remainder.
-              //  If product was less than remainder at the last compare:
+              //  phitb_ui.product = divisor multiplied by trial digit (n).
+              //  Compare phitb_ui.product and remainder.
+              //  If phitb_ui.product is greater than remainder:
+              //    Subtract divisor from phitb_ui.product, decrement trial digit.
+              //  Subtract phitb_ui.product from remainder.
+              //  If phitb_ui.product was less than remainder at the last compare:
               //    Compare new remainder and divisor.
               //    If remainder is greater than divisor:
               //      Subtract divisor from remainder, increment trial digit.
@@ -1082,19 +1082,19 @@
                 // n may be > base only when base is 3.
                 if (n >= base) n = base - 1;
 
-                // product = divisor * trial digit.
+                // phitb_ui.product = divisor * trial digit.
                 prod = multiply(yc, n, base);
                 prodL = prod.length;
                 remL = rem.length;
 
-                // Compare product and remainder.
-                // If product > remainder then trial digit n too high.
+                // Compare phitb_ui.product and remainder.
+                // If phitb_ui.product > remainder then trial digit n too high.
                 // n is 1 too high about 5% of the time, and is not known to have
                 // ever been more than 1 too high.
                 while (compare(prod, rem, prodL, remL) == 1) {
                   n--;
 
-                  // Subtract divisor from product.
+                  // Subtract divisor from phitb_ui.product.
                   subtract(prod, yL < prodL ? yz : yc, prodL, base);
                   prodL = prod.length;
                   cmp = 1;
@@ -1111,18 +1111,18 @@
                   cmp = n = 1;
                 }
 
-                // product = divisor
+                // phitb_ui.product = divisor
                 prod = yc.slice();
                 prodL = prod.length;
               }
 
               if (prodL < remL) prod = [0].concat(prod);
 
-              // Subtract product from remainder.
+              // Subtract phitb_ui.product from remainder.
               subtract(rem, prod, remL, base);
               remL = rem.length;
 
-               // If product was < remainder.
+               // If phitb_ui.product was < remainder.
               if (cmp == -1) {
 
                 // Compare divisor and new remainder.
@@ -3080,7 +3080,7 @@ function formatNumbro(instance, providedFormat, numbro) {
 }
 /**
  * Get the decimal byte unit (MB) for the provided numbro INSTANCE.
- * We go from one unit to another using the decimal system (1000).
+ * We go from one unit to another using the decimal phitb_ui.system (1000).
  *
  * @param {Numbro} instance - numbro instance to compute
  * @return {String}
@@ -3093,7 +3093,7 @@ function _getDecimalByteUnit(instance) {
 }
 /**
  * Get the binary byte unit (MiB) for the provided numbro INSTANCE.
- * We go from one unit to another using the decimal system (1024).
+ * We go from one unit to another using the decimal phitb_ui.system (1024).
  *
  * @param {Numbro} instance - numbro instance to compute
  * @return {String}
@@ -3106,7 +3106,7 @@ function _getBinaryByteUnit(instance) {
 }
 /**
  * Get the decimal byte unit (MB) for the provided numbro INSTANCE.
- * We go from one unit to another using the decimal system (1024).
+ * We go from one unit to another using the decimal phitb_ui.system (1024).
  *
  * @param {Numbro} instance - numbro instance to compute
  * @return {String}

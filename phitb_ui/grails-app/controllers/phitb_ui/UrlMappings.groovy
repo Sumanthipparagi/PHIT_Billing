@@ -233,14 +233,14 @@ class UrlMappings {
 
         /*<-------------------------------------------Product------------------------------------------------->*/
 //      Product Register
-        "/product"(controller: "product") {
+        "/phitb_ui.product"(controller: "phitb_ui.product") {
             action = [GET: 'index', POST: 'save']
         }
-        "/product/add-product"(controller: "product", action: 'addProduct')
-        "/product/update-product/$id"(controller: "product", action: 'updateProduct')
-        "/product/datatable"(controller: "product", action: 'dataTable')
-        "/product/update/$id"(controller:"product",action:"update")
-        "/product/delete/$id"(controller: "product",action:"delete")
+        "/phitb_ui.product/add-phitb_ui.product"(controller: "phitb_ui.product", action: 'addProduct')
+        "/phitb_ui.product/update-phitb_ui.product/$id"(controller: "phitb_ui.product", action: 'updateProduct')
+        "/phitb_ui.product/datatable"(controller: "phitb_ui.product", action: 'dataTable')
+        "/phitb_ui.product/update/$id"(controller:"phitb_ui.product",action:"update")
+        "/phitb_ui.product/delete/$id"(controller: "phitb_ui.product",action:"delete")
 
 
         //      Division
@@ -253,47 +253,47 @@ class UrlMappings {
 
 
         // Product Category
-        "/product-category"(controller: "productCategory") {
+        "/phitb_ui.product-category"(controller: "productCategory") {
             action = [GET: 'index', POST: 'save']
         }
-        "/product-category/datatable"(controller: "productCategory", action: 'dataTable')
-        "/product-category/update/$id"(controller:"productCategory",action:"update")
-        "/product-category/delete/$id"(controller: "productCategory",action:"delete")
+        "/phitb_ui.product-category/datatable"(controller: "productCategory", action: 'dataTable')
+        "/phitb_ui.product-category/update/$id"(controller:"productCategory",action:"update")
+        "/phitb_ui.product-category/delete/$id"(controller: "productCategory",action:"delete")
 
         // Product Schedule
-        "/product-schedule"(controller: "productSchedule") {
+        "/phitb_ui.product-schedule"(controller: "productSchedule") {
             action = [GET: 'index', POST: 'save']
         }
-        "/product-schedule/datatable"(controller: "productSchedule", action: 'dataTable')
-        "/product-schedule/update/$id"(controller:"productSchedule",action:"update")
-        "/product-schedule/delete/$id"(controller: "productSchedule",action:"delete")
+        "/phitb_ui.product-schedule/datatable"(controller: "productSchedule", action: 'dataTable')
+        "/phitb_ui.product-schedule/update/$id"(controller:"productSchedule",action:"update")
+        "/phitb_ui.product-schedule/delete/$id"(controller: "productSchedule",action:"delete")
 
 
         // Product Composition
-        "/product-composition"(controller: "composition") {
+        "/phitb_ui.product-composition"(controller: "composition") {
             action = [GET: 'index', POST: 'save']
         }
-        "/product-composition/datatable"(controller: "composition", action: 'dataTable')
-        "/product-composition/update/$id"(controller:"composition",action:"update")
-        "/product-composition/delete/$id"(controller: "composition",action:"delete")
+        "/phitb_ui.product-composition/datatable"(controller: "composition", action: 'dataTable')
+        "/phitb_ui.product-composition/update/$id"(controller:"composition",action:"update")
+        "/phitb_ui.product-composition/delete/$id"(controller: "composition",action:"delete")
 
 
         // Product Type
-        "/product-type"(controller: "productType") {
+        "/phitb_ui.product-type"(controller: "productType") {
             action = [GET: 'index', POST: 'save']
         }
-        "/product-type/datatable"(controller: "productType", action: 'dataTable')
-        "/product-type/update/$id"(controller:"productType",action:"update")
-        "/product-type/delete/$id"(controller: "productType",action:"delete")
+        "/phitb_ui.product-type/datatable"(controller: "productType", action: 'dataTable')
+        "/phitb_ui.product-type/update/$id"(controller:"productType",action:"update")
+        "/phitb_ui.product-type/delete/$id"(controller: "productType",action:"delete")
 
 
         // Product group
-        "/product-group"(controller: "productGroup") {
+        "/phitb_ui.product-group"(controller: "productGroup") {
             action = [GET: 'index', POST: 'save']
         }
-        "/product-group/datatable"(controller: "productGroup", action: 'dataTable')
-        "/product-group/update/$id"(controller:"productGroup",action:"update")
-        "/product-group/delete/$id"(controller: "productGroup",action:"delete")
+        "/phitb_ui.product-group/datatable"(controller: "productGroup", action: 'dataTable')
+        "/phitb_ui.product-group/update/$id"(controller:"productGroup",action:"update")
+        "/phitb_ui.product-group/delete/$id"(controller: "productGroup",action:"delete")
 
 
         //Unit Type
@@ -315,22 +315,22 @@ class UrlMappings {
 
 
         //Product Class
-        "/product-class"(controller: "productClass") {
+        "/phitb_ui.product-class"(controller: "productClass") {
             action = [GET: 'index', POST: 'save']
         }
-        "/product-class/datatable"(controller: "productClass", action: 'dataTable')
-        "/product-class/update/$id"(controller:"productClass",action:"update")
-        "/product-class/delete/$id"(controller: "productClass",action:"delete")
+        "/phitb_ui.product-class/datatable"(controller: "productClass", action: 'dataTable')
+        "/phitb_ui.product-class/update/$id"(controller:"productClass",action:"update")
+        "/phitb_ui.product-class/delete/$id"(controller: "productClass",action:"delete")
 
 
 
         //Product cost range
-        "/product-cost-range"(controller: "productCostRange") {
+        "/phitb_ui.product-cost-range"(controller: "productCostRange") {
             action = [GET: 'index', POST: 'save']
         }
-        "/product-cost-range/datatable"(controller: "productCostRange", action: 'dataTable')
-        "/product-cost-range/update/$id"(controller:"productCostRange",action:"update")
-        "/product-cost-range/delete/$id"(controller: "productCostRange",action:"delete")
+        "/phitb_ui.product-cost-range/datatable"(controller: "productCostRange", action: 'dataTable')
+        "/phitb_ui.product-cost-range/update/$id"(controller:"productCostRange",action:"update")
+        "/phitb_ui.product-cost-range/delete/$id"(controller: "productCostRange",action:"delete")
 
 
         //Batch register
@@ -340,7 +340,7 @@ class UrlMappings {
         "/batch-register/datatable"(controller: "batchRegister", action: 'dataTable')
         "/batch-register/update/$id"(controller:"batchRegister",action:"update")
         "/batch-register/delete/$id"(controller: "batchRegister",action:"delete")
-        "/batch-register/product/$id"(controller: "batchRegister",action:"getByProduct")
+        "/batch-register/phitb_ui.product/$id"(controller: "batchRegister",action:"getByProduct")
 
 
         /*<-------------------------------------------Sales------------------------------------------------->*/
@@ -355,7 +355,7 @@ class UrlMappings {
 //        "/sale-entry/delete/$id"(controller: "batchRegister",action:"delete")
 
         //Inventory
-        "/stockbook/product/$id"(controller: "stockBook",action:"getStocksOfProduct")
+        "/stockbook/phitb_ui.product/$id"(controller: "stockBook",action:"getStocksOfProduct")
 
     }
 }

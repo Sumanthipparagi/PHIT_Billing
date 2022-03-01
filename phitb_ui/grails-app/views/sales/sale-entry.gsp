@@ -372,7 +372,7 @@
             //
             $("#batchTableBody").html("");
             if(selectedId != null) {
-                var url = "/stockbook/product/"+selectedId;
+                var url = "/stockbook/phitb_ui.product/"+selectedId;
 
                 $.ajax({
                     type: "GET",

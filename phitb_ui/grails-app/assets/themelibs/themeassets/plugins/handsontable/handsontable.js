@@ -3203,10 +3203,10 @@ var consoleMessages = {
   expired: function expired(_ref) {
     var keyValidityDate = _ref.keyValidityDate,
         hotVersion = _ref.hotVersion;
-    return (0, _templateLiteralTag.toSingleLine)(_templateObject2 || (_templateObject2 = (0, _taggedTemplateLiteral2.default)(["\n    The license key for Handsontable expired on ", ", and is not valid for the installed \n    version ", ". Renew your license key at handsontable.com or downgrade to a version released prior \n    to ", ". If you need any help, contact us at sales@handsontable.com."], ["\n    The license key for Handsontable expired on ", ", and is not valid for the installed\\x20\n    version ", ". Renew your license key at handsontable.com or downgrade to a version released prior\\x20\n    to ", ". If you need any help, contact us at sales@handsontable.com."])), keyValidityDate, hotVersion, keyValidityDate);
+    return (0, _templateLiteralTag.toSingleLine)(_templateObject2 || (_templateObject2 = (0, _taggedTemplateLiteral2.default)(["\n    The license key for Handsontable expired on ", ", and is not valid for the installed \n    version ", ". Renew your license key at handsontable.com or downgrade to a version released prior \n    to ", ". If you need any help, contact us at phitb_ui.sales@handsontable.com."], ["\n    The license key for Handsontable expired on ", ", and is not valid for the installed\\x20\n    version ", ". Renew your license key at handsontable.com or downgrade to a version released prior\\x20\n    to ", ". If you need any help, contact us at phitb_ui.sales@handsontable.com."])), keyValidityDate, hotVersion, keyValidityDate);
   },
   missing: function missing() {
-    return (0, _templateLiteralTag.toSingleLine)(_templateObject3 || (_templateObject3 = (0, _taggedTemplateLiteral2.default)(["\n    The license key for Handsontable is missing. Use your purchased key to activate the product. \n    Alternatively, you can activate Handsontable to use for non-commercial purposes by \n    passing the key: 'non-commercial-and-evaluation'. If you need any help, contact \n    us at support@handsontable.com."], ["\n    The license key for Handsontable is missing. Use your purchased key to activate the product.\\x20\n    Alternatively, you can activate Handsontable to use for non-commercial purposes by\\x20\n    passing the key: 'non-commercial-and-evaluation'. If you need any help, contact\\x20\n    us at support@handsontable.com."])));
+    return (0, _templateLiteralTag.toSingleLine)(_templateObject3 || (_templateObject3 = (0, _taggedTemplateLiteral2.default)(["\n    The license key for Handsontable is missing. Use your purchased key to activate the phitb_ui.product. \n    Alternatively, you can activate Handsontable to use for non-commercial purposes by \n    passing the key: 'non-commercial-and-evaluation'. If you need any help, contact \n    us at support@handsontable.com."], ["\n    The license key for Handsontable is missing. Use your purchased key to activate the phitb_ui.product.\\x20\n    Alternatively, you can activate Handsontable to use for non-commercial purposes by\\x20\n    passing the key: 'non-commercial-and-evaluation'. If you need any help, contact\\x20\n    us at support@handsontable.com."])));
   },
   non_commercial: function non_commercial() {
     return '';
@@ -3219,10 +3219,10 @@ var domMessages = {
   expired: function expired(_ref2) {
     var keyValidityDate = _ref2.keyValidityDate,
         hotVersion = _ref2.hotVersion;
-    return (0, _templateLiteralTag.toSingleLine)(_templateObject5 || (_templateObject5 = (0, _taggedTemplateLiteral2.default)(["\n    The license key for Handsontable expired on ", ", and is not valid for the installed \n    version ", ". <a href=\"https://handsontable.com/pricing\" target=\"_blank\">Renew</a> your \n    license key or downgrade to a version released prior to ", ". If you need any \n    help, contact us at <a href=\"mailto:sales@handsontable.com\">sales@handsontable.com</a>."], ["\n    The license key for Handsontable expired on ", ", and is not valid for the installed\\x20\n    version ", ". <a href=\"https://handsontable.com/pricing\" target=\"_blank\">Renew</a> your\\x20\n    license key or downgrade to a version released prior to ", ". If you need any\\x20\n    help, contact us at <a href=\"mailto:sales@handsontable.com\">sales@handsontable.com</a>."])), keyValidityDate, hotVersion, keyValidityDate);
+    return (0, _templateLiteralTag.toSingleLine)(_templateObject5 || (_templateObject5 = (0, _taggedTemplateLiteral2.default)(["\n    The license key for Handsontable expired on ", ", and is not valid for the installed \n    version ", ". <a href=\"https://handsontable.com/pricing\" target=\"_blank\">Renew</a> your \n    license key or downgrade to a version released prior to ", ". If you need any \n    help, contact us at <a href=\"mailto:phitb_ui.sales@handsontable.com\">phitb_ui.sales@handsontable.com</a>."], ["\n    The license key for Handsontable expired on ", ", and is not valid for the installed\\x20\n    version ", ". <a href=\"https://handsontable.com/pricing\" target=\"_blank\">Renew</a> your\\x20\n    license key or downgrade to a version released prior to ", ". If you need any\\x20\n    help, contact us at <a href=\"mailto:phitb_ui.sales@handsontable.com\">phitb_ui.sales@handsontable.com</a>."])), keyValidityDate, hotVersion, keyValidityDate);
   },
   missing: function missing() {
-    return (0, _templateLiteralTag.toSingleLine)(_templateObject6 || (_templateObject6 = (0, _taggedTemplateLiteral2.default)(["\n    The license key for Handsontable is missing. Use your purchased key to activate the product. \n    Alternatively, you can activate Handsontable to use for non-commercial purposes by \n    passing the key: 'non-commercial-and-evaluation'. \n    <a href=\"https://handsontable.com/docs/tutorial-license-key.html\" target=\"_blank\">Read more</a> about it in \n    the documentation or contact us at <a href=\"mailto:support@handsontable.com\">support@handsontable.com</a>."], ["\n    The license key for Handsontable is missing. Use your purchased key to activate the product.\\x20\n    Alternatively, you can activate Handsontable to use for non-commercial purposes by\\x20\n    passing the key: 'non-commercial-and-evaluation'.\\x20\n    <a href=\"https://handsontable.com/docs/tutorial-license-key.html\" target=\"_blank\">Read more</a> about it in\\x20\n    the documentation or contact us at <a href=\"mailto:support@handsontable.com\">support@handsontable.com</a>."])));
+    return (0, _templateLiteralTag.toSingleLine)(_templateObject6 || (_templateObject6 = (0, _taggedTemplateLiteral2.default)(["\n    The license key for Handsontable is missing. Use your purchased key to activate the phitb_ui.product. \n    Alternatively, you can activate Handsontable to use for non-commercial purposes by \n    passing the key: 'non-commercial-and-evaluation'. \n    <a href=\"https://handsontable.com/docs/tutorial-license-key.html\" target=\"_blank\">Read more</a> about it in \n    the documentation or contact us at <a href=\"mailto:support@handsontable.com\">support@handsontable.com</a>."], ["\n    The license key for Handsontable is missing. Use your purchased key to activate the phitb_ui.product.\\x20\n    Alternatively, you can activate Handsontable to use for non-commercial purposes by\\x20\n    passing the key: 'non-commercial-and-evaluation'.\\x20\n    <a href=\"https://handsontable.com/docs/tutorial-license-key.html\" target=\"_blank\">Read more</a> about it in\\x20\n    the documentation or contact us at <a href=\"mailto:support@handsontable.com\">support@handsontable.com</a>."])));
   },
   non_commercial: function non_commercial() {
     return '';
@@ -5173,7 +5173,7 @@ var REGISTERED_HOOKS = [
 'afterDestroy',
 /**
  * General hook which captures `keydown` events attached to the document body. These events are delegated to the
- * hooks system and consumed by Core and internal modules (e.g plugins, editors).
+ * hooks phitb_ui.system and consumed by Core and internal modules (e.g plugins, editors).
  *
  * @event Hooks#afterDocumentKeyDown
  * @param {Event} event A native `keydown` event object.
@@ -21346,7 +21346,7 @@ var isBlockedSource = function isBlockedSource(source) {
 };
 /**
  * This plugin allows you to perform Excel-like calculations in your business applications. It does it by an
- * integration with our other product, [HyperFormula](https://github.com/handsontable/hyperformula/), which is a
+ * integration with our other phitb_ui.product, [HyperFormula](https://github.com/handsontable/hyperformula/), which is a
  * powerful calculation engine with an extensive number of features.
  *
  * To test out HyperFormula, see [this guide](@/guides/formulas/formula-calculation.md#available-functions).
@@ -65061,7 +65061,7 @@ var BasePlugin = /*#__PURE__*/function () {
       this.enabled = false;
     }
     /**
-     * Add listener to plugin hooks system.
+     * Add listener to plugin hooks phitb_ui.system.
      *
      * @param {string} name The hook name.
      * @param {Function} callback The listener function to add.
@@ -75805,7 +75805,7 @@ var runLocalHooks = function runLocalHooks(eventName, subject) {
   };
 };
 /**
- * Register copy/cut/paste events and forward their actions to the subject local hooks system.
+ * Register copy/cut/paste events and forward their actions to the subject local hooks phitb_ui.system.
  *
  * @param {EventManager} eventManager The instance of the EventManager class.
  * @param {HTMLElement} element The element on which the listeners are mounted.
@@ -95275,7 +95275,7 @@ var HeadersTree = /*#__PURE__*/function () {
 
       if (!rootNode) {
         return;
-      } // Normalize the visual column index to a 0-based system for a specific "box" defined
+      } // Normalize the visual column index to a 0-based phitb_ui.system for a specific "box" defined
       // by root node colspan width.
 
 

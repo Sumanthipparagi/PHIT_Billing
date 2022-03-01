@@ -1534,7 +1534,7 @@ var EmitterMixin = /** @class */ (function (_super) {
         var intercept = function (ev, extra) {
             return handler.apply(extra.context || this, extra.args || []);
         };
-        // mimick jQuery's internal "proxy" system (risky, I know)
+        // mimick jQuery's internal "proxy" phitb_ui.system (risky, I know)
         // causing all functions with the same .guid to appear to be the same.
         // https://github.com/jquery/jquery/blob/2.2.4/src/core.js#L448
         // this is needed for calling .off with the original non-intercept handler.
@@ -3452,7 +3452,7 @@ var InteractiveDateComponent = /** @class */ (function (_super) {
     // Event Mutation / Constraints
     // ---------------------------------------------------------------------------------------------------------------
     // Diffs the two dates, returning a duration, based on granularity of the grid
-    // TODO: port isTimeScale into this system?
+    // TODO: port isTimeScale into this phitb_ui.system?
     InteractiveDateComponent.prototype.diffDates = function (a, b) {
         if (this.largeUnit) {
             return util_1.diffByUnit(a, b, this.largeUnit);
@@ -3491,7 +3491,7 @@ var InteractiveDateComponent = /** @class */ (function (_super) {
         for (i = 0; i < eventFootprints.length; i++) {
             // treat it as a selection
             // TODO: pass in eventInstanceGroup instead
-            //  because we don't want calendar's constraint system to depend on a component's
+            //  because we don't want calendar's constraint phitb_ui.system to depend on a component's
             //  determination of footprints.
             if (!view.calendar.constraints.isSelectionFootprintAllowed(eventFootprints[i].componentFootprint)) {
                 return false;
@@ -7224,7 +7224,7 @@ var DayGrid = /** @class */ (function (_super) {
         segs = this.eventRenderer.renderFgSegEls(segs, true); // disableResizing=true
         this.popoverSegs = segs;
         for (i = 0; i < segs.length; i++) {
-            // because segments in the popover are not part of a grid coordinate system, provide a hint to any
+            // because segments in the popover are not part of a grid coordinate phitb_ui.system, provide a hint to any
             // grids that want to do drag-n-drop about which cell it came from
             this.hitsNeeded();
             segs[i].hit = this.getCellHit(row, col);
@@ -8762,7 +8762,7 @@ var DateComponent = /** @class */ (function (_super) {
         return false;
     };
     // TODO: only do if isInDom?
-    // TODO: make part of Component, along with children/batch-render system?
+    // TODO: make part of Component, along with children/batch-render phitb_ui.system?
     DateComponent.prototype.updateSize = function (totalHeight, isAuto, isResize) {
         this.callChildren('updateSize', arguments);
     };
@@ -9019,7 +9019,7 @@ var DateComponent = /** @class */ (function (_super) {
     // Hit Areas
     // ---------------------------------------------------------------------------------------------------------------
     // just because all DateComponents support this interface
-    // doesn't mean they need to have their own internal coord system. they can defer to sub-components.
+    // doesn't mean they need to have their own internal coord phitb_ui.system. they can defer to sub-components.
     DateComponent.prototype.hitsNeeded = function () {
         if (!(this.hitsNeededDepth++)) {
             this.prepareHits();
@@ -9256,7 +9256,7 @@ var DateComponent = /** @class */ (function (_super) {
         var dayRange = this.computeDayRange(unzonedRange);
         return dayRange.end.diff(dayRange.start, 'days') > 1;
     };
-    DateComponent.guid = 0; // TODO: better system for this?
+    DateComponent.guid = 0; // TODO: better phitb_ui.system for this?
     return DateComponent;
 }(Component_1.default));
 exports.default = DateComponent;
@@ -11920,7 +11920,7 @@ var TimeGrid = /** @class */ (function (_super) {
         if (!this.colContainerEls) {
             return;
         }
-        // seg system might be overkill, but it handles scenario where line needs to be rendered
+        // seg phitb_ui.system might be overkill, but it handles scenario where line needs to be rendered
         //  more than once because of columns with the same date (resources columns for example)
         var segs = this.componentFootprintToSegs(new ComponentFootprint_1.default(new UnzonedRange_1.default(date, date.valueOf() + 1), // protect against null range
         false // all-day
@@ -14938,7 +14938,7 @@ ViewRegistry_1.defineView('agenda', {
     defaults: {
         allDaySlot: true,
         slotDuration: '00:30:00',
-        slotEventOverlap: true // a bad name. confused with overlap/constraint system
+        slotEventOverlap: true // a bad name. confused with overlap/constraint phitb_ui.system
     }
 });
 ViewRegistry_1.defineView('agendaDay', {

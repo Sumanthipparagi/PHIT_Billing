@@ -1030,7 +1030,7 @@ var requirejs, require, define;
                             useInteractive = false;
                         }
 
-                        //Prime the system by creating a module instance for
+                        //Prime the phitb_ui.system by creating a module instance for
                         //it.
                         getModule(moduleMap);
 
@@ -1626,7 +1626,7 @@ var requirejs, require, define;
 
             /**
              * Executes a module callback function. Broken out as a separate function
-             * solely to allow the build system to sequence the files in the built
+             * solely to allow the build phitb_ui.system to sequence the files in the built
              * layer in the right sequence.
              *
              * @private

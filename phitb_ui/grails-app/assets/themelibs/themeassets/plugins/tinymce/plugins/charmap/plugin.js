@@ -89,7 +89,7 @@ tinymce.PluginManager.add('charmap', function(editor) {
 			['8712', 'element of'],
 			['8713', 'not an element of'],
 			['8715', 'contains as member'],
-			['8719', 'n-ary product'],
+			['8719', 'n-ary phitb_ui.product'],
 			['8743', 'logical and'],
 			['8744', 'logical or'],
 			['172', 'not sign'],

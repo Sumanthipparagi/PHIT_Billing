@@ -188,7 +188,7 @@
             },
             ajax: {
                 type: 'GET',
-                url: '/product-type/datatable',
+                url: '/phitb_ui.product-type/datatable',
                 dataType: 'json',
                 dataSrc: function (json) {
                     var return_data = [];
@@ -238,10 +238,10 @@
         var url = '';
         var type = '';
         if (id) {
-            url = '/product-type/update/' + id;
+            url = '/phitb_ui.product-type/update/' + id;
             type = 'POST'
         } else {
-            url = '/product-type';
+            url = '/phitb_ui.product-type';
             type = 'POST'
         }
 
@@ -291,7 +291,7 @@
     function deleteData() {
         $.ajax({
             type: 'POST',
-            url: '/product-type/delete/' + id,
+            url: '/phitb_ui.product-type/delete/' + id,
             dataType: 'json',
             success: function () {
                 $('.deleteModal').modal('hide');

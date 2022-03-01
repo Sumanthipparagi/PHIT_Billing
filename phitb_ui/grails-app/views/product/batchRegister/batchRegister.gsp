@@ -204,7 +204,7 @@
                         var manfDate = new Date(json.data[i].manfDate);
                         var expiryDate = new Date(json.data[i].expiryDate);
                         var editbtn = '<button type="button" data-id="' + json.data[i].id +
-                            '" data-product="' + json.data[i].product.id + '"' +
+                            '" data-phitb_ui.product="' + json.data[i].product.id + '"' +
                             '" data-batchNumber="' + json.data[i].batchNumber + '"' +
                             '" data-manfDate="' + moment(manfDate).format('DD/MM/YYYY') + '"' +
                             '" data-expiryDate="' +  moment(expiryDate).format('DD/MM/YYYY') + '"' +
@@ -322,7 +322,7 @@
 
     $(document).on("click", ".editbtn", function () {
         id = $(this).data('id');
-        $(".product").val($(this).attr('data-product')).change();
+        $(".phitb_ui.product").val($(this).attr('data-phitb_ui.product')).change();
         $(".batchNumber").val($(this).attr('data-batchNumber'));
         $(".manfDate").val($(this).attr('data-manfDate'));
         $(".expiryDate").val($(this).attr('data-expiryDate'));

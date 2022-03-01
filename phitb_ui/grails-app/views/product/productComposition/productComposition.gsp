@@ -187,7 +187,7 @@
             },
             ajax: {
                 type: 'GET',
-                url: '/product-composition/datatable',
+                url: '/phitb_ui.product-composition/datatable',
                 dataType: 'json',
                 dataSrc: function (json) {
                     var return_data = [];
@@ -234,10 +234,10 @@
         var url = '';
         var type = '';
         if (id) {
-            url = '/product-composition/update/' + id;
+            url = '/phitb_ui.product-composition/update/' + id;
             type = 'POST'
         } else {
-            url = '/product-composition';
+            url = '/phitb_ui.product-composition';
             type = 'POST'
         }
 
@@ -286,7 +286,7 @@
     function deleteData() {
         $.ajax({
             type: 'POST',
-            url: '/product-composition/delete/' + id,
+            url: '/phitb_ui.product-composition/delete/' + id,
             dataType: 'json',
             success: function () {
                 $('.deleteModal').modal('hide');

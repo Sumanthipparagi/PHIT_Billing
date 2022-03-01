@@ -440,7 +440,7 @@
                                     <select class="form-control show-tick salesman" name="salesman" id="salesman">
                                         <g:each var="sales" in="${salesmanList}">
                                             <option value="${sales.id}" <g:if
-                                                    test="${sales.id == entity.salesman}">selected</g:if> >${sales.userName}</option>
+                                                    test="${phitb_ui.sales.id == entity.salesman}">selected</g:if> >${sales.userName}</option>
                                         </g:each>
                                     </select>
                                 </div>

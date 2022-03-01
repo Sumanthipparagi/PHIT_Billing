@@ -188,7 +188,7 @@
             },
             ajax: {
                 type: 'GET',
-                url: '/product-schedule/datatable',
+                url: '/phitb_ui.product-schedule/datatable',
                 dataType: 'json',
                 dataSrc: function (json) {
                     var return_data = [];
@@ -239,10 +239,10 @@
         var url = '';
         var type = '';
         if (id) {
-            url = '/product-schedule/update/' + id;
+            url = '/phitb_ui.product-schedule/update/' + id;
             type = 'POST'
         } else {
-            url = '/product-schedule';
+            url = '/phitb_ui.product-schedule';
             type = 'POST'
         }
 
@@ -292,7 +292,7 @@
     function deleteData() {
         $.ajax({
             type: 'POST',
-            url: '/product-schedule/delete/' + id,
+            url: '/phitb_ui.product-schedule/delete/' + id,
             dataType: 'json',
             success: function () {
                 $('.deleteModal').modal('hide');

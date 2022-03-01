@@ -3,6 +3,11 @@ package phitb_accounts
 
 class SecurityInterceptor {
 
+    SecurityInterceptor()
+    {
+        matchAll()
+    }
+
     boolean before() {
         println("Controller: "+ controllerName + ", Action: "+actionName)
         true
