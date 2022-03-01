@@ -14,6 +14,8 @@ class UrlMappings {
         "500"(view:'/error')
         "404"(view:'/notFound')
         "/auth"(controller: "auth", action: 'index')
+        "/login"(controller: "auth", action: 'login')
+        "/logout"(controller: "auth", action: 'logout')
         "/dashboard"(controller: 'dashboard', action: 'index')
         "/forms"(controller: 'dashboard', action: 'forms')
         "/table"(controller: 'dashboard', action: 'table')

@@ -7,45 +7,45 @@ public class Links
     /*<-------------------------------------------System------------------------------------------------->*/
 
     //    Account modes
-    public static String ACCOUNT_MODES_SHOW = "api/v1.0/phitb_ui.system/accountmodes";
-    public static String ACCOUNT_MODES_SAVE = "api/v1.0/phitb_ui.system/accountmodes";
-    public static String ACCOUNT_MODES_DATATABLE = "api/v1.0/phitb_ui.system/accountmodes/datatable";
-    public static String ACCOUNT_MODES_UPDATE = "api/v1.0/phitb_ui.system/accountmodes/{id}";
-    public static String ACCOUNT_MODES_DELETE = "api/v1.0/phitb_ui.system/accountmodes/{id}";
+    public static String ACCOUNT_MODES_SHOW = "api/v1.0/system/accountmodes";
+    public static String ACCOUNT_MODES_SAVE = "api/v1.0/system/accountmodes";
+    public static String ACCOUNT_MODES_DATATABLE = "api/v1.0/system/accountmodes/datatable";
+    public static String ACCOUNT_MODES_UPDATE = "api/v1.0/system/accountmodes/{id}";
+    public static String ACCOUNT_MODES_DELETE = "api/v1.0/system/accountmodes/{id}";
 
     //    State Master
-    public static String STATE_MASTER_SAVE = "api/v1.0/phitb_ui.system/state";
-    public static String STATE_MASTER_SHOW = "api/v1.0/phitb_ui.system/state";
-    public static String STATE_MASTER_DATATABLE = "api/v1.0/phitb_ui.system/state/datatable";
-    public static String STATE_MASTER_UPDATE = "api/v1.0/phitb_ui.system/state/{id}";
-    public static String STATE_MASTER_DELETE = "api/v1.0/phitb_ui.system/state/{id}";
+    public static String STATE_MASTER_SAVE = "api/v1.0/system/state";
+    public static String STATE_MASTER_SHOW = "api/v1.0/system/state";
+    public static String STATE_MASTER_DATATABLE = "api/v1.0/system/state/datatable";
+    public static String STATE_MASTER_UPDATE = "api/v1.0/system/state/{id}";
+    public static String STATE_MASTER_DELETE = "api/v1.0/system/state/{id}";
 
     //Zone Master
-    public static String ZONE_MASTER_SHOW = "api/v1.0/phitb_ui.system/zone";
+    public static String ZONE_MASTER_SHOW = "api/v1.0/system/zone";
 
 
     //Country Master
-    public static String COUNTRY_MASTER_SHOW = "api/v1.0/phitb_ui.system/country";
-    public static String COUNTRY_MASTER_SAVE = "api/v1.0/phitb_ui.system/country";
-    public static String COUNTRY_MASTER_DATATABLE = "api/v1.0/phitb_ui.system/country/datatable";
-    public static String COUNTRY_MASTER_UPDATE = "api/v1.0/phitb_ui.system/country/{id}";
-    public static String COUNTRY_MASTER_DELETE = "api/v1.0/phitb_ui.system/country/{id}";
+    public static String COUNTRY_MASTER_SHOW = "api/v1.0/system/country";
+    public static String COUNTRY_MASTER_SAVE = "api/v1.0/system/country";
+    public static String COUNTRY_MASTER_DATATABLE = "api/v1.0/system/country/datatable";
+    public static String COUNTRY_MASTER_UPDATE = "api/v1.0/system/country/{id}";
+    public static String COUNTRY_MASTER_DELETE = "api/v1.0/system/country/{id}";
 
 
     //Form Master
-    public static String FORM_MASTER_SHOW = "api/v1.0/phitb_ui.system/form";
-    public static String FORM_MASTER_SAVE = "api/v1.0/phitb_ui.system/form";
-    public static String FORM_MASTER_DATATABLE = "api/v1.0/phitb_ui.system/form/datatable";
-    public static String FORM_MASTER_UPDATE = "api/v1.0/phitb_ui.system/form/{id}";
-    public static String FORM_MASTER_DELETE = "api/v1.0/phitb_ui.system/form/{id}";
+    public static String FORM_MASTER_SHOW = "api/v1.0/system/form";
+    public static String FORM_MASTER_SAVE = "api/v1.0/system/form";
+    public static String FORM_MASTER_DATATABLE = "api/v1.0/system/form/datatable";
+    public static String FORM_MASTER_UPDATE = "api/v1.0/system/form/{id}";
+    public static String FORM_MASTER_DELETE = "api/v1.0/system/form/{id}";
 
 
     //    City Master
-    public static String CITY_MASTER_SAVE = "api/v1.0/phitb_ui.system/city";
-    public static String CITY_MASTER_SHOW = "api/v1.0/phitb_ui.system/city";
-    public static String CITY_MASTER_DATATABLE = "api/v1.0/phitb_ui.system/city/datatable";
-    public static String CITY_MASTER_UPDATE = "api/v1.0/phitb_ui.system/city/{id}";
-    public static String CITY_MASTER_DELETE = "api/v1.0/phitb_ui.system/city/{id}";
+    public static String CITY_MASTER_SAVE = "api/v1.0/system/city";
+    public static String CITY_MASTER_SHOW = "api/v1.0/system/city";
+    public static String CITY_MASTER_DATATABLE = "api/v1.0/system/city/datatable";
+    public static String CITY_MASTER_UPDATE = "api/v1.0/system/city/{id}";
+    public static String CITY_MASTER_DELETE = "api/v1.0/system/city/{id}";
 
 
     /*<-------------------------------------------Facility ------------------------------------------------->*/
@@ -81,12 +81,14 @@ public class Links
 
     /*<-------------------------------------------Entity ------------------------------------------------->*/
 
+    public static String ENTITY_AUTH = "api/v1.0/entity/authregister/username";
+
     public static String ENTITY_TYPE_MASTER_SHOW = "api/v1.0/entity/entitytypemaster";
     public static String DEPARTMENT_MASTER_SHOW = "api/v1.0/entity/departmentmaster";
     public static String BANK_REGISTER_SHOW = "api/v1.0/accounts/bankregister";
     public static String ACCOUNT_REGISTER_SHOW = "api/v1.0/entity/accountregister";
-    public static String DIVISION_SHOW = "api/v1.0/phitb_ui.product/division";
-    public static String GENDER_SHOW = "api/v1.0/phitb_ui.system/gender";
+    public static String DIVISION_SHOW = "api/v1.0/product/division";
+    public static String GENDER_SHOW = "api/v1.0/system/gender";
 
     //Entity Register
     public static String ENTITY_REGISTER_SHOW = "api/v1.0/entity/entityregister";
@@ -195,97 +197,97 @@ public class Links
 
     /*<-------------------------------------------Product ------------------------------------------------->*/
     //Product Register
-    public static String PRODUCT_REGISTER_SHOW = "api/v1.0/phitb_ui.product/productregister";
-    public static String PRODUCT_REGISTER_BY_ENTITY = "api/v1.0/phitb_ui.product/productregisterbyentity";
-    public static String PRODUCT_REGISTER_SAVE = "api/v1.0/phitb_ui.product/productregister";
-    public static String PRODUCT_REGISTER_DATATABLE = "api/v1.0/phitb_ui.product/productregister/datatable";
-    public static String PRODUCT_REGISTER_UPDATE = "api/v1.0/phitb_ui.product/productregister/{id}";
-    public static String PRODUCT_REGISTER_DELETE = "api/v1.0/phitb_ui.product/productregister/{id}";
+    public static String PRODUCT_REGISTER_SHOW = "api/v1.0/product/productregister";
+    public static String PRODUCT_REGISTER_BY_ENTITY = "api/v1.0/product/productregisterbyentity";
+    public static String PRODUCT_REGISTER_SAVE = "api/v1.0/product/productregister";
+    public static String PRODUCT_REGISTER_DATATABLE = "api/v1.0/product/productregister/datatable";
+    public static String PRODUCT_REGISTER_UPDATE = "api/v1.0/product/productregister/{id}";
+    public static String PRODUCT_REGISTER_DELETE = "api/v1.0/product/productregister/{id}";
 
     //Product TYPE
-    public static String PRODUCT_TYPE_SHOW = "api/v1.0/phitb_ui.product/producttypemaster";
-    public static String PRODUCT_TYPE_SAVE = "api/v1.0/phitb_ui.product/producttypemaster";
-    public static String PRODUCT_TYPE_DATATABLE = "api/v1.0/phitb_ui.product/producttypemaster/datatable";
-    public static String PRODUCT_TYPE_UPDATE = "api/v1.0/phitb_ui.product/producttypemaster/{id}";
-    public static String PRODUCT_TYPE_DELETE = "api/v1.0/phitb_ui.product/producttypemaster/{id}";
+    public static String PRODUCT_TYPE_SHOW = "api/v1.0/product/producttypemaster";
+    public static String PRODUCT_TYPE_SAVE = "api/v1.0/product/producttypemaster";
+    public static String PRODUCT_TYPE_DATATABLE = "api/v1.0/product/producttypemaster/datatable";
+    public static String PRODUCT_TYPE_UPDATE = "api/v1.0/product/producttypemaster/{id}";
+    public static String PRODUCT_TYPE_DELETE = "api/v1.0/product/producttypemaster/{id}";
 
     //Product Group
-    public static String PRODUCT_GROUP_SHOW = "api/v1.0/phitb_ui.product/productgroupmaster";
-    public static String PRODUCT_GROUP_SAVE = "api/v1.0/phitb_ui.product/productgroupmaster";
-    public static String PRODUCT_GROUP_DATATABLE = "api/v1.0/phitb_ui.product/productgroupmaster/datatable";
-    public static String PRODUCT_GROUP_UPDATE = "api/v1.0/phitb_ui.product/productgroupmaster/{id}";
-    public static String PRODUCT_GROUP_DELETE = "api/v1.0/phitb_ui.product/productgroupmaster/{id}";
+    public static String PRODUCT_GROUP_SHOW = "api/v1.0/product/productgroupmaster";
+    public static String PRODUCT_GROUP_SAVE = "api/v1.0/product/productgroupmaster";
+    public static String PRODUCT_GROUP_DATATABLE = "api/v1.0/product/productgroupmaster/datatable";
+    public static String PRODUCT_GROUP_UPDATE = "api/v1.0/product/productgroupmaster/{id}";
+    public static String PRODUCT_GROUP_DELETE = "api/v1.0/product/productgroupmaster/{id}";
 
     //unit type
-    public static String UNIT_TYPE_SHOW = "api/v1.0/phitb_ui.product/unittypemaster";
-    public static String UNIT_TYPE_SAVE = "api/v1.0/phitb_ui.product/unittypemaster";
-    public static String UNIT_TYPE_DATATABLE = "api/v1.0/phitb_ui.product/unittypemaster/datatable";
-    public static String UNIT_TYPE_UPDATE = "api/v1.0/phitb_ui.product/unittypemaster/{id}";
-    public static String UNIT_TYPE_DELETE = "api/v1.0/phitb_ui.product/unittypemaster/{id}";
+    public static String UNIT_TYPE_SHOW = "api/v1.0/product/unittypemaster";
+    public static String UNIT_TYPE_SAVE = "api/v1.0/product/unittypemaster";
+    public static String UNIT_TYPE_DATATABLE = "api/v1.0/product/unittypemaster/datatable";
+    public static String UNIT_TYPE_UPDATE = "api/v1.0/product/unittypemaster/{id}";
+    public static String UNIT_TYPE_DELETE = "api/v1.0/product/unittypemaster/{id}";
 
     //division
-    public static String DIVISION_SAVE = "api/v1.0/phitb_ui.product/division";
-    public static String DIVISION_DATATABLE = "api/v1.0/phitb_ui.product/division/datatable";
-    public static String DIVISION_UPDATE = "api/v1.0/phitb_ui.product/division/{id}";
-    public static String DIVISION_DELETE = "api/v1.0/phitb_ui.product/division/{id}";
+    public static String DIVISION_SAVE = "api/v1.0/product/division";
+    public static String DIVISION_DATATABLE = "api/v1.0/product/division/datatable";
+    public static String DIVISION_UPDATE = "api/v1.0/product/division/{id}";
+    public static String DIVISION_DELETE = "api/v1.0/product/division/{id}";
 
     //division group
-    public static String DIVISION_GROUP_SAVE = "api/v1.0/phitb_ui.product/divisiongroupregister";
-    public static String DIVISION_GROUP_DATATABLE = "api/v1.0/phitb_ui.product/divisiongroupregister/datatable";
-    public static String DIVISION_GROUP_UPDATE = "api/v1.0/phitb_ui.product/divisiongroupregister/{id}";
-    public static String DIVISION_GROUP_DELETE = "api/v1.0/phitb_ui.product/divisiongroupregister/{id}";
+    public static String DIVISION_GROUP_SAVE = "api/v1.0/product/divisiongroupregister";
+    public static String DIVISION_GROUP_DATATABLE = "api/v1.0/product/divisiongroupregister/datatable";
+    public static String DIVISION_GROUP_UPDATE = "api/v1.0/product/divisiongroupregister/{id}";
+    public static String DIVISION_GROUP_DELETE = "api/v1.0/product/divisiongroupregister/{id}";
 
     //Product Category
-    public static String PRODUCT_CATEGORY_SHOW = "api/v1.0/phitb_ui.product/productcategorymaster";
-    public static String PRODUCT_CATEGORY_SAVE = "api/v1.0/phitb_ui.product/productcategorymaster";
-    public static String PRODUCT_CATEGORY_DATATABLE = "api/v1.0/phitb_ui.product/productcategorymaster/datatable";
-    public static String PRODUCT_CATEGORY_UPDATE = "api/v1.0/phitb_ui.product/productcategorymaster/{id}";
-    public static String PRODUCT_CATEGORY_DELETE = "api/v1.0/phitb_ui.product/productcategorymaster/{id}";
+    public static String PRODUCT_CATEGORY_SHOW = "api/v1.0/product/productcategorymaster";
+    public static String PRODUCT_CATEGORY_SAVE = "api/v1.0/product/productcategorymaster";
+    public static String PRODUCT_CATEGORY_DATATABLE = "api/v1.0/product/productcategorymaster/datatable";
+    public static String PRODUCT_CATEGORY_UPDATE = "api/v1.0/product/productcategorymaster/{id}";
+    public static String PRODUCT_CATEGORY_DELETE = "api/v1.0/product/productcategorymaster/{id}";
 
     //Product Schedule
-    public static String PRODUCT_SCHEDULE_SHOW = "api/v1.0/phitb_ui.product/productschdulemaster";
-    public static String PRODUCT_SCHEDULE_SAVE = "api/v1.0/phitb_ui.product/productschdulemaster";
-    public static String PRODUCT_SCHEDULE_DATATABLE = "api/v1.0/phitb_ui.product/productschdulemaster/datatable";
-    public static String PRODUCT_SCHEDULE_UPDATE = "api/v1.0/phitb_ui.product/productschdulemaster/{id}";
-    public static String PRODUCT_SCHEDULE_DELETE = "api/v1.0/phitb_ui.product/productschdulemaster/{id}";
+    public static String PRODUCT_SCHEDULE_SHOW = "api/v1.0/product/productschdulemaster";
+    public static String PRODUCT_SCHEDULE_SAVE = "api/v1.0/product/productschdulemaster";
+    public static String PRODUCT_SCHEDULE_DATATABLE = "api/v1.0/product/productschdulemaster/datatable";
+    public static String PRODUCT_SCHEDULE_UPDATE = "api/v1.0/product/productschdulemaster/{id}";
+    public static String PRODUCT_SCHEDULE_DELETE = "api/v1.0/product/productschdulemaster/{id}";
 
     //Product Composition
-    public static String PRODUCT_COMPOSITION_SHOW = "api/v1.0/phitb_ui.product/compositionmasterregister";
-    public static String PRODUCT_COMPOSITION_SAVE = "api/v1.0/phitb_ui.product/compositionmasterregister";
-    public static String PRODUCT_COMPOSITION_DATATABLE = "api/v1.0/phitb_ui.product/compositionmasterregister/datatable";
-    public static String PRODUCT_COMPOSITION_UPDATE = "api/v1.0/phitb_ui.product/compositionmasterregister/{id}";
-    public static String PRODUCT_COMPOSITION_DELETE = "api/v1.0/phitb_ui.product/compositionmasterregister/{id}";
+    public static String PRODUCT_COMPOSITION_SHOW = "api/v1.0/product/compositionmasterregister";
+    public static String PRODUCT_COMPOSITION_SAVE = "api/v1.0/product/compositionmasterregister";
+    public static String PRODUCT_COMPOSITION_DATATABLE = "api/v1.0/product/compositionmasterregister/datatable";
+    public static String PRODUCT_COMPOSITION_UPDATE = "api/v1.0/product/compositionmasterregister/{id}";
+    public static String PRODUCT_COMPOSITION_DELETE = "api/v1.0/product/compositionmasterregister/{id}";
 
     //Product Class
-    public static String PRODUCT_CLASS_SHOW = "api/v1.0/phitb_ui.product/productclass";
-    public static String PRODUCT_CLASS_SAVE = "api/v1.0/phitb_ui.product/productclass";
-    public static String PRODUCT_CLASS_DATATABLE = "api/v1.0/phitb_ui.product/productclass/datatable";
-    public static String PRODUCT_CLASS_UPDATE = "api/v1.0/phitb_ui.product/productclass/{id}";
-    public static String PRODUCT_CLASS_DELETE = "api/v1.0/phitb_ui.product/productclass/{id}";
+    public static String PRODUCT_CLASS_SHOW = "api/v1.0/product/productclass";
+    public static String PRODUCT_CLASS_SAVE = "api/v1.0/product/productclass";
+    public static String PRODUCT_CLASS_DATATABLE = "api/v1.0/product/productclass/datatable";
+    public static String PRODUCT_CLASS_UPDATE = "api/v1.0/product/productclass/{id}";
+    public static String PRODUCT_CLASS_DELETE = "api/v1.0/product/productclass/{id}";
 
 
     //Product Cost
-    public static String PRODUCT_COST_SHOW = "api/v1.0/phitb_ui.product/productcostrange";
-    public static String PRODUCT_COST_SAVE = "api/v1.0/phitb_ui.product/productcostrange";
-    public static String PRODUCT_COST_DATATABLE = "api/v1.0/phitb_ui.product/productcostrange/datatable";
-    public static String PRODUCT_COST_UPDATE = "api/v1.0/phitb_ui.product/productcostrange/{id}";
-    public static String PRODUCT_COST_DELETE = "api/v1.0/phitb_ui.product/productcostrange/{id}";
+    public static String PRODUCT_COST_SHOW = "api/v1.0/product/productcostrange";
+    public static String PRODUCT_COST_SAVE = "api/v1.0/product/productcostrange";
+    public static String PRODUCT_COST_DATATABLE = "api/v1.0/product/productcostrange/datatable";
+    public static String PRODUCT_COST_UPDATE = "api/v1.0/product/productcostrange/{id}";
+    public static String PRODUCT_COST_DELETE = "api/v1.0/product/productcostrange/{id}";
 
     //Batch Register
-    public static String BATCH_REGISTER_SHOW = "api/v1.0/phitb_ui.product/batchregister";
-    public static String GET_BATCH_BY_PRODUCT = "api/v1.0/phitb_ui.product/batchregisterbyproduct";
-    public static String BATCH_REGISTER_SAVE = "api/v1.0/phitb_ui.product/batchregister";
-    public static String BATCH_REGISTER_DATATABLE = "api/v1.0/phitb_ui.product/batchregister/datatable";
-    public static String BATCH_REGISTER_UPDATE = "api/v1.0/phitb_ui.product/batchregister/{id}";
-    public static String BATCH_REGISTER_DELETE = "api/v1.0/phitb_ui.product/batchregister/{id}";
+    public static String BATCH_REGISTER_SHOW = "api/v1.0/product/batchregister";
+    public static String GET_BATCH_BY_PRODUCT = "api/v1.0/product/batchregisterbyproduct";
+    public static String BATCH_REGISTER_SAVE = "api/v1.0/product/batchregister";
+    public static String BATCH_REGISTER_DATATABLE = "api/v1.0/product/batchregister/datatable";
+    public static String BATCH_REGISTER_UPDATE = "api/v1.0/product/batchregister/{id}";
+    public static String BATCH_REGISTER_DELETE = "api/v1.0/product/batchregister/{id}";
 
     /*<--------------------------------------------Sale Bill ------------------------------------------------->*/
     //Sale Bill Details
-    public static String SALE_BILL_SHOW = "api/v1.0/phitb_ui.sales/salebilldetails";
-    public static String SALE_BILL_SAVE = "api/v1.0/phitb_ui.sales/salebilldetails";
-    public static String SALE_BILL_DATATABLE = "api/v1.0/phitb_ui.sales/salebilldetails/datatable";
-    public static String SALE_BILL_UPDATE = "api/v1.0/phitb_ui.sales/salebilldetails/{id}";
-    public static String SALE_BILL_DELETE = "api/v1.0/phitb_ui.sales/salebilldetails/{id}";
+    public static String SALE_BILL_SHOW = "api/v1.0/sales/salebilldetails";
+    public static String SALE_BILL_SAVE = "api/v1.0/sales/salebilldetails";
+    public static String SALE_BILL_DATATABLE = "api/v1.0/sales/salebilldetails/datatable";
+    public static String SALE_BILL_UPDATE = "api/v1.0/sales/salebilldetails/{id}";
+    public static String SALE_BILL_DELETE = "api/v1.0/sales/salebilldetails/{id}";
 
     //Inventory
     public static String GET_STOCKS_OF_PRODUCT = "api/v1.0/inventory/stockbookbyproduct";

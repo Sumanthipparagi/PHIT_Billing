@@ -1,9 +1,6 @@
-package phitb_entity
+package phitb_ui
 
 import grails.gorm.transactions.Transactional
-import org.grails.web.json.JSONObject
-import phitb_entity.Exception.BadRequestException
-import phitb_entity.Exception.ResourceNotFoundException
 
 import javax.crypto.SecretKeyFactory
 import javax.crypto.spec.PBEKeySpec
@@ -13,110 +10,11 @@ import java.security.SecureRandom
 import java.security.spec.InvalidKeySpecException
 
 @Transactional
-class AuthRegisterService {
+class AuthService {
 
     private static final Random RANDOM = new SecureRandom()
     private static final int ITERATIONS = 10000
     private static final int KEY_LENGTH = 256
-
-    def getAll(String limit, String offset, String query) {
-        Integer o = offset ? Integer.parseInt(offset.toString()) : 0
-        Integer l = limit ? Integer.parseInt(limit.toString()) : 100
-        if (!query)
-            return AuthRegister.findAll([sort: 'id', max: l, offset: o, order: 'desc'])
-        else
-            return AuthRegister.findAllByUsernameIlike("%" + query + "%", [sort: 'id', max: l, offset: o, order:
-                    'desc'])
-    }
-
-    AuthRegister get(String id) {
-        return AuthRegister.findById(Long.parseLong(id))
-    }
-    AuthRegister getByUsername(String username)
-    {
-        return AuthRegister.findByUsername(username)
-    }
-
-
-    JSONObject dataTables(JSONObject paramsJsonObject, String start, String length) {
-        String searchTerm = paramsJsonObject.get("search[value]")
-        String orderColumnId = paramsJsonObject.get("order[0][column]")
-        String orderDir = paramsJsonObject.get("order[0][dir]")
-
-        String orderColumn = "id"
-        switch (orderColumnId) {
-            case '0':
-                orderColumn = "id"
-                break;
-            case '1':
-                orderColumn = "startDate"
-                break;
-        }
-        Integer offset = start ? Integer.parseInt(start.toString()) : 0
-        Integer max = length ? Integer.parseInt(length.toString()) : 100
-        def authRegisterCriteria = AuthRegister.createCriteria()
-        def authRegisterCriteriaArrayList = authRegisterCriteria.list(max: max, offset: offset) {
-            or {
-                if (searchTerm != "") {
-                    ilike('startDate', '%' + searchTerm + '%')
-                }
-            }
-            eq('deleted', false)
-            order(orderColumn, orderDir)
-        }
-        def recordsTotal = authRegisterCriteriaArrayList.totalCount
-        JSONObject jsonObject = new JSONObject()
-        jsonObject.put("draw", paramsJsonObject.draw)
-        jsonObject.put("recordsTotal", recordsTotal)
-        jsonObject.put("recordsFiltered", recordsTotal)
-        jsonObject.put("data", authRegisterCriteriaArrayList)
-        return jsonObject
-    }
-
-    AuthRegister save(JSONObject jsonObject) {
-        AuthRegister authRegister = new AuthRegister()
-        authRegister.username = jsonObject.get("username").toString()
-        authRegister.password = jsonObject.get("password").toString()
-        authRegister.user = UserRegister.findById(Long.parseLong(jsonObject.get("user").toString()))
-        authRegister.save(flush: true)
-        if (!authRegister.hasErrors())
-            return authRegister
-        else
-            throw new BadRequestException()
-    }
-
-    AuthRegister update(JSONObject jsonObject, String id) {
-        AuthRegister authRegister = AuthRegister.findById(Long.parseLong(id))
-        if (authRegister) {
-            authRegister.isUpdatable = true
-            authRegister.username = jsonObject.get("username").toString()
-            authRegister.password = jsonObject.get("password").toString()
-            authRegister.user = UserRegister.findById(Long.parseLong(jsonObject.get("user").toString()))
-            authRegister.save(flush: true)
-            if (!authRegister.hasErrors())
-                return authRegister
-            else
-                throw new BadRequestException()
-        } else
-            throw new ResourceNotFoundException()
-    }
-
-    void delete(String id) {
-        if (id) {
-            AuthRegister authRegister = AuthRegister.findById(Long.parseLong(id))
-            if (authRegister) {
-                authRegister.isUpdatable = true
-                authRegister.delete()
-            } else {
-                throw new ResourceNotFoundException()
-            }
-        } else {
-            throw new BadRequestException()
-        }
-    }
-
-
-
 
     /**
      * Returns a random salt to be used to hash a password.
@@ -187,7 +85,7 @@ class AuthRegisterService {
         byte[] salt = getNextSalt()
         String password1 = toHexString(hash(rawPassword.toCharArray(), salt))
         //replace original password with hashed password in client request
-        return password1 + "_" + toHexString(salt)
+        return password1 + "_" + new AuthService().toHexString(salt)
     }
 
     /**
@@ -196,7 +94,7 @@ class AuthRegisterService {
      * @param mobile
      * @return
      */
-   /* Auth accessTokenVerify(String accessToken, String mobile)
+  /*  Auth accessTokenVerify(String accessToken, String mobile)
     {
         String accessTokenURL = new MethodHandleNatives.Constants().FACEBOOK_SMS_VERIFICATION_LINK + accessToken
         Client client = ClientBuilder.newClient()
@@ -247,9 +145,9 @@ class AuthRegisterService {
             println("accessTokenVerify: Fail! Status from FB: " + response.getStatus())
             return null
         }
-    }*/
-
-    /*static PasswordHistory addPasswordHistory(
+    }
+*/
+  /*  static PasswordHistory addPasswordHistory(
             String username, String password, String userType)
     {
         PasswordHistory userPasswordHistory = new PasswordHistory()
@@ -264,8 +162,9 @@ class AuthRegisterService {
         }
         return null
     }*/
+/*
 
-   /* static boolean oldPasswordDelete(String username, String userType)
+    static boolean oldPasswordDelete(String username, String userType)
     {
         ArrayList<PasswordHistory> userPasswordHistory = PasswordHistory.findAllByUsernameAndUserType(username, userType, [offset: new Constants().MAX_PASSWORD_HISTORY_DELETE, sort: "dateCreated", order: "desc"])
 
@@ -274,7 +173,8 @@ class AuthRegisterService {
         }
 
         return true
-    }*/
+    }
+*/
 
     static checkPasswordStrength(String password)
     {

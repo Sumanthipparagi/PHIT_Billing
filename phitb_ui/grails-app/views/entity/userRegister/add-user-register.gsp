@@ -88,7 +88,7 @@
 
                                 <div class="col-lg-6 form-group  form-float">
                                     <label for="password">
-                                        User Name
+                                        Password
                                     </label>
                                     <input type="password" id="password" class="form-control password" name="password"
 

@@ -34,6 +34,7 @@ class UrlMappings
 
             //Auth register
             "/authregister(.$format)?"(controller: 'authRegister') {action = [GET: 'index', POST: 'save']}
+            "/authregister/username/$username(.$format)?"(controller: 'authRegister') {action = [GET: 'getByUsername']}
             "/authregister/datatable(.$format)?"(controller: 'authRegister') {action = [GET: 'dataTable']}
             "/authregister/$id(.$format)?"(controller: 'authRegister') {
                 action = [GET: 'show', PUT: 'update', DELETE:
@@ -272,7 +273,7 @@ class UrlMappings
             }
 
 
-            //User Register
+            //User Register getByUsername
             "/userregister(.$format)?"(controller: 'userRegister') {
                 action = [GET: 'index', POST:
                         'save']

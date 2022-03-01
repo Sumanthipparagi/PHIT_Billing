@@ -43,6 +43,11 @@ class UserRegisterService
         return UserRegister.findById(Long.parseLong(id))
     }
 
+    UserRegister getByUsername(String username)
+    {
+        return UserRegister.findByUserName(username)
+    }
+
     JSONObject dataTables(JSONObject paramsJsonObject, String start, String length)
     {
         String searchTerm = paramsJsonObject.get("search[value]")

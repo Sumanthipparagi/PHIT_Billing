@@ -49,21 +49,25 @@
                         <div class="header">
                             <h5>Log in</h5>
                         </div>
-                        <form class="form">
+                        <form class="form" action="login" method="POST">
                             <div class="input-group">
-                                <input type="text" class="form-control" placeholder="User Name">
+                                <input type="text" class="form-control" placeholder="User Name" name="username" required>
                                 <span class="input-group-addon"><i class="zmdi zmdi-account-circle"></i></span>
                             </div>
                             <div class="input-group">
-                                <input type="password" placeholder="Password" class="form-control" />
+                                <input type="password" placeholder="Password" class="form-control" name="password" required/>
                                 <span class="input-group-addon"><i class="zmdi zmdi-lock"></i></span>
                             </div>
-                        </form>
+                            <div class="link">
+                                <small style="color: red;">${session.getAttribute("loginErrorMessage")}</small>
+                            </div>
+
                         <div class="footer">
-                            <a href="/dashboard" class="btn btn-primary btn-round btn-block">SIGN IN</a>
+                            <button type="submit"  class="btn btn-primary btn-round btn-block">SIGN IN</button>
                             <a href="sign-up.html" class="btn btn-primary btn-simple btn-round btn-block">SIGN UP</a>
                         </div>
                         <a href="forgot-password.html" class="link">Forgot Password?</a>
+                        </form>
                     </div>
                 </div>
             </div>

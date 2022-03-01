@@ -129,7 +129,7 @@
                 class="zmdi zmdi-fullscreen"></i></a></li>
         <li class="power">
             <a href="javascript:void(0);" class="js-right-sidebar"><i class="zmdi zmdi-settings zmdi-hc-spin"></i></a>
-            <a href="sign-in.html" class="mega-menu"><i class="zmdi zmdi-power"></i></a>
+            <a href="/logout" class="mega-menu"><i class="zmdi zmdi-power"></i></a>
         </li>
     </ul>
 </aside>

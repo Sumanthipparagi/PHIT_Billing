@@ -191,4 +191,30 @@ class UserRegisterController {
         }
     }
 
+    /**
+     * Get requested user register by username
+     * @param id
+     * @return get requested user register
+     */
+    def getByUsername() {
+        try {
+            String username = params.username
+            if (username) {
+                respond userRegisterService.getByUsername(username)
+            }
+        }
+        catch (ResourceNotFoundException ex)
+        {
+            System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
+            response.status = 404
+        }
+        catch (BadRequestException ex)
+        {
+            System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
+            response.status = 400
+        }
+        catch (Exception ex) {
+            System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
+        }
+    }
 }
