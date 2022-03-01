@@ -17,7 +17,7 @@ class StateController {
             def entity = new JsonSlurper().parseText(apiUrl.text)
             ArrayList<String> zoneArrayList = new ZoneController().show()
             ArrayList<String> countryArrayList = new CountryController().show()
-            render(view: '/phitb_ui/system/state/state',model: [entity:entity, zoneArrayList:zoneArrayList, countryArrayList:countryArrayList])
+            render(view: '/system/state/state',model: [entity:entity, zoneArrayList:zoneArrayList, countryArrayList:countryArrayList])
         }
         catch (Exception ex)
         {

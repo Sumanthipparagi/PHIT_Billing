@@ -44,7 +44,7 @@ class ProductScheduleController {
                     managerList.add(it)
                 }
             }
-            render(view: '/phitb_ui/product/productSchedule/productSchedule',model: [entity     :entity, statelist:statelist,
+            render(view: '/product/productSchedule/productSchedule',model: [entity     :entity, statelist:statelist,
                                                                                      countrylist:countrylist, citylist:citylist,
                                                                                      zoneList   :zoneList,
                                                                                      entitytype :entitytype, customer:customer, series:series,

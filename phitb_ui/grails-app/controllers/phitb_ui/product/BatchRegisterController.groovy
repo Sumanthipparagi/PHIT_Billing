@@ -46,7 +46,7 @@ class BatchRegisterController {
                     managerList.add(it)
                 }
             }
-            render(view: '/phitb_ui/product/batchRegister/batchRegister',model: [entity     :entity, statelist:statelist,
+            render(view: '/product/batchRegister/batchRegister',model: [entity     :entity, statelist:statelist,
                                                                                  countrylist:countrylist, citylist:citylist,
                                                                                  zoneList   :zoneList,
                                                                                  entitytype :entitytype, customer:customer, series:series,

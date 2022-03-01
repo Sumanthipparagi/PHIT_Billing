@@ -16,7 +16,7 @@ class CityController {
             URL apiUrl = new URL(entityurl)
             def entity = new JsonSlurper().parseText(apiUrl.text)
             ArrayList<String> stateArrayList = new StateController().show() as ArrayList<String>
-            render(view: '/phitb_ui/system/city/city',model: [entity:entity, stateArrayList:stateArrayList])
+            render(view: '/system/city/city',model: [entity:entity, stateArrayList:stateArrayList])
         }
         catch (Exception ex)
         {

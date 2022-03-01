@@ -30,7 +30,7 @@ class SalebillDetailsController {
                 salesmanList.add(it)
             }
         }
-        render(view: '/phitb_ui/sales/sale-entry', model: [series      : series, accountMode: accountMode, entity: entity,
+        render(view: '/sales/sale-entry', model: [series      : series, accountMode: accountMode, entity: entity,
                                                            users       : users, customerList: customerList,
                                                            salesmanList: salesmanList, salebilllist:salebilllist])
     }

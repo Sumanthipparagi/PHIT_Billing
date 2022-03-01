@@ -4,6 +4,6 @@ class AuthController {
 
     def index()
     {
-        render(view: '/phitb_ui/usermanagement/auth/index')
+        render(view: '/usermanagement/auth/index')
     }
 }

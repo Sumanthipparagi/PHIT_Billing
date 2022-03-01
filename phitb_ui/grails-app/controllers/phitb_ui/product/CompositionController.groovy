@@ -43,7 +43,7 @@ class CompositionController {
                     managerList.add(it)
                 }
             }
-            render(view: '/phitb_ui/product/productComposition/productComposition',model: [entity     :entity, statelist:statelist,
+            render(view: '/product/productComposition/productComposition',model: [entity     :entity, statelist:statelist,
                                                                                            countrylist:countrylist, citylist:citylist,
                                                                                            zoneList   :zoneList,
                                                                                            entitytype :entitytype, customer:customer, series:series,

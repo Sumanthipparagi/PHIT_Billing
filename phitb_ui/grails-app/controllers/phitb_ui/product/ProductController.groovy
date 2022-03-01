@@ -50,7 +50,7 @@ class ProductController {
             ArrayList<String> productSchedules = new ProductScheduleController().show() as ArrayList<String>
             ArrayList<String> racks = new RackController().show() as ArrayList<String>
             ArrayList<String> compositions = new CompositionController().show() as ArrayList<String>
-            render(view: '/phitb_ui/product/productRegister/productRegister', model: [productTypes     : productTypes,
+            render(view: '/product/productRegister/productRegister', model: [productTypes     : productTypes,
                                                                                       productGroups    : productGroups,
                                                                                       productCategories: productCategories,
                                                                                       productSchedules : productSchedules,
@@ -85,7 +85,7 @@ class ProductController {
             ArrayList<String> producttype = new ProductTypeController().show() as ArrayList<String>
             ArrayList<String> productcost = new ProductCostRangeController().show() as ArrayList<String>
             ArrayList<String> unittype = new UnitTypeController().show() as ArrayList<String>
-            render(view: '/phitb_ui/product/productRegister/add-product', model: [productTypes     : productTypes,
+            render(view: '/product/productRegister/add-product', model: [productTypes     : productTypes,
                                                                                   productGroups    : productGroups,
                                                                                   productCategories: productCategories,
                                                                                   productSchedules : productSchedules,
@@ -126,7 +126,7 @@ class ProductController {
             ArrayList<String> producttype = new ProductTypeController().show() as ArrayList<String>
             ArrayList<String> productcost = new ProductCostRangeController().show() as ArrayList<String>
             ArrayList<String> unittype = new UnitTypeController().show() as ArrayList<String>
-            render(view: '/phitb_ui/product/productRegister/update-product', model: [productTypes     : productTypes,
+            render(view: '/product/productRegister/update-product', model: [productTypes     : productTypes,
                                                                                      productGroups    : productGroups,
                                                                                      productCategories: productCategories,
                                                                                      productSchedules : productSchedules,

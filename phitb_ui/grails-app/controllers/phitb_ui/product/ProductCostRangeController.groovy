@@ -41,7 +41,7 @@ class ProductCostRangeController {
                     managerList.add(it)
                 }
             }
-            render(view: '/phitb_ui/product/productCostRange/productCost',model: [entity     :entity, statelist:statelist,
+            render(view: '/product/productCostRange/productCost',model: [entity     :entity, statelist:statelist,
                                                                                   countrylist:countrylist, citylist:citylist,
                                                                                   zoneList   :zoneList,
                                                                                   entitytype :entitytype, customer:customer, series:series,

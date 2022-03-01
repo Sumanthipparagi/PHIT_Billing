@@ -17,7 +17,7 @@ class FormController {
             URL api3Url = new URL(entitytypeurl)
             def entity = new JsonSlurper().parseText(api1Url.text)
             def entitytype = new JsonSlurper().parseText(api3Url.text)
-            render(view: '/phitb_ui/system/form/formmaster',model: [entity:entity, entitytype:entitytype])
+            render(view: '/system/form/formmaster',model: [entity:entity, entitytype:entitytype])
         }
         catch (Exception ex)
         {

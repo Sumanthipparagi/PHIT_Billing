@@ -44,7 +44,7 @@ class ProductCategoryController {
                     managerList.add(it)
                 }
             }
-            render(view: '/phitb_ui/product/productCategory/productCategory',model: [entity     :entity, statelist:statelist,
+            render(view: '/product/productCategory/productCategory',model: [entity     :entity, statelist:statelist,
                                                                                      countrylist:countrylist, citylist:citylist,
                                                                                      zoneList   :zoneList,
                                                                                      entitytype :entitytype, customer:customer, series:series,

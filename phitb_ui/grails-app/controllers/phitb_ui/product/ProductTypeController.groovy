@@ -43,7 +43,7 @@ class ProductTypeController {
                     managerList.add(it)
                 }
             }
-            render(view: '/phitb_ui/product/productType/productType',model: [entity     :entity, statelist:statelist,
+            render(view: '/product/productType/productType',model: [entity     :entity, statelist:statelist,
                                                                              countrylist:countrylist, citylist:citylist,
                                                                              zoneList   :zoneList,
                                                                              entitytype :entitytype, customer:customer, series:series,

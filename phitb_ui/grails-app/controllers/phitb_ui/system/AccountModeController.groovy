@@ -17,7 +17,7 @@ class AccountModeController
         println(url)
         URL apiUrl = new URL(url)
         def entity = new JsonSlurper().parseText(apiUrl.text)
-        render(view: '/phitb_ui/system/accountMode/accountmodes',model: [entity:entity])
+        render(view: '/system/accountMode/accountmodes',model: [entity:entity])
     }
 
     def save()

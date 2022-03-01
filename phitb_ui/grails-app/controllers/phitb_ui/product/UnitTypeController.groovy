@@ -43,7 +43,7 @@ class UnitTypeController {
                     managerList.add(it)
                 }
             }
-            render(view: '/phitb_ui/product/unitType/unitType',model: [entity     :entity, statelist:statelist,
+            render(view: '/product/unitType/unitType',model: [entity     :entity, statelist:statelist,
                                                                        countrylist:countrylist, citylist:citylist,
                                                                        zoneList   :zoneList,
                                                                        entitytype :entitytype, customer:customer, series:series,

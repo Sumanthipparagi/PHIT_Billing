@@ -30,7 +30,7 @@ class SaleEntryController {
             }
         }
         def products = new ProductService().getProductsByEntityId(entityId)
-        render(view: '/phitb_ui/sales/sale-entry', model: [series      : series, accountMode: accountMode, entity: entity,
+        render(view: '/sales/sale-entry', model: [series      : series, accountMode: accountMode, entity: entity,
                                                            users       : users, customerList: customerList,
                                                            salesmanList: salesmanList, salebilllist:salebilllist,
                                                            products    :products])
