@@ -115,7 +115,22 @@
         </div>
 
         <div class="row clearfix">
-            <div class="col-lg-12">
+            <div class="col-lg-6">
+                <div class="card">
+                    <div class="header" style="padding: 1px;">
+                        Previous
+                    </div>
+
+                    <div class="body">
+                        <div class="table-responsive">
+                            <div id="previousTable" style="width:100%;">
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-6">
                 <div class="card">
                     <div class="header" style="padding: 1px;">
                         Stocks
@@ -123,7 +138,9 @@
 
                     <div class="body">
                         <div class="table-responsive">
-                            <div id="stocksTable" style="width:100%;"></div>
+                            <div id="C" style="width:100%;">
+
+                            </div>
                         </div>
                     </div>
                 </div>

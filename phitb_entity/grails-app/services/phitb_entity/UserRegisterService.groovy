@@ -128,6 +128,11 @@ class UserRegisterService
         userRegister.save(flush: true)
         if (!userRegister.hasErrors())
         {
+            AuthRegister authRegister = new AuthRegister()
+            authRegister.user = userRegister
+            authRegister.username = userRegister.userName
+            authRegister.password = new AuthRegisterService().hashPassword(jsonObject.get("password").toString())
+            authRegister.save(flush:true)
             return userRegister
         }
         else
@@ -186,6 +191,12 @@ class UserRegisterService
             userRegister.save(flush: true)
             if (!userRegister.hasErrors())
             {
+                AuthRegister authRegister = new AuthRegister()
+                authRegister.user = userRegister
+                authRegister.username = userRegister.userName
+                authRegister.password = new AuthRegisterService().hashPassword(jsonObject.get("password").toString())
+                authRegister.save(flush:true)
+
                 return userRegister
             }
             else
