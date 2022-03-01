@@ -105,14 +105,14 @@
                             <table class="table table-bordered table-striped table-hover fridgeTable dataTable">
                                 <thead>
                                 <tr>
-                                    <th style="width: 20%">ID</th>
+%{--                                    <th style="width: 20%">ID</th>--}%
                                     <th style="width: 20%">Kit Name</th>
                                     <th style="width: 20%">Kit Number</th>
                                     <th style="width: 20%">Fridge Name</th>
                                     <th style="width: 20%">Expiry Date</th>
                                     <th style="width: 20%">Purchase Date</th>
-                                    <th style="width: 20%">entityRegister Type</th>
-                                    <th style="width: 20%">entityRegister</th>
+                                    <th style="width: 20%">Entity Type</th>
+                                    <th style="width: 20%">Entity</th>
                                     <th style="width: 20%">Action</th>
                                 </tr>
                                 </thead>
@@ -185,7 +185,7 @@
             processing: true,
             serverSide: true,
             language: {
-                searchPlaceholder: "Search Form"
+                searchPlaceholder: "Search CCM"
             },
             ajax: {
                 type: 'GET',
@@ -203,19 +203,19 @@
                             '" data-entityRegister="' + json.data[i].entityId + '"' +
                             '" data-kitNumber="' + json.data[i].kitNumber + '"' +
                             '" data-entitytype="' + json.data[i].entityTypeId + '"' +
-                            '" data-expiryDate="' + moment(purDate).format('DD/MM/YYYY hh:mm A') + '"' +
-                            '" data-purchaseDate="' +  moment(expDate).format('DD/MM/YYYY hh:mm A') +
+                            '" data-expiryDate="' + moment(purDate).format('DD/MM/YYYY') + '"' +
+                            '" data-purchaseDate="' +  moment(expDate).format('DD/MM/YYYY') +
                             '"' +
                             ' class="editbtn btn btn-sm btn-warning  editbtn" data-toggle="modal" data-target="#addccmModal"><i class="material-icons"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">edit</font></font></i></button>'
                         var deletebtn = '<button type="button" data-id="' + json.data[i].id +
                             '" class="btn btn-sm btn-danger deletebtn" data-toggle="modal" data-target=".deleteModal"><i class="material-icons"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">delete</font></font></i></button>'
                         return_data.push({
-                            'id': json.data[i].id,
+                            // 'id': json.data[i].id,
                             'kitName': json.data[i].kitName,
                             'fridgeName': json.data[i].fridge.fridgeName,
                             'kitNumber': json.data[i].kitNumber,
-                            'expiryDate':  moment(expDate).format('DD/MM/YYYY hh:mm A'),
-                            'purchaseDate': moment(purDate).format('DD/MM/YYYY hh:mm A'),
+                            'expiryDate':  moment(expDate).format('DD/MM/YYYY'),
+                            'purchaseDate': moment(purDate).format('DD/MM/YYYY'),
                             'entity': json.entity[i].entityName,
                             'entitytype': json.entityType[i].name,
                             'action': editbtn + ' ' + deletebtn
@@ -225,7 +225,7 @@
                 }
             },
             columns: [
-                {'data': 'id', 'width': '20%'},
+                // {'data': 'id', 'width': '20%'},
                 {'data': 'kitName', 'width': '20%'},
                 {'data': 'kitNumber', 'width': '20%'},
                 {'data': 'fridgeName', 'width': '20%'},
@@ -237,6 +237,22 @@
             ]
         });
     }
+
+    $('.expiryDate').bootstrapMaterialDatePicker({
+        time:false,
+        format: 'DD/MM/YYYY',
+        clearButton: true,
+        shortTime: true,
+        weekStart: 1
+    });
+
+    $('.purchaseDate').bootstrapMaterialDatePicker({
+        time:false,
+        format: 'DD/MM/YYYY',
+        clearButton: true,
+        shortTime: true,
+        weekStart: 1
+    });
 
     $(".ccmForm").submit(function (event) {
 
@@ -290,8 +306,8 @@
         $(".entityRegister").val($(this).attr('data-entity'));
         $("#entityRegister").val($(this).data('entity')).change()
         $(".entityType").val($(this).attr('data-entitytype')).change()
-        $('.purchaseDate').bootstrapMaterialDatePicker('setDate',$(this).attr('data-purchaseDate'));
-        $('.expiryDate').bootstrapMaterialDatePicker('setDate',$(this).attr('data-expiryDate'));
+        $('.purchaseDate').val($(this).attr('data-purchaseDate'));
+        $('.expiryDate').val($(this).attr('data-expiryDate'));
         $(".formTitle").text("Update Ccm");
     });
 

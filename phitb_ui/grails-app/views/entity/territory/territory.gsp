@@ -285,7 +285,8 @@
         $(".territoryName").val($(this).attr('data-territoryName'))
         $(".shortName").val($(this).attr('data-shortName'))
         $(".territoryHq").val($(this).attr('data-territoryHq'));
-        $(".cityIds").val($(this).attr('data-cityIds')).change();
+        var cityIds = $(this).attr('data-cityIds');
+        $(".cityId").val(cityIds.split(",")).change();
         $(".stateId").val($(this).attr('data-stateId')).change();
         $(".countryId").val($(this).attr('data-countryId')).change();
         $(".entity").val($(this).attr('data-entityRegister')).change();

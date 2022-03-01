@@ -105,10 +105,10 @@
                             <table class="table table-bordered table-striped table-hover fridgeTable dataTable">
                                 <thead>
                                 <tr>
-                                    <th style="width: 20%">ID</th>
+%{--                                    <th style="width: 20%">ID</th>--}%
                                     <th style="width: 20%">Fridge Name</th>
-                                    <th style="width: 20%">entityRegister</th>
-                                    <th style="width: 20%">entityRegister Type</th>
+                                    <th style="width: 20%">Entity</th>
+                                    <th style="width: 20%">Entity Type</th>
                                     <th style="width: 20%">Date of purchase</th>
                                     <th style="width: 20%">Machine Part Number</th>
                                     <th style="width: 20%">Floor</th>
@@ -204,17 +204,17 @@
                             '" data-floor="' + json.data[i].floor + '"' +
                             '" data-entitytype="' + json.data[i].entityTypeId + '"' +
                             '" data-machinePartNumber="' + json.data[i].machinePartNumber + '"' +
-                            '" data-dateOfPurchase="' + moment(dateOfPur).format('DD/MM/YYYY hh:mm A') + '"' +
+                            '" data-dateOfPurchase="' + moment(dateOfPur).format('DD/MM/YYYY') + '"' +
                             '" data-status="' + json.data[i].status + '"' +
                             ' class="editbtn btn btn-warning  editbtn" data-toggle="modal" data-target="#addFridgeModal"><i class="material-icons"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">edit</font></font></i></button>'
                         var deletebtn = '<button type="button" data-id="' + json.data[i].id +
                             '" class="btn btn-danger deletebtn" data-toggle="modal" data-target=".deleteModal"><i class="material-icons"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">delete</font></font></i></button>'
                         return_data.push({
-                            'id': json.data[i].id,
+                            // 'id': json.data[i].id,
                             'fridgename': json.data[i].fridgeName,
                             'floor': json.data[i].floor,
                             'machinePartNumber': json.data[i].machinePartNumber,
-                            'dateOfPurchase': moment(dateOfPur).format('DD/MM/YYYY hh:mm A'),
+                            'dateOfPurchase': moment(dateOfPur).format('DD/MM/YYYY'),
                             'entity': json.entity[i].entityName,
                             'status': json.data[i].status,
                             'entitytype': json.entityType[i].name,
@@ -225,7 +225,7 @@
                 }
             },
             columns: [
-                {'data': 'id', 'width': '20%'},
+                // {'data': 'id', 'width': '20%'},
                 {'data': 'fridgename', 'width': '20%'},
                 {'data': 'entitytype', 'width': '20%'},
                 {'data': 'entity', 'width': '20%'},
@@ -281,6 +281,13 @@
         id = null
     });
 
+    $('.dateOfPurchase').bootstrapMaterialDatePicker({
+        time:false,
+        format: 'DD/MM/YYYY',
+        clearButton: true,
+        shortTime: true,
+        weekStart: 1
+    });
     $(document).on("click", ".editbtn", function () {
         id = $(this).data('id');
         $(".fridgeName").val($(this).attr('data-fridgeName'));
@@ -289,7 +296,7 @@
         $(".entityRegister").val($(this).attr('data-entity'));
         $("#entityRegister").val($(this).data('entity')).change()
         $(".entityType").val($(this).attr('data-entitytype')).change()
-        $('.datetimepicker').bootstrapMaterialDatePicker('setDate',$(this).attr('data-dateOfPurchase'));
+        $('.dateOfPurchase').val($(this).attr('data-dateOfPurchase'));
         $(".fridgeTitle").text("Update Fridge");
     });
 

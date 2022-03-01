@@ -2,6 +2,7 @@ package phitb_ui
 
 import grails.gorm.transactions.Transactional
 import grails.web.servlet.mvc.GrailsHttpSession
+import org.glassfish.jersey.jackson.JacksonFeature
 import org.grails.web.json.JSONObject
 import org.grails.web.util.WebUtils
 
@@ -535,7 +536,7 @@ class EntityService {
     //Region Master
     def saveRegionMaster(JSONObject jsonObject)
     {
-        Client client = ClientBuilder.newClient();
+        Client client = ClientBuilder.newClient().register(JacksonFeature.class)
         WebTarget target = client.target(new Links().API_GATEWAY);
         GrailsHttpSession session = WebUtils.retrieveGrailsWebRequest().session
         try
@@ -544,7 +545,7 @@ class EntityService {
             Response apiResponse = target
                     .path(new Links().REGION_REGISTER_SAVE)
                     .request(MediaType.APPLICATION_JSON_TYPE)
-                    .post(Entity.entity(jsonObject.toString(),MediaType.APPLICATION_JSON_TYPE))
+                    .post(Entity.entity(jsonObject,MediaType.APPLICATION_JSON_TYPE))
             println(apiResponse)
             return apiResponse
         }
@@ -583,7 +584,7 @@ class EntityService {
 
     def putRegionMaster(JSONObject jsonObject)
     {
-        Client client = ClientBuilder.newClient();
+        Client client = ClientBuilder.newClient().register(JacksonFeature.class)
         WebTarget target = client.target(new Links().API_GATEWAY);
         GrailsHttpSession session = WebUtils.retrieveGrailsWebRequest().session
         try
@@ -592,7 +593,7 @@ class EntityService {
                     .path(new Links().REGION_REGISTER_UPDATE)
                     .resolveTemplate("id", jsonObject.id)
                     .request(MediaType.APPLICATION_JSON_TYPE)
-                    .put(Entity.entity(jsonObject.toString(),MediaType.APPLICATION_JSON_TYPE))
+                    .put(Entity.entity(jsonObject,MediaType.APPLICATION_JSON_TYPE))
             println(jsonObject)
             return apiResponse
         }
@@ -1024,7 +1025,7 @@ class EntityService {
     //Territory
     def saveTerritory(JSONObject jsonObject)
     {
-        Client client = ClientBuilder.newClient();
+        Client client = ClientBuilder.newClient().register(JacksonFeature.class)
         WebTarget target = client.target(new Links().API_GATEWAY);
         GrailsHttpSession session = WebUtils.retrieveGrailsWebRequest().session
         try
@@ -1033,7 +1034,7 @@ class EntityService {
             Response apiResponse = target
                     .path(new Links().TERRITORY_MASTER_SAVE)
                     .request(MediaType.APPLICATION_JSON_TYPE)
-                    .post(Entity.entity(jsonObject.toString(),MediaType.APPLICATION_JSON_TYPE))
+                    .post(Entity.entity(jsonObject,MediaType.APPLICATION_JSON_TYPE))
             println(apiResponse)
             return apiResponse
         }
@@ -1051,7 +1052,7 @@ class EntityService {
      */
     def showTerritory(JSONObject jsonObject)
     {
-        Client client = ClientBuilder.newClient();
+        Client client = ClientBuilder.newClient()
         WebTarget target = client.target(new Links().API_GATEWAY);
         GrailsHttpSession session = WebUtils.retrieveGrailsWebRequest().session
         try
@@ -1072,7 +1073,7 @@ class EntityService {
 
     def putTerritory(JSONObject jsonObject)
     {
-        Client client = ClientBuilder.newClient();
+        Client client = ClientBuilder.newClient().register(JacksonFeature.class)
         WebTarget target = client.target(new Links().API_GATEWAY);
         GrailsHttpSession session = WebUtils.retrieveGrailsWebRequest().session
         try
@@ -1081,7 +1082,7 @@ class EntityService {
                     .path(new Links().TERRITORY_MASTER_UPDATE)
                     .resolveTemplate("id", jsonObject.id)
                     .request(MediaType.APPLICATION_JSON_TYPE)
-                    .put(Entity.entity(jsonObject.toString(),MediaType.APPLICATION_JSON_TYPE))
+                    .put(Entity.entity(jsonObject,MediaType.APPLICATION_JSON_TYPE))
             println(jsonObject)
             return apiResponse
         }

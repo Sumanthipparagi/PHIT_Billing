@@ -11,7 +11,7 @@ import java.text.SimpleDateFormat
 @Transactional
 class FridgeMasterService {
 
-    SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy hh:mm")
+    SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy")
 
 
     def getAll(String limit, String offset, String query) {

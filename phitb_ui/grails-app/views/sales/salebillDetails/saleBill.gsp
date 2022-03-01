@@ -346,7 +346,7 @@
                 // console.log(rId);
                 // console.log(value);
 
-
+                console.log(json['AccountMode'])
 
                 var url = '';
                 var type = '';
@@ -366,7 +366,7 @@
                         json:json
                     },
                     success: function (data) {
-                        console.log("data loaded");
+                       swal("data loaded");
                     },
                     error: function (data) {
                         console.log("Failed");

@@ -7,7 +7,7 @@ class TerritoryRegister implements LogicalDelete<TerritoryRegister>
     String territoryName
     String shortName
     long territoryHq
-    long cityIds
+    String cityIds
     long stateId
     long countryId
     EntityTypeMaster entityType
