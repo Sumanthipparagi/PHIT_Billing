@@ -6,7 +6,7 @@
     <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
     <meta name="description" content="Responsive Bootstrap 4 and web Application ui kit.">
 
-    <title>:: PharmIt :: Product Register</title>
+    <title>:: PharmIt :: Bank Register</title>
     <link rel="icon" type="image/x-icon" href="${assetPath(src: '/themeassets/images/favicon.ico')}"/>
     <!-- Favicon-->
     <asset:stylesheet rel="stylesheet" src="/themeassets/plugins/bootstrap/css/bootstrap.min.css"/>
@@ -16,9 +16,11 @@
     <asset:stylesheet  rel="stylesheet" src="/themeassets/css/main.css"/>
     <asset:stylesheet rel="stylesheet" href="/themeassets/css/color_skins.css"/>
     <asset:stylesheet rel="stylesheet" href="/themeassets/plugins/sweetalert/sweetalert.css"/>
+    <asset:stylesheet rel="stylesheet" href="/themeassets/plugins/multi-select/css/multi-select.css"/>
     <asset:stylesheet  src="/themeassets/plugins/bootstrap-select/css/bootstrap-select.css" rel="stylesheet" />
     <asset:stylesheet  src="/themeassets/js/pages/forms/basic-form-elements.js" rel="stylesheet" />
     <asset:stylesheet  src="/themeassets/plugins/bootstrap-material-datetimepicker/css/bootstrap-material-datetimepicker.css" rel="stylesheet" />
+
 
     <style>
 
@@ -60,10 +62,10 @@
         <div class="block-header">
             <div class="row clearfix">
                 <div class="col-lg-5 col-md-5 col-sm-12">
-                    <h2>Product Register</h2>
+                    <h2>Bank Register</h2>
                     <ul class="breadcrumb padding-0">
                         <li class="breadcrumb-item"><a href="index.html"><i class="zmdi zmdi-home"></i></a></li>
-                        <li class="breadcrumb-item active">Product Register</li>
+                        <li class="breadcrumb-item active">Bank Register</li>
                     </ul>
                 </div>
                 <div class="col-lg-7 col-md-7 col-sm-12">
@@ -96,21 +98,21 @@
                     %{--                        </ul>--}%
                     %{--                    </div>--}%
                     <div class="header">
-                        <a href="/product/add-product">  <button type="button"
-                                                                             class="btn btn-round btn-primary m-t-15 addbtn" data-toggle="modal"><font style="vertical-align: inherit;"><font
-                                    style="vertical-align: inherit;">Add Product Register</font></font></button></a>
+                        <button type="button" class="btn btn-round btn-primary m-t-15 addbtn" data-toggle="modal"
+                                data-target="#addbankRegisterModal"><font style="vertical-align: inherit;"><font
+                                style="vertical-align: inherit;">Add Bank Register</font></font></button>
                     </div>
                     <div class="body">
                         <div class="table-responsive">
-                            <table
-                                    class="table table-bordered table-striped table-hover productRegisterTable dataTable">
+                            <table class="table table-bordered table-striped table-hover fridgeTable dataTable">
                                 <thead>
                                 <tr>
                                     %{--                                    <th style="width: 20%">ID</th>--}%
-                                    <th style="width: 20%">Product Name</th>
-                                    <th style="width: 20%">Product Code</th>
-                                    <th style="width: 20%">Salesman Commission</th>
-                                    <th style="width: 20%">HSN code</th>
+                                    <th style="width: 20%">Bank Name</th>
+                                    <th style="width: 20%">IFSC Code</th>
+                                    <th style="width: 20%">City</th>
+                                    <th style="width: 20%">Entity</th>
+                                    <th style="width: 20%">Entity Type</th>
                                     <th style="width: 20%">Action</th>
                                 </tr>
                                 </thead>
@@ -136,6 +138,7 @@
 </section>
 
 
+<g:include view="controls/accounts/add-bank-register.gsp"/>
 <g:include view="controls/delete-modal.gsp"/>
 
 <!-- Jquery Core Js -->
@@ -157,25 +160,23 @@
 <asset:javascript src="/themeassets/plugins/momentjs/moment.js"/>
 <asset:javascript src="/themeassets/plugins/bootstrap-material-datetimepicker/js/bootstrap-material-datetimepicker.js"/>
 <asset:javascript src="/themeassets/js/pages/forms/basic-form-elements.js"/>
+<asset:javascript src="/themeassets/plugins/multi-select/js/jquery.multi-select.js" type="text/javascript"/>
 
 <script>
 
-    var productregister;
+    var fridgetable;
     var id = null;
     $(function () {
-        userRegisterTable();
-        // var $demoMaskedInput = $('.demo-masked-input');
-        // $demoMaskedInput.find('.datetime').inputmask('d/m/y h:m:s', { placeholder: '__/__/____ __:__:__:__', alias:
-        //         "datetime", hourFormat: '12' });
+        fridgeTable();
 
     });
 
-    function userRegisterTable() {
-        productregister = $(".productRegisterTable").DataTable({
+    function fridgeTable() {
+        fridgetable = $(".fridgeTable").DataTable({
             "order": [[0, "desc"]],
             sPaginationType: "simple_numbers",
             responsive: {
-                details: true
+                details: false
             },
             destroy: true,
             autoWidth: false,
@@ -185,27 +186,33 @@
             processing: true,
             serverSide: true,
             language: {
-                searchPlaceholder: "Search Product Register"
+                searchPlaceholder: "Search Bank Register"
             },
             ajax: {
                 type: 'GET',
-                url: '/product/datatable',
+                url: '/bank-register/datatable',
                 dataType: 'json',
                 dataSrc: function (json) {
                     var return_data = [];
                     for (var i = 0; i < json.data.length; i++) {
-                        console.log(json);
-                        var editbtn =
-                            '<a href="/product/update-product/' + json.data[i].id
-                            +'"><button type="button" data-id="' + json.data[i].id +'"class="editbtn btn btn-sm btn-warning  editbtn"><i class="material-icons"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">edit</font></font></i></button></a>'
+
+                        var editbtn = '<button type="button" data-id="' + json.data[i].id +
+                            '" data-bankName="' + json.data[i].bankName + '"' +
+                            '" data-cityId="' + json.data[i].cityId + '"' +
+                            '" data-ifscCode="' + json.data[i].ifscCode + '"' +
+                            '" data-entityId="' + json.data[i].entityId + '"' +
+                            '" data-entityType="' + json.data[i].entityTypeId + '"' +
+                            '"' +
+                            ' class="editbtn btn btn-sm btn-warning  editbtn" data-toggle="modal" data-target="#addbankRegisterModal"><i class="material-icons"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">edit</font></font></i></button>'
                         var deletebtn = '<button type="button" data-id="' + json.data[i].id +
                             '" class="btn btn-sm btn-danger deletebtn" data-toggle="modal" data-target=".deleteModal"><i class="material-icons"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">delete</font></font></i></button>'
                         return_data.push({
-                            'id': json.data[i].id,
-                            'productName': json.data[i].productName,
-                            'productCode': json.data[i].productCode,
-                            'salesmanCommission': json.data[i].salesmanCommission,
-                            'hsnCode': json.data[i].hsnCode,
+                            // 'id': json.data[i].id,
+                            'bankName': json.data[i].bankName,
+                            'cityId': json.data[i].cityId,
+                            'ifscCode': json.data[i].ifscCode,
+                            'entity': json.entity[i].entityName,
+                            'entitytype': json.entityType[i].name,
                             'action': editbtn + ' ' + deletebtn
                         });
                     }
@@ -214,16 +221,19 @@
             },
             columns: [
                 // {'data': 'id', 'width': '20%'},
-                {'data': 'productName', 'width': '20%'},
-                {'data': 'productCode', 'width': '20%'},
-                {'data': 'salesmanCommission', 'width': '20%'},
-                {'data': 'hsnCode', 'width': '20%'},
+                {'data': 'bankName', 'width': '20%'},
+                {'data': 'ifscCode', 'width': '20%'},
+                {'data': 'cityId', 'width': '20%'},
+                {'data': 'entity', 'width': '20%'},
+                {'data': 'entitytype', 'width': '20%'},
                 {'data': 'action', 'width': '20%'}
             ]
         });
     }
 
-    $(".entityRegister").submit(function (event) {
+
+
+    $(".bankForm").submit(function (event) {
 
         //disable the default form submission
         event.preventDefault();
@@ -235,10 +245,10 @@
         var url = '';
         var type = '';
         if (id) {
-            url = '/user-register/update/' + id;
+            url = '/bank-register/update/' + id;
             type = 'POST'
         } else {
-            url = '/user-register';
+            url = '/bank-register';
             type = 'POST'
         }
 
@@ -250,9 +260,9 @@
             contentType: false,
             processData: false,
             success: function () {
-                swal("Success!", "User Register Submitted Successfully", "success");
-                rackTable();
-                $('#addEntityRegisterModal').modal('hide');
+                swal("Success!", "Bank Register Submitted Successfully", "success");
+                fridgeTable();
+                $('#addbankRegisterModal').modal('hide');
             },
             error: function () {
                 swal("Error!", "Something went wrong", "error");
@@ -262,41 +272,43 @@
     });
 
     $(document).on("click", ".addbtn", function () {
-        $(".entityRegisterTitle").text("Add User Register")
-        $(".entityRegisterForm")[0].reset();
+        $(".bankTitle").text("Add Bank Register")
+        $(".bankForm")[0].reset();
         id = null
+    });
+
+    $('#entityId').change(function(){
+        var type = $('option:selected', this).attr('data-type');
+        $(".entityTypeId").val(type);
     });
 
     $(document).on("click", ".editbtn", function () {
         id = $(this).data('id');
-        $(".rackName").val($(this).attr('data-rackName'));
-        $(".floorNumber").val($(this).attr('data-floorNumber'));
-        $(".generalInfo").val($(this).attr('data-generalInfo'));
-        $(".rackCodeName").val($(this).attr('data-rackCodeName'));
-        $(".companies").val($(this).attr('data-companies'));
-        $(".ccmEnabled").val($(this).attr('data-cccEnabled'));
-        $(".entityRegister").val($(this).attr('data-entity'));
-        $("#entityRegister").val($(this).attr('data-entity')).change()
-        $(".entityType").val($(this).attr('data-entitytype')).change()
-        $(".rackTitle").text("Update User");
+        $(".bankName").val($(this).attr('data-bankName')).change();
+        $(".cityId").val($(this).attr('data-cityId')).change();
+        $(".ifscCode").val($(this).attr('data-ifscCode'));
+        $(".entityId").val($(this).attr('data-entityId')).change();
+        $(".bankTitle").text("Update Bank Register");
     });
+
+
 
 
     $(document).on("click", ".deletebtn", function () {
         id = $(this).data('id');
-        $("#myModalLabel").text("Delete Product Register?");
+        $("#myModalLabel").text("Delete Bank Register ?");
 
     });
 
     function deleteData() {
         $.ajax({
             type: 'POST',
-            url: '/product/delete/' + id,
+            url: '/bank-register/delete/' + id,
             dataType: 'json',
             success: function () {
                 $('.deleteModal').modal('hide');
-                userRegisterTable();
-                swal("Success!", "Product Register Deleted Successfully", "success");
+                fridgeTable();
+                swal("Success!", "Bank Register Deleted Successfully", "success");
             }, error: function () {
                 swal("Error!", "Something went wrong", "error");
             }

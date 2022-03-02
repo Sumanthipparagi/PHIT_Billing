@@ -85,7 +85,6 @@ public class Links
 
     public static String ENTITY_TYPE_MASTER_SHOW = "api/v1.0/entity/entitytypemaster";
     public static String DEPARTMENT_MASTER_SHOW = "api/v1.0/entity/departmentmaster";
-    public static String BANK_REGISTER_SHOW = "api/v1.0/accounts/bankregister";
     public static String ACCOUNT_REGISTER_SHOW = "api/v1.0/entity/accountregister";
     public static String DIVISION_SHOW = "api/v1.0/product/division";
     public static String GENDER_SHOW = "api/v1.0/system/gender";
@@ -292,6 +291,15 @@ public class Links
     //Inventory
     public static String GET_STOCKS_OF_PRODUCT = "api/v1.0/inventory/stockbookbyproduct";
 
+
+    /*<--------------------------------------------Bank Register ------------------------------------------------->*/
+
+    //Bank Register
+    public static String BANK_REGISTER_SHOW = "api/v1.0/accounts/bankregister";
+    public static String BANK_REGISTER_SAVE = "api/v1.0/accounts/bankregister";
+    public static String BANK_REGISTER_DATATABLE = "api/v1.0/accounts/bankregister/datatable";
+    public static String BANK_REGISTER_UPDATE = "api/v1.0/accounts/bankregister/{id}";
+    public static String BANK_REGISTER_DELETE = "api/v1.0/accounts/bankregister/{id}";
 
 
 }

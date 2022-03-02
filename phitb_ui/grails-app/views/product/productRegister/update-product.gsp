@@ -78,472 +78,463 @@
                         <form action="/product/update/${productregsiter.id}" id="form_validation" method="POST"
                               role="form"
                               class="entityRegisterForm" enctype="multipart/form-data">
-                            <div class="row clearfix">
-                                <div class="col-lg-6 form-group  form-float">
-                                    <label for="productCode">
-                                        Product Code
-                                    </label>
-                                    <input type="text" id="productCode" class="form-control productCode" name="productCode"
-                                           placeholder="Product Code" value="${productregsiter.productCode}"
-                                           required/>
+
+
+                            <div class="row">
+                                <div class="col-md-6" style="max-width: 49%;border: 1px solid black;  border-radius: 10px;padding: 10px;
+                                ">
+                                    <div class="row">
+                                        <div class="col-md-6 form-group  form-float">
+                                            <label for="productCode">
+                                                Product Code
+                                            </label>
+                                            <input type="text" id="productCode" class="form-control productCode"
+                                                   name="productCode"
+                                                   placeholder="Product Code"  value="${productregsiter.productCode}"
+                                                   required/>
+                                        </div>
+                                        <div class="col-md-6 form-group  form-float">
+                                            <label for="productName">
+                                                Product Name
+                                            </label>
+                                            <input type="text" id="productName" class="form-control productName"
+                                                   name="productName"
+                                                   placeholder="Product Name"  value="${productregsiter.productName}"
+                                                   required/>
+                                        </div>
+                                        <div class="col-md-6 form-group  form-float">
+                                            <label for="manufacturerId">
+                                                Manufacturer
+                                            </label>
+
+                                            <select class="form-control show-tick manufacturerId" name="manufacturerId" id="manufacturerId">
+                                                <g:each var="c" in="${manufacturerList}">
+                                                    <option value="${c.id}"  <g:if test="${c.id == productregsiter.manufacturerId}">selected</g:if>>${c.entityName}</option>
+                                                </g:each>
+                                            </select>
+                                        </div>
+                                        <div class="col-md-6 form-group  form-float">
+                                            <label for="mktCompanyId">
+                                                Makerting Company
+                                            </label>
+                                            <select class="form-control show-tick mktCompanyId" name="mktCompanyId" id="mktCompanyId">
+                                                <g:each var="c" in="${companyList}">
+                                                    <option value="${c.id}" <g:if test="${c.id == productregsiter.mktCompanyId}">selected</g:if>>${c.entityName}</option>
+                                                </g:each>
+                                            </select>
+                                        </div>
+                                        <div class="col-md-6 form-group  form-float">
+                                            <label for="rackId">
+                                                Rack
+                                            </label>
+                                            <select class="form-control show-tick rackId" name="rackId" id="rackId">
+                                                <g:each var="r" in="${racks}">
+                                                    <option value="${r.id}" <g:if test="${r.id == productregsiter.rackId}">selected</g:if> >${r.rackName}</option>
+                                                </g:each>
+                                            </select>
+                                        </div>
+                                        <div class="col-md-6 form-group  form-float">
+                                            <label for="division">
+                                                Division
+                                            </label>
+                                            <select class="form-control show-tick division" name="division" id="division">
+                                                <g:each var="d" in="${divisions}">
+                                                    <option value="${d.id}" <g:if test="${d.id == productregsiter.division.id}">selected</g:if> >${d.divisionName}</option>
+                                                </g:each>
+                                            </select>
+                                        </div>
+                                    </div>
                                 </div>
+                                <div class="ml-1"></div>
+                                <div class="col-md-6" style="max-width: 49%;border: 1px solid black;  border-radius: 10px;    padding: 10px;
+                                ">
+                                    <div class="row">
+                                        <div class="col-md-6 form-group  form-float">
+                                            <label for="composition">
+                                                Composition
+                                            </label>
 
-                                <div class="col-lg-6 form-group  form-float">
-                                    <label for="productName">
-                                        Product Name
-                                    </label>
-                                    <input type="text" id="productName" class="form-control productName" name="productName"
-                                           placeholder="Product Name" value="${productregsiter.productName}"
-                                           required/>
-                                </div>
+                                            <select class="form-control show-tick composition" name="composition"
+                                                    id="composition">
+                                                <g:each var="c" in="${compositions}">
+                                                    <option value="${c.id}"  <g:if test="${c.id == productregsiter.composition.id}">selected</g:if>  >${c.compositionName}</option>
+                                                </g:each>
+                                            </select>
+                                        </div>
+                                        <div class="col-lg-6 form-group  form-float">
+                                            <label for="costRange">
+                                                Cost Range
+                                            </label>
+                                            <select class="form-control show-tick costRange" name="costRange" id="costRange">
+                                                <g:each var="c" in="${productcost}">
+                                                    <option value="${c.id}"  <g:if test="${c.id ==
+                                                            productregsiter.costRange.id}">selected</g:if>>${c.priceType}</option>
+                                                </g:each>
+                                            </select>
+                                        </div>
+                                        <div class="col-lg-6 form-group  form-float">
+                                            <label for="productType">
+                                                Product Type
+                                            </label>
+                                            <select class="form-control show-tick productType" name="productType"
+                                                    id="productType">
+                                                <g:each var="c" in="${producttype}">
+                                                    <option value="${c.id}" <g:if test="${c.id == productregsiter.productType.id}">selected</g:if>>${c.productType}</option>
+                                                </g:each>
+                                            </select>
+                                        </div>
+                                        <div class="col-lg-6 form-group  form-float">
+                                            <label for="unit">
+                                                Unit
+                                            </label>
+                                            <select class="form-control show-tick unit" name="unit" id="unit">
+                                                <g:each var="u" in="${unittype}">
+                                                    <option value="${u.id}" <g:if test="${u.id == productregsiter.unit.id}">selected</g:if> >${u.unitName}</option>
+                                                </g:each>
+                                            </select>
 
-                                <div class="col-lg-6 form-group  form-float">
-                                    <label for="manufacturerId">
-                                        Manufacturer Id
-                                    </label>
-                                    <input type="number" id="manufacturerId" class="form-control manufacturerId"
-                                           name="manufacturerId"
-                                           placeholder="Manufacturer Id" value="${productregsiter.manufacturerId}"
-                                           required/>
-                                </div>
-
-                                <div class="col-lg-6 form-group  form-float">
-                                    <label for="mktCompanyId">
-                                        Makerting Company Id
-                                    </label>
-                                    <input type="number" id="mktCompanyId" class="form-control mktCompanyId" name="mktCompanyId"
-                                           placeholder="Manufacturer Id" value="${productregsiter.mktCompanyId}"
-                                           required/>
-                                </div>
-
-                                <div class="col-lg-6 form-group  form-float">
-                                    <label for="hsnCode">
-                                        HSN Code
-                                    </label>
-                                    <input type="text" id="hsnCode" class="form-control hsnCode" name="hsnCode"
-                                           placeholder="HSN Code" value="${productregsiter.hsnCode}"
-                                           required/>
-                                </div>
-
-                                <div class="col-lg-6 form-group  form-float">
-                                    <label for="rackId">
-                                        Rack
-                                    </label>
-                                    <select class="form-control show-tick rackId" name="rackId" id="rackId">
-                                        <g:each var="r" in="${racks}">
-                                            <option value="${r.id}" <g:if test="${r.id == productregsiter.rackId}">selected</g:if>
-                                            >${r.rackName}</option>
-                                        </g:each>
-                                    </select>
-                                </div>
-
-                                <div class="col-lg-6 form-group  form-float">
-                                    <label for="division">
-                                        Division
-                                    </label>
-                                    <select class="form-control show-tick division" name="division" id="division">
-                                        <g:each var="d" in="${divisions}">
-                                            <option value="${d.id}"
-                                                    <g:if
-                                                            test="${d.id == productregsiter.division.id}">selected</g:if>>${d.divisionName}</option>
-                                        </g:each>
-                                    </select>
-                                </div>
-
-                                <div class="col-lg-6 form-group  form-float">
-                                    <label for="composition">
-                                        Composition
-                                    </label>
-
-                                    <select class="form-control show-tick composition" name="composition" id="composition">
-                                        <g:each var="c" in="${compositions}">
-                                            <option value="${c.id}"
-                                                    <g:if test="${c.id == productregsiter.composition.id}">selected</g:if>  >${c.compositionName}</option>
-                                        </g:each>
-                                    </select>
-                                </div>
-
-
-                                <div class="col-lg-6 form-group  form-float">
-                                    <label for="costRange">
-                                        Cost Range
-                                    </label>
-                                    <select class="form-control show-tick costRange" name="costRange" id="costRange">
-                                        <g:each var="c" in="${productcost}">
-                                            <option value="${c.id}"  <g:if test="${c.id ==
-                                                    productregsiter.costRange.id}">selected</g:if>>${c.priceType}</option>
-                                        </g:each>
-                                    </select>
-                                </div>
-
-                                <div class="col-lg-6 form-group  form-float">
-                                    <label for="productType">
-                                        Product Type
-                                    </label>
-                                    <select class="form-control show-tick productType" name="productType" id="productType">
-                                        <g:each var="c" in="${producttype}">
-                                            <option value="${c.id}"   <g:if test="${c.id == productregsiter.productType.id}">selected</g:if>>${c.productType}</option>
-                                        </g:each>
-                                    </select>
-                                </div>
-
-
-                                <div class="col-lg-6 form-group  form-float">
-                                    <label for="unit">
-                                        Unit
-                                    </label>
-                                    <select class="form-control show-tick unit" name="unit" id="unit">
-                                        <g:each var="u" in="${unittype}">
-                                            <option value="${u.id}" <g:if test="${u.id == productregsiter.unit.id}">selected</g:if> >${u.unitName}</option>
-                                        </g:each>
-                                    </select>
-
-                                </div>
-
-
-                                <div class="col-lg-6 form-group  form-float">
-                                    <label for="unitPacking">
-                                        Unit Packing
-                                    </label>
-                                    <input type="text" id="unitPacking" class="form-control unitPacking"
-                                           name="unitPacking"
-                                           placeholder="Unit Packing" value="${productregsiter.unitPacking}"
-                                           required/>
-                                </div>
-
-
-                                <div class="col-lg-6 form-group  form-float">
-                                    <label for="productMoo">
-                                        Product Moo
-                                    </label>
-                                    <input type="number" id="productMoo" class="form-control productMoo" name="productMoo"
-                                           placeholder="Product Moo" value="${productregsiter.productMoo}"
-                                           required/>
-                                </div>
-
-
-                                <div class="col-lg-6 form-group  form-float">
-                                    <label for="perLotQuantity">
-                                        Per Lot quantity
-                                    </label>
-                                    <input type="number" id="perLotQuantity" class="form-control perLotQuantity" name="perLotQuantity"
-                                           placeholder="Per Lot quantity" value="${productregsiter.perLotQuantity}"
-                                           required/>
-                                </div>
-
-
-                                <div class="col-lg-6 form-group  form-float">
-                                    <label for="purchaseRate">
-                                        Purchase Rate
-                                    </label>
-                                    <input type="number" id="purchaseRate" class="form-control purchaseRate" name="purchaseRate"
-                                           placeholder="Purchase Rate" value="${productregsiter.purchaseRate}"
-                                           required/>
-                                </div>
-
-
-                                <div class="col-lg-6 form-group  form-float">
-                                    <label for="purchaseTradeDiscount">
-                                        Purchase Trade Discount
-                                    </label>
-                                    <input type="number" id="purchaseTradeDiscount" class="form-control purchaseTradeDiscount" name="purchaseTradeDiscount"
-                                           placeholder="Purchase Trade Discount" value="${productregsiter.purchaseTradeDiscount}"
-                                           required/>
-                                </div>
-
-
-                                <div class="col-lg-6 form-group  form-float">
-                                    <label for="purchaseMarginPercent">
-                                        Purchase Margin percent
-                                    </label>
-                                    <input type="number" id="purchaseMarginPercent"
-                                           class="form-control purchaseMarginPercent" name="purchaseMarginPercent"
-                                           placeholder="Purchase Margin Percent" value="${productregsiter.purchaseMarginPercent}"
-                                           required/>
-                                </div>
-
-                                <div class="col-lg-6 form-group  form-float">
-                                    <label for="saleRate">
-                                        Sale Rate
-                                    </label>
-                                    <input type="number" id="saleRate"
-                                           class="form-control saleRate" name="saleRate"
-                                           placeholder="Sale Rate" value="${productregsiter.saleRate}"
-                                           required/>
-                                </div>
-
-                                <div class="col-lg-6 form-group  form-float">
-                                    <label for="saleTradeDiscount">
-                                        Sale Trade Discount
-                                    </label>
-                                    <input type="number" id="saleTradeDiscount"
-                                           class="form-control saleTradeDiscount" name="saleTradeDiscount"
-                                           placeholder="Sale Trade Discount" value="${productregsiter.saleTradeDiscount}"
-                                           required/>
-                                </div>
-
-                                <div class="col-lg-6 form-group  form-float">
-                                    <label for="saleMarginPercent">
-                                        Sale Margin Percent
-                                    </label>
-                                    <input type="number" id="saleMarginPercent"
-                                           class="form-control saleMarginPercent" name="saleMarginPercent"
-                                           placeholder="Sale Margin Percent" value="${productregsiter.saleMarginPercent}"
-                                           required/>
-                                </div>
-
-
-                                <div class="col-lg-6 form-group  form-float">
-                                    <label for="salesmenPercent">
-                                        Sale Margin Percent
-                                    </label>
-                                    <input type="number" id="salesmenPercent"
-                                           class="form-control salesmenPercent" name="salesmenPercent"
-                                           placeholder="Sale Margin Percent" value="${productregsiter.salesmenPercent}"
-                                           required/>
+                                        </div>
+                                        <div class="col-lg-6 form-group  form-float">
+                                            <label for="unitPacking">
+                                                Unit Packing
+                                            </label>
+                                            <input type="text" id="unitPacking" class="form-control unitPacking"
+                                                   name="unitPacking" value="${productregsiter.unitPacking}"
+                                                   placeholder="Unit Packing"
+                                                   required/>
+                                        </div>
+                                        <div class="col-lg-6 form-group  form-float">
+                                            <label for="productMoo">
+                                                Product Moo
+                                            </label>
+                                            <input type="number" id="productMoo" class="form-control productMoo"
+                                                   name="productMoo" value="${productregsiter.productMoo}"
+                                                   placeholder="Product Moo"
+                                                   required/>
+                                        </div>
+                                    </div>
                                 </div>
 
 
 
-                                <div class="col-lg-6 form-group  form-float">
-                                    <label for="vipPRate">
-                                        vipPRate
-                                    </label>
-                                    <input type="number" id="vipPRate"
-                                           class="form-control vipPRate" name="vipPRate"
-                                           placeholder="vipPRate" value="${productregsiter.vipPRate}"
-                                           required/>
-                                </div>
-
-                                <div class="col-lg-6 form-group  form-float">
-                                    <label for="vipSRate">
-                                        vipSRate
-                                    </label>
-                                    <input type="number" id="vipSRate"
-                                           class="form-control vipPRate" name="vipSRate"
-                                           placeholder="vipSRate"  value="${productregsiter.vipSRate}"
-                                           required/>
-                                </div>
-
-                                <div class="col-lg-6 form-group  form-float">
-                                    <label for="mrp">
-                                        MRP
-                                    </label>
-                                    <input type="number" id="mrp"
-                                           class="form-control mrp" name="mrp"
-                                           placeholder="MRP"  value="${productregsiter.mrp}"
-                                           required/>
-                                </div>
-
-
-                                <div class="col-lg-6 form-group  form-float">
-                                    <label for="ptr">
-                                        ptr
-                                    </label>
-                                    <input type="number" id="ptr"
-                                           class="form-control ptr" name="ptr"
-                                           placeholder="ptr" value="${productregsiter.ptr}"
-                                           required/>
-                                </div>
-
-                                <div class="col-lg-6 form-group  form-float">
-                                    <label for="restrictedRate">
-                                        Restricted Rate
-                                    </label>
-                                    <input type="number" id="restrictedRate"
-                                           class="form-control restrictedRate" name="restrictedRate"
-                                           placeholder="Restricted Rate" value="${productregsiter.restrictedRate}"
-                                           required/>
-                                </div>
-
-
-                                <div class="col-lg-6 form-group  form-float">
-                                    <label for="nriRate">
-                                        NRI Rate
-                                    </label>
-                                    <input type="number" id="nriRate"
-                                           class="form-control ptr" name="nriRate"
-                                           placeholder="NRI Rate" value="${productregsiter.nriRate}"
-                                           required/>
-                                </div>
-
-
-                                <div class="col-lg-6 form-group  form-float">
-                                    <label for="salesmanCommission">
-                                        Salesman Commission
-                                    </label>
-                                    <input type="number" id="salesmanCommission"
-                                           class="form-control salesmanCommission" name="salesmanCommission"
-                                           placeholder="Salesman Commission" value="${productregsiter.salesmanCommission}"
-                                           required/>
-                                </div>
-
-                                <div class="col-lg-6 form-group  form-float">
-                                    <label for="grossProfitPercentage">
-                                        Gross Profit Percentage
-                                    </label>
-                                    <input type="number" id="grossProfitPercentage"
-                                           class="form-control grossProfitPercentage" name="grossProfitPercentage"
-                                           placeholder="Gross Profit Percentage" value="${productregsiter.grossProfitPercentage}"
-                                           required/>
-                                </div>
-
-
-                                <div class="col-lg-6 form-group  form-float">
-                                    <label for="taxId">
-                                        Tax
-                                    </label>
-                                    <select class="form-control show-tick taxId" name="taxId" id="taxId">
-                                        <g:each var="t" in="${tax}">
-                                            <option value="${t.id}"
-                                                    <g:if test="${t.id == productregsiter.taxId}">selected</g:if> >${t.taxName}</option>
-                                        </g:each>
-                                    </select>
-                                </div>
-
-                                <div class="col-lg-6 form-group  form-float">
-                                    <label for="thresholdLevel">
-                                        Threshold Level
-                                    </label>
-                                    <input type="text" id="thresholdLevel"
-                                           class="form-control thresholdLevel" name="thresholdLevel"
-                                           placeholder="Threshold Level" value="${productregsiter.thresholdLevel}"
-                                           required/>
-                                </div>
-
-                                <div class="col-lg-6 form-group  form-float">
-                                    <label for="orderQuantity">
-                                        Order Quantity
-                                    </label>
-                                    <input type="number" id="orderQuantity"
-                                           class="form-control orderQuantity" name="orderQuantity"
-                                           placeholder="Order Quantity" value="${productregsiter.orderQuantity}"
-                                           required/>
-                                </div>
-
-
-                                <div class="col-lg-6 form-group  form-float">
-                                    <label for="group">
-                                        Product Group
-                                    </label>
-                                    <select class="form-control show-tick group" name="group" id="group">
-                                        <g:each var="c" in="${productGroups}">
-                                            <option value="${c.id}" <g:if test="${c.id == productregsiter.group.id}">selected</g:if> >${c.groupName}</option>
-                                        </g:each>
-                                    </select>
-                                </div>
-
-                                <div class="col-lg-6 form-group  form-float">
-                                    <label for="schedule">
-                                        Product Schedule
-                                    </label>
-                                    <select class="form-control show-tick schedule" name="schedule" id="schedule">
-                                        <g:each var="c" in="${productSchedules}">
-                                            <option value="${c.id}" <g:if test="${c.id == productregsiter.schedule.id}">selected</g:if> >${c.scheduleCode}</option>
-                                        </g:each>
-                                    </select>
-                                </div>
-
-
-                                <div class="col-lg-6 form-group  form-float">
-                                    <label for="category1">
-                                        Product Category
-                                    </label>
-                                    <select class="form-control show-tick category1" name="category" id="category1">
-                                        <g:each var="c" in="${productCategories}">
-                                            <option value="${c.id}" <g:if test="${c.id == productregsiter.category.id}">selected</g:if> >${c.categoryName}</option>
-                                        </g:each>
-                                    </select>
-                                </div>
-
-                                <div class="col-lg-6 form-group  form-float">
-                                    <label for="sendMail">
-                                        Send Mail
-                                    </label>
-                                    <input type="text" id="sendMail"
-                                           class="form-control sendMail" name="sendMail"
-                                           placeholder="Send Mail" value="${productregsiter.sendMail}"
-                                           required/>
-                                </div>
-
-                                <div class="col-lg-6 form-group  form-float">
-                                    <label for="discountAllowed">
-                                        Discount Allowed
-                                    </label>
-                                    <input type="text" id="discountAllowed"
-                                           class="form-control discountAllowed" name="discountAllowed"
-                                           placeholder="Discount Allowed" value="${productregsiter.discountAllowed}"
-                                           required/>
+                                <div class="col-md-6 mt-2" style="max-width: 49%;border: 1px solid black;
+                                border-radius: 10px;padding: 10px;
+                                ">
+                                    <div class="row">
+                                        <div class="col-lg-6 form-group  form-float">
+                                            <label for="perLotQuantity">
+                                                Per Lot quantity
+                                            </label>
+                                            <input type="number" id="perLotQuantity" class="form-control perLotQuantity"
+                                                   name="perLotQuantity" value="${productregsiter.perLotQuantity}"
+                                                   placeholder="Product Moo"
+                                                   required/>
+                                        </div>
+                                        <div class="col-lg-6 form-group  form-float">
+                                            <label for="purchaseRate">
+                                                Purchase Rate
+                                            </label>
+                                            <input type="number" id="purchaseRate" class="form-control purchaseRate"
+                                                   name="purchaseRate" value="${productregsiter.purchaseRate}"
+                                                   placeholder="Purchase Rate"
+                                                   required/>
+                                        </div>
+                                        <div class="col-lg-6 form-group  form-float">
+                                            <label for="purchaseTradeDiscount">
+                                                Purchase Trade Discount
+                                            </label>
+                                            <input type="number" id="purchaseTradeDiscount"
+                                                   class="form-control purchaseTradeDiscount" name="purchaseTradeDiscount"
+                                                   value="${productregsiter.purchaseTradeDiscount}"
+                                                   placeholder="Purchase Trade Discount"
+                                                   required/>
+                                        </div>
+                                        <div class="col-lg-6 form-group  form-float">
+                                            <label for="purchaseMarginPercent">
+                                                Purchase Margin percent
+                                            </label>
+                                            <input type="number" id="purchaseMarginPercent"
+                                                   class="form-control purchaseMarginPercent" name="purchaseMarginPercent"
+                                                   placeholder="Purchase Margin Percent" value="${productregsiter.purchaseMarginPercent}"
+                                                   required/>
+                                        </div>
+                                        <div class="col-lg-6 form-group  form-float">
+                                            <label for="saleRate">
+                                                Sale Rate
+                                            </label>
+                                            <input type="number" id="saleRate"
+                                                   class="form-control saleRate" name="saleRate"
+                                                   placeholder="Sale Rate" value="${productregsiter.saleRate}"
+                                                   required/>
+                                        </div>
+                                        <div class="col-lg-6 form-group  form-float">
+                                            <label for="saleTradeDiscount">
+                                                Sale Trade Discount
+                                            </label>
+                                            <input type="number" id="saleTradeDiscount"
+                                                   class="form-control saleTradeDiscount" name="saleTradeDiscount"
+                                                   placeholder="Sale Trade Discount" value="${productregsiter.saleTradeDiscount}"
+                                                   required/>
+                                        </div>
+                                        <div class="col-lg-6 form-group  form-float">
+                                            <label for="salesmenPercent">
+                                                Sale Margin Percent
+                                            </label>
+                                            <input type="number" id="salesmenPercent"
+                                                   class="form-control saleTradeDiscount" name="salesmenPercent"
+                                                   placeholder="Sale Margin Percent" value="${productregsiter.saleMarginPercent}"
+                                                   required/>
+                                        </div>
+                                        <div class="col-lg-6 form-group  form-float">
+                                            <label for="vipPRate">
+                                                vipPRate
+                                            </label>
+                                            <input type="number" id="vipPRate"
+                                                   class="form-control vipPRate" name="vipPRate"
+                                                   placeholder="vipPRate" value="${productregsiter.vipPRate}"
+                                                   required/>
+                                        </div>
+                                        <div class="col-lg-6 form-group  form-float">
+                                            <label for="vipSRate">
+                                                vipSRate
+                                            </label>
+                                            <input type="number" id="vipSRate"
+                                                   class="form-control vipPRate" name="vipSRate"
+                                                   placeholder="vipSRate" value="${productregsiter.vipSRate}"
+                                                   required/>
+                                        </div>
+                                        <div class="col-lg-6 form-group  form-float">
+                                            <label for="mrp">
+                                                MRP
+                                            </label>
+                                            <input type="number" id="mrp"
+                                                   class="form-control mrp" name="mrp"
+                                                   placeholder="MRP" value="${productregsiter.mrp}"
+                                                   required/>
+                                        </div>
+                                        <div class="col-lg-6 form-group  form-float">
+                                            <label for="ptr">
+                                                PTR
+                                            </label>
+                                            <input type="number" id="ptr"
+                                                   class="form-control ptr" name="ptr"
+                                                   placeholder="PTR" value="${productregsiter.ptr}"
+                                                   required/>
+                                        </div>
+                                        <div class="col-lg-6 form-group  form-float">
+                                            <label for="restrictedRate">
+                                                Restricted Rate
+                                            </label>
+                                            <input type="number" id="restrictedRate"
+                                                   class="form-control ptr" name="restrictedRate"
+                                                   placeholder="Restricted Rate" value="${productregsiter.restrictedRate}"
+                                                   required/>
+                                        </div>
+                                    </div>
                                 </div>
 
 
 
-                                <div class="col-lg-6 form-group  form-float">
-                                    <label for="ccmProduct">
-                                        ccm Product
-                                    </label>
-                                    <input type="text" id="ccmProduct"
-                                           class="form-control ccmProduct" name="ccmProduct"
-                                           placeholder="ccm Product" value="${productregsiter.ccmProduct}"
-                                           required/>
+                                <div class="ml-1"></div>
+
+                                <div class="col-md-6 mt-2" style="max-width: 49%;border: 1px solid black;
+                                border-radius:
+                                10px;padding: 10px;
+                                ">
+                                    <div class="row">
+                                        <div class="col-lg-6 form-group  form-float">
+                                            <label for="nriRate">
+                                                NRI Rate
+                                            </label>
+                                            <input type="number" id="nriRate"
+                                                   class="form-control ptr" name="nriRate"
+                                                   placeholder="NRI Rate" value="${productregsiter.nriRate}"
+                                                   required/>
+                                        </div>
+                                        <div class="col-lg-6 form-group  form-float">
+                                            <label for="salesmanCommission">
+                                                Salesman Commission
+                                            </label>
+                                            <input type="number" id="salesmanCommission"
+                                                   class="form-control salesmanCommission" name="salesmanCommission"
+                                                   placeholder="Salesman Commission" value="${productregsiter.salesmanCommission}"
+                                                   required/>
+                                        </div>
+                                        <div class="col-lg-6 form-group  form-float">
+                                            <label for="grossProfitPercentage">
+                                                Gross Profit Percentage
+                                            </label>
+                                            <input type="number" id="grossProfitPercentage"
+                                                   class="form-control grossProfitPercentage" name="grossProfitPercentage"
+                                                   placeholder="Gross Profit Percentage" value="${productregsiter.grossProfitPercentage}"
+                                                   required/>
+                                        </div>
+                                        <div class="col-lg-6 form-group  form-float">
+                                            <label for="taxId">
+                                                Tax
+                                            </label>
+                                            <select class="form-control show-tick taxId" name="taxId" id="taxId">
+                                                <g:each var="t" in="${tax}">
+                                                    <option value="${t.id}"  <g:if test="${t.id == productregsiter.taxId}">selected</g:if>  >${t.taxName}</option>
+                                                </g:each>
+                                            </select>
+                                        </div>
+                                        <div class="col-lg-6 form-group  form-float">
+                                            <label for="thresholdLevel">
+                                                Threshold Level
+                                            </label>
+                                            <input type="text" id="thresholdLevel"
+                                                   class="form-control thresholdLevel" name="thresholdLevel"
+                                                   placeholder="Threshold Level" value="${productregsiter.thresholdLevel}"
+                                                   required/>
+                                        </div>
+                                        <div class="col-lg-6 form-group  form-float">
+                                            <label for="orderQuantity">
+                                                Order Quantity
+                                            </label>
+                                            <input type="number" id="orderQuantity"
+                                                   class="form-control orderQuantity" name="orderQuantity"
+                                                   placeholder="Order Quantity" value="${productregsiter.orderQuantity}"
+                                                   required/>
+                                        </div>
+                                        <div class="col-lg-6 form-group  form-float">
+                                            <label for="group">
+                                                Product Group
+                                            </label>
+                                            <select class="form-control show-tick group" name="group" id="group">
+                                                <g:each var="c" in="${productGroups}">
+                                                    <option value="${c.id}" <g:if test="${c.id == productregsiter.group.id}">selected</g:if>  >${c.groupName}</option>
+                                                </g:each>
+                                            </select>
+                                        </div>
+                                        <div class="col-lg-6 form-group  form-float">
+                                            <label for="schedule">
+                                                Product Schedule
+                                            </label>
+                                            <select class="form-control show-tick schedule" name="schedule" id="schedule">
+                                                <g:each var="c" in="${productSchedules}">
+                                                    <option value="${c.id}" <g:if test="${c.id == productregsiter.schedule.id}">selected</g:if> >${c.scheduleCode}</option>
+                                                </g:each>
+                                            </select>
+                                        </div>
+                                        <div class="col-lg-6 form-group  form-float">
+                                            <label for="category1">
+                                                Product Category
+                                            </label>
+                                            <select class="form-control show-tick category1" name="category" id="category1">
+                                                <g:each var="c" in="${productCategories}">
+                                                    <option value="${c.id}" <g:if test="${c.id == productregsiter.category.id}">selected</g:if>  >${c.categoryName}</option>
+                                                </g:each>
+                                            </select>
+                                        </div>
+                                        <div class="col-lg-6 form-group  form-float">
+                                            <label for="sendMail">
+                                                Send Mail
+                                            </label>
+                                            <input type="text" id="sendMail"
+                                                   class="form-control sendMail" name="sendMail"
+                                                   placeholder="Send Mail" value="${productregsiter.sendMail}"
+                                                   required/>
+                                        </div>
+                                        <div class="col-lg-6 form-group  form-float">
+                                            <label for="discountAllowed">
+                                                Discount Allowed
+                                            </label>
+                                            <input type="text" id="discountAllowed"
+                                                   class="form-control discountAllowed" name="discountAllowed"
+                                                   placeholder="Discount Allowed" value="${productregsiter.discountAllowed}"
+                                                   required/>
+                                        </div>
+                                        <div class="col-lg-6 form-group  form-float">
+                                            <label for="ccmProduct">
+                                                CCM Product
+                                            </label>
+
+                                            <select class="form-control show-tick ccmProduct" name="ccmProduct" id="ccmProduct">
+                                                <option value="1"
+                                                        <g:if
+                                                                test="${"YES" == productregsiter.ccmProduct}">selected</g:if> >YES</option>
+                                                <option value="0" <g:if
+                                                        test="${"NO" == productregsiter.ccmProduct}">selected</g:if>>NO
+                                                </option>
+                                            </select>
+                                        </div>
+                                    </div>
                                 </div>
 
+                                <div class="col-md-12 mt-2" style="max-width: 99%;border: 1px solid black;
+                                border-radius:
+                                10px;padding: 10px;
+                                ">
+                                    <div class="row">
+                                        <div class="col-lg-6 form-group  form-float">
+                                            <label for="hsnCode">
+                                                HSN Code
+                                            </label>
+                                            <input type="text" id="hsnCode" class="form-control hsnCode" name="hsnCode"
+                                                   placeholder="HSN Code" value="${productregsiter.hsnCode}"
+                                                   required/>
+                                        </div>
 
-                                <div class="col-lg-6 form-group  form-float">
-                                    <label for="soundexCode">
-                                        Soundex Code
-                                    </label>
-                                    <input type="text" id="soundexCode"
-                                           class="form-control soundexCode" name="soundexCode"
-                                           placeholder="Soundex Code" value="${productregsiter.soundexCode}"
-                                           required/>
+                                        <div class="col-lg-6 form-group  form-float">
+                                            <label for="saleMarginPercent">
+                                                Sale Margin Percent
+                                            </label>
+                                            <input type="number" id="saleMarginPercent"
+                                                   class="form-control saleMarginPercent" name="saleMarginPercent"
+                                                   placeholder="Sale Margin Percent" value="${productregsiter.saleMarginPercent}"
+                                                   required/>
+                                        </div>
+                                        <div class="col-lg-6 form-group  form-float">
+                                            <label for="soundexCode">
+                                                Soundex Code
+                                            </label>
+                                            <input type="text" id="soundexCode"
+                                                   class="form-control soundexCode" name="soundexCode"
+                                                   placeholder="Soundex Code" value="${productregsiter.soundexCode}"
+                                                   required/>
+                                        </div>
+                                        <div class="col-lg-6 form-group  form-float">
+                                            <label for="narration">
+                                                Narration
+                                            </label>
+                                            <input type="text" id="narration"
+                                                   class="form-control narration" name="narration"
+                                                   placeholder="Narration" value="${productregsiter.narration}"
+                                                   required/>
+                                        </div>
+                                        <div class="col-lg-6 form-group  form-float">
+                                            <label for="restrictedAssignment">
+                                                Restricted Assignment
+                                            </label>
+                                            <input type="text" id="restrictedAssignment"
+                                                   class="form-control restrictedAssignment" name="restrictedAssignment"
+                                                   placeholder="Restricted Assignment" value="${productregsiter.restrictedAssignment}"
+                                                   required/>
+                                        </div>
+                                        <div class="col-lg-6 form-group  form-float">
+                                            <label for="entityType">
+                                                Entity Type
+                                            </label>
+                                            <select class="form-control show-tick entityType" name="entityTypeId"
+                                                    id="entityType">
+                                                <g:each var="et" in="${entitytype}">
+                                                    <option value="${et.id}">${et.name}</option>
+                                                </g:each>
+                                            </select>
+                                        </div>
+                                        <div class="col-lg-6 form-group  form-float">
+                                            <label for="entity">
+                                                Entity
+                                            </label>
+                                            <select class="form-control show-tick entity" name="entityId" id="entity">
+                                                <g:each var="e" in="${entity}">
+                                                    <option value="${e.id}">${e.entityName}</option>
+                                                </g:each>
+                                            </select>
+                                        </div>
+                                    </div>
                                 </div>
-
-                                <div class="col-lg-6 form-group  form-float">
-                                    <label for="narration">
-                                        Narration
-                                    </label>
-                                    <input type="text" id="narration"
-                                           class="form-control narration" name="narration"
-                                           placeholder="Narration" value="${productregsiter.narration}"
-                                           required/>
-                                </div>
-
-                                <div class="col-lg-6 form-group  form-float">
-                                    <label for="restrictedAssignment">
-                                        Restricted Assignment
-                                    </label>
-                                    <input type="text" id="restrictedAssignment"
-                                           class="form-control restrictedAssignment" name="restrictedAssignment"
-                                           placeholder="Restricted Assignment" value="${productregsiter.restrictedAssignment}"
-                                           required/>
-                                </div>
-
-
-
-                                <div class="col-lg-6 form-group  form-float">
-                                    <label for="entityType">
-                                        Entity Type
-                                    </label>
-                                    <select class="form-control show-tick entityType" name="entityTypeId" id="entityType">
-                                        <g:each var="et" in="${entitytype}">
-                                            <option value="${et.id}" <g:if test="${et.id == productregsiter.entityTypeId}">selected</g:if> >${et.name}</option>
-                                        </g:each>
-                                    </select>
-                                </div>
-
-                                <div class="col-lg-6 form-group  form-float">
-                                    <label for="entity">
-                                        Entity
-                                    </label>
-                                    <select class="form-control show-tick entity" name="entityId" id="entity">
-                                        <g:each var="e" in="${entity}">
-                                            <option value="${e.id}"
-                                                    <g:if test="${e.id == productregsiter.entityId}">selected</g:if>>${e.entityName}</option>
-                                        </g:each>
-                                    </select>
-                                </div>
-
 
 
                                 <input type="hidden" name="status" value="1">
@@ -551,17 +542,21 @@
                                 <input type="hidden" name="lastLoginDate" value="12/02/2020">
                                 <input type="hidden" name="createdUser" value="1">
                                 <input type="hidden" name="modifiedUser" value="1">
+
                                 <div class="col-lg-12">
                                     <div class="" style="float: right;">
                                         <input name="id" id="id" class="id" type="hidden">
                                         <input name="type" class="type" value="add" type="hidden">
-                                        <button type="submit" class="btn btn-default btn-round waves-effect" name="submituser"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">SUBMIT</font></font></button>
+                                        <button type="submit" class="btn btn-default btn-round waves-effect"
+                                                name="submituser"><font style="vertical-align: inherit;"><font
+                                                style="vertical-align: inherit;">SUBMIT</font></font></button>
                                         <button type="reset" class="btn btn-danger btn-simple btn-round waves-effect"
                                                 data-dismiss="modal"><font style="vertical-align: inherit;"><font
                                                 style="vertical-align: inherit;">RESET</font></font></button>
                                     </div>
                                 </div>
                             </div>
+
                         </form>
                     </div>
                 </div>
