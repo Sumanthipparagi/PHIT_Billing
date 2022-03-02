@@ -6,7 +6,7 @@
     <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
     <meta name="description" content="Responsive Bootstrap 4 and web Application ui kit.">
 
-    <title>:: PharmIt :: Batch Register</title>
+    <title>:: PharmIt :: Bank Register</title>
     <link rel="icon" type="image/x-icon" href="${assetPath(src: '/themeassets/images/favicon.ico')}"/>
     <!-- Favicon-->
     <asset:stylesheet rel="stylesheet" src="/themeassets/plugins/bootstrap/css/bootstrap.min.css"/>
@@ -62,10 +62,10 @@
         <div class="block-header">
             <div class="row clearfix">
                 <div class="col-lg-5 col-md-5 col-sm-12">
-                    <h2>Batch Register</h2>
+                    <h2>Bank Register</h2>
                     <ul class="breadcrumb padding-0">
                         <li class="breadcrumb-item"><a href="index.html"><i class="zmdi zmdi-home"></i></a></li>
-                        <li class="breadcrumb-item active">Batch Register</li>
+                        <li class="breadcrumb-item active">Bank Register</li>
                     </ul>
                 </div>
                 <div class="col-lg-7 col-md-7 col-sm-12">
@@ -99,8 +99,8 @@
                     %{--                    </div>--}%
                     <div class="header">
                         <button type="button" class="btn btn-round btn-primary m-t-15 addbtn" data-toggle="modal"
-                                data-target="#addbatchModal"><font style="vertical-align: inherit;"><font
-                                style="vertical-align: inherit;">Add Batch Register</font></font></button>
+                                data-target="#addbankRegisterModal"><font style="vertical-align: inherit;"><font
+                                style="vertical-align: inherit;">Add Bank Register</font></font></button>
                     </div>
                     <div class="body">
                         <div class="table-responsive">
@@ -108,16 +108,11 @@
                                 <thead>
                                 <tr>
                                     %{--                                    <th style="width: 20%">ID</th>--}%
-                                    <th style="width: 20%">Product</th>
-                                    <th style="width: 20%">Batch Number</th>
-                                    <th style="width: 20%">Manfacture Date</th>
-                                    <th style="width: 20%">Expiry Date</th>
-                                    <th style="width: 20%">Purchase Rate</th>
-                                    <th style="width: 20%">PTR</th>
-                                    <th style="width: 20%">MRP</th>
-                                    <th style="width: 20%">Box</th>
-                                    <th style="width: 20%">CaseWt</th>
-                                    <th style="width: 20%">Product Category</th>
+                                    <th style="width: 20%">Bank Name</th>
+                                    <th style="width: 20%">IFSC Code</th>
+                                    <th style="width: 20%">City</th>
+                                    <th style="width: 20%">Entity</th>
+                                    <th style="width: 20%">Entity Type</th>
                                     <th style="width: 20%">Action</th>
                                 </tr>
                                 </thead>
@@ -143,7 +138,7 @@
 </section>
 
 
-<g:include view="controls/product/add-batch-register.gsp"/>
+<g:include view="controls/accounts/add-bank-register.gsp"/>
 <g:include view="controls/delete-modal.gsp"/>
 
 <!-- Jquery Core Js -->
@@ -191,49 +186,33 @@
             processing: true,
             serverSide: true,
             language: {
-                searchPlaceholder: "Search Batch Register"
+                searchPlaceholder: "Search Bank Register"
             },
             ajax: {
                 type: 'GET',
-                url: '/batch-register/datatable',
+                url: '/bank-register/datatable',
                 dataType: 'json',
                 dataSrc: function (json) {
                     var return_data = [];
                     for (var i = 0; i < json.data.length; i++) {
-                        console.log(json)
-                        var manfDate = new Date(json.data[i].manfDate);
-                        var expiryDate = new Date(json.data[i].expiryDate);
+
                         var editbtn = '<button type="button" data-id="' + json.data[i].id +
-                            '" data-product="' + json.data[i].product.id + '"' +
-                            '" data-batchNumber="' + json.data[i].batchNumber + '"' +
-                            '" data-manfDate="' + moment(manfDate).format('DD/MM/YYYY') + '"' +
-                            '" data-expiryDate="' +  moment(expiryDate).format('DD/MM/YYYY') + '"' +
-                            '" data-purchaseRate="' + json.data[i].purchaseRate + '"' +
-                            '" data-ptr="' + json.data[i].ptr + '"' +
-                            '" data-qty="' + json.data[i].qty + '"' +
-                            '" data-saleRate="' + json.data[i].saleRate + '"' +
-                            '" data-mrp="' + json.data[i].mrp + '"' +
-                            '" data-box="' + json.data[i].box + '"' +
-                            '" data-caseWt="' + json.data[i].caseWt + '"' +
-                            '" data-productCat="' + json.data[i].productCat.id + '"' +
+                            '" data-bankName="' + json.data[i].bankName + '"' +
+                            '" data-cityId="' + json.data[i].cityId + '"' +
+                            '" data-ifscCode="' + json.data[i].ifscCode + '"' +
                             '" data-entityId="' + json.data[i].entityId + '"' +
                             '" data-entityType="' + json.data[i].entityTypeId + '"' +
                             '"' +
-                            ' class="editbtn btn btn-sm btn-warning  editbtn" data-toggle="modal" data-target="#addbatchModal"><i class="material-icons"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">edit</font></font></i></button>'
+                            ' class="editbtn btn btn-sm btn-warning  editbtn" data-toggle="modal" data-target="#addbankRegisterModal"><i class="material-icons"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">edit</font></font></i></button>'
                         var deletebtn = '<button type="button" data-id="' + json.data[i].id +
                             '" class="btn btn-sm btn-danger deletebtn" data-toggle="modal" data-target=".deleteModal"><i class="material-icons"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">delete</font></font></i></button>'
                         return_data.push({
-                            'id': json.data[i].id,
-                            'product': json.data[i].product.productName,
-                            'batchNumber': json.data[i].batchNumber,
-                            'manfDate':  moment(manfDate).format('DD/MM/YYYY'),
-                            'expiryDate':  moment(expiryDate).format('DD/MM/YYYY'),
-                            'purchaseRate': json.data[i].purchaseRate,
-                            'ptr': json.data[i].ptr,
-                            'mrp': json.data[i].mrp,
-                            'box': json.data[i].box,
-                            'caseWt': json.data[i].caseWt,
-                            'productCat': json.data[i].productCat.categoryName,
+                            // 'id': json.data[i].id,
+                            'bankName': json.data[i].bankName,
+                            'cityId': json.data[i].cityId,
+                            'ifscCode': json.data[i].ifscCode,
+                            'entity': json.entity[i].entityName,
+                            'entitytype': json.entityType[i].name,
                             'action': editbtn + ' ' + deletebtn
                         });
                     }
@@ -242,16 +221,11 @@
             },
             columns: [
                 // {'data': 'id', 'width': '20%'},
-                {'data': 'product', 'width': '20%'},
-                {'data': 'batchNumber', 'width': '20%'},
-                {'data': 'manfDate', 'width': '20%'},
-                {'data': 'expiryDate', 'width': '20%'},
-                {'data': 'purchaseRate', 'width': '20%'},
-                {'data': 'ptr', 'width': '20%'},
-                {'data': 'mrp', 'width': '20%'},
-                {'data': 'box', 'width': '20%'},
-                {'data': 'caseWt', 'width': '20%'},
-                {'data': 'productCat', 'width': '20%'},
+                {'data': 'bankName', 'width': '20%'},
+                {'data': 'ifscCode', 'width': '20%'},
+                {'data': 'cityId', 'width': '20%'},
+                {'data': 'entity', 'width': '20%'},
+                {'data': 'entitytype', 'width': '20%'},
                 {'data': 'action', 'width': '20%'}
             ]
         });
@@ -259,24 +233,7 @@
 
 
 
-
-    $('.manfDate').bootstrapMaterialDatePicker({
-        time:false,
-        format: 'DD/MM/YYYY',
-        clearButton: true,
-        shortTime: true,
-        weekStart: 1
-    });
-
-    $('.expiryDate').bootstrapMaterialDatePicker({
-        time:false,
-        format: 'DD/MM/YYYY',
-        clearButton: true,
-        shortTime: true,
-        weekStart: 1
-    });
-
-    $(".batchForm").submit(function (event) {
+    $(".bankForm").submit(function (event) {
 
         //disable the default form submission
         event.preventDefault();
@@ -288,10 +245,10 @@
         var url = '';
         var type = '';
         if (id) {
-            url = '/batch-register/update/' + id;
+            url = '/bank-register/update/' + id;
             type = 'POST'
         } else {
-            url = '/batch-register';
+            url = '/bank-register';
             type = 'POST'
         }
 
@@ -303,9 +260,9 @@
             contentType: false,
             processData: false,
             success: function () {
-                swal("Success!", "Batch Register Submitted Successfully", "success");
+                swal("Success!", "Bank Register Submitted Successfully", "success");
                 fridgeTable();
-                $('#addbatchModal').modal('hide');
+                $('#addbankRegisterModal').modal('hide');
             },
             error: function () {
                 swal("Error!", "Something went wrong", "error");
@@ -315,28 +272,23 @@
     });
 
     $(document).on("click", ".addbtn", function () {
-        $(".batchTitle").text("Add Batch Register")
-        $(".batchForm")[0].reset();
+        $(".bankTitle").text("Add Bank Register")
+        $(".bankForm")[0].reset();
         id = null
+    });
+
+    $('#entityId').change(function(){
+        var type = $('option:selected', this).attr('data-type');
+        $(".entityTypeId").val(type);
     });
 
     $(document).on("click", ".editbtn", function () {
         id = $(this).data('id');
-        $(".phitb_ui.product").val($(this).attr('data-product')).change();
-        $(".batchNumber").val($(this).attr('data-batchNumber'));
-        $(".manfDate").val($(this).attr('data-manfDate'));
-        $(".expiryDate").val($(this).attr('data-expiryDate'));
-        $(".purchaseRate").val($(this).attr('data-purchaseRate'));
-        $(".ptr").val($(this).attr('data-ptr'));
-        $(".mrp").val($(this).attr('data-mrp'));
-        $(".box").val($(this).attr('data-box'));
-        $(".saleRate").val($(this).attr('data-saleRate'));
-        $(".qty").val($(this).attr('data-qty'));
-        $(".caseWt").val($(this).attr('data-caseWt'));
-        $(".productCat").val($(this).attr('data-productCat')).change();
+        $(".bankName").val($(this).attr('data-bankName')).change();
+        $(".cityId").val($(this).attr('data-cityId')).change();
+        $(".ifscCode").val($(this).attr('data-ifscCode'));
         $(".entityId").val($(this).attr('data-entityId')).change();
-        $(".entityType").val($(this).attr('data-entityType')).change();
-        $(".batchTitle").text("Update Batch Register");
+        $(".bankTitle").text("Update Bank Register");
     });
 
 
@@ -344,19 +296,19 @@
 
     $(document).on("click", ".deletebtn", function () {
         id = $(this).data('id');
-        $("#myModalLabel").text("Delete Batch Register ?");
+        $("#myModalLabel").text("Delete Bank Register ?");
 
     });
 
     function deleteData() {
         $.ajax({
             type: 'POST',
-            url: '/batch-register/delete/' + id,
+            url: '/bank-register/delete/' + id,
             dataType: 'json',
             success: function () {
                 $('.deleteModal').modal('hide');
                 fridgeTable();
-                swal("Success!", "Batch Register Deleted Successfully", "success");
+                swal("Success!", "Bank Register Deleted Successfully", "success");
             }, error: function () {
                 swal("Error!", "Something went wrong", "error");
             }

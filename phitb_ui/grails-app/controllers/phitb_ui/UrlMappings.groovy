@@ -359,5 +359,15 @@ class UrlMappings {
         //Inventory
         "/stockbook/product/$id"(controller: "stockBook",action:"getStocksOfProduct")
 
+        /*<-------------------------------------------Accounts------------------------------------------------->*/
+
+        //Bank register
+        "/bank-register"(controller: "bankRegister") {
+            action = [GET: 'index', POST: 'save']
+        }
+        "/bank-register/datatable"(controller: "bankRegister", action: 'dataTable')
+        "/bank-register/update/$id"(controller:"bankRegister",action:"update")
+        "/bank-register/delete/$id"(controller: "bankRegister",action:"delete")
+        "/bank-register/product/$id"(controller: "bankRegister",action:"getByProduct")
     }
 }
