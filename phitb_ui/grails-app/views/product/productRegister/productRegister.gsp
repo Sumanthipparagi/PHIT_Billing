@@ -189,14 +189,14 @@
             },
             ajax: {
                 type: 'GET',
-                url: '/phitb_ui.product/datatable',
+                url: '/product/datatable',
                 dataType: 'json',
                 dataSrc: function (json) {
                     var return_data = [];
                     for (var i = 0; i < json.data.length; i++) {
                         console.log(json);
                         var editbtn =
-                            '<a href="/phitb_ui.product/update-phitb_ui.product/' + json.data[i].id
+                            '<a href="/product/update-product/' + json.data[i].id
                             +'"><button type="button" data-id="' + json.data[i].id +'"class="editbtn btn btn-sm btn-warning  editbtn"><i class="material-icons"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">edit</font></font></i></button></a>'
                         var deletebtn = '<button type="button" data-id="' + json.data[i].id +
                             '" class="btn btn-sm btn-danger deletebtn" data-toggle="modal" data-target=".deleteModal"><i class="material-icons"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">delete</font></font></i></button>'
@@ -284,19 +284,19 @@
 
     $(document).on("click", ".deletebtn", function () {
         id = $(this).data('id');
-        $("#myModalLabel").text("Delete User Register?");
+        $("#myModalLabel").text("Delete Product Register?");
 
     });
 
     function deleteData() {
         $.ajax({
             type: 'POST',
-            url: '/user-register/delete/' + id,
+            url: '/product/delete/' + id,
             dataType: 'json',
             success: function () {
                 $('.deleteModal').modal('hide');
                 userRegisterTable();
-                swal("Success!", "User Register Deleted Successfully", "success");
+                swal("Success!", "Product Register Deleted Successfully", "success");
             }, error: function () {
                 swal("Error!", "Something went wrong", "error");
             }

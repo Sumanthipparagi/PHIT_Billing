@@ -16,6 +16,8 @@ public class Constants
     public static  String ROLE_SALESMAN = "SALESMAN";
     public static  String ROLE_MANAGER = "MANAGER";
     public static  String ENTITY_CUSTOMER = "CUSTOMER";
+    public static  String ENTITY_MANUFACTURER = "MANUFACTURER";
+    public static  String ENTITY_COMPANY = "COMPANY";
 
 
 
