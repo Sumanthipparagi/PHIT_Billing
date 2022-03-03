@@ -73,17 +73,17 @@
                             </div>
                             <div class="col-md-6">
                                 <label for="status">Status:</label>
-                                <select id="status" name="status"><option>PAID</option><option>CREDIT</option></select>
+                                <select id="status" name="status"><option>PAID</option></select>
                             </div>
                         </div>
                         <div class="row">
                             <div class="col-md-6">
                                 <label for="series">Series:</label>
-                                <select id="series" name="series"><option>PAID</option><option>CREDIT</option></select>
+                                <select id="series" name="series"></select>
                             </div>
                             <div class="col-md-6">
-                                <label for="docNo">Document ID:</label>
-                                <input type="text" class="form-control docNo" name="date" id="documentId"/>
+                                <label for="documentId">Document ID:</label>
+                                <input type="text" class="form-control documentId" name="date" id="documentId"/>
                             </div>
                         </div>
                     </div>
