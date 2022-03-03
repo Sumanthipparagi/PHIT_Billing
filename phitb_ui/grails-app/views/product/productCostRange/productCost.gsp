@@ -189,7 +189,7 @@
             },
             ajax: {
                 type: 'GET',
-                url: '/phitb_ui.product-cost-range/datatable',
+                url: '/product-cost-range/datatable',
                 dataType: 'json',
                 dataSrc: function (json) {
                     var return_data = [];
@@ -242,10 +242,10 @@
         var url = '';
         var type = '';
         if (id) {
-            url = '/phitb_ui.product-cost-range/update/' + id;
+            url = '/product-cost-range/update/' + id;
             type = 'POST'
         } else {
-            url = '/phitb_ui.product-cost-range';
+            url = '/product-cost-range';
             type = 'POST'
         }
 
@@ -296,7 +296,7 @@
     function deleteData() {
         $.ajax({
             type: 'POST',
-            url: '/phitb_ui.product-cost-range/delete/' + id,
+            url: '/product-cost-range/delete/' + id,
             dataType: 'json',
             success: function () {
                 $('.deleteModal').modal('hide');

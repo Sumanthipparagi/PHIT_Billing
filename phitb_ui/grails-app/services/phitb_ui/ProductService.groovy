@@ -317,6 +317,7 @@ class ProductService {
 //    Division
     def saveDivision(JSONObject jsonObject)
     {
+        jsonObject = Tools.setCreatedUser(jsonObject)
         Client client = ClientBuilder.newClient().register(JacksonFeature.class)
         WebTarget target = client.target(new Links().API_GATEWAY);
         GrailsHttpSession session = WebUtils.retrieveGrailsWebRequest().session
@@ -365,6 +366,7 @@ class ProductService {
 
     def putDivision(JSONObject jsonObject)
     {
+        jsonObject = Tools.setModifiedUser(jsonObject)
         Client client = ClientBuilder.newClient().register(JacksonFeature.class)
         WebTarget target = client.target(new Links().API_GATEWAY);
         GrailsHttpSession session = WebUtils.retrieveGrailsWebRequest().session
