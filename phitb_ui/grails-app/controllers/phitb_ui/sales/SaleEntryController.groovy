@@ -12,7 +12,7 @@ class SaleEntryController {
     def index() {
 
         String entityId = session.getAttribute("entityId")?.toString()
-        ArrayList<String> series = new SeriesController().show() as ArrayList<String>
+        ArrayList<String> series = new SeriesController().getByEntity(entityId) as ArrayList<String>
         ArrayList<String> accountMode = new AccountModeController().show() as ArrayList<String>
         ArrayList<String> entity = new EntityRegisterController().show() as ArrayList<String>
         ArrayList<String> users = new UserRegisterController().show() as ArrayList<String>

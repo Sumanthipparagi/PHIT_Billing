@@ -181,6 +181,7 @@ public class Links
 
     //Series Master
     public static String SERIES_MASTER_SHOW = "api/v1.0/entity/seriesmaster";
+    public static String SERIES_MASTER_BY_ENTITY = "api/v1.0/entity/seriesmasterbyentity";
     public static String SERIES_MASTER_SAVE = "api/v1.0/entity/seriesmaster";
     public static String SERIES_MASTER_DATATABLE = "api/v1.0/entity/seriesmaster/datatable";
     public static String SERIES_MASTER_UPDATE = "api/v1.0/entity/seriesmaster/{id}";

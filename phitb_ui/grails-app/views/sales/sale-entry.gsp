@@ -72,19 +72,25 @@
                                 <input type="date" class="form-control date" name="date" id="date"/>
                             </div>
                             <div class="col-md-6">
-                                <label for="status">Status:</label>
-                                <select id="status" name="status"><option>PAID</option></select>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-md-6">
-                                <label for="series">Series:</label>
-                                <select id="series" name="series"></select>
-                            </div>
-                            <div class="col-md-6">
                                 <label for="documentId">Document ID:</label>
                                 <input type="text" class="form-control documentId" name="date" id="documentId"/>
                             </div>
+
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <label for="status">Status:</label>
+                                <select id="status" name="status"><option>PAID</option></select>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="series">Series:</label>
+                                <select id="series" name="series">
+                                    <g:each in="${series}" var="sr">
+                                        <option value="${sr.id}">${sr.seriesCode}</option>
+                                    </g:each>
+                                </select>
+                            </div>
+
                         </div>
                     </div>
                 </div>
@@ -189,14 +195,12 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/3.5.2/select2.js"></script>
 
 <script>
-    %{--var data = [<g:each in="${salebilllist}" var="sb">--}%
-    %{--    ['${sb.finId}', ${sb.serBillId}, ${sb.seriesId}, '${sb.paymentStatus}','${sb.accountModeId}', '${sb.priorityId}',  moment('${sb.entryDate}').format("DD/MM/YYYY"), '${sb.customerId}', '${sb.customerNumber}', ${sb.salesmanId}, '${sb.salesmanComm}',moment('${sb.orderDate}').format("DD/MM/YYYY"),'${sb.refOrderId}','${sb.dueDate}', '${sb.dispatchDate}','${sb.deliveryManId}','${sb.totalSqty}','${sb.totalFqty}','${sb.totalItems}','${sb.totalQty}','${sb.totalDiscount}','${sb.totalAmount}','${sb.invoiceTotal}','${sb.totalGst}','${sb.userId}','${sb.balance}','${sb.grossAmount}','${sb.taxable}','${sb.cashDiscount}','${sb.exempted}','${sb.totalCgst}','${sb.totalSgst}', '${sb.totalIgst}','${sb.gstStatus}',${sb.billStatus}, ${sb.lockStatus},${sb.creditadjAmount},${sb.creditIds},${sb.referralDoctor},'${sb.message}','${sb.financialYear}',${sb.entityTypeId},${sb.entityId}],--}%
-    %{--</g:each>];--}%
 
-    var idArray = []
-    var data = []
+
+    var idArray = [];
+    var data = [];
     <g:each in="${salebilllist}" var="sb">
-    idArray.push(${sb.id})
+    idArray.push(${sb.id});
     data.push(['${sb.finId}', ${sb.serBillId}, ${sb.seriesId}, '${sb.paymentStatus}', '${sb.accountModeId}', '${sb.priorityId}', moment('${sb.entryDate}').format("DD/MM/YYYY"), '${sb.customerId}', '${sb.customerNumber}', ${sb.salesmanId}, '${sb.salesmanComm}', moment('${sb.orderDate}').format("DD/MM/YYYY"), '${sb.refOrderId}', moment('${sb.dueDate}').format("DD/MM/YYYY"), moment('${sb.dispatchDate}').format("DD/MM/YYYY"), '${sb.deliveryManId}', '${sb.totalSqty}', '${sb.totalFqty}', '${sb.totalItems}', '${sb.totalQty}', '${sb.totalDiscount}', '${sb.totalAmount}', '${sb.invoiceTotal}', '${sb.totalGst}', '${sb.userId}', '${sb.balance}', '${sb.grossAmount}', '${sb.taxable}', '${sb.cashDiscount}', '${sb.exempted}', '${sb.totalCgst}', '${sb.totalSgst}', '${sb.totalIgst}', '${sb.gstStatus}', ${sb.billStatus}, ${sb.lockStatus}, ${sb.creditadjAmount}, ${sb.creditIds}, ${sb.referralDoctor}, '${sb.message}', '${sb.financialYear}', ${sb.entityTypeId}, ${sb.entityId}])
     </g:each>
 
