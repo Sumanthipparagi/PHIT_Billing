@@ -35,4 +35,10 @@ class SaleEntryController {
                                                            salesmanList: salesmanList, salebilllist:salebilllist,
                                                            products    :products])
     }
+
+
+    def saleBill()
+    {
+        render(view: '/sales/sale-invoice')
+    }
 }

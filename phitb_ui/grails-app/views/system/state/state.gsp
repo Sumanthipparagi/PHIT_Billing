@@ -183,12 +183,14 @@
                 dataType: 'json',
                 dataSrc: function (json) {
                     var return_data = [];
+
                     for (var i = 0; i < json.data.length; i++) {
                         var editbtn = '<button type="button" data-id="' + json.data[i].id +
                             '" data-name="' + json.data[i].name + '"' +
-                            '" data-entityRegister="' + json.data[i].entityId + '"' +
+                            '" data-entity="' + json.data[i].entityId + '"' +
                             '" data-zoneId="' + json.data[i].zone.id + '"' +
                             '" data-countryId="' + json.data[i].country.id + '"' +
+                            '"' +
                             ' class="editbtn btn btn-sm btn-warning  editbtn" data-toggle="modal" data-target="#addStateModal"><i class="material-icons"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">edit</font></font></i></button>'
                         var deletebtn = '<button type="button" data-id="' + json.data[i].id +
                             '" class="btn btn-sm btn-danger deletebtn" data-toggle="modal" data-target=".deleteModal"><i class="material-icons"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">delete</font></font></i></button>'
@@ -264,14 +266,11 @@
     $(document).on("click", ".editbtn", function () {
         id = $(this).data('id');
         $(".name").val($(this).data('name'));
-        $("#entityRegister").val($(this).data('entity')).change()
+        $(".entity").val($(this).data('entity')).change()
         $("#zone").val($(this).attr('data-zoneId')).change()
         $("#country").val($(this).attr('data-countryId')).change()
         $(".stateTitle").text("Update State Master");
     });
-
-
-
 
     $(document).on("click", ".deletebtn", function () {
         id = $(this).data('id');

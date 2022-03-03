@@ -102,14 +102,14 @@
                             <table class="table table-bordered table-striped table-hover formTable dataTable">
                                 <thead>
                                 <tr>
-                                    <th style="width: 20%">ID</th>
+%{--                                    <th style="width: 20%">ID</th>--}%
                                     <th style="width: 20%">Form Name</th>
                                     <th style="width: 20%">Form button Name</th>
                                     <th style="width: 20%">Config Allowed</th>
-%{--                                    <th style="width: 20%">entityRegister Type</th>--}%
-%{--                                    <th style="width: 20%">entityRegister</th>--}%
-                                    <th style="width: 20%">Created User</th>
-                                    <th style="width: 20%">Modified User</th>
+                                    <th style="width: 20%">Entity Type</th>
+                                    <th style="width: 20%">Entity</th>
+%{--                                    <th style="width: 20%">Created User</th>--}%
+%{--                                    <th style="width: 20%">Modified User</th>--}%
                                     <th style="width: 20%">Action</th>
                                 </tr>
                                 </thead>
@@ -157,6 +157,9 @@
     var id = null;
     $(function () {
         formTable();
+       var t =$('.entity').find("option:first").attr("selected", true);
+
+        console.log(t)
     });
 
     function formTable() {
@@ -183,27 +186,29 @@
                 dataSrc: function (json) {
                     var return_data = [];
                     for (var i = 0; i < json.data.length; i++) {
+
                         var editbtn = '<button type="button" data-id="' + json.data[i].id +
                             '" data-formName="' + json.data[i].formName + '"' +
-                            '" data-entityRegister="' + json.data[i].entityId + '"' +
-                            '" data-entitytype="' + json.data[i].entitytype + '"' +
-                            '" data-createduser="' + json.data[i].createduser + '"' +
-                            '" data-modifieduser="' + json.data[i].modifieduser + '"' +
+                            '" data-entity="' + json.data[i].entityId + '"' +
+                            '" data-entitytype="' + json.data[i].entityTypeId + '"' +
+                            '" data-createduser="' + json.data[i].createdUser + '"' +
+                            '" data-modifieduser="' + json.data[i].modifiedUser + '"' +
                             '" data-formButtonName="' + json.data[i].formButtonName + '"' +
                             '" data-formname="' + json.data[i].formName + '"' +
                             '" data-configAllowed="' + json.data[i].configAllowed + '"' +
                             ' class="editbtn btn btn-sm btn-warning  editbtn" data-toggle="modal" data-target="#addFormModal"><i class="material-icons"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">edit</font></font></i></button>'
                         var deletebtn = '<button type="button" data-id="' + json.data[i].id +
                             '" class="btn btn-sm btn-danger deletebtn" data-toggle="modal" data-target=".deleteModal"><i class="material-icons"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">delete</font></font></i></button>'
+                        console.log(json)
                         return_data.push({
-                            'id': json.data[i].id,
+                            // 'id': json.data[i].id,
                             'formname': json.data[i].formName,
                             'formbtnname': json.data[i].formButtonName,
                             'confallowed': json.data[i].configAllowed,
                             'entity': json.entity[i].entityName,
                             'entitytype': json.entityType[i].name,
-                            'createduser': json.createduser[i].userName,
-                            'modifieduser': json.modifieduser[i].userName,
+                            // 'createduser': json.createduser[i].userName,
+                            // 'modifieduser': json.modifiedUser[i].userName,
                             'action': editbtn + ' ' + deletebtn
                         });
                     }
@@ -211,7 +216,7 @@
                 }
             },
             columns: [
-                {'data': 'id', 'width': '20%'},
+                // {'data': 'id', 'width': '20%'},
                 {'data': 'formname', 'width': '20%'},
                 {'data': 'formbtnname', 'width': '20%'},
                 {'data': 'confallowed', 'width': '20%'},
@@ -273,20 +278,23 @@
         id = $(this).data('id');
         $(".formName").val($(this).attr('data-formName'));
         $(".formButtonName").val($(this).attr('data-formButtonName'));
-        $(".entityRegister").val($(this).attr('data-entity'));
+        $(".entity").val($(this).data('entity')).change();
         $(".entitytype").val($(this).attr('data-entitytype'));
         $("#configAllowed").val($(this).attr('data-configAllowed'));
         $("#entityRegister").val($(this).data('entity')).change()
-        $(".formTitle").text("Update State Master");
+        $(".formTitle").text("Update Form");
     });
 
 
+    $('.entity').change(function(){
+        var type = $('option:selected', this).attr('data-type');
+        $(".entityTypeId").val(type);
+    });
 
 
     $(document).on("click", ".deletebtn", function () {
         id = $(this).data('id');
         $("#myModalLabel").text("Delete Form ?");
-
     });
 
     function deleteData() {

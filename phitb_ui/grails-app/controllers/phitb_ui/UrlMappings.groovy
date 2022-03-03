@@ -354,7 +354,7 @@ class UrlMappings {
         "/sale-entry/update/$id"(controller:"batchRegister",action:"update")
 //        "/sale-entry/datatable"(controller: "batchRegister", action: 'dataTable')
 
-//        "/sale-entry/delete/$id"(controller: "batchRegister",action:"delete")
+        "/sale-invoice"(controller: "saleEntry",action:"saleBill")
 
         //Inventory
         "/stockbook/product/$id"(controller: "stockBook",action:"getStocksOfProduct")
