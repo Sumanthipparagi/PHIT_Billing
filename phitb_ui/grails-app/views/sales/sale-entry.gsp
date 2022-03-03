@@ -66,11 +66,26 @@
                     </div>
 
                     <div class="body">
-                        <h5>${session.getAttribute("entityName")}</h5>
-                        <small>${session.getAttribute("entityAddress1")}</small>
-                        <small>${session.getAttribute("entityAddress2")}</small>
-                        <small>${session.getAttribute("entityPinCode")}</small>
-                        <small>${session.getAttribute("entityMobileNumber")}</small>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <label for="date">Date:</label>
+                                <input type="date" class="form-control date" name="date" id="date"/>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="status">Status:</label>
+                                <select id="status" name="status"><option>PAID</option><option>CREDIT</option></select>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <label for="series">Series:</label>
+                                <select id="series" name="series"><option>PAID</option><option>CREDIT</option></select>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="docNo">Document ID:</label>
+                                <input type="text" class="form-control docNo" name="date" id="documentId"/>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -78,16 +93,16 @@
             <div class="col-lg-6">
                 <div class="card">
 
-
                     <div class="body">
                         <div class="header" style="padding: 1px;">
                             Customer
                         </div>
+
                         <div class="form-group">
                             <select class="form-control" id="customerSelect">
                                 <g:each in="${entity}" var="en">
                                     <g:if test="${en.id != session.getAttribute("entityId")}">
-                                    <option value="${en.id}">${en.entityName}</option>
+                                        <option value="${en.id}">${en.entityName}</option>
                                     </g:if>
                                 </g:each>
                             </select>
@@ -105,6 +120,7 @@
                             <div id="saleTable" style="width:100%;"></div>
                         </div>
                     </div>
+
                     <div class="header" style="padding: 1px;">
                         <button type="button" class="btn btn-round btn-primary m-t-15 addbtn" data-toggle="modal"
                                 data-target="#addAccountModeModal"><span
@@ -130,6 +146,7 @@
                     </div>
                 </div>
             </div>
+
             <div class="col-lg-6">
                 <div class="card">
                     <div class="header" style="padding: 1px;">
@@ -218,21 +235,20 @@
     </g:each>
 
     var headerRow = [
-        '<strong>Series</strong>',
-        '<strong>Item</strong>',
+        '<strong>Product</strong>',
         '<strong>Batch</strong>',
-        '<strong>HSN Code</strong>',
         '<strong>Exp Dt</strong>',
         '<strong>Sale Qty</strong>',
         '<strong>Free Qty</strong>',
-        '<strong>Total Qty</strong>',
         '<strong>Sale Rate</strong>',
-        '<strong>CGST</strong>',
-        '<strong>IGST</strong>',
-        '<strong>Total GST</strong>',
-        '<strong>Value</strong>',
+        '<strong>MRP</strong>',
         '<strong>Discount</strong>',
-        '<strong>MRP</strong>'];
+        '<strong>Pack</strong>',
+        '<strong>GST</strong>',
+        '<strong>Value</strong>',
+        '<strong>SGST</strong>',
+        '<strong>CGST</strong>',
+        '<strong>IGST</strong>'];
 
 
     $(document).ready(function () {
@@ -252,16 +268,6 @@
             columns: [
                 {
                     editor: 'select2',
-                    renderer: seriesDropdownRenderer,
-                    select2Options: {
-                        data: series,
-                        dropdownAutoWidth: true,
-                        allowClear: true,
-                        width: 'auto'
-                    }
-                },
-                {
-                    editor: 'select2',
                     renderer: productsDropdownRenderer,
                     select2Options: {
                         data: products,
@@ -277,7 +283,7 @@
                 {type: 'numeric'},
                 {type: 'numeric'},
                 {type: 'numeric'},
-                {type: 'numeric'},
+                {type: 'text'},
                 {type: 'numeric'},
                 {type: 'numeric'},
                 {type: 'numeric'},
@@ -367,31 +373,28 @@
             // $('#selectedId').text(selectedId);
         }
 
-        function batchSelection(selectedId, value, row)
-        {
+        function batchSelection(selectedId, value, row) {
             //
             $("#batchTableBody").html("");
-            if(selectedId != null) {
-                var url = "/stockbook/product/"+selectedId;
+            if (selectedId != null) {
+                var url = "/stockbook/product/" + selectedId;
 
                 $.ajax({
                     type: "GET",
                     url: url,
                     dataType: 'json',
                     success: function (data) {
-                        if(data)
-                        {
+                        if (data) {
                             var tableData = "";
-                            for(var i = 0; i < data.length; i++)
-                            {
+                            for (var i = 0; i < data.length; i++) {
                                 tableData += "<tr>" +
-                                    "<td><a onclick='updateCell(hot, selectedId, value, row)' href='#' class='btn btn-info' id='batchTable"+i+"'>Select</a> </td>" +
-                                    "<td>"+data[i].batchNumber+"</td>" +
-                                    "<td>"+data[i].expDate+"</td>" +
-                                    "<td>"+data[i].remainingQty+"</td>" +
-                                    "<td>"+data[i].remainingFreeQty+"</td>" +
-                                    "<td>"+data[i].purchaseRate+"</td>" +
-                                    "<td>"+data[i].saleRate+"</td>" +
+                                    "<td><a onclick='updateCell(hot, selectedId, value, row)' href='#' class='btn btn-info' id='batchTable" + i + "'>Select</a> </td>" +
+                                    "<td>" + data[i].batchNumber + "</td>" +
+                                    "<td>" + data[i].expDate + "</td>" +
+                                    "<td>" + data[i].remainingQty + "</td>" +
+                                    "<td>" + data[i].remainingFreeQty + "</td>" +
+                                    "<td>" + data[i].purchaseRate + "</td>" +
+                                    "<td>" + data[i].saleRate + "</td>" +
                                     "<td>-</td>" +
                                     "</tr>"
                             }
@@ -410,8 +413,7 @@
             }
         }
 
-        function updateCell(hot, selectedId, value, row)
-        {
+        function updateCell(hot, selectedId, value, row) {
             hot.setDataAtCell(row, 2, value);
             $("#productNameTitle").text("");
             $("#batchSelectModal").modal("toggle");

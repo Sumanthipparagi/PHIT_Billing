@@ -116,7 +116,7 @@
                                         </div>
                                         <div class="col-md-6 form-group  form-float">
                                             <label for="mktCompanyId">
-                                                Makerting Company
+                                                Marketing Company
                                             </label>
                                             <select class="form-control show-tick mktCompanyId" name="mktCompanyId" id="mktCompanyId">
                                                 <g:each var="c" in="${companyList}">

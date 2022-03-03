@@ -53,7 +53,7 @@ class AuthController {
                     JSONObject entity = auth.get("user").entity
                     session.setMaxInactiveInterval(3600)
                     session.setAttribute("login", true)
-                    session.setAttribute("userId", auth.get("user").id)
+                    session.setAttribute("userId", auth.get("user")?.id)
                     session.setAttribute("entityId", entity?.get("id"))
                     session.setAttribute("entityName", entity?.get("entityName"))
                     session.setAttribute("userName", username)
@@ -61,6 +61,8 @@ class AuthController {
                     session.setAttribute("entityAddress2", entity?.get("addressLine2"))
                     session.setAttribute("entityPinCode", entity?.get("pinCode"))
                     session.setAttribute("entityMobileNumber", entity?.get("mobileNumber"))
+                    session.setAttribute("entityTypeId", entity?.get("entityType")?.id)
+                    session.setAttribute("entityTypeName", entity?.get("entityType")?.name)
 
                     redirect(uri: "/dashboard")
                 } else {

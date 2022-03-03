@@ -96,7 +96,7 @@
                                     </select>
                                 </div>
                                 <div class="col-lg-6 form-group  form-float">
-                                    <label for="entityName">
+                                    <label for="affiliateId">
                                         Affiliate Id
                                     </label>
                                     <input type="text" id="affiliateId" class="form-control affiliateId"
