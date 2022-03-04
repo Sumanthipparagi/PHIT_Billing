@@ -322,7 +322,7 @@
 
     $(document).on("click", ".editbtn", function () {
         id = $(this).data('id');
-        $(".phitb_ui.product").val($(this).attr('data-product')).change();
+        $(".product").val($(this).attr('data-product')).change();
         $(".batchNumber").val($(this).attr('data-batchNumber'));
         $(".manfDate").val($(this).attr('data-manfDate'));
         $(".expiryDate").val($(this).attr('data-expiryDate'));

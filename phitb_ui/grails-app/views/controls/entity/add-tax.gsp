@@ -33,7 +33,7 @@
                                 <label for="taxValue">
                                     Tax Value
                                 </label>
-                                <input type="number" id="taxValue" class="form-control taxValue" name="taxValue"
+                                <input type="number" step="any" step="any" id="taxValue" class="form-control taxValue" name="taxValue"
                                        placeholder="Tax Value"
                                        required/>
                             </div>
@@ -54,7 +54,7 @@
                                 <label for="salesSgst">
                                     Sales SGST
                                 </label>
-                                <input type="number" id="salesSgst" class="form-control salesSgst"
+                                <input type="number" step="any" id="salesSgst" class="form-control salesSgst"
                                        name="salesSgst"
                                        placeholder="Sales SGST"
                                        required/>
@@ -64,7 +64,7 @@
                                 <label for="salesCgst">
                                     Sales CGST
                                 </label>
-                                <input type="number" id="salesCgst" class="form-control salesCgst"
+                                <input type="number" step="any" id="salesCgst" class="form-control salesCgst"
                                        name="salesCgst"
                                        placeholder="Sales CGST"
                                        required/>
@@ -84,7 +84,7 @@
                                 <label for="purchaseSgst">
                                     Purchase SGST
                                 </label>
-                                <input type="number" id="purchaseSgst" class="form-control purchaseSgst"
+                                <input type="number" step="any" id="purchaseSgst" class="form-control purchaseSgst"
                                        name="purchaseSgst"
                                        placeholder="Purchase SGST"
                                        required/>
@@ -94,7 +94,7 @@
                                 <label for="purchaseCgst">
                                     Purchase CGST
                                 </label>
-                                <input type="number" id="purchaseCgst" class="form-control purchaseCgst"
+                                <input type="number" step="any" id="purchaseCgst" class="form-control purchaseCgst"
                                        name="purchaseCgst"
                                        placeholder="Purchase CGST"
                                        required/>
@@ -104,7 +104,7 @@
                                 <label for="salesIgst">
                                     Sales IGST
                                 </label>
-                                <input type="number" id="salesIgst" class="form-control salesIgst"
+                                <input type="number" step="any" id="salesIgst" class="form-control salesIgst"
                                        name="salesIgst"
                                        placeholder="Sales IGST"
                                        required/>
@@ -114,7 +114,7 @@
                                 <label for="purchaseIgst">
                                     Purchase IGST
                                 </label>
-                                <input type="number" id="purchaseIgst" class="form-control purchaseIgst"
+                                <input type="number" step="any" id="purchaseIgst" class="form-control purchaseIgst"
                                        name="purchaseIgst"
                                        placeholder="Sales IGST"
                                        required/>

@@ -189,4 +189,33 @@ class EntityRegisterController {
             System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
         }
     }
+
+    /**
+     * Get requested entity register by affiliates
+     * @param id
+     * @return get requested entity register by affiliates
+     */
+    def getByAffiliateId() {
+        try {
+            String id = params.id
+            String start = params.start
+            String length = params.length
+            if (id) {
+                respond entityRegisterService.getAllByAffiliateId(start, length,Long.parseLong(id))
+            }
+        }
+        catch (ResourceNotFoundException ex)
+        {
+            System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
+            response.status = 404
+        }
+        catch (BadRequestException ex)
+        {
+            System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
+            response.status = 400
+        }
+        catch (Exception ex) {
+            System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
+        }
+    }
 }

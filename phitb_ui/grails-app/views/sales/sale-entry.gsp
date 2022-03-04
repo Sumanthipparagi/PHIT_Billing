@@ -40,57 +40,60 @@
         <div class="block-header" style="padding: 1px;">
             <div class="row clearfix">
                 <div class="col-lg-5 col-md-5 col-sm-12">
-                    <h2>Sale Entry</h2>
+                    %{--<h2>Sale Entry</h2>--}%
                     <ul class="breadcrumb padding-0">
                         <li class="breadcrumb-item"><a href="#"><i class="zmdi zmdi-home"></i></a></li>
                         <li class="breadcrumb-item active">Sale Entry</li>
                     </ul>
                 </div>
 
-                <div class="col-lg-7 col-md-7 col-sm-12">
+               %{-- <div class="col-lg-7 col-md-7 col-sm-12">
                     <div class="input-group m-b-0">
                         <input type="text" class="form-control" placeholder="Search...">
                         <span class="input-group-addon">
                             <i class="zmdi zmdi-search"></i>
                         </span>
                     </div>
-                </div>
+                </div>--}%
             </div>
         </div>
 
         <div class="row clearfix">
-            <div class="col-lg-6">
+            <div class="col-lg-12">
                 <div class="card">
                     <div class="header" style="padding: 1px;">
 
                     </div>
 
                     <div class="body">
-                        <h5>${session.getAttribute("entityName")}</h5>
-                        <small>${session.getAttribute("entityAddress1")}</small>
-                        <small>${session.getAttribute("entityAddress2")}</small>
-                        <small>${session.getAttribute("entityPinCode")}</small>
-                        <small>${session.getAttribute("entityMobileNumber")}</small>
-                    </div>
-                </div>
-            </div>
+                        <div class="row">
+                            <div class="col-md-3">
+                                <label for="date">Date:</label>
+                                <input type="date" class="form-control date" name="date" id="date"/>
+                            </div>
+                            <div class="col-md-3">
+                                <label for="series">Series:</label>
+                                <select id="series" name="series">
+                                    <g:each in="${series}" var="sr">
+                                        <option value="${sr.id}">${sr.seriesCode}</option>
+                                    </g:each>
+                                </select>
+                            </div>
+                            <div class="col-md-3">
+                                <label for="documentId">Document ID:</label>
+                                <input type="text" class="form-control documentId" name="date" id="documentId"/>
+                            </div>
+                            <div class="col-md-3">
+                                <label for="customerSelect">Customer:</label>
+                                <select class="form-control" id="customerSelect">
+                                    <g:each in="${customers}" var="cs">
+                                        <g:if test="${cs.id != session.getAttribute("entityId")}">
+                                            <option value="${cs.id}">${cs.entityName}</option>
+                                        </g:if>
+                                    </g:each>
+                                </select>
+                            </div>
 
-            <div class="col-lg-6">
-                <div class="card">
-
-
-                    <div class="body">
-                        <div class="header" style="padding: 1px;">
-                            Customer
-                        </div>
-                        <div class="form-group">
-                            <select class="form-control" id="customerSelect">
-                                <g:each in="${entity}" var="en">
-                                    <g:if test="${en.id != session.getAttribute("entityId")}">
-                                    <option value="${en.id}">${en.entityName}</option>
-                                    </g:if>
-                                </g:each>
-                            </select>
                         </div>
                     </div>
                 </div>
@@ -105,6 +108,7 @@
                             <div id="saleTable" style="width:100%;"></div>
                         </div>
                     </div>
+
                     <div class="header" style="padding: 1px;">
                         <button type="button" class="btn btn-round btn-primary m-t-15 addbtn" data-toggle="modal"
                                 data-target="#addAccountModeModal"><span
@@ -130,6 +134,7 @@
                     </div>
                 </div>
             </div>
+
             <div class="col-lg-6">
                 <div class="card">
                     <div class="header" style="padding: 1px;">
@@ -172,14 +177,12 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/3.5.2/select2.js"></script>
 
 <script>
-    %{--var data = [<g:each in="${salebilllist}" var="sb">--}%
-    %{--    ['${sb.finId}', ${sb.serBillId}, ${sb.seriesId}, '${sb.paymentStatus}','${sb.accountModeId}', '${sb.priorityId}',  moment('${sb.entryDate}').format("DD/MM/YYYY"), '${sb.customerId}', '${sb.customerNumber}', ${sb.salesmanId}, '${sb.salesmanComm}',moment('${sb.orderDate}').format("DD/MM/YYYY"),'${sb.refOrderId}','${sb.dueDate}', '${sb.dispatchDate}','${sb.deliveryManId}','${sb.totalSqty}','${sb.totalFqty}','${sb.totalItems}','${sb.totalQty}','${sb.totalDiscount}','${sb.totalAmount}','${sb.invoiceTotal}','${sb.totalGst}','${sb.userId}','${sb.balance}','${sb.grossAmount}','${sb.taxable}','${sb.cashDiscount}','${sb.exempted}','${sb.totalCgst}','${sb.totalSgst}', '${sb.totalIgst}','${sb.gstStatus}',${sb.billStatus}, ${sb.lockStatus},${sb.creditadjAmount},${sb.creditIds},${sb.referralDoctor},'${sb.message}','${sb.financialYear}',${sb.entityTypeId},${sb.entityId}],--}%
-    %{--</g:each>];--}%
 
-    var idArray = []
-    var data = []
+
+    var idArray = [];
+    var data = [];
     <g:each in="${salebilllist}" var="sb">
-    idArray.push(${sb.id})
+    idArray.push(${sb.id});
     data.push(['${sb.finId}', ${sb.serBillId}, ${sb.seriesId}, '${sb.paymentStatus}', '${sb.accountModeId}', '${sb.priorityId}', moment('${sb.entryDate}').format("DD/MM/YYYY"), '${sb.customerId}', '${sb.customerNumber}', ${sb.salesmanId}, '${sb.salesmanComm}', moment('${sb.orderDate}').format("DD/MM/YYYY"), '${sb.refOrderId}', moment('${sb.dueDate}').format("DD/MM/YYYY"), moment('${sb.dispatchDate}').format("DD/MM/YYYY"), '${sb.deliveryManId}', '${sb.totalSqty}', '${sb.totalFqty}', '${sb.totalItems}', '${sb.totalQty}', '${sb.totalDiscount}', '${sb.totalAmount}', '${sb.invoiceTotal}', '${sb.totalGst}', '${sb.userId}', '${sb.balance}', '${sb.grossAmount}', '${sb.taxable}', '${sb.cashDiscount}', '${sb.exempted}', '${sb.totalCgst}', '${sb.totalSgst}', '${sb.totalIgst}', '${sb.gstStatus}', ${sb.billStatus}, ${sb.lockStatus}, ${sb.creditadjAmount}, ${sb.creditIds}, ${sb.referralDoctor}, '${sb.message}', '${sb.financialYear}', ${sb.entityTypeId}, ${sb.entityId}])
     </g:each>
 
@@ -218,21 +221,20 @@
     </g:each>
 
     var headerRow = [
-        '<strong>Series</strong>',
-        '<strong>Item</strong>',
+        '<strong>Product</strong>',
         '<strong>Batch</strong>',
-        '<strong>HSN Code</strong>',
         '<strong>Exp Dt</strong>',
         '<strong>Sale Qty</strong>',
         '<strong>Free Qty</strong>',
-        '<strong>Total Qty</strong>',
         '<strong>Sale Rate</strong>',
-        '<strong>CGST</strong>',
-        '<strong>IGST</strong>',
-        '<strong>Total GST</strong>',
-        '<strong>Value</strong>',
+        '<strong>MRP</strong>',
         '<strong>Discount</strong>',
-        '<strong>MRP</strong>'];
+        '<strong>Pack</strong>',
+        '<strong>GST</strong>',
+        '<strong>Value</strong>',
+        '<strong>SGST</strong>',
+        '<strong>CGST</strong>',
+        '<strong>IGST</strong>'];
 
 
     $(document).ready(function () {
@@ -252,16 +254,6 @@
             columns: [
                 {
                     editor: 'select2',
-                    renderer: seriesDropdownRenderer,
-                    select2Options: {
-                        data: series,
-                        dropdownAutoWidth: true,
-                        allowClear: true,
-                        width: 'auto'
-                    }
-                },
-                {
-                    editor: 'select2',
                     renderer: productsDropdownRenderer,
                     select2Options: {
                         data: products,
@@ -277,7 +269,7 @@
                 {type: 'numeric'},
                 {type: 'numeric'},
                 {type: 'numeric'},
-                {type: 'numeric'},
+                {type: 'text'},
                 {type: 'numeric'},
                 {type: 'numeric'},
                 {type: 'numeric'},
@@ -367,31 +359,28 @@
             // $('#selectedId').text(selectedId);
         }
 
-        function batchSelection(selectedId, value, row)
-        {
+        function batchSelection(selectedId, value, row) {
             //
             $("#batchTableBody").html("");
-            if(selectedId != null) {
-                var url = "/stockbook/product/"+selectedId;
+            if (selectedId != null) {
+                var url = "/stockbook/product/" + selectedId;
 
                 $.ajax({
                     type: "GET",
                     url: url,
                     dataType: 'json',
                     success: function (data) {
-                        if(data)
-                        {
+                        if (data) {
                             var tableData = "";
-                            for(var i = 0; i < data.length; i++)
-                            {
+                            for (var i = 0; i < data.length; i++) {
                                 tableData += "<tr>" +
-                                    "<td><a onclick='updateCell(hot, selectedId, value, row)' href='#' class='btn btn-info' id='batchTable"+i+"'>Select</a> </td>" +
-                                    "<td>"+data[i].batchNumber+"</td>" +
-                                    "<td>"+data[i].expDate+"</td>" +
-                                    "<td>"+data[i].remainingQty+"</td>" +
-                                    "<td>"+data[i].remainingFreeQty+"</td>" +
-                                    "<td>"+data[i].purchaseRate+"</td>" +
-                                    "<td>"+data[i].saleRate+"</td>" +
+                                    "<td><a onclick='updateCell(hot, selectedId, value, row)' href='#' class='btn btn-info' id='batchTable" + i + "'>Select</a> </td>" +
+                                    "<td>" + data[i].batchNumber + "</td>" +
+                                    "<td>" + data[i].expDate + "</td>" +
+                                    "<td>" + data[i].remainingQty + "</td>" +
+                                    "<td>" + data[i].remainingFreeQty + "</td>" +
+                                    "<td>" + data[i].purchaseRate + "</td>" +
+                                    "<td>" + data[i].saleRate + "</td>" +
                                     "<td>-</td>" +
                                     "</tr>"
                             }
@@ -410,8 +399,7 @@
             }
         }
 
-        function updateCell(hot, selectedId, value, row)
-        {
+        function updateCell(hot, selectedId, value, row) {
             hot.setDataAtCell(row, 2, value);
             $("#productNameTitle").text("");
             $("#batchSelectModal").modal("toggle");

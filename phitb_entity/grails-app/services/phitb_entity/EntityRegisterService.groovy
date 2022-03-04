@@ -290,5 +290,18 @@ class EntityRegisterService {
             log.error('Service :EntityRegisterService , action :  getAllByUser  , Ex:' + ex)
         }
     }
+
+    def getAllByAffiliateId(String limit, String offset, long affiliateId) {
+        try {
+            Integer o = offset ? Integer.parseInt(offset.toString()) : 0
+            Integer l = limit ? Integer.parseInt(limit.toString()) : 100
+            return EntityRegister.findAllByAffiliateId(affiliateId, [sort: 'id', max: l, offset: o, order: 'desc'])
+        }
+        catch (Exception ex)
+        {
+            println(ex.stackTrace)
+            throw new BadRequestException()
+        }
+    }
 }
 

@@ -95,6 +95,7 @@ public class Links
     public static String ENTITY_REGISTER_DATATABLE = "api/v1.0/entity/entityregister/datatable";
     public static String ENTITY_REGISTER_UPDATE = "api/v1.0/entity/entityregister/{id}";
     public static String ENTITY_REGISTER_DELETE = "api/v1.0/entity/entityregister/{id}";
+    public static String ENTITY_REGISTER_AFFILIATE = "api/v1.0/entity/entityregister/affiliate";
 
 
     //User Register
@@ -181,6 +182,7 @@ public class Links
 
     //Series Master
     public static String SERIES_MASTER_SHOW = "api/v1.0/entity/seriesmaster";
+    public static String SERIES_MASTER_BY_ENTITY = "api/v1.0/entity/seriesmasterbyentity";
     public static String SERIES_MASTER_SAVE = "api/v1.0/entity/seriesmaster";
     public static String SERIES_MASTER_DATATABLE = "api/v1.0/entity/seriesmaster/datatable";
     public static String SERIES_MASTER_UPDATE = "api/v1.0/entity/seriesmaster/{id}";

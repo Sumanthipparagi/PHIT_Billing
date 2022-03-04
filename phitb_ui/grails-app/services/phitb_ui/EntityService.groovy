@@ -18,9 +18,9 @@ class EntityService {
 
     def saveEntity(JSONObject jsonObject)
     {
-        Client client = ClientBuilder.newClient();
-        WebTarget target = client.target(new Links().API_GATEWAY);
-        GrailsHttpSession session = WebUtils.retrieveGrailsWebRequest().session
+        Client client = ClientBuilder.newClient()
+        WebTarget target = client.target(new Links().API_GATEWAY)
+       
         try
         {
             println(jsonObject)
@@ -45,9 +45,9 @@ class EntityService {
      */
     def showEntity(JSONObject jsonObject)
     {
-        Client client = ClientBuilder.newClient();
-        WebTarget target = client.target(new Links().API_GATEWAY);
-        GrailsHttpSession session = WebUtils.retrieveGrailsWebRequest().session
+        Client client = ClientBuilder.newClient()
+        WebTarget target = client.target(new Links().API_GATEWAY)
+       
         try
         {
             Response apiResponse = target
@@ -66,9 +66,9 @@ class EntityService {
 
     def putEntity(JSONObject jsonObject)
     {
-        Client client = ClientBuilder.newClient();
-        WebTarget target = client.target(new Links().API_GATEWAY);
-        GrailsHttpSession session = WebUtils.retrieveGrailsWebRequest().session
+        Client client = ClientBuilder.newClient()
+        WebTarget target = client.target(new Links().API_GATEWAY)
+       
         try
         {
             Response apiResponse = target
@@ -93,9 +93,9 @@ class EntityService {
      */
     def deleteEntity(JSONObject jsonObject)
     {
-        Client client = ClientBuilder.newClient();
-        WebTarget target = client.target(new Links().API_GATEWAY);
-        GrailsHttpSession session = WebUtils.retrieveGrailsWebRequest().session
+        Client client = ClientBuilder.newClient()
+        WebTarget target = client.target(new Links().API_GATEWAY)
+       
         try
         {
             Response apiResponse = target
@@ -116,9 +116,9 @@ class EntityService {
 //User Register
     def saveUser(JSONObject jsonObject)
     {
-        Client client = ClientBuilder.newClient();
-        WebTarget target = client.target(new Links().API_GATEWAY);
-        GrailsHttpSession session = WebUtils.retrieveGrailsWebRequest().session
+        Client client = ClientBuilder.newClient()
+        WebTarget target = client.target(new Links().API_GATEWAY)
+       
         try
         {
             println(jsonObject)
@@ -138,9 +138,9 @@ class EntityService {
 
     def getAuth(String username)
     {
-        Client client = ClientBuilder.newClient();
-        WebTarget target = client.target(new Links().API_GATEWAY);
-        GrailsHttpSession session = WebUtils.retrieveGrailsWebRequest().session
+        Client client = ClientBuilder.newClient()
+        WebTarget target = client.target(new Links().API_GATEWAY)
+       
         try
         {
             Response apiResponse = target
@@ -166,9 +166,9 @@ class EntityService {
 
     def getUser(String id)
     {
-        Client client = ClientBuilder.newClient();
-        WebTarget target = client.target(new Links().API_GATEWAY);
-        GrailsHttpSession session = WebUtils.retrieveGrailsWebRequest().session
+        Client client = ClientBuilder.newClient()
+        WebTarget target = client.target(new Links().API_GATEWAY)
+       
         try
         {
             Response apiResponse = target
@@ -198,9 +198,9 @@ class EntityService {
      */
     def showUser(JSONObject jsonObject)
     {
-        Client client = ClientBuilder.newClient();
-        WebTarget target = client.target(new Links().API_GATEWAY);
-        GrailsHttpSession session = WebUtils.retrieveGrailsWebRequest().session
+        Client client = ClientBuilder.newClient()
+        WebTarget target = client.target(new Links().API_GATEWAY)
+       
         try
         {
             Response apiResponse = target
@@ -219,9 +219,9 @@ class EntityService {
 
     def putUser(JSONObject jsonObject)
     {
-        Client client = ClientBuilder.newClient();
-        WebTarget target = client.target(new Links().API_GATEWAY);
-        GrailsHttpSession session = WebUtils.retrieveGrailsWebRequest().session
+        Client client = ClientBuilder.newClient()
+        WebTarget target = client.target(new Links().API_GATEWAY)
+       
         try
         {
             Response apiResponse = target
@@ -246,9 +246,9 @@ class EntityService {
      */
     def deleteUser(JSONObject jsonObject)
     {
-        Client client = ClientBuilder.newClient();
-        WebTarget target = client.target(new Links().API_GATEWAY);
-        GrailsHttpSession session = WebUtils.retrieveGrailsWebRequest().session
+        Client client = ClientBuilder.newClient()
+        WebTarget target = client.target(new Links().API_GATEWAY)
+       
         try
         {
             Response apiResponse = target
@@ -270,9 +270,9 @@ class EntityService {
     //Customer Group Register
     def saveCustomerGroup(JSONObject jsonObject)
     {
-        Client client = ClientBuilder.newClient();
-        WebTarget target = client.target(new Links().API_GATEWAY);
-        GrailsHttpSession session = WebUtils.retrieveGrailsWebRequest().session
+        Client client = ClientBuilder.newClient()
+        WebTarget target = client.target(new Links().API_GATEWAY)
+       
         try
         {
             println(jsonObject)
@@ -297,9 +297,9 @@ class EntityService {
      */
     def showCustomerGroup(JSONObject jsonObject)
     {
-        Client client = ClientBuilder.newClient();
-        WebTarget target = client.target(new Links().API_GATEWAY);
-        GrailsHttpSession session = WebUtils.retrieveGrailsWebRequest().session
+        Client client = ClientBuilder.newClient()
+        WebTarget target = client.target(new Links().API_GATEWAY)
+       
         try
         {
             Response apiResponse = target
@@ -318,9 +318,9 @@ class EntityService {
 
     def putCustomerGroup(JSONObject jsonObject)
     {
-        Client client = ClientBuilder.newClient();
-        WebTarget target = client.target(new Links().API_GATEWAY);
-        GrailsHttpSession session = WebUtils.retrieveGrailsWebRequest().session
+        Client client = ClientBuilder.newClient()
+        WebTarget target = client.target(new Links().API_GATEWAY)
+       
         try
         {
             Response apiResponse = target
@@ -345,9 +345,9 @@ class EntityService {
      */
     def deleteCustomerGroup(JSONObject jsonObject)
     {
-        Client client = ClientBuilder.newClient();
-        WebTarget target = client.target(new Links().API_GATEWAY);
-        GrailsHttpSession session = WebUtils.retrieveGrailsWebRequest().session
+        Client client = ClientBuilder.newClient()
+        WebTarget target = client.target(new Links().API_GATEWAY)
+       
         try
         {
             Response apiResponse = target
@@ -368,9 +368,9 @@ class EntityService {
     //Day End Master
     def saveDayEnd(JSONObject jsonObject)
     {
-        Client client = ClientBuilder.newClient();
-        WebTarget target = client.target(new Links().API_GATEWAY);
-        GrailsHttpSession session = WebUtils.retrieveGrailsWebRequest().session
+        Client client = ClientBuilder.newClient()
+        WebTarget target = client.target(new Links().API_GATEWAY)
+       
         try
         {
             println(jsonObject)
@@ -395,9 +395,9 @@ class EntityService {
      */
     def showDayEnd(JSONObject jsonObject)
     {
-        Client client = ClientBuilder.newClient();
-        WebTarget target = client.target(new Links().API_GATEWAY);
-        GrailsHttpSession session = WebUtils.retrieveGrailsWebRequest().session
+        Client client = ClientBuilder.newClient()
+        WebTarget target = client.target(new Links().API_GATEWAY)
+       
         try
         {
             Response apiResponse = target
@@ -416,9 +416,9 @@ class EntityService {
 
     def putDayEnd(JSONObject jsonObject)
     {
-        Client client = ClientBuilder.newClient();
-        WebTarget target = client.target(new Links().API_GATEWAY);
-        GrailsHttpSession session = WebUtils.retrieveGrailsWebRequest().session
+        Client client = ClientBuilder.newClient()
+        WebTarget target = client.target(new Links().API_GATEWAY)
+       
         try
         {
             Response apiResponse = target
@@ -443,9 +443,9 @@ class EntityService {
      */
     def deleteDayEnd(JSONObject jsonObject)
     {
-        Client client = ClientBuilder.newClient();
-        WebTarget target = client.target(new Links().API_GATEWAY);
-        GrailsHttpSession session = WebUtils.retrieveGrailsWebRequest().session
+        Client client = ClientBuilder.newClient()
+        WebTarget target = client.target(new Links().API_GATEWAY)
+       
         try
         {
             Response apiResponse = target
@@ -466,9 +466,9 @@ class EntityService {
     //Financial year
     def saveFinancialYear(JSONObject jsonObject)
     {
-        Client client = ClientBuilder.newClient();
-        WebTarget target = client.target(new Links().API_GATEWAY);
-        GrailsHttpSession session = WebUtils.retrieveGrailsWebRequest().session
+        Client client = ClientBuilder.newClient()
+        WebTarget target = client.target(new Links().API_GATEWAY)
+       
         try
         {
             println(jsonObject)
@@ -493,9 +493,9 @@ class EntityService {
      */
     def showFinancialYear(JSONObject jsonObject)
     {
-        Client client = ClientBuilder.newClient();
-        WebTarget target = client.target(new Links().API_GATEWAY);
-        GrailsHttpSession session = WebUtils.retrieveGrailsWebRequest().session
+        Client client = ClientBuilder.newClient()
+        WebTarget target = client.target(new Links().API_GATEWAY)
+       
         try
         {
             Response apiResponse = target
@@ -514,9 +514,9 @@ class EntityService {
 
     def putFinancialYear(JSONObject jsonObject)
     {
-        Client client = ClientBuilder.newClient();
-        WebTarget target = client.target(new Links().API_GATEWAY);
-        GrailsHttpSession session = WebUtils.retrieveGrailsWebRequest().session
+        Client client = ClientBuilder.newClient()
+        WebTarget target = client.target(new Links().API_GATEWAY)
+       
         try
         {
             Response apiResponse = target
@@ -541,9 +541,9 @@ class EntityService {
      */
     def deleteFinancialYear(JSONObject jsonObject)
     {
-        Client client = ClientBuilder.newClient();
-        WebTarget target = client.target(new Links().API_GATEWAY);
-        GrailsHttpSession session = WebUtils.retrieveGrailsWebRequest().session
+        Client client = ClientBuilder.newClient()
+        WebTarget target = client.target(new Links().API_GATEWAY)
+       
         try
         {
             Response apiResponse = target
@@ -565,8 +565,8 @@ class EntityService {
     def saveRegionMaster(JSONObject jsonObject)
     {
         Client client = ClientBuilder.newClient().register(JacksonFeature.class)
-        WebTarget target = client.target(new Links().API_GATEWAY);
-        GrailsHttpSession session = WebUtils.retrieveGrailsWebRequest().session
+        WebTarget target = client.target(new Links().API_GATEWAY)
+       
         try
         {
             println(jsonObject)
@@ -591,9 +591,9 @@ class EntityService {
      */
     def showRegionMaster(JSONObject jsonObject)
     {
-        Client client = ClientBuilder.newClient();
-        WebTarget target = client.target(new Links().API_GATEWAY);
-        GrailsHttpSession session = WebUtils.retrieveGrailsWebRequest().session
+        Client client = ClientBuilder.newClient()
+        WebTarget target = client.target(new Links().API_GATEWAY)
+       
         try
         {
             Response apiResponse = target
@@ -613,8 +613,8 @@ class EntityService {
     def putRegionMaster(JSONObject jsonObject)
     {
         Client client = ClientBuilder.newClient().register(JacksonFeature.class)
-        WebTarget target = client.target(new Links().API_GATEWAY);
-        GrailsHttpSession session = WebUtils.retrieveGrailsWebRequest().session
+        WebTarget target = client.target(new Links().API_GATEWAY)
+       
         try
         {
             Response apiResponse = target
@@ -639,9 +639,9 @@ class EntityService {
      */
     def deleteRegionMaster(JSONObject jsonObject)
     {
-        Client client = ClientBuilder.newClient();
-        WebTarget target = client.target(new Links().API_GATEWAY);
-        GrailsHttpSession session = WebUtils.retrieveGrailsWebRequest().session
+        Client client = ClientBuilder.newClient()
+        WebTarget target = client.target(new Links().API_GATEWAY)
+       
         try
         {
             Response apiResponse = target
@@ -662,9 +662,9 @@ class EntityService {
     //Region Master
     def saveRoute(JSONObject jsonObject)
     {
-        Client client = ClientBuilder.newClient();
-        WebTarget target = client.target(new Links().API_GATEWAY);
-        GrailsHttpSession session = WebUtils.retrieveGrailsWebRequest().session
+        Client client = ClientBuilder.newClient()
+        WebTarget target = client.target(new Links().API_GATEWAY)
+       
         try
         {
             println(jsonObject)
@@ -689,9 +689,9 @@ class EntityService {
      */
     def showRoute(JSONObject jsonObject)
     {
-        Client client = ClientBuilder.newClient();
-        WebTarget target = client.target(new Links().API_GATEWAY);
-        GrailsHttpSession session = WebUtils.retrieveGrailsWebRequest().session
+        Client client = ClientBuilder.newClient()
+        WebTarget target = client.target(new Links().API_GATEWAY)
+       
         try
         {
             Response apiResponse = target
@@ -710,9 +710,9 @@ class EntityService {
 
     def putRoute(JSONObject jsonObject)
     {
-        Client client = ClientBuilder.newClient();
-        WebTarget target = client.target(new Links().API_GATEWAY);
-        GrailsHttpSession session = WebUtils.retrieveGrailsWebRequest().session
+        Client client = ClientBuilder.newClient()
+        WebTarget target = client.target(new Links().API_GATEWAY)
+       
         try
         {
             Response apiResponse = target
@@ -737,9 +737,9 @@ class EntityService {
      */
     def deleteRoute(JSONObject jsonObject)
     {
-        Client client = ClientBuilder.newClient();
-        WebTarget target = client.target(new Links().API_GATEWAY);
-        GrailsHttpSession session = WebUtils.retrieveGrailsWebRequest().session
+        Client client = ClientBuilder.newClient()
+        WebTarget target = client.target(new Links().API_GATEWAY)
+       
         try
         {
             Response apiResponse = target
@@ -760,9 +760,9 @@ class EntityService {
     //Role Master
     def saveRole(JSONObject jsonObject)
     {
-        Client client = ClientBuilder.newClient();
-        WebTarget target = client.target(new Links().API_GATEWAY);
-        GrailsHttpSession session = WebUtils.retrieveGrailsWebRequest().session
+        Client client = ClientBuilder.newClient()
+        WebTarget target = client.target(new Links().API_GATEWAY)
+       
         try
         {
             println(jsonObject)
@@ -787,9 +787,9 @@ class EntityService {
      */
     def showRole(JSONObject jsonObject)
     {
-        Client client = ClientBuilder.newClient();
-        WebTarget target = client.target(new Links().API_GATEWAY);
-        GrailsHttpSession session = WebUtils.retrieveGrailsWebRequest().session
+        Client client = ClientBuilder.newClient()
+        WebTarget target = client.target(new Links().API_GATEWAY)
+       
         try
         {
             Response apiResponse = target
@@ -808,9 +808,9 @@ class EntityService {
 
     def putRole(JSONObject jsonObject)
     {
-        Client client = ClientBuilder.newClient();
-        WebTarget target = client.target(new Links().API_GATEWAY);
-        GrailsHttpSession session = WebUtils.retrieveGrailsWebRequest().session
+        Client client = ClientBuilder.newClient()
+        WebTarget target = client.target(new Links().API_GATEWAY)
+       
         try
         {
             Response apiResponse = target
@@ -835,9 +835,9 @@ class EntityService {
      */
     def deleteRole(JSONObject jsonObject)
     {
-        Client client = ClientBuilder.newClient();
-        WebTarget target = client.target(new Links().API_GATEWAY);
-        GrailsHttpSession session = WebUtils.retrieveGrailsWebRequest().session
+        Client client = ClientBuilder.newClient()
+        WebTarget target = client.target(new Links().API_GATEWAY)
+       
         try
         {
             Response apiResponse = target
@@ -857,9 +857,9 @@ class EntityService {
     //Tax
     def saveRule(JSONObject jsonObject)
     {
-        Client client = ClientBuilder.newClient();
-        WebTarget target = client.target(new Links().API_GATEWAY);
-        GrailsHttpSession session = WebUtils.retrieveGrailsWebRequest().session
+        Client client = ClientBuilder.newClient()
+        WebTarget target = client.target(new Links().API_GATEWAY)
+       
         try
         {
             println(jsonObject)
@@ -884,9 +884,9 @@ class EntityService {
      */
     def showRule(JSONObject jsonObject)
     {
-        Client client = ClientBuilder.newClient();
-        WebTarget target = client.target(new Links().API_GATEWAY);
-        GrailsHttpSession session = WebUtils.retrieveGrailsWebRequest().session
+        Client client = ClientBuilder.newClient()
+        WebTarget target = client.target(new Links().API_GATEWAY)
+       
         try
         {
             Response apiResponse = target
@@ -905,9 +905,9 @@ class EntityService {
 
     def putRule(JSONObject jsonObject)
     {
-        Client client = ClientBuilder.newClient();
-        WebTarget target = client.target(new Links().API_GATEWAY);
-        GrailsHttpSession session = WebUtils.retrieveGrailsWebRequest().session
+        Client client = ClientBuilder.newClient()
+        WebTarget target = client.target(new Links().API_GATEWAY)
+       
         try
         {
             Response apiResponse = target
@@ -932,9 +932,9 @@ class EntityService {
      */
     def deleteRule(JSONObject jsonObject)
     {
-        Client client = ClientBuilder.newClient();
-        WebTarget target = client.target(new Links().API_GATEWAY);
-        GrailsHttpSession session = WebUtils.retrieveGrailsWebRequest().session
+        Client client = ClientBuilder.newClient()
+        WebTarget target = client.target(new Links().API_GATEWAY)
+       
         try
         {
             Response apiResponse = target
@@ -955,9 +955,9 @@ class EntityService {
     //Tax
     def saveTax(JSONObject jsonObject)
     {
-        Client client = ClientBuilder.newClient();
-        WebTarget target = client.target(new Links().API_GATEWAY);
-        GrailsHttpSession session = WebUtils.retrieveGrailsWebRequest().session
+        Client client = ClientBuilder.newClient()
+        WebTarget target = client.target(new Links().API_GATEWAY)
+       
         try
         {
             println(jsonObject)
@@ -982,9 +982,9 @@ class EntityService {
      */
     def showTax(JSONObject jsonObject)
     {
-        Client client = ClientBuilder.newClient();
-        WebTarget target = client.target(new Links().API_GATEWAY);
-        GrailsHttpSession session = WebUtils.retrieveGrailsWebRequest().session
+        Client client = ClientBuilder.newClient()
+        WebTarget target = client.target(new Links().API_GATEWAY)
+       
         try
         {
             Response apiResponse = target
@@ -1003,9 +1003,9 @@ class EntityService {
 
     def putTax(JSONObject jsonObject)
     {
-        Client client = ClientBuilder.newClient();
-        WebTarget target = client.target(new Links().API_GATEWAY);
-        GrailsHttpSession session = WebUtils.retrieveGrailsWebRequest().session
+        Client client = ClientBuilder.newClient()
+        WebTarget target = client.target(new Links().API_GATEWAY)
+       
         try
         {
             Response apiResponse = target
@@ -1030,9 +1030,9 @@ class EntityService {
      */
     def deleteTax(JSONObject jsonObject)
     {
-        Client client = ClientBuilder.newClient();
-        WebTarget target = client.target(new Links().API_GATEWAY);
-        GrailsHttpSession session = WebUtils.retrieveGrailsWebRequest().session
+        Client client = ClientBuilder.newClient()
+        WebTarget target = client.target(new Links().API_GATEWAY)
+       
         try
         {
             Response apiResponse = target
@@ -1054,8 +1054,8 @@ class EntityService {
     def saveTerritory(JSONObject jsonObject)
     {
         Client client = ClientBuilder.newClient().register(JacksonFeature.class)
-        WebTarget target = client.target(new Links().API_GATEWAY);
-        GrailsHttpSession session = WebUtils.retrieveGrailsWebRequest().session
+        WebTarget target = client.target(new Links().API_GATEWAY)
+       
         try
         {
             println(jsonObject)
@@ -1081,8 +1081,8 @@ class EntityService {
     def showTerritory(JSONObject jsonObject)
     {
         Client client = ClientBuilder.newClient()
-        WebTarget target = client.target(new Links().API_GATEWAY);
-        GrailsHttpSession session = WebUtils.retrieveGrailsWebRequest().session
+        WebTarget target = client.target(new Links().API_GATEWAY)
+       
         try
         {
             Response apiResponse = target
@@ -1102,8 +1102,8 @@ class EntityService {
     def putTerritory(JSONObject jsonObject)
     {
         Client client = ClientBuilder.newClient().register(JacksonFeature.class)
-        WebTarget target = client.target(new Links().API_GATEWAY);
-        GrailsHttpSession session = WebUtils.retrieveGrailsWebRequest().session
+        WebTarget target = client.target(new Links().API_GATEWAY)
+       
         try
         {
             Response apiResponse = target
@@ -1128,9 +1128,9 @@ class EntityService {
      */
     def deleteTerritory(JSONObject jsonObject)
     {
-        Client client = ClientBuilder.newClient();
-        WebTarget target = client.target(new Links().API_GATEWAY);
-        GrailsHttpSession session = WebUtils.retrieveGrailsWebRequest().session
+        Client client = ClientBuilder.newClient()
+        WebTarget target = client.target(new Links().API_GATEWAY)
+       
         try
         {
             Response apiResponse = target
@@ -1151,9 +1151,9 @@ class EntityService {
     //Terms Condition
     def saveTermsCondition(JSONObject jsonObject)
     {
-        Client client = ClientBuilder.newClient();
-        WebTarget target = client.target(new Links().API_GATEWAY);
-        GrailsHttpSession session = WebUtils.retrieveGrailsWebRequest().session
+        Client client = ClientBuilder.newClient()
+        WebTarget target = client.target(new Links().API_GATEWAY)
+       
         try
         {
             println(jsonObject)
@@ -1178,9 +1178,9 @@ class EntityService {
      */
     def showTermsCondtion(JSONObject jsonObject)
     {
-        Client client = ClientBuilder.newClient();
-        WebTarget target = client.target(new Links().API_GATEWAY);
-        GrailsHttpSession session = WebUtils.retrieveGrailsWebRequest().session
+        Client client = ClientBuilder.newClient()
+        WebTarget target = client.target(new Links().API_GATEWAY)
+       
         try
         {
             Response apiResponse = target
@@ -1199,9 +1199,9 @@ class EntityService {
 
     def putTermsCondtion(JSONObject jsonObject)
     {
-        Client client = ClientBuilder.newClient();
-        WebTarget target = client.target(new Links().API_GATEWAY);
-        GrailsHttpSession session = WebUtils.retrieveGrailsWebRequest().session
+        Client client = ClientBuilder.newClient()
+        WebTarget target = client.target(new Links().API_GATEWAY)
+       
         try
         {
             Response apiResponse = target
@@ -1226,9 +1226,9 @@ class EntityService {
      */
     def deleteTermsCondtion(JSONObject jsonObject)
     {
-        Client client = ClientBuilder.newClient();
-        WebTarget target = client.target(new Links().API_GATEWAY);
-        GrailsHttpSession session = WebUtils.retrieveGrailsWebRequest().session
+        Client client = ClientBuilder.newClient()
+        WebTarget target = client.target(new Links().API_GATEWAY)
+       
         try
         {
             Response apiResponse = target
@@ -1249,9 +1249,9 @@ class EntityService {
     //Series Master
     def saveSeries(JSONObject jsonObject)
     {
-        Client client = ClientBuilder.newClient();
-        WebTarget target = client.target(new Links().API_GATEWAY);
-        GrailsHttpSession session = WebUtils.retrieveGrailsWebRequest().session
+        Client client = ClientBuilder.newClient()
+        WebTarget target = client.target(new Links().API_GATEWAY)
+       
         try
         {
             println(jsonObject)
@@ -1276,9 +1276,9 @@ class EntityService {
      */
     def showSeries(JSONObject jsonObject)
     {
-        Client client = ClientBuilder.newClient();
-        WebTarget target = client.target(new Links().API_GATEWAY);
-        GrailsHttpSession session = WebUtils.retrieveGrailsWebRequest().session
+        Client client = ClientBuilder.newClient()
+        WebTarget target = client.target(new Links().API_GATEWAY)
+       
         try
         {
             Response apiResponse = target
@@ -1297,9 +1297,9 @@ class EntityService {
 
     def putSeries(JSONObject jsonObject)
     {
-        Client client = ClientBuilder.newClient();
-        WebTarget target = client.target(new Links().API_GATEWAY);
-        GrailsHttpSession session = WebUtils.retrieveGrailsWebRequest().session
+        Client client = ClientBuilder.newClient()
+        WebTarget target = client.target(new Links().API_GATEWAY)
+       
         try
         {
             Response apiResponse = target
@@ -1324,9 +1324,9 @@ class EntityService {
      */
     def deleteSeries(JSONObject jsonObject)
     {
-        Client client = ClientBuilder.newClient();
-        WebTarget target = client.target(new Links().API_GATEWAY);
-        GrailsHttpSession session = WebUtils.retrieveGrailsWebRequest().session
+        Client client = ClientBuilder.newClient()
+        WebTarget target = client.target(new Links().API_GATEWAY)
+       
         try
         {
             Response apiResponse = target
@@ -1347,9 +1347,9 @@ class EntityService {
     //Series Master
     def saveServiceType(JSONObject jsonObject)
     {
-        Client client = ClientBuilder.newClient();
-        WebTarget target = client.target(new Links().API_GATEWAY);
-        GrailsHttpSession session = WebUtils.retrieveGrailsWebRequest().session
+        Client client = ClientBuilder.newClient()
+        WebTarget target = client.target(new Links().API_GATEWAY)
+       
         try
         {
             println(jsonObject)
@@ -1374,9 +1374,9 @@ class EntityService {
      */
     def showServiceType(JSONObject jsonObject)
     {
-        Client client = ClientBuilder.newClient();
-        WebTarget target = client.target(new Links().API_GATEWAY);
-        GrailsHttpSession session = WebUtils.retrieveGrailsWebRequest().session
+        Client client = ClientBuilder.newClient()
+        WebTarget target = client.target(new Links().API_GATEWAY)
+       
         try
         {
             Response apiResponse = target
@@ -1395,9 +1395,9 @@ class EntityService {
 
     def putServiceType(JSONObject jsonObject)
     {
-        Client client = ClientBuilder.newClient();
-        WebTarget target = client.target(new Links().API_GATEWAY);
-        GrailsHttpSession session = WebUtils.retrieveGrailsWebRequest().session
+        Client client = ClientBuilder.newClient()
+        WebTarget target = client.target(new Links().API_GATEWAY)
+       
         try
         {
             Response apiResponse = target
@@ -1422,9 +1422,9 @@ class EntityService {
      */
     def deleteServiceType(JSONObject jsonObject)
     {
-        Client client = ClientBuilder.newClient();
-        WebTarget target = client.target(new Links().API_GATEWAY);
-        GrailsHttpSession session = WebUtils.retrieveGrailsWebRequest().session
+        Client client = ClientBuilder.newClient()
+        WebTarget target = client.target(new Links().API_GATEWAY)
+       
         try
         {
             Response apiResponse = target
@@ -1443,9 +1443,9 @@ class EntityService {
 
 
     def getEntity() {
-        Client client = ClientBuilder.newClient();
-        WebTarget target = client.target(new Links().API_GATEWAY);
-        GrailsHttpSession session = WebUtils.retrieveGrailsWebRequest().session
+        Client client = ClientBuilder.newClient()
+        WebTarget target = client.target(new Links().API_GATEWAY)
+       
         try {
 
             Response apiResponse = target
@@ -1456,16 +1456,36 @@ class EntityService {
             return apiResponse
         }
         catch (Exception ex) {
-            System.err.println('Service :ProductService , action :  getProducts  , Ex:' + ex)
-            log.error('Service :ProductService , action :  getProducts  , Ex:' + ex)
+            System.err.println('Service :EntityService , action :  getProducts  , Ex:' + ex)
+            log.error('Service :EntityService , action :  getProducts  , Ex:' + ex)
+        }
+    }
+
+    def getEntityByAffiliates(String id) {
+        Client client = ClientBuilder.newClient()
+        WebTarget target = client.target(new Links().API_GATEWAY)
+
+        try {
+
+            Response apiResponse = target
+                    .path(new Links().ENTITY_REGISTER_AFFILIATE + "/" + id)
+                    .request(MediaType.APPLICATION_JSON_TYPE)
+                    .get()
+
+            return apiResponse
+        }
+        catch (Exception ex) {
+            System.err.println('Service :EntityService , action :  getProducts  , Ex:' + ex)
+            log.error('Service :EntityService , action :  getProducts  , Ex:' + ex)
         }
     }
 
 
+
     def getTaxRegister() {
-        Client client = ClientBuilder.newClient();
-        WebTarget target = client.target(new Links().API_GATEWAY);
-        GrailsHttpSession session = WebUtils.retrieveGrailsWebRequest().session
+        Client client = ClientBuilder.newClient()
+        WebTarget target = client.target(new Links().API_GATEWAY)
+       
         try {
 
             Response apiResponse = target
@@ -1476,15 +1496,15 @@ class EntityService {
             return apiResponse
         }
         catch (Exception ex) {
-            System.err.println('Service :ProductService , action :  getProducts  , Ex:' + ex)
-            log.error('Service :ProductService , action :  getProducts  , Ex:' + ex)
+            System.err.println('Service :EntityService , action :  getProducts  , Ex:' + ex)
+            log.error('Service :EntityService , action :  getProducts  , Ex:' + ex)
         }
     }
 
     def getEntityType() {
-        Client client = ClientBuilder.newClient();
-        WebTarget target = client.target(new Links().API_GATEWAY);
-        GrailsHttpSession session = WebUtils.retrieveGrailsWebRequest().session
+        Client client = ClientBuilder.newClient()
+        WebTarget target = client.target(new Links().API_GATEWAY)
+       
         try {
 
             Response apiResponse = target
@@ -1495,15 +1515,15 @@ class EntityService {
             return apiResponse
         }
         catch (Exception ex) {
-            System.err.println('Service :ProductService , action :  getProducts  , Ex:' + ex)
-            log.error('Service :ProductService , action :  getProducts  , Ex:' + ex)
+            System.err.println('Service :EntityService , action :  getProducts  , Ex:' + ex)
+            log.error('Service :EntityService , action :  getProducts  , Ex:' + ex)
         }
     }
 
     def getUserRegister() {
-        Client client = ClientBuilder.newClient();
-        WebTarget target = client.target(new Links().API_GATEWAY);
-        GrailsHttpSession session = WebUtils.retrieveGrailsWebRequest().session
+        Client client = ClientBuilder.newClient()
+        WebTarget target = client.target(new Links().API_GATEWAY)
+       
         try {
 
             Response apiResponse = target
@@ -1514,15 +1534,15 @@ class EntityService {
             return apiResponse
         }
         catch (Exception ex) {
-            System.err.println('Service :ProductService , action :  getProducts  , Ex:' + ex)
-            log.error('Service :ProductService , action :  getProducts  , Ex:' + ex)
+            System.err.println('Service :EntityService , action :  getProducts  , Ex:' + ex)
+            log.error('Service :EntityService , action :  getProducts  , Ex:' + ex)
         }
     }
 
     def getSeries() {
-        Client client = ClientBuilder.newClient();
-        WebTarget target = client.target(new Links().API_GATEWAY);
-        GrailsHttpSession session = WebUtils.retrieveGrailsWebRequest().session
+        Client client = ClientBuilder.newClient()
+        WebTarget target = client.target(new Links().API_GATEWAY)
+       
         try {
 
             Response apiResponse = target
@@ -1533,8 +1553,29 @@ class EntityService {
             return apiResponse
         }
         catch (Exception ex) {
-            System.err.println('Service :ProductService , action :  getProducts  , Ex:' + ex)
-            log.error('Service :ProductService , action :  getProducts  , Ex:' + ex)
+            System.err.println('Service :EntityService , action :  getProducts  , Ex:' + ex)
+            log.error('Service :EntityService , action :  getProducts  , Ex:' + ex)
         }
     }
+
+    def getSeriesByEntity(String id) {
+        Client client = ClientBuilder.newClient()
+        WebTarget target = client.target(new Links().API_GATEWAY)
+       
+        try {
+
+            Response apiResponse = target
+                    .path(new Links().SERIES_MASTER_BY_ENTITY + "/"+id)
+                    .request(MediaType.APPLICATION_JSON_TYPE)
+                    .get()
+
+            return apiResponse
+        }
+        catch (Exception ex) {
+            System.err.println('Service :EntityService , action :  getSeriesByEntity  , Ex:' + ex)
+            log.error('Service :EntityService , action :  getSeriesByEntity  , Ex:' + ex)
+        }
+    }
+
+    
 }

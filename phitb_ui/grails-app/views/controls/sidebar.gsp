@@ -534,14 +534,6 @@
                             <h6>${session.getAttribute("userName")}</h6>
 
                             <p class="m-b-0">${session.getAttribute("entityName")}</p>
-                            <a href="javascript:void(0);" title="" class=" waves-effect waves-block"><i
-                                    class="zmdi zmdi-facebook-box"></i></a>
-                            <a href="javascript:void(0);" title="" class=" waves-effect waves-block"><i
-                                    class="zmdi zmdi-linkedin-box"></i></a>
-                            <a href="javascript:void(0);" title="" class=" waves-effect waves-block"><i
-                                    class="zmdi zmdi-instagram"></i></a>
-                            <a href="javascript:void(0);" title="" class=" waves-effect waves-block"><i
-                                    class="zmdi zmdi-twitter-box"></i></a>
                         </div>
                     </div>
                 </li>
