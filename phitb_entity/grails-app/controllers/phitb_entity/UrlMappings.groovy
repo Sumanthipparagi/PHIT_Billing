@@ -93,6 +93,11 @@ class UrlMappings
             "/entityregisterbyentitytype/$id(.$format)?"(controller: 'entityRegister') {
                 action = [GET: 'getAllByEntityTypeId']
             }
+            "/entityregister/affiliate/$id(.$format)?"(controller: 'entityRegister') {
+                action = [GET: 'getByAffiliateId']
+            }
+
+
 
 
             //Entity Type Master

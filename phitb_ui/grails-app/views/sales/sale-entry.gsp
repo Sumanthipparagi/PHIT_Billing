@@ -40,26 +40,26 @@
         <div class="block-header" style="padding: 1px;">
             <div class="row clearfix">
                 <div class="col-lg-5 col-md-5 col-sm-12">
-                    <h2>Sale Entry</h2>
+                    %{--<h2>Sale Entry</h2>--}%
                     <ul class="breadcrumb padding-0">
                         <li class="breadcrumb-item"><a href="#"><i class="zmdi zmdi-home"></i></a></li>
                         <li class="breadcrumb-item active">Sale Entry</li>
                     </ul>
                 </div>
 
-                <div class="col-lg-7 col-md-7 col-sm-12">
+               %{-- <div class="col-lg-7 col-md-7 col-sm-12">
                     <div class="input-group m-b-0">
                         <input type="text" class="form-control" placeholder="Search...">
                         <span class="input-group-addon">
                             <i class="zmdi zmdi-search"></i>
                         </span>
                     </div>
-                </div>
+                </div>--}%
             </div>
         </div>
 
         <div class="row clearfix">
-            <div class="col-lg-6">
+            <div class="col-lg-12">
                 <div class="card">
                     <div class="header" style="padding: 1px;">
 
@@ -67,22 +67,11 @@
 
                     <div class="body">
                         <div class="row">
-                            <div class="col-md-6">
+                            <div class="col-md-3">
                                 <label for="date">Date:</label>
                                 <input type="date" class="form-control date" name="date" id="date"/>
                             </div>
-                            <div class="col-md-6">
-                                <label for="documentId">Document ID:</label>
-                                <input type="text" class="form-control documentId" name="date" id="documentId"/>
-                            </div>
-
-                        </div>
-                        <div class="row">
-                            <div class="col-md-6">
-                                <label for="status">Status:</label>
-                                <select id="status" name="status"><option>PAID</option></select>
-                            </div>
-                            <div class="col-md-6">
+                            <div class="col-md-3">
                                 <label for="series">Series:</label>
                                 <select id="series" name="series">
                                     <g:each in="${series}" var="sr">
@@ -90,28 +79,21 @@
                                     </g:each>
                                 </select>
                             </div>
+                            <div class="col-md-3">
+                                <label for="documentId">Document ID:</label>
+                                <input type="text" class="form-control documentId" name="date" id="documentId"/>
+                            </div>
+                            <div class="col-md-3">
+                                <label for="customerSelect">Customer:</label>
+                                <select class="form-control" id="customerSelect">
+                                    <g:each in="${customers}" var="cs">
+                                        <g:if test="${cs.id != session.getAttribute("entityId")}">
+                                            <option value="${cs.id}">${cs.entityName}</option>
+                                        </g:if>
+                                    </g:each>
+                                </select>
+                            </div>
 
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="col-lg-6">
-                <div class="card">
-
-                    <div class="body">
-                        <div class="header" style="padding: 1px;">
-                            Customer
-                        </div>
-
-                        <div class="form-group">
-                            <select class="form-control" id="customerSelect">
-                                <g:each in="${entity}" var="en">
-                                    <g:if test="${en.id != session.getAttribute("entityId")}">
-                                        <option value="${en.id}">${en.entityName}</option>
-                                    </g:if>
-                                </g:each>
-                            </select>
                         </div>
                     </div>
                 </div>

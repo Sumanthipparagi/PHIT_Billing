@@ -95,6 +95,7 @@ public class Links
     public static String ENTITY_REGISTER_DATATABLE = "api/v1.0/entity/entityregister/datatable";
     public static String ENTITY_REGISTER_UPDATE = "api/v1.0/entity/entityregister/{id}";
     public static String ENTITY_REGISTER_DELETE = "api/v1.0/entity/entityregister/{id}";
+    public static String ENTITY_REGISTER_AFFILIATE = "api/v1.0/entity/entityregister/affiliate";
 
 
     //User Register
