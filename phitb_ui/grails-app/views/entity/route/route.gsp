@@ -299,6 +299,11 @@
         $(".routeTitle").text("Update Region");
     });
 
+    $('.entity').change(function(){
+        var type = $('option:selected', this).attr('data-type');
+        $(".entityType").val(type);
+    });
+
 
     $(document).on("click", ".deletebtn", function () {
         id = $(this).data('id');

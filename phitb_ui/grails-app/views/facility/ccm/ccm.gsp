@@ -304,14 +304,17 @@
         $(".kitNumber").val($(this).attr('data-kitNumber'));
         $(".machinePartNumber").val($(this).attr('data-machinePartNumber'));
         $(".entityRegister").val($(this).attr('data-entity'));
-        $("#entityRegister").val($(this).data('entity')).change()
+        $(".entity").val($(this).data('entity')).change()
         $(".entityType").val($(this).attr('data-entitytype')).change()
         $('.purchaseDate').val($(this).attr('data-purchaseDate'));
         $('.expiryDate').val($(this).attr('data-expiryDate'));
-        $(".formTitle").text("Update Ccm");
+        $(".ccmTitle").text("Update CCM");
     });
 
-
+    $('.entity').change(function(){
+        var type = $('option:selected', this).attr('data-type');
+        $(".entityTypeId").val(type);
+    });
 
 
     $(document).on("click", ".deletebtn", function () {

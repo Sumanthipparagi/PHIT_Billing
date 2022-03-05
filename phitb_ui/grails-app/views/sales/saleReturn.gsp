@@ -1,7 +1,7 @@
 <%@ page contentType="text/html;charset=UTF-8" %>
 <html>
 <head>
-    <title>Sale Invoice</title>
+    <title>Sale Return</title>
 
     <script type="text/javascript">
         function generateBarCode() {
@@ -83,22 +83,22 @@
             BANGLORE 560074 State Code:29 State Name: Karnataka
             KENGERI HOBLI, BANGLORE</sub>
         </td>
-        <td style="width: 16%;vertical-align:top;"><b>Bill to Address :(1012700)</b><br>
+        <td style="width: 16%;vertical-align:top;"><b>Bill to  Address :(1012700)</b><br>
             <b>CHETHANA PHARMA</b><br>
             <sub>1ST FLOOR CHETHAN SRI VASVIARCHADE M.G. ROAD CHICKMAGALUR 577101
             </sub>
         </td>
-        <td style="width: 16%;vertical-align:top;"><b>Ship to Address :(1012700)</b><br>
+        <td style="width: 16%;vertical-align:top;"><b>Ship to  Address :(1012700)</b><br>
             <b>CHETHANA PHARMA</b><br>
             <sub>1ST FLOOR CHETHAN SRI VASVIARCHADE M.G. ROAD CHICKMAGALUR 577101
             </sub>
         </td>
 
         <td style="width: 25%;vertical-align:top;">
-            <strong>TAX INVOICE (Future Mankind)</strong>
+            <strong>CREDIT NOTE (Future Mankind)</strong>
             <ul style="margin: 0;">
-                <li><b class="tab">Invoice No</b>: 955932676</li>
-                <li><b class="tab">Inv Date</b>: 10.12.2021</li>
+                %{--                <li><b class="tab">Debit No</b>: 955932676</li>--}%
+                <li><b class="tab">Credit Date</b>: 10.12.2021</li>
                 <li><b class="tab">GR/PR No.</b>:</li>
                 <li><b class="tab">GR/PR Date</b>:</li>
                 <li><b class="tab">No of cases</b>:</li>

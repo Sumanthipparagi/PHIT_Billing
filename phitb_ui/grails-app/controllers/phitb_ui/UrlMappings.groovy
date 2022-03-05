@@ -20,6 +20,7 @@ class UrlMappings {
         "/forms"(controller: 'dashboard', action: 'forms')
         "/table"(controller: 'dashboard', action: 'table')
         "/timeline"(controller: 'dashboard', action: 'timeline')
+        "/api/media/$path**"(controller: "fileLocation", action: "index")
 /*<-------------------------------------------System ------------------------------------------------->*/
 
         "/accountmodes"(controller: "accountMode") {
@@ -355,6 +356,17 @@ class UrlMappings {
 //        "/sale-entry/datatable"(controller: "batchRegister", action: 'dataTable')
 
         "/sale-invoice"(controller: "saleEntry",action:"saleBill")
+
+        "/sale-return"(controller: "saleEntry",action:"saleRetrun")
+
+        /*<-------------------------------------------Purchase Entry------------------------------------------------->*/
+
+
+        "/purchase-entry"(controller: "purchaseEntry") {
+            action = [GET: 'index', POST: 'save']
+        }
+
+        "/purchase-retrun"(controller: 'purchaseEntry', action: 'purchaseReturn')
 
         //Inventory
         "/stockbook/product/$id"(controller: "stockBook",action:"getStocksOfProduct")

@@ -287,6 +287,11 @@
         $(".regionTitle").text("Update Region");
     });
 
+    $('.entity').change(function(){
+        var type = $('option:selected', this).attr('data-type');
+        $(".entityType").val(type);
+    });
+
 
 
 

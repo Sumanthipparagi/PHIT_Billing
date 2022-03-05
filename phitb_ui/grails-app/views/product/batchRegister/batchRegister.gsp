@@ -339,7 +339,10 @@
         $(".batchTitle").text("Update Batch Register");
     });
 
-
+    $('.entityId').change(function(){
+        var type = $('option:selected', this).attr('data-type');
+        $(".entityTypeId").val(type);
+    });
 
 
     $(document).on("click", ".deletebtn", function () {

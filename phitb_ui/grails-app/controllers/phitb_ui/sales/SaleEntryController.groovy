@@ -36,4 +36,9 @@ class SaleEntryController {
     {
         render(view: '/sales/sale-invoice')
     }
+
+    def saleRetrun()
+    {
+        render(view: '/sales/saleReturn')
+    }
 }

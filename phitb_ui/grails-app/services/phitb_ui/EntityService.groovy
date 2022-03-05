@@ -3,13 +3,18 @@ package phitb_ui
 import grails.gorm.transactions.Transactional
 import grails.web.servlet.mvc.GrailsHttpSession
 import org.glassfish.jersey.jackson.JacksonFeature
+import org.glassfish.jersey.media.multipart.FormDataMultiPart
+import org.glassfish.jersey.media.multipart.file.FileDataBodyPart
 import org.grails.web.json.JSONObject
 import org.grails.web.util.WebUtils
+import org.springframework.web.multipart.MultipartFile
+import sun.text.resources.cldr.mua.FormatData_mua
 
 import javax.ws.rs.client.Client
 import javax.ws.rs.client.ClientBuilder
 import javax.ws.rs.client.Entity
 import javax.ws.rs.client.WebTarget
+import javax.ws.rs.core.Form
 import javax.ws.rs.core.MediaType
 import javax.ws.rs.core.Response
 
@@ -118,10 +123,8 @@ class EntityService {
     {
         Client client = ClientBuilder.newClient()
         WebTarget target = client.target(new Links().API_GATEWAY)
-       
         try
         {
-            println(jsonObject)
             Response apiResponse = target
                     .path(new Links().USER_REGISTER_SAVE)
                     .request(MediaType.APPLICATION_JSON_TYPE)
@@ -217,13 +220,17 @@ class EntityService {
         }
     }
 
-    def putUser(JSONObject jsonObject)
+    def putUser(JSONObject jsonObject, MultipartFile multipartFile)
     {
         Client client = ClientBuilder.newClient()
         WebTarget target = client.target(new Links().API_GATEWAY)
-       
+        File file = convert(multipartFile)
         try
         {
+            if (file.size() != 0)
+            {
+                jsonObject.put("photo",file.name)
+            }
             Response apiResponse = target
                     .path(new Links().USER_REGISTER_UPDATE)
                     .resolveTemplate("id", jsonObject.id)
@@ -370,7 +377,6 @@ class EntityService {
     {
         Client client = ClientBuilder.newClient()
         WebTarget target = client.target(new Links().API_GATEWAY)
-       
         try
         {
             println(jsonObject)
@@ -1577,5 +1583,14 @@ class EntityService {
         }
     }
 
-    
+
+    def convert(MultipartFile multipartFile)
+    {
+        String fileName = UtilService.uploadFile('user/', multipartFile, null)
+        File file = new File(new FileManagementService().getApplicationPath() + 'user' + File.separator + fileName)
+        return file
+    }
+
+
+
 }

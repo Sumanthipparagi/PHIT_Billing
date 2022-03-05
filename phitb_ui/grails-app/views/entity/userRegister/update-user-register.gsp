@@ -1,3 +1,4 @@
+<%@ page import="phitb_ui.Constants" %>
 <!doctype html>
 <html class="no-js " lang="en">
 <head>
@@ -19,6 +20,7 @@
     <asset:stylesheet  src="/themeassets/plugins/bootstrap-select/css/bootstrap-select.css" rel="stylesheet" />
     <asset:stylesheet  src="/themeassets/js/pages/forms/basic-form-elements.js" rel="stylesheet" />
     <asset:stylesheet  src="/themeassets/plugins/bootstrap-material-datetimepicker/css/bootstrap-material-datetimepicker.css" rel="stylesheet" />
+    <asset:stylesheet src="/themeassets/plugins/dropify/dist/css/dropify.min.css"/>
 
 
 </head>
@@ -88,6 +90,15 @@
                                 </div>
 
                                 <div class="col-lg-6 form-group  form-float">
+                                    <label for="password">
+                                        Password
+                                    </label>
+                                    <input type="password" id="password" class="form-control password" name="password"
+                                           value="${userregisterbyId.password}"
+                                           required/>
+                                </div>
+
+                                <div class="col-lg-6 form-group  form-float">
                                     <label for="mobileNumber">
                                         Mobile Number
                                     </label>
@@ -153,9 +164,12 @@
                                     <label for="photo">
                                         Photo
                                     </label>
-                                    <input type="text" id="photo" class="form-control photo"
-                                           name="photo" placeholder="Photo" value="${userregisterbyId.photo}"
-                                           required/>
+                                    %{--                                    <input type="file" id="input-file-now photo" class="dropify"--}%
+                                    %{--                                           data-default-file=""--}%
+                                    %{--                                           name="photo"  accept="image/png, image/gif, image/jpeg"/>--}%
+                                    <input type="file" id="input-file-now photo" class="dropify"
+                                           data-default-file="/api/media/user/${userregisterbyId.photo}"
+                                           name="photo"  accept="image/png, image/gif, image/jpeg"/>
                                 </div>
 
                                 <div class="col-lg-6 form-group  form-float">
@@ -419,25 +433,25 @@
                                     </select>
                                 </div>
 
-                                <div class="col-lg-6 form-group  form-float">
-                                    <label for="entityType">
-                                        Entity Type
-                                    </label>
-                                    <select class="form-control show-tick entityType" name="entityType" id="entityType">
-                                        <g:each var="et" in="${entitytype}">
-                                            <option value="${et.id}"  <g:if
-                                                    test="${et.id == userregisterbyId.entityType}">selected</g:if> >${et.name}</option>
-                                        </g:each>
-                                    </select>
-                                </div>
+%{--                                <div class="col-lg-6 form-group  form-float">--}%
+%{--                                    <label for="entityType">--}%
+%{--                                        Entity Type--}%
+%{--                                    </label>--}%
+%{--                                    <select class="form-control show-tick entityType" name="entityType" id="entityType">--}%
+%{--                                        <g:each var="et" in="${entitytype}">--}%
+%{--                                            <option value="${et.id}"  <g:if--}%
+%{--                                                    test="${et.id == userregisterbyId.entityType}">selected</g:if> >${et.name}</option>--}%
+%{--                                        </g:each>--}%
+%{--                                    </select>--}%
+%{--                                </div>--}%
 
                                 <div class="col-lg-6 form-group  form-float">
                                     <label for="entity">
                                         Entity
                                     </label>
-                                    <select class="form-control show-tick entity" name="entity" id="entity">
+                                    <select class="form-control show-tick entity" name="entity" id="entity" required>
                                         <g:each var="e" in="${entity}">
-                                            <option value="${e.id}" <g:if
+                                            <option value="${e.id}" data-type="${e.entityType.id}" <g:if
                                                     test="${e.id == userregisterbyId.entity}">selected</g:if> >${e.entityName}</option>
                                         </g:each>
                                     </select>
@@ -455,8 +469,7 @@
                                     </select>
                                 </div>
 
-
-                                <input type="hidden" name="entityId" value="1">
+                                <input type="hidden" id="entityTypeId" class="entityType" name="entityType">
                                 <input type="hidden" name="status" value="1">
                                 <input type="hidden" name="syncStatus" value="1">
                                 <input type="hidden" name="lastLoginDate" value="12/02/2020">
@@ -502,6 +515,7 @@
 <asset:javascript src="/themeassets/plugins/momentjs/moment.js"/>
 <asset:javascript src="/themeassets/plugins/bootstrap-material-datetimepicker/js/bootstrap-material-datetimepicker.js"/>
 <asset:javascript src="/themeassets/js/pages/forms/basic-form-elements.js"/>
+<asset:javascript src="/themeassets/plugins/dropify/dist/js/dropify.min.js"/>
 
 <script>
 
@@ -548,6 +562,52 @@
             time: false,
             weekStart: 1
         });
+    });
+
+    $(document).ready(function() {
+        // Basic
+        $('.dropify').dropify();
+
+        // Translated
+        $('.dropify-fr').dropify({
+            messages: {
+                default: 'Glissez-déposez un fichier ici ou cliquez',
+                replace: 'Glissez-déposez un fichier ou cliquez pour remplacer',
+                remove: 'Supprimer',
+                error: 'Désolé, le fichier trop volumineux'
+            }
+        });
+
+        // Used events
+        var drEvent = $('#input-file-events').dropify();
+
+        drEvent.on('dropify.beforeClear', function(event, element) {
+            return confirm("Do you really want to delete \"" + element.file.name + "\" ?");
+        });
+
+        drEvent.on('dropify.afterClear', function(event, element) {
+            alert('File deleted');
+        });
+
+        drEvent.on('dropify.errors', function(event, element) {
+            console.log('Has Errors');
+        });
+
+        var drDestroy = $('#input-file-to-destroy').dropify();
+        drDestroy = drDestroy.data('dropify')
+        $('#toggleDropify').on('click', function(e) {
+            e.preventDefault();
+            if (drDestroy.isDropified()) {
+                drDestroy.destroy();
+            } else {
+                drDestroy.init();
+            }
+        })
+    });
+
+    $('.entity').change(function(){
+        var type = $('option:selected', this).attr('data-type');
+        $(".entityType").val(type);
     });
 </script>
 

@@ -284,6 +284,11 @@
         $(".productGroupTitle").text("Update Product Cost Range");
     });
 
+    $('.entityId').change(function(){
+        var type = $('option:selected', this).attr('data-type');
+        $(".entityTypeId").val(type);
+    });
+
 
 
 

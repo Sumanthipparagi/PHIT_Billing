@@ -271,6 +271,7 @@
     $(document).on("click", ".addbtn", function () {
         $(".formTitle").text("Add Form")
         $(".formForm")[0].reset();
+        $('.entity').prop('selectedIndex',0);
         id = null
     });
 

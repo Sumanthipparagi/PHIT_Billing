@@ -1,7 +1,7 @@
 <%@ page contentType="text/html;charset=UTF-8" %>
 <html>
 <head>
-    <title>Sale Invoice</title>
+    <title>Purchase Return</title>
 
     <script type="text/javascript">
         function generateBarCode() {
@@ -83,22 +83,22 @@
             BANGLORE 560074 State Code:29 State Name: Karnataka
             KENGERI HOBLI, BANGLORE</sub>
         </td>
-        <td style="width: 16%;vertical-align:top;"><b>Bill to Address :(1012700)</b><br>
+        <td style="width: 16%;vertical-align:top;"><b>Bill to Supplier Address :(1012700)</b><br>
             <b>CHETHANA PHARMA</b><br>
             <sub>1ST FLOOR CHETHAN SRI VASVIARCHADE M.G. ROAD CHICKMAGALUR 577101
             </sub>
         </td>
-        <td style="width: 16%;vertical-align:top;"><b>Ship to Address :(1012700)</b><br>
+        <td style="width: 16%;vertical-align:top;"><b>Ship to  Supplier Address :(1012700)</b><br>
             <b>CHETHANA PHARMA</b><br>
             <sub>1ST FLOOR CHETHAN SRI VASVIARCHADE M.G. ROAD CHICKMAGALUR 577101
             </sub>
         </td>
 
         <td style="width: 25%;vertical-align:top;">
-            <strong>TAX INVOICE (Future Mankind)</strong>
+            <strong>DEBIT NOTE (Future Mankind)</strong>
             <ul style="margin: 0;">
-                <li><b class="tab">Invoice No</b>: 955932676</li>
-                <li><b class="tab">Inv Date</b>: 10.12.2021</li>
+%{--                <li><b class="tab">Debit No</b>: 955932676</li>--}%
+                <li><b class="tab">Debit Date</b>: 10.12.2021</li>
                 <li><b class="tab">GR/PR No.</b>:</li>
                 <li><b class="tab">GR/PR Date</b>:</li>
                 <li><b class="tab">No of cases</b>:</li>
@@ -168,7 +168,7 @@
         <th>C</th>
         <th>Mfg Name/ Batch</th>
         <th>Mfg Date/ Exp Date</th>
-        <th>Mfg Date/ Use Before</th>
+        <th>Balance</th>
         <th>MRP</th>
         <th>PTR</th>
         <th>PTS</th>
@@ -187,7 +187,7 @@
         <td>D</td>
         <td>SWISS GARNIER BIOTECH PVT A0JQU026</td>
         <td>JUN-21<br>NOV-22</td>
-        <td>&nbsp;</td>
+        <td>2000</td>
         <td>17.50</td>
         <td>12.50</td>
         <td>11.25</td>
@@ -206,7 +206,7 @@
         <td>D</td>
         <td>J.K. PRINT PACKS (PHARMA D H2HPU016)</td>
         <td>JUN-21<br>MAY-23</td>
-        <td>&nbsp;</td>
+        <td>2000</td>
         <td>139.90</td>
         <td>99.93</td>
         <td>89.94</td>
@@ -225,7 +225,7 @@
         <td>D</td>
         <td>J.K. PRINT PACKS (PHARMA D H2HPU016)</td>
         <td>JUN-21<br>MAY-23</td>
-        <td>&nbsp;</td>
+        <td>2000</td>
         <td>139.90</td>
         <td>99.93</td>
         <td>89.94</td>
@@ -244,7 +244,7 @@
         <td>D</td>
         <td>J.K. PRINT PACKS (PHARMA D H2HPU016)</td>
         <td>JUN-21<br>MAY-23</td>
-        <td>&nbsp;</td>
+        <td>2000</td>
         <td>139.90</td>
         <td>99.93</td>
         <td>89.94</td>
@@ -263,7 +263,7 @@
         <td>D</td>
         <td>PHARMA FORCE LAB-UNIT H6AIU112</td>
         <td>JUL-21<br>DEC-22</td>
-        <td>&nbsp;</td>
+        <td>2000</td>
         <td>144.17</td>
         <td>102.98</td>
         <td>92.68</td>
@@ -282,7 +282,7 @@
         <td>D</td>
         <td>PHARMA FORCE LAB-UNIT H6AIU112</td>
         <td>JUL-21<br>DEC-22</td>
-        <td>&nbsp;</td>
+        <td>2000</td>
         <td>144.17</td>
         <td>102.98</td>
         <td>92.68</td>

@@ -9,21 +9,16 @@ import phitb_entity.Exception.ResourceNotFoundException
 import java.text.SimpleDateFormat
 
 @Transactional
-class UserRegisterService
-{
+class UserRegisterService {
 
     SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy")
 
-    def getAll(String limit, String offset, String query)
-    {
+    def getAll(String limit, String offset, String query) {
         Integer o = offset ? Integer.parseInt(offset.toString()) : 0
         Integer l = limit ? Integer.parseInt(limit.toString()) : 100
-        if (!query)
-        {
+        if (!query) {
             return UserRegister.findAll([sort: 'id', max: l, offset: o, order: 'desc'])
-        }
-        else
-        {
+        } else {
             return UserRegister.findAllByUserName("%" + query + "%", [sort: 'id', max: l, offset: o, order: 'desc'])
         }
     }
@@ -38,25 +33,21 @@ class UserRegisterService
     }
 
 
-    UserRegister get(String id)
-    {
+    UserRegister get(String id) {
         return UserRegister.findById(Long.parseLong(id))
     }
 
-    UserRegister getByUsername(String username)
-    {
+    UserRegister getByUsername(String username) {
         return UserRegister.findByUserName(username)
     }
 
-    JSONObject dataTables(JSONObject paramsJsonObject, String start, String length)
-    {
+    JSONObject dataTables(JSONObject paramsJsonObject, String start, String length) {
         String searchTerm = paramsJsonObject.get("search[value]")
         String orderColumnId = paramsJsonObject.get("order[0][column]")
         String orderDir = paramsJsonObject.get("order[0][dir]")
 
         String orderColumn = "id"
-        switch (orderColumnId)
-        {
+        switch (orderColumnId) {
             case '0':
                 orderColumn = "id"
                 break;
@@ -69,8 +60,7 @@ class UserRegisterService
         def userRegisterCriteria = UserRegister.createCriteria()
         def userRegisterArrayList = userRegisterCriteria.list(max: max, offset: offset) {
             or {
-                if (searchTerm != "")
-                {
+                if (searchTerm != "") {
                     ilike('userName', '%' + searchTerm + '%')
                 }
             }
@@ -86,8 +76,7 @@ class UserRegisterService
         return jsonObject
     }
 
-    UserRegister save(JSONObject jsonObject)
-    {
+    UserRegister save(JSONObject jsonObject) {
         UserRegister userRegister = new UserRegister()
         userRegister.userName = jsonObject.get("userName").toString()
         userRegister.mobileNumber = jsonObject.get("mobileNumber").toString()
@@ -95,6 +84,7 @@ class UserRegisterService
         userRegister.aadharId = jsonObject.get("aadharId").toString()
         userRegister.email = jsonObject.get("email").toString()
         userRegister.photo = jsonObject.get("photo").toString()
+        userRegister.photo = userRegister.getPhoto()
         userRegister.nationality = jsonObject.get("nationality").toString()
         userRegister.address = jsonObject.get("address").toString()
         userRegister.referenceRelation = jsonObject.get("referenceRelation").toString()
@@ -131,33 +121,35 @@ class UserRegisterService
         userRegister.createdUser = Long.parseLong(jsonObject.get("createdUser").toString())
         userRegister.modifiedUser = Long.parseLong(jsonObject.get("modifiedUser").toString())
         userRegister.save(flush: true)
-        if (!userRegister.hasErrors())
-        {
+        if (!userRegister.hasErrors()) {
             AuthRegister authRegister = new AuthRegister()
             authRegister.user = userRegister
             authRegister.username = userRegister.userName
             authRegister.password = new AuthRegisterService().hashPassword(jsonObject.get("password").toString())
-            authRegister.save(flush:true)
+            authRegister.save(flush: true)
             return userRegister
-        }
-        else
-        {
+        } else {
             throw new BadRequestException()
         }
     }
 
-    UserRegister update(JSONObject jsonObject, String id)
-    {
+    UserRegister update(JSONObject jsonObject, String id) {
         UserRegister userRegister = UserRegister.findById(Long.parseLong(id))
-        if (userRegister)
-        {
+        if (userRegister) {
             userRegister.isUpdatable = true
             userRegister.userName = jsonObject.get("userName").toString()
             userRegister.mobileNumber = jsonObject.get("mobileNumber").toString()
             userRegister.contactNumber = jsonObject.get("contactNumber").toString()
             userRegister.aadharId = jsonObject.get("aadharId").toString()
             userRegister.email = jsonObject.get("email").toString()
-            userRegister.photo = jsonObject.get("photo").toString()
+            if(userRegister.getPhoto()!='')
+            {
+                userRegister.photo = jsonObject.get("photo").toString()
+            }
+            else
+            {
+                userRegister.photo = userRegister.getPhoto()
+            }
             userRegister.nationality = jsonObject.get("nationality").toString()
             userRegister.address = jsonObject.get("address").toString()
             userRegister.referenceRelation = jsonObject.get("referenceRelation").toString()
@@ -194,44 +186,32 @@ class UserRegisterService
             userRegister.createdUser = Long.parseLong(jsonObject.get("createdUser").toString())
             userRegister.modifiedUser = Long.parseLong(jsonObject.get("modifiedUser").toString())
             userRegister.save(flush: true)
-            if (!userRegister.hasErrors())
-            {
+            if (!userRegister.hasErrors()) {
                 AuthRegister authRegister = new AuthRegister()
                 authRegister.user = userRegister
                 authRegister.username = userRegister.userName
                 authRegister.password = new AuthRegisterService().hashPassword(jsonObject.get("password").toString())
-                authRegister.save(flush:true)
+                authRegister.save(flush: true)
 
                 return userRegister
-            }
-            else
-            {
+            } else {
                 throw new BadRequestException()
             }
-        }
-        else
-        {
+        } else {
             throw new ResourceNotFoundException()
         }
     }
 
-    void delete(String id)
-    {
-        if (id)
-        {
+    void delete(String id) {
+        if (id) {
             UserRegister userRegister = UserRegister.findById(Long.parseLong(id))
-            if (userRegister)
-            {
+            if (userRegister) {
                 userRegister.isUpdatable = true
                 userRegister.delete()
-            }
-            else
-            {
+            } else {
                 throw new ResourceNotFoundException()
             }
-        }
-        else
-        {
+        } else {
             throw new BadRequestException()
         }
     }

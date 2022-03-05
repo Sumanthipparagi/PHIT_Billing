@@ -284,6 +284,10 @@
     $(".divisionTitle").text("Update Product Category");
   });
 
+  $('.entityId').change(function(){
+    var type = $('option:selected', this).attr('data-type');
+    $(".entityTypeId").val(type);
+  });
 
 
 

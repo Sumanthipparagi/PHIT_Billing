@@ -280,6 +280,11 @@
         id = null
     });
 
+    $('.entity').change(function(){
+        var type = $('option:selected', this).attr('data-type');
+        $(".entityType").val(type);
+    });
+
     $(document).on("click", ".editbtn", function () {
         id = $(this).data('id');
         $(".territoryName").val($(this).attr('data-territoryName'))
