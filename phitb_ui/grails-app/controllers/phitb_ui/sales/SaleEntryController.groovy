@@ -41,4 +41,29 @@ class SaleEntryController {
     {
         render(view: '/sales/saleReturn')
     }
+
+    def crdDebS()
+    {
+        render(view:"/sales/credit-debit-settlement")
+    }
+
+    def DebJV()
+    {
+        render(view:"/sales/debit-jv")
+    }
+
+    def credJV()
+    {
+        render(view:'/sales/credit-jv')
+    }
+
+    def goodsSalesRecipt()
+    {
+        render(view:"/sales/goods-sales-recipt")
+    }
+
+    def paymentVocher()
+    {
+        render(view:"/sales/payment-vocher")
+    }
 }

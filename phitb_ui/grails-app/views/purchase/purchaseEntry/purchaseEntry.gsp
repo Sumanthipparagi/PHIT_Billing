@@ -86,10 +86,11 @@
                                     </g:each>
                                 </select>
                             </div>
-                            <div class="col-md-3">
-                                <label for="documentId">Document ID:</label>
-                                <input type="text" class="form-control documentId" name="date" id="documentId"/>
-                            </div>
+
+%{--                            <div class="col-md-3">--}%
+%{--                                <label for="documentId">Document ID:</label>--}%
+%{--                                <input type="text" class="form-control documentId" name="date" id="documentId"/>--}%
+%{--                            </div>--}%
 
                             <div class="col-md-3">
                                 <label for="documentId">Supp. Bill Id</label>

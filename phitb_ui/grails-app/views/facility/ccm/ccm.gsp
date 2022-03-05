@@ -303,8 +303,7 @@
         $(".kitName").val($(this).attr('data-kitName'));
         $(".kitNumber").val($(this).attr('data-kitNumber'));
         $(".machinePartNumber").val($(this).attr('data-machinePartNumber'));
-        $(".entityRegister").val($(this).attr('data-entity'));
-        $(".entity").val($(this).data('entity')).change()
+        $(".entity").val($(this).data('entityRegister')).change()
         $(".entityType").val($(this).attr('data-entitytype')).change()
         $('.purchaseDate').val($(this).attr('data-purchaseDate'));
         $('.expiryDate').val($(this).attr('data-expiryDate'));

@@ -24,7 +24,9 @@
                                 <label for="entity">
                                     Entity
                                 </label>
-                                <select class="form-control show-tick entity" name="entityId" id="entity">
+                                <select class="form-control show-tick entity" name="entityId" id="entity" required>
+                                    <option value="">Please select</option>
+
                                     <g:each var="e" in="${entity}">
                                         <option value="${e.id}">${e.entityName}</option>
                                     </g:each>

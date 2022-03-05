@@ -359,6 +359,12 @@ class UrlMappings {
 
         "/sale-return"(controller: "saleEntry",action:"saleRetrun")
 
+        "/credit-debit-settlement"(controller: "saleEntry",action:"crdDebS")
+        "/debit-jv"(controller: "saleEntry",action:"DebJV")
+        "/credit-jv"(controller: "saleEntry",action:"credJV")
+        "/goods-sales-recipt"(controller: "saleEntry",action:"goodsSalesRecipt")
+        "/payment-vocher"(controller: "saleEntry",action:"paymentVocher")
+
         /*<-------------------------------------------Purchase Entry------------------------------------------------->*/
 
 
