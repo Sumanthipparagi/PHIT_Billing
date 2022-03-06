@@ -16,10 +16,10 @@
     <asset:stylesheet rel="stylesheet" src="/themeassets/css/main.css"/>
     <asset:stylesheet rel="stylesheet" href="/themeassets/css/color_skins.css"/>
     <asset:stylesheet rel="stylesheet" href="/themeassets/plugins/sweetalert/sweetalert.css"/>
-    <asset:stylesheet src="/themeassets/plugins/bootstrap-select/css/bootstrap-select.css" rel="stylesheet"/>
+    <asset:stylesheet rel="stylesheet" href="/themeassets/plugins/select2/dist/css/select2.css"/>
+%{--    <asset:stylesheet src="/themeassets/plugins/bootstrap-select/css/bootstrap-select.css" rel="stylesheet"/>--}%
     <link rel="stylesheet" media="screen"
           href="https://cdnjs.cloudflare.com/ajax/libs/handsontable/0.16.0/handsontable.full.css">
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/3.5.2/select2.css" rel="stylesheet"/>
 
 </head>
 
@@ -238,6 +238,7 @@
 
 
     $(document).ready(function () {
+        $("#customerSelect").select2();
         const container = document.getElementById('saleTable');
         const hot = new Handsontable(container, {
             data: data,
@@ -309,13 +310,7 @@
                 } else {
                     json['id'] = null
                 }
-                console.log(json)
-                // var cid = data[columnThatHasBeenChanged - 2];
-                // var rId = data[rowThatHasBeenChanged];
-                // var value = newValue;
-                // console.log(cid);
-                // console.log(rId);
-                // console.log(value);
+                console.log(json);
 
 
                 var url = '';
