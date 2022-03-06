@@ -1,7 +1,10 @@
 package phitb_ui.inventory
 
 import org.grails.web.json.JSONArray
+import org.grails.web.json.JSONObject
+import phitb_ui.EntityService
 import phitb_ui.InventoryService
+import phitb_ui.entity.TaxController
 
 class StockBookController {
 
@@ -12,8 +15,16 @@ class StockBookController {
         def apiResponse = new InventoryService().getStocksOfProduct(params.id)
         if(apiResponse?.status == 200)
         {
-            JSONArray jsonArray = new JSONArray(apiResponse.readEntity(String.class));
-            respond jsonArray, formats: ['json'], status: 200
+            JSONArray jsonArray = new JSONArray(apiResponse.readEntity(String.class))
+            JSONArray responseArray = new JSONArray()
+            for (JSONObject json : jsonArray) {
+                String id = json["taxId"]
+                def tax = new TaxController().show(id)
+                println(tax.taxValue)
+                json.put("gst", tax.taxValue)
+                responseArray.put(json)
+            }
+            respond responseArray, formats: ['json'], status: 200
         }
         else
         {

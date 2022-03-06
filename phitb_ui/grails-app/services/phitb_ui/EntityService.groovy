@@ -1488,14 +1488,17 @@ class EntityService {
 
 
 
-    def getTaxRegister() {
+    def getTaxRegister(String id = null) {
         Client client = ClientBuilder.newClient()
         WebTarget target = client.target(new Links().API_GATEWAY)
-       
+        String link = new Links().TAX_MASTER_SHOW
+        if(id)
+            link += "/"+id
+
         try {
 
             Response apiResponse = target
-                    .path(new Links().TAX_MASTER_SHOW)
+                    .path(link)
                     .request(MediaType.APPLICATION_JSON_TYPE)
                     .get()
 

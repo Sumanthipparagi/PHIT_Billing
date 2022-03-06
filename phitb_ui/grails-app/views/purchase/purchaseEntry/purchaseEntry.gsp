@@ -79,8 +79,8 @@
                                 </select>
                             </div>
                             <div class="col-md-3">
-                                <label for="series">Supplier:</label>
-                                <select id="supplier" name="series">
+                                <label for="supplier">Supplier:</label>
+                                <select id="supplier" name="supplier">
                                     <g:each in="${suppliers}" var="sp">
                                         <option value="${sp.id}">${sp.entityName}</option>
                                     </g:each>

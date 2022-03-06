@@ -15,12 +15,18 @@
     <!-- Custom Css -->
     <asset:stylesheet rel="stylesheet" src="/themeassets/css/main.css"/>
     <asset:stylesheet rel="stylesheet" href="/themeassets/css/color_skins.css"/>
+
     <asset:stylesheet rel="stylesheet" href="/themeassets/plugins/sweetalert/sweetalert.css"/>
     <asset:stylesheet rel="stylesheet" href="/themeassets/plugins/select2/dist/css/select2.css"/>
-%{--    <asset:stylesheet src="/themeassets/plugins/bootstrap-select/css/bootstrap-select.css" rel="stylesheet"/>--}%
-    <link rel="stylesheet" media="screen"
-          href="https://cdnjs.cloudflare.com/ajax/libs/handsontable/0.16.0/handsontable.full.css">
+    <asset:stylesheet src="/themeassets/plugins/bootstrap-select/css/bootstrap-select.css" rel="stylesheet"/>
+    <link rel="stylesheet" media="screen" href="https://cdnjs.cloudflare.com/ajax/libs/select2/3.5.2/select2.min.css">
+    <link rel="stylesheet" media="screen" href="https://cdnjs.cloudflare.com/ajax/libs/handsontable/0.16.0/handsontable.full.css">
 
+    <style>
+        .form-control{
+            border-radius: 7px !important;
+        }
+    </style>
 </head>
 
 <body class="theme-black">
@@ -73,25 +79,27 @@
                             </div>
                             <div class="col-md-3">
                                 <label for="series">Series:</label>
-                                <select id="series" name="series">
+                                <select class="form-control" id="series" name="series">
                                     <g:each in="${series}" var="sr">
                                         <option value="${sr.id}">${sr.seriesCode}</option>
                                     </g:each>
                                 </select>
                             </div>
-                            <div class="col-md-3">
-                                <label for="documentId">Document ID:</label>
-                                <input type="text" class="form-control documentId" name="date" id="documentId"/>
-                            </div>
+
                             <div class="col-md-3">
                                 <label for="customerSelect">Customer:</label>
-                                <select class="form-control" id="customerSelect">
+                                <select class="form-control show-tick" id="customerSelect" onchange="customerSelectChanged()">
                                     <g:each in="${customers}" var="cs">
                                         <g:if test="${cs.id != session.getAttribute("entityId")}">
-                                            <option value="${cs.id}">${cs.entityName}</option>
+                                            <option value="${cs.id}">${cs.entityName} (${cs.entityType.name})</option>
                                         </g:if>
                                     </g:each>
                                 </select>
+                            </div>
+
+                            <div class="col-md-3">
+                                <label for="duedate">Due Date:</label>
+                                <input type="date" class="form-control date" name="duedate" id="duedate"/>
                             </div>
 
                         </div>
@@ -109,33 +117,19 @@
                         </div>
                     </div>
 
-                    <div class="header" style="padding: 1px;">
+                    %{--<div class="header" style="padding: 1px;">
                         <button type="button" class="btn btn-round btn-primary m-t-15 addbtn" data-toggle="modal"
                                 data-target="#addAccountModeModal"><span
                                 class="glyphicon glyphicon-save-file"></span> Save</button>
-                    </div>
+                    </div>--}%
                 </div>
             </div>
         </div>
 
         <div class="row clearfix">
-            <div class="col-lg-6">
-                <div class="card">
-                    <div class="header" style="padding: 1px;">
-                        Previous
-                    </div>
 
-                    <div class="body">
-                        <div class="table-responsive">
-                            <div id="previousTable" style="width:100%;">
 
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="col-lg-6">
+            <div class="col-lg-8">
                 <div class="card">
                     <div class="header" style="padding: 1px;">
                         Stocks
@@ -143,13 +137,24 @@
 
                     <div class="body">
                         <div class="table-responsive">
-                            <div id="C" style="width:100%;">
-
-                            </div>
+                            <div id="batchTable" style="width:100%;"></div>
                         </div>
                     </div>
                 </div>
             </div>
+
+            <div class="col-lg-4">
+                <div class="card">
+                    <div class="header" style="padding: 1px;">
+                        -
+                    </div>
+
+                    <div class="body">
+
+                    </div>
+                </div>
+            </div>
+
         </div>
 
     </div>
@@ -173,27 +178,29 @@
 <asset:javascript src="/themeassets/js/pages/ui/dialogs.js"/>
 <asset:javascript src="/themeassets/plugins/sweetalert/sweetalert.min.js"/>
 <asset:javascript src="/themeassets/plugins/momentjs/moment.js"/>
+%{--<asset:javascript src="/themeassets/plugins/select2/dist/js/select2.full.js"/>--}%
 <script src="https://cdnjs.cloudflare.com/ajax/libs/handsontable/0.16.0/handsontable.full.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/3.5.2/select2.js"></script>
 
 <script>
 
 
-    var idArray = [];
+    <%--var idArray = [];
     var data = [];
+
     <g:each in="${salebilllist}" var="sb">
     idArray.push(${sb.id});
     data.push(['${sb.finId}', ${sb.serBillId}, ${sb.seriesId}, '${sb.paymentStatus}', '${sb.accountModeId}', '${sb.priorityId}', moment('${sb.entryDate}').format("DD/MM/YYYY"), '${sb.customerId}', '${sb.customerNumber}', ${sb.salesmanId}, '${sb.salesmanComm}', moment('${sb.orderDate}').format("DD/MM/YYYY"), '${sb.refOrderId}', moment('${sb.dueDate}').format("DD/MM/YYYY"), moment('${sb.dispatchDate}').format("DD/MM/YYYY"), '${sb.deliveryManId}', '${sb.totalSqty}', '${sb.totalFqty}', '${sb.totalItems}', '${sb.totalQty}', '${sb.totalDiscount}', '${sb.totalAmount}', '${sb.invoiceTotal}', '${sb.totalGst}', '${sb.userId}', '${sb.balance}', '${sb.grossAmount}', '${sb.taxable}', '${sb.cashDiscount}', '${sb.exempted}', '${sb.totalCgst}', '${sb.totalSgst}', '${sb.totalIgst}', '${sb.gstStatus}', ${sb.billStatus}, ${sb.lockStatus}, ${sb.creditadjAmount}, ${sb.creditIds}, ${sb.referralDoctor}, '${sb.message}', '${sb.financialYear}', ${sb.entityTypeId}, ${sb.entityId}])
-    </g:each>
+    </g:each> --%>
 
 
     var series = [];
     var products = [];
     var hsnCode = [];
-    var accountMode = [];
+   /* var accountMode = [];
     var customer = [];
     var salesman = [];
-    var user = [];
+    var user = [];*/
 
     <g:each in="${products}" var="pd">
     products.push({id:${pd.id}, text: '${pd.productName}'});
@@ -203,7 +210,7 @@
     hsnCode.push({id:${pd.id}, text: '${pd.hsnCode}'});
     </g:each>
 
-    <g:each in="${series}" var="s">
+   <%-- <g:each in="${series}" var="s">
     series.push({id:${s.id}, text: '${s.seriesName}'});
     </g:each>
     <g:each in="${accountMode}" var="am">
@@ -218,7 +225,7 @@
     console.log(salesman);
     <g:each in="${users}" var="u">
     user.push({id:${u.id}, text: '${u.userName}'});
-    </g:each>
+    </g:each> --%>
 
     var headerRow = [
         '<strong>Product</strong>',
@@ -236,13 +243,28 @@
         '<strong>CGST</strong>',
         '<strong>IGST</strong>'];
 
+    var batchHeaderRow = [
+        '<strong>Batch</strong>',
+        '<strong>Exp Dt</strong>',
+        '<strong>Rem Qty</strong>',
+        '<strong>Free Qty</strong>',
+        '<strong>Pur. Rate</strong>',
+        '<strong>Sale Rate</strong>',
+        '<strong>MRP</strong>',
+        '<strong>Pack</strong>',
+        '<strong>GST</strong>'];
 
+    const batchContainer = document.getElementById('batchTable');
+    var batchHot;
+    var batchData = [];
     $(document).ready(function () {
-        $("#customerSelect").select2();
+        //$("#customerSelect").select2();
+        $('#date').val(moment().format('YYYY-MM-DD'));
+        $('#date').attr("readonly");
         const container = document.getElementById('saleTable');
         const hot = new Handsontable(container, {
-            data: data,
-            minRows: 8,
+            data: [],
+            minRows: 1,
             height: '250',
             width: 'auto',
             rowHeights: 25,
@@ -282,7 +304,7 @@
             licenseKey: 'non-commercial-and-evaluation'
         });
 
-        hot.updateSettings({
+       /* hot.updateSettings({
             afterChange: function (changes, source) {
                 var rowThatHasBeenChanged = changes[0][0],
                     columnThatHasBeenChanged = changes[0][1],
@@ -298,7 +320,7 @@
                     return obj
                 };
                 var json = {}
-                var changedRow = visualObjectRow(rowThatHasBeenChanged)
+                var changedRow = visualObjectRow(rowThatHasBeenChanged);
                 // console.log(visualObjectRow(rowThatHasBeenChanged))
                 Object.keys(changedRow).forEach(function (key) {
                     json[headerRow[key].replace(/\s+/g, '')] = changedRow[key]
@@ -339,7 +361,7 @@
                 });
 
             }
-        });
+        });*/
 
         function productsDropdownRenderer(instance, td, row, col, prop, value, cellProperties) {
             var selectedId;
@@ -350,136 +372,108 @@
                 }
             }
             Handsontable.TextCell.renderer.apply(this, arguments);
-            batchSelection(selectedId, value)
-            // $('#selectedId').text(selectedId);
+            if(col === 0)
+                batchSelection(selectedId, value, row);
+            //$('#selectedId').text(selectedId);
         }
-
-        function batchSelection(selectedId, value, row) {
-            //
-            $("#batchTableBody").html("");
-            if (selectedId != null) {
-                var url = "/stockbook/product/" + selectedId;
-
-                $.ajax({
-                    type: "GET",
-                    url: url,
-                    dataType: 'json',
-                    success: function (data) {
-                        if (data) {
-                            var tableData = "";
-                            for (var i = 0; i < data.length; i++) {
-                                tableData += "<tr>" +
-                                    "<td><a onclick='updateCell(hot, selectedId, value, row)' href='#' class='btn btn-info' id='batchTable" + i + "'>Select</a> </td>" +
-                                    "<td>" + data[i].batchNumber + "</td>" +
-                                    "<td>" + data[i].expDate + "</td>" +
-                                    "<td>" + data[i].remainingQty + "</td>" +
-                                    "<td>" + data[i].remainingFreeQty + "</td>" +
-                                    "<td>" + data[i].purchaseRate + "</td>" +
-                                    "<td>" + data[i].saleRate + "</td>" +
-                                    "<td>-</td>" +
-                                    "</tr>"
-                            }
-
-                            $("#batchTableBody").html(tableData);
-                            $("#batchTable1").focus();
-                        }
-                    },
-                    error: function (data) {
-                        console.log("Failed");
-                    }
-                });
-
-                $("#productNameTitle").text(value);
-                $("#batchSelectModal").modal("toggle");
-            }
-        }
-
-        function updateCell(hot, selectedId, value, row) {
+       /* function updateCell(hot, selectedId, value, row) {
             hot.setDataAtCell(row, 2, value);
             $("#productNameTitle").text("");
             $("#batchSelectModal").modal("toggle");
-        }
+        }*/
 
-        //    Series Dropdown
-        function seriesDropdownRenderer(instance, td, row, col, prop, value, cellProperties) {
-            var selectedId;
-            for (var index = 0; index < series.length; index++) {
-                if (parseInt(value) === series[index].id) {
-                    selectedId = series[index].id;
-                    value = series[index].text;
-                }
-            }
-            Handsontable.TextCell.renderer.apply(this, arguments);
-            // $('#selectedId').text(selectedId);
-        }
-
-        //    Account mode Dropdown
-        function accountModeDropdownRenderer(instance, td, row, col, prop, value, cellProperties) {
-            var selectedId;
-            for (var index = 0; index < accountMode.length; index++) {
-                if (parseInt(value) === accountMode[index].id) {
-                    selectedId = accountMode[index].id;
-                    value = accountMode[index].text;
-                }
-            }
-            Handsontable.TextCell.renderer.apply(this, arguments);
-            // $('#selectedId').text(selectedId);
-        }
-
-        //Customer Entity
-        function customerDropdownRenderer(instance, td, row, col, prop, value, cellProperties) {
-            var selectedId;
-            for (var index = 0; index < customer.length; index++) {
-                if (parseInt(value) === customer[index].id) {
-                    selectedId = customer[index].id;
-                    value = customer[index].text;
-                }
-            }
-            Handsontable.TextCell.renderer.apply(this, arguments);
-            // $('#selectedId').text(selectedId);
-        }
-
-
-        //Salesman
-        function salesmanDropdownRenderer(instance, td, row, col, prop, value, cellProperties) {
-            var selectedId;
-            for (var index = 0; index < salesman.length; index++) {
-                if (parseInt(value) === salesman[index].id) {
-                    selectedId = salesman[index].id;
-                    value = salesman[index].text;
-                }
-            }
-            Handsontable.TextCell.renderer.apply(this, arguments);
-            // $('#selectedId').text(selectedId);
-        }
-
-        //User
-        function userDropdownRenderer(instance, td, row, col, prop, value, cellProperties) {
-            var selectedId;
-            for (var index = 0; index < user.length; index++) {
-                if (parseInt(value) === user[index].id) {
-                    selectedId = user[index].id;
-                    value = user[index].text;
-                }
-            }
-            Handsontable.TextCell.renderer.apply(this, arguments);
-            // $('#selectedId').text(selectedId);
-        }
-
-
+        batchHot = new Handsontable(batchContainer, {
+            data: batchData,
+            minRows: 1,
+            height: '120',
+            width: 'auto',
+            rowHeights: 25,
+            manualRowResize: true,
+            manualColumnResize: true,
+            persistentState: true,
+            contextMenu: true,
+            rowHeaders: true,
+            selectionMode: 'range',
+            colHeaders: batchHeaderRow,
+            columns: [
+                {type: 'text',readOnly: true},
+                {type: 'text',readOnly: true},
+                {type: 'numeric',readOnly: true},
+                {type: 'numeric',readOnly: true},
+                {type: 'numeric',readOnly: true},
+                {type: 'numeric',readOnly: true},
+                {type: 'numeric',readOnly: true},
+                {type: 'text',readOnly: true},
+                {type: 'text',readOnly: true}
+            ],
+            minSpareRows: 0,
+            fixedColumnsLeft: 0,
+            licenseKey: 'non-commercial-and-evaluation'
+        });
     });
+
+    function batchSelection(selectedId, value, row) {
+        if (selectedId != null) {
+            var url = "/stockbook/product/" + selectedId;
+            $.ajax({
+                type: "GET",
+                url: url,
+                dataType: 'json',
+                success: function (data) {
+                    if (data) {
+                        batchData = [];
+                        for (var i = 0; i < data.length; i++) {
+                            var batchdt = [];
+                            batchdt.push(data[i].batchNumber);
+                            batchdt.push(data[i].expDate);
+                            batchdt.push(data[i].remainingQty);
+                            batchdt.push(data[i].remainingFreeQty);
+                            batchdt.push(data[i].purchaseRate);
+                            batchdt.push(data[i].saleRate);
+                            batchdt.push(data[i].mrp);
+                            batchdt.push(data[i].packingDesc);
+                            batchdt.push(data[i].gst);
+                            batchData.push(batchdt);
+
+                        }
+                        batchHot.updateSettings({
+                            data: []
+                        });
+                        if(batchdt?.length > 0) {
+                            batchHot.loadData(batchData);
+                            $("#batchTable").focus();
+                        }
+                    }
+                },
+                error: function (data) {
+                    console.log("Failed");
+                }
+            });
+
+            /* $("#productNameTitle").text(value);
+             $("#batchSelectModal").modal("toggle");*/
+        }
+    }
+
+
+    function customerSelectChanged()
+    {
+        //$('#duedate').prop("readonly", false);
+        //$("#duedate").val(moment().add(5, 'days').format('YYYY-MM-DD'));
+        //$('#duedate').prop("readonly", true);
+    }
+
+
+
+
     /// select2 plugin
     (function (Handsontable) {
         "use strict";
 
         var Select2Editor = Handsontable.editors.TextEditor.prototype.extend();
-
         Select2Editor.prototype.prepare = function (row, col, prop, td, originalValue, cellProperties) {
-
             Handsontable.editors.TextEditor.prototype.prepare.apply(this, arguments);
-
             this.options = {};
-
             if (this.cellProperties.select2Options) {
                 this.options = $.extend(this.options, cellProperties.select2Options);
             }
@@ -487,7 +481,6 @@
 
         Select2Editor.prototype.createElements = function () {
             this.$body = $(document.body);
-
             this.TEXTAREA = document.createElement('input');
             this.TEXTAREA.setAttribute('type', 'text');
             this.$textarea = $(this.TEXTAREA);

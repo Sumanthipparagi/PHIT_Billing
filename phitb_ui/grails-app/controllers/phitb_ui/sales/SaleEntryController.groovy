@@ -13,20 +13,20 @@ class SaleEntryController {
 
         String entityId = session.getAttribute("entityId")?.toString()
         ArrayList<String> series = new SeriesController().getByEntity(entityId) as ArrayList<String>
-        ArrayList<String> accountMode = new AccountModeController().show() as ArrayList<String>
+        //ArrayList<String> accountMode = new AccountModeController().show() as ArrayList<String>
         ArrayList<String> customers = new EntityRegisterController().getByAffiliates(entityId) as ArrayList<String>
-        ArrayList<String> users = new UserRegisterController().show() as ArrayList<String>
+        //ArrayList<String> users = new UserRegisterController().show() as ArrayList<String>
         //ArrayList<String> salebilllist = new SalebillDetailsController().show() as ArrayList<String>
 
         ArrayList<String> salesmanList = []
-        users.each {
+        /*users.each {
             if (it.role.name.toString().equalsIgnoreCase(Constants.ROLE_SALESMAN)) {
                 salesmanList.add(it)
             }
-        }
-        def products = new ProductService().getProductsByEntityId(entityId)
-        render(view: '/sales/sale-entry', model: [series      : series, accountMode: accountMode,
-                                                           users       : users, customers: customers,
+        }*/
+        def products = new ProductService().getProductsByEntityId(entityId) //TODO: this should be called from ajax
+        render(view: '/sales/sale-entry', model: [series : series, /*accountMode: accountMode,
+                                                           users       : users,*/ customers: customers,
                                                            salesmanList: salesmanList,
                                                            products    :products])
     }
