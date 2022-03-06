@@ -277,6 +277,10 @@
         $(".customerGroupTitle").text("Update Day End");
     });
 
+    $('.entity').change(function(){
+        var type = $('option:selected', this).attr('data-type');
+        $(".entityType").val(type);
+    });
 
 
 

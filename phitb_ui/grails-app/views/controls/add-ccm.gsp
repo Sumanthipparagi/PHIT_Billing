@@ -61,16 +61,17 @@
                                 </select>
                             </div>
 
-%{--                            <div class="col-lg-6 form-group  form-float">--}%
-%{--                                <label for="entity">--}%
-%{--                                    entityRegister--}%
-%{--                                </label>--}%
-%{--                                <select class="form-control show-tick entity" name="entityId" id="entity">--}%
-%{--                                    <g:each var="e" in="${entity}">--}%
-%{--                                        <option value="${e.id}">${e.entityName}</option>--}%
-%{--                                    </g:each>--}%
-%{--                                </select>--}%
-%{--                            </div>--}%
+                            <div class="col-lg-6 form-group  form-float">
+                                <label for="entity">
+                                    Entity
+                                </label>
+                                <select class="form-control show-tick entity" name="entityId" id="entity" required>
+                                    <option value="">Please select</option>
+                                    <g:each var="e" in="${entity}">
+                                        <option value="${e.id}" data-type="${e.entityType.id}">${e.entityName}</option>
+                                    </g:each>
+                                </select>
+                            </div>
 
 
 %{--                            <div class="col-lg-6 form-group  form-float">--}%
@@ -84,8 +85,7 @@
 %{--                                </select>--}%
 %{--                            </div>--}%
 
-                            <input type="hidden" name="entityTypeId" value="1">
-                            <input type="hidden" name="entityId" value="1">
+                            <input type="hidden" class="entityTypeId" name="entityTypeId">
                             <input type="hidden" name="createdUser" value="1">
                             <input type="hidden" name="modifiedUser" value="1">
                             <input type="hidden" name="status" value="1">

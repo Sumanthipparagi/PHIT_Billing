@@ -3,6 +3,7 @@ package phitb_ui.entity
 import groovy.json.JsonSlurper
 import org.grails.web.json.JSONArray
 import org.grails.web.json.JSONObject
+import org.springframework.web.multipart.MultipartFile
 import phitb_ui.Constants
 import phitb_ui.EntityService
 import phitb_ui.Links
@@ -262,7 +263,8 @@ class UserRegisterController
         {
             println(params)
             JSONObject jsonObject = new JSONObject(params)
-            def apiResponse = new EntityService().putUser(jsonObject)
+            MultipartFile multipartFile = params.photo as MultipartFile
+            def apiResponse = new EntityService().putUser(jsonObject,multipartFile)
             if (apiResponse.status == 200)
             {
                 JSONObject obj = new JSONObject(apiResponse.readEntity(String.class))

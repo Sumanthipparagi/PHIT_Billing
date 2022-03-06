@@ -187,7 +187,7 @@
             processing: true,
             serverSide: true,
             language: {
-                searchPlaceholder: "Search Form"
+                searchPlaceholder: "Search Fridge"
             },
             ajax: {
                 type: 'GET',
@@ -293,13 +293,17 @@
         $(".fridgeName").val($(this).attr('data-fridgeName'));
         $(".floor").val($(this).attr('data-floor'));
         $(".machinePartNumber").val($(this).attr('data-machinePartNumber'));
-        $(".entityRegister").val($(this).attr('data-entity'));
-        $("#entityRegister").val($(this).data('entity')).change()
+        $(".entity").val($(this).data('entity')).change()
         $(".entityType").val($(this).attr('data-entitytype')).change()
         $('.dateOfPurchase').val($(this).attr('data-dateOfPurchase'));
         $(".fridgeTitle").text("Update Fridge");
     });
 
+
+    $('.entity').change(function(){
+        var type = $('option:selected', this).attr('data-type');
+        $(".entityTypeId").val(type);
+    });
 
 
 

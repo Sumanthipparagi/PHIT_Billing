@@ -279,6 +279,10 @@
         $(".customerGroupTitle").text("Update Customer Group");
     });
 
+    $('.entity').change(function(){
+        var type = $('option:selected', this).attr('data-type');
+        $(".entityType").val(type);
+    });
 
 
 

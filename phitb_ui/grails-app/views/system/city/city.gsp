@@ -103,10 +103,10 @@
                             <table class="table table-bordered table-striped table-hover cityTable dataTable">
                                 <thead>
                                 <tr>
-                                    <th style="width: 20%">ID</th>
+%{--                                    <th style="width: 20%">ID</th>--}%
                                     <th style="width: 20%">Name</th>
                                     <th style="width: 20%">State</th>
-                                    <th style="width: 20%">entityRegister</th>
+                                    <th style="width: 20%">Entity</th>
                                     <th style="width: 20%">Action</th>
                                 </tr>
                                 </thead>
@@ -185,13 +185,14 @@
                     for (var i = 0; i < json.data.length; i++) {
                         var editbtn = '<button type="button" data-id="' + json.data[i].id +
                             '" data-name="' + json.data[i].name + '"' +
-                            '" data-entityRegister="' + json.data[i].entityId + '"' +
+                            '" data-entity="' + json.data[i].entityId + '"' +
                             '" data-state="' + json.data[i].state.id + '"' +
-                            ' class="editbtn btn btn-warning  editbtn" data-toggle="modal" data-target="#addCityModal"><i class="material-icons"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">edit</font></font></i></button>'
+                            '"' +
+                            ' class="editbtn btn btn-sm btn-warning  editbtn" data-toggle="modal" data-target="#addCityModal"><i class="material-icons"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">edit</font></font></i></button>'
                         var deletebtn = '<button type="button" data-id="' + json.data[i].id +
                             '" class="btn btn-danger deletebtn" data-toggle="modal" data-target=".deleteModal"><i class="material-icons"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">delete</font></font></i></button>'
                         return_data.push({
-                            'id': json.data[i].id,
+                            // 'id': json.data[i].id,
                             'name': json.data[i].name,
                             'state': json.data[i].state.name,
                             'entity': json.names[i].entityName,
@@ -202,7 +203,7 @@
                 }
             },
             columns: [
-                {'data': 'id', 'width': '20%'},
+                // {'data': 'id', 'width': '20%'},
                 {'data': 'name', 'width': '20%'},
                 {'data': 'state', 'width': '20%'},
                 {'data': 'entity', 'width': '20%'},
@@ -258,8 +259,8 @@
     $(document).on("click", ".editbtn", function () {
         id = $(this).data('id');
         $(".name").val($(this).data('name'));
-        $("#entityRegister").val($(this).data('entity')).change()
-        $("#state").val($(this).attr('data-state')).change()
+        $(".entity").val($(this).data('entity')).change()
+        $(".state").val($(this).attr('data-state')).change()
         $(".cityTitle").text("Update City");
     });
 

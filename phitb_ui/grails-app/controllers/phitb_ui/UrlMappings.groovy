@@ -20,6 +20,7 @@ class UrlMappings {
         "/forms"(controller: 'dashboard', action: 'forms')
         "/table"(controller: 'dashboard', action: 'table')
         "/timeline"(controller: 'dashboard', action: 'timeline')
+        "/api/media/$path**"(controller: "fileLocation", action: "index")
 /*<-------------------------------------------System ------------------------------------------------->*/
 
         "/accountmodes"(controller: "accountMode") {
@@ -354,7 +355,24 @@ class UrlMappings {
         "/sale-entry/update/$id"(controller:"batchRegister",action:"update")
 //        "/sale-entry/datatable"(controller: "batchRegister", action: 'dataTable')
 
-//        "/sale-entry/delete/$id"(controller: "batchRegister",action:"delete")
+        "/sale-invoice"(controller: "saleEntry",action:"saleBill")
+
+        "/sale-return"(controller: "saleEntry",action:"saleRetrun")
+
+        "/credit-debit-settlement"(controller: "saleEntry",action:"crdDebS")
+        "/debit-jv"(controller: "saleEntry",action:"DebJV")
+        "/credit-jv"(controller: "saleEntry",action:"credJV")
+        "/goods-sales-recipt"(controller: "saleEntry",action:"goodsSalesRecipt")
+        "/payment-vocher"(controller: "saleEntry",action:"paymentVocher")
+
+        /*<-------------------------------------------Purchase Entry------------------------------------------------->*/
+
+
+        "/purchase-entry"(controller: "purchaseEntry") {
+            action = [GET: 'index', POST: 'save']
+        }
+
+        "/purchase-retrun"(controller: 'purchaseEntry', action: 'purchaseReturn')
 
         //Inventory
         "/stockbook/product/$id"(controller: "stockBook",action:"getStocksOfProduct")

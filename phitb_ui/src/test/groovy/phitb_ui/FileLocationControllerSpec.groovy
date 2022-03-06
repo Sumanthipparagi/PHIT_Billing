@@ -1,0 +1,18 @@
+package phitb_ui
+
+import grails.testing.web.controllers.ControllerUnitTest
+import spock.lang.Specification
+
+class FileLocationControllerSpec extends Specification implements ControllerUnitTest<FileLocationController> {
+
+    def setup() {
+    }
+
+    def cleanup() {
+    }
+
+    void "test something"() {
+        expect:"fix me"
+            true == false
+    }
+}

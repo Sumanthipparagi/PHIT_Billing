@@ -52,16 +52,18 @@
                 </select>
               </div>
 
-%{--              <div class="col-lg-6 form-group  form-float">--}%
-%{--                <label for="entity">--}%
-%{--                  Entity--}%
-%{--                </label>--}%
-%{--                <select class="form-control show-tick entity" name="entity" id="entity">--}%
-%{--                  <g:each var="e" in="${entity}">--}%
-%{--                    <option value="${e.id}">${e.entityName}</option>--}%
-%{--                  </g:each>--}%
-%{--                </select>--}%
-%{--              </div>--}%
+              <div class="col-lg-6 form-group  form-float">
+                <label for="entity">
+                  Entity
+                </label>
+                <select class="form-control show-tick entity" name="entity" id="entity" required>
+                  <option value="">-- Please select --</option>
+
+                  <g:each var="e" in="${entity}">
+                    <option value="${e.id}"  data-type="${e.entityType.id}">${e.entityName}</option>
+                  </g:each>
+                </select>
+              </div>
 
 
 %{--              <div class="col-lg-6 form-group  form-float">--}%
@@ -75,8 +77,7 @@
 %{--                </select>--}%
 %{--              </div>--}%
 
-              <input type="hidden" name="entityType" value="1">
-              <input type="hidden" name="entity" value="1">
+              <input type="hidden" id="entityTypeId" class="entityType" name="entityType">
               <input type="hidden" name="createdUser" value="1">
               <input type="hidden" name="modifiedUser" value="1">
               <input type="hidden" name="status" value="1">

@@ -274,6 +274,10 @@
         $(".unitTypeTitle").text("Update Unit Type");
     });
 
+    $('.entityId').change(function(){
+        var type = $('option:selected', this).attr('data-type');
+        $(".entityTypeId").val(type);
+    });
 
 
 

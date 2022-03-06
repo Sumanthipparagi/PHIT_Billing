@@ -279,6 +279,11 @@
         $(".divisionTitle").text("Update Product Class");
     });
 
+    $('.entityId').change(function(){
+        var type = $('option:selected', this).attr('data-type');
+        $(".entityTypeId").val(type);
+    });
+
 
     $(document).on("click", ".deletebtn", function () {
         id = $(this).data('id');

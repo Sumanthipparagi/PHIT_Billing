@@ -35,26 +35,29 @@
                                 <label for="entity">
                                     Entity
                                 </label>
-                                <select class="form-control show-tick entity" name="entity" id="entity">
+                                <select class="form-control show-tick entity" name="entity" id="entity" required>
+                                    <option value="">-- Please select --</option>
+
                                     <g:each var="e" in="${entity}">
-                                        <option value="${e.id}">${e.entityName}</option>
+                                        <option value="${e.id}"  data-type="${e.entityType.id}">${e.entityName}</option>
                                     </g:each>
                                 </select>
                             </div>
 
 
-                            <div class="col-lg-6 form-group  form-float">
-                                <label for="entityTypeId">
-                                    Entity Type
-                                </label>
-                                <select class="form-control show-tick entityType" name="entityType" id="entityTypeId">
-                                    <g:each var="et" in="${entitytype}">
-                                        <option value="${et.id}">${et.name}</option>
-                                    </g:each>
-                                </select>
-                            </div>
+%{--                            <div class="col-lg-6 form-group  form-float">--}%
+%{--                                <label for="entityTypeId">--}%
+%{--                                    Entity Type--}%
+%{--                                </label>--}%
+%{--                                <select class="form-control show-tick entityType" name="entityType" id="entityTypeId">--}%
+%{--                                    <g:each var="et" in="${entitytype}">--}%
+%{--                                        <option value="${et.id}">${et.name}</option>--}%
+%{--                                    </g:each>--}%
+%{--                                </select>--}%
+%{--                            </div>--}%
 
                             <input type="hidden" name="createdUser" value="1">
+                            <input type="hidden" id="entityTypeId" class="entityType" name="entityType">
                             <input type="hidden" name="saleId" value="1">
                             <input type="hidden" name="purId" value="1">
                             <input type="hidden" name="saleReturnId" value="1">

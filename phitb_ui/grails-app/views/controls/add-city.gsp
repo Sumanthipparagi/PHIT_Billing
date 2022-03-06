@@ -22,9 +22,11 @@
                             <div class="col-lg-6 form-group  form-float">
 
                                 <label for="entity">
-                                    entityRegister
+                                    Entity
                                 </label>
-                                <select class="form-control show-tick entity" name="entityId" id="entity">
+                                <select class="form-control show-tick entity" name="entityId" id="entity" required>
+                                    <option value="">Please select</option>
+
                                     <g:each var="e" in="${entity}">
                                         <option value="${e.id}">${e.entityName}</option>
                                     </g:each>

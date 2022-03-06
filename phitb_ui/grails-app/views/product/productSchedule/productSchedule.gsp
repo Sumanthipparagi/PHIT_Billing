@@ -280,6 +280,10 @@
         $(".productScheduleTitle").text("Update Product Schedule");
     });
 
+    $('.entityId').change(function(){
+        var type = $('option:selected', this).attr('data-type');
+        $(".entityTypeId").val(type);
+    });
 
 
 
