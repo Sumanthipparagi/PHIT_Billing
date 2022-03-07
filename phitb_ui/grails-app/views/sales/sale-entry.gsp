@@ -301,7 +301,15 @@
             ],
             minSpareRows: 1,
             fixedColumnsLeft: 0,
-            licenseKey: 'non-commercial-and-evaluation'
+            licenseKey: 'non-commercial-and-evaluation',
+            afterChange: (changes,source) => {
+                if(changes) {
+                    changes.forEach(([row, prop, oldValue, newValue]) => {
+                        if(prop === 0) //first col product dropdown
+                            batchSelection(newValue);
+                    });
+                }
+            }
         });
 
        /* hot.updateSettings({
@@ -372,8 +380,7 @@
                 }
             }
             Handsontable.TextCell.renderer.apply(this, arguments);
-            if(col === 0)
-                batchSelection(selectedId, value, row);
+
             //$('#selectedId').text(selectedId);
         }
        /* function updateCell(hot, selectedId, value, row) {
@@ -412,7 +419,7 @@
         });
     });
 
-    function batchSelection(selectedId, value, row) {
+    function batchSelection(selectedId) {
         if (selectedId != null) {
             var url = "/stockbook/product/" + selectedId;
             $.ajax({
