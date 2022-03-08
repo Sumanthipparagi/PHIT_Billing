@@ -94,8 +94,7 @@ class TempStockBookController {
         try {
             long id = params.id
             if (id) {
-                respond tempStockBookService.getAllByProductAndBatch(params.limit, params.offset,Long.parseLong(params
-                        .id),params.batch)
+                respond tempStockBookService.getAllByProductAndBatch(Long.parseLong(params.id),params.batch)
             }
         }
         catch (ResourceNotFoundException ex)

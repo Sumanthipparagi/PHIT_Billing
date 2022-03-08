@@ -210,8 +210,8 @@
 
 <script>
 
-
-    <%--var idArray = [];
+    var idArray = [];
+    <%--
     var data = [];
 
     <g:each in="${salebilllist}" var="sb">
@@ -389,6 +389,56 @@
                 }
                 else if(selection === 14)
                 {
+                    var rowThatHasBeenChanged = changes[0][0],
+                        columnThatHasBeenChanged = changes[0][1],
+                        previousValue = changes[0][2],
+                        newValue = changes[0][3];
+                    var visualObjectRow = function (row) {
+                        var obj = {},
+                            key, name;
+                        for (var i = 0; i < hot.countCols(); i++) {
+                            obj[hot.colToProp(i)] = hot.getDataAtCell(row, i);
+                        }
+                        return obj;
+                    };
+                    var json = {};
+                    var changedRow = visualObjectRow(rowThatHasBeenChanged);
+                    // console.log(visualObjectRow(rowThatHasBeenChanged))
+                    Object.keys(changedRow).forEach(function (key) {
+                        json[headerRow[key].replace(/\s+/g, '')] = changedRow[key]
+                    });
+
+                    if (idArray[rowThatHasBeenChanged] != undefined) {
+                        json['id'] = idArray[rowThatHasBeenChanged]
+                    } else {
+                        json['id'] = null
+                    }
+                    console.log(json);
+                    var url = '';
+                    var type = '';
+                    var id = json['id'];
+                    if (idArray[rowThatHasBeenChanged] != undefined) {
+                        url = '/sale-entry/update/' + id;
+                        type = 'POST'
+                    } else {
+                        url = '/purchase-entry';
+                        type = 'POST'
+                    }
+                    $.ajax({
+                        type: type,
+                        url: url,
+                        dataType: 'json',
+                        data: {
+                            json: json
+                        },
+                        success: function (data) {
+                            console.log("data loaded");
+                        },
+                        error: function (data) {
+                            console.log("Failed");
+                        }
+                    });
+
                     if (e.keyCode === 13 || e.keyCode === 9) {
                         //check if sqty is empty
                         var sqty = hot.getDataAtCell(row,4);
