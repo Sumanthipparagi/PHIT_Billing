@@ -32,14 +32,15 @@ class TempStockBookService {
             return TempStockBook.findAllByEntityId(entityId, [sort: 'id', max: l, offset: o, order: 'desc'])
     }
 
-    def getAllByProduct(String limit, String offset, long productId) {
+    def getAllByProductAndBatch(String limit, String offset, long productId, String batch) {
         Integer o = offset ? Integer.parseInt(offset.toString()) : 0
         Integer l = limit ? Integer.parseInt(limit.toString()) : 100
         if (!productId)
             return TempStockBook.findAll([sort: 'id', max: l, offset: o, order: 'desc'])
         else
-            return TempStockBook.findAllByProductId(productId, [sort: 'id', max: l, offset: o, order: 'desc'])
+            return TempStockBook.findAllByProductIdAndBatchNumber(productId,batch,[sort: 'id', max: l, offset: o, order: 'desc'])
     }
+
 
     TempStockBook get(String id) {
         return TempStockBook.findById(Long.parseLong(id))

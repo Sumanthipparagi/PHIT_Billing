@@ -298,7 +298,7 @@ public class Links
 
     //Temp Stock Book
     public static String GET_TEMP_STOCK_PRODUCT = "api/v1.0/inventory/tempstockbook";
-    public static String GET_TEMP_STOCK_PRODUCT_ENTITY = "api/v1.0/inventory/tempstockbookbyentity";
+    public static String GET_TEMP_STOCK_PRODUCT_BATCH = "api/v1.0/inventory/tempstockbookbyproductandbatch";
 
 
 
