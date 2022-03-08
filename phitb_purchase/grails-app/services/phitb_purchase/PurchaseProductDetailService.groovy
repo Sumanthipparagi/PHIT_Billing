@@ -65,6 +65,48 @@ class PurchaseProductDetailService {
         return jsonObject
     }
 
+//    PurchaseProductDetail save(JSONObject jsonObject) {
+//        PurchaseProductDetail purchaseProductDetail = new PurchaseProductDetail()
+//        purchaseProductDetail.finId = Long.parseLong(jsonObject.get("finId").toString())
+//        purchaseProductDetail.billId = Long.parseLong(jsonObject.get("billId").toString())
+//        purchaseProductDetail.billType = jsonObject.get("billType").toString()
+//        purchaseProductDetail.serBillId = Long.parseLong(jsonObject.get("serBillId").toString())
+//        purchaseProductDetail.seriesId = Long.parseLong(jsonObject.get("seriesId").toString())
+//        purchaseProductDetail.productId = Long.parseLong(jsonObject.get("productId").toString())
+//        purchaseProductDetail.batchNumber = jsonObject.get("batchNumber").toString()
+//        purchaseProductDetail.expiryDate = sdf.parse(jsonObject.get("expiryDate").toString())
+//        purchaseProductDetail.sqty = Long.parseLong(jsonObject.get("sqty").toString())
+//        purchaseProductDetail.freeQty = Long.parseLong(jsonObject.get("freeQty").toString())
+//        purchaseProductDetail.repQty = Long.parseLong(jsonObject.get("repQty").toString())
+//        purchaseProductDetail.pRate = Double.parseDouble(jsonObject.get("pRate").toString())
+//        purchaseProductDetail.sRate = Double.parseDouble(jsonObject.get("sRate").toString())
+//        purchaseProductDetail.mrp = Double.parseDouble(jsonObject.get("mrp").toString())
+//        purchaseProductDetail.discount = Double.parseDouble(jsonObject.get("discount").toString())
+//        purchaseProductDetail.taxId = Long.parseLong(jsonObject.get("taxId").toString())
+//        purchaseProductDetail.gstAmount = Double.parseDouble(jsonObject.get("gstAmount").toString())
+//        purchaseProductDetail.sgstAmount = Double.parseDouble(jsonObject.get("sgstAmount").toString())
+//        purchaseProductDetail.cgstAmount = Double.parseDouble(jsonObject.get("cgstAmount").toString())
+//        purchaseProductDetail.igstAmount = Double.parseDouble(jsonObject.get("igstAmount").toString())
+//        purchaseProductDetail.amount = Double.parseDouble(jsonObject.get("amount").toString())
+//        purchaseProductDetail.reason = jsonObject.get("reason").toString()
+//        purchaseProductDetail.fridgeId = Long.parseLong(jsonObject.get("fridgeId").toString())
+//        purchaseProductDetail.kitName = Long.parseLong(jsonObject.get("kitName").toString())
+//        purchaseProductDetail.saleFinId = jsonObject.get("saleFinId").toString()
+//        purchaseProductDetail.redundantBatch = Long.parseLong(jsonObject.get("redundantBatch").toString())
+//        purchaseProductDetail.status = Long.parseLong(jsonObject.get("status").toString())
+//        purchaseProductDetail.syncStatus = Long.parseLong(jsonObject.get("syncStatus").toString())
+//        purchaseProductDetail.financialYear = jsonObject.get("financialYear").toString()
+//        purchaseProductDetail.entityTypeId = Long.parseLong(jsonObject.get("entityTypeId").toString())
+//        purchaseProductDetail.entityId = Long.parseLong(jsonObject.get("entityId").toString())
+//        purchaseProductDetail.save(flush: true)
+//        if (!purchaseProductDetail.hasErrors())
+//            return purchaseProductDetail
+//        else
+//            throw new BadRequestException()
+//
+//    }
+
+
     PurchaseProductDetail save(JSONObject jsonObject) {
         PurchaseProductDetail purchaseProductDetail = new PurchaseProductDetail()
         purchaseProductDetail.finId = Long.parseLong(jsonObject.get("finId").toString())

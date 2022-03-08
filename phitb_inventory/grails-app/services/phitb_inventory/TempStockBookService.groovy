@@ -32,8 +32,7 @@ class TempStockBookService {
             return TempStockBook.findAllByEntityId(entityId, [sort: 'id', max: l, offset: o, order: 'desc'])
     }
 
-    def getAllByProduct(long limit, long offset, long productId) {
-
+    def getAllByProduct(String limit, String offset, long productId) {
         Integer o = offset ? Integer.parseInt(offset.toString()) : 0
         Integer l = limit ? Integer.parseInt(limit.toString()) : 100
         if (!productId)

@@ -4,7 +4,6 @@ import gorm.logical.delete.LogicalDelete
 
 class SaleProductDetails implements Serializable, LogicalDelete<SaleProductDetails>
 {
-
     long finId
     long billId
     long billType

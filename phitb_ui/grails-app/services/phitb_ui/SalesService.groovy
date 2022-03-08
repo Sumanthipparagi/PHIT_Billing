@@ -16,10 +16,6 @@ import javax.ws.rs.core.Response
 @Transactional
 class SalesService {
 
-    def serviceMethod() {
-
-    }
-
     def getSaleBillDetails() {
         Client client = ClientBuilder.newClient();
         WebTarget target = client.target(new Links().API_GATEWAY);

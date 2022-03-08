@@ -377,6 +377,12 @@ class UrlMappings {
         //Inventory
         "/stockbook/product/$id"(controller: "stockBook",action:"getStocksOfProduct")
 
+//        Temp Stock Book
+        "/tempstockbook/product/$id"(controller: "stockBook",action:"getStocksOfProduct")
+        "/tempstockbook/entity/$id"(controller: "stockBook",action:"getTempStocksOfEntity")
+
+
+
         /*<-------------------------------------------Accounts------------------------------------------------->*/
 
         //Bank register
