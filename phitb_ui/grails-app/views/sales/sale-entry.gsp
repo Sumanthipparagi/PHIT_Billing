@@ -239,9 +239,9 @@
         '<strong>Pack</strong>',
         '<strong>GST</strong>',
         '<strong>Value</strong>',
-        '<strong>SGST</strong>',
-        '<strong>CGST</strong>',
-        '<strong>IGST</strong>'];
+        'SGST',
+        'CGST',
+        'IGST'];
 
     var batchHeaderRow = [
         '<strong>Batch</strong>',
@@ -252,12 +252,16 @@
         '<strong>Sale Rate</strong>',
         '<strong>MRP</strong>',
         '<strong>Pack</strong>',
-        '<strong>GST</strong>'];
+        '<strong>GST</strong>',
+        'SGST',
+        'CGST',
+        'IGST'];
 
     const batchContainer = document.getElementById('batchTable');
     var batchHot;
     var hot;
     var batchData = [];
+    var mainTableRow = 0;
     $(document).ready(function () {
         //$("#customerSelect").select2();
         $('#date').val(moment().format('YYYY-MM-DD'));
@@ -287,28 +291,67 @@
                     }
                 },
                 {type: 'text', readOnly: true},
+                {type: 'text', readOnly: true},
+                {type: 'numeric'},
+                {type: 'numeric'},
+                {type: 'numeric', readOnly: true},
+                {type: 'numeric', readOnly: true},
+                {type: 'numeric', readOnly: true},
                 {type: 'text'},
-                {type: 'numeric'},
-                {type: 'numeric'},
-                {type: 'numeric'},
-                {type: 'numeric'},
-                {type: 'numeric'},
-                {type: 'text'},
-                {type: 'numeric'},
-                {type: 'numeric'},
-                {type: 'numeric'},
-                {type: 'numeric'},
-                {type: 'numeric'}
+                {type: 'numeric', readOnly: true},
+                {type: 'numeric', readOnly: true},
+                {type: 'numeric', readOnly: true},
+                {type: 'numeric', readOnly: true},
+                {type: 'numeric', readOnly: true}
             ],
-            minSpareRows: 1,
+            minSpareRows: 0,
+            enterMoves: {row: 0, col: 1},
             fixedColumnsLeft: 0,
             licenseKey: 'non-commercial-and-evaluation',
             afterChange: (changes,source) => {
                 if(changes) {
                     changes.forEach(([row, prop, oldValue, newValue]) => {
                         if(prop === 0) //first col product dropdown
-                            batchSelection(newValue,row);
+                        {
+                            mainTableRow = row;
+                            batchSelection(newValue, row);
+                        }
                     });
+                }
+            }
+        });
+
+        hot.updateSettings({
+            beforeKeyDown(e) {
+                var sRate = 0;
+                var sQty = 0;
+                const row = hot.getSelected()[0];
+                const selection = hot.getSelected()[1];
+                if(selection === 1) {
+                    if (e.keyCode === 13) {
+                        batchHot.selectCell(0, 0);
+                        $("#batchTable").focus();
+                    }
+                }
+                else if(selection === 13)
+                {
+                    if (e.keyCode === 13 /*|| e.keyCode === 9*/) {
+                        mainTableRow = row + 1;
+                        hot.alter('insert_row');
+                        hot.selectCell(mainTableRow, 0);
+                    }
+                }
+                else if (selection === 3)
+                {
+                    if (e.keyCode === 13 || e.keyCode === 9) {
+                         sQty = hot.getDataAtCell(row,selection);
+                         sRate = hot.getDataAtCell(row,5);
+                         var discount = hot.getDataAtCell(row,7);
+                         var gst = hot.getDataAtCell(row,9);
+                         var priceBeforeGst = (sRate * sQty) - ((sRate*sQty*discount)/100);
+                         var finalPrice = priceBeforeGst + (priceBeforeGst*gst)/100;
+                         hot.setDataAtCell(row, 10, finalPrice);
+                    }
                 }
             }
         });
@@ -412,6 +455,9 @@
                 {type: 'numeric',readOnly: true},
                 {type: 'numeric',readOnly: true},
                 {type: 'text',readOnly: true},
+                {type: 'text',readOnly: true},
+                {type: 'text',readOnly: true},
+                {type: 'text',readOnly: true},
                 {type: 'text',readOnly: true}
             ],
             minSpareRows: 0,
@@ -419,9 +465,33 @@
             fixedColumnsLeft: 0,
             licenseKey: 'non-commercial-and-evaluation'
         });
+
+        batchHot.updateSettings({
+            beforeKeyDown(e) {
+                const selection = batchHot.getSelected()[0];
+                var rowData = batchHot.getDataAtRow(selection);
+                console.log(rowData);
+                if (e.keyCode === 13) {
+
+                    hot.setDataAtCell(mainTableRow, 1, rowData[0]);
+                    hot.setDataAtCell(mainTableRow, 2, rowData[1]);
+                    hot.setDataAtCell(mainTableRow, 5, rowData[5]);
+                    hot.setDataAtCell(mainTableRow, 6, rowData[6]);
+                    hot.setDataAtCell(mainTableRow, 7, 0);
+                    hot.setDataAtCell(mainTableRow, 8, rowData[7]);
+                    hot.setDataAtCell(mainTableRow, 9, rowData[8]);
+                    hot.setDataAtCell(mainTableRow, 11, rowData[9]);
+                    hot.setDataAtCell(mainTableRow, 12, rowData[10]);
+                    hot.setDataAtCell(mainTableRow, 13, rowData[11]);
+                    hot.selectCell(mainTableRow,3);
+                    $("#saleTable").focus();
+
+                }
+            }
+        });
     });
 
-    function batchSelection(selectedId) {
+    function batchSelection(selectedId, mainRow) {
         if (selectedId != null) {
             var url = "/stockbook/product/" + selectedId;
             $.ajax({
@@ -434,7 +504,7 @@
                         for (var i = 0; i < data.length; i++) {
                             var batchdt = [];
                             batchdt.push(data[i].batchNumber);
-                            batchdt.push(data[i].expDate);
+                            batchdt.push(data[i].expDate.split("T")[0]);
                             batchdt.push(data[i].remainingQty);
                             batchdt.push(data[i].remainingFreeQty);
                             batchdt.push(data[i].purchaseRate);
@@ -442,6 +512,9 @@
                             batchdt.push(data[i].mrp);
                             batchdt.push(data[i].packingDesc);
                             batchdt.push(data[i].gst);
+                            batchdt.push(data[i].sgst);
+                            batchdt.push(data[i].cgst);
+                            batchdt.push(data[i].igst);
                             batchData.push(batchdt);
 
                         }
@@ -452,15 +525,6 @@
                             batchHot.loadData(batchData);
                             $("#batchTable").focus();
                             batchHot.selectCell(0,0);
-                            console.log(batchHot.getDataAtRow(0));
-                            var rowData = batchHot.getDataAtRow(0);
-                            hot.setDataAtCell(0, 1, rowData[0]);
-                            hot.setDataAtCell(0, 2, rowData[1]);
-                            hot.setDataAtCell(0, 5, rowData[5]);
-                            hot.setDataAtCell(0, 6, rowData[6]);
-                            hot.setDataAtCell(0, 8, rowData[7]);
-                            hot.setDataAtCell(0, 9, rowData[8]);
-
                         }
                     }
                 },

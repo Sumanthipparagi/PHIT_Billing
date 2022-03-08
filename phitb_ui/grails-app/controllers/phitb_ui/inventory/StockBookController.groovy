@@ -22,6 +22,9 @@ class StockBookController {
                 def tax = new TaxController().show(id)
                 println(tax.taxValue)
                 json.put("gst", tax.taxValue)
+                json.put("sgst", tax.salesSgst)
+                json.put("cgst", tax.salesCgst)
+                json.put("igst", tax.salesIgst)
                 responseArray.put(json)
             }
             respond responseArray, formats: ['json'], status: 200
