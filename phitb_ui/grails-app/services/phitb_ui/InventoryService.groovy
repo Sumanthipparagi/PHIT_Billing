@@ -34,8 +34,7 @@ class InventoryService {
 
     def getTempStocksOfProductAndBatch(String id, String batch) {
         Client client = ClientBuilder.newClient();
-        WebTarget target = client.target(new Links().API_GATEWAY);
-        GrailsHttpSession session = WebUtils.retrieveGrailsWebRequest().session
+        WebTarget target = client.target(new Links().API_GATEWAY)
         try {
             Response apiResponse = target
                     .path(new Links().GET_TEMP_STOCK_PRODUCT_BATCH + "/product/" + id + "/batch/"+ batch)

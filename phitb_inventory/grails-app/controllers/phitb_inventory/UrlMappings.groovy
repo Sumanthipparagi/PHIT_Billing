@@ -35,7 +35,9 @@ class UrlMappings {
             "/tempstockbook/datatable(.$format)?"(controller: 'tempStockBook') { action = [GET: 'dataTable'] }
             "/tempstockbook/$id(.$format)?"(controller: 'tempStockBook') { action = [GET: 'show', PUT: 'update', DELETE: 'delete'] }
             "/tempstockbookbyentity/$id(.$format)?"(controller: 'tempStockBook') { action = [GET: 'getByEntityId'] }
-            "/tempstockbookbyproductandbatch/product/$id/batch/$batch(.$format)?"(controller: 'tempStockBook') {
+            "/tempstockbook/product/$id/batch/$batch(.$format)?"(controller: 'tempStockBook') {
+                action = [GET:'getByProductIdAndBatch'] }
+            "/tempstockbook/product/$id(.$format)?"(controller: 'tempStockBook') {
                 action = [GET:'getByProductIdAndBatch'] }
 
 

@@ -33,22 +33,24 @@ class TempStockBookService {
     }
 
     def getAllByProductAndBatch(long productId, String batch) {
+        ArrayList<TempStockBook> tempStockBooks = new ArrayList<>()
         if(batch == null)
         {
-           ArrayList<TempStockBook> tempStockBooks = TempStockBook.findAllByProductId(productId)
-            if(tempStockBooks?.size() == 0)
-            {
-                ArrayList<StockBook> stockBooks = StockBook.findAllByProductId(productId)
-                return stockBooks
-            }
-            else
-            {
-                return tempStockBooks
-            }
+           tempStockBooks = TempStockBook.findAllByProductId(productId)
         }
         else
         {
-            return TempStockBook.findAllByProductIdAndBatchNumber(productId,batch)
+            tempStockBooks = TempStockBook.findAllByProductIdAndBatchNumber(productId,batch)
+        }
+
+        if(tempStockBooks?.size() == 0)
+        {
+            ArrayList<StockBook> stockBooks = StockBook.findAllByProductId(productId)
+            return stockBooks
+        }
+        else
+        {
+            return tempStockBooks
         }
     }
 

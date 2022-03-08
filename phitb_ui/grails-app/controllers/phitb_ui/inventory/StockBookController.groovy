@@ -36,7 +36,6 @@ class StockBookController {
 
     }
 
-
     def getTempStocksOfProductAndBatch()
     {
         def apiResponse = new InventoryService().getTempStocksOfProductAndBatch(params.id,params.batch)
@@ -62,7 +61,6 @@ class StockBookController {
         }
 
     }
-
 
     def getTempStocksOfEntity()
     {

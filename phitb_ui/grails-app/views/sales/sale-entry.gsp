@@ -89,7 +89,9 @@
                             <div class="col-md-3">
                                 <label for="customerSelect">Customer:</label>
                                 <select class="form-control show-tick" id="customerSelect" onchange="customerSelectChanged()">
+                                    <option selected disabled>--SELECT--</option>
                                     <g:each in="${customers}" var="cs">
+
                                         <g:if test="${cs.id != session.getAttribute("entityId")}">
                                             <option value="${cs.id}">${cs.entityName} (${cs.entityType.name})</option>
                                         </g:if>
@@ -166,16 +168,8 @@
                             </div>
                         </div>
                         <div class="row">
-                            <div class="col-md-6">
-                                <button type="button" class="btn btn-round btn-primary m-t-15 addbtn" data-toggle="modal"
-                                        data-target="#addAccountModeModal"><span
-                                        class="glyphicon glyphicon-save-file"></span> Save</button>
-                            </div>
-                            <div class="col-md-6">
-                                <button type="button" class="btn btn-round btn-primary m-t-15 addbtn" data-toggle="modal"
-                                        data-target="#addAccountModeModal"><span
-                                        class="glyphicon glyphicon-save-file" disabled="disabled"></span> Print Inv</button>
-                            </div>
+                            <button class="btn btn-primary">Save</button>
+                            <button class="btn btn-secondary">Print</button>
                         </div>
                     </div>
                 </div>
@@ -224,6 +218,7 @@
     var series = [];
     var products = [];
     var hsnCode = [];
+    var customers = [];
    /* var accountMode = [];
     var customer = [];
     var salesman = [];
@@ -294,6 +289,9 @@
         //$("#customerSelect").select2();
         $('#date').val(moment().format('YYYY-MM-DD'));
         $('#date').attr("readonly");
+        <g:each in="${customers}" var="cs">
+            customers.push({"id": ${cs.id}, "noOfCrDays": ${cs.noOfCrDays}});
+        </g:each>
         const container = document.getElementById('saleTable');
         hot = new Handsontable(container, {
             data: [],
@@ -559,7 +557,7 @@
     function batchSelection(selectedId, mainRow) {
         if (selectedId != null) {
             var url = "/stockbook/product/" + selectedId;
-            //var url = "/tempstockbook/product/"+selectedId+"/batch/null";
+            //var url = "/tempstockbook/product/"+ selectedId;
             $.ajax({
                 type: "GET",
                 url: url,
@@ -607,9 +605,18 @@
 
     function customerSelectChanged()
     {
-        //$('#duedate').prop("readonly", false);
-        //$("#duedate").val(moment().add(5, 'days').format('YYYY-MM-DD'));
-        //$('#duedate').prop("readonly", true);
+        var noOfCrDays = 0;
+        var customerId = $("#customerSelect").val();
+        for(var i = 0; i<customers.length; i++)
+        {
+            if(customerId == customers[i].id)
+            {
+                noOfCrDays = customers[i].noOfCrDays;
+            }
+        }
+        $('#duedate').prop("readonly", false);
+        $("#duedate").val(moment().add(noOfCrDays, 'days').format('YYYY-MM-DD'));
+        $('#duedate').prop("readonly", true);
     }
 
     function calculateTotalAmt()
