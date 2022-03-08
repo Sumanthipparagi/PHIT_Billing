@@ -256,13 +256,14 @@
 
     const batchContainer = document.getElementById('batchTable');
     var batchHot;
+    var hot;
     var batchData = [];
     $(document).ready(function () {
         //$("#customerSelect").select2();
         $('#date').val(moment().format('YYYY-MM-DD'));
         $('#date').attr("readonly");
         const container = document.getElementById('saleTable');
-        const hot = new Handsontable(container, {
+        hot = new Handsontable(container, {
             data: [],
             minRows: 1,
             height: '250',
@@ -285,7 +286,7 @@
                         width: 'auto'
                     }
                 },
-                {type: 'text'},
+                {type: 'text', readOnly: true},
                 {type: 'text'},
                 {type: 'numeric'},
                 {type: 'numeric'},
@@ -306,7 +307,7 @@
                 if(changes) {
                     changes.forEach(([row, prop, oldValue, newValue]) => {
                         if(prop === 0) //first col product dropdown
-                            batchSelection(newValue);
+                            batchSelection(newValue,row);
                     });
                 }
             }
@@ -414,6 +415,7 @@
                 {type: 'text',readOnly: true}
             ],
             minSpareRows: 0,
+            minSpareCols: 0,
             fixedColumnsLeft: 0,
             licenseKey: 'non-commercial-and-evaluation'
         });
@@ -449,6 +451,16 @@
                         if(batchdt?.length > 0) {
                             batchHot.loadData(batchData);
                             $("#batchTable").focus();
+                            batchHot.selectCell(0,0);
+                            console.log(batchHot.getDataAtRow(0));
+                            var rowData = batchHot.getDataAtRow(0);
+                            hot.setDataAtCell(0, 1, rowData[0]);
+                            hot.setDataAtCell(0, 2, rowData[1]);
+                            hot.setDataAtCell(0, 5, rowData[5]);
+                            hot.setDataAtCell(0, 6, rowData[6]);
+                            hot.setDataAtCell(0, 8, rowData[7]);
+                            hot.setDataAtCell(0, 9, rowData[8]);
+
                         }
                     }
                 },
