@@ -108,9 +108,10 @@
             </div>
         </div>
 
+
         <div class="row clearfix">
             <div class="col-lg-12">
-                <div class="card">
+                <div class="card" style="margin-bottom:10px;">
                     <div class="body">
                         <div class="table-responsive">
                             <div id="saleTable" style="width:100%;"></div>
@@ -123,6 +124,12 @@
                                 class="glyphicon glyphicon-save-file"></span> Save</button>
                     </div>--}%
                 </div>
+            </div>
+        </div>
+
+        <div class="row clearfix">
+            <div class="col-lg-12" style="margin-bottom: 10px;">
+                <p style="margin: 0; font-size: 10px;">Keyboard Shortcuts - Delete Row: <strong>Ctrl+Alt+D</strong>, Reset Table: <strong>Ctrl+Alt+R</strong></p>
             </div>
         </div>
 
@@ -150,7 +157,26 @@
                     </div>
 
                     <div class="body">
-
+                        <div class="row">
+                            <div class="col-md-6">
+                                Total: Rs. <p id="totalAmt">0</p>
+                            </div>
+                            <div class="col-md-6">
+                                Inv No: <span class="invno"></span>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <button type="button" class="btn btn-round btn-primary m-t-15 addbtn" data-toggle="modal"
+                                        data-target="#addAccountModeModal"><span
+                                        class="glyphicon glyphicon-save-file"></span> Save</button>
+                            </div>
+                            <div class="col-md-6">
+                                <button type="button" class="btn btn-round btn-primary m-t-15 addbtn" data-toggle="modal"
+                                        data-target="#addAccountModeModal"><span
+                                        class="glyphicon glyphicon-save-file" disabled="disabled"></span> Print Inv</button>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -194,6 +220,7 @@
     </g:each> --%>
 
 
+    var totalAmt = 0;
     var series = [];
     var products = [];
     var hsnCode = [];
@@ -228,6 +255,7 @@
     </g:each> --%>
 
     var headerRow = [
+        '<strong></strong>',
         '<strong>Product</strong>',
         '<strong>Batch</strong>',
         '<strong>Exp Dt</strong>',
@@ -276,10 +304,11 @@
             manualRowResize: true,
             manualColumnResize: true,
             persistentState: true,
-            contextMenu: true,
+            contextMenu: false,
             rowHeaders: true,
             colHeaders: headerRow,
             columns: [
+                {type: 'text'},
                 {
                     editor: 'select2',
                     renderer: productsDropdownRenderer,
@@ -297,7 +326,7 @@
                 {type: 'numeric', readOnly: true},
                 {type: 'numeric', readOnly: true},
                 {type: 'numeric', readOnly: true},
-                {type: 'text'},
+                {type: 'text', readOnly: true},
                 {type: 'numeric', readOnly: true},
                 {type: 'numeric', readOnly: true},
                 {type: 'numeric', readOnly: true},
@@ -311,16 +340,41 @@
             afterChange: (changes,source) => {
                 if(changes) {
                     changes.forEach(([row, prop, oldValue, newValue]) => {
-                        if(prop === 0) //first col product dropdown
+                        if(prop === 1) //first col product dropdown
                         {
                             mainTableRow = row;
                             batchSelection(newValue, row);
                         }
                     });
                 }
+            },
+            afterOnCellMouseDown: function(e, coords, TD) {
+                if (coords.col === 0) {
+                    this.alter("remove_row", coords.row);
+                    calculateTotalAmt();
+                }
+            },
+            cells: function(row, col) {
+                const cellPrp = {};
+                if (col === 0) {
+                    cellPrp.readOnly = true;
+                    cellPrp.renderer = function(
+                        instance,
+                        td,
+                        row,
+                        col,
+                        prop,
+                        value,
+                        cellProperties
+                    ) {
+                        Handsontable.renderers.TextRenderer.apply(this, arguments);
+                        td.innerHTML = '<button class="btn-danger" style="margin: 2px;">Delete</button>';
+                    };
+                }
+                return cellPrp;
             }
         });
-
+        hot.selectCell(0,1);
         hot.updateSettings({
             beforeKeyDown(e) {
                 var sRate = 0;
@@ -333,24 +387,34 @@
                         $("#batchTable").focus();
                     }
                 }
-                else if(selection === 13)
-                {
-                    if (e.keyCode === 13 /*|| e.keyCode === 9*/) {
-                        mainTableRow = row + 1;
-                        hot.alter('insert_row');
-                        hot.selectCell(mainTableRow, 0);
-                    }
-                }
-                else if (selection === 3)
+                else if(selection === 14)
                 {
                     if (e.keyCode === 13 || e.keyCode === 9) {
-                         sQty = hot.getDataAtCell(row,selection);
-                         sRate = hot.getDataAtCell(row,5);
-                         var discount = hot.getDataAtCell(row,7);
-                         var gst = hot.getDataAtCell(row,9);
-                         var priceBeforeGst = (sRate * sQty) - ((sRate*sQty*discount)/100);
-                         var finalPrice = priceBeforeGst + (priceBeforeGst*gst)/100;
-                         hot.setDataAtCell(row, 10, finalPrice);
+                        //check if sqty is empty
+                        var sqty = hot.getDataAtCell(row,4);
+                        if(sqty) {
+                            mainTableRow = row + 1;
+                            hot.alter('insert_row');
+                            hot.selectCell(mainTableRow, 1);
+                            calculateTotalAmt();
+                        }
+                        else
+                        {
+                            alert("Please enter Quantity");
+                        }
+                    }
+                }
+                else if (selection === 4)
+                {
+                    if (e.keyCode === 13 || e.keyCode === 9) {
+                         sQty = this.getActiveEditor().TEXTAREA.value;
+                        // sQty = hot.getDataAtCell(row,selection);
+                         sRate = hot.getDataAtCell(row,6);
+                         var discount = hot.getDataAtCell(row,8);
+                         var gst = hot.getDataAtCell(row,10);
+                         var priceBeforeGst = (sRate * sQty) - ((sRate*sQty)*discount)/100;
+                         var finalPrice = priceBeforeGst + (priceBeforeGst*(gst/100));
+                         hot.setDataAtCell(row, 11, finalPrice);
                     }
                 }
             }
@@ -473,16 +537,17 @@
                 console.log(rowData);
                 if (e.keyCode === 13) {
 
-                    hot.setDataAtCell(mainTableRow, 1, rowData[0]);
-                    hot.setDataAtCell(mainTableRow, 2, rowData[1]);
-                    hot.setDataAtCell(mainTableRow, 5, rowData[5]);
-                    hot.setDataAtCell(mainTableRow, 6, rowData[6]);
-                    hot.setDataAtCell(mainTableRow, 7, 0);
-                    hot.setDataAtCell(mainTableRow, 8, rowData[7]);
-                    hot.setDataAtCell(mainTableRow, 9, rowData[8]);
-                    hot.setDataAtCell(mainTableRow, 11, rowData[9]);
-                    hot.setDataAtCell(mainTableRow, 12, rowData[10]);
-                    hot.setDataAtCell(mainTableRow, 13, rowData[11]);
+                    hot.setDataAtCell(mainTableRow, 2, rowData[0]);
+                    hot.setDataAtCell(mainTableRow, 3, rowData[1]);
+                    hot.setDataAtCell(mainTableRow, 5, 0);
+                    hot.setDataAtCell(mainTableRow, 6, rowData[5]);
+                    hot.setDataAtCell(mainTableRow, 7, rowData[6]);
+                    hot.setDataAtCell(mainTableRow, 8, 0);
+                    hot.setDataAtCell(mainTableRow, 9, rowData[7]);
+                    hot.setDataAtCell(mainTableRow, 10, rowData[8]);
+                    hot.setDataAtCell(mainTableRow, 12, rowData[9]);
+                    hot.setDataAtCell(mainTableRow, 13, rowData[10]);
+                    hot.setDataAtCell(mainTableRow, 14, rowData[11]);
                     hot.selectCell(mainTableRow,3);
                     $("#saleTable").focus();
 
@@ -546,8 +611,51 @@
         //$('#duedate').prop("readonly", true);
     }
 
+    function calculateTotalAmt()
+    {
+        totalAmt = 0;
+        var data = hot.getData();
+        for(var i = 0; i<data.length; i++)
+        {
+            if(data[i][11])
+                totalAmt += data[i][11]
+        }
+        $("#totalAmt").text(totalAmt);
+    }
 
 
+    document.addEventListener("keydown", function(event) {
+        var ctrl = event.ctrlKey;
+        var alt = event.altKey;
+        var key = event.key;
+        console.log(ctrl + " "+alt + " "+key);
+        if (ctrl) {
+            if(alt) {
+                var result = false;
+                if (key === 'd' || key === 'ḍ') {
+                    result = confirm("Delete this row?");
+                    if (result) {
+                        const selection = hot.getSelected()[0];
+                        hot.alter("remove_row", selection);
+                        calculateTotalAmt();
+                    }
+                }
+                if (key === 'r') {
+                    result = confirm("Clear and Reset table?");
+                    if (result) {
+                        batchHot.updateSettings({
+                            data: []
+                        });
+                        hot.updateSettings({
+                            data: []
+                        });
+                        calculateTotalAmt();
+                    }
+                }
+            }
+
+        }
+    });
 
     /// select2 plugin
     (function (Handsontable) {
