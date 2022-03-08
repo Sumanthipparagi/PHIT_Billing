@@ -32,22 +32,23 @@ class InventoryService {
         }
     }
 
-    def getTempStocksOfProduct(String id) {
+    def getTempStocksOfProduct(String id, String batch = "") {
         Client client = ClientBuilder.newClient();
         WebTarget target = client.target(new Links().API_GATEWAY);
-        GrailsHttpSession session = WebUtils.retrieveGrailsWebRequest().session
+        String url = new Links().GET_TEMP_STOCK_PRODUCT
+        url.replace("\$productId", id)
+        url.replace("\$batch", batch)
         try {
-
             Response apiResponse = target
-                    .path(new Links().GET_TEMP_STOCK_PRODUCT + "/" + id)
+                    .path(url)
                     .request(MediaType.APPLICATION_JSON_TYPE)
                     .get()
 
             return apiResponse
         }
         catch (Exception ex) {
-            System.err.println('Service :ProductService , action :  getBatchesOfProduct  , Ex:' + ex)
-            log.error('Service :ProductService , action :  getBatchesOfProduct  , Ex:' + ex)
+            System.err.println('Service:InventoryService , action :  getTempStocksOfProduct  , Ex:' + ex)
+            log.error('Service:InventoryService , action :  getTempStocksOfProduct  , Ex:' + ex)
         }
     }
 

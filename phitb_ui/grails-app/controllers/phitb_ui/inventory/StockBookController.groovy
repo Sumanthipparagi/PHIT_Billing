@@ -39,7 +39,7 @@ class StockBookController {
 
     def getTempStocksOfProduct()
     {
-        def apiResponse = new InventoryService().getTempStocksOfProduct(params.id)
+        def apiResponse = new InventoryService().getTempStocksOfProduct(params.id, params.batch)
         if(apiResponse?.status == 200)
         {
             JSONArray jsonArray = new JSONArray(apiResponse.readEntity(String.class))

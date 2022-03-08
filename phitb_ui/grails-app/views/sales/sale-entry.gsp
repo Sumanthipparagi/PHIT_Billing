@@ -559,6 +559,7 @@
     function batchSelection(selectedId, mainRow) {
         if (selectedId != null) {
             var url = "/stockbook/product/" + selectedId;
+            //var url = "/tempstockbook/product/"+selectedId+"/batch/null";
             $.ajax({
                 type: "GET",
                 url: url,
