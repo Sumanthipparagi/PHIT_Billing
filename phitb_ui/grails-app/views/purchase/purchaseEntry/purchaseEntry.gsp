@@ -6,7 +6,7 @@
     <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
     <meta name="description" content="Responsive Bootstrap 4 and web Application ui kit.">
 
-    <title>:: PharmIt ::  Sale Entry</title>
+    <title>:: PharmIt ::  Purchase  Entry</title>
     <link rel="icon" type="image/x-icon" href="${assetPath(src: '/themeassets/images/favicon.ico')}"/>
     <!-- Favicon-->
     <asset:stylesheet rel="stylesheet" src="/themeassets/plugins/bootstrap/css/bootstrap.min.css"/>
@@ -234,9 +234,9 @@
         '<strong>Product</strong>',
         '<strong>Batch</strong>',
         '<strong>Exp Dt</strong>',
-        '<strong>Sale Qty</strong>',
+        '<strong>Purchase Qty</strong>',
         '<strong>Free Qty</strong>',
-        '<strong>Sale Rate</strong>',
+        '<strong>Purchase Rate</strong>',
         '<strong>MRP</strong>',
         '<strong>Discount</strong>',
         '<strong>Pack</strong>',

@@ -290,8 +290,16 @@ public class Links
     public static String SALE_BILL_UPDATE = "api/v1.0/sales/salebilldetails/{id}";
     public static String SALE_BILL_DELETE = "api/v1.0/sales/salebilldetails/{id}";
 
-    //Inventory
+    /*<--------------------------------------------Inventory ------------------------------------------------->*/
+
+    //Stock book
     public static String GET_STOCKS_OF_PRODUCT = "api/v1.0/inventory/stockbookbyproduct";
+
+
+    //Temp Stock Book
+    public static String GET_TEMP_STOCK_PRODUCT = "api/v1.0/inventory/tempstockbook";
+    public static String GET_TEMP_STOCK_PRODUCT_ENTITY = "api/v1.0/inventory/tempstockbookbyentity";
+
 
 
     /*<--------------------------------------------Bank Register ------------------------------------------------->*/

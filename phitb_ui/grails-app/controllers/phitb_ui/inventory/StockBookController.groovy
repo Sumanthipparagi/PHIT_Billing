@@ -35,4 +35,58 @@ class StockBookController {
         }
 
     }
+
+
+    def getTempStocksOfProduct()
+    {
+        def apiResponse = new InventoryService().getTempStocksOfProduct(params.id)
+        if(apiResponse?.status == 200)
+        {
+            JSONArray jsonArray = new JSONArray(apiResponse.readEntity(String.class))
+            JSONArray responseArray = new JSONArray()
+            for (JSONObject json : jsonArray) {
+                String id = json["taxId"]
+                def tax = new TaxController().show(id)
+                println(tax.taxValue)
+                json.put("gst", tax.taxValue)
+                json.put("sgst", tax.salesSgst)
+                json.put("cgst", tax.salesCgst)
+                json.put("igst", tax.salesIgst)
+                responseArray.put(json)
+            }
+            respond responseArray, formats: ['json'], status: 200
+        }
+        else
+        {
+            response.status = apiResponse?.status
+        }
+
+    }
+
+
+    def getTempStocksOfEntity()
+    {
+        def apiResponse = new InventoryService().getTempStocksOfEntity(params.id)
+        if(apiResponse?.status == 200)
+        {
+            JSONArray jsonArray = new JSONArray(apiResponse.readEntity(String.class))
+            JSONArray responseArray = new JSONArray()
+            for (JSONObject json : jsonArray) {
+                String id = json["taxId"]
+                def tax = new TaxController().show(id)
+                println(tax.taxValue)
+                json.put("gst", tax.taxValue)
+                json.put("sgst", tax.salesSgst)
+                json.put("cgst", tax.salesCgst)
+                json.put("igst", tax.salesIgst)
+                responseArray.put(json)
+            }
+            respond responseArray, formats: ['json'], status: 200
+        }
+        else
+        {
+            response.status = apiResponse?.status
+        }
+    }
+
 }
