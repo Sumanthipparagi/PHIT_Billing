@@ -227,10 +227,6 @@ class EntityService {
         File file = convert(multipartFile)
         try
         {
-            if (file.size() != 0)
-            {
-                jsonObject.put("photo",file.name)
-            }
             Response apiResponse = target
                     .path(new Links().USER_REGISTER_UPDATE)
                     .resolveTemplate("id", jsonObject.id)

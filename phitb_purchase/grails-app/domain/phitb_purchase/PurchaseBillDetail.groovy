@@ -3,7 +3,6 @@ package phitb_purchase
 import gorm.logical.delete.LogicalDelete
 
 class PurchaseBillDetail implements LogicalDelete<PurchaseBillDetail> {
-
     long finId
     long supplierId
     long seriesId

@@ -304,4 +304,12 @@ public class Links
     public static String BANK_REGISTER_DELETE = "api/v1.0/accounts/bankregister/{id}";
 
 
+    /*<--------------------------------------------Purchase ------------------------------------------------->*/
+    //Sale Bill Details
+    public static String PURCHASE_PRODUCT_SHOW = "api/v1.0/purchase/productdetail";
+    public static String PURCHASE_PRODUCT_SAVE = "api/v1.0/purchase/productdetail";
+    public static String PURCHASE_PRODUCT_DATATABLE = "api/v1.0/purchase/productdetail/datatable";
+    public static String PURCHASE_PRODUCT_UPDATE = "api/v1.0/purchase/productdetail/{id}";
+    public static String PURCHASE_PRODUCT_DELETE = "api/v1.0/purchase/productdetail/{id}";
+
 }

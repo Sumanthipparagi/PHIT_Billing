@@ -1,7 +1,10 @@
 package phitb_ui.purchase
 
+import org.grails.web.json.JSONObject
 import phitb_ui.Constants
 import phitb_ui.ProductService
+import phitb_ui.PurchaseService
+import phitb_ui.SalesService
 import phitb_ui.entity.EntityRegisterController
 import phitb_ui.entity.SeriesController
 import phitb_ui.entity.UserRegisterController
@@ -38,8 +41,31 @@ class PurchaseEntryController {
     }
 
 
-    def purchaseReturn()
+    def save()
     {
-        render(view: "/purchase/purchaseRetun")
+        try
+        {
+            JSONObject jsonObject = new JSONObject(params)
+            def apiResponse = new PurchaseService().savePurchaseDetails(jsonObject)
+            if (apiResponse?.status == 200)
+            {
+                JSONObject obj = new JSONObject(apiResponse.readEntity(String.class))
+//                redirect(uri: '/user-register')
+                respond obj, formats: ['json'], status: 200
+            }
+            else
+            {
+                response.status = apiResponse?.status ?: 400
+            }
+        }
+        catch (Exception ex)
+        {
+            System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
+            log.error('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
+            response.status = 400
+        }
     }
+
+
+
 }
