@@ -381,6 +381,9 @@ class UrlMappings {
         "/tempstockbook/product/$id"(controller: "stockBook",action:"getStocksOfProduct")
         "/tempstockbook/entity/$id"(controller: "stockBook",action:"getTempStocksOfEntity")
 
+        "/tempstockbook/product/$id/batch/$batch"(controller: "stockBook",action:"getTempStocksOfProductAndBatch")
+
+
 
 
         /*<-------------------------------------------Accounts------------------------------------------------->*/

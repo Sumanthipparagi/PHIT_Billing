@@ -6,7 +6,7 @@
     <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
     <meta name="description" content="Responsive Bootstrap 4 and web Application ui kit.">
 
-    <title>:: PharmIt ::  Purchase  Entry</title>
+    <title>:: PharmIt ::  Purchase Entry</title>
     <link rel="icon" type="image/x-icon" href="${assetPath(src: '/themeassets/images/favicon.ico')}"/>
     <!-- Favicon-->
     <asset:stylesheet rel="stylesheet" src="/themeassets/plugins/bootstrap/css/bootstrap.min.css"/>
@@ -20,11 +20,10 @@
     <asset:stylesheet rel="stylesheet" href="/themeassets/plugins/select2/dist/css/select2.css"/>
     <asset:stylesheet src="/themeassets/plugins/bootstrap-select/css/bootstrap-select.css" rel="stylesheet"/>
     <link rel="stylesheet" media="screen" href="https://cdnjs.cloudflare.com/ajax/libs/select2/3.5.2/select2.min.css">
-    <link rel="stylesheet" media="screen"
-          href="https://cdnjs.cloudflare.com/ajax/libs/handsontable/0.16.0/handsontable.full.css">
+    <link rel="stylesheet" media="screen" href="https://cdnjs.cloudflare.com/ajax/libs/handsontable/0.16.0/handsontable.full.css">
 
     <style>
-    .form-control {
+    .form-control{
         border-radius: 7px !important;
     }
     </style>
@@ -50,7 +49,7 @@
                     %{--<h2>Sale Entry</h2>--}%
                     <ul class="breadcrumb padding-0">
                         <li class="breadcrumb-item"><a href="#"><i class="zmdi zmdi-home"></i></a></li>
-                        <li class="breadcrumb-item active">Purchase Entry</li>
+                        <li class="breadcrumb-item active">Purcahse Entry</li>
                     </ul>
                 </div>
 
@@ -78,7 +77,6 @@
                                 <label for="date">Date:</label>
                                 <input type="date" class="form-control date" name="date" id="date"/>
                             </div>
-
                             <div class="col-md-3">
                                 <label for="series">Series:</label>
                                 <select class="form-control" id="series" name="series">
@@ -89,9 +87,8 @@
                             </div>
 
                             <div class="col-md-3">
-                                <label for="customerSelect">Suppliers:</label>
-                                <select class="form-control show-tick" id="customerSelect"
-                                        onchange="customerSelectChanged()">
+                                <label for="customerSelect">Supplier:</label>
+                                <select class="form-control show-tick" id="customerSelect" onchange="customerSelectChanged()">
                                     <g:each in="${suppliers}" var="cs">
                                         <g:if test="${cs.id != session.getAttribute("entityId")}">
                                             <option value="${cs.id}">${cs.entityName} (${cs.entityType.name})</option>
@@ -104,15 +101,17 @@
                                 <label for="duedate">Due Date:</label>
                                 <input type="date" class="form-control date" name="duedate" id="duedate"/>
                             </div>
+
                         </div>
                     </div>
                 </div>
             </div>
         </div>
 
+
         <div class="row clearfix">
             <div class="col-lg-12">
-                <div class="card">
+                <div class="card" style="margin-bottom:10px;">
                     <div class="body">
                         <div class="table-responsive">
                             <div id="saleTable" style="width:100%;"></div>
@@ -129,6 +128,13 @@
         </div>
 
         <div class="row clearfix">
+            <div class="col-lg-12" style="margin-bottom: 10px;">
+                <p style="margin: 0; font-size: 10px;">Keyboard Shortcuts - Delete Row: <strong>Ctrl+Alt+D</strong>, Reset Table: <strong>Ctrl+Alt+R</strong></p>
+            </div>
+        </div>
+
+        <div class="row clearfix">
+
 
             <div class="col-lg-8">
                 <div class="card">
@@ -151,9 +157,26 @@
                     </div>
 
                     <div class="body">
-
-                        <button class="btn btn-primary">Save</button>
-                        <button class="btn btn-secondary">Print</button>
+                        <div class="row">
+                            <div class="col-md-6">
+                                Total: Rs. <p id="totalAmt">0</p>
+                            </div>
+                            <div class="col-md-6">
+                                Inv No: <span class="invno"></span>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <button type="button" class="btn btn-round btn-primary m-t-15 addbtn" data-toggle="modal"
+                                        data-target="#addAccountModeModal"><span
+                                        class="glyphicon glyphicon-save-file"></span> Save</button>
+                            </div>
+                            <div class="col-md-6">
+                                <button type="button" class="btn btn-round btn-primary m-t-15 addbtn" data-toggle="modal"
+                                        data-target="#addAccountModeModal"><span
+                                        class="glyphicon glyphicon-save-file" disabled="disabled"></span> Print Inv</button>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -186,9 +209,9 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/3.5.2/select2.js"></script>
 
 <script>
-    var idArray = [];
 
-    <%--var idArray = [];
+    var idArray = [];
+    <%--
     var data = [];
 
     <g:each in="${salebilllist}" var="sb">
@@ -197,6 +220,7 @@
     </g:each> --%>
 
 
+    var totalAmt = 0;
     var series = [];
     var products = [];
     var hsnCode = [];
@@ -231,12 +255,13 @@
      </g:each> --%>
 
     var headerRow = [
+        '<strong></strong>',
         '<strong>Product</strong>',
         '<strong>Batch</strong>',
         '<strong>Exp Dt</strong>',
-        '<strong>Purchase Qty</strong>',
+        '<strong>Sale Qty</strong>',
         '<strong>Free Qty</strong>',
-        '<strong>Purchase Rate</strong>',
+        '<strong>Sale Rate</strong>',
         '<strong>MRP</strong>',
         '<strong>Discount</strong>',
         '<strong>Pack</strong>',
@@ -244,9 +269,7 @@
         '<strong>Value</strong>',
         'SGST',
         'CGST',
-        'IGST'
-        // 'Action'
-    ];
+        'IGST'];
 
     var batchHeaderRow = [
         '<strong>Batch</strong>',
@@ -281,10 +304,11 @@
             manualRowResize: true,
             manualColumnResize: true,
             persistentState: true,
-            contextMenu: true,
+            contextMenu: false,
             rowHeaders: true,
             colHeaders: headerRow,
             columns: [
+                {type: 'text'},
                 {
                     editor: 'select2',
                     renderer: productsDropdownRenderer,
@@ -302,25 +326,21 @@
                 {type: 'numeric', readOnly: true},
                 {type: 'numeric', readOnly: true},
                 {type: 'numeric', readOnly: true},
-                {type: 'text'},
-                {type: 'numeric', readOnly: true},
-                {type: 'numeric'},
+                {type: 'text', readOnly: true},
                 {type: 'numeric', readOnly: true},
                 {type: 'numeric', readOnly: true},
                 {type: 'numeric', readOnly: true},
-                // {
-                //     // validator: finalSubmit,
-                //     renderer: renderButtons
-                // }
+                {type: 'numeric', readOnly: true},
+                {type: 'numeric', readOnly: true}
             ],
             minSpareRows: 0,
             enterMoves: {row: 0, col: 1},
             fixedColumnsLeft: 0,
             licenseKey: 'non-commercial-and-evaluation',
-            afterChange: (changes, source) => {
-                if (changes) {
+            afterChange: (changes,source) => {
+                if(changes) {
                     changes.forEach(([row, prop, oldValue, newValue]) => {
-                        if (prop === 0) //first col product dropdown
+                        if(prop === 1) //first col product dropdown
                         {
                             mainTableRow = row;
                             batchSelection(newValue, row);
@@ -328,91 +348,186 @@
                     });
                 }
             },
+            afterOnCellMouseDown: function(e, coords, TD) {
+                if (coords.col === 0) {
+                    this.alter("remove_row", coords.row);
+                    calculateTotalAmt();
+                }
+            },
+            cells: function(row, col) {
+                const cellPrp = {};
+                if (col === 0) {
+                    cellPrp.readOnly = true;
+                    cellPrp.renderer = function(
+                        instance,
+                        td,
+                        row,
+                        col,
+                        prop,
+                        value,
+                        cellProperties
+                    ) {
+                        Handsontable.renderers.TextRenderer.apply(this, arguments);
+                        td.innerHTML = '<button class="btn-danger" style="margin: 2px;">Delete</button>';
+                    };
+                }
+                return cellPrp;
+            }
         });
-
+        hot.selectCell(0,1);
         hot.updateSettings({
             beforeKeyDown(e) {
                 var sRate = 0;
                 var sQty = 0;
                 const row = hot.getSelected()[0];
                 const selection = hot.getSelected()[1];
-                if (selection === 1) {
+                if(selection === 1) {
                     if (e.keyCode === 13) {
                         batchHot.selectCell(0, 0);
                         $("#batchTable").focus();
                     }
-                } else if (selection === 13) {
-                    if (e.keyCode === 13) {
-                        mainTableRow = row + 1;
-                        hot.alter('insert_row');
-                        hot.selectCell(mainTableRow, 0);
+                }
+                else if(selection === 14)
+                {
+                    var rowThatHasBeenChanged = changes[0][0],
+                        columnThatHasBeenChanged = changes[0][1],
+                        previousValue = changes[0][2],
+                        newValue = changes[0][3];
+                    var visualObjectRow = function (row) {
+                        var obj = {},
+                            key, name;
+                        for (var i = 0; i < hot.countCols(); i++) {
+                            obj[hot.colToProp(i)] = hot.getDataAtCell(row, i);
+                        }
+                        return obj;
+                    };
+                    var json = {};
+                    var changedRow = visualObjectRow(rowThatHasBeenChanged);
+                    // console.log(visualObjectRow(rowThatHasBeenChanged))
+                    Object.keys(changedRow).forEach(function (key) {
+                        json[headerRow[key].replace(/\s+/g, '')] = changedRow[key]
+                    });
+
+                    if (idArray[rowThatHasBeenChanged] != undefined) {
+                        json['id'] = idArray[rowThatHasBeenChanged]
+                    } else {
+                        json['id'] = null
                     }
-                } else if (selection === 3) {
+                    console.log(json);
+                    var url = '';
+                    var type = '';
+                    var id = json['id'];
+                    if (idArray[rowThatHasBeenChanged] != undefined) {
+                        url = '/sale-entry/update/' + id;
+                        type = 'POST'
+                    } else {
+                        url = '/purchase-entry';
+                        type = 'POST'
+                    }
+                    $.ajax({
+                        type: type,
+                        url: url,
+                        dataType: 'json',
+                        data: {
+                            json: json
+                        },
+                        success: function (data) {
+                            console.log("data loaded");
+                        },
+                        error: function (data) {
+                            console.log("Failed");
+                        }
+                    });
+
                     if (e.keyCode === 13 || e.keyCode === 9) {
-                        sQty = hot.getDataAtCell(row, selection);
-                        sRate = hot.getDataAtCell(row, 5);
-                        var discount = hot.getDataAtCell(row, 7);
-                        var gst = hot.getDataAtCell(row, 9);
-                        var priceBeforeGst = (sRate * sQty) - ((sRate * sQty * discount) / 100);
-                        var finalPrice = priceBeforeGst + (priceBeforeGst * gst) / 100;
-                        hot.setDataAtCell(row, 10, finalPrice);
+                        //check if sqty is empty
+                        var sqty = hot.getDataAtCell(row,4);
+                        if(sqty) {
+                            mainTableRow = row + 1;
+                            hot.alter('insert_row');
+                            hot.selectCell(mainTableRow, 1);
+                            calculateTotalAmt();
+                        }
+                        else
+                        {
+                            alert("Please enter Quantity");
+                        }
                     }
                 }
-
-            },
+                else if (selection === 4)
+                {
+                    if (e.keyCode === 13 || e.keyCode === 9) {
+                        sQty = this.getActiveEditor().TEXTAREA.value;
+                        // sQty = hot.getDataAtCell(row,selection);
+                        sRate = hot.getDataAtCell(row,6);
+                        var discount = hot.getDataAtCell(row,8);
+                        var gst = hot.getDataAtCell(row,10);
+                        var priceBeforeGst = (sRate * sQty) - ((sRate*sQty)*discount)/100;
+                        var finalPrice = priceBeforeGst + (priceBeforeGst*(gst/100));
+                        hot.setDataAtCell(row, 11, finalPrice);
+                    }
+                }
+            }
         });
 
-        hot.updateSettings({
-               afterChange: function (changes, source) {
-                   var rowThatHasBeenChanged = changes[0][0],
-                       columnThatHasBeenChanged = changes[0][1],
-                       previousValue = changes[0][2],
-                       newValue = changes[0][3];
-                   var visualObjectRow = function (row) {
-                       var obj = {},
-                           key, name;
-                       for (var i = 0; i < hot.countCols(); i++) {
-                           obj[hot.colToProp(i)] = hot.getDataAtCell(row, i);
-                       }
-                       return obj
-                   };
-                   var json = {};
-                   var changedRow = visualObjectRow(rowThatHasBeenChanged);
-                   // console.log(visualObjectRow(rowThatHasBeenChanged))
-                   Object.keys(changedRow).forEach(function (key) {
-                       json[headerRow[key].replace(/\s+/g, '')] = changedRow[key]
-                   });
-                   if (idArray[rowThatHasBeenChanged] !== undefined) {
-                       json['id'] = idArray[rowThatHasBeenChanged]
-                   } else {
-                       json['id'] = null
-                   }
-                   var url = '';
-                   var type = '';
-                   var id = json['id'];
-                   if (idArray[rowThatHasBeenChanged] !== undefined) {
-                       url = '/purchase-entry/update/' + id;
-                       type = 'POST'
-                   } else {
-                       url = '/purchase-entry';
-                       type = 'POST'
-                   }
-                   $.ajax({
-                       type: type,
-                       url: url,
-                       dataType: 'json',
-                       data: {
-                           json: json
-                       },
-                       success: function (data) {
-                           console.log("data loaded");
-                       },
-                       error: function (data) {
-                           console.log("Failed");
-                       }
-                   });
-               }
-           });
+        /* hot.updateSettings({
+             afterChange: function (changes, source) {
+                 var rowThatHasBeenChanged = changes[0][0],
+                     columnThatHasBeenChanged = changes[0][1],
+                     previousValue = changes[0][2],
+                     newValue = changes[0][3];
+
+                 var visualObjectRow = function (row) {
+                     var obj = {},
+                         key, name;
+                     for (var i = 0; i < hot.countCols(); i++) {
+                         obj[hot.colToProp(i)] = hot.getDataAtCell(row, i);
+                     }
+                     return obj
+                 };
+                 var json = {}
+                 var changedRow = visualObjectRow(rowThatHasBeenChanged);
+                 // console.log(visualObjectRow(rowThatHasBeenChanged))
+                 Object.keys(changedRow).forEach(function (key) {
+                     json[headerRow[key].replace(/\s+/g, '')] = changedRow[key]
+                 });
+
+
+                 if (idArray[rowThatHasBeenChanged] != undefined) {
+                     json['id'] = idArray[rowThatHasBeenChanged]
+                 } else {
+                     json['id'] = null
+                 }
+                 console.log(json);
+
+
+                 var url = '';
+                 var type = '';
+                 var id = json['id'];
+                 if (idArray[rowThatHasBeenChanged] != undefined) {
+                     url = '/sale-entry/update/' + id;
+                     type = 'POST'
+                 } else {
+                     url = '/sale-entry';
+                     type = 'POST'
+                 }
+                 $.ajax({
+                     type: type,
+                     url: url,
+                     dataType: 'json',
+                     data: {
+                         json: json
+                     },
+                     success: function (data) {
+                         console.log("data loaded");
+                     },
+                     error: function (data) {
+                         console.log("Failed");
+                     }
+                 });
+
+             }
+         });*/
 
         function productsDropdownRenderer(instance, td, row, col, prop, value, cellProperties) {
             var selectedId;
@@ -426,7 +541,6 @@
 
             //$('#selectedId').text(selectedId);
         }
-
         /* function updateCell(hot, selectedId, value, row) {
              hot.setDataAtCell(row, 2, value);
              $("#productNameTitle").text("");
@@ -447,18 +561,18 @@
             selectionMode: 'range',
             colHeaders: batchHeaderRow,
             columns: [
-                {type: 'text', readOnly: true},
-                {type: 'text', readOnly: true},
-                {type: 'numeric', readOnly: true},
-                {type: 'numeric', readOnly: true},
-                {type: 'numeric', readOnly: true},
-                {type: 'numeric', readOnly: true},
-                {type: 'numeric', readOnly: true},
-                {type: 'text', readOnly: true},
-                {type: 'text', readOnly: true},
-                {type: 'text', readOnly: true},
-                {type: 'text', readOnly: true},
-                {type: 'text', readOnly: true}
+                {type: 'text',readOnly: true},
+                {type: 'text',readOnly: true},
+                {type: 'numeric',readOnly: true},
+                {type: 'numeric',readOnly: true},
+                {type: 'numeric',readOnly: true},
+                {type: 'numeric',readOnly: true},
+                {type: 'numeric',readOnly: true},
+                {type: 'text',readOnly: true},
+                {type: 'text',readOnly: true},
+                {type: 'text',readOnly: true},
+                {type: 'text',readOnly: true},
+                {type: 'text',readOnly: true}
             ],
             minSpareRows: 0,
             minSpareCols: 0,
@@ -472,17 +586,19 @@
                 var rowData = batchHot.getDataAtRow(selection);
                 console.log(rowData);
                 if (e.keyCode === 13) {
-                    hot.setDataAtCell(mainTableRow, 1, rowData[0]);
-                    hot.setDataAtCell(mainTableRow, 2, rowData[1]);
-                    hot.setDataAtCell(mainTableRow, 5, rowData[5]);
-                    hot.setDataAtCell(mainTableRow, 6, rowData[6]);
-                    hot.setDataAtCell(mainTableRow, 7, 0);
-                    hot.setDataAtCell(mainTableRow, 8, rowData[7]);
-                    hot.setDataAtCell(mainTableRow, 9, rowData[8]);
-                    hot.setDataAtCell(mainTableRow, 11, rowData[9]);
-                    hot.setDataAtCell(mainTableRow, 12, rowData[10]);
-                    hot.setDataAtCell(mainTableRow, 13, rowData[11]);
-                    hot.selectCell(mainTableRow, 3);
+
+                    hot.setDataAtCell(mainTableRow, 2, rowData[0]);
+                    hot.setDataAtCell(mainTableRow, 3, rowData[1]);
+                    hot.setDataAtCell(mainTableRow, 5, 0);
+                    hot.setDataAtCell(mainTableRow, 6, rowData[5]);
+                    hot.setDataAtCell(mainTableRow, 7, rowData[6]);
+                    hot.setDataAtCell(mainTableRow, 8, 0);
+                    hot.setDataAtCell(mainTableRow, 9, rowData[7]);
+                    hot.setDataAtCell(mainTableRow, 10, rowData[8]);
+                    hot.setDataAtCell(mainTableRow, 12, rowData[9]);
+                    hot.setDataAtCell(mainTableRow, 13, rowData[10]);
+                    hot.setDataAtCell(mainTableRow, 14, rowData[11]);
+                    hot.selectCell(mainTableRow,3);
                     $("#saleTable").focus();
 
                 }
@@ -520,10 +636,10 @@
                         batchHot.updateSettings({
                             data: []
                         });
-                        if (batchdt?.length > 0) {
+                        if(batchdt?.length > 0) {
                             batchHot.loadData(batchData);
                             $("#batchTable").focus();
-                            batchHot.selectCell(0, 0);
+                            batchHot.selectCell(0,0);
                         }
                     }
                 },
@@ -537,34 +653,59 @@
         }
     }
 
-    function customerSelectChanged() {
+
+    function customerSelectChanged()
+    {
         //$('#duedate').prop("readonly", false);
         //$("#duedate").val(moment().add(5, 'days').format('YYYY-MM-DD'));
         //$('#duedate').prop("readonly", true);
     }
 
-    function renderButtons(instance, td, row, col, prop, value, cellProperties) {
-
-        td.innerHTML =
-            "<button type='submit' id='btnSubmit' class='btn btn-primary btn-sm' style='padding:1px'>Save</button>";
-
-        $(document).ready(function () {
-            $("#btnSubmit").one('click', function (event) {
-                event.preventDefault();
-                $(this).prop('disabled', true);
-            });
-        });
-        $(document).ready(function () {
-            $(window).keydown(function (event) {
-                if (event.keyCode === 13) {
-                    event.preventDefault();
-                    return false;
-                }
-            });
-        });
-
+    function calculateTotalAmt()
+    {
+        totalAmt = 0;
+        var data = hot.getData();
+        for(var i = 0; i<data.length; i++)
+        {
+            if(data[i][11])
+                totalAmt += data[i][11]
+        }
+        $("#totalAmt").text(totalAmt);
     }
 
+
+    document.addEventListener("keydown", function(event) {
+        var ctrl = event.ctrlKey;
+        var alt = event.altKey;
+        var key = event.key;
+        console.log(ctrl + " "+alt + " "+key);
+        if (ctrl) {
+            if(alt) {
+                var result = false;
+                if (key === 'd' || key === 'ḍ') {
+                    result = confirm("Delete this row?");
+                    if (result) {
+                        const selection = hot.getSelected()[0];
+                        hot.alter("remove_row", selection);
+                        calculateTotalAmt();
+                    }
+                }
+                if (key === 'r') {
+                    result = confirm("Clear and Reset table?");
+                    if (result) {
+                        batchHot.updateSettings({
+                            data: []
+                        });
+                        hot.updateSettings({
+                            data: []
+                        });
+                        calculateTotalAmt();
+                    }
+                }
+            }
+
+        }
+    });
 
     /// select2 plugin
     (function (Handsontable) {
