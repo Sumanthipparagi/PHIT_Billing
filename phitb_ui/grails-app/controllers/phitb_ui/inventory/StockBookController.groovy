@@ -87,4 +87,30 @@ class StockBookController {
         }
     }
 
+
+    def save()
+    {
+        try
+        {
+            JSONObject jsonObject = new JSONObject(params)
+            def apiResponse = new InventoryService().tempStockBookSave(jsonObject)
+            if (apiResponse?.status == 200)
+            {
+                JSONObject obj = new JSONObject(apiResponse.readEntity(String.class))
+//                render(view: '/entity/entityRegister/add-entity-register')
+                respond obj, formats: ['json'], status: 200
+            }
+            else
+            {
+                response.status = apiResponse?.status ?: 400
+            }
+        }
+        catch (Exception ex)
+        {
+            System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
+            log.error('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
+            response.status = 400
+        }
+    }
+
 }

@@ -1,5 +1,5 @@
 <%@ page contentType="text/html;charset=UTF-8" %>
-<html>
+<html id="invoiceprint">
 <head>
     <title>Purchase Return</title>
 
@@ -378,7 +378,7 @@
 <br>
 <p class="signatory" style="float: right;margin-right: 24px;">Authorized Signatory</p>
 
-<p style="float: left;margin-right: 24px;"><b>Printed By:</b> Name</p>
+<p style="float: left;margin-right: 24px;"><b>Printed By:</b> ${session.getAttribute('entityName')}</p>
 
 <p style="float: left;margin-right: 24px;"><b>Printed On:</b><span id="date"></span></p>
 </body>
