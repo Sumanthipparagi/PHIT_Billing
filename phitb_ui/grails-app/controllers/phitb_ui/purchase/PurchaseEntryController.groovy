@@ -106,6 +106,7 @@ class PurchaseEntryController {
 
     def purchaseReturn()
     {
+        ArrayList<String> tempStockBook = new StockBookController().tempStockShow() as ArrayList<String>
         render(view: '/purchase/purchaseRetun',model: [tempStockBook:tempStockBook])
     }
 }
