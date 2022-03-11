@@ -20,11 +20,16 @@
     <asset:stylesheet rel="stylesheet" href="/themeassets/plugins/select2/dist/css/select2.css"/>
     <asset:stylesheet src="/themeassets/plugins/bootstrap-select/css/bootstrap-select.css" rel="stylesheet"/>
     <link rel="stylesheet" media="screen" href="https://cdnjs.cloudflare.com/ajax/libs/select2/3.5.2/select2.min.css">
-    <link rel="stylesheet" media="screen" href="https://cdnjs.cloudflare.com/ajax/libs/handsontable/0.16.0/handsontable.full.css">
+    <link rel="stylesheet" media="screen"
+          href="https://cdnjs.cloudflare.com/ajax/libs/handsontable/0.16.0/handsontable.full.css">
 
     <style>
-    .form-control{
+    .form-control {
         border-radius: 7px !important;
+    }
+
+    .colHeader {
+        font-weight: bold;
     }
     </style>
 </head>
@@ -77,6 +82,7 @@
                                 <label for="date">Date:</label>
                                 <input type="date" class="form-control date" name="date" id="date"/>
                             </div>
+
                             <div class="col-md-3">
                                 <label for="series">Series:</label>
                                 <select class="form-control" id="series" name="series">
@@ -88,7 +94,8 @@
 
                             <div class="col-md-3">
                                 <label for="customerSelect">Supplier:</label>
-                                <select class="form-control show-tick" id="customerSelect" onchange="customerSelectChanged()">
+                                <select class="form-control show-tick" id="customerSelect"
+                                        onchange="customerSelectChanged()">
                                     <option selected disabled>--SELECT--</option>
                                     <g:each in="${suppliers}" var="cs">
 
@@ -131,12 +138,12 @@
 
         <div class="row clearfix">
             <div class="col-lg-12" style="margin-bottom: 10px;">
-                <p style="margin: 0; font-size: 10px;">Keyboard Shortcuts - Delete Row: <strong>Ctrl+Alt+D</strong>, Reset Table: <strong>Ctrl+Alt+R</strong></p>
+                <p style="margin: 0; font-size: 10px;">Keyboard Shortcuts - Delete Row: <strong>Ctrl+Alt+D</strong>, Reset Table: <strong>Ctrl+Alt+R</strong>
+                </p>
             </div>
         </div>
 
         <div class="row clearfix">
-
 
             <div class="col-lg-8">
                 <div class="card">
@@ -163,13 +170,15 @@
                             <div class="col-md-6">
                                 Total: Rs. <p id="totalAmt">0</p>
                             </div>
+
                             <div class="col-md-6">
                                 Inv No: <span class="invno"></span>
                             </div>
                         </div>
+
                         <div class="row">
-                            <button class="btn btn-primary">Save</button>
-                            <button class="btn btn-secondary">Print</button>
+                            <button class="btn btn-primary save">Save</button>
+                            <button class="btn btn-secondary print">Print</button>
                         </div>
                     </div>
                 </div>
@@ -206,14 +215,18 @@
 
 <script>
 
-    var idArray = [];
-    <%--var idArray = [];
-    var data = [];
+    // var idArray = [];
+    // (sRate * sQty) - ((sRate * sQty) * discount) / 100;
+    // priceBeforeGst + (priceBeforeGst * (gst / 100));
 
-    <g:each in="${salebilllist}" var="sb">
+    var idArray = [];
+    var data = [];
+    <g:each in="${tempStockBook.reverse()}" var="sb">
     idArray.push(${sb.id});
-    data.push(['${sb.finId}', ${sb.serBillId}, ${sb.seriesId}, '${sb.paymentStatus}', '${sb.accountModeId}', '${sb.priorityId}', moment('${sb.entryDate}').format("DD/MM/YYYY"), '${sb.customerId}', '${sb.customerNumber}', ${sb.salesmanId}, '${sb.salesmanComm}', moment('${sb.orderDate}').format("DD/MM/YYYY"), '${sb.refOrderId}', moment('${sb.dueDate}').format("DD/MM/YYYY"), moment('${sb.dispatchDate}').format("DD/MM/YYYY"), '${sb.deliveryManId}', '${sb.totalSqty}', '${sb.totalFqty}', '${sb.totalItems}', '${sb.totalQty}', '${sb.totalDiscount}', '${sb.totalAmount}', '${sb.invoiceTotal}', '${sb.totalGst}', '${sb.userId}', '${sb.balance}', '${sb.grossAmount}', '${sb.taxable}', '${sb.cashDiscount}', '${sb.exempted}', '${sb.totalCgst}', '${sb.totalSgst}', '${sb.totalIgst}', '${sb.gstStatus}', ${sb.billStatus}, ${sb.lockStatus}, ${sb.creditadjAmount}, ${sb.creditIds}, ${sb.referralDoctor}, '${sb.message}', '${sb.financialYear}', ${sb.entityTypeId}, ${sb.entityId}])
-    </g:each> --%>
+    data.push(['', ${sb.productId}, '${sb.batchNumber}', moment(new Date('${sb.expDate}')).format('YYYY-MM-DD'), '${sb.userOrderQty}', '${sb.userOrderFreeQty}', ${sb.purchaseRate}, ${sb.mrp}, '0', ${sb.packingDesc}, '1', ${(sb.purchaseRate * sb.userOrderQty) - ((sb.purchaseRate * sb.userOrderQty) * 0)/100 +(((sb.purchaseRate * sb.userOrderQty) - ((sb.purchaseRate * sb.userOrderQty) * 0)/100) * (10/100))}, '1', '1', '1'])
+
+
+    </g:each>
 
 
     var totalAmt = 0;
@@ -296,8 +309,8 @@
         </g:each>
         const container = document.getElementById('saleTable');
         hot = new Handsontable(container, {
-            data: [],
-            minRows: 1,
+            data: data,
+            minRows: 0,
             height: '250',
             width: 'auto',
             rowHeights: 25,
@@ -317,7 +330,7 @@
                         dropdownAutoWidth: true,
                         allowClear: true,
                         width: 'auto'
-                    }
+                    },
                 },
                 {type: 'text', readOnly: true},
                 {type: 'text', readOnly: true},
@@ -333,32 +346,33 @@
                 {type: 'numeric', readOnly: true},
                 {type: 'numeric', readOnly: true}
             ],
-            minSpareRows: 0,
+            minSpareRows: 1,
             enterMoves: {row: 0, col: 1},
             fixedColumnsLeft: 0,
             licenseKey: 'non-commercial-and-evaluation',
-            afterChange: (changes,source) => {
-                if(changes) {
+            afterChange: (changes, source) => {
+                if (changes) {
                     changes.forEach(([row, prop, oldValue, newValue]) => {
-                        if(prop === 1) //first col product dropdown
+                        if (prop === 1) //first col product dropdown
                         {
                             mainTableRow = row;
                             batchSelection(newValue, row);
                         }
+
                     });
                 }
             },
-            afterOnCellMouseDown: function(e, coords, TD) {
+            afterOnCellMouseDown: function (e, coords, TD) {
                 if (coords.col === 0) {
                     this.alter("remove_row", coords.row);
                     calculateTotalAmt();
                 }
             },
-            cells: function(row, col) {
+            cells: function (row, col) {
                 const cellPrp = {};
                 if (col === 0) {
                     cellPrp.readOnly = true;
-                    cellPrp.renderer = function(
+                    cellPrp.renderer = function (
                         instance,
                         td,
                         row,
@@ -374,39 +388,34 @@
                 return cellPrp;
             }
         });
-        hot.selectCell(0,1);
+        hot.selectCell(0, 1);
         hot.updateSettings({
-            beforeKeyDown(e,changes) {
+            beforeKeyDown(e, changes) {
                 var sRate = 0;
                 var sQty = 0;
                 const row = hot.getSelected()[0];
                 const selection = hot.getSelected()[1];
-                if(selection === 1) {
+                if (selection === 1) {
                     if (e.keyCode === 13) {
                         batchHot.selectCell(0, 0);
                         $("#batchTable").focus();
                     }
-                }
-                else if(selection === 14)
-                {
+                } else if (selection === 14) {
                     if (e.keyCode === 13 || e.keyCode === 9) {
                         //check if sqty is empty
-                        var sqty = hot.getDataAtCell(row,4);
-                        if(sqty) {
+                        var sqty = hot.getDataAtCell(row, 4);
+                        if (sqty) {
                             mainTableRow = row + 1;
                             hot.alter('insert_row');
                             hot.selectCell(mainTableRow, 1);
                             calculateTotalAmt();
-                        }
-                        else
-                        {
+                        } else {
                             alert("Please enter Quantity");
                         }
                     }
 
                     // alert(hot.getDataAtRow(row))
                     // var rowThatHasBeenChanged = hot.getDataAtRow(row)
-
                     var visualObjectRow = function (row) {
                         var obj = {},
                             key, name;
@@ -427,8 +436,7 @@
                     // } else {
                     //     json['id'] = null
                     // }
-                    console.log(json);
-
+                    // console.log(json);
 
                     var url = '';
                     var type = '';
@@ -437,8 +445,8 @@
                     //     url = '/sale-entry/update/' + id;
                     //     type = 'POST'
                     // } else {
-                        url = '/tempstockbook';
-                        type = 'POST'
+                    url = '/tempstockbook';
+                    type = 'POST'
                     // }
                     $.ajax({
                         type: type,
@@ -448,24 +456,22 @@
                             json: json
                         },
                         success: function (data) {
-                            swal("Data saved");
+                            console.log("Data saved");
                         },
                         error: function (data) {
                             console.log("Failed");
                         }
                     });
 
-                }
-                else if (selection === 4)
-                {
+                } else if (selection === 4) {
                     if (e.keyCode === 13 || e.keyCode === 9) {
                         sQty = this.getActiveEditor().TEXTAREA.value;
                         // sQty = hot.getDataAtCell(row,selection);
-                        sRate = hot.getDataAtCell(row,6);
-                        var discount = hot.getDataAtCell(row,8);
-                        var gst = hot.getDataAtCell(row,10);
-                        var priceBeforeGst = (sRate * sQty) - ((sRate*sQty)*discount)/100;
-                        var finalPrice = priceBeforeGst + (priceBeforeGst*(gst/100));
+                        sRate = hot.getDataAtCell(row, 6);
+                        var discount = hot.getDataAtCell(row, 8);
+                        var gst = hot.getDataAtCell(row, 10);
+                        var priceBeforeGst = (sRate * sQty) - ((sRate * sQty) * discount) / 100;
+                        var finalPrice = priceBeforeGst + (priceBeforeGst * (gst / 100));
                         hot.setDataAtCell(row, 11, finalPrice);
                     }
                 }
@@ -485,11 +491,13 @@
 
             //$('#selectedId').text(selectedId);
         }
+
         /* function updateCell(hot, selectedId, value, row) {
              hot.setDataAtCell(row, 2, value);
              $("#productNameTitle").text("");
              $("#batchSelectModal").modal("toggle");
          }*/
+
 
         batchHot = new Handsontable(batchContainer, {
             data: batchData,
@@ -505,18 +513,18 @@
             selectionMode: 'range',
             colHeaders: batchHeaderRow,
             columns: [
-                {type: 'text',readOnly: true},
-                {type: 'text',readOnly: true},
-                {type: 'numeric',readOnly: true},
-                {type: 'numeric',readOnly: true},
-                {type: 'numeric',readOnly: true},
-                {type: 'numeric',readOnly: true},
-                {type: 'numeric',readOnly: true},
-                {type: 'text',readOnly: true},
-                {type: 'text',readOnly: true},
-                {type: 'text',readOnly: true},
-                {type: 'text',readOnly: true},
-                {type: 'text',readOnly: true}
+                {type: 'text', readOnly: true},
+                {type: 'text', readOnly: true},
+                {type: 'numeric', readOnly: true},
+                {type: 'numeric', readOnly: true},
+                {type: 'numeric', readOnly: true},
+                {type: 'numeric', readOnly: true},
+                {type: 'numeric', readOnly: true},
+                {type: 'text', readOnly: true},
+                {type: 'text', readOnly: true},
+                {type: 'text', readOnly: true},
+                {type: 'text', readOnly: true},
+                {type: 'text', readOnly: true}
             ],
             minSpareRows: 0,
             minSpareCols: 0,
@@ -530,7 +538,6 @@
                 var rowData = batchHot.getDataAtRow(selection);
                 console.log(rowData);
                 if (e.keyCode === 13) {
-
                     hot.setDataAtCell(mainTableRow, 2, rowData[0]);
                     hot.setDataAtCell(mainTableRow, 3, rowData[1]);
                     hot.setDataAtCell(mainTableRow, 5, 0);
@@ -542,7 +549,7 @@
                     hot.setDataAtCell(mainTableRow, 12, rowData[9]);
                     hot.setDataAtCell(mainTableRow, 13, rowData[10]);
                     hot.setDataAtCell(mainTableRow, 14, rowData[11]);
-                    hot.selectCell(mainTableRow,3);
+                    hot.selectCell(mainTableRow, 3);
                     $("#saleTable").focus();
 
                 }
@@ -559,6 +566,7 @@
                 url: url,
                 dataType: 'json',
                 success: function (data) {
+                    console.log(data)
                     if (data) {
                         batchData = [];
                         for (var i = 0; i < data.length; i++) {
@@ -576,15 +584,14 @@
                             batchdt.push(data[i].cgst);
                             batchdt.push(data[i].igst);
                             batchData.push(batchdt);
-
                         }
                         batchHot.updateSettings({
                             data: []
                         });
-                        if(batchdt?.length > 0) {
+                        if (batchdt?.length > 0) {
                             batchHot.loadData(batchData);
                             $("#batchTable").focus();
-                            batchHot.selectCell(0,0);
+                            batchHot.selectCell(0, 0);
                         }
                     }
                 },
@@ -598,15 +605,11 @@
         }
     }
 
-
-    function customerSelectChanged()
-    {
+    function customerSelectChanged() {
         var noOfCrDays = 0;
         var customerId = $("#customerSelect").val();
-        for(var i = 0; i<customers.length; i++)
-        {
-            if(customerId == customers[i].id)
-            {
+        for (var i = 0; i < customers.length; i++) {
+            if (customerId === customers[i].id) {
                 noOfCrDays = customers[i].noOfCrDays;
             }
         }
@@ -615,26 +618,68 @@
         $('#duedate').prop("readonly", true);
     }
 
-    function calculateTotalAmt()
-    {
+    function calculateTotalAmt() {
         totalAmt = 0;
         var data = hot.getData();
-        for(var i = 0; i<data.length; i++)
-        {
-            if(data[i][11])
+        for (var i = 0; i < data.length; i++) {
+            if (data[i][11])
                 totalAmt += data[i][11]
         }
         $("#totalAmt").text(totalAmt);
     }
 
+    var visualObjectRow = function (row) {
+        var obj = {},
+            key, name;
+        for (var i = 0; i < hot.countCols(); i++) {
+            obj[hot.colToProp(i)] = hot.getDataAtCell(row, i);
+        }
+        return obj
+    };
 
-    document.addEventListener("keydown", function(event) {
+
+    function getVisualTableData() {
+        const tableData = [];
+        for (let i = 0; i < this.hot.countRows(); i++) {
+            tableData.push(visualObjectRow(i));
+        }
+        return tableData;
+    }
+
+    $(".save").on('click', function (event) {
+        var batch = [];
+        var data = hot.getData();
+        for (var i = 0; i < data.length; i++) {
+            if (data[i][2])
+                batch.push({'batch': data[i][2], 'purQty': data[i][4]})
+        }
+        var batchDataString = JSON.stringify(batch);
+        var batchData = JSON.parse(batchDataString);
+        var url ="/stockbook/purchase";
+        $.ajax({
+            type: "POST",
+            url: url,
+            dataType: 'json',
+            data: {
+                json: batchData
+            },
+            success: function (data) {
+               swal("Data saved");
+            },
+            error: function (data) {
+                console.log("Failed");
+            }
+        });
+    });
+
+
+    document.addEventListener("keydown", function (event) {
         var ctrl = event.ctrlKey;
         var alt = event.altKey;
         var key = event.key;
-        console.log(ctrl + " "+alt + " "+key);
+        console.log(ctrl + " " + alt + " " + key);
         if (ctrl) {
-            if(alt) {
+            if (alt) {
                 var result = false;
                 if (key === 'd' || key === 'ḍ') {
                     result = confirm("Delete this row?");
@@ -860,6 +905,7 @@
 
     })(Handsontable);
 
+
     function printInvoice() {
         /* window.addEventListener('load', function () {*/
         $('#invoiceprint').printThis({
@@ -870,6 +916,19 @@
             pageTitle: ""
         });
     }
+
+    $(".print").click(function(){
+        $("#printabel").remove();
+        purchasePrint()
+    });
+
+    function purchasePrint() {
+        $("<iframe id='printabel'>")
+            .hide()
+            .attr("src", "/purchase-retrun")
+            .appendTo("body");
+    }
+
 </script>
 </body>
 </html>

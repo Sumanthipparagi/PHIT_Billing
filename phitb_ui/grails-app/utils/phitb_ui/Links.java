@@ -295,6 +295,8 @@ public class Links
     //Stock book
     public static String GET_STOCKS_OF_PRODUCT = "api/v1.0/inventory/stockbookbyproduct";
 
+    public static String STOCK_BOOK_PURCHASE = "api/v1.0/inventory/stockbook/purchase/";
+
 
     //Temp Stock Book
     public static String GET_TEMP_STOCK_PRODUCT = "api/v1.0/inventory/tempstockbook";
@@ -314,7 +316,7 @@ public class Links
 
 
     /*<--------------------------------------------Purchase ------------------------------------------------->*/
-    //Sale Bill Details
+    //purchase product details
     public static String PURCHASE_PRODUCT_SHOW = "api/v1.0/purchase/productdetail";
     public static String PURCHASE_PRODUCT_SAVE = "api/v1.0/purchase/productdetail";
     public static String PURCHASE_PRODUCT_DATATABLE = "api/v1.0/purchase/productdetail/datatable";

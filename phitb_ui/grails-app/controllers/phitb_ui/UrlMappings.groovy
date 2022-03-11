@@ -377,9 +377,10 @@ class UrlMappings {
 
         //Inventory
         "/stockbook/product/$id"(controller: "stockBook",action:"getStocksOfProduct")
+        "/stockbook/purchase"(controller: "stockBook",action:"StockBookPurchase")
+
 
 //        Temp Stock Book
-
         "/tempstockbook"(controller: "stockBook") {
             action = [GET: 'index', POST: 'save']
         }
@@ -388,6 +389,7 @@ class UrlMappings {
 
         "/tempstockbook/product/$id/batch/$batch"(controller: "stockBook",action:"getTempStocksOfProductAndBatch")
         "/tempstockbook/product/$id/"(controller: "stockBook",action:"getTempStocksOfProductAndBatch")
+
 
 
 

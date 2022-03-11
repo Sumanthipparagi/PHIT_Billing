@@ -2,6 +2,7 @@ package phitb_ui
 
 import grails.gorm.transactions.Transactional
 import grails.web.servlet.mvc.GrailsHttpSession
+import org.grails.web.json.JSONArray
 import org.grails.web.json.JSONObject
 import org.grails.web.util.WebUtils
 
@@ -9,6 +10,7 @@ import javax.ws.rs.client.Client
 import javax.ws.rs.client.ClientBuilder
 import javax.ws.rs.client.Entity
 import javax.ws.rs.client.WebTarget
+import javax.ws.rs.core.Form
 import javax.ws.rs.core.MediaType
 import javax.ws.rs.core.Response
 
@@ -89,6 +91,60 @@ class InventoryService {
         {
             System.err.println('Service :saveStateMaster , action :  save  , Ex:' + ex)
             log.error('Service :saveStateMaster , action :  save  , Ex:' + ex)
+        }
+    }
+
+
+    def StockBookPurchase(JSONObject jsonObject)
+    {
+        Client client = ClientBuilder.newClient()
+        WebTarget target = client.target(new Links().API_GATEWAY)
+        Form form = UtilService.jsonToFormDataConverter(jsonObject)
+        try
+        {
+            print(jsonObject)
+
+            JSONObject objects = new JSONObject()
+            JSONArray key = objects.names ();
+
+//            jsonObject.items.each {
+//                println "item:"+it
+
+
+//            }
+//            Response apiResponse = target
+//                    .path(new Links().STOCK_BOOK_PURCHASE+"/batch/"+jsonObject.batch+"/qty/"+jsonObject.qty)
+//                    .request(MediaType.APPLICATION_JSON_TYPE)
+////                    .post(Entity.entity(jsonObject.toString(),MediaType.APPLICATION_JSON_TYPE))
+//                    .post(Entity.form(form))
+//            return apiResponse
+        }
+        catch (Exception ex)
+        {
+            System.err.println('Service :saveStateMaster , action :  save  , Ex:' + ex)
+            log.error('Service :saveStateMaster , action :  save  , Ex:' + ex)
+        }
+    }
+
+
+
+
+    def getTempStocks(String id) {
+        Client client = ClientBuilder.newClient();
+        WebTarget target = client.target(new Links().API_GATEWAY);
+        GrailsHttpSession session = WebUtils.retrieveGrailsWebRequest().session
+        try {
+
+            Response apiResponse = target
+                    .path(new Links().GET_TEMP_STOCK_PRODUCT)
+                    .request(MediaType.APPLICATION_JSON_TYPE)
+                    .get()
+
+            return apiResponse
+        }
+        catch (Exception ex) {
+            System.err.println('Service :ProductService , action :  getBatchesOfProduct  , Ex:' + ex)
+            log.error('Service :ProductService , action :  getBatchesOfProduct  , Ex:' + ex)
         }
     }
 
