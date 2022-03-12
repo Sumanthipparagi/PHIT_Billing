@@ -10,7 +10,7 @@ import java.text.SimpleDateFormat
 @Transactional
 class TempStockBookService {
 
-    SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss")
+    SimpleDateFormat sdf = new SimpleDateFormat("yyyy-mm-DD")
 
     def getAll(String limit, String offset, String query) {
 
@@ -98,27 +98,56 @@ class TempStockBookService {
         return jsonObject
     }
 
+//    TempStockBook save(JSONObject jsonObject) {
+//        TempStockBook tempStockBook = new TempStockBook()
+//        tempStockBook.batchNumber = jsonObject.get("batchNumber")
+//        tempStockBook.packingDesc = jsonObject.get("packingDesc")
+//        tempStockBook.productId = Long.parseLong(jsonObject.get("productId").toString())
+//        tempStockBook.userId = Long.parseLong(jsonObject.get("userId").toString())
+//        tempStockBook.userOrderQty = Long.parseLong(jsonObject.get("userOrderQty").toString())
+//        tempStockBook.userOrderFreeQty = Long.parseLong(jsonObject.get("userOrderFreeQty").toString())
+//        tempStockBook.userOrderReplQty = Long.parseLong(jsonObject.get("userOrderReplQty").toString())
+//        tempStockBook.redundantBatch = Long.parseLong(jsonObject.get("redundantBatch").toString())
+//        tempStockBook.remainingSchemeQty = Long.parseLong(jsonObject.get("remainingSchemeQty").toString())
+//        tempStockBook.expDate = sdf.parse(jsonObject.get("expDate").toString())
+//        tempStockBook.remainingQty = Long.parseLong(jsonObject.get("remainingQty").toString())
+//        tempStockBook.purchaseRate = Double.parseDouble(jsonObject.get("purchaseRate").toString())
+//        tempStockBook.mrp = Double.parseDouble(jsonObject.get("mrp").toString())
+//        tempStockBook.remainingReplQty = Long.parseLong(jsonObject.get("remainingReplQty").toString())
+//        tempStockBook.saleRate = Double.parseDouble(jsonObject.get("saleRate").toString())
+//        tempStockBook.taxId = Long.parseLong(jsonObject.get("taxId").toString())
+//        tempStockBook.entityTypeId = Long.parseLong(jsonObject.get("entityTypeId").toString())
+//        tempStockBook.entityId = Long.parseLong(jsonObject.get("entityId").toString())
+//        tempStockBook.originalId = Long.parseLong(jsonObject.get("originalId").toString())
+//        tempStockBook.save(flush: true)
+//        if (!tempStockBook.hasErrors())
+//            return tempStockBook
+//        else
+//            throw new BadRequestException()
+//    }
+
+
     TempStockBook save(JSONObject jsonObject) {
         TempStockBook tempStockBook = new TempStockBook()
-        tempStockBook.batchNumber = jsonObject.get("batchNumber")
-        tempStockBook.packingDesc = jsonObject.get("packingDesc")
-        tempStockBook.productId = Long.parseLong(jsonObject.get("productId").toString())
-        tempStockBook.userId = Long.parseLong(jsonObject.get("userId").toString())
-        tempStockBook.userOrderQty = Long.parseLong(jsonObject.get("userOrderQty").toString())
-        tempStockBook.userOrderFreeQty = Long.parseLong(jsonObject.get("userOrderFreeQty").toString())
-        tempStockBook.userOrderReplQty = Long.parseLong(jsonObject.get("userOrderReplQty").toString())
-        tempStockBook.redundantBatch = Long.parseLong(jsonObject.get("redundantBatch").toString())
-        tempStockBook.remainingSchemeQty = Long.parseLong(jsonObject.get("remainingSchemeQty").toString())
-        tempStockBook.expDate = sdf.parse(jsonObject.get("expDate").toString())
-        tempStockBook.remainingQty = Long.parseLong(jsonObject.get("remainingQty").toString())
-        tempStockBook.purchaseRate = Double.parseDouble(jsonObject.get("purchaseRate").toString())
-        tempStockBook.mrp = Double.parseDouble(jsonObject.get("mrp").toString())
-        tempStockBook.remainingReplQty = Long.parseLong(jsonObject.get("remainingReplQty").toString())
-        tempStockBook.saleRate = Double.parseDouble(jsonObject.get("saleRate").toString())
-        tempStockBook.taxId = Long.parseLong(jsonObject.get("taxId").toString())
-        tempStockBook.entityTypeId = Long.parseLong(jsonObject.get("entityTypeId").toString())
-        tempStockBook.entityId = Long.parseLong(jsonObject.get("entityId").toString())
-        tempStockBook.originalId = Long.parseLong(jsonObject.get("originalId").toString())
+        tempStockBook.batchNumber = jsonObject.get("json[Batch]")
+        tempStockBook.packingDesc = jsonObject.get("json[Pack]")
+        tempStockBook.productId = Long.parseLong(jsonObject.get("json[Product]").toString())
+        tempStockBook.userId = Long.parseLong("1")
+        tempStockBook.userOrderQty = Long.parseLong(jsonObject.get("json[PurchaseQty]").toString())
+        tempStockBook.userOrderFreeQty = Long.parseLong(jsonObject.get("json[FreeQty]").toString())
+        tempStockBook.userOrderReplQty = Long.parseLong("1")
+        tempStockBook.redundantBatch = Long.parseLong("1")
+        tempStockBook.remainingSchemeQty = Long.parseLong("1")
+        tempStockBook.expDate = sdf.parse(jsonObject.get("json[ExpDt]").toString())
+        tempStockBook.remainingQty = Long.parseLong("1")
+        tempStockBook.purchaseRate = Double.parseDouble(jsonObject.get("json[PurchaseRate]").toString())
+        tempStockBook.mrp = Double.parseDouble(jsonObject.get("json[MRP]").toString())
+        tempStockBook.remainingReplQty = Long.parseLong("1")
+        tempStockBook.saleRate = Double.parseDouble("1")
+        tempStockBook.taxId = Long.parseLong("1")
+        tempStockBook.entityTypeId = Long.parseLong("1")
+        tempStockBook.entityId = Long.parseLong("1")
+        tempStockBook.originalId = Long.parseLong("1")
         tempStockBook.save(flush: true)
         if (!tempStockBook.hasErrors())
             return tempStockBook

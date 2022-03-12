@@ -348,6 +348,7 @@ class UrlMappings {
 
         /*<-------------------------------------------Sales------------------------------------------------->*/
 
+        "/sale-bill"(controller: "saleEntry", action: 'saleBill')
         //Sale Entry
         "/sale-entry"(controller: "saleEntry") {
             action = [GET: 'index', POST: 'save']
@@ -376,13 +377,19 @@ class UrlMappings {
 
         //Inventory
         "/stockbook/product/$id"(controller: "stockBook",action:"getStocksOfProduct")
+        "/stockbook/purchase"(controller: "stockBook",action:"StockBookPurchase")
+
 
 //        Temp Stock Book
+        "/tempstockbook"(controller: "stockBook") {
+            action = [GET: 'index', POST: 'save']
+        }
         "/tempstockbook/product/$id"(controller: "stockBook",action:"getStocksOfProduct")
         "/tempstockbook/entity/$id"(controller: "stockBook",action:"getTempStocksOfEntity")
 
         "/tempstockbook/product/$id/batch/$batch"(controller: "stockBook",action:"getTempStocksOfProductAndBatch")
         "/tempstockbook/product/$id/"(controller: "stockBook",action:"getTempStocksOfProductAndBatch")
+
 
 
 

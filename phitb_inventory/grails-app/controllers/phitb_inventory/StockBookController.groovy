@@ -214,4 +214,26 @@ class StockBookController {
             System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
         }
     }
+
+    def stockPurchase()
+    {
+        try
+        {
+            StockBook stockBook = StockBook.findByBatchNumber(params.batch)
+            stockBook.remainingQty = stockBook.getRemainingQty() + params.purQty
+            stockBook.isUpdatable = true
+            StockBook savedStockBook = stockBook.save()
+            if (savedStockBook)
+            {
+                respond savedStockBook
+                return
+            }
+        }
+        catch (Exception ex)
+        {
+            System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
+            log.error('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
+        }
+        response.status = 400
+    }
 }

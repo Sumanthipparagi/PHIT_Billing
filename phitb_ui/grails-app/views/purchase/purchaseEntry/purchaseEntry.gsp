@@ -20,11 +20,16 @@
     <asset:stylesheet rel="stylesheet" href="/themeassets/plugins/select2/dist/css/select2.css"/>
     <asset:stylesheet src="/themeassets/plugins/bootstrap-select/css/bootstrap-select.css" rel="stylesheet"/>
     <link rel="stylesheet" media="screen" href="https://cdnjs.cloudflare.com/ajax/libs/select2/3.5.2/select2.min.css">
-    <link rel="stylesheet" media="screen" href="https://cdnjs.cloudflare.com/ajax/libs/handsontable/0.16.0/handsontable.full.css">
+    <link rel="stylesheet" media="screen"
+          href="https://cdnjs.cloudflare.com/ajax/libs/handsontable/0.16.0/handsontable.full.css">
 
     <style>
-    .form-control{
+    .form-control {
         border-radius: 7px !important;
+    }
+
+    .colHeader {
+        font-weight: bold;
     }
     </style>
 </head>
@@ -49,7 +54,7 @@
                     %{--<h2>Sale Entry</h2>--}%
                     <ul class="breadcrumb padding-0">
                         <li class="breadcrumb-item"><a href="#"><i class="zmdi zmdi-home"></i></a></li>
-                        <li class="breadcrumb-item active">Purcahse Entry</li>
+                        <li class="breadcrumb-item active">Purchase Entry</li>
                     </ul>
                 </div>
 
@@ -77,6 +82,7 @@
                                 <label for="date">Date:</label>
                                 <input type="date" class="form-control date" name="date" id="date"/>
                             </div>
+
                             <div class="col-md-3">
                                 <label for="series">Series:</label>
                                 <select class="form-control" id="series" name="series">
@@ -88,8 +94,11 @@
 
                             <div class="col-md-3">
                                 <label for="customerSelect">Supplier:</label>
-                                <select class="form-control show-tick" id="customerSelect" onchange="customerSelectChanged()">
+                                <select class="form-control show-tick" id="customerSelect"
+                                        onchange="customerSelectChanged()">
+                                    <option selected disabled>--SELECT--</option>
                                     <g:each in="${suppliers}" var="cs">
+
                                         <g:if test="${cs.id != session.getAttribute("entityId")}">
                                             <option value="${cs.id}">${cs.entityName} (${cs.entityType.name})</option>
                                         </g:if>
@@ -129,12 +138,12 @@
 
         <div class="row clearfix">
             <div class="col-lg-12" style="margin-bottom: 10px;">
-                <p style="margin: 0; font-size: 10px;">Keyboard Shortcuts - Delete Row: <strong>Ctrl+Alt+D</strong>, Reset Table: <strong>Ctrl+Alt+R</strong></p>
+                <p style="margin: 0; font-size: 10px;">Keyboard Shortcuts - Delete Row: <strong>Ctrl+Alt+D</strong>, Reset Table: <strong>Ctrl+Alt+R</strong>
+                </p>
             </div>
         </div>
 
         <div class="row clearfix">
-
 
             <div class="col-lg-8">
                 <div class="card">
@@ -161,21 +170,15 @@
                             <div class="col-md-6">
                                 Total: Rs. <p id="totalAmt">0</p>
                             </div>
+
                             <div class="col-md-6">
                                 Inv No: <span class="invno"></span>
                             </div>
                         </div>
+
                         <div class="row">
-                            <div class="col-md-6">
-                                <button type="button" class="btn btn-round btn-primary m-t-15 addbtn" data-toggle="modal"
-                                        data-target="#addAccountModeModal"><span
-                                        class="glyphicon glyphicon-save-file"></span> Save</button>
-                            </div>
-                            <div class="col-md-6">
-                                <button type="button" class="btn btn-round btn-primary m-t-15 addbtn" data-toggle="modal"
-                                        data-target="#addAccountModeModal"><span
-                                        class="glyphicon glyphicon-save-file" disabled="disabled"></span> Print Inv</button>
-                            </div>
+                            <button class="btn btn-primary save">Save</button>
+                            <button class="btn btn-secondary print">Print</button>
                         </div>
                     </div>
                 </div>
@@ -204,26 +207,33 @@
 <asset:javascript src="/themeassets/js/pages/ui/dialogs.js"/>
 <asset:javascript src="/themeassets/plugins/sweetalert/sweetalert.min.js"/>
 <asset:javascript src="/themeassets/plugins/momentjs/moment.js"/>
+<asset:javascript src="/themeassets/plugins/printThis/printThis.js"/>
 %{--<asset:javascript src="/themeassets/plugins/select2/dist/js/select2.full.js"/>--}%
 <script src="https://cdnjs.cloudflare.com/ajax/libs/handsontable/0.16.0/handsontable.full.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/3.5.2/select2.js"></script>
 
+
 <script>
 
-    var idArray = [];
-    <%--
-    var data = [];
+    // var idArray = [];
+    // (sRate * sQty) - ((sRate * sQty) * discount) / 100;
+    // priceBeforeGst + (priceBeforeGst * (gst / 100));
 
-    <g:each in="${salebilllist}" var="sb">
+    var idArray = [];
+    var data = [];
+    <g:each in="${tempStockBook.reverse()}" var="sb">
     idArray.push(${sb.id});
-    data.push(['${sb.finId}', ${sb.serBillId}, ${sb.seriesId}, '${sb.paymentStatus}', '${sb.accountModeId}', '${sb.priorityId}', moment('${sb.entryDate}').format("DD/MM/YYYY"), '${sb.customerId}', '${sb.customerNumber}', ${sb.salesmanId}, '${sb.salesmanComm}', moment('${sb.orderDate}').format("DD/MM/YYYY"), '${sb.refOrderId}', moment('${sb.dueDate}').format("DD/MM/YYYY"), moment('${sb.dispatchDate}').format("DD/MM/YYYY"), '${sb.deliveryManId}', '${sb.totalSqty}', '${sb.totalFqty}', '${sb.totalItems}', '${sb.totalQty}', '${sb.totalDiscount}', '${sb.totalAmount}', '${sb.invoiceTotal}', '${sb.totalGst}', '${sb.userId}', '${sb.balance}', '${sb.grossAmount}', '${sb.taxable}', '${sb.cashDiscount}', '${sb.exempted}', '${sb.totalCgst}', '${sb.totalSgst}', '${sb.totalIgst}', '${sb.gstStatus}', ${sb.billStatus}, ${sb.lockStatus}, ${sb.creditadjAmount}, ${sb.creditIds}, ${sb.referralDoctor}, '${sb.message}', '${sb.financialYear}', ${sb.entityTypeId}, ${sb.entityId}])
-    </g:each> --%>
+    data.push(['', ${sb.productId}, '${sb.batchNumber}', moment(new Date('${sb.expDate}')).format('YYYY-MM-DD'), '${sb.userOrderQty}', '${sb.userOrderFreeQty}', ${sb.purchaseRate}, ${sb.mrp}, '0', ${sb.packingDesc}, '1', ${(sb.purchaseRate * sb.userOrderQty) - ((sb.purchaseRate * sb.userOrderQty) * 0)/100 +(((sb.purchaseRate * sb.userOrderQty) - ((sb.purchaseRate * sb.userOrderQty) * 0)/100) * (10/100))}, '1', '1', '1'])
+
+
+    </g:each>
 
 
     var totalAmt = 0;
     var series = [];
     var products = [];
     var hsnCode = [];
+    var customers = [];
     /* var accountMode = [];
      var customer = [];
      var salesman = [];
@@ -255,18 +265,18 @@
      </g:each> --%>
 
     var headerRow = [
-        '<strong></strong>',
-        '<strong>Product</strong>',
-        '<strong>Batch</strong>',
-        '<strong>Exp Dt</strong>',
-        '<strong>Sale Qty</strong>',
-        '<strong>Free Qty</strong>',
-        '<strong>Sale Rate</strong>',
-        '<strong>MRP</strong>',
-        '<strong>Discount</strong>',
-        '<strong>Pack</strong>',
-        '<strong>GST</strong>',
-        '<strong>Value</strong>',
+        '</strong>',
+        'Product',
+        'Batch',
+        'Exp Dt',
+        'Purchase Qty',
+        'Free Qty',
+        'Purchase Rate',
+        'MRP',
+        'Discount',
+        'Pack',
+        'GST',
+        'Value',
         'SGST',
         'CGST',
         'IGST'];
@@ -294,10 +304,13 @@
         //$("#customerSelect").select2();
         $('#date').val(moment().format('YYYY-MM-DD'));
         $('#date').attr("readonly");
+        <g:each in="${customers}" var="cs">
+        customers.push({"id": ${cs.id}, "noOfCrDays": ${cs.noOfCrDays}});
+        </g:each>
         const container = document.getElementById('saleTable');
         hot = new Handsontable(container, {
-            data: [],
-            minRows: 1,
+            data: data,
+            minRows: 0,
             height: '250',
             width: 'auto',
             rowHeights: 25,
@@ -317,7 +330,7 @@
                         dropdownAutoWidth: true,
                         allowClear: true,
                         width: 'auto'
-                    }
+                    },
                 },
                 {type: 'text', readOnly: true},
                 {type: 'text', readOnly: true},
@@ -333,32 +346,33 @@
                 {type: 'numeric', readOnly: true},
                 {type: 'numeric', readOnly: true}
             ],
-            minSpareRows: 0,
+            minSpareRows: 1,
             enterMoves: {row: 0, col: 1},
             fixedColumnsLeft: 0,
             licenseKey: 'non-commercial-and-evaluation',
-            afterChange: (changes,source) => {
-                if(changes) {
+            afterChange: (changes, source) => {
+                if (changes) {
                     changes.forEach(([row, prop, oldValue, newValue]) => {
-                        if(prop === 1) //first col product dropdown
+                        if (prop === 1) //first col product dropdown
                         {
                             mainTableRow = row;
                             batchSelection(newValue, row);
                         }
+
                     });
                 }
             },
-            afterOnCellMouseDown: function(e, coords, TD) {
+            afterOnCellMouseDown: function (e, coords, TD) {
                 if (coords.col === 0) {
                     this.alter("remove_row", coords.row);
                     calculateTotalAmt();
                 }
             },
-            cells: function(row, col) {
+            cells: function (row, col) {
                 const cellPrp = {};
                 if (col === 0) {
                     cellPrp.readOnly = true;
-                    cellPrp.renderer = function(
+                    cellPrp.renderer = function (
                         instance,
                         td,
                         row,
@@ -374,56 +388,66 @@
                 return cellPrp;
             }
         });
-        hot.selectCell(0,1);
+        hot.selectCell(0, 1);
         hot.updateSettings({
-            beforeKeyDown(e) {
+            beforeKeyDown(e, changes) {
                 var sRate = 0;
                 var sQty = 0;
                 const row = hot.getSelected()[0];
                 const selection = hot.getSelected()[1];
-                if(selection === 1) {
+                if (selection === 1) {
                     if (e.keyCode === 13) {
                         batchHot.selectCell(0, 0);
                         $("#batchTable").focus();
                     }
-                }
-                else if(selection === 14)
-                {
-                    var rowThatHasBeenChanged = changes[0][0],
-                        columnThatHasBeenChanged = changes[0][1],
-                        previousValue = changes[0][2],
-                        newValue = changes[0][3];
+                } else if (selection === 14) {
+                    if (e.keyCode === 13 || e.keyCode === 9) {
+                        //check if sqty is empty
+                        var sqty = hot.getDataAtCell(row, 4);
+                        if (sqty) {
+                            mainTableRow = row + 1;
+                            hot.alter('insert_row');
+                            hot.selectCell(mainTableRow, 1);
+                            calculateTotalAmt();
+                        } else {
+                            alert("Please enter Quantity");
+                        }
+                    }
+
+                    // alert(hot.getDataAtRow(row))
+                    // var rowThatHasBeenChanged = hot.getDataAtRow(row)
                     var visualObjectRow = function (row) {
                         var obj = {},
                             key, name;
                         for (var i = 0; i < hot.countCols(); i++) {
                             obj[hot.colToProp(i)] = hot.getDataAtCell(row, i);
                         }
-                        return obj;
+                        return obj
                     };
                     var json = {};
-                    var changedRow = visualObjectRow(rowThatHasBeenChanged);
+                    var changedRow = visualObjectRow(row);
                     // console.log(visualObjectRow(rowThatHasBeenChanged))
                     Object.keys(changedRow).forEach(function (key) {
                         json[headerRow[key].replace(/\s+/g, '')] = changedRow[key]
                     });
 
-                    if (idArray[rowThatHasBeenChanged] != undefined) {
-                        json['id'] = idArray[rowThatHasBeenChanged]
-                    } else {
-                        json['id'] = null
-                    }
-                    console.log(json);
+                    // if (idArray[row] !== undefined) {
+                    //     json['id'] = idArray[row]
+                    // } else {
+                    //     json['id'] = null
+                    // }
+                    // console.log(json);
+
                     var url = '';
                     var type = '';
                     var id = json['id'];
-                    if (idArray[rowThatHasBeenChanged] != undefined) {
-                        url = '/sale-entry/update/' + id;
-                        type = 'POST'
-                    } else {
-                        url = '/purchase-entry';
-                        type = 'POST'
-                    }
+                    // if (idArray[rowThatHasBeenChanged] != undefined) {
+                    //     url = '/sale-entry/update/' + id;
+                    //     type = 'POST'
+                    // } else {
+                    url = '/tempstockbook';
+                    type = 'POST'
+                    // }
                     $.ajax({
                         type: type,
                         url: url,
@@ -432,102 +456,28 @@
                             json: json
                         },
                         success: function (data) {
-                            console.log("data loaded");
+                            console.log("Data saved");
                         },
                         error: function (data) {
                             console.log("Failed");
                         }
                     });
 
-                    if (e.keyCode === 13 || e.keyCode === 9) {
-                        //check if sqty is empty
-                        var sqty = hot.getDataAtCell(row,4);
-                        if(sqty) {
-                            mainTableRow = row + 1;
-                            hot.alter('insert_row');
-                            hot.selectCell(mainTableRow, 1);
-                            calculateTotalAmt();
-                        }
-                        else
-                        {
-                            alert("Please enter Quantity");
-                        }
-                    }
-                }
-                else if (selection === 4)
-                {
+                } else if (selection === 4) {
                     if (e.keyCode === 13 || e.keyCode === 9) {
                         sQty = this.getActiveEditor().TEXTAREA.value;
                         // sQty = hot.getDataAtCell(row,selection);
-                        sRate = hot.getDataAtCell(row,6);
-                        var discount = hot.getDataAtCell(row,8);
-                        var gst = hot.getDataAtCell(row,10);
-                        var priceBeforeGst = (sRate * sQty) - ((sRate*sQty)*discount)/100;
-                        var finalPrice = priceBeforeGst + (priceBeforeGst*(gst/100));
+                        sRate = hot.getDataAtCell(row, 6);
+                        var discount = hot.getDataAtCell(row, 8);
+                        var gst = hot.getDataAtCell(row, 10);
+                        var priceBeforeGst = (sRate * sQty) - ((sRate * sQty) * discount) / 100;
+                        var finalPrice = priceBeforeGst + (priceBeforeGst * (gst / 100));
                         hot.setDataAtCell(row, 11, finalPrice);
                     }
                 }
             }
         });
 
-        /* hot.updateSettings({
-             afterChange: function (changes, source) {
-                 var rowThatHasBeenChanged = changes[0][0],
-                     columnThatHasBeenChanged = changes[0][1],
-                     previousValue = changes[0][2],
-                     newValue = changes[0][3];
-
-                 var visualObjectRow = function (row) {
-                     var obj = {},
-                         key, name;
-                     for (var i = 0; i < hot.countCols(); i++) {
-                         obj[hot.colToProp(i)] = hot.getDataAtCell(row, i);
-                     }
-                     return obj
-                 };
-                 var json = {}
-                 var changedRow = visualObjectRow(rowThatHasBeenChanged);
-                 // console.log(visualObjectRow(rowThatHasBeenChanged))
-                 Object.keys(changedRow).forEach(function (key) {
-                     json[headerRow[key].replace(/\s+/g, '')] = changedRow[key]
-                 });
-
-
-                 if (idArray[rowThatHasBeenChanged] != undefined) {
-                     json['id'] = idArray[rowThatHasBeenChanged]
-                 } else {
-                     json['id'] = null
-                 }
-                 console.log(json);
-
-
-                 var url = '';
-                 var type = '';
-                 var id = json['id'];
-                 if (idArray[rowThatHasBeenChanged] != undefined) {
-                     url = '/sale-entry/update/' + id;
-                     type = 'POST'
-                 } else {
-                     url = '/sale-entry';
-                     type = 'POST'
-                 }
-                 $.ajax({
-                     type: type,
-                     url: url,
-                     dataType: 'json',
-                     data: {
-                         json: json
-                     },
-                     success: function (data) {
-                         console.log("data loaded");
-                     },
-                     error: function (data) {
-                         console.log("Failed");
-                     }
-                 });
-
-             }
-         });*/
 
         function productsDropdownRenderer(instance, td, row, col, prop, value, cellProperties) {
             var selectedId;
@@ -541,11 +491,13 @@
 
             //$('#selectedId').text(selectedId);
         }
+
         /* function updateCell(hot, selectedId, value, row) {
              hot.setDataAtCell(row, 2, value);
              $("#productNameTitle").text("");
              $("#batchSelectModal").modal("toggle");
          }*/
+
 
         batchHot = new Handsontable(batchContainer, {
             data: batchData,
@@ -561,18 +513,18 @@
             selectionMode: 'range',
             colHeaders: batchHeaderRow,
             columns: [
-                {type: 'text',readOnly: true},
-                {type: 'text',readOnly: true},
-                {type: 'numeric',readOnly: true},
-                {type: 'numeric',readOnly: true},
-                {type: 'numeric',readOnly: true},
-                {type: 'numeric',readOnly: true},
-                {type: 'numeric',readOnly: true},
-                {type: 'text',readOnly: true},
-                {type: 'text',readOnly: true},
-                {type: 'text',readOnly: true},
-                {type: 'text',readOnly: true},
-                {type: 'text',readOnly: true}
+                {type: 'text', readOnly: true},
+                {type: 'text', readOnly: true},
+                {type: 'numeric', readOnly: true},
+                {type: 'numeric', readOnly: true},
+                {type: 'numeric', readOnly: true},
+                {type: 'numeric', readOnly: true},
+                {type: 'numeric', readOnly: true},
+                {type: 'text', readOnly: true},
+                {type: 'text', readOnly: true},
+                {type: 'text', readOnly: true},
+                {type: 'text', readOnly: true},
+                {type: 'text', readOnly: true}
             ],
             minSpareRows: 0,
             minSpareCols: 0,
@@ -586,7 +538,6 @@
                 var rowData = batchHot.getDataAtRow(selection);
                 console.log(rowData);
                 if (e.keyCode === 13) {
-
                     hot.setDataAtCell(mainTableRow, 2, rowData[0]);
                     hot.setDataAtCell(mainTableRow, 3, rowData[1]);
                     hot.setDataAtCell(mainTableRow, 5, 0);
@@ -598,7 +549,7 @@
                     hot.setDataAtCell(mainTableRow, 12, rowData[9]);
                     hot.setDataAtCell(mainTableRow, 13, rowData[10]);
                     hot.setDataAtCell(mainTableRow, 14, rowData[11]);
-                    hot.selectCell(mainTableRow,3);
+                    hot.selectCell(mainTableRow, 3);
                     $("#saleTable").focus();
 
                 }
@@ -609,11 +560,13 @@
     function batchSelection(selectedId, mainRow) {
         if (selectedId != null) {
             var url = "/stockbook/product/" + selectedId;
+            //var url = "/tempstockbook/product/"+ selectedId;
             $.ajax({
                 type: "GET",
                 url: url,
                 dataType: 'json',
                 success: function (data) {
+                    console.log(data)
                     if (data) {
                         batchData = [];
                         for (var i = 0; i < data.length; i++) {
@@ -631,15 +584,14 @@
                             batchdt.push(data[i].cgst);
                             batchdt.push(data[i].igst);
                             batchData.push(batchdt);
-
                         }
                         batchHot.updateSettings({
                             data: []
                         });
-                        if(batchdt?.length > 0) {
+                        if (batchdt?.length > 0) {
                             batchHot.loadData(batchData);
                             $("#batchTable").focus();
-                            batchHot.selectCell(0,0);
+                            batchHot.selectCell(0, 0);
                         }
                     }
                 },
@@ -653,34 +605,81 @@
         }
     }
 
-
-    function customerSelectChanged()
-    {
-        //$('#duedate').prop("readonly", false);
-        //$("#duedate").val(moment().add(5, 'days').format('YYYY-MM-DD'));
-        //$('#duedate').prop("readonly", true);
+    function customerSelectChanged() {
+        var noOfCrDays = 0;
+        var customerId = $("#customerSelect").val();
+        for (var i = 0; i < customers.length; i++) {
+            if (customerId === customers[i].id) {
+                noOfCrDays = customers[i].noOfCrDays;
+            }
+        }
+        $('#duedate').prop("readonly", false);
+        $("#duedate").val(moment().add(noOfCrDays, 'days').format('YYYY-MM-DD'));
+        $('#duedate').prop("readonly", true);
     }
 
-    function calculateTotalAmt()
-    {
+    function calculateTotalAmt() {
         totalAmt = 0;
         var data = hot.getData();
-        for(var i = 0; i<data.length; i++)
-        {
-            if(data[i][11])
+        for (var i = 0; i < data.length; i++) {
+            if (data[i][11])
                 totalAmt += data[i][11]
         }
         $("#totalAmt").text(totalAmt);
     }
 
+    var visualObjectRow = function (row) {
+        var obj = {},
+            key, name;
+        for (var i = 0; i < hot.countCols(); i++) {
+            obj[hot.colToProp(i)] = hot.getDataAtCell(row, i);
+        }
+        return obj
+    };
 
-    document.addEventListener("keydown", function(event) {
+
+    function getVisualTableData() {
+        const tableData = [];
+        for (let i = 0; i < this.hot.countRows(); i++) {
+            tableData.push(visualObjectRow(i));
+        }
+        return tableData;
+    }
+
+    $(".save").on('click', function (event) {
+        var batch = [];
+        var data = hot.getData();
+        for (var i = 0; i < data.length; i++) {
+            if (data[i][2])
+                batch.push({'batch': data[i][2], 'purQty': data[i][4]})
+        }
+        var batchDataString = JSON.stringify(batch);
+        var batchData = JSON.parse(batchDataString);
+        var url ="/stockbook/purchase";
+        $.ajax({
+            type: "POST",
+            url: url,
+            dataType: 'json',
+            data: {
+                json: batchData
+            },
+            success: function (data) {
+               swal("Data saved");
+            },
+            error: function (data) {
+                console.log("Failed");
+            }
+        });
+    });
+
+
+    document.addEventListener("keydown", function (event) {
         var ctrl = event.ctrlKey;
         var alt = event.altKey;
         var key = event.key;
-        console.log(ctrl + " "+alt + " "+key);
+        console.log(ctrl + " " + alt + " " + key);
         if (ctrl) {
-            if(alt) {
+            if (alt) {
                 var result = false;
                 if (key === 'd' || key === 'ḍ') {
                     result = confirm("Delete this row?");
@@ -905,6 +904,31 @@
         Handsontable.editors.registerEditor('select2', Select2Editor);
 
     })(Handsontable);
+
+
+    function printInvoice() {
+        /* window.addEventListener('load', function () {*/
+        $('#invoiceprint').printThis({
+            importCSS: true,
+            printDelay: 2000,
+            importStyle: true,
+            base: "",
+            pageTitle: ""
+        });
+    }
+
+    $(".print").click(function(){
+        $("#printabel").remove();
+        purchasePrint()
+    });
+
+    function purchasePrint() {
+        $("<iframe id='printabel'>")
+            .hide()
+            .attr("src", "/purchase-retrun")
+            .appendTo("body");
+    }
+
 </script>
 </body>
 </html>

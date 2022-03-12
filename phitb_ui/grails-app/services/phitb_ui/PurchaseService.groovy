@@ -35,4 +35,24 @@ class PurchaseService {
             log.error('Service :saveStateMaster , action :  save  , Ex:' + ex)
         }
     }
+
+    def getPurchaseProductDetails(String id) {
+        Client client = ClientBuilder.newClient();
+        WebTarget target = client.target(new Links().API_GATEWAY);
+        GrailsHttpSession session = WebUtils.retrieveGrailsWebRequest().session
+        try {
+
+            Response apiResponse = target
+                    .path(new Links().PURCHASE_PRODUCT_SHOW)
+                    .request(MediaType.APPLICATION_JSON_TYPE)
+                    .get()
+
+            return apiResponse
+        }
+        catch (Exception ex) {
+            System.err.println('Service :ProductService , action :  getBatchesOfProduct  , Ex:' + ex)
+            log.error('Service :ProductService , action :  getBatchesOfProduct  , Ex:' + ex)
+        }
+    }
+
 }

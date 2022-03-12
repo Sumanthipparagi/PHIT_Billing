@@ -1,5 +1,6 @@
 <%@ page contentType="text/html;charset=UTF-8" %>
-<html>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html id="invoiceprint">
 <head>
     <title>Purchase Return</title>
 
@@ -13,6 +14,7 @@
         window.onload = function () {
             var d = new Date().toLocaleTimeString();
             document.getElementById("date").innerHTML = d;
+            window.print();
         }
     </script>
     <style>
@@ -75,8 +77,7 @@
 <table style="width:1308px;table-layout: auto;">
     <tr>
 
-        <td style="width: 25%;vertical-align:top;"><img width="109" height="43"
-                                                        src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAG0AAAArCAMAAABFJ/YVAAAAD1BMVEUAIgAFKwAIKQAJLgD///9auxmhAAAAAWJLR0QAiAUdSAAAAAlwSFlzAAAOxAAADsQBlSsOGwAAAZFJREFUWIXtlttywyAMRN1Z/f83t1N0WYHwJTFuH8IkwlZknwjEwiatAfJA2wz2CO5D+9D+Iw3e/oo2QYNshNavLtwT2izRW2nYibxMK1pPw+00/rWjHVXKrTSJ7DQQom69aZdunIbO314E/zbT0yw40WyModWjf2yo4Wys836kYaRxD3KF0fv6lp4fVoAOpd6MNDlBkwu0Nj7v0dgc0WgYC1p8wDQtDbHeQ2ieB1WmRYCSFjnHKHS14TQwzWvyEi1XT8xS1H3QUlyjddN1QOtG2In0jBTPN09Pk5dobiiipqGjCVcJLtBkTkNJg88MaQZXBdNIB1BrSaxa15JMo4uAR5Gn0dqhuU4mmqR5G9Tv7rYhFqatwsU0m8RQ5fU03d4Wwn5psYU9QUvbzUrYD83WgmdYNj4WIHk46BTtYkH6RiC24vJCqyVUabG/yTQ1MXkg0cs410N3fdW5yRmYZpUtaYILLEx2ipdtSUrmNEQP8kxyi9kdabS17af2dtvoVLIc1lT5KVg6cy2HtTPXQyyRb24URU7+XmydAAAAAElFTkSuQmCC"/><br><br>
+        <td style="width: 25%;vertical-align:top;"><img width="109" height="43" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAG0AAAArCAMAAABFJ/YVAAAAD1BMVEUAIgAFKwAIKQAJLgD///9auxmhAAAAAWJLR0QAiAUdSAAAAAlwSFlzAAAOxAAADsQBlSsOGwAAAZFJREFUWIXtlttywyAMRN1Z/f83t1N0WYHwJTFuH8IkwlZknwjEwiatAfJA2wz2CO5D+9D+Iw3e/oo2QYNshNavLtwT2izRW2nYibxMK1pPw+00/rWjHVXKrTSJ7DQQom69aZdunIbO314E/zbT0yw40WyModWjf2yo4Wys836kYaRxD3KF0fv6lp4fVoAOpd6MNDlBkwu0Nj7v0dgc0WgYC1p8wDQtDbHeQ2ieB1WmRYCSFjnHKHS14TQwzWvyEi1XT8xS1H3QUlyjddN1QOtG2In0jBTPN09Pk5dobiiipqGjCVcJLtBkTkNJg88MaQZXBdNIB1BrSaxa15JMo4uAR5Gn0dqhuU4mmqR5G9Tv7rYhFqatwsU0m8RQ5fU03d4Wwn5psYU9QUvbzUrYD83WgmdYNj4WIHk46BTtYkH6RiC24vJCqyVUabG/yTQ1MXkg0cs410N3fdW5yRmYZpUtaYILLEx2ipdtSUrmNEQP8kxyi9kdabS17af2dtvoVLIc1lT5KVg6cy2HtTPXQyyRb24URU7+XmydAAAAAElFTkSuQmCC"/><br><br>
             <b>MANKIND PHARMA LTD</b><br>
             <sub>PID NO 188-189/1, 3rd FLOOR, RAMOHALLI ROAD,
             KUMBALGODU VILLAGE, GERUPALAYA GRAMA,
@@ -180,15 +181,16 @@
         <th>Amount/IGST%</th>
         <th>Net Amount</th>
     </tr>
+<g:each var="ts" in="${tempStockBook}">
     <tr>
         <td>5000058830049099</td>
-        <td><b>FLORA - ZN SACHET</b></td>
-        <td>1 GM</td>
+        <td><b>${ts.productId}</b></td>
+        <td>${ts.packingDesc}</td>
         <td>D</td>
         <td>SWISS GARNIER BIOTECH PVT A0JQU026</td>
         <td>JUN-21<br>NOV-22</td>
         <td>2000</td>
-        <td>17.50</td>
+        <td>${ts.mrp}</td>
         <td>12.50</td>
         <td>11.25</td>
         <td>60</td>
@@ -199,121 +201,7 @@
         <td>0.00</td>
         <td>618.25</td>
     </tr>
-    <tr>
-        <td>5000091730049039</td>
-        <td><b>HISTAFREE - M TABLETS</b></td>
-        <td>10 TAB</td>
-        <td>D</td>
-        <td>J.K. PRINT PACKS (PHARMA D H2HPU016)</td>
-        <td>JUN-21<br>MAY-23</td>
-        <td>2000</td>
-        <td>139.90</td>
-        <td>99.93</td>
-        <td>89.94</td>
-        <td>12</td>
-        <td>1079.28</td>
-        <td>0<br>0.00</td>
-        <td>64.76<br>6.00</td>
-        <td>64.76<br>6.00</td>
-        <td>0.00</td>
-        <td>618.25</td>
-    </tr>
-    <tr>
-        <td>5000091730049039</td>
-        <td><b>HISTAFREE - M TABLETS</b></td>
-        <td>10 TAB</td>
-        <td>D</td>
-        <td>J.K. PRINT PACKS (PHARMA D H2HPU016)</td>
-        <td>JUN-21<br>MAY-23</td>
-        <td>2000</td>
-        <td>139.90</td>
-        <td>99.93</td>
-        <td>89.94</td>
-        <td>12</td>
-        <td>1079.28</td>
-        <td>0<br>0.00</td>
-        <td>64.76<br>6.00</td>
-        <td>64.76<br>6.00</td>
-        <td>0.00</td>
-        <td>618.25</td>
-    </tr>
-    <tr>
-        <td>5000020930049090</td>
-        <td><b>NUROKIND-GOLD INJ 2ML</b></td>
-        <td>2 ML</td>
-        <td>D</td>
-        <td>J.K. PRINT PACKS (PHARMA D H2HPU016)</td>
-        <td>JUN-21<br>MAY-23</td>
-        <td>2000</td>
-        <td>139.90</td>
-        <td>99.93</td>
-        <td>89.94</td>
-        <td>12</td>
-        <td>1079.28</td>
-        <td>0<br>0.00</td>
-        <td>64.76<br>6.00</td>
-        <td>64.76<br>6.00</td>
-        <td>0.00</td>
-        <td>618.25</td>
-    </tr>
-    <tr>
-        <td>5000020930049090</td>
-        <td><b>RANIDOM-O Suspension (RF)</b></td>
-        <td>200 ML</td>
-        <td>D</td>
-        <td>PHARMA FORCE LAB-UNIT H6AIU112</td>
-        <td>JUL-21<br>DEC-22</td>
-        <td>2000</td>
-        <td>144.17</td>
-        <td>102.98</td>
-        <td>92.68</td>
-        <td>72</td>
-        <td>6672.96</td>
-        <td>556.08<br>8.33</td>
-        <td>367.01<br>8.33</td>
-        <td>64.76<br>6.00</td>
-        <td>0.00</td>
-        <td>618.25</td>
-    </tr>
-    <tr>
-        <td>5000020930049090</td>
-        <td><b>ZADY READYMIX</b></td>
-        <td>200 ML</td>
-        <td>D</td>
-        <td>PHARMA FORCE LAB-UNIT H6AIU112</td>
-        <td>JUL-21<br>DEC-22</td>
-        <td>2000</td>
-        <td>144.17</td>
-        <td>102.98</td>
-        <td>92.68</td>
-        <td>72</td>
-        <td>6672.96</td>
-        <td>556.08<br>8.33</td>
-        <td>367.01<br>8.33</td>
-        <td>64.76<br>6.00</td>
-        <td>0.00</td>
-        <td>618.25</td>
-    </tr>
-
-    <tr>
-        <td class="hide"></td>
-        <td class="hide"></td>
-        <td class="hide"></td>
-        <td class="hide"></td>
-        <td class="hide"></td>
-        <td class="hide"></td>
-        <td class="hide"></td>
-        <td class="hide"></td>
-        <td class="hide"></td>
-        <td class="hide"></td>
-        <td><b>Total</b></td>
-        <td>12092.52</td>
-        <td>1115.09</td>
-        <td>658.65</td>
-        <td>658.65</td>
-        <td>0</td>
-        <td>10977.43</td>
-    </tr>
+</g:each>
 </table>
 
 <div class="container" style="display: flex; height: 200px;">
@@ -378,7 +266,7 @@
 <br>
 <p class="signatory" style="float: right;margin-right: 24px;">Authorized Signatory</p>
 
-<p style="float: left;margin-right: 24px;"><b>Printed By:</b> Name</p>
+<p style="float: left;margin-right: 24px;"><b>Printed By:</b> ${session.getAttribute('entityName')}</p>
 
 <p style="float: left;margin-right: 24px;"><b>Printed On:</b><span id="date"></span></p>
 </body>
