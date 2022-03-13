@@ -16,7 +16,7 @@ class RoleMasterService {
         if (!query)
             return RoleMaster.findAll([sort: 'id', max: l, offset: o, order: 'desc'])
         else
-            return RoleMaster.findAllByName("%" + query + "%", [sort: 'id', max: l, offset: o, order: 'desc'])
+            return RoleMaster.findAllByNameIlike("%" + query + "%", [sort: 'id', max: l, offset: o, order: 'desc'])
     }
 
     def getAllByEntity(String limit, String offset, long entityId) {

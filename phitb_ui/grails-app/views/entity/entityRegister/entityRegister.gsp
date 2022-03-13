@@ -22,12 +22,19 @@
 
     <style>
 
+table.dataTable tbody td {
+    word-break: break-word;
+    vertical-align: top;
+}
+
+/*
     div.dataTables_scrollBody table tbody  td {
         border-top: none;
         padding: 0.9px;
         text-align: center;
 
     }
+*/
 
     </style>
 
@@ -90,24 +97,14 @@
                         <div class="table-responsive">
                             <table class="table table-bordered table-striped table-hover entityRegisterTable dataTable">
                                 <thead>
-                                <tr>
-                                    %{--                                    <th style="width: 20%">ID</th>--}%
-                                    <th style="width: 20%">Entity Name</th>
-                                    <th style="width: 20%">Entity Type</th>
-                                    <th style="width: 20%">Rep Name</th>
-                                    <th style="width: 20%">Manager</th>
-                                    <th style="width: 20%">Salesman</th>
-                                    <th style="width: 20%">Action</th>
-                                </tr>
+                                    <tr>
+                                        <th>Entity Name</th>
+                                        <th>Entity Type</th>
+                                        <th>GSTIN</th>
+                                        <th>Address</th>
+                                        <th>Action</th>
+                                    </tr>
                                 </thead>
-                                %{--                                <tfoot>--}%
-                                %{--                                <tr>--}%
-                                %{--                                    <th>ID</th>--}%
-                                %{--                                    <th>Name</th>--}%
-                                %{--                                    <th>entityRegister ID</th>--}%
-                                %{--                                    <th>Action</th>--}%
-                                %{--                                </tr>--}%
-                                %{--                                </tfoot>--}%
                                 <tbody>
 
                                 </tbody>
@@ -122,7 +119,7 @@
 </section>
 
 
-<g:include view="controls/entity/add-entity-register.gsp"/>
+%{--<g:include view="controls/entity/add-entity-register.gsp"/>--}%
 <g:include view="controls/delete-modal.gsp"/>
 
 <!-- Jquery Core Js -->
@@ -181,7 +178,6 @@
                 dataSrc: function (json) {
                     var return_data = [];
                     for (var i = 0; i < json.data.length; i++) {
-                        console.log(json)
                         var editbtn =
                             '<a href="/entity-register/update-entity-register/' + json.data[i].id +'"><button type="button" data-id="' + json.data[i].id +'"class="editbtn btn btn-sm btn-warning  editbtn"><i class="material-icons"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">edit</font></font></i></button></a>'
                         var deletebtn = '<button type="button" data-id="' + json.data[i].id +
@@ -190,10 +186,8 @@
                             'id': json.data[i].id,
                             'entityName': json.data[i].entityName,
                             'entityType': json.data[i].entityType.name,
-                            'repName': json.data[i].repName,
-                            'manager': json.manager[i].userName,
-                            'salesman': json.salesman[i].userName,
-                            'currentBalance': json.data[i].currentBalance,
+                            'gstin': json.data[i].gstn,
+                            'address': json.data[i].addressLine2 + "<br>" + json.data[i].addressLine2,
                             'action': editbtn + ' ' + deletebtn
                         });
                     }
@@ -202,12 +196,11 @@
             },
             columns: [
                 // {'data': 'id', 'width': '20%'},
-                {'data': 'entityName', 'width': '20%'},
-                {'data': 'entityType', 'width': '20%'},
-                {'data': 'repName', 'width': '20%'},
-                {'data': 'manager', 'width': '20%'},
-                {'data': 'salesman', 'width': '20%'},
-                {'data': 'action', 'width': '20%'}
+                {'data': 'entityName', 'width': '75%'},
+                {'data': 'entityType', 'width': '10%'},
+                {'data': 'gstin', 'width': '10%'},
+                {'data': 'address', 'width': '5%'},
+                {'data': 'action', 'width': '10%'}
             ]
         });
     }

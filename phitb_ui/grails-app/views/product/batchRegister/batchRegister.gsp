@@ -280,6 +280,9 @@
 
         //disable the default form submission
         event.preventDefault();
+        var entityTypeId = $("#entityId").find(':selected').attr("data-type");
+        $(".entityType").val(entityTypeId);
+
 
         //grab all form data
         var formData = new FormData(this);
@@ -315,7 +318,7 @@
     });
 
     $(document).on("click", ".addbtn", function () {
-        $(".batchTitle").text("Add Batch Register")
+        $(".batchTitle").text("Add Batch Register");
         $(".batchForm")[0].reset();
         id = null
     });

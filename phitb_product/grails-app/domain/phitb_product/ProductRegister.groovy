@@ -56,10 +56,13 @@ class ProductRegister implements Serializable, LogicalDelete<ProductRegister> {
     Date dateCreated
     Date lastUpdated
 
+    String fieldForceId
+
     static mapping = {
         narration sqlType: 'longText'
     }
     static constraints = {
+        fieldForceId nullable: true
     }
 
     boolean isUpdatable

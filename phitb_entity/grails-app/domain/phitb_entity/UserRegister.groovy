@@ -40,7 +40,7 @@ class UserRegister implements LogicalDelete<UserRegister> {
     AccountRegister account
     long zoneId
     long divisionId
-    RoleMaster role
+    Role role
     EntityTypeMaster entityType
     EntityRegister entity
     long createdUser

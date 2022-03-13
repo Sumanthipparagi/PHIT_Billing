@@ -53,6 +53,8 @@ class ProductRegisterService {
         String searchTerm = paramsJsonObject.get("search[value]")
         String orderColumnId = paramsJsonObject.get("order[0][column]")
         String orderDir = paramsJsonObject.get("order[0][dir]")
+        start = paramsJsonObject.get("start")
+        length = paramsJsonObject.get("length")
 
         String orderColumn = "id"
         switch (orderColumnId) {

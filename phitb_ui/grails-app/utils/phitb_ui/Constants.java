@@ -41,4 +41,8 @@ public class Constants
             System.err.println(Arrays.toString(e.getStackTrace()));
         }
     }
+
+    public static String FEATURE_ROLE = "ROLE";
+    public static String FEATURE_SALE_ORDER = "SALE_ORDER";
+    public static String FEATURE_SALE_ENTRY = "SALE_ENTRY";
 }

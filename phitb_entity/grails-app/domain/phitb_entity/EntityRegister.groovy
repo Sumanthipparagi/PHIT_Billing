@@ -58,12 +58,22 @@ class EntityRegister implements LogicalDelete<EntityRegister>
     String password
     long zoneId
     String contactDob
+    long fieldForceId
     long createdUser
     long modifiedUser
     Date dateCreated
     Date lastUpdated
 
     static constraints = {
+        fieldForceId nullable: true
+        accountId nullable: true
+        aadharId nullable: true
+        companyCode nullable: true
+        faxNumber nullable: true
+        repName nullable: true
+        repPhoneNumber nullable: true
+        password nullable: true
+        contact nullable: true
     }
 
     boolean isUpdatable

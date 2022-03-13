@@ -1,20 +1,15 @@
 package phitb_ui
 
 import grails.gorm.transactions.Transactional
-import grails.web.servlet.mvc.GrailsHttpSession
 import org.glassfish.jersey.jackson.JacksonFeature
-import org.glassfish.jersey.media.multipart.FormDataMultiPart
-import org.glassfish.jersey.media.multipart.file.FileDataBodyPart
+import org.grails.web.json.JSONArray
 import org.grails.web.json.JSONObject
-import org.grails.web.util.WebUtils
 import org.springframework.web.multipart.MultipartFile
-import sun.text.resources.cldr.mua.FormatData_mua
 
 import javax.ws.rs.client.Client
 import javax.ws.rs.client.ClientBuilder
 import javax.ws.rs.client.Entity
 import javax.ws.rs.client.WebTarget
-import javax.ws.rs.core.Form
 import javax.ws.rs.core.MediaType
 import javax.ws.rs.core.Response
 
@@ -769,7 +764,7 @@ class EntityService {
         {
             println(jsonObject)
             Response apiResponse = target
-                    .path(new Links().ROLE_MASTER_SAVE)
+                    .path(new Links().ROLE_SAVE)
                     .request(MediaType.APPLICATION_JSON_TYPE)
                     .post(Entity.entity(jsonObject.toString(),MediaType.APPLICATION_JSON_TYPE))
             println(apiResponse)
@@ -795,7 +790,7 @@ class EntityService {
         try
         {
             Response apiResponse = target
-                    .path(new Links().ROLE_MASTER_DATATABLE)
+                    .path(new Links().ROLE_DATATABLE)
                     .queryParam("params", URLEncoder.encode(jsonObject.toString(), "UTF-8"))
                     .request(MediaType.APPLICATION_JSON_TYPE)
                     .get()
@@ -816,7 +811,7 @@ class EntityService {
         try
         {
             Response apiResponse = target
-                    .path(new Links().ROLE_MASTER_UPDATE)
+                    .path(new Links().ROLE_UPDATE)
                     .resolveTemplate("id", jsonObject.id)
                     .request(MediaType.APPLICATION_JSON_TYPE)
                     .put(Entity.entity(jsonObject.toString(),MediaType.APPLICATION_JSON_TYPE))
@@ -843,7 +838,7 @@ class EntityService {
         try
         {
             Response apiResponse = target
-                    .path(new Links().ROLE_MASTER_DELETE)
+                    .path(new Links().ROLE_DELETE)
                     .resolveTemplate("id", jsonObject.id)
                     .request(MediaType.APPLICATION_JSON_TYPE)
                     .delete()
@@ -1509,7 +1504,6 @@ class EntityService {
     def getEntityType() {
         Client client = ClientBuilder.newClient()
         WebTarget target = client.target(new Links().API_GATEWAY)
-       
         try {
 
             Response apiResponse = target
@@ -1528,7 +1522,6 @@ class EntityService {
     def getUserRegister() {
         Client client = ClientBuilder.newClient()
         WebTarget target = client.target(new Links().API_GATEWAY)
-       
         try {
 
             Response apiResponse = target
@@ -1566,7 +1559,6 @@ class EntityService {
     def getSeriesByEntity(String id) {
         Client client = ClientBuilder.newClient()
         WebTarget target = client.target(new Links().API_GATEWAY)
-       
         try {
 
             Response apiResponse = target
@@ -1585,11 +1577,109 @@ class EntityService {
 
     def convert(MultipartFile multipartFile)
     {
-        String fileName = UtilService.uploadFile('user/', multipartFile, null)
+        String fileName = UtilsService.uploadFile('user/', multipartFile, null)
         File file = new File(new FileManagementService().getApplicationPath() + 'user' + File.separator + fileName)
         return file
     }
 
 
+
+    def getRoles() {
+        Client client = ClientBuilder.newClient()
+        WebTarget target = client.target(new Links().API_GATEWAY)
+        try {
+
+            Response apiResponse = target
+                    .path(new Links().ROLE_SHOW)
+                    .request(MediaType.APPLICATION_JSON_TYPE)
+                    .get()
+
+            if(apiResponse.status == 200)
+            {
+                JSONArray jsonArray = new JSONArray(apiResponse.readEntity(String.class))
+                return jsonArray
+            }
+            else {
+                return null
+            }
+        }
+        catch (Exception ex) {
+            System.err.println('Service :EntityService , action :  getProducts  , Ex:' + ex)
+            log.error('Service :EntityService , action :  getProducts  , Ex:' + ex)
+        }
+    }
+
+    def getFeatures(String query = null) {
+        String url = new Links().FEATURE_SHOW
+        Client client = ClientBuilder.newClient()
+        WebTarget target = client.target(new Links().API_GATEWAY)
+        try {
+
+            Response apiResponse = target
+                    .path(url).queryParam("query", query)
+                    .request(MediaType.APPLICATION_JSON_TYPE)
+                    .get()
+            if(apiResponse.status == 200)
+            {
+                JSONArray jsonArray = new JSONArray(apiResponse.readEntity(String.class))
+                return jsonArray
+            }
+            else {
+                return null
+            }
+        }
+        catch (Exception ex) {
+            System.err.println('Service :EntityService , action :  getFeatures  , Ex:' + ex)
+            log.error('Service :EntityService , action :  getFeatures  , Ex:' + ex)
+        }
+    }
+
+    def getFeature(String id) {
+        String url = new Links().FEATURE_SHOW + "/" + id
+        Client client = ClientBuilder.newClient()
+        WebTarget target = client.target(new Links().API_GATEWAY)
+        try {
+            Response apiResponse = target
+                    .path(url)
+                    .request(MediaType.APPLICATION_JSON_TYPE)
+                    .get()
+            if(apiResponse.status == 200)
+            {
+                JSONArray jsonArray = new JSONArray(apiResponse.readEntity(String.class))
+                return jsonArray
+            }
+            else {
+                return null
+            }
+        }
+        catch (Exception ex) {
+            System.err.println('Service :EntityService , action :  getFeature  , Ex:' + ex)
+            log.error('Service :EntityService , action :  getFeature  , Ex:' + ex)
+        }
+    }
+
+    def getFeatureList(String ids) {
+        String url = new Links().FEATURE_SHOW + "/list/" + ids
+        Client client = ClientBuilder.newClient()
+        WebTarget target = client.target(new Links().API_GATEWAY)
+        try {
+            Response apiResponse = target
+                    .path(url)
+                    .request(MediaType.APPLICATION_JSON_TYPE)
+                    .get()
+            if(apiResponse.status == 200)
+            {
+                JSONArray jsonArray = new JSONArray(apiResponse.readEntity(String.class))
+                return jsonArray
+            }
+            else {
+                return null
+            }
+        }
+        catch (Exception ex) {
+            System.err.println('Service :EntityService , action :  getFeatureList  , Ex:' + ex)
+            log.error('Service :EntityService , action :  getFeatureList  , Ex:' + ex)
+        }
+    }
 
 }

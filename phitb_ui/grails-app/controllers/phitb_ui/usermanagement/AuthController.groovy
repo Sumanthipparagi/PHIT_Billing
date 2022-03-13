@@ -63,6 +63,7 @@ class AuthController {
                     session.setAttribute("entityMobileNumber", entity?.get("mobileNumber"))
                     session.setAttribute("entityTypeId", entity?.get("entityType")?.id)
                     session.setAttribute("entityTypeName", entity?.get("entityType")?.name)
+                    session.setAttribute("permittedFeatures", auth?.get("user").role?.permittedFeatures)
 
                     redirect(uri: "/dashboard")
                 } else {

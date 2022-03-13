@@ -99,7 +99,7 @@ class InventoryService {
     {
         Client client = ClientBuilder.newClient()
         WebTarget target = client.target(new Links().API_GATEWAY)
-        Form form = UtilService.jsonToFormDataConverter(jsonObject)
+        Form form = UtilsService.jsonToFormDataConverter(jsonObject)
         try
         {
             print(jsonObject)

@@ -11,7 +11,7 @@ import java.text.ParseException
 import java.text.SimpleDateFormat
 
 @Transactional
-class UtilService {
+class UtilsService {
 
 
     public ArrayList<Date> parseDateRange(String daterange)
@@ -147,6 +147,25 @@ class UtilService {
             form.param(key, json.get(key) as String)
         }
         return form
+    }
+
+    /**
+     * This method is used to identify if particular feature is permitted or not from reading the feature list from db
+     * @param featureName a particular feature like USER_EDIT is given as input
+     * @param permittedFeaturesString a string of features
+     * @return
+     */
+    static boolean isPermitted(String featureName, String permittedFeaturesString)
+    {
+        if (permittedFeaturesString != null)
+        {
+            ArrayList<String> permittedFeatures = new EntityService().getFeatureList(permittedFeaturesString).name
+            if (permittedFeatures.contains(featureName))
+            {
+                return true
+            }
+        }
+        return false
     }
 
 //    static FormDataMultiPart jsonToMultipartFormDataConverter(JSONObject json)

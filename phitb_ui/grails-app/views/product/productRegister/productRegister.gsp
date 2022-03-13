@@ -22,12 +22,14 @@
 
     <style>
 
+/*
     div.dataTables_scrollBody table tbody  td {
         border-top: none;
         padding: 0.9px;
         text-align: center;
         border-collapse: unset!important;
     }
+*/
 
     .editbtn
     {
@@ -108,8 +110,6 @@
                                 <tr>
                                     %{--                                    <th style="width: 20%">ID</th>--}%
                                     <th style="width: 20%">Product Name</th>
-                                    <th style="width: 20%">Product Code</th>
-                                    <th style="width: 20%">Salesman Commission</th>
                                     <th style="width: 20%">HSN code</th>
                                     <th style="width: 20%">Action</th>
                                 </tr>
@@ -203,8 +203,6 @@
                         return_data.push({
                             'id': json.data[i].id,
                             'productName': json.data[i].productName,
-                            'productCode': json.data[i].productCode,
-                            'salesmanCommission': json.data[i].salesmanCommission,
                             'hsnCode': json.data[i].hsnCode,
                             'action': editbtn + ' ' + deletebtn
                         });
@@ -215,8 +213,6 @@
             columns: [
                 // {'data': 'id', 'width': '20%'},
                 {'data': 'productName', 'width': '20%'},
-                {'data': 'productCode', 'width': '20%'},
-                {'data': 'salesmanCommission', 'width': '20%'},
                 {'data': 'hsnCode', 'width': '20%'},
                 {'data': 'action', 'width': '20%'}
             ]

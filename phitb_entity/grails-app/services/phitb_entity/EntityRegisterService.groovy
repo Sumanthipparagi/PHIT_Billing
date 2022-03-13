@@ -58,6 +58,9 @@ class EntityRegisterService {
         String orderColumnId = paramsJsonObject.get("order[0][column]")
         String orderDir = paramsJsonObject.get("order[0][dir]")
 
+        start = paramsJsonObject.get("start")
+        length = paramsJsonObject.get("length")
+
         String orderColumn = "id"
         switch (orderColumnId)
         {
@@ -82,26 +85,30 @@ class EntityRegisterService {
             order(orderColumn, orderDir)
         }
 
-        def manager = []
+/*        def manager = []
         entityRegisterArrayList.each {
             println(it.manager)
-            def apires1 = getAllByUser(it.manager.toString())
-            manager.push(apires1)
+            if(it.manager != 0) {
+                def apires1 = getAllByUser(it.manager.toString())
+                manager.push(apires1)
+            }
         }
 
         def salesman = []
         entityRegisterArrayList.each {
             println(it.salesman)
-            def apires2 = getAllByUser(it.salesman.toString())
-            salesman.push(apires2)
-        }
+            if(it.salesman != 0) {
+                def apires2 = getAllByUser(it.salesman.toString())
+                salesman.push(apires2)
+            }
+        }*/
         def recordsTotal = entityRegisterArrayList.totalCount
         JSONObject jsonObject = new JSONObject()
         jsonObject.put("draw", paramsJsonObject.draw)
         jsonObject.put("recordsTotal", recordsTotal)
         jsonObject.put("recordsFiltered", recordsTotal)
-        jsonObject.put("salesman", salesman)
-        jsonObject.put("manager", manager)
+/*        jsonObject.put("salesman", salesman)
+        jsonObject.put("manager", manager)*/
         jsonObject.put("data", entityRegisterArrayList)
         return jsonObject
     }

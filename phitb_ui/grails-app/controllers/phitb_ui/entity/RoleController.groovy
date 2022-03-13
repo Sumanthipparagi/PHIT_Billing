@@ -16,7 +16,7 @@ class RoleController {
     {
         try
         {
-            def entityurl = Links.API_GATEWAY+Links.ENTITY_REGISTER_SHOW
+/*            def entityurl = Links.API_GATEWAY+Links.ENTITY_REGISTER_SHOW
             def entitytypeurl = Links.API_GATEWAY+Links.ENTITY_TYPE_MASTER_SHOW
             def userregisterurl = Links.API_GATEWAY + Links.USER_REGISTER_SHOW
             def ccmurl = Links.API_GATEWAY + Links.CCM_SHOW
@@ -50,7 +50,10 @@ class RoleController {
             render(view: '/entity/role/role',model: [entity:entity, entitytype:entitytype,
                                                        statelist:statelist,countrylist:countrylist,
                                                        citylist:citylist,salesmanList:salesmanList,
-                                                       managerList:managerList,zoneList:zoneList,ccm:ccm])
+                                                       managerList:managerList,zoneList:zoneList,ccm:ccm])*/
+            def features = new EntityService().getFeatures()
+            def pageFeatures = new EntityService().getFeatures(Constants.FEATURE_ROLE)
+            render(view: '/entity/role/index', model: [features: features, pageFeatures:pageFeatures])
         }
         catch (Exception ex)
         {
@@ -88,7 +91,13 @@ class RoleController {
     {
         try
         {
-            JSONObject jsonObject = new JSONObject(params)
+            println(params)
+            String permissions = params.permissions
+            permissions = permissions.replaceAll("on,","")
+            JSONObject jsonObject = new JSONObject()
+            jsonObject.put("id", params.id)
+            jsonObject.put("name", params.role)
+            jsonObject.put("permittedFeatures", permissions)
             def apiResponse = new EntityService().saveRole(jsonObject)
             if (apiResponse?.status == 200)
             {
@@ -113,7 +122,12 @@ class RoleController {
         try
         {
             println(params)
-            JSONObject jsonObject = new JSONObject(params)
+            String permissions = params.permissions
+            permissions = permissions.replaceAll("on,","")
+            JSONObject jsonObject = new JSONObject()
+            jsonObject.put("id", params.id)
+            jsonObject.put("name", params.role)
+            jsonObject.put("permittedFeatures", permissions)
             def apiResponse = new EntityService().putRole(jsonObject)
             if (apiResponse.status == 200)
             {

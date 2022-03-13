@@ -150,6 +150,16 @@ public class Links
     public static String ROLE_MASTER_UPDATE = "api/v1.0/entity/rolemaster/{id}";
     public static String ROLE_MASTER_DELETE = "api/v1.0/entity/rolemaster/{id}";
 
+    //Role
+    public static String ROLE_SHOW = "api/v1.0/entity/role";
+    public static String ROLE_SAVE = "api/v1.0/entity/role";
+    public static String ROLE_DATATABLE = "api/v1.0/entity/role/datatable";
+    public static String ROLE_UPDATE = "api/v1.0/entity/role/{id}";
+    public static String ROLE_DELETE = "api/v1.0/entity/role/{id}";
+
+    //feature
+    public static String FEATURE_SHOW = "api/v1.0/entity/role/features";
+
 
     //Rule Master
     public static String RULE_MASTER_SHOW = "api/v1.0/entity/rulemaster";

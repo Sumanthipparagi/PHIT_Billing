@@ -25,7 +25,7 @@ class ProductService {
     def getProducts() {
         Client client = ClientBuilder.newClient();
         WebTarget target = client.target(new Links().API_GATEWAY);
-        GrailsHttpSession session = WebUtils.retrieveGrailsWebRequest().session
+        
         try {
 
             Response apiResponse = target
@@ -44,7 +44,7 @@ class ProductService {
     def getProductById(String id) {
         Client client = ClientBuilder.newClient();
         WebTarget target = client.target(new Links().API_GATEWAY);
-        GrailsHttpSession session = WebUtils.retrieveGrailsWebRequest().session
+        
         try {
 
             Response apiResponse = target
@@ -63,7 +63,7 @@ class ProductService {
     def getProductTypes() {
         Client client = ClientBuilder.newClient();
         WebTarget target = client.target(new Links().API_GATEWAY);
-        GrailsHttpSession session = WebUtils.retrieveGrailsWebRequest().session
+        
         try {
 
             Response apiResponse = target
@@ -82,7 +82,7 @@ class ProductService {
     def getProductRegister() {
         Client client = ClientBuilder.newClient();
         WebTarget target = client.target(new Links().API_GATEWAY);
-        GrailsHttpSession session = WebUtils.retrieveGrailsWebRequest().session
+        
         try {
 
             Response apiResponse = target
@@ -101,7 +101,7 @@ class ProductService {
     def getProductGroups() {
         Client client = ClientBuilder.newClient();
         WebTarget target = client.target(new Links().API_GATEWAY);
-        GrailsHttpSession session = WebUtils.retrieveGrailsWebRequest().session
+        
         try {
 
             Response apiResponse = target
@@ -120,7 +120,7 @@ class ProductService {
     def getDivisions() {
         Client client = ClientBuilder.newClient();
         WebTarget target = client.target(new Links().API_GATEWAY);
-        GrailsHttpSession session = WebUtils.retrieveGrailsWebRequest().session
+        
         try {
 
             Response apiResponse = target
@@ -139,7 +139,7 @@ class ProductService {
     def getProductClass() {
         Client client = ClientBuilder.newClient();
         WebTarget target = client.target(new Links().API_GATEWAY);
-        GrailsHttpSession session = WebUtils.retrieveGrailsWebRequest().session
+        
         try {
 
             Response apiResponse = target
@@ -158,7 +158,7 @@ class ProductService {
     def getProductCost() {
         Client client = ClientBuilder.newClient();
         WebTarget target = client.target(new Links().API_GATEWAY);
-        GrailsHttpSession session = WebUtils.retrieveGrailsWebRequest().session
+        
         try {
 
             Response apiResponse = target
@@ -176,7 +176,7 @@ class ProductService {
     def getProductCategories() {
         Client client = ClientBuilder.newClient();
         WebTarget target = client.target(new Links().API_GATEWAY);
-        GrailsHttpSession session = WebUtils.retrieveGrailsWebRequest().session
+        
         try {
 
             Response apiResponse = target
@@ -196,7 +196,7 @@ class ProductService {
     def getDivisionGroups() {
         Client client = ClientBuilder.newClient();
         WebTarget target = client.target(new Links().API_GATEWAY);
-        GrailsHttpSession session = WebUtils.retrieveGrailsWebRequest().session
+        
         try {
 
             Response apiResponse = target
@@ -219,7 +219,7 @@ class ProductService {
     def getProductSchedules() {
         Client client = ClientBuilder.newClient();
         WebTarget target = client.target(new Links().API_GATEWAY);
-        GrailsHttpSession session = WebUtils.retrieveGrailsWebRequest().session
+        
         try {
 
             Response apiResponse = target
@@ -238,7 +238,7 @@ class ProductService {
     def getCompositions() {
         Client client = ClientBuilder.newClient();
         WebTarget target = client.target(new Links().API_GATEWAY);
-        GrailsHttpSession session = WebUtils.retrieveGrailsWebRequest().session
+        
         try {
 
             Response apiResponse = target
@@ -258,7 +258,7 @@ class ProductService {
     def getBatchRegister() {
         Client client = ClientBuilder.newClient();
         WebTarget target = client.target(new Links().API_GATEWAY);
-        GrailsHttpSession session = WebUtils.retrieveGrailsWebRequest().session
+        
         try {
 
             Response apiResponse = target
@@ -277,7 +277,7 @@ class ProductService {
     def getBatchesOfProduct(String id) {
         Client client = ClientBuilder.newClient();
         WebTarget target = client.target(new Links().API_GATEWAY);
-        GrailsHttpSession session = WebUtils.retrieveGrailsWebRequest().session
+        
         try {
 
             Response apiResponse = target
@@ -297,7 +297,7 @@ class ProductService {
     def getUnitType() {
         Client client = ClientBuilder.newClient();
         WebTarget target = client.target(new Links().API_GATEWAY);
-        GrailsHttpSession session = WebUtils.retrieveGrailsWebRequest().session
+        
         try {
 
             Response apiResponse = target
@@ -317,7 +317,7 @@ class ProductService {
     def getCustomerGroup() {
         Client client = ClientBuilder.newClient();
         WebTarget target = client.target(new Links().API_GATEWAY);
-        GrailsHttpSession session = WebUtils.retrieveGrailsWebRequest().session
+        
         try {
 
             Response apiResponse = target
@@ -339,7 +339,7 @@ class ProductService {
         jsonObject = Tools.setCreatedUser(jsonObject)
         Client client = ClientBuilder.newClient().register(JacksonFeature.class)
         WebTarget target = client.target(new Links().API_GATEWAY);
-        GrailsHttpSession session = WebUtils.retrieveGrailsWebRequest().session
+        
         try
         {
             println(jsonObject)
@@ -366,7 +366,7 @@ class ProductService {
     {
         Client client = ClientBuilder.newClient();
         WebTarget target = client.target(new Links().API_GATEWAY);
-        GrailsHttpSession session = WebUtils.retrieveGrailsWebRequest().session
+        
         try
         {
             Response apiResponse = target
@@ -388,7 +388,7 @@ class ProductService {
         jsonObject = Tools.setModifiedUser(jsonObject)
         Client client = ClientBuilder.newClient().register(JacksonFeature.class)
         WebTarget target = client.target(new Links().API_GATEWAY);
-        GrailsHttpSession session = WebUtils.retrieveGrailsWebRequest().session
+        
         try
         {
             Response apiResponse = target
@@ -415,7 +415,7 @@ class ProductService {
     {
         Client client = ClientBuilder.newClient().register(JacksonFeature.class)
         WebTarget target = client.target(new Links().API_GATEWAY);
-        GrailsHttpSession session = WebUtils.retrieveGrailsWebRequest().session
+        
         try
         {
             Response apiResponse = target
@@ -438,7 +438,7 @@ class ProductService {
     {
         Client client = ClientBuilder.newClient().register(JacksonFeature.class)
         WebTarget target = client.target(new Links().API_GATEWAY);
-        GrailsHttpSession session = WebUtils.retrieveGrailsWebRequest().session
+        
         try
         {
             println(jsonObject)
@@ -465,7 +465,7 @@ class ProductService {
     {
         Client client = ClientBuilder.newClient();
         WebTarget target = client.target(new Links().API_GATEWAY);
-        GrailsHttpSession session = WebUtils.retrieveGrailsWebRequest().session
+        
         try
         {
             Response apiResponse = target
@@ -486,7 +486,7 @@ class ProductService {
     {
         Client client = ClientBuilder.newClient().register(JacksonFeature.class)
         WebTarget target = client.target(new Links().API_GATEWAY);
-        GrailsHttpSession session = WebUtils.retrieveGrailsWebRequest().session
+        
         try
         {
             Response apiResponse = target
@@ -513,7 +513,7 @@ class ProductService {
     {
         Client client = ClientBuilder.newClient().register(JacksonFeature.class)
         WebTarget target = client.target(new Links().API_GATEWAY);
-        GrailsHttpSession session = WebUtils.retrieveGrailsWebRequest().session
+        
         try
         {
             Response apiResponse = target
@@ -536,7 +536,7 @@ class ProductService {
     {
         Client client = ClientBuilder.newClient().register(JacksonFeature.class)
         WebTarget target = client.target(new Links().API_GATEWAY);
-        GrailsHttpSession session = WebUtils.retrieveGrailsWebRequest().session
+        
         try
         {
             println(jsonObject)
@@ -563,7 +563,7 @@ class ProductService {
     {
         Client client = ClientBuilder.newClient();
         WebTarget target = client.target(new Links().API_GATEWAY);
-        GrailsHttpSession session = WebUtils.retrieveGrailsWebRequest().session
+        
         try
         {
             Response apiResponse = target
@@ -584,7 +584,7 @@ class ProductService {
     {
         Client client = ClientBuilder.newClient().register(JacksonFeature.class)
         WebTarget target = client.target(new Links().API_GATEWAY);
-        GrailsHttpSession session = WebUtils.retrieveGrailsWebRequest().session
+        
         try
         {
             Response apiResponse = target
@@ -611,7 +611,7 @@ class ProductService {
     {
         Client client = ClientBuilder.newClient().register(JacksonFeature.class)
         WebTarget target = client.target(new Links().API_GATEWAY);
-        GrailsHttpSession session = WebUtils.retrieveGrailsWebRequest().session
+        
         try
         {
             Response apiResponse = target
@@ -634,7 +634,7 @@ class ProductService {
     {
         Client client = ClientBuilder.newClient().register(JacksonFeature.class)
         WebTarget target = client.target(new Links().API_GATEWAY);
-        GrailsHttpSession session = WebUtils.retrieveGrailsWebRequest().session
+        
         try
         {
             println(jsonObject)
@@ -661,7 +661,7 @@ class ProductService {
     {
         Client client = ClientBuilder.newClient();
         WebTarget target = client.target(new Links().API_GATEWAY);
-        GrailsHttpSession session = WebUtils.retrieveGrailsWebRequest().session
+        
         try
         {
             Response apiResponse = target
@@ -682,7 +682,7 @@ class ProductService {
     {
         Client client = ClientBuilder.newClient().register(JacksonFeature.class)
         WebTarget target = client.target(new Links().API_GATEWAY);
-        GrailsHttpSession session = WebUtils.retrieveGrailsWebRequest().session
+        
         try
         {
             Response apiResponse = target
@@ -709,7 +709,7 @@ class ProductService {
     {
         Client client = ClientBuilder.newClient().register(JacksonFeature.class)
         WebTarget target = client.target(new Links().API_GATEWAY);
-        GrailsHttpSession session = WebUtils.retrieveGrailsWebRequest().session
+        
         try
         {
             Response apiResponse = target
@@ -732,7 +732,7 @@ class ProductService {
     {
         Client client = ClientBuilder.newClient().register(JacksonFeature.class)
         WebTarget target = client.target(new Links().API_GATEWAY);
-        GrailsHttpSession session = WebUtils.retrieveGrailsWebRequest().session
+        
         try
         {
             println(jsonObject)
@@ -759,7 +759,7 @@ class ProductService {
     {
         Client client = ClientBuilder.newClient();
         WebTarget target = client.target(new Links().API_GATEWAY);
-        GrailsHttpSession session = WebUtils.retrieveGrailsWebRequest().session
+        
         try
         {
             Response apiResponse = target
@@ -780,7 +780,7 @@ class ProductService {
     {
         Client client = ClientBuilder.newClient().register(JacksonFeature.class)
         WebTarget target = client.target(new Links().API_GATEWAY);
-        GrailsHttpSession session = WebUtils.retrieveGrailsWebRequest().session
+        
         try
         {
             Response apiResponse = target
@@ -807,7 +807,7 @@ class ProductService {
     {
         Client client = ClientBuilder.newClient().register(JacksonFeature.class)
         WebTarget target = client.target(new Links().API_GATEWAY);
-        GrailsHttpSession session = WebUtils.retrieveGrailsWebRequest().session
+        
         try
         {
             Response apiResponse = target
@@ -829,7 +829,7 @@ class ProductService {
     {
         Client client = ClientBuilder.newClient().register(JacksonFeature.class)
         WebTarget target = client.target(new Links().API_GATEWAY);
-        GrailsHttpSession session = WebUtils.retrieveGrailsWebRequest().session
+        
         try
         {
             println(jsonObject)
@@ -856,7 +856,7 @@ class ProductService {
     {
         Client client = ClientBuilder.newClient();
         WebTarget target = client.target(new Links().API_GATEWAY);
-        GrailsHttpSession session = WebUtils.retrieveGrailsWebRequest().session
+        
         try
         {
             Response apiResponse = target
@@ -877,7 +877,7 @@ class ProductService {
     {
         Client client = ClientBuilder.newClient().register(JacksonFeature.class)
         WebTarget target = client.target(new Links().API_GATEWAY);
-        GrailsHttpSession session = WebUtils.retrieveGrailsWebRequest().session
+        
         try
         {
             Response apiResponse = target
@@ -904,7 +904,7 @@ class ProductService {
     {
         Client client = ClientBuilder.newClient().register(JacksonFeature.class)
         WebTarget target = client.target(new Links().API_GATEWAY);
-        GrailsHttpSession session = WebUtils.retrieveGrailsWebRequest().session
+        
         try
         {
             Response apiResponse = target
@@ -926,7 +926,7 @@ class ProductService {
     {
         Client client = ClientBuilder.newClient().register(JacksonFeature.class)
         WebTarget target = client.target(new Links().API_GATEWAY);
-        GrailsHttpSession session = WebUtils.retrieveGrailsWebRequest().session
+        
         try
         {
             println(jsonObject)
@@ -953,7 +953,7 @@ class ProductService {
     {
         Client client = ClientBuilder.newClient();
         WebTarget target = client.target(new Links().API_GATEWAY);
-        GrailsHttpSession session = WebUtils.retrieveGrailsWebRequest().session
+        
         try
         {
             Response apiResponse = target
@@ -974,7 +974,7 @@ class ProductService {
     {
         Client client = ClientBuilder.newClient().register(JacksonFeature.class)
         WebTarget target = client.target(new Links().API_GATEWAY);
-        GrailsHttpSession session = WebUtils.retrieveGrailsWebRequest().session
+        
         try
         {
             Response apiResponse = target
@@ -1001,7 +1001,7 @@ class ProductService {
     {
         Client client = ClientBuilder.newClient().register(JacksonFeature.class)
         WebTarget target = client.target(new Links().API_GATEWAY);
-        GrailsHttpSession session = WebUtils.retrieveGrailsWebRequest().session
+        
         try
         {
             Response apiResponse = target
@@ -1024,7 +1024,7 @@ class ProductService {
     {
         Client client = ClientBuilder.newClient().register(JacksonFeature.class)
         WebTarget target = client.target(new Links().API_GATEWAY);
-        GrailsHttpSession session = WebUtils.retrieveGrailsWebRequest().session
+        
         try
         {
             println(jsonObject)
@@ -1051,7 +1051,7 @@ class ProductService {
     {
         Client client = ClientBuilder.newClient();
         WebTarget target = client.target(new Links().API_GATEWAY);
-        GrailsHttpSession session = WebUtils.retrieveGrailsWebRequest().session
+        
         try
         {
             Response apiResponse = target
@@ -1072,7 +1072,7 @@ class ProductService {
     {
         Client client = ClientBuilder.newClient().register(JacksonFeature.class)
         WebTarget target = client.target(new Links().API_GATEWAY);
-        GrailsHttpSession session = WebUtils.retrieveGrailsWebRequest().session
+        
         try
         {
             Response apiResponse = target
@@ -1099,7 +1099,7 @@ class ProductService {
     {
         Client client = ClientBuilder.newClient().register(JacksonFeature.class)
         WebTarget target = client.target(new Links().API_GATEWAY);
-        GrailsHttpSession session = WebUtils.retrieveGrailsWebRequest().session
+        
         try
         {
             Response apiResponse = target
@@ -1121,7 +1121,7 @@ class ProductService {
     {
         Client client = ClientBuilder.newClient().register(JacksonFeature.class)
         WebTarget target = client.target(new Links().API_GATEWAY);
-        GrailsHttpSession session = WebUtils.retrieveGrailsWebRequest().session
+        
         try
         {
             println(jsonObject)
@@ -1148,7 +1148,7 @@ class ProductService {
     {
         Client client = ClientBuilder.newClient();
         WebTarget target = client.target(new Links().API_GATEWAY);
-        GrailsHttpSession session = WebUtils.retrieveGrailsWebRequest().session
+        
         try
         {
             Response apiResponse = target
@@ -1169,7 +1169,7 @@ class ProductService {
     {
         Client client = ClientBuilder.newClient().register(JacksonFeature.class)
         WebTarget target = client.target(new Links().API_GATEWAY);
-        GrailsHttpSession session = WebUtils.retrieveGrailsWebRequest().session
+        
         try
         {
             Response apiResponse = target
@@ -1196,7 +1196,7 @@ class ProductService {
     {
         Client client = ClientBuilder.newClient().register(JacksonFeature.class)
         WebTarget target = client.target(new Links().API_GATEWAY);
-        GrailsHttpSession session = WebUtils.retrieveGrailsWebRequest().session
+        
         try
         {
             Response apiResponse = target
@@ -1219,7 +1219,7 @@ class ProductService {
     {
         Client client = ClientBuilder.newClient().register(JacksonFeature.class)
         WebTarget target = client.target(new Links().API_GATEWAY);
-        GrailsHttpSession session = WebUtils.retrieveGrailsWebRequest().session
+        
         try
         {
             println(jsonObject)
@@ -1246,7 +1246,7 @@ class ProductService {
     {
         Client client = ClientBuilder.newClient();
         WebTarget target = client.target(new Links().API_GATEWAY);
-        GrailsHttpSession session = WebUtils.retrieveGrailsWebRequest().session
+        
         try
         {
             Response apiResponse = target
@@ -1267,7 +1267,7 @@ class ProductService {
     {
         Client client = ClientBuilder.newClient().register(JacksonFeature.class)
         WebTarget target = client.target(new Links().API_GATEWAY);
-        GrailsHttpSession session = WebUtils.retrieveGrailsWebRequest().session
+        
         try
         {
             Response apiResponse = target
@@ -1294,7 +1294,7 @@ class ProductService {
     {
         Client client = ClientBuilder.newClient().register(JacksonFeature.class)
         WebTarget target = client.target(new Links().API_GATEWAY);
-        GrailsHttpSession session = WebUtils.retrieveGrailsWebRequest().session
+        
         try
         {
             Response apiResponse = target
@@ -1318,7 +1318,6 @@ class ProductService {
     {
         Client client = ClientBuilder.newClient().register(JacksonFeature.class)
         WebTarget target = client.target(new Links().API_GATEWAY);
-        GrailsHttpSession session = WebUtils.retrieveGrailsWebRequest().session
         try
         {
             println(jsonObject)
@@ -1345,7 +1344,7 @@ class ProductService {
     {
         Client client = ClientBuilder.newClient();
         WebTarget target = client.target(new Links().API_GATEWAY);
-        GrailsHttpSession session = WebUtils.retrieveGrailsWebRequest().session
+        
         try
         {
             Response apiResponse = target
@@ -1366,7 +1365,7 @@ class ProductService {
     {
         Client client = ClientBuilder.newClient().register(JacksonFeature.class)
         WebTarget target = client.target(new Links().API_GATEWAY);
-        GrailsHttpSession session = WebUtils.retrieveGrailsWebRequest().session
+        
         try
         {
             Response apiResponse = target
@@ -1393,7 +1392,7 @@ class ProductService {
     {
         Client client = ClientBuilder.newClient().register(JacksonFeature.class)
         WebTarget target = client.target(new Links().API_GATEWAY);
-        GrailsHttpSession session = WebUtils.retrieveGrailsWebRequest().session
+        
         try
         {
             Response apiResponse = target
@@ -1417,7 +1416,7 @@ class ProductService {
     {
         Client client = ClientBuilder.newClient();
         WebTarget target = client.target(new Links().API_GATEWAY);
-        GrailsHttpSession session = WebUtils.retrieveGrailsWebRequest().session
+        
         try
         {
             Response apiResponse = target
@@ -1446,7 +1445,7 @@ class ProductService {
     {
         Client client = ClientBuilder.newClient().register(JacksonFeature.class)
         WebTarget target = client.target(new Links().API_GATEWAY);
-        GrailsHttpSession session = WebUtils.retrieveGrailsWebRequest().session
+        
         try
         {
             println(jsonObject)
@@ -1473,7 +1472,7 @@ class ProductService {
     {
         Client client = ClientBuilder.newClient();
         WebTarget target = client.target(new Links().API_GATEWAY);
-        GrailsHttpSession session = WebUtils.retrieveGrailsWebRequest().session
+
         try
         {
             Response apiResponse = target
@@ -1494,7 +1493,7 @@ class ProductService {
     {
         Client client = ClientBuilder.newClient().register(JacksonFeature.class)
         WebTarget target = client.target(new Links().API_GATEWAY);
-        GrailsHttpSession session = WebUtils.retrieveGrailsWebRequest().session
+        
         try
         {
             Response apiResponse = target
@@ -1521,7 +1520,7 @@ class ProductService {
     {
         Client client = ClientBuilder.newClient().register(JacksonFeature.class)
         WebTarget target = client.target(new Links().API_GATEWAY);
-        GrailsHttpSession session = WebUtils.retrieveGrailsWebRequest().session
+        
         try
         {
             Response apiResponse = target

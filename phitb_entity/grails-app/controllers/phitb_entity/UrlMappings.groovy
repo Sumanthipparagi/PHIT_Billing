@@ -169,6 +169,13 @@ class UrlMappings
                 action = [GET: 'getAllByEntityId']
             }
 
+            //Roles
+            "/role(.$format)?"(controller: 'role') {action = [GET: 'index', POST: 'save']}
+            "/role/datatable(.$format)?"(controller: 'role') {action = [GET: 'dataTable']}
+            "/role/$id(.$format)?"(controller: 'role') {action = [GET: 'show', PUT: 'update', DELETE: 'delete'] }
+            "/role/features(.$format)?"(controller: 'role') { action = [GET: 'getAllFeatures'] }
+            "/role/features/$id(.$format)?"(controller: 'role') { action = [GET: 'getFeature'] }
+            "/role/features/list/$ids(.$format)?"(controller: 'role') { action = [GET: 'getFeatureList'] }
 
             //Route register Controller
             "/routeregister(.$format)?"(controller: 'routeRegister') {
