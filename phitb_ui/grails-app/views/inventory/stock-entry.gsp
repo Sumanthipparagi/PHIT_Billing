@@ -16,8 +16,8 @@
     <asset:stylesheet rel="stylesheet" src="/themeassets/css/main.css"/>
     <asset:stylesheet rel="stylesheet" href="/themeassets/css/color_skins.css"/>
     <asset:stylesheet rel="stylesheet" href="/themeassets/plugins/sweetalert/sweetalert.css"/>
-    <asset:stylesheet rel="stylesheet" href="/themeassets/plugins/multi-select/css/multi-select.css"/>
-    <asset:stylesheet src="/themeassets/plugins/bootstrap-select/css/bootstrap-select.css" rel="stylesheet"/>
+%{--    <asset:stylesheet rel="stylesheet" href="/themeassets/plugins/multi-select/css/multi-select.css"/>
+    <asset:stylesheet src="/themeassets/plugins/bootstrap-select/css/bootstrap-select.css" rel="stylesheet"/>--}%
     <asset:stylesheet src="/themeassets/plugins/select2/dist/css/select2.css" rel="stylesheet"/>
     <asset:stylesheet src="/themeassets/js/pages/forms/basic-form-elements.js" rel="stylesheet"/>
     <asset:stylesheet
@@ -49,7 +49,7 @@
 <div class="page-loader-wrapper">
     <div class="loader">
         <div class="m-t-30"><img src="${assetPath(src: '/themeassets/images/logo.svg')}" width="48" height="48"
-                                 alt="Alpino"></div>
+                                 alt="PharmIT"></div>
 
         <p>Please wait...</p>
     </div>
@@ -139,8 +139,7 @@
 <!-- Jquery Core Js -->
 <asset:javascript src="/themeassets/bundles/libscripts.bundle.js"/>
 <asset:javascript src="/themeassets/bundles/vendorscripts.bundle.js"/>
-<asset:javascript src="/themeassets/plugins/bootstrap-colorpicker/js/bootstrap-colorpicker.js"/>
-<asset:javascript src="/themeassets/plugins/multi-select/js/jquery.multi-select.js"/>
+%{--<asset:javascript src="/themeassets/plugins/multi-select/js/jquery.multi-select.js"/>--}%
 <asset:javascript src="/themeassets/bundles/datatablescripts.bundle.js"/>
 <asset:javascript src="/themeassets/plugins/jquery-datatable/buttons/dataTables.buttons.min.js"/>
 <asset:javascript src="/themeassets/plugins/jquery-datatable/buttons/buttons.bootstrap4.min.js"/>
@@ -151,11 +150,10 @@
 <asset:javascript src="/themeassets/js/pages/tables/jquery-datatable.js"/>
 <asset:javascript src="/themeassets/js/pages/ui/dialogs.js"/>
 <asset:javascript src="/themeassets/plugins/sweetalert/sweetalert.min.js"/>
-<asset:javascript src="/themeassets/plugins/jquery-inputmask/jquery.inputmask.bundle.js"/>
+%{--<asset:javascript src="/themeassets/plugins/jquery-inputmask/jquery.inputmask.bundle.js"/>--}%
 <asset:javascript src="/themeassets/plugins/momentjs/moment.js"/>
 <asset:javascript src="/themeassets/plugins/bootstrap-material-datetimepicker/js/bootstrap-material-datetimepicker.js"/>
-<asset:javascript src="/themeassets/js/pages/forms/basic-form-elements.js"/>
-<asset:javascript src="/themeassets/plugins/multi-select/js/jquery.multi-select.js" type="text/javascript"/>
+%{--<asset:javascript src="/themeassets/js/pages/forms/basic-form-elements.js"/>--}%
 <asset:javascript src="/themeassets/plugins/select2/dist/js/select2.full.js" type="text/javascript"/>
 
 <script>
@@ -163,7 +161,9 @@
     var fridgetable;
     var id = null;
     $(function () {
-      //  $("#product").select2();
+       $("#product").select2();
+       $("#batchNumber").select2();
+       $("#supplierId").select2();
         stockTable();
 
     });
@@ -360,6 +360,7 @@
     var batches = [];
     function getBatch() {
         var id = $("#product").val();
+        var $select = $('#batchNumber');
         $.ajax({
             type: 'POST',
             url: '/batch-register/product/' + id,
@@ -367,20 +368,43 @@
             success: function (data) {
                 if(data != null && data.length>0)
                 {
-                    var $select = $('#batchNumber');
                     $select.find('option').remove();
-                    $select.append('<option></option>');
+                    $select.append('<option selected disabled>SELECT BATCH</option>');
                     $.each(data, function (i) {
                         batches.push(data[i]);
-                        key = data[i].batchNumber;
+                        key = data[i].batchNumber + "_"+ data[i].id;
                         value = data[i].batchNumber;
                         $select.append('<option value="' + key + '">' + value + '</option>');
                     });
                 }
+                else {
+                    batches = [];
+                    $select.find('option').remove();
+                }
             }, error: function () {
                 batches = [];
+                $select.find('option').remove();
             }
         });
+
+    }
+
+    function batchChanged()
+    {
+        var batchId = $('#batchNumber').val();
+        if(batchId) {
+            batchId = batchId.split("_")[1];
+            for (var i = 0; i < batches.length; i++) {
+                if (batches[i].id == batchId) {
+                    $(".manufacturingDate").val(batches[i].manfDate);
+                    $(".expDate").val(batches[i].expiryDate);
+                    $(".purchaseRate").val(batches[i].purchaseRate);
+                    $(".saleRate").val(batches[i].saleRate);
+                    $(".mrp").val(batches[i].mrp);
+                    $(".remainingQty").val("0");
+                }
+            }
+        }
     }
 </script>
 

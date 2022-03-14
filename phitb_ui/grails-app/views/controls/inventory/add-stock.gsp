@@ -15,7 +15,8 @@
                                 <label for="product">
                                     Product
                                 </label>
-                                <select onchange="getBatch()" class="form-control show-tick product" name="product" id="product">
+                                <select style="width: 100%" onchange="getBatch()" class="form-control show-tick product" name="product" id="product">
+                                    <option selected disabled>SELECT</option>
                                     <g:each var="p" in="${productList}">
                                         <option value="${p.id}">${p.productName}</option>
                                     </g:each>
@@ -26,7 +27,7 @@
                                 <label for="batchNumber">
                                     Batch
                                 </label>
-                                <select class="form-control show-tick batchNumber" name="batchNumber" id="batchNumber">
+                                <select onchange="batchChanged()"  style="width: 100%" class="form-control show-tick batchNumber" name="batchNumber" id="batchNumber">
                                 </select>
 
                             </div>
@@ -141,10 +142,10 @@
                                 <label for="supplierId">
                                     Supplier
                                 </label>
-                                <select class="form-control show-tick entityId" name="supplierId" id="supplierId" required>
+                                <select style="width:100%;" class="form-control show-tick supplierId" name="supplierId" id="supplierId" required>
                                     <option value="">-- Please select --</option>
 
-                                    <g:each var="e" in="${entity}">
+                                    <g:each var="e" in="${entityList}">
                                         <option value="${e.id}" data-type="${e.entityType.id}">${e.entityName}</option>
                                     </g:each>
                                 </select>

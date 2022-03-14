@@ -1442,11 +1442,11 @@ class EntityService {
     def getEntity() {
         Client client = ClientBuilder.newClient()
         WebTarget target = client.target(new Links().API_GATEWAY)
-       
         try {
-
             Response apiResponse = target
                     .path(new Links().ENTITY_REGISTER_SHOW)
+                    .queryParam("offset", "0")
+                    .queryParam("limit", "10000")
                     .request(MediaType.APPLICATION_JSON_TYPE)
                     .get()
 

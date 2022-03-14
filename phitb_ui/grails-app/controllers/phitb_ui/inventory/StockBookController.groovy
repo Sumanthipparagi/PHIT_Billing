@@ -5,6 +5,7 @@ import org.grails.web.json.JSONObject
 import phitb_ui.EntityService
 import phitb_ui.InventoryService
 import phitb_ui.ProductService
+import phitb_ui.entity.EntityRegisterController
 import phitb_ui.entity.TaxController
 
 class StockBookController {
@@ -12,7 +13,8 @@ class StockBookController {
     def index() {
         def entityId = session.getAttribute("entityId").toString()
         JSONArray productList = new ProductService().getProductsByEntityId(entityId)
-        render(view: "/inventory/stock-entry", model: [productList:productList])
+        def entityList = new EntityRegisterController().show()
+        render(view: "/inventory/stock-entry", model: [productList:productList, entityList:entityList])
     }
 
     def save()

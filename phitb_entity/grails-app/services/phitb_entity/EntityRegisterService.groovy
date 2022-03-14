@@ -19,7 +19,7 @@ class EntityRegisterService {
         Integer l = limit ? Integer.parseInt(limit.toString()) : 100
         if (!query)
         {
-            return EntityRegister.findAll([sort: 'id', max: l, offset: o, order: 'desc'])
+            return EntityRegister.findAll([sort: 'entityName', max: l, offset: o, order: 'asc'])
         }
         else
         {
@@ -34,7 +34,7 @@ class EntityRegisterService {
         Integer l = limit ? Integer.parseInt(limit.toString()) : 100
         if (!entityTypeId)
         {
-            return EntityRegister.findAll([sort: 'id', max: l, offset: o, order: 'desc'])
+            return EntityRegister.findAll([sort: 'entityName', max: l, offset: o, order: 'desc'])
         }
         else
         {
@@ -42,6 +42,7 @@ class EntityRegisterService {
                 entityType{
                     eq('id',entityTypeId)
                 }
+                order("entityName", "asc")
             }
         }
     }
