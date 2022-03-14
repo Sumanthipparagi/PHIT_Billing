@@ -168,6 +168,32 @@
 
     });
 
+    $('#expDate').bootstrapMaterialDatePicker({
+        time:false,
+        format: 'DD/MM/YYYY',
+        clearButton: true,
+        shortTime: true,
+        weekStart: 1
+    });
+
+    $('#purcDate').bootstrapMaterialDatePicker({
+        time:false,
+        format: 'DD/MM/YYYY',
+        clearButton: true,
+        shortTime: true,
+        weekStart: 1
+    });
+
+    $('#manufacturingDate').bootstrapMaterialDatePicker({
+        time:false,
+        format: 'DD/MM/YYYY',
+        clearButton: true,
+        shortTime: true,
+        weekStart: 1
+    });
+
+
+
     function stockTable() {
         fridgetable = $(".stockTable").DataTable({
             "order": [[0, "desc"]],
@@ -195,7 +221,7 @@
                         var manfDate = new Date(json.data[i].manufacturingDate);
                         var expiryDate = new Date(json.data[i].expDate);
                         var editbtn = '<button type="button" data-id="' + json.data[i].id +
-                            '" data-product="' + json.data[i].product.id + '"' +
+                            '" data-product="' + json.data[i].productId + '"' +
                             '" data-batchNumber="' + json.data[i].batchNumber + '"' +
                             '" data-manfDate="' + moment(manufacturingDate).format('DD/MM/YYYY') + '"' +
                             '" data-expiryDate="' + moment(expDate).format('DD/MM/YYYY') + '"' +
@@ -219,7 +245,7 @@
                             '" class="btn btn-sm btn-danger deletebtn" data-toggle="modal" data-target=".deleteModal"><i class="material-icons"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">delete</font></font></i></button>'
                         return_data.push({
                             'id': json.data[i].id,
-                            'product': json.data[i].product.productName,
+                            'product': json.data[i].productId,
                             'batchNumber': json.data[i].batchNumber,
                             'manfDate': moment(manfDate).format('DD/MM/YYYY'),
                             'expiryDate': moment(expiryDate).format('DD/MM/YYYY'),
@@ -264,7 +290,7 @@
         weekStart: 1
     });
 
-    $(".batchForm").submit(function (event) {
+    $(".stockForm").submit(function (event) {
 
         //disable the default form submission
         event.preventDefault();
@@ -279,10 +305,10 @@
         var url = '';
         var type = '';
         if (id) {
-            url = '/batch-register/update/' + id;
+            url = '/stockbook/' + id;
             type = 'POST'
         } else {
-            url = '/batch-register';
+            url = '/stockbook';
             type = 'POST'
         }
 
@@ -294,7 +320,7 @@
             contentType: false,
             processData: false,
             success: function () {
-                swal("Success!", "Batch Register Submitted Successfully", "success");
+                swal("Success!", "Stocks added Successfully", "success");
                 stockTable();
                 $('#addstockModal').modal('hide');
             },
@@ -307,7 +333,7 @@
 
     $(document).on("click", ".addbtn", function () {
         $(".stockTitle").text("Add Stocks");
-        $(".batchForm")[0].reset();
+        $(".stockForm")[0].reset();
         id = null
     });
 
@@ -327,7 +353,7 @@
         $(".productCat").val($(this).attr('data-productCat')).change();
         $(".entityId").val($(this).attr('data-entityId')).change();
         $(".entityType").val($(this).attr('data-entityType')).change();
-        $(".batchTitle").text("Update Batch Register");
+        $(".stockTitle").text("Update Batch Register");
     });
 
     $('.entityId').change(function () {
@@ -345,12 +371,12 @@
     function deleteData() {
         $.ajax({
             type: 'POST',
-            url: '/batch-register/delete/' + id,
+            url: '/stockbook/delete/' + id,
             dataType: 'json',
             success: function () {
                 $('.deleteModal').modal('hide');
                 stockTable();
-                swal("Success!", "Batch Register Deleted Successfully", "success");
+                swal("Success!", "Stock Deleted Successfully", "success");
             }, error: function () {
                 swal("Error!", "Something went wrong", "error");
             }
@@ -396,8 +422,8 @@
             batchId = batchId.split("_")[1];
             for (var i = 0; i < batches.length; i++) {
                 if (batches[i].id == batchId) {
-                    $(".manufacturingDate").val(batches[i].manfDate);
-                    $(".expDate").val(batches[i].expiryDate);
+                    $(".manufacturingDate").val(moment(batches[i].manfDate).format('DD/MM/YYYY'));
+                    $(".expDate").val(moment(batches[i].expiryDate).format('DD/MM/YYYY'));
                     $(".purchaseRate").val(batches[i].purchaseRate);
                     $(".saleRate").val(batches[i].saleRate);
                     $(".mrp").val(batches[i].mrp);

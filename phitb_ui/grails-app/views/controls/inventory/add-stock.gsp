@@ -7,7 +7,7 @@
                         <span aria-hidden="true">&times;</span></button>
                     <h4 class="stockTitle"></h4>
                 </div>
-                <form action="" id="form_validation" method="post" role="form" class="batchForm"
+                <form action="" id="form_validation" method="post" role="form" class="stockForm"
                       enctype="multipart/form-data">
                     <div class="modal-body">
                         <div class="row">
@@ -15,7 +15,7 @@
                                 <label for="product">
                                     Product
                                 </label>
-                                <select style="width: 100%" onchange="getBatch()" class="form-control show-tick product" name="product" id="product">
+                                <select style="width: 100%" onchange="getBatch()" class="form-control show-tick product" name="productId" id="product">
                                     <option selected disabled>SELECT</option>
                                     <g:each var="p" in="${productList}">
                                         <option value="${p.id}">${p.productName}</option>
@@ -139,6 +139,19 @@
                             </div>
 
                             <div class="col-lg-6 form-group  form-float">
+                                <label for="taxId">
+                                    Tax Slab
+                                </label>
+                                <select style="width:100%;" class="form-control show-tick taxId" name="taxId" id="taxId" required>
+                                    <option value="">-- Please select --</option>
+
+                                    <g:each var="e" in="${taxList}">
+                                        <option value="${e.id}">${e.taxName}</option>
+                                    </g:each>
+                                </select>
+                            </div>
+
+                            <div class="col-lg-6 form-group  form-float">
                                 <label for="supplierId">
                                     Supplier
                                 </label>
@@ -153,8 +166,11 @@
 
 %{--                            <input type="hidden" name="entityId" >
                             <input type="hidden" name="entityTypeId">--}%
+                            <input type="hidden" name="mergedWith">
                             <input type="hidden" name="createdUser">
                             <input type="hidden" name="modifiedUser">
+                            <input type="hidden" name="purcSeriesId" value="1">
+                            <input type="hidden" name="remainingReplQty" value="0">
                             <input type="hidden" name="status" value="1">
                             <input type="hidden" name="syncStatus" value="1">
                         </div>

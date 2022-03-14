@@ -14,7 +14,8 @@ class StockBookController {
         def entityId = session.getAttribute("entityId").toString()
         JSONArray productList = new ProductService().getProductsByEntityId(entityId)
         def entityList = new EntityRegisterController().show()
-        render(view: "/inventory/stock-entry", model: [productList:productList, entityList:entityList])
+        def taxList = new TaxController().show()
+        render(view: "/inventory/stock-entry", model: [productList:productList, entityList:entityList, taxList:taxList])
     }
 
     def save()
@@ -26,6 +27,7 @@ class StockBookController {
             jsonObject.put("entityTypeId", session.getAttribute("entityTypeId"))
             jsonObject.put("modifiedUser", session.getAttribute("userId"))
             jsonObject.put("createdUser", session.getAttribute("userId"))
+           // jsonObject.put("mergedWith", session.getAttribute(""))
             def apiResponse = new InventoryService().stockBookSave(jsonObject)
             if (apiResponse?.status == 200)
             {

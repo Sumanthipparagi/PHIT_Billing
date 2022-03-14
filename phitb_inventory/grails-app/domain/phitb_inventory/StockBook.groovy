@@ -2,7 +2,7 @@ package phitb_inventory
 
 import gorm.logical.delete.LogicalDelete
 
-class StockBook implements LogicalDelete<StockActivity> {
+class StockBook implements LogicalDelete<StockBook> {
 
     long productId
     String batchNumber

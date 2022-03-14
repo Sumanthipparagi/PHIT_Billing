@@ -168,8 +168,15 @@ class TaxController {
             def apiResponse = new EntityService().getTaxRegister(id)
             if (apiResponse?.status == 200)
             {
-                JSONObject jsonObject = new JSONObject(apiResponse.readEntity(String.class))
-                return jsonObject
+                if(id) {
+                    JSONObject jsonObject = new JSONObject(apiResponse.readEntity(String.class))
+                    return jsonObject
+                }
+                else
+                {
+                    JSONArray jsonArray = new JSONArray(apiResponse.readEntity(String.class))
+                    return jsonArray
+                }
             }
             else
             {
