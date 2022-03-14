@@ -4,11 +4,96 @@ import org.grails.web.json.JSONArray
 import org.grails.web.json.JSONObject
 import phitb_ui.EntityService
 import phitb_ui.InventoryService
+import phitb_ui.ProductService
 import phitb_ui.entity.TaxController
 
 class StockBookController {
 
-    def index() { }
+    def index() {
+        def entityId = session.getAttribute("entityId").toString()
+        JSONArray productList = new ProductService().getProductsByEntityId(entityId)
+        render(view: "/inventory/stock-entry", model: [productList:productList])
+    }
+
+    def save()
+    {
+        try
+        {
+            JSONObject jsonObject = new JSONObject(params)
+            jsonObject.put("entityId", session.getAttribute("entityId"))
+            jsonObject.put("entityTypeId", session.getAttribute("entityTypeId"))
+            jsonObject.put("modifiedUser", session.getAttribute("userId"))
+            jsonObject.put("createdUser", session.getAttribute("userId"))
+            def apiResponse = new InventoryService().stockBookSave(jsonObject)
+            if (apiResponse?.status == 200)
+            {
+                JSONObject obj = new JSONObject(apiResponse.readEntity(String.class))
+                respond obj, formats: ['json'], status: 200
+            }
+            else
+            {
+                response.status = apiResponse?.status ?: 400
+            }
+        }
+        catch (Exception ex)
+        {
+            System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
+            log.error('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
+            response.status = 400
+        }
+    }
+
+    def update()
+    {
+        try
+        {
+            JSONObject jsonObject = new JSONObject(params)
+            jsonObject.put("entityId", session.getAttribute("entityId"))
+            jsonObject.put("entityTypeId", session.getAttribute("entityTypeId"))
+            jsonObject.put("createdUser", session.getAttribute("userId"))
+            jsonObject.put("modifiedUser", session.getAttribute("userId"))
+            def apiResponse = new InventoryService().updateStockBook(jsonObject)
+            if (apiResponse?.status == 200)
+            {
+                JSONObject obj = new JSONObject(apiResponse.readEntity(String.class))
+                respond obj, formats: ['json'], status: 200
+            }
+            else
+            {
+                response.status = apiResponse?.status ?: 400
+            }
+        }
+        catch (Exception ex)
+        {
+            System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
+            log.error('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
+            response.status = 400
+        }
+    }
+
+    def dataTable()
+    {
+        try
+        {
+            JSONObject jsonObject = new JSONObject(params)
+            def apiResponse = new InventoryService().showStockBooks(jsonObject)
+            if (apiResponse.status == 200)
+            {
+                JSONObject responseObject = new JSONObject(apiResponse.readEntity(String.class))
+                respond responseObject, formats: ['json'], status: 200
+            }
+            else
+            {
+                response.status = 400
+            }
+        }
+        catch (Exception ex)
+        {
+            System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
+            log.error('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
+            response.status = 400
+        }
+    }
 
     def getStocksOfProduct()
     {
@@ -88,7 +173,7 @@ class StockBookController {
     }
 
 
-    def save()
+    def tempStockBookSave()
     {
         try
         {

@@ -303,8 +303,9 @@ public class Links
     /*<--------------------------------------------Inventory ------------------------------------------------->*/
 
     //Stock book
+    public static String STOCK_BOOK = "api/v1.0/inventory/stockbook";
+    public static String STOCK_BOOK_DATATABLE = "api/v1.0/inventory/stockbook/datatable";
     public static String GET_STOCKS_OF_PRODUCT = "api/v1.0/inventory/stockbookbyproduct";
-
     public static String STOCK_BOOK_PURCHASE = "api/v1.0/inventory/stockbook/purchase/";
 
 

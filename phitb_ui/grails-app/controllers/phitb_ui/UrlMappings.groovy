@@ -376,13 +376,20 @@ class UrlMappings {
         "/purchase-retrun"(controller: 'purchaseEntry', action: 'purchaseReturn')
 
         //Inventory
+        "/stockbook"(controller: "stockBook"){
+            action = [GET: 'index', POST: 'save']
+        }
+        "/stockbook/$id"(controller: "stockBook"){
+            action = [POST: 'update']
+        }
+        "/stockbook/datatable"(controller: "stockBook",action:"dataTable")
         "/stockbook/product/$id"(controller: "stockBook",action:"getStocksOfProduct")
         "/stockbook/purchase"(controller: "stockBook",action:"StockBookPurchase")
 
 
 //        Temp Stock Book
         "/tempstockbook"(controller: "stockBook") {
-            action = [GET: 'index', POST: 'save']
+            action = [POST: 'tempStockBookSave']
         }
         "/tempstockbook/product/$id"(controller: "stockBook",action:"getStocksOfProduct")
         "/tempstockbook/entity/$id"(controller: "stockBook",action:"getTempStocksOfEntity")
