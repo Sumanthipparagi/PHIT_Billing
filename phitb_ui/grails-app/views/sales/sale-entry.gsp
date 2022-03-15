@@ -20,12 +20,13 @@
     <asset:stylesheet rel="stylesheet" href="/themeassets/plugins/select2/dist/css/select2.css"/>
     <asset:stylesheet src="/themeassets/plugins/bootstrap-select/css/bootstrap-select.css" rel="stylesheet"/>
     <link rel="stylesheet" media="screen" href="https://cdnjs.cloudflare.com/ajax/libs/select2/3.5.2/select2.min.css">
-    <link rel="stylesheet" media="screen" href="https://cdnjs.cloudflare.com/ajax/libs/handsontable/0.16.0/handsontable.full.css">
+    <link rel="stylesheet" media="screen"
+          href="https://cdnjs.cloudflare.com/ajax/libs/handsontable/0.16.0/handsontable.full.css">
 
     <style>
-        .form-control{
-            border-radius: 7px !important;
-        }
+    .form-control {
+        border-radius: 7px !important;
+    }
     </style>
 </head>
 
@@ -53,20 +54,20 @@
                     </ul>
                 </div>
 
-               %{-- <div class="col-lg-7 col-md-7 col-sm-12">
-                    <div class="input-group m-b-0">
-                        <input type="text" class="form-control" placeholder="Search...">
-                        <span class="input-group-addon">
-                            <i class="zmdi zmdi-search"></i>
-                        </span>
-                    </div>
-                </div>--}%
+                %{-- <div class="col-lg-7 col-md-7 col-sm-12">
+                     <div class="input-group m-b-0">
+                         <input type="text" class="form-control" placeholder="Search...">
+                         <span class="input-group-addon">
+                             <i class="zmdi zmdi-search"></i>
+                         </span>
+                     </div>
+                 </div>--}%
             </div>
         </div>
 
         <div class="row clearfix">
             <div class="col-lg-12">
-                <div class="card">
+                <div class="card" style="margin-bottom: 10px;">
                     <div class="header" style="padding: 1px;">
 
                     </div>
@@ -77,6 +78,7 @@
                                 <label for="date">Date:</label>
                                 <input type="date" class="form-control date" name="date" id="date"/>
                             </div>
+
                             <div class="col-md-3">
                                 <label for="series">Series:</label>
                                 <select class="form-control" id="series" name="series">
@@ -88,7 +90,8 @@
 
                             <div class="col-md-3">
                                 <label for="customerSelect">Customer:</label>
-                                <select class="form-control show-tick" id="customerSelect" onchange="customerSelectChanged()">
+                                <select class="form-control show-tick" id="customerSelect"
+                                        onchange="customerSelectChanged()">
                                     <option selected disabled>--SELECT--</option>
                                     <g:each in="${customers}" var="cs">
 
@@ -110,6 +113,16 @@
             </div>
         </div>
 
+        <div class="row clearfix">
+            <div class="col-lg-12" style="margin-bottom: 0;">
+                <div class="card" style="margin-bottom: 10px;">
+                    <div class="body" style="background-color: #313740;padding: 2px; color: #fff;">
+                        <p style="margin: 0; font-size: 10px;">Keyboard Shortcuts - Delete Row: <strong>Ctrl+Alt+D</strong>, Reset Table: <strong>Ctrl+Alt+R</strong>
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
 
         <div class="row clearfix">
             <div class="col-lg-12">
@@ -131,12 +144,12 @@
 
         <div class="row clearfix">
             <div class="col-lg-12" style="margin-bottom: 10px;">
-                <p style="margin: 0; font-size: 10px;">Keyboard Shortcuts - Delete Row: <strong>Ctrl+Alt+D</strong>, Reset Table: <strong>Ctrl+Alt+R</strong></p>
+                <p style="margin: 0; font-size: 10px;">Keyboard Shortcuts - Delete Row: <strong>Ctrl+Alt+D</strong>, Reset Table: <strong>Ctrl+Alt+R</strong>
+                </p>
             </div>
         </div>
 
         <div class="row clearfix">
-
 
             <div class="col-lg-8">
                 <div class="card">
@@ -163,10 +176,12 @@
                             <div class="col-md-6">
                                 Total: Rs. <p id="totalAmt">0</p>
                             </div>
+
                             <div class="col-md-6">
                                 Inv No: <span class="invno"></span>
                             </div>
                         </div>
+
                         <div class="row">
                             <button class="btn btn-primary">Save</button>
                             <button class="btn btn-secondary">Print</button>
@@ -219,10 +234,10 @@
     var products = [];
     var hsnCode = [];
     var customers = [];
-   /* var accountMode = [];
-    var customer = [];
-    var salesman = [];
-    var user = [];*/
+    /* var accountMode = [];
+     var customer = [];
+     var salesman = [];
+     var user = [];*/
 
     <g:each in="${products}" var="pd">
     products.push({id:${pd.id}, text: '${pd.productName}'});
@@ -232,22 +247,22 @@
     hsnCode.push({id:${pd.id}, text: '${pd.hsnCode}'});
     </g:each>
 
-   <%-- <g:each in="${series}" var="s">
-    series.push({id:${s.id}, text: '${s.seriesName}'});
-    </g:each>
-    <g:each in="${accountMode}" var="am">
-    accountMode.push({id:${am.id}, text: '${am.mode}'});
-    </g:each>
-    <g:each in="${customerList}" var="cl">
-    customer.push({id:${cl.id}, text: '${cl.entityName}'});
-    </g:each>
-    <g:each in="${salesmanList}" var="sl">
-    salesman.push({id:${sl.id}, text: '${sl.userName}'});
-    </g:each>
-    console.log(salesman);
-    <g:each in="${users}" var="u">
-    user.push({id:${u.id}, text: '${u.userName}'});
-    </g:each> --%>
+    <%-- <g:each in="${series}" var="s">
+     series.push({id:${s.id}, text: '${s.seriesName}'});
+     </g:each>
+     <g:each in="${accountMode}" var="am">
+     accountMode.push({id:${am.id}, text: '${am.mode}'});
+     </g:each>
+     <g:each in="${customerList}" var="cl">
+     customer.push({id:${cl.id}, text: '${cl.entityName}'});
+     </g:each>
+     <g:each in="${salesmanList}" var="sl">
+     salesman.push({id:${sl.id}, text: '${sl.userName}'});
+     </g:each>
+     console.log(salesman);
+     <g:each in="${users}" var="u">
+     user.push({id:${u.id}, text: '${u.userName}'});
+     </g:each> --%>
 
     var headerRow = [
         '<strong></strong>',
@@ -285,12 +300,16 @@
     var hot;
     var batchData = [];
     var mainTableRow = 0;
+    var gst = 0;
+    var cgst = 0;
+    var sgst = 0;
+    var igst = 0;
     $(document).ready(function () {
         //$("#customerSelect").select2();
         $('#date').val(moment().format('YYYY-MM-DD'));
         $('#date').attr("readonly");
         <g:each in="${customers}" var="cs">
-            customers.push({"id": ${cs.id}, "noOfCrDays": ${cs.noOfCrDays}});
+        customers.push({"id": ${cs.id}, "noOfCrDays": ${cs.noOfCrDays}});
         </g:each>
         const container = document.getElementById('saleTable');
         hot = new Handsontable(container, {
@@ -335,10 +354,10 @@
             enterMoves: {row: 0, col: 1},
             fixedColumnsLeft: 0,
             licenseKey: 'non-commercial-and-evaluation',
-            afterChange: (changes,source) => {
-                if(changes) {
+            afterChange: (changes, source) => {
+                if (changes) {
                     changes.forEach(([row, prop, oldValue, newValue]) => {
-                        if(prop === 1) //first col product dropdown
+                        if (prop === 1) //first col product dropdown
                         {
                             mainTableRow = row;
                             batchSelection(newValue, row);
@@ -346,17 +365,17 @@
                     });
                 }
             },
-            afterOnCellMouseDown: function(e, coords, TD) {
+            afterOnCellMouseDown: function (e, coords, TD) {
                 if (coords.col === 0) {
                     this.alter("remove_row", coords.row);
                     calculateTotalAmt();
                 }
             },
-            cells: function(row, col) {
+            cells: function (row, col) {
                 const cellPrp = {};
                 if (col === 0) {
                     cellPrp.readOnly = true;
-                    cellPrp.renderer = function(
+                    cellPrp.renderer = function (
                         instance,
                         td,
                         row,
@@ -372,110 +391,120 @@
                 return cellPrp;
             }
         });
-        hot.selectCell(0,1);
+        hot.selectCell(0, 1);
         hot.updateSettings({
             beforeKeyDown(e) {
                 var sRate = 0;
                 var sQty = 0;
                 const row = hot.getSelected()[0];
                 const selection = hot.getSelected()[1];
-                if(selection === 1) {
+                if (selection === 1) {
                     if (e.keyCode === 13) {
                         batchHot.selectCell(0, 0);
                         $("#batchTable").focus();
                     }
-                }
-                else if(selection === 14)
-                {
+                } else if (selection === 14 || selection === 5) {
                     if (e.keyCode === 13 || e.keyCode === 9) {
                         //check if sqty is empty
-                        var sqty = hot.getDataAtCell(row,4);
-                        if(sqty) {
+                        var sqty = hot.getDataAtCell(row, 4);
+                        if (sqty) {
                             mainTableRow = row + 1;
                             hot.alter('insert_row');
                             hot.selectCell(mainTableRow, 1);
                             calculateTotalAmt();
-                        }
-                        else
-                        {
+                        } else {
                             alert("Please enter Quantity");
                         }
                     }
-                }
-                else if (selection === 4)
-                {
+                } else if (selection === 4) {
                     if (e.keyCode === 13 || e.keyCode === 9) {
-                         sQty = this.getActiveEditor().TEXTAREA.value;
+                        sQty = this.getActiveEditor().TEXTAREA.value;
                         // sQty = hot.getDataAtCell(row,selection);
-                         sRate = hot.getDataAtCell(row,6);
-                         var discount = hot.getDataAtCell(row,8);
-                         var gst = hot.getDataAtCell(row,10);
-                         var priceBeforeGst = (sRate * sQty) - ((sRate*sQty)*discount)/100;
-                         var finalPrice = priceBeforeGst + (priceBeforeGst*(gst/100));
-                         hot.setDataAtCell(row, 11, finalPrice);
+                        sRate = hot.getDataAtCell(row, 6);
+                        var discount = hot.getDataAtCell(row, 8);
+                        //var gst = hot.getDataAtCell(row, 10);
+                        var priceBeforeGst = (sRate * sQty) - ((sRate * sQty) * discount) / 100;
+                        var finalPrice = priceBeforeGst + (priceBeforeGst * (gst / 100));
+                        hot.setDataAtCell(row, 11, finalPrice);
+
+                        if(gst != 0) {
+                            hot.setDataAtCell(row, 10, priceBeforeGst * (gst / 100)); //GST
+                            hot.setDataAtCell(row, 12, priceBeforeGst * (sgst / 100)); //SGST
+                            hot.setDataAtCell(row, 13, priceBeforeGst * (cgst / 100)); //CGST
+                        }
+                        else
+                        {
+                            hot.setDataAtCell(row, 10, 0); //GST
+                            hot.setDataAtCell(row, 12, 0); //SGST
+                            hot.setDataAtCell(row, 13, 0); //CGST
+                        }
+                        if(igst != "0")
+                            hot.setDataAtCell(row, 14, priceBeforeGst*(igst/100)); //IGST
+                        else
+                            hot.setDataAtCell(row, 14, 0);
                     }
                 }
             }
         });
 
-       /* hot.updateSettings({
-            afterChange: function (changes, source) {
-                var rowThatHasBeenChanged = changes[0][0],
-                    columnThatHasBeenChanged = changes[0][1],
-                    previousValue = changes[0][2],
-                    newValue = changes[0][3];
+        /* hot.updateSettings({
+             afterChange: function (changes, source) {
+                 var rowThatHasBeenChanged = changes[0][0],
+                     columnThatHasBeenChanged = changes[0][1],
+                     previousValue = changes[0][2],
+                     newValue = changes[0][3];
 
-                var visualObjectRow = function (row) {
-                    var obj = {},
-                        key, name;
-                    for (var i = 0; i < hot.countCols(); i++) {
-                        obj[hot.colToProp(i)] = hot.getDataAtCell(row, i);
-                    }
-                    return obj
-                };
-                var json = {}
-                var changedRow = visualObjectRow(rowThatHasBeenChanged);
-                // console.log(visualObjectRow(rowThatHasBeenChanged))
-                Object.keys(changedRow).forEach(function (key) {
-                    json[headerRow[key].replace(/\s+/g, '')] = changedRow[key]
-                });
-
-
-                if (idArray[rowThatHasBeenChanged] != undefined) {
-                    json['id'] = idArray[rowThatHasBeenChanged]
-                } else {
-                    json['id'] = null
-                }
-                console.log(json);
+                 var visualObjectRow = function (row) {
+                     var obj = {},
+                         key, name;
+                     for (var i = 0; i < hot.countCols(); i++) {
+                         obj[hot.colToProp(i)] = hot.getDataAtCell(row, i);
+                     }
+                     return obj
+                 };
+                 var json = {}
+                 var changedRow = visualObjectRow(rowThatHasBeenChanged);
+                 // console.log(visualObjectRow(rowThatHasBeenChanged))
+                 Object.keys(changedRow).forEach(function (key) {
+                     json[headerRow[key].replace(/\s+/g, '')] = changedRow[key]
+                 });
 
 
-                var url = '';
-                var type = '';
-                var id = json['id'];
-                if (idArray[rowThatHasBeenChanged] != undefined) {
-                    url = '/sale-entry/update/' + id;
-                    type = 'POST'
-                } else {
-                    url = '/sale-entry';
-                    type = 'POST'
-                }
-                $.ajax({
-                    type: type,
-                    url: url,
-                    dataType: 'json',
-                    data: {
-                        json: json
-                    },
-                    success: function (data) {
-                        console.log("data loaded");
-                    },
-                    error: function (data) {
-                        console.log("Failed");
-                    }
-                });
+                 if (idArray[rowThatHasBeenChanged] != undefined) {
+                     json['id'] = idArray[rowThatHasBeenChanged]
+                 } else {
+                     json['id'] = null
+                 }
+                 console.log(json);
 
-            }
-        });*/
+
+                 var url = '';
+                 var type = '';
+                 var id = json['id'];
+                 if (idArray[rowThatHasBeenChanged] != undefined) {
+                     url = '/sale-entry/update/' + id;
+                     type = 'POST'
+                 } else {
+                     url = '/sale-entry';
+                     type = 'POST'
+                 }
+                 $.ajax({
+                     type: type,
+                     url: url,
+                     dataType: 'json',
+                     data: {
+                         json: json
+                     },
+                     success: function (data) {
+                         console.log("data loaded");
+                     },
+                     error: function (data) {
+                         console.log("Failed");
+                     }
+                 });
+
+             }
+         });*/
 
         function productsDropdownRenderer(instance, td, row, col, prop, value, cellProperties) {
             var selectedId;
@@ -489,11 +518,12 @@
 
             //$('#selectedId').text(selectedId);
         }
-       /* function updateCell(hot, selectedId, value, row) {
-            hot.setDataAtCell(row, 2, value);
-            $("#productNameTitle").text("");
-            $("#batchSelectModal").modal("toggle");
-        }*/
+
+        /* function updateCell(hot, selectedId, value, row) {
+             hot.setDataAtCell(row, 2, value);
+             $("#productNameTitle").text("");
+             $("#batchSelectModal").modal("toggle");
+         }*/
 
         batchHot = new Handsontable(batchContainer, {
             data: batchData,
@@ -509,18 +539,18 @@
             selectionMode: 'range',
             colHeaders: batchHeaderRow,
             columns: [
-                {type: 'text',readOnly: true},
-                {type: 'text',readOnly: true},
-                {type: 'numeric',readOnly: true},
-                {type: 'numeric',readOnly: true},
-                {type: 'numeric',readOnly: true},
-                {type: 'numeric',readOnly: true},
-                {type: 'numeric',readOnly: true},
-                {type: 'text',readOnly: true},
-                {type: 'text',readOnly: true},
-                {type: 'text',readOnly: true},
-                {type: 'text',readOnly: true},
-                {type: 'text',readOnly: true}
+                {type: 'text', readOnly: true},
+                {type: 'text', readOnly: true},
+                {type: 'numeric', readOnly: true},
+                {type: 'numeric', readOnly: true},
+                {type: 'numeric', readOnly: true},
+                {type: 'numeric', readOnly: true},
+                {type: 'numeric', readOnly: true},
+                {type: 'text', readOnly: true},
+                {type: 'text', readOnly: true},
+                {type: 'text', readOnly: true},
+                {type: 'text', readOnly: true},
+                {type: 'text', readOnly: true}
             ],
             minSpareRows: 0,
             minSpareCols: 0,
@@ -542,11 +572,15 @@
                     hot.setDataAtCell(mainTableRow, 7, rowData[6]);
                     hot.setDataAtCell(mainTableRow, 8, 0);
                     hot.setDataAtCell(mainTableRow, 9, rowData[7]);
-                    hot.setDataAtCell(mainTableRow, 10, rowData[8]);
-                    hot.setDataAtCell(mainTableRow, 12, rowData[9]);
-                    hot.setDataAtCell(mainTableRow, 13, rowData[10]);
-                    hot.setDataAtCell(mainTableRow, 14, rowData[11]);
-                    hot.selectCell(mainTableRow,3);
+                    gst = rowData[8];
+                    sgst = rowData[9];
+                    cgst = rowData[10];
+                    igst = rowData[11];
+                    //hot.setDataAtCell(mainTableRow, 10, rowData[8]); //GST
+                    //hot.setDataAtCell(mainTableRow, 12, rowData[9]); //SGST
+                    //hot.setDataAtCell(mainTableRow, 13, rowData[10]); //CGST
+                    //hot.setDataAtCell(mainTableRow, 14, rowData[11]); //IGST
+                    hot.selectCell(mainTableRow, 4);
                     $("#saleTable").focus();
 
                 }
@@ -585,10 +619,10 @@
                         batchHot.updateSettings({
                             data: []
                         });
-                        if(batchdt?.length > 0) {
+                        if (batchdt?.length > 0) {
                             batchHot.loadData(batchData);
                             $("#batchTable").focus();
-                            batchHot.selectCell(0,0);
+                            batchHot.selectCell(0, 0);
                         }
                     }
                 },
@@ -603,14 +637,11 @@
     }
 
 
-    function customerSelectChanged()
-    {
+    function customerSelectChanged() {
         var noOfCrDays = 0;
         var customerId = $("#customerSelect").val();
-        for(var i = 0; i<customers.length; i++)
-        {
-            if(customerId == customers[i].id)
-            {
+        for (var i = 0; i < customers.length; i++) {
+            if (customerId == customers[i].id) {
                 noOfCrDays = customers[i].noOfCrDays;
             }
         }
@@ -619,26 +650,24 @@
         $('#duedate').prop("readonly", true);
     }
 
-    function calculateTotalAmt()
-    {
+    function calculateTotalAmt() {
         totalAmt = 0;
         var data = hot.getData();
-        for(var i = 0; i<data.length; i++)
-        {
-            if(data[i][11])
+        for (var i = 0; i < data.length; i++) {
+            if (data[i][11])
                 totalAmt += data[i][11]
         }
         $("#totalAmt").text(totalAmt);
     }
 
 
-    document.addEventListener("keydown", function(event) {
+    document.addEventListener("keydown", function (event) {
         var ctrl = event.ctrlKey;
         var alt = event.altKey;
         var key = event.key;
-        console.log(ctrl + " "+alt + " "+key);
+        console.log(ctrl + " " + alt + " " + key);
         if (ctrl) {
-            if(alt) {
+            if (alt) {
                 var result = false;
                 if (key === 'd' || key === 'ḍ') {
                     result = confirm("Delete this row?");
