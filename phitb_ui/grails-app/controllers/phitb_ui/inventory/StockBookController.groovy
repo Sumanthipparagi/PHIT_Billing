@@ -101,10 +101,10 @@ class StockBookController {
 
     def getStocksOfProduct()
     {
-        def apiResponse = new InventoryService().getStocksOfProduct(params.id)
-        if(apiResponse?.status == 200)
+        def apiResp = new InventoryService().getTempStocks(params.id)
+        if(apiResp.status == 200)
         {
-            JSONArray jsonArray = new JSONArray(apiResponse.readEntity(String.class))
+            JSONArray jsonArray = new JSONArray(apiResp.readEntity(String.class))
             JSONArray responseArray = new JSONArray()
             for (JSONObject json : jsonArray) {
                 String id = json["taxId"]
@@ -118,9 +118,25 @@ class StockBookController {
             }
             respond responseArray, formats: ['json'], status: 200
         }
-        else
-        {
-            response.status = apiResponse?.status
+        else {
+            def apiResponse = new InventoryService().getStocksOfProduct(params.id)
+            if (apiResponse?.status == 200) {
+                JSONArray jsonArray = new JSONArray(apiResponse.readEntity(String.class))
+                JSONArray responseArray = new JSONArray()
+                for (JSONObject json : jsonArray) {
+                    String id = json["taxId"]
+                    def tax = new TaxController().show(id)
+                    println(tax.taxValue)
+                    json.put("gst", tax.taxValue)
+                    json.put("sgst", tax.salesSgst)
+                    json.put("cgst", tax.salesCgst)
+                    json.put("igst", tax.salesIgst)
+                    responseArray.put(json)
+                }
+                respond responseArray, formats: ['json'], status: 200
+            } else {
+                response.status = apiResponse?.status
+            }
         }
 
     }
@@ -181,7 +197,36 @@ class StockBookController {
     {
         try
         {
-            JSONObject jsonObject = new JSONObject(params)
+            JSONArray jsonArray = new JSONArray(params.rowData)
+            def stockBook = new InventoryService().getStockBookById(jsonArray[15].toString())
+            long remainingQty = stockBook.remainingQty
+            long remainingFreeQty = stockBook.remainingFreeQty
+            long saleQty  = jsonArray[4]
+            long saleFreeQty  = jsonArray[5]
+            remainingQty = remainingQty - saleQty
+            remainingFreeQty = remainingFreeQty - saleFreeQty
+            JSONObject jsonObject = new JSONObject()
+            jsonObject.put("productId", jsonArray[1])
+            jsonObject.put("batchNumber", jsonArray[2])
+            jsonObject.put("expDate", jsonArray[3])
+            jsonObject.put("remainingQty", remainingQty)
+            jsonObject.put("remainingFreeQty", remainingFreeQty)
+            jsonObject.put("remainingReplQty", 0)
+            jsonObject.put("saleRate", jsonArray[6])
+            jsonObject.put("purchaseRate", stockBook.purchaseRate)
+            jsonObject.put("mrp", jsonArray[7])
+            jsonObject.put("discount", jsonArray[8])
+            jsonObject.put("packingDesc", jsonArray[9])
+            jsonObject.put("userOrderQty", saleQty)
+            jsonObject.put("userOrderFreeQty", saleFreeQty)
+            jsonObject.put("userOrderReplQty", 0)
+            jsonObject.put("taxId", stockBook.taxId)
+            jsonObject.put("userId", session.getAttribute("userId"))
+            jsonObject.put("entityId", session.getAttribute("entityId"))
+            jsonObject.put("entityTypeId", session.getAttribute("entityTypeId"))
+            jsonObject.put("redundantBatch", "")
+            jsonObject.put("originalId", stockBook.id)
+
             def apiResponse = new InventoryService().tempStockBookSave(jsonObject)
             if (apiResponse?.status == 200)
             {

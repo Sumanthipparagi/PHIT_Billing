@@ -117,7 +117,8 @@
             <div class="col-lg-12" style="margin-bottom: 0;">
                 <div class="card" style="margin-bottom: 10px;">
                     <div class="body" style="background-color: #313740;padding: 2px; color: #fff;">
-                        <p style="margin: 0; font-size: 10px;">Keyboard Shortcuts - Delete Row: <strong>Ctrl+Alt+D</strong>, Reset Table: <strong>Ctrl+Alt+R</strong>
+                        <p style="margin: 0; font-size: 10px;">
+                            <strong>Total GST:</strong> ₹<span id="totalGST">0</span>, <strong>Total SGST:</strong> ₹<span id="totalSGST">0</span>, <strong>Total CGST:</strong> ₹<span id="totalCGST">0</span>, <strong>Total IGST:</strong>&nbsp; ₹<span id="totalIGST">0</span>
                         </p>
                     </div>
                 </div>
@@ -174,7 +175,7 @@
                     <div class="body">
                         <div class="row">
                             <div class="col-md-6">
-                                Total: Rs. <p id="totalAmt">0</p>
+                                Total: <p>₹ <span id="totalAmt">0</span></p>
                             </div>
 
                             <div class="col-md-6">
@@ -412,6 +413,26 @@
                             hot.alter('insert_row');
                             hot.selectCell(mainTableRow, 1);
                             calculateTotalAmt();
+                            var batchId = hot.getCellMeta(row, 2)?.batchId; //batch
+                            var dt = hot.getDataAtRow(row);
+                            dt.push(batchId);
+                            var json = JSON.stringify(dt);
+                            var url = '/tempstockbook';
+                            var type = 'POST';
+                            $.ajax({
+                                type: type,
+                                url: url,
+                                dataType: 'json',
+                                data: {
+                                    rowData: json
+                                },
+                                success: function (data) {
+                                    console.log("Data saved");
+                                },
+                                error: function (data) {
+                                    console.log("Failed");
+                                }
+                            });
                         } else {
                             alert("Please enter Quantity");
                         }
@@ -550,8 +571,13 @@
                 {type: 'text', readOnly: true},
                 {type: 'text', readOnly: true},
                 {type: 'text', readOnly: true},
+                {type: 'text', readOnly: true},
                 {type: 'text', readOnly: true}
             ],
+            hiddenColumns: {
+                // specify columns hidden by default
+                columns: [11]
+            },
             minSpareRows: 0,
             minSpareCols: 0,
             fixedColumnsLeft: 0,
@@ -565,7 +591,10 @@
                 console.log(rowData);
                 if (e.keyCode === 13) {
 
+                    var batchId = rowData[12];
                     hot.setDataAtCell(mainTableRow, 2, rowData[0]);
+                    hot.setCellMeta(mainTableRow, 2, "batchId", batchId);
+
                     hot.setDataAtCell(mainTableRow, 3, rowData[1]);
                     hot.setDataAtCell(mainTableRow, 5, 0);
                     hot.setDataAtCell(mainTableRow, 6, rowData[5]);
@@ -613,6 +642,7 @@
                             batchdt.push(data[i].sgst);
                             batchdt.push(data[i].cgst);
                             batchdt.push(data[i].igst);
+                            batchdt.push(data[i].id);
                             batchData.push(batchdt);
 
                         }
@@ -652,12 +682,28 @@
 
     function calculateTotalAmt() {
         totalAmt = 0;
+        totalGst = 0;
+        totalCgst = 0;
+        totalSgst = 0;
+        totalIgst = 0;
         var data = hot.getData();
         for (var i = 0; i < data.length; i++) {
             if (data[i][11])
-                totalAmt += data[i][11]
+                totalAmt += data[i][11];
+            if (data[i][10])
+                totalGst += data[i][10];
+            if (data[i][12])
+                totalSgst += data[i][12];
+            if (data[i][13])
+                totalCgst += data[i][13];
+            if (data[i][14])
+                totalIgst += data[i][14];
         }
         $("#totalAmt").text(totalAmt);
+        $("#totalGST").text(totalGst);
+        $("#totalSGST").text(totalSgst);
+        $("#totalCGST").text(totalCgst);
+        $("#totalIGST").text(totalIgst);
     }
 
 

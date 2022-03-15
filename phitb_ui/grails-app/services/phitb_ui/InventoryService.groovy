@@ -18,6 +18,34 @@ import javax.ws.rs.core.Response
 @Transactional
 class InventoryService {
 
+    def getStockBookById(String id)
+    {
+        Client client = ClientBuilder.newClient().register(JacksonFeature.class)
+        WebTarget target = client.target(new Links().API_GATEWAY);
+
+        try
+        {
+            Response apiResponse = target
+                    .path(new Links().STOCK_BOOK + "/"+id)
+                    .request(MediaType.APPLICATION_JSON_TYPE)
+                    .get()
+            if (apiResponse?.status == 200)
+            {
+                JSONObject jsonObject = new JSONObject(apiResponse.readEntity(String.class))
+                return jsonObject
+            }
+            else
+            {
+               return null
+            }
+        }
+        catch (Exception ex)
+        {
+            System.err.println('Service : InventoryService , action :  put  , Ex:' + ex)
+            log.error('Service :InventoryService , action :  put  , Ex:' + ex)
+        }
+    }
+
     //Temp Stock Book Save
     def stockBookSave(JSONObject jsonObject)
     {
@@ -144,6 +172,7 @@ class InventoryService {
     {
         Client client = ClientBuilder.newClient()
         WebTarget target = client.target(new Links().API_GATEWAY)
+        //WebTarget target = client.target("http://localhost:8086")
         try
         {
             println(jsonObject)

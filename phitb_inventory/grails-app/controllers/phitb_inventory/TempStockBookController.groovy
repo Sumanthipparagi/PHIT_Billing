@@ -90,6 +90,33 @@ class TempStockBookController {
      * @param id
      * @return get requested Stock Book
      */
+    def getByUserId() {
+        try {
+
+            if (params.id) {
+                respond tempStockBookService.getAllByUserId(Long.parseLong(params.id))
+            }
+        }
+        catch (ResourceNotFoundException ex)
+        {
+            System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
+            response.status = 404
+        }
+        catch (BadRequestException ex)
+        {
+            System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
+            response.status = 400
+        }
+        catch (Exception ex) {
+            System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
+        }
+    }
+
+    /**
+     * Get requested Stock Book
+     * @param id
+     * @return get requested Stock Book
+     */
     def getByProductIdAndBatch() {
         try {
             long id = params.id

@@ -269,8 +269,32 @@ class ProductService {
             return apiResponse
         }
         catch (Exception ex) {
-            System.err.println('Service :ProductService , action :  getProducts  , Ex:' + ex)
-            log.error('Service :ProductService , action :  getProducts  , Ex:' + ex)
+            System.err.println('Service :ProductService , action :  getBatchRegister  , Ex:' + ex)
+            log.error('Service :ProductService , action :  getBatchRegister  , Ex:' + ex)
+        }
+    }
+
+    def getBatchById(String id) {
+        Client client = ClientBuilder.newClient();
+        WebTarget target = client.target(new Links().API_GATEWAY);
+        try {
+            Response apiResponse = target
+                    .path(new Links().BATCH_REGISTER_SHOW + "/"+id)
+                    .request(MediaType.APPLICATION_JSON_TYPE)
+                    .get()
+            if (apiResponse?.status == 200)
+            {
+                JSONObject jsonObject = new JSONObject(apiResponse.readEntity(String.class));
+                return jsonObject
+            }
+            else
+            {
+                return null
+            }
+        }
+        catch (Exception ex) {
+            System.err.println('Service :ProductService , action :  getBatchRegister  , Ex:' + ex)
+            log.error('Service :ProductService , action :  getBatchRegister  , Ex:' + ex)
         }
     }
 
