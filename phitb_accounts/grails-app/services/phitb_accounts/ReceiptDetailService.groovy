@@ -97,7 +97,7 @@ class ReceiptDetailService {
 
     ReceiptDetail save(JSONObject jsonObject) {
         ReceiptDetail receiptDetail = new ReceiptDetail()
-        receiptDetail.receiptId = jsonObject.get("receiptId").toString()
+        receiptDetail.receiptId = jsonObject.get("id").toString()
         receiptDetail.date = sdf.parse(jsonObject.get("date").toString())
         receiptDetail.paymentModeId = Long.parseLong(jsonObject.get("paymentModeId").toString())
         receiptDetail.accountModeId = Long.parseLong(jsonObject.get("accountModeId").toString())

@@ -87,6 +87,34 @@ class SaleBillDetailsController
 
 
     /**
+     * Get requested Credit Debit Details
+     * @param id
+     * @return get requested Credit Debit Details
+     */
+    def getAllByCustomerId() {
+        try {
+            String id = params.id
+            if (id) {
+                respond saleBillDetailsService.getAllByCustomerId(params.limit, params.offset, id)
+            }
+        }
+        catch (ResourceNotFoundException ex)
+        {
+            System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
+            response.status = 404
+        }
+        catch (BadRequestException ex)
+        {
+            System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
+            response.status = 400
+        }
+        catch (Exception ex) {
+            System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
+        }
+    }
+
+
+    /**
      * Save new Sale Bill Details
      * @param Sale Bill Details
      * @return saved Sale Bill Details
@@ -189,5 +217,31 @@ class SaleBillDetailsController
         catch (Exception ex) {
             System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
         }
+    }
+
+
+    def updatePaymentStatus(Long id)
+    {
+        try
+        {
+            SaleBillDetails saleBillDetails = SaleBillDetails.findById(id)
+            if (saleBillDetails)
+            {
+                saleBillDetails.isUpdatable = true
+                saleBillDetails.paymentStatus = Long.parseLong("1")
+                SaleBillDetails saleBillDetails1 = saleBillDetails.save(flush: true)
+                if (saleBillDetails1)
+                {
+                    respond saleBillDetails1
+                    return
+                }
+            }
+        }
+        catch (Exception ex)
+        {
+            System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
+            log.error('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
+        }
+        response.status = 400
     }
 }

@@ -1,5 +1,6 @@
 package phitb_ui.accounts
 
+import grails.converters.JSON
 import groovy.json.JsonSlurper
 import org.grails.web.json.JSONArray
 import org.grails.web.json.JSONObject
@@ -11,43 +12,59 @@ import phitb_ui.entity.CustomerGroupController
 import phitb_ui.entity.EntityRegisterController
 import phitb_ui.entity.UserRegisterController
 import phitb_ui.product.DivisionController
+import phitb_ui.sales.SaleEntryController
+import phitb_ui.sales.SalebillDetailsController
+import phitb_ui.system.AccountModeController
 import phitb_ui.system.CityController
 import phitb_ui.system.CountryController
 import phitb_ui.system.StateController
 import phitb_ui.system.ZoneController
 
-class BankRegisterController {
+import javax.swing.text.html.parser.Entity
+
+class ReciptDetailController
+{
 
     def index()
     {
+        ArrayList<String> entity = new EntityRegisterController().show() as ArrayList
+        ArrayList<String> bank = new BankRegisterController().show() as ArrayList
+        ArrayList<String> accountMode = new AccountModeController().show() as ArrayList
+        ArrayList<String> wallet = new WalletController().show() as ArrayList
+        ArrayList<String> saleinvoice = new SalebillDetailsController().show() as ArrayList
+        render(view: "/accounts/recipt/customer-recipt", model: [entity: entity, bank: bank, accountMode: accountMode,
+                                                                 wallet: wallet, saleinvoice: saleinvoice])
+    }
+
+    def addRecipt()
+    {
+        ArrayList<String> entity = new EntityRegisterController().show() as ArrayList
+        ArrayList<String> bank = new BankRegisterController().show() as ArrayList
+        ArrayList<String> accountMode = new AccountModeController().show() as ArrayList
+        ArrayList<String> wallet = new WalletController().show() as ArrayList
+        render(view: '/accounts/recipt/add-recipt', model: [entity: entity, bank: bank, accountMode: accountMode, wallet: wallet])
+    }
+
+
+    def settledVocher()
+    {
+//        ArrayList<String> saleinvoice  = new SalebillDetailsController().show() as ArrayList
+//        JSONObject obj = new JSONObject()
+//        obj.put("saleinvoice", saleinvoice)
+//        respond obj, formats: ['json'], status: 200
         try
         {
-            def entitytypeurl = Links.API_GATEWAY+Links.ENTITY_TYPE_MASTER_SHOW
-            def seriesurl = Links.API_GATEWAY + Links.SERIES_MASTER_SHOW
-            URL apiUrl2 = new URL(entitytypeurl)
-            URL apiUrl5 = new URL(seriesurl)
-            def entitytype = new JsonSlurper().parseText(apiUrl2.text)
-            def series = new JsonSlurper().parseText(apiUrl5.text)
-            ArrayList<String> statelist = new StateController().show() as ArrayList<String>
-            ArrayList<String> divisionList = new DivisionController().show() as ArrayList<String>
-            ArrayList<String> userregister = new UserRegisterController().show() as ArrayList<String>
-            ArrayList<String> entity = new EntityRegisterController().show() as ArrayList<String>
-            ArrayList<String> customer = new CustomerGroupController().show() as ArrayList<String>
-            ArrayList<String> countrylist = new CountryController().show() as ArrayList<String>
-            ArrayList<String> citylist = new CityController().show() as ArrayList<String>
-            ArrayList<String> zoneList = new ZoneController().show() as ArrayList<String>
-            ArrayList<String> managerList = []
-            userregister.each {
-                if (it.role.name.toString().equalsIgnoreCase(Constants.ROLE_MANAGER))
-                {
-                    managerList.add(it)
-                }
+            JSONObject jsonObject = new JSONObject(params)
+            def apiResponse = new AccountsService().updateSettledVocher(jsonObject)
+            if (apiResponse?.status == 200)
+            {
+                JSONObject obj = new JSONObject(apiResponse.readEntity(String.class))
+                respond obj, formats: ['json'], status: 200
             }
-            render(view: '/accounts/bankRegister/bankRegister',model: [entity     :entity, statelist:statelist,
-                                                                       countrylist:countrylist, citylist:citylist,
-                                                                       zoneList   :zoneList,
-                                                                       entitytype :entitytype, customer:customer, series:series,
-                                                                       managerList:managerList, divisionList:divisionList])
+            else
+            {
+                response.status = apiResponse?.status ?: 400
+            }
         }
         catch (Exception ex)
         {
@@ -55,7 +72,6 @@ class BankRegisterController {
             log.error('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
             response.status = 400
         }
-
     }
 
     def dataTable()
@@ -81,6 +97,81 @@ class BankRegisterController {
             response.status = 400
         }
     }
+
+    def getAllEntityById()
+    {
+        try
+        {
+            JSONObject jsonObject = new JSONObject()
+            def apiResponse = new AccountsService().getEntityById(params.id)
+            if (apiResponse.status == 200)
+            {
+                JSONObject responseObject = new JSONObject(apiResponse.readEntity(String.class))
+                respond responseObject, formats: ['json'], status: 200
+            }
+            else
+            {
+                response.status = 400
+            }
+        }
+        catch (Exception ex)
+        {
+            System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
+            log.error('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
+            response.status = 400
+        }
+    }
+
+
+    def getAllSaleBillEntityById()
+    {
+        try
+        {
+            JSONObject jsonObject = new JSONObject()
+            def apiResponse = new AccountsService().getEntityById(params.id)
+            if (apiResponse.status == 200)
+            {
+                JSONObject responseObject = new JSONObject(apiResponse.readEntity(String.class))
+                respond responseObject, formats: ['json'], status: 200
+            }
+            else
+            {
+                response.status = 400
+            }
+        }
+        catch (Exception ex)
+        {
+            System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
+            log.error('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
+            response.status = 400
+        }
+    }
+
+
+    def getAllSaleBillCustomerId()
+    {
+        try
+        {
+            JSONArray jsonArray = new JSONArray();
+            def apiResponse = new AccountsService().getSaleBillCustomerId(params.id)
+            if (apiResponse.status == 200)
+            {
+                JSONArray responseArry = new JSONArray(apiResponse.readEntity(String.class))
+                respond responseArry, formats: ['json'], status: 200
+            }
+            else
+            {
+                response.status = 400
+            }
+        }
+        catch (Exception ex)
+        {
+            System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
+            log.error('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
+            response.status = 400
+        }
+    }
+
 
     def save()
     {
@@ -140,7 +231,7 @@ class BankRegisterController {
             if (apiResponse.status == 200)
             {
                 JSONObject data = new JSONObject()
-                data.put("success","success")
+                data.put("success", "success")
                 respond data, formats: ['json'], status: 200
             }
             else
@@ -160,7 +251,7 @@ class BankRegisterController {
     {
         try
         {
-            def apiResponse = new AccountsService().getBanks()
+            def apiResponse = new ProductService().getDivisions()
             if (apiResponse?.status == 200)
             {
                 JSONArray jsonArray = new JSONArray(apiResponse.readEntity(String.class));
@@ -179,4 +270,5 @@ class BankRegisterController {
             response.status = 400
         }
     }
+
 }

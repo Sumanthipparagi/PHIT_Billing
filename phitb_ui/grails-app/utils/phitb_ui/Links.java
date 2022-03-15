@@ -299,6 +299,9 @@ public class Links
     public static String SALE_BILL_DATATABLE = "api/v1.0/sales/salebilldetails/datatable";
     public static String SALE_BILL_UPDATE = "api/v1.0/sales/salebilldetails/{id}";
     public static String SALE_BILL_DELETE = "api/v1.0/sales/salebilldetails/{id}";
+    public static String SALE_BILL_CUSTOMER = "api/v1.0/sales/salebilldetailsbycustomer";
+    public static String SALE_BILL_PAYMENT = "api/v1.0/sales/salebillbypaymentstatus";
+    public static String SET_PAYMENT_BILL = "api/v1.0/sales/setpaymentstatus/{id}";
 
     /*<--------------------------------------------Inventory ------------------------------------------------->*/
 
@@ -315,7 +318,7 @@ public class Links
 
 
 
-    /*<--------------------------------------------Bank Register ------------------------------------------------->*/
+    /*<--------------------------------------------Accounts ------------------------------------------------->*/
 
     //Bank Register
     public static String BANK_REGISTER_SHOW = "api/v1.0/accounts/bankregister";
@@ -323,6 +326,22 @@ public class Links
     public static String BANK_REGISTER_DATATABLE = "api/v1.0/accounts/bankregister/datatable";
     public static String BANK_REGISTER_UPDATE = "api/v1.0/accounts/bankregister/{id}";
     public static String BANK_REGISTER_DELETE = "api/v1.0/accounts/bankregister/{id}";
+
+
+    //Accounts
+    public static String RECIPT_DETAIL = "api/v1.0/accounts/receiptdetails";
+    public static String RECIPT_DETAIL_SAVE = "api/v1.0/accounts/receiptdetails";
+    public static String RECIPT_DETAIL_DATATABLE = "api/v1.0/accounts/receiptdetails/datatable";
+    public static String RECIPT_DETAIL_UPDATE = "api/v1.0/accounts/receiptdetails/{id}";
+    public static String RECIPT_DETAIL_DELETE = "api/v1.0/accounts/receiptdetails/{id}";
+
+
+    //Wallet
+    public static String WALLET_SHOW = "api/v1.0/accounts/wallet";
+    public static String WALLET_SAVE = "api/v1.0/accounts/wallet";
+    public static String WALLET_DATATABLE = "api/v1.0/accounts/wallet/datatable";
+    public static String WALLET_UPDATE = "api/v1.0/accounts/wallet/{id}";
+    public static String WALLET_DELETE = "api/v1.0/accounts/wallet/{id}";
 
 
     /*<--------------------------------------------Purchase ------------------------------------------------->*/

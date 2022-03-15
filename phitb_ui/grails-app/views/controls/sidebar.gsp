@@ -546,10 +546,20 @@
                         class="badge badge-success float-right"></span></a>
                     <ul class="ml-menu">
                         <li><a href="#">Purchase Order</a></li>
+                        <li><a href="/recipt">Recipt</a></li>
                         <li><a href="#">Purchase Entry</a></li>
                         <li><a href="#">Purchase Return</a></li>
                         <li><a href="#">Mark Received Goods</a></li>
                         <li><a href="#">Purchase Voucher</a></li>
+                    </ul>
+                </li>
+
+                <li><a href="javascript:void(0);" class="menu-toggle"><i
+                        class="zmdi zmdi-apps"></i><span>Recipt</span> <span
+                        class="badge badge-success float-right"></span></a>
+                    <ul class="ml-menu">
+                        <li><a href="/recipt">Recipt</a></li>
+
                     </ul>
                 </li>
 

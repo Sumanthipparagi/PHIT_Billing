@@ -103,6 +103,9 @@ class UrlMappings {
             "/salebilldetailsbydays/$days(.$format)?"(controller: 'saleBillDetails') {
                 action = [GET: 'getAllByDays']
             }
+            "/salebilldetailsbycustomer/$id(.$format)?"(controller: 'saleBillDetails') {
+                action = [GET: 'getAllByCustomerId']
+            }
 
             //Sale Order entry Controller
             "/salebilldetails(.$format)?"(controller: 'saleBillDetails') {
@@ -116,6 +119,10 @@ class UrlMappings {
             }
             "/salebilldetailsbydays/$days(.$format)?"(controller: 'saleBillDetails') {
                 action = [GET: 'getAllByDays']
+            }
+
+            "/setpaymentstatus/$id(.$format)?"(controller: 'saleBillDetails') {
+                action = [POST: 'updatePaymentStatus']
             }
 
             //Sale Product Details

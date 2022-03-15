@@ -404,5 +404,21 @@ class UrlMappings {
         "/bank-register/update/$id"(controller:"bankRegister",action:"update")
         "/bank-register/delete/$id"(controller: "bankRegister",action:"delete")
         "/bank-register/product/$id"(controller: "bankRegister",action:"getByProduct")
+
+//        ReciptDetail
+        "/recipt"(controller: "reciptDetail") {
+            action = [GET: 'index', POST: 'save']
+        }
+        "/add-recipt"(controller: "reciptDetail", action: 'addRecipt')
+
+        "/unsettledvocher/$id"(controller: "reciptDetail", action: 'settledVocher')
+
+
+        "/getbyentity/$id"(controller: "reciptDetail", action: 'getAllEntityById')
+
+        "/getallsalebillbycustomer/$id"(controller: "reciptDetail", action: 'getAllSaleBillCustomerId')
+
+
+
     }
 }

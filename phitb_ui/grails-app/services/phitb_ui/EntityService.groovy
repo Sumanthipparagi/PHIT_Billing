@@ -1477,6 +1477,25 @@ class EntityService {
         }
     }
 
+    def getEntityById(String id) {
+        Client client = ClientBuilder.newClient()
+        WebTarget target = client.target(new Links().API_GATEWAY)
+
+        try {
+
+            Response apiResponse = target
+                    .path(new Links().ENTITY_REGISTER_SHOW + "/" + id)
+                    .request(MediaType.APPLICATION_JSON_TYPE)
+                    .get()
+
+            return apiResponse
+        }
+        catch (Exception ex) {
+            System.err.println('Service :EntityService , action :  getProducts  , Ex:' + ex)
+            log.error('Service :EntityService , action :  getProducts  , Ex:' + ex)
+        }
+    }
+
 
 
     def getTaxRegister(String id = null) {

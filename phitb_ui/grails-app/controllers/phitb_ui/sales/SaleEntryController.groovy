@@ -1,5 +1,8 @@
 package phitb_ui.sales
 
+import org.grails.web.json.JSONArray
+import phitb_ui.SalesService
+import phitb_ui.SystemService
 import phitb_ui.entity.EntityRegisterController
 import phitb_ui.entity.SeriesController
 import phitb_ui.entity.UserRegisterController
@@ -29,6 +32,56 @@ class SaleEntryController {
                                                            users       : users,*/ customers: customers,
                                                            salesmanList: salesmanList,
                                                            products    :products])
+    }
+
+
+    def show()
+    {
+        try
+        {
+            def apiResponse = new SalesService().getSaleInvoice()
+            if (apiResponse?.status == 200)
+            {
+                JSONArray jsonArray = new JSONArray(apiResponse.readEntity(String.class));
+                ArrayList<String> arrayList = new ArrayList<>(jsonArray)
+                return arrayList
+            }
+            else
+            {
+                return []
+            }
+        }
+        catch (Exception ex)
+        {
+            System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
+            log.error('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
+            response.status = 400
+        }
+    }
+
+
+    def showById(String id)
+    {
+        try
+        {
+            def apiResponse = new SalesService().getSaleInvoiceById(id)
+            if (apiResponse?.status == 200)
+            {
+                JSONArray jsonArray = new JSONArray(apiResponse.readEntity(String.class));
+                ArrayList<String> arrayList = new ArrayList<>(jsonArray)
+                return arrayList
+            }
+            else
+            {
+                return []
+            }
+        }
+        catch (Exception ex)
+        {
+            System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
+            log.error('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
+            response.status = 400
+        }
     }
 
 
