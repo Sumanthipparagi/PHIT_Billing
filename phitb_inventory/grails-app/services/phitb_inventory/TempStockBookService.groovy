@@ -36,6 +36,9 @@ class TempStockBookService {
         return TempStockBook.findAllByUserId(userId)
     }
 
+    /*
+    get all stocks by products or (product and batch)
+     */
     def getAllByProductAndBatch(long productId, String batch) {
         ArrayList<TempStockBook> tempStockBooks = new ArrayList<>()
         if(batch == null)

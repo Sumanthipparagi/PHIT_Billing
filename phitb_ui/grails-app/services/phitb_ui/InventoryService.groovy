@@ -115,7 +115,7 @@ class InventoryService {
     def getStocksOfProduct(String id) {
         Client client = ClientBuilder.newClient();
         WebTarget target = client.target(new Links().API_GATEWAY);
-        GrailsHttpSession session = WebUtils.retrieveGrailsWebRequest().session
+
         try {
 
             Response apiResponse = target
@@ -134,9 +134,14 @@ class InventoryService {
     def getTempStocksOfProductAndBatch(String id, String batch) {
         Client client = ClientBuilder.newClient();
         WebTarget target = client.target(new Links().API_GATEWAY)
+        String url = ""
+        if(batch)
+            url = new Links().GET_TEMP_STOCK_PRODUCT + "/product/" + id + "/batch/"+ batch
+        else
+            url = new Links().GET_TEMP_STOCK_PRODUCT + "/product/" + id
         try {
             Response apiResponse = target
-                    .path(new Links().GET_TEMP_STOCK_PRODUCT_BATCH + "/product/" + id + "/batch/"+ batch)
+                    .path(url)
                     .request(MediaType.APPLICATION_JSON_TYPE)
                     .get()
 
@@ -151,7 +156,7 @@ class InventoryService {
 //    def getTempStocksOfEntity(String id) {
 //        Client client = ClientBuilder.newClient();
 //        WebTarget target = client.target(new Links().API_GATEWAY);
-//        GrailsHttpSession session = WebUtils.retrieveGrailsWebRequest().session
+//
 //        try {
 //
 //            Response apiResponse = target
@@ -222,12 +227,29 @@ class InventoryService {
     }
 
 
+    def deleteTempStock(String id) {
+        Client client = ClientBuilder.newClient();
+        WebTarget target = client.target(new Links().API_GATEWAY);
 
+        try {
+
+            Response apiResponse = target
+                    .path(new Links().GET_TEMP_STOCK_PRODUCT+"/"+id)
+                    .request(MediaType.APPLICATION_JSON_TYPE)
+                    .delete()
+
+            return apiResponse
+        }
+        catch (Exception ex) {
+            System.err.println('Service :InventoryService , action :  getTempStocks  , Ex:' + ex)
+            log.error('Service :InventoryService , action :  getTempStocks  , Ex:' + ex)
+        }
+    }
 
     def getTempStocks(String id) {
         Client client = ClientBuilder.newClient();
         WebTarget target = client.target(new Links().API_GATEWAY);
-        GrailsHttpSession session = WebUtils.retrieveGrailsWebRequest().session
+
         try {
 
             Response apiResponse = target
@@ -243,5 +265,22 @@ class InventoryService {
         }
     }
 
+    def getTempStocksByUser(String id) {
+        Client client = ClientBuilder.newClient();
+        WebTarget target = client.target(new Links().API_GATEWAY);
 
+        try {
+
+            Response apiResponse = target
+                    .path(new Links().TEMP_STOCK_BOOK_BY_USER + "/"+id)
+                    .request(MediaType.APPLICATION_JSON_TYPE)
+                    .get()
+
+            return apiResponse
+        }
+        catch (Exception ex) {
+            System.err.println('Service :InventoryService , action :  getTempStocks  , Ex:' + ex)
+            log.error('Service :InventoryService , action :  getTempStocks  , Ex:' + ex)
+        }
+    }
 }

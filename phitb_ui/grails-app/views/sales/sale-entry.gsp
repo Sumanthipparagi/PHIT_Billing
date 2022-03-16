@@ -117,7 +117,7 @@
             <div class="col-lg-12" style="margin-bottom: 0;">
                 <div class="card" style="margin-bottom: 10px;">
                     <div class="body" style="background-color: #313740;padding: 2px; color: #fff;">
-                        <p style="margin: 0; font-size: 10px;">
+                        <p style="margin: 0; font-size: 14px;">
                             <strong>Total GST:</strong> ₹<span id="totalGST">0</span>, <strong>Total SGST:</strong> ₹<span id="totalSGST">0</span>, <strong>Total CGST:</strong> ₹<span id="totalCGST">0</span>, <strong>Total IGST:</strong>&nbsp; ₹<span id="totalIGST">0</span>
                         </p>
                     </div>
@@ -280,7 +280,8 @@
         '<strong>Value</strong>',
         'SGST',
         'CGST',
-        'IGST'];
+        'IGST',
+        'id'];
 
     var batchHeaderRow = [
         '<strong>Batch</strong>',
@@ -299,6 +300,7 @@
     const batchContainer = document.getElementById('batchTable');
     var batchHot;
     var hot;
+    var saleData = [];
     var batchData = [];
     var mainTableRow = 0;
     var gst = 0;
@@ -306,6 +308,7 @@
     var sgst = 0;
     var igst = 0;
     $(document).ready(function () {
+        loadTempStockBookData();
         //$("#customerSelect").select2();
         $('#date').val(moment().format('YYYY-MM-DD'));
         $('#date').attr("readonly");
@@ -314,7 +317,7 @@
         </g:each>
         const container = document.getElementById('saleTable');
         hot = new Handsontable(container, {
-            data: [],
+            data: saleData,
             minRows: 1,
             height: '250',
             width: 'auto',
@@ -349,9 +352,11 @@
                 {type: 'numeric', readOnly: true},
                 {type: 'numeric', readOnly: true},
                 {type: 'numeric', readOnly: true},
-                {type: 'numeric', readOnly: true}
+                {type: 'numeric', readOnly: true},
+                {type: 'text', readOnly: true}
             ],
             minSpareRows: 0,
+            minSpareColumns: 0,
             enterMoves: {row: 0, col: 1},
             fixedColumnsLeft: 0,
             licenseKey: 'non-commercial-and-evaluation',
@@ -368,7 +373,8 @@
             },
             afterOnCellMouseDown: function (e, coords, TD) {
                 if (coords.col === 0) {
-                    this.alter("remove_row", coords.row);
+                    var id = hot.getDataAtCell(coords.row, 15);
+                    deleteTempStockRow(id, coords.row);
                     calculateTotalAmt();
                 }
             },
@@ -428,6 +434,7 @@
                                 },
                                 success: function (data) {
                                     console.log("Data saved");
+                                    hot.setDataAtCell(row, 15, data.id)
                                 },
                                 error: function (data) {
                                     console.log("Failed");
@@ -468,64 +475,11 @@
             }
         });
 
-        /* hot.updateSettings({
-             afterChange: function (changes, source) {
-                 var rowThatHasBeenChanged = changes[0][0],
-                     columnThatHasBeenChanged = changes[0][1],
-                     previousValue = changes[0][2],
-                     newValue = changes[0][3];
-
-                 var visualObjectRow = function (row) {
-                     var obj = {},
-                         key, name;
-                     for (var i = 0; i < hot.countCols(); i++) {
-                         obj[hot.colToProp(i)] = hot.getDataAtCell(row, i);
-                     }
-                     return obj
-                 };
-                 var json = {}
-                 var changedRow = visualObjectRow(rowThatHasBeenChanged);
-                 // console.log(visualObjectRow(rowThatHasBeenChanged))
-                 Object.keys(changedRow).forEach(function (key) {
-                     json[headerRow[key].replace(/\s+/g, '')] = changedRow[key]
-                 });
-
-
-                 if (idArray[rowThatHasBeenChanged] != undefined) {
-                     json['id'] = idArray[rowThatHasBeenChanged]
-                 } else {
-                     json['id'] = null
-                 }
-                 console.log(json);
-
-
-                 var url = '';
-                 var type = '';
-                 var id = json['id'];
-                 if (idArray[rowThatHasBeenChanged] != undefined) {
-                     url = '/sale-entry/update/' + id;
-                     type = 'POST'
-                 } else {
-                     url = '/sale-entry';
-                     type = 'POST'
-                 }
-                 $.ajax({
-                     type: type,
-                     url: url,
-                     dataType: 'json',
-                     data: {
-                         json: json
-                     },
-                     success: function (data) {
-                         console.log("data loaded");
-                     },
-                     error: function (data) {
-                         console.log("Failed");
-                     }
-                 });
-
-             }
-         });*/
+        hot.addHook('afterSelection', (row, col) => {
+            if(col == 2) {
+                batchSelection(hot.getDataAtCell(row,1),row,false);
+            }
+        });
 
         function productsDropdownRenderer(instance, td, row, col, prop, value, cellProperties) {
             var selectedId;
@@ -536,15 +490,7 @@
                 }
             }
             Handsontable.TextCell.renderer.apply(this, arguments);
-
-            //$('#selectedId').text(selectedId);
         }
-
-        /* function updateCell(hot, selectedId, value, row) {
-             hot.setDataAtCell(row, 2, value);
-             $("#productNameTitle").text("");
-             $("#batchSelectModal").modal("toggle");
-         }*/
 
         batchHot = new Handsontable(batchContainer, {
             data: batchData,
@@ -591,33 +537,38 @@
                 console.log(rowData);
                 if (e.keyCode === 13) {
 
-                    var batchId = rowData[12];
-                    hot.setDataAtCell(mainTableRow, 2, rowData[0]);
-                    hot.setCellMeta(mainTableRow, 2, "batchId", batchId);
+                    if(!checkForDuplicateEntry(rowData[0])) {
+                        var batchId = rowData[12];
+                        hot.setDataAtCell(mainTableRow, 2, rowData[0]);
+                        hot.setCellMeta(mainTableRow, 2, "batchId", batchId);
 
-                    hot.setDataAtCell(mainTableRow, 3, rowData[1]);
-                    hot.setDataAtCell(mainTableRow, 5, 0);
-                    hot.setDataAtCell(mainTableRow, 6, rowData[5]);
-                    hot.setDataAtCell(mainTableRow, 7, rowData[6]);
-                    hot.setDataAtCell(mainTableRow, 8, 0);
-                    hot.setDataAtCell(mainTableRow, 9, rowData[7]);
-                    gst = rowData[8];
-                    sgst = rowData[9];
-                    cgst = rowData[10];
-                    igst = rowData[11];
-                    //hot.setDataAtCell(mainTableRow, 10, rowData[8]); //GST
-                    //hot.setDataAtCell(mainTableRow, 12, rowData[9]); //SGST
-                    //hot.setDataAtCell(mainTableRow, 13, rowData[10]); //CGST
-                    //hot.setDataAtCell(mainTableRow, 14, rowData[11]); //IGST
-                    hot.selectCell(mainTableRow, 4);
-                    $("#saleTable").focus();
-
+                        hot.setDataAtCell(mainTableRow, 3, rowData[1]);
+                        hot.setDataAtCell(mainTableRow, 5, 0);
+                        hot.setDataAtCell(mainTableRow, 6, rowData[5]);
+                        hot.setDataAtCell(mainTableRow, 7, rowData[6]);
+                        hot.setDataAtCell(mainTableRow, 8, 0);
+                        hot.setDataAtCell(mainTableRow, 9, rowData[7]);
+                        gst = rowData[8];
+                        sgst = rowData[9];
+                        cgst = rowData[10];
+                        igst = rowData[11];
+                        //hot.setDataAtCell(mainTableRow, 10, rowData[8]); //GST
+                        //hot.setDataAtCell(mainTableRow, 12, rowData[9]); //SGST
+                        //hot.setDataAtCell(mainTableRow, 13, rowData[10]); //CGST
+                        //hot.setDataAtCell(mainTableRow, 14, rowData[11]); //IGST
+                        hot.selectCell(mainTableRow, 4);
+                        $("#saleTable").focus();
+                    }
+                    else
+                    {
+                        alert("Selected product and batch already entered, duplicate entries not allowed");
+                    }
                 }
             }
         });
     });
 
-    function batchSelection(selectedId, mainRow) {
+    function batchSelection(selectedId, mainRow, selectCell = true) {
         if (selectedId != null) {
             var url = "/stockbook/product/" + selectedId;
             //var url = "/tempstockbook/product/"+ selectedId;
@@ -652,7 +603,8 @@
                         if (batchdt?.length > 0) {
                             batchHot.loadData(batchData);
                             $("#batchTable").focus();
-                            batchHot.selectCell(0, 0);
+                            if(selectCell)
+                                batchHot.selectCell(0, 0);
                         }
                     }
                 },
@@ -707,6 +659,102 @@
     }
 
 
+    function checkForDuplicateEntry(batchNumber)
+    {
+        var productId = hot.getDataAtCell(mainTableRow, 1);
+        var saleTableData = hot.getData();
+        for(var i = 0; i<saleTableData.length; i++)
+        {
+            if(productId == saleTableData[i][1])
+            {
+                if(saleTableData[i][2] !== undefined && saleTableData[i][2] == batchNumber)
+                    return true;
+            }
+        }
+        return false;
+    }
+
+    function loadTempStockBookData()
+    {
+        var userId = "${session.getAttribute("userId")}";
+        $.ajax({
+            type: "GET",
+            url: "tempstockbook/user/"+userId,
+            dataType: 'json',
+            success: function (data) {
+                saleData = data;
+
+                for(var i = 0; i < saleData.length; i++) {
+                    hot.selectCell(i, 1);
+                    var sRate = saleData[i]["saleRate"];
+                    var sQty = saleData[i]["userOrderQty"];
+                    batchSelection(saleData[i]["productId"], null, false);
+                    var batchId = saleData[i][12];
+                    hot.setDataAtCell(i, 1, saleData[i]["productId"]);
+
+                    hot.setDataAtCell(i, 2, saleData[i]["batchNumber"]);
+                    hot.setCellMeta(i, 2, "batchId", batchId);
+
+                    hot.setDataAtCell(i, 3, saleData[i]["expDate"].split("T")[0]);
+                    hot.setDataAtCell(i, 5, 0);
+                    hot.setDataAtCell(i, 6, sRate);
+                    hot.setDataAtCell(i, 4, sQty);
+                    hot.setDataAtCell(i, 7, saleData[i]["mrp"]);
+                    hot.setDataAtCell(i, 8, 0);
+                    hot.setDataAtCell(i, 9, saleData[i]["packingDesc"]);
+                    gst = saleData[i]["gst"];
+                    sgst = saleData[i]["sgst"];
+                    cgst = saleData[i]["cgst"];
+                    igst = saleData[i]["igst"];
+
+                   // var discount = hot.getDataAtCell(i, 8);
+                    var discount = 0; //TODO: discount to be set
+                    //var gst = hot.getDataAtCell(row, 10);
+                    var priceBeforeGst = (sRate * sQty) - ((sRate * sQty) * discount) / 100;
+                    var finalPrice = priceBeforeGst + (priceBeforeGst * (gst / 100));
+                    hot.setDataAtCell(i, 11, finalPrice);
+
+                    if(gst != 0) {
+                        hot.setDataAtCell(i, 10, priceBeforeGst * (gst / 100)); //GST
+                        hot.setDataAtCell(i, 12, priceBeforeGst * (sgst / 100)); //SGST
+                        hot.setDataAtCell(i, 13, priceBeforeGst * (cgst / 100)); //CGST
+                    }
+                    else
+                    {
+                        hot.setDataAtCell(i, 10, 0); //GST
+                        hot.setDataAtCell(i, 12, 0); //SGST
+                        hot.setDataAtCell(i, 13, 0); //CGST
+                    }
+                    if(igst != "0")
+                        hot.setDataAtCell(i, 14, priceBeforeGst*(igst/100)); //IGST
+                    else
+                        hot.setDataAtCell(i, 14, 0);
+
+                    hot.setDataAtCell(i, 15, saleData[i].id)
+                }
+
+                setTimeout(function () {
+                    hot.selectCell(0, 1);
+                    calculateTotalAmt();
+                },1000);
+
+            }
+        })
+    }
+
+    function deleteTempStockRow(id, row)
+    {
+        $.ajax({
+            type: "POST",
+            url: "tempstockbook/delete/" + id,
+            dataType: 'json',
+            success: function (data) {
+                hot.alter("remove_row", row);
+                swal("Success", "Row Deleted", "").fire();
+            }
+        });
+    }
+
     document.addEventListener("keydown", function (event) {
         var ctrl = event.ctrlKey;
         var alt = event.altKey;
@@ -719,7 +767,8 @@
                     result = confirm("Delete this row?");
                     if (result) {
                         const selection = hot.getSelected()[0];
-                        hot.alter("remove_row", selection);
+                        var id = hot.getDataAtCell(selection, 15);
+                        deleteTempStockRow(id, selection);
                         calculateTotalAmt();
                     }
                 }

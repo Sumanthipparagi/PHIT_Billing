@@ -119,9 +119,9 @@ class TempStockBookController {
      */
     def getByProductIdAndBatch() {
         try {
-            long id = params.id
+            String id = params.id
             if (id) {
-                respond tempStockBookService.getAllByProductAndBatch(Long.parseLong(params.id),params.batch)
+                respond tempStockBookService.getAllByProductAndBatch(Long.parseLong(id),params.batch)
             }
         }
         catch (ResourceNotFoundException ex)

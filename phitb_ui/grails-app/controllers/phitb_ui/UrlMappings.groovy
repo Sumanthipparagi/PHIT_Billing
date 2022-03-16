@@ -391,8 +391,12 @@ class UrlMappings {
         "/tempstockbook"(controller: "stockBook") {
             action = [POST: 'tempStockBookSave']
         }
+        "/tempstockbook/delete/$id"(controller: "stockBook") {
+            action = [POST: 'deleteTempStock']
+        }
         "/tempstockbook/product/$id"(controller: "stockBook",action:"getStocksOfProduct")
         "/tempstockbook/entity/$id"(controller: "stockBook",action:"getTempStocksOfEntity")
+        "/tempstockbook/user/$id"(controller: "stockBook",action:"getTempStocksOfUser")
 
         "/tempstockbook/product/$id/batch/$batch"(controller: "stockBook",action:"getTempStocksOfProductAndBatch")
         "/tempstockbook/product/$id/"(controller: "stockBook",action:"getTempStocksOfProductAndBatch")
