@@ -75,7 +75,7 @@ class ReciptDetailController
         try
         {
             JSONObject jsonObject = new JSONObject(params)
-            def apiResponse = new AccountsService().updateSettledVocher(jsonObject)
+            def apiResponse = new AccountsService().updateunSettledVocher(jsonObject)
             if (apiResponse?.status == 200)
             {
                 JSONObject obj = new JSONObject(apiResponse.readEntity(String.class))
@@ -221,7 +221,7 @@ class ReciptDetailController
         try
         {
             JSONObject jsonObject = new JSONObject(params)
-            def apiResponse = new AccountsService().saveBankRegister(jsonObject)
+            def apiResponse = new AccountsService().saveRecipt(jsonObject)
             if (apiResponse?.status == 200)
             {
                 JSONObject obj = new JSONObject(apiResponse.readEntity(String.class))

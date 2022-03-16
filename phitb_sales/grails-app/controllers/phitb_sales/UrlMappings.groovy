@@ -125,7 +125,7 @@ class UrlMappings {
                 action = [GET: 'getAllByDays']
             }
 
-            "/setpaymentstatus/$id(.$format)?"(controller: 'saleBillDetails') {
+            "/setpaymentstatus/$id/type/$type(.$format)?"(controller: 'saleBillDetails') {
                 action = [POST: 'updatePaymentStatus']
             }
 

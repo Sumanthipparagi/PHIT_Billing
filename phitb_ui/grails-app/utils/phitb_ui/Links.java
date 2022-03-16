@@ -302,7 +302,7 @@ public class Links
     public static String SALE_BILL_UNSETTLED = "api/v1.0/sales/salebillunsettledbycustomer";
     public static String SALE_BILL_SETTLED = "api/v1.0/sales/salebillsettledbycustomer";
     public static String SALE_BILL_PAYMENT = "api/v1.0/sales/salebillbypaymentstatus";
-    public static String SET_PAYMENT_BILL = "api/v1.0/sales/setpaymentstatus/{id}";
+    public static String SET_PAYMENT_BILL = "api/v1.0/sales/setpaymentstatus/{id}/type/{type}";
 
     /*<--------------------------------------------Inventory ------------------------------------------------->*/
 

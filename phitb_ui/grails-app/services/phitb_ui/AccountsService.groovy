@@ -116,11 +116,6 @@ class AccountsService {
 
 
     //Recipt Detail
-    /**
-     *
-     * @param jsonObject
-     * @return
-     */
     def saveRecipt(JSONObject jsonObject)
     {
         Client client = ClientBuilder.newClient();
@@ -128,17 +123,18 @@ class AccountsService {
         GrailsHttpSession session = WebUtils.retrieveGrailsWebRequest().session
         try
         {
+            println(jsonObject)
             Response apiResponse = target
                     .path(new Links().RECIPT_DETAIL_SAVE)
-                    .queryParam("params", URLEncoder.encode(jsonObject.toString(), "UTF-8"))
                     .request(MediaType.APPLICATION_JSON_TYPE)
-                    .get()
+                    .post(Entity.entity(jsonObject.toString(),MediaType.APPLICATION_JSON_TYPE))
+            println(apiResponse)
             return apiResponse
         }
         catch (Exception ex)
         {
-            System.err.println('Service :getAccountModes , action :  show  , Ex:' + ex)
-            log.error('Service :getAccountModes , action :  show  , Ex:' + ex)
+            System.err.println('Service :saveStateMaster , action :  save  , Ex:' + ex)
+            log.error('Service :saveStateMaster , action :  save  , Ex:' + ex)
         }
     }
 
@@ -287,6 +283,7 @@ class AccountsService {
             Response apiResponse = target
                     .path(new Links().SET_PAYMENT_BILL)
                     .resolveTemplate("id", jsonObject.id)
+                    .resolveTemplate("type", "settled")
                     .request(MediaType.APPLICATION_JSON_TYPE)
 //                    .post(Entity.entity(jsonObject.toString(),MediaType.APPLICATION_JSON_TYPE))
                     .post(Entity.form(form))
@@ -312,6 +309,7 @@ class AccountsService {
             Response apiResponse = target
                     .path(new Links().SET_PAYMENT_BILL)
                     .resolveTemplate("id", jsonObject.id)
+                    .resolveTemplate("type", "unsettled")
                     .request(MediaType.APPLICATION_JSON_TYPE)
 //                    .post(Entity.entity(jsonObject.toString(),MediaType.APPLICATION_JSON_TYPE))
                     .post(Entity.form(form))

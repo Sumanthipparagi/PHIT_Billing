@@ -146,7 +146,7 @@
                                     <label for="date">
                                         Date:
                                     </label>
-                                    <input type="date" id="date" class="date" name="Recipt Date"
+                                    <input type="text" id="date" class="date" name="date"
                                            placeholder="Recipt Date" readonly
                                            required/>
                                 </div>
@@ -167,40 +167,38 @@
                                     <div id="caddress" class="mt-2"></div>
                                 </div>
 
-                                <div class="col-lg-6">
-                                    <label for="bank">
-                                        Bank
+                                <div class="col-lg-6 form-group  form-float">
+                                    <label for="paymentMode">
+                                        Payment Mode
                                     </label>
-                                    <select class="form-control show-tick bank" name="bank"
-                                            id="bank" required>
+                                    <select class="form-control show-tick paymentMode" name="paymentMode"
+                                            id="paymentMode" onchange="payMode(this.value)" required>
                                         <option value="">-- Please select --</option>
-                                        <g:each var="b" in="${bank}">
-                                            <option value="${b.id}">${b.bankName}</option>
+                                        <option value="BANK">BANK</option>
+                                        <option value="CARD">CARD</option>
+                                        <option value="CASH">CASH</option>
+                                    </select>
+                                </div>
+
+                                <div class="col-lg-6 form-group form-float" id="mode">
+
+                                </div>
+
+                                <div class="col-lg-3 form-group  form-float">
+                                    <label for="accountMode">
+                                        Account Mode
+                                    </label>
+                                    <select class="form-control show-tick accountMode" name="accountMode"
+                                            id="accountMode" required>
+                                        <option value="">-- Please select --</option>
+                                        <g:each var="am" in="${accountMode}">
+                                            <option value="${am.id}">${am.mode}</option>
                                         </g:each>
                                     </select>
                                 </div>
 
-                                <div class="col-lg-3 form-group  form-float">
-                                    <label for="amountPaid">
-                                        Amount
-                                    </label>
-                                    <input type="number" id="amountPaid" class="amountPaid form-control" name="Amount"
-                                           placeholder="Amount" min="1" step="any"
-                                           required/>
-                                </div>
 
-                                <div class="col-lg-3 form-group  form-float">
-                                    <label for="branch">
-                                        Branch
-                                    </label>
-                                    <input type="text" id="branch" class="branch form-control"
-                                           name="Branch"
-                                           placeholder="Branch"
-                                           required/>
-                                </div>
-
-
-                                <div class="col-lg-3 form-group  form-float">
+                                <div class="col-lg-3 form-group  form-float cheque">
                                     <label for="chequeNumber">
                                         Cheque Number
                                     </label>
@@ -211,67 +209,74 @@
                                 </div>
 
                                 <div class="col-lg-3 form-group  form-float">
-                                    <label for="chequeDate">
-                                        Cheque Date
+                                    <label for="paymentDate">
+                                        Payment Date
                                     </label>
-                                    <input type="date" id="chequeDate" class="chequeDate form-control"
-                                           name="Cheque Date"
-                                           placeholder="Cheque Number"
+                                    <input type="text" id="paymentDate" class="paymentDate form-control datetimepicker"
+                                           name="Payment Date"
+                                           placeholder="Payment Date"
                                            required/>
+                                </div>
+
+
+%{--                                <div class="col-lg-3 form-group  form-float">--}%
+%{--                                    <label for="financialYear">--}%
+%{--                                        Financial Year--}%
+%{--                                    </label>--}%
+%{--                                    <input type="text" id="financialYear" class="financialYear form-control"--}%
+%{--                                           name="Financial Year"--}%
+%{--                                           placeholder="Financial Year"--}%
+%{--                                           required/>--}%
+%{--                                </div>--}%
+
+                                <div class="col-lg-3 form-group  form-float">
+                                    <label for="wallet">
+                                        Wallet
+                                    </label>
+                                    <select class="form-control show-tick wallet" name="wallet"
+                                            id="wallet" required>
+                                        <option value="">-- Please select --</option>
+                                        <g:each var="w" in="${wallet}">
+                                            <option value="${w.id}">${w.walletName}</option>
+                                        </g:each>
+                                    </select>
                                 </div>
 
 
                                 <div class="col-lg-3 form-group  form-float">
-                                    <label for="chequeType">
-                                        Cheque Type
-                                    </label>
-                                    <input type="text" id="chequeType" class="chequeType form-control"
-                                           name="Cheque Type"
-                                           placeholder="Cheque Type"
-                                           required/>
-                                </div>
-
-                                <div class="col-lg-3 form-group  form-float">
-                                    <label for="draweeBank">
-                                        Drawee Bank
-                                    </label>
-                                    <input type="text" id="draweeBank" class="draweeBank form-control"
-                                           name="Drawee Bank"
-                                           placeholder="Drawee Bank"
-                                           required/>
-                                </div>
-
-
-
-                                <div class="col-lg-6 form-group  form-float">
                                     <label for="note">
                                         Remark / Note
                                     </label>
                                     <input type="text" id="note" class="note form-control"
-                                           name="note"
+                                           name="narration"
                                            placeholder="Remark / Note"
                                            required/>
                                 </div>
 
-                                <div class="col-lg-6 form-group  form-float">
-                                    <label for="total">
-                                        Total Cheque:
-                                    </label>
-                                    <input type="text" style="margin-left: 43px;" id="tc" class="tc" name="tc"
-                                           placeholder="0.00">
-                                    <br>
-                                    <label for="total">
-                                        Total Bill Amount:
-                                    </label>
-                                    <input style="margin-left: 18px;" type="text" id="tba" class="tba" name="tba"
-                                           placeholder="0.00">
-                                    <br>
+                                %{--                                <div class="col-lg-6 form-group  form-float">--}%
+                                %{--                                    <label for="total">--}%
+                                %{--                                        Total Cheque:--}%
+                                %{--                                    </label>--}%
+                                %{--                                    <input type="text" style="margin-left: 43px;" id="tc" class="tc" name="tc"--}%
+                                %{--                                           placeholder="0.00" autocomplete="off">--}%
+                                %{--                                    <br>--}%
+                                %{--                                    <label for="total">--}%
+                                %{--                                        Total Bill Amount:--}%
+                                %{--                                    </label>--}%
+                                %{--                                    <input style="margin-left: 18px;" type="text" id="tba" class="tba" name="tba"--}%
+                                %{--                                           placeholder="0.00" readonly>--}%
+                                %{--                                    <br>--}%
 
-                                    <span style="margin-left: 134px;">====================</span>
-                                    <br>
-                                    <input style="margin-left: 134px;" type="text" id="total" class="total" name="total"
-                                           placeholder="0.00">
-                                </div>
+                                %{--                                    <span style="margin-left: 134px;">====================</span>--}%
+                                %{--                                    <br>--}%
+                                %{--                                    <input style="margin-left: 134px;" type="text" id="total" class="total" name="total"--}%
+                                %{--                                           placeholder="0.00" readonly>--}%
+                                %{--                                </div>--}%
+
+
+
+
+
                                 %{--                                <div class="col-lg-6 form-group  form-float">--}%
                                 %{--                                    <label for="cardNumber">--}%
                                 %{--                                        Card Number--}%
@@ -401,78 +406,54 @@
     if (month < 10) month = "0" + month;
     if (day < 10) day = "0" + day;
     var today = year + "-" + month + "-" + day;
-    document.getElementById("date").value = today;
+    document.getElementById("date").value = moment(today).format('DD/MM/YYYY');
 
     var $demoMaskedInput = $('.demo-masked-input');
     $demoMaskedInput.find('.credit-card').inputmask('9999 9999 9999 9999', {placeholder: '____ ____ ____ ____'});
 
-    //
-    // function tab1_To_tab2() {
-    //     var table1 = document.getElementById("table1"),
-    //         table2 = document.getElementById("table2"),
-    //         checkboxes = document.getElementsByName("check-tab1");
-    //     console.log("Val1 = " + checkboxes.length);
-    //     for (var i = 0; i < checkboxes.length; i++)
-    //
-    //         if (checkboxes[i].checked) {
-    //             // create new row and cells
-    //             var newRow = table2.insertRow(table2.length),
-    //                 cell1 = newRow.insertCell(0),
-    //                 cell2 = newRow.insertCell(1),
-    //                 cell3 = newRow.insertCell(2),
-    //                 cell4 = newRow.insertCell(3);
-    //             // add values to the cells
-    //             cell1.innerHTML = table1.rows[i + 1].cells[0].innerHTML;
-    //             cell2.innerHTML = table1.rows[i + 1].cells[1].innerHTML;
-    //             cell3.innerHTML = table1.rows[i + 1].cells[2].innerHTML;
-    //             cell4.innerHTML =
-    //                 "<label for='' style='background: green;padding: 3px;'></label><input type='checkbox' name='check-tab2' onclick='tab2_To_tab1();'>";
-    //
-    //             // remove the transfered rows from the first table [table1]
-    //             var index = table1.rows[i + 1].rowIndex;
-    //             table1.deleteRow(index);
-    //             // we have deleted some rows so the checkboxes.length have changed
-    //             // so we have to decrement the value of i
-    //             i--;
-    //             console.log(checkboxes.length);
-    //         }
-    // }
-    //
-    //
-    // function tab2_To_tab1() {
-    //     var table1 = document.getElementById("table1"),
-    //         table2 = document.getElementById("table2"),
-    //         checkboxes = document.getElementsByName("check-tab2");
-    //     console.log("Val1 = " + checkboxes.length);
-    //     for (var i = 0; i < checkboxes.length; i++)
-    //         if (checkboxes[i].checked) {
-    //             // create new row and cells
-    //             var newRow = table1.insertRow(table1.length),
-    //                 cell1 = newRow.insertCell(0),
-    //                 cell2 = newRow.insertCell(1),
-    //                 cell3 = newRow.insertCell(2),
-    //                 cell4 = newRow.insertCell(3);
-    //             // add values to the cells
-    //             cell1.innerHTML = table2.rows[i + 1].cells[0].innerHTML;
-    //             cell2.innerHTML = table2.rows[i + 1].cells[1].innerHTML;
-    //             cell3.innerHTML = table2.rows[i + 1].cells[2].innerHTML;
-    //             cell4.innerHTML = "<input type='checkbox' name='check-tab1' onclick='tab1_To_tab2();'>";
-    //
-    //             // remove the transfered rows from the second table [table2]
-    //             var index = table2.rows[i + 1].rowIndex;
-    //             table2.deleteRow(index);
-    //             // we have deleted some rows so the checkboxes.length have changed
-    //             // so we have to decrement the value of i
-    //             i--;
-    //             console.log(checkboxes.length);
-    //         }
-    // }
-    // $('tbody').on('click','tr',function(){
-    //     myParent=$(this).closest('table').attr('id');
-    //     if(myParent == "table1") $('#table2 tbody').append('<tr>'+$(this).html()+'</tr>');
-    //     else $('#table1 tbody').append('<tr>'+$(this).html()+'</tr>');
-    //     $(this).remove();
-    // })
+
+    $('.datetimepicker').bootstrapMaterialDatePicker({
+        format: 'DD/MM/YYYY',
+        clearButton: true,
+        shortTime: true,
+        time: false,
+        weekStart: 1
+    });
+
+    function payMode(mode) {
+        var html = '';
+        if (mode === "BANK") {
+            $("#mode").show()
+            html=' <label for="bank">\n' +
+                '                                        Bank\n' +
+                '                                    </label>\n' +
+                '                                    <select class="form-control show-tick bank" name="bank"\n' +
+                '                                            id="bank" required>\n' +
+                '                                        <option value="">-- Please select --</option>\n' +
+                '                                        <g:each var="b" in="${bank}">\n' +
+                '                                            <option value="${b.id}">${b.bankName}</option>\n' +
+                '                                        </g:each>\n' +
+                '                                    </select>'
+            $(".cheque").show()
+        } else if (mode === "CARD") {
+           html='<label for="cardNumber">\n' +
+               '        Card Number\n' +
+               '    </label>\n' +
+               '    <input type="number" id="cardNumber" class="cardNumber form-control"\n' +
+               '    name="cardNumber"\n' +
+               '    placeholder="Card Number"\n' +
+               '    required/>'
+            $(".cheque").hide()
+
+        }
+        else if(mode === "CASH")
+        {
+            $("#mode").hide()
+            $(".cheque").hide()
+        }
+        $('#mode').html(html)
+    }
+
 
 
     function getAddress(id) {
@@ -504,22 +485,20 @@
                 var trHTML = '';
                 trHTML += '';
                 var invoice = "INV"
-                if(data.length!==0)
-                {
-                    var total_bal = data.map(data => data.balance).reduce((acc, amount) => acc + amount,0);
+                if (data.length !== 0) {
+                    var total_bal = data.map(data => data.balance).reduce((acc, amount) => acc + amount, 0);
+                } else {
+                    total_bal = 0;
                 }
-                else {
-                     total_bal = 0;
-                }
-                $('.total_bal').text(parseFloat(total_bal));
+                $('.total_bal').text(parseFloat(total_bal).toFixed(2));
 
                 $.each(data, function (key, value) {
-                        trHTML +=
-                            '<tr id="'+value.id+'"><td><button type="button" data-id="'+value.id+'"  data-custId="'+value.customerId+'" class="btn-sm btn-primary" id="settled"><-</button></td><td>' + invoice +
-                            '</td><td>' + value.financialYear +
-                            '</td><td>' + moment(value.dateCreated).format('DD-MM-YYYY') +
-                            '</td><td>' + value.balance +
-                            '</td></tr>';
+                    trHTML +=
+                        '<tr id="' + value.id + '"><td><button type="button" data-id="' + value.id + '"  data-custId="' + value.customerId + '" class="btn-sm btn-primary" id="settled"><-</button></td><td>' + invoice +
+                        '</td><td>' + value.financialYear +
+                        '</td><td>' + moment(value.dateCreated).format('DD-MM-YYYY') +
+                        '</td><td>' + value.balance +
+                        '</td></tr>';
                 });
                 $('.unsettledVocher').html(trHTML);
             },
@@ -533,22 +512,23 @@
     function getsettledSaleBillByCustomer(id) {
         $.ajax({
             type: 'GET',
-            url: '/getallsalesettledcustomer/'+id,
+            url: '/getallsalesettledcustomer/' + id,
             dataType: 'json',
             success: function (data) {
                 var trHTML = '';
                 trHTML += '';
-                var invoice = "INV"
-                var total_bal_s = data.map(data => data.balance).reduce((acc, amount) => acc + amount,0);
-                $('.total_bal_s').text(parseFloat(total_bal_s));
-                $('.tba').val(parseFloat(total_bal_s));
+                var invoice = "INVS"
+                var creditNote = "CRNT"
+                var total_bal_s = data.map(data => data.balance).reduce((acc, amount) => acc + amount, 0);
+                $('.total_bal_s').text(parseFloat(total_bal_s).toFixed(2));
+                $('.tba').val(total_bal_s.toFixed(2));
                 $.each(data, function (key, value) {
                     trHTML +=
-                        '<tr id="'+value.id+'"><td>' + invoice +
+                        '<tr id="' + value.id + '"><td>' + invoice +
                         '</td><td>' + value.financialYear +
                         '</td><td>' + moment(value.dateCreated).format('DD-MM-YYYY') +
                         '</td><td>' + value.balance +
-                        '</td><td><button type="button" data-id="'+value.id+'"  class="btn-sm btn-primary" id="unsettled">-></button></td></tr>';
+                        '</td><td><button type="button" data-id="' + value.id + '"  data-custId="' + value.customerId + '"  class="btn-sm btn-primary" id="unsettled">-></button></td></tr>';
                 });
                 $('.settledVocher').html(trHTML);
             },
@@ -558,27 +538,27 @@
         });
     }
 
-    var input = document.getElementById("tc");
-    input.addEventListener("keydown", function (e) {
-        if(e.target.value!==0) {
-            if (e.key === "Enter") {
-                $(".total").val(total())
-            }
-        }
-    });
-    function total()
-    {
-        // Capture the entered values of two input boxes
-        var my_input1 = document.getElementById('tc').value;
-        var my_input2 = document.getElementById('tba').value;
-        return parseInt(my_input1) + parseInt(my_input2)
-    }
+    // var input = document.getElementById("tc");
+    // input.addEventListener("keydown", function (e) {
+    //     if (e.target.value !== 0) {
+    //         if (e.key === "Enter") {
+    //             $(".total").val(total().toFixed(2))
+    //         }
+    //     }
+    // });
+    //
+    // function total() {
+    //     // Capture the entered values of two input boxes
+    //     var my_input1 = document.getElementById('tc').value;
+    //     var my_input2 = document.getElementById('tba').value;
+    //     return parseFloat(my_input1) - parseInt(my_input2)
+    // }
 
-    $(document).on('click','#settled', function(e) {
+    $(document).on('click', '#settled', function (e) {
         e.preventDefault();
         var id = $(this).data('id');
         var custId = $(this).attr('data-custId');
-        var url = '/settledvocher/'+id;
+        var url = '/settledvocher/' + id;
         var type = 'GET';
         $.ajax({
             url: url,
@@ -586,7 +566,7 @@
             contentType: false,
             processData: false,
             success: function () {
-                $('table#table2 tr#'+id).remove();
+                $('table#table2 tr#' + id).remove();
                 getSaleBillByCustomer(custId)
                 getsettledSaleBillByCustomer(custId)
             },
@@ -597,11 +577,11 @@
     });
 
 
-    $(document).on('click','#unsettled', function(e) {
+    $(document).on('click', '#unsettled', function (e) {
         e.preventDefault();
         var id = $(this).data('id');
         var custId = $(this).attr('data-custId');
-        var url = '/unsettledvocher/'+id;
+        var url = '/unsettledvocher/' + id;
         var type = 'GET';
         $.ajax({
             url: url,
@@ -609,7 +589,7 @@
             contentType: false,
             processData: false,
             success: function () {
-                $('table#table1 tr#'+id).remove();
+                $('table#table1 tr#' + id).remove();
                 getSaleBillByCustomer(custId);
                 getsettledSaleBillByCustomer(custId)
             },
@@ -619,6 +599,14 @@
         });
     });
 
+    $(document).ready(function () {
+        $(window).keydown(function (event) {
+            if (event.keyCode === 13) {
+                event.preventDefault();
+                return false;
+            }
+        });
+    });
 </script>
 </body>
 </html>
