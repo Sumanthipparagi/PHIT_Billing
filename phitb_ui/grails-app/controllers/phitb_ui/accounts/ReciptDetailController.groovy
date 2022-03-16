@@ -8,6 +8,7 @@ import phitb_ui.AccountsService
 import phitb_ui.Constants
 import phitb_ui.Links
 import phitb_ui.ProductService
+import phitb_ui.SalesService
 import phitb_ui.entity.CustomerGroupController
 import phitb_ui.entity.EntityRegisterController
 import phitb_ui.entity.UserRegisterController
@@ -45,6 +46,10 @@ class ReciptDetailController
         render(view: '/accounts/recipt/add-recipt', model: [entity: entity, bank: bank, accountMode: accountMode, wallet: wallet])
     }
 
+    def reciptList()
+    {
+        render(view: '/accounts/recipt/recipt-list')
+    }
 
     def settledVocher()
     {
@@ -99,7 +104,7 @@ class ReciptDetailController
         try
         {
             JSONObject jsonObject = new JSONObject(params)
-            def apiResponse = new AccountsService().showBankRegister(jsonObject)
+            def apiResponse = new AccountsService().showRecipt(jsonObject)
             if (apiResponse.status == 200)
             {
                 JSONObject responseObject = new JSONObject(apiResponse.readEntity(String.class))
@@ -313,5 +318,19 @@ class ReciptDetailController
             response.status = 400
         }
     }
+
+
+
+    def printRecipt()
+    {
+        JSONObject jsonObject = new JSONObject()
+        def cust = new AccountsService().getEntityById(params.custid)
+        JSONObject customer = new JSONObject(cust.readEntity(String.class))
+        def recipt1 = new AccountsService().getReciptById(params.id)
+        JSONObject recipt = new JSONObject(recipt1.readEntity(String.class))
+        ArrayList<String> settled = new SalebillDetailsController().getAllSettledById(params.custid) as ArrayList
+        render(view:'/accounts/recipt/recipt-temp',model: [customer:customer,settled:settled,recipt:recipt])
+    }
+
 
 }

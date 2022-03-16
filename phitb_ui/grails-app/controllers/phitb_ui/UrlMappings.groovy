@@ -406,16 +406,23 @@ class UrlMappings {
         "/bank-register/product/$id"(controller: "bankRegister",action:"getByProduct")
 
 //        ReciptDetail
+
+        "/recipt-list"(controller: 'reciptDetail', action: 'reciptList')
         "/recipt"(controller: "reciptDetail") {
             action = [GET: 'index', POST: 'save']
         }
+
+        "/recipt-list/datatable"(controller: "reciptDetail", action: 'dataTable')
         "/add-recipt"(controller: "reciptDetail", action: 'addRecipt')
+        "/print-recipt/$custid/recipt/$id"(controller: "reciptDetail", action: 'printRecipt')
 
         "/settledvocher/$id"(controller: "reciptDetail", action: 'settledVocher')
         "/unsettledvocher/$id"(controller: "reciptDetail", action: 'unsettledVocher')
         "/getbyentity/$id"(controller: "reciptDetail", action: 'getAllEntityById')
         "/getallsalebillbycustomer/$id"(controller: "reciptDetail", action: 'getAllSaleBillCustomerId')
         "/getallsalesettledcustomer/$id"(controller: "reciptDetail", action: 'getAllSaleBillsettled')
+
+
 
 
     }

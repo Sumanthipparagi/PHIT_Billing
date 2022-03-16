@@ -323,4 +323,21 @@ class AccountsService {
         }
     }
 
+    def getReciptById(String id) {
+        Client client = ClientBuilder.newClient()
+        WebTarget target = client.target(new Links().API_GATEWAY)
+        try {
+
+            Response apiResponse = target
+                    .path(new Links().RECIPT_DETAIL + "/" + id)
+                    .request(MediaType.APPLICATION_JSON_TYPE)
+                    .get()
+            return apiResponse
+        }
+        catch (Exception ex) {
+            System.err.println('Service :EntityService , action :  getProducts  , Ex:' + ex)
+            log.error('Service :EntityService , action :  getProducts  , Ex:' + ex)
+        }
+    }
+
 }

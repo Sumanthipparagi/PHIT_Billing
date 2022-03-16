@@ -152,11 +152,11 @@
                                 </div>
 
                                 <div class="col-lg-6">
-                                    <label for="customer">
+                                    <label for="receivedFrom">
                                         Customer
                                     </label>
-                                    <select class="form-control show-tick customer" name="customer"
-                                            id="customer" onchange="getAddress(this.value)" required>
+                                    <select class="form-control show-tick receivedFrom" name="receivedFrom"
+                                            id="receivedFrom" onchange="getAddress(this.value)" required>
                                         <option value="">-- Please select --</option>
                                         <g:each var="e" in="${entity}">
                                             <option value="${e.id}"
@@ -174,9 +174,9 @@
                                     <select class="form-control show-tick paymentMode" name="paymentMode"
                                             id="paymentMode" onchange="payMode(this.value)" required>
                                         <option value="">-- Please select --</option>
-                                        <option value="BANK">BANK</option>
-                                        <option value="CARD">CARD</option>
-                                        <option value="CASH">CASH</option>
+                                        <option value="1">BANK</option>
+                                        <option value="2">CARD</option>
+                                        <option value="3">CASH</option>
                                     </select>
                                 </div>
 
@@ -188,7 +188,7 @@
                                     <label for="accountMode">
                                         Account Mode
                                     </label>
-                                    <select class="form-control show-tick accountMode" name="accountMode"
+                                    <select class="form-control show-tick accountMode" name="accountModeId"
                                             id="accountMode" required>
                                         <option value="">-- Please select --</option>
                                         <g:each var="am" in="${accountMode}">
@@ -203,7 +203,7 @@
                                         Cheque Number
                                     </label>
                                     <input type="number" id="chequeNumber" class="chequeNumber form-control"
-                                           name="Cheque Number"
+                                           name="chequeNumber"
                                            placeholder="Cheque Number"
                                            required/>
                                 </div>
@@ -213,7 +213,7 @@
                                         Payment Date
                                     </label>
                                     <input type="text" id="paymentDate" class="paymentDate form-control datetimepicker"
-                                           name="Payment Date"
+                                           name="paymentDate"
                                            placeholder="Payment Date"
                                            required/>
                                 </div>
@@ -241,7 +241,6 @@
                                         </g:each>
                                     </select>
                                 </div>
-
 
                                 <div class="col-lg-3 form-group  form-float">
                                     <label for="note">
@@ -351,6 +350,7 @@
                                 </div>
 
                                 <input type="hidden" name="status" value="1">
+                                <input type="hidden" class="tba" name="amountPaid">
                                 <input type="hidden" name="syncStatus" value="1">
                                 <input type="hidden" name="createdUser" value="1">
                                 <input type="hidden" name="modifiedUser" value="1">
@@ -422,7 +422,7 @@
 
     function payMode(mode) {
         var html = '';
-        if (mode === "BANK") {
+        if (mode === "1") {
             $("#mode").show()
             html=' <label for="bank">\n' +
                 '                                        Bank\n' +
@@ -435,7 +435,7 @@
                 '                                        </g:each>\n' +
                 '                                    </select>'
             $(".cheque").show()
-        } else if (mode === "CARD") {
+        } else if (mode === "2") {
            html='<label for="cardNumber">\n' +
                '        Card Number\n' +
                '    </label>\n' +
@@ -446,7 +446,7 @@
             $(".cheque").hide()
 
         }
-        else if(mode === "CASH")
+        else if(mode === "3")
         {
             $("#mode").hide()
             $(".cheque").hide()

@@ -10,7 +10,7 @@ import java.text.SimpleDateFormat
 @Transactional
 class ReceiptDetailService {
 
-    SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss")
+    SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy")
 
     def getAll(String limit, String offset, String query) {
 
@@ -97,18 +97,18 @@ class ReceiptDetailService {
 
     ReceiptDetail save(JSONObject jsonObject) {
         ReceiptDetail receiptDetail = new ReceiptDetail()
-//        receiptDetail.receiptId = jsonObject.get("id").toString()
+        receiptDetail.receiptId = "001"
         receiptDetail.date = sdf.parse(jsonObject.get("date").toString())
         receiptDetail.paymentModeId = Long.parseLong(jsonObject.get("paymentMode").toString())
         receiptDetail.accountModeId = Long.parseLong(jsonObject.get("accountModeId").toString())
         receiptDetail.receivedFrom = jsonObject.get("receivedFrom").toString()
-        receiptDetail.depositTo = jsonObject.get("depositTo").toString()
+        receiptDetail.depositTo = jsonObject.get("bank").toString()
         receiptDetail.amountPaid = Double.parseDouble(jsonObject.get("amountPaid").toString())
         receiptDetail.narration = jsonObject.get("narration").toString()
-        receiptDetail.cardNumber = Long.parseLong(jsonObject.get("cardNumber").toString())
+        receiptDetail.cardNumber = Long.parseLong("1")
         receiptDetail.paymentDate = sdf.parse(jsonObject.get("paymentDate").toString())
-        receiptDetail.transId = jsonObject.get("transId").toString()
-        receiptDetail.employeeReceived = Long.parseLong(jsonObject.get("employeeReceived").toString())
+        receiptDetail.transId = "1"
+        receiptDetail.employeeReceived = Long.parseLong("1")
         receiptDetail.commission = Double.parseDouble("1")
         receiptDetail.totalNotes = Long.parseLong("1")
         receiptDetail.chequeNumber = jsonObject.get("chequeNumber").toString()
@@ -117,7 +117,7 @@ class ReceiptDetailService {
         receiptDetail.lockStatus = Long.parseLong("1")
         receiptDetail.approvedBy = Long.parseLong("1")
         receiptDetail.approvedDate = sdf.parse(jsonObject.get("date").toString())
-        receiptDetail.financialYear = jsonObject.get("financialYear").toString()
+        receiptDetail.financialYear = "2012"
         receiptDetail.status = Long.parseLong("1")
         receiptDetail.syncStatus = Long.parseLong("1")
         receiptDetail.entityTypeId = Long.parseLong("1")

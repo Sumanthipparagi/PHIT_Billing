@@ -168,6 +168,13 @@ class UtilsService {
         return false
     }
 
+
+
+//    public String getMoneyIntoWords(String input) {
+//        MoneyConverters converter = MoneyConverters.ENGLISH_BANKING_MONEY_VALUE;
+//        return converter.asWords(new BigDecimal(input));
+//    }
+
 //    static FormDataMultiPart jsonToMultipartFormDataConverter(JSONObject json)
 //    {
 //        Iterator<String> keys = json.keys();

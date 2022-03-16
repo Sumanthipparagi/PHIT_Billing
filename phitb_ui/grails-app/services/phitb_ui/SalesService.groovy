@@ -34,6 +34,24 @@ class SalesService {
         }
     }
 
+    def getAllSettledBillsByCustomer(String id) {
+        Client client = ClientBuilder.newClient();
+        WebTarget target = client.target(new Links().API_GATEWAY);
+        GrailsHttpSession session = WebUtils.retrieveGrailsWebRequest().session
+        try {
+            Response apiResponse = target
+                    .path(new Links().SALE_BILL_SETTLED+"/"+id)
+                    .request(MediaType.APPLICATION_JSON_TYPE)
+                    .get()
+
+            return apiResponse
+        }
+        catch (Exception ex) {
+            System.err.println('Service :ProductService , action :  getProducts  , Ex:' + ex)
+            log.error('Service :ProductService , action :  getProducts  , Ex:' + ex)
+        }
+    }
+
     def saveSaleBill(JSONObject jsonObject)
     {
         Client client = ClientBuilder.newClient();
