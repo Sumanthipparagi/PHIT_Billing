@@ -67,7 +67,7 @@ class TermsConditionController {
         try
         {
             JSONObject jsonObject = new JSONObject(params)
-            def apiResponse = new EntityService().showTermsCondtion(jsonObject)
+            def apiResponse = new EntityService().showTermsCondition(jsonObject)
             if (apiResponse.status == 200)
             {
                 JSONObject responseObject = new JSONObject(apiResponse.readEntity(String.class))
@@ -116,7 +116,7 @@ class TermsConditionController {
         {
             println(params)
             JSONObject jsonObject = new JSONObject(params)
-            def apiResponse = new EntityService().putTermsCondtion(jsonObject)
+            def apiResponse = new EntityService().putTermsCondition(jsonObject)
             if (apiResponse.status == 200)
             {
                 JSONObject obj = new JSONObject(apiResponse.readEntity(String.class))
@@ -140,7 +140,7 @@ class TermsConditionController {
         try
         {
             JSONObject jsonObject = new JSONObject(params)
-            def apiResponse = new EntityService().deleteTermsCondtion(jsonObject)
+            def apiResponse = new EntityService().deleteTermsCondition(jsonObject)
             if (apiResponse.status == 200)
             {
                 JSONObject data = new JSONObject()

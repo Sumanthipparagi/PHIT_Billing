@@ -63,8 +63,8 @@ class InventoryService {
         }
         catch (Exception ex)
         {
-            System.err.println('Service :saveStateMaster , action :  save  , Ex:' + ex)
-            log.error('Service :saveStateMaster , action :  save  , Ex:' + ex)
+            System.err.println('Service :InventoryService , action :  save  , Ex:' + ex)
+            log.error('Service :InventoryService , action :  save  , Ex:' + ex)
         }
     }
 
@@ -106,8 +106,8 @@ class InventoryService {
         }
         catch (Exception ex)
         {
-            System.err.println('Service :getAccountModes , action :  show  , Ex:' + ex)
-            log.error('Service :getAccountModes , action :  show  , Ex:' + ex)
+            System.err.println('Service :InventoryService , action :  show  , Ex:' + ex)
+            log.error('Service :InventoryService , action :  show  , Ex:' + ex)
         }
     }
 
@@ -126,8 +126,8 @@ class InventoryService {
             return apiResponse
         }
         catch (Exception ex) {
-            System.err.println('Service :ProductService , action :  getBatchesOfProduct  , Ex:' + ex)
-            log.error('Service :ProductService , action :  getBatchesOfProduct  , Ex:' + ex)
+            System.err.println('Service :InventoryService , action :  getBatchesOfProduct  , Ex:' + ex)
+            log.error('Service :InventoryService , action :  getBatchesOfProduct  , Ex:' + ex)
         }
     }
 
@@ -162,8 +162,8 @@ class InventoryService {
 //            return apiResponse
 //        }
 //        catch (Exception ex) {
-//            System.err.println('Service :ProductService , action :  getBatchesOfProduct  , Ex:' + ex)
-//            log.error('Service :ProductService , action :  getBatchesOfProduct  , Ex:' + ex)
+//            System.err.println('Service :InventoryService , action :  getBatchesOfProduct  , Ex:' + ex)
+//            log.error('Service :InventoryService , action :  getBatchesOfProduct  , Ex:' + ex)
 //        }
 //    }
 
@@ -172,7 +172,6 @@ class InventoryService {
     {
         Client client = ClientBuilder.newClient()
         WebTarget target = client.target(new Links().API_GATEWAY)
-        //WebTarget target = client.target("http://localhost:8086")
         try
         {
             println(jsonObject)
@@ -185,8 +184,8 @@ class InventoryService {
         }
         catch (Exception ex)
         {
-            System.err.println('Service :saveStateMaster , action :  save  , Ex:' + ex)
-            log.error('Service :saveStateMaster , action :  save  , Ex:' + ex)
+            System.err.println('Service :InventoryService , action :  save  , Ex:' + ex)
+            log.error('Service :InventoryService , action :  save  , Ex:' + ex)
         }
     }
 
@@ -217,8 +216,8 @@ class InventoryService {
         }
         catch (Exception ex)
         {
-            System.err.println('Service :saveStateMaster , action :  save  , Ex:' + ex)
-            log.error('Service :saveStateMaster , action :  save  , Ex:' + ex)
+            System.err.println('Service :InventoryService , action :  save  , Ex:' + ex)
+            log.error('Service :InventoryService , action :  save  , Ex:' + ex)
         }
     }
 
@@ -239,8 +238,8 @@ class InventoryService {
             return apiResponse
         }
         catch (Exception ex) {
-            System.err.println('Service :ProductService , action :  getBatchesOfProduct  , Ex:' + ex)
-            log.error('Service :ProductService , action :  getBatchesOfProduct  , Ex:' + ex)
+            System.err.println('Service :InventoryService , action :  getTempStocks  , Ex:' + ex)
+            log.error('Service :InventoryService , action :  getTempStocks  , Ex:' + ex)
         }
     }
 
