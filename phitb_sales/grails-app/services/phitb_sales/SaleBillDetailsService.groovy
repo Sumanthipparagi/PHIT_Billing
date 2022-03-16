@@ -50,7 +50,7 @@ class SaleBillDetailsService
     }
 
 
-    def getAllByCustomerId(String limit, String offset, String id)
+    def getAllUnsettledByCustId(String limit, String offset, String id)
     {
         Integer o = offset ? Integer.parseInt(offset.toString()) : 0
         Integer l = limit ? Integer.parseInt(limit.toString()) : 100
@@ -61,6 +61,20 @@ class SaleBillDetailsService
         else
         {
             return SaleBillDetails.findAllByCustomerIdAndPaymentStatus(Long.parseLong(id),0)
+        }
+    }
+
+    def getAllsettledByCustId(String limit, String offset, String id)
+    {
+        Integer o = offset ? Integer.parseInt(offset.toString()) : 0
+        Integer l = limit ? Integer.parseInt(limit.toString()) : 100
+        if (!id)
+        {
+            return SaleBillDetails.findAll([sort: 'id', max: l, offset: o, order: 'desc'])
+        }
+        else
+        {
+            return SaleBillDetails.findAllByCustomerIdAndPaymentStatus(Long.parseLong(id),1)
         }
     }
 

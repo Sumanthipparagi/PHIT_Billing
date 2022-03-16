@@ -48,10 +48,30 @@ class ReciptDetailController
 
     def settledVocher()
     {
-//        ArrayList<String> saleinvoice  = new SalebillDetailsController().show() as ArrayList
-//        JSONObject obj = new JSONObject()
-//        obj.put("saleinvoice", saleinvoice)
-//        respond obj, formats: ['json'], status: 200
+        try
+        {
+            JSONObject jsonObject = new JSONObject(params)
+            def apiResponse = new AccountsService().updateSettledVocher(jsonObject)
+            if (apiResponse?.status == 200)
+            {
+                JSONObject obj = new JSONObject(apiResponse.readEntity(String.class))
+                respond obj, formats: ['json'], status: 200
+            }
+            else
+            {
+                response.status = apiResponse?.status ?: 400
+            }
+        }
+        catch (Exception ex)
+        {
+            System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
+            log.error('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
+            response.status = 400
+        }
+    }
+
+    def unsettledVocher()
+    {
         try
         {
             JSONObject jsonObject = new JSONObject(params)
@@ -172,6 +192,29 @@ class ReciptDetailController
         }
     }
 
+    def getAllSaleBillsettled()
+    {
+        try
+        {
+            JSONArray jsonArray = new JSONArray();
+            def apiResponse = new AccountsService().getSaleBillSettledCustomerId(params.id)
+            if (apiResponse.status == 200)
+            {
+                JSONArray responseArry = new JSONArray(apiResponse.readEntity(String.class))
+                respond responseArry, formats: ['json'], status: 200
+            }
+            else
+            {
+                response.status = 400
+            }
+        }
+        catch (Exception ex)
+        {
+            System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
+            log.error('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
+            response.status = 400
+        }
+    }
 
     def save()
     {

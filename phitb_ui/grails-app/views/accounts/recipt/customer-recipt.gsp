@@ -306,6 +306,10 @@
                                                     <tbody class="settledVocher">
 
                                                     </tbody>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td>Total:&nbsp;<span class="total_bal_s"></span></td>
 
                                                 </table>
                                             </div>
@@ -478,6 +482,7 @@
             dataType: 'json',
             success: function (data) {
                 getSaleBillByCustomer(id)
+                getsettledSaleBillByCustomer(id)
                 var trHTML = '';
                 trHTML += '<p><b>' + data.entityName + '</b><br>' + data.addressLine1 + '' + data.addressLine2 + '</p>';
                 $('#caddress').html(trHTML);
@@ -496,16 +501,21 @@
             url: '/getallsalebillbycustomer/' + id,
             dataType: 'json',
             success: function (data) {
-                console.log(data)
                 var trHTML = '';
                 trHTML += '';
                 var invoice = "INV"
-                var total_bal = data.map(data => data.balance).reduce((acc, amount) => acc + amount,0);
+                if(data.length!==0)
+                {
+                    var total_bal = data.map(data => data.balance).reduce((acc, amount) => acc + amount,0);
+                }
+                else {
+                     total_bal = 0;
+                }
                 $('.total_bal').text(parseFloat(total_bal));
 
                 $.each(data, function (key, value) {
                         trHTML +=
-                            '<tr data-id="'+value.id+'"><td><button type="button" data-id="'+value.id+'" class="btn-sm btn-primary" id="settled"><-</button></td><td>' + invoice +
+                            '<tr id="'+value.id+'"><td><button type="button" data-id="'+value.id+'"  data-custId="'+value.customerId+'" class="btn-sm btn-primary" id="settled"><-</button></td><td>' + invoice +
                             '</td><td>' + value.financialYear +
                             '</td><td>' + moment(value.dateCreated).format('DD-MM-YYYY') +
                             '</td><td>' + value.balance +
@@ -519,37 +529,78 @@
         });
     }
 
-    $("#settled").click(function (event) {
-        //disable the default form submission
-        var id = $(this).attr("data-id")
-        alert(id);
-        event.preventDefault();
-        var url = '/unsettledvocher/'+id;
-        var type = 'GET';
-        $.ajax({
-            url: url,
-            type: type,
-            contentType: false,
-            processData: false,
-            success: function () {
-                // var trHTML = '';
-                // $.each(response, function (i, item) {
-                //     trHTML += '<tr><td>' + item.rank + '</td><td>' + item.content + '</td><td>' + item.UID + '</td></tr>';
-                // });
-                // $('#settled_vocher').append(trHTML);
-                $('tr:not(.toplevel)[data-id="'+id+'+"]').hide();
 
+    function getsettledSaleBillByCustomer(id) {
+        $.ajax({
+            type: 'GET',
+            url: '/getallsalesettledcustomer/'+id,
+            dataType: 'json',
+            success: function (data) {
+                var trHTML = '';
+                trHTML += '';
+                var invoice = "INV"
+                var total_bal_s = data.map(data => data.balance).reduce((acc, amount) => acc + amount,0);
+                $('.total_bal_s').text(parseFloat(total_bal_s));
+                $('.tba').val(parseFloat(total_bal_s));
+                $.each(data, function (key, value) {
+                    trHTML +=
+                        '<tr id="'+value.id+'"><td>' + invoice +
+                        '</td><td>' + value.financialYear +
+                        '</td><td>' + moment(value.dateCreated).format('DD-MM-YYYY') +
+                        '</td><td>' + value.balance +
+                        '</td><td><button type="button" data-id="'+value.id+'"  class="btn-sm btn-primary" id="unsettled">-></button></td></tr>';
+                });
+                $('.settledVocher').html(trHTML);
             },
             error: function () {
                 swal("Error!", "Something went wrong", "error");
             }
         });
-    });
+    }
 
+    var input = document.getElementById("tc");
+    input.addEventListener("keydown", function (e) {
+        if(e.target.value!==0) {
+            if (e.key === "Enter") {
+                $(".total").val(total())
+            }
+        }
+    });
+    function total()
+    {
+        // Capture the entered values of two input boxes
+        var my_input1 = document.getElementById('tc').value;
+        var my_input2 = document.getElementById('tba').value;
+        return parseInt(my_input1) + parseInt(my_input2)
+    }
 
     $(document).on('click','#settled', function(e) {
         e.preventDefault();
         var id = $(this).data('id');
+        var custId = $(this).attr('data-custId');
+        var url = '/settledvocher/'+id;
+        var type = 'GET';
+        $.ajax({
+            url: url,
+            type: type,
+            contentType: false,
+            processData: false,
+            success: function () {
+                $('table#table2 tr#'+id).remove();
+                getSaleBillByCustomer(custId)
+                getsettledSaleBillByCustomer(custId)
+            },
+            error: function () {
+                swal("Error!", "Something went wrong", "error");
+            }
+        });
+    });
+
+
+    $(document).on('click','#unsettled', function(e) {
+        e.preventDefault();
+        var id = $(this).data('id');
+        var custId = $(this).attr('data-custId');
         var url = '/unsettledvocher/'+id;
         var type = 'GET';
         $.ajax({
@@ -558,17 +609,16 @@
             contentType: false,
             processData: false,
             success: function () {
-               // swal("Success!!")
+                $('table#table1 tr#'+id).remove();
+                getSaleBillByCustomer(custId);
+                getsettledSaleBillByCustomer(custId)
             },
             error: function () {
                 swal("Error!", "Something went wrong", "error");
             }
         });
-
     });
 
-
 </script>
-
 </body>
 </html>

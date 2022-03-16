@@ -91,11 +91,39 @@ class SaleBillDetailsController
      * @param id
      * @return get requested Credit Debit Details
      */
-    def getAllByCustomerId() {
+    def getAllUnsettledByCustId() {
         try {
             String id = params.id
             if (id) {
-                respond saleBillDetailsService.getAllByCustomerId(params.limit, params.offset, id)
+                respond saleBillDetailsService.getAllUnsettledByCustId(params.limit, params.offset, id)
+            }
+        }
+        catch (ResourceNotFoundException ex)
+        {
+            System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
+            response.status = 404
+        }
+        catch (BadRequestException ex)
+        {
+            System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
+            response.status = 400
+        }
+        catch (Exception ex) {
+            System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
+        }
+    }
+
+
+    /**
+     * Get requested Credit Debit Details
+     * @param id
+     * @return get requested Credit Debit Details
+     */
+    def getAllsettledByCustId() {
+        try {
+            String id = params.id
+            if (id) {
+                respond saleBillDetailsService.getAllsettledByCustId(params.limit, params.offset, id)
             }
         }
         catch (ResourceNotFoundException ex)

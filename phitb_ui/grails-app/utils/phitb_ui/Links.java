@@ -299,7 +299,8 @@ public class Links
     public static String SALE_BILL_DATATABLE = "api/v1.0/sales/salebilldetails/datatable";
     public static String SALE_BILL_UPDATE = "api/v1.0/sales/salebilldetails/{id}";
     public static String SALE_BILL_DELETE = "api/v1.0/sales/salebilldetails/{id}";
-    public static String SALE_BILL_CUSTOMER = "api/v1.0/sales/salebilldetailsbycustomer";
+    public static String SALE_BILL_UNSETTLED = "api/v1.0/sales/salebillunsettledbycustomer";
+    public static String SALE_BILL_SETTLED = "api/v1.0/sales/salebillsettledbycustomer";
     public static String SALE_BILL_PAYMENT = "api/v1.0/sales/salebillbypaymentstatus";
     public static String SET_PAYMENT_BILL = "api/v1.0/sales/setpaymentstatus/{id}";
 

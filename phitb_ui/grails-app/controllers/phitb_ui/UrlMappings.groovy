@@ -411,13 +411,11 @@ class UrlMappings {
         }
         "/add-recipt"(controller: "reciptDetail", action: 'addRecipt')
 
-        "/unsettledvocher/$id"(controller: "reciptDetail", action: 'settledVocher')
-
-
+        "/settledvocher/$id"(controller: "reciptDetail", action: 'settledVocher')
+        "/unsettledvocher/$id"(controller: "reciptDetail", action: 'unsettledVocher')
         "/getbyentity/$id"(controller: "reciptDetail", action: 'getAllEntityById')
-
         "/getallsalebillbycustomer/$id"(controller: "reciptDetail", action: 'getAllSaleBillCustomerId')
-
+        "/getallsalesettledcustomer/$id"(controller: "reciptDetail", action: 'getAllSaleBillsettled')
 
 
     }
