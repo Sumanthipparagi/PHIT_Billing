@@ -7,6 +7,7 @@ import org.springframework.web.multipart.MultipartFile
 import javax.ws.rs.core.Form
 import java.awt.Graphics2D
 import java.awt.image.BufferedImage
+import java.text.DateFormat
 import java.text.ParseException
 import java.text.SimpleDateFormat
 import java.util.ArrayList;
@@ -173,11 +174,14 @@ class UtilsService {
 
     static String dateFormater(String date)
     {
-        SimpleDateFormat inputFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
-        SimpleDateFormat outputFormat = new SimpleDateFormat("dd-mm-yyyy");
-        Date parsedDate = inputFormat.parse(date as String);
-        String formattedDate = outputFormat.format(parsedDate);
-        return  formattedDate
+        DateFormat df = new SimpleDateFormat("yyyy-MM-dd'T'hh:mm:ssZ");
+        Date result;
+        result = df.parse(date);
+        System.out.println("date:"+result); //prints date in current locale
+        SimpleDateFormat sdf = new SimpleDateFormat("dd-mm-yyyy");
+        sdf.setTimeZone(TimeZone.getTimeZone("GMT"));
+        String foramtedDate = sdf.format(result) //prints date in the format sdf
+        return foramtedDate
     }
 
 

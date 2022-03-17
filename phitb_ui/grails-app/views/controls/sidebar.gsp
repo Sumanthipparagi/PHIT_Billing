@@ -558,8 +558,19 @@
                         class="zmdi zmdi-apps"></i><span>Recipt</span> <span
                         class="badge badge-success float-right"></span></a>
                     <ul class="ml-menu">
-                        <li><a href="/recipt">Add Recipt</a></li>
+                        <li><a href="/recipt">Create Recipt</a></li>
                         <li><a href="/recipt-list">Recipt List</a></li>
+
+                    </ul>
+                </li>
+
+
+                <li><a href="javascript:void(0);" class="menu-toggle"><i
+                        class="zmdi zmdi-apps"></i><span>Payments</span> <span
+                        class="badge badge-success float-right"></span></a>
+                    <ul class="ml-menu">
+%{--                        <li><a href="/recipt">Add Recipt</a></li>--}%
+                        <li><a href="/payments-list">Payment Lists</a></li>
 
                     </ul>
                 </li>

@@ -345,6 +345,15 @@ public class Links
     public static String WALLET_DELETE = "api/v1.0/accounts/wallet/{id}";
 
 
+
+    //Wallet
+    public static String PAYMENT_SHOW = "api/v1.0/accounts/paymentdetails";
+    public static String PAYMENT_SAVE = "api/v1.0/accounts/paymentdetails";
+    public static String PAYMENT_DATATABLE = "api/v1.0/accounts/paymentdetails/datatable";
+    public static String PAYMENT_UPDATE = "api/v1.0/accounts/paymentdetails/{id}";
+    public static String PAYMENT_DELETE = "api/v1.0/accounts/paymentdetails/{id}";
+
+
     //Credit
     public static String CREDIT_SHOW = "api/v1.0/accounts/creditjv";
     public static String CREDIT_SAVE = "api/v1.0/accounts/creditjv";

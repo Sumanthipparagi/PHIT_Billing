@@ -175,8 +175,8 @@
                                             id="paymentMode" onchange="payMode(this.value)" required>
                                         <option value="">-- Please select --</option>
                                         <option value="1">BANK</option>
-                                        <option value="2">CARD</option>
-                                        <option value="3">CASH</option>
+%{--                                        <option value="2">CARD</option>--}%
+%{--                                        <option value="3">CASH</option>--}%
                                     </select>
                                 </div>
 

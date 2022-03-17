@@ -30,9 +30,9 @@ class PaymentDetailController {
         render(view: '/accounts/recipt/add-recipt', model: [entity: entity, bank: bank, accountMode: accountMode, wallet: wallet])
     }
 
-    def reciptList()
+    def paymentList()
     {
-        render(view: '/accounts/recipt/recipt-list')
+        render(view: '/accounts/recipt/payment-list')
     }
 
     def settledVocher()
@@ -84,14 +84,12 @@ class PaymentDetailController {
     }
 
 
-
-
     def dataTable()
     {
         try
         {
             JSONObject jsonObject = new JSONObject(params)
-            def apiResponse = new AccountsService().showRecipt(jsonObject)
+            def apiResponse = new AccountsService().showPayments(jsonObject)
             if (apiResponse.status == 200)
             {
                 JSONObject responseObject = new JSONObject(apiResponse.readEntity(String.class))
@@ -322,13 +320,13 @@ class PaymentDetailController {
     }
 
 
-    def getReciptById(String id)
+    def getPaymentById(String id)
     {
-        def recipt1 = new AccountsService().getReciptById(id)
-        if(recipt1.status==200)
+        def payment1 = new AccountsService().getPaymentById(id)
+        if(payment1.status==200)
         {
-            JSONObject recipt = new JSONObject(recipt1.readEntity(String.class))
-            return recipt
+            JSONObject payment = new JSONObject(payment1.readEntity(String.class))
+            return payment
         }
         else {
 
@@ -337,14 +335,15 @@ class PaymentDetailController {
     }
 
 
-    def printRecipt()
+    def printPayment()
     {
         JSONObject customer = new EntityRegisterController().getEnitityById(params.custid)  as JSONObject
-        JSONObject recipt = new ReciptDetailController().getReciptById(params.id)  as JSONObject
+        JSONObject payment = new PaymentDetailController().getPaymentById(params.id)  as JSONObject
         JSONObject entity = new EntityRegisterController().getEnitityById(session.getAttribute('entityId').toString())  as
                 JSONObject
         ArrayList<String> settled = new SalebillDetailsController().getAllSettledById(params.custid) as ArrayList
-        render(view:'/accounts/recipt/recipt-temp',model: [customer:customer,settled:settled,recipt:recipt,entity:entity])
+        render(view:'/accounts/recipt/payment-vocher',model: [customer:customer,settled:settled,payment:payment,
+                                                         entity:entity])
     }
 
 }

@@ -6,6 +6,7 @@ import gorm.logical.delete.LogicalDelete
 class PaymentDetail implements LogicalDelete<PaymentDetail> {
 
     long finId
+    String paymentId
     Date date
     long accountModeId
     long paymentModeId
