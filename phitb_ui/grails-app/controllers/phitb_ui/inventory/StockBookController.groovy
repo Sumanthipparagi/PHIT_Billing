@@ -260,27 +260,28 @@ class StockBookController {
         try
         {
             JSONArray jsonArray = new JSONArray(params.rowData)
-
-            long remainingQty = 0
-            long remainingFreeQty = 0
-            long saleQty = 0
-            long saleFreeQty = 0
+            Boolean isEdit = false
+            int i = 0
+            for (Object obj : jsonArray) {
+                //15 if edit, 16 if being added
+                if(i == 15 && obj != null)
+                    isEdit = true
+                else if(i == 16 && obj != null)
+                    isEdit = false
+                i++
+            }
             def stockBook = null
-            if(jsonArray[16] != null)
-            {
-                //while entering for first time, get from main stockbook
-                stockBook = new InventoryService().getStockBookById(jsonArray[16].toString())
-
-            }
+            if(!isEdit)
+                stockBook = new InventoryService().getStockBookById(jsonArray[16])
             else {
-                //if we are editing the same row
-                stockBook = new InventoryService().getStockBookById(jsonArray[15].toString())
+                def tmpStockBook = new InventoryService().getTempStocksById(jsonArray[15])
+                stockBook = new InventoryService().getStockBookById(Long.parseLong(tmpStockBook.originalId))
             }
 
-            remainingQty = stockBook.remainingQty
-            remainingFreeQty = stockBook.remainingFreeQty
-            saleQty  = jsonArray[4]
-            saleFreeQty  = jsonArray[5]
+            long remainingQty = stockBook.remainingQty
+            long remainingFreeQty = stockBook.remainingFreeQty
+            long saleQty  = jsonArray[4]
+            long saleFreeQty  = jsonArray[5]
             remainingQty = remainingQty - saleQty
             remainingFreeQty = remainingFreeQty - saleFreeQty
 
@@ -310,7 +311,6 @@ class StockBookController {
             if (apiResponse?.status == 200)
             {
                 JSONObject obj = new JSONObject(apiResponse.readEntity(String.class))
-//                render(view: '/entity/entityRegister/add-entity-register')
                 respond obj, formats: ['json'], status: 200
             }
             else

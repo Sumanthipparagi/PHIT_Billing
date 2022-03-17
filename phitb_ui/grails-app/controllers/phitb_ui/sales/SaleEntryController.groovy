@@ -2,6 +2,7 @@ package phitb_ui.sales
 
 import org.grails.web.json.JSONArray
 import org.grails.web.json.JSONObject
+import phitb_ui.InventoryService
 import phitb_ui.SystemService
 import phitb_ui.entity.EntityRegisterController
 import phitb_ui.entity.SeriesController
@@ -53,7 +54,9 @@ class SaleEntryController {
             String sgst = sale.get("12")
             String cgst = sale.get("13")
             String igst = sale.get("14")
-            String tempRowId = sale.get("15")
+            String tempStockRowId = sale.get("15")
+
+            new InventoryService().getTempStocksById(Long.parseLong(tempStockRowId))
         }
     }
 

@@ -421,10 +421,8 @@
                 } else if (selection === 4) {
                     if (e.keyCode === 13 || e.keyCode === 9) {
                         sQty = this.getActiveEditor().TEXTAREA.value;
-                        // sQty = hot.getDataAtCell(row,selection);
                         sRate = hot.getDataAtCell(row, 6);
                         var discount = hot.getDataAtCell(row, 8);
-                        //var gst = hot.getDataAtCell(row, 10);
                         var priceBeforeGst = (sRate * sQty) - ((sRate * sQty) * discount) / 100;
                         var finalPrice = priceBeforeGst + (priceBeforeGst * (gst / 100));
                         hot.setDataAtCell(row, 11, finalPrice);
@@ -526,10 +524,6 @@
                         sgst = rowData[9];
                         cgst = rowData[10];
                         igst = rowData[11];
-                        //hot.setDataAtCell(mainTableRow, 10, rowData[8]); //GST
-                        //hot.setDataAtCell(mainTableRow, 12, rowData[9]); //SGST
-                        //hot.setDataAtCell(mainTableRow, 13, rowData[10]); //CGST
-                        //hot.setDataAtCell(mainTableRow, 14, rowData[11]); //IGST
                         hot.selectCell(mainTableRow, 4);
                         $("#saleTable").focus();
                     }
@@ -586,9 +580,6 @@
                     console.log("Failed");
                 }
             });
-
-            /* $("#productNameTitle").text(value);
-             $("#batchSelectModal").modal("toggle");*/
         }
     }
 

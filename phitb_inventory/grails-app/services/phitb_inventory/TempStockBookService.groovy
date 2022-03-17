@@ -139,9 +139,11 @@ class TempStockBookService {
         Long userId = Long.parseLong(jsonObject.get("userId").toString())
         String batchNumber = jsonObject.get("batchNumber").toString()
         TempStockBook tempStockBook = TempStockBook.findByProductIdAndUserIdAndBatchNumber(productId, userId, batchNumber)
-        tempStockBook.isUpdatable = true
+
         if(tempStockBook == null)
             tempStockBook = new TempStockBook()
+        else
+            tempStockBook.isUpdatable = true
 
         tempStockBook.batchNumber = batchNumber
         tempStockBook.packingDesc = jsonObject.get("packingDesc")
