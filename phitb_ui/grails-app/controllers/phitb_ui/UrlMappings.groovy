@@ -411,7 +411,6 @@ class UrlMappings {
         "/recipt"(controller: "reciptDetail") {
             action = [GET: 'index', POST: 'save']
         }
-
         "/recipt-list/datatable"(controller: "reciptDetail", action: 'dataTable')
         "/add-recipt"(controller: "reciptDetail", action: 'addRecipt')
         "/print-recipt/$custid/recipt/$id"(controller: "reciptDetail", action: 'printRecipt')
@@ -422,8 +421,10 @@ class UrlMappings {
         "/getallsalebillbycustomer/$id"(controller: "reciptDetail", action: 'getAllSaleBillCustomerId')
         "/getallsalesettledcustomer/$id"(controller: "reciptDetail", action: 'getAllSaleBillsettled')
 
-
-
+//        Payment Details
+        "/payments"(controller: "paymentDetail") {
+            action = [GET: 'index', POST: 'save']
+        }
 
     }
 }
