@@ -318,25 +318,15 @@ class EntityRegisterController
 
     def getEnitityById(String id)
     {
-        try
+        def apiResponse = new EntityService().getEntityById(id)
+        if(apiResponse.status==200)
         {
-            def apiResponse = new EntityService().getEntityById(id)
-            if (apiResponse?.status == 200)
-            {
-                JSONArray jsonArray = new JSONArray(apiResponse.readEntity(String.class));
-                ArrayList<String> arrayList = new ArrayList<>(jsonArray)
-                return arrayList
-            }
-            else
-            {
-                return []
-            }
+            JSONObject obj = new JSONObject(apiResponse.readEntity(String.class))
+            return obj
         }
-        catch (Exception ex)
-        {
-            System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
-            log.error('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
-            response.status = 400
+        else {
+
+            return []
         }
     }
 

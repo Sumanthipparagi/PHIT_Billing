@@ -1491,9 +1491,6 @@ class EntityService {
     }
 
 
-
-
-
     def getTaxRegister(String id = null) {
         Client client = ClientBuilder.newClient()
         WebTarget target = client.target(new Links().API_GATEWAY)

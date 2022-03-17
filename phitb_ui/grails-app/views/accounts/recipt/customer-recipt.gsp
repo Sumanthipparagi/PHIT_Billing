@@ -252,6 +252,18 @@
                                            required/>
                                 </div>
 
+
+
+                                <div class="col-lg-3 form-group  form-float">
+                                    <label for="amountPaid">
+                                        Amount
+                                    </label>
+                                    <input type="text" id="amountPaid" class="note form-control amountPaid"
+                                           name="amountPaid"
+                                           placeholder="Amount" readonly
+                                           required/>
+                                </div>
+
                                 %{--                                <div class="col-lg-6 form-group  form-float">--}%
                                 %{--                                    <label for="total">--}%
                                 %{--                                        Total Cheque:--}%
@@ -350,7 +362,6 @@
                                 </div>
 
                                 <input type="hidden" name="status" value="1">
-                                <input type="hidden" class="tba" name="amountPaid">
                                 <input type="hidden" name="syncStatus" value="1">
                                 <input type="hidden" name="createdUser" value="1">
                                 <input type="hidden" name="modifiedUser" value="1">
@@ -522,6 +533,7 @@
                 var total_bal_s = data.map(data => data.balance).reduce((acc, amount) => acc + amount, 0);
                 $('.total_bal_s').text(parseFloat(total_bal_s).toFixed(2));
                 $('.tba').val(total_bal_s.toFixed(2));
+                $('.amountPaid').val(total_bal_s.toFixed(2));
                 $.each(data, function (key, value) {
                     trHTML +=
                         '<tr id="' + value.id + '"><td>' + invoice +

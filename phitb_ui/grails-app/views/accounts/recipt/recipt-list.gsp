@@ -107,6 +107,7 @@
                                 <tr>
                                     %{--                                    <th style="width: 20%">ID</th>--}%
                                     <th style="width: 20%">Date</th>
+                                    <th style="width: 20%">Recipt Id</th>
                                     <th style="width: 20%">Financial Year</th>
                                     <th style="width: 20%">Payment Date</th>
                                     <th style="width: 20%">Bank</th>
@@ -191,26 +192,27 @@
                 dataSrc: function (json) {
                     var return_data = [];
                     for (var i = 0; i < json.data.length; i++) {
-                        console.log(json)
+                        var date = new Date(json.data[i].date);
+                        var pd = new Date(json.data[i].paymentDate)
                         var editbtn =
                             ' <button type="button" data-id="'+json.data[i].id+'" data-recievedfrom="'+json.data[i].receivedFrom+'" class="print btn btn-sm btn-warning editbtn"><i class="material-icons"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">print</font></font></i></button>'
-                        var deletebtn = '<button type="button" data-id="' + json.data[i].id +
-                            '" class="btn btn-sm btn-danger deletebtn" data-toggle="modal" data-target=".deleteModal"><i class="material-icons"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">delete</font></font></i></button>'
+                        // var deletebtn = '<button type="button" data-id="' + json.data[i].id +
+                        //     '" class="btn btn-sm btn-danger deletebtn" data-toggle="modal" data-target=".deleteModal"><i class="material-icons"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">delete</font></font></i></button>'
                         return_data.push({
-                            // 'id': json.data[i].id,
-                            'date': json.data[i].date,
+                            'id': json.data[i].receiptId,
+                            'date': moment(date).format('DD/MM/YYYY'),
                             'fy': json.data[i].financialYear,
-                            'pd': json.data[i].paymentDate,
+                            'pd': moment(pd).format('DD/MM/YYYY'),
                             'bank': json.data[i].bank.bankName,
-                            'action': editbtn + ' ' + deletebtn
+                            'action': editbtn
                         });
                     }
                     return return_data;
                 }
             },
             columns: [
-                // {'data': 'id', 'width': '20%'},
                 {'data': 'date', 'width': '20%'},
+                {'data': 'id', 'width': '20%'},
                 {'data': 'fy', 'width': '20%'},
                 {'data': 'pd', 'width': '20%'},
                 {'data': 'bank', 'width': '20%'},

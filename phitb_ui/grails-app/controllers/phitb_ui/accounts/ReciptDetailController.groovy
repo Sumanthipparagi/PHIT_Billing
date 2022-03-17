@@ -320,16 +320,44 @@ class ReciptDetailController
     }
 
 
+    def getCustomerById(String id)
+    {
+        def cust = new AccountsService().getEntityById(id)
+        if(cust.status==200)
+        {
+            JSONObject customer = new JSONObject(cust.readEntity(String.class))
+            return customer
+        }
+        else {
+
+            return []
+        }
+    }
+
+
+    def getReciptById(String id)
+    {
+        def recipt1 = new AccountsService().getReciptById(id)
+        if(recipt1.status==200)
+        {
+            JSONObject recipt = new JSONObject(recipt1.readEntity(String.class))
+            return recipt
+        }
+        else {
+
+            return []
+        }
+    }
+
 
     def printRecipt()
     {
-        JSONObject jsonObject = new JSONObject()
-        def cust = new AccountsService().getEntityById(params.custid)
-        JSONObject customer = new JSONObject(cust.readEntity(String.class))
-        def recipt1 = new AccountsService().getReciptById(params.id)
-        JSONObject recipt = new JSONObject(recipt1.readEntity(String.class))
+        JSONObject customer = new EntityRegisterController().getEnitityById(params.custid)  as JSONObject
+        JSONObject recipt = new ReciptDetailController().getReciptById(params.id)  as JSONObject
+        JSONObject entity = new EntityRegisterController().getEnitityById(session.getAttribute('entityId').toString())  as
+                JSONObject
         ArrayList<String> settled = new SalebillDetailsController().getAllSettledById(params.custid) as ArrayList
-        render(view:'/accounts/recipt/recipt-temp',model: [customer:customer,settled:settled,recipt:recipt])
+        render(view:'/accounts/recipt/recipt-temp',model: [customer:customer,settled:settled,recipt:recipt,entity:entity])
     }
 
 

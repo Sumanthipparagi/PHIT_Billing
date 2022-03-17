@@ -558,7 +558,8 @@
                         class="zmdi zmdi-apps"></i><span>Recipt</span> <span
                         class="badge badge-success float-right"></span></a>
                     <ul class="ml-menu">
-                        <li><a href="/recipt">Recipt</a></li>
+                        <li><a href="/recipt">Add Recipt</a></li>
+                        <li><a href="/recipt-list">Recipt List</a></li>
 
                     </ul>
                 </li>

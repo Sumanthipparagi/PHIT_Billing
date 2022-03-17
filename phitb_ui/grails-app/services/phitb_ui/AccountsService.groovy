@@ -224,7 +224,6 @@ class AccountsService {
         Client client = ClientBuilder.newClient()
         WebTarget target = client.target(new Links().API_GATEWAY)
         try {
-
             Response apiResponse = target
                     .path(new Links().ENTITY_REGISTER_SHOW + "/" + id)
                     .request(MediaType.APPLICATION_JSON_TYPE)

@@ -78,8 +78,7 @@ class ReceiptDetailService {
         def receiptDetailArrayList = receiptDetailCriteria.list(max: max, offset: offset) {
             or {
                 if (searchTerm != "") {
-                    ilike('accountModeId', '%' + searchTerm + '%')
-                    ilike('paymentModeId', '%' + searchTerm + '%')
+                    ilike('receiptId', '%' + searchTerm + '%')
                 }
             }
             eq('deleted', false)
