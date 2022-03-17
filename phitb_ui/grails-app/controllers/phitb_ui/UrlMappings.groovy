@@ -66,6 +66,16 @@ class UrlMappings {
         "/form/update/$id"(controller: "form",action:"update")
         "/form/delete/$id"(controller: "form",action:"delete")
 
+
+        //      Form Master
+        "/priority"(controller: "form") {
+            action = [GET: 'index', POST: 'save']
+        }
+        "/priority/datatable"(controller: "priority", action: 'dataTable')
+        "/priority/update/$id"(controller: "priority",action:"update")
+        "/priority/delete/$id"(controller: "priority",action:"delete")
+        "/priority/entity/$id"(controller: "priority",action:"getPriorityByEntity")
+
         /*<-------------------------------------------Facility ------------------------------------------------->*/
 
 //        Fridge
@@ -351,8 +361,9 @@ class UrlMappings {
         "/sale-bill"(controller: "saleEntry", action: 'saleBill')
         //Sale Entry
         "/sale-entry"(controller: "saleEntry") {
-            action = [GET: 'index', POST: 'save']
+            action = [GET: 'index', POST: 'saveSaleEntry']
         }
+
         "/sale-entry/update/$id"(controller:"batchRegister",action:"update")
 //        "/sale-entry/datatable"(controller: "batchRegister", action: 'dataTable')
 

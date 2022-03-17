@@ -260,13 +260,30 @@ class StockBookController {
         try
         {
             JSONArray jsonArray = new JSONArray(params.rowData)
-            def stockBook = new InventoryService().getStockBookById(jsonArray[16].toString())
-            long remainingQty = stockBook.remainingQty
-            long remainingFreeQty = stockBook.remainingFreeQty
-            long saleQty  = jsonArray[4]
-            long saleFreeQty  = jsonArray[5]
+
+            long remainingQty = 0
+            long remainingFreeQty = 0
+            long saleQty = 0
+            long saleFreeQty = 0
+            def stockBook = null
+            if(jsonArray[16] != null)
+            {
+                //while entering for first time, get from main stockbook
+                stockBook = new InventoryService().getStockBookById(jsonArray[16].toString())
+
+            }
+            else {
+                //if we are editing the same row
+                stockBook = new InventoryService().getStockBookById(jsonArray[15].toString())
+            }
+
+            remainingQty = stockBook.remainingQty
+            remainingFreeQty = stockBook.remainingFreeQty
+            saleQty  = jsonArray[4]
+            saleFreeQty  = jsonArray[5]
             remainingQty = remainingQty - saleQty
             remainingFreeQty = remainingFreeQty - saleFreeQty
+
             JSONObject jsonObject = new JSONObject()
             jsonObject.put("productId", jsonArray[1])
             jsonObject.put("batchNumber", jsonArray[2])

@@ -53,15 +53,6 @@
                         <li class="breadcrumb-item active">Sale Entry</li>
                     </ul>
                 </div>
-
-                %{-- <div class="col-lg-7 col-md-7 col-sm-12">
-                     <div class="input-group m-b-0">
-                         <input type="text" class="form-control" placeholder="Search...">
-                         <span class="input-group-addon">
-                             <i class="zmdi zmdi-search"></i>
-                         </span>
-                     </div>
-                 </div>--}%
             </div>
         </div>
 
@@ -74,21 +65,29 @@
 
                     <div class="body">
                         <div class="row">
-                            <div class="col-md-3">
+                            <div class="col-md-2">
                                 <label for="date">Date:</label>
                                 <input type="date" class="form-control date" name="date" id="date"/>
                             </div>
 
-                            <div class="col-md-3">
+                            <div class="col-md-2">
                                 <label for="series">Series:</label>
                                 <select class="form-control" id="series" name="series">
                                     <g:each in="${series}" var="sr">
-                                        <option value="${sr.id}">${sr.seriesCode}</option>
+                                        <option value="${sr.id}">${sr.seriesName} (${sr.seriesCode})</option>
+                                    </g:each>
+                                </select>
+                            </div>
+                            <div class="col-md-2">
+                                <label for="priority">Priority:</label>
+                                <select class="form-control" id="priority" name="priority">
+                                    <g:each in="${priorityList}" var="pr">
+                                        <option value="${pr.id}">${pr.priority}</option>
                                     </g:each>
                                 </select>
                             </div>
 
-                            <div class="col-md-3">
+                            <div class="col-md-4">
                                 <label for="customerSelect">Customer:</label>
                                 <select class="form-control show-tick" id="customerSelect"
                                         onchange="customerSelectChanged()">
@@ -102,7 +101,7 @@
                                 </select>
                             </div>
 
-                            <div class="col-md-3">
+                            <div class="col-md-2">
                                 <label for="duedate">Due Date:</label>
                                 <input type="date" class="form-control date" name="duedate" id="duedate"/>
                             </div>
@@ -117,9 +116,14 @@
             <div class="col-lg-12" style="margin-bottom: 0;">
                 <div class="card" style="margin-bottom: 10px;">
                     <div class="body" style="background-color: #313740;padding: 2px; color: #fff;">
-                        <p style="margin: 0; font-size: 14px;">
-                            <strong>Total GST:</strong> ₹<span id="totalGST">0</span>, <strong>Total SGST:</strong> ₹<span id="totalSGST">0</span>, <strong>Total CGST:</strong> ₹<span id="totalCGST">0</span>, <strong>Total IGST:</strong>&nbsp; ₹<span id="totalIGST">0</span>
-                        </p>
+                        <div class="row" style="margin: 0; font-size: 14px;">
+                            <div class="col-md-2"><strong>Total GST:</strong> ₹<span id="totalGST">0</span></div>
+                            <div class="col-md-2"><strong>Total SGST:</strong> ₹<span id="totalSGST">0</span></div>
+                            <div class="col-md-2"><strong>Total CGST:</strong> ₹<span id="totalCGST">0</span></div>
+                            <div class="col-md-2"><strong>Total IGST:</strong>&nbsp; ₹<span id="totalIGST">0</span></div>
+                            <div class="col-md-2"><strong>Total Qty:</strong> <span id="totalQty">0</span></div>
+                            <div class="col-md-2"><strong>Total Free Qty:</strong> <span id="totalFQty">0</span></div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -133,12 +137,6 @@
                             <div id="saleTable" style="width:100%;"></div>
                         </div>
                     </div>
-
-                    %{--<div class="header" style="padding: 1px;">
-                        <button type="button" class="btn btn-round btn-primary m-t-15 addbtn" data-toggle="modal"
-                                data-target="#addAccountModeModal"><span
-                                class="glyphicon glyphicon-save-file"></span> Save</button>
-                    </div>--}%
                 </div>
             </div>
         </div>
@@ -184,7 +182,7 @@
                         </div>
 
                         <div class="row">
-                            <button class="btn btn-primary">Save</button>
+                            <button onclick="saveSaleInvoice()" class="btn btn-primary">Save</button>
                             <button class="btn btn-secondary">Print</button>
                         </div>
                     </div>
@@ -221,13 +219,6 @@
 <script>
 
 
-    <%--var idArray = [];
-    var data = [];
-
-    <g:each in="${salebilllist}" var="sb">
-    idArray.push(${sb.id});
-    data.push(['${sb.finId}', ${sb.serBillId}, ${sb.seriesId}, '${sb.paymentStatus}', '${sb.accountModeId}', '${sb.priorityId}', moment('${sb.entryDate}').format("DD/MM/YYYY"), '${sb.customerId}', '${sb.customerNumber}', ${sb.salesmanId}, '${sb.salesmanComm}', moment('${sb.orderDate}').format("DD/MM/YYYY"), '${sb.refOrderId}', moment('${sb.dueDate}').format("DD/MM/YYYY"), moment('${sb.dispatchDate}').format("DD/MM/YYYY"), '${sb.deliveryManId}', '${sb.totalSqty}', '${sb.totalFqty}', '${sb.totalItems}', '${sb.totalQty}', '${sb.totalDiscount}', '${sb.totalAmount}', '${sb.invoiceTotal}', '${sb.totalGst}', '${sb.userId}', '${sb.balance}', '${sb.grossAmount}', '${sb.taxable}', '${sb.cashDiscount}', '${sb.exempted}', '${sb.totalCgst}', '${sb.totalSgst}', '${sb.totalIgst}', '${sb.gstStatus}', ${sb.billStatus}, ${sb.lockStatus}, ${sb.creditadjAmount}, ${sb.creditIds}, ${sb.referralDoctor}, '${sb.message}', '${sb.financialYear}', ${sb.entityTypeId}, ${sb.entityId}])
-    </g:each> --%>
 
 
     var totalAmt = 0;
@@ -235,10 +226,7 @@
     var products = [];
     var hsnCode = [];
     var customers = [];
-    /* var accountMode = [];
-     var customer = [];
-     var salesman = [];
-     var user = [];*/
+
 
     <g:each in="${products}" var="pd">
     products.push({id:${pd.id}, text: '${pd.productName}'});
@@ -247,23 +235,6 @@
     <g:each in="${products}" var="pd">
     hsnCode.push({id:${pd.id}, text: '${pd.hsnCode}'});
     </g:each>
-
-    <%-- <g:each in="${series}" var="s">
-     series.push({id:${s.id}, text: '${s.seriesName}'});
-     </g:each>
-     <g:each in="${accountMode}" var="am">
-     accountMode.push({id:${am.id}, text: '${am.mode}'});
-     </g:each>
-     <g:each in="${customerList}" var="cl">
-     customer.push({id:${cl.id}, text: '${cl.entityName}'});
-     </g:each>
-     <g:each in="${salesmanList}" var="sl">
-     salesman.push({id:${sl.id}, text: '${sl.userName}'});
-     </g:each>
-     console.log(salesman);
-     <g:each in="${users}" var="u">
-     user.push({id:${u.id}, text: '${u.userName}'});
-     </g:each> --%>
 
     var headerRow = [
         '<strong></strong>',
@@ -295,7 +266,8 @@
         '<strong>GST</strong>',
         'SGST',
         'CGST',
-        'IGST'];
+        'IGST',
+        'id'];
 
     const batchContainer = document.getElementById('batchTable');
     var batchHot;
@@ -307,9 +279,11 @@
     var cgst = 0;
     var sgst = 0;
     var igst = 0;
+    var totalQty = 0;
+    var totalFQty = 0;
     $(document).ready(function () {
         loadTempStockBookData();
-        //$("#customerSelect").select2();
+        $("#customerSelect").select2();
         $('#date').val(moment().format('YYYY-MM-DD'));
         $('#date').attr("readonly");
         <g:each in="${customers}" var="cs">
@@ -638,8 +612,14 @@
         totalCgst = 0;
         totalSgst = 0;
         totalIgst = 0;
+        totalQty = 0;
+        totalFQty = 0;
         var data = hot.getData();
         for (var i = 0; i < data.length; i++) {
+            if (data[i][4])
+                totalQty += data[i][4];
+            if (data[i][5])
+                totalFQty += data[i][5];
             if (data[i][11])
                 totalAmt += data[i][11];
             if (data[i][10])
@@ -656,6 +636,8 @@
         $("#totalSGST").text(totalSgst);
         $("#totalCGST").text(totalCgst);
         $("#totalIGST").text(totalIgst);
+        $("#totalQty").text(totalQty);
+        $("#totalFQty").text(totalFQty);
     }
 
 
@@ -755,6 +737,37 @@
         });
     }
 
+    function saveSaleInvoice()
+    {
+        var customer = $("#customerSelect").val();
+        var series = $("#series").val();
+        var duedate = $("#duedate").val();
+
+        if(!series)
+            alert("Please select series.");
+
+        if(!customer)
+            alert("Please select customer.");
+
+        var saleData = JSON.stringify(hot.getData());
+
+        $.ajax({
+            type: "POST",
+            url: "sale-entry",
+            dataType: 'json',
+            data:{
+                saleData: saleData,
+                customer:customer,
+                series:series,
+                duedate:duedate
+            },
+            success: function (data) {
+                hot.alter("remove_row", row);
+                swal("Success", "Row Deleted", "").fire();
+            }
+        });
+
+    }
     document.addEventListener("keydown", function (event) {
         var ctrl = event.ctrlKey;
         var alt = event.altKey;

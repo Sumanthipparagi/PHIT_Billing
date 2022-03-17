@@ -47,6 +47,14 @@ public class Links
     public static String CITY_MASTER_UPDATE = "api/v1.0/system/city/{id}";
     public static String CITY_MASTER_DELETE = "api/v1.0/system/city/{id}";
 
+    //    Priorty Master
+    public static String PRIORITY_SAVE = "api/v1.0/system/priority";
+    public static String PRIORITY_SHOW = "api/v1.0/system/priority";
+    public static String PRIORITY_DATATABLE = "api/v1.0/system/priority/datatable";
+    public static String PRIORITY_UPDATE = "api/v1.0/system/priority/{id}";
+    public static String PRIORITY_DELETE = "api/v1.0/system/priority/{id}";
+    public static String PRIORITY_BY_ENTITY = "api/v1.0/system/prioritybyentity";
+
 
     /*<-------------------------------------------Facility ------------------------------------------------->*/
 
