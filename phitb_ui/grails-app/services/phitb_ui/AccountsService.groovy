@@ -237,7 +237,8 @@ class AccountsService {
         }
     }
 
-    def getSaleBillCustomerId(String id) {
+//   get Invoice to Unsettled
+    def getUnSaleBillCustomerId(String id) {
         Client client = ClientBuilder.newClient()
         WebTarget target = client.target(new Links().API_GATEWAY)
         try {
@@ -253,6 +254,24 @@ class AccountsService {
         }
     }
 
+    //    get Credit Note to settled
+    def getCNUnsettledCustomerId(String id) {
+        Client client = ClientBuilder.newClient()
+        WebTarget target = client.target(new Links().API_GATEWAY)
+        try {
+            Response apiResponse = target
+                    .path(new Links().CREDIT_UNSETTLED+"/"+ id)
+                    .request(MediaType.APPLICATION_JSON_TYPE)
+                    .get()
+            return apiResponse
+        }
+        catch (Exception ex) {
+            System.err.println('Service :EntityService , action :  getProducts  , Ex:' + ex)
+            log.error('Service :EntityService , action :  getProducts  , Ex:' + ex)
+        }
+    }
+
+    //    get invoice to settled
     def getSaleBillSettledCustomerId(String id) {
         Client client = ClientBuilder.newClient()
         WebTarget target = client.target(new Links().API_GATEWAY)
@@ -269,8 +288,24 @@ class AccountsService {
         }
     }
 
+    //    get Credit Note to settled
+    def getCNsettledCustomerId(String id) {
+        Client client = ClientBuilder.newClient()
+        WebTarget target = client.target(new Links().API_GATEWAY)
+        try {
+            Response apiResponse = target
+                    .path(new Links().CREDIT_SETTLED+"/"+ id)
+                    .request(MediaType.APPLICATION_JSON_TYPE)
+                    .get()
+            return apiResponse
+        }
+        catch (Exception ex) {
+            System.err.println('Service :EntityService , action :  getProducts  , Ex:' + ex)
+            log.error('Service :EntityService , action :  getProducts  , Ex:' + ex)
+        }
+    }
 
-//    settled vocher
+//   move invoice to settled vocher
     def updateSettledVocher(JSONObject jsonObject)
     {
         Form form = UtilsService.jsonToFormDataConverter(jsonObject)
@@ -296,7 +331,7 @@ class AccountsService {
         }
     }
 
-    //    unsettled vocher
+//   move invoice to Unsettled vocher
     def updateunSettledVocher(JSONObject jsonObject)
     {
         Form form = UtilsService.jsonToFormDataConverter(jsonObject)
@@ -321,6 +356,60 @@ class AccountsService {
             log.error('Service :saveStateMaster , action :  save  , Ex:' + ex)
         }
     }
+
+    //   move Credit Note to settled vocher
+    def updateCNSettledVocher(JSONObject jsonObject)
+    {
+        Form form = UtilsService.jsonToFormDataConverter(jsonObject)
+        Client client = ClientBuilder.newClient();
+        WebTarget target = client.target(new Links().API_GATEWAY);
+        GrailsHttpSession session = WebUtils.retrieveGrailsWebRequest().session
+        try
+        {
+            Response apiResponse = target
+                    .path(new Links().SET_CREDIT_STATUS)
+                    .resolveTemplate("id", jsonObject.id)
+                    .resolveTemplate("type", "settled")
+                    .request(MediaType.APPLICATION_JSON_TYPE)
+//                    .post(Entity.entity(jsonObject.toString(),MediaType.APPLICATION_JSON_TYPE))
+                    .post(Entity.form(form))
+            println(apiResponse)
+            return apiResponse
+        }
+        catch (Exception ex)
+        {
+            System.err.println('Service :saveStateMaster , action :  save  , Ex:' + ex)
+            log.error('Service :saveStateMaster , action :  save  , Ex:' + ex)
+        }
+    }
+
+//   move Credit Note to Unsettled vocher
+    def updateCNunSettledVocher(JSONObject jsonObject)
+    {
+        Form form = UtilsService.jsonToFormDataConverter(jsonObject)
+        Client client = ClientBuilder.newClient();
+        WebTarget target = client.target(new Links().API_GATEWAY);
+        GrailsHttpSession session = WebUtils.retrieveGrailsWebRequest().session
+        try
+        {
+            Response apiResponse = target
+                    .path(new Links().SET_CREDIT_STATUS)
+                    .resolveTemplate("id", jsonObject.id)
+                    .resolveTemplate("type", "unsettled")
+                    .request(MediaType.APPLICATION_JSON_TYPE)
+//                    .post(Entity.entity(jsonObject.toString(),MediaType.APPLICATION_JSON_TYPE))
+                    .post(Entity.form(form))
+            println(apiResponse)
+            return apiResponse
+        }
+        catch (Exception ex)
+        {
+            System.err.println('Service :saveStateMaster , action :  save  , Ex:' + ex)
+            log.error('Service :saveStateMaster , action :  save  , Ex:' + ex)
+        }
+    }
+
+
 
     def getReciptById(String id) {
         Client client = ClientBuilder.newClient()

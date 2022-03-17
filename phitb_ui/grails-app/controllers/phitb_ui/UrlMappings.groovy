@@ -393,7 +393,6 @@ class UrlMappings {
 
 
 
-
         /*<-------------------------------------------Accounts------------------------------------------------->*/
 
         //Bank register
@@ -415,16 +414,21 @@ class UrlMappings {
         "/add-recipt"(controller: "reciptDetail", action: 'addRecipt')
         "/print-recipt/$custid/recipt/$id"(controller: "reciptDetail", action: 'printRecipt')
 
-        "/settledvocher/$id"(controller: "reciptDetail", action: 'settledVocher')
-        "/unsettledvocher/$id"(controller: "reciptDetail", action: 'unsettledVocher')
+        "/salesettledvocher/$id"(controller: "reciptDetail", action: 'settledVocher')
+        "/saleunsettledvocher/$id"(controller: "reciptDetail", action: 'unsettledVocher')
+
+        "/creditsettledvocher/$id"(controller: "reciptDetail", action: 'creditSettledVocher')
+        "/creditunsettledvocher/$id"(controller: "reciptDetail", action: 'creditUnsettledVocher')
+
+
         "/getbyentity/$id"(controller: "reciptDetail", action: 'getAllEntityById')
-        "/getallsalebillbycustomer/$id"(controller: "reciptDetail", action: 'getAllSaleBillCustomerId')
-        "/getallsalesettledcustomer/$id"(controller: "reciptDetail", action: 'getAllSaleBillsettled')
+        "/getallunsettledbycustomer/$id"(controller: "reciptDetail", action: 'getAllUNSaleBillCustomerId')
+        "/getallsettledbycustomer/$id"(controller: "reciptDetail", action: 'getAllSaleBillsettled')
 
 //        Payment Details
         "/payments"(controller: "paymentDetail") {
             action = [GET: 'index', POST: 'save']
         }
-
+        "/payments-list/datatable"(controller: "reciptDetail", action: 'dataTable')
     }
 }

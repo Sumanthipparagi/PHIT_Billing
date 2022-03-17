@@ -139,7 +139,7 @@
                     %{--                        </ul>--}%
                     %{--                    </div>--}%
                     <div class="body">
-                        <form action="/recipt" id="form_validation" method="POST" role="form"
+                        <form action="/payments" id="form_validation" method="POST" role="form"
                               class="entityRegisterForm" enctype="multipart/form-data">
                             <div class="row clearfix">
                                 <div class="col-lg-12 form-group  form-float">

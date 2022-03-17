@@ -17,7 +17,7 @@ class PaymentDetailController {
         ArrayList<String> accountMode = new AccountModeController().show() as ArrayList
         ArrayList<String> wallet = new WalletController().show() as ArrayList
         ArrayList<String> saleinvoice = new SalebillDetailsController().show() as ArrayList
-        render(view: "/accounts/recipt/customer-recipt", model: [entity: entity, bank: bank, accountMode: accountMode,
+        render(view: "/accounts/recipt/payments", model: [entity: entity, bank: bank, accountMode: accountMode,
                                                                  wallet: wallet, saleinvoice: saleinvoice])
     }
 
@@ -82,6 +82,9 @@ class PaymentDetailController {
             response.status = 400
         }
     }
+
+
+
 
     def dataTable()
     {

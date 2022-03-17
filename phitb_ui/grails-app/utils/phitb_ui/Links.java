@@ -345,6 +345,17 @@ public class Links
     public static String WALLET_DELETE = "api/v1.0/accounts/wallet/{id}";
 
 
+    //Credit
+    public static String CREDIT_SHOW = "api/v1.0/accounts/creditjv";
+    public static String CREDIT_SAVE = "api/v1.0/accounts/creditjv";
+    public static String CREDIT_UNSETTLED = "api/v1.0/accounts/creditjvunbycustomer";
+    public static String CREDIT_SETTLED = "api/v1.0/accounts/creditjvsettledbycustomer";
+    public static String CREDIT_DATATABLE = "api/v1.0/accounts/creditjv/datatable";
+    public static String CREDIT_UPDATE = "api/v1.0/accounts/creditjv/{id}";
+    public static String CREDIT_DELETE = "api/v1.0/accounts/creditjv/{id}";
+    public static String SET_CREDIT_STATUS = "api/v1.0/accounts/setcreditstatus/{id}/type/{type}";
+
+
     /*<--------------------------------------------Purchase ------------------------------------------------->*/
     //purchase product details
     public static String PURCHASE_PRODUCT_SHOW = "api/v1.0/purchase/productdetail";

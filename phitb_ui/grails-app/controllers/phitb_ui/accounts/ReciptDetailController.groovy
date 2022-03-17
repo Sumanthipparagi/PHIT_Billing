@@ -173,16 +173,20 @@ class ReciptDetailController
     }
 
 
-    def getAllSaleBillCustomerId()
+    def getAllUNSaleBillCustomerId()
     {
         try
         {
             JSONArray jsonArray = new JSONArray();
-            def apiResponse = new AccountsService().getSaleBillCustomerId(params.id)
-            if (apiResponse.status == 200)
+            def salebill  = new AccountsService().getUnSaleBillCustomerId(params.id)
+            def creditNote = new AccountsService().getCNUnsettledCustomerId(params.id)
+            if (salebill.status == 200 && creditNote.status)
             {
-                JSONArray responseArry = new JSONArray(apiResponse.readEntity(String.class))
-                respond responseArry, formats: ['json'], status: 200
+                JSONArray salearray = new JSONArray(salebill.readEntity(String.class))
+                JSONArray creditNoteArry = new JSONArray(creditNote.readEntity(String.class))
+                jsonArray.add(salearray)
+                jsonArray.add(creditNoteArry)
+                respond jsonArray, formats: ['json'], status: 200
             }
             else
             {
@@ -202,15 +206,68 @@ class ReciptDetailController
         try
         {
             JSONArray jsonArray = new JSONArray();
-            def apiResponse = new AccountsService().getSaleBillSettledCustomerId(params.id)
-            if (apiResponse.status == 200)
+            def salebill  = new AccountsService().getSaleBillSettledCustomerId(params.id)
+            def creditNote = new AccountsService().getCNsettledCustomerId(params.id)
+            if (salebill.status == 200 && creditNote.status)
             {
-                JSONArray responseArry = new JSONArray(apiResponse.readEntity(String.class))
-                respond responseArry, formats: ['json'], status: 200
+                JSONArray salearray = new JSONArray(salebill.readEntity(String.class))
+                JSONArray creditNoteArry = new JSONArray(creditNote.readEntity(String.class))
+                jsonArray.add(salearray)
+                jsonArray.add(creditNoteArry)
+                respond jsonArray, formats: ['json'], status: 200
             }
             else
             {
                 response.status = 400
+            }
+        }
+        catch (Exception ex)
+        {
+            System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
+            log.error('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
+            response.status = 400
+        }
+    }
+
+
+    def creditSettledVocher()
+    {
+        try
+        {
+            JSONObject jsonObject = new JSONObject(params)
+            def apiResponse = new AccountsService().updateCNSettledVocher(jsonObject)
+            if (apiResponse?.status == 200)
+            {
+                JSONObject obj = new JSONObject(apiResponse.readEntity(String.class))
+                respond obj, formats: ['json'], status: 200
+            }
+            else
+            {
+                response.status = apiResponse?.status ?: 400
+            }
+        }
+        catch (Exception ex)
+        {
+            System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
+            log.error('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
+            response.status = 400
+        }
+    }
+
+    def creditUnsettledVocher()
+    {
+        try
+        {
+            JSONObject jsonObject = new JSONObject(params)
+            def apiResponse = new AccountsService().updateCNunSettledVocher(jsonObject)
+            if (apiResponse?.status == 200)
+            {
+                JSONObject obj = new JSONObject(apiResponse.readEntity(String.class))
+                respond obj, formats: ['json'], status: 200
+            }
+            else
+            {
+                response.status = apiResponse?.status ?: 400
             }
         }
         catch (Exception ex)
@@ -230,7 +287,8 @@ class ReciptDetailController
             if (apiResponse?.status == 200)
             {
                 JSONObject obj = new JSONObject(apiResponse.readEntity(String.class))
-                respond obj, formats: ['json'], status: 200
+//                respond obj, formats: ['json'], status: 200
+                redirect(uri:'/recipt-list')
             }
             else
             {
