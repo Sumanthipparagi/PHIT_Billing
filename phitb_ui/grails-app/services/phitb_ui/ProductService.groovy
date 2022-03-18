@@ -52,7 +52,16 @@ class ProductService {
                     .request(MediaType.APPLICATION_JSON_TYPE)
                     .get()
 
-            return apiResponse
+            if (apiResponse?.status == 200)
+            {
+                JSONArray jsonArray = new JSONArray(apiResponse.readEntity(String.class));
+                ArrayList<String> arrayList = new ArrayList<>(jsonArray)
+                return arrayList
+            }
+            else
+            {
+                return []
+            }
         }
         catch (Exception ex) {
             System.err.println('Service :ProductService , action :  getProducts  , Ex:' + ex)

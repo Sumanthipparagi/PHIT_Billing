@@ -19,7 +19,7 @@ class SalesService {
     def getSaleBillDetails() {
         Client client = ClientBuilder.newClient();
         WebTarget target = client.target(new Links().API_GATEWAY);
-        GrailsHttpSession session = WebUtils.retrieveGrailsWebRequest().session
+
         try {
             Response apiResponse = target
                     .path(new Links().SALE_BILL_SHOW)
@@ -37,8 +37,8 @@ class SalesService {
     def saveSaleBill(JSONObject jsonObject)
     {
         Client client = ClientBuilder.newClient();
-        WebTarget target = client.target(new Links().API_GATEWAY);
-        GrailsHttpSession session = WebUtils.retrieveGrailsWebRequest().session
+       // WebTarget target = client.target(new Links().API_GATEWAY);
+        WebTarget target = client.target("http://localhost:8083");
         try
         {
             println(jsonObject)
@@ -60,7 +60,7 @@ class SalesService {
     {
         Client client = ClientBuilder.newClient().register(JacksonFeature.class)
         WebTarget target = client.target(new Links().API_GATEWAY);
-        GrailsHttpSession session = WebUtils.retrieveGrailsWebRequest().session
+
         try
         {
             Response apiResponse = target

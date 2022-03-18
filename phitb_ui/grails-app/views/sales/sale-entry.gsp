@@ -733,12 +733,19 @@
         var customer = $("#customerSelect").val();
         var series = $("#series").val();
         var duedate = $("#duedate").val();
+        duedate = moment(duedate, 'YYYY-MM-DD').toDate();
+        duedate = moment(duedate).format('DD/MM/YYYY');
+        var priority = $("#priority").val();
 
-        if(!series)
+        if(!series) {
             alert("Please select series.");
+            return;
+        }
 
-        if(!customer)
+        if(!customer) {
             alert("Please select customer.");
+            return;
+        }
 
         var saleData = JSON.stringify(hot.getData());
 
@@ -750,7 +757,8 @@
                 saleData: saleData,
                 customer:customer,
                 series:series,
-                duedate:duedate
+                duedate:duedate,
+                priority:priority
             },
             success: function (data) {
                 hot.alter("remove_row", row);

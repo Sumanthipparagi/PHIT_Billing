@@ -534,6 +534,7 @@
                             <h6>${session.getAttribute("userName")}</h6>
 
                             <p class="m-b-0">${session.getAttribute("entityName")}</p>
+                            <small>Financial Year: ${session.getAttribute("financialYear")}</small>
                         </div>
                     </div>
                 </li>

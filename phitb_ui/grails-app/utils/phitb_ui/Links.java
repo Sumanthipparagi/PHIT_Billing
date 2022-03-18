@@ -135,6 +135,7 @@ public class Links
     public static String FINANCIAL_YEAR_DATATABLE = "api/v1.0/entity/financialyearmaster/datatable";
     public static String FINANCIAL_YEAR_UPDATE = "api/v1.0/entity/financialyearmaster/{id}";
     public static String FINANCIAL_YEAR_DELETE = "api/v1.0/entity/financialyearmaster/{id}";
+    public static String FINANCIAL_YEAR_ENTITY = "api/v1.0/entity/financialyearmasterbyentity";
 
 
     //Region Register

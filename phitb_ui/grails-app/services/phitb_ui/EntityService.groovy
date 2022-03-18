@@ -487,6 +487,37 @@ class EntityService {
      * @param jsonObject
      * @return
      */
+    def getFinancialYearByEntity(String entityId)
+    {
+        Client client = ClientBuilder.newClient()
+        WebTarget target = client.target(new Links().API_GATEWAY)
+
+        try
+        {
+            Response apiResponse = target
+                    .path(new Links().FINANCIAL_YEAR_ENTITY + "/" + entityId)
+                    .request(MediaType.APPLICATION_JSON_TYPE)
+                    .get()
+            if(apiResponse.status == 200)
+            {
+                JSONArray jsonArray = new JSONArray(apiResponse.readEntity(String.class))
+                return jsonArray
+            }
+            else
+                return null
+        }
+        catch (Exception ex)
+        {
+            System.err.println('Service :EntityService , action :  showFinancialYear  , Ex:' + ex)
+            log.error('Service :EntityService , action :  showFinancialYear  , Ex:' + ex)
+        }
+    }
+
+    /**
+     *
+     * @param jsonObject
+     * @return
+     */
     def showFinancialYear(JSONObject jsonObject)
     {
         Client client = ClientBuilder.newClient()
