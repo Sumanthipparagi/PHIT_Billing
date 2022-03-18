@@ -215,6 +215,16 @@ class SaleEntryController {
                 stockBook.put("remainingQty", tmpStockBook.get("remainingQty"))
                 stockBook.put("remainingFreeQty", tmpStockBook.get("remainingFreeQty"))
                 stockBook.put("remainingReplQty", tmpStockBook.get("remainingReplQty"))
+                String expDate = stockBook.get("expDate").toString().split("T")[0]
+                String purcDate = stockBook.get("purcDate").toString().split("T")[0]
+                String manufacturingDate = stockBook.get("manufacturingDate").toString().split("T")[0]
+                SimpleDateFormat sdf1 = new SimpleDateFormat("yyyy-MM-dd")
+                expDate = sdf1.parse(expDate).format("dd/MM/yyyy")
+                purcDate = sdf1.parse(purcDate).format("dd/MM/yyyy")
+                manufacturingDate = sdf1.parse(manufacturingDate).format("dd/MM/yyyy")
+                stockBook.put("expDate", expDate)
+                stockBook.put("purcDate", purcDate)
+                stockBook.put("manufacturingDate", manufacturingDate)
                 def apiRes = new InventoryService().updateStockBook(stockBook)
                 if(apiRes.status == 200) {
                     //clear tempstockbook

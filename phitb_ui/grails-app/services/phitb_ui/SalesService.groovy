@@ -38,8 +38,7 @@ class SalesService {
     def saveSaleBill(JSONObject jsonObject)
     {
         Client client = ClientBuilder.newClient();
-        //WebTarget target = client.target(new Links().API_GATEWAY);
-        WebTarget target = client.target("http://localhost:8083");
+        WebTarget target = client.target(new Links().API_GATEWAY);
         try
         {
             println(jsonObject)
@@ -83,8 +82,7 @@ class SalesService {
     def saveSaleProductDetail(JSONObject jsonObject)
     {
         Client client = ClientBuilder.newClient();
-        // WebTarget target = client.target(new Links().API_GATEWAY);
-        WebTarget target = client.target("http://localhost:8083");
+        WebTarget target = client.target(new Links().API_GATEWAY);
         try
         {
             println(jsonObject)
@@ -104,8 +102,7 @@ class SalesService {
     def getRecentSaleBill(String financialYear, String entityId)
     {
         Client client = ClientBuilder.newClient();
-       // WebTarget target = client.target(new Links().API_GATEWAY);
-        WebTarget target = client.target("http://localhost:8083");
+        WebTarget target = client.target(new Links().API_GATEWAY);
         try
         {
             Response apiResponse = target
@@ -134,8 +131,7 @@ class SalesService {
 
     def getSaleBillDetailsById(String id) {
         Client client = ClientBuilder.newClient();
-     //   WebTarget target = client.target(new Links().API_GATEWAY);
-        WebTarget target = client.target("http://localhost:8083");
+        WebTarget target = client.target(new Links().API_GATEWAY);
         try {
             Response apiResponse = target
                     .path(new Links().SALE_BILL_SHOW+"/"+id)
@@ -157,8 +153,7 @@ class SalesService {
 
     def getSaleProductDetails(String id) {
         Client client = ClientBuilder.newClient();
-        //   WebTarget target = client.target(new Links().API_GATEWAY);
-        WebTarget target = client.target("http://localhost:8083");
+        WebTarget target = client.target(new Links().API_GATEWAY);
         try {
             Response apiResponse = target
                     .path(new Links().SALE_PRODUCT_OF_BILL+"/"+id)
