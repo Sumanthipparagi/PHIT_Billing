@@ -318,16 +318,7 @@ class EntityRegisterController
 
     def getEnitityById(String id)
     {
-        def apiResponse = new EntityService().getEntityById(id)
-        if(apiResponse.status==200)
-        {
-            JSONObject obj = new JSONObject(apiResponse.readEntity(String.class))
-            return obj
-        }
-        else {
-
-            return []
-        }
+        return new EntityService().getEntityById(id)
     }
 
 }

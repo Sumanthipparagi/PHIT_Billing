@@ -1526,7 +1526,7 @@ class EntityService {
         }
     }
 
-    def getEntityById(String id) {
+/*    def getEntityById(String id) {
         Client client = ClientBuilder.newClient()
         WebTarget target = client.target(new Links().API_GATEWAY)
         try {
@@ -1540,7 +1540,7 @@ class EntityService {
             System.err.println('Service :EntityService , action :  getProducts  , Ex:' + ex)
             log.error('Service :EntityService , action :  getProducts  , Ex:' + ex)
         }
-    }
+    }*/
 
 
     def getTaxRegister(String id = null) {
