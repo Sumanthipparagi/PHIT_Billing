@@ -308,6 +308,10 @@ public class Links
     public static String SALE_BILL_DATATABLE = "api/v1.0/sales/salebilldetails/datatable";
     public static String SALE_BILL_UPDATE = "api/v1.0/sales/salebilldetails/{id}";
     public static String SALE_BILL_DELETE = "api/v1.0/sales/salebilldetails/{id}";
+    public static String SALE_BILL_UNSETTLED = "api/v1.0/sales/salebillunsettledbycustomer";
+    public static String SALE_BILL_SETTLED = "api/v1.0/sales/salebillsettledbycustomer";
+    public static String SALE_BILL_PAYMENT = "api/v1.0/sales/salebillbypaymentstatus";
+    public static String SET_PAYMENT_BILL = "api/v1.0/sales/setpaymentstatus/{id}/type/{type}";
     public static String SALE_BILL_RECENT = "api/v1.0/sales/salebilldetails/getrecent";
 
 
@@ -338,7 +342,7 @@ public class Links
 
 
 
-    /*<--------------------------------------------Bank Register ------------------------------------------------->*/
+    /*<--------------------------------------------Accounts ------------------------------------------------->*/
 
     //Bank Register
     public static String BANK_REGISTER_SHOW = "api/v1.0/accounts/bankregister";
@@ -346,6 +350,42 @@ public class Links
     public static String BANK_REGISTER_DATATABLE = "api/v1.0/accounts/bankregister/datatable";
     public static String BANK_REGISTER_UPDATE = "api/v1.0/accounts/bankregister/{id}";
     public static String BANK_REGISTER_DELETE = "api/v1.0/accounts/bankregister/{id}";
+
+
+    //Accounts
+    public static String RECIPT_DETAIL = "api/v1.0/accounts/receiptdetails";
+    public static String RECIPT_DETAIL_SAVE = "api/v1.0/accounts/receiptdetails";
+    public static String RECIPT_DETAIL_DATATABLE = "api/v1.0/accounts/receiptdetails/datatable";
+    public static String RECIPT_DETAIL_UPDATE = "api/v1.0/accounts/receiptdetails/{id}";
+    public static String RECIPT_DETAIL_DELETE = "api/v1.0/accounts/receiptdetails/{id}";
+
+
+    //Wallet
+    public static String WALLET_SHOW = "api/v1.0/accounts/wallet";
+    public static String WALLET_SAVE = "api/v1.0/accounts/wallet";
+    public static String WALLET_DATATABLE = "api/v1.0/accounts/wallet/datatable";
+    public static String WALLET_UPDATE = "api/v1.0/accounts/wallet/{id}";
+    public static String WALLET_DELETE = "api/v1.0/accounts/wallet/{id}";
+
+
+
+    //Wallet
+    public static String PAYMENT_SHOW = "api/v1.0/accounts/paymentdetails";
+    public static String PAYMENT_SAVE = "api/v1.0/accounts/paymentdetails";
+    public static String PAYMENT_DATATABLE = "api/v1.0/accounts/paymentdetails/datatable";
+    public static String PAYMENT_UPDATE = "api/v1.0/accounts/paymentdetails/{id}";
+    public static String PAYMENT_DELETE = "api/v1.0/accounts/paymentdetails/{id}";
+
+
+    //Credit
+    public static String CREDIT_SHOW = "api/v1.0/accounts/creditjv";
+    public static String CREDIT_SAVE = "api/v1.0/accounts/creditjv";
+    public static String CREDIT_UNSETTLED = "api/v1.0/accounts/creditjvunbycustomer";
+    public static String CREDIT_SETTLED = "api/v1.0/accounts/creditjvsettledbycustomer";
+    public static String CREDIT_DATATABLE = "api/v1.0/accounts/creditjv/datatable";
+    public static String CREDIT_UPDATE = "api/v1.0/accounts/creditjv/{id}";
+    public static String CREDIT_DELETE = "api/v1.0/accounts/creditjv/{id}";
+    public static String SET_CREDIT_STATUS = "api/v1.0/accounts/setcreditstatus/{id}/type/{type}";
 
 
     /*<--------------------------------------------Purchase ------------------------------------------------->*/

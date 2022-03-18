@@ -3,7 +3,6 @@ package phitb_accounts
 import gorm.logical.delete.LogicalDelete
 
 class BankRegister implements LogicalDelete<BankRegister> {
-
     String bankName
     long cityId
     String ifscCode

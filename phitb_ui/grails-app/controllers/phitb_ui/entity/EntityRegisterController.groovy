@@ -1,8 +1,10 @@
 package phitb_ui.entity
 
+import grails.converters.JSON
 import groovy.json.JsonSlurper
 import org.grails.web.json.JSONArray
 import org.grails.web.json.JSONObject
+import phitb_ui.AccountsService
 import phitb_ui.Constants
 import phitb_ui.EntityService
 import phitb_ui.Links
@@ -312,4 +314,20 @@ class EntityRegisterController
             response.status = 400
         }
     }
+
+
+    def getEnitityById(String id)
+    {
+        def apiResponse = new EntityService().getEntityById(id)
+        if(apiResponse.status==200)
+        {
+            JSONObject obj = new JSONObject(apiResponse.readEntity(String.class))
+            return obj
+        }
+        else {
+
+            return []
+        }
+    }
+
 }

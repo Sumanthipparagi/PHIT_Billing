@@ -58,7 +58,6 @@ class BankRegisterController {
 
     }
 
-
     def dataTable()
     {
         try
@@ -161,7 +160,7 @@ class BankRegisterController {
     {
         try
         {
-            def apiResponse = new ProductService().getDivisions()
+            def apiResponse = new AccountsService().getBanks()
             if (apiResponse?.status == 200)
             {
                 JSONArray jsonArray = new JSONArray(apiResponse.readEntity(String.class));

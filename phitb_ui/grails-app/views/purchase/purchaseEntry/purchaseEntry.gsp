@@ -138,7 +138,8 @@
 
         <div class="row clearfix">
             <div class="col-lg-12" style="margin-bottom: 10px;">
-                <p style="margin: 0; font-size: 10px;">Keyboard Shortcuts - Delete Row: <strong>Ctrl+Alt+D</strong>, Reset Table: <strong>Ctrl+Alt+R</strong>
+                <p style="margin: 0; font-size: 10px;">Keyboard Shortcuts - Delete Row:
+                    <strong><kbd>Ctrl</kbd>+<kbd>Alt</kbd>+<kbd>D</kbd></strong>, Reset Table: <strong>Ctrl+Alt+R</strong>
                 </p>
             </div>
         </div>
@@ -878,7 +879,6 @@
         };
 
         Select2Editor.prototype.focus = function () {
-
             this.instance.listen();
 
             // DO NOT CALL THE BASE TEXTEDITOR FOCUS METHOD HERE, IT CAN MAKE THIS EDITOR BEHAVE POORLY AND HAS NO PURPOSE WITHIN THE CONTEXT OF THIS EDITOR

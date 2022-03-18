@@ -41,8 +41,13 @@ class UrlMappings {
             "/creditjv(.$format)?"(controller: 'creditJv') { action = [GET: 'index', POST: 'save'] }
             "/creditjv/datatable(.$format)?"(controller: 'creditJv') { action = [GET: 'dataTable'] }
             "/creditjv/$id(.$format)?"(controller: 'creditJv') { action = [GET: 'show', PUT: 'update', DELETE: 'delete'] }
-            "creditjvbyentity/$id(.$format)?"(controller: 'creditJv') { action = [GET: 'getByEntityId'] }
+            "/creditjvbyentity/$id(.$format)?"(controller: 'creditJv') { action = [GET: 'getByEntityId'] }
+            "/creditjvunbycustomer/$id(.$format)?"(controller: 'creditJv') { action = [GET: 'getAllUnsettledByCustId'] }
+            "/creditjvsettledbycustomer/$id(.$format)?"(controller: 'creditJv') { action = [GET: 'getAllsettledByCustId'] }
             "/creditjvbydays/$days(.$format)?"(controller: 'creditJv') { action = [GET: 'getAllByDays'] }
+            "/setcreditstatus/$id/type/$type(.$format)?"(controller: 'creditJv') {
+                action = [POST: 'updateStatus']
+            }
 
             //credit jv transaction detail
             "/creditjvtransactiondetail(.$format)?"(controller: 'creditJvTransactionDetail') { action = [GET: 'index', POST: 'save'] }

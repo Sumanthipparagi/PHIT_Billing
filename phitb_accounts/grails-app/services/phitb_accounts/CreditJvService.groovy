@@ -53,6 +53,32 @@ class CreditJvService {
         }
     }
 
+
+    def getAllsettledByCustId(String id)
+    {
+        if (!id)
+        {
+            return CreditJv.findAll()
+        }
+        else
+        {
+            return CreditJv.findAllByReferenceIdAndStatus(id,1)
+        }
+    }
+
+
+    def getAllUnsettledByCustId(String id)
+    {
+        if (!id)
+        {
+            return CreditJv.findAll()
+        }
+        else
+        {
+            return CreditJv.findAllByReferenceIdAndStatus(id,0)
+        }
+    }
+
     CreditJv get(String id) {
         return CreditJv.findById(Long.parseLong(id))
     }

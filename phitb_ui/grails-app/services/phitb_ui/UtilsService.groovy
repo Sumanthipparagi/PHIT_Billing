@@ -7,8 +7,11 @@ import org.springframework.web.multipart.MultipartFile
 import javax.ws.rs.core.Form
 import java.awt.Graphics2D
 import java.awt.image.BufferedImage
+import java.text.DateFormat
 import java.text.ParseException
 import java.text.SimpleDateFormat
+import java.util.ArrayList;
+import java.util.Iterator;
 
 @Transactional
 class UtilsService {
@@ -134,7 +137,7 @@ class UtilsService {
     static boolean isAllowedFileType(String fileType)
     {
         String[] fileTypes = ["jpg", "jpeg", "png", "bmp", "gif", "pdf", "doc", "docx", "xls", "xlsx", "ppt", "pptx"]
-        return fileTypes.contains(fileType.toLowerCase())
+        return fileTypes.contains(fileType.toLowerCase());
     }
 
     static Form jsonToFormDataConverter(JSONObject json)
@@ -159,14 +162,29 @@ class UtilsService {
     {
         if (permittedFeaturesString != null)
         {
-            ArrayList<String> permittedFeatures = new EntityService().getFeatureList(permittedFeaturesString).name
+            ArrayList<String> permittedFeatures = new EntityService().getFeatureList(permittedFeaturesString).name;
             if (permittedFeatures.contains(featureName))
             {
-                return true
+                return true;
             }
         }
         return false
     }
+
+
+    static String dateFormater(String date)
+    {
+        DateFormat df = new SimpleDateFormat("yyyy-MM-dd'T'hh:mm:ssZ");
+        Date result;
+        result = df.parse(date);
+        System.out.println("date:"+result); //prints date in current locale
+        SimpleDateFormat sdf = new SimpleDateFormat("dd-mm-yyyy");
+        sdf.setTimeZone(TimeZone.getTimeZone("GMT"));
+        String foramtedDate = sdf.format(result) //prints date in the format sdf
+        return foramtedDate
+    }
+
+
 
 //    static FormDataMultiPart jsonToMultipartFormDataConverter(JSONObject json)
 //    {

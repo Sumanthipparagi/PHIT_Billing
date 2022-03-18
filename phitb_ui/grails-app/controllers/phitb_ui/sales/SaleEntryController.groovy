@@ -257,6 +257,56 @@ class SaleEntryController {
                                                     series:series, entity:entity])
     }
 
+    def show()
+    {
+        try
+        {
+            def apiResponse = new SalesService().getSaleInvoice()
+            if (apiResponse?.status == 200)
+            {
+                JSONArray jsonArray = new JSONArray(apiResponse.readEntity(String.class));
+                ArrayList<String> arrayList = new ArrayList<>(jsonArray)
+                return arrayList
+            }
+            else
+            {
+                return []
+            }
+        }
+        catch (Exception ex)
+        {
+            System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
+            log.error('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
+            response.status = 400
+        }
+    }
+
+
+    def showById(String id)
+    {
+        try
+        {
+            def apiResponse = new SalesService().getSaleInvoiceById(id)
+            if (apiResponse?.status == 200)
+            {
+                JSONArray jsonArray = new JSONArray(apiResponse.readEntity(String.class));
+                ArrayList<String> arrayList = new ArrayList<>(jsonArray)
+                return arrayList
+            }
+            else
+            {
+                return []
+            }
+        }
+        catch (Exception ex)
+        {
+            System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
+            log.error('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
+            response.status = 400
+        }
+    }
+
+
     def saleBill()
     {
         render(view: '/sales/salebillDetails/saleBill')
