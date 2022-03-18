@@ -1,7 +1,9 @@
 package phitb_ui.sales
 
+import grails.converters.JSON
 import org.grails.web.json.JSONArray
 import org.grails.web.json.JSONObject
+import phitb_ui.EntityService
 import phitb_ui.InventoryService
 import phitb_ui.SalesService
 import phitb_ui.SystemService
@@ -42,12 +44,28 @@ class SaleEntryController {
         SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy")
         JSONObject saleBillDetails = new JSONObject()
         JSONArray saleProductDetails = new JSONArray()
+        String entityId = session.getAttribute("entityId").toString()
         String customerId = params.customer
         String priorityId = params.priority
         String seriesId = params.series
         String duedate = params.duedate
-        String finId = session.getAttribute("finId")
+        String message = params.message
+        if(!message)
+            message = "NA"
+        long finId = 0
+        long serBillId = 0
         String financialYear = session.getAttribute("financialYear")
+        def recentSaleBill = new SalesService().getRecentSaleBill(financialYear, entityId)
+        def series = new EntityService().getSeriesById(seriesId)
+        if(recentSaleBill != null)
+        {
+            finId += recentSaleBill.get("finId")
+            serBillId += recentSaleBill.get("serBillId")
+        }
+        else {
+            finId = 1
+            serBillId = series.get("saleId")
+        }
         long totalSqty = 0
         long totalFqty = 0
         double totalAmount = 0.00
@@ -85,8 +103,41 @@ class SaleEntryController {
 
             def tmpStockBook = new InventoryService().getTempStocksById(Long.parseLong(tempStockRowId))
             def stockBook = new InventoryService().getStockBookById(Long.parseLong(tmpStockBook.originalId))
-            def product = new ProductService().getProductById(stockBook.productId.toString())
+            //def product = new ProductService().getProductById(stockBook.productId.toString())
 
+            JSONObject saleProductDetail = new JSONObject()
+            saleProductDetail.put("finId", finId)
+            saleProductDetail.put("billId",0)
+            saleProductDetail.put("billType",0)
+            saleProductDetail.put("serBillId",0)
+            saleProductDetail.put("seriesId", seriesId)
+            saleProductDetail.put("productId", productId)
+            saleProductDetail.put("batchNumber", batchNumber)
+            saleProductDetail.put("expiryDate", expDate)
+            saleProductDetail.put("sqty", saleQty)
+            saleProductDetail.put("freeQty", freeQty)
+            saleProductDetail.put("repQty", 0)
+            saleProductDetail.put("pRate", 0) //TODO: to be changed
+            saleProductDetail.put("sRate", saleRate)
+            saleProductDetail.put("mrp", mrp)
+            saleProductDetail.put("discount", discount)
+            saleProductDetail.put("gstAmount", gst)
+            saleProductDetail.put("sgstAmount", sgst)
+            saleProductDetail.put("cgstAmount", cgst)
+            saleProductDetail.put("igstAmount", igst)
+            saleProductDetail.put("gstId", 1) //TODO: to be changed
+            saleProductDetail.put("amount", value)
+            saleProductDetail.put("reason", "") //TODO: to be changed
+            saleProductDetail.put("fridgeId", 0) //TODO: to be changed
+            saleProductDetail.put("kitName", 0) //TODO: to be changed
+            saleProductDetail.put("saleFinId", "") //TODO: to be changed
+            saleProductDetail.put("redundantBatch", 0) //TODO: to be changed
+            saleProductDetail.put("status", 0)
+            saleProductDetail.put("syncStatus", 0)
+            saleProductDetail.put("financialYear", financialYear)
+            saleProductDetail.put("entityId", entityId)
+            saleProductDetail.put("entityTypeId", session.getAttribute("entityTypeId").toString())
+            saleProductDetails.add(saleProductDetail)
 
             //save to sale transaction log
             //save to sale transportation details
@@ -97,7 +148,7 @@ class SaleEntryController {
         String entryDate = sdf.format(new Date())
         String orderDate = sdf.format(new Date())
         //save to sale bill details
-        saleBillDetails.put("serBillId", "1") //TODO: to be added
+        saleBillDetails.put("serBillId", serBillId)
         saleBillDetails.put("customerId", customerId)
         saleBillDetails.put("customerNumber", 0) //TODO: to be changed
         saleBillDetails.put("finId", finId)
@@ -112,7 +163,7 @@ class SaleEntryController {
         saleBillDetails.put("dispatchDate", sdf.format(new Date())) //TODO: to be changed
         saleBillDetails.put("salesmanId", "0") //TODO: to be changed
         saleBillDetails.put("salesmanComm", "0") //TODO: to be changed
-        saleBillDetails.put("refOrderId", "0") //TODO: to be changed
+        saleBillDetails.put("refOrderId", "") //TODO: to be changed this is for sale order conversion
         saleBillDetails.put("deliveryManId", "0") //TODO: to be changed
         saleBillDetails.put("accountModeId", "0") //TODO: to be changed
         saleBillDetails.put("totalSqty", totalSqty)
@@ -125,17 +176,17 @@ class SaleEntryController {
         saleBillDetails.put("totalItems", totalSqty + totalFqty)
         saleBillDetails.put("totalDiscount", totalDiscount)
         saleBillDetails.put("grossAmount", totalAmount + totalDiscount) //TODO: to be checked once
-        saleBillDetails.put("invoiceTotal", totalAmount)
+        saleBillDetails.put("invoiceTotal", totalAmount) //TODO: adjusted amount
         saleBillDetails.put("totalAmount", totalAmount)
-        saleBillDetails.put("balance", 0) //TODO: to be changed
-        saleBillDetails.put("entityId", session.getAttribute("entityId"))
+        saleBillDetails.put("balance", totalAmount)
+        saleBillDetails.put("entityId", entityId)
         saleBillDetails.put("entityTypeId", session.getAttribute("entityTypeId"))
         saleBillDetails.put("createdUser", session.getAttribute("userId"))
         saleBillDetails.put("modifiedUser", session.getAttribute("userId"))
-        saleBillDetails.put("message", "test message") //TODO: to be changed
+        saleBillDetails.put("message", message) //TODO: to be changed
         saleBillDetails.put("gstStatus", "0") //TODO: to be changed
-        saleBillDetails.put("billStatus", "TRANSIT") //TODO: to be changed
-        saleBillDetails.put("lockStatus", "0") //TODO: to be changed
+        saleBillDetails.put("billStatus", "ACTIVE") //TODO: to be changed
+        saleBillDetails.put("lockStatus", 0) //TODO: to be changed
         saleBillDetails.put("syncStatus", "0") //TODO: to be changed
         saleBillDetails.put("creditadjAmount", 0) //TODO: to be changed
         saleBillDetails.put("creditIds", "0") //TODO: to be changed
@@ -147,7 +198,25 @@ class SaleEntryController {
         Response response = new SalesService().saveSaleBill(saleBillDetails)
         if(response.status == 200)
         {
+            def saleBillDetail = new JSONObject(response.readEntity(String.class))
             //save to sale product details
+            for (JSONObject saleProductDetail : saleProductDetails) {
+                saleProductDetail.put("billId",saleBillDetail.get("id"))
+                saleProductDetail.put("billType",0) //0 Sale, 1 Purchase
+                saleProductDetail.put("serBillId",saleBillDetail.get("serBillId"))
+                def resp = new SalesService().saveSaleProductDetail(saleProductDetail)
+
+                if(resp.status == 200)
+                    println("Product Detail Saved")
+                else {
+                    println("Product Detail Failed")
+                }
+            }
+            respond saleBillDetail, formats: ['json']
+        }
+        else
+        {
+            response.status == 400
         }
     }
 

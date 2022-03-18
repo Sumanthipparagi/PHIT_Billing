@@ -177,7 +177,7 @@
                             </div>
 
                             <div class="col-md-6">
-                                Inv No: <span class="invno"></span>
+                                Inv No: <span id="invNo"></span>
                             </div>
                         </div>
 
@@ -761,8 +761,13 @@
                 priority:priority
             },
             success: function (data) {
-                hot.alter("remove_row", row);
-                swal("Success", "Row Deleted", "").fire();
+                //hot.alter("remove_row", row);
+                swal("Success", "Sale Invoice Generated", "");
+                var datepart = data.entryDate.split("T")[0];
+                var month = datepart.split("-")[1];
+                var year = datepart.split("-")[0];
+                var invoiceNumber = "S/"+month+year+"/SC"+data.serBillId;
+                $("#invNo").html("<p><strong>"+invoiceNumber+"</strong></p>");
             }
         });
 

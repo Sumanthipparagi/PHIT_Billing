@@ -1586,6 +1586,31 @@ class EntityService {
         }
     }
 
+    def getSeriesById(String id) {
+        Client client = ClientBuilder.newClient()
+        WebTarget target = client.target(new Links().API_GATEWAY)
+
+        try {
+
+            Response apiResponse = target
+                    .path(new Links().SERIES_MASTER_SHOW + "/"+id)
+                    .request(MediaType.APPLICATION_JSON_TYPE)
+                    .get()
+
+            if(apiResponse.status == 200)
+            {
+                JSONObject jsonObject = new JSONObject(apiResponse.readEntity(String.class))
+                return jsonObject
+            }
+            else
+                return null
+        }
+        catch (Exception ex) {
+            System.err.println('Service :EntityService , action :  getSeries  , Ex:' + ex)
+            log.error('Service :EntityService , action :  getSeries  , Ex:' + ex)
+        }
+    }
+
     def getSeriesByEntity(String id) {
         Client client = ClientBuilder.newClient()
         WebTarget target = client.target(new Links().API_GATEWAY)

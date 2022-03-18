@@ -117,6 +117,7 @@ class UrlMappings {
             "/salebilldetailsbydays/$days(.$format)?"(controller: 'saleBillDetails') {
                 action = [GET: 'getAllByDays']
             }
+            "/salebilldetails/getrecent(.$format)?"(controller: 'saleBillDetails', action: 'getRecentByFinancialYearAndEntity')
 
             //Sale Product Details
             "/saleproductdetails(.$format)?"(controller: 'saleProductDetails') {

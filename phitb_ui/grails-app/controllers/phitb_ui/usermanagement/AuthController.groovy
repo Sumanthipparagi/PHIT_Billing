@@ -76,7 +76,6 @@ class AuthController {
                     else
                     {
                         JSONObject jsonObject = jsonArray.last() //TODO: this should be obtained from settings
-                        session.setAttribute("finId", jsonObject.get("id"))
                         String startYear = jsonObject.get("startDate").toString().split("/")[2]
                         String endYear = jsonObject.get("endDate").toString().split("/")[2]
                         session.setAttribute("financialYear", startYear+"-"+endYear)

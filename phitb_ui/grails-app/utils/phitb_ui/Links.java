@@ -308,6 +308,17 @@ public class Links
     public static String SALE_BILL_DATATABLE = "api/v1.0/sales/salebilldetails/datatable";
     public static String SALE_BILL_UPDATE = "api/v1.0/sales/salebilldetails/{id}";
     public static String SALE_BILL_DELETE = "api/v1.0/sales/salebilldetails/{id}";
+    public static String SALE_BILL_RECENT = "api/v1.0/sales/salebilldetails/getrecent";
+
+
+    //Sale Bill Details
+    public static String SALE_PRODUCT_SHOW = "api/v1.0/sales/saleproductdetails";
+    public static String SALE_PRODUCT_SAVE = "api/v1.0/sales/saleproductdetails";
+    public static String SALE_PRODUCT_DATATABLE = "api/v1.0/sales/saleproductdetails/datatable";
+    public static String SALE_PRODUCT_UPDATE = "api/v1.0/sales/saleproductdetails/{id}";
+    public static String SALE_PRODUCT_DELETE = "api/v1.0/sales/saleproductdetails/{id}";
+
+
 
     /*<--------------------------------------------Inventory ------------------------------------------------->*/
 

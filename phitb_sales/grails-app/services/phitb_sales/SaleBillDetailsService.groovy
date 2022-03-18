@@ -95,7 +95,6 @@ class SaleBillDetailsService
     SaleBillDetails save(JSONObject jsonObject)
     {
         SaleBillDetails saleBillDetails = new SaleBillDetails()
-        //SaleBillDetails saleBillDetails = SaleBillDetails.findById(Long.parseLong(jsonObject.get("finId").toString()))
         saleBillDetails.finId = Long.parseLong(jsonObject.get("finId").toString())
         saleBillDetails.serBillId = Long.parseLong(jsonObject.get("serBillId").toString())
         saleBillDetails.seriesId = Long.parseLong(jsonObject.get("seriesId").toString())
@@ -133,7 +132,7 @@ class SaleBillDetailsService
         saleBillDetails.lockStatus = jsonObject.get("lockStatus").toString()
         saleBillDetails.syncStatus = jsonObject.get("syncStatus").toString()
         saleBillDetails.creditadjAmount = Double.parseDouble(jsonObject.get("creditadjAmount").toString())
-        saleBillDetails.creditIds = jsonObject.get("creditadjAmount").toString()
+        saleBillDetails.creditIds = jsonObject.get("creditIds").toString()
         saleBillDetails.referralDoctor = jsonObject.get("referralDoctor").toString()
         saleBillDetails.message = jsonObject.get("message").toString()
         saleBillDetails.financialYear = jsonObject.get("financialYear").toString()
@@ -149,72 +148,13 @@ class SaleBillDetailsService
         {
             throw new BadRequestException()
         }
-        /*println(jsonObject.isNull("json[FinancialYear]"))
-            if(jsonObject.isNull("json[FinancialYear]"))
-            {
-                saleBillDetails.serBillId = Long.parseLong(jsonObject.get("json[SeriesBillId]").toString())
-                saleBillDetails.seriesId = Long.parseLong(jsonObject.get("json[Series]").toString())
-                saleBillDetails.paymentStatus = Long.parseLong(jsonObject.get("json[PaymentStatus]").toString())
-                saleBillDetails.accountModeId = Long.parseLong(jsonObject.get("json[AccountMode]").toString())
-                saleBillDetails.priorityId = Long.parseLong(jsonObject.get("json[Priority]").toString())
-                saleBillDetails.entryDate = sdf.parse(jsonObject.get("json[EntryDate]").toString())
-                saleBillDetails.customerId = Long.parseLong(jsonObject.get("json[Customer]").toString())
-                saleBillDetails.customerNumber = Long.parseLong(jsonObject.get("json[CustomerNumber]").toString())
-                saleBillDetails.salesmanId = Long.parseLong(jsonObject.get("json[Salesman]").toString())
-                saleBillDetails.salesmanComm = Long.parseLong(jsonObject.get("json[SalesmanCommision]").toString())
-                saleBillDetails.orderDate = sdf.parse(jsonObject.get("json[OrderDate]").toString())
-                saleBillDetails.refOrderId = Long.parseLong(jsonObject.get("json[Ref_order]").toString())
-                saleBillDetails.dueDate = sdf.parse(jsonObject.get("json[Duedate]").toString())
-                saleBillDetails.dispatchDate = sdf.parse(jsonObject.get("json[Dispatchdate]").toString())
-                saleBillDetails.deliveryManId = Long.parseLong(jsonObject.get("json[Deliveryman]").toString())
-                saleBillDetails.totalSqty = Double.parseDouble(jsonObject.get("json[Totalsqty]").toString())
-                saleBillDetails.totalFqty = Double.parseDouble(jsonObject.get("json[Totalfqty]").toString())
-                saleBillDetails.totalItems = Double.parseDouble(jsonObject.get("json[Total_items]").toString())
-                saleBillDetails.totalQty = Double.parseDouble(jsonObject.get("json[Totalqty]").toString())
-                saleBillDetails.totalDiscount = Double.parseDouble(jsonObject.get("json[TotalDiscount]").toString())
-                saleBillDetails.totalAmount = Double.parseDouble(jsonObject.get("json[TotalAmount]").toString())
-                saleBillDetails.invoiceTotal = Double.parseDouble(jsonObject.get("json[InvoiceTotal]").toString())
-                saleBillDetails.totalGst = Double.parseDouble(jsonObject.get("json[TotalGST]").toString())
-                saleBillDetails.userId = Long.parseLong(jsonObject.get("json[User]").toString())
-                saleBillDetails.balance = Double.parseDouble(jsonObject.get("json[Balance]").toString())
-                saleBillDetails.grossAmount = Double.parseDouble(jsonObject.get("json[GrossAmount]").toString())
-                saleBillDetails.cashDiscount = Double.parseDouble(jsonObject.get("json[CashDiscount]").toString())
-                saleBillDetails.exempted = Double.parseDouble(jsonObject.get("json[Exempted]").toString())
-                saleBillDetails.totalCgst = Double.parseDouble(jsonObject.get("json[Totalcgst]").toString())
-                saleBillDetails.totalSgst = Double.parseDouble(jsonObject.get("json[Totalsgst]").toString())
-                saleBillDetails.totalIgst = Double.parseDouble(jsonObject.get("json[Totaligst]").toString())
-                saleBillDetails.gstStatus = jsonObject.get("json[GSTstatus]").toString()
-                saleBillDetails.billStatus = Double.parseDouble(jsonObject.get("json[Billstatus]").toString())
-                saleBillDetails.lockStatus = jsonObject.get("json[Lockstatus]").toString()
-                saleBillDetails.syncStatus = "1"
-                saleBillDetails.creditadjAmount = Double.parseDouble(jsonObject.get("json[CreditAdjamount]").toString())
-                saleBillDetails.creditIds = Double.parseDouble(jsonObject.get("json[Creditids]").toString())
-                saleBillDetails.referralDoctor = Double.parseDouble(jsonObject.get("json[Referraldoctor]").toString())
-                saleBillDetails.message = jsonObject.get("json[Message]").toString()
-                saleBillDetails.financialYear = jsonObject.get("json[FinancialYear]").toString()
-                saleBillDetails.createdUser = Long.parseLong("1")
-                saleBillDetails.modifiedUser = Long.parseLong("1")
-                saleBillDetails.entityTypeId = Long.parseLong("1")
-                saleBillDetails.entityId = Long.parseLong("1")
-                saleBillDetails.save(flush: true)
-                if (!saleBillDetails.hasErrors())
-                {
-                    return saleBillDetails
-                }
-                else
-                {
-                    throw new BadRequestException()
-                }
-            }*/
     }
-
-//    }
 
     SaleBillDetails update(JSONObject jsonObject, String id)
     {
         SaleBillDetails saleBillDetails = SaleBillDetails.findById(Long.parseLong(id))
         println(jsonObject.has(null))
-        if (saleBillDetails)
+        /*if (saleBillDetails)
         {
             saleBillDetails.isUpdatable = true
             saleBillDetails.finId = Long.parseLong(jsonObject.get("json[fin_id]").toString())
@@ -275,7 +215,7 @@ class SaleBillDetailsService
         else
         {
             throw new ResourceNotFoundException()
-        }
+        }*/
     }
 
     void delete(String id)
@@ -297,5 +237,10 @@ class SaleBillDetailsService
         {
             throw new BadRequestException()
         }
+    }
+
+    SaleBillDetails getRecentByFinancialYearAndEntity(String financialYear, String entityId)
+    {
+        return SaleBillDetails.findByFinancialYearAndEntityId(financialYear, Long.parseLong(entityId), [sort: 'id', order: 'desc'])
     }
 }
