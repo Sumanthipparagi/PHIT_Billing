@@ -183,7 +183,7 @@
 
                         <div class="row">
                             <button onclick="saveSaleInvoice()" class="btn btn-primary">Save</button>
-                            <button class="btn btn-secondary">Print</button>
+                            <button onclick="printInvoice()" class="btn btn-secondary">Print</button>
                         </div>
                     </div>
                 </div>
@@ -226,7 +226,7 @@
     var products = [];
     var hsnCode = [];
     var customers = [];
-
+    var readOnly = false;
 
     <g:each in="${products}" var="pd">
     products.push({id:${pd.id}, text: '${pd.productName}'});
@@ -385,7 +385,7 @@
                         $("#batchTable").focus();
                     }
                 } else if (selection === 14 || selection === 5) {
-                    if (e.keyCode === 13 || e.keyCode === 9) {
+                    if ((e.keyCode === 13 || e.keyCode === 9) && !readOnly) {
                         //check if sqty is empty
                         var sqty = hot.getDataAtCell(row, 4);
                         if (sqty) {
@@ -717,17 +717,22 @@
 
     function deleteTempStockRow(id, row)
     {
-        $.ajax({
-            type: "POST",
-            url: "tempstockbook/delete/" + id,
-            dataType: 'json',
-            success: function (data) {
-                hot.alter("remove_row", row);
-                swal("Success", "Row Deleted", "").fire();
-            }
-        });
+        if(!readOnly) {
+            $.ajax({
+                type: "POST",
+                url: "tempstockbook/delete/" + id,
+                dataType: 'json',
+                success: function (data) {
+                    hot.alter("remove_row", row);
+                    swal("Success", "Row Deleted", "").fire();
+                }
+            });
+        }
+        else
+            alert("Can't change this now, invoice has been saved already.")
     }
 
+    var saleBillId = 0;
     function saveSaleInvoice()
     {
         var customer = $("#customerSelect").val();
@@ -761,17 +766,36 @@
                 priority:priority
             },
             success: function (data) {
-                //hot.alter("remove_row", row);
+                readOnly = true;
+                var rowData = hot.getData();
+                for(var j = 0; j < rowData.length;j++) {
+                    for (var i = 0; i < 16; i++) {
+                      hot.setCellMeta(j, i,'readOnly', true);
+                    }
+                }
+                saleBillId = data.saleBillDetail.id;
                 swal("Success", "Sale Invoice Generated", "");
-                var datepart = data.entryDate.split("T")[0];
+                var datepart = data.saleBillDetail.entryDate.split("T")[0];
                 var month = datepart.split("-")[1];
                 var year = datepart.split("-")[0];
-                var invoiceNumber = "S/"+month+year+"/SC"+data.serBillId;
+                var seriesCode = data.series.seriesCode;
+                var invoiceNumber = "S/"+month+year+"/"+seriesCode+"/"+data.saleBillDetail.serBillId;
                 $("#invNo").html("<p><strong>"+invoiceNumber+"</strong></p>");
             }
         });
 
     }
+
+    function printInvoice()
+    {
+        if(readOnly) {
+            window.open(
+                'sale-entry/print-invoice?id=' + saleBillId,
+                '_blank'
+            );
+        }
+    }
+
     document.addEventListener("keydown", function (event) {
         var ctrl = event.ctrlKey;
         var alt = event.altKey;

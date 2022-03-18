@@ -90,7 +90,6 @@ class SaleEntryController {
             String sgst = sale.get("12")
             String cgst = sale.get("13")
             String igst = sale.get("14")
-            String tempStockRowId = sale.get("15")
 
             totalSqty += Long.parseLong(saleQty)
             totalFqty += Long.parseLong(freeQty)
@@ -100,10 +99,6 @@ class SaleEntryController {
             totalCgst += Double.parseDouble(cgst)
             totalIgst += Double.parseDouble(igst)
             totalDiscount += Double.parseDouble(discount)
-
-            def tmpStockBook = new InventoryService().getTempStocksById(Long.parseLong(tempStockRowId))
-            def stockBook = new InventoryService().getStockBookById(Long.parseLong(tmpStockBook.originalId))
-            //def product = new ProductService().getProductById(stockBook.productId.toString())
 
             JSONObject saleProductDetail = new JSONObject()
             saleProductDetail.put("finId", finId)
@@ -141,8 +136,7 @@ class SaleEntryController {
 
             //save to sale transaction log
             //save to sale transportation details
-            //update stockbook
-            //clear tempstockbook
+
         }
 
         String entryDate = sdf.format(new Date())
@@ -212,12 +206,45 @@ class SaleEntryController {
                     println("Product Detail Failed")
                 }
             }
-            respond saleBillDetail, formats: ['json']
+
+            //update stockbook
+            for (JSONObject sale : saleData) {
+                String tempStockRowId = sale.get("15")
+                def tmpStockBook = new InventoryService().getTempStocksById(Long.parseLong(tempStockRowId))
+                def stockBook = new InventoryService().getStockBookById(Long.parseLong(tmpStockBook.originalId))
+                stockBook.put("remainingQty", tmpStockBook.get("remainingQty"))
+                stockBook.put("remainingFreeQty", tmpStockBook.get("remainingFreeQty"))
+                stockBook.put("remainingReplQty", tmpStockBook.get("remainingReplQty"))
+                def apiRes = new InventoryService().updateStockBook(stockBook)
+                if(apiRes.status == 200) {
+                    //clear tempstockbook
+                    apiRes = new InventoryService().deleteTempStock(tempStockRowId)
+                    if(apiRes.status == 200) {
+                        JSONObject responseJson = new JSONObject()
+                        responseJson.put("series", series)
+                        responseJson.put("saleBillDetail", saleBillDetail)
+                        respond responseJson, formats: ['json']
+                    }
+                }
+            }
+            response.status == 400
         }
         else
         {
             response.status == 400
         }
+    }
+
+    def printSaleInvoice()
+    {
+        String saleBillId = params.id
+        JSONObject saleBillDetail = new SalesService().getSaleBillDetailsById(saleBillId)
+        JSONArray saleProductDetails = new SalesService().getSaleProductDetails(saleBillId)
+        JSONObject series = new EntityService().getSeriesById(saleBillDetail.get("seriesId").toString())
+        JSONObject entity = new EntityService().getEntityById(session.getAttribute("entityId").toString())
+        render(view: "/sales/sale-invoice", model: [saleBillDetail: saleBillDetail,
+                                                    saleProductDetails:saleProductDetails,
+                                                    series:series, entity:entity])
     }
 
     def saleBill()

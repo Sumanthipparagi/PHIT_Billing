@@ -3,6 +3,7 @@ package phitb_ui
 import grails.gorm.transactions.Transactional
 import grails.web.servlet.mvc.GrailsHttpSession
 import org.glassfish.jersey.jackson.JacksonFeature
+import org.grails.web.json.JSONArray
 import org.grails.web.json.JSONObject
 import org.grails.web.util.WebUtils
 
@@ -29,15 +30,15 @@ class SalesService {
             return apiResponse
         }
         catch (Exception ex) {
-            System.err.println('Service :ProductService , action :  getProducts  , Ex:' + ex)
-            log.error('Service :ProductService , action :  getProducts  , Ex:' + ex)
+            System.err.println('Service :SalesService , action :  getProducts  , Ex:' + ex)
+            log.error('Service :SalesService , action :  getProducts  , Ex:' + ex)
         }
     }
 
     def saveSaleBill(JSONObject jsonObject)
     {
         Client client = ClientBuilder.newClient();
-       // WebTarget target = client.target(new Links().API_GATEWAY);
+        //WebTarget target = client.target(new Links().API_GATEWAY);
         WebTarget target = client.target("http://localhost:8083");
         try
         {
@@ -103,7 +104,7 @@ class SalesService {
     def getRecentSaleBill(String financialYear, String entityId)
     {
         Client client = ClientBuilder.newClient();
-        // WebTarget target = client.target(new Links().API_GATEWAY);
+       // WebTarget target = client.target(new Links().API_GATEWAY);
         WebTarget target = client.target("http://localhost:8083");
         try
         {
@@ -131,4 +132,49 @@ class SalesService {
         }
     }
 
+    def getSaleBillDetailsById(String id) {
+        Client client = ClientBuilder.newClient();
+     //   WebTarget target = client.target(new Links().API_GATEWAY);
+        WebTarget target = client.target("http://localhost:8083");
+        try {
+            Response apiResponse = target
+                    .path(new Links().SALE_BILL_SHOW+"/"+id)
+                    .request(MediaType.APPLICATION_JSON_TYPE)
+                    .get()
+            if(apiResponse.status == 200)
+            {
+                JSONObject saleBillDetail = new JSONObject(apiResponse.readEntity(String.class))
+                return saleBillDetail
+            }
+            else
+                return null
+        }
+        catch (Exception ex) {
+            System.err.println('Service :SalesService , action :  getProducts  , Ex:' + ex)
+            log.error('Service :SalesService , action :  getProducts  , Ex:' + ex)
+        }
+    }
+
+    def getSaleProductDetails(String id) {
+        Client client = ClientBuilder.newClient();
+        //   WebTarget target = client.target(new Links().API_GATEWAY);
+        WebTarget target = client.target("http://localhost:8083");
+        try {
+            Response apiResponse = target
+                    .path(new Links().SALE_PRODUCT_OF_BILL+"/"+id)
+                    .request(MediaType.APPLICATION_JSON_TYPE)
+                    .get()
+            if(apiResponse.status == 200)
+            {
+                JSONArray saleProductDetail = new JSONArray(apiResponse.readEntity(String.class))
+                return saleProductDetail
+            }
+            else
+                return null
+        }
+        catch (Exception ex) {
+            System.err.println('Service :SalesService , action :  getProducts  , Ex:' + ex)
+            log.error('Service :SalesService , action :  getProducts  , Ex:' + ex)
+        }
+    }
 }

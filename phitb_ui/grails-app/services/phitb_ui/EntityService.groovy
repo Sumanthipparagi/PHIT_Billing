@@ -1475,12 +1475,34 @@ class EntityService {
         try {
             Response apiResponse = target
                     .path(new Links().ENTITY_REGISTER_SHOW)
-                    .queryParam("offset", "0")
+                    .queryParam("offset", "0") //TODO:to remove
                     .queryParam("limit", "10000")
                     .request(MediaType.APPLICATION_JSON_TYPE)
                     .get()
 
             return apiResponse
+        }
+        catch (Exception ex) {
+            System.err.println('Service :EntityService , action :  getEntity  , Ex:' + ex)
+            log.error('Service :EntityService , action :  getEntity  , Ex:' + ex)
+        }
+    }
+
+    def getEntityById(String id) {
+        Client client = ClientBuilder.newClient()
+        WebTarget target = client.target(new Links().API_GATEWAY)
+        try {
+            Response apiResponse = target
+                    .path(new Links().ENTITY_REGISTER_SHOW + "/"+id)
+                    .request(MediaType.APPLICATION_JSON_TYPE)
+                    .get()
+            if(apiResponse.status == 200)
+            {
+                JSONObject jsonObject = new JSONObject(apiResponse.readEntity(String.class))
+                return jsonObject
+            }
+            else
+                return null
         }
         catch (Exception ex) {
             System.err.println('Service :EntityService , action :  getEntity  , Ex:' + ex)

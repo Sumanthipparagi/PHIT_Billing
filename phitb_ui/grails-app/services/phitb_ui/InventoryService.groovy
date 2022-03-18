@@ -72,15 +72,12 @@ class InventoryService {
     {
         Client client = ClientBuilder.newClient().register(JacksonFeature.class)
         WebTarget target = client.target(new Links().API_GATEWAY);
-
         try
         {
             Response apiResponse = target
-                    .path(new Links().STOCK_BOOK)
-                    .resolveTemplate("id", jsonObject.id)
+                    .path(new Links().STOCK_BOOK + "/"+jsonObject.id)
                     .request(MediaType.APPLICATION_JSON_TYPE)
                     .put(Entity.entity(jsonObject,MediaType.APPLICATION_JSON_TYPE))
-            println(jsonObject)
             return apiResponse
         }
         catch (Exception ex)

@@ -363,6 +363,7 @@ class UrlMappings {
         "/sale-entry"(controller: "saleEntry") {
             action = [GET: 'index', POST: 'saveSaleEntry']
         }
+        "/sale-entry/print-invoice"(controller: "saleEntry", action: "printSaleInvoice")
 
         "/sale-entry/update/$id"(controller:"batchRegister",action:"update")
 //        "/sale-entry/datatable"(controller: "batchRegister", action: 'dataTable')

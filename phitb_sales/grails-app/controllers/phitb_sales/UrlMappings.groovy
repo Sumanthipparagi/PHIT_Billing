@@ -124,6 +124,10 @@ class UrlMappings {
                 action = [GET: 'index', POST:
                         'save']
             }
+            "/saleproductdetails/bill/$id(.$format)?"(controller: 'saleProductDetails') {
+                action = [GET: 'getSaleProductDetailsOfSaleBill']
+            }
+
             "/saleproductdetails/datatable(.$format)?"(controller: 'saleProductDetails') {action = [GET: 'dataTable']}
             "/saleproductdetails/$id(.$format)?"(controller: 'saleProductDetails') {
                 action = [GET: 'show', PUT: 'update', DELETE:

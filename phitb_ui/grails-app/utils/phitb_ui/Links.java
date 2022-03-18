@@ -317,6 +317,7 @@ public class Links
     public static String SALE_PRODUCT_DATATABLE = "api/v1.0/sales/saleproductdetails/datatable";
     public static String SALE_PRODUCT_UPDATE = "api/v1.0/sales/saleproductdetails/{id}";
     public static String SALE_PRODUCT_DELETE = "api/v1.0/sales/saleproductdetails/{id}";
+    public static String SALE_PRODUCT_OF_BILL = "api/v1.0/sales/saleproductdetails/bill";
 
 
 
