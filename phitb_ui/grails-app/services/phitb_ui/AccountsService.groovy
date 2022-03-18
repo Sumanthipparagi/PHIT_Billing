@@ -114,7 +114,7 @@ class AccountsService {
     {
         Client client = ClientBuilder.newClient();
         WebTarget target = client.target(new Links().API_GATEWAY);
-        GrailsHttpSession session = WebUtils.retrieveGrailsWebRequest().session
+       
         try
         {
             println(jsonObject)
@@ -136,7 +136,7 @@ class AccountsService {
     {
         Client client = ClientBuilder.newClient();
         WebTarget target = client.target(new Links().API_GATEWAY);
-        GrailsHttpSession session = WebUtils.retrieveGrailsWebRequest().session
+       
         try
         {
             Response apiResponse = target
@@ -158,7 +158,7 @@ class AccountsService {
     {
         Client client = ClientBuilder.newClient();
         WebTarget target = client.target(new Links().API_GATEWAY);
-        GrailsHttpSession session = WebUtils.retrieveGrailsWebRequest().session
+       
         try
         {
             Response apiResponse = target
@@ -179,7 +179,7 @@ class AccountsService {
     {
         Client client = ClientBuilder.newClient();
         WebTarget target = client.target(new Links().API_GATEWAY);
-        GrailsHttpSession session = WebUtils.retrieveGrailsWebRequest().session
+       
         try
         {
             Response apiResponse = target
@@ -326,7 +326,7 @@ class AccountsService {
         Form form = UtilsService.jsonToFormDataConverter(jsonObject)
         Client client = ClientBuilder.newClient();
         WebTarget target = client.target(new Links().API_GATEWAY);
-        GrailsHttpSession session = WebUtils.retrieveGrailsWebRequest().session
+       
         try
         {
             Response apiResponse = target
@@ -352,7 +352,7 @@ class AccountsService {
         Form form = UtilsService.jsonToFormDataConverter(jsonObject)
         Client client = ClientBuilder.newClient();
         WebTarget target = client.target(new Links().API_GATEWAY);
-        GrailsHttpSession session = WebUtils.retrieveGrailsWebRequest().session
+       
         try
         {
             Response apiResponse = target
@@ -378,7 +378,7 @@ class AccountsService {
         Form form = UtilsService.jsonToFormDataConverter(jsonObject)
         Client client = ClientBuilder.newClient();
         WebTarget target = client.target(new Links().API_GATEWAY);
-        GrailsHttpSession session = WebUtils.retrieveGrailsWebRequest().session
+       
         try
         {
             Response apiResponse = target
@@ -404,7 +404,7 @@ class AccountsService {
         Form form = UtilsService.jsonToFormDataConverter(jsonObject)
         Client client = ClientBuilder.newClient();
         WebTarget target = client.target(new Links().API_GATEWAY);
-        GrailsHttpSession session = WebUtils.retrieveGrailsWebRequest().session
+       
         try
         {
             Response apiResponse = target
