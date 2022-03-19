@@ -85,7 +85,6 @@ public class Links
 
     public static String ENTITY_TYPE_MASTER_SHOW = "api/v1.0/entity/entitytypemaster";
     public static String DEPARTMENT_MASTER_SHOW = "api/v1.0/entity/departmentmaster";
-    public static String ACCOUNT_REGISTER_SHOW = "api/v1.0/entity/accountregister";
     public static String DIVISION_SHOW = "api/v1.0/product/division";
     public static String GENDER_SHOW = "api/v1.0/system/gender";
 
@@ -97,6 +96,13 @@ public class Links
     public static String ENTITY_REGISTER_DELETE = "api/v1.0/entity/entityregister/{id}";
     public static String ENTITY_REGISTER_AFFILIATE = "api/v1.0/entity/entityregister/affiliate";
 
+    //Account Register
+    public static String ACCOUNT_REGISTER_SHOW = "api/v1.0/entity/accountregister";
+    public static String ACCOUNT_REGISTER_SAVE = "api/v1.0/entity/entityregister";
+    public static String ACCOUNT_REGISTER_DATATABLE = "api/v1.0/entity/entityregister/datatable";
+    public static String ACCOUNT_REGISTER_UPDATE = "api/v1.0/entity/entityregister/{id}";
+    public static String ACCOUNT_REGISTER_DELETE = "api/v1.0/entity/entityregister/{id}";
+    public static String ACCOUNT_REGISTER_AFFILIATE = "api/v1.0/entity/entityregister/affiliate";
 
     //User Register
     public static String USER_REGISTER_SHOW = "api/v1.0/entity/userregister";
@@ -346,7 +352,7 @@ public class Links
 
 
 
-    //Wallet
+    //Payemnt Show
     public static String PAYMENT_SHOW = "api/v1.0/accounts/paymentdetails";
     public static String PAYMENT_SAVE = "api/v1.0/accounts/paymentdetails";
     public static String PAYMENT_DATATABLE = "api/v1.0/accounts/paymentdetails/datatable";

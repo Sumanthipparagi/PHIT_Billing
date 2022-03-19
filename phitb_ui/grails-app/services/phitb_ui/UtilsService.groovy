@@ -10,6 +10,9 @@ import java.awt.image.BufferedImage
 import java.text.DateFormat
 import java.text.ParseException
 import java.text.SimpleDateFormat
+import java.time.Instant
+import java.time.OffsetDateTime
+import java.time.format.DateTimeFormatter
 import java.util.ArrayList;
 import java.util.Iterator;
 
@@ -174,14 +177,8 @@ class UtilsService {
 
     static String dateFormater(String date)
     {
-        DateFormat df = new SimpleDateFormat("yyyy-MM-dd'T'hh:mm:ssZ");
-        Date result;
-        result = df.parse(date);
-        System.out.println("date:"+result); //prints date in current locale
-        SimpleDateFormat sdf = new SimpleDateFormat("dd-mm-yyyy");
-        sdf.setTimeZone(TimeZone.getTimeZone("GMT"));
-        String foramtedDate = sdf.format(result) //prints date in the format sdf
-        return foramtedDate
+        OffsetDateTime odt = OffsetDateTime.parse(date);
+        Instant instant = odt.toInstant();
     }
 
 

@@ -192,7 +192,6 @@
                     var return_data = [];
                     for (var i = 0; i < json.data.length; i++) {
 
-
                         var editbtn = '<button type="button" data-id="' + json.data[i].id +
                             '" data-custGroup="' + json.data[i].customerGroupName + '"' +
                             '" data-shortName="' + json.data[i].shortName + '"' +

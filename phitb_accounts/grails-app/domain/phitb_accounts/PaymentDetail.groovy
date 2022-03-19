@@ -12,7 +12,7 @@ class PaymentDetail implements LogicalDelete<PaymentDetail> {
     long paymentModeId
     String transferFrom
     String paymentTo
-    long amountPaid
+    Double amountPaid
     String narration
     String cardNumber
     String paymentDate

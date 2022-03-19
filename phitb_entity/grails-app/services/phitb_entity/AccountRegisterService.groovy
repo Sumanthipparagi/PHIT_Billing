@@ -74,7 +74,7 @@ class AccountRegisterService {
         accountRegister.accountStatus = Long.parseLong(jsonObject.get("accountStatus").toString())
         accountRegister.subAccountType = Long.parseLong(jsonObject.get("subAccountType").toString())
         accountRegister.accountMode = Long.parseLong(jsonObject.get("accountMode").toString())
-        accountRegister.responsibleUserId = Long.parseLong(jsonObject.get("accountMode").toString())
+        accountRegister.responsibleUserId = Long.parseLong(jsonObject.get("responsibleUserId").toString())
         accountRegister.yearlyBudget = jsonObject.get("yearlyBudget").toString()
         accountRegister.balance = Long.parseLong(jsonObject.get("balance").toString())
         accountRegister.syncStatus = Long.parseLong(jsonObject.get("syncStatus").toString())

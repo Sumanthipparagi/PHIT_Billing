@@ -278,12 +278,12 @@ class ReciptDetailController
         }
     }
 
-    def save()
+def save()
     {
         try
         {
             JSONObject jsonObject = new JSONObject(params)
-            def apiResponse = new AccountsService().saveRecipt(jsonObject)
+            def apiResponse = new AccountsService().savePaymentDetail(jsonObject)
             if (apiResponse?.status == 200)
             {
                 JSONObject obj = new JSONObject(apiResponse.readEntity(String.class))

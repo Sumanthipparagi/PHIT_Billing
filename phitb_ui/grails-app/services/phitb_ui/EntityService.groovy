@@ -1595,7 +1595,6 @@ class EntityService {
     }
 
 
-
     def getRoles() {
         Client client = ClientBuilder.newClient()
         WebTarget target = client.target(new Links().API_GATEWAY)
@@ -1691,6 +1690,60 @@ class EntityService {
         catch (Exception ex) {
             System.err.println('Service :EntityService , action :  getFeatureList  , Ex:' + ex)
             log.error('Service :EntityService , action :  getFeatureList  , Ex:' + ex)
+        }
+    }
+
+    def getAllAccount() {
+        Client client = ClientBuilder.newClient()
+        WebTarget target = client.target(new Links().API_GATEWAY)
+        try {
+            Response apiResponse = target
+                    .path(new Links().ACCOUNT_REGISTER_SHOW)
+                    .request(MediaType.APPLICATION_JSON_TYPE)
+                    .get()
+            return apiResponse
+        }
+        catch (Exception ex) {
+            System.err.println('Service :EntityService , action :  getAccountById  , Ex:' + ex)
+            log.error('Service :EntityService , action :  getAccountById  , Ex:' + ex)
+        }
+    }
+
+    def saveAccountRegister(JSONObject jsonObject)
+    {
+        Client client = ClientBuilder.newClient()
+        WebTarget target = client.target(new Links().API_GATEWAY)
+
+        try
+        {
+            println(jsonObject)
+            Response apiResponse = target
+                    .path(new Links().ACCOUNT_REGISTER_SAVE)
+                    .request(MediaType.APPLICATION_JSON_TYPE)
+                    .post(Entity.entity(jsonObject.toString(),MediaType.APPLICATION_JSON_TYPE))
+            println(apiResponse)
+            return apiResponse
+        }
+        catch (Exception ex)
+        {
+            System.err.println('Service :saveStateMaster , action :  save  , Ex:' + ex)
+            log.error('Service :saveStateMaster , action :  save  , Ex:' + ex)
+        }
+    }
+
+    def getAllAccountById(String id) {
+        Client client = ClientBuilder.newClient()
+        WebTarget target = client.target(new Links().API_GATEWAY)
+        try {
+            Response apiResponse = target
+                    .path(new Links().ACCOUNT_REGISTER_SHOW + "/"+id)
+                    .request(MediaType.APPLICATION_JSON_TYPE)
+                    .get()
+            return apiResponse
+        }
+        catch (Exception ex) {
+            System.err.println('Service :EntityService , action :  getAccountById  , Ex:' + ex)
+            log.error('Service :EntityService , action :  getAccountById  , Ex:' + ex)
         }
     }
 
