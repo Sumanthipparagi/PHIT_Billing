@@ -123,16 +123,16 @@ class SaleBillDetailsService
             eq('deleted', false)
             order(orderColumn, orderDir)
         }
-        def names = []
-        saleBillDetailsArrayList.each {
-            def apires = getEntityById(it.entityId.toString())
-            names.push(apires)
-        }
+//        def names = []
+//        saleBillDetailsArrayList.each {
+//            def apires = getEntityById(it.entityId.toString())
+//            names.push(apires)
+//        }
         def recordsTotal = saleBillDetailsArrayList.totalCount
         JSONObject jsonObject = new JSONObject()
         jsonObject.put("draw", paramsJsonObject.draw)
         jsonObject.put("recordsTotal", recordsTotal)
-        jsonObject.put("entity", names)
+//        jsonObject.put("entity", names)
         jsonObject.put("recordsFiltered", recordsTotal)
         jsonObject.put("data", saleBillDetailsArrayList)
         return jsonObject
