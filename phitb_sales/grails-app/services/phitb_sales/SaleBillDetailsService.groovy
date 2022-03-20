@@ -4,6 +4,17 @@ import grails.gorm.transactions.Transactional
 import org.grails.web.json.JSONObject
 import phitb_sales.Exception.BadRequestException
 import phitb_sales.Exception.ResourceNotFoundException
+import org.glassfish.jersey.jackson.JacksonFeature
+import org.grails.web.json.JSONArray
+import org.grails.web.json.JSONObject
+import org.springframework.web.multipart.MultipartFile
+
+import javax.ws.rs.client.Client
+import javax.ws.rs.client.ClientBuilder
+import javax.ws.rs.client.Entity
+import javax.ws.rs.client.WebTarget
+import javax.ws.rs.core.MediaType
+import javax.ws.rs.core.Response
 
 import java.text.SimpleDateFormat
 
@@ -273,4 +284,27 @@ class SaleBillDetailsService
     {
         return SaleBillDetails.findByFinancialYearAndEntityId(financialYear, Long.parseLong(entityId), [sort: 'id', order: 'desc'])
     }
+
+    def getEntityById(String id) {
+        Client client = ClientBuilder.newClient()
+        WebTarget target = client.target(new Constants().API_GATEWAY)
+        try {
+            Response apiResponse = target
+                    .path(new Constants().ENTITY_REGISTER_SHOW + "/"+id)
+                    .request(MediaType.APPLICATION_JSON_TYPE)
+                    .get()
+            if(apiResponse.status == 200)
+            {
+                JSONObject jsonObject = new JSONObject(apiResponse.readEntity(String.class))
+                return jsonObject
+            }
+            else
+                return null
+        }
+        catch (Exception ex) {
+            System.err.println('Service :EntityService , action :  getEntity  , Ex:' + ex)
+            log.error('Service :EntityService , action :  getEntity  , Ex:' + ex)
+        }
+    }
+
 }

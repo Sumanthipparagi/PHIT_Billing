@@ -59,6 +59,15 @@ dependencies {
     testRuntime "org.seleniumhq.selenium:selenium-htmlunit-driver:2.47.1"
     testRuntime "net.sourceforge.htmlunit:htmlunit:2.18"
 
+
+    compile group: 'org.glassfish.jersey.core', name: 'jersey-client', version: '2.24.1'
+    compile group: 'org.glassfish.jersey.media', name: 'jersey-media-json-jackson', version: '2.24.1'
+    compile group: 'org.glassfish.jersey.media', name: 'jersey-media-multipart', version: '2.24.1'
+    compile group: 'org.jboss.resteasy', name: 'resteasy-client', version: '6.0.0.Final'
+    compile 'com.google.code.gson:gson:2.8.5'
+    compile 'org.grails.plugins:rendering:2.0.3'
+
+
     compile "org.grails.plugins:gorm-logical-delete:2.0.0.M2"
     // https://mvnrepository.com/artifact/mysql/mysql-connector-java
     compile group: 'mysql', name: 'mysql-connector-java', version: '8.0.11'
