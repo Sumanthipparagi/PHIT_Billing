@@ -293,7 +293,22 @@ class ProductController {
         }
     }
 
-    def getProductbyId()
+    def getProductBySeries() {
+        try {
+            JSONArray jsonArray = new ProductService().getProductsBySeries(params.id, session.getAttribute("entityId").toString())
+            if (jsonArray)
+                respond jsonArray, formats: ['json']
+            else
+                response.status = 404
+        }
+        catch (Exception ex) {
+            System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
+            log.error('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
+            response.status = 400
+        }
+    }
+
+    /* def getProductbyId()
      {
          try
          {
@@ -315,7 +330,7 @@ class ProductController {
              log.error('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
              response.status = 400
          }
-     }
+     }*/
 
 
 }

@@ -70,18 +70,9 @@
                             </div>
 
                             <div class="col-md-2">
-                                <label for="series">Division:</label>
-                                <select class="form-control" id="division" name="division" onchange="divisionChanged()">
-                                    <option selected disabled>--SELECT--</option>
-                                    <g:each in="${divisions}" var="dv">
-                                        <option value="${dv.id}">${dv.divisionName}</option>
-                                    </g:each>
-                                </select>
-                            </div>
-
-                            <div class="col-md-2">
                                 <label for="series">Series:</label>
-                                <select class="form-control" id="series" name="series">
+                                <select onchange="seriesChanged()" class="form-control" id="series" name="series">
+                                    <option selected disabled>--SELECT--</option>
                                     <g:each in="${series}" var="sr">
                                         <option value="${sr.id}">${sr.seriesName} (${sr.seriesCode})</option>
                                     </g:each>
@@ -198,7 +189,8 @@
                         </div>
 
                         <div class="row">
-                            <button onclick="saveSaleInvoice()" class="btn btn-primary">Save</button>
+                            <button onclick="saveSaleInvoice('DRAFT')" class="btn btn-primary">Save Draft</button>
+                            <button onclick="saveSaleInvoice('ACTIVE')" class="btn btn-primary">Save</button>
                             <button onclick="printInvoice()" class="btn btn-secondary">Print</button>
                         </div>
                     </div>
@@ -233,18 +225,12 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/3.5.2/select2.js"></script>
 
 <script>
-
-
-
-
     var totalAmt = 0;
     var series = [];
     var products = [];
     var customers = [];
     var readOnly = false;
     var scheme = null;
-
-
     var headerRow = [
         '<strong></strong>',
         '<strong>Product</strong>',
@@ -254,7 +240,7 @@
         '<strong>Free Qty</strong>',
         '<strong>Sale Rate</strong>',
         '<strong>MRP</strong>',
-        '<strong>Discount</strong>',
+        '<strong>Disc.(%)</strong>',
         '<strong>Pack</strong>',
         '<strong>GST</strong>',
         '<strong>Value</strong>',
@@ -290,8 +276,9 @@
     var igst = 0;
     var totalQty = 0;
     var totalFQty = 0;
+    var remainingQty = 0;
+    var remainingFQty = 0;
     $(document).ready(function () {
-        loadTempStockBookData();
         $("#customerSelect").select2();
         $('#date').val(moment().format('YYYY-MM-DD'));
         $('#date').attr("readonly");
@@ -329,7 +316,7 @@
                 {type: 'numeric'},
                 {type: 'numeric', readOnly: true},
                 {type: 'numeric', readOnly: true},
-                {type: 'numeric', readOnly: true},
+                {type: 'numeric'},
                 {type: 'text', readOnly: true},
                 {type: 'numeric', readOnly: true},
                 {type: 'numeric', readOnly: true},
@@ -398,7 +385,8 @@
                         //check if sqty is empty
                         var sqty = hot.getDataAtCell(row, 4);
                         var fqty = hot.getDataAtCell(row, 5);
-                        if (sqty && sqty>0 && fqty && fqty >=0) {
+                        if (sqty && sqty>0)
+                        {
                             mainTableRow = row + 1;
                             hot.alter('insert_row');
                             hot.selectCell(mainTableRow, 1);
@@ -428,13 +416,41 @@
                             alert("Invalid Quantity, please enter quantity greater than 0");
                         }
                     }
-                } else if (selection === 4) {
+                } else if (selection === 4 || selection === 8) {
                     if (e.keyCode === 13 || e.keyCode === 9) {
-                        sQty = this.getActiveEditor().TEXTAREA.value;
+                        var discount = 0;
+
+                        if(selection === 4)
+                            sQty = this.getActiveEditor().TEXTAREA.value;
+                        else
+                            sQty = hot.getDataAtCell(row,4);
+
+                        if(selection === 8) {
+                            discount = this.getActiveEditor().TEXTAREA.value;
+                            if(discount>100)
+                            {
+                                hot.setDataAtCell(row,8,0);
+                                this.getActiveEditor().TEXTAREA.value = 0;
+                                alert("Invalid Discount");
+                                hot.selectCell(row,8);
+                                return;
+                            }
+                        }
+                        else
+                            discount = hot.getDataAtCell(row,8);
+
+                        if(sQty>remainingQty)
+                        {
+                            this.getActiveEditor().TEXTAREA.value = "";
+                            alert("Entered quantity exceeds available quantity");
+                            return;
+                        }
+
                         applySchemes(row, sQty);
                         sRate = hot.getDataAtCell(row, 6);
-                        var discount = hot.getDataAtCell(row, 8);
-                        var priceBeforeGst = (sRate * sQty) - ((sRate * sQty) * discount) / 100;
+
+                        var value = sRate * sQty;
+                        var priceBeforeGst = value - (value * discount/100);
                         var finalPrice = priceBeforeGst + (priceBeforeGst * (gst / 100));
                         hot.setDataAtCell(row, 11, finalPrice);
 
@@ -538,6 +554,8 @@
                         cgst = rowData[10];
                         igst = rowData[11];
                         hot.selectCell(mainTableRow, 4);
+                        remainingQty = rowData[2];
+                        remainingFQty = rowData[3];
                         $("#saleTable").focus();
                     }
                     else
@@ -746,7 +764,7 @@
     }
 
     var saleBillId = 0;
-    function saveSaleInvoice()
+    function saveSaleInvoice(billStatus)
     {
         var customer = $("#customerSelect").val();
         var series = $("#series").val();
@@ -776,7 +794,8 @@
                 customer:customer,
                 series:series,
                 duedate:duedate,
-                priority:priority
+                priority:priority,
+                billStatus: billStatus
             },
             success: function (data) {
                 readOnly = true;
@@ -809,37 +828,25 @@
         }
     }
 
-    function divisionChanged()
+    function seriesChanged()
     {
-        var division = $("#division").val();
-        loadProducts(division);
-        $.ajax({
-            type: "GET",
-            url: "/series/"+division,
-            dataType: 'json',
-            success: function (data) {
-                var $select = $("#series");
-                $select.find('option').remove();
-                $select.append('<option value="' + data.id + '">' + data.seriesName + '(' + data.seriesCode + ')</option>');
-            },
-            error: function () {
-                var $select = $("#series");
-                $select.find('option').remove();
-            }
-        });
+        var series = $("#series").val();
+        loadProducts(series);
+
     }
 
-    function loadProducts(division)
+    function loadProducts(series)
     {
         products.length = 0;//remove all elements
         $.ajax({
             type: "GET",
-            url: "/product/division/"+division,
+            url: "/product/series/"+series,
             dataType: 'json',
             success: function (data) {
                 for(var i=0; i<data.length;i++) {
                     products.push({id:data[i].id, text: data[i].productName});
                 }
+                loadTempStockBookData();
             },
             error: function () {
                 products.length = 0; //remove all elements

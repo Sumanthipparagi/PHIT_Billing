@@ -25,13 +25,14 @@ class SaleEntryController {
         JSONArray divisions = new ProductService().getDivisionsByEntityId(entityId)
         ArrayList<String> customers = new EntityRegisterController().show() as ArrayList<String>
         def priorityList = new SystemService().getPriorityByEntity(entityId)
+        def series = new SeriesController().getByEntity(entityId)
         ArrayList<String> salesmanList = []
         /*users.each {
             if (it.role.name.toString().equalsIgnoreCase(Constants.ROLE_SALESMAN)) {
                 salesmanList.add(it)
             }
         }*/
-        render(view: '/sales/sale-entry', model: [customers: customers,divisions:divisions,
+        render(view: '/sales/sale-entry', model: [customers: customers,divisions:divisions, series:series,
                                                            salesmanList: salesmanList, priorityList:priorityList])
     }
 
@@ -45,6 +46,7 @@ class SaleEntryController {
         String priorityId = params.priority
         String seriesId = params.series
         String duedate = params.duedate
+        String billStatus = params.billStatus
         String message = params.message
         if(!message)
             message = "NA"
@@ -55,12 +57,12 @@ class SaleEntryController {
         def series = new EntityService().getSeriesById(seriesId)
         if(recentSaleBill != null)
         {
-            finId += recentSaleBill.get("finId")
-            serBillId += recentSaleBill.get("serBillId")
+            finId = Long.parseLong(recentSaleBill.get("finId").toString()) + 1
+            serBillId = Long.parseLong(recentSaleBill.get("serBillId").toString()) + 1
         }
         else {
             finId = 1
-            serBillId = series.get("saleId")
+            serBillId = Long.parseLong(series.get("saleId").toString())
         }
         long totalSqty = 0
         long totalFqty = 0
@@ -175,7 +177,7 @@ class SaleEntryController {
         saleBillDetails.put("modifiedUser", session.getAttribute("userId"))
         saleBillDetails.put("message", message) //TODO: to be changed
         saleBillDetails.put("gstStatus", "0") //TODO: to be changed
-        saleBillDetails.put("billStatus", "ACTIVE") //TODO: to be changed
+        saleBillDetails.put("billStatus", billStatus)
         saleBillDetails.put("lockStatus", 0) //TODO: to be changed
         saleBillDetails.put("syncStatus", "0") //TODO: to be changed
         saleBillDetails.put("creditadjAmount", 0) //TODO: to be changed
