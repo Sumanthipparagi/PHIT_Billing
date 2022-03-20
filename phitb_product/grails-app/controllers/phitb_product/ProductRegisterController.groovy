@@ -85,9 +85,9 @@ class ProductRegisterController
     }
 
     /**
-     * Get requested Stock Activity
+     * Get requested product by div
      * @param id
-     * @return get requested Stock Activity
+     * @return get product by div
      */
     def getAllByDivision() {
         try {
