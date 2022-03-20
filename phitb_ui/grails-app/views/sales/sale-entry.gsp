@@ -189,8 +189,8 @@
                         </div>
 
                         <div class="row">
-                            <button onclick="saveSaleInvoiceDraft()" class="btn btn-primary">Save Draft</button>
-                            <button onclick="saveSaleInvoice()" class="btn btn-primary">Save</button>
+                            <button onclick="saveSaleInvoice('DRAFT')" class="btn btn-primary">Save Draft</button>
+                            <button onclick="saveSaleInvoice('ACTIVE')" class="btn btn-primary">Save</button>
                             <button onclick="printInvoice()" class="btn btn-secondary">Print</button>
                         </div>
                     </div>
@@ -276,6 +276,8 @@
     var igst = 0;
     var totalQty = 0;
     var totalFQty = 0;
+    var remainingQty = 0;
+    var remainingFQty = 0;
     $(document).ready(function () {
         $("#customerSelect").select2();
         $('#date').val(moment().format('YYYY-MM-DD'));
@@ -435,9 +437,14 @@
                             }
                         }
                         else
-                            sQty = hot.getDataAtCell(row,8);
+                            discount = hot.getDataAtCell(row,8);
 
-
+                        if(sQty>remainingQty)
+                        {
+                            this.getActiveEditor().TEXTAREA.value = "";
+                            alert("Entered quantity exceeds available quantity");
+                            return;
+                        }
 
                         applySchemes(row, sQty);
                         sRate = hot.getDataAtCell(row, 6);
@@ -547,6 +554,8 @@
                         cgst = rowData[10];
                         igst = rowData[11];
                         hot.selectCell(mainTableRow, 4);
+                        remainingQty = rowData[2];
+                        remainingFQty = rowData[3];
                         $("#saleTable").focus();
                     }
                     else
@@ -755,7 +764,7 @@
     }
 
     var saleBillId = 0;
-    function saveSaleInvoice()
+    function saveSaleInvoice(billStatus)
     {
         var customer = $("#customerSelect").val();
         var series = $("#series").val();
@@ -785,7 +794,8 @@
                 customer:customer,
                 series:series,
                 duedate:duedate,
-                priority:priority
+                priority:priority,
+                billStatus: billStatus
             },
             success: function (data) {
                 readOnly = true;

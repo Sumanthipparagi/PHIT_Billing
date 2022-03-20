@@ -120,7 +120,8 @@ class SalesService {
     def getRecentSaleBill(String financialYear, String entityId)
     {
         Client client = ClientBuilder.newClient();
-        WebTarget target = client.target(new Links().API_GATEWAY);
+        //WebTarget target = client.target(new Links().API_GATEWAY);
+        WebTarget target = client.target("http://localhost:8083");
         try
         {
             Response apiResponse = target

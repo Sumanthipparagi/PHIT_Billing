@@ -165,9 +165,10 @@ class SaleBillDetailsService
         saleBillDetails.referralDoctor = jsonObject.get("referralDoctor").toString()
         saleBillDetails.message = jsonObject.get("message").toString()
         saleBillDetails.financialYear = jsonObject.get("financialYear").toString()
-        saleBillDetails.entityTypeId = Long.parseLong(jsonObject.get("entityTypeId").toString())
         saleBillDetails.createdUser = Long.parseLong(jsonObject.get("createdUser").toString())
         saleBillDetails.modifiedUser = Long.parseLong(jsonObject.get("modifiedUser").toString())
+        saleBillDetails.entityId = Long.parseLong(jsonObject.get("entityId").toString())
+        saleBillDetails.entityTypeId = Long.parseLong(jsonObject.get("entityTypeId").toString())
         saleBillDetails.save(flush: true)
         if (!saleBillDetails.hasErrors())
         {
