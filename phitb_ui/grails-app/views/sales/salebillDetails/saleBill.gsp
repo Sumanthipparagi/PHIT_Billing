@@ -6,7 +6,7 @@
     <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
     <meta name="description" content="Responsive Bootstrap 4 and web Application ui kit.">
 
-    <title>:: PharmIt :: Sale Bill Details</title>
+    <title>:: PharmIt :: Sale Invoices</title>
     <link rel="icon" type="image/x-icon" href="${assetPath(src: '/themeassets/images/favicon.ico')}"/>
     <!-- Favicon-->
     <asset:stylesheet rel="stylesheet" src="/themeassets/plugins/bootstrap/css/bootstrap.min.css"/>
@@ -54,10 +54,10 @@
         <div class="block-header">
             <div class="row clearfix">
                 <div class="col-lg-5 col-md-5 col-sm-12">
-                    <h2>Entity Register</h2>
+                    <h2>Sale Invoices</h2>
                     <ul class="breadcrumb padding-0">
                         <li class="breadcrumb-item"><a href="index.html"><i class="zmdi zmdi-home"></i></a></li>
-                        <li class="breadcrumb-item active">Entity Register</li>
+                        <li class="breadcrumb-item active"></li>
                     </ul>
                 </div>
                 <div class="col-lg-7 col-md-7 col-sm-12">
@@ -74,21 +74,7 @@
         <div class="row clearfix">
             <div class="col-lg-12">
                 <div class="card">
-                    %{--                    <div class="header">--}%
-                    %{--                        <h2><strong>Basic</strong> Examples </h2>--}%
-                    %{--                        <ul class="header-dropdown">--}%
-                    %{--                            <li class="dropdown"> <a href="javascript:void(0);" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"> <i class="zmdi zmdi-more"></i> </a>--}%
-                    %{--                                <ul class="dropdown-menu slideUp">--}%
-                    %{--                                    <li><a href="javascript:void(0);">Action</a></li>--}%
-                    %{--                                    <li><a href="javascript:void(0);">Another action</a></li>--}%
-                    %{--                                    <li><a href="javascript:void(0);">Something else</a></li>--}%
-                    %{--                                </ul>--}%
-                    %{--                            </li>--}%
-                    %{--                            <li class="remove">--}%
-                    %{--                                <a role="button" class="boxs-close"><i class="zmdi zmdi-close"></i></a>--}%
-                    %{--                            </li>--}%
-                    %{--                        </ul>--}%
-                    %{--                    </div>--}%
+
 
                     <div class="body">
                         <div class="table-responsive">
@@ -96,6 +82,7 @@
                                 <thead>
                                 <tr>
 %{--                                    <th>Entity Name</th>--}%
+                                    <th>Invoice No.</th>
                                     <th>Financial Year</th>
                                     <th>Invoice Total</th>
                                     <th>Bill Status</th>
@@ -179,9 +166,24 @@
                     for (var i = 0; i < json.data.length; i++) {
                         var deletebtn = '<a href="/sale-entry/print-invoice?id=' + json.data[i].id +'"><button type="button" data-id="' + json.data[i].id +
                             '" class="btn btn-sm btn-danger deletebtn" ><i class="material-icons"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">print</font></font></i></button></a>'
+
+                        var datepart = json.data[i].entryDate.split("T")[0];
+                        var month = datepart.split("-")[1];
+                        var year = datepart.split("-")[0];
+                       // var seriesCode = json.data[i].series.seriesCode;
+                        var seriesCode = "__";
+                        var invoiceNumber = "S/"+month+year+"/"+seriesCode+"/"+json.data[i].serBillId;
+                        if(json.data[i].billStatus === "DRAFT")
+                        {
+                            invoiceNumber = "DR/S/"+ month + year + "/" + seriesCode + "/__";
+                        }
+                        else
+                            invoiceNumber = "S/"+month+year+"/"+seriesCode+"/"+json.data[i].serBillId;
+
                         return_data.push({
                             // 'id': json.data[i].id,
                             // 'entityName': json.data[i].entityId,
+                            'invNo': invoiceNumber,
                             'finYear': json.data[i].financialYear,
                             'inv': json.data[i].invoiceTotal,
                             'bill_status': json.data[i].billStatus,
@@ -195,6 +197,7 @@
             columns: [
                 // {'data': 'id', 'width': '20%'},
                 // {'data': 'entityName', 'width': '75%'},
+                {'data': 'invNo', 'width': '10%'},
                 {'data': 'finYear', 'width': '10%'},
                 {'data': 'inv', 'width': '10%'},
                 {'data': 'bill_status', 'width': '5%'},

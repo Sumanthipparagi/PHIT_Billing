@@ -1,5 +1,7 @@
 package phitb_ui.sales
 
+import com.google.gson.JsonObject
+import phitb_ui.EntityService
 import phitb_ui.ProductService
 import phitb_ui.entity.EntityRegisterController
 import phitb_ui.entity.SeriesController
@@ -144,6 +146,12 @@ class SalebillDetailsController {
             def apiResponse = new SalesService().showSalesService(jsonObject)
             if (apiResponse.status == 200) {
                 JSONObject responseObject = new JSONObject(apiResponse.readEntity(String.class))
+/*                JSONObject saleBill = new JSONObject()
+                for (JSONObject jsonObject1 : responseObject.data) {
+                    def series = new EntityService().getSeriesById(jsonObject1.seriesId)
+                    saleBill.putAll(jsonObject1)
+                    saleBill.put("series", series)
+                }*/
                 respond responseObject, formats: ['json'], status: 200
             } else {
                 response.status = 400
