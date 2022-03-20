@@ -575,7 +575,7 @@
                     <ul class="ml-menu">
                         <li><a href="#">Sale Order</a></li>
                         <li><a href="/sale-entry">Sale Entry</a></li>
-                        <li><a href="/sale-bill">Sale Bill Details</a></li>
+                        <li><a href="/sale-bill-list">Sale Bill Details</a></li>
                         <li><a href="#">Sale Return</a></li>
                         <li><a href="#">Scheme Entry (Offers)</a></li>
                         <li><a href="#">Stock Adjustment</a></li>
