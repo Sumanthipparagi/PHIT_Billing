@@ -138,7 +138,7 @@ class AccountsService {
     {
         Client client = ClientBuilder.newClient();
         WebTarget target = client.target(new Links().API_GATEWAY);
-        GrailsHttpSession session = WebUtils.retrieveGrailsWebRequest().session
+//        GrailsHttpSession session = WebUtils.retrieveGrailsWebRequest().session
         try
         {
             println(jsonObject)
