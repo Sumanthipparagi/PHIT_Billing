@@ -50,17 +50,23 @@ class SaleEntryController {
         long finId = 0
         long serBillId = 0
         String financialYear = session.getAttribute("financialYear")
-        def recentSaleBill = new SalesService().getRecentSaleBill(financialYear, entityId)
         def series = new EntityService().getSeriesById(seriesId)
-        if(recentSaleBill != null)
+
+
+        if(!billStatus.equalsIgnoreCase("DRAFT"))
         {
-            finId = Long.parseLong(recentSaleBill.get("finId").toString()) + 1
-            serBillId = Long.parseLong(recentSaleBill.get("serBillId").toString()) + 1
+            def recentSaleBill = new SalesService().getRecentSaleBill(financialYear, entityId, billStatus)
+            if(recentSaleBill != null)
+            {
+                finId = Long.parseLong(recentSaleBill.get("finId").toString()) + 1
+                serBillId = Long.parseLong(recentSaleBill.get("serBillId").toString()) + 1
+            }
+            else {
+                finId = 1
+                serBillId = Long.parseLong(series.get("saleId").toString())
+            }
         }
-        else {
-            finId = 1
-            serBillId = Long.parseLong(series.get("saleId").toString())
-        }
+
         long totalSqty = 0
         long totalFqty = 0
         double totalAmount = 0.00

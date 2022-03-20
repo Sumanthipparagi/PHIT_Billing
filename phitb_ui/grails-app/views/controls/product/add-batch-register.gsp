@@ -132,7 +132,7 @@
                             </div>
 
 
-                            <div class="col-lg-6 form-group  form-float">
+%{--                            <div class="col-lg-6 form-group  form-float">
                                 <label for="entityId">
                                     Entity
                                 </label>
@@ -143,7 +143,7 @@
                                         <option value="${e.id}" data-type="${e.entityType.id}">${e.entityName}</option>
                                     </g:each>
                                 </select>
-                            </div>
+                            </div>--}%
 
 
 %{--                            <div class="col-lg-6 form-group  form-float">--}%

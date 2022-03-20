@@ -269,8 +269,8 @@ class SaleBillDetailsService
         }
     }
 
-    SaleBillDetails getRecentByFinancialYearAndEntity(String financialYear, String entityId)
+    SaleBillDetails getRecentByFinancialYearAndEntity(String financialYear, String entityId, billStatus)
     {
-        return SaleBillDetails.findByFinancialYearAndEntityId(financialYear, Long.parseLong(entityId), [sort: 'id', order: 'desc'])
+        return SaleBillDetails.findByFinancialYearAndEntityIdAndBillStatus(financialYear, Long.parseLong(entityId), billStatus, [sort: 'id', order: 'desc'])
     }
 }

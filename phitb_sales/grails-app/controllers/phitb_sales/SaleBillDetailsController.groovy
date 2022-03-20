@@ -316,7 +316,8 @@ class SaleBillDetailsController
         try {
             String financialYear = params.financialYear
             String entityId = params.entityId
-            respond saleBillDetailsService.getRecentByFinancialYearAndEntity(financialYear, entityId)
+            String billStatus = params.billStatus
+            respond saleBillDetailsService.getRecentByFinancialYearAndEntity(financialYear, entityId, billStatus)
         }
         catch (ResourceNotFoundException ex)
         {
