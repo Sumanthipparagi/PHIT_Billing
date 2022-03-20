@@ -157,7 +157,8 @@
 %{--                                </select>--}%
 %{--                            </div>--}%
 
-                            <input type="hidden" class="entityType" name="entityTypeId">
+                            <input type="hidden" value="${session.getAttribute("entityTypeId")}" name="entityTypeId">
+                            <input type="hidden" value="${session.getAttribute("entityId")}" name="entityId">
                             <input type="hidden" name="createdUser" value="1">
                             <input type="hidden" name="modifiedUser" value="1">
                             <input type="hidden" name="status" value="1">
