@@ -125,6 +125,7 @@ class SaleBillDetailsService
         }
 //        def names = []
 //        saleBillDetailsArrayList.each {
+//            println
 //            def apires = getEntityById(it.entityId.toString())
 //            names.push(apires)
 //        }
