@@ -8,7 +8,7 @@ class TempStockBook implements LogicalDelete<TempStockBook> {
     String batchNumber
     Date expDate
     long remainingQty
-    long remainingSchemeQty
+    long remainingFreeQty
     long remainingReplQty
     long userId
     long userOrderQty

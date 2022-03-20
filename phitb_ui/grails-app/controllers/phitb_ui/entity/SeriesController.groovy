@@ -184,6 +184,8 @@ class SeriesController
         }
     }
 
+
+
     def getByEntity(String id)
     {
         try
@@ -208,5 +210,23 @@ class SeriesController
         }
     }
 
-
+    def getSeriesById()
+    {
+        try{
+            String id = params.id
+            JSONObject jsonObject = new EntityService().getSeriesById(id)
+            if(jsonObject && (jsonObject.get("entity").get("id") == session.getAttribute("entityId")))
+            {
+                respond jsonObject, formats: ['json']
+            }
+            else
+                response.status = 404
+        }
+        catch (Exception ex)
+        {
+            System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
+            log.error('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
+            response.status = 400
+        }
+    }
 }

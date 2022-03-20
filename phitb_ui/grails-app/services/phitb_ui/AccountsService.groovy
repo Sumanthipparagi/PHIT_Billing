@@ -1,9 +1,7 @@
 package phitb_ui
 
 import grails.gorm.transactions.Transactional
-import grails.web.servlet.mvc.GrailsHttpSession
 import org.grails.web.json.JSONObject
-import org.grails.web.util.WebUtils
 
 import javax.ws.rs.client.Client
 import javax.ws.rs.client.ClientBuilder
@@ -16,12 +14,11 @@ import javax.ws.rs.core.Response
 @Transactional
 class AccountsService {
 
-    //Bank Regsiter
+    //Bank Register
     def saveBankRegister(JSONObject jsonObject)
     {
-        Client client = ClientBuilder.newClient();
-        WebTarget target = client.target(new Links().API_GATEWAY);
-        GrailsHttpSession session = WebUtils.retrieveGrailsWebRequest().session
+        Client client = ClientBuilder.newClient()
+        WebTarget target = client.target(new Links().API_GATEWAY)
         try
         {
             println(jsonObject)
@@ -34,8 +31,8 @@ class AccountsService {
         }
         catch (Exception ex)
         {
-            System.err.println('Service :saveStateMaster , action :  save  , Ex:' + ex)
-            log.error('Service :saveStateMaster , action :  save  , Ex:' + ex)
+            System.err.println('Service :AccountsService , action :  saveBankRegister  , Ex:' + ex)
+            log.error('Service :AccountsService , action :  saveBankRegister  , Ex:' + ex)
         }
     }
 
@@ -46,9 +43,8 @@ class AccountsService {
      */
     def showBankRegister(JSONObject jsonObject)
     {
-        Client client = ClientBuilder.newClient();
-        WebTarget target = client.target(new Links().API_GATEWAY);
-        GrailsHttpSession session = WebUtils.retrieveGrailsWebRequest().session
+        Client client = ClientBuilder.newClient()
+        WebTarget target = client.target(new Links().API_GATEWAY)
         try
         {
             Response apiResponse = target
@@ -60,16 +56,15 @@ class AccountsService {
         }
         catch (Exception ex)
         {
-            System.err.println('Service :getAccountModes , action :  show  , Ex:' + ex)
-            log.error('Service :getAccountModes , action :  show  , Ex:' + ex)
+            System.err.println('Service :AccountsService , action :  showBankRegister  , Ex:' + ex)
+            log.error('Service :AccountsService , action :  showBankRegister  , Ex:' + ex)
         }
     }
 
     def putBankRegister(JSONObject jsonObject)
     {
-        Client client = ClientBuilder.newClient();
-        WebTarget target = client.target(new Links().API_GATEWAY);
-        GrailsHttpSession session = WebUtils.retrieveGrailsWebRequest().session
+        Client client = ClientBuilder.newClient()
+        WebTarget target = client.target(new Links().API_GATEWAY)
         try
         {
             Response apiResponse = target
@@ -82,8 +77,8 @@ class AccountsService {
         }
         catch (Exception ex)
         {
-            System.err.println('Service : , action :  put  , Ex:' + ex)
-            log.error('Service :putAccountMode , action :  put  , Ex:' + ex)
+            System.err.println('Service: AccountsService , action :  putBankRegister  , Ex:' + ex)
+            log.error('Service: AccountsService , action :  putBankRegister  , Ex:' + ex)
         }
     }
 
@@ -94,9 +89,8 @@ class AccountsService {
      */
     def deleteBankRegister(JSONObject jsonObject)
     {
-        Client client = ClientBuilder.newClient();
-        WebTarget target = client.target(new Links().API_GATEWAY);
-        GrailsHttpSession session = WebUtils.retrieveGrailsWebRequest().session
+        Client client = ClientBuilder.newClient()
+        WebTarget target = client.target(new Links().API_GATEWAY)
         try
         {
             Response apiResponse = target
@@ -108,8 +102,8 @@ class AccountsService {
         }
         catch (Exception ex)
         {
-            System.err.println('Service :systemService , action :  delete  , Ex:' + ex)
-            log.error('Service :systemService , action :  delete  , Ex:' + ex)
+            System.err.println('Service :AccountsService , action :  deleteBankRegister  , Ex:' + ex)
+            log.error('Service :AccountsService , action :  deleteBankRegister  , Ex:' + ex)
         }
     }
 
@@ -120,7 +114,7 @@ class AccountsService {
     {
         Client client = ClientBuilder.newClient();
         WebTarget target = client.target(new Links().API_GATEWAY);
-        GrailsHttpSession session = WebUtils.retrieveGrailsWebRequest().session
+       
         try
         {
             println(jsonObject)
@@ -166,7 +160,7 @@ class AccountsService {
     {
         Client client = ClientBuilder.newClient();
         WebTarget target = client.target(new Links().API_GATEWAY);
-        GrailsHttpSession session = WebUtils.retrieveGrailsWebRequest().session
+       
         try
         {
             Response apiResponse = target
@@ -188,7 +182,7 @@ class AccountsService {
     {
         Client client = ClientBuilder.newClient();
         WebTarget target = client.target(new Links().API_GATEWAY);
-        GrailsHttpSession session = WebUtils.retrieveGrailsWebRequest().session
+       
         try
         {
             Response apiResponse = target
@@ -209,7 +203,7 @@ class AccountsService {
     {
         Client client = ClientBuilder.newClient();
         WebTarget target = client.target(new Links().API_GATEWAY);
-        GrailsHttpSession session = WebUtils.retrieveGrailsWebRequest().session
+       
         try
         {
             Response apiResponse = target
@@ -356,7 +350,7 @@ class AccountsService {
         Form form = UtilsService.jsonToFormDataConverter(jsonObject)
         Client client = ClientBuilder.newClient();
         WebTarget target = client.target(new Links().API_GATEWAY);
-        GrailsHttpSession session = WebUtils.retrieveGrailsWebRequest().session
+       
         try
         {
             Response apiResponse = target
@@ -382,7 +376,7 @@ class AccountsService {
         Form form = UtilsService.jsonToFormDataConverter(jsonObject)
         Client client = ClientBuilder.newClient();
         WebTarget target = client.target(new Links().API_GATEWAY);
-        GrailsHttpSession session = WebUtils.retrieveGrailsWebRequest().session
+       
         try
         {
             Response apiResponse = target
@@ -408,7 +402,7 @@ class AccountsService {
         Form form = UtilsService.jsonToFormDataConverter(jsonObject)
         Client client = ClientBuilder.newClient();
         WebTarget target = client.target(new Links().API_GATEWAY);
-        GrailsHttpSession session = WebUtils.retrieveGrailsWebRequest().session
+       
         try
         {
             Response apiResponse = target
@@ -434,7 +428,7 @@ class AccountsService {
         Form form = UtilsService.jsonToFormDataConverter(jsonObject)
         Client client = ClientBuilder.newClient();
         WebTarget target = client.target(new Links().API_GATEWAY);
-        GrailsHttpSession session = WebUtils.retrieveGrailsWebRequest().session
+       
         try
         {
             Response apiResponse = target

@@ -33,8 +33,8 @@ class EntityService {
         }
         catch (Exception ex)
         {
-            System.err.println('Service :saveStateMaster , action :  save  , Ex:' + ex)
-            log.error('Service :saveStateMaster , action :  save  , Ex:' + ex)
+            System.err.println('Service :EntityService , action :  saveEntity  , Ex:' + ex)
+            log.error('Service :EntityService , action :  saveEntity  , Ex:' + ex)
         }
     }
 
@@ -59,8 +59,8 @@ class EntityService {
         }
         catch (Exception ex)
         {
-            System.err.println('Service :getAccountModes , action :  show  , Ex:' + ex)
-            log.error('Service :getAccountModes , action :  show  , Ex:' + ex)
+            System.err.println('Service :EntityService , action :  showEntity  , Ex:' + ex)
+            log.error('Service :EntityService , action :  showEntity  , Ex:' + ex)
         }
     }
 
@@ -81,8 +81,8 @@ class EntityService {
         }
         catch (Exception ex)
         {
-            System.err.println('Service : , action :  put  , Ex:' + ex)
-            log.error('Service :putAccountMode , action :  put  , Ex:' + ex)
+            System.err.println('Service : , action :  putEntity  , Ex:' + ex)
+            log.error('Service :EntityService , action :  putEntity  , Ex:' + ex)
         }
     }
 
@@ -107,8 +107,8 @@ class EntityService {
         }
         catch (Exception ex)
         {
-            System.err.println('Service :systemService , action :  delete  , Ex:' + ex)
-            log.error('Service :systemService , action :  delete  , Ex:' + ex)
+            System.err.println('Service :EntityService , action :  deleteEntity  , Ex:' + ex)
+            log.error('Service :EntityService , action :  deleteEntity  , Ex:' + ex)
         }
     }
 
@@ -129,8 +129,8 @@ class EntityService {
         }
         catch (Exception ex)
         {
-            System.err.println('Service :saveStateMaster , action :  save  , Ex:' + ex)
-            log.error('Service :saveStateMaster , action :  save  , Ex:' + ex)
+            System.err.println('Service :EntityService , action :  save  , Ex:' + ex)
+            log.error('Service :EntityService , action :  save  , Ex:' + ex)
         }
     }
 
@@ -157,8 +157,8 @@ class EntityService {
         }
         catch (Exception ex)
         {
-            System.err.println('Service :EntityService , action :  getUser  , Ex:' + ex)
-            log.error('Service :EntityService , action :  getUser  , Ex:' + ex)
+            System.err.println('Service :EntityService , action :  getAuth  , Ex:' + ex)
+            log.error('Service :EntityService , action :  getAuth  , Ex:' + ex)
         }
     }
 
@@ -210,8 +210,8 @@ class EntityService {
         }
         catch (Exception ex)
         {
-            System.err.println('Service :getAccountModes , action :  show  , Ex:' + ex)
-            log.error('Service :getAccountModes , action :  show  , Ex:' + ex)
+            System.err.println('Service :EntityService , action :  showUser  , Ex:' + ex)
+            log.error('Service :EntityService , action :  showUser  , Ex:' + ex)
         }
     }
 
@@ -232,8 +232,8 @@ class EntityService {
         }
         catch (Exception ex)
         {
-            System.err.println('Service : , action :  put  , Ex:' + ex)
-            log.error('Service :putAccountMode , action :  put  , Ex:' + ex)
+            System.err.println('Service :EntityService , action :  putUser  , Ex:' + ex)
+            log.error('Service :EntityService , action :  putUser  , Ex:' + ex)
         }
     }
 
@@ -246,7 +246,6 @@ class EntityService {
     {
         Client client = ClientBuilder.newClient()
         WebTarget target = client.target(new Links().API_GATEWAY)
-       
         try
         {
             Response apiResponse = target
@@ -258,8 +257,8 @@ class EntityService {
         }
         catch (Exception ex)
         {
-            System.err.println('Service :systemService , action :  delete  , Ex:' + ex)
-            log.error('Service :systemService , action :  delete  , Ex:' + ex)
+            System.err.println('Service :EntityService , action :  deleteUser  , Ex:' + ex)
+            log.error('Service :EntityService , action :  deleteUser  , Ex:' + ex)
         }
     }
 
@@ -283,8 +282,8 @@ class EntityService {
         }
         catch (Exception ex)
         {
-            System.err.println('Service :saveStateMaster , action :  save  , Ex:' + ex)
-            log.error('Service :saveStateMaster , action :  save  , Ex:' + ex)
+            System.err.println('Service :EntityService , action :  saveCustomerGroup  , Ex:' + ex)
+            log.error('Service :EntityService , action :  saveCustomerGroup  , Ex:' + ex)
         }
     }
 
@@ -309,8 +308,8 @@ class EntityService {
         }
         catch (Exception ex)
         {
-            System.err.println('Service :getAccountModes , action :  show  , Ex:' + ex)
-            log.error('Service :getAccountModes , action :  show  , Ex:' + ex)
+            System.err.println('Service :EntityService , action : showCustomerGroup  , Ex:' + ex)
+            log.error('Service :EntityService , action : showCustomerGroup  , Ex:' + ex)
         }
     }
 
@@ -331,8 +330,8 @@ class EntityService {
         }
         catch (Exception ex)
         {
-            System.err.println('Service : , action :  put  , Ex:' + ex)
-            log.error('Service :putAccountMode , action :  put  , Ex:' + ex)
+            System.err.println('Service : EntityService, action :  putCustomerGroup  , Ex:' + ex)
+            log.error('Service :EntityService , action :  putCustomerGroup  , Ex:' + ex)
         }
     }
 
@@ -357,8 +356,8 @@ class EntityService {
         }
         catch (Exception ex)
         {
-            System.err.println('Service :systemService , action :  delete  , Ex:' + ex)
-            log.error('Service :systemService , action :  delete  , Ex:' + ex)
+            System.err.println('Service :EntityService , action :  deleteCustomerGroup  , Ex:' + ex)
+            log.error('Service :EntityService , action :  deleteCustomerGroup  , Ex:' + ex)
         }
     }
 
@@ -380,8 +379,8 @@ class EntityService {
         }
         catch (Exception ex)
         {
-            System.err.println('Service :saveStateMaster , action :  save  , Ex:' + ex)
-            log.error('Service :saveStateMaster , action :  save  , Ex:' + ex)
+            System.err.println('Service :EntityService , action :  saveDayEnd  , Ex:' + ex)
+            log.error('Service :EntityService , action :  saveDayEnd  , Ex:' + ex)
         }
     }
 
@@ -406,8 +405,8 @@ class EntityService {
         }
         catch (Exception ex)
         {
-            System.err.println('Service :getAccountModes , action :  show  , Ex:' + ex)
-            log.error('Service :getAccountModes , action :  show  , Ex:' + ex)
+            System.err.println('Service :EntityService , action :  showDayEnd  , Ex:' + ex)
+            log.error('Service :EntityService , action :  showDayEnd  , Ex:' + ex)
         }
     }
 
@@ -428,8 +427,8 @@ class EntityService {
         }
         catch (Exception ex)
         {
-            System.err.println('Service : , action :  put  , Ex:' + ex)
-            log.error('Service :putAccountMode , action :  put  , Ex:' + ex)
+            System.err.println('Service : , action :  putDayEnd  , Ex:' + ex)
+            log.error('Service :EntityService , action :  putDayEnd  , Ex:' + ex)
         }
     }
 
@@ -454,8 +453,8 @@ class EntityService {
         }
         catch (Exception ex)
         {
-            System.err.println('Service :systemService , action :  delete  , Ex:' + ex)
-            log.error('Service :systemService , action :  delete  , Ex:' + ex)
+            System.err.println('Service :EntityService , action :  deleteDayEnd  , Ex:' + ex)
+            log.error('Service :EntityService , action :  deleteDayEnd  , Ex:' + ex)
         }
     }
 
@@ -478,8 +477,39 @@ class EntityService {
         }
         catch (Exception ex)
         {
-            System.err.println('Service :saveStateMaster , action :  save  , Ex:' + ex)
-            log.error('Service :saveStateMaster , action :  save  , Ex:' + ex)
+            System.err.println('Service :EntityService , action :  saveFinancialYear  , Ex:' + ex)
+            log.error('Service :EntityService , action :  saveFinancialYear  , Ex:' + ex)
+        }
+    }
+
+    /**
+     *
+     * @param jsonObject
+     * @return
+     */
+    def getFinancialYearByEntity(String entityId)
+    {
+        Client client = ClientBuilder.newClient()
+        WebTarget target = client.target(new Links().API_GATEWAY)
+
+        try
+        {
+            Response apiResponse = target
+                    .path(new Links().FINANCIAL_YEAR_ENTITY + "/" + entityId)
+                    .request(MediaType.APPLICATION_JSON_TYPE)
+                    .get()
+            if(apiResponse.status == 200)
+            {
+                JSONArray jsonArray = new JSONArray(apiResponse.readEntity(String.class))
+                return jsonArray
+            }
+            else
+                return null
+        }
+        catch (Exception ex)
+        {
+            System.err.println('Service :EntityService , action :  showFinancialYear  , Ex:' + ex)
+            log.error('Service :EntityService , action :  showFinancialYear  , Ex:' + ex)
         }
     }
 
@@ -504,8 +534,8 @@ class EntityService {
         }
         catch (Exception ex)
         {
-            System.err.println('Service :getAccountModes , action :  show  , Ex:' + ex)
-            log.error('Service :getAccountModes , action :  show  , Ex:' + ex)
+            System.err.println('Service :EntityService , action :  showFinancialYear  , Ex:' + ex)
+            log.error('Service :EntityService , action :  showFinancialYear  , Ex:' + ex)
         }
     }
 
@@ -526,8 +556,8 @@ class EntityService {
         }
         catch (Exception ex)
         {
-            System.err.println('Service : , action :  put  , Ex:' + ex)
-            log.error('Service :putAccountMode , action :  put  , Ex:' + ex)
+            System.err.println('Service : EntityService, action :  putFinancialYear  , Ex:' + ex)
+            log.error('Service :EntityService , action :  putFinancialYear  , Ex:' + ex)
         }
     }
 
@@ -552,8 +582,8 @@ class EntityService {
         }
         catch (Exception ex)
         {
-            System.err.println('Service :systemService , action :  delete  , Ex:' + ex)
-            log.error('Service :systemService , action :  delete  , Ex:' + ex)
+            System.err.println('Service :EntityService , action :  deleteFinancialYear  , Ex:' + ex)
+            log.error('Service :EntityService , action :  deleteFinancialYear  , Ex:' + ex)
         }
     }
 
@@ -576,8 +606,8 @@ class EntityService {
         }
         catch (Exception ex)
         {
-            System.err.println('Service :saveStateMaster , action :  save  , Ex:' + ex)
-            log.error('Service :saveStateMaster , action :  save  , Ex:' + ex)
+            System.err.println('Service :EntityService , action :  saveRegionMaster  , Ex:' + ex)
+            log.error('Service :EntityService , action :  saveRegionMaster  , Ex:' + ex)
         }
     }
 
@@ -602,8 +632,8 @@ class EntityService {
         }
         catch (Exception ex)
         {
-            System.err.println('Service :getAccountModes , action :  show  , Ex:' + ex)
-            log.error('Service :getAccountModes , action :  show  , Ex:' + ex)
+            System.err.println('Service :EntityService , action :  showRegionMaster  , Ex:' + ex)
+            log.error('Service :EntityService , action :  showRegionMaster  , Ex:' + ex)
         }
     }
 
@@ -624,8 +654,8 @@ class EntityService {
         }
         catch (Exception ex)
         {
-            System.err.println('Service : , action :  put  , Ex:' + ex)
-            log.error('Service :putAccountMode , action :  put  , Ex:' + ex)
+            System.err.println('Service :EntityService , action :  putRegionMaster  , Ex:' + ex)
+            log.error('Service :EntityService , action :  putRegionMaster  , Ex:' + ex)
         }
     }
 
@@ -650,13 +680,13 @@ class EntityService {
         }
         catch (Exception ex)
         {
-            System.err.println('Service :systemService , action :  delete  , Ex:' + ex)
-            log.error('Service :systemService , action :  delete  , Ex:' + ex)
+            System.err.println('Service :EntityService , action :  deleteRegionMaster  , Ex:' + ex)
+            log.error('Service :EntityService , action :  deleteRegionMaster  , Ex:' + ex)
         }
     }
 
 
-    //Region Master
+    //Route Master
     def saveRoute(JSONObject jsonObject)
     {
         Client client = ClientBuilder.newClient()
@@ -674,8 +704,8 @@ class EntityService {
         }
         catch (Exception ex)
         {
-            System.err.println('Service :saveStateMaster , action :  save  , Ex:' + ex)
-            log.error('Service :saveStateMaster , action :  save  , Ex:' + ex)
+            System.err.println('Service :EntityService , action :  saveRoute  , Ex:' + ex)
+            log.error('Service :EntityService , action :  saveRoute  , Ex:' + ex)
         }
     }
 
@@ -700,8 +730,8 @@ class EntityService {
         }
         catch (Exception ex)
         {
-            System.err.println('Service :getAccountModes , action :  show  , Ex:' + ex)
-            log.error('Service :getAccountModes , action :  show  , Ex:' + ex)
+            System.err.println('Service :EntityService , action :  showRoute  , Ex:' + ex)
+            log.error('Service :EntityService , action :  showRoute  , Ex:' + ex)
         }
     }
 
@@ -722,8 +752,8 @@ class EntityService {
         }
         catch (Exception ex)
         {
-            System.err.println('Service : , action :  put  , Ex:' + ex)
-            log.error('Service :putAccountMode , action :  put  , Ex:' + ex)
+            System.err.println('Service :EntityService , action :  putRoute  , Ex:' + ex)
+            log.error('Service :EntityService , action :  putRoute  , Ex:' + ex)
         }
     }
 
@@ -748,8 +778,8 @@ class EntityService {
         }
         catch (Exception ex)
         {
-            System.err.println('Service :systemService , action :  delete  , Ex:' + ex)
-            log.error('Service :systemService , action :  delete  , Ex:' + ex)
+            System.err.println('Service :EntityService , action :  deleteRoute  , Ex:' + ex)
+            log.error('Service :EntityService , action :  deleteRoute  , Ex:' + ex)
         }
     }
 
@@ -772,8 +802,8 @@ class EntityService {
         }
         catch (Exception ex)
         {
-            System.err.println('Service :saveStateMaster , action :  save  , Ex:' + ex)
-            log.error('Service :saveStateMaster , action :  save  , Ex:' + ex)
+            System.err.println('Service :EntityService , action :  saveRole  , Ex:' + ex)
+            log.error('Service :EntityService , action :  saveRole  , Ex:' + ex)
         }
     }
 
@@ -798,8 +828,8 @@ class EntityService {
         }
         catch (Exception ex)
         {
-            System.err.println('Service :getAccountModes , action :  show  , Ex:' + ex)
-            log.error('Service :getAccountModes , action :  show  , Ex:' + ex)
+            System.err.println('Service :EntityService , action :  showRole  , Ex:' + ex)
+            log.error('Service :EntityService , action :  showRole  , Ex:' + ex)
         }
     }
 
@@ -820,8 +850,8 @@ class EntityService {
         }
         catch (Exception ex)
         {
-            System.err.println('Service : , action :  put  , Ex:' + ex)
-            log.error('Service :putAccountMode , action :  put  , Ex:' + ex)
+            System.err.println('Service :EntityService , action :  putRole  , Ex:' + ex)
+            log.error('Service :EntityService , action :  putRole  , Ex:' + ex)
         }
     }
 
@@ -846,8 +876,8 @@ class EntityService {
         }
         catch (Exception ex)
         {
-            System.err.println('Service :systemService , action :  delete  , Ex:' + ex)
-            log.error('Service :systemService , action :  delete  , Ex:' + ex)
+            System.err.println('Service :EntityService , action :  deleteRole  , Ex:' + ex)
+            log.error('Service :EntityService , action :  deleteRole  , Ex:' + ex)
         }
     }
 
@@ -869,8 +899,8 @@ class EntityService {
         }
         catch (Exception ex)
         {
-            System.err.println('Service :saveStateMaster , action :  save  , Ex:' + ex)
-            log.error('Service :saveStateMaster , action :  save  , Ex:' + ex)
+            System.err.println('Service :EntityService , action :  saveRule  , Ex:' + ex)
+            log.error('Service :EntityService , action :  saveRule  , Ex:' + ex)
         }
     }
 
@@ -895,8 +925,8 @@ class EntityService {
         }
         catch (Exception ex)
         {
-            System.err.println('Service :getAccountModes , action :  show  , Ex:' + ex)
-            log.error('Service :getAccountModes , action :  show  , Ex:' + ex)
+            System.err.println('Service :EntityService , action :  showRule  , Ex:' + ex)
+            log.error('Service :EntityService , action :  showRule  , Ex:' + ex)
         }
     }
 
@@ -917,8 +947,8 @@ class EntityService {
         }
         catch (Exception ex)
         {
-            System.err.println('Service : , action :  put  , Ex:' + ex)
-            log.error('Service :putAccountMode , action :  put  , Ex:' + ex)
+            System.err.println('Service : , action :  putRule  , Ex:' + ex)
+            log.error('Service :EntityService , action :  putRule  , Ex:' + ex)
         }
     }
 
@@ -943,8 +973,8 @@ class EntityService {
         }
         catch (Exception ex)
         {
-            System.err.println('Service :systemService , action :  delete  , Ex:' + ex)
-            log.error('Service :systemService , action :  delete  , Ex:' + ex)
+            System.err.println('Service :EntityService , action :  deleteRule  , Ex:' + ex)
+            log.error('Service :EntityService , action :  deleteRule  , Ex:' + ex)
         }
     }
 
@@ -967,8 +997,8 @@ class EntityService {
         }
         catch (Exception ex)
         {
-            System.err.println('Service :saveStateMaster , action :  save  , Ex:' + ex)
-            log.error('Service :saveStateMaster , action :  save  , Ex:' + ex)
+            System.err.println('Service :EntityService , action :  saveTax  , Ex:' + ex)
+            log.error('Service :EntityService , action :  saveTax  , Ex:' + ex)
         }
     }
 
@@ -993,8 +1023,8 @@ class EntityService {
         }
         catch (Exception ex)
         {
-            System.err.println('Service :getAccountModes , action :  show  , Ex:' + ex)
-            log.error('Service :getAccountModes , action :  show  , Ex:' + ex)
+            System.err.println('Service :EntityService , action :  showTax  , Ex:' + ex)
+            log.error('Service :EntityService , action :  showTax  , Ex:' + ex)
         }
     }
 
@@ -1015,8 +1045,8 @@ class EntityService {
         }
         catch (Exception ex)
         {
-            System.err.println('Service : , action :  put  , Ex:' + ex)
-            log.error('Service :putAccountMode , action :  put  , Ex:' + ex)
+            System.err.println('Service :EntityService , action :  putTax  , Ex:' + ex)
+            log.error('Service :EntityService , action :  putTax  , Ex:' + ex)
         }
     }
 
@@ -1041,8 +1071,8 @@ class EntityService {
         }
         catch (Exception ex)
         {
-            System.err.println('Service :systemService , action :  delete  , Ex:' + ex)
-            log.error('Service :systemService , action :  delete  , Ex:' + ex)
+            System.err.println('Service :EntityService , action :  deleteTax  , Ex:' + ex)
+            log.error('Service :EntityService , action :  deleteTax  , Ex:' + ex)
         }
     }
 
@@ -1065,8 +1095,8 @@ class EntityService {
         }
         catch (Exception ex)
         {
-            System.err.println('Service :saveStateMaster , action :  save  , Ex:' + ex)
-            log.error('Service :saveStateMaster , action :  save  , Ex:' + ex)
+            System.err.println('Service :EntityService , action :  saveTerritory  , Ex:' + ex)
+            log.error('Service :EntityService , action :  saveTerritory  , Ex:' + ex)
         }
     }
 
@@ -1091,8 +1121,8 @@ class EntityService {
         }
         catch (Exception ex)
         {
-            System.err.println('Service :getAccountModes , action :  show  , Ex:' + ex)
-            log.error('Service :getAccountModes , action :  show  , Ex:' + ex)
+            System.err.println('Service :EntityService , action :  showTerritory  , Ex:' + ex)
+            log.error('Service :EntityService , action :  showTerritory  , Ex:' + ex)
         }
     }
 
@@ -1113,8 +1143,8 @@ class EntityService {
         }
         catch (Exception ex)
         {
-            System.err.println('Service : , action :  put  , Ex:' + ex)
-            log.error('Service :putAccountMode , action :  put  , Ex:' + ex)
+            System.err.println('Service : EntityService, action :  putTerritory  , Ex:' + ex)
+            log.error('Service :EntityService , action :  putTerritory  , Ex:' + ex)
         }
     }
 
@@ -1139,8 +1169,8 @@ class EntityService {
         }
         catch (Exception ex)
         {
-            System.err.println('Service :systemService , action :  delete  , Ex:' + ex)
-            log.error('Service :systemService , action :  delete  , Ex:' + ex)
+            System.err.println('Service :EntityService , action :  deleteTerritory  , Ex:' + ex)
+            log.error('Service :EntityService , action :  deleteTerritory  , Ex:' + ex)
         }
     }
 
@@ -1163,8 +1193,8 @@ class EntityService {
         }
         catch (Exception ex)
         {
-            System.err.println('Service :saveStateMaster , action :  save  , Ex:' + ex)
-            log.error('Service :saveStateMaster , action :  save  , Ex:' + ex)
+            System.err.println('Service :EntityService , action :  saveTermsCondition  , Ex:' + ex)
+            log.error('Service :EntityService , action :  saveTermsCondition  , Ex:' + ex)
         }
     }
 
@@ -1173,7 +1203,7 @@ class EntityService {
      * @param jsonObject
      * @return
      */
-    def showTermsCondtion(JSONObject jsonObject)
+    def showTermsCondition(JSONObject jsonObject)
     {
         Client client = ClientBuilder.newClient()
         WebTarget target = client.target(new Links().API_GATEWAY)
@@ -1189,12 +1219,12 @@ class EntityService {
         }
         catch (Exception ex)
         {
-            System.err.println('Service :getAccountModes , action :  show  , Ex:' + ex)
-            log.error('Service :getAccountModes , action :  show  , Ex:' + ex)
+            System.err.println('Service :EntityService , action :  showTermsCondition  , Ex:' + ex)
+            log.error('Service :EntityService , action :  showTermsCondition  , Ex:' + ex)
         }
     }
 
-    def putTermsCondtion(JSONObject jsonObject)
+    def putTermsCondition(JSONObject jsonObject)
     {
         Client client = ClientBuilder.newClient()
         WebTarget target = client.target(new Links().API_GATEWAY)
@@ -1211,8 +1241,8 @@ class EntityService {
         }
         catch (Exception ex)
         {
-            System.err.println('Service : , action :  put  , Ex:' + ex)
-            log.error('Service :putAccountMode , action :  put  , Ex:' + ex)
+            System.err.println('Service : EntityService, action :  putTermsCondition  , Ex:' + ex)
+            log.error('Service :EntityService , action :  putTermsCondition  , Ex:' + ex)
         }
     }
 
@@ -1221,7 +1251,7 @@ class EntityService {
      * @param jsonObject
      * @return
      */
-    def deleteTermsCondtion(JSONObject jsonObject)
+    def deleteTermsCondition(JSONObject jsonObject)
     {
         Client client = ClientBuilder.newClient()
         WebTarget target = client.target(new Links().API_GATEWAY)
@@ -1237,8 +1267,8 @@ class EntityService {
         }
         catch (Exception ex)
         {
-            System.err.println('Service :systemService , action :  delete  , Ex:' + ex)
-            log.error('Service :systemService , action :  delete  , Ex:' + ex)
+            System.err.println('Service :EntityService , action :  deleteTermsCondtion  , Ex:' + ex)
+            log.error('Service :EntityService , action :  deleteTermsCondtion  , Ex:' + ex)
         }
     }
 
@@ -1261,8 +1291,8 @@ class EntityService {
         }
         catch (Exception ex)
         {
-            System.err.println('Service :saveStateMaster , action :  save  , Ex:' + ex)
-            log.error('Service :saveStateMaster , action :  save  , Ex:' + ex)
+            System.err.println('Service :EntityService , action :  saveSeries  , Ex:' + ex)
+            log.error('Service :EntityService , action :  saveSeries  , Ex:' + ex)
         }
     }
 
@@ -1287,8 +1317,8 @@ class EntityService {
         }
         catch (Exception ex)
         {
-            System.err.println('Service :getAccountModes , action :  show  , Ex:' + ex)
-            log.error('Service :getAccountModes , action :  show  , Ex:' + ex)
+            System.err.println('Service :EntityService , action :  showSeries  , Ex:' + ex)
+            log.error('Service :EntityService , action :  showSeries  , Ex:' + ex)
         }
     }
 
@@ -1309,8 +1339,8 @@ class EntityService {
         }
         catch (Exception ex)
         {
-            System.err.println('Service : , action :  put  , Ex:' + ex)
-            log.error('Service :putAccountMode , action :  put  , Ex:' + ex)
+            System.err.println('Service : EntityService, action :  putSeries  , Ex:' + ex)
+            log.error('Service :EntityService , action :  putSeries  , Ex:' + ex)
         }
     }
 
@@ -1335,8 +1365,8 @@ class EntityService {
         }
         catch (Exception ex)
         {
-            System.err.println('Service :systemService , action :  delete  , Ex:' + ex)
-            log.error('Service :systemService , action :  delete  , Ex:' + ex)
+            System.err.println('Service :EntityService , action :  deleteSeries  , Ex:' + ex)
+            log.error('Service :EntityService , action :  deleteSeries  , Ex:' + ex)
         }
     }
 
@@ -1359,8 +1389,8 @@ class EntityService {
         }
         catch (Exception ex)
         {
-            System.err.println('Service :saveStateMaster , action :  save  , Ex:' + ex)
-            log.error('Service :saveStateMaster , action :  save  , Ex:' + ex)
+            System.err.println('Service :EntityService , action :  saveServiceType  , Ex:' + ex)
+            log.error('Service :EntityService , action :  saveServiceType  , Ex:' + ex)
         }
     }
 
@@ -1385,8 +1415,8 @@ class EntityService {
         }
         catch (Exception ex)
         {
-            System.err.println('Service :getAccountModes , action :  show  , Ex:' + ex)
-            log.error('Service :getAccountModes , action :  show  , Ex:' + ex)
+            System.err.println('Service :EntityService , action :  showServiceType  , Ex:' + ex)
+            log.error('Service :EntityService , action :  showServiceType  , Ex:' + ex)
         }
     }
 
@@ -1407,8 +1437,8 @@ class EntityService {
         }
         catch (Exception ex)
         {
-            System.err.println('Service : , action :  put  , Ex:' + ex)
-            log.error('Service :putAccountMode , action :  put  , Ex:' + ex)
+            System.err.println('Service : , action :  putServiceType  , Ex:' + ex)
+            log.error('Service :EntityService , action :  putServiceType  , Ex:' + ex)
         }
     }
 
@@ -1433,8 +1463,8 @@ class EntityService {
         }
         catch (Exception ex)
         {
-            System.err.println('Service :systemService , action :  delete  , Ex:' + ex)
-            log.error('Service :systemService , action :  delete  , Ex:' + ex)
+            System.err.println('Service :EntityService , action :  deleteServiceType  , Ex:' + ex)
+            log.error('Service :EntityService , action :  deleteServiceType  , Ex:' + ex)
         }
     }
 
@@ -1442,19 +1472,41 @@ class EntityService {
     def getEntity() {
         Client client = ClientBuilder.newClient()
         WebTarget target = client.target(new Links().API_GATEWAY)
-       
         try {
-
             Response apiResponse = target
                     .path(new Links().ENTITY_REGISTER_SHOW)
+                    .queryParam("offset", "0") //TODO:to remove
+                    .queryParam("limit", "10000")
                     .request(MediaType.APPLICATION_JSON_TYPE)
                     .get()
 
             return apiResponse
         }
         catch (Exception ex) {
-            System.err.println('Service :EntityService , action :  getProducts  , Ex:' + ex)
-            log.error('Service :EntityService , action :  getProducts  , Ex:' + ex)
+            System.err.println('Service :EntityService , action :  getEntity  , Ex:' + ex)
+            log.error('Service :EntityService , action :  getEntity  , Ex:' + ex)
+        }
+    }
+
+    def getEntityById(String id) {
+        Client client = ClientBuilder.newClient()
+        WebTarget target = client.target(new Links().API_GATEWAY)
+        try {
+            Response apiResponse = target
+                    .path(new Links().ENTITY_REGISTER_SHOW + "/"+id)
+                    .request(MediaType.APPLICATION_JSON_TYPE)
+                    .get()
+            if(apiResponse.status == 200)
+            {
+                JSONObject jsonObject = new JSONObject(apiResponse.readEntity(String.class))
+                return jsonObject
+            }
+            else
+                return null
+        }
+        catch (Exception ex) {
+            System.err.println('Service :EntityService , action :  getEntity  , Ex:' + ex)
+            log.error('Service :EntityService , action :  getEntity  , Ex:' + ex)
         }
     }
 
@@ -1469,12 +1521,12 @@ class EntityService {
             return apiResponse
         }
         catch (Exception ex) {
-            System.err.println('Service :EntityService , action :  getProducts  , Ex:' + ex)
-            log.error('Service :EntityService , action :  getProducts  , Ex:' + ex)
+            System.err.println('Service :EntityService , action :  getEntityByAffiliates  , Ex:' + ex)
+            log.error('Service :EntityService , action :  getEntityByAffiliates  , Ex:' + ex)
         }
     }
 
-    def getEntityById(String id) {
+/*    def getEntityById(String id) {
         Client client = ClientBuilder.newClient()
         WebTarget target = client.target(new Links().API_GATEWAY)
         try {
@@ -1488,7 +1540,7 @@ class EntityService {
             System.err.println('Service :EntityService , action :  getProducts  , Ex:' + ex)
             log.error('Service :EntityService , action :  getProducts  , Ex:' + ex)
         }
-    }
+    }*/
 
 
     def getTaxRegister(String id = null) {
@@ -1508,8 +1560,8 @@ class EntityService {
             return apiResponse
         }
         catch (Exception ex) {
-            System.err.println('Service :EntityService , action :  getProducts  , Ex:' + ex)
-            log.error('Service :EntityService , action :  getProducts  , Ex:' + ex)
+            System.err.println('Service :EntityService , action :  getTaxRegister  , Ex:' + ex)
+            log.error('Service :EntityService , action :  getTaxRegister  , Ex:' + ex)
         }
     }
 
@@ -1526,8 +1578,8 @@ class EntityService {
             return apiResponse
         }
         catch (Exception ex) {
-            System.err.println('Service :EntityService , action :  getProducts  , Ex:' + ex)
-            log.error('Service :EntityService , action :  getProducts  , Ex:' + ex)
+            System.err.println('Service :EntityService , action :  getEntityType  , Ex:' + ex)
+            log.error('Service :EntityService , action :  getEntityType  , Ex:' + ex)
         }
     }
 
@@ -1544,27 +1596,52 @@ class EntityService {
             return apiResponse
         }
         catch (Exception ex) {
-            System.err.println('Service :EntityService , action :  getProducts  , Ex:' + ex)
-            log.error('Service :EntityService , action :  getProducts  , Ex:' + ex)
+            System.err.println('Service :EntityService , action :  getUserRegister  , Ex:' + ex)
+            log.error('Service :EntityService , action :  getUserRegister  , Ex:' + ex)
         }
     }
 
-    def getSeries() {
+    def getSeries(String id = null) {
         Client client = ClientBuilder.newClient()
         WebTarget target = client.target(new Links().API_GATEWAY)
-       
+        String uri = new Links().SERIES_MASTER_SHOW
+        if(id)
+            uri += "/"+id
         try {
 
             Response apiResponse = target
-                    .path(new Links().SERIES_MASTER_SHOW)
+                    .path(uri)
                     .request(MediaType.APPLICATION_JSON_TYPE)
                     .get()
 
             return apiResponse
         }
         catch (Exception ex) {
-            System.err.println('Service :EntityService , action :  getProducts  , Ex:' + ex)
-            log.error('Service :EntityService , action :  getProducts  , Ex:' + ex)
+            System.err.println('Service :EntityService , action :  getSeries  , Ex:' + ex)
+            log.error('Service :EntityService , action :  getSeries  , Ex:' + ex)
+        }
+    }
+
+    def getSeriesById(String id) {
+        Client client = ClientBuilder.newClient()
+        WebTarget target = client.target(new Links().API_GATEWAY)
+        try {
+            Response apiResponse = target
+                    .path(new Links().SERIES_MASTER_SHOW + "/"+id)
+                    .request(MediaType.APPLICATION_JSON_TYPE)
+                    .get()
+
+            if(apiResponse.status == 200)
+            {
+                JSONObject jsonObject = new JSONObject(apiResponse.readEntity(String.class))
+                return jsonObject
+            }
+            else
+                return null
+        }
+        catch (Exception ex) {
+            System.err.println('Service :EntityService , action :  getSeries  , Ex:' + ex)
+            log.error('Service :EntityService , action :  getSeries  , Ex:' + ex)
         }
     }
 
@@ -1615,8 +1692,8 @@ class EntityService {
             }
         }
         catch (Exception ex) {
-            System.err.println('Service :EntityService , action :  getProducts  , Ex:' + ex)
-            log.error('Service :EntityService , action :  getProducts  , Ex:' + ex)
+            System.err.println('Service :EntityService , action :  getRoles  , Ex:' + ex)
+            log.error('Service :EntityService , action :  getRoles  , Ex:' + ex)
         }
     }
 

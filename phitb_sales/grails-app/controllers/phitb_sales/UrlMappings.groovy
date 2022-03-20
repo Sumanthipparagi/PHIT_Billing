@@ -124,6 +124,7 @@ class UrlMappings {
             "/salebilldetailsbydays/$days(.$format)?"(controller: 'saleBillDetails') {
                 action = [GET: 'getAllByDays']
             }
+            "/salebilldetails/getrecent(.$format)?"(controller: 'saleBillDetails', action: 'getRecentByFinancialYearAndEntity')
 
             "/setpaymentstatus/$id/type/$type(.$format)?"(controller: 'saleBillDetails') {
                 action = [POST: 'updatePaymentStatus']
@@ -134,6 +135,10 @@ class UrlMappings {
                 action = [GET: 'index', POST:
                         'save']
             }
+            "/saleproductdetails/bill/$id(.$format)?"(controller: 'saleProductDetails') {
+                action = [GET: 'getSaleProductDetailsOfSaleBill']
+            }
+
             "/saleproductdetails/datatable(.$format)?"(controller: 'saleProductDetails') {action = [GET: 'dataTable']}
             "/saleproductdetails/$id(.$format)?"(controller: 'saleProductDetails') {
                 action = [GET: 'show', PUT: 'update', DELETE:
@@ -193,6 +198,8 @@ class UrlMappings {
             "/schemeconfigurationbydays/$days(.$format)?"(controller: 'schemeConfiguration') {
                 action = [GET: 'getAllByDays']
             }
+            "/schemeconfiguration/product/$productId/batch/$batchNumber(.$format)?"(controller:'schemeConfiguration', action: 'getByProductBatchNumber')
+
 
             //Temp User Log
             "/tempuserlog(.$format)?"(controller:'tempUserLog') {

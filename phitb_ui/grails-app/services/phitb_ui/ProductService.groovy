@@ -52,7 +52,16 @@ class ProductService {
                     .request(MediaType.APPLICATION_JSON_TYPE)
                     .get()
 
-            return apiResponse
+            if (apiResponse?.status == 200)
+            {
+                JSONArray jsonArray = new JSONArray(apiResponse.readEntity(String.class));
+                ArrayList<String> arrayList = new ArrayList<>(jsonArray)
+                return arrayList
+            }
+            else
+            {
+                return []
+            }
         }
         catch (Exception ex) {
             System.err.println('Service :ProductService , action :  getProducts  , Ex:' + ex)
@@ -269,8 +278,32 @@ class ProductService {
             return apiResponse
         }
         catch (Exception ex) {
-            System.err.println('Service :ProductService , action :  getProducts  , Ex:' + ex)
-            log.error('Service :ProductService , action :  getProducts  , Ex:' + ex)
+            System.err.println('Service :ProductService , action :  getBatchRegister  , Ex:' + ex)
+            log.error('Service :ProductService , action :  getBatchRegister  , Ex:' + ex)
+        }
+    }
+
+    def getBatchById(String id) {
+        Client client = ClientBuilder.newClient();
+        WebTarget target = client.target(new Links().API_GATEWAY);
+        try {
+            Response apiResponse = target
+                    .path(new Links().BATCH_REGISTER_SHOW + "/"+id)
+                    .request(MediaType.APPLICATION_JSON_TYPE)
+                    .get()
+            if (apiResponse?.status == 200)
+            {
+                JSONObject jsonObject = new JSONObject(apiResponse.readEntity(String.class));
+                return jsonObject
+            }
+            else
+            {
+                return null
+            }
+        }
+        catch (Exception ex) {
+            System.err.println('Service :ProductService , action :  getBatchRegister  , Ex:' + ex)
+            log.error('Service :ProductService , action :  getBatchRegister  , Ex:' + ex)
         }
     }
 
@@ -1411,12 +1444,10 @@ class ProductService {
 
 
     //   Product Register
-
     def getProductsByEntityId(String id)
     {
         Client client = ClientBuilder.newClient();
-        WebTarget target = client.target(new Links().API_GATEWAY);
-        
+        WebTarget target = client.target(new Links().API_GATEWAY)
         try
         {
             Response apiResponse = target
@@ -1438,6 +1469,34 @@ class ProductService {
         {
             System.err.println('Service :ProductService , action :  getProductByEntityId  , Ex:' + ex)
             log.error('Service :ProductService , action :  getProductByEntityId  , Ex:' + ex)
+        }
+    }
+
+    def getProductsByDivision(String id)
+    {
+        Client client = ClientBuilder.newClient();
+        WebTarget target = client.target(new Links().API_GATEWAY)
+        try
+        {
+            Response apiResponse = target
+                    .path(new Links().PRODUCT_REGISTER_BY_DIVISION + "/"+id)
+                    .request(MediaType.APPLICATION_JSON_TYPE)
+                    .get()
+            if (apiResponse?.status == 200)
+            {
+                def txt = apiResponse.readEntity(String.class)
+                JSONArray obj = new JSONArray(txt)
+                return obj
+            }
+            else
+            {
+                return null
+            }
+        }
+        catch (Exception ex)
+        {
+            System.err.println('Service :ProductService , action :  getProductsByDivision  , Ex:' + ex)
+            log.error('Service :ProductService , action :  getProductsByDivision  , Ex:' + ex)
         }
     }
 
@@ -1534,6 +1593,30 @@ class ProductService {
         {
             System.err.println('Service :systemService , action :  delete  , Ex:' + ex)
             log.error('Service :systemService , action :  delete  , Ex:' + ex)
+        }
+    }
+
+
+    def getDivisionsByEntityId(String id) {
+        Client client = ClientBuilder.newClient();
+        WebTarget target = client.target(new Links().API_GATEWAY);
+        try {
+
+            Response apiResponse = target
+                    .path(new Links().DIVISION_BY_ENTITY + "/" + id)
+                    .request(MediaType.APPLICATION_JSON_TYPE)
+                    .get()
+            if(apiResponse.status == 200)
+            {
+                JSONArray jsonArray = new JSONArray(apiResponse.readEntity(String.class))
+                return jsonArray
+            }
+            else
+                return null
+        }
+        catch (Exception ex) {
+            System.err.println('Service :ProductService , action :  getDivisionsByEntityId  , Ex:' + ex)
+            log.error('Service :ProductService , action :  getDivisionsByEntityId  , Ex:' + ex)
         }
     }
 

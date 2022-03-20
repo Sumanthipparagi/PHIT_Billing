@@ -204,4 +204,9 @@ class SchemeConfigurationService {
             throw new BadRequestException()
         }
     }
+
+    def getByProductBatchNumber(String productId, String batchNumber)
+    {
+       return SchemeConfiguration.findByProductIdAndBatch(Long.parseLong(productId), batchNumber)
+    }
 }

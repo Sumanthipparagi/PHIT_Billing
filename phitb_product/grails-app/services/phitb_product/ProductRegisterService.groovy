@@ -32,17 +32,14 @@ class ProductRegisterService {
 
     }
 
-    def getAllByDivision(long limit, long offset, long divisionId) {
-        Integer o = offset ? Integer.parseInt(offset.toString()) : 0
-        Integer l = limit ? Integer.parseInt(limit.toString()) : 100
-        if (!divisionId)
-            return ProductRegister.findAll([sort: 'id', max: l, offset: o, order: 'desc'])
-        else
-            return ProductRegister.createCriteria().list(max: l,offset:o){
-                division{
-                    eq('id',divisionId)
-                }
+    def getAllByDivision(long divisionId) {
+        return ProductRegister.createCriteria().list(){
+            division{
+                eq('id',divisionId)
             }
+            order("productName", "asc")
+        }
+
     }
 
     ProductRegister get(String id) {

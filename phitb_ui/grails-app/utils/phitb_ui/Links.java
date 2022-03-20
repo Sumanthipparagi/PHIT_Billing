@@ -47,6 +47,14 @@ public class Links
     public static String CITY_MASTER_UPDATE = "api/v1.0/system/city/{id}";
     public static String CITY_MASTER_DELETE = "api/v1.0/system/city/{id}";
 
+    //    Priorty Master
+    public static String PRIORITY_SAVE = "api/v1.0/system/priority";
+    public static String PRIORITY_SHOW = "api/v1.0/system/priority";
+    public static String PRIORITY_DATATABLE = "api/v1.0/system/priority/datatable";
+    public static String PRIORITY_UPDATE = "api/v1.0/system/priority/{id}";
+    public static String PRIORITY_DELETE = "api/v1.0/system/priority/{id}";
+    public static String PRIORITY_BY_ENTITY = "api/v1.0/system/prioritybyentity";
+
 
     /*<-------------------------------------------Facility ------------------------------------------------->*/
 
@@ -86,6 +94,7 @@ public class Links
     public static String ENTITY_TYPE_MASTER_SHOW = "api/v1.0/entity/entitytypemaster";
     public static String DEPARTMENT_MASTER_SHOW = "api/v1.0/entity/departmentmaster";
     public static String DIVISION_SHOW = "api/v1.0/product/division";
+    public static String DIVISION_BY_ENTITY = "api/v1.0/product/divisionbyentity";
     public static String GENDER_SHOW = "api/v1.0/system/gender";
 
     //Entity Register
@@ -133,6 +142,7 @@ public class Links
     public static String FINANCIAL_YEAR_DATATABLE = "api/v1.0/entity/financialyearmaster/datatable";
     public static String FINANCIAL_YEAR_UPDATE = "api/v1.0/entity/financialyearmaster/{id}";
     public static String FINANCIAL_YEAR_DELETE = "api/v1.0/entity/financialyearmaster/{id}";
+    public static String FINANCIAL_YEAR_ENTITY = "api/v1.0/entity/financialyearmasterbyentity";
 
 
     //Region Register
@@ -216,6 +226,7 @@ public class Links
     //Product Register
     public static String PRODUCT_REGISTER_SHOW = "api/v1.0/product/productregister";
     public static String PRODUCT_REGISTER_BY_ENTITY = "api/v1.0/product/productregisterbyentity";
+    public static String PRODUCT_REGISTER_BY_DIVISION = "api/v1.0/product/productregisterbydivision";
     public static String PRODUCT_REGISTER_SAVE = "api/v1.0/product/productregister";
     public static String PRODUCT_REGISTER_DATATABLE = "api/v1.0/product/productregister/datatable";
     public static String PRODUCT_REGISTER_UPDATE = "api/v1.0/product/productregister/{id}";
@@ -309,12 +320,28 @@ public class Links
     public static String SALE_BILL_SETTLED = "api/v1.0/sales/salebillsettledbycustomer";
     public static String SALE_BILL_PAYMENT = "api/v1.0/sales/salebillbypaymentstatus";
     public static String SET_PAYMENT_BILL = "api/v1.0/sales/setpaymentstatus/{id}/type/{type}";
+    public static String SALE_BILL_RECENT = "api/v1.0/sales/salebilldetails/getrecent";
+
+
+    public static String SALE_SCHEME_CONFIG_GET_PRODUCT_BATCH = "api/v1.0/sales/schemeconfiguration/product/$productId/batch/$batchNumber";
+
+
+    //Sale Bill Details
+    public static String SALE_PRODUCT_SHOW = "api/v1.0/sales/saleproductdetails";
+    public static String SALE_PRODUCT_SAVE = "api/v1.0/sales/saleproductdetails";
+    public static String SALE_PRODUCT_DATATABLE = "api/v1.0/sales/saleproductdetails/datatable";
+    public static String SALE_PRODUCT_UPDATE = "api/v1.0/sales/saleproductdetails/{id}";
+    public static String SALE_PRODUCT_DELETE = "api/v1.0/sales/saleproductdetails/{id}";
+    public static String SALE_PRODUCT_OF_BILL = "api/v1.0/sales/saleproductdetails/bill";
+
+
 
     /*<--------------------------------------------Inventory ------------------------------------------------->*/
 
     //Stock book
+    public static String STOCK_BOOK = "api/v1.0/inventory/stockbook";
+    public static String STOCK_BOOK_DATATABLE = "api/v1.0/inventory/stockbook/datatable";
     public static String GET_STOCKS_OF_PRODUCT = "api/v1.0/inventory/stockbookbyproduct";
-
     public static String STOCK_BOOK_PURCHASE = "api/v1.0/inventory/stockbook/purchase/";
 
 
@@ -322,6 +349,7 @@ public class Links
     public static String GET_TEMP_STOCK_PRODUCT = "api/v1.0/inventory/tempstockbook";
     public static String GET_TEMP_STOCK_PRODUCT_BATCH = "api/v1.0/inventory/tempstockbookbyproductandbatch";
     public static String TEMP_STOCK_BOOK_SAVE = "api/v1.0/inventory/tempstockbook";
+    public static String TEMP_STOCK_BOOK_BY_USER = "api/v1.0/inventory/tempstockbook/user";
 
 
 

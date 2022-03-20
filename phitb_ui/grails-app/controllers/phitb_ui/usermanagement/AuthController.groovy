@@ -1,8 +1,11 @@
 package phitb_ui.usermanagement
 
+import org.grails.web.json.JSONArray
 import org.grails.web.json.JSONObject
 import phitb_ui.AuthService
 import phitb_ui.EntityService
+
+import java.text.SimpleDateFormat
 
 class AuthController {
 
@@ -64,6 +67,19 @@ class AuthController {
                     session.setAttribute("entityTypeId", entity?.get("entityType")?.id)
                     session.setAttribute("entityTypeName", entity?.get("entityType")?.name)
                     session.setAttribute("permittedFeatures", auth?.get("user").role?.permittedFeatures)
+                    JSONArray jsonArray = new EntityService().getFinancialYearByEntity(entity?.get("entityType")?.id?.toString())
+                    if(jsonArray == null || jsonArray.size()<1)
+                    {
+                        session.invalidate()
+                        redirect(uri: "/")
+                    }
+                    else
+                    {
+                        JSONObject jsonObject = jsonArray.last() //TODO: this should be obtained from settings
+                        String startYear = jsonObject.get("startDate").toString().split("/")[2]
+                        String endYear = jsonObject.get("endDate").toString().split("/")[2]
+                        session.setAttribute("financialYear", startYear+"-"+endYear)
+                    }
 
                     redirect(uri: "/dashboard")
                 } else {

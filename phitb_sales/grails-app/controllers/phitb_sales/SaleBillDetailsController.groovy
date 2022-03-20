@@ -310,4 +310,26 @@ class SaleBillDetailsController
         }
         response.status = 400
     }
+
+    def getRecentByFinancialYearAndEntity()
+    {
+        try {
+            String financialYear = params.financialYear
+            String entityId = params.entityId
+            respond saleBillDetailsService.getRecentByFinancialYearAndEntity(financialYear, entityId)
+        }
+        catch (ResourceNotFoundException ex)
+        {
+            System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
+            response.status = 404
+        }
+        catch (BadRequestException ex)
+        {
+            System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
+            response.status = 400
+        }
+        catch (Exception ex) {
+            System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
+        }
+    }
 }

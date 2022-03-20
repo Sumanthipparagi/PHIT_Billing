@@ -1,7 +1,5 @@
 package phitb_inventory
 
-
-import grails.rest.*
 import grails.converters.*
 import grails.web.servlet.mvc.GrailsParameterMap
 import org.grails.web.json.JSONObject

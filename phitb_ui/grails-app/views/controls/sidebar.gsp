@@ -534,6 +534,7 @@
                             <h6>${session.getAttribute("userName")}</h6>
 
                             <p class="m-b-0">${session.getAttribute("entityName")}</p>
+                            <small>Financial Year: ${session.getAttribute("financialYear")}</small>
                         </div>
                     </div>
                 </li>
@@ -546,6 +547,7 @@
                         class="badge badge-success float-right"></span></a>
                     <ul class="ml-menu">
                         <li><a href="#">Purchase Order</a></li>
+                        <li><a href="/purchase-entry">Purchase Entry</a></li>
                         <li><a href="/recipt">Recipt</a></li>
                         <li><a href="#">Purchase Entry</a></li>
                         <li><a href="#">Purchase Return</a></li>
@@ -660,7 +662,13 @@
                         <li><a href="/product-cost-range">Product Cost Range</a></li>
                     </ul>
                 </li>
-
+                <li><a href="javascript:void(0);" class="menu-toggle"><i
+                        class="zmdi zmdi-apps"></i><span>Inventory</span> <span
+                        class="badge badge-success float-right"></span></a>
+                    <ul class="ml-menu">
+                        <li><a href="stockbook">Stock Entry</a></li>
+                    </ul>
+                </li>
 
             </ul>
         </div>

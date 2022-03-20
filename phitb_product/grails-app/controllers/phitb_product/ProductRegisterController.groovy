@@ -92,7 +92,7 @@ class ProductRegisterController
     def getAllByDivision() {
         try {
             if (params.id) {
-                respond productRegisterService.getAllByDivision(0,0,Long.parseLong(params.id))
+                respond productRegisterService.getAllByDivision(Long.parseLong(params.id))
             }
         }
         catch (ResourceNotFoundException ex)
