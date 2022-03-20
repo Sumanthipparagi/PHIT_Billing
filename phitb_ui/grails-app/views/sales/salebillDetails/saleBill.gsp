@@ -95,7 +95,7 @@
                             <table class="table table-bordered table-striped table-hover entityRegisterTable dataTable">
                                 <thead>
                                 <tr>
-                                    <th>Entity Name</th>
+%{--                                    <th>Entity Name</th>--}%
                                     <th>Financial Year</th>
                                     <th>Invoice Total</th>
                                     <th>Bill Status</th>
@@ -174,13 +174,14 @@
                 url: '/sale-bill/datatable',
                 dataType: 'json',
                 dataSrc: function (json) {
+                    console.log(json)
                     var return_data = [];
                     for (var i = 0; i < json.data.length; i++) {
                         var deletebtn = '<a href="/sale-entry/print-invoice?id=' + json.data[i].id +'"><button type="button" data-id="' + json.data[i].id +
                             '" class="btn btn-sm btn-danger deletebtn" ><i class="material-icons"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">print</font></font></i></button></a>'
                         return_data.push({
                             // 'id': json.data[i].id,
-                            'entityName': json.data[i].entityId,
+                            // 'entityName': json.data[i].entityId,
                             'finYear': json.data[i].financialYear,
                             'inv': json.data[i].invoiceTotal,
                             'bill_status': json.data[i].billStatus,
@@ -193,7 +194,7 @@
             },
             columns: [
                 // {'data': 'id', 'width': '20%'},
-                {'data': 'entityName', 'width': '75%'},
+                // {'data': 'entityName', 'width': '75%'},
                 {'data': 'finYear', 'width': '10%'},
                 {'data': 'inv', 'width': '10%'},
                 {'data': 'bill_status', 'width': '5%'},
