@@ -181,6 +181,13 @@ class UrlMappings {
         "/route-regitser/update/$id"(controller:"route",action:"update")
         "/route-regitser/delete/$id"(controller: "route",action:"delete")
 
+        //   Account Register
+        "/accounts"(controller: "accountRegister") {
+            action = [GET: 'index', POST: 'save']
+        }
+        "/account-regitser/datatable"(controller: "accountRegister", action: 'dataTable')
+        "/account-regitser/update/$id"(controller:"accountRegister",action:"update")
+        "/account-regitser/delete/$id"(controller: "accountRegister",action:"delete")
 
         //   Role
         "/role"(controller: "role") {
@@ -359,7 +366,12 @@ class UrlMappings {
 
         /*<-------------------------------------------Sales------------------------------------------------->*/
 
-        "/sale-bill"(controller: "saleEntry", action: 'saleBill')
+        "/sale-bill-list"(controller: "salebillDetails", action: 'saleBillList')
+        "/sale-bill/datatable"(controller: "salebillDetails", action: 'dataTable')
+
+
+
+
         //Sale Entry
         "/sale-entry"(controller: "saleEntry") {
             action = [GET: "index", POST: 'saveSaleEntry']

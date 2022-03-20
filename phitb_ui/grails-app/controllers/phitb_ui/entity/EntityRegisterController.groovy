@@ -321,4 +321,7 @@ class EntityRegisterController
         return new EntityService().getEntityById(id)
     }
 
+
+
+
 }

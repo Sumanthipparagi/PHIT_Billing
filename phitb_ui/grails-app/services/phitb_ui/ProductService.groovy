@@ -25,14 +25,11 @@ class ProductService {
     def getProducts() {
         Client client = ClientBuilder.newClient();
         WebTarget target = client.target(new Links().API_GATEWAY);
-        
         try {
-
             Response apiResponse = target
                     .path(new Links().PRODUCT_REGISTER_SHOW)
                     .request(MediaType.APPLICATION_JSON_TYPE)
                     .get()
-
             return apiResponse
         }
         catch (Exception ex) {
@@ -42,30 +39,24 @@ class ProductService {
     }
 
     def getProductById(String id) {
-        Client client = ClientBuilder.newClient();
-        WebTarget target = client.target(new Links().API_GATEWAY);
-        
+        Client client = ClientBuilder.newClient()
+        WebTarget target = client.target(new Links().API_GATEWAY)
         try {
-
             Response apiResponse = target
-                    .path(new Links().PRODUCT_REGISTER_SHOW+"/"+id)
+                    .path(new Links().PRODUCT_REGISTER_SHOW + "/"+id)
                     .request(MediaType.APPLICATION_JSON_TYPE)
                     .get()
-
-            if (apiResponse?.status == 200)
+            if(apiResponse.status == 200)
             {
-                JSONArray jsonArray = new JSONArray(apiResponse.readEntity(String.class));
-                ArrayList<String> arrayList = new ArrayList<>(jsonArray)
-                return arrayList
+                JSONObject jsonObject = new JSONObject(apiResponse.readEntity(String.class))
+                return jsonObject
             }
             else
-            {
-                return []
-            }
+                return null
         }
         catch (Exception ex) {
-            System.err.println('Service :ProductService , action :  getProducts  , Ex:' + ex)
-            log.error('Service :ProductService , action :  getProducts  , Ex:' + ex)
+            System.err.println('Service :ProductService , action :  getEntity  , Ex:' + ex)
+            log.error('Service :ProductService , action :  getEntity  , Ex:' + ex)
         }
     }
 

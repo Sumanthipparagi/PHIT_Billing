@@ -1,5 +1,6 @@
 package phitb_ui
 
+import grails.converters.JSON
 import grails.gorm.transactions.Transactional
 import grails.web.servlet.mvc.GrailsHttpSession
 import org.glassfish.jersey.jackson.JacksonFeature
@@ -253,4 +254,50 @@ class SalesService {
             log.error('Service :SalesService , action :  getProducts  , Ex:' + ex)
         }
     }
+
+
+    /**
+     * This methos is used for get data
+     * @param accessToken
+     * @param link
+     * @return response
+     */
+     def getRequestWithId(String id, String link)
+    {
+        try
+        {
+            Client client = ClientBuilder.newClient();
+            WebTarget target = client.target(new Links().API_GATEWAY);
+            Response apiResponse = target.path(link+"/"+id)
+                    .request(MediaType.APPLICATION_JSON_TYPE)
+                    .get()
+            println("API Response from server :" + apiResponse?.getStatus())
+            return apiResponse
+        }
+        catch (Exception ex)
+        {
+            System.err.println(ex)
+        }
+    }
+
+    def showSalesService(JSONObject jsonObject)
+    {
+        Client client = ClientBuilder.newClient();
+        WebTarget target = client.target(new Links().API_GATEWAY);
+        try
+        {
+            Response apiResponse = target
+                    .path(new Links().SALE_BILL_DATATABLE)
+                    .queryParam("params", URLEncoder.encode(jsonObject.toString(), "UTF-8"))
+                    .request(MediaType.APPLICATION_JSON_TYPE)
+                    .get()
+            return apiResponse
+        }
+        catch (Exception ex)
+        {
+            System.err.println('Service :getAccountModes , action :  show  , Ex:' + ex)
+            log.error('Service :getAccountModes , action :  show  , Ex:' + ex)
+        }
+    }
+
 }
