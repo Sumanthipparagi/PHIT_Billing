@@ -22,21 +22,28 @@
 
     <style>
 
-    table.dataTable tbody td {
-        word-break: break-word;
-        vertical-align: top;
+    div.dataTables_scrollBody table tbody  td {
+        border-top: none;
+        padding: 0.9px;
+        text-align: center;
+        border-collapse: unset!important;
     }
 
-    /*
-        div.dataTables_scrollBody table tbody  td {
-            border-top: none;
-            padding: 0.9px;
-            text-align: center;
+    .editbtn
+    {
+        padding: 1px 9px;
+    }
+    .deletebtn
+    {
+        padding: 1px 9px;
+    }
 
-        }
-    */
+    tbody td {
+        padding: 0px;
+    }
 
     </style>
+
 
 </head>
 <body class="theme-black">
