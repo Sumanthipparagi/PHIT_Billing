@@ -192,7 +192,7 @@ class SaleProductDetailsController {
     def getSaleProductDetailsOfSaleBill() {
         try {
             String id = params.id
-            respond SaleProductDetailsService.getBySaleBill(id)
+            respond saleProductDetailsService.getBySaleBill(id)
         }
         catch (ResourceNotFoundException ex)
         {

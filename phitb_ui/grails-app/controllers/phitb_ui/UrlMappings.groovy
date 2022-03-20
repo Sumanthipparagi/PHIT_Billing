@@ -365,7 +365,12 @@ class UrlMappings {
 
         /*<-------------------------------------------Sales------------------------------------------------->*/
 
-        "/sale-bill"(controller: "saleEntry", action: 'saleBill')
+        "/sale-bill-list"(controller: "salebillDetails", action: 'saleBillList')
+        "/sale-bill/datatable"(controller: "salebillDetails", action: 'dataTable')
+
+
+
+
         //Sale Entry
         "/sale-entry"(controller: "saleEntry") {
             action = [GET: "index", POST: 'saveSaleEntry']

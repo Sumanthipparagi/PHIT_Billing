@@ -1,15 +1,18 @@
 package phitb_ui.sales
 
+import grails.converters.JSON
+import groovy.json.JsonSlurper
 import org.grails.web.json.JSONArray
 import org.grails.web.json.JSONObject
 import phitb_ui.EntityService
 import phitb_ui.InventoryService
+import phitb_ui.Links
 import phitb_ui.SalesService
 import phitb_ui.SystemService
 import phitb_ui.entity.EntityRegisterController
 import phitb_ui.entity.SeriesController
 import phitb_ui.ProductService
-
+import phitb_ui.product.ProductController
 
 import javax.ws.rs.core.Response
 import java.text.SimpleDateFormat
@@ -244,10 +247,18 @@ class SaleEntryController {
         JSONObject saleBillDetail = new SalesService().getSaleBillDetailsById(saleBillId)
         JSONArray saleProductDetails = new SalesService().getSaleProductDetails(saleBillId)
         JSONObject series = new EntityService().getSeriesById(saleBillDetail.get("seriesId").toString())
+        JSONObject customer = new EntityService().getEntityById(saleBillDetail.get("customerId").toString())
         JSONObject entity = new EntityService().getEntityById(session.getAttribute("entityId").toString())
+        JSONObject city = new SystemService().getCityById(entity.get('cityId').toString())
+       ArrayList<JSONObject> prodObject = []
+        saleProductDetails.each{
+            def apiResponse = new SalesService().getRequestWithId(it.productId.toString(),new Links().PRODUCT_REGISTER_SHOW)
+            prodObject.add(JSON.parse(apiResponse.readEntity(String.class)) as JSONObject)
+        }
+        println(prodObject)
         render(view: "/sales/sale-invoice", model: [saleBillDetail: saleBillDetail,
                                                     saleProductDetails:saleProductDetails,
-                                                    series:series, entity:entity])
+                                                    series:series, entity:entity,customer:customer,city:city])
     }
 
     def show()
@@ -348,6 +359,21 @@ class SaleEntryController {
         else
         {
             response.status = 400
+        }
+    }
+
+
+    def getProductsById(String id)
+    {
+        try
+        {
+            JSONObject product = new ProductService().getProductById(id)
+            return product
+        }
+        catch (Exception ex)
+        {
+            System.err.println('Service :getProductsById , action :  show  , Ex:' + ex)
+            log.error('Service :getProductsById , action :  show  , Ex:' + ex)
         }
     }
 }

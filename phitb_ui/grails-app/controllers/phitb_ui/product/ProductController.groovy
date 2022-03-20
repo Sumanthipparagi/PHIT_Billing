@@ -293,7 +293,7 @@ class ProductController {
         }
     }
 
-    /* def getProductbyId()
+    def getProductbyId()
      {
          try
          {
@@ -315,7 +315,7 @@ class ProductController {
              log.error('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
              response.status = 400
          }
-     }*/
+     }
 
 
 }

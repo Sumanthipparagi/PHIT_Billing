@@ -6,30 +6,44 @@
     <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
     <meta name="description" content="Responsive Bootstrap 4 and web Application ui kit.">
 
-    <title>:: PharmIt ::  Sale Entry</title>
+    <title>:: PharmIt :: Sale Bill Details</title>
     <link rel="icon" type="image/x-icon" href="${assetPath(src: '/themeassets/images/favicon.ico')}"/>
     <!-- Favicon-->
     <asset:stylesheet rel="stylesheet" src="/themeassets/plugins/bootstrap/css/bootstrap.min.css"/>
     <!-- JQuery DataTable Css -->
     <asset:stylesheet rel="stylesheet" src="/themeassets/plugins/jquery-datatable/dataTables.bootstrap4.min.css"/>
     <!-- Custom Css -->
-    <asset:stylesheet rel="stylesheet" src="/themeassets/css/main.css"/>
+    <asset:stylesheet  rel="stylesheet" src="/themeassets/css/main.css"/>
     <asset:stylesheet rel="stylesheet" href="/themeassets/css/color_skins.css"/>
     <asset:stylesheet rel="stylesheet" href="/themeassets/plugins/sweetalert/sweetalert.css"/>
-    <asset:stylesheet src="/themeassets/plugins/bootstrap-select/css/bootstrap-select.css" rel="stylesheet"/>
-    <link rel="stylesheet" media="screen"
-          href="https://cdnjs.cloudflare.com/ajax/libs/handsontable/0.16.0/handsontable.full.css">
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/3.5.2/select2.css" rel="stylesheet"/>
+    <asset:stylesheet  src="/themeassets/plugins/bootstrap-select/css/bootstrap-select.css" rel="stylesheet" />
+    <asset:stylesheet  src="/themeassets/js/pages/forms/basic-form-elements.js" rel="stylesheet" />
+    <asset:stylesheet  src="/themeassets/plugins/bootstrap-material-datetimepicker/css/bootstrap-material-datetimepicker.css" rel="stylesheet" />
+
+    <style>
+
+    table.dataTable tbody td {
+        word-break: break-word;
+        vertical-align: top;
+    }
+
+    /*
+        div.dataTables_scrollBody table tbody  td {
+            border-top: none;
+            padding: 0.9px;
+            text-align: center;
+
+        }
+    */
+
+    </style>
 
 </head>
-
 <body class="theme-black">
 <!-- Page Loader -->
 <div class="page-loader-wrapper">
     <div class="loader">
-        <div class="m-t-30"><img src="${assetPath(src: '/themeassets/images/logo.svg')}" width="48" height="48"
-                                 alt="Alpino"></div>
-
+        <div class="m-t-30"><img src="${assetPath(src: '/themeassets/images/logo.svg')}" width="48" height="48" alt="Alpino"></div>
         <p>Please wait...</p>
     </div>
 </div>
@@ -37,16 +51,15 @@
 
 <section class="content">
     <div class="container-fluid">
-        <div class="block-header" style="padding: 1px;">
+        <div class="block-header">
             <div class="row clearfix">
                 <div class="col-lg-5 col-md-5 col-sm-12">
-                    <h2>Sale Entry</h2>
+                    <h2>Entity Register</h2>
                     <ul class="breadcrumb padding-0">
                         <li class="breadcrumb-item"><a href="index.html"><i class="zmdi zmdi-home"></i></a></li>
-                        <li class="breadcrumb-item active">Sale Entry</li>
+                        <li class="breadcrumb-item active">Entity Register</li>
                     </ul>
                 </div>
-
                 <div class="col-lg-7 col-md-7 col-sm-12">
                     <div class="input-group m-b-0">
                         <input type="text" class="form-control" placeholder="Search...">
@@ -61,15 +74,39 @@
         <div class="row clearfix">
             <div class="col-lg-12">
                 <div class="card">
-                    <div class="header" style="padding: 1px;">
-%{--                        <button type="button" class="btn btn-round btn-primary m-t-15 addbtn" data-toggle="modal"--}%
-%{--                                data-target="#addAccountModeModal"><span--}%
-%{--                                class="glyphicon glyphicon-save-file"></span> Save</button>--}%
-                    </div>
+                    %{--                    <div class="header">--}%
+                    %{--                        <h2><strong>Basic</strong> Examples </h2>--}%
+                    %{--                        <ul class="header-dropdown">--}%
+                    %{--                            <li class="dropdown"> <a href="javascript:void(0);" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"> <i class="zmdi zmdi-more"></i> </a>--}%
+                    %{--                                <ul class="dropdown-menu slideUp">--}%
+                    %{--                                    <li><a href="javascript:void(0);">Action</a></li>--}%
+                    %{--                                    <li><a href="javascript:void(0);">Another action</a></li>--}%
+                    %{--                                    <li><a href="javascript:void(0);">Something else</a></li>--}%
+                    %{--                                </ul>--}%
+                    %{--                            </li>--}%
+                    %{--                            <li class="remove">--}%
+                    %{--                                <a role="button" class="boxs-close"><i class="zmdi zmdi-close"></i></a>--}%
+                    %{--                            </li>--}%
+                    %{--                        </ul>--}%
+                    %{--                    </div>--}%
 
                     <div class="body">
                         <div class="table-responsive">
-                            <div id="saleTable" style="width:100%;"></div>
+                            <table class="table table-bordered table-striped table-hover entityRegisterTable dataTable">
+                                <thead>
+                                <tr>
+                                    <th>Entity Name</th>
+                                    <th>Financial Year</th>
+                                    <th>Invoice Total</th>
+                                    <th>Bill Status</th>
+                                    <th>Balance</th>
+                                    <th>Action</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+
+                                </tbody>
+                            </table>
                         </div>
                     </div>
                 </div>
@@ -79,12 +116,15 @@
     </div>
 </section>
 
-<g:include view="controls/add-account-mode.gsp"/>
+
+%{--<g:include view="controls/entity/add-entity-register.gsp"/>--}%
 <g:include view="controls/delete-modal.gsp"/>
 
 <!-- Jquery Core Js -->
 <asset:javascript src="/themeassets/bundles/libscripts.bundle.js"/>
 <asset:javascript src="/themeassets/bundles/vendorscripts.bundle.js"/>
+<asset:javascript src="/themeassets/plugins/bootstrap-colorpicker/js/bootstrap-colorpicker.js"/>
+<asset:javascript src="/themeassets/plugins/multi-select/js/jquery.multi-select.js"/>
 <asset:javascript src="/themeassets/bundles/datatablescripts.bundle.js"/>
 <asset:javascript src="/themeassets/plugins/jquery-datatable/buttons/dataTables.buttons.min.js"/>
 <asset:javascript src="/themeassets/plugins/jquery-datatable/buttons/buttons.bootstrap4.min.js"/>
@@ -95,558 +135,78 @@
 <asset:javascript src="/themeassets/js/pages/tables/jquery-datatable.js"/>
 <asset:javascript src="/themeassets/js/pages/ui/dialogs.js"/>
 <asset:javascript src="/themeassets/plugins/sweetalert/sweetalert.min.js"/>
+<asset:javascript src="/themeassets/plugins/jquery-inputmask/jquery.inputmask.bundle.js"/>
 <asset:javascript src="/themeassets/plugins/momentjs/moment.js"/>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/handsontable/0.16.0/handsontable.full.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/3.5.2/select2.js"></script>
+<asset:javascript src="/themeassets/plugins/bootstrap-material-datetimepicker/js/bootstrap-material-datetimepicker.js"/>
+<asset:javascript src="/themeassets/js/pages/forms/basic-form-elements.js"/>
 
 <script>
-    %{--var data = [<g:each in="${salebilllist}" var="sb">--}%
-    %{--    ['${sb.finId}', ${sb.serBillId}, ${sb.seriesId}, '${sb.paymentStatus}','${sb.accountModeId}', '${sb.priorityId}',  moment('${sb.entryDate}').format("DD/MM/YYYY"), '${sb.customerId}', '${sb.customerNumber}', ${sb.salesmanId}, '${sb.salesmanComm}',moment('${sb.orderDate}').format("DD/MM/YYYY"),'${sb.refOrderId}','${sb.dueDate}', '${sb.dispatchDate}','${sb.deliveryManId}','${sb.totalSqty}','${sb.totalFqty}','${sb.totalItems}','${sb.totalQty}','${sb.totalDiscount}','${sb.totalAmount}','${sb.invoiceTotal}','${sb.totalGst}','${sb.userId}','${sb.balance}','${sb.grossAmount}','${sb.taxable}','${sb.cashDiscount}','${sb.exempted}','${sb.totalCgst}','${sb.totalSgst}', '${sb.totalIgst}','${sb.gstStatus}',${sb.billStatus}, ${sb.lockStatus},${sb.creditadjAmount},${sb.creditIds},${sb.referralDoctor},'${sb.message}','${sb.financialYear}',${sb.entityTypeId},${sb.entityId}],--}%
-    %{--</g:each>];--}%
 
-    var idArray = []
-    var data = []
-    <g:each in="${salebilllist}" var="sb">
-    idArray.push(${sb.id})
-    data.push(['${sb.finId}', ${sb.serBillId}, ${sb.seriesId}, '${sb.paymentStatus}', '${sb.accountModeId}', '${sb.priorityId}', moment('${sb.entryDate}').format("DD/MM/YYYY"), '${sb.customerId}', '${sb.customerNumber}', ${sb.salesmanId}, '${sb.salesmanComm}', moment('${sb.orderDate}').format("DD/MM/YYYY"), '${sb.refOrderId}', moment('${sb.dueDate}').format("DD/MM/YYYY"), moment('${sb.dispatchDate}').format("DD/MM/YYYY"), '${sb.deliveryManId}', '${sb.totalSqty}', '${sb.totalFqty}', '${sb.totalItems}', '${sb.totalQty}', '${sb.totalDiscount}', '${sb.totalAmount}', '${sb.invoiceTotal}', '${sb.totalGst}', '${sb.userId}', '${sb.balance}', '${sb.grossAmount}', '${sb.taxable}', '${sb.cashDiscount}', '${sb.exempted}', '${sb.totalCgst}', '${sb.totalSgst}', '${sb.totalIgst}', '${sb.gstStatus}', ${sb.billStatus}, ${sb.lockStatus}, ${sb.creditadjAmount}, ${sb.creditIds}, ${sb.referralDoctor}, '${sb.message}', '${sb.financialYear}', ${sb.entityTypeId}, ${sb.entityId}])
-    </g:each>
-
-
-    var series = [];
-    var accountMode = [];
-    var customer = [];
-    var salesman = [];
-    var user = [];
-    <g:each in="${series}" var="s">
-    series.push({id:${s.id}, text: '${s.seriesName}'});
-    </g:each>
-    <g:each in="${accountMode}" var="am">
-    accountMode.push({id:${am.id}, text: '${am.mode}'});
-    </g:each>
-    <g:each in="${customerList}" var="cl">
-    customer.push({id:${cl.id}, text: '${cl.entityName}'});
-    </g:each>
-    <g:each in="${salesmanList}" var="sl">
-    salesman.push({id:${sl.id}, text: '${sl.userName}'});
-    </g:each>
-    console.log(salesman)
-    <g:each in="${users}" var="u">
-    user.push({id:${u.id}, text: '${u.userName}'});
-    </g:each>
-
-    var headerRow = ['fin_id',
-        'Series Bill Id',
-        'Series',
-        'Payment Status',
-        'Account Mode',
-        'Priority',
-        'Entry Date',
-        'Customer',
-        'Customer Number',
-        'Salesman',
-        'Salesman Commision',
-        'Order Date',
-        'Ref_order',
-        'Due date',
-        'Dispatch date',
-        'Deliveryman',
-        'Total sqty',
-        'Total fqty',
-        'Total_items',
-        'Total qty',
-        'Total Discount',
-        'Total Amount',
-        'Invoice Total',
-        'Total GST',
-        'User',
-        'Balance',
-        'Gross Amount',
-        'Taxable',
-        'Cash Discount',
-        'Exempted',
-        'Total cgst',
-        'Total sgst',
-        'Total igst',
-        'GST status',
-        'Bill status',
-        'Lock status',
-        'CreditAdj amount',
-        'Credit ids',
-        'Referral doctor',
-        'Message',
-        'Financial Year',
-        'entity_type_id',
-        'entity_id',]
-
-    console.log(data)
-    $(document).ready(function () {
-        const container = document.getElementById('saleTable');
-        const hot = new Handsontable(container, {
-            data: data,
-            minRows: 20,
-            height: '500',
-            width: 'auto',
-            rowHeights: 25,
-            manualRowResize: true,
-            manualColumnResize: true,
-            persistentState: true,
-            contextMenu: true,
-
-            colHeaders: headerRow,
-            columns: [
-                {type: 'numeric'},
-                {type: 'numeric'},
-                {
-                    editor: 'select2',
-                    renderer: seriesDropdownRenderer,
-                    select2Options: {
-                        data: series,
-                        dropdownAutoWidth: true,
-                        allowClear: true,
-                        width: 'resolve'
-                    }
-                },
-                {type: 'numeric'},
-                {
-                    editor: 'select2',
-                    renderer: accountModeDropdownRenderer,
-                    select2Options: {
-                        data: accountMode,
-                        dropdownAutoWidth: true,
-                        allowClear: true,
-                        width: 'resolve'
-                    }
-                },
-                {type: 'numeric'},
-                {
-                    type: 'date',
-                    dateFormat: 'DD/MM/YYYY',
-                    correctFormat: true,
-                    defaultDate: new Date(),
-                },
-                {
-                    editor: 'select2',
-                    renderer: customerDropdownRenderer,
-                    select2Options: {
-                        data: customer,
-                        dropdownAutoWidth: true,
-                        allowClear: true,
-                        width: 'resolve'
-                    }
-                },
-                {type: 'numeric'},
-                {
-                    editor: 'select2',
-                    renderer: salesmanDropdownRenderer,
-                    select2Options: {
-                        data: salesman,
-                        dropdownAutoWidth: true,
-                        allowClear: true,
-                        width: 'resolve'
-                    }
-                },
-                {type: 'numeric'},
-                {
-                    type: 'date',
-                    dateFormat: 'DD/MM/YYYY',
-                    correctFormat: true,
-                    defaultDate: new Date(),
-                },
-                {type: 'numeric'},
-                {
-                    type: 'date',
-                    dateFormat: 'DD/MM/YYYY',
-                    correctFormat: true,
-                    defaultDate: new Date(),
-                },
-                {
-                    type: 'date',
-                    dateFormat: 'DD/MM/YYYY',
-                    correctFormat: true,
-                    defaultDate: new Date(),
-                },
-                {type: 'numeric'},
-                {type: 'numeric'},
-                {type: 'numeric'},
-                {type: 'numeric'},
-                {type: 'numeric'},
-                {type: 'numeric'},
-                {type: 'numeric'},
-                {type: 'numeric'},
-                {type: 'numeric'},
-                {
-                    editor: 'select2',
-                    renderer: userDropdownRenderer,
-                    select2Options: {
-                        data: user,
-                        dropdownAutoWidth: true,
-                        allowClear: true,
-                        width: 'resolve'
-                    }
-                },
-                {type: 'numeric'},
-                {type: 'numeric'},
-                {type: 'numeric'},
-                {type: 'numeric'},
-                {type: 'text'},
-                {type: 'numeric'},
-                {type: 'numeric'},
-                {type: 'numeric'},
-                {type: 'numeric'},
-                {type: 'numeric'},
-                {type: 'numeric'},
-                {type: 'numeric'},
-                {type: 'numeric'},
-                {type: 'text'},
-                {type: 'text'},
-                {type: 'numeric'},
-                {type: 'numeric'},
-                {type: 'numeric'},
-            ],
-            minSpareRows: 1,
-            fixedColumnsLeft: 0,
-            licenseKey: 'non-commercial-and-evaluation'
-        });
-
-        hot.updateSettings({
-            afterChange: function (changes, source) {
-                var rowThatHasBeenChanged = changes[0][0],
-                    columnThatHasBeenChanged = changes[0][1],
-                    previousValue = changes[0][2],
-                    newValue = changes[0][3];
-
-                var visualObjectRow = function (row) {
-                    var obj = {},
-                        key, name;
-                    for (var i = 0; i < hot.countCols(); i++) {
-                        obj[hot.colToProp(i)] = hot.getDataAtCell(row, i);
-                    }
-                    return obj
-                };
-                var json = {}
-                var changedRow = visualObjectRow(rowThatHasBeenChanged)
-                // console.log(visualObjectRow(rowThatHasBeenChanged))
-                Object.keys(changedRow).forEach(function (key) {
-                    json[headerRow[key].replace(/\s+/g, '')] = changedRow[key]
-                });
-
-
-                if(idArray[rowThatHasBeenChanged]!=undefined){
-                    json['id'] = idArray[rowThatHasBeenChanged]
-                }
-                else
-                {
-                    json['id'] = null
-                }
-                console.log(json)
-                // var cid = data[columnThatHasBeenChanged - 2];
-                // var rId = data[rowThatHasBeenChanged];
-                // var value = newValue;
-                // console.log(cid);
-                // console.log(rId);
-                // console.log(value);
-
-                console.log(json['AccountMode'])
-
-                var url = '';
-                var type = '';
-                var id = json['id'];
-                if (idArray[rowThatHasBeenChanged]!=undefined) {
-                    url = '/sale-entry/update/' + id;
-                    type = 'POST'
-                } else {
-                    url = '/sale-entry';
-                    type = 'POST'
-                }
-                $.ajax({
-                    type: type,
-                    url: url,
-                    dataType: 'json',
-                    data: {
-                        json:json
-                    },
-                    success: function (data) {
-                       swal("data loaded");
-                    },
-                    error: function (data) {
-                        console.log("Failed");
-                    }
-                });
-
-            }
-        })
-
-        //    Series Dropdown
-        function seriesDropdownRenderer(instance, td, row, col, prop, value, cellProperties) {
-            var selectedId;
-            for (var index = 0; index < series.length; index++) {
-                if (parseInt(value) === series[index].id) {
-                    selectedId = series[index].id;
-                    value = series[index].text;
-                }
-            }
-            Handsontable.TextCell.renderer.apply(this, arguments);
-            // $('#selectedId').text(selectedId);
-        }
-
-        //    Account mode Dropdown
-        function accountModeDropdownRenderer(instance, td, row, col, prop, value, cellProperties) {
-            var selectedId;
-            for (var index = 0; index < accountMode.length; index++) {
-                if (parseInt(value) === accountMode[index].id) {
-                    selectedId = accountMode[index].id;
-                    value = accountMode[index].text;
-                }
-            }
-            Handsontable.TextCell.renderer.apply(this, arguments);
-            // $('#selectedId').text(selectedId);
-        }
-
-        //Customer Entity
-        function customerDropdownRenderer(instance, td, row, col, prop, value, cellProperties) {
-            var selectedId;
-            for (var index = 0; index < customer.length; index++) {
-                if (parseInt(value) === customer[index].id) {
-                    selectedId = customer[index].id;
-                    value = customer[index].text;
-                }
-            }
-            Handsontable.TextCell.renderer.apply(this, arguments);
-            // $('#selectedId').text(selectedId);
-        }
-
-
-        //Salesman
-        function salesmanDropdownRenderer(instance, td, row, col, prop, value, cellProperties) {
-            var selectedId;
-            for (var index = 0; index < salesman.length; index++) {
-                if (parseInt(value) === salesman[index].id) {
-                    selectedId = salesman[index].id;
-                    value = salesman[index].text;
-                }
-            }
-            Handsontable.TextCell.renderer.apply(this, arguments);
-            // $('#selectedId').text(selectedId);
-        }
-
-        //User
-        function userDropdownRenderer(instance, td, row, col, prop, value, cellProperties) {
-            var selectedId;
-            for (var index = 0; index < user.length; index++) {
-                if (parseInt(value) === user[index].id) {
-                    selectedId = user[index].id;
-                    value = user[index].text;
-                }
-            }
-            Handsontable.TextCell.renderer.apply(this, arguments);
-            // $('#selectedId').text(selectedId);
-        }
-
+    var entityregister;
+    var id = null;
+    $(function () {
+        entityRegisterTable();
+        // var $demoMaskedInput = $('.demo-masked-input');
+        // $demoMaskedInput.find('.datetime').inputmask('d/m/y h:m:s', { placeholder: '__/__/____ __:__:__:__', alias:
+        //         "datetime", hourFormat: '12' });
 
     });
-    /// select2 plugin
-    (function (Handsontable) {
-        "use strict";
 
-        var Select2Editor = Handsontable.editors.TextEditor.prototype.extend();
-
-        Select2Editor.prototype.prepare = function (row, col, prop, td, originalValue, cellProperties) {
-
-            Handsontable.editors.TextEditor.prototype.prepare.apply(this, arguments);
-
-            this.options = {};
-
-            if (this.cellProperties.select2Options) {
-                this.options = $.extend(this.options, cellProperties.select2Options);
-            }
-        };
-
-        Select2Editor.prototype.createElements = function () {
-            this.$body = $(document.body);
-
-            this.TEXTAREA = document.createElement('input');
-            this.TEXTAREA.setAttribute('type', 'text');
-            this.$textarea = $(this.TEXTAREA);
-
-            Handsontable.Dom.addClass(this.TEXTAREA, 'handsontableInput');
-
-            this.textareaStyle = this.TEXTAREA.style;
-            this.textareaStyle.width = 0;
-            this.textareaStyle.height = 0;
-
-            this.TEXTAREA_PARENT = document.createElement('DIV');
-            Handsontable.Dom.addClass(this.TEXTAREA_PARENT, 'handsontableInputHolder');
-
-            this.textareaParentStyle = this.TEXTAREA_PARENT.style;
-            this.textareaParentStyle.top = 0;
-            this.textareaParentStyle.left = 0;
-            this.textareaParentStyle.display = 'none';
-
-            this.TEXTAREA_PARENT.appendChild(this.TEXTAREA);
-
-            this.instance.rootElement.appendChild(this.TEXTAREA_PARENT);
-
-            var that = this;
-            this.instance._registerTimeout(setTimeout(function () {
-                that.refreshDimensions();
-            }, 0));
-        };
-
-        var onSelect2Changed = function () {
-            this.close();
-            this.finishEditing();
-        };
-        var onSelect2Closed = function () {
-            this.close();
-            this.finishEditing();
-        };
-        var onBeforeKeyDown = function (event) {
-            var instance = this;
-            var that = instance.getActiveEditor();
-
-            var keyCodes = Handsontable.helper.keyCode;
-            var ctrlDown = (event.ctrlKey || event.metaKey) && !event.altKey; //catch CTRL but not right ALT (which in some systems triggers ALT+CTRL)
-
-
-            //Process only events that have been fired in the editor
-            if (!$(event.target).hasClass('select2-input') || event.isImmediatePropagationStopped()) {
-                return;
-            }
-            if (event.keyCode === 17 || event.keyCode === 224 || event.keyCode === 91 || event.keyCode === 93) {
-                //when CTRL or its equivalent is pressed and cell is edited, don't prepare selectable text in textarea
-                event.stopImmediatePropagation();
-                return;
-            }
-
-            var target = event.target;
-
-            switch (event.keyCode) {
-                case keyCodes.ARROW_RIGHT:
-                    if (Handsontable.Dom.getCaretPosition(target) !== target.value.length) {
-                        event.stopImmediatePropagation();
-                    } else {
-                        that.$textarea.select2('close');
+    function entityRegisterTable() {
+        entityregister = $(".entityRegisterTable").DataTable({
+            "order": [[0, "desc"]],
+            sPaginationType: "simple_numbers",
+            responsive: {
+                details: false
+            },
+            destroy: true,
+            autoWidth: false,
+            bJQueryUI: true,
+            sScrollX: "100%",
+            info: true,
+            processing: true,
+            serverSide: true,
+            language: {
+                searchPlaceholder: "Search Sale Bill"
+            },
+            ajax: {
+                type: 'GET',
+                url: '/sale-bill/datatable',
+                dataType: 'json',
+                dataSrc: function (json) {
+                    var return_data = [];
+                    for (var i = 0; i < json.data.length; i++) {
+                        var deletebtn = '<button type="button" data-id="' + json.data[i].id +
+                            '" class="btn btn-sm btn-danger deletebtn" ><i class="material-icons"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">print</font></font></i></button>'
+                        return_data.push({
+                            // 'id': json.data[i].id,
+                            'entityName': json.data[i].entityId,
+                            'finYear': json.data[i].financialYear,
+                            'inv': json.data[i].invoiceTotal,
+                            'bill_status': json.data[i].billStatus,
+                            'balance': json.data[i].balance,
+                            'action': deletebtn
+                        });
                     }
-                    break;
+                    return return_data;
+                }
+            },
+            columns: [
+                // {'data': 'id', 'width': '20%'},
+                {'data': 'entityName', 'width': '75%'},
+                {'data': 'finYear', 'width': '10%'},
+                {'data': 'inv', 'width': '10%'},
+                {'data': 'bill_status', 'width': '5%'},
+                {'data': 'balance', 'width': '5%'},
+                {'data': 'action', 'width': '10%'}
+            ]
+        });
+    }
 
-                case keyCodes.ARROW_LEFT:
-                    if (Handsontable.Dom.getCaretPosition(target) !== 0) {
-                        event.stopImmediatePropagation();
-                    } else {
-                        that.$textarea.select2('close');
-                    }
-                    break;
 
-                case keyCodes.ENTER:
-                    var selected = that.instance.getSelected();
-                    var isMultipleSelection = !(selected[0] === selected[2] && selected[1] === selected[3]);
-                    if ((ctrlDown && !isMultipleSelection) || event.altKey) { //if ctrl+enter or alt+enter, add new line
-                        if (that.isOpened()) {
-                            that.val(that.val() + '\n');
-                            that.focus();
-                        } else {
-                            that.beginEditing(that.originalValue + '\n')
-                        }
-                        event.stopImmediatePropagation();
-                    }
-                    event.preventDefault(); //don't add newline to field
-                    break;
 
-                case keyCodes.A:
-                case keyCodes.X:
-                case keyCodes.C:
-                case keyCodes.V:
-                    if (ctrlDown) {
-                        event.stopImmediatePropagation(); //CTRL+A, CTRL+C, CTRL+V, CTRL+X should only work locally when cell is edited (not in table context)
-                    }
-                    break;
-
-                case keyCodes.BACKSPACE:
-                case keyCodes.DELETE:
-                case keyCodes.HOME:
-                case keyCodes.END:
-                    event.stopImmediatePropagation(); //backspace, delete, home, end should only work locally when cell is edited (not in table context)
-                    break;
-            }
-
-        };
-
-        Select2Editor.prototype.open = function (keyboardEvent) {
-            this.refreshDimensions();
-            this.textareaParentStyle.display = 'block';
-            this.textareaParentStyle.zIndex = 20000;
-            this.instance.addHook('beforeKeyDown', onBeforeKeyDown);
-
-            this.$textarea.css({
-                height: $(this.TD).height() + 4,
-                'min-width': $(this.TD).outerWidth() - 4
-            });
-
-            //display the list
-            this.$textarea.show();
-
-            var self = this;
-            this.$textarea.select2(this.options)
-                .on('change', onSelect2Changed.bind(this))
-                .on('select2-close', onSelect2Closed.bind(this));
-
-            self.$textarea.select2('open');
-
-            // Pushes initial character entered into the search field, if available
-            if (keyboardEvent && keyboardEvent.keyCode) {
-                var key = keyboardEvent.keyCode;
-                var keyText = (String.fromCharCode((96 <= key && key <= 105) ? key - 48 : key)).toLowerCase();
-                self.$textarea.select2('search', keyText);
-            }
-        };
-
-        Select2Editor.prototype.init = function () {
-            Handsontable.editors.TextEditor.prototype.init.apply(this, arguments);
-        };
-
-        Select2Editor.prototype.close = function () {
-            this.instance.listen();
-            this.instance.removeHook('beforeKeyDown', onBeforeKeyDown);
-            this.$textarea.off();
-            this.$textarea.hide();
-            Handsontable.editors.TextEditor.prototype.close.apply(this, arguments);
-        };
-
-        Select2Editor.prototype.val = function (value) {
-            if (typeof value == 'undefined') {
-                return this.$textarea.val();
-            } else {
-                this.$textarea.val(value);
-            }
-        };
-
-        Select2Editor.prototype.focus = function () {
-
-            this.instance.listen();
-
-            // DO NOT CALL THE BASE TEXTEDITOR FOCUS METHOD HERE, IT CAN MAKE THIS EDITOR BEHAVE POORLY AND HAS NO PURPOSE WITHIN THE CONTEXT OF THIS EDITOR
-            //Handsontable.editors.TextEditor.prototype.focus.apply(this, arguments);
-        };
-
-        Select2Editor.prototype.beginEditing = function (initialValue) {
-            var onBeginEditing = this.instance.getSettings().onBeginEditing;
-            if (onBeginEditing && onBeginEditing() === false) {
-                return;
-            }
-
-            Handsontable.editors.TextEditor.prototype.beginEditing.apply(this, arguments);
-
-        };
-
-        Select2Editor.prototype.finishEditing = function (isCancelled, ctrlDown) {
-            this.instance.listen();
-            return Handsontable.editors.TextEditor.prototype.finishEditing.apply(this, arguments);
-        };
-
-        Handsontable.editors.Select2Editor = Select2Editor;
-        Handsontable.editors.registerEditor('select2', Select2Editor);
-
-    })(Handsontable);
 </script>
+
+
 </body>
 </html>

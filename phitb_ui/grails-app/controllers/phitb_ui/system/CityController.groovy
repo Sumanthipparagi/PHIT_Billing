@@ -140,5 +140,9 @@ class CityController {
         }
     }
 
+    def getCityById(String id)
+    {
+        return new SystemService().getCityById(id)
+    }
 
 }

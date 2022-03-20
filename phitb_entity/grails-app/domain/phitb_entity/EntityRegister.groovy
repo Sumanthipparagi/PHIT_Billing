@@ -27,6 +27,7 @@ class EntityRegister implements LogicalDelete<EntityRegister>
     String drugLicence2
     String drugLicenceValidity
     String foodLicenceValidity
+    String foodLicence1
     double salesBalanceLimit
     long noOfCrDays
     long noOfGraceDays
@@ -74,6 +75,7 @@ class EntityRegister implements LogicalDelete<EntityRegister>
         repPhoneNumber nullable: true
         password nullable: true
         contact nullable: true
+        foodLicence1 nullable: true
     }
 
     boolean isUpdatable
