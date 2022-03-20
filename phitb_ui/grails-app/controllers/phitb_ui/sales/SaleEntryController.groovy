@@ -1,6 +1,5 @@
 package phitb_ui.sales
 
-import grails.converters.JSON
 import org.grails.web.json.JSONArray
 import org.grails.web.json.JSONObject
 import phitb_ui.EntityService
@@ -9,12 +8,8 @@ import phitb_ui.SalesService
 import phitb_ui.SystemService
 import phitb_ui.entity.EntityRegisterController
 import phitb_ui.entity.SeriesController
-import phitb_ui.entity.UserRegisterController
-import phitb_ui.Constants
 import phitb_ui.ProductService
-import phitb_ui.product.ProductController
-import phitb_ui.system.AccountModeController
-import phitb_ui.system.PriorityController
+
 
 import javax.ws.rs.core.Response
 import java.text.SimpleDateFormat
@@ -24,7 +19,7 @@ class SaleEntryController {
     def index() {
 
         String entityId = session.getAttribute("entityId")?.toString()
-        ArrayList<String> series = new SeriesController().getByEntity(entityId) as ArrayList<String>
+        JSONArray divisions = new ProductService().getDivisionsByEntityId(entityId)
         ArrayList<String> customers = new EntityRegisterController().show() as ArrayList<String>
         def priorityList = new SystemService().getPriorityByEntity(entityId)
         ArrayList<String> salesmanList = []
@@ -33,10 +28,8 @@ class SaleEntryController {
                 salesmanList.add(it)
             }
         }*/
-        def products = new ProductService().getProductsByEntityId(entityId) //TODO: this should be called from ajax
-        render(view: '/sales/sale-entry', model: [series : series, customers: customers,
-                                                           salesmanList: salesmanList, priorityList:priorityList,
-                                                           products    :products])
+        render(view: '/sales/sale-entry', model: [customers: customers,divisions:divisions,
+                                                           salesmanList: salesmanList, priorityList:priorityList])
     }
 
     def saveSaleEntry()
@@ -340,5 +333,21 @@ class SaleEntryController {
     def paymentVocher()
     {
         render(view:"/sales/payment-vocher")
+    }
+
+
+    def checkSchemeConfiguration()
+    {
+        String productId = params.productId
+        String batchNumber = params.batchNumber
+
+        if(productId && batchNumber)
+        {
+            respond new SalesService().getSchemeConfiguration(productId, batchNumber)
+        }
+        else
+        {
+            response.status = 400
+        }
     }
 }

@@ -198,6 +198,8 @@ class UrlMappings {
             "/schemeconfigurationbydays/$days(.$format)?"(controller: 'schemeConfiguration') {
                 action = [GET: 'getAllByDays']
             }
+            "/schemeconfiguration/product/$productId/batch/$batchNumber(.$format)?"(controller:'schemeConfiguration', action: 'getByProductBatchNumber')
+
 
             //Temp User Log
             "/tempuserlog(.$format)?"(controller:'tempUserLog') {

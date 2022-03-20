@@ -226,4 +226,30 @@ class SalesService {
             log.error('Service :ProductService , action :  getProducts  , Ex:' + ex)
         }
     }
+
+    def getSchemeConfiguration(String productId, String batchNumber) {
+        String url = new Links().SALE_SCHEME_CONFIG_GET_PRODUCT_BATCH
+        url = url.replace("\$productId", productId)
+        url = url.replace("\$batchNumber", batchNumber)
+        Client client = ClientBuilder.newClient();
+        WebTarget target = client.target(new Links().API_GATEWAY);
+        try {
+            Response apiResponse = target
+                    .path(url)
+                    .request(MediaType.APPLICATION_JSON_TYPE)
+                    .get()
+
+            if(apiResponse.status == 200)
+            {
+                JSONObject jsonObject = new JSONObject(apiResponse.readEntity(String.class))
+                return jsonObject
+            }
+            else
+                return null
+        }
+        catch (Exception ex) {
+            System.err.println('Service :SalesService , action :  getProducts  , Ex:' + ex)
+            log.error('Service :SalesService , action :  getProducts  , Ex:' + ex)
+        }
+    }
 }

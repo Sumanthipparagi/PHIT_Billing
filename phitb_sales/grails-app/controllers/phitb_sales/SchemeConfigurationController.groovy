@@ -187,4 +187,25 @@ class SchemeConfigurationController {
             System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
         }
     }
+
+    def getByProductBatchNumber() {
+        try {
+            String productId = params.productId
+            String batchNumber = params.batchNumber
+            respond schemeConfigurationService.getByProductBatchNumber(productId, batchNumber)
+        }
+        catch (ResourceNotFoundException ex)
+        {
+            System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
+            response.status = 404
+        }
+        catch (BadRequestException ex)
+        {
+            System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
+            response.status = 400
+        }
+        catch (Exception ex) {
+            System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
+        }
+    }
 }

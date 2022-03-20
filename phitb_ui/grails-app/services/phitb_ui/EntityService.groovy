@@ -1601,14 +1601,16 @@ class EntityService {
         }
     }
 
-    def getSeries() {
+    def getSeries(String id = null) {
         Client client = ClientBuilder.newClient()
         WebTarget target = client.target(new Links().API_GATEWAY)
-       
+        String uri = new Links().SERIES_MASTER_SHOW
+        if(id)
+            uri += "/"+id
         try {
 
             Response apiResponse = target
-                    .path(new Links().SERIES_MASTER_SHOW)
+                    .path(uri)
                     .request(MediaType.APPLICATION_JSON_TYPE)
                     .get()
 
@@ -1623,9 +1625,7 @@ class EntityService {
     def getSeriesById(String id) {
         Client client = ClientBuilder.newClient()
         WebTarget target = client.target(new Links().API_GATEWAY)
-
         try {
-
             Response apiResponse = target
                     .path(new Links().SERIES_MASTER_SHOW + "/"+id)
                     .request(MediaType.APPLICATION_JSON_TYPE)

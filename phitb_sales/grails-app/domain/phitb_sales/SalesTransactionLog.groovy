@@ -2,7 +2,7 @@ package phitb_sales
 
 import gorm.logical.delete.LogicalDelete
 
-class SalesTrasactionLog implements Serializable, LogicalDelete<SalesTrasactionLog>
+class SalesTransactionLog implements Serializable, LogicalDelete<SalesTransactionLog>
 {
 
     long finId
@@ -34,12 +34,12 @@ class SalesTrasactionLog implements Serializable, LogicalDelete<SalesTrasactionL
     {
         if (!this.isUpdatable)
         {
-            System.out.println("SalesTrasactionLog Domain update Prevented " + new Date().toString() + " ,id: " + this.id)
+            System.out.println("SalesTransactionLog Domain update Prevented " + new Date().toString() + " ,id: " + this.id)
             return false
         }
         else
         {
-            System.out.println("SalesTrasactionLog domain Updated " + new Date().toString() + " ,id: " + this.id)
+            System.out.println("SalesTransactionLog domain Updated " + new Date().toString() + " ,id: " + this.id)
         }
     }
 }

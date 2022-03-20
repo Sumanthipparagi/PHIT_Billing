@@ -18,11 +18,11 @@ class SalesTransactionLogService {
         Integer l = limit ? Integer.parseInt(limit.toString()) : 100
         if (!query)
         {
-            return SalesTrasactionLog.findAll([sort: 'id', max: l, offset: o, order: 'desc'])
+            return SalesTransactionLog.findAll([sort: 'id', max: l, offset: o, order: 'desc'])
         }
         else
         {
-            return SalesTrasactionLog.findAllByAccountId("%" + query + "%", [sort: 'id', max: l, offset: o, order:
+            return SalesTransactionLog.findAllByAccountId("%" + query + "%", [sort: 'id', max: l, offset: o, order:
                     'desc'])
         }
     }
@@ -33,7 +33,7 @@ class SalesTransactionLogService {
         Integer l = limit ? Integer.parseInt(limit.toString()) : 100
         if (!days)
         {
-            return SalesTrasactionLog.findAll([sort: 'id', max: l, offset: o, order: 'desc'])
+            return SalesTransactionLog.findAll([sort: 'id', max: l, offset: o, order: 'desc'])
         }
         else
         {
@@ -42,15 +42,15 @@ class SalesTransactionLogService {
             cal.setTime(today)
             cal.add(Calendar.DAY_OF_MONTH, - Integer.parseInt(days))
             Date dateCreated = cal.getTime()
-            return SalesTrasactionLog.createCriteria().list {
+            return SalesTransactionLog.createCriteria().list {
                 gt("dateCreated",dateCreated)
             }
         }
     }
 
-    SalesTrasactionLog get(String id)
+    SalesTransactionLog get(String id)
     {
-        return SalesTrasactionLog.findById(Long.parseLong(id))
+        return SalesTransactionLog.findById(Long.parseLong(id))
     }
 
     JSONObject dataTables(JSONObject paramsJsonObject, String start, String length)
@@ -71,7 +71,7 @@ class SalesTransactionLogService {
         }
         Integer offset = start ? Integer.parseInt(start.toString()) : 0
         Integer max = length ? Integer.parseInt(length.toString()) : 100
-        def salesTransactionLogCriteria = SalesTrasactionLog.createCriteria()
+        def salesTransactionLogCriteria = SalesTransactionLog.createCriteria()
         def salesTransactionLogArrayList = salesTransactionLogCriteria.list(max: max, offset: offset) {
             or {
                 if (searchTerm != "")
@@ -91,9 +91,9 @@ class SalesTransactionLogService {
         return jsonObject
     }
 
-    SalesTrasactionLog save(JSONObject jsonObject)
+    SalesTransactionLog save(JSONObject jsonObject)
     {
-        SalesTrasactionLog salesTrasactionLog = new SalesTrasactionLog()
+        SalesTransactionLog salesTrasactionLog = new SalesTransactionLog()
         salesTrasactionLog.finId =  Long.parseLong(jsonObject.get("finId").toString())
         salesTrasactionLog.transactionType =  jsonObject.get("transactionType").toString()
         salesTrasactionLog.accountModeId =  jsonObject.get("accountModeId").toString()
@@ -122,9 +122,9 @@ class SalesTransactionLogService {
         }
     }
 
-    SalesTrasactionLog update(JSONObject jsonObject, String id)
+    SalesTransactionLog update(JSONObject jsonObject, String id)
     {
-        SalesTrasactionLog salesTrasactionLog = SalesTrasactionLog.findById(Long.parseLong(id))
+        SalesTransactionLog salesTrasactionLog = SalesTransactionLog.findById(Long.parseLong(id))
         if (salesTrasactionLog)
         {
             salesTrasactionLog.isUpdatable = true
@@ -165,7 +165,7 @@ class SalesTransactionLogService {
     {
         if (id)
         {
-            SalesTrasactionLog salesTrasactionLog = SalesTrasactionLog.findById(Long.parseLong(id))
+            SalesTransactionLog salesTrasactionLog = SalesTransactionLog.findById(Long.parseLong(id))
             if (salesTrasactionLog)
             {
                 salesTrasactionLog.isUpdatable = true

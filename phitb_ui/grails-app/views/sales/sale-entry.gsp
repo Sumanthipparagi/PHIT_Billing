@@ -62,12 +62,21 @@
                     <div class="header" style="padding: 1px;">
 
                     </div>
-
                     <div class="body">
                         <div class="row">
                             <div class="col-md-2">
                                 <label for="date">Date:</label>
                                 <input type="date" class="form-control date" name="date" id="date"/>
+                            </div>
+
+                            <div class="col-md-2">
+                                <label for="series">Division:</label>
+                                <select class="form-control" id="division" name="division" onchange="divisionChanged()">
+                                    <option selected disabled>--SELECT--</option>
+                                    <g:each in="${divisions}" var="dv">
+                                        <option value="${dv.id}">${dv.divisionName}</option>
+                                    </g:each>
+                                </select>
                             </div>
 
                             <div class="col-md-2">
@@ -142,8 +151,15 @@
         </div>
 
         <div class="row clearfix">
-            <div class="col-lg-12" style="margin-bottom: 10px;">
+            <div class="col-lg-4" style="margin-bottom: 10px;">
                 <p style="margin: 0; font-size: 10px;">Keyboard Shortcuts - Delete Row: <strong>Ctrl+Alt+D</strong>, Reset Table: <strong>Ctrl+Alt+R</strong>
+                </p>
+            </div>
+            <div class="col-lg-4" style="margin-bottom: 10px;">
+
+            </div>
+            <div class="col-lg-4" style="margin-bottom: 10px;">
+                <p style="margin: 0; font-size: 10px;color: red;">Offers: <span id="offers"></span>
                 </p>
             </div>
         </div>
@@ -228,9 +244,9 @@
     var customers = [];
     var readOnly = false;
 
-    <g:each in="${products}" var="pd">
+<%--    <g:each in="${products}" var="pd">
     products.push({id:${pd.id}, text: '${pd.productName}'});
-    </g:each>
+    </g:each>--%>
 
     <g:each in="${products}" var="pd">
     hsnCode.push({id:${pd.id}, text: '${pd.hsnCode}'});
@@ -510,6 +526,8 @@
                 if (e.keyCode === 13) {
 
                     if(!checkForDuplicateEntry(rowData[0])) {
+                        //check for schemes
+                        checkSchemes(hot.getDataAtCell(mainTableRow,1), rowData[0]); //product, batch
                         var batchId = rowData[12];
                         hot.setDataAtCell(mainTableRow, 2, rowData[0]);
                         hot.setCellMeta(mainTableRow, 2, "batchId", batchId);
@@ -539,7 +557,6 @@
     function batchSelection(selectedId, mainRow, selectCell = true) {
         if (selectedId != null) {
             var url = "/stockbook/product/" + selectedId;
-            //var url = "/tempstockbook/product/"+ selectedId;
             $.ajax({
                 type: "GET",
                 url: url,
@@ -582,6 +599,7 @@
             });
         }
     }
+
 
 
     function customerSelectChanged() {
@@ -796,11 +814,82 @@
         }
     }
 
+    function divisionChanged()
+    {
+        var division = $("#division").val();
+        loadProducts(division);
+        $.ajax({
+            type: "GET",
+            url: "/series/"+division,
+            dataType: 'json',
+            success: function (data) {
+                var $select = $("#series");
+                $select.find('option').remove();
+                $select.append('<option value="' + data.id + '">' + data.seriesName + '(' + data.seriesCode + ')</option>');
+            },
+            error: function () {
+                var $select = $("#series");
+                $select.find('option').remove();
+            }
+        });
+    }
+
+    function loadProducts(division)
+    {
+        products.length = 0;//remove all elements
+        $.ajax({
+            type: "GET",
+            url: "/product/division/"+division,
+            dataType: 'json',
+            success: function (data) {
+                for(var i=0; i<data.length;i++) {
+                    products.push({id:data[i].id, text: data[i].productName});
+                }
+            },
+            error: function () {
+                products.length = 0; //remove all elements
+            }
+        });
+    }
+
+    function checkSchemes(productId, batchNumber) {
+        $.ajax({
+            type: "GET",
+            url: "/sales/check-scheme",
+            data:{
+                productId: productId,
+                batchNumber: batchNumber
+            },
+            dataType: 'json',
+            success: function (data) {
+                var offers = "";
+
+                if(data.slab1Status == 1)
+                {
+                    offers = "S1: "+data.slab1MinQty + "+" + data.slab1SchemeQty;
+                }
+
+                if(data.slab2Status == 1)
+                {
+                    offers += " | S2: "+data.slab2MinQty + "+" + data.slab2SchemeQty;
+                }
+
+                if(data.slab3Status == 1)
+                {
+                    offers += " | S3: "+data.slab3MinQty + "+" + data.slab3SchemeQty;
+                }
+
+                $("#offers").html(offers)
+            },
+            error: function () {
+                $("#offers").html("");
+            }
+        });
+    }
     document.addEventListener("keydown", function (event) {
         var ctrl = event.ctrlKey;
         var alt = event.altKey;
         var key = event.key;
-        console.log(ctrl + " " + alt + " " + key);
         if (ctrl) {
             if (alt) {
                 var result = false;
@@ -890,7 +979,7 @@
 
 
             //Process only events that have been fired in the editor
-            if (!$(event.target).hasClass('select2-input') || event.isImmediatePropagationStopped()) {
+            if (!$(event.target).hasClass('select2-input') || event?.isImmediatePropagationStopped()) {
                 return;
             }
             if (event.keyCode === 17 || event.keyCode === 224 || event.keyCode === 91 || event.keyCode === 93) {

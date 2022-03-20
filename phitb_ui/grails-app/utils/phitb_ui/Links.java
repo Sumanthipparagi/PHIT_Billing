@@ -95,6 +95,7 @@ public class Links
     public static String DEPARTMENT_MASTER_SHOW = "api/v1.0/entity/departmentmaster";
     public static String ACCOUNT_REGISTER_SHOW = "api/v1.0/entity/accountregister";
     public static String DIVISION_SHOW = "api/v1.0/product/division";
+    public static String DIVISION_BY_ENTITY = "api/v1.0/product/divisionbyentity";
     public static String GENDER_SHOW = "api/v1.0/system/gender";
 
     //Entity Register
@@ -219,6 +220,7 @@ public class Links
     //Product Register
     public static String PRODUCT_REGISTER_SHOW = "api/v1.0/product/productregister";
     public static String PRODUCT_REGISTER_BY_ENTITY = "api/v1.0/product/productregisterbyentity";
+    public static String PRODUCT_REGISTER_BY_DIVISION = "api/v1.0/product/productregisterbydivision";
     public static String PRODUCT_REGISTER_SAVE = "api/v1.0/product/productregister";
     public static String PRODUCT_REGISTER_DATATABLE = "api/v1.0/product/productregister/datatable";
     public static String PRODUCT_REGISTER_UPDATE = "api/v1.0/product/productregister/{id}";
@@ -313,6 +315,9 @@ public class Links
     public static String SALE_BILL_PAYMENT = "api/v1.0/sales/salebillbypaymentstatus";
     public static String SET_PAYMENT_BILL = "api/v1.0/sales/setpaymentstatus/{id}/type/{type}";
     public static String SALE_BILL_RECENT = "api/v1.0/sales/salebilldetails/getrecent";
+
+
+    public static String SALE_SCHEME_CONFIG_GET_PRODUCT_BATCH = "api/v1.0/sales/schemeconfiguration/product/$productId/batch/$batchNumber";
 
 
     //Sale Bill Details

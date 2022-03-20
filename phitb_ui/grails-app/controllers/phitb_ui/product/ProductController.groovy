@@ -11,8 +11,7 @@ import org.grails.web.json.JSONObject
 import phitb_ui.Links
 import phitb_ui.ProductService
 
-class ProductController
-{
+class ProductController {
 
 //    def index()
 //    {
@@ -44,10 +43,8 @@ class ProductController
 //    }
 
 
-    def index()
-    {
-        try
-        {
+    def index() {
+        try {
             ArrayList<String> productTypes = new ProductTypeController().show() as ArrayList<String>
             ArrayList<String> productGroups = new ProductGroupController().show() as ArrayList<String>
             ArrayList<String> divisions = new DivisionController().show() as ArrayList<String>
@@ -64,8 +61,7 @@ class ProductController
                                                                              divisions        : divisions])
 
         }
-        catch (Exception ex)
-        {
+        catch (Exception ex) {
             System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
             log.error('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
             response.status = 400
@@ -74,10 +70,8 @@ class ProductController
     }
 
 
-    def addProduct()
-    {
-        try
-        {
+    def addProduct() {
+        try {
             ArrayList<String> productTypes = new ProductTypeController().show() as ArrayList<String>
             def entitytypeurl = Links.API_GATEWAY + Links.ENTITY_TYPE_MASTER_SHOW
             URL apiUrl1 = new URL(entitytypeurl)
@@ -96,13 +90,11 @@ class ProductController
             ArrayList<String> manufacturerList = []
             ArrayList<String> companyList = []
             entity.each {
-                if (it.entityType.name.toString().equalsIgnoreCase(Constants.ENTITY_MANUFACTURER))
-                {
+                if (it.entityType.name.toString().equalsIgnoreCase(Constants.ENTITY_MANUFACTURER)) {
                     manufacturerList.add(it)
                 }
 
-                if (it.entityType.name.toString().equalsIgnoreCase(Constants.ENTITY_COMPANY))
-                {
+                if (it.entityType.name.toString().equalsIgnoreCase(Constants.ENTITY_COMPANY)) {
                     companyList.add(it)
                 }
             }
@@ -117,14 +109,13 @@ class ProductController
                                                                          producttype      : producttype,
                                                                          productcost      : productcost,
                                                                          unittype         : unittype,
-                                                                         tax: tax,
-                                                                         manufacturerList:manufacturerList,
-                                                                         companyList:companyList
+                                                                         tax              : tax,
+                                                                         manufacturerList : manufacturerList,
+                                                                         companyList      : companyList
             ])
 
         }
-        catch (Exception ex)
-        {
+        catch (Exception ex) {
             System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
             log.error('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
             response.status = 400
@@ -132,10 +123,8 @@ class ProductController
 
     }
 
-    def updateProduct()
-    {
-        try
-        {
+    def updateProduct() {
+        try {
             ArrayList<String> productTypes = new ProductTypeController().show() as ArrayList<String>
             def entitytypeurl = Links.API_GATEWAY + Links.ENTITY_TYPE_MASTER_SHOW
             def productregisterbyidurl = Links.API_GATEWAY + Links.PRODUCT_REGISTER_SHOW + "/" + params.id
@@ -157,13 +146,11 @@ class ProductController
             ArrayList<String> manufacturerList = []
             ArrayList<String> companyList = []
             entity.each {
-                if (it.entityType.name.toString().equalsIgnoreCase(Constants.ENTITY_MANUFACTURER))
-                {
+                if (it.entityType.name.toString().equalsIgnoreCase(Constants.ENTITY_MANUFACTURER)) {
                     manufacturerList.add(it)
                 }
 
-                if (it.entityType.name.toString().equalsIgnoreCase(Constants.ENTITY_COMPANY))
-                {
+                if (it.entityType.name.toString().equalsIgnoreCase(Constants.ENTITY_COMPANY)) {
                     companyList.add(it)
                 }
             }
@@ -179,14 +166,13 @@ class ProductController
                                                                             productregsiter  : productregsiter,
                                                                             productcost      : productcost,
                                                                             unittype         : unittype,
-                                                                            tax: tax,
-                                                                            manufacturerList:manufacturerList,
-                                                                            companyList:companyList
+                                                                            tax              : tax,
+                                                                            manufacturerList : manufacturerList,
+                                                                            companyList      : companyList
             ])
 
         }
-        catch (Exception ex)
-        {
+        catch (Exception ex) {
             System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
             log.error('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
             response.status = 400
@@ -195,102 +181,78 @@ class ProductController
     }
 
 
-    def dataTable()
-    {
-        try
-        {
+    def dataTable() {
+        try {
             JSONObject jsonObject = new JSONObject(params)
             def apiResponse = new ProductService().showProductRegister(jsonObject)
-            if (apiResponse.status == 200)
-            {
+            if (apiResponse.status == 200) {
                 JSONObject responseObject = new JSONObject(apiResponse.readEntity(String.class))
                 respond responseObject, formats: ['json'], status: 200
-            }
-            else
-            {
+            } else {
                 response.status = 400
             }
         }
-        catch (Exception ex)
-        {
+        catch (Exception ex) {
             System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
             log.error('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
             response.status = 400
         }
     }
 
-    def save()
-    {
-        try
-        {
+    def save() {
+        try {
             JSONObject jsonObject = new JSONObject(params)
             def apiResponse = new ProductService().saveProductRegister(jsonObject)
-            if (apiResponse?.status == 200)
-            {
+            if (apiResponse?.status == 200) {
                 JSONObject obj = new JSONObject(apiResponse.readEntity(String.class))
 //                respond obj, formats: ['json'], status: 200
                 redirect(uri: '/product')
 
-            }
-            else
-            {
+            } else {
                 response.status = apiResponse?.status ?: 400
             }
         }
-        catch (Exception ex)
-        {
+        catch (Exception ex) {
             System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
             log.error('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
             response.status = 400
         }
     }
 
-    def update()
-    {
-        try
-        {
+    def update() {
+        try {
             println(params)
             JSONObject jsonObject = new JSONObject(params)
             def apiResponse = new ProductService().putProductRegister(jsonObject)
-            if (apiResponse.status == 200)
-            {
+            if (apiResponse.status == 200) {
                 JSONObject obj = new JSONObject(apiResponse.readEntity(String.class))
 //                respond obj, formats: ['json'], status: 200
                 redirect(uri: '/product')
 
-            }
-            else
-            {
+            } else {
                 response.status = 400
             }
         }
-        catch (Exception ex)
-        {
+        catch (Exception ex) {
             System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
             log.error('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
             response.status = 400
         }
     }
 
-    def delete()
-    {
-        try
-        {
+    def delete() {
+        try {
             JSONObject jsonObject = new JSONObject(params)
             def apiResponse = new ProductService().deleteProductRegister(jsonObject)
-            if (apiResponse.status == 200)
-            {
+            if (apiResponse.status == 200) {
                 JSONObject data = new JSONObject()
                 data.put("success", "success")
                 respond data, formats: ['json'], status: 200
-            }
-            else
-            {
+            } else {
                 response.status = 400
             }
         }
-        catch (Exception ex)
-        {
+        catch (Exception ex) {
             System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
             log.error('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
             response.status = 400
@@ -298,53 +260,62 @@ class ProductController
     }
 
 
-    def show()
-    {
-        try
-        {
+    def show() {
+        try {
             def apiResponse = new ProductService().getProducts()
-            if (apiResponse?.status == 200)
-            {
+            if (apiResponse?.status == 200) {
                 JSONArray jsonArray = new JSONArray(apiResponse.readEntity(String.class));
                 ArrayList<String> arrayList = new ArrayList<>(jsonArray)
                 return arrayList
-            }
-            else
-            {
+            } else {
                 return []
             }
         }
-        catch (Exception ex)
-        {
+        catch (Exception ex) {
             System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
             log.error('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
             response.status = 400
         }
     }
 
-   /* def getProductbyId()
-    {
-        try
-        {
-            def apiResponse = new ProductService().getProductById(params.id)
-            if (apiResponse?.status == 200)
-            {
-                JSONArray jsonArray = new JSONArray(apiResponse.readEntity(String.class));
-                ArrayList<String> arrayList = new ArrayList<>(jsonArray)
-                return arrayList
-            }
+    def getProductByDivision() {
+        try {
+            JSONArray jsonArray = new ProductService().getProductsByDivision(params.id)
+            if (jsonArray)
+                respond jsonArray, formats: ['json']
             else
-            {
-                return []
-            }
+                response.status = 404
         }
-        catch (Exception ex)
-        {
+        catch (Exception ex) {
             System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
             log.error('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
             response.status = 400
         }
-    }*/
+    }
+
+    /* def getProductbyId()
+     {
+         try
+         {
+             def apiResponse = new ProductService().getProductById(params.id)
+             if (apiResponse?.status == 200)
+             {
+                 JSONArray jsonArray = new JSONArray(apiResponse.readEntity(String.class));
+                 ArrayList<String> arrayList = new ArrayList<>(jsonArray)
+                 return arrayList
+             }
+             else
+             {
+                 return []
+             }
+         }
+         catch (Exception ex)
+         {
+             System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
+             log.error('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
+             response.status = 400
+         }
+     }*/
 
 
 }
