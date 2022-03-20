@@ -176,8 +176,8 @@
                 dataSrc: function (json) {
                     var return_data = [];
                     for (var i = 0; i < json.data.length; i++) {
-                        var deletebtn = '<button type="button" data-id="' + json.data[i].id +
-                            '" class="btn btn-sm btn-danger deletebtn" ><i class="material-icons"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">print</font></font></i></button>'
+                        var deletebtn = '<a href="/sale-entry/print-invoice?id=' + json.data[i].id +'"><button type="button" data-id="' + json.data[i].id +
+                            '" class="btn btn-sm btn-danger deletebtn" ><i class="material-icons"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">print</font></font></i></button></a>'
                         return_data.push({
                             // 'id': json.data[i].id,
                             'entityName': json.data[i].entityId,
