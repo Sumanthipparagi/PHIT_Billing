@@ -240,17 +240,10 @@
     var totalAmt = 0;
     var series = [];
     var products = [];
-    var hsnCode = [];
     var customers = [];
     var readOnly = false;
+    var scheme = null;
 
-<%--    <g:each in="${products}" var="pd">
-    products.push({id:${pd.id}, text: '${pd.productName}'});
-    </g:each>--%>
-
-    <g:each in="${products}" var="pd">
-    hsnCode.push({id:${pd.id}, text: '${pd.hsnCode}'});
-    </g:each>
 
     var headerRow = [
         '<strong></strong>',
@@ -404,7 +397,8 @@
                     if ((e.keyCode === 13 || e.keyCode === 9) && !readOnly) {
                         //check if sqty is empty
                         var sqty = hot.getDataAtCell(row, 4);
-                        if (sqty) {
+                        var fqty = hot.getDataAtCell(row, 5);
+                        if (sqty && sqty>0 && fqty && fqty >=0) {
                             mainTableRow = row + 1;
                             hot.alter('insert_row');
                             hot.selectCell(mainTableRow, 1);
@@ -431,12 +425,13 @@
                                 }
                             });
                         } else {
-                            alert("Please enter Quantity");
+                            alert("Invalid Quantity, please enter quantity greater than 0");
                         }
                     }
                 } else if (selection === 4) {
                     if (e.keyCode === 13 || e.keyCode === 9) {
                         sQty = this.getActiveEditor().TEXTAREA.value;
+                        applySchemes(row, sQty);
                         sRate = hot.getDataAtCell(row, 6);
                         var discount = hot.getDataAtCell(row, 8);
                         var priceBeforeGst = (sRate * sQty) - ((sRate * sQty) * discount) / 100;
@@ -853,6 +848,7 @@
     }
 
     function checkSchemes(productId, batchNumber) {
+        scheme = null;
         $.ajax({
             type: "GET",
             url: "/sales/check-scheme",
@@ -862,6 +858,7 @@
             },
             dataType: 'json',
             success: function (data) {
+                scheme = data;
                 var offers = "";
 
                 if(data.slab1Status == 1)
@@ -886,6 +883,87 @@
             }
         });
     }
+
+    function applySchemes(row, saleQty) {
+        if (scheme && saleQty > 0) {
+            if(saleQty>=scheme.slab1MinQty && saleQty<scheme.slab2MinQty)
+            {
+                if(scheme.slab1Status == 1) {
+                    if(scheme.slab2BulkStatus == 1) {
+                        var slab1Multiplier = Math.floor(parseInt(saleQty)/scheme.slab1MinQty);
+                        var slab1Qty = scheme.slab1SchemeQty * slab1Multiplier;
+                        hot.setDataAtCell(row, 5, slab1Qty);
+                    }
+                    else
+                    {
+                        hot.setDataAtCell(row, 5, scheme.slab1SchemeQty);
+                    }
+                }
+                else
+                    hot.setDataAtCell(row, 5, 0);
+            }
+            else if(saleQty>=scheme.slab2MinQty && saleQty<scheme.slab3MinQty)
+            {
+                if(scheme.slab2Status == 1) {
+                    if(scheme.slab2BulkStatus == 1)
+                    {
+
+                        var slab2Multiplier = Math.floor(parseInt(saleQty)/scheme.slab2MinQty);
+                        var slab2Qty = slab2Multiplier * scheme.slab2MinQty;
+                        var slb2RemQty = saleQty - slab2Qty;
+
+                        var slab1Multiplier = Math.floor(parseInt(slb2RemQty)/scheme.slab1MinQty);
+                        var slab2Qty = scheme.slab2SchemeQty * slab2Multiplier;
+                        var slab1Qty = scheme.slab1SchemeQty * slab1Multiplier;
+
+                        hot.setDataAtCell(row, 5,slab2Qty+slab1Qty);
+                    }
+                    else {
+                        hot.setDataAtCell(row, 5,  scheme.slab2SchemeQty);
+                    }
+                }
+                else
+                    hot.setDataAtCell(row, 5, 0);
+            }
+            else if(saleQty>=scheme.slab3MinQty)
+            {
+                if(scheme.slab3Status == 1) {
+                    if(scheme.slab3BulkStatus == 1)
+                    {
+                        var slab3Multiplier = Math.floor(parseInt(saleQty)/scheme.slab3MinQty);
+                        var slab3Qty = slab3Multiplier*scheme.slab3MinQty;
+                        var slb3RemQty = saleQty - slab3Qty;
+
+                        var slab2Qty = 0;
+                        var slb2RemQty = 0;
+                        var slab2Multiplier = Math.floor(parseInt(slb3RemQty)/scheme.slab2MinQty);
+                        if(slab2Multiplier > 0) {
+                            slab2Qty = slab2Multiplier * scheme.slab2MinQty;
+                            slb2RemQty = slb3RemQty - slab2Qty;
+                        }
+                        else
+                        {
+                            slb2RemQty = slb3RemQty;
+                        }
+
+                        var slab1Multiplier = Math.floor(parseInt(slb2RemQty)/scheme.slab1MinQty);
+
+                        slab3Qty = scheme.slab3SchemeQty * slab3Multiplier;
+                        slab2Qty = scheme.slab2SchemeQty * slab2Multiplier;
+                        var slab1Qty = scheme.slab1SchemeQty * slab1Multiplier;
+
+                        hot.setDataAtCell(row, 5, slab3Qty+slab2Qty+slab1Qty);
+                    }
+                    else {
+                        hot.setDataAtCell(row, 5, scheme.slab3SchemeQty);
+                    }
+                }
+                else
+                    hot.setDataAtCell(row, 5, 0);
+            }
+        }
+    }
+
     document.addEventListener("keydown", function (event) {
         var ctrl = event.ctrlKey;
         var alt = event.altKey;
