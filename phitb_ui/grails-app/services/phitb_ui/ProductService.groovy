@@ -1620,5 +1620,38 @@ class ProductService {
         }
     }
 
+    def getProductsBySeries(String seriesId, String entityId)
+    {
+        try
+        {
+        JSONArray divisions = getDivisionsByEntityId(entityId)
+        JSONArray products = new JSONArray()
+        for (JSONObject jsonObject : divisions) {
+
+            if(jsonObject.get("seriesId") == Long.parseLong(seriesId))
+            {
+                String divisionId = jsonObject.get("id")
+                Client client = ClientBuilder.newClient();
+                WebTarget target = client.target(new Links().API_GATEWAY)
+
+                    Response apiResponse = target
+                            .path(new Links().PRODUCT_REGISTER_BY_DIVISION + "/"+divisionId)
+                            .request(MediaType.APPLICATION_JSON_TYPE)
+                            .get()
+                    if (apiResponse?.status == 200)
+                    {
+                        JSONArray obj = new JSONArray(apiResponse.readEntity(String.class))
+                        products.addAll(obj)
+                    }
+                client.close()
+            }
+        }
+        return products
+        }
+        catch (Exception ex) {
+            System.err.println('Service :ProductService , action :  getProductsBySeries  , Ex:' + ex)
+            log.error('Service :ProductService , action :  getProductsBySeries  , Ex:' + ex)
+        }
+    }
 
 }

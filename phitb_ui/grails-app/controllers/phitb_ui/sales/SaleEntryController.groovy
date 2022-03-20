@@ -22,13 +22,14 @@ class SaleEntryController {
         JSONArray divisions = new ProductService().getDivisionsByEntityId(entityId)
         ArrayList<String> customers = new EntityRegisterController().show() as ArrayList<String>
         def priorityList = new SystemService().getPriorityByEntity(entityId)
+        def series = new SeriesController().getByEntity(entityId)
         ArrayList<String> salesmanList = []
         /*users.each {
             if (it.role.name.toString().equalsIgnoreCase(Constants.ROLE_SALESMAN)) {
                 salesmanList.add(it)
             }
         }*/
-        render(view: '/sales/sale-entry', model: [customers: customers,divisions:divisions,
+        render(view: '/sales/sale-entry', model: [customers: customers,divisions:divisions, series:series,
                                                            salesmanList: salesmanList, priorityList:priorityList])
     }
 
