@@ -239,7 +239,6 @@ class StockBookController {
             for (JSONObject json : jsonArray) {
                 String id = json["taxId"]
                 def tax = new TaxController().show(id)
-                println(tax.taxValue)
                 json.put("gst", tax.taxValue)
                 json.put("sgst", tax.salesSgst)
                 json.put("cgst", tax.salesCgst)

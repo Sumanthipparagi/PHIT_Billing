@@ -556,26 +556,18 @@
                     </ul>
                 </li>
 
-                <li><a href="javascript:void(0);" class="menu-toggle"><i
-                        class="zmdi zmdi-apps"></i><span>Recipt</span> <span
-                        class="badge badge-success float-right"></span></a>
-                    <ul class="ml-menu">
-                        <li><a href="/recipt">Create Recipt</a></li>
-                        <li><a href="/recipt-list">Recipt List</a></li>
-
-                    </ul>
-                </li>
 
 
-                <li><a href="javascript:void(0);" class="menu-toggle"><i
+
+%{--                <li><a href="javascript:void(0);" class="menu-toggle"><i
                         class="zmdi zmdi-apps"></i><span>Payments</span> <span
                         class="badge badge-success float-right"></span></a>
                     <ul class="ml-menu">
-%{--                        <li><a href="/recipt">Add Recipt</a></li>--}%
+--}%%{--                        <li><a href="/recipt">Add Recipt</a></li>--}%%{--
                         <li><a href="/payments-list">Payment Lists</a></li>
 
                     </ul>
-                </li>
+                </li>--}%
 
                 <li><a href="javascript:void(0);" class="menu-toggle"><i
                         class="zmdi zmdi-apps"></i><span>Sales</span> <span
@@ -596,10 +588,17 @@
                     <ul class="ml-menu">
                         <li><a href="#">Credit JV</a></li>
                         <li><a href="#">Debit JV</a></li>
-                        <li><a href="#">Receipt</a></li>
+                        <li><a href="javascript:void(0);" class="menu-toggle">Receipt</span> <span
+                                class="badge badge-success float-right"></span></a>
+                            <ul class="ml-menu">
+                                <li><a href="/recipt">Create Receipt</a></li>
+                                <li><a href="/recipt-list">Receipt List</a></li>
+
+                            </ul>
+                        </li>
                         <li><a href="#">Receipt Approval</a></li>
                         <li><a href="#">Cheque Returns</a></li>
-                        <li><a href="#">Payment</a></li>
+                        <li><a href="/payments-list">Payment</a></li>
                     </ul>
                 </li>
                 <li class="header"></li>
@@ -652,10 +651,11 @@
                         class="badge badge-success float-right"></span></a>
                     <ul class="ml-menu">
                         <li><a href="/product">Product Register</a></li>
+                        <li><a href="/batch-register">Batch Register</a></li>
                         <li><a href="/division">Division</a></li>
                         <li><a href="/product-category">Product Category</a></li>
                         <li><a href="/product-schedule">Product Schedule</a></li>
-                        <li><a href="/product-composition">Product Compostion</a></li>
+                        <li><a href="/product-composition">Product Composition</a></li>
                         <li><a href="/product-type">Product Type</a></li>
                         <li><a href="/division-group">Division Group</a></li>
                         <li><a href="/product-class">Product Class</a></li>

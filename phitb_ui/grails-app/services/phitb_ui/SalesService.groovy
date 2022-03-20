@@ -118,17 +118,17 @@ class SalesService {
         }
     }
 
-    def getRecentSaleBill(String financialYear, String entityId)
+    def getRecentSaleBill(String financialYear, String entityId, String billStatus)
     {
         Client client = ClientBuilder.newClient();
-        //WebTarget target = client.target(new Links().API_GATEWAY);
-        WebTarget target = client.target("http://localhost:8083");
+        WebTarget target = client.target(new Links().API_GATEWAY);
         try
         {
             Response apiResponse = target
                     .path(new Links().SALE_BILL_RECENT)
                     .queryParam("financialYear", financialYear)
                     .queryParam("entityId", entityId)
+                    .queryParam("billStatus", billStatus)
                     .request(MediaType.APPLICATION_JSON_TYPE)
                     .get()
 

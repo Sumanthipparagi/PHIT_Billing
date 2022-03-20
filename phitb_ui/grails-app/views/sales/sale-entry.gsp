@@ -16,7 +16,7 @@
     <asset:stylesheet rel="stylesheet" src="/themeassets/css/main.css"/>
     <asset:stylesheet rel="stylesheet" href="/themeassets/css/color_skins.css"/>
 
-    <asset:stylesheet rel="stylesheet" href="/themeassets/plugins/sweetalert/sweetalert.css"/>
+    <asset:stylesheet rel="stylesheet" href="/themeassets/plugins/sweetalert2/dist/sweetalert2.css"/>
     <asset:stylesheet rel="stylesheet" href="/themeassets/plugins/select2/dist/css/select2.css"/>
     <asset:stylesheet src="/themeassets/plugins/bootstrap-select/css/bootstrap-select.css" rel="stylesheet"/>
     <link rel="stylesheet" media="screen" href="https://cdnjs.cloudflare.com/ajax/libs/select2/3.5.2/select2.min.css">
@@ -72,7 +72,6 @@
                             <div class="col-md-2">
                                 <label for="series">Series:</label>
                                 <select onchange="seriesChanged()" class="form-control" id="series" name="series">
-                                    <option selected disabled>--SELECT--</option>
                                     <g:each in="${series}" var="sr">
                                         <option value="${sr.id}">${sr.seriesName} (${sr.seriesCode})</option>
                                     </g:each>
@@ -189,6 +188,7 @@
                         </div>
 
                         <div class="row">
+                            <button onclick="resetPage()" class="btn btn-danger">Reset</button>
                             <button onclick="saveSaleInvoice('DRAFT')" class="btn btn-primary">Save Draft</button>
                             <button onclick="saveSaleInvoice('ACTIVE')" class="btn btn-primary">Save</button>
                             <button onclick="printInvoice()" class="btn btn-secondary">Print</button>
@@ -218,19 +218,14 @@
 <asset:javascript src="/themeassets/bundles/mainscripts.bundle.js"/>
 <asset:javascript src="/themeassets/js/pages/tables/jquery-datatable.js"/>
 <asset:javascript src="/themeassets/js/pages/ui/dialogs.js"/>
-<asset:javascript src="/themeassets/plugins/sweetalert/sweetalert.min.js"/>
+<asset:javascript src="/themeassets/plugins/sweetalert2/dist/sweetalert2.all.js"/>
 <asset:javascript src="/themeassets/plugins/momentjs/moment.js"/>
 %{--<asset:javascript src="/themeassets/plugins/select2/dist/js/select2.full.js"/>--}%
 <script src="https://cdnjs.cloudflare.com/ajax/libs/handsontable/0.16.0/handsontable.full.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/3.5.2/select2.js"></script>
 
 <script>
-    var totalAmt = 0;
-    var series = [];
-    var products = [];
-    var customers = [];
-    var readOnly = false;
-    var scheme = null;
+
     var headerRow = [
         '<strong></strong>',
         '<strong>Product</strong>',
@@ -278,6 +273,12 @@
     var totalFQty = 0;
     var remainingQty = 0;
     var remainingFQty = 0;
+    var totalAmt = 0;
+    var series = [];
+    var products = [];
+    var customers = [];
+    var readOnly = false;
+    var scheme = null;
     $(document).ready(function () {
         $("#customerSelect").select2();
         $('#date').val(moment().format('YYYY-MM-DD'));
@@ -565,6 +566,8 @@
                 }
             }
         });
+
+        $('#series').trigger('change');
     });
 
     function batchSelection(selectedId, mainRow, selectCell = true) {
@@ -749,15 +752,19 @@
     function deleteTempStockRow(id, row)
     {
         if(!readOnly) {
-            $.ajax({
-                type: "POST",
-                url: "tempstockbook/delete/" + id,
-                dataType: 'json',
-                success: function (data) {
-                    hot.alter("remove_row", row);
-                    swal("Success", "Row Deleted", "").fire();
-                }
-            });
+            if(id) {
+                $.ajax({
+                    type: "POST",
+                    url: "tempstockbook/delete/" + id,
+                    dataType: 'json',
+                    success: function (data) {
+                        hot.alter("remove_row", row);
+                        swal("Success", "Row Deleted", "").fire();
+                    }
+                });
+            }
+            else
+                hot.alter("remove_row", row);
         }
         else
             alert("Can't change this now, invoice has been saved already.")
@@ -766,6 +773,14 @@
     var saleBillId = 0;
     function saveSaleInvoice(billStatus)
     {
+        var waitingSwal = Swal.fire({
+            title: "Generating Invoice, Please wait!",
+            showDenyButton: false,
+            showCancelButton: false,
+            showConfirmButton: false,
+            allowOutsideClick: false
+        });
+
         var customer = $("#customerSelect").val();
         var series = $("#series").val();
         var duedate = $("#duedate").val();
@@ -775,11 +790,13 @@
 
         if(!series) {
             alert("Please select series.");
+            waitingSwal.close();
             return;
         }
 
         if(!customer) {
             alert("Please select customer.");
+            waitingSwal.close();
             return;
         }
 
@@ -806,13 +823,43 @@
                     }
                 }
                 saleBillId = data.saleBillDetail.id;
-                swal("Success", "Sale Invoice Generated", "");
                 var datepart = data.saleBillDetail.entryDate.split("T")[0];
                 var month = datepart.split("-")[1];
                 var year = datepart.split("-")[0];
                 var seriesCode = data.series.seriesCode;
                 var invoiceNumber = "S/"+month+year+"/"+seriesCode+"/"+data.saleBillDetail.serBillId;
-                $("#invNo").html("<p><strong>"+invoiceNumber+"</strong></p>");
+                var message = "";
+                if(billStatus !== "DRAFT") {
+                    message = 'Sale Invoice Generated: '+ invoiceNumber;
+                    $("#invNo").html("<p><strong>" + invoiceNumber + "</strong></p>");
+                }
+                else {
+                    $("#invNo").html("<p><strong>DR/S/" + month + year + "/" + seriesCode + "/__</strong></p>");
+                    message = 'Draft Invoice Generated: DR/S/'+ month + year + "/" + seriesCode + "/__";
+                }
+                waitingSwal.close();
+                Swal.fire({
+                    title: message,
+                    showDenyButton: true,
+                    showCancelButton: false,
+                    confirmButtonText: 'Print',
+                    denyButtonText: 'New Entry',
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        printInvoice();
+                    } else if (result.isDenied) {
+                        resetPage();
+                    }
+                });
+
+
+            },
+            error: function(){
+                waitingSwal.close();
+                Swal.fire({
+                    title: "Unable to generate Invoice at the moment.",
+                    confirmButtonText: 'OK'
+                });
             }
         });
 
@@ -826,6 +873,37 @@
                 '_blank'
             );
         }
+    }
+
+    function resetPage()
+    {
+        Swal.fire({
+            title: "Reset Contents?",
+            showDenyButton: true,
+            showCancelButton: true,
+            confirmButtonText: 'OK',
+        }).then((result) => {
+            if (result) {
+                saleData.length = 0;
+                batchData.length = 0;
+                mainTableRow = 0;
+                gst = 0;
+                cgst = 0;
+                sgst = 0;
+                igst = 0;
+                totalQty = 0;
+                totalFQty = 0;
+                remainingQty = 0;
+                remainingFQty = 0;
+                totalAmt = 0;
+                readOnly = false;
+                scheme = null;
+
+                hot.render();
+                batchHot.render();
+                calculateTotalAmt();
+            }
+        });
     }
 
     function seriesChanged()
