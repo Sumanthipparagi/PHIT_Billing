@@ -556,26 +556,13 @@
                     </ul>
                 </li>
 
-
-
-
-%{--                <li><a href="javascript:void(0);" class="menu-toggle"><i
-                        class="zmdi zmdi-apps"></i><span>Payments</span> <span
-                        class="badge badge-success float-right"></span></a>
-                    <ul class="ml-menu">
---}%%{--                        <li><a href="/recipt">Add Recipt</a></li>--}%%{--
-                        <li><a href="/payments-list">Payment Lists</a></li>
-
-                    </ul>
-                </li>--}%
-
                 <li><a href="javascript:void(0);" class="menu-toggle"><i
                         class="zmdi zmdi-apps"></i><span>Sales</span> <span
                         class="badge badge-success float-right"></span></a>
                     <ul class="ml-menu">
                         <li><a href="#">Sale Order</a></li>
                         <li><a href="/sale-entry">Sale Entry</a></li>
-                        <li><a href="/sale-bill-list">Sale Bill Details</a></li>
+                        <li><a href="/sale-bill-list">My Invoices</a></li>
                         <li><a href="#">Sale Return</a></li>
                         <li><a href="#">Scheme Entry (Offers)</a></li>
                         <li><a href="#">Stock Adjustment</a></li>

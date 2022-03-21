@@ -295,8 +295,8 @@ class SalesService {
         }
         catch (Exception ex)
         {
-            System.err.println('Service :getAccountModes , action :  show  , Ex:' + ex)
-            log.error('Service :getAccountModes , action :  show  , Ex:' + ex)
+            System.err.println('Service :showSalesService , action :  show  , Ex:' + ex)
+            log.error('Service :showSalesService , action :  show  , Ex:' + ex)
         }
     }
 
