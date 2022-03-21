@@ -21,6 +21,7 @@ class UrlMappings {
             //Purchase Bill Detail
             "/billdetail(.$format)?"(controller: 'purchaseBillDetail') { action = [GET: 'index', POST: 'save'] }
             "/billdetail/datatable(.$format)?"(controller: 'purchaseBillDetail') { action = [GET: 'dataTable'] }
+            "/billdetail/getrecent(.$format)?"(controller: 'purchaseBillDetail') { action = [GET: 'getRecentByFinancialYearAndEntity'] }
             "/billdetail/$id(.$format)?"(controller: 'purchaseBillDetail') { action = [GET: 'show', PUT: 'update', DELETE: 'delete'] }
 
             //Purchase Order

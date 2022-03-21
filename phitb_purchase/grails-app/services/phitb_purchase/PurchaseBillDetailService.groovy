@@ -10,7 +10,7 @@ import java.text.SimpleDateFormat
 @Transactional
 class PurchaseBillDetailService {
 
-    SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss")
+    SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy")
 
     def getAll(String limit, String offset, String query) {
 
@@ -121,8 +121,12 @@ class PurchaseBillDetailService {
 
     }
 
-    PurchaseBillDetail update(JSONObject jsonObject, String id) {
+    PurchaseBillDetail getRecentByFinancialYearAndEntity(String financialYear, String entityId, billStatus)
+    {
+        return PurchaseBillDetail.findByFinancialYearAndEntityIdAndBillStatus(financialYear, Long.parseLong(entityId), billStatus, [sort: 'id', order: 'desc'])
+    }
 
+    PurchaseBillDetail update(JSONObject jsonObject, String id) {
         PurchaseBillDetail purchaseBillDetail = PurchaseBillDetail.findById(Long.parseLong(id))
         if (purchaseBillDetail) {
             purchaseBillDetail.isUpdatable = true

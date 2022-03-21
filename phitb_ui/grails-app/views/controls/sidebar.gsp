@@ -560,7 +560,7 @@
                         class="zmdi zmdi-apps"></i><span>Sales</span> <span
                         class="badge badge-success float-right"></span></a>
                     <ul class="ml-menu">
-                        <li><a href="#">Sale Order</a></li>
+                        <li><a href="/sale-order-entry">Sale Order</a></li>
                         <li><a href="/sale-entry">Sale Entry</a></li>
                         <li><a href="/sale-bill-list">My Invoices</a></li>
                         <li><a href="#">Sale Return</a></li>

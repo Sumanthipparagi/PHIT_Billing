@@ -416,7 +416,14 @@ public class Links
     public static String PURCHASE_PRODUCT_UPDATE = "api/v1.0/purchase/productdetail/{id}";
     public static String PURCHASE_PRODUCT_DELETE = "api/v1.0/purchase/productdetail/{id}";
 
-    public static String PURCHASE_BILL_RECENT = "api/v1.0/purchase/productdetail/getrecent";
+    //purchase product bill details
+    public static String PURCHASE_BILL_SHOW = "api/v1.0/purchase/billdetail";
+    public static String PURCHASE_BILL_SAVE = "api/v1.0/purchase/billdetail";
+    public static String PURCHASE_BILL_DATATABLE = "api/v1.0/purchase/billdetail/datatable";
+    public static String PURCHASE_BILL_UPDATE = "api/v1.0/purchase/billdetail/{id}";
+    public static String PURCHASE_BILL_DELETE = "api/v1.0/purchase/billdetail/{id}";
+
+    public static String PURCHASE_BILL_RECENT = "api/v1.0/purchase/billdetail/getrecent";
 
 
 }

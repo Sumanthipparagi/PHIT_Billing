@@ -15,7 +15,7 @@ import javax.ws.rs.core.Response
 @Transactional
 class PurchaseService {
 
-    def savePurchaseDetails(JSONObject jsonObject)
+    def savePurchaseProductDetails(JSONObject jsonObject)
     {
         Client client = ClientBuilder.newClient();
         WebTarget target = client.target(new Links().API_GATEWAY);
@@ -25,6 +25,26 @@ class PurchaseService {
             println(jsonObject)
             Response apiResponse = target
                     .path(new Links().PURCHASE_PRODUCT_SAVE)
+                    .request(MediaType.APPLICATION_JSON_TYPE)
+                    .post(Entity.entity(jsonObject.toString(),MediaType.APPLICATION_JSON_TYPE))
+            return apiResponse
+        }
+        catch (Exception ex)
+        {
+            System.err.println('Service :saveStateMaster , action :  save  , Ex:' + ex)
+            log.error('Service :saveStateMaster , action :  save  , Ex:' + ex)
+        }
+    }
+
+    def savePurchaseBillDetails(JSONObject jsonObject)
+    {
+        Client client = ClientBuilder.newClient();
+        WebTarget target = client.target(new Links().API_GATEWAY);
+        GrailsHttpSession session = WebUtils.retrieveGrailsWebRequest().session
+        try
+        {
+            Response apiResponse = target
+                    .path(new Links().PURCHASE_BILL_SAVE)
                     .request(MediaType.APPLICATION_JSON_TYPE)
                     .post(Entity.entity(jsonObject.toString(),MediaType.APPLICATION_JSON_TYPE))
             return apiResponse
@@ -62,7 +82,7 @@ class PurchaseService {
         try
         {
             Response apiResponse = target
-                    .path(new Links().SALE_BILL_RECENT)
+                    .path(new Links().PURCHASE_BILL_RECENT)
                     .queryParam("financialYear", financialYear)
                     .queryParam("entityId", entityId)
                     .queryParam("billStatus", billStatus)

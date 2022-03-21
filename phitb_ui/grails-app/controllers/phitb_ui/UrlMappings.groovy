@@ -395,7 +395,7 @@ class UrlMappings {
 
 
         "/purchase-entry"(controller: "purchaseEntry") {
-            action = [GET: "index", POST: "save"]
+            action = [GET: "index", POST: "savePurchaseEntry"]
         }
 
         "/purchase-retrun"(controller: 'purchaseEntry', action: 'purchaseReturn')

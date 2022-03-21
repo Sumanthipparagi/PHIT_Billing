@@ -783,7 +783,7 @@
             allowOutsideClick: false
         });
 
-        var customer = $("#supplier").val();
+        var supplier = $("#supplier").val();
         var series = $("#series").val();
         var duedate = $("#duedate").val();
         duedate = moment(duedate, 'YYYY-MM-DD').toDate();
@@ -796,7 +796,7 @@
             return;
         }
 
-        if(!customer) {
+        if(!supplier) {
             alert("Please select customer.");
             waitingSwal.close();
             return;
@@ -806,11 +806,11 @@
 
         $.ajax({
             type: "POST",
-            url: "sale-entry",
+            url: "/purchase-entry",
             dataType: 'json',
             data:{
                 saleData: saleData,
-                customer:customer,
+                supplier:supplier,
                 series:series,
                 duedate:duedate,
                 priority:priority,
