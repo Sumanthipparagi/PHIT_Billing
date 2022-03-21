@@ -181,21 +181,21 @@
     </tr>
 <g:each var="sp" in="${saleProductDetails}">
     <tr>
-        <td>5000058830049099</td>
-        <td><b>${sp.productId}</b></td>
-        <td>1 GM</td>
+        <td>${sp.productId.hsnCode}</td>
+        <td><b>${sp.productId.productName}</b></td>
+        <td>${sp.unitPacking}</td>
         <td>D</td>
-        <td>SWISS GARNIER BIOTECH PVT A0JQU026</td>
+        <td>${sp.batchNumber}</td>
         <td>JUN-21<br>NOV-22</td>
         <td>&nbsp;</td>
-        <td>17.50</td>
-        <td>12.50</td>
-        <td>11.25</td>
-        <td>60</td>
-        <td>675</td>
-        <td>56.25<br>8.33</td>
-        <td>37.13<br>6.00</td>
-        <td>37.13<br>6.00</td>
+        <td>${sp.mrp}</td>
+        <td>${sp.pts}</td>
+        <td>${sp.orderQuantity}</td>
+        <td>${sp.amount}</td>
+        <td>${sp.discount}</td>
+        <td>${sp.cgstAmount}</td>
+        <td>${sp.sgstAmount}</td>
+        <td>${sp.igstAmount}</td>
         <td>0.00</td>
         <td>618.25</td>
     </tr>

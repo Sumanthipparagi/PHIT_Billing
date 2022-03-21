@@ -427,7 +427,16 @@ class UrlMappings {
         "/tempstockbook/product/$id/"(controller: "stockBook",action:"getTempStocksOfProductAndBatch")
 
 
+//        Stock Book
+        "/stockbook"(controller: "stockBook") {
+            action = [POST: 'stockBookSave']
+        }
+        "/stockbook/user/$id"(controller: "stockBook",action:"getStocksOfUser")
 
+//        Sale Order Entry
+        "/sale-order-entry"(controller: "saleOrderEntry") {
+            action = [GET: "index", POST: 'saveSaleOrder']
+        }
 
         /*<-------------------------------------------Accounts------------------------------------------------->*/
 

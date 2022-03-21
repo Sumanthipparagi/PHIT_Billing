@@ -200,6 +200,11 @@ class UrlMappings {
             }
             "/schemeconfiguration/product/$productId/batch/$batchNumber(.$format)?"(controller:'schemeConfiguration', action: 'getByProductBatchNumber')
 
+//            Sale order Details
+            "/saleorderdetails(.$format)?"(controller: 'saleOrderEntry') {
+                action = [GET: 'index', POST:
+                        'save']
+            }
 
             //Temp User Log
             "/tempuserlog(.$format)?"(controller:'tempUserLog') {

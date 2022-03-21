@@ -11,6 +11,7 @@ import java.text.SimpleDateFormat
 class StockBookService {
 
     SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy")
+    SimpleDateFormat sdf1 = new SimpleDateFormat("dd-MM-yyyy")
 
     def getAll(String limit, String offset, String query) {
 
@@ -90,9 +91,9 @@ class StockBookService {
         stockBook.mergedWith = jsonObject.get("mergedWith")
         stockBook.packingDesc = jsonObject.get("packingDesc")
         stockBook.productId = Long.parseLong(jsonObject.get("productId").toString())
-        stockBook.expDate = sdf.parse(jsonObject.get("expDate").toString())
-        stockBook.purcDate = sdf.parse(jsonObject.get("purcDate").toString())
-        stockBook.manufacturingDate = sdf.parse(jsonObject.get("manufacturingDate").toString())
+        stockBook.expDate = sdf1.parse(jsonObject.get("expDate").toString())
+        stockBook.purcDate = sdf1.parse(jsonObject.get("purcDate").toString())
+        stockBook.manufacturingDate = sdf1.parse(jsonObject.get("manufacturingDate").toString())
         stockBook.remainingQty = Long.parseLong(jsonObject.get("remainingQty").toString())
         stockBook.purcProductValue = Double.parseDouble(jsonObject.get("purcProductValue").toString())
         stockBook.purcTradeDiscount = Double.parseDouble(jsonObject.get("purcTradeDiscount").toString())
@@ -172,4 +173,5 @@ class StockBookService {
             throw new BadRequestException()
         }
     }
+
 }

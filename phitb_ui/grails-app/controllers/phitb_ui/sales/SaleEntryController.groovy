@@ -38,6 +38,7 @@ class SaleEntryController {
 
     def saveSaleEntry()
     {
+        println(params.saleData)
         SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy")
         JSONObject saleBillDetails = new JSONObject()
         JSONArray saleProductDetails = new JSONArray()
@@ -258,12 +259,10 @@ class SaleEntryController {
         JSONObject customer = new EntityService().getEntityById(saleBillDetail.get("customerId").toString())
         JSONObject entity = new EntityService().getEntityById(session.getAttribute("entityId").toString())
         JSONObject city = new SystemService().getCityById(entity.get('cityId').toString())
-       ArrayList<JSONObject> prodObject = []
         saleProductDetails.each{
             def apiResponse = new SalesService().getRequestWithId(it.productId.toString(),new Links().PRODUCT_REGISTER_SHOW)
-            prodObject.add(JSON.parse(apiResponse.readEntity(String.class)) as JSONObject)
+            it.put("productId",JSON.parse(apiResponse.readEntity(String.class)) as JSONObject)
         }
-        println(prodObject)
         render(view: "/sales/sale-invoice", model: [saleBillDetail: saleBillDetail,
                                                     saleProductDetails:saleProductDetails,
                                                     series:series, entity:entity,customer:customer,city:city])

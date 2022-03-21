@@ -326,7 +326,7 @@ public class Links
     public static String SALE_SCHEME_CONFIG_GET_PRODUCT_BATCH = "api/v1.0/sales/schemeconfiguration/product/$productId/batch/$batchNumber";
 
 
-    //Sale Bill Details
+    //Sale Product Details
     public static String SALE_PRODUCT_SHOW = "api/v1.0/sales/saleproductdetails";
     public static String SALE_PRODUCT_SAVE = "api/v1.0/sales/saleproductdetails";
     public static String SALE_PRODUCT_DATATABLE = "api/v1.0/sales/saleproductdetails/datatable";
@@ -336,6 +336,14 @@ public class Links
 
 
 
+    //Sale Order Details
+    public static String SALE_ORDER_SAVE = "api/v1.0/sales/saleorderdetails";
+//    public static String SALE_ORDER_DATATABLE = "api/v1.0/sales/saleproductdetails/datatable";
+//    public static String SALE_ORDER_UPDATE = "api/v1.0/sales/saleproductdetails/{id}";
+//    public static String SALE_ORDER_DELETE = "api/v1.0/sales/saleproductdetails/{id}";
+//    public static String SALE_ORDER = "api/v1.0/sales/saleproductdetails";
+
+
     /*<--------------------------------------------Inventory ------------------------------------------------->*/
 
     //Stock book
@@ -343,6 +351,7 @@ public class Links
     public static String STOCK_BOOK_DATATABLE = "api/v1.0/inventory/stockbook/datatable";
     public static String GET_STOCKS_OF_PRODUCT = "api/v1.0/inventory/stockbookbyproduct";
     public static String STOCK_BOOK_PURCHASE = "api/v1.0/inventory/stockbook/purchase/";
+    public static String STOCK_BOOK_BY_USER = "api/v1.0/inventory/stockbook/user";
 
 
     //Temp Stock Book
@@ -406,5 +415,8 @@ public class Links
     public static String PURCHASE_PRODUCT_DATATABLE = "api/v1.0/purchase/productdetail/datatable";
     public static String PURCHASE_PRODUCT_UPDATE = "api/v1.0/purchase/productdetail/{id}";
     public static String PURCHASE_PRODUCT_DELETE = "api/v1.0/purchase/productdetail/{id}";
+
+    public static String PURCHASE_BILL_RECENT = "api/v1.0/purchase/productdetail/getrecent";
+
 
 }

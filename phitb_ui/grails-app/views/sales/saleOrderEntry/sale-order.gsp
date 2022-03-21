@@ -6,7 +6,7 @@
     <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
     <meta name="description" content="Responsive Bootstrap 4 and web Application ui kit.">
 
-    <title>:: PharmIt ::  Sale Entry</title>
+    <title>:: PharmIt ::  Sale Order</title>
     <link rel="icon" type="image/x-icon" href="${assetPath(src: '/themeassets/images/favicon.ico')}"/>
     <!-- Favicon-->
     <asset:stylesheet rel="stylesheet" src="/themeassets/plugins/bootstrap/css/bootstrap.min.css"/>
@@ -50,7 +50,7 @@
                     %{--<h2>Sale Entry</h2>--}%
                     <ul class="breadcrumb padding-0">
                         <li class="breadcrumb-item"><a href="#"><i class="zmdi zmdi-home"></i></a></li>
-                        <li class="breadcrumb-item active">Sale Entry</li>
+                        <li class="breadcrumb-item active">Sale Order</li>
                     </ul>
                 </div>
             </div>
@@ -148,10 +148,10 @@
             <div class="col-lg-4" style="margin-bottom: 10px;">
 
             </div>
-            <div class="col-lg-4" style="margin-bottom: 10px;">
-                <p style="margin: 0; font-size: 10px;color: red;">Offers: <span id="offers"></span>
-                </p>
-            </div>
+%{--            <div class="col-lg-4" style="margin-bottom: 10px;">--}%
+%{--                <p style="margin: 0; font-size: 10px;color: red;">Offers: <span id="offers"></span>--}%
+%{--                </p>--}%
+%{--            </div>--}%
         </div>
 
         <div class="row clearfix">
@@ -189,7 +189,7 @@
 
                         <div class="row">
                             <button onclick="resetPage()" class="btn btn-danger">Reset</button>
-                            <button onclick="saveSaleInvoice('DRAFT')" class="btn btn-primary">Save Draft</button>
+%{--                            <button onclick="saveSaleInvoice('DRAFT')" class="btn btn-primary">Save Draft</button>--}%
                             <button onclick="saveSaleInvoice('ACTIVE')" class="btn btn-primary">Save</button>
                             <button onclick="printInvoice()" class="btn btn-secondary">Print</button>
                         </div>
@@ -543,7 +543,6 @@
                         var batchId = rowData[12];
                         hot.setDataAtCell(mainTableRow, 2, rowData[0]);
                         hot.setCellMeta(mainTableRow, 2, "batchId", batchId);
-
                         hot.setDataAtCell(mainTableRow, 3, rowData[1]);
                         hot.setDataAtCell(mainTableRow, 5, 0);
                         hot.setDataAtCell(mainTableRow, 6, rowData[5]);
@@ -712,7 +711,7 @@
                     cgst = saleData[i]["cgst"];
                     igst = saleData[i]["igst"];
 
-                   // var discount = hot.getDataAtCell(i, 8);
+                    // var discount = hot.getDataAtCell(i, 8);
                     var discount = 0; //TODO: discount to be set
                     //var gst = hot.getDataAtCell(row, 10);
                     var priceBeforeGst = (sRate * sQty) - ((sRate * sQty) * discount) / 100;
@@ -802,7 +801,7 @@
 
         $.ajax({
             type: "POST",
-            url: "sale-entry",
+            url: "/sale-order-entry",
             dataType: 'json',
             data:{
                 saleData: saleData,
@@ -817,7 +816,7 @@
                 var rowData = hot.getData();
                 for(var j = 0; j < rowData.length;j++) {
                     for (var i = 0; i < 16; i++) {
-                      hot.setCellMeta(j, i,'readOnly', true);
+                        hot.setCellMeta(j, i,'readOnly', true);
                     }
                 }
                 saleBillId = data.saleBillDetail.id;
