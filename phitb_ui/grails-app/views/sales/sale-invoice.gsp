@@ -225,7 +225,7 @@
 
 <div class="container" style="display: flex; height: 200px;">
     <div style="width: 50%;">
-        ${termsConditions}
+        ${term}
     </div>
 
 %{--    <div style="float: right;">--}%

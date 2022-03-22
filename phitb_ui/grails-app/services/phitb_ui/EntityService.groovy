@@ -74,8 +74,8 @@ class EntityService {
                     .get()
             if(apiResponse.status == 200)
             {
-                JSONObject jsonObject = new JSONObject(apiResponse.readEntity(String.class))
-                return jsonObject
+                JSONArray jsonArray = new JSONArray(apiResponse.readEntity(String.class))
+                return jsonArray
             }
             else
                 return null
