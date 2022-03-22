@@ -381,9 +381,13 @@ class UrlMappings {
         "/sale-invoice"(controller: "saleEntry",action:"saleBill")
         "/sales/check-scheme"(controller: "saleEntry", action: "checkSchemeConfiguration")
 
+//        Scheme Entry
         "/scheme-entry" (controller: "schemeEntry", action: "index")
         "/scheme-entry/datatable" (controller: "schemeEntry", action: "datatable")
         "/sale-return"(controller: "saleEntry",action:"saleRetrun")
+        "/genral-scheme-entry"(controller: "schemeEntry") {
+            action = [GET: "addGenralScheme", POST: 'saveGeneralScheme']
+        }
 
         "/credit-debit-settlement"(controller: "saleEntry",action:"crdDebS")
         "/debit-jv"(controller: "saleEntry",action:"DebJV")
@@ -410,6 +414,7 @@ class UrlMappings {
         "/stockbook/datatable"(controller: "stockBook",action:"dataTable")
         "/stockbook/product/$id"(controller: "stockBook",action:"getStocksOfProduct")
         "/stockbook/purchase"(controller: "stockBook",action:"StockBookPurchase")
+        "/stockbook/purchase/batch"(controller: 'stockBook', action: 'stockPurchase')
 
 
 //        Temp Stock Book

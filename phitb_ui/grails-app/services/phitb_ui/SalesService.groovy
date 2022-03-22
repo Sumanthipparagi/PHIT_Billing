@@ -321,4 +321,25 @@ class SalesService {
         }
     }
 
+    def saveGeneralScheme(JSONObject jsonObject)
+    {
+        Client client = ClientBuilder.newClient()
+        WebTarget target = client.target(new Links().API_GATEWAY)
+
+        try
+        {
+            println(jsonObject)
+            Response apiResponse = target
+                    .path(new Links().ENTITY_REGISTER_SAVE)
+                    .request(MediaType.APPLICATION_JSON_TYPE)
+                    .post(Entity.entity(jsonObject.toString(),MediaType.APPLICATION_JSON_TYPE))
+            println(apiResponse)
+            return apiResponse
+        }
+        catch (Exception ex)
+        {
+            System.err.println('Service :EntityService , action :  saveEntity  , Ex:' + ex)
+            log.error('Service :EntityService , action :  saveEntity  , Ex:' + ex)
+        }
+    }
 }

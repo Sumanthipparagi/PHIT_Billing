@@ -13,6 +13,10 @@ public class Links
     public static String ACCOUNT_MODES_UPDATE = "api/v1.0/system/accountmodes/{id}";
     public static String ACCOUNT_MODES_DELETE = "api/v1.0/system/accountmodes/{id}";
 
+    //    Terms Condtions
+    public static String TERMS_CONDITIONS = "api/v1.0/entity/termconditiondetailsbyentity";
+
+
     //    State Master
     public static String STATE_MASTER_SAVE = "api/v1.0/system/state";
     public static String STATE_MASTER_SHOW = "api/v1.0/system/state";
@@ -309,7 +313,7 @@ public class Links
     public static String BATCH_REGISTER_UPDATE = "api/v1.0/product/batchregister/{id}";
     public static String BATCH_REGISTER_DELETE = "api/v1.0/product/batchregister/{id}";
 
-    /*<--------------------------------------------Sale Bill ------------------------------------------------->*/
+    /*<--------------------------------------------Sales------------------------------------------------->*/
     //Sale Bill Details
     public static String SALE_BILL_SHOW = "api/v1.0/sales/salebilldetails";
     public static String SALE_BILL_SAVE = "api/v1.0/sales/salebilldetails";
@@ -324,6 +328,7 @@ public class Links
 
 
     public static String SALE_SCHEME_CONFIG_GET_PRODUCT_BATCH = "api/v1.0/sales/schemeconfiguration/product/$productId/batch/$batchNumber";
+
 
 
     //Sale Product Details
@@ -352,6 +357,8 @@ public class Links
     public static String GET_STOCKS_OF_PRODUCT = "api/v1.0/inventory/stockbookbyproduct";
     public static String STOCK_BOOK_PURCHASE = "api/v1.0/inventory/stockbook/purchase/";
     public static String STOCK_BOOK_BY_USER = "api/v1.0/inventory/stockbook/user";
+    public static String STOCK_BOOK_BY_BATCH = "api/v1.0/inventory/stockbook/batch";
+
 
 
     //Temp Stock Book

@@ -46,6 +46,52 @@ class InventoryService {
         }
     }
 
+//    def stockPurchase(String batch,String sqty)
+//    {
+//        Client client = ClientBuilder.newClient().register(JacksonFeature.class)
+//        WebTarget target = client.target(new Links().API_GATEWAY);
+//        try
+//        {
+//            Response apiResponse = target
+//                    .path(new Links().STOCK_BOOK_BY_BATCH + "/" +batch)
+//                    .request(MediaType.APPLICATION_JSON_TYPE)
+//                    .get()
+//            if (apiResponse?.status == 200)
+//            {
+//                JSONObject jsonObject = new JSONObject(apiResponse.readEntity(String.class))
+//                return jsonObject
+//            }
+//            else
+//            {
+//                return null
+//            }
+//        }
+//        catch (Exception ex)
+//        {
+//            System.err.println('Service : InventoryService , action :  put  , Ex:' + ex)
+//            log.error('Service :InventoryService , action :  put  , Ex:' + ex)
+//        }
+//    }
+
+
+
+    def stocksPurchase(String batch, String purQty) {
+        Client client = ClientBuilder.newClient()
+        WebTarget target = client.target(new Links().API_GATEWAY)
+        try {
+            Response apiResponse = target
+                    .path(new Links().STOCK_BOOK_PURCHASE+"batch/"+ batch+"/qty/"+purQty)
+                    .request(MediaType.APPLICATION_JSON_TYPE)
+                    .get()
+            return apiResponse
+        }
+        catch (Exception ex) {
+            System.err.println('Service :EntityService , action :  getProducts  , Ex:' + ex)
+            log.error('Service :EntityService , action :  getProducts  , Ex:' + ex)
+        }
+    }
+
+
     //Temp Stock Book Save
     def stockBookSave(JSONObject jsonObject)
     {
@@ -194,7 +240,6 @@ class InventoryService {
 
 
 
-
     def StockBookPurchase(JSONObject jsonObject)
     {
         Client client = ClientBuilder.newClient()
@@ -202,22 +247,12 @@ class InventoryService {
         Form form = UtilsService.jsonToFormDataConverter(jsonObject)
         try
         {
-            print(jsonObject)
 
-            JSONObject objects = new JSONObject()
-            JSONArray key = objects.names ();
-
-//            jsonObject.items.each {
-//                println "item:"+it
-
-
-//            }
-//            Response apiResponse = target
-//                    .path(new Links().STOCK_BOOK_PURCHASE+"/batch/"+jsonObject.batch+"/qty/"+jsonObject.qty)
-//                    .request(MediaType.APPLICATION_JSON_TYPE)
-////                    .post(Entity.entity(jsonObject.toString(),MediaType.APPLICATION_JSON_TYPE))
-//                    .post(Entity.form(form))
-//            return apiResponse
+            Response apiResponse = target
+                    .path(new Links().STOCK_BOOK_PURCHASE+"/batch/"+jsonObject.batch+"/qty/"+jsonObject.qty)
+                    .request(MediaType.APPLICATION_JSON_TYPE)
+                    .post(Entity.form(form))
+            return apiResponse
         }
         catch (Exception ex)
         {
@@ -330,7 +365,6 @@ class InventoryService {
     def getStocksByUser(String id) {
         Client client = ClientBuilder.newClient();
         WebTarget target = client.target(new Links().API_GATEWAY);
-
         try {
 
             Response apiResponse = target

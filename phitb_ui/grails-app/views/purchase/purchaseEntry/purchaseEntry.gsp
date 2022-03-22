@@ -386,6 +386,7 @@
                         //check if sqty is empty
                         var sqty = hot.getDataAtCell(row, 4);
                         var fqty = hot.getDataAtCell(row, 5);
+                        var batch = hot.getDataAtCell(row, 2);
                         if (sqty && sqty>0)
                         {
                             mainTableRow = row + 1;
@@ -396,18 +397,15 @@
                             var dt = hot.getDataAtRow(row);
                             dt.push(batchId);
                             var json = JSON.stringify(dt);
-                            var url = '/stockbook';
+                            var url = '/stockbook/purchase/batch';
                             var type = 'POST';
-                            var supplier = $("#supplier").val();
-                            var series = $("#series").val();
                             $.ajax({
                                 type: type,
                                 url: url,
                                 dataType: 'json',
                                 data: {
-                                    supplier:supplier,
-                                    rowData: json,
-                                    series:series,
+                                    batch:batch,
+                                    sqty:sqty
                                 },
                                 success: function (data) {
                                     console.log("Data saved");

@@ -20,7 +20,12 @@
     <asset:stylesheet  src="/themeassets/js/pages/forms/basic-form-elements.js" rel="stylesheet" />
     <asset:stylesheet  src="/themeassets/plugins/bootstrap-material-datetimepicker/css/bootstrap-material-datetimepicker.css" rel="stylesheet" />
 
-
+<style>
+    .form-control
+    {
+        border-radius: 0;
+    }
+</style>
 </head>
 <body class="theme-black">
 <!-- Page Loader -->
@@ -40,7 +45,7 @@
                     <h2>Add General Scheme</h2>
                     <ul class="breadcrumb padding-0">
                         <li class="breadcrumb-item"><a href="index.html"><i class="zmdi zmdi-home"></i></a></li>
-                        <li class="breadcrumb-item"><a href="/entity-register">Entity Register</a></li>
+%{--                        <li class="breadcrumb-item"><a href="/entity-register">Entity Register</a></li>--}%
                         <li class="breadcrumb-item active">Add General Scheme</li>
                     </ul>
                 </div>
@@ -78,484 +83,254 @@
                               class="schemeRegisterForm" enctype="multipart/form-data">
                             <div class="row clearfix">
                                 <div class="col-lg-6 form-group  form-float">
-                                    <label for="entityType">
+                                    <label for="zone">
                                        Zone
                                     </label>
-                                    <select class="form-control show-tick entityType" name="entityType" id="entityType">
-                                        <g:each var="et" in="${entitytype}">
-                                            <option value="${et.id}">${et.name}</option>
+                                    <select class="form-control show-tick zone" name="entityType" id="zone">
+                                        <g:each var="z" in="${zoneList}">
+                                            <option value="${z.id}">${z.name}</option>
                                         </g:each>
                                     </select>
                                 </div>
 
                                 <div class="col-lg-6 form-group  form-float">
-                                    <label for="entityType">
-                                        Entity Type
-                                    </label>
-                                    <select class="form-control show-tick entityType" name="entityType" id="entityType">
-                                        <g:each var="et" in="${entitytype}">
-                                            <option value="${et.id}">${et.name}</option>
-                                        </g:each>
-                                    </select>
-                                </div>
-                                <div class="col-lg-6 form-group  form-float">
-                                    <label for="affiliateId">
-                                        Affiliate Id
-                                    </label>
-                                    <input type="text" id="affiliateId" class="form-control affiliateId"
-                                           name="affiliateId" placeholder="Affliate Id"
-                                           required/>
-                                </div>
-
-                                <div class="col-lg-6 form-group  form-float">
-                                    <label for="addressLine1">
-                                        Address Line 1
-                                    </label>
-                                    <input type="text" id="addressLine1" class="form-control addressLine1"
-                                           name="addressLine1" placeholder="Address Line 1"
-                                           required/>
-                                </div>
-
-                                <div class="col-lg-6 form-group  form-float">
-                                    <label for="addressLine1">
-                                        Address Line 2
-                                    </label>
-                                    <input type="text" id="addressLine2" class="form-control addressLine2"
-                                           name="addressLine2" placeholder="Address Line 2"
-                                           required/>
-                                </div>
-
-                                <div class="col-lg-6 form-group  form-float">
-                                    <label for="countryId">
-                                        Country
-                                    </label>
-                                    <select class="form-control show-tick countryId" name="countryId" id="countryId">
-                                        <g:each var="country" in="${countrylist}">
-                                            <option value="${country.id}">${country.name}</option>
-                                        </g:each>
-                                    </select>
-                                </div>
-
-                                <div class="col-lg-6 form-group  form-float">
-                                    <label for="stateId">
+                                    <label for="state">
                                         State
                                     </label>
-                                    <select class="form-control show-tick stateId" name="stateId" id="stateId">
-                                        <g:each var="state" in="${statelist}">
-                                            <option value="${state.id}">${state.name}</option>
+                                    <select class="form-control show-tick state" name="state" id="state">
+                                        <g:each var="s" in="${stateList}">
+                                            <option value="${s.id}">${s.name}</option>
                                         </g:each>
                                     </select>
                                 </div>
 
                                 <div class="col-lg-6 form-group  form-float">
-                                    <label for="cityId">
+                                    <label for="city">
                                         City
                                     </label>
-                                    <select class="form-control show-tick cityId" name="cityId" id="cityId">
-                                        <g:each var="city" in="${citylist}">
-                                            <option value="${city.id}">${city.name}</option>
+                                    <select class="form-control show-tick city" name="city" id="city">
+                                        <g:each var="c" in="${cityList}">
+                                            <option value="${c.id}">${c.name}</option>
                                         </g:each>
                                     </select>
                                 </div>
 
                                 <div class="col-lg-6 form-group  form-float">
-                                    <label for="pinCode">
-                                        Pin Code
+                                    <label for="distributor">
+                                        Distributor
                                     </label>
-                                    <input type="number" id="pinCode" class="form-control pinCode"
-                                           name="pinCode" placeholder="Pin Code"
-                                           required/>
-                                </div>
-
-                                <div class="col-lg-6 form-group  form-float">
-                                    <label for="phoneNumber">
-                                        Phone Number
-                                    </label>
-                                    <input type="number" id="phoneNumber" class="form-control phoneNumber"
-                                           name="phoneNumber" placeholder="Phone Number"
-                                           required/>
-                                </div>
-
-                                <div class="col-lg-6 form-group  form-float">
-                                    <label for="mobileNumber">
-                                        Mobile Number
-                                    </label>
-                                    <input type="number" id="mobileNumber" class="form-control mobileNumber"
-                                           name="mobileNumber" placeholder="Mobile Number"
-                                           required/>
-                                </div>
-
-                                <div class="col-lg-6 form-group  form-float">
-                                    <label for="email">
-                                        Email
-                                    </label>
-                                    <input type="email" id="email" class="form-control email"
-                                           name="email" placeholder="Email"
-                                           required/>
-                                </div>
-
-                                <div class="col-lg-6 form-group  form-float">
-                                    <label for="contactName">
-                                        Contact Name
-                                    </label>
-                                    <input type="text" id="contactName" class="form-control contactName"
-                                           name="contactName" placeholder="Contact Name"
-                                           required/>
-                                </div>
-
-                                <div class="col-lg-6 form-group  form-float">
-                                    <label for="priorityId">
-                                        Priority Id
-                                    </label>
-                                    <input type="text" id="priorityId" class="form-control priorityId"
-                                           name="priorityId" placeholder="Priority Id"
-                                           required/>
-                                </div>
-                                <div class="col-lg-6 form-group  form-float">
-                                    <label for="pan">
-                                        PAN
-                                    </label>
-                                    <input type="text" id="pan" class="form-control pan"
-                                           name="pan" placeholder="PAN"
-                                           required/>
-                                </div>
-
-                                <div class="col-lg-6 form-group  form-float">
-                                    <label for="gstn">
-                                        GSTIN
-                                    </label>
-                                    <input type="text" id="gstn" class="form-control gstn"
-                                           name="gstn" placeholder="GSTIN"
-                                           required/>
-                                </div>
-
-                                <div class="col-lg-6 form-group  form-float">
-                                    <label for="gstn">
-                                        USD number
-                                    </label>
-                                    <input type="text" id="usdNumber" class="form-control usdNumber"
-                                           name="usdNumber" placeholder="USD number"
-                                           required/>
-                                </div>
-
-                                <div class="col-lg-6 form-group  form-float">
-                                    <label for="corpId">
-                                        Crop Id
-                                    </label>
-                                    <input type="number" id="corpId" class="form-control corpId"
-                                           name="corpId" placeholder="Crop Id"
-                                           required/>
-                                </div>
-
-                                <div class="col-lg-6 form-group  form-float">
-                                    <label for="drugLicence1">
-                                        Drug Licence 1
-                                    </label>
-                                    <input type="text" id="drugLicence1" class="form-control drugLicence1"
-                                           name="drugLicence1" placeholder="Drug Licence 1"
-                                           required/>
-                                </div>
-
-                                <div class="col-lg-6 form-group  form-float">
-                                    <label for="drugLicence2">
-                                        Drug Licence 2
-                                    </label>
-                                    <input type="text" id="drugLicence2" class="form-control drugLicence2"
-                                           name="drugLicence2" placeholder="Drug Licence 2"
-                                           required/>
-                                </div>
-                                <div class="col-lg-6 form-group  form-float">
-                                    <label for="drugLicenceValidity">
-                                        Drug Licence Validity
-                                    </label>
-                                    <input type="text" id="drugLicenceValidity" class="form-control drugLicenceValidity"
-                                           name="drugLicenceValidity" placeholder=" Drug Licence Validity"
-                                           required/>
-                                </div>
-
-                                <div class="col-lg-6 form-group  form-float">
-                                    <label for="drugLicenceValidity">
-                                        Food Licence Validity
-                                    </label>
-                                    <input type="text" id="foodLicenceValidity" class="form-control foodLicenceValidity"
-                                           name="foodLicenceValidity" placeholder="Food Licence Validity"
-                                           required/>
-                                </div>
-
-                                <div class="col-lg-6 form-group  form-float">
-                                    <label for="salesBalanceLimit">
-                                        Sales Balance Limit
-                                    </label>
-                                    <input type="number" id="salesBalanceLimit" class="form-control salesBalanceLimit"
-                                           name="salesBalanceLimit" placeholder="Sales Balance Limit"
-                                           required/>
-                                </div>
-
-                                <div class="col-lg-6 form-group  form-float">
-                                    <label for="noOfCrDays">
-                                        Number Of CR Days
-                                    </label>
-                                    <input type="number" id="noOfCrDays" class="form-control noOfCrDays"
-                                           name="noOfCrDays" placeholder=" Number Of CR Days"
-                                           required/>
-                                </div>
-
-                                <div class="col-lg-6 form-group  form-float">
-                                    <label for="noOfGraceDays">
-                                        Number Of Grace Days
-                                    </label>
-                                    <input type="number" id="noOfGraceDays" class="form-control noOfGraceDays"
-                                           name="noOfGraceDays" placeholder="Number Of Grace Days"
-                                           required/>
-                                </div>
-
-                                <div class="col-lg-6 form-group  form-float">
-                                    <label for="calculateOn">
-                                        Calculate On
-                                    </label>
-                                    <input type="text" id="calculateOn" class="form-control calculateOn"
-                                           name="calculateOn" placeholder="Number Of Grace Days"
-                                           required/>
+                                    <select class="form-control show-tick distributor" name="distributor" id="distributor">
+                                        <g:each var="d" in="${distributorList}">
+                                            <option value="${d.id}">${d.entityName}</option>
+                                        </g:each>
+                                    </select>
                                 </div>
 
 
                                 <div class="col-lg-6 form-group  form-float">
-                                    <label for="bankId">
-                                        Bank
+                                    <label for="product">
+                                        Product
                                     </label>
-                                    <select class="form-control show-tick bankId" name="bankId" id="bankId">
-                                        <g:each var="b" in="${bank}">
-                                            <option value="${b.id}">${b.bankName}</option>
+                                    <select class="form-control show-tick product" name="product" id="product">
+                                        <g:each var="p" in="${productList}">
+                                            <option value="${p.id}">${p.productName}</option>
                                         </g:each>
                                     </select>
                                 </div>
 
                                 <div class="col-lg-6 form-group  form-float">
-                                    <label for="accountNo">
-                                        Account Number
+                                    <label for="batch">
+                                        Batch
                                     </label>
-                                    <input type="text" id="accountNo" class="form-control accountNo"
-                                           name="accountNo" placeholder="Account Number"
-                                           required/>
-                                </div>
-
-                                <div class="col-lg-6 form-group  form-float">
-                                    <label for="upiId">
-                                        UPI Id
-                                    </label>
-                                    <input type="text" id="upiId" class="form-control upiId"
-                                           name="upiId" placeholder="UPI Id"
-                                           required/>
-                                </div>
-
-                                <div class="col-lg-6 form-group  form-float">
-                                    <label for="openingBalance">
-                                        Opening Balance
-                                    </label>
-                                    <input type="number" id="openingBalance" class="form-control openingBalance"
-                                           name="openingBalance" placeholder="Opening Balance"
-                                           required/>
-                                </div>
-
-                                <div class="col-lg-6 form-group  form-float">
-                                    <label for="currentBalance">
-                                        Current Balance
-                                    </label>
-                                    <input type="number" id="currentBalance" class="form-control currentBalance"
-                                           name="currentBalance" placeholder="Current Balance"
-                                           required/>
-                                </div>
-
-
-                                <div class="col-lg-6 form-group  form-float">
-                                    <label for="discount">
-                                        Discount
-                                    </label>
-                                    <input type="number" id="discount" class="form-control discount"
-                                           name="discount" placeholder="Discount"
-                                           required/>
-                                </div>
-
-                                <div class="col-lg-6 form-group  form-float">
-                                    <label for="bankCommision">
-                                        Bank Commision
-                                    </label>
-                                    <input type="number" id="bankCommision" class="form-control bankCommision"
-                                           name="bankCommision" placeholder="Bank Commision"
-                                           required/>
-                                </div>
-
-                                <div class="col-lg-6 form-group  form-float">
-                                    <label for="transportTypeId">
-                                        Transport Type Id
-                                    </label>
-                                    <input type="number" id="transportTypeId" class="form-control transportTypeId"
-                                           name="transportTypeId" placeholder="Transport Type Id"
-                                           required/>
-                                </div>
-
-                                <div class="col-lg-6 form-group  form-float">
-                                    <label for="defaultCharge">
-                                        Default Charge
-                                    </label>
-                                    <input type="number" id="defaultCharge" class="form-control defaultCharge"
-                                           name="defaultCharge" placeholder="Default Charge"
-                                           required/>
-                                </div>
-
-                                <div class="col-lg-6 form-group  form-float">
-                                    <label for="careTaker">
-                                        Care Taker
-                                    </label>
-                                    <input type="number" id="careTaker" class="form-control careTaker"
-                                           name="careTaker" placeholder="Care Taker"
-                                           required/>
-                                </div>
-
-                                <div class="col-lg-6 form-group  form-float">
-                                    <label for="contact">
-                                        Contact
-                                    </label>
-                                    <input type="text" id="contact" class="form-control contact"
-                                           name="contact" placeholder="Contact"
-                                           required/>
-                                </div>
-
-                                <div class="col-lg-6 form-group  form-float">
-                                    <label for="terms">
-                                        Terms
-                                    </label>
-                                    <input type="text" id="terms" class="form-control terms"
-                                           name="terms" placeholder="Terms"
-                                           required/>
-                                </div>
-
-                                <div class="col-lg-6 form-group  form-float">
-                                    <label for="salesman">
-                                        Salesman
-                                    </label>
-                                    <select class="form-control show-tick salesman" name="salesman" id="salesman">
-                                        <g:each var="sales" in="${salesmanList}">
-                                            <option value="${sales.id}">${sales.userName}</option>
+                                    <select class="form-control show-tick batch" name="batch" id="batch">
+                                        <g:each var="p" in="${batchList}">
+                                            <option value="${p.id}">${p.batchNumber}</option>
                                         </g:each>
                                     </select>
                                 </div>
 
                                 <div class="col-lg-6 form-group  form-float">
-                                    <label for="manager">
-                                        Manager
+                                    <label for="slab1_min_qty">
+                                       Slab 1 Min Quantity
                                     </label>
-                                    <select class="form-control show-tick manager" name="manager" id="manager">
-                                        <g:each var="manager" in="${managerList}">
-                                            <option value="${manager.id}">${manager.userName}</option>
-                                        </g:each>
-                                    </select>
-                                </div>
-
-                                <div class="col-lg-6 form-group  form-float">
-                                    <label for="salesmanCommission">
-                                        Salesman Commission
-                                    </label>
-                                    <input type="text" id="salesmanCommission" class="form-control salesmanCommission"
-                                           name="salesmanCommission" placeholder="Salesman Commission"
+                                    <input type="text" id="slab1_min_qty" class="form-control slab1_min_qty"
+                                           name="slab1_min_qty" placeholder="Slab 1 Min Quantity"
                                            required/>
                                 </div>
 
                                 <div class="col-lg-6 form-group  form-float">
-                                    <label for="routeId">
-                                        Route
+                                    <label for="slab1_scheme_qty">
+                                        Slab 1 Scheme Quantity
                                     </label>
-                                    <select class="form-control show-tick routeId" name="routeId" id="routeId">
-                                        <g:each var="route" in="${routeregister}">
-                                            <option value="${route.id}">${route.routeName}</option>
-                                        </g:each>
-                                    </select>
-                                </div>
-
-                                <div class="col-lg-6 form-group  form-float">
-                                    <label for="accountId">
-                                        Account Id
-                                    </label>
-                                    <input type="text" id="accountId" class="form-control accountId"
-                                           name="accountId" placeholder="Account Id"
-                                           required/>
-                                </div>
-
-
-                                <div class="col-lg-6 form-group  form-float">
-                                    <label for="aadharId">
-                                        Aadhar Id
-                                    </label>
-                                    <input type="text" id="aadharId" class="form-control aadharId"
-                                           name="aadharId" placeholder="Aadhar Id"
-                                           required/>
-                                </div>
-
-
-                                <div class="col-lg-6 form-group  form-float">
-                                    <label for="companyCode">
-                                        Company Code
-                                    </label>
-                                    <input type="text" id="companyCode" class="form-control companyCode"
-                                           name="companyCode" placeholder="Company Code"
+                                    <input type="text" id="slab1_scheme_qty" class="form-control slab1_scheme_qty"
+                                           name="slab1_min_qty" placeholder="Slab 1 Scheme Quantity"
                                            required/>
                                 </div>
 
                                 <div class="col-lg-6 form-group  form-float">
-                                    <label for="faxNumber">
-                                        Fax Number
+                                    <label for="slab1_bulk_status">
+                                        Slab 1 Bulk Status
                                     </label>
-                                    <input type="text" id="faxNumber" class="form-control faxNumber"
-                                           name="faxNumber" placeholder="Fax Number"
-                                           required/>
-                                </div>
-
-
-                                <div class="col-lg-6 form-group  form-float">
-                                    <label for="repName">
-                                        Rep Name
-                                    </label>
-                                    <input type="text" id="repName" class="form-control repName"
-                                           name="repName" placeholder="Rep Name"
-                                           required/>
-                                </div>
-
-
-                                <div class="col-lg-6 form-group  form-float">
-                                    <label for="repPhoneNumber">
-                                        Rep Phone Number
-                                    </label>
-                                    <input type="text" id="repPhoneNumber" class="form-control repPhoneNumber"
-                                           name="repPhoneNumber" placeholder="Rep Phone Number"
+                                    <input type="text" id="slab1_bulk_status" class="form-control slab1_bulk_status"
+                                           name="slab1_min_qty" placeholder=" Slab 1 bulk Status"
                                            required/>
                                 </div>
 
                                 <div class="col-lg-6 form-group  form-float">
-                                    <label for="password">
-                                        Password
+                                    <label for="slab1_status">
+                                        Slab 1 Status
                                     </label>
-                                    <input type="password" id="password" class="form-control password"
-                                           name="password" placeholder="Password"
+                                    <input type="text" id="slab1_status" class="form-control slab1_status"
+                                           name="slab1_min_qty" placeholder="Slab 1 Status"
                                            required/>
                                 </div>
 
                                 <div class="col-lg-6 form-group  form-float">
-                                    <label for="zoneId">
-                                        Zone
+                                    <label for="slab2_min_qty">
+                                        Slab 2 Min Quantity
                                     </label>
-                                    <select class="form-control show-tick zoneId" name="zoneId" id="zoneId">
-                                        <g:each var="zone" in="${zoneList}">
-                                            <option value="${zone.id}">${zone.name}</option>
-                                        </g:each>
-                                    </select>
+                                    <input type="text" id="slab2_min_qty" class="form-control slab2_min_qty"
+                                           name="slab2_min_qty" placeholder="Slab 2 Min Quantity"
+                                           required/>
                                 </div>
 
                                 <div class="col-lg-6 form-group  form-float">
-                                    <label for="contactDob">
-                                        Contact Dob
+                                    <label for="slab2_scheme_qty">
+                                        Slab 2 Scheme Quantity
                                     </label>
-                                    <input type="text" id="contactDob" class="form-control contactDob"
-                                           name="contactDob" placeholder="Contact Dob"
+                                    <input type="text" id="slab2_scheme_qty" class="form-control slab2_scheme_qty"
+                                           name="slab2_scheme_qty" placeholder="Slab 2 Scheme Quantity"
+                                           required/>
+                                </div>
+
+                                <div class="col-lg-6 form-group  form-float">
+                                    <label for="slab2_bulk_status">
+                                        Slab 2 Bulk Status
+                                    </label>
+                                    <input type="text" id="slab2_bulk_status" class="form-control slab2_bulk_status"
+                                           name="slab2_bulk_status" placeholder="Slab 2 Bulk Status"
+                                           required/>
+                                </div>
+
+                                <div class="col-lg-6 form-group  form-float">
+                                    <label for="slab2_status">
+                                        Slab 2 Status
+                                    </label>
+                                    <input type="text" id="slab2_status" class="form-control slab2_status"
+                                           name="slab2_status" placeholder="Slab 2 Status"
+                                           required/>
+                                </div>
+
+                                <div class="col-lg-6 form-group  form-float">
+                                    <label for="slab3_min_qty">
+                                        Slab 3 Min Quantity
+                                    </label>
+                                    <input type="text" id="slab3_min_qty" class="form-control slab3_min_qty"
+                                           name="slab2_min_qty" placeholder="Slab 3 Min Quantity"
+                                           required/>
+                                </div>
+
+                                <div class="col-lg-6 form-group  form-float">
+                                    <label for="slab3_scheme_qty">
+                                        Slab 3 Scheme Quantity
+                                    </label>
+                                    <input type="text" id="slab3_scheme_qty" class="form-control slab3_scheme_qty"
+                                           name="slab3_scheme_qty" placeholder="Slab 3 Scheme Quantity"
+                                           required/>
+                                </div>
+
+                                <div class="col-lg-6 form-group  form-float">
+                                    <label for="slab3_bulk_status">
+                                        Slab 3 Bulk Status
+                                    </label>
+                                    <input type="text" id="slab3_bulk_status" class="form-control slab3_bulk_status"
+                                           name="slab3_bulk_status" placeholder="Slab 3 Bulk Status"
+                                           required/>
+                                </div>
+
+                                <div class="col-lg-6 form-group  form-float">
+                                    <label for="slab3_status">
+                                        Slab 3 Status
+                                    </label>
+                                    <input type="text" id="slab3_status" class="form-control slab3_status"
+                                           name="slab3_status" placeholder="Slab 3 Status"
+                                           required/>
+                                </div>
+
+                                <div class="col-lg-6 form-group  form-float">
+                                    <label for="slab_validity_from">
+                                       Slab Validity From
+                                    </label>
+                                    <input type="text" id="slab_validity_from" class="form-control slab_validity_from date"
+                                           name="slab_validity_from" placeholder="Slab Validity From"
+                                           required/>
+                                </div>
+
+                                <div class="col-lg-6 form-group  form-float">
+                                    <label for="slab_validity_to">
+                                        Slab Validity to
+                                    </label>
+                                    <input type="text" id="slab_validity_to" class="form-control slab_validity_to date"
+                                           name="slab_validity_to" placeholder=" Slab Validity to"
+                                           required/>
+                                </div>
+
+                                <div class="col-lg-6 form-group  form-float">
+                                    <label for="special_discount">
+                                        Special Discount
+                                    </label>
+                                    <input type="text" id="special_discount" class="form-control special_discount"
+                                           name="special_discount" placeholder="Special Discount"
+                                           required/>
+                                </div>
+
+                                <div class="col-lg-6 form-group  form-float">
+                                    <label for="special_discount_valid_from">
+                                        Special Discount Valid From
+                                    </label>
+                                    <input type="text" id="special_discount_valid_from"
+                                           class="form-control special_discount_valid_from date"
+                                           name="special_discount_valid_from" placeholder="Special Discount"
+                                           required/>
+                                </div>
+
+                                <div class="col-lg-6 form-group  form-float">
+                                    <label for="special_discount_valid_to">
+                                        Special Discount Valid to
+                                    </label>
+                                    <input type="text" id="special_discount_valid_to"
+                                           class="form-control special_discount_valid_to date"
+                                           name="special_discount_valid_to" placeholder="Special Discount Valid to"
+                                           required/>
+                                </div>
+
+                                <div class="col-lg-6 form-group  form-float">
+                                    <label for="special_rate">
+                                        Special Rate
+                                    </label>
+                                    <input type="text" id="special_rate"
+                                           class="form-control special_rate"
+                                           name="special_rate" placeholder="Special Rate"
+                                           required/>
+                                </div>
+
+                                <div class="col-lg-6 form-group  form-float">
+                                    <label for="special_rate_valid_from">
+                                        Special Rate Valid From
+                                    </label>
+                                    <input type="text" id="special_rate_valid_from"
+                                           class="form-control special_rate_valid_from date"
+                                           name="special_rate_valid_from" placeholder="Special Rate Valid From"
+                                           required/>
+                                </div>
+
+                                <div class="col-lg-6 form-group  form-float">
+                                    <label for="special_rate_valid_to">
+                                        Special Rate Valid to
+                                    </label>
+                                    <input type="text" id="special_rate_valid_to"
+                                           class="form-control special_rate_valid_to date"
+                                           name="special_rate_valid_from" placeholder="Special Rate Valid to"
                                            required/>
                                 </div>
                                 <input type="hidden" name="status" value="1">
@@ -607,7 +382,7 @@
 
     $(function () {
         //Datetimepicker plugin
-        $('.contactDob').bootstrapMaterialDatePicker({
+        $('.date').bootstrapMaterialDatePicker({
             format: 'DD/MM/YYYY',
             clearButton: true,
             time: false,

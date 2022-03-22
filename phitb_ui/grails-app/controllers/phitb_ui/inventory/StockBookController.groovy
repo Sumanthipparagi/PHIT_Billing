@@ -490,6 +490,21 @@ class StockBookController {
         }
     }
 
+    def stockPurchase()
+    {
+        def batch = params.batch
+        def purqty = params.sqty
+        def apiResponse = new InventoryService().stocksPurchase(batch,purqty)
+        if (apiResponse?.status == 200)
+        {
+            JSONObject jsonObject = new JSONObject(apiResponse.readEntity(String.class))
+            respond jsonObject,formats: ['json'],status: 200
+        }
+        else
+        {
+            return null
+        }
 
+    }
 
 }

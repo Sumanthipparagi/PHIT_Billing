@@ -259,14 +259,30 @@ class SaleEntryController {
         JSONObject customer = new EntityService().getEntityById(saleBillDetail.get("customerId").toString())
         JSONObject entity = new EntityService().getEntityById(session.getAttribute("entityId").toString())
         JSONObject city = new SystemService().getCityById(entity.get('cityId').toString())
+        JSONObject custcity = new SystemService().getCityById(customer.get('cityId').toString())
+        JSONObject termsConditions = new EntityService().getTermsContionsByEntity(session.getAttribute("entityId")
+                .toString())
         saleProductDetails.each{
             def apiResponse = new SalesService().getRequestWithId(it.productId.toString(),new Links().PRODUCT_REGISTER_SHOW)
             it.put("productId",JSON.parse(apiResponse.readEntity(String.class)) as JSONObject)
         }
+        def invoiceNumber;
+        def datepart = saleBillDetail.entryDate.split("T")[0];
+        def month = datepart.split("-")[1];
+        def year = datepart.split("-")[0];
+        def seriesCode = "__";
+        if(saleBillDetail.billStatus == "DRAFT")
+        {
+            invoiceNumber = "DR/S/"+ month + year + "/" + series.seriesCode + "/__";
+        }
+        else {
+            invoiceNumber = "S/"+month+year+"/"+series.seriesCode+"/"+saleBillDetail.id
+        }
         render(view: "/sales/sale-invoice", model: [saleBillDetail: saleBillDetail,
                                                     saleProductDetails:saleProductDetails,
                                                     series:series, entity:entity,customer:customer,city:city,
-                                                    total:saleProductDetails.amount.sum()])
+                                                    total:saleProductDetails.amount.sum(),custcity:custcity,
+                                                    invoiceNumber:invoiceNumber,termsConditions:termsConditions])
     }
 
     def show()

@@ -218,9 +218,10 @@ class StockBookController {
         try
         {
             StockBook stockBook = StockBook.findByBatchNumber(params.batch)
-            stockBook.remainingQty = stockBook.getRemainingQty() + params.purQty
+            def remQty = stockBook.getRemainingQty()
+            stockBook.remainingQty = remQty + Long.parseLong(params.purQty)
             stockBook.isUpdatable = true
-            StockBook savedStockBook = stockBook.save()
+            StockBook savedStockBook = stockBook.save(flush:true)
             if (savedStockBook)
             {
                 respond savedStockBook

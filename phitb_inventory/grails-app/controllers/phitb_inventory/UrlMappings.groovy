@@ -32,6 +32,7 @@ class UrlMappings {
             "/stockbook/purchase/batch/$batch/qty/$purQty(.$format)?"(controller: 'stockBook') {
                 action = [GET:'stockPurchase'] }
 
+
             //Temp Stock Book
             "/tempstockbook(.$format)?"(controller: 'tempStockBook') { action = [GET: 'index', POST: 'save'] }
             "/tempstockbook/user/$id(.$format)?"(controller: 'tempStockBook') { action = [GET: 'getByUserId'] }
