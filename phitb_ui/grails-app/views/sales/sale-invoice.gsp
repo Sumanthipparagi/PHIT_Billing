@@ -194,7 +194,7 @@
             <td></td>
             <td>${sp.sqty}</td>
             <td>${sp.freeQty}</td>
-            <td>${String.format("%.1f", sp.amount - sp.cgstAmount - sp.sgstAmount - sp.igstAmount)}</td>
+            <td>${String.format("%.2f", sp.amount - sp.cgstAmount - sp.sgstAmount - sp.igstAmount)}</td>
             <td>${sp.discount}</td>
             <td>${sp.cgstAmount}<br>${String.format("%.2f", sp.cgstAmount / sp.amount * 100)}</td>
             <td>${sp.sgstAmount}<br>${String.format("%.2f", sp.sgstAmount / sp.amount * 100)}</td>
