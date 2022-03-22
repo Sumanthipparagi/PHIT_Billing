@@ -159,7 +159,6 @@
     </tr>
 
 </table>
-
 <table style="width:1308px;table-layout: auto;">
     <tr>
         <th>Material HSN Code</th>
@@ -180,7 +179,7 @@
         <th>Amount/IGST%</th>
         <th>Net Amount</th>
     </tr>
-<g:each var="sp" in="${saleProductDetails}">
+<g:each var="sp" in="${purchaseProductDetails}">
     <tr>
         <td>${sp.productId.hsnCode}</td>
         <td><b>${sp.productId.productName}</b></td>
@@ -295,50 +294,8 @@
     window.onload = function () {
         var d = new Date().toLocaleTimeString();
         document.getElementById("date").innerHTML = d;
-        var invDate = new Date('${saleBillDetail.entryDate}')
+        var invDate = new Date('${purchaseBillDetail.entryDate}')
         $("#invDate").text(moment(invDate).format('DD-MM-YYYY'));
-
-        $.ajax({
-            type: 'GET',
-            url: '/getallsettledbycustomer/' + ,
-            dataType: 'json',
-            success: function (data) {
-                var trHTML = '';
-                var trHTML1 = '';
-                trHTML += '';
-                trHTML1 += '';
-                var invoice = "INVS";
-                var cred = "CRNT";
-                var inv = data[0].map(data => data.balance).reduce((acc, amount) => acc + amount, 0);
-                var crnt = data[1].map(data => data.totalExpense).reduce((acc, amount) => acc + amount, 0)
-                var total_bal_s = inv - crnt
-                $('.total_bal_s').text(parseFloat(total_bal_s).toFixed(2));
-                $('.tba').val(total_bal_s.toFixed(2));
-                $('.amountPaid').val(total_bal_s.toFixed(2));
-                $.each(data[0], function (key, value) {
-                    trHTML +=
-                        '<tr id="' + "IN"+value.id + '"><td>' + invoice +
-                        '</td><td>' + value.financialYear +
-                        '</td><td>' + moment(value.dateCreated).format('DD-MM-YYYY') +
-                        '</td><td>' + value.balance +
-                        '</td><td><button type="button" data-id="' + value.id + '"  data-custId="' + value.customerId + '"  class="btn-sm btn-primary" id="unsettled">-></button></td></tr>';
-                });
-                $.each(data[1], function (key, value) {
-                    trHTML +=
-                        '<tr id="' + "CR"+value.id + '"><td>' + cred +
-                        '</td><td>' + value.financialYear +
-                        '</td><td>' + moment(value.dateCreated).format('DD-MM-YYYY') +
-                        '</td><td>' + "-"+value.totalExpense +
-                        '</td><td><button type="button" data-id="' + value.id +
-                        '"  data-custId="' + value.referenceId +
-                        '" class="btn-sm btn-primary" id="cnunsettled">-></button></td></tr>';
-                });
-                $('.settledVocher').html(trHTML+trHTML1);
-            },
-            error: function () {
-                swal("Error!", "Something went wrong", "error");
-            }
-        });
 
 
     }
