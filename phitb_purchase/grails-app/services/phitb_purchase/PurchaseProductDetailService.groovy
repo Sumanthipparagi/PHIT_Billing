@@ -207,4 +207,24 @@ class PurchaseProductDetailService {
             throw new BadRequestException()
         }
     }
+
+    def getBySaleBill(String id)
+    {
+        if (id)
+        {
+            ArrayList<PurchaseProductDetail> purchaseProductDetails = PurchaseProductDetail.findAllByBillId(Long.parseLong(id))
+            if (purchaseProductDetails)
+            {
+                return purchaseProductDetails
+            }
+            else
+            {
+                throw new ResourceNotFoundException()
+            }
+        }
+        else
+        {
+            throw new BadRequestException()
+        }
+    }
 }

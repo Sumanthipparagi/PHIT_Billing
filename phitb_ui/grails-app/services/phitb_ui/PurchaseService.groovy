@@ -2,6 +2,7 @@ package phitb_ui
 
 import grails.gorm.transactions.Transactional
 import grails.web.servlet.mvc.GrailsHttpSession
+import org.grails.web.json.JSONArray
 import org.grails.web.json.JSONObject
 import org.grails.web.util.WebUtils
 
@@ -103,6 +104,50 @@ class PurchaseService {
         {
             System.err.println('Service :saveStateMaster , action :  save  , Ex:' + ex)
             log.error('Service :saveStateMaster , action :  save  , Ex:' + ex)
+        }
+    }
+
+    def getPurchaseBillDetailsById(String id) {
+        Client client = ClientBuilder.newClient();
+        WebTarget target = client.target(new Links().API_GATEWAY);
+        try {
+            Response apiResponse = target
+                    .path(new Links().PURCHASE_BILL_SHOW+"/"+id)
+                    .request(MediaType.APPLICATION_JSON_TYPE)
+                    .get()
+            if(apiResponse.status == 200)
+            {
+                JSONObject purchaseBillDetail = new JSONObject(apiResponse.readEntity(String.class))
+                return purchaseBillDetail
+            }
+            else
+                return null
+        }
+        catch (Exception ex) {
+            System.err.println('Service :PurchaseService , action :  getProducts  , Ex:' + ex)
+            log.error('Service :PurchaseService , action :  getProducts  , Ex:' + ex)
+        }
+    }
+
+    def getPurchaseProductDetailsByBill(String id) {
+        Client client = ClientBuilder.newClient();
+        WebTarget target = client.target(new Links().API_GATEWAY);
+        try {
+            Response apiResponse = target
+                    .path(new Links().PURCHASE_PRODUCT_OF_BILL+"/"+id)
+                    .request(MediaType.APPLICATION_JSON_TYPE)
+                    .get()
+            if(apiResponse.status == 200)
+            {
+                JSONArray saleProductDetail = new JSONArray(apiResponse.readEntity(String.class))
+                return saleProductDetail
+            }
+            else
+                return null
+        }
+        catch (Exception ex) {
+            System.err.println('Service :PurchaseService , action :  getProducts  , Ex:' + ex)
+            log.error('Service :PurchaseService , action :  getProducts  , Ex:' + ex)
         }
     }
 

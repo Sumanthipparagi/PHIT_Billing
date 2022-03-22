@@ -34,6 +34,8 @@ class UrlMappings {
             "/productdetail(.$format)?"(controller: 'purchaseProductDetail') { action = [GET: 'index', POST: 'save'] }
             "/productdetail/datatable(.$format)?"(controller: 'purchaseProductDetail') { action = [GET: 'dataTable'] }
             "/productdetail/$id(.$format)?"(controller: 'purchaseProductDetail') { action = [GET: 'show', PUT: 'update', DELETE: 'delete'] }
+            "/productdetail/bill/$id(.$format)?"(controller: 'purchaseProductDetail') { action = [GET: 'getPurchaseProductDetailsOfSaleBill'] }
+
 
             //Purchase Return Detail
             "/returndetail(.$format)?"(controller: 'purchaseReturnDetail') { action = [GET: 'index', POST: 'save'] }

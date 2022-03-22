@@ -265,7 +265,8 @@ class SaleEntryController {
         }
         render(view: "/sales/sale-invoice", model: [saleBillDetail: saleBillDetail,
                                                     saleProductDetails:saleProductDetails,
-                                                    series:series, entity:entity,customer:customer,city:city])
+                                                    series:series, entity:entity,customer:customer,city:city,
+                                                    total:saleProductDetails.amount.sum()])
     }
 
     def show()

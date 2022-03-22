@@ -772,7 +772,7 @@
             alert("Can't change this now, invoice has been saved already.")
     }
 
-    var saleBillId = 0;
+    var purchasebillid = 0;
     function saveSaleInvoice(billStatus)
     {
         var waitingSwal = Swal.fire({
@@ -817,6 +817,7 @@
                 billStatus: billStatus
             },
             success: function (data) {
+                console.log(data)
                 readOnly = true;
                 var rowData = hot.getData();
                 for(var j = 0; j < rowData.length;j++) {
@@ -824,12 +825,12 @@
                         hot.setCellMeta(j, i,'readOnly', true);
                     }
                 }
-                saleBillId = data.saleBillDetail.id;
-                var datepart = data.saleBillDetail.entryDate.split("T")[0];
+                purchasebillid = data.purchaseBillDetail.id;
+                var datepart = data.purchaseBillDetail.entryDate.split("T")[0];
                 var month = datepart.split("-")[1];
                 var year = datepart.split("-")[0];
                 var seriesCode = data.series.seriesCode;
-                var invoiceNumber = "S/"+month+year+"/"+seriesCode+"/"+data.saleBillDetail.serBillId;
+                var invoiceNumber = "P/"+month+year+"/"+seriesCode+"/"+data.purchaseBillDetail.serBillId;
                 var message = "";
                 if(billStatus !== "DRAFT") {
                     message = 'Sale Invoice Generated: '+ invoiceNumber;
@@ -871,7 +872,7 @@
     {
         if(readOnly) {
             window.open(
-                'sale-entry/print-invoice?id=' + saleBillId,
+                'purchase-entry/print-invoice?id=' + purchasebillid,
                 '_blank'
             );
         }

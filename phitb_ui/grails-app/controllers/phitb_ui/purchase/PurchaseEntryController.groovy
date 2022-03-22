@@ -1,10 +1,12 @@
 package phitb_ui.purchase
 
+import grails.converters.JSON
 import org.grails.web.json.JSONArray
 import org.grails.web.json.JSONObject
 import phitb_ui.Constants
 import phitb_ui.EntityService
 import phitb_ui.InventoryService
+import phitb_ui.Links
 import phitb_ui.ProductService
 import phitb_ui.PurchaseService
 import phitb_ui.SalesService
@@ -220,9 +222,7 @@ class PurchaseEntryController {
 
             //save to sale transaction log
             //save to sale transportation details
-
         }
-
         String entryDate = sdf.format(new Date())
         String orderDate = sdf.format(new Date())
         //save to sale bill details
@@ -306,42 +306,36 @@ class PurchaseEntryController {
                     println("Product Detail Failed")
                 }
             }
-            JSONObject responseJson = new JSONObject()
-            responseJson.put("series", series)
-            responseJson.put("purchaseBillDetail", purchaseBillDetail)
-            respond responseJson, formats: ['json'],status: 200
-
-//            //update stockbook
-//            for (JSONObject sale : purchaseData) {
-//                String stockRowId = sale.get("15")
-//                def tmpStockBook = new InventoryService().getStockBookById(Long.parseLong(stockRowId))
-//                def stockBook = new InventoryService().getStockBookById(Long.parseLong(tmpStockBook.originalId))
-//                stockBook.put("remainingQty", tmpStockBook.get("remainingQty"))
-//                stockBook.put("remainingFreeQty", tmpStockBook.get("remainingFreeQty"))
-//                stockBook.put("remainingReplQty", tmpStockBook.get("remainingReplQty"))
-//                String expDate = stockBook.get("expDate").toString().split("T")[0]
-//                String purcDate = stockBook.get("purcDate").toString().split("T")[0]
-//                String manufacturingDate = stockBook.get("manufacturingDate").toString().split("T")[0]
-//                SimpleDateFormat sdf1 = new SimpleDateFormat("yyyy-MM-dd")
-//                expDate = sdf1.parse(expDate).format("dd/MM/yyyy")
-//                purcDate = sdf1.parse(purcDate).format("dd/MM/yyyy")
-//                manufacturingDate = sdf1.parse(manufacturingDate).format("dd/MM/yyyy")
-//                stockBook.put("expDate", expDate)
-//                stockBook.put("purcDate", purcDate)
-//                stockBook.put("manufacturingDate", manufacturingDate)
-//                def apiRes = new InventoryService().updateStockBook(stockBook)
-//                if(apiRes.status == 200) {
-//                    //clear tempstockbook
-//                    apiRes = new InventoryService().deleteTempStock(stockRowId)
-//                    if(apiRes.status == 200) {
-//                        JSONObject responseJson = new JSONObject()
-//                        responseJson.put("series", series)
-//                        responseJson.put("purchaseBillDetail", purchaseBillDetail)
-//                        respond responseJson, formats: ['json']
-//                    }
-//                }
-//            }
-//            response.status == 400
+            //update stockbook
+            for (JSONObject sale : purchaseData) {
+                String stockRowId = sale.get("15")
+                def stockBook = new InventoryService().getStockBookById(Long.parseLong(stockRowId))
+                stockBook.put("remainingQty", stockBook.get("remainingQty"))
+                stockBook.put("remainingFreeQty", stockBook.get("remainingFreeQty"))
+                stockBook.put("remainingReplQty", stockBook.get("remainingReplQty"))
+                String expDate = stockBook.get("expDate").toString().split("T")[0]
+                String purcDate = stockBook.get("purcDate").toString().split("T")[0]
+                String manufacturingDate = stockBook.get("manufacturingDate").toString().split("T")[0]
+                SimpleDateFormat sdf1 = new SimpleDateFormat("yyyy-MM-dd")
+                expDate = sdf1.parse(expDate).format("dd/MM/yyyy")
+                purcDate = sdf1.parse(purcDate).format("dd/MM/yyyy")
+                manufacturingDate = sdf1.parse(manufacturingDate).format("dd/MM/yyyy")
+                stockBook.put("expDate", expDate)
+                stockBook.put("purcDate", purcDate)
+                stockBook.put("manufacturingDate", manufacturingDate)
+                def apiRes = new InventoryService().updateStockBook(stockBook)
+                if(apiRes.status == 200) {
+                    //clear tempstockbook
+                    apiRes = new InventoryService().deleteStockBook(stockRowId)
+                    if(apiRes.status == 200) {
+                        JSONObject responseJson = new JSONObject()
+                        responseJson.put("series", series)
+                        responseJson.put("purchaseBillDetail", purchaseBillDetail)
+                        respond responseJson, formats: ['json']
+                    }
+                }
+            }
+            response.status == 400
         }
         else
         {
@@ -349,6 +343,26 @@ class PurchaseEntryController {
         }
     }
 
+
+    def printPurchaseEntry()
+    {
+        String purchaseBillId = params.id
+        JSONObject purchaseBillDetail = new PurchaseService().getPurchaseBillDetailsById(purchaseBillId)
+        JSONArray purchaseProductDetails = new PurchaseService().getPurchaseProductDetailsByBill(purchaseBillId)
+        JSONObject series = new EntityService().getSeriesById(purchaseBillDetail.get("seriesId").toString())
+        JSONObject customer = new EntityService().getEntityById(purchaseBillDetail.get("supplierId").toString())
+        JSONObject entity = new EntityService().getEntityById(session.getAttribute("entityId").toString())
+        JSONObject city = new SystemService().getCityById(entity.get('cityId').toString())
+        purchaseProductDetails.each{
+            def apiResponse = new SalesService().getRequestWithId(it.productId.toString(),new Links().PRODUCT_REGISTER_SHOW)
+            it.put("productId", JSON.parse(apiResponse.readEntity(String.class)) as JSONObject)
+        }
+        println(purchaseProductDetails)
+        render(view: "/purchase/purchaseEntry/purchase-entry", model: [saleBillDetail: purchaseBillDetail,
+                                                    saleProductDetails:purchaseBillDetail,
+                                                    series:series, entity:entity,customer:customer,city:city,
+                                                    total:purchaseProductDetails.amount.sum()])
+    }
 
     def purchaseReturn()
     {
