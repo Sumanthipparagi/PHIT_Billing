@@ -6,12 +6,10 @@ import org.grails.web.json.JSONObject
 import phitb_accounts.Exception.BadRequestException
 import phitb_accounts.Exception.ResourceNotFoundException
 
-import java.text.SimpleDateFormat
 
 @Transactional
 class GeneralLedgerService {
 
-    SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss")
 
     def getAll(String limit, String offset, String query) {
 
