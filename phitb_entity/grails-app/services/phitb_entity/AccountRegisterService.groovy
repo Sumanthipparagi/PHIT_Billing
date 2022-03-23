@@ -129,4 +129,9 @@ class AccountRegisterService {
             throw new BadRequestException()
         }
     }
+
+    ArrayList<AccountRegister> getAllByEntity(String id) {
+        EntityRegister entityRegister = EntityRegister.findById(Long.parseLong(id))
+        return AccountRegister.findAllByEntity(entityRegister)
+    }
 }

@@ -1812,7 +1812,6 @@ class EntityService {
     {
         Client client = ClientBuilder.newClient()
         WebTarget target = client.target(new Links().API_GATEWAY)
-
         try
         {
             println(jsonObject)
@@ -1843,6 +1842,31 @@ class EntityService {
         catch (Exception ex) {
             System.err.println('Service :EntityService , action :  getAccountById  , Ex:' + ex)
             log.error('Service :EntityService , action :  getAccountById  , Ex:' + ex)
+        }
+    }
+
+    def getAllAccountByEntity(String id)
+    {
+        Client client = ClientBuilder.newClient()
+        WebTarget target = client.target(new Links().API_GATEWAY)
+        try {
+            Response apiResponse = target
+                    .path(new Links().ACCOUNT_REGISTER_BY_ENTITY + "/"+id)
+                    .request(MediaType.APPLICATION_JSON_TYPE)
+                    .get()
+            if(apiResponse.status == 200)
+            {
+                JSONArray jsonArray = new JSONArray(apiResponse.readEntity(String.class))
+                return jsonArray
+            }
+            else
+            {
+                return null
+            }
+        }
+        catch (Exception ex) {
+            System.err.println('Service :EntityService , action :  getAllAccountByEntity  , Ex:' + ex)
+            log.error('Service :EntityService , action :  getAllAccountByEntity  , Ex:' + ex)
         }
     }
 

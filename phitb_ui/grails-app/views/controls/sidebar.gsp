@@ -574,8 +574,8 @@
                         class="zmdi zmdi-apps"></i><span>Accounts</span> <span
                         class="badge badge-success float-right"></span></a>
                     <ul class="ml-menu">
-                        <li><a href="#">Credit JV</a></li>
-                        <li><a href="#">Debit JV</a></li>
+                        <li><a href="/credit-jv">Credit JV</a></li>
+                        <li><a href="/debit-jv">Debit JV</a></li>
                         <li><a href="javascript:void(0);" class="menu-toggle">Receipt</span> <span
                                 class="badge badge-success float-right"></span></a>
                             <ul class="ml-menu">

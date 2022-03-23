@@ -306,9 +306,20 @@ class EntityRegisterService {
 
     def getAllByAffiliateId(String limit, String offset, long affiliateId) {
         try {
-            Integer o = offset ? Integer.parseInt(offset.toString()) : 0
-            Integer l = limit ? Integer.parseInt(limit.toString()) : 100
-            return EntityRegister.findAllByAffiliateId(affiliateId, [sort: 'id', max: l, offset: o, order: 'desc'])
+/*            Integer o = offset ? Integer.parseInt(offset.toString()) : 0
+            Integer l = limit ? Integer.parseInt(limit.toString()) : 100*/
+            //return EntityRegister.findAllByAffiliateId(affiliateId, [sort: 'id', max: l, offset: o, order: 'desc'])
+
+            return EntityRegister.createCriteria().list(){
+               or{
+                   eq("affiliateId", affiliateId)
+                   eq("parentEntity", affiliateId)
+               }
+                order("entityName", "asc")
+            }
+
+            //ArrayList<EntityRegister> entityRegisters = EntityRegister.findAllByAffiliateId(affiliateId, [sort: 'entityName', order: 'asc'])
+
         }
         catch (Exception ex)
         {

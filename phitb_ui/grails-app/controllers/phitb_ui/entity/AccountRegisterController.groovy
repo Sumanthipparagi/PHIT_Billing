@@ -68,6 +68,11 @@ class AccountRegisterController {
         try
         {
             JSONObject jsonObject = new JSONObject(params)
+            jsonObject.put("generalId", "1")
+            jsonObject.put("accountStatus", "1")
+            jsonObject.put("responsibleUserId", session.getAttribute("userId"))
+            jsonObject.put("entityType", session.getAttribute("entityTypeId"))
+            jsonObject.put("entity", session.getAttribute("entityId"))
             def apiResponse = new EntityService().saveAccountRegister(jsonObject)
             if (apiResponse?.status == 200)
             {
@@ -88,14 +93,9 @@ class AccountRegisterController {
     }
 
     def index() {
-        ArrayList<String> account = new AccountRegisterController().getAllAccounts()
-        def map = [:]
-        account.each {val ->
-            map['text'] = val.accountName
-            map['nodes'] = val.accountName
-        }
+        JSONArray accountList = new EntityService().getAllAccountByEntity(session.getAttribute("entityId").toString())
         ArrayList<String> accountMode = new AccountModeController().show() as ArrayList<String>
         ArrayList<String> entity = new EntityRegisterController().show() as ArrayList<String>
-        render(view: '/entity/accountRegister/accounts',model: [account:account,accountMode:accountMode,entity:entity])
+        render(view: '/entity/accountRegister/accounts',model: [account:accountList,accountMode:accountMode,entity:entity])
     }
 }

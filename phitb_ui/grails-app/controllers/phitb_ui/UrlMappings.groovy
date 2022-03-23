@@ -249,7 +249,9 @@ class UrlMappings {
         "/service-type/datatable"(controller: "serviceType", action: "dataTable")
         "/service-type/update/$id"(controller:"serviceType",action:"update")
         "/service-type/delete/$id"(controller: "serviceType",action:"delete")
-
+        /*<-------------------------------------------Accounts------------------------------------------------->*/
+        "/credit-jv"(controller: "creditJv",action:"index")
+        "/debit-jv"(controller: "debitJv",action:"index")
         /*<-------------------------------------------Product------------------------------------------------->*/
 //      Product Register
         "/product"(controller: "product") {
@@ -390,8 +392,8 @@ class UrlMappings {
         }
 
         "/credit-debit-settlement"(controller: "saleEntry",action:"crdDebS")
-        "/debit-jv"(controller: "saleEntry",action:"DebJV")
-        "/credit-jv"(controller: "saleEntry",action:"credJV")
+        "/debit-jv-print"(controller: "saleEntry",action:"DebJV")
+        "/credit-jv-print"(controller: "saleEntry",action:"credJV")
         "/goods-sales-recipt"(controller: "saleEntry",action:"goodsSalesRecipt")
         "/payment-vocher"(controller: "saleEntry",action:"paymentVocher")
 

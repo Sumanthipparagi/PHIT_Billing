@@ -111,11 +111,12 @@ public class Links
 
     //Account Register
     public static String ACCOUNT_REGISTER_SHOW = "api/v1.0/entity/accountregister";
-    public static String ACCOUNT_REGISTER_SAVE = "api/v1.0/entity/entityregister";
-    public static String ACCOUNT_REGISTER_DATATABLE = "api/v1.0/entity/entityregister/datatable";
-    public static String ACCOUNT_REGISTER_UPDATE = "api/v1.0/entity/entityregister/{id}";
-    public static String ACCOUNT_REGISTER_DELETE = "api/v1.0/entity/entityregister/{id}";
-    public static String ACCOUNT_REGISTER_AFFILIATE = "api/v1.0/entity/entityregister/affiliate";
+    public static String ACCOUNT_REGISTER_SAVE = "api/v1.0/entity/accountregister";
+    public static String ACCOUNT_REGISTER_DATATABLE = "api/v1.0/entity/accountregister/datatable";
+    public static String ACCOUNT_REGISTER_UPDATE = "api/v1.0/entity/accountregister/{id}";
+    public static String ACCOUNT_REGISTER_DELETE = "api/v1.0/entity/accountregister/{id}";
+    public static String ACCOUNT_REGISTER_AFFILIATE = "api/v1.0/entity/accountregister/affiliate";
+    public static String ACCOUNT_REGISTER_BY_ENTITY = "api/v1.0/entity/accountregister/entity";
 
     //User Register
     public static String USER_REGISTER_SHOW = "api/v1.0/entity/userregister";

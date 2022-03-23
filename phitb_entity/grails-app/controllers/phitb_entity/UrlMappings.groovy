@@ -30,6 +30,9 @@ class UrlMappings
                 action = [GET: 'show', PUT: 'update', DELETE:
                         'delete']
             }
+            "/accountregister/entity/$id(.$format)?"(controller: 'accountRegister') {
+                action = [GET: 'getByAccountsByEntity']
+            }
 
 
             //Auth register
