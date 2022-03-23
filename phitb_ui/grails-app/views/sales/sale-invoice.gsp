@@ -305,6 +305,7 @@
         var expDate = new Date('${spd.expiryDate}')
         $("#expDate${spd.id}").text(moment(expDate).format('MMM-YY').toUpperCase());
         </g:each>
+        window.print()
     }
 </script>
 </html>
