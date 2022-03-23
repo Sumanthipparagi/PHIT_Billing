@@ -380,6 +380,12 @@ public class Links
     public static String BANK_REGISTER_DELETE = "api/v1.0/accounts/bankregister/{id}";
 
 
+    //GL
+    public static String GENERAL_LEDGER_SHOW = "api/v1.0/accounts/generalledger";
+    public static String GENERAL_LEDGER_SAVE = "api/v1.0/accounts/generalledger";
+    public static String GENERAL_LEDGER_DATATABLE = "api/v1.0/accounts/generalledger/datatable";
+    public static String GENERAL_LEDGER_UPDATE = "api/v1.0/accounts/generalledger/{id}";
+
     //Accounts
     public static String RECIPT_DETAIL = "api/v1.0/accounts/receiptdetails";
     public static String RECIPT_DETAIL_SAVE = "api/v1.0/accounts/receiptdetails";

@@ -13,12 +13,21 @@ public class Constants
     //public String API_GATEWAY = "http://172.16.17.143:81/";
     public String API_GATEWAY = "http://localhost/";
 
-    public static  String ROLE_SALESMAN = "SALESMAN";
-    public static  String ROLE_MANAGER = "MANAGER";
-    public static  String ENTITY_CUSTOMER = "CUSTOMER";
-    public static  String ENTITY_MANUFACTURER = "MANUFACTURER";
-    public static  String ENTITY_COMPANY = "COMPANY";
-    public static  String ENTITY_DISTRIBUTOR = "DISTRIBUTOR";
+    public static String ROLE_SALESMAN = "SALESMAN";
+    public static String ROLE_MANAGER = "MANAGER";
+    public static String ENTITY_CUSTOMER = "CUSTOMER";
+    public static String ENTITY_MANUFACTURER = "MANUFACTURER";
+    public static String ENTITY_COMPANY = "COMPANY";
+    public static String ENTITY_DISTRIBUTOR = "DISTRIBUTOR";
+
+    public static String DOCTYPE_SALE_INVOICE = "SLINV";
+    public static String DOCTYPE_PURCHASE_INVOICE = "PRINV";
+    public static String DOCTYPE_SALE_RETURN = "SR";
+    public static String DOCTYPE_PURCHASE_RETURN = "PR";
+    public static String DOCTYPE_PURCHASE_ORDER = "PO";
+    public static String DOCTYPE_SALE_ORDER = "SO";
+    public static String DOCTYPE_CREDITJV = "CRJV";
+    public static String DOCTYPE_DEBITJV = "DBJV";
 
 
 
