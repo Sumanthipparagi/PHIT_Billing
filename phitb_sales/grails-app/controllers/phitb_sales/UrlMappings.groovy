@@ -206,6 +206,17 @@ class UrlMappings {
                         'save']
             }
 
+
+            //Sale return details
+            "/salereturndetails(.$format)?"(controller:'tempUserLog') {
+                action = [GET: 'index', POST: 'save']
+            }
+            "/salereturndetails/$id(.$format)?"(controller:'tempUserLog') {
+                action = [GET: 'show', PUT: 'update', DELETE:
+                        'delete']
+            }
+
+
             //Temp User Log
             "/tempuserlog(.$format)?"(controller:'tempUserLog') {
                 action = [GET: 'index', POST: 'save']

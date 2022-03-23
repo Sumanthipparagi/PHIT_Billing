@@ -1,7 +1,6 @@
 package phitb_ui.sales
 
 import grails.converters.JSON
-import groovy.json.JsonSlurper
 import org.grails.web.json.JSONArray
 import org.grails.web.json.JSONObject
 import phitb_ui.EntityService
@@ -12,7 +11,6 @@ import phitb_ui.SystemService
 import phitb_ui.entity.EntityRegisterController
 import phitb_ui.entity.SeriesController
 import phitb_ui.ProductService
-import phitb_ui.product.ProductController
 
 import javax.ws.rs.core.Response
 import java.text.SimpleDateFormat
@@ -322,7 +320,7 @@ class SaleEntryController {
     }
 
     def saleRetrun() {
-        render(view: '/sales/saleReturn')
+        render(view: '/sales/saleRetrun/sale-return-print')
     }
 
     def crdDebS() {

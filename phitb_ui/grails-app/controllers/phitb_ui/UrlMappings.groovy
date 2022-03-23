@@ -366,11 +366,15 @@ class UrlMappings {
 
         /*<-------------------------------------------Sales------------------------------------------------->*/
 
+//        My Invoices
         "/sale-bill-list"(controller: "salebillDetails", action: 'saleBillList')
         "/sale-bill/datatable"(controller: "salebillDetails", action: 'dataTable')
 
 
-
+//        Sale Retrun
+        "/sale-return"(controller: "saleRetrun") {
+            action = [GET: "index", POST: 'saveSaleRetrun']
+        }
 
         //Sale Entry
         "/sale-entry"(controller: "saleEntry") {
@@ -384,7 +388,7 @@ class UrlMappings {
 //        Scheme Entry
         "/scheme-entry" (controller: "schemeEntry", action: "index")
         "/scheme-entry/datatable" (controller: "schemeEntry", action: "dataTable")
-        "/sale-return"(controller: "saleEntry",action:"saleRetrun")
+//        "/sale-return"(controller: "saleEntry",action:"saleRetrun")
         "/add-scheme-entry"(controller: "schemeEntry") {
             action = [GET: "addScheme", POST: 'saveScheme']
         }
