@@ -261,6 +261,8 @@ class SaleEntryController {
         JSONObject city = new SystemService().getCityById(entity.get('cityId').toString())
         JSONObject custcity = new SystemService().getCityById(customer.get('cityId').toString())
         JSONArray termsConditions = new EntityService().getTermsContionsByEntity(session.getAttribute("entityId").toString())
+        /*JSONObject term = new JSONObject()
+        term.put("termsConditions", termsConditions);*/
         saleProductDetails.each{
             def apiResponse = new SalesService().getRequestWithId(it.productId.toString(),new Links().PRODUCT_REGISTER_SHOW)
             it.put("productId",JSON.parse(apiResponse.readEntity(String.class)) as JSONObject)
@@ -277,18 +279,11 @@ class SaleEntryController {
         else {
             invoiceNumber = "S/"+month+year+"/"+series.seriesCode+"/"+saleBillDetail.id
         }
-
-        def totalcgst = saleProductDetails.cgstAmount.sum()
-        def totalsgst = saleProductDetails.sgstAmount.sum()
-        def totaligst = saleProductDetails.igstAmount.sum()
-        def totaldiscount = saleProductDetails.discount.sum()
-       render(view: "/sales/sale-invoice", model: [saleBillDetail: saleBillDetail,
+        render(view: "/sales/sale-invoice", model: [saleBillDetail: saleBillDetail,
                                                     saleProductDetails:saleProductDetails,
                                                     series:series, entity:entity,customer:customer,city:city,
-                                                    total:saleProductDetails.amount.sum(),custcity:custcity,
-                                                    invoiceNumber:invoiceNumber,termsConditions:termsConditions,
-                                                     totalcgst:totalcgst,totalsgst:totalsgst,totaligst:totaligst,
-                                                   totaldiscount:totaldiscount])
+                                                    total:saleProductDetails?.amount?.sum(),custcity:custcity,
+                                                    invoiceNumber:invoiceNumber,termsConditions:termsConditions])
     }
 
     def show()
