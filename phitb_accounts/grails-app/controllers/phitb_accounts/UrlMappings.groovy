@@ -25,6 +25,12 @@ class UrlMappings {
             "/bankregister/$id(.$format)?"(controller: 'bankRegister') { action = [GET: 'show', PUT: 'update', DELETE: 'delete'] }
             "/bankregisterbyentity/$id(.$format)?"(controller: 'bankRegister') { action = [GET: 'getByEntityId'] }
 
+            //bank register
+            "/generalledger(.$format)?"(controller: 'generalLedger') { action = [GET: 'index', POST: 'save'] }
+            "/generalledger/datatable(.$format)?"(controller: 'generalLedger') { action = [GET: 'dataTable'] }
+            "/generalledger/$id(.$format)?"(controller: 'generalLedger') { action = [GET: 'show', PUT: 'update', DELETE: 'delete'] }
+            "/generalledgerbyentity/$id(.$format)?"(controller: 'generalLedger') { action = [GET: 'getByEntityId'] }
+
             //bill payment log
             "/billpaymentlog(.$format)?"(controller: 'billPaymentLog') { action = [GET: 'index', POST: 'save'] }
             "/billpaymentlog/datatable(.$format)?"(controller: 'billPaymentLog') { action = [GET: 'dataTable'] }
