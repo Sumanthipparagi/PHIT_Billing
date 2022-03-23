@@ -321,25 +321,121 @@ class SalesService {
         }
     }
 
-    def saveGeneralScheme(JSONObject jsonObject)
+    def saveScheme(JSONObject jsonObject)
+    {
+        Client client = ClientBuilder.newClient()
+        WebTarget target = client.target(new Links().API_GATEWAY)
+        try
+        {
+            Response apiResponse = target
+                    .path(new Links().SALE_SCHEME_SAVE)
+                    .request(MediaType.APPLICATION_JSON_TYPE)
+                    .post(Entity.entity(jsonObject.toString(),MediaType.APPLICATION_JSON_TYPE))
+            return apiResponse
+        }
+        catch (Exception ex)
+        {
+            System.err.println('Service :SaleService , action :  saveEntity  , Ex:' + ex)
+            log.error('Service :SaleService , action :  saveEntity  , Ex:' + ex)
+        }
+    }
+
+
+    /**
+     *
+     * @param jsonObject
+     * @return
+     */
+    def showScheme(JSONObject jsonObject)
+    {
+        Client client = ClientBuilder.newClient();
+        WebTarget target = client.target(new Links().API_GATEWAY);
+
+        try
+        {
+            Response apiResponse = target
+                    .path(new Links().SALE_SCHEME_DATATABLE)
+                    .queryParam("params", URLEncoder.encode(jsonObject.toString(), "UTF-8"))
+                    .request(MediaType.APPLICATION_JSON_TYPE)
+                    .get()
+            return apiResponse
+        }
+        catch (Exception ex)
+        {
+            System.err.println('Service :getAccountModes , action :  show  , Ex:' + ex)
+            log.error('Service :getAccountModes , action :  show  , Ex:' + ex)
+        }
+    }
+
+
+    def putScheme(JSONObject jsonObject)
     {
         Client client = ClientBuilder.newClient()
         WebTarget target = client.target(new Links().API_GATEWAY)
 
         try
         {
-            println(jsonObject)
             Response apiResponse = target
-                    .path(new Links().ENTITY_REGISTER_SAVE)
+                    .path(new Links().SALE_SCHEME_UPDATE)
+                    .resolveTemplate("id", jsonObject.id)
                     .request(MediaType.APPLICATION_JSON_TYPE)
-                    .post(Entity.entity(jsonObject.toString(),MediaType.APPLICATION_JSON_TYPE))
-            println(apiResponse)
+                    .put(Entity.entity(jsonObject.toString(),MediaType.APPLICATION_JSON_TYPE))
+            println(jsonObject)
             return apiResponse
         }
         catch (Exception ex)
         {
-            System.err.println('Service :EntityService , action :  saveEntity  , Ex:' + ex)
-            log.error('Service :EntityService , action :  saveEntity  , Ex:' + ex)
+            System.err.println('Service : , action :  putEntity  , Ex:' + ex)
+            log.error('Service :EntityService , action :  putEntity  , Ex:' + ex)
         }
     }
+
+    /**
+     *
+     * @param jsonObject
+     * @return
+     */
+    def deleteScheme(JSONObject jsonObject)
+    {
+        Client client = ClientBuilder.newClient()
+        WebTarget target = client.target(new Links().API_GATEWAY)
+
+        try
+        {
+            Response apiResponse = target
+                    .path(new Links().SALE_SCHEME_DELETE)
+                    .resolveTemplate("id", jsonObject.id)
+                    .request(MediaType.APPLICATION_JSON_TYPE)
+                    .delete()
+            return apiResponse
+        }
+        catch (Exception ex)
+        {
+            System.err.println('Service :EntityService , action :  deleteEntity  , Ex:' + ex)
+            log.error('Service :EntityService , action :  deleteEntity  , Ex:' + ex)
+        }
+    }
+
+    def getSchemeById(String id) {
+        Client client = ClientBuilder.newClient()
+        WebTarget target = client.target(new Links().API_GATEWAY)
+        try {
+            Response apiResponse = target
+                    .path(new Links().SALE_SCHEME_SHOW + "/"+id)
+                    .request(MediaType.APPLICATION_JSON_TYPE)
+                    .get()
+            if(apiResponse.status == 200)
+            {
+                JSONObject jsonObject = new JSONObject(apiResponse.readEntity(String.class))
+                return jsonObject
+            }
+            else
+                return null
+        }
+        catch (Exception ex) {
+            System.err.println('Service :EntityService , action :  getEntity  , Ex:' + ex)
+            log.error('Service :EntityService , action :  getEntity  , Ex:' + ex)
+        }
+    }
+
 }

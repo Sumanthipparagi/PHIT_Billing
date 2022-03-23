@@ -383,11 +383,16 @@ class UrlMappings {
 
 //        Scheme Entry
         "/scheme-entry" (controller: "schemeEntry", action: "index")
-        "/scheme-entry/datatable" (controller: "schemeEntry", action: "datatable")
+        "/scheme-entry/datatable" (controller: "schemeEntry", action: "dataTable")
         "/sale-return"(controller: "saleEntry",action:"saleRetrun")
-        "/genral-scheme-entry"(controller: "schemeEntry") {
-            action = [GET: "addGenralScheme", POST: 'saveGeneralScheme']
+        "/add-scheme-entry"(controller: "schemeEntry") {
+            action = [GET: "addScheme", POST: 'saveScheme']
         }
+        "/update-scheme-entry/$id"(controller: "schemeEntry") {
+            action = [GET: "updateScheme", POST: 'update']
+        }
+        "/scheme-entry/delete/$id"(controller: "schemeEntry",action:"delete")
+
 
         "/credit-debit-settlement"(controller: "saleEntry",action:"crdDebS")
         "/debit-jv"(controller: "saleEntry",action:"DebJV")

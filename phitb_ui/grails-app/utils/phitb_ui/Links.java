@@ -327,6 +327,13 @@ public class Links
     public static String SALE_BILL_RECENT = "api/v1.0/sales/salebilldetails/getrecent";
 
 
+    public static String SALE_SCHEME_UPDATE = "api/v1.0/sales/schemeconfiguration/{id}";
+    public static String SALE_SCHEME_DELETE = "api/v1.0/sales/schemeconfiguration/{id}";
+    public static String SALE_SCHEME_SAVE = "api/v1.0/sales/schemeconfiguration";
+    public static String SALE_SCHEME_SHOW = "api/v1.0/sales/schemeconfiguration";
+    public static String SALE_SCHEME_DATATABLE = "api/v1.0/sales/schemeconfiguration/datatable";
+
+
     public static String SALE_SCHEME_CONFIG_GET_PRODUCT_BATCH = "api/v1.0/sales/schemeconfiguration/product/$productId/batch/$batchNumber";
 
 

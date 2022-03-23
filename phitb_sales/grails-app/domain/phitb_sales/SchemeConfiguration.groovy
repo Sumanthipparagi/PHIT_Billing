@@ -25,9 +25,12 @@ class SchemeConfiguration implements Serializable, LogicalDelete<SchemeConfigura
     long slab3Status
     Date slabValidityFrom
     Date slabValidityTo
-    long specialRate
+    Double specialRate
     Date specialRateValidFrom
     Date specialRateValidTo
+    Double specialDiscount
+    Date specialDiscountValidFrom
+    Date specialDiscountValidTo
     String schemeStatus
     long syncStatus
     long entityTypeId

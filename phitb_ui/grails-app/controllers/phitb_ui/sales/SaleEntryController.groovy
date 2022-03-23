@@ -139,7 +139,6 @@ class SaleEntryController {
             //save to sale transportation details
 
         }
-
         String entryDate = sdf.format(new Date())
         String orderDate = sdf.format(new Date())
         //save to sale bill details
@@ -267,7 +266,6 @@ class SaleEntryController {
         } else {
             invoiceNumber = "S/" + month + year + "/" + series.seriesCode + "/" + saleBillDetail.id
         }
-
         def totalcgst = saleProductDetails.cgstAmount.sum()
         def totalsgst = saleProductDetails.sgstAmount.sum()
         def totaligst = saleProductDetails.igstAmount.sum()
