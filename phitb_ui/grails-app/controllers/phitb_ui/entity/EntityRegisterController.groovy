@@ -196,6 +196,9 @@ class EntityRegisterController
         try
         {
             JSONObject jsonObject = new JSONObject(params)
+            jsonObject.put("parentEntity", session.getAttribute("entityId"))
+            jsonObject.put("parentEntityType", session.getAttribute("entityTypeId"))
+
             def apiResponse = new EntityService().saveEntity(jsonObject)
             if (apiResponse?.status == 200)
             {
@@ -220,8 +223,9 @@ class EntityRegisterController
     {
         try
         {
-            println(params)
             JSONObject jsonObject = new JSONObject(params)
+            jsonObject.put("parentEntity", session.getAttribute("entityId"))
+            jsonObject.put("parentEntityType", session.getAttribute("entityTypeId"))
             def apiResponse = new EntityService().putEntity(jsonObject)
             if (apiResponse.status == 200)
             {

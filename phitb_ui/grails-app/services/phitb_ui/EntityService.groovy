@@ -20,7 +20,6 @@ class EntityService {
     {
         Client client = ClientBuilder.newClient()
         WebTarget target = client.target(new Links().API_GATEWAY)
-       
         try
         {
             println(jsonObject)

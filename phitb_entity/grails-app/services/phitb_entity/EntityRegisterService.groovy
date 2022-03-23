@@ -172,7 +172,9 @@ class EntityRegisterService {
         entityRegister.zoneId = Long.parseLong(jsonObject.get("zoneId").toString())
         entityRegister.contactDob = jsonObject.get("contactDob").toString()
         entityRegister.createdUser = Long.parseLong(jsonObject.get("createdUser").toString())
-        entityRegister.modifiedUser =Long.parseLong(jsonObject.get("modifiedUser").toString())
+        entityRegister.modifiedUser = Long.parseLong(jsonObject.get("modifiedUser").toString())
+        entityRegister.parentEntity = Long.parseLong(jsonObject.get("parentEntity").toString())
+        entityRegister.parentEntityType =Long.parseLong(jsonObject.get("parentEntityType").toString())
         entityRegister.save(flush: true)
         if (!entityRegister.hasErrors())
         {
@@ -246,6 +248,9 @@ class EntityRegisterService {
             entityRegister.contactDob = jsonObject.get("contactDob").toString()
             entityRegister.createdUser = Long.parseLong(jsonObject.get("createdUser").toString())
             entityRegister.modifiedUser =Long.parseLong(jsonObject.get("modifiedUser").toString())
+            //once created can't be changed to another parent entity
+            /*entityRegister.parentEntity = Long.parseLong(jsonObject.get("parentEntity").toString())
+            entityRegister.parentEntityType =Long.parseLong(jsonObject.get("parentEntityType").toString())*/
             entityRegister.save(flush: true)
             if (!entityRegister.hasErrors())
             {
