@@ -257,12 +257,12 @@ class CreditJvController {
      */
     def dataTable() {
         try {
-            String start = params.start
-            String length = params.length
-            String entityId = params.entityId
             GrailsParameterMap parameterMap = getParams()
             JSONObject paramsJsonObject = new JSONObject(parameterMap.params)
-            respond creditJvService.dataTables(paramsJsonObject, start, length, Long.parseLong(entityId))
+            String start = paramsJsonObject.get("start")
+            String length = paramsJsonObject.get("length")
+            String entityId = paramsJsonObject.get("entityId")
+            render creditJvService.dataTables(paramsJsonObject, start, length, Long.parseLong(entityId)) as JSON
         }
         catch (ResourceNotFoundException ex)
         {
@@ -276,6 +276,7 @@ class CreditJvController {
         }
         catch (Exception ex) {
             System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
+            response.status = 400
         }
     }
 

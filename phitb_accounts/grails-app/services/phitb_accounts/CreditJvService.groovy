@@ -105,7 +105,8 @@ class CreditJvService {
                     ilike('transactionId', '%' + searchTerm + '%')
                 }
             }
-            eq('approvedTime', null)
+
+           // isNull('approvedTime')
             eq('entityId', entityId)
             eq('deleted', false)
             order(orderColumn, orderDir)

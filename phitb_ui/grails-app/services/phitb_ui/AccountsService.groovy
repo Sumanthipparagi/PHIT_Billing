@@ -529,4 +529,30 @@ class AccountsService {
             log.error('Service :accountsService , action :  saveCreditJV  , Ex:' + ex)
         }
     }
+
+    /**
+     *
+     * @param jsonObject
+     * @return
+     */
+    def creditJVDatatables(JSONObject jsonObject)
+    {
+        Client client = ClientBuilder.newClient()
+        //WebTarget target = client.target(new Links().API_GATEWAY)
+        WebTarget target = client.target("http://localhost:8089")
+        try
+        {
+            Response apiResponse = target
+                    .path(new Links().CREDIT_DATATABLE)
+                    .queryParam("params", URLEncoder.encode(jsonObject.toString(), "UTF-8"))
+                    .request(MediaType.APPLICATION_JSON_TYPE)
+                    .get()
+            return apiResponse
+        }
+        catch (Exception ex)
+        {
+            System.err.println('Service :AccountsService , action :  creditJVDatatables  , Ex:' + ex)
+            log.error('Service :AccountsService , action :  creditJVDatatables  , Ex:' + ex)
+        }
+    }
 }

@@ -17,27 +17,23 @@ class CreditJvController {
         JSONArray reasons = new SalesService().getReasons()
         ArrayList<JSONObject> debitAccounts = new ArrayList<>()
         ArrayList<JSONObject> creditAccounts = new ArrayList<>()
-        if(accounts?.size()>0)
-        {
+        if (accounts?.size() > 0) {
             for (JSONObject json : accounts) {
-                if(json.get("showInDebit"))
-                {
+                if (json.get("showInDebit")) {
                     debitAccounts.add(json)
                 }
 
-                if(json.get("showInCredit"))
-                {
+                if (json.get("showInCredit")) {
                     creditAccounts.add(json)
                 }
 
             }
         }
-        render(view: "/accounts/creditJV/index", model: [debitAccounts:debitAccounts, reasons:reasons?.reverse(),
-                                                         creditAccounts:creditAccounts])
+        render(view: "/accounts/creditJV/index", model: [debitAccounts : debitAccounts, reasons: reasons?.reverse(),
+                                                         creditAccounts: creditAccounts])
     }
 
-    def saveCreditJv()
-    {
+    def saveCreditJv() {
         SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss")
         JSONObject jsonObject = new JSONObject(params)
         jsonObject.put("status", "1")
@@ -57,8 +53,35 @@ class CreditJvController {
         redirect(uri: "/credit-jv")
     }
 
-    def datatables()
-    {
+    def approval() {
+        render(view: "/accounts/creditJV/approve-creditjv")
+    }
 
+    //unapproved list
+    def dataTable() {
+        try {
+            JSONObject jsonObject = new JSONObject(params)
+            jsonObject.put("entityId", session.getAttribute("entityId").toString())
+            def apiResponse = new AccountsService().creditJVDatatables(jsonObject)
+            if (apiResponse.status == 200) {
+                JSONObject responseObject = new JSONObject(apiResponse.readEntity(String.class))
+                for (Object json : responseObject["data"]) {
+                    long toAccount = json.toAccount
+                    def account = new EntityService().getAllAccountById(toAccount.toString())
+                    responseObject["data"]["toAccount"] = account
+                    /*long debitAccount = json.debitAccount
+                    def account = new EntityService().getAllAccountById(debitAccount.toString())*/
+
+                }
+                respond responseObject, formats: ['json'], status: 200
+            } else {
+                response.status = 400
+            }
+        }
+        catch (Exception ex) {
+            System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
+            log.error('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
+            response.status = 400
+        }
     }
 }

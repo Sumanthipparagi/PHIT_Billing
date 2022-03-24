@@ -253,8 +253,13 @@ class UrlMappings {
         /*<-------------------------------------------Accounts------------------------------------------------->*/
         "/credit-jv"(controller: "creditJv",action:"index")
         "/credit-jv/save"(controller: "creditJv",action:"saveCreditJv")
+        "/credit-jv/approval"(controller: "creditJv",action:"approval")
+        "/credit-jv/approval-table"(controller: "creditJv",action:"dataTable")
         "/debit-jv"(controller: "debitJv",action:"index")
         "/debit-jv/save"(controller: "debitJv",action:"saveDebitJv")
+        "/debit-jv/approval"(controller: "debitJv",action:"approval")
+        "/debit-jv/approval-table"(controller: "debitJv",action:"dataTable")
+
         /*<-------------------------------------------Product------------------------------------------------->*/
 //      Product Register
         "/product"(controller: "product") {
