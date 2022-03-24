@@ -118,6 +118,14 @@ public class Links
     public static String ACCOUNT_REGISTER_AFFILIATE = "api/v1.0/entity/accountregister/affiliate";
     public static String ACCOUNT_REGISTER_BY_ENTITY = "api/v1.0/entity/accountregister/entity";
 
+    //Account Type
+    public static String ACCOUNT_TYPE_SAVE = "api/v1.0/system/accounttype";
+    public static String ACCOUNT_TYPE_SHOW = "api/v1.0/system/accounttype";
+    public static String ACCOUNT_TYPE_DATATABLE = "api/v1.0/system/accounttype/datatable";
+    public static String ACCOUNT_TYPE_UPDATE = "api/v1.0/system/accounttype/{id}";
+    public static String ACCOUNT_TYPE_DELETE = "api/v1.0/system/accounttype/{id}";
+    public static String ACCOUNT_TYPE_BY_ENTITY = "api/v1.0/system/accounttypebyentity";
+
     //User Register
     public static String USER_REGISTER_SHOW = "api/v1.0/entity/userregister";
     public static String USER_REGISTER_SAVE = "api/v1.0/entity/userregister";

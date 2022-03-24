@@ -82,6 +82,8 @@ class AccountRegisterService {
         accountRegister.entity = EntityRegister.findById(Long.parseLong(jsonObject.get("entity").toString()))
         accountRegister.modifiedUser = Long.parseLong(jsonObject.get("modifiedUser").toString())
         accountRegister.createdUser = Long.parseLong(jsonObject.get("createdUser").toString())
+        accountRegister.showInDebit = Boolean.parseBoolean(jsonObject.get("showInDebit").toString())
+        accountRegister.showInCredit = Boolean.parseBoolean(jsonObject.get("showInCredit").toString())
         accountRegister.save(flush: true)
         if (!accountRegister.hasErrors())
             return accountRegister
@@ -107,6 +109,8 @@ class AccountRegisterService {
             accountRegister.entity = EntityRegister.findById(Long.parseLong(jsonObject.get("entity").toString()))
             accountRegister.modifiedUser = Long.parseLong(jsonObject.get("modifiedUser").toString())
             accountRegister.createdUser = Long.parseLong(jsonObject.get("createdUser").toString())
+            accountRegister.showInDebit = Boolean.parseBoolean(jsonObject.get("showInDebit").toString())
+            accountRegister.showInCredit = Boolean.parseBoolean(jsonObject.get("showInCredit").toString())
             accountRegister.save(flush: true)
             if (!accountRegister.hasErrors())
                 return accountRegister

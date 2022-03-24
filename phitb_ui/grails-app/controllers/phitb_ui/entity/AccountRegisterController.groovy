@@ -5,6 +5,7 @@ import grails.converters.JSON
 import org.grails.web.json.JSONArray
 import org.grails.web.json.JSONObject
 import phitb_ui.EntityService
+import phitb_ui.SystemService
 import phitb_ui.system.AccountModeController
 import phitb_ui.system.ZoneController
 
@@ -94,8 +95,9 @@ class AccountRegisterController {
 
     def index() {
         JSONArray accountList = new EntityService().getAllAccountByEntity(session.getAttribute("entityId").toString())
+        JSONArray accountTypes = new SystemService().getAccountTypes()
         ArrayList<String> accountMode = new AccountModeController().show() as ArrayList<String>
         ArrayList<String> entity = new EntityRegisterController().show() as ArrayList<String>
-        render(view: '/entity/accountRegister/accounts',model: [account:accountList,accountMode:accountMode,entity:entity])
+        render(view: '/entity/accountRegister/accounts',model: [account:accountList,accountMode:accountMode,entity:entity, accountTypes: accountTypes])
     }
 }

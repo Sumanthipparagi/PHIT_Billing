@@ -16,8 +16,9 @@
     <asset:stylesheet  rel="stylesheet" src="/themeassets/css/main.css"/>
     <asset:stylesheet rel="stylesheet" href="/themeassets/css/color_skins.css"/>
     <asset:stylesheet rel="stylesheet" href="/themeassets/plugins/sweetalert/sweetalert.css"/>
-    <asset:stylesheet rel="stylesheet" href="/themeassets/plugins/multi-select/css/multi-select.css"/>
-    <asset:stylesheet  src="/themeassets/plugins/bootstrap-select/css/bootstrap-select.css" rel="stylesheet" />
+    <asset:stylesheet rel="stylesheet" href="/themeassets/plugins/select2/dist/css/select2.css"/>
+    <asset:stylesheet src="/themeassets/plugins/bootstrap-select/css/bootstrap-select.css" rel="stylesheet"/>
+    <link rel="stylesheet" media="screen" href="https://cdnjs.cloudflare.com/ajax/libs/select2/3.5.2/select2.min.css">
     <asset:stylesheet  src="/themeassets/js/pages/forms/basic-form-elements.js" rel="stylesheet" />
     <asset:stylesheet  src="/themeassets/plugins/bootstrap-material-datetimepicker/css/bootstrap-material-datetimepicker.css" rel="stylesheet" />
 
@@ -67,16 +68,22 @@
                             <div class="col-md-9">
                                 <div class="form-group">
                                     <label>Account</label>
-                                    <select class="account form-control">
-
+                                    <select id="account" class="form-control">
+                                        <g:each in="${accounts}" var="a">
+                                            <option value="${a.id}">${a.accountName}</option>
+                                        </g:each>
                                     </select>
                                     <label>Amount</label>
                                     <input class="account form-control"/>
                                     <label>Debit A/C</label>
-                                    <select class="account form-control">
-
+                                    <select id="debitAccount" class="form-control">
+                                        <g:each in="${accounts}" var="a">
+                                            <option value="${a.id}">${a.accountName}</option>
+                                        </g:each>
                                     </select>
                                 </div>
+                            </div>
+                            <div class="col-md-12">
                             </div>
                         </div>
                     </div>
@@ -108,10 +115,11 @@
 <asset:javascript src="/themeassets/plugins/momentjs/moment.js"/>
 <asset:javascript src="/themeassets/plugins/bootstrap-material-datetimepicker/js/bootstrap-material-datetimepicker.js"/>
 <asset:javascript src="/themeassets/js/pages/forms/basic-form-elements.js"/>
-<asset:javascript src="/themeassets/plugins/multi-select/js/jquery.multi-select.js" type="text/javascript"/>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/3.5.2/select2.js"></script>
 
 <script>
-
+$("#account").select2();
+$("#debitAccount").select2();
 
 
 </script>

@@ -687,7 +687,27 @@ class SystemService
         }
     }
 
-
-
+    def getAccountTypes(String entityId)
+    {
+        Client client = ClientBuilder.newClient()
+        WebTarget target = client.target(new Links().API_GATEWAY)
+        try {
+            Response apiResponse = target
+                    .path(new Links().ACCOUNT_TYPE_BY_ENTITY + "/"+entityId)
+                    .request(MediaType.APPLICATION_JSON_TYPE)
+                    .get()
+            if(apiResponse.status == 200)
+            {
+                JSONArray jsonArray = new JSONArray(apiResponse.readEntity(String.class))
+                return jsonArray
+            }
+            else
+                return null
+        }
+        catch (Exception ex) {
+            System.err.println('Service :SystemService , action :  getAccountTypes  , Ex:' + ex)
+            log.error('Service :SystemService , action :  getAccountTypes  , Ex:' + ex)
+        }
+    }
 
 }
