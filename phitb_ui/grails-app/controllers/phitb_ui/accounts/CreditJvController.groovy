@@ -56,4 +56,9 @@ class CreditJvController {
         def apiResponse = new AccountsService().saveCreditJV(jsonObject)
         redirect(uri: "/credit-jv")
     }
+
+    def datatables()
+    {
+
+    }
 }

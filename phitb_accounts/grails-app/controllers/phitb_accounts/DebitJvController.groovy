@@ -195,9 +195,10 @@ class DebitJvController {
         try {
             String start = params.start
             String length = params.length
+            String entityId = params.entityId
             GrailsParameterMap parameterMap = getParams()
             JSONObject paramsJsonObject = new JSONObject(parameterMap.params)
-            respond debitJvService.dataTables(paramsJsonObject, start, length)
+            respond debitJvService.dataTables(paramsJsonObject, start, length, Long.parseLong(entityId))
         }
         catch (ResourceNotFoundException ex)
         {

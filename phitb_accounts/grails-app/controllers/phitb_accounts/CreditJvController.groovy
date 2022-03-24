@@ -259,9 +259,10 @@ class CreditJvController {
         try {
             String start = params.start
             String length = params.length
+            String entityId = params.entityId
             GrailsParameterMap parameterMap = getParams()
             JSONObject paramsJsonObject = new JSONObject(parameterMap.params)
-            respond creditJvService.dataTables(paramsJsonObject, start, length)
+            respond creditJvService.dataTables(paramsJsonObject, start, length, Long.parseLong(entityId))
         }
         catch (ResourceNotFoundException ex)
         {

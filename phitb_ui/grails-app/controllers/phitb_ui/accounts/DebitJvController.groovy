@@ -31,7 +31,7 @@ class DebitJvController {
 
             }
         }
-        render(view: "/accounts/creditJV/index", model: [debitAccounts:debitAccounts, reasons:reasons?.reverse(),
+        render(view: "/accounts/debitJV/index", model: [debitAccounts:debitAccounts, reasons:reasons?.reverse(),
                                                          creditAccounts:creditAccounts])
     }
 

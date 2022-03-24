@@ -83,7 +83,7 @@ class CreditJvService {
         return CreditJv.findById(Long.parseLong(id))
     }
 
-    JSONObject dataTables(JSONObject paramsJsonObject, String start, String length) {
+    JSONObject dataTables(JSONObject paramsJsonObject, String start, String length, long entityId) {
         String searchTerm = paramsJsonObject.get("search[value]")
         String orderColumnId = paramsJsonObject.get("order[0][column]")
         String orderDir = paramsJsonObject.get("order[0][dir]")
@@ -91,11 +91,8 @@ class CreditJvService {
         String orderColumn = "id"
         switch (orderColumnId) {
             case '0':
-                orderColumn = "employeeId"
-                break;
-            case '1':
-                orderColumn = "transId"
-                break;
+                orderColumn = "id"
+                break
         }
 
         Integer offset = start ? Integer.parseInt(start.toString()) : 0
@@ -105,9 +102,11 @@ class CreditJvService {
         def creditJvArrayList = creditJvCriteria.list(max: max, offset: offset) {
             or {
                 if (searchTerm != "") {
-                    ilike('transId', '%' + searchTerm + '%')
+                    ilike('transactionId', '%' + searchTerm + '%')
                 }
             }
+            eq('approvedTime', null)
+            eq('entityId', entityId)
             eq('deleted', false)
             order(orderColumn, orderDir)
         }

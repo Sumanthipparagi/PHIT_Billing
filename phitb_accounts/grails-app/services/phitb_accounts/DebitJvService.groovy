@@ -56,7 +56,7 @@ class DebitJvService {
         return DebitJv.findById(Long.parseLong(id))
     }
 
-    JSONObject dataTables(JSONObject paramsJsonObject, String start, String length) {
+    JSONObject dataTables(JSONObject paramsJsonObject, String start, String length, long entityId) {
         String searchTerm = paramsJsonObject.get("search[value]")
         String orderColumnId = paramsJsonObject.get("order[0][column]")
         String orderDir = paramsJsonObject.get("order[0][dir]")
@@ -64,10 +64,10 @@ class DebitJvService {
         String orderColumn = "id"
         switch (orderColumnId) {
             case '0':
-                orderColumn = "employeeId"
+                orderColumn = "id"
                 break;
             case '1':
-                orderColumn = "transId"
+                orderColumn = "transactionId"
                 break;
         }
 
@@ -78,10 +78,12 @@ class DebitJvService {
         def debitJvArrayList = debitJvCriteria.list(max: max, offset: offset) {
             or {
                 if (searchTerm != "") {
-                    ilike('transId', '%' + searchTerm + '%')
+                    ilike('transactionId', '%' + searchTerm + '%')
                 }
             }
+            eq('approvedTime', null)
             eq('deleted', false)
+            eq('entityId', entityId)
             order(orderColumn, orderDir)
         }
 
