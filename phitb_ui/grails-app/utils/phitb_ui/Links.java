@@ -432,6 +432,9 @@ public class Links
     public static String CREDIT_DELETE = "api/v1.0/accounts/creditjv/{id}";
     public static String SET_CREDIT_STATUS = "api/v1.0/accounts/setcreditstatus/{id}/type/{type}";
 
+    //Debit
+    public static String DEBIT_SHOW = "api/v1.0/accounts/debitjv";
+    public static String DEBIT_SAVE = "api/v1.0/accounts/debitjv";
 
     /*<--------------------------------------------Purchase ------------------------------------------------->*/
     //purchase product details

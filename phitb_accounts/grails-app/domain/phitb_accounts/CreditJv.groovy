@@ -6,6 +6,7 @@ import gorm.logical.delete.LogicalDelete
 class CreditJv implements LogicalDelete<CreditJv> {
 
     long id
+    long finId //unique ID of the financial year
     long debitAccount
     long toAccount
     double amount

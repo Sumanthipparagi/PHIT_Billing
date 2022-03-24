@@ -96,8 +96,19 @@ class DebitJvService {
 
     DebitJv save(JSONObject jsonObject) {
         DebitJv debitJv = new DebitJv()
-        debitJv.transactionId = jsonObject.get("transactionId").toString() //TODO:
-        debitJv.financialYear = jsonObject.get("financialYear").toString()
+        long entityId = Long.parseLong(jsonObject.get("entityId").toString())
+        String financialYear = jsonObject.get("financialYear").toString()
+        long finId = 1
+        String transactionId = ""
+        DebitJv previousDJv = DebitJv.findByEntityIdAndFinancialYear(entityId, financialYear, [sort: 'id', order: 'desc', max: 1])
+        if(previousDJv)
+        {
+            finId = previousDJv.finId+1
+        }
+        transactionId = entityId + "/" + "DB" + "/" + finId
+
+        debitJv.transactionId = transactionId
+        debitJv.financialYear = financialYear
         debitJv.remarks = jsonObject.get("remarks").toString()
         debitJv.employeeId = Long.parseLong(jsonObject.get("employeeId").toString())
         debitJv.approverId = Long.parseLong(jsonObject.get("approverId").toString())
@@ -109,7 +120,7 @@ class DebitJvService {
         debitJv.status = Long.parseLong(jsonObject.get("status").toString())
         debitJv.syncStatus = Long.parseLong(jsonObject.get("syncStatus").toString())
         debitJv.entityTypeId = Long.parseLong(jsonObject.get("entityTypeId").toString())
-        debitJv.entityId = Long.parseLong(jsonObject.get("entityId").toString())
+        debitJv.entityId = entityId
         debitJv.modifiedUser = Long.parseLong(jsonObject.get("modifiedUser").toString())
         debitJv.createdUser = Long.parseLong(jsonObject.get("createdUser").toString())
         debitJv.save(flush: true)

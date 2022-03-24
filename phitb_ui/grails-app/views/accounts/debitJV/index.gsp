@@ -6,7 +6,7 @@
     <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
     <meta name="description" content="Responsive Bootstrap 4 and web Application ui kit.">
 
-    <title>:: PharmIt :: Credit JV</title>
+    <title>:: PharmIt :: Debit JV</title>
     <link rel="icon" type="image/x-icon" href="${assetPath(src: '/themeassets/images/favicon.ico')}"/>
     <!-- Favicon-->
     <asset:stylesheet rel="stylesheet" src="/themeassets/plugins/bootstrap/css/bootstrap.min.css"/>
@@ -50,7 +50,7 @@
                     <h2>Credit JV</h2>
                     <ul class="breadcrumb padding-0">
                         <li class="breadcrumb-item"><a href="index.html"><i class="zmdi zmdi-home"></i></a></li>
-                        <li class="breadcrumb-item active">Credit JV</li>
+                        <li class="breadcrumb-item active">Debit JV</li>
                     </ul>
                 </div>
 
@@ -74,62 +74,62 @@
                     </div>
 
                     <div class="body">
-                        <form id="creditJvForm" action="credit-jv/save" method="POST">
-                        <div class="row">
-                            <div class="col-md-12">
-                                <div class="form-group">
-                                    <label for="toAccount">Account</label>
-                                    <select id="toAccount" name="toAccount" class="form-control">
-                                        <g:each in="${creditAccounts}" var="a">
-                                            <option value="${a.id}">${a.accountName}</option>
-                                        </g:each>
-                                    </select>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="row">
-
-                            <div class="col-md-12">
-                                <div class="form-group">
-                                    <label>Amount</label>
-                                    <input name="amount" class="amount form-control"/>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="row">
-                            <div class="col-md-12">
-                                <div class="form-group">
-                                    <label>Debit A/C</label>
-                                    <select id="debitAccount" name="debitAccount" class="form-control">
-                                        <g:each in="${debitAccounts}" var="a">
-                                            <option value="${a.id}">${a.accountName}</option>
-                                        </g:each>
-                                    </select>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="row">
-                            <div class="col-md-6">
-                                <div class="form-group">
-                                    <label>Reason</label>
-                                    <select id="reason" name="reason" class="form-control">
-                                        <g:each in="${reasons}" var="a">
-                                            <option value="${a.id}">${a.reasonName}</option>
-                                        </g:each>
-                                    </select>
+                        <form id="creditJvForm" action="debit-jv/save" method="POST">
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="form-group">
+                                        <label for="fromAccount">Account</label>
+                                        <select id="fromAccount" name="fromAccount" class="form-control">
+                                            <g:each in="${debitAccounts}" var="a">
+                                                <option value="${a.id}">${a.accountName}</option>
+                                            </g:each>
+                                        </select>
+                                    </div>
                                 </div>
                             </div>
 
-                            <div class="col-md-6">
-                                <div class="form-group">
-                                    <label for="remarks">Remarks</label>
-                                    <textarea class="form-control" id="remarks" name="remarks"></textarea>
+                            <div class="row">
+
+                                <div class="col-md-12">
+                                    <div class="form-group">
+                                        <label>Amount</label>
+                                        <input name="amount" class="amount form-control"/>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
+
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="form-group">
+                                        <label>Credit A/C</label>
+                                        <select id="creditAccount" name="creditAccount" class="form-control">
+                                            <g:each in="${creditAccounts}" var="a">
+                                                <option value="${a.id}">${a.accountName}</option>
+                                            </g:each>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label>Reason</label>
+                                        <select id="reason" name="reason" class="form-control">
+                                            <g:each in="${reasons}" var="a">
+                                                <option value="${a.id}">${a.reasonName}</option>
+                                            </g:each>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="remarks">Remarks</label>
+                                        <textarea class="form-control" id="remarks" name="remarks"></textarea>
+                                    </div>
+                                </div>
+                            </div>
 
                             <div class="row">
                                 <div class="col-md-6">
@@ -170,8 +170,8 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/3.5.2/select2.js"></script>
 
 <script>
-    $("#toAccount").select2();
-    $("#debitAccount").select2();
+    $("#fromAccount").select2();
+    $("#creditAccount").select2();
 
 
 </script>

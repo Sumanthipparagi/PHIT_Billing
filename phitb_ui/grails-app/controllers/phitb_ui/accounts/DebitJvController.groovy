@@ -1,6 +1,5 @@
 package phitb_ui.accounts
 
-import grails.converters.JSON
 import org.grails.web.json.JSONArray
 import org.grails.web.json.JSONObject
 import phitb_ui.AccountsService
@@ -9,7 +8,7 @@ import phitb_ui.SalesService
 
 import java.text.SimpleDateFormat
 
-class CreditJvController {
+class DebitJvController {
 
     def index() {
         String entityId = session.getAttribute("entityId").toString()
@@ -36,7 +35,7 @@ class CreditJvController {
                                                          creditAccounts:creditAccounts])
     }
 
-    def saveCreditJv()
+    def saveDebitJv()
     {
         SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss")
         JSONObject jsonObject = new JSONObject(params)
@@ -53,7 +52,7 @@ class CreditJvController {
         jsonObject.put("approverId", session.getAttribute("userId"))
         jsonObject.put("amount", jsonObject.get("amount"))
 
-        def apiResponse = new AccountsService().saveCreditJV(jsonObject)
-        redirect(uri: "/credit-jv")
+        def apiResponse = new AccountsService().saveDebitJV(jsonObject)
+        redirect(uri: "/debit-jv")
     }
 }

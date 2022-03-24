@@ -122,9 +122,20 @@ class CreditJvService {
     }
 
     CreditJv save(JSONObject jsonObject) {
+        long entityId = Long.parseLong(jsonObject.get("entityId").toString())
+        String financialYear = jsonObject.get("financialYear").toString()
+        long finId = 1
+        String transactionId = ""
+        CreditJv previousCJv = CreditJv.findByEntityIdAndFinancialYear(entityId, financialYear, [sort: 'id', order: 'desc', max: 1])
+        if(previousCJv)
+        {
+            finId = previousCJv.finId+1
+        }
+        transactionId = entityId + "/" + "CR" + "/" + finId
         CreditJv creditJv = new CreditJv()
-        creditJv.transactionId = jsonObject.get("transactionId").toString() //TODO:
-        creditJv.financialYear = jsonObject.get("financialYear").toString()
+        creditJv.transactionId = transactionId
+        creditJv.financialYear = financialYear
+        creditJv.finId = finId
         creditJv.remarks = jsonObject.get("remarks").toString()
         creditJv.employeeId = Long.parseLong(jsonObject.get("employeeId").toString())
         creditJv.approverId = Long.parseLong(jsonObject.get("approverId").toString())
@@ -136,7 +147,7 @@ class CreditJvService {
         creditJv.status = Long.parseLong(jsonObject.get("status").toString())
         creditJv.syncStatus = Long.parseLong(jsonObject.get("syncStatus").toString())
         creditJv.entityTypeId = Long.parseLong(jsonObject.get("entityTypeId").toString())
-        creditJv.entityId = Long.parseLong(jsonObject.get("entityId").toString())
+        creditJv.entityId = entityId
         creditJv.modifiedUser = Long.parseLong(jsonObject.get("modifiedUser").toString())
         creditJv.createdUser = Long.parseLong(jsonObject.get("createdUser").toString())
         creditJv.save(flush: true)

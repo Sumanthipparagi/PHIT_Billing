@@ -249,10 +249,12 @@ class UrlMappings {
         "/service-type/datatable"(controller: "serviceType", action: "dataTable")
         "/service-type/update/$id"(controller:"serviceType",action:"update")
         "/service-type/delete/$id"(controller: "serviceType",action:"delete")
+
         /*<-------------------------------------------Accounts------------------------------------------------->*/
         "/credit-jv"(controller: "creditJv",action:"index")
         "/credit-jv/save"(controller: "creditJv",action:"saveCreditJv")
         "/debit-jv"(controller: "debitJv",action:"index")
+        "/debit-jv/save"(controller: "debitJv",action:"saveDebitJv")
         /*<-------------------------------------------Product------------------------------------------------->*/
 //      Product Register
         "/product"(controller: "product") {
