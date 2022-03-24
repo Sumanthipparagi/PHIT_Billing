@@ -324,6 +324,9 @@ public class Links
 
     /*<--------------------------------------------Sales------------------------------------------------->*/
     //Sale Bill Details
+    public static String GET_REASON = "api/v1.0/sales/reasonmaster";
+
+    //Sale Bill Details
     public static String SALE_BILL_SHOW = "api/v1.0/sales/salebilldetails";
     public static String SALE_BILL_SAVE = "api/v1.0/sales/salebilldetails";
     public static String SALE_BILL_DATATABLE = "api/v1.0/sales/salebilldetails/datatable";

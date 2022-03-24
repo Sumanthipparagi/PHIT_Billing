@@ -39,7 +39,7 @@ class SalesService {
     def getAllSettledBillsByCustomer(String id) {
         Client client = ClientBuilder.newClient();
         WebTarget target = client.target(new Links().API_GATEWAY);
-        GrailsHttpSession session = WebUtils.retrieveGrailsWebRequest().session
+
         try {
             Response apiResponse = target
                     .path(new Links().SALE_BILL_SETTLED+"/"+id)
@@ -217,7 +217,7 @@ class SalesService {
     def getSaleInvoiceById(String id) {
         Client client = ClientBuilder.newClient();
         WebTarget target = client.target(new Links().API_GATEWAY);
-        GrailsHttpSession session = WebUtils.retrieveGrailsWebRequest().session
+
         try {
 
             Response apiResponse = target
@@ -235,7 +235,7 @@ class SalesService {
     def getSaleInvoice(){
         Client client = ClientBuilder.newClient();
         WebTarget target = client.target(new Links().API_GATEWAY);
-        GrailsHttpSession session = WebUtils.retrieveGrailsWebRequest().session
+
         try {
 
             Response apiResponse = target
@@ -340,6 +340,28 @@ class SalesService {
         {
             System.err.println('Service :EntityService , action :  saveEntity  , Ex:' + ex)
             log.error('Service :EntityService , action :  saveEntity  , Ex:' + ex)
+        }
+    }
+
+    def getReasons() {
+        Client client = ClientBuilder.newClient();
+        WebTarget target = client.target(new Links().API_GATEWAY);
+        try {
+            Response apiResponse = target
+                    .path(new Links().GET_REASON)
+                    .request(MediaType.APPLICATION_JSON_TYPE)
+                    .get()
+            if(apiResponse.status == 200)
+            {
+                JSONArray jsonArray = new JSONArray(apiResponse.readEntity(String.class))
+                return jsonArray
+            }
+            else
+                return null
+        }
+        catch (Exception ex) {
+            System.err.println('Service :SalesService , action :  getReasons  , Ex:' + ex)
+            log.error('Service :SalesService , action :  getReasons  , Ex:' + ex)
         }
     }
 }

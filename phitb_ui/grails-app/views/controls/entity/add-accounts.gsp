@@ -8,7 +8,7 @@
                     <h4 class="addaccountsTitle"></h4>
                 </div>
 
-                <form id="form_validation" action="/account-register" method="post" role="form" class="addaccountsForm"
+                <form id="form_validation" action="/accounts" method="post" role="form" class="addaccountsForm"
                       enctype="multipart/form-data">
                     <div class="modal-body">
                         <div class="row">
@@ -81,8 +81,8 @@
                                     Account Type
                                 </label>
                                 <select id="AccountType" class="form-control AccountType"
-                                       name="accountType"
-                                       required>
+                                        name="accountType"
+                                        required>
                                     <g:each in="${accountTypes}" var="at">
                                         <option value="${at.id}">${at.accountType}</option>
                                     </g:each>
@@ -91,11 +91,24 @@
                         </div>
 
                         <div class="row">
-                            <div class="col-lg-6 form-group form-float">
-                                Show in Debit: <input type="checkbox" id="showInDebit" class="form-control showInDebit"
-                                       name="showInDebit"/>
-                                Show in Credit: <input type="checkbox" id="showInCredit" class="form-control showInCredit"
-                                       name="showInCredit"/>
+                            <div class="col-lg-6">
+                                <div class="row">
+                                    <div class="col-lg-6">
+                                        <div class="checkbox">
+                                            <label for="showInDebit">Show in Debit</label>
+                                            <input type="checkbox" id="showInDebit" class="showInDebit"
+                                                   name="showInDebit"/>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-lg-6">
+                                        <div class="checkbox">
+                                            <label for="showInCredit">Show in Credit</label>
+                                            <input type="checkbox" id="showInCredit" class="showInCredit"
+                                                   name="showInCredit"/>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                             <input type="hidden" id="entityTypeId" class="entityType" name="entityType">
                             <input type="hidden" name="createdUser" value="${session.getAttribute("userId")}">

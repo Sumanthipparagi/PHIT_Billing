@@ -13,22 +13,30 @@
     <!-- JQuery DataTable Css -->
     <asset:stylesheet rel="stylesheet" src="/themeassets/plugins/jquery-datatable/dataTables.bootstrap4.min.css"/>
     <!-- Custom Css -->
-    <asset:stylesheet  rel="stylesheet" src="/themeassets/css/main.css"/>
+    <asset:stylesheet rel="stylesheet" src="/themeassets/css/main.css"/>
     <asset:stylesheet rel="stylesheet" href="/themeassets/css/color_skins.css"/>
     <asset:stylesheet rel="stylesheet" href="/themeassets/plugins/sweetalert/sweetalert.css"/>
     <asset:stylesheet rel="stylesheet" href="/themeassets/plugins/select2/dist/css/select2.css"/>
     <asset:stylesheet src="/themeassets/plugins/bootstrap-select/css/bootstrap-select.css" rel="stylesheet"/>
     <link rel="stylesheet" media="screen" href="https://cdnjs.cloudflare.com/ajax/libs/select2/3.5.2/select2.min.css">
-    <asset:stylesheet  src="/themeassets/js/pages/forms/basic-form-elements.js" rel="stylesheet" />
-    <asset:stylesheet  src="/themeassets/plugins/bootstrap-material-datetimepicker/css/bootstrap-material-datetimepicker.css" rel="stylesheet" />
-
-
+    <asset:stylesheet src="/themeassets/js/pages/forms/basic-form-elements.js" rel="stylesheet"/>
+    <asset:stylesheet
+            src="/themeassets/plugins/bootstrap-material-datetimepicker/css/bootstrap-material-datetimepicker.css"
+            rel="stylesheet"/>
+    <style>
+    .form-control {
+        border-radius: 7px !important;
+    }
+    </style>
 </head>
+
 <body class="theme-black">
 <!-- Page Loader -->
 <div class="page-loader-wrapper">
     <div class="loader">
-        <div class="m-t-30"><img src="${assetPath(src: '/themeassets/images/logo.svg')}" width="48" height="48" alt="Alpino"></div>
+        <div class="m-t-30"><img src="${assetPath(src: '/themeassets/images/logo.svg')}" width="48" height="48"
+                                 alt="Alpino"></div>
+
         <p>Please wait...</p>
     </div>
 </div>
@@ -45,6 +53,7 @@
                         <li class="breadcrumb-item active">Credit JV</li>
                     </ul>
                 </div>
+
                 <div class="col-lg-7 col-md-7 col-sm-12">
                     <div class="input-group m-b-0">
                         <input type="text" class="form-control" placeholder="Search...">
@@ -63,29 +72,72 @@
                     <div class="header">
 
                     </div>
+
                     <div class="body">
+                        <form action="credit-jv/save" method="POST">
                         <div class="row">
-                            <div class="col-md-9">
+                            <div class="col-md-12">
                                 <div class="form-group">
-                                    <label>Account</label>
-                                    <select id="account" class="form-control">
-                                        <g:each in="${accounts}" var="a">
-                                            <option value="${a.id}">${a.accountName}</option>
-                                        </g:each>
-                                    </select>
-                                    <label>Amount</label>
-                                    <input class="account form-control"/>
-                                    <label>Debit A/C</label>
-                                    <select id="debitAccount" class="form-control">
-                                        <g:each in="${accounts}" var="a">
+                                    <label for="toAccount">Account</label>
+                                    <select id="toAccount" name="toAccount" class="form-control">
+                                        <g:each in="${creditAccounts}" var="a">
                                             <option value="${a.id}">${a.accountName}</option>
                                         </g:each>
                                     </select>
                                 </div>
                             </div>
+                        </div>
+
+                        <div class="row">
+
                             <div class="col-md-12">
+                                <div class="form-group">
+                                    <label>Amount</label>
+                                    <input name="amount" class="amount form-control"/>
+                                </div>
                             </div>
                         </div>
+
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label>Debit A/C</label>
+                                    <select id="debitAccount" name="debitAccount" class="form-control">
+                                        <g:each in="${debitAccounts}" var="a">
+                                            <option value="${a.id}">${a.accountName}</option>
+                                        </g:each>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label>Reason</label>
+                                    <select id="reason" name="reason" class="form-control">
+                                        <g:each in="${reasons}" var="a">
+                                            <option value="${a.id}">${a.reasonName}</option>
+                                        </g:each>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="remarks">Remarks</label>
+                                    <textarea class="form-control" id="remarks" name="remarks"></textarea>
+                                </div>
+                            </div>
+                        </div>
+
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <button class="btn btn-primary" type="submit">Save</button>
+                                </div>
+                            </div>
+                        </form>
+
                     </div>
                 </div>
             </div>
@@ -118,12 +170,11 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/3.5.2/select2.js"></script>
 
 <script>
-$("#account").select2();
-$("#debitAccount").select2();
+    $("#toAccount").select2();
+    $("#debitAccount").select2();
 
 
 </script>
-
 
 </body>
 </html>

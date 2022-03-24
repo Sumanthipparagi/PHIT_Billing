@@ -96,14 +96,16 @@ class DebitJvService {
 
     DebitJv save(JSONObject jsonObject) {
         DebitJv debitJv = new DebitJv()
-        debitJv.transId = jsonObject.get("transId").toString()
-        debitJv.employeeId = Long.parseLong(jsonObject.get("employeeId").toString())
-        debitJv.managerId = Long.parseLong(jsonObject.get("managerId").toString())
-        debitJv.totalExpense = Double.parseDouble(jsonObject.get("totalExpense").toString())
-        debitJv.transactionDate = sdf.parse(jsonObject.get("transactionDate").toString())
-        debitJv.referenceId = jsonObject.get("referenceId").toString()
-        debitJv.finalSubmissionDate = sdf.parse(jsonObject.get("finalSubmissionDate").toString())
+        debitJv.transactionId = jsonObject.get("transactionId").toString() //TODO:
         debitJv.financialYear = jsonObject.get("financialYear").toString()
+        debitJv.remarks = jsonObject.get("remarks").toString()
+        debitJv.employeeId = Long.parseLong(jsonObject.get("employeeId").toString())
+        debitJv.approverId = Long.parseLong(jsonObject.get("approverId").toString())
+        debitJv.amount = Double.parseDouble(jsonObject.get("amount").toString())
+        debitJv.fromAccount = Long.parseLong(jsonObject.get("fromAccount").toString())
+        debitJv.creditAccount = Long.parseLong(jsonObject.get("creditAccount").toString())
+        debitJv.reason = Long.parseLong(jsonObject.get("reason").toString())
+        debitJv.transactionDate = sdf.parse(jsonObject.get("transactionDate").toString())
         debitJv.status = Long.parseLong(jsonObject.get("status").toString())
         debitJv.syncStatus = Long.parseLong(jsonObject.get("syncStatus").toString())
         debitJv.entityTypeId = Long.parseLong(jsonObject.get("entityTypeId").toString())
@@ -123,14 +125,16 @@ class DebitJvService {
         DebitJv debitJv = DebitJv.findById(Long.parseLong(id))
         if (debitJv) {
             debitJv.isUpdatable = true
-            debitJv.transId = jsonObject.get("transId").toString()
-            debitJv.employeeId = Long.parseLong(jsonObject.get("employeeId").toString())
-            debitJv.managerId = Long.parseLong(jsonObject.get("managerId").toString())
-            debitJv.totalExpense = Double.parseDouble(jsonObject.get("totalExpense").toString())
-            debitJv.transactionDate = sdf.parse(jsonObject.get("transactionDate").toString())
-            debitJv.referenceId = jsonObject.get("referenceId").toString()
-            debitJv.finalSubmissionDate = sdf.parse(jsonObject.get("finalSubmissionDate").toString())
+            debitJv.transactionId = jsonObject.get("transactionId").toString() //TODO:
             debitJv.financialYear = jsonObject.get("financialYear").toString()
+            debitJv.remarks = jsonObject.get("remarks").toString()
+            debitJv.employeeId = Long.parseLong(jsonObject.get("employeeId").toString())
+            debitJv.approverId = Long.parseLong(jsonObject.get("approverId").toString())
+            debitJv.amount = Double.parseDouble(jsonObject.get("amount").toString())
+            debitJv.fromAccount = Long.parseLong(jsonObject.get("fromAccount").toString())
+            debitJv.creditAccount = Long.parseLong(jsonObject.get("creditAccount").toString())
+            debitJv.reason = Long.parseLong(jsonObject.get("reason").toString())
+            debitJv.transactionDate = sdf.parse(jsonObject.get("transactionDate").toString())
             debitJv.status = Long.parseLong(jsonObject.get("status").toString())
             debitJv.syncStatus = Long.parseLong(jsonObject.get("syncStatus").toString())
             debitJv.entityTypeId = Long.parseLong(jsonObject.get("entityTypeId").toString())
@@ -158,5 +162,23 @@ class DebitJvService {
         } else {
             throw new BadRequestException()
         }
+    }
+
+    def approveDebitJv(long id, long entityId, long approverId)
+    {
+        if(id && entityId)
+        {
+            DebitJv debitJv = DebitJv.findByIdAndEntityId(id,entityId)
+            if(debitJv)
+            {
+                debitJv.isUpdatable = true
+                debitJv.approvedTime = new Date()
+                debitJv.approverId = approverId
+                debitJv.save(flush:true)
+
+                return debitJv
+            }
+        }
+        return null
     }
 }

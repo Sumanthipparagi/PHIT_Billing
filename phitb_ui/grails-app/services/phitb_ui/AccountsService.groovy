@@ -484,4 +484,27 @@ class AccountsService {
         }
     }
 
+
+    //Credit JV
+    def saveCreditJV(JSONObject jsonObject)
+    {
+        Client client = ClientBuilder.newClient();
+        WebTarget target = client.target(new Links().API_GATEWAY);
+
+        try
+        {
+            println(jsonObject)
+            Response apiResponse = target
+                    .path(new Links().CREDIT_SAVE)
+                    .request(MediaType.APPLICATION_JSON_TYPE)
+                    .post(Entity.entity(jsonObject.toString(),MediaType.APPLICATION_JSON_TYPE))
+            println(apiResponse)
+            return apiResponse
+        }
+        catch (Exception ex)
+        {
+            System.err.println('Service :accountsService , action :  saveCreditJV  , Ex:' + ex)
+            log.error('Service :accountsService , action :  saveCreditJV  , Ex:' + ex)
+        }
+    }
 }

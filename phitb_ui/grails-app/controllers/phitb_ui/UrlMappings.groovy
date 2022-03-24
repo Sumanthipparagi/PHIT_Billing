@@ -185,9 +185,9 @@ class UrlMappings {
         "/accounts"(controller: "accountRegister") {
             action = [GET: 'index', POST: 'save']
         }
-        "/account-regitser/datatable"(controller: "accountRegister", action: 'dataTable')
-        "/account-regitser/update/$id"(controller:"accountRegister",action:"update")
-        "/account-regitser/delete/$id"(controller: "accountRegister",action:"delete")
+        "/accounts/datatable"(controller: "accountRegister", action: 'dataTable')
+        "/accounts/update/$id"(controller:"accountRegister",action:"update")
+        "/accounts/delete/$id"(controller: "accountRegister",action:"delete")
 
         //   Role
         "/role"(controller: "role") {
@@ -251,6 +251,7 @@ class UrlMappings {
         "/service-type/delete/$id"(controller: "serviceType",action:"delete")
         /*<-------------------------------------------Accounts------------------------------------------------->*/
         "/credit-jv"(controller: "creditJv",action:"index")
+        "/credit-jv/save"(controller: "creditJv",action:"saveCreditJv")
         "/debit-jv"(controller: "debitJv",action:"index")
         /*<-------------------------------------------Product------------------------------------------------->*/
 //      Product Register

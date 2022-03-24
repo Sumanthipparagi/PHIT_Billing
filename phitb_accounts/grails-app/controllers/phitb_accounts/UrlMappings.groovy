@@ -45,12 +45,14 @@ class UrlMappings {
 
             //credit jv
             "/creditjv(.$format)?"(controller: 'creditJv') { action = [GET: 'index', POST: 'save'] }
+            "/creditjv/approve(.$format)?"(controller: 'creditJv') { action = [POST: 'approveCreditJv'] }
             "/creditjv/datatable(.$format)?"(controller: 'creditJv') { action = [GET: 'dataTable'] }
             "/creditjv/$id(.$format)?"(controller: 'creditJv') { action = [GET: 'show', PUT: 'update', DELETE: 'delete'] }
             "/creditjvbyentity/$id(.$format)?"(controller: 'creditJv') { action = [GET: 'getByEntityId'] }
             "/creditjvunbycustomer/$id(.$format)?"(controller: 'creditJv') { action = [GET: 'getAllUnsettledByCustId'] }
             "/creditjvsettledbycustomer/$id(.$format)?"(controller: 'creditJv') { action = [GET: 'getAllsettledByCustId'] }
             "/creditjvbydays/$days(.$format)?"(controller: 'creditJv') { action = [GET: 'getAllByDays'] }
+            "/creditjv/approve(.$format)?"(controller: 'creditJv') { action = [GET: 'approveCreditJv'] }
             "/setcreditstatus/$id/type/$type(.$format)?"(controller: 'creditJv') {
                 action = [POST: 'updateStatus']
             }
@@ -65,6 +67,7 @@ class UrlMappings {
 
             //debit jv
             "/debitjv(.$format)?"(controller: 'debitJv') { action = [GET: 'index', POST: 'save'] }
+            "/creditjv/approve(.$format)?"(controller: 'debitJv') { action = [POST: 'approveDebitJv'] }
             "/debitjv/datatable(.$format)?"(controller: 'debitJv') { action = [GET: 'dataTable'] }
             "/debitjv/$id(.$format)?"(controller: 'debitJv') { action = [GET: 'show', PUT: 'update', DELETE: 'delete'] }
             "/debitjvbyentity/$id(.$format)?"(controller: 'debitJv') { action = [GET: 'getByEntityId'] }

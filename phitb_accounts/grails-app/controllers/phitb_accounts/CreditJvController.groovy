@@ -310,4 +310,13 @@ class CreditJvController {
         }
         response.status = 400
     }
+
+    def approveCreditJv()
+    {
+        CreditJv creditJv = new CreditJvService().approveCreditJv(Long.parseLong(params.id),Long.parseLong(params.entityId),Long.parseLong(params.approverId))
+        if(creditJv)
+            response.status = 200
+        else
+            response.status = 400
+    }
 }

@@ -123,14 +123,16 @@ class CreditJvService {
 
     CreditJv save(JSONObject jsonObject) {
         CreditJv creditJv = new CreditJv()
-        creditJv.transId = jsonObject.get("transId").toString()
-        creditJv.employeeId = Long.parseLong(jsonObject.get("employeeId").toString())
-        creditJv.managerId = Long.parseLong(jsonObject.get("managerId").toString())
-        creditJv.totalExpense = Double.parseDouble(jsonObject.get("totalExpense").toString())
-        creditJv.transactionDate = sdf.parse(jsonObject.get("transactionDate").toString())
-        creditJv.referenceId = jsonObject.get("referenceId").toString()
-        creditJv.finalSubmissionDate = sdf.parse(jsonObject.get("finalSubmissionDate").toString())
+        creditJv.transactionId = jsonObject.get("transactionId").toString() //TODO:
         creditJv.financialYear = jsonObject.get("financialYear").toString()
+        creditJv.remarks = jsonObject.get("remarks").toString()
+        creditJv.employeeId = Long.parseLong(jsonObject.get("employeeId").toString())
+        creditJv.approverId = Long.parseLong(jsonObject.get("approverId").toString())
+        creditJv.toAccount = Long.parseLong(jsonObject.get("toAccount").toString())
+        creditJv.debitAccount = Long.parseLong(jsonObject.get("debitAccount").toString())
+        creditJv.reason = Long.parseLong(jsonObject.get("reason").toString())
+        creditJv.amount = Double.parseDouble(jsonObject.get("amount").toString())
+        creditJv.transactionDate = sdf.parse(jsonObject.get("transactionDate").toString())
         creditJv.status = Long.parseLong(jsonObject.get("status").toString())
         creditJv.syncStatus = Long.parseLong(jsonObject.get("syncStatus").toString())
         creditJv.entityTypeId = Long.parseLong(jsonObject.get("entityTypeId").toString())
@@ -150,14 +152,16 @@ class CreditJvService {
         CreditJv creditJv = CreditJv.findById(Long.parseLong(id))
         if (creditJv) {
             creditJv.isUpdatable = true
-            creditJv.transId = jsonObject.get("transId").toString()
-            creditJv.employeeId = Long.parseLong(jsonObject.get("employeeId").toString())
-            creditJv.managerId = Long.parseLong(jsonObject.get("managerId").toString())
-            creditJv.totalExpense = Double.parseDouble(jsonObject.get("totalExpense").toString())
-            creditJv.transactionDate = sdf.parse(jsonObject.get("transactionDate").toString())
-            creditJv.referenceId = jsonObject.get("referenceId").toString()
-            creditJv.finalSubmissionDate = sdf.parse(jsonObject.get("finalSubmissionDate").toString())
+            creditJv.transactionId = jsonObject.get("transactionId").toString() //TODO:
             creditJv.financialYear = jsonObject.get("financialYear").toString()
+            creditJv.remarks = jsonObject.get("remarks").toString()
+            creditJv.employeeId = Long.parseLong(jsonObject.get("employeeId").toString())
+            creditJv.approverId = Long.parseLong(jsonObject.get("approverId").toString())
+            creditJv.amount = Double.parseDouble(jsonObject.get("amount").toString())
+            creditJv.toAccount = Long.parseLong(jsonObject.get("toAccount").toString())
+            creditJv.debitAccount = Long.parseLong(jsonObject.get("debitAccount").toString())
+            creditJv.reason = Long.parseLong(jsonObject.get("reason").toString())
+            creditJv.transactionDate = sdf.parse(jsonObject.get("transactionDate").toString())
             creditJv.status = Long.parseLong(jsonObject.get("status").toString())
             creditJv.syncStatus = Long.parseLong(jsonObject.get("syncStatus").toString())
             creditJv.entityTypeId = Long.parseLong(jsonObject.get("entityTypeId").toString())
@@ -165,8 +169,9 @@ class CreditJvService {
             creditJv.modifiedUser = Long.parseLong(jsonObject.get("modifiedUser").toString())
             creditJv.createdUser = Long.parseLong(jsonObject.get("createdUser").toString())
             creditJv.save(flush: true)
-            if (!creditJv.hasErrors())
+            if (!creditJv.hasErrors()) {
                 return creditJv
+            }
             else
                 throw new BadRequestException()
         } else
@@ -185,5 +190,23 @@ class CreditJvService {
         } else {
             throw new BadRequestException()
         }
+    }
+
+    def approveCreditJv(long id, long entityId, long approverId)
+    {
+        if(id && entityId)
+        {
+            CreditJv creditJv = CreditJv.findByIdAndEntityId(id,entityId)
+            if(creditJv)
+            {
+                creditJv.isUpdatable = true
+                creditJv.approvedTime = new Date()
+                creditJv.approverId = approverId
+                creditJv.save(flush:true)
+
+                return creditJv
+            }
+        }
+        return null
     }
 }

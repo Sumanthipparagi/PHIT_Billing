@@ -213,4 +213,13 @@ class DebitJvController {
             System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
         }
     }
+
+    def approveDebitJv()
+    {
+        DebitJv debitJv = new DebitJvService().approveDebitJv(Long.parseLong(params.id),Long.parseLong(params.entityId),Long.parseLong(params.approverId))
+        if(debitJv)
+            response.status = 200
+        else
+            response.status = 400
+    }
 }

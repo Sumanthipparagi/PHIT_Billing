@@ -1,12 +1,68 @@
 package phitb_ui.accounts
 
+import grails.converters.JSON
+import org.grails.web.json.JSONArray
+import org.grails.web.json.JSONObject
+import phitb_ui.AccountsService
 import phitb_ui.EntityService
+import phitb_ui.SalesService
+
+import java.text.SimpleDateFormat
 
 class CreditJvController {
 
     def index() {
         String entityId = session.getAttribute("entityId").toString()
-        def accounts = new EntityService().getAllAccountByEntity(entityId)
-        render(view: "/accounts/creditJV/index", model: [accounts:accounts])
+        JSONArray accounts = new EntityService().getAllAccountByEntity(entityId)
+        JSONArray reasons = new SalesService().getReasons()
+        ArrayList<JSONObject> debitAccounts = new ArrayList<>()
+        ArrayList<JSONObject> creditAccounts = new ArrayList<>()
+        if(accounts?.size()>0)
+        {
+            for (JSONObject json : accounts) {
+                if(json.get("showInDebit"))
+                {
+                    debitAccounts.add(json)
+                }
+
+                if(json.get("showInCredit"))
+                {
+                    creditAccounts.add(json)
+                }
+
+            }
+        }
+        render(view: "/accounts/creditJV/index", model: [debitAccounts:debitAccounts, reasons:reasons?.reverse(),
+                                                         creditAccounts:creditAccounts])
+    }
+
+    def saveCreditJv()
+    {
+        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss")
+        JSONObject jsonObject = new JSONObject(params)
+        jsonObject.put("status", "1")
+        jsonObject.put("syncStatus", "1")
+        jsonObject.put("entityTypeId", session.getAttribute("entityTypeId"))
+        jsonObject.put("entityId", session.getAttribute("entityId"))
+        jsonObject.put("modifiedUser", session.getAttribute("userId"))
+        jsonObject.put("createdUser", session.getAttribute("userId"))
+        jsonObject.put("financialYear", session.getAttribute("financialYear"))
+        jsonObject.put("transactionDate", sdf.format(new Date()))
+        jsonObject.put("employeeId", session.getAttribute("userId"))
+        jsonObject.put("managerId", session.getAttribute("userId"))
+        jsonObject.put("amount", jsonObject.get("amount"))
+
+        /*String transId
+        long employeeId
+        long managerId
+        double totalExpense
+        Date transactionDate
+        String referenceId
+        Date finalSubmissionDate
+        String financialYear
+*/
+
+        //new AccountsService().saveCreditJV(jsonObject)
+        respond(uri: "/credit-jv")
     }
 }

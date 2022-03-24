@@ -74,15 +74,47 @@ class AccountRegisterController {
             jsonObject.put("responsibleUserId", session.getAttribute("userId"))
             jsonObject.put("entityType", session.getAttribute("entityTypeId"))
             jsonObject.put("entity", session.getAttribute("entityId"))
-            def apiResponse = new EntityService().saveAccountRegister(jsonObject)
-            if (apiResponse?.status == 200)
+            if(jsonObject.has("showInDebit"))
             {
-                JSONObject obj = new JSONObject(apiResponse.readEntity(String.class))
-                respond obj, formats: ['json'], status: 200
+                if(jsonObject.get("showInDebit").toString().equalsIgnoreCase("on"))
+                {
+                    jsonObject.put("showInDebit", true)
+                }
+                else
+                {
+                    jsonObject.put("showInDebit", false)
+                }
             }
             else
             {
-                response.status = apiResponse?.status ?: 400
+                jsonObject.put("showInDebit", false)
+            }
+
+            if(jsonObject.has("showInCredit"))
+            {
+                if(jsonObject.get("showInCredit").toString().equalsIgnoreCase("on"))
+                {
+                    jsonObject.put("showInCredit", true)
+                }
+                else
+                {
+                    jsonObject.put("showInCredit", false)
+                }
+            }
+            else
+            {
+                jsonObject.put("showInCredit", false)
+            }
+
+            def apiResponse = new EntityService().saveAccountRegister(jsonObject)
+            if (apiResponse?.status == 200)
+            {
+                //JSONObject obj = new JSONObject(apiResponse.readEntity(String.class))
+                redirect(uri: "/accounts")
+            }
+            else
+            {
+                redirect(uri: "/accounts")
             }
         }
         catch (Exception ex)
@@ -95,7 +127,7 @@ class AccountRegisterController {
 
     def index() {
         JSONArray accountList = new EntityService().getAllAccountByEntity(session.getAttribute("entityId").toString())
-        JSONArray accountTypes = new SystemService().getAccountTypes()
+        JSONArray accountTypes = new SystemService().getAccountTypes(session.getAttribute("entityId").toString())
         ArrayList<String> accountMode = new AccountModeController().show() as ArrayList<String>
         ArrayList<String> entity = new EntityRegisterController().show() as ArrayList<String>
         render(view: '/entity/accountRegister/accounts',model: [account:accountList,accountMode:accountMode,entity:entity, accountTypes: accountTypes])
