@@ -117,6 +117,7 @@ public class Links
     public static String ACCOUNT_REGISTER_DELETE = "api/v1.0/entity/accountregister/{id}";
     public static String ACCOUNT_REGISTER_AFFILIATE = "api/v1.0/entity/accountregister/affiliate";
     public static String ACCOUNT_REGISTER_BY_ENTITY = "api/v1.0/entity/accountregister/entity";
+    public static String ACCOUNT_REGISTER_UPDATE_BALANCE = "api/v1.0/entity/accountregister/updatebalance";
 
     //Account Type
     public static String ACCOUNT_TYPE_SAVE = "api/v1.0/system/accounttype";
@@ -436,7 +437,8 @@ public class Links
     //Debit
     public static String DEBIT_SHOW = "api/v1.0/accounts/debitjv";
     public static String DEBIT_SAVE = "api/v1.0/accounts/debitjv";
-    public static String DEBIT_APPROVE = "api/v1.0/accounts/creditjv/approve";
+    public static String DEBIT_DATATABLE = "api/v1.0/accounts/debitjv/datatable";
+    public static String DEBIT_APPROVE = "api/v1.0/accounts/debitjv/approve";
 
     /*<--------------------------------------------Purchase ------------------------------------------------->*/
     //purchase product details

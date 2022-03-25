@@ -6,7 +6,7 @@
     <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
     <meta name="description" content="Responsive Bootstrap 4 and web Application ui kit.">
 
-    <title>:: PharmIt :: Credit JV Approvals</title>
+    <title>:: PharmIt :: Debit JV Approvals</title>
     <link rel="icon" type="image/x-icon" href="${assetPath(src: '/themeassets/images/favicon.ico')}"/>
     <!-- Favicon-->
     <asset:stylesheet rel="stylesheet" src="/themeassets/plugins/bootstrap/css/bootstrap.min.css"/>
@@ -64,7 +64,7 @@
         <div class="block-header">
             <div class="row clearfix">
                 <div class="col-lg-5 col-md-5 col-sm-12">
-                    <h2>Credit JV - Approval</h2>
+                    <h2>Debit JV - Approval</h2>
                     <ul class="breadcrumb padding-0">
                         <li class="breadcrumb-item"><a href="index.html"><i class="zmdi zmdi-home"></i></a></li>
                         <li class="breadcrumb-item active">Approvals</li>
@@ -83,8 +83,8 @@
                                 <tr>
                                     <th style="width: 20%">Trans.Id</th>
                                     <th style="width: 20%">Amount</th>
-                                    <th style="width: 20%">Debit A/C</th>
-                                    <th style="width: 20%">To A/C</th>
+                                    <th style="width: 20%">Credit A/C</th>
+                                    <th style="width: 20%">From A/C</th>
                                     <th style="width: 20%">Date</th>
                                     <th style="width: 20%">Reason</th>
                                     <th style="width: 20%">Remarks</th>
@@ -161,13 +161,13 @@
                 dataSrc: function (json) {
                     var return_data = [];
                     for (var i = 0; i < json.data.length; i++) {
-                        var approveBtn = '<button data-amount="'+json.data[i].amount+'" data-toaccount="'+json.data[i].toAccount.id+'" data-debitaccount="'+json.data[i].debitAccount.id+'" data-transactionid="'+json.data[i].transactionId+'" class="btn btn-success btn-sm approveCreditJv" data-id="'+json.data[i].id+'">Approve</button> ' +
-                            '<button data-amount="'+json.data[i].amount+'" data-toaccount="'+json.data[i].toAccount.id+'" data-debitaccount="'+json.data[i].debitAccount.id+'"data-transactionid="'+json.data[i].transactionId+'"  class="btn btn-danger btn-sm rejectCreditJv" data-id="'+json.data[i].id+'">Reject</button>';
+                        var approveBtn = '<button data-amount="'+json.data[i].amount+'" data-fromaccount="'+json.data[i].fromAccount.id+'" data-creditaccount="'+json.data[i].creditAccount.id+'" data-transactionid="'+json.data[i].transactionId+'" class="btn btn-success btn-sm approveCreditJv" data-id="'+json.data[i].id+'">Approve</button> ' +
+                            '<button data-amount="'+json.data[i].amount+'" data-fromaccount="'+json.data[i].fromAccount.id+'" data-creditaccount="'+json.data[i].creditAccount.id+'"data-transactionid="'+json.data[i].transactionId+'"  class="btn btn-danger btn-sm rejectCreditJv" data-id="'+json.data[i].id+'">Reject</button>';
                         return_data.push({
                             'transactionId': json.data[i].transactionId,
                             'amount': json.data[i].amount,
-                            'debitAccount': json.data[i].debitAccount.accountName,
-                            'toAccount': json.data[i].toAccount.accountName,
+                            'creditAccount': json.data[i].creditAccount.accountName,
+                            'fromAccount': json.data[i].fromAccount.accountName,
                             'date':  json.data[i].transactionDate,
                             'reason':  json.data[i].reason,
                             'remarks': json.data[i].remarks,
@@ -181,8 +181,8 @@
                 // {'data': 'id', 'width': '20%'},
                 {'data': 'transactionId', 'width': '20%'},
                 {'data': 'amount', 'width': '20%'},
-                {'data': 'debitAccount', 'width': '20%'},
-                {'data': 'toAccount', 'width': '20%'},
+                {'data': 'creditAccount', 'width': '20%'},
+                {'data': 'fromAccount', 'width': '20%'},
                 {'data': 'date', 'width': '20%'},
                 {'data': 'reason', 'width': '20%'},
                 {'data': 'remarks', 'width': '20%'},
@@ -190,11 +190,13 @@
             ]
         });
     }
+    
+
 
     $(document).on("click", ".approveCreditJv", function () {
         var id = $(this).data('id');
-        var toAccount = $(this).data('toaccount');
-        var debitAccount = $(this).data('debitaccount');
+        var fromAccount = $(this).data('fromaccount');
+        var creditAccount = $(this).data('creditaccount');
         var transactionid = $(this).data('transactionid');
         var amount = $(this).data('amount');
         Swal.fire({
@@ -206,7 +208,7 @@
         }).then((result) => {
             if (result.isConfirmed) {
                 $.ajax({
-                    url: "approve?status="+1+"&id="+id+"&debitAccount="+debitAccount+"&toAccount="+toAccount+"&amount="+amount,
+                    url: "approve?status="+1+"&id="+id+"&creditAccount="+creditAccount+"&fromAccount="+fromAccount+"&amount="+amount,
                     type: "GET",
                     contentType: false,
                     processData: false,
@@ -227,8 +229,8 @@
 
     $(document).on("click", ".rejectCreditJv", function () {
         var id = $(this).data('id');
-        var toAccount = $(this).data('toaccount');
-        var debitAccount = $(this).data('debitaccount');
+        var fromAccount = $(this).data('fromaccount');
+        var creditAccount = $(this).data('creditaccount');
         var transactionid = $(this).data('transactionid');
         var amount = $(this).data('amount');
         Swal.fire({
@@ -240,7 +242,7 @@
         }).then((result) => {
             if (result.isConfirmed) {
                 $.ajax({
-                    url: "approve?status="+0+"&id="+id+"&debitAccount="+debitAccount+"&toAccount="+toAccount+"&amount="+amount,
+                    url: "approve?status="+0+"&id="+id+"&creditAccount="+creditAccount+"&fromAccount="+fromAccount+"&amount="+amount,
                     type: "GET",
                     contentType: false,
                     processData: false,

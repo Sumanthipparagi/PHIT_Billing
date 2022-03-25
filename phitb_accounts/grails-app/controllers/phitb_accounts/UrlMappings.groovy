@@ -52,7 +52,6 @@ class UrlMappings {
             "/creditjvunbycustomer/$id(.$format)?"(controller: 'creditJv') { action = [GET: 'getAllUnsettledByCustId'] }
             "/creditjvsettledbycustomer/$id(.$format)?"(controller: 'creditJv') { action = [GET: 'getAllsettledByCustId'] }
             "/creditjvbydays/$days(.$format)?"(controller: 'creditJv') { action = [GET: 'getAllByDays'] }
-            "/creditjv/approve(.$format)?"(controller: 'creditJv') { action = [GET: 'approveCreditJv'] }
             "/setcreditstatus/$id/type/$type(.$format)?"(controller: 'creditJv') {
                 action = [POST: 'updateStatus']
             }

@@ -9,7 +9,7 @@ import phitb_entity.Exception.BadRequestException
 import phitb_entity.Exception.ResourceNotFoundException
 
 class AccountRegisterController {
-	static responseFormats = ['json', 'xml']
+    static responseFormats = ['json', 'xml']
     static allowedMethods = [index: "GET", show: "GET", save: "POST", update: "PUT", delete: "DELETE", dataTable: "GET"]
 
     AccountRegisterService accountRegisterService
@@ -42,13 +42,11 @@ class AccountRegisterController {
                 respond accountRegisterService.get(id)
             }
         }
-        catch (ResourceNotFoundException ex)
-        {
+        catch (ResourceNotFoundException ex) {
             System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
             response.status = 404
         }
-        catch (BadRequestException ex)
-        {
+        catch (BadRequestException ex) {
             System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
             response.status = 400
         }
@@ -67,13 +65,11 @@ class AccountRegisterController {
             JSONObject jsonObject = JSON.parse(request.reader.text) as JSONObject
             respond accountRegisterService.save(jsonObject)
         }
-        catch (ResourceNotFoundException ex)
-        {
+        catch (ResourceNotFoundException ex) {
             System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
             response.status = 404
         }
-        catch (BadRequestException ex)
-        {
+        catch (BadRequestException ex) {
             System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
             response.status = 400
         }
@@ -92,15 +88,13 @@ class AccountRegisterController {
         try {
             String id = params.id
             JSONObject jsonObject = JSON.parse(request.reader.text) as JSONObject
-            respond accountRegisterService.update(jsonObject,id)
+            respond accountRegisterService.update(jsonObject, id)
         }
-        catch (ResourceNotFoundException ex)
-        {
+        catch (ResourceNotFoundException ex) {
             System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
             response.status = 404
         }
-        catch (BadRequestException ex)
-        {
+        catch (BadRequestException ex) {
             System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
             response.status = 400
         }
@@ -120,13 +114,11 @@ class AccountRegisterController {
             accountRegisterService.delete(id)
             response.status = 200
         }
-        catch (ResourceNotFoundException ex)
-        {
+        catch (ResourceNotFoundException ex) {
             System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
             response.status = 404
         }
-        catch (BadRequestException ex)
-        {
+        catch (BadRequestException ex) {
             System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
             response.status = 400
         }
@@ -147,13 +139,11 @@ class AccountRegisterController {
             JSONObject paramsJsonObject = new JSONObject(parameterMap.params)
             respond accountRegisterService.dataTables(paramsJsonObject, start, length)
         }
-        catch (ResourceNotFoundException ex)
-        {
+        catch (ResourceNotFoundException ex) {
             System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
             response.status = 404
         }
-        catch (BadRequestException ex)
-        {
+        catch (BadRequestException ex) {
             System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
             response.status = 400
         }
@@ -162,21 +152,39 @@ class AccountRegisterController {
         }
     }
 
-    def getByAccountsByEntity()
-    {
+    def getByAccountsByEntity() {
         try {
             String id = params.id
             if (id) {
                 respond accountRegisterService.getAllByEntity(id)
             }
         }
-        catch (ResourceNotFoundException ex)
-        {
+        catch (ResourceNotFoundException ex) {
             System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
             response.status = 404
         }
-        catch (BadRequestException ex)
-        {
+        catch (BadRequestException ex) {
+            System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
+            response.status = 400
+        }
+        catch (Exception ex) {
+            System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
+        }
+    }
+
+    def updateBalance() {
+        try {
+            String amount = params.amount
+            String entityId = params.entityId
+            String id = params.id
+            boolean add = Boolean.parseBoolean(params.add)
+            respond accountRegisterService.updateBalance(id, entityId, amount, add)
+        }
+        catch (ResourceNotFoundException ex) {
+            System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
+            response.status = 404
+        }
+        catch (BadRequestException ex) {
             System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
             response.status = 400
         }

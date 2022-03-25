@@ -8,7 +8,7 @@ import phitb_accounts.Exception.ResourceNotFoundException
 
 class CreditJvController {
     static responseFormats = ['json', 'xml']
-    static allowedMethods = [index: "GET", show: "GET", save: "POST", update: "PUT", delete: "DELETE", dataTable: "GET"]
+    static allowedMethods = [index: "GET", show: "GET", save: "POST", update: "PUT", delete: "DELETE", dataTable: "GET", approveCreditJv: "POST"]
 
     CreditJvService creditJvService
     /**
@@ -280,10 +280,15 @@ class CreditJvController {
     }
 
     def approveCreditJv() {
-        def status = params.status
-        double currentBalance = params.currentBalance
+        JSONObject jsonObject = new JSONObject(request.reader.text)
+        def status = Long.parseLong(jsonObject.get("status").toString())
+        def id = Long.parseLong(jsonObject.get("id").toString())
+        def entityId = Long.parseLong(jsonObject.get("entityId").toString())
+        def approverId = Long.parseLong(jsonObject.get("approverId").toString())
+        double debitAcCurrentBalance = Double.parseDouble(jsonObject.get("debitAcCurrentBalance").toString())
+        double toAcCurrentBalance =  Double.parseDouble(jsonObject.get("toAcCurrentBalance").toString())
         if (status == 1) {
-            CreditJv creditJv = new CreditJvService().approveCreditJv(Long.parseLong(params.id), Long.parseLong(params.entityId), Long.parseLong(params.approverId))
+            CreditJv creditJv = new CreditJvService().approveCreditJv(id, entityId, approverId)
             if (creditJv) {
                 //add general ledger to debit account
                 GeneralLedger generalLedger = new GeneralLedger()
@@ -293,7 +298,7 @@ class CreditJvController {
                 generalLedger.account = creditJv.debitAccount
                 generalLedger.debitAmount = creditJv.amount
                 generalLedger.creditAmount = 0.00
-                generalLedger.balance = currentBalance - creditJv.amount
+                generalLedger.balance = debitAcCurrentBalance - creditJv.amount
                 generalLedger.status = 1
                 generalLedger.financialYear = creditJv.financialYear
                 generalLedger.entityId = creditJv.entityId
@@ -310,7 +315,7 @@ class CreditJvController {
                 generalLedger.account = creditJv.toAccount
                 generalLedger.debitAmount = 0.00
                 generalLedger.creditAmount = creditJv.amount
-                generalLedger.balance = currentBalance - creditJv.amount
+                generalLedger.balance = toAcCurrentBalance + creditJv.amount
                 generalLedger.status = 1
                 generalLedger.financialYear = creditJv.financialYear
                 generalLedger.entityId = creditJv.entityId
@@ -324,7 +329,7 @@ class CreditJvController {
                 response.status = 400
         } else {
 
-            CreditJv creditJv = new CreditJvService().rejectCreditJv(Long.parseLong(params.id), Long.parseLong(params.entityId), Long.parseLong(params.approverId))
+            CreditJv creditJv = new CreditJvService().rejectCreditJv(id, entityId, approverId)
             if (creditJv)
                 response.status = 200
             else

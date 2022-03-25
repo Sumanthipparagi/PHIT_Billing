@@ -91,11 +91,29 @@ class CreditJvController {
 
     def approveReject()
     {
-        long status = params.status
-        long creditJvId = params.id
+        String status = params.status
+        String creditJvId = params.id
+        String toAccount = params.toAccount
+        String debitAccount = params.debitAccount
+        String amount = params.amount
         long entityId = session.getAttribute("entityId")
         long userId = session.getAttribute("userId")
-        def apiResponse = new AccountsService().creditJvApprove(status, entityId, userId, creditJvId)
-        response.status = apiResponse.status
+        def toAcc = new EntityService().getAccountById(toAccount)
+        def debAcc = new EntityService().getAccountById(debitAccount)
+
+        if(toAcc && debAcc)
+        {
+            def apiResponse = new AccountsService().creditJvApprove(status, entityId, userId, creditJvId, debAcc.balance, toAcc.balance)
+            if(apiResponse?.status == 200)
+            {
+                //update balance in accounts
+                new EntityService().updateAccountBalance(amount, entityId.toString(),debAcc.id, false)
+                new EntityService().updateAccountBalance(amount, entityId.toString(),toAcc.id, true)
+            }
+            response.status = apiResponse.status
+        }
+        else
+            response.status = 400
+
     }
 }

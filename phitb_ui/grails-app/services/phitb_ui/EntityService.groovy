@@ -1893,4 +1893,30 @@ class EntityService {
         }
     }
 
+
+    def updateAccountBalance(String amount, String entityId, String id, boolean add)
+    {
+        Client client = ClientBuilder.newClient()
+        WebTarget target = client.target(new Links().API_GATEWAY)
+        try
+        {
+            JSONObject jsonObject = new JSONObject()
+            jsonObject.put("amount", amount)
+            jsonObject.put("entityId", entityId)
+            jsonObject.put("id", id)
+            jsonObject.put("add", add)
+            Response apiResponse = target
+                    .path(new Links().ACCOUNT_REGISTER_UPDATE_BALANCE)
+                    .request(MediaType.APPLICATION_JSON_TYPE)
+                    .post(Entity.entity(jsonObject.toString(),MediaType.APPLICATION_JSON_TYPE))
+            println(apiResponse)
+            return apiResponse
+        }
+        catch (Exception ex)
+        {
+            System.err.println('Service :entityService , action :  updateAccountBalance  , Ex:' + ex)
+            log.error('Service :entityService , action :  updateAccountBalance  , Ex:' + ex)
+        }
+    }
+
 }

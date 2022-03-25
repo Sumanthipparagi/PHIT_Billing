@@ -138,4 +138,16 @@ class AccountRegisterService {
         EntityRegister entityRegister = EntityRegister.findById(Long.parseLong(id))
         return AccountRegister.findAllByEntity(entityRegister)
     }
+
+    def updateBalance(String id, String entityId, String amount, boolean add) {
+        EntityRegister entityRegister = EntityRegister.findById(Long.parseLong(entityId))
+        AccountRegister accountRegister = AccountRegister.findByEntityAndId(entityRegister,Long.parseLong(id))
+        accountRegister.isUpdatable = true
+        if(add)
+            accountRegister.balance = accountRegister.balance+amount
+        else
+            accountRegister.balance = accountRegister.balance-amount
+
+        accountRegister.save(flush:true)
+    }
 }

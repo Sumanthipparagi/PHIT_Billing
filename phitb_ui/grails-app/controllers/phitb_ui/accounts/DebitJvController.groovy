@@ -55,4 +55,64 @@ class DebitJvController {
         def apiResponse = new AccountsService().saveDebitJV(jsonObject)
         redirect(uri: "/debit-jv")
     }
+
+    //unapproved list
+    def dataTable() {
+        try {
+            JSONObject jsonObject = new JSONObject(params)
+            jsonObject.put("entityId", session.getAttribute("entityId").toString())
+            def apiResponse = new AccountsService().debitJVDatatables(jsonObject)
+            if (apiResponse?.status == 200) {
+                JSONObject responseObject = new JSONObject(apiResponse.readEntity(String.class))
+                for (JSONObject json : responseObject["data"]) {
+                    long toAccount = json.toAccount
+                    def account = new EntityService().getAccountById(toAccount.toString())
+                    if(account)
+                        json.put("toAccount",account)
+
+                    long debitAccount = json.debitAccount
+                    def dAccount = new EntityService().getAccountById(debitAccount.toString())
+                    if(dAccount)
+                        json.put("debitAccount",dAccount)
+
+                }
+                respond responseObject, formats: ['json'], status: 200
+            } else {
+                response.status = 400
+            }
+        }
+        catch (Exception ex) {
+            System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
+            log.error('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
+            response.status = 400
+        }
+    }
+
+    def approveReject()
+    {
+        String status = params.status
+        String creditJvId = params.id
+        String fromAccount = params.fromAccount
+        String creditAccount = params.creditAccount
+        String amount = params.amount
+        long entityId = session.getAttribute("entityId")
+        long userId = session.getAttribute("userId")
+        def frmAcc = new EntityService().getAccountById(fromAccount)
+        def crAcc = new EntityService().getAccountById(creditAccount)
+
+        if(frmAcc && crAcc)
+        {
+            def apiResponse = new AccountsService().debitJvApprove(status, entityId, userId, creditJvId, crAcc.balance, frmAcc.balance)
+            if(apiResponse?.status == 200)
+            {
+                //update balance in accounts
+                new EntityService().updateAccountBalance(amount, entityId.toString(),crAcc.id, true)
+                new EntityService().updateAccountBalance(amount, entityId.toString(),frmAcc.id, false)
+            }
+            response.status = apiResponse.status
+        }
+        else
+            response.status = 400
+
+    }
 }

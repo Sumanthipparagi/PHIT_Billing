@@ -538,8 +538,7 @@ class AccountsService {
     def creditJVDatatables(JSONObject jsonObject)
     {
         Client client = ClientBuilder.newClient()
-        //WebTarget target = client.target(new Links().API_GATEWAY)
-        WebTarget target = client.target("http://localhost:8089")
+        WebTarget target = client.target(new Links().API_GATEWAY)
         try
         {
             Response apiResponse = target
@@ -556,27 +555,76 @@ class AccountsService {
         }
     }
 
-    def creditJvApprove(long status, long entityId, long approverId, long creditJvId)
+    def creditJvApprove(String status, long entityId, long approverId, String creditJvId, String debitBalance, String toBalance)
     {
         Client client = ClientBuilder.newClient()
-        //WebTarget target = client.target(new Links().API_GATEWAY)
-        WebTarget target = client.target("http://localhost:8089")
+        WebTarget target = client.target(new Links().API_GATEWAY)
         try
         {
-            Form form = new Form()
-            form.param("status",status.toString())
-            form.param("entityId",entityId.toString())
-            form.param("approverId",approverId.toString())
-            form.param("id",creditJvId.toString())
+            JSONObject jsonObject = new JSONObject()
+            jsonObject.put("status",status)
+            jsonObject.put("entityId",entityId.toString())
+            jsonObject.put("approverId",approverId.toString())
+            jsonObject.put("id",creditJvId)
+            jsonObject.put("debitAcCurrentBalance",debitBalance)
+            jsonObject.put("toAcCurrentBalance",toBalance)
             Response apiResponse = target
                     .path(new Links().CREDIT_APPROVE)
-                    .request().post(Entity.form(form))
+                    .request(MediaType.APPLICATION_JSON_TYPE)
+                    .post(Entity.entity(jsonObject.toString(),MediaType.APPLICATION_JSON_TYPE))
             return apiResponse
         }
         catch (Exception ex)
         {
             System.err.println('Service :AccountsService , action :  creditJVDatatables  , Ex:' + ex)
             log.error('Service :AccountsService , action :  creditJVDatatables  , Ex:' + ex)
+        }
+    }
+
+
+    def debitJVDatatables(JSONObject jsonObject)
+    {
+        Client client = ClientBuilder.newClient()
+        WebTarget target = client.target(new Links().API_GATEWAY)
+        try
+        {
+            Response apiResponse = target
+                    .path(new Links().DEBIT_DATATABLE)
+                    .queryParam("params", URLEncoder.encode(jsonObject.toString(), "UTF-8"))
+                    .request(MediaType.APPLICATION_JSON_TYPE)
+                    .get()
+            return apiResponse
+        }
+        catch (Exception ex)
+        {
+            System.err.println('Service :AccountsService , action :  debitJVDatatables  , Ex:' + ex)
+            log.error('Service :AccountsService , action :  debitJVDatatables  , Ex:' + ex)
+        }
+    }
+
+    def debitJvApprove(String status, long entityId, long approverId, String debitJvId, String creditBalance, String fromBalance)
+    {
+        Client client = ClientBuilder.newClient()
+        WebTarget target = client.target(new Links().API_GATEWAY)
+        try
+        {
+            JSONObject jsonObject = new JSONObject()
+            jsonObject.put("status",status)
+            jsonObject.put("entityId",entityId.toString())
+            jsonObject.put("approverId",approverId.toString())
+            jsonObject.put("id",debitJvId)
+            jsonObject.put("creditAcCurrentBalance",creditBalance)
+            jsonObject.put("fromAcCurrentBalance",fromBalance)
+            Response apiResponse = target
+                    .path(new Links().CREDIT_APPROVE)
+                    .request(MediaType.APPLICATION_JSON_TYPE)
+                    .post(Entity.entity(jsonObject.toString(),MediaType.APPLICATION_JSON_TYPE))
+            return apiResponse
+        }
+        catch (Exception ex)
+        {
+            System.err.println('Service :AccountsService , action :  debitJvApprove  , Ex:' + ex)
+            log.error('Service :AccountsService , action :  debitJvApprove  , Ex:' + ex)
         }
     }
 }

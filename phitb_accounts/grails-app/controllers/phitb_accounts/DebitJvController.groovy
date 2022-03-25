@@ -217,10 +217,15 @@ class DebitJvController {
 
     def approveDebitJv()
     {
-        def status = params.status
-        double currentBalance = params.currentBalance
+        JSONObject jsonObject = new JSONObject(request.reader.text)
+        def status = Long.parseLong(jsonObject.get("status").toString())
+        def id = Long.parseLong(jsonObject.get("id").toString())
+        def entityId = Long.parseLong(jsonObject.get("entityId").toString())
+        def approverId = Long.parseLong(jsonObject.get("approverId").toString())
+        double creditAcCurrentBalance = Double.parseDouble(jsonObject.get("creditAcCurrentBalance"))
+        double fromAcCurrentBalance =Double.parseDouble(jsonObject.get("fromAcCurrentBalance"))
         if (status == 1) {
-            DebitJv debitJv = new DebitJvService().approveDebitJv(Long.parseLong(params.id), Long.parseLong(params.entityId), Long.parseLong(params.approverId))
+            DebitJv debitJv = new DebitJvService().approveDebitJv(id, entityId, approverId)
             if (debitJv) {
                 //add general ledger to debit account
                 GeneralLedger generalLedger = new GeneralLedger()
@@ -230,7 +235,7 @@ class DebitJvController {
                 generalLedger.account = debitJv.creditAccount
                 generalLedger.debitAmount = 0.00
                 generalLedger.creditAmount = debitJv.amount
-                generalLedger.balance = currentBalance + debitJv.amount
+                generalLedger.balance = creditAcCurrentBalance + debitJv.amount
                 generalLedger.status = 1
                 generalLedger.financialYear = debitJv.financialYear
                 generalLedger.entityId = debitJv.entityId
@@ -247,7 +252,7 @@ class DebitJvController {
                 generalLedger.account = debitJv.fromAccount
                 generalLedger.debitAmount = debitJv.amount
                 generalLedger.creditAmount = 0.00
-                generalLedger.balance = currentBalance + debitJv.amount
+                generalLedger.balance = fromAcCurrentBalance - debitJv.amount
                 generalLedger.status = 1
                 generalLedger.financialYear = debitJv.financialYear
                 generalLedger.entityId = debitJv.entityId
@@ -261,7 +266,7 @@ class DebitJvController {
                 response.status = 400
         } else {
 
-            CreditJv creditJv = new CreditJvService().rejectCreditJv(Long.parseLong(params.id), Long.parseLong(params.entityId), Long.parseLong(params.approverId))
+            CreditJv creditJv = new CreditJvService().rejectCreditJv(id, entityId, approverId)
             if (creditJv)
                 response.status = 200
             else

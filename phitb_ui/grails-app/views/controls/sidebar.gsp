@@ -584,7 +584,6 @@
 
                             </ul>
                         </li>
-                        <li><a href="#">Receipt Approval</a></li>
                         <li><a href="#">Cheque Returns</a></li>
                         <li><a href="/payments-list">Payment</a></li>
                     </ul>
@@ -655,6 +654,16 @@
                         class="badge badge-success float-right"></span></a>
                     <ul class="ml-menu">
                         <li><a href="stockbook">Stock Entry</a></li>
+                    </ul>
+                </li>
+
+                <li><a href="javascript:void(0);" class="menu-toggle"><i
+                        class="zmdi zmdi-apps"></i><span>Approvals</span> <span
+                        class="badge badge-success float-right"></span></a>
+                    <ul class="ml-menu">
+                        <li><a href="/credit-jv/approval">Credit JV Approval</a></li>
+                        <li><a href="/debit-jv/approval">Debit JV Approval</a></li>
+                        <li><a href="#">Receipt Approval</a></li>
                     </ul>
                 </li>
 
