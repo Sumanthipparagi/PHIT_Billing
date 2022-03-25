@@ -373,7 +373,7 @@ class UrlMappings {
 
 //        Sale Retrun
         "/sale-return"(controller: "saleRetrun") {
-            action = [GET: "index", POST: 'saveSaleRetrun']
+            action = [GET: "index", POST: 'saveSaleReturn']
         }
         "/salebill/customer/$custid"(controller: 'saleRetrun', action: 'getSaleBillByCustomer')
 
@@ -447,11 +447,14 @@ class UrlMappings {
             action = [POST: 'stockBookSave']
         }
         "/stockbook/user/$id"(controller: "stockBook",action:"getStocksOfUser")
-
+        "/stockbook/increase/"(controller: 'stockBook', action: 'stockIncrease')
 //        Sale Order Entry
         "/sale-order-entry"(controller: "saleOrderEntry") {
             action = [GET: "index", POST: 'saveSaleOrder']
         }
+
+
+
 
         /*<-------------------------------------------Accounts------------------------------------------------->*/
 

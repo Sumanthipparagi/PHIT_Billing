@@ -236,6 +236,50 @@ class StockBookController {
         response.status = 400
     }
 
+
+    def stockIncrease()
+    {
+        try
+        {
+            StockBook stockBook = StockBook.findByBatchNumber(params.batch)
+            def remQty = stockBook.getRemainingQty()
+            def freeQty = stockBook.getRemainingFreeQty()
+            if(params.reason == "Sale Return")
+            {
+                stockBook.remainingQty = remQty + Long.parseLong(params.purQty)
+                stockBook.remainingFreeQty = freeQty + Long.parseLong(params.fqty)
+            }
+            else if (params.reason == "Product Expired")
+            {
+                stockBook.remainingQty = remQty - Long.parseLong(params.purQty)
+                stockBook.remainingFreeQty = freeQty - Long.parseLong(params.fqty)
+            }
+            else if (params.reason == "Breakage")
+            {
+                stockBook.remainingQty = remQty - Long.parseLong(params.purQty)
+                stockBook.remainingFreeQty = freeQty - Long.parseLong(params.fqty)
+            }
+            else if(params.reason == "Other")
+            {
+                stockBook.remainingQty = remQty + Long.parseLong(params.purQty)
+                stockBook.remainingFreeQty = freeQty + Long.parseLong(params.fqty)
+            }
+            stockBook.isUpdatable = true
+            StockBook savedStockBook = stockBook.save(flush:true)
+            if (savedStockBook)
+            {
+                respond savedStockBook
+                return
+            }
+        }
+        catch (Exception ex)
+        {
+            System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
+            log.error('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
+        }
+        response.status = 400
+    }
+
     /**
      * Get requested Stock Book
      * @param id
