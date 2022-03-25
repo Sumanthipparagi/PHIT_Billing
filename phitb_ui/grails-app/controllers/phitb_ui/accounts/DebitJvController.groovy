@@ -56,6 +56,10 @@ class DebitJvController {
         redirect(uri: "/debit-jv")
     }
 
+    def approval() {
+        render(view: "/accounts/debitJV/approve-debitjv")
+    }
+
     //unapproved list
     def dataTable() {
         try {
