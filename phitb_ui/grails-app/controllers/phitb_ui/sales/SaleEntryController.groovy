@@ -1,7 +1,6 @@
 package phitb_ui.sales
 
 import grails.converters.JSON
-import groovy.json.JsonSlurper
 import org.grails.web.json.JSONArray
 import org.grails.web.json.JSONObject
 import phitb_ui.EntityService
@@ -12,7 +11,6 @@ import phitb_ui.SystemService
 import phitb_ui.entity.EntityRegisterController
 import phitb_ui.entity.SeriesController
 import phitb_ui.ProductService
-import phitb_ui.product.ProductController
 
 import javax.ws.rs.core.Response
 import java.text.SimpleDateFormat
@@ -32,12 +30,11 @@ class SaleEntryController {
                 salesmanList.add(it)
             }
         }*/
-        render(view: '/sales/sale-entry', model: [customers: customers,divisions:divisions, series:series,
-                                                           salesmanList: salesmanList, priorityList:priorityList])
+        render(view: '/sales/sale-entry', model: [customers   : customers, divisions: divisions, series: series,
+                                                  salesmanList: salesmanList, priorityList: priorityList])
     }
 
-    def saveSaleEntry()
-    {
+    def saveSaleEntry() {
         println(params.saleData)
         SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy")
         JSONObject saleBillDetails = new JSONObject()
@@ -49,7 +46,7 @@ class SaleEntryController {
         String duedate = params.duedate
         String billStatus = params.billStatus
         String message = params.message
-        if(!message)
+        if (!message)
             message = "NA"
         long finId = 0
         long serBillId = 0
@@ -57,15 +54,12 @@ class SaleEntryController {
         def series = new EntityService().getSeriesById(seriesId)
 
 
-        if(!billStatus.equalsIgnoreCase("DRAFT"))
-        {
+        if (!billStatus.equalsIgnoreCase("DRAFT")) {
             def recentSaleBill = new SalesService().getRecentSaleBill(financialYear, entityId, billStatus)
-            if(recentSaleBill != null)
-            {
+            if (recentSaleBill != null) {
                 finId = Long.parseLong(recentSaleBill.get("finId").toString()) + 1
                 serBillId = Long.parseLong(recentSaleBill.get("serBillId").toString()) + 1
-            }
-            else {
+            } else {
                 finId = 1
                 serBillId = Long.parseLong(series.get("saleId").toString())
             }
@@ -107,9 +101,9 @@ class SaleEntryController {
 
             JSONObject saleProductDetail = new JSONObject()
             saleProductDetail.put("finId", finId)
-            saleProductDetail.put("billId",0)
-            saleProductDetail.put("billType",0)
-            saleProductDetail.put("serBillId",0)
+            saleProductDetail.put("billId", 0)
+            saleProductDetail.put("billType", 0)
+            saleProductDetail.put("serBillId", 0)
             saleProductDetail.put("seriesId", seriesId)
             saleProductDetail.put("productId", productId)
             saleProductDetail.put("batchNumber", batchNumber)
@@ -143,7 +137,6 @@ class SaleEntryController {
             //save to sale transportation details
 
         }
-
         String entryDate = sdf.format(new Date())
         String orderDate = sdf.format(new Date())
         //save to sale bill details
@@ -195,17 +188,16 @@ class SaleEntryController {
         saleBillDetails.put("exempted", 0) //TODO: to be changed
 
         Response response = new SalesService().saveSaleBill(saleBillDetails)
-        if(response.status == 200)
-        {
+        if (response.status == 200) {
             def saleBillDetail = new JSONObject(response.readEntity(String.class))
             //save to sale product details
             for (JSONObject saleProductDetail : saleProductDetails) {
-                saleProductDetail.put("billId",saleBillDetail.get("id"))
-                saleProductDetail.put("billType",0) //0 Sale, 1 Purchase
-                saleProductDetail.put("serBillId",saleBillDetail.get("serBillId"))
+                saleProductDetail.put("billId", saleBillDetail.get("id"))
+                saleProductDetail.put("billType", 0) //0 Sale, 1 Purchase
+                saleProductDetail.put("serBillId", saleBillDetail.get("serBillId"))
                 def resp = new SalesService().saveSaleProductDetail(saleProductDetail)
 
-                if(resp.status == 200)
+                if (resp.status == 200)
                     println("Product Detail Saved")
                 else {
                     println("Product Detail Failed")
@@ -231,10 +223,10 @@ class SaleEntryController {
                 stockBook.put("purcDate", purcDate)
                 stockBook.put("manufacturingDate", manufacturingDate)
                 def apiRes = new InventoryService().updateStockBook(stockBook)
-                if(apiRes.status == 200) {
+                if (apiRes.status == 200) {
                     //clear tempstockbook
                     apiRes = new InventoryService().deleteTempStock(tempStockRowId)
-                    if(apiRes.status == 200) {
+                    if (apiRes.status == 200) {
                         JSONObject responseJson = new JSONObject()
                         responseJson.put("series", series)
                         responseJson.put("saleBillDetail", saleBillDetail)
@@ -243,15 +235,12 @@ class SaleEntryController {
                 }
             }
             response.status == 400
-        }
-        else
-        {
+        } else {
             response.status == 400
         }
     }
 
-    def printSaleInvoice()
-    {
+    def printSaleInvoice() {
         String saleBillId = params.id
         JSONObject saleBillDetail = new SalesService().getSaleBillDetailsById(saleBillId)
         JSONArray saleProductDetails = new SalesService().getSaleProductDetails(saleBillId)
@@ -261,49 +250,45 @@ class SaleEntryController {
         JSONObject city = new SystemService().getCityById(entity.get('cityId').toString())
         JSONObject custcity = new SystemService().getCityById(customer.get('cityId').toString())
         JSONArray termsConditions = new EntityService().getTermsContionsByEntity(session.getAttribute("entityId").toString())
-        /*JSONObject term = new JSONObject()
-        term.put("termsConditions", termsConditions);*/
-        saleProductDetails.each{
-            def apiResponse = new SalesService().getRequestWithId(it.productId.toString(),new Links().PRODUCT_REGISTER_SHOW)
-            it.put("productId",JSON.parse(apiResponse.readEntity(String.class)) as JSONObject)
+        saleProductDetails.each {
+            def apiResponse = new SalesService().getRequestWithId(it.productId.toString(), new Links().PRODUCT_REGISTER_SHOW)
+            it.put("productId", JSON.parse(apiResponse.readEntity(String.class)) as JSONObject)
         }
         def invoiceNumber;
         def datepart = saleBillDetail.entryDate.split("T")[0];
         def month = datepart.split("-")[1];
         def year = datepart.split("-")[0];
         def seriesCode = "__";
-        if(saleBillDetail.billStatus == "DRAFT")
-        {
-            invoiceNumber = "DR/S/"+ month + year + "/" + series.seriesCode + "/__";
+        if (saleBillDetail.billStatus == "DRAFT") {
+            invoiceNumber = "DR/S/" + month + year + "/" + series.seriesCode + "/__";
+        } else {
+            invoiceNumber = "S/" + month + year + "/" + series.seriesCode + "/" + saleBillDetail.id
         }
-        else {
-            invoiceNumber = "S/"+month+year+"/"+series.seriesCode+"/"+saleBillDetail.id
-        }
-        render(view: "/sales/sale-invoice", model: [saleBillDetail: saleBillDetail,
-                                                    saleProductDetails:saleProductDetails,
-                                                    series:series, entity:entity,customer:customer,city:city,
-                                                    total:saleProductDetails?.amount?.sum(),custcity:custcity,
-                                                    invoiceNumber:invoiceNumber,termsConditions:termsConditions])
+        def totalcgst = saleProductDetails.cgstAmount.sum()
+        def totalsgst = saleProductDetails.sgstAmount.sum()
+        def totaligst = saleProductDetails.igstAmount.sum()
+        def totaldiscount = saleProductDetails.discount.sum()
+        render(view: "/sales/sale-invoice", model: [saleBillDetail    : saleBillDetail,
+                                                    saleProductDetails: saleProductDetails,
+                                                    series            : series, entity: entity, customer: customer, city: city,
+                                                    total             : saleProductDetails.amount.sum(), custcity: custcity,
+                                                    invoiceNumber     : invoiceNumber, termsConditions: termsConditions,
+                                                    totalcgst         : totalcgst, totalsgst: totalsgst, totaligst: totaligst,
+                                                    totaldiscount     : totaldiscount])
     }
 
-    def show()
-    {
-        try
-        {
+    def show() {
+        try {
             def apiResponse = new SalesService().getSaleInvoice()
-            if (apiResponse?.status == 200)
-            {
+            if (apiResponse?.status == 200) {
                 JSONArray jsonArray = new JSONArray(apiResponse.readEntity(String.class));
                 ArrayList<String> arrayList = new ArrayList<>(jsonArray)
                 return arrayList
-            }
-            else
-            {
+            } else {
                 return []
             }
         }
-        catch (Exception ex)
-        {
+        catch (Exception ex) {
             System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
             log.error('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
             response.status = 400
@@ -311,24 +296,18 @@ class SaleEntryController {
     }
 
 
-    def showById(String id)
-    {
-        try
-        {
+    def showById(String id) {
+        try {
             def apiResponse = new SalesService().getSaleInvoiceById(id)
-            if (apiResponse?.status == 200)
-            {
+            if (apiResponse?.status == 200) {
                 JSONArray jsonArray = new JSONArray(apiResponse.readEntity(String.class));
                 ArrayList<String> arrayList = new ArrayList<>(jsonArray)
                 return arrayList
-            }
-            else
-            {
+            } else {
                 return []
             }
         }
-        catch (Exception ex)
-        {
+        catch (Exception ex) {
             System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
             log.error('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
             response.status = 400
@@ -336,67 +315,53 @@ class SaleEntryController {
     }
 
 
-    def saleBill()
-    {
+    def saleBill() {
         render(view: '/sales/salebillDetails/saleBill')
     }
 
-    def saleRetrun()
-    {
-        render(view: '/sales/saleReturn')
+    def saleRetrun() {
+        render(view: '/sales/saleRetrun/sale-return-print')
     }
 
-    def crdDebS()
-    {
-        render(view:"/sales/credit-debit-settlement")
+    def crdDebS() {
+        render(view: "/sales/credit-debit-settlement")
     }
 
-    def DebJV()
-    {
-        render(view:"/sales/debit-jv")
+    def DebJV() {
+        render(view: "/sales/debit-jv")
     }
 
-    def credJV()
-    {
-        render(view:'/sales/credit-jv')
+    def credJV() {
+        render(view: '/sales/credit-jv')
     }
 
-    def goodsSalesRecipt()
-    {
-        render(view:"/sales/goods-sales-recipt")
+    def goodsSalesRecipt() {
+        render(view: "/sales/goods-sales-recipt")
     }
 
-    def paymentVocher()
-    {
-        render(view:"/sales/payment-vocher")
+    def paymentVocher() {
+        render(view: "/sales/payment-vocher")
     }
 
 
-    def checkSchemeConfiguration()
-    {
+    def checkSchemeConfiguration() {
         String productId = params.productId
         String batchNumber = params.batchNumber
 
-        if(productId && batchNumber)
-        {
+        if (productId && batchNumber) {
             respond new SalesService().getSchemeConfiguration(productId, batchNumber)
-        }
-        else
-        {
+        } else {
             response.status = 400
         }
     }
 
 
-    def getProductsById(String id)
-    {
-        try
-        {
+    def getProductsById(String id) {
+        try {
             JSONObject product = new ProductService().getProductById(id)
             return product
         }
-        catch (Exception ex)
-        {
+        catch (Exception ex) {
             System.err.println('Service :getProductsById , action :  show  , Ex:' + ex)
             log.error('Service :getProductsById , action :  show  , Ex:' + ex)
         }

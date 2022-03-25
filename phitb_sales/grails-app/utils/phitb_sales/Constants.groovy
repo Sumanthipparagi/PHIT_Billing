@@ -34,4 +34,6 @@ class Constants
             System.err.println(Arrays.toString(e.getStackTrace()));
         }
     }
+    public static String PRODUCT_REGISTER_SHOW = "api/v1.0/product/productregister";
+
 }

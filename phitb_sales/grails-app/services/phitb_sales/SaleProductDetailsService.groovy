@@ -8,7 +8,8 @@ import phitb_sales.Exception.ResourceNotFoundException
 import java.text.SimpleDateFormat
 
 @Transactional
-class SaleProductDetailsService {
+class SaleProductDetailsService
+{
 
     SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss")
 
@@ -40,10 +41,10 @@ class SaleProductDetailsService {
             Date today = new Date()
             Calendar cal = new GregorianCalendar()
             cal.setTime(today)
-            cal.add(Calendar.DAY_OF_MONTH, - Integer.parseInt(days))
+            cal.add(Calendar.DAY_OF_MONTH, -Integer.parseInt(days))
             Date dateCreated = cal.getTime()
             return SaleBillDetails.createCriteria().list {
-                gt("dateCreated",dateCreated)
+                gt("dateCreated", dateCreated)
             }
         }
     }
@@ -94,7 +95,7 @@ class SaleProductDetailsService {
     SaleProductDetails save(JSONObject jsonObject)
     {
         SaleProductDetails saleProductDetails = new SaleProductDetails()
-        saleProductDetails.finId =  Long.parseLong(jsonObject.get("finId").toString())
+        saleProductDetails.finId = Long.parseLong(jsonObject.get("finId").toString())
         saleProductDetails.billId = Long.parseLong(jsonObject.get("billId").toString())
         saleProductDetails.billType = Long.parseLong(jsonObject.get("billType").toString())
         saleProductDetails.serBillId = Long.parseLong(jsonObject.get("serBillId").toString())
@@ -103,19 +104,19 @@ class SaleProductDetailsService {
         saleProductDetails.batchNumber = jsonObject.get("batchNumber").toString()
         saleProductDetails.expiryDate = jsonObject.get("expiryDate").toString()
         saleProductDetails.sqty = Double.parseDouble(jsonObject.get("sqty").toString())
-        saleProductDetails.freeQty =  Double.parseDouble(jsonObject.get("freeQty").toString())
-        saleProductDetails.repQty =  Double.parseDouble(jsonObject.get("repQty").toString())
-        saleProductDetails.repQty =  Double.parseDouble(jsonObject.get("repQty").toString())
-        saleProductDetails.pRate =  Double.parseDouble(jsonObject.get("pRate").toString())
-        saleProductDetails.sRate =  Double.parseDouble(jsonObject.get("sRate").toString())
-        saleProductDetails.mrp =  Double.parseDouble(jsonObject.get("mrp").toString())
-        saleProductDetails.discount =  Double.parseDouble(jsonObject.get("discount").toString())
+        saleProductDetails.freeQty = Double.parseDouble(jsonObject.get("freeQty").toString())
+        saleProductDetails.repQty = Double.parseDouble(jsonObject.get("repQty").toString())
+        saleProductDetails.repQty = Double.parseDouble(jsonObject.get("repQty").toString())
+        saleProductDetails.pRate = Double.parseDouble(jsonObject.get("pRate").toString())
+        saleProductDetails.sRate = Double.parseDouble(jsonObject.get("sRate").toString())
+        saleProductDetails.mrp = Double.parseDouble(jsonObject.get("mrp").toString())
+        saleProductDetails.discount = Double.parseDouble(jsonObject.get("discount").toString())
         saleProductDetails.gstId = Double.parseDouble(jsonObject.get("gstId").toString())
         saleProductDetails.gstAmount = Double.parseDouble(jsonObject.get("gstAmount").toString())
         saleProductDetails.sgstAmount = Double.parseDouble(jsonObject.get("sgstAmount").toString())
         saleProductDetails.cgstAmount = Double.parseDouble(jsonObject.get("cgstAmount").toString())
         saleProductDetails.igstAmount = Double.parseDouble(jsonObject.get("igstAmount").toString())
-        saleProductDetails.amount =  Double.parseDouble(jsonObject.get("amount").toString())
+        saleProductDetails.amount = Double.parseDouble(jsonObject.get("amount").toString())
         saleProductDetails.reason = jsonObject.get("reason").toString()
         saleProductDetails.fridgeId = Long.parseLong(jsonObject.get("fridgeId").toString())
         saleProductDetails.kitName = Long.parseLong(jsonObject.get("kitName").toString())
@@ -143,7 +144,7 @@ class SaleProductDetailsService {
         if (SaleProductDetails)
         {
             saleProductDetails.isUpdatable = true
-            saleProductDetails.finId =  Long.parseLong(jsonObject.get("finId").toString())
+            saleProductDetails.finId = Long.parseLong(jsonObject.get("finId").toString())
             saleProductDetails.billId = Long.parseLong(jsonObject.get("billId").toString())
             saleProductDetails.billType = Long.parseLong(jsonObject.get("billType").toString())
             saleProductDetails.serBillId = Long.parseLong(jsonObject.get("serBillId").toString())
@@ -152,19 +153,19 @@ class SaleProductDetailsService {
             saleProductDetails.batchNumber = jsonObject.get("batchNumber").toString()
             saleProductDetails.expiryDate = jsonObject.get("expiryDate").toString()
             saleProductDetails.sqty = Double.parseDouble(jsonObject.get("sqty").toString())
-            saleProductDetails.freeQty =  Double.parseDouble(jsonObject.get("freeQty").toString())
-            saleProductDetails.repQty =  Double.parseDouble(jsonObject.get("repQty").toString())
-            saleProductDetails.repQty =  Double.parseDouble(jsonObject.get("repQty").toString())
-            saleProductDetails.pRate =  Double.parseDouble(jsonObject.get("pRate").toString())
-            saleProductDetails.sRate =  Double.parseDouble(jsonObject.get("sRate").toString())
-            saleProductDetails.mrp =  Double.parseDouble(jsonObject.get("mrp").toString())
-            saleProductDetails.discount =  Double.parseDouble(jsonObject.get("discount").toString())
+            saleProductDetails.freeQty = Double.parseDouble(jsonObject.get("freeQty").toString())
+            saleProductDetails.repQty = Double.parseDouble(jsonObject.get("repQty").toString())
+            saleProductDetails.repQty = Double.parseDouble(jsonObject.get("repQty").toString())
+            saleProductDetails.pRate = Double.parseDouble(jsonObject.get("pRate").toString())
+            saleProductDetails.sRate = Double.parseDouble(jsonObject.get("sRate").toString())
+            saleProductDetails.mrp = Double.parseDouble(jsonObject.get("mrp").toString())
+            saleProductDetails.discount = Double.parseDouble(jsonObject.get("discount").toString())
             saleProductDetails.gstId = Double.parseDouble(jsonObject.get("gstId").toString())
             saleProductDetails.gstAmount = Double.parseDouble(jsonObject.get("gstAmount").toString())
             saleProductDetails.sgstAmount = Double.parseDouble(jsonObject.get("sgstAmount").toString())
             saleProductDetails.cgstAmount = Double.parseDouble(jsonObject.get("cgstAmount").toString())
             saleProductDetails.igstAmount = Double.parseDouble(jsonObject.get("igstAmount").toString())
-            saleProductDetails.amount =  Double.parseDouble(jsonObject.get("amount").toString())
+            saleProductDetails.amount = Double.parseDouble(jsonObject.get("amount").toString())
             saleProductDetails.reason = jsonObject.get("reason").toString()
             saleProductDetails.fridgeId = Long.parseLong(jsonObject.get("fridgeId").toString())
             saleProductDetails.kitName = Long.parseLong(jsonObject.get("kitName").toString())
@@ -231,5 +232,19 @@ class SaleProductDetailsService {
         {
             throw new BadRequestException()
         }
+    }
+
+    def getBySaleBillByList(ArrayList<Long> arrayListIds)
+    {
+        ArrayList<SaleProductDetails> saleProductDetails = SaleProductDetails.findAllByBillIdInList(arrayListIds)
+        if (saleProductDetails)
+        {
+            return saleProductDetails
+        }
+        else
+        {
+            throw new ResourceNotFoundException()
+        }
+
     }
 }

@@ -5,12 +5,17 @@ import org.grails.web.json.JSONObject
 import phitb_sales.Exception.BadRequestException
 import phitb_sales.Exception.ResourceNotFoundException
 
+import javax.ws.rs.client.Client
+import javax.ws.rs.client.ClientBuilder
+import javax.ws.rs.client.WebTarget
+import javax.ws.rs.core.MediaType
+import javax.ws.rs.core.Response
 import java.text.SimpleDateFormat
 
 @Transactional
 class SchemeConfigurationService {
 
-    SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss")
+    SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy")
 
     def getAll(String limit, String offset, String query)
     {
@@ -81,9 +86,16 @@ class SchemeConfigurationService {
             eq('deleted', false)
             order(orderColumn, orderDir)
         }
+
+        def products = []
+        schemeConfigurationArrayList.each {
+            def apires = getProductById(it.productId.toString())
+            products.push(apires)
+        }
         def recordsTotal = schemeConfigurationArrayList.totalCount
         JSONObject jsonObject = new JSONObject()
         jsonObject.put("draw", paramsJsonObject.draw)
+        jsonObject.put("products", products)
         jsonObject.put("recordsTotal", recordsTotal)
         jsonObject.put("recordsFiltered", recordsTotal)
         jsonObject.put("data", schemeConfigurationArrayList)
@@ -113,6 +125,9 @@ class SchemeConfigurationService {
         schemeConfiguration.slab3Status = Long.parseLong(jsonObject.get("slab3Status").toString())
         schemeConfiguration.slabValidityFrom = sdf.parse(jsonObject.get("slabValidityFrom").toString())
         schemeConfiguration.slabValidityTo = sdf.parse(jsonObject.get("slabValidityTo").toString())
+        schemeConfiguration.specialDiscount = Double.parseDouble(jsonObject.get("specialDiscount").toString())
+        schemeConfiguration.specialDiscountValidTo =  sdf.parse(jsonObject.get("specialDiscountValidTo").toString())
+        schemeConfiguration.specialDiscountValidFrom =  sdf.parse(jsonObject.get("specialDiscountValidFrom").toString())
         schemeConfiguration.specialRate = Long.parseLong(jsonObject.get("specialRate").toString())
         schemeConfiguration.specialRateValidFrom = sdf.parse(jsonObject.get("specialRateValidFrom").toString())
         schemeConfiguration.specialRateValidTo = sdf.parse(jsonObject.get("specialRateValidTo").toString())
@@ -159,7 +174,10 @@ class SchemeConfigurationService {
             schemeConfiguration.slab3Status = Long.parseLong(jsonObject.get("slab3Status").toString())
             schemeConfiguration.slabValidityFrom = sdf.parse(jsonObject.get("slabValidityFrom").toString())
             schemeConfiguration.slabValidityTo = sdf.parse(jsonObject.get("slabValidityTo").toString())
-            schemeConfiguration.specialRate = Long.parseLong(jsonObject.get("specialRate").toString())
+            schemeConfiguration.specialDiscount = Double.parseDouble(jsonObject.get("specialDiscount").toString())
+            schemeConfiguration.specialDiscountValidTo =  sdf.parse(jsonObject.get("specialDiscountValidTo").toString())
+            schemeConfiguration.specialDiscountValidFrom =  sdf.parse(jsonObject.get("specialDiscountValidFrom").toString())
+            schemeConfiguration.specialRate = Double.parseDouble(jsonObject.get("specialRate").toString())
             schemeConfiguration.specialRateValidFrom = sdf.parse(jsonObject.get("specialRateValidFrom").toString())
             schemeConfiguration.specialRateValidTo = sdf.parse(jsonObject.get("specialRateValidTo").toString())
             schemeConfiguration.schemeStatus = jsonObject.get("schemeStatus").toString()
@@ -209,4 +227,28 @@ class SchemeConfigurationService {
     {
        return SchemeConfiguration.findByProductIdAndBatch(Long.parseLong(productId), batchNumber)
     }
+
+
+    def getProductById(String id) {
+        Client client = ClientBuilder.newClient()
+        WebTarget target = client.target(new Constants().API_GATEWAY)
+        try {
+            Response apiResponse = target
+                    .path(new Constants().PRODUCT_REGISTER_SHOW + "/"+id)
+                    .request(MediaType.APPLICATION_JSON_TYPE)
+                    .get()
+            if(apiResponse.status == 200)
+            {
+                JSONObject jsonObject = new JSONObject(apiResponse.readEntity(String.class))
+                return jsonObject
+            }
+            else
+                return null
+        }
+        catch (Exception ex) {
+            System.err.println('Service :SchemeConfiguration , action :  getEntity  , Ex:' + ex)
+            log.error('Service :SchemeConfiguration , action :  getEntity  , Ex:' + ex)
+        }
+    }
+
 }

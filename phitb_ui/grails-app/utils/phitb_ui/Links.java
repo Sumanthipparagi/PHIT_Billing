@@ -338,10 +338,24 @@ public class Links
     public static String SALE_BILL_PAYMENT = "api/v1.0/sales/salebillbypaymentstatus";
     public static String SET_PAYMENT_BILL = "api/v1.0/sales/setpaymentstatus/{id}/type/{type}";
     public static String SALE_BILL_RECENT = "api/v1.0/sales/salebilldetails/getrecent";
+    public static String SALE_BILL_CUSTOMER = "api/v1.0/sales//salebillbycustomer/{custid}";
+
+
+    public static String SALE_SCHEME_UPDATE = "api/v1.0/sales/schemeconfiguration/{id}";
+    public static String SALE_SCHEME_DELETE = "api/v1.0/sales/schemeconfiguration/{id}";
+    public static String SALE_SCHEME_SAVE = "api/v1.0/sales/schemeconfiguration";
+    public static String SALE_SCHEME_SHOW = "api/v1.0/sales/schemeconfiguration";
+    public static String SALE_SCHEME_DATATABLE = "api/v1.0/sales/schemeconfiguration/datatable";
+
+//    Reason Master
+    public static String REASON_UPDATE = "api/v1.0/sales/reasonmaster/{id}";
+    public static String REASON_DELETE = "api/v1.0/sales/reasonmaster/{id}";
+    public static String REASON_SAVE = "api/v1.0/sales/reasonmaster";
+    public static String REASON_SHOW = "api/v1.0/sales/reasonmaster";
+    public static String REASON_DATATABLE = "api/v1.0/sales/reasonmaster/datatable";
 
 
     public static String SALE_SCHEME_CONFIG_GET_PRODUCT_BATCH = "api/v1.0/sales/schemeconfiguration/product/$productId/batch/$batchNumber";
-
 
 
     //Sale Product Details
@@ -351,7 +365,11 @@ public class Links
     public static String SALE_PRODUCT_UPDATE = "api/v1.0/sales/saleproductdetails/{id}";
     public static String SALE_PRODUCT_DELETE = "api/v1.0/sales/saleproductdetails/{id}";
     public static String SALE_PRODUCT_OF_BILL = "api/v1.0/sales/saleproductdetails/bill";
+    public static String SALE_PRODUCT_OF_BILL2 = "api/v1.0/sales/saleproductdetailslist/bill/{salebillsIds}";
 
+    //Sale Return Details
+    public static String SALE_RETURN_SHOW = "api/v1.0/sales/saleproductdetails";
+    public static String SALE_RETURN_SAVE = "api/v1.0/sales/saleproductdetails";
 
 
     //Sale Order Details

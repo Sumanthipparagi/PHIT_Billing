@@ -110,20 +110,23 @@ class UrlMappings {
                 action = [GET: 'getAllsettledByCustId']
             }
 
+            "/salebillbycustomer/$id(.$format)?"(controller: 'saleBillDetails') {
+                action = [GET: 'getAllByCustomerId']
+            }
 
-            //Sale Order entry Controller
-            "/salebilldetails(.$format)?"(controller: 'saleBillDetails') {
-                action = [GET: 'index', POST:
-                        'save']
-            }
-            "/salebilldetails/datatable(.$format)?"(controller: 'saleBillDetails') {action = [GET: 'dataTable']}
-            "/salebilldetails/$id(.$format)?"(controller: 'saleBillDetails') {
-                action = [GET: 'show', PUT: 'update', DELETE:
-                        'delete']
-            }
-            "/salebilldetailsbydays/$days(.$format)?"(controller: 'saleBillDetails') {
-                action = [GET: 'getAllByDays']
-            }
+//            //Sale Order entry Controller
+//            "/salebilldetails(.$format)?"(controller: 'saleBillDetails') {
+//                action = [GET: 'index', POST:
+//                        'save']
+//            }
+//            "/salebilldetails/datatable(.$format)?"(controller: 'saleBillDetails') {action = [GET: 'dataTable']}
+//            "/salebilldetails/$id(.$format)?"(controller: 'saleBillDetails') {
+//                action = [GET: 'show', PUT: 'update', DELETE:
+//                        'delete']
+//            }
+//            "/salebilldetailsbydays/$days(.$format)?"(controller: 'saleBillDetails') {
+//                action = [GET: 'getAllByDays']
+//            }
             "/salebilldetails/getrecent(.$format)?"(controller: 'saleBillDetails', action: 'getRecentByFinancialYearAndEntity')
 
             "/setpaymentstatus/$id/type/$type(.$format)?"(controller: 'saleBillDetails') {
@@ -137,6 +140,10 @@ class UrlMappings {
             }
             "/saleproductdetails/bill/$id(.$format)?"(controller: 'saleProductDetails') {
                 action = [GET: 'getSaleProductDetailsOfSaleBill']
+            }
+
+            "/saleproductdetailslist/bill/$salebillsIds(.$format)?"(controller: 'saleProductDetails') {
+                action = [GET: 'getSaleProductDetailsOfSaleBillList']
             }
 
             "/saleproductdetails/datatable(.$format)?"(controller: 'saleProductDetails') {action = [GET: 'dataTable']}
@@ -205,6 +212,17 @@ class UrlMappings {
                 action = [GET: 'index', POST:
                         'save']
             }
+
+
+            //Sale return details
+            "/salereturndetails(.$format)?"(controller:'tempUserLog') {
+                action = [GET: 'index', POST: 'save']
+            }
+            "/salereturndetails/$id(.$format)?"(controller:'tempUserLog') {
+                action = [GET: 'show', PUT: 'update', DELETE:
+                        'delete']
+            }
+
 
             //Temp User Log
             "/tempuserlog(.$format)?"(controller:'tempUserLog') {

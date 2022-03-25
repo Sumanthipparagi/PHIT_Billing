@@ -335,4 +335,23 @@ class SaleBillDetailsController
     }
 
 
+    /**
+     * Gets all Sale Bill Details
+     * @param query
+     * @param offset
+     * @param limit
+     * @return list of Sale Bill Details
+     */
+    def getAllByCustomerId()
+    {
+
+        try
+        {
+            respond saleBillDetailsService.getAllByCustomerId(params.id)
+        }
+        catch (Exception ex)
+        {
+            System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
+        }
+    }
 }

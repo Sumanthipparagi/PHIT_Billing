@@ -80,33 +80,36 @@
             </div>
         </div>
         <div class="row clearfix">
-            <div class="col-lg-3">
-                <div class="form-group">
-                    <label>Entities</label>
-                    <select class="form-control" id="entitySelect"></select>
-                </div>
-            </div>
-            <div class="col-lg-3">
-                <div class="form-group">
-                    <label>Division</label>
-                    <select class="form-control" id="divisionSelect"></select>
-                </div>
-            </div>
-            <div class="col-lg-3">
-                <div class="form-group">
-                    <label>Batch Status</label>
-                    <select class="form-control" id="batchStatus"></select>
-                </div>
-            </div>
+%{--            <div class="col-lg-3">--}%
+%{--                <div class="form-group">--}%
+%{--                    <label>Entities</label>--}%
+%{--                    <select class="form-control" id="entitySelect"></select>--}%
+%{--                </div>--}%
+%{--            </div>--}%
+%{--            <div class="col-lg-3">--}%
+%{--                <div class="form-group">--}%
+%{--                    <label>Division</label>--}%
+%{--                    <select class="form-control" id="divisionSelect"></select>--}%
+%{--                </div>--}%
+%{--            </div>--}%
+%{--            <div class="col-lg-3">--}%
+%{--                <div class="form-group">--}%
+%{--                    <label>Batch Status</label>--}%
+%{--                    <select class="form-control" id="batchStatus"></select>--}%
+%{--                </div>--}%
+%{--            </div>--}%
         </div>
         <div class="row clearfix">
             <div class="col-lg-12">
                 <div class="card">
                     <div class="header">
-                        <button type="button" class="btn btn-round btn-primary m-t-15 addbtn" data-toggle="modal"
-                                data-target="#addSchemeModal"><font style="vertical-align: inherit;"><font
+                        <a href="/add-scheme-entry">
+                        <button type="button" class="btn btn-round btn-primary m-t-15 addbtn"
+                                ><font style="vertical-align: inherit;"><font
                                 style="vertical-align: inherit;">Add Scheme</font></font></button>
+                        </a>
                     </div>
+
                     <div class="body">
                         <div class="table-responsive">
                             <table class="table table-bordered table-striped table-hover schemeTable dataTable">
@@ -120,7 +123,7 @@
                                     <th>Slb2 Sch Qty</th>
                                     <th>Slb3 Min Qty</th>
                                     <th>Slb3 Sch Qty</th>
-                                    <th>Status</th>
+%{--                                    <th>Status</th>--}%
                                     <th>Action</th>
                                 </tr>
                                 </thead>
@@ -189,46 +192,49 @@
             processing: true,
             serverSide: true,
             language: {
-                searchPlaceholder: "Search Product Category"
+                searchPlaceholder: "Search Scheme"
             },
             ajax: {
                 type: 'GET',
-                url: '/product-category/datatable',
+                url: '/scheme-entry/datatable',
                 dataType: 'json',
                 dataSrc: function (json) {
                     var return_data = [];
                     for (var i = 0; i < json.data.length; i++) {
                         console.log(json)
-                        var editbtn = '<button type="button" data-id="' + json.data[i].id +
-                            '" data-categoryName="' + json.data[i].categoryName + '"' +
-                            '" data-restrictedCategory="' + json.data[i].restrictedCategory + '"' +
-                            '" data-accessRestriction="' + json.data[i].accessRestriction + '"' +
-                            '" data-entityId="' + json.data[i].entityId + '"' +
-                            '" data-entityType="' + json.data[i].entityTypeId + '"' +
+                        var editbtn = '<a href="/update-scheme-entry/' + json.data[i].id
+                            +'"><button type="button" data-id="' +
+                            json.data[i].id +
                             '"' +
-                            ' class="editbtn btn btn-sm btn-warning  editbtn" data-toggle="modal" data-target="#addSchemeModal"><i class="material-icons"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">edit</font></font></i></button>'
+                            ' class="editbtn btn btn-sm btn-warning  editbtn"><i class="material-icons"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">edit</font></font></i></button></a>'
                         var deletebtn = '<button type="button" data-id="' + json.data[i].id +
-                            '" class="btn btn-sm btn-danger deletebtn" data-toggle="modal" data-target=".deleteModal"><i class="material-icons"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">delete</font></font></i></button>'
+                            '" class="btn btn-sm btn-danger deletebtn" data-toggle="modal" data-target=".deleteModal"><i class="material-icons"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">delete</font></font></i></button>';
                         return_data.push({
-                            'id': json.data[i].id,
-                            'categoryName': json.data[i].categoryName,
-                            'restrictedCategory': json.data[i].restrictedCategory,
-                            'accessRestriction': json.data[i].accessRestriction,
-                            'entity':json.entity[i].entityName,
-                            'entitytype': json.entityType[i].name,
+                            'product': json.products[i].productName,
+                            'batch': json.data[i].batch,
+                            'slab1minQty': json.data[i].slab1MinQty,
+                            'slab1SchQty':json.data[i].slab1SchemeQty,
+                            'slab2minQty': json.data[i].slab2MinQty,
+                            'slab2SchQty':json.data[i].slab2SchemeQty,
+                            'slab3minQty': json.data[i].slab3MinQty,
+                            'slab3SchQty':json.data[i].slab3SchemeQty,
                             'action': editbtn + ' ' + deletebtn
                         });
                     }
+
                     return return_data;
                 }
             },
             columns: [
                 // {'data': 'id', 'width': '20%'},
-                {'data': 'categoryName', 'width': '20%'},
-                {'data': 'restrictedCategory', 'width': '20%'},
-                {'data': 'accessRestriction', 'width': '20%'},
-                {'data': 'entity', 'width': '20%'},
-                {'data': 'entitytype', 'width': '20%'},
+                {'data': 'product', 'width': '20%'},
+                {'data': 'batch', 'width': '20%'},
+                {'data': 'slab1minQty', 'width': '20%'},
+                {'data': 'slab1SchQty', 'width': '20%'},
+                {'data': 'slab2minQty', 'width': '20%'},
+                {'data': 'slab2SchQty', 'width': '20%'},
+                {'data': 'slab3minQty', 'width': '20%'},
+                {'data': 'slab3SchQty', 'width': '20%'},
                 {'data': 'action', 'width': '20%'}
             ]
         });
@@ -297,19 +303,19 @@
 
     $(document).on("click", ".deletebtn", function () {
         id = $(this).data('id');
-        $("#myModalLabel").text("Delete Product Category ?");
+        $("#myModalLabel").text("Delete Scheme ?");
 
     });
 
     function deleteData() {
         $.ajax({
             type: 'POST',
-            url: '/product-category/delete/' + id,
+            url: '/scheme-entry/delete/' + id,
             dataType: 'json',
             success: function () {
                 $('.deleteModal').modal('hide');
                 schemeTable();
-                swal("Success!", "Product Category Deleted Successfully", "success");
+                swal("Success!", "Scheme Deleted Successfully", "success");
             }, error: function () {
                 swal("Error!", "Something went wrong", "error");
             }

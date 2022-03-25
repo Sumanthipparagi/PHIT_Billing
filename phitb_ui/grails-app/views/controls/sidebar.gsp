@@ -564,7 +564,7 @@
                         <li><a href="/sale-entry">Sale Entry</a></li>
                         <li><a href="/sale-bill-list">My Invoices</a></li>
                         <li><a href="#">Sale Return</a></li>
-                        <li><a href="#">Scheme Entry (Offers)</a></li>
+                        <li><a href="/scheme-entry">Scheme Entry (Offers)</a></li>
                         <li><a href="#">Stock Adjustment</a></li>
                         <li><a href="#">Credit Debit Settlement</a></li>
                     </ul>
