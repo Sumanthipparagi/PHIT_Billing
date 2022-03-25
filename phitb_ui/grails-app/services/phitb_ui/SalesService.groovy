@@ -111,7 +111,7 @@ class SalesService
         {
             println(jsonObject)
             Response apiResponse = target
-                    .path(new Links().SALE_ORDER_SAVE)
+                    .path(new Links().SALE_RETURN_SAVE)
                     .request(MediaType.APPLICATION_JSON_TYPE)
                     .post(Entity.entity(jsonObject.toString(), MediaType.APPLICATION_JSON_TYPE))
             println(apiResponse)

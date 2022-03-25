@@ -215,10 +215,10 @@ class UrlMappings {
 
 
             //Sale return details
-            "/salereturndetails(.$format)?"(controller:'tempUserLog') {
+            "/salereturndetails(.$format)?"(controller:'saleReturnDetails') {
                 action = [GET: 'index', POST: 'save']
             }
-            "/salereturndetails/$id(.$format)?"(controller:'tempUserLog') {
+            "/salereturndetails/$id(.$format)?"(controller:'saleReturnDetails') {
                 action = [GET: 'show', PUT: 'update', DELETE:
                         'delete']
             }

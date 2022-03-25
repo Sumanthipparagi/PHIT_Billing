@@ -356,7 +356,7 @@ public class Links
 
     //Sale Return Details
     public static String SALE_RETURN_SHOW = "api/v1.0/sales/saleproductdetails";
-    public static String SALE_RETURN_SAVE = "api/v1.0/sales/saleproductdetails";
+    public static String SALE_RETURN_SAVE = "api/v1.0/sales/salereturndetails";
 
 
     //Sale Order Details

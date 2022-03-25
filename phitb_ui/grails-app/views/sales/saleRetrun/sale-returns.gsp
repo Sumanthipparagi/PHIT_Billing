@@ -111,7 +111,7 @@
 
                             <div class="col-md-4">
                                 <label for="customerSelect">Salesman:</label>
-                                <select class="form-control show-tick" id="salesmanSelect">
+                                <select class="form-control show-tick" id="salesmanSelect" name="salesmanId">
                                     <option selected disabled>--SELECT--</option>
                                     <g:each in="${salesmanList}" var="sales">
                                         <g:if test="${sales.id != session.getAttribute("userId")}">
@@ -123,7 +123,7 @@
 
                             <div class="col-md-3">
                                 <label for="duedate">Dispatch Date:</label>
-                                <input type="date" class="form-control date" name="duedate" id="dispatchDate"/>
+                                <input type="date" class="form-control date" name="dispatchDate" id="dispatchDate"/>
                             </div>
 
                             <div class="col-md-4">
@@ -291,6 +291,10 @@
         '<strong>Amount</strong>',
         '<strong>Sqty</strong>',
         '<strong>FreeQty</strong>',
+        'SGST',
+        'CGST',
+        'IGST',
+        '<strong>PId</strong>',
         'id'];
 
     const batchContainer = document.getElementById('batchTable');
@@ -583,6 +587,11 @@
                 {type: 'numeric', readOnly: true},
                 {type: 'numeric', readOnly: true},
                 {type: 'numeric', readOnly: true},
+                {type: 'numeric', readOnly: true},
+                {type: 'numeric', readOnly: true},
+                {type: 'numeric', readOnly: true},
+                {type: 'numeric', readOnly: true},
+                {type: 'numeric', readOnly: true},
                 {type: 'text', readOnly: true}
             ],
             // hiddenColumns: {
@@ -610,12 +619,16 @@
                         hot.setCellMeta(mainTableRow, 2, "batchId", batchId);
                         hot.setDataAtCell(mainTableRow, 3, rowData[3]);
                         hot.setDataAtCell(mainTableRow, 4, rowData[7]);
+                        hot.setDataAtCell(mainTableRow, 2, rowData[12]);
 
                         hot.setDataAtCell(mainTableRow, 5, rowData[8]);
                         hot.setDataAtCell(mainTableRow, 6, rowData[5]);
-                        hot.setDataAtCell(mainTableRow, 7, rowData[6]);
+                        hot.setDataAtCell(mainTableRow, 10, rowData[6]);
+                        hot.setDataAtCell(mainTableRow, 11, rowData[10]);
+                        hot.setDataAtCell(mainTableRow, 12, rowData[11]);
+                        hot.setDataAtCell(mainTableRow, 13, rowData[12]);
+
                         hot.setDataAtCell(mainTableRow, 8, 0);
-                        hot.setDataAtCell(mainTableRow, 9, rowData[7]);
                         gst = rowData[8];
                         sgst = rowData[9];
                         cgst = rowData[10];
@@ -669,11 +682,10 @@
                             batchdt.push(data[i].amount);
                             batchdt.push(data[i].sqty);
                             batchdt.push(data[i].freeQty);
-                            // batchdt.push(data[i].packingDesc);
-                            // batchdt.push(data[i].gst);
-                            // batchdt.push(data[i].sgst);
-                            // batchdt.push(data[i].cgst);
-                            // batchdt.push(data[i].igst);
+                            batchdt.push(data[i].sgstAmount);
+                            batchdt.push(data[i].cgstAmount);
+                            batchdt.push(data[i].igstAmount);
+                            batchdt.push(data[i].productId);
                             batchdt.push(data[i].id);
                             batchData.push(batchdt);
                         }
@@ -716,6 +728,11 @@
                         saledt.push(data[0].sRate);
                         saledt.push(data[0].mrp);
                         saledt.push(data[0].discount);
+                        saledt.push(0);
+                        saledt.push(data[0].amount);
+                        saledt.push(data[0].sgstAmount);
+                        saledt.push(data[0].cgstAmount);
+                        saledt.push(data[0].igstAmount);
                         saleData.push(saledt);
                         // }
                         hot.updateSettings({
@@ -899,10 +916,11 @@
         });
 
         var customer = $("#customerSelect").val();
+        var salesmanId = $("#salesmanSelect").val();
         var series = $("#series").val();
-        var duedate = $("#duedate").val();
-        duedate = moment(duedate, 'YYYY-MM-DD').toDate();
-        duedate = moment(duedate).format('DD/MM/YYYY');
+        var dispatchDate = $("#dispatchDate").val();
+        dispatchDate = moment(dispatchDate, 'YYYY-MM-DD').toDate();
+        dispatchDate = moment(dispatchDate).format('DD/MM/YYYY');
         var priority = $("#priority").val();
 
         if (!series) {
@@ -917,6 +935,18 @@
             return;
         }
 
+        if (!salesmanId) {
+            alert("Please select Salesman.");
+            waitingSwal.close();
+            return;
+        }
+
+        if (!dispatchDate) {
+            alert("Please select dispatchDate.");
+            waitingSwal.close();
+            return;
+        }
+
         var saleData = JSON.stringify(hot.getData());
 
         $.ajax({
@@ -927,27 +957,29 @@
                 saleData: saleData,
                 customer: customer,
                 series: series,
-                duedate: duedate,
+                dispatchDate: dispatchDate,
                 priority: priority,
-                billStatus: billStatus
+                billStatus: billStatus,
+                salesmanId: salesmanId
             },
             success: function (data) {
-                readOnly = true;
-                var rowData = hot.getData();
-                for (var j = 0; j < rowData.length; j++) {
-                    for (var i = 0; i < 16; i++) {
-                        hot.setCellMeta(j, i, 'readOnly', true);
-                    }
-                }
-                saleBillId = data.saleBillDetail.id;
-                var datepart = data.saleBillDetail.entryDate.split("T")[0];
+                console.log(data)
+                // readOnly = true;
+                // var rowData = hot.getData();
+                // for (var j = 0; j < rowData.length; j++) {
+                //     for (var i = 0; i < 16; i++) {
+                //         hot.setCellMeta(j, i, 'readOnly', true);
+                //     }
+                // }
+                saleBillId = data.saleReturnDetail.id;
+                var datepart = data.saleReturnDetail.entryDate.split("T")[0];
                 var month = datepart.split("-")[1];
                 var year = datepart.split("-")[0];
                 var seriesCode = data.series.seriesCode;
-                var invoiceNumber = "S/" + month + year + "/" + seriesCode + "/" + data.saleBillDetail.serBillId;
+                var invoiceNumber = "S/" + month + year + "/" + seriesCode + "/" + data.saleReturnDetail.serBillId;
                 var message = "";
                 if (billStatus !== "DRAFT") {
-                    message = 'Sale Invoice Generated: ' + invoiceNumber;
+                    message = 'Sale Retrun Generated: ' + invoiceNumber;
                     $("#invNo").html("<p><strong>" + invoiceNumber + "</strong></p>");
                 } else {
                     $("#invNo").html("<p><strong>DR/S/" + month + year + "/" + seriesCode + "/__</strong></p>");
