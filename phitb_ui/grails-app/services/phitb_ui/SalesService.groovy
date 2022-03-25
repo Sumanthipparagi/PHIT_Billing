@@ -16,13 +16,16 @@ import javax.ws.rs.core.MediaType
 import javax.ws.rs.core.Response
 
 @Transactional
-class SalesService {
+class SalesService
+{
 
-    def getSaleBillDetails() {
+    def getSaleBillDetails()
+    {
         Client client = ClientBuilder.newClient();
         WebTarget target = client.target(new Links().API_GATEWAY);
 
-        try {
+        try
+        {
             Response apiResponse = target
                     .path(new Links().SALE_BILL_SHOW)
                     .request(MediaType.APPLICATION_JSON_TYPE)
@@ -30,25 +33,29 @@ class SalesService {
 
             return apiResponse
         }
-        catch (Exception ex) {
+        catch (Exception ex)
+        {
             System.err.println('Service :SalesService , action :  getProducts  , Ex:' + ex)
             log.error('Service :SalesService , action :  getProducts  , Ex:' + ex)
         }
     }
 
-    def getAllSettledBillsByCustomer(String id) {
+    def getAllSettledBillsByCustomer(String id)
+    {
         Client client = ClientBuilder.newClient();
         WebTarget target = client.target(new Links().API_GATEWAY);
         GrailsHttpSession session = WebUtils.retrieveGrailsWebRequest().session
-        try {
+        try
+        {
             Response apiResponse = target
-                    .path(new Links().SALE_BILL_SETTLED+"/"+id)
+                    .path(new Links().SALE_BILL_SETTLED + "/" + id)
                     .request(MediaType.APPLICATION_JSON_TYPE)
                     .get()
 
             return apiResponse
         }
-        catch (Exception ex) {
+        catch (Exception ex)
+        {
             System.err.println('Service :ProductService , action :  getProducts  , Ex:' + ex)
             log.error('Service :ProductService , action :  getProducts  , Ex:' + ex)
         }
@@ -64,7 +71,7 @@ class SalesService {
             Response apiResponse = target
                     .path(new Links().SALE_BILL_SAVE)
                     .request(MediaType.APPLICATION_JSON_TYPE)
-                    .post(Entity.entity(jsonObject.toString(),MediaType.APPLICATION_JSON_TYPE))
+                    .post(Entity.entity(jsonObject.toString(), MediaType.APPLICATION_JSON_TYPE))
             println(apiResponse)
             return apiResponse
         }
@@ -85,7 +92,7 @@ class SalesService {
             Response apiResponse = target
                     .path(new Links().SALE_ORDER_SAVE)
                     .request(MediaType.APPLICATION_JSON_TYPE)
-                    .post(Entity.entity(jsonObject.toString(),MediaType.APPLICATION_JSON_TYPE))
+                    .post(Entity.entity(jsonObject.toString(), MediaType.APPLICATION_JSON_TYPE))
             println(apiResponse)
             return apiResponse
         }
@@ -107,7 +114,7 @@ class SalesService {
                     .path(new Links().SALE_BILL_UPDATE)
                     .resolveTemplate("id", jsonObject.id)
                     .request(MediaType.APPLICATION_JSON_TYPE)
-                    .put(Entity.entity(jsonObject,MediaType.APPLICATION_JSON_TYPE))
+                    .put(Entity.entity(jsonObject, MediaType.APPLICATION_JSON_TYPE))
             println(jsonObject)
             return apiResponse
         }
@@ -129,7 +136,7 @@ class SalesService {
             Response apiResponse = target
                     .path(new Links().SALE_PRODUCT_SAVE)
                     .request(MediaType.APPLICATION_JSON_TYPE)
-                    .post(Entity.entity(jsonObject.toString(),MediaType.APPLICATION_JSON_TYPE))
+                    .post(Entity.entity(jsonObject.toString(), MediaType.APPLICATION_JSON_TYPE))
             return apiResponse
         }
         catch (Exception ex)
@@ -153,7 +160,7 @@ class SalesService {
                     .request(MediaType.APPLICATION_JSON_TYPE)
                     .get()
 
-            if(apiResponse.status == 200)
+            if (apiResponse.status == 200)
             {
                 JSONObject jsonObject = new JSONObject(apiResponse.readEntity(String.class))
                 return jsonObject
@@ -170,73 +177,88 @@ class SalesService {
         }
     }
 
-    def getSaleBillDetailsById(String id) {
+    def getSaleBillDetailsById(String id)
+    {
         Client client = ClientBuilder.newClient();
         WebTarget target = client.target(new Links().API_GATEWAY);
-        try {
+        try
+        {
             Response apiResponse = target
-                    .path(new Links().SALE_BILL_SHOW+"/"+id)
+                    .path(new Links().SALE_BILL_SHOW + "/" + id)
                     .request(MediaType.APPLICATION_JSON_TYPE)
                     .get()
-            if(apiResponse.status == 200)
+            if (apiResponse.status == 200)
             {
                 JSONObject saleBillDetail = new JSONObject(apiResponse.readEntity(String.class))
                 return saleBillDetail
             }
             else
+            {
                 return null
+            }
         }
-        catch (Exception ex) {
+        catch (Exception ex)
+        {
             System.err.println('Service :SalesService , action :  getProducts  , Ex:' + ex)
             log.error('Service :SalesService , action :  getProducts  , Ex:' + ex)
         }
     }
 
-    def getSaleProductDetails(String id) {
+    def getSaleProductDetails(String id)
+    {
         Client client = ClientBuilder.newClient();
         WebTarget target = client.target(new Links().API_GATEWAY);
-        try {
+        try
+        {
             Response apiResponse = target
-                    .path(new Links().SALE_PRODUCT_OF_BILL+"/"+id)
+                    .path(new Links().SALE_PRODUCT_OF_BILL + "/" + id)
                     .request(MediaType.APPLICATION_JSON_TYPE)
                     .get()
-            if(apiResponse.status == 200)
+            if (apiResponse.status == 200)
             {
                 JSONArray saleProductDetail = new JSONArray(apiResponse.readEntity(String.class))
                 return saleProductDetail
             }
             else
+            {
                 return null
+            }
         }
-        catch (Exception ex) {
+        catch (Exception ex)
+        {
             System.err.println('Service :SalesService , action :  getProducts  , Ex:' + ex)
             log.error('Service :SalesService , action :  getProducts  , Ex:' + ex)
         }
     }
 
-    def getSaleInvoiceById(String id) {
+    def getSaleInvoiceById(String id)
+    {
         Client client = ClientBuilder.newClient();
         WebTarget target = client.target(new Links().API_GATEWAY);
         GrailsHttpSession session = WebUtils.retrieveGrailsWebRequest().session
-        try {
+        try
+        {
 
             Response apiResponse = target
-                    .path(new Links().SALE_BILL_SHOW +"/"+id)
+                    .path(new Links().SALE_BILL_SHOW + "/" + id)
                     .request(MediaType.APPLICATION_JSON_TYPE)
                     .get()
             return apiResponse
         }
-        catch (Exception ex) {
+        catch (Exception ex)
+        {
             System.err.println('Service :ProductService , action :  getProducts  , Ex:' + ex)
             log.error('Service :ProductService , action :  getProducts  , Ex:' + ex)
         }
     }
 
-    def getSaleInvoice(){
+    def getSaleInvoice()
+    {
         Client client = ClientBuilder.newClient();
         WebTarget target = client.target(new Links().API_GATEWAY);
         GrailsHttpSession session = WebUtils.retrieveGrailsWebRequest().session
-        try {
+        try
+        {
 
             Response apiResponse = target
                     .path(new Links().SALE_BILL_SHOW)
@@ -244,33 +266,39 @@ class SalesService {
                     .get()
             return apiResponse
         }
-        catch (Exception ex) {
+        catch (Exception ex)
+        {
             System.err.println('Service :ProductService , action :  getProducts  , Ex:' + ex)
             log.error('Service :ProductService , action :  getProducts  , Ex:' + ex)
         }
     }
 
-    def getSchemeConfiguration(String productId, String batchNumber) {
+    def getSchemeConfiguration(String productId, String batchNumber)
+    {
         String url = new Links().SALE_SCHEME_CONFIG_GET_PRODUCT_BATCH
         url = url.replace("\$productId", productId)
         url = url.replace("\$batchNumber", batchNumber)
         Client client = ClientBuilder.newClient();
         WebTarget target = client.target(new Links().API_GATEWAY);
-        try {
+        try
+        {
             Response apiResponse = target
                     .path(url)
                     .request(MediaType.APPLICATION_JSON_TYPE)
                     .get()
 
-            if(apiResponse.status == 200)
+            if (apiResponse.status == 200)
             {
                 JSONObject jsonObject = new JSONObject(apiResponse.readEntity(String.class))
                 return jsonObject
             }
             else
+            {
                 return null
+            }
         }
-        catch (Exception ex) {
+        catch (Exception ex)
+        {
             System.err.println('Service :SalesService , action :  getProducts  , Ex:' + ex)
             log.error('Service :SalesService , action :  getProducts  , Ex:' + ex)
         }
@@ -283,13 +311,33 @@ class SalesService {
      * @param link
      * @return response
      */
-     def getRequestWithId(String id, String link)
+    def getRequestWithId(String id, String link)
     {
         try
         {
             Client client = ClientBuilder.newClient();
             WebTarget target = client.target(new Links().API_GATEWAY);
-            Response apiResponse = target.path(link+"/"+id)
+            Response apiResponse = target.path(link + "/" + id)
+                    .request(MediaType.APPLICATION_JSON_TYPE)
+                    .get()
+            println("API Response from server :" + apiResponse?.getStatus())
+            return apiResponse
+        }
+        catch (Exception ex)
+        {
+            System.err.println(ex)
+        }
+    }
+
+
+    def getRequestWithIdList(ArrayList<Long> idList, String link)
+    {
+        try
+        {
+            Client client = ClientBuilder.newClient();
+            WebTarget target = client.target(new Links().API_GATEWAY);
+            Response apiResponse = target.path(link)
+                    .resolveTemplate("salebillsIds", idList.toString())
                     .request(MediaType.APPLICATION_JSON_TYPE)
                     .get()
             println("API Response from server :" + apiResponse?.getStatus())
@@ -330,7 +378,7 @@ class SalesService {
             Response apiResponse = target
                     .path(new Links().SALE_SCHEME_SAVE)
                     .request(MediaType.APPLICATION_JSON_TYPE)
-                    .post(Entity.entity(jsonObject.toString(),MediaType.APPLICATION_JSON_TYPE))
+                    .post(Entity.entity(jsonObject.toString(), MediaType.APPLICATION_JSON_TYPE))
             return apiResponse
         }
         catch (Exception ex)
@@ -379,7 +427,7 @@ class SalesService {
                     .path(new Links().SALE_SCHEME_UPDATE)
                     .resolveTemplate("id", jsonObject.id)
                     .request(MediaType.APPLICATION_JSON_TYPE)
-                    .put(Entity.entity(jsonObject.toString(),MediaType.APPLICATION_JSON_TYPE))
+                    .put(Entity.entity(jsonObject.toString(), MediaType.APPLICATION_JSON_TYPE))
             println(jsonObject)
             return apiResponse
         }
@@ -416,50 +464,88 @@ class SalesService {
         }
     }
 
-    def getSchemeById(String id) {
+    def getSchemeById(String id)
+    {
         Client client = ClientBuilder.newClient()
         WebTarget target = client.target(new Links().API_GATEWAY)
-        try {
+        try
+        {
             Response apiResponse = target
-                    .path(new Links().SALE_SCHEME_SHOW + "/"+id)
+                    .path(new Links().SALE_SCHEME_SHOW + "/" + id)
                     .request(MediaType.APPLICATION_JSON_TYPE)
                     .get()
-            if(apiResponse.status == 200)
+            if (apiResponse.status == 200)
             {
                 JSONObject jsonObject = new JSONObject(apiResponse.readEntity(String.class))
                 return jsonObject
             }
             else
+            {
                 return null
+            }
         }
-        catch (Exception ex) {
+        catch (Exception ex)
+        {
             System.err.println('Service :EntityService , action :  getEntity  , Ex:' + ex)
             log.error('Service :EntityService , action :  getEntity  , Ex:' + ex)
         }
     }
 
 
-    def getReason(String id) {
+    def getReason()
+    {
         Client client = ClientBuilder.newClient()
         WebTarget target = client.target(new Links().API_GATEWAY)
-        try {
+        try
+        {
             Response apiResponse = target
                     .path(new Links().REASON_SHOW)
                     .request(MediaType.APPLICATION_JSON_TYPE)
                     .get()
-            if(apiResponse.status == 200)
+            if (apiResponse.status == 200)
             {
                 JSONArray JSONArray = new JSONArray(apiResponse.readEntity(String.class))
                 return JSONArray
             }
             else
+            {
                 return null
+            }
         }
-        catch (Exception ex) {
+        catch (Exception ex)
+        {
             System.err.println('Service :EntityService , action :  getEntity  , Ex:' + ex)
             log.error('Service :EntityService , action :  getEntity  , Ex:' + ex)
         }
     }
 
+
+    def getSaleBillByCustomer(String custid)
+    {
+        Client client = ClientBuilder.newClient()
+        WebTarget target = client.target(new Links().API_GATEWAY)
+        try
+        {
+            Response apiResponse = target
+                    .path(new Links().SALE_BILL_CUSTOMER)
+                    .resolveTemplate("custid", custid)
+                    .request(MediaType.APPLICATION_JSON_TYPE)
+                    .get()
+            if (apiResponse.status == 200)
+            {
+                JSONArray jsonArray = new JSONArray(apiResponse.readEntity(String.class))
+                return jsonArray
+            }
+            else
+            {
+                return null
+            }
+        }
+        catch (Exception ex)
+        {
+            System.err.println('Service :EntityService , action :  getEntity  , Ex:' + ex)
+            log.error('Service :EntityService , action :  getEntity  , Ex:' + ex)
+        }
+    }
 
 }

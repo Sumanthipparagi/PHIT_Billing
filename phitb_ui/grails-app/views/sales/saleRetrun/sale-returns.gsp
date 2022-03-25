@@ -90,7 +90,7 @@
                                 <label for="customerSelect">Customer:</label>
                                 <select class="form-control show-tick" id="customerSelect"
                                         onchange="customerSelectChanged()">
-                                    <option selected disabled>--SELECT--</option>
+%{--                                    <option selected disabled>--SELECT--</option>--}%
                                     <g:each in="${customers}" var="cs">
 
                                         <g:if test="${cs.id != session.getAttribute("entityId")}">
@@ -120,11 +120,22 @@
                                 </select>
                             </div>
 
-                            <div class="col-md-2">
+                            <div class="col-md-3">
                                 <label for="duedate">Dispatch Date:</label>
                                 <input type="date" class="form-control date" name="duedate" id="dispatchDate"/>
                             </div>
-
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <div class="mt-2">
+                                       Check from Previous Sales
+                                    </div>
+                                    <label class="checkbox-inline">
+                                        <input type="radio" name="prev_sales" value="YES" /> Yes
+                                        &emsp;
+                                        <input type="radio" name="prev_sales" value="NO"/> No
+                                    </label>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -266,18 +277,13 @@
         'id'];
 
     var batchHeaderRow = [
+        '<strong>Financial year</strong>',
+        '<strong>Document ID</strong>',
+        '<strong>Doc Type</strong>',
         '<strong>Batch</strong>',
-        '<strong>Exp Dt</strong>',
-        '<strong>Rem Qty</strong>',
-        '<strong>Free Qty</strong>',
-        '<strong>Pur. Rate</strong>',
-        '<strong>Sale Rate</strong>',
-        '<strong>MRP</strong>',
-        '<strong>Pack</strong>',
-        '<strong>GST</strong>',
-        'SGST',
-        'CGST',
-        'IGST',
+        '<strong>Pur.Rate</strong>',
+        '<strong>Tax</strong>',
+        '<strong>Amount</strong>',
         'id'];
 
     const batchContainer = document.getElementById('batchTable');
@@ -305,8 +311,12 @@
         $("#customerSelect").select2();
         $('#date').val(moment().format('YYYY-MM-DD'));
         $('#date').attr("readonly");
+        saleSelection($("#customerSelect").val())
         <g:each in="${customers}" var="cs">
         customers.push({"id": ${cs.id}, "noOfCrDays": ${cs.noOfCrDays}});
+        </g:each>
+        <g:each in="${reason}" var="r">
+        reason.push({"id": ${r.id}, "text": '${r.reasonName}'});
         </g:each>
         const container = document.getElementById('saleTable');
         hot = new Handsontable(container, {
@@ -323,6 +333,16 @@
             colHeaders: headerRow,
             columns: [
                 {type: 'text'},
+                {
+                    editor: 'select2',
+                    renderer: reasonDropdownRenderer,
+                    select2Options: {
+                        data: reason,
+                        dropdownAutoWidth: true,
+                        allowClear: true,
+                        width: 'auto'
+                    }
+                },
                 {
                     editor: 'select2',
                     renderer: productsDropdownRenderer,
@@ -514,6 +534,18 @@
             Handsontable.TextCell.renderer.apply(this, arguments);
         }
 
+
+        function reasonDropdownRenderer(instance, td, row, col, prop, value, cellProperties) {
+            var selectedId;
+            for (var index = 0; index < reason.length; index++) {
+                if (parseInt(value) === reason[index].id) {
+                    selectedId = reason[index].id;
+                    value = reason[index].text;
+                }
+            }
+            Handsontable.TextCell.renderer.apply(this, arguments);
+        }
+
         batchHot = new Handsontable(batchContainer, {
             data: batchData,
             minRows: 1,
@@ -535,11 +567,6 @@
                 {type: 'numeric', readOnly: true},
                 {type: 'numeric', readOnly: true},
                 {type: 'numeric', readOnly: true},
-                {type: 'text', readOnly: true},
-                {type: 'text', readOnly: true},
-                {type: 'text', readOnly: true},
-                {type: 'text', readOnly: true},
-                {type: 'text', readOnly: true},
                 {type: 'text', readOnly: true}
             ],
             hiddenColumns: {
@@ -593,32 +620,35 @@
 
     function batchSelection(selectedId, mainRow, selectCell = true) {
         if (selectedId != null) {
-            var url = "/stockbook/product/" + selectedId;
+            var url = "/salebill/customer/"+selectedId;
             $.ajax({
                 type: "GET",
                 url: url,
                 dataType: 'json',
                 success: function (data) {
+                    console.log(data)
                     if (data) {
+                        console.log(data)
                         batchData = [];
-                        for (var i = 0; i < data.length; i++) {
+                        // for (var i = 0; i < data.length; i++) {
                             var batchdt = [];
-                            batchdt.push(data[i].batchNumber);
-                            batchdt.push(data[i].expDate.split("T")[0]);
-                            batchdt.push(data[i].remainingQty);
-                            batchdt.push(data[i].remainingFreeQty);
-                            batchdt.push(data[i].purchaseRate);
-                            batchdt.push(data[i].saleRate);
-                            batchdt.push(data[i].mrp);
-                            batchdt.push(data[i].packingDesc);
-                            batchdt.push(data[i].gst);
-                            batchdt.push(data[i].sgst);
-                            batchdt.push(data[i].cgst);
-                            batchdt.push(data[i].igst);
-                            batchdt.push(data[i].id);
+                            batchdt.push(data[0].billId.financialYear);
+                            batchdt.push("");
+                            batchdt.push("Invoice");
+                            batchdt.push(data[0].batchNumber);
+                            batchdt.push(data[0].pRate);
+                            batchdt.push(data[0].billId.taxable);
+                            batchdt.push(data[0].amount);
+                            // batchdt.push(data[i].packingDesc);
+                            // batchdt.push(data[i].gst);
+                            // batchdt.push(data[i].sgst);
+                            // batchdt.push(data[i].cgst);
+                            // batchdt.push(data[i].igst);
+                            batchdt.push(data[0].id);
                             batchData.push(batchdt);
 
-                        }
+
+                        // }
                         batchHot.updateSettings({
                             data: []
                         });
@@ -637,9 +667,48 @@
         }
     }
 
+    function saleSelection(selectedId, mainRow, selectCell = true) {
+        if (selectedId != null) {
+            var url = "/salebill/customer/"+selectedId;
+            $.ajax({
+                type: "GET",
+                url: url,
+                dataType: 'json',
+                success: function (data) {
+                    if (data) {
+                        saleData = [];
+                        for (var i = 0; i < data.length; i++) {
+                            var saledt = [];
+                            saledt.push("");
+                            saledt.push("");
+                            saledt.push(data[i].productId);
+                            saledt.push(data[i].batchNumber);
+                            saleData.push(saledt);
+                        }
+                        hot.updateSettings({
+                            data: []
+                        });
+                        if (saledt?.length > 0) {
+                            hot.loadData(saleData);
+                            $("#saleTable").focus();
+                            if(selectCell)
+                                hot.selectCell(0, 0);
+                        }
+                    }
+                },
+                error: function (data) {
+                    console.log("Failed");
+                }
+            });
+        }
+    }
+
+
     function customerSelectChanged() {
+
         var noOfCrDays = 0;
         var customerId = $("#customerSelect").val();
+        batchSelection(customerId)
         for (var i = 0; i < customers.length; i++) {
             if (customerId == customers[i].id) {
                 noOfCrDays = customers[i].noOfCrDays;

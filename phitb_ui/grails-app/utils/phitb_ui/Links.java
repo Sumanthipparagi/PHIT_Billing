@@ -325,6 +325,7 @@ public class Links
     public static String SALE_BILL_PAYMENT = "api/v1.0/sales/salebillbypaymentstatus";
     public static String SET_PAYMENT_BILL = "api/v1.0/sales/setpaymentstatus/{id}/type/{type}";
     public static String SALE_BILL_RECENT = "api/v1.0/sales/salebilldetails/getrecent";
+    public static String SALE_BILL_CUSTOMER = "api/v1.0/sales//salebillbycustomer/{custid}";
 
 
     public static String SALE_SCHEME_UPDATE = "api/v1.0/sales/schemeconfiguration/{id}";
@@ -351,6 +352,7 @@ public class Links
     public static String SALE_PRODUCT_UPDATE = "api/v1.0/sales/saleproductdetails/{id}";
     public static String SALE_PRODUCT_DELETE = "api/v1.0/sales/saleproductdetails/{id}";
     public static String SALE_PRODUCT_OF_BILL = "api/v1.0/sales/saleproductdetails/bill";
+    public static String SALE_PRODUCT_OF_BILL2 = "api/v1.0/sales/saleproductdetailslist/bill/{salebillsIds}";
 
     //Sale Return Details
     public static String SALE_RETURN_SHOW = "api/v1.0/sales/saleproductdetails";

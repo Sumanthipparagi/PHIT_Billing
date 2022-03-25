@@ -314,4 +314,13 @@ class SaleBillDetailsService
         }
     }
 
+
+    def getAllByCustomerId(String id)
+    {
+        if(id)
+        {
+            return SaleBillDetails.findAllByCustomerId(Long.parseLong(id))
+        }
+    }
+
 }

@@ -375,6 +375,7 @@ class UrlMappings {
         "/sale-return"(controller: "saleRetrun") {
             action = [GET: "index", POST: 'saveSaleRetrun']
         }
+        "/salebill/customer/$custid"(controller: 'saleRetrun', action: 'getSaleBillByCustomer')
 
         //Sale Entry
         "/sale-entry"(controller: "saleEntry") {
