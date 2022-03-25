@@ -255,10 +255,12 @@ class UrlMappings {
         "/credit-jv/save"(controller: "creditJv",action:"saveCreditJv")
         "/credit-jv/approval"(controller: "creditJv",action:"approval")
         "/credit-jv/approval-table"(controller: "creditJv",action:"dataTable")
+        "/credit-jv/approve"(controller: "creditJv",action:"approveReject")
         "/debit-jv"(controller: "debitJv",action:"index")
         "/debit-jv/save"(controller: "debitJv",action:"saveDebitJv")
         "/debit-jv/approval"(controller: "debitJv",action:"approval")
         "/debit-jv/approval-table"(controller: "debitJv",action:"dataTable")
+        "/debit-jv/approve"(controller: "debitJv",action:"approveReject")
 
         /*<-------------------------------------------Product------------------------------------------------->*/
 //      Product Register

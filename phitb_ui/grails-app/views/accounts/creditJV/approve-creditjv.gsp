@@ -15,7 +15,7 @@
     <!-- Custom Css -->
     <asset:stylesheet  rel="stylesheet" src="/themeassets/css/main.css"/>
     <asset:stylesheet rel="stylesheet" href="/themeassets/css/color_skins.css"/>
-    <asset:stylesheet rel="stylesheet" href="/themeassets/plugins/sweetalert/sweetalert.css"/>
+    <asset:stylesheet rel="stylesheet" href="/themeassets/plugins/sweetalert2/dist/sweetalert2.css"/>
     <asset:stylesheet rel="stylesheet" href="/themeassets/plugins/multi-select/css/multi-select.css"/>
     <asset:stylesheet  src="/themeassets/plugins/bootstrap-select/css/bootstrap-select.css" rel="stylesheet" />
     <asset:stylesheet  src="/themeassets/js/pages/forms/basic-form-elements.js" rel="stylesheet" />
@@ -67,43 +67,15 @@
                     <h2>Credit JV - Approval</h2>
                     <ul class="breadcrumb padding-0">
                         <li class="breadcrumb-item"><a href="index.html"><i class="zmdi zmdi-home"></i></a></li>
-                        <li class="breadcrumb-item active"></li>
+                        <li class="breadcrumb-item active">Approvals</li>
                     </ul>
                 </div>
-                %{--<div class="col-lg-7 col-md-7 col-sm-12">
-                    <div class="input-group m-b-0">
-                        <input type="text" class="form-control" placeholder="Search...">
-                        <span class="input-group-addon">
-                            <i class="zmdi zmdi-search"></i>
-                        </span>
-                    </div>
-                </div>--}%
             </div>
         </div>
         <!-- Basic Examples -->
         <div class="row clearfix">
             <div class="col-lg-12">
                 <div class="card">
-                    %{--                    <div class="header">--}%
-                    %{--                        <h2><strong>Basic</strong> Examples </h2>--}%
-                    %{--                        <ul class="header-dropdown">--}%
-                    %{--                            <li class="dropdown"> <a href="javascript:void(0);" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"> <i class="zmdi zmdi-more"></i> </a>--}%
-                    %{--                                <ul class="dropdown-menu slideUp">--}%
-                    %{--                                    <li><a href="javascript:void(0);">Action</a></li>--}%
-                    %{--                                    <li><a href="javascript:void(0);">Another action</a></li>--}%
-                    %{--                                    <li><a href="javascript:void(0);">Something else</a></li>--}%
-                    %{--                                </ul>--}%
-                    %{--                            </li>--}%
-                    %{--                            <li class="remove">--}%
-                    %{--                                <a role="button" class="boxs-close"><i class="zmdi zmdi-close"></i></a>--}%
-                    %{--                            </li>--}%
-                    %{--                        </ul>--}%
-                    %{--                    </div>--}%
-                    %{--<div class="header">
-                        <button type="button" class="btn btn-round btn-primary m-t-15 addbtn" data-toggle="modal"
-                                data-target="#addbatchModal"><font style="vertical-align: inherit;"><font
-                                style="vertical-align: inherit;">Add Batch Register</font></font></button>
-                    </div>--}%
                     <div class="body">
                         <div class="table-responsive">
                             <table class="table table-bordered table-striped table-hover approvalTable dataTable">
@@ -150,7 +122,7 @@
 <asset:javascript src="/themeassets/bundles/mainscripts.bundle.js"/>
 <asset:javascript src="/themeassets/js/pages/tables/jquery-datatable.js"/>
 <asset:javascript src="/themeassets/js/pages/ui/dialogs.js"/>
-<asset:javascript src="/themeassets/plugins/sweetalert/sweetalert.min.js"/>
+<asset:javascript src="/themeassets/plugins/sweetalert2/dist/sweetalert2.all.js"/>
 <asset:javascript src="/themeassets/plugins/jquery-inputmask/jquery.inputmask.bundle.js"/>
 <asset:javascript src="/themeassets/plugins/momentjs/moment.js"/>
 <asset:javascript src="/themeassets/plugins/bootstrap-material-datetimepicker/js/bootstrap-material-datetimepicker.js"/>
@@ -189,34 +161,14 @@
                 dataSrc: function (json) {
                     var return_data = [];
                     for (var i = 0; i < json.data.length; i++) {
-
-/*                        var editbtn = '<button type="button" data-id="' + json.data[i].id +
-                            '" data-product="' + json.data[i].product.id + '"' +
-                            '" data-batchNumber="' + json.data[i].batchNumber + '"' +
-                            '" data-manfDate="' + moment(manfDate).format('DD/MM/YYYY') + '"' +
-                            '" data-expiryDate="' +  moment(expiryDate).format('DD/MM/YYYY') + '"' +
-                            '" data-purchaseRate="' + json.data[i].purchaseRate + '"' +
-                            '" data-ptr="' + json.data[i].ptr + '"' +
-                            '" data-qty="' + json.data[i].qty + '"' +
-                            '" data-saleRate="' + json.data[i].saleRate + '"' +
-                            '" data-mrp="' + json.data[i].mrp + '"' +
-                            '" data-box="' + json.data[i].box + '"' +
-                            '" data-caseWt="' + json.data[i].caseWt + '"' +
-                            '" data-productCat="' + json.data[i].productCat.id + '"' +
-                            '" data-entityId="' + json.data[i].entityId + '"' +
-                            '" data-entityType="' + json.data[i].entityTypeId + '"' +
-                            '"' +
-                            ' class="editbtn btn btn-sm btn-warning  editbtn" data-toggle="modal" data-target="#addbatchModal"><i class="material-icons"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">edit</font></font></i></button>'
-                        var deletebtn = '<button type="button" data-id="' + json.data[i].id +
-                            '" class="btn btn-sm btn-danger deletebtn" data-toggle="modal" data-target=".deleteModal"><i class="material-icons"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">delete</font></font></i></button>'
-                        */
-                        var approveBtn = '<button class="btn btn-success" data-id="'+json.data[i].id+'">Approve</button>';
+                        var approveBtn = '<button data-transactionid="'+json.data[i].transactionId+'" class="btn btn-success btn-sm approveCreditJv" data-id="'+json.data[i].id+'">Approve</button> ' +
+                            '<button data-transactionid="'+json.data[i].transactionId+'"  class="btn btn-danger btn-sm rejectCreditJv" data-id="'+json.data[i].id+'">Reject</button>';
                         return_data.push({
                             'transactionId': json.data[i].transactionId,
                             'amount': json.data[i].amount,
-                            'debitAccount': json.data[i].debitAccount,
-                            'toAccount': json.data[i].toAccount,
-                            'date':  moment(json.data[i].transactionDate).format('DD/MM/YYYY'),
+                            'debitAccount': json.data[i].debitAccount.accountName,
+                            'toAccount': json.data[i].toAccount.accountName,
+                            'date':  json.data[i].transactionDate,
                             'reason':  json.data[i].reason,
                             'remarks': json.data[i].remarks,
                             'action': approveBtn
@@ -239,24 +191,6 @@
         });
     }
 
-
-
-
-    $('.manfDate').bootstrapMaterialDatePicker({
-        time:false,
-        format: 'DD/MM/YYYY',
-        clearButton: true,
-        shortTime: true,
-        weekStart: 1
-    });
-
-    $('.expiryDate').bootstrapMaterialDatePicker({
-        time:false,
-        format: 'DD/MM/YYYY',
-        clearButton: true,
-        shortTime: true,
-        weekStart: 1
-    });
 
     $(".batchForm").submit(function (event) {
 
@@ -299,42 +233,48 @@
         });
     });
 
-    $(document).on("click", ".addbtn", function () {
-        $(".batchTitle").text("Add Batch Register");
-        $(".batchForm")[0].reset();
-        id = null
-    });
 
-    $(document).on("click", ".editbtn", function () {
+    $(document).on("click", ".approveCreditJv", function () {
         id = $(this).data('id');
-        $(".product").val($(this).attr('data-product')).change();
-        $(".batchNumber").val($(this).attr('data-batchNumber'));
-        $(".manfDate").val($(this).attr('data-manfDate'));
-        $(".expiryDate").val($(this).attr('data-expiryDate'));
-        $(".purchaseRate").val($(this).attr('data-purchaseRate'));
-        $(".ptr").val($(this).attr('data-ptr'));
-        $(".mrp").val($(this).attr('data-mrp'));
-        $(".box").val($(this).attr('data-box'));
-        $(".saleRate").val($(this).attr('data-saleRate'));
-        $(".qty").val($(this).attr('data-qty'));
-        $(".caseWt").val($(this).attr('data-caseWt'));
-        $(".productCat").val($(this).attr('data-productCat')).change();
-        $(".entityId").val($(this).attr('data-entityId')).change();
-        $(".entityType").val($(this).attr('data-entityType')).change();
-        $(".batchTitle").text("Update Batch Register");
+        var transactionid = $(this).data('transactionid');
+        Swal.fire({
+            title: 'Do you want to Approve '+transactionid+'?',
+            showDenyButton: true,
+            showCancelButton: false,
+            confirmButtonText: 'Yes',
+            denyButtonText: 'No',
+        }).then((result) => {
+            if (result.isConfirmed) {
+                $.ajax({
+                    url: "credit-jv/approve",
+                    type: type,
+                    data: {
+                        status: 1,
+                        id: id
+                    },
+                    contentType: false,
+                    processData: false,
+                    success: function () {
+                        Swal.fire('Approved!', '', 'success');
+                        approvalTable();
+                    },
+                    error: function () {
+                        swal("Error!", "Something went wrong", "error");
+
+                    }
+                });
+
+            } else if (result.isDenied) {
+                Swal.fire('Cancelled', '', 'info')
+            }
+        })
     });
 
-    $('.entityId').change(function(){
-        var type = $('option:selected', this).attr('data-type');
-        $(".entityTypeId").val(type);
-    });
-
-
-    $(document).on("click", ".deletebtn", function () {
+    $(document).on("click", ".rejectCreditJv", function () {
         id = $(this).data('id');
-        $("#myModalLabel").text("Delete Batch Register ?");
-
+        swal("Reject?", "Reject the credit voucher", "success");
     });
+
 
     function deleteData() {
         $.ajax({

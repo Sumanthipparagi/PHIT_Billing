@@ -67,7 +67,7 @@ class UrlMappings {
 
             //debit jv
             "/debitjv(.$format)?"(controller: 'debitJv') { action = [GET: 'index', POST: 'save'] }
-            "/creditjv/approve(.$format)?"(controller: 'debitJv') { action = [POST: 'approveDebitJv'] }
+            "/debitjv/approve(.$format)?"(controller: 'debitJv') { action = [POST: 'approveDebitJv'] }
             "/debitjv/datatable(.$format)?"(controller: 'debitJv') { action = [GET: 'dataTable'] }
             "/debitjv/$id(.$format)?"(controller: 'debitJv') { action = [GET: 'show', PUT: 'update', DELETE: 'delete'] }
             "/debitjvbyentity/$id(.$format)?"(controller: 'debitJv') { action = [GET: 'getByEntityId'] }

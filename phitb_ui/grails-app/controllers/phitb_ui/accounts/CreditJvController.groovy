@@ -63,14 +63,18 @@ class CreditJvController {
             JSONObject jsonObject = new JSONObject(params)
             jsonObject.put("entityId", session.getAttribute("entityId").toString())
             def apiResponse = new AccountsService().creditJVDatatables(jsonObject)
-            if (apiResponse.status == 200) {
+            if (apiResponse?.status == 200) {
                 JSONObject responseObject = new JSONObject(apiResponse.readEntity(String.class))
-                for (Object json : responseObject["data"]) {
+                for (JSONObject json : responseObject["data"]) {
                     long toAccount = json.toAccount
-                    def account = new EntityService().getAllAccountById(toAccount.toString())
-                    responseObject["data"]["toAccount"] = account
-                    /*long debitAccount = json.debitAccount
-                    def account = new EntityService().getAllAccountById(debitAccount.toString())*/
+                    def account = new EntityService().getAccountById(toAccount.toString())
+                    if(account)
+                        json.put("toAccount",account)
+
+                    long debitAccount = json.debitAccount
+                    def dAccount = new EntityService().getAccountById(debitAccount.toString())
+                    if(dAccount)
+                        json.put("debitAccount",dAccount)
 
                 }
                 respond responseObject, formats: ['json'], status: 200
@@ -83,5 +87,15 @@ class CreditJvController {
             log.error('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
             response.status = 400
         }
+    }
+
+    def approveReject()
+    {
+        long status = params.status
+        long creditJvId = params.id
+        long entityId = session.getAttribute("entityId")
+        long userId = session.getAttribute("userId")
+        def apiResponse = new AccountsService().creditJvApprove(status, entityId, userId, creditJvId)
+        response.status = apiResponse.status
     }
 }

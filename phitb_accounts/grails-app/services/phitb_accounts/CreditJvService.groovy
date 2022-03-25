@@ -87,7 +87,7 @@ class CreditJvService {
         String searchTerm = paramsJsonObject.get("search[value]")
         String orderColumnId = paramsJsonObject.get("order[0][column]")
         String orderDir = paramsJsonObject.get("order[0][dir]")
-
+        long status = 1
         String orderColumn = "id"
         switch (orderColumnId) {
             case '0':
@@ -106,7 +106,8 @@ class CreditJvService {
                 }
             }
 
-           // isNull('approvedTime')
+            isNull('approvedTime')
+            eq('status', status)
             eq('entityId', entityId)
             eq('deleted', false)
             order(orderColumn, orderDir)
@@ -213,6 +214,25 @@ class CreditJvService {
                 creditJv.isUpdatable = true
                 creditJv.approvedTime = new Date()
                 creditJv.approverId = approverId
+                creditJv.save(flush:true)
+
+                return creditJv
+            }
+        }
+        return null
+    }
+
+    def rejectCreditJv(long id, long entityId, long approverId)
+    {
+        if(id && entityId)
+        {
+            CreditJv creditJv = CreditJv.findByIdAndEntityId(id,entityId)
+            if(creditJv)
+            {
+                creditJv.isUpdatable = true
+                creditJv.approvedTime = new Date()
+                creditJv.approverId = approverId
+                creditJv.status = 0
                 creditJv.save(flush:true)
 
                 return creditJv

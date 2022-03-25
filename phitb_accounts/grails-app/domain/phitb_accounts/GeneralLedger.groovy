@@ -7,9 +7,9 @@ class GeneralLedger implements LogicalDelete<GeneralLedger> {
     String docType
     String docNo
     String narration
-    long fromAccount
-    long toAccount
-    double amount
+    long account
+    double debitAmount
+    double creditAmount
     double balance
     long status
     String financialYear

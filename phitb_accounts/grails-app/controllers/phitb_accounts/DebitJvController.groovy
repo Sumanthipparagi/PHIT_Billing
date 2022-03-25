@@ -217,10 +217,55 @@ class DebitJvController {
 
     def approveDebitJv()
     {
-        DebitJv debitJv = new DebitJvService().approveDebitJv(Long.parseLong(params.id),Long.parseLong(params.entityId),Long.parseLong(params.approverId))
-        if(debitJv)
-            response.status = 200
-        else
-            response.status = 400
+        def status = params.status
+        double currentBalance = params.currentBalance
+        if (status == 1) {
+            DebitJv debitJv = new DebitJvService().approveDebitJv(Long.parseLong(params.id), Long.parseLong(params.entityId), Long.parseLong(params.approverId))
+            if (debitJv) {
+                //add general ledger to debit account
+                GeneralLedger generalLedger = new GeneralLedger()
+                generalLedger.docType = "DEBIT-JV"
+                generalLedger.docNo = debitJv.transactionId
+                generalLedger.narration = debitJv.reason
+                generalLedger.account = debitJv.creditAccount
+                generalLedger.debitAmount = 0.00
+                generalLedger.creditAmount = debitJv.amount
+                generalLedger.balance = currentBalance + debitJv.amount
+                generalLedger.status = 1
+                generalLedger.financialYear = debitJv.financialYear
+                generalLedger.entityId = debitJv.entityId
+                generalLedger.entityType = debitJv.entityTypeId
+                generalLedger.createdUser = debitJv.approverId
+                generalLedger.createdUser = debitJv.approverId
+                generalLedger.save(flush: true)
+
+                //add general ledger to credit account
+                generalLedger = new GeneralLedger()
+                generalLedger.docType = "DEBIT-JV"
+                generalLedger.docNo = debitJv.transactionId
+                generalLedger.narration = debitJv.reason
+                generalLedger.account = debitJv.fromAccount
+                generalLedger.debitAmount = debitJv.amount
+                generalLedger.creditAmount = 0.00
+                generalLedger.balance = currentBalance + debitJv.amount
+                generalLedger.status = 1
+                generalLedger.financialYear = debitJv.financialYear
+                generalLedger.entityId = debitJv.entityId
+                generalLedger.entityType = debitJv.entityTypeId
+                generalLedger.createdUser = debitJv.approverId
+                generalLedger.createdUser = debitJv.approverId
+                generalLedger.save(flush: true)
+
+                response.status = 200
+            } else
+                response.status = 400
+        } else {
+
+            CreditJv creditJv = new CreditJvService().rejectCreditJv(Long.parseLong(params.id), Long.parseLong(params.entityId), Long.parseLong(params.approverId))
+            if (creditJv)
+                response.status = 200
+            else
+                response.status = 400
+        }
     }
 }

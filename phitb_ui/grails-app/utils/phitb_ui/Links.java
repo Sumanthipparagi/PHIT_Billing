@@ -425,6 +425,7 @@ public class Links
     //Credit
     public static String CREDIT_SHOW = "api/v1.0/accounts/creditjv";
     public static String CREDIT_SAVE = "api/v1.0/accounts/creditjv";
+    public static String CREDIT_APPROVE = "api/v1.0/accounts/creditjv/approve";
     public static String CREDIT_UNSETTLED = "api/v1.0/accounts/creditjvunbycustomer";
     public static String CREDIT_SETTLED = "api/v1.0/accounts/creditjvsettledbycustomer";
     public static String CREDIT_DATATABLE = "api/v1.0/accounts/creditjv/datatable";
@@ -435,6 +436,7 @@ public class Links
     //Debit
     public static String DEBIT_SHOW = "api/v1.0/accounts/debitjv";
     public static String DEBIT_SAVE = "api/v1.0/accounts/debitjv";
+    public static String DEBIT_APPROVE = "api/v1.0/accounts/creditjv/approve";
 
     /*<--------------------------------------------Purchase ------------------------------------------------->*/
     //purchase product details

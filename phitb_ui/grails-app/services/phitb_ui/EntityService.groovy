@@ -1845,6 +1845,29 @@ class EntityService {
         }
     }
 
+    def getAccountById(String id) {
+        Client client = ClientBuilder.newClient()
+        WebTarget target = client.target(new Links().API_GATEWAY)
+        try {
+            Response apiResponse = target
+                    .path(new Links().ACCOUNT_REGISTER_SHOW + "/"+id)
+                    .request(MediaType.APPLICATION_JSON_TYPE)
+                    .get()
+            if(apiResponse?.status == 200)
+            {
+                JSONObject jsonObject = new JSONObject(apiResponse.readEntity(String.class))
+                return jsonObject
+            }
+            else
+                return null
+        }
+        catch (Exception ex) {
+            System.err.println('Service :EntityService , action :  getAccountById  , Ex:' + ex)
+            log.error('Service :EntityService , action :  getAccountById  , Ex:' + ex)
+        }
+    }
+
+
     def getAllAccountByEntity(String id)
     {
         Client client = ClientBuilder.newClient()

@@ -555,4 +555,28 @@ class AccountsService {
             log.error('Service :AccountsService , action :  creditJVDatatables  , Ex:' + ex)
         }
     }
+
+    def creditJvApprove(long status, long entityId, long approverId, long creditJvId)
+    {
+        Client client = ClientBuilder.newClient()
+        //WebTarget target = client.target(new Links().API_GATEWAY)
+        WebTarget target = client.target("http://localhost:8089")
+        try
+        {
+            Form form = new Form()
+            form.param("status",status.toString())
+            form.param("entityId",entityId.toString())
+            form.param("approverId",approverId.toString())
+            form.param("id",creditJvId.toString())
+            Response apiResponse = target
+                    .path(new Links().CREDIT_APPROVE)
+                    .request().post(Entity.form(form))
+            return apiResponse
+        }
+        catch (Exception ex)
+        {
+            System.err.println('Service :AccountsService , action :  creditJVDatatables  , Ex:' + ex)
+            log.error('Service :AccountsService , action :  creditJVDatatables  , Ex:' + ex)
+        }
+    }
 }
