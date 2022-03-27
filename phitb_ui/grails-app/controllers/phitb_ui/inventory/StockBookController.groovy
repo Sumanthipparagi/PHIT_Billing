@@ -525,5 +525,4 @@ class StockBookController {
         }
 
     }
-
 }

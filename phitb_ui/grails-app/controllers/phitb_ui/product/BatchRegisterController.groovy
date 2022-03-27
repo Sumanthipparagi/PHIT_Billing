@@ -7,6 +7,7 @@ import phitb_ui.Constants
 import phitb_ui.Links
 import phitb_ui.ProductService
 import phitb_ui.SalesService
+import phitb_ui.entity.TaxController
 import phitb_ui.system.CityController
 import phitb_ui.system.CountryController
 import phitb_ui.system.StateController
@@ -94,8 +95,8 @@ class BatchRegisterController {
             def apiResponse = new ProductService().saveBatchRegister(jsonObject)
             if (apiResponse?.status == 200)
             {
-                JSONObject obj = new JSONObject(apiResponse.readEntity(String.class))
-                respond obj, formats: ['json'], status: 200
+               // JSONObject obj = new JSONObject(apiResponse.readEntity(String.class))
+                redirect(uri: "/batch-register")
             }
             else
             {
@@ -119,8 +120,9 @@ class BatchRegisterController {
             def apiResponse = new ProductService().putBatchRegister(jsonObject)
             if (apiResponse.status == 200)
             {
-                JSONObject obj = new JSONObject(apiResponse.readEntity(String.class))
-                respond obj, formats: ['json'], status: 200
+                //JSONObject obj = new JSONObject(apiResponse.readEntity(String.class))
+                //respond obj, formats: ['json'], status: 200
+                redirect(uri: "/batch-register")
             }
             else
             {
@@ -206,6 +208,29 @@ class BatchRegisterController {
             System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
             log.error('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
             response.status = 400
+        }
+    }
+
+    def getBatchesForPurchase()
+    {
+        String productId = params.id
+        def apiResponse = new ProductService().getBatchesOfProduct(productId)
+        if (apiResponse?.status == 200) {
+            JSONArray stockBookData = new JSONArray(apiResponse.readEntity(String.class))
+            JSONArray responseArray = new JSONArray()
+            for (JSONObject json : stockBookData) {
+                String id = json["product"]["taxId"]
+                def tax = new TaxController().show(id)
+                println(tax.taxValue)
+                json.put("gst", tax.taxValue)
+                json.put("sgst", tax.salesSgst)
+                json.put("cgst", tax.salesCgst)
+                json.put("igst", tax.salesIgst)
+                responseArray.put(json)
+            }
+            respond responseArray, formats: ['json'], status: 200
+        } else {
+            response.status = apiResponse?.status
         }
     }
 }

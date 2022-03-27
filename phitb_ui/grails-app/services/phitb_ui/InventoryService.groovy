@@ -110,7 +110,7 @@ class InventoryService {
     }
 
 
-    //Temp Stock Book Save
+
     def stockBookSave(JSONObject jsonObject)
     {
         Client client = ClientBuilder.newClient()
@@ -211,6 +211,32 @@ class InventoryService {
         catch (Exception ex) {
             System.err.println('Service:InventoryService , action :  getTempStocksOfProduct  , Ex:' + ex)
             log.error('Service:InventoryService , action :  getTempStocksOfProduct  , Ex:' + ex)
+        }
+    }
+
+
+
+    def getStocksOfProductAndBatch(String id, String batch, String entityId) {
+        Client client = ClientBuilder.newClient();
+        WebTarget target = client.target(new Links().API_GATEWAY)
+        String url = new Links().STOCK_BOOK + "/product/" + id + "/batch/"+ batch
+        try {
+            Response apiResponse = target
+                    .path(url)
+                    .queryParam("entityId", entityId)
+                    .request(MediaType.APPLICATION_JSON_TYPE)
+                    .get()
+            if(apiResponse.status == 200)
+            {
+                JSONObject jsonObject1 = new JSONObject(apiResponse.readEntity(String.class))
+                return jsonObject1
+            }
+            else
+                return null
+        }
+        catch (Exception ex) {
+            System.err.println('Service:InventoryService , action :  getStocksOfProductAndBatch  , Ex:' + ex)
+            log.error('Service:InventoryService , action :  getStocksOfProductAndBatch  , Ex:' + ex)
         }
     }
 

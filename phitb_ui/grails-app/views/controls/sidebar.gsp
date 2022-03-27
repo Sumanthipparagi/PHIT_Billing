@@ -548,8 +548,6 @@
                     <ul class="ml-menu">
                         <li><a href="#">Purchase Order</a></li>
                         <li><a href="/purchase-entry">Purchase Entry</a></li>
-                        <li><a href="/recipt">Recipt</a></li>
-                        <li><a href="#">Purchase Entry</a></li>
                         <li><a href="#">Purchase Return</a></li>
                         <li><a href="#">Mark Received Goods</a></li>
                         <li><a href="#">Purchase Voucher</a></li>

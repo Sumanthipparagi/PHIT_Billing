@@ -374,6 +374,7 @@ class UrlMappings {
         "/batch-register/update/$id"(controller:"batchRegister",action:"update")
         "/batch-register/delete/$id"(controller: "batchRegister",action:"delete")
         "/batch-register/product/$id"(controller: "batchRegister",action:"getByProduct")
+        "/batch-register/batchesforpurchase/$id"(controller: "batchRegister",action:"getBatchesForPurchase")
 
 
         /*<-------------------------------------------Sales------------------------------------------------->*/
