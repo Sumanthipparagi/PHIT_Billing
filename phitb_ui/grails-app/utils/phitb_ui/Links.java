@@ -476,5 +476,13 @@ public class Links
 
     public static String PURCHASE_BILL_RECENT = "api/v1.0/purchase/billdetail/getrecent";
 
+    //e-Invoice
+    public static String E_INVOICE_BASE_URL = "https://test.nsdlgsp.co.in";
+    public static String E_INVOICE_GET_KEY = E_INVOICE_BASE_URL + "/GSPUtility/getKey";
+    public static String E_INVOICE_AUTH_TOKEN = E_INVOICE_BASE_URL + "/ewb_v1.03/einv/authtoken";
+    public static String E_INVOICE_GEN_IRN = E_INVOICE_BASE_URL + "/ewb_v1.03/einv/gen-irn";
+    public static String E_INVOICE_CANCEL_IRN = E_INVOICE_BASE_URL + "/ewb_v1.03/einv/can-irn";
+    public static String E_INVOICE_GET_IRN = E_INVOICE_BASE_URL + "/ewb_v1.03/einv/get-irn";
+
 
 }

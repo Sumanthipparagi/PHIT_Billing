@@ -29,6 +29,8 @@ public class Constants
     public static String DOCTYPE_CREDITJV = "CRJV";
     public static String DOCTYPE_DEBITJV = "DBJV";
 
+    public static String E_INVOICE_ASP_ID = "29AALCP6561H000978";
+
 
 
     public Constants()
