@@ -92,6 +92,24 @@ class InventoryService {
     }
 
 
+    def stocksIncrease(String batch,String purQty, String freeQty,String reason) {
+        Client client = ClientBuilder.newClient()
+        WebTarget target = client.target(new Links().API_GATEWAY)
+        try {
+            Response apiResponse = target
+                    .path(new Links().STOCK_BOOK_PURCHASE+"batch/"+
+                            batch+"/qty/"+purQty+"/fqty/"+freeQty+"/reason/"+reason)
+                    .request(MediaType.APPLICATION_JSON_TYPE)
+                    .get()
+            return apiResponse
+        }
+        catch (Exception ex) {
+            System.err.println('Service :EntityService , action :  getProducts  , Ex:' + ex)
+            log.error('Service :EntityService , action :  getProducts  , Ex:' + ex)
+        }
+    }
+
+
     //Temp Stock Book Save
     def stockBookSave(JSONObject jsonObject)
     {

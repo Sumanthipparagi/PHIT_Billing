@@ -31,6 +31,9 @@ class UrlMappings {
             "/stockbookbyproduct/$id(.$format)?"(controller: 'stockBook') { action = [GET: 'getByProductId'] }
             "/stockbook/purchase/batch/$batch/qty/$purQty(.$format)?"(controller: 'stockBook') {
                 action = [GET:'stockPurchase'] }
+            "/stockbook/purchase/batch/$batch/qty/$purQty/fqty/$fqty/reason/$reason(.$format)?"(controller:
+                    'stockBook') {
+                action = [GET:'stockIncrease'] }
 
 
             //Temp Stock Book

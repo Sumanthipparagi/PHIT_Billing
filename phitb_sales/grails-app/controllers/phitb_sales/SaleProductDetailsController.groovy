@@ -4,6 +4,8 @@ package phitb_sales
 import grails.rest.*
 import grails.converters.*
 import grails.web.servlet.mvc.GrailsParameterMap
+import groovy.json.internal.ArrayUtils
+import org.grails.web.json.JSONArray
 import org.grails.web.json.JSONObject
 import org.springframework.boot.context.config.ResourceNotFoundException
 import phitb_sales.Exception.BadRequestException
@@ -240,10 +242,13 @@ class SaleProductDetailsController
     {
         try
         {
+            JSONArray jsonArray = new JSONArray()
             String idArrayString = params.salebillsIds
-            println(idArrayString)
             def idArray = idArrayString.trim().replaceAll(~/^\[|\]$/, '').split(',').collect{ it.trim()}
+            if(idArray.toString()!='[]')
             respond saleProductDetailsService.getBySaleBillByList(idArray as ArrayList<Long>)
+            else
+                respond jsonArray,formats: ['json'],status: 200
         }
         catch (ResourceNotFoundException ex)
         {
