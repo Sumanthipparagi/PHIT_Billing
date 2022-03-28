@@ -178,9 +178,9 @@ class ReciptDetailController
         try
         {
             JSONArray jsonArray = new JSONArray();
-            def salebill  = new AccountsService().getUnSaleBillCustomerId(params.id)
-            def creditNote = new AccountsService().getCNUnsettledCustomerId(params.id)
-            if (salebill.status == 200 && creditNote.status)
+            def salebill  = new AccountsService().getUnSaleBillCustomerId(params.id, session.getAttribute("entityId").toString(), session.getAttribute("financialYear").toString())
+            def creditNote = new AccountsService().getCNUnsettledCustomerId(session.getAttribute("entityId").toString(), session.getAttribute("financialYear").toString())
+            if (salebill.status == 200 && creditNote.status == 200)
             {
                 JSONArray salearray = new JSONArray(salebill.readEntity(String.class))
                 JSONArray creditNoteArry = new JSONArray(creditNote.readEntity(String.class))

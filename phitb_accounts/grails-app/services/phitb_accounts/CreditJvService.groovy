@@ -54,29 +54,15 @@ class CreditJvService {
     }
 
 
-    def getAllsettledByCustId(String id)
+    def getAllsettledByCustId(String financialYear, long entityId)
     {
-        if (!id)
-        {
-            return CreditJv.findAll()
-        }
-        else
-        {
-            return CreditJv.findAllByReferenceIdAndStatus(id,1)
-        }
+        return CreditJv.findAllByStatusAndEntityIdAndFinancialYear(1, entityId, financialYear)
     }
 
 
-    def getAllUnsettledByCustId(String id)
+    ArrayList<CreditJv> getAllUnsettledByCustId(String financialYear, long entityId)
     {
-        if (!id)
-        {
-            return CreditJv.findAll()
-        }
-        else
-        {
-            return CreditJv.findAllByReferenceIdAndStatus(id,0)
-        }
+        return CreditJv.findAllByStatusAndEntityIdAndFinancialYear(0, entityId, financialYear)
     }
 
     CreditJv get(String id) {

@@ -331,11 +331,12 @@ class PurchaseEntryController {
                     String freeQty = purchase.get("5")
                     String manfDate = purchase.get("16")
                     String purchaseDate = new SimpleDateFormat("dd-MM-yyyy").format(new Date())
-
+                    expDate = new SimpleDateFormat("yyyy-MM-dd").parse(expDate).format("dd-MM-yyyy")
+                    manfDate = new SimpleDateFormat("yyyy-MM-dd").parse(manfDate).format("dd-MM-yyyy")
                     stockBook = new JSONObject()
                     stockBook.put("productId",productId)
                     stockBook.put("batchNumber",batchNumber)
-                    stockBook.put("expDate",expDate)
+                    stockBook.put("expDate", expDate)
                     stockBook.put("purcDate", purchaseDate)
                     stockBook.put("supplierId",supplierId)
                     stockBook.put("entityTypeId",session.getAttribute("entityTypeId"))
@@ -362,7 +363,7 @@ class PurchaseEntryController {
             }
             JSONObject responseJson = new JSONObject()
             responseJson.put("series", series)
-            responseJson.put("purchaseBillDetail", purchaseBillDetails)
+            responseJson.put("purchaseBillDetail", purchaseBillDetail)
             respond responseJson, formats: ['json']
         } else {
             response.status == 400

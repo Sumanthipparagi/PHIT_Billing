@@ -15,22 +15,19 @@ import javax.ws.rs.core.Response
 class AccountsService {
 
     //Bank Register
-    def saveBankRegister(JSONObject jsonObject)
-    {
+    def saveBankRegister(JSONObject jsonObject) {
         Client client = ClientBuilder.newClient()
         WebTarget target = client.target(new Links().API_GATEWAY)
-        try
-        {
+        try {
             println(jsonObject)
             Response apiResponse = target
                     .path(new Links().BANK_REGISTER_SAVE)
                     .request(MediaType.APPLICATION_JSON_TYPE)
-                    .post(Entity.entity(jsonObject.toString(),MediaType.APPLICATION_JSON_TYPE))
+                    .post(Entity.entity(jsonObject.toString(), MediaType.APPLICATION_JSON_TYPE))
             println(apiResponse)
             return apiResponse
         }
-        catch (Exception ex)
-        {
+        catch (Exception ex) {
             System.err.println('Service :AccountsService , action :  saveBankRegister  , Ex:' + ex)
             log.error('Service :AccountsService , action :  saveBankRegister  , Ex:' + ex)
         }
@@ -41,12 +38,10 @@ class AccountsService {
      * @param jsonObject
      * @return
      */
-    def showBankRegister(JSONObject jsonObject)
-    {
+    def showBankRegister(JSONObject jsonObject) {
         Client client = ClientBuilder.newClient()
         WebTarget target = client.target(new Links().API_GATEWAY)
-        try
-        {
+        try {
             Response apiResponse = target
                     .path(new Links().BANK_REGISTER_DATATABLE)
                     .queryParam("params", URLEncoder.encode(jsonObject.toString(), "UTF-8"))
@@ -54,29 +49,25 @@ class AccountsService {
                     .get()
             return apiResponse
         }
-        catch (Exception ex)
-        {
+        catch (Exception ex) {
             System.err.println('Service :AccountsService , action :  showBankRegister  , Ex:' + ex)
             log.error('Service :AccountsService , action :  showBankRegister  , Ex:' + ex)
         }
     }
 
-    def putBankRegister(JSONObject jsonObject)
-    {
+    def putBankRegister(JSONObject jsonObject) {
         Client client = ClientBuilder.newClient()
         WebTarget target = client.target(new Links().API_GATEWAY)
-        try
-        {
+        try {
             Response apiResponse = target
                     .path(new Links().BANK_REGISTER_UPDATE)
                     .resolveTemplate("id", jsonObject.id)
                     .request(MediaType.APPLICATION_JSON_TYPE)
-                    .put(Entity.entity(jsonObject.toString(),MediaType.APPLICATION_JSON_TYPE))
+                    .put(Entity.entity(jsonObject.toString(), MediaType.APPLICATION_JSON_TYPE))
             println(jsonObject)
             return apiResponse
         }
-        catch (Exception ex)
-        {
+        catch (Exception ex) {
             System.err.println('Service: AccountsService , action :  putBankRegister  , Ex:' + ex)
             log.error('Service: AccountsService , action :  putBankRegister  , Ex:' + ex)
         }
@@ -87,12 +78,10 @@ class AccountsService {
      * @param jsonObject
      * @return
      */
-    def deleteBankRegister(JSONObject jsonObject)
-    {
+    def deleteBankRegister(JSONObject jsonObject) {
         Client client = ClientBuilder.newClient()
         WebTarget target = client.target(new Links().API_GATEWAY)
-        try
-        {
+        try {
             Response apiResponse = target
                     .path(new Links().BANK_REGISTER_DELETE)
                     .resolveTemplate("id", jsonObject.id)
@@ -100,33 +89,28 @@ class AccountsService {
                     .delete()
             return apiResponse
         }
-        catch (Exception ex)
-        {
+        catch (Exception ex) {
             System.err.println('Service :AccountsService , action :  deleteBankRegister  , Ex:' + ex)
             log.error('Service :AccountsService , action :  deleteBankRegister  , Ex:' + ex)
         }
     }
 
 
-
     //Recipt Detail
-    def saveRecipt(JSONObject jsonObject)
-    {
+    def saveRecipt(JSONObject jsonObject) {
         Client client = ClientBuilder.newClient();
         WebTarget target = client.target(new Links().API_GATEWAY);
-       
-        try
-        {
+
+        try {
             println(jsonObject)
             Response apiResponse = target
                     .path(new Links().RECIPT_DETAIL_SAVE)
                     .request(MediaType.APPLICATION_JSON_TYPE)
-                    .post(Entity.entity(jsonObject.toString(),MediaType.APPLICATION_JSON_TYPE))
+                    .post(Entity.entity(jsonObject.toString(), MediaType.APPLICATION_JSON_TYPE))
             println(apiResponse)
             return apiResponse
         }
-        catch (Exception ex)
-        {
+        catch (Exception ex) {
             System.err.println('Service :saveStateMaster , action :  save  , Ex:' + ex)
             log.error('Service :saveStateMaster , action :  save  , Ex:' + ex)
         }
@@ -134,57 +118,49 @@ class AccountsService {
 
 
     //Recipt Detail
-    def savePaymentDetail(JSONObject jsonObject)
-    {
+    def savePaymentDetail(JSONObject jsonObject) {
         Client client = ClientBuilder.newClient();
         WebTarget target = client.target(new Links().API_GATEWAY);
 //        GrailsHttpSession session = WebUtils.retrieveGrailsWebRequest().session
-        try
-        {
+        try {
             println(jsonObject)
             Response apiResponse = target
                     .path(new Links().PAYMENT_SAVE)
                     .request(MediaType.APPLICATION_JSON_TYPE)
-                    .post(Entity.entity(jsonObject.toString(),MediaType.APPLICATION_JSON_TYPE))
+                    .post(Entity.entity(jsonObject.toString(), MediaType.APPLICATION_JSON_TYPE))
             println(apiResponse)
             return apiResponse
         }
-        catch (Exception ex)
-        {
+        catch (Exception ex) {
             System.err.println('Service :saveStateMaster , action :  save  , Ex:' + ex)
             log.error('Service :saveStateMaster , action :  save  , Ex:' + ex)
         }
     }
 
-    def putRecipt(JSONObject jsonObject)
-    {
+    def putRecipt(JSONObject jsonObject) {
         Client client = ClientBuilder.newClient();
         WebTarget target = client.target(new Links().API_GATEWAY);
-       
-        try
-        {
+
+        try {
             Response apiResponse = target
                     .path(new Links().RECIPT_DETAIL_UPDATE)
                     .resolveTemplate("id", jsonObject.id)
                     .request(MediaType.APPLICATION_JSON_TYPE)
-                    .put(Entity.entity(jsonObject.toString(),MediaType.APPLICATION_JSON_TYPE))
+                    .put(Entity.entity(jsonObject.toString(), MediaType.APPLICATION_JSON_TYPE))
             println(jsonObject)
             return apiResponse
         }
-        catch (Exception ex)
-        {
+        catch (Exception ex) {
             System.err.println('Service : , action :  put  , Ex:' + ex)
             log.error('Service :putAccountMode , action :  put  , Ex:' + ex)
         }
     }
 
-    def showRecipt(JSONObject jsonObject)
-    {
+    def showRecipt(JSONObject jsonObject) {
         Client client = ClientBuilder.newClient();
         WebTarget target = client.target(new Links().API_GATEWAY);
-       
-        try
-        {
+
+        try {
             Response apiResponse = target
                     .path(new Links().RECIPT_DETAIL_DATATABLE)
                     .queryParam("params", URLEncoder.encode(jsonObject.toString(), "UTF-8"))
@@ -192,20 +168,17 @@ class AccountsService {
                     .get()
             return apiResponse
         }
-        catch (Exception ex)
-        {
+        catch (Exception ex) {
             System.err.println('Service :getAccountModes , action :  show  , Ex:' + ex)
             log.error('Service :getAccountModes , action :  show  , Ex:' + ex)
         }
     }
 
-    def showPayments(JSONObject jsonObject)
-    {
+    def showPayments(JSONObject jsonObject) {
         Client client = ClientBuilder.newClient();
         WebTarget target = client.target(new Links().API_GATEWAY);
-       
-        try
-        {
+
+        try {
             Response apiResponse = target
                     .path(new Links().PAYMENT_DATATABLE)
                     .queryParam("params", URLEncoder.encode(jsonObject.toString(), "UTF-8"))
@@ -213,8 +186,7 @@ class AccountsService {
                     .get()
             return apiResponse
         }
-        catch (Exception ex)
-        {
+        catch (Exception ex) {
             System.err.println('Service :getAccountModes , action :  show  , Ex:' + ex)
             log.error('Service :getAccountModes , action :  show  , Ex:' + ex)
         }
@@ -277,12 +249,15 @@ class AccountsService {
     }
 
 //   get Invoice to Unsettled
-    def getUnSaleBillCustomerId(String id) {
+    def getUnSaleBillCustomerId(String id, String entityId, String financialYear) {
         Client client = ClientBuilder.newClient()
-        WebTarget target = client.target(new Links().API_GATEWAY)
+        // WebTarget target = client.target(new Links().API_GATEWAY)
+        WebTarget target = client.target("http://localhost:8083")
         try {
             Response apiResponse = target
-                    .path(new Links().SALE_BILL_UNSETTLED+"/"+ id)
+                    .path(new Links().SALE_BILL_UNSETTLED + "/" + id)
+                    .queryParam("entityId", entityId)
+                    .queryParam("financialYear", financialYear)
                     .request(MediaType.APPLICATION_JSON_TYPE)
                     .get()
             return apiResponse
@@ -294,19 +269,22 @@ class AccountsService {
     }
 
     //    get Credit Note to settled
-    def getCNUnsettledCustomerId(String id) {
+    def getCNUnsettledCustomerId(String entityId, String financialYear) {
         Client client = ClientBuilder.newClient()
-        WebTarget target = client.target(new Links().API_GATEWAY)
+        //WebTarget target = client.target(new Links().API_GATEWAY)
+        WebTarget target = client.target("http://localhost:8089")
         try {
             Response apiResponse = target
-                    .path(new Links().CREDIT_UNSETTLED+"/"+ id)
+                    .path(new Links().CREDIT_UNSETTLED + "/" + entityId) //TODO: To be changed
+                    .queryParam("entityId", entityId)
+                    .queryParam("financialYear", financialYear)
                     .request(MediaType.APPLICATION_JSON_TYPE)
                     .get()
             return apiResponse
         }
         catch (Exception ex) {
-            System.err.println('Service :EntityService , action :  getProducts  , Ex:' + ex)
-            log.error('Service :EntityService , action :  getProducts  , Ex:' + ex)
+            System.err.println('Service :AccountsService , action :  getCNUnsettledCustomerId  , Ex:' + ex)
+            log.error('Service :AccountsService , action :  getCNUnsettledCustomerId  , Ex:' + ex)
         }
     }
 
@@ -316,7 +294,7 @@ class AccountsService {
         WebTarget target = client.target(new Links().API_GATEWAY)
         try {
             Response apiResponse = target
-                    .path(new Links().SALE_BILL_SETTLED+"/"+ id)
+                    .path(new Links().SALE_BILL_SETTLED + "/" + id)
                     .request(MediaType.APPLICATION_JSON_TYPE)
                     .get()
             return apiResponse
@@ -333,7 +311,7 @@ class AccountsService {
         WebTarget target = client.target(new Links().API_GATEWAY)
         try {
             Response apiResponse = target
-                    .path(new Links().CREDIT_SETTLED+"/"+ id)
+                    .path(new Links().CREDIT_SETTLED + "/" + id)
                     .request(MediaType.APPLICATION_JSON_TYPE)
                     .get()
             return apiResponse
@@ -345,14 +323,12 @@ class AccountsService {
     }
 
 //   move invoice to settled vocher
-    def updateSettledVocher(JSONObject jsonObject)
-    {
+    def updateSettledVocher(JSONObject jsonObject) {
         Form form = UtilsService.jsonToFormDataConverter(jsonObject)
         Client client = ClientBuilder.newClient();
         WebTarget target = client.target(new Links().API_GATEWAY);
-       
-        try
-        {
+
+        try {
             Response apiResponse = target
                     .path(new Links().SET_PAYMENT_BILL)
                     .resolveTemplate("id", jsonObject.id)
@@ -363,22 +339,19 @@ class AccountsService {
             println(apiResponse)
             return apiResponse
         }
-        catch (Exception ex)
-        {
+        catch (Exception ex) {
             System.err.println('Service :saveStateMaster , action :  save  , Ex:' + ex)
             log.error('Service :saveStateMaster , action :  save  , Ex:' + ex)
         }
     }
 
 //   move invoice to Unsettled vocher
-    def updateunSettledVocher(JSONObject jsonObject)
-    {
+    def updateunSettledVocher(JSONObject jsonObject) {
         Form form = UtilsService.jsonToFormDataConverter(jsonObject)
         Client client = ClientBuilder.newClient();
         WebTarget target = client.target(new Links().API_GATEWAY);
-       
-        try
-        {
+
+        try {
             Response apiResponse = target
                     .path(new Links().SET_PAYMENT_BILL)
                     .resolveTemplate("id", jsonObject.id)
@@ -389,22 +362,19 @@ class AccountsService {
             println(apiResponse)
             return apiResponse
         }
-        catch (Exception ex)
-        {
+        catch (Exception ex) {
             System.err.println('Service :saveStateMaster , action :  save  , Ex:' + ex)
             log.error('Service :saveStateMaster , action :  save  , Ex:' + ex)
         }
     }
 
     //   move Credit Note to settled vocher
-    def updateCNSettledVocher(JSONObject jsonObject)
-    {
+    def updateCNSettledVocher(JSONObject jsonObject) {
         Form form = UtilsService.jsonToFormDataConverter(jsonObject)
         Client client = ClientBuilder.newClient();
         WebTarget target = client.target(new Links().API_GATEWAY);
-       
-        try
-        {
+
+        try {
             Response apiResponse = target
                     .path(new Links().SET_CREDIT_STATUS)
                     .resolveTemplate("id", jsonObject.id)
@@ -415,22 +385,19 @@ class AccountsService {
             println(apiResponse)
             return apiResponse
         }
-        catch (Exception ex)
-        {
+        catch (Exception ex) {
             System.err.println('Service :saveStateMaster , action :  save  , Ex:' + ex)
             log.error('Service :saveStateMaster , action :  save  , Ex:' + ex)
         }
     }
 
 //   move Credit Note to Unsettled vocher
-    def updateCNunSettledVocher(JSONObject jsonObject)
-    {
+    def updateCNunSettledVocher(JSONObject jsonObject) {
         Form form = UtilsService.jsonToFormDataConverter(jsonObject)
         Client client = ClientBuilder.newClient();
         WebTarget target = client.target(new Links().API_GATEWAY);
-       
-        try
-        {
+
+        try {
             Response apiResponse = target
                     .path(new Links().SET_CREDIT_STATUS)
                     .resolveTemplate("id", jsonObject.id)
@@ -441,13 +408,11 @@ class AccountsService {
             println(apiResponse)
             return apiResponse
         }
-        catch (Exception ex)
-        {
+        catch (Exception ex) {
             System.err.println('Service :saveStateMaster , action :  save  , Ex:' + ex)
             log.error('Service :saveStateMaster , action :  save  , Ex:' + ex)
         }
     }
-
 
 
     def getReciptById(String id) {
@@ -486,45 +451,39 @@ class AccountsService {
 
 
     //Credit JV
-    def saveCreditJV(JSONObject jsonObject)
-    {
+    def saveCreditJV(JSONObject jsonObject) {
         Client client = ClientBuilder.newClient();
         WebTarget target = client.target(new Links().API_GATEWAY);
 
-        try
-        {
+        try {
             println(jsonObject)
             Response apiResponse = target
                     .path(new Links().CREDIT_SAVE)
                     .request(MediaType.APPLICATION_JSON_TYPE)
-                    .post(Entity.entity(jsonObject.toString(),MediaType.APPLICATION_JSON_TYPE))
+                    .post(Entity.entity(jsonObject.toString(), MediaType.APPLICATION_JSON_TYPE))
             println(apiResponse)
             return apiResponse
         }
-        catch (Exception ex)
-        {
+        catch (Exception ex) {
             System.err.println('Service :accountsService , action :  saveCreditJV  , Ex:' + ex)
             log.error('Service :accountsService , action :  saveCreditJV  , Ex:' + ex)
         }
     }
 
-    def saveDebitJV(JSONObject jsonObject)
-    {
+    def saveDebitJV(JSONObject jsonObject) {
         Client client = ClientBuilder.newClient();
         WebTarget target = client.target(new Links().API_GATEWAY);
 
-        try
-        {
+        try {
             println(jsonObject)
             Response apiResponse = target
                     .path(new Links().DEBIT_SAVE)
                     .request(MediaType.APPLICATION_JSON_TYPE)
-                    .post(Entity.entity(jsonObject.toString(),MediaType.APPLICATION_JSON_TYPE))
+                    .post(Entity.entity(jsonObject.toString(), MediaType.APPLICATION_JSON_TYPE))
             println(apiResponse)
             return apiResponse
         }
-        catch (Exception ex)
-        {
+        catch (Exception ex) {
             System.err.println('Service :accountsService , action :  saveCreditJV  , Ex:' + ex)
             log.error('Service :accountsService , action :  saveCreditJV  , Ex:' + ex)
         }
@@ -535,12 +494,10 @@ class AccountsService {
      * @param jsonObject
      * @return
      */
-    def creditJVDatatables(JSONObject jsonObject)
-    {
+    def creditJVDatatables(JSONObject jsonObject) {
         Client client = ClientBuilder.newClient()
         WebTarget target = client.target(new Links().API_GATEWAY)
-        try
-        {
+        try {
             Response apiResponse = target
                     .path(new Links().CREDIT_DATATABLE)
                     .queryParam("params", URLEncoder.encode(jsonObject.toString(), "UTF-8"))
@@ -548,46 +505,40 @@ class AccountsService {
                     .get()
             return apiResponse
         }
-        catch (Exception ex)
-        {
+        catch (Exception ex) {
             System.err.println('Service :AccountsService , action :  creditJVDatatables  , Ex:' + ex)
             log.error('Service :AccountsService , action :  creditJVDatatables  , Ex:' + ex)
         }
     }
 
-    def creditJvApprove(String status, long entityId, long approverId, String creditJvId, String debitBalance, String toBalance)
-    {
+    def creditJvApprove(String status, long entityId, long approverId, String creditJvId, String debitBalance, String toBalance) {
         Client client = ClientBuilder.newClient()
         WebTarget target = client.target(new Links().API_GATEWAY)
-        try
-        {
+        try {
             JSONObject jsonObject = new JSONObject()
-            jsonObject.put("status",status)
-            jsonObject.put("entityId",entityId.toString())
-            jsonObject.put("approverId",approverId.toString())
-            jsonObject.put("id",creditJvId)
-            jsonObject.put("debitAcCurrentBalance",debitBalance)
-            jsonObject.put("toAcCurrentBalance",toBalance)
+            jsonObject.put("status", status)
+            jsonObject.put("entityId", entityId.toString())
+            jsonObject.put("approverId", approverId.toString())
+            jsonObject.put("id", creditJvId)
+            jsonObject.put("debitAcCurrentBalance", debitBalance)
+            jsonObject.put("toAcCurrentBalance", toBalance)
             Response apiResponse = target
                     .path(new Links().CREDIT_APPROVE)
                     .request(MediaType.APPLICATION_JSON_TYPE)
-                    .post(Entity.entity(jsonObject.toString(),MediaType.APPLICATION_JSON_TYPE))
+                    .post(Entity.entity(jsonObject.toString(), MediaType.APPLICATION_JSON_TYPE))
             return apiResponse
         }
-        catch (Exception ex)
-        {
+        catch (Exception ex) {
             System.err.println('Service :AccountsService , action :  creditJVDatatables  , Ex:' + ex)
             log.error('Service :AccountsService , action :  creditJVDatatables  , Ex:' + ex)
         }
     }
 
 
-    def debitJVDatatables(JSONObject jsonObject)
-    {
+    def debitJVDatatables(JSONObject jsonObject) {
         Client client = ClientBuilder.newClient()
         WebTarget target = client.target(new Links().API_GATEWAY)
-        try
-        {
+        try {
             Response apiResponse = target
                     .path(new Links().DEBIT_DATATABLE)
                     .queryParam("params", URLEncoder.encode(jsonObject.toString(), "UTF-8"))
@@ -595,34 +546,30 @@ class AccountsService {
                     .get()
             return apiResponse
         }
-        catch (Exception ex)
-        {
+        catch (Exception ex) {
             System.err.println('Service :AccountsService , action :  debitJVDatatables  , Ex:' + ex)
             log.error('Service :AccountsService , action :  debitJVDatatables  , Ex:' + ex)
         }
     }
 
-    def debitJvApprove(String status, long entityId, long approverId, String debitJvId, String creditBalance, String fromBalance)
-    {
+    def debitJvApprove(String status, long entityId, long approverId, String debitJvId, String creditBalance, String fromBalance) {
         Client client = ClientBuilder.newClient()
         WebTarget target = client.target(new Links().API_GATEWAY)
-        try
-        {
+        try {
             JSONObject jsonObject = new JSONObject()
-            jsonObject.put("status",status)
-            jsonObject.put("entityId",entityId.toString())
-            jsonObject.put("approverId",approverId.toString())
-            jsonObject.put("id",debitJvId)
-            jsonObject.put("creditAcCurrentBalance",creditBalance)
-            jsonObject.put("fromAcCurrentBalance",fromBalance)
+            jsonObject.put("status", status)
+            jsonObject.put("entityId", entityId.toString())
+            jsonObject.put("approverId", approverId.toString())
+            jsonObject.put("id", debitJvId)
+            jsonObject.put("creditAcCurrentBalance", creditBalance)
+            jsonObject.put("fromAcCurrentBalance", fromBalance)
             Response apiResponse = target
                     .path(new Links().CREDIT_APPROVE)
                     .request(MediaType.APPLICATION_JSON_TYPE)
-                    .post(Entity.entity(jsonObject.toString(),MediaType.APPLICATION_JSON_TYPE))
+                    .post(Entity.entity(jsonObject.toString(), MediaType.APPLICATION_JSON_TYPE))
             return apiResponse
         }
-        catch (Exception ex)
-        {
+        catch (Exception ex) {
             System.err.println('Service :AccountsService , action :  debitJvApprove  , Ex:' + ex)
             log.error('Service :AccountsService , action :  debitJvApprove  , Ex:' + ex)
         }

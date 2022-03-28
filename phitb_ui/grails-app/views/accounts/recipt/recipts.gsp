@@ -6,7 +6,7 @@
     <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
     <meta name="description" content="Responsive Bootstrap 4 and web Application ui kit.">
 
-    <title>:: PharmIt :: Recipt</title>
+    <title>:: PharmIT :: Receipt</title>
     <link rel="icon" type="image/x-icon" href="${assetPath(src: '/themeassets/images/favicon.ico')}"/>
     <!-- Favicon-->
     <asset:stylesheet rel="stylesheet" src="/themeassets/plugins/bootstrap/css/bootstrap.min.css"/>
@@ -108,7 +108,7 @@
                                 <thead>
                                 <tr>
                                     %{--                                    <th style="width: 20%">ID</th>--}%
-                                    <th style="width: 20%">Recipt Date</th>
+                                    <th style="width: 20%">Receipt Date</th>
                                     <th style="width: 20%">Account</th>
                                     <th style="width: 20%">Amount</th>
                                     <th style="width: 20%">Bank/Cash</th>

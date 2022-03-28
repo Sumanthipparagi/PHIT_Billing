@@ -98,9 +98,9 @@
             <a class="navbar-brand" href="index.html"><img src="${assetPath(src: '/themeassets/images/logo.svg')}"
                                                            alt="PharmIT"></a>
         </li>
-        <li><a href="javascript:void(0);" class="btn_overlay hidden-sm-down"><i class="zmdi zmdi-search"></i></a></li>
+%{--        <li><a href="javascript:void(0);" class="btn_overlay hidden-sm-down"><i class="zmdi zmdi-search"></i></a></li>--}%
         <li><a href="javascript:void(0);" class="menu-sm"><i class="zmdi zmdi-swap"></i></a></li>
-        <li class="menuapp-btn"><a href="javascript:void(0);"><i class="zmdi zmdi-apps"></i></a></li>
+%{--        <li class="menuapp-btn"><a href="javascript:void(0);"><i class="zmdi zmdi-apps"></i></a></li>
         <li class="notifications badgebit">
             <a href="javascript:void(0);">
                 <i class="zmdi zmdi-notifications"></i>
@@ -124,7 +124,7 @@
         <li><a href="events.html" title="Events"><i class="zmdi zmdi-calendar"></i></a></li>
         <li><a href="mail-inbox.html" title="Inbox"><i class="zmdi zmdi-email"></i></a></li>
         <li><a href="contact.html" title="Contact List"><i class="zmdi zmdi-account-box-phone"></i></a></li>
-        <li><a href="chat.html"><i class="zmdi zmdi-comments"></i></a></li>
+        <li><a href="chat.html"><i class="zmdi zmdi-comments"></i></a></li>--}%
         <li><a href="javascript:void(0);" class="fullscreen" data-provide="fullscreen"><i
                 class="zmdi zmdi-fullscreen"></i></a></li>
         <li class="power">
@@ -135,7 +135,7 @@
 </aside>
 
 <aside class="right_menu">
-    <div class="menu-app">
+%{--    <div class="menu-app">
         <div class="slim_scroll">
             <div class="card">
                 <div class="header">
@@ -155,9 +155,9 @@
                 </div>
             </div>
         </div>
-    </div>
+    </div>--}%
 
-    <div class="notif-menu">
+%{--    <div class="notif-menu">
         <div class="slim_scroll">
             <div class="card">
                 <div class="header">
@@ -314,7 +314,7 @@
                 </div>
             </div>
         </div>
-    </div>
+    </div>--}%
 
     <div id="rightsidebar" class="right-sidebar">
         <ul class="nav nav-tabs">

@@ -305,9 +305,15 @@ class StockBookController {
             long remainingFreeQty = stockBook.remainingFreeQty
             long saleQty  = jsonArray[4]
             long saleFreeQty  = jsonArray[5]
-            remainingQty = remainingQty - saleQty
-            remainingFreeQty = remainingFreeQty - saleFreeQty
-
+            if(saleQty>remainingQty && remainingFreeQty>saleQty)
+            {
+                remainingQty = 0
+                remainingFreeQty = remainingFreeQty - saleQty
+            }
+            else {
+                remainingQty = remainingQty - saleQty
+                remainingFreeQty = remainingFreeQty - saleFreeQty
+            }
             JSONObject jsonObject = new JSONObject()
             jsonObject.put("productId", jsonArray[1])
             jsonObject.put("batchNumber", jsonArray[2])

@@ -61,32 +61,15 @@ class SaleBillDetailsService
     }
 
 
-    def getAllUnsettledByCustId(String limit, String offset, String id)
+    def getAllUnsettledByCustId(String customerId, String entityId, String financialYear)
     {
-        Integer o = offset ? Integer.parseInt(offset.toString()) : 0
-        Integer l = limit ? Integer.parseInt(limit.toString()) : 100
-        if (!id)
-        {
-            return SaleBillDetails.findAll([sort: 'id', max: l, offset: o, order: 'desc'])
-        }
-        else
-        {
-            return SaleBillDetails.findAllByCustomerIdAndPaymentStatus(Long.parseLong(id),0)
-        }
+        return SaleBillDetails.findAllByCustomerIdAndEntityIdAndFinancialYearAndPaymentStatus(Long.parseLong(customerId),Long.parseLong(entityId),financialYear,0)
     }
 
-    def getAllsettledByCustId(String limit, String offset, String id)
+    def getAllsettledByCustId(String customerId, String entityId, String financialYear)
     {
-        Integer o = offset ? Integer.parseInt(offset.toString()) : 0
-        Integer l = limit ? Integer.parseInt(limit.toString()) : 100
-        if (!id)
-        {
-            return SaleBillDetails.findAll([sort: 'id', max: l, offset: o, order: 'desc'])
-        }
-        else
-        {
-            return SaleBillDetails.findAllByCustomerIdAndPaymentStatus(Long.parseLong(id),1)
-        }
+        return SaleBillDetails.findAllByCustomerIdAndEntityIdAndFinancialYearAndPaymentStatus(Long.parseLong(customerId),Long.parseLong(entityId),financialYear,1)
+
     }
 
     SaleBillDetails get(String id)

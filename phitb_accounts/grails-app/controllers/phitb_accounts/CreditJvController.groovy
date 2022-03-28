@@ -2,6 +2,7 @@ package phitb_accounts
 
 import grails.converters.JSON
 import grails.web.servlet.mvc.GrailsParameterMap
+import org.grails.web.json.JSONArray
 import org.grails.web.json.JSONObject
 import phitb_accounts.Exception.BadRequestException
 import phitb_accounts.Exception.ResourceNotFoundException
@@ -87,10 +88,10 @@ class CreditJvController {
      */
     def getAllUnsettledByCustId() {
         try {
-            String id = params.id
-            if (id) {
-                respond creditJvService.getAllUnsettledByCustId(id)
-            }
+            long id = Long.parseLong(params.id)
+            String financialYear = params.financialYear
+            JSONArray creditJvs = creditJvService.getAllUnsettledByCustId(financialYear, id) as JSONArray
+            respond creditJvs, formats: ['json']
         }
         catch (ResourceNotFoundException ex) {
             System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
@@ -112,10 +113,9 @@ class CreditJvController {
      */
     def getAllsettledByCustId() {
         try {
-            String id = params.id
-            if (id) {
-                respond creditJvService.getAllsettledByCustId(id)
-            }
+            long id = Long.parseLong(params.id)
+            String financialYear = params.financialYear
+            respond creditJvService.getAllsettledByCustId(financialYear, id)
         }
         catch (ResourceNotFoundException ex) {
             System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)

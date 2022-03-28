@@ -39,7 +39,7 @@ class DebitJvController {
     {
         SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss")
         JSONObject jsonObject = new JSONObject(params)
-        jsonObject.put("status", "1")
+        jsonObject.put("status", "0")
         jsonObject.put("syncStatus", "1")
         jsonObject.put("entityTypeId", session.getAttribute("entityTypeId"))
         jsonObject.put("entityId", session.getAttribute("entityId"))
