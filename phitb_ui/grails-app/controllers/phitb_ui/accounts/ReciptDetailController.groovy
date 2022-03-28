@@ -182,6 +182,7 @@ class ReciptDetailController
             def creditNote = new AccountsService().getCNUnsettledCustomerId(session.getAttribute("entityId").toString(), session.getAttribute("financialYear").toString())
             if (salebill.status == 200 && creditNote.status == 200)
             {
+                def tmp = creditNote.readEntity(String.class)
                 JSONArray salearray = new JSONArray(salebill.readEntity(String.class))
                 JSONArray creditNoteArry = new JSONArray(creditNote.readEntity(String.class))
                 jsonArray.add(salearray)

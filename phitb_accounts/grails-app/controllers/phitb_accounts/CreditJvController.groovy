@@ -90,7 +90,7 @@ class CreditJvController {
         try {
             long id = Long.parseLong(params.id)
             String financialYear = params.financialYear
-            JSONArray creditJvs = creditJvService.getAllUnsettledByCustId(financialYear, id) as JSONArray
+            ArrayList<CreditJv> creditJvs =  creditJvService.getAllUnsettledByCustId(financialYear, id)
             respond creditJvs, formats: ['json']
         }
         catch (ResourceNotFoundException ex) {

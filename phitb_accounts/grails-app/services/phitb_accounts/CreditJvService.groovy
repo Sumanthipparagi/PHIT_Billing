@@ -60,9 +60,19 @@ class CreditJvService {
     }
 
 
-    ArrayList<CreditJv> getAllUnsettledByCustId(String financialYear, long entityId)
+    def getAllUnsettledByCustId(String financialYear, long entityId)
     {
-        return CreditJv.findAllByStatusAndEntityIdAndFinancialYear(0, entityId, financialYear)
+        long status = 0
+        def creditJvCriteria = CreditJv.createCriteria()
+        def creditJvArrayList = creditJvCriteria.list() {
+            isNotNull('approvedTime')
+            eq('status', status)
+            eq('entityId', entityId)
+            eq('financialYear', financialYear)
+            eq('deleted', false)
+        }
+        return creditJvArrayList
+       // return CreditJv.findAllByStatusAndEntityIdAndFinancialYearAndApprovedTimeIsNotNull(0, entityId, financialYear)
     }
 
     CreditJv get(String id) {
