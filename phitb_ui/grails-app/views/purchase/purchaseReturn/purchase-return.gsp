@@ -817,81 +817,81 @@
         return false;
     }
 
-    function loadTempStockBookData() {
-        var userId = "${session.getAttribute("userId")}";
-        $.ajax({
-            type: "GET",
-            url: "tempstockbook/user/" + userId,
-            dataType: 'json',
-            success: function (data) {
-                saleData = data;
-                for (var i = 0; i < saleData.length; i++) {
-                    hot.selectCell(i, 1);
-                    var sRate = saleData[i]["saleRate"];
-                    var sQty = saleData[i]["userOrderQty"];
-                    batchSelection(saleData[i]["productId"], null, false);
-                    var batchId = saleData[i][12];
-                    hot.setDataAtCell(i, 1, saleData[i]["productId"]);
-                    hot.setDataAtCell(i, 2, saleData[i]["batchNumber"]);
-                    hot.setCellMeta(i, 2, "batchId", batchId);
-                    hot.setDataAtCell(i, 3, saleData[i]["expDate"].split("T")[0]);
-                    hot.setDataAtCell(i, 5, 0);
-                    hot.setDataAtCell(i, 6, sRate);
-                    hot.setDataAtCell(i, 4, sQty);
-                    hot.setDataAtCell(i, 7, saleData[i]["mrp"]);
-                    hot.setDataAtCell(i, 8, 0);
-                    hot.setDataAtCell(i, 9, saleData[i]["packingDesc"]);
-                    gst = saleData[i]["gst"];
-                    sgst = saleData[i]["sgst"];
-                    cgst = saleData[i]["cgst"];
-                    igst = saleData[i]["igst"];
+    %{--function loadTempStockBookData() {--}%
+    %{--    var userId = "${session.getAttribute("userId")}";--}%
+    %{--    $.ajax({--}%
+    %{--        type: "GET",--}%
+    %{--        url: "tempstockbook/user/" + userId,--}%
+    %{--        dataType: 'json',--}%
+    %{--        success: function (data) {--}%
+    %{--            saleData = data;--}%
+    %{--            for (var i = 0; i < saleData.length; i++) {--}%
+    %{--                hot.selectCell(i, 1);--}%
+    %{--                var sRate = saleData[i]["saleRate"];--}%
+    %{--                var sQty = saleData[i]["userOrderQty"];--}%
+    %{--                batchSelection(saleData[i]["productId"], null, false);--}%
+    %{--                var batchId = saleData[i][12];--}%
+    %{--                hot.setDataAtCell(i, 1, saleData[i]["productId"]);--}%
+    %{--                hot.setDataAtCell(i, 2, saleData[i]["batchNumber"]);--}%
+    %{--                hot.setCellMeta(i, 2, "batchId", batchId);--}%
+    %{--                hot.setDataAtCell(i, 3, saleData[i]["expDate"].split("T")[0]);--}%
+    %{--                hot.setDataAtCell(i, 5, 0);--}%
+    %{--                hot.setDataAtCell(i, 6, sRate);--}%
+    %{--                hot.setDataAtCell(i, 4, sQty);--}%
+    %{--                hot.setDataAtCell(i, 7, saleData[i]["mrp"]);--}%
+    %{--                hot.setDataAtCell(i, 8, 0);--}%
+    %{--                hot.setDataAtCell(i, 9, saleData[i]["packingDesc"]);--}%
+    %{--                gst = saleData[i]["gst"];--}%
+    %{--                sgst = saleData[i]["sgst"];--}%
+    %{--                cgst = saleData[i]["cgst"];--}%
+    %{--                igst = saleData[i]["igst"];--}%
 
-                    // var discount = hot.getDataAtCell(i, 8);
-                    var discount = 0; //TODO: discount to be set
-                    //var gst = hot.getDataAtCell(row, 10);
-                    var priceBeforeGst = (sRate * sQty) - ((sRate * sQty) * discount) / 100;
-                    var finalPrice = priceBeforeGst + (priceBeforeGst * (gst / 100));
-                    hot.setDataAtCell(i, 11, finalPrice);
+    %{--                // var discount = hot.getDataAtCell(i, 8);--}%
+    %{--                var discount = 0; //TODO: discount to be set--}%
+    %{--                //var gst = hot.getDataAtCell(row, 10);--}%
+    %{--                var priceBeforeGst = (sRate * sQty) - ((sRate * sQty) * discount) / 100;--}%
+    %{--                var finalPrice = priceBeforeGst + (priceBeforeGst * (gst / 100));--}%
+    %{--                hot.setDataAtCell(i, 11, finalPrice);--}%
 
-                    if (gst != 0) {
-                        hot.setDataAtCell(i, 10, priceBeforeGst * (gst / 100)); //GST
-                        hot.setDataAtCell(i, 12, priceBeforeGst * (sgst / 100)); //SGST
-                        hot.setDataAtCell(i, 13, priceBeforeGst * (cgst / 100)); //CGST
-                    } else {
-                        hot.setDataAtCell(i, 10, 0); //GST
-                        hot.setDataAtCell(i, 12, 0); //SGST
-                        hot.setDataAtCell(i, 13, 0); //CGST
-                    }
-                    if (igst != "0")
-                        hot.setDataAtCell(i, 14, priceBeforeGst * (igst / 100)); //IGST
-                    else
-                        hot.setDataAtCell(i, 14, 0);
+    %{--                if (gst != 0) {--}%
+    %{--                    hot.setDataAtCell(i, 10, priceBeforeGst * (gst / 100)); //GST--}%
+    %{--                    hot.setDataAtCell(i, 12, priceBeforeGst * (sgst / 100)); //SGST--}%
+    %{--                    hot.setDataAtCell(i, 13, priceBeforeGst * (cgst / 100)); //CGST--}%
+    %{--                } else {--}%
+    %{--                    hot.setDataAtCell(i, 10, 0); //GST--}%
+    %{--                    hot.setDataAtCell(i, 12, 0); //SGST--}%
+    %{--                    hot.setDataAtCell(i, 13, 0); //CGST--}%
+    %{--                }--}%
+    %{--                if (igst != "0")--}%
+    %{--                    hot.setDataAtCell(i, 14, priceBeforeGst * (igst / 100)); //IGST--}%
+    %{--                else--}%
+    %{--                    hot.setDataAtCell(i, 14, 0);--}%
 
-                    hot.setDataAtCell(i, 15, saleData[i].id)
-                }
+    %{--                hot.setDataAtCell(i, 15, saleData[i].id)--}%
+    %{--            }--}%
 
-                setTimeout(function () {
-                    hot.selectCell(0, 1);
-                    calculateTotalAmt();
-                }, 1000);
+    %{--            setTimeout(function () {--}%
+    %{--                hot.selectCell(0, 1);--}%
+    %{--                calculateTotalAmt();--}%
+    %{--            }, 1000);--}%
 
-            }
-        })
-    }
+    %{--        }--}%
+    %{--    })--}%
+    %{--}--}%
 
     function deleteTempStockRow(id, row) {
         if (!readOnly) {
-            if (id) {
-                $.ajax({
-                    type: "POST",
-                    url: "tempstockbook/delete/" + id,
-                    dataType: 'json',
-                    success: function (data) {
-                        hot.alter("remove_row", row);
-                        swal("Success", "Row Deleted", "").fire();
-                    }
-                });
-            } else
+            // if (id) {
+                // $.ajax({
+                //     type: "POST",
+                //     url: "tempstockbook/delete/" + id,
+                //     dataType: 'json',
+                //     success: function (data) {
+                //         hot.alter("remove_row", row);
+                //         swal("Success", "Row Deleted", "").fire();
+                //     }
+                // });
+            // } else
                 hot.alter("remove_row", row);
         } else
             alert("Can't change this now, invoice has been saved already.")

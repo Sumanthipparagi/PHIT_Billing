@@ -35,9 +35,7 @@ class FacilityService {
             System.err.println('Service :saveStateMaster , action :  save  , Ex:' + ex)
             log.error('Service :saveStateMaster , action :  save  , Ex:' + ex)
         }
-        finally{
-            client.close()
-        }
+
     }
 
 
@@ -65,9 +63,7 @@ class FacilityService {
             System.err.println('Service :getAccountModes , action :  show  , Ex:' + ex)
             log.error('Service :getAccountModes , action :  show  , Ex:' + ex)
         }
-        finally{
-            client.close()
-        }
+
     }
 
 
@@ -91,9 +87,7 @@ class FacilityService {
             System.err.println('Service : , action :  put  , Ex:' + ex)
             log.error('Service :putAccountMode , action :  put  , Ex:' + ex)
         }
-        finally{
-            client.close()
-        }
+
     }
 
     /**
@@ -120,9 +114,7 @@ class FacilityService {
             System.err.println('Service :systemService , action :  delete  , Ex:' + ex)
             log.error('Service :systemService , action :  delete  , Ex:' + ex)
         }
-        finally{
-            client.close()
-        }
+
     }
 
     def getFridgeList()
@@ -143,9 +135,7 @@ class FacilityService {
             System.err.println('Service :systemService , action :  getStateList  , Ex:' + ex)
             log.error('Service :systemService , action :  getStateList  , Ex:' + ex)
         }
-        finally{
-            client.close()
-        }
+
     }
 
 
@@ -171,9 +161,7 @@ class FacilityService {
             System.err.println('Service :Facility , action :  save  , Ex:' + ex)
             log.error('Service :saveStateMaster , action :  save  , Ex:' + ex)
         }
-        finally{
-            client.close()
-        }
+
     }
 
 
@@ -201,9 +189,7 @@ class FacilityService {
             System.err.println('Service :getAccountModes , action :  show  , Ex:' + ex)
             log.error('Service :getAccountModes , action :  show  , Ex:' + ex)
         }
-        finally{
-            client.close()
-        }
+
     }
 
 
@@ -227,9 +213,7 @@ class FacilityService {
             System.err.println('Service : , action :  put  , Ex:' + ex)
             log.error('Service :putAccountMode , action :  put  , Ex:' + ex)
         }
-        finally{
-            client.close()
-        }
+
     }
 
     /**
@@ -256,9 +240,7 @@ class FacilityService {
             System.err.println('Service :systemService , action :  delete  , Ex:' + ex)
             log.error('Service :systemService , action :  delete  , Ex:' + ex)
         }
-        finally{
-            client.close()
-        }
+
 
     }
 
@@ -285,9 +267,7 @@ class FacilityService {
             System.err.println('Service :Facility , action :  save  , Ex:' + ex)
             log.error('Service :saveStateMaster , action :  save  , Ex:' + ex)
         }
-        finally{
-            client.close()
-        }
+
     }
 
 
@@ -315,9 +295,7 @@ class FacilityService {
             System.err.println('Service :getAccountModes , action :  show  , Ex:' + ex)
             log.error('Service :getAccountModes , action :  show  , Ex:' + ex)
         }
-        finally{
-            client.close()
-        }
+
     }
 
 
@@ -341,9 +319,7 @@ class FacilityService {
             System.err.println('Service : Godown , action :  put  , Ex:' + ex)
             log.error('Service :putAccountMode , action :  put  , Ex:' + ex)
         }
-        finally{
-            client.close()
-        }
+
     }
 
     /**
@@ -370,9 +346,7 @@ class FacilityService {
             System.err.println('Service :systemService , action :  delete  , Ex:' + ex)
             log.error('Service :systemService , action :  delete  , Ex:' + ex)
         }
-        finally{
-            client.close()
-        }
+
     }
 
 
@@ -398,9 +372,7 @@ class FacilityService {
             System.err.println('Service :Facility , action :  save  , Ex:' + ex)
             log.error('Service :saveStateMaster , action :  save  , Ex:' + ex)
         }
-        finally{
-            client.close()
-        }
+
     }
 
 
@@ -428,9 +400,7 @@ class FacilityService {
             System.err.println('Service :getAccountModes , action :  show  , Ex:' + ex)
             log.error('Service :getAccountModes , action :  show  , Ex:' + ex)
         }
-        finally{
-            client.close()
-        }
+
     }
 
 
@@ -454,9 +424,7 @@ class FacilityService {
             System.err.println('Service : Godown , action :  put  , Ex:' + ex)
             log.error('Service :putAccountMode , action :  put  , Ex:' + ex)
         }
-        finally{
-            client.close()
-        }
+
     }
 
     /**
@@ -483,9 +451,7 @@ class FacilityService {
             System.err.println('Service :systemService , action :  delete  , Ex:' + ex)
             log.error('Service :systemService , action :  delete  , Ex:' + ex)
         }
-        finally{
-            client.close()
-        }
+
     }
 
 
@@ -512,9 +478,7 @@ class FacilityService {
             System.err.println('Service :ProductService , action :  getProductSchedules  , Ex:' + ex)
             log.error('Service :ProductService , action :  getProductSchedules  , Ex:' + ex)
         }
-        finally{
-            client.close()
-        }
+
     }
 
 }

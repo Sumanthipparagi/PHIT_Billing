@@ -34,9 +34,7 @@ class PurchaseService {
             System.err.println('Service :saveStateMaster , action :  save  , Ex:' + ex)
             log.error('Service :saveStateMaster , action :  save  , Ex:' + ex)
         }
-        finally{
-            client.close()
-        }
+
     }
 
     def savePurchaseBillDetails(JSONObject jsonObject)
@@ -56,9 +54,7 @@ class PurchaseService {
             System.err.println('Service :saveStateMaster , action :  save  , Ex:' + ex)
             log.error('Service :saveStateMaster , action :  save  , Ex:' + ex)
         }
-        finally{
-            client.close()
-        }
+
     }
 
     def getPurchaseProductDetails(String id) {
@@ -77,9 +73,7 @@ class PurchaseService {
             System.err.println('Service :ProductService , action :  getBatchesOfProduct  , Ex:' + ex)
             log.error('Service :ProductService , action :  getBatchesOfProduct  , Ex:' + ex)
         }
-        finally{
-            client.close()
-        }
+
     }
 
     def getRecentPurchaseBill(String financialYear, String entityId, String billStatus)
@@ -111,9 +105,7 @@ class PurchaseService {
             System.err.println('Service :saveStateMaster , action :  save  , Ex:' + ex)
             log.error('Service :saveStateMaster , action :  save  , Ex:' + ex)
         }
-        finally{
-            client.close()
-        }
+
     }
 
     def getPurchaseBillDetailsById(String id) {
@@ -136,9 +128,7 @@ class PurchaseService {
             System.err.println('Service :PurchaseService , action :  getProducts  , Ex:' + ex)
             log.error('Service :PurchaseService , action :  getProducts  , Ex:' + ex)
         }
-        finally{
-            client.close()
-        }
+
     }
 
     def getPurchaseProductDetailsByBill(String id) {
@@ -161,9 +151,7 @@ class PurchaseService {
             System.err.println('Service :PurchaseService , action :  getProducts  , Ex:' + ex)
             log.error('Service :PurchaseService , action :  getProducts  , Ex:' + ex)
         }
-        finally{
-            client.close()
-        }
+
     }
 
     def getPurchaseBillBySupplier(String supplierId)

@@ -384,9 +384,9 @@ class SalesService
         {
             System.err.println(ex)
         }
-        finally{
-            client.close()
-        }
+//        finally{
+//            client.close()
+//        }
     }
 
 
@@ -430,9 +430,7 @@ class SalesService
             System.err.println('Service :showSalesService , action :  show  , Ex:' + ex)
             log.error('Service :showSalesService , action :  show  , Ex:' + ex)
         }
-        finally{
-            client.close()
-        }
+
     }
 
     def saveScheme(JSONObject jsonObject)
@@ -452,9 +450,7 @@ class SalesService
             System.err.println('Service :SaleService , action :  saveEntity  , Ex:' + ex)
             log.error('Service :SaleService , action :  saveEntity  , Ex:' + ex)
         }
-        finally{
-            client.close()
-        }
+
     }
 
 
@@ -482,9 +478,7 @@ class SalesService
             System.err.println('Service :getAccountModes , action :  show  , Ex:' + ex)
             log.error('Service :getAccountModes , action :  show  , Ex:' + ex)
         }
-        finally{
-            client.close()
-        }
+
     }
 
 
@@ -508,9 +502,7 @@ class SalesService
             System.err.println('Service : , action :  putEntity  , Ex:' + ex)
             log.error('Service :EntityService , action :  putEntity  , Ex:' + ex)
         }
-        finally{
-            client.close()
-        }
+
     }
 
     /**
@@ -537,9 +529,7 @@ class SalesService
             System.err.println('Service :EntityService , action :  deleteEntity  , Ex:' + ex)
             log.error('Service :EntityService , action :  deleteEntity  , Ex:' + ex)
         }
-        finally{
-            client.close()
-        }
+
     }
 
     def getSchemeById(String id)
@@ -567,9 +557,7 @@ class SalesService
             System.err.println('Service :EntityService , action :  getEntity  , Ex:' + ex)
             log.error('Service :EntityService , action :  getEntity  , Ex:' + ex)
         }
-        finally{
-            client.close()
-        }
+
     }
 
 
@@ -598,9 +586,7 @@ class SalesService
             System.err.println('Service :EntityService , action :  getEntity  , Ex:' + ex)
             log.error('Service :EntityService , action :  getEntity  , Ex:' + ex)
         }
-        finally{
-            client.close()
-        }
+
     }
 
 
@@ -630,9 +616,7 @@ class SalesService
             System.err.println('Service :EntityService , action :  getEntity  , Ex:' + ex)
             log.error('Service :EntityService , action :  getEntity  , Ex:' + ex)
         }
-        finally{
-            client.close()
-        }
+
     }
 
 
@@ -656,8 +640,6 @@ class SalesService
             System.err.println('Service :SalesService , action :  getReasons  , Ex:' + ex)
             log.error('Service :SalesService , action :  getReasons  , Ex:' + ex)
         }
-        finally{
-            client.close()
-        }
+
     }
 }

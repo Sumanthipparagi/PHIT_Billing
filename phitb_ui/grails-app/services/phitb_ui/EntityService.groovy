@@ -1688,9 +1688,7 @@ class EntityService {
             System.err.println('Service :EntityService , action :  getEntity  , Ex:' + ex)
             log.error('Service :EntityService , action :  getEntity  , Ex:' + ex)
         }
-        finally{
-            client.close()
-        }
+
     }
 
     def getEntityById(String id) {
@@ -1713,9 +1711,7 @@ class EntityService {
             System.err.println('Service :EntityService , action :  getEntity  , Ex:' + ex)
             log.error('Service :EntityService , action :  getEntity  , Ex:' + ex)
         }
-        finally{
-            client.close()
-        }
+
     }
 
     def getEntityByAffiliates(String id) {
@@ -1732,9 +1728,7 @@ class EntityService {
             System.err.println('Service :EntityService , action :  getEntityByAffiliates  , Ex:' + ex)
             log.error('Service :EntityService , action :  getEntityByAffiliates  , Ex:' + ex)
         }
-        finally{
-            client.close()
-        }
+
     }
 
 /*    def getEntityById(String id) {
@@ -1774,9 +1768,7 @@ class EntityService {
             System.err.println('Service :EntityService , action :  getTaxRegister  , Ex:' + ex)
             log.error('Service :EntityService , action :  getTaxRegister  , Ex:' + ex)
         }
-        finally{
-            client.close()
-        }
+
     }
 
     def getEntityType() {
@@ -1795,9 +1787,7 @@ class EntityService {
             System.err.println('Service :EntityService , action :  getEntityType  , Ex:' + ex)
             log.error('Service :EntityService , action :  getEntityType  , Ex:' + ex)
         }
-        finally{
-            client.close()
-        }
+
     }
 
     def getUserRegister() {
@@ -1816,9 +1806,7 @@ class EntityService {
             System.err.println('Service :EntityService , action :  getUserRegister  , Ex:' + ex)
             log.error('Service :EntityService , action :  getUserRegister  , Ex:' + ex)
         }
-        finally{
-            client.close()
-        }
+
     }
 
     def getSeries(String id = null) {
@@ -1840,9 +1828,7 @@ class EntityService {
             System.err.println('Service :EntityService , action :  getSeries  , Ex:' + ex)
             log.error('Service :EntityService , action :  getSeries  , Ex:' + ex)
         }
-        finally{
-            client.close()
-        }
+
     }
 
     def getSeriesById(String id) {
@@ -1866,9 +1852,7 @@ class EntityService {
             System.err.println('Service :EntityService , action :  getSeries  , Ex:' + ex)
             log.error('Service :EntityService , action :  getSeries  , Ex:' + ex)
         }
-        finally{
-            client.close()
-        }
+
     }
 
     def getSeriesByEntity(String id) {
@@ -1887,9 +1871,7 @@ class EntityService {
             System.err.println('Service :EntityService , action :  getSeriesByEntity  , Ex:' + ex)
             log.error('Service :EntityService , action :  getSeriesByEntity  , Ex:' + ex)
         }
-        finally{
-            client.close()
-        }
+
     }
 
 
@@ -1924,9 +1906,7 @@ class EntityService {
             System.err.println('Service :EntityService , action :  getRoles  , Ex:' + ex)
             log.error('Service :EntityService , action :  getRoles  , Ex:' + ex)
         }
-        finally{
-            client.close()
-        }
+
     }
 
     def getFeatures(String query = null) {
@@ -1952,9 +1932,7 @@ class EntityService {
             System.err.println('Service :EntityService , action :  getFeatures  , Ex:' + ex)
             log.error('Service :EntityService , action :  getFeatures  , Ex:' + ex)
         }
-        finally{
-            client.close()
-        }
+
     }
 
     def getFeature(String id) {
@@ -1979,9 +1957,7 @@ class EntityService {
             System.err.println('Service :EntityService , action :  getFeature  , Ex:' + ex)
             log.error('Service :EntityService , action :  getFeature  , Ex:' + ex)
         }
-        finally{
-            client.close()
-        }
+
     }
 
     def getFeatureList(String ids) {
@@ -2006,9 +1982,7 @@ class EntityService {
             System.err.println('Service :EntityService , action :  getFeatureList  , Ex:' + ex)
             log.error('Service :EntityService , action :  getFeatureList  , Ex:' + ex)
         }
-        finally{
-            client.close()
-        }
+
     }
 
     def getAllAccount() {
@@ -2025,9 +1999,7 @@ class EntityService {
             System.err.println('Service :EntityService , action :  getAccountById  , Ex:' + ex)
             log.error('Service :EntityService , action :  getAccountById  , Ex:' + ex)
         }
-        finally{
-            client.close()
-        }
+
     }
 
     def saveAccountRegister(JSONObject jsonObject)
@@ -2049,9 +2021,7 @@ class EntityService {
             System.err.println('Service :saveStateMaster , action :  save  , Ex:' + ex)
             log.error('Service :saveStateMaster , action :  save  , Ex:' + ex)
         }
-        finally{
-            client.close()
-        }
+
     }
 
     def getAllAccountById(String id) {
@@ -2068,9 +2038,7 @@ class EntityService {
             System.err.println('Service :EntityService , action :  getAccountById  , Ex:' + ex)
             log.error('Service :EntityService , action :  getAccountById  , Ex:' + ex)
         }
-        finally{
-            client.close()
-        }
+
     }
 
     def getAccountById(String id) {
@@ -2093,9 +2061,7 @@ class EntityService {
             System.err.println('Service :EntityService , action :  getAccountById  , Ex:' + ex)
             log.error('Service :EntityService , action :  getAccountById  , Ex:' + ex)
         }
-        finally{
-            client.close()
-        }
+
     }
 
 
@@ -2122,9 +2088,7 @@ class EntityService {
             System.err.println('Service :EntityService , action :  getAllAccountByEntity  , Ex:' + ex)
             log.error('Service :EntityService , action :  getAllAccountByEntity  , Ex:' + ex)
         }
-        finally{
-            client.close()
-        }
+
     }
 
 
@@ -2151,9 +2115,7 @@ class EntityService {
             System.err.println('Service :entityService , action :  updateAccountBalance  , Ex:' + ex)
             log.error('Service :entityService , action :  updateAccountBalance  , Ex:' + ex)
         }
-        finally{
-            client.close()
-        }
+
     }
 
 }

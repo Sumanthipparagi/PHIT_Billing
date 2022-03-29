@@ -1811,9 +1811,7 @@ class ProductService {
             System.err.println('Service :ProductService , action :  getDivisionsByEntityId  , Ex:' + ex)
             log.error('Service :ProductService , action :  getDivisionsByEntityId  , Ex:' + ex)
         }
-        finally{
-            client.close()
-        }
+
     }
 
     def getProductsBySeries(String seriesId, String entityId)

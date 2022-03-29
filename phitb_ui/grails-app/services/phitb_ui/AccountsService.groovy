@@ -298,9 +298,7 @@ class AccountsService {
             System.err.println('Service :EntityService , action :  getProducts  , Ex:' + ex)
             log.error('Service :EntityService , action :  getProducts  , Ex:' + ex)
         }
-        finally{
-            client.close()
-        }
+
     }
 
     //    get Credit Note to settled
@@ -320,9 +318,7 @@ class AccountsService {
             System.err.println('Service :AccountsService , action :  getCNUnsettledCustomerId  , Ex:' + ex)
             log.error('Service :AccountsService , action :  getCNUnsettledCustomerId  , Ex:' + ex)
         }
-        finally{
-            client.close()
-        }
+
     }
 
     //    get invoice to settled
@@ -340,9 +336,7 @@ class AccountsService {
             System.err.println('Service :EntityService , action :  getProducts  , Ex:' + ex)
             log.error('Service :EntityService , action :  getProducts  , Ex:' + ex)
         }
-        finally{
-            client.close()
-        }
+
     }
 
     //    get Credit Note to settled
@@ -360,9 +354,7 @@ class AccountsService {
             System.err.println('Service :EntityService , action :  getProducts  , Ex:' + ex)
             log.error('Service :EntityService , action :  getProducts  , Ex:' + ex)
         }
-        finally{
-            client.close()
-        }
+
     }
 
 //   move invoice to settled vocher
@@ -386,9 +378,7 @@ class AccountsService {
             System.err.println('Service :saveStateMaster , action :  save  , Ex:' + ex)
             log.error('Service :saveStateMaster , action :  save  , Ex:' + ex)
         }
-        finally{
-            client.close()
-        }
+
     }
 
 //   move invoice to Unsettled vocher
@@ -412,9 +402,7 @@ class AccountsService {
             System.err.println('Service :saveStateMaster , action :  save  , Ex:' + ex)
             log.error('Service :saveStateMaster , action :  save  , Ex:' + ex)
         }
-        finally{
-            client.close()
-        }
+
     }
 
     //   move Credit Note to settled vocher
@@ -438,9 +426,7 @@ class AccountsService {
             System.err.println('Service :saveStateMaster , action :  save  , Ex:' + ex)
             log.error('Service :saveStateMaster , action :  save  , Ex:' + ex)
         }
-        finally{
-            client.close()
-        }
+
     }
 
 //   move Credit Note to Unsettled vocher
@@ -464,9 +450,7 @@ class AccountsService {
             System.err.println('Service :saveStateMaster , action :  save  , Ex:' + ex)
             log.error('Service :saveStateMaster , action :  save  , Ex:' + ex)
         }
-        finally{
-            client.close()
-        }
+
     }
 
 
@@ -485,9 +469,7 @@ class AccountsService {
             System.err.println('Service :EntityService , action :  getProducts  , Ex:' + ex)
             log.error('Service :EntityService , action :  getProducts  , Ex:' + ex)
         }
-        finally{
-            client.close()
-        }
+
     }
 
     def getPaymentById(String id) {
@@ -505,9 +487,7 @@ class AccountsService {
             System.err.println('Service :EntityService , action :  getProducts  , Ex:' + ex)
             log.error('Service :EntityService , action :  getProducts  , Ex:' + ex)
         }
-        finally{
-            client.close()
-        }
+
     }
 
 
@@ -529,9 +509,7 @@ class AccountsService {
             System.err.println('Service :accountsService , action :  saveCreditJV  , Ex:' + ex)
             log.error('Service :accountsService , action :  saveCreditJV  , Ex:' + ex)
         }
-        finally{
-            client.close()
-        }
+
     }
 
     def saveDebitJV(JSONObject jsonObject) {
@@ -551,9 +529,7 @@ class AccountsService {
             System.err.println('Service :accountsService , action :  saveCreditJV  , Ex:' + ex)
             log.error('Service :accountsService , action :  saveCreditJV  , Ex:' + ex)
         }
-        finally{
-            client.close()
-        }
+
     }
 
     /**
@@ -576,9 +552,7 @@ class AccountsService {
             System.err.println('Service :AccountsService , action :  creditJVDatatables  , Ex:' + ex)
             log.error('Service :AccountsService , action :  creditJVDatatables  , Ex:' + ex)
         }
-        finally{
-            client.close()
-        }
+
     }
 
     def creditJvApprove(String status, long entityId, long approverId, String creditJvId, String debitBalance, String toBalance) {
@@ -602,9 +576,7 @@ class AccountsService {
             System.err.println('Service :AccountsService , action :  creditJVDatatables  , Ex:' + ex)
             log.error('Service :AccountsService , action :  creditJVDatatables  , Ex:' + ex)
         }
-        finally{
-            client.close()
-        }
+
     }
 
 
@@ -623,9 +595,7 @@ class AccountsService {
             System.err.println('Service :AccountsService , action :  debitJVDatatables  , Ex:' + ex)
             log.error('Service :AccountsService , action :  debitJVDatatables  , Ex:' + ex)
         }
-        finally{
-            client.close()
-        }
+
     }
 
     def debitJvApprove(String status, long entityId, long approverId, String debitJvId, String creditBalance, String fromBalance) {
@@ -649,8 +619,6 @@ class AccountsService {
             System.err.println('Service :AccountsService , action :  debitJvApprove  , Ex:' + ex)
             log.error('Service :AccountsService , action :  debitJvApprove  , Ex:' + ex)
         }
-        finally{
-            client.close()
-        }
+
     }
 }

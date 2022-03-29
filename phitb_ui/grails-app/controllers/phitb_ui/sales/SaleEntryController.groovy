@@ -18,7 +18,6 @@ import java.text.SimpleDateFormat
 class SaleEntryController {
 
     def index() {
-
         String entityId = session.getAttribute("entityId")?.toString()
         JSONArray divisions = new ProductService().getDivisionsByEntityId(entityId)
         ArrayList<String> customers = new EntityRegisterController().show() as ArrayList<String>
@@ -240,40 +239,52 @@ class SaleEntryController {
     }
 
     def printSaleInvoice() {
+
         String saleBillId = params.id
         JSONObject saleBillDetail = new SalesService().getSaleBillDetailsById(saleBillId)
-        JSONArray saleProductDetails = new SalesService().getSaleProductDetails(saleBillId)
-        JSONObject series = new EntityService().getSeriesById(saleBillDetail.get("seriesId").toString())
-        JSONObject customer = new EntityService().getEntityById(saleBillDetail.get("customerId").toString())
-        JSONObject entity = new EntityService().getEntityById(session.getAttribute("entityId").toString())
-        JSONObject city = new SystemService().getCityById(entity.get('cityId').toString())
-        JSONObject custcity = new SystemService().getCityById(customer.get('cityId').toString())
-        JSONArray termsConditions = new EntityService().getTermsContionsByEntity(session.getAttribute("entityId").toString())
-        saleProductDetails.each {
-            def apiResponse = new SalesService().getRequestWithId(it.productId.toString(), new Links().PRODUCT_REGISTER_SHOW)
-            it.put("productId", JSON.parse(apiResponse.readEntity(String.class)) as JSONObject)
+        if(saleBillDetail!=null)
+        {
+            JSONArray saleProductDetails = new SalesService().getSaleProductDetails(saleBillId)
+            JSONObject series = new EntityService().getSeriesById(saleBillDetail.get("seriesId").toString())
+            JSONObject customer = new EntityService().getEntityById(saleBillDetail.get("customerId").toString())
+            JSONObject entity = new EntityService().getEntityById(session.getAttribute("entityId").toString())
+            JSONObject city = new SystemService().getCityById(entity.get('cityId').toString())
+            JSONObject custcity = new SystemService().getCityById(customer.get('cityId').toString())
+            JSONArray termsConditions = new EntityService().getTermsContionsByEntity(session.getAttribute("entityId").toString())
+            saleProductDetails.each {
+                def apiResponse = new SalesService().getRequestWithId(it.productId.toString(), new Links().PRODUCT_REGISTER_SHOW)
+                it.put("productId", JSON.parse(apiResponse.readEntity(String.class)) as JSONObject)
+            }
+            def invoiceNumber;
+            def datepart = saleBillDetail.entryDate.split("T")[0];
+            def month = datepart.split("-")[1];
+            def year = datepart.split("-")[0];
+            def seriesCode = "__";
+            if (saleBillDetail.billStatus == "DRAFT")
+            {
+                invoiceNumber = "DR/S/" + month + year + "/" + series.seriesCode + "/__";
+            }
+            else
+            {
+                invoiceNumber = "S/" + month + year + "/" + series.seriesCode + "/" + saleBillDetail.id
+            }
+            def totalcgst = saleProductDetails.cgstAmount.sum()
+            def totalsgst = saleProductDetails.sgstAmount.sum()
+            def totaligst = saleProductDetails.igstAmount.sum()
+            def totaldiscount = saleProductDetails.discount.sum()
+            render(view: "/sales/sale-invoice", model: [saleBillDetail    : saleBillDetail,
+                                                        saleProductDetails: saleProductDetails,
+                                                        series            : series, entity: entity, customer: customer, city: city,
+                                                        total             : saleProductDetails.amount.sum(), custcity: custcity,
+                                                        invoiceNumber     : invoiceNumber, termsConditions: termsConditions,
+                                                        totalcgst         : totalcgst, totalsgst: totalsgst, totaligst: totaligst,
+                                                        totaldiscount     : totaldiscount])
         }
-        def invoiceNumber;
-        def datepart = saleBillDetail.entryDate.split("T")[0];
-        def month = datepart.split("-")[1];
-        def year = datepart.split("-")[0];
-        def seriesCode = "__";
-        if (saleBillDetail.billStatus == "DRAFT") {
-            invoiceNumber = "DR/S/" + month + year + "/" + series.seriesCode + "/__";
-        } else {
-            invoiceNumber = "S/" + month + year + "/" + series.seriesCode + "/" + saleBillDetail.id
+
+        else {
+
+            render("No Bill Found")
         }
-        def totalcgst = saleProductDetails.cgstAmount.sum()
-        def totalsgst = saleProductDetails.sgstAmount.sum()
-        def totaligst = saleProductDetails.igstAmount.sum()
-        def totaldiscount = saleProductDetails.discount.sum()
-        render(view: "/sales/sale-invoice", model: [saleBillDetail    : saleBillDetail,
-                                                    saleProductDetails: saleProductDetails,
-                                                    series            : series, entity: entity, customer: customer, city: city,
-                                                    total             : saleProductDetails.amount.sum(), custcity: custcity,
-                                                    invoiceNumber     : invoiceNumber, termsConditions: termsConditions,
-                                                    totalcgst         : totalcgst, totalsgst: totalsgst, totaligst: totaligst,
-                                                    totaldiscount     : totaldiscount])
     }
 
     def show() {

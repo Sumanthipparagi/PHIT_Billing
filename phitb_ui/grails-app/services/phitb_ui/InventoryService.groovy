@@ -113,9 +113,7 @@ class InventoryService {
             System.err.println('Service :EntityService , action :  getProducts  , Ex:' + ex)
             log.error('Service :EntityService , action :  getProducts  , Ex:' + ex)
         }
-        finally{
-            client.close()
-        }
+
     }
 
 
@@ -139,9 +137,7 @@ class InventoryService {
             System.err.println('Service :InventoryService , action :  save  , Ex:' + ex)
             log.error('Service :InventoryService , action :  save  , Ex:' + ex)
         }
-        finally{
-            client.close()
-        }
+
     }
 
     def updateStockBook(JSONObject jsonObject)
@@ -161,9 +157,7 @@ class InventoryService {
             System.err.println('Service : InventoryService , action :  put  , Ex:' + ex)
             log.error('Service :InventoryService , action :  put  , Ex:' + ex)
         }
-        finally{
-            client.close()
-        }
+
     }
 
     def showStockBooks(JSONObject jsonObject)
@@ -185,9 +179,7 @@ class InventoryService {
             System.err.println('Service :InventoryService , action :  show  , Ex:' + ex)
             log.error('Service :InventoryService , action :  show  , Ex:' + ex)
         }
-        finally{
-            client.close()
-        }
+
     }
 
 
@@ -208,9 +200,7 @@ class InventoryService {
             System.err.println('Service :InventoryService , action :  getBatchesOfProduct  , Ex:' + ex)
             log.error('Service :InventoryService , action :  getBatchesOfProduct  , Ex:' + ex)
         }
-        finally{
-            client.close()
-        }
+
     }
 
     def getTempStocksOfProductAndBatch(String id, String batch) {
@@ -233,9 +223,7 @@ class InventoryService {
             System.err.println('Service:InventoryService , action :  getTempStocksOfProduct  , Ex:' + ex)
             log.error('Service:InventoryService , action :  getTempStocksOfProduct  , Ex:' + ex)
         }
-        finally{
-            client.close()
-        }
+
     }
 
 
@@ -262,9 +250,7 @@ class InventoryService {
             System.err.println('Service:InventoryService , action :  getStocksOfProductAndBatch  , Ex:' + ex)
             log.error('Service:InventoryService , action :  getStocksOfProductAndBatch  , Ex:' + ex)
         }
-        finally{
-            client.close()
-        }
+
     }
 
 //    def getTempStocksOfEntity(String id) {
@@ -306,9 +292,7 @@ class InventoryService {
             System.err.println('Service :InventoryService , action :  save  , Ex:' + ex)
             log.error('Service :InventoryService , action :  save  , Ex:' + ex)
         }
-        finally{
-            client.close()
-        }
+
     }
 
 
@@ -333,9 +317,7 @@ class InventoryService {
             System.err.println('Service :InventoryService , action :  save  , Ex:' + ex)
             log.error('Service :InventoryService , action :  save  , Ex:' + ex)
         }
-        finally{
-            client.close()
-        }
+
     }
 
 
@@ -356,9 +338,7 @@ class InventoryService {
             System.err.println('Service :InventoryService , action :  getTempStocks  , Ex:' + ex)
             log.error('Service :InventoryService , action :  getTempStocks  , Ex:' + ex)
         }
-        finally{
-            client.close()
-        }
+
     }
 
     def deleteStockBook(String id) {
@@ -378,9 +358,7 @@ class InventoryService {
             System.err.println('Service :InventoryService , action :  getTempStocks  , Ex:' + ex)
             log.error('Service :InventoryService , action :  getTempStocks  , Ex:' + ex)
         }
-        finally{
-            client.close()
-        }
+
     }
 
     def getTempStocks() {
@@ -399,9 +377,7 @@ class InventoryService {
             System.err.println('Service :InventoryService , action :  getTempStocks  , Ex:' + ex)
             log.error('Service :InventoryService , action :  getTempStocks  , Ex:' + ex)
         }
-        finally{
-            client.close()
-        }
+
     }
 
     def getTempStocksById(long id) {
@@ -427,9 +403,7 @@ class InventoryService {
             System.err.println('Service :InventoryService , action :  getTempStocks  , Ex:' + ex)
             log.error('Service :InventoryService , action :  getTempStocks  , Ex:' + ex)
         }
-        finally{
-            client.close()
-        }
+
     }
 
     def getTempStocksByUser(String id) {
@@ -449,9 +423,7 @@ class InventoryService {
             System.err.println('Service :InventoryService , action :  getTempStocks  , Ex:' + ex)
             log.error('Service :InventoryService , action :  getTempStocks  , Ex:' + ex)
         }
-        finally{
-            client.close()
-        }
+
     }
 
     def getStocksByUser(String id) {
@@ -470,8 +442,6 @@ class InventoryService {
             System.err.println('Service :InventoryService , action :  getTempStocks  , Ex:' + ex)
             log.error('Service :InventoryService , action :  getTempStocks  , Ex:' + ex)
         }
-        finally{
-            client.close()
-        }
+
     }
 }
