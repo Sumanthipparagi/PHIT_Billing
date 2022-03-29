@@ -31,6 +31,9 @@ class AccountsService {
             System.err.println('Service :AccountsService , action :  saveBankRegister  , Ex:' + ex)
             log.error('Service :AccountsService , action :  saveBankRegister  , Ex:' + ex)
         }
+        finally{
+            client.close()
+        }
     }
 
     /**
@@ -53,6 +56,9 @@ class AccountsService {
             System.err.println('Service :AccountsService , action :  showBankRegister  , Ex:' + ex)
             log.error('Service :AccountsService , action :  showBankRegister  , Ex:' + ex)
         }
+        finally{
+            client.close()
+        }
     }
 
     def putBankRegister(JSONObject jsonObject) {
@@ -70,6 +76,9 @@ class AccountsService {
         catch (Exception ex) {
             System.err.println('Service: AccountsService , action :  putBankRegister  , Ex:' + ex)
             log.error('Service: AccountsService , action :  putBankRegister  , Ex:' + ex)
+        }
+        finally{
+            client.close()
         }
     }
 
@@ -93,6 +102,9 @@ class AccountsService {
             System.err.println('Service :AccountsService , action :  deleteBankRegister  , Ex:' + ex)
             log.error('Service :AccountsService , action :  deleteBankRegister  , Ex:' + ex)
         }
+        finally{
+            client.close()
+        }
     }
 
 
@@ -113,6 +125,9 @@ class AccountsService {
         catch (Exception ex) {
             System.err.println('Service :saveStateMaster , action :  save  , Ex:' + ex)
             log.error('Service :saveStateMaster , action :  save  , Ex:' + ex)
+        }
+        finally{
+            client.close()
         }
     }
 
@@ -135,6 +150,9 @@ class AccountsService {
             System.err.println('Service :saveStateMaster , action :  save  , Ex:' + ex)
             log.error('Service :saveStateMaster , action :  save  , Ex:' + ex)
         }
+        finally{
+            client.close()
+        }
     }
 
     def putRecipt(JSONObject jsonObject) {
@@ -153,6 +171,9 @@ class AccountsService {
         catch (Exception ex) {
             System.err.println('Service : , action :  put  , Ex:' + ex)
             log.error('Service :putAccountMode , action :  put  , Ex:' + ex)
+        }
+        finally{
+            client.close()
         }
     }
 
@@ -190,6 +211,9 @@ class AccountsService {
             System.err.println('Service :getAccountModes , action :  show  , Ex:' + ex)
             log.error('Service :getAccountModes , action :  show  , Ex:' + ex)
         }
+        finally{
+            client.close()
+        }
     }
 
     def getBanks() {
@@ -208,6 +232,9 @@ class AccountsService {
         catch (Exception ex) {
             System.err.println('Service :ProductService , action :  getProducts  , Ex:' + ex)
             log.error('Service :ProductService , action :  getProducts  , Ex:' + ex)
+        }
+        finally{
+            client.close()
         }
     }
 
@@ -228,6 +255,9 @@ class AccountsService {
             System.err.println('Service :ProductService , action :  getProducts  , Ex:' + ex)
             log.error('Service :ProductService , action :  getProducts  , Ex:' + ex)
         }
+        finally{
+            client.close()
+        }
     }
 
 
@@ -246,13 +276,15 @@ class AccountsService {
             System.err.println('Service :EntityService , action :  getProducts  , Ex:' + ex)
             log.error('Service :EntityService , action :  getProducts  , Ex:' + ex)
         }
+        finally{
+            client.close()
+        }
     }
 
 //   get Invoice to Unsettled
     def getUnSaleBillCustomerId(String id, String entityId, String financialYear) {
         Client client = ClientBuilder.newClient()
-        // WebTarget target = client.target(new Links().API_GATEWAY)
-        WebTarget target = client.target("http://localhost:8083")
+         WebTarget target = client.target(new Links().API_GATEWAY)
         try {
             Response apiResponse = target
                     .path(new Links().SALE_BILL_UNSETTLED + "/" + id)
@@ -266,13 +298,15 @@ class AccountsService {
             System.err.println('Service :EntityService , action :  getProducts  , Ex:' + ex)
             log.error('Service :EntityService , action :  getProducts  , Ex:' + ex)
         }
+        finally{
+            client.close()
+        }
     }
 
     //    get Credit Note to settled
     def getCNUnsettledCustomerId(String entityId, String financialYear) {
         Client client = ClientBuilder.newClient()
-        //WebTarget target = client.target(new Links().API_GATEWAY)
-        WebTarget target = client.target("http://localhost:8089")
+        WebTarget target = client.target(new Links().API_GATEWAY)
         try {
             Response apiResponse = target
                     .path(new Links().CREDIT_UNSETTLED + "/" + entityId) //TODO: To be changed
@@ -285,6 +319,9 @@ class AccountsService {
         catch (Exception ex) {
             System.err.println('Service :AccountsService , action :  getCNUnsettledCustomerId  , Ex:' + ex)
             log.error('Service :AccountsService , action :  getCNUnsettledCustomerId  , Ex:' + ex)
+        }
+        finally{
+            client.close()
         }
     }
 
@@ -303,6 +340,9 @@ class AccountsService {
             System.err.println('Service :EntityService , action :  getProducts  , Ex:' + ex)
             log.error('Service :EntityService , action :  getProducts  , Ex:' + ex)
         }
+        finally{
+            client.close()
+        }
     }
 
     //    get Credit Note to settled
@@ -319,6 +359,9 @@ class AccountsService {
         catch (Exception ex) {
             System.err.println('Service :EntityService , action :  getProducts  , Ex:' + ex)
             log.error('Service :EntityService , action :  getProducts  , Ex:' + ex)
+        }
+        finally{
+            client.close()
         }
     }
 
@@ -343,6 +386,9 @@ class AccountsService {
             System.err.println('Service :saveStateMaster , action :  save  , Ex:' + ex)
             log.error('Service :saveStateMaster , action :  save  , Ex:' + ex)
         }
+        finally{
+            client.close()
+        }
     }
 
 //   move invoice to Unsettled vocher
@@ -365,6 +411,9 @@ class AccountsService {
         catch (Exception ex) {
             System.err.println('Service :saveStateMaster , action :  save  , Ex:' + ex)
             log.error('Service :saveStateMaster , action :  save  , Ex:' + ex)
+        }
+        finally{
+            client.close()
         }
     }
 
@@ -389,6 +438,9 @@ class AccountsService {
             System.err.println('Service :saveStateMaster , action :  save  , Ex:' + ex)
             log.error('Service :saveStateMaster , action :  save  , Ex:' + ex)
         }
+        finally{
+            client.close()
+        }
     }
 
 //   move Credit Note to Unsettled vocher
@@ -412,6 +464,9 @@ class AccountsService {
             System.err.println('Service :saveStateMaster , action :  save  , Ex:' + ex)
             log.error('Service :saveStateMaster , action :  save  , Ex:' + ex)
         }
+        finally{
+            client.close()
+        }
     }
 
 
@@ -430,6 +485,9 @@ class AccountsService {
             System.err.println('Service :EntityService , action :  getProducts  , Ex:' + ex)
             log.error('Service :EntityService , action :  getProducts  , Ex:' + ex)
         }
+        finally{
+            client.close()
+        }
     }
 
     def getPaymentById(String id) {
@@ -446,6 +504,9 @@ class AccountsService {
         catch (Exception ex) {
             System.err.println('Service :EntityService , action :  getProducts  , Ex:' + ex)
             log.error('Service :EntityService , action :  getProducts  , Ex:' + ex)
+        }
+        finally{
+            client.close()
         }
     }
 
@@ -468,6 +529,9 @@ class AccountsService {
             System.err.println('Service :accountsService , action :  saveCreditJV  , Ex:' + ex)
             log.error('Service :accountsService , action :  saveCreditJV  , Ex:' + ex)
         }
+        finally{
+            client.close()
+        }
     }
 
     def saveDebitJV(JSONObject jsonObject) {
@@ -486,6 +550,9 @@ class AccountsService {
         catch (Exception ex) {
             System.err.println('Service :accountsService , action :  saveCreditJV  , Ex:' + ex)
             log.error('Service :accountsService , action :  saveCreditJV  , Ex:' + ex)
+        }
+        finally{
+            client.close()
         }
     }
 
@@ -508,6 +575,9 @@ class AccountsService {
         catch (Exception ex) {
             System.err.println('Service :AccountsService , action :  creditJVDatatables  , Ex:' + ex)
             log.error('Service :AccountsService , action :  creditJVDatatables  , Ex:' + ex)
+        }
+        finally{
+            client.close()
         }
     }
 
@@ -532,6 +602,9 @@ class AccountsService {
             System.err.println('Service :AccountsService , action :  creditJVDatatables  , Ex:' + ex)
             log.error('Service :AccountsService , action :  creditJVDatatables  , Ex:' + ex)
         }
+        finally{
+            client.close()
+        }
     }
 
 
@@ -549,6 +622,9 @@ class AccountsService {
         catch (Exception ex) {
             System.err.println('Service :AccountsService , action :  debitJVDatatables  , Ex:' + ex)
             log.error('Service :AccountsService , action :  debitJVDatatables  , Ex:' + ex)
+        }
+        finally{
+            client.close()
         }
     }
 
@@ -572,6 +648,9 @@ class AccountsService {
         catch (Exception ex) {
             System.err.println('Service :AccountsService , action :  debitJvApprove  , Ex:' + ex)
             log.error('Service :AccountsService , action :  debitJvApprove  , Ex:' + ex)
+        }
+        finally{
+            client.close()
         }
     }
 }

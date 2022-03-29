@@ -42,6 +42,9 @@ class SystemService
             System.err.println('Service :System , action :  save  , Ex:' + ex)
             log.error('Service :System , action :  save  , Ex:' + ex)
         }
+        finally{
+            client.close()
+        }
     }
 
 
@@ -70,6 +73,9 @@ class SystemService
             System.err.println('Service :putAccountMode , action :  put  , Ex:' + ex)
             log.error('Service :putAccountMode , action :  put  , Ex:' + ex)
         }
+        finally{
+            client.close()
+        }
     }
 
     /**
@@ -95,6 +101,9 @@ class SystemService
         {
             System.err.println('Service :showAccountModes , action :  show  , Ex:' + ex)
             log.error('Service :showAccountModes , action :  show  , Ex:' + ex)
+        }
+        finally{
+            client.close()
         }
     }
 
@@ -123,6 +132,9 @@ class SystemService
             System.err.println('Service :caseDetails , action :  delete  , Ex:' + ex)
             log.error('Service :caseDetails , action :  delete  , Ex:' + ex)
         }
+        finally{
+            client.close()
+        }
     }
 
     //State
@@ -148,6 +160,9 @@ class SystemService
         {
             System.err.println('Service :saveStateMaster , action :  save  , Ex:' + ex)
             log.error('Service :saveStateMaster , action :  save  , Ex:' + ex)
+        }
+        finally{
+            client.close()
         }
     }
 
@@ -176,6 +191,9 @@ class SystemService
             System.err.println('Service :getAccountModes , action :  show  , Ex:' + ex)
             log.error('Service :getAccountModes , action :  show  , Ex:' + ex)
         }
+        finally{
+            client.close()
+        }
     }
 
     /**
@@ -202,6 +220,9 @@ class SystemService
         {
             System.err.println('Service :putAccountMode , action :  put  , Ex:' + ex)
             log.error('Service :putAccountMode , action :  put  , Ex:' + ex)
+        }
+        finally{
+            client.close()
         }
     }
 
@@ -230,6 +251,9 @@ class SystemService
             System.err.println('Service :systemService , action :  delete  , Ex:' + ex)
             log.error('Service :systemService , action :  delete  , Ex:' + ex)
         }
+        finally{
+            client.close()
+        }
     }
 
     def getZoneList()
@@ -252,6 +276,9 @@ class SystemService
             System.err.println('Service :systemService , action :  getZoneList  , Ex:' + ex)
             log.error('Service :systemService , action :  getZoneList  , Ex:' + ex)
         }
+        finally{
+            client.close()
+        }
     }
 
     def getCountryList()
@@ -271,6 +298,9 @@ class SystemService
         {
             System.err.println('Service :systemService , action :  getCountryList  , Ex:' + ex)
             log.error('Service :systemService , action :  getCountryList  , Ex:' + ex)
+        }
+        finally{
+            client.close()
         }
     }
 
@@ -292,6 +322,9 @@ class SystemService
             System.err.println('Service :systemService , action :  getCountryList  , Ex:' + ex)
             log.error('Service :systemService , action :  getCountryList  , Ex:' + ex)
         }
+        finally{
+            client.close()
+        }
     }
 
     def getStateList()
@@ -310,6 +343,9 @@ class SystemService
         {
             System.err.println('Service :systemService , action :  getStateList  , Ex:' + ex)
             log.error('Service :systemService , action :  getStateList  , Ex:' + ex)
+        }
+        finally{
+            client.close()
         }
     }
 
@@ -337,6 +373,9 @@ class SystemService
             System.err.println('Service :saveStateMaster , action :  save  , Ex:' + ex)
             log.error('Service :saveStateMaster , action :  save  , Ex:' + ex)
         }
+        finally{
+            client.close()
+        }
     }
 
     def putCity(JSONObject jsonObject)
@@ -358,6 +397,9 @@ class SystemService
         {
             System.err.println('Service :putAccountMode , action :  put  , Ex:' + ex)
             log.error('Service :putAccountMode , action :  put  , Ex:' + ex)
+        }
+        finally{
+            client.close()
         }
     }
 
@@ -385,6 +427,9 @@ class SystemService
             System.err.println('Service :getAccountModes , action :  show  , Ex:' + ex)
             log.error('Service :getAccountModes , action :  show  , Ex:' + ex)
         }
+        finally{
+            client.close()
+        }
     }
 
     /**
@@ -411,6 +456,9 @@ class SystemService
             System.err.println('Service :systemService , action :  delete  , Ex:' + ex)
             log.error('Service :systemService , action :  delete  , Ex:' + ex)
         }
+        finally{
+            client.close()
+        }
     }
 
 //    Country
@@ -434,6 +482,9 @@ class SystemService
         {
             System.err.println('Service :saveStateMaster , action :  save  , Ex:' + ex)
             log.error('Service :saveStateMaster , action :  save  , Ex:' + ex)
+        }
+        finally{
+            client.close()
         }
     }
 
@@ -461,6 +512,9 @@ class SystemService
             System.err.println('Service :getAccountModes , action :  show  , Ex:' + ex)
             log.error('Service :getAccountModes , action :  show  , Ex:' + ex)
         }
+        finally{
+            client.close()
+        }
     }
 
     def putCountry(JSONObject jsonObject)
@@ -482,6 +536,9 @@ class SystemService
         {
             System.err.println('Service :putAccountMode , action :  put  , Ex:' + ex)
             log.error('Service :putAccountMode , action :  put  , Ex:' + ex)
+        }
+        finally{
+            client.close()
         }
     }
 
@@ -508,6 +565,9 @@ class SystemService
         {
             System.err.println('Service :systemService , action :  delete  , Ex:' + ex)
             log.error('Service :systemService , action :  delete  , Ex:' + ex)
+        }
+        finally{
+            client.close()
         }
     }
 
@@ -538,6 +598,9 @@ class SystemService
             System.err.println('Service :getAccountModes , action :  show  , Ex:' + ex)
             log.error('Service :getAccountModes , action :  show  , Ex:' + ex)
         }
+        finally{
+            client.close()
+        }
     }
 
 
@@ -561,6 +624,9 @@ class SystemService
             System.err.println('Service :System , action :  save  , Ex:' + ex)
             log.error('Service :System , action :  save  , Ex:' + ex)
         }
+        finally{
+            client.close()
+        }
     }
 
 
@@ -583,6 +649,9 @@ class SystemService
         {
             System.err.println('Service :putAccountMode , action :  put  , Ex:' + ex)
             log.error('Service :putAccountMode , action :  put  , Ex:' + ex)
+        }
+        finally{
+            client.close()
         }
     }
 
@@ -609,6 +678,9 @@ class SystemService
             System.err.println('Service :systemService , action :  delete  , Ex:' + ex)
             log.error('Service :systemService , action :  delete  , Ex:' + ex)
         }
+        finally{
+            client.close()
+        }
     }
 
     def getAccountmodes() {
@@ -627,6 +699,9 @@ class SystemService
         catch (Exception ex) {
             System.err.println('Service :ProductService , action :  getProducts  , Ex:' + ex)
             log.error('Service :ProductService , action :  getProducts  , Ex:' + ex)
+        }
+        finally{
+            client.close()
         }
     }
 
@@ -662,6 +737,9 @@ class SystemService
             System.err.println('Service :showAccountModes , action :  show  , Ex:' + ex)
             log.error('Service :showAccountModes , action :  show  , Ex:' + ex)
         }
+        finally{
+            client.close()
+        }
     }
 
     def getCityById(String id) {
@@ -683,6 +761,9 @@ class SystemService
         catch (Exception ex) {
             System.err.println('Service :EntityService , action :  getEntity  , Ex:' + ex)
             log.error('Service :EntityService , action :  getEntity  , Ex:' + ex)
+        }
+        finally{
+            client.close()
         }
     }
 
@@ -706,6 +787,9 @@ class SystemService
         catch (Exception ex) {
             System.err.println('Service :SystemService , action :  getAccountTypes  , Ex:' + ex)
             log.error('Service :SystemService , action :  getAccountTypes  , Ex:' + ex)
+        }
+        finally{
+            client.close()
         }
     }
 
