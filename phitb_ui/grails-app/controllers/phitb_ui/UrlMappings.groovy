@@ -381,6 +381,7 @@ class UrlMappings {
         "/purchase-return"(controller: "purchaseReturn") {
             action = [GET: "index", POST: 'savePurchaseReturn']
         }
+        "/purchase-bill/supplier/$supplierId"(controller: 'purchaseReturn', action: 'getPurchaseBillBySupplier')
 
 
         //Sale Entry

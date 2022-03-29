@@ -151,4 +151,51 @@ class PurchaseService {
         }
     }
 
+    def getPurchaseBillBySupplier(String supplierId)
+    {
+        Client client = ClientBuilder.newClient()
+        WebTarget target = client.target(new Links().API_GATEWAY)
+        try
+        {
+            Response apiResponse = target
+                    .path(new Links().PURCHASE_BILL_SUPPLIER)
+                    .resolveTemplate("supplierId", supplierId)
+                    .request(MediaType.APPLICATION_JSON_TYPE)
+                    .get()
+            if (apiResponse.status == 200)
+            {
+                JSONArray jsonArray = new JSONArray(apiResponse.readEntity(String.class))
+                return jsonArray
+            }
+            else
+            {
+                return []
+            }
+        }
+        catch (Exception ex)
+        {
+            System.err.println('Service :PurchaseService , action :  getPurchaseBillBySupplier  , Ex:' + ex)
+            log.error('Service :PurchaseService , action :  getPurchaseBillBySupplier  , Ex:' + ex)
+        }
+    }
+
+
+    def getRequestWithIdList(ArrayList<Long> idList, String link)
+    {
+        try
+        {
+            Client client = ClientBuilder.newClient();
+            WebTarget target = client.target(new Links().API_GATEWAY);
+            Response apiResponse = target.path(link)
+                    .resolveTemplate("purbillsIds", idList.toString())
+                    .request(MediaType.APPLICATION_JSON_TYPE)
+                    .get()
+            println("API Response from server :" + apiResponse?.getStatus())
+            return apiResponse
+        }
+        catch (Exception ex)
+        {
+            System.err.println(ex)
+        }
+    }
 }

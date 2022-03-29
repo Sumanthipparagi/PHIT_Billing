@@ -198,4 +198,12 @@ class PurchaseBillDetailService {
             throw new BadRequestException()
         }
     }
+
+    def getAllBySupplierId(String id)
+    {
+        if(id)
+        {
+            return PurchaseBillDetail.findAllBySupplierId(Long.parseLong(id))
+        }
+    }
 }

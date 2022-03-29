@@ -6,7 +6,7 @@
     <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
     <meta name="description" content="Responsive Bootstrap 4 and web Application ui kit.">
 
-    <title>:: PharmIt ::  Sale Returns</title>
+    <title>:: PharmIt ::  Purchase Returns</title>
     <link rel="icon" type="image/x-icon" href="${assetPath(src: '/themeassets/images/favicon.ico')}"/>
     <!-- Favicon-->
     <asset:stylesheet rel="stylesheet" src="/themeassets/plugins/bootstrap/css/bootstrap.min.css"/>
@@ -50,7 +50,7 @@
                     %{--<h2>Sale Entry</h2>--}%
                     <ul class="breadcrumb padding-0">
                         <li class="breadcrumb-item"><a href="#"><i class="zmdi zmdi-home"></i></a></li>
-                        <li class="breadcrumb-item active">Sale Returns</li>
+                        <li class="breadcrumb-item active">Purchase Returns</li>
                     </ul>
                 </div>
             </div>
@@ -62,7 +62,6 @@
                     <div class="header" style="padding: 1px;">
 
                     </div>
-
                     <div class="body">
                         <div class="row">
                             <div class="col-md-2">
@@ -89,12 +88,11 @@
                             </div>
 
                             <div class="col-md-4">
-                                <label for="customerSelect">Customer:</label>
-                                <select class="form-control show-tick" id="customerSelect"
-                                        onchange="customerSelectChanged()">
+                                <label for="supplierSelect">Supplier:</label>
+                                <select class="form-control show-tick" id="supplierSelect"
+                                        onchange="supplierSelectChanged()">
                                 %{--                                    <option selected disabled>--SELECT--</option>--}%
-                                    <g:each in="${customers}" var="cs">
-
+                                    <g:each in="${supplier}" var="cs">
                                         <g:if test="${cs.id != session.getAttribute("entityId")}">
                                             <option value="${cs.id}">${cs.entityName} (${cs.entityType.name})</option>
                                         </g:if>
@@ -110,7 +108,7 @@
 
 
                             <div class="col-md-4">
-                                <label for="customerSelect">Salesman:</label>
+                                <label for="supplierSelect">Salesman:</label>
                                 <select class="form-control show-tick" id="salesmanSelect" name="salesmanId">
                                     <option selected disabled>--SELECT--</option>
                                     <g:each in="${salesmanList}" var="sales">
@@ -136,7 +134,7 @@
                                         Yes
                                         &emsp;
                                         <input type="radio" name="prev_sales" value="NO"
-                                               onclick="deleteTempStockRow()"/> No
+                                               onclick="removeDetails()"/> No
                                     </label>
                                 </div>
                             </div>
@@ -270,7 +268,7 @@
         // '<strong>Exp Dt</strong>',
         '<strong>Sale Qty</strong>',
         '<strong>Free Qty</strong>',
-        '<strong>Sale Rate</strong>',
+        '<strong>Pur Rate</strong>',
         '<strong>MRP</strong>',
         '<strong>Disc.(%)</strong>',
         // '<strong>Pack</strong>',
@@ -314,28 +312,30 @@
     var totalAmt = 0;
     var series = [];
     var products = [];
-    var customers = [];
+    var suppliers = [];
     var reason = [];
     var readOnly = false;
     var scheme = null;
     $(document).ready(function () {
-        $("#customerSelect").select2();
+        $("#supplierSelect").select2();
         $('#date').val(moment().format('YYYY-MM-DD'));
         $('#date').attr("readonly");
-        batchSelection($("#customerSelect").val())
+        batchSelection($("#supplierSelect").val())
         var isChecked = $('#prev_sales_yes').prop('checked');
         if (isChecked) {
-            saleSelection($("#customerSelect").val())
+            purchaseSelection($("#supplierSelect").val())
+            supplierSelectChanged()
         }
         $("#prev_sales_yes").click(function () {
-            saleSelection($("#customerSelect").val())
+            purchaseSelection($("#supplierSelect").val())
+            supplierSelectChanged()
+
         });
         setTimeout(function () {
             $('#prev_sales_yes').click()
         }, 0.1);
-
-        <g:each in="${customers}" var="cs">
-        customers.push({"id": ${cs.id}, "noOfCrDays": ${cs.noOfCrDays}});
+        <g:each in="${supplier}" var="cs">
+        suppliers.push({"id": ${cs.id}, "noOfCrDays": ${cs.noOfCrDays}});
         </g:each>
         <g:each in="${reason}" var="r">
         reason.push({"id":'${r.reasonName}', "text": '${r.reasonName}'});
@@ -620,14 +620,12 @@
                         hot.setDataAtCell(mainTableRow, 3, rowData[3]);
                         hot.setDataAtCell(mainTableRow, 4, rowData[7]);
                         hot.setDataAtCell(mainTableRow, 2, rowData[12]);
-
                         hot.setDataAtCell(mainTableRow, 5, rowData[8]);
                         hot.setDataAtCell(mainTableRow, 6, rowData[5]);
                         hot.setDataAtCell(mainTableRow, 10, rowData[6]);
                         hot.setDataAtCell(mainTableRow, 11, rowData[10]);
                         hot.setDataAtCell(mainTableRow, 12, rowData[11]);
                         hot.setDataAtCell(mainTableRow, 13, rowData[12]);
-
                         hot.setDataAtCell(mainTableRow, 8, 0);
                         gst = rowData[8];
                         sgst = rowData[9];
@@ -649,7 +647,7 @@
 
     function batchSelection(selectedId, mainRow, selectCell = true) {
         if (selectedId != null) {
-            var url = "/salebill/customer/" + selectedId;
+            var url = "/purchase-bill/supplier/" + selectedId;
             $.ajax({
                 type: "GET",
                 url: url,
@@ -657,7 +655,6 @@
                 success: function (data) {
                     console.log(data)
                     if (data) {
-                        console.log(data)
                         batchData = [];
                         for (var i = 0; i < data.length; i++) {
                             var batchdt = [];
@@ -666,13 +663,13 @@
                             var month = datepart.split("-")[1];
                             var year = datepart.split("-")[0];
                             var seriesCode = "__";
-                            var invoiceNumber = "S/"+month+year+"/"+seriesCode+"/"+data[0].serBillId;
+                            var invoiceNumber = "P/"+month+year+"/"+seriesCode+"/"+data[0].serBillId;
                             if(data[i].billStatus === "DRAFT")
                             {
-                                invoiceNumber = "DR/S/"+ month + year + "/" + seriesCode + "/__";
+                                invoiceNumber = "DR/P/"+ month + year + "/" + seriesCode + "/__";
                             }
                             else
-                                invoiceNumber = "S/"+month+year+"/"+seriesCode+"/"+data[0].serBillId;
+                                invoiceNumber = "P/"+month+year+"/"+seriesCode+"/"+data[0].serBillId;
 
                             batchdt.push(invoiceNumber);
                             batchdt.push("Invoice");
@@ -707,9 +704,9 @@
         }
     }
 
-    function saleSelection(selectedId, mainRow, selectCell = true) {
+    function purchaseSelection(selectedId, mainRow, selectCell = true) {
         if (selectedId != null) {
-            var url = "/salebill/customer/" + selectedId;
+            var url = "/purchase-bill/supplier/" + selectedId;
             $.ajax({
                 type: "GET",
                 url: url,
@@ -758,14 +755,14 @@
     }
 
 
-    function customerSelectChanged() {
+    function supplierSelectChanged() {
         var noOfCrDays = 0;
-        var customerId = $("#customerSelect").val();
+        var customerId = $("#supplierSelect").val();
         batchSelection(customerId)
-        saleSelection(customerId)
-        for (var i = 0; i < customers.length; i++) {
-            if (customerId == customers[i].id) {
-                noOfCrDays = customers[i].noOfCrDays;
+        purchaseSelection(customerId)
+        for (var i = 0; i < suppliers.length; i++) {
+            if (customerId == suppliers[i].id) {
+                noOfCrDays = suppliers[i].noOfCrDays;
             }
         }
         $('#duedate').prop("readonly", false);
@@ -900,8 +897,10 @@
             alert("Can't change this now, invoice has been saved already.")
     }
 
-    function removeDetails(row) {
-        hot.alter("remove_row", row);
+    function removeDetails() {
+        hot.updateSettings({
+            data : []
+        });
     }
 
     var saleBillId = 0;
@@ -915,7 +914,7 @@
             allowOutsideClick: false
         });
 
-        var customer = $("#customerSelect").val();
+        var customer = $("#supplierSelect").val();
         var salesmanId = $("#salesmanSelect").val();
         var series = $("#series").val();
         var dispatchDate = $("#dispatchDate").val();
@@ -947,14 +946,14 @@
             return;
         }
 
-        var saleData = JSON.stringify(hot.getData());
+        var purchaseData = JSON.stringify(hot.getData());
 
         $.ajax({
             type: "POST",
-            url: "/sale-return",
+            url: "/purchase-return",
             dataType: 'json',
             data: {
-                saleData: saleData,
+                purchaseData: purchaseData,
                 customer: customer,
                 series: series,
                 dispatchDate: dispatchDate,
@@ -963,7 +962,6 @@
                 salesmanId: salesmanId
             },
             success: function (data) {
-                console.log(data)
                 // readOnly = true;
                 // var rowData = hot.getData();
                 // for (var j = 0; j < rowData.length; j++) {
@@ -979,7 +977,7 @@
                 var invoiceNumber = "S/" + month + year + "/" + seriesCode + "/" + data.saleReturnDetail.serBillId;
                 var message = "";
                 if (billStatus !== "DRAFT") {
-                    message = 'Sale Retrun Generated: ' + invoiceNumber;
+                    message = 'Sale Return Generated: ' + invoiceNumber;
                     $("#invNo").html("<p><strong>" + invoiceNumber + "</strong></p>");
                 } else {
                     $("#invNo").html("<p><strong>DR/S/" + month + year + "/" + seriesCode + "/__</strong></p>");
@@ -1069,7 +1067,7 @@
                     products.push({id: data[i].id, text: data[i].productName});
                 }
                 // loadTempStockBookData();
-                saleSelection();
+                purchaseSelection();
             },
             error: function () {
                 products.length = 0; //remove all elements
@@ -1408,10 +1406,10 @@
     })(Handsontable);
 
 
-    window.addEventListener('beforeunload', function (e) {
-        e.preventDefault();
-        e.returnValue = '';
-    });
+    // window.addEventListener('beforeunload', function (e) {
+    //     e.preventDefault();
+    //     e.returnValue = '';
+    // });
 
 </script>
 </body>

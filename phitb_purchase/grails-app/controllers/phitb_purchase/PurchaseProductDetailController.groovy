@@ -4,6 +4,7 @@ package phitb_purchase
 import grails.rest.*
 import grails.converters.*
 import grails.web.servlet.mvc.GrailsParameterMap
+import org.grails.web.json.JSONArray
 import org.grails.web.json.JSONObject
 import phitb_purchase.Exception.BadRequestException
 import phitb_purchase.Exception.ResourceNotFoundException
@@ -178,6 +179,34 @@ class PurchaseProductDetailController {
             response.status = 400
         }
         catch (Exception ex) {
+            System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
+        }
+    }
+
+    def getPurchaseProductDetailsOfPurBillList()
+    {
+        try
+        {
+            JSONArray jsonArray = new JSONArray()
+            String idArrayString = params.purbillsIds
+            def idArray = idArrayString.trim().replaceAll(~/^\[|\]$/, '').split(',').collect{ it.trim()}
+            if(idArray.toString()!='[]')
+                respond purchaseProductDetailService.getByPurchaseBillByList(idArray as ArrayList<Long>)
+            else
+                respond jsonArray,formats: ['json'],status: 200
+        }
+        catch (org.springframework.boot.context.config.ResourceNotFoundException ex)
+        {
+            System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
+            response.status = 404
+        }
+        catch (BadRequestException ex)
+        {
+            System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
+            response.status = 400
+        }
+        catch (Exception ex)
+        {
             System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
         }
     }

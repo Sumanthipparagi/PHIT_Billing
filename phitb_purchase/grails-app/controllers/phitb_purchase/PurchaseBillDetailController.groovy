@@ -184,4 +184,23 @@ class PurchaseBillDetailController {
             System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
         }
     }
+
+    /**
+     * Gets all Sale Bill Details
+     * @param query
+     * @param offset
+     * @param limit
+     * @return list of Sale Bill Details
+     */
+    def getAllBySupplierId()
+    {
+        try
+        {
+            respond purchaseBillDetailService.getAllBySupplierId(params.id)
+        }
+        catch (Exception ex)
+        {
+            System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
+        }
+    }
 }
