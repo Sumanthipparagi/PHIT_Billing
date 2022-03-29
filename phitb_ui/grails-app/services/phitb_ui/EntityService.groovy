@@ -20,7 +20,6 @@ class EntityService {
     {
         Client client = ClientBuilder.newClient()
         WebTarget target = client.target(new Links().API_GATEWAY)
-       
         try
         {
             println(jsonObject)
@@ -35,6 +34,9 @@ class EntityService {
         {
             System.err.println('Service :EntityService , action :  saveEntity  , Ex:' + ex)
             log.error('Service :EntityService , action :  saveEntity  , Ex:' + ex)
+        }
+        finally{
+            client.close()
         }
     }
 
@@ -62,6 +64,9 @@ class EntityService {
             System.err.println('Service :EntityService , action :  showEntity  , Ex:' + ex)
             log.error('Service :EntityService , action :  showEntity  , Ex:' + ex)
         }
+        finally{
+            client.close()
+        }
     }
 
     def getTermsContionsByEntity(String id) {
@@ -83,6 +88,9 @@ class EntityService {
         catch (Exception ex) {
             System.err.println('Service :EntityService , action :  getEntity  , Ex:' + ex)
             log.error('Service :EntityService , action :  getEntity  , Ex:' + ex)
+        }
+        finally{
+            client.close()
         }
     }
 
@@ -106,6 +114,9 @@ class EntityService {
         {
             System.err.println('Service : , action :  putEntity  , Ex:' + ex)
             log.error('Service :EntityService , action :  putEntity  , Ex:' + ex)
+        }
+        finally{
+            client.close()
         }
     }
 
@@ -133,6 +144,9 @@ class EntityService {
             System.err.println('Service :EntityService , action :  deleteEntity  , Ex:' + ex)
             log.error('Service :EntityService , action :  deleteEntity  , Ex:' + ex)
         }
+        finally{
+            client.close()
+        }
     }
 
 
@@ -154,6 +168,9 @@ class EntityService {
         {
             System.err.println('Service :EntityService , action :  save  , Ex:' + ex)
             log.error('Service :EntityService , action :  save  , Ex:' + ex)
+        }
+        finally{
+            client.close()
         }
     }
 
@@ -183,6 +200,9 @@ class EntityService {
             System.err.println('Service :EntityService , action :  getAuth  , Ex:' + ex)
             log.error('Service :EntityService , action :  getAuth  , Ex:' + ex)
         }
+        finally{
+            client.close()
+        }
     }
 
     def getUser(String id)
@@ -211,6 +231,9 @@ class EntityService {
             System.err.println('Service :EntityService , action :  getUser  , Ex:' + ex)
             log.error('Service :EntityService , action :  getUser  , Ex:' + ex)
         }
+        finally{
+            client.close()
+        }
     }
     /**
      *
@@ -236,6 +259,9 @@ class EntityService {
             System.err.println('Service :EntityService , action :  showUser  , Ex:' + ex)
             log.error('Service :EntityService , action :  showUser  , Ex:' + ex)
         }
+        finally{
+            client.close()
+        }
     }
 
     def putUser(JSONObject jsonObject, MultipartFile multipartFile)
@@ -257,6 +283,9 @@ class EntityService {
         {
             System.err.println('Service :EntityService , action :  putUser  , Ex:' + ex)
             log.error('Service :EntityService , action :  putUser  , Ex:' + ex)
+        }
+        finally{
+            client.close()
         }
     }
 
@@ -283,6 +312,9 @@ class EntityService {
             System.err.println('Service :EntityService , action :  deleteUser  , Ex:' + ex)
             log.error('Service :EntityService , action :  deleteUser  , Ex:' + ex)
         }
+        finally{
+            client.close()
+        }
     }
 
 
@@ -307,6 +339,9 @@ class EntityService {
         {
             System.err.println('Service :EntityService , action :  saveCustomerGroup  , Ex:' + ex)
             log.error('Service :EntityService , action :  saveCustomerGroup  , Ex:' + ex)
+        }
+        finally{
+            client.close()
         }
     }
 
@@ -334,6 +369,9 @@ class EntityService {
             System.err.println('Service :EntityService , action : showCustomerGroup  , Ex:' + ex)
             log.error('Service :EntityService , action : showCustomerGroup  , Ex:' + ex)
         }
+        finally{
+            client.close()
+        }
     }
 
     def putCustomerGroup(JSONObject jsonObject)
@@ -355,6 +393,9 @@ class EntityService {
         {
             System.err.println('Service : EntityService, action :  putCustomerGroup  , Ex:' + ex)
             log.error('Service :EntityService , action :  putCustomerGroup  , Ex:' + ex)
+        }
+        finally{
+            client.close()
         }
     }
 
@@ -382,6 +423,9 @@ class EntityService {
             System.err.println('Service :EntityService , action :  deleteCustomerGroup  , Ex:' + ex)
             log.error('Service :EntityService , action :  deleteCustomerGroup  , Ex:' + ex)
         }
+        finally{
+            client.close()
+        }
     }
 
 
@@ -404,6 +448,9 @@ class EntityService {
         {
             System.err.println('Service :EntityService , action :  saveDayEnd  , Ex:' + ex)
             log.error('Service :EntityService , action :  saveDayEnd  , Ex:' + ex)
+        }
+        finally{
+            client.close()
         }
     }
 
@@ -431,6 +478,9 @@ class EntityService {
             System.err.println('Service :EntityService , action :  showDayEnd  , Ex:' + ex)
             log.error('Service :EntityService , action :  showDayEnd  , Ex:' + ex)
         }
+        finally{
+            client.close()
+        }
     }
 
     def putDayEnd(JSONObject jsonObject)
@@ -452,6 +502,9 @@ class EntityService {
         {
             System.err.println('Service : , action :  putDayEnd  , Ex:' + ex)
             log.error('Service :EntityService , action :  putDayEnd  , Ex:' + ex)
+        }
+        finally{
+            client.close()
         }
     }
 
@@ -479,6 +532,9 @@ class EntityService {
             System.err.println('Service :EntityService , action :  deleteDayEnd  , Ex:' + ex)
             log.error('Service :EntityService , action :  deleteDayEnd  , Ex:' + ex)
         }
+        finally{
+            client.close()
+        }
     }
 
 
@@ -502,6 +558,9 @@ class EntityService {
         {
             System.err.println('Service :EntityService , action :  saveFinancialYear  , Ex:' + ex)
             log.error('Service :EntityService , action :  saveFinancialYear  , Ex:' + ex)
+        }
+        finally{
+            client.close()
         }
     }
 
@@ -534,6 +593,9 @@ class EntityService {
             System.err.println('Service :EntityService , action :  showFinancialYear  , Ex:' + ex)
             log.error('Service :EntityService , action :  showFinancialYear  , Ex:' + ex)
         }
+        finally{
+            client.close()
+        }
     }
 
     /**
@@ -560,6 +622,9 @@ class EntityService {
             System.err.println('Service :EntityService , action :  showFinancialYear  , Ex:' + ex)
             log.error('Service :EntityService , action :  showFinancialYear  , Ex:' + ex)
         }
+        finally{
+            client.close()
+        }
     }
 
     def putFinancialYear(JSONObject jsonObject)
@@ -581,6 +646,9 @@ class EntityService {
         {
             System.err.println('Service : EntityService, action :  putFinancialYear  , Ex:' + ex)
             log.error('Service :EntityService , action :  putFinancialYear  , Ex:' + ex)
+        }
+        finally{
+            client.close()
         }
     }
 
@@ -608,6 +676,9 @@ class EntityService {
             System.err.println('Service :EntityService , action :  deleteFinancialYear  , Ex:' + ex)
             log.error('Service :EntityService , action :  deleteFinancialYear  , Ex:' + ex)
         }
+        finally{
+            client.close()
+        }
     }
 
 
@@ -631,6 +702,9 @@ class EntityService {
         {
             System.err.println('Service :EntityService , action :  saveRegionMaster  , Ex:' + ex)
             log.error('Service :EntityService , action :  saveRegionMaster  , Ex:' + ex)
+        }
+        finally{
+            client.close()
         }
     }
 
@@ -658,6 +732,9 @@ class EntityService {
             System.err.println('Service :EntityService , action :  showRegionMaster  , Ex:' + ex)
             log.error('Service :EntityService , action :  showRegionMaster  , Ex:' + ex)
         }
+        finally{
+            client.close()
+        }
     }
 
     def putRegionMaster(JSONObject jsonObject)
@@ -679,6 +756,9 @@ class EntityService {
         {
             System.err.println('Service :EntityService , action :  putRegionMaster  , Ex:' + ex)
             log.error('Service :EntityService , action :  putRegionMaster  , Ex:' + ex)
+        }
+        finally{
+            client.close()
         }
     }
 
@@ -706,6 +786,9 @@ class EntityService {
             System.err.println('Service :EntityService , action :  deleteRegionMaster  , Ex:' + ex)
             log.error('Service :EntityService , action :  deleteRegionMaster  , Ex:' + ex)
         }
+        finally{
+            client.close()
+        }
     }
 
 
@@ -729,6 +812,9 @@ class EntityService {
         {
             System.err.println('Service :EntityService , action :  saveRoute  , Ex:' + ex)
             log.error('Service :EntityService , action :  saveRoute  , Ex:' + ex)
+        }
+        finally{
+            client.close()
         }
     }
 
@@ -756,6 +842,9 @@ class EntityService {
             System.err.println('Service :EntityService , action :  showRoute  , Ex:' + ex)
             log.error('Service :EntityService , action :  showRoute  , Ex:' + ex)
         }
+        finally{
+            client.close()
+        }
     }
 
     def putRoute(JSONObject jsonObject)
@@ -777,6 +866,9 @@ class EntityService {
         {
             System.err.println('Service :EntityService , action :  putRoute  , Ex:' + ex)
             log.error('Service :EntityService , action :  putRoute  , Ex:' + ex)
+        }
+        finally{
+            client.close()
         }
     }
 
@@ -804,6 +896,9 @@ class EntityService {
             System.err.println('Service :EntityService , action :  deleteRoute  , Ex:' + ex)
             log.error('Service :EntityService , action :  deleteRoute  , Ex:' + ex)
         }
+        finally{
+            client.close()
+        }
     }
 
 
@@ -827,6 +922,9 @@ class EntityService {
         {
             System.err.println('Service :EntityService , action :  saveRole  , Ex:' + ex)
             log.error('Service :EntityService , action :  saveRole  , Ex:' + ex)
+        }
+        finally{
+            client.close()
         }
     }
 
@@ -854,6 +952,9 @@ class EntityService {
             System.err.println('Service :EntityService , action :  showRole  , Ex:' + ex)
             log.error('Service :EntityService , action :  showRole  , Ex:' + ex)
         }
+        finally{
+            client.close()
+        }
     }
 
     def putRole(JSONObject jsonObject)
@@ -875,6 +976,9 @@ class EntityService {
         {
             System.err.println('Service :EntityService , action :  putRole  , Ex:' + ex)
             log.error('Service :EntityService , action :  putRole  , Ex:' + ex)
+        }
+        finally{
+            client.close()
         }
     }
 
@@ -902,6 +1006,9 @@ class EntityService {
             System.err.println('Service :EntityService , action :  deleteRole  , Ex:' + ex)
             log.error('Service :EntityService , action :  deleteRole  , Ex:' + ex)
         }
+        finally{
+            client.close()
+        }
     }
 
     //Tax
@@ -924,6 +1031,9 @@ class EntityService {
         {
             System.err.println('Service :EntityService , action :  saveRule  , Ex:' + ex)
             log.error('Service :EntityService , action :  saveRule  , Ex:' + ex)
+        }
+        finally{
+            client.close()
         }
     }
 
@@ -951,6 +1061,9 @@ class EntityService {
             System.err.println('Service :EntityService , action :  showRule  , Ex:' + ex)
             log.error('Service :EntityService , action :  showRule  , Ex:' + ex)
         }
+        finally{
+            client.close()
+        }
     }
 
     def putRule(JSONObject jsonObject)
@@ -972,6 +1085,9 @@ class EntityService {
         {
             System.err.println('Service : , action :  putRule  , Ex:' + ex)
             log.error('Service :EntityService , action :  putRule  , Ex:' + ex)
+        }
+        finally{
+            client.close()
         }
     }
 
@@ -999,6 +1115,9 @@ class EntityService {
             System.err.println('Service :EntityService , action :  deleteRule  , Ex:' + ex)
             log.error('Service :EntityService , action :  deleteRule  , Ex:' + ex)
         }
+        finally{
+            client.close()
+        }
     }
 
 
@@ -1022,6 +1141,9 @@ class EntityService {
         {
             System.err.println('Service :EntityService , action :  saveTax  , Ex:' + ex)
             log.error('Service :EntityService , action :  saveTax  , Ex:' + ex)
+        }
+        finally{
+            client.close()
         }
     }
 
@@ -1049,6 +1171,9 @@ class EntityService {
             System.err.println('Service :EntityService , action :  showTax  , Ex:' + ex)
             log.error('Service :EntityService , action :  showTax  , Ex:' + ex)
         }
+        finally{
+            client.close()
+        }
     }
 
     def putTax(JSONObject jsonObject)
@@ -1070,6 +1195,9 @@ class EntityService {
         {
             System.err.println('Service :EntityService , action :  putTax  , Ex:' + ex)
             log.error('Service :EntityService , action :  putTax  , Ex:' + ex)
+        }
+        finally{
+            client.close()
         }
     }
 
@@ -1097,6 +1225,9 @@ class EntityService {
             System.err.println('Service :EntityService , action :  deleteTax  , Ex:' + ex)
             log.error('Service :EntityService , action :  deleteTax  , Ex:' + ex)
         }
+        finally{
+            client.close()
+        }
     }
 
 
@@ -1120,6 +1251,9 @@ class EntityService {
         {
             System.err.println('Service :EntityService , action :  saveTerritory  , Ex:' + ex)
             log.error('Service :EntityService , action :  saveTerritory  , Ex:' + ex)
+        }
+        finally{
+            client.close()
         }
     }
 
@@ -1147,6 +1281,9 @@ class EntityService {
             System.err.println('Service :EntityService , action :  showTerritory  , Ex:' + ex)
             log.error('Service :EntityService , action :  showTerritory  , Ex:' + ex)
         }
+        finally{
+            client.close()
+        }
     }
 
     def putTerritory(JSONObject jsonObject)
@@ -1168,6 +1305,9 @@ class EntityService {
         {
             System.err.println('Service : EntityService, action :  putTerritory  , Ex:' + ex)
             log.error('Service :EntityService , action :  putTerritory  , Ex:' + ex)
+        }
+        finally{
+            client.close()
         }
     }
 
@@ -1195,6 +1335,9 @@ class EntityService {
             System.err.println('Service :EntityService , action :  deleteTerritory  , Ex:' + ex)
             log.error('Service :EntityService , action :  deleteTerritory  , Ex:' + ex)
         }
+        finally{
+            client.close()
+        }
     }
 
 
@@ -1218,6 +1361,9 @@ class EntityService {
         {
             System.err.println('Service :EntityService , action :  saveTermsCondition  , Ex:' + ex)
             log.error('Service :EntityService , action :  saveTermsCondition  , Ex:' + ex)
+        }
+        finally{
+            client.close()
         }
     }
 
@@ -1245,6 +1391,9 @@ class EntityService {
             System.err.println('Service :EntityService , action :  showTermsCondition  , Ex:' + ex)
             log.error('Service :EntityService , action :  showTermsCondition  , Ex:' + ex)
         }
+        finally{
+            client.close()
+        }
     }
 
     def putTermsCondition(JSONObject jsonObject)
@@ -1266,6 +1415,9 @@ class EntityService {
         {
             System.err.println('Service : EntityService, action :  putTermsCondition  , Ex:' + ex)
             log.error('Service :EntityService , action :  putTermsCondition  , Ex:' + ex)
+        }
+        finally{
+            client.close()
         }
     }
 
@@ -1293,6 +1445,9 @@ class EntityService {
             System.err.println('Service :EntityService , action :  deleteTermsCondtion  , Ex:' + ex)
             log.error('Service :EntityService , action :  deleteTermsCondtion  , Ex:' + ex)
         }
+        finally{
+            client.close()
+        }
     }
 
 
@@ -1316,6 +1471,9 @@ class EntityService {
         {
             System.err.println('Service :EntityService , action :  saveSeries  , Ex:' + ex)
             log.error('Service :EntityService , action :  saveSeries  , Ex:' + ex)
+        }
+        finally{
+            client.close()
         }
     }
 
@@ -1343,6 +1501,9 @@ class EntityService {
             System.err.println('Service :EntityService , action :  showSeries  , Ex:' + ex)
             log.error('Service :EntityService , action :  showSeries  , Ex:' + ex)
         }
+        finally{
+            client.close()
+        }
     }
 
     def putSeries(JSONObject jsonObject)
@@ -1364,6 +1525,9 @@ class EntityService {
         {
             System.err.println('Service : EntityService, action :  putSeries  , Ex:' + ex)
             log.error('Service :EntityService , action :  putSeries  , Ex:' + ex)
+        }
+        finally{
+            client.close()
         }
     }
 
@@ -1391,6 +1555,9 @@ class EntityService {
             System.err.println('Service :EntityService , action :  deleteSeries  , Ex:' + ex)
             log.error('Service :EntityService , action :  deleteSeries  , Ex:' + ex)
         }
+        finally{
+            client.close()
+        }
     }
 
 
@@ -1414,6 +1581,9 @@ class EntityService {
         {
             System.err.println('Service :EntityService , action :  saveServiceType  , Ex:' + ex)
             log.error('Service :EntityService , action :  saveServiceType  , Ex:' + ex)
+        }
+        finally{
+            client.close()
         }
     }
 
@@ -1441,6 +1611,9 @@ class EntityService {
             System.err.println('Service :EntityService , action :  showServiceType  , Ex:' + ex)
             log.error('Service :EntityService , action :  showServiceType  , Ex:' + ex)
         }
+        finally{
+            client.close()
+        }
     }
 
     def putServiceType(JSONObject jsonObject)
@@ -1462,6 +1635,9 @@ class EntityService {
         {
             System.err.println('Service : , action :  putServiceType  , Ex:' + ex)
             log.error('Service :EntityService , action :  putServiceType  , Ex:' + ex)
+        }
+        finally{
+            client.close()
         }
     }
 
@@ -1489,6 +1665,9 @@ class EntityService {
             System.err.println('Service :EntityService , action :  deleteServiceType  , Ex:' + ex)
             log.error('Service :EntityService , action :  deleteServiceType  , Ex:' + ex)
         }
+        finally{
+            client.close()
+        }
     }
 
 
@@ -1508,6 +1687,9 @@ class EntityService {
         catch (Exception ex) {
             System.err.println('Service :EntityService , action :  getEntity  , Ex:' + ex)
             log.error('Service :EntityService , action :  getEntity  , Ex:' + ex)
+        }
+        finally{
+            client.close()
         }
     }
 
@@ -1531,6 +1713,9 @@ class EntityService {
             System.err.println('Service :EntityService , action :  getEntity  , Ex:' + ex)
             log.error('Service :EntityService , action :  getEntity  , Ex:' + ex)
         }
+        finally{
+            client.close()
+        }
     }
 
     def getEntityByAffiliates(String id) {
@@ -1546,6 +1731,9 @@ class EntityService {
         catch (Exception ex) {
             System.err.println('Service :EntityService , action :  getEntityByAffiliates  , Ex:' + ex)
             log.error('Service :EntityService , action :  getEntityByAffiliates  , Ex:' + ex)
+        }
+        finally{
+            client.close()
         }
     }
 
@@ -1586,6 +1774,9 @@ class EntityService {
             System.err.println('Service :EntityService , action :  getTaxRegister  , Ex:' + ex)
             log.error('Service :EntityService , action :  getTaxRegister  , Ex:' + ex)
         }
+        finally{
+            client.close()
+        }
     }
 
     def getEntityType() {
@@ -1604,6 +1795,9 @@ class EntityService {
             System.err.println('Service :EntityService , action :  getEntityType  , Ex:' + ex)
             log.error('Service :EntityService , action :  getEntityType  , Ex:' + ex)
         }
+        finally{
+            client.close()
+        }
     }
 
     def getUserRegister() {
@@ -1621,6 +1815,9 @@ class EntityService {
         catch (Exception ex) {
             System.err.println('Service :EntityService , action :  getUserRegister  , Ex:' + ex)
             log.error('Service :EntityService , action :  getUserRegister  , Ex:' + ex)
+        }
+        finally{
+            client.close()
         }
     }
 
@@ -1642,6 +1839,9 @@ class EntityService {
         catch (Exception ex) {
             System.err.println('Service :EntityService , action :  getSeries  , Ex:' + ex)
             log.error('Service :EntityService , action :  getSeries  , Ex:' + ex)
+        }
+        finally{
+            client.close()
         }
     }
 
@@ -1666,6 +1866,9 @@ class EntityService {
             System.err.println('Service :EntityService , action :  getSeries  , Ex:' + ex)
             log.error('Service :EntityService , action :  getSeries  , Ex:' + ex)
         }
+        finally{
+            client.close()
+        }
     }
 
     def getSeriesByEntity(String id) {
@@ -1683,6 +1886,9 @@ class EntityService {
         catch (Exception ex) {
             System.err.println('Service :EntityService , action :  getSeriesByEntity  , Ex:' + ex)
             log.error('Service :EntityService , action :  getSeriesByEntity  , Ex:' + ex)
+        }
+        finally{
+            client.close()
         }
     }
 
@@ -1718,6 +1924,9 @@ class EntityService {
             System.err.println('Service :EntityService , action :  getRoles  , Ex:' + ex)
             log.error('Service :EntityService , action :  getRoles  , Ex:' + ex)
         }
+        finally{
+            client.close()
+        }
     }
 
     def getFeatures(String query = null) {
@@ -1743,6 +1952,9 @@ class EntityService {
             System.err.println('Service :EntityService , action :  getFeatures  , Ex:' + ex)
             log.error('Service :EntityService , action :  getFeatures  , Ex:' + ex)
         }
+        finally{
+            client.close()
+        }
     }
 
     def getFeature(String id) {
@@ -1766,6 +1978,9 @@ class EntityService {
         catch (Exception ex) {
             System.err.println('Service :EntityService , action :  getFeature  , Ex:' + ex)
             log.error('Service :EntityService , action :  getFeature  , Ex:' + ex)
+        }
+        finally{
+            client.close()
         }
     }
 
@@ -1791,6 +2006,9 @@ class EntityService {
             System.err.println('Service :EntityService , action :  getFeatureList  , Ex:' + ex)
             log.error('Service :EntityService , action :  getFeatureList  , Ex:' + ex)
         }
+        finally{
+            client.close()
+        }
     }
 
     def getAllAccount() {
@@ -1807,13 +2025,15 @@ class EntityService {
             System.err.println('Service :EntityService , action :  getAccountById  , Ex:' + ex)
             log.error('Service :EntityService , action :  getAccountById  , Ex:' + ex)
         }
+        finally{
+            client.close()
+        }
     }
 
     def saveAccountRegister(JSONObject jsonObject)
     {
         Client client = ClientBuilder.newClient()
         WebTarget target = client.target(new Links().API_GATEWAY)
-
         try
         {
             println(jsonObject)
@@ -1828,6 +2048,9 @@ class EntityService {
         {
             System.err.println('Service :saveStateMaster , action :  save  , Ex:' + ex)
             log.error('Service :saveStateMaster , action :  save  , Ex:' + ex)
+        }
+        finally{
+            client.close()
         }
     }
 
@@ -1844,6 +2067,92 @@ class EntityService {
         catch (Exception ex) {
             System.err.println('Service :EntityService , action :  getAccountById  , Ex:' + ex)
             log.error('Service :EntityService , action :  getAccountById  , Ex:' + ex)
+        }
+        finally{
+            client.close()
+        }
+    }
+
+    def getAccountById(String id) {
+        Client client = ClientBuilder.newClient()
+        WebTarget target = client.target(new Links().API_GATEWAY)
+        try {
+            Response apiResponse = target
+                    .path(new Links().ACCOUNT_REGISTER_SHOW + "/"+id)
+                    .request(MediaType.APPLICATION_JSON_TYPE)
+                    .get()
+            if(apiResponse?.status == 200)
+            {
+                JSONObject jsonObject = new JSONObject(apiResponse.readEntity(String.class))
+                return jsonObject
+            }
+            else
+                return null
+        }
+        catch (Exception ex) {
+            System.err.println('Service :EntityService , action :  getAccountById  , Ex:' + ex)
+            log.error('Service :EntityService , action :  getAccountById  , Ex:' + ex)
+        }
+        finally{
+            client.close()
+        }
+    }
+
+
+    def getAllAccountByEntity(String id)
+    {
+        Client client = ClientBuilder.newClient()
+        WebTarget target = client.target(new Links().API_GATEWAY)
+        try {
+            Response apiResponse = target
+                    .path(new Links().ACCOUNT_REGISTER_BY_ENTITY + "/"+id)
+                    .request(MediaType.APPLICATION_JSON_TYPE)
+                    .get()
+            if(apiResponse.status == 200)
+            {
+                JSONArray jsonArray = new JSONArray(apiResponse.readEntity(String.class))
+                return jsonArray
+            }
+            else
+            {
+                return null
+            }
+        }
+        catch (Exception ex) {
+            System.err.println('Service :EntityService , action :  getAllAccountByEntity  , Ex:' + ex)
+            log.error('Service :EntityService , action :  getAllAccountByEntity  , Ex:' + ex)
+        }
+        finally{
+            client.close()
+        }
+    }
+
+
+    def updateAccountBalance(String amount, String entityId, String id, boolean add)
+    {
+        Client client = ClientBuilder.newClient()
+        WebTarget target = client.target(new Links().API_GATEWAY)
+        try
+        {
+            JSONObject jsonObject = new JSONObject()
+            jsonObject.put("amount", amount)
+            jsonObject.put("entityId", entityId)
+            jsonObject.put("id", id)
+            jsonObject.put("add", add)
+            Response apiResponse = target
+                    .path(new Links().ACCOUNT_REGISTER_UPDATE_BALANCE)
+                    .request(MediaType.APPLICATION_JSON_TYPE)
+                    .post(Entity.entity(jsonObject.toString(),MediaType.APPLICATION_JSON_TYPE))
+            println(apiResponse)
+            return apiResponse
+        }
+        catch (Exception ex)
+        {
+            System.err.println('Service :entityService , action :  updateAccountBalance  , Ex:' + ex)
+            log.error('Service :entityService , action :  updateAccountBalance  , Ex:' + ex)
+        }
+        finally{
+            client.close()
         }
     }
 

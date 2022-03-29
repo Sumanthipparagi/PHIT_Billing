@@ -1,7 +1,6 @@
 package phitb_entity
 
 import gorm.logical.delete.LogicalDelete
-import org.apache.catalina.User
 
 class EntityRegister implements LogicalDelete<EntityRegister>
 {
@@ -60,8 +59,11 @@ class EntityRegister implements LogicalDelete<EntityRegister>
     long zoneId
     String contactDob
     long fieldForceId
+    long parentEntity
+    long parentEntityType
     long createdUser
     long modifiedUser
+
     Date dateCreated
     Date lastUpdated
 

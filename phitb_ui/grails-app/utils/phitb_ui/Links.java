@@ -111,11 +111,21 @@ public class Links
 
     //Account Register
     public static String ACCOUNT_REGISTER_SHOW = "api/v1.0/entity/accountregister";
-    public static String ACCOUNT_REGISTER_SAVE = "api/v1.0/entity/entityregister";
-    public static String ACCOUNT_REGISTER_DATATABLE = "api/v1.0/entity/entityregister/datatable";
-    public static String ACCOUNT_REGISTER_UPDATE = "api/v1.0/entity/entityregister/{id}";
-    public static String ACCOUNT_REGISTER_DELETE = "api/v1.0/entity/entityregister/{id}";
-    public static String ACCOUNT_REGISTER_AFFILIATE = "api/v1.0/entity/entityregister/affiliate";
+    public static String ACCOUNT_REGISTER_SAVE = "api/v1.0/entity/accountregister";
+    public static String ACCOUNT_REGISTER_DATATABLE = "api/v1.0/entity/accountregister/datatable";
+    public static String ACCOUNT_REGISTER_UPDATE = "api/v1.0/entity/accountregister/{id}";
+    public static String ACCOUNT_REGISTER_DELETE = "api/v1.0/entity/accountregister/{id}";
+    public static String ACCOUNT_REGISTER_AFFILIATE = "api/v1.0/entity/accountregister/affiliate";
+    public static String ACCOUNT_REGISTER_BY_ENTITY = "api/v1.0/entity/accountregister/entity";
+    public static String ACCOUNT_REGISTER_UPDATE_BALANCE = "api/v1.0/entity/accountregister/updatebalance";
+
+    //Account Type
+    public static String ACCOUNT_TYPE_SAVE = "api/v1.0/system/accounttype";
+    public static String ACCOUNT_TYPE_SHOW = "api/v1.0/system/accounttype";
+    public static String ACCOUNT_TYPE_DATATABLE = "api/v1.0/system/accounttype/datatable";
+    public static String ACCOUNT_TYPE_UPDATE = "api/v1.0/system/accounttype/{id}";
+    public static String ACCOUNT_TYPE_DELETE = "api/v1.0/system/accounttype/{id}";
+    public static String ACCOUNT_TYPE_BY_ENTITY = "api/v1.0/system/accounttypebyentity";
 
     //User Register
     public static String USER_REGISTER_SHOW = "api/v1.0/entity/userregister";
@@ -315,6 +325,9 @@ public class Links
 
     /*<--------------------------------------------Sales------------------------------------------------->*/
     //Sale Bill Details
+    public static String GET_REASON = "api/v1.0/sales/reasonmaster";
+
+    //Sale Bill Details
     public static String SALE_BILL_SHOW = "api/v1.0/sales/salebilldetails";
     public static String SALE_BILL_SAVE = "api/v1.0/sales/salebilldetails";
     public static String SALE_BILL_DATATABLE = "api/v1.0/sales/salebilldetails/datatable";
@@ -397,6 +410,12 @@ public class Links
     public static String BANK_REGISTER_DELETE = "api/v1.0/accounts/bankregister/{id}";
 
 
+    //GL
+    public static String GENERAL_LEDGER_SHOW = "api/v1.0/accounts/generalledger";
+    public static String GENERAL_LEDGER_SAVE = "api/v1.0/accounts/generalledger";
+    public static String GENERAL_LEDGER_DATATABLE = "api/v1.0/accounts/generalledger/datatable";
+    public static String GENERAL_LEDGER_UPDATE = "api/v1.0/accounts/generalledger/{id}";
+
     //Accounts
     public static String RECIPT_DETAIL = "api/v1.0/accounts/receiptdetails";
     public static String RECIPT_DETAIL_SAVE = "api/v1.0/accounts/receiptdetails";
@@ -425,6 +444,7 @@ public class Links
     //Credit
     public static String CREDIT_SHOW = "api/v1.0/accounts/creditjv";
     public static String CREDIT_SAVE = "api/v1.0/accounts/creditjv";
+    public static String CREDIT_APPROVE = "api/v1.0/accounts/creditjv/approve";
     public static String CREDIT_UNSETTLED = "api/v1.0/accounts/creditjvunbycustomer";
     public static String CREDIT_SETTLED = "api/v1.0/accounts/creditjvsettledbycustomer";
     public static String CREDIT_DATATABLE = "api/v1.0/accounts/creditjv/datatable";
@@ -432,6 +452,11 @@ public class Links
     public static String CREDIT_DELETE = "api/v1.0/accounts/creditjv/{id}";
     public static String SET_CREDIT_STATUS = "api/v1.0/accounts/setcreditstatus/{id}/type/{type}";
 
+    //Debit
+    public static String DEBIT_SHOW = "api/v1.0/accounts/debitjv";
+    public static String DEBIT_SAVE = "api/v1.0/accounts/debitjv";
+    public static String DEBIT_DATATABLE = "api/v1.0/accounts/debitjv/datatable";
+    public static String DEBIT_APPROVE = "api/v1.0/accounts/debitjv/approve";
 
     /*<--------------------------------------------Purchase ------------------------------------------------->*/
     //purchase product details
@@ -453,6 +478,14 @@ public class Links
     public static String PURCHASE_BILL_SUPPLIER = "api/v1.0/purchase/purchasebillbysupplier/{supplierId}";
     public static String PURCHASE_PRODUCT_OF_BILLIDS = "api/v1.0/purchase/purchaseproductdetailslist/bill" +
             "/{purbillsIds}";
+
+    //e-Invoice
+    public static String E_INVOICE_BASE_URL = "https://test.nsdlgsp.co.in";
+    public static String E_INVOICE_GET_KEY = E_INVOICE_BASE_URL + "/GSPUtility/getKey";
+    public static String E_INVOICE_AUTH_TOKEN = E_INVOICE_BASE_URL + "/ewb_v1.03/einv/authtoken";
+    public static String E_INVOICE_GEN_IRN = E_INVOICE_BASE_URL + "/ewb_v1.03/einv/gen-irn";
+    public static String E_INVOICE_CANCEL_IRN = E_INVOICE_BASE_URL + "/ewb_v1.03/einv/can-irn";
+    public static String E_INVOICE_GET_IRN = E_INVOICE_BASE_URL + "/ewb_v1.03/einv/get-irn";
 
 
 }

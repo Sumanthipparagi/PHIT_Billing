@@ -143,22 +143,23 @@ class PurchaseEntryController {
         double totalSgst = 0.00
         double totalIgst = 0.00
         double totalDiscount = 0.00
-        JSONArray purchaseData = new JSONArray(params.saleData)
-        for (JSONObject sale : purchaseData) {
-            String productId = sale.get("1")
-            String batchNumber = sale.get("2")
-            String expDate = sale.get("3")
-            String saleQty = sale.get("4")
-            String freeQty = sale.get("5")
-            String saleRate = sale.get("6")
-            String mrp = sale.get("7")
-            String discount = sale.get("8")
-            String packDesc = sale.get("9")
-            String gst = sale.get("10")
-            String value = sale.get("11")
-            String sgst = sale.get("12")
-            String cgst = sale.get("13")
-            String igst = sale.get("14")
+        JSONArray purchaseData = new JSONArray(params.purchaseData)
+        for (JSONObject purchase : purchaseData) {
+            String productId = purchase.get("1")
+            String batchNumber = purchase.get("2")
+            String expDate = purchase.get("3")
+            String saleQty = purchase.get("4")
+            String freeQty = purchase.get("5")
+            String purchaseRate = purchase.get("6")
+            String saleRate = purchase.get("7")
+            String mrp = purchase.get("8")
+            String discount = purchase.get("9")
+            String packDesc = purchase.get("10")
+            String gst = purchase.get("11")
+            String value = purchase.get("12")
+            String sgst = purchase.get("13")
+            String cgst = purchase.get("14")
+            String igst = purchase.get("15")
             totalSqty += Long.parseLong(saleQty)
             totalFqty += Long.parseLong(freeQty)
             totalAmount += Double.parseDouble(value)
@@ -180,7 +181,7 @@ class PurchaseEntryController {
             purchaseProductDetail.put("sqty", saleQty)
             purchaseProductDetail.put("freeQty", freeQty)
             purchaseProductDetail.put("repQty", 0)
-            purchaseProductDetail.put("pRate", 0) //TODO: to be changed
+            purchaseProductDetail.put("pRate", purchaseRate)
             purchaseProductDetail.put("sRate", saleRate)
             purchaseProductDetail.put("mrp", mrp)
             purchaseProductDetail.put("discount", discount)
@@ -271,52 +272,99 @@ class PurchaseEntryController {
         purchaseBillDetails.put("taxable", "1") //TODO: to be changed
         purchaseBillDetails.put("cashDiscount", 0) //TODO: to be changed
         purchaseBillDetails.put("exempted", 0) //TODO: to be changed
-        Response response = new PurchaseService().savePurchaseBillDetails(purchaseBillDetails)
-        if (response.status == 200) {
-            def purchaseBillDetail = new JSONObject(response.readEntity(String.class))
-            //save to sale product details
+        Response resp = new PurchaseService().savePurchaseBillDetails(purchaseBillDetails)
+        if (resp.status == 200) {
+            def purchaseBillDetail = new JSONObject(resp.readEntity(String.class))
+            //save to purchase product details
             for (JSONObject purchaseProductDetail : purchaseProductDetails) {
                 purchaseProductDetail.put("billId", purchaseBillDetail.get("id"))
                 purchaseProductDetail.put("taxId", purchaseBillDetail.get("taxable"))
                 purchaseProductDetail.put("billType", 0) //0 Sale, 1 Purchase
                 purchaseProductDetail.put("serBillId", purchaseBillDetail.get("serBillId"))
-                def resp = new PurchaseService().savePurchaseProductDetails(purchaseProductDetail)
-                if (resp.status == 200)
+                def resp1 = new PurchaseService().savePurchaseProductDetails(purchaseProductDetail)
+                if (resp1.status == 200)
                     println("Product Detail Saved")
                 else {
                     println("Product Detail Failed")
                 }
             }
+
             //update stockbook
-            for (JSONObject sale : purchaseData) {
-                String stockRowId = sale.get("15")
-                def stockBook = new InventoryService().getStockBookById(Long.parseLong(stockRowId))
-                stockBook.put("remainingQty", stockBook.get("remainingQty"))
-                stockBook.put("remainingFreeQty", stockBook.get("remainingFreeQty"))
-                stockBook.put("remainingReplQty", stockBook.get("remainingReplQty"))
-                String expDate = stockBook.get("expDate").toString().split("T")[0]
-                String purcDate = stockBook.get("purcDate").toString().split("T")[0]
-                String manufacturingDate = stockBook.get("manufacturingDate").toString().split("T")[0]
-                SimpleDateFormat sdf1 = new SimpleDateFormat("yyyy-MM-dd")
-                expDate = sdf1.parse(expDate).format("dd/MM/yyyy")
-                purcDate = sdf1.parse(purcDate).format("dd/MM/yyyy")
-                manufacturingDate = sdf1.parse(manufacturingDate).format("dd/MM/yyyy")
-                stockBook.put("expDate", expDate)
-                stockBook.put("purcDate", purcDate)
-                stockBook.put("manufacturingDate", manufacturingDate)
-                def apiRes = new InventoryService().updateStockBook(stockBook)
-                if (apiRes.status == 200) {
-                    //clear tempstockbook
-                    apiRes = new InventoryService().deleteStockBook(stockRowId)
-                    if (apiRes.status == 200) {
-                        JSONObject responseJson = new JSONObject()
-                        responseJson.put("series", series)
-                        responseJson.put("purchaseBillDetail", purchaseBillDetail)
-                        respond responseJson, formats: ['json']
-                    }
+            for (JSONObject purchase : purchaseData) {
+                //check if selected product and batch exists for the entity, if so update data, else add new
+                String productId = purchase.get("1")
+                String batchNumber = purchase.get("2")
+                JSONObject stockBook = new InventoryService().getStocksOfProductAndBatch(productId, batchNumber, session.getAttribute("entityId").toString())
+                if(stockBook)
+                {
+                    String saleQty = purchase.get("4")
+                    String freeQty = purchase.get("5")
+                    long sQty = Long.parseLong(stockBook.get("remainingQty").toString()) + Long.parseLong(saleQty)
+                    long fQty = Long.parseLong(stockBook.get("remainingFreeQty").toString()) + Long.parseLong(freeQty)
+                    String expDate = stockBook.get("expDate").toString().split("T")[0]
+                    String purcDate = stockBook.get("purcDate").toString().split("T")[0]
+                    String manufacturingDate = stockBook.get("manufacturingDate").toString().split("T")[0]
+                    SimpleDateFormat sdf1 = new SimpleDateFormat("yyyy-MM-dd")
+                    expDate = sdf1.parse(expDate).format("dd-MM-yyyy")
+                    purcDate = sdf1.parse(purcDate).format("dd-MM-yyyy")
+                    manufacturingDate = sdf1.parse(manufacturingDate).format("dd-MM-yyyy")
+                    stockBook.put("expDate", expDate)
+                    stockBook.put("purcDate", purcDate)
+                    stockBook.put("manufacturingDate", manufacturingDate)
+                    stockBook.put("remainingQty", sQty)
+                    stockBook.put("remainingFreeQty", fQty)
+                    stockBook.put("remainingReplQty", 0)
+                    stockBook.put("modifiedUser",session.getAttribute("userId"))
+                    new InventoryService().updateStockBook(stockBook)
+                }
+                else
+                {
+                    JSONObject jsonObject = new ProductService().getProductById(productId)
+                    String value = purchase.get("12")
+                    String purchaseRate = purchase.get("6")
+                    String saleRate = purchase.get("7")
+                    String mrp = purchase.get("8")
+                    String discount = purchase.get("9")
+                    String packDesc = purchase.get("10")
+                    String expDate = purchase.get("3")
+                    String saleQty = purchase.get("4")
+                    String freeQty = purchase.get("5")
+                    String manfDate = purchase.get("16")
+                    String purchaseDate = new SimpleDateFormat("dd-MM-yyyy").format(new Date())
+                    expDate = new SimpleDateFormat("yyyy-MM-dd").parse(expDate).format("dd-MM-yyyy")
+                    manfDate = new SimpleDateFormat("yyyy-MM-dd").parse(manfDate).format("dd-MM-yyyy")
+                    stockBook = new JSONObject()
+                    stockBook.put("productId",productId)
+                    stockBook.put("batchNumber",batchNumber)
+                    stockBook.put("expDate", expDate)
+                    stockBook.put("purcDate", purchaseDate)
+                    stockBook.put("supplierId",supplierId)
+                    stockBook.put("entityTypeId",session.getAttribute("entityTypeId"))
+                    stockBook.put("entityId",session.getAttribute("entityId"))
+                    stockBook.put("createdUser",session.getAttribute("userId"))
+                    stockBook.put("modifiedUser",session.getAttribute("userId"))
+                    stockBook.put("status","1")
+                    stockBook.put("syncStatus","1")
+                    stockBook.put("mergedWith","1")
+                    stockBook.put("purcSeriesId",seriesId)
+                    stockBook.put("saleRate",saleRate)
+                    stockBook.put("purchaseRate",purchaseRate)
+                    stockBook.put("mrp",mrp)
+                    stockBook.put("purcTradeDiscount",discount)
+                    stockBook.put("packingDesc",packDesc)
+                    stockBook.put("purcProductValue",value)
+                    stockBook.put("remainingQty", saleQty)
+                    stockBook.put("remainingFreeQty", freeQty)
+                    stockBook.put("remainingReplQty", 0)
+                    stockBook.put("taxId", jsonObject.get("taxId"))
+                    stockBook.put("manufacturingDate", manfDate)
+                    new InventoryService().stockBookSave(stockBook)
                 }
             }
-            response.status == 400
+            JSONObject responseJson = new JSONObject()
+            responseJson.put("series", series)
+            responseJson.put("purchaseBillDetail", purchaseBillDetail)
+            respond responseJson, formats: ['json']
         } else {
             response.status == 400
         }

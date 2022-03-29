@@ -25,6 +25,12 @@ class UrlMappings {
             "/bankregister/$id(.$format)?"(controller: 'bankRegister') { action = [GET: 'show', PUT: 'update', DELETE: 'delete'] }
             "/bankregisterbyentity/$id(.$format)?"(controller: 'bankRegister') { action = [GET: 'getByEntityId'] }
 
+            //bank register
+            "/generalledger(.$format)?"(controller: 'generalLedger') { action = [GET: 'index', POST: 'save'] }
+            "/generalledger/datatable(.$format)?"(controller: 'generalLedger') { action = [GET: 'dataTable'] }
+            "/generalledger/$id(.$format)?"(controller: 'generalLedger') { action = [GET: 'show', PUT: 'update', DELETE: 'delete'] }
+            "/generalledgerbyentity/$id(.$format)?"(controller: 'generalLedger') { action = [GET: 'getByEntityId'] }
+
             //bill payment log
             "/billpaymentlog(.$format)?"(controller: 'billPaymentLog') { action = [GET: 'index', POST: 'save'] }
             "/billpaymentlog/datatable(.$format)?"(controller: 'billPaymentLog') { action = [GET: 'dataTable'] }
@@ -39,6 +45,7 @@ class UrlMappings {
 
             //credit jv
             "/creditjv(.$format)?"(controller: 'creditJv') { action = [GET: 'index', POST: 'save'] }
+            "/creditjv/approve(.$format)?"(controller: 'creditJv') { action = [POST: 'approveCreditJv'] }
             "/creditjv/datatable(.$format)?"(controller: 'creditJv') { action = [GET: 'dataTable'] }
             "/creditjv/$id(.$format)?"(controller: 'creditJv') { action = [GET: 'show', PUT: 'update', DELETE: 'delete'] }
             "/creditjvbyentity/$id(.$format)?"(controller: 'creditJv') { action = [GET: 'getByEntityId'] }
@@ -59,6 +66,7 @@ class UrlMappings {
 
             //debit jv
             "/debitjv(.$format)?"(controller: 'debitJv') { action = [GET: 'index', POST: 'save'] }
+            "/debitjv/approve(.$format)?"(controller: 'debitJv') { action = [POST: 'approveDebitJv'] }
             "/debitjv/datatable(.$format)?"(controller: 'debitJv') { action = [GET: 'dataTable'] }
             "/debitjv/$id(.$format)?"(controller: 'debitJv') { action = [GET: 'show', PUT: 'update', DELETE: 'delete'] }
             "/debitjvbyentity/$id(.$format)?"(controller: 'debitJv') { action = [GET: 'getByEntityId'] }

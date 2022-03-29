@@ -82,6 +82,8 @@ class AccountRegisterService {
         accountRegister.entity = EntityRegister.findById(Long.parseLong(jsonObject.get("entity").toString()))
         accountRegister.modifiedUser = Long.parseLong(jsonObject.get("modifiedUser").toString())
         accountRegister.createdUser = Long.parseLong(jsonObject.get("createdUser").toString())
+        accountRegister.showInDebit = Boolean.parseBoolean(jsonObject.get("showInDebit").toString())
+        accountRegister.showInCredit = Boolean.parseBoolean(jsonObject.get("showInCredit").toString())
         accountRegister.save(flush: true)
         if (!accountRegister.hasErrors())
             return accountRegister
@@ -107,6 +109,8 @@ class AccountRegisterService {
             accountRegister.entity = EntityRegister.findById(Long.parseLong(jsonObject.get("entity").toString()))
             accountRegister.modifiedUser = Long.parseLong(jsonObject.get("modifiedUser").toString())
             accountRegister.createdUser = Long.parseLong(jsonObject.get("createdUser").toString())
+            accountRegister.showInDebit = Boolean.parseBoolean(jsonObject.get("showInDebit").toString())
+            accountRegister.showInCredit = Boolean.parseBoolean(jsonObject.get("showInCredit").toString())
             accountRegister.save(flush: true)
             if (!accountRegister.hasErrors())
                 return accountRegister
@@ -128,5 +132,22 @@ class AccountRegisterService {
         } else {
             throw new BadRequestException()
         }
+    }
+
+    ArrayList<AccountRegister> getAllByEntity(String id) {
+        EntityRegister entityRegister = EntityRegister.findById(Long.parseLong(id))
+        return AccountRegister.findAllByEntity(entityRegister)
+    }
+
+    def updateBalance(String id, String entityId, String amount, boolean add) {
+        EntityRegister entityRegister = EntityRegister.findById(Long.parseLong(entityId))
+        AccountRegister accountRegister = AccountRegister.findByEntityAndId(entityRegister,Long.parseLong(id))
+        accountRegister.isUpdatable = true
+        if(add)
+            accountRegister.balance = accountRegister.balance+amount
+        else
+            accountRegister.balance = accountRegister.balance-amount
+
+        accountRegister.save(flush:true)
     }
 }

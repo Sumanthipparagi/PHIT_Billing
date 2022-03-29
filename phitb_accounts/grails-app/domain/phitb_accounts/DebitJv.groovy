@@ -4,14 +4,20 @@ import gorm.logical.delete.LogicalDelete
 
 class DebitJv implements LogicalDelete<DebitJv> {
 
-    String transId
-    long employeeId
-    long managerId
-    double totalExpense
+    long id
+    long finId //unique ID of the financial year
+    long creditAccount
+    long fromAccount
+    double amount
+    double crAdjAmount
+    long reason
+    String remarks
     Date transactionDate
-    String referenceId
-    Date finalSubmissionDate
+    long employeeId
+    long approverId
+    Date approvedTime
     String financialYear
+    String transactionId
     long status
     long syncStatus
     long entityTypeId
@@ -23,6 +29,10 @@ class DebitJv implements LogicalDelete<DebitJv> {
     Date lastUpdated
 
     static constraints = {
+        approvedTime nullable: true
+    }
+    static mapping = {
+        remarks sqlType: 'longText'
     }
 
     boolean isUpdatable

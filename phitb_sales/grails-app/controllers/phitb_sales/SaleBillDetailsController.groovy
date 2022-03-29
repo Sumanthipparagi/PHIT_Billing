@@ -106,11 +106,10 @@ class SaleBillDetailsController
     {
         try
         {
-            String id = params.id
-            if (id)
-            {
-                respond saleBillDetailsService.getAllUnsettledByCustId(params.limit, params.offset, id)
-            }
+            String customerId = params.id
+            String entityId = params.entityId
+            String financialYear = params.financialYear
+            respond saleBillDetailsService.getAllUnsettledByCustId(customerId, entityId, financialYear)
         }
         catch (ResourceNotFoundException ex)
         {
@@ -138,11 +137,10 @@ class SaleBillDetailsController
     {
         try
         {
-            String id = params.id
-            if (id)
-            {
-                respond saleBillDetailsService.getAllsettledByCustId(params.limit, params.offset, id)
-            }
+            String customerId = params.id
+            String entityId = params.entityId
+            String financialYear = params.financialYear
+            respond saleBillDetailsService.getAllsettledByCustId(customerId, entityId, financialYear)
         }
         catch (ResourceNotFoundException ex)
         {

@@ -19,6 +19,9 @@ class AccountRegister implements LogicalDelete<AccountRegister> {
     long createdUser
     long modifiedUser
 
+    boolean showInDebit
+    boolean showInCredit
+
     Date dateCreated
     Date lastUpdated
 

@@ -193,11 +193,12 @@ class DebitJvController {
      */
     def dataTable() {
         try {
-            String start = params.start
-            String length = params.length
             GrailsParameterMap parameterMap = getParams()
             JSONObject paramsJsonObject = new JSONObject(parameterMap.params)
-            respond debitJvService.dataTables(paramsJsonObject, start, length)
+            String start = paramsJsonObject.get("start")
+            String length = paramsJsonObject.get("length")
+            String entityId = paramsJsonObject.get("entityId")
+            respond debitJvService.dataTables(paramsJsonObject, start, length, Long.parseLong(entityId))
         }
         catch (ResourceNotFoundException ex)
         {
@@ -211,6 +212,65 @@ class DebitJvController {
         }
         catch (Exception ex) {
             System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
+        }
+    }
+
+    def approveDebitJv()
+    {
+        JSONObject jsonObject = new JSONObject(request.reader.text)
+        def status = Long.parseLong(jsonObject.get("status").toString())
+        def id = Long.parseLong(jsonObject.get("id").toString())
+        def entityId = Long.parseLong(jsonObject.get("entityId").toString())
+        def approverId = Long.parseLong(jsonObject.get("approverId").toString())
+        double creditAcCurrentBalance = Double.parseDouble(jsonObject.get("creditAcCurrentBalance"))
+        double fromAcCurrentBalance =Double.parseDouble(jsonObject.get("fromAcCurrentBalance"))
+        if (status == 1) {
+            DebitJv debitJv = new DebitJvService().approveDebitJv(id, entityId, approverId)
+            if (debitJv) {
+                //add general ledger to debit account
+                GeneralLedger generalLedger = new GeneralLedger()
+                generalLedger.docType = "DEBIT-JV"
+                generalLedger.docNo = debitJv.transactionId
+                generalLedger.narration = debitJv.reason
+                generalLedger.account = debitJv.creditAccount
+                generalLedger.debitAmount = 0.00
+                generalLedger.creditAmount = debitJv.amount
+                generalLedger.balance = creditAcCurrentBalance + debitJv.amount
+                generalLedger.status = 1
+                generalLedger.financialYear = debitJv.financialYear
+                generalLedger.entityId = debitJv.entityId
+                generalLedger.entityType = debitJv.entityTypeId
+                generalLedger.createdUser = debitJv.approverId
+                generalLedger.createdUser = debitJv.approverId
+                generalLedger.save(flush: true)
+
+                //add general ledger to credit account
+                generalLedger = new GeneralLedger()
+                generalLedger.docType = "DEBIT-JV"
+                generalLedger.docNo = debitJv.transactionId
+                generalLedger.narration = debitJv.reason
+                generalLedger.account = debitJv.fromAccount
+                generalLedger.debitAmount = debitJv.amount
+                generalLedger.creditAmount = 0.00
+                generalLedger.balance = fromAcCurrentBalance - debitJv.amount
+                generalLedger.status = 1
+                generalLedger.financialYear = debitJv.financialYear
+                generalLedger.entityId = debitJv.entityId
+                generalLedger.entityType = debitJv.entityTypeId
+                generalLedger.createdUser = debitJv.approverId
+                generalLedger.createdUser = debitJv.approverId
+                generalLedger.save(flush: true)
+
+                response.status = 200
+            } else
+                response.status = 400
+        } else {
+
+            CreditJv creditJv = new CreditJvService().rejectCreditJv(id, entityId, approverId)
+            if (creditJv)
+                response.status = 200
+            else
+                response.status = 400
         }
     }
 }

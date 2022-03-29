@@ -191,7 +191,7 @@
                             <button onclick="resetPage()" class="btn btn-danger">Reset</button>
                             <button onclick="saveSaleInvoice('DRAFT')" class="btn btn-primary">Save Draft</button>
                             <button onclick="saveSaleInvoice('ACTIVE')" class="btn btn-primary">Save</button>
-                            <button onclick="printInvoice()" class="btn btn-secondary">Print</button>
+                            %{--<button onclick="printInvoice()" class="btn btn-secondary">Print</button>--}%
                         </div>
                     </div>
                 </div>
@@ -440,7 +440,13 @@
                         else
                             discount = hot.getDataAtCell(row,8);
 
-                        if(sQty>remainingQty)
+                        var allowEntry = false;
+                        if(sQty>remainingQty && remainingFQty>sQty)
+                        {
+                            allowEntry = true;
+                        }
+
+                        if(!allowEntry)
                         {
                             this.getActiveEditor().TEXTAREA.value = "";
                             alert("Entered quantity exceeds available quantity");
@@ -870,6 +876,7 @@
                 'sale-entry/print-invoice?id=' + saleBillId,
                 '_blank'
             );
+            resetData();
         }
     }
 
@@ -882,26 +889,43 @@
             confirmButtonText: 'OK',
         }).then((result) => {
             if (result) {
-                saleData.length = 0;
-                batchData.length = 0;
-                mainTableRow = 0;
-                gst = 0;
-                cgst = 0;
-                sgst = 0;
-                igst = 0;
-                totalQty = 0;
-                totalFQty = 0;
-                remainingQty = 0;
-                remainingFQty = 0;
-                totalAmt = 0;
-                readOnly = false;
-                scheme = null;
-
-                hot.render();
-                batchHot.render();
-                calculateTotalAmt();
+                resetData();
             }
         });
+    }
+
+    function resetData()
+    {
+        var saleTableData = hot.getData();
+        if(saleTableData && !readOnly) {
+            for(var row=0;row<saleTableData.length;row++) {
+                var id = hot.getDataAtCell(row, 15);
+                deleteTempStockRow(id, row);
+            }
+        }
+
+        saleData.length = 0;
+        batchData.length = 0;
+        mainTableRow = 0;
+        gst = 0;
+        cgst = 0;
+        sgst = 0;
+        igst = 0;
+        totalQty = 0;
+        totalFQty = 0;
+        remainingQty = 0;
+        remainingFQty = 0;
+        totalAmt = 0;
+        readOnly = false;
+        scheme = null;
+
+        batchHot.updateSettings({
+            data: []
+        });
+        hot.updateSettings({
+            data: []
+        });
+        calculateTotalAmt();
     }
 
     function seriesChanged()

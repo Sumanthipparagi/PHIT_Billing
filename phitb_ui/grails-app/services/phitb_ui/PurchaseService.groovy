@@ -19,8 +19,7 @@ class PurchaseService {
     def savePurchaseProductDetails(JSONObject jsonObject)
     {
         Client client = ClientBuilder.newClient();
-        WebTarget target = client.target(new Links().API_GATEWAY);
-        GrailsHttpSession session = WebUtils.retrieveGrailsWebRequest().session
+        WebTarget target = client.target(new Links().API_GATEWAY)
         try
         {
             println(jsonObject)
@@ -35,13 +34,15 @@ class PurchaseService {
             System.err.println('Service :saveStateMaster , action :  save  , Ex:' + ex)
             log.error('Service :saveStateMaster , action :  save  , Ex:' + ex)
         }
+        finally{
+            client.close()
+        }
     }
 
     def savePurchaseBillDetails(JSONObject jsonObject)
     {
         Client client = ClientBuilder.newClient();
-        WebTarget target = client.target(new Links().API_GATEWAY);
-        GrailsHttpSession session = WebUtils.retrieveGrailsWebRequest().session
+        WebTarget target = client.target(new Links().API_GATEWAY)
         try
         {
             Response apiResponse = target
@@ -55,12 +56,14 @@ class PurchaseService {
             System.err.println('Service :saveStateMaster , action :  save  , Ex:' + ex)
             log.error('Service :saveStateMaster , action :  save  , Ex:' + ex)
         }
+        finally{
+            client.close()
+        }
     }
 
     def getPurchaseProductDetails(String id) {
         Client client = ClientBuilder.newClient();
-        WebTarget target = client.target(new Links().API_GATEWAY);
-        GrailsHttpSession session = WebUtils.retrieveGrailsWebRequest().session
+        WebTarget target = client.target(new Links().API_GATEWAY)
         try {
 
             Response apiResponse = target
@@ -73,6 +76,9 @@ class PurchaseService {
         catch (Exception ex) {
             System.err.println('Service :ProductService , action :  getBatchesOfProduct  , Ex:' + ex)
             log.error('Service :ProductService , action :  getBatchesOfProduct  , Ex:' + ex)
+        }
+        finally{
+            client.close()
         }
     }
 
@@ -105,6 +111,9 @@ class PurchaseService {
             System.err.println('Service :saveStateMaster , action :  save  , Ex:' + ex)
             log.error('Service :saveStateMaster , action :  save  , Ex:' + ex)
         }
+        finally{
+            client.close()
+        }
     }
 
     def getPurchaseBillDetailsById(String id) {
@@ -127,6 +136,9 @@ class PurchaseService {
             System.err.println('Service :PurchaseService , action :  getProducts  , Ex:' + ex)
             log.error('Service :PurchaseService , action :  getProducts  , Ex:' + ex)
         }
+        finally{
+            client.close()
+        }
     }
 
     def getPurchaseProductDetailsByBill(String id) {
@@ -148,6 +160,9 @@ class PurchaseService {
         catch (Exception ex) {
             System.err.println('Service :PurchaseService , action :  getProducts  , Ex:' + ex)
             log.error('Service :PurchaseService , action :  getProducts  , Ex:' + ex)
+        }
+        finally{
+            client.close()
         }
     }
 

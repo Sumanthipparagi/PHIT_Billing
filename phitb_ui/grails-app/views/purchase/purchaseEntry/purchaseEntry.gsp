@@ -133,7 +133,7 @@
                 <div class="card" style="margin-bottom:10px;">
                     <div class="body">
                         <div class="table-responsive">
-                            <div id="saleTable" style="width:100%;"></div>
+                            <div id="purchaseTable" style="width:100%;"></div>
                         </div>
                     </div>
                 </div>
@@ -189,9 +189,9 @@
 
                         <div class="row">
                             <button onclick="resetPage()" class="btn btn-danger">Reset</button>
-                            <button onclick="saveSaleInvoice('DRAFT')" class="btn btn-primary">Save Draft</button>
-                            <button onclick="saveSaleInvoice('ACTIVE')" class="btn btn-primary">Save</button>
-                            <button onclick="printInvoice()" class="btn btn-secondary">Print</button>
+                            <button onclick="savePurchaseInvoice('DRAFT')" class="btn btn-primary">Save Draft</button>
+                            <button onclick="savePurchaseInvoice('ACTIVE')" class="btn btn-primary">Save</button>
+                           %{-- <button onclick="printInvoice()" class="btn btn-secondary">Print</button>--}%
                         </div>
                     </div>
                 </div>
@@ -234,6 +234,7 @@
         '<strong>Sale Qty</strong>',
         '<strong>Free Qty</strong>',
         '<strong>Purchase Rate</strong>',
+        '<strong>Sale Rate</strong>',
         '<strong>MRP</strong>',
         '<strong>Disc.(%)</strong>',
         '<strong>Pack</strong>',
@@ -242,17 +243,15 @@
         'SGST',
         'CGST',
         'IGST',
-        'id'];
+        'Manf. Date'];
 
     var batchHeaderRow = [
         '<strong>Batch</strong>',
         '<strong>Exp Dt</strong>',
-        '<strong>Rem Qty</strong>',
-        '<strong>Free Qty</strong>',
+        '<strong>Manf. Dt</strong>',
         '<strong>Pur. Rate</strong>',
         '<strong>Sale Rate</strong>',
         '<strong>MRP</strong>',
-        '<strong>Pack</strong>',
         '<strong>GST</strong>',
         'SGST',
         'CGST',
@@ -262,7 +261,7 @@
     const batchContainer = document.getElementById('batchTable');
     var batchHot;
     var hot;
-    var saleData = [];
+    var purchaseData = [];
     var batchData = [];
     var mainTableRow = 0;
     var gst = 0;
@@ -286,9 +285,9 @@
         <g:each in="${customers}" var="cs">
         customers.push({"id": ${cs.id}, "noOfCrDays": ${cs.noOfCrDays}});
         </g:each>
-        const container = document.getElementById('saleTable');
+        const container = document.getElementById('purchaseTable');
         hot = new Handsontable(container, {
-            data: saleData,
+            data: purchaseData,
             minRows: 1,
             height: '250',
             width: 'auto',
@@ -315,10 +314,11 @@
                 {type: 'text', readOnly: true},
                 {type: 'numeric'},
                 {type: 'numeric'},
-                {type: 'numeric', readOnly: true},
-                {type: 'numeric', readOnly: true},
                 {type: 'numeric'},
-                {type: 'text', readOnly: true},
+                {type: 'numeric'},
+                {type: 'numeric'},
+                {type: 'text'},
+                {type: 'numeric'},
                 {type: 'numeric', readOnly: true},
                 {type: 'numeric', readOnly: true},
                 {type: 'numeric', readOnly: true},
@@ -387,13 +387,13 @@
                         var sqty = hot.getDataAtCell(row, 4);
                         var fqty = hot.getDataAtCell(row, 5);
                         var batch = hot.getDataAtCell(row, 2);
-                        if (sqty && sqty>0)
+                        if ((sqty && sqty>=0))
                         {
                             mainTableRow = row + 1;
                             hot.alter('insert_row');
                             hot.selectCell(mainTableRow, 1);
                             calculateTotalAmt();
-                            var batchId = hot.getCellMeta(row, 2)?.batchId; //batch
+/*                            var batchId = hot.getCellMeta(row, 2)?.batchId; //batch
                             var dt = hot.getDataAtRow(row);
                             dt.push(batchId);
                             var json = JSON.stringify(dt);
@@ -409,17 +409,17 @@
                                 },
                                 success: function (data) {
                                     console.log("Data saved");
-                                    hot.setDataAtCell(row, 15, data.id)
+                                    hot.setDataAtCell(row, 16, data.id)
                                 },
                                 error: function (data) {
                                     console.log("Failed");
                                 }
-                            });
+                            });*/
                         } else {
                             alert("Invalid Quantity, please enter quantity greater than 0");
                         }
                     }
-                } else if (selection === 4 || selection === 8) {
+                } else if (selection === 4 || selection === 9) {
                     if (e.keyCode === 13 || e.keyCode === 9) {
                         var discount = 0;
 
@@ -428,50 +428,50 @@
                         else
                             sQty = hot.getDataAtCell(row,4);
 
-                        if(selection === 8) {
+                        if(selection === 9) {
                             discount = this.getActiveEditor().TEXTAREA.value;
                             if(discount>100)
                             {
-                                hot.setDataAtCell(row,8,0);
+                                hot.setDataAtCell(row,9,0);
                                 this.getActiveEditor().TEXTAREA.value = 0;
                                 alert("Invalid Discount");
-                                hot.selectCell(row,8);
+                                hot.selectCell(row,9);
                                 return;
                             }
                         }
                         else
-                            discount = hot.getDataAtCell(row,8);
+                            discount = hot.getDataAtCell(row,9);
 
-                        if(sQty>remainingQty)
+                      /*  if(sQty>remainingQty)
                         {
                             this.getActiveEditor().TEXTAREA.value = "";
                             alert("Entered quantity exceeds available quantity");
                             return;
                         }
 
-                        applySchemes(row, sQty);
-                        sRate = hot.getDataAtCell(row, 6);
+                        applySchemes(row, sQty);*/
+                        sRate = hot.getDataAtCell(row, 7);
 
                         var value = sRate * sQty;
                         var priceBeforeGst = value - (value * discount/100);
                         var finalPrice = priceBeforeGst + (priceBeforeGst * (gst / 100));
-                        hot.setDataAtCell(row, 11, finalPrice);
+                        hot.setDataAtCell(row, 12, finalPrice);
 
                         if(gst != 0) {
-                            hot.setDataAtCell(row, 10, priceBeforeGst * (gst / 100)); //GST
-                            hot.setDataAtCell(row, 12, priceBeforeGst * (sgst / 100)); //SGST
-                            hot.setDataAtCell(row, 13, priceBeforeGst * (cgst / 100)); //CGST
+                            hot.setDataAtCell(row, 11, priceBeforeGst * (gst / 100)); //GST
+                            hot.setDataAtCell(row, 13, priceBeforeGst * (sgst / 100)); //SGST
+                            hot.setDataAtCell(row, 14, priceBeforeGst * (cgst / 100)); //CGST
                         }
                         else
                         {
-                            hot.setDataAtCell(row, 10, 0); //GST
-                            hot.setDataAtCell(row, 12, 0); //SGST
-                            hot.setDataAtCell(row, 13, 0); //CGST
+                            hot.setDataAtCell(row, 11, 0); //GST
+                            hot.setDataAtCell(row, 13, 0); //SGST
+                            hot.setDataAtCell(row, 14, 0); //CGST
                         }
                         if(igst != "0")
-                            hot.setDataAtCell(row, 14, priceBeforeGst*(igst/100)); //IGST
+                            hot.setDataAtCell(row, 15, priceBeforeGst*(igst/100)); //IGST
                         else
-                            hot.setDataAtCell(row, 14, 0);
+                            hot.setDataAtCell(row, 15, 0);
                     }
                 }
             }
@@ -510,12 +510,10 @@
             columns: [
                 {type: 'text', readOnly: true},
                 {type: 'text', readOnly: true},
-                {type: 'numeric', readOnly: true},
-                {type: 'numeric', readOnly: true},
-                {type: 'numeric', readOnly: true},
-                {type: 'numeric', readOnly: true},
-                {type: 'numeric', readOnly: true},
                 {type: 'text', readOnly: true},
+                {type: 'numeric', readOnly: true},
+                {type: 'numeric', readOnly: true},
+                {type: 'numeric', readOnly: true},
                 {type: 'text', readOnly: true},
                 {type: 'text', readOnly: true},
                 {type: 'text', readOnly: true},
@@ -524,7 +522,7 @@
             ],
             hiddenColumns: {
                 // specify columns hidden by default
-                columns: [11]
+                columns: [9]
             },
             minSpareRows: 0,
             minSpareCols: 0,
@@ -541,25 +539,25 @@
 
                     if(!checkForDuplicateEntry(rowData[0])) {
                         //check for schemes
-                        checkSchemes(hot.getDataAtCell(mainTableRow,1), rowData[0]); //product, batch
-                        var batchId = rowData[12];
-                        hot.setDataAtCell(mainTableRow, 2, rowData[0]);
+                       // checkSchemes(hot.getDataAtCell(mainTableRow,1), rowData[0]); //product, batch
+                        var batchId = rowData[10];
+                        hot.setDataAtCell(mainTableRow, 2, rowData[0]); //batchnumber
                         hot.setCellMeta(mainTableRow, 2, "batchId", batchId);
-
-                        hot.setDataAtCell(mainTableRow, 3, rowData[1]);
-                        hot.setDataAtCell(mainTableRow, 5, 0);
-                        hot.setDataAtCell(mainTableRow, 6, rowData[5]);
-                        hot.setDataAtCell(mainTableRow, 7, rowData[6]);
-                        hot.setDataAtCell(mainTableRow, 8, 0);
-                        hot.setDataAtCell(mainTableRow, 9, rowData[7]);
-                        gst = rowData[8];
-                        sgst = rowData[9];
-                        cgst = rowData[10];
-                        igst = rowData[11];
+                        hot.setDataAtCell(mainTableRow, 3, rowData[1]); //expdate
+                        hot.setDataAtCell(mainTableRow, 4, 0); //sale qty
+                        hot.setDataAtCell(mainTableRow, 5, 0); //free qty
+                        hot.setDataAtCell(mainTableRow, 6, rowData[3]); //purchase rate
+                        hot.setDataAtCell(mainTableRow, 7, rowData[4]);
+                        hot.setDataAtCell(mainTableRow, 8, rowData[5]);
+                        hot.setDataAtCell(mainTableRow, 9, 0);
+                        hot.setDataAtCell(mainTableRow, 11, rowData[6]);
+                        hot.setDataAtCell(mainTableRow, 16, rowData[2]);
+                        gst = rowData[6];
+                        sgst = rowData[7];
+                        cgst = rowData[8];
+                        igst = rowData[9];
                         hot.selectCell(mainTableRow, 4);
-                        remainingQty = rowData[2];
-                        remainingFQty = rowData[3];
-                        $("#saleTable").focus();
+                        $("#purchaseTable").focus();
                     }
                     else
                     {
@@ -574,7 +572,7 @@
 
     function batchSelection(selectedId, mainRow, selectCell = true) {
         if (selectedId != null) {
-            var url = "/stockbook/product/" + selectedId;
+            var url = "/batch-register/batchesforpurchase/" + selectedId;
             $.ajax({
                 type: "GET",
                 url: url,
@@ -585,20 +583,17 @@
                         for (var i = 0; i < data.length; i++) {
                             var batchdt = [];
                             batchdt.push(data[i].batchNumber);
-                            batchdt.push(data[i].expDate.split("T")[0]);
-                            batchdt.push(data[i].remainingQty);
-                            batchdt.push(data[i].remainingFreeQty);
+                            batchdt.push(data[i].expiryDate.split("T")[0]);
+                            batchdt.push(data[i].manfDate.split("T")[0]);
                             batchdt.push(data[i].purchaseRate);
                             batchdt.push(data[i].saleRate);
                             batchdt.push(data[i].mrp);
-                            batchdt.push(data[i].packingDesc);
                             batchdt.push(data[i].gst);
                             batchdt.push(data[i].sgst);
                             batchdt.push(data[i].cgst);
                             batchdt.push(data[i].igst);
                             batchdt.push(data[i].id);
                             batchData.push(batchdt);
-
                         }
                         batchHot.updateSettings({
                             data: []
@@ -645,16 +640,16 @@
                 totalQty += data[i][4];
             if (data[i][5])
                 totalFQty += data[i][5];
-            if (data[i][11])
-                totalAmt += data[i][11];
-            if (data[i][10])
-                totalGst += data[i][10];
             if (data[i][12])
-                totalSgst += data[i][12];
+                totalAmt += data[i][12];
+            if (data[i][11])
+                totalGst += data[i][11];
             if (data[i][13])
-                totalCgst += data[i][13];
+                totalSgst += data[i][13];
             if (data[i][14])
-                totalIgst += data[i][14];
+                totalCgst += data[i][14];
+            if (data[i][15])
+                totalIgst += data[i][15];
         }
         $("#totalAmt").text(totalAmt);
         $("#totalGST").text(totalGst);
@@ -669,12 +664,12 @@
     function checkForDuplicateEntry(batchNumber)
     {
         var productId = hot.getDataAtCell(mainTableRow, 1);
-        var saleTableData = hot.getData();
-        for(var i = 0; i<saleTableData.length; i++)
+        var purchaseTableData = hot.getData();
+        for(var i = 0; i<purchaseTableData.length; i++)
         {
-            if(productId == saleTableData[i][1])
+            if(productId == purchaseTableData[i][1])
             {
-                if(saleTableData[i][2] !== undefined && saleTableData[i][2] == batchNumber)
+                if(purchaseTableData[i][2] !== undefined && purchaseTableData[i][2] == batchNumber)
                     return true;
             }
         }
@@ -683,36 +678,36 @@
 
     function loadTempStockBookData()
     {
-        var userId = "${session.getAttribute("userId")}";
+      /*  var userId = "${session.getAttribute("userId")}";
         $.ajax({
             type: "GET",
             url: "tempstockbook/user/"+userId,
             dataType: 'json',
             success: function (data) {
-                saleData = data;
+                purchaseData = data;
 
-                for(var i = 0; i < saleData.length; i++) {
+                for(var i = 0; i < purchaseData.length; i++) {
                     hot.selectCell(i, 1);
-                    var sRate = saleData[i]["saleRate"];
-                    var sQty = saleData[i]["userOrderQty"];
-                    batchSelection(saleData[i]["productId"], null, false);
-                    var batchId = saleData[i][12];
-                    hot.setDataAtCell(i, 1, saleData[i]["productId"]);
+                    var sRate = purchaseData[i]["saleRate"];
+                    var sQty = purchaseData[i]["userOrderQty"];
+                    batchSelection(purchaseData[i]["productId"], null, false);
+                    var batchId = purchaseData[i][12];
+                    hot.setDataAtCell(i, 1, purchaseData[i]["productId"]);
 
-                    hot.setDataAtCell(i, 2, saleData[i]["batchNumber"]);
+                    hot.setDataAtCell(i, 2, purchaseData[i]["batchNumber"]);
                     hot.setCellMeta(i, 2, "batchId", batchId);
 
-                    hot.setDataAtCell(i, 3, saleData[i]["expDate"].split("T")[0]);
+                    hot.setDataAtCell(i, 3, purchaseData[i]["expDate"].split("T")[0]);
                     hot.setDataAtCell(i, 5, 0);
                     hot.setDataAtCell(i, 6, sRate);
                     hot.setDataAtCell(i, 4, sQty);
-                    hot.setDataAtCell(i, 7, saleData[i]["mrp"]);
+                    hot.setDataAtCell(i, 7, purchaseData[i]["mrp"]);
                     hot.setDataAtCell(i, 8, 0);
-                    hot.setDataAtCell(i, 9, saleData[i]["packingDesc"]);
-                    gst = saleData[i]["gst"];
-                    sgst = saleData[i]["sgst"];
-                    cgst = saleData[i]["cgst"];
-                    igst = saleData[i]["igst"];
+                    hot.setDataAtCell(i, 9, purchaseData[i]["packingDesc"]);
+                    gst = purchaseData[i]["gst"];
+                    sgst = purchaseData[i]["sgst"];
+                    cgst = purchaseData[i]["cgst"];
+                    igst = purchaseData[i]["igst"];
 
                     // var discount = hot.getDataAtCell(i, 8);
                     var discount = 0; //TODO: discount to be set
@@ -737,7 +732,7 @@
                     else
                         hot.setDataAtCell(i, 14, 0);
 
-                    hot.setDataAtCell(i, 15, saleData[i].id)
+                    hot.setDataAtCell(i, 15, purchaseData[i].id)
                 }
 
                 setTimeout(function () {
@@ -746,13 +741,13 @@
                 },1000);
 
             }
-        })
+        })*/
     }
 
     function deleteTempStockRow(id, row)
     {
         if(!readOnly) {
-            if(id) {
+          /*  if(id) {
                 $.ajax({
                     type: "POST",
                     url: "tempstockbook/delete/" + id,
@@ -763,7 +758,7 @@
                     }
                 });
             }
-            else
+            else*/
                 hot.alter("remove_row", row);
         }
         else
@@ -771,10 +766,10 @@
     }
 
     var purchasebillid = 0;
-    function saveSaleInvoice(billStatus)
+    function savePurchaseInvoice(billStatus)
     {
         var waitingSwal = Swal.fire({
-            title: "Generating Invoice, Please wait!",
+            title: "Generating Purchase Invoice, Please wait!",
             showDenyButton: false,
             showCancelButton: false,
             showConfirmButton: false,
@@ -795,19 +790,19 @@
         }
 
         if(!supplier) {
-            alert("Please select customer.");
+            alert("Please select supplier.");
             waitingSwal.close();
             return;
         }
 
-        var saleData = JSON.stringify(hot.getData());
+        var purchaseData = JSON.stringify(hot.getData());
 
         $.ajax({
             type: "POST",
             url: "/purchase-entry",
             dataType: 'json',
             data:{
-                saleData: saleData,
+                purchaseData: purchaseData,
                 supplier:supplier,
                 series:series,
                 duedate:duedate,
@@ -815,7 +810,7 @@
                 billStatus: billStatus
             },
             success: function (data) {
-                console.log(data)
+                console.log(data);
                 readOnly = true;
                 var rowData = hot.getData();
                 for(var j = 0; j < rowData.length;j++) {
@@ -831,7 +826,7 @@
                 var invoiceNumber = "P/"+month+year+"/"+seriesCode+"/"+data.purchaseBillDetail.serBillId;
                 var message = "";
                 if(billStatus !== "DRAFT") {
-                    message = 'Sale Invoice Generated: '+ invoiceNumber;
+                    message = 'Purchase Invoice Generated: '+ invoiceNumber;
                     $("#invNo").html("<p><strong>" + invoiceNumber + "</strong></p>");
                 }
                 else {
@@ -873,6 +868,7 @@
                 'purchase-entry/print-invoice?id=' + purchasebillid,
                 '_blank'
             );
+            resetData();
         }
     }
 
@@ -885,26 +881,36 @@
             confirmButtonText: 'OK',
         }).then((result) => {
             if (result) {
-                saleData.length = 0;
-                batchData.length = 0;
-                mainTableRow = 0;
-                gst = 0;
-                cgst = 0;
-                sgst = 0;
-                igst = 0;
-                totalQty = 0;
-                totalFQty = 0;
-                remainingQty = 0;
-                remainingFQty = 0;
-                totalAmt = 0;
-                readOnly = false;
-                scheme = null;
-
-                hot.render();
-                batchHot.render();
-                calculateTotalAmt();
+                resetData();
             }
         });
+    }
+
+    function resetData()
+    {
+        purchaseData.length = 0;
+        batchData.length = 0;
+        mainTableRow = 0;
+        gst = 0;
+        cgst = 0;
+        sgst = 0;
+        igst = 0;
+        totalQty = 0;
+        totalFQty = 0;
+        remainingQty = 0;
+        remainingFQty = 0;
+        totalAmt = 0;
+        readOnly = false;
+        scheme = null;
+
+        batchHot.updateSettings({
+            data: []
+        });
+        hot.updateSettings({
+            data: []
+        });
+
+        calculateTotalAmt();
     }
 
     function seriesChanged()

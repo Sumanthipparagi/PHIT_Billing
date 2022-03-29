@@ -172,7 +172,9 @@ class EntityRegisterService {
         entityRegister.zoneId = Long.parseLong(jsonObject.get("zoneId").toString())
         entityRegister.contactDob = jsonObject.get("contactDob").toString()
         entityRegister.createdUser = Long.parseLong(jsonObject.get("createdUser").toString())
-        entityRegister.modifiedUser =Long.parseLong(jsonObject.get("modifiedUser").toString())
+        entityRegister.modifiedUser = Long.parseLong(jsonObject.get("modifiedUser").toString())
+        entityRegister.parentEntity = Long.parseLong(jsonObject.get("parentEntity").toString())
+        entityRegister.parentEntityType =Long.parseLong(jsonObject.get("parentEntityType").toString())
         entityRegister.save(flush: true)
         if (!entityRegister.hasErrors())
         {
@@ -246,6 +248,9 @@ class EntityRegisterService {
             entityRegister.contactDob = jsonObject.get("contactDob").toString()
             entityRegister.createdUser = Long.parseLong(jsonObject.get("createdUser").toString())
             entityRegister.modifiedUser =Long.parseLong(jsonObject.get("modifiedUser").toString())
+            //once created can't be changed to another parent entity
+            /*entityRegister.parentEntity = Long.parseLong(jsonObject.get("parentEntity").toString())
+            entityRegister.parentEntityType =Long.parseLong(jsonObject.get("parentEntityType").toString())*/
             entityRegister.save(flush: true)
             if (!entityRegister.hasErrors())
             {
@@ -301,9 +306,20 @@ class EntityRegisterService {
 
     def getAllByAffiliateId(String limit, String offset, long affiliateId) {
         try {
-            Integer o = offset ? Integer.parseInt(offset.toString()) : 0
-            Integer l = limit ? Integer.parseInt(limit.toString()) : 100
-            return EntityRegister.findAllByAffiliateId(affiliateId, [sort: 'id', max: l, offset: o, order: 'desc'])
+/*            Integer o = offset ? Integer.parseInt(offset.toString()) : 0
+            Integer l = limit ? Integer.parseInt(limit.toString()) : 100*/
+            //return EntityRegister.findAllByAffiliateId(affiliateId, [sort: 'id', max: l, offset: o, order: 'desc'])
+
+            return EntityRegister.createCriteria().list(){
+               or{
+                   eq("affiliateId", affiliateId)
+                   eq("parentEntity", affiliateId)
+               }
+                order("entityName", "asc")
+            }
+
+            //ArrayList<EntityRegister> entityRegisters = EntityRegister.findAllByAffiliateId(affiliateId, [sort: 'entityName', order: 'asc'])
+
         }
         catch (Exception ex)
         {

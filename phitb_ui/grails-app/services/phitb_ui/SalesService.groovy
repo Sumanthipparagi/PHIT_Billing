@@ -38,15 +38,17 @@ class SalesService
             System.err.println('Service :SalesService , action :  getProducts  , Ex:' + ex)
             log.error('Service :SalesService , action :  getProducts  , Ex:' + ex)
         }
+        finally{
+            client.close()
+        }
     }
 
     def getAllSettledBillsByCustomer(String id)
     {
         Client client = ClientBuilder.newClient();
         WebTarget target = client.target(new Links().API_GATEWAY);
-        GrailsHttpSession session = WebUtils.retrieveGrailsWebRequest().session
-        try
-        {
+
+        try {
             Response apiResponse = target
                     .path(new Links().SALE_BILL_SETTLED + "/" + id)
                     .request(MediaType.APPLICATION_JSON_TYPE)
@@ -58,6 +60,9 @@ class SalesService
         {
             System.err.println('Service :ProductService , action :  getProducts  , Ex:' + ex)
             log.error('Service :ProductService , action :  getProducts  , Ex:' + ex)
+        }
+        finally{
+            client.close()
         }
     }
 
@@ -80,6 +85,9 @@ class SalesService
             System.err.println('Service :saveStateMaster , action :  save  , Ex:' + ex)
             log.error('Service :saveStateMaster , action :  save  , Ex:' + ex)
         }
+        finally{
+            client.close()
+        }
     }
 
     def saveSaleOrder(JSONObject jsonObject)
@@ -101,6 +109,9 @@ class SalesService
             System.err.println('Service :saveStateMaster , action :  save  , Ex:' + ex)
             log.error('Service :saveStateMaster , action :  save  , Ex:' + ex)
         }
+        finally{
+            client.close()
+        }
     }
 
     def saveSaleRetrun(JSONObject jsonObject)
@@ -121,6 +132,9 @@ class SalesService
         {
             System.err.println('Service :saveStateMaster , action :  save  , Ex:' + ex)
             log.error('Service :saveStateMaster , action :  save  , Ex:' + ex)
+        }
+        finally{
+            client.close()
         }
     }
 
@@ -144,6 +158,9 @@ class SalesService
             System.err.println('Service : Godown , action :  put  , Ex:' + ex)
             log.error('Service :putAccountMode , action :  put  , Ex:' + ex)
         }
+        finally{
+            client.close()
+        }
     }
 
 
@@ -164,6 +181,9 @@ class SalesService
         {
             System.err.println('Service :saveStateMaster , action :  save  , Ex:' + ex)
             log.error('Service :saveStateMaster , action :  save  , Ex:' + ex)
+        }
+        finally{
+            client.close()
         }
     }
 
@@ -196,6 +216,9 @@ class SalesService
             System.err.println('Service :saveStateMaster , action :  save  , Ex:' + ex)
             log.error('Service :saveStateMaster , action :  save  , Ex:' + ex)
         }
+        finally{
+            client.close()
+        }
     }
 
     def getSaleBillDetailsById(String id)
@@ -222,6 +245,9 @@ class SalesService
         {
             System.err.println('Service :SalesService , action :  getProducts  , Ex:' + ex)
             log.error('Service :SalesService , action :  getProducts  , Ex:' + ex)
+        }
+        finally{
+            client.close()
         }
     }
 
@@ -250,15 +276,17 @@ class SalesService
             System.err.println('Service :SalesService , action :  getProducts  , Ex:' + ex)
             log.error('Service :SalesService , action :  getProducts  , Ex:' + ex)
         }
+        finally{
+            client.close()
+        }
     }
 
     def getSaleInvoiceById(String id)
     {
         Client client = ClientBuilder.newClient();
         WebTarget target = client.target(new Links().API_GATEWAY);
-        GrailsHttpSession session = WebUtils.retrieveGrailsWebRequest().session
-        try
-        {
+
+        try {
 
             Response apiResponse = target
                     .path(new Links().SALE_BILL_SHOW + "/" + id)
@@ -271,15 +299,17 @@ class SalesService
             System.err.println('Service :ProductService , action :  getProducts  , Ex:' + ex)
             log.error('Service :ProductService , action :  getProducts  , Ex:' + ex)
         }
+        finally{
+            client.close()
+        }
     }
 
     def getSaleInvoice()
     {
         Client client = ClientBuilder.newClient();
         WebTarget target = client.target(new Links().API_GATEWAY);
-        GrailsHttpSession session = WebUtils.retrieveGrailsWebRequest().session
-        try
-        {
+
+        try {
 
             Response apiResponse = target
                     .path(new Links().SALE_BILL_SHOW)
@@ -291,6 +321,9 @@ class SalesService
         {
             System.err.println('Service :ProductService , action :  getProducts  , Ex:' + ex)
             log.error('Service :ProductService , action :  getProducts  , Ex:' + ex)
+        }
+        finally{
+            client.close()
         }
     }
 
@@ -323,6 +356,9 @@ class SalesService
             System.err.println('Service :SalesService , action :  getProducts  , Ex:' + ex)
             log.error('Service :SalesService , action :  getProducts  , Ex:' + ex)
         }
+        finally{
+            client.close()
+        }
     }
 
 
@@ -334,9 +370,9 @@ class SalesService
      */
     def getRequestWithId(String id, String link)
     {
+        Client client = ClientBuilder.newClient();
         try
         {
-            Client client = ClientBuilder.newClient();
             WebTarget target = client.target(new Links().API_GATEWAY);
             Response apiResponse = target.path(link + "/" + id)
                     .request(MediaType.APPLICATION_JSON_TYPE)
@@ -348,14 +384,17 @@ class SalesService
         {
             System.err.println(ex)
         }
+        finally{
+            client.close()
+        }
     }
 
 
     def getRequestWithIdList(ArrayList<Long> idList, String link)
     {
+        Client client = ClientBuilder.newClient()
         try
         {
-            Client client = ClientBuilder.newClient();
             WebTarget target = client.target(new Links().API_GATEWAY);
             Response apiResponse = target.path(link)
                     .resolveTemplate("salebillsIds", idList.toString())
@@ -367,6 +406,9 @@ class SalesService
         catch (Exception ex)
         {
             System.err.println(ex)
+        }
+        finally{
+            client.close()
         }
     }
 
@@ -388,6 +430,9 @@ class SalesService
             System.err.println('Service :showSalesService , action :  show  , Ex:' + ex)
             log.error('Service :showSalesService , action :  show  , Ex:' + ex)
         }
+        finally{
+            client.close()
+        }
     }
 
     def saveScheme(JSONObject jsonObject)
@@ -406,6 +451,9 @@ class SalesService
         {
             System.err.println('Service :SaleService , action :  saveEntity  , Ex:' + ex)
             log.error('Service :SaleService , action :  saveEntity  , Ex:' + ex)
+        }
+        finally{
+            client.close()
         }
     }
 
@@ -434,6 +482,9 @@ class SalesService
             System.err.println('Service :getAccountModes , action :  show  , Ex:' + ex)
             log.error('Service :getAccountModes , action :  show  , Ex:' + ex)
         }
+        finally{
+            client.close()
+        }
     }
 
 
@@ -456,6 +507,9 @@ class SalesService
         {
             System.err.println('Service : , action :  putEntity  , Ex:' + ex)
             log.error('Service :EntityService , action :  putEntity  , Ex:' + ex)
+        }
+        finally{
+            client.close()
         }
     }
 
@@ -482,6 +536,9 @@ class SalesService
         {
             System.err.println('Service :EntityService , action :  deleteEntity  , Ex:' + ex)
             log.error('Service :EntityService , action :  deleteEntity  , Ex:' + ex)
+        }
+        finally{
+            client.close()
         }
     }
 
@@ -510,6 +567,9 @@ class SalesService
             System.err.println('Service :EntityService , action :  getEntity  , Ex:' + ex)
             log.error('Service :EntityService , action :  getEntity  , Ex:' + ex)
         }
+        finally{
+            client.close()
+        }
     }
 
 
@@ -537,6 +597,9 @@ class SalesService
         {
             System.err.println('Service :EntityService , action :  getEntity  , Ex:' + ex)
             log.error('Service :EntityService , action :  getEntity  , Ex:' + ex)
+        }
+        finally{
+            client.close()
         }
     }
 
@@ -567,6 +630,34 @@ class SalesService
             System.err.println('Service :EntityService , action :  getEntity  , Ex:' + ex)
             log.error('Service :EntityService , action :  getEntity  , Ex:' + ex)
         }
+        finally{
+            client.close()
+        }
     }
 
+
+    def getReasons() {
+        Client client = ClientBuilder.newClient();
+        WebTarget target = client.target(new Links().API_GATEWAY);
+        try {
+            Response apiResponse = target
+                    .path(new Links().GET_REASON)
+                    .request(MediaType.APPLICATION_JSON_TYPE)
+                    .get()
+            if(apiResponse.status == 200)
+            {
+                JSONArray jsonArray = new JSONArray(apiResponse.readEntity(String.class))
+                return jsonArray
+            }
+            else
+                return null
+        }
+        catch (Exception ex) {
+            System.err.println('Service :SalesService , action :  getReasons  , Ex:' + ex)
+            log.error('Service :SalesService , action :  getReasons  , Ex:' + ex)
+        }
+        finally{
+            client.close()
+        }
+    }
 }

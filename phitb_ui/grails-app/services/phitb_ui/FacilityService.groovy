@@ -17,9 +17,9 @@ class FacilityService {
 
     def saveFridge(JSONObject jsonObject)
     {
-        Client client = ClientBuilder.newClient();
-        WebTarget target = client.target(new Links().API_GATEWAY);
-        GrailsHttpSession session = WebUtils.retrieveGrailsWebRequest().session
+        Client client = ClientBuilder.newClient()
+        WebTarget target = client.target(new Links().API_GATEWAY)
+
         try
         {
             println(jsonObject)
@@ -35,6 +35,9 @@ class FacilityService {
             System.err.println('Service :saveStateMaster , action :  save  , Ex:' + ex)
             log.error('Service :saveStateMaster , action :  save  , Ex:' + ex)
         }
+        finally{
+            client.close()
+        }
     }
 
 
@@ -45,9 +48,9 @@ class FacilityService {
      */
     def showFridge(JSONObject jsonObject)
     {
-        Client client = ClientBuilder.newClient();
-        WebTarget target = client.target(new Links().API_GATEWAY);
-        GrailsHttpSession session = WebUtils.retrieveGrailsWebRequest().session
+        Client client = ClientBuilder.newClient()
+        WebTarget target = client.target(new Links().API_GATEWAY)
+
         try
         {
             Response apiResponse = target
@@ -62,14 +65,17 @@ class FacilityService {
             System.err.println('Service :getAccountModes , action :  show  , Ex:' + ex)
             log.error('Service :getAccountModes , action :  show  , Ex:' + ex)
         }
+        finally{
+            client.close()
+        }
     }
 
 
     def putFridge(JSONObject jsonObject)
     {
-        Client client = ClientBuilder.newClient();
-        WebTarget target = client.target(new Links().API_GATEWAY);
-        GrailsHttpSession session = WebUtils.retrieveGrailsWebRequest().session
+        Client client = ClientBuilder.newClient()
+        WebTarget target = client.target(new Links().API_GATEWAY)
+
         try
         {
             Response apiResponse = target
@@ -85,6 +91,9 @@ class FacilityService {
             System.err.println('Service : , action :  put  , Ex:' + ex)
             log.error('Service :putAccountMode , action :  put  , Ex:' + ex)
         }
+        finally{
+            client.close()
+        }
     }
 
     /**
@@ -94,9 +103,9 @@ class FacilityService {
      */
     def deleteFridge(JSONObject jsonObject)
     {
-        Client client = ClientBuilder.newClient();
-        WebTarget target = client.target(new Links().API_GATEWAY);
-        GrailsHttpSession session = WebUtils.retrieveGrailsWebRequest().session
+        Client client = ClientBuilder.newClient()
+        WebTarget target = client.target(new Links().API_GATEWAY)
+
         try
         {
             Response apiResponse = target
@@ -111,13 +120,16 @@ class FacilityService {
             System.err.println('Service :systemService , action :  delete  , Ex:' + ex)
             log.error('Service :systemService , action :  delete  , Ex:' + ex)
         }
+        finally{
+            client.close()
+        }
     }
 
     def getFridgeList()
     {
-        Client client = ClientBuilder.newClient();
-        WebTarget target = client.target(new Links().API_GATEWAY);
-        GrailsHttpSession session = WebUtils.retrieveGrailsWebRequest().session
+        Client client = ClientBuilder.newClient()
+        WebTarget target = client.target(new Links().API_GATEWAY)
+
         try
         {
             Response apiResponse = target
@@ -131,6 +143,9 @@ class FacilityService {
             System.err.println('Service :systemService , action :  getStateList  , Ex:' + ex)
             log.error('Service :systemService , action :  getStateList  , Ex:' + ex)
         }
+        finally{
+            client.close()
+        }
     }
 
 
@@ -138,9 +153,9 @@ class FacilityService {
 
     def saveCcm(JSONObject jsonObject)
     {
-        Client client = ClientBuilder.newClient();
-        WebTarget target = client.target(new Links().API_GATEWAY);
-        GrailsHttpSession session = WebUtils.retrieveGrailsWebRequest().session
+        Client client = ClientBuilder.newClient()
+        WebTarget target = client.target(new Links().API_GATEWAY)
+
         try
         {
             println(jsonObject)
@@ -156,6 +171,9 @@ class FacilityService {
             System.err.println('Service :Facility , action :  save  , Ex:' + ex)
             log.error('Service :saveStateMaster , action :  save  , Ex:' + ex)
         }
+        finally{
+            client.close()
+        }
     }
 
 
@@ -166,9 +184,9 @@ class FacilityService {
      */
     def showCcm(JSONObject jsonObject)
     {
-        Client client = ClientBuilder.newClient();
-        WebTarget target = client.target(new Links().API_GATEWAY);
-        GrailsHttpSession session = WebUtils.retrieveGrailsWebRequest().session
+        Client client = ClientBuilder.newClient()
+        WebTarget target = client.target(new Links().API_GATEWAY)
+
         try
         {
             Response apiResponse = target
@@ -183,14 +201,17 @@ class FacilityService {
             System.err.println('Service :getAccountModes , action :  show  , Ex:' + ex)
             log.error('Service :getAccountModes , action :  show  , Ex:' + ex)
         }
+        finally{
+            client.close()
+        }
     }
 
 
     def putCCm(JSONObject jsonObject)
     {
-        Client client = ClientBuilder.newClient();
-        WebTarget target = client.target(new Links().API_GATEWAY);
-        GrailsHttpSession session = WebUtils.retrieveGrailsWebRequest().session
+        Client client = ClientBuilder.newClient()
+        WebTarget target = client.target(new Links().API_GATEWAY)
+
         try
         {
             Response apiResponse = target
@@ -206,6 +227,9 @@ class FacilityService {
             System.err.println('Service : , action :  put  , Ex:' + ex)
             log.error('Service :putAccountMode , action :  put  , Ex:' + ex)
         }
+        finally{
+            client.close()
+        }
     }
 
     /**
@@ -215,9 +239,9 @@ class FacilityService {
      */
     def deleteCcm(JSONObject jsonObject)
     {
-        Client client = ClientBuilder.newClient();
-        WebTarget target = client.target(new Links().API_GATEWAY);
-        GrailsHttpSession session = WebUtils.retrieveGrailsWebRequest().session
+        Client client = ClientBuilder.newClient()
+        WebTarget target = client.target(new Links().API_GATEWAY)
+
         try
         {
             Response apiResponse = target
@@ -232,6 +256,10 @@ class FacilityService {
             System.err.println('Service :systemService , action :  delete  , Ex:' + ex)
             log.error('Service :systemService , action :  delete  , Ex:' + ex)
         }
+        finally{
+            client.close()
+        }
+
     }
 
 
@@ -239,9 +267,9 @@ class FacilityService {
 
     def saveGodown(JSONObject jsonObject)
     {
-        Client client = ClientBuilder.newClient();
-        WebTarget target = client.target(new Links().API_GATEWAY);
-        GrailsHttpSession session = WebUtils.retrieveGrailsWebRequest().session
+        Client client = ClientBuilder.newClient()
+        WebTarget target = client.target(new Links().API_GATEWAY)
+
         try
         {
             println(jsonObject)
@@ -257,6 +285,9 @@ class FacilityService {
             System.err.println('Service :Facility , action :  save  , Ex:' + ex)
             log.error('Service :saveStateMaster , action :  save  , Ex:' + ex)
         }
+        finally{
+            client.close()
+        }
     }
 
 
@@ -267,9 +298,9 @@ class FacilityService {
      */
     def showGodown(JSONObject jsonObject)
     {
-        Client client = ClientBuilder.newClient();
-        WebTarget target = client.target(new Links().API_GATEWAY);
-        GrailsHttpSession session = WebUtils.retrieveGrailsWebRequest().session
+        Client client = ClientBuilder.newClient()
+        WebTarget target = client.target(new Links().API_GATEWAY)
+
         try
         {
             Response apiResponse = target
@@ -284,14 +315,17 @@ class FacilityService {
             System.err.println('Service :getAccountModes , action :  show  , Ex:' + ex)
             log.error('Service :getAccountModes , action :  show  , Ex:' + ex)
         }
+        finally{
+            client.close()
+        }
     }
 
 
     def putGodown(JSONObject jsonObject)
     {
-        Client client = ClientBuilder.newClient();
-        WebTarget target = client.target(new Links().API_GATEWAY);
-        GrailsHttpSession session = WebUtils.retrieveGrailsWebRequest().session
+        Client client = ClientBuilder.newClient()
+        WebTarget target = client.target(new Links().API_GATEWAY)
+
         try
         {
             Response apiResponse = target
@@ -307,6 +341,9 @@ class FacilityService {
             System.err.println('Service : Godown , action :  put  , Ex:' + ex)
             log.error('Service :putAccountMode , action :  put  , Ex:' + ex)
         }
+        finally{
+            client.close()
+        }
     }
 
     /**
@@ -316,9 +353,9 @@ class FacilityService {
      */
     def deleteGodown(JSONObject jsonObject)
     {
-        Client client = ClientBuilder.newClient();
-        WebTarget target = client.target(new Links().API_GATEWAY);
-        GrailsHttpSession session = WebUtils.retrieveGrailsWebRequest().session
+        Client client = ClientBuilder.newClient()
+        WebTarget target = client.target(new Links().API_GATEWAY)
+
         try
         {
             Response apiResponse = target
@@ -333,6 +370,9 @@ class FacilityService {
             System.err.println('Service :systemService , action :  delete  , Ex:' + ex)
             log.error('Service :systemService , action :  delete  , Ex:' + ex)
         }
+        finally{
+            client.close()
+        }
     }
 
 
@@ -340,9 +380,9 @@ class FacilityService {
 
     def saveRack(JSONObject jsonObject)
     {
-        Client client = ClientBuilder.newClient();
-        WebTarget target = client.target(new Links().API_GATEWAY);
-        GrailsHttpSession session = WebUtils.retrieveGrailsWebRequest().session
+        Client client = ClientBuilder.newClient()
+        WebTarget target = client.target(new Links().API_GATEWAY)
+
         try
         {
             println(jsonObject)
@@ -358,6 +398,9 @@ class FacilityService {
             System.err.println('Service :Facility , action :  save  , Ex:' + ex)
             log.error('Service :saveStateMaster , action :  save  , Ex:' + ex)
         }
+        finally{
+            client.close()
+        }
     }
 
 
@@ -368,9 +411,9 @@ class FacilityService {
      */
     def showRack(JSONObject jsonObject)
     {
-        Client client = ClientBuilder.newClient();
-        WebTarget target = client.target(new Links().API_GATEWAY);
-        GrailsHttpSession session = WebUtils.retrieveGrailsWebRequest().session
+        Client client = ClientBuilder.newClient()
+        WebTarget target = client.target(new Links().API_GATEWAY)
+
         try
         {
             Response apiResponse = target
@@ -385,14 +428,17 @@ class FacilityService {
             System.err.println('Service :getAccountModes , action :  show  , Ex:' + ex)
             log.error('Service :getAccountModes , action :  show  , Ex:' + ex)
         }
+        finally{
+            client.close()
+        }
     }
 
 
     def putRack(JSONObject jsonObject)
     {
-        Client client = ClientBuilder.newClient();
-        WebTarget target = client.target(new Links().API_GATEWAY);
-        GrailsHttpSession session = WebUtils.retrieveGrailsWebRequest().session
+        Client client = ClientBuilder.newClient()
+        WebTarget target = client.target(new Links().API_GATEWAY)
+
         try
         {
             Response apiResponse = target
@@ -408,6 +454,9 @@ class FacilityService {
             System.err.println('Service : Godown , action :  put  , Ex:' + ex)
             log.error('Service :putAccountMode , action :  put  , Ex:' + ex)
         }
+        finally{
+            client.close()
+        }
     }
 
     /**
@@ -417,9 +466,9 @@ class FacilityService {
      */
     def deleteRack(JSONObject jsonObject)
     {
-        Client client = ClientBuilder.newClient();
-        WebTarget target = client.target(new Links().API_GATEWAY);
-        GrailsHttpSession session = WebUtils.retrieveGrailsWebRequest().session
+        Client client = ClientBuilder.newClient()
+        WebTarget target = client.target(new Links().API_GATEWAY)
+
         try
         {
             Response apiResponse = target
@@ -434,6 +483,9 @@ class FacilityService {
             System.err.println('Service :systemService , action :  delete  , Ex:' + ex)
             log.error('Service :systemService , action :  delete  , Ex:' + ex)
         }
+        finally{
+            client.close()
+        }
     }
 
 
@@ -444,9 +496,9 @@ class FacilityService {
      */
     def getRacks()
     {
-        Client client = ClientBuilder.newClient();
-        WebTarget target = client.target(new Links().API_GATEWAY);
-        GrailsHttpSession session = WebUtils.retrieveGrailsWebRequest().session
+        Client client = ClientBuilder.newClient()
+        WebTarget target = client.target(new Links().API_GATEWAY)
+
         try {
 
             Response apiResponse = target
@@ -459,6 +511,9 @@ class FacilityService {
         catch (Exception ex) {
             System.err.println('Service :ProductService , action :  getProductSchedules  , Ex:' + ex)
             log.error('Service :ProductService , action :  getProductSchedules  , Ex:' + ex)
+        }
+        finally{
+            client.close()
         }
     }
 

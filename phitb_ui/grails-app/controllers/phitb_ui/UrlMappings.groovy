@@ -185,9 +185,9 @@ class UrlMappings {
         "/accounts"(controller: "accountRegister") {
             action = [GET: 'index', POST: 'save']
         }
-        "/account-regitser/datatable"(controller: "accountRegister", action: 'dataTable')
-        "/account-regitser/update/$id"(controller:"accountRegister",action:"update")
-        "/account-regitser/delete/$id"(controller: "accountRegister",action:"delete")
+        "/accounts/datatable"(controller: "accountRegister", action: 'dataTable')
+        "/accounts/update/$id"(controller:"accountRegister",action:"update")
+        "/accounts/delete/$id"(controller: "accountRegister",action:"delete")
 
         //   Role
         "/role"(controller: "role") {
@@ -249,6 +249,18 @@ class UrlMappings {
         "/service-type/datatable"(controller: "serviceType", action: "dataTable")
         "/service-type/update/$id"(controller:"serviceType",action:"update")
         "/service-type/delete/$id"(controller: "serviceType",action:"delete")
+
+        /*<-------------------------------------------Accounts------------------------------------------------->*/
+        "/credit-jv"(controller: "creditJv",action:"index")
+        "/credit-jv/save"(controller: "creditJv",action:"saveCreditJv")
+        "/credit-jv/approval"(controller: "creditJv",action:"approval")
+        "/credit-jv/approval-table"(controller: "creditJv",action:"dataTable")
+        "/credit-jv/approve"(controller: "creditJv",action:"approveReject")
+        "/debit-jv"(controller: "debitJv",action:"index")
+        "/debit-jv/save"(controller: "debitJv",action:"saveDebitJv")
+        "/debit-jv/approval"(controller: "debitJv",action:"approval")
+        "/debit-jv/approval-table"(controller: "debitJv",action:"dataTable")
+        "/debit-jv/approve"(controller: "debitJv",action:"approveReject")
 
         /*<-------------------------------------------Product------------------------------------------------->*/
 //      Product Register
@@ -362,6 +374,7 @@ class UrlMappings {
         "/batch-register/update/$id"(controller:"batchRegister",action:"update")
         "/batch-register/delete/$id"(controller: "batchRegister",action:"delete")
         "/batch-register/product/$id"(controller: "batchRegister",action:"getByProduct")
+        "/batch-register/batchesforpurchase/$id"(controller: "batchRegister",action:"getBatchesForPurchase")
 
 
         /*<-------------------------------------------Sales------------------------------------------------->*/
@@ -407,8 +420,8 @@ class UrlMappings {
 
 
         "/credit-debit-settlement"(controller: "saleEntry",action:"crdDebS")
-        "/debit-jv"(controller: "saleEntry",action:"DebJV")
-        "/credit-jv"(controller: "saleEntry",action:"credJV")
+        "/debit-jv-print"(controller: "saleEntry",action:"DebJV")
+        "/credit-jv-print"(controller: "saleEntry",action:"credJV")
         "/goods-sales-recipt"(controller: "saleEntry",action:"goodsSalesRecipt")
         "/payment-vocher"(controller: "saleEntry",action:"paymentVocher")
 

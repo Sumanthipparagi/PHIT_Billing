@@ -6,7 +6,7 @@
     <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
     <meta name="description" content="Responsive Bootstrap 4 and web Application ui kit.">
 
-    <title>:: PharmIt :: Account Types</title>
+    <title>:: PharmIt :: Accounts</title>
     <link rel="icon" type="image/x-icon" href="${assetPath(src: '/themeassets/images/favicon.ico')}"/>
     <!-- Favicon-->
     <asset:stylesheet rel="stylesheet" src="/themeassets/plugins/bootstrap/css/bootstrap.min.css"/>
@@ -115,12 +115,27 @@
 
     $(function () {
         var defaultData = [
-            <g:each var="a" in="${account}">
-            {
-                text: '${a.accountName}',
-                href: '${a.accountName}',
-                nodes: []
-            },
+            <g:each var="i" in="${account}">
+                <g:if test="${i.subAccountType == 0}">
+                {
+                    text: '${i.accountName}',
+                    href: '${i.accountName}',
+                    nodes: [
+                    <g:each var="j" in="${account}">
+                        <g:if test="${j.subAccountType == i.id}">
+                        {text: '${j.accountName}', href: '${j.accountName}',
+                            nodes:[
+                            <g:each var="k" in="${account}">
+                                <g:if test="${k.subAccountType == j.id}">
+                                {text: '${k.accountName}', href: '${k.accountName}'},
+                                    </g:if>
+                                </g:each>
+                            ]},
+                        </g:if>
+                        </g:each>
+                    ]
+                },
+                </g:if>
             </g:each>
         ];
         $('#treeview1').treeview({
@@ -188,7 +203,7 @@
     //     });
     // });
     $(document).on("click", ".addbtn", function () {
-        $(".addaccountsTitle").text("Add Account")
+        $(".addaccountsTitle").text("Add Account");
         $(".addaccountsForm")[0].reset();
         id = null
     });

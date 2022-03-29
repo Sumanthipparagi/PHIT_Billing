@@ -4,6 +4,7 @@ import grails.gorm.transactions.Transactional
 import org.grails.web.json.JSONObject
 import org.springframework.web.multipart.MultipartFile
 
+import javax.imageio.ImageIO
 import javax.ws.rs.core.Form
 import java.awt.Graphics2D
 import java.awt.image.BufferedImage

@@ -2,13 +2,14 @@ package phitb_accounts
 
 import grails.converters.JSON
 import grails.web.servlet.mvc.GrailsParameterMap
+import org.grails.web.json.JSONArray
 import org.grails.web.json.JSONObject
 import phitb_accounts.Exception.BadRequestException
 import phitb_accounts.Exception.ResourceNotFoundException
 
 class CreditJvController {
-	static responseFormats = ['json', 'xml']
-    static allowedMethods = [index: "GET", show: "GET", save: "POST", update: "PUT", delete: "DELETE", dataTable: "GET"]
+    static responseFormats = ['json', 'xml']
+    static allowedMethods = [index: "GET", show: "GET", save: "POST", update: "PUT", delete: "DELETE", dataTable: "GET", approveCreditJv: "POST"]
 
     CreditJvService creditJvService
     /**
@@ -40,13 +41,11 @@ class CreditJvController {
                 respond creditJvService.get(id)
             }
         }
-        catch (ResourceNotFoundException ex)
-        {
+        catch (ResourceNotFoundException ex) {
             System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
             response.status = 404
         }
-        catch (BadRequestException ex)
-        {
+        catch (BadRequestException ex) {
             System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
             response.status = 400
         }
@@ -65,16 +64,14 @@ class CreditJvController {
         try {
 
             if (params.id) {
-                respond creditJvService.getAllByEntity(params.limit, params.offset,Long.parseLong(params.id))
+                respond creditJvService.getAllByEntity(params.limit, params.offset, Long.parseLong(params.id))
             }
         }
-        catch (ResourceNotFoundException ex)
-        {
+        catch (ResourceNotFoundException ex) {
             System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
             response.status = 404
         }
-        catch (BadRequestException ex)
-        {
+        catch (BadRequestException ex) {
             System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
             response.status = 400
         }
@@ -89,28 +86,22 @@ class CreditJvController {
      * @param id
      * @return get requested Credit Debit Details
      */
-    def getAllUnsettledByCustId()
-    {
-        try
-        {
-            String id = params.id
-            if (id)
-            {
-                respond creditJvService.getAllUnsettledByCustId(id)
-            }
+    def getAllUnsettledByCustId() {
+        try {
+            long id = Long.parseLong(params.id)
+            String financialYear = params.financialYear
+            ArrayList<CreditJv> creditJvs =  creditJvService.getAllUnsettledByCustId(financialYear, id)
+            respond creditJvs, formats: ['json']
         }
-        catch (ResourceNotFoundException ex)
-        {
+        catch (ResourceNotFoundException ex) {
             System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
             response.status = 404
         }
-        catch (BadRequestException ex)
-        {
+        catch (BadRequestException ex) {
             System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
             response.status = 400
         }
-        catch (Exception ex)
-        {
+        catch (Exception ex) {
             System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
         }
     }
@@ -120,28 +111,21 @@ class CreditJvController {
      * @param id
      * @return get requested Credit Debit Details
      */
-    def getAllsettledByCustId()
-    {
-        try
-        {
-            String id = params.id
-            if (id)
-            {
-                respond creditJvService.getAllsettledByCustId(id)
-            }
+    def getAllsettledByCustId() {
+        try {
+            long id = Long.parseLong(params.id)
+            String financialYear = params.financialYear
+            respond creditJvService.getAllsettledByCustId(financialYear, id)
         }
-        catch (ResourceNotFoundException ex)
-        {
+        catch (ResourceNotFoundException ex) {
             System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
             response.status = 404
         }
-        catch (BadRequestException ex)
-        {
+        catch (BadRequestException ex) {
             System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
             response.status = 400
         }
-        catch (Exception ex)
-        {
+        catch (Exception ex) {
             System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
         }
     }
@@ -158,13 +142,11 @@ class CreditJvController {
                 respond creditJvService.getAllByNoOfDays(params.limit, params.offset, days)
             }
         }
-        catch (ResourceNotFoundException ex)
-        {
+        catch (ResourceNotFoundException ex) {
             System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
             response.status = 404
         }
-        catch (BadRequestException ex)
-        {
+        catch (BadRequestException ex) {
             System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
             response.status = 400
         }
@@ -183,13 +165,11 @@ class CreditJvController {
             JSONObject jsonObject = JSON.parse(request.reader.text) as JSONObject
             respond creditJvService.save(jsonObject)
         }
-        catch (ResourceNotFoundException ex)
-        {
+        catch (ResourceNotFoundException ex) {
             System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
             response.status = 404
         }
-        catch (BadRequestException ex)
-        {
+        catch (BadRequestException ex) {
             System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
             response.status = 400
         }
@@ -208,15 +188,13 @@ class CreditJvController {
         try {
             String id = params.id
             JSONObject jsonObject = JSON.parse(request.reader.text) as JSONObject
-            respond creditJvService.update(jsonObject,id)
+            respond creditJvService.update(jsonObject, id)
         }
-        catch (ResourceNotFoundException ex)
-        {
+        catch (ResourceNotFoundException ex) {
             System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
             response.status = 404
         }
-        catch (BadRequestException ex)
-        {
+        catch (BadRequestException ex) {
             System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
             response.status = 400
         }
@@ -236,13 +214,11 @@ class CreditJvController {
             creditJvService.delete(id)
             response.status = 200
         }
-        catch (ResourceNotFoundException ex)
-        {
+        catch (ResourceNotFoundException ex) {
             System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
             response.status = 404
         }
-        catch (BadRequestException ex)
-        {
+        catch (BadRequestException ex) {
             System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
             response.status = 400
         }
@@ -257,57 +233,107 @@ class CreditJvController {
      */
     def dataTable() {
         try {
-            String start = params.start
-            String length = params.length
             GrailsParameterMap parameterMap = getParams()
             JSONObject paramsJsonObject = new JSONObject(parameterMap.params)
-            respond creditJvService.dataTables(paramsJsonObject, start, length)
+            String start = paramsJsonObject.get("start")
+            String length = paramsJsonObject.get("length")
+            String entityId = paramsJsonObject.get("entityId")
+            render creditJvService.dataTables(paramsJsonObject, start, length, Long.parseLong(entityId)) as JSON
         }
-        catch (ResourceNotFoundException ex)
-        {
+        catch (ResourceNotFoundException ex) {
             System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
             response.status = 404
         }
-        catch (BadRequestException ex)
-        {
+        catch (BadRequestException ex) {
             System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
             response.status = 400
         }
         catch (Exception ex) {
             System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
+            response.status = 400
         }
     }
 
 
-    def updateStatus(Long id)
-    {
-        try
-        {
+    def updateStatus(Long id) {
+        try {
             CreditJv creditJv = CreditJv.findById(id)
-            if (creditJv)
-            {
+            if (creditJv) {
                 creditJv.isUpdatable = true
-                if (params.type == "settled")
-                {
+                if (params.type == "settled") {
                     creditJv.status = Long.parseLong("1")
-                }
-                else
-                {
+                } else {
                     creditJv.status = Long.parseLong("0")
                 }
                 CreditJv creditJv1 = creditJv.save(flush: true)
-                if (creditJv1)
-                {
+                if (creditJv1) {
                     respond creditJv1
                     return
                 }
             }
         }
-        catch (Exception ex)
-        {
+        catch (Exception ex) {
             System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
             log.error('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
         }
         response.status = 400
+    }
+
+    def approveCreditJv() {
+        JSONObject jsonObject = new JSONObject(request.reader.text)
+        def status = Long.parseLong(jsonObject.get("status").toString())
+        def id = Long.parseLong(jsonObject.get("id").toString())
+        def entityId = Long.parseLong(jsonObject.get("entityId").toString())
+        def approverId = Long.parseLong(jsonObject.get("approverId").toString())
+        double debitAcCurrentBalance = Double.parseDouble(jsonObject.get("debitAcCurrentBalance").toString())
+        double toAcCurrentBalance =  Double.parseDouble(jsonObject.get("toAcCurrentBalance").toString())
+        if (status == 1) {
+            CreditJv creditJv = new CreditJvService().approveCreditJv(id, entityId, approverId)
+            if (creditJv) {
+                //add general ledger to debit account
+                GeneralLedger generalLedger = new GeneralLedger()
+                generalLedger.docType = "CREDIT-JV"
+                generalLedger.docNo = creditJv.transactionId
+                generalLedger.narration = creditJv.reason
+                generalLedger.account = creditJv.debitAccount
+                generalLedger.debitAmount = creditJv.amount
+                generalLedger.creditAmount = 0.00
+                generalLedger.balance = debitAcCurrentBalance - creditJv.amount
+                generalLedger.status = 1
+                generalLedger.financialYear = creditJv.financialYear
+                generalLedger.entityId = creditJv.entityId
+                generalLedger.entityType = creditJv.entityTypeId
+                generalLedger.createdUser = creditJv.approverId
+                generalLedger.createdUser = creditJv.approverId
+                generalLedger.save(flush: true)
+
+                //add general ledger to credit account
+                generalLedger = new GeneralLedger()
+                generalLedger.docType = "CREDIT-JV"
+                generalLedger.docNo = creditJv.transactionId
+                generalLedger.narration = creditJv.reason
+                generalLedger.account = creditJv.toAccount
+                generalLedger.debitAmount = 0.00
+                generalLedger.creditAmount = creditJv.amount
+                generalLedger.balance = toAcCurrentBalance + creditJv.amount
+                generalLedger.status = 1
+                generalLedger.financialYear = creditJv.financialYear
+                generalLedger.entityId = creditJv.entityId
+                generalLedger.entityType = creditJv.entityTypeId
+                generalLedger.createdUser = creditJv.approverId
+                generalLedger.createdUser = creditJv.approverId
+                generalLedger.save(flush: true)
+
+                response.status = 200
+            } else
+                response.status = 400
+        } else {
+
+            CreditJv creditJv = new CreditJvService().rejectCreditJv(id, entityId, approverId)
+            if (creditJv)
+                response.status = 200
+            else
+                response.status = 400
+        }
     }
 }

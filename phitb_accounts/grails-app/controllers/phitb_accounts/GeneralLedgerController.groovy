@@ -1,29 +1,30 @@
-package phitb_entity
+package phitb_accounts
 
 
 import grails.rest.*
 import grails.converters.*
 import grails.web.servlet.mvc.GrailsParameterMap
 import org.grails.web.json.JSONObject
-import phitb_entity.Exception.BadRequestException
-import phitb_entity.Exception.ResourceNotFoundException
+import phitb_accounts.Exception.BadRequestException
+import phitb_accounts.Exception.ResourceNotFoundException
 
-class AccountRegisterController {
-    static responseFormats = ['json', 'xml']
+class GeneralLedgerController {
+	static responseFormats = ['json', 'xml']
+
     static allowedMethods = [index: "GET", show: "GET", save: "POST", update: "PUT", delete: "DELETE", dataTable: "GET"]
 
-    AccountRegisterService accountRegisterService
+    GeneralLedgerService generalLedgerService
     /**
-     * Gets all account register
+     * Gets all general ledger
      * @param query
      * @param offset
      * @param limit
-     * @return list of account register
+     * @return list of general ledger
      */
     def index() {
 
         try {
-            respond accountRegisterService.getAll(params.limit, params.offset, params.query)
+            respond generalLedgerService.getAll(params.limit, params.offset, params.query)
         }
         catch (Exception ex) {
             System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
@@ -31,22 +32,24 @@ class AccountRegisterController {
     }
 
     /**
-     * Get requested account register
+     * Get requested general ledger
      * @param id
-     * @return get requested account register
+     * @return get requested general ledger
      */
     def show() {
         try {
             String id = params.id
             if (id) {
-                respond accountRegisterService.get(id)
+                respond generalLedgerService.get(id)
             }
         }
-        catch (ResourceNotFoundException ex) {
+        catch (ResourceNotFoundException ex)
+        {
             System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
             response.status = 404
         }
-        catch (BadRequestException ex) {
+        catch (BadRequestException ex)
+        {
             System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
             response.status = 400
         }
@@ -56,20 +59,49 @@ class AccountRegisterController {
     }
 
     /**
-     * Save new account register
-     * @param account register
-     * @return saved account register
+     * Get requested Stock Book
+     * @param id
+     * @return get requested Stock Book
+     */
+    def getByEntityId() {
+        try {
+
+            if (params.id) {
+                respond generalLedgerService.getAllByEntity(params.limit, params.offset,Long.parseLong(params.id))
+            }
+        }
+        catch (ResourceNotFoundException ex)
+        {
+            System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
+            response.status = 404
+        }
+        catch (BadRequestException ex)
+        {
+            System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
+            response.status = 400
+        }
+        catch (Exception ex) {
+            System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
+        }
+    }
+
+    /**
+     * Save new general ledger
+     * @param general ledger
+     * @return saved general ledger
      */
     def save() {
         try {
             JSONObject jsonObject = JSON.parse(request.reader.text) as JSONObject
-            respond accountRegisterService.save(jsonObject)
+            respond generalLedgerService.save(jsonObject)
         }
-        catch (ResourceNotFoundException ex) {
+        catch (ResourceNotFoundException ex)
+        {
             System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
             response.status = 404
         }
-        catch (BadRequestException ex) {
+        catch (BadRequestException ex)
+        {
             System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
             response.status = 400
         }
@@ -78,23 +110,26 @@ class AccountRegisterController {
         }
     }
 
+
     /**
-     * Update existing account register
+     * Update existing general ledger
      * @param id
-     * @param account register
-     * @return updated account register
+     * @param general ledger
+     * @return updated general ledger
      */
     def update() {
         try {
             String id = params.id
             JSONObject jsonObject = JSON.parse(request.reader.text) as JSONObject
-            respond accountRegisterService.update(jsonObject, id)
+            respond generalLedgerService.update(jsonObject,id)
         }
-        catch (ResourceNotFoundException ex) {
+        catch (ResourceNotFoundException ex)
+        {
             System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
             response.status = 404
         }
-        catch (BadRequestException ex) {
+        catch (BadRequestException ex)
+        {
             System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
             response.status = 400
         }
@@ -104,21 +139,23 @@ class AccountRegisterController {
     }
 
     /**
-     * Delete selected account register
+     * Delete selected general ledger
      * @param id
      * @return returns status code 200
      */
     def delete() {
         try {
             String id = params.id
-            accountRegisterService.delete(id)
+            generalLedgerService.delete(id)
             response.status = 200
         }
-        catch (ResourceNotFoundException ex) {
+        catch (ResourceNotFoundException ex)
+        {
             System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
             response.status = 404
         }
-        catch (BadRequestException ex) {
+        catch (BadRequestException ex)
+        {
             System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
             response.status = 400
         }
@@ -128,22 +165,25 @@ class AccountRegisterController {
     }
 
     /**
-     * Gets all bank register in datatables format
-     * @return list of bank register
+     * Gets all general ledger in datatables format
+     * @return list of general ledger
      */
     def dataTable() {
         try {
             String start = params.start
             String length = params.length
+            String entityId = params.entityId
             GrailsParameterMap parameterMap = getParams()
             JSONObject paramsJsonObject = new JSONObject(parameterMap.params)
-            respond accountRegisterService.dataTables(paramsJsonObject, start, length)
+            respond generalLedgerService.dataTables(paramsJsonObject, start, length,entityId)
         }
-        catch (ResourceNotFoundException ex) {
+        catch (ResourceNotFoundException ex)
+        {
             System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
             response.status = 404
         }
-        catch (BadRequestException ex) {
+        catch (BadRequestException ex)
+        {
             System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
             response.status = 400
         }
@@ -151,46 +191,4 @@ class AccountRegisterController {
             System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
         }
     }
-
-    def getByAccountsByEntity() {
-        try {
-            String id = params.id
-            if (id) {
-                respond accountRegisterService.getAllByEntity(id)
-            }
-        }
-        catch (ResourceNotFoundException ex) {
-            System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
-            response.status = 404
-        }
-        catch (BadRequestException ex) {
-            System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
-            response.status = 400
-        }
-        catch (Exception ex) {
-            System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
-        }
-    }
-
-    def updateBalance() {
-        try {
-            String amount = params.amount
-            String entityId = params.entityId
-            String id = params.id
-            boolean add = Boolean.parseBoolean(params.add)
-            respond accountRegisterService.updateBalance(id, entityId, amount, add)
-        }
-        catch (ResourceNotFoundException ex) {
-            System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
-            response.status = 404
-        }
-        catch (BadRequestException ex) {
-            System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
-            response.status = 400
-        }
-        catch (Exception ex) {
-            System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
-        }
-    }
-
 }
