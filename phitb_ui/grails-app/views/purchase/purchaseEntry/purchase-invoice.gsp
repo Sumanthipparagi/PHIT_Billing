@@ -1,7 +1,7 @@
 <%@ page import="phitb_ui.SalesService; java.text.SimpleDateFormat" contentType="text/html;charset=UTF-8" %>
 <html>
 <head>
-    <title>Purchase Entry</title>
+    <title>Purchase Invoice</title>
 
     <script type="text/javascript">
         function generateBarCode() {
@@ -96,14 +96,14 @@
             <strong>PURCHASE INVOICE (Future ${customer.entityName})</strong>
             <ul style="margin: 0;">
 
-                <li><b class="tab">Invoice No</b>: 955932676</li>
+                <li><b class="tab">Invoice No</b>: ${invoiceNumber}</li>
                 <li><b class="tab" >Inv Date</b>:<span id="invDate"></span></li>
                 <li><b class="tab">GR/PR No.</b>:</li>
                 <li><b class="tab">GR/PR Date</b>:</li>
                 <li><b class="tab">No of cases</b>:</li>
                 <li><b class="tab">Weight in Kgs</b>:</li>
-                <li><b class="tab">Party Ref No.</b>: 429803</li>
-                <li><b class="tab">Rev-Charge</b>: No Dist.Chnl.01</li>
+                <li><b class="tab">Party Ref No.</b>: </li>
+                <li><b class="tab">Rev-Charge</b>:</li>
             </ul>
         </td>
     </tr>

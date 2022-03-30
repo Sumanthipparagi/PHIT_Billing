@@ -383,7 +383,22 @@ class PurchaseEntryController {
             def apiResponse = new SalesService().getRequestWithId(it.productId.toString(), new Links().PRODUCT_REGISTER_SHOW)
             it.put("productId", JSON.parse(apiResponse.readEntity(String.class)) as JSONObject)
         }
-        render(view: "/purchase/purchaseEntry/purchase-invoice", model: [purchaseBillDetail    : purchaseBillDetail,
+
+        def invoiceNumber;
+        def datepart = purchaseBillDetail.dateCreated.split("T")[0];
+        def month = datepart.split("-")[1];
+        def year = datepart.split("-")[0];
+        def seriesCode = "__";
+        if (purchaseBillDetail.billStatus == "DRAFT")
+        {
+            invoiceNumber = purchaseBillDetail.entityId+"/DR/S/" + month + year + "/" + series.seriesCode + "/__";
+        }
+        else
+        {
+            invoiceNumber = purchaseBillDetail.entityId+"/S/" + month + year + "/" + series.seriesCode + "/" + purchaseBillDetail.id
+        }
+
+        render(view: "/purchase/purchaseEntry/purchase-invoice", model: [purchaseBillDetail    : purchaseBillDetail,invoiceNumber:invoiceNumber,
                                                                        purchaseProductDetails: purchaseProductDetails,
                                                                        series                : series, entity: entity, customer: customer, city: city,
                                                                        total                 : purchaseProductDetails.amount.sum()])

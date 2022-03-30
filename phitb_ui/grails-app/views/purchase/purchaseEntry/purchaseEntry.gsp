@@ -550,6 +550,7 @@
                         hot.setDataAtCell(mainTableRow, 7, rowData[4]);
                         hot.setDataAtCell(mainTableRow, 8, rowData[5]);
                         hot.setDataAtCell(mainTableRow, 9, 0);
+                        hot.setDataAtCell(mainTableRow, 10, 0); //packing
                         hot.setDataAtCell(mainTableRow, 11, rowData[6]);
                         hot.setDataAtCell(mainTableRow, 16, rowData[2]);
                         gst = rowData[6];
@@ -823,15 +824,15 @@
                 var month = datepart.split("-")[1];
                 var year = datepart.split("-")[0];
                 var seriesCode = data.series.seriesCode;
-                var invoiceNumber = "P/"+month+year+"/"+seriesCode+"/"+data.purchaseBillDetail.serBillId;
+                var invoiceNumber = data.purchaseBillDetail.entityId +"/P/"+month+year+"/"+seriesCode+"/"+data.purchaseBillDetail.serBillId;
                 var message = "";
                 if(billStatus !== "DRAFT") {
                     message = 'Purchase Invoice Generated: '+ invoiceNumber;
                     $("#invNo").html("<p><strong>" + invoiceNumber + "</strong></p>");
                 }
                 else {
-                    $("#invNo").html("<p><strong>DR/S/" + month + year + "/" + seriesCode + "/__</strong></p>");
-                    message = 'Draft Invoice Generated: DR/S/'+ month + year + "/" + seriesCode + "/__";
+                    $("#invNo").html("<p><strong>"+data.purchaseBillDetail.entityId+"/DR/P/" + month + year + "/" + seriesCode + "/__</strong></p>");
+                    message = 'Draft Invoice Generated: '+data.purchaseBillDetail.entityId+'/DR/P/'+ month + year + "/" + seriesCode + "/__";
                 }
                 waitingSwal.close();
                 Swal.fire({

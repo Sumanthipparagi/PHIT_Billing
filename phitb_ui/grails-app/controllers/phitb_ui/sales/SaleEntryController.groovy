@@ -262,11 +262,11 @@ class SaleEntryController {
             def seriesCode = "__";
             if (saleBillDetail.billStatus == "DRAFT")
             {
-                invoiceNumber = "DR/S/" + month + year + "/" + series.seriesCode + "/__";
+                invoiceNumber = saleBillDetail.entityId+"/DR/S/" + month + year + "/" + series.seriesCode + "/__";
             }
             else
             {
-                invoiceNumber = "S/" + month + year + "/" + series.seriesCode + "/" + saleBillDetail.id
+                invoiceNumber = saleBillDetail.entityId+"/S/" + month + year + "/" + series.seriesCode + "/" + saleBillDetail.id
             }
             def totalcgst = saleProductDetails.cgstAmount.sum()
             def totalsgst = saleProductDetails.sgstAmount.sum()
