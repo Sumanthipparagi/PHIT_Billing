@@ -416,7 +416,6 @@ class PurchaseEntryController
             def apiResponse = new SalesService().getRequestWithId(it.productId.toString(), new Links().PRODUCT_REGISTER_SHOW)
             it.put("productId", JSON.parse(apiResponse.readEntity(String.class)) as JSONObject)
         }
-
         def invoiceNumber;
         def datepart = purchaseBillDetail.dateCreated.split("T")[0];
         def month = datepart.split("-")[1];
@@ -430,12 +429,10 @@ class PurchaseEntryController
         {
             invoiceNumber = purchaseBillDetail.entityId + "/S/" + month + year + "/" + series.seriesCode + "/" + purchaseBillDetail.id
         }
-
         def totalcgst = purchaseProductDetails.cgstAmount.sum()
         def totalsgst = purchaseProductDetails.sgstAmount.sum()
         def totaligst = purchaseProductDetails.igstAmount.sum()
         def totaldiscount = purchaseProductDetails.discount.sum()
-
         render(view: "/purchase/purchaseEntry/purchase-invoice", model: [purchaseBillDetail      :
                                                                                  purchaseBillDetail, invoiceNumber:
                 invoiceNumber, purchaseProductDetails  : purchaseProductDetails,series: series, entity: entity,

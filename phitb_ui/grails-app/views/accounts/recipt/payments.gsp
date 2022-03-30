@@ -175,8 +175,8 @@
                                             id="paymentMode" onchange="payMode(this.value)" required>
                                         <option value="">-- Please select --</option>
                                         <option value="1">BANK</option>
-                                        <option value="2">CARD</option>
-                                        <option value="3">CASH</option>
+%{--                                        <option value="2">CARD</option>--}%
+%{--                                        <option value="3">CASH</option>--}%
                                     </select>
                                 </div>
 
@@ -507,6 +507,7 @@
                     total_bal = 0;
                 }
                 $('.total_bal').text(parseFloat(total_bal).toFixed(2));
+                $('.amountPaid').val(total_bal.toFixed(2));
 
                 $.each(data[0], function (key, value) {
                     trHTML1 +=
@@ -555,7 +556,7 @@
                 var total_bal_s = inv - crnt
                 $('.total_bal_s').text(parseFloat(total_bal_s).toFixed(2));
                 $('.tba').val(total_bal_s.toFixed(2));
-                $('.amountPaid').val(total_bal_s.toFixed(2));
+                // $('.amountPaid').val(total_bal_s.toFixed(2));
                 $.each(data[0], function (key, value) {
                     trHTML +=
                         '<tr id="' + "IN"+value.id + '"><td>' + invoice +

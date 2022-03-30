@@ -10,7 +10,7 @@ import java.text.SimpleDateFormat
 @Transactional
 class PaymentDetailService {
 
-    SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss")
+    SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy")
 
     def getAll(String limit, String offset, String query) {
 
@@ -107,15 +107,17 @@ class PaymentDetailService {
         paymentDetail.amountPaid = Double.parseDouble(jsonObject.get("amountPaid").toString())
         paymentDetail.narration = jsonObject.get("narration").toString()
         paymentDetail.cardNumber = Long.parseLong("1")
-        paymentDetail.paymentDate = sdf.parse(jsonObject.get("paymentDate").toString())
+        paymentDetail.paymentDate = jsonObject.get("paymentDate").toString()
         paymentDetail.transId = "1"
         paymentDetail.commission = Double.parseDouble("1")
         paymentDetail.totalNotes = Long.parseLong("1")
-        paymentDetail.chequeNumber = jsonObject.get("chequeNumber").toString()
+        paymentDetail.chequeNumber = "1"
+        paymentDetail.employeeName = Long.parseLong("1")
         paymentDetail.bank = BankRegister.findById(Long.parseLong(jsonObject.get("bank").toString()))
         paymentDetail.wallet = WalletMaster.findById(Long.parseLong(jsonObject.get("wallet").toString()))
-        paymentDetail.financialYear = "2012"
+        paymentDetail.financialYear = jsonObject.get("financialYear").toString()
         paymentDetail.status = Long.parseLong("1")
+        paymentDetail.paymentTo = jsonObject.get("receivedFrom").toString()
         paymentDetail.syncStatus = Long.parseLong("1")
         paymentDetail.entityTypeId = Long.parseLong("1")
         paymentDetail.entityId = Long.parseLong("1")
