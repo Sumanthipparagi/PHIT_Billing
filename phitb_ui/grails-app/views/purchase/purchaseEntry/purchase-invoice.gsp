@@ -245,108 +245,108 @@
         <p>No of cases <br>
             Weight in Kgs :<br>
             Party Ref No. : <br>
-            Rev-Charge : No Dist.Chnl.01</p>
+            Rev-Charge : </p>
         <g:each in="${termsConditions}" var="t">
             <p>${t.termCondition}</p>
         </g:each>
     </div>
 
     <div style="float: right;">
-        <table class="print" style="margin-top: 10px;width: 100%;">
-            <tr>
-                <th>Total</th>
-                <td>0.00</td>
-                <td>${total}</td>
-            </tr>
-            <g:each var="c" in="${cgst}">
-                <g:if test="${c > 0 && c <= 5}">
-                    <tr>
-                        <th>Add CGST 5 % on</th>
-                        <td>${total}</td>
-                        <td id="cgst5">${0.5 * total}</td>
-                    </tr>
-                </g:if>
-                <g:if test="${c > 5 && c <= 12}">
-                    <tr>
-                        <th>Add CGST 12 % on</th>
-                        <td>${total}</td>
-                        <td id="cgst12">${String.format("%.2f",0.12 * total)}</td>
-                    </tr>
-                </g:if>
+%{--        <table class="print" style="margin-top: 10px;width: 100%;">--}%
+%{--            <tr>--}%
+%{--                <th>Total</th>--}%
+%{--                <td>0.00</td>--}%
+%{--                <td>${total}</td>--}%
+%{--            </tr>--}%
+%{--            <g:each var="c" in="${cgst}">--}%
+%{--                <g:if test="${c > 0 && c <= 5}">--}%
+%{--                    <tr>--}%
+%{--                        <th>Add CGST 5 % on</th>--}%
+%{--                        <td>${total}</td>--}%
+%{--                        <td id="cgst5">${0.5 * total}</td>--}%
+%{--                    </tr>--}%
+%{--                </g:if>--}%
+%{--                <g:if test="${c > 5 && c <= 12}">--}%
+%{--                    <tr>--}%
+%{--                        <th>Add CGST 12 % on</th>--}%
+%{--                        <td>${total}</td>--}%
+%{--                        <td id="cgst12">${String.format("%.2f",0.12 * total)}</td>--}%
+%{--                    </tr>--}%
+%{--                </g:if>--}%
 
-                <g:if test="${c >12 && c <= 18}">
-                    <tr>
-                        <th>Add CGST 18 % on</th>
-                        <td>${total}</td>
-                        <td id="cgst18">${0.18 * total}</td>
-                    </tr>
-                </g:if>
-                <g:if test="${c >18 && c <= 28}">
-                    <tr>
-                        <th>Add CGST 28 % on</th>
-                        <td>${total}</td>
-                        <td id="cgst28">${0.28 * total}</td>
-                    </tr>
-                </g:if>
-            </g:each>
+%{--                <g:if test="${c >12 && c <= 18}">--}%
+%{--                    <tr>--}%
+%{--                        <th>Add CGST 18 % on</th>--}%
+%{--                        <td>${total}</td>--}%
+%{--                        <td id="cgst18">${0.18 * total}</td>--}%
+%{--                    </tr>--}%
+%{--                </g:if>--}%
+%{--                <g:if test="${c >18 && c <= 28}">--}%
+%{--                    <tr>--}%
+%{--                        <th>Add CGST 28 % on</th>--}%
+%{--                        <td>${total}</td>--}%
+%{--                        <td id="cgst28">${0.28 * total}</td>--}%
+%{--                    </tr>--}%
+%{--                </g:if>--}%
+%{--            </g:each>--}%
 
-            <g:each var="s" in="${sgst}">
+%{--            <g:each var="s" in="${sgst}">--}%
 
-                <g:if test="${s > 0 && s <= 5}">
-                    <tr>
-                        <th>Add SGST 5 % on</th>
-                        <td>${total}</td>
-                        <td id="sgst5">${0.5 * total}</td>
-                    </tr>
-                </g:if>
-                <g:if test="${s > 5 && s <= 12}">
-                    <tr>
-                        <th>Add SGST 12 % on</th>
-                        <td>${total}</td>
-                        <td id="sgst12">${String.format("%.2f",0.12 * total)}</td>
-                    </tr>
-                </g:if>
-                <g:if test="${s > 12 && s <= 18}">
-                    <tr>
-                        <th>Add SGST 18 % on</th>
-                        <td>${total}</td>
-                        <td id="sgst18">${0.18 * total}</td>
-                    </tr>
-                </g:if>
-                <g:if test="${s > 18 && s <= 28}">
-                    <tr>
-                        <th>Add SGST 28 % on</th>
-                        <td>${total}</td>
-                        <td id="sgst28">${0.28 * total}</td>
-                    </tr>
-                </g:if>
-            </g:each>
-            <tr>
-                <th>Net Invoice Amt.</th>
-                <td>0.00</td>
-                <td id="netInvAmt"></td>
-            </tr>
-            <tr>
-                <th>Less Cr. Nt*</th>
-                <td>0.00</td>
-                <td>0.00</td>
-            </tr>
-            <tr>
-                <th>Add Debit Nt*</th>
-                <td>0.00</td>
-                <td>0.00</td>
-            </tr>
-            <tr>
-                <th>Add Rounding off*</th>
-                <td>0.00</td>
-                <td>0.00</td>
-            </tr>
-            <tr>
-                <th>Net Payable Amt.</th>
-                <td>0.00</td>
-                <td id="netPayAmt"></td>
-            </tr>
-        </table>
+%{--                <g:if test="${s > 0 && s <= 5}">--}%
+%{--                    <tr>--}%
+%{--                        <th>Add SGST 5 % on</th>--}%
+%{--                        <td>${total}</td>--}%
+%{--                        <td id="sgst5">${0.5 * total}</td>--}%
+%{--                    </tr>--}%
+%{--                </g:if>--}%
+%{--                <g:if test="${s > 5 && s <= 12}">--}%
+%{--                    <tr>--}%
+%{--                        <th>Add SGST 12 % on</th>--}%
+%{--                        <td>${total}</td>--}%
+%{--                        <td id="sgst12">${String.format("%.2f",0.12 * total)}</td>--}%
+%{--                    </tr>--}%
+%{--                </g:if>--}%
+%{--                <g:if test="${s > 12 && s <= 18}">--}%
+%{--                    <tr>--}%
+%{--                        <th>Add SGST 18 % on</th>--}%
+%{--                        <td>${total}</td>--}%
+%{--                        <td id="sgst18">${0.18 * total}</td>--}%
+%{--                    </tr>--}%
+%{--                </g:if>--}%
+%{--                <g:if test="${s > 18 && s <= 28}">--}%
+%{--                    <tr>--}%
+%{--                        <th>Add SGST 28 % on</th>--}%
+%{--                        <td>${total}</td>--}%
+%{--                        <td id="sgst28">${0.28 * total}</td>--}%
+%{--                    </tr>--}%
+%{--                </g:if>--}%
+%{--            </g:each>--}%
+%{--            <tr>--}%
+%{--                <th>Net Invoice Amt.</th>--}%
+%{--                <td>0.00</td>--}%
+%{--                <td id="netInvAmt"></td>--}%
+%{--            </tr>--}%
+%{--            <tr>--}%
+%{--                <th>Less Cr. Nt*</th>--}%
+%{--                <td>0.00</td>--}%
+%{--                <td>0.00</td>--}%
+%{--            </tr>--}%
+%{--            <tr>--}%
+%{--                <th>Add Debit Nt*</th>--}%
+%{--                <td>0.00</td>--}%
+%{--                <td>0.00</td>--}%
+%{--            </tr>--}%
+%{--            <tr>--}%
+%{--                <th>Add Rounding off*</th>--}%
+%{--                <td>0.00</td>--}%
+%{--                <td>0.00</td>--}%
+%{--            </tr>--}%
+%{--            <tr>--}%
+%{--                <th>Net Payable Amt.</th>--}%
+%{--                <td>0.00</td>--}%
+%{--                <td id="netPayAmt"></td>--}%
+%{--            </tr>--}%
+%{--        </table>--}%
     </div>
 </div>
 <br>
