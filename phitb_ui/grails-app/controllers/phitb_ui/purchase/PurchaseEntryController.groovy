@@ -418,35 +418,33 @@ class PurchaseEntryController
         }
 
         def invoiceNumber;
-        def datepart = purchaseBillDetail.entryDate.split("T")[0];
+        def datepart = purchaseBillDetail.dateCreated.split("T")[0];
         def month = datepart.split("-")[1];
         def year = datepart.split("-")[0];
         def seriesCode = "__";
         if (purchaseBillDetail.billStatus == "DRAFT")
         {
-            invoiceNumber = "DR/P/" + month + year + "/" + series.seriesCode + "/__";
+            invoiceNumber = purchaseBillDetail.entityId + "/DR/S/" + month + year + "/" + series.seriesCode + "/__";
         }
         else
         {
-            invoiceNumber = "P/" + month + year + "/" + series.seriesCode + "/" + purchaseBillDetail.id
+            invoiceNumber = purchaseBillDetail.entityId + "/S/" + month + year + "/" + series.seriesCode + "/" + purchaseBillDetail.id
         }
 
         def totalcgst = purchaseProductDetails.cgstAmount.sum()
         def totalsgst = purchaseProductDetails.sgstAmount.sum()
         def totaligst = purchaseProductDetails.igstAmount.sum()
         def totaldiscount = purchaseProductDetails.discount.sum()
-        render(view: "/purchase/purchaseEntry/purchase-entry", model: [purchaseBillDetail    : purchaseBillDetail,
-                                                                       purchaseProductDetails: purchaseProductDetails,
-                                                                       series                : series, entity: entity,
-                                                                       total                 : purchaseProductDetails.amount.sum(),
-                                                                       invoiceNumber         : invoiceNumber,
-                                                                       supplier              : supplier, city: city,
-                                                                       supcity:supcity,
-                                                                       termsConditions:termsConditions,
-                                                                       totalcgst:totalcgst,totalsgst:totalsgst,
-                                                                       totaligst:totaligst,totaldiscount:totaldiscount
 
-        ])
+        render(view: "/purchase/purchaseEntry/purchase-invoice", model: [purchaseBillDetail      :
+                                                                                 purchaseBillDetail, invoiceNumber:
+                invoiceNumber, purchaseProductDetails  : purchaseProductDetails,series: series, entity: entity,
+                                                                         supplier: supplier, city: city, supcity   :
+                                                                                 supcity, total :
+                                                                                 purchaseProductDetails.amount.sum(),
+                                                                         totalcgst:totalcgst,totalsgst:totalsgst,
+                                                                         totaligst:totaligst,
+                                                                         totaldiscount:totaldiscount,termsConditions:termsConditions])
     }
 
     def purchaseReturn()

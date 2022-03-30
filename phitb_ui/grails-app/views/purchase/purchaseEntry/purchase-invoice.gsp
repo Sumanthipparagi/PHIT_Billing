@@ -244,7 +244,7 @@
 
         <p>No of cases <br>
             Weight in Kgs :<br>
-            Party Ref No. : 429803<br>
+            Party Ref No. : <br>
             Rev-Charge : No Dist.Chnl.01</p>
         <g:each in="${termsConditions}" var="t">
             <p>${t.termCondition}</p>
