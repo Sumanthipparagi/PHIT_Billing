@@ -154,19 +154,19 @@
                                 <div class="col-lg-6">
                                     <label for="receivedFrom">
                                         Customer
-                                    </label>
-                                    <select class="form-control show-tick receivedFrom" name="receivedFrom"
-                                            id="receivedFrom" onchange="getAddress(this.value)" required>
+                                    </label><br>
+                                    <select class=" show-tick receivedFrom" name="receivedFrom"
+                                            id="receivedFrom" onchange="getAddress(this.value)" required
+                                            style="width: 460px;">
                                         <option value="">-- Please select --</option>
                                         <g:each var="e" in="${entity}">
                                             <option value="${e.id}"
-                                                    data-type="${e.entityType.id}">${e.entityName} - ${e.id}</option>
+                                                    data-type="${e.entityType.id}">${e.entityName}</option>
                                         </g:each>
                                     </select>
 
                                     <div id="caddress" class="mt-2"></div>
                                 </div>
-
                                 <div class="col-lg-6 form-group  form-float">
                                     <label for="paymentMode">
                                         Payment Mode
@@ -418,6 +418,7 @@
     if (day < 10) day = "0" + day;
     var today = year + "-" + month + "-" + day;
     document.getElementById("date").value = moment(today).format('DD/MM/YYYY');
+    $('.receivedFrom').select2()
 
     var $demoMaskedInput = $('.demo-masked-input');
     $demoMaskedInput.find('.credit-card').inputmask('9999 9999 9999 9999', {placeholder: '____ ____ ____ ____'});
