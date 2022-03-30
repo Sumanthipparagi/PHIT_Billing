@@ -36,9 +36,7 @@ class ProductService {
             System.err.println('Service :ProductService , action :  getProducts  , Ex:' + ex)
             log.error('Service :ProductService , action :  getProducts  , Ex:' + ex)
         }
-        finally{
-            client.close()
-        }
+
     }
 
     def getProductById(String id) {
@@ -61,9 +59,7 @@ class ProductService {
             System.err.println('Service :ProductService , action :  getEntity  , Ex:' + ex)
             log.error('Service :ProductService , action :  getEntity  , Ex:' + ex)
         }
-        finally{
-            client.close()
-        }
+
     }
 
     def getProductTypes() {
@@ -83,9 +79,7 @@ class ProductService {
             System.err.println('Service :ProductService , action :  getProducts  , Ex:' + ex)
             log.error('Service :ProductService , action :  getProducts  , Ex:' + ex)
         }
-        finally{
-            client.close()
-        }
+
     }
 
     def getProductRegister() {
@@ -105,9 +99,7 @@ class ProductService {
             System.err.println('Service :ProductService , action :  getProducts  , Ex:' + ex)
             log.error('Service :ProductService , action :  getProducts  , Ex:' + ex)
         }
-        finally{
-            client.close()
-        }
+
     }
 
     def getProductGroups() {
@@ -127,9 +119,7 @@ class ProductService {
             System.err.println('Service :ProductService , action :  getProducts  , Ex:' + ex)
             log.error('Service :ProductService , action :  getProducts  , Ex:' + ex)
         }
-        finally{
-            client.close()
-        }
+
     }
 
     def getDivisions() {
@@ -149,9 +139,7 @@ class ProductService {
             System.err.println('Service :ProductService , action :  getProducts  , Ex:' + ex)
             log.error('Service :ProductService , action :  getProducts  , Ex:' + ex)
         }
-        finally{
-            client.close()
-        }
+
     }
 
     def getProductClass() {
@@ -171,9 +159,7 @@ class ProductService {
             System.err.println('Service :ProductService , action :  getProducts  , Ex:' + ex)
             log.error('Service :ProductService , action :  getProducts  , Ex:' + ex)
         }
-        finally{
-            client.close()
-        }
+
     }
 
     def getProductCost() {
@@ -192,9 +178,7 @@ class ProductService {
             System.err.println('Service :ProductService , action :  getProducts  , Ex:' + ex)
             log.error('Service :ProductService , action :  getProducts  , Ex:' + ex)
         }
-        finally{
-            client.close()
-        }
+
     }
 
     def getProductCategories() {
@@ -214,9 +198,7 @@ class ProductService {
             System.err.println('Service :ProductService , action :  getProducts  , Ex:' + ex)
             log.error('Service :ProductService , action :  getProducts  , Ex:' + ex)
         }
-        finally{
-            client.close()
-        }
+
     }
 
 
@@ -237,9 +219,7 @@ class ProductService {
             System.err.println('Service :ProductService , action :  getProducts  , Ex:' + ex)
             log.error('Service :ProductService , action :  getProducts  , Ex:' + ex)
         }
-        finally{
-            client.close()
-        }
+
     }
     /**
      *
@@ -263,9 +243,7 @@ class ProductService {
             System.err.println('Service :ProductService , action :  getProductSchedules  , Ex:' + ex)
             log.error('Service :ProductService , action :  getProductSchedules  , Ex:' + ex)
         }
-        finally{
-            client.close()
-        }
+
     }
 
     def getCompositions() {
@@ -285,9 +263,7 @@ class ProductService {
             System.err.println('Service :ProductService , action :  getProducts  , Ex:' + ex)
             log.error('Service :ProductService , action :  getProducts  , Ex:' + ex)
         }
-        finally{
-            client.close()
-        }
+
     }
 
 
@@ -308,9 +284,7 @@ class ProductService {
             System.err.println('Service :ProductService , action :  getBatchRegister  , Ex:' + ex)
             log.error('Service :ProductService , action :  getBatchRegister  , Ex:' + ex)
         }
-        finally{
-            client.close()
-        }
+
     }
 
     def getBatchById(String id) {
@@ -335,9 +309,7 @@ class ProductService {
             System.err.println('Service :ProductService , action :  getBatchRegister  , Ex:' + ex)
             log.error('Service :ProductService , action :  getBatchRegister  , Ex:' + ex)
         }
-        finally{
-            client.close()
-        }
+
     }
 
     def getBatchesOfProduct(String id) {
@@ -357,9 +329,7 @@ class ProductService {
             System.err.println('Service :ProductService , action :  getBatchesOfProduct  , Ex:' + ex)
             log.error('Service :ProductService , action :  getBatchesOfProduct  , Ex:' + ex)
         }
-        finally{
-            client.close()
-        }
+
     }
 
 
@@ -380,9 +350,7 @@ class ProductService {
             System.err.println('Service :ProductService , action :  getProducts  , Ex:' + ex)
             log.error('Service :ProductService , action :  getProducts  , Ex:' + ex)
         }
-        finally{
-            client.close()
-        }
+
     }
 
 
@@ -403,9 +371,7 @@ class ProductService {
             System.err.println('Service :ProductService , action :  getProducts  , Ex:' + ex)
             log.error('Service :ProductService , action :  getProducts  , Ex:' + ex)
         }
-        finally{
-            client.close()
-        }
+
     }
 
 //    Division
@@ -430,9 +396,7 @@ class ProductService {
             System.err.println('Service :Product , action :  save  , Ex:' + ex)
             log.error('Service :Product , action :  save  , Ex:' + ex)
         }
-        finally{
-            client.close()
-        }
+
     }
 
     /**
@@ -459,9 +423,7 @@ class ProductService {
             System.err.println('Service :getAccountModes , action :  show  , Ex:' + ex)
             log.error('Service :getAccountModes , action :  show  , Ex:' + ex)
         }
-        finally{
-            client.close()
-        }
+
     }
 
     def putDivision(JSONObject jsonObject)
@@ -485,9 +447,7 @@ class ProductService {
             System.err.println('Service : Godown , action :  put  , Ex:' + ex)
             log.error('Service :putAccountMode , action :  put  , Ex:' + ex)
         }
-        finally{
-            client.close()
-        }
+
     }
 
     /**
@@ -514,9 +474,7 @@ class ProductService {
             System.err.println('Service :systemService , action :  delete  , Ex:' + ex)
             log.error('Service :systemService , action :  delete  , Ex:' + ex)
         }
-        finally{
-            client.close()
-        }
+
     }
 
 
@@ -541,9 +499,7 @@ class ProductService {
             System.err.println('Service :Product , action :  save  , Ex:' + ex)
             log.error('Service :Product , action :  save  , Ex:' + ex)
         }
-        finally{
-            client.close()
-        }
+
     }
 
     /**
@@ -570,9 +526,7 @@ class ProductService {
             System.err.println('Service :getAccountModes , action :  show  , Ex:' + ex)
             log.error('Service :getAccountModes , action :  show  , Ex:' + ex)
         }
-        finally{
-            client.close()
-        }
+
     }
 
     def putProductCategory(JSONObject jsonObject)
@@ -595,9 +549,7 @@ class ProductService {
             System.err.println('Service : putProductCategory , action :  put  , Ex:' + ex)
             log.error('Service :putProductCategory , action :  put  , Ex:' + ex)
         }
-        finally{
-            client.close()
-        }
+
     }
 
     /**
@@ -624,9 +576,7 @@ class ProductService {
             System.err.println('Service :systemService , action :  delete  , Ex:' + ex)
             log.error('Service :systemService , action :  delete  , Ex:' + ex)
         }
-        finally{
-            client.close()
-        }
+
     }
 
 
@@ -651,9 +601,7 @@ class ProductService {
             System.err.println('Service :Product , action :  save  , Ex:' + ex)
             log.error('Service :Product , action :  save  , Ex:' + ex)
         }
-        finally{
-            client.close()
-        }
+
     }
 
     /**
@@ -680,9 +628,7 @@ class ProductService {
             System.err.println('Service :getAccountModes , action :  show  , Ex:' + ex)
             log.error('Service :getAccountModes , action :  show  , Ex:' + ex)
         }
-        finally{
-            client.close()
-        }
+
     }
 
     def putProductSchedule(JSONObject jsonObject)
@@ -705,9 +651,7 @@ class ProductService {
             System.err.println('Service : putProductCategory , action :  put  , Ex:' + ex)
             log.error('Service :putProductCategory , action :  put  , Ex:' + ex)
         }
-        finally{
-            client.close()
-        }
+
     }
 
     /**
@@ -734,9 +678,7 @@ class ProductService {
             System.err.println('Service :systemService , action :  delete  , Ex:' + ex)
             log.error('Service :systemService , action :  delete  , Ex:' + ex)
         }
-        finally{
-            client.close()
-        }
+
     }
 
 
@@ -761,9 +703,7 @@ class ProductService {
             System.err.println('Service :Product , action :  save  , Ex:' + ex)
             log.error('Service :Product , action :  save  , Ex:' + ex)
         }
-        finally{
-            client.close()
-        }
+
     }
 
     /**
@@ -790,9 +730,7 @@ class ProductService {
             System.err.println('Service :getAccountModes , action :  show  , Ex:' + ex)
             log.error('Service :getAccountModes , action :  show  , Ex:' + ex)
         }
-        finally{
-            client.close()
-        }
+
     }
 
     def putProductComposition(JSONObject jsonObject)
@@ -815,9 +753,7 @@ class ProductService {
             System.err.println('Service : putProductCategory , action :  put  , Ex:' + ex)
             log.error('Service :putProductCategory , action :  put  , Ex:' + ex)
         }
-        finally{
-            client.close()
-        }
+
     }
 
     /**
@@ -844,9 +780,7 @@ class ProductService {
             System.err.println('Service :systemService , action :  delete  , Ex:' + ex)
             log.error('Service :systemService , action :  delete  , Ex:' + ex)
         }
-        finally{
-            client.close()
-        }
+
     }
 
 
@@ -871,9 +805,7 @@ class ProductService {
             System.err.println('Service :Product , action :  save  , Ex:' + ex)
             log.error('Service :Product , action :  save  , Ex:' + ex)
         }
-        finally{
-            client.close()
-        }
+
     }
 
     /**
@@ -900,9 +832,7 @@ class ProductService {
             System.err.println('Service :getAccountModes , action :  show  , Ex:' + ex)
             log.error('Service :getAccountModes , action :  show  , Ex:' + ex)
         }
-        finally{
-            client.close()
-        }
+
     }
 
     def putProductType(JSONObject jsonObject)
@@ -925,9 +855,7 @@ class ProductService {
             System.err.println('Service : putProductCategory , action :  put  , Ex:' + ex)
             log.error('Service :putProductCategory , action :  put  , Ex:' + ex)
         }
-        finally{
-            client.close()
-        }
+
 
     }
 
@@ -955,9 +883,7 @@ class ProductService {
             System.err.println('Service :systemService , action :  delete  , Ex:' + ex)
             log.error('Service :systemService , action :  delete  , Ex:' + ex)
         }
-        finally{
-            client.close()
-        }
+
     }
 
     //    Product Group
@@ -981,9 +907,7 @@ class ProductService {
             System.err.println('Service :Product , action :  save  , Ex:' + ex)
             log.error('Service :Product , action :  save  , Ex:' + ex)
         }
-        finally{
-            client.close()
-        }
+
     }
 
     /**
@@ -1010,9 +934,7 @@ class ProductService {
             System.err.println('Service :getAccountModes , action :  show  , Ex:' + ex)
             log.error('Service :getAccountModes , action :  show  , Ex:' + ex)
         }
-        finally{
-            client.close()
-        }
+
     }
 
     def putProductGroup(JSONObject jsonObject)
@@ -1035,9 +957,7 @@ class ProductService {
             System.err.println('Service : putProductCategory , action :  put  , Ex:' + ex)
             log.error('Service :putProductCategory , action :  put  , Ex:' + ex)
         }
-        finally{
-            client.close()
-        }
+
     }
 
     /**
@@ -1064,9 +984,7 @@ class ProductService {
             System.err.println('Service :systemService , action :  delete  , Ex:' + ex)
             log.error('Service :systemService , action :  delete  , Ex:' + ex)
         }
-        finally{
-            client.close()
-        }
+
     }
 
     //    Unit Type
@@ -1090,9 +1008,7 @@ class ProductService {
             System.err.println('Service :Product , action :  save  , Ex:' + ex)
             log.error('Service :Product , action :  save  , Ex:' + ex)
         }
-        finally{
-            client.close()
-        }
+
     }
 
     /**
@@ -1119,9 +1035,7 @@ class ProductService {
             System.err.println('Service :getAccountModes , action :  show  , Ex:' + ex)
             log.error('Service :getAccountModes , action :  show  , Ex:' + ex)
         }
-        finally{
-            client.close()
-        }
+
     }
 
     def putUnitType(JSONObject jsonObject)
@@ -1144,9 +1058,7 @@ class ProductService {
             System.err.println('Service : putProductCategory , action :  put  , Ex:' + ex)
             log.error('Service :putProductCategory , action :  put  , Ex:' + ex)
         }
-        finally{
-            client.close()
-        }
+
     }
 
     /**
@@ -1173,9 +1085,7 @@ class ProductService {
             System.err.println('Service :systemService , action :  delete  , Ex:' + ex)
             log.error('Service :systemService , action :  delete  , Ex:' + ex)
         }
-        finally{
-            client.close()
-        }
+
     }
 
 
@@ -1200,9 +1110,7 @@ class ProductService {
             System.err.println('Service :Product , action :  save  , Ex:' + ex)
             log.error('Service :Product , action :  save  , Ex:' + ex)
         }
-        finally{
-            client.close()
-        }
+
     }
 
     /**
@@ -1229,9 +1137,7 @@ class ProductService {
             System.err.println('Service :getAccountModes , action :  show  , Ex:' + ex)
             log.error('Service :getAccountModes , action :  show  , Ex:' + ex)
         }
-        finally{
-            client.close()
-        }
+
     }
 
     def putDivisionGroup(JSONObject jsonObject)
@@ -1254,9 +1160,7 @@ class ProductService {
             System.err.println('Service : putProductCategory , action :  put  , Ex:' + ex)
             log.error('Service :putProductCategory , action :  put  , Ex:' + ex)
         }
-        finally{
-            client.close()
-        }
+
     }
 
     /**
@@ -1283,9 +1187,7 @@ class ProductService {
             System.err.println('Service :systemService , action :  delete  , Ex:' + ex)
             log.error('Service :systemService , action :  delete  , Ex:' + ex)
         }
-        finally{
-            client.close()
-        }
+
     }
 
     //    Product Class
@@ -1309,9 +1211,7 @@ class ProductService {
             System.err.println('Service :Product , action :  save  , Ex:' + ex)
             log.error('Service :Product , action :  save  , Ex:' + ex)
         }
-        finally{
-            client.close()
-        }
+
     }
 
     /**
@@ -1338,9 +1238,7 @@ class ProductService {
             System.err.println('Service :getAccountModes , action :  show  , Ex:' + ex)
             log.error('Service :getAccountModes , action :  show  , Ex:' + ex)
         }
-        finally{
-            client.close()
-        }
+
     }
 
     def putProductClass(JSONObject jsonObject)
@@ -1363,9 +1261,7 @@ class ProductService {
             System.err.println('Service : putProductCategory , action :  put  , Ex:' + ex)
             log.error('Service :putProductCategory , action :  put  , Ex:' + ex)
         }
-        finally{
-            client.close()
-        }
+
     }
 
     /**
@@ -1392,9 +1288,7 @@ class ProductService {
             System.err.println('Service :systemService , action :  delete  , Ex:' + ex)
             log.error('Service :systemService , action :  delete  , Ex:' + ex)
         }
-        finally{
-            client.close()
-        }
+
     }
 
 
@@ -1419,9 +1313,7 @@ class ProductService {
             System.err.println('Service :Product , action :  save  , Ex:' + ex)
             log.error('Service :Product , action :  save  , Ex:' + ex)
         }
-        finally{
-            client.close()
-        }
+
     }
 
     /**
@@ -1448,9 +1340,7 @@ class ProductService {
             System.err.println('Service :getAccountModes , action :  show  , Ex:' + ex)
             log.error('Service :getAccountModes , action :  show  , Ex:' + ex)
         }
-        finally{
-            client.close()
-        }
+
     }
 
     def putProductCost(JSONObject jsonObject)
@@ -1473,9 +1363,7 @@ class ProductService {
             System.err.println('Service : putProductCategory , action :  put  , Ex:' + ex)
             log.error('Service :putProductCategory , action :  put  , Ex:' + ex)
         }
-        finally{
-            client.close()
-        }
+
     }
 
     /**
@@ -1502,9 +1390,7 @@ class ProductService {
             System.err.println('Service :systemService , action :  delete  , Ex:' + ex)
             log.error('Service :systemService , action :  delete  , Ex:' + ex)
         }
-        finally{
-            client.close()
-        }
+
     }
 
 
@@ -1529,9 +1415,7 @@ class ProductService {
             System.err.println('Service :Product , action :  save  , Ex:' + ex)
             log.error('Service :Product , action :  save  , Ex:' + ex)
         }
-        finally{
-            client.close()
-        }
+
     }
 
     /**
@@ -1558,9 +1442,7 @@ class ProductService {
             System.err.println('Service :getAccountModes , action :  show  , Ex:' + ex)
             log.error('Service :getAccountModes , action :  show  , Ex:' + ex)
         }
-        finally{
-            client.close()
-        }
+
     }
 
     def putBatchRegister(JSONObject jsonObject)
@@ -1583,9 +1465,7 @@ class ProductService {
             System.err.println('Service : putProductCategory , action :  put  , Ex:' + ex)
             log.error('Service :putProductCategory , action :  put  , Ex:' + ex)
         }
-        finally{
-            client.close()
-        }
+
     }
 
     /**
@@ -1612,9 +1492,7 @@ class ProductService {
             System.err.println('Service :systemService , action :  delete  , Ex:' + ex)
             log.error('Service :systemService , action :  delete  , Ex:' + ex)
         }
-        finally{
-            client.close()
-        }
+
     }
 
 
@@ -1645,9 +1523,7 @@ class ProductService {
             System.err.println('Service :ProductService , action :  getProductByEntityId  , Ex:' + ex)
             log.error('Service :ProductService , action :  getProductByEntityId  , Ex:' + ex)
         }
-        finally{
-            client.close()
-        }
+
     }
 
     def getProductsByDivision(String id)
@@ -1676,9 +1552,7 @@ class ProductService {
             System.err.println('Service :ProductService , action :  getProductsByDivision  , Ex:' + ex)
             log.error('Service :ProductService , action :  getProductsByDivision  , Ex:' + ex)
         }
-        finally{
-            client.close()
-        }
+
     }
 
     def saveProductRegister(JSONObject jsonObject)
@@ -1701,9 +1575,7 @@ class ProductService {
             System.err.println('Service :Product , action :  save  , Ex:' + ex)
             log.error('Service :Product , action :  save  , Ex:' + ex)
         }
-        finally{
-            client.close()
-        }
+
     }
 
     /**
@@ -1730,9 +1602,7 @@ class ProductService {
             System.err.println('Service :getAccountModes , action :  show  , Ex:' + ex)
             log.error('Service :getAccountModes , action :  show  , Ex:' + ex)
         }
-        finally{
-            client.close()
-        }
+
     }
 
     def putProductRegister(JSONObject jsonObject)
@@ -1755,9 +1625,7 @@ class ProductService {
             System.err.println('Service : putProductCategory , action :  put  , Ex:' + ex)
             log.error('Service :putProductCategory , action :  put  , Ex:' + ex)
         }
-        finally{
-            client.close()
-        }
+
     }
 
     /**
@@ -1784,9 +1652,7 @@ class ProductService {
             System.err.println('Service :systemService , action :  delete  , Ex:' + ex)
             log.error('Service :systemService , action :  delete  , Ex:' + ex)
         }
-        finally{
-            client.close()
-        }
+
     }
 
 

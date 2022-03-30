@@ -31,9 +31,7 @@ class AccountsService {
             System.err.println('Service :AccountsService , action :  saveBankRegister  , Ex:' + ex)
             log.error('Service :AccountsService , action :  saveBankRegister  , Ex:' + ex)
         }
-        finally{
-            client.close()
-        }
+
     }
 
     /**
@@ -56,9 +54,7 @@ class AccountsService {
             System.err.println('Service :AccountsService , action :  showBankRegister  , Ex:' + ex)
             log.error('Service :AccountsService , action :  showBankRegister  , Ex:' + ex)
         }
-        finally{
-            client.close()
-        }
+
     }
 
     def putBankRegister(JSONObject jsonObject) {

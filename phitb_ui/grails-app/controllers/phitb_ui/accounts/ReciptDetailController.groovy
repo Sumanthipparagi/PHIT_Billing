@@ -422,20 +422,7 @@ class ReciptDetailController
                 JSONObject
         ArrayList<String> settled = new SalebillDetailsController().getAllSettledById(params.custid,session.getAttribute("entityId").toString(), session.getAttribute("financialYear").toString()) as ArrayList
 
-//        def invoiceNumber;
-//        def datepart = settled.entryDate.split("T")[0];
-//        def month = datepart.split("-")[1];
-//        def year = datepart.split("-")[0];
-//        def seriesCode = "__";
-//        if (saleBillDetail.billStatus == "DRAFT")
-//        {
-//            invoiceNumber = "DR/S/" + month + year + "/" + series.seriesCode + "/__";
-//        }
-//        else
-//        {
-//            invoiceNumber = "S/" + month + year + "/" + series.seriesCode + "/" + saleBillDetail.id
-//        }
-        println(settled)
+
         render(view: '/accounts/recipt/recipt-temp', model: [customer: customer, settled: settled, recipt: recipt,
                                                              entity: entity])
     }

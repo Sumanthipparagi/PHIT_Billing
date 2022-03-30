@@ -55,7 +55,7 @@
                                 <label for="purchaseRate">
                                     Purchase Rate
                                 </label>
-                                <input type="number" id="purchaseRate" class="form-control purchaseRate"
+                                <input type="text" id="purchaseRate" class="form-control purchaseRate"
                                        name="purchaseRate"
                                        placeholder="Purchase Rate"
                                        required/>
@@ -66,8 +66,8 @@
                                 <label for="saleRate">
                                     Sale Rate
                                 </label>
-                                <input type="number" id="saleRate" class="form-control saleRate" name="saleRate"
-                                       placeholder="Sale Rate"
+                                <input type="text" id="saleRate" class="form-control saleRate" name="saleRate"
+                                       placeholder="Sale Rate" pattern="^\d*(\.\d{0,2})?$"
                                        required/>
                             </div>
 
@@ -76,7 +76,7 @@
                                 <label for="ptr">
                                     PTR
                                 </label>
-                                <input type="number" id="ptr" class="form-control ptr" name="ptr"
+                                <input type="text" id="ptr" class="form-control ptr" name="ptr"
                                        placeholder="Sale Rate"
                                        required/>
                             </div>
@@ -86,7 +86,7 @@
                                 <label for="mrp">
                                     MRP
                                 </label>
-                                <input type="number" id="mrp" class="form-control mrp" name="mrp"
+                                <input type="text" id="mrp" class="form-control mrp" name="mrp"
                                        placeholder="MRP"
                                        required/>
                             </div>

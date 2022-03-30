@@ -130,8 +130,25 @@
                     </th>
                 </tr>
                 <g:each var="sv" in="${settled}">
+                    <%
+
+                        def invoiceNumber;
+                        def series ="__"
+                        def datepart = sv.entryDate.split("T")[0];
+                        def month = datepart.split("-")[1];
+                        def year = datepart.split("-")[0];
+                        def seriesCode = "__";
+                        if (sv.billStatus == "DRAFT")
+                        {
+                            invoiceNumber = sv.entityId+"/DR/S/" + month + year + "/" + series + "/__";
+                        }
+                        else
+                        {
+                            invoiceNumber =  sv.entityId+"/S/" + month + year + "/" + series + "/" + sv.id
+                        }
+%>
                     <tr>
-                        <td>013/21/SP000208</td>
+                        <td>${invoiceNumber}</td>
                         <td>${sv.dateCreated.split("T")[0]}</td>
                         <td>${sv.balance}</td>
                     </tr>
@@ -162,8 +179,11 @@
     <tr>
         <td style="border-left: none;border-right: none;">
             <p><strong>Deposit Bank : ${recipt.bank.bankName}</strong></p>
+
             <p>&nbsp;</p>
+
             <p>&nbsp;</p>
+
             <p>Cashier / Accountant</p>
         </td>
 

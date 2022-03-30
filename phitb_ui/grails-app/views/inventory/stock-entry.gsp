@@ -253,7 +253,8 @@
                             'saleRate': json.data[i].saleRate,
                             'mrp': json.data[i].mrp,
                             'remainingQty': json.data[i].remainingQty,
-                            'action': editbtn + ' ' + deletebtn
+                           /* 'action': editbtn + ' ' + deletebtn*/
+                            'action': deletebtn
                         });
                     }
                     return return_data;

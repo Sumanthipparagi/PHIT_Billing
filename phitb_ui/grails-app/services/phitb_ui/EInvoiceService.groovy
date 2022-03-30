@@ -90,9 +90,7 @@ class EInvoiceService {
                 System.err.println('Service :showSalesService , action :  show  , Ex:' + ex)
                 log.error('Service :showSalesService , action :  show  , Ex:' + ex)
             }
-            finally{
-                client.close()
-            }
+
 
         }
         catch (Exception ex) {

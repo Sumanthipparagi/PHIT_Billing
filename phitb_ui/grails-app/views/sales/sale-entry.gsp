@@ -441,7 +441,11 @@
                             discount = hot.getDataAtCell(row,8);
 
                         var allowEntry = false;
-                        if(sQty>remainingQty && remainingFQty>sQty)
+                        if(remainingQty > sQty)
+                        {
+                            allowEntry = true;
+                        }
+                        else if(sQty>remainingQty && remainingFQty>sQty)
                         {
                             allowEntry = true;
                         }
@@ -831,15 +835,15 @@
                 var month = datepart.split("-")[1];
                 var year = datepart.split("-")[0];
                 var seriesCode = data.series.seriesCode;
-                var invoiceNumber = "S/"+month+year+"/"+seriesCode+"/"+data.saleBillDetail.serBillId;
+                var invoiceNumber = data.saleBillDetail.entityId+"/S/"+month+year+"/"+seriesCode+"/"+data.saleBillDetail.serBillId;
                 var message = "";
                 if(billStatus !== "DRAFT") {
                     message = 'Sale Invoice Generated: '+ invoiceNumber;
                     $("#invNo").html("<p><strong>" + invoiceNumber + "</strong></p>");
                 }
                 else {
-                    $("#invNo").html("<p><strong>DR/S/" + month + year + "/" + seriesCode + "/__</strong></p>");
-                    message = 'Draft Invoice Generated: DR/S/'+ month + year + "/" + seriesCode + "/__";
+                    $("#invNo").html("<p><strong>"+data.saleBillDetail.entityId+"/DR/S/" + month + year + "/" + seriesCode + "/__</strong></p>");
+                    message = 'Draft Invoice Generated: '+data.saleBillDetail.entityId+'/DR/S/'+ month + year + "/" + seriesCode + "/__";
                 }
                 waitingSwal.close();
                 Swal.fire({
@@ -1302,6 +1306,10 @@
         Handsontable.editors.registerEditor('select2', Select2Editor);
 
     })(Handsontable);
+</script>
+<g:include view="controls/footer-content.gsp"/>
+<script>
+    selectSideMenu("sales-menu");
 </script>
 </body>
 </html>

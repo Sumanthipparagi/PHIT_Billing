@@ -64,9 +64,9 @@
 
                         <div class="footer">
                             <button type="submit"  class="btn btn-primary btn-round btn-block">SIGN IN</button>
-                            <a href="sign-up.html" class="btn btn-primary btn-simple btn-round btn-block">SIGN UP</a>
+                            %{--<a href="sign-up.html" class="btn btn-primary btn-simple btn-round btn-block">SIGN UP</a>--}%
                         </div>
-                        <a href="forgot-password.html" class="link">Forgot Password?</a>
+                        <a href="#" class="link">Forgot Password?</a>
                         </form>
                     </div>
                 </div>
