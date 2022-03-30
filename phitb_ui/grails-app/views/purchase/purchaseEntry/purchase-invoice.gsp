@@ -386,7 +386,7 @@
         var cgst18;
         var cgst28;
 
-        var netAmount = ${total}
+        var netAmount = ${total};
 
         //Sgst slab total
         if($("#sgst5").text().length === 0)

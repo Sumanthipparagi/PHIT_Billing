@@ -21,6 +21,8 @@
     <asset:stylesheet
             src="/themeassets/plugins/bootstrap-material-datetimepicker/css/bootstrap-material-datetimepicker.css"
             rel="stylesheet"/>
+    <link rel="stylesheet" media="screen" href="https://cdnjs.cloudflare.com/ajax/libs/select2/3.5.2/select2.min.css">
+
 
     <style>
     input.chk-btn {
@@ -89,7 +91,7 @@
 <div class="page-loader-wrapper">
     <div class="loader">
         <div class="m-t-30"><img src="${assetPath(src: '/themeassets/images/logo.svg')}" width="48" height="48"
-                                 alt="Alpino"></div>
+                                 alt="PharmIt"></div>
 
         <p>Please wait...</p>
     </div>
@@ -101,7 +103,7 @@
         <div class="block-header">
             <div class="row">
                 <div class="col-lg-5 col-md-5 col-sm-12">
-                    <h2>Recipt</h2>
+                    <h2>Receipt</h2>
                     <ul class="breadcrumb padding-0">
                         <li class="breadcrumb-item"><a href="index.html"><i class="zmdi zmdi-home"></i></a></li>
                         <li class="breadcrumb-item"><a href="/recipt">Accounts</a></li>
@@ -147,20 +149,21 @@
                                         Date:
                                     </label>
                                     <input type="text" id="date" class="date" name="date"
-                                           placeholder="Recipt Date" readonly
+                                           placeholder="Receipt Date" readonly
                                            required/>
                                 </div>
 
                                 <div class="col-lg-6">
                                     <label for="receivedFrom">
                                         Customer
-                                    </label>
-                                    <select class="form-control show-tick receivedFrom" name="receivedFrom"
-                                            id="receivedFrom" onchange="getAddress(this.value)" required>
+                                    </label><br>
+                                    <select class=" show-tick receivedFrom" name="receivedFrom"
+                                            id="receivedFrom" onchange="getAddress(this.value)" required
+                                            style="width: 460px;">
                                         <option value="">-- Please select --</option>
                                         <g:each var="e" in="${entity}">
                                             <option value="${e.id}"
-                                                    data-type="${e.entityType.id}">${e.entityName} - ${e.id}</option>
+                                                    data-type="${e.entityType.id}">${e.entityName}</option>
                                         </g:each>
                                     </select>
 
@@ -170,13 +173,14 @@
                                 <div class="col-lg-6 form-group  form-float">
                                     <label for="paymentMode">
                                         Payment Mode
-                                    </label>
-                                    <select class="form-control show-tick paymentMode" name="paymentMode"
-                                            id="paymentMode" onchange="payMode(this.value)" required>
+                                    </label><br>
+                                    <select class="show-tick paymentMode" name="paymentMode"
+                                            id="paymentMode" onchange="payMode(this.value)" required style="height: 37px;width: 425px;">
                                         <option value="">-- Please select --</option>
-                                        <g:each var="pm" in="${paymodes}">
-                                        <option value="${pm.id}" data-mode="${pm.name}">${pm.name}</option>
-                                        </g:each>
+%{--                                        <g:each var="pm" in="${paymodes}">--}%
+%{--                                        <option value="${pm.id}" data-mode="${pm.name}">${pm.name}</option>--}%
+%{--                                        </g:each>--}%
+                                        <option value="1" data-mode="BANK">BANK</option>
                                     </select>
                                 </div>
 
@@ -244,7 +248,7 @@
 
                                 <div class="col-lg-3 form-group  form-float">
                                     <label for="note">
-                                        Remark / Note
+                                        Remarks / Note
                                     </label>
                                     <input type="text" id="note" class="note form-control"
                                            name="narration"
@@ -302,9 +306,9 @@
 
                                 <div class="container">
                                     <div class="row">
-                                        <div class="col-lg-6">Settled Vocher</div>
+                                        <div class="col-lg-6">Settled Vocher List</div>
 
-                                        <div class="col-lg-6">Unsettled Vocher</div>
+                                        <div class="col-lg-6">Unsettled Vocher List</div>
 
                                         <div class="col-lg-6">
                                             <div class="tab tableFixHead" style="width:100%;overflow:auto;
@@ -408,6 +412,7 @@
 <asset:javascript src="/themeassets/plugins/momentjs/moment.js"/>
 <asset:javascript src="/themeassets/plugins/bootstrap-material-datetimepicker/js/bootstrap-material-datetimepicker.js"/>
 <asset:javascript src="/themeassets/js/pages/forms/basic-form-elements.js"/>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/3.5.2/select2.js"></script>
 
 <script>
     var date = new Date();
@@ -419,6 +424,7 @@
     var today = year + "-" + month + "-" + day;
     document.getElementById("date").value = moment(today).format('DD/MM/YYYY');
 
+    $('.receivedFrom').select2()
     var $demoMaskedInput = $('.demo-masked-input');
     $demoMaskedInput.find('.credit-card').inputmask('9999 9999 9999 9999', {placeholder: '____ ____ ____ ____'});
 
@@ -466,7 +472,6 @@
     }
 
 
-
     function getAddress(id) {
         $.ajax({
             type: 'GET',
@@ -485,7 +490,6 @@
         });
 
     }
-
 
     function getUnsettledByCustomer(id) {
         $.ajax({

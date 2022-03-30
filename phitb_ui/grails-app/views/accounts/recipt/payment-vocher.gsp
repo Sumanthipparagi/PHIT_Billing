@@ -114,69 +114,59 @@
     <tr>
         <td>
             <p>By Cheque No.: ${payment.chequeNumber} of ${payment.bank.bankName} dated ${payment.date}</p>
-%{--            <table >--}%
-%{--                <tr>--}%
-%{--                    <th>--}%
-%{--                        Adj. Doc. No.--}%
-%{--                    </th>--}%
-%{--                    <th>--}%
-%{--                        Ref No.--}%
-%{--                    </th>--}%
-%{--                    <th>--}%
-%{--                        Doc. Date--}%
-%{--                    </th>--}%
-%{--                    <th>--}%
-%{--                        Adj. Amount--}%
-%{--                    </th>--}%
-%{--                </tr>--}%
+            <table >
+                <tr>
+                    <th>
+                        Adj. Doc. No.
+                    </th>
+                    <th>
+                        Ref No.
+                    </th>
+                    <th>
+                        Doc. Date
+                    </th>
+                    <th>
+                        Adj. Amount
+                    </th>
+                </tr>
 
-%{--                <tr>--}%
-%{--                    <td>013/20/N 000007</td>--}%
-%{--                    <td></td>--}%
-%{--                    <td>29-12-20 </td>--}%
-%{--                    <td>-2777.04</td>--}%
-%{--                </tr>--}%
+                <g:each var="unv" in="${unsettled}">
+                    <%
 
-%{--                <tr>--}%
-%{--                    <td>013/20/N 000008</td>--}%
-%{--                    <td></td>--}%
-%{--                    <td>29-12-20 </td>--}%
-%{--                    <td>-2777.04</td>--}%
-%{--                </tr>--}%
-%{--                <tr>--}%
-%{--                    <td>013/20/N 000009</td>--}%
-%{--                    <td></td>--}%
-%{--                    <td>15-12-20 </td>--}%
-%{--                    <td>-2777.04</td>--}%
-%{--                </tr>--}%
-
-%{--                <tr>--}%
-%{--                    <td>013/20/N 000019</td>--}%
-%{--                    <td></td>--}%
-%{--                    <td>15-12-20 </td>--}%
-%{--                    <td>-2777.04</td>--}%
-%{--                </tr>--}%
-
-%{--                <tr>--}%
-%{--                    <td>013/20/N 000011</td>--}%
-%{--                    <td></td>--}%
-%{--                    <td>15-12-20 </td>--}%
-%{--                    <td>-2777.04</td>--}%
-%{--                </tr>--}%
-%{--                <tr>--}%
-%{--                    <td>013/20/N 000012</td>--}%
-%{--                    <td>Advance</td>--}%
-%{--                    <td>15-12-20 </td>--}%
-%{--                    <td>-2777.04</td>--}%
-%{--                </tr>--}%
-%{--            </table>--}%
+                        def invoiceNumber;
+                        def series ="__"
+                        def datepart = unv.entryDate.split("T")[0];
+                        def month = datepart.split("-")[1];
+                        def year = datepart.split("-")[0];
+                        def seriesCode = "__";
+                        if (unv.billStatus == "DRAFT")
+                        {
+                            invoiceNumber = unv.entityId+"/DR/S/" + month + year + "/" + series + "/__";
+                        }
+                        else
+                        {
+                            invoiceNumber =  unv.entityId+"/S/" + month + year + "/" + series + "/" + unv.id
+                        }
+                    %>
+                    <tr>
+                        <td>${invoiceNumber}</td>
+                        <td></td>
+                        <td>${unv.dateCreated.split("T")[0]}</td>
+                        <td>${String.format("%.2f",unv.balance)}</td>
+                    </tr>
+                </g:each>
+            </table>
         </td>
         <td colspan="5"><b>${payment.amountPaid}</b></td>
     <tr>
 
+    <% double data = payment.amountPaid
+    int value = (int) data;
+    System.out.println(value)
+    %>
     <tr>
         <td colspan="5">
-            <p><strong>${WordsToNumbersUtil.convert(payment.amountPaid)} Ruppes Only
+            <p><strong>${WordsToNumbersUtil.convert(value)} Ruppes Only
             </strong></p>
         </td>
     </tr>
@@ -195,7 +185,7 @@
 
 
             <p>&nbsp;</p>
-            <p>Approved BY</p>
+            <p>Approved By</p>
 
         </td>
 
@@ -206,11 +196,11 @@
             <p>&nbsp;</p>
             <p>&nbsp;</p>
 
-            <p>Authorized BY</p>
+            <p>Authorized By</p>
         </td>
 
         <td style="text-align: right;border-left:none;">
-            <p>For, SUMUKHA ASSOCIATES</p>
+            <p>For,${session.getAttribute("entityName").toString()}</p>
 
             <p>&nbsp;</p>
 

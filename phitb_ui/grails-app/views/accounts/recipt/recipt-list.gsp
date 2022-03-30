@@ -6,7 +6,7 @@
     <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
     <meta name="description" content="Responsive Bootstrap 4 and web Application ui kit.">
 
-    <title>:: PharmIt :: Recipts</title>
+    <title>:: PharmIt :: Receipts</title>
     <link rel="icon" type="image/x-icon" href="${assetPath(src: '/themeassets/images/favicon.ico')}"/>
     <!-- Favicon-->
     <asset:stylesheet rel="stylesheet" src="/themeassets/plugins/bootstrap/css/bootstrap.min.css"/>
@@ -60,10 +60,10 @@
         <div class="block-header">
             <div class="row clearfix">
                 <div class="col-lg-5 col-md-5 col-sm-12">
-                    <h2>Recipt </h2>
+                    <h2>Receipt </h2>
                     <ul class="breadcrumb padding-0">
                         <li class="breadcrumb-item"><a href="index.html"><i class="zmdi zmdi-home"></i></a></li>
-                        <li class="breadcrumb-item active">Recipt</li>
+                        <li class="breadcrumb-item active">Receipt</li>
                     </ul>
                 </div>
                 <div class="col-lg-7 col-md-7 col-sm-12">
@@ -107,7 +107,7 @@
                                 <tr>
                                     %{--                                    <th style="width: 20%">ID</th>--}%
                                     <th style="width: 20%">Date</th>
-                                    <th style="width: 20%">Recipt Id</th>
+                                    <th style="width: 20%">Receipt Id</th>
                                     <th style="width: 20%">Financial Year</th>
                                     <th style="width: 20%">Payment Date</th>
                                     <th style="width: 20%">Bank</th>
@@ -183,7 +183,7 @@
             processing: true,
             serverSide: true,
             language: {
-                searchPlaceholder: "Search Recipt"
+                searchPlaceholder: "Search Receipt"
             },
             ajax: {
                 type: 'GET',

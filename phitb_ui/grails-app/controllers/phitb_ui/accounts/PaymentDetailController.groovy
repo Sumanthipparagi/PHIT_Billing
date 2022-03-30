@@ -21,14 +21,14 @@ class PaymentDetailController {
                                                                  wallet: wallet, saleinvoice: saleinvoice])
     }
 
-    def addRecipt()
-    {
-        ArrayList<String> entity = new EntityRegisterController().show() as ArrayList
-        ArrayList<String> bank = new BankRegisterController().show() as ArrayList
-        ArrayList<String> accountMode = new AccountModeController().show() as ArrayList
-        ArrayList<String> wallet = new WalletController().show() as ArrayList
-        render(view: '/accounts/recipt/add-recipt', model: [entity: entity, bank: bank, accountMode: accountMode, wallet: wallet])
-    }
+//    def addRecipt()
+//    {
+//        ArrayList<String> entity = new EntityRegisterController().show() as ArrayList
+//        ArrayList<String> bank = new BankRegisterController().show() as ArrayList
+//        ArrayList<String> accountMode = new AccountModeController().show() as ArrayList
+//        ArrayList<String> wallet = new WalletController().show() as ArrayList
+//        render(view: '/accounts/recipt/add-recipt', model: [entity: entity, bank: bank, accountMode: accountMode, wallet: wallet])
+//    }
 
     def paymentList()
     {
@@ -211,11 +211,12 @@ class PaymentDetailController {
         try
         {
             JSONObject jsonObject = new JSONObject(params)
-            def apiResponse = new AccountsService().saveRecipt(jsonObject)
+            def apiResponse = new AccountsService().savePaymentDetail(jsonObject,session.getAttribute('financialYear') as String)
             if (apiResponse?.status == 200)
             {
                 JSONObject obj = new JSONObject(apiResponse.readEntity(String.class))
-                respond obj, formats: ['json'], status: 200
+//                respond obj, formats: ['json'], status: 200
+                redirect(uri:'/payments')
             }
             else
             {
@@ -341,8 +342,8 @@ class PaymentDetailController {
         JSONObject payment = new PaymentDetailController().getPaymentById(params.id)  as JSONObject
         JSONObject entity = new EntityRegisterController().getEnitityById(session.getAttribute('entityId').toString())  as
                 JSONObject
-        ArrayList<String> settled = new SalebillDetailsController().getAllSettledById(params.custid) as ArrayList
-        render(view:'/accounts/recipt/payment-vocher',model: [customer:customer,settled:settled,payment:payment,
+        ArrayList<String> unsettled = new SalebillDetailsController().getAllUNSettledById(params.custid,session.getAttribute("entityId").toString(), session.getAttribute("financialYear").toString()) as ArrayList
+        render(view:'/accounts/recipt/payment-vocher',model: [customer:customer,unsettled:unsettled,payment:payment,
                                                          entity:entity])
     }
 

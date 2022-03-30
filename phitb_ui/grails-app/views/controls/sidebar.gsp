@@ -378,7 +378,13 @@
                             </ul>
                         </li>
                         <li><a href="#">Cheque Returns</a></li>
-                        <li><a href="/payments-list">Payment</a></li>
+                        <li><a href="javascript:void(0);" class="menu-toggle">Payments</span> <span
+                                class="badge badge-success float-right"></span></a>
+                            <ul class="ml-menu">
+                                <li><a href="/payments">Create Payments</a></li>
+                                <li><a href="/payments-list">Payments List</a></li>
+                            </ul>
+                        </li>
                     </ul>
                 </li>
                 <li class="header"></li>

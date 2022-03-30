@@ -202,7 +202,7 @@
                             'id': json.data[i].paymentId,
                             'date': moment(date).format('DD/MM/YYYY'),
                             'fy': json.data[i].financialYear,
-                            'pd': moment(pd).format('DD/MM/YYYY'),
+                            'pd': json.data[i].paymentDate,
                             'bank': json.data[i].bank.bankName,
                             'action': editbtn
                         });

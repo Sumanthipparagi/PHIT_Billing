@@ -100,7 +100,7 @@
                     <div class="header">
                         <button type="button" class="btn btn-round btn-primary m-t-15 addbtn" data-toggle="modal"
                                 data-target="#addbankRegisterModal"><font style="vertical-align: inherit;"><font
-                                style="vertical-align: inherit;">Recipt</font></font></button>
+                                style="vertical-align: inherit;">Reciept</font></font></button>
                     </div>
                     <div class="body">
                         <div class="table-responsive">
