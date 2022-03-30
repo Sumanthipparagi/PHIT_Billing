@@ -652,13 +652,13 @@
             if (data[i][15])
                 totalIgst += data[i][15];
         }
-        $("#totalAmt").text(totalAmt);
-        $("#totalGST").text(totalGst);
-        $("#totalSGST").text(totalSgst);
-        $("#totalCGST").text(totalCgst);
-        $("#totalIGST").text(totalIgst);
-        $("#totalQty").text(totalQty);
-        $("#totalFQty").text(totalFQty);
+        $("#totalAmt").text(totalAmt.toFixed(2));
+        $("#totalGST").text(totalGst.toFixed(2));
+        $("#totalSGST").text(totalSgst.toFixed(2));
+        $("#totalCGST").text(totalCgst.toFixed(2));
+        $("#totalIGST").text(totalIgst.toFixed(2));
+        $("#totalQty").text(totalQty.toFixed(2));
+        $("#totalFQty").text(totalFQty.toFixed(2));
     }
 
 

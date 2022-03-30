@@ -63,7 +63,7 @@
                 <div class="col-lg-5 col-md-5 col-sm-12">
                     <h2>Stock Book</h2>
                     <ul class="breadcrumb padding-0">
-                        <li class="breadcrumb-item"><a href="index.html"><i class="zmdi zmdi-home"></i></a></li>
+                        <li class="breadcrumb-item"><a href="#"><i class="zmdi zmdi-home"></i></a></li>
                         <li class="breadcrumb-item active">Stock Entry</li>
                     </ul>
                 </div>
@@ -221,7 +221,7 @@
                         var manfDate = new Date(json.data[i].manufacturingDate);
                         var expiryDate = new Date(json.data[i].expDate);
                         var editbtn = '<button type="button" data-id="' + json.data[i].id +
-                            '" data-product="' + json.data[i].productId + '"' +
+                            '" data-product="' + json.data[i].product.productName + '"' +
                             '" data-batchNumber="' + json.data[i].batchNumber + '"' +
                             '" data-manfDate="' + moment(manufacturingDate).format('DD/MM/YYYY') + '"' +
                             '" data-expiryDate="' + moment(expDate).format('DD/MM/YYYY') + '"' +
@@ -245,7 +245,7 @@
                             '" class="btn btn-sm btn-danger deletebtn" data-toggle="modal" data-target=".deleteModal"><i class="material-icons"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">delete</font></font></i></button>'
                         return_data.push({
                             'id': json.data[i].id,
-                            'product': json.data[i].productId,
+                            'product': json.data[i].product.productName,
                             'batchNumber': json.data[i].batchNumber,
                             'manfDate': moment(manfDate).format('DD/MM/YYYY'),
                             'expiryDate': moment(expiryDate).format('DD/MM/YYYY'),

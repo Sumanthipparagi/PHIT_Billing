@@ -214,7 +214,7 @@
             <td>${sp.cgstAmount}<br>${String.format("%.1f", sp.cgstAmount / amount * 100)}</td>
             <td>${sp.sgstAmount}<br>${String.format("%.1f", sp.sgstAmount / amount * 100)}</td>
             <td>${sp.igstAmount}<br>${String.format("%.1f", sp.igstAmount / amount * 100)}</td>
-            <td>${sp.amount}</td>
+            <td>${String.format("%.2f",sp.amount)}</td>
         </tr>
     </g:each>
     <tr>

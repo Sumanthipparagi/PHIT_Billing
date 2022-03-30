@@ -214,7 +214,7 @@
             <td>${sp.cgstAmount}<br>${String.format("%.1f", sp.cgstAmount / amount * 100)}</td>
             <td>${sp.sgstAmount}<br>${String.format("%.1f", sp.sgstAmount / amount * 100)}</td>
             <td>${sp.igstAmount}<br>${String.format("%.1f", sp.igstAmount / amount * 100)}</td>
-            <td>${sp.amount}</td>
+            <td>${String.format("%.2f",sp.amount)}</td>
         </tr>
     </g:each>
     <tr>
@@ -230,11 +230,11 @@
         <td class="hide"></td>
         <td><b>Total</b></td>
         <td>${String.format("%.1f", total - totalcgst - totalsgst - totaligst)}</td>
-        <td>${totaldiscount}</td>
-        <td>${totalcgst}</td>
-        <td>${totalsgst}</td>
-        <td>${totaligst}</td>
-        <td>${total}</td>
+        <td>${String.format("%.2f",totaldiscount)}</td>
+        <td>${String.format("%.2f",totalcgst)}</td>
+        <td>${String.format("%.2f",totalsgst)}</td>
+        <td>${String.format("%.2f",totaligst)}</td>
+        <td>${String.format("%.2f",total)}</td>
     </tr>
 </table>
 
@@ -256,20 +256,20 @@
             <tr>
                 <th>Total</th>
                 <td>0.00</td>
-                <td>${total}</td>
+                <td>${String.format("%.2f",total)}</td>
             </tr>
             <g:each var="c" in="${cgst}">
                 <g:if test="${c > 0 && c <= 2.5}">
                     <tr>
                         <th>Add CGST 2.5% on</th>
-                        <td>${total}</td>
-                        <td id="cgst5">${0.025 * total}</td>
+                        <td>${String.format("%.2f",total)}</td>
+                        <td id="cgst5">${String.format("%.2f",0.025 * total)}</td>
                     </tr>
                 </g:if>
                 <g:if test="${c > 2.5 && c <= 6}">
                     <tr>
                         <th>Add CGST 6% on</th>
-                        <td>${total}</td>
+                        <td>${String.format("%.2f",total)}</td>
                         <td id="cgst12">${String.format("%.2f", 0.06 * total)}</td>
                     </tr>
                 </g:if>
@@ -277,15 +277,15 @@
                 <g:if test="${c > 6 && c <= 9}">
                     <tr>
                         <th>Add CGST 9% on</th>
-                        <td>${total}</td>
-                        <td id="cgst18">${0.09 * total}</td>
+                        <td>${String.format("%.2f",total)}</td>
+                        <td id="cgst18">${String.format("%.2f",0.09 * total)}</td>
                     </tr>
                 </g:if>
                 <g:if test="${c > 9 && c <= 14}">
                     <tr>
                         <th>Add CGST 14% on</th>
-                        <td>${total}</td>
-                        <td id="cgst28">${0.014 * total}</td>
+                        <td>${String.format("%.2f",total)}</td>
+                        <td id="cgst28">${String.format("%.2f",0.014 * total)}</td>
                     </tr>
                 </g:if>
             </g:each>
@@ -295,29 +295,29 @@
                 <g:if test="${s > 0 && s <= 2.5}">
                     <tr>
                         <th>Add SGST 2.5% on</th>
-                        <td>${total}</td>
-                        <td id="sgst5">${0.025 * total}</td>
+                        <td>${String.format("%.2f",total)}</td>
+                        <td id="sgst5">${String.format("%.2f",0.025 * total)}</td>
                     </tr>
                 </g:if>
                 <g:if test="${s > 2.5 && s <= 6}">
                     <tr>
                         <th>Add SGST 6% on</th>
-                        <td>${total}</td>
+                        <td>${String.format("%.2f",total)}</td>
                         <td id="sgst12">${String.format("%.2f", 0.06 * total)}</td>
                     </tr>
                 </g:if>
                 <g:if test="${s > 6 && s <= 9}">
                     <tr>
                         <th>Add SGST 9% on</th>
-                        <td>${total}</td>
-                        <td id="sgst18">${0.09 * total}</td>
+                        <td>${String.format("%.2f",total)}</td>
+                        <td id="sgst18">${String.format("%.2f",0.09 * total)}</td>
                     </tr>
                 </g:if>
                 <g:if test="${s > 9 && s <= 14}">
                     <tr>
                         <th>Add SGST 14% on</th>
-                        <td>${total}</td>
-                        <td id="sgst28">${0.014 * total}</td>
+                        <td>${String.format("%.2f",total)}</td>
+                        <td id="sgst28">${String.format("%.2f", 0.014 * total)}</td>
                     </tr>
                 </g:if>
             </g:each>
