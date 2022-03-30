@@ -116,7 +116,7 @@ class ReceiptDetailService {
         receiptDetail.lockStatus = Long.parseLong("1")
         receiptDetail.approvedBy = Long.parseLong("1")
         receiptDetail.approvedDate = sdf.parse(jsonObject.get("date").toString())
-        receiptDetail.financialYear = "2012"
+        receiptDetail.financialYear = jsonObject.get("financialYear").toString()
         receiptDetail.status = Long.parseLong("1")
         receiptDetail.syncStatus = Long.parseLong("1")
         receiptDetail.entityTypeId = Long.parseLong("1")

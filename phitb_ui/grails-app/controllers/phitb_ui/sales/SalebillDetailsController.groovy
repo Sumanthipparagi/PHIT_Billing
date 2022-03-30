@@ -116,11 +116,11 @@ class SalebillDetailsController {
     }
 
 
-    def getAllSettledById(String id)
+    def getAllSettledById(String id,String entityId, String financialYear)
     {
         try
         {
-            def apiResponse = new SalesService().getAllSettledBillsByCustomer(id)
+            def apiResponse = new SalesService().getAllSettledBillsByCustomer(id,entityId,financialYear)
             if (apiResponse?.status == 200)
             {
                 JSONArray jsonArray = new JSONArray(apiResponse.readEntity(String.class));
@@ -169,5 +169,6 @@ class SalebillDetailsController {
     {
         render(view:'/sales/salebillDetails/saleBill')
     }
+
 
 }

@@ -82,66 +82,66 @@
             <sub>${entity.addressLine1}<br>${entity.addressLine2}</sub>
         </td>
         <td style="width: 16%;vertical-align:top;"><b>Bill to Supplier Address :(1012700)</b><br>
-            <b>${customer.entityName}</b><br>
-            <sub>${customer.addressLine1}<br>${customer.addressLine2}
+            <b>${supplier.entityName}</b><br>
+            <sub>${supplier.addressLine1}<br>${supplier.addressLine2}
             </sub>
         </td>
         <td style="width: 16%;vertical-align:top;"><b>Ship to Supplier Address :(1012700)</b><br>
-            <b>${customer.entityName}</b><br>
-            <sub>${customer.addressLine1}<br>${customer.addressLine2}
+            <b>${supplier.entityName}</b><br>
+            <sub>${supplier.addressLine1}<br>${supplier.addressLine2}
             </sub>
         </td>
 
         <td style="width: 25%;vertical-align:top;">
-            <strong>TAX INVOICE (Future ${customer.entityName})</strong>
+            <strong>TAX INVOICE</strong>
             <ul style="margin: 0;">
 
-                <li><b class="tab">Invoice No</b>: 955932676</li>
-                <li><b class="tab"  >Inv Date</b>:<span id="invDate"></span></li>
-                <li><b class="tab">GR/PR No.</b>:</li>
-                <li><b class="tab">GR/PR Date</b>:</li>
-                <li><b class="tab">No of cases</b>:</li>
-                <li><b class="tab">Weight in Kgs</b>:</li>
-                <li><b class="tab">Party Ref No.</b>: 429803</li>
-                <li><b class="tab">Rev-Charge</b>: No Dist.Chnl.01</li>
+                <li><b class="tab">Invoice No</b>: ${invoiceNumber}</li>
+                <li><b class="tab"  >Inv Date</b>:&nbsp;<span id="invDate"></span></li>
+%{--                <li><b class="tab">GR/PR No.</b>:</li>--}%
+%{--                <li><b class="tab">GR/PR Date</b>:</li>--}%
+%{--                <li><b class="tab">No of cases</b>:</li>--}%
+%{--                <li><b class="tab">Weight in Kgs</b>:</li>--}%
+%{--                <li><b class="tab">Party Ref No.</b>: 429803</li>--}%
+%{--                <li><b class="tab">Rev-Charge</b>: No Dist.Chnl.01</li>--}%
             </ul>
         </td>
     </tr>
     <tr>
         <td style="width: 25%;vertical-align:top;">
             <ul>
-                <li><b class="tab">Location</b>: ${customer.cityId}</li>
-                <li><b class="tab">Phone</b>: ${customer.phoneNumber}</li>
-                <li><b class="tab">GST No</b>: ${customer.gstn}</li>
-                <li><b class="tab">FAX No</b>: ${customer.faxNumber}</li>
-                <li><b class="tab">DL No1</b>: ${customer.drugLicence1}</li>
-                <li><b class="tab">DL No2</b>: ${customer.drugLicence2}</li>
-                <li><b class="tab">Food Lic. No.</b>:  ${customer.foodLicence1}</li>
+                <li><b class="tab">Location</b>: ${city.name}</li>
+                <li><b class="tab">Phone</b>: ${entity.phoneNumber}</li>
+                <li><b class="tab">GST No</b>: ${entity.gstn}</li>
+                <li><b class="tab">FAX No</b>: ${entity.faxNumber}</li>
+                <li><b class="tab">DL No1</b>: ${entity.drugLicence1}</li>
+                <li><b class="tab">DL No2</b>: ${entity.drugLicence2}</li>
+                <li><b class="tab">Food Lic. No.</b>:  ${entity.foodLicence1}</li>
             </ul>
         </td>
         <td style="width: 25%;vertical-align:top;">
             <ul>
-                <li><b class="tab">DELIVERY AT</b>: CHICKMAGALUR</li>
-                <li><b class="tab">GST NO</b>: ${customer.gstn}</li>
-                <li><b class="tab">PAN</b>: ${customer.pan}</li>
-                <li><b class="tab">DL No1</b>: ${customer.drugLicence1}</li>
-                <li><b class="tab">DL No2</b>: ${customer.drugLicence2}</li>
-                <li><b class="tab">STATE NAME</b>: Karnataka</li>
+                <li><b class="tab">DELIVERY AT</b>: ${supcity.name}</li>
+                <li><b class="tab">GST NO</b>: ${supplier.gstn}</li>
+                <li><b class="tab">PAN</b>: ${supplier.pan}</li>
+                <li><b class="tab">DL No1</b>: ${supplier.drugLicence1}</li>
+                <li><b class="tab">DL No2</b>: ${supplier.drugLicence2}</li>
+                <li><b class="tab">STATE NAME</b>: ${supcity.state.name}</li>
                 <li><b class="tab">Goods Through</b>:</li>
-                <li><b class="tab">Place of Supply</b>: CHICKMAGALUR</li>
+                <li><b class="tab">Place of Supply</b>: ${supcity.name}</li>
                 <li><b class="tab">State Code</b>: 29</li>
             </ul>
         </td>
         <td style="width: 25%;vertical-align:top;">
             <ul>
-                <li><b class="tab">DELIVERY AT</b>: CHICKMAGALUR</li>
-                <li><b class="tab">GST NO</b>: ${customer.gstn}</li>
-                <li><b class="tab">PAN</b>: ${customer.pan}</li>
-                <li><b class="tab">DL No1</b>: ${customer.drugLicence1}</li>
-                <li><b class="tab">DL No2</b>: ${customer.drugLicence2}</li>
-                <li><b class="tab">STATE NAME</b>: Karnataka</li>
+                <li><b class="tab">DELIVERY AT</b>: ${supcity.name}</li>
+                <li><b class="tab">GST NO</b>: ${supplier.gstn}</li>
+                <li><b class="tab">PAN</b>: ${supplier.pan}</li>
+                <li><b class="tab">DL No1</b>: ${supplier.drugLicence1}</li>
+                <li><b class="tab">DL No2</b>: ${supplier.drugLicence2}</li>
+                <li><b class="tab">STATE NAME</b>: ${supcity.state.name}</li>
                 <li><b class="tab">Goods Through</b>:</li>
-                <li><b class="tab">Place of Supply</b>: CHICKMAGALUR</li>
+                <li><b class="tab">Place of Supply</b>: ${supcity.name}</li>
                 <li><b class="tab">State Code</b>: 29</li>
             </ul>
         </td>
@@ -167,11 +167,12 @@
         <th>C</th>
         <th>Mfg Name/ Batch</th>
         <th>Mfg Date/ Exp Date</th>
-        <th>Mfg Date/ Use Before</th>
+        %{--        <th>Mfg Date/ Use Before</th>--}%
         <th>MRP</th>
         <th>PTR</th>
         <th>PTS</th>
         <th>QTY</th>
+        <th>Scheme</th>
         <th>Amount</th>
         <th>Disc.Amt/Disc.%</th>
         <th>Amount/CGST%</th>
@@ -179,27 +180,43 @@
         <th>Amount/IGST%</th>
         <th>Net Amount</th>
     </tr>
-<g:each var="sp" in="${purchaseProductDetails}">
-    <tr>
-        <td>${sp.productId.hsnCode}</td>
-        <td><b>${sp.productId.productName}</b></td>
-        <td>${sp.unitPacking}</td>
-        <td>D</td>
-        <td>${sp.batchNumber}</td>
-        <td></td>
-        <td></td>
-        <td>${sp.mrp}</td>
-        <td>${sp.productId.ptr}</td>
-        <td></td>
-        <td>${sp.repQty}</td>
-        <td>${sp.amount}</td>
-        <td>${sp.discount}</td>
-        <td>${sp.cgstAmount}</td>
-        <td>${sp.sgstAmount}</td>
-        <td>${sp.igstAmount}</td>
-        <td></td>
-    </tr>
-</g:each>
+    <%
+
+        ArrayList<Double> cgst = new ArrayList<>()
+        ArrayList<Double> sgst = new ArrayList<>()
+        ArrayList<Double> igst = new ArrayList<>()
+    %>
+
+    <g:each var="sp" in="${purchaseProductDetails}">
+        <tr>
+            <td>${sp.productId.hsnCode}</td>
+            <td><b>${sp.productId.productName}</b></td>
+            <td><b>${sp.productId.unitPacking}</b></td>
+            <td><b>D</b></td>
+            <td>${sp.batchNumber}</td>
+            <td id="expDate${sp.id}">${sp.expiryDate}</td>
+            %{--            <td></td>--}%
+            <td>${sp.mrp}</td>
+            <td>${sp.productId.ptr}</td>
+            <td></td>
+            <td>${sp.sqty}</td>
+            <td>${sp.freeQty}</td>
+            <%
+                float amount = sp.amount - sp.cgstAmount - sp.sgstAmount - sp.igstAmount
+            %>
+            <td>${amount}</td>
+            <td>${sp.discount}</td>
+            <%
+                cgst.push(sp.cgstAmount/amount * 100)
+                sgst.push(sp.sgstAmount/amount * 100)
+                igst.push(sp.igstAmount/amount * 100)
+            %>
+            <td>${sp.cgstAmount}<br>${String.format("%.1f", sp.cgstAmount / amount * 100)}</td>
+            <td>${sp.sgstAmount}<br>${String.format("%.1f", sp.sgstAmount / amount * 100)}</td>
+            <td>${sp.igstAmount}<br>${String.format("%.1f", sp.igstAmount / amount * 100)}</td>
+            <td>${sp.amount}</td>
+        </tr>
+    </g:each>
     <tr>
         <td class="hide"></td>
         <td class="hide"></td>
@@ -212,78 +229,132 @@
         <td class="hide"></td>
         <td class="hide"></td>
         <td><b>Total</b></td>
+        <td>${String.format("%.1f", total - totalcgst - totalsgst - totaligst)}</td>
+        <td>${totaldiscount}</td>
+        <td>${totalcgst}</td>
+        <td>${totalsgst}</td>
+        <td>${totaligst}</td>
         <td>${total}</td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
     </tr>
 </table>
 
-<div class="container" style="display: flex; height: 200px;">
+<div class="container" style="display: flex; ">
+    %{--    height:200px--}%
     <div style="width: 50%;">
-        <p>For Pymt thru:<br>
-            DD/Chq should be made in favour of MANKIND PHARMA LTD .Payable At New Delhi.<br> Online mode: Virtual A/C "15411012700"
-        should be used. Bank Name:" CITI BANK LTD" IFSC Code: "CITI0000002 Account Type: CURRENT Payment not released before due date of this Invoice will incur Interest 14 % p.a. Any Payment Stockissue to any person under whatsoever
-        Context/reason without the permission of the Co. is not bound on us.
-        GOODS SUPPLIED AGAINST THISINVOICE DO NOT CONTRAVENE THE PROVISION OF SECTION 18 OF THE DRUG ANDCOSMETIC ACT 1940. DUE DATE: 31.12.2021 CHEQUE No. :
-        Los Cr. Nt
-        Add Debit Nt Ade Rounding Off
-        Net Payable Amt
-        For payment through UPI mode,kindly visit: <a href="www.aiocdawacs.com">www.aiocdawacs.com</a></p>
+
+        <p>No of cases <br>
+            Weight in Kgs :<br>
+            Party Ref No. : 429803<br>
+            Rev-Charge : No Dist.Chnl.01</p>
+        <g:each in="${termsConditions}" var="t">
+            <p>${t.termCondition}</p>
+        </g:each>
     </div>
 
-%{--    <div style="float: right;">--}%
-%{--        <table class="print" style="margin-top: 10px;width: 100%;">--}%
-%{--            <tr>--}%
-%{--                <th>Total</th>--}%
-%{--                <td>0.00</td>--}%
-%{--                <td>10977.43</td>--}%
-%{--            </tr>--}%
-%{--            <tr>--}%
-%{--                <th>Add CGST 6 % on</th>--}%
-%{--                <td>10977.43</td>--}%
-%{--                <td>658.65</td>--}%
-%{--            </tr>--}%
-%{--            <tr>--}%
-%{--                <th>Add SGST 6 % on</th>--}%
-%{--                <td>10977.43</td>--}%
-%{--                <td>658.65</td>--}%
-%{--            </tr>--}%
-%{--            <tr>--}%
-%{--                <th>Net Invoice Amt.</th>--}%
-%{--                <td>0.00</td>--}%
-%{--                <td>12294.73</td>--}%
-%{--            </tr>--}%
-%{--            <tr>--}%
-%{--                <th>Less Cr. Nt*</th>--}%
-%{--                <td>0.00</td>--}%
-%{--                <td>0.00</td>--}%
-%{--            </tr>--}%
-%{--            <tr>--}%
-%{--                <th>Add Debit Nt*</th>--}%
-%{--                <td>0.00</td>--}%
-%{--                <td>0.00</td>--}%
-%{--            </tr>--}%
-%{--            <tr>--}%
-%{--                <th>Add Rounding off*</th>--}%
-%{--                <td>0.00</td>--}%
-%{--                <td>0.27</td>--}%
-%{--            </tr>--}%
-%{--            <tr>--}%
-%{--                <th>Net Payable Amt.</th>--}%
-%{--                <td>0.00</td>--}%
-%{--                <td>12295.00</td>--}%
-%{--            </tr>--}%
-%{--        </table>--}%
-%{--    </div>--}%
+    <div style="float: right;">
+        <table class="print" style="margin-top: 10px;width: 100%;">
+            <tr>
+                <th>Total</th>
+                <td>0.00</td>
+                <td>${total}</td>
+            </tr>
+            <g:each var="c" in="${cgst}">
+                <g:if test="${c > 0 && c <= 5}">
+                    <tr>
+                        <th>Add CGST 5 % on</th>
+                        <td>${total}</td>
+                        <td id="cgst5">${0.5 * total}</td>
+                    </tr>
+                </g:if>
+                <g:if test="${c > 5 && c <= 12}">
+                    <tr>
+                        <th>Add CGST 12 % on</th>
+                        <td>${total}</td>
+                        <td id="cgst12">${String.format("%.2f",0.12 * total)}</td>
+                    </tr>
+                </g:if>
+
+                <g:if test="${c >12 && c <= 18}">
+                    <tr>
+                        <th>Add CGST 18 % on</th>
+                        <td>${total}</td>
+                        <td id="cgst18">${0.18 * total}</td>
+                    </tr>
+                </g:if>
+                <g:if test="${c >18 && c <= 28}">
+                    <tr>
+                        <th>Add CGST 28 % on</th>
+                        <td>${total}</td>
+                        <td id="cgst28">${0.28 * total}</td>
+                    </tr>
+                </g:if>
+            </g:each>
+
+            <g:each var="s" in="${sgst}">
+
+                <g:if test="${s > 0 && s <= 5}">
+                    <tr>
+                        <th>Add SGST 5 % on</th>
+                        <td>${total}</td>
+                        <td id="sgst5">${0.5 * total}</td>
+                    </tr>
+                </g:if>
+                <g:if test="${s > 5 && s <= 12}">
+                    <tr>
+                        <th>Add SGST 12 % on</th>
+                        <td>${total}</td>
+                        <td id="sgst12">${String.format("%.2f",0.12 * total)}</td>
+                    </tr>
+                </g:if>
+                <g:if test="${s > 12 && s <= 18}">
+                    <tr>
+                        <th>Add SGST 18 % on</th>
+                        <td>${total}</td>
+                        <td id="sgst18">${0.18 * total}</td>
+                    </tr>
+                </g:if>
+                <g:if test="${s > 18 && s <= 28}">
+                    <tr>
+                        <th>Add SGST 28 % on</th>
+                        <td>${total}</td>
+                        <td id="sgst28">${0.28 * total}</td>
+                    </tr>
+                </g:if>
+            </g:each>
+            <tr>
+                <th>Net Invoice Amt.</th>
+                <td>0.00</td>
+                <td id="netInvAmt"></td>
+            </tr>
+            <tr>
+                <th>Less Cr. Nt*</th>
+                <td>0.00</td>
+                <td>0.00</td>
+            </tr>
+            <tr>
+                <th>Add Debit Nt*</th>
+                <td>0.00</td>
+                <td>0.00</td>
+            </tr>
+            <tr>
+                <th>Add Rounding off*</th>
+                <td>0.00</td>
+                <td>0.00</td>
+            </tr>
+            <tr>
+                <th>Net Payable Amt.</th>
+                <td>0.00</td>
+                <td id="netPayAmt"></td>
+            </tr>
+        </table>
+    </div>
 </div>
 <br>
 <br>
+
 <p class="signatory" style="float: right;margin-right: 24px;">Authorized Signatory</p>
 
-<p style="float: left;margin-right: 24px;"><b>Printed By:</b> Name</p>
+<p style="float: left;margin-right: 24px;"><b>Printed By:</b> ${session.getAttribute("userName").toString()}</p>
 
 <p style="float: left;margin-right: 24px;"><b>Printed On:</b><span id="date"></span></p>
 </body>
@@ -297,6 +368,90 @@
         var invDate = new Date('${purchaseBillDetail.entryDate}')
         $("#invDate").text(moment(invDate).format('DD-MM-YYYY'));
 
+        <g:each var="ppd" in="${purchaseProductDetails}">
+        var expDate = new Date('${ppd.expiryDate}')
+        $("#expDate${ppd.id}").text(moment(expDate).format('MMM-YY').toUpperCase());
+        </g:each>
+        generateBarCode()
+
+        //sgst slabs
+        var sgst5;
+        var sgst12;
+        var sgst18;
+        var sgst28;
+
+        //sgst slabs
+        var cgst5;
+        var cgst12;
+        var cgst18;
+        var cgst28;
+
+        var netAmount = ${total}
+
+        //Sgst slab total
+        if($("#sgst5").text().length === 0)
+        {
+            sgst5 = 0;
+        }
+        else
+        {
+            sgst5 = $("#sgst5").text()
+        }
+        if($("#sgst12").text().length === 0) {
+            sgst12 = 0;
+        }
+        else {
+            sgst12 = $("#sgst12").text()
+        }
+        if($("#sgst18").text().length === 0) {
+            sgst18 = 0;
+        }
+        else {
+            sgst18 = $("#sgst18").text()
+        }
+        if ($("#sgst28").text().length === 0)
+        {
+            sgst28 = 0;
+        }
+        else
+        {
+            sgst28 = $("#sgst28").text()
+        }
+
+        //Sgst slab total
+        if($("#cgst5").text().length === 0)
+        {
+            cgst5 = 0;
+        }
+        else
+        {
+            cgst5 = $("#cgst5").text()
+        }
+        if($("#cgst12").text().length === 0) {
+            cgst12 = 0;
+        }
+        else {
+            cgst12 = $("#cgst12").text()
+        }
+        if($("#cgst18").text().length === 0) {
+            cgst18 = 0;
+        }
+        else {
+            cgst18 = $("#cgst18").text()
+        }
+        if ($("#cgst28").text().length === 0)
+        {
+            cgst28 = 0;
+        }
+        else
+        {
+            cgst28 = $("#cgst28").text()
+        }
+        var sgstSlabTotal = parseFloat(sgst5) +  parseFloat(sgst12) +  parseFloat(sgst18) +  parseFloat(sgst28)
+        var cgstSlabTotal = parseFloat(cgst5) +  parseFloat(cgst12) +  parseFloat(cgst18) +  parseFloat(cgst28)
+        var netInvAmt =  parseFloat(sgstSlabTotal) + parseFloat(cgstSlabTotal)+netAmount
+        $( "#netInvAmt" ).text(netInvAmt.toFixed(2));
+        $( "#netPayAmt" ).text(netInvAmt.toFixed(2));
 
     }
 </script>

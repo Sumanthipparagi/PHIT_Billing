@@ -90,8 +90,8 @@ class CreditJvController {
         try {
             long id = Long.parseLong(params.id)
             String financialYear = params.financialYear
-            ArrayList<CreditJv> creditJvs =  creditJvService.getAllUnsettledByCustId(financialYear, id)
-            respond creditJvs, formats: ['json']
+            render creditJvService.getAllUnsettledByCustId(financialYear, id) as JSON
+
         }
         catch (ResourceNotFoundException ex) {
             System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
@@ -115,7 +115,7 @@ class CreditJvController {
         try {
             long id = Long.parseLong(params.id)
             String financialYear = params.financialYear
-            respond creditJvService.getAllsettledByCustId(financialYear, id)
+            render creditJvService.getAllsettledByCustId(financialYear, id) as JSON
         }
         catch (ResourceNotFoundException ex) {
             System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
@@ -267,8 +267,8 @@ class CreditJvController {
                 }
                 CreditJv creditJv1 = creditJv.save(flush: true)
                 if (creditJv1) {
-                    respond creditJv1
-                    return
+                    render creditJv1 as JSON
+
                 }
             }
         }

@@ -674,6 +674,25 @@ class SystemService
     }
 
 
+    def getPaymentModes() {
+        Client client = ClientBuilder.newClient();
+        WebTarget target = client.target(new Links().API_GATEWAY);
+
+        try {
+            Response apiResponse = target
+                    .path(new Links().PAYMENT_MODE_SHOW)
+                    .request(MediaType.APPLICATION_JSON_TYPE)
+                    .get()
+            return apiResponse
+        }
+        catch (Exception ex) {
+            System.err.println('Service :ProductService , action :  getProducts  , Ex:' + ex)
+            log.error('Service :ProductService , action :  getProducts  , Ex:' + ex)
+        }
+
+    }
+
+
     /**
      *
      * @param jsonObject

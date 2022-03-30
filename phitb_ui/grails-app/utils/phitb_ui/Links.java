@@ -13,6 +13,10 @@ public class Links
     public static String ACCOUNT_MODES_UPDATE = "api/v1.0/system/accountmodes/{id}";
     public static String ACCOUNT_MODES_DELETE = "api/v1.0/system/accountmodes/{id}";
 
+    //    Payment Mode show
+    public static String PAYMENT_MODE_SHOW = "api/v1.0/system/paymentmode";
+
+
     //    Terms Condtions
     public static String TERMS_CONDITIONS = "api/v1.0/entity/termconditiondetailsbyentity";
 
@@ -347,7 +351,7 @@ public class Links
     public static String SALE_SCHEME_SHOW = "api/v1.0/sales/schemeconfiguration";
     public static String SALE_SCHEME_DATATABLE = "api/v1.0/sales/schemeconfiguration/datatable";
 
-//    Reason Master
+    //    Reason Master
     public static String REASON_UPDATE = "api/v1.0/sales/reasonmaster/{id}";
     public static String REASON_DELETE = "api/v1.0/sales/reasonmaster/{id}";
     public static String REASON_SAVE = "api/v1.0/sales/reasonmaster";
@@ -391,7 +395,6 @@ public class Links
     public static String STOCK_BOOK_BY_BATCH = "api/v1.0/inventory/stockbook/batch";
 
 
-
     //Temp Stock Book
     public static String GET_TEMP_STOCK_PRODUCT = "api/v1.0/inventory/tempstockbook";
     public static String GET_TEMP_STOCK_PRODUCT_BATCH = "api/v1.0/inventory/tempstockbookbyproductandbatch";
@@ -430,7 +433,6 @@ public class Links
     public static String WALLET_DATATABLE = "api/v1.0/accounts/wallet/datatable";
     public static String WALLET_UPDATE = "api/v1.0/accounts/wallet/{id}";
     public static String WALLET_DELETE = "api/v1.0/accounts/wallet/{id}";
-
 
 
     //Payemnt Show

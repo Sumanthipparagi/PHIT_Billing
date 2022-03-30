@@ -18,6 +18,7 @@ import phitb_ui.sales.SalebillDetailsController
 import phitb_ui.system.AccountModeController
 import phitb_ui.system.CityController
 import phitb_ui.system.CountryController
+import phitb_ui.system.PaymentModeController
 import phitb_ui.system.StateController
 import phitb_ui.system.ZoneController
 
@@ -33,18 +34,20 @@ class ReciptDetailController
         ArrayList<String> accountMode = new AccountModeController().show() as ArrayList
         ArrayList<String> wallet = new WalletController().show() as ArrayList
         ArrayList<String> saleinvoice = new SalebillDetailsController().show() as ArrayList
+        ArrayList<String> paymodes = new PaymentModeController().show() as ArrayList<String>
         render(view: "/accounts/recipt/customer-recipt", model: [entity: entity, bank: bank, accountMode: accountMode,
-                                                                 wallet: wallet, saleinvoice: saleinvoice])
+                                                                 wallet: wallet, saleinvoice: saleinvoice,paymodes:
+                                                                         paymodes])
     }
 
-    def addRecipt()
-    {
-        ArrayList<String> entity = new EntityRegisterController().show() as ArrayList
-        ArrayList<String> bank = new BankRegisterController().show() as ArrayList
-        ArrayList<String> accountMode = new AccountModeController().show() as ArrayList
-        ArrayList<String> wallet = new WalletController().show() as ArrayList
-        render(view: '/accounts/recipt/add-recipt', model: [entity: entity, bank: bank, accountMode: accountMode, wallet: wallet])
-    }
+//    def addRecipt()
+//    {
+//        ArrayList<String> entity = new EntityRegisterController().show() as ArrayList
+//        ArrayList<String> bank = new BankRegisterController().show() as ArrayList
+//        ArrayList<String> accountMode = new AccountModeController().show() as ArrayList
+//        ArrayList<String> wallet = new WalletController().show() as ArrayList
+//        render(view: '/accounts/recipt/add-recipt', model: [entity: entity, bank: bank, accountMode: accountMode, wallet: wallet])
+//    }
 
     def reciptList()
     {
@@ -178,11 +181,11 @@ class ReciptDetailController
         try
         {
             JSONArray jsonArray = new JSONArray();
-            def salebill  = new AccountsService().getUnSaleBillCustomerId(params.id, session.getAttribute("entityId").toString(), session.getAttribute("financialYear").toString())
+            def salebill = new AccountsService().getUnSaleBillCustomerId(params.id, session.getAttribute("entityId").toString(), session.getAttribute("financialYear").toString())
             def creditNote = new AccountsService().getCNUnsettledCustomerId(session.getAttribute("entityId").toString(), session.getAttribute("financialYear").toString())
             if (salebill.status == 200 && creditNote.status == 200)
             {
-                def tmp = creditNote.readEntity(String.class)
+//                def tmp = creditNote.readEntity(String.class)
                 JSONArray salearray = new JSONArray(salebill.readEntity(String.class))
                 JSONArray creditNoteArry = new JSONArray(creditNote.readEntity(String.class))
                 jsonArray.add(salearray)
@@ -207,8 +210,8 @@ class ReciptDetailController
         try
         {
             JSONArray jsonArray = new JSONArray();
-            def salebill  = new AccountsService().getSaleBillSettledCustomerId(params.id)
-            def creditNote = new AccountsService().getCNsettledCustomerId(params.id)
+            def salebill = new AccountsService().getSaleBillSettledCustomerId(params.id, session.getAttribute("entityId").toString(), session.getAttribute("financialYear").toString())
+            def creditNote = new AccountsService().getCNsettledCustomerId(params.id, session.getAttribute("entityId").toString(), session.getAttribute("financialYear").toString())
             if (salebill.status == 200 && creditNote.status)
             {
                 JSONArray salearray = new JSONArray(salebill.readEntity(String.class))
@@ -279,17 +282,17 @@ class ReciptDetailController
         }
     }
 
-def save()
+    def save()
     {
         try
         {
             JSONObject jsonObject = new JSONObject(params)
-            def apiResponse = new AccountsService().savePaymentDetail(jsonObject)
+            def apiResponse = new AccountsService().saveRecipt(jsonObject, session.getAttribute('financialYear') as String)
             if (apiResponse?.status == 200)
             {
                 JSONObject obj = new JSONObject(apiResponse.readEntity(String.class))
 //                respond obj, formats: ['json'], status: 200
-                redirect(uri:'/recipt-list')
+                redirect(uri: '/recipt-list')
             }
             else
             {
@@ -382,12 +385,13 @@ def save()
     def getCustomerById(String id)
     {
         def cust = new AccountsService().getEntityById(id)
-        if(cust.status==200)
+        if (cust.status == 200)
         {
             JSONObject customer = new JSONObject(cust.readEntity(String.class))
             return customer
         }
-        else {
+        else
+        {
 
             return []
         }
@@ -397,12 +401,13 @@ def save()
     def getReciptById(String id)
     {
         def recipt1 = new AccountsService().getReciptById(id)
-        if(recipt1.status==200)
+        if (recipt1.status == 200)
         {
             JSONObject recipt = new JSONObject(recipt1.readEntity(String.class))
             return recipt
         }
-        else {
+        else
+        {
 
             return []
         }
@@ -411,12 +416,28 @@ def save()
 
     def printRecipt()
     {
-        JSONObject customer = new EntityRegisterController().getEnitityById(params.custid)  as JSONObject
-        JSONObject recipt = new ReciptDetailController().getReciptById(params.id)  as JSONObject
-        JSONObject entity = new EntityRegisterController().getEnitityById(session.getAttribute('entityId').toString())  as
+        JSONObject customer = new EntityRegisterController().getEnitityById(params.custid) as JSONObject
+        JSONObject recipt = new ReciptDetailController().getReciptById(params.id) as JSONObject
+        JSONObject entity = new EntityRegisterController().getEnitityById(session.getAttribute('entityId').toString()) as
                 JSONObject
-        ArrayList<String> settled = new SalebillDetailsController().getAllSettledById(params.custid) as ArrayList
-        render(view:'/accounts/recipt/recipt-temp',model: [customer:customer,settled:settled,recipt:recipt,entity:entity])
+        ArrayList<String> settled = new SalebillDetailsController().getAllSettledById(params.custid,session.getAttribute("entityId").toString(), session.getAttribute("financialYear").toString()) as ArrayList
+
+//        def invoiceNumber;
+//        def datepart = settled.entryDate.split("T")[0];
+//        def month = datepart.split("-")[1];
+//        def year = datepart.split("-")[0];
+//        def seriesCode = "__";
+//        if (saleBillDetail.billStatus == "DRAFT")
+//        {
+//            invoiceNumber = "DR/S/" + month + year + "/" + series.seriesCode + "/__";
+//        }
+//        else
+//        {
+//            invoiceNumber = "S/" + month + year + "/" + series.seriesCode + "/" + saleBillDetail.id
+//        }
+        println(settled)
+        render(view: '/accounts/recipt/recipt-temp', model: [customer: customer, settled: settled, recipt: recipt,
+                                                             entity: entity])
     }
 
 

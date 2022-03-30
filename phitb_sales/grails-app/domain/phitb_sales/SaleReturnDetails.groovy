@@ -5,7 +5,7 @@ class SaleReturnDetails {
     long serBillId
     long series
     String type
-    String supplierId
+    String customerId
     String salesmanId
     Date dispatchDate
     Date entryDate

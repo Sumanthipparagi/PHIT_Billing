@@ -252,7 +252,7 @@
     </div>
 
     <div style="float: right;">
-        <table class="print" style="margin-top: 10px;margin-right:10px;width: 100%;">
+        <table class="print" style="margin-top: 10px;margin-right:5px;width: 100%;">
             <tr>
                 <th>Total</th>
                 <td>0.00</td>
