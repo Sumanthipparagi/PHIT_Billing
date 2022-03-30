@@ -101,11 +101,11 @@ class AccountsService {
 
 
     //Recipt Detail
-    def saveRecipt(JSONObject jsonObject) {
+    def saveRecipt(JSONObject jsonObject,String financialYear) {
         Client client = ClientBuilder.newClient();
         WebTarget target = client.target(new Links().API_GATEWAY);
-
         try {
+            jsonObject.put("financialYear",financialYear)
             println(jsonObject)
             Response apiResponse = target
                     .path(new Links().RECIPT_DETAIL_SAVE)
@@ -273,8 +273,8 @@ class AccountsService {
             return apiResponse
         }
         catch (Exception ex) {
-            System.err.println('Service :EntityService , action :  getProducts  , Ex:' + ex)
-            log.error('Service :EntityService , action :  getProducts  , Ex:' + ex)
+            System.err.println('Service :AccountsService , action :  getProducts  , Ex:' + ex)
+            log.error('Service :AccountsService , action :  getProducts  , Ex:' + ex)
         }
 
     }
@@ -300,12 +300,14 @@ class AccountsService {
     }
 
     //    get invoice to settled
-    def getSaleBillSettledCustomerId(String id) {
+    def getSaleBillSettledCustomerId(String id,String entityId, String financialYear) {
         Client client = ClientBuilder.newClient()
         WebTarget target = client.target(new Links().API_GATEWAY)
         try {
             Response apiResponse = target
                     .path(new Links().SALE_BILL_SETTLED + "/" + id)
+                    .queryParam("entityId", URLEncoder.encode(entityId, "UTF-8"))
+                    .queryParam("financialYear", URLEncoder.encode(financialYear, "UTF-8"))
                     .request(MediaType.APPLICATION_JSON_TYPE)
                     .get()
             return apiResponse
@@ -318,12 +320,14 @@ class AccountsService {
     }
 
     //    get Credit Note to settled
-    def getCNsettledCustomerId(String id) {
+    def getCNsettledCustomerId(String id,String entityId, String financialYear) {
         Client client = ClientBuilder.newClient()
         WebTarget target = client.target(new Links().API_GATEWAY)
         try {
             Response apiResponse = target
                     .path(new Links().CREDIT_SETTLED + "/" + id)
+                    .queryParam("entityId", URLEncoder.encode(entityId, "UTF-8"))
+                    .queryParam("financialYear", URLEncoder.encode(financialYear, "UTF-8"))
                     .request(MediaType.APPLICATION_JSON_TYPE)
                     .get()
             return apiResponse

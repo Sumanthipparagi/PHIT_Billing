@@ -21,7 +21,8 @@ import phitb_ui.system.AccountModeController
 import javax.ws.rs.core.Response
 import java.text.SimpleDateFormat
 
-class PurchaseEntryController {
+class PurchaseEntryController
+{
 
 //    def index() {
 //        String entityId = session.getAttribute("entityId")?.toString()
@@ -57,7 +58,8 @@ class PurchaseEntryController {
 //    }
 
 
-    def index() {
+    def index()
+    {
         String entityId = session.getAttribute("entityId")?.toString()
         JSONArray divisions = new ProductService().getDivisionsByEntityId(entityId)
         ArrayList<String> customers = new EntityRegisterController().show() as ArrayList<String>
@@ -68,19 +70,25 @@ class PurchaseEntryController {
     }
 
 
-    def save() {
-        try {
+    def save()
+    {
+        try
+        {
             JSONObject jsonObject = new JSONObject(params)
             def apiResponse = new PurchaseService().savePurchaseDetails(jsonObject)
-            if (apiResponse?.status == 200) {
+            if (apiResponse?.status == 200)
+            {
                 JSONObject obj = new JSONObject(apiResponse.readEntity(String.class))
 //                redirect(uri: '/user-register')
                 respond obj, formats: ['json'], status: 200
-            } else {
+            }
+            else
+            {
                 response.status = apiResponse?.status ?: 400
             }
         }
-        catch (Exception ex) {
+        catch (Exception ex)
+        {
             System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
             log.error('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
             response.status = 400
@@ -88,25 +96,32 @@ class PurchaseEntryController {
     }
 
 
-    def purchaseDetailShow() {
-        try {
+    def purchaseDetailShow()
+    {
+        try
+        {
             def apiResponse = new PurchaseService().getPurchaseProductDetails()
-            if (apiResponse?.status == 200) {
+            if (apiResponse?.status == 200)
+            {
                 JSONArray jsonArray = new JSONArray(apiResponse.readEntity(String.class));
                 ArrayList<String> arrayList = new ArrayList<>(jsonArray)
                 return arrayList
-            } else {
+            }
+            else
+            {
                 return []
             }
         }
-        catch (Exception ex) {
+        catch (Exception ex)
+        {
             System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
             log.error('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
             response.status = 400
         }
     }
 
-    def savePurchaseEntry() {
+    def savePurchaseEntry()
+    {
         SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy")
         JSONObject purchaseBillDetails = new JSONObject()
         JSONArray purchaseProductDetails = new JSONArray()
@@ -118,19 +133,25 @@ class PurchaseEntryController {
         String billStatus = params.billStatus
         String message = params.message
         if (!message)
+        {
             message = "NA"
+        }
         long finId = 0
         long serBillId = 0
         String financialYear = session.getAttribute("financialYear")
         def series = new EntityService().getSeriesById(seriesId)
 
 
-        if (!billStatus.equalsIgnoreCase("DRAFT")) {
+        if (!billStatus.equalsIgnoreCase("DRAFT"))
+        {
             def recentPurchaseBill = new PurchaseService().getRecentPurchaseBill(financialYear, entityId, billStatus)
-            if (recentPurchaseBill != null) {
+            if (recentPurchaseBill != null)
+            {
                 finId = Long.parseLong(recentPurchaseBill.get("finId").toString()) + 1
                 serBillId = Long.parseLong(recentPurchaseBill.get("serBillId").toString()) + 1
-            } else {
+            }
+            else
+            {
                 finId = 1
                 serBillId = Long.parseLong(series.get("saleId").toString())
             }
@@ -144,7 +165,8 @@ class PurchaseEntryController {
         double totalIgst = 0.00
         double totalDiscount = 0.00
         JSONArray purchaseData = new JSONArray(params.purchaseData)
-        for (JSONObject purchase : purchaseData) {
+        for (JSONObject purchase : purchaseData)
+        {
             String productId = purchase.get("1")
             String batchNumber = purchase.get("2")
             String expDate = purchase.get("3")
@@ -273,29 +295,35 @@ class PurchaseEntryController {
         purchaseBillDetails.put("cashDiscount", 0) //TODO: to be changed
         purchaseBillDetails.put("exempted", 0) //TODO: to be changed
         Response resp = new PurchaseService().savePurchaseBillDetails(purchaseBillDetails)
-        if (resp.status == 200) {
+        if (resp.status == 200)
+        {
             def purchaseBillDetail = new JSONObject(resp.readEntity(String.class))
             //save to purchase product details
-            for (JSONObject purchaseProductDetail : purchaseProductDetails) {
+            for (JSONObject purchaseProductDetail : purchaseProductDetails)
+            {
                 purchaseProductDetail.put("billId", purchaseBillDetail.get("id"))
                 purchaseProductDetail.put("taxId", purchaseBillDetail.get("taxable"))
                 purchaseProductDetail.put("billType", 0) //0 Sale, 1 Purchase
                 purchaseProductDetail.put("serBillId", purchaseBillDetail.get("serBillId"))
                 def resp1 = new PurchaseService().savePurchaseProductDetails(purchaseProductDetail)
                 if (resp1.status == 200)
+                {
                     println("Product Detail Saved")
-                else {
+                }
+                else
+                {
                     println("Product Detail Failed")
                 }
             }
 
             //update stockbook
-            for (JSONObject purchase : purchaseData) {
+            for (JSONObject purchase : purchaseData)
+            {
                 //check if selected product and batch exists for the entity, if so update data, else add new
                 String productId = purchase.get("1")
                 String batchNumber = purchase.get("2")
                 JSONObject stockBook = new InventoryService().getStocksOfProductAndBatch(productId, batchNumber, session.getAttribute("entityId").toString())
-                if(stockBook)
+                if (stockBook)
                 {
                     String saleQty = purchase.get("4")
                     String freeQty = purchase.get("5")
@@ -314,7 +342,7 @@ class PurchaseEntryController {
                     stockBook.put("remainingQty", sQty)
                     stockBook.put("remainingFreeQty", fQty)
                     stockBook.put("remainingReplQty", 0)
-                    stockBook.put("modifiedUser",session.getAttribute("userId"))
+                    stockBook.put("modifiedUser", session.getAttribute("userId"))
                     new InventoryService().updateStockBook(stockBook)
                 }
                 else
@@ -334,25 +362,25 @@ class PurchaseEntryController {
                     expDate = new SimpleDateFormat("yyyy-MM-dd").parse(expDate).format("dd-MM-yyyy")
                     manfDate = new SimpleDateFormat("yyyy-MM-dd").parse(manfDate).format("dd-MM-yyyy")
                     stockBook = new JSONObject()
-                    stockBook.put("productId",productId)
-                    stockBook.put("batchNumber",batchNumber)
+                    stockBook.put("productId", productId)
+                    stockBook.put("batchNumber", batchNumber)
                     stockBook.put("expDate", expDate)
                     stockBook.put("purcDate", purchaseDate)
-                    stockBook.put("supplierId",supplierId)
-                    stockBook.put("entityTypeId",session.getAttribute("entityTypeId"))
-                    stockBook.put("entityId",session.getAttribute("entityId"))
-                    stockBook.put("createdUser",session.getAttribute("userId"))
-                    stockBook.put("modifiedUser",session.getAttribute("userId"))
-                    stockBook.put("status","1")
-                    stockBook.put("syncStatus","1")
-                    stockBook.put("mergedWith","1")
-                    stockBook.put("purcSeriesId",seriesId)
-                    stockBook.put("saleRate",saleRate)
-                    stockBook.put("purchaseRate",purchaseRate)
-                    stockBook.put("mrp",mrp)
-                    stockBook.put("purcTradeDiscount",discount)
-                    stockBook.put("packingDesc",packDesc)
-                    stockBook.put("purcProductValue",value)
+                    stockBook.put("supplierId", supplierId)
+                    stockBook.put("entityTypeId", session.getAttribute("entityTypeId"))
+                    stockBook.put("entityId", session.getAttribute("entityId"))
+                    stockBook.put("createdUser", session.getAttribute("userId"))
+                    stockBook.put("modifiedUser", session.getAttribute("userId"))
+                    stockBook.put("status", "1")
+                    stockBook.put("syncStatus", "1")
+                    stockBook.put("mergedWith", "1")
+                    stockBook.put("purcSeriesId", seriesId)
+                    stockBook.put("saleRate", saleRate)
+                    stockBook.put("purchaseRate", purchaseRate)
+                    stockBook.put("mrp", mrp)
+                    stockBook.put("purcTradeDiscount", discount)
+                    stockBook.put("packingDesc", packDesc)
+                    stockBook.put("purcProductValue", value)
                     stockBook.put("remainingQty", saleQty)
                     stockBook.put("remainingFreeQty", freeQty)
                     stockBook.put("remainingReplQty", 0)
@@ -365,20 +393,25 @@ class PurchaseEntryController {
             responseJson.put("series", series)
             responseJson.put("purchaseBillDetail", purchaseBillDetail)
             respond responseJson, formats: ['json']
-        } else {
+        }
+        else
+        {
             response.status == 400
         }
     }
 
 
-    def printPurchaseEntry() {
+    def printPurchaseEntry()
+    {
         String purchaseBillId = params.id
         JSONObject purchaseBillDetail = new PurchaseService().getPurchaseBillDetailsById(purchaseBillId)
         JSONArray purchaseProductDetails = new PurchaseService().getPurchaseProductDetailsByBill(purchaseBillId)
         JSONObject series = new EntityService().getSeriesById(purchaseBillDetail.get("seriesId").toString())
-        JSONObject customer = new EntityService().getEntityById(purchaseBillDetail.get("supplierId").toString())
+        JSONObject supplier = new EntityService().getEntityById(purchaseBillDetail.get("supplierId").toString())
+        JSONObject supcity = new SystemService().getCityById(supplier.get('cityId').toString())
         JSONObject entity = new EntityService().getEntityById(session.getAttribute("entityId").toString())
         JSONObject city = new SystemService().getCityById(entity.get('cityId').toString())
+        JSONArray termsConditions = new EntityService().getTermsContionsByEntity(session.getAttribute("entityId").toString())
         purchaseProductDetails.each {
             def apiResponse = new SalesService().getRequestWithId(it.productId.toString(), new Links().PRODUCT_REGISTER_SHOW)
             it.put("productId", JSON.parse(apiResponse.readEntity(String.class)) as JSONObject)
@@ -391,20 +424,31 @@ class PurchaseEntryController {
         def seriesCode = "__";
         if (purchaseBillDetail.billStatus == "DRAFT")
         {
-            invoiceNumber = purchaseBillDetail.entityId+"/DR/S/" + month + year + "/" + series.seriesCode + "/__";
+            invoiceNumber = purchaseBillDetail.entityId + "/DR/S/" + month + year + "/" + series.seriesCode + "/__";
         }
         else
         {
-            invoiceNumber = purchaseBillDetail.entityId+"/S/" + month + year + "/" + series.seriesCode + "/" + purchaseBillDetail.id
+            invoiceNumber = purchaseBillDetail.entityId + "/S/" + month + year + "/" + series.seriesCode + "/" + purchaseBillDetail.id
         }
 
-        render(view: "/purchase/purchaseEntry/purchase-invoice", model: [purchaseBillDetail    : purchaseBillDetail,invoiceNumber:invoiceNumber,
-                                                                       purchaseProductDetails: purchaseProductDetails,
-                                                                       series                : series, entity: entity, customer: customer, city: city,
-                                                                       total                 : purchaseProductDetails.amount.sum()])
+        def totalcgst = purchaseProductDetails.cgstAmount.sum()
+        def totalsgst = purchaseProductDetails.sgstAmount.sum()
+        def totaligst = purchaseProductDetails.igstAmount.sum()
+        def totaldiscount = purchaseProductDetails.discount.sum()
+
+        render(view: "/purchase/purchaseEntry/purchase-invoice", model: [purchaseBillDetail      :
+                                                                                 purchaseBillDetail, invoiceNumber:
+                invoiceNumber, purchaseProductDetails  : purchaseProductDetails,series: series, entity: entity,
+                                                                         supplier: supplier, city: city, supcity   :
+                                                                                 supcity, total :
+                                                                                 purchaseProductDetails.amount.sum(),
+                                                                         totalcgst:totalcgst,totalsgst:totalsgst,
+                                                                         totaligst:totaligst,
+                                                                         totaldiscount:totaldiscount,termsConditions:termsConditions])
     }
 
-    def purchaseReturn() {
+    def purchaseReturn()
+    {
         ArrayList<String> tempStockBook = new StockBookController().tempStockShow() as ArrayList<String>
         render(view: '/purchase/purchaseRetun', model: [tempStockBook: tempStockBook])
     }

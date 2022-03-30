@@ -6,7 +6,7 @@
     <script type="text/javascript">
         function generateBarCode() {
             var nric =
-                '${invoiceNumber}'
+            '${invoiceNumber}'
             var url = 'https://api.qrserver.com/v1/create-qr-code/?data=' + nric + '&amp;size=50x50';
             $('#barcode').attr('src', url);
         }
@@ -185,7 +185,7 @@
         ArrayList<Double> cgst = new ArrayList<>()
         ArrayList<Double> sgst = new ArrayList<>()
         ArrayList<Double> igst = new ArrayList<>()
-    %>
+%>
 
     <g:each var="sp" in="${saleProductDetails}">
         <tr>
@@ -207,9 +207,9 @@
             <td>${amount}</td>
             <td>${sp.discount}</td>
             <%
-                cgst.push(sp.cgstAmount / amount * 100)
-                sgst.push(sp.sgstAmount / amount * 100)
-                igst.push(sp.igstAmount / amount * 100)
+                 cgst.push(sp.cgstAmount/amount * 100)
+                 sgst.push(sp.sgstAmount/amount * 100)
+                 igst.push(sp.igstAmount/amount * 100)
             %>
             <td>${sp.cgstAmount}<br>${String.format("%.1f", sp.cgstAmount / amount * 100)}</td>
             <td>${sp.sgstAmount}<br>${String.format("%.1f", sp.sgstAmount / amount * 100)}</td>
@@ -389,53 +389,69 @@
         var netAmount = ${total}
 
         //Sgst slab total
-        if ($("#sgst5").text().length === 0) {
+        if($("#sgst5").text().length === 0)
+        {
             sgst5 = 0;
-        } else {
+        }
+        else
+        {
             sgst5 = $("#sgst5").text()
         }
-        if ($("#sgst12").text().length === 0) {
+        if($("#sgst12").text().length === 0) {
             sgst12 = 0;
-        } else {
+        }
+        else {
             sgst12 = $("#sgst12").text()
         }
-        if ($("#sgst18").text().length === 0) {
+        if($("#sgst18").text().length === 0) {
             sgst18 = 0;
-        } else {
+        }
+        else {
             sgst18 = $("#sgst18").text()
         }
-        if ($("#sgst28").text().length === 0) {
+        if ($("#sgst28").text().length === 0)
+        {
             sgst28 = 0;
-        } else {
+        }
+        else
+        {
             sgst28 = $("#sgst28").text()
         }
 
         //Sgst slab total
-        if ($("#cgst5").text().length === 0) {
+        if($("#cgst5").text().length === 0)
+        {
             cgst5 = 0;
-        } else {
+        }
+        else
+        {
             cgst5 = $("#cgst5").text()
         }
-        if ($("#cgst12").text().length === 0) {
+        if($("#cgst12").text().length === 0) {
             cgst12 = 0;
-        } else {
+        }
+        else {
             cgst12 = $("#cgst12").text()
         }
-        if ($("#cgst18").text().length === 0) {
+        if($("#cgst18").text().length === 0) {
             cgst18 = 0;
-        } else {
+        }
+        else {
             cgst18 = $("#cgst18").text()
         }
-        if ($("#cgst28").text().length === 0) {
+        if ($("#cgst28").text().length === 0)
+        {
             cgst28 = 0;
-        } else {
+        }
+        else
+        {
             cgst28 = $("#cgst28").text()
         }
-        var sgstSlabTotal = parseFloat(sgst5) + parseFloat(sgst12) + parseFloat(sgst18) + parseFloat(sgst28)
-        var cgstSlabTotal = parseFloat(cgst5) + parseFloat(cgst12) + parseFloat(cgst18) + parseFloat(cgst28)
-        var netInvAmt = parseFloat(sgstSlabTotal) + parseFloat(cgstSlabTotal) + netAmount
-        $("#netInvAmt").text(netInvAmt.toFixed(2));
-        $("#netPayAmt").text(netInvAmt.toFixed(2));
+        var sgstSlabTotal = parseFloat(sgst5) +  parseFloat(sgst12) +  parseFloat(sgst18) +  parseFloat(sgst28)
+        var cgstSlabTotal = parseFloat(cgst5) +  parseFloat(cgst12) +  parseFloat(cgst18) +  parseFloat(cgst28)
+        var netInvAmt =  parseFloat(sgstSlabTotal) + parseFloat(cgstSlabTotal)+netAmount
+        $( "#netInvAmt" ).text(netInvAmt.toFixed(2));
+        $( "#netPayAmt" ).text(netInvAmt.toFixed(2));
 
     }
 </script>

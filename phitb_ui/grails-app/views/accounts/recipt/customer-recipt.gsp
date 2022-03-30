@@ -174,9 +174,9 @@
                                     <select class="form-control show-tick paymentMode" name="paymentMode"
                                             id="paymentMode" onchange="payMode(this.value)" required>
                                         <option value="">-- Please select --</option>
-                                        <option value="1">BANK</option>
-%{--                                        <option value="2">CARD</option>--}%
-%{--                                        <option value="3">CASH</option>--}%
+                                        <g:each var="pm" in="${paymodes}">
+                                        <option value="${pm.id}" data-mode="${pm.name}">${pm.name}</option>
+                                        </g:each>
                                     </select>
                                 </div>
 
@@ -433,7 +433,7 @@
 
     function payMode(mode) {
         var html = '';
-        if (mode === "1") {
+        if ($('#paymentMode option:selected').attr('data-mode') === "BANK") {
             $("#mode").show()
             html=' <label for="bank">\n' +
                 '                                        Bank\n' +
@@ -446,7 +446,7 @@
                 '                                        </g:each>\n' +
                 '                                    </select>'
             $(".cheque").show()
-        } else if (mode === "2") {
+        } else if ($('#paymentMode option:selected').attr('data-mode') === "CARD") {
             html='<label for="cardNumber">\n' +
                 '        Card Number\n' +
                 '    </label>\n' +
@@ -457,7 +457,7 @@
             $(".cheque").hide()
 
         }
-        else if(mode === "3")
+        else if($('#paymentMode option:selected').attr('data-mode') === "CASH")
         {
             $("#mode").hide()
             $(".cheque").hide()
@@ -501,7 +501,7 @@
                 var cred = "CRNT";
                 if (data.length !== 0) {
                     var inv = data[0].map(data => data.balance).reduce((acc, amount) => acc + amount, 0);
-                    var crnt = data[1].map(data => data.totalExpense).reduce((acc, amount) => acc + amount, 0)
+                    var crnt = data[1].map(data => data.amount).reduce((acc, amount) => acc + amount, 0)
                     var total_bal = inv - crnt
                 } else {
                     total_bal = 0;
@@ -520,13 +520,16 @@
                 });
 
                 $.each(data[1], function (key, value) {
+                    var date =  value.dateCreated;
+                    var dateCreated = value.dateCreated.substr(0, (date + " ").indexOf(" "));
+                    var day = moment(dateCreated, "DD/MM/YYYY");
                     trHTML +=
                         '<tr id="' + "CR"+value.id + '"><td><button type="button" data-id="' + value.id +
-                        '"  data-custId="' + value.referenceId +
+                        '"  data-custId="' + value.id +
                         '" class="btn-sm btn-primary" id="cnsettled"><-</button></td><td>' + cred +
                         '</td><td>' + value.financialYear +
-                        '</td><td>' + moment(value.dateCreated).format('DD-MM-YYYY') +
-                        '</td><td>' + "-"+value.totalExpense +
+                        '</td><td>' + moment(day).format('DD-MM-YYYY') +
+                        '</td><td>' + "-"+value.amount +
                         '</td></tr>';
                 });
                 $('.unsettledVocher').html(trHTML+trHTML1);
@@ -544,6 +547,7 @@
             url: '/getallsettledbycustomer/' + id,
             dataType: 'json',
             success: function (data) {
+                console.log(data)
                 var trHTML = '';
                 var trHTML1 = '';
                 trHTML += '';
@@ -551,7 +555,7 @@
                 var invoice = "INVS";
                 var cred = "CRNT";
                 var inv = data[0].map(data => data.balance).reduce((acc, amount) => acc + amount, 0);
-                var crnt = data[1].map(data => data.totalExpense).reduce((acc, amount) => acc + amount, 0)
+                var crnt = data[1].map(data => data.amount).reduce((acc, amount) => acc + amount, 0)
                 var total_bal_s = inv - crnt
                 $('.total_bal_s').text(parseFloat(total_bal_s).toFixed(2));
                 $('.tba').val(total_bal_s.toFixed(2));
@@ -565,13 +569,15 @@
                         '</td><td><button type="button" data-id="' + value.id + '"  data-custId="' + value.customerId + '"  class="btn-sm btn-primary" id="unsettled">-></button></td></tr>';
                 });
                 $.each(data[1], function (key, value) {
+                    var date =  value.dateCreated;
+                    var dateCreated = value.dateCreated.substr(0, (date + " ").indexOf(" "))
                     trHTML +=
                         '<tr id="' + "CR"+value.id + '"><td>' + cred +
                         '</td><td>' + value.financialYear +
-                        '</td><td>' + moment(value.dateCreated).format('DD-MM-YYYY') +
-                        '</td><td>' + "-"+value.totalExpense +
+                        '</td><td>' + moment(dateCreated).format('DD-MM-YYYY') +
+                        '</td><td>' + "-"+value.amount +
                         '</td><td><button type="button" data-id="' + value.id +
-                        '"  data-custId="' + value.referenceId +
+                        '"  data-custId="' + value.id +
                         '" class="btn-sm btn-primary" id="cnunsettled">-></button></td></tr>';
                 });
                 $('.settledVocher').html(trHTML+trHTML1);
@@ -650,6 +656,7 @@
         var custId = $(this).attr('data-custId');
         var url = '/creditsettledvocher/' + id;
         var type = 'GET';
+        alert(custId)
         $.ajax({
             url: url,
             type: type,

@@ -68,6 +68,7 @@ class SaleBillDetailsService
 
     def getAllsettledByCustId(String customerId, String entityId, String financialYear)
     {
+
         return SaleBillDetails.findAllByCustomerIdAndEntityIdAndFinancialYearAndPaymentStatus(Long.parseLong(customerId),Long.parseLong(entityId),financialYear,1)
 
     }

@@ -91,13 +91,13 @@
         <td style="width: 15%;vertical-align:top;">
             <ul style="margin: 0;">
                 <li><b class="tab">Receipt No.</b>: ${recipt.receiptId}</li>
-                <li><b class="tab">Receipt Date</b>:${recipt.date}</li>
+                <li><b class="tab">Receipt Date</b>:${recipt.date.split("T")[0]}</li>
             </ul>
         </td>
         <td style="width: 25%;vertical-align:top;">
             <input id="text" type="hidden" value="PharmIT" style="Width:20%" onblur='generateBarCode();'/>
             <img id='barcode'
-                 src="https://api.qrserver.com/v1/create-qr-code/?data=${recipt.receiptId}&amp;size=100x100"
+                 src="https://api.qrserver.com/v1/create-qr-code/?data=${recipt.id}&amp;size=100x100"
                  alt=""
                  title="PhramIT"
                  style="display: block;
@@ -116,7 +116,7 @@
     </tr>
     <tr>
         <td>
-            <p>By Cheque No.: ${recipt.chequeNumber} of ${recipt.bank.bankName} dated ${recipt.paymentDate}</p>
+            <p>By Cheque No.: ${recipt.chequeNumber} of ${recipt.bank.bankName} dated ${recipt.paymentDate.split("T")[0]}</p>
             <table>
                 <tr>
                     <th>
@@ -129,11 +129,28 @@
                         Adj. Amount
                     </th>
                 </tr>
-                <g:each var="b" in="${settled}">
+                <g:each var="sv" in="${settled}">
+                    <%
+
+                        def invoiceNumber;
+                        def series ="__"
+                        def datepart = sv.entryDate.split("T")[0];
+                        def month = datepart.split("-")[1];
+                        def year = datepart.split("-")[0];
+                        def seriesCode = "__";
+                        if (sv.billStatus == "DRAFT")
+                        {
+                            invoiceNumber = sv.entityId+"/DR/S/" + month + year + "/" + series + "/__";
+                        }
+                        else
+                        {
+                            invoiceNumber =  sv.entityId+"/S/" + month + year + "/" + series + "/" + sv.id
+                        }
+%>
                     <tr>
-                        <td>013/21/SP000208</td>
-                        <td>${b.dateCreated}</td>
-                        <td>${b.balance}</td>
+                        <td>${invoiceNumber}</td>
+                        <td>${sv.dateCreated.split("T")[0]}</td>
+                        <td>${sv.balance}</td>
                     </tr>
                 </g:each>
             </table>
@@ -162,8 +179,11 @@
     <tr>
         <td style="border-left: none;border-right: none;">
             <p><strong>Deposit Bank : ${recipt.bank.bankName}</strong></p>
+
             <p>&nbsp;</p>
+
             <p>&nbsp;</p>
+
             <p>Cashier / Accountant</p>
         </td>
 

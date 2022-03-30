@@ -65,7 +65,7 @@ class CreditJvService {
         long status = 0
         def creditJvCriteria = CreditJv.createCriteria()
         def creditJvArrayList = creditJvCriteria.list() {
-            isNotNull('approvedTime')
+//            isNotNull('approvedTime')
             eq('status', status)
             eq('entityId', entityId)
             eq('financialYear', financialYear)
