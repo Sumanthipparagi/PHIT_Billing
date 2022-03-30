@@ -338,7 +338,7 @@
                 </li>
 
                 <li id="purchase-menu" class="sidemenuitem"><a href="javascript:void(0);" class="menu-toggle"><i
-                        class="zmdi zmdi-apps"></i><span>Purchase</span> <span
+                        class="zmdi zmdi-shopping-basket"></i><span>Purchase</span> <span
                         class="badge badge-success float-right"></span></a>
                     <ul class="ml-menu">
                         <li><a href="#">Purchase Order</a></li>
@@ -350,7 +350,7 @@
                 </li>
 
                 <li id="sales-menu" class="sidemenuitem"><a href="javascript:void(0);" class="menu-toggle"><i
-                        class="zmdi zmdi-apps"></i><span>Sales</span> <span
+                        class="zmdi zmdi-money-box"></i><span>Sales</span> <span
                         class="badge badge-success float-right"></span></a>
                     <ul class="ml-menu">
                         <li><a href="/sale-order-entry">Sale Order</a></li>
@@ -364,7 +364,7 @@
                 </li>
 
                 <li id="accounts-menu" class="sidemenuitem"><a href="javascript:void(0);" class="menu-toggle"><i
-                        class="zmdi zmdi-apps"></i><span>Accounts</span> <span
+                        class="zmdi zmdi-book"></i><span>Accounts</span> <span
                         class="badge badge-success float-right"></span></a>
                     <ul class="ml-menu">
                         <li><a href="/credit-jv">Credit JV</a></li>
@@ -383,7 +383,7 @@
                 </li>
                 <li class="header"></li>
                 <li id="system-menu" class="sidemenuitem"><a href="javascript:void(0);" class="menu-toggle"><i
-                        class="zmdi zmdi-apps"></i><span>System</span> <span
+                        class="zmdi zmdi-book-image"></i><span>System</span> <span
                         class="badge badge-success float-right"></span></a>
                     <ul class="ml-menu">
                         <li><a href="/state">State</a></li>
@@ -394,7 +394,7 @@
                 </li>
 
                 <li id="facility-menu" class="sidemenuitem"><a href="javascript:void(0);" class="menu-toggle"><i
-                        class="zmdi zmdi-apps"></i><span>Facility</span> <span
+                        class="zmdi zmdi-home"></i><span>Facility</span> <span
                         class="badge badge-success float-right"></span></a>
                     <ul class="ml-menu">
                         <li><a href="/ccm">CCM</a></li>

@@ -6,5 +6,7 @@
 
         $("#"+menu).addClass("active");
         $("#"+menu).addClass("open");
+
+        $('body').scrollTo("#"+menu);
     }
 </script>
