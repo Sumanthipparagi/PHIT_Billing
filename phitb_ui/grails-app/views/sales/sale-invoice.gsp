@@ -259,65 +259,65 @@
                 <td>${total}</td>
             </tr>
             <g:each var="c" in="${cgst}">
-                <g:if test="${c > 0 && c <= 5}">
+                <g:if test="${c > 0 && c <= 2.5}">
                     <tr>
                         <th>Add CGST 2.5% on</th>
                         <td>${total}</td>
-                        <td id="cgst5">${0.5 * total}</td>
+                        <td id="cgst5">${0.025 * total}</td>
                     </tr>
                 </g:if>
-                <g:if test="${c > 5 && c <= 12}">
+                <g:if test="${c > 2.5 && c <= 6}">
                     <tr>
                         <th>Add CGST 6% on</th>
                         <td>${total}</td>
-                        <td id="cgst12">${String.format("%.2f", 0.12 * total)}</td>
+                        <td id="cgst12">${String.format("%.2f", 0.06 * total)}</td>
                     </tr>
                 </g:if>
 
-                <g:if test="${c > 12 && c <= 18}">
+                <g:if test="${c > 6 && c <= 9}">
                     <tr>
                         <th>Add CGST 9% on</th>
                         <td>${total}</td>
-                        <td id="cgst18">${0.18 * total}</td>
+                        <td id="cgst18">${0.09 * total}</td>
                     </tr>
                 </g:if>
-                <g:if test="${c > 18 && c <= 28}">
+                <g:if test="${c > 9 && c <= 14}">
                     <tr>
                         <th>Add CGST 14% on</th>
                         <td>${total}</td>
-                        <td id="cgst28">${0.28 * total}</td>
+                        <td id="cgst28">${0.014 * total}</td>
                     </tr>
                 </g:if>
             </g:each>
 
             <g:each var="s" in="${sgst}">
 
-                <g:if test="${s > 0 && s <= 5}">
+                <g:if test="${s > 0 && s <= 2.5}">
                     <tr>
                         <th>Add SGST 2.5% on</th>
                         <td>${total}</td>
-                        <td id="sgst5">${0.5 * total}</td>
+                        <td id="sgst5">${0.025 * total}</td>
                     </tr>
                 </g:if>
-                <g:if test="${s > 5 && s <= 12}">
+                <g:if test="${s > 2.5 && s <= 6}">
                     <tr>
                         <th>Add SGST 6% on</th>
                         <td>${total}</td>
-                        <td id="sgst12">${String.format("%.2f", 0.12 * total)}</td>
+                        <td id="sgst12">${String.format("%.2f", 0.06 * total)}</td>
                     </tr>
                 </g:if>
-                <g:if test="${s > 12 && s <= 18}">
+                <g:if test="${s > 6 && s <= 9}">
                     <tr>
                         <th>Add SGST 9% on</th>
                         <td>${total}</td>
-                        <td id="sgst18">${0.18 * total}</td>
+                        <td id="sgst18">${0.09 * total}</td>
                     </tr>
                 </g:if>
-                <g:if test="${s > 18 && s <= 28}">
+                <g:if test="${s > 9 && s <= 14}">
                     <tr>
                         <th>Add SGST 14% on</th>
                         <td>${total}</td>
-                        <td id="sgst28">${0.28 * total}</td>
+                        <td id="sgst28">${0.014 * total}</td>
                     </tr>
                 </g:if>
             </g:each>
@@ -386,8 +386,7 @@
         var cgst18;
         var cgst28;
 
-        var netAmount =
-        ${total}
+        var netAmount = ${total}
 
         //Sgst slab total
         if ($("#sgst5").text().length === 0) {
