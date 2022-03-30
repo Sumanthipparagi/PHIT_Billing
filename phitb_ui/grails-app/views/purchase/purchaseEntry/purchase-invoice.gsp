@@ -93,11 +93,11 @@
         </td>
 
         <td style="width: 25%;vertical-align:top;">
-            <strong>TAX INVOICE (Future ${customer.entityName})</strong>
+            <strong>PURCHASE INVOICE (Future ${customer.entityName})</strong>
             <ul style="margin: 0;">
 
                 <li><b class="tab">Invoice No</b>: 955932676</li>
-                <li><b class="tab"  >Inv Date</b>:<span id="invDate"></span></li>
+                <li><b class="tab" >Inv Date</b>:<span id="invDate"></span></li>
                 <li><b class="tab">GR/PR No.</b>:</li>
                 <li><b class="tab">GR/PR Date</b>:</li>
                 <li><b class="tab">No of cases</b>:</li>

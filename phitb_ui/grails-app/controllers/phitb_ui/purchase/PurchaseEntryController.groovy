@@ -383,7 +383,7 @@ class PurchaseEntryController {
             def apiResponse = new SalesService().getRequestWithId(it.productId.toString(), new Links().PRODUCT_REGISTER_SHOW)
             it.put("productId", JSON.parse(apiResponse.readEntity(String.class)) as JSONObject)
         }
-        render(view: "/purchase/purchaseEntry/purchase-entry", model: [purchaseBillDetail    : purchaseBillDetail,
+        render(view: "/purchase/purchaseEntry/purchase-invoice", model: [purchaseBillDetail    : purchaseBillDetail,
                                                                        purchaseProductDetails: purchaseProductDetails,
                                                                        series                : series, entity: entity, customer: customer, city: city,
                                                                        total                 : purchaseProductDetails.amount.sum()])

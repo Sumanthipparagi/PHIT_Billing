@@ -38,9 +38,7 @@ class SalesService
             System.err.println('Service :SalesService , action :  getProducts  , Ex:' + ex)
             log.error('Service :SalesService , action :  getProducts  , Ex:' + ex)
         }
-        finally{
-            client.close()
-        }
+
     }
 
     def getAllSettledBillsByCustomer(String id)
@@ -61,9 +59,7 @@ class SalesService
             System.err.println('Service :ProductService , action :  getProducts  , Ex:' + ex)
             log.error('Service :ProductService , action :  getProducts  , Ex:' + ex)
         }
-        finally{
-            client.close()
-        }
+
     }
 
     def saveSaleBill(JSONObject jsonObject)
@@ -85,9 +81,7 @@ class SalesService
             System.err.println('Service :saveStateMaster , action :  save  , Ex:' + ex)
             log.error('Service :saveStateMaster , action :  save  , Ex:' + ex)
         }
-        finally{
-            client.close()
-        }
+
     }
 
     def saveSaleOrder(JSONObject jsonObject)
@@ -109,9 +103,7 @@ class SalesService
             System.err.println('Service :saveStateMaster , action :  save  , Ex:' + ex)
             log.error('Service :saveStateMaster , action :  save  , Ex:' + ex)
         }
-        finally{
-            client.close()
-        }
+
     }
 
     def saveSaleRetrun(JSONObject jsonObject)
@@ -133,9 +125,7 @@ class SalesService
             System.err.println('Service :saveStateMaster , action :  save  , Ex:' + ex)
             log.error('Service :saveStateMaster , action :  save  , Ex:' + ex)
         }
-        finally{
-            client.close()
-        }
+
     }
 
     def putSaleBill(JSONObject jsonObject)
@@ -158,9 +148,7 @@ class SalesService
             System.err.println('Service : Godown , action :  put  , Ex:' + ex)
             log.error('Service :putAccountMode , action :  put  , Ex:' + ex)
         }
-        finally{
-            client.close()
-        }
+
     }
 
 
@@ -182,9 +170,7 @@ class SalesService
             System.err.println('Service :saveStateMaster , action :  save  , Ex:' + ex)
             log.error('Service :saveStateMaster , action :  save  , Ex:' + ex)
         }
-        finally{
-            client.close()
-        }
+
     }
 
     def getRecentSaleBill(String financialYear, String entityId, String billStatus)
@@ -216,9 +202,7 @@ class SalesService
             System.err.println('Service :saveStateMaster , action :  save  , Ex:' + ex)
             log.error('Service :saveStateMaster , action :  save  , Ex:' + ex)
         }
-        finally{
-            client.close()
-        }
+
     }
 
     def getSaleBillDetailsById(String id)
@@ -246,9 +230,7 @@ class SalesService
             System.err.println('Service :SalesService , action :  getProducts  , Ex:' + ex)
             log.error('Service :SalesService , action :  getProducts  , Ex:' + ex)
         }
-        finally{
-            client.close()
-        }
+
     }
 
     def getSaleProductDetails(String id)
@@ -276,9 +258,7 @@ class SalesService
             System.err.println('Service :SalesService , action :  getProducts  , Ex:' + ex)
             log.error('Service :SalesService , action :  getProducts  , Ex:' + ex)
         }
-        finally{
-            client.close()
-        }
+
     }
 
     def getSaleInvoiceById(String id)
@@ -299,9 +279,7 @@ class SalesService
             System.err.println('Service :ProductService , action :  getProducts  , Ex:' + ex)
             log.error('Service :ProductService , action :  getProducts  , Ex:' + ex)
         }
-        finally{
-            client.close()
-        }
+
     }
 
     def getSaleInvoice()
@@ -322,9 +300,7 @@ class SalesService
             System.err.println('Service :ProductService , action :  getProducts  , Ex:' + ex)
             log.error('Service :ProductService , action :  getProducts  , Ex:' + ex)
         }
-        finally{
-            client.close()
-        }
+
     }
 
     def getSchemeConfiguration(String productId, String batchNumber)
@@ -356,9 +332,7 @@ class SalesService
             System.err.println('Service :SalesService , action :  getProducts  , Ex:' + ex)
             log.error('Service :SalesService , action :  getProducts  , Ex:' + ex)
         }
-        finally{
-            client.close()
-        }
+
     }
 
 
@@ -407,9 +381,7 @@ class SalesService
         {
             System.err.println(ex)
         }
-        finally{
-            client.close()
-        }
+
     }
 
     def showSalesService(JSONObject jsonObject)

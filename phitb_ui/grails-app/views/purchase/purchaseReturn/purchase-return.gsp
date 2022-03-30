@@ -1412,5 +1412,9 @@
     // });
 
 </script>
+<g:include view="controls/footer-content.gsp"/>
+<script>
+    selectSideMenu("purchase-menu");
+</script>
 </body>
 </html>

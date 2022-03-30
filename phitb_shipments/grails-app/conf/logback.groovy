@@ -1,3 +1,4 @@
+import ch.qos.logback.core.util.FileSize
 import grails.util.BuildSettings
 import grails.util.Environment
 import org.springframework.boot.logging.logback.ColorConverter
@@ -22,15 +23,27 @@ appender('STDOUT', ConsoleAppender) {
     }
 }
 
-def targetDir = BuildSettings.TARGET_DIR
-if (Environment.isDevelopmentMode() && targetDir != null) {
-    appender("FULL_STACKTRACE", FileAppender) {
-        file = "${targetDir}/stacktrace.log"
-        append = true
-        encoder(PatternLayoutEncoder) {
-            pattern = "%level %logger - %msg%n"
-        }
+String logDirectory = System.getProperty("user.home") + File.separator +  "log_phitb_shipments" + File.separator
+appender("ROLLING", RollingFileAppender) {
+    encoder(PatternLayoutEncoder) {
+        pattern = "%date{HH:mm:ss} [%level] %logger - %msg%n"
     }
-    logger("StackTrace", ERROR, ['FULL_STACKTRACE'], false)
+    rollingPolicy(TimeBasedRollingPolicy) {
+        fileNamePattern = logDirectory+"normal/p1-%d{yyyy-MM-dd}.log"
+        maxHistory = 30
+        totalSizeCap = FileSize.valueOf("100MB")
+    }
 }
-root(ERROR, ['STDOUT'])
+appender("FULL_STACKTRACE", RollingFileAppender) {
+    encoder(PatternLayoutEncoder) {
+        pattern = "%date{HH:mm:ss.SSS} [%level] %logger - %msg%n"
+    }
+    rollingPolicy(TimeBasedRollingPolicy) {
+        fileNamePattern = logDirectory+"critical/p1-%d{yyyy-MM-dd}.log"
+        maxHistory = 30
+        totalSizeCap = FileSize.valueOf("100MB")
+    }
+    append=true
+}
+logger("StackTrace", ERROR, ['FULL_STACKTRACE'], false)
+root(INFO,['ROLLING'])

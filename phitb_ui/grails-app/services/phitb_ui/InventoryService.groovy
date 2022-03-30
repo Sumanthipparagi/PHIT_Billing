@@ -44,9 +44,7 @@ class InventoryService {
             System.err.println('Service : InventoryService , action :  put  , Ex:' + ex)
             log.error('Service :InventoryService , action :  put  , Ex:' + ex)
         }
-        finally{
-            client.close()
-        }
+
     }
 
 //    def stockPurchase(String batch,String sqty)
@@ -92,9 +90,7 @@ class InventoryService {
             System.err.println('Service :EntityService , action :  getProducts  , Ex:' + ex)
             log.error('Service :EntityService , action :  getProducts  , Ex:' + ex)
         }
-        finally{
-            client.close()
-        }
+
     }
 
 

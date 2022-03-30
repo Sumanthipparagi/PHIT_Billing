@@ -31,9 +31,7 @@ class AccountsService {
             System.err.println('Service :AccountsService , action :  saveBankRegister  , Ex:' + ex)
             log.error('Service :AccountsService , action :  saveBankRegister  , Ex:' + ex)
         }
-        finally{
-            client.close()
-        }
+
     }
 
     /**
@@ -56,9 +54,7 @@ class AccountsService {
             System.err.println('Service :AccountsService , action :  showBankRegister  , Ex:' + ex)
             log.error('Service :AccountsService , action :  showBankRegister  , Ex:' + ex)
         }
-        finally{
-            client.close()
-        }
+
     }
 
     def putBankRegister(JSONObject jsonObject) {
@@ -77,9 +73,7 @@ class AccountsService {
             System.err.println('Service: AccountsService , action :  putBankRegister  , Ex:' + ex)
             log.error('Service: AccountsService , action :  putBankRegister  , Ex:' + ex)
         }
-        finally{
-            client.close()
-        }
+
     }
 
     /**
@@ -102,9 +96,7 @@ class AccountsService {
             System.err.println('Service :AccountsService , action :  deleteBankRegister  , Ex:' + ex)
             log.error('Service :AccountsService , action :  deleteBankRegister  , Ex:' + ex)
         }
-        finally{
-            client.close()
-        }
+
     }
 
 
@@ -126,9 +118,7 @@ class AccountsService {
             System.err.println('Service :saveStateMaster , action :  save  , Ex:' + ex)
             log.error('Service :saveStateMaster , action :  save  , Ex:' + ex)
         }
-        finally{
-            client.close()
-        }
+
     }
 
 
@@ -150,9 +140,7 @@ class AccountsService {
             System.err.println('Service :saveStateMaster , action :  save  , Ex:' + ex)
             log.error('Service :saveStateMaster , action :  save  , Ex:' + ex)
         }
-        finally{
-            client.close()
-        }
+
     }
 
     def putRecipt(JSONObject jsonObject) {
@@ -172,9 +160,7 @@ class AccountsService {
             System.err.println('Service : , action :  put  , Ex:' + ex)
             log.error('Service :putAccountMode , action :  put  , Ex:' + ex)
         }
-        finally{
-            client.close()
-        }
+
     }
 
     def showRecipt(JSONObject jsonObject) {
@@ -211,9 +197,7 @@ class AccountsService {
             System.err.println('Service :getAccountModes , action :  show  , Ex:' + ex)
             log.error('Service :getAccountModes , action :  show  , Ex:' + ex)
         }
-        finally{
-            client.close()
-        }
+
     }
 
     def getBanks() {
@@ -233,9 +217,7 @@ class AccountsService {
             System.err.println('Service :ProductService , action :  getProducts  , Ex:' + ex)
             log.error('Service :ProductService , action :  getProducts  , Ex:' + ex)
         }
-        finally{
-            client.close()
-        }
+
     }
 
     def getWallet() {
@@ -255,9 +237,7 @@ class AccountsService {
             System.err.println('Service :ProductService , action :  getProducts  , Ex:' + ex)
             log.error('Service :ProductService , action :  getProducts  , Ex:' + ex)
         }
-        finally{
-            client.close()
-        }
+
     }
 
 
@@ -276,9 +256,7 @@ class AccountsService {
             System.err.println('Service :EntityService , action :  getProducts  , Ex:' + ex)
             log.error('Service :EntityService , action :  getProducts  , Ex:' + ex)
         }
-        finally{
-            client.close()
-        }
+
     }
 
 //   get Invoice to Unsettled
