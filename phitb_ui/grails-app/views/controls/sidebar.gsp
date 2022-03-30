@@ -382,8 +382,7 @@
                                 class="badge badge-success float-right"></span></a>
                             <ul class="ml-menu">
                                 <li><a href="/payments">Create Payments</a></li>
-                                <li><a href="/payments-list">Receipt List</a></li>
-
+                                <li><a href="/payments-list">Payments List</a></li>
                             </ul>
                         </li>
                     </ul>

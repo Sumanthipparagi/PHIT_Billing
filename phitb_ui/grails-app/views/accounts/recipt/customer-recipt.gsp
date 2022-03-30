@@ -248,7 +248,7 @@
 
                                 <div class="col-lg-3 form-group  form-float">
                                     <label for="note">
-                                        Remark / Note
+                                        Remarks / Note
                                     </label>
                                     <input type="text" id="note" class="note form-control"
                                            name="narration"
