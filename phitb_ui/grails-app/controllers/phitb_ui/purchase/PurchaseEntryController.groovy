@@ -21,8 +21,7 @@ import phitb_ui.system.AccountModeController
 import javax.ws.rs.core.Response
 import java.text.SimpleDateFormat
 
-class PurchaseEntryController
-{
+class PurchaseEntryController {
 
 //    def index() {
 //        String entityId = session.getAttribute("entityId")?.toString()
@@ -58,8 +57,7 @@ class PurchaseEntryController
 //    }
 
 
-    def index()
-    {
+    def index() {
         String entityId = session.getAttribute("entityId")?.toString()
         JSONArray divisions = new ProductService().getDivisionsByEntityId(entityId)
         ArrayList<String> customers = new EntityRegisterController().show() as ArrayList<String>
@@ -70,25 +68,19 @@ class PurchaseEntryController
     }
 
 
-    def save()
-    {
-        try
-        {
+    def save() {
+        try {
             JSONObject jsonObject = new JSONObject(params)
             def apiResponse = new PurchaseService().savePurchaseDetails(jsonObject)
-            if (apiResponse?.status == 200)
-            {
+            if (apiResponse?.status == 200) {
                 JSONObject obj = new JSONObject(apiResponse.readEntity(String.class))
 //                redirect(uri: '/user-register')
                 respond obj, formats: ['json'], status: 200
-            }
-            else
-            {
+            } else {
                 response.status = apiResponse?.status ?: 400
             }
         }
-        catch (Exception ex)
-        {
+        catch (Exception ex) {
             System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
             log.error('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
             response.status = 400
@@ -96,32 +88,25 @@ class PurchaseEntryController
     }
 
 
-    def purchaseDetailShow()
-    {
-        try
-        {
+    def purchaseDetailShow() {
+        try {
             def apiResponse = new PurchaseService().getPurchaseProductDetails()
-            if (apiResponse?.status == 200)
-            {
+            if (apiResponse?.status == 200) {
                 JSONArray jsonArray = new JSONArray(apiResponse.readEntity(String.class));
                 ArrayList<String> arrayList = new ArrayList<>(jsonArray)
                 return arrayList
-            }
-            else
-            {
+            } else {
                 return []
             }
         }
-        catch (Exception ex)
-        {
+        catch (Exception ex) {
             System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
             log.error('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
             response.status = 400
         }
     }
 
-    def savePurchaseEntry()
-    {
+    def savePurchaseEntry() {
         SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy")
         JSONObject purchaseBillDetails = new JSONObject()
         JSONArray purchaseProductDetails = new JSONArray()
@@ -132,8 +117,7 @@ class PurchaseEntryController
         String duedate = params.duedate
         String billStatus = params.billStatus
         String message = params.message
-        if (!message)
-        {
+        if (!message) {
             message = "NA"
         }
         long finId = 0
@@ -142,16 +126,12 @@ class PurchaseEntryController
         def series = new EntityService().getSeriesById(seriesId)
 
 
-        if (!billStatus.equalsIgnoreCase("DRAFT"))
-        {
+        if (!billStatus.equalsIgnoreCase("DRAFT")) {
             def recentPurchaseBill = new PurchaseService().getRecentPurchaseBill(financialYear, entityId, billStatus)
-            if (recentPurchaseBill != null)
-            {
+            if (recentPurchaseBill != null) {
                 finId = Long.parseLong(recentPurchaseBill.get("finId").toString()) + 1
                 serBillId = Long.parseLong(recentPurchaseBill.get("serBillId").toString()) + 1
-            }
-            else
-            {
+            } else {
                 finId = 1
                 serBillId = Long.parseLong(series.get("saleId").toString())
             }
@@ -165,8 +145,7 @@ class PurchaseEntryController
         double totalIgst = 0.00
         double totalDiscount = 0.00
         JSONArray purchaseData = new JSONArray(params.purchaseData)
-        for (JSONObject purchase : purchaseData)
-        {
+        for (JSONObject purchase : purchaseData) {
             String productId = purchase.get("1")
             String batchNumber = purchase.get("2")
             String expDate = purchase.get("3")
@@ -295,36 +274,29 @@ class PurchaseEntryController
         purchaseBillDetails.put("cashDiscount", 0) //TODO: to be changed
         purchaseBillDetails.put("exempted", 0) //TODO: to be changed
         Response resp = new PurchaseService().savePurchaseBillDetails(purchaseBillDetails)
-        if (resp.status == 200)
-        {
+        if (resp.status == 200) {
             def purchaseBillDetail = new JSONObject(resp.readEntity(String.class))
             //save to purchase product details
-            for (JSONObject purchaseProductDetail : purchaseProductDetails)
-            {
+            for (JSONObject purchaseProductDetail : purchaseProductDetails) {
                 purchaseProductDetail.put("billId", purchaseBillDetail.get("id"))
                 purchaseProductDetail.put("taxId", purchaseBillDetail.get("taxable"))
                 purchaseProductDetail.put("billType", 0) //0 Sale, 1 Purchase
                 purchaseProductDetail.put("serBillId", purchaseBillDetail.get("serBillId"))
                 def resp1 = new PurchaseService().savePurchaseProductDetails(purchaseProductDetail)
-                if (resp1.status == 200)
-                {
+                if (resp1.status == 200) {
                     println("Product Detail Saved")
-                }
-                else
-                {
+                } else {
                     println("Product Detail Failed")
                 }
             }
 
             //update stockbook
-            for (JSONObject purchase : purchaseData)
-            {
+            for (JSONObject purchase : purchaseData) {
                 //check if selected product and batch exists for the entity, if so update data, else add new
                 String productId = purchase.get("1")
                 String batchNumber = purchase.get("2")
                 JSONObject stockBook = new InventoryService().getStocksOfProductAndBatch(productId, batchNumber, session.getAttribute("entityId").toString())
-                if (stockBook)
-                {
+                if (stockBook) {
                     String saleQty = purchase.get("4")
                     String freeQty = purchase.get("5")
                     long sQty = Long.parseLong(stockBook.get("remainingQty").toString()) + Long.parseLong(saleQty)
@@ -344,9 +316,7 @@ class PurchaseEntryController
                     stockBook.put("remainingReplQty", 0)
                     stockBook.put("modifiedUser", session.getAttribute("userId"))
                     new InventoryService().updateStockBook(stockBook)
-                }
-                else
-                {
+                } else {
                     JSONObject jsonObject = new ProductService().getProductById(productId)
                     String value = purchase.get("12")
                     String purchaseRate = purchase.get("6")
@@ -393,16 +363,13 @@ class PurchaseEntryController
             responseJson.put("series", series)
             responseJson.put("purchaseBillDetail", purchaseBillDetail)
             respond responseJson, formats: ['json']
-        }
-        else
-        {
+        } else {
             response.status == 400
         }
     }
 
 
-    def printPurchaseEntry()
-    {
+    def printPurchaseEntry() {
         String purchaseBillId = params.id
         JSONObject purchaseBillDetail = new PurchaseService().getPurchaseBillDetailsById(purchaseBillId)
         JSONArray purchaseProductDetails = new PurchaseService().getPurchaseProductDetailsByBill(purchaseBillId)
@@ -416,36 +383,34 @@ class PurchaseEntryController
             def apiResponse = new SalesService().getRequestWithId(it.productId.toString(), new Links().PRODUCT_REGISTER_SHOW)
             it.put("productId", JSON.parse(apiResponse.readEntity(String.class)) as JSONObject)
         }
-        def invoiceNumber;
-        def datepart = purchaseBillDetail.dateCreated.split("T")[0];
-        def month = datepart.split("-")[1];
-        def year = datepart.split("-")[0];
-        def seriesCode = "__";
-        if (purchaseBillDetail.billStatus == "DRAFT")
-        {
-            invoiceNumber = purchaseBillDetail.entityId + "/DR/S/" + month + year + "/" + series.seriesCode + "/__";
-        }
-        else
-        {
-            invoiceNumber = purchaseBillDetail.entityId + "/S/" + month + year + "/" + series.seriesCode + "/" + purchaseBillDetail.id
-        }
+        /*  def invoiceNumber;
+          def datepart = purchaseBillDetail.dateCreated.split("T")[0];
+          def month = datepart.split("-")[1];
+          def year = datepart.split("-")[0];
+          def seriesCode = "__";
+          if (purchaseBillDetail.billStatus == "DRAFT")
+          {
+              invoiceNumber = purchaseBillDetail.entityId + "/DR/S/" + month + year + "/" + series.seriesCode + "/__";
+          }
+          else
+          {
+              invoiceNumber = purchaseBillDetail.entityId + "/S/" + month + year + "/" + series.seriesCode + "/" + purchaseBillDetail.id
+          }*/
         def totalcgst = purchaseProductDetails.cgstAmount.sum()
         def totalsgst = purchaseProductDetails.sgstAmount.sum()
         def totaligst = purchaseProductDetails.igstAmount.sum()
         def totaldiscount = purchaseProductDetails.discount.sum()
-        render(view: "/purchase/purchaseEntry/purchase-invoice", model: [purchaseBillDetail      :
-                                                                                 purchaseBillDetail, invoiceNumber:
-                invoiceNumber, purchaseProductDetails  : purchaseProductDetails,series: series, entity: entity,
-                                                                         supplier: supplier, city: city, supcity   :
-                                                                                 supcity, total :
-                                                                                 purchaseProductDetails.amount.sum(),
-                                                                         totalcgst:totalcgst,totalsgst:totalsgst,
-                                                                         totaligst:totaligst,
-                                                                         totaldiscount:totaldiscount,termsConditions:termsConditions])
+        render(view: "/purchase/purchaseEntry/purchase-invoice", model: [purchaseBillDetail: purchaseBillDetail,
+                                                                         purchaseProductDetails: purchaseProductDetails,
+                                                                         series: series, entity: entity,
+                                                                         supplier: supplier, city: city, supcity: supcity,
+                                                                         total:purchaseProductDetails.amount.sum(),
+                                                                         totalcgst: totalcgst, totalsgst: totalsgst,
+                                                                         totaligst: totaligst,
+                                                                         totaldiscount: totaldiscount, termsConditions: termsConditions])
     }
 
-    def purchaseReturn()
-    {
+    def purchaseReturn() {
         ArrayList<String> tempStockBook = new StockBookController().tempStockShow() as ArrayList<String>
         render(view: '/purchase/purchaseRetun', model: [tempStockBook: tempStockBook])
     }

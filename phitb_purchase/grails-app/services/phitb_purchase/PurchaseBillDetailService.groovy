@@ -5,6 +5,7 @@ import org.grails.web.json.JSONObject
 import phitb_purchase.Exception.BadRequestException
 import phitb_purchase.Exception.ResourceNotFoundException
 
+import java.text.DecimalFormat
 import java.text.SimpleDateFormat
 
 @Transactional
@@ -114,8 +115,35 @@ class PurchaseBillDetailService {
         purchaseBillDetail.createdUser = Long.parseLong(jsonObject.get("createdUser").toString())
         purchaseBillDetail.modifiedUser = Long.parseLong(jsonObject.get("modifiedUser").toString())
         purchaseBillDetail.save(flush: true)
-        if (!purchaseBillDetail.hasErrors())
+        if (!purchaseBillDetail.hasErrors()) {
+            Calendar cal = new GregorianCalendar()
+            cal.setTime(purchaseBillDetail.entryDate)
+            String month = cal.get(Calendar.MONTH)
+            String year = cal.get(Calendar.YEAR)
+
+            DecimalFormat mFormat= new DecimalFormat("00");
+            month = mFormat.format(Double.valueOf(month));
+
+            String invoiceNumber = null
+            String seriesCode = jsonObject.get("seriesCode")
+
+            if (purchaseBillDetail.billStatus == "DRAFT")
+            {
+                invoiceNumber = purchaseBillDetail.entityId+"/DR/P/" + month + year + "/" + seriesCode + "/__";
+            }
+            else
+            {
+                invoiceNumber = purchaseBillDetail.entityId+"/P/" + month + year + "/" + seriesCode + "/" + purchaseBillDetail.serBillId
+            }
+
+            if(invoiceNumber)
+            {
+                purchaseBillDetail.invoiceNumber = invoiceNumber
+                purchaseBillDetail.isUpdatable = true
+                purchaseBillDetail = purchaseBillDetail.save(flush:true)
+            }
             return purchaseBillDetail
+        }
         else
             throw new BadRequestException()
 

@@ -83,6 +83,7 @@ class SaleBillDetailsService
         String searchTerm = paramsJsonObject.get("search[value]")
         String orderColumnId = paramsJsonObject.get("order[0][column]")
         String orderDir = paramsJsonObject.get("order[0][dir]")
+        String invoiceStatus = paramsJsonObject.get("invoiceStatus")
 
         String orderColumn = "id"
         switch (orderColumnId)
@@ -103,6 +104,10 @@ class SaleBillDetailsService
                 {
                     ilike('financialYear', '%' + searchTerm + '%')
                 }
+            }
+            if(!invoiceStatus.equalsIgnoreCase("ALL"))
+            {
+                eq('billStatus', invoiceStatus)
             }
             eq('deleted', false)
             order(orderColumn, orderDir)
@@ -334,4 +339,38 @@ class SaleBillDetailsService
         }
     }
 
+    def cancelSaleBill(JSONObject jsonObject)
+    {
+        String id = jsonObject.get("id")
+        String entityId = jsonObject.get("entityId")
+        String financialYear = jsonObject.get("financialYear")
+        JSONObject saleInvoice = new JSONObject()
+        SaleBillDetails saleBillDetails = SaleBillDetails.findById(Long.parseLong(id))
+        if(saleBillDetails)
+        {
+            if(saleBillDetails.financialYear.equalsIgnoreCase(financialYear) && saleBillDetails.entityId == Long.parseLong(entityId))
+            {
+                ArrayList<SaleProductDetails> saleProductDetails = SaleProductDetails.findAllByBillId(saleBillDetails.id)
+                for (SaleProductDetails saleProductDetail : saleProductDetails) {
+                    saleProductDetail.status = 0
+                    saleProductDetail.isUpdatable = true
+                    saleProductDetail.save(flush:true)
+                }
+                saleBillDetails.billStatus = "CANCELLED"
+                saleBillDetails.isUpdatable = true
+                saleBillDetails.save(flush: true)
+
+                saleInvoice.put("products", saleProductDetails)
+                saleInvoice.put("invoice", saleBillDetails)
+            }
+            else
+            {
+                throw new ResourceNotFoundException()
+            }
+        }
+        else
+        {
+            throw new ResourceNotFoundException()
+        }
+    }
 }

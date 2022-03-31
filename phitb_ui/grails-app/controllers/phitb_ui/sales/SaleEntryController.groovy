@@ -378,4 +378,35 @@ class SaleEntryController {
             log.error('Service :getProductsById , action :  show  , Ex:' + ex)
         }
     }
+
+    def cancelInvoice()
+    {
+        String id = params.id
+        String entityId = session.getAttribute("entityId")
+        String financialYear = session.getAttribute("financialYear")
+        JSONObject jsonObject = new SalesService().cancelInvoice(id, entityId, financialYear)
+        if(jsonObject)
+        {
+            //adjust stocks
+            JSONArray productDetails = jsonObject.get("products")
+            if(productDetails)
+            {
+                for (JSONObject productDetail : productDetails) {
+                    def stockBook = new InventoryService().getStocksOfProductAndBatch(productDetail.productId.toString(), productDetail.batchNumber, session.getAttribute("entityId").toString())
+                    double remainingQty = stockBook.get("remainingQty") + productDetail.get("sqty")
+                    double remainingFreeQty = stockBook.get("remainingFreeQty") + productDetail.get("freeQty")
+                    double remainingReplQty = stockBook.get("remainingReplQty") + productDetail.get("repQty")
+                    stockBook.put("remainingQty", remainingQty.toLong())
+                    stockBook.put("remainingFreeQty", remainingFreeQty.toLong())
+                    stockBook.put("remainingReplQty", remainingReplQty.toLong())
+                    new InventoryService().updateStockBook(stockBook)
+                }
+            }
+            respond jsonObject, formats: ['json']
+        }
+        else
+        {
+            response.status = 400
+        }
+    }
 }

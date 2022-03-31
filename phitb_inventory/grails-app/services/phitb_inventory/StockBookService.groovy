@@ -86,23 +86,29 @@ class StockBookService {
     }
 
     StockBook save(JSONObject jsonObject) {
+        long productId = Long.parseLong(jsonObject.get("productId").toString())
+        String batchNumber = jsonObject.get("batchNumber")
+        double saleRate = Double.parseDouble(jsonObject.get("saleRate").toString())
+        long remainingQty = Long.parseLong(jsonObject.get("remainingQty").toString())
+        long remainingFreeQty = Long.parseLong(jsonObject.get("remainingFreeQty").toString())
+
         StockBook stockBook = new StockBook()
-        stockBook.batchNumber = jsonObject.get("batchNumber")
+        stockBook.batchNumber = batchNumber
         stockBook.mergedWith = jsonObject.get("mergedWith")
         stockBook.packingDesc = jsonObject.get("packingDesc")
-        stockBook.productId = Long.parseLong(jsonObject.get("productId").toString())
+        stockBook.productId = productId
         stockBook.expDate = sdf.parse(jsonObject.get("expDate").toString())
         stockBook.purcDate = sdf.parse(jsonObject.get("purcDate").toString())
         stockBook.manufacturingDate = sdf.parse(jsonObject.get("manufacturingDate").toString())
-        stockBook.remainingQty = Long.parseLong(jsonObject.get("remainingQty").toString())
+        stockBook.remainingQty = remainingQty
         stockBook.purcProductValue = Double.parseDouble(jsonObject.get("purcProductValue").toString())
         stockBook.purcTradeDiscount = Double.parseDouble(jsonObject.get("purcTradeDiscount").toString())
         stockBook.purchaseRate = Double.parseDouble(jsonObject.get("purchaseRate").toString())
         stockBook.mrp = Double.parseDouble(jsonObject.get("mrp").toString())
         stockBook.purcSeriesId = Long.parseLong(jsonObject.get("purcSeriesId").toString())
-        stockBook.remainingFreeQty = Long.parseLong(jsonObject.get("remainingFreeQty").toString())
+        stockBook.remainingFreeQty = remainingFreeQty
         stockBook.remainingReplQty = Long.parseLong(jsonObject.get("remainingReplQty").toString())
-        stockBook.saleRate = Double.parseDouble(jsonObject.get("saleRate").toString())
+        stockBook.saleRate = saleRate
         stockBook.supplierId = Long.parseLong(jsonObject.get("supplierId").toString())
         stockBook.taxId = Long.parseLong(jsonObject.get("taxId").toString())
         stockBook.status = Long.parseLong(jsonObject.get("status").toString())
@@ -111,18 +117,50 @@ class StockBookService {
         stockBook.entityId = Long.parseLong(jsonObject.get("entityId").toString())
         stockBook.createdUser = Long.parseLong(jsonObject.get("createdUser").toString())
         stockBook.modifiedUser = Long.parseLong(jsonObject.get("modifiedUser").toString())
+        stockBook.openingStockQty = Long.parseLong(jsonObject.get("openingStockQty").toString())
         stockBook.save(flush: true)
-        if (!stockBook.hasErrors())
+        if (!stockBook.hasErrors()) {
+
+            StockActivity stockActivity = new StockActivity()
+            stockActivity.productId = productId
+            stockActivity.batch = batchNumber
+            stockActivity.remainingQty = remainingQty
+            stockActivity.remainingSchemeQty = remainingFreeQty
+            stockActivity.prevRemQty = 0
+            stockActivity.prevSchemeQty = 0
+            stockActivity.saleRate = saleRate
+            stockActivity.prevSaleRate = 0
+            stockActivity.status = Long.parseLong(jsonObject.get("status").toString())
+            stockActivity.syncStatus = Long.parseLong(jsonObject.get("syncStatus").toString())
+            stockActivity.entityTypeId = Long.parseLong(jsonObject.get("entityTypeId").toString())
+            stockActivity.entityId = Long.parseLong(jsonObject.get("entityId").toString())
+            stockActivity.createdUser = Long.parseLong(jsonObject.get("createdUser").toString())
+            stockActivity.modifiedUser = Long.parseLong(jsonObject.get("modifiedUser").toString())
+            stockActivity.save(flush:true)
+
             return stockBook
+        }
         else
             throw new BadRequestException()
+
+
     }
 
     StockBook update(JSONObject jsonObject, String id) {
 
         if (id) {
+            long productId = Long.parseLong(jsonObject.get("productId").toString())
+            String batchNumber = jsonObject.get("batchNumber")
+            double saleRate = Double.parseDouble(jsonObject.get("saleRate").toString())
+            long remainingQty = Long.parseLong(jsonObject.get("remainingQty").toString())
+            long remainingFreeQty = Long.parseLong(jsonObject.get("remainingFreeQty").toString())
+
             StockBook stockBook = StockBook.findById(Long.parseLong(id))
             if (stockBook) {
+                double prvSaleRate = stockBook.saleRate
+                long prvRemainingQty = stockBook.remainingQty
+                long prvRemainingFreeQty = stockBook.remainingFreeQty
+
                 stockBook.isUpdatable = true
                 stockBook.batchNumber = jsonObject.get("batchNumber")
                 stockBook.mergedWith = jsonObject.get("mergedWith")
@@ -148,9 +186,27 @@ class StockBookService {
                 stockBook.entityId = Long.parseLong(jsonObject.get("entityId").toString())
                 stockBook.createdUser = Long.parseLong(jsonObject.get("createdUser").toString())
                 stockBook.modifiedUser = Long.parseLong(jsonObject.get("modifiedUser").toString())
+                stockBook.openingStockQty = Long.parseLong(jsonObject.get("openingStockQty").toString())
                 stockBook.save(flush: true)
-                if (!stockBook.hasErrors())
+                if (!stockBook.hasErrors()) {
+                    StockActivity stockActivity = new StockActivity()
+                    stockActivity.productId = productId
+                    stockActivity.batch = batchNumber
+                    stockActivity.remainingQty = remainingQty
+                    stockActivity.remainingSchemeQty = remainingFreeQty
+                    stockActivity.prevRemQty = prvRemainingQty
+                    stockActivity.prevSchemeQty = prvRemainingFreeQty
+                    stockActivity.saleRate = saleRate
+                    stockActivity.prevSaleRate = prvSaleRate
+                    stockActivity.status = Long.parseLong(jsonObject.get("status").toString())
+                    stockActivity.syncStatus = Long.parseLong(jsonObject.get("syncStatus").toString())
+                    stockActivity.entityTypeId = Long.parseLong(jsonObject.get("entityTypeId").toString())
+                    stockActivity.entityId = Long.parseLong(jsonObject.get("entityId").toString())
+                    stockActivity.createdUser = Long.parseLong(jsonObject.get("createdUser").toString())
+                    stockActivity.modifiedUser = Long.parseLong(jsonObject.get("modifiedUser").toString())
+                    stockActivity.save(flush:true)
                     return stockBook
+                }
                 else
                     throw new BadRequestException()
             } else

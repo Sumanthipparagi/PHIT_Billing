@@ -29,6 +29,8 @@ class StockBook implements LogicalDelete<StockBook> {
     long createdUser
     long modifiedUser
 
+    long openingStockQty
+
     Date dateCreated
     Date lastUpdated
 

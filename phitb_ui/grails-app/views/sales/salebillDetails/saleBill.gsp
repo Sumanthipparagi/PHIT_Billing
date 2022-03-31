@@ -13,12 +13,14 @@
     <!-- JQuery DataTable Css -->
     <asset:stylesheet rel="stylesheet" src="/themeassets/plugins/jquery-datatable/dataTables.bootstrap4.min.css"/>
     <!-- Custom Css -->
-    <asset:stylesheet  rel="stylesheet" src="/themeassets/css/main.css"/>
+    <asset:stylesheet rel="stylesheet" src="/themeassets/css/main.css"/>
     <asset:stylesheet rel="stylesheet" href="/themeassets/css/color_skins.css"/>
-    <asset:stylesheet rel="stylesheet" href="/themeassets/plugins/sweetalert/sweetalert.css"/>
-    <asset:stylesheet  src="/themeassets/plugins/bootstrap-select/css/bootstrap-select.css" rel="stylesheet" />
-    <asset:stylesheet  src="/themeassets/js/pages/forms/basic-form-elements.js" rel="stylesheet" />
-    <asset:stylesheet  src="/themeassets/plugins/bootstrap-material-datetimepicker/css/bootstrap-material-datetimepicker.css" rel="stylesheet" />
+    <asset:stylesheet rel="stylesheet" href="/themeassets/plugins/sweetalert2/dist/sweetalert2.css"/>
+    <asset:stylesheet src="/themeassets/plugins/bootstrap-select/css/bootstrap-select.css" rel="stylesheet"/>
+    <asset:stylesheet src="/themeassets/js/pages/forms/basic-form-elements.js" rel="stylesheet"/>
+    <asset:stylesheet
+            src="/themeassets/plugins/bootstrap-material-datetimepicker/css/bootstrap-material-datetimepicker.css"
+            rel="stylesheet"/>
 
     <style>
 
@@ -39,11 +41,14 @@
     </style>
 
 </head>
+
 <body class="theme-black">
 <!-- Page Loader -->
 <div class="page-loader-wrapper">
     <div class="loader">
-        <div class="m-t-30"><img src="${assetPath(src: '/themeassets/images/logo.svg')}" width="48" height="48" alt="Alpino"></div>
+        <div class="m-t-30"><img src="${assetPath(src: '/themeassets/images/logo.svg')}" width="48" height="48"
+                                 alt="Alpino"></div>
+
         <p>Please wait...</p>
     </div>
 </div>
@@ -60,6 +65,7 @@
                         <li class="breadcrumb-item active">My Invoices</li>
                     </ul>
                 </div>
+
                 <div class="col-lg-7 col-md-7 col-sm-12">
                     <div class="input-group m-b-0">
                         <input type="text" class="form-control" placeholder="Search...">
@@ -74,14 +80,34 @@
         <div class="row clearfix">
             <div class="col-lg-12">
                 <div class="card">
+                    <div class="header">
+                        <div class="row">
+                            <div class="col-md-4">
+                            </div>
 
+                            <div class="col-md-4">
+                            </div>
+
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label for="invoiceStatus">Invoice Status</label>
+                                    <select onchange="invoiceStatusChanged()" id="invoiceStatus" class="form-control">
+                                        <option>All</option>
+                                        <option>DRAFT</option>
+                                        <option>ACTIVE</option>
+                                        <option>CANCELLED</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
 
                     <div class="body">
                         <div class="table-responsive">
-                            <table class="table table-bordered table-striped table-hover entityRegisterTable dataTable">
+                            <table class="table table-bordered table-striped table-hover saleInvoiceTable dataTable">
                                 <thead>
                                 <tr>
-%{--                                    <th>Entity Name</th>--}%
+                                    <th>Customer</th>
                                     <th>Invoice No.</th>
                                     <th>Financial Year</th>
                                     <th>Invoice Total</th>
@@ -121,7 +147,7 @@
 <asset:javascript src="/themeassets/bundles/mainscripts.bundle.js"/>
 <asset:javascript src="/themeassets/js/pages/tables/jquery-datatable.js"/>
 <asset:javascript src="/themeassets/js/pages/ui/dialogs.js"/>
-<asset:javascript src="/themeassets/plugins/sweetalert/sweetalert.min.js"/>
+<asset:javascript src="/themeassets/plugins/sweetalert2/dist/sweetalert2.js"/>
 <asset:javascript src="/themeassets/plugins/jquery-inputmask/jquery.inputmask.bundle.js"/>
 <asset:javascript src="/themeassets/plugins/momentjs/moment.js"/>
 <asset:javascript src="/themeassets/plugins/bootstrap-material-datetimepicker/js/bootstrap-material-datetimepicker.js"/>
@@ -132,15 +158,16 @@
     var entityregister;
     var id = null;
     $(function () {
-        entityRegisterTable();
+        saleInvoiceTable();
         // var $demoMaskedInput = $('.demo-masked-input');
         // $demoMaskedInput.find('.datetime').inputmask('d/m/y h:m:s', { placeholder: '__/__/____ __:__:__:__', alias:
         //         "datetime", hourFormat: '12' });
 
     });
 
-    function entityRegisterTable() {
-        entityregister = $(".entityRegisterTable").DataTable({
+    function saleInvoiceTable() {
+        var invoiceStatus = $("#invoiceStatus").val();
+        entityregister = $(".saleInvoiceTable").DataTable({
             "order": [[0, "desc"]],
             sPaginationType: "simple_numbers",
             responsive: {
@@ -159,24 +186,33 @@
             ajax: {
                 type: 'GET',
                 url: '/sale-bill/datatable',
+                data: {
+                    invoiceStatus: invoiceStatus
+                },
                 dataType: 'json',
                 dataSrc: function (json) {
                     console.log(json)
                     var return_data = [];
                     for (var i = 0; i < json.data.length; i++) {
-                        var deletebtn = '<a href="/sale-entry/print-invoice?id=' + json.data[i].id +'"><button type="button" data-id="' + json.data[i].id +
-                            '" class="btn btn-sm btn-danger deletebtn" ><i class="material-icons"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">print</font></font></i></button></a>'
+                        var cancelInvoice = "";
+                        if (json.data[i].billStatus != "CANCELLED") {
+                            cancelInvoice = '<a class="btn btn-sm btn-info" onclick="cancelBill(' + json.data[i].id + ')" href="#">Cancel</a>';
+                        }
+                        var printbtn = '<a target="_blank" href="/sale-entry/print-invoice?id=' + json.data[i].id + '"><button type="button" data-id="' + json.data[i].id +
+                            '" class="btn btn-sm btn-danger" ><i class="material-icons"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">print</font></font></i></button></a>'
                         var invoiceNumber = json.data[i].invoiceNumber;
+                        if (invoiceNumber === undefined)
+                            invoiceNumber = "";
 
                         return_data.push({
                             // 'id': json.data[i].id,
-                            // 'entityName': json.data[i].entityId,
+                            'customer': json.data[i].customer.entityName,
                             'invNo': invoiceNumber,
                             'finYear': json.data[i].financialYear,
-                            'inv': json.data[i].invoiceTotal,
+                            'inv': json.data[i].invoiceTotal.toFixed(2),
                             'bill_status': json.data[i].billStatus,
-                            'balance': json.data[i].balance,
-                            'action': deletebtn
+                            'balance': json.data[i].balance.toFixed(2),
+                            'action': cancelInvoice + " " + printbtn
                         });
                     }
                     return return_data;
@@ -184,7 +220,7 @@
             },
             columns: [
                 // {'data': 'id', 'width': '20%'},
-                // {'data': 'entityName', 'width': '75%'},
+                {'data': 'customer', 'width': '5%'},
                 {'data': 'invNo', 'width': '10%'},
                 {'data': 'finYear', 'width': '10%'},
                 {'data': 'inv', 'width': '10%'},
@@ -195,10 +231,49 @@
         });
     }
 
+    function cancelBill(id) {
+        Swal.fire({
+            title: "Cancel this Sale Invoice? this can't be undone.",
+            showDenyButton: true,
+            showCancelButton: false,
+            confirmButtonText: 'Yes',
+            denyButtonText: 'No',
+        }).then((result) => {
+            if (result.isConfirmed) {
+                var url = '/sale-entry/cancel-invoice?id=' + id;
+                $.ajax({
+                    type: "GET",
+                    url: url,
+                    dataType: 'json',
+                    success: function (data) {
+                        Swal.fire(
+                            'Success!',
+                            'Invoice Cancelled',
+                            'success'
+                        );
+                        saleInvoiceTable();
+                    },
+                    error: function () {
+                        Swal.fire(
+                            'Error!',
+                            'Unable to cancel invoice at the moment, try later.',
+                            'danger'
+                        );
+                    }
+                });
+            } else if (result.isDenied) {
 
+            }
+        });
+
+
+    }
+
+    function invoiceStatusChanged() {
+        saleInvoiceTable();
+    }
 
 </script>
-
 
 </body>
 </html>

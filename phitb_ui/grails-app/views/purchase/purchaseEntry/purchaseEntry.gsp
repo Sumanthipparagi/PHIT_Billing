@@ -824,15 +824,14 @@
                 var month = datepart.split("-")[1];
                 var year = datepart.split("-")[0];
                 var seriesCode = data.series.seriesCode;
-                var invoiceNumber = data.purchaseBillDetail.entityId +"/P/"+month+year+"/"+seriesCode+"/"+data.purchaseBillDetail.serBillId;
+                var invoiceNumber = data.purchaseBillDetail.invoiceNumber;
+                $("#invNo").html("<p><strong>" + invoiceNumber + "</strong></p>");
                 var message = "";
                 if(billStatus !== "DRAFT") {
                     message = 'Purchase Invoice Generated: '+ invoiceNumber;
-                    $("#invNo").html("<p><strong>" + invoiceNumber + "</strong></p>");
                 }
                 else {
-                    $("#invNo").html("<p><strong>"+data.purchaseBillDetail.entityId+"/DR/P/" + month + year + "/" + seriesCode + "/__</strong></p>");
-                    message = 'Draft Invoice Generated: '+data.purchaseBillDetail.entityId+'/DR/P/'+ month + year + "/" + seriesCode + "/__";
+                    message = 'Draft Invoice Generated: '+ invoiceNumber;
                 }
                 waitingSwal.close();
                 Swal.fire({

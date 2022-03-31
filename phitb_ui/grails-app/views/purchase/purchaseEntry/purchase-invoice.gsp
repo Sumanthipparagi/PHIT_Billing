@@ -93,10 +93,10 @@
         </td>
 
         <td style="width: 25%;vertical-align:top;">
-            <strong>TAX INVOICE</strong>
+            <strong>PURCHASE INVOICE</strong>
             <ul style="margin: 0;">
 
-                <li><b class="tab">Invoice No</b>: ${invoiceNumber}</li>
+                <li><b class="tab">Invoice No</b>: ${purchaseBillDetail.invoiceNumber}</li>
                 <li><b class="tab"  >Inv Date</b>:&nbsp;<span id="invDate"></span></li>
 %{--                <li><b class="tab">GR/PR No.</b>:</li>--}%
 %{--                <li><b class="tab">GR/PR Date</b>:</li>--}%

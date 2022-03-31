@@ -158,7 +158,7 @@
 
 <script>
 
-    var fridgetable;
+    var stockentrytable;
     var id = null;
     $(function () {
        $("#product").select2();
@@ -195,7 +195,7 @@
 
 
     function stockTable() {
-        fridgetable = $(".stockTable").DataTable({
+        stockentrytable = $(".stockTable").DataTable({
             "order": [[0, "desc"]],
             sPaginationType: "simple_numbers",
             responsive: {

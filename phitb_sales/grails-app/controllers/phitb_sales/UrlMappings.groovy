@@ -96,6 +96,7 @@ class UrlMappings {
                         'save']
             }
             "/salebilldetails/datatable(.$format)?"(controller: 'saleBillDetails') {action = [GET: 'dataTable']}
+            "/salebilldetails/cancel(.$format)?"(controller: 'saleBillDetails') {action = [POST: 'cancelSaleBill']}
             "/salebilldetails/$id(.$format)?"(controller: 'saleBillDetails') {
                 action = [GET: 'show', PUT: 'update', DELETE:
                         'delete']

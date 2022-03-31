@@ -405,6 +405,7 @@ class UrlMappings {
         "/sale-entry/update/$id"(controller:"batchRegister",action:"update")
         "/sale-invoice"(controller: "saleEntry",action:"saleBill")
         "/sales/check-scheme"(controller: "saleEntry", action: "checkSchemeConfiguration")
+        "/sale-entry/cancel-invoice"(controller: "saleEntry", action: "cancelInvoice")
 
 //        Scheme Entry
         "/scheme-entry" (controller: "schemeEntry", action: "index")
