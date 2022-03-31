@@ -86,6 +86,11 @@ class SaleReturnDetailsService {
     {
         return SaleReturnDetails.findAllByCustomerIdAndEntityIdAndFinancialYearAndAdjustmentStatus(Long.parseLong(customerId) as
                 String, Long.parseLong(entityId),financialYear,"1")
+    }
 
+    def getAllUnsettledByCustId(String customerId, String entityId, String financialYear)
+    {
+        return SaleReturnDetails.findAllByCustomerIdAndEntityIdAndFinancialYearAndAdjustmentStatus(Long.parseLong(customerId) as
+                String, Long.parseLong(entityId),financialYear,"0")
     }
 }

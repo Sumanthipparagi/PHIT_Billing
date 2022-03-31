@@ -374,6 +374,9 @@ public class Links
     //Sale Return Details
     public static String SALE_RETURN_SHOW = "api/v1.0/sales/saleproductdetails";
     public static String SALE_RETURN_SAVE = "api/v1.0/sales/salereturndetails";
+    public static String SALE_RETURN_UNSETTLED = "api/v1.0/sales/saleretrununsettledbycustomer";
+    public static String SALE_RETURN_SETTLED = "api/v1.0/sales/saleretrunsettledbycustomer";
+    public static String SET_SALE_RETURN_STATUS = "api/v1.0/sales/setsalereturnstatus/{id}/type/{type}";
 
 
     //Sale Order Details

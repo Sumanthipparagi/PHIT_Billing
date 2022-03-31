@@ -497,6 +497,8 @@
             url: '/getallunsettledbycustomer/' + id,
             dataType: 'json',
             success: function (data) {
+                console.log(data)
+
                 var trHTML = '';
                 var trHTML1 = '';
                 trHTML += '';
@@ -505,7 +507,7 @@
                 var cred = "CRNT";
                 if (data.length !== 0) {
                     var inv = data[0].map(data => data.balance).reduce((acc, amount) => acc + amount, 0);
-                    var crnt = data[1].map(data => data.amount).reduce((acc, amount) => acc + amount, 0)
+                    var crnt = data[1].map(data => data.totalAmount).reduce((acc, amount) => acc + amount, 0)
                     var total_bal = inv - crnt
                 } else {
                     total_bal = 0;
@@ -524,16 +526,14 @@
                 });
 
                 $.each(data[1], function (key, value) {
-                    var date =  value.dateCreated;
-                    var dateCreated = value.dateCreated.substr(0, (date + " ").indexOf(" "));
-                    var day = moment(dateCreated, "DD/MM/YYYY");
+                        var date = new Date(value.entryDate)
                     trHTML +=
                         '<tr id="' + "CR"+value.id + '"><td><button type="button" data-id="' + value.id +
-                        '"  data-custId="' + value.id +
+                        '"  data-custId="' + value.customerId +
                         '" class="btn-sm btn-primary" id="cnsettled"><-</button></td><td>' + cred +
                         '</td><td>' + value.financialYear +
-                        '</td><td>' + moment(day).format('DD-MM-YYYY') +
-                        '</td><td>' + "-"+value.amount +
+                        '</td><td>' + moment(date).format('DD-MM-YYYY') +
+                        '</td><td>' + "-"+value.totalAmount +
                         '</td></tr>';
                 });
                 $('.unsettledVocher').html(trHTML+trHTML1);
@@ -551,7 +551,6 @@
             url: '/getallsettledbycustomer/' + id,
             dataType: 'json',
             success: function (data) {
-                console.log(data)
                 var trHTML = '';
                 var trHTML1 = '';
                 trHTML += '';
@@ -559,7 +558,7 @@
                 var invoice = "INVS";
                 var cred = "CRNT";
                 var inv = data[0].map(data => data.balance).reduce((acc, amount) => acc + amount, 0);
-                var crnt = data[1].map(data => data.amount).reduce((acc, amount) => acc + amount, 0)
+                var crnt = data[1].map(data => data.totalAmount).reduce((acc, amount) => acc + amount, 0)
                 var total_bal_s = inv - crnt
                 $('.total_bal_s').text(parseFloat(total_bal_s).toFixed(2));
                 $('.tba').val(total_bal_s.toFixed(2));
@@ -573,15 +572,14 @@
                         '</td><td><button type="button" data-id="' + value.id + '"  data-custId="' + value.customerId + '"  class="btn-sm btn-primary" id="unsettled">-></button></td></tr>';
                 });
                 $.each(data[1], function (key, value) {
-                    var date =  value.dateCreated;
-                    var dateCreated = value.dateCreated.substr(0, (date + " ").indexOf(" "))
+                    var date = new Date(value.entryDate)
                     trHTML +=
                         '<tr id="' + "CR"+value.id + '"><td>' + cred +
                         '</td><td>' + value.financialYear +
-                        '</td><td>' + moment(dateCreated).format('DD-MM-YYYY') +
-                        '</td><td>' + "-"+value.amount +
+                        '</td><td>' + moment(date).format('DD-MM-YYYY') +
+                        '</td><td>' + "-"+value.totalAmount +
                         '</td><td><button type="button" data-id="' + value.id +
-                        '"  data-custId="' + value.id +
+                        '"  data-custId="' + value.customerId +
                         '" class="btn-sm btn-primary" id="cnunsettled">-></button></td></tr>';
                 });
                 $('.settledVocher').html(trHTML+trHTML1);
@@ -660,7 +658,6 @@
         var custId = $(this).attr('data-custId');
         var url = '/creditsettledvocher/' + id;
         var type = 'GET';
-        alert(custId)
         $.ajax({
             url: url,
             type: type,

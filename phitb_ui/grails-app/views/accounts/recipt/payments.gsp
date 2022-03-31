@@ -21,6 +21,7 @@
     <asset:stylesheet
             src="/themeassets/plugins/bootstrap-material-datetimepicker/css/bootstrap-material-datetimepicker.css"
             rel="stylesheet"/>
+    <link rel="stylesheet" media="screen" href="https://cdnjs.cloudflare.com/ajax/libs/select2/3.5.2/select2.min.css">
 
     <style>
     input.chk-btn {
@@ -408,6 +409,7 @@
 <asset:javascript src="/themeassets/plugins/momentjs/moment.js"/>
 <asset:javascript src="/themeassets/plugins/bootstrap-material-datetimepicker/js/bootstrap-material-datetimepicker.js"/>
 <asset:javascript src="/themeassets/js/pages/forms/basic-form-elements.js"/>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/3.5.2/select2.js"></script>
 
 <script>
     var date = new Date();
@@ -494,6 +496,8 @@
             url: '/getallunsettledbycustomer/' + id,
             dataType: 'json',
             success: function (data) {
+                console.log(data)
+
                 var trHTML = '';
                 var trHTML1 = '';
                 trHTML += '';
@@ -502,7 +506,7 @@
                 var cred = "CRNT";
                 if (data.length !== 0) {
                     var inv = data[0].map(data => data.balance).reduce((acc, amount) => acc + amount, 0);
-                    var crnt = data[1].map(data => data.totalExpense).reduce((acc, amount) => acc + amount, 0)
+                    var crnt = data[1].map(data => data.totalAmount).reduce((acc, amount) => acc + amount, 0)
                     var total_bal = inv - crnt
                 } else {
                     total_bal = 0;
@@ -520,15 +524,15 @@
                         '</td><td>' + value.balance +
                         '</td></tr>';
                 });
-
                 $.each(data[1], function (key, value) {
+                    var date = new Date(value.entryDate)
                     trHTML +=
                         '<tr id="' + "CR"+value.id + '"><td><button type="button" data-id="' + value.id +
-                        '"  data-custId="' + value.referenceId +
+                        '"  data-custId="' + value.customerId +
                         '" class="btn-sm btn-primary" id="cnsettled"><-</button></td><td>' + cred +
                         '</td><td>' + value.financialYear +
-                        '</td><td>' + moment(value.dateCreated).format('DD-MM-YYYY') +
-                        '</td><td>' + "-"+value.totalExpense +
+                        '</td><td>' + moment(date).format('DD-MM-YYYY') +
+                        '</td><td>' + "-"+value.totalAmount +
                         '</td></tr>';
                 });
                 $('.unsettledVocher').html(trHTML+trHTML1);
@@ -553,7 +557,7 @@
                 var invoice = "INVS";
                 var cred = "CRNT";
                 var inv = data[0].map(data => data.balance).reduce((acc, amount) => acc + amount, 0);
-                var crnt = data[1].map(data => data.totalExpense).reduce((acc, amount) => acc + amount, 0)
+                var crnt = data[1].map(data => data.totalAmount).reduce((acc, amount) => acc + amount, 0)
                 var total_bal_s = inv - crnt
                 $('.total_bal_s').text(parseFloat(total_bal_s).toFixed(2));
                 $('.tba').val(total_bal_s.toFixed(2));
@@ -567,13 +571,14 @@
                         '</td><td><button type="button" data-id="' + value.id + '"  data-custId="' + value.customerId + '"  class="btn-sm btn-primary" id="unsettled">-></button></td></tr>';
                 });
                 $.each(data[1], function (key, value) {
+                    var date = new Date(value.entryDate)
                     trHTML +=
                         '<tr id="' + "CR"+value.id + '"><td>' + cred +
                         '</td><td>' + value.financialYear +
-                        '</td><td>' + moment(value.dateCreated).format('DD-MM-YYYY') +
-                        '</td><td>' + "-"+value.totalExpense +
+                        '</td><td>' + moment(date).format('DD-MM-YYYY') +
+                        '</td><td>' + "-"+value.totalAmount +
                         '</td><td><button type="button" data-id="' + value.id +
-                        '"  data-custId="' + value.referenceId +
+                        '"  data-custId="' + value.customerId +
                         '" class="btn-sm btn-primary" id="cnunsettled">-></button></td></tr>';
                 });
                 $('.settledVocher').html(trHTML+trHTML1);
@@ -690,7 +695,6 @@
             }
         });
     });
-
     $(document).ready(function () {
         $(window).keydown(function (event) {
             if (event.keyCode === 13) {
