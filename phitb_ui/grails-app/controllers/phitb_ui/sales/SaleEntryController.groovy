@@ -44,6 +44,7 @@ class SaleEntryController {
         String seriesId = params.series
         String duedate = params.duedate
         String billStatus = params.billStatus
+        String seriesCode = params.seriesCode
         String message = params.message
         if (!message)
             message = "NA"
@@ -186,6 +187,7 @@ class SaleEntryController {
         saleBillDetails.put("cashDiscount", 0) //TODO: to be changed
         saleBillDetails.put("exempted", 0) //TODO: to be changed
 
+        saleBillDetails.put("seriesCode",seriesCode)
         Response response = new SalesService().saveSaleBill(saleBillDetails)
         if (response.status == 200) {
             def saleBillDetail = new JSONObject(response.readEntity(String.class))
@@ -255,7 +257,7 @@ class SaleEntryController {
                 def apiResponse = new SalesService().getRequestWithId(it.productId.toString(), new Links().PRODUCT_REGISTER_SHOW)
                 it.put("productId", JSON.parse(apiResponse.readEntity(String.class)) as JSONObject)
             }
-            def invoiceNumber;
+         /*   def invoiceNumber;
             def datepart = saleBillDetail.entryDate.split("T")[0];
             def month = datepart.split("-")[1];
             def year = datepart.split("-")[0];
@@ -267,7 +269,7 @@ class SaleEntryController {
             else
             {
                 invoiceNumber = saleBillDetail.entityId+"/S/" + month + year + "/" + series.seriesCode + "/" + saleBillDetail.id
-            }
+            }*/
             def totalcgst = saleProductDetails.cgstAmount.sum()
             def totalsgst = saleProductDetails.sgstAmount.sum()
             def totaligst = saleProductDetails.igstAmount.sum()
@@ -276,7 +278,7 @@ class SaleEntryController {
                                                         saleProductDetails: saleProductDetails,
                                                         series            : series, entity: entity, customer: customer, city: city,
                                                         total             : saleProductDetails.amount.sum(), custcity: custcity,
-                                                        invoiceNumber     : invoiceNumber, termsConditions: termsConditions,
+                                                        termsConditions: termsConditions,
                                                         totalcgst         : totalcgst, totalsgst: totalsgst, totaligst: totaligst,
                                                         totaldiscount     : totaldiscount])
         }

@@ -5,6 +5,7 @@ import gorm.logical.delete.LogicalDelete
 class SaleBillDetails implements Serializable, LogicalDelete<SaleBillDetails>
 {
 
+    String invoiceNumber
     long finId
     long serBillId
     long seriesId
@@ -55,6 +56,7 @@ class SaleBillDetails implements Serializable, LogicalDelete<SaleBillDetails>
     Date dateCreated
     Date lastUpdated
     static constraints = {
+        invoiceNumber unique: true, nullable: true
     }
 
     boolean isUpdatable

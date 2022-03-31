@@ -166,19 +166,7 @@
                     for (var i = 0; i < json.data.length; i++) {
                         var deletebtn = '<a href="/sale-entry/print-invoice?id=' + json.data[i].id +'"><button type="button" data-id="' + json.data[i].id +
                             '" class="btn btn-sm btn-danger deletebtn" ><i class="material-icons"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">print</font></font></i></button></a>'
-
-                        var datepart = json.data[i].entryDate.split("T")[0];
-                        var month = datepart.split("-")[1];
-                        var year = datepart.split("-")[0];
-                       // var seriesCode = json.data[i].series.seriesCode;
-                        var seriesCode = "__";
-                        var invoiceNumber = "S/"+month+year+"/"+seriesCode+"/"+json.data[i].serBillId;
-                        if(json.data[i].billStatus === "DRAFT")
-                        {
-                            invoiceNumber = "DR/S/"+ month + year + "/" + seriesCode + "/__";
-                        }
-                        else
-                            invoiceNumber = "S/"+month+year+"/"+seriesCode+"/"+json.data[i].serBillId;
+                        var invoiceNumber = data[i].invoiceNumber;
 
                         return_data.push({
                             // 'id': json.data[i].id,

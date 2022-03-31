@@ -99,7 +99,7 @@
             <strong>TAX INVOICE</strong>
             <ul style="margin: 0;">
 
-                <li><b class="tab">Invoice No</b>: ${invoiceNumber}</li>
+                <li><b class="tab">Invoice No</b>: ${saleBillDetail.invoiceNumber}</li>
                 <li><b class="tab">Inv Date</b>:&nbsp;<span id="invDate"></span></li>
                 %{--                <li><b class="tab">No of cases</b>:</li>--}%
                 %{--                <li><b class="tab">Weight in Kgs</b>:</li>--}%

@@ -889,6 +889,7 @@
 
     function resetData()
     {
+        $("#invNo").html("");
         purchaseData.length = 0;
         batchData.length = 0;
         mainTableRow = 0;

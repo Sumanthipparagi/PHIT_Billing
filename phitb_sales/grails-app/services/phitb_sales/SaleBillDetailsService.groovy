@@ -15,7 +15,7 @@ import javax.ws.rs.client.Entity
 import javax.ws.rs.client.WebTarget
 import javax.ws.rs.core.MediaType
 import javax.ws.rs.core.Response
-
+import java.text.DecimalFormat
 import java.text.SimpleDateFormat
 
 @Transactional
@@ -174,6 +174,33 @@ class SaleBillDetailsService
         saleBillDetails.save(flush: true)
         if (!saleBillDetails.hasErrors())
         {
+            Calendar cal = new GregorianCalendar()
+            cal.setTime(saleBillDetails.entryDate)
+            String month = cal.get(Calendar.MONTH)
+            String year = cal.get(Calendar.YEAR)
+
+            DecimalFormat mFormat= new DecimalFormat("00");
+            month = mFormat.format(Double.valueOf(month));
+
+            String invoiceNumber = null
+            String seriesCode = jsonObject.get("seriesCode")
+
+            if (saleBillDetails.billStatus == "DRAFT")
+            {
+                invoiceNumber = saleBillDetails.entityId+"/DR/S/" + month + year + "/" + seriesCode + "/__";
+            }
+            else
+            {
+                invoiceNumber = saleBillDetails.entityId+"/S/" + month + year + "/" + seriesCode + "/" + saleBillDetails.serBillId
+            }
+
+            if(invoiceNumber)
+            {
+                saleBillDetails.invoiceNumber = invoiceNumber
+                saleBillDetails.isUpdatable = true
+                saleBillDetails = saleBillDetails.save(flush:true)
+            }
+
             return saleBillDetails
         }
         else
