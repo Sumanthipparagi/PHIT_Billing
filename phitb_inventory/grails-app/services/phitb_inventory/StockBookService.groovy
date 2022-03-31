@@ -11,7 +11,7 @@ import java.text.SimpleDateFormat
 class StockBookService {
 
     SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy")
-    //SimpleDateFormat sdf1 = new SimpleDateFormat("dd-MM-yyyy")
+//    SimpleDateFormat sdf1 = new SimpleDateFormat("dd/MM/yyyy")
 
     def getAll(String limit, String offset, String query) {
 
