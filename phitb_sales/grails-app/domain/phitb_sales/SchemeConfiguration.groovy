@@ -4,7 +4,6 @@ import gorm.logical.delete.LogicalDelete
 
 class SchemeConfiguration implements Serializable, LogicalDelete<SchemeConfiguration>
 {
-
     String zoneIds
     String stateIds
     String cityIds
