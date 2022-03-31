@@ -38,7 +38,7 @@ class SaleReturnDetailsService {
         saleReturnDetails.serBillId = Long.parseLong(jsonObject.get("serBillId").toString())
         saleReturnDetails.series = Long.parseLong(jsonObject.get("series").toString())
         saleReturnDetails.type = jsonObject.get("type").toString()
-        saleReturnDetails.supplierId = Long.parseLong(jsonObject.get("supplierId").toString())
+        saleReturnDetails.customerId = Long.parseLong(jsonObject.get("customerId").toString())
         saleReturnDetails.salesmanId = Long.parseLong(jsonObject.get("salesmanId").toString())
         saleReturnDetails.dispatchDate = sdf.parse(jsonObject.get("dispatchDate").toString())
         saleReturnDetails.entryDate = sdf.parse(jsonObject.get("entryDate").toString())
@@ -80,5 +80,12 @@ class SaleReturnDetailsService {
         {
             throw new BadRequestException()
         }
+    }
+
+    def getAllsettledByCustId(String customerId, String entityId, String financialYear)
+    {
+        return SaleReturnDetails.findAllByCustomerIdAndEntityIdAndFinancialYearAndAdjustmentStatus(Long.parseLong(customerId) as
+                String, Long.parseLong(entityId),financialYear,"1")
+
     }
 }

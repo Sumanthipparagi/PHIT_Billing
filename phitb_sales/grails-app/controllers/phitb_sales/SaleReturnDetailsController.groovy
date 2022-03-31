@@ -21,7 +21,7 @@ class SaleReturnDetailsController {
     def index() {
 
         try {
-            respond saleProductDetailsService.getAll(params.limit, params.offset, params.query)
+            respond saleReturnDetailsService.getAll(params.limit, params.offset, params.query)
         }
         catch (Exception ex) {
             System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
@@ -77,6 +77,36 @@ class SaleReturnDetailsController {
             response.status = 400
         }
         catch (Exception ex) {
+            System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
+        }
+    }
+
+    /**
+     * Get requested Credit Debit Details
+     * @param id
+     * @return get requested Credit Debit Details
+     */
+    def getAllsettledByCustId()
+    {
+        try
+        {
+            String customerId = params.id
+            String entityId = params.entityId
+            String financialYear = params.financialYear
+            respond saleReturnDetailsService.getAllsettledByCustId(customerId, entityId, financialYear)
+        }
+        catch (ResourceNotFoundException ex)
+        {
+            System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
+            response.status = 404
+        }
+        catch (BadRequestException ex)
+        {
+            System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
+            response.status = 400
+        }
+        catch (Exception ex)
+        {
             System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
         }
     }

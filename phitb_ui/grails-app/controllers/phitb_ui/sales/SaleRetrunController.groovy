@@ -127,7 +127,7 @@ class SaleRetrunController
             saleReturnDetail.put("productId", productId)
             saleReturnDetail.put("batchNumber", batchNumber)
             saleReturnDetail.put("sqty", saleQty)
-            saleReturnDetail.put("supplierId", 1)
+            saleReturnDetail.put("customerId", customerId)
             saleReturnDetail.put("salesmanId", salesmanId)
             saleReturnDetail.put("dispatchDate", dispatchDate)
             saleReturnDetail.put("totalDiscount", totalDiscount)
