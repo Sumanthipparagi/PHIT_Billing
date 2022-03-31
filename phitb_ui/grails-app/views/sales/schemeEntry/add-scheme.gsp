@@ -135,7 +135,9 @@
                                     <label for="distributor">
                                         Distributor
                                     </label>
-                                    <select class="form-control show-tick distributor" name="distributor" id="distributor">
+                                    <select class="form-control show-tick distributor" name="distributorId"
+                                            id="distributor">
+                                        <option value="">--Please Select--</option>
                                         <g:each var="d" in="${distributorList}">
                                             <option value="${d.id}">${d.entityName}</option>
                                         </g:each>
