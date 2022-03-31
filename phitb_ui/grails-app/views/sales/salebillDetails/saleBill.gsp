@@ -57,7 +57,7 @@
                     <h2>Sale Invoices</h2>
                     <ul class="breadcrumb padding-0">
                         <li class="breadcrumb-item"><a href="index.html"><i class="zmdi zmdi-home"></i></a></li>
-                        <li class="breadcrumb-item active"></li>
+                        <li class="breadcrumb-item active">My Invoices</li>
                     </ul>
                 </div>
                 <div class="col-lg-7 col-md-7 col-sm-12">
@@ -166,7 +166,7 @@
                     for (var i = 0; i < json.data.length; i++) {
                         var deletebtn = '<a href="/sale-entry/print-invoice?id=' + json.data[i].id +'"><button type="button" data-id="' + json.data[i].id +
                             '" class="btn btn-sm btn-danger deletebtn" ><i class="material-icons"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">print</font></font></i></button></a>'
-                        var invoiceNumber = data[i].invoiceNumber;
+                        var invoiceNumber = json.data[i].invoiceNumber;
 
                         return_data.push({
                             // 'id': json.data[i].id,
