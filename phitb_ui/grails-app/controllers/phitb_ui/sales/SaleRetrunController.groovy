@@ -110,14 +110,17 @@ class SaleRetrunController
             String mrp = sale[7]
             String value = sale[10]
             String gst = sale[9]
+            String igst = sale[13]
+            String cgst = sale[12]
+            String sgst = sale[11]
 
             totalSqty += Long.parseLong(saleQty)
             totalFqty += Long.parseLong(freeQty)
             totalAmount += Double.parseDouble(value)
             totalGst += Double.parseDouble(gst)
-            totalSgst += Double.parseDouble("0")
-            totalCgst += Double.parseDouble("0")
-            totalIgst += Double.parseDouble("0")
+            totalSgst += Double.parseDouble(sgst)
+            totalCgst += Double.parseDouble(cgst)
+            totalIgst += Double.parseDouble(igst)
             totalDiscount += Double.parseDouble("0")
             saleReturnDetail.put("finId", finId)
             saleReturnDetail.put("billId",0)
@@ -127,7 +130,7 @@ class SaleRetrunController
             saleReturnDetail.put("productId", productId)
             saleReturnDetail.put("batchNumber", batchNumber)
             saleReturnDetail.put("sqty", saleQty)
-            saleReturnDetail.put("supplierId", 1)
+            saleReturnDetail.put("customerId", customerId)
             saleReturnDetail.put("salesmanId", salesmanId)
             saleReturnDetail.put("dispatchDate", dispatchDate)
             saleReturnDetail.put("totalDiscount", totalDiscount)

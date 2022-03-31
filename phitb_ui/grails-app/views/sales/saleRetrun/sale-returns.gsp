@@ -940,8 +940,14 @@
             waitingSwal.close();
             return;
         }
+        //
+        // if (!dispatchDate) {
+        //     alert("Please select dispatchDate.");
+        //     waitingSwal.close();
+        //     return;
+        // }
 
-        if (!dispatchDate) {
+        if (!Date.parse(dispatchDate)) {
             alert("Please select dispatchDate.");
             waitingSwal.close();
             return;

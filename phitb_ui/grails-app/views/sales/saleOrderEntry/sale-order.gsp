@@ -777,28 +777,23 @@
             showConfirmButton: false,
             allowOutsideClick: false
         });
-
         var customer = $("#customerSelect").val();
         var series = $("#series").val();
         var duedate = $("#duedate").val();
         duedate = moment(duedate, 'YYYY-MM-DD').toDate();
         duedate = moment(duedate).format('DD/MM/YYYY');
         var priority = $("#priority").val();
-
         if(!series) {
             alert("Please select series.");
             waitingSwal.close();
             return;
         }
-
         if(!customer) {
             alert("Please select customer.");
             waitingSwal.close();
             return;
         }
-
         var saleData = JSON.stringify(hot.getData());
-
         $.ajax({
             type: "POST",
             url: "/sale-order-entry",
@@ -866,7 +861,7 @@
     {
         if(readOnly) {
             window.open(
-                'sale-entry/print-invoice?id=' + saleBillId,
+                'sale-order/print-invoice?id=' + saleBillId,
                 '_blank'
             );
         }

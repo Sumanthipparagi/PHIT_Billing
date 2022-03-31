@@ -321,14 +321,14 @@ class AccountsService
     }
 
     //    get Credit Note to settled
-    def getCNUnsettledCustomerId(String entityId, String financialYear)
+    def getCNUnsettledCustomerId(String id,String entityId, String financialYear)
     {
         Client client = ClientBuilder.newClient()
         WebTarget target = client.target(new Links().API_GATEWAY)
         try
         {
             Response apiResponse = target
-                    .path(new Links().CREDIT_UNSETTLED + "/" + entityId) //TODO: To be changed
+                    .path(new Links().SALE_RETURN_UNSETTLED +"/"+id) //TODO: To be changed
                     .queryParam("entityId", entityId)
                     .queryParam("financialYear", financialYear)
                     .request(MediaType.APPLICATION_JSON_TYPE)
@@ -374,7 +374,7 @@ class AccountsService
         try
         {
             Response apiResponse = target
-                    .path(new Links().CREDIT_SETTLED + "/" + id)
+                    .path(new Links().SALE_RETURN_SETTLED + "/" + id)
                     .queryParam("entityId", URLEncoder.encode(entityId, "UTF-8"))
                     .queryParam("financialYear", URLEncoder.encode(financialYear, "UTF-8"))
                     .request(MediaType.APPLICATION_JSON_TYPE)
@@ -453,13 +453,12 @@ class AccountsService
         try
         {
             Response apiResponse = target
-                    .path(new Links().SET_CREDIT_STATUS)
+                    .path(new Links().SET_SALE_RETURN_STATUS)
                     .resolveTemplate("id", jsonObject.id)
                     .resolveTemplate("type", "settled")
                     .request(MediaType.APPLICATION_JSON_TYPE)
 //                    .post(Entity.entity(jsonObject.toString(),MediaType.APPLICATION_JSON_TYPE))
                     .post(Entity.form(form))
-            println(apiResponse)
             return apiResponse
         }
         catch (Exception ex)
@@ -480,7 +479,7 @@ class AccountsService
         try
         {
             Response apiResponse = target
-                    .path(new Links().SET_CREDIT_STATUS)
+                    .path(new Links().SET_SALE_RETURN_STATUS)
                     .resolveTemplate("id", jsonObject.id)
                     .resolveTemplate("type", "unsettled")
                     .request(MediaType.APPLICATION_JSON_TYPE)

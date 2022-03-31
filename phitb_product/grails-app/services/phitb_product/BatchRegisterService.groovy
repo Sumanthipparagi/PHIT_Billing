@@ -39,14 +39,11 @@ class BatchRegisterService {
         }
     }
 
-    def getAllByProduct(String limit, String offset, long productId) {
-
-        Integer o = offset ? Integer.parseInt(offset.toString()) : 0
-        Integer l = limit ? Integer.parseInt(limit.toString()) : 100
+    def getAllByProduct(long productId) {
         if (!productId)
-            return BatchRegister.findAll([sort: 'id', max: l, offset: o, order: 'desc'])
+            return BatchRegister.findAll()
         else
-            return BatchRegister.createCriteria().list(max: l,offset:o){
+            return BatchRegister.createCriteria().list(){
                 product{
                     eq('id',productId)
                 }

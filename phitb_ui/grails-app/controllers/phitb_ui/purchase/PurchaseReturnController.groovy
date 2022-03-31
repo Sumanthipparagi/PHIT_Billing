@@ -67,7 +67,7 @@ class PurchaseReturnController
     def savePurchaseReturn()
     {
         SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy")
-        JSONObject saleReturnDetail = new JSONObject()
+        JSONObject purReturnDetail = new JSONObject()
 
         String entityId = session.getAttribute("entityId").toString()
         String supplierId = params.supplierId
@@ -126,68 +126,68 @@ class PurchaseReturnController
             totalCgst += Double.parseDouble("0")
             totalIgst += Double.parseDouble("0")
             totalDiscount += Double.parseDouble("0")
-            saleReturnDetail.put("finId", finId)
-            saleReturnDetail.put("billId",0)
-            saleReturnDetail.put("billType",0)
-            saleReturnDetail.put("serBillId",0)
-            saleReturnDetail.put("series", seriesId)
-            saleReturnDetail.put("productId", productId)
-            saleReturnDetail.put("batchNumber", batchNumber)
-            saleReturnDetail.put("sqty", saleQty)
-            saleReturnDetail.put("supplierId", 1)
-            saleReturnDetail.put("salesmanId", salesmanId)
-            saleReturnDetail.put("dispatchDate", dispatchDate)
-            saleReturnDetail.put("totalDiscount", totalDiscount)
-            saleReturnDetail.put("freeQty", freeQty)
-            saleReturnDetail.put("entryDate", entryDate)
-            saleReturnDetail.put("refId", 0) //TODO: to be changed
-            saleReturnDetail.put("sRate", saleRate)
-            saleReturnDetail.put("mrp", mrp)
-            saleReturnDetail.put("gstAmount", gst)
-            saleReturnDetail.put("maxDnAmount", 1) //TODO: to be changed
-            saleReturnDetail.put("amount", value)
-            saleReturnDetail.put("supplierContact", 1) //TODO: to be changed
-            saleReturnDetail.put("totalGst", totalGst) //TODO: to be changed
-            saleReturnDetail.put("totalCgst", totalCgst) //TODO: to be changed
-            saleReturnDetail.put("totalSgst", totalSgst) //TODO: to be changed
-            saleReturnDetail.put("totalSgst", totalSgst) //TODO: to be changed
-            saleReturnDetail.put("totalIgst", totalIgst) //TODO: to be changed
-            saleReturnDetail.put("exempted", 0) //TODO: to be changed
-            saleReturnDetail.put("type", 0) //TODO: to be changed
-            saleReturnDetail.put("cashDiscount", 0) //TODO: to be changed
-            saleReturnDetail.put("items", 0) //TODO: to be changed
-            saleReturnDetail.put("quantity", 0) //TODO: to be changed
-            saleReturnDetail.put("totalAmount", totalAmount) //TODO: to be changed
-            saleReturnDetail.put("balance", totalAmount) //TODO: to be changed
-            saleReturnDetail.put("dbAdjAmount", 0) //TODO: to be changed
-            saleReturnDetail.put("debitIds", 0) //TODO: to be changed
-            saleReturnDetail.put("debitIds", 0) //TODO: to be changed
-            saleReturnDetail.put("supplierEmail", 0) //TODO: to be changed
-            saleReturnDetail.put("gross", 0) //TODO: to be changed
-            saleReturnDetail.put("taxable", 0) //TODO: to be changed
-            saleReturnDetail.put("saleFinId", "") //TODO: to be changed
-            saleReturnDetail.put("lockStatus", 0) //TODO: to be changed
-            saleReturnDetail.put("adjustmentStatus", 0) //TODO: to be changed
-            saleReturnDetail.put("message", 0)
-            saleReturnDetail.put("ignoreSold", 0)
-            saleReturnDetail.put("status", 0)
-            saleReturnDetail.put("syncStatus", 0)
-            saleReturnDetail.put("financialYear", financialYear)
-            saleReturnDetail.put("", financialYear)
-            saleReturnDetail.put("createdUser", 1)
-            saleReturnDetail.put("modifiedUser", 1)
-            saleReturnDetail.put("entityId", entityId)
-            saleReturnDetail.put("entityTypeId", session.getAttribute("entityTypeId").toString())
+            purReturnDetail.put("finId", finId)
+            purReturnDetail.put("billId",0)
+            purReturnDetail.put("billType",0)
+            purReturnDetail.put("serBillId",0)
+            purReturnDetail.put("series", seriesId)
+            purReturnDetail.put("productId", productId)
+            purReturnDetail.put("batchNumber", batchNumber)
+            purReturnDetail.put("sqty", saleQty)
+            purReturnDetail.put("supplierId", 1)
+            purReturnDetail.put("salesmanId", salesmanId)
+            purReturnDetail.put("dispatchDate", dispatchDate)
+            purReturnDetail.put("totalDiscount", totalDiscount)
+            purReturnDetail.put("freeQty", freeQty)
+            purReturnDetail.put("entryDate", entryDate)
+            purReturnDetail.put("refId", 0) //TODO: to be changed
+            purReturnDetail.put("sRate", saleRate)
+            purReturnDetail.put("mrp", mrp)
+            purReturnDetail.put("gstAmount", gst)
+            purReturnDetail.put("maxDnAmount", 1) //TODO: to be changed
+            purReturnDetail.put("amount", value)
+            purReturnDetail.put("supplierContact", 1) //TODO: to be changed
+            purReturnDetail.put("totalGst", totalGst) //TODO: to be changed
+            purReturnDetail.put("totalCgst", totalCgst) //TODO: to be changed
+            purReturnDetail.put("totalSgst", totalSgst) //TODO: to be changed
+            purReturnDetail.put("totalSgst", totalSgst) //TODO: to be changed
+            purReturnDetail.put("totalIgst", totalIgst) //TODO: to be changed
+            purReturnDetail.put("exempted", 0) //TODO: to be changed
+            purReturnDetail.put("type", 0) //TODO: to be changed
+            purReturnDetail.put("cashDiscount", 0) //TODO: to be changed
+            purReturnDetail.put("items", 0) //TODO: to be changed
+            purReturnDetail.put("quantity", 0) //TODO: to be changed
+            purReturnDetail.put("totalAmount", totalAmount) //TODO: to be changed
+            purReturnDetail.put("balance", totalAmount) //TODO: to be changed
+            purReturnDetail.put("dbAdjAmount", 0) //TODO: to be changed
+            purReturnDetail.put("debitIds", 0) //TODO: to be changed
+            purReturnDetail.put("debitIds", 0) //TODO: to be changed
+            purReturnDetail.put("supplierEmail", 0) //TODO: to be changed
+            purReturnDetail.put("gross", 0) //TODO: to be changed
+            purReturnDetail.put("taxable", 0) //TODO: to be changed
+            purReturnDetail.put("saleFinId", "") //TODO: to be changed
+            purReturnDetail.put("lockStatus", 0) //TODO: to be changed
+            purReturnDetail.put("adjustmentStatus", 0) //TODO: to be changed
+            purReturnDetail.put("message", 0)
+            purReturnDetail.put("ignoreSold", 0)
+            purReturnDetail.put("status", 0)
+            purReturnDetail.put("syncStatus", 0)
+            purReturnDetail.put("financialYear", financialYear)
+            purReturnDetail.put("", financialYear)
+            purReturnDetail.put("createdUser", 1)
+            purReturnDetail.put("modifiedUser", 1)
+            purReturnDetail.put("entityId", entityId)
+            purReturnDetail.put("entityTypeId", session.getAttribute("entityTypeId").toString())
             //save to sale transaction log
             //save to sale transportation details
         }
-        Response response = new SalesService().saveSaleRetrun(saleReturnDetail)
+        Response response = new SalesService().saveSaleRetrun(purReturnDetail)
         if(response.status == 200)
         {
             def saleOrder = new JSONObject(response.readEntity(String.class))
             JSONObject responseJson = new JSONObject()
             responseJson.put("series", series)
-            responseJson.put("saleReturnDetail", saleOrder)
+            responseJson.put("purReturnDetail", saleOrder)
             respond responseJson, formats: ['json'],status: 200
         }
         else

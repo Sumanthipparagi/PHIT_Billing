@@ -4,11 +4,11 @@ import gorm.logical.delete.LogicalDelete
 
 class SchemeConfiguration implements Serializable, LogicalDelete<SchemeConfiguration>
 {
-
     String zoneIds
     String stateIds
     String cityIds
     String customerIds
+    String distributorId
     long productId
     String batch
     long slab1MinQty
@@ -37,10 +37,15 @@ class SchemeConfiguration implements Serializable, LogicalDelete<SchemeConfigura
     long entityId
     long createdUser
     long modifiedUser
-
     Date dateCreated
     Date lastUpdated
+
     static constraints = {
+        zoneIds nullable: true
+        stateIds nullable: true
+        cityIds nullable: true
+        customerIds nullable: true
+        distributorId nullable: true
     }
 
     boolean isUpdatable

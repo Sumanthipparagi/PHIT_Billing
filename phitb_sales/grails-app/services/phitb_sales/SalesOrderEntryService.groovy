@@ -105,7 +105,7 @@ class SalesOrderEntryService {
         salesOrderEntry.orderValidity = sdf.parse(jsonObject.get("orderValidity").toString())
         salesOrderEntry.orderId = jsonObject.get("orderId").toString()
         salesOrderEntry.totalEstimate = Long.parseLong(jsonObject.get("totalEstimate").toString())
-        salesOrderEntry.totalGst = Long.parseLong(jsonObject.get("totalGst").toString())
+        salesOrderEntry.totalGst = Double.parseDouble(jsonObject.get("totalGst").toString())
         salesOrderEntry.billStatus = jsonObject.get("billStatus").toString()
         salesOrderEntry.lockStatus = Long.parseLong(jsonObject.get("lockStatus").toString())
         salesOrderEntry.syncStatus = Long.parseLong(jsonObject.get("syncStatus").toString())

@@ -223,7 +223,16 @@ class UrlMappings {
                 action = [GET: 'show', PUT: 'update', DELETE:
                         'delete']
             }
+            "/saleretrununsettledbycustomer/$id(.$format)?"(controller: 'saleReturnDetails') {
+                action = [GET: 'getAllUnsettledByCustId']
+            }
+            "/saleretrunsettledbycustomer/$id(.$format)?"(controller: 'saleReturnDetails') {
+                action = [GET: 'getAllsettledByCustId']
+            }
 
+            "/setsalereturnstatus/$id/type/$type(.$format)?"(controller: 'saleReturnDetails') {
+                action = [POST: 'updateStatus']
+            }
 
             //Temp User Log
             "/tempuserlog(.$format)?"(controller:'tempUserLog') {

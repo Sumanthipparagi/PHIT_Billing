@@ -20,6 +20,7 @@
     <asset:stylesheet  src="/themeassets/plugins/bootstrap-select/css/bootstrap-select.css" rel="stylesheet" />
     <asset:stylesheet  src="/themeassets/js/pages/forms/basic-form-elements.js" rel="stylesheet" />
     <asset:stylesheet  src="/themeassets/plugins/bootstrap-material-datetimepicker/css/bootstrap-material-datetimepicker.css" rel="stylesheet" />
+    <link rel="stylesheet" media="screen" href="https://cdnjs.cloudflare.com/ajax/libs/select2/3.5.2/select2.min.css">
 
     <style>
     .form-control
@@ -45,7 +46,7 @@
                 <div class="col-lg-5 col-md-5 col-sm-12">
                     <h2>Scheme Entry</h2>
                     <ul class="breadcrumb padding-0">
-                        <li class="breadcrumb-item"><a href="index.html"><i class="zmdi zmdi-home"></i></a></li>
+                        <li class="breadcrumb-item"><a href="/"><i class="zmdi zmdi-home"></i></a></li>
                         %{--                        <li class="breadcrumb-item"><a href="/entity-register">Entity Register</a></li>--}%
                         <li class="breadcrumb-item active">Update Scheme</li>
                     </ul>
@@ -88,6 +89,7 @@
                                         Zone
                                     </label>
                                     <select class="form-control show-tick zone" name="zoneIds" id="zone">
+                                        <option value="">--Please Select--</option>
                                         <g:each var="z" in="${zoneList}">
                                             <option value="${z.id}">${z.name}</option>
                                         </g:each>
@@ -99,6 +101,7 @@
                                         State
                                     </label>
                                     <select class="form-control show-tick state" name="stateIds" id="state">
+                                        <option value="">--Please Select--</option>
                                         <g:each var="s" in="${stateList}">
                                             <option value="${s.id}">${s.name}</option>
                                         </g:each>
@@ -110,6 +113,7 @@
                                         City
                                     </label>
                                     <select class="form-control show-tick city" name="cityIds" id="city">
+                                        <option value="">--Please Select--</option>
                                         <g:each var="c" in="${cityList}">
                                             <option value="${c.id}">${c.name}</option>
                                         </g:each>
@@ -121,6 +125,7 @@
                                         Customer
                                     </label>
                                     <select class="form-control show-tick customer" name="customerIds" id="customer">
+                                        <option value="">--Please Select--</option>
                                         <g:each var="e" in="${entityList}">
                                             <option value="${e.id}">${e.entityName}</option>
                                         </g:each>
@@ -131,7 +136,9 @@
                                     <label for="distributor">
                                         Distributor
                                     </label>
-                                    <select class="form-control show-tick distributor" name="distributor" id="distributor">
+                                    <select class="form-control show-tick distributor" name="distributorId"
+                                            id="distributor">
+                                        <option value="">--Please Select--</option>
                                         <g:each var="d" in="${distributorList}">
                                             <option value="${d.id}">${d.entityName}</option>
                                         </g:each>
@@ -143,7 +150,9 @@
                                     <label for="productId">
                                         Product
                                     </label>
-                                    <select class="form-control show-tick productId" name="productId" id="productId">
+                                    <select class="form-control show-tick productId" name="productId" id="productId"
+                                            onchange="getBatches(this.value)" required>
+                                        <option value="">--Please Select--</option>
                                         <g:each var="p" in="${productList}">
                                             <option value="${p.id}">${p.productName}</option>
                                         </g:each>
@@ -154,10 +163,10 @@
                                     <label for="batch">
                                         Batch
                                     </label>
-                                    <select class="form-control show-tick batch" name="batch" id="batch">
-                                        <g:each var="p" in="${batchList}">
-                                            <option value="${p.batchNumber}">${p.batchNumber}</option>
-                                        </g:each>
+                                    <select class="form-control show-tick batch" name="batch" id="batch" required>
+%{--                                        <g:each var="p" in="${batchList}">--}%
+%{--                                            <option value="${p.batchNumber}">${p.batchNumber}</option>--}%
+%{--                                        </g:each>--}%
                                     </select>
                                 </div>
 
@@ -396,6 +405,7 @@
 <asset:javascript src="/themeassets/plugins/momentjs/moment.js"/>
 <asset:javascript src="/themeassets/plugins/bootstrap-material-datetimepicker/js/bootstrap-material-datetimepicker.js"/>
 <asset:javascript src="/themeassets/js/pages/forms/basic-form-elements.js"/>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/3.5.2/select2.js"></script>
 
 <script>
 
@@ -415,7 +425,50 @@
         $('#slabValidityTo').val(moment().format('DD/MM/YYYY'));
         $('#slabValidityFrom').val(moment().format('DD/MM/YYYY'));
 
+        $('#productId').val(${scheme.productId}).select2()
+        $('#customer').select2()
+        $('#distributor').select2()
+        $('#state').select2()
+        $('#zone').select2()
+        $('#city').select2()
+        $('#batch').val(${scheme.batchNumber})
+
     });
+
+    function getBatches(id)
+    {
+        var option = '';
+        $.ajax({
+            url: '/batch-register/product/'+id,
+            dataType: 'json',
+            type: 'GET',
+            success: function(data) {
+                for (var i=0; i<data.length; i++) {
+                    option += '<option value="'+ data[i].batchNumber + '">' + data[i].batchNumber + '</option>';
+                }
+                $('#batch').html(option);
+                if(data.length===0)
+                {
+                    $('#batch').prop('disabled', true);
+                }
+                else {
+                    $('#batch').prop('disabled', false);
+                }
+            },
+            error: function(x, e) {
+
+            }
+
+        });
+    }
+
+    $(document).ready(function () {
+        var productId = $('#productId').val();
+        getBatches(productId)
+    });
+
+
+
 </script>
 
 </body>

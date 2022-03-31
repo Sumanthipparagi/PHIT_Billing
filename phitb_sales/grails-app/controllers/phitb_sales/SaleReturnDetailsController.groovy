@@ -21,7 +21,7 @@ class SaleReturnDetailsController {
     def index() {
 
         try {
-            respond saleProductDetailsService.getAll(params.limit, params.offset, params.query)
+            respond saleReturnDetailsService.getAll(params.limit, params.offset, params.query)
         }
         catch (Exception ex) {
             System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
@@ -81,4 +81,90 @@ class SaleReturnDetailsController {
         }
     }
 
+    /**
+     * Get requested Credit Debit Details
+     * @param id
+     * @return get requested Credit Debit Details
+     */
+    def getAllsettledByCustId()
+    {
+        try
+        {
+            String customerId = params.id
+            String entityId = params.entityId
+            String financialYear = params.financialYear
+            respond saleReturnDetailsService.getAllsettledByCustId(customerId, entityId, financialYear)
+        }
+        catch (ResourceNotFoundException ex)
+        {
+            System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
+            response.status = 404
+        }
+        catch (BadRequestException ex)
+        {
+            System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
+            response.status = 400
+        }
+        catch (Exception ex)
+        {
+            System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
+        }
+    }
+
+    def getAllUnsettledByCustId()
+    {
+        try
+        {
+            String customerId = params.id
+            String entityId = params.entityId
+            String financialYear = params.financialYear
+            respond saleReturnDetailsService.getAllUnsettledByCustId(customerId, entityId, financialYear)
+        }
+        catch (ResourceNotFoundException ex)
+        {
+            System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
+            response.status = 404
+        }
+        catch (BadRequestException ex)
+        {
+            System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
+            response.status = 400
+        }
+        catch (Exception ex)
+        {
+            System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
+        }
+    }
+
+    def updateStatus(Long id)
+    {
+        try
+        {
+            SaleReturnDetails saleReturnDetails = SaleReturnDetails.findById(id)
+            if (saleReturnDetails)
+            {
+                saleReturnDetails.isUpdatable = true
+                if (params.type == "settled")
+                {
+                    saleReturnDetails.adjustmentStatus = "1"
+                }
+                else
+                {
+                    saleReturnDetails.adjustmentStatus = "0"
+                }
+                SaleReturnDetails saleReturnDetails1 = saleReturnDetails.save(flush: true)
+                if (saleReturnDetails1)
+                {
+                    respond saleReturnDetails1
+                    return
+                }
+            }
+        }
+        catch (Exception ex)
+        {
+            System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
+            log.error('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
+        }
+        response.status = 400
+    }
 }
