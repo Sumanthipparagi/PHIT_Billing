@@ -439,7 +439,8 @@ class UrlMappings {
         "/stockbook"(controller: "stockBook"){
             action = [GET: "index", POST: "save"]
         }
-        "/stockbook/$id"(controller: "stockBook"){
+        "/stockbook/save"(controller: "stockBook"){action = [POST: "save"]}
+        "/stockbook/update/$id"(controller: "stockBook"){
             action = [POST: 'update']
         }
         "/stockbook/datatable"(controller: "stockBook",action:"dataTable")
@@ -464,9 +465,7 @@ class UrlMappings {
 
 
 //        Stock Book
-        "/stockbook"(controller: "stockBook") {
-            action = [POST: 'stockBookSave']
-        }
+        "/stockbook"(controller: "stockBook") {action = [POST: 'stockBookSave']}
         "/stockbook/user/$id"(controller: "stockBook",action:"getStocksOfUser")
         "/stockbook/increase/"(controller: 'stockBook', action: 'stockIncrease')
 //        Sale Order Entry

@@ -792,7 +792,7 @@
 
         var customer = $("#customerSelect").val();
         var series = $("#series").val();
-        var seriesCode = $("#series").find(':selected').data('seriescode')
+        var seriesCode = $("#series").find(':selected').data('seriescode');
         var duedate = $("#duedate").val();
         duedate = moment(duedate, 'YYYY-MM-DD').toDate();
         duedate = moment(duedate).format('DD/MM/YYYY');

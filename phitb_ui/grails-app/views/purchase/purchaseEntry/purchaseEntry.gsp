@@ -73,7 +73,7 @@
                                 <label for="series">Series:</label>
                                 <select onchange="seriesChanged()" class="form-control" id="series" name="series">
                                     <g:each in="${series}" var="sr">
-                                        <option value="${sr.id}">${sr.seriesName} (${sr.seriesCode})</option>
+                                        <option data-seriescode="${sr.seriesCode}" value="${sr.id}">${sr.seriesName} (${sr.seriesCode})</option>
                                     </g:each>
                                 </select>
                             </div>
@@ -779,6 +779,7 @@
 
         var supplier = $("#supplier").val();
         var series = $("#series").val();
+        var seriesCode = $("#series").find(':selected').data('seriescode');
         var duedate = $("#duedate").val();
         duedate = moment(duedate, 'YYYY-MM-DD').toDate();
         duedate = moment(duedate).format('DD/MM/YYYY');
@@ -808,7 +809,8 @@
                 series:series,
                 duedate:duedate,
                 priority:priority,
-                billStatus: billStatus
+                billStatus: billStatus,
+                seriesCode:seriesCode
             },
             success: function (data) {
                 console.log(data);

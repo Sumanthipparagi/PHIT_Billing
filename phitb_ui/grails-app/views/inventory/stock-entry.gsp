@@ -170,7 +170,7 @@
 
     $('#expDate').bootstrapMaterialDatePicker({
         time:false,
-        format: 'DD/MM/YYYY',
+        format: 'DD-MM-YYYY',
         clearButton: true,
         shortTime: true,
         weekStart: 1
@@ -178,7 +178,7 @@
 
     $('#purcDate').bootstrapMaterialDatePicker({
         time:false,
-        format: 'DD/MM/YYYY',
+        format: 'DD-MM-YYYY',
         clearButton: true,
         shortTime: true,
         weekStart: 1
@@ -186,7 +186,7 @@
 
     $('#manufacturingDate').bootstrapMaterialDatePicker({
         time:false,
-        format: 'DD/MM/YYYY',
+        format: 'DD-MM-YYYY',
         clearButton: true,
         shortTime: true,
         weekStart: 1
@@ -277,7 +277,7 @@
 
     $('.manfDate').bootstrapMaterialDatePicker({
         time: false,
-        format: 'DD/MM/YYYY',
+        format: 'DD-MM-YYYY',
         clearButton: true,
         shortTime: true,
         weekStart: 1
@@ -285,7 +285,7 @@
 
     $('.expiryDate').bootstrapMaterialDatePicker({
         time: false,
-        format: 'DD/MM/YYYY',
+        format: 'DD-MM-YYYY',
         clearButton: true,
         shortTime: true,
         weekStart: 1
@@ -306,10 +306,10 @@
         var url = '';
         var type = '';
         if (id) {
-            url = '/stockbook/' + id;
+            url = '/stockbook/update' + id;
             type = 'POST'
         } else {
-            url = '/stockbook';
+            url = '/stockbook/save';
             type = 'POST'
         }
 
@@ -399,9 +399,9 @@
                     $select.append('<option selected disabled>SELECT BATCH</option>');
                     $.each(data, function (i) {
                         batches.push(data[i]);
-                        key = data[i].batchNumber + "_"+ data[i].id;
+                        key = data[i].batchNumber;
                         value = data[i].batchNumber;
-                        $select.append('<option value="' + key + '">' + value + '</option>');
+                        $select.append('<option data-id='+data[i].id+' value="' + key + '">' + value + '</option>');
                     });
                 }
                 else {
@@ -418,13 +418,12 @@
 
     function batchChanged()
     {
-        var batchId = $('#batchNumber').val();
+        var batchId = $('#batchNumber').find(':selected').data('id');
         if(batchId) {
-            batchId = batchId.split("_")[1];
             for (var i = 0; i < batches.length; i++) {
                 if (batches[i].id == batchId) {
-                    $(".manufacturingDate").val(moment(batches[i].manfDate).format('DD/MM/YYYY'));
-                    $(".expDate").val(moment(batches[i].expiryDate).format('DD/MM/YYYY'));
+                    $(".manufacturingDate").val(moment(batches[i].manfDate).format('DD-MM-YYYY'));
+                    $(".expDate").val(moment(batches[i].expiryDate).format('DD-MM-YYYY'));
                     $(".purchaseRate").val(batches[i].purchaseRate);
                     $(".saleRate").val(batches[i].saleRate);
                     $(".mrp").val(batches[i].mrp);

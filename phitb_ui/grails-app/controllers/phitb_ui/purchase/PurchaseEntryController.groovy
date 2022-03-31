@@ -116,6 +116,7 @@ class PurchaseEntryController {
         String seriesId = params.series
         String duedate = params.duedate
         String billStatus = params.billStatus
+        String seriesCode = params.seriesCode
         String message = params.message
         if (!message) {
             message = "NA"
@@ -273,6 +274,7 @@ class PurchaseEntryController {
         purchaseBillDetails.put("taxable", "1") //TODO: to be changed
         purchaseBillDetails.put("cashDiscount", 0) //TODO: to be changed
         purchaseBillDetails.put("exempted", 0) //TODO: to be changed
+        purchaseBillDetails.put("seriesCode",seriesCode)
         Response resp = new PurchaseService().savePurchaseBillDetails(purchaseBillDetails)
         if (resp.status == 200) {
             def purchaseBillDetail = new JSONObject(resp.readEntity(String.class))
