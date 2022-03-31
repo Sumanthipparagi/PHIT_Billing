@@ -1,3 +1,4 @@
+<%@ page import="phitb_ui.UtilsService" %>
 <div class="overlay_menu">
     <button class="btn btn-primary btn-icon btn-icon-mini btn-round"><i class="zmdi zmdi-close"></i></button>
 
@@ -96,9 +97,9 @@
         <li>
             <a href="javascript:void(0);" class="bars"></a>
             <a class="navbar-brand" href="#"><img src="${assetPath(src: '/themeassets/images/logo.svg')}"
-                                                           alt="PharmIT"></a>
+                                                  alt="PharmIT"></a>
         </li>
-%{--        <li><a href="javascript:void(0);" class="btn_overlay hidden-sm-down"><i class="zmdi zmdi-search"></i></a></li>--}%
+        %{--        <li><a href="javascript:void(0);" class="btn_overlay hidden-sm-down"><i class="zmdi zmdi-search"></i></a></li>--}%
         <li><a href="javascript:void(0);" class="menu-sm"><i class="zmdi zmdi-swap"></i></a></li>
 
         <li><a href="javascript:void(0);" class="fullscreen" data-provide="fullscreen"><i
@@ -114,7 +115,7 @@
     <div id="rightsidebar" class="right-sidebar">
         <ul class="nav nav-tabs">
             <li class="nav-item"><a class="nav-link active" data-toggle="tab" href="#setting">Setting</a></li>
-           %{-- <li class="nav-item"><a class="nav-link" data-toggle="tab" href="#activity">Activity</a></li>--}%
+            %{-- <li class="nav-item"><a class="nav-link" data-toggle="tab" href="#activity">Activity</a></li>--}%
         </ul>
 
         <div class="tab-content slim_scroll">
@@ -322,7 +323,8 @@
                 <li>
                     <div class="user-info m-b-20">
                         <div class="image">
-                            <a href="#"><img src="${assetPath(src: '/themeassets/images/profile_av.jpg')}" alt="User"></a>
+                            <a href="#"><img src="${assetPath(src: '/themeassets/images/profile_av.jpg')}" alt="User">
+                            </a>
                         </div>
 
                         <div class="detail">
@@ -334,18 +336,29 @@
                     </div>
                 </li>
                 <li class="header">MAIN</li>
-                <li id="dashboard-menu" class="sidemenuitem active open"><a href="dashboard"><i class="zmdi zmdi-home"></i><span>Dashboard</span></a>
+                <li id="dashboard-menu" class="sidemenuitem active open"><a href="dashboard"><i
+                        class="zmdi zmdi-home"></i><span>Dashboard</span></a>
                 </li>
 
                 <li id="purchase-menu" class="sidemenuitem"><a href="javascript:void(0);" class="menu-toggle"><i
                         class="zmdi zmdi-shopping-basket"></i><span>Purchase</span> <span
                         class="badge badge-success float-right"></span></a>
                     <ul class="ml-menu">
-                        <li><a href="#">Purchase Order</a></li>
-                        <li><a href="/purchase-entry">Purchase Entry</a></li>
-                        <li><a href="#">Purchase Return</a></li>
-                        <li><a href="#">Mark Received Goods</a></li>
-                        <li><a href="#">Purchase Voucher</a></li>
+                        <g:if test="${UtilsService.isPermitted("VIEW_PURCHASE_ORDER", session.getAttribute("permittedFeatures").toString())}">
+                            <li><a href="#">Purchase Order</a></li>
+                        </g:if>
+                        <g:if test="${UtilsService.isPermitted("VIEW_PURCHASE_ENTRY", session.getAttribute("permittedFeatures").toString())}">
+                            <li><a href="/purchase-entry">Purchase Entry</a></li>
+                        </g:if>
+                        <g:if test="${UtilsService.isPermitted("VIEW_PURCHASE_RETURN", session.getAttribute("permittedFeatures").toString())}">
+                            <li><a href="#">Purchase Return</a></li>
+                        </g:if>
+                        <g:if test="${UtilsService.isPermitted("VIEW_MARK_RECIEVED_GOODS", session.getAttribute("permittedFeatures").toString())}">
+                            <li><a href="#">Mark Received Goods</a></li>
+                        </g:if>
+                        <g:if test="${UtilsService.isPermitted("VIEW_PURCHASE_VOUCHER", session.getAttribute("permittedFeatures").toString())}">
+                            <li><a href="#">Purchase Voucher</a></li>
+                        </g:if>
                     </ul>
                 </li>
 
@@ -353,13 +366,25 @@
                         class="zmdi zmdi-money-box"></i><span>Sales</span> <span
                         class="badge badge-success float-right"></span></a>
                     <ul class="ml-menu">
-                        <li><a href="/sale-order-entry">Sale Order</a></li>
-                        <li><a href="/sale-entry">Sale Entry</a></li>
-                        <li><a href="/sale-bill-list">My Invoices</a></li>
-                        <li><a href="/sale-return">Sale Return</a></li>
-                        <li><a href="/scheme-entry">Scheme Entry (Offers)</a></li>
-                        <li><a href="#">Stock Adjustment</a></li>
-                        <li><a href="#">Credit Debit Settlement</a></li>
+                        <g:if test="${UtilsService.isPermitted("VIEW_SALE_ORDER", session.getAttribute("permittedFeatures").toString())}">
+                            <li><a href="/sale-order-entry">Sale Order</a></li>
+                        </g:if>
+                        <g:if test="${UtilsService.isPermitted("VIEW_SALE_ENTRY", session.getAttribute("permittedFeatures").toString())}">
+                            <li><a href="/sale-entry">Sale Entry</a></li>
+                            <li><a href="/sale-bill-list">My Invoices</a></li>
+                        </g:if>
+                        <g:if test="${UtilsService.isPermitted("VIEW_SALE_RETURN", session.getAttribute("permittedFeatures").toString())}">
+                            <li><a href="/sale-return">Sale Return</a></li>
+                        </g:if>
+                        <g:if test="${UtilsService.isPermitted("VIEW_SCHEME_ENTRY", session.getAttribute("permittedFeatures").toString())}">
+                            <li><a href="/scheme-entry">Scheme Entry (Offers)</a></li>
+                        </g:if>
+                        <g:if test="${UtilsService.isPermitted("VIEW_STOCK_ADJUSTEMENT", session.getAttribute("permittedFeatures").toString())}">
+                            <li><a href="#">Stock Adjustment</a></li>
+                        </g:if>
+                        <g:if test="${UtilsService.isPermitted("VIEW_CREDIT_DEBIT_SETTLEMENT", session.getAttribute("permittedFeatures").toString())}">
+                            <li><a href="#">Credit Debit Settlement</a></li>
+                        </g:if>
                     </ul>
                 </li>
 
@@ -367,24 +392,34 @@
                         class="zmdi zmdi-book"></i><span>Accounts</span> <span
                         class="badge badge-success float-right"></span></a>
                     <ul class="ml-menu">
-                        <li><a href="/credit-jv">Credit JV</a></li>
-                        <li><a href="/debit-jv">Debit JV</a></li>
-                        <li><a href="javascript:void(0);" class="menu-toggle">Receipt</span> <span
-                                class="badge badge-success float-right"></span></a>
-                            <ul class="ml-menu">
-                                <li><a href="/recipt">Create Receipt</a></li>
-                                <li><a href="/recipt-list">Receipt List</a></li>
+                        <g:if test="${UtilsService.isPermitted("VIEW_CREDIT_JV", session.getAttribute("permittedFeatures").toString())}">
+                            <li><a href="/credit-jv">Credit JV</a></li>
+                        </g:if>
+                        <g:if test="${UtilsService.isPermitted("VIEW_DEBIT_JV", session.getAttribute("permittedFeatures").toString())}">
+                            <li><a href="/debit-jv">Debit JV</a></li>
+                        </g:if>
+                        <g:if test="${UtilsService.isPermitted("VIEW_RECEIPT", session.getAttribute("permittedFeatures").toString())}">
+                            <li><a href="javascript:void(0);" class="menu-toggle">Receipt</span> <span
+                                    class="badge badge-success float-right"></span></a>
+                                <ul class="ml-menu">
+                                    <li><a href="/recipt">Create Receipt</a></li>
+                                    <li><a href="/recipt-list">Receipt List</a></li>
 
-                            </ul>
-                        </li>
-                        <li><a href="#">Cheque Returns</a></li>
-                        <li><a href="javascript:void(0);" class="menu-toggle">Payments</span> <span
-                                class="badge badge-success float-right"></span></a>
-                            <ul class="ml-menu">
-                                <li><a href="/payments">Create Payments</a></li>
-                                <li><a href="/payments-list">Payments List</a></li>
-                            </ul>
-                        </li>
+                                </ul>
+                            </li>
+                        </g:if>
+                        <g:if test="${UtilsService.isPermitted("VIEW_CHEQUE_RETURNS", session.getAttribute("permittedFeatures").toString())}">
+                            <li><a href="#">Cheque Returns</a></li>
+                        </g:if>
+                        <g:if test="${UtilsService.isPermitted("VIEW_PAYMENTS", session.getAttribute("permittedFeatures").toString())}">
+                            <li><a href="javascript:void(0);" class="menu-toggle">Payments</span> <span
+                                    class="badge badge-success float-right"></span></a>
+                                <ul class="ml-menu">
+                                    <li><a href="/payments">Create Payments</a></li>
+                                    <li><a href="/payments-list">Payments List</a></li>
+                                </ul>
+                            </li>
+                        </g:if>
                     </ul>
                 </li>
                 <li class="header"></li>
@@ -392,10 +427,18 @@
                         class="zmdi zmdi-book-image"></i><span>System</span> <span
                         class="badge badge-success float-right"></span></a>
                     <ul class="ml-menu">
-                        <li><a href="/state">State</a></li>
-                        <li><a href="/city">City</a></li>
-                        <li><a href="/country">Country</a></li>
-                        <li><a href="/form">Form</a></li>
+                        <g:if test="${UtilsService.isPermitted("VIEW_STATE", session.getAttribute("permittedFeatures").toString())}">
+                            <li><a href="/state">State</a></li>
+                        </g:if>
+                        <g:if test="${UtilsService.isPermitted("VIEW_CITY", session.getAttribute("permittedFeatures").toString())}">
+                            <li><a href="/city">City</a></li>
+                        </g:if>
+                        <g:if test="${UtilsService.isPermitted("VIEW_COUNTRY", session.getAttribute("permittedFeatures").toString())}">
+                            <li><a href="/country">Country</a></li>
+                        </g:if>
+                        <g:if test="${UtilsService.isPermitted("VIEW_FORM", session.getAttribute("permittedFeatures").toString())}">
+                            <li><a href="/form">Form</a></li>
+                        </g:if>
                     </ul>
                 </li>
 
@@ -403,10 +446,18 @@
                         class="zmdi zmdi-home"></i><span>Facility</span> <span
                         class="badge badge-success float-right"></span></a>
                     <ul class="ml-menu">
-                        <li><a href="/ccm">CCM</a></li>
-                        <li><a href="/rack">Rack</a></li>
-                        <li><a href="/fridge">Fridge</a></li>
-                        <li><a href="/godown">Godown</a></li>
+                        <g:if test="${UtilsService.isPermitted("VIEW_CCM", session.getAttribute("permittedFeatures").toString())}">
+                            <li><a href="/ccm">CCM</a></li>
+                        </g:if>
+                        <g:if test="${UtilsService.isPermitted("VIEW_RACK", session.getAttribute("permittedFeatures").toString())}">
+                            <li><a href="/rack">Rack</a></li>
+                        </g:if>
+                        <g:if test="${UtilsService.isPermitted("VIEW_FRIDGE", session.getAttribute("permittedFeatures").toString())}">
+                            <li><a href="/fridge">Fridge</a></li>
+                        </g:if>
+                        <g:if test="${UtilsService.isPermitted("VIEW_GODOWN", session.getAttribute("permittedFeatures").toString())}">
+                            <li><a href="/godown">Godown</a></li>
+                        </g:if>
                     </ul>
                 </li>
 
@@ -415,20 +466,48 @@
                         class="zmdi zmdi-apps"></i><span>Entity</span> <span
                         class="badge badge-success float-right"></span></a>
                     <ul class="ml-menu">
-                        <li><a href="/entity-register">Entity Register</a></li>
-                        <li><a href="/user-register">User Register</a></li>
-                        <li><a href="/customer-group-register">Customer Group Register</a></li>
-                        <li><a href="/day-end-master">Day End Master</a></li>
-                        <li><a href="/financial-year-master">Financial Year Master</a></li>
-                        <li><a href="/region-master">Region Master</a></li>
-                        <li><a href="/route-regitser">Route Register</a></li>
-                        <li><a href="/role">Role</a></li>
-                        <li><a href="/rule">Rule Master</a></li>
-                        <li><a href="/tax">Tax Register</a></li>
-                        <li><a href="/territory">Territory</a></li>
-                        <li><a href="/terms-conditions">Terms and Conditions</a></li>
-                        <li><a href="/series">Series</a></li>
-                        <li><a href="/service-type">Service Type</a></li>
+                        <g:if test="${UtilsService.isPermitted("VIEW_ENTITY_REGISTER", session.getAttribute("permittedFeatures").toString())}">
+                            <li><a href="/entity-register">Entity Register</a></li>
+                        </g:if>
+                        <g:if test="${UtilsService.isPermitted("VIEW_USER_REGISTER", session.getAttribute("permittedFeatures").toString())}">
+                            <li><a href="/user-register">User Register</a></li>
+                        </g:if>
+                        <g:if test="${UtilsService.isPermitted("VIEW_CUSTOMER_GROUP_REGISTER", session.getAttribute("permittedFeatures").toString())}">
+                            <li><a href="/customer-group-register">Customer Group Register</a></li>
+                        </g:if>
+                        <g:if test="${UtilsService.isPermitted("VIEW_DAY_END", session.getAttribute("permittedFeatures").toString())}">
+                            <li><a href="/day-end-master">Day End Master</a></li>
+                        </g:if>
+                        <g:if test="${UtilsService.isPermitted("VIEW_FINANCIAL_YEAR", session.getAttribute("permittedFeatures").toString())}">
+                            <li><a href="/financial-year-master">Financial Year Master</a></li>
+                        </g:if>
+                        <g:if test="${UtilsService.isPermitted("VIEW_REGION", session.getAttribute("permittedFeatures").toString())}">
+                            <li><a href="/region-master">Region Master</a></li>
+                        </g:if>
+                        <g:if test="${UtilsService.isPermitted("VIEW_ROUTE", session.getAttribute("permittedFeatures").toString())}">
+                            <li><a href="/route-regitser">Route Register</a></li>
+                        </g:if>
+                        <g:if test="${UtilsService.isPermitted("VIEW_ROLE", session.getAttribute("permittedFeatures").toString())}">
+                            <li><a href="/role">Role</a></li>
+                        </g:if>
+                        <g:if test="${UtilsService.isPermitted("VIEW_RULE", session.getAttribute("permittedFeatures").toString())}">
+                            <li><a href="/rule">Rule Master</a></li>
+                        </g:if>
+                        <g:if test="${UtilsService.isPermitted("VIEW_TAX", session.getAttribute("permittedFeatures").toString())}">
+                            <li><a href="/tax">Tax Register</a></li>
+                        </g:if>
+                        <g:if test="${UtilsService.isPermitted("VIEW_TERRITORY", session.getAttribute("permittedFeatures").toString())}">
+                            <li><a href="/territory">Territory</a></li>
+                        </g:if>
+                        <g:if test="${UtilsService.isPermitted("VIEW_TERMS_CONDITIONS", session.getAttribute("permittedFeatures").toString())}">
+                            <li><a href="/terms-conditions">Terms and Conditions</a></li>
+                        </g:if>
+                        <g:if test="${UtilsService.isPermitted("VIEW_SERIES", session.getAttribute("permittedFeatures").toString())}">
+                            <li><a href="/series">Series</a></li>
+                        </g:if>
+                        <g:if test="${UtilsService.isPermitted("VIEW_SERVICE_TYPE", session.getAttribute("permittedFeatures").toString())}">
+                            <li><a href="/service-type">Service Type</a></li>
+                        </g:if>
                     </ul>
                 </li>
 
@@ -436,23 +515,45 @@
                         class="zmdi zmdi-apps"></i><span>Product</span> <span
                         class="badge badge-success float-right"></span></a>
                     <ul class="ml-menu">
-                        <li><a href="/product">Product Register</a></li>
-                        <li><a href="/batch-register">Batch Register</a></li>
-                        <li><a href="/division">Division</a></li>
-                        <li><a href="/product-category">Product Category</a></li>
-                        <li><a href="/product-schedule">Product Schedule</a></li>
-                        <li><a href="/product-composition">Product Composition</a></li>
-                        <li><a href="/product-type">Product Type</a></li>
-                        <li><a href="/division-group">Division Group</a></li>
-                        <li><a href="/product-class">Product Class</a></li>
-                        <li><a href="/product-cost-range">Product Cost Range</a></li>
+                        <g:if test="${UtilsService.isPermitted("VIEW_PRODUCT_REGISTER", session.getAttribute("permittedFeatures").toString())}">
+                            <li><a href="/product">Product Register</a></li>
+                        </g:if>
+                        <g:if test="${UtilsService.isPermitted("VIEW_BATCH_REGISTER", session.getAttribute("permittedFeatures").toString())}">
+                            <li><a href="/batch-register">Batch Register</a></li>
+                        </g:if>
+                        <g:if test="${UtilsService.isPermitted("VIEW_DIVISION", session.getAttribute("permittedFeatures").toString())}">
+                            <li><a href="/division">Division</a></li>
+                        </g:if>
+                        <g:if test="${UtilsService.isPermitted("VIEW_PRODUCT_CATEGORY", session.getAttribute("permittedFeatures").toString())}">
+                            <li><a href="/product-category">Product Category</a></li>
+                        </g:if>
+                        <g:if test="${UtilsService.isPermitted("VIEW_PRODUCT_SCHEDULE", session.getAttribute("permittedFeatures").toString())}">
+                            <li><a href="/product-schedule">Product Schedule</a></li>
+                        </g:if>
+                        <g:if test="${UtilsService.isPermitted("VIEW_PRODUCT_COMPOSITION", session.getAttribute("permittedFeatures").toString())}">
+                            <li><a href="/product-composition">Product Composition</a></li>
+                        </g:if>
+                        <g:if test="${UtilsService.isPermitted("VIEW_PRODUCT_TYPE", session.getAttribute("permittedFeatures").toString())}">
+                            <li><a href="/product-type">Product Type</a></li>
+                        </g:if>
+                        <g:if test="${UtilsService.isPermitted("VIEW_DIVISION_GROUP", session.getAttribute("permittedFeatures").toString())}">
+                            <li><a href="/division-group">Division Group</a></li>
+                        </g:if>
+                        <g:if test="${UtilsService.isPermitted("VIEW_PRODUCT_CLASS", session.getAttribute("permittedFeatures").toString())}">
+                            <li><a href="/product-class">Product Class</a></li>
+                        </g:if>
+                        <g:if test="${UtilsService.isPermitted("VIEW_PRODUCT_COST_RANGE", session.getAttribute("permittedFeatures").toString())}">
+                            <li><a href="/product-cost-range">Product Cost Range</a></li>
+                        </g:if>
                     </ul>
                 </li>
                 <li id="inventory-menu" class="sidemenuitem"><a href="javascript:void(0);" class="menu-toggle"><i
                         class="zmdi zmdi-apps"></i><span>Inventory</span> <span
                         class="badge badge-success float-right"></span></a>
                     <ul class="ml-menu">
-                        <li><a href="stockbook">Stock Entry</a></li>
+                        <g:if test="${UtilsService.isPermitted("VIEW_STOCKBOOK_ENTRY", session.getAttribute("permittedFeatures").toString())}">
+                            <li><a href="stockbook">Stock Entry</a></li>
+                        </g:if>
                     </ul>
                 </li>
 
@@ -460,9 +561,15 @@
                         class="zmdi zmdi-apps"></i><span>Approvals</span> <span
                         class="badge badge-success float-right"></span></a>
                     <ul class="ml-menu">
-                        <li><a href="/credit-jv/approval">Credit JV Approval</a></li>
-                        <li><a href="/debit-jv/approval">Debit JV Approval</a></li>
-                        <li><a href="#">Receipt Approval</a></li>
+                        <g:if test="${UtilsService.isPermitted("VIEW_CREDIT_JV", session.getAttribute("permittedFeatures").toString())}">
+                            <li><a href="/credit-jv/approval">Credit JV Approval</a></li>
+                        </g:if>
+                        <g:if test="${UtilsService.isPermitted("VIEW_DEBIT_JV", session.getAttribute("permittedFeatures").toString())}">
+                            <li><a href="/debit-jv/approval">Debit JV Approval</a></li>
+                        </g:if>
+                        <g:if test="${UtilsService.isPermitted("VIEW_RECEIPT", session.getAttribute("permittedFeatures").toString())}">
+                            <li><a href="#">Receipt Approval</a></li>
+                        </g:if>
                     </ul>
                 </li>
 

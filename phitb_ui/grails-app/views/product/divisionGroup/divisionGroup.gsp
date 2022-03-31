@@ -320,7 +320,10 @@
 
 
 </script>
-
+<g:include view="controls/footer-content.gsp"/>
+<script>
+    selectSideMenu("product-menu");
+</script>
 
 </body>
 </html>

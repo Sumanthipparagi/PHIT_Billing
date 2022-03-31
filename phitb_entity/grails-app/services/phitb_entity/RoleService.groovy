@@ -95,13 +95,8 @@ class RoleService {
         }
     }
 
-    def getAllFeatures(String limit, String offset, String query) {
-        Integer o = offset ? Integer.parseInt(offset.toString()) : 0
-        Integer l = limit ? Integer.parseInt(limit.toString()) : 100
-        if (!query)
-            return Feature.findAll([sort: 'id', max: l, offset: o, order: 'desc'])
-        else
-            return Feature.findAllByNameIlike("%" + query + "%", [sort: 'id', max: l, offset: o, order: 'desc'])
+    def getAllFeatures() {
+        return Feature.findAll()
     }
 
     Feature getFeature(String id) {
@@ -111,8 +106,7 @@ class RoleService {
     ArrayList<Feature> getFeatureList(String ids) {
         String[] fIds = ids.split(",")
         ArrayList<Long> featureIds = new ArrayList<>()
-        for (String fid : fIds)
-        {
+        for (String fid : fIds) {
             featureIds.add(Long.parseLong(fid))
         }
         return Feature.findAllByIdInList(featureIds)

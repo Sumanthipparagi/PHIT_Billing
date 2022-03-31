@@ -434,6 +434,9 @@
         }
     }
 </script>
-
+<g:include view="controls/footer-content.gsp"/>
+<script>
+    selectSideMenu("inventory-menu");
+</script>
 </body>
 </html>

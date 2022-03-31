@@ -1413,5 +1413,9 @@
 
     })(Handsontable);
 </script>
+<g:include view="controls/footer-content.gsp"/>
+<script>
+    selectSideMenu("sales-menu");
+</script>
 </body>
 </html>

@@ -1,12 +1,12 @@
 <%@ page import="phitb_ui.UtilsService" %>
 <g:set var="addPermission"
-       value="${new UtilsService().isPermitted(pageFeatures[0].name, (session.getAttribute("permittedFeatures").toString()))}"/>
+       value="${UtilsService.isPermitted(pageFeatures[0].name, (session.getAttribute("permittedFeatures").toString()))}"/>
 <g:set var="viewPermission"
-       value="${new UtilsService().isPermitted(pageFeatures[1].name, (session.getAttribute("permittedFeatures").toString()))}"/>
+       value="${UtilsService.isPermitted(pageFeatures[1].name, (session.getAttribute("permittedFeatures").toString()))}"/>
 <g:set var="editPermission"
-       value="${new UtilsService().isPermitted(pageFeatures[2].name, (session.getAttribute("permittedFeatures").toString()))}"/>
+       value="${UtilsService.isPermitted(pageFeatures[2].name, (session.getAttribute("permittedFeatures").toString()))}"/>
 <g:set var="deletePermission"
-       value="${new UtilsService().isPermitted(pageFeatures[3].name, (session.getAttribute("permittedFeatures").toString()))}"/>
+       value="${UtilsService.isPermitted(pageFeatures[3].name, (session.getAttribute("permittedFeatures").toString()))}"/>
 <!doctype html>
 <html class="no-js " lang="en">
 <head>
@@ -533,6 +533,9 @@
     }
 </script>
 
-
+<g:include view="controls/footer-content.gsp"/>
+<script>
+    selectSideMenu("entity-menu");
+</script>
 </body>
 </html>

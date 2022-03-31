@@ -307,6 +307,9 @@
 
 </script>
 
-
+<g:include view="controls/footer-content.gsp"/>
+<script>
+    selectSideMenu("entity-menu");
+</script>
 </body>
 </html>
