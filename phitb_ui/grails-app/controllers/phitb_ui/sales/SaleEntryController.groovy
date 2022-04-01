@@ -15,9 +15,11 @@ import phitb_ui.ProductService
 import javax.ws.rs.core.Response
 import java.text.SimpleDateFormat
 
-class SaleEntryController {
+class SaleEntryController
+{
 
-    def index() {
+    def index()
+    {
         String entityId = session.getAttribute("entityId")?.toString()
         JSONArray divisions = new ProductService().getDivisionsByEntityId(entityId)
         ArrayList<String> customers = new EntityRegisterController().show() as ArrayList<String>
@@ -33,7 +35,8 @@ class SaleEntryController {
                                                   salesmanList: salesmanList, priorityList: priorityList])
     }
 
-    def saveSaleEntry() {
+    def saveSaleEntry()
+    {
         println(params.saleData)
         SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy")
         JSONObject saleBillDetails = new JSONObject()
@@ -47,19 +50,25 @@ class SaleEntryController {
         String seriesCode = params.seriesCode
         String message = params.message
         if (!message)
+        {
             message = "NA"
+        }
         long finId = 0
         long serBillId = 0
         String financialYear = session.getAttribute("financialYear")
         def series = new EntityService().getSeriesById(seriesId)
 
 
-        if (!billStatus.equalsIgnoreCase("DRAFT")) {
+        if (!billStatus.equalsIgnoreCase("DRAFT"))
+        {
             def recentSaleBill = new SalesService().getRecentSaleBill(financialYear, entityId, billStatus)
-            if (recentSaleBill != null) {
+            if (recentSaleBill != null)
+            {
                 finId = Long.parseLong(recentSaleBill.get("finId").toString()) + 1
                 serBillId = Long.parseLong(recentSaleBill.get("serBillId").toString()) + 1
-            } else {
+            }
+            else
+            {
                 finId = 1
                 serBillId = Long.parseLong(series.get("saleId").toString())
             }
@@ -74,7 +83,8 @@ class SaleEntryController {
         double totalIgst = 0.00
         double totalDiscount = 0.00
         JSONArray saleData = new JSONArray(params.saleData)
-        for (JSONObject sale : saleData) {
+        for (JSONObject sale : saleData)
+        {
             String productId = sale.get("1")
             String batchNumber = sale.get("2")
             String expDate = sale.get("3")
@@ -187,26 +197,32 @@ class SaleEntryController {
         saleBillDetails.put("cashDiscount", 0) //TODO: to be changed
         saleBillDetails.put("exempted", 0) //TODO: to be changed
 
-        saleBillDetails.put("seriesCode",seriesCode)
+        saleBillDetails.put("seriesCode", seriesCode)
         Response response = new SalesService().saveSaleBill(saleBillDetails)
-        if (response.status == 200) {
+        if (response.status == 200)
+        {
             def saleBillDetail = new JSONObject(response.readEntity(String.class))
             //save to sale product details
-            for (JSONObject saleProductDetail : saleProductDetails) {
+            for (JSONObject saleProductDetail : saleProductDetails)
+            {
                 saleProductDetail.put("billId", saleBillDetail.get("id"))
                 saleProductDetail.put("billType", 0) //0 Sale, 1 Purchase
                 saleProductDetail.put("serBillId", saleBillDetail.get("serBillId"))
                 def resp = new SalesService().saveSaleProductDetail(saleProductDetail)
 
                 if (resp.status == 200)
+                {
                     println("Product Detail Saved")
-                else {
+                }
+                else
+                {
                     println("Product Detail Failed")
                 }
             }
 
             //update stockbook
-            for (JSONObject sale : saleData) {
+            for (JSONObject sale : saleData)
+            {
                 String tempStockRowId = sale.get("15")
                 def tmpStockBook = new InventoryService().getTempStocksById(Long.parseLong(tempStockRowId))
                 def stockBook = new InventoryService().getStockBookById(Long.parseLong(tmpStockBook.originalId))
@@ -224,7 +240,8 @@ class SaleEntryController {
                 stockBook.put("purcDate", purcDate)
                 stockBook.put("manufacturingDate", manufacturingDate)
                 def apiRes = new InventoryService().updateStockBook(stockBook)
-                if (apiRes.status == 200) {
+                if (apiRes.status == 200)
+                {
                     //clear tempstockbook
                     new InventoryService().deleteTempStock(tempStockRowId)
                 }
@@ -235,16 +252,19 @@ class SaleEntryController {
             responseJson.put("saleBillDetail", saleBillDetail)
             respond responseJson, formats: ['json']
 
-        } else {
+        }
+        else
+        {
             response.status == 400
         }
     }
 
-    def printSaleInvoice() {
+    def printSaleInvoice()
+    {
 
         String saleBillId = params.id
         JSONObject saleBillDetail = new SalesService().getSaleBillDetailsById(saleBillId)
-        if(saleBillDetail!=null)
+        if (saleBillDetail != null)
         {
             JSONArray saleProductDetails = new SalesService().getSaleProductDetails(saleBillId)
             JSONObject series = new EntityService().getSeriesById(saleBillDetail.get("seriesId").toString())
@@ -257,50 +277,127 @@ class SaleEntryController {
                 def apiResponse = new SalesService().getRequestWithId(it.productId.toString(), new Links().PRODUCT_REGISTER_SHOW)
                 it.put("productId", JSON.parse(apiResponse.readEntity(String.class)) as JSONObject)
             }
-         /*   def invoiceNumber;
-            def datepart = saleBillDetail.entryDate.split("T")[0];
-            def month = datepart.split("-")[1];
-            def year = datepart.split("-")[0];
-            def seriesCode = "__";
-            if (saleBillDetail.billStatus == "DRAFT")
-            {
-                invoiceNumber = saleBillDetail.entityId+"/DR/S/" + month + year + "/" + series.seriesCode + "/__";
-            }
-            else
-            {
-                invoiceNumber = saleBillDetail.entityId+"/S/" + month + year + "/" + series.seriesCode + "/" + saleBillDetail.id
-            }*/
+            /*   def invoiceNumber;
+               def datepart = saleBillDetail.entryDate.split("T")[0];
+               def month = datepart.split("-")[1];
+               def year = datepart.split("-")[0];
+               def seriesCode = "__";
+               if (saleBillDetail.billStatus == "DRAFT")
+               {
+                   invoiceNumber = saleBillDetail.entityId+"/DR/S/" + month + year + "/" + series.seriesCode + "/__";
+               }
+               else
+               {
+                   invoiceNumber = saleBillDetail.entityId+"/S/" + month + year + "/" + series.seriesCode + "/" + saleBillDetail.id
+               }*/
             def totalcgst = saleProductDetails.cgstAmount.sum()
             def totalsgst = saleProductDetails.sgstAmount.sum()
             def totaligst = saleProductDetails.igstAmount.sum()
             def totaldiscount = saleProductDetails.discount.sum()
+            ArrayList<Double> cgst = new ArrayList<>()
+            ArrayList<Double> sgst = new ArrayList<>()
+            ArrayList<Double> igst = new ArrayList<>()
+            def total = saleProductDetails.amount.sum()
+            ArrayList<Double> cgst5 = new ArrayList<>()
+            ArrayList<Double> cgst12 = new ArrayList<>()
+            ArrayList<Double> cgst18 = new ArrayList<>()
+            ArrayList<Double> cgst28 = new ArrayList<>()
+            ArrayList<Double> sgst5 = new ArrayList<>()
+            ArrayList<Double> sgst12 = new ArrayList<>()
+            ArrayList<Double> sgst18 = new ArrayList<>()
+            ArrayList<Double> sgst28 = new ArrayList<>()
+            saleProductDetails.each {
+                float amount = it.amount - it.cgstAmount - it.sgstAmount - it.igstAmount
+                cgst.push(it.cgstAmount / amount * 100)
+                sgst.push(it.sgstAmount / amount * 100)
+                igst.push(it.igstAmount / amount * 100)
+            }
+            def t = 0
+            for (Double c : cgst)
+            {
+                if (c > 0 && c <= 2.5)
+                {
+                    cgst5.push(t + (0.025 * total))
+                }
+
+                if(c > 2.5 && c <= 6)
+                {
+                    cgst12.push(t + (0.06 * total))
+
+                }
+                if(c > 6 && c <= 9)
+                {
+                    cgst18.push(t + (0.09 * total))
+
+                }
+                if(c > 9 && c <= 14)
+                {
+                    cgst28.push(t + (0.09 * total))
+                }
+
+            }
+            for (Double s : sgst)
+            {
+                if (s > 0 && s <= 2.5)
+                {
+                    sgst5.push(t + (0.025 * total))
+                }
+
+                if(s > 2.5 && s <= 6)
+                {
+                    sgst12.push(t + (0.06 * total))
+
+                }
+                if(s > 6 && s <= 9)
+                {
+                    sgst18.push(t + (0.09 * total))
+
+                }
+                if(s > 9 && s <= 14)
+                {
+                    sgst28.push(t + (0.09 * total))
+                }
+
+            }
             render(view: "/sales/sale-invoice", model: [saleBillDetail    : saleBillDetail,
                                                         saleProductDetails: saleProductDetails,
                                                         series            : series, entity: entity, customer: customer, city: city,
                                                         total             : saleProductDetails.amount.sum(), custcity: custcity,
-                                                        termsConditions: termsConditions,
+                                                        termsConditions   : termsConditions,
                                                         totalcgst         : totalcgst, totalsgst: totalsgst, totaligst: totaligst,
-                                                        totaldiscount     : totaldiscount])
+                                                        totaldiscount     : totaldiscount,
+                                                        cgst5:cgst5.sum(),cgst12:cgst12.sum(),
+                                                        cgst18:cgst18.sum(),cgst28:cgst28.sum(),
+                                                        sgst5:sgst5.sum(),sgst12:sgst12.sum(),
+                                                        sgst18:sgst18.sum(),sgst28:sgst28.sum()
+            ])
         }
 
-        else {
+        else
+        {
 
             render("No Bill Found")
         }
     }
 
-    def show() {
-        try {
+    def show()
+    {
+        try
+        {
             def apiResponse = new SalesService().getSaleInvoice()
-            if (apiResponse?.status == 200) {
+            if (apiResponse?.status == 200)
+            {
                 JSONArray jsonArray = new JSONArray(apiResponse.readEntity(String.class));
                 ArrayList<String> arrayList = new ArrayList<>(jsonArray)
                 return arrayList
-            } else {
+            }
+            else
+            {
                 return []
             }
         }
-        catch (Exception ex) {
+        catch (Exception ex)
+        {
             System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
             log.error('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
             response.status = 400
@@ -308,18 +405,24 @@ class SaleEntryController {
     }
 
 
-    def showById(String id) {
-        try {
+    def showById(String id)
+    {
+        try
+        {
             def apiResponse = new SalesService().getSaleInvoiceById(id)
-            if (apiResponse?.status == 200) {
+            if (apiResponse?.status == 200)
+            {
                 JSONArray jsonArray = new JSONArray(apiResponse.readEntity(String.class));
                 ArrayList<String> arrayList = new ArrayList<>(jsonArray)
                 return arrayList
-            } else {
+            }
+            else
+            {
                 return []
             }
         }
-        catch (Exception ex) {
+        catch (Exception ex)
+        {
             System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
             log.error('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
             response.status = 400
@@ -327,53 +430,67 @@ class SaleEntryController {
     }
 
 
-    def saleBill() {
+    def saleBill()
+    {
         render(view: '/sales/salebillDetails/saleBill')
     }
 
-    def saleRetrun() {
+    def saleRetrun()
+    {
         render(view: '/sales/saleRetrun/sale-return-print')
     }
 
-    def crdDebS() {
+    def crdDebS()
+    {
         render(view: "/sales/credit-debit-settlement")
     }
 
-    def DebJV() {
+    def DebJV()
+    {
         render(view: "/sales/debit-jv")
     }
 
-    def credJV() {
+    def credJV()
+    {
         render(view: '/sales/credit-jv')
     }
 
-    def goodsSalesRecipt() {
+    def goodsSalesRecipt()
+    {
         render(view: "/sales/goods-sales-recipt")
     }
 
-    def paymentVocher() {
+    def paymentVocher()
+    {
         render(view: "/sales/payment-vocher")
     }
 
 
-    def checkSchemeConfiguration() {
+    def checkSchemeConfiguration()
+    {
         String productId = params.productId
         String batchNumber = params.batchNumber
 
-        if (productId && batchNumber) {
+        if (productId && batchNumber)
+        {
             respond new SalesService().getSchemeConfiguration(productId, batchNumber)
-        } else {
+        }
+        else
+        {
             response.status = 400
         }
     }
 
 
-    def getProductsById(String id) {
-        try {
+    def getProductsById(String id)
+    {
+        try
+        {
             JSONObject product = new ProductService().getProductById(id)
             return product
         }
-        catch (Exception ex) {
+        catch (Exception ex)
+        {
             System.err.println('Service :getProductsById , action :  show  , Ex:' + ex)
             log.error('Service :getProductsById , action :  show  , Ex:' + ex)
         }
@@ -385,13 +502,14 @@ class SaleEntryController {
         String entityId = session.getAttribute("entityId")
         String financialYear = session.getAttribute("financialYear")
         JSONObject jsonObject = new SalesService().cancelInvoice(id, entityId, financialYear)
-        if(jsonObject)
+        if (jsonObject)
         {
             //adjust stocks
             JSONArray productDetails = jsonObject.get("products")
-            if(productDetails)
+            if (productDetails)
             {
-                for (JSONObject productDetail : productDetails) {
+                for (JSONObject productDetail : productDetails)
+                {
                     def stockBook = new InventoryService().getStocksOfProductAndBatch(productDetail.productId.toString(), productDetail.batchNumber, session.getAttribute("entityId").toString())
                     double remainingQty = stockBook.get("remainingQty") + productDetail.get("sqty")
                     double remainingFreeQty = stockBook.get("remainingFreeQty") + productDetail.get("freeQty")
