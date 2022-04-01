@@ -1,10 +1,13 @@
 package phitb_ui
 
 import grails.gorm.transactions.Transactional
+import grails.web.servlet.mvc.GrailsHttpSession
 import org.grails.web.json.JSONObject
 import org.springframework.web.multipart.MultipartFile
 
 import javax.imageio.ImageIO
+import javax.servlet.http.HttpServletRequest
+import javax.servlet.http.HttpSession
 import javax.ws.rs.core.Form
 import java.awt.Graphics2D
 import java.awt.image.BufferedImage
@@ -20,6 +23,8 @@ import java.util.Iterator;
 @Transactional
 class UtilsService {
 
+    HttpServletRequest request = WebUtils.retrieveGrailsWebRequest().currentRequest
+    HttpSession session = request.session
 
     public ArrayList<Date> parseDateRange(String daterange)
     {

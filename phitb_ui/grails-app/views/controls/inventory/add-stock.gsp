@@ -11,6 +11,16 @@
                       enctype="multipart/form-data">
                     <div class="modal-body">
                         <div class="row">
+                            <div class="col-lg-12 form-group  form-float">
+                                <label for="openingStockQty">
+                                    Opening Stock Quantity
+                                </label>
+                                <input type="number" id="openingStockQty" class="form-control openingStockQty"
+                                       name="openingStockQty"
+                                       placeholder="Opening Stock"
+                                       required/>
+                            </div>
+
                             <div class="col-lg-6 form-group  form-float">
                                 <label for="product">
                                     Product

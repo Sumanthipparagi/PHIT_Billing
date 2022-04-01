@@ -170,12 +170,16 @@ class SalebillDetailsController {
             def apiResponse = new SalesService().showSalesService(jsonObject)
             if (apiResponse.status == 200) {
                 JSONObject responseObject = new JSONObject(apiResponse.readEntity(String.class))
-/*                JSONObject saleBill = new JSONObject()
-                for (JSONObject jsonObject1 : responseObject.data) {
-                    def series = new EntityService().getSeriesById(jsonObject1.seriesId)
-                    saleBill.putAll(jsonObject1)
-                    saleBill.put("series", series)
-                }*/
+                if(responseObject)
+                {
+                    JSONArray jsonArray = responseObject.data
+                    JSONArray jsonArray2 = new JSONArray()
+                    for (JSONObject json : jsonArray) {
+                        json.put("customer", new EntityService().getEntityById(json.get("customerId").toString()))
+                        jsonArray2.put(json)
+                    }
+                    responseObject.put("data", jsonArray2)
+                }
                 respond responseObject, formats: ['json'], status: 200
             } else {
                 response.status = 400

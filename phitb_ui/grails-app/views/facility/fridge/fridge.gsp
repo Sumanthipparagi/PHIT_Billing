@@ -331,6 +331,9 @@
 
 </script>
 
-
+<g:include view="controls/footer-content.gsp"/>
+<script>
+    selectSideMenu("facility-menu");
+</script>
 </body>
 </html>

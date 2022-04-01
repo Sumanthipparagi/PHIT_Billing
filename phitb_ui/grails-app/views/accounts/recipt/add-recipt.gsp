@@ -208,6 +208,9 @@
     var $demoMaskedInput = $('.demo-masked-input');
     $demoMaskedInput.find('.credit-card').inputmask('9999 9999 9999 9999', { placeholder: '____ ____ ____ ____' });
 </script>
-
+<g:include view="controls/footer-content.gsp"/>
+<script>
+    selectSideMenu("accounts-menu");
+</script>
 </body>
 </html>

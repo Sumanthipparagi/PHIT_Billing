@@ -315,5 +315,9 @@
 
 
 </script>
+<g:include view="controls/footer-content.gsp"/>
+<script>
+    selectSideMenu("accounts-menu");
+</script>
 </body>
 </html>

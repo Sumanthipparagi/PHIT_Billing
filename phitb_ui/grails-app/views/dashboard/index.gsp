@@ -146,5 +146,9 @@
 <asset:javascript src="/themeassets/bundles/mainscripts.bundle.js"/>
 <asset:javascript src="/themeassets/js/pages/index.js"/>
 
+<g:include view="controls/footer-content.gsp"/>
+<script>
+    selectSideMenu("dashboard-menu");
+</script>
 </body>
 </html>

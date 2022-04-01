@@ -15,7 +15,7 @@ import javax.ws.rs.client.Entity
 import javax.ws.rs.client.WebTarget
 import javax.ws.rs.core.MediaType
 import javax.ws.rs.core.Response
-
+import java.text.DecimalFormat
 import java.text.SimpleDateFormat
 
 @Transactional
@@ -83,6 +83,7 @@ class SaleBillDetailsService
         String searchTerm = paramsJsonObject.get("search[value]")
         String orderColumnId = paramsJsonObject.get("order[0][column]")
         String orderDir = paramsJsonObject.get("order[0][dir]")
+        String invoiceStatus = paramsJsonObject.get("invoiceStatus")
 
         String orderColumn = "id"
         switch (orderColumnId)
@@ -103,6 +104,10 @@ class SaleBillDetailsService
                 {
                     ilike('financialYear', '%' + searchTerm + '%')
                 }
+            }
+            if(!invoiceStatus.equalsIgnoreCase("ALL"))
+            {
+                eq('billStatus', invoiceStatus)
             }
             eq('deleted', false)
             order(orderColumn, orderDir)
@@ -174,6 +179,33 @@ class SaleBillDetailsService
         saleBillDetails.save(flush: true)
         if (!saleBillDetails.hasErrors())
         {
+            Calendar cal = new GregorianCalendar()
+            cal.setTime(saleBillDetails.entryDate)
+            String month = cal.get(Calendar.MONTH)
+            String year = cal.get(Calendar.YEAR)
+
+            DecimalFormat mFormat= new DecimalFormat("00");
+            month = mFormat.format(Double.valueOf(month));
+
+            String invoiceNumber = null
+            String seriesCode = jsonObject.get("seriesCode")
+
+            if (saleBillDetails.billStatus == "DRAFT")
+            {
+                invoiceNumber = saleBillDetails.entityId+"/DR/S/" + month + year + "/" + seriesCode + "/__";
+            }
+            else
+            {
+                invoiceNumber = saleBillDetails.entityId+"/S/" + month + year + "/" + seriesCode + "/" + saleBillDetails.serBillId
+            }
+
+            if(invoiceNumber)
+            {
+                saleBillDetails.invoiceNumber = invoiceNumber
+                saleBillDetails.isUpdatable = true
+                saleBillDetails = saleBillDetails.save(flush:true)
+            }
+
             return saleBillDetails
         }
         else
@@ -307,4 +339,38 @@ class SaleBillDetailsService
         }
     }
 
+    def cancelSaleBill(JSONObject jsonObject)
+    {
+        String id = jsonObject.get("id")
+        String entityId = jsonObject.get("entityId")
+        String financialYear = jsonObject.get("financialYear")
+        JSONObject saleInvoice = new JSONObject()
+        SaleBillDetails saleBillDetails = SaleBillDetails.findById(Long.parseLong(id))
+        if(saleBillDetails)
+        {
+            if(saleBillDetails.financialYear.equalsIgnoreCase(financialYear) && saleBillDetails.entityId == Long.parseLong(entityId))
+            {
+                ArrayList<SaleProductDetails> saleProductDetails = SaleProductDetails.findAllByBillId(saleBillDetails.id)
+                for (SaleProductDetails saleProductDetail : saleProductDetails) {
+                    saleProductDetail.status = 0
+                    saleProductDetail.isUpdatable = true
+                    saleProductDetail.save(flush:true)
+                }
+                saleBillDetails.billStatus = "CANCELLED"
+                saleBillDetails.isUpdatable = true
+                saleBillDetails.save(flush: true)
+
+                saleInvoice.put("products", saleProductDetails)
+                saleInvoice.put("invoice", saleBillDetails)
+            }
+            else
+            {
+                throw new ResourceNotFoundException()
+            }
+        }
+        else
+        {
+            throw new ResourceNotFoundException()
+        }
+    }
 }

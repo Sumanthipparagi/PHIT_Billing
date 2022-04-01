@@ -73,7 +73,7 @@
                                 <label for="series">Series:</label>
                                 <select onchange="seriesChanged()" class="form-control" id="series" name="series">
                                     <g:each in="${series}" var="sr">
-                                        <option value="${sr.id}">${sr.seriesName} (${sr.seriesCode})</option>
+                                        <option data-seriescode="${sr.seriesCode}" value="${sr.id}">${sr.seriesName} (${sr.seriesCode})</option>
                                     </g:each>
                                 </select>
                             </div>
@@ -652,13 +652,13 @@
             if (data[i][15])
                 totalIgst += data[i][15];
         }
-        $("#totalAmt").text(totalAmt);
-        $("#totalGST").text(totalGst);
-        $("#totalSGST").text(totalSgst);
-        $("#totalCGST").text(totalCgst);
-        $("#totalIGST").text(totalIgst);
-        $("#totalQty").text(totalQty);
-        $("#totalFQty").text(totalFQty);
+        $("#totalAmt").text(totalAmt.toFixed(2));
+        $("#totalGST").text(totalGst.toFixed(2));
+        $("#totalSGST").text(totalSgst.toFixed(2));
+        $("#totalCGST").text(totalCgst.toFixed(2));
+        $("#totalIGST").text(totalIgst.toFixed(2));
+        $("#totalQty").text(totalQty.toFixed(2));
+        $("#totalFQty").text(totalFQty.toFixed(2));
     }
 
 
@@ -779,6 +779,7 @@
 
         var supplier = $("#supplier").val();
         var series = $("#series").val();
+        var seriesCode = $("#series").find(':selected').data('seriescode');
         var duedate = $("#duedate").val();
         duedate = moment(duedate, 'YYYY-MM-DD').toDate();
         duedate = moment(duedate).format('DD/MM/YYYY');
@@ -808,7 +809,8 @@
                 series:series,
                 duedate:duedate,
                 priority:priority,
-                billStatus: billStatus
+                billStatus: billStatus,
+                seriesCode:seriesCode
             },
             success: function (data) {
                 console.log(data);
@@ -824,15 +826,14 @@
                 var month = datepart.split("-")[1];
                 var year = datepart.split("-")[0];
                 var seriesCode = data.series.seriesCode;
-                var invoiceNumber = data.purchaseBillDetail.entityId +"/P/"+month+year+"/"+seriesCode+"/"+data.purchaseBillDetail.serBillId;
+                var invoiceNumber = data.purchaseBillDetail.invoiceNumber;
+                $("#invNo").html("<p><strong>" + invoiceNumber + "</strong></p>");
                 var message = "";
                 if(billStatus !== "DRAFT") {
                     message = 'Purchase Invoice Generated: '+ invoiceNumber;
-                    $("#invNo").html("<p><strong>" + invoiceNumber + "</strong></p>");
                 }
                 else {
-                    $("#invNo").html("<p><strong>"+data.purchaseBillDetail.entityId+"/DR/P/" + month + year + "/" + seriesCode + "/__</strong></p>");
-                    message = 'Draft Invoice Generated: '+data.purchaseBillDetail.entityId+'/DR/P/'+ month + year + "/" + seriesCode + "/__";
+                    message = 'Draft Invoice Generated: '+ invoiceNumber;
                 }
                 waitingSwal.close();
                 Swal.fire({
@@ -889,6 +890,7 @@
 
     function resetData()
     {
+        $("#invNo").html("");
         purchaseData.length = 0;
         batchData.length = 0;
         mainTableRow = 0;

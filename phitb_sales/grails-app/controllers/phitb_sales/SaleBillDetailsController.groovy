@@ -4,6 +4,7 @@ package phitb_sales
 import grails.rest.*
 import grails.converters.*
 import grails.web.servlet.mvc.GrailsParameterMap
+import org.grails.web.json.JSONArray
 import org.grails.web.json.JSONObject
 import org.springframework.boot.context.config.ResourceNotFoundException
 import phitb_sales.Exception.BadRequestException
@@ -254,11 +255,12 @@ class SaleBillDetailsController
     {
         try
         {
-            String start = params.start
-            String length = params.length
             GrailsParameterMap parameterMap = getParams()
             JSONObject paramsJsonObject = new JSONObject(parameterMap.params)
-            respond saleBillDetailsService.dataTables(paramsJsonObject, start, length)
+            String start = paramsJsonObject.get("start")
+            String length = paramsJsonObject.get("length")
+            def saleBillDetails = saleBillDetailsService.dataTables(paramsJsonObject, start, length)
+            respond saleBillDetails
         }
         catch (ResourceNotFoundException ex)
         {
@@ -349,6 +351,25 @@ class SaleBillDetailsController
         }
         catch (Exception ex)
         {
+            System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
+        }
+    }
+
+    def cancelSaleBill() {
+        try {
+            JSONObject jsonObject = new JSONObject(request.reader.text)
+            JSONObject saleBillDetails = saleBillDetailsService.cancelSaleBill(jsonObject)
+            respond saleBillDetails
+        }
+        catch (ResourceNotFoundException ex) {
+            System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
+            response.status = 404
+        }
+        catch (BadRequestException ex) {
+            System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
+            response.status = 400
+        }
+        catch (Exception ex) {
             System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
         }
     }

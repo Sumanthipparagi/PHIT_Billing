@@ -68,7 +68,7 @@ class UserRegisterController
             def userregisterurl = Links.API_GATEWAY + Links.USER_REGISTER_SHOW
             def routeregisterurl = Links.API_GATEWAY + Links.ROUTE_REGISTER_SHOW
             def departmenturl = Links.API_GATEWAY + Links.DEPARTMENT_MASTER_SHOW
-            def roleurl = Links.API_GATEWAY + Links.ROLE_MASTER_SHOW
+            def roleurl = Links.API_GATEWAY + Links.ROLE_SHOW
             def bankurl = Links.API_GATEWAY + Links.BANK_REGISTER_SHOW
             def accounturl = Links.API_GATEWAY + Links.ACCOUNT_REGISTER_SHOW
             def divisionurl = Links.API_GATEWAY + Links.DIVISION_SHOW

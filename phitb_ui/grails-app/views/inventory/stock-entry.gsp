@@ -63,7 +63,7 @@
                 <div class="col-lg-5 col-md-5 col-sm-12">
                     <h2>Stock Book</h2>
                     <ul class="breadcrumb padding-0">
-                        <li class="breadcrumb-item"><a href="index.html"><i class="zmdi zmdi-home"></i></a></li>
+                        <li class="breadcrumb-item"><a href="#"><i class="zmdi zmdi-home"></i></a></li>
                         <li class="breadcrumb-item active">Stock Entry</li>
                     </ul>
                 </div>
@@ -158,7 +158,7 @@
 
 <script>
 
-    var fridgetable;
+    var stockentrytable;
     var id = null;
     $(function () {
        $("#product").select2();
@@ -170,7 +170,7 @@
 
     $('#expDate').bootstrapMaterialDatePicker({
         time:false,
-        format: 'DD/MM/YYYY',
+        format: 'DD-MM-YYYY',
         clearButton: true,
         shortTime: true,
         weekStart: 1
@@ -178,7 +178,7 @@
 
     $('#purcDate').bootstrapMaterialDatePicker({
         time:false,
-        format: 'DD/MM/YYYY',
+        format: 'DD-MM-YYYY',
         clearButton: true,
         shortTime: true,
         weekStart: 1
@@ -186,7 +186,7 @@
 
     $('#manufacturingDate').bootstrapMaterialDatePicker({
         time:false,
-        format: 'DD/MM/YYYY',
+        format: 'DD-MM-YYYY',
         clearButton: true,
         shortTime: true,
         weekStart: 1
@@ -195,7 +195,7 @@
 
 
     function stockTable() {
-        fridgetable = $(".stockTable").DataTable({
+        stockentrytable = $(".stockTable").DataTable({
             "order": [[0, "desc"]],
             sPaginationType: "simple_numbers",
             responsive: {
@@ -221,7 +221,7 @@
                         var manfDate = new Date(json.data[i].manufacturingDate);
                         var expiryDate = new Date(json.data[i].expDate);
                         var editbtn = '<button type="button" data-id="' + json.data[i].id +
-                            '" data-product="' + json.data[i].productId + '"' +
+                            '" data-product="' + json.data[i].product.productName + '"' +
                             '" data-batchNumber="' + json.data[i].batchNumber + '"' +
                             '" data-manfDate="' + moment(manufacturingDate).format('DD/MM/YYYY') + '"' +
                             '" data-expiryDate="' + moment(expDate).format('DD/MM/YYYY') + '"' +
@@ -245,7 +245,7 @@
                             '" class="btn btn-sm btn-danger deletebtn" data-toggle="modal" data-target=".deleteModal"><i class="material-icons"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">delete</font></font></i></button>'
                         return_data.push({
                             'id': json.data[i].id,
-                            'product': json.data[i].productId,
+                            'product': json.data[i].product.productName,
                             'batchNumber': json.data[i].batchNumber,
                             'manfDate': moment(manfDate).format('DD/MM/YYYY'),
                             'expiryDate': moment(expiryDate).format('DD/MM/YYYY'),
@@ -277,7 +277,7 @@
 
     $('.manfDate').bootstrapMaterialDatePicker({
         time: false,
-        format: 'DD/MM/YYYY',
+        format: 'DD-MM-YYYY',
         clearButton: true,
         shortTime: true,
         weekStart: 1
@@ -285,7 +285,7 @@
 
     $('.expiryDate').bootstrapMaterialDatePicker({
         time: false,
-        format: 'DD/MM/YYYY',
+        format: 'DD-MM-YYYY',
         clearButton: true,
         shortTime: true,
         weekStart: 1
@@ -306,10 +306,10 @@
         var url = '';
         var type = '';
         if (id) {
-            url = '/stockbook/' + id;
+            url = '/stockbook/update' + id;
             type = 'POST'
         } else {
-            url = '/stockbook';
+            url = '/stockbook/save';
             type = 'POST'
         }
 
@@ -399,9 +399,9 @@
                     $select.append('<option selected disabled>SELECT BATCH</option>');
                     $.each(data, function (i) {
                         batches.push(data[i]);
-                        key = data[i].batchNumber + "_"+ data[i].id;
+                        key = data[i].batchNumber;
                         value = data[i].batchNumber;
-                        $select.append('<option value="' + key + '">' + value + '</option>');
+                        $select.append('<option data-id='+data[i].id+' value="' + key + '">' + value + '</option>');
                     });
                 }
                 else {
@@ -418,13 +418,12 @@
 
     function batchChanged()
     {
-        var batchId = $('#batchNumber').val();
+        var batchId = $('#batchNumber').find(':selected').data('id');
         if(batchId) {
-            batchId = batchId.split("_")[1];
             for (var i = 0; i < batches.length; i++) {
                 if (batches[i].id == batchId) {
-                    $(".manufacturingDate").val(moment(batches[i].manfDate).format('DD/MM/YYYY'));
-                    $(".expDate").val(moment(batches[i].expiryDate).format('DD/MM/YYYY'));
+                    $(".manufacturingDate").val(moment(batches[i].manfDate).format('DD-MM-YYYY'));
+                    $(".expDate").val(moment(batches[i].expiryDate).format('DD-MM-YYYY'));
                     $(".purchaseRate").val(batches[i].purchaseRate);
                     $(".saleRate").val(batches[i].saleRate);
                     $(".mrp").val(batches[i].mrp);
@@ -434,6 +433,9 @@
         }
     }
 </script>
-
+<g:include view="controls/footer-content.gsp"/>
+<script>
+    selectSideMenu("inventory-menu");
+</script>
 </body>
 </html>

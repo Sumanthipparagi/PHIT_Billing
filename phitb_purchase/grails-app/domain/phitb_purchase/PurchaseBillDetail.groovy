@@ -3,6 +3,8 @@ package phitb_purchase
 import gorm.logical.delete.LogicalDelete
 
 class PurchaseBillDetail implements LogicalDelete<PurchaseBillDetail> {
+
+    String invoiceNumber
     long finId
     long supplierId
     long seriesId
@@ -54,6 +56,7 @@ class PurchaseBillDetail implements LogicalDelete<PurchaseBillDetail> {
     Date lastUpdated
     
     static constraints = {
+        invoiceNumber unique: true, nullable: true
     }
 
     boolean isUpdatable

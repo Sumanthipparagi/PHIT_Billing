@@ -264,7 +264,7 @@
 
 <g:include view="controls/footer-content.gsp"/>
 <script>
-    selectSideMenu("accounts-menu");
+    selectSideMenu("approvals-menu");
 </script>
 </body>
 </html>

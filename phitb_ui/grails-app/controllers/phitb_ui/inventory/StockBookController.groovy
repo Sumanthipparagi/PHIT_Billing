@@ -84,7 +84,23 @@ class StockBookController {
             if (apiResponse.status == 200)
             {
                 JSONObject responseObject = new JSONObject(apiResponse.readEntity(String.class))
-                respond responseObject, formats: ['json'], status: 200
+                if(responseObject) {
+                    JSONArray productData = new JSONObject()
+                    JSONArray data = responseObject.get("data")
+                    for (JSONObject dt : data) {
+                        def product = new ProductService().getProductById(dt.productId.toString())
+                        if(product)
+                        {
+                            dt.put("product", product)
+                        }
+                        productData.put(dt)
+                    }
+                    responseObject.put("data", productData)
+
+                    respond responseObject, formats: ['json'], status: 200
+                }
+                else
+                    response.status = 404
             }
             else
             {

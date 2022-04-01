@@ -5,7 +5,7 @@
 
     <script type="text/javascript">
         function generateBarCode() {
-            var nric = $('#text').val();
+            var nric = '${purchaseBillDetail.invoiceNumber}';
             var url = 'https://api.qrserver.com/v1/create-qr-code/?data=' + nric + '&amp;size=50x50';
             $('#barcode').attr('src', url);
         }
@@ -93,10 +93,10 @@
         </td>
 
         <td style="width: 25%;vertical-align:top;">
-            <strong>TAX INVOICE</strong>
+            <strong>PURCHASE INVOICE</strong>
             <ul style="margin: 0;">
 
-                <li><b class="tab">Invoice No</b>: ${invoiceNumber}</li>
+                <li><b class="tab">Invoice No</b>: ${purchaseBillDetail.invoiceNumber}</li>
                 <li><b class="tab"  >Inv Date</b>:&nbsp;<span id="invDate"></span></li>
 %{--                <li><b class="tab">GR/PR No.</b>:</li>--}%
 %{--                <li><b class="tab">GR/PR Date</b>:</li>--}%
@@ -165,8 +165,8 @@
         <th>Material Description</th>
         <th>Pack</th>
         <th>C</th>
-        <th>Mfg Name/ Batch</th>
-        <th>Mfg Date/ Exp Date</th>
+        <th>Batch</th>
+        <th>Exp Date</th>
         %{--        <th>Mfg Date/ Use Before</th>--}%
         <th>MRP</th>
         <th>PTR</th>
@@ -175,10 +175,10 @@
         <th>Scheme</th>
         <th>Amount</th>
         <th>Disc.Amt/Disc.%</th>
-        <th>Amount/CGST%</th>
-        <th>Amount/SGST%</th>
-        <th>Amount/IGST%</th>
-        <th>Net Amount</th>
+        <th>Amt/CGST%</th>
+        <th>Amt/SGST%</th>
+        <th>Amt/IGST%</th>
+        <th>Net Amt</th>
     </tr>
     <%
 
@@ -214,7 +214,7 @@
             <td>${sp.cgstAmount}<br>${String.format("%.1f", sp.cgstAmount / amount * 100)}</td>
             <td>${sp.sgstAmount}<br>${String.format("%.1f", sp.sgstAmount / amount * 100)}</td>
             <td>${sp.igstAmount}<br>${String.format("%.1f", sp.igstAmount / amount * 100)}</td>
-            <td>${sp.amount}</td>
+            <td>${String.format("%.2f",sp.amount)}</td>
         </tr>
     </g:each>
     <tr>

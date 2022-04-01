@@ -175,7 +175,7 @@ class RoleController {
     def getAllFeatures() {
 
         try {
-            respond roleService.getAllFeatures(params.limit, params.offset, params.query)
+            respond roleService.getAllFeatures()
         }
         catch (Exception ex) {
             System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)

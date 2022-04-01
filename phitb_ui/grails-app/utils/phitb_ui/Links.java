@@ -334,6 +334,7 @@ public class Links
     //Sale Bill Details
     public static String SALE_BILL_SHOW = "api/v1.0/sales/salebilldetails";
     public static String SALE_BILL_SAVE = "api/v1.0/sales/salebilldetails";
+    public static String SALE_BILL_CANCEL = "api/v1.0/sales/salebilldetails/cancel";
     public static String SALE_BILL_DATATABLE = "api/v1.0/sales/salebilldetails/datatable";
     public static String SALE_BILL_UPDATE = "api/v1.0/sales/salebilldetails/{id}";
     public static String SALE_BILL_DELETE = "api/v1.0/sales/salebilldetails/{id}";
