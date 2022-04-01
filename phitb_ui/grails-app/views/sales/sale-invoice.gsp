@@ -281,7 +281,6 @@
                 </tr>
             </g:if>
             <g:if test="${cgst28}">
-
                 <tr>
                     <th>Add CGST 14% on</th>
                     <td>${String.format("%.2f", total)}</td>
@@ -384,7 +383,6 @@
         var cgst28;
 
 
-
         //Sgst slab total
         if ($("#sgst5").text().length === 0) {
             sgst5 = 0;
@@ -428,15 +426,12 @@
         } else {
             cgst28 = $("#cgst28").text()
         }
-
         var netAmount = ${total}
         var sgstSlabTotal = parseFloat(sgst5) + parseFloat(sgst12) + parseFloat(sgst18) + parseFloat(sgst28)
         var cgstSlabTotal = parseFloat(cgst5) + parseFloat(cgst12) + parseFloat(cgst18) + parseFloat(cgst28)
         var netInvAmt = parseFloat(sgstSlabTotal) + parseFloat(cgstSlabTotal) + netAmount
-
         $("#netInvAmt").text(netInvAmt.toFixed(2));
         $("#netPayAmt").text(netInvAmt.toFixed(2));
-
     }
 </script>
 </html>
