@@ -12,7 +12,6 @@ class ReceiptDetail implements LogicalDelete<ReceiptDetail> {
     String depositTo
     double amountPaid
     String narration
-    String cardNumber
     Date paymentDate
     String transId
     long employeeReceived
@@ -31,6 +30,7 @@ class ReceiptDetail implements LogicalDelete<ReceiptDetail> {
     long entityId
     long modifiedUser
     long createdUser
+    String cardNumber
 
     Date dateCreated
     Date lastUpdated

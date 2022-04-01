@@ -122,12 +122,13 @@
             <g:elseif test="${recipt?.cardNumber!=null && recipt?.cardNumber!=""}">
                 BY CARD
                 <br>
+                <br>
             </g:elseif>
             <g:else>
                 BY CASH
                 <br>
+                <br>
             </g:else>
-
             <table>
                 <tr>
                     <th>
@@ -189,7 +190,7 @@
 
     <tr>
         <td style="border-left: none;border-right: none;">
-            <p><strong>Deposit Bank : </strong></p>
+            <p><strong><g:if test="${recipt.bank!=null && recipt.bank!=""}">Deposit Bank :${recipt.bank.bankName}</g:if> </strong></p>
 
             <p>&nbsp;</p>
 
