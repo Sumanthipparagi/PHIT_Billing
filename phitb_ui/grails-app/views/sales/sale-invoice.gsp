@@ -433,9 +433,7 @@
         var sgstSlabTotal = parseFloat(sgst5) + parseFloat(sgst12) + parseFloat(sgst18) + parseFloat(sgst28)
         var cgstSlabTotal = parseFloat(cgst5) + parseFloat(cgst12) + parseFloat(cgst18) + parseFloat(cgst28)
         var netInvAmt = parseFloat(sgstSlabTotal) + parseFloat(cgstSlabTotal) + netAmount
-        // alert(sgstSlabTotal)
-        // alert(cgstSlabTotal)
-        // alert(netInvAmt)
+
         $("#netInvAmt").text(netInvAmt.toFixed(2));
         $("#netPayAmt").text(netInvAmt.toFixed(2));
 

@@ -334,7 +334,6 @@ class SaleEntryController
                 {
                     cgst28.push(t + (0.014 * total))
                 }
-
             }
             for (Double s : sgst)
             {
