@@ -35,7 +35,6 @@ class ReceiptDetail implements LogicalDelete<ReceiptDetail> {
     Date dateCreated
     Date lastUpdated
 
-
     static constraints = {
         depositTo nullable: true
         bank nullable: true
