@@ -168,7 +168,7 @@
         <th>Exp Date</th>
         %{--        <th>Mfg Date/ Use Before</th>--}%
         <th>MRP</th>
-        <th>PTR</th>
+        %{--        <th>PTR</th>--}%
         <th>PTS</th>
         <th>QTY</th>
         <th>Scheme</th>
@@ -196,8 +196,8 @@
             <td id="expDate${sp.id}">${sp.expiryDate}</td>
             %{--            <td></td>--}%
             <td>${sp.mrp}</td>
-            <td>${sp.productId.ptr}</td>
-            <td></td>
+            %{--            <td>${sp.productId.ptr}</td>--}%
+            <td>${sp.sRate}</td>
             <td>${sp.sqty}</td>
             <td>${sp.freeQty}</td>
             <%
@@ -210,10 +210,10 @@
                 sgst.push(sp.sgstAmount / amount * 100)
                 igst.push(sp.igstAmount / amount * 100)
             %>
-            <td>${String.format("%.2f",sp.cgstAmount)}<br>${String.format("%.1f", sp.cgstAmount / amount * 100)}</td>
-            <td>${String.format("%.2f",sp.sgstAmount)}<br>${String.format("%.1f", sp.sgstAmount / amount * 100)}</td>
-            <td>${String.format("%.2f",sp.igstAmount)}<br>${String.format("%.1f", sp.igstAmount / amount * 100)}</td>
-            <td>${String.format("%.2f",sp.amount)}</td>
+            <td>${String.format("%.2f", sp.cgstAmount)}<br>${String.format("%.1f", sp.cgstAmount / amount * 100)}</td>
+            <td>${String.format("%.2f", sp.sgstAmount)}<br>${String.format("%.1f", sp.sgstAmount / amount * 100)}</td>
+            <td>${String.format("%.2f", sp.igstAmount)}<br>${String.format("%.1f", sp.igstAmount / amount * 100)}</td>
+            <td>${String.format("%.2f", sp.amount)}</td>
         </tr>
     </g:each>
     <tr>
@@ -225,7 +225,7 @@
         <td class="hide"></td>
         <td class="hide"></td>
         <td class="hide"></td>
-        <td class="hide"></td>
+        %{--        <td class="hide"></td>--}%
         <td class="hide"></td>
         <td><b>Total</b></td>
         <td>${String.format("%.1f", total - totalcgst - totalsgst - totaligst)}</td>
@@ -245,9 +245,9 @@
             Weight in Kgs :<br>
             Party Ref No. : <br>
             Rev-Charge :</p>
-%{--        <g:each in="${termsConditions}" var="t">--}%
-            <p>${termsConditions.termsConditions}</p>
-%{--        </g:each>--}%
+        %{--        <g:each in="${termsConditions}" var="t">--}%
+        <p>${termsConditions[0].termCondition}</p>
+        %{--        </g:each>--}%
     </div>
 
     <div style="float: right;">
@@ -255,69 +255,68 @@
             <tr>
                 <th>Total</th>
                 <td>0.00</td>
-                <td>${String.format("%.2f", total)}</td>
+                <td>${String.format("%.2f", totalBeforeTaxes)}</td>
             </tr>
 
             <g:if test="${cgst5}">
                 <tr>
                     <th>Add CGST 2.5% on</th>
-                    <td>${String.format("%.2f", total)}</td>
+                    <td>${String.format("%.2f", totalBeforeTaxes)}</td>
                     <td id="cgst5">${String.format("%.2f", cgst5)}</td>
                 </tr>
             </g:if>
-            <g:if test="${cgst12}">
+            <g:if test="${sgst5}">
                 <tr>
-                    <th>Add CGST 6% on</th>
-                    <td>${String.format("%.2f", total)}</td>
-                    <td id="cgst12">${String.format("%.2f", cgst12)}</td>
+                    <th>Add SGST 2.5% on</th>
+                    <td>${String.format("%.2f", totalBeforeTaxes)}</td>
+                    <td id="sgst5">${String.format("%.2f", sgst5)}</td>
                 </tr>
             </g:if>
 
+
+            <g:if test="${cgst12}">
+                <tr>
+                    <th>Add CGST 6% on</th>
+                    <td>${String.format("%.2f", totalBeforeTaxes)}</td>
+                    <td id="cgst12">${String.format("%.2f", cgst12)}</td>
+                </tr>
+            </g:if>
+            <g:if test="${sgst12}">
+                <tr>
+                    <th>Add SGST 6% on</th>
+                    <td>${String.format("%.2f", totalBeforeTaxes)}</td>
+                    <td id="sgst12">${String.format("%.2f", sgst12)}</td>
+                </tr>
+            </g:if>
             <g:if test="${cgst18}">
                 <tr>
                     <th>Add CGST 9% on</th>
-                    <td>${String.format("%.2f", total)}</td>
+                    <td>${String.format("%.2f", totalBeforeTaxes)}</td>
                     <td id="cgst18">${String.format("%.2f", cgst18)}</td>
+                </tr>
+            </g:if>
+            <g:if test="${sgst18}">
+                <tr>
+                    <th>Add SGST 9% on</th>
+                    <td>${String.format("%.2f", totalBeforeTaxes)}</td>
+                    <td id="sgst18">${String.format("%.2f", sgst18)}</td>
                 </tr>
             </g:if>
             <g:if test="${cgst28}">
 
                 <tr>
                     <th>Add CGST 14% on</th>
-                    <td>${String.format("%.2f", total)}</td>
+                    <td>${String.format("%.2f", totalBeforeTaxes)}</td>
                     <td id="cgst28">${String.format("%.2f", cgst28)}</td>
                 </tr>
             </g:if>
-
-
-                <g:if test="${sgst5}">
-                    <tr>
-                        <th>Add SGST 2.5% on</th>
-                        <td>${String.format("%.2f", total)}</td>
-                        <td id="sgst5">${String.format("%.2f",sgst5)}</td>
-                    </tr>
-                </g:if>
-                <g:if test="${sgst12}">
-                    <tr>
-                        <th>Add SGST 6% on</th>
-                        <td>${String.format("%.2f", total)}</td>
-                        <td id="sgst12">${String.format("%.2f",sgst12)}</td>
-                    </tr>
-                </g:if>
-                <g:if test="${sgst18}">
-                    <tr>
-                        <th>Add SGST 9% on</th>
-                        <td>${String.format("%.2f", total)}</td>
-                        <td id="sgst18">${String.format("%.2f",sgst18)}</td>
-                    </tr>
-                </g:if>
-                <g:if test="${sgst28}">
-                    <tr>
-                        <th>Add SGST 14% on</th>
-                        <td>${String.format("%.2f", total)}</td>
-                        <td id="sgst28">${String.format("%.2f",sgst28)}</td>
-                    </tr>
-                </g:if>
+            <g:if test="${sgst28}">
+                <tr>
+                    <th>Add SGST 14% on</th>
+                    <td>${String.format("%.2f", totalBeforeTaxes)}</td>
+                    <td id="sgst28">${String.format("%.2f", sgst28)}</td>
+                </tr>
+            </g:if>
             <tr>
                 <th>Net Invoice Amt.</th>
                 <td>0.00</td>
@@ -362,14 +361,14 @@
     window.onload = function () {
         var d = new Date().toLocaleTimeString();
         document.getElementById("date").innerHTML = d;
-        var invDate = new Date('${saleBillDetail.entryDate}')
+        var invDate = new Date('${saleBillDetail.entryDate}');
         $("#invDate").text(moment(invDate).format('DD-MM-YYYY'));
 
         <g:each var="spd" in="${saleProductDetails}">
         var expDate = new Date('${spd.expiryDate}')
         $("#expDate${spd.id}").text(moment(expDate).format('MMM-YY').toUpperCase());
         </g:each>
-        generateBarCode()
+        generateBarCode();
 
         //sgst slabs
         var sgst5;
@@ -382,7 +381,6 @@
         var cgst12;
         var cgst18;
         var cgst28;
-
 
 
         //Sgst slab total

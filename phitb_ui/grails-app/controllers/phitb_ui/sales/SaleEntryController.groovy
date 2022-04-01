@@ -298,6 +298,8 @@ class SaleEntryController
             ArrayList<Double> sgst = new ArrayList<>()
             ArrayList<Double> igst = new ArrayList<>()
             def total = saleProductDetails.amount.sum()
+            def totalBeforeTaxes = total - totalcgst - totalsgst - totaligst
+
             ArrayList<Double> cgst5 = new ArrayList<>()
             ArrayList<Double> cgst12 = new ArrayList<>()
             ArrayList<Double> cgst18 = new ArrayList<>()
@@ -317,40 +319,40 @@ class SaleEntryController
             {
                 if (c > 0 && c <= 2.5)
                 {
-                    cgst5.push(t + (0.025 * total))
+                    cgst5.push(t + (0.025 * totalBeforeTaxes))
                 }
                 if(c > 2.5 && c <= 6)
                 {
-                    cgst12.push(t + (0.06 * total))
+                    cgst12.push(t + (0.06 * totalBeforeTaxes))
 
                 }
                 if(c > 6 && c <= 9)
                 {
-                    cgst18.push(t + (0.09 * total))
+                    cgst18.push(t + (0.09 * totalBeforeTaxes))
                 }
                 if(c > 9 && c <= 14)
                 {
-                    cgst28.push(t + (0.014 * total))
+                    cgst28.push(t + (0.014 * totalBeforeTaxes))
                 }
             }
             for (Double s : sgst)
             {
                 if (s > 0 && s <= 2.5)
                 {
-                    sgst5.push(t + (0.025 * total))
+                    sgst5.push(t + (0.025 * totalBeforeTaxes))
                 }
                 if(s > 2.5 && s <= 6)
                 {
-                    sgst12.push(t + (0.06 * total))
+                    sgst12.push(t + (0.06 * totalBeforeTaxes))
                 }
                 if(s > 6 && s <= 9)
                 {
-                    sgst18.push(t + (0.09 * total))
+                    sgst18.push(t + (0.09 * totalBeforeTaxes))
 
                 }
                 if(s > 9 && s <= 14)
                 {
-                    sgst28.push(t + (0.014 * total))
+                    sgst28.push(t + (0.014 * totalBeforeTaxes))
                 }
             }
             render(view: "/sales/sale-invoice", model: [saleBillDetail    : saleBillDetail,
@@ -363,7 +365,8 @@ class SaleEntryController
                                                         cgst5:cgst5.sum(),cgst12:cgst12.sum(),
                                                         cgst18:cgst18.sum(),cgst28:cgst28.sum(),
                                                         sgst5:sgst5.sum(),sgst12:sgst12.sum(),
-                                                        sgst18:sgst18.sum(),sgst28:sgst28.sum()
+                                                        sgst18:sgst18.sum(),sgst28:sgst28.sum(),
+                                                        totalBeforeTaxes:totalBeforeTaxes
             ])
         }
 
