@@ -245,9 +245,9 @@
             Weight in Kgs :<br>
             Party Ref No. : <br>
             Rev-Charge :</p>
-        <g:each in="${termsConditions}" var="t">
-            <p>${t.termCondition}</p>
-        </g:each>
+%{--        <g:each in="${termsConditions}" var="t">--}%
+            <p>${termsConditions.termsConditions}</p>
+%{--        </g:each>--}%
     </div>
 
     <div style="float: right;">
@@ -433,9 +433,7 @@
         var sgstSlabTotal = parseFloat(sgst5) + parseFloat(sgst12) + parseFloat(sgst18) + parseFloat(sgst28)
         var cgstSlabTotal = parseFloat(cgst5) + parseFloat(cgst12) + parseFloat(cgst18) + parseFloat(cgst28)
         var netInvAmt = parseFloat(sgstSlabTotal) + parseFloat(cgstSlabTotal) + netAmount
-        // alert(sgstSlabTotal)
-        // alert(cgstSlabTotal)
-        // alert(netInvAmt)
+
         $("#netInvAmt").text(netInvAmt.toFixed(2));
         $("#netPayAmt").text(netInvAmt.toFixed(2));
 

@@ -319,7 +319,6 @@ class SaleEntryController
                 {
                     cgst5.push(t + (0.025 * total))
                 }
-
                 if(c > 2.5 && c <= 6)
                 {
                     cgst12.push(t + (0.06 * total))
@@ -328,13 +327,11 @@ class SaleEntryController
                 if(c > 6 && c <= 9)
                 {
                     cgst18.push(t + (0.09 * total))
-
                 }
                 if(c > 9 && c <= 14)
                 {
-                    cgst28.push(t + (0.09 * total))
+                    cgst28.push(t + (0.014 * total))
                 }
-
             }
             for (Double s : sgst)
             {
@@ -342,11 +339,9 @@ class SaleEntryController
                 {
                     sgst5.push(t + (0.025 * total))
                 }
-
                 if(s > 2.5 && s <= 6)
                 {
                     sgst12.push(t + (0.06 * total))
-
                 }
                 if(s > 6 && s <= 9)
                 {
@@ -355,7 +350,7 @@ class SaleEntryController
                 }
                 if(s > 9 && s <= 14)
                 {
-                    sgst28.push(t + (0.09 * total))
+                    sgst28.push(t + (0.014 * total))
                 }
             }
             render(view: "/sales/sale-invoice", model: [saleBillDetail    : saleBillDetail,
