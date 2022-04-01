@@ -246,7 +246,7 @@
             Party Ref No. : <br>
             Rev-Charge :</p>
 %{--        <g:each in="${termsConditions}" var="t">--}%
-            <p>${termsConditions.termsConditions}</p>
+            <p>${termsConditions[0].termCondition}</p>
 %{--        </g:each>--}%
     </div>
 
