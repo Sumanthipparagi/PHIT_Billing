@@ -332,7 +332,7 @@ class SaleEntryController
                 }
                 if(c > 9 && c <= 14)
                 {
-                    cgst28.push(t + (0.09 * total))
+                    cgst28.push(t + (0.014 * total))
                 }
 
             }
@@ -355,7 +355,7 @@ class SaleEntryController
                 }
                 if(s > 9 && s <= 14)
                 {
-                    sgst28.push(t + (0.09 * total))
+                    sgst28.push(t + (0.014 * total))
                 }
             }
             render(view: "/sales/sale-invoice", model: [saleBillDetail    : saleBillDetail,

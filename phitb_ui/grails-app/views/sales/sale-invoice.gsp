@@ -245,9 +245,9 @@
             Weight in Kgs :<br>
             Party Ref No. : <br>
             Rev-Charge :</p>
-        <g:each in="${termsConditions}" var="t">
-            <p>${t.termCondition}</p>
-        </g:each>
+%{--        <g:each in="${termsConditions}" var="t">--}%
+            <p>${termsConditions.termsConditions}</p>
+%{--        </g:each>--}%
     </div>
 
     <div style="float: right;">
