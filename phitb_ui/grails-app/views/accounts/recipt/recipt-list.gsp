@@ -110,7 +110,7 @@
                                     <th style="width: 20%">Receipt Id</th>
                                     <th style="width: 20%">Financial Year</th>
                                     <th style="width: 20%">Payment Date</th>
-                                    <th style="width: 20%">Bank</th>
+%{--                                    <th style="width: 20%">Bank</th>--}%
                                     <th style="width: 20%">Action</th>
                                 </tr>
                                 </thead>
@@ -203,7 +203,7 @@
                             'date': moment(date).format('DD/MM/YYYY'),
                             'fy': json.data[i].financialYear,
                             'pd': moment(pd).format('DD/MM/YYYY'),
-                            'bank': json.data[i].bank.bankName,
+                            // 'bank': json.data[i].bank.bankName,
                             'action': editbtn
                         });
                     }
@@ -215,7 +215,7 @@
                 {'data': 'id', 'width': '20%'},
                 {'data': 'fy', 'width': '20%'},
                 {'data': 'pd', 'width': '20%'},
-                {'data': 'bank', 'width': '20%'},
+                // {'data': 'bank', 'width': '20%'},
                 {'data': 'action', 'width': '20%'}
             ]
         });

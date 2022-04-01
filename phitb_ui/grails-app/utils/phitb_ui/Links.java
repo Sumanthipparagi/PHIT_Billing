@@ -485,6 +485,13 @@ public class Links
     public static String PURCHASE_PRODUCT_OF_BILLIDS = "api/v1.0/purchase/purchaseproductdetailslist/bill" +
             "/{purbillsIds}";
 
+    //purchase product bill details
+    public static String PURCHASE_RETURN_SHOW = "api/v1.0/purchase/returndetail";
+    public static String PURCHASE_RETURN_SAVE = "api/v1.0/purchase/returndetail";
+    public static String PURCHASE_RETURN_DATATABLE = "api/v1.0/purchase/returndetail/datatable";
+    public static String PURCHASE_RETURN_UPDATE = "api/v1.0/purchase/returndetail/{id}";
+    public static String PURCHASE_RETURN_DELETE = "api/v1.0/purchase/returndetail/{id}";
+
     //e-Invoice
     public static String E_INVOICE_BASE_URL = "https://test.nsdlgsp.co.in";
     public static String E_INVOICE_GET_KEY = E_INVOICE_BASE_URL + "/GSPUtility/getKey";

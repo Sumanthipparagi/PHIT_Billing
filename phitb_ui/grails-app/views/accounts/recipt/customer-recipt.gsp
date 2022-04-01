@@ -177,10 +177,10 @@
                                     <select class="show-tick paymentMode" name="paymentMode"
                                             id="paymentMode" onchange="payMode(this.value)" required style="height: 37px;width: 425px;">
                                         <option value="">-- Please select --</option>
-%{--                                        <g:each var="pm" in="${paymodes}">--}%
-%{--                                        <option value="${pm.id}" data-mode="${pm.name}">${pm.name}</option>--}%
-%{--                                        </g:each>--}%
-                                        <option value="1" data-mode="BANK">BANK</option>
+                                        <g:each var="pm" in="${paymodes}">
+                                        <option value="${pm.id}" data-mode="${pm.name}">${pm.name}</option>
+                                        </g:each>
+%{--                                        <option value="1" data-mode="BANK">BANK</option>--}%
                                     </select>
                                 </div>
 
@@ -208,8 +208,7 @@
                                     </label>
                                     <input type="number" id="chequeNumber" class="chequeNumber form-control"
                                            name="chequeNumber"
-                                           placeholder="Cheque Number"
-                                           required/>
+                                           placeholder="Cheque Number"/>
                                 </div>
 
                                 <div class="col-lg-3 form-group  form-float">
@@ -459,14 +458,15 @@
                 '    <input type="number" id="cardNumber" class="cardNumber form-control"\n' +
                 '    name="cardNumber"\n' +
                 '    placeholder="Card Number"\n' +
-                '    required/>'
-            $(".cheque").hide()
+                '    />'
+            $(".cheque").hide().prop('required',false)
+            $(".cardNumber").prop('required',false)
 
         }
         else if($('#paymentMode option:selected').attr('data-mode') === "CASH")
         {
-            $("#mode").hide()
-            $(".cheque").hide()
+            $("#mode").hide().prop('required',false)
+            $(".cheque").hide().prop('required',false)
         }
         $('#mode').html(html)
     }
