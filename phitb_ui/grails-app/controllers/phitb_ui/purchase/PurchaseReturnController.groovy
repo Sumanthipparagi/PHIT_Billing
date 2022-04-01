@@ -111,20 +111,22 @@ class PurchaseReturnController
         for (JSONArray sale : saleData) {
             String productId = sale[2]
             String batchNumber = sale[3]
-            String saleQty = sale[4]
+            String purQty = sale[4]
             String freeQty = sale[5]
             String saleRate = sale[6]
             String mrp = sale[7]
             String value = sale[10]
             String gst = sale[9]
-
-            totalSqty += Long.parseLong(saleQty)
+            String igst = sale[13]
+            String cgst = sale[12]
+            String sgst = sale[11]
+            totalSqty += Long.parseLong(purQty)
             totalFqty += Long.parseLong(freeQty)
             totalAmount += Double.parseDouble(value)
             totalGst += Double.parseDouble(gst)
-            totalSgst += Double.parseDouble("0")
-            totalCgst += Double.parseDouble("0")
-            totalIgst += Double.parseDouble("0")
+            totalSgst += Double.parseDouble(sgst)
+            totalCgst += Double.parseDouble(cgst)
+            totalIgst += Double.parseDouble(igst)
             totalDiscount += Double.parseDouble("0")
             purReturnDetail.put("finId", finId)
             purReturnDetail.put("billId",0)
@@ -133,7 +135,7 @@ class PurchaseReturnController
             purReturnDetail.put("series", seriesId)
             purReturnDetail.put("productId", productId)
             purReturnDetail.put("batchNumber", batchNumber)
-            purReturnDetail.put("sqty", saleQty)
+            purReturnDetail.put("sqty", purQty)
             purReturnDetail.put("supplierId", 1)
             purReturnDetail.put("salesmanId", salesmanId)
             purReturnDetail.put("dispatchDate", dispatchDate)
@@ -181,7 +183,7 @@ class PurchaseReturnController
             //save to sale transaction log
             //save to sale transportation details
         }
-        Response response = new SalesService().saveSaleRetrun(purReturnDetail)
+        Response response = new PurchaseService().savePurchaseRetrun(purReturnDetail)
         if(response.status == 200)
         {
             def saleOrder = new JSONObject(response.readEntity(String.class))
