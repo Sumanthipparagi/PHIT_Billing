@@ -12,7 +12,7 @@ class ReceiptDetail implements LogicalDelete<ReceiptDetail> {
     String depositTo
     double amountPaid
     String narration
-    long cardNumber
+    String cardNumber
     Date paymentDate
     String transId
     long employeeReceived
@@ -37,6 +37,9 @@ class ReceiptDetail implements LogicalDelete<ReceiptDetail> {
 
 
     static constraints = {
+        depositTo nullable: true
+        bank nullable: true
+        cardNumber nullable: true
     }
 
     static mapping = {

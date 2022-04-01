@@ -101,7 +101,13 @@ class ReceiptDetailService {
         receiptDetail.paymentModeId = Long.parseLong(jsonObject.get("paymentMode").toString())
         receiptDetail.accountModeId = Long.parseLong(jsonObject.get("accountModeId").toString())
         receiptDetail.receivedFrom = jsonObject.get("receivedFrom").toString()
-        receiptDetail.depositTo = jsonObject.get("bank").toString()
+        if(!jsonObject.isNull("bank"))
+        {
+            receiptDetail.depositTo = jsonObject.get("bank").toString()
+        }else
+        {
+            receiptDetail.depositTo = null
+        }
         receiptDetail.amountPaid = Double.parseDouble(jsonObject.get("amountPaid").toString())
         receiptDetail.narration = jsonObject.get("narration").toString()
         receiptDetail.cardNumber = Long.parseLong("1")
@@ -111,7 +117,13 @@ class ReceiptDetailService {
         receiptDetail.commission = Double.parseDouble("1")
         receiptDetail.totalNotes = Long.parseLong("1")
         receiptDetail.chequeNumber = jsonObject.get("chequeNumber").toString()
-        receiptDetail.bank = BankRegister.findById(Long.parseLong(jsonObject.get("bank").toString()))
+        if(!jsonObject.isNull("bank"))
+        {
+            receiptDetail.bank = BankRegister.findById(Long.parseLong(jsonObject.get("bank").toString()))
+        }
+        else {
+            receiptDetail.bank = null
+        }
         receiptDetail.wallet = WalletMaster.findById(Long.parseLong(jsonObject.get("wallet").toString()))
         receiptDetail.lockStatus = Long.parseLong("1")
         receiptDetail.approvedBy = Long.parseLong("1")

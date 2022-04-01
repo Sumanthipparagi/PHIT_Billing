@@ -357,7 +357,6 @@ class SaleEntryController
                 {
                     sgst28.push(t + (0.09 * total))
                 }
-
             }
             render(view: "/sales/sale-invoice", model: [saleBillDetail    : saleBillDetail,
                                                         saleProductDetails: saleProductDetails,

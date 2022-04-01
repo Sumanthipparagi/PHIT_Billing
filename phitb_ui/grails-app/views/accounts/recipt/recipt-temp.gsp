@@ -116,7 +116,18 @@
     </tr>
     <tr>
         <td>
+            <g:if test="${recipt.bank!=null && recipt.bank!=""}">
             <p>By Cheque No.: ${recipt.chequeNumber} of ${recipt.bank.bankName} dated ${recipt.paymentDate.split("T")[0]}</p>
+            </g:if>
+            <g:elseif test="${recipt?.cardNumber!=null && recipt?.cardNumber!=""}">
+                BY CARD
+            </g:elseif>
+            <g:if test="${recipt?.cardNumber==0 && recipt?.cardNumber ==""}">
+                BY CASH
+            </g:if>
+            <g:if test="${recipt?.bank==null && recipt?.bank==""}">
+                BY CASH
+            </g:if>
             <table>
                 <tr>
                     <th>
@@ -178,7 +189,7 @@
 
     <tr>
         <td style="border-left: none;border-right: none;">
-            <p><strong>Deposit Bank : ${recipt.bank.bankName}</strong></p>
+            <p><strong>Deposit Bank : </strong></p>
 
             <p>&nbsp;</p>
 
