@@ -75,7 +75,7 @@
                                 <label for="purchaseRate">
                                     Purchase Rate
                                 </label>
-                                <input type="number" id="purchaseRate" class="form-control purchaseRate"
+                                <input type="text" id="purchaseRate" class="form-control purchaseRate"
                                        name="purchaseRate"
                                        placeholder="Purchase Rate"
                                        required/>
@@ -84,9 +84,9 @@
 
                             <div class="col-lg-6 form-group  form-float">
                                 <label for="saleRate">
-                                    Sale Rate
+                                    Sale Rate (PTS)
                                 </label>
-                                <input type="number" id="saleRate" class="form-control saleRate" name="saleRate"
+                                <input type="text" id="saleRate" class="form-control saleRate" name="saleRate"
                                        placeholder="Sale Rate"
                                        required/>
                             </div>
@@ -96,8 +96,8 @@
                                 <label for="purcTradeDiscount">
                                     Purchase Trade Discount
                                 </label>
-                                <input type="number" id="purcTradeDiscount" class="form-control purcTradeDiscount" name="purcTradeDiscount"
-                                       placeholder="Sale Rate" value="0"
+                                <input type="text" id="purcTradeDiscount" class="form-control purcTradeDiscount" name="purcTradeDiscount"
+                                       placeholder="Sale Rate"
                                        required/>
                             </div>
 
@@ -106,7 +106,7 @@
                                 <label for="mrp">
                                     MRP
                                 </label>
-                                <input type="number" id="mrp" class="form-control mrp" name="mrp"
+                                <input type="text" id="mrp" class="form-control mrp" name="mrp"
                                        placeholder="MRP"
                                        required/>
                             </div>
