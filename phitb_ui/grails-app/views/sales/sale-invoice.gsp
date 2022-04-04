@@ -148,7 +148,7 @@
         <td style="width: 25%;vertical-align:top;">
             <input id="text" type="hidden" value="PharmIT" style="Width:20%" onblur='generateBarCode();'/>
             <img id='barcode'
-                 src="https://api.qrserver.com/v1/create-qr-code/?data=${invoiceNumber}&amp;size=100x100"
+                 src="https://api.qrserver.com/v1/create-qr-code/?data=${saleBillDetail.invoiceNumber}&amp;size=100x100"
                  alt=""
                  title="PhramIT"
                  style="display: block;
