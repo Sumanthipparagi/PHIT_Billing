@@ -323,11 +323,11 @@
         batchSelection($("#supplierSelect").val())
         var isChecked = $('#prev_sales_yes').prop('checked');
         if (isChecked) {
-            purchaseSelection($("#supplierSelect").val())
+            purchaseSelection($("#supplierSelect").val());
             supplierSelectChanged()
         }
         $("#prev_sales_yes").click(function () {
-            purchaseSelection($("#supplierSelect").val())
+            purchaseSelection($("#supplierSelect").val());
             supplierSelectChanged()
 
         });

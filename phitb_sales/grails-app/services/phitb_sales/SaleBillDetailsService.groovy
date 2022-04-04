@@ -183,13 +183,11 @@ class SaleBillDetailsService
             cal.setTime(saleBillDetails.entryDate)
             String month = cal.get(Calendar.MONTH)
             String year = cal.get(Calendar.YEAR)
-
             DecimalFormat mFormat= new DecimalFormat("00");
             month = mFormat.format(Double.valueOf(month));
-
-            String invoiceNumber = null
+            String invoiceNumber = null;
             String seriesCode = jsonObject.get("seriesCode")
-
+            SaleBillDetails  saleBillDetails1
             if (saleBillDetails.billStatus == "DRAFT")
             {
                 invoiceNumber = saleBillDetails.entityId+"/DR/S/" + month + year + "/" + seriesCode + "/__";
@@ -198,15 +196,14 @@ class SaleBillDetailsService
             {
                 invoiceNumber = saleBillDetails.entityId+"/S/" + month + year + "/" + seriesCode + "/" + saleBillDetails.serBillId
             }
-
             if(invoiceNumber)
             {
                 saleBillDetails.invoiceNumber = invoiceNumber
                 saleBillDetails.isUpdatable = true
-                saleBillDetails = saleBillDetails.save(flush:true)
+                saleBillDetails1 = saleBillDetails.save(flush:true)
             }
 
-            return saleBillDetails
+            return saleBillDetails1
         }
         else
         {

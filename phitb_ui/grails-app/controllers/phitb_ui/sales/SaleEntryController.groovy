@@ -58,8 +58,6 @@ class SaleEntryController
         long serBillId = 0
         String financialYear = session.getAttribute("financialYear")
         def series = new EntityService().getSeriesById(seriesId)
-
-
         if (!billStatus.equalsIgnoreCase("DRAFT"))
         {
             def recentSaleBill = new SalesService().getRecentSaleBill(financialYear, entityId, billStatus)
