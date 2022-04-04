@@ -210,9 +210,9 @@
                 sgst.push(sp.sgstAmount / amount * 100)
                 igst.push(sp.igstAmount / amount * 100)
             %>
-            <td>${String.format("%.2f", sp.cgstAmount)}<br>${String.format("%.1f", sp.cgstAmount / amount * 100)}</td>
-            <td>${String.format("%.2f", sp.sgstAmount)}<br>${String.format("%.1f", sp.sgstAmount / amount * 100)}</td>
-            <td>${String.format("%.2f", sp.igstAmount)}<br>${String.format("%.1f", sp.igstAmount / amount * 100)}</td>
+            <td>${String.format("%.2f", sp.cgstAmount)}<br>${String.format("%.2f", sp.cgstAmount / amount * 100)}</td>
+            <td>${String.format("%.2f", sp.sgstAmount)}<br>${String.format("%.2f", sp.sgstAmount / amount * 100)}</td>
+            <td>${String.format("%.2f", sp.igstAmount)}<br>${String.format("%.2f", sp.igstAmount / amount * 100)}</td>
             <td>${String.format("%.2f", sp.amount)}</td>
         </tr>
     </g:each>
@@ -228,7 +228,7 @@
         %{--        <td class="hide"></td>--}%
         <td class="hide"></td>
         <td><b>Total</b></td>
-        <td>${String.format("%.1f", total - totalcgst - totalsgst - totaligst)}</td>
+        <td>${String.format("%.2f", totalBeforeTaxes)}</td>
         <td>${String.format("%.2f", totaldiscount)}</td>
         <td>${String.format("%.2f", totalcgst)}</td>
         <td>${String.format("%.2f", totalsgst)}</td>
@@ -258,65 +258,32 @@
                 <td>${String.format("%.2f", totalBeforeTaxes)}</td>
             </tr>
 
-            <g:if test="${cgst5}">
+            <g:each in="${sgstGroup}" var="sg">
                 <tr>
-                    <th>Add CGST 2.5% on</th>
-                    <td>${String.format("%.2f", totalBeforeTaxes)}</td>
-                    <td id="cgst5">${String.format("%.2f", cgst5)}</td>
+                    <th>Add SGST ${sg.key}% on</th>
+                    <td>${String.format("%.2f", sg.value)}</td>
+                    <td class="totalgst">${String.format("%.2f",sg.value * (Double.parseDouble(sg.key.toString())/100))}</td>
                 </tr>
-            </g:if>
-            <g:if test="${sgst5}">
-                <tr>
-                    <th>Add SGST 2.5% on</th>
-                    <td>${String.format("%.2f", totalBeforeTaxes)}</td>
-                    <td id="sgst5">${String.format("%.2f", sgst5)}</td>
-                </tr>
-            </g:if>
 
+            </g:each>
 
-            <g:if test="${cgst12}">
+            <g:each in="${cgstGroup}" var="cg">
                 <tr>
-                    <th>Add CGST 6% on</th>
-                    <td>${String.format("%.2f", totalBeforeTaxes)}</td>
-                    <td id="cgst12">${String.format("%.2f", cgst12)}</td>
+                    <th>Add CGST ${cg.key}% on</th>
+                    <td>${String.format("%.2f", cg.value)}</td>
+                    <td class="totalgst">${String.format("%.2f",cg.value * (Double.parseDouble(cg.key.toString())/100))}</td>
                 </tr>
-            </g:if>
-            <g:if test="${sgst12}">
-                <tr>
-                    <th>Add SGST 6% on</th>
-                    <td>${String.format("%.2f", totalBeforeTaxes)}</td>
-                    <td id="sgst12">${String.format("%.2f", sgst12)}</td>
-                </tr>
-            </g:if>
-            <g:if test="${cgst18}">
-                <tr>
-                    <th>Add CGST 9% on</th>
-                    <td>${String.format("%.2f", totalBeforeTaxes)}</td>
-                    <td id="cgst18">${String.format("%.2f", cgst18)}</td>
-                </tr>
-            </g:if>
-            <g:if test="${sgst18}">
-                <tr>
-                    <th>Add SGST 9% on</th>
-                    <td>${String.format("%.2f", totalBeforeTaxes)}</td>
-                    <td id="sgst18">${String.format("%.2f", sgst18)}</td>
-                </tr>
-            </g:if>
-            <g:if test="${cgst28}">
 
+            </g:each>
+
+            <g:each in="${igstGroup}" var="ig">
                 <tr>
-                    <th>Add CGST 14% on</th>
-                    <td>${String.format("%.2f", totalBeforeTaxes)}</td>
-                    <td id="cgst28">${String.format("%.2f", cgst28)}</td>
+                    <th>Add IGST ${ig.key}% on</th>
+                    <td>${String.format("%.2f", ig.value)}</td>
+                    <td class="totalgst">${String.format("%.2f",ig.value * (Double.parseDouble(ig.key.toString())/100))}</td>
                 </tr>
-            </g:if>
-            <g:if test="${sgst28}">
-                <tr>
-                    <th>Add SGST 14% on</th>
-                    <td>${String.format("%.2f", totalBeforeTaxes)}</td>
-                    <td id="sgst28">${String.format("%.2f", sgst28)}</td>
-                </tr>
-            </g:if>
+
+            </g:each>
             <tr>
                 <th>Net Invoice Amt.</th>
                 <td>0.00</td>
@@ -365,72 +332,20 @@
         $("#invDate").text(moment(invDate).format('DD-MM-YYYY'));
 
         <g:each var="spd" in="${saleProductDetails}">
-        var expDate = new Date('${spd.expiryDate}')
+        var expDate = new Date('${spd.expiryDate}');
         $("#expDate${spd.id}").text(moment(expDate).format('MMM-YY').toUpperCase());
         </g:each>
         generateBarCode();
-
-        //sgst slabs
-        var sgst5;
-        var sgst12;
-        var sgst18;
-        var sgst28;
-
-        //sgst slabs
-        var cgst5;
-        var cgst12;
-        var cgst18;
-        var cgst28;
-
-
-        //Sgst slab total
-        if ($("#sgst5").text().length === 0) {
-            sgst5 = 0;
-        } else {
-            sgst5 = $("#sgst5").text()
-        }
-        if ($("#sgst12").text().length === 0) {
-            sgst12 = 0;
-        } else {
-            sgst12 = $("#sgst12").text()
-        }
-        if ($("#sgst18").text().length === 0) {
-            sgst18 = 0;
-        } else {
-            sgst18 = $("#sgst18").text()
-        }
-        if ($("#sgst28").text().length === 0) {
-            sgst28 = 0;
-        } else {
-            sgst28 = $("#sgst28").text()
-        }
-
-        //Sgst slab total
-        if ($("#cgst5").text().length === 0) {
-            cgst5 = 0;
-        } else {
-            cgst5 = $("#cgst5").text()
-        }
-        if ($("#cgst12").text().length === 0) {
-            cgst12 = 0;
-        } else {
-            cgst12 = $("#cgst12").text()
-        }
-        if ($("#cgst18").text().length === 0) {
-            cgst18 = 0;
-        } else {
-            cgst18 = $("#cgst18").text()
-        }
-        if ($("#cgst28").text().length === 0) {
-            cgst28 = 0;
-        } else {
-            cgst28 = $("#cgst28").text()
-        }
-
-        var netAmount = ${total}
-        var sgstSlabTotal = parseFloat(sgst5) + parseFloat(sgst12) + parseFloat(sgst18) + parseFloat(sgst28)
-        var cgstSlabTotal = parseFloat(cgst5) + parseFloat(cgst12) + parseFloat(cgst18) + parseFloat(cgst28)
-        var netInvAmt = parseFloat(sgstSlabTotal) + parseFloat(cgstSlabTotal) + netAmount
+        var totalGst = 0.0;
+        var totalgstField = $(".totalgst");
+        totalgstField.each(function(i)
+        {
+            var totGst = totalgstField.eq(i)[0].innerText;
+            if(totGst !== "")
+                totalGst += parseFloat(totGst);
+        });
+        var netAmount = ${totalBeforeTaxes}
+        var netInvAmt = parseFloat(totalGst) + netAmount;
 
         $("#netInvAmt").text(netInvAmt.toFixed(2));
         $("#netPayAmt").text(netInvAmt.toFixed(2));

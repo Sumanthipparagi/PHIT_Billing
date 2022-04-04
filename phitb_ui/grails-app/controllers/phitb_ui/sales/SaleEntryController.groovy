@@ -8,6 +8,7 @@ import phitb_ui.InventoryService
 import phitb_ui.Links
 import phitb_ui.SalesService
 import phitb_ui.SystemService
+import phitb_ui.UtilsService
 import phitb_ui.entity.EntityRegisterController
 import phitb_ui.entity.SeriesController
 import phitb_ui.ProductService
@@ -302,99 +303,64 @@ class SaleEntryController
                 def apiResponse = new SalesService().getRequestWithId(it.productId.toString(), new Links().PRODUCT_REGISTER_SHOW)
                 it.put("productId", JSON.parse(apiResponse.readEntity(String.class)) as JSONObject)
             }
-            /*   def invoiceNumber;
-               def datepart = saleBillDetail.entryDate.split("T")[0];
-               def month = datepart.split("-")[1];
-               def year = datepart.split("-")[0];
-               def seriesCode = "__";
-               if (saleBillDetail.billStatus == "DRAFT")
-               {
-                   invoiceNumber = saleBillDetail.entityId+"/DR/S/" + month + year + "/" + series.seriesCode + "/__";
-               }
-               else
-               {
-                   invoiceNumber = saleBillDetail.entityId+"/S/" + month + year + "/" + series.seriesCode + "/" + saleBillDetail.id
-               }*/
-            def totalcgst = saleProductDetails.cgstAmount.sum()
-            def totalsgst = saleProductDetails.sgstAmount.sum()
-            def totaligst = saleProductDetails.igstAmount.sum()
-            def totaldiscount = saleProductDetails.discount.sum()
-            ArrayList<Double> cgst = new ArrayList<>()
-            ArrayList<Double> sgst = new ArrayList<>()
-            ArrayList<Double> igst = new ArrayList<>()
-            def total = saleProductDetails.amount.sum()
-            def totalBeforeTaxes = total - totalcgst - totalsgst - totaligst
+            def totalcgst = UtilsService.round(saleProductDetails.cgstAmount.sum(), 2)
+            def totalsgst = UtilsService.round(saleProductDetails.sgstAmount.sum(), 2)
+            def totaligst = UtilsService.round(saleProductDetails.igstAmount.sum(), 2)
+            def totaldiscount = UtilsService.round(saleProductDetails.discount.sum(), 2)
+            def totalBeforeTaxes = 0
+            HashMap<String, Double> gstGroup = new HashMap<>()
+            HashMap<String, Double> sgstGroup = new HashMap<>()
+            HashMap<String, Double> cgstGroup = new HashMap<>()
+            HashMap<String, Double> igstGroup = new HashMap<>()
+            for (Object it : saleProductDetails) {
+                double amountBeforeTaxes = it.amount - it.cgstAmount - it.sgstAmount - it.igstAmount
+                totalBeforeTaxes += amountBeforeTaxes
+                if(it.igstPercentage > 0) {
+                    def igstPercentage = igstGroup.get(it.igstPercentage.toString())
+                    if (igstPercentage == null)
+                        igstGroup.put(it.igstPercentage.toString(), amountBeforeTaxes)
+                    else
+                        igstGroup.put(it.igstPercentage.toString(), igstPercentage.doubleValue() + amountBeforeTaxes)
+                }
+                else
+                {
+                    def gstPercentage = gstGroup.get(it.gstPercentage.toString())
+                    if(gstPercentage == null)
+                        gstGroup.put(it.gstPercentage.toString(), amountBeforeTaxes)
+                    else
+                        gstGroup.put(it.gstPercentage.toString(), gstPercentage.doubleValue() + amountBeforeTaxes)
 
-            ArrayList<Double> cgst5 = new ArrayList<>()
-            ArrayList<Double> cgst12 = new ArrayList<>()
-            ArrayList<Double> cgst18 = new ArrayList<>()
-            ArrayList<Double> cgst28 = new ArrayList<>()
-            ArrayList<Double> sgst5 = new ArrayList<>()
-            ArrayList<Double> sgst12 = new ArrayList<>()
-            ArrayList<Double> sgst18 = new ArrayList<>()
-            ArrayList<Double> sgst28 = new ArrayList<>()
-            saleProductDetails.each {
-                float amount = it.amount - it.cgstAmount - it.sgstAmount - it.igstAmount
-                cgst.push(it.cgstAmount / amount * 100)
-                sgst.push(it.sgstAmount / amount * 100)
-                igst.push(it.igstAmount / amount * 100)
-            }
-            def t = 0
-            for (Double c : cgst)
-            {
-                if (c > 0 && c <= 2.5)
-                {
-                    cgst5.push(t + (0.025 * totalBeforeTaxes))
-                }
-                if(c > 2.5 && c <= 6)
-                {
-                    cgst12.push(t + (0.06 * totalBeforeTaxes))
+                    def sgstPercentage = sgstGroup.get(it.sgstPercentage.toString())
+                    if(sgstPercentage == null)
+                        sgstGroup.put(it.sgstPercentage.toString(), amountBeforeTaxes)
+                    else
+                        sgstGroup.put(it.sgstPercentage.toString(), sgstPercentage.doubleValue() + amountBeforeTaxes)
 
+                    def cgstPercentage = cgstGroup.get(it.cgstPercentage.toString())
+                    if(cgstPercentage == null)
+                        cgstGroup.put(it.cgstPercentage.toString(), amountBeforeTaxes)
+                    else
+                        cgstGroup.put(it.cgstPercentage.toString(), cgstPercentage.doubleValue() + amountBeforeTaxes)
                 }
-                if(c > 6 && c <= 9)
-                {
-                    cgst18.push(t + (0.09 * totalBeforeTaxes))
-                }
-                if(c > 9 && c <= 14)
-                {
-                    cgst28.push(t + (0.014 * totalBeforeTaxes))
-                }
-            }
-            for (Double s : sgst)
-            {
-                if (s > 0 && s <= 2.5)
-                {
-                    sgst5.push(t + (0.025 * totalBeforeTaxes))
-                }
-                if(s > 2.5 && s <= 6)
-                {
-                    sgst12.push(t + (0.06 * totalBeforeTaxes))
-                }
-                if(s > 6 && s <= 9)
-                {
-                    sgst18.push(t + (0.09 * totalBeforeTaxes))
 
-                }
-                if(s > 9 && s <= 14)
-                {
-                    sgst28.push(t + (0.014 * totalBeforeTaxes))
-                }
             }
+
+            def total = totalBeforeTaxes + totalcgst + totalsgst + totaligst
+
             render(view: "/sales/sale-invoice", model: [saleBillDetail    : saleBillDetail,
                                                         saleProductDetails: saleProductDetails,
                                                         series            : series, entity: entity, customer: customer, city: city,
-                                                        total             : saleProductDetails.amount.sum(), custcity: custcity,
+                                                        total             : total, custcity: custcity,
                                                         termsConditions   : termsConditions,
                                                         totalcgst         : totalcgst, totalsgst: totalsgst, totaligst: totaligst,
                                                         totaldiscount     : totaldiscount,
-                                                        cgst5:cgst5.sum(),cgst12:cgst12.sum(),
-                                                        cgst18:cgst18.sum(),cgst28:cgst28.sum(),
-                                                        sgst5:sgst5.sum(),sgst12:sgst12.sum(),
-                                                        sgst18:sgst18.sum(),sgst28:sgst28.sum(),
+                                                        gstGroup:gstGroup,
+                                                        sgstGroup:sgstGroup,
+                                                        cgstGroup:cgstGroup,
+                                                        igstGroup:igstGroup,
                                                         totalBeforeTaxes:totalBeforeTaxes
             ])
         }
-
         else
         {
 
