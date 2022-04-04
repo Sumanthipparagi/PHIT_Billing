@@ -127,6 +127,12 @@ class SaleProductDetailsService
         saleProductDetails.financialYear = jsonObject.get("financialYear").toString()
         saleProductDetails.entityTypeId = Long.parseLong(jsonObject.get("entityTypeId").toString())
         saleProductDetails.entityId = Long.parseLong(jsonObject.get("entityId").toString())
+
+        saleProductDetails.gstPercentage = Double.parseDouble(jsonObject.get("gstPercentage").toString())
+        saleProductDetails.sgstPercentage = Double.parseDouble(jsonObject.get("sgstPercentage").toString())
+        saleProductDetails.cgstPercentage = Double.parseDouble(jsonObject.get("cgstPercentage").toString())
+        saleProductDetails.igstPercentage = Double.parseDouble(jsonObject.get("igstPercentage").toString())
+
         saleProductDetails.save(flush: true)
         if (!saleProductDetails.hasErrors())
         {
@@ -176,6 +182,12 @@ class SaleProductDetailsService
             saleProductDetails.financialYear = jsonObject.get("financialYear").toString()
             saleProductDetails.entityTypeId = Long.parseLong(jsonObject.get("entityTypeId").toString())
             saleProductDetails.entityId = Long.parseLong(jsonObject.get("entityId").toString())
+
+            saleProductDetails.gstPercentage = Double.parseDouble(jsonObject.get("gstPercentage").toString())
+            saleProductDetails.sgstPercentage = Double.parseDouble(jsonObject.get("sgstPercentage").toString())
+            saleProductDetails.cgstPercentage = Double.parseDouble(jsonObject.get("cgstPercentage").toString())
+            saleProductDetails.igstPercentage = Double.parseDouble(jsonObject.get("igstPercentage").toString())
+
             saleProductDetails.save(flush: true)
             if (!saleProductDetails.hasErrors())
             {

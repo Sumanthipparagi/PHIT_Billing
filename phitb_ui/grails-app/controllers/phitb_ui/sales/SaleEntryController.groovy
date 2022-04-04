@@ -129,7 +129,32 @@ class SaleEntryController
             saleProductDetail.put("sgstAmount", sgst)
             saleProductDetail.put("cgstAmount", cgst)
             saleProductDetail.put("igstAmount", igst)
-            saleProductDetail.put("gstId", 1) //TODO: to be changed
+
+            //GST percentage Calculation
+            double priceBeforeTaxes = (Double.parseDouble(saleQty) * Double.parseDouble(saleRate))
+            if(Double.parseDouble(discount)>0)
+                priceBeforeTaxes = priceBeforeTaxes - (priceBeforeTaxes * (Double.parseDouble(discount)/100))
+
+            double gstPercentage = 0.0
+            double sgstPercentage = 0.0
+            double cgstPercentage = 0.0
+            double igstPercentage = 0.0
+
+            if(Double.parseDouble(gst) >0)
+                gstPercentage = (Double.parseDouble(gst) / priceBeforeTaxes) * 100
+            if(Double.parseDouble(sgst) >0)
+                sgstPercentage = (Double.parseDouble(sgst) / priceBeforeTaxes) * 100
+            if(Double.parseDouble(cgst) >0)
+                cgstPercentage = (Double.parseDouble(cgst) / priceBeforeTaxes) * 100
+            if(Double.parseDouble(igst) >0)
+                igstPercentage = (Double.parseDouble(igst) / priceBeforeTaxes) * 100
+
+            saleProductDetail.put("gstPercentage", gstPercentage)
+            saleProductDetail.put("sgstPercentage", sgstPercentage)
+            saleProductDetail.put("cgstPercentage",cgstPercentage)
+            saleProductDetail.put("igstPercentage", igstPercentage)
+
+            saleProductDetail.put("gstId", 0) //TODO: to be changed
             saleProductDetail.put("amount", value)
             saleProductDetail.put("reason", "") //TODO: to be changed
             saleProductDetail.put("fridgeId", 0) //TODO: to be changed
