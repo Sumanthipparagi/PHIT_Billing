@@ -326,7 +326,7 @@
 
 <script>
     window.onload = function () {
-        var d = new Date().toLocaleTimeString();
+        var d = new Date().toLocaleDateString() + " " +  new Date().toLocaleTimeString();
         document.getElementById("date").innerHTML = d;
         var invDate = new Date('${saleBillDetail.entryDate}');
         $("#invDate").text(moment(invDate).format('DD-MM-YYYY'));
