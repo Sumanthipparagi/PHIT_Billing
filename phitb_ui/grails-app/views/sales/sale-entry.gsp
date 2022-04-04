@@ -388,10 +388,6 @@
                         var fqty = hot.getDataAtCell(row, 5);
                         if (sqty && sqty>0)
                         {
-                            mainTableRow = row + 1;
-                            hot.alter('insert_row');
-                            hot.selectCell(mainTableRow, 1);
-                            calculateTotalAmt();
                             var batchId = hot.getCellMeta(row, 2)?.batchId; //batch
                             var dt = hot.getDataAtRow(row);
                             dt.push(batchId);
@@ -407,10 +403,16 @@
                                 },
                                 success: function (data) {
                                     console.log("Data saved");
-                                    hot.setDataAtCell(row, 15, data.id)
+                                    hot.setDataAtCell(row, 15, data.id);
+
+                                    mainTableRow = row + 1;
+                                    hot.alter('insert_row');
+                                    hot.selectCell(mainTableRow, 1);
+                                    calculateTotalAmt();
                                 },
                                 error: function (data) {
                                     console.log("Failed");
+                                    alert("Unable to save the row, please delete it and add again.");
                                 }
                             });
                         } else {
@@ -859,7 +861,7 @@
                     showCancelButton: false,
                     confirmButtonText: 'Print',
                     denyButtonText: 'New Entry',
-                    closeOnClickOutside: false
+                    allowOutsideClick: false
                 }).then((result) => {
                     if (result.isConfirmed) {
                         printInvoice();
@@ -875,7 +877,10 @@
                 waitingSwal.close();
                 Swal.fire({
                     title: "Unable to generate Invoice at the moment.",
-                    confirmButtonText: 'OK'
+                    confirmButtonText: 'OK',
+                    allowOutsideClick: false
+                }).then((result)=>{
+                    resetData();
                 });
             }
         });
@@ -900,7 +905,7 @@
             showDenyButton: true,
             showCancelButton: false,
             confirmButtonText: 'OK',
-            closeOnClickOutside: false
+            allowOutsideClick: false
         }).then((result) => {
             if (result.isConfirmed) {
                 resetData();
