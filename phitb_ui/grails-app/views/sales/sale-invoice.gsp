@@ -168,7 +168,7 @@
         <th>Exp Date</th>
         %{--        <th>Mfg Date/ Use Before</th>--}%
         <th>MRP</th>
-        %{--        <th>PTR</th>--}%
+        <th>PTR</th>
         <th>PTS</th>
         <th>QTY</th>
         <th>Scheme</th>
@@ -196,7 +196,7 @@
             <td id="expDate${sp.id}">${sp.expiryDate}</td>
             %{--            <td></td>--}%
             <td>${sp.mrp}</td>
-            %{--            <td>${sp.productId.ptr}</td>--}%
+            <td>${sp.batch.ptr}</td>
             <td>${sp.sRate}</td>
             <td>${sp.sqty}</td>
             <td>${sp.freeQty}</td>
@@ -225,7 +225,7 @@
         <td class="hide"></td>
         <td class="hide"></td>
         <td class="hide"></td>
-        %{--        <td class="hide"></td>--}%
+        <td class="hide"></td>
         <td class="hide"></td>
         <td><b>Total</b></td>
         <td>${String.format("%.2f", totalBeforeTaxes)}</td>
@@ -245,9 +245,7 @@
             Weight in Kgs :<br>
             Party Ref No. : <br>
             Rev-Charge :</p>
-        %{--        <g:each in="${termsConditions}" var="t">--}%
         <p>${termsConditions[0].termCondition}</p>
-        %{--        </g:each>--}%
     </div>
 
     <div style="float: right;">

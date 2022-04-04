@@ -84,6 +84,28 @@ class SaleEntryController
         double totalIgst = 0.00
         double totalDiscount = 0.00
         JSONArray saleData = new JSONArray(params.saleData)
+        boolean tempStocksSavedCheck = true
+        for (JSONObject sale : saleData) {
+            if(sale.has("15")) {
+                String tempStockRowId = sale.get("15")
+                if (tempStockRowId && Long.parseLong(tempStockRowId) > 0) {
+                    tempStocksSavedCheck = true
+                }
+                else
+                    tempStocksSavedCheck = false
+            }
+            else
+                tempStocksSavedCheck = false
+        }
+
+        //safety check
+        if(!tempStocksSavedCheck)
+        {
+            println("Safety Check Failed! attempted to generate sale invoice, but temp stock was not saved.")
+            response.status == 400
+            return
+        }
+
         for (JSONObject sale : saleData)
         {
             String productId = sale.get("1")
@@ -300,6 +322,14 @@ class SaleEntryController
             JSONObject custcity = new SystemService().getCityById(customer.get('cityId').toString())
             JSONArray termsConditions = new EntityService().getTermsContionsByEntity(session.getAttribute("entityId").toString())
             saleProductDetails.each {
+                def batchResponse = new ProductService().getBatchesOfProduct(it.productId.toString())
+                JSONArray batchArray = JSON.parse(batchResponse.readEntity(String.class)) as JSONArray
+                for (JSONObject batch : batchArray) {
+                    if(batch.batchNumber == it.batchNumber)
+                    {
+                        it.put("batch", batch)
+                    }
+                }
                 def apiResponse = new SalesService().getRequestWithId(it.productId.toString(), new Links().PRODUCT_REGISTER_SHOW)
                 it.put("productId", JSON.parse(apiResponse.readEntity(String.class)) as JSONObject)
             }

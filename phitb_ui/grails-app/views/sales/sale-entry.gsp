@@ -189,8 +189,8 @@
 
                         <div class="row">
                             <button onclick="resetPage()" class="btn btn-danger">Reset</button>
-                            <button onclick="saveSaleInvoice('DRAFT')" class="btn btn-primary">Save Draft</button>
-                            <button onclick="saveSaleInvoice('ACTIVE')" class="btn btn-primary">Save</button>
+                            <button id="saveDraftBtn" onclick="saveSaleInvoice('DRAFT')" class="btn btn-primary">Save Draft</button>
+                            <button id="saveBtn" onclick="saveSaleInvoice('ACTIVE')" class="btn btn-primary">Save</button>
                             %{--<button onclick="printInvoice()" class="btn btn-secondary">Print</button>--}%
                         </div>
                     </div>
@@ -388,10 +388,6 @@
                         var fqty = hot.getDataAtCell(row, 5);
                         if (sqty && sqty>0)
                         {
-                            mainTableRow = row + 1;
-                            hot.alter('insert_row');
-                            hot.selectCell(mainTableRow, 1);
-                            calculateTotalAmt();
                             var batchId = hot.getCellMeta(row, 2)?.batchId; //batch
                             var dt = hot.getDataAtRow(row);
                             dt.push(batchId);
@@ -407,10 +403,16 @@
                                 },
                                 success: function (data) {
                                     console.log("Data saved");
-                                    hot.setDataAtCell(row, 15, data.id)
+                                    hot.setDataAtCell(row, 15, data.id);
+
+                                    mainTableRow = row + 1;
+                                    hot.alter('insert_row');
+                                    hot.selectCell(mainTableRow, 1);
+                                    calculateTotalAmt();
                                 },
                                 error: function (data) {
                                     console.log("Failed");
+                                    alert("Unable to save the row, please delete it and add again.");
                                 }
                             });
                         } else {
@@ -753,7 +755,6 @@
                     hot.selectCell(0, 1);
                     calculateTotalAmt();
                 },1000);
-
             }
         })
     }
@@ -782,6 +783,8 @@
     var saleBillId = 0;
     function saveSaleInvoice(billStatus)
     {
+        $("#saveBtn").prop("disabled",true);
+        $("#saveDraftBtn").prop("disabled",true);
         var waitingSwal = Swal.fire({
             title: "Generating Invoice, Please wait!",
             showDenyButton: false,
@@ -801,12 +804,16 @@
         if(!series) {
             alert("Please select series.");
             waitingSwal.close();
+            $("#saveBtn").prop("disabled",false);
+            $("#saveDraftBtn").prop("disabled",false);
             return;
         }
 
         if(!customer) {
             alert("Please select customer.");
             waitingSwal.close();
+            $("#saveBtn").prop("disabled",false);
+            $("#saveDraftBtn").prop("disabled",false);
             return;
         }
 
@@ -854,6 +861,7 @@
                     showCancelButton: false,
                     confirmButtonText: 'Print',
                     denyButtonText: 'New Entry',
+                    allowOutsideClick: false
                 }).then((result) => {
                     if (result.isConfirmed) {
                         printInvoice();
@@ -862,13 +870,17 @@
                     }
                 });
 
-
             },
             error: function(){
+                $("#saveBtn").prop("disabled",false);
+                $("#saveDraftBtn").prop("disabled",false);
                 waitingSwal.close();
                 Swal.fire({
                     title: "Unable to generate Invoice at the moment.",
-                    confirmButtonText: 'OK'
+                    confirmButtonText: 'OK',
+                    allowOutsideClick: false
+                }).then((result)=>{
+                    resetData();
                 });
             }
         });
@@ -891,10 +903,11 @@
         Swal.fire({
             title: "Reset Contents?",
             showDenyButton: true,
-            showCancelButton: true,
+            showCancelButton: false,
             confirmButtonText: 'OK',
+            allowOutsideClick: false
         }).then((result) => {
-            if (result) {
+            if (result.isConfirmed) {
                 resetData();
             }
         });
@@ -902,7 +915,16 @@
 
     function resetData()
     {
-        var saleTableData = hot.getData();
+        Swal.fire({
+            title: "Reloading, Please wait!",
+            showDenyButton: false,
+            showCancelButton: false,
+            showConfirmButton: false,
+            allowOutsideClick: false,
+            closeOnClickOutside: false
+        });
+        location.reload();
+        /*var saleTableData = hot.getData();
         if(saleTableData && !readOnly) {
             for(var row=0;row<saleTableData.length;row++) {
                 var id = hot.getDataAtCell(row, 15);
@@ -933,7 +955,7 @@
         hot.updateSettings({
             data: []
         });
-        calculateTotalAmt();
+        calculateTotalAmt();*/
     }
 
     function seriesChanged()
