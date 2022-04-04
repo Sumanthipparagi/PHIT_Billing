@@ -989,7 +989,6 @@
                     $("#invNo").html("<p><strong>" + invoiceNumber + "</strong></p>");
                 } else {
                     $("#invNo").html("<p><strong>DR/S/" + month + year + "/" + seriesCode + "/__</strong></p>");
-                    message = 'Draft Invoice Generated: DR/S/' + month + year + "/" + seriesCode + "/__";
                 }
                 waitingSwal.close();
                 Swal.fire({

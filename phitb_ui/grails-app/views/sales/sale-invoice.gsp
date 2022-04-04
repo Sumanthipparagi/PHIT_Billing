@@ -196,7 +196,7 @@
             <td id="expDate${sp.id}">${sp.expiryDate}</td>
             %{--            <td></td>--}%
             <td>${sp.mrp}</td>
-            <td>${sp.batch.ptr}</td>
+            <td>${sp?.batch?.ptr}</td>
             <td>${sp.sRate}</td>
             <td>${sp.sqty}</td>
             <td>${sp.freeQty}</td>

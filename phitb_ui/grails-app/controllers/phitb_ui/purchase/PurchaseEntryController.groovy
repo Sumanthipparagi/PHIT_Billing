@@ -11,6 +11,7 @@ import phitb_ui.ProductService
 import phitb_ui.PurchaseService
 import phitb_ui.SalesService
 import phitb_ui.SystemService
+import phitb_ui.UtilsService
 import phitb_ui.entity.EntityRegisterController
 import phitb_ui.entity.SeriesController
 import phitb_ui.entity.UserRegisterController
@@ -203,6 +204,30 @@ class PurchaseEntryController {
             purchaseProductDetail.put("financialYear", financialYear)
             purchaseProductDetail.put("entityId", entityId)
             purchaseProductDetail.put("entityTypeId", session.getAttribute("entityTypeId").toString())
+            //GST percentage Calculation
+            double priceBeforeTaxes = UtilsService.round((Double.parseDouble(saleQty) * Double.parseDouble(saleRate)), 2)
+            if(discount>0)
+                priceBeforeTaxes = priceBeforeTaxes - (priceBeforeTaxes * (discount/100))
+
+            double gstPercentage = 0.0
+            double sgstPercentage = 0.0
+            double cgstPercentage = 0.0
+            double igstPercentage = 0.0
+
+            if(gst >0)
+                gstPercentage = (gst / priceBeforeTaxes) * 100
+            if(sgst >0)
+                sgstPercentage = (sgst / priceBeforeTaxes) * 100
+            if(cgst >0)
+                cgstPercentage = (cgst / priceBeforeTaxes) * 100
+            if(igst >0)
+                igstPercentage = (igst / priceBeforeTaxes) * 100
+
+            purchaseProductDetail.put("gstPercentage", UtilsService.round(gstPercentage,2))
+            purchaseProductDetail.put("sgstPercentage", UtilsService.round(sgstPercentage,2))
+            purchaseProductDetail.put("cgstPercentage", UtilsService.round(cgstPercentage,2))
+            purchaseProductDetail.put("igstPercentage", UtilsService.round(igstPercentage,2))
+
             purchaseProductDetails.add(purchaseProductDetail)
 
             //save to sale transaction log

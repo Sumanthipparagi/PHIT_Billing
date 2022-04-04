@@ -63,13 +63,13 @@ class SaleBillDetailsService
 
     def getAllUnsettledByCustId(String customerId, String entityId, String financialYear)
     {
-        return SaleBillDetails.findAllByCustomerIdAndEntityIdAndFinancialYearAndPaymentStatus(Long.parseLong(customerId),Long.parseLong(entityId),financialYear,0)
+        return SaleBillDetails.findAllByCustomerIdAndEntityIdAndFinancialYearAndPaymentStatus(Long.parseLong(customerId), Long.parseLong(entityId), financialYear, 0)
     }
 
     def getAllsettledByCustId(String customerId, String entityId, String financialYear)
     {
 
-        return SaleBillDetails.findAllByCustomerIdAndEntityIdAndFinancialYearAndPaymentStatus(Long.parseLong(customerId),Long.parseLong(entityId),financialYear,1)
+        return SaleBillDetails.findAllByCustomerIdAndEntityIdAndFinancialYearAndPaymentStatus(Long.parseLong(customerId), Long.parseLong(entityId), financialYear, 1)
 
     }
 
@@ -105,7 +105,7 @@ class SaleBillDetailsService
                     ilike('financialYear', '%' + searchTerm + '%')
                 }
             }
-            if(!invoiceStatus.equalsIgnoreCase("ALL"))
+            if (!invoiceStatus.equalsIgnoreCase("ALL"))
             {
                 eq('billStatus', invoiceStatus)
             }
@@ -151,7 +151,7 @@ class SaleBillDetailsService
         saleBillDetails.totalFqty = Double.parseDouble(jsonObject.get("totalFqty").toString())
         saleBillDetails.totalItems = Double.parseDouble(jsonObject.get("totalItems").toString())
         saleBillDetails.totalQty = Double.parseDouble(jsonObject.get("totalQty").toString())
-        saleBillDetails.totalDiscount =Double.parseDouble(jsonObject.get("totalDiscount").toString())
+        saleBillDetails.totalDiscount = Double.parseDouble(jsonObject.get("totalDiscount").toString())
         saleBillDetails.totalAmount = Double.parseDouble(jsonObject.get("totalAmount").toString())
         saleBillDetails.invoiceTotal = Double.parseDouble(jsonObject.get("invoiceTotal").toString())
         saleBillDetails.totalGst = Double.parseDouble(jsonObject.get("totalGst").toString())
@@ -183,27 +183,27 @@ class SaleBillDetailsService
             cal.setTime(saleBillDetails.entryDate)
             String month = cal.get(Calendar.MONTH)
             String year = cal.get(Calendar.YEAR)
-            DecimalFormat mFormat= new DecimalFormat("00");
+            DecimalFormat mFormat = new DecimalFormat("00");
             month = mFormat.format(Double.valueOf(month));
             String invoiceNumber = null;
             String seriesCode = jsonObject.get("seriesCode")
-            SaleBillDetails  saleBillDetails1
+            SaleBillDetails saleBillDetails1
             if (saleBillDetails.billStatus == "DRAFT")
             {
-                invoiceNumber = saleBillDetails.entityId+"/DR/S/" + month + year + "/" + seriesCode + "/__";
+//                invoiceNumber = saleBillDetails.entityId+"/DR/S/" + month + year + "/" + seriesCode + "/__";'
+                saleBillDetails.invoiceNumber = null
             }
             else
             {
-                invoiceNumber = saleBillDetails.entityId+"/S/" + month + year + "/" + seriesCode + "/" + saleBillDetails.serBillId
+                invoiceNumber = saleBillDetails.entityId + "/S/" + month + year + "/" + seriesCode + "/" + saleBillDetails.serBillId
             }
-            if(invoiceNumber)
+            if (invoiceNumber)
             {
                 saleBillDetails.invoiceNumber = invoiceNumber
                 saleBillDetails.isUpdatable = true
-                saleBillDetails1 = saleBillDetails.save(flush:true)
+                saleBillDetails.save(flush: true)
             }
-
-            return saleBillDetails1
+            return saleBillDetails
         }
         else
         {
@@ -305,23 +305,28 @@ class SaleBillDetailsService
         return SaleBillDetails.findByFinancialYearAndEntityIdAndBillStatus(financialYear, Long.parseLong(entityId), billStatus, [sort: 'id', order: 'desc'])
     }
 
-    def getEntityById(String id) {
+    def getEntityById(String id)
+    {
         Client client = ClientBuilder.newClient()
         WebTarget target = client.target(new Constants().API_GATEWAY)
-        try {
+        try
+        {
             Response apiResponse = target
-                    .path(new Constants().ENTITY_REGISTER_SHOW + "/"+id)
+                    .path(new Constants().ENTITY_REGISTER_SHOW + "/" + id)
                     .request(MediaType.APPLICATION_JSON_TYPE)
                     .get()
-            if(apiResponse.status == 200)
+            if (apiResponse.status == 200)
             {
                 JSONObject jsonObject = new JSONObject(apiResponse.readEntity(String.class))
                 return jsonObject
             }
             else
+            {
                 return null
+            }
         }
-        catch (Exception ex) {
+        catch (Exception ex)
+        {
             System.err.println('Service :EntityService , action :  getEntity  , Ex:' + ex)
             log.error('Service :EntityService , action :  getEntity  , Ex:' + ex)
         }
@@ -330,7 +335,7 @@ class SaleBillDetailsService
 
     def getAllByCustomerId(String id)
     {
-        if(id)
+        if (id)
         {
             return SaleBillDetails.findAllByCustomerId(Long.parseLong(id))
         }
@@ -343,15 +348,16 @@ class SaleBillDetailsService
         String financialYear = jsonObject.get("financialYear")
         JSONObject saleInvoice = new JSONObject()
         SaleBillDetails saleBillDetails = SaleBillDetails.findById(Long.parseLong(id))
-        if(saleBillDetails)
+        if (saleBillDetails)
         {
-            if(saleBillDetails.financialYear.equalsIgnoreCase(financialYear) && saleBillDetails.entityId == Long.parseLong(entityId))
+            if (saleBillDetails.financialYear.equalsIgnoreCase(financialYear) && saleBillDetails.entityId == Long.parseLong(entityId))
             {
                 ArrayList<SaleProductDetails> saleProductDetails = SaleProductDetails.findAllByBillId(saleBillDetails.id)
-                for (SaleProductDetails saleProductDetail : saleProductDetails) {
+                for (SaleProductDetails saleProductDetail : saleProductDetails)
+                {
                     saleProductDetail.status = 0
                     saleProductDetail.isUpdatable = true
-                    saleProductDetail.save(flush:true)
+                    saleProductDetail.save(flush: true)
                 }
                 saleBillDetails.billStatus = "CANCELLED"
                 saleBillDetails.isUpdatable = true

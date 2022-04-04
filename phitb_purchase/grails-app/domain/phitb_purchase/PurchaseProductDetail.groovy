@@ -38,8 +38,16 @@ class PurchaseProductDetail implements LogicalDelete<PurchaseProductDetail> {
     Date dateCreated
     Date lastUpdated
 
-    static constraints = {
+    double gstPercentage
+    double sgstPercentage
+    double cgstPercentage
+    double igstPercentage
 
+    static constraints = {
+        gstPercentage nullable:true
+        sgstPercentage nullable:true
+        cgstPercentage nullable:true
+        igstPercentage nullable:true
     }
 
     boolean isUpdatable

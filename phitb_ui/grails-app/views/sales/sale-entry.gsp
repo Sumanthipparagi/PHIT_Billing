@@ -852,7 +852,8 @@
                     message = 'Sale Invoice Generated: '+ invoiceNumber;
                 }
                 else {
-                    message = 'Draft Invoice Generated: '+ invoiceNumber;
+                    message = 'Draft Invoice Generated: '+ data.saleBillDetail.entityId+"/DR/S/" + month + year + "/"
+                        + seriesCode + "/__";
                 }
                 waitingSwal.close();
                 Swal.fire({
