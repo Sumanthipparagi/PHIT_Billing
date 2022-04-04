@@ -197,4 +197,20 @@ class PurchaseReturnController
             response.status == 400
         }
     }
+
+
+    def getPurchaseBillByCustomer()
+    {
+        def salebills = new SalesService().getSaleBillByCustomer(params.custid)
+        def apiResponse = new PurchaseService().getRequestWithIdList(salebills.id, new Links().PURCHASE_PRODUCT_OF_BILLIDS)
+        def prod = JSON.parse(apiResponse.readEntity(String.class))
+        prod.each {product ->
+            def index = salebills.findIndexOf({
+                it.id == product.billId
+            })
+            if(index!= -1)
+                product.put("billId", salebills[index])
+        }
+        respond prod, formats: ['json'], status: 200
+    }
 }

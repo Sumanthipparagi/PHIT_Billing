@@ -99,8 +99,7 @@ class InventoryService {
         WebTarget target = client.target(new Links().API_GATEWAY)
         try {
             Response apiResponse = target
-                    .path(new Links().STOCK_BOOK_PURCHASE+"batch/"+
-                            batch+"/qty/"+purQty+"/fqty/"+freeQty+"/reason/"+reason)
+                    .path(new Links().STOCK_BOOK_PURCHASE+"batch/"+ batch+"/qty/"+purQty+"/fqty/"+freeQty+"/reason/"+reason)
                     .request(MediaType.APPLICATION_JSON_TYPE)
                     .get()
             return apiResponse

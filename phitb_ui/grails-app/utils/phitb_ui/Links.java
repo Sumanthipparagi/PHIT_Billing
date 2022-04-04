@@ -472,6 +472,9 @@ public class Links
     public static String PURCHASE_PRODUCT_UPDATE = "api/v1.0/purchase/productdetail/{id}";
     public static String PURCHASE_PRODUCT_DELETE = "api/v1.0/purchase/productdetail/{id}";
     public static String PURCHASE_PRODUCT_OF_BILL = "api/v1.0/purchase/productdetail/bill";
+    public static String PURCHASE_BILL_CUSTOMER = "api/v1.0/purchase/purchasebillbycustomer/{custid}";
+
+
 
     //purchase product bill details
     public static String PURCHASE_BILL_SHOW = "api/v1.0/purchase/billdetail";

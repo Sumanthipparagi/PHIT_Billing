@@ -409,7 +409,8 @@ class PurchaseEntryController {
                                                                          total:purchaseProductDetails.amount.sum(),
                                                                          totalcgst: totalcgst, totalsgst: totalsgst,
                                                                          totaligst: totaligst,
-                                                                         totaldiscount: totaldiscount, termsConditions: termsConditions])
+                                                                         totaldiscount: totaldiscount,
+                                                                         termsConditions:termsConditions])
     }
 
     def purchaseReturn() {

@@ -335,14 +335,12 @@ class SaleEntryController
                         sgstGroup.put(it.sgstPercentage.toString(), amountBeforeTaxes)
                     else
                         sgstGroup.put(it.sgstPercentage.toString(), sgstPercentage.doubleValue() + amountBeforeTaxes)
-
                     def cgstPercentage = cgstGroup.get(it.cgstPercentage.toString())
                     if(cgstPercentage == null)
                         cgstGroup.put(it.cgstPercentage.toString(), amountBeforeTaxes)
                     else
                         cgstGroup.put(it.cgstPercentage.toString(), cgstPercentage.doubleValue() + amountBeforeTaxes)
                 }
-
             }
 
             def total = totalBeforeTaxes + totalcgst + totalsgst + totaligst
