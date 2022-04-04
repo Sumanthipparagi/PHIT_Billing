@@ -39,6 +39,11 @@ class SaleProductDetails implements Serializable, LogicalDelete<SaleProductDetai
     Date dateCreated
     Date lastUpdated
 
+    double gstPercentage
+    double sgstPercentage
+    double cgstPercentage
+    double igstPercentage
+
     static constraints = {
     }
 

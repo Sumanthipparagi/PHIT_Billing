@@ -194,9 +194,14 @@
                     console.log(json)
                     var return_data = [];
                     for (var i = 0; i < json.data.length; i++) {
+                        var approveInvoice = "";
                         var cancelInvoice = "";
                         if (json.data[i].billStatus != "CANCELLED") {
                             cancelInvoice = '<a class="btn btn-sm btn-info" onclick="cancelBill(' + json.data[i].id + ')" href="#">Cancel</a>';
+                        }
+                        else if(json.data[i].billStatus != "DRAFT")
+                        {
+                            approveInvoice =  '';
                         }
                         var printbtn = '<a target="_blank" href="/sale-entry/print-invoice?id=' + json.data[i].id + '"><button type="button" data-id="' + json.data[i].id +
                             '" class="btn btn-sm btn-danger" ><i class="material-icons"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">print</font></font></i></button></a>'
@@ -212,7 +217,7 @@
                             'inv': json.data[i].invoiceTotal.toFixed(2),
                             'bill_status': json.data[i].billStatus,
                             'balance': json.data[i].balance.toFixed(2),
-                            'action': cancelInvoice + " " + printbtn
+                            'action': cancelInvoice + " " + approveInvoice + " " + printbtn
                         });
                     }
                     return return_data;

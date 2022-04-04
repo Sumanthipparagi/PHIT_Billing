@@ -321,15 +321,44 @@ class StockBookController {
             long remainingFreeQty = stockBook.remainingFreeQty
             long saleQty  = jsonArray[4]
             long saleFreeQty  = jsonArray[5]
-            if(saleQty>remainingQty && remainingFreeQty>saleQty)
+
+
+            if(saleQty<remainingQty)
+            {
+                remainingQty = remainingQty - saleQty
+            }
+            else if(saleQty>remainingQty && saleQty<(remainingQty+remainingFreeQty))
+            {
+                remainingFreeQty = remainingFreeQty - (saleQty - remainingQty)
+                remainingQty = 0
+            }
+
+            if(saleFreeQty<remainingFreeQty)
+            {
+                remainingFreeQty = remainingFreeQty - saleFreeQty
+            }
+            else if(saleFreeQty>remainingFreeQty && saleFreeQty<(remainingQty+remainingFreeQty))
+            {
+                remainingQty = remainingQty - (saleFreeQty - remainingFreeQty)
+                remainingFreeQty = 0
+            }
+
+           /* if(saleQty>remainingQty && remainingFreeQty>saleQty)
             {
                 remainingQty = 0
                 remainingFreeQty = remainingFreeQty - saleQty
             }
             else {
                 remainingQty = remainingQty - saleQty
-                remainingFreeQty = remainingFreeQty - saleFreeQty
-            }
+                if(remainingFreeQty<saleFreeQty)
+                {
+
+                    remainingFreeQty = 0
+                }
+                else {
+                    remainingFreeQty = remainingFreeQty - saleFreeQty
+                }
+            }*/
             JSONObject jsonObject = new JSONObject()
             jsonObject.put("productId", jsonArray[1])
             jsonObject.put("batchNumber", jsonArray[2])

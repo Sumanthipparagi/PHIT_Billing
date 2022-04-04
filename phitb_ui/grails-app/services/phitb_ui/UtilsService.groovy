@@ -11,6 +11,7 @@ import javax.servlet.http.HttpSession
 import javax.ws.rs.core.Form
 import java.awt.Graphics2D
 import java.awt.image.BufferedImage
+import java.math.RoundingMode
 import java.text.DateFormat
 import java.text.ParseException
 import java.text.SimpleDateFormat
@@ -188,6 +189,13 @@ class UtilsService {
     }
 
 
+    public static double round(double value, int places, RoundingMode roundingMode = RoundingMode.HALF_UP) {
+        if (places < 0) throw new IllegalArgumentException();
+
+        BigDecimal bd = BigDecimal.valueOf(value);
+        bd = bd.setScale(places, roundingMode);
+        return bd.doubleValue();
+    }
 
 //    static FormDataMultiPart jsonToMultipartFormDataConverter(JSONObject json)
 //    {

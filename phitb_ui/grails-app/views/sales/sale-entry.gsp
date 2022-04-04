@@ -315,15 +315,15 @@
                 {type: 'text', readOnly: true},
                 {type: 'numeric'},
                 {type: 'numeric'},
-                {type: 'numeric', readOnly: true},
-                {type: 'numeric', readOnly: true},
-                {type: 'numeric'},
                 {type: 'text', readOnly: true},
-                {type: 'numeric', readOnly: true},
-                {type: 'numeric', readOnly: true},
-                {type: 'numeric', readOnly: true},
-                {type: 'numeric', readOnly: true},
-                {type: 'numeric', readOnly: true},
+                {type: 'text', readOnly: true},
+                {type: 'text'},
+                {type: 'text', readOnly: true},
+                {type: 'text', readOnly: true},
+                {type: 'text', readOnly: true},
+                {type: 'text', readOnly: true},
+                {type: 'text', readOnly: true},
+                {type: 'text', readOnly: true},
                 {type: 'text', readOnly: true}
             ],
             minSpareRows: 0,
@@ -381,7 +381,7 @@
                         batchHot.selectCell(0, 0);
                         $("#batchTable").focus();
                     }
-                } else if (selection === 14 || selection === 5) {
+                } else if (selection === 14 || selection === 6) {
                     if ((e.keyCode === 13 || e.keyCode === 9) && !readOnly) {
                         //check if sqty is empty
                         var sqty = hot.getDataAtCell(row, 4);
@@ -441,7 +441,7 @@
                             discount = hot.getDataAtCell(row,8);
 
                         var allowEntry = false;
-                        if(remainingQty > sQty)
+                        if(remainingQty >= sQty)
                         {
                             allowEntry = true;
                         }
@@ -520,9 +520,9 @@
                 {type: 'text', readOnly: true},
                 {type: 'numeric', readOnly: true},
                 {type: 'numeric', readOnly: true},
-                {type: 'numeric', readOnly: true},
-                {type: 'numeric', readOnly: true},
-                {type: 'numeric', readOnly: true},
+                {type: 'text', readOnly: true},
+                {type: 'text', readOnly: true},
+                {type: 'text', readOnly: true},
                 {type: 'text', readOnly: true},
                 {type: 'text', readOnly: true},
                 {type: 'text', readOnly: true},
