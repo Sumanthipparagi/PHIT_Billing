@@ -113,22 +113,22 @@ class SaleEntryController
             String freeQty = sale.get("5")
             String saleRate = sale.get("6")
             String mrp = sale.get("7")
-            String discount = sale.get("8")
+            double discount = UtilsService.round(Double.parseDouble(sale.get("8").toString()), 2)
             String packDesc = sale.get("9")
-            String gst = sale.get("10")
-            String value = sale.get("11")
-            String sgst = sale.get("12")
-            String cgst = sale.get("13")
-            String igst = sale.get("14")
+            double gst = UtilsService.round(Double.parseDouble(sale.get("10").toString()), 2)
+            double value = UtilsService.round(Double.parseDouble(sale.get("11").toString()), 2)
+            double sgst = UtilsService.round(Double.parseDouble(sale.get("12").toString()), 2)
+            double cgst = UtilsService.round(Double.parseDouble(sale.get("13").toString()), 2)
+            double igst = UtilsService.round(Double.parseDouble(sale.get("14").toString()), 2)
 
             totalSqty += Long.parseLong(saleQty)
             totalFqty += Long.parseLong(freeQty)
-            totalAmount += Double.parseDouble(value)
-            totalGst += Double.parseDouble(gst)
-            totalSgst += Double.parseDouble(sgst)
-            totalCgst += Double.parseDouble(cgst)
-            totalIgst += Double.parseDouble(igst)
-            totalDiscount += Double.parseDouble(discount)
+            totalAmount += value
+            totalGst += gst
+            totalSgst += sgst
+            totalCgst += cgst
+            totalIgst += igst
+            totalDiscount += discount
 
             JSONObject saleProductDetail = new JSONObject()
             saleProductDetail.put("finId", finId)
@@ -152,28 +152,28 @@ class SaleEntryController
             saleProductDetail.put("igstAmount", igst)
 
             //GST percentage Calculation
-            double priceBeforeTaxes = (Double.parseDouble(saleQty) * Double.parseDouble(saleRate))
-            if(Double.parseDouble(discount)>0)
-                priceBeforeTaxes = priceBeforeTaxes - (priceBeforeTaxes * (Double.parseDouble(discount)/100))
+            double priceBeforeTaxes = UtilsService.round((Double.parseDouble(saleQty) * Double.parseDouble(saleRate)), 2)
+            if(discount>0)
+                priceBeforeTaxes = priceBeforeTaxes - (priceBeforeTaxes * (discount/100))
 
             double gstPercentage = 0.0
             double sgstPercentage = 0.0
             double cgstPercentage = 0.0
             double igstPercentage = 0.0
 
-            if(Double.parseDouble(gst) >0)
-                gstPercentage = (Double.parseDouble(gst) / priceBeforeTaxes) * 100
-            if(Double.parseDouble(sgst) >0)
-                sgstPercentage = (Double.parseDouble(sgst) / priceBeforeTaxes) * 100
-            if(Double.parseDouble(cgst) >0)
-                cgstPercentage = (Double.parseDouble(cgst) / priceBeforeTaxes) * 100
-            if(Double.parseDouble(igst) >0)
-                igstPercentage = (Double.parseDouble(igst) / priceBeforeTaxes) * 100
+            if(gst >0)
+                gstPercentage = (gst / priceBeforeTaxes) * 100
+            if(sgst >0)
+                sgstPercentage = (sgst / priceBeforeTaxes) * 100
+            if(cgst >0)
+                cgstPercentage = (cgst / priceBeforeTaxes) * 100
+            if(igst >0)
+                igstPercentage = (igst / priceBeforeTaxes) * 100
 
-            saleProductDetail.put("gstPercentage", gstPercentage)
-            saleProductDetail.put("sgstPercentage", sgstPercentage)
-            saleProductDetail.put("cgstPercentage",cgstPercentage)
-            saleProductDetail.put("igstPercentage", igstPercentage)
+            saleProductDetail.put("gstPercentage", UtilsService.round(gstPercentage,2))
+            saleProductDetail.put("sgstPercentage", UtilsService.round(sgstPercentage,2))
+            saleProductDetail.put("cgstPercentage", UtilsService.round(cgstPercentage,2))
+            saleProductDetail.put("igstPercentage", UtilsService.round(igstPercentage,2))
 
             saleProductDetail.put("gstId", 0) //TODO: to be changed
             saleProductDetail.put("amount", value)
