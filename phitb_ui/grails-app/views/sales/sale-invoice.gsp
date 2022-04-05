@@ -66,6 +66,10 @@
         margin-left: 200px;
     }
 
+    @media print {
+        tr.page-break  { display: block; page-break-before: always; }
+    }
+
     </style>
 </head>
 
@@ -127,7 +131,7 @@
                 <li><b class="tab">STATE NAME</b>: ${custcity.state.name}</li>
                 <li><b class="tab">Goods Through</b>:</li>
                 <li><b class="tab">Place of Supply</b>: &nbsp;${custcity.name}</li>
-                <li><b class="tab">State Code</b>: 29</li>
+                <li><b class="tab">State Code</b>: </li>
             </ul>
         </td>
         <td style="width: 25%;vertical-align:top;">
@@ -140,7 +144,7 @@
                 <li><b class="tab">STATE NAME</b>: ${custcity.state.name}</li>
                 <li><b class="tab">Goods Through</b>:</li>
                 <li><b class="tab">Place of Supply</b>:  &nbsp;${custcity.name}</li>
-                <li><b class="tab">State Code</b>: 29</li>
+                <li><b class="tab">State Code</b>: </li>
             </ul>
         </td>
         <td style="width: 25%;vertical-align:top;">
@@ -206,7 +210,8 @@
             <td>${String.format("%.2f", sp.igstAmount)}<br>${String.format("%.2f", sp.igstAmount / amount * 100)}</td>
             <td>${String.format("%.2f", sp.amount)}</td>
         </tr>
-%{--        </g:if>--}%
+
+
     </g:each>
     <tr>
         <td class="hide"></td>
@@ -351,10 +356,7 @@
 
         $("#netInvAmt").text(netInvAmt.toFixed(2));
         $("#netPayAmt").text(netInvAmt.toFixed(2));
-
     }
-
-
 
 </script>
 </html>
