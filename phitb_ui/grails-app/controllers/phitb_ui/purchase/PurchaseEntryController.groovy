@@ -171,7 +171,6 @@ class PurchaseEntryController {
             totalCgst += Double.parseDouble(cgst)
             totalIgst += Double.parseDouble(igst)
             totalDiscount += Double.parseDouble(discount)
-
             JSONObject purchaseProductDetail = new JSONObject()
             purchaseProductDetail.put("finId", finId)
             purchaseProductDetail.put("billId", 0)
@@ -214,20 +213,19 @@ class PurchaseEntryController {
             double cgstPercentage = 0.0
             double igstPercentage = 0.0
 
-            if(gst >0)
+            if(gst>0)
                 gstPercentage = (gst / priceBeforeTaxes) * 100
-            if(sgst >0)
+            if(sgst>0)
                 sgstPercentage = (sgst / priceBeforeTaxes) * 100
-            if(cgst >0)
+            if(cgst>0)
                 cgstPercentage = (cgst / priceBeforeTaxes) * 100
-            if(igst >0)
+            if(igst>0)
                 igstPercentage = (igst / priceBeforeTaxes) * 100
 
             purchaseProductDetail.put("gstPercentage", UtilsService.round(gstPercentage,2))
             purchaseProductDetail.put("sgstPercentage", UtilsService.round(sgstPercentage,2))
             purchaseProductDetail.put("cgstPercentage", UtilsService.round(cgstPercentage,2))
             purchaseProductDetail.put("igstPercentage", UtilsService.round(igstPercentage,2))
-
             purchaseProductDetails.add(purchaseProductDetail)
 
             //save to sale transaction log
