@@ -66,8 +66,6 @@
         margin-left: 200px;
     }
 
-
-
     </style>
 </head>
 
@@ -150,7 +148,7 @@
         </td>
     </tr>
 </table>
-<table style="width:1308px;table-layout: auto;">
+<table style="width:1308px;table-layout: auto;" id="prodDetails row-item">
     <tr>
         <th>Material HSN Code</th>
         <th>Material Description</th>
@@ -178,7 +176,8 @@
         ArrayList<Double> igst = new ArrayList<>()
     %>
 
-    <g:each var="sp" in="${saleProductDetails}">
+    <g:each var="sp" in="${saleProductDetails}" status="i">
+%{--        <g:if test="${i <= 2}">--}%
         <tr>
             <td>${sp.productId.hsnCode}</td>
             <td><b>${sp.productId.productName}</b></td>
@@ -207,6 +206,7 @@
             <td>${String.format("%.2f", sp.igstAmount)}<br>${String.format("%.2f", sp.igstAmount / amount * 100)}</td>
             <td>${String.format("%.2f", sp.amount)}</td>
         </tr>
+%{--        </g:if>--}%
     </g:each>
     <tr>
         <td class="hide"></td>
@@ -314,6 +314,8 @@
 <asset:javascript src="/themeassets/bundles/libscripts.bundle.js"/>
 <asset:javascript src="/themeassets/plugins/momentjs/moment.js"/>
 <asset:javascript src="/themeassets/plugins/qr-code/qrcode.min.js"/>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.5.3/jspdf.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.6/jspdf.plugin.autotable.min.js"></script>
 
 <script>
     window.onload = function () {
@@ -326,7 +328,6 @@
             colorLight : '#fff',
             correctLevel : QRCode.CorrectLevel.H
         });
-
 
         var d = new Date().toLocaleDateString() + " " +  new Date().toLocaleTimeString();
         document.getElementById("date").innerHTML = d;
@@ -351,8 +352,9 @@
         $("#netInvAmt").text(netInvAmt.toFixed(2));
         $("#netPayAmt").text(netInvAmt.toFixed(2));
 
-
-
     }
+
+
+
 </script>
 </html>
