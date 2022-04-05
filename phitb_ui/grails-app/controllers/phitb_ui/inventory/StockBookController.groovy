@@ -305,13 +305,13 @@ class StockBookController {
                 //15 if edit, 16 if being added
                 if(i == 15 && obj != null)
                     isEdit = true
-                else if(i == 16 && obj != null)
-                    isEdit = false
+/*                else if(i == 16 && obj != null)
+                    isEdit = false*/
                 i++
             }
             def stockBook = null
             if(!isEdit)
-                stockBook = new InventoryService().getStockBookById(jsonArray[16])
+                stockBook = new InventoryService().getStockBookById(jsonArray[20])
             else {
                 def tmpStockBook = new InventoryService().getTempStocksById(jsonArray[15])
                 stockBook = new InventoryService().getStockBookById(Long.parseLong(tmpStockBook.originalId))

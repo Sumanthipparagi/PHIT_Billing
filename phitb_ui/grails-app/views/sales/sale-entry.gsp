@@ -19,9 +19,10 @@
     <asset:stylesheet rel="stylesheet" href="/themeassets/plugins/sweetalert2/dist/sweetalert2.css"/>
     <asset:stylesheet rel="stylesheet" href="/themeassets/plugins/select2/dist/css/select2.css"/>
     <asset:stylesheet src="/themeassets/plugins/bootstrap-select/css/bootstrap-select.css" rel="stylesheet"/>
+    <asset:stylesheet src="/themeassets/plugins/handsontable/handsontable.full.css" rel="stylesheet"/>
     <link rel="stylesheet" media="screen" href="https://cdnjs.cloudflare.com/ajax/libs/select2/3.5.2/select2.min.css">
-    <link rel="stylesheet" media="screen"
-          href="https://cdnjs.cloudflare.com/ajax/libs/handsontable/0.16.0/handsontable.full.css">
+%{--    <link rel="stylesheet" media="screen"
+          href="https://cdnjs.cloudflare.com/ajax/libs/handsontable/0.16.0/handsontable.full.css">--}%
 
     <style>
     .form-control {
@@ -116,9 +117,9 @@
                 <div class="card" style="margin-bottom: 10px;">
                     <div class="body" style="background-color: #313740;padding: 2px; color: #fff;">
                         <div class="row" style="margin: 0; font-size: 14px;">
-                            <div class="col-md-2"><strong>Total GST:</strong>&#x20b9;<span id="totalGST">0</span></div>
-                            <div class="col-md-2"><strong>Total SGST:</strong>&#x20b9;<span id="totalSGST">0</span></div>
-                            <div class="col-md-2"><strong>Total CGST:</strong>&#x20b9;<span id="totalCGST">0</span></div>
+                            <div class="col-md-2"><strong>Total GST:</strong> &#x20b9;<span id="totalGST">0</span></div>
+                            <div class="col-md-2"><strong>Total SGST:</strong> &#x20b9;<span id="totalSGST">0</span></div>
+                            <div class="col-md-2"><strong>Total CGST:</strong> &#x20b9;<span id="totalCGST">0</span></div>
                             <div class="col-md-2"><strong>Total IGST:</strong>&nbsp;&#x20b9;<span id="totalIGST">0</span></div>
                             <div class="col-md-2"><strong>Total Qty:</strong> <span id="totalQty">0</span></div>
                             <div class="col-md-2"><strong>Total Free Qty:</strong> <span id="totalFQty">0</span></div>
@@ -220,8 +221,9 @@
 <asset:javascript src="/themeassets/js/pages/ui/dialogs.js"/>
 <asset:javascript src="/themeassets/plugins/sweetalert2/dist/sweetalert2.all.js"/>
 <asset:javascript src="/themeassets/plugins/momentjs/moment.js"/>
+<asset:javascript src="/themeassets/plugins/handsontable/handsontable.full.js"/>
 %{--<asset:javascript src="/themeassets/plugins/select2/dist/js/select2.full.js"/>--}%
-<script src="https://cdnjs.cloudflare.com/ajax/libs/handsontable/0.16.0/handsontable.full.js"></script>
+%{--<script src="https://cdnjs.cloudflare.com/ajax/libs/handsontable/0.16.0/handsontable.full.js"></script>--}%
 <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/3.5.2/select2.js"></script>
 
 <script>
@@ -324,8 +326,16 @@
                 {type: 'text', readOnly: true},
                 {type: 'text', readOnly: true},
                 {type: 'text', readOnly: true},
-                {type: 'text', readOnly: true}
+                {type: 'text', readOnly: true},
+                {type: 'text', readOnly: true}, //GST Percentage
+                {type: 'text', readOnly: true}, //SGST Percentage
+                {type: 'text', readOnly: true}, //CGST Percentage
+                {type: 'text', readOnly: true} //IGST Percentage
             ],
+            hiddenColumns: true,
+            hiddenColumns:{
+                columns: [15,16,17,18,19]
+            },
             minSpareRows: 0,
             minSpareColumns: 0,
             enterMoves: {row: 0, col: 1},
@@ -371,11 +381,16 @@
         });
         hot.selectCell(0, 1);
         hot.updateSettings({
+            /*afterSelectionEnd: function(r, c, r2, c2) {
+                if(hot.getCellMeta(r,c).readOnly){
+                    hot.selectCell(r, c + 1);
+                }
+            },*/
             beforeKeyDown(e) {
                 var sRate = 0;
                 var sQty = 0;
-                const row = hot.getSelected()[0];
-                const selection = hot.getSelected()[1];
+                const row = hot.getSelected()[0][0];
+                const selection = hot.getSelected()[0][1];
                 if (selection === 1) {
                     if (e.keyCode === 13) {
                         batchHot.selectCell(0, 0);
@@ -423,10 +438,13 @@
                     if (e.keyCode === 13 || e.keyCode === 9) {
                         var discount = 0;
 
-                        if(selection === 4)
-                            sQty = this.getActiveEditor().TEXTAREA.value;
+                        if(selection === 4) {
+                            sQty = Number(this.getActiveEditor().TEXTAREA.value);
+                            /*hot.setDataAtCell(row,4,sQty);
+                            hot.selectCell(row, selection+1);*/
+                        }
                         else
-                            sQty = hot.getDataAtCell(row,4);
+                            sQty = Number(hot.getDataAtCell(row,4));
 
                         if(selection === 8) {
                             discount = this.getActiveEditor().TEXTAREA.value;
@@ -465,12 +483,15 @@
                         var value = sRate * sQty;
                         var priceBeforeGst = value - (value * discount/100);
                         var finalPrice = priceBeforeGst + (priceBeforeGst * (gst / 100));
-                        hot.setDataAtCell(row, 11, finalPrice);
+                        hot.setDataAtCell(row, 11, Number(finalPrice).toFixed(2));
 
                         if(gst != 0) {
-                            hot.setDataAtCell(row, 10, priceBeforeGst * (gst / 100)); //GST
-                            hot.setDataAtCell(row, 12, priceBeforeGst * (sgst / 100)); //SGST
-                            hot.setDataAtCell(row, 13, priceBeforeGst * (cgst / 100)); //CGST
+                            var gstAmount = priceBeforeGst * (gst / 100);
+                            var sgstAmount = priceBeforeGst * (sgst / 100);
+                            var cgstAmount = priceBeforeGst * (cgst / 100);
+                            hot.setDataAtCell(row, 10, Number(gstAmount).toFixed(2)); //GST
+                            hot.setDataAtCell(row, 12, Number(sgstAmount).toFixed(2)); //SGST
+                            hot.setDataAtCell(row, 13, Number(cgstAmount).toFixed(2)); //CGST
                         }
                         else
                         {
@@ -478,8 +499,10 @@
                             hot.setDataAtCell(row, 12, 0); //SGST
                             hot.setDataAtCell(row, 13, 0); //CGST
                         }
-                        if(igst != "0")
-                            hot.setDataAtCell(row, 14, priceBeforeGst*(igst/100)); //IGST
+                        if(igst != "0") {
+                            var igstAmount = priceBeforeGst*(igst/100);
+                            hot.setDataAtCell(row, 14,Number(igstAmount).toFixed(2)); //IGST
+                        }
                         else
                             hot.setDataAtCell(row, 14, 0);
                     }
@@ -501,7 +524,8 @@
                     value = products[index].text;
                 }
             }
-            Handsontable.TextCell.renderer.apply(this, arguments);
+            Handsontable.renderers.TextRenderer.apply(this, arguments);
+            //Handsontable.TextCell.renderer.apply(this, arguments);
         }
 
         batchHot = new Handsontable(batchContainer, {
@@ -532,9 +556,10 @@
                 {type: 'text', readOnly: true},
                 {type: 'text', readOnly: true}
             ],
+            hiddenColumns: true,
             hiddenColumns: {
                 // specify columns hidden by default
-                columns: [11]
+                columns: [12]
             },
             minSpareRows: 0,
             minSpareCols: 0,
@@ -544,7 +569,7 @@
 
         batchHot.updateSettings({
             beforeKeyDown(e) {
-                const selection = batchHot.getSelected()[0];
+                const selection = batchHot.getSelected()[0][0];
                 var rowData = batchHot.getDataAtRow(selection);
                 console.log(rowData);
                 if (e.keyCode === 13) {
@@ -567,6 +592,10 @@
                         cgst = rowData[10];
                         igst = rowData[11];
                         hot.selectCell(mainTableRow, 4);
+                        hot.setDataAtCell(mainTableRow, 16, gst);
+                        hot.setDataAtCell(mainTableRow, 17, sgst);
+                        hot.setDataAtCell(mainTableRow, 18, cgst);
+                        hot.setDataAtCell(mainTableRow, 19, igst);
                         remainingQty = rowData[2];
                         remainingFQty = rowData[3];
                         $("#saleTable").focus();
@@ -667,13 +696,13 @@
                 totalIgst += data[i][14];
         }
 
-        $("#totalAmt").text(totalAmt.toFixed(2));
-        $("#totalGST").text(totalGst.toFixed(2));
-        $("#totalSGST").text(totalSgst.toFixed(2));
-        $("#totalCGST").text(totalCgst.toFixed(2));
-        $("#totalIGST").text(totalIgst.toFixed(2));
-        $("#totalQty").text(totalQty.toFixed(2));
-        $("#totalFQty").text(totalFQty.toFixed(2));
+        $("#totalAmt").text(Number(totalAmt).toFixed(2));
+        $("#totalGST").text(Number(totalGst).toFixed(2));
+        $("#totalSGST").text(Number(totalSgst).toFixed(2));
+        $("#totalCGST").text(Number(totalCgst).toFixed(2));
+        $("#totalIGST").text(Number(totalIgst).toFixed(2));
+        $("#totalQty").text(Number(totalQty).toFixed(2));
+        $("#totalFQty").text(Number(totalFQty).toFixed(2));
     }
 
 
@@ -685,7 +714,7 @@
         {
             if(productId == saleTableData[i][1])
             {
-                if(saleTableData[i][2] !== undefined && saleTableData[i][2] == batchNumber)
+                if(saleTableData[i][2] !== null && saleTableData[i][2] == batchNumber)
                     return true;
             }
         }
@@ -727,15 +756,14 @@
 
                    // var discount = hot.getDataAtCell(i, 8);
                     var discount = 0; //TODO: discount to be set
-                    //var gst = hot.getDataAtCell(row, 10);
                     var priceBeforeGst = (sRate * sQty) - ((sRate * sQty) * discount) / 100;
                     var finalPrice = priceBeforeGst + (priceBeforeGst * (gst / 100));
-                    hot.setDataAtCell(i, 11, finalPrice);
+                    hot.setDataAtCell(i, 11, Number(finalPrice).toFixed(2));
 
                     if(gst != 0) {
-                        hot.setDataAtCell(i, 10, priceBeforeGst * (gst / 100)); //GST
-                        hot.setDataAtCell(i, 12, priceBeforeGst * (sgst / 100)); //SGST
-                        hot.setDataAtCell(i, 13, priceBeforeGst * (cgst / 100)); //CGST
+                        hot.setDataAtCell(i, 10, Number(priceBeforeGst * (gst / 100)).toFixed(2)); //GST
+                        hot.setDataAtCell(i, 12, Number(priceBeforeGst * (sgst / 100)).toFixed(2)); //SGST
+                        hot.setDataAtCell(i, 13, Number(priceBeforeGst * (cgst / 100)).toFixed(2)); //CGST
                     }
                     else
                     {
@@ -744,11 +772,15 @@
                         hot.setDataAtCell(i, 13, 0); //CGST
                     }
                     if(igst != "0")
-                        hot.setDataAtCell(i, 14, priceBeforeGst*(igst/100)); //IGST
+                        hot.setDataAtCell(i, 14, Number(priceBeforeGst*(igst/100)).toFixed(2)); //IGST
                     else
                         hot.setDataAtCell(i, 14, 0);
 
-                    hot.setDataAtCell(i, 15, saleData[i].id)
+                    hot.setDataAtCell(i, 15, saleData[i].id);
+                    hot.setDataAtCell(i, 16, gst);
+                    hot.setDataAtCell(i, 17, sgst);
+                    hot.setDataAtCell(i, 18, cgst);
+                    hot.setDataAtCell(i, 19, igst);
                 }
 
                 setTimeout(function () {
@@ -817,7 +849,7 @@
             return;
         }
 
-        var saleData = JSON.stringify(hot.getData());
+        var saleData = JSON.stringify(hot.getSourceData());
 
         $.ajax({
             type: "POST",
@@ -1154,14 +1186,14 @@
             this.TEXTAREA.setAttribute('type', 'text');
             this.$textarea = $(this.TEXTAREA);
 
-            Handsontable.Dom.addClass(this.TEXTAREA, 'handsontableInput');
+            Handsontable.dom.addClass(this.TEXTAREA, 'handsontableInput');
 
             this.textareaStyle = this.TEXTAREA.style;
             this.textareaStyle.width = 0;
             this.textareaStyle.height = 0;
 
             this.TEXTAREA_PARENT = document.createElement('DIV');
-            Handsontable.Dom.addClass(this.TEXTAREA_PARENT, 'handsontableInputHolder');
+            Handsontable.dom.addClass(this.TEXTAREA_PARENT, 'handsontableInputHolder');
 
             this.textareaParentStyle = this.TEXTAREA_PARENT.style;
             this.textareaParentStyle.top = 0;
@@ -1208,16 +1240,16 @@
 
             switch (event.keyCode) {
                 case keyCodes.ARROW_RIGHT:
-                    if (Handsontable.Dom.getCaretPosition(target) !== target.value.length) {
-                        event.stopImmediatePropagation();
+                    if (Handsontable.dom.getCaretPosition(target) !== target.value.length) {
+                        event?.stopImmediatePropagation();
                     } else {
                         that.$textarea.select2('close');
                     }
                     break;
 
                 case keyCodes.ARROW_LEFT:
-                    if (Handsontable.Dom.getCaretPosition(target) !== 0) {
-                        event.stopImmediatePropagation();
+                    if (Handsontable.dom.getCaretPosition(target) !== 0) {
+                        event?.stopImmediatePropagation();
                     } else {
                         that.$textarea.select2('close');
                     }
@@ -1233,7 +1265,7 @@
                         } else {
                             that.beginEditing(that.originalValue + '\n')
                         }
-                        event.stopImmediatePropagation();
+                        event?.stopImmediatePropagation();
                     }
                     event.preventDefault(); //don't add newline to field
                     break;
@@ -1243,7 +1275,7 @@
                 case keyCodes.C:
                 case keyCodes.V:
                     if (ctrlDown) {
-                        event.stopImmediatePropagation(); //CTRL+A, CTRL+C, CTRL+V, CTRL+X should only work locally when cell is edited (not in table context)
+                        event?.stopImmediatePropagation(); //CTRL+A, CTRL+C, CTRL+V, CTRL+X should only work locally when cell is edited (not in table context)
                     }
                     break;
 
@@ -1251,7 +1283,7 @@
                 case keyCodes.DELETE:
                 case keyCodes.HOME:
                 case keyCodes.END:
-                    event.stopImmediatePropagation(); //backspace, delete, home, end should only work locally when cell is edited (not in table context)
+                    event?.stopImmediatePropagation(); //backspace, delete, home, end should only work locally when cell is edited (not in table context)
                     break;
             }
 
@@ -1282,6 +1314,7 @@
             if (keyboardEvent && keyboardEvent.keyCode) {
                 var key = keyboardEvent.keyCode;
                 var keyText = (String.fromCharCode((96 <= key && key <= 105) ? key - 48 : key)).toLowerCase();
+                console.log("KeyText: "+keyText);
                 self.$textarea.select2('search', keyText);
             }
         };

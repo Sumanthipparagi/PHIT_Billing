@@ -152,7 +152,7 @@ class SaleEntryController
             saleProductDetail.put("igstAmount", igst)
 
             //GST percentage Calculation
-            double priceBeforeTaxes = UtilsService.round((Double.parseDouble(saleQty) * Double.parseDouble(saleRate)), 2)
+/*            double priceBeforeTaxes = UtilsService.round((Double.parseDouble(saleQty) * Double.parseDouble(saleRate)), 2)
             if(discount>0)
                 priceBeforeTaxes = priceBeforeTaxes - (priceBeforeTaxes * (discount/100))
 
@@ -173,7 +173,12 @@ class SaleEntryController
             saleProductDetail.put("gstPercentage", UtilsService.round(gstPercentage,2))
             saleProductDetail.put("sgstPercentage", UtilsService.round(sgstPercentage,2))
             saleProductDetail.put("cgstPercentage", UtilsService.round(cgstPercentage,2))
-            saleProductDetail.put("igstPercentage", UtilsService.round(igstPercentage,2))
+            saleProductDetail.put("igstPercentage", UtilsService.round(igstPercentage,2))*/
+
+            saleProductDetail.put("gstPercentage", sale.get("16").toString())
+            saleProductDetail.put("sgstPercentage",sale.get("17").toString())
+            saleProductDetail.put("cgstPercentage",sale.get("18").toString())
+            saleProductDetail.put("igstPercentage",sale.get("19").toString())
 
             saleProductDetail.put("gstId", 0) //TODO: to be changed
             saleProductDetail.put("amount", value)
