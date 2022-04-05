@@ -4,11 +4,11 @@
     <title>Sale Invoice</title>
 
     <script type="text/javascript">
-        function generateBarCode() {
-            var nric = '${saleBillDetail.invoiceNumber}';
-            var url = 'https://api.qrserver.com/v1/create-qr-code/?data=' + nric + '&amp;size=50x50';
-            $('#barcode').attr('src', url);
-        }
+        %{--function generateBarCode() {--}%
+        %{--    var nric = '${saleBillDetail.invoiceNumber}';--}%
+        %{--    var url = 'https://api.qrserver.com/v1/create-qr-code/?data=' + nric + '&amp;size=50x50';--}%
+        %{--    $('#barcode').attr('src', url);--}%
+        %{--}--}%
 
 
     </script>
@@ -146,15 +146,7 @@
             </ul>
         </td>
         <td style="width: 25%;vertical-align:top;">
-            <input id="text" type="hidden" value="PharmIT" style="Width:20%" onblur='generateBarCode();'/>
-            <img id='barcode'
-                 src="https://api.qrserver.com/v1/create-qr-code/?data=${invoiceNumber}&amp;size=100x100"
-                 alt=""
-                 title="PhramIT"
-                 style="display: block;
-                 margin-left: auto;
-                 margin-right: auto;
-                 width: 40%;"/>
+            <div id="qrcode"></div>
         </td>
     </tr>
 </table>
@@ -321,9 +313,21 @@
 </body>
 <asset:javascript src="/themeassets/bundles/libscripts.bundle.js"/>
 <asset:javascript src="/themeassets/plugins/momentjs/moment.js"/>
+<asset:javascript src="/themeassets/plugins/qr-code/qrcode.min.js"/>
 
 <script>
     window.onload = function () {
+
+        const qrcode = new QRCode(document.getElementById('qrcode'), {
+            text: ' ${saleBillDetail.invoiceNumber}',
+            width: 128,
+            height: 128,
+            colorDark : '#000000',
+            colorLight : '#fff',
+            correctLevel : QRCode.CorrectLevel.H
+        });
+
+
         var d = new Date().toLocaleDateString() + " " +  new Date().toLocaleTimeString();
         document.getElementById("date").innerHTML = d;
         var invDate = new Date('${saleBillDetail.entryDate}');
@@ -333,7 +337,6 @@
         var expDate = new Date('${spd.expiryDate}');
         $("#expDate${spd.id}").text(moment(expDate).format('MMM-YY').toUpperCase());
         </g:each>
-        generateBarCode();
         var totalGst = 0.0;
         var totalgstField = $(".totalgst");
         totalgstField.each(function(i)
@@ -347,6 +350,8 @@
 
         $("#netInvAmt").text(netInvAmt.toFixed(2));
         $("#netPayAmt").text(netInvAmt.toFixed(2));
+
+
 
     }
 </script>

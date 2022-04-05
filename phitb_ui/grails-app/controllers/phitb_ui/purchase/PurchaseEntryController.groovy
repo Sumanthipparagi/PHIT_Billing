@@ -126,8 +126,6 @@ class PurchaseEntryController {
         long serBillId = 0
         String financialYear = session.getAttribute("financialYear")
         def series = new EntityService().getSeriesById(seriesId)
-
-
         if (!billStatus.equalsIgnoreCase("DRAFT")) {
             def recentPurchaseBill = new PurchaseService().getRecentPurchaseBill(financialYear, entityId, billStatus)
             if (recentPurchaseBill != null) {
@@ -156,21 +154,21 @@ class PurchaseEntryController {
             String purchaseRate = purchase.get("6")
             String saleRate = purchase.get("7")
             String mrp = purchase.get("8")
-            String discount = purchase.get("9")
+            double discount = UtilsService.round(Double.parseDouble(purchase.get("9").toString()), 2)
             String packDesc = purchase.get("10")
-            String gst = purchase.get("11")
-            String value = purchase.get("12")
-            String sgst = purchase.get("13")
-            String cgst = purchase.get("14")
-            String igst = purchase.get("15")
+            double gst = UtilsService.round(Double.parseDouble(purchase.get("11").toString()), 2)
+            double value = UtilsService.round(Double.parseDouble(purchase.get("12").toString()), 2)
+            double sgst = UtilsService.round(Double.parseDouble(purchase.get("13").toString()), 2)
+            double cgst = UtilsService.round(Double.parseDouble(purchase.get("14").toString()), 2)
+            double igst = UtilsService.round(Double.parseDouble(purchase.get("15").toString()), 2)
             totalSqty += Long.parseLong(saleQty)
             totalFqty += Long.parseLong(freeQty)
-            totalAmount += Double.parseDouble(value)
-            totalGst += Double.parseDouble(gst)
-            totalSgst += Double.parseDouble(sgst)
-            totalCgst += Double.parseDouble(cgst)
-            totalIgst += Double.parseDouble(igst)
-            totalDiscount += Double.parseDouble(discount)
+            totalAmount += value
+            totalGst += gst
+            totalSgst += sgst
+            totalCgst += cgst
+            totalIgst += igst
+            totalDiscount += discount
             JSONObject purchaseProductDetail = new JSONObject()
             purchaseProductDetail.put("finId", finId)
             purchaseProductDetail.put("billId", 0)
@@ -205,23 +203,23 @@ class PurchaseEntryController {
             purchaseProductDetail.put("entityTypeId", session.getAttribute("entityTypeId").toString())
             //GST percentage Calculation
             double priceBeforeTaxes = UtilsService.round((Double.parseDouble(saleQty) * Double.parseDouble(saleRate)), 2)
-            if(discount>0)
+            if(discount > 0)
+            {
                 priceBeforeTaxes = priceBeforeTaxes - (priceBeforeTaxes * (discount/100))
-
+            }
             double gstPercentage = 0.0
             double sgstPercentage = 0.0
             double cgstPercentage = 0.0
             double igstPercentage = 0.0
 
-            if(gst>0)
+            if(gst > 0)
                 gstPercentage = (gst / priceBeforeTaxes) * 100
-            if(sgst>0)
+            if(sgst > 0)
                 sgstPercentage = (sgst / priceBeforeTaxes) * 100
-            if(cgst>0)
+            if(cgst > 0)
                 cgstPercentage = (cgst / priceBeforeTaxes) * 100
-            if(igst>0)
+            if(igst > 0)
                 igstPercentage = (igst / priceBeforeTaxes) * 100
-
             purchaseProductDetail.put("gstPercentage", UtilsService.round(gstPercentage,2))
             purchaseProductDetail.put("sgstPercentage", UtilsService.round(sgstPercentage,2))
             purchaseProductDetail.put("cgstPercentage", UtilsService.round(cgstPercentage,2))
@@ -314,7 +312,6 @@ class PurchaseEntryController {
                     println("Product Detail Failed")
                 }
             }
-
             //update stockbook
             for (JSONObject purchase : purchaseData) {
                 //check if selected product and batch exists for the entity, if so update data, else add new

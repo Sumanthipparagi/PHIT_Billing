@@ -141,16 +141,18 @@ class PurchaseProductDetailService {
         purchaseProductDetail.financialYear = jsonObject.get("financialYear").toString()
         purchaseProductDetail.entityTypeId = Long.parseLong(jsonObject.get("entityTypeId").toString())
         purchaseProductDetail.entityId = Long.parseLong(jsonObject.get("entityId").toString())
+        purchaseProductDetail.gstPercentage = Double.parseDouble(jsonObject.get("gstPercentage").toString())
+        purchaseProductDetail.sgstPercentage = Double.parseDouble(jsonObject.get("sgstPercentage").toString())
+        purchaseProductDetail.cgstPercentage = Double.parseDouble(jsonObject.get("cgstPercentage").toString())
+        purchaseProductDetail.igstPercentage = Double.parseDouble(jsonObject.get("igstPercentage").toString())
         purchaseProductDetail.save(flush: true)
         if (!purchaseProductDetail.hasErrors())
             return purchaseProductDetail
         else
             throw new BadRequestException()
-
     }
 
     PurchaseProductDetail update(JSONObject jsonObject, String id) {
-
         PurchaseProductDetail purchaseProductDetail = PurchaseProductDetail.findById(Long.parseLong(id))
         if (purchaseProductDetail) {
             purchaseProductDetail.isUpdatable = true

@@ -3,15 +3,15 @@
 <head>
     <title>Purchase Entry</title>
 
-    <script type="text/javascript">
-        function generateBarCode() {
-            var nric = '${purchaseBillDetail.invoiceNumber}';
-            var url = 'https://api.qrserver.com/v1/create-qr-code/?data=' + nric + '&amp;size=50x50';
-            $('#barcode').attr('src', url);
-        }
+%{--    <script type="text/javascript">--}%
+%{--        function generateBarCode() {--}%
+%{--            var nric = '${purchaseBillDetail.invoiceNumber}';--}%
+%{--            var url = 'https://api.qrserver.com/v1/create-qr-code/?data=' + nric + '&amp;size=50x50';--}%
+%{--            $('#barcode').attr('src', url);--}%
+%{--        }--}%
 
 
-    </script>
+%{--    </script>--}%
     <style>
     table {
         border-collapse: collapse;
@@ -146,15 +146,17 @@
             </ul>
         </td>
         <td style="width: 25%;vertical-align:top;">
-            <input id="text" type="hidden" value="PharmIT" style="Width:20%" onblur='generateBarCode();'/>
-            <img id='barcode'
-                 src="https://api.qrserver.com/v1/create-qr-code/?data=PharmIT&amp;size=100x100"
-                 alt=""
-                 title="PhramIT"
-                 style="display: block;
-                 margin-left: auto;
-                 margin-right: auto;
-                 width: 40%;"/>
+%{--            <input id="text" type="hidden" value="PharmIT" style="Width:20%" onblur='generateBarCode();'/>--}%
+%{--            <img id='barcode'--}%
+%{--                 src="https://api.qrserver.com/v1/create-qr-code/?data=PharmIT&amp;size=100x100"--}%
+%{--                 alt=""--}%
+%{--                 title="PhramIT"--}%
+%{--                 style="display: block;--}%
+%{--                 margin-left: auto;--}%
+%{--                 margin-right: auto;--}%
+%{--                 width: 40%;"/>--}%
+            <div id="qrcode"></div>
+
         </td>
     </tr>
 
@@ -187,34 +189,34 @@
         ArrayList<Double> igst = new ArrayList<>()
     %>
 
-    <g:each var="sp" in="${purchaseProductDetails}">
+    <g:each var="ppd" in="${purchaseProductDetails}">
         <tr>
-            <td>${sp.productId.hsnCode}</td>
-            <td><b>${sp.productId.productName}</b></td>
-            <td><b>${sp.productId.unitPacking}</b></td>
+            <td>${ppd.productId.hsnCode}</td>
+            <td><b>${ppd.productId.productName}</b></td>
+            <td><b>${ppd.productId.unitPacking}</b></td>
             <td><b>D</b></td>
-            <td>${sp.batchNumber}</td>
-            <td id="expDate${sp.id}">${sp.expiryDate}</td>
+            <td>${ppd.batchNumber}</td>
+            <td id="expDate${ppd.id}">${ppd.expiryDate}</td>
             %{--            <td></td>--}%
-            <td>${sp.mrp}</td>
-            <td>${sp.productId.ptr}</td>
-            <td></td>
-            <td>${sp.sqty}</td>
-            <td>${sp.freeQty}</td>
+            <td>${ppd.mrp}</td>
+            <td>${ppd?.batch?.ptr}</td>
+            <td>${ppd.sRate}</td>
+            <td>${ppd.sqty}</td>
+            <td>${ppd.freeQty}</td>
             <%
-                float amount = sp.amount - sp.cgstAmount - sp.sgstAmount - sp.igstAmount
+                float amount = ppd.amount - ppd.cgstAmount - ppd.sgstAmount - ppd.igstAmount
             %>
             <td>${amount}</td>
-            <td>${sp.discount}</td>
+            <td>${ppd.discount}</td>
             <%
-                cgst.push(sp.cgstAmount/amount * 100)
-                sgst.push(sp.sgstAmount/amount * 100)
-                igst.push(sp.igstAmount/amount * 100)
+                cgst.push(ppd.cgstAmount / amount * 100)
+                sgst.push(ppd.sgstAmount / amount * 100)
+                igst.push(ppd.igstAmount / amount * 100)
             %>
-            <td>${sp.cgstAmount}<br>${String.format("%.1f", sp.cgstAmount / amount * 100)}</td>
-            <td>${sp.sgstAmount}<br>${String.format("%.1f", sp.sgstAmount / amount * 100)}</td>
-            <td>${sp.igstAmount}<br>${String.format("%.1f", sp.igstAmount / amount * 100)}</td>
-            <td>${String.format("%.2f",sp.amount)}</td>
+            <td>${String.format("%.2f", ppd.cgstAmount)}<br>${String.format("%.1f", ppd.cgstAmount / amount * 100)}</td>
+            <td>${String.format("%.2f", ppd.sgstAmount)}<br>${String.format("%.1f", ppd.sgstAmount / amount * 100)}</td>
+            <td>${String.format("%.2f", ppd.igstAmount)}<br>${String.format("%.1f", ppd.igstAmount / amount * 100)}</td>
+            <td>${String.format("%.2f", ppd.amount)}</td>
         </tr>
     </g:each>
     <tr>
@@ -229,12 +231,12 @@
         <td class="hide"></td>
         <td class="hide"></td>
         <td><b>Total</b></td>
-        <td>${String.format("%.1f", total - totalcgst - totalsgst - totaligst)}</td>
-        <td>${totaldiscount}</td>
-        <td>${totalcgst}</td>
-        <td>${totalsgst}</td>
-        <td>${totaligst}</td>
-        <td>${total}</td>
+        <td>${String.format("%.2f", totalBeforeTaxes)}</td>
+        <td>${String.format("%.2f", totaldiscount)}</td>
+        <td>${String.format("%.2f", totalcgst)}</td>
+        <td>${String.format("%.2f", totalsgst)}</td>
+        <td>${String.format("%.2f", totaligst)}</td>
+        <td>${String.format("%.2f", total)}</td>
     </tr>
 </table>
 
@@ -245,108 +247,70 @@
         <p>No of cases <br>
             Weight in Kgs :<br>
             Party Ref No. : <br>
-            Rev-Charge : </p>
-        <g:each in="${termsConditions}" var="t">
-            <p>${t.termCondition}</p>
-        </g:each>
+            Rev-Charge :</p>
+        <p>${termsConditions[0].termCondition}</p>
     </div>
 
     <div style="float: right;">
-%{--        <table class="print" style="margin-top: 10px;width: 100%;">--}%
-%{--            <tr>--}%
-%{--                <th>Total</th>--}%
-%{--                <td>0.00</td>--}%
-%{--                <td>${total}</td>--}%
-%{--            </tr>--}%
-%{--            <g:each var="c" in="${cgst}">--}%
-%{--                <g:if test="${c > 0 && c <= 5}">--}%
-%{--                    <tr>--}%
-%{--                        <th>Add CGST 5 % on</th>--}%
-%{--                        <td>${total}</td>--}%
-%{--                        <td id="cgst5">${0.5 * total}</td>--}%
-%{--                    </tr>--}%
-%{--                </g:if>--}%
-%{--                <g:if test="${c > 5 && c <= 12}">--}%
-%{--                    <tr>--}%
-%{--                        <th>Add CGST 12 % on</th>--}%
-%{--                        <td>${total}</td>--}%
-%{--                        <td id="cgst12">${String.format("%.2f",0.12 * total)}</td>--}%
-%{--                    </tr>--}%
-%{--                </g:if>--}%
+        <table class="print" style="margin-top: 10px;margin-right:10px;width: 78%;">
+            <tr>
+                <th>Total</th>
+                <td>0.00</td>
+                <td>${String.format("%.2f", totalBeforeTaxes)}</td>
+            </tr>
 
-%{--                <g:if test="${c >12 && c <= 18}">--}%
-%{--                    <tr>--}%
-%{--                        <th>Add CGST 18 % on</th>--}%
-%{--                        <td>${total}</td>--}%
-%{--                        <td id="cgst18">${0.18 * total}</td>--}%
-%{--                    </tr>--}%
-%{--                </g:if>--}%
-%{--                <g:if test="${c >18 && c <= 28}">--}%
-%{--                    <tr>--}%
-%{--                        <th>Add CGST 28 % on</th>--}%
-%{--                        <td>${total}</td>--}%
-%{--                        <td id="cgst28">${0.28 * total}</td>--}%
-%{--                    </tr>--}%
-%{--                </g:if>--}%
-%{--            </g:each>--}%
+            <g:each in="${sgstGroup}" var="sg">
+                <tr>
+                    <th>Add SGST ${sg.key}% on</th>
+                    <td>${String.format("%.2f", sg.value)}</td>
+                    <td class="totalgst">${String.format("%.2f",sg.value * (Double.parseDouble(sg.key.toString())/100))}</td>
+                </tr>
 
-%{--            <g:each var="s" in="${sgst}">--}%
+            </g:each>
 
-%{--                <g:if test="${s > 0 && s <= 5}">--}%
-%{--                    <tr>--}%
-%{--                        <th>Add SGST 5 % on</th>--}%
-%{--                        <td>${total}</td>--}%
-%{--                        <td id="sgst5">${0.5 * total}</td>--}%
-%{--                    </tr>--}%
-%{--                </g:if>--}%
-%{--                <g:if test="${s > 5 && s <= 12}">--}%
-%{--                    <tr>--}%
-%{--                        <th>Add SGST 12 % on</th>--}%
-%{--                        <td>${total}</td>--}%
-%{--                        <td id="sgst12">${String.format("%.2f",0.12 * total)}</td>--}%
-%{--                    </tr>--}%
-%{--                </g:if>--}%
-%{--                <g:if test="${s > 12 && s <= 18}">--}%
-%{--                    <tr>--}%
-%{--                        <th>Add SGST 18 % on</th>--}%
-%{--                        <td>${total}</td>--}%
-%{--                        <td id="sgst18">${0.18 * total}</td>--}%
-%{--                    </tr>--}%
-%{--                </g:if>--}%
-%{--                <g:if test="${s > 18 && s <= 28}">--}%
-%{--                    <tr>--}%
-%{--                        <th>Add SGST 28 % on</th>--}%
-%{--                        <td>${total}</td>--}%
-%{--                        <td id="sgst28">${0.28 * total}</td>--}%
-%{--                    </tr>--}%
-%{--                </g:if>--}%
-%{--            </g:each>--}%
-%{--            <tr>--}%
-%{--                <th>Net Invoice Amt.</th>--}%
-%{--                <td>0.00</td>--}%
-%{--                <td id="netInvAmt"></td>--}%
-%{--            </tr>--}%
-%{--            <tr>--}%
-%{--                <th>Less Cr. Nt*</th>--}%
-%{--                <td>0.00</td>--}%
-%{--                <td>0.00</td>--}%
-%{--            </tr>--}%
-%{--            <tr>--}%
-%{--                <th>Add Debit Nt*</th>--}%
-%{--                <td>0.00</td>--}%
-%{--                <td>0.00</td>--}%
-%{--            </tr>--}%
-%{--            <tr>--}%
-%{--                <th>Add Rounding off*</th>--}%
-%{--                <td>0.00</td>--}%
-%{--                <td>0.00</td>--}%
-%{--            </tr>--}%
-%{--            <tr>--}%
-%{--                <th>Net Payable Amt.</th>--}%
-%{--                <td>0.00</td>--}%
-%{--                <td id="netPayAmt"></td>--}%
-%{--            </tr>--}%
-%{--        </table>--}%
+            <g:each in="${cgstGroup}" var="cg">
+                <tr>
+                    <th>Add CGST ${cg.key}% on</th>
+                    <td>${String.format("%.2f", cg.value)}</td>
+                    <td class="totalgst">${String.format("%.2f",cg.value * (Double.parseDouble(cg.key.toString())/100))}</td>
+                </tr>
+
+            </g:each>
+
+            <g:each in="${igstGroup}" var="ig">
+                <tr>
+                    <th>Add IGST ${ig.key}% on</th>
+                    <td>${String.format("%.2f", ig.value)}</td>
+                    <td class="totalgst">${String.format("%.2f",ig.value * (Double.parseDouble(ig.key.toString())/100))}</td>
+                </tr>
+
+            </g:each>
+            <tr>
+                <th>Net Invoice Amt.</th>
+                <td>0.00</td>
+                <td id="netInvAmt"></td>
+            </tr>
+            <tr>
+                <th>Less Cr. Nt*</th>
+                <td>0.00</td>
+                <td>0.00</td>
+            </tr>
+            <tr>
+                <th>Add Debit Nt*</th>
+                <td>0.00</td>
+                <td>0.00</td>
+            </tr>
+            <tr>
+                <th>Add Rounding off*</th>
+                <td>0.00</td>
+                <td>0.00</td>
+            </tr>
+            <tr>
+                <th>Net Payable Amt.</th>
+                <td>0.00</td>
+                <td id="netPayAmt"></td>
+            </tr>
+        </table>
     </div>
 </div>
 <br>
@@ -360,9 +324,19 @@
 </body>
 <asset:javascript src="/themeassets/bundles/libscripts.bundle.js"/>
 <asset:javascript src="/themeassets/plugins/momentjs/moment.js"/>
+<asset:javascript src="/themeassets/plugins/qr-code/qrcode.min.js"/>
 
 <script>
     window.onload = function () {
+        const qrcode = new QRCode(document.getElementById('qrcode'), {
+            text: '${purchaseBillDetail.invoiceNumber}',
+            width: 128,
+            height: 128,
+            colorDark : '#000000',
+            colorLight : '#fff',
+            correctLevel : QRCode.CorrectLevel.H
+        });
+
         var d = new Date().toLocaleTimeString();
         document.getElementById("date").innerHTML = d;
         var invDate = new Date('${purchaseBillDetail.entryDate}')
@@ -372,7 +346,6 @@
         var expDate = new Date('${ppd.expiryDate}')
         $("#expDate${ppd.id}").text(moment(expDate).format('MMM-YY').toUpperCase());
         </g:each>
-        generateBarCode()
 
         //sgst slabs
         var sgst5;
