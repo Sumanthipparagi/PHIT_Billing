@@ -407,35 +407,76 @@ class PurchaseEntryController {
         JSONObject city = new SystemService().getCityById(entity.get('cityId').toString())
         JSONArray termsConditions = new EntityService().getTermsContionsByEntity(session.getAttribute("entityId").toString())
         purchaseProductDetails.each {
+            def batchResponse = new ProductService().getBatchesOfProduct(it.productId.toString())
+            JSONArray batchArray = JSON.parse(batchResponse.readEntity(String.class)) as JSONArray
+            for (JSONObject batch : batchArray) {
+                if(batch.batchNumber == it.batchNumber)
+                {
+                    it.put("batch", batch)
+                }
+            }
             def apiResponse = new SalesService().getRequestWithId(it.productId.toString(), new Links().PRODUCT_REGISTER_SHOW)
             it.put("productId", JSON.parse(apiResponse.readEntity(String.class)) as JSONObject)
         }
-        /*  def invoiceNumber;
-          def datepart = purchaseBillDetail.dateCreated.split("T")[0];
-          def month = datepart.split("-")[1];
-          def year = datepart.split("-")[0];
-          def seriesCode = "__";
-          if (purchaseBillDetail.billStatus == "DRAFT")
-          {
-              invoiceNumber = purchaseBillDetail.entityId + "/DR/S/" + month + year + "/" + series.seriesCode + "/__";
-          }
-          else
-          {
-              invoiceNumber = purchaseBillDetail.entityId + "/S/" + month + year + "/" + series.seriesCode + "/" + purchaseBillDetail.id
-          }*/
-        def totalcgst = purchaseProductDetails.cgstAmount.sum()
-        def totalsgst = purchaseProductDetails.sgstAmount.sum()
-        def totaligst = purchaseProductDetails.igstAmount.sum()
-        def totaldiscount = purchaseProductDetails.discount.sum()
+
+        def totalcgst = UtilsService.round(purchaseProductDetails.cgstAmount.sum(), 2)
+        def totalsgst = UtilsService.round(purchaseProductDetails.sgstAmount.sum(), 2)
+        def totaligst = UtilsService.round(purchaseProductDetails.igstAmount.sum(), 2)
+        def totaldiscount = UtilsService.round(purchaseProductDetails.discount.sum(), 2)
+        def totalBeforeTaxes = 0
+        HashMap<String, Double> gstGroup = new HashMap<>()
+        HashMap<String, Double> sgstGroup = new HashMap<>()
+        HashMap<String, Double> cgstGroup = new HashMap<>()
+        HashMap<String, Double> igstGroup = new HashMap<>()
+        for (Object it : purchaseProductDetails) {
+            double amountBeforeTaxes = it.amount - it.cgstAmount - it.sgstAmount - it.igstAmount
+            totalBeforeTaxes += amountBeforeTaxes
+            if(it.igstPercentage > 0) {
+                def igstPercentage = igstGroup.get(it.igstPercentage.toString())
+                if (igstPercentage == null)
+                    igstGroup.put(it.igstPercentage.toString(), amountBeforeTaxes)
+                else
+                    igstGroup.put(it.igstPercentage.toString(), igstPercentage.doubleValue() + amountBeforeTaxes)
+            }
+            else
+            {
+                def gstPercentage = gstGroup.get(it.gstPercentage.toString())
+                if(gstPercentage == null)
+                    gstGroup.put(it.gstPercentage.toString(), amountBeforeTaxes)
+                else
+                    gstGroup.put(it.gstPercentage.toString(), gstPercentage.doubleValue() + amountBeforeTaxes)
+
+                def sgstPercentage = sgstGroup.get(it.sgstPercentage.toString())
+                if(sgstPercentage == null)
+                    sgstGroup.put(it.sgstPercentage.toString(), amountBeforeTaxes)
+                else
+                    sgstGroup.put(it.sgstPercentage.toString(), sgstPercentage.doubleValue() + amountBeforeTaxes)
+                def cgstPercentage = cgstGroup.get(it.cgstPercentage.toString())
+                if(cgstPercentage == null)
+                    cgstGroup.put(it.cgstPercentage.toString(), amountBeforeTaxes)
+                else
+                    cgstGroup.put(it.cgstPercentage.toString(), cgstPercentage.doubleValue() + amountBeforeTaxes)
+            }
+        }
+
+        def total = totalBeforeTaxes + totalcgst + totalsgst + totaligst
+
         render(view: "/purchase/purchaseEntry/purchase-invoice", model: [purchaseBillDetail: purchaseBillDetail,
                                                                          purchaseProductDetails: purchaseProductDetails,
                                                                          series: series, entity: entity,
                                                                          supplier: supplier, city: city, supcity: supcity,
-                                                                         total:purchaseProductDetails.amount.sum(),
+                                                                         total:total,
                                                                          totalcgst: totalcgst, totalsgst: totalsgst,
                                                                          totaligst: totaligst,
                                                                          totaldiscount: totaldiscount,
-                                                                         termsConditions:termsConditions])
+                                                                         termsConditions:termsConditions,
+                                                                         gstGroup:gstGroup,
+                                                                         sgstGroup:sgstGroup,
+                                                                         cgstGroup:cgstGroup,
+                                                                         igstGroup:igstGroup,
+                                                                         totalBeforeTaxes:totalBeforeTaxes
+
+        ])
     }
 
     def purchaseReturn() {
