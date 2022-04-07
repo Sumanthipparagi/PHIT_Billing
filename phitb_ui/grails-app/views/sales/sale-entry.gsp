@@ -28,7 +28,13 @@
     .form-control {
         border-radius: 7px !important;
     }
-    </style>
+
+    /*.handsontableInputHolder*/
+    /*{*/
+    /*    display: none!important;*/
+    /*}*/
+
+</style>
 </head>
 
 <body class="theme-black">
@@ -440,8 +446,10 @@
 
                         if(selection === 4) {
                             sQty = Number(this.getActiveEditor().TEXTAREA.value);
-                            /*hot.setDataAtCell(row,4,sQty);
-                            hot.selectCell(row, selection+1);*/
+
+                                hot.setDataAtCell(row,4,sQty);
+                                hot.selectCell(row, selection+1);
+
                         }
                         else
                             sQty = Number(hot.getDataAtCell(row,4));
@@ -458,8 +466,9 @@
                             }
                         }
                         else
+                        {
                             discount = hot.getDataAtCell(row,8);
-
+                        }
                         var allowEntry = false;
                         if(remainingQty >= sQty)
                         {
@@ -473,19 +482,18 @@
                         if(!allowEntry)
                         {
                             this.getActiveEditor().TEXTAREA.value = "";
+                            hot.setDataAtCell(row,4,0);
                             alert("Entered quantity exceeds available quantity");
                             return;
                         }
-
                         applySchemes(row, sQty);
                         sRate = hot.getDataAtCell(row, 6);
-
                         var value = sRate * sQty;
                         var priceBeforeGst = value - (value * discount/100);
                         var finalPrice = priceBeforeGst + (priceBeforeGst * (gst / 100));
                         hot.setDataAtCell(row, 11, Number(finalPrice).toFixed(2));
 
-                        if(gst != 0) {
+                        if(gst !== 0) {
                             var gstAmount = priceBeforeGst * (gst / 100);
                             var sgstAmount = priceBeforeGst * (sgst / 100);
                             var cgstAmount = priceBeforeGst * (cgst / 100);
@@ -499,7 +507,7 @@
                             hot.setDataAtCell(row, 12, 0); //SGST
                             hot.setDataAtCell(row, 13, 0); //CGST
                         }
-                        if(igst != "0") {
+                        if(igst !== "0") {
                             var igstAmount = priceBeforeGst*(igst/100);
                             hot.setDataAtCell(row, 14,Number(igstAmount).toFixed(2)); //IGST
                         }
@@ -511,7 +519,7 @@
         });
 
         hot.addHook('afterSelection', (row, col) => {
-            if(col == 2) {
+            if(col === 2) {
                 batchSelection(hot.getDataAtCell(row,1),row,false);
             }
         });
@@ -681,19 +689,19 @@
         var data = hot.getData();
         for (var i = 0; i < data.length; i++) {
             if (data[i][4])
-                totalQty += data[i][4];
+                totalQty += parseFloat(data[i][4]);
             if (data[i][5])
-                totalFQty += data[i][5];
+                totalFQty += parseFloat(data[i][5]);
             if (data[i][11])
-                totalAmt += data[i][11];
+                totalAmt += parseFloat(data[i][11]);
             if (data[i][10])
-                totalGst += data[i][10];
+                totalGst += parseFloat(data[i][10]);
             if (data[i][12])
-                totalSgst += data[i][12];
+                totalSgst += parseFloat(data[i][12]);
             if (data[i][13])
-                totalCgst += data[i][13];
+                totalCgst += parseFloat(data[i][13]);
             if (data[i][14])
-                totalIgst += data[i][14];
+                totalIgst += parseFloat(data[i][14]);
         }
 
         $("#totalAmt").text(Number(totalAmt).toFixed(2));
@@ -1167,6 +1175,7 @@
         }
     });
 
+
     /// select2 plugin
     (function (Handsontable) {
         "use strict";
@@ -1307,7 +1316,6 @@
             this.$textarea.select2(this.options)
                 .on('change', onSelect2Changed.bind(this))
                 .on('select2-close', onSelect2Closed.bind(this));
-
             self.$textarea.select2('open');
 
             // Pushes initial character entered into the search field, if available
@@ -1315,8 +1323,9 @@
                 var key = keyboardEvent.keyCode;
                 var keyText = (String.fromCharCode((96 <= key && key <= 105) ? key - 48 : key)).toLowerCase();
                 console.log("KeyText: "+keyText);
-                self.$textarea.select2('search', keyText);
+                self.$textarea.select2('search', keyText.slice(0, -1));
             }
+
         };
 
         Select2Editor.prototype.init = function () {
@@ -1340,11 +1349,10 @@
         };
 
         Select2Editor.prototype.focus = function () {
-
             this.instance.listen();
 
             // DO NOT CALL THE BASE TEXTEDITOR FOCUS METHOD HERE, IT CAN MAKE THIS EDITOR BEHAVE POORLY AND HAS NO PURPOSE WITHIN THE CONTEXT OF THIS EDITOR
-            //Handsontable.editors.TextEditor.prototype.focus.apply(this, arguments);
+            Handsontable.editors.TextEditor.prototype.focus.apply(this, arguments);
         };
 
         Select2Editor.prototype.beginEditing = function (initialValue) {

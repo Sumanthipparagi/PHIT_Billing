@@ -66,16 +66,14 @@
         margin-left: 200px;
     }
 
-    @media print {
-        tr.page-break  { display: block; page-break-before: always; }
-    }
+
 
     </style>
 </head>
 
 <body>
 
-<table style="width:1308px;table-layout: auto;">
+<table style="width:1308px;table-layout: auto;"  id="userDetails">
     <tr>
 
         <td style="width: 25%;vertical-align:top;">
@@ -148,12 +146,12 @@
             </ul>
         </td>
         <td style="width: 25%;vertical-align:top;">
-            <div id="qrcode"></div>
+            <div class="qrCode" ></div>
         </td>
     </tr>
 </table>
-<table style="width:1308px;table-layout: auto;" id="prodDetails row-item">
-    <tr>
+<table style="width:1308px;table-layout: auto;" id="prodDetails">
+    <tr class="">
         <th>Material HSN Code</th>
         <th>Material Description</th>
         <th>Pack</th>
@@ -174,12 +172,10 @@
         <th>Net Amt</th>
     </tr>
     <%
-
         ArrayList<Double> cgst = new ArrayList<>()
         ArrayList<Double> sgst = new ArrayList<>()
         ArrayList<Double> igst = new ArrayList<>()
     %>
-
     <g:each var="sp" in="${saleProductDetails}" status="i">
 %{--        <g:if test="${i <= 2}">--}%
         <tr>
@@ -315,24 +311,31 @@
 <p style="float: left;margin-right: 24px;"><b>Printed By:</b> ${session.getAttribute("userName").toString()}</p>
 
 <p style="float: left;margin-right: 24px;"><b>Printed On:</b><span id="date"></span></p>
+
+
+<div id="breakPage"></div>
+<br>
+<br>
+<div id="breakPageContent"></div>
 </body>
 <asset:javascript src="/themeassets/bundles/libscripts.bundle.js"/>
 <asset:javascript src="/themeassets/plugins/momentjs/moment.js"/>
-<asset:javascript src="/themeassets/plugins/qr-code/qrcode.min.js"/>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.5.3/jspdf.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.6/jspdf.plugin.autotable.min.js"></script>
+<asset:javascript src="/themeassets/plugins/qr-code/jquery-qrcode-0.18.0.min.js"/>
+%{--<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.5.3/jspdf.min.js"></script>--}%
+%{--<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.6/jspdf.plugin.autotable.min.js"></script>--}%
 
 <script>
     window.onload = function () {
 
-        const qrcode = new QRCode(document.getElementById('qrcode'), {
-            text: ' ${saleBillDetail.invoiceNumber}',
-            width: 128,
-            height: 128,
-            colorDark : '#000000',
-            colorLight : '#fff',
-            correctLevel : QRCode.CorrectLevel.H
-        });
+        %{--const qrcode = new QRCode(document.getElementsByClassName('qrcode'), {--}%
+        %{--    text: ' ${saleBillDetail.invoiceNumber}',--}%
+        %{--    width: 128,--}%
+        %{--    height: 128,--}%
+        %{--    colorDark : '#000000',--}%
+        %{--    colorLight : '#fff',--}%
+        %{--    correctLevel : QRCode.CorrectLevel.H--}%
+        %{--});--}%
+
 
         var d = new Date().toLocaleDateString() + " " +  new Date().toLocaleTimeString();
         document.getElementById("date").innerHTML = d;
@@ -353,10 +356,87 @@
         });
         var netAmount = ${totalBeforeTaxes}
         var netInvAmt = parseFloat(totalGst) + netAmount;
-
         $("#netInvAmt").text(netInvAmt.toFixed(2));
         $("#netPayAmt").text(netInvAmt.toFixed(2));
-    }
+
+
+        var rowCount = $('#prodDetails tr').length;
+        var row = rowCount - 2;
+
+        var userDetails = $('#userDetails').prop('outerHTML');
+        var prodHeaders="";
+        var prodDetails="";
+        $("#prodDetails tr th").each(function(){
+            prodHeaders += $(this).prop('outerHTML');
+        });
+        $("#prodDetails").each(function(){
+            prodDetails += $(this).prop('outerHTML');
+        });
+        var array = [];
+        var headers = [];
+        $('#prodDetails th').each(function(index, item) {
+            headers[index] = $(item).html()
+        });
+
+        $('#prodDetails tr').has('td').each(function() {
+            var arrayItem = {};
+            $('td', $(this)).each(function(index, item) {
+                arrayItem[headers[index].replace(/\s+/g, '').replace(/[\W_]/g, "_")] = $(item).html();
+            });
+            array.push(arrayItem);
+        });
+        console.log(array)
+        var data = array.slice(3);
+        var pdetails="";
+        for (var i = 0; i < data.length; i++)
+        {
+            pdetails +="<tr><td>"+data[i].MaterialHSNCode+"</td><td>"+data[i].MaterialDescription+"</td><td>"+data[i].Pack+"</td><td>"+data[i].C+"</td><td>"+data[i].Batch+"</td><td>"+data[i].ExpDate+"</td><td>"+data[i].MRP+"</td><td>"+data[i].PTR+"</td><td>"+data[i].PTS+"</td><td>"+data[i].QTY+"</td><td>"+data[i].Scheme+"</td><td>"+data[i].Amount+"</td><td>"+data[i].Disc_Amt_Disc__+"</td><td>"+data[i].Amt_CGST_+"</td><td>"+data[i].Amt_SGST_+"</td><td>"+data[i].Amt_IGST_+"</td><td>"+data[i].NetAmt+"</td></tr>";
+        }
+        var prodTableHeaders = '<table style="width:1308px;table-layout: auto;">'+prodHeaders;
+        if(row > 3)
+        {
+            document.getElementById("breakPage").style.pageBreakAfter = "always";
+            $('#breakPageContent').html(userDetails+prodTableHeaders+pdetails+"</table>")
+            $("#prodDetails tr").slice(-3).remove();
+        }
+    };
+    jQuery('.qrCode').qrcode({
+        // width: 100,
+        // height: 100,
+        render : "image",
+        size: 150,
+        // code color or image element
+        fill: '#000',
+
+        // background color or image element, null for transparent background
+        background: null,
+
+        // corner radius relative to module width: 0.0 .. 0.5
+        radius: 0,
+
+        // quiet zone in modules
+        quiet: 0,
+
+        // modes
+        // 0: normal
+        // 1: label strip
+        // 2: label box
+        // 3: image strip
+        // 4: image box
+        mode: 0,
+
+        mSize: 0.1,
+        mPosX: 0.5,
+        mPosY: 0.5,
+
+        label: '${saleBillDetail.invoiceNumber}',
+        fontname: 'sans',
+        fontcolor: '#000',
+
+        image: null,
+        text : "${saleBillDetail.invoiceNumber}"
+    });
+
 
 </script>
 </html>
