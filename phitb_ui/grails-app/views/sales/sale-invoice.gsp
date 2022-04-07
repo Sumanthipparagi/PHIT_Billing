@@ -397,7 +397,7 @@
         {
             document.getElementById("breakPage").style.pageBreakAfter = "always";
             $('#breakPageContent').html(userDetails+prodTableHeaders+pdetails+"</table>")
-            $("#prodDetails tr").slice(-3).remove();
+            $("#prodDetails tr").slice(-data.length).remove();
         }
     };
     jQuery('.qrCode').qrcode({
