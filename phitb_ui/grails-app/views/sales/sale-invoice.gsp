@@ -385,14 +385,14 @@
             });
             array.push(arrayItem);
         });
-        var data = array.slice(3);
+        var data = array.slice(5);
         var pdetails="";
         for (var i = 0; i < data.length; i++)
         {
             pdetails +="<tr><td>"+data[i].MaterialHSNCode+"</td><td>"+data[i].MaterialDescription+"</td><td>"+data[i].Pack+"</td><td>"+data[i].C+"</td><td>"+data[i].Batch+"</td><td>"+data[i].ExpDate+"</td><td>"+data[i].MRP+"</td><td>"+data[i].PTR+"</td><td>"+data[i].PTS+"</td><td>"+data[i].QTY+"</td><td>"+data[i].Scheme+"</td><td>"+data[i].Amount+"</td><td>"+data[i].Disc_Amt_Disc__+"</td><td>"+data[i].Amt_CGST_+"</td><td>"+data[i].Amt_SGST_+"</td><td>"+data[i].Amt_IGST_+"</td><td>"+data[i].NetAmt+"</td></tr>";
         }
         var prodTableHeaders = '<table style="width:1308px;table-layout: auto;">'+prodHeaders;
-        if(row > 3)
+        if(row > 5)
         {
             document.getElementById("breakPage").style.pageBreakAfter = "always";
             $('#breakPageContent').html(userDetails+prodTableHeaders+pdetails+"</table>")
