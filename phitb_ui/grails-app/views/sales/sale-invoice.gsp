@@ -385,7 +385,6 @@
             });
             array.push(arrayItem);
         });
-        console.log(array)
         var data = array.slice(3);
         var pdetails="";
         for (var i = 0; i < data.length; i++)
@@ -404,7 +403,7 @@
         // width: 100,
         // height: 100,
         render : "image",
-        size: 150,
+        size: 100,
         // code color or image element
         fill: '#000',
 
