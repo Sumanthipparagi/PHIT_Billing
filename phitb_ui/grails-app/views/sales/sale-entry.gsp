@@ -503,7 +503,12 @@
                                         }
                                         if (!allowEntry) {
                                             hot.getActiveEditor().TEXTAREA.value = "";
-                                            hot.setDataAtCell(row, 4, 0);
+                                            hot.setDataAtCell(row, 4, "");
+                                            hot.setDataAtCell(row, 10, 0);
+                                            hot.setDataAtCell(row, 11, 0);
+                                            hot.setDataAtCell(row, 12, 0);
+                                            hot.setDataAtCell(row, 13, 0);
+                                            hot.setDataAtCell(row, 14, 0);
                                             alert("Entered quantity exceeds available quantity");
                                             return;
                                         }
