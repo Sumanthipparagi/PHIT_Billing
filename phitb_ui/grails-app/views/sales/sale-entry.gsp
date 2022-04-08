@@ -520,8 +520,6 @@
                                         else if ((remQty + remFQty) >= sQty) {
                                             allowEntry = true;
                                         }
-
-
                                         if(selection === 5)
                                         {
                                             if(remFQty >= fQty)
@@ -542,11 +540,11 @@
                                             if(freeQtyEntry!==true)
                                             {
                                                 alert("Entered Free quantity exceeds available quantity");
-                                                hot.setDataAtCell(row, 5, 0);
+                                                // hot.setDataAtCell(row, 5, 0);
                                             }
                                         }
                                         if (!allowEntry) {
-                                            hot.getActiveEditor().TEXTAREA.value = "";
+                                            this.getActiveEditor().TEXTAREA.value = "";
                                             hot.setDataAtCell(row, 4, 0);
                                             hot.setDataAtCell(row, 10, 0);
                                             hot.setDataAtCell(row, 11, 0);
