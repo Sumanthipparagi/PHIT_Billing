@@ -468,6 +468,7 @@ class UrlMappings {
         "/stockbook"(controller: "stockBook") {action = [POST: 'stockBookSave']}
         "/stockbook/user/$id"(controller: "stockBook",action:"getStocksOfUser")
         "/stockbook/increase/"(controller: 'stockBook', action: 'stockIncrease')
+        "/stockbook/product/$productId/batch/$batch"(controller: 'stockBook',action: 'stockByProductAndBatch')
 //        Sale Order Entry
         "/sale-order-entry"(controller: "saleOrderEntry") {
             action = [GET: "index", POST: 'saveSaleOrder']

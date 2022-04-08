@@ -576,4 +576,23 @@ class StockBookController {
         }
 
     }
+
+
+    def stockByProductAndBatch()
+    {
+        def batch = params.batch
+        def productId = params.productId
+        String entityId = session.getAttribute('entityId').toString()
+        def apiResponse = new InventoryService().stocksByProductAndBatch(batch,productId,entityId)
+        if (apiResponse?.status == 200)
+        {
+            JSONObject jsonObject = new JSONObject(apiResponse.readEntity(String.class))
+            respond jsonObject,formats: ['json'],status: 200
+        }
+        else
+        {
+            return null
+        }
+
+    }
 }

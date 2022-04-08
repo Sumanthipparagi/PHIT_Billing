@@ -397,6 +397,7 @@ public class Links
     public static String STOCK_BOOK_PURCHASE = "api/v1.0/inventory/stockbook/purchase/";
     public static String STOCK_BOOK_BY_USER = "api/v1.0/inventory/stockbook/user";
     public static String STOCK_BOOK_BY_BATCH = "api/v1.0/inventory/stockbook/batch";
+    public static String STOCK_BOOK_BY_PROD_BATCH ="api/v1.0/inventory/stockbook/product/{productId}/batch/{batch}";
 
 
     //Temp Stock Book

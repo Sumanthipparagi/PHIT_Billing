@@ -487,15 +487,15 @@
                         if (pid && batch) {
                             $.ajax({
                                     type: "POST",
-                                    url: "/tempstockbook/product/" + pid + "/batch/" + batch,
+                                    url: "/stockbook/product/" + pid + "/batch/" + batch,
                                     dataType: 'json',
-                                    async: true,
                                     success: function (data) {
-                                        remQty = remQty + data[0].remainingQty;
-                                        remFQty = remFQty + data[0].remainingFreeQty;
+                                        remQty = remQty + data.remainingQty;
+                                        remFQty = remFQty + data.remainingFreeQty;
                                         if (remQty >= sQty) {
                                             allowEntry = true;
-                                        } else if (sQty >= remQty && remFQty >= sQty) {
+                                        }
+                                        else if (sQty >= remQty && remFQty >= sQty) {
                                             allowEntry = true;
                                         }
                                         else if ((remQty + remFQty) >= sQty) {
@@ -504,6 +504,7 @@
                                         if (!allowEntry) {
                                             hot.getActiveEditor().TEXTAREA.value = "";
                                             hot.setDataAtCell(row, 4, "");
+                                            hot.setDataAtCell(row, 5, "");
                                             hot.setDataAtCell(row, 10, 0);
                                             hot.setDataAtCell(row, 11, 0);
                                             hot.setDataAtCell(row, 12, 0);

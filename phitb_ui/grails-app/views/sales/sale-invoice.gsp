@@ -150,7 +150,7 @@
         </td>
     </tr>
 </table>
-<table style="width:1308px;table-layout: auto;" id="prodDetails">
+<table style="width:1308px;table-layout: auto;" id="prodDetails" class="extended">
     <tr class="">
         <th>Material HSN Code</th>
         <th>Material Description</th>
@@ -360,25 +360,25 @@
         $("#netPayAmt").text(netInvAmt.toFixed(2));
 
 
-        var rowCount = $('#prodDetails tr').length;
+        var rowCount = $('.extended tr').length;
         var row = rowCount - 2;
 
         var userDetails = $('#userDetails').prop('outerHTML');
         var prodHeaders="";
         var prodDetails="";
-        $("#prodDetails tr th").each(function(){
+        $(".extended tr th").each(function(){
             prodHeaders += $(this).prop('outerHTML');
         });
-        $("#prodDetails").each(function(){
+        $(".extended").each(function(){
             prodDetails += $(this).prop('outerHTML');
         });
         var array = [];
         var headers = [];
-        $('#prodDetails th').each(function(index, item) {
+        $('.extended th').each(function(index, item) {
             headers[index] = $(item).html()
         });
 
-        $('#prodDetails tr').has('td').each(function() {
+        $('.extended tr').has('td').each(function() {
             var arrayItem = {};
             $('td', $(this)).each(function(index, item) {
                 arrayItem[headers[index].replace(/\s+/g, '').replace(/[\W_]/g, "_")] = $(item).html();
@@ -391,7 +391,8 @@
         {
             pdetails +="<tr><td>"+data[i].MaterialHSNCode+"</td><td>"+data[i].MaterialDescription+"</td><td>"+data[i].Pack+"</td><td>"+data[i].C+"</td><td>"+data[i].Batch+"</td><td>"+data[i].ExpDate+"</td><td>"+data[i].MRP+"</td><td>"+data[i].PTR+"</td><td>"+data[i].PTS+"</td><td>"+data[i].QTY+"</td><td>"+data[i].Scheme+"</td><td>"+data[i].Amount+"</td><td>"+data[i].Disc_Amt_Disc__+"</td><td>"+data[i].Amt_CGST_+"</td><td>"+data[i].Amt_SGST_+"</td><td>"+data[i].Amt_IGST_+"</td><td>"+data[i].NetAmt+"</td></tr>";
         }
-        var prodTableHeaders = '<table style="width:1308px;table-layout: auto;">'+prodHeaders;
+        var prodTableHeaders =
+            '<table style="width:1308px;table-layout: auto;" class="extended">'+prodHeaders;
         if(row > 5)
         {
             document.getElementById("breakPage").style.pageBreakAfter = "always";
@@ -399,6 +400,9 @@
             $("#prodDetails tr").slice(-data.length).remove();
         }
     };
+
+
+
     jQuery('.qrCode').qrcode({
         // width: 100,
         // height: 100,

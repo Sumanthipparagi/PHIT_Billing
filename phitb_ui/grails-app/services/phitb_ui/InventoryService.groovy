@@ -112,6 +112,25 @@ class InventoryService {
     }
 
 
+    def stocksByProductAndBatch(String batch,String productId,String entityId) {
+        Client client = ClientBuilder.newClient()
+        WebTarget target = client.target(new Links().API_GATEWAY)
+        try {
+            Response apiResponse = target
+                    .path(new Links().STOCK_BOOK_BY_PROD_BATCH)
+                    .resolveTemplate("batch", batch)
+                    .resolveTemplate("productId", productId)
+                    .queryParam("entityId", URLEncoder.encode(entityId.toString(), "UTF-8"))
+                    .request(MediaType.APPLICATION_JSON_TYPE)
+                    .get()
+            return apiResponse
+        }
+        catch (Exception ex) {
+            System.err.println('Service :InventroyService , action :  getProducts  , Ex:' + ex)
+            log.error('Service :InventroyService , action :  getProducts  , Ex:' + ex)
+        }
+
+    }
 
     def stockBookSave(JSONObject jsonObject)
     {
