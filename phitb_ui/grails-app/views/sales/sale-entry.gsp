@@ -495,7 +495,10 @@
                                         remFQty = remFQty + data[0].remainingFreeQty;
                                         if (remQty >= sQty) {
                                             allowEntry = true;
-                                        } else if (sQty > remQty && remFQty > sQty) {
+                                        } else if (sQty >= remQty && remFQty >= sQty) {
+                                            allowEntry = true;
+                                        }
+                                        else if ((remQty + remFQty) >= sQty) {
                                             allowEntry = true;
                                         }
                                         if (!allowEntry) {
@@ -758,7 +761,7 @@
                     hot.selectCell(i, 1);
                     var sRate = saleData[i]["saleRate"];
                     var sQty = saleData[i]["userOrderQty"];
-                    var fQty = saleData[i]["remainingFreeQty"]
+                    var fQty = saleData[i]["userOrderFreeQty"];
                     batchSelection(saleData[i]["productId"], null, false);
                     var batchId = saleData[i][12];
                     hot.setDataAtCell(i, 1, saleData[i]["productId"]);
