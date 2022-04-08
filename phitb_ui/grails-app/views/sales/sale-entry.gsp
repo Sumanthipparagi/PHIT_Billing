@@ -502,13 +502,13 @@
                                             hot.getActiveEditor().TEXTAREA.value = "";
                                             hot.setDataAtCell(row, 4, 0);
                                             alert("Entered quantity exceeds available quantity");
-                                            // return;
+                                            return;
                                         }
-                                    },
-                                    error: function (data) {
-                                        console.log("Failed");
-                                        alert("Something went wrong!!.");
                                     }
+                                    // error: function (data) {
+                                    //     console.log("Failed");
+                                    //     alert("Something went wrong!!.");
+                                    // }
                                 }
                             );
                         }
