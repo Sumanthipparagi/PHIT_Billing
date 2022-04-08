@@ -474,6 +474,7 @@
                         }
 
                         if (selection === 5) {
+
                             fQty = Number(this.getActiveEditor().TEXTAREA.value);
                             var fq = this.getDataAtCell(row,5);
                             hot.setDataAtCell(row, 5, fq);
@@ -515,19 +516,33 @@
                                         else if (sQty >= remQty && remFQty >= sQty) {
                                             allowEntry = true;
                                         }
+
                                         else if ((remQty + remFQty) >= sQty) {
                                             allowEntry = true;
                                         }
+
+
                                         if(selection === 5)
                                         {
                                             if(remFQty >= fQty)
                                             {
                                                 freeQtyEntry = true;
                                             }
+
+                                            if ((remQty + remFQty) >= sQty+fQty) {
+                                                freeQtyEntry = true;
+                                                allowEntry = true;
+                                            }
+                                            else
+                                            {
+                                                freeQtyEntry = false;
+                                                allowEntry = false;
+                                            }
+
                                             if(freeQtyEntry!==true)
                                             {
-                                                hot.setDataAtCell(row, 5, 0);
                                                 alert("Entered Free quantity exceeds available quantity");
+                                                hot.setDataAtCell(row, 5, 0);
                                             }
                                         }
                                         if (!allowEntry) {
@@ -538,7 +553,6 @@
                                             hot.setDataAtCell(row, 12, 0);
                                             hot.setDataAtCell(row, 13, 0);
                                             hot.setDataAtCell(row, 14, 0);
-                                            hot.setDataAtCell(row, 5, 0);
                                             alert("Entered quantity exceeds available quantity");
                                             return;
                                         }
