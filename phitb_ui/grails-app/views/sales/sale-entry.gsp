@@ -303,6 +303,7 @@
     var readOnly = false;
     var scheme = null;
     $(document).ready(function () {
+
         $("#customerSelect").select2();
         $('#date').val(moment().format('YYYY-MM-DD'));
         $('#date').attr("readonly");
@@ -423,7 +424,7 @@
                         //check if sqty is empty
                         var sqty = hot.getDataAtCell(row, 4);
                         var fqty = hot.getDataAtCell(row, 5);
-                        if (sqty && sqty > 0) {
+                        if (sqty && sqty > 0 && fqty && fqty > 0) {
                             var batchId = hot.getCellMeta(row, 2)?.batchId; //batch
                             var dt = hot.getDataAtRow(row);
                             dt.push(batchId);
@@ -454,18 +455,33 @@
                         } else {
                             alert("Invalid Quantity, please enter quantity greater than 0");
                         }
+
                     }
-                } else if (selection === 4 || selection === 8) {
+                } else if (selection === 4 || selection === 5) {
                     if (e.keyCode === 13 || e.keyCode === 9) {
                         var discount = 0;
-
                         if (selection === 4) {
+                            this.getActiveEditor().enableFullEditMode();
+                            this.getActiveEditor().beginEditing();
                             sQty = Number(this.getActiveEditor().TEXTAREA.value);
-                            hot.setDataAtCell(row, 4, sQty);
-                            hot.selectCell(row, selection + 1);
-
+                            // var sq = this.getDataAtCell(row,4);
+                            // alert(sq)
+                            this.setDataAtCell(row, 4, sQty);
+                            this.selectCell(row, selection + 1);
                         } else
-                            sQty = Number(hot.getDataAtCell(row, 4));
+                        {
+                            sQty = Number(this.getDataAtCell(row, 4));
+                        }
+
+                        if (selection === 5) {
+                            fQty = Number(this.getActiveEditor().TEXTAREA.value);
+                            var fq = this.getDataAtCell(row,5);
+                            hot.setDataAtCell(row, 5, fq);
+                            this.selectCell(row, selection + 1);
+                        } else
+                        {
+                            fQty = Number(this.getDataAtCell(row, 5));
+                        }
 
                         if (selection === 8) {
                             discount = this.getActiveEditor().TEXTAREA.value;
@@ -484,6 +500,7 @@
                         var batch = hot.getDataAtCell(row, 2);
                         var remQty = 0;
                         var remFQty = 0;
+                        var freeQtyEntry = false;
                         if (pid && batch) {
                             $.ajax({
                                     type: "POST",
@@ -501,27 +518,34 @@
                                         else if ((remQty + remFQty) >= sQty) {
                                             allowEntry = true;
                                         }
+                                        if(selection === 5)
+                                        {
+                                            if(remFQty >= fQty)
+                                            {
+                                                freeQtyEntry = true;
+                                            }
+                                            if(freeQtyEntry!==true)
+                                            {
+                                                hot.setDataAtCell(row, 5, 0);
+                                                alert("Entered Free quantity exceeds available quantity");
+                                            }
+                                        }
                                         if (!allowEntry) {
                                             hot.getActiveEditor().TEXTAREA.value = "";
-                                            hot.setDataAtCell(row, 4, "");
-                                            hot.setDataAtCell(row, 5, "");
+                                            hot.setDataAtCell(row, 4, 0);
                                             hot.setDataAtCell(row, 10, 0);
                                             hot.setDataAtCell(row, 11, 0);
                                             hot.setDataAtCell(row, 12, 0);
                                             hot.setDataAtCell(row, 13, 0);
                                             hot.setDataAtCell(row, 14, 0);
+                                            hot.setDataAtCell(row, 5, 0);
                                             alert("Entered quantity exceeds available quantity");
                                             return;
                                         }
                                     }
-                                    // error: function (data) {
-                                    //     console.log("Failed");
-                                    //     alert("Something went wrong!!.");
-                                    // }
                                 }
                             );
                         }
-
                         applySchemes(row, sQty);
                         sRate = hot.getDataAtCell(row, 6);
                         var value = sRate * sQty;
@@ -556,6 +580,10 @@
                 batchSelection(hot.getDataAtCell(row, 1), row, false);
             }
         });
+
+
+
+
 
         function productsDropdownRenderer(instance, td, row, col, prop, value, cellProperties) {
             var selectedId;
@@ -647,6 +675,8 @@
         });
 
         $('#series').trigger('change');
+
+
     });
 
     function batchSelection(selectedId, mainRow, selectCell = true) {
@@ -1368,6 +1398,9 @@
         Handsontable.editors.registerEditor('select2', Select2Editor);
 
     })(Handsontable);
+
+
+
 </script>
 <g:include view="controls/footer-content.gsp"/>
 <script>
