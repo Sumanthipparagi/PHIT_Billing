@@ -476,8 +476,8 @@
                         if (selection === 5) {
 
                             fQty = Number(this.getActiveEditor().TEXTAREA.value);
-                            var fq = this.getDataAtCell(row,5);
-                            hot.setDataAtCell(row, 5, fq);
+                            // var fq = this.getDataAtCell(row,5);
+                            hot.setDataAtCell(row, 5, fQty);
                             this.selectCell(row, selection + 1);
                         } else
                         {
@@ -520,6 +520,7 @@
                                         else if ((remQty + remFQty) >= sQty) {
                                             allowEntry = true;
                                         }
+
                                         if(selection === 5)
                                         {
                                             if(remFQty >= fQty)
@@ -527,7 +528,7 @@
                                                 freeQtyEntry = true;
                                             }
 
-                                            if ((remQty + remFQty) >= sQty+fQty) {
+                                           else if ((remQty + remFQty) >= sQty+fQty) {
                                                 freeQtyEntry = true;
                                                 allowEntry = true;
                                             }
@@ -544,8 +545,9 @@
                                             }
                                         }
                                         if (!allowEntry) {
-                                            this.getActiveEditor().TEXTAREA.value = "";
+                                            // this.getActiveEditor().TEXTAREA.value = "";
                                             hot.setDataAtCell(row, 4, 0);
+                                            hot.setDataAtCell(row, 5, 0);
                                             hot.setDataAtCell(row, 10, 0);
                                             hot.setDataAtCell(row, 11, 0);
                                             hot.setDataAtCell(row, 12, 0);
