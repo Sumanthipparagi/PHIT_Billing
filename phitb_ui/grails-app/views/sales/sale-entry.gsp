@@ -441,7 +441,6 @@
                                 success: function (data) {
                                     console.log("Data saved");
                                     hot.setDataAtCell(row, 15, data.id);
-
                                     mainTableRow = row + 1;
                                     hot.alter('insert_row');
                                     hot.selectCell(mainTableRow, 1);
@@ -457,7 +456,7 @@
                         }
 
                     }
-                } else if (selection === 4 || selection === 5) {
+                } else if (selection === 4 || selection === 5 || selection === 8) {
                     if (e.keyCode === 13 || e.keyCode === 9) {
                         var discount = 0;
                         if (selection === 4) {
@@ -474,7 +473,6 @@
                         }
 
                         if (selection === 5) {
-
                             fQty = Number(this.getActiveEditor().TEXTAREA.value);
                             // var fq = this.getDataAtCell(row,5);
                             hot.setDataAtCell(row, 5, fQty);
@@ -485,13 +483,18 @@
                         }
 
                         if (selection === 8) {
-                            discount = this.getActiveEditor().TEXTAREA.value;
+                            discount = Number(this.getActiveEditor().TEXTAREA.value);
                             if (discount > 100) {
+                                alert("Invalid Discount");
                                 hot.setDataAtCell(row, 8, 0);
                                 this.getActiveEditor().TEXTAREA.value = 0;
-                                alert("Invalid Discount");
                                 hot.selectCell(row, 8);
                                 return;
+                            }
+                            else
+                            {
+                                hot.setDataAtCell(row, 8, discount);
+                                this.selectCell(row, selection + 1);
                             }
                         } else {
                             discount = hot.getDataAtCell(row, 8);
@@ -556,7 +559,10 @@
                                             alert("Entered quantity exceeds available quantity");
                                             return;
                                         }
-                                    }
+                                    },
+                                    error: function (data) {
+                                    alert("Something went Wrong!")
+                                }
                                 }
                             );
                         }
@@ -806,6 +812,7 @@
             url: "tempstockbook/user/" + userId,
             dataType: 'json',
             success: function (data) {
+
                 saleData = data;
                 for (var i = 0; i < saleData.length; i++) {
                     hot.selectCell(i, 1);
@@ -836,7 +843,7 @@
                     var finalPrice = priceBeforeGst + (priceBeforeGst * (gst / 100));
                     hot.setDataAtCell(i, 11, Number(finalPrice).toFixed(2));
 
-                    if (gst != 0) {
+                    if (gst !== 0) {
                         hot.setDataAtCell(i, 10, Number(priceBeforeGst * (gst / 100)).toFixed(2)); //GST
                         hot.setDataAtCell(i, 12, Number(priceBeforeGst * (sgst / 100)).toFixed(2)); //SGST
                         hot.setDataAtCell(i, 13, Number(priceBeforeGst * (cgst / 100)).toFixed(2)); //CGST
@@ -845,7 +852,7 @@
                         hot.setDataAtCell(i, 12, 0); //SGST
                         hot.setDataAtCell(i, 13, 0); //CGST
                     }
-                    if (igst != "0")
+                    if (igst !== "0")
                         hot.setDataAtCell(i, 14, Number(priceBeforeGst * (igst / 100)).toFixed(2)); //IGST
                     else
                         hot.setDataAtCell(i, 14, 0);
@@ -856,6 +863,10 @@
                     hot.setDataAtCell(i, 18, cgst);
                     hot.setDataAtCell(i, 19, igst);
                 }
+
+                // setTimeout(function () {
+                //     $('#saleTable').show()
+                // }, 2000);
 
                 setTimeout(function () {
                     hot.selectCell(0, 1);

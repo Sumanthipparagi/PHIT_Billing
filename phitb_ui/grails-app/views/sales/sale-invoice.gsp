@@ -67,7 +67,6 @@
     }
 
 
-
     </style>
 </head>
 
@@ -385,7 +384,7 @@
             });
             array.push(arrayItem);
         });
-        var data = array.slice(5);
+        var data = array.slice();
         var pdetails="";
         for (var i = 0; i < data.length; i++)
         {
