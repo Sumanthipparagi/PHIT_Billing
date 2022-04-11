@@ -316,13 +316,10 @@ class StockBookController {
                 def tmpStockBook = new InventoryService().getTempStocksById(jsonArray[15])
                 stockBook = new InventoryService().getStockBookById(Long.parseLong(tmpStockBook.originalId))
             }
-
             long remainingQty = stockBook.remainingQty
             long remainingFreeQty = stockBook.remainingFreeQty
             long saleQty  = jsonArray[4]
             long saleFreeQty  = jsonArray[5]
-
-
             if(saleQty<=remainingQty)
             {
                 remainingQty = remainingQty - saleQty
@@ -332,7 +329,6 @@ class StockBookController {
                 remainingFreeQty = remainingFreeQty - (saleQty - remainingQty)
                 remainingQty = 0
             }
-
             if(saleFreeQty<=remainingFreeQty)
             {
                 remainingFreeQty = remainingFreeQty - saleFreeQty
@@ -342,7 +338,6 @@ class StockBookController {
                 remainingQty = remainingQty - (saleFreeQty - remainingFreeQty)
                 remainingFreeQty = 0
             }
-
            /* if(saleQty>remainingQty && remainingFreeQty>saleQty)
             {
                 remainingQty = 0
@@ -352,7 +347,6 @@ class StockBookController {
                 remainingQty = remainingQty - saleQty
                 if(remainingFreeQty<saleFreeQty)
                 {
-
                     remainingFreeQty = 0
                 }
                 else {
@@ -380,7 +374,6 @@ class StockBookController {
             jsonObject.put("entityTypeId", session.getAttribute("entityTypeId"))
             jsonObject.put("redundantBatch", "")
             jsonObject.put("originalId", stockBook.id)
-
             def apiResponse = new InventoryService().tempStockBookSave(jsonObject)
             if (apiResponse?.status == 200)
             {

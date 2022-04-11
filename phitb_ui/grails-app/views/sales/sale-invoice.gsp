@@ -66,6 +66,28 @@
         margin-left: 200px;
     }
 
+    footer {
+        font-size: 9px;
+        color: #f00;
+        text-align: center;
+    }
+
+
+    @media print {
+        footer {
+            position: fixed;
+            bottom: 0;
+        }
+
+        .content-block, p {
+            page-break-inside: avoid;
+        }
+
+        html, body {
+            width: 210mm;
+            height: 297mm;
+        }
+    }
 
     </style>
 </head>
@@ -73,6 +95,7 @@
 <body>
 
 <table style="width:1308px;table-layout: auto;"  id="userDetails">
+    <thead>
     <tr>
 
         <td style="width: 25%;vertical-align:top;">
@@ -148,10 +171,12 @@
             <div class="qrCode" ></div>
         </td>
     </tr>
+    </thead>
 </table>
 <table style="width:1308px;table-layout: auto;" id="prodDetails" class="extended">
     <thead>
     <tr class="">
+        <th>Sl.No</th>
         <th>Material HSN Code</th>
         <th>Material Description</th>
         <th>Pack</th>
@@ -171,7 +196,7 @@
         <th>Amt/IGST%</th>
         <th>Net Amt</th>
     </tr>
-
+    </thead>
     <%
         ArrayList<Double> cgst = new ArrayList<>()
         ArrayList<Double> sgst = new ArrayList<>()
@@ -180,6 +205,7 @@
     <g:each var="sp" in="${saleProductDetails}" status="i">
 %{--        <g:if test="${i <= 2}">--}%
         <tr>
+            <td>${i+1}</td>
             <td>${sp.productId.hsnCode}</td>
             <td><b>${sp.productId.productName}</b></td>
             <td><b>${sp.productId.unitPacking}</b></td>
@@ -210,7 +236,9 @@
 
 
     </g:each>
+
     <tr>
+        <td class="hide"></td>
         <td class="hide"></td>
         <td class="hide"></td>
         <td class="hide"></td>
@@ -360,46 +388,48 @@
         $("#netInvAmt").text(netInvAmt.toFixed(2));
         $("#netPayAmt").text(netInvAmt.toFixed(2));
 
+        //
+        // var rowCount = $('.extended tr').length;
+        // var row = rowCount - 2;
+        //
+        // var userDetails = $('#userDetails').prop('outerHTML');
+        // var prodHeaders="";
+        // var prodDetails="";
+        // $(".extended tr th").each(function(){
+        //     prodHeaders += $(this).prop('outerHTML');
+        // });
+        // $(".extended").each(function(){
+        //     prodDetails += $(this).prop('outerHTML');
+        // });
+        // var array = [];
+        // var headers = [];
+        // $('.extended th').each(function(index, item) {
+        //     headers[index] = $(item).html()
+        // });
+        //
+        // $('.extended tr').has('td').each(function() {
+        //     var arrayItem = {};
+        //     $('td', $(this)).each(function(index, item) {
+        //         arrayItem[headers[index].replace(/\s+/g, '').replace(/[\W_]/g, "_")] = $(item).html();
+        //     });
+        //     array.push(arrayItem);
+        // });
+        // var data = array.slice(5);
+        // var pdetails="";
+        // for (var i = 0; i < data.length; i++)
+        // {
+        //     pdetails +="<tr><td>"+data[i].MaterialHSNCode+"</td><td>"+data[i].MaterialDescription+"</td><td>"+data[i].Pack+"</td><td>"+data[i].C+"</td><td>"+data[i].Batch+"</td><td>"+data[i].ExpDate+"</td><td>"+data[i].MRP+"</td><td>"+data[i].PTR+"</td><td>"+data[i].PTS+"</td><td>"+data[i].QTY+"</td><td>"+data[i].Scheme+"</td><td>"+data[i].Amount+"</td><td>"+data[i].Disc_Amt_Disc__+"</td><td>"+data[i].Amt_CGST_+"</td><td>"+data[i].Amt_SGST_+"</td><td>"+data[i].Amt_IGST_+"</td><td>"+data[i].NetAmt+"</td></tr>";
+        // }
+        // var prodTableHeaders =
+        //     '<table style="width:1308px;table-layout: auto;" class="extended">'+prodHeaders;
+        // if(row > 5)
+        // {
+        //     document.getElementById("breakPage").style.pageBreakAfter = "always";
+        //     $('#breakPageContent').html(userDetails+prodTableHeaders+pdetails+"</table>")
+        //     $("#prodDetails tr").slice(-data.length).remove();
+        // }
 
-        var rowCount = $('.extended tr').length;
-        var row = rowCount - 2;
 
-        var userDetails = $('#userDetails').prop('outerHTML');
-        var prodHeaders="";
-        var prodDetails="";
-        $(".extended tr th").each(function(){
-            prodHeaders += $(this).prop('outerHTML');
-        });
-        $(".extended").each(function(){
-            prodDetails += $(this).prop('outerHTML');
-        });
-        var array = [];
-        var headers = [];
-        $('.extended th').each(function(index, item) {
-            headers[index] = $(item).html()
-        });
-
-        $('.extended tr').has('td').each(function() {
-            var arrayItem = {};
-            $('td', $(this)).each(function(index, item) {
-                arrayItem[headers[index].replace(/\s+/g, '').replace(/[\W_]/g, "_")] = $(item).html();
-            });
-            array.push(arrayItem);
-        });
-        var data = array.slice(5);
-        var pdetails="";
-        for (var i = 0; i < data.length; i++)
-        {
-            pdetails +="<tr><td>"+data[i].MaterialHSNCode+"</td><td>"+data[i].MaterialDescription+"</td><td>"+data[i].Pack+"</td><td>"+data[i].C+"</td><td>"+data[i].Batch+"</td><td>"+data[i].ExpDate+"</td><td>"+data[i].MRP+"</td><td>"+data[i].PTR+"</td><td>"+data[i].PTS+"</td><td>"+data[i].QTY+"</td><td>"+data[i].Scheme+"</td><td>"+data[i].Amount+"</td><td>"+data[i].Disc_Amt_Disc__+"</td><td>"+data[i].Amt_CGST_+"</td><td>"+data[i].Amt_SGST_+"</td><td>"+data[i].Amt_IGST_+"</td><td>"+data[i].NetAmt+"</td></tr>";
-        }
-        var prodTableHeaders =
-            '<table style="width:1308px;table-layout: auto;" class="extended">'+prodHeaders;
-        if(row > 5)
-        {
-            document.getElementById("breakPage").style.pageBreakAfter = "always";
-            $('#breakPageContent').html(userDetails+prodTableHeaders+pdetails+"</table>")
-            $("#prodDetails tr").slice(-data.length).remove();
-        }
     };
 
 

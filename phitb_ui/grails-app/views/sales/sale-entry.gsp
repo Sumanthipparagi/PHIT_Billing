@@ -1076,7 +1076,6 @@
     function seriesChanged() {
         var series = $("#series").val();
         loadProducts(series);
-
     }
 
     function loadProducts(series) {
