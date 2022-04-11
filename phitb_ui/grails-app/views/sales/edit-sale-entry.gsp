@@ -6,7 +6,7 @@
     <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
     <meta name="description" content="Responsive Bootstrap 4 and web Application ui kit.">
 
-    <title>:: PharmIt ::  Sale Entry</title>
+    <title>:: PharmIt :: Update Sale Entry</title>
     <link rel="icon" type="image/x-icon" href="${assetPath(src: '/themeassets/images/favicon.ico')}"/>
     <!-- Favicon-->
     <asset:stylesheet rel="stylesheet" src="/themeassets/plugins/bootstrap/css/bootstrap.min.css"/>
@@ -70,7 +70,7 @@
                     <div class="header" style="padding: 1px;">
 
                     </div>
-
+                    ${saleBillDetail}
                     <div class="body">
                         <div class="row">
                             <div class="col-md-2">
@@ -82,8 +82,10 @@
                                 <label for="series">Series:</label>
                                 <select onchange="seriesChanged()" class="form-control" id="series" name="series">
                                     <g:each in="${series}" var="sr">
+
                                         <option data-seriescode="${sr.seriesCode}"
-                                                value="${sr.id}">${sr.seriesName} (${sr.seriesCode})</option>
+                                                value="${sr.id}"
+                                        <g:if test="${saleBillDetail.seriesId == sr.id}">selected</g:if>>${sr.seriesName}(${sr.seriesCode})</option>
                                     </g:each>
                                 </select>
                             </div>
@@ -92,7 +94,7 @@
                                 <label for="priority">Priority:</label>
                                 <select class="form-control" id="priority" name="priority">
                                     <g:each in="${priorityList}" var="pr">
-                                        <option value="${pr.id}">${pr.priority}</option>
+                                        <option value="${pr.id}"  <g:if test="${saleBillDetail.priorityId == pr.id}">selected</g:if> >${pr.priority}</option>
                                     </g:each>
                                 </select>
                             </div>
@@ -105,14 +107,14 @@
                                     <g:each in="${customers}" var="cs">
 
                                         <g:if test="${cs.id != session.getAttribute("entityId")}">
-                                            <option value="${cs.id}">${cs.entityName} (${cs.entityType.name})</option>
+                                            <option value="${cs.id}"  <g:if test="${saleBillDetail.customerId == cs.id}">selected</g:if> >${cs.entityName} (${cs.entityType.name})</option>
                                         </g:if>
                                     </g:each>
                                 </select>
                             </div>
 
                             <div class="col-md-2">
-                                <label for="duedate">Due Date:</label>
+                                <label for="duedate">Due Date:${saleBillDetail.dueDate}</label>
                                 <input type="date" class="form-control date" name="duedate" id="duedate"/>
                             </div>
 
@@ -428,7 +430,7 @@
                         //check if sqty is empty
                         var sqty = hot.getDataAtCell(row, 4);
                         var fqty = hot.getDataAtCell(row, 5);
-                        if (sqty && sqty > 0 ) {
+                        if (sqty && sqty > 0 && fqty && fqty > 0) {
                             var batchId = hot.getCellMeta(row, 2)?.batchId; //batch
                             var dt = hot.getDataAtRow(row);
                             dt.push(batchId);
@@ -535,7 +537,7 @@
                                                 freeQtyEntry = true;
                                             }
 
-                                           else if ((remQty + remFQty) >= sQty+fQty) {
+                                            else if ((remQty + remFQty) >= sQty+fQty) {
                                                 freeQtyEntry = true;
                                                 allowEntry = true;
                                             }
@@ -565,8 +567,8 @@
                                         }
                                     },
                                     error: function (data) {
-                                    alert("Something went Wrong!")
-                                }
+                                        alert("Something went Wrong!")
+                                    }
                                 }
                             );
                         }
@@ -749,6 +751,7 @@
     }
 
     function customerSelectChanged() {
+
         var noOfCrDays = 0;
         var customerId = $("#customerSelect").val();
         for (var i = 0; i < customers.length; i++) {

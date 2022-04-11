@@ -546,4 +546,19 @@ class SaleEntryController
             response.status = 400
         }
     }
+
+    def editSaleBillDetails()
+    {
+        String entityId = session.getAttribute("entityId")?.toString()
+        JSONArray divisions = new ProductService().getDivisionsByEntityId(entityId)
+        ArrayList<String> customers = new EntityRegisterController().show() as ArrayList<String>
+        def priorityList = new SystemService().getPriorityByEntity(entityId)
+        def series = new SeriesController().getByEntity(entityId)
+        def saleBillId = params.saleBillId
+        JSONObject saleBillDetail = new SalesService().getSaleBillDetailsById(saleBillId)
+
+        render(view:'/sales/edit-sale-entry',model: [customers   : customers, divisions: divisions, series: series,
+                                                     priorityList:priorityList,saleBillDetail:saleBillDetail])
+    }
+
 }
