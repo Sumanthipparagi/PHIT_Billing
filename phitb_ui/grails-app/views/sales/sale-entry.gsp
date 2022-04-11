@@ -1428,7 +1428,6 @@
 
     $(document).ready(function () {
         $('.htCore tbody').hide();
-        $('.htBorders').text("Hello world!");
         setTimeout(function () {
             $('.htCore tbody').show()
         }, 5000);
