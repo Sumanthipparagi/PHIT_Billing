@@ -66,29 +66,6 @@
         margin-left: 200px;
     }
 
-    footer {
-        font-size: 9px;
-        color: #f00;
-        text-align: center;
-    }
-
-
-    @media print {
-        footer {
-            position: fixed;
-            bottom: 0;
-        }
-
-        .content-block, p {
-            page-break-inside: avoid;
-        }
-
-        html, body {
-            width: 210mm;
-            height: 297mm;
-        }
-    }
-
     </style>
 </head>
 
@@ -236,9 +213,7 @@
 
 
     </g:each>
-
     <tr>
-        <td class="hide"></td>
         <td class="hide"></td>
         <td class="hide"></td>
         <td class="hide"></td>

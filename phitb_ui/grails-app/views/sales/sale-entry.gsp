@@ -563,6 +563,11 @@
                                             alert("Entered quantity exceeds available quantity");
                                             return;
                                         }
+                                        else
+                                        {
+                                            hot.setDataAtCell(row,5,fQty)
+                                        }
+
                                     },
                                     error: function (data) {
                                     alert("Something went Wrong!")
