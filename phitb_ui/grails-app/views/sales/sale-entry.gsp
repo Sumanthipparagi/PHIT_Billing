@@ -1430,12 +1430,12 @@
 
 
     $(document).ready(function () {
-        $('.htCore tbody').hide();
-        $('.loadTable').show();
-        setTimeout(function () {
-            $('.htCore tbody').show();
+        // $('.htCore tbody').hide();
+        // $('.loadTable').show();
+        // setTimeout(function () {
+        //     $('.htCore tbody').show();
             $('.loadTable').remove();
-        }, 5000);
+        // }, 5000);
     });
 
 </script>

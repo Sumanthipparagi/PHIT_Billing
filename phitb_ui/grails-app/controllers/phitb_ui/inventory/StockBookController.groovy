@@ -323,7 +323,7 @@ class StockBookController {
             long saleFreeQty  = jsonArray[5]
 
 
-            if(saleQty<remainingQty)
+            if(saleQty<=remainingQty)
             {
                 remainingQty = remainingQty - saleQty
             }
@@ -333,7 +333,7 @@ class StockBookController {
                 remainingQty = 0
             }
 
-            if(saleFreeQty<remainingFreeQty)
+            if(saleFreeQty<=remainingFreeQty)
             {
                 remainingFreeQty = remainingFreeQty - saleFreeQty
             }
