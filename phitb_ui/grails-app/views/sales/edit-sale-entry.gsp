@@ -114,7 +114,7 @@
                             </div>
 
                             <div class="col-md-2">
-                                <label for="duedate">Due Date:${saleBillDetail.dueDate}</label>
+                                <label for="duedate">Due Date:</label>
                                 <input type="date" class="form-control date" name="duedate" id="duedate"/>
                             </div>
 
@@ -311,6 +311,8 @@
     $(document).ready(function () {
 
         $("#customerSelect").select2();
+        $("#customerSelect").val('${saleBillDetail.customerId}').trigger('change');
+
         $('#date').val(moment().format('YYYY-MM-DD'));
         $('#date').attr("readonly");
         <g:each in="${customers}" var="cs">
