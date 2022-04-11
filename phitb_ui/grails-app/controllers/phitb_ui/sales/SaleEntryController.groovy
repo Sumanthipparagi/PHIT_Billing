@@ -556,9 +556,14 @@ class SaleEntryController
         def series = new SeriesController().getByEntity(entityId)
         def saleBillId = params.saleBillId
         JSONObject saleBillDetail = new SalesService().getSaleBillDetailsById(saleBillId)
+        if (saleBillDetail != null)
+        {
+            JSONArray saleProductDetails = new SalesService().getSaleProductDetails(saleBillId)
+            render(view:'/sales/edit-sale-entry',model: [customers   : customers, divisions: divisions, series: series,
+                                                         priorityList:priorityList,saleBillDetail:saleBillDetail,
+                                                         saleProductDetails:saleProductDetails])
+        }
 
-        render(view:'/sales/edit-sale-entry',model: [customers   : customers, divisions: divisions, series: series,
-                                                     priorityList:priorityList,saleBillDetail:saleBillDetail])
     }
 
 }

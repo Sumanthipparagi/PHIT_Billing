@@ -150,6 +150,7 @@
     </tr>
 </table>
 <table style="width:1308px;table-layout: auto;" id="prodDetails" class="extended">
+    <thead>
     <tr class="">
         <th>Material HSN Code</th>
         <th>Material Description</th>
@@ -170,6 +171,7 @@
         <th>Amt/IGST%</th>
         <th>Net Amt</th>
     </tr>
+
     <%
         ArrayList<Double> cgst = new ArrayList<>()
         ArrayList<Double> sgst = new ArrayList<>()
@@ -384,7 +386,7 @@
             });
             array.push(arrayItem);
         });
-        var data = array.slice();
+        var data = array.slice(5);
         var pdetails="";
         for (var i = 0; i < data.length; i++)
         {
