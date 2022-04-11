@@ -152,6 +152,7 @@
                 <div class="card" style="margin-bottom:10px;">
                     <div class="body">
                         <div class="table-responsive">
+                            <p class="loadTable">sss</p>
                             <div id="saleTable" style="width:100%;"></div>
                         </div>
                     </div>
@@ -1428,11 +1429,12 @@
 
     $(document).ready(function () {
         $('.htCore tbody').hide();
+        $('.loadTable').text('Loading...')
         setTimeout(function () {
             $('.htCore tbody').show()
+            $('.loadTable').remove();
         }, 5000);
     });
-
 
 </script>
 <g:include view="controls/footer-content.gsp"/>
