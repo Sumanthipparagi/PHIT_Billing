@@ -547,8 +547,8 @@
 
                                             if(freeQtyEntry!==true)
                                             {
-                                                alert("Entered Free quantity exceeds available quantity");
                                                 hot.setDataAtCell(row, 5, 0);
+                                                alert("Entered Free quantity exceeds available quantity");
                                             }
                                         }
                                         if (!allowEntry) {
