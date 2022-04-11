@@ -432,7 +432,7 @@
                         //check if sqty is empty
                         var sqty = hot.getDataAtCell(row, 4);
                         var fqty = hot.getDataAtCell(row, 5);
-                        if (sqty && sqty > 0 && fqty && fqty > 0) {
+                        if (sqty && sqty > 0) {
                             var batchId = hot.getCellMeta(row, 2)?.batchId; //batch
                             var dt = hot.getDataAtRow(row);
                             dt.push(batchId);
@@ -890,7 +890,7 @@
         var userId = "${session.getAttribute("userId")}";
         $.ajax({
             type: "GET",
-            url: "tempstockbook/user/" + userId,
+            url: "/sale-product-details/sale-bill/" + ${saleBillDetail.id},
             dataType: 'json',
             success: function (data) {
 
@@ -956,8 +956,6 @@
             }
         })
     }
-
-
 
 
     function deleteTempStockRow(id, row) {

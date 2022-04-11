@@ -548,13 +548,13 @@
                                             if(freeQtyEntry!==true)
                                             {
                                                 alert("Entered Free quantity exceeds available quantity");
-                                                // hot.setDataAtCell(row, 5, 0);
+                                                hot.setDataAtCell(row, 5, 0);
                                             }
                                         }
                                         if (!allowEntry) {
                                             // this.getActiveEditor().TEXTAREA.value = "";
                                             hot.setDataAtCell(row, 4, 0);
-                                            hot.setDataAtCell(row, 5, 0);
+                                            // hot.setDataAtCell(row, 5, 0);
                                             hot.setDataAtCell(row, 10, 0);
                                             hot.setDataAtCell(row, 11, 0);
                                             hot.setDataAtCell(row, 12, 0);
