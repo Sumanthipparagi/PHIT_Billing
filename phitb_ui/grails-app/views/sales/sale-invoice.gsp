@@ -1,4 +1,5 @@
 <%@ page import="phitb_ui.SalesService; java.text.SimpleDateFormat" contentType="text/html;charset=UTF-8" %>
+<!DOCTYPE html>
 <html>
 <head>
     <title>Sale Invoice</title>
@@ -17,30 +18,29 @@
         border-collapse: collapse;
         border: 1px solid black;
         font-family: Roboto, Sans-Serif, serif;
-        font-size: 9pt;
+        font-size: 7pt;
+        page-break-before: always;
     }
+
+
 
     th, td {
         text-align: left;
-        padding: 5px;
+        padding: 1.5px;
         border: 1px solid black;
         /*word-break: break-word;*/
         vertical-align: top;
     }
 
-    ul {
-        list-style: none;
-        display: table;
+    thead {
+        /*display: block;*/
+        width: 450px;
+        /*overflow: auto;*/
+        /*color: #fff;*/
+        /*background: #000;*/
     }
 
-    li {
-        display: table-row;
-    }
 
-    .tab {
-        display: table-cell;
-        padding-right: 1em;
-    }
 
     body {
         font-size: 9pt;
@@ -54,46 +54,120 @@
 
     @media print {
         .print {
-            margin-left: 208px !important;
+            margin-left: 165px !important;
+            /*white-space:nowrap;*/
         }
 
         .signatory {
             margin-right: 10px !important;
         }
+
+        ul {
+            list-style: none;
+            display: table;
+        }
+
+        li {
+            display: table-row;
+        }
+
+        .tab {
+            display: table-cell;
+            padding-right: 1em;
+        }
+
     }
 
+    ul {
+        list-style: none;
+        display: table;
+    }
+
+    li {
+        display: table-row;
+    }
     .print {
         margin-left: 200px;
     }
 
+    /*thead{*/
+    /*    display:table-header-group;!*repeat table headers on each page*!*/
+    /*}*/
+    .page-number{
+        content: counter(page)
+    }
     </style>
 </head>
 
 <body>
 
-<table style="width:1308px;table-layout: auto;"  id="userDetails">
+%{--<table style="table-layout: auto;"  id="userDetails">--}%
+%{--    <thead>--}%
+%{--    <tr>--}%
+%{--        <td style="width: 25%;vertical-align:top;">--}%
+%{--            <ul>--}%
+%{--                <li><b class="tab">Location</b>: ${city.name}</li>--}%
+%{--                <li><b class="tab">Phone</b>: ${entity.phoneNumber}</li>--}%
+%{--                <li><b class="tab">GST No</b>: ${entity.gstn}</li>--}%
+%{--                <li><b class="tab">FAX No</b>: ${entity.faxNumber}</li>--}%
+%{--                <li><b class="tab">DL No1</b>: ${entity.drugLicence1}</li>--}%
+%{--                <li><b class="tab">DL No2</b>: ${entity.drugLicence2}</li>--}%
+%{--                <li><b class="tab">Food Lic. No.</b>:  ${entity.foodLicence1}</li>--}%
+%{--            </ul>--}%
+%{--        </td>--}%
+%{--        <td style="width: 25%;vertical-align:top;">--}%
+%{--            <ul>--}%
+%{--                <li><b class="tab">DELIVERY AT</b>:&nbsp;${custcity.name}</li>--}%
+%{--                <li><b class="tab">GST NO</b>: ${customer.gstn}</li>--}%
+%{--                <li><b class="tab">PAN</b>: ${customer.pan}</li>--}%
+%{--                <li><b class="tab">DL No1</b>: ${customer.drugLicence1}</li>--}%
+%{--                <li><b class="tab">DL No2</b>: ${customer.drugLicence2}</li>--}%
+%{--                <li><b class="tab">STATE NAME</b>: ${custcity.state.name}</li>--}%
+%{--                <li><b class="tab">Goods Through</b>:</li>--}%
+%{--                <li><b class="tab">Place of Supply</b>: &nbsp;${custcity.name}</li>--}%
+%{--                <li><b class="tab">State Code</b>: </li>--}%
+%{--            </ul>--}%
+%{--        </td>--}%
+%{--        <td style="width: 25%;vertical-align:top;">--}%
+%{--            <ul>--}%
+%{--                <li><b class="tab">DELIVERY AT</b>:&nbsp;${custcity.name}</li>--}%
+%{--                <li><b class="tab">GST NO</b>: ${customer.gstn}</li>--}%
+%{--                <li><b class="tab">PAN</b>: ${customer.pan}</li>--}%
+%{--                <li><b class="tab">DL No1</b>: ${customer.drugLicence1}</li>--}%
+%{--                <li><b class="tab">DL No2</b>: ${customer.drugLicence2}</li>--}%
+%{--                <li><b class="tab">STATE NAME</b>: ${custcity.state.name}</li>--}%
+%{--                <li><b class="tab">Goods Through</b>:</li>--}%
+%{--                <li><b class="tab">Place of Supply</b>:  &nbsp;${custcity.name}</li>--}%
+%{--                <li><b class="tab">State Code</b>: </li>--}%
+%{--            </ul>--}%
+%{--        </td>--}%
+%{--        <td style="width: 25%;vertical-align:top;">--}%
+%{--            <div class="qrCode" ></div>--}%
+%{--        </td>--}%
+%{--    </tr>--}%
+%{--    </thead>--}%
+%{--</table>--}%
+<table  id="prodDetails" class="extended">
     <thead>
     <tr>
-
-        <td style="width: 25%;vertical-align:top;">
+        <td colspan="4" style="vertical-align:top;">
             %{--            <img width="109" height="43"--}%
             %{--                                                        src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAG0AAAArCAMAAABFJ/YVAAAAD1BMVEUAIgAFKwAIKQAJLgD///9auxmhAAAAAWJLR0QAiAUdSAAAAAlwSFlzAAAOxAAADsQBlSsOGwAAAZFJREFUWIXtlttywyAMRN1Z/f83t1N0WYHwJTFuH8IkwlZknwjEwiatAfJA2wz2CO5D+9D+Iw3e/oo2QYNshNavLtwT2izRW2nYibxMK1pPw+00/rWjHVXKrTSJ7DQQom69aZdunIbO314E/zbT0yw40WyModWjf2yo4Wys836kYaRxD3KF0fv6lp4fVoAOpd6MNDlBkwu0Nj7v0dgc0WgYC1p8wDQtDbHeQ2ieB1WmRYCSFjnHKHS14TQwzWvyEi1XT8xS1H3QUlyjddN1QOtG2In0jBTPN09Pk5dobiiipqGjCVcJLtBkTkNJg88MaQZXBdNIB1BrSaxa15JMo4uAR5Gn0dqhuU4mmqR5G9Tv7rYhFqatwsU0m8RQ5fU03d4Wwn5psYU9QUvbzUrYD83WgmdYNj4WIHk46BTtYkH6RiC24vJCqyVUabG/yTQ1MXkg0cs410N3fdW5yRmYZpUtaYILLEx2ipdtSUrmNEQP8kxyi9kdabS17af2dtvoVLIc1lT5KVg6cy2HtTPXQyyRb24URU7+XmydAAAAAElFTkSuQmCC"/>--}%
             %{--            <br><br>--}%
             <b>${entity.entityName}</b><br>
             <sub>${entity.addressLine1}<br>${entity.addressLine2}</sub>
         </td>
-        <td style="width: 16%;vertical-align:top;"><b>Bill to Address :(${customer.id})</b><br>
+        <td colspan="5" style="vertical-align:top;"><b>Bill to Address :(${customer.id})</b><br>
             <b>${customer.entityName}</b><br>
-            <sub>${customer.addressLine1}<br>${customer.addressLine2}
+            <sub>${customer.addressLine1}${customer.addressLine2}
             </sub>
         </td>
-        <td style="width: 16%;vertical-align:top;"><b>Ship to Address :(${customer.id})</b><br>
+        <td colspan="5" style="vertical-align:top;"><b>Ship to Address :(${customer.id})</b><br>
             <b>${customer.entityName}</b><br>
-            <sub>${customer.addressLine1}<br>${customer.addressLine2}
+            <sub>${customer.addressLine1}${customer.addressLine2}
             </sub>
         </td>
-
-        <td style="width: 25%;vertical-align:top;">
+        <td colspan="4" style="vertical-align:top;">
             <strong>TAX INVOICE</strong>
             <ul style="margin: 0;">
 
@@ -107,7 +181,7 @@
         </td>
     </tr>
     <tr>
-        <td style="width: 25%;vertical-align:top;">
+        <td colspan="4" style="vertical-align:top;">
             <ul>
                 <li><b class="tab">Location</b>: ${city.name}</li>
                 <li><b class="tab">Phone</b>: ${entity.phoneNumber}</li>
@@ -118,7 +192,7 @@
                 <li><b class="tab">Food Lic. No.</b>:  ${entity.foodLicence1}</li>
             </ul>
         </td>
-        <td style="width: 25%;vertical-align:top;">
+        <td colspan="5" style="vertical-align:top;">
             <ul>
                 <li><b class="tab">DELIVERY AT</b>:&nbsp;${custcity.name}</li>
                 <li><b class="tab">GST NO</b>: ${customer.gstn}</li>
@@ -130,8 +204,9 @@
                 <li><b class="tab">Place of Supply</b>: &nbsp;${custcity.name}</li>
                 <li><b class="tab">State Code</b>: </li>
             </ul>
+
         </td>
-        <td style="width: 25%;vertical-align:top;">
+        <td colspan="5" style="vertical-align:top;">
             <ul>
                 <li><b class="tab">DELIVERY AT</b>:&nbsp;${custcity.name}</li>
                 <li><b class="tab">GST NO</b>: ${customer.gstn}</li>
@@ -144,15 +219,12 @@
                 <li><b class="tab">State Code</b>: </li>
             </ul>
         </td>
-        <td style="width: 25%;vertical-align:top;">
+        <td colspan="4" style="vertical-align:top;" >
             <div class="qrCode" ></div>
         </td>
     </tr>
-    </thead>
-</table>
-<table style="width:1308px;table-layout: auto;" id="prodDetails" class="extended">
-    <thead>
-    <tr class="">
+
+    <tr>
         <th>Sl.No</th>
         <th>Material HSN Code</th>
         <th>Material Description</th>
@@ -173,14 +245,15 @@
         <th>Amt/IGST%</th>
         <th>Net Amt</th>
     </tr>
+
     </thead>
     <%
         ArrayList<Double> cgst = new ArrayList<>()
         ArrayList<Double> sgst = new ArrayList<>()
         ArrayList<Double> igst = new ArrayList<>()
     %>
+    <tbody style="padding: 5px!important;">
     <g:each var="sp" in="${saleProductDetails}" status="i">
-%{--        <g:if test="${i <= 2}">--}%
         <tr>
             <td>${i+1}</td>
             <td>${sp.productId.hsnCode}</td>
@@ -213,7 +286,9 @@
 
 
     </g:each>
+
     <tr>
+        <td class="hide"></td>
         <td class="hide"></td>
         <td class="hide"></td>
         <td class="hide"></td>
@@ -232,7 +307,11 @@
         <td>${String.format("%.2f", totaligst)}</td>
         <td>${String.format("%.2f", total)}</td>
     </tr>
+    </tbody>
 </table>
+
+%{--<div id="breakPage" style="page-break-after: avoid;"></div>--}%
+
 
 <div class="container" style="display: flex; ">
     %{--    height:200px--}%
@@ -246,7 +325,7 @@
     </div>
 
     <div style="float: right;">
-        <table class="print" style="margin-top: 10px;margin-right:10px;width: 78%;">
+        <table class="print" style="margin-top: 10px;margin-left:78px;margin-right:10px;width: 78%;">
             <tr>
                 <th>Total</th>
                 <td>0.00</td>
@@ -316,8 +395,8 @@
 
 <p style="float: left;margin-right: 24px;"><b>Printed On:</b><span id="date"></span></p>
 
+<div class="page-number"></div>
 
-<div id="breakPage"></div>
 <br>
 <br>
 <div id="breakPageContent"></div>
@@ -341,7 +420,8 @@
         %{--});--}%
 
 
-        var d = new Date().toLocaleDateString() + " " +  new Date().toLocaleTimeString();
+        window.print();
+        var d = moment(new Date()).format('DD/MM/YYYY') + " " +  new Date().toLocaleTimeString();
         document.getElementById("date").innerHTML = d;
         var invDate = new Date('${saleBillDetail.entryDate}');
         $("#invDate").text(moment(invDate).format('DD-MM-YYYY'));
@@ -362,6 +442,7 @@
         var netInvAmt = parseFloat(totalGst) + netAmount;
         $("#netInvAmt").text(netInvAmt.toFixed(2));
         $("#netPayAmt").text(netInvAmt.toFixed(2));
+
 
         //
         // var rowCount = $('.extended tr').length;

@@ -336,7 +336,6 @@ class SaleEntryController
                 def apiResponse = new SalesService().getRequestWithId(it.productId.toString(), new Links().PRODUCT_REGISTER_SHOW)
                 it.put("productId", JSON.parse(apiResponse.readEntity(String.class)) as JSONObject)
             }
-            println(saleProductDetails)
             def totalcgst = UtilsService.round(saleProductDetails.cgstAmount.sum(), 2)
             def totalsgst = UtilsService.round(saleProductDetails.sgstAmount.sum(), 2)
             def totaligst = UtilsService.round(saleProductDetails.igstAmount.sum(), 2)
