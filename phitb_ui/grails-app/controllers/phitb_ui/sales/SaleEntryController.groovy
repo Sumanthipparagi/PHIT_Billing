@@ -811,6 +811,8 @@ class SaleEntryController
     {
         SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy")
         JSONObject saleBillDetails = new JSONObject()
+        JSONArray saleProductDetails = new JSONArray()
+
         String entityId = session.getAttribute("entityId").toString()
         String customerId = params.customer
         String priorityId = params.priority
@@ -819,7 +821,24 @@ class SaleEntryController
         String billStatus = params.billStatus
         String seriesCode = params.seriesCode
         String message = "NA"
+        long finId = 0
+        long serBillId = 0
+        String financialYear = session.getAttribute("financialYear")
         def series = new EntityService().getSeriesById(seriesId)
+        if (!billStatus.equalsIgnoreCase("DRAFT"))
+        {
+            def recentSaleBill = new SalesService().getRecentSaleBill(financialYear, entityId, billStatus)
+            if (recentSaleBill != null)
+            {
+                finId = Long.parseLong(recentSaleBill.get("finId").toString()) + 1
+                serBillId = Long.parseLong(recentSaleBill.get("serBillId").toString()) + 1
+            }
+            else
+            {
+                finId = 1
+                serBillId = Long.parseLong(series.get("saleId").toString())
+            }
+        }
         long totalSqty = 0
         long totalFqty = 0
         double totalAmount = 0.00
@@ -862,10 +881,10 @@ class SaleEntryController
         String orderDate = sdf.format(new Date())
         //update to sale bill details
         saleBillDetails.put("id",params.id)
-        saleBillDetails.put("serBillId", 0)
+        saleBillDetails.put("serBillId", serBillId)
         saleBillDetails.put("customerId", customerId)
         saleBillDetails.put("customerNumber", 0) //TODO: to be changed
-        saleBillDetails.put("finId", 0)
+        saleBillDetails.put("finId", finId)
         saleBillDetails.put("seriesId", seriesId)
         saleBillDetails.put("priorityId", priorityId)
         saleBillDetails.put("financialYear", session.getAttribute('financialYear'))
@@ -913,6 +932,7 @@ class SaleEntryController
         if (response.status == 200)
         {
             def saleBillDetail = new JSONObject(response.readEntity(String.class))
+//            //save to sale product details
             JSONObject responseJson = new JSONObject()
             responseJson.put("series", series)
             responseJson.put("saleBillDetail", saleBillDetail)
