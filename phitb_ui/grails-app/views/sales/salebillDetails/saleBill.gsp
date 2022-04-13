@@ -21,7 +21,7 @@
     <asset:stylesheet
             src="/themeassets/plugins/bootstrap-material-datetimepicker/css/bootstrap-material-datetimepicker.css"
             rel="stylesheet"/>
-
+    <asset:stylesheet src="/themeassets/fonts/font-awesome/css/font-awesome.css" rel="stylesheet"/>
     <style>
 
     table.dataTable tbody td {
@@ -107,6 +107,7 @@
                             <table class="table table-bordered table-striped table-hover saleInvoiceTable dataTable js-exportable">
                                 <thead>
                                 <tr>
+                                    <th>-</th>
                                     <th>Customer</th>
                                     <th>Invoice No.</th>
                                     <th>Financial Year</th>
@@ -114,10 +115,8 @@
                                     <th>Net Amt</th>
                                     <th>Gross Amt</th>
                                     <th>City</th>
-                                    <th>Invoice Total</th>
                                     <th>Bill Status</th>
                                     <th>Balance</th>
-                                    <th>Action</th>
                                 </tr>
                                 </thead>
                                 <tbody>
@@ -201,11 +200,15 @@
                 {
                     'extend': 'excel',
                     exportOptions: { columns: ':visible:not(:last-child)' }
+                },
+                {
+                    'extend': 'pdf',
+                    exportOptions: { columns: ':visible:not(:last-child)' }
+                },
+                {
+                    'extend': 'print',
+                    exportOptions: { columns: ':visible:not(:last-child)' }
                 }
-                // {
-                //     'extend': 'pdf',
-                //     exportOptions: { columns: ':visible:not(:last-child)' }
-                // },
             ],
             language: {
                 searchPlaceholder: "Search Sale Bill"
@@ -226,7 +229,7 @@
                         var cancelInvoice = "";
                         var editInvoice = "";
                         if (json.data[i].billStatus !== "CANCELLED") {
-                            cancelInvoice = '<a class="btn btn-sm btn-info" onclick="cancelBill(' + json.data[i].id +')" href="#">Cancel</a>';
+                            cancelInvoice = '<a class="btn btn-sm btn-info" title="Cancel" onclick="cancelBill(' + json.data[i].id +')" href="#"><i class="fa fa-times"></i></a>';
                         }
                         else if(json.data[i].billStatus!== "DRAFT")
                         {
@@ -241,28 +244,28 @@
                         if(json.data[i].billStatus=== "DRAFT")
                         {
                             editInvoice = '<a class="btn btn-sm btn-warning"  href="/edit-sale-entry?saleBillId=' +
-                                json.data[i].id + '">Edit</a>';
+                                json.data[i].id + '"><i class="fa fa-edit"></i></a>';
                         }
                         return_data.push({
                             // 'id': json.data[i].id,
+                            'action': cancelInvoice + " " + approveInvoice + " " + printbtn+" "+editInvoice,
                             'customer': json.data[i].customer.entityName,
                             'invNo': invoiceNumber,
                             'finYear': json.data[i].financialYear,
-                            'gstAmt': json.data[i].totalGst,
-                            'netAmt': json.data[i].invoiceTotal.toFixed(2) - json.data[i].totalGst,
-                            'grossAmt': json.data[i].grossAmount,
+                            'gstAmt': json.data[i].totalGst.toFixed(2),
+                            'netAmt': json.data[i].invoiceTotal.toFixed(2) - json.data[i].totalGst.toFixed(2),
+                            'grossAmt': json.data[i].grossAmount.toFixed(2),
                             'city': json.city[i].cityId.name,
-                            'inv': json.data[i].invoiceTotal.toFixed(2),
                             'bill_status': json.data[i].billStatus,
-                            'balance': json.data[i].balance.toFixed(2),
-                            'action': cancelInvoice + " " + approveInvoice + " " + printbtn+" "+editInvoice
+                            'balance': json.data[i].balance.toFixed(2)
+
                         });
                     }
                     return return_data;
                 }
             },
             columns: [
-                // {'data': 'id', 'width': '20%'},
+                {'data': 'action', 'width': '10%'},
                 {'data': 'customer', 'width': '5%'},
                 {'data': 'invNo', 'width': '10%'},
                 {'data': 'finYear', 'width': '10%'},
@@ -270,10 +273,8 @@
                 {'data': 'netAmt', 'width': '10%'},
                 {'data': 'grossAmt', 'width': '10%'},
                 {'data': 'city', 'width': '10%'},
-                {'data': 'inv', 'width': '10%'},
                 {'data': 'bill_status', 'width': '5%'},
-                {'data': 'balance', 'width': '5%'},
-                {'data': 'action', 'width': '10%'}
+                {'data': 'balance', 'width': '5%'}
             ]
         });
     }
