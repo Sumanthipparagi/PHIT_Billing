@@ -521,8 +521,8 @@
                         '" class="btn-sm btn-primary" id="settled"><-</button></td><td>' + invoice +
                         '</td><td>' + value.financialYear +
                         '</td><td>' + moment(value.dateCreated).format('DD-MM-YYYY') +
-                        '</td><td>' + value.balance +
-                        '</td></tr>';
+                        '</td><td><input type="number" value="' + value.balance +
+                        '"></td></tr>';
                 });
 
                 $.each(data[1], function (key, value) {
@@ -533,8 +533,8 @@
                         '" class="btn-sm btn-primary" id="cnsettled"><-</button></td><td>' + cred +
                         '</td><td>' + value.financialYear +
                         '</td><td>' + moment(date).format('DD-MM-YYYY') +
-                        '</td><td>' + "-"+value.totalAmount +
-                        '</td></tr>';
+                        '</td><td><input type="number" value="' + "-"+value.totalAmount +
+                        '"></td></tr>';
                 });
                 $('.unsettledVocher').html(trHTML+trHTML1);
             },

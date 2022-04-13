@@ -17,8 +17,7 @@ class PaymentDetailController {
         ArrayList<String> accountMode = new AccountModeController().show() as ArrayList
         ArrayList<String> wallet = new WalletController().show() as ArrayList
         ArrayList<String> saleinvoice = new SalebillDetailsController().show() as ArrayList
-        render(view: "/accounts/recipt/payments", model: [entity: entity, bank: bank, accountMode: accountMode,
-                                                                 wallet: wallet, saleinvoice: saleinvoice])
+        render(view: "/accounts/recipt/payments", model: [entity: entity, bank: bank, accountMode: accountMode, wallet: wallet, saleinvoice: saleinvoice])
     }
 
 //    def addRecipt()
