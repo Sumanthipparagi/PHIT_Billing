@@ -820,7 +820,7 @@
             url: "tempstockbook/user/" + userId,
             dataType: 'json',
             success: function (data) {
-
+                console.log(data)
                 saleData = data;
                 for (var i = 0; i < saleData.length; i++) {
                     hot.selectCell(i, 1);
@@ -844,7 +844,6 @@
                     sgst = saleData[i]["sgst"];
                     cgst = saleData[i]["cgst"];
                     igst = saleData[i]["igst"];
-
                     // var discount = hot.getDataAtCell(i, 8);
                     var discount = 0; //TODO: discount to be set
                     var priceBeforeGst = (sRate * sQty) - ((sRate * sQty) * discount) / 100;

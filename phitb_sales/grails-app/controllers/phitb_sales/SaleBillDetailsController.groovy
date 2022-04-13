@@ -27,7 +27,7 @@ class SaleBillDetailsController
 
         try
         {
-            respond saleBillDetailsService.getAll(params.limit, params.offset, params.query)
+            respond saleBillDetailsService.getAll()
         }
         catch (Exception ex)
         {

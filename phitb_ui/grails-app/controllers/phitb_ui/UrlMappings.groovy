@@ -402,9 +402,11 @@ class UrlMappings {
             action = [GET: "index", POST: 'saveSaleEntry']
         }
         "/edit-sale-entry"(controller: "saleEntry") {
-            action = [GET: "editSaleBillDetails", POST: 'updateSaleBillDetails']
+            action = [GET: "editSaleBillDetails", POST: 'updateSaleProductDetails']
         }
+        "/sale-product-details/sale-bill"(controller: 'saleEntry', action: 'getSaleProductDetailsByBill')
 
+        "/sale-product-details/delete"(controller: 'saleEntry', action: 'deleteSaleProduct')
 
         "/sale-entry/print-invoice"(controller: "saleEntry", action: "printSaleInvoice")
         "/sale-entry/update/$id"(controller:"batchRegister",action:"update")

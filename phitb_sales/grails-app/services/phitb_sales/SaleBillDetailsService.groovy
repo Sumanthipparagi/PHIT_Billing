@@ -24,18 +24,17 @@ class SaleBillDetailsService
 
     SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy")
 
-    def getAll(String limit, String offset, String query)
+    def getAll(String query)
     {
-        Integer o = offset ? Integer.parseInt(offset.toString()) : 0
-        Integer l = limit ? Integer.parseInt(limit.toString()) : 100
+//        Integer o = offset ? Integer.parseInt(offset.toString()) : 0
+//        Integer l = limit ? Integer.parseInt(limit.toString()) : 100
         if (!query)
         {
-            return SaleBillDetails.findAll([sort: 'id', max: l, offset: o, order: 'desc'])
+            return SaleBillDetails.findAll()
         }
         else
         {
-            return SaleBillDetails.findAllByFinancialYearIlike("%" + query + "%", [sort: 'id', max: l, offset: o, order:
-                    'desc'])
+            return SaleBillDetails.findAllByFinancialYearIlike("%" + query + "%")
         }
     }
 

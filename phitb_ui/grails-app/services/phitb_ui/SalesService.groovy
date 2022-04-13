@@ -195,8 +195,10 @@ class SalesService
             System.err.println('Service :saveStateMaster , action :  save  , Ex:' + ex)
             log.error('Service :saveStateMaster , action :  save  , Ex:' + ex)
         }
-
     }
+
+
+
 
     def getRecentSaleBill(String financialYear, String entityId, String billStatus)
     {
@@ -265,7 +267,7 @@ class SalesService
         try
         {
             Response apiResponse = target
-                    .path(new Links().SALE_PRODUCT_OF_BILL + "/" + id)
+                    .path(new Links().SALE_PRODUCT_OF_BILL+"/"+id)
                     .request(MediaType.APPLICATION_JSON_TYPE)
                     .get()
             if (apiResponse.status == 200)
@@ -664,5 +666,24 @@ class SalesService
             System.err.println('Service :SalesService , action :  cancelInvoice  , Ex:' + ex)
             log.error('Service :SalesService , action :  cancelInvoice  , Ex:' + ex)
         }
+    }
+
+    def deleteSaleProduct(String id) {
+        Client client = ClientBuilder.newClient();
+        WebTarget target = client.target(new Links().API_GATEWAY);
+
+        try {
+            Response apiResponse = target
+                    .path(new Links().SALE_PRODUCT_DELETE)
+                    .resolveTemplate("id",id)
+                    .request(MediaType.APPLICATION_JSON_TYPE)
+                    .delete()
+            return apiResponse
+        }
+        catch (Exception ex) {
+            System.err.println('Service :InventoryService , action :  getTempStocks  , Ex:' + ex)
+            log.error('Service :InventoryService , action :  getTempStocks  , Ex:' + ex)
+        }
+
     }
 }

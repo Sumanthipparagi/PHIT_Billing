@@ -12,6 +12,7 @@ import phitb_ui.UtilsService
 import phitb_ui.entity.EntityRegisterController
 import phitb_ui.entity.SeriesController
 import phitb_ui.ProductService
+import phitb_ui.entity.TaxController
 
 import javax.ws.rs.core.Response
 import java.text.SimpleDateFormat
@@ -399,6 +400,10 @@ class SaleEntryController
         }
     }
 
+
+
+
+
     def show()
     {
         try
@@ -564,6 +569,96 @@ class SaleEntryController
                                                          saleProductDetails:saleProductDetails])
         }
 
+    }
+
+
+    def getSaleProductDetailsByBill()
+    {
+       try
+       {
+           if(params.id)
+           {
+               JSONArray saleProductDetails = new SalesService().getSaleProductDetails(params.id)
+               def saleBillResponse = new SalesService().getSaleBillDetailsById(params.id.toString())
+               saleProductDetails.each {
+                   def stockResponse = new InventoryService().getStocksOfProductAndBatch(it.productId.toString(),
+                           it.batchNumber.toString(),session.getAttribute('entityId').toString())
+                   if(it.batchNumber == stockResponse.batchNumber)
+                   {
+                       def tax = new TaxController().show(stockResponse.taxId.toString())
+                       it.put("gst", tax.taxValue)
+                       it.put("sgst", tax.salesSgst)
+                       it.put("cgst", tax.salesCgst)
+                       it.put("igst", tax.salesIgst)
+                   }
+                   it.put("billId",saleBillResponse as JSONObject)
+                   def apiResponse = new SalesService().getRequestWithId(it.productId.toString(), new Links().PRODUCT_REGISTER_SHOW)
+                   it.put("productId", JSON.parse(apiResponse.readEntity(String.class)) as JSONObject)
+               }
+               respond saleProductDetails,formats: ['json'],status: 200;
+           }
+           else
+           {
+               return [];
+           }
+       }
+
+        catch (Exception ex)
+        {
+            System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
+            response.status = 404
+        }
+    }
+
+
+
+    def updateSaleProductDetails()
+    {
+        try
+        {
+            JSONArray jsonArray = new JSONArray(params.rowData)
+            Boolean isEdit = false
+            int i = 0
+            for (Object obj : jsonArray) {
+                //15 if edit, 16 if being added
+                if(i == 15 && obj != null)
+                    isEdit = true
+/*                else if(i == 16 && obj != null)
+                    isEdit = false*/
+                i++
+            }
+            def saleProduct = null
+            if(!isEdit)
+                saleProduct = new InventoryService().getStockBookById(jsonArray[20])
+            else {
+                def tmpStockBook = new InventoryService().getTempStocksById(jsonArray[15])
+                saleProduct = new InventoryService().getStockBookById(Long.parseLong(tmpStockBook.originalId))
+            }
+
+        }
+        catch (Exception ex)
+        {
+            System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
+            log.error('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
+            response.status = 400
+        }
+    }
+
+
+
+    def deleteSaleProduct()
+    {
+        try
+        {
+            def id = params.id
+            def apiResponse = new SalesService().deleteSaleProduct(id)
+            respond(text: id, status: apiResponse.status)
+        }
+        catch (Exception ex)
+        {
+            System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
+            response.status = 404
+        }
     }
 
 }

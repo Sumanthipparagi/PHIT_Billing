@@ -83,6 +83,11 @@
         display: table;
     }
 
+    .tab {
+        display: table-cell;
+        padding-right: 1em;
+    }
+
     li {
         display: table-row;
     }
@@ -287,6 +292,7 @@
 
     </g:each>
 
+
     <tr>
         <td class="hide"></td>
         <td class="hide"></td>
@@ -418,7 +424,6 @@
         %{--    colorLight : '#fff',--}%
         %{--    correctLevel : QRCode.CorrectLevel.H--}%
         %{--});--}%
-
 
         window.print();
         var d = moment(new Date()).format('DD/MM/YYYY') + " " +  new Date().toLocaleTimeString();

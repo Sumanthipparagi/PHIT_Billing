@@ -70,7 +70,6 @@
                     <div class="header" style="padding: 1px;">
 
                     </div>
-                    ${saleProductDetails}
                     <div class="body">
                         <div class="row">
                             <div class="col-md-2">
@@ -312,6 +311,7 @@
 
         $("#customerSelect").select2();
         $("#customerSelect").val('${saleBillDetail.customerId}').trigger('change');
+        $("#series").val('${saleBillDetail.seriesId}').trigger('change');
 
         $('#date').val(moment().format('YYYY-MM-DD'));
         $('#date').attr("readonly");
@@ -385,7 +385,7 @@
             afterOnCellMouseDown: function (e, coords, TD) {
                 if (coords.col === 0) {
                     var id = hot.getDataAtCell(coords.row, 15);
-                    deleteTempStockRow(id, coords.row);
+                    deleteSaleBillRow(id, coords.row);
                     calculateTotalAmt();
                 }
             },
@@ -437,7 +437,7 @@
                             var dt = hot.getDataAtRow(row);
                             dt.push(batchId);
                             var json = JSON.stringify(dt);
-                            var url = '/tempstockbook';
+                            var url = '/edit-sale-entry';
                             var type = 'POST';
                             $.ajax({
                                 type: type,
@@ -890,40 +890,37 @@
         var userId = "${session.getAttribute("userId")}";
         $.ajax({
             type: "GET",
-            url: "/sale-product-details/sale-bill/" + ${saleBillDetail.id},
+            url: "/sale-product-details/sale-bill?id="+${saleBillDetail.id},
             dataType: 'json',
             success: function (data) {
-
                 saleData = data;
                 for (var i = 0; i < saleData.length; i++) {
                     hot.selectCell(i, 1);
-                    var sRate = saleData[i]["saleRate"];
-                    var sQty = saleData[i]["userOrderQty"];
-                    var fQty = saleData[i]["userOrderFreeQty"];
-                    batchSelection(saleData[i]["productId"], null, false);
+                    var sRate = saleData[i].sRate;
+                    var sQty = saleData[i].sqty;
+                    var fQty = saleData[i].freeQty;
+                    batchSelection(saleData[i].productId, null, false);
                     var batchId = saleData[i][12];
-                    hot.setDataAtCell(i, 1, saleData[i]["productId"]);
-                    hot.setDataAtCell(i, 2, saleData[i]["batchNumber"]);
+                    hot.setDataAtCell(i, 1, saleData[i].productId.id);
+                    hot.setDataAtCell(i, 2, saleData[i].batchNumber);
                     hot.setCellMeta(i, 2, "batchId", batchId);
-                    hot.setDataAtCell(i, 3, saleData[i]["expDate"].split("T")[0]);
-                    hot.setDataAtCell(i, 5, 0);
+                    hot.setDataAtCell(i, 3, saleData[i].expiryDate.split("T")[0]);
                     hot.setDataAtCell(i, 6, sRate);
                     hot.setDataAtCell(i, 4, sQty);
                     hot.setDataAtCell(i, 5, fQty);
-                    hot.setDataAtCell(i, 7, saleData[i]["mrp"]);
+                    hot.setDataAtCell(i, 7, saleData[i].mrp);
                     hot.setDataAtCell(i, 8, 0);
-                    hot.setDataAtCell(i, 9, saleData[i]["packingDesc"]);
-                    gst = saleData[i]["gst"];
-                    sgst = saleData[i]["sgst"];
-                    cgst = saleData[i]["cgst"];
-                    igst = saleData[i]["igst"];
-
+                    hot.setDataAtCell(i, 9, saleData[i].productId.unitPacking);
+                    gst =  saleData[i].gst;
+                    sgst = saleData[i].sgst;
+                    cgst = saleData[i].cgst;
+                    igst = saleData[i].igst;
+                    // alert(sgst)
                     // var discount = hot.getDataAtCell(i, 8);
                     var discount = 0; //TODO: discount to be set
                     var priceBeforeGst = (sRate * sQty) - ((sRate * sQty) * discount) / 100;
                     var finalPrice = priceBeforeGst + (priceBeforeGst * (gst / 100));
                     hot.setDataAtCell(i, 11, Number(finalPrice).toFixed(2));
-
                     if (gst !== 0) {
                         hot.setDataAtCell(i, 10, Number(priceBeforeGst * (gst / 100)).toFixed(2)); //GST
                         hot.setDataAtCell(i, 12, Number(priceBeforeGst * (sgst / 100)).toFixed(2)); //SGST
@@ -958,12 +955,12 @@
     }
 
 
-    function deleteTempStockRow(id, row) {
+    function deleteSaleBillRow(id, row) {
         if (!readOnly) {
             if (id) {
                 $.ajax({
                     type: "POST",
-                    url: "tempstockbook/delete/" + id,
+                    url: "/sale-product-details/delete?id="+id,
                     dataType: 'json',
                     success: function (data) {
                         hot.alter("remove_row", row);
@@ -1285,7 +1282,7 @@
                     if (result) {
                         const selection = hot.getSelected()[0];
                         var id = hot.getDataAtCell(selection, 15);
-                        deleteTempStockRow(id, selection);
+                        deleteSaleBillRow(id, selection);
                         calculateTotalAmt();
                     }
                 }
