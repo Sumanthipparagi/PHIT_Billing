@@ -156,6 +156,13 @@
 <asset:javascript src="/themeassets/plugins/momentjs/moment.js"/>
 <asset:javascript src="/themeassets/plugins/bootstrap-material-datetimepicker/js/bootstrap-material-datetimepicker.js"/>
 <asset:javascript src="/themeassets/js/pages/forms/basic-form-elements.js"/>
+<script type="text/javascript" src="https://cdn.datatables.net/buttons/1.4.1/js/dataTables.buttons.min.js"></script>
+<script type="text/javascript" src="https://cdn.datatables.net/buttons/1.4.1/js/buttons.flash.min.js"></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.32/pdfmake.min.js"></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.32/vfs_fonts.js"></script>
+<script type="text/javascript" src="https://cdn.datatables.net/buttons/1.4.1/js/buttons.html5.min.js"></script>
+<script type="text/javascript" src="https://cdn.datatables.net/buttons/1.4.1/js/buttons.print.min.js"></script>
 
 <script>
 
@@ -192,7 +199,11 @@
             // ],
             buttons: [
                 {
-                    'extend': 'csv',
+                    'extend': 'excel',
+                    exportOptions: { columns: ':visible:not(:last-child)' }
+                },
+                {
+                    'extend': 'pdf',
                     exportOptions: { columns: ':visible:not(:last-child)' }
                 },
             ],
@@ -309,9 +320,9 @@
         saleInvoiceTable();
     }
 
-    $(document).ready(function() {
-        $('.buttons-html5').text('Export');
-    });
+    // $(document).ready(function() {
+    //     $('.buttons-html5').text('Export');
+    // });
 </script>
 <g:include view="controls/footer-content.gsp"/>
 <script>
