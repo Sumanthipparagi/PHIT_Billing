@@ -95,6 +95,10 @@ class UrlMappings {
                 action = [GET: 'index', POST:
                         'save']
             }
+            "/draftsalebilldetails(.$format)?"(controller: 'saleBillDetails') {
+                action = [GET: 'getDraftBillById']
+            }
+
             "/salebilldetails/datatable(.$format)?"(controller: 'saleBillDetails') {action = [GET: 'dataTable']}
             "/salebilldetails/cancel(.$format)?"(controller: 'saleBillDetails') {action = [POST: 'cancelSaleBill']}
             "/salebilldetails/$id(.$format)?"(controller: 'saleBillDetails') {

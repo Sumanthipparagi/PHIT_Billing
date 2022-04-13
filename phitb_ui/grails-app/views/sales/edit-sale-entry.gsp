@@ -216,8 +216,9 @@
                             <button onclick="resetPage()" class="btn btn-danger">Reset</button>
                             <button id="saveDraftBtn" onclick="saveSaleInvoice('DRAFT')"
                                     class="btn btn-primary">Save Draft</button>
-                            <button id="saveBtn" onclick="saveSaleInvoice('ACTIVE')"
-                                    class="btn btn-primary">Save</button>
+
+%{--                            <button id="saveBtn" onclick="saveSaleInvoice('ACTIVE')"--}%
+%{--                                    class="btn btn-primary">Save</button>--}%
                             %{--<button onclick="printInvoice()" class="btn btn-secondary">Print</button>--}%
                         </div>
                     </div>
@@ -437,14 +438,15 @@
                             var dt = hot.getDataAtRow(row);
                             dt.push(batchId);
                             var json = JSON.stringify(dt);
-                            var url = '/edit-sale-entry';
+                            var url = '/edit-sale-products';
                             var type = 'POST';
                             $.ajax({
                                 type: type,
                                 url: url,
                                 dataType: 'json',
                                 data: {
-                                    rowData: json
+                                    rowData: json,
+                                    billId: '${params.saleBillId}'
                                 },
                                 success: function (data) {
                                     console.log("Data saved");
@@ -894,6 +896,7 @@
             dataType: 'json',
             success: function (data) {
                 saleData = data;
+                console.log(data)
                 for (var i = 0; i < saleData.length; i++) {
                     hot.selectCell(i, 1);
                     var sRate = saleData[i].sRate;
@@ -917,6 +920,7 @@
                     igst = saleData[i].igst;
                     // alert(sgst)
                     // var discount = hot.getDataAtCell(i, 8);
+                    // alert(saleData[i].id)
                     var discount = 0; //TODO: discount to be set
                     var priceBeforeGst = (sRate * sQty) - ((sRate * sQty) * discount) / 100;
                     var finalPrice = priceBeforeGst + (priceBeforeGst * (gst / 100));
@@ -934,7 +938,6 @@
                         hot.setDataAtCell(i, 14, Number(priceBeforeGst * (igst / 100)).toFixed(2)); //IGST
                     else
                         hot.setDataAtCell(i, 14, 0);
-
                     hot.setDataAtCell(i, 15, saleData[i].id);
                     hot.setDataAtCell(i, 16, gst);
                     hot.setDataAtCell(i, 17, sgst);
@@ -1014,7 +1017,7 @@
 
         $.ajax({
             type: "POST",
-            url: "sale-entry",
+            url: "/edit-sale-entry?id="+'${saleBillDetail.id}',
             dataType: 'json',
             data: {
                 saleData: saleData,
@@ -1062,7 +1065,6 @@
                         resetPage();
                     }
                 });
-
             },
             error: function () {
                 $("#saveBtn").prop("disabled", false);

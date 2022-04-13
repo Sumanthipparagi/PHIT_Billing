@@ -120,7 +120,6 @@ class StockBookService {
         stockBook.openingStockQty = Long.parseLong(jsonObject.get("openingStockQty").toString())
         stockBook.save(flush: true)
         if (!stockBook.hasErrors()) {
-
             StockActivity stockActivity = new StockActivity()
             stockActivity.productId = productId
             stockActivity.batch = batchNumber

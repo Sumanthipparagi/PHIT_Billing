@@ -41,6 +41,7 @@ class SalesService
 
     }
 
+
     def getAllSettledBillsByCustomer(String id,String entityId, String financialYear)
     {
         Client client = ClientBuilder.newClient();
@@ -98,6 +99,29 @@ class SalesService
                     .path(new Links().SALE_BILL_SAVE)
                     .request(MediaType.APPLICATION_JSON_TYPE)
                     .post(Entity.entity(jsonObject.toString(), MediaType.APPLICATION_JSON_TYPE))
+            println(apiResponse)
+            return apiResponse
+        }
+        catch (Exception ex)
+        {
+            System.err.println('Service :saveStateMaster , action :  save  , Ex:' + ex)
+            log.error('Service :saveStateMaster , action :  save  , Ex:' + ex)
+        }
+
+    }
+
+    def updateSaleBill(JSONObject jsonObject)
+    {
+        Client client = ClientBuilder.newClient();
+        WebTarget target = client.target(new Links().API_GATEWAY);
+        try
+        {
+            println(jsonObject)
+            Response apiResponse = target
+                    .path(new Links().SALE_BILL_UPDATE)
+                    .resolveTemplate("id",jsonObject.id)
+                    .request(MediaType.APPLICATION_JSON_TYPE)
+                    .put(Entity.entity(jsonObject.toString(), MediaType.APPLICATION_JSON_TYPE))
             println(apiResponse)
             return apiResponse
         }
@@ -198,6 +222,26 @@ class SalesService
     }
 
 
+    def updateSaleProductDetail(JSONObject jsonObject)
+    {
+        Client client = ClientBuilder.newClient();
+        WebTarget target = client.target(new Links().API_GATEWAY);
+        try
+        {
+            println(jsonObject)
+            Response apiResponse = target
+                    .path(new Links().SALE_PRODUCT_UPDATE)
+                    .resolveTemplate("id",jsonObject.id)
+                    .request(MediaType.APPLICATION_JSON_TYPE)
+                    .put(Entity.entity(jsonObject.toString(), MediaType.APPLICATION_JSON_TYPE))
+            return apiResponse
+        }
+        catch (Exception ex)
+        {
+            System.err.println('Service :saveStateMaster , action :  save  , Ex:' + ex)
+            log.error('Service :saveStateMaster , action :  save  , Ex:' + ex)
+        }
+    }
 
 
     def getRecentSaleBill(String financialYear, String entityId, String billStatus)
@@ -260,7 +304,35 @@ class SalesService
 
     }
 
-    def getSaleProductDetails(String id)
+    def getDraftSaleBillDetailsById(String id)
+    {
+        Client client = ClientBuilder.newClient();
+        WebTarget target = client.target(new Links().API_GATEWAY);
+        try
+        {
+            Response apiResponse = target
+                    .path(new Links().DRAFT_SALE_BILL_SHOW + "/" + id)
+                    .request(MediaType.APPLICATION_JSON_TYPE)
+                    .get()
+            if (apiResponse.status == 200)
+            {
+                JSONObject saleBillDetail = new JSONObject(apiResponse.readEntity(String.class))
+                return saleBillDetail
+            }
+            else
+            {
+                return null
+            }
+        }
+        catch (Exception ex)
+        {
+            System.err.println('Service :SalesService , action :  getDraftSaleBillDetailsById  , Ex:' + ex)
+            log.error('Service :SalesService , action :  getDraftSaleBillDetailsById  , Ex:' + ex)
+        }
+
+    }
+
+    def getSaleProductDetailsByBill(String id)
     {
         Client client = ClientBuilder.newClient();
         WebTarget target = client.target(new Links().API_GATEWAY);
@@ -273,6 +345,34 @@ class SalesService
             if (apiResponse.status == 200)
             {
                 JSONArray saleProductDetail = new JSONArray(apiResponse.readEntity(String.class))
+                return saleProductDetail
+            }
+            else
+            {
+                return null
+            }
+        }
+        catch (Exception ex)
+        {
+            System.err.println('Service :SalesService , action :  getProducts  , Ex:' + ex)
+            log.error('Service :SalesService , action :  getProducts  , Ex:' + ex)
+        }
+
+    }
+
+    def getSaleProductDetailsById(String id)
+    {
+        Client client = ClientBuilder.newClient();
+        WebTarget target = client.target(new Links().API_GATEWAY);
+        try
+        {
+            Response apiResponse = target
+                    .path(new Links().SALE_PRODUCT_SHOW+"/"+id)
+                    .request(MediaType.APPLICATION_JSON_TYPE)
+                    .get()
+            if (apiResponse.status == 200)
+            {
+                JSONObject saleProductDetail = new JSONObject(JSON.parse(apiResponse.readEntity(String.class)) as JSONObject)
                 return saleProductDetail
             }
             else
@@ -361,7 +461,6 @@ class SalesService
         }
 
     }
-
 
     /**
      * This methos is used for get data

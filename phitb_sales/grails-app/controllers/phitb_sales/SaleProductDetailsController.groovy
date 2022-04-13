@@ -48,7 +48,7 @@ class SaleProductDetailsController
             String id = params.id
             if (id)
             {
-                respond SaleProductDetailsService.get(id)
+                respond saleProductDetailsService.get(id)
             }
         }
         catch (ResourceNotFoundException ex)

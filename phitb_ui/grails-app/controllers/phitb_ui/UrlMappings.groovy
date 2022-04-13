@@ -402,7 +402,10 @@ class UrlMappings {
             action = [GET: "index", POST: 'saveSaleEntry']
         }
         "/edit-sale-entry"(controller: "saleEntry") {
-            action = [GET: "editSaleBillDetails", POST: 'updateSaleProductDetails']
+            action = [GET: "editSaleBillDetails", POST: 'updateSaleBillDetails']
+        }
+        "/edit-sale-products"(controller: 'saleEntry'){
+            action=[POST:'updateSaleProductDetails']
         }
         "/sale-product-details/sale-bill"(controller: 'saleEntry', action: 'getSaleProductDetailsByBill')
 
