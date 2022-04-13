@@ -244,6 +244,7 @@ class SalesService
     }
 
 
+
     def getRecentSaleBill(String financialYear, String entityId, String billStatus)
     {
         Client client = ClientBuilder.newClient();
