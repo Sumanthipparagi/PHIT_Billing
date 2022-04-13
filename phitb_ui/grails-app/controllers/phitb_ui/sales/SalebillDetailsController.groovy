@@ -1,8 +1,11 @@
 package phitb_ui.sales
 
 import com.google.gson.JsonObject
+import grails.converters.JSON
 import phitb_ui.EntityService
+import phitb_ui.Links
 import phitb_ui.ProductService
+import phitb_ui.SystemService
 import phitb_ui.entity.EntityRegisterController
 import phitb_ui.entity.SeriesController
 import phitb_ui.entity.UserRegisterController
@@ -174,11 +177,23 @@ class SalebillDetailsController {
                 {
                     JSONArray jsonArray = responseObject.data
                     JSONArray jsonArray2 = new JSONArray()
+                    JSONArray jsonArray3 = new JSONArray()
+                    JSONArray entityArray = new JSONArray()
+                    JSONArray cityArray = new JSONArray()
                     for (JSONObject json : jsonArray) {
                         json.put("customer", new EntityService().getEntityById(json.get("customerId").toString()))
                         jsonArray2.put(json)
                     }
+                    for(JSONObject json1 : jsonArray2)
+                    {
+                        entityArray.put(json1.get("customer"))
+                    }
+                    entityArray.each {
+                        def cityResp = new SystemService().getCityById(it.cityId.toString())
+                        it.put("cityId", cityResp)
+                    }
                     responseObject.put("data", jsonArray2)
+                    responseObject.put("city",entityArray)
                 }
                 respond responseObject, formats: ['json'], status: 200
             } else {

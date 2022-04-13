@@ -587,6 +587,9 @@ class SaleEntryController
                                                            priorityList      : priorityList, saleBillDetail: saleBillDetail,
                                                            saleProductDetails: saleProductDetails])
         }
+        else {
+            render('No bill found!!')
+        }
 
     }
 

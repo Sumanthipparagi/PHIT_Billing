@@ -218,6 +218,7 @@ class SaleBillDetailsService
     SaleBillDetails update(JSONObject jsonObject, String id)
     {
         SaleBillDetails saleBillDetails = SaleBillDetails.findById(Long.parseLong(id))
+        saleBillDetails.isUpdatable = true
         saleBillDetails.finId = Long.parseLong(jsonObject.get("finId").toString())
         saleBillDetails.serBillId = Long.parseLong(jsonObject.get("serBillId").toString())
         saleBillDetails.seriesId = Long.parseLong(jsonObject.get("seriesId").toString())
@@ -266,30 +267,6 @@ class SaleBillDetailsService
         saleBillDetails.save(flush: true)
         if (!saleBillDetails.hasErrors())
         {
-            Calendar cal = new GregorianCalendar()
-            cal.setTime(saleBillDetails.entryDate)
-            String month = cal.get(Calendar.MONTH)
-            String year = cal.get(Calendar.YEAR)
-            DecimalFormat mFormat = new DecimalFormat("00");
-            month = mFormat.format(Double.valueOf(month));
-            String invoiceNumber = null;
-            String seriesCode = jsonObject.get("seriesCode")
-            SaleBillDetails saleBillDetails1
-            if (saleBillDetails.billStatus == "DRAFT")
-            {
-//                invoiceNumber = saleBillDetails.entityId+"/DR/S/" + month + year + "/" + seriesCode + "/__";'
-                saleBillDetails.invoiceNumber = null
-            }
-            else
-            {
-                invoiceNumber = saleBillDetails.entityId + "/S/" + month + year + "/" + seriesCode + "/" + saleBillDetails.serBillId
-            }
-            if (invoiceNumber)
-            {
-                saleBillDetails.invoiceNumber = invoiceNumber
-                saleBillDetails.isUpdatable = true
-                saleBillDetails.save(flush: true)
-            }
             return saleBillDetails
         }
         else

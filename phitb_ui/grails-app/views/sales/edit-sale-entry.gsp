@@ -1042,7 +1042,8 @@
                 var year = datepart.split("-")[0];
                 var seriesCode = data.series.seriesCode;
                 var invoiceNumber = data.saleBillDetail.invoiceNumber;
-                $("#invNo").html("<p><strong>" + invoiceNumber + "</strong></p>");
+                $("#invNo").html("<p><strong>"+ data.saleBillDetail.entityId + "/DR/S/" + month + year + "/"
+                + seriesCode + "/</strong></p>");
                 var message = "";
                 if (billStatus !== "DRAFT") {
                     message = 'Sale Invoice Generated: ' + invoiceNumber;

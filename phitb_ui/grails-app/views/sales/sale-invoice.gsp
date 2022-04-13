@@ -35,6 +35,7 @@
     thead {
         /*display: block;*/
         width: 450px;
+        font-size: 7pt;
         /*overflow: auto;*/
         /*color: #fff;*/
         /*background: #000;*/
@@ -54,7 +55,7 @@
 
     @media print {
         .print {
-            margin-left: 165px !important;
+            margin-left: 110px !important;
             /*white-space:nowrap;*/
         }
 
@@ -75,7 +76,11 @@
             display: table-cell;
             padding-right: 1em;
         }
-
+        thead
+        {
+            font-size: 6pt;
+            padding: 0px;
+        }
     }
 
     ul {
@@ -291,7 +296,6 @@
 
 
     </g:each>
-
 
     <tr>
         <td class="hide"></td>

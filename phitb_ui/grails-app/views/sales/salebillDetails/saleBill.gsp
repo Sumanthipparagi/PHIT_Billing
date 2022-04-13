@@ -104,12 +104,16 @@
 
                     <div class="body">
                         <div class="table-responsive">
-                            <table class="table table-bordered table-striped table-hover saleInvoiceTable dataTable">
+                            <table class="table table-bordered table-striped table-hover saleInvoiceTable dataTable js-exportable">
                                 <thead>
                                 <tr>
                                     <th>Customer</th>
                                     <th>Invoice No.</th>
                                     <th>Financial Year</th>
+                                    <th>GST Amt</th>
+                                    <th>Net Amt</th>
+                                    <th>Gross Amt</th>
+                                    <th>City</th>
                                     <th>Invoice Total</th>
                                     <th>Bill Status</th>
                                     <th>Balance</th>
@@ -180,6 +184,18 @@
             info: true,
             processing: true,
             serverSide: true,
+            dom: 'Bfrtip',
+            // buttons: [
+            //     {
+            //         'copy', 'csv', 'excel', 'pdf', 'print'
+            //     },
+            // ],
+            buttons: [
+                {
+                    'extend': 'csv',
+                    exportOptions: { columns: ':visible:not(:last-child)' }
+                },
+            ],
             language: {
                 searchPlaceholder: "Search Sale Bill"
             },
@@ -190,34 +206,45 @@
                     invoiceStatus: invoiceStatus
                 },
                 dataType: 'json',
+
                 dataSrc: function (json) {
                     console.log(json)
                     var return_data = [];
                     for (var i = 0; i < json.data.length; i++) {
                         var approveInvoice = "";
                         var cancelInvoice = "";
-                        if (json.data[i].billStatus != "CANCELLED") {
-                            cancelInvoice = '<a class="btn btn-sm btn-info" onclick="cancelBill(' + json.data[i].id + ')" href="#">Cancel</a>';
+                        var editInvoice = "";
+                        if (json.data[i].billStatus !== "CANCELLED") {
+                            cancelInvoice = '<a class="btn btn-sm btn-info" onclick="cancelBill(' + json.data[i].id +')" href="#">Cancel</a>';
                         }
-                        else if(json.data[i].billStatus != "DRAFT")
+                        else if(json.data[i].billStatus!== "DRAFT")
                         {
                             approveInvoice =  '';
+
                         }
                         var printbtn = '<a target="_blank" href="/sale-entry/print-invoice?id=' + json.data[i].id + '"><button type="button" data-id="' + json.data[i].id +
                             '" class="btn btn-sm btn-danger" ><i class="material-icons"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">print</font></font></i></button></a>'
                         var invoiceNumber = json.data[i].invoiceNumber;
                         if (invoiceNumber === undefined)
                             invoiceNumber = "";
-
+                        if(json.data[i].billStatus=== "DRAFT")
+                        {
+                            editInvoice = '<a class="btn btn-sm btn-warning"  href="/edit-sale-entry?saleBillId=' +
+                                json.data[i].id + '">Edit</a>';
+                        }
                         return_data.push({
                             // 'id': json.data[i].id,
                             'customer': json.data[i].customer.entityName,
                             'invNo': invoiceNumber,
                             'finYear': json.data[i].financialYear,
+                            'gstAmt': json.data[i].totalGst,
+                            'netAmt': json.data[i].invoiceTotal.toFixed(2) - json.data[i].totalGst,
+                            'grossAmt': json.data[i].grossAmount,
+                            'city': json.city[i].cityId.name,
                             'inv': json.data[i].invoiceTotal.toFixed(2),
                             'bill_status': json.data[i].billStatus,
                             'balance': json.data[i].balance.toFixed(2),
-                            'action': cancelInvoice + " " + approveInvoice + " " + printbtn
+                            'action': cancelInvoice + " " + approveInvoice + " " + printbtn+" "+editInvoice
                         });
                     }
                     return return_data;
@@ -228,6 +255,10 @@
                 {'data': 'customer', 'width': '5%'},
                 {'data': 'invNo', 'width': '10%'},
                 {'data': 'finYear', 'width': '10%'},
+                {'data': 'gstAmt', 'width': '10%'},
+                {'data': 'netAmt', 'width': '10%'},
+                {'data': 'grossAmt', 'width': '10%'},
+                {'data': 'city', 'width': '10%'},
                 {'data': 'inv', 'width': '10%'},
                 {'data': 'bill_status', 'width': '5%'},
                 {'data': 'balance', 'width': '5%'},
@@ -278,6 +309,9 @@
         saleInvoiceTable();
     }
 
+    $(document).ready(function() {
+        $('.buttons-html5').text('Export');
+    });
 </script>
 <g:include view="controls/footer-content.gsp"/>
 <script>
