@@ -191,7 +191,7 @@
             info: true,
             processing: true,
             serverSide: true,
-            dom: 'Bfrtip',
+            dom: 'lBfrtip',
             // buttons: [
             //     {
             //         'copy', 'csv', 'excel', 'pdf', 'print'
@@ -201,11 +201,11 @@
                 {
                     'extend': 'excel',
                     exportOptions: { columns: ':visible:not(:last-child)' }
-                },
-                {
-                    'extend': 'pdf',
-                    exportOptions: { columns: ':visible:not(:last-child)' }
-                },
+                }
+                // {
+                //     'extend': 'pdf',
+                //     exportOptions: { columns: ':visible:not(:last-child)' }
+                // },
             ],
             language: {
                 searchPlaceholder: "Search Sale Bill"

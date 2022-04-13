@@ -216,10 +216,9 @@
                             <button onclick="resetPage()" class="btn btn-danger">Reset</button>
                             <button id="saveDraftBtn" onclick="saveSaleInvoice('DRAFT')"
                                     class="btn btn-primary">Save Draft</button>
-
-%{--                            <button id="saveBtn" onclick="saveSaleInvoice('ACTIVE')"--}%
-%{--                                    class="btn btn-primary">Save</button>--}%
-                            %{--<button onclick="printInvoice()" class="btn btn-secondary">Print</button>--}%
+                            <button id="saveBtn" onclick="saveSaleInvoice('ACTIVE')"
+                                    class="btn btn-primary">Save</button>
+                            <button onclick="printInvoice()" class="btn btn-secondary">Print</button>
                         </div>
                     </div>
                 </div>
@@ -1042,8 +1041,7 @@
                 var year = datepart.split("-")[0];
                 var seriesCode = data.series.seriesCode;
                 var invoiceNumber = data.saleBillDetail.invoiceNumber;
-                $("#invNo").html("<p><strong>"+ data.saleBillDetail.entityId + "/DR/S/" + month + year + "/"
-                + seriesCode + "/</strong></p>");
+                $("#invNo").html("<p><strong>" + invoiceNumber + "</strong></p>");
                 var message = "";
                 if (billStatus !== "DRAFT") {
                     message = 'Sale Invoice Generated: ' + invoiceNumber;
@@ -1066,6 +1064,7 @@
                         resetPage();
                     }
                 });
+
             },
             error: function () {
                 $("#saveBtn").prop("disabled", false);
