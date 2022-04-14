@@ -812,7 +812,6 @@ class SaleEntryController
         SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy")
         JSONObject saleBillDetails = new JSONObject()
         JSONArray saleProductDetails = new JSONArray()
-
         String entityId = session.getAttribute("entityId").toString()
         String customerId = params.customer
         String priorityId = params.priority
