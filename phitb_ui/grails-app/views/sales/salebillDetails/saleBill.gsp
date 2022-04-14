@@ -244,15 +244,15 @@
                             editInvoice = '<a class="btn btn-sm btn-warning"  href="/edit-sale-entry?saleBillId=' +
                                 json.data[i].id + '"><i class="fa fa-edit"></i></a>';
                         }
-                        var netAmt = (json.data[i].grossAmount - json.data[i].totalGst).toFixed(2);
+                        var grossAmt = (json.data[i].invoiceTotal - json.data[i].totalGst).toFixed(2);
                         return_data.push({
                             'action': cancelInvoice + " " + approveInvoice + " " + printbtn+" "+editInvoice,
                             /*'action': '',*/
                             'customer': json.data[i].customer.entityName,
                             'invNo': invoiceNumber,
                             'gstAmt': json.data[i].totalGst.toFixed(2),
-                            'grossAmt': json.data[i].grossAmount.toFixed(2),
-                            'netAmt': netAmt,
+                            'grossAmt': grossAmt,
+                            'netAmt': json.data[i].invoiceTotal.toFixed(2),
                             'city': json.city[i].cityId.name,
                             'bill_status': json.data[i].billStatus,
                             'balance': json.data[i].balance.toFixed(2),
