@@ -102,6 +102,8 @@ class ReciptDetailController
         }
     }
 
+
+
     def dataTable()
     {
         try
@@ -425,6 +427,34 @@ class ReciptDetailController
 
         render(view: '/accounts/recipt/recipt-temp', model: [customer: customer, settled: settled, recipt: recipt,
                                                              entity: entity])
+    }
+
+
+    def updateSaleBalance()
+    {
+        try
+        {
+            JSONObject jsonObject = new JSONObject(params)
+            jsonObject.put('balance',params.balance)
+            jsonObject.put('id',params.balance)
+            println(jsonObject)
+            def apiResponse = new AccountsService().updateSaleBalance(jsonObject)
+            if (apiResponse?.status == 200)
+            {
+                JSONObject obj = new JSONObject(apiResponse.readEntity(String.class))
+                respond obj, formats: ['json'], status: 200
+            }
+            else
+            {
+                response.status = apiResponse?.status ?: 400
+            }
+        }
+        catch (Exception ex)
+        {
+            System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
+            log.error('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
+            response.status = 400
+        }
     }
 
 

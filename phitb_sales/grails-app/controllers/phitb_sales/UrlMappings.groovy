@@ -138,6 +138,9 @@ class UrlMappings {
                 action = [POST: 'updatePaymentStatus']
             }
 
+            "/updatebalancebyid"(controller: 'saleBillDetails')
+                    {action=[POST: 'updatePricing']}
+
             //Sale Product Details
             "/saleproductdetails(.$format)?"(controller: 'saleProductDetails') {
                 action = [GET: 'index', POST:

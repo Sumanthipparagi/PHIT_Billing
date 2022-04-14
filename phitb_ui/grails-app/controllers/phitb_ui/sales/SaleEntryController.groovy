@@ -47,7 +47,7 @@ class SaleEntryController
         String priorityId = params.priority
         String seriesId = params.series
         String duedate = params.duedate
-        String billStatus = 'DRAFT'
+        String billStatus = params.billStatus
         String seriesCode = params.seriesCode
         String message = params.message
         if (!message)
@@ -919,9 +919,7 @@ class SaleEntryController
             saleProductDetail.put("entityTypeId", session.getAttribute("entityTypeId").toString())
             saleProductDetails.add(saleProductDetail)
 
-
         }
-
 
         String entryDate = sdf.format(new Date())
         String orderDate = sdf.format(new Date())

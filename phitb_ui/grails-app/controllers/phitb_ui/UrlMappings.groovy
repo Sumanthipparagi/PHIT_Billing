@@ -518,6 +518,8 @@ class UrlMappings {
         "/getallunsettledbycustomer/$id"(controller: "reciptDetail", action: 'getAllUNSaleBillCustomerId')
         "/getallsettledbycustomer/$id"(controller: "reciptDetail", action: 'getAllSaleBillsettled')
 
+        "/updatesalebalance"(controller: 'reciptDetail', action: 'updateSaleBalance')
+
 
 //        Payment Details
         "/payments"(controller: "paymentDetail") { action = [GET: "index", POST: "save"]}
