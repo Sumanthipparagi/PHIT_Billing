@@ -194,12 +194,14 @@ class SaleBillDetailsService
             SaleBillDetails saleBillDetails1
             if (saleBillDetails.billStatus == "DRAFT")
             {
+                println(saleBillDetails.billStatus)
 //                invoiceNumber = saleBillDetails.entityId+"/DR/S/" + month + year + "/" + seriesCode + "/__";'
                 saleBillDetails.invoiceNumber = null
             }
             else
             {
                 invoiceNumber = saleBillDetails.entityId + "/S/" + month + year + "/" + seriesCode + "/" + saleBillDetails.serBillId
+                println("Invoice Number generated: "+invoiceNumber)
             }
             if (invoiceNumber)
             {
@@ -278,12 +280,14 @@ class SaleBillDetailsService
             SaleBillDetails saleBillDetails1
             if (saleBillDetails.billStatus == "DRAFT")
             {
+                println(saleBillDetails.billStatus)
 //                invoiceNumber = saleBillDetails.entityId+"/DR/S/" + month + year + "/" + seriesCode + "/__";'
                 saleBillDetails.invoiceNumber = null
             }
             else
             {
                 invoiceNumber = saleBillDetails.entityId + "/S/" + month + year + "/" + seriesCode + "/" + saleBillDetails.serBillId
+                println("Invoice Number generated: "+invoiceNumber)
             }
             if (invoiceNumber)
             {
