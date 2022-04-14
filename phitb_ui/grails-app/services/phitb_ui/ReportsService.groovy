@@ -19,16 +19,24 @@ class ReportsService {
         jsonObject.put("dateRange", dateRange)
         jsonObject.put("financialYear", financialYear)
         Client client = ClientBuilder.newClient()
-        //WebTarget target = client.target(new Links().API_GATEWAY)
-        WebTarget target = client.target("http://localhost:8083")
+        WebTarget target = client.target(new Links().API_GATEWAY)
+        //WebTarget target = client.target("http://localhost:8083")
         try
         {
             Response apiResponse = target
                     .path(new Links().SALE_BILL_REPORTS)
                     .request(MediaType.APPLICATION_JSON_TYPE)
                     .post(Entity.entity(jsonObject.toString(),MediaType.APPLICATION_JSON_TYPE))
-            println(apiResponse)
-            return apiResponse
+           if(apiResponse.status == 200)
+           {
+               JSONObject jsonObject1 = new JSONObject(apiResponse.readEntity(String.class))
+               return jsonObject1
+           }
+            else
+           {
+               return null
+           }
+
         }
         catch (Exception ex)
         {

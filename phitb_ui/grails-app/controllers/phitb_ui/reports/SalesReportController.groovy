@@ -5,13 +5,15 @@ import phitb_ui.ReportsService
 class SalesReportController {
 
     ReportsService reportsService
-    def index() { }
+    def index() {
+        render(view: '/reports/salesReport/index')
+    }
 
     def salesCustomerWiseReport()
     {
         String entityId = session.getAttribute("entityId")
         String financialYear = session.getAttribute("financialYear")
-        String daterange = params.daterange
-        respond reportsService.getCustomerWiseReport(entityId, daterange, financialYear)
+        String dateRange = params.dateRange
+        respond reportsService.getCustomerWiseReport(entityId, dateRange, financialYear), formats: ['json']
     }
 }

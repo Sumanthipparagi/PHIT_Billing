@@ -17,7 +17,8 @@
     <asset:stylesheet rel="stylesheet" href="/themeassets/css/color_skins.css"/>
     <asset:stylesheet rel="stylesheet" href="/themeassets/plugins/sweetalert/sweetalert.css"/>
     <asset:stylesheet src="/themeassets/plugins/bootstrap-select/css/bootstrap-select.css" rel="stylesheet"/>
-    <asset:stylesheet  src="/themeassets/plugins/bootstrap-material-datetimepicker/css/bootstrap-material-datetimepicker.css" rel="stylesheet" />
+    <asset:stylesheet src="/themeassets/plugins/daterangepicker/daterangepicker.css" rel="stylesheet"/>
+
 
 
     <style>
@@ -84,9 +85,11 @@
             <div class="col-lg-12">
                 <div class="card">
                     <div class="header">
-                        <div class="form-group">
-                            <div class="form-control">
-                                <input type="text" name="dateRange" />
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label>Date Range</label>
+                                <input class="form-control dateRange" type="text" name="dateRange"/>
+                                <button class="btn btn-success" onclick="getReport()">Get Report</button>
                             </div>
                         </div>
                     </div>
@@ -114,17 +117,34 @@
 <asset:javascript src="/themeassets/js/pages/tables/jquery-datatable.js"/>
 <asset:javascript src="/themeassets/js/pages/ui/dialogs.js"/>
 <asset:javascript src="/themeassets/plugins/sweetalert/sweetalert.min.js"/>
-<asset:javascript src="/themeassets/plugins/bootstrap-material-datetimepicker/js/bootstrap-material-datetimepicker.js"/>
+<asset:javascript src="/themeassets/plugins/daterangepicker/moment.min.js"/>
+<asset:javascript src="/themeassets/plugins/daterangepicker/daterangepicker.js"/>
 
 
 <script>
-    $('.dateRange').bootstrapMaterialDatePicker({
-        time:false,
-        format: 'DD/MM/YYYY',
-        clearButton: true,
-        shortTime: true,
-        weekStart: 1
+    $('.dateRange').daterangepicker({
+        locale:{
+            format: "DD/MM/YYYY"
+        }
     });
+
+    function getReport()
+    {
+        var dateRange = $('.dateRange').val();
+        alert(dateRange);
+        $.ajax({
+            url: "sales/customerwise?dateRange="+dateRange,
+            type: "GET",
+            contentType: false,
+            processData: false,
+            success: function (data) {
+                alert(data);
+            },
+            error: function () {
+                swal("Error!", "Unable to generate report at the moment", "error");
+            }
+        })
+    }
 </script>
 <g:include view="controls/footer-content.gsp"/>
 <script>
