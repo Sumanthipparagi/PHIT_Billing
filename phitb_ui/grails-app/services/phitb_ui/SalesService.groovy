@@ -312,7 +312,8 @@ class SalesService
         try
         {
             Response apiResponse = target
-                    .path(new Links().DRAFT_SALE_BILL_SHOW + "/" + id)
+                    .path(new Links().DRAFT_SALE_BILL_SHOW)
+                    .queryParam("id", URLEncoder.encode(id, "UTF-8"))
                     .request(MediaType.APPLICATION_JSON_TYPE)
                     .get()
             if (apiResponse.status == 200)
