@@ -79,7 +79,7 @@ class SaleBillDetailsService
 
     SaleBillDetails getDraftBillById(String id)
     {
-        return SaleBillDetails.findByBillStatusAndId('DRAFT',Long.parseLong(id))
+        return SaleBillDetails.findByBillStatusAndId('DRAFT', Long.parseLong(id))
     }
 
     JSONObject dataTables(JSONObject paramsJsonObject, String start, String length)
@@ -116,12 +116,6 @@ class SaleBillDetailsService
             eq('deleted', false)
             order(orderColumn, orderDir)
         }
-//        def names = []
-//        saleBillDetailsArrayList.each {
-//            println
-//            def apires = getEntityById(it.entityId.toString())
-//            names.push(apires)
-//        }
         def recordsTotal = saleBillDetailsArrayList.totalCount
         JSONObject jsonObject = new JSONObject()
         jsonObject.put("draw", paramsJsonObject.draw)
@@ -201,7 +195,7 @@ class SaleBillDetailsService
             else
             {
                 invoiceNumber = saleBillDetails.entityId + "/S/" + month + year + "/" + seriesCode + "/" + saleBillDetails.serBillId
-                println("Invoice Number generated: "+invoiceNumber)
+                println("Invoice Number generated: " + invoiceNumber)
             }
             if (invoiceNumber)
             {
@@ -287,7 +281,7 @@ class SaleBillDetailsService
             else
             {
                 invoiceNumber = saleBillDetails.entityId + "/S/" + month + year + "/" + seriesCode + "/" + saleBillDetails.serBillId
-                println("Invoice Number generated: "+invoiceNumber)
+                println("Invoice Number generated: " + invoiceNumber)
             }
             if (invoiceNumber)
             {
@@ -325,10 +319,17 @@ class SaleBillDetailsService
         }
     }
 
-    SaleBillDetails getRecentByFinancialYearAndEntity(String financialYear, String entityId, billStatus = null)
+    JSONObject getRecentByFinancialYearAndEntity(String financialYear, String entityId, billStatus)
     {
-        //return SaleBillDetails.findByFinancialYearAndEntityIdAndBillStatus(financialYear, Long.parseLong(entityId), billStatus, [sort: 'id', order: 'desc'])
-        return SaleBillDetails.findByFinancialYearAndEntityId(financialYear, Long.parseLong(entityId), [sort: 'id', order: 'desc'])
+
+        JSONObject jsonObject = new JSONObject()
+        ArrayList<SaleBillDetails> saleBillDetails =
+                SaleBillDetails.findAllByFinancialYearAndEntityIdAndBillStatusNotEqual(financialYear, Long.parseLong(entityId), 'DRAFT', [sort: 'id', order: 'desc'])
+        println(saleBillDetails.serBillId)
+        jsonObject.put("serBillId", saleBillDetails.serBillId.max())
+        jsonObject.put("finId", saleBillDetails.finId.max())
+        return jsonObject
+
     }
 
     def getEntityById(String id)

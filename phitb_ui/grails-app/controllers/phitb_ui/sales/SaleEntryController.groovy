@@ -61,7 +61,7 @@ class SaleEntryController
         if (!billStatus.equalsIgnoreCase("DRAFT"))
         {
             def recentSaleBill = new SalesService().getRecentSaleBill(financialYear, entityId, billStatus)
-            if (recentSaleBill != null)
+            if (recentSaleBill != null && recentSaleBill.size()!=0)
             {
                 finId = Long.parseLong(recentSaleBill.get("finId").toString()) + 1
                 serBillId = Long.parseLong(recentSaleBill.get("serBillId").toString()) + 1
@@ -580,7 +580,7 @@ class SaleEntryController
         def series = new SeriesController().getByEntity(entityId)
         def saleBillId = params.saleBillId
         JSONObject saleBillDetail = new SalesService().getSaleBillDetailsById(saleBillId)
-        if (saleBillDetail != null && saleBillDetail.billStatus!='DRAFT')
+        if (saleBillDetail != null && saleBillDetail.billStatus=='DRAFT')
         {
             JSONArray saleProductDetails = new SalesService().getSaleProductDetailsByBill(saleBillId)
             render(view: '/sales/edit-sale-entry', model: [customers         : customers, divisions: divisions, series: series,
@@ -827,7 +827,8 @@ class SaleEntryController
         if (!billStatus.equalsIgnoreCase("DRAFT"))
         {
             def recentSaleBill = new SalesService().getRecentSaleBill(financialYear, entityId, billStatus)
-            if (recentSaleBill != null)
+            println(recentSaleBill)
+            if (recentSaleBill != null && recentSaleBill.size()!=0)
             {
                 finId = Long.parseLong(recentSaleBill.get("finId").toString()) + 1
                 serBillId = Long.parseLong(recentSaleBill.get("serBillId").toString()) + 1
