@@ -21,7 +21,7 @@
     <asset:stylesheet
             src="/themeassets/plugins/bootstrap-material-datetimepicker/css/bootstrap-material-datetimepicker.css"
             rel="stylesheet"/>
-
+    <asset:stylesheet src="/themeassets/fonts/font-awesome/css/font-awesome.css" rel="stylesheet"/>
     <style>
 
     table.dataTable tbody td {
@@ -66,14 +66,14 @@
                     </ul>
                 </div>
 
-                <div class="col-lg-7 col-md-7 col-sm-12">
+               %{-- <div class="col-lg-7 col-md-7 col-sm-12">
                     <div class="input-group m-b-0">
                         <input type="text" class="form-control" placeholder="Search...">
                         <span class="input-group-addon">
                             <i class="zmdi zmdi-search"></i>
                         </span>
                     </div>
-                </div>
+                </div>--}%
             </div>
         </div>
         <!-- Basic Examples -->
@@ -107,17 +107,16 @@
                             <table class="table table-bordered table-striped table-hover saleInvoiceTable dataTable js-exportable">
                                 <thead>
                                 <tr>
+                                    <th>-</th>
                                     <th>Customer</th>
                                     <th>Invoice No.</th>
-                                    <th>Financial Year</th>
                                     <th>GST Amt</th>
-                                    <th>Net Amt</th>
                                     <th>Gross Amt</th>
+                                    <th>Net Amt</th>
                                     <th>City</th>
-                                    <th>Invoice Total</th>
                                     <th>Bill Status</th>
                                     <th>Balance</th>
-                                    <th>Action</th>
+                                    <th>Financial Year</th>
                                 </tr>
                                 </thead>
                                 <tbody>
@@ -201,11 +200,15 @@
                 {
                     'extend': 'excel',
                     exportOptions: { columns: ':visible:not(:last-child)' }
+                },
+                {
+                    'extend': 'pdf',
+                    exportOptions: { columns: ':visible:not(:last-child)' }
+                },
+                {
+                    'extend': 'print',
+                    exportOptions: { columns: ':visible:not(:last-child)' }
                 }
-                // {
-                //     'extend': 'pdf',
-                //     exportOptions: { columns: ':visible:not(:last-child)' }
-                // },
             ],
             language: {
                 searchPlaceholder: "Search Sale Bill"
@@ -219,61 +222,69 @@
                 dataType: 'json',
 
                 dataSrc: function (json) {
-                    console.log(json)
                     var return_data = [];
                     for (var i = 0; i < json.data.length; i++) {
                         var approveInvoice = "";
                         var cancelInvoice = "";
                         var editInvoice = "";
                         if (json.data[i].billStatus !== "CANCELLED") {
-                            cancelInvoice = '<a class="btn btn-sm btn-info" onclick="cancelBill(' + json.data[i].id +')" href="#">Cancel</a>';
+                            cancelInvoice = '<a class="btn btn-sm btn-info" title="Cancel" onclick="cancelBill(' + json.data[i].id +')" href="#"><i class="fa fa-times"></i></a>';
                         }
                         else if(json.data[i].billStatus!== "DRAFT")
                         {
                             approveInvoice =  '';
 
                         }
-                        var printbtn = '<a target="_blank" href="/sale-entry/print-invoice?id=' + json.data[i].id + '"><button type="button" data-id="' + json.data[i].id +
-                            '" class="btn btn-sm btn-danger" ><i class="material-icons"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">print</font></font></i></button></a>'
+                        var printbtn = '<a target="_blank" class="btn btn-sm btn-danger" data-id="' + json.data[i].id + '" href="/sale-entry/print-invoice?id=' + json.data[i].id + '"><i class="fa fa-print"></i></a>';
                         var invoiceNumber = json.data[i].invoiceNumber;
                         if (invoiceNumber === undefined)
                             invoiceNumber = "";
                         if(json.data[i].billStatus=== "DRAFT")
                         {
                             editInvoice = '<a class="btn btn-sm btn-warning"  href="/edit-sale-entry?saleBillId=' +
-                                json.data[i].id + '">Edit</a>';
+                                json.data[i].id + '"><i class="fa fa-edit"></i></a>';
                         }
+                        var grossAmt = (json.data[i].invoiceTotal - json.data[i].totalGst).toFixed(2);
                         return_data.push({
-                            // 'id': json.data[i].id,
+                            'action': cancelInvoice + " " + approveInvoice + " " + printbtn+" "+editInvoice,
+                            /*'action': '',*/
                             'customer': json.data[i].customer.entityName,
                             'invNo': invoiceNumber,
-                            'finYear': json.data[i].financialYear,
-                            'gstAmt': json.data[i].totalGst,
-                            'netAmt': json.data[i].invoiceTotal.toFixed(2) - json.data[i].totalGst,
-                            'grossAmt': json.data[i].grossAmount,
+                            'gstAmt': json.data[i].totalGst.toFixed(2),
+                            'grossAmt': grossAmt,
+                            'netAmt': json.data[i].invoiceTotal.toFixed(2),
                             'city': json.city[i].cityId.name,
-                            'inv': json.data[i].invoiceTotal.toFixed(2),
                             'bill_status': json.data[i].billStatus,
                             'balance': json.data[i].balance.toFixed(2),
-                            'action': cancelInvoice + " " + approveInvoice + " " + printbtn+" "+editInvoice
+                            'finYear': json.data[i].financialYear
+
                         });
                     }
                     return return_data;
                 }
             },
             columns: [
-                // {'data': 'id', 'width': '20%'},
+                {'data': 'action'},
+                {'data': 'customer', 'width': '10%'},
+                {'data': 'invNo'},
+                {'data': 'gstAmt'},
+                {'data': 'grossAmt'},
+                {'data': 'netAmt'},
+                {'data': 'city'},
+                {'data': 'bill_status'},
+                {'data': 'balance'},
+                {'data': 'finYear'}
+
+               /* {'data': 'action', 'width': '4%'},
                 {'data': 'customer', 'width': '5%'},
                 {'data': 'invNo', 'width': '10%'},
-                {'data': 'finYear', 'width': '10%'},
                 {'data': 'gstAmt', 'width': '10%'},
                 {'data': 'netAmt', 'width': '10%'},
                 {'data': 'grossAmt', 'width': '10%'},
                 {'data': 'city', 'width': '10%'},
-                {'data': 'inv', 'width': '10%'},
                 {'data': 'bill_status', 'width': '5%'},
                 {'data': 'balance', 'width': '5%'},
-                {'data': 'action', 'width': '10%'}
+                {'data': 'finYear', 'width': '30%'}*/
             ]
         });
     }
