@@ -1,0 +1,39 @@
+package phitb_ui
+
+import grails.gorm.transactions.Transactional
+import org.grails.web.json.JSONObject
+
+import javax.ws.rs.client.Client
+import javax.ws.rs.client.ClientBuilder
+import javax.ws.rs.client.Entity
+import javax.ws.rs.client.WebTarget
+import javax.ws.rs.core.MediaType
+import javax.ws.rs.core.Response
+
+@Transactional
+class ReportsService {
+
+    def getCustomerWiseReport(String entityId, String dateRange, String financialYear) {
+        JSONObject jsonObject = new JSONObject()
+        jsonObject.put("entityId",entityId)
+        jsonObject.put("dateRange", dateRange)
+        jsonObject.put("financialYear", financialYear)
+        Client client = ClientBuilder.newClient()
+        //WebTarget target = client.target(new Links().API_GATEWAY)
+        WebTarget target = client.target("http://localhost:8083")
+        try
+        {
+            Response apiResponse = target
+                    .path(new Links().SALE_BILL_REPORTS)
+                    .request(MediaType.APPLICATION_JSON_TYPE)
+                    .post(Entity.entity(jsonObject.toString(),MediaType.APPLICATION_JSON_TYPE))
+            println(apiResponse)
+            return apiResponse
+        }
+        catch (Exception ex)
+        {
+            System.err.println('Service :ReportsService , action :  getCustomerWiseReport  , Ex:' + ex)
+            log.error('Service :ReportsService , action :  getCustomerWiseReport  , Ex:' + ex)
+        }
+    }
+}

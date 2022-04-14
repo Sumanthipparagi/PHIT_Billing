@@ -346,6 +346,7 @@ public class Links
     public static String SET_PAYMENT_BILL = "api/v1.0/sales/setpaymentstatus/{id}/type/{type}";
     public static String SALE_BILL_RECENT = "api/v1.0/sales/salebilldetails/getrecent";
     public static String SALE_BILL_CUSTOMER = "api/v1.0/sales/salebillbycustomer/{custid}";
+    public static String SALE_BILL_REPORTS = "api/v1.0/sales/reports/customerwise";
 
 
     public static String SALE_SCHEME_UPDATE = "api/v1.0/sales/schemeconfiguration/{id}";

@@ -253,6 +253,8 @@ class UrlMappings {
             "/tempuserlogbydays/$days(.$format)?"(controller: 'tempUserLog') {
                 action = [GET: 'getAllByDays']
             }
+
+            "/reports/customerwise(.$format)?"(controller: 'reports', action: 'getCustomerWiseBillDetails')
         }
     }
 }
