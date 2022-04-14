@@ -138,7 +138,7 @@ class UrlMappings {
                 action = [POST: 'updatePaymentStatus']
             }
 
-            "/updatebalancebyid"(controller: 'saleBillDetails')
+            "/updatebalancebyid/id/$id/balance/$balance"(controller: 'saleBillDetails')
                     {action=[POST: 'updatePricing']}
 
             //Sale Product Details

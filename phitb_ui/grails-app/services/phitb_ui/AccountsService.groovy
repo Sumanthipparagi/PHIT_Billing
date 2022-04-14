@@ -399,9 +399,7 @@ class AccountsService
         try
         {
             Response apiResponse = target
-                    .path(new Links().SALE_BILL_BALANCE_UPDATE)
-                    .queryParam("balance", URLEncoder.encode(jsonObject.balance.toString(), "UTF-8"))
-                    .queryParam("id", URLEncoder.encode(jsonObject.id.toString(), "UTF-8"))
+                    .path(new Links().SALE_BILL_BALANCE_UPDATE+"/id/"+jsonObject.id+"/balance/"+jsonObject.balance)
                     .request(MediaType.APPLICATION_JSON_TYPE)
                     .post(Entity.form(form))
             println(apiResponse)
