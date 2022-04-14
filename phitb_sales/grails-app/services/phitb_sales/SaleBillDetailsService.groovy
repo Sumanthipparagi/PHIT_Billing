@@ -194,12 +194,14 @@ class SaleBillDetailsService
             SaleBillDetails saleBillDetails1
             if (saleBillDetails.billStatus == "DRAFT")
             {
+                println(saleBillDetails.billStatus)
 //                invoiceNumber = saleBillDetails.entityId+"/DR/S/" + month + year + "/" + seriesCode + "/__";'
                 saleBillDetails.invoiceNumber = null
             }
             else
             {
                 invoiceNumber = saleBillDetails.entityId + "/S/" + month + year + "/" + seriesCode + "/" + saleBillDetails.serBillId
+                println("Invoice Number generated: "+invoiceNumber)
             }
             if (invoiceNumber)
             {
@@ -278,12 +280,14 @@ class SaleBillDetailsService
             SaleBillDetails saleBillDetails1
             if (saleBillDetails.billStatus == "DRAFT")
             {
+                println(saleBillDetails.billStatus)
 //                invoiceNumber = saleBillDetails.entityId+"/DR/S/" + month + year + "/" + seriesCode + "/__";'
                 saleBillDetails.invoiceNumber = null
             }
             else
             {
                 invoiceNumber = saleBillDetails.entityId + "/S/" + month + year + "/" + seriesCode + "/" + saleBillDetails.serBillId
+                println("Invoice Number generated: "+invoiceNumber)
             }
             if (invoiceNumber)
             {
@@ -321,9 +325,10 @@ class SaleBillDetailsService
         }
     }
 
-    SaleBillDetails getRecentByFinancialYearAndEntity(String financialYear, String entityId, billStatus)
+    SaleBillDetails getRecentByFinancialYearAndEntity(String financialYear, String entityId, billStatus = null)
     {
-        return SaleBillDetails.findByFinancialYearAndEntityIdAndBillStatus(financialYear, Long.parseLong(entityId), billStatus, [sort: 'id', order: 'desc'])
+        //return SaleBillDetails.findByFinancialYearAndEntityIdAndBillStatus(financialYear, Long.parseLong(entityId), billStatus, [sort: 'id', order: 'desc'])
+        return SaleBillDetails.findByFinancialYearAndEntityId(financialYear, Long.parseLong(entityId), [sort: 'id', order: 'desc'])
     }
 
     def getEntityById(String id)
