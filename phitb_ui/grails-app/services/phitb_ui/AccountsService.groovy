@@ -389,6 +389,33 @@ class AccountsService
 
     }
 
+
+    //   update balance
+    def updateSaleBalance(JSONObject jsonObject)
+    {
+        Form form = UtilsService.jsonToFormDataConverter(jsonObject)
+        Client client = ClientBuilder.newClient();
+        WebTarget target = client.target(new Links().API_GATEWAY);
+        try
+        {
+            Response apiResponse = target
+                    .path(new Links().SALE_BILL_BALANCE_UPDATE)
+                    .queryParam("balance", URLEncoder.encode(jsonObject.balance.toString(), "UTF-8"))
+                    .queryParam("id", URLEncoder.encode(jsonObject.id.toString(), "UTF-8"))
+                    .request(MediaType.APPLICATION_JSON_TYPE)
+                    .post(Entity.form(form))
+            println(apiResponse)
+            return apiResponse
+        }
+        catch (Exception ex)
+        {
+            System.err.println('Service :saveStateMaster , action :  save  , Ex:' + ex)
+            log.error('Service :saveStateMaster , action :  save  , Ex:' + ex)
+        }
+
+    }
+
+
 //   move invoice to settled vocher
     def updateSettledVocher(JSONObject jsonObject)
     {

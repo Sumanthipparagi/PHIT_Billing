@@ -47,7 +47,7 @@ class SaleEntryController
         String priorityId = params.priority
         String seriesId = params.series
         String duedate = params.duedate
-        String billStatus = 'DRAFT'
+        String billStatus = params.billStatus
         String seriesCode = params.seriesCode
         String message = params.message
         if (!message)
@@ -857,6 +857,7 @@ class SaleEntryController
             String freeQty = sale.get("5")
             String saleRate = sale.get("6")
             String mrp = sale.get("7")
+            String saleProductId = sale.get("15")
             double discount = UtilsService.round(Double.parseDouble(sale.get("8").toString()), 2)
             String packDesc = sale.get("9")
             double gst = UtilsService.round(Double.parseDouble(sale.get("10").toString()), 2)
@@ -876,7 +877,50 @@ class SaleEntryController
             //save to sale transaction log
             //save to sale transportation details
 
+            JSONObject saleProductDetail = new JSONObject()
+            saleProductDetail.put("finId", finId)
+            saleProductDetail.put("id", saleProductId)
+            saleProductDetail.put("billId", 0)
+            saleProductDetail.put("billType", 0)
+            saleProductDetail.put("serBillId", 0)
+            saleProductDetail.put("seriesId", seriesId)
+            saleProductDetail.put("productId", productId)
+            saleProductDetail.put("batchNumber", batchNumber)
+            saleProductDetail.put("expiryDate", expDate)
+            saleProductDetail.put("sqty", saleQty)
+            saleProductDetail.put("freeQty", freeQty)
+            saleProductDetail.put("repQty", 0)
+            saleProductDetail.put("pRate", 0) //TODO: to be changed
+            saleProductDetail.put("sRate", saleRate)
+            saleProductDetail.put("mrp", mrp)
+            saleProductDetail.put("discount", discount)
+            saleProductDetail.put("gstAmount", gst)
+            saleProductDetail.put("sgstAmount", sgst)
+            saleProductDetail.put("cgstAmount", cgst)
+            saleProductDetail.put("igstAmount", igst)
+
+
+            saleProductDetail.put("gstPercentage", sale.get("16").toString())
+            saleProductDetail.put("sgstPercentage", sale.get("17").toString())
+            saleProductDetail.put("cgstPercentage", sale.get("18").toString())
+            saleProductDetail.put("igstPercentage", sale.get("19").toString())
+
+            saleProductDetail.put("gstId", 0) //TODO: to be changed
+            saleProductDetail.put("amount", value)
+            saleProductDetail.put("reason", "") //TODO: to be changed
+            saleProductDetail.put("fridgeId", 0) //TODO: to be changed
+            saleProductDetail.put("kitName", 0) //TODO: to be changed
+            saleProductDetail.put("saleFinId", "") //TODO: to be changed
+            saleProductDetail.put("redundantBatch", 0) //TODO: to be changed
+            saleProductDetail.put("status", 0)
+            saleProductDetail.put("syncStatus", 0)
+            saleProductDetail.put("financialYear", financialYear)
+            saleProductDetail.put("entityId", entityId)
+            saleProductDetail.put("entityTypeId", session.getAttribute("entityTypeId").toString())
+            saleProductDetails.add(saleProductDetail)
+
         }
+
         String entryDate = sdf.format(new Date())
         String orderDate = sdf.format(new Date())
         //update to sale bill details
@@ -932,6 +976,21 @@ class SaleEntryController
         if (response.status == 200)
         {
             def saleBillDetail = new JSONObject(response.readEntity(String.class))
+            for (JSONObject saleProductDetail : saleProductDetails)
+            {
+                saleProductDetail.put("billId", saleBillDetail.get("id"))
+                saleProductDetail.put("billType", 0) //0 Sale, 1 Purchase
+                saleProductDetail.put("serBillId", saleBillDetail.get("serBillId"))
+                def resp = new SalesService().updateSaleProductDetail(saleProductDetail)
+                if (resp.status == 200)
+                {
+                    println("Product Detail Saved")
+                }
+                else
+                {
+                    println("Product Detail Failed")
+                }
+            }
 //            //save to sale product details
             JSONObject responseJson = new JSONObject()
             responseJson.put("series", series)

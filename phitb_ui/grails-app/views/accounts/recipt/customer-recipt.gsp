@@ -521,20 +521,21 @@
                         '" class="btn-sm btn-primary" id="settled"><-</button></td><td>' + invoice +
                         '</td><td>' + value.financialYear +
                         '</td><td>' + moment(value.dateCreated).format('DD-MM-YYYY') +
-                        '</td><td>' + value.balance +
-                        '</td></tr>';
+                        '</td><td><input type="number" name="balunsettled" value="' + value.balance +
+                        '" id="balunsettled" data-inid="'+value.id +'"  data-custId="'+ value.customerId +'" ></td></tr>';
+
                 });
 
                 $.each(data[1], function (key, value) {
-                        var date = new Date(value.entryDate)
+                        var date = new Date(value.entryDate);
                     trHTML +=
                         '<tr id="' + "CR"+value.id + '"><td><button type="button" data-id="' + value.id +
                         '"  data-custId="' + value.customerId +
                         '" class="btn-sm btn-primary" id="cnsettled"><-</button></td><td>' + cred +
                         '</td><td>' + value.financialYear +
                         '</td><td>' + moment(date).format('DD-MM-YYYY') +
-                        '</td><td>' + "-"+value.totalAmount +
-                        '</td></tr>';
+                        '</td><td><input type="number" value="'+value.totalAmount +
+                        '" id="' + "CR"+value.id + '" data-cnid="'+value.id +'" ></td></tr>';
                 });
                 $('.unsettledVocher').html(trHTML+trHTML1);
             },
@@ -568,8 +569,8 @@
                         '<tr id="' + "IN"+value.id + '"><td>' + invoice +
                         '</td><td>' + value.financialYear +
                         '</td><td>' + moment(value.dateCreated).format('DD-MM-YYYY') +
-                        '</td><td>' + value.balance +
-                        '</td><td><button type="button" data-id="' + value.id + '"  data-custId="' + value.customerId + '"  class="btn-sm btn-primary" id="unsettled">-></button></td></tr>';
+                        '</td><td><input type="number" value="' + value.balance +
+                        '"></td><td><button type="button" data-id="' + value.id + '"  data-custId="' + value.customerId + '"  class="btn-sm btn-primary" id="unsettled">-></button></td></tr>';
                 });
                 $.each(data[1], function (key, value) {
                     var date = new Date(value.entryDate)
@@ -577,8 +578,8 @@
                         '<tr id="' + "CR"+value.id + '"><td>' + cred +
                         '</td><td>' + value.financialYear +
                         '</td><td>' + moment(date).format('DD-MM-YYYY') +
-                        '</td><td>' + "-"+value.totalAmount +
-                        '</td><td><button type="button" data-id="' + value.id +
+                        '</td><td><input type="number" value="'+value.totalAmount +
+                        '"></td><td><button type="button" data-id="' + value.id +
                         '"  data-custId="' + value.customerId +
                         '" class="btn-sm btn-primary" id="cnunsettled">-></button></td></tr>';
                 });
@@ -704,7 +705,35 @@
                 return false;
             }
         });
+
+        $(document).on('keydown','#balunsettled',function(e){
+            if (e.keyCode === 13 || e.which === '13') {
+                var balance = $(this).val();
+                var id = $(this).attr('data-inid');
+                var custId = $(this).attr('data-custId');
+                var url="/updatesalebalance?id="+id+"&balance="+balance;
+                var type="POST";
+                $.ajax({
+                    url: url,
+                    type: type,
+                    contentType: false,
+                    processData: false,
+                    data: {
+                        balance: balance,
+                        id:id
+                    },
+                    success: function () {
+                        getUnsettledByCustomer(custId);
+                        getsettledSaleBillByCustomer(custId)
+                    },
+                    error: function () {
+                        swal("Error!", "Something went wrong", "error");
+                    }
+                });
+            }
+        });
     });
+
 </script>
 <g:include view="controls/footer-content.gsp"/>
 <script>

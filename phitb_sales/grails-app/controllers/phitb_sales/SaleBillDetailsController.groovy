@@ -338,6 +338,40 @@ class SaleBillDetailsController
         response.status = 400
     }
 
+
+    def updatePricing()
+    {
+        try
+        {
+            println(params.id)
+            SaleBillDetails saleBillDetails = SaleBillDetails.findById(Long.parseLong(params.id))
+            if (saleBillDetails)
+            {
+                saleBillDetails.isUpdatable = true
+                if (params.balance > 0 && params.balance!="" && params.balance!=null)
+                {
+                    saleBillDetails.balance = params.balance
+                }
+                else
+                {
+                    saleBillDetails.balance = params.balance
+                }
+                SaleBillDetails saleBillDetails1 = saleBillDetails.save(flush: true)
+                if (saleBillDetails1)
+                {
+                    respond saleBillDetails1
+                    return
+                }
+            }
+        }
+        catch (Exception ex)
+        {
+            System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
+            log.error('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
+        }
+        response.status = 400
+    }
+
     def getRecentByFinancialYearAndEntity()
     {
         try {

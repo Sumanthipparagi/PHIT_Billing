@@ -331,9 +331,7 @@
         saleInvoiceTable();
     }
 
-    // $(document).ready(function() {
-    //     $('.buttons-html5').text('Export');
-    // });
+
 </script>
 <g:include view="controls/footer-content.gsp"/>
 <script>
