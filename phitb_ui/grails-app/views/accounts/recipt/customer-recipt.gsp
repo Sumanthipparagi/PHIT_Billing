@@ -708,6 +708,7 @@
 
         $(document).on('keydown','#balunsettled',function(e){
             if (e.keyCode === 13 || e.which === '13') {
+                $(this).parent().next('td').find('input#balunsettled').focus();
                 var balance = $(this).val();
                 var id = $(this).attr('data-inid');
                 var custId = $(this).attr('data-custId');
