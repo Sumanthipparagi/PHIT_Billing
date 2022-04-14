@@ -162,6 +162,7 @@
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.32/vfs_fonts.js"></script>
 <script type="text/javascript" src="https://cdn.datatables.net/buttons/1.4.1/js/buttons.html5.min.js"></script>
 <script type="text/javascript" src="https://cdn.datatables.net/buttons/1.4.1/js/buttons.print.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.2/js/all.js" integrity="sha256-2JRzNxMJiS0aHOJjG+liqsEOuBb6++9cY4dSOyiijX4=" crossorigin="anonymous"></script>
 
 <script>
 
@@ -199,15 +200,15 @@
             buttons: [
                 {
                     'extend': 'excel',
-                    exportOptions: { columns: ':visible:not(:last-child)' }
+                    exportOptions: { columns: ':visible:not(:first-child)' }
                 },
                 {
                     'extend': 'pdf',
-                    exportOptions: { columns: ':visible:not(:last-child)' }
+                    exportOptions: { columns: ':visible:not(:first-child)' }
                 },
                 {
                     'extend': 'print',
-                    exportOptions: { columns: ':visible:not(:last-child)' }
+                    exportOptions: { columns: ':visible:not(:first-child)' }
                 }
             ],
             language: {

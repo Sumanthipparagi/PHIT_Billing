@@ -218,7 +218,7 @@
                                     class="btn btn-primary">Save Draft</button>
                             <button id="saveBtn" onclick="saveSaleInvoice('ACTIVE')"
                                     class="btn btn-primary">Save</button>
-                            <button onclick="printInvoice()" class="btn btn-secondary">Print</button>
+%{--                            <button onclick="printInvoice()" class="btn btn-secondary">Print</button>--}%
                         </div>
                     </div>
                 </div>
@@ -1042,6 +1042,12 @@
                 var seriesCode = data.series.seriesCode;
                 var invoiceNumber = data.saleBillDetail.invoiceNumber;
                 $("#invNo").html("<p><strong>" + invoiceNumber + "</strong></p>");
+                var draftInvNo = ""
+                if(billStatus === "DRAFT"){
+                    draftInvNo = '<p><strong>' + data.saleBillDetail.entityId + "/DR/S/" + month + year + "/"
+                        + seriesCode + "/__"+'<p><strong>';
+                    $("#invNo").html(draftInvNo);
+                }
                 var message = "";
                 if (billStatus !== "DRAFT") {
                     message = 'Sale Invoice Generated: ' + invoiceNumber;

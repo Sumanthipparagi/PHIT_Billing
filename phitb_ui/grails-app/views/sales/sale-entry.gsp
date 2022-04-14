@@ -969,6 +969,12 @@
                 var invoiceNumber = data.saleBillDetail.invoiceNumber;
                 $("#invNo").html("<p><strong>" + invoiceNumber + "</strong></p>");
                 var message = "";
+                var draftInvNo ="";
+                if(billStatus === "DRAFT"){
+                    draftInvNo = '<p><strong>' + data.saleBillDetail.entityId + "/DR/S/" + month + year + "/"
+                        + seriesCode + "/__"+'<p><strong>';
+                    $("#invNo").html(draftInvNo);
+                }
                 if (billStatus !== "DRAFT") {
                     message = 'Sale Invoice Generated: ' + invoiceNumber;
                 } else {
