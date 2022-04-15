@@ -177,9 +177,7 @@ class InventoryService {
     def showStockBooks(JSONObject jsonObject)
     {
         Client client = ClientBuilder.newClient();
-       // WebTarget target = client.target(new Links().API_GATEWAY)
-        WebTarget target = client.target("http://localhost:8086")
-
+        WebTarget target = client.target(new Links().API_GATEWAY)
         try
         {
             Response apiResponse = target
@@ -291,8 +289,7 @@ class InventoryService {
     def tempStockBookSave(JSONObject jsonObject)
     {
         Client client = ClientBuilder.newClient()
-        //WebTarget target = client.target(new Links().API_GATEWAY)
-        WebTarget target = client.target("http://localhost:8086")
+        WebTarget target = client.target(new Links().API_GATEWAY)
         try
         {
             println(jsonObject)
