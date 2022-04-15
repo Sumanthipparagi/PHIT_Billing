@@ -19,8 +19,8 @@ class ReportsService {
         jsonObject.put("dateRange", dateRange)
         jsonObject.put("financialYear", financialYear)
         Client client = ClientBuilder.newClient()
-        WebTarget target = client.target(new Links().API_GATEWAY)
-        //WebTarget target = client.target("http://localhost:8083")
+        //WebTarget target = client.target(new Links().API_GATEWAY)
+        WebTarget target = client.target("http://localhost:8083")
         try
         {
             Response apiResponse = target
