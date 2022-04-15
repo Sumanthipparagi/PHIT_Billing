@@ -19,27 +19,14 @@
     <asset:stylesheet src="/themeassets/plugins/bootstrap-select/css/bootstrap-select.css" rel="stylesheet"/>
     <asset:stylesheet src="/themeassets/plugins/daterangepicker/daterangepicker.css" rel="stylesheet"/>
 
-
+    <asset:stylesheet rel="stylesheet" href="/themeassets/plugins/sweetalert2/dist/sweetalert2.css"/>
 
     <style>
 
-    div.dataTables_scrollBody table tbody td {
-        border-top: none;
-        padding: 0.9px;
-        text-align: center;
-        border-collapse: unset !important;
-    }
-
-    .editbtn {
-        padding: 1px 9px;
-    }
-
-    .deletebtn {
-        padding: 1px 9px;
-    }
-
-    tbody td {
-        padding: 0px;
+    @media print {
+        .pagebreak {
+            page-break-before: always;
+        }
     }
 
     </style>
@@ -85,16 +72,41 @@
             <div class="col-lg-12">
                 <div class="card">
                     <div class="header">
-                        <div class="col-md-4">
-                            <div class="form-group">
-                                <label>Date Range</label>
-                                <input class="form-control dateRange" type="text" name="dateRange"/>
-                                <button class="btn btn-success" onclick="getReport()">Get Report</button>
+                        <div class="row">
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label>Date Range</label>
+
+                                    <div class="input-group">
+                                        <input class="dateRange" type="text" name="dateRange"
+                                               style="border-radius: 6px;margin: 4px;"/>
+                                        <button class="input-group-btn btn btn-info"
+                                                onclick="getReport()">Get Report</button>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-md-4">
+                            </div>
+
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label>Export</label>
+
+                                    <div class="input-group">
+                                        <button class="input-group-btn btn btn-info" id="btnExport">Excel</button>
+                                        %{-- <button class="input-group-btn btn btn-success" id="btnPdf">PDF</button>--}%
+                                        <button class="input-group-btn btn btn-danger" id="btnPrint">Print</button>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
 
                     <div class="body">
+                        <div id="result">
+                            <h2 style="color: rgba(26,131,185,0.74);">Select Date Range and Click "Get Reports"</h2>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -119,32 +131,144 @@
 <asset:javascript src="/themeassets/plugins/sweetalert/sweetalert.min.js"/>
 <asset:javascript src="/themeassets/plugins/daterangepicker/moment.min.js"/>
 <asset:javascript src="/themeassets/plugins/daterangepicker/daterangepicker.js"/>
-
-
+<asset:javascript src="/themeassets/plugins/tabletoexcel/tableToExcel.js"/>
+<asset:javascript src="/themeassets/plugins/jQuery.print/jQuery.print.min.js"/>
+<asset:javascript src="/themeassets/plugins/sweetalert2/dist/sweetalert2.all.js"/>
+<asset:javascript src="/themeassets/plugins/momentjs/moment.js"/>
+%{--<asset:javascript src="/themeassets/plugins/jspdf/jspdf.umd.min.js"/>--}%
+%{--<asset:javascript src="/themeassets/plugins/jspdf/jspdf.plugin.autotable.js"/>--}%
+%{--<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.3.5/jspdf.debug.js"></script>--}%
+%{--
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.js" integrity="sha512-Bw9Zj8x4giJb3OmlMiMaGbNrFr0ERD2f9jL3en5FmcTXLhkI+fKyXVeyGyxKMIl1RfgcCBDprJJt4JvlglEb3A==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.23/jspdf.plugin.autotable.js" integrity="sha512-P3z5YHtqjIxRAu1AjkWiIPWmMwO9jApnCMsa5s0UTgiDDEjTBjgEqRK0Wn0Uo8Ku3IDa1oer1CIBpTWAvqbmCA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+--}%
 <script>
     $('.dateRange').daterangepicker({
-        locale:{
+        locale: {
             format: "DD/MM/YYYY"
         }
     });
 
-    function getReport()
-    {
+    function getReport() {
+        var loading = Swal.fire({
+            title: "Getting reports, Please wait!",
+            html: '<img src="${assetPath(src: "/themeassets/images/3.gif")}" width="25" height="25"/>',
+            showDenyButton: false,
+            showCancelButton: false,
+            showConfirmButton: false,
+            allowOutsideClick: false,
+            closeOnClickOutside: false
+        });
         var dateRange = $('.dateRange').val();
-        alert(dateRange);
         $.ajax({
-            url: "sales/customerwise?dateRange="+dateRange,
+            url: "sales/customerwise?dateRange=" + dateRange,
             type: "GET",
             contentType: false,
             processData: false,
             success: function (data) {
-                alert(data);
+                var content = "";
+                var mainTableHeader = "<table class='table table-bordered table-sm' style='width: 100%;'><thead>" +
+                    "<tr><td data-f-bold='true' colspan='11'><h3 style='margin-bottom:0 !important;'>${session.getAttribute('entityName')}</h3></td></tr>" +
+                    "<tr><td colspan='11'>${session.getAttribute('entityAddress1')} ${session.getAttribute('entityAddress1')} ${session.getAttribute('entityPinCode')}, ph: ${session.getAttribute('entityMobileNumber')}</td></tr>" +
+                    "<tr><th data-f-bold='true' colspan='11'>Customer-Bill-Itemwise Sales* Detail, Date: " + dateRange + "</th></tr>" +
+                    "<tr><th data-f-bold='true'>Sl No.</th><th data-f-bold='true'>Item Name</th><th data-f-bold='true'>Batch No.</th><th data-f-bold='true'>Expiry</th>" +
+                    "<th data-f-bold='true'>Sale Qty</th><th data-f-bold='true'>Fr. Qty</th><th data-f-bold='true'>Rate</th><th data-f-bold='true'>N T V</th><th data-f-bold='true'>Discount</th><th data-f-bold='true'>GST</th><th data-f-bold='true'>Net Amount</th></tr></thead><tbody>";
+                $.each(data, function (key, customer) {
+                    var customerName = "<tr><td data-f-bold='true' colspan='11'><strong>Customer: </strong><span class='customerData cust" + key + "'>" + customer[0].customerDetail.entityName + "</span></td></tr>";
+                    var billDetails = "";
+                    var custNtvTotal = 0;
+                    var custDiscountTotal = 0;
+                    var custGstTotal = 0;
+                    var custNetAmtTotal = 0;
+                    $.each(customer, function (key, bill) {
+                        var products = "";
+                        billDetails += "<tr><td colspan='2'><strong>Invoice No: </strong> " + bill.invoiceNumber + "</td><td colspan='9'><strong>Date:</strong> " + dateFormat(bill.orderDate) + "</td></tr>";
+                        var ntvTotal = 0;
+                        var discountTotal = 0;
+                        var gstTotal = 0;
+                        var netAmtTotal = 0;
+                        $.each(bill.products, function (key, product) {
+                            var ntv = Number((product.amount - product.gstAmount).toFixed(2));
+                            ntvTotal += ntv;
+                            discountTotal += Number(product.discount.toFixed(2));
+                            gstTotal += Number(product.gstAmount.toFixed(2));
+                            netAmtTotal += Number(product.amount.toFixed(2));
+                            products += "<tr><td>" + (key + 1) + "</td><td><span class='itemData item" + product.productId + "'>" + product.productDetail.productName + "</span></td><td>" + product.batchNumber + "</td><td>" + product.expiryDate + "</td><td>" + product.sqty + "</td>" +
+                                "<td>" + product.freeQty + "</td><td>" + Number(product.sRate.toFixed(2)) + "</td><td>" + ntv + "</td><td>" + Number(product.discount.toFixed(2)) + "</td><td>" + Number(product.gstAmount.toFixed(2)) + "</td><td>" + Number(product.amount.toFixed(2)) + "</td></tr>"
+                        });
+                        var totals = "<tr><td></td><td></td><td></td><td></td><td></td><td></td><td></td>" +
+                            "<td data-f-underline='true'><u>" + ntvTotal + "</u></td><td data-f-underline='true'><u>" + discountTotal + "</u></td>" +
+                            "<td data-f-underline='true'><u>" + gstTotal + "</u></td><td data-f-underline='true'><u>" + netAmtTotal + "</u></td></tr>";
+                        custNtvTotal += Number(ntvTotal.toFixed(2));
+                        custDiscountTotal += Number(discountTotal.toFixed(2));
+                        custGstTotal += Number(gstTotal.toFixed(2));
+                        custNetAmtTotal += Number(netAmtTotal.toFixed(2));
+
+                        billDetails += products + totals;
+                    });
+                    var space = "<tr class='pagebreak' style='background-color: #ceecf5 !important;'><td data-f-fill='ceecf500' colspan='11'></td></tr>";
+                    var custTotals = "<tr><td></td><td></td><td></td><td></td><td></td><td></td><td></td>" +
+                        "<td data-f-underline='true' data-f-bold='true'><strong><u>" + custNtvTotal + "</u></strong></td><td data-f-underline='true' data-f-bold='true'><strong><u>" + custDiscountTotal + "</u></strong></td>" +
+                        "<td data-f-underline='true' data-f-bold='true'><strong><u>" + custGstTotal + "</u></strong></td><td data-f-underline='true' data-f-bold='true'><strong><u>" + custNetAmtTotal + "</u></strong></td></tr>";
+
+                    content += customerName + billDetails + custTotals + space;
+                });
+                var mainTableFooter = "</tbody></table>";
+
+                $("#result").html(mainTableHeader + content + mainTableFooter);
+                loading.close();
             },
             error: function () {
+                loading.close();
                 swal("Error!", "Unable to generate report at the moment", "error");
             }
         })
     }
+
+    $("#btnExport").click(function () {
+        let table = document.getElementById("result");
+        TableToExcel.convert(table, {
+            name: 'customerwise-sales-report.xlsx',
+            sheet: {
+                name: 'Sheet 1' // sheetName
+            }
+        });
+    });
+
+    $("#btnPrint").click(function () {
+        $("#result").print({
+            globalStyles: true,
+            mediaPrint: false,
+            stylesheet: null,
+            noPrintSelector: ".no-print",
+            iframe: true,
+            append: null,
+            prepend: null,
+            manuallyCopyFormValues: true,
+            deferred: $.Deferred(),
+            timeout: 750,
+            title: null,
+            doctype: '<!doctype html>'
+        });
+    });
+
+    /*  $(document).ready(function() {
+          window.jsPDF = window.jspdf.jsPDF;
+          $("#btnPdf").click(function () {
+              var doc = new jsPDF();
+              doc.autoTable({ html: '#result' });
+              doc.save('table.pdf');
+          });
+      });*/
+
+    function dateFormat(dt)
+    {
+        var date = new Date(dt);
+        return moment(date).format('DD/MM/YYYY hh:mm:ss a');
+
+    }
+
+
 </script>
 <g:include view="controls/footer-content.gsp"/>
 <script>
