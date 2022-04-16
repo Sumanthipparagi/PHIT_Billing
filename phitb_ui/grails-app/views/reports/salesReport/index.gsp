@@ -169,7 +169,7 @@
                 var content = "";
                 var mainTableHeader = "<table class='table table-bordered table-sm' style='width: 100%;'><thead>" +
                     "<tr><td data-f-bold='true' colspan='11'><h3 style='margin-bottom:0 !important;'>${session.getAttribute('entityName')}</h3></td></tr>" +
-                    "<tr><td colspan='11'>${session.getAttribute('entityAddress1')} ${session.getAttribute('entityAddress1')} ${session.getAttribute('entityPinCode')}, ph: ${session.getAttribute('entityMobileNumber')}</td></tr>" +
+                    "<tr><td colspan='11'>${session.getAttribute('entityAddress1')} ${session.getAttribute('entityAddress2')} ${session.getAttribute('entityPinCode')}, ph: ${session.getAttribute('entityMobileNumber')}</td></tr>" +
                     "<tr><th data-f-bold='true' colspan='11'>Customer-Bill-Itemwise Sales* Detail, Date: " + dateRange + "</th></tr>" +
                     "<tr><th data-f-bold='true'>Sl No.</th><th data-f-bold='true'>Item Name</th><th data-f-bold='true'>Batch No.</th><th data-f-bold='true'>Expiry</th>" +
                     "<th data-f-bold='true'>Sale Qty</th><th data-f-bold='true'>Fr. Qty</th><th data-f-bold='true'>Rate</th><th data-f-bold='true'>N T V</th><th data-f-bold='true'>Discount</th><th data-f-bold='true'>GST</th><th data-f-bold='true'>Net Amount</th></tr></thead><tbody>";
@@ -188,28 +188,28 @@
                         var gstTotal = 0;
                         var netAmtTotal = 0;
                         $.each(bill.products, function (key, product) {
-                            var ntv = Number((product.amount - product.gstAmount).toFixed(2));
+                            var ntv = product.amount - product.gstAmount;
                             ntvTotal += ntv;
-                            discountTotal += Number(product.discount.toFixed(2));
-                            gstTotal += Number(product.gstAmount.toFixed(2));
-                            netAmtTotal += Number(product.amount.toFixed(2));
+                            discountTotal += product.discount;
+                            gstTotal += product.gstAmount;
+                            netAmtTotal += product.amount;
                             products += "<tr><td>" + (key + 1) + "</td><td><span class='itemData item" + product.productId + "'>" + product.productDetail.productName + "</span></td><td>" + product.batchNumber + "</td><td>" + product.expiryDate + "</td><td>" + product.sqty + "</td>" +
-                                "<td>" + product.freeQty + "</td><td>" + Number(product.sRate.toFixed(2)) + "</td><td>" + ntv + "</td><td>" + Number(product.discount.toFixed(2)) + "</td><td>" + Number(product.gstAmount.toFixed(2)) + "</td><td>" + Number(product.amount.toFixed(2)) + "</td></tr>"
+                                "<td>" + product.freeQty + "</td><td>" + product.sRate.toFixed(2) + "</td><td>" + ntv.toFixed(2) + "</td><td>" + product.discount.toFixed(2) + "</td><td>" + product.gstAmount.toFixed(2) + "</td><td>" + product.amount.toFixed(2) + "</td></tr>"
                         });
                         var totals = "<tr><td></td><td></td><td></td><td></td><td></td><td></td><td></td>" +
-                            "<td data-f-underline='true'><u>" + ntvTotal + "</u></td><td data-f-underline='true'><u>" + discountTotal + "</u></td>" +
-                            "<td data-f-underline='true'><u>" + gstTotal + "</u></td><td data-f-underline='true'><u>" + netAmtTotal + "</u></td></tr>";
-                        custNtvTotal += Number(ntvTotal.toFixed(2));
-                        custDiscountTotal += Number(discountTotal.toFixed(2));
-                        custGstTotal += Number(gstTotal.toFixed(2));
-                        custNetAmtTotal += Number(netAmtTotal.toFixed(2));
+                            "<td data-f-underline='true'><u>" + ntvTotal.toFixed(2) + "</u></td><td data-f-underline='true'><u>" + discountTotal.toFixed(2) + "</u></td>" +
+                            "<td data-f-underline='true'><u>" + gstTotal.toFixed(2) + "</u></td><td data-f-underline='true'><u>" + netAmtTotal.toFixed(2) + "</u></td></tr>";
+                        custNtvTotal += ntvTotal;
+                        custDiscountTotal += discountTotal;
+                        custGstTotal += gstTotal;
+                        custNetAmtTotal += netAmtTotal;
 
                         billDetails += products + totals;
                     });
                     var space = "<tr class='pagebreak' style='background-color: #ceecf5 !important;'><td data-f-fill='ceecf500' colspan='11'></td></tr>";
                     var custTotals = "<tr><td></td><td></td><td></td><td></td><td></td><td></td><td></td>" +
-                        "<td data-f-underline='true' data-f-bold='true'><strong><u>" + custNtvTotal + "</u></strong></td><td data-f-underline='true' data-f-bold='true'><strong><u>" + custDiscountTotal + "</u></strong></td>" +
-                        "<td data-f-underline='true' data-f-bold='true'><strong><u>" + custGstTotal + "</u></strong></td><td data-f-underline='true' data-f-bold='true'><strong><u>" + custNetAmtTotal + "</u></strong></td></tr>";
+                        "<td data-f-underline='true' data-f-bold='true'><strong><u>" + custNtvTotal.toFixed(2) + "</u></strong></td><td data-f-underline='true' data-f-bold='true'><strong><u>" + custDiscountTotal.toFixed(2) + "</u></strong></td>" +
+                        "<td data-f-underline='true' data-f-bold='true'><strong><u>" + custGstTotal.toFixed(2) + "</u></strong></td><td data-f-underline='true' data-f-bold='true'><strong><u>" + custNetAmtTotal.toFixed(2) + "</u></strong></td></tr>";
 
                     content += customerName + billDetails + custTotals + space;
                 });
