@@ -713,13 +713,12 @@
             if (e.keyCode === 13 || e.which === '13') {
                 var balance = Number($(this).val());
                 paid = $(this).val()
-                $('.total_bal_s').text(e.value)
+                $('.total_bal_s').text(event.target.dataset.old)
                 var id = $(this).attr('data-inid');
                 var invbal = $(this).attr('data-invbal');
                 var custId = $(this).attr('data-custId');
                 var url="/updatesalebalance?id="+id+"&balance="+balance;
                 var type="POST";
-
                 if(balance!==0 && balance<=invbal)
                 {
                     $.ajax({
