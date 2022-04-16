@@ -422,6 +422,15 @@
                         </g:if>
                     </ul>
                 </li>
+                <li id="reports-menu" class="sidemenuitem"><a href="javascript:void(0);" class="menu-toggle"><i
+                        class="zmdi zmdi-chart"></i><span>Reports</span> <span
+                        class="badge badge-success float-right"></span></a>
+                    <ul class="ml-menu">
+
+                        <li><a href="/reports/sales">Sales Report (customer-wise)</a></li>
+
+                    </ul>
+                </li>
                 <li class="header"></li>
                 <li id="system-menu" class="sidemenuitem"><a href="javascript:void(0);" class="menu-toggle"><i
                         class="zmdi zmdi-book-image"></i><span>System</span> <span

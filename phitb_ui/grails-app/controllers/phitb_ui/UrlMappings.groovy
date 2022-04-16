@@ -527,5 +527,9 @@ class UrlMappings {
         "/payments-list"(controller: "paymentDetail", action: 'paymentList')
         "/print-payment/$custid/recipt/$id"(controller: "paymentDetail", action: 'printPayment')
 
+
+        //reports
+        "/reports/sales"(controller: "salesReport", action: "index")
+        "/reports/sales/customerwise"(controller: "salesReport", action: "salesCustomerWiseReport")
     }
 }

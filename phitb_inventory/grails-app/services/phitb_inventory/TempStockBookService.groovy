@@ -10,7 +10,7 @@ import java.text.SimpleDateFormat
 @Transactional
 class TempStockBookService {
 
-    SimpleDateFormat sdf = new SimpleDateFormat("yyyy-mm-DD")
+    SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd")
 
     def getAll(String limit, String offset, String query) {
 
