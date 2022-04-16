@@ -497,8 +497,6 @@
             url: '/getallunsettledbycustomer/' + id,
             dataType: 'json',
             success: function (data) {
-                console.log(data)
-
                 var trHTML = '';
                 var trHTML1 = '';
                 trHTML += '';
@@ -522,7 +520,7 @@
                         '</td><td>' + value.financialYear +
                         '</td><td>' + moment(value.dateCreated).format('DD-MM-YYYY') +
                         '</td><td><input type="number" name="balunsettled" value="' + value.balance +
-                        '" id="balunsettled" data-inid="'+value.id +'"  data-custId="'+ value.customerId +'" ></td></tr>';
+                        '" id="balunsettled" data-inid="'+value.id +'"  data-custId="'+ value.customerId +'" readonly></td></tr>';
 
                 });
 
@@ -535,7 +533,7 @@
                         '</td><td>' + value.financialYear +
                         '</td><td>' + moment(date).format('DD-MM-YYYY') +
                         '</td><td><input type="number" value="'+value.totalAmount +
-                        '" id="' + "CR"+value.id + '" data-cnid="'+value.id +'" ></td></tr>';
+                        '" id="' + "CR"+value.id + '" data-cnid="'+value.id +'" readonly></td></tr>';
                 });
                 $('.unsettledVocher').html(trHTML+trHTML1);
             },
@@ -560,7 +558,7 @@
                 var cred = "CRNT";
                 var inv = data[0].map(data => data.balance).reduce((acc, amount) => acc + amount, 0);
                 var crnt = data[1].map(data => data.totalAmount).reduce((acc, amount) => acc + amount, 0)
-                var total_bal_s = inv - crnt
+                var total_bal_s = inv - crnt;
                 $('.total_bal_s').text(parseFloat(total_bal_s).toFixed(2));
                 $('.tba').val(total_bal_s.toFixed(2));
                 $('.amountPaid').val(total_bal_s.toFixed(2));
@@ -570,7 +568,10 @@
                         '</td><td>' + value.financialYear +
                         '</td><td>' + moment(value.dateCreated).format('DD-MM-YYYY') +
                         '</td><td><input type="number" value="' + value.balance +
-                        '"></td><td><button type="button" data-id="' + value.id + '"  data-custId="' + value.customerId + '"  class="btn-sm btn-primary" id="unsettled">-></button></td></tr>';
+                        '" id="INVbalsettled" data-inid="'+value.id +'"  data-custId="'+ value.customerId
+                        +'" data-invbal="'+ value.balance +'"></td><td><button type="button" data-id="' + value.id +
+                        '"  data-custId="' +
+                        value.customerId + '"  class="btn-sm btn-primary" id="unsettled">-></button></td></tr>';
                 });
                 $.each(data[1], function (key, value) {
                     var date = new Date(value.entryDate)
@@ -579,7 +580,8 @@
                         '</td><td>' + value.financialYear +
                         '</td><td>' + moment(date).format('DD-MM-YYYY') +
                         '</td><td><input type="number" value="'+value.totalAmount +
-                        '"></td><td><button type="button" data-id="' + value.id +
+                        '" id="balsettled" data-cnid="'+value.id +'"  data-custId="'+ value.customerId
+                        +'"></td><td><button type="button" data-id="' + value.id +
                         '"  data-custId="' + value.customerId +
                         '" class="btn-sm btn-primary" id="cnunsettled">-></button></td></tr>';
                 });
@@ -666,8 +668,8 @@
             processData: false,
             success: function () {
                 $('table#table2 tr#CN' + id).remove();
-                getUnsettledByCustomer(custId)
-                getsettledSaleBillByCustomer(custId)
+                getUnsettledByCustomer(custId);
+                getsettledSaleBillByCustomer(custId);
             },
             error: function () {
                 swal("Error!", "Something went wrong", "error");
@@ -706,31 +708,50 @@
             }
         });
 
-        $(document).on('keydown','#balunsettled',function(e){
+        var paid="";
+        $(document).on('keydown','#INVbalsettled',function(e){
             if (e.keyCode === 13 || e.which === '13') {
-                $(this).parent().next('td').find('input#balunsettled').focus();
-                var balance = $(this).val();
+                var balance = Number($(this).val());
+                paid = $(this).val()
+                $('.total_bal_s').text(e.value)
                 var id = $(this).attr('data-inid');
+                var invbal = $(this).attr('data-invbal');
                 var custId = $(this).attr('data-custId');
                 var url="/updatesalebalance?id="+id+"&balance="+balance;
                 var type="POST";
-                $.ajax({
-                    url: url,
-                    type: type,
-                    contentType: false,
-                    processData: false,
-                    data: {
-                        balance: balance,
-                        id:id
-                    },
-                    success: function () {
-                        getUnsettledByCustomer(custId);
-                        getsettledSaleBillByCustomer(custId)
-                    },
-                    error: function () {
-                        swal("Error!", "Something went wrong", "error");
+
+                if(balance!==0 && balance<=invbal)
+                {
+                    $.ajax({
+                        url: url,
+                        type: type,
+                        contentType: false,
+                        processData: false,
+                        data: {
+                            balance: balance,
+                            id:id
+                        },
+                        success: function () {
+                            getUnsettledByCustomer(custId);
+                            getsettledSaleBillByCustomer(custId)
+                        },
+                        error: function () {
+                            swal("Error!", "Something went wrong", "error");
+                        }
+                    });
+                }
+               else
+                {
+                    if(balance === 0)
+                    {
+                        swal("Balance should not be zero!!");
                     }
-                });
+                    else
+                    {
+                        swal("Balance should not exceed!!");
+                    }
+                    $('#balsettled').val(invbal)
+                }
             }
         });
     });

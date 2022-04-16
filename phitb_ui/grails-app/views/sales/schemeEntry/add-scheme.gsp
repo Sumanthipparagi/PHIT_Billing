@@ -446,7 +446,7 @@
                 }
             },
             error: function(x, e) {
-
+                console.log("Something went wrong!")
             }
 
         });

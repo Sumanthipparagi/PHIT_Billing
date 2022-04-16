@@ -351,7 +351,8 @@ class SaleBillDetailsController
                 Double balance = Double.parseDouble(params.balance)
                 if (balance > 0 && balance!="" && balance!=null)
                 {
-                    saleBillDetails.balance = balance
+                    double diffBalance = Double.parseDouble(saleBillDetails.getBalance().toString()) - balance
+                    saleBillDetails.balance = diffBalance
                 }
                 else
                 {

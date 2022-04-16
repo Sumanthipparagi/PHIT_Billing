@@ -655,8 +655,6 @@ class SaleEntryController
                 i++
             }
             String saleProductId
-
-
             if(jsonArray.isNull(15))
             {
                 saleProductId = 0;

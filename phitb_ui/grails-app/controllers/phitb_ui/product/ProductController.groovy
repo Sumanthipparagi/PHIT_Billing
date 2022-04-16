@@ -94,7 +94,7 @@ class ProductController {
                     manufacturerList.add(it)
                 }
 
-                if (it.entityType.name.toString().equalsIgnoreCase(Constants.ENTITY_COMPANY)) {
+                if (it.entityType.name.toString().equalsIgnoreCase(Constants.ENTITY_MANUFACTURER_AND_MARKETING)) {
                     companyList.add(it)
                 }
             }
