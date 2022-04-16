@@ -73,9 +73,18 @@
                 <div class="card">
                     <div class="header">
                         <div class="row">
-                            <div class="col-md-4">
+                            <div class="col-md-2">
                                 <div class="form-group">
-                                    <label>Date Range</label>
+                                    <label for="sortBy">Sort By:</label>
+                                    <select style="margin-top: 5px; border-radius: 6px;" id="sortBy" class="sortBy form-control" name="sortBy">
+                                        <option value="default">DEFAULT</option>
+                                        <option value="invoice-date">INVOICE DATE</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-md-8">
+                                <div class="form-group">
+                                    <label>Date Range:</label>
 
                                     <div class="input-group">
                                         <input class="dateRange" type="text" name="dateRange"
@@ -85,11 +94,7 @@
                                     </div>
                                 </div>
                             </div>
-
-                            <div class="col-md-4">
-                            </div>
-
-                            <div class="col-md-4">
+                            <div class="col-md-2">
                                 <div class="form-group">
                                     <label>Export</label>
 
@@ -160,17 +165,20 @@
             closeOnClickOutside: false
         });
         var dateRange = $('.dateRange').val();
+        var sortBy = $('.sortBy').val();
         $.ajax({
-            url: "sales/customerwise?dateRange=" + dateRange,
+            url: "sales/customerwise?dateRange=" + dateRange+"&sortBy="+sortBy,
             type: "GET",
             contentType: false,
             processData: false,
             success: function (data) {
                 var content = "";
+                var grandTotal = 0.00;
                 var mainTableHeader = "<table class='table table-bordered table-sm' style='width: 100%;'><thead>" +
                     "<tr><td data-f-bold='true' colspan='11'><h3 style='margin-bottom:0 !important;'>${session.getAttribute('entityName')}</h3></td></tr>" +
                     "<tr><td colspan='11'>${session.getAttribute('entityAddress1')} ${session.getAttribute('entityAddress2')} ${session.getAttribute('entityPinCode')}, ph: ${session.getAttribute('entityMobileNumber')}</td></tr>" +
                     "<tr><th data-f-bold='true' colspan='11'>Customer-Bill-Itemwise Sales* Detail, Date: " + dateRange + "</th></tr>" +
+                    "<tr><th colspan='10'></th><th data-f-bold='true'><strong>Grand Total:</strong> <span id='grandTotal'></span></th></tr>" +
                     "<tr><th data-f-bold='true'>Sl No.</th><th data-f-bold='true'>Item Name</th><th data-f-bold='true'>Batch No.</th><th data-f-bold='true'>Expiry</th>" +
                     "<th data-f-bold='true'>Sale Qty</th><th data-f-bold='true'>Fr. Qty</th><th data-f-bold='true'>Rate</th><th data-f-bold='true'>N T V</th><th data-f-bold='true'>Discount</th><th data-f-bold='true'>GST</th><th data-f-bold='true'>Net Amount</th></tr></thead><tbody>";
                 $.each(data, function (key, customer) {
@@ -181,8 +189,11 @@
                     var custGstTotal = 0;
                     var custNetAmtTotal = 0;
                     $.each(customer, function (key, bill) {
+                        var billStatusColor = "green";
+                        if(bill.billStatus == "CANCELLED")
+                            billStatusColor = "red";
                         var products = "";
-                        billDetails += "<tr><td colspan='2'><strong>Invoice No: </strong> " + bill.invoiceNumber + "</td><td colspan='9'><strong>Date:</strong> " + dateFormat(bill.orderDate) + "</td></tr>";
+                        billDetails += "<tr><td colspan='2'><strong>Invoice No: </strong> " + bill.invoiceNumber + "</td><td><strong>Date:</strong> " + dateFormat(bill.orderDate) + "</td><td colspan='9'><strong>Invoice Status: <span style='color: "+billStatusColor+";'>" + bill.billStatus + "</span></strong></td></tr>";
                         var ntvTotal = 0;
                         var discountTotal = 0;
                         var gstTotal = 0;
@@ -199,11 +210,12 @@
                         var totals = "<tr><td></td><td></td><td></td><td></td><td></td><td></td><td></td>" +
                             "<td data-f-underline='true'><u>" + ntvTotal.toFixed(2) + "</u></td><td data-f-underline='true'><u>" + discountTotal.toFixed(2) + "</u></td>" +
                             "<td data-f-underline='true'><u>" + gstTotal.toFixed(2) + "</u></td><td data-f-underline='true'><u>" + netAmtTotal.toFixed(2) + "</u></td></tr>";
-                        custNtvTotal += ntvTotal;
-                        custDiscountTotal += discountTotal;
-                        custGstTotal += gstTotal;
-                        custNetAmtTotal += netAmtTotal;
-
+                        if(bill.billStatus != "CANCELLED") {
+                            custNtvTotal += ntvTotal;
+                            custDiscountTotal += discountTotal;
+                            custGstTotal += gstTotal;
+                            custNetAmtTotal += netAmtTotal;
+                        }
                         billDetails += products + totals;
                     });
                     var space = "<tr class='pagebreak' style='background-color: #ceecf5 !important;'><td data-f-fill='ceecf500' colspan='11'></td></tr>";
@@ -211,12 +223,14 @@
                         "<td data-f-underline='true' data-f-bold='true'><strong><u>" + custNtvTotal.toFixed(2) + "</u></strong></td><td data-f-underline='true' data-f-bold='true'><strong><u>" + custDiscountTotal.toFixed(2) + "</u></strong></td>" +
                         "<td data-f-underline='true' data-f-bold='true'><strong><u>" + custGstTotal.toFixed(2) + "</u></strong></td><td data-f-underline='true' data-f-bold='true'><strong><u>" + custNetAmtTotal.toFixed(2) + "</u></strong></td></tr>";
 
+                    grandTotal += custNetAmtTotal;
                     content += customerName + billDetails + custTotals + space;
                 });
                 var mainTableFooter = "</tbody></table>";
 
                 $("#result").html(mainTableHeader + content + mainTableFooter);
                 loading.close();
+                $("#grandTotal").text(grandTotal.toFixed(2));
             },
             error: function () {
                 loading.close();

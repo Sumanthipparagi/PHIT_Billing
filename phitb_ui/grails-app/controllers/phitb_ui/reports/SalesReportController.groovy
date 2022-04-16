@@ -18,7 +18,8 @@ class SalesReportController {
         String entityId = session.getAttribute("entityId")
         String financialYear = session.getAttribute("financialYear")
         String dateRange = params.dateRange
-        JSONObject customerWiseData = reportsService.getCustomerWiseReport(entityId, dateRange, financialYear)
+        String sortBy = params.sortBy
+        JSONObject customerWiseData = reportsService.getCustomerWiseReport(entityId, dateRange, financialYear, sortBy)
         //get product details
         for (Object customer : customerWiseData.keySet()) {
             def customerDetail = new EntityService().getEntityById(customer.toString())

@@ -13,13 +13,15 @@ import javax.ws.rs.core.Response
 @Transactional
 class ReportsService {
 
-    def getCustomerWiseReport(String entityId, String dateRange, String financialYear) {
+    def getCustomerWiseReport(String entityId, String dateRange, String financialYear, String sortBy) {
         JSONObject jsonObject = new JSONObject()
         jsonObject.put("entityId",entityId)
         jsonObject.put("dateRange", dateRange)
         jsonObject.put("financialYear", financialYear)
+        jsonObject.put("sortBy", sortBy)
         Client client = ClientBuilder.newClient()
-        WebTarget target = client.target(new Links().API_GATEWAY)
+        //WebTarget target = client.target(new Links().API_GATEWAY)
+        WebTarget target = client.target("http://localhost:8083")
         try
         {
             Response apiResponse = target

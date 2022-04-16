@@ -18,12 +18,17 @@ class ReportsController {
             String entityId = jsonObject.get("entityId")
             String financialYear = jsonObject.get("financialYear")
             String daterange = jsonObject.get("dateRange")
+            String sortby = jsonObject.get("sortBy")
+            String sort = "id"
+            if(sortby.equalsIgnoreCase("invoice-date"))
+                sort = "orderDate"
+
             SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy")
             Date fromDate = sdf.parse(daterange.split("-")[0].trim())
             Date toDate = sdf.parse(daterange.split("-")[1].trim())
             JSONObject customerBills = new JSONObject()
             JSONArray bills = new JSONArray()
-            ArrayList<SaleBillDetails> saleBillDetails = SaleBillDetails.findAllByEntityIdAndFinancialYearAndOrderDateBetweenAndBillStatus(Long.parseLong(entityId), financialYear, fromDate, toDate, "ACTIVE")
+            ArrayList<SaleBillDetails> saleBillDetails = SaleBillDetails.findAllByEntityIdAndFinancialYearAndOrderDateBetweenAndBillStatusNotEqual(Long.parseLong(entityId), financialYear, fromDate, toDate, "DRAFT", [sort: sort, order: 'desc'])
             for (SaleBillDetails saleBillDetail : saleBillDetails) {
                 def saleBillJson = new JSONObject((saleBillDetail as JSON).toString())
                 ArrayList<SaleProductDetails> saleProductDetails = SaleProductDetails.findAllByBillId(saleBillDetail.id)
