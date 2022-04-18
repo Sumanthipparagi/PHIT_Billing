@@ -727,7 +727,6 @@ class SaleEntryController
                 def saveResponse = new SalesService().saveSaleProductDetail(saleProductDetail)
                 if (saveResponse?.status == 200)
                 {
-
                     JSONObject obj = new JSONObject(saveResponse.readEntity(String.class))
                     def productDetail = new SalesService().getSaleProductDetailsById(obj.id.toString())
                     if (productDetail)
@@ -748,6 +747,20 @@ class SaleEntryController
             {
                 if (saleProductId != null)
                 {
+                    def productDetail1 = new SalesService().getSaleProductDetailsById(saleProductId.toString())
+                    println(productDetail1.productId)
+                    if (productDetail1)
+                    {
+                        def stockBook = new InventoryService().getStocksOfProductAndBatch(productDetail1.productId.toString(),
+                                productDetail1.batchNumber.toString(), session.getAttribute("entityId").toString())
+                        double remainingQty = stockBook.get("remainingQty") + productDetail1.sqty
+                        double remainingFreeQty = stockBook.get("remainingFreeQty") + productDetail1.freeQty
+                        double remainingReplQty = stockBook.get("remainingReplQty") + productDetail1.repQty
+                        stockBook.put("remainingQty", remainingQty.toLong())
+                        stockBook.put("remainingFreeQty", remainingFreeQty.toLong())
+                        stockBook.put("remainingReplQty", remainingReplQty.toLong())
+                        new InventoryService().updateStockBook(stockBook)
+                    }
                     def updateResponse = new SalesService().updateSaleProductDetail(saleProductDetail)
                     if (updateResponse?.status == 200)
                     {
