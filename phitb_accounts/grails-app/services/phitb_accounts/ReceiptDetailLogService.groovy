@@ -90,7 +90,6 @@ class ReceiptDetailLogService {
     }
 
     ReceiptDetailLog update(JSONObject jsonObject, String id) {
-
         ReceiptDetailLog receiptDetailLog = ReceiptDetailLog.findById(Long.parseLong(id))
         if (receiptDetailLog) {
             receiptDetailLog.isUpdatable = true
@@ -118,10 +117,10 @@ class ReceiptDetailLogService {
 
     void delete(String id) {
         if (id) {
-            BillPaymentLog billPaymentLog = BillPaymentLog.findById(Long.parseLong(id))
-            if (billPaymentLog) {
-                billPaymentLog.isUpdatable = true
-                billPaymentLog.delete()
+            ReceiptDetailLog receiptDetailLog = ReceiptDetailLog.findById(Long.parseLong(id))
+            if (receiptDetailLog) {
+                receiptDetailLog.isUpdatable = true
+                receiptDetailLog.delete()
             } else {
                 throw new ResourceNotFoundException()
             }
