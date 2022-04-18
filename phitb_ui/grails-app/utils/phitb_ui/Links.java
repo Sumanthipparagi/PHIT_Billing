@@ -434,6 +434,9 @@ public class Links
     public static String RECIPT_DETAIL_UPDATE = "api/v1.0/accounts/receiptdetails/{id}";
     public static String RECIPT_DETAIL_DELETE = "api/v1.0/accounts/receiptdetails/{id}";
 
+//    Reciept detail log
+    public static String RECIPT_DETAIL_LOG = "api/v1.0/accounts/reciptdetaillog";
+
 
     //Wallet
     public static String WALLET_SHOW = "api/v1.0/accounts/wallet";

@@ -353,6 +353,7 @@ class SaleBillDetailsController
                 {
                     double diffBalance = Double.parseDouble(saleBillDetails.getBalance().toString()) - balance
                     saleBillDetails.balance = diffBalance
+                    saleBillDetails.adjAmount = balance
                 }
                 else
                 {

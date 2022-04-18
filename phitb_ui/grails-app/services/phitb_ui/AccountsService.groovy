@@ -413,6 +413,27 @@ class AccountsService
 
     }
 
+    //   update receipt details log
+    def updateReceiptDetailLog(JSONObject jsonObject)
+    {
+        Form form = UtilsService.jsonToFormDataConverter(jsonObject)
+        Client client = ClientBuilder.newClient();
+        WebTarget target = client.target(new Links().API_GATEWAY);
+        try
+        {
+            Response apiResponse = target
+                    .path(new Links().RECIPT_DETAIL_LOG)
+                    .request(MediaType.APPLICATION_JSON_TYPE)
+                    .post(Entity.form(form))
+            return apiResponse
+        }
+        catch (Exception ex)
+        {
+            System.err.println('Service :saveStateMaster , action :  save  , Ex:' + ex)
+            log.error('Service :saveStateMaster , action :  save  , Ex:' + ex)
+        }
+
+    }
 
 //   move invoice to settled vocher
     def updateSettledVocher(JSONObject jsonObject)

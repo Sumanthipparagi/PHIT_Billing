@@ -319,12 +319,15 @@
                                                         <th>Document No.</th>
                                                         <th>Document Date</th>
                                                         <th>Amount</th>
+                                                        <th>Adj Amount</th>
                                                         <th style="width: 2%"></th>
                                                         </thead>
                                                     </tr>
                                                     <tbody class="settledVocher">
 
                                                     </tbody>
+                                                    <td></td>
+                                                    <td></td>
                                                     <td></td>
                                                     <td></td>
                                                     <td></td>
@@ -569,9 +572,9 @@
                         '</td><td>' + moment(value.dateCreated).format('DD-MM-YYYY') +
                         '</td><td><input type="number" value="' + value.balance +
                         '" id="INVbalsettled" data-inid="'+value.id +'"  data-custId="'+ value.customerId
-                        +'" data-invbal="'+ value.balance +'"></td><td><button type="button" data-id="' + value.id +
-                        '"  data-custId="' +
-                        value.customerId + '"  class="btn-sm btn-primary" id="unsettled">-></button></td></tr>';
+                        +'" data-invbal="'+ value.balance +'"></td><td>'+ value.adjAmount +'</td><td><button type="button" data-id="' +
+                        value.id +
+                        '"  data-custId="' + value.customerId + '"  class="btn-sm btn-primary" id="unsettled">-></button></td></tr>';
                 });
                 $.each(data[1], function (key, value) {
                     var date = new Date(value.entryDate)
@@ -581,9 +584,8 @@
                         '</td><td>' + moment(date).format('DD-MM-YYYY') +
                         '</td><td><input type="number" value="'+value.totalAmount +
                         '" id="balsettled" data-cnid="'+value.id +'"  data-custId="'+ value.customerId
-                        +'"></td><td><button type="button" data-id="' + value.id +
-                        '"  data-custId="' + value.customerId +
-                        '" class="btn-sm btn-primary" id="cnunsettled">-></button></td></tr>';
+                        +'"></td><td></td><td><button type="button" data-id="' + value.id +
+                        '"  data-custId="' + value.customerId + '" class="btn-sm btn-primary" id="cnunsettled">-></button></td></tr>';
                 });
                 $('.settledVocher').html(trHTML+trHTML1);
             },
@@ -701,29 +703,23 @@
     });
 
     $(document).ready(function () {
-        $(window).keydown(function (event) {
-            if (event.keyCode === 13) {
-                event.preventDefault();
-                return false;
-            }
-        });
+
 
         var paid="";
         $(document).on('keydown','#INVbalsettled',function(e){
             if (e.keyCode === 13 || e.which === '13') {
                 var balance = Number($(this).val());
-                paid = $(this).val()
-                $('.total_bal_s').text(event.target.dataset.old)
+                paid = $(this).val();
                 var id = $(this).attr('data-inid');
                 var invbal = $(this).attr('data-invbal');
                 var custId = $(this).attr('data-custId');
+                var billType = "INVOICE";
                 var url="/updatesalebalance?id="+id+"&balance="+balance;
-                var type="POST";
                 if(balance!==0 && balance<=invbal)
                 {
                     $.ajax({
                         url: url,
-                        type: type,
+                        type: "POST",
                         contentType: false,
                         processData: false,
                         data: {
@@ -731,8 +727,23 @@
                             id:id
                         },
                         success: function () {
-                            getUnsettledByCustomer(custId);
-                            getsettledSaleBillByCustomer(custId)
+                            $.ajax({
+                                type: "POST",
+                                url: "/updatereciptlog",
+                                data: {
+                                    amountPaid: balance,
+                                    billId:id,
+                                    billType:billType,
+                                    financialYear:'${session.getAttribute('financialYear')}',
+                                    currentFinancialYear:'${session.getAttribute('financialYear')}',
+                                },
+                                success: function (data) {
+                                    // console.log(data)
+                                    $('#INVbalsettled').attr('value', "sjsj");
+                                    getUnsettledByCustomer(custId);
+                                    getsettledSaleBillByCustomer(custId)
+                                }
+                            });
                         },
                         error: function () {
                             swal("Error!", "Something went wrong", "error");
@@ -744,15 +755,25 @@
                     if(balance === 0)
                     {
                         swal("Balance should not be zero!!");
+                        $('#balsettled').val(invbal)
                     }
                     else
                     {
                         swal("Balance should not exceed!!");
+                        $('#balsettled').val(invbal)
                     }
                     $('#balsettled').val(invbal)
                 }
             }
         });
+
+        $(window).keydown(function (event) {
+            if (event.keyCode === 13) {
+                event.preventDefault();
+                return false;
+            }
+        });
+
     });
 
 </script>

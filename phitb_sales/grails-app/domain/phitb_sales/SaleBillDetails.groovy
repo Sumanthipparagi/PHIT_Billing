@@ -52,11 +52,12 @@ class SaleBillDetails implements Serializable, LogicalDelete<SaleBillDetails>
     long entityId
     long createdUser
     long modifiedUser
-
+    double adjAmount
     Date dateCreated
     Date lastUpdated
     static constraints = {
         invoiceNumber unique: true, nullable: true
+        adjAmount nullable: true
     }
 
     boolean isUpdatable

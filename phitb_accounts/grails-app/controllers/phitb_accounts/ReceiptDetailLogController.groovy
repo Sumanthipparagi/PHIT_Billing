@@ -63,7 +63,7 @@ class ReceiptDetailLogController {
      */
     def save() {
         try {
-            JSONObject jsonObject = JSON.parse(request.reader.text) as JSONObject
+            JSONObject jsonObject = new JSONObject(params)
             respond receiptDetailLogService.save(jsonObject)
         }
         catch (ResourceNotFoundException ex)
