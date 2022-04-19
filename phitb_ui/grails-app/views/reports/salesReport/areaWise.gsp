@@ -183,6 +183,7 @@
                     "<tr><th data-f-bold='true' colspan='3'>Customer</th><th data-f-bold='true'>Net Amount</th>";
                 // "<th data-f-bold='true'>Sale Qty</th><th data-f-bold='true'>Fr. Qty</th><th data-f-bold='true'>Rate</th><th data-f-bold='true'>N T V</th><th data-f-bold='true'>Discount</th><th data-f-bold='true'>GST</th><th data-f-bold='true'>Net Amount</th></tr></thead><tbody>";
                 $.each(data, function (key, city) {
+                    console.log(data)
                     var billDetails = "";
                     var custNetAmtTotal = 0;
                     $.each(city, function (key, bill) {

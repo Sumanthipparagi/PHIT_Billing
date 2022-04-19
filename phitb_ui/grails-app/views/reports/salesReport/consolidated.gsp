@@ -179,7 +179,7 @@
                     "<tr><td colspan='11'>${session.getAttribute('entityAddress1')} ${session.getAttribute('entityAddress2')} ${session.getAttribute('entityPinCode')}, ph: ${session.getAttribute('entityMobileNumber')}</td></tr>" +
                     "<tr><th data-f-bold='true' colspan='11'>Customer-Bill-consolidated Sales* Detail, Date: " +
                     dateRange + "</th></tr>"+
-                // "<tr><th></th><th data-f-bold='true'><strong>Grand Total:</strong> <span id='grandTotal'></span></th></tr>"+
+                "<tr><th colspan='3'></th><th data-f-bold='true'><strong>Grand Total:</strong> <span id='grandTotal'></span></th></tr>"+
                 "<tr><th data-f-bold='true' colspan='3'>Customer</th><th data-f-bold='true'>Net Amount</th>";
                 // "<th data-f-bold='true'>Sale Qty</th><th data-f-bold='true'>Fr. Qty</th><th data-f-bold='true'>Rate</th><th data-f-bold='true'>N T V</th><th data-f-bold='true'>Discount</th><th data-f-bold='true'>GST</th><th data-f-bold='true'>Net Amount</th></tr></thead><tbody>";
                 $.each(data, function (key, city) {
@@ -238,12 +238,13 @@
                     grandTotal += custNetAmtTotal;
                     content += cityName + billDetails;
                 });
-                var total = "<tr><th colspan='3'></th><th data-f-bold='true'><strong>Grand Total:</strong> <span id='grandTotal'></span></th></tr>"
+                var total = "<tr><th colspan='3'></th><th data-f-bold='true'><strong>Grand Total:</strong> <span id='Total'></span></th></tr>"
                 var mainTableFooter = "</tbody></table>";
 
                 $("#result").html(mainTableHeader + content+total+ mainTableFooter);
                 loading.close();
                 $("#grandTotal").text(grandTotal.toFixed(2));
+                $("#Total").text(grandTotal.toFixed(2));
             },
             error: function () {
                 loading.close();
