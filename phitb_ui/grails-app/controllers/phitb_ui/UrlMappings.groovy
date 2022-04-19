@@ -529,7 +529,9 @@ class UrlMappings {
 
 
         //reports
-        "/reports/sales"(controller: "salesReport", action: "index")
-        "/reports/sales/customerwise"(controller: "salesReport", action: "salesCustomerWiseReport")
+        "/reports/sales/customerwise"(controller: "salesReport", action: "index")
+        "/reports/sales/getcustomerwise"(controller: "salesReport", action: "salesCustomerWiseReport")
+        "/reports/sales/datewise"(controller: "salesReport", action: "datewise")
+        "/reports/sales/getdatewise"(controller: "salesReport", action: "salesDateWiseReport")
     }
 }

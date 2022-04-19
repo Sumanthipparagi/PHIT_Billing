@@ -427,7 +427,8 @@
                         class="badge badge-success float-right"></span></a>
                     <ul class="ml-menu">
 
-                        <li><a href="/reports/sales">Sales Report (customer-wise)</a></li>
+                        <li><a href="/reports/sales/customerwise">Sales Report (customer-wise)</a></li>
+                        <li><a href="/reports/sales/datewise">Sales Report (date-wise)</a></li>
 
                     </ul>
                 </li>
