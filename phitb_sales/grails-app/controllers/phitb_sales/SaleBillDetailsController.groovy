@@ -348,13 +348,15 @@ class SaleBillDetailsController
             if (saleBillDetails)
             {
                 saleBillDetails.isUpdatable = true
-                if (params.balance > 0 && params.balance!="" && params.balance!=null)
+                Double balance = Double.parseDouble(params.balance)
+                if (balance > 0 && balance!="" && balance!=null)
                 {
-                    saleBillDetails.balance = params.balance
+                    double diffBalance = Double.parseDouble(saleBillDetails.getBalance().toString()) - balance
+                    saleBillDetails.balance = diffBalance
                 }
                 else
                 {
-                    saleBillDetails.balance = params.balance
+                    saleBillDetails.balance = 0
                 }
                 SaleBillDetails saleBillDetails1 = saleBillDetails.save(flush: true)
                 if (saleBillDetails1)

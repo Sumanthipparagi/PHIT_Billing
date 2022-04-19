@@ -22,6 +22,8 @@
             src="/themeassets/plugins/bootstrap-material-datetimepicker/css/bootstrap-material-datetimepicker.css"
             rel="stylesheet"/>
     <asset:stylesheet src="/themeassets/plugins/dropify/dist/css/dropify.min.css"/>
+    <asset:stylesheet src="/themeassets/plugins/select-2-editor/select2.min.css"/>
+
 
 </head>
 
@@ -108,18 +110,20 @@
                                             <label for="manufacturerId">
                                                 Manufacturer
                                             </label>
-                                            <select class="form-control show-tick manufacturerId" name="manufacturerId" id="manufacturerId">
+                                            <select class="form-control show-tick manufacturerId"
+                                                    name="manufacturerId" id="manufacturerId" style="border: 0">
                                                 <g:each var="c" in="${manufacturerList}">
                                                     <option value="${c.id}">${c.entityName}</option>
                                                 </g:each>
                                             </select>
                                         </div>
-                                        <div class="col-md-6 form-group  form-float">
+                                        <div class="col-md-6 form-group">
                                             <label for="mktCompanyId">
                                                 Marketing Company
                                             </label>
-                                            <select class="form-control show-tick mktCompanyId" name="mktCompanyId" id="mktCompanyId">
-                                                <g:each var="c" in="${companyList}">
+                                            <select class="form-control show-tick mktCompanyId" name="mktCompanyId"
+                                                    id="mktCompanyId" style="border: 0;">
+                                                <g:each var="c" in="${companyList}" >
                                                     <option value="${c.id}">${c.entityName}</option>
                                                 </g:each>
                                             </select>
@@ -574,6 +578,7 @@
 <asset:javascript src="/themeassets/js/pages/tables/jquery-datatable.js"/>
 <asset:javascript src="/themeassets/js/pages/ui/dialogs.js"/>
 <asset:javascript src="/themeassets/plugins/sweetalert/sweetalert.min.js"/>
+<asset:javascript src="/themeassets/plugins/select-2-editor/select2.js"/>
 <asset:javascript src="/themeassets/plugins/jquery-inputmask/jquery.inputmask.bundle.js"/>
 <asset:javascript src="/themeassets/plugins/momentjs/moment.js"/>
 <asset:javascript src="/themeassets/plugins/bootstrap-material-datetimepicker/js/bootstrap-material-datetimepicker.js"/>
@@ -583,34 +588,9 @@
 <script>
 
     $(function () {
-        //Datetimepicker plugin
-        $('.dob').bootstrapMaterialDatePicker({
-            format: 'DD/MM/YYYY',
-            clearButton: true,
-            time: false,
-            weekStart: 1
-        });
 
-        $('.joiningDate').bootstrapMaterialDatePicker({
-            format: 'DD/MM/YYYY',
-            clearButton: true,
-            time: false,
-            weekStart: 1
-        });
-
-        $('.lastPaidDate').bootstrapMaterialDatePicker({
-            format: 'DD/MM/YYYY',
-            clearButton: true,
-            time: false,
-            weekStart: 1
-        });
-
-        $('.anniversaryDate').bootstrapMaterialDatePicker({
-            format: 'DD/MM/YYYY',
-            clearButton: true,
-            time: false,
-            weekStart: 1
-        });
+        $('#manufacturerId').select2()
+        $('#mktCompanyId').select2()
     });
 
 

@@ -1114,14 +1114,17 @@
 
     function resetData() {
         Swal.fire({
-            title: "Reloading, Please wait!",
+            title: "Redirecting, Please wait!",
             showDenyButton: false,
             showCancelButton: false,
             showConfirmButton: false,
             allowOutsideClick: false,
             closeOnClickOutside: false
         });
-        location.reload();
+
+        window.location = "/sale-entry";
+
+        // location.reload();
         /*var saleTableData = hot.getData();
         if(saleTableData && !readOnly) {
             for(var row=0;row<saleTableData.length;row++) {

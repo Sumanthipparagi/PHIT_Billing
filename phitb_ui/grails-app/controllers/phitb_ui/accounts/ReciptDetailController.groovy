@@ -436,7 +436,7 @@ class ReciptDetailController
         {
             JSONObject jsonObject = new JSONObject(params)
             jsonObject.put('balance',params.balance)
-            jsonObject.put('id',params.balance)
+            jsonObject.put('id',params.id)
             println(jsonObject)
             def apiResponse = new AccountsService().updateSaleBalance(jsonObject)
             if (apiResponse?.status == 200)

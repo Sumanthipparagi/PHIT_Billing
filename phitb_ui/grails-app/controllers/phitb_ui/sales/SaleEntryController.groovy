@@ -61,7 +61,7 @@ class SaleEntryController
         if (!billStatus.equalsIgnoreCase("DRAFT"))
         {
             def recentSaleBill = new SalesService().getRecentSaleBill(financialYear, entityId, billStatus)
-            if (recentSaleBill != null)
+            if (recentSaleBill != null && recentSaleBill.size()!=0)
             {
                 finId = Long.parseLong(recentSaleBill.get("finId").toString()) + 1
                 serBillId = Long.parseLong(recentSaleBill.get("serBillId").toString()) + 1
@@ -580,7 +580,7 @@ class SaleEntryController
         def series = new SeriesController().getByEntity(entityId)
         def saleBillId = params.saleBillId
         JSONObject saleBillDetail = new SalesService().getSaleBillDetailsById(saleBillId)
-        if (saleBillDetail != null)
+        if (saleBillDetail != null && saleBillDetail.billStatus=='DRAFT')
         {
             JSONArray saleProductDetails = new SalesService().getSaleProductDetailsByBill(saleBillId)
             render(view: '/sales/edit-sale-entry', model: [customers         : customers, divisions: divisions, series: series,
@@ -588,7 +588,7 @@ class SaleEntryController
                                                            saleProductDetails: saleProductDetails])
         }
         else {
-            render('No bill found!!')
+            render('No Draft invoice found!!')
         }
 
     }
@@ -655,8 +655,6 @@ class SaleEntryController
                 i++
             }
             String saleProductId
-
-
             if(jsonArray.isNull(15))
             {
                 saleProductId = 0;
@@ -729,7 +727,6 @@ class SaleEntryController
                 def saveResponse = new SalesService().saveSaleProductDetail(saleProductDetail)
                 if (saveResponse?.status == 200)
                 {
-
                     JSONObject obj = new JSONObject(saveResponse.readEntity(String.class))
                     def productDetail = new SalesService().getSaleProductDetailsById(obj.id.toString())
                     if (productDetail)
@@ -750,6 +747,20 @@ class SaleEntryController
             {
                 if (saleProductId != null)
                 {
+                    def productDetail1 = new SalesService().getSaleProductDetailsById(saleProductId.toString())
+                    println(productDetail1.productId)
+                    if (productDetail1)
+                    {
+                        def stockBook = new InventoryService().getStocksOfProductAndBatch(productDetail1.productId.toString(),
+                                productDetail1.batchNumber.toString(), session.getAttribute("entityId").toString())
+                        double remainingQty = stockBook.get("remainingQty") + productDetail1.sqty
+                        double remainingFreeQty = stockBook.get("remainingFreeQty") + productDetail1.freeQty
+                        double remainingReplQty = stockBook.get("remainingReplQty") + productDetail1.repQty
+                        stockBook.put("remainingQty", remainingQty.toLong())
+                        stockBook.put("remainingFreeQty", remainingFreeQty.toLong())
+                        stockBook.put("remainingReplQty", remainingReplQty.toLong())
+                        new InventoryService().updateStockBook(stockBook)
+                    }
                     def updateResponse = new SalesService().updateSaleProductDetail(saleProductDetail)
                     if (updateResponse?.status == 200)
                     {
@@ -812,7 +823,6 @@ class SaleEntryController
         SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy")
         JSONObject saleBillDetails = new JSONObject()
         JSONArray saleProductDetails = new JSONArray()
-
         String entityId = session.getAttribute("entityId").toString()
         String customerId = params.customer
         String priorityId = params.priority
@@ -828,7 +838,8 @@ class SaleEntryController
         if (!billStatus.equalsIgnoreCase("DRAFT"))
         {
             def recentSaleBill = new SalesService().getRecentSaleBill(financialYear, entityId, billStatus)
-            if (recentSaleBill != null)
+            println(recentSaleBill)
+            if (recentSaleBill != null && recentSaleBill.size()!=0)
             {
                 finId = Long.parseLong(recentSaleBill.get("finId").toString()) + 1
                 serBillId = Long.parseLong(recentSaleBill.get("serBillId").toString()) + 1
