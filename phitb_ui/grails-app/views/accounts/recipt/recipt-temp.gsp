@@ -135,6 +135,9 @@
                         Adj. Doc. No.
                     </th>
                     <th>
+                         Doc Type
+                    </th>
+                    <th>
                         Doc. Date
                     </th>
                     <th>
@@ -142,27 +145,36 @@
                     </th>
                 </tr>
                 <g:each var="sv" in="${settled}">
-                    <%
+%{--                    <%--}%
 
-                        def invoiceNumber;
-                        def series ="__"
-                        def datepart = sv.entryDate.split("T")[0];
-                        def month = datepart.split("-")[1];
-                        def year = datepart.split("-")[0];
-                        def seriesCode = "__";
-                        if (sv.billStatus == "DRAFT")
-                        {
-                            invoiceNumber = sv.entityId+"/DR/S/" + month + year + "/" + series + "/__";
-                        }
-                        else
-                        {
-                            invoiceNumber =  sv.entityId+"/S/" + month + year + "/" + series + "/" + sv.id
-                        }
-%>
+%{--                        def invoiceNumber;--}%
+%{--                        def series ="__"--}%
+%{--                        def datepart = sv.entryDate.split("T")[0];--}%
+%{--                        def month = datepart.split("-")[1];--}%
+%{--                        def year = datepart.split("-")[0];--}%
+%{--                        def seriesCode = "__";--}%
+%{--                        if (sv.billStatus == "DRAFT")--}%
+%{--                        {--}%
+%{--                            invoiceNumber = sv.entityId+"/DR/S/" + month + year + "/" + series + "/__";--}%
+%{--                        }--}%
+%{--                        else--}%
+%{--                        {--}%
+%{--                            invoiceNumber =  sv.entityId+"/S/" + month + year + "/" + series + "/" + sv.id--}%
+%{--                        }--}%
+%{--%>--}%
                     <tr>
-                        <td>${invoiceNumber}</td>
+                        <td>${sv.invoiceNumber}</td>
+                        <td>INV</td>
                         <td>${sv.dateCreated.split("T")[0]}</td>
                         <td>${sv.balance}</td>
+                    </tr>
+                </g:each>
+                <g:each var="csv" in="${creditNoteArry}">
+                    <tr>
+                        <td>${csv.invoiceNumber}</td>
+                        <td>CRNT</td>
+                        <td>${csv.dateCreated.split("T")[0]}</td>
+                        <td>${csv.balance}</td>
                     </tr>
                 </g:each>
             </table>
