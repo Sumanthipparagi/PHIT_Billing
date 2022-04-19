@@ -257,6 +257,7 @@ class UrlMappings {
             }
 
             "/reports/customerwise(.$format)?"(controller: 'reports', action: 'getCustomerWiseBillDetails')
+            "/reports/datewise(.$format)?"(controller: 'reports', action: 'getDateWiseBillDetails')
         }
     }
 }

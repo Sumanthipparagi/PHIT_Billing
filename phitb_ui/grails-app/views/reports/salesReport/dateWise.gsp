@@ -6,7 +6,7 @@
     <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
     <meta name="description" content="Responsive Bootstrap 4 and web Application ui kit.">
 
-    <title>:: PharmIt ::  Customer-wise Sales Report</title>
+    <title>:: PharmIt ::  Date-wise Sales Report</title>
     <link rel="icon" type="image/x-icon" href="${assetPath(src: '/themeassets/images/favicon.ico')}"/>
     <!-- Favicon-->
     <asset:stylesheet rel="stylesheet" src="/themeassets/plugins/bootstrap/css/bootstrap.min.css"/>
@@ -50,10 +50,10 @@
         <div class="block-header">
             <div class="row clearfix">
                 <div class="col-lg-5 col-md-5 col-sm-12">
-                    <h2>Customer-wise Sales Report</h2>
+                    <h2>Date-wise Sales Report</h2>
                     <ul class="breadcrumb padding-0">
                         <li class="breadcrumb-item"><a href="#"><i class="zmdi zmdi-home"></i></a></li>
-                        <li class="breadcrumb-item active">Customer-wise Sales Report</li>
+                        <li class="breadcrumb-item active">Date-wise Sales Report</li>
                     </ul>
                 </div>
 
@@ -167,7 +167,7 @@
         var dateRange = $('.dateRange').val();
         var sortBy = $('.sortBy').val();
         $.ajax({
-            url: "sales/getcustomerwise?dateRange=" + dateRange+"&sortBy="+sortBy,
+            url: "getdatewise?dateRange=" + dateRange+"&sortBy="+sortBy,
             type: "GET",
             contentType: false,
             processData: false,
@@ -182,7 +182,7 @@
                     "<tr><th data-f-bold='true'>Sl No.</th><th data-f-bold='true'>Item Name</th><th data-f-bold='true'>Batch No.</th><th data-f-bold='true'>Expiry</th>" +
                     "<th data-f-bold='true'>Sale Qty</th><th data-f-bold='true'>Fr. Qty</th><th data-f-bold='true'>Rate</th><th data-f-bold='true'>N T V</th><th data-f-bold='true'>Discount</th><th data-f-bold='true'>GST</th><th data-f-bold='true'>Net Amount</th></tr></thead><tbody>";
                 $.each(data, function (key, customer) {
-                    var customerName = "<tr><td data-f-bold='true' colspan='11'><strong>Customer: </strong><span class='customerData cust" + key + "'>" + customer[0].customerDetail.entityName + "</span></td></tr>";
+                    var billDate = "<tr><td colspan='11'>"+dateFormat(key)+"</td></tr>";
                     var billDetails = "";
                     var custNtvTotal = 0;
                     var custDiscountTotal = 0;
@@ -192,8 +192,9 @@
                         var billStatusColor = "green";
                         if(bill.billStatus == "CANCELLED")
                             billStatusColor = "red";
+                        var customerName = "<tr><td data-f-bold='true' colspan='11'><strong>Customer: </strong><span class='customerData cust" + key + "'>" + customer[key].customerDetail.entityName + "</span></td></tr>";
+                        billDetails += customerName + "<tr><td colspan='2'><strong>Invoice No: </strong> " + bill.invoiceNumber + "</td><td><strong>Date:</strong> " + dateFormat(bill.orderDate) + "</td><td colspan='9'><strong>Invoice Status: <span style='color: "+billStatusColor+";'>" + bill.billStatus + "</span></strong></td></tr>";
                         var products = "";
-                        billDetails += "<tr><td colspan='2'><strong>Invoice No: </strong> " + bill.invoiceNumber + "</td><td><strong>Date:</strong> " + dateFormat(bill.orderDate) + "</td><td colspan='9'><strong>Invoice Status: <span style='color: "+billStatusColor+";'>" + bill.billStatus + "</span></strong></td></tr>";
                         var ntvTotal = 0;
                         var discountTotal = 0;
                         var gstTotal = 0;
@@ -224,7 +225,7 @@
                         "<td data-f-underline='true' data-f-bold='true'><strong><u>" + custGstTotal.toFixed(2) + "</u></strong></td><td data-f-underline='true' data-f-bold='true'><strong><u>" + custNetAmtTotal.toFixed(2) + "</u></strong></td></tr>";
 
                     grandTotal += custNetAmtTotal;
-                    content += customerName + billDetails + custTotals + space;
+                    content += billDate + billDetails + custTotals + space;
                 });
                 var mainTableFooter = "</tbody></table>";
 
@@ -277,6 +278,7 @@
 
     function dateFormat(dt)
     {
+        dt = dt.replace("T", " ").replace("Z", '');
         var date = new Date(dt);
         return moment(date).format('DD/MM/YYYY hh:mm:ss a');
 
