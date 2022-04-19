@@ -521,6 +521,8 @@ class UrlMappings {
 
         "/updatesalebalance"(controller: 'reciptDetail', action: 'updateSaleBalance')
 
+        "/updatesalereturnbalance"(controller: 'reciptDetail', action: 'updateSaleReturnBalance')
+
         "/updatereciptlog"(controller: 'reciptDetail',action: 'updateRecieptLog')
 
 //        Payment Details

@@ -139,7 +139,7 @@ class UrlMappings {
             }
 
             "/updatebalancebyid/id/$id/balance/$balance"(controller: 'saleBillDetails')
-                    {action=[POST: 'updatePricing']}
+                    {action=[POST: 'updateBalance']}
 
             //Sale Product Details
             "/saleproductdetails(.$format)?"(controller: 'saleProductDetails') {
@@ -237,9 +237,11 @@ class UrlMappings {
                 action = [GET: 'getAllsettledByCustId']
             }
 
-            "/setsalereturnstatus/$id/type/$type(.$format)?"(controller: 'saleReturnDetails') {
+            "/setsalereturnstatus/$id/type/$type/adj/$adj(.$format)?"(controller: 'saleReturnDetails') {
                 action = [POST: 'updateStatus']
             }
+            "/updatereturnbalancebyid/id/$id/balance/$balance"(controller: 'saleReturnDetails')
+                    {action=[POST: 'updateBalance']}
 
             //Temp User Log
             "/tempuserlog(.$format)?"(controller:'tempUserLog') {

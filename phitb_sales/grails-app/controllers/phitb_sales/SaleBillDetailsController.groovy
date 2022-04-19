@@ -339,7 +339,7 @@ class SaleBillDetailsController
     }
 
 
-    def updatePricing()
+    def updateBalance()
     {
         try
         {
@@ -353,7 +353,7 @@ class SaleBillDetailsController
                 {
                     double diffBalance = Double.parseDouble(saleBillDetails.getBalance().toString()) - balance
                     saleBillDetails.balance = diffBalance
-                    saleBillDetails.adjAmount = balance
+                    saleBillDetails.adjAmount = saleBillDetails.getAdjAmount() + balance
                 }
                 else
                 {

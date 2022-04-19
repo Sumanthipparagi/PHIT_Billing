@@ -147,9 +147,11 @@ class SaleReturnDetailsController {
                 if (params.type == "settled")
                 {
                     saleReturnDetails.adjustmentStatus = "1"
+                    saleReturnDetails.adjAmount = saleReturnDetails.getBalance() - Double.parseDouble(params.adj)
                 }
                 else
                 {
+                    saleReturnDetails.balance = saleReturnDetails.getBalance() + Double.parseDouble(params.adj)
                     saleReturnDetails.adjustmentStatus = "0"
                 }
                 SaleReturnDetails saleReturnDetails1 = saleReturnDetails.save(flush: true)
@@ -169,4 +171,38 @@ class SaleReturnDetailsController {
     }
 
 
+    def updateBalance()
+    {
+        try
+        {
+            SaleReturnDetails saleReturnDetails = SaleReturnDetails.findById(Long.parseLong(params.id))
+            if (saleReturnDetails)
+            {
+                saleReturnDetails.isUpdatable = true
+                Double balance = Double.parseDouble(params.balance)
+                if (balance > 0 && balance!="" && balance!=null)
+                {
+                    double diffBalance = Double.parseDouble(saleReturnDetails.getBalance().toString()) - balance
+                    saleReturnDetails.balance = diffBalance
+                    saleReturnDetails.adjAmount = saleReturnDetails.getAdjAmount() + balance
+                }
+                else
+                {
+                    saleReturnDetails.balance = 0
+                }
+                SaleReturnDetails saleReturnDetails1 = saleReturnDetails.save(flush: true)
+                if (saleReturnDetails1)
+                {
+                    respond saleReturnDetails1
+                    return
+                }
+            }
+        }
+        catch (Exception ex)
+        {
+            System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
+            log.error('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
+        }
+        response.status = 400
+    }
 }

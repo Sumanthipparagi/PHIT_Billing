@@ -457,6 +457,33 @@ class ReciptDetailController
         }
     }
 
+    def updateSaleReturnBalance()
+    {
+        try
+        {
+            JSONObject jsonObject = new JSONObject(params)
+            jsonObject.put('balance',params.balance)
+            jsonObject.put('id',params.id)
+            println(jsonObject)
+            def apiResponse = new AccountsService().updateSaleReturnBalance(jsonObject)
+            if (apiResponse?.status == 200)
+            {
+                JSONObject obj = new JSONObject(apiResponse.readEntity(String.class))
+                respond obj, formats: ['json'], status: 200
+            }
+            else
+            {
+                response.status = apiResponse?.status ?: 400
+            }
+        }
+        catch (Exception ex)
+        {
+            System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
+            log.error('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
+            response.status = 400
+        }
+    }
+
     def updateRecieptLog()
     {
         try

@@ -316,7 +316,7 @@
                                                     <tr>
                                                         <thead>
                                                         <th>Doc.Type</th>
-                                                        <th>Document No.</th>
+                                                        <th>Yr</th>
                                                         <th>Document Date</th>
                                                         <th>Amount</th>
                                                         <th>Adj Amount</th>
@@ -324,9 +324,7 @@
                                                         </thead>
                                                     </tr>
                                                     <tbody class="settledVocher">
-
                                                     </tbody>
-                                                    <td></td>
                                                     <td></td>
                                                     <td></td>
                                                     <td></td>
@@ -508,7 +506,7 @@
                 var cred = "CRNT";
                 if (data.length !== 0) {
                     var inv = data[0].map(data => data.balance).reduce((acc, amount) => acc + amount, 0);
-                    var crnt = data[1].map(data => data.totalAmount).reduce((acc, amount) => acc + amount, 0)
+                    var crnt = data[1].map(data => data.balance).reduce((acc, amount) => acc + amount, 0)
                     var total_bal = inv - crnt
                 } else {
                     total_bal = 0;
@@ -516,27 +514,30 @@
                 $('.total_bal').text(parseFloat(total_bal).toFixed(2));
 
                 $.each(data[0], function (key, value) {
-                    trHTML1 +=
-                        '<tr id="' + "IN"+value.id + '"><td><button type="button" data-id="' + value.id +
-                        '"  data-custId="' + value.customerId +
-                        '" class="btn-sm btn-primary" id="settled"><-</button></td><td>' + invoice +
-                        '</td><td>' + value.financialYear +
-                        '</td><td>' + moment(value.dateCreated).format('DD-MM-YYYY') +
-                        '</td><td><input type="number" name="balunsettled" value="' + value.balance +
-                        '" id="balunsettled" data-inid="'+value.id +'"  data-custId="'+ value.customerId +'" readonly></td></tr>';
-
+                    if(value.balance!==0) {
+                        trHTML1 +=
+                            '<tr id="' + "IN" + value.id + '"><td><button type="button" data-id="' + value.id +
+                            '"  data-custId="' + value.customerId +
+                            '"   data-adj="' + value.adjAmount + '" class="btn-sm btn-primary"  id="settled"><-</button></td><td>' + invoice +
+                            '</td><td>' + value.financialYear +
+                            '</td><td>' + moment(value.dateCreated).format('DD-MM-YYYY') +
+                            '</td><td><input type="number" name="balunsettled" value="' + value.balance +
+                            '" id="balunsettled" data-inid="' + value.id + '"  data-custId="' + value.customerId + '" readonly></td></tr>';
+                    }
                 });
 
                 $.each(data[1], function (key, value) {
-                        var date = new Date(value.entryDate);
-                    trHTML +=
-                        '<tr id="' + "CR"+value.id + '"><td><button type="button" data-id="' + value.id +
-                        '"  data-custId="' + value.customerId +
-                        '" class="btn-sm btn-primary" id="cnsettled"><-</button></td><td>' + cred +
-                        '</td><td>' + value.financialYear +
-                        '</td><td>' + moment(date).format('DD-MM-YYYY') +
-                        '</td><td><input type="number" value="'+value.totalAmount +
-                        '" id="' + "CR"+value.id + '" data-cnid="'+value.id +'" readonly></td></tr>';
+                    var date = new Date(value.entryDate);
+                    if(value.balance!==0) {
+
+                        trHTML +=
+                            '<tr id="' + "CR" + value.id + '"><td><button type="button" data-id="' + value.id +
+                            '"  data-custId="' + value.customerId +
+                            '"   data-adj="' + value.adjAmount + '" class="btn-sm btn-primary" id="cnsettled"><-</button></td><td>' + cred + '</td><td>' + value.financialYear +
+                            '</td><td>' + moment(date).format('DD-MM-YYYY') +
+                            '</td><td><input type="number" value="' + value.balance +
+                            '" id="' + "CR" + value.id + '" data-cnid="' + value.id + '" readonly></td></tr>';
+                    }
                 });
                 $('.unsettledVocher').html(trHTML+trHTML1);
             },
@@ -560,32 +561,42 @@
                 var invoice = "INVS";
                 var cred = "CRNT";
                 var inv = data[0].map(data => data.balance).reduce((acc, amount) => acc + amount, 0);
-                var crnt = data[1].map(data => data.totalAmount).reduce((acc, amount) => acc + amount, 0)
-                var total_bal_s = inv - crnt;
+                var invAdjAmt = data[0].map(data => data.adjAmount).reduce((acc, adjAmt) => acc + adjAmt, 0);
+                var crnt = data[1].map(data => data.balance).reduce((acc, amount) => acc + amount, 0);
+                var  crntAdjAmt= data[1].map(data => data.adjAmount).reduce((acc, adjAmount) => acc + adjAmount, 0);
+                var total_bal_s = invAdjAmt - crntAdjAmt;
                 $('.total_bal_s').text(parseFloat(total_bal_s).toFixed(2));
                 $('.tba').val(total_bal_s.toFixed(2));
                 $('.amountPaid').val(total_bal_s.toFixed(2));
                 $.each(data[0], function (key, value) {
-                    trHTML +=
-                        '<tr id="' + "IN"+value.id + '"><td>' + invoice +
-                        '</td><td>' + value.financialYear +
-                        '</td><td>' + moment(value.dateCreated).format('DD-MM-YYYY') +
-                        '</td><td><input type="number" value="' + value.balance +
-                        '" id="INVbalsettled" data-inid="'+value.id +'"  data-custId="'+ value.customerId
-                        +'" data-invbal="'+ value.balance +'"></td><td>'+ value.adjAmount +'</td><td><button type="button" data-id="' +
-                        value.id +
-                        '"  data-custId="' + value.customerId + '"  class="btn-sm btn-primary" id="unsettled">-></button></td></tr>';
+                    if(value.balance!==0)
+                    {
+                        trHTML +=
+                            '<tr id="' + "IN" + value.id + '"><td>' + invoice +
+                            '</td><td>' + value.financialYear +
+                            '</td><td>' + moment(value.dateCreated).format('DD-MM-YYYY') +
+                            '</td><td><input type="number" value="' + value.balance +
+                            '" id="INVbalsettled" data-inid="' + value.id + '"  data-custId="' + value.customerId
+                            + '" data-invbal="' + value.balance + '"></td><td>' + value?.adjAmount +
+                            '</td><td><button type="button" data-id="' + value.id + '"  data-custId="' +
+                            value.customerId + '" data-adjAmt="' + value.adjAmount + '" class="btn-sm btn-primary" id="unsettled">-></button></td></tr>';
+                    }
+
                 });
                 $.each(data[1], function (key, value) {
-                    var date = new Date(value.entryDate)
-                    trHTML +=
-                        '<tr id="' + "CR"+value.id + '"><td>' + cred +
-                        '</td><td>' + value.financialYear +
-                        '</td><td>' + moment(date).format('DD-MM-YYYY') +
-                        '</td><td><input type="number" value="'+value.totalAmount +
-                        '" id="balsettled" data-cnid="'+value.id +'"  data-custId="'+ value.customerId
-                        +'"></td><td></td><td><button type="button" data-id="' + value.id +
-                        '"  data-custId="' + value.customerId + '" class="btn-sm btn-primary" id="cnunsettled">-></button></td></tr>';
+                    var date = new Date(value.entryDate);
+                    if(value.balance!==0) {
+                        trHTML +=
+                            '<tr id="' + "CR" + value.id + '"><td>' + cred +
+                            '</td><td>' + value.financialYear +
+                            '</td><td>' + moment(date).format('DD-MM-YYYY') +
+                            '</td><td><input type="number" value="' + value.balance +
+                            '" id="CRbalsettled" data-cnid="' + value.id + '"  data-custId="' + value.customerId
+                            + '"  data-crbal="' + value.balance + '"></td><td>' + value.adjAmount +
+                            '</td><td><button type="button" data-id="' + value.id +
+                            '"  data-custId="' + value.customerId +
+                            '"  data-adj="' + value.adjAmount + '" class="btn-sm btn-primary" id="cnunsettled">-></button></td></tr>';
+                    }
                 });
                 $('.settledVocher').html(trHTML+trHTML1);
             },
@@ -615,6 +626,7 @@
         e.preventDefault();
         var id = $(this).data('id');
         var custId = $(this).attr('data-custId');
+        var adj = $(this).attr('data-adj');
         var url = '/salesettledvocher/' + id;
         var type = 'GET';
         $.ajax({
@@ -660,8 +672,9 @@
     $(document).on('click', '#cnsettled', function (e) {
         e.preventDefault();
         var id = $(this).data('id');
+        var adj = $(this).attr('data-adj');
         var custId = $(this).attr('data-custId');
-        var url = '/creditsettledvocher/' + id;
+        var url = '/creditsettledvocher/' + id+"?adj="+adj;
         var type = 'GET';
         $.ajax({
             url: url,
@@ -683,8 +696,9 @@
     $(document).on('click', '#cnunsettled', function (e) {
         e.preventDefault();
         var id = $(this).data('id');
+        var adj = $(this).attr('data-adj');
         var custId = $(this).attr('data-custId');
-        var url = '/creditunsettledvocher/' + id;
+        var url = '/creditunsettledvocher/' + id+"?adj="+adj;
         var type = 'GET';
         $.ajax({
             url: url,
@@ -703,13 +717,9 @@
     });
 
     $(document).ready(function () {
-
-
-        var paid="";
         $(document).on('keydown','#INVbalsettled',function(e){
             if (e.keyCode === 13 || e.which === '13') {
                 var balance = Number($(this).val());
-                paid = $(this).val();
                 var id = $(this).attr('data-inid');
                 var invbal = $(this).attr('data-invbal');
                 var custId = $(this).attr('data-custId');
@@ -738,8 +748,6 @@
                                     currentFinancialYear:'${session.getAttribute('financialYear')}',
                                 },
                                 success: function (data) {
-                                    // console.log(data)
-                                    $('#INVbalsettled').attr('value', "sjsj");
                                     getUnsettledByCustomer(custId);
                                     getsettledSaleBillByCustomer(custId)
                                 }
@@ -766,6 +774,66 @@
                 }
             }
         });
+
+
+        $(document).on('keydown','#CRbalsettled',function(e){
+            if (e.keyCode === 13 || e.which === '13') {
+                var balance = Number($(this).val());
+                var id = $(this).attr('data-cnid');
+                var invbal = $(this).attr('data-crbal');
+                var custId = $(this).attr('data-custId');
+                var billType = "CRNT";
+                var url="/updatesalereturnbalance?id="+id+"&balance="+balance;
+                if(balance!==0 && balance<=invbal)
+                {
+                    $.ajax({
+                        url: url,
+                        type: "POST",
+                        contentType: false,
+                        processData: false,
+                        data: {
+                            balance: balance,
+                            id:id
+                        },
+                        success: function () {
+                            $.ajax({
+                                type: "POST",
+                                url: "/updatereciptlog",
+                                data: {
+                                    amountPaid: balance,
+                                    billId:id,
+                                    billType:billType,
+                                    financialYear:'${session.getAttribute('financialYear')}',
+                                    currentFinancialYear:'${session.getAttribute('financialYear')}',
+                                },
+                                success: function (data) {
+                                    getUnsettledByCustomer(custId);
+                                    getsettledSaleBillByCustomer(custId)
+                                }
+                            });
+                        },
+                        error: function () {
+                            swal("Error!", "Something went wrong", "error");
+                        }
+                    });
+                }
+                else
+                {
+                    if(balance === 0)
+                    {
+                        swal("Balance should not be zero!!");
+                        $('#balsettled').val(invbal)
+                    }
+                    else
+                    {
+                        swal("Balance should not exceed!!");
+                        $('#balsettled').val(invbal)
+                    }
+                    $('#balsettled').val(invbal)
+                }
+            }
+        });
+
 
         $(window).keydown(function (event) {
             if (event.keyCode === 13) {

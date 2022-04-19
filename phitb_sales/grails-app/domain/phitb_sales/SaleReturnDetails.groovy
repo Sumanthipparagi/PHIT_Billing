@@ -38,6 +38,7 @@ class SaleReturnDetails {
     long entityTypeId
     long createdUser
     long modifiedUser
+    Double adjAmount
 
     Date dateCreated
     Date lastUpdated

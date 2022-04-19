@@ -390,7 +390,7 @@ class AccountsService
     }
 
 
-    //   update balance
+    //   update Sale invoice balance
     def updateSaleBalance(JSONObject jsonObject)
     {
         Form form = UtilsService.jsonToFormDataConverter(jsonObject)
@@ -413,7 +413,30 @@ class AccountsService
 
     }
 
-    //   update receipt details log
+    //   update Sale return balance
+    def updateSaleReturnBalance(JSONObject jsonObject)
+    {
+        Form form = UtilsService.jsonToFormDataConverter(jsonObject)
+        Client client = ClientBuilder.newClient();
+        WebTarget target = client.target(new Links().API_GATEWAY);
+        try
+        {
+            Response apiResponse = target
+                    .path(new Links().UPDATE_SALE_RETURN_BALANCE+"/id/"+jsonObject.id+"/balance/"+jsonObject.balance)
+                    .request(MediaType.APPLICATION_JSON_TYPE)
+                    .post(Entity.form(form))
+            println(apiResponse)
+            return apiResponse
+        }
+        catch (Exception ex)
+        {
+            System.err.println('Service :saveStateMaster , action :  save  , Ex:' + ex)
+            log.error('Service :saveStateMaster , action :  save  , Ex:' + ex)
+        }
+
+    }
+
+    //   update balance
     def updateReceiptDetailLog(JSONObject jsonObject)
     {
         Form form = UtilsService.jsonToFormDataConverter(jsonObject)
@@ -495,13 +518,13 @@ class AccountsService
         Form form = UtilsService.jsonToFormDataConverter(jsonObject)
         Client client = ClientBuilder.newClient();
         WebTarget target = client.target(new Links().API_GATEWAY);
-
         try
         {
             Response apiResponse = target
                     .path(new Links().SET_SALE_RETURN_STATUS)
                     .resolveTemplate("id", jsonObject.id)
                     .resolveTemplate("type", "settled")
+                    .resolveTemplate("adj", jsonObject.adj.toString())
                     .request(MediaType.APPLICATION_JSON_TYPE)
 //                    .post(Entity.entity(jsonObject.toString(),MediaType.APPLICATION_JSON_TYPE))
                     .post(Entity.form(form))
@@ -521,13 +544,13 @@ class AccountsService
         Form form = UtilsService.jsonToFormDataConverter(jsonObject)
         Client client = ClientBuilder.newClient();
         WebTarget target = client.target(new Links().API_GATEWAY);
-
         try
         {
             Response apiResponse = target
                     .path(new Links().SET_SALE_RETURN_STATUS)
                     .resolveTemplate("id", jsonObject.id)
                     .resolveTemplate("type", "unsettled")
+                    .resolveTemplate("adj", jsonObject.adj.toString())
                     .request(MediaType.APPLICATION_JSON_TYPE)
 //                    .post(Entity.entity(jsonObject.toString(),MediaType.APPLICATION_JSON_TYPE))
                     .post(Entity.form(form))
