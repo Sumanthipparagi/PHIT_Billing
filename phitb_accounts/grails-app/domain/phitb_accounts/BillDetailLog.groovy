@@ -2,7 +2,7 @@ package phitb_accounts
 
 import gorm.logical.delete.LogicalDelete
 
-class ReceiptDetailLog implements LogicalDelete<ReceiptDetailLog>
+class BillDetailLog implements LogicalDelete<BillDetailLog>
 {
     long billId
     String billType

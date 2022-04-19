@@ -347,6 +347,7 @@
                                                         <th>Doc.Type</th>
                                                         <th>Yr</th>
                                                         <th>Document Date</th>
+                                                        <th>Invoice Number</th>
                                                         <th>Amount</th>
                                                         </thead>
                                                     </tr>
@@ -521,6 +522,7 @@
                             '"   data-adj="' + value.adjAmount + '" class="btn-sm btn-primary"  id="settled"><-</button></td><td>' + invoice +
                             '</td><td>' + value.financialYear +
                             '</td><td>' + moment(value.dateCreated).format('DD-MM-YYYY') +
+                            '</td><td>' + value.invoiceNumber +
                             '</td><td><input type="number" name="balunsettled" value="' + value.balance +
                             '" id="balunsettled" data-inid="' + value.id + '"  data-custId="' + value.customerId + '" readonly></td></tr>';
                     }
@@ -535,7 +537,7 @@
                             '"  data-custId="' + value.customerId +
                             '"   data-adj="' + value.adjAmount + '" class="btn-sm btn-primary" id="cnsettled"><-</button></td><td>' + cred + '</td><td>' + value.financialYear +
                             '</td><td>' + moment(date).format('DD-MM-YYYY') +
-                            '</td><td><input type="number" value="' + value.balance +
+                            '</td><td></td><td><input type="number" value="' + value.balance +
                             '" id="' + "CR" + value.id + '" data-cnid="' + value.id + '" readonly></td></tr>';
                     }
                 });
@@ -569,7 +571,7 @@
                 $('.tba').val(total_bal_s.toFixed(2));
                 $('.amountPaid').val(total_bal_s.toFixed(2));
                 $.each(data[0], function (key, value) {
-                    if(value.balance!==0)
+                    if(value.balance!==0 && value.billStatus!=='DRAFT')
                     {
                         trHTML +=
                             '<tr id="' + "IN" + value.id + '"><td>' + invoice +
@@ -717,6 +719,14 @@
     });
 
     $(document).ready(function () {
+        $(window).keydown(function (event) {
+            if (event.keyCode === 13) {
+                event.preventDefault();
+                return false;
+            }
+        });
+
+
         $(document).on('keydown','#INVbalsettled',function(e){
             if (e.keyCode === 13 || e.which === '13') {
                 var balance = Number($(this).val());
@@ -835,12 +845,7 @@
         });
 
 
-        $(window).keydown(function (event) {
-            if (event.keyCode === 13) {
-                event.preventDefault();
-                return false;
-            }
-        });
+
 
     });
 

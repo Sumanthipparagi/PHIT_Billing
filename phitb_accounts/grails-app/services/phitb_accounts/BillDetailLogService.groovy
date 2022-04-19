@@ -8,7 +8,8 @@ import phitb_accounts.Exception.ResourceNotFoundException
 import java.text.SimpleDateFormat
 
 @Transactional
-class ReceiptDetailLogService {
+class BillDetailLogService
+{
 
     SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss")
 
@@ -23,8 +24,8 @@ class ReceiptDetailLogService {
             return BillPaymentLog.findAllByBillTypeIlike("%" + query + "%", [sort: 'id', max: l, offset: o, order: 'desc'])
     }
 
-    ReceiptDetailLog get(String id) {
-        return ReceiptDetailLog.findById(Long.parseLong(id))
+    BillDetailLog get(String id) {
+        return BillDetailLog.findById(Long.parseLong(id))
     }
 
     JSONObject dataTables(JSONObject paramsJsonObject, String start, String length) {
@@ -45,7 +46,7 @@ class ReceiptDetailLogService {
         Integer offset = start ? Integer.parseInt(start.toString()) : 0
         Integer max = length ? Integer.parseInt(length.toString()) : 100
 
-        def ReceiptDetailLogCriteria = ReceiptDetailLog.createCriteria()
+        def ReceiptDetailLogCriteria = BillDetailLog.createCriteria()
         def ReceiptDetailLogArrayList = ReceiptDetailLogCriteria.list(max: max, offset: offset) {
             or {
                 if (searchTerm != "") {
@@ -66,8 +67,8 @@ class ReceiptDetailLogService {
         return jsonObject
     }
 
-    ReceiptDetailLog save(JSONObject jsonObject) {
-        ReceiptDetailLog receiptDetailLog = new ReceiptDetailLog()
+    BillDetailLog save(JSONObject jsonObject) {
+        BillDetailLog receiptDetailLog = new BillDetailLog()
         receiptDetailLog.billId = Long.parseLong(jsonObject.get("billId").toString())
         receiptDetailLog.billType = jsonObject.get("billType").toString()
         receiptDetailLog.amountPaid = Double.parseDouble(jsonObject.get("amountPaid").toString())
@@ -89,8 +90,8 @@ class ReceiptDetailLogService {
 
     }
 
-    ReceiptDetailLog update(JSONObject jsonObject, String id) {
-        ReceiptDetailLog receiptDetailLog = ReceiptDetailLog.findById(Long.parseLong(id))
+    BillDetailLog update(JSONObject jsonObject, String id) {
+        BillDetailLog receiptDetailLog = BillDetailLog.findById(Long.parseLong(id))
         if (receiptDetailLog) {
             receiptDetailLog.isUpdatable = true
             receiptDetailLog.billId = Long.parseLong(jsonObject.get("billId").toString())
@@ -117,7 +118,7 @@ class ReceiptDetailLogService {
 
     void delete(String id) {
         if (id) {
-            ReceiptDetailLog receiptDetailLog = ReceiptDetailLog.findById(Long.parseLong(id))
+            BillDetailLog receiptDetailLog = BillDetailLog.findById(Long.parseLong(id))
             if (receiptDetailLog) {
                 receiptDetailLog.isUpdatable = true
                 receiptDetailLog.delete()

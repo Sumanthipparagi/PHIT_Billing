@@ -151,7 +151,7 @@ class SaleReturnDetailsController {
                 }
                 else
                 {
-                    saleReturnDetails.balance = saleReturnDetails.getBalance() + Double.parseDouble(params.adj)
+                    saleReturnDetails.adjAmount = 0
                     saleReturnDetails.adjustmentStatus = "0"
                 }
                 SaleReturnDetails saleReturnDetails1 = saleReturnDetails.save(flush: true)

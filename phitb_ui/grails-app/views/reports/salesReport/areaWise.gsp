@@ -6,7 +6,7 @@
     <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
     <meta name="description" content="Responsive Bootstrap 4 and web Application ui kit.">
 
-    <title>:: PharmIt ::  Date-wise Sales Report</title>
+    <title>:: PharmIt ::  Customer-wise Sales Report</title>
     <link rel="icon" type="image/x-icon" href="${assetPath(src: '/themeassets/images/favicon.ico')}"/>
     <!-- Favicon-->
     <asset:stylesheet rel="stylesheet" src="/themeassets/plugins/bootstrap/css/bootstrap.min.css"/>
@@ -50,10 +50,10 @@
         <div class="block-header">
             <div class="row clearfix">
                 <div class="col-lg-5 col-md-5 col-sm-12">
-                    <h2>Date-wise Sales Report</h2>
+                    <h2>Area-wise Sales Report</h2>
                     <ul class="breadcrumb padding-0">
                         <li class="breadcrumb-item"><a href="#"><i class="zmdi zmdi-home"></i></a></li>
-                        <li class="breadcrumb-item active">Date-wise Sales Report</li>
+                        <li class="breadcrumb-item active">Area-wise Sales Report</li>
                     </ul>
                 </div>
 
@@ -73,15 +73,15 @@
                 <div class="card">
                     <div class="header">
                         <div class="row">
-                            %{--<div class="col-md-2">
-                                <div class="form-group">
-                                    <label for="sortBy">Sort By:</label>
-                                    <select style="margin-top: 5px; border-radius: 6px;" id="sortBy" class="sortBy form-control" name="sortBy">
-                                        <option value="default">DEFAULT</option>
-                                        <option value="invoice-date">INVOICE DATE</option>
-                                    </select>
-                                </div>
-                            </div>--}%
+                            %{--                            <div class="col-md-2">--}%
+                            %{--                                <div class="form-group">--}%
+                            %{--                                    <label for="sortBy">Sort By:</label>--}%
+                            %{--                                    <select style="margin-top: 5px; border-radius: 6px;" id="sortBy" class="sortBy form-control" name="sortBy">--}%
+                            %{--                                        <option value="default">DEFAULT</option>--}%
+                            %{--                                        <option value="invoice-date">INVOICE DATE</option>--}%
+                            %{--                                    </select>--}%
+                            %{--                                </div>--}%
+                            %{--                            </div>--}%
                             <div class="col-lg-6">
                                 <div class="form-group">
                                     <label>Date Range:</label>
@@ -94,13 +94,12 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="col-lg-6  d-flex justify-content-center">
+
+                            <div class="col-lg-6 d-flex justify-content-center">
                                 <div class="form-group">
                                     <label>Export</label>
-
                                     <div class="input-group">
                                         <button class="input-group-btn btn btn-info" id="btnExport">Excel</button>
-                                        %{-- <button class="input-group-btn btn btn-success" id="btnPdf">PDF</button>--}%
                                         <button class="input-group-btn btn btn-danger" id="btnPrint">Print</button>
                                     </div>
                                 </div>
@@ -165,67 +164,79 @@
             closeOnClickOutside: false
         });
         var dateRange = $('.dateRange').val();
-        var sortBy = $('.sortBy').val();
+        // var sortBy = $('.sortBy').val();
+
         $.ajax({
-            url: "getdatewise?dateRange=" + dateRange,
+            url: "/reports/sales/getareawise?dateRange=" + dateRange,
             type: "GET",
             contentType: false,
             processData: false,
             success: function (data) {
                 var content = "";
                 var grandTotal = 0.00;
-                var mainTableHeader = "<table class='table-bordered table-sm' style='width: 100%;color: #212529;'><thead>" +
+                var mainTableHeader = "<table class='table table-bordered table-sm' style='width: 100%;'><thead>" +
                     "<tr><td data-f-bold='true' colspan='11'><h3 style='margin-bottom:0 !important;'>${session.getAttribute('entityName')}</h3></td></tr>" +
                     "<tr><td colspan='11'>${session.getAttribute('entityAddress1')} ${session.getAttribute('entityAddress2')} ${session.getAttribute('entityPinCode')}, ph: ${session.getAttribute('entityMobileNumber')}</td></tr>" +
-                    "<tr><th data-f-bold='true' colspan='11'>Customer-Bill-Itemwise Sales* Detail, Date: " + dateRange + "</th></tr>" +
-                    "<tr><th colspan='10'></th><th data-f-bold='true'><strong>Grand Total:</strong> <span id='grandTotal'></span></th></tr>" +
-                    "<tr><th data-f-bold='true'>Sl No.</th><th data-f-bold='true'>Item Name</th><th data-f-bold='true'>Batch No.</th><th data-f-bold='true'>Expiry</th>" +
-                    "<th data-f-bold='true'>Sale Qty</th><th data-f-bold='true'>Fr. Qty</th><th data-f-bold='true'>Rate</th><th data-f-bold='true'>N T V</th><th data-f-bold='true'>Discount</th><th data-f-bold='true'>GST</th><th data-f-bold='true'>Net Amount</th></tr></thead><tbody>";
-                $.each(data, function (key, customer) {
-                    var billDate = "<tr><td colspan='11'>"+dateFormat(key)+"</td></tr>";
+                    "<tr><th data-f-bold='true' colspan='11'>Customer-Bill-Areawise Sales* Detail, Date: " +
+                    dateRange + "</th></tr>"
+                    // "<tr><th></th><th data-f-bold='true'><strong>Grand Total:</strong> <span id='grandTotal'></span></th></tr>"
+                    +"</thead><tbody>"+
+                // "<tr><th data-f-bold='true'>City</th><th data-f-bold='true'>Net Amount</th></tr>";
+                $.each(data, function (key, city) {
                     var billDetails = "";
-                    var custNtvTotal = 0;
-                    var custDiscountTotal = 0;
-                    var custGstTotal = 0;
                     var custNetAmtTotal = 0;
-                    $.each(customer, function (key, bill) {
-                        var billStatusColor = "green";
-                        if(bill.billStatus == "CANCELLED")
-                            billStatusColor = "red";
-                        var customerName = "<tr><td data-f-bold='true' colspan='11'><strong>Customer: </strong><span class='customerData cust" + key + "'>" + customer[key].customerDetail.entityName + "</span></td></tr>";
-                        billDetails += customerName + "<tr><td colspan='2'><strong>Invoice No: </strong> " + bill.invoiceNumber + "</td><td><strong>Date:</strong> " + dateFormat(bill.orderDate) + "</td><td colspan='9'><strong>Invoice Status: <span style='color: "+billStatusColor+";'>" + bill.billStatus + "</span></strong></td></tr>";
-                        var products = "";
-                        var ntvTotal = 0;
-                        var discountTotal = 0;
-                        var gstTotal = 0;
+                    $.each(city, function (key, bill) {
                         var netAmtTotal = 0;
                         $.each(bill.products, function (key, product) {
-                            var ntv = product.amount - product.gstAmount;
-                            ntvTotal += ntv;
-                            discountTotal += product.discount;
-                            gstTotal += product.gstAmount;
                             netAmtTotal += product.amount;
-                            products += "<tr><td>" + (key + 1) + "</td><td><span class='itemData item" + product.productId + "'>" + product.productDetail.productName + "</span></td><td>" + product.batchNumber + "</td><td>" + product.expiryDate + "</td><td>" + product.sqty + "</td>" +
-                                "<td>" + product.freeQty + "</td><td>" + product.sRate.toFixed(2) + "</td><td>" + ntv.toFixed(2) + "</td><td>" + product.discount.toFixed(2) + "</td><td>" + product.gstAmount.toFixed(2) + "</td><td>" + product.amount.toFixed(2) + "</td></tr>"
+                            if(bill.billStatus !== "CANCELLED") {
+                                custNetAmtTotal += netAmtTotal;
+                            }
                         });
-                        var totals = "<tr><td></td><td></td><td></td><td></td><td></td><td></td><td></td>" +
-                            "<td data-f-underline='true'><u>" + ntvTotal.toFixed(2) + "</u></td><td data-f-underline='true'><u>" + discountTotal.toFixed(2) + "</u></td>" +
-                            "<td data-f-underline='true'><u>" + gstTotal.toFixed(2) + "</u></td><td data-f-underline='true'><u>" + netAmtTotal.toFixed(2) + "</u></td></tr>";
-                        if(bill.billStatus != "CANCELLED") {
-                            custNtvTotal += ntvTotal;
-                            custDiscountTotal += discountTotal;
-                            custGstTotal += gstTotal;
-                            custNetAmtTotal += netAmtTotal;
-                        }
-                        billDetails += products + totals;
                     });
+                    var cityName =
+                        "<tr><td data-f-bold='true' colspan='11'><strong>Area: </strong><span class='customerData cust" + key + "'>" + city[0].city.name + "<br><strong>Customers:</strong>" + city[0].customerDetail.entityName + "</span></td><td></td></tr>";
+
+                        // billDetails += "<tr</tr>";
+                    // $.each(city, function (key, bill) {
+                    //     var billStatusColor = "green";
+                    //     if(bill.billStatus == "CANCELLED")
+                    //         billStatusColor = "red";
+                    //     var products = "";
+                    //     billDetails += "<tr><td colspan='2'><strong>Invoice No: </strong> " + bill.invoiceNumber + "</td><td><strong>Date:</strong> " + dateFormat(bill.orderDate) + "</td><td colspan='9'><strong>Invoice Status: <span style='color: "+billStatusColor+";'>" + bill.billStatus + "</span></strong></td></tr>";
+                    //     var ntvTotal = 0;
+                    //     var discountTotal = 0;
+                    //     var gstTotal = 0;
+                    //     var netAmtTotal = 0;
+                    //     $.each(bill.products, function (key, product) {
+                    //         var ntv = product.amount - product.gstAmount;
+                    //         ntvTotal += ntv;
+                    //         discountTotal += product.discount;
+                    //         gstTotal += product.gstAmount;
+                    //         netAmtTotal += product.amount;
+                    //         products += "<tr><td>" + (key + 1) + "</td><td><span class='itemData item" + product.productId + "'>" + product.productDetail.productName + "</span></td><td>" + product.batchNumber + "</td><td>" + product.expiryDate + "</td><td>" + product.sqty + "</td>" +
+                    //             "<td>" + product.freeQty + "</td><td>" + product.sRate.toFixed(2) + "</td><td>" + ntv.toFixed(2) + "</td><td>" + product.discount.toFixed(2) + "</td><td>" + product.gstAmount.toFixed(2) + "</td><td>" + product.amount.toFixed(2) + "</td></tr>"
+                    //     });
+                    //     var totals = "<tr><td></td><td></td><td></td><td></td><td></td><td></td><td></td>" +
+                    //         "<td data-f-underline='true'><u>" + ntvTotal.toFixed(2) + "</u></td><td data-f-underline='true'><u>" + discountTotal.toFixed(2) + "</u></td>" +
+                    //         "<td data-f-underline='true'><u>" + gstTotal.toFixed(2) + "</u></td><td data-f-underline='true'><u>" + netAmtTotal.toFixed(2) + "</u></td></tr>";
+                    //     if(bill.billStatus !== "CANCELLED") {
+                    //         custNtvTotal += ntvTotal;
+                    //         custDiscountTotal += discountTotal;
+                    //         custGstTotal += gstTotal;
+                    //         custNetAmtTotal += netAmtTotal;
+                    //     }
+                    //     billDetails += products + totals;
+                    // });
+
+
                     var space = "<tr class='pagebreak' style='background-color: #ceecf5 !important;'><td data-f-fill='ceecf500' colspan='11'></td></tr>";
-                    var custTotals = "<tr><td></td><td></td><td></td><td></td><td></td><td></td><td></td>" +
-                        "<td data-f-underline='true' data-f-bold='true'><strong><u>" + custNtvTotal.toFixed(2) + "</u></strong></td><td data-f-underline='true' data-f-bold='true'><strong><u>" + custDiscountTotal.toFixed(2) + "</u></strong></td>" +
-                        "<td data-f-underline='true' data-f-bold='true'><strong><u>" + custGstTotal.toFixed(2) + "</u></strong></td><td data-f-underline='true' data-f-bold='true'><strong><u>" + custNetAmtTotal.toFixed(2) + "</u></strong></td></tr>";
+                    // var custTotals = "<tr><td></td><td></td><td></td><td></td><td></td><td></td><td></td>" +
+                    //     "<td data-f-underline='true' data-f-bold='true'><strong><u>" + custNtvTotal.toFixed(2) + "</u></strong></td><td data-f-underline='true' data-f-bold='true'><strong><u>" + custDiscountTotal.toFixed(2) + "</u></strong></td>" +
+                    //     "<td data-f-underline='true' data-f-bold='true'><strong><u>" + custGstTotal.toFixed(2) + "</u></strong></td><td data-f-underline='true' data-f-bold='true'><strong><u>" + custNetAmtTotal.toFixed(2) + "</u></strong></td></tr>";
 
                     grandTotal += custNetAmtTotal;
-                    content += billDate + billDetails + custTotals + space;
+                    content += cityName + billDetails + space;
                 });
                 var mainTableFooter = "</tbody></table>";
 
@@ -243,7 +254,7 @@
     $("#btnExport").click(function () {
         let table = document.getElementById("result");
         TableToExcel.convert(table, {
-            name: 'customerwise-sales-report.xlsx',
+            name: 'areawise-sales-report.xlsx',
             sheet: {
                 name: 'Sheet 1' // sheetName
             }
@@ -276,9 +287,7 @@
           });
       });*/
 
-    function dateFormat(dt)
-    {
-        dt = dt.replace("T", " ").replace("Z", '');
+    function dateFormat(dt) {
         var date = new Date(dt);
         return moment(date).format('DD/MM/YYYY hh:mm:ss a');
 

@@ -317,9 +317,12 @@ class SaleBillDetailsController
                 if (params.type == "settled")
                 {
                     saleBillDetails.paymentStatus = Long.parseLong("1")
+                    saleBillDetails.adjAmount = saleBillDetails.getBalance() - Double.parseDouble(params.adj)
+
                 }
                 else
                 {
+                    saleBillDetails.adjAmount = 0
                     saleBillDetails.paymentStatus = Long.parseLong("0")
                 }
                 SaleBillDetails saleBillDetails1 = saleBillDetails.save(flush: true)

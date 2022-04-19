@@ -3,7 +3,7 @@ package phitb_accounts
 import grails.testing.gorm.DomainUnitTest
 import spock.lang.Specification
 
-class ReceiptDetailLogSpec extends Specification implements DomainUnitTest<ReceiptDetailLog> {
+class BillDetailLogSpec extends Specification implements DomainUnitTest<BillDetailLog> {
 
     def setup() {
     }

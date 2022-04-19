@@ -32,9 +32,9 @@ class UrlMappings {
             "/generalledgerbyentity/$id(.$format)?"(controller: 'generalLedger') { action = [GET: 'getByEntityId'] }
 
             //Reciept Detail log
-            "/reciptdetaillog(.$format)?"(controller: 'receiptDetailLog') { action = [GET: 'index', POST: 'save'] }
-            "/reciptdetaillog/datatable(.$format)?"(controller: 'receiptDetailLog') { action = [GET: 'dataTable'] }
-            "/reciptdetaillog/$id(.$format)?"(controller: 'receiptDetailLog') { action = [GET: 'show', PUT: 'update', DELETE: 'delete'] }
+            "/reciptdetaillog(.$format)?"(controller: 'billDetailLog') { action = [GET: 'index', POST: 'save'] }
+            "/reciptdetaillog/datatable(.$format)?"(controller: 'billDetailLog') { action = [GET: 'dataTable'] }
+            "/reciptdetaillog/$id(.$format)?"(controller: 'billDetailLog') { action = [GET: 'show', PUT: 'update', DELETE: 'delete'] }
 
 
             //bill payment log

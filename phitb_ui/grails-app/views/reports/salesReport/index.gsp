@@ -73,16 +73,16 @@
                 <div class="card">
                     <div class="header">
                         <div class="row">
-                            %{--<div class="col-md-2">
-                                <div class="form-group">
-                                    <label for="sortBy">Sort By:</label>
-                                    <select style="margin-top: 5px; border-radius: 6px;" id="sortBy" class="sortBy form-control" name="sortBy">
-                                        <option value="default">DEFAULT</option>
-                                        <option value="invoice-date">INVOICE DATE</option>
-                                    </select>
-                                </div>
-                            </div>--}%
-                            <div class="col-md-8">
+%{--                            <div class="col-md-2">--}%
+%{--                                <div class="form-group">--}%
+%{--                                    <label for="sortBy">Sort By:</label>--}%
+%{--                                    <select style="margin-top: 5px; border-radius: 6px;" id="sortBy" class="sortBy form-control" name="sortBy">--}%
+%{--                                        <option value="default">DEFAULT</option>--}%
+%{--                                        <option value="invoice-date">INVOICE DATE</option>--}%
+%{--                                    </select>--}%
+%{--                                </div>--}%
+%{--                            </div>--}%
+                            <div class="col-lg-6">
                                 <div class="form-group">
                                     <label>Date Range:</label>
 
@@ -94,7 +94,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="col-md-2">
+                            <div class="col-lg-6  d-flex justify-content-center">
                                 <div class="form-group">
                                     <label>Export</label>
 
@@ -165,16 +165,17 @@
             closeOnClickOutside: false
         });
         var dateRange = $('.dateRange').val();
-        var sortBy = $('.sortBy').val();
+        // var sortBy = $('.sortBy').val();
+
         $.ajax({
-            url: "sales/getcustomerwise?dateRange=" + dateRange+"&sortBy="+sortBy,
+            url: "/reports/sales/getcustomerwise?dateRange=" + dateRange,
             type: "GET",
             contentType: false,
             processData: false,
             success: function (data) {
                 var content = "";
                 var grandTotal = 0.00;
-                var mainTableHeader = "<table class='table table-bordered table-sm' style='width: 100%;'><thead>" +
+                var mainTableHeader = "<table class='table-bordered table-sm' style='width: 100%;color: #212529;'><thead>" +
                     "<tr><td data-f-bold='true' colspan='11'><h3 style='margin-bottom:0 !important;'>${session.getAttribute('entityName')}</h3></td></tr>" +
                     "<tr><td colspan='11'>${session.getAttribute('entityAddress1')} ${session.getAttribute('entityAddress2')} ${session.getAttribute('entityPinCode')}, ph: ${session.getAttribute('entityMobileNumber')}</td></tr>" +
                     "<tr><th data-f-bold='true' colspan='11'>Customer-Bill-Itemwise Sales* Detail, Date: " + dateRange + "</th></tr>" +
@@ -210,7 +211,7 @@
                         var totals = "<tr><td></td><td></td><td></td><td></td><td></td><td></td><td></td>" +
                             "<td data-f-underline='true'><u>" + ntvTotal.toFixed(2) + "</u></td><td data-f-underline='true'><u>" + discountTotal.toFixed(2) + "</u></td>" +
                             "<td data-f-underline='true'><u>" + gstTotal.toFixed(2) + "</u></td><td data-f-underline='true'><u>" + netAmtTotal.toFixed(2) + "</u></td></tr>";
-                        if(bill.billStatus != "CANCELLED") {
+                        if(bill.billStatus !== "CANCELLED") {
                             custNtvTotal += ntvTotal;
                             custDiscountTotal += discountTotal;
                             custGstTotal += gstTotal;
