@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=Edge">
     <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
-    <meta name="description" content="Responsive Bootstrap 4 and web Application ui kit.">
+    <meta name="description" content="PharmIT">
 
     <title>:: PharmIt ::  Customer-wise Sales Report</title>
     <link rel="icon" type="image/x-icon" href="${assetPath(src: '/themeassets/images/favicon.ico')}"/>
@@ -177,11 +177,11 @@
                 var mainTableHeader = "<table class='table table-bordered table-sm' style='width: 100%;'><thead>" +
                     "<tr><td data-f-bold='true' colspan='11'><h3 style='margin-bottom:0 !important;'>${session.getAttribute('entityName')}</h3></td></tr>" +
                     "<tr><td colspan='11'>${session.getAttribute('entityAddress1')} ${session.getAttribute('entityAddress2')} ${session.getAttribute('entityPinCode')}, ph: ${session.getAttribute('entityMobileNumber')}</td></tr>" +
-                    "<tr><th data-f-bold='true' colspan='11'>Customer-Bill-Areawise Sales* Detail, Date: " +
-                    dateRange + "</th></tr>"
-                    // "<tr><th></th><th data-f-bold='true'><strong>Grand Total:</strong> <span id='grandTotal'></span></th></tr>"
-                    +"</thead><tbody>"+
-                // "<tr><th data-f-bold='true'>City</th><th data-f-bold='true'>Net Amount</th></tr>";
+                    "<tr><th data-f-bold='true' colspan='11'>Customer-Bill-consolidated Sales* Detail, Date: " +
+                    dateRange + "</th></tr>"+
+                    "<tr><th colspan='3'></th><th data-f-bold='true'><strong>Grand Total:</strong> <span id='grandTotal'></span></th></tr>"+
+                    "<tr><th data-f-bold='true' colspan='3'>Customer</th><th data-f-bold='true'>Net Amount</th>";
+                // "<th data-f-bold='true'>Sale Qty</th><th data-f-bold='true'>Fr. Qty</th><th data-f-bold='true'>Rate</th><th data-f-bold='true'>N T V</th><th data-f-bold='true'>Discount</th><th data-f-bold='true'>GST</th><th data-f-bold='true'>Net Amount</th></tr></thead><tbody>";
                 $.each(data, function (key, city) {
                     var billDetails = "";
                     var custNetAmtTotal = 0;
@@ -195,9 +195,12 @@
                         });
                     });
                     var cityName =
-                        "<tr><td data-f-bold='true' colspan='11'><strong>Area: </strong><span class='customerData cust" + key + "'>" + city[0].city.name + "<br><strong>Customers:</strong>" + city[0].customerDetail.entityName + "</span></td><td></td></tr>";
+                        "<tr><td data-f-bold='true' colspan='3'><strong>Area:</strong><span class='customerData cust" +
+                        key + "'>" + city[0].city.name +
+                        "</span><br><strong>Customer:</strong><span class='customerData cust" +
+                        key + "'>" + city[0].customerDetail.entityName + "</span></td><td data-f-bold='true' colspan='3'><strong></strong><spanclass='customerData cust" + key + "'>" +custNetAmtTotal + "</span></td></tr>";
 
-                        // billDetails += "<tr</tr>";
+
                     // $.each(city, function (key, bill) {
                     //     var billStatusColor = "green";
                     //     if(bill.billStatus == "CANCELLED")
@@ -230,19 +233,21 @@
                     // });
 
 
-                    var space = "<tr class='pagebreak' style='background-color: #ceecf5 !important;'><td data-f-fill='ceecf500' colspan='11'></td></tr>";
+                    // var space = "<tr class='pagebreak' style='background-color: #ceecf5 !important;'><td data-f-fill='ceecf500' colspan='11'></td></tr>";
                     // var custTotals = "<tr><td></td><td></td><td></td><td></td><td></td><td></td><td></td>" +
                     //     "<td data-f-underline='true' data-f-bold='true'><strong><u>" + custNtvTotal.toFixed(2) + "</u></strong></td><td data-f-underline='true' data-f-bold='true'><strong><u>" + custDiscountTotal.toFixed(2) + "</u></strong></td>" +
                     //     "<td data-f-underline='true' data-f-bold='true'><strong><u>" + custGstTotal.toFixed(2) + "</u></strong></td><td data-f-underline='true' data-f-bold='true'><strong><u>" + custNetAmtTotal.toFixed(2) + "</u></strong></td></tr>";
 
                     grandTotal += custNetAmtTotal;
-                    content += cityName + billDetails + space;
+                    content += cityName + billDetails;
                 });
+                var total = "<tr><th colspan='3'></th><th data-f-bold='true'><strong></strong><span id='Total'></span></th></tr>"
                 var mainTableFooter = "</tbody></table>";
 
-                $("#result").html(mainTableHeader + content + mainTableFooter);
+                $("#result").html(mainTableHeader + content+total+ mainTableFooter);
                 loading.close();
                 $("#grandTotal").text(grandTotal.toFixed(2));
+                $("#Total").text(grandTotal.toFixed(2));
             },
             error: function () {
                 loading.close();
