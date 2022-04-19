@@ -1,17 +1,17 @@
 package phitb_accounts
 
 
-import grails.rest.*
 import grails.converters.*
 import grails.web.servlet.mvc.GrailsParameterMap
 import org.grails.web.json.JSONObject
 import phitb_accounts.Exception.BadRequestException
 import phitb_accounts.Exception.ResourceNotFoundException
 
-class ReceiptDetailLogController {
+class BillDetailLogController
+{
 	static responseFormats = ['json', 'xml']
 
-    ReceiptDetailLogService receiptDetailLogService
+    BillDetailLogService billDetailLogService
     /**
      * Gets all bill payment log
      * @param query
@@ -22,7 +22,7 @@ class ReceiptDetailLogController {
     def index() {
 
         try {
-            respond receiptDetailLogService.getAll(params.limit, params.offset, params.query)
+            respond billDetailLogService.getAll(params.limit, params.offset, params.query)
         }
         catch (Exception ex) {
             System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
@@ -38,7 +38,7 @@ class ReceiptDetailLogController {
         try {
             String id = params.id
             if (id) {
-                respond receiptDetailLogService.get(id)
+                respond billDetailLogService.get(id)
             }
         }
         catch (ResourceNotFoundException ex)
@@ -63,8 +63,8 @@ class ReceiptDetailLogController {
      */
     def save() {
         try {
-            JSONObject jsonObject = JSON.parse(request.reader.text) as JSONObject
-            respond receiptDetailLogService.save(jsonObject)
+            JSONObject jsonObject = new JSONObject(params)
+            respond billDetailLogService.save(jsonObject)
         }
         catch (ResourceNotFoundException ex)
         {
@@ -91,7 +91,7 @@ class ReceiptDetailLogController {
         try {
             String id = params.id
             JSONObject jsonObject = JSON.parse(request.reader.text) as JSONObject
-            respond receiptDetailLogService.update(jsonObject,id)
+            respond billDetailLogService.update(jsonObject,id)
         }
         catch (ResourceNotFoundException ex)
         {
@@ -116,7 +116,7 @@ class ReceiptDetailLogController {
     def delete() {
         try {
             String id = params.id
-            receiptDetailLogService.delete(id)
+            billDetailLogService.delete(id)
             response.status = 200
         }
         catch (ResourceNotFoundException ex)
@@ -144,7 +144,7 @@ class ReceiptDetailLogController {
             String length = params.length
             GrailsParameterMap parameterMap = getParams()
             JSONObject paramsJsonObject = new JSONObject(parameterMap.params)
-            respond receiptDetailLogService.dataTables(paramsJsonObject, start, length)
+            respond billDetailLogService.dataTables(paramsJsonObject, start, length)
         }
         catch (ResourceNotFoundException ex)
         {

@@ -24,8 +24,8 @@ class ReportsService {
         jsonObject.put("financialYear", financialYear)
         jsonObject.put("sortBy", sortBy)
         Client client = ClientBuilder.newClient()
-        //WebTarget target = client.target(new Links().API_GATEWAY)
-        WebTarget target = client.target("http://localhost:8083")
+        WebTarget target = client.target(new Links().API_GATEWAY)
+//        WebTarget target = client.target("http://localhost:8083")
         try
         {
             Response apiResponse = target
@@ -57,8 +57,8 @@ class ReportsService {
         jsonObject.put("financialYear", financialYear)
         jsonObject.put("sortBy", sortBy)
         Client client = ClientBuilder.newClient()
-        //WebTarget target = client.target(new Links().API_GATEWAY)
-        WebTarget target = client.target("http://localhost:8083")
+        WebTarget target = client.target(new Links().API_GATEWAY)
+//        WebTarget target = client.target("http://localhost:8083")
         try
         {
             Response apiResponse = target
@@ -70,6 +70,72 @@ class ReportsService {
                 String json = apiResponse.readEntity(String.class)
                 //gson used to preserve order
                 JsonObject jsonObject1 = new JsonParser().parse(json).getAsJsonObject()
+                return jsonObject1
+            }
+            else
+            {
+                return null
+            }
+
+        }
+        catch (Exception ex)
+        {
+            System.err.println('Service :ReportsService , action :  getCustomerWiseReport  , Ex:' + ex)
+            log.error('Service :ReportsService , action :  getCustomerWiseReport  , Ex:' + ex)
+        }
+    }
+
+    def getAreaWiseReport(String entityId, String dateRange, String financialYear, String sortBy) {
+        JSONObject jsonObject = new JSONObject()
+        jsonObject.put("entityId",entityId)
+        jsonObject.put("dateRange", dateRange)
+        jsonObject.put("financialYear", financialYear)
+        jsonObject.put("sortBy", sortBy)
+        Client client = ClientBuilder.newClient()
+        WebTarget target = client.target(new Links().API_GATEWAY)
+//        WebTarget target = client.target("http://localhost:8083")
+        try
+        {
+            Response apiResponse = target
+                    .path(new Links().SALE_BILL_AREAWISE_REPORTS)
+                    .request(MediaType.APPLICATION_JSON_TYPE)
+                    .post(Entity.entity(jsonObject.toString(),MediaType.APPLICATION_JSON_TYPE))
+            if(apiResponse.status == 200)
+            {
+                JSONObject jsonObject1 = new JSONObject(apiResponse.readEntity(String.class))
+                return jsonObject1
+            }
+            else
+            {
+                return null
+            }
+
+        }
+        catch (Exception ex)
+        {
+            System.err.println('Service :ReportsService , action :  getCustomerWiseReport  , Ex:' + ex)
+            log.error('Service :ReportsService , action :  getCustomerWiseReport  , Ex:' + ex)
+        }
+    }
+
+    def getConsolidatedReport(String entityId, String dateRange, String financialYear, String sortBy) {
+        JSONObject jsonObject = new JSONObject()
+        jsonObject.put("entityId",entityId)
+        jsonObject.put("dateRange", dateRange)
+        jsonObject.put("financialYear", financialYear)
+        jsonObject.put("sortBy", sortBy)
+        Client client = ClientBuilder.newClient()
+        WebTarget target = client.target(new Links().API_GATEWAY)
+//        WebTarget target = client.target("http://localhost:8083")
+        try
+        {
+            Response apiResponse = target
+                    .path(new Links().SALE_BILL_CONSOLIDATED_REPORTS)
+                    .request(MediaType.APPLICATION_JSON_TYPE)
+                    .post(Entity.entity(jsonObject.toString(),MediaType.APPLICATION_JSON_TYPE))
+            if(apiResponse.status == 200)
+            {
+                JSONObject jsonObject1 = new JSONObject(apiResponse.readEntity(String.class))
                 return jsonObject1
             }
             else

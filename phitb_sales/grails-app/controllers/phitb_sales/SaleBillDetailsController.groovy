@@ -317,9 +317,12 @@ class SaleBillDetailsController
                 if (params.type == "settled")
                 {
                     saleBillDetails.paymentStatus = Long.parseLong("1")
+                    saleBillDetails.adjAmount = saleBillDetails.getBalance() - Double.parseDouble(params.adj)
+
                 }
                 else
                 {
+                    saleBillDetails.adjAmount = 0
                     saleBillDetails.paymentStatus = Long.parseLong("0")
                 }
                 SaleBillDetails saleBillDetails1 = saleBillDetails.save(flush: true)
@@ -339,7 +342,7 @@ class SaleBillDetailsController
     }
 
 
-    def updatePricing()
+    def updateBalance()
     {
         try
         {
@@ -353,6 +356,7 @@ class SaleBillDetailsController
                 {
                     double diffBalance = Double.parseDouble(saleBillDetails.getBalance().toString()) - balance
                     saleBillDetails.balance = diffBalance
+                    saleBillDetails.adjAmount = saleBillDetails.getAdjAmount() + balance
                 }
                 else
                 {

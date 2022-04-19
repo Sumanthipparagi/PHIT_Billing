@@ -518,8 +518,12 @@ class UrlMappings {
         "/getallunsettledbycustomer/$id"(controller: "reciptDetail", action: 'getAllUNSaleBillCustomerId')
         "/getallsettledbycustomer/$id"(controller: "reciptDetail", action: 'getAllSaleBillsettled')
 
+
         "/updatesalebalance"(controller: 'reciptDetail', action: 'updateSaleBalance')
 
+        "/updatesalereturnbalance"(controller: 'reciptDetail', action: 'updateSaleReturnBalance')
+
+        "/updatereciptlog"(controller: 'reciptDetail',action: 'updateRecieptLog')
 
 //        Payment Details
         "/payments"(controller: "paymentDetail") { action = [GET: "index", POST: "save"]}
@@ -533,5 +537,10 @@ class UrlMappings {
         "/reports/sales/getcustomerwise"(controller: "salesReport", action: "salesCustomerWiseReport")
         "/reports/sales/datewise"(controller: "salesReport", action: "datewise")
         "/reports/sales/getdatewise"(controller: "salesReport", action: "salesDateWiseReport")
+        "/reports/sales/areawise"(controller: "salesReport", action: "areawise")
+        "/reports/sales/getareawise"(controller: "salesReport", action: "salesAreaWiseReport")
+        "/reports/sales/consolidated"(controller: "salesReport", action: "consolidated")
+        "/reports/sales/getconsolidated"(controller: "salesReport", action: "saleConsolidatedReport")
+
     }
 }

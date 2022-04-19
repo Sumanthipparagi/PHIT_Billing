@@ -31,10 +31,17 @@ class UrlMappings {
             "/generalledger/$id(.$format)?"(controller: 'generalLedger') { action = [GET: 'show', PUT: 'update', DELETE: 'delete'] }
             "/generalledgerbyentity/$id(.$format)?"(controller: 'generalLedger') { action = [GET: 'getByEntityId'] }
 
+            //Reciept Detail log
+            "/reciptdetaillog(.$format)?"(controller: 'billDetailLog') { action = [GET: 'index', POST: 'save'] }
+            "/reciptdetaillog/datatable(.$format)?"(controller: 'billDetailLog') { action = [GET: 'dataTable'] }
+            "/reciptdetaillog/$id(.$format)?"(controller: 'billDetailLog') { action = [GET: 'show', PUT: 'update', DELETE: 'delete'] }
+
+
             //bill payment log
             "/billpaymentlog(.$format)?"(controller: 'billPaymentLog') { action = [GET: 'index', POST: 'save'] }
             "/billpaymentlog/datatable(.$format)?"(controller: 'billPaymentLog') { action = [GET: 'dataTable'] }
             "/billpaymentlog/$id(.$format)?"(controller: 'billPaymentLog') { action = [GET: 'show', PUT: 'update', DELETE: 'delete'] }
+
 
             //cheque returns
             "/chequereturns(.$format)?"(controller: 'chequeReturns') { action = [GET: 'index', POST: 'save'] }

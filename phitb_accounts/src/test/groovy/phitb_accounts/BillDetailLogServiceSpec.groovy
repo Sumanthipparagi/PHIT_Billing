@@ -3,7 +3,7 @@ package phitb_accounts
 import grails.testing.services.ServiceUnitTest
 import spock.lang.Specification
 
-class ReceiptDetailLogServiceSpec extends Specification implements ServiceUnitTest<ReceiptDetailLogService>{
+class BillDetailLogServiceSpec extends Specification implements ServiceUnitTest<BillDetailLogService>{
 
     def setup() {
     }

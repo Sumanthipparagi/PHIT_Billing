@@ -348,6 +348,8 @@ public class Links
     public static String SALE_BILL_CUSTOMER = "api/v1.0/sales/salebillbycustomer/{custid}";
     public static String SALE_BILL_REPORTS = "api/v1.0/sales/reports/customerwise";
     public static String SALE_BILL_DATEWISE_REPORTS = "api/v1.0/sales/reports/datewise";
+    public static String SALE_BILL_AREAWISE_REPORTS = "api/v1.0/sales/reports/areawise";
+    public static String SALE_BILL_CONSOLIDATED_REPORTS = "api/v1.0/sales/reports/consolidated";
 
 
     public static String SALE_SCHEME_UPDATE = "api/v1.0/sales/schemeconfiguration/{id}";
@@ -381,7 +383,8 @@ public class Links
     public static String SALE_RETURN_SAVE = "api/v1.0/sales/salereturndetails";
     public static String SALE_RETURN_UNSETTLED = "api/v1.0/sales/saleretrununsettledbycustomer";
     public static String SALE_RETURN_SETTLED = "api/v1.0/sales/saleretrunsettledbycustomer";
-    public static String SET_SALE_RETURN_STATUS = "api/v1.0/sales/setsalereturnstatus/{id}/type/{type}";
+    public static String SET_SALE_RETURN_STATUS = "api/v1.0/sales/setsalereturnstatus/{id}/type/{type}/adj/{adj}";
+    public static String UPDATE_SALE_RETURN_BALANCE = "api/v1.0/sales/updatereturnbalancebyid";
 
 
     //Sale Order Details
@@ -434,6 +437,9 @@ public class Links
     public static String RECIPT_DETAIL_DATATABLE = "api/v1.0/accounts/receiptdetails/datatable";
     public static String RECIPT_DETAIL_UPDATE = "api/v1.0/accounts/receiptdetails/{id}";
     public static String RECIPT_DETAIL_DELETE = "api/v1.0/accounts/receiptdetails/{id}";
+
+//    Reciept detail log
+    public static String RECIPT_DETAIL_LOG = "api/v1.0/accounts/reciptdetaillog";
 
 
     //Wallet
