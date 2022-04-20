@@ -172,6 +172,7 @@
             contentType: false,
             processData: false,
             success: function (data) {
+                console.log(data)
                 var content = "";
                 var grandTotal = 0.00;
                 var totalNetAmt;
@@ -205,6 +206,8 @@
                             // billDetails += "<tr><td>"+q.customer.entityName+"</td><td colspan='4'>"+q.products+"</td></tr>"
                         bd.push(q.customer.entityName)
                     });
+
+
                     function getUnique(array){
                         var uniqueArray = [];
                         // Loop through array values
@@ -217,9 +220,12 @@
                     }
                     var billD = getUnique(bd)
                     $.each(billD, function (key, bill) {
-                        billDetails += "<tr><td>"+bill+"</td><td colspan='4'>"+custNetAmtTotal+"</td></tr>"
+                        billDetails += "<tr><td>"+bill+"</td><td colspan='4'>"+custNetAmtTotal.toFixed(2)+"</td></tr>"
                     });
 
+                    $.each(city, function (key, bill) {
+
+                    });
                     // $.each(city, function (key, bill) {
                     //     var billStatusColor = "green";
                     //     if(bill.billStatus == "CANCELLED")
