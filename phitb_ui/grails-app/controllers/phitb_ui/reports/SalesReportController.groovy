@@ -87,6 +87,7 @@ class SalesReportController {
         //String sortBy = params.sortBy
         String sortBy = "id"
         JSONObject areaWiseData = reportsService.getAreaWiseReport(entityId, dateRange, financialYear, sortBy)
+        println(areaWiseData)
         //get product details
         for (Object customer : areaWiseData.keySet()) {
             def customerDetail = new EntityService().getEntityById(customer.toString())
