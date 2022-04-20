@@ -429,6 +429,8 @@
 
                         <li><a href="/reports/sales/customerwise">Sales Report (customer-wise)</a></li>
                         <li><a href="/reports/sales/datewise">Sales Report (date-wise)</a></li>
+                        <li><a href="/reports/sales/areawise">Sales Report (area-wise)</a></li>
+                        <li><a href="/reports/sales/consolidated">Sales Report (consolidated)</a></li>
 
                     </ul>
                 </li>

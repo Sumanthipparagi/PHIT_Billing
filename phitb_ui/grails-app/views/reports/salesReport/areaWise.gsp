@@ -177,7 +177,7 @@
                 var mainTableHeader = "<table class='table table-bordered table-sm' style='width: 100%;'><thead>" +
                     "<tr><td data-f-bold='true' colspan='11'><h3 style='margin-bottom:0 !important;'>${session.getAttribute('entityName')}</h3></td></tr>" +
                     "<tr><td colspan='11'>${session.getAttribute('entityAddress1')} ${session.getAttribute('entityAddress2')} ${session.getAttribute('entityPinCode')}, ph: ${session.getAttribute('entityMobileNumber')}</td></tr>" +
-                    "<tr><th data-f-bold='true' colspan='11'>Customer-Bill-consolidated Sales* Detail, Date: " +
+                    "<tr><th data-f-bold='true' colspan='11'>Customer-Bill-Areawise Sales* Detail, Date: " +
                     dateRange + "</th></tr>"+
                     "<tr><th colspan='3'></th><th data-f-bold='true'><strong>Grand Total:</strong> <span id='grandTotal'></span></th></tr>"+
                     "<tr><th data-f-bold='true' colspan='3'>Customer</th><th data-f-bold='true'>Net Amount</th>";
@@ -242,7 +242,8 @@
                     grandTotal += custNetAmtTotal;
                     content += cityName + billDetails;
                 });
-                var total = "<tr><th colspan='3'></th><th data-f-bold='true'><strong></strong><span id='Total'></span></th></tr>"
+                var total =
+                    "<tr><th colspan='3'></th><th data-f-bold='true'><strong></strong><u><strong><span id='Total'></span></strong></u></th></tr>"
                 var mainTableFooter = "</tbody></table>";
 
                 $("#result").html(mainTableHeader + content+total+ mainTableFooter);
