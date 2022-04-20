@@ -110,7 +110,14 @@ class ReceiptDetailService {
         }
         receiptDetail.amountPaid = Double.parseDouble(jsonObject.get("amountPaid").toString())
         receiptDetail.narration = jsonObject.get("narration").toString()
-        receiptDetail.cardNumber = Long.parseLong("1")
+        if(!jsonObject.isNull("cardNumber"))
+        {
+            receiptDetail.cardNumber = jsonObject.get("cardNumber").toString()
+        }
+        else
+        {
+            receiptDetail.cardNumber = null
+        }
         receiptDetail.paymentDate = sdf.parse(jsonObject.get("paymentDate").toString())
         receiptDetail.transId = "1"
         receiptDetail.employeeReceived = Long.parseLong("1")

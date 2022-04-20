@@ -423,10 +423,12 @@ class ReciptDetailController
         JSONObject entity = new EntityRegisterController().getEnitityById(session.getAttribute('entityId').toString()) as
                 JSONObject
         ArrayList<String> settled = new SalebillDetailsController().getAllSettledById(params.custid,session.getAttribute("entityId").toString(), session.getAttribute("financialYear").toString()) as ArrayList
-
+        def creditNoteRespone = new AccountsService().getCNsettledCustomerId(params.custid, session.getAttribute
+        ("entityId").toString(), session.getAttribute("financialYear").toString())
+        JSONArray creditNoteArry = new JSONArray(creditNoteRespone.readEntity(String.class))
 
         render(view: '/accounts/recipt/recipt-temp', model: [customer: customer, settled: settled, recipt: recipt,
-                                                             entity: entity])
+                                                             entity: entity,creditNoteArry:creditNoteArry])
     }
 
 

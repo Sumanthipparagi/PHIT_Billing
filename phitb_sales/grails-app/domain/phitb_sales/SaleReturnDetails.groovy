@@ -34,6 +34,7 @@ class SaleReturnDetails {
     String message
     int ignoreSold
     String financialYear
+    String invoiceNumber
     long entityId
     long entityTypeId
     long createdUser

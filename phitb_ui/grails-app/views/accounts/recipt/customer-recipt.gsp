@@ -317,7 +317,8 @@
                                                         <thead>
                                                         <th>Doc.Type</th>
                                                         <th>Yr</th>
-                                                        <th>Document Date</th>
+                                                        <th>DD</th>
+                                                        <th>Invoice Number</th>
                                                         <th>Amount</th>
                                                         <th>Adj Amount</th>
                                                         <th style="width: 2%"></th>
@@ -325,6 +326,7 @@
                                                     </tr>
                                                     <tbody class="settledVocher">
                                                     </tbody>
+                                                    <td></td>
                                                     <td></td>
                                                     <td></td>
                                                     <td></td>
@@ -346,7 +348,7 @@
                                                         <th></th>
                                                         <th>Doc.Type</th>
                                                         <th>Yr</th>
-                                                        <th>Document Date</th>
+                                                        <th>DD</th>
                                                         <th>Invoice Number</th>
                                                         <th>Amount</th>
                                                         </thead>
@@ -354,6 +356,7 @@
                                                     <tbody class="unsettledVocher">
                                                     </tbody>
                                                     <tr>
+                                                        <td></td>
                                                         <td></td>
                                                         <td></td>
                                                         <td></td>
@@ -515,7 +518,7 @@
                 $('.total_bal').text(parseFloat(total_bal).toFixed(2));
 
                 $.each(data[0], function (key, value) {
-                    if(value.balance!==0) {
+                    if(value.balance!==0 && value.billStatus!=='DRAFT') {
                         trHTML1 +=
                             '<tr id="' + "IN" + value.id + '"><td><button type="button" data-id="' + value.id +
                             '"  data-custId="' + value.customerId +
@@ -524,21 +527,21 @@
                             '</td><td>' + moment(value.dateCreated).format('DD-MM-YYYY') +
                             '</td><td>' + value.invoiceNumber +
                             '</td><td><input type="number" name="balunsettled" value="' + value.balance +
-                            '" id="balunsettled" data-inid="' + value.id + '"  data-custId="' + value.customerId + '" readonly></td></tr>';
+                            '" id="balunsettled" data-inid="' + value.id + '"  data-custId="' + value.customerId +
+                            '" style="width: 65%;" readonly></td></tr>';
                     }
                 });
 
                 $.each(data[1], function (key, value) {
                     var date = new Date(value.entryDate);
                     if(value.balance!==0) {
-
                         trHTML +=
                             '<tr id="' + "CR" + value.id + '"><td><button type="button" data-id="' + value.id +
                             '"  data-custId="' + value.customerId +
                             '"   data-adj="' + value.adjAmount + '" class="btn-sm btn-primary" id="cnsettled"><-</button></td><td>' + cred + '</td><td>' + value.financialYear +
                             '</td><td>' + moment(date).format('DD-MM-YYYY') +
-                            '</td><td></td><td><input type="number" value="' + value.balance +
-                            '" id="' + "CR" + value.id + '" data-cnid="' + value.id + '" readonly></td></tr>';
+                            '</td><td>' + value.invoiceNumber +'</td><td><input type="number" value="' + value.balance +
+                            '" id="' + "CR" + value.id + '" data-cnid="' + value.id + '" style="width: 65%;" readonly></td></tr>';
                     }
                 });
                 $('.unsettledVocher').html(trHTML+trHTML1);
@@ -577,9 +580,9 @@
                             '<tr id="' + "IN" + value.id + '"><td>' + invoice +
                             '</td><td>' + value.financialYear +
                             '</td><td>' + moment(value.dateCreated).format('DD-MM-YYYY') +
-                            '</td><td><input type="number" value="' + value.balance +
+                            '</td><td>' + value.invoiceNumber +'</td><td><input type="number" value="' + value.balance +
                             '" id="INVbalsettled" data-inid="' + value.id + '"  data-custId="' + value.customerId
-                            + '" data-invbal="' + value.balance + '"></td><td>' + value?.adjAmount +
+                            + '" data-invbal="' + value.balance + '" ></td><td>' + value?.adjAmount +
                             '</td><td><button type="button" data-id="' + value.id + '"  data-custId="' +
                             value.customerId + '" data-adjAmt="' + value.adjAmount + '" class="btn-sm btn-primary" id="unsettled">-></button></td></tr>';
                     }
@@ -592,9 +595,9 @@
                             '<tr id="' + "CR" + value.id + '"><td>' + cred +
                             '</td><td>' + value.financialYear +
                             '</td><td>' + moment(date).format('DD-MM-YYYY') +
-                            '</td><td><input type="number" value="' + value.balance +
+                            '</td><td>' + value.invoiceNumber +'</td><td><input type="number" value="' + value.balance +
                             '" id="CRbalsettled" data-cnid="' + value.id + '"  data-custId="' + value.customerId
-                            + '"  data-crbal="' + value.balance + '"></td><td>' + value.adjAmount +
+                            + '"  data-crbal="' + value.balance + '" ></td><td>' + value.adjAmount +
                             '</td><td><button type="button" data-id="' + value.id +
                             '"  data-custId="' + value.customerId +
                             '"  data-adj="' + value.adjAmount + '" class="btn-sm btn-primary" id="cnunsettled">-></button></td></tr>';

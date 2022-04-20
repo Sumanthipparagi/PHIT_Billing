@@ -91,7 +91,6 @@ class SalesReportController {
         for (Object customer : areaWiseData.keySet()) {
             def customerDetail = new EntityService().getEntityById(customer.toString())
             JSONArray bills = areaWiseData.get(customer) as JSONArray
-            println(bills)
             for (Object bill : bills) {
                 JSONArray saleProducts = bill.products
                 for (Object saleProduct : saleProducts) {
