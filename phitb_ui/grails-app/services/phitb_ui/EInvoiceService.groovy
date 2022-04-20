@@ -1,6 +1,8 @@
 package phitb_ui
 
 import grails.gorm.transactions.Transactional
+import org.bouncycastle.jce.provider.BouncyCastleProvider
+import org.glassfish.jersey.logging.LoggingFeature
 import org.grails.web.json.JSONObject
 import sun.text.resources.FormatData
 
@@ -8,6 +10,7 @@ import javax.ws.rs.client.Client
 import javax.ws.rs.client.ClientBuilder
 import javax.ws.rs.client.Entity
 import javax.ws.rs.client.WebTarget
+import javax.ws.rs.core.Feature
 import javax.ws.rs.core.MediaType
 import javax.ws.rs.core.Response
 import java.security.Key
@@ -17,6 +20,29 @@ import java.security.PublicKey
 import java.security.Signature
 import java.security.cert.Certificate
 import java.text.SimpleDateFormat
+import java.util.logging.Level
+import java.util.logging.Logger
+
+import java.io.FileInputStream;
+import java.security.KeyStore;
+import java.security.PrivateKey;
+import java.security.PublicKey;
+import java.security.Security;
+import java.security.cert.X509Certificate;
+import java.text.SimpleDateFormat;
+import java.util.Arrays;
+import java.util.Calendar;
+import java.util.Enumeration;
+
+import org.bouncycastle.cert.jcajce.JcaCertStore;
+import org.bouncycastle.cms.CMSProcessableByteArray;
+import org.bouncycastle.cms.CMSSignedData;
+import org.bouncycastle.cms.CMSSignedDataGenerator;
+import org.bouncycastle.cms.CMSTypedData;
+import org.bouncycastle.cms.jcajce.JcaSimpleSignerInfoGeneratorBuilder;
+import org.bouncycastle.util.Store;
+
+import sun.misc.BASE64Encoder;
 
 /*import org.apache.http.HttpResponse
 import org.apache.http.client.methods.HttpPost
@@ -46,9 +72,23 @@ import java.util.logging.Logger*/
 @Transactional
 class EInvoiceService {
 
+    private static final char[] JKSPassword;
+    private static final char[] PFXPassword;
+    private static KeyStore ks = null;
+    private static String alias = null;
+    private static X509Certificate UserCert = null;
+    private static PrivateKey UserCertPrivKey = null;
+    private static PublicKey UserCertPubKey = null;
+    private static X509Certificate myPubCert = null;
+
+    static {
+        JKSPassword = "123456".toCharArray();
+        PFXPassword = "tcs".toCharArray();
+    }
+
     def generateSignature() {
         try {
-            String alias = "localhost"
+           /* String alias = "localhost"
             char[] keyStorePassword = "123456".toCharArray();
             KeyStore keyStore = KeyStore.getInstance("JKS");
             InputStream keyStoreData = new FileInputStream("C:\\Users\\arjun\\Desktop\\KeyStore.jks")
@@ -67,16 +107,37 @@ class EInvoiceService {
             String base64EncodedSignature = Base64.encoder.encodeToString(signature)
             println(base64EncodedSignature)
 
+*/
+            String aspId = Constants.E_INVOICE_ASP_ID;
+            String ts = "";
+
+            ts = getCurrTs();
+
+            System.out.println("AspId : " + aspId);
+            System.out.println("TimeStamp : " + ts);
+
+            String aspData = aspId + ts;
+            String sign = ""
+            try {
+                sign = generateSignature(aspData);
+                System.out.println("sign:" + sign);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
             JSONObject jsonObject = new JSONObject()
-            jsonObject.put("timestamp", sdf.format(new Date()))
-            jsonObject.put("signed_content", base64EncodedSignature)
+            jsonObject.put("timestamp", ts)
+            jsonObject.put("signed_content", sign)
+            Logger logger = Logger.getLogger(getClass().getName());
+            Feature feature = new LoggingFeature(logger, Level.INFO, null, null);
             Client client = ClientBuilder.newClient();
-            WebTarget target = client.target(new Links().E_INVOICE_GET_KEY);
+            client.register(feature)
+            WebTarget target = client.target(new Links().E_INVOICE_GET_KEY)
             try {
                 Response apiResponse = target
                         .request(MediaType.APPLICATION_JSON_TYPE)
                         .header("aspid", new Constants().E_INVOICE_ASP_ID)
-                        .header("message-id", "XXXXXXXXXXXXXXXX")
+                        .header("message-id", "2022032712345678")
                         .header("filler1", "")
                         .header("filler2", "")
                         .post(Entity.entity(jsonObject.toString(), MediaType.APPLICATION_JSON_TYPE))
@@ -87,155 +148,102 @@ class EInvoiceService {
                 }
             }
             catch (Exception ex) {
-                System.err.println('Service :showSalesService , action :  show  , Ex:' + ex)
-                log.error('Service :showSalesService , action :  show  , Ex:' + ex)
+                System.err.println('Service :EInvoiceService , action :  generateSignature  , Ex:' + ex)
+                log.error('Service :EInvoiceService , action :  generateSignature  , Ex:' + ex)
             }
-
-
         }
         catch (Exception ex) {
             ex.printStackTrace()
         }
     }
-    /*static String folderPath = "";
-    static byte[] appKey = null;
-    static String userName = "<User Id>";
-    static String password = "<Password>";
-    static String gstin = "<GSTIN>";
-    static String encPayload = "";
-    static String authtoken = "";
-    static String sek = "";
-    static ObjectMapper objectMapper;
-    public static void main(String[] args) {
-        authtoken = "";
-        folderPath = getPath();
-        objectMapper = new ObjectMapper();
-        try {
-            String appKey = Base64.getEncoder().encodeToString(createAESKey());
-            String payload = "{\"username\":\"" + userName + "\",\"password\":\"" + password + "\",\"appkey\":\"" + appKey + "\",\"ForceRefreshAccessToken\": true}";
-            System.out.println("Payload: Plain: " + payload);
-            payload = Base64.getEncoder().encodeToString(payload.getBytes());
-            payload = "{\"Data\":\"" + encryptAsymmentricKey(payload) + "\"}";
-            System.out.println("Payload: Encrypted: " + payload);
-            DefaultHttpClient httpClient = new DefaultHttpClient();
-            HttpPost postRequest = new HttpPost("<URL>/v1.04/auth");
-            postRequest.setHeader("client-id", "<Client Id>");
-            postRequest.setHeader("client-secret", "Client Secret");
-            postRequest.setHeader("gstin", "GSTIN");
-            postRequest.addHeader("KeepAlive", "true");
-            postRequest.addHeader("AllowAutoRedirect", "false");
-            StringEntity input = new StringEntity(payload);
-            input.setContentType("application/json");
-            postRequest.setEntity(input);
-            HttpResponse response = httpClient.execute(postRequest);
-            if (response.getStatusLine().getStatusCode() != 200) {
-                throw new RuntimeException("Failed : HTTP error code : " + response.getStatusLine().getStatusCode());
-            }
-            BufferedReader br = new BufferedReader(new InputStreamReader((response.getEntity().getContent())));
-            String output;
-            String responseText = "";
-            while ((output = br.readLine()) != null) {
-                responseText = output;
-            }
-            System.out.println("Response:" + responseText);
-            String status = objectMapper.readTree(responseText).get("Status").asText();
-            if (status.equals("0")) {
-                String errorDesc = "";
-                errorDesc = objectMapper.readTree(responseText).get("error").asText();
-                //errorDesc = new String(Base64.getDecoder().decode(errorDesc), "utf-8");
-                System.out.println("Error: " + errorDesc);
-            }
-            if (status.equals("1")) {
-                authtoken = objectMapper.readTree(responseText).get("Data").get("AuthToken").asText();
-                sek = objectMapper.readTree(responseText).get("Data").get("Sek").asText();
-                System.out.println("Authtoken: " + authtoken);
-                System.out.println("Encrypted SEK: " + sek);
-                sek = decrptBySymmetricKeySEK(sek);
-                System.out.println("Decrypted SEK: " + sek);
-            }
-            httpClient.getConnectionManager().shutdown();
-        } catch (Exception ex) {
-            Logger.getLogger(EWayBillAuth.class.getName()).log(Level.SEVERE, null, ex);
-        }
-    }
-    public static PublicKey getPublicKey() throws FileNotFoundException, IOException, NoSuchAlgorithmException, InvalidKeySpecException {
-        FileInputStream inp = new FileInputStream("<Path to File>/einv_sandbox.pem");
-        byte[] keyBytes = new byte[inp.available()];
-        inp.read(keyBytes);
-        inp.close();
-        String pubKey = new String(keyBytes, "UTF-8");
-        pubKey = pubKey.replaceAll("(-+BEGIN PUBLIC KEY-+\\r?\\n|-+END PUBLIC KEY-+\\r?\\n?)", "");
-        BASE64Decoder decoder = new BASE64Decoder();
-        keyBytes = decoder.decodeBuffer(pubKey);
-        X509EncodedKeySpec spec = new X509EncodedKeySpec(keyBytes);
-        KeyFactory keyFactory = KeyFactory.getInstance("RSA");
-        PublicKey publicKey = keyFactory.generatePublic(spec);
-        return publicKey;
-    }
-    public static byte[] createAESKey() {
-        try {
-            KeyGenerator gen = KeyGenerator.getInstance("AES");
-            gen.init(128);
-            *//* 128-bit AES *//*
-            SecretKey secret = gen.generateKey();
-            appKey = secret.getEncoded();
-        } catch (NoSuchAlgorithmException ex) {
-            Logger.getLogger(EWayBillAuth.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        return appKey;
-    }
-    private static String encryptAsymmentricKey(String clearText) throws Exception {
-        PublicKey publicKeys = getPublicKey();
-        Cipher cipher = Cipher.getInstance("RSA/ECB/PKCS1PADDING");
-        cipher.init(Cipher.ENCRYPT_MODE, publicKeys);
-        byte[] encryptedText = cipher.doFinal(clearText.getBytes());
-        String encryptedPassword = Base64.getEncoder().encodeToString(encryptedText);
-        return encryptedPassword;
-    }
-    public static String getPath() {
-        String folderPath = "";
-        try {
-            File tempFile = new File(EWayBillAuth.class.getProtectionDomain().getCodeSource().getLocation().toURI().getPath());
-            folderPath = tempFile.getParentFile().getPath() + "\\";
-            return folderPath;
-        } catch (URISyntaxException ex) {
-            Logger.getLogger(EWayBillAuth.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        return folderPath;
-    }
-    public static String decrptBySymmetricKeySEK(String encryptedSek) {
-        Key aesKey = new SecretKeySpec(appKey, "AES"); // converts bytes(32 byte random generated) to key
-        try {
-            Cipher cipher = Cipher.getInstance("AES/ECB/PKCS5Padding");  // encryption type = AES with padding PKCS5
-            cipher.init(Cipher.DECRYPT_MODE, aesKey); // initiate decryption type with the key
-            byte[] encryptedSekBytes = Base64.getDecoder().decode(encryptedSek); // decode the base64 encryptedSek to bytes
-            byte[] decryptedSekBytes = cipher.doFinal(encryptedSekBytes); // decrypt the encryptedSek with the initialized cipher containing the key(Results in bytes)
-            byte[] sekBytes = decryptedSekBytes;
-            String decryptedSek = Base64.getEncoder().encodeToString(decryptedSekBytes); // convert the decryptedSek(bytes) to Base64 String
-            return decryptedSek;  // return results in base64 string
-        } catch (Exception e) {
-            return "Exception; " + e;
-        }
-    }*/
-    /* def GetKey()
-     {
-         Client client = ClientBuilder.newClient();
-         WebTarget target = client.target(new Links().API_GATEWAY);
-         try
-         {
-             Response apiResponse = target
-                     .path(new Links().E_INVOICE_GET_KEY)
-                     .request(MediaType.APPLICATION_JSON_TYPE)
-                     .header("aspid", new Constants().E_INVOICE_ASP_ID)
-                     .header("message-id", "XXXXXXXXXXXXXXXX")
-                     .get()
-             return apiResponse
-         }
-         catch (Exception ex)
-         {
-             System.err.println('Service :showSalesService , action :  show  , Ex:' + ex)
-             log.error('Service :showSalesService , action :  show  , Ex:' + ex)
-         }
-     }*/
 
+    public static String generateSignature(String data) throws Exception {
+
+        System.out.println("@@inside generateSignature: " + data);
+
+        String signature;
+
+        String jksFilepath = "C:\\Users\\arjun\\Desktop\\KeyStore.jks";
+
+        try {
+            // Adding Security Provider for PKCS 12
+            Security.addProvider(new BouncyCastleProvider());
+            // Setting password for the e-Token
+
+            // logging into token
+            ks = KeyStore.getInstance("jks");
+
+
+            FileInputStream fileInputStream = new FileInputStream(jksFilepath);
+
+            // Loading Keystore
+            // System.out.println("loading keystore");
+            ks.load(fileInputStream, JKSPassword);
+            Enumeration<String> e = ks.aliases();
+
+            while (e.hasMoreElements()) {
+                alias = e.nextElement();
+                // System.out.println("Alias of the e-Token : "+ alias);
+
+                UserCert = (X509Certificate) ks.getCertificate(alias);
+
+                UserCertPubKey = (PublicKey) ks.getCertificate(alias).getPublicKey();
+
+                // System.out.println("loading Private key");
+                UserCertPrivKey = (PrivateKey) ks.getKey(alias, JKSPassword);
+            }
+
+            // Method Call to generate Signature
+            signature = MakeSignature(data);
+
+            return signature;
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            System.out.println("generateSignature" + e.getCause());
+            throw new Exception();
+        }
+
+    }
+
+    private static String MakeSignature(String data) {
+
+        System.out.println("@@inside MakeSignature...");
+
+        try {
+            PrivateKey privateKey = (PrivateKey) ks.getKey(alias, JKSPassword);
+            myPubCert = (X509Certificate) ks.getCertificate(alias);
+            Store certs = new JcaCertStore(Arrays.asList(myPubCert));
+
+            CMSSignedDataGenerator generator = new CMSSignedDataGenerator();
+
+            generator.addSignerInfoGenerator(new JcaSimpleSignerInfoGeneratorBuilder().setProvider("BC").build("SHA256withRSA", privateKey, myPubCert));
+
+            generator.addCertificates(certs);
+
+            CMSTypedData data1 = new CMSProcessableByteArray(data.getBytes());
+
+            CMSSignedData signed = generator.generate(data1, true);
+
+            BASE64Encoder encoder = new BASE64Encoder();
+
+            String signedContent = encoder.encode((byte[]) signed.getSignedContent().getContent());
+
+            String envelopedData = encoder.encode(signed.getEncoded());
+
+            return envelopedData;
+        } catch (Exception e) {
+            e.printStackTrace();
+            System.out.println("MakeSignature ==" + e.getCause());
+            return "";
+        }
+    }
+
+    public static String getCurrTs() {
+        System.out.println("@@inside getCurrTs...");
+        Calendar cal = Calendar.getInstance();
+        SimpleDateFormat format1 = new SimpleDateFormat("ddMMyyyyHHmmssSSS111");
+        String tmpstmp = format1.format(cal.getTime());
+        return tmpstmp;
+    }
 }
