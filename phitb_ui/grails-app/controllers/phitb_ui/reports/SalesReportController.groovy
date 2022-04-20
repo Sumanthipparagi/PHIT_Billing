@@ -121,7 +121,6 @@ class SalesReportController {
         for (Object customer : consolidated.keySet()) {
             def customerDetail = new EntityService().getEntityById(customer.toString())
             JSONArray bills = consolidated.get(customer) as JSONArray
-            println(bills)
             for (Object bill : bills) {
                 JSONArray saleProducts = bill.products
                 for (Object saleProduct : saleProducts) {
