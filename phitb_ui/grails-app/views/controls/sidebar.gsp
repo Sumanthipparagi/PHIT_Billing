@@ -426,12 +426,15 @@
                         class="zmdi zmdi-chart"></i><span>Reports</span> <span
                         class="badge badge-success float-right"></span></a>
                     <ul class="ml-menu">
-
-                        <li><a href="/reports/sales/customerwise">Sales Report (customer-wise)</a></li>
-                        <li><a href="/reports/sales/datewise">Sales Report (date-wise)</a></li>
-                        <li><a href="/reports/sales/areawise">Sales Report (area-wise)</a></li>
-                        <li><a href="/reports/sales/consolidated">Sales Report (consolidated)</a></li>
-
+                        <li><a href="javascript:void(0);" class="menu-toggle">Sales</span><span
+                                class="badge badge-success float-right"></span></a>
+                            <ul class="ml-menu">
+                                <li><a href="/reports/sales/customerwise">Sales Report (customer-wise)</a></li>
+                                <li><a href="/reports/sales/datewise">Sales Report (date-wise)</a></li>
+                                <li><a href="/reports/sales/areawise">Sales Report (area-wise)</a></li>
+                                <li><a href="/reports/sales/consolidated">Sales Report (consolidated)</a></li>
+                            </ul>
+                        </li>
                     </ul>
                 </li>
                 <li class="header"></li>
