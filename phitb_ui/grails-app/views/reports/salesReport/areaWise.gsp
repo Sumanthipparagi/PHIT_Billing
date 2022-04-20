@@ -223,9 +223,6 @@
                         billDetails += "<tr><td>"+bill+"</td><td colspan='4'>"+custNetAmtTotal.toFixed(2)+"</td></tr>"
                     });
 
-                    $.each(city, function (key, bill) {
-
-                    });
                     // $.each(city, function (key, bill) {
                     //     var billStatusColor = "green";
                     //     if(bill.billStatus == "CANCELLED")
