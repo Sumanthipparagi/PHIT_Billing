@@ -98,6 +98,7 @@ class SalesReportController {
                     saleProduct.put("productDetail", product)
                 }
                 def cityResp = new SystemService().getCityById(customerDetail.cityId.toString())
+                cityResp.put("entity",customerDetail)
                 bill.put("customerDetail", customerDetail)
                 bill.put("city",cityResp)
             }

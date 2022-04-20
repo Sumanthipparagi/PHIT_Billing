@@ -172,6 +172,7 @@
             contentType: false,
             processData: false,
             success: function (data) {
+                console.log(data)
                 var content = "";
                 var grandTotal = 0.00;
                 var mainTableHeader = "<table class='table table-bordered table-sm' style='width: 100%;'><thead>" +
