@@ -632,7 +632,7 @@
         var id = $(this).data('id');
         var custId = $(this).attr('data-custId');
         var adj = $(this).attr('data-adj');
-        var url = '/salesettledvocher/' + id;
+        var url = '/salesettledvocher/' + id+"?adj="+adj;
         var type = 'GET';
         $.ajax({
             url: url,
@@ -655,7 +655,8 @@
         e.preventDefault();
         var id = $(this).data('id');
         var custId = $(this).attr('data-custId');
-        var url = '/saleunsettledvocher/' + id;
+        var adj = $(this).attr('data-adj');
+        var url = '/saleunsettledvocher/' + id+"?adj="+adj;
         var type = 'GET';
         $.ajax({
             url: url,
