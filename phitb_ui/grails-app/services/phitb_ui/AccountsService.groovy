@@ -390,6 +390,54 @@ class AccountsService
     }
 
 
+
+    def getAllSaleBillById(String id,String entityId,String financialYear)
+    {
+        Client client = ClientBuilder.newClient()
+        WebTarget target = client.target(new Links().API_GATEWAY)
+        try
+        {
+            Response apiResponse = target
+                    .path(new Links().SALE_BILL_CUSTOMER)
+                    .resolveTemplate("custid",id)
+                    .queryParam("financialYear", URLEncoder.encode(financialYear, "UTF-8"))
+                    .queryParam("entityId", URLEncoder.encode(entityId, "UTF-8"))
+                    .request(MediaType.APPLICATION_JSON_TYPE)
+                    .get()
+            return apiResponse
+        }
+        catch (Exception ex)
+        {
+            System.err.println('Service :AccountsService , action :  getProducts  , Ex:' + ex)
+            log.error('Service :AccountsService , action :  getProducts  , Ex:' + ex)
+        }
+
+    }
+
+    def getAllSaleReturnById(String id,String entityId,String financialYear)
+    {
+        Client client = ClientBuilder.newClient()
+        WebTarget target = client.target(new Links().API_GATEWAY)
+        try
+        {
+            Response apiResponse = target
+                    .path(new Links().SALE_RETURN_CUSTOMER)
+                    .queryParam("id", URLEncoder.encode(id, "UTF-8"))
+                    .queryParam("financialYear", URLEncoder.encode(financialYear, "UTF-8"))
+                    .queryParam("entityId", URLEncoder.encode(entityId, "UTF-8"))
+                    .request(MediaType.APPLICATION_JSON_TYPE)
+                    .get()
+            return apiResponse
+        }
+        catch (Exception ex)
+        {
+            System.err.println('Service :AccountsService , action :  getProducts  , Ex:' + ex)
+            log.error('Service :AccountsService , action :  getProducts  , Ex:' + ex)
+        }
+
+    }
+
+
     //   update Sale invoice balance
     def updateSaleBalance(JSONObject jsonObject)
     {

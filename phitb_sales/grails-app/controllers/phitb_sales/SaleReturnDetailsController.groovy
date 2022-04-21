@@ -136,6 +136,31 @@ class SaleReturnDetailsController {
         }
     }
 
+    def getAllByCustomerId()
+    {
+        try
+        {
+            String customerId = params.id
+            String entityId = params.entityId
+            String financialYear = params.financialYear
+            respond saleReturnDetailsService.getAllUnsettledByCustId(customerId, entityId, financialYear)
+        }
+        catch (ResourceNotFoundException ex)
+        {
+            System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
+            response.status = 404
+        }
+        catch (BadRequestException ex)
+        {
+            System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
+            response.status = 400
+        }
+        catch (Exception ex)
+        {
+            System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
+        }
+    }
+
     def updateStatus(Long id)
     {
         try

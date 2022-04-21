@@ -385,6 +385,7 @@ public class Links
     public static String SALE_RETURN_SETTLED = "api/v1.0/sales/saleretrunsettledbycustomer";
     public static String SET_SALE_RETURN_STATUS = "api/v1.0/sales/setsalereturnstatus/{id}/type/{type}/adj/{adj}";
     public static String UPDATE_SALE_RETURN_BALANCE = "api/v1.0/sales/updatereturnbalancebyid";
+    public static String SALE_RETURN_CUSTOMER = "api/v1.0/sales/salereturnbycustomer";
 
 
     //Sale Order Details

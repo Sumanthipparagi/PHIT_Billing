@@ -362,11 +362,11 @@ class SaleBillDetailsService
     }
 
 
-    def getAllByCustomerId(String id)
+    def getAllByCustomerId(String id,String financialYear,String entityId)
     {
         if (id)
         {
-            return SaleBillDetails.findAllByCustomerId(Long.parseLong(id))
+            return SaleBillDetails.findAllByCustomerIdAndFinancialYearAndEntityId(Long.parseLong(id),financialYear,Long.parseLong(entityId))
         }
     }
 

@@ -93,4 +93,10 @@ class SaleReturnDetailsService {
         return SaleReturnDetails.findAllByCustomerIdAndEntityIdAndFinancialYearAndAdjustmentStatus(Long.parseLong(customerId) as
                 String, Long.parseLong(entityId),financialYear,"0")
     }
+
+    def getAllByCustomerId(String customerId, String entityId, String financialYear)
+    {
+        return SaleReturnDetails.findAllByCustomerIdAndEntityIdAndFinancialYear(customerId,Long.parseLong(entityId),
+                financialYear)
+    }
 }

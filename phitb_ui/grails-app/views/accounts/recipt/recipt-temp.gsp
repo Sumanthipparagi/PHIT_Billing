@@ -162,20 +162,24 @@
 %{--                            invoiceNumber =  sv.entityId+"/S/" + month + year + "/" + series + "/" + sv.id--}%
 %{--                        }--}%
 %{--%>--}%
+                    <g:if test="${sv.balance!=0 && sv.billStatus!='DRAFT'}">
                     <tr>
                         <td>${sv.invoiceNumber}</td>
                         <td>INV</td>
                         <td>${sv.dateCreated.split("T")[0]}</td>
                         <td>${sv.balance}</td>
                     </tr>
+                    </g:if>
                 </g:each>
                 <g:each var="csv" in="${creditNoteArry}">
+                    <g:if test="${csv.balance!=0}">
                     <tr>
                         <td>${csv.invoiceNumber}</td>
                         <td>CRNT</td>
                         <td>${csv.dateCreated.split("T")[0]}</td>
                         <td>${csv.balance}</td>
                     </tr>
+                    </g:if>
                 </g:each>
             </table>
         </td>

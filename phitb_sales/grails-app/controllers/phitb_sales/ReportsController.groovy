@@ -113,9 +113,7 @@ class ReportsController {
 
             ArrayList<SaleBillDetails> saleBillDetails = SaleBillDetails
                     .findAllByEntityIdAndFinancialYearAndOrderDateBetweenAndBillStatusNotEqual(Long.parseLong(entityId), financialYear, fromDate, toDate, "DRAFT", [sort: sort, order: 'desc'])
-
             ArrayList<String> custIds = [];
-
             for (SaleBillDetails saleBillDetail : saleBillDetails) {
                 def saleBillJson = new JSONObject((saleBillDetail as JSON).toString())
                 ArrayList<SaleProductDetails> saleProductDetails = SaleProductDetails.findAllByBillId(saleBillDetail.id)
@@ -125,6 +123,7 @@ class ReportsController {
 //                if(!custIds.contains(customerJson.id)){
                     def cityJson = getCityById(customerJson.cityId.toString())
                     customerJson.put("cityId",cityJson)
+                    customerJson.put("salebill",saleBillJson)
                     saleBillJson.put("customer",customerJson)
                     if (customerBills.containsKey(saleBillJson.customer.cityId.id)) {
                         bills = customerBills.get(saleBillJson.customer.cityId.id) as JSONArray

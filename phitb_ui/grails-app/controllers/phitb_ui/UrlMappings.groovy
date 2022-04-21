@@ -525,6 +525,8 @@ class UrlMappings {
 
         "/updatereciptlog"(controller: 'reciptDetail',action: 'updateRecieptLog')
 
+        "/recipts/getallbilldetails"(controller: 'reciptDetail', action: 'getAllBillDetailsByCustomerId')
+
 //        Payment Details
         "/payments"(controller: "paymentDetail") { action = [GET: "index", POST: "save"]}
         "/payments-list/datatable"(controller: "paymentDetail", action: "dataTable")
