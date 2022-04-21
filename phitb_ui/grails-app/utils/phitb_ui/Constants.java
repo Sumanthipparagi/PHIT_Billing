@@ -31,6 +31,7 @@ public class Constants
     public static String DOCTYPE_DEBITJV = "DBJV";
 
     public static String E_INVOICE_ASP_ID = "29AALCP6561H000978";
+    public static String E_INVOICE_ASP_SECRET = "v490411B91226v0I1cIWUPLcW6718690";
 
 
 
