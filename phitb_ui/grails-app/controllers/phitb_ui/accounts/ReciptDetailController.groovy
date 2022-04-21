@@ -337,6 +337,7 @@ class ReciptDetailController
         {
             JSONObject jsonObject = new JSONObject(params)
             def apiResponse = new AccountsService().saveRecipt(jsonObject, session.getAttribute('financialYear') as String)
+            println(params.bills)
             if (apiResponse?.status == 200)
             {
                 JSONObject obj = new JSONObject(apiResponse.readEntity(String.class))

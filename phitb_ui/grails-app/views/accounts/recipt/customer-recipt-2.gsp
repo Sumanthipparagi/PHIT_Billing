@@ -290,6 +290,7 @@
                                     </div>
                                 </div>
 
+                                <input type="hidden" id="bills" name="bills" value="">
                                 <input type="hidden" name="status" value="1">
                                 <input type="hidden" name="syncStatus" value="1">
                                 <input type="hidden" name="createdUser" value="1">
@@ -338,6 +339,7 @@
 <asset:javascript src="/themeassets/plugins/bootstrap-material-datetimepicker/js/bootstrap-material-datetimepicker.js"/>
 <asset:javascript src="/themeassets/js/pages/forms/basic-form-elements.js"/>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/3.5.2/select2.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/table-to-json@1.0.0/lib/jquery.tabletojson.min.js"integrity="sha256-H8xrCe0tZFi/C2CgxkmiGksqVaxhW0PFcUKZJZo1yNU=" crossorigin="anonymous"></script>
 
 <script>
     var date = new Date();
@@ -588,10 +590,15 @@
                                 '                                        <td>' + value.totalAmount.toFixed(2) + '</td>\n' +
                                 '                                        <td id="'+"invAdjAmt"+value.id+'">' + value.adjAmount + '</td>\n' +
                                 '                                        <td>' + value.balance.toFixed(2) + '</td>\n' +
-                                '                                        <td><input type="number" class="paidNowInv" id="paidNowInv" name="paidNowInv" data-inid="'+value.id+'" style="width: 100px;"></td>\n' +
+                                '                                        <td><input type="number" class="paidNowInv" id="paidNowInv" name="paidNowInv" min="0" max="' + value.balance.toFixed(2) + '" data-inid="'+value.id+'" data-bal="'+value.balance+'" style="width: 100px;" pattern="\\d{1,10}(?:\\.\\d{1,3})?$"  ></td>\n' +
                                 '                                        <td>' + calculateNoOfDays(value.dateCreated) + '</td>\n' +
                                 '                                        <td>' + value.financialYear + '</td>\n' +
                                 '                                        </tr>';
+
+                            $('#paidNowInv').attr({
+                                'min': value.balance.toFixed(2),
+                            });
+
                         }
                     });
 
@@ -602,9 +609,10 @@
                                 '                                        <td>' + creditNote + '</td>\n' +
                                 '                                        <td>' + value.invoiceNumber + '</td>\n' +
                                 '                                        <td>' + moment(value.dateCreated).format('DD-MM-YYYY') + '</td>\n' +
-                                '                                        <td>' + value.totalAmount.toFixed(2) + '</td>\n' +
+                                '                                        <td>' + "-"+value.totalAmount.toFixed(2) + '</td>\n' +
                                 '                                        <td>' + value?.adjAmount + '</td>\n' +
-                                '                                        <td>' + value.balance.toFixed(2) + '</td>\n' +
+                                '                                        <td>' + "-"+value.balance.toFixed(2) +
+                                '</td>\n' +
                                 '                                        <td><input type="number" class="paidNowCrt" name="paidNowCrt" style="width: 100px;"></td>\n' +
                                 '                                        <td>' + calculateNoOfDays(value.dateCreated) + '</td>\n' +
                                 '                                        <td>' + value.financialYear + '</td>\n' +
@@ -881,20 +889,23 @@
             //     alert(id)
             //     $(this).next('.paidNowInv').focus();
             // }
+
         }
     });
 
     $(document).on('click', '#autoAdj', function (e) {
        var value = $('#amountPaid').val();
-       var invoices = $('.paidNowInv').length
-        if(value!==0)
-        {
-            var paidNow = parseFloat(value)/parseFloat(invoices)
-            $('.paidNowInv').val(paidNow.toFixed(2));
+       var databal = $('.paidNowInv').attr('data-bal');
+       var inputs = $(".paidNowInv");
+        var invoices = $('.paidNowInv').length;
+        for(var i = 0; i < inputs.length; i++) {
+            if (value !== 0) {
+                var paidNow = parseFloat(value) / parseFloat(invoices)
+                $('.paidNowInv').val(paidNow.toFixed(2));
+            }
         }
-        // var els=document.getElementsByClassName("in1");
-        // for (var i=0;i<els.length;i++) {
-        //     els[i].value = "New values";}
+        var table = $('#table1').tableToJSON();
+        $('#bills').val(table)
     });
 
 
