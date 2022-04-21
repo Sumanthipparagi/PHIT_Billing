@@ -515,5 +515,8 @@ public class Links
     public static String E_INVOICE_CANCEL_IRN = E_INVOICE_BASE_URL + "/ewb_v1.03/einv/can-irn";
     public static String E_INVOICE_GET_IRN = E_INVOICE_BASE_URL + "/ewb_v1.03/einv/get-irn";
 
+//    Bill detail log
+    public static  String BILL_DETAIL_LOG = "api/v1.0/accounts/reciptdetaillog";
+
 
 }

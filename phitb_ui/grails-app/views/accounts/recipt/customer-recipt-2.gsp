@@ -886,8 +886,12 @@
 
     $(document).on('click', '#autoAdj', function (e) {
        var value = $('#amountPaid').val();
-        $('.paidNowInv').val(value)
-        $('.paidNowCrt').val(value)
+       var invoices = $('.paidNowInv').length
+        if(value!==0)
+        {
+            var paidNow = parseFloat(value)/parseFloat(invoices)
+            $('.paidNowInv').val(paidNow.toFixed(2));
+        }
         // var els=document.getElementsByClassName("in1");
         // for (var i=0;i<els.length;i++) {
         //     els[i].value = "New values";}
