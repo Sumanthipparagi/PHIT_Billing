@@ -65,6 +65,10 @@ dependencies {
     compile 'com.google.code.gson:gson:2.8.5'
     compile 'org.grails.plugins:rendering:2.0.3'
 
+    compile group: 'org.bouncycastle', name: 'bcpkix-jdk15on', version: '1.56'
+    // https://mvnrepository.com/artifact/org.bouncycastle/bcprov-jdk15on
+    compile group: 'org.bouncycastle', name: 'bcprov-jdk15on', version: '1.56'
+
 }
 
 bootRun {
