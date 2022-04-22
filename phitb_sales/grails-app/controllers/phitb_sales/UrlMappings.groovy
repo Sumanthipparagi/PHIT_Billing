@@ -243,6 +243,10 @@ class UrlMappings {
             "/updatereturnbalancebyid/id/$id/balance/$balance"(controller: 'saleReturnDetails')
                     {action=[POST: 'updateBalance']}
 
+            "/salereturnbycustomer(.$format)?"(controller: 'saleReturnDetails') {
+                action = [GET: 'getAllByCustomerId']
+            }
+
             //Temp User Log
             "/tempuserlog(.$format)?"(controller:'tempUserLog') {
                 action = [GET: 'index', POST: 'save']

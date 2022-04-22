@@ -50,10 +50,10 @@
         <div class="block-header">
             <div class="row clearfix">
                 <div class="col-lg-5 col-md-5 col-sm-12">
-                    <h2>Area-wise Sales Report</h2>
+                    <h2>Consolidated Sales Report</h2>
                     <ul class="breadcrumb padding-0">
                         <li class="breadcrumb-item"><a href="#"><i class="zmdi zmdi-home"></i></a></li>
-                        <li class="breadcrumb-item active">Area-wise Sales Report</li>
+                        <li class="breadcrumb-item active">Consolidated Sales Report</li>
                     </ul>
                 </div>
 
@@ -238,7 +238,8 @@
                     grandTotal += custNetAmtTotal;
                     content += cityName + billDetails;
                 });
-                var total = "<tr><th colspan='3'></th><th data-f-bold='true'><strong>Grand Total:</strong> <span id='Total'></span></th></tr>"
+                var total =
+                    "<tr><th colspan='3'></th><th data-f-bold='true'><strong><u><span id='Total'></span></u></strong></th></tr>"
                 var mainTableFooter = "</tbody></table>";
 
                 $("#result").html(mainTableHeader + content+total+ mainTableFooter);
@@ -256,7 +257,7 @@
     $("#btnExport").click(function () {
         let table = document.getElementById("result");
         TableToExcel.convert(table, {
-            name: 'areawise-sales-report.xlsx',
+            name: 'consolidated-sales-report.xlsx',
             sheet: {
                 name: 'Sheet 1' // sheetName
             }

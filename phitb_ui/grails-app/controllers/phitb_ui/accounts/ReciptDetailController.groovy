@@ -27,18 +27,19 @@ import javax.swing.text.html.parser.Entity
 class ReciptDetailController
 {
 
-    def index()
-    {
-        ArrayList<String> entity = new EntityRegisterController().show() as ArrayList
-        ArrayList<String> bank = new BankRegisterController().show() as ArrayList
-        ArrayList<String> accountMode = new AccountModeController().show() as ArrayList
-        ArrayList<String> wallet = new WalletController().show() as ArrayList
-        ArrayList<String> saleinvoice = new SalebillDetailsController().show() as ArrayList
-        ArrayList<String> paymodes = new PaymentModeController().show() as ArrayList<String>
-        render(view: "/accounts/recipt/customer-recipt", model: [entity: entity, bank: bank, accountMode: accountMode,
-                                                                 wallet: wallet, saleinvoice: saleinvoice,paymodes:
-                                                                         paymodes])
-    }
+//    def index()
+//    {
+//        ArrayList<String> entity = new EntityRegisterController().show() as ArrayList
+//        ArrayList<String> bank = new BankRegisterController().show() as ArrayList
+//        ArrayList<String> accountMode = new AccountModeController().show() as ArrayList
+//        ArrayList<String> wallet = new WalletController().show() as ArrayList
+//        ArrayList<String> saleinvoice = new SalebillDetailsController().show() as ArrayList
+//        ArrayList<String> paymodes = new PaymentModeController().show() as ArrayList<String>
+//        render(view: "/accounts/recipt/customer-recipt", model: [entity: entity, bank: bank, accountMode: accountMode,
+//                                                                 wallet: wallet, saleinvoice: saleinvoice,paymodes:
+//                                                                         paymodes])
+//    }
+
 
 //    def addRecipt()
 //    {
@@ -48,6 +49,21 @@ class ReciptDetailController
 //        ArrayList<String> wallet = new WalletController().show() as ArrayList
 //        render(view: '/accounts/recipt/add-recipt', model: [entity: entity, bank: bank, accountMode: accountMode, wallet: wallet])
 //    }
+
+    def index()
+    {
+        ArrayList<String> entity = new EntityRegisterController().show() as ArrayList
+        ArrayList<String> bank = new BankRegisterController().show() as ArrayList
+        ArrayList<String> accountMode = new AccountModeController().show() as ArrayList
+        ArrayList<String> wallet = new WalletController().show() as ArrayList
+        ArrayList<String> saleinvoice = new SalebillDetailsController().show() as ArrayList
+        ArrayList<String> paymodes = new PaymentModeController().show() as ArrayList<String>
+        render(view: "/accounts/recipt/customer-recipt-2", model: [entity: entity, bank: bank, accountMode: accountMode,
+                                                                 wallet: wallet, saleinvoice: saleinvoice,paymodes:
+                                                                         paymodes])
+    }
+
+
 
     def reciptList()
     {
@@ -207,6 +223,37 @@ class ReciptDetailController
         }
     }
 
+
+    def getAllBillDetailsByCustomerId()
+    {
+        try
+        {
+            JSONArray jsonArray = new JSONArray();
+            def salebill = new AccountsService().getAllSaleBillById(params.id,session.getAttribute("entityId").toString(), session.getAttribute("financialYear").toString())
+            def creditNote = new AccountsService().getAllSaleReturnById(params.id,session.getAttribute("entityId").toString(), session.getAttribute("financialYear").toString())
+            if (salebill.status == 200 && creditNote.status == 200)
+            {
+//                def tmp = creditNote.readEntity(String.class)
+                JSONArray salearray = new JSONArray(salebill.readEntity(String.class))
+                JSONArray creditNoteArry = new JSONArray(creditNote.readEntity(String.class))
+                jsonArray.add(salearray)
+                jsonArray.add(creditNoteArry)
+                respond jsonArray, formats: ['json'], status: 200
+            }
+            else
+            {
+                response.status = 400
+            }
+        }
+        catch (Exception ex)
+        {
+            System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
+            log.error('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
+            response.status = 400
+        }
+    }
+
+
     def getAllSaleBillsettled()
     {
         try
@@ -290,6 +337,7 @@ class ReciptDetailController
         {
             JSONObject jsonObject = new JSONObject(params)
             def apiResponse = new AccountsService().saveRecipt(jsonObject, session.getAttribute('financialYear') as String)
+            println(params.bills)
             if (apiResponse?.status == 200)
             {
                 JSONObject obj = new JSONObject(apiResponse.readEntity(String.class))

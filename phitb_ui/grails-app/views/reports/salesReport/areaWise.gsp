@@ -172,19 +172,21 @@
             contentType: false,
             processData: false,
             success: function (data) {
+                console.log(data)
                 var content = "";
                 var grandTotal = 0.00;
+                var totalNetAmt;
                 var mainTableHeader = "<table class='table table-bordered table-sm' style='width: 100%;'><thead>" +
                     "<tr><td data-f-bold='true' colspan='11'><h3 style='margin-bottom:0 !important;'>${session.getAttribute('entityName')}</h3></td></tr>" +
                     "<tr><td colspan='11'>${session.getAttribute('entityAddress1')} ${session.getAttribute('entityAddress2')} ${session.getAttribute('entityPinCode')}, ph: ${session.getAttribute('entityMobileNumber')}</td></tr>" +
-                    "<tr><th data-f-bold='true' colspan='11'>Customer-Bill-consolidated Sales* Detail, Date: " +
+                    "<tr><th data-f-bold='true' colspan='11'>Customer-Bill-Areawise Sales* Detail, Date: " +
                     dateRange + "</th></tr>"+
                     "<tr><th colspan='3'></th><th data-f-bold='true'><strong>Grand Total:</strong> <span id='grandTotal'></span></th></tr>"+
                     "<tr><th data-f-bold='true' colspan='3'>Customer</th><th data-f-bold='true'>Net Amount</th>";
                 // "<th data-f-bold='true'>Sale Qty</th><th data-f-bold='true'>Fr. Qty</th><th data-f-bold='true'>Rate</th><th data-f-bold='true'>N T V</th><th data-f-bold='true'>Discount</th><th data-f-bold='true'>GST</th><th data-f-bold='true'>Net Amount</th></tr></thead><tbody>";
+                var billDetails = "";
                 $.each(data, function (key, city) {
-                    console.log(data)
-                    var billDetails = "";
+                     billDetails = "";
                     var custNetAmtTotal = 0;
                     $.each(city, function (key, bill) {
                         var netAmtTotal = 0;
@@ -196,11 +198,30 @@
                         });
                     });
                     var cityName =
-                        "<tr><td data-f-bold='true' colspan='3'><strong>Area:</strong><span class='customerData cust" +
-                        key + "'>" + city[0].city.name +
-                        "</span><br><strong>Customer:</strong><span class='customerData cust" +
-                        key + "'>" + city[0].customerDetail.entityName + "</span></td><td data-f-bold='true' colspan='3'><strong></strong><spanclass='customerData cust" + key + "'>" +custNetAmtTotal + "</span></td></tr>";
+                        "<tr><td colspan='4' data-f-bold='true' colspan='3'><span class='customerData cust" +
+                        key + "'><strong>" + city[0].cityDetail.name + "</strong></span></td></tr>";
 
+                    var bd=[]
+                    $.each(city, function (i, q) {
+                            // billDetails += "<tr><td>"+q.customer.entityName+"</td><td colspan='4'>"+q.products+"</td></tr>"
+                        bd.push(q.customer.entityName)
+                    });
+
+
+                    function getUnique(array){
+                        var uniqueArray = [];
+                        // Loop through array values
+                        for(i=0; i < array.length; i++){
+                            if(uniqueArray.indexOf(array[i]) === -1) {
+                                uniqueArray.push(array[i]);
+                            }
+                        }
+                        return uniqueArray;
+                    }
+                    var billD = getUnique(bd)
+                    $.each(billD, function (key, bill) {
+                        billDetails += "<tr><td>"+bill+"</td><td colspan='4'>"+custNetAmtTotal.toFixed(2)+"</td></tr>"
+                    });
 
                     // $.each(city, function (key, bill) {
                     //     var billStatusColor = "green";
@@ -242,7 +263,8 @@
                     grandTotal += custNetAmtTotal;
                     content += cityName + billDetails;
                 });
-                var total = "<tr><th colspan='3'></th><th data-f-bold='true'><strong></strong><span id='Total'></span></th></tr>"
+                var total =
+                    "<tr><th colspan='3'></th><th data-f-bold='true'><strong></strong><u><strong><span id='Total'></span></strong></u></th></tr>"
                 var mainTableFooter = "</tbody></table>";
 
                 $("#result").html(mainTableHeader + content+total+ mainTableFooter);

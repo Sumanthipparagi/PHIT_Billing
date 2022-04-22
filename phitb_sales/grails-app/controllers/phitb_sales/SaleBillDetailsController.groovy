@@ -411,16 +411,16 @@ class SaleBillDetailsController
      */
     def getAllByCustomerId()
     {
-
         try
         {
-            respond saleBillDetailsService.getAllByCustomerId(params.id)
+            respond saleBillDetailsService.getAllByCustomerId(params.id,params.financialYear,params.entityId)
         }
         catch (Exception ex)
         {
             System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
         }
     }
+
 
     def cancelSaleBill() {
         try {
@@ -435,6 +435,7 @@ class SaleBillDetailsController
         catch (BadRequestException ex) {
             System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
             response.status = 400
+
         }
         catch (Exception ex) {
             System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)

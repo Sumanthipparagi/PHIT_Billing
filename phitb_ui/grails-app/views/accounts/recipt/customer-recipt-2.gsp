@@ -47,8 +47,8 @@
         background: #eee;
     }
 
-    .table td, .table th {
-        padding: 0.1rem;
+    .table td {
+        padding: 0.4rem;
     }
 
     .btn-sm {
@@ -81,7 +81,6 @@
     th {
         background: #eee;
     }
-
 
     </style>
 </head>
@@ -178,13 +177,13 @@
                                             id="paymentMode" onchange="payMode(this.value)" required style="height: 37px;width: 425px;">
                                         <option value="">-- Please select --</option>
                                         <g:each var="pm" in="${paymodes}">
-                                        <option value="${pm.id}" data-mode="${pm.name}">${pm.name}</option>
+                                            <option value="${pm.id}" data-mode="${pm.name}">${pm.name}</option>
                                         </g:each>
-%{--                                        <option value="1" data-mode="BANK">BANK</option>--}%
+                                    %{--                                        <option value="1" data-mode="BANK">BANK</option>--}%
                                     </select>
                                 </div>
 
-                                <div class="col-lg-6 form-group form-float" id="mode">
+                                <div class="form-group form-float" id="mode">
 
                                 </div>
 
@@ -254,121 +253,44 @@
                                            placeholder="Remark / Note"
                                            required/>
                                 </div>
-
-
-
-                                <div class="col-lg-3 form-group  form-float">
+                                    <div class="col-lg-3 form-group  form-float">
                                     <label for="amountPaid">
                                         Amount
                                     </label>
                                     <input type="text" id="amountPaid" class="note form-control amountPaid"
                                            name="amountPaid"
-                                           placeholder="Amount" readonly
+                                           placeholder="Amount"
                                            required/>
+                                    </div>
+                                <div class="col-lg-3 form-group  form-float mt-4">
+                                    <button type="button" class="btn btn-secondary" id="autoAdj">Auto Adjust</button>
                                 </div>
-
-                                %{--                                <div class="col-lg-6 form-group  form-float">--}%
-                                %{--                                    <label for="total">--}%
-                                %{--                                        Total Cheque:--}%
-                                %{--                                    </label>--}%
-                                %{--                                    <input type="text" style="margin-left: 43px;" id="tc" class="tc" name="tc"--}%
-                                %{--                                           placeholder="0.00" autocomplete="off">--}%
-                                %{--                                    <br>--}%
-                                %{--                                    <label for="total">--}%
-                                %{--                                        Total Bill Amount:--}%
-                                %{--                                    </label>--}%
-                                %{--                                    <input style="margin-left: 18px;" type="text" id="tba" class="tba" name="tba"--}%
-                                %{--                                           placeholder="0.00" readonly>--}%
-                                %{--                                    <br>--}%
-
-                                %{--                                    <span style="margin-left: 134px;">====================</span>--}%
-                                %{--                                    <br>--}%
-                                %{--                                    <input style="margin-left: 134px;" type="text" id="total" class="total" name="total"--}%
-                                %{--                                           placeholder="0.00" readonly>--}%
-                                %{--                                </div>--}%
-
-
-
-
-
-                                %{--                                <div class="col-lg-6 form-group  form-float">--}%
-                                %{--                                    <label for="cardNumber">--}%
-                                %{--                                        Card Number--}%
-                                %{--                                    </label>--}%
-                                %{--                                    <div class="demo-masked-input">--}%
-                                %{--                                    <input type="number" id="cardNumber" class="credit-card form-control"--}%
-                                %{--                                           name="Card Number"--}%
-                                %{--                                           placeholder="Card Number"--}%
-                                %{--                                           required/>--}%
-                                %{--                                    </div>--}%
-                                %{--                                </div>--}%
-
-                                <div class="container">
-                                    <div class="row">
-                                        <div class="col-lg-6">Settled Vocher List</div>
-
-                                        <div class="col-lg-6">Unsettled Vocher List</div>
-
-                                        <div class="col-lg-6">
-                                            <div class="tab tableFixHead" style="width:100%;overflow:auto;
-                                            max-height:300px;">
-                                                <table class="table table-striped" id="table1" border="1">
-                                                    <tr>
-                                                        <thead>
-                                                        <th>Doc.Type</th>
-                                                        <th>Yr</th>
-                                                        <th>DD</th>
-                                                        <th>Invoice Number</th>
-                                                        <th>Amount</th>
-                                                        <th>Adj Amount</th>
-                                                        <th style="width: 2%"></th>
-                                                        </thead>
-                                                    </tr>
-                                                    <tbody class="settledVocher">
-                                                    </tbody>
-                                                    <td></td>
-                                                    <td></td>
-                                                    <td></td>
-                                                    <td></td>
-                                                    <td></td>
-                                                    <td>Total:&nbsp;<span class="total_bal_s"></span></td>
-
-                                                </table>
-                                            </div>
-                                        </div>
-
-
-                                        <div class="col-lg-6">
-                                            <div class="tab tableFixHead" style="width:100%;overflow:auto;
-                                            max-height:300px;">
-                                                <table id="table2" class="table table-striped"
-                                                       border="1">
-                                                    <tr>
-                                                        <thead>
-                                                        <th></th>
-                                                        <th>Doc.Type</th>
-                                                        <th>Yr</th>
-                                                        <th>DD</th>
-                                                        <th>Invoice Number</th>
-                                                        <th>Amount</th>
-                                                        </thead>
-                                                    </tr>
-                                                    <tbody class="unsettledVocher">
-                                                    </tbody>
-                                                    <tr>
-                                                        <td></td>
-                                                        <td></td>
-                                                        <td></td>
-                                                        <td></td>
-                                                        <td></td>
-                                                        <td>Total:&nbsp;<span class="total_bal"></span></td>
-                                                    </tr>
-                                                </table>
-                                            </div>
-                                        </div>
+                                <div class="container mt-5">
+                                    <div class="tab tableFixHead" style="width:100%;overflow:auto;
+                                    max-height:300px;">
+                                    <table class="table table-bordered" id="table1">
+                                        <thead>
+                                        <tr>
+                                        <th>Doc.Type</th>
+                                        <th>Trans_Id</th>
+                                        <th>Bill Date</th>
+                                        <th>Total Amt</th>
+                                        <th>Prev.Paid Amt</th>
+                                        <th>Bal Amt</th>
+                                        <th>Paid Now</th>
+                                        <th>No of Days</th>
+                                        <th>Fin_Year</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody id="billDetails">
+                                        <tr><td colspan='9'><div
+                                                style='text-align: center;'><h2>Please select customer</h2></div></td></tr>
+                                        </tbody>
+                                    </table>
                                     </div>
                                 </div>
 
+                                <input type="hidden" id="bills" name="bills" value="">
                                 <input type="hidden" name="status" value="1">
                                 <input type="hidden" name="syncStatus" value="1">
                                 <input type="hidden" name="createdUser" value="1">
@@ -417,6 +339,7 @@
 <asset:javascript src="/themeassets/plugins/bootstrap-material-datetimepicker/js/bootstrap-material-datetimepicker.js"/>
 <asset:javascript src="/themeassets/js/pages/forms/basic-form-elements.js"/>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/3.5.2/select2.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/table-to-json@1.0.0/lib/jquery.tabletojson.min.js"integrity="sha256-H8xrCe0tZFi/C2CgxkmiGksqVaxhW0PFcUKZJZo1yNU=" crossorigin="anonymous"></script>
 
 <script>
     var date = new Date();
@@ -445,6 +368,7 @@
         var html = '';
         if ($('#paymentMode option:selected').attr('data-mode') === "BANK") {
             $("#mode").show()
+            $("#mode").addClass('col-lg-6')
             html=' <label for="bank">\n' +
                 '                                        Bank\n' +
                 '                                    </label>\n' +
@@ -457,6 +381,7 @@
                 '                                    </select>'
             $(".cheque").show()
         } else if ($('#paymentMode option:selected').attr('data-mode') === "CARD") {
+            $("#mode").addClass('col-lg-6')
             html='<label for="cardNumber">\n' +
                 '        Card Number\n' +
                 '    </label>\n' +
@@ -470,29 +395,50 @@
         }
         else if($('#paymentMode option:selected').attr('data-mode') === "CASH")
         {
+            $("#mode").addClass('col-lg-6')
             $("#mode").hide().prop('required',false)
             $(".cheque").hide().prop('required',false)
+        }
+        else if($('#paymentMode option:selected').attr('data-mode') === "")
+        {
+            $('#mode').removeClass('col-lg-6');
         }
         $('#mode').html(html)
     }
 
+    function calculateNoOfDays(date) {
+        const oneDay = 24 * 60 * 60 * 1000; // hours*minutes*seconds*milliseconds
+        const firstDate = new Date(date);
+        const secondDate = new Date();
+        const diffDays = Math.round(Math.abs((firstDate - secondDate) / oneDay));
+        return diffDays
+    }
 
     function getAddress(id) {
-        $.ajax({
-            type: 'GET',
-            url: '/getbyentity/' + id,
-            dataType: 'json',
-            success: function (data) {
-                getUnsettledByCustomer(id)
-                getsettledSaleBillByCustomer(id)
-                var trHTML = '';
-                trHTML += '<p><b>' + data.entityName + '</b><br>' + data.addressLine1 + '' + data.addressLine2 + '</p>';
-                $('#caddress').html(trHTML);
-            },
-            error: function () {
-                swal("Error!", "Something went wrong", "error");
-            }
-        });
+        if(id) {
+            $.ajax({
+                type: 'GET',
+                url: '/getbyentity/' + id,
+                dataType: 'json',
+                success: function (data) {
+
+                    getUnsettledByCustomer(id)
+                    getsettledSaleBillByCustomer(id)
+                    getAllSaleBillDetails(id)
+                    var trHTML = '';
+                    trHTML += '<p><b>' + data.entityName + '</b><br>' + data.addressLine1 + '' + data.addressLine2 + '</p>';
+                    $('#caddress').html(trHTML);
+                },
+                error: function () {
+                    swal("Error!", "Something went wrong", "error");
+                }
+            });
+        }
+        else
+        {
+            getAllSaleBillDetails(id)
+            $('#caddress').html("");
+        }
 
     }
 
@@ -611,6 +557,86 @@
         });
     }
 
+
+
+    function getAllSaleBillDetails(id) {
+        if(id) {
+            $.ajax({
+                type: 'GET',
+                url: '/recipts/getallbilldetails?id=' + id,
+                dataType: 'json',
+                success: function (data) {
+                    console.log(data)
+                    var trHTML = '';
+                    var trHTML1 = '';
+                    trHTML += '';
+                    trHTML1 += '';
+                    var invoice = "INVS";
+                    var creditNote = "CRNT";
+                    var inv = data[0].map(data => data.balance).reduce((acc, amount) => acc + amount, 0);
+                    var invAdjAmt = data[0].map(data => data.adjAmount).reduce((acc, adjAmt) => acc + adjAmt, 0);
+                    var crnt = data[1].map(data => data.balance).reduce((acc, amount) => acc + amount, 0);
+                    var crntAdjAmt = data[1].map(data => data.adjAmount).reduce((acc, adjAmount) => acc + adjAmount, 0);
+                    var total_bal_s = invAdjAmt - crntAdjAmt;
+                    $('.total_bal_s').text(parseFloat(total_bal_s).toFixed(2));
+                    $('.tba').val(total_bal_s.toFixed(2));
+                    $('.amountPaid').val(total_bal_s.toFixed(2));
+                    $.each(data[0], function (key, value) {
+                        if (value.balance !== 0 && value.billStatus !== 'DRAFT') {
+                            trHTML += ' <tr id="' + "IN" + value.id + '">\n' +
+                                '                                        <td>' + invoice + '</td>\n' +
+                                '                                        <td>' + value.invoiceNumber + '</td>\n' +
+                                '                                        <td>' + moment(value.dateCreated).format('DD-MM-YYYY') + '</td>\n' +
+                                '                                        <td>' + value.totalAmount.toFixed(2) + '</td>\n' +
+                                '                                        <td id="'+"invAdjAmt"+value.id+'">' + value.adjAmount + '</td>\n' +
+                                '                                        <td>' + value.balance.toFixed(2) + '</td>\n' +
+                                '                                        <td><input type="number" class="paidNowInv" id="paidNowInv" name="paidNowInv" min="0" max="' + value.balance.toFixed(2) + '" data-inid="'+value.id+'" data-bal="'+value.balance+'" style="width: 100px;" pattern="\\d{1,10}(?:\\.\\d{1,3})?$"  ></td>\n' +
+                                '                                        <td>' + calculateNoOfDays(value.dateCreated) + '</td>\n' +
+                                '                                        <td>' + value.financialYear + '</td>\n' +
+                                '                                        </tr>';
+
+                            $('#paidNowInv').attr({
+                                'min': value.balance.toFixed(2),
+                            });
+
+                        }
+                    });
+
+                    $.each(data[1], function (key, value) {
+                        var date = new Date(value.entryDate);
+                        if (value.balance !== 0) {
+                            trHTML1 += ' <tr id="' + "CR" + value.id + '">\n' +
+                                '                                        <td>' + creditNote + '</td>\n' +
+                                '                                        <td>' + value.invoiceNumber + '</td>\n' +
+                                '                                        <td>' + moment(value.dateCreated).format('DD-MM-YYYY') + '</td>\n' +
+                                '                                        <td>' + "-"+value.totalAmount.toFixed(2) + '</td>\n' +
+                                '                                        <td>' + value?.adjAmount + '</td>\n' +
+                                '                                        <td>' + "-"+value.balance.toFixed(2) +
+                                '</td>\n' +
+                                '                                        <td><input type="number" class="paidNowCrt" name="paidNowCrt" style="width: 100px;"></td>\n' +
+                                '                                        <td>' + calculateNoOfDays(value.dateCreated) + '</td>\n' +
+                                '                                        <td>' + value.financialYear + '</td>\n' +
+                                '                                        </tr>';
+                        }
+                    });
+                    $('#billDetails').html(trHTML + trHTML1);
+
+                    if(data[0].length === 0 && data[1].length === 0)
+                    {
+                        $('#billDetails').html("<tr><td colspan='9'><div style='text-align: center;'><h2>No Data Found</h2></div></td></tr>");
+                    }
+                },
+                error: function () {
+                    swal("Error!", "Something went wrong", "error");
+                }
+            });
+        }
+        else
+        {
+            $('#billDetails').html("<tr><td colspan='9'><div style='text-align: center;'><h2>Please select customer</h2></div></td></tr>");
+        }
+    }
+
     // var input = document.getElementById("tc");
     // input.addEventListener("keydown", function (e) {
     //     if (e.target.value !== 0) {
@@ -641,8 +667,8 @@
             processData: false,
             success: function () {
                 $('table#table2 tr#IN' + id).remove();
-                getUnsettledByCustomer(custId)
-                getsettledSaleBillByCustomer(custId)
+                getUnsettledByCustomer(custId);
+                getAllSaleBillDetails(custId)
             },
             error: function () {
                 swal("Error!", "Something went wrong", "error");
@@ -666,7 +692,7 @@
             success: function () {
                 $('table#table1 tr#IN' + id).remove();
                 getUnsettledByCustomer(custId);
-                getsettledSaleBillByCustomer(custId)
+                getAllSaleBillDetails(custId)
             },
             error: function () {
                 swal("Error!", "Something went wrong", "error");
@@ -690,7 +716,7 @@
             success: function () {
                 $('table#table2 tr#CN' + id).remove();
                 getUnsettledByCustomer(custId);
-                getsettledSaleBillByCustomer(custId);
+                getAllSaleBillDetails(custId);
             },
             error: function () {
                 swal("Error!", "Something went wrong", "error");
@@ -714,7 +740,7 @@
             success: function () {
                 $('table#table1 tr#CN' + id).remove();
                 getUnsettledByCustomer(custId);
-                getsettledSaleBillByCustomer(custId)
+                getAllSaleBillDetails(custId)
             },
             error: function () {
                 swal("Error!", "Something went wrong", "error");
@@ -763,7 +789,7 @@
                                 },
                                 success: function (data) {
                                     getUnsettledByCustomer(custId);
-                                    getsettledSaleBillByCustomer(custId)
+                                    getAllSaleBillDetails(custId)
                                 }
                             });
                         },
@@ -772,7 +798,7 @@
                         }
                     });
                 }
-               else
+                else
                 {
                     if(balance === 0)
                     {
@@ -822,7 +848,7 @@
                                 },
                                 success: function (data) {
                                     getUnsettledByCustomer(custId);
-                                    getsettledSaleBillByCustomer(custId)
+                                    getAllSaleBillDetails(custId)
                                 }
                             });
                         },
@@ -847,16 +873,46 @@
                 }
             }
         });
-
-
-
-
     });
 
+    $(document).on('keydown','#paidNowInv',function(e){
+        if (e.keyCode === 13 || e.which === '13') {
+            var id = $(this).attr('data-inid');
+            var index = $('.paidNowInv').index(this) + 1;
+            $('.paidNowInv').eq(index).focus();
+
+            // var prevPaid = $('table#table1 tr#IN'+id+' td#invAdjAmt'+id+'').text();
+            // var paid = parseFloat(prevPaid) + parseFloat($('#paidNowInv').val());
+            // $('table#table1 tr#IN'+id+' td#invAdjAmt'+id+'').text(parseFloat(paid).toFixed());
+            // alert(id)
+            // if (this.value.length === this.maxLength) {
+            //     alert(id)
+            //     $(this).next('.paidNowInv').focus();
+            // }
+
+        }
+    });
+
+    $(document).on('click', '#autoAdj', function (e) {
+       var value = $('#amountPaid').val();
+       var databal = $('.paidNowInv').attr('data-bal');
+       var inputs = $(".paidNowInv");
+        var invoices = $('.paidNowInv').length;
+        for(var i = 0; i < inputs.length; i++) {
+            if (value !== 0) {
+                var paidNow = parseFloat(value) / parseFloat(invoices)
+                $('.paidNowInv').val(paidNow.toFixed(2));
+            }
+        }
+        var table = $('#table1').tableToJSON();
+        $('#bills').val(table)
+    });
+
+
 </script>
-<g:include view="controls/footer-content.gsp"/>
+%{--<g:include view="controls/footer-content.gsp"/>--}%
 <script>
-    selectSideMenu("accounts-menu");
+    // selectSideMenu("accounts-menu");
 </script>
 </body>
 </html>

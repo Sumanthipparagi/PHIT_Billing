@@ -88,18 +88,16 @@ class SalesReportController {
         String sortBy = "id"
         JSONObject areaWiseData = reportsService.getAreaWiseReport(entityId, dateRange, financialYear, sortBy)
         //get product details
-        for (Object customer : areaWiseData.keySet()) {
-            def customerDetail = new EntityService().getEntityById(customer.toString())
-            JSONArray bills = areaWiseData.get(customer) as JSONArray
+        for (Object city : areaWiseData.keySet()) {
+            def cityDetail = new SystemService().getCityById(city.toString())
+            JSONArray bills = areaWiseData.get(city) as JSONArray
             for (Object bill : bills) {
                 JSONArray saleProducts = bill.products
                 for (Object saleProduct : saleProducts) {
                     JSONObject product = new ProductService().getProductById(saleProduct.productId.toString())
                     saleProduct.put("productDetail", product)
                 }
-                def cityResp = new SystemService().getCityById(customerDetail.cityId.toString())
-                bill.put("customerDetail", customerDetail)
-                bill.put("city",cityResp)
+                bill.put("cityDetail", cityDetail)
             }
         }
         respond areaWiseData, formats: ['json']

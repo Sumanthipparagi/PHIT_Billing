@@ -385,6 +385,7 @@ public class Links
     public static String SALE_RETURN_SETTLED = "api/v1.0/sales/saleretrunsettledbycustomer";
     public static String SET_SALE_RETURN_STATUS = "api/v1.0/sales/setsalereturnstatus/{id}/type/{type}/adj/{adj}";
     public static String UPDATE_SALE_RETURN_BALANCE = "api/v1.0/sales/updatereturnbalancebyid";
+    public static String SALE_RETURN_CUSTOMER = "api/v1.0/sales/salereturnbycustomer";
 
 
     //Sale Order Details
@@ -513,6 +514,9 @@ public class Links
     public static String E_INVOICE_GEN_IRN = E_INVOICE_BASE_URL + "/ewb_v1.03/einv/gen-irn";
     public static String E_INVOICE_CANCEL_IRN = E_INVOICE_BASE_URL + "/ewb_v1.03/einv/can-irn";
     public static String E_INVOICE_GET_IRN = E_INVOICE_BASE_URL + "/ewb_v1.03/einv/get-irn";
+
+//    Bill detail log
+    public static  String BILL_DETAIL_LOG = "api/v1.0/accounts/reciptdetaillog";
 
 
 }
