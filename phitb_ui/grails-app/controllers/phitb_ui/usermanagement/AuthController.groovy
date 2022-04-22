@@ -12,7 +12,7 @@ class AuthController {
 
     def index()
     {
-        new EInvoiceService().generateSignature()
+        //new EInvoiceService().generateSignature()
         render(view: '/usermanagement/auth/index')
     }
 
