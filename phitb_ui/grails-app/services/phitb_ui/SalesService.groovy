@@ -476,7 +476,7 @@ class SalesService
         try
         {
             WebTarget target = client.target(new Links().API_GATEWAY);
-            Response apiResponse = target.path(link+"?="+id)
+            Response apiResponse = target.path(link+"/"+id)
                     .request(MediaType.APPLICATION_JSON_TYPE)
                     .get()
             println("API Response from server :" + apiResponse?.getStatus())

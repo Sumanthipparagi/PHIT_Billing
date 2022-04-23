@@ -174,78 +174,63 @@
             success: function (data) {
                 var content = "";
                 var grandTotal = 0.00;
+                var totalSqty = 0;
+                var totalfQty = 0;
+                var totalNtv = 0;
+                var totalDiscount = 0;
+                var totalGst = 0;
                 var mainTableHeader = "<table class='table table-bordered table-sm' style='width: 100%;'><thead>" +
                     "<tr><td data-f-bold='true' colspan='11'><h3 style='margin-bottom:0 !important;'>${session.getAttribute('entityName')}</h3></td></tr>" +
                     "<tr><td colspan='11'>${session.getAttribute('entityAddress1')} ${session.getAttribute('entityAddress2')} ${session.getAttribute('entityPinCode')}, ph: ${session.getAttribute('entityMobileNumber')}</td></tr>" +
-                    "<tr><th data-f-bold='true' colspan='11'>Customer-Bill-consolidated Sales* Detail, Date: " +
+                    "<tr><th data-f-bold='true' colspan='11'>Consolidated Sales* Detail, Date: " +
                     dateRange + "</th></tr>"+
-                "<tr><th colspan='3'></th><th data-f-bold='true'><strong>Grand Total:</strong> <span id='grandTotal'></span></th></tr>"+
-                "<tr><th data-f-bold='true' colspan='3'>Customer</th><th data-f-bold='true'>Net Amount</th>";
-                // "<th data-f-bold='true'>Sale Qty</th><th data-f-bold='true'>Fr. Qty</th><th data-f-bold='true'>Rate</th><th data-f-bold='true'>N T V</th><th data-f-bold='true'>Discount</th><th data-f-bold='true'>GST</th><th data-f-bold='true'>Net Amount</th></tr></thead><tbody>";
+                "<tr><th colspan='6'></th><th data-f-bold='true'><strong>Grand Total:</strong> <span id='grandTotal'></span></th></tr>"+
+                //"<tr><th data-f-bold='true' colspan='3'>Customer</th><th data-f-bold='true'>Net Amount</th>"+
+                 "<tr><th data-f-bold='true'>Customer</th><th data-f-bold='true'>Sale Qty</th><th data-f-bold='true'>Fr. Qty</th><th data-f-bold='true'>N T V</th><th data-f-bold='true'>Discount</th><th data-f-bold='true'>GST</th><th data-f-bold='true'>Net Amount</th></tr></thead><tbody>";
                 $.each(data, function (key, city) {
                     var billDetails = "";
+                    var sQty = 0;
+                    var fQty = 0;
+                    var ntv = 0;
+                    var discount = 0;
+                    var gst = 0;
                     var custNetAmtTotal = 0;
                     $.each(city, function (key, bill) {
-                        var netAmtTotal = 0;
                         $.each(bill.products, function (key, product) {
-                            netAmtTotal += product.amount;
                             if(bill.billStatus !== "CANCELLED") {
-                                custNetAmtTotal += netAmtTotal;
+                                ntv += Number(product.amount.toFixed("2")) - Number(product.gstAmount.toFixed("2"));
+                                discount += Number(product.discount.toFixed("2"));
+                                gst += Number(product.gstAmount.toFixed("2"));
+                                custNetAmtTotal += Number(product.amount.toFixed("2"));
+                                sQty += product.sqty;
+                                fQty += product.freeQty;
                             }
                         });
                     });
                     var cityName =
-                        "<tr><td data-f-bold='true' colspan='3'><strong></strong><span class='customerData cust" + key + "'>" + city[0].customerDetail.entityName + "</span></td><td data-f-bold='true' colspan='3'><strong></strong><span class='customerData cust" + key + "'>" +custNetAmtTotal + "</span></td></tr>";
+                        "<tr><td data-f-bold='true'><span class='customerData cust" + key + "'>" + city[0].customerDetail.entityName + "</span></td>" +
+                            "<td>"+sQty+"</td>"+
+                            "<td>"+fQty+"</td>"+
+                            "<td>"+ntv.toFixed("2")+"</td>"+
+                            "<td>"+discount.toFixed("2")+"</td>"+
+                            "<td>"+gst.toFixed("2")+"</td>"+
+                        "<td data-f-bold='true'><span class='customerData cust" + key + "'>" +custNetAmtTotal.toFixed("2") + "</span></td></tr>";
 
 
-                    // $.each(city, function (key, bill) {
-                    //     var billStatusColor = "green";
-                    //     if(bill.billStatus == "CANCELLED")
-                    //         billStatusColor = "red";
-                    //     var products = "";
-                    //     billDetails += "<tr><td colspan='2'><strong>Invoice No: </strong> " + bill.invoiceNumber + "</td><td><strong>Date:</strong> " + dateFormat(bill.orderDate) + "</td><td colspan='9'><strong>Invoice Status: <span style='color: "+billStatusColor+";'>" + bill.billStatus + "</span></strong></td></tr>";
-                    //     var ntvTotal = 0;
-                    //     var discountTotal = 0;
-                    //     var gstTotal = 0;
-                    //     var netAmtTotal = 0;
-                    //     $.each(bill.products, function (key, product) {
-                    //         var ntv = product.amount - product.gstAmount;
-                    //         ntvTotal += ntv;
-                    //         discountTotal += product.discount;
-                    //         gstTotal += product.gstAmount;
-                    //         netAmtTotal += product.amount;
-                    //         products += "<tr><td>" + (key + 1) + "</td><td><span class='itemData item" + product.productId + "'>" + product.productDetail.productName + "</span></td><td>" + product.batchNumber + "</td><td>" + product.expiryDate + "</td><td>" + product.sqty + "</td>" +
-                    //             "<td>" + product.freeQty + "</td><td>" + product.sRate.toFixed(2) + "</td><td>" + ntv.toFixed(2) + "</td><td>" + product.discount.toFixed(2) + "</td><td>" + product.gstAmount.toFixed(2) + "</td><td>" + product.amount.toFixed(2) + "</td></tr>"
-                    //     });
-                    //     var totals = "<tr><td></td><td></td><td></td><td></td><td></td><td></td><td></td>" +
-                    //         "<td data-f-underline='true'><u>" + ntvTotal.toFixed(2) + "</u></td><td data-f-underline='true'><u>" + discountTotal.toFixed(2) + "</u></td>" +
-                    //         "<td data-f-underline='true'><u>" + gstTotal.toFixed(2) + "</u></td><td data-f-underline='true'><u>" + netAmtTotal.toFixed(2) + "</u></td></tr>";
-                    //     if(bill.billStatus !== "CANCELLED") {
-                    //         custNtvTotal += ntvTotal;
-                    //         custDiscountTotal += discountTotal;
-                    //         custGstTotal += gstTotal;
-                    //         custNetAmtTotal += netAmtTotal;
-                    //     }
-                    //     billDetails += products + totals;
-                    // });
-
-
-                    // var space = "<tr class='pagebreak' style='background-color: #ceecf5 !important;'><td data-f-fill='ceecf500' colspan='11'></td></tr>";
-                    // var custTotals = "<tr><td></td><td></td><td></td><td></td><td></td><td></td><td></td>" +
-                    //     "<td data-f-underline='true' data-f-bold='true'><strong><u>" + custNtvTotal.toFixed(2) + "</u></strong></td><td data-f-underline='true' data-f-bold='true'><strong><u>" + custDiscountTotal.toFixed(2) + "</u></strong></td>" +
-                    //     "<td data-f-underline='true' data-f-bold='true'><strong><u>" + custGstTotal.toFixed(2) + "</u></strong></td><td data-f-underline='true' data-f-bold='true'><strong><u>" + custNetAmtTotal.toFixed(2) + "</u></strong></td></tr>";
-
+                    totalSqty += sQty;
+                    totalfQty += fQty;
+                    totalNtv += ntv;
+                    totalDiscount += discount;
+                    totalGst += gst;
                     grandTotal += custNetAmtTotal;
                     content += cityName + billDetails;
                 });
-                var total =
-                    "<tr><th colspan='3'></th><th data-f-bold='true'><strong><u><span id='Total'></span></u></strong></th></tr>"
+                var total = "<tr><th></th><th data-f-bold='true'><u>"+totalSqty+"</u></th data-f-bold='true'><th><u>"+totalfQty+"</u></th><th data-f-bold='true'><u>"+totalNtv.toFixed(2)+"</u></th><th><u>"+totalDiscount.toFixed(2)+"</u></th><th data-f-bold='true'><u>"+totalGst.toFixed(2)+"</u></th><th data-f-bold='true'><strong><u><span id='Total'>"+grandTotal.toFixed(2)+"</span></u></strong></th></tr>"
                 var mainTableFooter = "</tbody></table>";
 
                 $("#result").html(mainTableHeader + content+total+ mainTableFooter);
                 loading.close();
                 $("#grandTotal").text(grandTotal.toFixed(2));
-                $("#Total").text(grandTotal.toFixed(2));
             },
             error: function () {
                 loading.close();

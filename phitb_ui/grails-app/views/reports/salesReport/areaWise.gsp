@@ -98,6 +98,7 @@
                             <div class="col-lg-6 d-flex justify-content-center">
                                 <div class="form-group">
                                     <label>Export</label>
+
                                     <div class="input-group">
                                         <button class="input-group-btn btn btn-info" id="btnExport">Excel</button>
                                         <button class="input-group-btn btn btn-danger" id="btnPrint">Print</button>
@@ -172,102 +173,105 @@
             contentType: false,
             processData: false,
             success: function (data) {
-                console.log(data)
                 var content = "";
                 var grandTotal = 0.00;
                 var totalNetAmt;
                 var mainTableHeader = "<table class='table table-bordered table-sm' style='width: 100%;'><thead>" +
                     "<tr><td data-f-bold='true' colspan='11'><h3 style='margin-bottom:0 !important;'>${session.getAttribute('entityName')}</h3></td></tr>" +
                     "<tr><td colspan='11'>${session.getAttribute('entityAddress1')} ${session.getAttribute('entityAddress2')} ${session.getAttribute('entityPinCode')}, ph: ${session.getAttribute('entityMobileNumber')}</td></tr>" +
-                    "<tr><th data-f-bold='true' colspan='11'>Customer-Bill-Areawise Sales* Detail, Date: " +
-                    dateRange + "</th></tr>"+
-                    "<tr><th colspan='3'></th><th data-f-bold='true'><strong>Grand Total:</strong> <span id='grandTotal'></span></th></tr>"+
-                    "<tr><th data-f-bold='true' colspan='3'>Customer</th><th data-f-bold='true'>Net Amount</th>";
-                // "<th data-f-bold='true'>Sale Qty</th><th data-f-bold='true'>Fr. Qty</th><th data-f-bold='true'>Rate</th><th data-f-bold='true'>N T V</th><th data-f-bold='true'>Discount</th><th data-f-bold='true'>GST</th><th data-f-bold='true'>Net Amount</th></tr></thead><tbody>";
+                    "<tr><th data-f-bold='true' colspan='11'>Customer-Bill-Area-wise Sales* Detail, Date: " +
+                    dateRange + "</th></tr>" +
+                    "<tr><th colspan='6'></th><th data-f-bold='true'><strong>Grand Total:</strong> <span id='grandTotal'></span></th></tr>" +
+                    //"<tr><th data-f-bold='true'>Customer</th><th data-f-bold='true'>Net Amount</th>"+
+                   "<th data-f-bold='true'>Customer</th><th data-f-bold='true'>Sale Qty</th><th data-f-bold='true'>Fr. Qty</th><th data-f-bold='true'>N T V</th><th data-f-bold='true'>Discount</th><th data-f-bold='true'>GST</th><th data-f-bold='true'>Net Amount</th></tr></thead><tbody>";
                 var billDetails = "";
+                var totalSqty = 0;
+                var totalfQty = 0;
+                var totalNtv = 0;
+                var totalDiscount = 0;
+                var totalGst = 0;
                 $.each(data, function (key, city) {
-                     billDetails = "";
-                    var custNetAmtTotal = 0;
+                    billDetails = "";
+                    var dtArray = [];
                     $.each(city, function (key, bill) {
                         var netAmtTotal = 0;
-                        $.each(bill.products, function (key, product) {
-                            netAmtTotal += product.amount;
-                            if(bill.billStatus !== "CANCELLED") {
-                                custNetAmtTotal += netAmtTotal;
-                            }
-                        });
+                        var sQty = 0;
+                        var fQty = 0;
+                        var ntv = 0;
+                        var discount = 0;
+                        var gst = 0;
+                        if (bill.billStatus !== "CANCELLED") {
+                            $.each(bill.products, function (key, product) {
+                                sQty += product.sqty;
+                                fQty += product.freeQty;
+                                netAmtTotal += product.amount;
+                                ntv += product.amount - product.gstAmount;
+                                discount += product.discount;
+                                gst += product.gstAmount;
+                            });
+                        }
+                        //if(bill.customer.entityName in dtArray)
+                        if(dtArray.find((o) => { return o["customer"] === bill.customer.entityName })) {
+                            var objIndex = dtArray.findIndex(dtArray => dtArray.customer === bill.customer.entityName);
+                            dtArray[objIndex].netAmount += netAmtTotal;
+                            dtArray[objIndex].sQty += sQty;
+                            dtArray[objIndex].fQty += fQty;
+                            dtArray[objIndex].ntv += ntv;
+                            dtArray[objIndex].discount += discount;
+                            dtArray[objIndex].gst += gst;
+                        }
+                        else
+                        {
+                            dtArray.push({"customer": bill.customer.entityName,
+                                "sQty": sQty,
+                                "fQty": fQty,
+                                "ntv": ntv,
+                                "discount": discount,
+                                "gst": gst,
+                                "netAmount": netAmtTotal});
+                        }
+                        totalSqty += sQty;
+                        totalfQty += fQty;
+                        totalNtv += ntv;
+                        totalDiscount += discount;
+                        totalGst += gst;
                     });
+
+                    var custNetAmtTotal = 0;
                     var cityName =
                         "<tr><td colspan='4' data-f-bold='true' colspan='3'><span class='customerData cust" +
                         key + "'><strong>" + city[0].cityDetail.name + "</strong></span></td></tr>";
 
-                    var bd=[]
-                    $.each(city, function (i, q) {
-                            // billDetails += "<tr><td>"+q.customer.entityName+"</td><td colspan='4'>"+q.products+"</td></tr>"
-                        bd.push(q.customer.entityName)
+                    var cityTotalSqty = 0;
+                    var cityTotalfQty = 0;
+                    var cityTotalNtv = 0;
+                    var cityTotalDiscount = 0;
+                    var cityTotalGst = 0;
+
+                    $.each(dtArray, function (key, data) {
+                        custNetAmtTotal += data.netAmount;
+                        billDetails += "<tr><td>" + data.customer + "</td>" +
+                                "<td>" + data.sQty + "</td>"+
+                                "<td>" + data.fQty + "</td>"+
+                                "<td>" + data.ntv.toFixed(2) + "</td>"+
+                                "<td>" + data.discount.toFixed(2) + "</td>"+
+                                "<td>" + data.gst.toFixed(2) + "</td>"+
+                            "<td>" + data.netAmount.toFixed(2) + "</td></tr>";
+
+                        cityTotalSqty += data.sQty;
+                        cityTotalfQty += data.fQty;
+                        cityTotalNtv += data.ntv;
+                        cityTotalDiscount += data.discount;
+                        cityTotalGst += data.gst;
                     });
-
-
-                    function getUnique(array){
-                        var uniqueArray = [];
-                        // Loop through array values
-                        for(i=0; i < array.length; i++){
-                            if(uniqueArray.indexOf(array[i]) === -1) {
-                                uniqueArray.push(array[i]);
-                            }
-                        }
-                        return uniqueArray;
-                    }
-                    var billD = getUnique(bd)
-                    $.each(billD, function (key, bill) {
-                        billDetails += "<tr><td>"+bill+"</td><td colspan='4'>"+custNetAmtTotal.toFixed(2)+"</td></tr>"
-                    });
-
-                    // $.each(city, function (key, bill) {
-                    //     var billStatusColor = "green";
-                    //     if(bill.billStatus == "CANCELLED")
-                    //         billStatusColor = "red";
-                    //     var products = "";
-                    //     billDetails += "<tr><td colspan='2'><strong>Invoice No: </strong> " + bill.invoiceNumber + "</td><td><strong>Date:</strong> " + dateFormat(bill.orderDate) + "</td><td colspan='9'><strong>Invoice Status: <span style='color: "+billStatusColor+";'>" + bill.billStatus + "</span></strong></td></tr>";
-                    //     var ntvTotal = 0;
-                    //     var discountTotal = 0;
-                    //     var gstTotal = 0;
-                    //     var netAmtTotal = 0;
-                    //     $.each(bill.products, function (key, product) {
-                    //         var ntv = product.amount - product.gstAmount;
-                    //         ntvTotal += ntv;
-                    //         discountTotal += product.discount;
-                    //         gstTotal += product.gstAmount;
-                    //         netAmtTotal += product.amount;
-                    //         products += "<tr><td>" + (key + 1) + "</td><td><span class='itemData item" + product.productId + "'>" + product.productDetail.productName + "</span></td><td>" + product.batchNumber + "</td><td>" + product.expiryDate + "</td><td>" + product.sqty + "</td>" +
-                    //             "<td>" + product.freeQty + "</td><td>" + product.sRate.toFixed(2) + "</td><td>" + ntv.toFixed(2) + "</td><td>" + product.discount.toFixed(2) + "</td><td>" + product.gstAmount.toFixed(2) + "</td><td>" + product.amount.toFixed(2) + "</td></tr>"
-                    //     });
-                    //     var totals = "<tr><td></td><td></td><td></td><td></td><td></td><td></td><td></td>" +
-                    //         "<td data-f-underline='true'><u>" + ntvTotal.toFixed(2) + "</u></td><td data-f-underline='true'><u>" + discountTotal.toFixed(2) + "</u></td>" +
-                    //         "<td data-f-underline='true'><u>" + gstTotal.toFixed(2) + "</u></td><td data-f-underline='true'><u>" + netAmtTotal.toFixed(2) + "</u></td></tr>";
-                    //     if(bill.billStatus !== "CANCELLED") {
-                    //         custNtvTotal += ntvTotal;
-                    //         custDiscountTotal += discountTotal;
-                    //         custGstTotal += gstTotal;
-                    //         custNetAmtTotal += netAmtTotal;
-                    //     }
-                    //     billDetails += products + totals;
-                    // });
-
-
-                    // var space = "<tr class='pagebreak' style='background-color: #ceecf5 !important;'><td data-f-fill='ceecf500' colspan='11'></td></tr>";
-                    // var custTotals = "<tr><td></td><td></td><td></td><td></td><td></td><td></td><td></td>" +
-                    //     "<td data-f-underline='true' data-f-bold='true'><strong><u>" + custNtvTotal.toFixed(2) + "</u></strong></td><td data-f-underline='true' data-f-bold='true'><strong><u>" + custDiscountTotal.toFixed(2) + "</u></strong></td>" +
-                    //     "<td data-f-underline='true' data-f-bold='true'><strong><u>" + custGstTotal.toFixed(2) + "</u></strong></td><td data-f-underline='true' data-f-bold='true'><strong><u>" + custNetAmtTotal.toFixed(2) + "</u></strong></td></tr>";
-
                     grandTotal += custNetAmtTotal;
-                    content += cityName + billDetails;
+                    var cityFooter = "<tr><td></td><td><u>"+cityTotalSqty+"</u></td><td><u>"+cityTotalfQty+"</u></td><td><u>"+cityTotalNtv.toFixed(2)+"</u></td><td><u>"+cityTotalDiscount.toFixed(2)+"</u></td><td><u>"+cityTotalGst.toFixed(2)+"</u></td><td><u>"+custNetAmtTotal.toFixed(2)+"</u></td></tr>";
+                    content += cityName + billDetails + cityFooter;
                 });
-                var total =
-                    "<tr><th colspan='3'></th><th data-f-bold='true'><strong></strong><u><strong><span id='Total'></span></strong></u></th></tr>"
+                var total = "<tr><th></th><th data-f-bold='true'><u>"+totalSqty+"</u></th data-f-bold='true'><th><u>"+totalfQty+"</u></th><th data-f-bold='true'><u>"+totalNtv.toFixed(2)+"</u></th><th><u>"+totalDiscount.toFixed(2)+"</u></th><th data-f-bold='true'><u>"+totalGst.toFixed(2)+"</u></th><th data-f-bold='true'><strong><u><span id='Total'>"+grandTotal.toFixed(2)+"</span></u></strong></th></tr>"
                 var mainTableFooter = "</tbody></table>";
 
-                $("#result").html(mainTableHeader + content+total+ mainTableFooter);
+                $("#result").html(mainTableHeader + content + total + mainTableFooter);
                 loading.close();
                 $("#grandTotal").text(grandTotal.toFixed(2));
                 $("#Total").text(grandTotal.toFixed(2));
