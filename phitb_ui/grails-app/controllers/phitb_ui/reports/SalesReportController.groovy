@@ -79,6 +79,10 @@ class SalesReportController {
         render(view: '/reports/salesReport/areaWise')
     }
 
+    def areawiseWithProducts() {
+        render(view: '/reports/salesReport/areaWiseWithProducts')
+    }
+
     def salesAreaWiseReport()
     {
         String entityId = session.getAttribute("entityId")
