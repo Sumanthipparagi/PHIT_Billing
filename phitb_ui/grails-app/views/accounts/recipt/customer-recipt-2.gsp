@@ -290,7 +290,7 @@
                                     </div>
                                 </div>
 
-                                <input type="hidden" id="bills" name="bills" value="">
+                                <input type="hidden" id="bills" name="bills" >
                                 <input type="hidden" name="status" value="1">
                                 <input type="hidden" name="syncStatus" value="1">
                                 <input type="hidden" name="createdUser" value="1">
@@ -558,7 +558,6 @@
     }
 
 
-
     function getAllSaleBillDetails(id) {
         if(id) {
             $.ajax({
@@ -636,6 +635,10 @@
             $('#billDetails').html("<tr><td colspan='9'><div style='text-align: center;'><h2>Please select customer</h2></div></td></tr>");
         }
     }
+
+    var table = $('#table1').tableToJSON();
+    $('#bills').val(table.toString())
+   console.log(table)
 
     // var input = document.getElementById("tc");
     // input.addEventListener("keydown", function (e) {
@@ -904,8 +907,7 @@
                 $('.paidNowInv').val(paidNow.toFixed(2));
             }
         }
-        var table = $('#table1').tableToJSON();
-        $('#bills').val(table)
+
     });
 
 
