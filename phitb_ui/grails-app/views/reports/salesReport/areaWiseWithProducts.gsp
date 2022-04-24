@@ -168,7 +168,7 @@
         // var sortBy = $('.sortBy').val();
 
         $.ajax({
-            url: "/reports/sales/getareawise?dateRange=" + dateRange,
+            url: "/reports/sales/getareawisewithproducts?dateRange=" + dateRange,
             type: "GET",
             contentType: false,
             processData: false,
@@ -192,52 +192,9 @@
                 var totalGst = 0;
                 $.each(data, function (key, city) {
                     billDetails = "";
-                    var dtArray = [];
-                    $.each(city, function (key, bill) {
-                        var netAmtTotal = 0;
-                        var sQty = 0;
-                        var fQty = 0;
-                        var ntv = 0;
-                        var discount = 0;
-                        var gst = 0;
-                        if (bill.billStatus !== "CANCELLED") {
-                            var products = [];
-                            $.each(bill.products, function (key, product) {
-                                if(products.find((o) => { return o["productId"] === product.productId })) {
-                                    var objIndex = products.findIndex(products => products.productId === product?.productId);
-                                    if(objIndex>=0) {
-                                        products[objIndex].netAmount += product.amount;
-                                        products[objIndex].sQty += product.sqty;
-                                        products[objIndex].fQty += product.freeQty;
-                                        products[objIndex].ntv += product.amount - product.gstAmount;
-                                        products[objIndex].discount += product.discount;
-                                        products[objIndex].gst += product.gstAmount;
-                                    }
-                                }
-                                else
-                                {
-                                    products.push(
-                                        {
-                                            "productId":  product.productId,
-                                            "productDetail": product.productDetail,
-                                            "sQty": product.sqty,
-                                            "fQty": product.freeQty,
-                                            "ntv": product.amount - product.gstAmount,
-                                            "discount": product.discount,
-                                            "gst": product.gstAmount,
-                                            "netAmount": product.amount
-                                        }
-                                    );
-                                }
-                            });
-
-                            dtArray.push({"customer": bill.customer.entityName, "products": products})
-                        }
-                    });
-
                     var custNetAmtTotal = 0;
                     var cityName = "<tr><td colspan='4' data-f-bold='true'><span class='customerData cust" +
-                        key + "'><strong>" + city[0].cityDetail.name + "</strong></span></td></tr>";
+                        key + "'><strong>" + key + "</strong></span></td></tr>";
 
                     var cityTotalSqty = 0;
                     var cityTotalfQty = 0;
@@ -245,15 +202,19 @@
                     var cityTotalDiscount = 0;
                     var cityTotalGst = 0;
                     var ntv = 0;
-                    $.each(dtArray, function (key, dt) {
-                        var customerName = "<tr><td colspan='8'>"+dt.customer+"</td></tr>";
-                        $.each(dt.products, function (key, product) {
-                            custNetAmtTotal += product.netAmount;
-                            ntv += Number(product.netAmount - product.gst);
-                            billDetails += "<tr><td></td><td>" + product.productDetail.productName + "</td>" +
+                    var customerName = "";
+                    console.log("City: "+ key);
+                    $.each(city, function (key, customer) {
+                        console.log("Customer: "+ key);
+                        customerName = "<tr><td colspan='8'>"+key+"</td></tr>";
+                        var products = "";
+                        $.each(customer, function (key, product) {
+/*                            custNetAmtTotal += product.netAmount;
+                            ntv += Number(product.netAmount - product.gst);*/
+                            products += "<tr><td></td><td>" + key + "</td>" +
                                 "<td>" + product.sQty + "</td>" +
                                 "<td>" + product.fQty + "</td>" +
-                                "<td>" + ntv.toFixed(2) + "</td>" +
+                                "<td>" + product.ntv.toFixed(2) + "</td>" +
                                 "<td>" + product.discount.toFixed(2) + "</td>" +
                                 "<td>" + product.gst.toFixed(2) + "</td>" +
                                 "<td>" + product.netAmount.toFixed(2) + "</td></tr>";
@@ -263,7 +224,7 @@
                         cityTotalNtv += data.ntv;
                         cityTotalDiscount += data.discount;
                         cityTotalGst += data.gst;*/
-                       billDetails = customerName + billDetails;
+                       billDetails = customerName + products;
                     });
                     grandTotal += custNetAmtTotal;
                     var cityFooter = "<tr><td></td><td></td><td><u>"+cityTotalSqty+"</u></td><td><u>"+cityTotalfQty+"</u></td><td><u>"+cityTotalNtv.toFixed(2)+"</u></td><td><u>"+cityTotalDiscount.toFixed(2)+"</u></td><td><u>"+cityTotalGst.toFixed(2)+"</u></td><td><u>"+custNetAmtTotal.toFixed(2)+"</u></td></tr>";
