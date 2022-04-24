@@ -343,7 +343,7 @@
                 {type: 'text', readOnly: true},
                 {type: 'numeric'},
                 {type: 'numeric'},
-                {type: 'text', readOnly: true},
+                {type: 'numeric'}, //sale rate
                 {type: 'text', readOnly: true},
                 {type: 'text'},
                 {type: 'text', readOnly: true},
@@ -423,7 +423,7 @@
                         batchHot.selectCell(0, 0);
                         $("#batchTable").focus();
                     }
-                } else if (selection === 14 || selection === 6) {
+                } else if (selection === 14 || selection === 7) {
                     if ((e.keyCode === 13 || e.keyCode === 9) && !readOnly) {
                         //check if sqty is empty
                         var sqty = hot.getDataAtCell(row, 4);
@@ -460,9 +460,25 @@
                         }
 
                     }
-                } else if (selection === 4 || selection === 5 || selection === 8) {
+                } else if (selection === 4 || selection === 5 || selection === 8 || selection === 6 ) {
                     if (e.keyCode === 13 || e.keyCode === 9) {
                         var discount = 0;
+                        if(selection === 6)
+                        {
+                            var mrp = hot.getDataAtCell(row, 7);
+                            var oldSaleRate = hot.getDataAtCell(row, 6);
+                            var saleRate = Number(this.getActiveEditor().TEXTAREA.value);
+                            if(saleRate > mrp)
+                            {
+                                hot.setDataAtCell(row, 6,  oldSaleRate);
+                                this.getActiveEditor().TEXTAREA.value = oldSaleRate;
+                                alert("Sale Rate exceeds MRP!");
+                            }
+                            else {
+                                hot.setDataAtCell(row, 6,  Number(this.getActiveEditor().TEXTAREA.value));
+                                this.selectCell(row, selection + 1);
+                            }
+                        }
                         if (selection === 4) {
                             this.getActiveEditor().enableFullEditMode();
                             this.getActiveEditor().beginEditing();
@@ -478,14 +494,12 @@
 
                         if (selection === 5) {
                             fQty = Number(this.getActiveEditor().TEXTAREA.value);
-                            // var fq = this.getDataAtCell(row,5);
                             hot.setDataAtCell(row, 5, fQty);
                             this.selectCell(row, selection + 1);
                         } else
                         {
                             fQty = Number(this.getDataAtCell(row, 5));
                         }
-
                         if (selection === 8) {
                             discount = Number(this.getActiveEditor().TEXTAREA.value);
                             if (discount > 100) {
@@ -575,7 +589,13 @@
                             );
                         }
                         applySchemes(row, sQty);
-                        sRate = hot.getDataAtCell(row, 6);
+                        if(selection === 6)
+                        {
+                            sRate = Number(this.getActiveEditor().TEXTAREA.value);
+                        }
+                        else
+                            sRate = hot.getDataAtCell(row, 6);
+
                         var value = sRate * sQty;
                         var priceBeforeGst = value - (value * discount / 100);
                         var finalPrice = priceBeforeGst + (priceBeforeGst * (gst / 100));

@@ -50,10 +50,10 @@
         <div class="block-header">
             <div class="row clearfix">
                 <div class="col-lg-5 col-md-5 col-sm-12">
-                    <h2>Consolidated Sales Report</h2>
+                    <h2>Area-wise Sales Report</h2>
                     <ul class="breadcrumb padding-0">
                         <li class="breadcrumb-item"><a href="#"><i class="zmdi zmdi-home"></i></a></li>
-                        <li class="breadcrumb-item active">Consolidated Sales Report</li>
+                        <li class="breadcrumb-item active">Area-wise Sales Report</li>
                     </ul>
                 </div>
 
@@ -98,6 +98,7 @@
                             <div class="col-lg-6 d-flex justify-content-center">
                                 <div class="form-group">
                                     <label>Export</label>
+
                                     <div class="input-group">
                                         <button class="input-group-btn btn btn-info" id="btnExport">Excel</button>
                                         <button class="input-group-btn btn btn-danger" id="btnPrint">Print</button>
@@ -167,70 +168,114 @@
         // var sortBy = $('.sortBy').val();
 
         $.ajax({
-            url: "/reports/sales/getconsolidated?dateRange=" + dateRange,
+            url: "/reports/sales/getareawise?dateRange=" + dateRange,
             type: "GET",
             contentType: false,
             processData: false,
             success: function (data) {
                 var content = "";
                 var grandTotal = 0.00;
+                var totalNetAmt;
+                var mainTableHeader = "<table class='table table-bordered table-sm' style='width: 100%;'><thead>" +
+                    "<tr><td data-f-bold='true' colspan='11'><h3 style='margin-bottom:0 !important;'>${session.getAttribute('entityName')}</h3></td></tr>" +
+                    "<tr><td colspan='11'>${session.getAttribute('entityAddress1')} ${session.getAttribute('entityAddress2')} ${session.getAttribute('entityPinCode')}, ph: ${session.getAttribute('entityMobileNumber')}</td></tr>" +
+                    "<tr><th data-f-bold='true' colspan='11'>Customer-Bill-Area-wise Sales* Detail, Date: " +
+                    dateRange + "</th></tr>" +
+                    "<tr><th colspan='7'></th><th data-f-bold='true'><strong>Grand Total:</strong> <span id='grandTotal'></span></th></tr>" +
+                    //"<tr><th data-f-bold='true'>Customer</th><th data-f-bold='true'>Net Amount</th>"+
+                   "<th data-f-bold='true'>Customer</th><th data-f-bold='true'>Products</th><th data-f-bold='true'>Sale Qty</th><th data-f-bold='true'>Fr. Qty</th><th data-f-bold='true'>N T V</th><th data-f-bold='true'>Discount</th><th data-f-bold='true'>GST</th><th data-f-bold='true'>Net Amount</th></tr></thead><tbody>";
+                var billDetails = "";
                 var totalSqty = 0;
                 var totalfQty = 0;
                 var totalNtv = 0;
                 var totalDiscount = 0;
                 var totalGst = 0;
-                var mainTableHeader = "<table class='table table-bordered table-sm' style='width: 100%;'><thead>" +
-                    "<tr><td data-f-bold='true' colspan='11'><h3 style='margin-bottom:0 !important;'>${session.getAttribute('entityName')}</h3></td></tr>" +
-                    "<tr><td colspan='11'>${session.getAttribute('entityAddress1')} ${session.getAttribute('entityAddress2')} ${session.getAttribute('entityPinCode')}, ph: ${session.getAttribute('entityMobileNumber')}</td></tr>" +
-                    "<tr><th data-f-bold='true' colspan='11'>Consolidated Sales* Detail, Date: " +
-                    dateRange + "</th></tr>"+
-                "<tr><th colspan='6'></th><th data-f-bold='true'><strong>Grand Total:</strong> <span id='grandTotal'></span></th></tr>"+
-                //"<tr><th data-f-bold='true' colspan='3'>Customer</th><th data-f-bold='true'>Net Amount</th>"+
-                 "<tr><th data-f-bold='true'>Customer</th><th data-f-bold='true'>Sale Qty</th><th data-f-bold='true'>Fr. Qty</th><th data-f-bold='true'>N T V</th><th data-f-bold='true'>Discount</th><th data-f-bold='true'>GST</th><th data-f-bold='true'>Net Amount</th></tr></thead><tbody>";
                 $.each(data, function (key, city) {
-                    var billDetails = "";
-                    var sQty = 0;
-                    var fQty = 0;
-                    var ntv = 0;
-                    var discount = 0;
-                    var gst = 0;
-                    var custNetAmtTotal = 0;
+                    billDetails = "";
+                    var dtArray = [];
                     $.each(city, function (key, bill) {
-                        $.each(bill.products, function (key, product) {
-                            if(bill.billStatus !== "CANCELLED") {
-                                ntv += Number(product.amount.toFixed("2")) - Number(product.gstAmount.toFixed("2"));
-                                discount += Number(product.discount.toFixed("2"));
-                                gst += Number(product.gstAmount.toFixed("2"));
-                                custNetAmtTotal += Number(product.amount.toFixed("2"));
-                                sQty += product.sqty;
-                                fQty += product.freeQty;
-                            }
-                        });
+                        var netAmtTotal = 0;
+                        var sQty = 0;
+                        var fQty = 0;
+                        var ntv = 0;
+                        var discount = 0;
+                        var gst = 0;
+                        if (bill.billStatus !== "CANCELLED") {
+                            var products = [];
+                            $.each(bill.products, function (key, product) {
+                                if(products.find((o) => { return o["productId"] === product.productId })) {
+                                    var objIndex = products.findIndex(products => products.productId === product?.productId);
+                                    if(objIndex>=0) {
+                                        products[objIndex].netAmount += product.amount;
+                                        products[objIndex].sQty += product.sqty;
+                                        products[objIndex].fQty += product.freeQty;
+                                        products[objIndex].ntv += product.amount - product.gstAmount;
+                                        products[objIndex].discount += product.discount;
+                                        products[objIndex].gst += product.gstAmount;
+                                    }
+                                }
+                                else
+                                {
+                                    products.push(
+                                        {
+                                            "productId":  product.productId,
+                                            "productDetail": product.productDetail,
+                                            "sQty": product.sqty,
+                                            "fQty": product.freeQty,
+                                            "ntv": product.amount - product.gstAmount,
+                                            "discount": product.discount,
+                                            "gst": product.gstAmount,
+                                            "netAmount": product.amount
+                                        }
+                                    );
+                                }
+                            });
+
+                            dtArray.push({"customer": bill.customer.entityName, "products": products})
+                        }
                     });
-                    var cityName =
-                        "<tr><td data-f-bold='true'><span class='customerData cust" + key + "'>" + city[0].customerDetail.entityName + "</span></td>" +
-                            "<td>"+sQty+"</td>"+
-                            "<td>"+fQty+"</td>"+
-                            "<td>"+ntv.toFixed("2")+"</td>"+
-                            "<td>"+discount.toFixed("2")+"</td>"+
-                            "<td>"+gst.toFixed("2")+"</td>"+
-                        "<td data-f-bold='true'><span class='customerData cust" + key + "'>" +custNetAmtTotal.toFixed("2") + "</span></td></tr>";
 
+                    var custNetAmtTotal = 0;
+                    var cityName = "<tr><td colspan='4' data-f-bold='true'><span class='customerData cust" +
+                        key + "'><strong>" + city[0].cityDetail.name + "</strong></span></td></tr>";
 
-                    totalSqty += sQty;
-                    totalfQty += fQty;
-                    totalNtv += ntv;
-                    totalDiscount += discount;
-                    totalGst += gst;
+                    var cityTotalSqty = 0;
+                    var cityTotalfQty = 0;
+                    var cityTotalNtv = 0;
+                    var cityTotalDiscount = 0;
+                    var cityTotalGst = 0;
+                    var ntv = 0;
+                    $.each(dtArray, function (key, dt) {
+                        var customerName = "<tr><td colspan='8'>"+dt.customer+"</td></tr>";
+                        $.each(dt.products, function (key, product) {
+                            custNetAmtTotal += product.netAmount;
+                            ntv += Number(product.netAmount - product.gst);
+                            billDetails += "<tr><td></td><td>" + product.productDetail.productName + "</td>" +
+                                "<td>" + product.sQty + "</td>" +
+                                "<td>" + product.fQty + "</td>" +
+                                "<td>" + ntv.toFixed(2) + "</td>" +
+                                "<td>" + product.discount.toFixed(2) + "</td>" +
+                                "<td>" + product.gst.toFixed(2) + "</td>" +
+                                "<td>" + product.netAmount.toFixed(2) + "</td></tr>";
+                        });
+                       /* cityTotalSqty += data.sQty;
+                        cityTotalfQty += data.fQty;
+                        cityTotalNtv += data.ntv;
+                        cityTotalDiscount += data.discount;
+                        cityTotalGst += data.gst;*/
+                       billDetails = customerName + billDetails;
+                    });
                     grandTotal += custNetAmtTotal;
-                    content += cityName + billDetails;
+                    var cityFooter = "<tr><td></td><td></td><td><u>"+cityTotalSqty+"</u></td><td><u>"+cityTotalfQty+"</u></td><td><u>"+cityTotalNtv.toFixed(2)+"</u></td><td><u>"+cityTotalDiscount.toFixed(2)+"</u></td><td><u>"+cityTotalGst.toFixed(2)+"</u></td><td><u>"+custNetAmtTotal.toFixed(2)+"</u></td></tr>";
+                    content += cityName + billDetails + cityFooter;
                 });
-                var total = "<tr><th></th><th data-f-bold='true'><u>"+totalSqty+"</u></th data-f-bold='true'><th><u>"+totalfQty+"</u></th><th data-f-bold='true'><u>"+totalNtv.toFixed(2)+"</u></th><th><u>"+totalDiscount.toFixed(2)+"</u></th><th data-f-bold='true'><u>"+totalGst.toFixed(2)+"</u></th><th data-f-bold='true'><strong><u><span id='Total'>"+grandTotal.toFixed(2)+"</span></u></strong></th></tr>"
+                var total = "<tr><th></th><th></th><th data-f-bold='true'><u>"+totalSqty+"</u></th data-f-bold='true'><th><u>"+totalfQty+"</u></th><th data-f-bold='true'><u>"+totalNtv.toFixed(2)+"</u></th><th><u>"+totalDiscount.toFixed(2)+"</u></th><th data-f-bold='true'><u>"+totalGst.toFixed(2)+"</u></th><th data-f-bold='true'><strong><u><span id='Total'>"+grandTotal.toFixed(2)+"</span></u></strong></th></tr>"
                 var mainTableFooter = "</tbody></table>";
 
-                $("#result").html(mainTableHeader + content+total+ mainTableFooter);
+                $("#result").html(mainTableHeader + content + total + mainTableFooter);
                 loading.close();
                 $("#grandTotal").text(grandTotal.toFixed(2));
+                $("#Total").text(grandTotal.toFixed(2));
             },
             error: function () {
                 loading.close();
@@ -242,7 +287,7 @@
     $("#btnExport").click(function () {
         let table = document.getElementById("result");
         TableToExcel.convert(table, {
-            name: 'consolidated-sales-report.xlsx',
+            name: 'areawise-sales-report.xlsx',
             sheet: {
                 name: 'Sheet 1' // sheetName
             }

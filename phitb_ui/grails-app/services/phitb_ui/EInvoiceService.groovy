@@ -1,10 +1,12 @@
 package phitb_ui
 
 import grails.gorm.transactions.Transactional
+import org.bouncycastle.util.encoders.Base64Encoder
 import org.glassfish.jersey.logging.LoggingFeature
 import org.grails.web.json.JSONObject
 import phitb_ui.einvoice.AESEncryption
 import phitb_ui.einvoice.EinvoiceHelper
+import phitb_ui.einvoice.NicV4TokenPayloadGen
 
 import javax.ws.rs.client.Client
 import javax.ws.rs.client.ClientBuilder
@@ -72,16 +74,19 @@ class EInvoiceService {
 
     def generateAuthToken(JSONObject jsonObject)
     {
-        String appKey = Base64.getEncoder().encodeToString(new EinvoiceHelper().createAESKey());
-        JSONObject payload = new JSONObject()
-        payload.put("UserName", userName)
-        payload.put("Password ", password)
-        payload.put("AppKey ",appKey)
-        payload.put("ForceRefreshAccessToken ",true)
-        String payLoadBase64 = Base64.getEncoder().encodeToString(payload.toString().getBytes());
-        payLoadBase64 = "{\"Data\":\""+new EinvoiceHelper().encryptAsymmentricKey(payLoadBase64)+"\"}";
+        //String appKey = Base64.getEncoder().encodeToString(new EinvoiceHelper().createAESKey());
+        //To encrypt auth-token payload payload
+        String randomAppKey = "8rZqQ01ZEqeoRLqoLgu2vLsT0BMtS7ex";
+        String base64EncodedAppKey = Base64.getEncoder().encodeToString(randomAppKey.getBytes());
+        String authPayload = "{\"UserName\":\"nsdlTest\", \"Password\":\"Test@123\", \"AppKey\":\""+ base64EncodedAppKey +"\", \"ForceRefreshAccessToken\":true}";
+        String base64EncodedPayload = Base64.getEncoder().encodeToString(authPayload.getBytes());
+        byte[] b = new NicV4TokenPayloadGen().readFile("C:\\Users\\arjun\\Desktop\\publicKey.pem");
+        NicV4TokenPayloadGen gen = new NicV4TokenPayloadGen(b);
+        String encData = gen.encryptPayload(base64EncodedPayload);
+        JSONObject finalPayLoad = new JSONObject()
+        finalPayLoad.put("Data", encData)
         String encAspSecret = new AESEncryption().encryptAspSecret(jsonObject.get("enc_key").toString(), Constants.E_INVOICE_ASP_SECRET)
-        Logger logger = Logger.getLogger(getClass().getName());
+        Logger logger = Logger.getLogger(getClass().getName())
         Feature feature = new LoggingFeature(logger, Level.INFO, null, null);
         Client client = ClientBuilder.newClient();
         client.register(feature)
@@ -93,7 +98,7 @@ class EInvoiceService {
                     .header("asp_secret_key", encAspSecret)
                     .header("session_id", jsonObject.get("session_id"))
                     .header("gstin", gstin)
-                    .post(Entity.entity(payLoadBase64, MediaType.APPLICATION_JSON_TYPE))
+                    .post(Entity.entity(finalPayLoad.toString(), MediaType.APPLICATION_JSON_TYPE))
             if(apiResponse.status == 200)
             {
                 String tmp = apiResponse.readEntity(String.class)
