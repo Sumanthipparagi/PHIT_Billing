@@ -521,7 +521,7 @@ class ReciptDetailController
 //        JSONArray creditNoteArry = new JSONArray(creditNoteRespone.readEntity(String.class))
         JSONObject reciptlogs = new AccountsService().getReceiptLogById(params.id) as JSONObject
 
-        render(view: '/accounts/recipt/recipt-temp', model: [customer: customer, settled: settled, recipt: recipt,
+        render(view: '/accounts/recipt/recipt-temp', model: [customer: customer, recipt: recipt,
                                                              entity: entity,reciptlogs:reciptlogs])
     }
 

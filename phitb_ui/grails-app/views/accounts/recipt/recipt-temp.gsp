@@ -144,7 +144,7 @@
                         Adj. Amount
                     </th>
                 </tr>
-                <g:each var="sv" in="${settled}">
+                <g:each var="sv" in="${reciptlogs}">
 %{--                    <%--}%
 
 %{--                        def invoiceNumber;--}%
@@ -162,31 +162,30 @@
 %{--                            invoiceNumber =  sv.entityId+"/S/" + month + year + "/" + series + "/" + sv.id--}%
 %{--                        }--}%
 %{--%>--}%
-                    <g:if test="${sv.balance!=0 && sv.billStatus!='DRAFT'}">
+
                     <tr>
-                        <td>${sv.invoiceNumber}</td>
-                        <td>INV</td>
+                        <td>${sv.transId}</td>
+                        <td>${sv.billType}</td>
                         <td>${sv.dateCreated.split("T")[0]}</td>
-                        <td>${sv.balance}</td>
+                        <td>${sv.amountPaid}</td>
                     </tr>
-                    </g:if>
                 </g:each>
-                <g:each var="csv" in="${creditNoteArry}">
-                    <g:if test="${csv.balance!=0}">
-                    <tr>
-                        <td>${csv.invoiceNumber}</td>
-                        <td>CRNT</td>
-                        <td>${csv.dateCreated.split("T")[0]}</td>
-                        <td>${csv.balance}</td>
-                    </tr>
-                    </g:if>
-                </g:each>
+%{--                <g:each var="csv" in="${creditNoteArry}">--}%
+%{--                    <g:if test="${csv.balance!=0}">--}%
+%{--                    <tr>--}%
+%{--                        <td>${csv.invoiceNumber}</td>--}%
+%{--                        <td>CRNT</td>--}%
+%{--                        <td>${csv.dateCreated.split("T")[0]}</td>--}%
+%{--                        <td>${csv.balance}</td>--}%
+%{--                    </tr>--}%
+%{--                    </g:if>--}%
+%{--                </g:each>--}%
             </table>
         </td>
-        <td colspan="5"><b>${recipt.amountPaid}</b></td>
+        <td colspan="5"><b>${reciptlogs.amountPaid.sum()}</b></td>
     <tr>
 
-        <% double data = recipt.amountPaid
+        <% double data = reciptlogs.amountPaid.sum()
         int value = (int) data;
         System.out.println(value)
         %>

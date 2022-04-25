@@ -475,7 +475,8 @@
                         trHTML1 +=
                             '<tr id="' + "IN" + value.id + '"><td><button type="button" data-id="' + value.id +
                             '"  data-custId="' + value.customerId +
-                            '"   data-adj="' + value.adjAmount + '" class="btn-sm btn-primary"  id="settled"><-</button></td><td>' + invoice +
+                            '"   data-adj="' + value.adjAmount.toFixed(2) +
+                            '" class="btn-sm btn-primary"  id="settled"><-</button></td><td>' + invoice +
                             '</td><td>' + value.financialYear +
                             '</td><td>' + moment(value.dateCreated).format('DD-MM-YYYY') +
                             '</td><td>' + value.invoiceNumber +
@@ -593,7 +594,8 @@
                                 '                                        <td>' + value.invoiceNumber + '</td>\n' +
                                 '                                        <td>' + moment(value.dateCreated).format('DD-MM-YYYY') + '</td>\n' +
                                 '                                        <td>' + value.totalAmount.toFixed(2) + '</td>\n' +
-                                '                                        <td id="' + "invAdjAmt" + value.id + '">' + value.adjAmount + '</td>\n' +
+                                '                                        <td id="' + "invAdjAmt" + value.id + '">' +
+                                value.adjAmount.toFixed(2) + '</td>\n' +
                                 '                                        <td>' + value.balance.toFixed(2) + '</td>\n' +
                                 '                                        <td><input type="number" class="paidNowInv txt" id="paidNowInv'+value.id+'" name="paidNowInv" data-inid="' + value.id + '" data-bal="' + value.balance + '" style="width: 100px;" pattern="\\d{1,10}(?:\\.\\d{1,3})?$" value="0"></td>\n' +
                                 '                                        <td>' + calculateNoOfDays(value.dateCreated) + '</td>\n' +
@@ -616,7 +618,7 @@
                                 '                                        <td  >' + value.invoiceNumber + '</td>\n' +
                                 '                                        <td>' + moment(value.dateCreated).format('DD-MM-YYYY') + '</td>\n' +
                                 '                                        <td>' + "-" + value.totalAmount.toFixed(2) + '</td>\n' +
-                                '                                        <td>' + value?.adjAmount + '</td>\n' +
+                                '                                        <td>' + value?.adjAmount.toFixed(2) + '</td>\n' +
                                 '                                        <td id="inv'+id+'">' + "-" +
                                 value.balance.toFixed(2) +
                                 '</td>\n' +
