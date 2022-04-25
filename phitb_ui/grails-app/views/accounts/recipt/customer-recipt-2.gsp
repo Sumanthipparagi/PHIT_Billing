@@ -262,7 +262,7 @@
                                     </label>
                                     <input type="text" id="amountPaid" class="note form-control "
                                            name="amountPaid"
-                                           placeholder="Amount"
+                                           placeholder="Amount" value="0"
                                            required/>
                                 </div>
 
@@ -868,7 +868,7 @@
         });
     });
 
-    $(document).on('keydown', '#paidNowInv', function (e) {
+    $(document).on('keydown', '.txt', function (e) {
         if (e.keyCode === 13 || e.which === '13') {
             var id = $(this).attr('data-inid');
             var index = $('.txt').index(this) + 1;
