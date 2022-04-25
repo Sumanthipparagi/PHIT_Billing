@@ -979,7 +979,6 @@
                     syncStatus: 1,
                 },
                 success: function (data) {
-                    window.reload()
                     Swal.fire({
                         title: "Success!",
                         // showDenyButton: true,
