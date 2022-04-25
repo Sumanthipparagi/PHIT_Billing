@@ -3,6 +3,7 @@ package phitb_accounts
 
 import grails.converters.*
 import grails.web.servlet.mvc.GrailsParameterMap
+import org.grails.web.json.JSONArray
 import org.grails.web.json.JSONObject
 import phitb_accounts.Exception.BadRequestException
 import phitb_accounts.Exception.ResourceNotFoundException
@@ -65,7 +66,9 @@ class BillDetailLogController
         try {
             String id = params.id
             if (id) {
-                respond billDetailLogService.getRecieptDetails(id)
+                def bill = BillDetailLog.findAllByReceiptId(id)
+                JSONArray jsonArray = new JSONArray(bill)
+                respond jsonArray,formats: ['json']
             }
         }
         catch (ResourceNotFoundException ex)

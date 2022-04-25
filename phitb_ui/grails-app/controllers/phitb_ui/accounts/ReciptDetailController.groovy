@@ -519,10 +519,14 @@ class ReciptDetailController
 //        def creditNoteRespone = new AccountsService().getCNsettledCustomerId(params.custid, session.getAttribute
 //        ("entityId").toString(), session.getAttribute("financialYear").toString())
 //        JSONArray creditNoteArry = new JSONArray(creditNoteRespone.readEntity(String.class))
-        JSONObject reciptlogs = new AccountsService().getReceiptLogById(params.id) as JSONObject
+        def reciptlogs = new AccountsService().getReceiptLogById(params.id)
+        if(reciptlogs?.status == 200)
+        {
+            JSONArray reciptlogArray = new JSONArray(reciptlogs.readEntity(String.class))
+            render(view: '/accounts/recipt/recipt-temp', model: [customer: customer, recipt: recipt,
+                                                                 entity: entity,reciptlogs:reciptlogArray])
+        }
 
-        render(view: '/accounts/recipt/recipt-temp', model: [customer: customer, recipt: recipt,
-                                                             entity: entity,reciptlogs:reciptlogs])
     }
 
 

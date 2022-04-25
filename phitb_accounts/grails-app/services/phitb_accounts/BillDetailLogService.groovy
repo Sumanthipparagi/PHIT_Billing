@@ -1,6 +1,7 @@
 package phitb_accounts
 
 import grails.gorm.transactions.Transactional
+import org.grails.web.json.JSONArray
 import org.grails.web.json.JSONObject
 import phitb_accounts.Exception.BadRequestException
 import phitb_accounts.Exception.ResourceNotFoundException
@@ -19,18 +20,21 @@ class BillDetailLogService
         Integer l = limit ? Integer.parseInt(limit.toString()) : 100
 
         if (!query)
-            return BillPaymentLog.findAll([sort: 'id', max: l, offset: o, order: 'desc'])
+            return BillDetailLog.findAll([sort: 'id', max: l, offset: o, order: 'desc'])
         else
-            return BillPaymentLog.findAllByBillTypeIlike("%" + query + "%", [sort: 'id', max: l, offset: o, order: 'desc'])
+            return BillDetailLog.findAllByBillTypeIlike("%" + query + "%", [sort: 'id', max: l, offset: o, order: 'desc'])
     }
 
     BillDetailLog get(String id) {
         return BillDetailLog.findById(Long.parseLong(id))
     }
 
-    BillDetailLog getRecieptDetails(String id) {
-        return BillDetailLog.findByRecieptId(Long.parseLong(id))
+    def getRecieptDetails(String id) {
+        def bill = BillDetailLog.findAllByReceiptId(id)
+        JSONArray jsonArray = new JSONArray(bill)
+        return jsonArray.toString()
     }
+
 
     JSONObject dataTables(JSONObject paramsJsonObject, String start, String length) {
         String searchTerm = paramsJsonObject.get("search[value]")

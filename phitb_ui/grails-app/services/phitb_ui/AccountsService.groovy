@@ -1,6 +1,8 @@
 package phitb_ui
 
+import grails.converters.JSON
 import grails.gorm.transactions.Transactional
+import org.grails.web.json.JSONArray
 import org.grails.web.json.JSONObject
 
 import javax.ws.rs.client.Client
@@ -516,7 +518,10 @@ class AccountsService
                     .path(new Links().RECIPT_DETAIL_LOG_RECIPTID + "/" + id)
                     .request(MediaType.APPLICATION_JSON_TYPE)
                     .get()
-            return apiResponse
+            if(apiResponse.status == 200)
+            {
+                 return apiResponse
+            }
         }
         catch (Exception ex)
         {
