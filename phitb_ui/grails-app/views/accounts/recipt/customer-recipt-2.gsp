@@ -989,10 +989,10 @@
                         allowOutsideClick: false
                     }).then((result) => {
                         if (result.isConfirmed) {
-                           window.reload()
+                            location.reload();
                         }
                     });
-                    window.reload()
+                    location.reload();
                 },
                 error: function () {
                     console.log('ERR')
