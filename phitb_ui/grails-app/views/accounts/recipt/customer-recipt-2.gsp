@@ -595,7 +595,7 @@
                                 '                                        <td>' + value.totalAmount.toFixed(2) + '</td>\n' +
                                 '                                        <td id="' + "invAdjAmt" + value.id + '">' + value.adjAmount + '</td>\n' +
                                 '                                        <td>' + value.balance.toFixed(2) + '</td>\n' +
-                                '                                        <td><input type="number" class="paidNowInv txt" id="paidNowInv" name="paidNowInv" data-inid="' + value.id + '" data-bal="' + value.balance + '" style="width: 100px;" pattern="\\d{1,10}(?:\\.\\d{1,3})?$" value="0" ></td>\n' +
+                                '                                        <td><input type="number" class="paidNowInv txt" id="paidNowInv'+value.id+'" name="paidNowInv" data-inid="' + value.id + '" data-bal="' + value.balance + '" style="width: 100px;" pattern="\\d{1,10}(?:\\.\\d{1,3})?$" value="0"></td>\n' +
                                 '                                        <td>' + calculateNoOfDays(value.dateCreated) + '</td>\n' +
                                 '                                        <td>' + value.financialYear + '</td>\n' +
                                 '                                        <td style="display: none;">' + value.id + '</td>\n' +
@@ -617,7 +617,8 @@
                                 '                                        <td>' + moment(value.dateCreated).format('DD-MM-YYYY') + '</td>\n' +
                                 '                                        <td>' + "-" + value.totalAmount.toFixed(2) + '</td>\n' +
                                 '                                        <td>' + value?.adjAmount + '</td>\n' +
-                                '                                        <td>' + "-" + value.balance.toFixed(2) +
+                                '                                        <td id="inv'+id+'">' + "-" +
+                                value.balance.toFixed(2) +
                                 '</td>\n' +
                                 '<td><input type="number" class="paidNowCrt txt" name="paidNowCrt" style="width: 100px;" value="0"></td>\n' +
                                 '                                        <td>' + calculateNoOfDays(value.dateCreated) + '</td>\n' +
@@ -871,9 +872,14 @@
     $(document).on('keydown', '.txt', function (e) {
         if (e.keyCode === 13 || e.which === '13') {
             var id = $(this).attr('data-inid');
+            var bal = $(this).attr('data-bal');
             var index = $('.txt').index(this) + 1;
             $('.txt').eq(index).focus();
-
+            var value = $('#paidNowInv'+id).val();
+            if(Number(value) > Number(bal))
+            {
+                $('#paidNowInv'+id).val(0);
+            }
             // var prevPaid = $('table#table1 tr#IN'+id+' td#invAdjAmt'+id+'').text();
             // var paid = parseFloat(prevPaid) + parseFloat($('#paidNowInv').val());
             // $('table#table1 tr#IN'+id+' td#invAdjAmt'+id+'').text(parseFloat(paid).toFixed());
