@@ -447,10 +447,9 @@ class AccountsService
         try
         {
             Response apiResponse = target
-                    .path(new Links().SALE_BILL_BALANCE_UPDATE+"/id/"+jsonObject.id+"/balance/"+jsonObject.balance)
+                    .path(new Links().SALE_BILL_BALANCE_UPDATE+"/id/"+jsonObject.id+"/balance/"+jsonObject.paidNow)
                     .request(MediaType.APPLICATION_JSON_TYPE)
                     .post(Entity.form(form))
-            println(apiResponse)
             return apiResponse
         }
         catch (Exception ex)
@@ -470,7 +469,7 @@ class AccountsService
         try
         {
             Response apiResponse = target
-                    .path(new Links().UPDATE_SALE_RETURN_BALANCE+"/id/"+jsonObject.id+"/balance/"+jsonObject.balance)
+                    .path(new Links().UPDATE_SALE_RETURN_BALANCE+"/id/"+jsonObject.id+"/balance/"+jsonObject.paidNow)
                     .request(MediaType.APPLICATION_JSON_TYPE)
                     .post(Entity.form(form))
             println(apiResponse)
@@ -507,22 +506,45 @@ class AccountsService
     }
 
 //   move invoice to settled vocher
-    def updateSettledVocher(JSONObject jsonObject)
+//    def updateSettledVocher(JSONObject jsonObject)
+//    {
+//        Form form = UtilsService.jsonToFormDataConverter(jsonObject)
+//        Client client = ClientBuilder.newClient();
+//        WebTarget target = client.target(new Links().API_GATEWAY);
+//
+//        try
+//        {
+//            Response apiResponse = target
+//                    .path(new Links().SET_PAYMENT_BILL)
+//                    .resolveTemplate("id", jsonObject.id)
+//                    .resolveTemplate("type", "settled")
+//                    .request(MediaType.APPLICATION_JSON_TYPE)
+////                    .post(Entity.entity(jsonObject.toString(),MediaType.APPLICATION_JSON_TYPE))
+//                    .post(Entity.form(form))
+//            println(apiResponse)
+//            return apiResponse
+//        }
+//        catch (Exception ex)
+//        {
+//            System.err.println('Service :saveStateMaster , action :  save  , Ex:' + ex)
+//            log.error('Service :saveStateMaster , action :  save  , Ex:' + ex)
+//        }
+//
+//    }
+
+
+    def updateSettledVocher(String id, String paidAmt)
     {
-        Form form = UtilsService.jsonToFormDataConverter(jsonObject)
         Client client = ClientBuilder.newClient();
         WebTarget target = client.target(new Links().API_GATEWAY);
-
         try
         {
             Response apiResponse = target
                     .path(new Links().SET_PAYMENT_BILL)
-                    .resolveTemplate("id", jsonObject.id)
-                    .resolveTemplate("type", "settled")
+                    .resolveTemplate("id", id)
+                    .resolveTemplate("paid", paidAmt)
                     .request(MediaType.APPLICATION_JSON_TYPE)
-//                    .post(Entity.entity(jsonObject.toString(),MediaType.APPLICATION_JSON_TYPE))
                     .post(Entity.form(form))
-            println(apiResponse)
             return apiResponse
         }
         catch (Exception ex)

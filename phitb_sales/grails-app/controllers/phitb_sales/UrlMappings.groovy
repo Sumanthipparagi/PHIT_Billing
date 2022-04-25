@@ -134,7 +134,7 @@ class UrlMappings {
 //            }
             "/salebilldetails/getrecent(.$format)?"(controller: 'saleBillDetails', action: 'getRecentByFinancialYearAndEntity')
 
-            "/setpaymentstatus/$id/type/$type(.$format)?"(controller: 'saleBillDetails') {
+            "/setpaymentstatus/$id/type/$paid(.$format)?"(controller: 'saleBillDetails') {
                 action = [POST: 'updatePaymentStatus']
             }
 

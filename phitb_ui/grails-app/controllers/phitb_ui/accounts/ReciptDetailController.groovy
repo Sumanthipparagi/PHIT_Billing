@@ -335,14 +335,56 @@ class ReciptDetailController
     {
         try
         {
+            JSONArray billArray = new JSONArray(params.reciptData)
             JSONObject jsonObject = new JSONObject(params)
+            for (JSONObject bills : billArray)
+            {
+                String paidNow = bills.get("PaidNow")
+                String BalAmt = bills.get("BalAmt")
+                String transactionId = bills.get("Trans_Id")
+                String docType = bills.get("Doc.Type")
+                String billId = bills.get("BillId")
+                if(docType=="INVS")
+                {
+                    JSONObject invObject = new JSONObject();
+                    invObject.put("id",billId)
+                    invObject.put("paidNow",paidNow)
+                    def invoice = new AccountsService().updateSaleBalance(invObject)
+                    if(invoice?.status == 200)
+                    {
+                        invObject.remove("id");
+                        invObject.remove("paidNow");
+                    }
+                }
+                if(docType=="CRNT")
+                {
+                    JSONObject crntObject = new JSONObject();
+                    crntObject.put("id",billId)
+                    crntObject.put("paidNow",paidNow)
+                    def crnt = new AccountsService().updateSaleReturnBalance(crntObject)
+                    if(crnt?.status == 200)
+                    {
+                        crntObject.remove("id");
+                        crntObject.remove("paidNow");
+                    }
+                }
+
+                JSONObject billLog = new JSONObject()
+                billLog.put("billId",billId)
+                billLog.put("billType",docType)
+                billLog.put("amountPaid",paidNow)
+                billLog.put("currentFinancialYear",session.getAttribute('financialYear').toString())
+                def billLogResponse = new AccountsService().updateReceiptDetailLog(billLog)
+                if(billLogResponse?.status == 200)
+                {
+                    println("Bill Log Saved!")
+                }
+            }
             def apiResponse = new AccountsService().saveRecipt(jsonObject, session.getAttribute('financialYear') as String)
-            println(params.bills)
             if (apiResponse?.status == 200)
             {
                 JSONObject obj = new JSONObject(apiResponse.readEntity(String.class))
-//                respond obj, formats: ['json'], status: 200
-                redirect(uri: '/recipt-list')
+                respond obj, formats: ['json'], status: 200
             }
             else
             {
