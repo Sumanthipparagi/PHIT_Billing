@@ -306,47 +306,46 @@ class SaleBillDetailsController
     }
 
 
-    def updatePaymentStatus(Long id)
-    {
-        try
-        {
-            SaleBillDetails saleBillDetails = SaleBillDetails.findById(id)
-            if (saleBillDetails)
-            {
-                saleBillDetails.isUpdatable = true
-                if (params.type == "settled")
-                {
-                    saleBillDetails.paymentStatus = Long.parseLong("1")
-                    saleBillDetails.adjAmount = saleBillDetails.getBalance() - Double.parseDouble(params.adj)
-
-                }
-                else
-                {
-                    saleBillDetails.adjAmount = 0
-                    saleBillDetails.paymentStatus = Long.parseLong("0")
-                }
-                SaleBillDetails saleBillDetails1 = saleBillDetails.save(flush: true)
-                if (saleBillDetails1)
-                {
-                    respond saleBillDetails1
-                    return
-                }
-            }
-        }
-        catch (Exception ex)
-        {
-            System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
-            log.error('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
-        }
-        response.status = 400
-    }
+//    def updatePaymentStatus(Long id)
+//    {
+//        try
+//        {
+//            SaleBillDetails saleBillDetails = SaleBillDetails.findById(id)
+//            if (saleBillDetails)
+//            {
+//                saleBillDetails.isUpdatable = true
+//                if (params.type == "settled")
+//                {
+//                    saleBillDetails.paymentStatus = Long.parseLong("1")
+//                    saleBillDetails.adjAmount = saleBillDetails.getBalance() - Double.parseDouble(params.adj)
+//
+//                }
+//                else
+//                {
+//                    saleBillDetails.adjAmount = 0
+//                    saleBillDetails.paymentStatus = Long.parseLong("0")
+//                }
+//                SaleBillDetails saleBillDetails1 = saleBillDetails.save(flush: true)
+//                if (saleBillDetails1)
+//                {
+//                    respond saleBillDetails1
+//                    return
+//                }
+//            }
+//        }
+//        catch (Exception ex)
+//        {
+//            System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
+//            log.error('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
+//        }
+//        response.status = 400
+//    }
 
 
     def updateBalance()
     {
         try
         {
-            println(params.id)
             SaleBillDetails saleBillDetails = SaleBillDetails.findById(Long.parseLong(params.id))
             if (saleBillDetails)
             {

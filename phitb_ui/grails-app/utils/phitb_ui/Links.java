@@ -441,6 +441,7 @@ public class Links
 
 //    Reciept detail log
     public static String RECIPT_DETAIL_LOG = "api/v1.0/accounts/reciptdetaillog";
+    public static String RECIPT_DETAIL_LOG_RECIPTID = "api/v1.0/accounts/reciptdetaillogbyreciptId";
 
 
     //Wallet

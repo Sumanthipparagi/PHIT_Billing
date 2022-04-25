@@ -23,6 +23,7 @@
             rel="stylesheet"/>
     <link rel="stylesheet" media="screen" href="https://cdnjs.cloudflare.com/ajax/libs/select2/3.5.2/select2.min.css">
 
+    <asset:stylesheet rel="stylesheet" href="/themeassets/plugins/sweetalert2/dist/sweetalert2.css"/>
 
     <style>
     input.chk-btn {
@@ -140,8 +141,8 @@
                     %{--                        </ul>--}%
                     %{--                    </div>--}%
                     <div class="body">
-                        <form action="/recipt" id="form_validation" method="POST" role="form"
-                              class="entityRegisterForm" enctype="multipart/form-data">
+%{--                        <form action="/recipt" id="form_validation" method="POST" role="form"--}%
+%{--                              class="entityRegisterForm" enctype="multipart/form-data">--}%
                             <div class="row clearfix">
                                 <div class="col-lg-12 form-group  form-float">
                                     <label for="date">
@@ -174,7 +175,8 @@
                                         Payment Mode
                                     </label><br>
                                     <select class="show-tick paymentMode" name="paymentMode"
-                                            id="paymentMode" onchange="payMode(this.value)" required style="height: 37px;width: 425px;">
+                                            id="paymentMode" onchange="payMode(this.value)" required
+                                            style="height: 37px;width: 425px;">
                                         <option value="">-- Please select --</option>
                                         <g:each var="pm" in="${paymodes}">
                                             <option value="${pm.id}" data-mode="${pm.name}">${pm.name}</option>
@@ -253,40 +255,45 @@
                                            placeholder="Remark / Note"
                                            required/>
                                 </div>
-                                    <div class="col-lg-3 form-group  form-float">
+
+                                <div class="col-lg-3 form-group  form-float">
                                     <label for="amountPaid">
                                         Amount
                                     </label>
-                                    <input type="text" id="amountPaid" class="note form-control amountPaid"
+                                    <input type="text" id="amountPaid" class="note form-control "
                                            name="amountPaid"
-                                           placeholder="Amount"
+                                           placeholder="Amount" value="0"
                                            required/>
-                                    </div>
+                                </div>
+
                                 <div class="col-lg-3 form-group  form-float mt-4">
                                     <button type="button" class="btn btn-secondary" id="autoAdj">Auto Adjust</button>
                                 </div>
+
                                 <div class="container mt-5">
                                     <div class="tab tableFixHead" style="width:100%;overflow:auto;
                                     max-height:300px;">
-                                    <table class="table table-bordered" id="table1">
-                                        <thead>
-                                        <tr>
-                                        <th>Doc.Type</th>
-                                        <th>Trans_Id</th>
-                                        <th>Bill Date</th>
-                                        <th>Total Amt</th>
-                                        <th>Prev.Paid Amt</th>
-                                        <th>Bal Amt</th>
-                                        <th>Paid Now</th>
-                                        <th>No of Days</th>
-                                        <th>Fin_Year</th>
-                                        </tr>
-                                        </thead>
-                                        <tbody id="billDetails">
-                                        <tr><td colspan='9'><div
-                                                style='text-align: center;'><h2>Please select customer</h2></div></td></tr>
-                                        </tbody>
-                                    </table>
+                                        <table class="table table-bordered" id="table1">
+                                            <thead>
+                                            <tr>
+                                                <th>Doc.Type</th>
+                                                <th>Trans_Id</th>
+                                                <th>Bill Date</th>
+                                                <th>Total Amt</th>
+                                                <th>Prev.Paid Amt</th>
+                                                <th>Bal Amt</th>
+                                                <th>Paid Now</th>
+                                                <th>No of Days</th>
+                                                <th>Fin_Year</th>
+                                                <th style="display: none;">BillId</th>
+                                            </tr>
+                                            </thead>
+                                            <tbody id="billDetails">
+                                            <tr><td colspan='9'><div
+                                                    style='text-align: center;'><h2>Please select customer</h2></div>
+                                            </td></tr>
+                                            </tbody>
+                                        </table>
                                     </div>
                                 </div>
 
@@ -300,16 +307,16 @@
                                     <div class="" style="float: right;">
                                         <input name="id" id="id" class="id" type="hidden">
                                         <input name="type" class="type" value="add" type="hidden">
-                                        <button type="submit" class="btn btn-default btn-round waves-effect"
-                                                name="submituser"><font style="vertical-align: inherit;"><font
+                                        <button  class="btn btn-default btn-round waves-effect" id="submitData"><font style="vertical-align: inherit;"><font
                                                 style="vertical-align: inherit;">SUBMIT</font></font></button>
-                                        <button type="reset" class="btn btn-danger btn-simple btn-round waves-effect"
-                                                data-dismiss="modal"><font style="vertical-align: inherit;"><font
-                                                style="vertical-align: inherit;">RESET</font></font></button>
+
+%{--                                        <button type="reset" class="btn btn-danger btn-simple btn-round waves-effect"--}%
+%{--                                                data-dismiss="modal"><font style="vertical-align: inherit;"><font--}%
+%{--                                                style="vertical-align: inherit;">RESET</font></font></button>--}%
                                     </div>
                                 </div>
                             </div>
-                        </form>
+%{--                        </form>--}%
                     </div>
                 </div>
             </div>
@@ -338,8 +345,11 @@
 <asset:javascript src="/themeassets/plugins/momentjs/moment.js"/>
 <asset:javascript src="/themeassets/plugins/bootstrap-material-datetimepicker/js/bootstrap-material-datetimepicker.js"/>
 <asset:javascript src="/themeassets/js/pages/forms/basic-form-elements.js"/>
+<asset:javascript src="/themeassets/plugins/sweetalert2/dist/sweetalert2.all.js"/>
+
 <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/3.5.2/select2.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/table-to-json@1.0.0/lib/jquery.tabletojson.min.js"integrity="sha256-H8xrCe0tZFi/C2CgxkmiGksqVaxhW0PFcUKZJZo1yNU=" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/table-to-json@1.0.0/lib/jquery.tabletojson.min.js"
+        integrity="sha256-H8xrCe0tZFi/C2CgxkmiGksqVaxhW0PFcUKZJZo1yNU=" crossorigin="anonymous"></script>
 
 <script>
     var date = new Date();
@@ -369,7 +379,7 @@
         if ($('#paymentMode option:selected').attr('data-mode') === "BANK") {
             $("#mode").show()
             $("#mode").addClass('col-lg-6')
-            html=' <label for="bank">\n' +
+            html = ' <label for="bank">\n' +
                 '                                        Bank\n' +
                 '                                    </label>\n' +
                 '                                    <select class="form-control show-tick bank" name="bank"\n' +
@@ -382,25 +392,21 @@
             $(".cheque").show()
         } else if ($('#paymentMode option:selected').attr('data-mode') === "CARD") {
             $("#mode").addClass('col-lg-6')
-            html='<label for="cardNumber">\n' +
+            html = '<label for="cardNumber">\n' +
                 '        Card Number\n' +
                 '    </label>\n' +
                 '    <input type="number" id="cardNumber" class="cardNumber form-control"\n' +
                 '    name="cardNumber"\n' +
                 '    placeholder="Card Number"\n' +
                 '    />'
-            $(".cheque").hide().prop('required',false)
-            $(".cardNumber").prop('required',false)
+            $(".cheque").hide().prop('required', false)
+            $(".cardNumber").prop('required', false)
 
-        }
-        else if($('#paymentMode option:selected').attr('data-mode') === "CASH")
-        {
+        } else if ($('#paymentMode option:selected').attr('data-mode') === "CASH") {
             $("#mode").addClass('col-lg-6')
-            $("#mode").hide().prop('required',false)
-            $(".cheque").hide().prop('required',false)
-        }
-        else if($('#paymentMode option:selected').attr('data-mode') === "")
-        {
+            $("#mode").hide().prop('required', false)
+            $(".cheque").hide().prop('required', false)
+        } else if ($('#paymentMode option:selected').attr('data-mode') === "") {
             $('#mode').removeClass('col-lg-6');
         }
         $('#mode').html(html)
@@ -415,7 +421,7 @@
     }
 
     function getAddress(id) {
-        if(id) {
+        if (id) {
             $.ajax({
                 type: 'GET',
                 url: '/getbyentity/' + id,
@@ -428,19 +434,20 @@
                     var trHTML = '';
                     trHTML += '<p><b>' + data.entityName + '</b><br>' + data.addressLine1 + '' + data.addressLine2 + '</p>';
                     $('#caddress').html(trHTML);
+
+
                 },
                 error: function () {
                     swal("Error!", "Something went wrong", "error");
                 }
             });
-        }
-        else
-        {
+        } else {
             getAllSaleBillDetails(id)
             $('#caddress').html("");
         }
 
     }
+
 
     function getUnsettledByCustomer(id) {
         $.ajax({
@@ -464,11 +471,12 @@
                 $('.total_bal').text(parseFloat(total_bal).toFixed(2));
 
                 $.each(data[0], function (key, value) {
-                    if(value.balance!==0 && value.billStatus!=='DRAFT') {
+                    if (value.balance !== 0 && value.billStatus !== 'DRAFT') {
                         trHTML1 +=
                             '<tr id="' + "IN" + value.id + '"><td><button type="button" data-id="' + value.id +
                             '"  data-custId="' + value.customerId +
-                            '"   data-adj="' + value.adjAmount + '" class="btn-sm btn-primary"  id="settled"><-</button></td><td>' + invoice +
+                            '"   data-adj="' + value.adjAmount.toFixed(2) +
+                            '" class="btn-sm btn-primary"  id="settled"><-</button></td><td>' + invoice +
                             '</td><td>' + value.financialYear +
                             '</td><td>' + moment(value.dateCreated).format('DD-MM-YYYY') +
                             '</td><td>' + value.invoiceNumber +
@@ -480,17 +488,17 @@
 
                 $.each(data[1], function (key, value) {
                     var date = new Date(value.entryDate);
-                    if(value.balance!==0) {
+                    if (value.balance !== 0) {
                         trHTML +=
                             '<tr id="' + "CR" + value.id + '"><td><button type="button" data-id="' + value.id +
                             '"  data-custId="' + value.customerId +
                             '"   data-adj="' + value.adjAmount + '" class="btn-sm btn-primary" id="cnsettled"><-</button></td><td>' + cred + '</td><td>' + value.financialYear +
                             '</td><td>' + moment(date).format('DD-MM-YYYY') +
-                            '</td><td>' + value.invoiceNumber +'</td><td><input type="number" value="' + value.balance +
+                            '</td><td>' + value.invoiceNumber + '</td><td><input type="number" value="' + value.balance +
                             '" id="' + "CR" + value.id + '" data-cnid="' + value.id + '" style="width: 65%;" readonly></td></tr>';
                     }
                 });
-                $('.unsettledVocher').html(trHTML+trHTML1);
+                $('.unsettledVocher').html(trHTML + trHTML1);
             },
             error: function () {
                 swal("Error!", "Something went wrong", "error");
@@ -514,19 +522,18 @@
                 var inv = data[0].map(data => data.balance).reduce((acc, amount) => acc + amount, 0);
                 var invAdjAmt = data[0].map(data => data.adjAmount).reduce((acc, adjAmt) => acc + adjAmt, 0);
                 var crnt = data[1].map(data => data.balance).reduce((acc, amount) => acc + amount, 0);
-                var  crntAdjAmt= data[1].map(data => data.adjAmount).reduce((acc, adjAmount) => acc + adjAmount, 0);
+                var crntAdjAmt = data[1].map(data => data.adjAmount).reduce((acc, adjAmount) => acc + adjAmount, 0);
                 var total_bal_s = invAdjAmt - crntAdjAmt;
                 $('.total_bal_s').text(parseFloat(total_bal_s).toFixed(2));
                 $('.tba').val(total_bal_s.toFixed(2));
                 $('.amountPaid').val(total_bal_s.toFixed(2));
                 $.each(data[0], function (key, value) {
-                    if(value.balance!==0 && value.billStatus!=='DRAFT')
-                    {
+                    if (value.balance !== 0 && value.billStatus !== 'DRAFT') {
                         trHTML +=
                             '<tr id="' + "IN" + value.id + '"><td>' + invoice +
                             '</td><td>' + value.financialYear +
                             '</td><td>' + moment(value.dateCreated).format('DD-MM-YYYY') +
-                            '</td><td>' + value.invoiceNumber +'</td><td><input type="number" value="' + value.balance +
+                            '</td><td>' + value.invoiceNumber + '</td><td><input type="number" value="' + value.balance +
                             '" id="INVbalsettled" data-inid="' + value.id + '"  data-custId="' + value.customerId
                             + '" data-invbal="' + value.balance + '" ></td><td>' + value?.adjAmount +
                             '</td><td><button type="button" data-id="' + value.id + '"  data-custId="' +
@@ -536,12 +543,12 @@
                 });
                 $.each(data[1], function (key, value) {
                     var date = new Date(value.entryDate);
-                    if(value.balance!==0) {
+                    if (value.balance !== 0) {
                         trHTML +=
                             '<tr id="' + "CR" + value.id + '"><td>' + cred +
                             '</td><td>' + value.financialYear +
                             '</td><td>' + moment(date).format('DD-MM-YYYY') +
-                            '</td><td>' + value.invoiceNumber +'</td><td><input type="number" value="' + value.balance +
+                            '</td><td>' + value.invoiceNumber + '</td><td><input type="number" value="' + value.balance +
                             '" id="CRbalsettled" data-cnid="' + value.id + '"  data-custId="' + value.customerId
                             + '"  data-crbal="' + value.balance + '" ></td><td>' + value.adjAmount +
                             '</td><td><button type="button" data-id="' + value.id +
@@ -549,7 +556,7 @@
                             '"  data-adj="' + value.adjAmount + '" class="btn-sm btn-primary" id="cnunsettled">-></button></td></tr>';
                     }
                 });
-                $('.settledVocher').html(trHTML+trHTML1);
+                $('.settledVocher').html(trHTML + trHTML1);
             },
             error: function () {
                 swal("Error!", "Something went wrong", "error");
@@ -558,9 +565,8 @@
     }
 
 
-
     function getAllSaleBillDetails(id) {
-        if(id) {
+        if (id) {
             $.ajax({
                 type: 'GET',
                 url: '/recipts/getallbilldetails?id=' + id,
@@ -588,14 +594,16 @@
                                 '                                        <td>' + value.invoiceNumber + '</td>\n' +
                                 '                                        <td>' + moment(value.dateCreated).format('DD-MM-YYYY') + '</td>\n' +
                                 '                                        <td>' + value.totalAmount.toFixed(2) + '</td>\n' +
-                                '                                        <td id="'+"invAdjAmt"+value.id+'">' + value.adjAmount + '</td>\n' +
+                                '                                        <td id="' + "invAdjAmt" + value.id + '">' +
+                                value.adjAmount.toFixed(2) + '</td>\n' +
                                 '                                        <td>' + value.balance.toFixed(2) + '</td>\n' +
-                                '                                        <td><input type="number" class="paidNowInv" id="paidNowInv" name="paidNowInv" min="0" max="' + value.balance.toFixed(2) + '" data-inid="'+value.id+'" data-bal="'+value.balance+'" style="width: 100px;" pattern="\\d{1,10}(?:\\.\\d{1,3})?$"  ></td>\n' +
+                                '                                        <td><input type="number" class="paidNowInv txt" id="paidNowInv'+value.id+'" name="paidNowInv" data-inid="' + value.id + '" data-bal="' + value.balance + '" style="width: 100px;" pattern="\\d{1,10}(?:\\.\\d{1,3})?$" value="0"></td>\n' +
                                 '                                        <td>' + calculateNoOfDays(value.dateCreated) + '</td>\n' +
                                 '                                        <td>' + value.financialYear + '</td>\n' +
+                                '                                        <td style="display: none;">' + value.id + '</td>\n' +
                                 '                                        </tr>';
 
-                            $('#paidNowInv').attr({
+                            $('.paidNowInv').attr({
                                 'min': value.balance.toFixed(2),
                             });
 
@@ -607,22 +615,23 @@
                         if (value.balance !== 0) {
                             trHTML1 += ' <tr id="' + "CR" + value.id + '">\n' +
                                 '                                        <td>' + creditNote + '</td>\n' +
-                                '                                        <td>' + value.invoiceNumber + '</td>\n' +
+                                '                                        <td  >' + value.invoiceNumber + '</td>\n' +
                                 '                                        <td>' + moment(value.dateCreated).format('DD-MM-YYYY') + '</td>\n' +
-                                '                                        <td>' + "-"+value.totalAmount.toFixed(2) + '</td>\n' +
-                                '                                        <td>' + value?.adjAmount + '</td>\n' +
-                                '                                        <td>' + "-"+value.balance.toFixed(2) +
+                                '                                        <td>' + "-" + value.totalAmount.toFixed(2) + '</td>\n' +
+                                '                                        <td>' + value?.adjAmount.toFixed(2) + '</td>\n' +
+                                '                                        <td id="inv'+id+'">' + "-" +
+                                value.balance.toFixed(2) +
                                 '</td>\n' +
-                                '                                        <td><input type="number" class="paidNowCrt" name="paidNowCrt" style="width: 100px;"></td>\n' +
+                                '<td><input type="number" class="paidNowCrt txt" name="paidNowCrt" style="width: 100px;" value="0"></td>\n' +
                                 '                                        <td>' + calculateNoOfDays(value.dateCreated) + '</td>\n' +
                                 '                                        <td>' + value.financialYear + '</td>\n' +
+                                '                                        <td style="display: none;">' + value.id + '</td>\n' +
                                 '                                        </tr>';
                         }
                     });
                     $('#billDetails').html(trHTML + trHTML1);
 
-                    if(data[0].length === 0 && data[1].length === 0)
-                    {
+                    if (data[0].length === 0 && data[1].length === 0) {
                         $('#billDetails').html("<tr><td colspan='9'><div style='text-align: center;'><h2>No Data Found</h2></div></td></tr>");
                     }
                 },
@@ -630,12 +639,11 @@
                     swal("Error!", "Something went wrong", "error");
                 }
             });
-        }
-        else
-        {
+        } else {
             $('#billDetails').html("<tr><td colspan='9'><div style='text-align: center;'><h2>Please select customer</h2></div></td></tr>");
         }
     }
+
 
     // var input = document.getElementById("tc");
     // input.addEventListener("keydown", function (e) {
@@ -658,7 +666,7 @@
         var id = $(this).data('id');
         var custId = $(this).attr('data-custId');
         var adj = $(this).attr('data-adj');
-        var url = '/salesettledvocher/' + id+"?adj="+adj;
+        var url = '/salesettledvocher/' + id + "?adj=" + adj;
         var type = 'GET';
         $.ajax({
             url: url,
@@ -682,7 +690,7 @@
         var id = $(this).data('id');
         var custId = $(this).attr('data-custId');
         var adj = $(this).attr('data-adj');
-        var url = '/saleunsettledvocher/' + id+"?adj="+adj;
+        var url = '/saleunsettledvocher/' + id + "?adj=" + adj;
         var type = 'GET';
         $.ajax({
             url: url,
@@ -706,7 +714,7 @@
         var id = $(this).data('id');
         var adj = $(this).attr('data-adj');
         var custId = $(this).attr('data-custId');
-        var url = '/creditsettledvocher/' + id+"?adj="+adj;
+        var url = '/creditsettledvocher/' + id + "?adj=" + adj;
         var type = 'GET';
         $.ajax({
             url: url,
@@ -730,7 +738,7 @@
         var id = $(this).data('id');
         var adj = $(this).attr('data-adj');
         var custId = $(this).attr('data-custId');
-        var url = '/creditunsettledvocher/' + id+"?adj="+adj;
+        var url = '/creditunsettledvocher/' + id + "?adj=" + adj;
         var type = 'GET';
         $.ajax({
             url: url,
@@ -757,16 +765,15 @@
         });
 
 
-        $(document).on('keydown','#INVbalsettled',function(e){
+        $(document).on('keydown', '#INVbalsettled', function (e) {
             if (e.keyCode === 13 || e.which === '13') {
                 var balance = Number($(this).val());
                 var id = $(this).attr('data-inid');
                 var invbal = $(this).attr('data-invbal');
                 var custId = $(this).attr('data-custId');
                 var billType = "INVOICE";
-                var url="/updatesalebalance?id="+id+"&balance="+balance;
-                if(balance!==0 && balance<=invbal)
-                {
+                var url = "/updatesalebalance?id=" + id + "&balance=" + balance;
+                if (balance !== 0 && balance <= invbal) {
                     $.ajax({
                         url: url,
                         type: "POST",
@@ -774,7 +781,7 @@
                         processData: false,
                         data: {
                             balance: balance,
-                            id:id
+                            id: id
                         },
                         success: function () {
                             $.ajax({
@@ -782,10 +789,10 @@
                                 url: "/updatereciptlog",
                                 data: {
                                     amountPaid: balance,
-                                    billId:id,
-                                    billType:billType,
-                                    financialYear:'${session.getAttribute('financialYear')}',
-                                    currentFinancialYear:'${session.getAttribute('financialYear')}',
+                                    billId: id,
+                                    billType: billType,
+                                    financialYear: '${session.getAttribute('financialYear')}',
+                                    currentFinancialYear: '${session.getAttribute('financialYear')}',
                                 },
                                 success: function (data) {
                                     getUnsettledByCustomer(custId);
@@ -797,16 +804,11 @@
                             swal("Error!", "Something went wrong", "error");
                         }
                     });
-                }
-                else
-                {
-                    if(balance === 0)
-                    {
+                } else {
+                    if (balance === 0) {
                         swal("Balance should not be zero!!");
                         $('#balsettled').val(invbal)
-                    }
-                    else
-                    {
+                    } else {
                         swal("Balance should not exceed!!");
                         $('#balsettled').val(invbal)
                     }
@@ -816,16 +818,15 @@
         });
 
 
-        $(document).on('keydown','#CRbalsettled',function(e){
+        $(document).on('keydown', '#CRbalsettled', function (e) {
             if (e.keyCode === 13 || e.which === '13') {
                 var balance = Number($(this).val());
                 var id = $(this).attr('data-cnid');
                 var invbal = $(this).attr('data-crbal');
                 var custId = $(this).attr('data-custId');
                 var billType = "CRNT";
-                var url="/updatesalereturnbalance?id="+id+"&balance="+balance;
-                if(balance!==0 && balance<=invbal)
-                {
+                var url = "/updatesalereturnbalance?id=" + id + "&balance=" + balance;
+                if (balance !== 0 && balance <= invbal) {
                     $.ajax({
                         url: url,
                         type: "POST",
@@ -833,7 +834,7 @@
                         processData: false,
                         data: {
                             balance: balance,
-                            id:id
+                            id: id
                         },
                         success: function () {
                             $.ajax({
@@ -841,10 +842,10 @@
                                 url: "/updatereciptlog",
                                 data: {
                                     amountPaid: balance,
-                                    billId:id,
-                                    billType:billType,
-                                    financialYear:'${session.getAttribute('financialYear')}',
-                                    currentFinancialYear:'${session.getAttribute('financialYear')}',
+                                    billId: id,
+                                    billType: billType,
+                                    financialYear: '${session.getAttribute('financialYear')}',
+                                    currentFinancialYear: '${session.getAttribute('financialYear')}',
                                 },
                                 success: function (data) {
                                     getUnsettledByCustomer(custId);
@@ -856,16 +857,11 @@
                             swal("Error!", "Something went wrong", "error");
                         }
                     });
-                }
-                else
-                {
-                    if(balance === 0)
-                    {
+                } else {
+                    if (balance === 0) {
                         swal("Balance should not be zero!!");
                         $('#balsettled').val(invbal)
-                    }
-                    else
-                    {
+                    } else {
                         swal("Balance should not exceed!!");
                         $('#balsettled').val(invbal)
                     }
@@ -875,12 +871,17 @@
         });
     });
 
-    $(document).on('keydown','#paidNowInv',function(e){
+    $(document).on('keydown', '.txt', function (e) {
         if (e.keyCode === 13 || e.which === '13') {
             var id = $(this).attr('data-inid');
-            var index = $('.paidNowInv').index(this) + 1;
-            $('.paidNowInv').eq(index).focus();
-
+            var bal = $(this).attr('data-bal');
+            var index = $('.txt').index(this) + 1;
+            $('.txt').eq(index).focus();
+            var value = $('#paidNowInv'+id).val();
+            if(Number(value) > Number(bal))
+            {
+                $('#paidNowInv'+id).val(0);
+            }
             // var prevPaid = $('table#table1 tr#IN'+id+' td#invAdjAmt'+id+'').text();
             // var paid = parseFloat(prevPaid) + parseFloat($('#paidNowInv').val());
             // $('table#table1 tr#IN'+id+' td#invAdjAmt'+id+'').text(parseFloat(paid).toFixed());
@@ -894,20 +895,118 @@
     });
 
     $(document).on('click', '#autoAdj', function (e) {
-       var value = $('#amountPaid').val();
-       var databal = $('.paidNowInv').attr('data-bal');
-       var inputs = $(".paidNowInv");
+        var value = $('#amountPaid').val();
+        var databal = $('.paidNowInv').attr('data-bal');
+        var inputs = $(".paidNowInv");
         var invoices = $('.paidNowInv').length;
-        for(var i = 0; i < inputs.length; i++) {
+        var crnt = $('.paidNowCrt').length;
+
+        $(".paidNowInv[data-bal]").each(function () {
+            var databal = $(this).attr('data-bal');
             if (value !== 0) {
-                var paidNow = parseFloat(value) / parseFloat(invoices)
-                $('.paidNowInv').val(paidNow.toFixed(2));
+                var paidNow = parseFloat(value) / parseFloat(invoices);
+                $('.paidNowInv').val(parseFloat(paidNow).toFixed(2));
+                $('.paidNowCrt').val(parseFloat(0).toFixed(2));
             }
-        }
-        var table = $('#table1').tableToJSON();
-        $('#bills').val(table)
+            else
+            {
+                $('.paidNowInv').val(parseFloat(0).toFixed(2));
+            }
+        });
+        // var table = $('#table1').tableToJSON();
+        // $('#bills').val(table.toString())
+        // console.log(table)
     });
 
+
+    $(document).ready(function() {
+        $(document).on('click', '#submitData', function (e) {
+            e.preventDefault();
+            var receivedFrom = $("#receivedFrom").val();
+            var date = $("#date").val();
+            var paymentMode = $("#paymentMode").val();
+            var accountMode = $("#accountMode").val();
+            var bank = $("#bank").val();
+            var cardNumber = $("#cardNumber").val();
+            var paymentDate = $("#paymentDate").val();
+            var chequeNumber = $("#chequeNumber").val();
+            var wallet = $("#wallet").val();
+            var note = $("#note").val();
+            var amount = $("#amountPaid").val();
+            var tbl = $('#table1 tbody tr').map(function (idxRow, ele) {
+                //
+                // start building the retVal object
+                //
+                var retVal = {id: ++idxRow};
+                //
+                // for each cell
+                //
+                var $td = $(ele).find('td').map(function (idxCell, ele) {
+                    var input = $(ele).find(':input');
+                    //
+                    // if cell contains an input or select....
+                    //
+                    if (input.length === 1) {
+                        var attr = $('#table1 thead tr th').eq(idxCell).text();
+                        retVal[attr] = input.val();
+                    } else {
+                        var attr = $('#table1 thead tr th').eq(idxCell).text();
+                        retVal[attr] = $(ele).text();
+                    }
+                });
+                return retVal;
+            }).get();
+            var reciptData = JSON.stringify(tbl).replace(/\s(?=\w+":)/g, "");
+            var waitingSwal = Swal.fire({
+                title: "Saving, Please wait!",
+                showDenyButton: false,
+                showCancelButton: false,
+                showConfirmButton: false,
+                allowOutsideClick: false
+            });
+            $.ajax({
+                type: "POST",
+                url: "/recipt",
+                dataType: 'json',
+                data: {
+                    reciptData: reciptData,
+                    receivedFrom: receivedFrom,
+                    paymentMode: paymentMode,
+                    cardNumber: cardNumber,
+                    bank: bank,
+                    accountModeId: accountMode,
+                    paymentDate: paymentDate,
+                    wallet: wallet,
+                    chequeNumber: chequeNumber,
+                    narration: note,
+                    amountPaid: amount,
+                    date: date,
+                    createdUser: '${session.getAttribute('userId')}',
+                    modifiedUser: '${session.getAttribute('userId')}',
+                    status: 1,
+                    syncStatus: 1,
+                },
+                success: function (data) {
+                    Swal.fire({
+                        title: "Success!",
+                        // showDenyButton: true,
+                        showCancelButton: false,
+                        confirmButtonText: 'OK',
+                        // denyButtonText: 'New Entry',
+                        allowOutsideClick: false
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            location.reload();
+                        }
+                    });
+                    location.reload();
+                },
+                error: function () {
+                    console.log('ERR')
+                }
+            });
+        });
+    });
 
 </script>
 %{--<g:include view="controls/footer-content.gsp"/>--}%
