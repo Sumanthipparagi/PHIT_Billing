@@ -260,7 +260,7 @@
                                     <label for="amountPaid">
                                         Amount
                                     </label>
-                                    <input type="text" id="amountPaid" class="note form-control amountPaid"
+                                    <input type="text" id="amountPaid" class="note form-control "
                                            name="amountPaid"
                                            placeholder="Amount"
                                            required/>
@@ -891,12 +891,18 @@
         var databal = $('.paidNowInv').attr('data-bal');
         var inputs = $(".paidNowInv");
         var invoices = $('.paidNowInv').length;
+        var crnt = $('.paidNowCrt').length;
 
         $(".paidNowInv[data-bal]").each(function () {
             var databal = $(this).attr('data-bal');
             if (value !== 0) {
                 var paidNow = parseFloat(value) / parseFloat(invoices);
                 $('.paidNowInv').val(parseFloat(paidNow).toFixed(2));
+                $('.paidNowCrt').val(parseFloat(0).toFixed(2));
+            }
+            else
+            {
+                $('.paidNowInv').val(parseFloat(0).toFixed(2));
             }
         });
         // var table = $('#table1').tableToJSON();
@@ -973,6 +979,7 @@
                     syncStatus: 1,
                 },
                 success: function (data) {
+                    window.reload()
                     Swal.fire({
                         title: "Success!",
                         // showDenyButton: true,
