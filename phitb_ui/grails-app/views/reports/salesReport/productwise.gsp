@@ -6,7 +6,7 @@
     <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
     <meta name="description" content="PharmIT">
 
-    <title>:: PharmIt ::  Area-wise (Products) Sales Report</title>
+    <title>:: PharmIt ::  Product-wise Sales Report</title>
     <link rel="icon" type="image/x-icon" href="${assetPath(src: '/themeassets/images/favicon.ico')}"/>
     <!-- Favicon-->
     <asset:stylesheet rel="stylesheet" src="/themeassets/plugins/bootstrap/css/bootstrap.min.css"/>
@@ -50,10 +50,10 @@
         <div class="block-header">
             <div class="row clearfix">
                 <div class="col-lg-5 col-md-5 col-sm-12">
-                    <h2>Area-wise (Products) Sales Report</h2>
+                    <h2>Product-Wise Sales Report</h2>
                     <ul class="breadcrumb padding-0">
                         <li class="breadcrumb-item"><a href="#"><i class="zmdi zmdi-home"></i></a></li>
-                        <li class="breadcrumb-item active">Area-wise (Products) Sales Report</li>
+                        <li class="breadcrumb-item active">Product-Wise Sales Report</li>
                     </ul>
                 </div>
 
@@ -98,7 +98,6 @@
                             <div class="col-lg-6 d-flex justify-content-center">
                                 <div class="form-group">
                                     <label>Export</label>
-
                                     <div class="input-group">
                                         <button class="input-group-btn btn btn-info" id="btnExport">Excel</button>
                                         <button class="input-group-btn btn btn-danger" id="btnPrint">Print</button>
@@ -168,89 +167,43 @@
         // var sortBy = $('.sortBy').val();
 
         $.ajax({
-            url: "/reports/sales/getareawisewithproducts?dateRange=" + dateRange,
+            url: "/reports/sales/getproductwise?dateRange=" + dateRange,
             type: "GET",
             contentType: false,
             processData: false,
             success: function (data) {
                 var content = "";
+                var productDetails = "";
                 var grandTotal = 0.00;
-                var totalNetAmt;
+                var totalSqty = 0;
+                var totalfQty = 0;
+                var totalNtv = 0.00;
+                var totalDiscount = 0.00;
+                var totalGst = 0.00;
+                var totalNetAmount = 0.00;
                 var mainTableHeader = "<table class='table table-bordered table-sm' style='width: 100%;'><thead>" +
                     "<tr><td data-f-bold='true' colspan='11'><h3 style='margin-bottom:0 !important;'>${session.getAttribute('entityName')}</h3></td></tr>" +
                     "<tr><td colspan='11'>${session.getAttribute('entityAddress1')} ${session.getAttribute('entityAddress2')} ${session.getAttribute('entityPinCode')}, ph: ${session.getAttribute('entityMobileNumber')}</td></tr>" +
-                    "<tr><th data-f-bold='true' colspan='11'>Customer-Bill-Area-wise Sales* Detail, Date: " +
-                    dateRange + "</th></tr>" +
-                    "<tr><th colspan='7'></th><th data-f-bold='true'><strong>Grand Total:</strong> <span id='grandTotal'></span></th></tr>" +
-                    //"<tr><th data-f-bold='true'>Customer</th><th data-f-bold='true'>Net Amount</th>"+
-                    "<th data-f-bold='true'>Customer</th><th data-f-bold='true'>Products</th><th data-f-bold='true'>Sale Qty</th><th data-f-bold='true'>Fr. Qty</th><th data-f-bold='true'>N T V</th><th data-f-bold='true'>Discount</th><th data-f-bold='true'>GST</th><th data-f-bold='true'>Net Amount</th></tr></thead><tbody>";
-                var billDetails = "";
-                var totalSqty = 0;
-                var totalfQty = 0;
-                var totalNtv = 0;
-                var totalDiscount = 0;
-                var totalGst = 0;
-                $.each(data, function (key, city) {
-                    billDetails = "";
-                    var cityNetAmtTotal = 0;
-                    var cityName = "<tr><td colspan='4' data-f-bold='true'><span class='customerData cust" +
-                        key + "'><strong>" + key + "</strong></span></td></tr>";
-
-                    var cityTotalSqty = 0;
-                    var cityTotalfQty = 0;
-                    var cityTotalNtv = 0;
-                    var cityTotalDiscount = 0;
-                    var cityTotalGst = 0;
-                    var ntv = 0;
-                    console.log("City: " + key);
-                    $.each(city, function (key, customer) {
-                        console.log("Customer: " + key);
-                        var custNetAmtTotal = 0.00;
-                        var customerTotalSqty = 0;
-                        var customerTotalfQty = 0;
-                        var customerTotalNtv = 0.00;
-                        var customerTotalDiscount = 0.00;
-                        var customerTotalGst = 0.00;
-                        var customerName = "<tr><td colspan='8'>" + key + "</td></tr>";
-                        var products = "";
-                        $.each(customer, function (key, product) {
-                            console.log("Product: " + key);
-                            custNetAmtTotal += product.netAmount;
-                            customerTotalSqty += product.sQty;
-                            customerTotalfQty += product.fQty;
-                            customerTotalNtv += product.ntv;
-                            customerTotalDiscount += product.discount;
-                            customerTotalGst += product.gst;
-                            products += "<tr><td></td><td>" + key + "</td>" +
-                                "<td>" + product.sQty + "</td>" +
-                                "<td>" + product.fQty + "</td>" +
-                                "<td>" + product.ntv.toFixed(2) + "</td>" +
-                                "<td>" + product.discount.toFixed(2) + "</td>" +
-                                "<td>" + product.gst.toFixed(2) + "</td>" +
-                                "<td>" + product.netAmount.toFixed(2) + "</td></tr>";
-                        });
-
-                        cityTotalSqty += customerTotalSqty;
-                        cityTotalfQty += customerTotalfQty;
-                        cityTotalNtv += customerTotalNtv;
-                        cityTotalDiscount += customerTotalDiscount;
-                        cityTotalGst += customerTotalGst;
-                        cityNetAmtTotal += custNetAmtTotal;
-
-                        var productsTotal = "<tr><td></td><td>Customer Total:</td><td><u>" + customerTotalSqty + "</u></td><td><u>" + customerTotalfQty + "</u></td><td><u>" + customerTotalNtv.toFixed(2) + "</u></td><td><u>" + customerTotalDiscount.toFixed(2) + "</u></td><td><u>" + customerTotalGst.toFixed(2) + "</u></td><td><u>" + custNetAmtTotal.toFixed(2) + "</u></td></tr>";
-                        billDetails += customerName + products + productsTotal;
-                    });
-                    grandTotal += cityNetAmtTotal;
-                    var cityFooter = "<tr><td></td><td data-f-bold='true'><strong>Area Total:</strong></td><td data-f-bold='true'><u><strong>" + cityTotalSqty + "</strong></u></td><td data-f-bold='true'><u><strong>" + cityTotalfQty + "</u></strong></td><td data-f-bold='true'><u><strong>" + cityTotalNtv.toFixed(2) + "</strong></u></td><td data-f-bold='true'><u><strong>" + cityTotalDiscount.toFixed(2) + "</strong></u></td><td data-f-bold='true'><u><strong>" + cityTotalGst.toFixed(2) + "</strong></u></td><td data-f-bold='true'><u><strong>" + cityNetAmtTotal.toFixed(2) + "</strong></u></td></tr>";
-                    content += cityName + billDetails + cityFooter;
+                    "<tr><th data-f-bold='true' colspan='11'>Consolidated Sales* Detail, Date: " +
+                    dateRange + "</th></tr>"+
+                "<tr><th colspan='6'></th><th data-f-bold='true'><strong>Grand Total:</strong> <span id='grandTotal'></span></th></tr>"+
+                 "<tr><th data-f-bold='true'>Product</th><th data-f-bold='true'>Sale Qty</th><th data-f-bold='true'>Fr. Qty</th><th data-f-bold='true'>N T V</th><th data-f-bold='true'>Discount</th><th data-f-bold='true'>GST</th><th data-f-bold='true'>Net Amount</th></tr></thead><tbody>";
+                $.each(data[0], function (key, product) {
+                    totalSqty += product.sQty;
+                    totalfQty += product.fQty;
+                    totalNtv += product.ntv;
+                    totalDiscount += product.discount;
+                    totalGst += product.gst;
+                    totalNetAmount += product.netAmount;
+                    productDetails = "<tr><td>"+key+"</td><td>"+product.sQty+"</td><td>"+product.fQty+"</td><td>"+product.ntv.toFixed(2)+"</td><td>"+product.discount.toFixed(2)+"</td><td>"+product.gst.toFixed(2)+"</td><td>"+product.netAmount.toFixed(2)+"</td></tr>";
+                    content += productDetails;
                 });
-                var total = "<tr><th></th><th></th><th data-f-bold='true'><u>" + totalSqty + "</u></th data-f-bold='true'><th><u>" + totalfQty + "</u></th><th data-f-bold='true'><u>" + totalNtv.toFixed(2) + "</u></th><th><u>" + totalDiscount.toFixed(2) + "</u></th><th data-f-bold='true'><u>" + totalGst.toFixed(2) + "</u></th><th data-f-bold='true'><strong><u><span id='Total'>" + grandTotal.toFixed(2) + "</span></u></strong></th></tr>"
+                var total = "<tr><th></th><th data-f-bold='true'><u>"+totalSqty+"</u></th data-f-bold='true'><th><u>"+totalfQty+"</u></th><th data-f-bold='true'><u>"+totalNtv.toFixed(2)+"</u></th><th><u>"+totalDiscount.toFixed(2)+"</u></th><th data-f-bold='true'><u>"+totalGst.toFixed(2)+"</u></th><th data-f-bold='true'><strong><u><span id='Total'>"+totalNetAmount.toFixed(2)+"</span></u></strong></th></tr>";
                 var mainTableFooter = "</tbody></table>";
 
-                $("#result").html(mainTableHeader + content + total + mainTableFooter);
+                $("#result").html(mainTableHeader + content + total+ mainTableFooter);
                 loading.close();
-                $("#grandTotal").text(grandTotal.toFixed(2));
-                $("#Total").text(grandTotal.toFixed(2));
+                $("#grandTotal").text(totalNetAmount.toFixed(2));
             },
             error: function () {
                 loading.close();
@@ -262,7 +215,7 @@
     $("#btnExport").click(function () {
         let table = document.getElementById("result");
         TableToExcel.convert(table, {
-            name: 'areawise-sales-report.xlsx',
+            name: 'consolidated-sales-report.xlsx',
             sheet: {
                 name: 'Sheet 1' // sheetName
             }

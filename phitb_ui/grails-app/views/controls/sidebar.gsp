@@ -433,7 +433,9 @@
                                 <li><a href="/reports/sales/datewise">Date-wise</a></li>
                                 <li><a href="/reports/sales/areawise">Area-wise (Consolidated)</a></li>
                                 <li><a href="/reports/sales/areawisewithproducts">Area-wise (Products)</a></li>
+                                <li><a href="/reports/sales/areawiseconsolidatedproducts">Area-wise (Products-Consolidated)</a></li>
                                 <li><a href="/reports/sales/consolidated">Consolidated</a></li>
+                                <li><a href="/reports/sales/productwise">Product-Wise</a></li>
                             </ul>
                         </li>
                     </ul>

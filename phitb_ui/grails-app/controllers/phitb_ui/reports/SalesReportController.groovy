@@ -114,7 +114,6 @@ class SalesReportController {
         JSONObject areaWiseData = reportsService.getAreaWiseReport(entityId, dateRange, financialYear, sortBy)
         //get product details
         for (Object city : areaWiseData.keySet()) {
-            def cityDetail = new SystemService().getCityById(city.toString())
             JSONArray bills = areaWiseData.get(city) as JSONArray
             for (Object bill : bills) {
                 JSONArray saleProducts = bill.products
@@ -122,53 +121,122 @@ class SalesReportController {
                     JSONObject product = new ProductService().getProductById(saleProduct.productId.toString())
                     saleProduct.put("productDetail", product)
                 }
-                bill.put("cityDetail", cityDetail)
             }
         }
+
         JSONObject resultJson = new JSONObject()
-        for (Object key : areaWiseData.keySet()) {
-            JSONArray areaWiseBills = areaWiseData.get(key)
+        for (Object key : areaWiseData.keySet())
+        {
+            JSONArray areaWiseBills = (JSONArray)areaWiseData.get(key)
             JSONObject customerJson = new JSONObject()
-            JSONObject products = new JSONObject()
-            for (JSONObject bill : areaWiseBills) {
-                if (customerJson.has(bill.customer.entityName)) {
-                   /* products = new JSONObject()
-                    JSONObject customerProducts = customerJson.get(bill.customer.entityName)
-                    for (String productName : customerProducts.keySet()) {
-                        if(products.has(productName)) {
-                            JSONObject prd = products.get(productName)
-                            prd.put("sQty", prd.get("sQty") + customerProducts[productName].sQty)
-                            prd.put("fQty", prd.get("fQty") + customerProducts[productName].freeQty)
-                            prd.put("discount", prd.get("discount") + customerProducts[productName].discount)
-                            prd.put("gst", prd.get("gst") + customerProducts[productName].gstAmount)
-                            prd.put("netAmount", prd.get("netAmount") + customerProducts[productName].amount)
-                            prd.put("ntv", prd.get("ntv") + (customerProducts[productName].amount - customerProducts[productName].gstAmount))
-                            products.put(productName, prd)
-                        } else {
-                            JSONObject prd = new JSONObject()
-                            prd.put("sQty", customerProducts[productName].sQty)
-                            prd.put("fQty", customerProducts[productName].freeQty)
-                            prd.put("discount", customerProducts[productName].discount)
-                            prd.put("gst", customerProducts[productName].gstAmount)
-                            prd.put("netAmount", customerProducts[productName].amount)
-                            prd.put("ntv", customerProducts[productName].amount - customerProducts[productName].gstAmount)
-                            products.put(productName, prd)
+            for (JSONObject bill : (areaWiseBills as List<JSONObject>))
+            {
+                if(bill.billStatus != "CANCELLED")
+                {
+                    JSONObject products = new JSONObject()
+                    if (customerJson.has(bill.customer.entityName)) {
+                        for (JSONObject product : bill.products) {
+                            products = (JSONObject) customerJson.get(bill.customer.entityName)
+                            if (products.has(product.productDetail.productName)) {
+                                JSONObject customerProduct = (JSONObject) products.get(product.productDetail.productName)
+                                customerProduct.put("sQty", customerProduct.get("sQty") + product.sqty)
+                                customerProduct.put("fQty", customerProduct.get("fQty") + product.freeQty)
+                                customerProduct.put("discount", customerProduct.get("discount") + product.discount)
+                                customerProduct.put("gst", customerProduct.get("gst") + product.gstAmount)
+                                customerProduct.put("netAmount", customerProduct.get("netAmount") + product.amount)
+                                customerProduct.put("ntv", customerProduct.get("ntv") + (product.amount - product.gstAmount))
+                                products.put(product.productDetail.productName.toString(), customerProduct)
+                            } else {
+                                JSONObject prd = new JSONObject()
+                                prd.put("sQty", product.sqty)
+                                prd.put("fQty", product.freeQty)
+                                prd.put("discount", product.discount)
+                                prd.put("gst", product.gstAmount)
+                                prd.put("netAmount", product.amount)
+                                prd.put("ntv", product.amount - product.gstAmount)
+                                products.put(product.productDetail.productName.toString(), prd)
+                            }
                         }
-                    }*/
-                    //customerJson.put(bill.customer.entityName, products)
-                } else {
-                    for (JSONObject product : bill.products) {
-                        if(products.has(product.productDetail.productName)) {
-                            JSONObject prd = products.get(product.productDetail.name)
-                            if(prd) {
+                        customerJson.put(bill.customer.entityName.toString(), products)
+                    } else
+                    {
+                        for (JSONObject product : bill.products) {
+                            if (products.has(product.productDetail.productName)) {
+                                JSONObject prd = (JSONObject) products.get(product.productDetail.productName)
                                 prd.put("sQty", prd.get("sQty") + product.sqty)
                                 prd.put("fQty", prd.get("fQty") + product.freeQty)
                                 prd.put("discount", prd.get("discount") + product.discount)
                                 prd.put("gst", prd.get("gst") + product.gstAmount)
                                 prd.put("netAmount", prd.get("netAmount") + product.amount)
                                 prd.put("ntv", prd.get("ntv") + (product.amount - product.gstAmount))
-                                products.put(product.productDetail.productName, prd)
+                                products.put(product.productDetail.productName.toString(), prd)
+                            } else {
+                                JSONObject prd = new JSONObject()
+                                prd.put("sQty", product.sqty)
+                                prd.put("fQty", product.freeQty)
+                                prd.put("discount", product.discount)
+                                prd.put("gst", product.gstAmount)
+                                prd.put("netAmount", product.amount)
+                                prd.put("ntv", product.amount - product.gstAmount)
+                                products.put(product.productDetail.productName.toString(), prd)
                             }
+                        }
+                        customerJson.put(bill.customer.entityName.toString(), products)
+                    }
+                }
+                else
+                {
+                    //ignore if cancelled
+                }
+            }
+            def cityDetail = new SystemService().getCityById(key.toString())
+            resultJson.put(cityDetail.name.toString(), customerJson)
+        }
+        respond resultJson, formats: ['json']
+    }
+
+    def areawiseConsolidatedProducts() {
+        render(view: '/reports/salesReport/areaWiseConsolidatedProducts')
+    }
+
+    def areawiseConsolidatedProductsReport() {
+        String entityId = session.getAttribute("entityId")
+        String financialYear = session.getAttribute("financialYear")
+        String dateRange = params.dateRange
+        //String sortBy = params.sortBy
+        String sortBy = "id"
+        JSONObject areaWiseData = reportsService.getAreaWiseReport(entityId, dateRange, financialYear, sortBy)
+        //get product details
+        for (Object city : areaWiseData.keySet()) {
+            JSONArray bills = areaWiseData.get(city) as JSONArray
+            for (Object bill : bills) {
+                JSONArray saleProducts = bill.products
+                for (Object saleProduct : saleProducts) {
+                    JSONObject product = new ProductService().getProductById(saleProduct.productId.toString())
+                    saleProduct.put("productDetail", product)
+                }
+            }
+        }
+
+        JSONObject resultJson = new JSONObject()
+        for (Object key : areaWiseData.keySet())
+        {
+            JSONArray areaWiseBills = (JSONArray)areaWiseData.get(key)
+            JSONObject products = new JSONObject()
+            for (JSONObject bill : (areaWiseBills as List<JSONObject>))
+            {
+                if(bill.billStatus != "CANCELLED")
+                {
+                    for (JSONObject product : bill.products) {
+                        if (products.has(product.productDetail.productName)) {
+                            JSONObject prd = (JSONObject) products.get(product.productDetail.productName)
+                            prd.put("sQty", prd.get("sQty") + product.sqty)
+                            prd.put("fQty", prd.get("fQty") + product.freeQty)
+                            prd.put("discount", prd.get("discount") + product.discount)
+                            prd.put("gst", prd.get("gst") + product.gstAmount)
+                            prd.put("netAmount", prd.get("netAmount") + product.amount)
+                            prd.put("ntv", prd.get("ntv") + (product.amount - product.gstAmount))
+                            products.put(product.productDetail.productName.toString(), prd)
                         } else {
                             JSONObject prd = new JSONObject()
                             prd.put("sQty", product.sqty)
@@ -177,18 +245,20 @@ class SalesReportController {
                             prd.put("gst", product.gstAmount)
                             prd.put("netAmount", product.amount)
                             prd.put("ntv", product.amount - product.gstAmount)
-                            products.put(product.productDetail.productName, prd)
+                            products.put(product.productDetail.productName.toString(), prd)
                         }
                     }
-                    customerJson.put(bill.customer.entityName, products)
+                }
+                else
+                {
+                    //ignore if cancelled
                 }
             }
             def cityDetail = new SystemService().getCityById(key.toString())
-            resultJson.put(cityDetail.name, customerJson)
+            resultJson.put(cityDetail.name.toString(), products)
         }
         respond resultJson, formats: ['json']
     }
-
 
     def consolidated() {
         render(view: '/reports/salesReport/consolidated')
@@ -216,5 +286,71 @@ class SalesReportController {
             }
         }
         respond consolidated, formats: ['json']
+    }
+
+
+    def saleProductWise()
+    {
+        render(view: '/reports/salesReport/productwise')
+    }
+
+    def saleProductWiseReport() {
+        String entityId = session.getAttribute("entityId")
+        String financialYear = session.getAttribute("financialYear")
+        String dateRange = params.dateRange
+        //String sortBy = params.sortBy
+        String sortBy = "id"
+        JSONObject areaWiseData = reportsService.getAreaWiseReport(entityId, dateRange, financialYear, sortBy)
+        //get product details
+        for (Object city : areaWiseData.keySet()) {
+            JSONArray bills = areaWiseData.get(city) as JSONArray
+            for (Object bill : bills) {
+                JSONArray saleProducts = bill.products
+                for (Object saleProduct : saleProducts) {
+                    JSONObject product = new ProductService().getProductById(saleProduct.productId.toString())
+                    saleProduct.put("productDetail", product)
+                }
+            }
+        }
+
+        JSONArray resultJson = new JSONArray()
+        JSONObject products = new JSONObject()
+        for (Object key : areaWiseData.keySet())
+        {
+            JSONArray areaWiseBills = (JSONArray)areaWiseData.get(key)
+            for (JSONObject bill : (areaWiseBills as List<JSONObject>))
+            {
+                if(bill.billStatus != "CANCELLED")
+                {
+                    for (JSONObject product : bill.products) {
+                        if (products.has(product.productDetail.productName)) {
+                            JSONObject prd = (JSONObject) products.get(product.productDetail.productName)
+                            prd.put("sQty", prd.get("sQty") + product.sqty)
+                            prd.put("fQty", prd.get("fQty") + product.freeQty)
+                            prd.put("discount", prd.get("discount") + product.discount)
+                            prd.put("gst", prd.get("gst") + product.gstAmount)
+                            prd.put("netAmount", prd.get("netAmount") + product.amount)
+                            prd.put("ntv", prd.get("ntv") + (product.amount - product.gstAmount))
+                            products.put(product.productDetail.productName.toString(), prd)
+                        } else {
+                            JSONObject prd = new JSONObject()
+                            prd.put("sQty", product.sqty)
+                            prd.put("fQty", product.freeQty)
+                            prd.put("discount", product.discount)
+                            prd.put("gst", product.gstAmount)
+                            prd.put("netAmount", product.amount)
+                            prd.put("ntv", product.amount - product.gstAmount)
+                            products.put(product.productDetail.productName.toString(), prd)
+                        }
+                    }
+                }
+                else
+                {
+                    //ignore if cancelled
+                }
+            }
+        }
+        resultJson.addAll(products)
+        respond resultJson, formats: ['json']
     }
 }

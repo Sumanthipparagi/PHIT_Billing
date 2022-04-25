@@ -543,8 +543,12 @@ class UrlMappings {
         "/reports/sales/getareawise"(controller: "salesReport", action: "salesAreaWiseReport")
         "/reports/sales/areawisewithproducts"(controller: "salesReport", action: "areawiseWithProducts")
         "/reports/sales/getareawisewithproducts"(controller: "salesReport", action: "areawiseWithProductsReport")
+        "/reports/sales/areawiseconsolidatedproducts"(controller: "salesReport", action: "areawiseConsolidatedProducts")
+        "/reports/sales/getareawiseconsolidatedproducts"(controller: "salesReport", action: "areawiseConsolidatedProductsReport")
         "/reports/sales/consolidated"(controller: "salesReport", action: "consolidated")
         "/reports/sales/getconsolidated"(controller: "salesReport", action: "saleConsolidatedReport")
+        "/reports/sales/productwise"(controller: "salesReport", action: "saleProductWise")
+        "/reports/sales/getproductwise"(controller: "salesReport", action: "saleProductWiseReport")
 
     }
 }
