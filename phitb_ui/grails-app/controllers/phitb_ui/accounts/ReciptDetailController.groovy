@@ -374,6 +374,7 @@ class ReciptDetailController
                 billLog.put("billType",docType)
                 billLog.put("amountPaid",paidNow)
                 billLog.put("currentFinancialYear",session.getAttribute('financialYear').toString())
+                billLog.put("financialYear",session.getAttribute('financialYear').toString())
                 def billLogResponse = new AccountsService().updateReceiptDetailLog(billLog)
                 if(billLogResponse?.status == 200)
                 {
