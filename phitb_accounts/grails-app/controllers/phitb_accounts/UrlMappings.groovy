@@ -35,6 +35,8 @@ class UrlMappings {
             "/reciptdetaillog(.$format)?"(controller: 'billDetailLog') { action = [GET: 'index', POST: 'save'] }
             "/reciptdetaillog/datatable(.$format)?"(controller: 'billDetailLog') { action = [GET: 'dataTable'] }
             "/reciptdetaillog/$id(.$format)?"(controller: 'billDetailLog') { action = [GET: 'show', PUT: 'update', DELETE: 'delete'] }
+            "/reciptdetaillogbyreciptId/$id(.$format)?"(controller: 'billDetailLog'){action = [GET: 'recieptDetailsById']}
+
 
 
             //bill payment log

@@ -6,11 +6,13 @@ class BillDetailLog implements LogicalDelete<BillDetailLog>
 {
     long billId
     String billType
+    String transId
     double amountPaid
     String paymentRecord
     long approvedBy
     String currentFinancialYear
     String financialYear
+    long recieptId
     long status
     long syncStatus
     long entityTypeId

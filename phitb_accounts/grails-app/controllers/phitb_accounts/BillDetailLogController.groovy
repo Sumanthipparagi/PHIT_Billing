@@ -57,6 +57,33 @@ class BillDetailLogController
     }
 
     /**
+     * Get requested bill payment log
+     * @param id
+     * @return get requested bill payment log
+     */
+    def recieptDetailsById() {
+        try {
+            String id = params.id
+            if (id) {
+                respond billDetailLogService.getRecieptDetails(id)
+            }
+        }
+        catch (ResourceNotFoundException ex)
+        {
+            System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
+            response.status = 404
+        }
+        catch (BadRequestException ex)
+        {
+            System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
+            response.status = 400
+        }
+        catch (Exception ex) {
+            System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
+        }
+    }
+
+    /**
      * Save new bill payment log
      * @param bill payment log
      * @return saved bill payment log

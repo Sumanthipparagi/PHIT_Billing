@@ -335,57 +335,59 @@ class ReciptDetailController
     {
         try
         {
-            JSONArray billArray = new JSONArray(params.reciptData)
             JSONObject jsonObject = new JSONObject(params)
-            for (JSONObject bills : billArray)
-            {
-                String paidNow = bills.get("PaidNow")
-                String BalAmt = bills.get("BalAmt")
-                String transactionId = bills.get("Trans_Id")
-                String docType = bills.get("Doc.Type")
-                String billId = bills.get("BillId")
-                if(docType=="INVS")
-                {
-                    JSONObject invObject = new JSONObject();
-                    invObject.put("id",billId)
-                    invObject.put("paidNow",paidNow)
-                    def invoice = new AccountsService().updateSaleBalance(invObject)
-                    if(invoice?.status == 200)
-                    {
-                        invObject.remove("id");
-                        invObject.remove("paidNow");
-                    }
-                }
-                if(docType=="CRNT")
-                {
-                    JSONObject crntObject = new JSONObject();
-                    crntObject.put("id",billId)
-                    crntObject.put("paidNow",paidNow)
-                    def crnt = new AccountsService().updateSaleReturnBalance(crntObject)
-                    if(crnt?.status == 200)
-                    {
-                        crntObject.remove("id");
-                        crntObject.remove("paidNow");
-                    }
-                }
-
-                JSONObject billLog = new JSONObject()
-                billLog.put("billId",billId)
-                billLog.put("billType",docType)
-                billLog.put("amountPaid",paidNow)
-                billLog.put("currentFinancialYear",session.getAttribute('financialYear').toString())
-                billLog.put("financialYear",session.getAttribute('financialYear').toString())
-                def billLogResponse = new AccountsService().updateReceiptDetailLog(billLog)
-                if(billLogResponse?.status == 200)
-                {
-                    println("Bill Log Saved!")
-                }
-            }
+            JSONArray billArray = new JSONArray(params.reciptData)
             def apiResponse = new AccountsService().saveRecipt(jsonObject, session.getAttribute('financialYear') as String)
             if (apiResponse?.status == 200)
             {
-                JSONObject obj = new JSONObject(apiResponse.readEntity(String.class))
-                respond obj, formats: ['json'], status: 200
+                JSONObject jsonObject1 = new JSONObject(apiResponse.readEntity(String.class))
+                for (JSONObject bills : billArray)
+                {
+                    String paidNow = bills.get("PaidNow")
+                    String BalAmt = bills.get("BalAmt")
+                    String transactionId = bills.get("Trans_Id")
+                    String docType = bills.get("Doc.Type")
+                    String billId = bills.get("BillId")
+                    String recieptId = jsonObject1.id.toString()
+                    if(docType=="INVS")
+                    {
+                        JSONObject invObject = new JSONObject()
+                        invObject.put("id",billId)
+                        invObject.put("paidNow",paidNow)
+                        def invoice = new AccountsService().updateSaleBalance(invObject)
+                        if(invoice?.status == 200)
+                        {
+                            invObject.remove("id");
+                            invObject.remove("paidNow");
+                        }
+                    }
+                    if(docType=="CRNT")
+                    {
+                        JSONObject crntObject = new JSONObject();
+                        crntObject.put("id",billId)
+                        crntObject.put("paidNow",paidNow)
+                        def crnt = new AccountsService().updateSaleReturnBalance(crntObject)
+                        if(crnt?.status == 200)
+                        {
+                            crntObject.remove("id");
+                            crntObject.remove("paidNow");
+                        }
+                    }
+                    JSONObject billLog = new JSONObject()
+                    billLog.put("billId",billId)
+                    billLog.put("billType",docType)
+                    billLog.put("amountPaid",paidNow)
+                    billLog.put("currentFinancialYear",session.getAttribute('financialYear').toString())
+                    billLog.put("financialYear",session.getAttribute('financialYear').toString())
+                    billLog.put("recieptId",recieptId)
+                    billLog.put("transId",transactionId)
+                    def billLogResponse = new AccountsService().updateReceiptDetailLog(billLog)
+                    if(billLogResponse?.status == 200)
+                    {
+                        println("Bill Log Saved!")
+                    }
+                }
+                respond jsonObject1, formats: ['json'], status: 200
             }
             else
             {
@@ -513,13 +515,14 @@ class ReciptDetailController
         JSONObject recipt = new ReciptDetailController().getReciptById(params.id) as JSONObject
         JSONObject entity = new EntityRegisterController().getEnitityById(session.getAttribute('entityId').toString()) as
                 JSONObject
-        ArrayList<String> settled = new SalebillDetailsController().getAllSettledById(params.custid,session.getAttribute("entityId").toString(), session.getAttribute("financialYear").toString()) as ArrayList
-        def creditNoteRespone = new AccountsService().getCNsettledCustomerId(params.custid, session.getAttribute
-        ("entityId").toString(), session.getAttribute("financialYear").toString())
-        JSONArray creditNoteArry = new JSONArray(creditNoteRespone.readEntity(String.class))
+//        ArrayList<String> settled = new SalebillDetailsController().getAllSettledById(params.custid,session.getAttribute("entityId").toString(), session.getAttribute("financialYear").toString()) as ArrayList
+//        def creditNoteRespone = new AccountsService().getCNsettledCustomerId(params.custid, session.getAttribute
+//        ("entityId").toString(), session.getAttribute("financialYear").toString())
+//        JSONArray creditNoteArry = new JSONArray(creditNoteRespone.readEntity(String.class))
+        JSONObject reciptlogs = new AccountsService().getReceiptLogById(params.id) as JSONObject
 
         render(view: '/accounts/recipt/recipt-temp', model: [customer: customer, settled: settled, recipt: recipt,
-                                                             entity: entity,creditNoteArry:creditNoteArry])
+                                                             entity: entity,reciptlogs:reciptlogs])
     }
 
 

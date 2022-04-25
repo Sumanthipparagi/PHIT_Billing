@@ -28,6 +28,10 @@ class BillDetailLogService
         return BillDetailLog.findById(Long.parseLong(id))
     }
 
+    BillDetailLog getRecieptDetails(String id) {
+        return BillDetailLog.findByRecieptId(Long.parseLong(id))
+    }
+
     JSONObject dataTables(JSONObject paramsJsonObject, String start, String length) {
         String searchTerm = paramsJsonObject.get("search[value]")
         String orderColumnId = paramsJsonObject.get("order[0][column]")
@@ -73,8 +77,10 @@ class BillDetailLogService
         receiptDetailLog.billType = jsonObject.get("billType").toString()
         receiptDetailLog.amountPaid = Double.parseDouble(jsonObject.get("amountPaid").toString())
         receiptDetailLog.paymentRecord = "0"
+        receiptDetailLog.transId = jsonObject.get("transId").toString()
         receiptDetailLog.approvedBy = Long.parseLong("1")
         receiptDetailLog.currentFinancialYear = jsonObject.get("currentFinancialYear").toString()
+        receiptDetailLog.recieptId = Long.parseLong(jsonObject.get("recieptId").toString())
         receiptDetailLog.financialYear = jsonObject.get("financialYear").toString()
         receiptDetailLog.status = Long.parseLong("1")
         receiptDetailLog.syncStatus = Long.parseLong("1")
@@ -101,6 +107,7 @@ class BillDetailLogService
             receiptDetailLog.approvedBy = Long.parseLong(jsonObject.get("approvedBy").toString())
             receiptDetailLog.currentFinancialYear = jsonObject.get("currentFinancialYear").toString()
             receiptDetailLog.financialYear = jsonObject.get("financialYear").toString()
+            receiptDetailLog.recieptId = Long.parseLong(jsonObject.get("recieptId").toString())
             receiptDetailLog.status = Long.parseLong(jsonObject.get("status").toString())
             receiptDetailLog.syncStatus = Long.parseLong(jsonObject.get("syncStatus").toString())
             receiptDetailLog.entityTypeId = Long.parseLong(jsonObject.get("entityTypeId").toString())

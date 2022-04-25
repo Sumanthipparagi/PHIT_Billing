@@ -505,6 +505,27 @@ class AccountsService
 
     }
 
+
+    def getReceiptLogById(String id)
+    {
+        Client client = ClientBuilder.newClient()
+        WebTarget target = client.target(new Links().API_GATEWAY)
+        try
+        {
+            Response apiResponse = target
+                    .path(new Links().RECIPT_DETAIL_LOG_RECIPTID + "/" + id)
+                    .request(MediaType.APPLICATION_JSON_TYPE)
+                    .get()
+            return apiResponse
+        }
+        catch (Exception ex)
+        {
+            System.err.println('Service :AccountsService , action :  getProducts  , Ex:' + ex)
+            log.error('Service :AccountsService , action :  getProducts  , Ex:' + ex)
+        }
+
+    }
+
 //   move invoice to settled vocher
 //    def updateSettledVocher(JSONObject jsonObject)
 //    {
