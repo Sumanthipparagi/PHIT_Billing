@@ -62,11 +62,40 @@ class BillDetailLogController
      * @param id
      * @return get requested bill payment log
      */
-    def recieptDetailsById() {
+    def recieptDetailsByInvId() {
         try {
             String id = params.id
             if (id) {
-                def bill = BillDetailLog.findAllByReceiptId(id)
+                def bill = BillDetailLog.findAllByReceiptIdAndBillType(id,"INVS")
+                JSONArray jsonArray = new JSONArray(bill)
+                respond jsonArray,formats: ['json']
+            }
+        }
+        catch (ResourceNotFoundException ex)
+        {
+            System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
+            response.status = 404
+        }
+        catch (BadRequestException ex)
+        {
+            System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
+            response.status = 400
+        }
+        catch (Exception ex) {
+            System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
+        }
+    }
+
+    /**
+     * Get requested bill payment log
+     * @param id
+     * @return get requested bill payment log
+     */
+    def recieptDetailsByCrntId() {
+        try {
+            String id = params.id
+            if (id) {
+                def bill = BillDetailLog.findAllByReceiptIdAndBillType(id,"CRNT")
                 JSONArray jsonArray = new JSONArray(bill)
                 respond jsonArray,formats: ['json']
             }

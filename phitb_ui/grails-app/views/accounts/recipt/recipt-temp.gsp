@@ -144,32 +144,26 @@
                         Adj. Amount
                     </th>
                 </tr>
-                <g:each var="sv" in="${reciptlogs}">
-%{--                    <%--}%
+                <g:each var="inv" in="${reciptloginvArray}">
 
-%{--                        def invoiceNumber;--}%
-%{--                        def series ="__"--}%
-%{--                        def datepart = sv.entryDate.split("T")[0];--}%
-%{--                        def month = datepart.split("-")[1];--}%
-%{--                        def year = datepart.split("-")[0];--}%
-%{--                        def seriesCode = "__";--}%
-%{--                        if (sv.billStatus == "DRAFT")--}%
-%{--                        {--}%
-%{--                            invoiceNumber = sv.entityId+"/DR/S/" + month + year + "/" + series + "/__";--}%
-%{--                        }--}%
-%{--                        else--}%
-%{--                        {--}%
-%{--                            invoiceNumber =  sv.entityId+"/S/" + month + year + "/" + series + "/" + sv.id--}%
-%{--                        }--}%
-%{--%>--}%
-
-                    <g:if test="${sv.amountPaid!=0}">
+                    <g:if test="${inv.amountPaid!=0}">
                     <tr>
-                        <td>${sv.transId}</td>
-                        <td>${sv.billType}</td>
-                        <td>${sv.dateCreated.split("T")[0]}</td>
-                        <td>${sv.amountPaid}</td>
+                        <td>${inv.transId}</td>
+                        <td>${inv.billType}</td>
+                        <td>${inv.dateCreated.split("T")[0]}</td>
+                        <td>${inv.amountPaid}</td>
                     </tr>
+                    </g:if>
+                </g:each>
+                <g:each var="crnt" in="${reciptlogcrntArray}">
+
+                    <g:if test="${crnt.amountPaid!=0}">
+                        <tr>
+                            <td>${crnt.transId}</td>
+                            <td>${crnt.billType}</td>
+                            <td>${crnt.dateCreated.split("T")[0]}</td>
+                            <td>- ${crnt.amountPaid}</td>
+                        </tr>
                     </g:if>
                 </g:each>
 %{--                <g:each var="csv" in="${creditNoteArry}">--}%
@@ -184,10 +178,10 @@
 %{--                </g:each>--}%
             </table>
         </td>
-        <td colspan="5"><b>${reciptlogs.amountPaid.sum()}</b></td>
+        <td colspan="5"><b>${reciptloginvArray.amountPaid.sum()}</b></td>
     <tr>
 
-        <% double data = reciptlogs.amountPaid.sum()
+        <% double data = reciptloginvArray.amountPaid.sum()
         int value = (int) data;
         System.out.println(value)
         %>

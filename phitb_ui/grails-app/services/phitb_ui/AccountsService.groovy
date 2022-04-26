@@ -508,19 +508,42 @@ class AccountsService
     }
 
 
-    def getReceiptLogById(String id)
+    def getReceiptLogInvById(String id)
     {
         Client client = ClientBuilder.newClient()
         WebTarget target = client.target(new Links().API_GATEWAY)
         try
         {
             Response apiResponse = target
-                    .path(new Links().RECIPT_DETAIL_LOG_RECIPTID + "/" + id)
+                    .path(new Links().RECIPT_DETAIL_LOG_INVS_ID + "/" + id)
                     .request(MediaType.APPLICATION_JSON_TYPE)
                     .get()
             if(apiResponse.status == 200)
             {
                  return apiResponse
+            }
+        }
+        catch (Exception ex)
+        {
+            System.err.println('Service :AccountsService , action :  getProducts  , Ex:' + ex)
+            log.error('Service :AccountsService , action :  getProducts  , Ex:' + ex)
+        }
+
+    }
+
+    def getReceiptLogcrntById(String id)
+    {
+        Client client = ClientBuilder.newClient()
+        WebTarget target = client.target(new Links().API_GATEWAY)
+        try
+        {
+            Response apiResponse = target
+                    .path(new Links().RECIPT_DETAIL_LOG_CRNT_ID + "/" + id)
+                    .request(MediaType.APPLICATION_JSON_TYPE)
+                    .get()
+            if(apiResponse.status == 200)
+            {
+                return apiResponse
             }
         }
         catch (Exception ex)

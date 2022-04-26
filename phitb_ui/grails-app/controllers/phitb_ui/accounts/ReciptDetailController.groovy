@@ -1,31 +1,16 @@
 package phitb_ui.accounts
 
-import grails.converters.JSON
-import groovy.json.JsonSlurper
+
 import org.grails.web.json.JSONArray
 import org.grails.web.json.JSONObject
 import phitb_ui.AccountsService
-import phitb_ui.Constants
 import phitb_ui.EntityService
-import phitb_ui.Links
 import phitb_ui.ProductService
-import phitb_ui.SalesService
-import phitb_ui.SystemService
 import phitb_ui.entity.AccountRegisterController
-import phitb_ui.entity.CustomerGroupController
 import phitb_ui.entity.EntityRegisterController
-import phitb_ui.entity.UserRegisterController
-import phitb_ui.product.DivisionController
-import phitb_ui.sales.SaleEntryController
 import phitb_ui.sales.SalebillDetailsController
 import phitb_ui.system.AccountModeController
-import phitb_ui.system.CityController
-import phitb_ui.system.CountryController
 import phitb_ui.system.PaymentModeController
-import phitb_ui.system.StateController
-import phitb_ui.system.ZoneController
-
-import javax.swing.text.html.parser.Entity
 
 class ReciptDetailController
 {
@@ -543,18 +528,13 @@ class ReciptDetailController
         JSONObject recipt = new ReciptDetailController().getReciptById(params.id) as JSONObject
         JSONObject entity = new EntityRegisterController().getEnitityById(session.getAttribute('entityId').toString()) as
                 JSONObject
-//        ArrayList<String> settled = new SalebillDetailsController().getAllSettledById(params.custid,session.getAttribute("entityId").toString(), session.getAttribute("financialYear").toString()) as ArrayList
-//        def creditNoteRespone = new AccountsService().getCNsettledCustomerId(params.custid, session.getAttribute
-//        ("entityId").toString(), session.getAttribute("financialYear").toString())
-//        JSONArray creditNoteArry = new JSONArray(creditNoteRespone.readEntity(String.class))
-        def reciptlogs = new AccountsService().getReceiptLogById(params.id)
-        if(reciptlogs?.status == 200)
-        {
-            JSONArray reciptlogArray = new JSONArray(reciptlogs.readEntity(String.class))
+        def reciptlogsinv = new AccountsService().getReceiptLogInvById(params.id)
+        def reciptlogscrnt = new AccountsService().getReceiptLogcrntById(params.id)
+        JSONArray reciptloginvArray = new JSONArray(reciptlogsinv.readEntity(String.class))
+        JSONArray reciptlogcrntArray = new JSONArray(reciptlogscrnt.readEntity(String.class))
             render(view: '/accounts/recipt/recipt-temp', model: [customer: customer, recipt: recipt,
-                                                                 entity: entity,reciptlogs:reciptlogArray])
-        }
-
+                                                                 entity: entity,reciptloginvArray:reciptloginvArray,
+                                                                 reciptlogcrntArray:reciptlogcrntArray])
     }
 
 
