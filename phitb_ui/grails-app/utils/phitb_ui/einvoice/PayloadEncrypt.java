@@ -6,6 +6,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
+import java.nio.charset.StandardCharsets;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
 import java.security.Security;
@@ -21,15 +22,6 @@ public class PayloadEncrypt {
     static byte[] b=null;
     static String appKey="ACEFGHJKLMNPQRUVWXYabcdefijkpro";
     static String sek= "R4AG1PI1dwQNxekm7VCbwrd7LVlzmYNMXaZbq6DZpv4FuEjcixS4IogSbFtU1Bnb";
-
-    public static void main(String args[]) throws Exception
-    {
-        EncryptPayload();
-        //DecryptPayload();
-        DecodeError();
-        DecryptResponse();
-        DecGetEway();
-    }
 
     static
     {
@@ -49,9 +41,11 @@ public class PayloadEncrypt {
             e.printStackTrace();
         }
     }
+
+
     /*piyushm*/
     //Encrypt Payload
-    public static void EncryptPayload() throws InvalidKeyException, IllegalBlockSizeException, BadPaddingException, IOException, Exception
+    public static void EncryptPayload() throws Exception
     {
         System.out.println("*************Encrypt Payload*************");
 
@@ -66,13 +60,13 @@ public class PayloadEncrypt {
     }
 
     //Decrypt Payload
-	/*public static void DecryptPayload() throws InvalidKeyException, IllegalBlockSizeException, BadPaddingException, IOException, Exception
+	public static void DecryptPayload() throws Exception
 	{
 		System.out.println("*************Decrypt Payload*************");
 		String enc_sample_data = "dwqukd+VBqAAbF/NOSXT2SLHM5XQmWLvwCI9s8VlD2jGOeBL4+TDN3LJVHx5AgQ19CTbrn8CW/tZdm9wI2uP35DJ7dJrcK1eALD7fM8HvYM=";
 		byte[] d = decrypt( enc_sample_data, b);
 		System.out.println(new String(d));
-	}*/
+	}
 
     //Decode Response
     public static void DecodeError()
@@ -82,7 +76,7 @@ public class PayloadEncrypt {
     }
 
     //Decrypt Response
-    public static void DecryptResponse() throws InvalidKeyException, IllegalBlockSizeException, BadPaddingException, IOException, Exception
+    public static void DecryptResponse() throws Exception
     {
         System.out.println("*************Decrypt Response*************");
         String response = "z+mqjh1PmHH30m4oWGbpF4s5FYrG2WAZRbTgdcCgFruJabuBf0+0r4vwG8bPYe9M10WdED7RoOissPra2vOUExYGc/S5UNlltDekNVlDMo0=";
@@ -91,7 +85,7 @@ public class PayloadEncrypt {
     }
 
     //Decrypt Get Ewaybill
-    public static void DecGetEway() throws InvalidKeyException, IllegalBlockSizeException, BadPaddingException, IOException, Exception
+    public static void DecGetEway() throws Exception
     {
         System.out.println("*************Decrypt Get Ewaybill*************");
         String get_data="TjjKZaf9ZIhKzu4wzEm8bN2FyyIuHqxxXc7mz2ylg8Ura+jfMtbNBDG+V1RJ7UAYKi/OdvX6G/oq2vT+AqLqCk+1ob0D+q7MWhahhKaW0hPelci3/pNdG0BdZkW0QMfGr1lCpcyeNO3ulSsI8LYIdJoekntFfBNEYgWwCQRN5mA=";
@@ -143,7 +137,7 @@ public class PayloadEncrypt {
         {
             SecretKeySpec sk = new SecretKeySpec(secret, AES_ALGORITHM);
             ENCRYPT_CIPHER.init(Cipher.ENCRYPT_MODE, sk);
-            byte[] s = ENCRYPT_CIPHER.doFinal(plainText.getBytes("UTF-8"));
+            byte[] s = ENCRYPT_CIPHER.doFinal(plainText.getBytes(StandardCharsets.UTF_8));
             return s;
         }
         catch(Exception e)
@@ -165,7 +159,7 @@ public class PayloadEncrypt {
      * @throws BadPaddingException
      * @throws IllegalBlockSizeException
      */
-    public static byte[] decrypt(String plainText, byte[] secret)throws InvalidKeyException, IOException, IllegalBlockSizeException,BadPaddingException,Exception
+    public static byte[] decrypt(String plainText, byte[] secret)throws Exception
     {
         SecretKeySpec sk = new SecretKeySpec(secret, AES_ALGORITHM);
         DECRYPT_CIPHER.init(Cipher.DECRYPT_MODE, sk);
@@ -231,7 +225,7 @@ public class PayloadEncrypt {
             SecretKeySpec sk = new SecretKeySpec(secret, AES_ALGORITHM);
             Cipher cipher = Cipher.getInstance("AES/ECB/PKCS5Padding");
             cipher.init(Cipher.ENCRYPT_MODE, sk);
-            return java.util.Base64.getEncoder().encodeToString(cipher.doFinal(strToEncrypt.getBytes("UTF-8")));
+            return java.util.Base64.getEncoder().encodeToString(cipher.doFinal(strToEncrypt.getBytes(StandardCharsets.UTF_8)));
         }
         catch (Exception e)
         {
