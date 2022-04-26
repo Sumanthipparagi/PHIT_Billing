@@ -5,6 +5,7 @@ import org.grails.web.json.JSONObject
 import phitb_accounts.Exception.BadRequestException
 import phitb_accounts.Exception.ResourceNotFoundException
 
+import java.text.DecimalFormat
 import java.text.SimpleDateFormat
 
 @Transactional
@@ -96,18 +97,12 @@ class ReceiptDetailService {
 
     ReceiptDetail save(JSONObject jsonObject) {
         ReceiptDetail receiptDetail = new ReceiptDetail()
-        receiptDetail.receiptId = "001"
+        receiptDetail.receiptId = ""
         receiptDetail.date = sdf.parse(jsonObject.get("date").toString())
+        receiptDetail.depositTo = jsonObject.get("depositTo").toString()
         receiptDetail.paymentModeId = Long.parseLong(jsonObject.get("paymentMode").toString())
         receiptDetail.accountModeId = Long.parseLong(jsonObject.get("accountModeId").toString())
         receiptDetail.receivedFrom = jsonObject.get("receivedFrom").toString()
-        if(!jsonObject.isNull("bank"))
-        {
-            receiptDetail.depositTo = jsonObject.get("bank").toString()
-        }else
-        {
-            receiptDetail.depositTo = null
-        }
         receiptDetail.amountPaid = Double.parseDouble(jsonObject.get("amountPaid").toString())
         receiptDetail.narration = jsonObject.get("narration").toString()
         if(!jsonObject.isNull("cardNumber"))
@@ -139,15 +134,34 @@ class ReceiptDetailService {
         receiptDetail.status = Long.parseLong("1")
         receiptDetail.syncStatus = Long.parseLong("1")
         receiptDetail.entityTypeId = Long.parseLong("1")
-        receiptDetail.entityId = Long.parseLong("1")
+        receiptDetail.entityId = Long.parseLong(jsonObject.get("entityId").toString())
         receiptDetail.modifiedUser = Long.parseLong("1")
         receiptDetail.createdUser = Long.parseLong(jsonObject.get("createdUser").toString())
-
         receiptDetail.save(flush: true)
         if (!receiptDetail.hasErrors())
+        {
+            Calendar cal = new GregorianCalendar()
+            cal.setTime(receiptDetail.paymentDate)
+            String month = cal.get(Calendar.MONTH)
+            String year = cal.get(Calendar.YEAR)
+            DecimalFormat mFormat = new DecimalFormat("00");
+            month = mFormat.format(Double.valueOf(month));
+            String reciptId = null;
+            ReceiptDetail receiptDetail1
+            reciptId = receiptDetail.entityId + "/R/" + month + year + "/" + receiptDetail.id
+            println("Invoice Number generated: " + reciptId)
+            if (reciptId)
+            {
+                receiptDetail.receiptId = reciptId
+                receiptDetail.isUpdatable = true
+                receiptDetail.save(flush: true)
+            }
             return receiptDetail
+        }
         else
+        {
             throw new BadRequestException()
+        }
 
     }
 

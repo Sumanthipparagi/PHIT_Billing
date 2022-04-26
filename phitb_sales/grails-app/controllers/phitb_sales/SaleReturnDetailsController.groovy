@@ -213,7 +213,8 @@ class SaleReturnDetailsController {
                 }
                 else
                 {
-                    saleReturnDetails.balance = 0
+                    saleReturnDetails.balance = saleReturnDetails.getBalance()
+                    saleReturnDetails.adjAmount = saleReturnDetails.getAdjAmount()
                 }
                 SaleReturnDetails saleReturnDetails1 = saleReturnDetails.save(flush: true)
                 if (saleReturnDetails1)

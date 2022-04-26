@@ -163,12 +163,14 @@
 %{--                        }--}%
 %{--%>--}%
 
+                    <g:if test="${sv.amountPaid!=0}">
                     <tr>
                         <td>${sv.transId}</td>
                         <td>${sv.billType}</td>
                         <td>${sv.dateCreated.split("T")[0]}</td>
                         <td>${sv.amountPaid}</td>
                     </tr>
+                    </g:if>
                 </g:each>
 %{--                <g:each var="csv" in="${creditNoteArry}">--}%
 %{--                    <g:if test="${csv.balance!=0}">--}%
@@ -198,8 +200,8 @@
 
     <tr>
         <td colspan="5">
-            <p><strong>Note:
-            </strong></p>
+            <p><strong>Note:</strong>${recipt.narration}
+            </p>
         </td>
     </tr>
 

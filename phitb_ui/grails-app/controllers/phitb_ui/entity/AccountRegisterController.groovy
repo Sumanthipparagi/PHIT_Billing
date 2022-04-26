@@ -29,8 +29,8 @@ class AccountRegisterController {
         def apiResponse = new EntityService().getAllAccountById(id)
         if(apiResponse.status==200)
         {
-            JSONArray jsonArray = new JSONArray(apiResponse.readEntity(String.class))
-            return jsonArray
+            JSONObject jsonObject = new JSONObject(apiResponse.readEntity(String.class))
+            return jsonObject
         }
         else {
             return []
