@@ -4,6 +4,7 @@ import grails.gorm.transactions.Transactional
 import org.grails.web.json.JSONObject
 import phitb_sales.Exception.BadRequestException
 
+import java.text.DecimalFormat
 import java.text.SimpleDateFormat
 
 @Transactional
@@ -61,6 +62,7 @@ class SaleReturnDetailsService {
         saleReturnDetails.dbAdjAmount = Double.parseDouble(jsonObject.get("dbAdjAmount").toString())
         saleReturnDetails.totalDiscount = Double.parseDouble(jsonObject.get("totalDiscount").toString())
         saleReturnDetails.debitIds = jsonObject.get("debitIds").toString()
+        saleReturnDetails.adjAmount = 0
         saleReturnDetails.syncStatus = Long.parseLong(jsonObject.get("syncStatus").toString())
         saleReturnDetails.lockStatus = Long.parseLong(jsonObject.get("lockStatus").toString())
         saleReturnDetails.adjustmentStatus = jsonObject.get("adjustmentStatus").toString()
@@ -74,6 +76,23 @@ class SaleReturnDetailsService {
         saleReturnDetails.save(flush: true)
         if (!saleReturnDetails.hasErrors())
         {
+            Calendar cal = new GregorianCalendar()
+            cal.setTime(saleReturnDetails.entryDate)
+            String month = cal.get(Calendar.MONTH)
+            String year = cal.get(Calendar.YEAR)
+            DecimalFormat mFormat = new DecimalFormat("00");
+            month = mFormat.format(Double.valueOf(month));
+            String invoiceNumber = null;
+//            String seriesCode = jsonObject.get("seriesCode")
+            SaleReturnDetails saleReturnDetails1
+            invoiceNumber = saleReturnDetails.entityId + "/S/" + month + year + "/" + saleReturnDetails.serBillId
+            println("Invoice Number generated: " + invoiceNumber)
+            if (invoiceNumber)
+            {
+                saleReturnDetails.invoiceNumber = invoiceNumber
+                saleReturnDetails.isUpdatable = true
+                saleReturnDetails.save(flush: true)
+            }
             return saleReturnDetails
         }
         else

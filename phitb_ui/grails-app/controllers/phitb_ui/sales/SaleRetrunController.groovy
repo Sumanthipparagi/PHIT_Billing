@@ -10,6 +10,7 @@ import phitb_ui.Links
 import phitb_ui.ProductService
 import phitb_ui.SalesService
 import phitb_ui.SystemService
+import phitb_ui.UtilsService
 import phitb_ui.entity.EntityRegisterController
 import phitb_ui.entity.SeriesController
 import phitb_ui.entity.UserRegisterController
@@ -62,7 +63,6 @@ class SaleRetrunController
     {
         SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy")
         JSONObject saleReturnDetail = new JSONObject()
-
         String entityId = session.getAttribute("entityId").toString()
         String customerId = params.customer
         String salesmanId = params.salesmanId
@@ -190,6 +190,114 @@ class SaleRetrunController
         else
         {
             response.status == 400
+        }
+    }
+
+    def printSaleReturn()
+    {
+
+        String saleReturnId = params.id
+        JSONObject saleReturnDetail = new SalesService().getSaleReturnDetailsById(saleReturnId)
+        if (saleReturnDetail != null)
+        {
+            JSONArray saleProductDetails = new SalesService().getSaleProductDetailsByBill(saleReturnId)
+            JSONObject series = new EntityService().getSeriesById(saleReturnDetail.get("seriesId").toString())
+            JSONObject customer = new EntityService().getEntityById(saleReturnDetail.get("customerId").toString())
+            JSONObject entity = new EntityService().getEntityById(session.getAttribute("entityId").toString())
+            JSONObject city = new SystemService().getCityById(entity.get('cityId').toString())
+            JSONObject custcity = new SystemService().getCityById(customer.get('cityId').toString())
+            JSONArray termsConditions = new EntityService().getTermsContionsByEntity(session.getAttribute("entityId").toString())
+            saleProductDetails.each {
+                def batchResponse = new ProductService().getBatchesOfProduct(it.productId.toString())
+                JSONArray batchArray = JSON.parse(batchResponse.readEntity(String.class)) as JSONArray
+                for (JSONObject batch : batchArray)
+                {
+                    if (batch.batchNumber == it.batchNumber)
+                    {
+                        it.put("batch", batch)
+                    }
+                }
+                def apiResponse = new SalesService().getRequestWithId(it.productId.toString(), new Links().PRODUCT_REGISTER_SHOW)
+                it.put("productId", JSON.parse(apiResponse.readEntity(String.class)) as JSONObject)
+            }
+            def totalcgst = UtilsService.round(saleProductDetails.cgstAmount.sum(), 2)
+            def totalsgst = UtilsService.round(saleProductDetails.sgstAmount.sum(), 2)
+            def totaligst = UtilsService.round(saleProductDetails.igstAmount.sum(), 2)
+            def totaldiscount = UtilsService.round(saleProductDetails.discount.sum(), 2)
+            def totalBeforeTaxes = 0
+            HashMap<String, Double> gstGroup = new HashMap<>()
+            HashMap<String, Double> sgstGroup = new HashMap<>()
+            HashMap<String, Double> cgstGroup = new HashMap<>()
+            HashMap<String, Double> igstGroup = new HashMap<>()
+            for (Object it : saleProductDetails)
+            {
+                double amountBeforeTaxes = it.amount - it.cgstAmount - it.sgstAmount - it.igstAmount
+                totalBeforeTaxes += amountBeforeTaxes
+                if (it.igstPercentage > 0)
+                {
+                    def igstPercentage = igstGroup.get(it.igstPercentage.toString())
+                    if (igstPercentage == null)
+                    {
+                        igstGroup.put(it.igstPercentage.toString(), amountBeforeTaxes)
+                    }
+                    else
+                    {
+                        igstGroup.put(it.igstPercentage.toString(), igstPercentage.doubleValue() + amountBeforeTaxes)
+                    }
+                }
+                else
+                {
+                    def gstPercentage = gstGroup.get(it.gstPercentage.toString())
+                    if (gstPercentage == null)
+                    {
+                        gstGroup.put(it.gstPercentage.toString(), amountBeforeTaxes)
+                    }
+                    else
+                    {
+                        gstGroup.put(it.gstPercentage.toString(), gstPercentage.doubleValue() + amountBeforeTaxes)
+                    }
+
+                    def sgstPercentage = sgstGroup.get(it.sgstPercentage.toString())
+                    if (sgstPercentage == null)
+                    {
+                        sgstGroup.put(it.sgstPercentage.toString(), amountBeforeTaxes)
+                    }
+                    else
+                    {
+                        sgstGroup.put(it.sgstPercentage.toString(), sgstPercentage.doubleValue() + amountBeforeTaxes)
+                    }
+                    def cgstPercentage = cgstGroup.get(it.cgstPercentage.toString())
+                    if (cgstPercentage == null)
+                    {
+                        cgstGroup.put(it.cgstPercentage.toString(), amountBeforeTaxes)
+                    }
+                    else
+                    {
+                        cgstGroup.put(it.cgstPercentage.toString(), cgstPercentage.doubleValue() + amountBeforeTaxes)
+                    }
+                }
+            }
+
+            def total = totalBeforeTaxes + totalcgst + totalsgst + totaligst
+
+            render(view: "/sales/saleRetrun/sale-return-print", model: [saleBillDetail    : saleReturnDetail,
+                                                        saleProductDetails: saleProductDetails,
+                                                        series            : series, entity: entity, customer: customer, city: city,
+                                                        total             : total, custcity: custcity,
+                                                        termsConditions   : termsConditions,
+                                                        totalcgst         : totalcgst, totalsgst: totalsgst, totaligst: totaligst,
+                                                        totaldiscount     : totaldiscount,
+                                                        gstGroup          : gstGroup,
+                                                        sgstGroup         : sgstGroup,
+                                                        cgstGroup         : cgstGroup,
+                                                        igstGroup         : igstGroup,
+                                                        totalBeforeTaxes  : totalBeforeTaxes
+            ])
+        }
+        else
+        {
+
+            render("No Bill Found")
         }
     }
 }

@@ -81,8 +81,8 @@
                     <a class="icon" href="javascript:void(0);"><i class="zmdi zmdi-twitter"></i></a>
                     <a class="icon" href="javascript:void(0);"><i class="zmdi zmdi-linkedin"></i></a>
 
-                    <p>Coded by WrapTheme<br> Designed by <a href="http://thememakker.com/"
-                                                             target="_blank">thememakker.com</a></p>
+%{--                    <p>Coded by WrapTheme<br> Designed by <a href="http://thememakker.com/"--}%
+%{--                                                             target="_blank">thememakker.com</a></p>--}%
                 </div>
             </div>
         </div>
@@ -323,7 +323,8 @@
                 <li>
                     <div class="user-info m-b-20">
                         <div class="image">
-                            <a href="#"><img src="${assetPath(src: '/themeassets/images/profile_av.jpg')}" alt="User">
+                            <a href="/user-register/update-user-register/${session.getAttribute("userId")}"><img
+                                    src="${assetPath(src: '/themeassets/images/profile_av.jpg')}" alt="User">
                             </a>
                         </div>
 

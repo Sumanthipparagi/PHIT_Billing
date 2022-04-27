@@ -297,7 +297,6 @@ class SaleBillDetailsService
         {
             throw new BadRequestException()
         }
-
     }
 
     void delete(String id)

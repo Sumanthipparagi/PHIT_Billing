@@ -305,6 +305,34 @@ class SalesService
 
     }
 
+    def getSaleReturnDetailsById(String id)
+    {
+        Client client = ClientBuilder.newClient();
+        WebTarget target = client.target(new Links().API_GATEWAY);
+        try
+        {
+            Response apiResponse = target
+                    .path(new Links().SALE_RETURN_SHOW + "/" + id)
+                    .request(MediaType.APPLICATION_JSON_TYPE)
+                    .get()
+            if (apiResponse.status == 200)
+            {
+                JSONObject saleBillDetail = new JSONObject(apiResponse.readEntity(String.class))
+                return saleBillDetail
+            }
+            else
+            {
+                return null
+            }
+        }
+        catch (Exception ex)
+        {
+            System.err.println('Service :SalesService , action :  getProducts  , Ex:' + ex)
+            log.error('Service :SalesService , action :  getProducts  , Ex:' + ex)
+        }
+
+    }
+
     def getDraftSaleBillDetailsById(String id)
     {
         Client client = ClientBuilder.newClient();
