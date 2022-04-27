@@ -1112,8 +1112,10 @@
                 }).then((result) => {
                     if (result.isConfirmed) {
                         printInvoice();
+                        window.location.href ="";
                     } else if (result.isDenied) {
                         resetPage();
+                        window.location.href ="";
                     }
                 });
 
