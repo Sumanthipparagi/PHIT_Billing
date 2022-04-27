@@ -7,6 +7,7 @@ import org.grails.web.json.JSONObject
 import phitb_ui.einvoice.AESEncryption
 import phitb_ui.einvoice.EinvoiceHelper
 import phitb_ui.einvoice.NicV4TokenPayloadGen
+import phitb_ui.einvoice.PayloadEncrypt
 
 import javax.ws.rs.client.Client
 import javax.ws.rs.client.ClientBuilder
@@ -59,24 +60,27 @@ class EInvoiceService {
                 if(apiResponse.status == 200)
                 {
                     JSONObject jsonObject1 = new JSONObject(apiResponse.readEntity(String.class))
-                    generateAuthToken(jsonObject1)
+                    return jsonObject1
                 }
+                else
+                    return null
             }
             catch (Exception ex) {
                 System.err.println('Service :EInvoiceService , action :  generateSignature  , Ex:' + ex)
                 log.error('Service :EInvoiceService , action :  generateSignature  , Ex:' + ex)
+                return null
             }
         }
         catch (Exception ex) {
             ex.printStackTrace()
+            return null
         }
     }
 
     def generateAuthToken(JSONObject jsonObject)
     {
-        //String appKey = Base64.getEncoder().encodeToString(new EinvoiceHelper().createAESKey());
         //To encrypt auth-token payload payload
-        String randomAppKey = "8rZqQ01ZEqeoRLqoLgu2vLsT0BMtS7ex";
+        String randomAppKey = Base64.getEncoder().encodeToString(new EinvoiceHelper().createAESKey());
         String base64EncodedAppKey = Base64.getEncoder().encodeToString(randomAppKey.getBytes());
         String authPayload = "{\"UserName\":\"nsdlTest\", \"Password\":\"Test@123\", \"AppKey\":\""+ base64EncodedAppKey +"\", \"ForceRefreshAccessToken\":true}";
         String base64EncodedPayload = Base64.getEncoder().encodeToString(authPayload.getBytes());
@@ -101,14 +105,206 @@ class EInvoiceService {
                     .post(Entity.entity(finalPayLoad.toString(), MediaType.APPLICATION_JSON_TYPE))
             if(apiResponse.status == 200)
             {
-                String tmp = apiResponse.readEntity(String.class)
-                println(tmp)
+                return new JSONObject(apiResponse.readEntity(String.class))
+
+            }
+            else
+            {
+                return null
             }
         }
         catch (Exception ex) {
             System.err.println('Service :EInvoiceService , action :  generateAuthToken  , Ex:' + ex)
             log.error('Service :EInvoiceService , action :  generateAuthToken  , Ex:' + ex)
         }
+    }
+
+    def generateIRN()
+    {
+        JSONObject sessionData = generateSignature()
+        JSONObject authData = generateAuthToken(sessionData)
+        String sampleIRN = "\n" +
+                "{\n" +
+                "  \"Version\": \"1.1\",\n" +
+                "  \"TranDtls\": {\n" +
+                "    \"TaxSch\": \"GST\",\n" +
+                "    \"SupTyp\": \"B2B\",\n" +
+                "    \"RegRev\": \"Y\",\n" +
+                "    \"EcmGstin\": null,\n" +
+                "    \"IgstOnIntra\": \"N\"\n" +
+                "  },\n" +
+                "  \"DocDtls\": {\n" +
+                "    \"Typ\": \"INV\",\n" +
+                "    \"No\": \"DOC/001\",\n" +
+                "    \"Dt\": \"18/08/2020\"\n" +
+                "  },\n" +
+                "  \"SellerDtls\": {\n" +
+                "    \"Gstin\": \"37ARZPT4384Q1MT\",\n" +
+                "    \"LglNm\": \"NIC company pvt ltd\",\n" +
+                "    \"TrdNm\": \"NIC Industries\",\n" +
+                "    \"Addr1\": \"5th block, kuvempu layout\",\n" +
+                "    \"Addr2\": \"kuvempu layout\",\n" +
+                "    \"Loc\": \"GANDHINAGAR\",\n" +
+                "    \"Pin\": 518001,\n" +
+                "    \"Stcd\": \"37\",\n" +
+                "    \"Ph\": \"9000000000\",\n" +
+                "    \"Em\": \"abc@gmail.com\"\n" +
+                "  },\n" +
+                "  \"BuyerDtls\": {\n" +
+                "    \"Gstin\": \"29AWGPV7107B1Z1\",\n" +
+                "    \"LglNm\": \"XYZ company pvt ltd\",\n" +
+                "    \"TrdNm\": \"XYZ Industries\",\n" +
+                "    \"Pos\": \"12\",\n" +
+                "    \"Addr1\": \"7th block, kuvempu layout\",\n" +
+                "    \"Addr2\": \"kuvempu layout\",\n" +
+                "    \"Loc\": \"GANDHINAGAR\",\n" +
+                "    \"Pin\": 562160,\n" +
+                "    \"Stcd\": \"29\",\n" +
+                "    \"Ph\": \"91111111111\",\n" +
+                "    \"Em\": \"xyz@yahoo.com\"\n" +
+                "  },\n" +
+                "  \"DispDtls\": {\n" +
+                "    \"Nm\": \"ABC company pvt ltd\",\n" +
+                "    \"Addr1\": \"7th block, kuvempu layout\",\n" +
+                "    \"Addr2\": \"kuvempu layout\",\n" +
+                "    \"Loc\": \"Banagalore\",\n" +
+                "    \"Pin\": 562160,\n" +
+                "    \"Stcd\": \"29\"\n" +
+                "  },\n" +
+                "  \"ShipDtls\": {\n" +
+                "    \"Gstin\": \"29AWGPV7107B1Z1\",\n" +
+                "    \"LglNm\": \"CBE company pvt ltd\",\n" +
+                "    \"TrdNm\": \"kuvempu layout\",\n" +
+                "    \"Addr1\": \"7th block, kuvempu layout\",\n" +
+                "    \"Addr2\": \"kuvempu layout\",\n" +
+                "    \"Loc\": \"Banagalore\",\n" +
+                "    \"Pin\": 562160,\n" +
+                "    \"Stcd\": \"29\"\n" +
+                "  },\n" +
+                "  \"ItemList\": [\n" +
+                "    {\n" +
+                "      \"SlNo\": \"1\",\n" +
+                "      \"PrdDesc\": \"Rice\",\n" +
+                "      \"IsServc\": \"N\",\n" +
+                "      \"HsnCd\": \"1001\",\n" +
+                "      \"Barcde\": \"123456\",\n" +
+                "      \"Qty\": 100.345,\n" +
+                "      \"FreeQty\": 10,\n" +
+                "      \"Unit\": \"BAG\",\n" +
+                "      \"UnitPrice\": 99.545,\n" +
+                "      \"TotAmt\": 9988.84,\n" +
+                "      \"Discount\": 10,\n" +
+                "      \"PreTaxVal\": 1,\n" +
+                "      \"AssAmt\": 9978.84,\n" +
+                "      \"GstRt\": 12.0,\n" +
+                "      \"IgstAmt\": 1197.46,\n" +
+                "      \"CgstAmt\": 0,\n" +
+                "      \"SgstAmt\": 0,\n" +
+                "      \"CesRt\": 5,\n" +
+                "      \"CesAmt\": 498.94,\n" +
+                "      \"CesNonAdvlAmt\": 10,\n" +
+                "      \"StateCesRt\": 12,\n" +
+                "      \"StateCesAmt\": 1197.46,\n" +
+                "      \"StateCesNonAdvlAmt\": 5,\n" +
+                "      \"OthChrg\": 10,\n" +
+                "      \"TotItemVal\": 12897.7,\n" +
+                "      \"OrdLineRef\": \"3256\",\n" +
+                "      \"OrgCntry\": \"AG\",\n" +
+                "      \"PrdSlNo\": \"12345\",\n" +
+                "      \"BchDtls\": {\n" +
+                "        \"Nm\": \"123456\",\n" +
+                "        \"ExpDt\": \"01/08/2020\",\n" +
+                "        \"WrDt\": \"01/09/2020\"\n" +
+                "      },\n" +
+                "      \"AttribDtls\": [\n" +
+                "        {\n" +
+                "          \"Nm\": \"Rice\",\n" +
+                "          \"Val\": \"10000\"\n" +
+                "        }\n" +
+                "      ]\n" +
+                "    }\n" +
+                "  ],\n" +
+                "  \"ValDtls\": {\n" +
+                "    \"AssVal\": 9978.84,\n" +
+                "    \"CgstVal\": 0,\n" +
+                "    \"SgstVal\": 0,\n" +
+                "    \"IgstVal\": 1197.46,\n" +
+                "    \"CesVal\": 508.94,\n" +
+                "    \"StCesVal\": 1202.46,\n" +
+                "    \"Discount\": 10,\n" +
+                "    \"OthChrg\": 20,\n" +
+                "    \"RndOffAmt\": 0.3,\n" +
+                "    \"TotInvVal\": 12908,\n" +
+                "    \"TotInvValFc\": 12897.7\n" +
+                "  },\n" +
+                "  \"PayDtls\": {\n" +
+                "    \"Nm\": \"ABCDE\",\n" +
+                "    \"AccDet\": \"5697389713210\",\n" +
+                "    \"Mode\": \"Cash\",\n" +
+                "    \"FinInsBr\": \"SBIN11000\",\n" +
+                "    \"PayTerm\": \"100\",\n" +
+                "    \"PayInstr\": \"Gift\",\n" +
+                "    \"CrTrn\": \"test\",\n" +
+                "    \"DirDr\": \"test\",\n" +
+                "    \"CrDay\": 100,\n" +
+                "    \"PaidAmt\": 10000,\n" +
+                "    \"PaymtDue\": 5000\n" +
+                "  },\n" +
+                "  \"RefDtls\": {\n" +
+                "    \"InvRm\": \"TEST\",\n" +
+                "    \"DocPerdDtls\": {\n" +
+                "      \"InvStDt\": \"01/08/2020\",\n" +
+                "      \"InvEndDt\": \"01/09/2020\"\n" +
+                "    },\n" +
+                "    \"PrecDocDtls\": [\n" +
+                "      {\n" +
+                "        \"InvNo\": \"DOC/002\",\n" +
+                "        \"InvDt\": \"01/08/2020\",\n" +
+                "        \"OthRefNo\": \"123456\"\n" +
+                "      }\n" +
+                "    ],\n" +
+                "    \"ContrDtls\": [\n" +
+                "      {\n" +
+                "        \"RecAdvRefr\": \"Doc/003\",\n" +
+                "        \"RecAdvDt\": \"01/08/2020\",\n" +
+                "        \"TendRefr\": \"Abc001\",\n" +
+                "        \"ContrRefr\": \"Co123\",\n" +
+                "        \"ExtRefr\": \"Yo456\",\n" +
+                "        \"ProjRefr\": \"Doc-456\",\n" +
+                "        \"PORefr\": \"Doc-789\",\n" +
+                "        \"PORefDt\": \"01/08/2020\"\n" +
+                "      }\n" +
+                "    ]\n" +
+                "  },\n" +
+                "  \"AddlDocDtls\": [\n" +
+                "    {\n" +
+                "      \"Url\": \"https://einv-apisandbox.nic.in\",\n" +
+                "      \"Docs\": \"Test Doc\",\n" +
+                "      \"Info\": \"Document Test\"\n" +
+                "    }\n" +
+                "  ],\n" +
+                "  \"ExpDtls\": {\n" +
+                "    \"ShipBNo\": \"A-248\",\n" +
+                "    \"ShipBDt\": \"01/08/2020\",\n" +
+                "    \"Port\": \"INABG1\",\n" +
+                "    \"RefClm\": \"N\",\n" +
+                "    \"ForCur\": \"AED\",\n" +
+                "    \"CntCode\": \"AE\",\n" +
+                "    \"ExpDuty\": null\n" +
+                "  },\n" +
+                "  \"EwbDtls\": {\n" +
+                "    \"TransId\": \"12AWGPV7107B1Z1\",\n" +
+                "    \"TransName\": \"XYZ EXPORTS\",\n" +
+                "    \"Distance\": 100,\n" +
+                "    \"TransDocNo\": \"DOC01\",\n" +
+                "    \"TransDocDt\": \"18/08/2020\",\n" +
+                "    \"VehNo\": \"ka123456\",\n" +
+                "    \"VehType\": \"R\",\n" +
+                "    \"TransMode\": \"1\"\n" +
+                "  }\n" +
+                "}\n"
+
+        new PayloadEncrypt()
     }
 
 }
