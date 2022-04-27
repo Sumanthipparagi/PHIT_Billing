@@ -21,8 +21,7 @@
     <asset:stylesheet src="/themeassets/plugins/bootstrap-select/css/bootstrap-select.css" rel="stylesheet"/>
     <asset:stylesheet src="/themeassets/plugins/handsontable/handsontable.full.css" rel="stylesheet"/>
     <link rel="stylesheet" media="screen" href="https://cdnjs.cloudflare.com/ajax/libs/select2/3.5.2/select2.min.css">
-    <link rel="stylesheet" media="screen"
-          href="https://cdnjs.cloudflare.com/ajax/libs/handsontable/0.16.0/handsontable.full.css">
+%{--    <link rel="stylesheet" media="screen" href="https://cdnjs.cloudflare.com/ajax/libs/handsontable/0.16.0/handsontable.full.css">--}%
 
     <style>
     .form-control {
@@ -221,9 +220,9 @@
 <asset:javascript src="/themeassets/js/pages/ui/dialogs.js"/>
 <asset:javascript src="/themeassets/plugins/sweetalert2/dist/sweetalert2.all.js"/>
 <asset:javascript src="/themeassets/plugins/momentjs/moment.js"/>
-%{--<asset:javascript src="/themeassets/plugins/handsontable/handsontable.full.js"/>--}%
+<asset:javascript src="/themeassets/plugins/handsontable/handsontable.full.js"/>
 %{--<asset:javascript src="/themeassets/plugins/select2/dist/js/select2.full.js"/>--}%
-<script src="https://cdnjs.cloudflare.com/ajax/libs/handsontable/0.16.0/handsontable.full.js"></script>
+%{--<script src="https://cdnjs.cloudflare.com/ajax/libs/handsontable/0.16.0/handsontable.full.js"></script>--}%
 <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/3.5.2/select2.js"></script>
 
 <script>
@@ -250,15 +249,19 @@
     var batchHeaderRow = [
         '<strong>Batch</strong>',
         '<strong>Exp Dt</strong>',
-        '<strong>Manf. Dt</strong>',
+        '<strong>Manf Dt</strong>',
+        '<strong>Rem Qty</strong>',
+        '<strong>Free Qty</strong>',
         '<strong>Pur. Rate</strong>',
         '<strong>Sale Rate</strong>',
         '<strong>MRP</strong>',
+        '<strong>Pack</strong>',
         '<strong>GST</strong>',
         'SGST',
         'CGST',
         'IGST',
         'id'];
+
 
     const batchContainer = document.getElementById('batchTable');
     var batchHot;
@@ -316,11 +319,11 @@
                 {type: 'text', readOnly: true},
                 {type: 'numeric'},
                 {type: 'numeric'},
+                {type: 'text', readOnly: true},
+                {type: 'text', readOnly: true},
+                {type: 'text', readOnly: true},
                 {type: 'text'},
-                {type: 'text'},
-                {type: 'text'},
-                {type: 'text'},
-                {type: 'text'},
+                {type: 'text',readOnly: true},
                 {type: 'text', readOnly: true},
                 {type: 'text', readOnly: true},
                 {type: 'text', readOnly: true},
@@ -376,103 +379,190 @@
             beforeKeyDown(e) {
                 var sRate = 0;
                 var sQty = 0;
-                const row = hot.getSelected()[0];
-                const selection = hot.getSelected()[1];
+                var fQty = 0;
+                const row = hot.getSelected()[0][0];
+                const selection = hot.getSelected()[0][1];
                 if (selection === 1) {
                     if (e.keyCode === 13) {
                         batchHot.selectCell(0, 0);
                         $("#batchTable").focus();
                     }
-                } else if (selection === 14 || selection === 5) {
+                } else if (selection === 14 || selection === 7) {
                     if ((e.keyCode === 13 || e.keyCode === 9) && !readOnly) {
                         //check if sqty is empty
                         var sqty = hot.getDataAtCell(row, 4);
                         var fqty = hot.getDataAtCell(row, 5);
-                        var batch = hot.getDataAtCell(row, 2);
-                        if ((sqty && sqty>=0))
-                        {
+                        if (sqty && sqty > 0) {
+                            var batchId = hot.getCellMeta(row, 2)?.batchId; //batch
+                            var dt = hot.getDataAtRow(row);
+                            dt.push(batchId);
+                            console.log("Data saved");
                             mainTableRow = row + 1;
+                            calculateTotalAmt();
                             hot.alter('insert_row');
                             hot.selectCell(mainTableRow, 1);
-                            calculateTotalAmt();
-                            /*                            var batchId = hot.getCellMeta(row, 2)?.batchId; //batch
-                                                        var dt = hot.getDataAtRow(row);
-                                                        dt.push(batchId);
-                                                        var json = JSON.stringify(dt);
-                                                        var url = '/stockbook/purchase/batch';
-                                                        var type = 'POST';
-                                                        $.ajax({
-                                                            type: type,
-                                                            url: url,
-                                                            dataType: 'json',
-                                                            data: {
-                                                                batch:batch,
-                                                                sqty:sqty
-                                                            },
-                                                            success: function (data) {
-                                                                console.log("Data saved");
-                                                                hot.setDataAtCell(row, 16, data.id)
-                                                            },
-                                                            error: function (data) {
-                                                                console.log("Failed");
-                                                            }
-                                                        });*/
+
                         } else {
                             alert("Invalid Quantity, please enter quantity greater than 0");
                         }
+
                     }
-                } else if (selection === 4 || selection === 9) {
+                } else if (selection === 4 || selection === 5 || selection === 8 || selection === 6  || selection === 9) {
                     if (e.keyCode === 13 || e.keyCode === 9) {
                         var discount = 0;
-
-                        if(selection === 4)
-                            sQty = this.getActiveEditor().TEXTAREA.value;
-                        else
-                            sQty = hot.getDataAtCell(row,4);
-
-                        if(selection === 9) {
-                            discount = this.getActiveEditor().TEXTAREA.value;
-                            if(discount>100)
+                        if(selection === 7)
+                        {
+                            var mrp = hot.getDataAtCell(row, 8);
+                            var oldSaleRate = hot.getDataAtCell(row, 7);
+                            var saleRate = Number(this.getActiveEditor().TEXTAREA.value);
+                            if(saleRate > mrp)
                             {
-                                hot.setDataAtCell(row,9,0);
-                                this.getActiveEditor().TEXTAREA.value = 0;
-                                alert("Invalid Discount");
-                                hot.selectCell(row,9);
-                                return;
+                                hot.setDataAtCell(row, 7,  oldSaleRate);
+                                this.getActiveEditor().TEXTAREA.value = oldSaleRate;
+                                alert("Sale Rate exceeds MRP!");
+                            }
+                            else {
+                                hot.setDataAtCell(row, 7,  Number(this.getActiveEditor().TEXTAREA.value));
+                                this.selectCell(row, selection + 1);
                             }
                         }
-                        else
-                            discount = hot.getDataAtCell(row,9);
+                        if (selection === 4) {
+                            this.getActiveEditor().enableFullEditMode();
+                            this.getActiveEditor().beginEditing();
+                            sQty = Number(this.getActiveEditor().TEXTAREA.value);
+                            // var sq = this.getDataAtCell(row,4);
+                            // alert(sq)
+                            this.setDataAtCell(row, 4, sQty);
+                            this.selectCell(row, selection + 1);
+                        } else
+                        {
+                            sQty = Number(this.getDataAtCell(row, 4));
+                        }
 
-                        /*  if(sQty>remainingQty)
-                          {
-                              this.getActiveEditor().TEXTAREA.value = "";
-                              alert("Entered quantity exceeds available quantity");
-                              return;
-                          }
+                        if (selection === 5) {
+                            fQty = Number(this.getActiveEditor().TEXTAREA.value);
+                            hot.setDataAtCell(row, 5, fQty);
+                            this.selectCell(row, selection + 1);
+                        } else
+                        {
+                            fQty = Number(this.getDataAtCell(row, 5));
+                        }
+                        if (selection === 9) {
+                            discount = Number(this.getActiveEditor().TEXTAREA.value);
+                            if (discount > 100) {
+                                alert("Invalid Discount");
+                                hot.setDataAtCell(row, 9, 0);
+                                this.getActiveEditor().TEXTAREA.value = 0;
+                                hot.selectCell(row, 9);
+                                return;
+                            }
+                            else
+                            {
+                                hot.setDataAtCell(row, 9, discount);
+                                this.selectCell(row, selection + 1);
+                            }
+                        } else {
+                            discount = hot.getDataAtCell(row, 9);
+                        }
+                        var allowEntry = false;
+                        var pid = hot.getDataAtCell(row, 1);
+                        var batch = hot.getDataAtCell(row, 2);
+                        var remQty = 0;
+                        var remFQty = 0;
+                        var freeQtyEntry = false;
+                        if (pid && batch) {
+                            $.ajax({
+                                    type: "POST",
+                                    url: "/stockbook/product/" + pid + "/batch/" + batch,
+                                    dataType: 'json',
+                                    success: function (data) {
+                                        remQty = remQty + data.remainingQty;
+                                        remFQty = remFQty + data.remainingFreeQty;
+                                        if (remQty >= sQty) {
+                                            allowEntry = true;
+                                        }
+                                        else if (sQty >= remQty && remFQty >= sQty) {
+                                            allowEntry = true;
+                                        }
 
-                          applySchemes(row, sQty);*/
-                        sRate = hot.getDataAtCell(row, 7);
+                                        else if ((remQty + remFQty) >= sQty) {
+                                            allowEntry = true;
+                                        }
 
-                        var value = sRate * sQty;
-                        var priceBeforeGst = value - (value * discount/100);
-                        var finalPrice = priceBeforeGst + (priceBeforeGst * (gst / 100));
-                        hot.setDataAtCell(row, 12, finalPrice);
+                                        if(selection === 5)
+                                        {
+                                            if(remFQty >= fQty)
+                                            {
+                                                freeQtyEntry = true;
+                                            }
 
-                        if(gst != 0) {
-                            hot.setDataAtCell(row, 11, priceBeforeGst * (gst / 100)); //GST
-                            hot.setDataAtCell(row, 13, priceBeforeGst * (sgst / 100)); //SGST
-                            hot.setDataAtCell(row, 14, priceBeforeGst * (cgst / 100)); //CGST
+                                            else if ((remQty + remFQty) >= sQty+fQty) {
+                                                freeQtyEntry = true;
+                                                allowEntry = true;
+                                            }
+                                            else
+                                            {
+                                                freeQtyEntry = false;
+                                                allowEntry = false;
+                                            }
+
+                                            if(freeQtyEntry!==true)
+                                            {
+                                                // hot.setDataAtCell(row, 5, 0);
+                                                alert("Entered Free quantity exceeds available quantity");
+                                            }
+                                        }
+                                        if (!allowEntry) {
+                                            // this.getActiveEditor().TEXTAREA.value = "";
+                                            hot.setDataAtCell(row, 4, 0);
+                                            hot.setDataAtCell(row, 5, 0);
+                                            hot.setDataAtCell(row, 11, 0);
+                                            hot.setDataAtCell(row, 12, 0);
+                                            hot.setDataAtCell(row, 13, 0);
+                                            hot.setDataAtCell(row, 14, 0);
+                                            alert("Entered quantity exceeds available quantity");
+                                            return;
+                                        }
+                                        else
+                                        {
+                                            hot.setDataAtCell(row,5,fQty)
+                                        }
+                                    },
+                                    error: function (data) {
+                                        alert("Something went Wrong!")
+                                    }
+                                }
+                            );
+                        }
+                        applySchemes(row, sQty);
+                        if(selection === 7)
+                        {
+                            sRate = Number(this.getActiveEditor().TEXTAREA.value);
                         }
                         else
-                        {
+                            sRate = hot.getDataAtCell(row, 7);
+
+                        var value = sRate * sQty;
+                        var priceBeforeGst = value - (value * discount / 100);
+                        var finalPrice = priceBeforeGst + (priceBeforeGst * (gst / 100));
+                        hot.setDataAtCell(row, 12, Number(finalPrice).toFixed(2));
+
+                        if (gst !== 0) {
+                            var gstAmount = priceBeforeGst * (gst / 100);
+                            var sgstAmount = priceBeforeGst * (sgst / 100);
+                            var cgstAmount = priceBeforeGst * (cgst / 100);
+                            hot.setDataAtCell(row, 11, Number(gstAmount).toFixed(2)); //GST
+                            hot.setDataAtCell(row, 13, Number(sgstAmount).toFixed(2)); //SGST
+                            hot.setDataAtCell(row, 14, Number(cgstAmount).toFixed(2)); //CGST
+                        } else {
                             hot.setDataAtCell(row, 11, 0); //GST
                             hot.setDataAtCell(row, 13, 0); //SGST
                             hot.setDataAtCell(row, 14, 0); //CGST
                         }
-                        if(igst != "0")
-                            hot.setDataAtCell(row, 15, priceBeforeGst*(igst/100)); //IGST
-                        else
+                        if (igst !== "0") {
+                            var igstAmount = priceBeforeGst * (igst / 100);
+                            hot.setDataAtCell(row, 15, Number(igstAmount).toFixed(2)); //IGST
+                        } else
                             hot.setDataAtCell(row, 15, 0);
                     }
                 }
@@ -480,7 +570,7 @@
         });
 
         hot.addHook('afterSelection', (row, col) => {
-            if(col == 2) {
+            if(col === 2) {
                 batchSelection(hot.getDataAtCell(row,1),row,false);
             }
         });
@@ -493,7 +583,7 @@
                     value = products[index].text;
                 }
             }
-            Handsontable.TextCell.renderer.apply(this, arguments);
+            Handsontable.renderers.TextRenderer.apply(this, arguments);
         }
 
         batchHot = new Handsontable(batchContainer, {
@@ -513,6 +603,9 @@
                 {type: 'text', readOnly: true},
                 {type: 'text', readOnly: true},
                 {type: 'text', readOnly: true},
+                {type: 'numeric', readOnly: true},
+                {type: 'numeric', readOnly: true},
+                {type: 'text', readOnly: true},
                 {type: 'text', readOnly: true},
                 {type: 'text', readOnly: true},
                 {type: 'text', readOnly: true},
@@ -522,9 +615,10 @@
                 {type: 'text', readOnly: true},
                 {type: 'text', readOnly: true}
             ],
+            hiddenColumns: true,
             hiddenColumns: {
                 // specify columns hidden by default
-                columns: [9]
+                columns: [13]
             },
             minSpareRows: 0,
             minSpareCols: 0,
@@ -532,38 +626,40 @@
             licenseKey: 'non-commercial-and-evaluation'
         });
 
+
         batchHot.updateSettings({
             beforeKeyDown(e) {
-                const selection = batchHot.getSelected()[0];
+                const selection = batchHot.getSelected()[0][0];
                 var rowData = batchHot.getDataAtRow(selection);
-                console.log(rowData);
                 if (e.keyCode === 13) {
 
-                    if(!checkForDuplicateEntry(rowData[0])) {
+                    if (!checkForDuplicateEntry(rowData[0])) {
                         //check for schemes
-                        // checkSchemes(hot.getDataAtCell(mainTableRow,1), rowData[0]); //product, batch
-                        var batchId = rowData[10];
-                        hot.setDataAtCell(mainTableRow, 2, rowData[0]); //batchnumber
+                        checkSchemes(hot.getDataAtCell(mainTableRow, 1), rowData[0]); //product, batch
+                        var batchId = rowData[12];
+                        hot.setDataAtCell(mainTableRow, 2, rowData[0]);
                         hot.setCellMeta(mainTableRow, 2, "batchId", batchId);
-                        hot.setDataAtCell(mainTableRow, 3, rowData[1]); //expdate
-                        hot.setDataAtCell(mainTableRow, 4, 0); //sale qty
-                        hot.setDataAtCell(mainTableRow, 5, 0); //free qty
-                        hot.setDataAtCell(mainTableRow, 6, rowData[3]); //purchase rate
-                        hot.setDataAtCell(mainTableRow, 7, rowData[4]);
-                        hot.setDataAtCell(mainTableRow, 8, rowData[5]);
+                        hot.setDataAtCell(mainTableRow, 3, rowData[1]);
+                        hot.setDataAtCell(mainTableRow, 5, 0);
+                        hot.setDataAtCell(mainTableRow, 6, rowData[5]);
+                        hot.setDataAtCell(mainTableRow, 7, rowData[6]);
+                        hot.setDataAtCell(mainTableRow, 8, rowData[7]);
                         hot.setDataAtCell(mainTableRow, 9, 0);
-                        hot.setDataAtCell(mainTableRow, 10, 0); //packing
-                        hot.setDataAtCell(mainTableRow, 11, rowData[6]);
+                        hot.setDataAtCell(mainTableRow, 10, rowData[8]);
                         hot.setDataAtCell(mainTableRow, 16, rowData[2]);
-                        gst = rowData[6];
-                        sgst = rowData[7];
-                        cgst = rowData[8];
-                        igst = rowData[9];
+                        gst = rowData[9];
+                        sgst = rowData[10];
+                        cgst = rowData[11];
+                        igst = rowData[12];
                         hot.selectCell(mainTableRow, 4);
+                        hot.setDataAtCell(mainTableRow, 17, gst);
+                        hot.setDataAtCell(mainTableRow, 18, sgst);
+                        hot.setDataAtCell(mainTableRow, 19, cgst);
+                        hot.setDataAtCell(mainTableRow, 20, igst);
+                        remainingQty = rowData[3];
+                        remainingFQty = rowData[4];
                         $("#purchaseTable").focus();
-                    }
-                    else
-                    {
+                    } else {
                         alert("Selected product and batch already entered, duplicate entries not allowed");
                     }
                 }
@@ -575,7 +671,7 @@
 
     function batchSelection(selectedId, mainRow, selectCell = true) {
         if (selectedId != null) {
-            var url = "/batch-register/batchesforpurchase/" + selectedId;
+            var url = "/stockbook/product/" + selectedId;
             $.ajax({
                 type: "GET",
                 url: url,
@@ -586,17 +682,21 @@
                         for (var i = 0; i < data.length; i++) {
                             var batchdt = [];
                             batchdt.push(data[i].batchNumber);
-                            batchdt.push(data[i].expiryDate.split("T")[0]);
-                            batchdt.push(data[i].manfDate.split("T")[0]);
+                            batchdt.push(data[i].expDate.split("T")[0]);
+                            batchdt.push(data[i].manufacturingDate.split("T")[0]);
+                            batchdt.push(data[i].remainingQty);
+                            batchdt.push(data[i].remainingFreeQty);
                             batchdt.push(data[i].purchaseRate);
                             batchdt.push(data[i].saleRate);
                             batchdt.push(data[i].mrp);
+                            batchdt.push(data[i].packingDesc);
                             batchdt.push(data[i].gst);
                             batchdt.push(data[i].sgst);
                             batchdt.push(data[i].cgst);
                             batchdt.push(data[i].igst);
                             batchdt.push(data[i].id);
                             batchData.push(batchdt);
+                            console.log(batchData)
                         }
                         batchHot.updateSettings({
                             data: []
@@ -604,7 +704,7 @@
                         if (batchdt?.length > 0) {
                             batchHot.loadData(batchData);
                             $("#batchTable").focus();
-                            if(selectCell)
+                            if (selectCell)
                                 batchHot.selectCell(0, 0);
                         }
                     }
@@ -640,19 +740,19 @@
         var data = hot.getData();
         for (var i = 0; i < data.length; i++) {
             if (data[i][4])
-                totalQty += data[i][4];
+                totalQty += Number(data[i][4]);
             if (data[i][5])
-                totalFQty += data[i][5];
+                totalFQty +=  Number(data[i][5]);
             if (data[i][12])
-                totalAmt += data[i][12];
+                totalAmt += Number(data[i][12]);
             if (data[i][11])
-                totalGst += data[i][11];
+                totalGst += Number(data[i][11]);
             if (data[i][13])
-                totalSgst += data[i][13];
+                totalSgst += Number(data[i][13]);
             if (data[i][14])
-                totalCgst += data[i][14];
+                totalCgst += Number(data[i][14]);
             if (data[i][15])
-                totalIgst += data[i][15];
+                totalIgst += Number(data[i][15]);
         }
         $("#totalAmt").text(totalAmt.toFixed(2));
         $("#totalGST").text(totalGst.toFixed(2));
@@ -664,15 +764,12 @@
     }
 
 
-    function checkForDuplicateEntry(batchNumber)
-    {
+    function checkForDuplicateEntry(batchNumber) {
         var productId = hot.getDataAtCell(mainTableRow, 1);
         var purchaseTableData = hot.getData();
-        for(var i = 0; i<purchaseTableData.length; i++)
-        {
-            if(productId == purchaseTableData[i][1])
-            {
-                if(purchaseTableData[i][2] !== undefined && purchaseTableData[i][2] == batchNumber)
+        for (var i = 0; i < purchaseTableData.length; i++) {
+            if (productId === purchaseTableData[i][1]) {
+                if (purchaseTableData[i][2] !== null && purchaseTableData[i][2] === batchNumber)
                     return true;
             }
         }
@@ -799,7 +896,7 @@
             return;
         }
 
-        var purchaseData = JSON.stringify(hot.getData());
+        var purchaseData = JSON.stringify(hot.getSourceData());
 
         $.ajax({
             type: "POST",
@@ -831,11 +928,17 @@
                 var invoiceNumber = data.purchaseBillDetail.invoiceNumber;
                 $("#invNo").html("<p><strong>" + invoiceNumber + "</strong></p>");
                 var message = "";
-                if(billStatus !== "DRAFT") {
-                    message = 'Purchase Invoice Generated: '+ invoiceNumber;
+                var draftInvNo ="";
+                if(billStatus === "DRAFT"){
+                    draftInvNo = '<p><strong>' + data.purchaseBillDetail.entityId + "/DR/S/" + month + year + "/"
+                        + seriesCode + "/__"+'<p><strong>';
+                    $("#invNo").html(draftInvNo);
                 }
-                else {
-                    message = 'Draft Invoice Generated: '+ invoiceNumber;
+                if (billStatus !== "DRAFT") {
+                    message = 'Sale Invoice Generated: ' + invoiceNumber;
+                } else {
+                    message = 'Draft Invoice Generated: ' + data.purchaseBillDetail.entityId + "/DR/S/" + month + year + "/"
+                        + seriesCode + "/__";
                 }
                 waitingSwal.close();
                 Swal.fire({
@@ -1113,14 +1216,14 @@
             this.TEXTAREA.setAttribute('type', 'text');
             this.$textarea = $(this.TEXTAREA);
 
-            Handsontable.Dom.addClass(this.TEXTAREA, 'handsontableInput');
+            Handsontable.dom.addClass(this.TEXTAREA, 'handsontableInput');
 
             this.textareaStyle = this.TEXTAREA.style;
             this.textareaStyle.width = 0;
             this.textareaStyle.height = 0;
 
             this.TEXTAREA_PARENT = document.createElement('DIV');
-            Handsontable.Dom.addClass(this.TEXTAREA_PARENT, 'handsontableInputHolder');
+            Handsontable.dom.addClass(this.TEXTAREA_PARENT, 'handsontableInputHolder');
 
             this.textareaParentStyle = this.TEXTAREA_PARENT.style;
             this.textareaParentStyle.top = 0;
@@ -1167,16 +1270,16 @@
 
             switch (event.keyCode) {
                 case keyCodes.ARROW_RIGHT:
-                    if (Handsontable.Dom.getCaretPosition(target) !== target.value.length) {
-                        event.stopImmediatePropagation();
+                    if (Handsontable.dom.getCaretPosition(target) !== target.value.length) {
+                        event?.stopImmediatePropagation();
                     } else {
                         that.$textarea.select2('close');
                     }
                     break;
 
                 case keyCodes.ARROW_LEFT:
-                    if (Handsontable.Dom.getCaretPosition(target) !== 0) {
-                        event.stopImmediatePropagation();
+                    if (Handsontable.dom.getCaretPosition(target) !== 0) {
+                        event?.stopImmediatePropagation();
                     } else {
                         that.$textarea.select2('close');
                     }
@@ -1192,7 +1295,7 @@
                         } else {
                             that.beginEditing(that.originalValue + '\n')
                         }
-                        event.stopImmediatePropagation();
+                        event?.stopImmediatePropagation();
                     }
                     event.preventDefault(); //don't add newline to field
                     break;
@@ -1202,7 +1305,7 @@
                 case keyCodes.C:
                 case keyCodes.V:
                     if (ctrlDown) {
-                        event.stopImmediatePropagation(); //CTRL+A, CTRL+C, CTRL+V, CTRL+X should only work locally when cell is edited (not in table context)
+                        event?.stopImmediatePropagation(); //CTRL+A, CTRL+C, CTRL+V, CTRL+X should only work locally when cell is edited (not in table context)
                     }
                     break;
 
@@ -1210,7 +1313,7 @@
                 case keyCodes.DELETE:
                 case keyCodes.HOME:
                 case keyCodes.END:
-                    event.stopImmediatePropagation(); //backspace, delete, home, end should only work locally when cell is edited (not in table context)
+                    event?.stopImmediatePropagation(); //backspace, delete, home, end should only work locally when cell is edited (not in table context)
                     break;
             }
 
@@ -1234,15 +1337,16 @@
             this.$textarea.select2(this.options)
                 .on('change', onSelect2Changed.bind(this))
                 .on('select2-close', onSelect2Closed.bind(this));
-
             self.$textarea.select2('open');
 
             // Pushes initial character entered into the search field, if available
             if (keyboardEvent && keyboardEvent.keyCode) {
                 var key = keyboardEvent.keyCode;
                 var keyText = (String.fromCharCode((96 <= key && key <= 105) ? key - 48 : key)).toLowerCase();
-                self.$textarea.select2('search', keyText);
+                console.log("KeyText: " + keyText);
+                self.$textarea.select2('search', keyText.slice(0, -1));
             }
+
         };
 
         Select2Editor.prototype.init = function () {
@@ -1266,11 +1370,10 @@
         };
 
         Select2Editor.prototype.focus = function () {
-
             this.instance.listen();
 
             // DO NOT CALL THE BASE TEXTEDITOR FOCUS METHOD HERE, IT CAN MAKE THIS EDITOR BEHAVE POORLY AND HAS NO PURPOSE WITHIN THE CONTEXT OF THIS EDITOR
-            //Handsontable.editors.TextEditor.prototype.focus.apply(this, arguments);
+            Handsontable.editors.TextEditor.prototype.focus.apply(this, arguments);
         };
 
         Select2Editor.prototype.beginEditing = function (initialValue) {

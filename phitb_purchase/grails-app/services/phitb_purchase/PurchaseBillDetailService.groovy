@@ -115,37 +115,41 @@ class PurchaseBillDetailService {
         purchaseBillDetail.createdUser = Long.parseLong(jsonObject.get("createdUser").toString())
         purchaseBillDetail.modifiedUser = Long.parseLong(jsonObject.get("modifiedUser").toString())
         purchaseBillDetail.save(flush: true)
-        if (!purchaseBillDetail.hasErrors()) {
+        if (!purchaseBillDetail.hasErrors())
+        {
             Calendar cal = new GregorianCalendar()
             cal.setTime(purchaseBillDetail.entryDate)
             String month = cal.get(Calendar.MONTH)
             String year = cal.get(Calendar.YEAR)
-
-            DecimalFormat mFormat= new DecimalFormat("00");
+            DecimalFormat mFormat = new DecimalFormat("00");
             month = mFormat.format(Double.valueOf(month));
-
-            String invoiceNumber = null
+            String invoiceNumber = null;
             String seriesCode = jsonObject.get("seriesCode")
-
+            PurchaseBillDetail purchaseBillDetail1
             if (purchaseBillDetail.billStatus == "DRAFT")
             {
-                invoiceNumber = purchaseBillDetail.entityId+"/DR/P/" + month + year + "/" + seriesCode + "/__";
+                println(purchaseBillDetail.billStatus)
+//                invoiceNumber = saleBillDetails.entityId+"/DR/S/" + month + year + "/" + seriesCode + "/__";'
+                purchaseBillDetail.invoiceNumber = "DRAFT"
             }
             else
             {
-                invoiceNumber = purchaseBillDetail.entityId+"/P/" + month + year + "/" + seriesCode + "/" + purchaseBillDetail.serBillId
+                invoiceNumber = purchaseBillDetail.entityId + "/P/" + month + year + "/" + seriesCode + "/" +
+                        purchaseBillDetail.serBillId
+                println("Invoice Number generated: " + invoiceNumber)
             }
-
-            if(invoiceNumber)
+            if (invoiceNumber)
             {
                 purchaseBillDetail.invoiceNumber = invoiceNumber
                 purchaseBillDetail.isUpdatable = true
-                purchaseBillDetail = purchaseBillDetail.save(flush:true)
+                purchaseBillDetail.save(flush: true)
             }
             return purchaseBillDetail
         }
         else
+        {
             throw new BadRequestException()
+        }
 
     }
 
