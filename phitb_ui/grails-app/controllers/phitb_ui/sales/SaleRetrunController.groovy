@@ -44,7 +44,8 @@ class SaleRetrunController
 
     def getSaleBillByCustomer()
     {
-        def salebills = new SalesService().getSaleBillByCustomer(params.custid)
+        def salebills = new SalesService().getSaleBillByCustomer(params.custid,session.getAttribute('financialYear')
+                .toString(),session.getAttribute('entityId').toString())
         def apiResponse = new SalesService().getRequestWithIdList(salebills.id, new Links().SALE_PRODUCT_OF_BILLIDS)
         def prod = JSON.parse(apiResponse.readEntity(String.class))
         prod.each {product ->

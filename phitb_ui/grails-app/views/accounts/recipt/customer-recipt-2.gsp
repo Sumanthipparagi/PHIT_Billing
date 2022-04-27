@@ -80,7 +80,8 @@
     }
 
     th {
-        background: #eee;
+        background: #313740;
+        color: white;
     }
 
     </style>
@@ -141,182 +142,198 @@
                     %{--                        </ul>--}%
                     %{--                    </div>--}%
                     <div class="body">
-%{--                        <form action="/recipt" id="form_validation" method="POST" role="form"--}%
-%{--                              class="entityRegisterForm" enctype="multipart/form-data">--}%
-                            <div class="row clearfix">
-                                <div class="col-lg-12 form-group  form-float">
-                                    <label for="date">
-                                        Date:
-                                    </label>
-                                    <input type="text" id="date" class="date" name="date"
-                                           placeholder="Receipt Date" readonly
-                                           required/>
-                                </div>
+                        %{--                        <form action="/recipt" id="form_validation" method="POST" role="form"--}%
+                        %{--                              class="entityRegisterForm" enctype="multipart/form-data">--}%
+                        <div class="row clearfix">
+                            %{--                                <div class="col-lg-12 form-group  form-float">--}%
+                            %{--                                    <label for="date">--}%
+                            %{--                                        Date:--}%
+                            %{--                                    </label>--}%
+                            %{--                                  --}%
+                            %{--                                </div>--}%
 
-                                <div class="col-lg-6">
-                                    <label for="receivedFrom">
-                                        Customer
-                                    </label><br>
-                                    <select class=" show-tick receivedFrom" name="receivedFrom"
-                                            id="receivedFrom" onchange="getAddress(this.value)" required
-                                            style="width: 460px;">
-                                        <option value="">-- Please select --</option>
-                                        <g:each var="e" in="${entity}">
-                                            <option value="${e.id}"
-                                                    data-type="${e.entityType.id}">${e.entityName}</option>
-                                        </g:each>
-                                    </select>
+                            <div class="col-lg-6">
+                                <label for="receivedFrom">
+                                    Customer
+                                </label><br>
+                                <select class=" show-tick receivedFrom" name="receivedFrom"
+                                        id="receivedFrom" onchange="getAddress(this.value)" required
+                                        style="width: 460px;">
+                                    <option value="">-- Please select --</option>
+                                    <g:each var="e" in="${entity}">
+                                        <option value="${e.id}"
+                                                data-type="${e.entityType.id}">${e.entityName}</option>
+                                    </g:each>
+                                </select>
 
-                                    <div id="caddress" class="mt-2"></div>
-                                </div>
+                                <div id="caddress" class="mt-2"></div>
+                            </div>
 
-                                <div class="col-lg-6 form-group  form-float">
-                                    <label for="paymentMode">
-                                        Payment Mode
-                                    </label><br>
-                                    <select class="show-tick paymentMode" name="paymentMode"
-                                            id="paymentMode" onchange="payMode(this.value)" required
-                                            style="height: 37px;width: 425px;">
-                                        <option value="">-- Please select --</option>
-                                        <g:each var="pm" in="${paymodes}">
-                                            <option value="${pm.id}" data-mode="${pm.name}">${pm.name}</option>
-                                        </g:each>
-                                    %{--                                        <option value="1" data-mode="BANK">BANK</option>--}%
-                                    </select>
-                                </div>
+                            <div class="col-lg-6 form-group  form-float">
+                                <label for="paymentMode">
+                                    Payment Mode
+                                </label><br>
+                                <select class="show-tick paymentMode" name="paymentMode"
+                                        id="paymentMode" onchange="payMode(this.value)" required
+                                        style="height: 37px;width: 425px;">
+                                    <option value="">-- Please select --</option>
+                                    <g:each var="pm" in="${paymodes.reverse()}">
+                                        <option value="${pm.id}" data-mode="${pm.name}">${pm.name}</option>
+                                    </g:each>
+                                %{--                                        <option value="1" data-mode="BANK">BANK</option>--}%
+                                </select>
+                            </div>
 
-                                <div class="form-group form-float" id="mode">
+                            <div class="form-group form-float" id="mode">
 
-                                </div>
+                            </div>
 
-                                <div class="col-lg-3 form-group  form-float">
-                                    <label for="accountMode">
-                                        Account Mode
-                                    </label>
-                                    <select class="form-control show-tick accountMode" name="accountModeId"
-                                            id="accountMode" required>
-                                        <option value="">-- Please select --</option>
-                                        <g:each var="am" in="${accountMode}">
-                                            <option value="${am.id}">${am.mode}</option>
-                                        </g:each>
-                                    </select>
-                                </div>
+                            <div class="col-lg-3 form-group  form-float">
+                                <label for="accountMode">
+                                    Account Mode
+                                </label>
+                                <select class="form-control show-tick accountMode" name="accountModeId"
+                                        id="accountMode" required>
+                                    <option value="">-- Please select --</option>
+                                    <g:each var="am" in="${accountMode}">
+                                        <option value="${am.id}">${am.mode}</option>
+                                    </g:each>
+                                </select>
+                            </div>
 
-
-                                <div class="col-lg-3 form-group  form-float cheque">
-                                    <label for="chequeNumber">
-                                        Cheque Number
-                                    </label>
-                                    <input type="number" id="chequeNumber" class="chequeNumber form-control"
-                                           name="chequeNumber"
-                                           placeholder="Cheque Number"/>
-                                </div>
-
-                                <div class="col-lg-3 form-group  form-float">
-                                    <label for="paymentDate">
-                                        Payment Date
-                                    </label>
-                                    <input type="text" id="paymentDate" class="paymentDate form-control datetimepicker"
-                                           name="paymentDate"
-                                           placeholder="Payment Date"
-                                           required/>
-                                </div>
+                            <div class="col-lg-3 form-group  form-float">
+                                <label for="accountMode">
+                                    Deposit To
+                                </label>
+                                <select class="form-control show-tick depositTo" name="depositTo"
+                                        id="depositTo" required style="padding: 0">
+                                    <option value="">-- Please select --</option>
+                                    <g:each var="ar" in="${accountRegister}">
+                                        <option value="${ar.id}">${ar.accountName}</option>
+                                    </g:each>
+                                </select>
+                            </div>
 
 
-                                %{--                                <div class="col-lg-3 form-group  form-float">--}%
-                                %{--                                    <label for="financialYear">--}%
-                                %{--                                        Financial Year--}%
-                                %{--                                    </label>--}%
-                                %{--                                    <input type="text" id="financialYear" class="financialYear form-control"--}%
-                                %{--                                           name="Financial Year"--}%
-                                %{--                                           placeholder="Financial Year"--}%
-                                %{--                                           required/>--}%
-                                %{--                                </div>--}%
+                            <div class="col-lg-3 form-group  form-float cheque">
+                                <label for="chequeNumber">
+                                    Cheque Number
+                                </label>
+                                <input type="number" id="chequeNumber" class="chequeNumber form-control"
+                                       name="chequeNumber"
+                                       placeholder="Cheque Number"/>
+                            </div>
 
-                                <div class="col-lg-3 form-group  form-float">
-                                    <label for="wallet">
-                                        Wallet
-                                    </label>
-                                    <select class="form-control show-tick wallet" name="wallet"
-                                            id="wallet" required>
-                                        <option value="">-- Please select --</option>
-                                        <g:each var="w" in="${wallet}">
-                                            <option value="${w.id}">${w.walletName}</option>
-                                        </g:each>
-                                    </select>
-                                </div>
+                            <div class="col-lg-3 form-group  form-float">
+                                <label for="paymentDate">
+                                    Payment Date
+                                </label>
+                                <input type="text" id="paymentDate" class="paymentDate form-control datetimepicker"
+                                       name="paymentDate"
+                                       placeholder="Payment Date"
+                                       required/>
+                            </div>
 
-                                <div class="col-lg-3 form-group  form-float">
-                                    <label for="note">
-                                        Remarks / Note
-                                    </label>
-                                    <input type="text" id="note" class="note form-control"
-                                           name="narration"
-                                           placeholder="Remark / Note"
-                                           required/>
-                                </div>
 
-                                <div class="col-lg-3 form-group  form-float">
-                                    <label for="amountPaid">
-                                        Amount
-                                    </label>
-                                    <input type="text" id="amountPaid" class="note form-control "
-                                           name="amountPaid"
-                                           placeholder="Amount" value="0"
-                                           required/>
-                                </div>
+                            %{--                                <div class="col-lg-3 form-group  form-float">--}%
+                            %{--                                    <label for="financialYear">--}%
+                            %{--                                        Financial Year--}%
+                            %{--                                    </label>--}%
+                            %{--                                    <input type="text" id="financialYear" class="financialYear form-control"--}%
+                            %{--                                           name="Financial Year"--}%
+                            %{--                                           placeholder="Financial Year"--}%
+                            %{--                                           required/>--}%
+                            %{--                                </div>--}%
 
-                                <div class="col-lg-3 form-group  form-float mt-4">
-                                    <button type="button" class="btn btn-secondary" id="autoAdj">Auto Adjust</button>
-                                </div>
+                            %{--                                <div class="col-lg-3 form-group  form-float">--}%
+                            %{--                                    <label for="wallet">--}%
+                            %{--                                        Wallet--}%
+                            %{--                                    </label>--}%
+                            %{--                                    <select class="form-control show-tick wallet" name="wallet"--}%
+                            %{--                                            id="wallet" required>--}%
+                            %{--                                        <option value="">-- Please select --</option>--}%
+                            %{--                                        <g:each var="w" in="${wallet}">--}%
+                            %{--                                            <option value="${w.id}">${w.walletName}</option>--}%
+                            %{--                                        </g:each>--}%
+                            %{--                                    </select>--}%
+                            %{--                                </div>--}%
 
-                                <div class="container mt-5">
-                                    <div class="tab tableFixHead" style="width:100%;overflow:auto;
-                                    max-height:300px;">
-                                        <table class="table table-bordered" id="table1">
-                                            <thead>
-                                            <tr>
-                                                <th>Doc.Type</th>
-                                                <th>Trans_Id</th>
-                                                <th>Bill Date</th>
-                                                <th>Total Amt</th>
-                                                <th>Prev.Paid Amt</th>
-                                                <th>Bal Amt</th>
-                                                <th>Paid Now</th>
-                                                <th>No of Days</th>
-                                                <th>Fin_Year</th>
-                                                <th style="display: none;">BillId</th>
-                                            </tr>
-                                            </thead>
-                                            <tbody id="billDetails">
-                                            <tr><td colspan='9'><div
-                                                    style='text-align: center;'><h2>Please select customer</h2></div>
-                                            </td></tr>
-                                            </tbody>
-                                        </table>
-                                    </div>
-                                </div>
+                            <div class="col-lg-3 form-group  form-float">
+                                <label for="note">
+                                    Remarks / Note
+                                </label>
+                                <input type="text" id="note" class="note form-control"
+                                       name="narration"
+                                       placeholder="Remark / Note"
+                                       required/>
+                            </div>
 
-                                <input type="hidden" id="bills" name="bills" value="">
-                                <input type="hidden" name="status" value="1">
-                                <input type="hidden" name="syncStatus" value="1">
-                                <input type="hidden" name="createdUser" value="1">
-                                <input type="hidden" name="modifiedUser" value="1">
+                            <div class="col-lg-3 form-group  form-float">
+                                <label for="amountPaid">
+                                    Amount
+                                </label>
+                                <input type="text" id="amountPaid" class="note form-control "
+                                       name="amountPaid"
+                                       placeholder="Amount" value="0"
+                                       required/>
+                            </div>
 
-                                <div class="col-lg-12">
-                                    <div class="" style="float: right;">
-                                        <input name="id" id="id" class="id" type="hidden">
-                                        <input name="type" class="type" value="add" type="hidden">
-                                        <button  class="btn btn-default btn-round waves-effect" id="submitData"><font style="vertical-align: inherit;"><font
-                                                style="vertical-align: inherit;">SUBMIT</font></font></button>
+                            <div class="col-lg-3 form-group  form-float mt-4">
+                                <button type="button" class="btn btn-secondary" id="autoAdj">Auto Adjust</button>
+                            </div>
 
-%{--                                        <button type="reset" class="btn btn-danger btn-simple btn-round waves-effect"--}%
-%{--                                                data-dismiss="modal"><font style="vertical-align: inherit;"><font--}%
-%{--                                                style="vertical-align: inherit;">RESET</font></font></button>--}%
-                                    </div>
+                            <input type="hidden" id="date" class="date" name="date"
+                                   placeholder="Receipt Date" readonly
+                                   required/>
+
+                            <div class="container mt-5">
+                                <div class="tab tableFixHead" style="width:100%;overflow:auto;
+                                max-height:300px;">
+                                    <table class="table table-bordered" id="table1">
+                                        <thead>
+                                        <tr>
+                                            <th>Doc.Type</th>
+                                            <th>Trans_Id</th>
+                                            <th>Bill Date</th>
+                                            <th>Total Amt</th>
+                                            <th>Prev.Paid Amt</th>
+                                            <th>Bal Amt</th>
+                                            <th>Paid Now</th>
+                                            <th>No of Days</th>
+                                            <th>Fin_Year</th>
+                                            <th style="display: none;">BillId</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody id="billDetails">
+                                        <tr><td colspan='9'><div
+                                                style='text-align: center;'><h2>Please select customer</h2></div>
+                                        </td></tr>
+                                        </tbody>
+                                    </table>
                                 </div>
                             </div>
-%{--                        </form>--}%
+
+                            <input type="hidden" id="bills" name="bills" value="">
+                            <input type="hidden" name="status" value="1">
+                            <input type="hidden" name="syncStatus" value="1">
+                            <input type="hidden" name="createdUser" value="1">
+                            <input type="hidden" name="modifiedUser" value="1">
+
+                            <div class="col-lg-12">
+                                <div class="" style="float: right;">
+                                    <input name="id" id="id" class="id" type="hidden">
+                                    <input name="type" class="type" value="add" type="hidden">
+                                    <button class="btn btn-default btn-round waves-effect" id="submitData"><font
+                                            style="vertical-align: inherit;"><font
+                                                style="vertical-align: inherit;">SUBMIT</font></font></button>
+
+                                    %{--                                        <button type="reset" class="btn btn-danger btn-simple btn-round waves-effect"--}%
+                                    %{--                                                data-dismiss="modal"><font style="vertical-align: inherit;"><font--}%
+                                    %{--                                                style="vertical-align: inherit;">RESET</font></font></button>--}%
+                                </div>
+                            </div>
+                        </div>
+                        %{--                        </form>--}%
                     </div>
                 </div>
             </div>
@@ -362,6 +379,7 @@
     document.getElementById("date").value = moment(today).format('DD/MM/YYYY');
 
     $('.receivedFrom').select2()
+    $('.depositTo').select2()
     var $demoMaskedInput = $('.demo-masked-input');
     $demoMaskedInput.find('.credit-card').inputmask('9999 9999 9999 9999', {placeholder: '____ ____ ____ ____'});
 
@@ -390,7 +408,9 @@
                 '                                        </g:each>\n' +
                 '                                    </select>'
             $(".cheque").show()
-        } else if ($('#paymentMode option:selected').attr('data-mode') === "CARD") {
+        }
+
+        if ($('#paymentMode option:selected').attr('data-mode') === "CARD") {
             $("#mode").addClass('col-lg-6')
             html = '<label for="cardNumber">\n' +
                 '        Card Number\n' +
@@ -402,11 +422,13 @@
             $(".cheque").hide().prop('required', false)
             $(".cardNumber").prop('required', false)
 
-        } else if ($('#paymentMode option:selected').attr('data-mode') === "CASH") {
+        }
+        if ($('#paymentMode option:selected').attr('data-mode') === "CASH") {
             $("#mode").addClass('col-lg-6')
             $("#mode").hide().prop('required', false)
             $(".cheque").hide().prop('required', false)
-        } else if ($('#paymentMode option:selected').attr('data-mode') === "") {
+        }
+        if ($('#paymentMode option:selected').attr('data-mode') === "") {
             $('#mode').removeClass('col-lg-6');
         }
         $('#mode').html(html)
@@ -427,15 +449,10 @@
                 url: '/getbyentity/' + id,
                 dataType: 'json',
                 success: function (data) {
-
-                    getUnsettledByCustomer(id)
-                    getsettledSaleBillByCustomer(id)
                     getAllSaleBillDetails(id)
                     var trHTML = '';
                     trHTML += '<p><b>' + data.entityName + '</b><br>' + data.addressLine1 + '' + data.addressLine2 + '</p>';
                     $('#caddress').html(trHTML);
-
-
                 },
                 error: function () {
                     swal("Error!", "Something went wrong", "error");
@@ -445,125 +462,10 @@
             getAllSaleBillDetails(id)
             $('#caddress').html("");
         }
-
     }
 
 
-    function getUnsettledByCustomer(id) {
-        $.ajax({
-            type: 'GET',
-            url: '/getallunsettledbycustomer/' + id,
-            dataType: 'json',
-            success: function (data) {
-                var trHTML = '';
-                var trHTML1 = '';
-                trHTML += '';
-                trHTML1 += '';
-                var invoice = "INVS";
-                var cred = "CRNT";
-                if (data.length !== 0) {
-                    var inv = data[0].map(data => data.balance).reduce((acc, amount) => acc + amount, 0);
-                    var crnt = data[1].map(data => data.balance).reduce((acc, amount) => acc + amount, 0)
-                    var total_bal = inv - crnt
-                } else {
-                    total_bal = 0;
-                }
-                $('.total_bal').text(parseFloat(total_bal).toFixed(2));
-
-                $.each(data[0], function (key, value) {
-                    if (value.balance !== 0 && value.billStatus !== 'DRAFT') {
-                        trHTML1 +=
-                            '<tr id="' + "IN" + value.id + '"><td><button type="button" data-id="' + value.id +
-                            '"  data-custId="' + value.customerId +
-                            '"   data-adj="' + value.adjAmount.toFixed(2) +
-                            '" class="btn-sm btn-primary"  id="settled"><-</button></td><td>' + invoice +
-                            '</td><td>' + value.financialYear +
-                            '</td><td>' + moment(value.dateCreated).format('DD-MM-YYYY') +
-                            '</td><td>' + value.invoiceNumber +
-                            '</td><td><input type="number" name="balunsettled" value="' + value.balance +
-                            '" id="balunsettled" data-inid="' + value.id + '"  data-custId="' + value.customerId +
-                            '" style="width: 65%;" readonly></td></tr>';
-                    }
-                });
-
-                $.each(data[1], function (key, value) {
-                    var date = new Date(value.entryDate);
-                    if (value.balance !== 0) {
-                        trHTML +=
-                            '<tr id="' + "CR" + value.id + '"><td><button type="button" data-id="' + value.id +
-                            '"  data-custId="' + value.customerId +
-                            '"   data-adj="' + value.adjAmount + '" class="btn-sm btn-primary" id="cnsettled"><-</button></td><td>' + cred + '</td><td>' + value.financialYear +
-                            '</td><td>' + moment(date).format('DD-MM-YYYY') +
-                            '</td><td>' + value.invoiceNumber + '</td><td><input type="number" value="' + value.balance +
-                            '" id="' + "CR" + value.id + '" data-cnid="' + value.id + '" style="width: 65%;" readonly></td></tr>';
-                    }
-                });
-                $('.unsettledVocher').html(trHTML + trHTML1);
-            },
-            error: function () {
-                swal("Error!", "Something went wrong", "error");
-            }
-        });
-    }
-
-
-    function getsettledSaleBillByCustomer(id) {
-        $.ajax({
-            type: 'GET',
-            url: '/getallsettledbycustomer/' + id,
-            dataType: 'json',
-            success: function (data) {
-                var trHTML = '';
-                var trHTML1 = '';
-                trHTML += '';
-                trHTML1 += '';
-                var invoice = "INVS";
-                var cred = "CRNT";
-                var inv = data[0].map(data => data.balance).reduce((acc, amount) => acc + amount, 0);
-                var invAdjAmt = data[0].map(data => data.adjAmount).reduce((acc, adjAmt) => acc + adjAmt, 0);
-                var crnt = data[1].map(data => data.balance).reduce((acc, amount) => acc + amount, 0);
-                var crntAdjAmt = data[1].map(data => data.adjAmount).reduce((acc, adjAmount) => acc + adjAmount, 0);
-                var total_bal_s = invAdjAmt - crntAdjAmt;
-                $('.total_bal_s').text(parseFloat(total_bal_s).toFixed(2));
-                $('.tba').val(total_bal_s.toFixed(2));
-                $('.amountPaid').val(total_bal_s.toFixed(2));
-                $.each(data[0], function (key, value) {
-                    if (value.balance !== 0 && value.billStatus !== 'DRAFT') {
-                        trHTML +=
-                            '<tr id="' + "IN" + value.id + '"><td>' + invoice +
-                            '</td><td>' + value.financialYear +
-                            '</td><td>' + moment(value.dateCreated).format('DD-MM-YYYY') +
-                            '</td><td>' + value.invoiceNumber + '</td><td><input type="number" value="' + value.balance +
-                            '" id="INVbalsettled" data-inid="' + value.id + '"  data-custId="' + value.customerId
-                            + '" data-invbal="' + value.balance + '" ></td><td>' + value?.adjAmount +
-                            '</td><td><button type="button" data-id="' + value.id + '"  data-custId="' +
-                            value.customerId + '" data-adjAmt="' + value.adjAmount + '" class="btn-sm btn-primary" id="unsettled">-></button></td></tr>';
-                    }
-
-                });
-                $.each(data[1], function (key, value) {
-                    var date = new Date(value.entryDate);
-                    if (value.balance !== 0) {
-                        trHTML +=
-                            '<tr id="' + "CR" + value.id + '"><td>' + cred +
-                            '</td><td>' + value.financialYear +
-                            '</td><td>' + moment(date).format('DD-MM-YYYY') +
-                            '</td><td>' + value.invoiceNumber + '</td><td><input type="number" value="' + value.balance +
-                            '" id="CRbalsettled" data-cnid="' + value.id + '"  data-custId="' + value.customerId
-                            + '"  data-crbal="' + value.balance + '" ></td><td>' + value.adjAmount +
-                            '</td><td><button type="button" data-id="' + value.id +
-                            '"  data-custId="' + value.customerId +
-                            '"  data-adj="' + value.adjAmount + '" class="btn-sm btn-primary" id="cnunsettled">-></button></td></tr>';
-                    }
-                });
-                $('.settledVocher').html(trHTML + trHTML1);
-            },
-            error: function () {
-                swal("Error!", "Something went wrong", "error");
-            }
-        });
-    }
-
+    let invIdArray = [];
 
     function getAllSaleBillDetails(id) {
         if (id) {
@@ -594,19 +496,18 @@
                                 '                                        <td>' + value.invoiceNumber + '</td>\n' +
                                 '                                        <td>' + moment(value.dateCreated).format('DD-MM-YYYY') + '</td>\n' +
                                 '                                        <td>' + value.totalAmount.toFixed(2) + '</td>\n' +
-                                '                                        <td id="' + "invAdjAmt" + value.id + '">' +
-                                value.adjAmount.toFixed(2) + '</td>\n' +
-                                '                                        <td>' + value.balance.toFixed(2) + '</td>\n' +
-                                '                                        <td><input type="number" class="paidNowInv txt" id="paidNowInv'+value.id+'" name="paidNowInv" data-inid="' + value.id + '" data-bal="' + value.balance + '" style="width: 100px;" pattern="\\d{1,10}(?:\\.\\d{1,3})?$" value="0"></td>\n' +
+                                '                                        <td id="' + "invAdjAmt" + value.id + '">' + value.adjAmount.toFixed(2) + '</td>\n' +
+                                '                                        <td id="' + "invBal" + value.id + '" >' +
+                                value.balance.toFixed(2) +
+                                '</td>\n' +
+                                '                                        <td><input type="number" class="paidNowInv txt" id="paidNowInv' + value.id + '" name="paidNowInv" data-inid="' + value.id + '" data-bal="' + value.balance + '" style="width: 100px;" pattern="\\d{1,10}(?:\\.\\d{1,3})?$" value="0"></td>\n' +
                                 '                                        <td>' + calculateNoOfDays(value.dateCreated) + '</td>\n' +
                                 '                                        <td>' + value.financialYear + '</td>\n' +
                                 '                                        <td style="display: none;">' + value.id + '</td>\n' +
                                 '                                        </tr>';
 
-                            $('.paidNowInv').attr({
-                                'min': value.balance.toFixed(2),
-                            });
-
+                            invIdArray.push(value.id);
+                            console.log(invIdArray)
                         }
                     });
 
@@ -619,7 +520,7 @@
                                 '                                        <td>' + moment(value.dateCreated).format('DD-MM-YYYY') + '</td>\n' +
                                 '                                        <td>' + "-" + value.totalAmount.toFixed(2) + '</td>\n' +
                                 '                                        <td>' + value?.adjAmount.toFixed(2) + '</td>\n' +
-                                '                                        <td id="inv'+id+'">' + "-" +
+                                '                                        <td id="inv' + id + '">' + "-" +
                                 value.balance.toFixed(2) +
                                 '</td>\n' +
                                 '<td><input type="number" class="paidNowCrt txt" name="paidNowCrt" style="width: 100px;" value="0"></td>\n' +
@@ -645,117 +546,6 @@
     }
 
 
-    // var input = document.getElementById("tc");
-    // input.addEventListener("keydown", function (e) {
-    //     if (e.target.value !== 0) {
-    //         if (e.key === "Enter") {
-    //             $(".total").val(total().toFixed(2))
-    //         }
-    //     }
-    // });
-    //
-    // function total() {
-    //     // Capture the entered values of two input boxes
-    //     var my_input1 = document.getElementById('tc').value;
-    //     var my_input2 = document.getElementById('tba').value;
-    //     return parseFloat(my_input1) - parseInt(my_input2)
-    // }
-
-    $(document).on('click', '#settled', function (e) {
-        e.preventDefault();
-        var id = $(this).data('id');
-        var custId = $(this).attr('data-custId');
-        var adj = $(this).attr('data-adj');
-        var url = '/salesettledvocher/' + id + "?adj=" + adj;
-        var type = 'GET';
-        $.ajax({
-            url: url,
-            type: type,
-            contentType: false,
-            processData: false,
-            success: function () {
-                $('table#table2 tr#IN' + id).remove();
-                getUnsettledByCustomer(custId);
-                getAllSaleBillDetails(custId)
-            },
-            error: function () {
-                swal("Error!", "Something went wrong", "error");
-            }
-        });
-    });
-
-
-    $(document).on('click', '#unsettled', function (e) {
-        e.preventDefault();
-        var id = $(this).data('id');
-        var custId = $(this).attr('data-custId');
-        var adj = $(this).attr('data-adj');
-        var url = '/saleunsettledvocher/' + id + "?adj=" + adj;
-        var type = 'GET';
-        $.ajax({
-            url: url,
-            type: type,
-            contentType: false,
-            processData: false,
-            success: function () {
-                $('table#table1 tr#IN' + id).remove();
-                getUnsettledByCustomer(custId);
-                getAllSaleBillDetails(custId)
-            },
-            error: function () {
-                swal("Error!", "Something went wrong", "error");
-            }
-        });
-    });
-
-
-    $(document).on('click', '#cnsettled', function (e) {
-        e.preventDefault();
-        var id = $(this).data('id');
-        var adj = $(this).attr('data-adj');
-        var custId = $(this).attr('data-custId');
-        var url = '/creditsettledvocher/' + id + "?adj=" + adj;
-        var type = 'GET';
-        $.ajax({
-            url: url,
-            type: type,
-            contentType: false,
-            processData: false,
-            success: function () {
-                $('table#table2 tr#CN' + id).remove();
-                getUnsettledByCustomer(custId);
-                getAllSaleBillDetails(custId);
-            },
-            error: function () {
-                swal("Error!", "Something went wrong", "error");
-            }
-        });
-    });
-
-
-    $(document).on('click', '#cnunsettled', function (e) {
-        e.preventDefault();
-        var id = $(this).data('id');
-        var adj = $(this).attr('data-adj');
-        var custId = $(this).attr('data-custId');
-        var url = '/creditunsettledvocher/' + id + "?adj=" + adj;
-        var type = 'GET';
-        $.ajax({
-            url: url,
-            type: type,
-            contentType: false,
-            processData: false,
-            success: function () {
-                $('table#table1 tr#CN' + id).remove();
-                getUnsettledByCustomer(custId);
-                getAllSaleBillDetails(custId)
-            },
-            error: function () {
-                swal("Error!", "Something went wrong", "error");
-            }
-        });
-    });
-
     $(document).ready(function () {
         $(window).keydown(function (event) {
             if (event.keyCode === 13) {
@@ -765,123 +555,26 @@
         });
 
 
-        $(document).on('keydown', '#INVbalsettled', function (e) {
-            if (e.keyCode === 13 || e.which === '13') {
-                var balance = Number($(this).val());
-                var id = $(this).attr('data-inid');
-                var invbal = $(this).attr('data-invbal');
-                var custId = $(this).attr('data-custId');
-                var billType = "INVOICE";
-                var url = "/updatesalebalance?id=" + id + "&balance=" + balance;
-                if (balance !== 0 && balance <= invbal) {
-                    $.ajax({
-                        url: url,
-                        type: "POST",
-                        contentType: false,
-                        processData: false,
-                        data: {
-                            balance: balance,
-                            id: id
-                        },
-                        success: function () {
-                            $.ajax({
-                                type: "POST",
-                                url: "/updatereciptlog",
-                                data: {
-                                    amountPaid: balance,
-                                    billId: id,
-                                    billType: billType,
-                                    financialYear: '${session.getAttribute('financialYear')}',
-                                    currentFinancialYear: '${session.getAttribute('financialYear')}',
-                                },
-                                success: function (data) {
-                                    getUnsettledByCustomer(custId);
-                                    getAllSaleBillDetails(custId)
-                                }
-                            });
-                        },
-                        error: function () {
-                            swal("Error!", "Something went wrong", "error");
-                        }
-                    });
-                } else {
-                    if (balance === 0) {
-                        swal("Balance should not be zero!!");
-                        $('#balsettled').val(invbal)
-                    } else {
-                        swal("Balance should not exceed!!");
-                        $('#balsettled').val(invbal)
-                    }
-                    $('#balsettled').val(invbal)
-                }
-            }
-        });
-
-
-        $(document).on('keydown', '#CRbalsettled', function (e) {
-            if (e.keyCode === 13 || e.which === '13') {
-                var balance = Number($(this).val());
-                var id = $(this).attr('data-cnid');
-                var invbal = $(this).attr('data-crbal');
-                var custId = $(this).attr('data-custId');
-                var billType = "CRNT";
-                var url = "/updatesalereturnbalance?id=" + id + "&balance=" + balance;
-                if (balance !== 0 && balance <= invbal) {
-                    $.ajax({
-                        url: url,
-                        type: "POST",
-                        contentType: false,
-                        processData: false,
-                        data: {
-                            balance: balance,
-                            id: id
-                        },
-                        success: function () {
-                            $.ajax({
-                                type: "POST",
-                                url: "/updatereciptlog",
-                                data: {
-                                    amountPaid: balance,
-                                    billId: id,
-                                    billType: billType,
-                                    financialYear: '${session.getAttribute('financialYear')}',
-                                    currentFinancialYear: '${session.getAttribute('financialYear')}',
-                                },
-                                success: function (data) {
-                                    getUnsettledByCustomer(custId);
-                                    getAllSaleBillDetails(custId)
-                                }
-                            });
-                        },
-                        error: function () {
-                            swal("Error!", "Something went wrong", "error");
-                        }
-                    });
-                } else {
-                    if (balance === 0) {
-                        swal("Balance should not be zero!!");
-                        $('#balsettled').val(invbal)
-                    } else {
-                        swal("Balance should not exceed!!");
-                        $('#balsettled').val(invbal)
-                    }
-                    $('#balsettled').val(invbal)
-                }
-            }
-        });
     });
 
-    $(document).on('keydown', '.txt', function (e) {
+    $(document).on('keyup', '.txt', function (e) {
+        var id = $(this).attr('data-inid');
+        var bal = $(this).attr('data-bal');
+        var value = $('#paidNowInv' + id).val();
+        if (Number(value) > Number(bal)) {
+            Swal.fire({
+                position: 'top-end',
+                icon: 'error',
+                title: 'Amount should not be greater!',
+                showConfirmButton: false,
+                timer: 1000
+            });
+            $('#paidNowInv' + id).val(0);
+        }
         if (e.keyCode === 13 || e.which === '13') {
-            var id = $(this).attr('data-inid');
-            var bal = $(this).attr('data-bal');
             var index = $('.txt').index(this) + 1;
             $('.txt').eq(index).focus();
-            var value = $('#paidNowInv'+id).val();
-            if(Number(value) > Number(bal))
-            {
-                $('#paidNowInv'+id).val(0);
-            }
+
             // var prevPaid = $('table#table1 tr#IN'+id+' td#invAdjAmt'+id+'').text();
             // var paid = parseFloat(prevPaid) + parseFloat($('#paidNowInv').val());
             // $('table#table1 tr#IN'+id+' td#invAdjAmt'+id+'').text(parseFloat(paid).toFixed());
@@ -895,32 +588,58 @@
     });
 
     $(document).on('click', '#autoAdj', function (e) {
-        var value = $('#amountPaid').val();
-        var databal = $('.paidNowInv').attr('data-bal');
-        var inputs = $(".paidNowInv");
-        var invoices = $('.paidNowInv').length;
-        var crnt = $('.paidNowCrt').length;
-
-        $(".paidNowInv[data-bal]").each(function () {
-            var databal = $(this).attr('data-bal');
-            if (value !== 0) {
-                var paidNow = parseFloat(value) / parseFloat(invoices);
-                $('.paidNowInv').val(parseFloat(paidNow).toFixed(2));
-                $('.paidNowCrt').val(parseFloat(0).toFixed(2));
-            }
-            else
-            {
-                $('.paidNowInv').val(parseFloat(0).toFixed(2));
-            }
-        });
+        var amountPaid = Number($('#amountPaid').val());
+        if(amountPaid!==0 && amountPaid!=="")
+        {
+            $.each(invIdArray, function (key, value) {
+                var invBal = Number($('#invBal' + value).text());
+                if (invBal > amountPaid) {
+                    $('#paidNowInv' + value).val(amountPaid)
+                    amountPaid = 0;
+                } else {
+                    amountPaid = amountPaid - invBal;
+                    $('#paidNowInv' + value).val(invBal)
+                }
+            });
+        }
+        else
+        {
+            Swal.fire({
+                icon: 'error',
+                title: 'Enter vaild amount!',
+                showConfirmButton: false,
+                timer: 1000
+            });
+        }
+        // var databal = $('.paidNowInv').attr('data-bal');
+        // var inputs = $(".paidNowInv");
+        // var invoices = $('.paidNowInv').length;
+        // var crnt = $('.paidNowCrt').length;
+        // $(".paidNowInv[data-bal]").each(function () {
+        //     var databal = $(this).attr('data-bal');
+        //     if (value !== 0) {
+        //         var paidNow = parseFloat(value) / parseFloat(invoices);
+        //         $('.paidNowInv').val(parseFloat(paidNow).toFixed(2));
+        //         $('.paidNowCrt').val(parseFloat(0).toFixed(2));
+        //     }
+        //     else
+        //     {
+        //         $('.paidNowInv').val(parseFloat(0).toFixed(2));
+        //     }
+        // });
         // var table = $('#table1').tableToJSON();
         // $('#bills').val(table.toString())
         // console.log(table)
     });
 
 
-    $(document).ready(function() {
+    $(document).ready(function () {
+
         $(document).on('click', '#submitData', function (e) {
+            var sum = 0.0;
+            $('.paidNowInv').each(function () {
+                sum += parseFloat($(this).val());
+            });
             e.preventDefault();
             var receivedFrom = $("#receivedFrom").val();
             var date = $("#date").val();
@@ -930,9 +649,44 @@
             var cardNumber = $("#cardNumber").val();
             var paymentDate = $("#paymentDate").val();
             var chequeNumber = $("#chequeNumber").val();
-            var wallet = $("#wallet").val();
+            var depositTo = $("#depositTo").val();
+            var wallet = "0";
             var note = $("#note").val();
-            var amount = $("#amountPaid").val();
+            var amount = sum;
+            if (!paymentDate) {
+                alert("Please select payment Date.");
+                waitingSwal.close();
+                return;
+            }
+            if (!receivedFrom) {
+                alert("Please select customer.");
+                waitingSwal.close();
+                return;
+            }
+            if (!depositTo) {
+                alert("Please select deposit account.");
+                waitingSwal.close();
+                return;
+            }
+
+            if ($('#paymentMode option:selected').attr('data-mode') === "BANK") {
+                if (!bank) {
+                    alert("Please select Bank.");
+                    waitingSwal.close();
+                    return;
+                }
+                if (!chequeNumber) {
+                    alert("Please select Cheque number.");
+                    waitingSwal.close();
+                    return;
+                }
+            } else if ($('#paymentMode option:selected').attr('data-mode') === "CARD") {
+                if (!cardNumber) {
+                    alert("Please select card number.");
+                    waitingSwal.close();
+                    return;
+                }
+            }
             var tbl = $('#table1 tbody tr').map(function (idxRow, ele) {
                 //
                 // start building the retVal object
@@ -980,6 +734,7 @@
                     chequeNumber: chequeNumber,
                     narration: note,
                     amountPaid: amount,
+                    depositTo: depositTo,
                     date: date,
                     createdUser: '${session.getAttribute('userId')}',
                     modifiedUser: '${session.getAttribute('userId')}',
@@ -989,17 +744,19 @@
                 success: function (data) {
                     Swal.fire({
                         title: "Success!",
-                        // showDenyButton: true,
+                        showDenyButton: true,
                         showCancelButton: false,
                         confirmButtonText: 'OK',
-                        // denyButtonText: 'New Entry',
+                        denyButtonText: 'Print',
                         allowOutsideClick: false
                     }).then((result) => {
                         if (result.isConfirmed) {
                             location.reload();
+                        }else if (result.isDenied) {
+                            location.reload();
+                            window.open("/print-recipt/"+data.receivedFrom+"/recipt/"+data.id, '_blank');
                         }
                     });
-                    location.reload();
                 },
                 error: function () {
                     console.log('ERR')

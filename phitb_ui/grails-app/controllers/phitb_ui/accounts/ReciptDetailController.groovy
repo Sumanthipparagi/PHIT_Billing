@@ -6,9 +6,12 @@ import org.grails.web.json.JSONArray
 import org.grails.web.json.JSONObject
 import phitb_ui.AccountsService
 import phitb_ui.Constants
+import phitb_ui.EntityService
 import phitb_ui.Links
 import phitb_ui.ProductService
 import phitb_ui.SalesService
+import phitb_ui.SystemService
+import phitb_ui.entity.AccountRegisterController
 import phitb_ui.entity.CustomerGroupController
 import phitb_ui.entity.EntityRegisterController
 import phitb_ui.entity.UserRegisterController
@@ -55,12 +58,13 @@ class ReciptDetailController
         ArrayList<String> entity = new EntityRegisterController().show() as ArrayList
         ArrayList<String> bank = new BankRegisterController().show() as ArrayList
         ArrayList<String> accountMode = new AccountModeController().show() as ArrayList
+        ArrayList<String> accountRegister = new AccountRegisterController().getAllAccounts() as ArrayList
         ArrayList<String> wallet = new WalletController().show() as ArrayList
         ArrayList<String> saleinvoice = new SalebillDetailsController().show() as ArrayList
         ArrayList<String> paymodes = new PaymentModeController().show() as ArrayList<String>
         render(view: "/accounts/recipt/customer-recipt-2", model: [entity: entity, bank: bank, accountMode: accountMode,
                                                                  wallet: wallet, saleinvoice: saleinvoice,paymodes:
-                                                                         paymodes])
+                                                                         paymodes,accountRegister:accountRegister])
     }
 
 
@@ -129,6 +133,26 @@ class ReciptDetailController
             if (apiResponse.status == 200)
             {
                 JSONObject responseObject = new JSONObject(apiResponse.readEntity(String.class))
+                if(responseObject)
+                {
+                    JSONArray jsonArray = responseObject.data
+                    JSONArray jsonArray2 = new JSONArray()
+                    JSONArray depositArray = new JSONArray()
+                    for (JSONObject json : jsonArray) {
+                        json.put("receivedFrom", new EntityService().getEntityById(json.get("receivedFrom").toString()))
+                        jsonArray2.put(json)
+                    }
+
+//                    for(JSONObject json1 : jsonArray2)
+//                    {
+//                        entityArray.put(json1.get("customer"))
+//                    }
+                    jsonArray.each {
+                        def accountResp = new AccountRegisterController().getAllAccountsById(it.get("depositTo").toString())
+                        it.put("deposit", accountResp)
+                    }
+                    responseObject.put("data", jsonArray2)
+                }
                 respond responseObject, formats: ['json'], status: 200
             }
             else
@@ -336,6 +360,7 @@ class ReciptDetailController
         try
         {
             JSONObject jsonObject = new JSONObject(params)
+            jsonObject.put("entityId",session.getAttribute('entityId').toString())
             JSONArray billArray = new JSONArray(params.reciptData)
             def apiResponse = new AccountsService().saveRecipt(jsonObject, session.getAttribute('financialYear') as String)
             if (apiResponse?.status == 200)
@@ -374,13 +399,16 @@ class ReciptDetailController
                         }
                     }
                     JSONObject billLog = new JSONObject()
-                    billLog.put("billId",billId)
-                    billLog.put("billType",docType)
-                    billLog.put("amountPaid",paidNow)
-                    billLog.put("currentFinancialYear",session.getAttribute('financialYear').toString())
-                    billLog.put("financialYear",session.getAttribute('financialYear').toString())
-                    billLog.put("recieptId",recieptId)
-                    billLog.put("transId",transactionId)
+                    if(paidNow!=0)
+                    {
+                        billLog.put("billId",billId)
+                        billLog.put("billType",docType)
+                        billLog.put("amountPaid",paidNow)
+                        billLog.put("currentFinancialYear",session.getAttribute('financialYear').toString())
+                        billLog.put("financialYear",session.getAttribute('financialYear').toString())
+                        billLog.put("recieptId",recieptId)
+                        billLog.put("transId",transactionId)
+                    }
                     def billLogResponse = new AccountsService().updateReceiptDetailLog(billLog)
                     if(billLogResponse?.status == 200)
                     {

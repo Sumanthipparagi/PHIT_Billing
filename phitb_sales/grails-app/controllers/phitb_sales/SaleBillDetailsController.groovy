@@ -359,7 +359,8 @@ class SaleBillDetailsController
                 }
                 else
                 {
-                    saleBillDetails.balance = 0
+                    saleBillDetails.balance = saleBillDetails.getBalance()
+                    saleBillDetails.adjAmount = saleBillDetails.getAdjAmount()
                 }
                 SaleBillDetails saleBillDetails1 = saleBillDetails.save(flush: true)
                 if (saleBillDetails1)

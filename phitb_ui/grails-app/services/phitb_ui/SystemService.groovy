@@ -638,14 +638,12 @@ class SystemService
     def getAccountmodes() {
         Client client = ClientBuilder.newClient();
         WebTarget target = client.target(new Links().API_GATEWAY);
-
         try {
 
             Response apiResponse = target
                     .path(new Links().ACCOUNT_MODES_SHOW)
                     .request(MediaType.APPLICATION_JSON_TYPE)
                     .get()
-
             return apiResponse
         }
         catch (Exception ex) {

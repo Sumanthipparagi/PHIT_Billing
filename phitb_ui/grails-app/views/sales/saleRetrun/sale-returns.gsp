@@ -330,8 +330,10 @@
         $("#prev_sales_yes").click(function () {
             saleSelection($("#customerSelect").val())
         });
+
         setTimeout(function () {
             $('#prev_sales_yes').click()
+            $('#prev_sales_yes').trigger('click')
         }, 0.1);
 
         <g:each in="${customers}" var="cs">
@@ -519,7 +521,7 @@
                         var finalPrice = priceBeforeGst + (priceBeforeGst * (gst / 100));
                         hot.setDataAtCell(row, 11, finalPrice);
 
-                        if (gst != 0) {
+                        if (gst !== 0) {
                             hot.setDataAtCell(row, 10, priceBeforeGst * (gst / 100)); //GST
                             hot.setDataAtCell(row, 12, priceBeforeGst * (sgst / 100)); //SGST
                             hot.setDataAtCell(row, 13, priceBeforeGst * (cgst / 100)); //CGST
@@ -672,8 +674,9 @@
                                 invoiceNumber = "DR/S/"+ month + year + "/" + seriesCode + "/__";
                             }
                             else
-                                invoiceNumber = "S/"+month+year+"/"+seriesCode+"/"+data[0].serBillId;
-
+                            {
+                                invoiceNumber = data[i].billId.invoiceNumber
+                            }
                             batchdt.push(invoiceNumber);
                             batchdt.push("Invoice");
                             batchdt.push(data[i].batchNumber);
@@ -1411,6 +1414,10 @@
         Handsontable.editors.registerEditor('select2', Select2Editor);
 
     })(Handsontable);
+
+    window.onbeforeunload = function() {
+        return "Data will be lost if you leave the page, are you sure?";
+    };
 </script>
 <g:include view="controls/footer-content.gsp"/>
 <script>

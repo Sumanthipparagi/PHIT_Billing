@@ -39,6 +39,8 @@ class ReceiptDetail implements LogicalDelete<ReceiptDetail> {
         depositTo nullable: true
         bank nullable: true
         cardNumber nullable: true
+        wallet nullable: true
+        narration nullable: true
     }
 
     static mapping = {
