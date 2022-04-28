@@ -195,7 +195,7 @@ class UserRegisterService {
             userRegister.modifiedUser = Long.parseLong(jsonObject.get("modifiedUser").toString())
             userRegister.save(flush: true)
             if (!userRegister.hasErrors()) {
-                AuthRegister authRegister = new AuthRegister()
+                AuthRegister authRegister = AuthRegister.findByUser(userRegister)
                 authRegister.user = userRegister
                 authRegister.username = userRegister.userName
                 authRegister.password = new AuthRegisterService().hashPassword(jsonObject.get("password").toString())
@@ -210,7 +210,33 @@ class UserRegisterService {
         }
     }
 
-    void delete(String id) {
+     def updatePassword(String id, String password) {
+         try
+         {
+             UserRegister userRegister = UserRegister.findById(Long.parseLong(id))
+             if (userRegister)
+             {
+                 AuthRegister authRegister = AuthRegister.findByUser(userRegister)
+                 authRegister.user = userRegister
+                 authRegister.username = userRegister.userName
+                 authRegister.password = new AuthRegisterService().hashPassword(password)
+             }
+             else
+             {
+                 throw new BadRequestException()
+             }
+         }
+         catch (Exception ex)
+         {
+            println("Service:UserRegisterService, Password Update Failed"+ex)
+         }
+
+    }
+
+
+
+
+        void delete(String id) {
         if (id) {
             UserRegister userRegister = UserRegister.findById(Long.parseLong(id))
             if (userRegister) {

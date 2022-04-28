@@ -317,6 +317,9 @@ class UrlMappings
                 action = [GET: 'show', PUT: 'update', DELETE:
                         'delete']
             }
+
+//            Update Password
+            "/update-passoword(.$format)?"(controller: 'userRegister', action: 'updatePassword')
         }
     }
 }

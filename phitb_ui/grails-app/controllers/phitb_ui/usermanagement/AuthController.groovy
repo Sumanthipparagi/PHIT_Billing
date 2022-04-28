@@ -108,7 +108,22 @@ class AuthController {
 
     def updateUser()
     {
-        def user = new EntityService().getUser(params.id)
-        render(view:'/usermanagement/auth/updateUser')
+        try
+        {
+            if(params.id!="")
+            {
+                def user = new EntityService().getUser(params.id)
+                render(view: '/usermanagement/auth/updateUser', model: [user: user])
+            }
+            else
+            {
+                redirect(uri: '/')
+            }
+        }
+        catch (Exception ex)
+        {
+            log.error(controllerName+":"+ex)
+            println(controllerName+":"+ex)
+        }
     }
 }
