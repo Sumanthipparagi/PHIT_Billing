@@ -873,8 +873,8 @@
     function customerSelectChanged() {
         var noOfCrDays = 0;
         var customerId = $("#customerSelect").val();
-        batchSelection(customerId);
-        saleSelection(customerId);
+        batchSelection(customerId)
+        saleSelection(customerId)
         for (var i = 0; i < customers.length; i++) {
             if (customerId == customers[i].id) {
                 noOfCrDays = customers[i].noOfCrDays;
@@ -1112,10 +1112,8 @@
                 }).then((result) => {
                     if (result.isConfirmed) {
                         printInvoice();
-                        window.location.href ="";
                     } else if (result.isDenied) {
                         resetPage();
-                        window.location.href ="";
                     }
                 });
 

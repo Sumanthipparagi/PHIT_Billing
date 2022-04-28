@@ -7,7 +7,7 @@
     <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
     <meta name="description" content="Responsive Bootstrap 4 and web Application ui kit.">
 
-    <title>:: PharmIt :: User Register</title>
+    <title>:: PharmIt :: Update Password</title>
     <link rel="icon" type="image/x-icon" href="${assetPath(src: '/themeassets/images/favicon.ico')}"/>
     <!-- Favicon-->
     <asset:stylesheet rel="stylesheet" src="/themeassets/plugins/bootstrap/css/bootstrap.min.css"/>
@@ -76,14 +76,30 @@
                     %{--                        </ul>--}%
                     %{--                    </div>--}%
                     <div class="body">
-                        <form action="/user-register/update/${userregisterbyId.id}" id="form_validation" method="POST"
+                        <form action="" id="form_validation" method="POST"
                               role="form"  class="entityRegisterForm" enctype="multipart/form-data">
                             <div class="row clearfix">
                                 <div class="col-lg-12 col-md-12 col-sm-12">
                                     <div class="card">
+                                        <div class="header">
+                                            <h2><strong>Advanced</strong> Form Example With Validation</h2>
+                                            <ul class="header-dropdown">
+                                                <li class="dropdown"> <a href="javascript:void(0);" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"> <i class="zmdi zmdi-more"></i> </a>
+                                                    <ul class="dropdown-menu dropdown-menu-right">
+                                                        <li><a href="javascript:void(0);">Action</a></li>
+                                                        <li><a href="javascript:void(0);">Another action</a></li>
+                                                        <li><a href="javascript:void(0);">Something else</a></li>
+                                                        <li><a href="javascript:void(0);" class="boxs-close">Delete</a></li>
+                                                    </ul>
+                                                </li>
+                                            </ul>
+                                        </div>
                                         <form id="wizard_with_validation" method="POST">
                                             <h3>Account Information</h3>
                                             <fieldset>
+                                                <div class="form-group form-float">
+                                                    <input type="text" class="form-control" placeholder="Username *" name="username" required>
+                                                </div>
                                                 <div class="form-group form-float">
                                                     <input type="password" class="form-control" placeholder="Password *" name="password" id="password" required>
                                                 </div>
@@ -152,99 +168,6 @@
 <asset:javascript src="/themeassets/js/pages/forms/basic-form-elements.js"/>
 <asset:javascript src="/themeassets/plugins/dropify/dist/js/dropify.min.js"/>
 
-<script>
-
-    $(function () {
-
-        var dob = new Date('${userregisterbyId.dob}');
-        $('.dob').val(moment(dob).format('DD/MM/YYYY'));
-
-        //Datetimepicker plugin
-        $('.dob').bootstrapMaterialDatePicker({
-            format: 'DD/MM/YYYY',
-            clearButton: true,
-            time: false,
-            weekStart: 1
-        });
-
-        var joiningDate = new Date('${userregisterbyId.joiningDate}');
-        $('.joiningDate').val(moment(joiningDate).format('DD/MM/YYYY'));
-
-
-        $('.joiningDate').bootstrapMaterialDatePicker({
-            format: 'DD/MM/YYYY',
-            clearButton: true,
-            time: false,
-            weekStart: 1
-        });
-
-        var lastPaidDate = new Date('${userregisterbyId.lastPaidDate}');
-        $('.lastPaidDate').val(moment(lastPaidDate).format('DD/MM/YYYY'));
-
-        $('.lastPaidDate').bootstrapMaterialDatePicker({
-            format: 'DD/MM/YYYY',
-            clearButton: true,
-            time: false,
-            weekStart: 1
-        });
-
-        var anniversaryDate = new Date('${userregisterbyId.anniversaryDate}');
-        $('.anniversaryDate').val(moment(anniversaryDate).format('DD/MM/YYYY'));
-
-        $('.anniversaryDate').bootstrapMaterialDatePicker({
-            format: 'DD/MM/YYYY',
-            clearButton: true,
-            time: false,
-            weekStart: 1
-        });
-    });
-
-    $(document).ready(function() {
-        // Basic
-        $('.dropify').dropify();
-
-        // Translated
-        $('.dropify-fr').dropify({
-            messages: {
-                default: 'Glissez-déposez un fichier ici ou cliquez',
-                replace: 'Glissez-déposez un fichier ou cliquez pour remplacer',
-                remove: 'Supprimer',
-                error: 'Désolé, le fichier trop volumineux'
-            }
-        });
-
-        // Used events
-        var drEvent = $('#input-file-events').dropify();
-
-        drEvent.on('dropify.beforeClear', function(event, element) {
-            return confirm("Do you really want to delete \"" + element.file.name + "\" ?");
-        });
-
-        drEvent.on('dropify.afterClear', function(event, element) {
-            alert('File deleted');
-        });
-
-        drEvent.on('dropify.errors', function(event, element) {
-            console.log('Has Errors');
-        });
-
-        var drDestroy = $('#input-file-to-destroy').dropify();
-        drDestroy = drDestroy.data('dropify')
-        $('#toggleDropify').on('click', function(e) {
-            e.preventDefault();
-            if (drDestroy.isDropified()) {
-                drDestroy.destroy();
-            } else {
-                drDestroy.init();
-            }
-        })
-    });
-
-    $('.entity').change(function(){
-        var type = $('option:selected', this).attr('data-type');
-        $(".entityType").val(type);
-    });
-</script>
 <g:include view="controls/footer-content.gsp"/>
 <script>
     selectSideMenu("entity-menu");

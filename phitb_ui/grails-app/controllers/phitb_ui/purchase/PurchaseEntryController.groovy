@@ -128,12 +128,12 @@ class PurchaseEntryController {
         def series = new EntityService().getSeriesById(seriesId)
         if (!billStatus.equalsIgnoreCase("DRAFT")) {
             def recentPurchaseBill = new PurchaseService().getRecentPurchaseBill(financialYear, entityId, billStatus)
-            if (recentPurchaseBill != null) {
+            if (recentPurchaseBill != null && recentPurchaseBill.size()!=0) {
                 finId = Long.parseLong(recentPurchaseBill.get("finId").toString()) + 1
                 serBillId = Long.parseLong(recentPurchaseBill.get("serBillId").toString()) + 1
             } else {
                 finId = 1
-                serBillId = Long.parseLong(series.get("saleId").toString())
+                serBillId = Long.parseLong(series.get("purId").toString())
             }
         }
         long totalSqty = 0
