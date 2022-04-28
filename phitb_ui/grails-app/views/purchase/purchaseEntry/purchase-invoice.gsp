@@ -2,7 +2,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Sale Invoice</title>
+    <title>Purchase Invoice</title>
 
     <script type="text/javascript">
         %{--function generateBarCode() {--}%
@@ -178,7 +178,7 @@
             </sub>
         </td>
         <td colspan="4" style="vertical-align:top;">
-            <strong>TAX INVOICE</strong>
+            <strong>PURCHASE INVOICE</strong>
             <ul style="margin: 0;">
 
                 <li><b class="tab">Invoice No</b>: ${purchaseBillDetail.invoiceNumber}</li>
