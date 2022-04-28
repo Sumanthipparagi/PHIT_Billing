@@ -108,6 +108,7 @@ class AuthController {
 
     def updateUser()
     {
+        def user = new EntityService().getUser(params.id)
         render(view:'/usermanagement/auth/updateUser')
     }
 }

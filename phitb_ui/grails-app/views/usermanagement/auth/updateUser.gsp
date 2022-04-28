@@ -80,8 +80,8 @@
                     </div>
                     <ul class="nav nav-tabs profile_tab">
                         <li class="nav-item"><a class="nav-link" data-toggle="tab" href="#overview">Overview</a></li>
-                        <li class="nav-item"><a class="nav-link active" data-toggle="tab" href="#schedule">Schedule</a></li>
-                        <li class="nav-item"><a class="nav-link" data-toggle="tab" href="#usersettings">Settings</a></li>
+                        <li class="nav-item"><a class="nav-link" data-toggle="tab" href="#schedule">Schedule</a></li>
+                        <li class="nav-item"><a class="nav-link active" data-toggle="tab" href="#usersettings">Settings</a></li>
                     </ul>
                 </div>
                 <div class="tab-content">
@@ -267,7 +267,7 @@
                                     </div>
                                     <div class="body">
                                         <div class="post-img">
-                                            <img src="assets/images/image1.jpg" class="img-fluid" alt="">
+                                            <img src="${assetPath(src: '/themeassets/images/profile_av.jpg')}" class="img-fluid" alt="">
                                         </div>
                                         <h5 class="m-t-20 m-b-0 post_title">It is a long established fact that a be distracted</h5>
                                         <p>If you are going to use a passage of Lorem Ipsum, you need to be sure there isn't anything embarrassing hidden in the middle of text</p>
@@ -282,7 +282,7 @@
                         </div>
                     </div>
 
-                    <div role="tabpanel" class="tab-pane page-calendar active" id="schedule">
+                    <div role="tabpanel" class="tab-pane page-calendar" id="schedule">
                         <div class="row">
                             <div class="col-md-12 col-lg-4">
                                 <div class="card">
@@ -358,7 +358,7 @@
                         </div>
                     </div>
 
-                    <div role="tabpanel" class="tab-pane" id="usersettings">
+                    <div role="tabpanel" class="tab-pane active" id="usersettings">
                         <div class="card">
                             <div class="header">
                                 <h2><strong>Security</strong> Settings</h2>

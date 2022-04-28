@@ -85,7 +85,7 @@ class SaleReturnDetailsService {
             String invoiceNumber = null;
 //            String seriesCode = jsonObject.get("seriesCode")
             SaleReturnDetails saleReturnDetails1
-            invoiceNumber = saleReturnDetails.entityId + "/S/" + month + year + "/" + saleReturnDetails.serBillId
+            invoiceNumber = saleReturnDetails.entityId + "/SR/" + month + year + "/" + saleReturnDetails.id
             println("Invoice Number generated: " + invoiceNumber)
             if (invoiceNumber)
             {
