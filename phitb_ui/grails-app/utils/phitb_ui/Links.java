@@ -521,4 +521,7 @@ public class Links
     public static  String BILL_DETAIL_LOG = "api/v1.0/accounts/reciptdetaillog";
 
 
+//      Update Password
+    public static String UPDATE_PASSWORD = "api/v1.0/entity/update-passoword";
+
 }

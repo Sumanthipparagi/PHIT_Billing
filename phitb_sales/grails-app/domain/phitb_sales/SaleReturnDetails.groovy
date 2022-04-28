@@ -45,6 +45,7 @@ class SaleReturnDetails {
     Date lastUpdated
 
     static constraints = {
+        invoiceNumber nullable: true
     }
 
     static mapping = {

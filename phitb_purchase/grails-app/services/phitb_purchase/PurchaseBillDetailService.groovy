@@ -153,9 +153,15 @@ class PurchaseBillDetailService {
 
     }
 
-    PurchaseBillDetail getRecentByFinancialYearAndEntity(String financialYear, String entityId, billStatus)
+    JSONObject getRecentByFinancialYearAndEntity(String financialYear, String entityId, billStatus)
     {
-        return PurchaseBillDetail.findByFinancialYearAndEntityIdAndBillStatus(financialYear, Long.parseLong(entityId), billStatus, [sort: 'id', order: 'desc'])
+        JSONObject jsonObject = new JSONObject()
+        ArrayList<PurchaseBillDetail> purchaseBillDetails =
+                PurchaseBillDetail.findAllByFinancialYearAndEntityIdAndBillStatusNotEqual(financialYear, Long.parseLong(entityId), 'DRAFT', [sort: 'id', order: 'desc'])
+        println(purchaseBillDetails.serBillId)
+        jsonObject.put("serBillId", purchaseBillDetails.serBillId.max())
+        jsonObject.put("finId", purchaseBillDetails.finId.max())
+        return jsonObject
     }
 
     PurchaseBillDetail update(JSONObject jsonObject, String id) {

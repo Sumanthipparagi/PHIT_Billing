@@ -59,6 +59,34 @@ class UserRegisterController {
     }
 
     /**
+     * Get requested user register
+     * @param id
+     * @return get requested user register
+     */
+    def updatePassword() {
+        try {
+            String id = params.id
+            String password = params.password
+            if (id) {
+                respond userRegisterService.updatePassword(id,password)
+            }
+        }
+        catch (ResourceNotFoundException ex)
+        {
+            System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
+            response.status = 404
+        }
+        catch (BadRequestException ex)
+        {
+            System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
+            response.status = 400
+        }
+        catch (Exception ex) {
+            System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
+        }
+    }
+
+    /**
      * Get requested customerGroup register
      * @param id
      * @return get requested customerGroup register

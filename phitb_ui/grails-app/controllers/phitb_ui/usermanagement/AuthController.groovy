@@ -6,13 +6,11 @@ import phitb_ui.AuthService
 import phitb_ui.EInvoiceService
 import phitb_ui.EntityService
 
-import java.text.SimpleDateFormat
-
 class AuthController {
 
     def index()
     {
-        new EInvoiceService().generateIRN()
+//        new EInvoiceService().generateIRN()
         render(view: '/usermanagement/auth/index')
     }
 
@@ -106,5 +104,26 @@ class AuthController {
     {
         session.invalidate()
         redirect(uri: "/")
+    }
+
+    def updateUser()
+    {
+        try
+        {
+            if(params.id!="")
+            {
+                def user = new EntityService().getUser(params.id)
+                render(view: '/usermanagement/auth/updateUser', model: [user: user])
+            }
+            else
+            {
+                redirect(uri: '/')
+            }
+        }
+        catch (Exception ex)
+        {
+            log.error(controllerName+":"+ex)
+            println(controllerName+":"+ex)
+        }
     }
 }
