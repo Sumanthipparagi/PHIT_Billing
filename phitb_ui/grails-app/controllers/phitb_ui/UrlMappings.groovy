@@ -385,10 +385,10 @@ class UrlMappings {
 
 
 //        Sale Retrun
-        "/sale-return"(controller: "saleRetrun") {
+        "/sale-return"(controller: "saleReturn") {
             action = [GET: "index", POST: 'saveSaleReturn']
         }
-        "/salebill/customer/$custid"(controller: 'saleRetrun', action: 'getSaleBillByCustomer')
+        "/salebill/customer/$custid"(controller: 'saleReturn', action: 'getSaleBillByCustomer')
 
 //        Purchase Return
         "/purchase-return"(controller: "purchaseReturn") {

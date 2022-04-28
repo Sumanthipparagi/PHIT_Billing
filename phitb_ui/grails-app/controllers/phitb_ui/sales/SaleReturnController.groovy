@@ -18,7 +18,7 @@ import phitb_ui.entity.UserRegisterController
 import javax.ws.rs.core.Response
 import java.text.SimpleDateFormat
 
-class SaleRetrunController
+class SaleReturnController
 {
 
     def index()
@@ -61,135 +61,151 @@ class SaleRetrunController
 
     def saveSaleReturn()
     {
-        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy")
-        JSONObject saleReturnDetail = new JSONObject()
-        String entityId = session.getAttribute("entityId").toString()
-        String customerId = params.customer
-        String salesmanId = params.salesmanId
-        String priorityId = params.priority
-        String seriesId = params.series
-        String dispatchDate = params.dispatchDate
-        String billStatus = params.billStatus
-        String message = params.message
-        if(!message)
-            message = "NA"
-        long finId = 0
-        long serBillId = 0
-        String financialYear = session.getAttribute("financialYear")
-        def series = new EntityService().getSeriesById(seriesId)
-        if(!billStatus.equalsIgnoreCase("DRAFT"))
+        try
         {
-            def recentSaleBill = new SalesService().getRecentSaleBill(financialYear, entityId, billStatus)
-            if(recentSaleBill != null)
+
+            SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy")
+            JSONObject saleReturnDetail = new JSONObject()
+            String entityId = session.getAttribute("entityId").toString()
+            String customerId = params.customer
+            String salesmanId = params.salesmanId
+            String priorityId = params.priority
+            String seriesId = params.series
+            String dispatchDate = params.dispatchDate
+            String billStatus = params.billStatus
+            String message = params.message
+            if (!message)
+                message = "NA"
+            long finId = 0
+            long serBillId = 0
+            String financialYear = session.getAttribute("financialYear")
+            def series = new EntityService().getSeriesById(seriesId)
+            if (!billStatus.equalsIgnoreCase("DRAFT"))
             {
-                finId = Long.parseLong(recentSaleBill.get("finId").toString()) + 1
-                serBillId = Long.parseLong(recentSaleBill.get("serBillId").toString()) + 1
+                def recentSaleBill = new SalesService().getRecentSaleBill(financialYear, entityId, billStatus)
+                if (recentSaleBill != null)
+                {
+                    finId = Long.parseLong(recentSaleBill.get("finId").toString()) + 1
+                    serBillId = Long.parseLong(recentSaleBill.get("serBillId").toString()) + 1
+                }
+                else
+                {
+                    finId = 1
+                    serBillId = Long.parseLong(series.get("saleId").toString())
+                }
             }
-            else {
-                finId = 1
-                serBillId = Long.parseLong(series.get("saleId").toString())
+
+            long totalSqty = 0
+            long totalFqty = 0
+            double totalAmount = 0.00
+            double totalGst = 0.00
+            double totalCgst = 0.00
+            double totalSgst = 0.00
+            double totalIgst = 0.00
+            double totalDiscount = 0.00
+            String entryDate = sdf.format(new Date())
+            println(params.saleReturnData)
+            JSONArray saleReturn = new JSONArray(params.saleReturnData)
+            for (JSONObject sale : saleReturn)
+            {
+                String productId = sale.get("2")
+                String batchNumber = sale.get("3")
+                String expDate = sale.get("4")
+                String saleQty = sale.get("5")
+                String freeQty = sale.get("6")
+                String purchaseRate = sale.get("7")
+                String saleRate = sale.get("8")
+                String mrp = sale.get("9")
+                double discount = UtilsService.round(Double.parseDouble(sale.get("10").toString()), 2)
+                String packDesc = sale.get("11")
+                double gst = UtilsService.round(Double.parseDouble(sale.get("12").toString()), 2)
+                double value = UtilsService.round(Double.parseDouble(sale.get("13").toString()), 2)
+                double sgst = UtilsService.round(Double.parseDouble(sale.get("14").toString()), 2)
+                double cgst = UtilsService.round(Double.parseDouble(sale.get("15").toString()), 2)
+                double igst = UtilsService.round(Double.parseDouble(sale.get("16").toString()), 2)
+
+                totalSqty += Long.parseLong(saleQty)
+                totalFqty += Long.parseLong(freeQty)
+                totalAmount += Double.parseDouble(value.toString())
+                totalGst += Double.parseDouble(gst.toString())
+                totalSgst += Double.parseDouble(sgst.toString())
+                totalCgst += Double.parseDouble(cgst.toString())
+                totalIgst += Double.parseDouble(igst.toString())
+                totalDiscount += Double.parseDouble(discount.toString())
+                saleReturnDetail.put("finId", finId)
+                saleReturnDetail.put("billId", 0)
+                saleReturnDetail.put("billType", 0)
+                saleReturnDetail.put("serBillId", 0)
+                saleReturnDetail.put("series", seriesId)
+                saleReturnDetail.put("productId", productId)
+                saleReturnDetail.put("batchNumber", batchNumber)
+                saleReturnDetail.put("sqty", saleQty)
+                saleReturnDetail.put("customerId", customerId)
+                saleReturnDetail.put("salesmanId", salesmanId)
+                saleReturnDetail.put("dispatchDate", entryDate)
+                saleReturnDetail.put("totalDiscount", totalDiscount)
+                saleReturnDetail.put("freeQty", freeQty)
+                saleReturnDetail.put("entryDate", entryDate)
+                saleReturnDetail.put("refId", 0) //TODO: to be changed
+                saleReturnDetail.put("sRate", saleRate)
+                saleReturnDetail.put("mrp", mrp)
+                saleReturnDetail.put("gstAmount", gst)
+                saleReturnDetail.put("maxDnAmount", 1) //TODO: to be changed
+                saleReturnDetail.put("amount", value)
+                saleReturnDetail.put("supplierContact", 1) //TODO: to be changed
+                saleReturnDetail.put("totalGst", totalGst) //TODO: to be changed
+                saleReturnDetail.put("totalCgst", totalCgst) //TODO: to be changed
+                saleReturnDetail.put("totalSgst", totalSgst) //TODO: to be changed
+                saleReturnDetail.put("totalSgst", totalSgst) //TODO: to be changed
+                saleReturnDetail.put("totalIgst", totalIgst) //TODO: to be changed
+                saleReturnDetail.put("exempted", 0) //TODO: to be changed
+                saleReturnDetail.put("type", 0) //TODO: to be changed
+                saleReturnDetail.put("cashDiscount", 0) //TODO: to be changed
+                saleReturnDetail.put("items", 0) //TODO: to be changed
+                saleReturnDetail.put("quantity", 0) //TODO: to be changed
+                saleReturnDetail.put("totalAmount", totalAmount) //TODO: to be changed
+                saleReturnDetail.put("balance", totalAmount) //TODO: to be changed
+                saleReturnDetail.put("dbAdjAmount", 0) //TODO: to be changed
+                saleReturnDetail.put("debitIds", 0) //TODO: to be changed
+                saleReturnDetail.put("debitIds", 0) //TODO: to be changed
+                saleReturnDetail.put("supplierEmail", 0) //TODO: to be changed
+                saleReturnDetail.put("gross", 0) //TODO: to be changed
+                saleReturnDetail.put("taxable", 0) //TODO: to be changed
+                saleReturnDetail.put("saleFinId", "") //TODO: to be changed
+                saleReturnDetail.put("lockStatus", 0) //TODO: to be changed
+                saleReturnDetail.put("adjustmentStatus", 0) //TODO: to be changed
+                saleReturnDetail.put("message", 0)
+                saleReturnDetail.put("ignoreSold", 0)
+                saleReturnDetail.put("salesmanId", 0)
+                saleReturnDetail.put("status", 0)
+                saleReturnDetail.put("syncStatus", 0)
+                saleReturnDetail.put("financialYear", financialYear)
+                saleReturnDetail.put("", financialYear)
+                saleReturnDetail.put("createdUser", 1)
+                saleReturnDetail.put("modifiedUser", 1)
+                saleReturnDetail.put("entityId", entityId)
+                saleReturnDetail.put("entityTypeId", session.getAttribute("entityTypeId").toString())
+                //save to sale transaction log
+                //save to sale transportation details
+            }
+            Response response = new SalesService().saveSaleRetrun(saleReturnDetail)
+            if (response.status == 200)
+            {
+                def saleOrder = new JSONObject(response.readEntity(String.class))
+                JSONObject responseJson = new JSONObject()
+                responseJson.put("series", series)
+                responseJson.put("saleReturnDetail", saleOrder)
+                respond responseJson, formats: ['json'], status: 200
+            }
+            else
+            {
+                response.status == 400
             }
         }
-
-        long totalSqty = 0
-        long totalFqty = 0
-        double totalAmount = 0.00
-        double totalGst = 0.00
-        double totalCgst = 0.00
-        double totalSgst = 0.00
-        double totalIgst = 0.00
-        double totalDiscount = 0.00
-        String entryDate = sdf.format(new Date())
-        println(params.saleData)
-        JSONArray saleData = new JSONArray(params.saleData)
-        for (JSONArray sale : saleData) {
-            String productId = sale[2]
-            String batchNumber = sale[3]
-            String saleQty = sale[4]
-            String freeQty = sale[5]
-            String saleRate = sale[6]
-            String mrp = sale[7]
-            String value = sale[10]
-            String gst = sale[9]
-            String igst = sale[13]
-            String cgst = sale[12]
-            String sgst = sale[11]
-
-            totalSqty += Long.parseLong(saleQty)
-            totalFqty += Long.parseLong(freeQty)
-            totalAmount += Double.parseDouble(value)
-            totalGst += Double.parseDouble(gst)
-            totalSgst += Double.parseDouble(sgst)
-            totalCgst += Double.parseDouble(cgst)
-            totalIgst += Double.parseDouble(igst)
-            totalDiscount += Double.parseDouble("0")
-            saleReturnDetail.put("finId", finId)
-            saleReturnDetail.put("billId",0)
-            saleReturnDetail.put("billType",0)
-            saleReturnDetail.put("serBillId",0)
-            saleReturnDetail.put("series", seriesId)
-            saleReturnDetail.put("productId", productId)
-            saleReturnDetail.put("batchNumber", batchNumber)
-            saleReturnDetail.put("sqty", saleQty)
-            saleReturnDetail.put("customerId", customerId)
-            saleReturnDetail.put("salesmanId", salesmanId)
-            saleReturnDetail.put("dispatchDate", dispatchDate)
-            saleReturnDetail.put("totalDiscount", totalDiscount)
-            saleReturnDetail.put("freeQty", freeQty)
-            saleReturnDetail.put("entryDate", entryDate)
-            saleReturnDetail.put("refId", 0) //TODO: to be changed
-            saleReturnDetail.put("sRate", saleRate)
-            saleReturnDetail.put("mrp", mrp)
-            saleReturnDetail.put("gstAmount", gst)
-            saleReturnDetail.put("maxDnAmount", 1) //TODO: to be changed
-            saleReturnDetail.put("amount", value)
-            saleReturnDetail.put("supplierContact", 1) //TODO: to be changed
-            saleReturnDetail.put("totalGst", totalGst) //TODO: to be changed
-            saleReturnDetail.put("totalCgst", totalCgst) //TODO: to be changed
-            saleReturnDetail.put("totalSgst", totalSgst) //TODO: to be changed
-            saleReturnDetail.put("totalSgst", totalSgst) //TODO: to be changed
-            saleReturnDetail.put("totalIgst", totalIgst) //TODO: to be changed
-            saleReturnDetail.put("exempted", 0) //TODO: to be changed
-            saleReturnDetail.put("type", 0) //TODO: to be changed
-            saleReturnDetail.put("cashDiscount", 0) //TODO: to be changed
-            saleReturnDetail.put("items", 0) //TODO: to be changed
-            saleReturnDetail.put("quantity", 0) //TODO: to be changed
-            saleReturnDetail.put("totalAmount", totalAmount) //TODO: to be changed
-            saleReturnDetail.put("balance", totalAmount) //TODO: to be changed
-            saleReturnDetail.put("dbAdjAmount", 0) //TODO: to be changed
-            saleReturnDetail.put("debitIds", 0) //TODO: to be changed
-            saleReturnDetail.put("debitIds", 0) //TODO: to be changed
-            saleReturnDetail.put("supplierEmail", 0) //TODO: to be changed
-            saleReturnDetail.put("gross", 0) //TODO: to be changed
-            saleReturnDetail.put("taxable", 0) //TODO: to be changed
-            saleReturnDetail.put("saleFinId", "") //TODO: to be changed
-            saleReturnDetail.put("lockStatus", 0) //TODO: to be changed
-            saleReturnDetail.put("adjustmentStatus", 0) //TODO: to be changed
-            saleReturnDetail.put("message", 0)
-            saleReturnDetail.put("ignoreSold", 0)
-            saleReturnDetail.put("status", 0)
-            saleReturnDetail.put("syncStatus", 0)
-            saleReturnDetail.put("financialYear", financialYear)
-            saleReturnDetail.put("", financialYear)
-            saleReturnDetail.put("createdUser", 1)
-            saleReturnDetail.put("modifiedUser", 1)
-            saleReturnDetail.put("entityId", entityId)
-            saleReturnDetail.put("entityTypeId", session.getAttribute("entityTypeId").toString())
-            //save to sale transaction log
-            //save to sale transportation details
-        }
-        Response response = new SalesService().saveSaleRetrun(saleReturnDetail)
-        if(response.status == 200)
+        catch (Exception ex)
         {
-            def saleOrder = new JSONObject(response.readEntity(String.class))
-            JSONObject responseJson = new JSONObject()
-            responseJson.put("series", series)
-            responseJson.put("saleReturnDetail", saleOrder)
-            respond responseJson, formats: ['json'],status: 200
-        }
-        else
-        {
-            response.status == 400
+            log.error(controllerName+":"+ex)
+            println(controllerName+":"+ex)
         }
     }
 

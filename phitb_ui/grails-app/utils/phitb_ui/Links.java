@@ -378,14 +378,19 @@ public class Links
     public static String SALE_PRODUCT_OF_BILL = "api/v1.0/sales/saleproductdetails/bill";
     public static String SALE_PRODUCT_OF_BILLIDS = "api/v1.0/sales/saleproductdetailslist/bill/{salebillsIds}";
 
-    //Sale Return Details
-    public static String SALE_RETURN_SHOW = "api/v1.0/sales/saleproductdetails";
-    public static String SALE_RETURN_SAVE = "api/v1.0/sales/salereturndetails";
+    //Sale Return
+    public static String SALE_RETURN_SHOW = "api/v1.0/sales/salereturn";
+    public static String SALE_RETURN_SAVE = "api/v1.0/sales/salereturn";
     public static String SALE_RETURN_UNSETTLED = "api/v1.0/sales/saleretrununsettledbycustomer";
     public static String SALE_RETURN_SETTLED = "api/v1.0/sales/saleretrunsettledbycustomer";
     public static String SET_SALE_RETURN_STATUS = "api/v1.0/sales/setsalereturnstatus/{id}/type/{type}/adj/{adj}";
     public static String UPDATE_SALE_RETURN_BALANCE = "api/v1.0/sales/updatereturnbalancebyid";
     public static String SALE_RETURN_CUSTOMER = "api/v1.0/sales/salereturnbycustomer";
+
+
+    //Sale Return Details
+    public static String SALE_RETURN_DETAIL_SHOW = "api/v1.0/sales/salereturndetails";
+    public static String SALE_RETURN_DETAIL_SAVE = "api/v1.0/sales/salereturndetails";
 
 
     //Sale Order Details

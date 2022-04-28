@@ -10,7 +10,6 @@ import java.text.SimpleDateFormat
 @Transactional
 class SaleProductDetailsService
 {
-
     SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss")
 
     def getAll(String limit, String offset, String query)
@@ -224,7 +223,6 @@ class SaleProductDetailsService
             throw new BadRequestException()
         }
     }
-
 
     def getBySaleBill(String id)
     {

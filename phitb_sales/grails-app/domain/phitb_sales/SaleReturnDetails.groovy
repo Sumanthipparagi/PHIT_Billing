@@ -1,57 +1,50 @@
 package phitb_sales
 
-class SaleReturnDetails {
+import gorm.logical.delete.LogicalDelete
+
+class SaleReturnDetails implements Serializable, LogicalDelete<SaleReturnDetails>
+{
     long finId
+    long billId
+    long billType
     long serBillId
-    long series
-    String type
-    String customerId
-    String salesmanId
-    Date dispatchDate
-    Date entryDate
-    String refId
-    double maxDnAmount
-    String supplierContact
-    String supplierEmail
-    double gross
-    double taxable
-    double totalGst
-    double totalCgst
-    double totalSgst
-    double totalIgst
-    double exempted
-    double cashDiscount
-    int items
-    int quantity
-    double totalAmount
-    double balance
-    double dbAdjAmount
-    double totalDiscount
-    String debitIds
+    long seriesId
+    long productId
+    String batchNumber
+    String expiryDate
+    double sqty
+    double freeQty
+    double repQty
+    double pRate
+    double sRate
+    double mrp
+    double discount
+    double gstId
+    double gstAmount
+    double sgstAmount
+    double cgstAmount
+    double igstAmount
+    double amount
+    String reason
+    long fridgeId
+    long kitName
+    String saleFinId
+    long redundantBatch
+    long status
     long syncStatus
-    long lockStatus
-    String adjustmentStatus
-    String message
-    int ignoreSold
     String financialYear
-    String invoiceNumber
-    long entityId
     long entityTypeId
-    long createdUser
-    long modifiedUser
-    Double adjAmount
+    long entityId
 
     Date dateCreated
     Date lastUpdated
 
+    double gstPercentage
+    double sgstPercentage
+    double cgstPercentage
+    double igstPercentage
+
     static constraints = {
-        invoiceNumber nullable: true
-    }
-
-    static mapping = {
-        debitIds  sqlType: 'longText'
-        message  sqlType: 'longText'
-
     }
 
     boolean isUpdatable
@@ -61,12 +54,12 @@ class SaleReturnDetails {
 
         if (!this.isUpdatable)
         {
-            System.out.println("SaleReturnDetails Domain update Prevented " + new Date().toString() + " ,id: " + this.id)
+            System.out.println("SaleProductDetails Domain update Prevented " + new Date().toString() + " ,id: " + this.id)
             return false
         }
         else
         {
-            System.out.println("SaleReturnDetails domain Updated " + new Date().toString() + " ,id: " + this.id)
+            System.out.println("SaleProductDetails domain Updated " + new Date().toString() + " ,id: " + this.id)
         }
     }
 }
