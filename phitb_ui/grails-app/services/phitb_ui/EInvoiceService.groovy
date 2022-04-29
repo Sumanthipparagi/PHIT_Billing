@@ -23,9 +23,9 @@ import java.util.logging.Logger;
 
 @Transactional
 class EInvoiceService {
-    String userName = "nsdlTest"
+/*    String userName = "nsdlTest"
     String password = "Test@123"
-    String gstin = "27ABFPD4021L002"
+    String gstin = "27ABFPD4021L002"*/
     JSONObject entityIrnDetails = new JSONObject()
 
     def generateSignatureAndAuthToken(HttpSession session) {
@@ -34,11 +34,12 @@ class EInvoiceService {
             //String entityId = session.getAttribute("entityId").toString()
             String entityId = "1"
             entityIrnDetails = new EntityService().getEntityIrnByEntity(entityId)
-            boolean isAuthTokenValid = true
+            boolean isAuthTokenValid = false
             if(entityIrnDetails && entityIrnDetails.has("authToken"))
             {
+                Date currentDate = new Date()
                 Date authTokenExpiryDate = tokenDateFormat.parse(entityIrnDetails.get("tokenExpiry").toString())
-                if(authTokenExpiryDate.before(new Date()))
+                if(currentDate.before(authTokenExpiryDate))
                     isAuthTokenValid = false
             }
             if(!isAuthTokenValid)
@@ -52,7 +53,6 @@ class EInvoiceService {
                 String sign = ""
                 try {
                     sign = new EinvoiceHelper().generateSignature(aspData);
-                    //System.out.println("sign:" + sign);
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -101,8 +101,14 @@ class EInvoiceService {
         //To encrypt auth-token payload payload
         String randomAppKey = Base64.getEncoder().encodeToString(new EinvoiceHelper().createAESKey());
         String base64EncodedAppKey = Base64.getEncoder().encodeToString(randomAppKey.getBytes());
-        String authPayload = "{\"UserName\":\"nsdlTest\", \"Password\":\"Test@123\", \"AppKey\":\"" + base64EncodedAppKey + "\", \"ForceRefreshAccessToken\":true}";
-        String base64EncodedPayload = Base64.getEncoder().encodeToString(authPayload.getBytes());
+
+        JSONObject authPayload = new JSONObject()
+        authPayload.put("UserName", entityIrnDetails.get("irnUsername"))
+        authPayload.put("Password", entityIrnDetails.get("irnPassword"))
+        authPayload.put("AppKey", base64EncodedAppKey)
+        authPayload.put("ForceRefreshAccessToken", true)
+
+        String base64EncodedPayload = Base64.getEncoder().encodeToString(authPayload.toString().getBytes());
         byte[] b = new NicV4TokenPayloadGen().readFile("C:\\Users\\arjun\\Desktop\\publicKey.pem");
         NicV4TokenPayloadGen gen = new NicV4TokenPayloadGen(b);
         String encData = gen.encryptPayload(base64EncodedPayload);
@@ -120,13 +126,13 @@ class EInvoiceService {
                     .header("aspid", new Constants().E_INVOICE_ASP_ID)
                     .header("asp_secret_key", encAspSecret)
                     .header("session_id", jsonObject.get("session_id"))
-                    .header("gstin", gstin)
+                    .header("gstin", entityIrnDetails.get("irnGSTIN"))
                     .post(Entity.entity(finalPayLoad.toString(), MediaType.APPLICATION_JSON_TYPE))
             if (apiResponse.status == 200) {
                 JSONObject authToken = new JSONObject(apiResponse.readEntity(String.class))
                 //update entityIrnDetails
                 entityIrnDetails.put("sessionId", jsonObject.get("session_id").toString())
-                entityIrnDetails.put("appKey", authToken.get("appKey").toString())
+                entityIrnDetails.put("appKey", randomAppKey)
                 entityIrnDetails.put("aspSecretKey", encAspSecret)
                 entityIrnDetails.put("authToken", authToken.get("authtoken").toString())
                 entityIrnDetails.put("sek", authToken.get("sek").toString())
@@ -146,7 +152,6 @@ class EInvoiceService {
     def generateIRN(HttpSession session) {
 
         JSONObject authData = generateSignatureAndAuthToken(session)
-       // JSONObject authData = generateAuthToken(sessionData)
         String sampleIRN = "\n" +
                 "{\n" +
                 "  \"Version\": \"1.1\",\n" +
@@ -344,11 +349,11 @@ class EInvoiceService {
             Response apiResponse = target
                     .request(MediaType.APPLICATION_JSON_TYPE)
                     .header("aspid", new Constants().E_INVOICE_ASP_ID)
-                    .header("asp_secret_key", authData.get("asp_secret_key"))
-                    .header("session_id", authData.get("session_id"))
-                    .header("gstin", gstin)
-                    .header("authtoken", authData.get("authtoken"))
-                    .header("username", authData.get("userName"))
+                    .header("asp_secret_key", authData.get("aspSecretKey"))
+                    .header("session_id", authData.get("sessionId"))
+                    .header("gstin", authData.get("irnGSTIN"))
+                    .header("authtoken", authData.get("authToken"))
+                    .header("username", authData.get("irnUsername"))
                     .post(Entity.entity(finalPayLoad.toString(), MediaType.APPLICATION_JSON_TYPE))
             if (apiResponse.status == 200) {
                 JSONObject generatedIRN = new JSONObject(apiResponse.readEntity(String.class))
