@@ -334,5 +334,30 @@ class UserRegisterController
         }
     }
 
+    def updatePassword()
+    {
+        try
+        {
+            JSONObject jsonObject = new JSONObject(params)
+            def apiResponse = new EntityService().updatePassword(jsonObject)
+            if (apiResponse.status == 200)
+            {
+                JSONObject obj = new JSONObject(apiResponse.readEntity(String.class))
+                redirect(uri:"/entity-register")
+//                respond obj, formats: ['json'], status: 200
+            }
+            else
+            {
+                response.status = 400
+            }
+        }
+        catch (Exception ex)
+        {
+            System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
+            log.error('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
+            response.status = 400
+        }
+    }
+
 
 }

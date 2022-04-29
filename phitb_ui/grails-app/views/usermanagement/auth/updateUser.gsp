@@ -64,8 +64,8 @@
                                 <img src="${assetPath(src: '/themeassets/images/profile_av.jpg')}" class="user_pic rounded img-raised" alt="User">
                                 <div class="detail">
                                     <div class="u_name">
-                                        <h4><strong>Michael</strong> Deo</h4>
-                                        <span>Ui UX Designer</span>
+                                        <h4><strong>${user.userName}</strong></h4>
+%{--                                        <span>Ui UX Designer</span>--}%
                                     </div>
                                     <div id="m_area_chart"></div>
                                 </div>
@@ -79,8 +79,8 @@
                         </div>
                     </div>
                     <ul class="nav nav-tabs profile_tab">
-                        <li class="nav-item"><a class="nav-link" data-toggle="tab" href="#overview">Overview</a></li>
-                        <li class="nav-item"><a class="nav-link" data-toggle="tab" href="#schedule">Schedule</a></li>
+%{--                        <li class="nav-item"><a class="nav-link" data-toggle="tab" href="#overview">Overview</a></li>--}%
+%{--                        <li class="nav-item"><a class="nav-link" data-toggle="tab" href="#schedule">Schedule</a></li>--}%
                         <li class="nav-item"><a class="nav-link active" data-toggle="tab" href="#usersettings">Settings</a></li>
                     </ul>
                 </div>
@@ -363,16 +363,18 @@
                             <div class="header">
                                 <h2><strong>Security</strong> Settings</h2>
                             </div>
-                            <form action="/auth/updateuser">
+                            <form action="/user/update-password?id=${user.id}">
                             <div class="body">
 %{--                                <div class="form-group">--}%
 %{--                                    <input type="text" class="form-control" placeholder="Username">--}%
 %{--                                </div>--}%
                                 <div class="form-group">
-                                    <input type="password" class="form-control" placeholder="Current Password">
+                                    <input type="password" name="password" id="password" class="form-control"
+                                           placeholder="Enter Password">
                                 </div>
                                 <div class="form-group">
-                                    <input type="password" class="form-control" placeholder="New Password">
+                                    <input type="password" class="form-control" id="confirm_password" placeholder="Confirm Password">
+                                    <span id='message'></span>
                                 </div>
                                 <button class="btn btn-info btn-round">Save Changes</button>
                             </div>
@@ -465,6 +467,16 @@
 <asset:javascript src="/themeassets/bundles/fullcalendarscripts.bundle.js"/>
 
 <g:include view="controls/footer-content.gsp"/>
+
+<script>
+    $('#password, #confirm_password').on('keyup', function () {
+        if ($('#password').val() == $('#confirm_password').val()) {
+            $('#message').html('Matching').css('color', 'green');
+        } else
+            $('#message').html('Not Matching').css('color', 'red');
+    });
+</script>
+
 <script>
     selectSideMenu("entity-menu");
 </script>
