@@ -183,6 +183,7 @@
 
                 <li><b class="tab">Invoice No</b>: ${saleBillDetail.invoiceNumber}</li>
                 <li><b class="tab">Inv Date</b>:&nbsp;<span id="invDate"></span></li>
+                <li><b class="tab">Due Date</b>:&nbsp;<span id="dueDate"></span></li>
                 %{--                <li><b class="tab">No of cases</b>:</li>--}%
                 %{--                <li><b class="tab">Weight in Kgs</b>:</li>--}%
                 %{--                <li><b class="tab">Party Ref No.</b>: 429803</li>--}%
@@ -437,7 +438,9 @@
         var d = moment(new Date()).format('DD/MM/YYYY') + " " +  new Date().toLocaleTimeString();
         document.getElementById("date").innerHTML = d;
         var invDate = new Date('${saleBillDetail.entryDate}');
+        var dueDate = new Date('${saleBillDetail.dueDate}');
         $("#invDate").text(moment(invDate).format('DD-MM-YYYY'));
+        $("#dueDate").text(moment(dueDate).format('DD-MM-YYYY'));
 
         <g:each var="spd" in="${saleProductDetails}">
         var expDate = new Date('${spd.expiryDate}');

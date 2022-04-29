@@ -255,4 +255,9 @@ class SaleReturnDetailsService {
         }
 
     }
+
+    def getSaleReturnDetailsByBill(String id)
+    {
+       return SaleReturnDetails.findByBillId(Long.parseLong(id))
+    }
 }

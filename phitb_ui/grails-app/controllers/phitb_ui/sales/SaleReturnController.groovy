@@ -326,14 +326,14 @@ class SaleReturnController
         JSONObject saleReturnDetail = new SalesService().getSaleReturnDetailsById(saleReturnId)
         if (saleReturnDetail != null)
         {
-            JSONArray saleProductDetails = new SalesService().getSaleProductDetailsByBill(saleReturnId)
-            JSONObject series = new EntityService().getSeriesById(saleReturnDetail.get("seriesId").toString())
+            JSONArray saleRetrunDetails = new SalesService().getSaleRetrunDetailsByBill(saleReturnId)
+            JSONObject series = new EntityService().getSeriesById(saleReturnDetail.get("series").toString())
             JSONObject customer = new EntityService().getEntityById(saleReturnDetail.get("customerId").toString())
             JSONObject entity = new EntityService().getEntityById(session.getAttribute("entityId").toString())
             JSONObject city = new SystemService().getCityById(entity.get('cityId').toString())
             JSONObject custcity = new SystemService().getCityById(customer.get('cityId').toString())
             JSONArray termsConditions = new EntityService().getTermsContionsByEntity(session.getAttribute("entityId").toString())
-            saleProductDetails.each {
+            saleRetrunDetails.each {
                 def batchResponse = new ProductService().getBatchesOfProduct(it.productId.toString())
                 JSONArray batchArray = JSON.parse(batchResponse.readEntity(String.class)) as JSONArray
                 for (JSONObject batch : batchArray)
@@ -346,16 +346,16 @@ class SaleReturnController
                 def apiResponse = new SalesService().getRequestWithId(it.productId.toString(), new Links().PRODUCT_REGISTER_SHOW)
                 it.put("productId", JSON.parse(apiResponse.readEntity(String.class)) as JSONObject)
             }
-            def totalcgst = UtilsService.round(saleProductDetails.cgstAmount.sum(), 2)
-            def totalsgst = UtilsService.round(saleProductDetails.sgstAmount.sum(), 2)
-            def totaligst = UtilsService.round(saleProductDetails.igstAmount.sum(), 2)
-            def totaldiscount = UtilsService.round(saleProductDetails.discount.sum(), 2)
+            def totalcgst = UtilsService.round(saleRetrunDetails.cgstAmount.sum(), 2)
+            def totalsgst = UtilsService.round(saleRetrunDetails.sgstAmount.sum(), 2)
+            def totaligst = UtilsService.round(saleRetrunDetails.igstAmount.sum(), 2)
+            def totaldiscount = UtilsService.round(saleRetrunDetails.discount.sum(), 2)
             def totalBeforeTaxes = 0
             HashMap<String, Double> gstGroup = new HashMap<>()
             HashMap<String, Double> sgstGroup = new HashMap<>()
             HashMap<String, Double> cgstGroup = new HashMap<>()
             HashMap<String, Double> igstGroup = new HashMap<>()
-            for (Object it : saleProductDetails)
+            for (Object it : saleRetrunDetails)
             {
                 double amountBeforeTaxes = it.amount - it.cgstAmount - it.sgstAmount - it.igstAmount
                 totalBeforeTaxes += amountBeforeTaxes
@@ -407,7 +407,7 @@ class SaleReturnController
             def total = totalBeforeTaxes + totalcgst + totalsgst + totaligst
 
             render(view: "/sales/saleRetrun/sale-return-print", model: [saleBillDetail    : saleReturnDetail,
-                                                        saleProductDetails: saleProductDetails,
+                                                        saleProductDetails: saleRetrunDetails,
                                                         series            : series, entity: entity, customer: customer, city: city,
                                                         total             : total, custcity: custcity,
                                                         termsConditions   : termsConditions,

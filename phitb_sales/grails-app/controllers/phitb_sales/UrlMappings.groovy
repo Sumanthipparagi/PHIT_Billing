@@ -252,6 +252,8 @@ class UrlMappings {
             }
 
 
+
+
             //Sale Return Details
             "/salereturndetails(.$format)?"(controller: 'saleReturnDetails') {
                 action = [GET: 'index', POST:
@@ -274,6 +276,9 @@ class UrlMappings {
                 action = [GET: 'getAllByDays']
             }
 
+            "/salereturndetails/bill(.$format)?"(controller: 'saleReturnDetails') {
+                action = [GET: 'getSaleReturnDetailsById']
+            }
 
             //Temp User Log
             "/tempuserlog(.$format)?"(controller:'tempUserLog') {

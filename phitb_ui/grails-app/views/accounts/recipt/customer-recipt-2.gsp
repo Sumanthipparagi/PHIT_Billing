@@ -295,10 +295,10 @@
                                             <th>Doc.Type</th>
                                             <th>Trans_Id</th>
                                             <th>Bill Date</th>
-                                            <th>Total Amt</th>
                                             <th>Prev.Paid Amt</th>
                                             <th>Bal Amt</th>
                                             <th>Paid Now</th>
+                                            <th>Total Amt</th>
                                             <th>No of Days</th>
                                             <th>Fin_Year</th>
                                             <th style="display: none;">BillId</th>
@@ -495,12 +495,12 @@
                                 '                                        <td>' + invoice + '</td>\n' +
                                 '                                        <td>' + value.invoiceNumber + '</td>\n' +
                                 '                                        <td>' + moment(value.dateCreated).format('DD-MM-YYYY') + '</td>\n' +
-                                '                                        <td>' + value.totalAmount.toFixed(2) + '</td>\n' +
                                 '                                        <td id="' + "invAdjAmt" + value.id + '">' + value.adjAmount.toFixed(2) + '</td>\n' +
                                 '                                        <td id="' + "invBal" + value.id + '" >' +
                                 value.balance.toFixed(2) +
                                 '</td>\n' +
                                 '                                        <td><input type="number" class="paidNowInv txt" id="paidNowInv' + value.id + '" name="paidNowInv" data-inid="' + value.id + '" data-bal="' + value.balance + '" style="width: 100px;" pattern="\\d{1,10}(?:\\.\\d{1,3})?$" value="0"></td>\n' +
+                                '                                        <td>' + value.totalAmount.toFixed(2) + '</td>\n' +
                                 '                                        <td>' + calculateNoOfDays(value.dateCreated) + '</td>\n' +
                                 '                                        <td>' + value.financialYear + '</td>\n' +
                                 '                                        <td style="display: none;">' + value.id + '</td>\n' +

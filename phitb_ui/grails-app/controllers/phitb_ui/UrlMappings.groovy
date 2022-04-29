@@ -390,6 +390,7 @@ class UrlMappings {
         }
         "/salebill/customer/$custid"(controller: 'saleReturn', action: 'getSaleBillByCustomer')
         "/getinvoicedetails"(controller:'saleReturn', action: 'getSaleInvByProducts')
+        "/sale-return/print-invoice"(controller: "saleReturn", action: "printSaleReturn")
 
 //        Purchase Return
         "/purchase-return"(controller: "purchaseReturn") {

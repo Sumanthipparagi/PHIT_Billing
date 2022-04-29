@@ -237,6 +237,30 @@ class SaleReturnDetailsController {
         }
     }
 
+    def getSaleReturnDetailsById()
+    {
+        try
+        {
+            String id = params.id
+            respond saleReturnDetailsService.getSaleReturnDetailsByBill(id)
+        }
+        catch (ResourceNotFoundException ex)
+        {
+            System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
+            response.status = 404
+        }
+        catch (BadRequestException ex)
+        {
+            System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
+            response.status = 400
+        }
+        catch (Exception ex)
+        {
+            System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
+        }
+    }
+
+
     def getSaleProductDetailsOfSaleBillList()
     {
         try
