@@ -363,7 +363,7 @@
                             <div class="header">
                                 <h2><strong>Security</strong> Settings</h2>
                             </div>
-                            <form action="/user/update-password?id=${user.id}">
+                            <form action="/user/update-password" method="post">
                             <div class="body">
 %{--                                <div class="form-group">--}%
 %{--                                    <input type="text" class="form-control" placeholder="Username">--}%
