@@ -257,4 +257,17 @@ class SaleProductDetailsService
         }
 
     }
+
+    Object getSaleProductDetailsByProductId(String productId)
+    {
+        try
+        {
+            return SaleProductDetails.findAllByProductId(Long.parseLong(productId))
+        }
+        catch (Exception ex)
+        {
+            log.error("SaleProductDeatilsService" + ex)
+            println("SaleProductDeatilsService" + ex)
+        }
+    }
 }

@@ -97,6 +97,7 @@ class SaleReturnDetailsService {
         SaleReturnDetails saleReturnDetails = new SaleReturnDetails()
         saleReturnDetails.finId = Long.parseLong(jsonObject.get("finId").toString())
         saleReturnDetails.billId = Long.parseLong(jsonObject.get("billId").toString())
+//        saleReturnDetails.reason = Long.parseLong(jsonObject.get("reason").toString())
         saleReturnDetails.billType = Long.parseLong(jsonObject.get("billType").toString())
         saleReturnDetails.serBillId = Long.parseLong(jsonObject.get("serBillId").toString())
         saleReturnDetails.seriesId = Long.parseLong(jsonObject.get("seriesId").toString())

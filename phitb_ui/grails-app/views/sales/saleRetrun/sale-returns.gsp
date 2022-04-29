@@ -126,10 +126,10 @@
                                         Check from Previous Sales
                                     </div>
                                     <label class="checkbox-inline">
-                                        <input type="radio" name="prev_sales" value="YES" id="prev_sales_yes" checked/>
+                                        <input type="radio" name="prev_sales" value="YES" class="prev_sales_yes" checked/>
                                         Yes
                                         &emsp;
-                                        <input type="radio" name="prev_sales" value="NO"/> No
+                                        <input type="radio" name="prev_sales" value="NO" class="prev_sales_no"/> No
                                     </label>
                                 </div>
                             </div>
@@ -192,9 +192,9 @@
 
         <div class="row clearfix">
 
-            <div class="col-lg-12">
+            <div class="col-lg-12 batches">
                 <div class="card">
-                    <div class="header" style="padding: 1px;">
+                    <div class="header " style="padding: 1px;">
                         Batches
                     </div>
 
@@ -206,11 +206,25 @@
                 </div>
             </div>
 
+            <div class="col-lg-12 bills">
+                <div class="card">
+                    <div class="header " style="padding: 1px;">
+                        Sale Bills
+                    </div>
+
+                    <div class="body">
+                        <div class="table-responsive">
+                            <div id="billsTable" style="width:100%;"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
             <div class="col-lg-4">
                 <div class="card">
-                    <div class="header" style="padding: 1px;">
-                        -
-                    </div>
+%{--                    <div class="header" style="padding: 1px;">--}%
+%{--                        ---}%
+%{--                    </div>--}%
 
 %{--                    <div class="body">--}%
 %{--                        <div class="row">--}%
@@ -281,7 +295,7 @@
         'SGST',
         'CGST',
         'IGST',
-        'Manf. Date'];
+        ''];
 
     var batchHeaderRow = [
         '<strong>Batch</strong>',
@@ -299,12 +313,36 @@
         'IGST',
         'id'];
 
+    var billHeaderRow = [
+        '<strong>Financial year</strong>',
+        '<strong>Document ID</strong>',
+        '<strong>Doc Type</strong>',
+        '<strong>Batch</strong>',
+        '<strong>Pur.Rate</strong>',
+        '<strong>S.Rate</strong>',
+        '<strong>Exp.Date</strong>',
+        '<strong>Amount</strong>',
+        '<strong>Sqty</strong>',
+        '<strong>FreeQty</strong>',
+        '<strong>Pack</strong>',
+        '<strong>Discount</strong>',
+        '<strong>MRP</strong>',
+        '<strong>GST</strong>',
+        'SGST',
+        'CGST',
+        'IGST',
+        '<strong>pid</strong>',
+        'id'];
+
 
     const batchContainer = document.getElementById('batchTable');
+    const billsContainer = document.getElementById('billsTable');
     var batchHot;
+    var billHot;
     var hot;
     var purchaseData = [];
     var batchData = [];
+    var billData = [];
     var mainTableRow = 0;
     var gst = 0;
     var cgst = 0;
@@ -322,6 +360,23 @@
     var readOnly = false;
     var scheme = null;
     $(document).ready(function () {
+        var isCheckedYes = "YES";
+        // var isCheckedNo = $('.prev_sales_no').prop('checked');
+        if (isCheckedYes === "YES") {
+            $('.batches').hide()
+        }
+        else
+        {
+            $('.bills').hide()
+        }
+        $('.prev_sales_no').on('click',function () {
+            $('.prev_sales_yes').prop('checked',false);
+            isCheckedYes="NO"
+        });
+        $('.prev_sales_yes').on('click',function () {
+            $('.prev_sales_no').prop('checked',false);
+            isCheckedYes="YES"
+        });
         $("#customer").select2();
         $('#date').val(moment().format('YYYY-MM-DD'));
         $('#date').attr("readonly");
@@ -395,10 +450,21 @@
             afterChange: (changes, source) => {
                 if (changes) {
                     changes.forEach(([row, prop, oldValue, newValue]) => {
-                        if (prop === 2) //first col product dropdown
-                        {
-                            mainTableRow = row;
-                            batchSelection(newValue, row);
+                        if (isCheckedYes === "YES") {
+                            // alert("yes")
+                            if (prop === 2) //second col product dropdown
+                            {
+                                mainTableRow = row;
+                                saleSelection(newValue, row);
+                            }
+                        }
+                        else {
+                            // alert("no")
+                            if (prop === 2) //second col product dropdown
+                            {
+                                mainTableRow = row;
+                                batchSelection(newValue, row);
+                            }
                         }
                     });
                 }
@@ -630,6 +696,26 @@
             }
         });
 
+
+
+
+        $(document).ready(function() {
+            $("input[name$='prev_sales']").click(function() {
+                var test = $(this).val();
+                if(test === 'YES')
+                {
+                    $('.batches').hide()
+                    $('.bills').show()
+                }
+                else
+                {
+                    $('.batches').show()
+                    $('.bills').hide()
+                }
+            });
+        });
+
+
         function productsDropdownRenderer(instance, td, row, col, prop, value, cellProperties) {
             var selectedId;
             for (var index = 0; index < products.length; index++) {
@@ -652,6 +738,7 @@
             Handsontable.renderers.TextRenderer.apply(this, arguments);
         }
 
+        // batch Selection
         batchHot = new Handsontable(batchContainer, {
             data: batchData,
             minRows: 1,
@@ -691,8 +778,6 @@
             fixedColumnsLeft: 0,
             licenseKey: 'non-commercial-and-evaluation'
         });
-
-
         batchHot.updateSettings({
             beforeKeyDown(e) {
                 const selection = batchHot.getSelected()[0][0];
@@ -732,6 +817,104 @@
             }
         });
 
+
+        // sale Selection
+        billHot = new Handsontable(billsContainer, {
+            data: billData,
+            minRows: 1,
+            height: '120',
+            width: 'auto',
+            rowHeights: 25,
+            manualRowResize: true,
+            manualColumnResize: true,
+            persistentState: true,
+            contextMenu: true,
+            rowHeaders: true,
+            selectionMode: 'range',
+            colHeaders: billHeaderRow,
+            columns: [
+                {type: 'text', readOnly: true},
+                {type: 'text', readOnly: true},
+                {type: 'numeric', readOnly: true},
+                {type: 'numeric', readOnly: true},
+                {type: 'numeric', readOnly: true},
+                {type: 'numeric', readOnly: true},
+                {type: 'numeric', readOnly: true},
+                {type: 'numeric', readOnly: true},
+                {type: 'numeric', readOnly: true},
+                {type: 'numeric', readOnly: true},
+                {type: 'numeric', readOnly: true},
+                {type: 'numeric', readOnly: true},
+                {type: 'numeric', readOnly: true},
+                {type: 'numeric', readOnly: true},
+                {type: 'numeric', readOnly: true},
+                {type: 'text', readOnly: true},
+                {type: 'text', readOnly: true}
+            ],
+            // hiddenColumns: true,
+            // hiddenColumns: {
+            //     // specify columns hidden by default
+            //     // columns: [16]
+            // },
+            minSpareRows: 0,
+            minSpareCols: 0,
+            fixedColumnsLeft: 0,
+            licenseKey: 'non-commercial-and-evaluation'
+        });
+        billHot.updateSettings({
+            beforeKeyDown(e) {
+                const selection = billHot.getSelected()[0][0];
+                var rowData = billHot.getDataAtRow(selection);
+                console.log(rowData)
+                if (e.keyCode === 13) {
+                    if (!checkForDuplicateEntry(rowData[0])) {
+                        //check for schemes
+                        checkSchemes(hot.getDataAtCell(mainTableRow, 1), rowData[0]); //product, batch
+                        // var batchId = rowData[12];
+                        // hot.setDataAtCell(mainTableRow, 2, rowData[0]);
+                        // hot.setCellMeta(mainTableRow, 3, "batchId", batchId);
+                        hot.setDataAtCell(mainTableRow, 3, rowData[3]);
+                        hot.setDataAtCell(mainTableRow, 4, rowData[6]);
+                        hot.setDataAtCell(mainTableRow, 5, rowData[8]);
+                        hot.setDataAtCell(mainTableRow, 6, rowData[9]);
+                        hot.setDataAtCell(mainTableRow, 7, rowData[4]);
+                        hot.setDataAtCell(mainTableRow, 8, rowData[5]);
+                        hot.setDataAtCell(mainTableRow, 9, rowData[12]);
+                        hot.setDataAtCell(mainTableRow, 10, rowData[11]);
+                        hot.setDataAtCell(mainTableRow, 11, rowData[10]);
+                        hot.setDataAtCell(mainTableRow, 12, rowData[13]);
+                        hot.setDataAtCell(mainTableRow, 14, rowData[14]);
+                        hot.setDataAtCell(mainTableRow, 15, rowData[15]);
+                        hot.setDataAtCell(mainTableRow, 16, rowData[16]);
+                        hot.setDataAtCell(mainTableRow, 17, rowData[1]);
+                        hot.setDataAtCell(mainTableRow, 13, rowData[7]);
+
+                        // hot.setDataAtCell(mainTableRow, 4, rowData[5]);
+                        // hot.setDataAtCell(mainTableRow, 5, rowData[7]);
+                        // hot.setDataAtCell(mainTableRow, 6, rowData[8]);
+                        // hot.setDataAtCell(mainTableRow, 7, rowData[5]);
+                        // hot.setDataAtCell(mainTableRow, 10, rowData[14]);
+                        // hot.setDataAtCell(mainTableRow, 11, rowData[9]);
+                        // hot.setDataAtCell(mainTableRow, 12, rowData[11]);
+                        // hot.setDataAtCell(mainTableRow, 13, rowData[12]);
+                        //
+                        // hot.setDataAtCell(mainTableRow, 8, 0);
+                        gst = rowData[13];
+                        sgst = rowData[14];
+                        cgst = rowData[15];
+                        igst = rowData[16];
+                        hot.selectCell(mainTableRow, 4);
+                        remainingQty = rowData[8];
+                        remainingFQty = rowData[9];
+                        $("#saleReturnTable").focus();
+                    } else {
+                        alert("Selected product and batch already entered, duplicate entries not allowed");
+                    }
+                }
+            }
+        });
+
+
         $('#series').trigger('change');
     });
 
@@ -762,7 +945,6 @@
                             batchdt.push(data[i].igst);
                             batchdt.push(data[i].id);
                             batchData.push(batchdt);
-                            console.log(batchData)
                         }
                         batchHot.updateSettings({
                             data: []
@@ -782,11 +964,66 @@
         }
     }
 
+
+    function saleSelection(selectedId, mainRow, selectCell = true) {
+        if (selectedId != null) {
+            var url = "/getinvoicedetails?productId="+selectedId;
+            $.ajax({
+                type: "GET",
+                url: url,
+                dataType: 'json',
+                success: function (data) {
+                    if (data) {
+                        billData = [];
+                        for (var i = 0; i < data.length; i++) {
+                            var saledt = [];
+                            if(data[i].bill.billStatus!=="DRAFT" && data[i].bill.billStatus!=="CANCELLED") {
+                                saledt.push(data[i].financialYear);
+                                saledt.push(data[i].bill.invoiceNumber);
+                                saledt.push("INVOICE");
+                                saledt.push(data[i].batchNumber);
+                                saledt.push(data[i].pRate);
+                                saledt.push(data[i].sRate);
+                                saledt.push(data[i].expiryDate);
+                                saledt.push(data[i].amount);
+                                saledt.push(data[i].sqty);
+                                saledt.push(data[i].freeQty);
+                                saledt.push(data[i].batch.product.unitPacking);
+                                saledt.push(data[i].discount)
+                                saledt.push(data[i].mrp)
+                                saledt.push(data[i].gstAmount);
+                                saledt.push(data[i].sgstAmount);
+                                saledt.push(data[i].cgstAmount);
+                                saledt.push(data[i].igstAmount);
+                                saledt.push(data[i].id);
+                                billData.push(saledt);
+                                console.log(billData)
+                            }
+                        }
+                        billHot.updateSettings({
+                            data: []
+                        });
+                        if (saledt?.length > 0) {
+                            billHot.loadData(billData);
+                            $("#billsTable").focus();
+                            if (selectCell)
+                                billHot.selectCell(0, 0);
+                        }
+                    }
+                },
+                error: function (data) {
+                    console.log("Failed");
+                }
+            });
+        }
+    }
+
+
     function customerChanged() {
         var noOfCrDays = 0;
         var customerId = $("#customer").val();
         for (var i = 0; i < customers.length; i++) {
-            if (customerId == customers[i].id) {
+            if (customerId === customers[i].id) {
                 noOfCrDays = customers[i].noOfCrDays;
             }
         }
@@ -805,20 +1042,20 @@
         totalFQty = 0;
         var data = hot.getData();
         for (var i = 0; i < data.length; i++) {
-            if (data[i][4])
-                totalQty += Number(data[i][4]);
             if (data[i][5])
-                totalFQty +=  Number(data[i][5]);
+                totalQty += Number(data[i][5]);
+            if (data[i][6])
+                totalFQty +=  Number(data[i][6]);
             if (data[i][12])
-                totalAmt += Number(data[i][12]);
-            if (data[i][11])
-                totalGst += Number(data[i][11]);
-            if (data[i][13])
-                totalSgst += Number(data[i][13]);
+                totalAmt += Number(data[i][13]);
+            if (data[i][12])
+                totalGst += Number(data[i][12]);
             if (data[i][14])
-                totalCgst += Number(data[i][14]);
+                totalSgst += Number(data[i][14]);
             if (data[i][15])
-                totalIgst += Number(data[i][15]);
+                totalCgst += Number(data[i][15]);
+            if (data[i][15])
+                totalIgst += Number(data[i][16]);
         }
         $("#totalAmt").text(totalAmt.toFixed(2));
         $("#totalGST").text(totalGst.toFixed(2));
@@ -978,7 +1215,6 @@
                 seriesCode:seriesCode
             },
             success: function (data) {
-                console.log(data);
                 readOnly = true;
                 var rowData = hot.getData();
                 for(var j = 0; j < rowData.length;j++) {

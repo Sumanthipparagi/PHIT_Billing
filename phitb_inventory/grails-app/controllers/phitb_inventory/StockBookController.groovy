@@ -244,22 +244,22 @@ class StockBookController {
             StockBook stockBook = StockBook.findByBatchNumber(params.batch)
             def remQty = stockBook.getRemainingQty()
             def freeQty = stockBook.getRemainingFreeQty()
-            if(params.reason == "Sale Return")
+            if(params.reason == "SALE RETURN")
             {
                 stockBook.remainingQty = remQty + Long.parseLong(params.purQty)
                 stockBook.remainingFreeQty = freeQty + Long.parseLong(params.fqty)
             }
-            else if (params.reason == "Product Expired")
+            else if (params.reason == "PRODUCT EXPIRED")
             {
                 stockBook.remainingQty = remQty - Long.parseLong(params.purQty)
                 stockBook.remainingFreeQty = freeQty - Long.parseLong(params.fqty)
             }
-            else if (params.reason == "Breakage")
+            else if (params.reason == "BREAKAGE")
             {
                 stockBook.remainingQty = remQty - Long.parseLong(params.purQty)
                 stockBook.remainingFreeQty = freeQty - Long.parseLong(params.fqty)
             }
-            else if(params.reason == "Other")
+            else if(params.reason == "OTHER")
             {
                 stockBook.remainingQty = remQty + Long.parseLong(params.purQty)
                 stockBook.remainingFreeQty = freeQty + Long.parseLong(params.fqty)

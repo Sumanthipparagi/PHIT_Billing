@@ -163,6 +163,10 @@ class UrlMappings {
                 action = [GET: 'getAllByDays']
             }
 
+            "/saleproductdetailsbyproductId(.$format)?"(controller: 'saleProductDetails') {
+                action = [GET: 'getSaleProductDetailsbyProductId']
+            }
+
             //Sale Transaction Log
             "/saletransactionlog(.$format)?"(controller: 'saleTransactionLog') {
                 action = [GET: 'index', POST: 'save']

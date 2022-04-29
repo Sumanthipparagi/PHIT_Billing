@@ -266,6 +266,32 @@ class InventoryService {
 
     }
 
+
+    def getStocksIncrease(String batch,String qty, String fqty, String reason) {
+        Client client = ClientBuilder.newClient();
+        WebTarget target = client.target(new Links().API_GATEWAY)
+        String url = new Links().STOCK_INCREASE + "/batch/" + batch + "/qty/"+ qty+"/fQty/"+fqty+"/reason/"+reason
+        try {
+            Response apiResponse = target
+                    .path(url)
+                    .queryParam("entityId", entityId)
+                    .request(MediaType.APPLICATION_JSON_TYPE)
+                    .get()
+            if(apiResponse.status == 200)
+            {
+                JSONObject jsonObject1 = new JSONObject(apiResponse.readEntity(String.class))
+                return jsonObject1
+            }
+            else
+                return null
+        }
+        catch (Exception ex) {
+            System.err.println('Service:InventoryService , action :  getStocksOfProductAndBatch  , Ex:' + ex)
+            log.error('Service:InventoryService , action :  getStocksOfProductAndBatch  , Ex:' + ex)
+        }
+
+    }
+
 //    def getTempStocksOfEntity(String id) {
 //        Client client = ClientBuilder.newClient();
 //        WebTarget target = client.target(new Links().API_GATEWAY);
