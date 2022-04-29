@@ -23,9 +23,6 @@ import java.util.logging.Logger;
 
 @Transactional
 class EInvoiceService {
-/*    String userName = "nsdlTest"
-    String password = "Test@123"
-    String gstin = "27ABFPD4021L002"*/
     JSONObject entityIrnDetails = new JSONObject()
 
     def generateSignatureAndAuthToken(HttpSession session) {
@@ -45,8 +42,7 @@ class EInvoiceService {
             if(!isAuthTokenValid)
             {
                 String aspId = Constants.E_INVOICE_ASP_ID;
-                String ts = "";
-                ts = new EinvoiceHelper().getCurrTs();
+                String ts = new EinvoiceHelper().getCurrTs();
                 System.out.println("AspId : " + aspId);
                 System.out.println("TimeStamp : " + ts);
                 String aspData = aspId + ts;
@@ -164,8 +160,8 @@ class EInvoiceService {
                 "  },\n" +
                 "  \"DocDtls\": {\n" +
                 "    \"Typ\": \"INV\",\n" +
-                "    \"No\": \"DOC/003\",\n" +
-                "    \"Dt\": \"29/04/2022\"\n" +
+                "    \"No\": \"DOC/004\",\n" +
+                "    \"Dt\": \"30/04/2022\"\n" +
                 "  },\n" +
                 "  \"SellerDtls\": {\n" +
                 "    \"Gstin\": \"27ABFPD4021L002\",\n" +

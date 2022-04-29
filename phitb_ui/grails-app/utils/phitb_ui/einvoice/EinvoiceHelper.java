@@ -10,18 +10,11 @@ import org.bouncycastle.jce.provider.BouncyCastleProvider;
 import org.bouncycastle.util.Store;
 import sun.misc.BASE64Decoder;
 import sun.misc.BASE64Encoder;
-
-import javax.crypto.Cipher;
 import javax.crypto.KeyGenerator;
 import javax.crypto.SecretKey;
 import java.io.FileInputStream;
-import java.io.IOException;
-import java.net.URL;
-import java.nio.charset.StandardCharsets;
 import java.security.*;
 import java.security.cert.X509Certificate;
-import java.security.spec.InvalidKeySpecException;
-import java.security.spec.X509EncodedKeySpec;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
@@ -38,26 +31,21 @@ public class EinvoiceHelper {
     static byte[] appKey = null;
     private static String jksFilePath = "";
     private static String publicKeyPath = "";
+    static ClassLoader classLoader = EinvoiceHelper.class.getClassLoader();
 
-    public EinvoiceHelper()
-    {
+    static {
         JKSPassword = "123456".toCharArray();
         PFXPassword = "tcs".toCharArray();
-        jksFilePath = EinvoiceHelper.class.getResource("KeyStore.jks").getPath();
-        publicKeyPath = EinvoiceHelper.class.getResource("publicKey.pem").getPath();
+        if(classLoader != null) {
+            jksFilePath = Objects.requireNonNull(classLoader.getResource("KeyStore/KeyStore.jks")).getPath();
+            publicKeyPath = Objects.requireNonNull(classLoader.getResource("KeyStore/publicKey")).getPath();
+        }
     }
-   /* static {
-        JKSPassword = "123456".toCharArray();
-        PFXPassword = "tcs".toCharArray();
-        jksFilePath = EinvoiceHelper.class.getResource("KeyStore.jks").getPath();
-        publicKeyPath = EinvoiceHelper.class.getResource("publicKey.pem").getPath();
-    }*/
 
     public static String generateSignature(String data) throws Exception {
 
         System.out.println("@@inside generateSignature: " + data);
         String signature;
-        //String jksFilePath = "C:\\Users\\arjun\\Desktop\\KeyStore.jks";
         try {
             // Adding Security Provider for PKCS 12
             Security.addProvider(new BouncyCastleProvider());
@@ -101,8 +89,8 @@ public class EinvoiceHelper {
             CMSTypedData data1 = new CMSProcessableByteArray(data.getBytes());
             CMSSignedData signed = generator.generate(data1, true);
             BASE64Encoder encoder = new BASE64Encoder();
-            //String signedContent = encoder.encode((byte[]) signed.getSignedContent().getContent());
             return encoder.encode(signed.getEncoded());
+           // return Base64.getEncoder().encodeToString(signed.getEncoded());
         } catch (Exception e) {
             e.printStackTrace();
             System.out.println("MakeSignature ==" + e.getCause());
@@ -137,7 +125,7 @@ public class EinvoiceHelper {
         cipher.init(Cipher.ENCRYPT_MODE, publicKeys);
         byte[] encryptedText = cipher.doFinal(clearText.getBytes());
         return Base64.getEncoder().encodeToString(encryptedText);
-    }*/
+    }
 
     public static PublicKey getPublicKey() throws IOException, NoSuchAlgorithmException, InvalidKeySpecException
     {
@@ -152,5 +140,5 @@ public class EinvoiceHelper {
         X509EncodedKeySpec spec = new X509EncodedKeySpec(keyBytes);
         KeyFactory keyFactory = KeyFactory.getInstance("RSA");
         return keyFactory.generatePublic(spec);
-    }
+    }*/
 }
