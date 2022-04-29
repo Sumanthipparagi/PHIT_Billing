@@ -6,9 +6,10 @@ import org.glassfish.jersey.logging.LoggingFeature
 import org.grails.web.json.JSONObject
 import phitb_ui.einvoice.AESEncryption
 import phitb_ui.einvoice.EinvoiceHelper
+import phitb_ui.einvoice.NICEncryption
 import phitb_ui.einvoice.NicV4TokenPayloadGen
-import phitb_ui.einvoice.PayloadEncrypt
 
+import javax.servlet.http.HttpSession
 import javax.ws.rs.client.Client
 import javax.ws.rs.client.ClientBuilder
 import javax.ws.rs.client.Entity
@@ -16,7 +17,7 @@ import javax.ws.rs.client.WebTarget
 import javax.ws.rs.core.Feature
 import javax.ws.rs.core.MediaType
 import javax.ws.rs.core.Response
-
+import java.text.SimpleDateFormat
 import java.util.logging.Level
 import java.util.logging.Logger;
 
@@ -25,50 +26,69 @@ class EInvoiceService {
     String userName = "nsdlTest"
     String password = "Test@123"
     String gstin = "27ABFPD4021L002"
-    def generateSignature() {
-        try {
-            String aspId = Constants.E_INVOICE_ASP_ID;
-            String ts = "";
-            ts = new EinvoiceHelper().getCurrTs();
-            System.out.println("AspId : " + aspId);
-            System.out.println("TimeStamp : " + ts);
-            String aspData = aspId + ts;
-            String sign = ""
-            try {
-                sign = new EinvoiceHelper().generateSignature(aspData);
-                //System.out.println("sign:" + sign);
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
+    JSONObject entityIrnDetails = new JSONObject()
 
-            JSONObject jsonObject = new JSONObject()
-            jsonObject.put("timestamp", ts)
-            jsonObject.put("signed_content", sign)
-            Logger logger = Logger.getLogger(getClass().getName());
-            Feature feature = new LoggingFeature(logger, Level.INFO, null, null);
-            Client client = ClientBuilder.newClient();
-            client.register(feature)
-            WebTarget target = client.target(new Links().E_INVOICE_GET_KEY)
-            try {
-                Response apiResponse = target
-                        .request(MediaType.APPLICATION_JSON_TYPE)
-                        .header("aspid", new Constants().E_INVOICE_ASP_ID)
-                        .header("message-id", ts) //TODO: logic to be implemented
-                        .header("filler1", "")
-                        .header("filler2", "")
-                        .post(Entity.entity(jsonObject.toString(), MediaType.APPLICATION_JSON_TYPE))
-                if(apiResponse.status == 200)
-                {
-                    JSONObject jsonObject1 = new JSONObject(apiResponse.readEntity(String.class))
-                    return jsonObject1
-                }
-                else
-                    return null
+    def generateSignatureAndAuthToken(HttpSession session) {
+        try {
+            SimpleDateFormat tokenDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss")
+            //String entityId = session.getAttribute("entityId").toString()
+            String entityId = "1"
+            entityIrnDetails = new EntityService().getEntityIrnByEntity(entityId)
+            boolean isAuthTokenValid = true
+            if(entityIrnDetails && entityIrnDetails.has("authToken"))
+            {
+                Date authTokenExpiryDate = tokenDateFormat.parse(entityIrnDetails.get("tokenExpiry").toString())
+                if(authTokenExpiryDate.before(new Date()))
+                    isAuthTokenValid = false
             }
-            catch (Exception ex) {
-                System.err.println('Service :EInvoiceService , action :  generateSignature  , Ex:' + ex)
-                log.error('Service :EInvoiceService , action :  generateSignature  , Ex:' + ex)
-                return null
+            if(!isAuthTokenValid)
+            {
+                String aspId = Constants.E_INVOICE_ASP_ID;
+                String ts = "";
+                ts = new EinvoiceHelper().getCurrTs();
+                System.out.println("AspId : " + aspId);
+                System.out.println("TimeStamp : " + ts);
+                String aspData = aspId + ts;
+                String sign = ""
+                try {
+                    sign = new EinvoiceHelper().generateSignature(aspData);
+                    //System.out.println("sign:" + sign);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+
+                JSONObject jsonObject = new JSONObject()
+                jsonObject.put("timestamp", ts)
+                jsonObject.put("signed_content", sign)
+                Logger logger = Logger.getLogger(getClass().getName());
+                Feature feature = new LoggingFeature(logger, Level.INFO, null, null);
+                Client client = ClientBuilder.newClient();
+                client.register(feature)
+                WebTarget target = client.target(new Links().E_INVOICE_GET_KEY)
+                try {
+                    Response apiResponse = target
+                            .request(MediaType.APPLICATION_JSON_TYPE)
+                            .header("aspid", new Constants().E_INVOICE_ASP_ID)
+                            .header("message-id", ts)
+                            .header("filler1", "")
+                            .header("filler2", "")
+                            .post(Entity.entity(jsonObject.toString(), MediaType.APPLICATION_JSON_TYPE))
+                    if (apiResponse.status == 200) {
+                        JSONObject sessionData = new JSONObject(apiResponse.readEntity(String.class))
+                        JSONObject authToken = generateAuthToken(sessionData)
+                        return authToken
+                    } else
+                        return null
+                }
+                catch (Exception ex) {
+                    System.err.println('Service :EInvoiceService , action :  generateSignature  , Ex:' + ex)
+                    log.error('Service :EInvoiceService , action :  generateSignature  , Ex:' + ex)
+                    return null
+                }
+            }
+            else
+            {
+                return entityIrnDetails
             }
         }
         catch (Exception ex) {
@@ -77,12 +97,11 @@ class EInvoiceService {
         }
     }
 
-    def generateAuthToken(JSONObject jsonObject)
-    {
+    def generateAuthToken(JSONObject jsonObject) {
         //To encrypt auth-token payload payload
         String randomAppKey = Base64.getEncoder().encodeToString(new EinvoiceHelper().createAESKey());
         String base64EncodedAppKey = Base64.getEncoder().encodeToString(randomAppKey.getBytes());
-        String authPayload = "{\"UserName\":\"nsdlTest\", \"Password\":\"Test@123\", \"AppKey\":\""+ base64EncodedAppKey +"\", \"ForceRefreshAccessToken\":true}";
+        String authPayload = "{\"UserName\":\"nsdlTest\", \"Password\":\"Test@123\", \"AppKey\":\"" + base64EncodedAppKey + "\", \"ForceRefreshAccessToken\":true}";
         String base64EncodedPayload = Base64.getEncoder().encodeToString(authPayload.getBytes());
         byte[] b = new NicV4TokenPayloadGen().readFile("C:\\Users\\arjun\\Desktop\\publicKey.pem");
         NicV4TokenPayloadGen gen = new NicV4TokenPayloadGen(b);
@@ -103,13 +122,18 @@ class EInvoiceService {
                     .header("session_id", jsonObject.get("session_id"))
                     .header("gstin", gstin)
                     .post(Entity.entity(finalPayLoad.toString(), MediaType.APPLICATION_JSON_TYPE))
-            if(apiResponse.status == 200)
-            {
-                return new JSONObject(apiResponse.readEntity(String.class))
-
-            }
-            else
-            {
+            if (apiResponse.status == 200) {
+                JSONObject authToken = new JSONObject(apiResponse.readEntity(String.class))
+                //update entityIrnDetails
+                entityIrnDetails.put("sessionId", jsonObject.get("session_id").toString())
+                entityIrnDetails.put("appKey", authToken.get("appKey").toString())
+                entityIrnDetails.put("aspSecretKey", encAspSecret)
+                entityIrnDetails.put("authToken", authToken.get("authtoken").toString())
+                entityIrnDetails.put("sek", authToken.get("sek").toString())
+                entityIrnDetails.put("tokenExpiry", authToken.get("tokenExp").toString())
+                new EntityService().updateEntityIRN(entityIrnDetails)
+                return entityIrnDetails
+            } else {
                 return null
             }
         }
@@ -119,10 +143,10 @@ class EInvoiceService {
         }
     }
 
-    def generateIRN()
-    {
-        JSONObject sessionData = generateSignature()
-        JSONObject authData = generateAuthToken(sessionData)
+    def generateIRN(HttpSession session) {
+
+        JSONObject authData = generateSignatureAndAuthToken(session)
+       // JSONObject authData = generateAuthToken(sessionData)
         String sampleIRN = "\n" +
                 "{\n" +
                 "  \"Version\": \"1.1\",\n" +
@@ -135,18 +159,18 @@ class EInvoiceService {
                 "  },\n" +
                 "  \"DocDtls\": {\n" +
                 "    \"Typ\": \"INV\",\n" +
-                "    \"No\": \"DOC/001\",\n" +
-                "    \"Dt\": \"18/08/2020\"\n" +
+                "    \"No\": \"DOC/003\",\n" +
+                "    \"Dt\": \"29/04/2022\"\n" +
                 "  },\n" +
                 "  \"SellerDtls\": {\n" +
-                "    \"Gstin\": \"37ARZPT4384Q1MT\",\n" +
+                "    \"Gstin\": \"27ABFPD4021L002\",\n" +
                 "    \"LglNm\": \"NIC company pvt ltd\",\n" +
                 "    \"TrdNm\": \"NIC Industries\",\n" +
                 "    \"Addr1\": \"5th block, kuvempu layout\",\n" +
                 "    \"Addr2\": \"kuvempu layout\",\n" +
                 "    \"Loc\": \"GANDHINAGAR\",\n" +
-                "    \"Pin\": 518001,\n" +
-                "    \"Stcd\": \"37\",\n" +
+                "    \"Pin\": 410506,\n" +
+                "    \"Stcd\": \"27\",\n" +
                 "    \"Ph\": \"9000000000\",\n" +
                 "    \"Em\": \"abc@gmail.com\"\n" +
                 "  },\n" +
@@ -302,9 +326,49 @@ class EInvoiceService {
                 "    \"VehType\": \"R\",\n" +
                 "    \"TransMode\": \"1\"\n" +
                 "  }\n" +
-                "}\n"
+                "}\n" +
+                "\t\t "
+        String appKey = authData.get("appKey")
+        String sek = authData.get("sek")
+        String encryptedPayload = new NICEncryption(appKey, sek).EncryptPayload(sampleIRN)
 
-        new PayloadEncrypt()
+        JSONObject finalPayLoad = new JSONObject()
+        finalPayLoad.put("Data", encryptedPayload)
+
+        Logger logger = Logger.getLogger(getClass().getName())
+        Feature feature = new LoggingFeature(logger, Level.INFO, null, null);
+        Client client = ClientBuilder.newClient();
+        client.register(feature)
+        WebTarget target = client.target(new Links().E_INVOICE_GEN_IRN)
+        try {
+            Response apiResponse = target
+                    .request(MediaType.APPLICATION_JSON_TYPE)
+                    .header("aspid", new Constants().E_INVOICE_ASP_ID)
+                    .header("asp_secret_key", authData.get("asp_secret_key"))
+                    .header("session_id", authData.get("session_id"))
+                    .header("gstin", gstin)
+                    .header("authtoken", authData.get("authtoken"))
+                    .header("username", authData.get("userName"))
+                    .post(Entity.entity(finalPayLoad.toString(), MediaType.APPLICATION_JSON_TYPE))
+            if (apiResponse.status == 200) {
+                JSONObject generatedIRN = new JSONObject(apiResponse.readEntity(String.class))
+                if (generatedIRN) {
+                    if (generatedIRN.get("Status").toString().equalsIgnoreCase("1")) {
+                        def tmp = new NICEncryption(appKey, sek).DecryptResponse(generatedIRN.get("Data").toString())
+                        println(tmp)
+                    } else {
+                        println(generatedIRN.get("ErrorDetails").toString())
+                    }
+                }
+                return generatedIRN
+            } else {
+                return null
+            }
+        }
+        catch (Exception ex) {
+            System.err.println('Service :EInvoiceService , action :  generateAuthToken  , Ex:' + ex)
+            log.error('Service :EInvoiceService , action :  generateAuthToken  , Ex:' + ex)
+        }
     }
 
 }

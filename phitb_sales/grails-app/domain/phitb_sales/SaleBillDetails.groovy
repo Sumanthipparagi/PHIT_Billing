@@ -55,8 +55,15 @@ class SaleBillDetails implements Serializable, LogicalDelete<SaleBillDetails>
     Double adjAmount
     Date dateCreated
     Date lastUpdated
+
+    String irnDetails
     static constraints = {
         invoiceNumber unique: true, nullable: true
+        irnDetails nullable: true
+    }
+
+    static mapping = {
+        irnDetails sqlType: 'longText'
     }
 
     boolean isUpdatable

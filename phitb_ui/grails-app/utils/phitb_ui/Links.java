@@ -97,6 +97,14 @@ public class Links
 
     /*<-------------------------------------------Entity ------------------------------------------------->*/
 
+    //Entity IRN
+    public static String ENTITY_IRN_SHOW = "api/v1.0/entity/entityirn";
+    public static String ENTITY_IRN_SAVE = "api/v1.0/entity/entityirn";
+    public static String ENTITY_IRN_DATATABLE = "api/v1.0/entity/entityirn/datatable";
+    public static String ENTITY_IRN_UPDATE = "api/v1.0/entity/entityirn/";
+    public static String ENTITY_IRN_DELETE = "api/v1.0/entity/entityirn/";
+    public static String ENTITY_IRN_SHOW_BY_ENTITY = "api/v1.0/entity//entityirn/entity/";
+
     public static String ENTITY_AUTH = "api/v1.0/entity/authregister/username";
 
     public static String ENTITY_TYPE_MASTER_SHOW = "api/v1.0/entity/entitytypemaster";

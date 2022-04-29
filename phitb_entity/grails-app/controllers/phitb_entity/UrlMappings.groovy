@@ -87,6 +87,18 @@ class UrlMappings
                         'delete']
             }
 
+            //Entity IRN
+            "/entityirn(.$format)?"(controller: 'entityIRN') {
+                action = [GET: 'index', POST:
+                        'save']
+            }
+            "/entityirn/entity/$id(.$format)?"(controller: 'entityIRN') {action = [GET: 'showByEntity']}
+            "/entityirn/datatable(.$format)?"(controller: 'entityIRN') {action = [GET: 'dataTable']}
+            "/entityirn/$id(.$format)?"(controller: 'entityIRN') {
+                action = [GET: 'show', PUT: 'update', DELETE:
+                        'delete']
+            }
+
 
             //Entity register
             "/entityregister(.$format)?"(controller: 'entityRegister') {
