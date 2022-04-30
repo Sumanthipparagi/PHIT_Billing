@@ -134,16 +134,16 @@ class SaleReturnController
             String expDate = sr.get("4")
             String saleQty = sr.get("5")
             String freeQty = sr.get("6")
-            String purchaseRate = sr.get("7")
-            String saleRate = sr.get("8")
-            String mrp = sr.get("9")
-            double discount = UtilsService.round(Double.parseDouble(sr.get("10").toString()), 2)
-            String packDesc = sr.get("11")
-            double gst = UtilsService.round(Double.parseDouble(sr.get("12").toString()), 2)
-            double value = UtilsService.round(Double.parseDouble(sr.get("13").toString()), 2)
-            double sgst = UtilsService.round(Double.parseDouble(sr.get("14").toString()), 2)
-            double cgst = UtilsService.round(Double.parseDouble(sr.get("15").toString()), 2)
-            double igst = UtilsService.round(Double.parseDouble(sr.get("16").toString()), 2)
+            String saleRate = sr.get("7")
+            String mrp = sr.get("8")
+            String invoiceNumber = sr.get("16")
+            double discount = UtilsService.round(Double.parseDouble(sr.get("9").toString()), 2)
+            String packDesc = sr.get("10")
+            double gst = UtilsService.round(Double.parseDouble(sr.get("11").toString()), 2)
+            double value = UtilsService.round(Double.parseDouble(sr.get("12").toString()), 2)
+            double sgst = UtilsService.round(Double.parseDouble(sr.get("13").toString()), 2)
+            double cgst = UtilsService.round(Double.parseDouble(sr.get("14").toString()), 2)
+            double igst = UtilsService.round(Double.parseDouble(sr.get("15").toString()), 2)
             totalSqty += Long.parseLong(saleQty)
             totalFqty += Long.parseLong(freeQty)
             totalAmount += value
@@ -165,7 +165,7 @@ class SaleReturnController
             saleReturnDetail.put("sqty", saleQty)
             saleReturnDetail.put("freeQty", freeQty)
             saleReturnDetail.put("repQty", 0)
-            saleReturnDetail.put("pRate", purchaseRate)
+            saleReturnDetail.put("invoiceNumber", invoiceNumber)
             saleReturnDetail.put("sRate", saleRate)
             saleReturnDetail.put("mrp", mrp)
             saleReturnDetail.put("discount", discount)
@@ -212,6 +212,14 @@ class SaleReturnController
 
             //save to sale transaction log
             //save to sale transportation details
+
+            def stocks = new InventoryService().stocksIncrease(batchNumber,saleQty,freeQty,reason)
+            if (stocks.status == 200) {
+                println("Inc")
+            } else {
+                println("not inc")
+            }
+
         }
         String entryDate = sdf.format(new Date())
         String orderDate = sdf.format(new Date())

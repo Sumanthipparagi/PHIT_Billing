@@ -376,6 +376,8 @@
                                     <input type="password" class="form-control" id="confirm_password" placeholder="Confirm Password">
                                     <span id='message'></span>
                                 </div>
+                                <input type="hidden" name="id" value="${user.id}">
+
                                 <button class="btn btn-info btn-round">Save Changes</button>
                             </div>
                             </form>
