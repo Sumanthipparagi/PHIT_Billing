@@ -13,7 +13,7 @@ class SaleBillDetailsController
 {
     static responseFormats = ['json', 'xml']
 
-    static allowedMethods = [index: "GET", show: "GET", save: "POST", update: "PUT", delete: "DELETE", dataTable: "GET"]
+    static allowedMethods = [index: "GET", show: "GET", save: "POST", update: "PUT", delete: "DELETE", dataTable: "GET", updateIRNDetails: "PUT"]
     SaleBillDetailsService saleBillDetailsService
     /**
      * Gets all Sale Bill Details
@@ -426,6 +426,27 @@ class SaleBillDetailsController
         try {
             JSONObject jsonObject = new JSONObject(request.reader.text)
             JSONObject saleBillDetails = saleBillDetailsService.cancelSaleBill(jsonObject)
+            respond saleBillDetails
+        }
+        catch (ResourceNotFoundException ex) {
+            System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
+            response.status = 404
+        }
+        catch (BadRequestException ex) {
+            System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
+            response.status = 400
+
+        }
+        catch (Exception ex) {
+            System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
+        }
+    }
+
+    def updateIRNDetails()
+    {
+        try {
+            JSONObject jsonObject = new JSONObject(request.reader.text)
+            SaleBillDetails saleBillDetails = saleBillDetailsService.updateIRNDetails(jsonObject)
             respond saleBillDetails
         }
         catch (ResourceNotFoundException ex) {

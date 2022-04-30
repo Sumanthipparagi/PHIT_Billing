@@ -409,6 +409,8 @@ class SaleEntryController
 
             def total = totalBeforeTaxes + totalcgst + totalsgst + totaligst
 
+            JSONObject irnDetails = new JSONObject(saleBillDetail.get("irnDetails").toString())
+
             render(view: "/sales/sale-invoice", model: [saleBillDetail    : saleBillDetail,
                                                         saleProductDetails: saleProductDetails,
                                                         series            : series, entity: entity, customer: customer, city: city,
@@ -420,7 +422,8 @@ class SaleEntryController
                                                         sgstGroup         : sgstGroup,
                                                         cgstGroup         : cgstGroup,
                                                         igstGroup         : igstGroup,
-                                                        totalBeforeTaxes  : totalBeforeTaxes
+                                                        totalBeforeTaxes  : totalBeforeTaxes,
+                                                        irnDetails: irnDetails
             ])
         }
         else

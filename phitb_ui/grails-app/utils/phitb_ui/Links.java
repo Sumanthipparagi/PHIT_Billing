@@ -358,7 +358,7 @@ public class Links
     public static String SALE_BILL_DATEWISE_REPORTS = "api/v1.0/sales/reports/datewise";
     public static String SALE_BILL_AREAWISE_REPORTS = "api/v1.0/sales/reports/areawise";
     public static String SALE_BILL_CONSOLIDATED_REPORTS = "api/v1.0/sales/reports/consolidated";
-
+    public static String SALE_BILL_UPDATE_IRN = "api/v1.0/sales/salebilldetails/updateirn";
 
     public static String SALE_SCHEME_UPDATE = "api/v1.0/sales/schemeconfiguration/{id}";
     public static String SALE_SCHEME_DELETE = "api/v1.0/sales/schemeconfiguration/{id}";

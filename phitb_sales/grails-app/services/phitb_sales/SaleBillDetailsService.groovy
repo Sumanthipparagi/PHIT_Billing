@@ -404,4 +404,22 @@ class SaleBillDetailsService
             throw new ResourceNotFoundException()
         }
     }
+
+
+    def updateIRNDetails(JSONObject jsonObject)
+    {
+        String id = jsonObject.get("id")
+        SaleBillDetails saleBillDetails = SaleBillDetails.findById(Long.parseLong(id))
+        if (saleBillDetails)
+        {
+            saleBillDetails.isUpdatable = true
+            saleBillDetails.irnDetails = jsonObject.get("irnDetails").toString()
+            saleBillDetails.save(flush:true)
+            return saleBillDetails
+        }
+        else
+        {
+            throw new ResourceNotFoundException()
+        }
+    }
 }

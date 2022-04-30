@@ -298,6 +298,8 @@ class UrlMappings {
             "/reports/areawise(.$format)?"(controller: 'reports', action: 'getAreaWiseBillDetails')
             "/reports/consolidated(.$format)?"(controller: 'reports', action: 'getConsolidatedBillDetails')
 
+            "/salebilldetails/updateirn(.$format)?"(controller: 'saleBillDetails', action: 'updateIRNDetails')
+
         }
     }
 }

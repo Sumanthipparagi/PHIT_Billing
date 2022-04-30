@@ -184,8 +184,10 @@ class EInvoiceService {
                         Response apiResp = new SalesService().getSaleInvoiceById(invoiceId)
                         if (apiResp.status == 200) {
                             JSONObject salesInvoice = new JSONObject(apiResp.readEntity(String.class))
-                            salesInvoice.put("irnDetails", irnDetails)
-                            new SalesService().updateSaleBill(salesInvoice)
+                            JSONObject irnDetailsJSON = new JSONObject()
+                            irnDetailsJSON.put("id", salesInvoice.get("id"))
+                            irnDetailsJSON.put("irnDetails", irnDetails)
+                            new SalesService().updateSaleBillIRNDetails(irnDetailsJSON)
                         }
                     } else {
                         println(generatedIRN.get("ErrorDetails").toString())
