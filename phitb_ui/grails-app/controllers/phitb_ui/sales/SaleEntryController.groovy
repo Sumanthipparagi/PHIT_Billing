@@ -3,6 +3,7 @@ package phitb_ui.sales
 import grails.converters.JSON
 import org.grails.web.json.JSONArray
 import org.grails.web.json.JSONObject
+import phitb_ui.EInvoiceService
 import phitb_ui.EntityService
 import phitb_ui.InventoryService
 import phitb_ui.Links
@@ -265,7 +266,6 @@ class SaleEntryController
                 saleProductDetail.put("billType", 0) //0 Sale, 1 Purchase
                 saleProductDetail.put("serBillId", saleBillDetail.get("serBillId"))
                 def resp = new SalesService().saveSaleProductDetail(saleProductDetail)
-
                 if (resp.status == 200)
                 {
                     println("Product Detail Saved")
@@ -300,6 +300,14 @@ class SaleEntryController
                 {
                     //clear tempstockbook
                     new InventoryService().deleteTempStock(tempStockRowId)
+                    try {
+                        //push the invoice to e-Invoice service and generate IRN, save IRN to Sale Bill Details
+                        new EInvoiceService().generateIRN(session, saleBillDetail, saleProductDetails)
+                    }
+                    catch (Exception ex)
+                    {
+                        ex.printStackTrace()
+                    }
                 }
             }
             JSONObject responseJson = new JSONObject()
