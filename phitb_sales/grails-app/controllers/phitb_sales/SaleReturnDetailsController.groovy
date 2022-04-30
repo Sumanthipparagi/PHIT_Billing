@@ -3,12 +3,16 @@ package phitb_sales
 
 import grails.rest.*
 import grails.converters.*
+import grails.web.servlet.mvc.GrailsParameterMap
+import org.grails.web.json.JSONArray
 import org.grails.web.json.JSONObject
 import org.springframework.boot.context.config.ResourceNotFoundException
 import phitb_sales.Exception.BadRequestException
 
 class SaleReturnDetailsController {
 	static responseFormats = ['json', 'xml']
+
+    static allowedMethods = [index: "GET", show: "GET", save: "POST", update: "PUT", delete: "DELETE", dataTable: "GET"]
 
     SaleReturnDetailsService saleReturnDetailsService
     /**
@@ -18,12 +22,15 @@ class SaleReturnDetailsController {
      * @param limit
      * @return list of Sale Product Details
      */
-    def index() {
+    def index()
+    {
 
-        try {
+        try
+        {
             respond saleReturnDetailsService.getAll(params.limit, params.offset, params.query)
         }
-        catch (Exception ex) {
+        catch (Exception ex)
+        {
             System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
         }
     }
@@ -33,10 +40,13 @@ class SaleReturnDetailsController {
      * @param id
      * @return get requested Sale Product Details
      */
-    def show() {
-        try {
+    def show()
+    {
+        try
+        {
             String id = params.id
-            if (id) {
+            if (id)
+            {
                 respond saleReturnDetailsService.get(id)
             }
         }
@@ -50,19 +60,52 @@ class SaleReturnDetailsController {
             System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
             response.status = 400
         }
-        catch (Exception ex) {
+        catch (Exception ex)
+        {
             System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
         }
     }
 
+    /**
+     * Get requested Credit Debit Details
+     * @param id
+     * @return get requested Credit Debit Details
+     */
+    def getAllByDays()
+    {
+        try
+        {
+            String days = params.days
+            if (days)
+            {
+                respond saleReturnDetailsService.getAllByNoOfDays(params.limit, params.offset, days)
+            }
+        }
+        catch (ResourceNotFoundException ex)
+        {
+            System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
+            response.status = 404
+        }
+        catch (BadRequestException ex)
+        {
+            System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
+            response.status = 400
+        }
+        catch (Exception ex)
+        {
+            System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
+        }
+    }
 
     /**
      * Save new Sale Product Details
      * @param Sale Product Details
      * @return saved Sale Product Details
      */
-    def save() {
-        try {
+    def save()
+    {
+        try
+        {
             JSONObject jsonObject = JSON.parse(request.reader.text) as JSONObject
             respond saleReturnDetailsService.save(jsonObject)
         }
@@ -76,24 +119,25 @@ class SaleReturnDetailsController {
             System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
             response.status = 400
         }
-        catch (Exception ex) {
+        catch (Exception ex)
+        {
             System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
         }
     }
 
     /**
-     * Get requested Credit Debit Details
+     * Update existing Sale Product Details
      * @param id
-     * @return get requested Credit Debit Details
+     * @param Sale Product Details
+     * @return updated Sale Product Details
      */
-    def getAllsettledByCustId()
+    def update()
     {
         try
         {
-            String customerId = params.id
-            String entityId = params.entityId
-            String financialYear = params.financialYear
-            respond saleReturnDetailsService.getAllsettledByCustId(customerId, entityId, financialYear)
+            String id = params.id
+            JSONObject jsonObject = JSON.parse(request.reader.text) as JSONObject
+            respond saleReturnDetailsService.update(jsonObject, id)
         }
         catch (ResourceNotFoundException ex)
         {
@@ -111,14 +155,18 @@ class SaleReturnDetailsController {
         }
     }
 
-    def getAllUnsettledByCustId()
+    /**
+     * Delete selected account register
+     * @param id
+     * @return returns status code 200
+     */
+    def delete()
     {
         try
         {
-            String customerId = params.id
-            String entityId = params.entityId
-            String financialYear = params.financialYear
-            respond saleReturnDetailsService.getAllUnsettledByCustId(customerId, entityId, financialYear)
+            String id = params.id
+            saleReturnDetailsService.delete(id)
+            response.status = 200
         }
         catch (ResourceNotFoundException ex)
         {
@@ -136,14 +184,19 @@ class SaleReturnDetailsController {
         }
     }
 
-    def getAllByCustomerId()
+    /**
+     * Gets all bank register in datatables format
+     * @return list of bank register
+     */
+    def dataTable()
     {
         try
         {
-            String customerId = params.id
-            String entityId = params.entityId
-            String financialYear = params.financialYear
-            respond saleReturnDetailsService.getAllUnsettledByCustId(customerId, entityId, financialYear)
+            String start = params.start
+            String length = params.length
+            GrailsParameterMap parameterMap = getParams()
+            JSONObject paramsJsonObject = new JSONObject(parameterMap.params)
+            respond saleReturnDetailsService.dataTables(paramsJsonObject, start, length)
         }
         catch (ResourceNotFoundException ex)
         {
@@ -161,74 +214,79 @@ class SaleReturnDetailsController {
         }
     }
 
-    def updateStatus(Long id)
+    def getSaleProductDetailsOfSaleBill()
     {
         try
         {
-            SaleReturnDetails saleReturnDetails = SaleReturnDetails.findById(id)
-            if (saleReturnDetails)
-            {
-                saleReturnDetails.isUpdatable = true
-                if (params.type == "settled")
-                {
-                    saleReturnDetails.adjustmentStatus = "1"
-                    saleReturnDetails.adjAmount = saleReturnDetails.getBalance() - Double.parseDouble(params.adj)
-                }
-                else
-                {
-                    saleReturnDetails.adjAmount = 0
-                    saleReturnDetails.adjustmentStatus = "0"
-                }
-                SaleReturnDetails saleReturnDetails1 = saleReturnDetails.save(flush: true)
-                if (saleReturnDetails1)
-                {
-                    respond saleReturnDetails1
-                    return
-                }
-            }
+            String id = params.id
+            respond saleReturnDetailsService.getBySaleBill(id)
+        }
+        catch (ResourceNotFoundException ex)
+        {
+            System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
+            response.status = 404
+        }
+        catch (BadRequestException ex)
+        {
+            System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
+            response.status = 400
         }
         catch (Exception ex)
         {
             System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
-            log.error('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
         }
-        response.status = 400
     }
 
-
-    def updateBalance()
+    def getSaleReturnDetailsById()
     {
         try
         {
-            SaleReturnDetails saleReturnDetails = SaleReturnDetails.findById(Long.parseLong(params.id))
-            if (saleReturnDetails)
-            {
-                saleReturnDetails.isUpdatable = true
-                Double balance = Double.parseDouble(params.balance)
-                if (balance > 0 && balance!="" && balance!=null)
-                {
-                    double diffBalance = Double.parseDouble(saleReturnDetails.getBalance().toString()) - balance
-                    saleReturnDetails.balance = diffBalance
-                    saleReturnDetails.adjAmount = saleReturnDetails.getAdjAmount() + balance
-                }
-                else
-                {
-                    saleReturnDetails.balance = saleReturnDetails.getBalance()
-                    saleReturnDetails.adjAmount = saleReturnDetails.getAdjAmount()
-                }
-                SaleReturnDetails saleReturnDetails1 = saleReturnDetails.save(flush: true)
-                if (saleReturnDetails1)
-                {
-                    respond saleReturnDetails1
-                    return
-                }
-            }
+            String id = params.id
+            respond saleReturnDetailsService.getSaleReturnDetailsByBill(id)
+        }
+        catch (ResourceNotFoundException ex)
+        {
+            System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
+            response.status = 404
+        }
+        catch (BadRequestException ex)
+        {
+            System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
+            response.status = 400
         }
         catch (Exception ex)
         {
             System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
-            log.error('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
         }
-        response.status = 400
     }
+
+
+    def getSaleProductDetailsOfSaleBillList()
+    {
+        try
+        {
+            JSONArray jsonArray = new JSONArray()
+            String idArrayString = params.salebillsIds
+            def idArray = idArrayString.trim().replaceAll(~/^\[|\]$/, '').split(',').collect{ it.trim()}
+            if(idArray.toString()!='[]')
+                respond saleReturnDetailsService.getBySaleBillByList(idArray as ArrayList<Long>)
+            else
+                respond jsonArray,formats: ['json'],status: 200
+        }
+        catch (ResourceNotFoundException ex)
+        {
+            System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
+            response.status = 404
+        }
+        catch (BadRequestException ex)
+        {
+            System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
+            response.status = 400
+        }
+        catch (Exception ex)
+        {
+            System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
+        }
+    }
+
 }

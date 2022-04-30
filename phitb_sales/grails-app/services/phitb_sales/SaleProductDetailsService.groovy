@@ -10,7 +10,6 @@ import java.text.SimpleDateFormat
 @Transactional
 class SaleProductDetailsService
 {
-
     SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss")
 
     def getAll(String limit, String offset, String query)
@@ -225,7 +224,6 @@ class SaleProductDetailsService
         }
     }
 
-
     def getBySaleBill(String id)
     {
         if (id)
@@ -258,5 +256,18 @@ class SaleProductDetailsService
             throw new ResourceNotFoundException()
         }
 
+    }
+
+    Object getSaleProductDetailsByProductId(String productId)
+    {
+        try
+        {
+            return SaleProductDetails.findAllByProductId(Long.parseLong(productId))
+        }
+        catch (Exception ex)
+        {
+            log.error("SaleProductDeatilsService" + ex)
+            println("SaleProductDeatilsService" + ex)
+        }
     }
 }

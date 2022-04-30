@@ -163,6 +163,10 @@ class UrlMappings {
                 action = [GET: 'getAllByDays']
             }
 
+            "/saleproductdetailsbyproductId(.$format)?"(controller: 'saleProductDetails') {
+                action = [GET: 'getSaleProductDetailsbyProductId']
+            }
+
             //Sale Transaction Log
             "/saletransactionlog(.$format)?"(controller: 'saleTransactionLog') {
                 action = [GET: 'index', POST: 'save']
@@ -222,29 +226,58 @@ class UrlMappings {
             }
 
 
-            //Sale return details
-            "/salereturndetails(.$format)?"(controller:'saleReturnDetails') {
+            //Sale return
+            "/salereturn(.$format)?"(controller:'saleReturn') {
                 action = [GET: 'index', POST: 'save']
             }
-            "/salereturndetails/$id(.$format)?"(controller:'saleReturnDetails') {
+            "/salereturn/$id(.$format)?"(controller:'saleReturn') {
                 action = [GET: 'show', PUT: 'update', DELETE:
                         'delete']
             }
-            "/saleretrununsettledbycustomer/$id(.$format)?"(controller: 'saleReturnDetails') {
+            "/saleretrununsettledbycustomer/$id(.$format)?"(controller: 'saleReturn') {
                 action = [GET: 'getAllUnsettledByCustId']
             }
-            "/saleretrunsettledbycustomer/$id(.$format)?"(controller: 'saleReturnDetails') {
+            "/saleretrunsettledbycustomer/$id(.$format)?"(controller: 'saleReturn') {
                 action = [GET: 'getAllsettledByCustId']
             }
 
-            "/setsalereturnstatus/$id/type/$type/adj/$adj(.$format)?"(controller: 'saleReturnDetails') {
+            "/setsalereturnstatus/$id/type/$type/adj/$adj(.$format)?"(controller: 'saleReturn') {
                 action = [POST: 'updateStatus']
             }
-            "/updatereturnbalancebyid/id/$id/balance/$balance"(controller: 'saleReturnDetails')
+            "/updatereturnbalancebyid/id/$id/balance/$balance"(controller: 'saleReturn')
                     {action=[POST: 'updateBalance']}
 
-            "/salereturnbycustomer(.$format)?"(controller: 'saleReturnDetails') {
+            "/salereturnbycustomer(.$format)?"(controller: 'saleReturn') {
                 action = [GET: 'getAllByCustomerId']
+            }
+
+
+
+
+            //Sale Return Details
+            "/salereturndetails(.$format)?"(controller: 'saleReturnDetails') {
+                action = [GET: 'index', POST:
+                        'save']
+            }
+            "/salereturndetails/bill/$id(.$format)?"(controller: 'saleReturnDetails') {
+                action = [GET: 'getSaleProductDetailsOfSaleBill']
+            }
+
+            "/salereturndetailslist/bill/$salebillsIds(.$format)?"(controller: 'saleReturnDetails') {
+                action = [GET: 'getSaleProductDetailsOfSaleBillList']
+            }
+
+            "/salereturndetails/datatable(.$format)?"(controller: 'saleReturnDetails') {action = [GET: 'dataTable']}
+            "/salereturndetails/$id(.$format)?"(controller: 'saleReturnDetails') {
+                action = [GET: 'show', PUT: 'update', DELETE:
+                        'delete']
+            }
+            "/salereturndetailsbydays/$days(.$format)?"(controller: 'saleReturnDetails') {
+                action = [GET: 'getAllByDays']
+            }
+
+            "/salereturndetails/bill(.$format)?"(controller: 'saleReturnDetails') {
+                action = [GET: 'getSaleReturnDetailsById']
             }
 
             //Temp User Log

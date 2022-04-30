@@ -177,6 +177,28 @@ class SalesService
 
     }
 
+    def saveSaleRetrunDetails(JSONObject jsonObject)
+    {
+        Client client = ClientBuilder.newClient();
+        WebTarget target = client.target(new Links().API_GATEWAY);
+        try
+        {
+            println(jsonObject)
+            Response apiResponse = target
+                    .path(new Links().SALE_RETURN_DETAIL_SAVE)
+                    .request(MediaType.APPLICATION_JSON_TYPE)
+                    .post(Entity.entity(jsonObject.toString(), MediaType.APPLICATION_JSON_TYPE))
+            println(apiResponse)
+            return apiResponse
+        }
+        catch (Exception ex)
+        {
+            System.err.println('Service :saveStateMaster , action :  save  , Ex:' + ex)
+            log.error('Service :saveStateMaster , action :  save  , Ex:' + ex)
+        }
+
+    }
+
     def putSaleBill(JSONObject jsonObject)
     {
         Client client = ClientBuilder.newClient().register(JacksonFeature.class)
@@ -390,6 +412,35 @@ class SalesService
 
     }
 
+
+    def getSaleRetrunDetailsByBill(String id)
+    {
+        Client client = ClientBuilder.newClient();
+        WebTarget target = client.target(new Links().API_GATEWAY);
+        try
+        {
+            Response apiResponse = target
+                    .path(new Links().SALE_RETURN_DETAIL_BILL+"/"+id)
+                    .request(MediaType.APPLICATION_JSON_TYPE)
+                    .get()
+            if (apiResponse.status == 200)
+            {
+                JSONArray saleProductDetail = new JSONArray(apiResponse.readEntity(String.class))
+                return saleProductDetail
+            }
+            else
+            {
+                return null
+            }
+        }
+        catch (Exception ex)
+        {
+            System.err.println('Service :SalesService , action :  getProducts  , Ex:' + ex)
+            log.error('Service :SalesService , action :  getProducts  , Ex:' + ex)
+        }
+
+    }
+
     def getSaleProductDetailsById(String id)
     {
         Client client = ClientBuilder.newClient();
@@ -414,6 +465,36 @@ class SalesService
         {
             System.err.println('Service :SalesService , action :  getProducts  , Ex:' + ex)
             log.error('Service :SalesService , action :  getProducts  , Ex:' + ex)
+        }
+
+    }
+
+
+    def getSaleProductDetailsByProductId(String productId)
+    {
+        Client client = ClientBuilder.newClient();
+        WebTarget target = client.target(new Links().API_GATEWAY);
+        try
+        {
+            Response apiResponse = target
+                    .path(new Links().SALE_PRODUCT_BY_PRODUCT)
+                    .queryParam("productId", URLEncoder.encode(productId.toString(), "UTF-8"))
+                    .request(MediaType.APPLICATION_JSON_TYPE)
+                    .get()
+            if (apiResponse.status == 200)
+            {
+                JSONArray saleProductDetail = new JSONArray(apiResponse.readEntity(String.class))
+                return saleProductDetail
+            }
+            else
+            {
+                return null
+            }
+        }
+        catch (Exception ex)
+        {
+            System.err.println('Service :SalesService , action :  getSaleProductDetailsByProductId  , Ex:' + ex)
+            log.error('Service :SalesService , action :  getSaleProductDetailsByProductId  , Ex:' + ex)
         }
 
     }

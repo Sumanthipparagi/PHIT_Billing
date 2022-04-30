@@ -266,4 +266,19 @@ class SaleProductDetailsController
         }
     }
 
+
+    def getSaleProductDetailsbyProductId()
+    {
+        try
+        {
+            String productId = params.productId
+            respond saleProductDetailsService.getSaleProductDetailsByProductId(productId)
+        }
+        catch(Exception ex)
+        {
+            log.error(controllerName+":"+ex)
+            println(controllerName+":"+ex)
+        }
+    }
+
 }
