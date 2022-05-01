@@ -53,6 +53,9 @@ class SaleBillDetails implements Serializable, LogicalDelete<SaleBillDetails>
     long createdUser
     long modifiedUser
     Double adjAmount
+
+    Date cancelledDate
+
     Date dateCreated
     Date lastUpdated
 
@@ -60,6 +63,8 @@ class SaleBillDetails implements Serializable, LogicalDelete<SaleBillDetails>
     static constraints = {
         invoiceNumber unique: true, nullable: true
         irnDetails nullable: true
+        cancelledDate nullable: true
+        orderDate nullable: true
     }
 
     static mapping = {

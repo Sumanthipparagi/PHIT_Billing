@@ -576,6 +576,11 @@ class SaleEntryController
                     new InventoryService().updateStockBook(stockBook)
                 }
             }
+            JSONObject invoice = jsonObject.get("invoice") as JSONObject
+            if(invoice.has("irnDetails")) {
+                JSONObject irnDetails = new JSONObject(invoice.get("irnDetails").toString())
+                new EInvoiceService().cancelIRN(session, irnDetails.get("Irn").toString(), invoice.get("id").toString())
+            }
             respond jsonObject, formats: ['json']
         }
         else

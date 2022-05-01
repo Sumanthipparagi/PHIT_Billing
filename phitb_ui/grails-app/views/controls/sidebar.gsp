@@ -482,7 +482,7 @@
 
 
                 <li id="entity-menu" class="sidemenuitem"><a href="javascript:void(0);" class="menu-toggle"><i
-                        class="zmdi zmdi-apps"></i><span>Entity</span> <span
+                        class="zmdi zmdi-library"></i><span>Entity</span> <span
                         class="badge badge-success float-right"></span></a>
                     <ul class="ml-menu">
                         <g:if test="${UtilsService.isPermitted("VIEW_ENTITY_REGISTER", session.getAttribute("permittedFeatures").toString())}">
@@ -567,7 +567,7 @@
                     </ul>
                 </li>
                 <li id="inventory-menu" class="sidemenuitem"><a href="javascript:void(0);" class="menu-toggle"><i
-                        class="zmdi zmdi-apps"></i><span>Inventory</span> <span
+                        class="zmdi zmdi-store-24"></i><span>Inventory</span> <span
                         class="badge badge-success float-right"></span></a>
                     <ul class="ml-menu">
                         <g:if test="${UtilsService.isPermitted("VIEW_STOCKBOOK_ENTRY", session.getAttribute("permittedFeatures").toString())}">
@@ -577,7 +577,7 @@
                 </li>
 
                 <li id="approvals-menu" class="sidemenuitem"><a href="javascript:void(0);" class="menu-toggle"><i
-                        class="zmdi zmdi-apps"></i><span>Approvals</span> <span
+                        class="zmdi zmdi-check-circle"></i><span>Approvals</span> <span
                         class="badge badge-success float-right"></span></a>
                     <ul class="ml-menu">
                         <g:if test="${UtilsService.isPermitted("VIEW_CREDIT_JV", session.getAttribute("permittedFeatures").toString())}">

@@ -3,6 +3,7 @@ package phitb_ui
 import grails.gorm.transactions.Transactional
 import grails.web.servlet.mvc.GrailsHttpSession
 import org.grails.web.json.JSONObject
+import org.grails.web.util.WebUtils
 import org.springframework.web.multipart.MultipartFile
 
 import javax.imageio.ImageIO
@@ -195,6 +196,11 @@ class UtilsService {
         BigDecimal bd = BigDecimal.valueOf(value);
         bd = bd.setScale(places, roundingMode);
         return bd.doubleValue();
+    }
+
+    String truncateString(String str, int length)
+    {
+        return str.substring(0, Math.min(str.length(), length))
     }
 
 //    static FormDataMultiPart jsonToMultipartFormDataConverter(JSONObject json)

@@ -208,7 +208,7 @@
                             'fy': json.data[i].financialYear,
                             'amountPaid': json.data[i].amountPaid,
                             'receivedFrom': json.data[i].receivedFrom.entityName,
-                            'depositTo': json.data[i].deposit.accountName,
+                            'depositTo': json.data[i]?.deposit?.accountName,
                             'pd': moment(pd).format('DD/MM/YYYY'),
                             // 'bank': json.data[i].bank.bankName,
                             'action': editbtn

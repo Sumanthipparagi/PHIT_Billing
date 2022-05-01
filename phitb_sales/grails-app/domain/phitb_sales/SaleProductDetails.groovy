@@ -46,6 +46,7 @@ class SaleProductDetails implements Serializable, LogicalDelete<SaleProductDetai
     double igstPercentage
 
     static constraints = {
+        invoiceNumber nullable: true
     }
 
     boolean isUpdatable

@@ -882,7 +882,7 @@ class SalesService
         jsonObject.put("entityId", entityId)
         jsonObject.put("financialYear", financialYear)
         Client client = ClientBuilder.newClient();
-        WebTarget target = client.target(new Links().API_GATEWAY);
+        WebTarget target = client.target(new Links().API_GATEWAY)
         try {
             Response apiResponse = target
                     .path(new Links().SALE_BILL_CANCEL)

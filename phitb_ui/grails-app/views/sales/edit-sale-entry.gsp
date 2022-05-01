@@ -631,10 +631,6 @@
             }
         });
 
-
-
-
-
         function productsDropdownRenderer(instance, td, row, col, prop, value, cellProperties) {
             var selectedId;
             for (var index = 0; index < products.length; index++) {
@@ -725,13 +721,14 @@
         });
 
         $('#series').trigger('change');
-
-
     });
 
     function batchSelection(selectedId, mainRow, selectCell = true) {
         if (selectedId != null) {
-            var url = "/stockbook/product/" + selectedId;
+            var id = selectedId.id;
+            if(id == null)
+                id = selectedId;
+            var url = "/stockbook/product/" + id;
             $.ajax({
                 type: "GET",
                 url: url,
@@ -1088,7 +1085,7 @@
                     if (result.isConfirmed) {
                         printInvoice();
                     } else if (result.isDenied) {
-                        resetPage();
+                        resetData();
                     }
                 });
 

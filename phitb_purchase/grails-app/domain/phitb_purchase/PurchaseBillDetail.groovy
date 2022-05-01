@@ -52,11 +52,14 @@ class PurchaseBillDetail implements LogicalDelete<PurchaseBillDetail> {
     long createdUser
     long modifiedUser
 
+    Date cancelledDate
+
     Date dateCreated
     Date lastUpdated
     
     static constraints = {
         invoiceNumber unique: true, nullable: true
+        cancelledDate nullable: true
     }
 
     boolean isUpdatable

@@ -32,6 +32,10 @@ class EInvoiceService {
             //String entityId = session.getAttribute("entityId").toString()
             String entityId = "1"
             entityIrnDetails = new EntityService().getEntityIrnByEntity(entityId)
+            //don't proceed if null
+            if (entityIrnDetails == null) {
+                return null
+            }
             //don't proceed if inactive
             if (!entityIrnDetails.get("active")) {
                 return null
@@ -245,11 +249,12 @@ class EInvoiceService {
             SellerDtls.put("Gstin", entityIrnDetails.get("irnGSTIN")) //TODO: to be removed in production
             SellerDtls.put("LglNm", sellerDetails.get("entityName"))
             SellerDtls.put("TrdNm", sellerDetails.get("entityName"))
-            SellerDtls.put("Addr1", sellerDetails.get("addressLine1"))
+            SellerDtls.put("Addr1", new UtilsService().truncateString(sellerDetails.get("addressLine1").toString(),100))
             String sellerAddressLine2 = ""
-            if (sellerDetails.get("addressLine2")?.toString()?.length() > 0)
-                sellerAddressLine2 = sellerDetails.get("addressLine2")
-            SellerDtls.put("Addr2", sellerAddressLine2)
+            if (sellerDetails.get("addressLine2")?.toString()?.length() > 2) {
+                sellerAddressLine2 = new UtilsService().truncateString(sellerDetails.get("addressLine2").toString(), 100)
+                SellerDtls.put("Addr2", sellerAddressLine2)
+            }
             SellerDtls.put("Loc", sellerCity.get("name"))
             //SellerDtls.put("Pin", Long.parseLong(sellerDetails.get("pinCode").toString()))
             SellerDtls.put("Pin", 431132) //TODO: to be removed in production
@@ -265,11 +270,12 @@ class EInvoiceService {
             BuyerDtls.put("Gstin", "27AAACA4410D2ZD") //TODO: to be removed in production
             BuyerDtls.put("LglNm", buyerDetails.get("entityName"))
             BuyerDtls.put("TrdNm", buyerDetails.get("entityName"))
-            BuyerDtls.put("Addr1", buyerDetails.get("addressLine1"))
+            BuyerDtls.put("Addr1", new UtilsService().truncateString(buyerDetails.get("addressLine1").toString(), 100))
             String buyerAddressLine2 = ""
-            if (sellerDetails.get("addressLine2")?.toString()?.length() > 0)
-                buyerAddressLine2 = buyerDetails.get("addressLine2")
-            BuyerDtls.put("Addr2", buyerAddressLine2)
+            if (buyerDetails.get("addressLine2")?.toString()?.length() > 2) {
+                buyerAddressLine2 = new UtilsService().truncateString(buyerDetails.get("addressLine2").toString(), 100)
+                BuyerDtls.put("Addr2", buyerAddressLine2)
+            }
             BuyerDtls.put("Loc", buyerCity.get("name"))
           //  BuyerDtls.put("Pin", Long.parseLong(buyerDetails.get("pinCode").toString()))
             BuyerDtls.put("Pin", 431132)  //TODO: to be removed in production
@@ -285,11 +291,12 @@ class EInvoiceService {
             JSONObject DispDtls = new JSONObject()
             DispDtls.put("Nm", sellerDetails.get("entityName"))
             DispDtls.put("Loc", sellerCity.get("name"))
-            DispDtls.put("Addr1", sellerDetails.get("addressLine1"))
+            DispDtls.put("Addr1", new UtilsService().truncateString(sellerDetails.get("addressLine1").toString(), 100))
             String dispDtlsAddressLine2 = ""
-            if (sellerDetails.get("addressLine2")?.toString()?.length() > 0)
-                dispDtlsAddressLine2 = sellerDetails.get("addressLine2")
-            DispDtls.put("Addr2", dispDtlsAddressLine2)
+            if (sellerDetails.get("addressLine2")?.toString()?.length() > 2) {
+                dispDtlsAddressLine2 = new UtilsService().truncateString(sellerDetails.get("addressLine2").toString(), 100)
+                DispDtls.put("Addr2", dispDtlsAddressLine2)
+            }
            // DispDtls.put("Pin", Long.parseLong(sellerDetails.get("pinCode").toString()))
             DispDtls.put("Pin", 431132) //TODO: to be removed in production
            // DispDtls.put("Stcd", sellerState.get("irnStateCode"))
@@ -392,6 +399,66 @@ class EInvoiceService {
             irnJson = irnObject.toString()
         }
         return irnJson
+    }
+
+    def cancelIRN(HttpSession session, String irn, String invoiceId)
+    {
+        JSONObject cancelJson = new JSONObject()
+        cancelJson.put("Irn", irn)
+        cancelJson.put("CnlRsn", "1")
+        cancelJson.put("CnlRem", "Wrong entry")
+        JSONObject authData = generateSignatureAndAuthToken(session)
+        if (authData == null) {
+            return
+        }
+        String appKey = authData.get("appKey")
+        String sek = authData.get("sek")
+        String encryptedPayload = new NICEncryption(appKey, sek).EncryptPayload(cancelJson.toString())
+
+        JSONObject finalPayLoad = new JSONObject()
+        finalPayLoad.put("Data", encryptedPayload)
+
+        Logger logger = Logger.getLogger(getClass().getName())
+        Feature feature = new LoggingFeature(logger, Level.INFO, null, null);
+        Client client = ClientBuilder.newClient();
+        client.register(feature)
+        WebTarget target = client.target(new Links().E_INVOICE_CANCEL_IRN)
+        try {
+            Response apiResponse = target
+                    .request(MediaType.APPLICATION_JSON_TYPE)
+                    .header("aspid", new Constants().E_INVOICE_ASP_ID)
+                    .header("asp_secret_key", authData.get("aspSecretKey"))
+                    .header("session_id", authData.get("sessionId"))
+                    .header("gstin", authData.get("irnGSTIN"))
+                    .header("authtoken", authData.get("authToken"))
+                    .header("username", authData.get("irnUsername"))
+                    .post(Entity.entity(finalPayLoad.toString(), MediaType.APPLICATION_JSON_TYPE))
+            if (apiResponse.status == 200) {
+                JSONObject cancelledIRN = new JSONObject(apiResponse.readEntity(String.class))
+                if (cancelledIRN) {
+                    if (cancelledIRN.get("Status").toString().equalsIgnoreCase("1")) {
+                        JSONObject cancelledIRNDetails = new JSONObject(new NICEncryption(appKey, sek).DecryptResponse(cancelledIRN.get("Data").toString()))
+                        Response apiResp = new SalesService().getSaleInvoiceById(invoiceId)
+                        if (apiResp.status == 200) {
+                            JSONObject salesInvoice = new JSONObject(apiResp.readEntity(String.class))
+                            JSONObject cancelledIRNDetailsJSON = new JSONObject()
+                            cancelledIRNDetailsJSON.put("id", salesInvoice.get("id"))
+                            cancelledIRNDetailsJSON.put("cancelledDate", cancelledIRNDetails.get("CancelDate").toString())
+                            new SalesService().updateSaleBillIRNDetails(cancelledIRNDetailsJSON)
+                        }
+                    } else {
+                        println(cancelledIRN.get("ErrorDetails").toString())
+                    }
+                }
+                return cancelledIRN
+            } else {
+                return null
+            }
+        }
+        catch (Exception ex) {
+            System.err.println('Service :EInvoiceService , action :  cancelIRN  , Ex:' + ex)
+            log.error('Service :EInvoiceService , action :  cancelIRN  , Ex:' + ex)
+        }
     }
 
 }
