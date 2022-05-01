@@ -542,6 +542,6 @@ public class Links
 
 
 //      Update Password
-    public static String UPDATE_PASSWORD = "api/v1.0/entity/update-passoword";
+    public static String UPDATE_PASSWORD = "api/v1.0/entity/update-password/id/{id}/password/{password}";
 
 }

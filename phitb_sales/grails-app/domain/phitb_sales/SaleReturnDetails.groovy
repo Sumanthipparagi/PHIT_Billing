@@ -35,7 +35,7 @@ class SaleReturnDetails implements Serializable, LogicalDelete<SaleReturnDetails
     String financialYear
     long entityTypeId
     long entityId
-
+    String invoiceNumber
     Date dateCreated
     Date lastUpdated
 

@@ -2,7 +2,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Sale Invoice</title>
+    <title>Sale Returns</title>
 
     <script type="text/javascript">
         %{--function generateBarCode() {--}%
@@ -177,7 +177,7 @@
             <sub>${customer.addressLine1}${customer.addressLine2}
             </sub>
         </td>
-        <td colspan="4" style="vertical-align:top;">
+        <td colspan="5" style="vertical-align:top;">
             <strong>TAX INVOICE</strong>
             <ul style="margin: 0;">
 
@@ -233,7 +233,7 @@
                 %{--                <li><b class="tab">State Code</b>: </li>--}%
             </ul>
         </td>
-        <td colspan="4" style="vertical-align:top;" >
+        <td colspan="5" style="vertical-align:top;" >
             <div class="qrCode" ></div>
         </td>
     </tr>
@@ -248,6 +248,7 @@
         <th>Exp Date</th>
         %{--        <th>Mfg Date/ Use Before</th>--}%
         <th>MRP</th>
+        <th>Invoice No. & Date</th>
         <th>PTR</th>
         <th>PTS</th>
         <th>QTY</th>
@@ -278,6 +279,7 @@
             <td id="expDate${sp.id}">${sp.expiryDate}</td>
             %{--            <td></td>--}%
             <td>${sp.mrp}</td>
+            <td>${sp.invoiceNumber} <span id="invsDate${sp.id}">${sp.dateCreated}</span></td>
             <td>${sp?.batch?.ptr}</td>
             <td>${sp.sRate}</td>
             <td>${sp.sqty}</td>
@@ -302,6 +304,7 @@
     </g:each>
 
     <tr>
+        <td class="hide"></td>
         <td class="hide"></td>
         <td class="hide"></td>
         <td class="hide"></td>
@@ -442,6 +445,11 @@
         <g:each var="spd" in="${saleProductDetails}">
         var expDate = new Date('${spd.expiryDate}');
         $("#expDate${spd.id}").text(moment(expDate).format('MMM-YY').toUpperCase());
+        </g:each>
+
+        <g:each var="spd" in="${saleProductDetails}">
+        var invsDate = new Date('${spd.dateCreated}');
+        $("#invsDate${spd.id}").text(moment(invsDate).format('DD-MM-YYYY').toUpperCase());
         </g:each>
         var totalGst = 0.0;
         var totalgstField = $(".totalgst");

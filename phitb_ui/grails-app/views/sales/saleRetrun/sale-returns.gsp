@@ -62,6 +62,7 @@
                     <div class="header" style="padding: 1px;">
 
                     </div>
+
                     <div class="body">
                         <div class="row">
                             <div class="col-md-2">
@@ -73,26 +74,26 @@
                                 <label for="series">Series:</label>
                                 <select onchange="seriesChanged()" class="form-control" id="series" name="series">
                                     <g:each in="${series}" var="sr">
-                                        <option data-seriescode="${sr.seriesCode}" value="${sr.id}">${sr.seriesName} (${sr.seriesCode})</option>
+                                        <option data-seriescode="${sr.seriesCode}"
+                                                value="${sr.id}">${sr.seriesName} (${sr.seriesCode})</option>
                                     </g:each>
                                 </select>
                             </div>
 
 
-%{--                            <div class="col-md-2">--}%
-%{--                                <label for="priority">Priority:</label>--}%
-%{--                                <select class="form-control" id="priority" name="priority">--}%
-%{--                                    <g:each in="${priorityList}" var="pr">--}%
-%{--                                        <option value="${pr.id}">${pr.priority}</option>--}%
-%{--                                    </g:each>--}%
-%{--                                </select>--}%
-%{--                            </div>--}%
+                            %{--                            <div class="col-md-2">--}%
+                            %{--                                <label for="priority">Priority:</label>--}%
+                            %{--                                <select class="form-control" id="priority" name="priority">--}%
+                            %{--                                    <g:each in="${priorityList}" var="pr">--}%
+                            %{--                                        <option value="${pr.id}">${pr.priority}</option>--}%
+                            %{--                                    </g:each>--}%
+                            %{--                                </select>--}%
+                            %{--                            </div>--}%
 
                             <div class="col-md-4">
                                 <label for="customer">Customer:</label>
                                 <select class="form-control show-tick" id="customer"
                                         onchange="customerChanged()">
-                                    <option selected disabled>--SELECT--</option>
                                     <g:each in="${customers}" var="cs">
                                         <g:if test="${cs.id != session.getAttribute("entityId")}">
                                             <option value="${cs.id}">${cs.entityName} (${cs.entityType.name})</option>
@@ -101,24 +102,6 @@
                                 </select>
                             </div>
 
-                            <div class="col-lg-4">
-                                <div class="row">
-                                    <div class="col-md-6">
-                                        Total: <p>&#x20b9;&nbsp;<span id="totalAmt">0</span></p>
-                                    </div>
-
-                                    <div class="col-md-6">
-                                        Inv No: <span id="invNo"></span>
-                                    </div>
-                                </div>
-
-                                <div class="row">
-                                    <button onclick="resetPage()" class="btn btn-danger">Reset</button>
-%{--                                    <button onclick="saveReturnInvoice('DRAFT')" class="btn btn-primary">Save Draft</button>--}%
-                                    <button onclick="saveReturnInvoice('ACTIVE')" class="btn btn-primary">Save</button>
-                                    %{-- <button onclick="printInvoice()" class="btn btn-secondary">Print</button>--}%
-                                </div>
-                            </div>
 
                             <div class="col-md-4">
                                 <div class="form-group">
@@ -126,7 +109,8 @@
                                         Check from Previous Sales
                                     </div>
                                     <label class="checkbox-inline">
-                                        <input type="radio" name="prev_sales" value="YES" class="prev_sales_yes" checked/>
+                                        <input type="radio" name="prev_sales" value="YES" class="prev_sales_yes"
+                                               checked/>
                                         Yes
                                         &emsp;
                                         <input type="radio" name="prev_sales" value="NO" class="prev_sales_no"/> No
@@ -134,17 +118,62 @@
                                 </div>
                             </div>
 
-%{--                            <div class="col-md-2">--}%
-%{--                                <label for="duedate">Due Date:</label>--}%
-%{--                                <input type="date" class="form-control date" name="duedate" id="duedate"/>--}%
-%{--                            </div>--}%
+                            %{--                            <div class="col-md-2">--}%
+                            %{--                                <label for="duedate">Due Date:</label>--}%
+                            %{--                                <input type="date" class="form-control date" name="duedate" id="duedate"/>--}%
+                            %{--                            </div>--}%
 
+                            <div class="col-lg-4 mt-2">
+                                <div class="card">
+                                    <div class="body">
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                Total: <p>&#8377;&nbsp;<span id="totalAmt">0.00</span></p>
+                                            </div>
 
+                                            <div class="col-md-6">
+                                                Inv No: <span id="invNo"></span>
+                                            </div>
+                                        </div>
+
+                                        <div class="row">
+                                            <button onclick="resetPage()" class="btn btn-danger">Reset</button>
+                                            %{--                            <button id="saveDraftBtn" onclick="('DRAFT')" class="btn btn-primary">Save --}%
+                                            %{--                            Draft</button>--}%
+                                            <button id="saveBtn" onclick="saveReturnInvoice('ACTIVE')" class="btn btn-primary">Save</button>
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
 
                         </div>
                     </div>
                 </div>
             </div>
+%{--            <div class="col-lg-4">--}%
+%{--                <div class="card">--}%
+%{--                    <div class="body">--}%
+%{--                        <div class="row">--}%
+%{--                            <div class="col-md-6">--}%
+%{--                                Total: <p>₹&nbsp;<span id="totalAmt">0.00</span></p>--}%
+%{--                            </div>--}%
+
+%{--                            <div class="col-md-6">--}%
+%{--                                Inv No: <span id="invNo"></span>--}%
+%{--                            </div>--}%
+%{--                        </div>--}%
+
+%{--                        <div class="row">--}%
+%{--                            <button onclick="resetPage()" class="btn btn-danger">Reset</button>--}%
+%{--                            <button id="saveDraftBtn" onclick="('DRAFT')" class="btn btn-primary">Save --}%
+%{--                            Draft</button>--}%
+%{--                            <button id="saveBtn" onclick="saveReturnInvoice('ACTIVE')" class="btn btn-primary">Save</button>--}%
+
+%{--                        </div>--}%
+%{--                    </div>--}%
+%{--                </div>--}%
+%{--            </div>--}%
         </div>
 
         <div class="row clearfix">
@@ -153,10 +182,18 @@
                     <div class="body" style="background-color: #313740;padding: 2px; color: #fff;">
                         <div class="row" style="margin: 0; font-size: 14px;">
                             <div class="col-md-2"><strong>Total GST:</strong>&#x20b9;<span id="totalGST">0</span></div>
-                            <div class="col-md-2"><strong>Total SGST:</strong>&#x20b9;<span id="totalSGST">0</span></div>
-                            <div class="col-md-2"><strong>Total CGST:</strong>&#x20b9;<span id="totalCGST">0</span></div>
-                            <div class="col-md-2"><strong>Total IGST:</strong>&nbsp;&#x20b9;<span id="totalIGST">0</span></div>
+
+                            <div class="col-md-2"><strong>Total SGST:</strong>&#x20b9;<span id="totalSGST">0</span>
+                            </div>
+
+                            <div class="col-md-2"><strong>Total CGST:</strong>&#x20b9;<span id="totalCGST">0</span>
+                            </div>
+
+                            <div class="col-md-2"><strong>Total IGST:</strong>&nbsp;&#x20b9;<span
+                                    id="totalIGST">0</span></div>
+
                             <div class="col-md-2"><strong>Total Qty:</strong> <span id="totalQty">0</span></div>
+
                             <div class="col-md-2"><strong>Total Free Qty:</strong> <span id="totalFQty">0</span></div>
                         </div>
                     </div>
@@ -181,9 +218,11 @@
                 <p style="margin: 0; font-size: 10px;">Keyboard Shortcuts - Delete Row: <strong>Ctrl+Alt+D</strong>, Reset Table: <strong>Ctrl+Alt+R</strong>
                 </p>
             </div>
+
             <div class="col-lg-4" style="margin-bottom: 10px;">
 
             </div>
+
             <div class="col-lg-4" style="margin-bottom: 10px;">
                 <p style="margin: 0; font-size: 10px;color: red;">Offers: <span id="offers"></span>
                 </p>
@@ -222,28 +261,28 @@
 
             <div class="col-lg-4">
                 <div class="card">
-%{--                    <div class="header" style="padding: 1px;">--}%
-%{--                        ---}%
-%{--                    </div>--}%
+                    %{--                    <div class="header" style="padding: 1px;">--}%
+                    %{--                        ---}%
+                    %{--                    </div>--}%
 
-%{--                    <div class="body">--}%
-%{--                        <div class="row">--}%
-%{--                            <div class="col-md-6">--}%
-%{--                                Total: <p>&#x20b9;&nbsp;<span id="totalAmt">0</span></p>--}%
-%{--                            </div>--}%
+                    %{--                    <div class="body">--}%
+                    %{--                        <div class="row">--}%
+                    %{--                            <div class="col-md-6">--}%
+                    %{--                                Total: <p>&#x20b9;&nbsp;<span id="totalAmt">0</span></p>--}%
+                    %{--                            </div>--}%
 
-%{--                            <div class="col-md-6">--}%
-%{--                                Inv No: <span id="invNo"></span>--}%
-%{--                            </div>--}%
-%{--                        </div>--}%
+                    %{--                            <div class="col-md-6">--}%
+                    %{--                                Inv No: <span id="invNo"></span>--}%
+                    %{--                            </div>--}%
+                    %{--                        </div>--}%
 
-%{--                        <div class="row">--}%
-%{--                            <button onclick="resetPage()" class="btn btn-danger">Reset</button>--}%
-%{--                            <button onclick="savePurchaseInvoice('DRAFT')" class="btn btn-primary">Save Draft</button>--}%
-%{--                            <button onclick="savePurchaseInvoice('ACTIVE')" class="btn btn-primary">Save</button>--}%
-%{--                            --}%%{-- <button onclick="printInvoice()" class="btn btn-secondary">Print</button>--}%
-%{--                        </div>--}%
-%{--                    </div>--}%
+                    %{--                        <div class="row">--}%
+                    %{--                            <button onclick="resetPage()" class="btn btn-danger">Reset</button>--}%
+                    %{--                            <button onclick="savePurchaseInvoice('DRAFT')" class="btn btn-primary">Save Draft</button>--}%
+                    %{--                            <button onclick="savePurchaseInvoice('ACTIVE')" class="btn btn-primary">Save</button>--}%
+                    %{--                            --}%%{-- <button onclick="printInvoice()" class="btn btn-secondary">Print</button>--}%
+                    %{--                        </div>--}%
+                    %{--                    </div>--}%
                 </div>
             </div>
 
@@ -285,7 +324,6 @@
         '<strong>Exp Dt</strong>',
         '<strong>Sale Qty</strong>',
         '<strong>Free Qty</strong>',
-        '<strong>Purchase Rate</strong>',
         '<strong>Sale Rate</strong>',
         '<strong>MRP</strong>',
         '<strong>Disc.(%)</strong>',
@@ -318,7 +356,6 @@
         '<strong>Document ID</strong>',
         '<strong>Doc Type</strong>',
         '<strong>Batch</strong>',
-        '<strong>Pur.Rate</strong>',
         '<strong>S.Rate</strong>',
         '<strong>Exp.Date</strong>',
         '<strong>Amount</strong>',
@@ -340,7 +377,7 @@
     var batchHot;
     var billHot;
     var hot;
-    var purchaseData = [];
+    var saleReturnData = [];
     var batchData = [];
     var billData = [];
     var mainTableRow = 0;
@@ -364,18 +401,16 @@
         // var isCheckedNo = $('.prev_sales_no').prop('checked');
         if (isCheckedYes === "YES") {
             $('.batches').hide()
-        }
-        else
-        {
+        } else {
             $('.bills').hide()
         }
-        $('.prev_sales_no').on('click',function () {
-            $('.prev_sales_yes').prop('checked',false);
-            isCheckedYes="NO"
+        $('.prev_sales_no').on('click', function () {
+            $('.prev_sales_yes').prop('checked', false);
+            isCheckedYes = "NO"
         });
-        $('.prev_sales_yes').on('click',function () {
-            $('.prev_sales_no').prop('checked',false);
-            isCheckedYes="YES"
+        $('.prev_sales_yes').on('click', function () {
+            $('.prev_sales_no').prop('checked', false);
+            isCheckedYes = "YES"
         });
         $("#customer").select2();
         $('#date').val(moment().format('YYYY-MM-DD'));
@@ -384,12 +419,12 @@
         customers.push({"id": ${cs.id}, "noOfCrDays": ${cs.noOfCrDays}});
         </g:each>
         <g:each in="${reason}" var="r">
-        reason.push({"id":'${r.reasonName}', "text": '${r.reasonName}'});
+        reason.push({"id": '${r.reasonName}', "text": '${r.reasonName}'});
         %{--reason.push('${r.reasonName}')--}%
         </g:each>
         const container = document.getElementById('saleReturnTable');
         hot = new Handsontable(container, {
-            data: purchaseData,
+            data: saleReturnData,
             minRows: 1,
             height: '250',
             width: 'auto',
@@ -430,11 +465,10 @@
                 {type: 'text', readOnly: true},
                 {type: 'numeric'},
                 {type: 'numeric'},
-                {type: 'text', readOnly: true},
-                {type: 'text', readOnly: true},
+                {type: 'text'},
                 {type: 'text', readOnly: true},
                 {type: 'text'},
-                {type: 'text',readOnly: true},
+                {type: 'text', readOnly: true},
                 {type: 'text', readOnly: true},
                 {type: 'text', readOnly: true},
                 {type: 'text', readOnly: true},
@@ -457,8 +491,7 @@
                                 mainTableRow = row;
                                 saleSelection(newValue, row);
                             }
-                        }
-                        else {
+                        } else {
                             // alert("no")
                             if (prop === 2) //second col product dropdown
                             {
@@ -528,22 +561,19 @@
                         }
 
                     }
-                } else if (selection === 4 || selection === 5 || selection === 8 || selection === 6  || selection === 9) {
+                } else if (selection === 4 || selection === 5 || selection === 8 || selection === 6 || selection === 9) {
                     if (e.keyCode === 13 || e.keyCode === 9) {
                         var discount = 0;
-                        if(selection === 8)
-                        {
-                            var mrp = hot.getDataAtCell(row, 9);
-                            var oldSaleRate = hot.getDataAtCell(row, 8);
+                        if (selection === 7) {
+                            var mrp = hot.getDataAtCell(row, 8);
+                            var oldSaleRate = hot.getDataAtCell(row, 7);
                             var saleRate = Number(this.getActiveEditor().TEXTAREA.value);
-                            if(saleRate > mrp)
-                            {
-                                hot.setDataAtCell(row, 8,  oldSaleRate);
+                            if (saleRate > mrp) {
+                                hot.setDataAtCell(row, 7, oldSaleRate);
                                 this.getActiveEditor().TEXTAREA.value = oldSaleRate;
                                 alert("Sale Rate exceeds MRP!");
-                            }
-                            else {
-                                hot.setDataAtCell(row, 8,  Number(this.getActiveEditor().TEXTAREA.value));
+                            } else {
+                                hot.setDataAtCell(row, 7, Number(this.getActiveEditor().TEXTAREA.value));
                                 this.selectCell(row, selection + 1);
                             }
                         }
@@ -555,8 +585,7 @@
                             // alert(sq)
                             this.setDataAtCell(row, 5, sQty);
                             this.selectCell(row, selection + 1);
-                        } else
-                        {
+                        } else {
                             sQty = Number(this.getDataAtCell(row, 5));
                         }
 
@@ -564,26 +593,23 @@
                             fQty = Number(this.getActiveEditor().TEXTAREA.value);
                             hot.setDataAtCell(row, 6, fQty);
                             this.selectCell(row, selection + 1);
-                        } else
-                        {
+                        } else {
                             fQty = Number(this.getDataAtCell(row, 6));
                         }
-                        if (selection === 10) {
+                        if (selection === 9) {
                             discount = Number(this.getActiveEditor().TEXTAREA.value);
                             if (discount > 100) {
                                 alert("Invalid Discount");
-                                hot.setDataAtCell(row, 10, 0);
+                                hot.setDataAtCell(row, 9, 0);
                                 this.getActiveEditor().TEXTAREA.value = 0;
-                                hot.selectCell(row, 10);
+                                hot.selectCell(row, 9);
                                 return;
-                            }
-                            else
-                            {
-                                hot.setDataAtCell(row, 10, discount);
+                            } else {
+                                hot.setDataAtCell(row, 9, discount);
                                 this.selectCell(row, selection + 1);
                             }
                         } else {
-                            discount = hot.getDataAtCell(row, 10);
+                            discount = hot.getDataAtCell(row, 9);
                         }
                         var allowEntry = false;
                         var pid = hot.getDataAtCell(row, 2);
@@ -601,34 +627,24 @@
                                         remFQty = remFQty + data.remainingFreeQty;
                                         if (remQty >= sQty) {
                                             allowEntry = true;
-                                        }
-                                        else if (sQty >= remQty && remFQty >= sQty) {
+                                        } else if (sQty >= remQty && remFQty >= sQty) {
+                                            allowEntry = true;
+                                        } else if ((remQty + remFQty) >= sQty) {
                                             allowEntry = true;
                                         }
 
-                                        else if ((remQty + remFQty) >= sQty) {
-                                            allowEntry = true;
-                                        }
-
-                                        if(selection === 6)
-                                        {
-                                            if(remFQty >= fQty)
-                                            {
+                                        if (selection === 6) {
+                                            if (remFQty >= fQty) {
                                                 freeQtyEntry = true;
-                                            }
-
-                                            else if ((remQty + remFQty) >= sQty+fQty) {
+                                            } else if ((remQty + remFQty) >= sQty + fQty) {
                                                 freeQtyEntry = true;
                                                 allowEntry = true;
-                                            }
-                                            else
-                                            {
+                                            } else {
                                                 freeQtyEntry = false;
                                                 allowEntry = false;
                                             }
 
-                                            if(freeQtyEntry!==true)
-                                            {
+                                            if (freeQtyEntry !== true) {
                                                 // hot.setDataAtCell(row, 5, 0);
                                                 alert("Entered Free quantity exceeds available quantity");
                                             }
@@ -643,10 +659,8 @@
                                             hot.setDataAtCell(row, 15, 0);
                                             alert("Entered quantity exceeds available quantity");
                                             return;
-                                        }
-                                        else
-                                        {
-                                            hot.setDataAtCell(row,6,fQty)
+                                        } else {
+                                            hot.setDataAtCell(row, 6, fQty)
                                         }
                                     },
                                     error: function (data) {
@@ -656,59 +670,57 @@
                             );
                         }
                         applySchemes(row, sQty);
-                        if(selection === 8)
-                        {
+                        if (selection === 7) {
                             sRate = Number(this.getActiveEditor().TEXTAREA.value);
-                        }
-                        else
-                            sRate = hot.getDataAtCell(row, 8);
+                        } else
+                            sRate = hot.getDataAtCell(row, 7);
 
                         var value = sRate * sQty;
                         var priceBeforeGst = value - (value * discount / 100);
                         var finalPrice = priceBeforeGst + (priceBeforeGst * (gst / 100));
-                        hot.setDataAtCell(row, 13, Number(finalPrice).toFixed(2));
+                        hot.setDataAtCell(row, 12, Number(finalPrice).toFixed(2));
 
                         if (gst !== 0) {
                             var gstAmount = priceBeforeGst * (gst / 100);
                             var sgstAmount = priceBeforeGst * (sgst / 100);
                             var cgstAmount = priceBeforeGst * (cgst / 100);
-                            hot.setDataAtCell(row, 12, Number(gstAmount).toFixed(2)); //GST
-                            hot.setDataAtCell(row, 14, Number(sgstAmount).toFixed(2)); //SGST
-                            hot.setDataAtCell(row, 15, Number(cgstAmount).toFixed(2)); //CGST
+                            hot.setDataAtCell(row, 11, Number(gstAmount).toFixed(2)); //GST
+                            hot.setDataAtCell(row, 13, Number(sgstAmount).toFixed(2)); //SGST
+                            hot.setDataAtCell(row, 14, Number(cgstAmount).toFixed(2)); //CGST
                         } else {
-                            hot.setDataAtCell(row, 12, 0); //GST
-                            hot.setDataAtCell(row, 14, 0); //SGST
-                            hot.setDataAtCell(row, 15, 0); //CGST
+                            hot.setDataAtCell(row, 11, 0); //GST
+                            hot.setDataAtCell(row, 13, 0); //SGST
+                            hot.setDataAtCell(row, 14, 0); //CGST
                         }
                         if (igst !== "0") {
                             var igstAmount = priceBeforeGst * (igst / 100);
-                            hot.setDataAtCell(row, 16, Number(igstAmount).toFixed(2)); //IGST
+                            hot.setDataAtCell(row, 15, Number(igstAmount).toFixed(2)); //IGST
                         } else
-                            hot.setDataAtCell(row, 16, 0);
+                            hot.setDataAtCell(row, 15, 0);
                     }
                 }
             }
         });
 
         hot.addHook('afterSelection', (row, col) => {
-            if(col === 3) {
-                batchSelection(hot.getDataAtCell(row,2),row,false);
+            if (col === 3) {
+                batchSelection(hot.getDataAtCell(row, 2), row, false);
             }
         });
 
 
-
-
-        $(document).ready(function() {
-            $("input[name$='prev_sales']").click(function() {
+        $(document).ready(function () {
+            $("input[name$='prev_sales']").click(function () {
+                hot.updateSettings({
+                    data: []
+                });
+                hot.selectCell(0, 2);
                 var test = $(this).val();
-                if(test === 'YES')
-                {
+                if (test === 'YES') {
                     $('.batches').hide()
                     $('.bills').show()
-                }
-                else
-                {
+
+                } else {
                     $('.batches').show()
                     $('.bills').hide()
                 }
@@ -757,7 +769,6 @@
                 {type: 'text', readOnly: true},
                 {type: 'text', readOnly: true},
                 {type: 'numeric', readOnly: true},
-                {type: 'numeric', readOnly: true},
                 {type: 'text', readOnly: true},
                 {type: 'text', readOnly: true},
                 {type: 'text', readOnly: true},
@@ -791,13 +802,18 @@
                         hot.setDataAtCell(mainTableRow, 3, rowData[0]);
                         hot.setCellMeta(mainTableRow, 3, "batchId", batchId);
                         hot.setDataAtCell(mainTableRow, 4, rowData[1]);
+                        hot.setDataAtCell(mainTableRow, 5, 0);
                         hot.setDataAtCell(mainTableRow, 6, 0);
-                        hot.setDataAtCell(mainTableRow, 7, rowData[5]);
-                        hot.setDataAtCell(mainTableRow, 8, rowData[6]);
-                        hot.setDataAtCell(mainTableRow, 9, rowData[7]);
-                        hot.setDataAtCell(mainTableRow, 10, 0);
-                        hot.setDataAtCell(mainTableRow, 11, rowData[8]);
-                        hot.setDataAtCell(mainTableRow, 17, rowData[2]);
+                        hot.setDataAtCell(mainTableRow, 7, rowData[6]);
+                        hot.setDataAtCell(mainTableRow, 8, rowData[7]);
+                        hot.setDataAtCell(mainTableRow, 9, 0);
+                        hot.setDataAtCell(mainTableRow, 10, rowData[8]);
+                        hot.setDataAtCell(mainTableRow, 11, rowData[9]);
+                        hot.setDataAtCell(mainTableRow, 13, rowData[10]);
+                        hot.setDataAtCell(mainTableRow, 14, rowData[11]);
+                        hot.setDataAtCell(mainTableRow, 15, rowData[12]);
+                        hot.setDataAtCell(mainTableRow, 16, "NA");
+
                         gst = rowData[9];
                         sgst = rowData[10];
                         cgst = rowData[11];
@@ -874,35 +890,23 @@
                         // hot.setDataAtCell(mainTableRow, 2, rowData[0]);
                         // hot.setCellMeta(mainTableRow, 3, "batchId", batchId);
                         hot.setDataAtCell(mainTableRow, 3, rowData[3]);
-                        hot.setDataAtCell(mainTableRow, 4, rowData[6]);
-                        hot.setDataAtCell(mainTableRow, 5, rowData[8]);
-                        hot.setDataAtCell(mainTableRow, 6, rowData[9]);
+                        hot.setDataAtCell(mainTableRow, 4, rowData[5]);
+                        hot.setDataAtCell(mainTableRow, 5, 0);
+                        hot.setDataAtCell(mainTableRow, 6, 0);
                         hot.setDataAtCell(mainTableRow, 7, rowData[4]);
-                        hot.setDataAtCell(mainTableRow, 8, rowData[5]);
-                        hot.setDataAtCell(mainTableRow, 9, rowData[12]);
-                        hot.setDataAtCell(mainTableRow, 10, rowData[11]);
-                        hot.setDataAtCell(mainTableRow, 11, rowData[10]);
-                        hot.setDataAtCell(mainTableRow, 12, rowData[13]);
+                        hot.setDataAtCell(mainTableRow, 8, rowData[11]);
+                        hot.setDataAtCell(mainTableRow, 9, 0);
+                        hot.setDataAtCell(mainTableRow, 10, rowData[9]);
+                        hot.setDataAtCell(mainTableRow, 11, rowData[12]);
+                        hot.setDataAtCell(mainTableRow, 12, rowData[6]);
+                        hot.setDataAtCell(mainTableRow, 13, rowData[13]);
                         hot.setDataAtCell(mainTableRow, 14, rowData[14]);
                         hot.setDataAtCell(mainTableRow, 15, rowData[15]);
-                        hot.setDataAtCell(mainTableRow, 16, rowData[16]);
-                        hot.setDataAtCell(mainTableRow, 17, rowData[1]);
-                        hot.setDataAtCell(mainTableRow, 13, rowData[7]);
-
-                        // hot.setDataAtCell(mainTableRow, 4, rowData[5]);
-                        // hot.setDataAtCell(mainTableRow, 5, rowData[7]);
-                        // hot.setDataAtCell(mainTableRow, 6, rowData[8]);
-                        // hot.setDataAtCell(mainTableRow, 7, rowData[5]);
-                        // hot.setDataAtCell(mainTableRow, 10, rowData[14]);
-                        // hot.setDataAtCell(mainTableRow, 11, rowData[9]);
-                        // hot.setDataAtCell(mainTableRow, 12, rowData[11]);
-                        // hot.setDataAtCell(mainTableRow, 13, rowData[12]);
-                        //
-                        // hot.setDataAtCell(mainTableRow, 8, 0);
-                        gst = rowData[13];
-                        sgst = rowData[14];
-                        cgst = rowData[15];
-                        igst = rowData[16];
+                        hot.setDataAtCell(mainTableRow, 16, rowData[1]);
+                        gst = rowData[12];
+                        sgst = rowData[13];
+                        cgst = rowData[14];
+                        igst = rowData[15];
                         hot.selectCell(mainTableRow, 4);
                         remainingQty = rowData[8];
                         remainingFQty = rowData[9];
@@ -967,7 +971,9 @@
 
     function saleSelection(selectedId, mainRow, selectCell = true) {
         if (selectedId != null) {
-            var url = "/getinvoicedetails?productId="+selectedId;
+            var customer = Number($("#customer").val());
+            console.log("customer:" + customer)
+            var url = "/getinvoicedetails?productId=" + selectedId;
             $.ajax({
                 type: "GET",
                 url: url,
@@ -976,34 +982,37 @@
                     if (data) {
                         billData = [];
                         for (var i = 0; i < data.length; i++) {
+                            var custId = data[i].bill.customerId
                             var saledt = [];
-                            if(data[i].bill.billStatus!=="DRAFT" && data[i].bill.billStatus!=="CANCELLED") {
-                                saledt.push(data[i].financialYear);
-                                saledt.push(data[i].bill.invoiceNumber);
-                                saledt.push("INVOICE");
-                                saledt.push(data[i].batchNumber);
-                                saledt.push(data[i].pRate);
-                                saledt.push(data[i].sRate);
-                                saledt.push(data[i].expiryDate);
-                                saledt.push(data[i].amount);
-                                saledt.push(data[i].sqty);
-                                saledt.push(data[i].freeQty);
-                                saledt.push(data[i].batch.product.unitPacking);
-                                saledt.push(data[i].discount)
-                                saledt.push(data[i].mrp)
-                                saledt.push(data[i].gstAmount);
-                                saledt.push(data[i].sgstAmount);
-                                saledt.push(data[i].cgstAmount);
-                                saledt.push(data[i].igstAmount);
-                                saledt.push(data[i].id);
-                                billData.push(saledt);
-                                console.log(billData)
+                            if (data[i].bill.billStatus !== "DRAFT" && data[i].bill.billStatus !== "CANCELLED") {
+                                if (custId === customer) {
+                                    saledt.push(data[i].financialYear);
+                                    saledt.push(data[i].bill.invoiceNumber);
+                                    saledt.push("INVOICE");
+                                    saledt.push(data[i].batchNumber);
+                                    saledt.push(data[i].sRate);
+                                    saledt.push(data[i].expiryDate);
+                                    saledt.push(data[i].amount);
+                                    saledt.push(data[i].sqty);
+                                    saledt.push(data[i].freeQty);
+                                    saledt.push(data[i].batch.product.unitPacking);
+                                    saledt.push(data[i].discount)
+                                    saledt.push(data[i].mrp)
+                                    saledt.push(data[i].gstAmount);
+                                    saledt.push(data[i].sgstAmount);
+                                    saledt.push(data[i].cgstAmount);
+                                    saledt.push(data[i].igstAmount);
+                                    saledt.push(data[i].id);
+                                    billData.push(saledt);
+                                    console.log(billData)
+                                }
                             }
+
                         }
                         billHot.updateSettings({
                             data: []
                         });
-                        if (saledt?.length > 0) {
+                        if (billData?.length > 0) {
                             billHot.loadData(billData);
                             $("#billsTable").focus();
                             if (selectCell)
@@ -1020,6 +1029,13 @@
 
 
     function customerChanged() {
+        hot.updateSettings({
+            data: []
+        });
+        hot.selectCell(0, 2);
+        billHot.updateSettings({
+            data: []
+        });
         var noOfCrDays = 0;
         var customerId = $("#customer").val();
         for (var i = 0; i < customers.length; i++) {
@@ -1045,16 +1061,16 @@
             if (data[i][5])
                 totalQty += Number(data[i][5]);
             if (data[i][6])
-                totalFQty +=  Number(data[i][6]);
+                totalFQty += Number(data[i][6]);
             if (data[i][12])
-                totalAmt += Number(data[i][13]);
-            if (data[i][12])
-                totalGst += Number(data[i][12]);
+                totalAmt += Number(data[i][12]);
+            if (data[i][11])
+                totalGst += Number(data[i][11]);
+            if (data[i][13])
+                totalSgst += Number(data[i][13]);
             if (data[i][14])
-                totalSgst += Number(data[i][14]);
-            if (data[i][15])
-                totalCgst += Number(data[i][15]);
-            if (data[i][15])
+                totalCgst += Number(data[i][14]);
+            if (data[i][16])
                 totalIgst += Number(data[i][16]);
         }
         $("#totalAmt").text(totalAmt.toFixed(2));
@@ -1079,9 +1095,9 @@
         return false;
     }
 
-    function loadTempStockBookData()
-    {
-        /*  var userId = "${session.getAttribute("userId")}";
+    function loadTempStockBookData() {
+        /*  var userId = "
+        ${session.getAttribute("userId")}";
         $.ajax({
             type: "GET",
             url: "tempstockbook/user/"+userId,
@@ -1147,9 +1163,8 @@
         })*/
     }
 
-    function deleteTempStockRow(id, row)
-    {
-        if(!readOnly) {
+    function deleteTempStockRow(id, row) {
+        if (!readOnly) {
             /*  if(id) {
                   $.ajax({
                       type: "POST",
@@ -1163,14 +1178,13 @@
               }
               else*/
             hot.alter("remove_row", row);
-        }
-        else
+        } else
             alert("Can't change this now, invoice has been saved already.")
     }
 
     var purchasebillid = 0;
-    function saveReturnInvoice(billStatus)
-    {
+
+    function saveReturnInvoice(billStatus) {
         var waitingSwal = Swal.fire({
             title: "Generating Sale Return, Please wait!",
             showDenyButton: false,
@@ -1187,13 +1201,13 @@
         duedate = moment(duedate).format('DD/MM/YYYY');
         var priority = $("#priority").val();
 
-        if(!series) {
+        if (!series) {
             alert("Please select series.");
             waitingSwal.close();
             return;
         }
 
-        if(!customer) {
+        if (!customer) {
             alert("Please select customer.");
             waitingSwal.close();
             return;
@@ -1205,21 +1219,21 @@
             type: "POST",
             url: "/sale-return",
             dataType: 'json',
-            data:{
+            data: {
                 saleReturnData: saleReturnData,
-                customer:customer,
-                series:series,
+                customer: customer,
+                series: series,
                 // duedate:duedate,
                 // priority:priority,
                 billStatus: billStatus,
-                seriesCode:seriesCode
+                seriesCode: seriesCode
             },
             success: function (data) {
                 readOnly = true;
                 var rowData = hot.getData();
-                for(var j = 0; j < rowData.length;j++) {
+                for (var j = 0; j < rowData.length; j++) {
                     for (var i = 0; i < 16; i++) {
-                        hot.setCellMeta(j, i,'readOnly', true);
+                        hot.setCellMeta(j, i, 'readOnly', true);
                     }
                 }
                 purchasebillid = data.saleReturnDetail.id;
@@ -1230,10 +1244,10 @@
                 var invoiceNumber = data.saleReturnDetail.invoiceNumber;
                 $("#invNo").html("<p><strong>" + invoiceNumber + "</strong></p>");
                 var message = "";
-                var draftInvNo ="";
-                if(billStatus === "DRAFT"){
+                var draftInvNo = "";
+                if (billStatus === "DRAFT") {
                     draftInvNo = '<p><strong>' + data.saleReturnDetail.entityId + "/DR/S/" + month + year + "/"
-                        + seriesCode + "/__"+'<p><strong>';
+                        + seriesCode + "/__" + '<p><strong>';
                     $("#invNo").html(draftInvNo);
                 }
                 if (billStatus !== "DRAFT") {
@@ -1259,7 +1273,7 @@
 
 
             },
-            error: function(){
+            error: function () {
                 waitingSwal.close();
                 Swal.fire({
                     title: "Unable to generate Invoice at the moment.",
@@ -1270,9 +1284,8 @@
 
     }
 
-    function printInvoice()
-    {
-        if(readOnly) {
+    function printInvoice() {
+        if (readOnly) {
             window.open(
                 'sale-return/print-invoice?id=' + purchasebillid,
                 '_blank'
@@ -1281,8 +1294,7 @@
         }
     }
 
-    function resetPage()
-    {
+    function resetPage() {
         Swal.fire({
             title: "Reset Contents?",
             showDenyButton: true,
@@ -1295,10 +1307,9 @@
         });
     }
 
-    function resetData()
-    {
+    function resetData() {
         $("#invNo").html("");
-        purchaseData.length = 0;
+        saleReturnData.length = 0;
         batchData.length = 0;
         mainTableRow = 0;
         gst = 0;
@@ -1323,23 +1334,21 @@
         calculateTotalAmt();
     }
 
-    function seriesChanged()
-    {
+    function seriesChanged() {
         var series = $("#series").val();
         loadProducts(series);
 
     }
 
-    function loadProducts(series)
-    {
+    function loadProducts(series) {
         products.length = 0;//remove all elements
         $.ajax({
             type: "GET",
-            url: "/product/series/"+series,
+            url: "/product/series/" + series,
             dataType: 'json',
             success: function (data) {
-                for(var i=0; i<data.length;i++) {
-                    products.push({id:data[i].id, text: data[i].productName});
+                for (var i = 0; i < data.length; i++) {
+                    products.push({id: data[i].id, text: data[i].productName});
                 }
                 loadTempStockBookData();
             },
@@ -1354,7 +1363,7 @@
         $.ajax({
             type: "GET",
             url: "/sales/check-scheme",
-            data:{
+            data: {
                 productId: productId,
                 batchNumber: batchNumber
             },
@@ -1363,19 +1372,16 @@
                 scheme = data;
                 var offers = "";
 
-                if(data.slab1Status == 1)
-                {
-                    offers = "S1: "+data.slab1MinQty + "+" + data.slab1SchemeQty;
+                if (data.slab1Status == 1) {
+                    offers = "S1: " + data.slab1MinQty + "+" + data.slab1SchemeQty;
                 }
 
-                if(data.slab2Status == 1)
-                {
-                    offers += " | S2: "+data.slab2MinQty + "+" + data.slab2SchemeQty;
+                if (data.slab2Status == 1) {
+                    offers += " | S2: " + data.slab2MinQty + "+" + data.slab2SchemeQty;
                 }
 
-                if(data.slab3Status == 1)
-                {
-                    offers += " | S3: "+data.slab3MinQty + "+" + data.slab3SchemeQty;
+                if (data.slab3Status == 1) {
+                    offers += " | S3: " + data.slab3MinQty + "+" + data.slab3SchemeQty;
                 }
 
                 $("#offers").html(offers)
@@ -1388,79 +1394,63 @@
 
     function applySchemes(row, saleQty) {
         if (scheme && saleQty > 0) {
-            if(saleQty>=scheme.slab1MinQty && saleQty<scheme.slab2MinQty)
-            {
-                if(scheme.slab1Status == 1) {
-                    if(scheme.slab2BulkStatus == 1) {
-                        var slab1Multiplier = Math.floor(parseInt(saleQty)/scheme.slab1MinQty);
+            if (saleQty >= scheme.slab1MinQty && saleQty < scheme.slab2MinQty) {
+                if (scheme.slab1Status == 1) {
+                    if (scheme.slab2BulkStatus == 1) {
+                        var slab1Multiplier = Math.floor(parseInt(saleQty) / scheme.slab1MinQty);
                         var slab1Qty = scheme.slab1SchemeQty * slab1Multiplier;
                         hot.setDataAtCell(row, 5, slab1Qty);
-                    }
-                    else
-                    {
+                    } else {
                         hot.setDataAtCell(row, 5, scheme.slab1SchemeQty);
                     }
-                }
-                else
+                } else
                     hot.setDataAtCell(row, 5, 0);
-            }
-            else if(saleQty>=scheme.slab2MinQty && saleQty<scheme.slab3MinQty)
-            {
-                if(scheme.slab2Status == 1) {
-                    if(scheme.slab2BulkStatus == 1)
-                    {
+            } else if (saleQty >= scheme.slab2MinQty && saleQty < scheme.slab3MinQty) {
+                if (scheme.slab2Status == 1) {
+                    if (scheme.slab2BulkStatus == 1) {
 
-                        var slab2Multiplier = Math.floor(parseInt(saleQty)/scheme.slab2MinQty);
+                        var slab2Multiplier = Math.floor(parseInt(saleQty) / scheme.slab2MinQty);
                         var slab2Qty = slab2Multiplier * scheme.slab2MinQty;
                         var slb2RemQty = saleQty - slab2Qty;
 
-                        var slab1Multiplier = Math.floor(parseInt(slb2RemQty)/scheme.slab1MinQty);
+                        var slab1Multiplier = Math.floor(parseInt(slb2RemQty) / scheme.slab1MinQty);
                         var slab2Qty = scheme.slab2SchemeQty * slab2Multiplier;
                         var slab1Qty = scheme.slab1SchemeQty * slab1Multiplier;
 
-                        hot.setDataAtCell(row, 5,slab2Qty+slab1Qty);
+                        hot.setDataAtCell(row, 5, slab2Qty + slab1Qty);
+                    } else {
+                        hot.setDataAtCell(row, 5, scheme.slab2SchemeQty);
                     }
-                    else {
-                        hot.setDataAtCell(row, 5,  scheme.slab2SchemeQty);
-                    }
-                }
-                else
+                } else
                     hot.setDataAtCell(row, 5, 0);
-            }
-            else if(saleQty>=scheme.slab3MinQty)
-            {
-                if(scheme.slab3Status == 1) {
-                    if(scheme.slab3BulkStatus == 1)
-                    {
-                        var slab3Multiplier = Math.floor(parseInt(saleQty)/scheme.slab3MinQty);
-                        var slab3Qty = slab3Multiplier*scheme.slab3MinQty;
+            } else if (saleQty >= scheme.slab3MinQty) {
+                if (scheme.slab3Status == 1) {
+                    if (scheme.slab3BulkStatus == 1) {
+                        var slab3Multiplier = Math.floor(parseInt(saleQty) / scheme.slab3MinQty);
+                        var slab3Qty = slab3Multiplier * scheme.slab3MinQty;
                         var slb3RemQty = saleQty - slab3Qty;
 
                         var slab2Qty = 0;
                         var slb2RemQty = 0;
-                        var slab2Multiplier = Math.floor(parseInt(slb3RemQty)/scheme.slab2MinQty);
-                        if(slab2Multiplier > 0) {
+                        var slab2Multiplier = Math.floor(parseInt(slb3RemQty) / scheme.slab2MinQty);
+                        if (slab2Multiplier > 0) {
                             slab2Qty = slab2Multiplier * scheme.slab2MinQty;
                             slb2RemQty = slb3RemQty - slab2Qty;
-                        }
-                        else
-                        {
+                        } else {
                             slb2RemQty = slb3RemQty;
                         }
 
-                        var slab1Multiplier = Math.floor(parseInt(slb2RemQty)/scheme.slab1MinQty);
+                        var slab1Multiplier = Math.floor(parseInt(slb2RemQty) / scheme.slab1MinQty);
 
                         slab3Qty = scheme.slab3SchemeQty * slab3Multiplier;
                         slab2Qty = scheme.slab2SchemeQty * slab2Multiplier;
                         var slab1Qty = scheme.slab1SchemeQty * slab1Multiplier;
 
-                        hot.setDataAtCell(row, 5, slab3Qty+slab2Qty+slab1Qty);
-                    }
-                    else {
+                        hot.setDataAtCell(row, 5, slab3Qty + slab2Qty + slab1Qty);
+                    } else {
                         hot.setDataAtCell(row, 5, scheme.slab3SchemeQty);
                     }
-                }
-                else
+                } else
                     hot.setDataAtCell(row, 5, 0);
             }
         }

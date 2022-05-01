@@ -112,6 +112,30 @@ class EntityService {
 
     }
 
+
+    def updatePassword(JSONObject jsonObject)
+    {
+        Client client = ClientBuilder.newClient()
+        WebTarget target = client.target(new Links().API_GATEWAY)
+
+        try
+        {
+            Response apiResponse = target
+                    .path(new Links().UPDATE_PASSWORD)
+                    .resolveTemplate("id",jsonObject.id.toString())
+                    .resolveTemplate("password", jsonObject.password.toString())
+                    .request(MediaType.APPLICATION_JSON_TYPE)
+                    .put(Entity.entity(jsonObject.toString(),MediaType.APPLICATION_JSON_TYPE))
+            println(jsonObject)
+            return apiResponse
+        }
+        catch (Exception ex)
+        {
+            System.err.println('Service : , action :  putEntity  , Ex:' + ex)
+            log.error('Service :EntityService , action :  putEntity  , Ex:' + ex)
+        }
+
+    }
     /**
      *
      * @param jsonObject

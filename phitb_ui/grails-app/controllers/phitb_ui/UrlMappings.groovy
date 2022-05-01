@@ -20,6 +20,7 @@ class UrlMappings {
         "/timeline"(controller: 'dashboard', action: 'timeline')
         "/api/media/$path**"(controller: "fileLocation", action: "index")
         "/user/update-details/$id"(controller: 'auth' , action: 'updateUser')
+        "/user/update-password"(controller: 'userRegister' , action: 'updatePassword')
 /*<-------------------------------------------System ------------------------------------------------->*/
         "/accountmodes"(controller: "accountMode") {
             action = [GET: "index", POST: "save"]
