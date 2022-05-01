@@ -988,7 +988,8 @@
                             if (data[i].bill.billStatus !== "DRAFT" && data[i].bill.billStatus !== "CANCELLED") {
                                 if (custId === customer) {
                                     saledt.push(data[i].financialYear);
-                                    saledt.push(data[i].bill.invoiceNumber);
+                                    saledt.push(data[i].bill.invoiceNumber+" "+
+                                        moment(data[i].bill.entryDate).format('DD-MM-YYYY'));
                                     saledt.push("INVOICE");
                                     saledt.push(data[i].batchNumber);
                                     saledt.push(data[i].sRate);

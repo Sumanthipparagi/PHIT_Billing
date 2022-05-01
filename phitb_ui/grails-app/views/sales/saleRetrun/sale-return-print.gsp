@@ -279,7 +279,7 @@
             <td id="expDate${sp.id}">${sp.expiryDate}</td>
             %{--            <td></td>--}%
             <td>${sp.mrp}</td>
-            <td>${sp.invoiceNumber} <span id="invsDate${sp.id}">${sp.dateCreated}</span></td>
+            <td>${sp.invoiceNumber}</td>
             <td>${sp?.batch?.ptr}</td>
             <td>${sp.sRate}</td>
             <td>${sp.sqty}</td>
@@ -447,10 +447,10 @@
         $("#expDate${spd.id}").text(moment(expDate).format('MMM-YY').toUpperCase());
         </g:each>
 
-        <g:each var="spd" in="${saleProductDetails}">
-        var invsDate = new Date('${spd.dateCreated}');
-        $("#invsDate${spd.id}").text(moment(invsDate).format('DD-MM-YYYY').toUpperCase());
-        </g:each>
+%{--        <g:each var="spd" in="${saleProductDetails}">--}%
+%{--        var invsDate = new Date('${spd.dateCreated}');--}%
+%{--        $("#invsDate${spd.id}").text(moment(invsDate).format('DD-MM-YYYY').toUpperCase());--}%
+%{--        </g:each>--}%
         var totalGst = 0.0;
         var totalgstField = $(".totalgst");
         totalgstField.each(function(i)
