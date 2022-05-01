@@ -57,7 +57,7 @@
         </div>
 
         <div class="row clearfix">
-            <div class="col-lg-12">
+            <div class="col-lg-9">
                 <div class="card" style="margin-bottom: 10px;">
                     <div class="header" style="padding: 1px;">
 
@@ -123,29 +123,30 @@
                             %{--                                <input type="date" class="form-control date" name="duedate" id="duedate"/>--}%
                             %{--                            </div>--}%
 
-                            <div class="col-lg-4 mt-2">
-                                <div class="card">
-                                    <div class="body">
-                                        <div class="row">
-                                            <div class="col-md-6">
-                                                Total: <p>&#8377;&nbsp;<span id="totalAmt">0.00</span></p>
-                                            </div>
 
-                                            <div class="col-md-6">
-                                                Inv No: <span id="invNo"></span>
-                                            </div>
-                                        </div>
 
-                                        <div class="row">
-                                            <button onclick="resetPage()" class="btn btn-danger">Reset</button>
-                                            %{--                            <button id="saveDraftBtn" onclick="('DRAFT')" class="btn btn-primary">Save --}%
-                                            %{--                            Draft</button>--}%
-                                            <button id="saveBtn" onclick="saveReturnInvoice('ACTIVE')" class="btn btn-primary">Save</button>
-
-                                        </div>
-                                    </div>
-                                </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-3">
+                <div class="card">
+                    <div class="body">
+                        <div class="row">
+                            <div class="col-md-6">
+                                Total: <p>	&#8377;&nbsp;<span id="totalAmt">0.00</span></p>
                             </div>
+
+                            <div class="col-md-6">
+                                Inv No: <span id="invNo"></span>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <button onclick="resetPage()" class="btn btn-danger">Reset</button>
+                            %{--                            <button id="saveDraftBtn" onclick="('DRAFT')" class="btn btn-primary">Save --}%
+                            %{--                            Draft</button>--}%
+                            <button id="saveBtn" onclick="saveReturnInvoice('ACTIVE')" class="btn btn-primary">Save</button>
 
                         </div>
                     </div>
