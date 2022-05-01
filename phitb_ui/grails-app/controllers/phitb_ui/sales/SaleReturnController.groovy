@@ -18,11 +18,9 @@ import phitb_ui.entity.UserRegisterController
 import javax.ws.rs.core.Response
 import java.text.SimpleDateFormat
 
-class SaleReturnController
-{
+class SaleReturnController {
 
-    def index()
-    {
+    def index() {
         String entityId = session.getAttribute("entityId")?.toString()
         JSONArray divisions = new ProductService().getDivisionsByEntityId(entityId)
         ArrayList<String> users = new UserRegisterController().show() as ArrayList<String>
@@ -32,8 +30,7 @@ class SaleReturnController
         def reason = new SalesService().getReason()
         ArrayList<String> salesmanList = []
         users.each {
-            if (it.role.name.toString().equalsIgnoreCase(Constants.ROLE_SALESMAN))
-            {
+            if (it.role.name.toString().equalsIgnoreCase(Constants.ROLE_SALESMAN)) {
                 salesmanList.add(it)
             }
         }
@@ -43,36 +40,31 @@ class SaleReturnController
     }
 
 
-    def getSaleBillByCustomer()
-    {
-        def salebills = new SalesService().getSaleBillByCustomer(params.custid,session.getAttribute('financialYear')
-                .toString(),session.getAttribute('entityId').toString())
+    def getSaleBillByCustomer() {
+        def salebills = new SalesService().getSaleBillByCustomer(params.custid, session.getAttribute('financialYear')
+                .toString(), session.getAttribute('entityId').toString())
         def apiResponse = new SalesService().getRequestWithIdList(salebills.id, new Links().SALE_PRODUCT_OF_BILLIDS)
         def prod = JSON.parse(apiResponse.readEntity(String.class))
-        prod.each {product ->
+        prod.each { product ->
             def index = salebills.findIndexOf({
                 it.id == product.billId
             })
-            if(index!= -1)
-            product.put("billId", salebills[index])
+            if (index != -1)
+                product.put("billId", salebills[index])
         }
         respond prod, formats: ['json'], status: 200
     }
 
 
-    def getSaleInvByProducts()
-    {
-        try
-        {
+    def getSaleInvByProducts() {
+        try {
             def products = new SalesService().getSaleProductDetailsByProductId(params.productId)
             products.each {
                 def apiResponse = new SalesService().getRequestWithId(it.billId.toString(), new Links().SALE_BILL_SHOW)
                 def batchResponse = new ProductService().getBatchesOfProduct(it.productId.toString())
                 JSONArray batchArray = JSON.parse(batchResponse.readEntity(String.class)) as JSONArray
-                for (JSONObject batch : batchArray)
-                {
-                    if (batch.batchNumber == it.batchNumber)
-                    {
+                for (JSONObject batch : batchArray) {
+                    if (batch.batchNumber == it.batchNumber) {
                         it.put("batch", batch)
                     }
                 }
@@ -80,13 +72,11 @@ class SaleReturnController
             }
             respond products, formats: ['json'], status: 200
         }
-        catch(Exception ex)
-        {
-            log.error(controllerName+":"+ex)
-            println(controllerName+":"+ex)
+        catch (Exception ex) {
+            log.error(controllerName + ":" + ex)
+            println(controllerName + ":" + ex)
         }
     }
-
 
 
     def saveSaleReturn() {
@@ -110,7 +100,7 @@ class SaleReturnController
         def series = new EntityService().getSeriesById(seriesId)
         if (!billStatus.equalsIgnoreCase("DRAFT")) {
             def recentBill = new SalesService().getRecentSaleBill(financialYear, entityId, billStatus)
-            if (recentBill != null && recentBill.size()!=0) {
+            if (recentBill != null && recentBill.size() != 0) {
                 finId = Long.parseLong(recentBill.get("finId").toString()) + 1
                 serBillId = Long.parseLong(recentBill.get("serBillId").toString()) + 1
             } else {
@@ -187,33 +177,32 @@ class SaleReturnController
             saleReturnDetail.put("entityTypeId", session.getAttribute("entityTypeId").toString())
             //GST percentage Calculation
             double priceBeforeTaxes = UtilsService.round((Double.parseDouble(saleQty) * Double.parseDouble(saleRate)), 2)
-            if(discount > 0)
-            {
-                priceBeforeTaxes = priceBeforeTaxes - (priceBeforeTaxes * (discount/100))
+            if (discount > 0) {
+                priceBeforeTaxes = priceBeforeTaxes - (priceBeforeTaxes * (discount / 100))
             }
             double gstPercentage = 0.0
             double sgstPercentage = 0.0
             double cgstPercentage = 0.0
             double igstPercentage = 0.0
 
-            if(gst > 0)
+            if (gst > 0)
                 gstPercentage = (gst / priceBeforeTaxes) * 100
-            if(sgst > 0)
+            if (sgst > 0)
                 sgstPercentage = (sgst / priceBeforeTaxes) * 100
-            if(cgst > 0)
+            if (cgst > 0)
                 cgstPercentage = (cgst / priceBeforeTaxes) * 100
-            if(igst > 0)
+            if (igst > 0)
                 igstPercentage = (igst / priceBeforeTaxes) * 100
-            saleReturnDetail.put("gstPercentage", UtilsService.round(gstPercentage,2))
-            saleReturnDetail.put("sgstPercentage", UtilsService.round(sgstPercentage,2))
-            saleReturnDetail.put("cgstPercentage", UtilsService.round(cgstPercentage,2))
-            saleReturnDetail.put("igstPercentage", UtilsService.round(igstPercentage,2))
+            saleReturnDetail.put("gstPercentage", UtilsService.round(gstPercentage, 2))
+            saleReturnDetail.put("sgstPercentage", UtilsService.round(sgstPercentage, 2))
+            saleReturnDetail.put("cgstPercentage", UtilsService.round(cgstPercentage, 2))
+            saleReturnDetail.put("igstPercentage", UtilsService.round(igstPercentage, 2))
             saleReturnDetails.add(saleReturnDetail)
 
             //save to sale transaction log
             //save to sale transportation details
 
-            def stocks = new InventoryService().stocksIncrease(batchNumber,saleQty,freeQty,reason)
+            def stocks = new InventoryService().stocksIncrease(batchNumber, saleQty, freeQty, reason)
             if (stocks.status == 200) {
                 println("Inc")
             } else {
@@ -301,7 +290,7 @@ class SaleReturnController
         saleReturn.put("taxable", "1") //TODO: to be changed
         saleReturn.put("cashDiscount", 0) //TODO: to be changed
         saleReturn.put("exempted", 0) //TODO: to be changed
-        saleReturn.put("seriesCode",seriesCode)
+        saleReturn.put("seriesCode", seriesCode)
         Response resp = new SalesService().saveSaleRetrun(saleReturn)
         if (resp.status == 200) {
             def saleReturns = new JSONObject(resp.readEntity(String.class))
@@ -327,13 +316,11 @@ class SaleReturnController
         }
     }
 
-    def printSaleReturn()
-    {
+    def printSaleReturn() {
 
         String saleReturnId = params.id
         JSONObject saleReturnDetail = new SalesService().getSaleReturnDetailsById(saleReturnId)
-        if (saleReturnDetail != null)
-        {
+        if (saleReturnDetail != null) {
             JSONArray saleRetrunDetails = new SalesService().getSaleRetrunDetailsByBill(saleReturnId)
             JSONObject series = new EntityService().getSeriesById(saleReturnDetail.get("series").toString())
             JSONObject customer = new EntityService().getEntityById(saleReturnDetail.get("customerId").toString())
@@ -344,10 +331,8 @@ class SaleReturnController
             saleRetrunDetails.each {
                 def batchResponse = new ProductService().getBatchesOfProduct(it.productId.toString())
                 JSONArray batchArray = JSON.parse(batchResponse.readEntity(String.class)) as JSONArray
-                for (JSONObject batch : batchArray)
-                {
-                    if (batch.batchNumber == it.batchNumber)
-                    {
+                for (JSONObject batch : batchArray) {
+                    if (batch.batchNumber == it.batchNumber) {
                         it.put("batch", batch)
                     }
                 }
@@ -363,50 +348,34 @@ class SaleReturnController
             HashMap<String, Double> sgstGroup = new HashMap<>()
             HashMap<String, Double> cgstGroup = new HashMap<>()
             HashMap<String, Double> igstGroup = new HashMap<>()
-            for (Object it : saleRetrunDetails)
-            {
+            for (Object it : saleRetrunDetails) {
                 double amountBeforeTaxes = it.amount - it.cgstAmount - it.sgstAmount - it.igstAmount
                 totalBeforeTaxes += amountBeforeTaxes
-                if (it.igstPercentage > 0)
-                {
+                if (it.igstPercentage > 0) {
                     def igstPercentage = igstGroup.get(it.igstPercentage.toString())
-                    if (igstPercentage == null)
-                    {
+                    if (igstPercentage == null) {
                         igstGroup.put(it.igstPercentage.toString(), amountBeforeTaxes)
-                    }
-                    else
-                    {
+                    } else {
                         igstGroup.put(it.igstPercentage.toString(), igstPercentage.doubleValue() + amountBeforeTaxes)
                     }
-                }
-                else
-                {
+                } else {
                     def gstPercentage = gstGroup.get(it.gstPercentage.toString())
-                    if (gstPercentage == null)
-                    {
+                    if (gstPercentage == null) {
                         gstGroup.put(it.gstPercentage.toString(), amountBeforeTaxes)
-                    }
-                    else
-                    {
+                    } else {
                         gstGroup.put(it.gstPercentage.toString(), gstPercentage.doubleValue() + amountBeforeTaxes)
                     }
 
                     def sgstPercentage = sgstGroup.get(it.sgstPercentage.toString())
-                    if (sgstPercentage == null)
-                    {
+                    if (sgstPercentage == null) {
                         sgstGroup.put(it.sgstPercentage.toString(), amountBeforeTaxes)
-                    }
-                    else
-                    {
+                    } else {
                         sgstGroup.put(it.sgstPercentage.toString(), sgstPercentage.doubleValue() + amountBeforeTaxes)
                     }
                     def cgstPercentage = cgstGroup.get(it.cgstPercentage.toString())
-                    if (cgstPercentage == null)
-                    {
+                    if (cgstPercentage == null) {
                         cgstGroup.put(it.cgstPercentage.toString(), amountBeforeTaxes)
-                    }
-                    else
-                    {
+                    } else {
                         cgstGroup.put(it.cgstPercentage.toString(), cgstPercentage.doubleValue() + amountBeforeTaxes)
                     }
                 }
@@ -415,21 +384,19 @@ class SaleReturnController
             def total = totalBeforeTaxes + totalcgst + totalsgst + totaligst
 
             render(view: "/sales/saleRetrun/sale-return-print", model: [saleBillDetail    : saleReturnDetail,
-                                                        saleProductDetails: saleRetrunDetails,
-                                                        series            : series, entity: entity, customer: customer, city: city,
-                                                        total             : total, custcity: custcity,
-                                                        termsConditions   : termsConditions,
-                                                        totalcgst         : totalcgst, totalsgst: totalsgst, totaligst: totaligst,
-                                                        totaldiscount     : totaldiscount,
-                                                        gstGroup          : gstGroup,
-                                                        sgstGroup         : sgstGroup,
-                                                        cgstGroup         : cgstGroup,
-                                                        igstGroup         : igstGroup,
-                                                        totalBeforeTaxes  : totalBeforeTaxes
+                                                                        saleProductDetails: saleRetrunDetails,
+                                                                        series            : series, entity: entity, customer: customer, city: city,
+                                                                        total             : total, custcity: custcity,
+                                                                        termsConditions   : termsConditions,
+                                                                        totalcgst         : totalcgst, totalsgst: totalsgst, totaligst: totaligst,
+                                                                        totaldiscount     : totaldiscount,
+                                                                        gstGroup          : gstGroup,
+                                                                        sgstGroup         : sgstGroup,
+                                                                        cgstGroup         : cgstGroup,
+                                                                        igstGroup         : igstGroup,
+                                                                        totalBeforeTaxes  : totalBeforeTaxes
             ])
-        }
-        else
-        {
+        } else {
 
             render("No Bill Found")
         }
