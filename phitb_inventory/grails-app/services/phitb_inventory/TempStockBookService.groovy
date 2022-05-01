@@ -135,6 +135,16 @@ class TempStockBookService {
 
 
     TempStockBook save(JSONObject jsonObject) {
+        //Date sanitize
+        String expDate = jsonObject.get("expDate")
+        SimpleDateFormat sdf1 = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'")
+        sdf.setTimeZone(TimeZone.getTimeZone("GMT"))
+        if(expDate.contains("T"))
+        {
+            expDate = sdf.format(sdf1.parse(expDate))
+        }
+        jsonObject.put("expDate",expDate)
+
         Long productId = Long.parseLong(jsonObject.get("productId").toString())
         Long userId = Long.parseLong(jsonObject.get("userId").toString())
         String batchNumber = jsonObject.get("batchNumber").toString()
@@ -175,6 +185,16 @@ class TempStockBookService {
     TempStockBook update(JSONObject jsonObject, String id) {
 
         if (id) {
+            //Date sanitize
+            String expDate = jsonObject.get("expDate")
+            SimpleDateFormat sdf1 = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'")
+            sdf.setTimeZone(TimeZone.getTimeZone("GMT"))
+            if(expDate.contains("T"))
+            {
+                expDate = sdf.format(sdf1.parse(expDate))
+            }
+            jsonObject.put("expDate",expDate)
+
             TempStockBook tempStockBook = TempStockBook.findById(Long.parseLong(id))
             if (tempStockBook) {
                 tempStockBook.isUpdatable = true
@@ -186,7 +206,7 @@ class TempStockBookService {
                 tempStockBook.userOrderFreeQty = Long.parseLong(jsonObject.get("userOrderFreeQty").toString())
                 tempStockBook.userOrderReplQty = Long.parseLong(jsonObject.get("userOrderReplQty").toString())
                 tempStockBook.redundantBatch = Long.parseLong(jsonObject.get("redundantBatch").toString())
-                tempStockBook.remainingSchemeQty = Long.parseLong(jsonObject.get("remainingSchemeQty").toString())
+                tempStockBook.remainingFreeQty = Long.parseLong(jsonObject.get("remainingFreeQty").toString())
                 tempStockBook.expDate = sdf.parse(jsonObject.get("expDate").toString())
                 tempStockBook.remainingQty = Long.parseLong(jsonObject.get("remainingQty").toString())
                 tempStockBook.purchaseRate = Double.parseDouble(jsonObject.get("purchaseRate").toString())

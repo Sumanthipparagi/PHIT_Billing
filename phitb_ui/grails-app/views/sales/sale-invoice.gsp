@@ -156,7 +156,7 @@
 %{--    </tr>--}%
 %{--    </thead>--}%
 %{--</table>--}%
-<table id="prodDetails" class="extended">
+<table id="prodDetails" class="extended" style="width: 100%; padding: 5%;">
     <thead>
     <tr>
         <td colspan="4" style="vertical-align:top;">
@@ -183,11 +183,6 @@
                 <li><b class="tab">Invoice No</b>: ${saleBillDetail.invoiceNumber}</li>
                 <li><b class="tab">Inv Date</b>:&nbsp;<span id="invDate"></span></li>
                 <li><b class="tab">Due Date</b>:&nbsp;<span id="dueDate"></span></li>
-                <g:if test="${irnDetails != null}">
-                    <li><b class="tab">Ack No</b>:&nbsp;${irnDetails.AckNo}</li>
-                    <li><b class="tab">Ack Dt</b>:&nbsp;${irnDetails.AckDt}</li>
-                    <li><b class="tab">IRN</b>:&nbsp;${irnDetails.Irn}</li>
-                </g:if>
             %{--                <li><b class="tab">No of cases</b>:</li>--}%
             %{--                <li><b class="tab">Weight in Kgs</b>:</li>--}%
             %{--                <li><b class="tab">Party Ref No.</b>: 429803</li>--}%
@@ -216,7 +211,7 @@
                 <li><b class="tab">DL No1</b>: ${customer.drugLicence1}</li>
                 <li><b class="tab">DL No2</b>: ${customer.drugLicence2}</li>
                 <li><b class="tab">STATE NAME</b>: ${custcity.state.name}</li>
-                <li><b class="tab">Area pincode</b>: ${customer.pinCode}</li>s
+                <li><b class="tab">Area PIN</b>: ${customer.pinCode}</li>
                 <li><b class="tab">Goods Through</b>:</li>
                 <li><b class="tab">Place of Supply</b>: &nbsp;${custcity.name}</li>
                 %{--                <li><b class="tab">State Code</b>: </li>--}%
@@ -232,7 +227,7 @@
                 <li><b class="tab">DL No1</b>: ${customer.drugLicence1}</li>
                 <li><b class="tab">DL No2</b>: ${customer.drugLicence2}</li>
                 <li><b class="tab">STATE NAME</b>: ${custcity.state.name}</li>
-                <li><b class="tab">Area pincode</b>: ${customer.pinCode}</li>
+                <li><b class="tab">Area PIN</b>: ${customer.pinCode}</li>
                 <li><b class="tab">Goods Through</b>:</li>
                 <li><b class="tab">Place of Supply</b>:  &nbsp;${custcity.name}</li>
                 %{--                <li><b class="tab">State Code</b>: </li>--}%
@@ -242,7 +237,19 @@
             <div class="qrCode"></div>
         </td>
     </tr>
-
+    <g:if test="${irnDetails != null}">
+        <tr>
+            <td colspan="4">
+                <strong>Ack No</strong>:&nbsp;${irnDetails.AckNo}
+            </td>
+            <td colspan="5">
+                <strong>Ack Dt</strong>:&nbsp;${irnDetails.AckDt}
+            </td>
+            <td colspan="9">
+                <strong>IRN</strong>:&nbsp;${irnDetails.Irn}
+            </td>
+        </tr>
+    </g:if>
     <tr>
         <th>Sl.No</th>
         <th>Material HSN Code</th>
@@ -519,7 +526,7 @@
         minVersion: 1,
         maxVersion: 40,
         render: "canvas",
-        size: 200,
+        size: 100,
         // code color or image element
         fill: '#000',
         // background color or image element, null for transparent background
