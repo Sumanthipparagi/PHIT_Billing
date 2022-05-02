@@ -95,12 +95,13 @@ class InventoryService {
     }
 
 
-    def stocksIncrease(String batch,String purQty, String freeQty,String reason) {
+    def stocksIncrease(String batch,String purQty, String freeQty,String reason, String productId) {
         Client client = ClientBuilder.newClient()
         WebTarget target = client.target(new Links().API_GATEWAY)
         try {
             Response apiResponse = target
                     .path(new Links().STOCK_BOOK_PURCHASE+"batch/"+ batch+"/qty/"+purQty+"/fqty/"+freeQty+"/reason/"+reason)
+                    .queryParam("productId", URLEncoder.encode(productId.toString(), "UTF-8"))
                     .request(MediaType.APPLICATION_JSON_TYPE)
                     .get()
             return apiResponse

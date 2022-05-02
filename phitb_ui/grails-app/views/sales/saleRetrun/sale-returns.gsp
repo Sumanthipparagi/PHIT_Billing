@@ -980,6 +980,7 @@
                 url: url,
                 dataType: 'json',
                 success: function (data) {
+                   alert(data)
                     if (data) {
                         billData = [];
                         for (var i = 0; i < data.length; i++) {

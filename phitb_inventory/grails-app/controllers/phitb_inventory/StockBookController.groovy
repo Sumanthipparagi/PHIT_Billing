@@ -241,7 +241,7 @@ class StockBookController {
     {
         try
         {
-            StockBook stockBook = StockBook.findByBatchNumber(params.batch)
+            StockBook stockBook = StockBook.findByBatchNumberAndProductId(params.batch,params.productId)
             def remQty = stockBook.getRemainingQty()
             def freeQty = stockBook.getRemainingFreeQty()
             if(params.reason == "SALE RETURN")

@@ -202,7 +202,7 @@ class SaleReturnController {
             //save to sale transaction log
             //save to sale transportation details
 
-            def stocks = new InventoryService().stocksIncrease(batchNumber, saleQty, freeQty, reason)
+            def stocks = new InventoryService().stocksIncrease(batchNumber, saleQty, freeQty, reason, productId)
             if (stocks.status == 200) {
                 println("Inc")
             } else {
