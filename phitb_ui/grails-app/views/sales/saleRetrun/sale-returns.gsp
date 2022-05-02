@@ -420,7 +420,7 @@
         customers.push({"id": ${cs.id}, "noOfCrDays": ${cs.noOfCrDays}});
         </g:each>
         <g:each in="${reason}" var="r">
-        reason.push({"id": '${r.reasonName}', "text": '${r.reasonName}'});
+        reason.push({"id": '${r.reasonCode}', "text": '${r.reasonName}'});
         %{--reason.push('${r.reasonName}')--}%
         </g:each>
         const container = document.getElementById('saleReturnTable');
@@ -743,7 +743,7 @@
         function reasonDropdownRenderer(instance, td, row, col, prop, value, cellProperties) {
             var selectedId;
             for (var index = 0; index < reason.length; index++) {
-                if (parseInt(value) === reason[index].id) {
+                if (value === reason[index].id) {
                     selectedId = reason[index].id;
                     value = reason[index].text;
                 }
@@ -980,7 +980,6 @@
                 url: url,
                 dataType: 'json',
                 success: function (data) {
-                   alert(data)
                     if (data) {
                         billData = [];
                         for (var i = 0; i < data.length; i++) {

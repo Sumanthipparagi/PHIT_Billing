@@ -321,6 +321,38 @@ class SalesService
 
     }
 
+
+    def getRecentSaleReturn(String financialYear, String entityId)
+    {
+        Client client = ClientBuilder.newClient();
+        WebTarget target = client.target(new Links().API_GATEWAY);
+        try
+        {
+            Response apiResponse = target
+                    .path(new Links().SALE_RETURN_RECENT)
+                    .queryParam("financialYear", financialYear)
+                    .queryParam("entityId", entityId)
+                    .request(MediaType.APPLICATION_JSON_TYPE)
+                    .get()
+
+            if (apiResponse.status == 200)
+            {
+                JSONObject jsonObject = new JSONObject(apiResponse.readEntity(String.class))
+                return jsonObject
+            }
+            else
+            {
+                return null
+            }
+        }
+        catch (Exception ex)
+        {
+            System.err.println('Service :saveStateMaster , action :  save  , Ex:' + ex)
+            log.error('Service :saveStateMaster , action :  save  , Ex:' + ex)
+        }
+
+    }
+
     def getSaleBillDetailsById(String id)
     {
         Client client = ClientBuilder.newClient();

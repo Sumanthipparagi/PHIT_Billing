@@ -99,13 +99,13 @@ class SaleReturnController {
         String financialYear = session.getAttribute("financialYear")
         def series = new EntityService().getSeriesById(seriesId)
         if (!billStatus.equalsIgnoreCase("DRAFT")) {
-            def recentBill = new SalesService().getRecentSaleBill(financialYear, entityId, billStatus)
-            if (recentBill != null && recentBill.size() != 0) {
-                finId = Long.parseLong(recentBill.get("finId").toString()) + 1
-                serBillId = Long.parseLong(recentBill.get("serBillId").toString()) + 1
+            def recentReturn = new SalesService().getRecentSaleReturn(financialYear, entityId)
+            if (recentReturn != null && recentReturn.size() != 0) {
+                finId = Long.parseLong(recentReturn.get("finId").toString()) + 1
+                serBillId = Long.parseLong(recentReturn.get("serBillId").toString()) + 1
             } else {
                 finId = 1
-                serBillId = Long.parseLong(series.get("purId").toString())
+                serBillId = Long.parseLong(series.get("saleReturnId").toString())
             }
         }
         long totalSqty = 0

@@ -251,6 +251,10 @@ class UrlMappings {
                 action = [GET: 'getAllByCustomerId']
             }
 
+            "/salereturn/getrecent(.$format)?"(controller: 'saleReturn') {
+                action = [GET: 'getRecentByFinancialYearAndEntity']
+            }
+
 
 
 

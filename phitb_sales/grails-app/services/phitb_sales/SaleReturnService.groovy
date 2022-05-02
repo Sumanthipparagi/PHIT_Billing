@@ -118,4 +118,18 @@ class SaleReturnService {
         return SaleReturn.findAllByCustomerIdAndEntityIdAndFinancialYear(customerId,Long.parseLong(entityId),
                 financialYear)
     }
+
+    JSONObject getRecentByFinancialYearAndEntity(String financialYear, String entityId)
+    {
+
+        JSONObject jsonObject = new JSONObject()
+        ArrayList<SaleReturnDetails> saleReturnDetails =
+                SaleReturnDetails.findAllByFinancialYearAndEntityId(financialYear, Long.parseLong(entityId), [sort: 'id', order:
+                        'desc'])
+        println(saleReturnDetails.serBillId)
+        jsonObject.put("serBillId", saleReturnDetails.serBillId.max())
+        jsonObject.put("finId", saleReturnDetails.finId.max())
+        return jsonObject
+
+    }
 }
