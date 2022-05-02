@@ -369,7 +369,10 @@
         'SGST',
         'CGST',
         'IGST',
-        '<strong>pid</strong>',
+        '<strong>gst_p</strong>',
+        '<strong>cgst_p</strong>',
+        '<strong>sgst_p</strong>',
+        '<strong>igst_p</strong>',
         'id'];
 
 
@@ -866,13 +869,18 @@
                 {type: 'numeric', readOnly: true},
                 {type: 'numeric', readOnly: true},
                 {type: 'text', readOnly: true},
+                {type: 'text', readOnly: true},
+                {type: 'text', readOnly: true},
+                {type: 'text', readOnly: true},
+                {type: 'text', readOnly: true},
                 {type: 'text', readOnly: true}
             ],
-            // hiddenColumns: true,
-            // hiddenColumns: {
-            //     // specify columns hidden by default
-            //     // columns: [16]
-            // },
+            hiddenColumns: true,
+            hiddenColumns: {
+                copyPasteEnabled: true,
+                indicators: true,
+                columns:  [16, 17, 18, 19, 20]
+            },
             minSpareRows: 0,
             minSpareCols: 0,
             fixedColumnsLeft: 0,
@@ -886,7 +894,7 @@
                 if (e.keyCode === 13) {
                     if (!checkForDuplicateEntry(rowData[0])) {
                         //check for schemes
-                        checkSchemes(hot.getDataAtCell(mainTableRow, 1), rowData[0]); //product, batch
+                        checkSchemes(hot.getDataAtCell(mainTableRow, 2), rowData[0]); //product, batch
                         // var batchId = rowData[12];
                         // hot.setDataAtCell(mainTableRow, 2, rowData[0]);
                         // hot.setCellMeta(mainTableRow, 3, "batchId", batchId);
@@ -904,10 +912,10 @@
                         hot.setDataAtCell(mainTableRow, 14, rowData[14]);
                         hot.setDataAtCell(mainTableRow, 15, rowData[15]);
                         hot.setDataAtCell(mainTableRow, 16, rowData[1]);
-                        gst = rowData[12];
-                        sgst = rowData[13];
-                        cgst = rowData[14];
-                        igst = rowData[15];
+                        gst = rowData[16];
+                        sgst = rowData[17];
+                        cgst = rowData[18];
+                        igst = rowData[19];
                         hot.selectCell(mainTableRow, 4);
                         remainingQty = rowData[8];
                         remainingFQty = rowData[9];
@@ -980,6 +988,7 @@
                 url: url,
                 dataType: 'json',
                 success: function (data) {
+                    console.log(data)
                     if (data) {
                         billData = [];
                         for (var i = 0; i < data.length; i++) {
@@ -1004,6 +1013,10 @@
                                     saledt.push(data[i].sgstAmount);
                                     saledt.push(data[i].cgstAmount);
                                     saledt.push(data[i].igstAmount);
+                                    saledt.push(data[i].gstPercentage);
+                                    saledt.push(data[i].cgstPercentage);
+                                    saledt.push(data[i].sgstPercentage);
+                                    saledt.push(data[i].igstPercentage);
                                     saledt.push(data[i].id);
                                     billData.push(saledt);
                                     console.log(billData)
