@@ -148,6 +148,8 @@ class SaleEntryController
             saleProductDetail.put("expiryDate", expDate)
             saleProductDetail.put("sqty", saleQty)
             saleProductDetail.put("freeQty", freeQty)
+            saleProductDetail.put("sqtyReturn", saleQty)
+            saleProductDetail.put("fqtyReturn", freeQty)
             saleProductDetail.put("repQty", 0)
             saleProductDetail.put("pRate", 0) //TODO: to be changed
             saleProductDetail.put("sRate", saleRate)
@@ -711,6 +713,8 @@ class SaleEntryController
             saleProductDetail.put("expiryDate", expDate)
             saleProductDetail.put("sqty", saleQty)
             saleProductDetail.put("freeQty", freeQty)
+            saleProductDetail.put("sqtyReturn", saleQty)
+            saleProductDetail.put("fqtyReturn", freeQty)
             saleProductDetail.put("repQty", 0) //TODO: to be changed
             saleProductDetail.put("pRate", 0) //TODO: to be changed
             saleProductDetail.put("sRate", saleRate)
@@ -918,6 +922,8 @@ class SaleEntryController
             saleProductDetail.put("expiryDate", expDate)
             saleProductDetail.put("sqty", saleQty)
             saleProductDetail.put("freeQty", freeQty)
+            saleProductDetail.put("sqtyReturn", saleQty)
+            saleProductDetail.put("fqtyReturn", freeQty)
             saleProductDetail.put("repQty", 0)
             saleProductDetail.put("pRate", 0) //TODO: to be changed
             saleProductDetail.put("sRate", saleRate)

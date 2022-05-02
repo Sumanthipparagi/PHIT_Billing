@@ -354,7 +354,7 @@
 
     var billHeaderRow = [
         '<strong>Financial year</strong>',
-        '<strong>Document ID</strong>',
+        '<strong>Document ID & Date</strong>',
         '<strong>Doc Type</strong>',
         '<strong>Batch</strong>',
         '<strong>S.Rate</strong>',
@@ -621,6 +621,7 @@
                         var remQty = 0;
                         var remFQty = 0;
                         var freeQtyEntry = false;
+                        var url = "";
                         if (pid && batch) {
                             $.ajax({
                                     type: "POST",
@@ -723,7 +724,6 @@
                 if (test === 'YES') {
                     $('.batches').hide()
                     $('.bills').show()
-
                 } else {
                     $('.batches').show()
                     $('.bills').hide()
@@ -1004,8 +1004,8 @@
                                     saledt.push(data[i].sRate);
                                     saledt.push(data[i].expiryDate);
                                     saledt.push(data[i].amount);
-                                    saledt.push(data[i].sqty);
-                                    saledt.push(data[i].freeQty);
+                                    saledt.push(data[i].sqtyReturn);
+                                    saledt.push(data[i].fqtyReturn);
                                     saledt.push(data[i].batch.product.unitPacking);
                                     saledt.push(data[i].discount)
                                     saledt.push(data[i].mrp)
@@ -1711,7 +1711,7 @@
 
 <g:include view="controls/footer-content.gsp"/>
 <script>
-    selectSideMenu("purchase-menu");
+    selectSideMenu("sale-menu");
 </script>
 </body>
 </html>

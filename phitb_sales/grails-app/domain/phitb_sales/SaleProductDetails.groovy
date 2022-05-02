@@ -35,6 +35,8 @@ class SaleProductDetails implements Serializable, LogicalDelete<SaleProductDetai
     String financialYear
     long entityTypeId
     long entityId
+    Double sqtyReturn
+    Double fqtyReturn
 
     Date dateCreated
     Date lastUpdated
@@ -45,6 +47,8 @@ class SaleProductDetails implements Serializable, LogicalDelete<SaleProductDetai
     double igstPercentage
 
     static constraints = {
+        fqtyReturn nullable:true
+        sqtyReturn nullable:true
     }
 
     boolean isUpdatable
