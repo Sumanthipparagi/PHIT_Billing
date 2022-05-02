@@ -35,7 +35,6 @@ class SaleProductDetails implements Serializable, LogicalDelete<SaleProductDetai
     String financialYear
     long entityTypeId
     long entityId
-    String invoiceNumber
 
     Date dateCreated
     Date lastUpdated
@@ -46,7 +45,6 @@ class SaleProductDetails implements Serializable, LogicalDelete<SaleProductDetai
     double igstPercentage
 
     static constraints = {
-        invoiceNumber nullable: true
     }
 
     boolean isUpdatable

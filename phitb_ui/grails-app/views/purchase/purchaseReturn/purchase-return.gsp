@@ -761,7 +761,7 @@
         batchSelection(customerId)
         purchaseSelection(customerId)
         for (var i = 0; i < suppliers.length; i++) {
-            if (customerId == suppliers[i].id) {
+            if (customerId === suppliers[i].id) {
                 noOfCrDays = suppliers[i].noOfCrDays;
             }
         }
