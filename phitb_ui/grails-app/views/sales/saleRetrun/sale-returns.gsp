@@ -581,7 +581,10 @@
                                 hot.alter('insert_row');
                                 hot.selectCell(mainTableRow, 1);
                             }
-                            // alert("Invalid Quantity, please enter quantity greater than 0");
+                            else
+                            {
+                                alert("Invalid Quantity, please enter quantity greater than 0");
+                            }
                         }
 
                     }
