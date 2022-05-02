@@ -27,7 +27,11 @@
     .form-control {
         border-radius: 7px !important;
     }
-    </style>
+
+    .handsontableInputHolder{
+        z-index: 0!important;
+    }
+</style>
 </head>
 
 <body class="theme-black">
