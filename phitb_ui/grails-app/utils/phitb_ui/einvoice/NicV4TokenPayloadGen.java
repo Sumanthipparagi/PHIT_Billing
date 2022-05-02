@@ -106,7 +106,7 @@ public class NicV4TokenPayloadGen {
         }
         catch (Exception e)
         {
-            e.printStackTrace();
+           // e.printStackTrace();
         }
     }
     public static byte[] readFile(String fileName)

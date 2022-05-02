@@ -189,7 +189,7 @@
 
                         <div class="row">
                             <button onclick="resetPage()" class="btn btn-danger">Reset</button>
-                            <button onclick="savePurchaseInvoice('DRAFT')" class="btn btn-primary">Save Draft</button>
+                            %{--<button onclick="savePurchaseInvoice('DRAFT')" class="btn btn-primary">Save Draft</button>--}%
                             <button onclick="savePurchaseInvoice('ACTIVE')" class="btn btn-primary">Save</button>
                             %{-- <button onclick="printInvoice()" class="btn btn-secondary">Print</button>--}%
                         </div>
@@ -476,7 +476,7 @@
                                     url: "/stockbook/product/" + pid + "/batch/" + batch,
                                     dataType: 'json',
                                     success: function (data) {
-                                        remQty = remQty + data.remainingQty;
+                                       /* remQty = remQty + data.remainingQty;
                                         remFQty = remFQty + data.remainingFreeQty;
                                         if (remQty >= sQty) {
                                             allowEntry = true;
@@ -526,7 +526,7 @@
                                         else
                                         {
                                             hot.setDataAtCell(row,5,fQty)
-                                        }
+                                        }*/
                                     },
                                     error: function (data) {
                                         alert("Something went Wrong!")
@@ -935,7 +935,7 @@
                     $("#invNo").html(draftInvNo);
                 }
                 if (billStatus !== "DRAFT") {
-                    message = 'Sale Invoice Generated: ' + invoiceNumber;
+                    message = 'Purchase Invoice Generated: ' + invoiceNumber;
                 } else {
                     message = 'Draft Invoice Generated: ' + data.purchaseBillDetail.entityId + "/DR/S/" + month + year + "/"
                         + seriesCode + "/__";
@@ -951,7 +951,7 @@
                     if (result.isConfirmed) {
                         printInvoice();
                     } else if (result.isDenied) {
-                        resetPage();
+                        resetData();
                     }
                 });
 

@@ -10,7 +10,6 @@ class AuthController {
 
     def index()
     {
-//        new EInvoiceService().generateIRN()
         render(view: '/usermanagement/auth/index')
     }
 

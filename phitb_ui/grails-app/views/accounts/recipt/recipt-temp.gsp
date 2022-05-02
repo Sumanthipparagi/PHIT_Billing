@@ -1,7 +1,7 @@
 <%@ page import="phitb_ui.WordsToNumbersUtil; phitb_ui.UtilsService; java.time.ZonedDateTime" contentType="text/html;charset=UTF-8" %>
 <html id="reciptPrint">
 <head>
-    <title>Goods Sales Recipt</title>
+    <title>Receipt</title>
 
     <script type="text/javascript">
         function generateBarCode() {
@@ -74,7 +74,7 @@
 </head>
 
 <body>
-<table style="width:1308px;table-layout: auto;">
+<table style="width:100%;table-layout: auto;">
     <tr>
 
         <td style="width: 25%;vertical-align:top;">
@@ -109,17 +109,17 @@
     </tr>
 
 </table>
-<table style="width:1308px;table-layout: auto;">
+<table style="width:100%;table-layout: auto;">
     <tr>
         <th>Particulars</th>
         <th colspan="5">Amount</th>
     </tr>
     <tr>
         <td>
-            <g:if test="${recipt.bank!=null && recipt.bank!=""}">
-            <p>By Cheque No.: ${recipt.chequeNumber} of ${recipt.bank.bankName} dated ${recipt.paymentDate.split("T")[0]}</p>
+            <g:if test="${recipt.bank != null && recipt.bank != ""}">
+                <p>By Cheque No.: ${recipt.chequeNumber} of ${recipt.bank.bankName} dated ${recipt.paymentDate.split("T")[0]}</p>
             </g:if>
-            <g:elseif test="${recipt?.cardNumber!=null && recipt?.cardNumber!=""}">
+            <g:elseif test="${recipt?.cardNumber != null && recipt?.cardNumber != ""}">
                 BY CARD
                 <br>
                 <br>
@@ -135,7 +135,7 @@
                         Adj. Doc. No.
                     </th>
                     <th>
-                         Doc Type
+                        Doc Type
                     </th>
                     <th>
                         Doc. Date
@@ -146,18 +146,18 @@
                 </tr>
                 <g:each var="inv" in="${reciptloginvArray}">
 
-                    <g:if test="${inv.amountPaid!=0}">
-                    <tr>
-                        <td>${inv.transId}</td>
-                        <td>${inv.billType}</td>
-                        <td>${inv.dateCreated.split("T")[0]}</td>
-                        <td>${inv.amountPaid}</td>
-                    </tr>
+                    <g:if test="${inv.amountPaid != 0}">
+                        <tr>
+                            <td>${inv.transId}</td>
+                            <td>${inv.billType}</td>
+                            <td>${inv.dateCreated.split("T")[0]}</td>
+                            <td>${inv.amountPaid}</td>
+                        </tr>
                     </g:if>
                 </g:each>
                 <g:each var="crnt" in="${reciptlogcrntArray}">
 
-                    <g:if test="${crnt.amountPaid!=0}">
+                    <g:if test="${crnt.amountPaid != 0}">
                         <tr>
                             <td>${crnt.transId}</td>
                             <td>${crnt.billType}</td>
@@ -166,16 +166,16 @@
                         </tr>
                     </g:if>
                 </g:each>
-%{--                <g:each var="csv" in="${creditNoteArry}">--}%
-%{--                    <g:if test="${csv.balance!=0}">--}%
-%{--                    <tr>--}%
-%{--                        <td>${csv.invoiceNumber}</td>--}%
-%{--                        <td>CRNT</td>--}%
-%{--                        <td>${csv.dateCreated.split("T")[0]}</td>--}%
-%{--                        <td>${csv.balance}</td>--}%
-%{--                    </tr>--}%
-%{--                    </g:if>--}%
-%{--                </g:each>--}%
+            %{--                <g:each var="csv" in="${creditNoteArry}">--}%
+            %{--                    <g:if test="${csv.balance!=0}">--}%
+            %{--                    <tr>--}%
+            %{--                        <td>${csv.invoiceNumber}</td>--}%
+            %{--                        <td>CRNT</td>--}%
+            %{--                        <td>${csv.dateCreated.split("T")[0]}</td>--}%
+            %{--                        <td>${csv.balance}</td>--}%
+            %{--                    </tr>--}%
+            %{--                    </g:if>--}%
+            %{--                </g:each>--}%
             </table>
         </td>
         <td colspan="5"><b>${reciptloginvArray.amountPaid.sum()}</b></td>
@@ -201,7 +201,9 @@
 
     <tr>
         <td style="border-left: none;border-right: none;">
-            <p><strong><g:if test="${recipt.bank!=null && recipt.bank!=""}">Deposit Bank :${recipt.bank.bankName}</g:if> </strong></p>
+            <p><strong><g:if
+                    test="${recipt.bank != null && recipt.bank != ""}">Deposit Bank :${recipt.bank.bankName}</g:if></strong>
+            </p>
 
             <p>&nbsp;</p>
 

@@ -135,12 +135,17 @@ class SaleBillDetailsService
         saleBillDetails.paymentStatus = Long.parseLong(jsonObject.get("paymentStatus").toString())
         saleBillDetails.accountModeId = Long.parseLong(jsonObject.get("accountModeId").toString())
         saleBillDetails.priorityId = Long.parseLong(jsonObject.get("priorityId").toString())
-        saleBillDetails.entryDate = sdf.parse(jsonObject.get("entryDate").toString())
+        //saleBillDetails.entryDate = sdf.parse(jsonObject.get("entryDate").toString())
+        saleBillDetails.entryDate = new Date()
         saleBillDetails.customerId = Long.parseLong(jsonObject.get("customerId").toString())
         saleBillDetails.customerNumber = Long.parseLong(jsonObject.get("customerNumber").toString())
         saleBillDetails.salesmanId = Long.parseLong(jsonObject.get("salesmanId").toString())
         saleBillDetails.salesmanComm = Long.parseLong(jsonObject.get("salesmanComm").toString())
-        saleBillDetails.orderDate = sdf.parse(jsonObject.get("orderDate").toString())
+        //saleBillDetails.orderDate = sdf.parse(jsonObject.get("orderDate").toString())
+
+        if(jsonObject.get("billStatus").toString().equalsIgnoreCase("ACTIVE"))
+            saleBillDetails.orderDate = new Date()
+
         saleBillDetails.refOrderId = jsonObject.get("refOrderId").toString()
         saleBillDetails.dueDate = sdf.parse(jsonObject.get("dueDate").toString())
         saleBillDetails.dispatchDate = sdf.parse(jsonObject.get("dispatchDate").toString())
@@ -222,12 +227,16 @@ class SaleBillDetailsService
         saleBillDetails.paymentStatus = Long.parseLong(jsonObject.get("paymentStatus").toString())
         saleBillDetails.accountModeId = Long.parseLong(jsonObject.get("accountModeId").toString())
         saleBillDetails.priorityId = Long.parseLong(jsonObject.get("priorityId").toString())
-        saleBillDetails.entryDate = sdf.parse(jsonObject.get("entryDate").toString())
+       // saleBillDetails.entryDate = sdf.parse(jsonObject.get("entryDate").toString())
         saleBillDetails.customerId = Long.parseLong(jsonObject.get("customerId").toString())
         saleBillDetails.customerNumber = Long.parseLong(jsonObject.get("customerNumber").toString())
         saleBillDetails.salesmanId = Long.parseLong(jsonObject.get("salesmanId").toString())
         saleBillDetails.salesmanComm = Long.parseLong(jsonObject.get("salesmanComm").toString())
-        saleBillDetails.orderDate = sdf.parse(jsonObject.get("orderDate").toString())
+        //saleBillDetails.orderDate = sdf.parse(jsonObject.get("orderDate").toString())
+
+        if(jsonObject.get("billStatus").toString().equalsIgnoreCase("ACTIVE"))
+            saleBillDetails.orderDate = new Date()
+
         saleBillDetails.refOrderId = jsonObject.get("refOrderId").toString()
         saleBillDetails.dueDate = sdf.parse(jsonObject.get("dueDate").toString())
         saleBillDetails.dispatchDate = sdf.parse(jsonObject.get("dispatchDate").toString())
@@ -388,16 +397,46 @@ class SaleBillDetailsService
                     saleProductDetail.save(flush: true)
                 }
                 saleBillDetails.billStatus = "CANCELLED"
+                saleBillDetails.cancelledDate = new Date()
                 saleBillDetails.isUpdatable = true
                 saleBillDetails.save(flush: true)
 
                 saleInvoice.put("products", saleProductDetails)
                 saleInvoice.put("invoice", saleBillDetails)
+                return saleInvoice
             }
             else
             {
                 throw new ResourceNotFoundException()
             }
+        }
+        else
+        {
+            throw new ResourceNotFoundException()
+        }
+    }
+
+
+    def updateIRNDetails(JSONObject jsonObject)
+    {
+        String id = jsonObject.get("id")
+        Date cancelledDate = null
+        if(jsonObject.has("cancelledDate")) {
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss")
+            cancelledDate = sdf.parse(jsonObject.get("cancelledDate").toString())
+        }
+
+        SaleBillDetails saleBillDetails = SaleBillDetails.findById(Long.parseLong(id))
+        if (saleBillDetails)
+        {
+            saleBillDetails.isUpdatable = true
+            if(jsonObject.has("irnDetails"))
+                saleBillDetails.irnDetails = jsonObject.get("irnDetails").toString()
+            if(cancelledDate)
+                saleBillDetails.cancelledDate = cancelledDate
+
+            saleBillDetails.save(flush:true)
+            return saleBillDetails
         }
         else
         {

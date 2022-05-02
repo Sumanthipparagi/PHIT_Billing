@@ -325,6 +325,30 @@ class SystemService
 
     }
 
+    def getStateById(String id)
+    {
+        Client client = ClientBuilder.newClient();
+        WebTarget target = client.target(new Links().API_GATEWAY);
+        try
+        {
+            Response apiResponse = target
+                    .path(new Links().STATE_MASTER_SHOW + "/"+id)
+                    .request(MediaType.APPLICATION_JSON_TYPE)
+                    .get()
+            if(apiResponse.status == 200)
+            {
+                JSONObject state = new JSONObject(apiResponse.readEntity(String.class))
+                return state
+            }
+        }
+        catch (Exception ex)
+        {
+            System.err.println('Service :systemService , action :  getStateById  , Ex:' + ex)
+            log.error('Service :systemService , action :  getStateById  , Ex:' + ex)
+        }
+
+    }
+
 
 
 //    City

@@ -23,7 +23,6 @@
     }
 
 
-
     th, td {
         text-align: left;
         padding: 1.5px;
@@ -40,7 +39,6 @@
         /*color: #fff;*/
         /*background: #000;*/
     }
-
 
 
     body {
@@ -76,8 +74,8 @@
             display: table-cell;
             padding-right: 1em;
         }
-        thead
-        {
+
+        thead {
             font-size: 6pt;
             padding: 0px;
         }
@@ -96,6 +94,7 @@
     li {
         display: table-row;
     }
+
     .print {
         margin-left: 200px;
     }
@@ -103,7 +102,7 @@
     /*thead{*/
     /*    display:table-header-group;!*repeat table headers on each page*!*/
     /*}*/
-    .page-number{
+    .page-number {
         content: counter(page)
     }
     </style>
@@ -157,7 +156,7 @@
 %{--    </tr>--}%
 %{--    </thead>--}%
 %{--</table>--}%
-<table  id="prodDetails" class="extended">
+<table id="prodDetails" class="extended" style="width: 100%; padding: 5%;">
     <thead>
     <tr>
         <td colspan="4" style="vertical-align:top;">
@@ -184,10 +183,10 @@
                 <li><b class="tab">Invoice No</b>: ${saleBillDetail.invoiceNumber}</li>
                 <li><b class="tab">Inv Date</b>:&nbsp;<span id="invDate"></span></li>
                 <li><b class="tab">Due Date</b>:&nbsp;<span id="dueDate"></span></li>
-                %{--                <li><b class="tab">No of cases</b>:</li>--}%
-                %{--                <li><b class="tab">Weight in Kgs</b>:</li>--}%
-                %{--                <li><b class="tab">Party Ref No.</b>: 429803</li>--}%
-                %{--                <li><b class="tab">Rev-Charge</b>: No Dist.Chnl.01</li>--}%
+            %{--                <li><b class="tab">No of cases</b>:</li>--}%
+            %{--                <li><b class="tab">Weight in Kgs</b>:</li>--}%
+            %{--                <li><b class="tab">Party Ref No.</b>: 429803</li>--}%
+            %{--                <li><b class="tab">Rev-Charge</b>: No Dist.Chnl.01</li>--}%
             </ul>
         </td>
     </tr>
@@ -212,10 +211,10 @@
                 <li><b class="tab">DL No1</b>: ${customer.drugLicence1}</li>
                 <li><b class="tab">DL No2</b>: ${customer.drugLicence2}</li>
                 <li><b class="tab">STATE NAME</b>: ${custcity.state.name}</li>
-                <li><b class="tab">Area pincode</b>: ${customer.pinCode}</li>s
+                <li><b class="tab">Area PIN</b>: ${customer.pinCode}</li>
                 <li><b class="tab">Goods Through</b>:</li>
                 <li><b class="tab">Place of Supply</b>: &nbsp;${custcity.name}</li>
-%{--                <li><b class="tab">State Code</b>: </li>--}%
+                %{--                <li><b class="tab">State Code</b>: </li>--}%
             </ul>
 
         </td>
@@ -228,17 +227,29 @@
                 <li><b class="tab">DL No1</b>: ${customer.drugLicence1}</li>
                 <li><b class="tab">DL No2</b>: ${customer.drugLicence2}</li>
                 <li><b class="tab">STATE NAME</b>: ${custcity.state.name}</li>
-                <li><b class="tab">Area pincode</b>: ${customer.pinCode}</li>
+                <li><b class="tab">Area PIN</b>: ${customer.pinCode}</li>
                 <li><b class="tab">Goods Through</b>:</li>
                 <li><b class="tab">Place of Supply</b>:  &nbsp;${custcity.name}</li>
-%{--                <li><b class="tab">State Code</b>: </li>--}%
+                %{--                <li><b class="tab">State Code</b>: </li>--}%
             </ul>
         </td>
-        <td colspan="4" style="vertical-align:top;" >
-            <div class="qrCode" ></div>
+        <td colspan="4" style="vertical-align:center;padding: 10px;">
+            <div class="qrCode"></div>
         </td>
     </tr>
-
+    <g:if test="${irnDetails != null}">
+        <tr>
+            <td colspan="4">
+                <strong>Ack No</strong>:&nbsp;${irnDetails.AckNo}
+            </td>
+            <td colspan="5">
+                <strong>Ack Dt</strong>:&nbsp;${irnDetails.AckDt}
+            </td>
+            <td colspan="9">
+                <strong>IRN</strong>:&nbsp;${irnDetails.Irn}
+            </td>
+        </tr>
+    </g:if>
     <tr>
         <th>Sl.No</th>
         <th>Material HSN Code</th>
@@ -270,7 +281,7 @@
     <tbody style="padding: 5px!important;">
     <g:each var="sp" in="${saleProductDetails}" status="i">
         <tr>
-            <td>${i+1}</td>
+            <td>${i + 1}</td>
             <td>${sp.productId.hsnCode}</td>
             <td><b>${sp.productId.productName}</b></td>
             <td><b>${sp.productId.unitPacking}</b></td>
@@ -298,7 +309,6 @@
             <td>${String.format("%.2f", sp.igstAmount)}<br>${String.format("%.2f", sp.igstAmount / amount * 100)}</td>
             <td>${String.format("%.2f", sp.amount)}</td>
         </tr>
-
 
     </g:each>
 
@@ -336,6 +346,7 @@
             Weight in Kgs :<br>
             Party Ref No. : <br>
             Rev-Charge :</p>
+
         <p>${termsConditions[0].termCondition}</p>
     </div>
 
@@ -351,7 +362,7 @@
                 <tr>
                     <th>Add SGST ${sg.key}% on</th>
                     <td>${String.format("%.2f", sg.value)}</td>
-                    <td class="totalgst">${String.format("%.2f",sg.value * (Double.parseDouble(sg.key.toString())/100))}</td>
+                    <td class="totalgst">${String.format("%.2f", sg.value * (Double.parseDouble(sg.key.toString()) / 100))}</td>
                 </tr>
 
             </g:each>
@@ -360,7 +371,7 @@
                 <tr>
                     <th>Add CGST ${cg.key}% on</th>
                     <td>${String.format("%.2f", cg.value)}</td>
-                    <td class="totalgst">${String.format("%.2f",cg.value * (Double.parseDouble(cg.key.toString())/100))}</td>
+                    <td class="totalgst">${String.format("%.2f", cg.value * (Double.parseDouble(cg.key.toString()) / 100))}</td>
                 </tr>
 
             </g:each>
@@ -369,7 +380,7 @@
                 <tr>
                     <th>Add IGST ${ig.key}% on</th>
                     <td>${String.format("%.2f", ig.value)}</td>
-                    <td class="totalgst">${String.format("%.2f",ig.value * (Double.parseDouble(ig.key.toString())/100))}</td>
+                    <td class="totalgst">${String.format("%.2f", ig.value * (Double.parseDouble(ig.key.toString()) / 100))}</td>
                 </tr>
 
             </g:each>
@@ -414,6 +425,7 @@
 
 <br>
 <br>
+
 <div id="breakPageContent"></div>
 </body>
 <asset:javascript src="/themeassets/bundles/libscripts.bundle.js"/>
@@ -435,7 +447,7 @@
         %{--});--}%
 
         window.print();
-        var d = moment(new Date()).format('DD/MM/YYYY') + " " +  new Date().toLocaleTimeString();
+        var d = moment(new Date()).format('DD/MM/YYYY') + " " + new Date().toLocaleTimeString();
         document.getElementById("date").innerHTML = d;
         var invDate = new Date('${saleBillDetail.entryDate}');
         var dueDate = new Date('${saleBillDetail.dueDate}');
@@ -448,13 +460,13 @@
         </g:each>
         var totalGst = 0.0;
         var totalgstField = $(".totalgst");
-        totalgstField.each(function(i)
-        {
+        totalgstField.each(function (i) {
             var totGst = totalgstField.eq(i)[0].innerText;
-            if(totGst !== "")
+            if (totGst !== "")
                 totalGst += parseFloat(totGst);
         });
-        var netAmount = ${totalBeforeTaxes}
+        var netAmount =
+        ${totalBeforeTaxes}
         var netInvAmt = parseFloat(totalGst) + netAmount;
         $("#netInvAmt").text(netInvAmt.toFixed(2));
         $("#netPayAmt").text(netInvAmt.toFixed(2));
@@ -504,25 +516,26 @@
 
     };
 
-
-
+    var qrText = '${saleBillDetail.invoiceNumber}';
+    <g:if test="${irnDetails != null}">
+    qrText = '${irnDetails.SignedQRCode}';
+    </g:if>
     jQuery('.qrCode').qrcode({
         // width: 100,
         // height: 100,
-        render : "image",
+        minVersion: 1,
+        maxVersion: 40,
+        render: "canvas",
         size: 100,
         // code color or image element
         fill: '#000',
-
         // background color or image element, null for transparent background
         background: null,
-
         // corner radius relative to module width: 0.0 .. 0.5
         radius: 0,
-
         // quiet zone in modules
-        quiet: 0,
-
+        quiet: 1,
+        ecLevel: 'L',
         // modes
         // 0: normal
         // 1: label strip
@@ -534,13 +547,11 @@
         mSize: 0.1,
         mPosX: 0.5,
         mPosY: 0.5,
-
-        label: '${saleBillDetail.invoiceNumber}',
+        label: qrText,
         fontname: 'sans',
         fontcolor: '#000',
-
         image: null,
-        text : "${saleBillDetail.invoiceNumber}"
+        text: qrText
     });
 
 

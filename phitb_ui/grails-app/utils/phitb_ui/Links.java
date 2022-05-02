@@ -97,6 +97,14 @@ public class Links
 
     /*<-------------------------------------------Entity ------------------------------------------------->*/
 
+    //Entity IRN
+    public static String ENTITY_IRN_SHOW = "api/v1.0/entity/entityirn";
+    public static String ENTITY_IRN_SAVE = "api/v1.0/entity/entityirn";
+    public static String ENTITY_IRN_DATATABLE = "api/v1.0/entity/entityirn/datatable";
+    public static String ENTITY_IRN_UPDATE = "api/v1.0/entity/entityirn/";
+    public static String ENTITY_IRN_DELETE = "api/v1.0/entity/entityirn/";
+    public static String ENTITY_IRN_SHOW_BY_ENTITY = "api/v1.0/entity//entityirn/entity/";
+
     public static String ENTITY_AUTH = "api/v1.0/entity/authregister/username";
 
     public static String ENTITY_TYPE_MASTER_SHOW = "api/v1.0/entity/entitytypemaster";
@@ -350,7 +358,7 @@ public class Links
     public static String SALE_BILL_DATEWISE_REPORTS = "api/v1.0/sales/reports/datewise";
     public static String SALE_BILL_AREAWISE_REPORTS = "api/v1.0/sales/reports/areawise";
     public static String SALE_BILL_CONSOLIDATED_REPORTS = "api/v1.0/sales/reports/consolidated";
-
+    public static String SALE_BILL_UPDATE_IRN = "api/v1.0/sales/salebilldetails/updateirn";
 
     public static String SALE_SCHEME_UPDATE = "api/v1.0/sales/schemeconfiguration/{id}";
     public static String SALE_SCHEME_DELETE = "api/v1.0/sales/schemeconfiguration/{id}";

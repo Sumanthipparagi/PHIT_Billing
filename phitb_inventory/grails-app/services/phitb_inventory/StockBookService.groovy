@@ -86,6 +86,30 @@ class StockBookService {
     }
 
     StockBook save(JSONObject jsonObject) {
+
+        //Date sanitize
+        String manufacturingDate = jsonObject.get("manufacturingDate")
+        String expDate = jsonObject.get("expDate")
+        String purcDate = jsonObject.get("purcDate")
+        SimpleDateFormat sdf1 = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'")
+        sdf.setTimeZone(TimeZone.getTimeZone("GMT"))
+        if(manufacturingDate.contains("T"))
+        {
+            manufacturingDate = sdf.format(sdf1.parse(manufacturingDate))
+        }
+        if(expDate.contains("T"))
+        {
+            expDate = sdf.format(sdf1.parse(expDate))
+        }
+        if(purcDate.contains("T"))
+        {
+            purcDate = sdf.format(sdf1.parse(purcDate))
+        }
+        jsonObject.put("manufacturingDate",manufacturingDate)
+        jsonObject.put("expDate",expDate)
+        jsonObject.put("purcDate",purcDate)
+
+
         long productId = Long.parseLong(jsonObject.get("productId").toString())
         String batchNumber = jsonObject.get("batchNumber")
         double saleRate = Double.parseDouble(jsonObject.get("saleRate").toString())
@@ -148,6 +172,28 @@ class StockBookService {
     StockBook update(JSONObject jsonObject, String id) {
 
         if (id) {
+            //Date sanitize
+            String manufacturingDate = jsonObject.get("manufacturingDate")
+            String expDate = jsonObject.get("expDate")
+            String purcDate = jsonObject.get("purcDate")
+            SimpleDateFormat sdf1 = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'")
+            sdf.setTimeZone(TimeZone.getTimeZone("GMT"))
+            if(manufacturingDate.contains("T"))
+            {
+                manufacturingDate = sdf.format(sdf1.parse(manufacturingDate))
+            }
+            if(expDate.contains("T"))
+            {
+                expDate = sdf.format(sdf1.parse(expDate))
+            }
+            if(purcDate.contains("T"))
+            {
+                purcDate = sdf.format(sdf1.parse(purcDate))
+            }
+            jsonObject.put("manufacturingDate",manufacturingDate)
+            jsonObject.put("expDate",expDate)
+            jsonObject.put("purcDate",purcDate)
+
             long productId = Long.parseLong(jsonObject.get("productId").toString())
             String batchNumber = jsonObject.get("batchNumber")
             double saleRate = Double.parseDouble(jsonObject.get("saleRate").toString())

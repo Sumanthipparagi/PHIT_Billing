@@ -35,6 +35,7 @@ class BootStrap
             stateMaster['entityId'] = it.entityId
             stateMaster['zone'] = it.zone
             stateMaster['country'] = it.country
+            stateMaster['irnStateCode'] = it.irnStateCode
             return stateMaster
         }
 
@@ -51,6 +52,7 @@ class BootStrap
             countryMaster['id'] = it.id
             countryMaster['name'] = it.name
             countryMaster['entityId'] = it.entityId
+            countryMaster['irnCountryCode'] = it.irnCountryCode
             return countryMaster
         }
 

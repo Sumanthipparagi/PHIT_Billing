@@ -10,27 +10,17 @@ import org.bouncycastle.jce.provider.BouncyCastleProvider;
 import org.bouncycastle.util.Store;
 import sun.misc.BASE64Decoder;
 import sun.misc.BASE64Encoder;
-
-import javax.crypto.Cipher;
 import javax.crypto.KeyGenerator;
 import javax.crypto.SecretKey;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
 import java.security.*;
 import java.security.cert.X509Certificate;
-import java.security.spec.InvalidKeySpecException;
-import java.security.spec.X509EncodedKeySpec;
 import java.text.SimpleDateFormat;
-import java.util.Arrays;
-import java.util.Base64;
-import java.util.Calendar;
-import java.util.Enumeration;
+import java.util.*;
 
 public class EinvoiceHelper {
-
-    private static final char[] JKSPassword;
-    private static final char[] PFXPassword;
+    private static char[] JKSPassword;
+    private static char[] PFXPassword;
     private static KeyStore ks = null;
     private static String alias = null;
     private static X509Certificate UserCert = null;
@@ -39,25 +29,30 @@ public class EinvoiceHelper {
     private static X509Certificate myPubCert = null;
 
     static byte[] appKey = null;
-
+    private static String jksFilePath = "";
+    private static String publicKeyPath = "";
+    static ClassLoader classLoader = EinvoiceHelper.class.getClassLoader();
 
     static {
         JKSPassword = "123456".toCharArray();
         PFXPassword = "tcs".toCharArray();
+        if(classLoader != null) {
+            jksFilePath = Objects.requireNonNull(classLoader.getResource("KeyStore/KeyStore.jks")).getPath();
+            publicKeyPath = Objects.requireNonNull(classLoader.getResource("KeyStore/publicKey")).getPath();
+        }
     }
 
     public static String generateSignature(String data) throws Exception {
 
         System.out.println("@@inside generateSignature: " + data);
         String signature;
-        String jksFilepath = "C:\\Users\\arjun\\Desktop\\KeyStore.jks";
         try {
             // Adding Security Provider for PKCS 12
             Security.addProvider(new BouncyCastleProvider());
             // Setting password for the e-Token
             // logging into token
             ks = KeyStore.getInstance("jks");
-            FileInputStream fileInputStream = new FileInputStream(jksFilepath);
+            FileInputStream fileInputStream = new FileInputStream(jksFilePath);
             // Loading Keystore
             // System.out.println("loading keystore");
             ks.load(fileInputStream, JKSPassword);
@@ -66,7 +61,7 @@ public class EinvoiceHelper {
                 alias = e.nextElement();
                 // System.out.println("Alias of the e-Token : "+ alias);
                 UserCert = (X509Certificate) ks.getCertificate(alias);
-                UserCertPubKey = (PublicKey) ks.getCertificate(alias).getPublicKey();
+                UserCertPubKey = ks.getCertificate(alias).getPublicKey();
                 // System.out.println("loading Private key");
                 UserCertPrivKey = (PrivateKey) ks.getKey(alias, JKSPassword);
             }
@@ -87,16 +82,15 @@ public class EinvoiceHelper {
         try {
             PrivateKey privateKey = (PrivateKey) ks.getKey(alias, JKSPassword);
             myPubCert = (X509Certificate) ks.getCertificate(alias);
-            Store certs = new JcaCertStore(Arrays.asList(myPubCert));
+            Store certs = new JcaCertStore(Collections.singletonList(myPubCert));
             CMSSignedDataGenerator generator = new CMSSignedDataGenerator();
             generator.addSignerInfoGenerator(new JcaSimpleSignerInfoGeneratorBuilder().setProvider("BC").build("SHA256withRSA", privateKey, myPubCert));
             generator.addCertificates(certs);
             CMSTypedData data1 = new CMSProcessableByteArray(data.getBytes());
             CMSSignedData signed = generator.generate(data1, true);
             BASE64Encoder encoder = new BASE64Encoder();
-            String signedContent = encoder.encode((byte[]) signed.getSignedContent().getContent());
-            String envelopedData = encoder.encode(signed.getEncoded());
-            return envelopedData;
+            return encoder.encode(signed.getEncoded());
+           // return Base64.getEncoder().encodeToString(signed.getEncoded());
         } catch (Exception e) {
             e.printStackTrace();
             System.out.println("MakeSignature ==" + e.getCause());
@@ -108,8 +102,7 @@ public class EinvoiceHelper {
         System.out.println("@@inside getCurrTs...");
         Calendar cal = Calendar.getInstance();
         SimpleDateFormat format1 = new SimpleDateFormat("ddMMyyyyHHmmssSSS111");
-        String tmpstmp = format1.format(cal.getTime());
-        return tmpstmp;
+        return format1.format(cal.getTime());
     }
 
     public static byte[] createAESKey() {
@@ -125,29 +118,27 @@ public class EinvoiceHelper {
         return appKey;
     }
 
-    public static String encryptAsymmentricKey(String clearText) throws Exception
+/*    public static String encryptAsymmentricKey(String clearText) throws Exception
     {
         PublicKey publicKeys = getPublicKey();
         Cipher cipher = Cipher.getInstance("RSA/ECB/PKCS1PADDING");
         cipher.init(Cipher.ENCRYPT_MODE, publicKeys);
         byte[] encryptedText = cipher.doFinal(clearText.getBytes());
-        String encryptedPassword = Base64.getEncoder().encodeToString(encryptedText);
-        return encryptedPassword;
+        return Base64.getEncoder().encodeToString(encryptedText);
     }
 
-    public static PublicKey getPublicKey() throws FileNotFoundException, IOException, NoSuchAlgorithmException, InvalidKeySpecException
+    public static PublicKey getPublicKey() throws IOException, NoSuchAlgorithmException, InvalidKeySpecException
     {
-        FileInputStream inputStream = new FileInputStream("C:\\Users\\arjun\\Desktop\\publicKey.pem");
+        FileInputStream inputStream = new FileInputStream(publicKeyPath);
         byte[] keyBytes = new byte[inputStream.available()];
         inputStream.read(keyBytes);
         inputStream.close();
-        String pubKey = new String(keyBytes, "UTF-8");
+        String pubKey = new String(keyBytes, StandardCharsets.UTF_8);
         pubKey = pubKey.replaceAll("(-+BEGIN PUBLIC KEY-+\\r?\\n|-+END PUBLIC KEY-+\\r?\\n?)", "");
         BASE64Decoder decoder = new BASE64Decoder();
         keyBytes = decoder.decodeBuffer(pubKey);
         X509EncodedKeySpec spec = new X509EncodedKeySpec(keyBytes);
         KeyFactory keyFactory = KeyFactory.getInstance("RSA");
-        PublicKey publicKey = keyFactory.generatePublic(spec);
-        return publicKey;
-    }
+        return keyFactory.generatePublic(spec);
+    }*/
 }

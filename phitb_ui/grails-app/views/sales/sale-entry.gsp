@@ -1013,7 +1013,7 @@
                     if (result.isConfirmed) {
                         printInvoice();
                     } else if (result.isDenied) {
-                        resetPage();
+                        resetData();
                     }
                 });
 

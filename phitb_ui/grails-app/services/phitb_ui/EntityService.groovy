@@ -2022,4 +2022,93 @@ class EntityService {
 
     }
 
+
+    def addEntityIRN(JSONObject jsonObject)
+    {
+        Client client = ClientBuilder.newClient()
+        WebTarget target = client.target(new Links().API_GATEWAY)
+        try
+        {
+            Response apiResponse = target
+                    .path(new Links().ENTITY_IRN_SAVE)
+                    .request(MediaType.APPLICATION_JSON_TYPE)
+                    .post(Entity.entity(jsonObject.toString(),MediaType.APPLICATION_JSON_TYPE))
+            println(apiResponse)
+            return apiResponse
+        }
+        catch (Exception ex)
+        {
+            System.err.println('Service :entityService , action :  addEntityIRN  , Ex:' + ex)
+            log.error('Service :entityService , action :  addEntityIRN  , Ex:' + ex)
+        }
+
+    }
+
+    def getEntityIrn(String id) {
+        Client client = ClientBuilder.newClient()
+        WebTarget target = client.target(new Links().API_GATEWAY)
+        try {
+            Response apiResponse = target
+                    .path(new Links().ENTITY_IRN_SHOW + "/"+id)
+                    .request(MediaType.APPLICATION_JSON_TYPE)
+                    .get()
+            if(apiResponse?.status == 200)
+            {
+                JSONObject jsonObject = new JSONObject(apiResponse.readEntity(String.class))
+                return jsonObject
+            }
+            else
+                return null
+        }
+        catch (Exception ex) {
+            System.err.println('Service :EntityService , action :  getEntityIrn  , Ex:' + ex)
+            log.error('Service :EntityService , action :  getEntityIrn  , Ex:' + ex)
+        }
+
+    }
+
+    def getEntityIrnByEntity(String id) {
+        Client client = ClientBuilder.newClient()
+        WebTarget target = client.target(new Links().API_GATEWAY)
+        try {
+            Response apiResponse = target
+                    .path(new Links().ENTITY_IRN_SHOW_BY_ENTITY + "/"+id)
+                    .request(MediaType.APPLICATION_JSON_TYPE)
+                    .get()
+            if(apiResponse?.status == 200)
+            {
+                JSONObject jsonObject = new JSONObject(apiResponse.readEntity(String.class))
+                return jsonObject
+            }
+            else
+                return null
+        }
+        catch (Exception ex) {
+            System.err.println('Service :EntityService , action :  getEntityIrn  , Ex:' + ex)
+            log.error('Service :EntityService , action :  getEntityIrn  , Ex:' + ex)
+        }
+
+    }
+
+    def updateEntityIRN(JSONObject jsonObject)
+    {
+        Client client = ClientBuilder.newClient()
+        WebTarget target = client.target(new Links().API_GATEWAY)
+        try
+        {
+            Response apiResponse = target
+                    .path(new Links().ENTITY_IRN_UPDATE +  jsonObject.get("id"))
+                    .request(MediaType.APPLICATION_JSON_TYPE)
+                    .put(Entity.entity(jsonObject.toString(),MediaType.APPLICATION_JSON_TYPE))
+            println(apiResponse)
+            return apiResponse
+        }
+        catch (Exception ex)
+        {
+            System.err.println('Service :entityService , action :  updateEntityIRN  , Ex:' + ex)
+            log.error('Service :entityService , action :  updateEntityIRN  , Ex:' + ex)
+        }
+
+    }
+
 }

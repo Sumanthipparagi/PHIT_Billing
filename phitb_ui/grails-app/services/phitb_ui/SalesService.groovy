@@ -133,6 +133,28 @@ class SalesService
 
     }
 
+    def updateSaleBillIRNDetails(JSONObject jsonObject)
+    {
+        Client client = ClientBuilder.newClient();
+        WebTarget target = client.target(new Links().API_GATEWAY);
+        try
+        {
+            println(jsonObject)
+            Response apiResponse = target
+                    .path(new Links().SALE_BILL_UPDATE_IRN)
+                    .request(MediaType.APPLICATION_JSON_TYPE)
+                    .put(Entity.entity(jsonObject.toString(), MediaType.APPLICATION_JSON_TYPE))
+            println(apiResponse)
+            return apiResponse
+        }
+        catch (Exception ex)
+        {
+            System.err.println('Service :saveStateMaster , action :  save  , Ex:' + ex)
+            log.error('Service :saveStateMaster , action :  save  , Ex:' + ex)
+        }
+
+    }
+
     def saveSaleOrder(JSONObject jsonObject)
     {
         Client client = ClientBuilder.newClient();
@@ -860,7 +882,7 @@ class SalesService
         jsonObject.put("entityId", entityId)
         jsonObject.put("financialYear", financialYear)
         Client client = ClientBuilder.newClient();
-        WebTarget target = client.target(new Links().API_GATEWAY);
+        WebTarget target = client.target(new Links().API_GATEWAY)
         try {
             Response apiResponse = target
                     .path(new Links().SALE_BILL_CANCEL)
