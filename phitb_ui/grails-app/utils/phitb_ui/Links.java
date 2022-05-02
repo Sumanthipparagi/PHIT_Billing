@@ -386,6 +386,7 @@ public class Links
     public static String SALE_PRODUCT_OF_BILL = "api/v1.0/sales/saleproductdetails/bill";
     public static String SALE_PRODUCT_OF_BILLIDS = "api/v1.0/sales/saleproductdetailslist/bill/{salebillsIds}";
     public static String SALE_PRODUCT_BY_PRODUCT = "api/v1.0/sales/saleproductdetailsbyproductId";
+    public static String SALE_PRODUCT_BILL_BATCH = "api/v1.0/sales/saleproductdetailsbillandbatch";
 
 
     //Sale Return

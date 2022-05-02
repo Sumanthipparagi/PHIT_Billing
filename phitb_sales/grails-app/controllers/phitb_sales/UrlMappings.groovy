@@ -167,6 +167,10 @@ class UrlMappings {
                 action = [GET: 'getSaleProductDetailsbyProductId']
             }
 
+            "/saleproductdetailsbillandbatch(.$format)?"(controller: 'saleProductDetails', action:
+                    'getSaleProductDetailsbybatchAndBill')
+
+
             //Sale Transaction Log
             "/saletransactionlog(.$format)?"(controller: 'saleTransactionLog') {
                 action = [GET: 'index', POST: 'save']
@@ -283,6 +287,7 @@ class UrlMappings {
             "/salereturndetails/bill(.$format)?"(controller: 'saleReturnDetails') {
                 action = [GET: 'getSaleReturnDetailsById']
             }
+
 
             //Temp User Log
             "/tempuserlog(.$format)?"(controller:'tempUserLog') {

@@ -79,6 +79,14 @@ class SaleReturnController {
     }
 
 
+    def getSaleDetailsByProductAndBatch()
+    {
+        def apiResponse = new SalesService().getByBillAndBatches(params.billId,params.batch)
+        JSONObject jsonObject = new JSONObject(apiResponse.readEntity(String.class))
+        respond jsonObject, formats: ['json'], status: 200
+    }
+
+
     def saveSaleReturn() {
         SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy")
         JSONObject saleReturn = new JSONObject()
@@ -126,6 +134,7 @@ class SaleReturnController {
             String freeQty = sr.get("6")
             String saleRate = sr.get("7")
             String mrp = sr.get("8")
+            String saleBillId = sr.get("17")
             String invoiceNumber = sr.get("16")
             double discount = UtilsService.round(Double.parseDouble(sr.get("9").toString()), 2)
             String packDesc = sr.get("10")
@@ -148,6 +157,13 @@ class SaleReturnController {
             saleReturnDetail.put("billId", 0)
             saleReturnDetail.put("billType", 0)
             saleReturnDetail.put("serBillId", 0)
+            if(saleBillId!="")
+            {
+                saleReturnDetail.put("saleBillId", saleBillId)
+            }
+            else {
+                saleReturnDetail.put("saleBillId", 0)
+            }
             saleReturnDetail.put("seriesId", seriesId)
             saleReturnDetail.put("productId", productId)
             saleReturnDetail.put("batchNumber", batchNumber)

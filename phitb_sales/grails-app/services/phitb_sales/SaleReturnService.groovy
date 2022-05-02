@@ -34,6 +34,7 @@ class SaleReturnService {
 
     SaleReturn save(JSONObject jsonObject)
     {
+
         SaleReturn saleReturn = new SaleReturn()
         saleReturn.finId =  Long.parseLong(jsonObject.get("finId").toString())
         saleReturn.serBillId = Long.parseLong(jsonObject.get("serBillId").toString())
@@ -85,7 +86,7 @@ class SaleReturnService {
             String invoiceNumber = null;
 //            String seriesCode = jsonObject.get("seriesCode")
             SaleReturn saleReturn1
-            invoiceNumber = saleReturn.entityId + "/SR/" + month + year + "/" + saleReturn.id
+            invoiceNumber = saleReturn.entityId + "/SR/" + month + year + "/" + saleReturn.serBillId
             println("Invoice Number generated: " + invoiceNumber)
             if (invoiceNumber)
             {
@@ -132,4 +133,6 @@ class SaleReturnService {
         return jsonObject
 
     }
+
+
 }

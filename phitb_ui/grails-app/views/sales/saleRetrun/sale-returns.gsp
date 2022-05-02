@@ -334,7 +334,9 @@
         'SGST',
         'CGST',
         'IGST',
-        ''];
+        '',
+        'ID',
+    ];
 
     var batchHeaderRow = [
         '<strong>Batch</strong>',
@@ -478,8 +480,15 @@
                 {type: 'text', readOnly: true},
                 {type: 'text', readOnly: true},
                 {type: 'text', readOnly: true},
+                {type: 'text', readOnly: true},
                 {type: 'text', readOnly: true}
             ],
+            hiddenColumns: true,
+            hiddenColumns: {
+                copyPasteEnabled: true,
+                indicators: true,
+                columns:  [17]
+            },
             minSpareRows: 0,
             minSpareColumns: 0,
             enterMoves: {row: 0, col: 1},
@@ -621,9 +630,11 @@
                         var remQty = 0;
                         var remFQty = 0;
                         var freeQtyEntry = false;
-                        var url = "";
+                        var billId = hot.getDataAtCell(row, 17);
                         if (pid && batch) {
-                            $.ajax({
+                            if(isCheckedYes!=="YES")
+                            {
+                                $.ajax({
                                     type: "POST",
                                     url: "/stockbook/product/" + pid + "/batch/" + batch,
                                     dataType: 'json',
@@ -654,6 +665,9 @@
                                                 alert("Entered Free quantity exceeds available quantity");
                                             }
                                         }
+
+
+
                                         if (!allowEntry) {
                                             // this.getActiveEditor().TEXTAREA.value = "";
                                             hot.setDataAtCell(row, 5, 0);
@@ -671,8 +685,56 @@
                                     error: function (data) {
                                         alert("Something went Wrong!")
                                     }
-                                }
-                            );
+                                });
+                            }
+                            else
+                            {
+                                $.ajax({
+                                    type: "POST",
+                                    url: "/saleproductdetailsbillandbatch?billId="+billId+"&batch="+batch,
+                                    dataType: 'json',
+                                    success: function (data) {
+                                        console.log(data)
+                                        remQty = remQty + data.sqty;
+                                        remFQty = remFQty + data.freeQty;
+                                        if (remQty == sQty) {
+                                            allowEntry = true;
+                                        }
+
+                                        if (selection === 6) {
+                                            if (remFQty == fQty) {
+                                                freeQtyEntry = true;
+                                            } else {
+                                                freeQtyEntry = false;
+                                                allowEntry = false;
+                                            }
+
+                                            if (freeQtyEntry !== true) {
+                                                // hot.setDataAtCell(row, 5, 0);
+                                                alert("Entered Free quantity exceeds available quantity");
+                                            }
+                                        }
+
+
+                                        if (!allowEntry) {
+                                            // this.getActiveEditor().TEXTAREA.value = "";
+                                            hot.setDataAtCell(row, 5, 0);
+                                            hot.setDataAtCell(row, 6, 0);
+                                            hot.setDataAtCell(row, 12, 0);
+                                            hot.setDataAtCell(row, 13, 0);
+                                            hot.setDataAtCell(row, 14, 0);
+                                            hot.setDataAtCell(row, 15, 0);
+                                            alert("Entered quantity exceeds available quantity");
+                                            return;
+                                        } else {
+                                            hot.setDataAtCell(row, 6, fQty)
+                                        }
+                                    },
+                                    error: function (data) {
+                                        alert("Something went Wrong!")
+                                    }
+                                });
+                            }
                         }
                         applySchemes(row, sQty);
                         if (selection === 7) {
@@ -890,9 +952,9 @@
             beforeKeyDown(e) {
                 const selection = billHot.getSelected()[0][0];
                 var rowData = billHot.getDataAtRow(selection);
-                console.log(rowData)
+
                 if (e.keyCode === 13) {
-                    if (!checkForDuplicateEntry(rowData[0])) {
+                    if (!checkForDuplicateEntryBill(rowData[3],rowData[20])) {
                         //check for schemes
                         checkSchemes(hot.getDataAtCell(mainTableRow, 2), rowData[0]); //product, batch
                         // var batchId = rowData[12];
@@ -912,6 +974,7 @@
                         hot.setDataAtCell(mainTableRow, 14, rowData[14]);
                         hot.setDataAtCell(mainTableRow, 15, rowData[15]);
                         hot.setDataAtCell(mainTableRow, 16, rowData[1]);
+                        hot.setDataAtCell(mainTableRow, 17, rowData[20]);
                         gst = rowData[16];
                         sgst = rowData[17];
                         cgst = rowData[18];
@@ -988,14 +1051,14 @@
                 url: url,
                 dataType: 'json',
                 success: function (data) {
-                    console.log(data)
+                    console.log(data);
                     if (data) {
                         billData = [];
                         for (var i = 0; i < data.length; i++) {
                             var custId = data[i].bill.customerId
                             var saledt = [];
-                            if (data[i].bill.billStatus !== "DRAFT" && data[i].bill.billStatus !== "CANCELLED") {
-                                if (custId === customer) {
+                            if (data[i].bill.billStatus !== "DRAFT" && data[i].bill.billStatus !== "CANCELLED" ) {
+                                if (custId === customer && data[i].sqtyReturn !== 0  || data[i].fqtyReturn !== 0) {
                                     saledt.push(data[i].financialYear);
                                     saledt.push(data[i].bill.invoiceNumber+" "+
                                         moment(data[i].bill.entryDate).format('DD-MM-YYYY'));
@@ -1007,8 +1070,8 @@
                                     saledt.push(data[i].sqtyReturn);
                                     saledt.push(data[i].fqtyReturn);
                                     saledt.push(data[i].batch.product.unitPacking);
-                                    saledt.push(data[i].discount)
-                                    saledt.push(data[i].mrp)
+                                    saledt.push(data[i].discount);
+                                    saledt.push(data[i].mrp);
                                     saledt.push(data[i].gstAmount);
                                     saledt.push(data[i].sgstAmount);
                                     saledt.push(data[i].cgstAmount);
@@ -1017,7 +1080,7 @@
                                     saledt.push(data[i].cgstPercentage);
                                     saledt.push(data[i].sgstPercentage);
                                     saledt.push(data[i].igstPercentage);
-                                    saledt.push(data[i].id);
+                                    saledt.push(data[i].bill.id);
                                     billData.push(saledt);
                                     console.log(billData)
                                 }
@@ -1085,8 +1148,8 @@
                 totalSgst += Number(data[i][13]);
             if (data[i][14])
                 totalCgst += Number(data[i][14]);
-            if (data[i][16])
-                totalIgst += Number(data[i][16]);
+            if (data[i][15])
+                totalIgst += Number(data[i][15]);
         }
         $("#totalAmt").text(totalAmt.toFixed(2));
         $("#totalGST").text(totalGst.toFixed(2));
@@ -1099,16 +1162,30 @@
 
 
     function checkForDuplicateEntry(batchNumber) {
-        var productId = hot.getDataAtCell(mainTableRow, 1);
-        var purchaseTableData = hot.getData();
-        for (var i = 0; i < purchaseTableData.length; i++) {
-            if (productId === purchaseTableData[i][1]) {
-                if (purchaseTableData[i][2] !== null && purchaseTableData[i][2] === batchNumber)
+        var productId = hot.getDataAtCell(mainTableRow, 2);
+        var saleReturnTableData = hot.getData();
+        for (var i = 0; i < saleReturnTableData.length; i++) {
+            if (productId === saleReturnTableData[i][1]) {
+                if (saleReturnTableData[i][2] !== null && saleReturnTableData[i][2] === batchNumber)
                     return true;
             }
         }
         return false;
     }
+
+
+    function checkForDuplicateEntryBill(batchNumber,saleBillId) {
+        var productId = hot.getDataAtCell(mainTableRow, 2);
+        var saleReturnTableData = hot.getData();
+        for (var i = 0; i < saleReturnTableData.length; i++) {
+            if (productId === saleReturnTableData[i][2]) {
+                if (saleReturnTableData[i][2] !== null && saleReturnTableData[i][3] === batchNumber && saleReturnTableData[i][17] === saleBillId)
+                    return true;
+            }
+        }
+        return false;
+    }
+
 
     function loadTempStockBookData() {
         /*  var userId = "

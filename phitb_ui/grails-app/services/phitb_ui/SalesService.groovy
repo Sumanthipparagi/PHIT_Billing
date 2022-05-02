@@ -553,6 +553,28 @@ class SalesService
 
     }
 
+
+    def getByBillAndBatches(String billId,String batch) {
+        Client client = ClientBuilder.newClient();
+        WebTarget target = client.target(new Links().API_GATEWAY);
+
+        try {
+            Response apiResponse = target
+                    .path(new Links().SALE_PRODUCT_BILL_BATCH)
+                    .queryParam("billId", URLEncoder.encode(billId.toString(), "UTF-8"))
+                    .queryParam("batch", URLEncoder.encode(batch.toString(), "UTF-8"))
+                    .request(MediaType.APPLICATION_JSON_TYPE)
+                    .get()
+
+            return apiResponse
+        }
+        catch (Exception ex) {
+            System.err.println('Service :ProductService , action :  getBatchesOfProduct  , Ex:' + ex)
+            log.error('Service :ProductService , action :  getBatchesOfProduct  , Ex:' + ex)
+        }
+
+    }
+
     def getSaleInvoiceById(String id)
     {
         Client client = ClientBuilder.newClient();

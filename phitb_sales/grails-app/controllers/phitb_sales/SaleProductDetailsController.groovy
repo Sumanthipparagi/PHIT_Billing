@@ -281,4 +281,18 @@ class SaleProductDetailsController
         }
     }
 
+    def getSaleProductDetailsbybatchAndBill()
+    {
+        try
+        {
+            String billId = params.billId
+            String batch = params.batch
+            respond saleProductDetailsService.getSaleProductDetailsByBillIdAndBatch(billId,batch)
+        }
+        catch(Exception ex)
+        {
+            log.error(controllerName+":"+ex)
+            println(controllerName+":"+ex)
+        }
+    }
 }

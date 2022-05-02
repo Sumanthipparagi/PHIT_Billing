@@ -439,6 +439,10 @@ class UrlMappings {
         "/goods-sales-recipt"(controller: "saleEntry",action:"goodsSalesRecipt")
         "/payment-vocher"(controller: "saleEntry",action:"paymentVocher")
 
+
+
+        "/saleproductdetailsbillandbatch"(controller: 'saleReturn', action: 'getSaleDetailsByProductAndBatch')
+
         /*<-------------------------------------------Purchase Entry------------------------------------------------->*/
 
 
