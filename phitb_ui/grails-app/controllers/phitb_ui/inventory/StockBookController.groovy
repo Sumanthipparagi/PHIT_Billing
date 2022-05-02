@@ -188,10 +188,76 @@ class StockBookController {
             }
         }
         else {
+            response.status = apiResp?.status
+        }
+    }
+
+
+    def getStocksOfProductForPurchase()
+    {
+        String productId = params.id
+        //Get main stock
+        def apiResponse = new InventoryService().getStocksOfProduct(productId)
+        if (apiResponse?.status == 200) {
+            JSONArray stockBookData = new JSONArray(apiResponse.readEntity(String.class))
+            JSONArray responseArray = new JSONArray()
+            for (JSONObject json : stockBookData) {
+                String id = json["taxId"]
+                def tax = new TaxController().show(id)
+                json.put("gst", tax.taxValue)
+                json.put("sgst", tax.salesSgst)
+                json.put("cgst", tax.salesCgst)
+                json.put("igst", tax.salesIgst)
+                responseArray.put(json)
+            }
+            //Add New Batches
+            def apiResp2 = new ProductService().getBatchesOfProduct(productId)
+            if (apiResp2?.status == 200) {
+                def addedBatches = responseArray.batchNumber
+                JSONArray batches = new JSONArray(apiResp2.readEntity(String.class))
+                for (Object batch : batches) {
+                    if(!addedBatches.contains(batch.batchNumber))
+                    {
+                        JSONObject stockEntry = new JSONObject()
+                        stockEntry.put("productId", batch.product.id)
+                        stockEntry.put("batchNumber", batch.batchNumber)
+                        stockEntry.put("expDate", batch.expiryDate)
+                        stockEntry.put("purchaseRate", batch.purchaseRate)
+                        stockEntry.put("saleRate", batch.saleRate)
+                        stockEntry.put("mrp", batch.mrp)
+                        stockEntry.put("purcTradeDiscount", "0")
+                        stockEntry.put("purcSeriesId", "")
+                        stockEntry.put("purcDate", new Date())
+                        stockEntry.put("supplierId", "")
+                        stockEntry.put("manufacturingDate", batch.manfDate)
+                        stockEntry.put("packingDesc","" )
+                        stockEntry.put("purcProductValue","" )
+                        stockEntry.put("remainingQty",0 )
+                        stockEntry.put("remainingFreeQty",0 )
+                        stockEntry.put("remainingReplQty",0 )
+                        stockEntry.put("status", "1")
+                        stockEntry.put("syncStatus", "1")
+                        stockEntry.put("mergedWith", "0")
+                        stockEntry.put("entityTypeId", session.getAttribute("entityTypeId"))
+                        stockEntry.put("entityId", session.getAttribute("entityId"))
+                        stockEntry.put("createdUser", session.getAttribute("userId"))
+                        stockEntry.put("modifiedUser", session.getAttribute("userId"))
+                        stockEntry.put("openingStockQty", 0)
+                        stockEntry.put("taxId", batch.product.taxId)
+                        def tax = new TaxController().show(batch.product.taxId.toString())
+                        stockEntry.put("gst", tax.taxValue)
+                        stockEntry.put("sgst", tax.salesSgst)
+                        stockEntry.put("cgst", tax.salesCgst)
+                        stockEntry.put("igst", tax.salesIgst)
+
+                        responseArray.add(stockEntry)
+                    }
+                }
+            }
+            respond responseArray, formats: ['json'], status: 200
+        } else {
             response.status = apiResponse?.status
         }
-
-
     }
 
     def getTempStocksOfProductAndBatch()

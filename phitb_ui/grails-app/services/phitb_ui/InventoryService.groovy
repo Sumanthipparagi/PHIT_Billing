@@ -136,7 +136,8 @@ class InventoryService {
     def stockBookSave(JSONObject jsonObject)
     {
         Client client = ClientBuilder.newClient()
-        WebTarget target = client.target(new Links().API_GATEWAY)
+        //WebTarget target = client.target(new Links().API_GATEWAY)
+        WebTarget target = client.target("http://localhost:8086")
         try
         {
             println(jsonObject)

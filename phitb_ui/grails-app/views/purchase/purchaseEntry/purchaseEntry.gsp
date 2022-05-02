@@ -323,7 +323,7 @@
                 {type: 'text', readOnly: true},
                 {type: 'text', readOnly: true},
                 {type: 'text'},
-                {type: 'text',readOnly: true},
+                {type: 'text'},
                 {type: 'text', readOnly: true},
                 {type: 'text', readOnly: true},
                 {type: 'text', readOnly: true},
@@ -467,10 +467,11 @@
                         var allowEntry = false;
                         var pid = hot.getDataAtCell(row, 1);
                         var batch = hot.getDataAtCell(row, 2);
+                        var batchId = hot.getCellMeta(row, 2)?.batchId;
                         var remQty = 0;
                         var remFQty = 0;
                         var freeQtyEntry = false;
-                        if (pid && batch) {
+                        if (pid && batch && batchId !== "new") {
                             $.ajax({
                                     type: "POST",
                                     url: "/stockbook/product/" + pid + "/batch/" + batch,
@@ -636,7 +637,7 @@
                     if (!checkForDuplicateEntry(rowData[0])) {
                         //check for schemes
                         checkSchemes(hot.getDataAtCell(mainTableRow, 1), rowData[0]); //product, batch
-                        var batchId = rowData[12];
+                        var batchId = rowData[13];
                         hot.setDataAtCell(mainTableRow, 2, rowData[0]);
                         hot.setCellMeta(mainTableRow, 2, "batchId", batchId);
                         hot.setDataAtCell(mainTableRow, 3, rowData[1]);
@@ -671,7 +672,7 @@
 
     function batchSelection(selectedId, mainRow, selectCell = true) {
         if (selectedId != null) {
-            var url = "/stockbook/product/" + selectedId;
+            var url = "/stockbook/purchase/product/" + selectedId;
             $.ajax({
                 type: "GET",
                 url: url,
@@ -694,7 +695,10 @@
                             batchdt.push(data[i].sgst);
                             batchdt.push(data[i].cgst);
                             batchdt.push(data[i].igst);
-                            batchdt.push(data[i].id);
+                            if(data[i].id == null)
+                                batchdt.push("new");
+                            else
+                                batchdt.push(data[i].id);
                             batchData.push(batchdt);
                             console.log(batchData)
                         }
