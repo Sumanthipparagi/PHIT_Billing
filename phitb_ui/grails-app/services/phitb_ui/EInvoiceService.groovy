@@ -29,8 +29,7 @@ class EInvoiceService {
     private generateSignatureAndAuthToken(HttpSession session) {
         try {
             SimpleDateFormat tokenDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss")
-            //String entityId = session.getAttribute("entityId").toString()
-            String entityId = "1"
+            String entityId = session.getAttribute("entityId").toString()
             entityIrnDetails = new EntityService().getEntityIrnByEntity(entityId)
             //don't proceed if null
             if (entityIrnDetails == null) {

@@ -378,6 +378,7 @@ class PurchaseEntryController {
                     stockBook.put("remainingReplQty", 0)
                     stockBook.put("taxId", jsonObject.get("taxId"))
                     stockBook.put("manufacturingDate", manfDate)
+                    stockBook.put("openingStockQty", saleQty) //opening stock is same as sale while adding
                     new InventoryService().stockBookSave(stockBook)
                 }
             }

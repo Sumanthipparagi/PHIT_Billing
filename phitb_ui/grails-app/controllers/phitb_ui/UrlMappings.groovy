@@ -458,8 +458,10 @@ class UrlMappings {
         }
         "/stockbook/datatable"(controller: "stockBook",action:"dataTable")
         "/stockbook/product/$id"(controller: "stockBook",action:"getStocksOfProduct")
+        "/stockbook/purchase/product/$id"(controller: "stockBook",action:"getStocksOfProductForPurchase")
         "/stockbook/purchase"(controller: "stockBook",action:"StockBookPurchase")
         "/stockbook/purchase/batch"(controller: 'stockBook', action: 'stockPurchase')
+
 
 
 //        Temp Stock Book
