@@ -571,7 +571,7 @@
                             hot.selectCell(mainTableRow, 1);
                         }
                         else {
-                            if(isCheckedYes=="YES")
+                            if(isCheckedYes==="YES")
                             {
                                 mainTableRow = row + 1;
                                 hot.alter('insert_row');
@@ -704,12 +704,12 @@
                                         console.log(data)
                                         remQty = remQty + data.sqtyReturn;
                                         remFQty = remFQty + data.fqtyReturn;
-                                        if (remQty == sQty) {
+                                        if (remQty >= sQty) {
                                             allowEntry = true;
                                         }
 
                                         if (selection === 6) {
-                                            if (remFQty == fQty) {
+                                            if (remFQty >= fQty) {
                                                 freeQtyEntry = true;
                                             } else {
                                                 freeQtyEntry = false;
