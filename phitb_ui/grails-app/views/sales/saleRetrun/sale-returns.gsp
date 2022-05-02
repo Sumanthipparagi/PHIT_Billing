@@ -704,12 +704,12 @@
                                         console.log(data)
                                         remQty = remQty + data.sqtyReturn;
                                         remFQty = remFQty + data.fqtyReturn;
-                                        if (remQty >= sQty) {
+                                        if (remQty <= sQty) {
                                             allowEntry = true;
                                         }
 
                                         if (selection === 6) {
-                                            if (remFQty >= fQty) {
+                                            if (remFQty <= fQty) {
                                                 freeQtyEntry = true;
                                             } else {
                                                 freeQtyEntry = false;
