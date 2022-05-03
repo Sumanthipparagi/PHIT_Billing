@@ -28,6 +28,7 @@ class EInvoiceService {
 
     private generateSignatureAndAuthToken(HttpSession session) {
         try {
+            println("Inside generateSignatureAndAuthToken")
             SimpleDateFormat tokenDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss")
             String entityId = session.getAttribute("entityId").toString()
             entityIrnDetails = new EntityService().getEntityIrnByEntity(entityId)
@@ -98,6 +99,7 @@ class EInvoiceService {
     }
 
     private generateAuthToken(JSONObject jsonObject) {
+        println("Inside generateAuthToken")
         //To encrypt auth-token payload payload
         String randomAppKey = Base64.getEncoder().encodeToString(new EinvoiceHelper().createAESKey());
         String base64EncodedAppKey = Base64.getEncoder().encodeToString(randomAppKey.getBytes());
