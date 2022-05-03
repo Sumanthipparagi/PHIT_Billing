@@ -40,19 +40,20 @@ class TempStockBookService {
     get all stocks by products or (product and batch)
      */
     def getAllByProductAndBatch(long productId, String batch) {
+        Date currentDate = new Date()
         ArrayList<TempStockBook> tempStockBooks = new ArrayList<>()
         if(batch == null)
         {
-           tempStockBooks = TempStockBook.findAllByProductId(productId)
+           tempStockBooks = TempStockBook.findAllByProductIdAndExpDateGreaterThanEquals(productId, currentDate)
         }
         else
         {
-            tempStockBooks = TempStockBook.findAllByProductIdAndBatchNumber(productId,batch)
+            tempStockBooks = TempStockBook.findAllByProductIdAndBatchNumberAndExpDateGreaterThanEquals(productId,batch, currentDate)
         }
 
         if(tempStockBooks?.size() == 0)
         {
-            ArrayList<StockBook> stockBooks = StockBook.findAllByProductId(productId)
+            ArrayList<StockBook> stockBooks = StockBook.findAllByProductIdAndExpDateGreaterThanEquals(productId, currentDate)
             return stockBooks
         }
         else

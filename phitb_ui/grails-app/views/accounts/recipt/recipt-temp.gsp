@@ -112,7 +112,7 @@
 <table style="width:100%;table-layout: auto;">
     <tr>
         <th>Particulars</th>
-        <th colspan="5">Amount</th>
+        <th colspan="2">Amount</th>
     </tr>
     <tr>
         <td>
@@ -162,7 +162,7 @@
                             <td>${crnt.transId}</td>
                             <td>${crnt.billType}</td>
                             <td>${crnt.dateCreated.split("T")[0]}</td>
-                            <td>- ${crnt.amountPaid}</td>
+                            <td>- ${UtilsService.round(crnt.amountPaid, 2)}</td>
                         </tr>
                     </g:if>
                 </g:each>
@@ -178,13 +178,14 @@
             %{--                </g:each>--}%
             </table>
         </td>
-        <td colspan="5"><b>${reciptloginvArray.amountPaid.sum()}</b></td>
+        <td colspan="4"><b>${UtilsService.round(reciptloginvArray.amountPaid.sum(), 2)}</b></td>
     <tr>
 
         <% double data = reciptloginvArray.amountPaid.sum()
         int value = (int) data;
         System.out.println(value)
         %>
+    </tr>
     <tr>
         <td colspan="5">
             <p><strong>${WordsToNumbersUtil.convert(value)} Ruppees Only
