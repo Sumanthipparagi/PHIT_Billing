@@ -1083,7 +1083,7 @@
                                     saledt.push(data[i].amount);
                                     saledt.push(data[i].sqtyReturn);
                                     saledt.push(data[i].fqtyReturn);
-                                    saledt.push(data[i].batch.product.unitPacking);
+                                    saledt.push(data[i].batch?.product?.unitPacking);
                                     saledt.push(data[i].discount);
                                     saledt.push(data[i].mrp);
                                     saledt.push(data[i].gstAmount);

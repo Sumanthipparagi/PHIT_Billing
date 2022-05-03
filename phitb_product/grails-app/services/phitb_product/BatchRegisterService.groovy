@@ -48,7 +48,7 @@ class BatchRegisterService {
                 product{
                     eq('id',productId)
                 }
-                ge("expiryDate", currentDate)
+                //ge("expiryDate", currentDate)
             }
     }
 
