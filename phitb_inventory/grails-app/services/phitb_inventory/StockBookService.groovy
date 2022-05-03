@@ -38,12 +38,13 @@ class StockBookService {
     }
 
     def getAllByProduct(long limit, long offset, long productId) {
+        Date currentDate = new Date()
         Integer o = offset ? Integer.parseInt(offset.toString()) : 0
         Integer l = limit ? Integer.parseInt(limit.toString()) : 100
         if (!productId)
-            return StockBook.findAll([sort: 'id', max: l, offset: o, order: 'desc'])
+            return StockBook.findAllByExpDateGreaterThanEquals(currentDate, [sort: 'id', max: l, offset: o, order: 'desc'])
         else
-            return StockBook.findAllByProductId(productId, [sort: 'id', max: l, offset: o, order: 'desc'])
+            return StockBook.findAllByProductIdAndExpDateGreaterThanEquals(productId, currentDate, [sort: 'id', max: l, offset: o, order: 'desc'])
     }
 
     JSONObject dataTables(JSONObject paramsJsonObject, String start, String length)

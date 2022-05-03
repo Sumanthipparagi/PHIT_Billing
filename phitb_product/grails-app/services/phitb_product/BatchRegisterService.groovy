@@ -40,6 +40,7 @@ class BatchRegisterService {
     }
 
     def getAllByProduct(long productId) {
+        Date currentDate = new Date()
         if (!productId)
             return BatchRegister.findAll()
         else
@@ -47,6 +48,7 @@ class BatchRegisterService {
                 product{
                     eq('id',productId)
                 }
+                ge("expiryDate", currentDate)
             }
     }
 
