@@ -106,7 +106,7 @@ class SaleReturnDetailsService {
             {
                 saleProductDetails.sqtyReturn = saleProductDetails.getSqtyReturn() - Double.parseDouble(jsonObject.get("sqty").toString())
             }
-            if(saleProductDetails.fqtyReturn()!=0)
+            if(saleProductDetails.fqtyReturn!=0)
             {
                 saleProductDetails.fqtyReturn = saleProductDetails.getFqtyReturn() - Double.parseDouble(jsonObject.get("freeQty").toString())
             }

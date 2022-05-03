@@ -27,7 +27,11 @@
     .form-control {
         border-radius: 7px !important;
     }
-    </style>
+
+    .handsontableInputHolder{
+        z-index: 0!important;
+    }
+</style>
 </head>
 
 <body class="theme-black">
@@ -560,7 +564,7 @@
                         //check if sqty is empty
                         var sqty = hot.getDataAtCell(row, 5);
                         var fqty = hot.getDataAtCell(row, 6);
-                        if (sqty && sqty > 0) {
+                        if (sqty && sqty) {
                             var batchId = hot.getCellMeta(row, 3)?.batchId; //batch
                             var dt = hot.getDataAtRow(row);
                             dt.push(batchId);
@@ -569,8 +573,18 @@
                             calculateTotalAmt();
                             hot.alter('insert_row');
                             hot.selectCell(mainTableRow, 1);
-                        } else {
-                            alert("Invalid Quantity, please enter quantity greater than 0");
+                        }
+                        else {
+                            if(isCheckedYes==="YES")
+                            {
+                                mainTableRow = row + 1;
+                                hot.alter('insert_row');
+                                hot.selectCell(mainTableRow, 1);
+                            }
+                            else
+                            {
+                                alert("Invalid Quantity, please enter quantity greater than 0");
+                            }
                         }
 
                     }
@@ -694,15 +708,15 @@
                                     url: "/saleproductdetailsbillandbatch?billId="+billId+"&batch="+batch,
                                     dataType: 'json',
                                     success: function (data) {
-                                        console.log(data)
-                                        remQty = remQty + data.sqty;
-                                        remFQty = remFQty + data.freeQty;
-                                        if (remQty == sQty) {
+                                        console.log(data);
+                                        remQty = remQty + data.sqtyReturn;
+                                        remFQty = remFQty + data.fqtyReturn;
+                                        if (remQty >= sQty) {
                                             allowEntry = true;
                                         }
 
                                         if (selection === 6) {
-                                            if (remFQty == fQty) {
+                                            if (remFQty >= fQty) {
                                                 freeQtyEntry = true;
                                             } else {
                                                 freeQtyEntry = false;
