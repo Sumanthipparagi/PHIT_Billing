@@ -172,6 +172,7 @@ class SaleReturnController {
             saleReturnDetail.put("freeQty", freeQty)
             saleReturnDetail.put("repQty", 0)
             saleReturnDetail.put("invoiceNumber", invoiceNumber)
+            saleReturnDetail.put("reason", reason)
             saleReturnDetail.put("sRate", saleRate)
             saleReturnDetail.put("mrp", mrp)
             saleReturnDetail.put("discount", discount)

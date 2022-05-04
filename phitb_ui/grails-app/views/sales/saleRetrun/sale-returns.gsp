@@ -228,10 +228,10 @@
 
             </div>
 
-            <div class="col-lg-4" style="margin-bottom: 10px;">
-                <p style="margin: 0; font-size: 10px;color: red;">Offers: <span id="offers"></span>
-                </p>
-            </div>
+%{--            <div class="col-lg-4" style="margin-bottom: 10px;">--}%
+%{--                <p style="margin: 0; font-size: 10px;color: red;">Offers: <span id="offers"></span>--}%
+%{--                </p>--}%
+%{--            </div>--}%
         </div>
 
         <div class="row clearfix">
