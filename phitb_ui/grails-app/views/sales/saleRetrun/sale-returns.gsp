@@ -1067,15 +1067,14 @@
                 url: url,
                 dataType: 'json',
                 success: function (data) {
+                    console.log(data)
                     if (data) {
                         billData = [];
                         for (var i = 0; i < data.length; i++) {
                             var custId = data[i].bill.customerId;
-                            var sqty = data[i].sqty;
-                            var freeQty = data[i].freeQty;
                             var saledt = [];
-                            if (data[i].bill.billStatus !== "DRAFT" && data[i].bill.billStatus !== "CANCELLED") {
-                                if (custId === customer && sqty!==0 || freeQty!==0) {
+                            if (data[i].bill.billStatus !== "DRAFT" && data[i].bill.billStatus !== "CANCELLED" && (data[i].sqty!==0 ||  data[i].freeQty!==0)) {
+                                if (custId === customer) {
                                     saledt.push(data[i].financialYear);
                                     saledt.push(data[i].bill.invoiceNumber+" "+ moment(data[i].bill.entryDate).format('DD-MM-YYYY'));
                                     saledt.push("INVOICE");
