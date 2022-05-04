@@ -99,6 +99,14 @@ class SaleReturnDetailsService {
         saleReturnDetails.billId = Long.parseLong(jsonObject.get("billId").toString())
         saleReturnDetails.reason = jsonObject.get("reason").toString()
         saleReturnDetails.invoiceNumber = jsonObject.get("invoiceNumber").toString()
+        if(jsonObject.get("saleBillId").toString()!=null && jsonObject.get("saleBillId").toString()!="")
+        {
+            saleReturnDetails.saleBillId = Long.parseLong(jsonObject.get("saleBillId").toString())
+        }
+        else
+        {
+            saleReturnDetails.saleBillId = null
+        }
         saleReturnDetails.billType = Long.parseLong(jsonObject.get("billType").toString())
         saleReturnDetails.serBillId = Long.parseLong(jsonObject.get("serBillId").toString())
         saleReturnDetails.seriesId = Long.parseLong(jsonObject.get("seriesId").toString())
@@ -259,5 +267,10 @@ class SaleReturnDetailsService {
     def getSaleReturnDetailsByBill(String id)
     {
        return SaleReturnDetails.findByBillId(Long.parseLong(id))
+    }
+
+    def getSaleReturnDetailsByProductBatchSaleBill(String productId, String batch, String saleBillId)
+    {
+        return SaleReturnDetails.findAllByProductIdAndBatchNumberAndSaleBillId(productId as long,batch, saleBillId as Long)
     }
 }

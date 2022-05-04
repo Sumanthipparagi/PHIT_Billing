@@ -398,6 +398,8 @@ public class Links
     public static String UPDATE_SALE_RETURN_BALANCE = "api/v1.0/sales/updatereturnbalancebyid";
     public static String SALE_RETURN_CUSTOMER = "api/v1.0/sales/salereturnbycustomer";
     public static String SALE_RETURN_RECENT = "api/v1.0/sales/salereturn/getrecent";
+    public static String SALE_RETURN_PRODUCT_BATCH_BILL = "api/v1.0/sales/getsalereturndetailsby-product-batch-salebill";
+
 
 
 

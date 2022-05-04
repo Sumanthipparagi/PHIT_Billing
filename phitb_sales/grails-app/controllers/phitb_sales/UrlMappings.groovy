@@ -287,7 +287,7 @@ class UrlMappings {
             "/salereturndetails/bill(.$format)?"(controller: 'saleReturnDetails') {
                 action = [GET: 'getSaleReturnDetailsById']
             }
-
+            "/getsalereturndetailsby-product-batch-salebill(.$format)?"(controller: 'saleReturnDetails', action: 'getSaleReturnDetailsByProductBatchSaleBill')
 
             //Temp User Log
             "/tempuserlog(.$format)?"(controller:'tempUserLog') {

@@ -974,4 +974,26 @@ class SalesService
         }
 
     }
+
+
+    def getReturnDetailsByBatchSalebillProductId(String productId, String batch, String saleBill)
+    {
+        Client client = ClientBuilder.newClient();
+        WebTarget target = client.target(new Links().API_GATEWAY);
+        try {
+            Response apiResponse = target
+                    .path(new Links().SALE_RETURN_PRODUCT_BATCH_BILL)
+                    .queryParam("productId", URLEncoder.encode(productId.toString(), "UTF-8"))
+                    .queryParam("batch", URLEncoder.encode(batch.toString(), "UTF-8"))
+                    .queryParam("salebill", URLEncoder.encode(saleBill.toString(), "UTF-8"))
+                    .request(MediaType.APPLICATION_JSON_TYPE)
+                    .get()
+
+            return apiResponse
+        }
+        catch (Exception ex) {
+            System.err.println('Service :SalesService , action :  getReturnDetailsByBatchSalebillProductId  , Ex:' + ex)
+            log.error('Service :SalesService , action :  getReturnDetailsByBatchSalebillProductId  , Ex:' + ex)
+        }
+    }
 }

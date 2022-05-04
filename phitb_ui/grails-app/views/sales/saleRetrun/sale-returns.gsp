@@ -709,8 +709,8 @@
                                     dataType: 'json',
                                     success: function (data) {
                                         console.log(data);
-                                        remQty = remQty + data.sqtyReturn;
-                                        remFQty = remFQty + data.fqtyReturn;
+                                        remQty = remQty + data.sqty;
+                                        remFQty = remFQty + data.freeQty;
                                         if (remQty >= sQty) {
                                             allowEntry = true;
                                         }
@@ -1072,7 +1072,7 @@
                             var custId = data[i].bill.customerId
                             var saledt = [];
                             if (data[i].bill.billStatus !== "DRAFT" && data[i].bill.billStatus !== "CANCELLED" ) {
-                                if (custId === customer && data[i].sqtyReturn !== 0  || data[i].fqtyReturn !== 0) {
+                                if (custId === customer && data[i].sqty !== 0  || data[i].freeQty !== 0) {
                                     saledt.push(data[i].financialYear);
                                     saledt.push(data[i].bill.invoiceNumber+" "+
                                         moment(data[i].bill.entryDate).format('DD-MM-YYYY'));
@@ -1081,8 +1081,8 @@
                                     saledt.push(data[i].sRate);
                                     saledt.push(data[i].expiryDate);
                                     saledt.push(data[i].amount);
-                                    saledt.push(data[i].sqtyReturn);
-                                    saledt.push(data[i].fqtyReturn);
+                                    saledt.push(data[i].sqty);
+                                    saledt.push(data[i].freeQty);
                                     saledt.push(data[i].batch?.product?.unitPacking);
                                     saledt.push(data[i].discount);
                                     saledt.push(data[i].mrp);

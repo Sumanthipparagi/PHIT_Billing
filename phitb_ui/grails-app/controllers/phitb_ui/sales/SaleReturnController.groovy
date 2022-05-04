@@ -60,7 +60,7 @@ class SaleReturnController {
         try {
             def products = new SalesService().getSaleProductDetailsByProductId(params.productId)
             products.each {
-                def apiResponse = new SalesService().getRequestWithId(it.billId.toString(), new Links().SALE_BILL_SHOW)
+                def saleBillShow = new SalesService().getRequestWithId(it.billId.toString(), new Links().SALE_BILL_SHOW)
                 def batchResponse = new ProductService().getBatchesOfProduct(it.productId.toString())
                 JSONArray batchArray = JSON.parse(batchResponse.readEntity(String.class)) as JSONArray
                 for (JSONObject batch : batchArray) {
@@ -68,7 +68,28 @@ class SaleReturnController {
                         it.put("batch", batch)
                     }
                 }
-                it.put("bill", JSON.parse(apiResponse.readEntity(String.class)) as JSONObject)
+                it.put("bill", JSON.parse(saleBillShow.readEntity(String.class)) as JSONObject)
+                def saleReturns = new SalesService().getReturnDetailsByBatchSalebillProductId(it.productId.toString()
+                        , it.batchNumber.toString(), it.billId.toString())
+                JSONArray saleReturnArray = JSON.parse(saleReturns.readEntity(String.class)) as JSONArray
+                if(saleReturnArray.size() > 0)
+                {
+                    for (JSONObject saleReturn : saleReturnArray) {
+                        if (saleReturn.saleBillId == it.billId) {
+                            if(saleReturn.sqty!=0)
+                            {
+                                double sqty = it.sqty - saleReturn.sqty
+                                it.put("sqty",sqty)
+                            }
+                            if(saleReturn.sqty!=0)
+                            {
+                                double fqty = it.freeQty - saleReturn.freeQty
+                                it.put("freeQty",fqty)
+                            }
+                        }
+                    }
+                }
+
             }
             respond products, formats: ['json'], status: 200
         }
@@ -126,6 +147,7 @@ class SaleReturnController {
         double totalDiscount = 0.00
         JSONArray saleRetrunData = new JSONArray(params.saleReturnData)
         for (JSONObject sr : saleRetrunData) {
+            String saleBillId;
             String reason = sr.get("1")
             String productId = sr.get("2")
             String batchNumber = sr.get("3")
@@ -134,7 +156,14 @@ class SaleReturnController {
             String freeQty = sr.get("6")
             String saleRate = sr.get("7")
             String mrp = sr.get("8")
-            String saleBillId = sr.get("17")
+            if (sr.has("17"))
+            {
+                saleBillId = sr.get("17")
+            }
+            else
+            {
+                saleBillId =""
+            }
             String invoiceNumber = sr.get("16")
             double discount = UtilsService.round(Double.parseDouble(sr.get("9").toString()), 2)
             String packDesc = sr.get("10")
@@ -162,7 +191,7 @@ class SaleReturnController {
                 saleReturnDetail.put("saleBillId", saleBillId)
             }
             else {
-                saleReturnDetail.put("saleBillId", 0)
+                saleReturnDetail.put("saleBillId", "")
             }
             saleReturnDetail.put("seriesId", seriesId)
             saleReturnDetail.put("productId", productId)

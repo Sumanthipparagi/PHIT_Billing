@@ -332,9 +332,6 @@ class ProductService {
 
     }
 
-
-
-
     def getUnitType() {
         Client client = ClientBuilder.newClient();
         WebTarget target = client.target(new Links().API_GATEWAY);
