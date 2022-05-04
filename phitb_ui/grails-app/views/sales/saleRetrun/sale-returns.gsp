@@ -1342,6 +1342,12 @@
                         hot.setCellMeta(j, i, 'readOnly', true);
                     }
                 }
+                billHot.updateSettings({
+                    data: []
+                });
+                batchHot.updateSettings({
+                    data: []
+                });
                 purchasebillid = data.saleReturnDetail.id;
                 var datepart = data.saleReturnDetail.entryDate.split("T")[0];
                 var month = datepart.split("-")[1];
@@ -1357,7 +1363,7 @@
                     $("#invNo").html(draftInvNo);
                 }
                 if (billStatus !== "DRAFT") {
-                    message = 'Sale Invoice Generated: ' + invoiceNumber;
+                    message = 'Sale Return Generated: ' + invoiceNumber;
                 } else {
                     message = 'Draft Invoice Generated: ' + data.saleReturnDetail.entityId + "/DR/S/" + month + year + "/"
                         + seriesCode + "/__";

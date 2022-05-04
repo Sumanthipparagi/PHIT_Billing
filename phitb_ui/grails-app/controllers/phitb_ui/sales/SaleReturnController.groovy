@@ -250,9 +250,9 @@ class SaleReturnController {
 
             def stocks = new InventoryService().stocksIncrease(batchNumber, saleQty, freeQty, reason, productId)
             if (stocks.status == 200) {
-                println("Inc")
+                println("Stocks modified")
             } else {
-                println("not inc")
+                println("Stocks not modified")
             }
 
         }
