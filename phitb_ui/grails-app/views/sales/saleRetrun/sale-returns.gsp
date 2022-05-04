@@ -115,9 +115,14 @@
                                     <label class="checkbox-inline">
                                         <input type="radio" name="prev_sales" value="YES" class="prev_sales_yes"
                                                checked/>
-                                        Yes
+                                        <span>Yes</span>
                                         &emsp;
-                                        <input type="radio" name="prev_sales" value="NO" class="prev_sales_no"/> No
+%{--                                        <input type="radio" name="prev_sales" value="NO" class="prev_sales_no"/>  --}%
+%{--                                        <span>No</span>--}%
+                                    </label>
+                                    <label>
+                                        <input type="radio" name="prev_sales" value="NO" class="prev_sales_no"/>
+                                        <span>No</span>
                                     </label>
                                 </div>
                             </div>
@@ -366,7 +371,7 @@
         '<strong>S.Rate</strong>',
         '<strong>Exp.Date</strong>',
         '<strong>Amount</strong>',
-        '<strong>Sqty</strong>',
+        '<strong>S.qty</strong>',
         '<strong>FreeQty</strong>',
         '<strong>Pack</strong>',
         '<strong>Discount</strong>',
@@ -705,10 +710,9 @@
                             {
                                 $.ajax({
                                     type: "POST",
-                                    url: "/saleproductdetailsbillandbatch?billId="+billId+"&batch="+batch,
+                                    url: "/saleproductdetailsbillandbatch?billId="+billId+"&batch="+batch+"&productId="+pid,
                                     dataType: 'json',
                                     success: function (data) {
-                                        console.log(data);
                                         remQty = remQty + data.sqty;
                                         remFQty = remFQty + data.freeQty;
                                         if (remQty >= sQty) {
@@ -1065,17 +1069,17 @@
                 url: url,
                 dataType: 'json',
                 success: function (data) {
-                    console.log(data);
                     if (data) {
                         billData = [];
                         for (var i = 0; i < data.length; i++) {
-                            var custId = data[i].bill.customerId
+                            var custId = data[i].bill.customerId;
+                            var sqty = data[i].sqty;
+                            var freeQty = data[i].freeQty;
                             var saledt = [];
-                            if (data[i].bill.billStatus !== "DRAFT" && data[i].bill.billStatus !== "CANCELLED" ) {
-                                if (custId === customer && data[i].sqty !== 0  || data[i].freeQty !== 0) {
+                            if (data[i].bill.billStatus !== "DRAFT" && data[i].bill.billStatus !== "CANCELLED") {
+                                if (custId === customer && sqty!==0 || freeQty!==0) {
                                     saledt.push(data[i].financialYear);
-                                    saledt.push(data[i].bill.invoiceNumber+" "+
-                                        moment(data[i].bill.entryDate).format('DD-MM-YYYY'));
+                                    saledt.push(data[i].bill.invoiceNumber+" "+ moment(data[i].bill.entryDate).format('DD-MM-YYYY'));
                                     saledt.push("INVOICE");
                                     saledt.push(data[i].batchNumber);
                                     saledt.push(data[i].sRate);
@@ -1096,10 +1100,8 @@
                                     saledt.push(data[i].igstPercentage);
                                     saledt.push(data[i].bill.id);
                                     billData.push(saledt);
-                                    console.log(billData)
                                 }
                             }
-
                         }
                         billHot.updateSettings({
                             data: []
@@ -1750,7 +1752,7 @@
                 console.log("KeyText: " + keyText);
                 self.$textarea.select2('search', keyText.slice(0, -1));
             }
-
+            Handsontable.renderers.cellDecorator.apply(this, arguments);
         };
 
         Select2Editor.prototype.init = function () {

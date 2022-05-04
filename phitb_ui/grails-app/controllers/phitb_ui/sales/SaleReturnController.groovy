@@ -81,7 +81,7 @@ class SaleReturnController {
                                 double sqty = it.sqty - saleReturn.sqty
                                 it.put("sqty",sqty)
                             }
-                            if(saleReturn.sqty!=0)
+                            if(saleReturn.freeQty!=0)
                             {
                                 double fqty = it.freeQty - saleReturn.freeQty
                                 it.put("freeQty",fqty)
@@ -89,8 +89,8 @@ class SaleReturnController {
                         }
                     }
                 }
-
             }
+
             respond products, formats: ['json'], status: 200
         }
         catch (Exception ex) {
@@ -102,8 +102,29 @@ class SaleReturnController {
 
     def getSaleDetailsByProductAndBatch()
     {
-        def apiResponse = new SalesService().getByBillAndBatches(params.billId,params.batch)
-        JSONObject jsonObject = new JSONObject(apiResponse.readEntity(String.class))
+        def billAndBatch = new SalesService().getByBillBatchesProduct(params.billId,params.batch,params.productId)
+        JSONObject jsonObject = new JSONObject(billAndBatch.readEntity(String.class))
+        def saleReturns = new SalesService().getReturnDetailsByBatchSalebillProductId(jsonObject.productId.toString()
+                , jsonObject.batchNumber.toString(), jsonObject.billId.toString())
+        JSONArray saleReturnArray = JSON.parse(saleReturns.readEntity(String.class)) as JSONArray
+        if(saleReturnArray.size() > 0)
+        {
+            for (JSONObject saleReturn : saleReturnArray) {
+                if (saleReturn.saleBillId == jsonObject.billId) {
+                    if(saleReturn.sqty!=0)
+                    {
+                        double sqty = jsonObject.sqty - saleReturn.sqty
+                        jsonObject.put("sqty",sqty)
+                    }
+                    if(saleReturn.sqty!=0)
+                    {
+                        double fqty = jsonObject.freeQty - saleReturn.freeQty
+                        jsonObject.put("freeQty",fqty)
+                    }
+                }
+            }
+        }
+
         respond jsonObject, formats: ['json'], status: 200
     }
 

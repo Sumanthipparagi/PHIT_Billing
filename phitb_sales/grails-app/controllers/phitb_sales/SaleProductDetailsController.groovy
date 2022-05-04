@@ -287,7 +287,8 @@ class SaleProductDetailsController
         {
             String billId = params.billId
             String batch = params.batch
-            respond saleProductDetailsService.getSaleProductDetailsByBillIdAndBatch(billId,batch)
+            String productId = params.productId
+            respond saleProductDetailsService.getSaleProductDetailsByBillIdAndBatch(billId,batch,productId)
         }
         catch(Exception ex)
         {

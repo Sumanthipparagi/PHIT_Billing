@@ -554,7 +554,7 @@ class SalesService
     }
 
 
-    def getByBillAndBatches(String billId,String batch) {
+    def getByBillBatchesProduct(String billId,String batch,String productId) {
         Client client = ClientBuilder.newClient();
         WebTarget target = client.target(new Links().API_GATEWAY);
 
@@ -563,6 +563,7 @@ class SalesService
                     .path(new Links().SALE_PRODUCT_BILL_BATCH)
                     .queryParam("billId", URLEncoder.encode(billId.toString(), "UTF-8"))
                     .queryParam("batch", URLEncoder.encode(batch.toString(), "UTF-8"))
+                    .queryParam("productId", URLEncoder.encode(productId.toString(), "UTF-8"))
                     .request(MediaType.APPLICATION_JSON_TYPE)
                     .get()
 

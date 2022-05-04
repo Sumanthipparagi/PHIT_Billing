@@ -271,11 +271,11 @@ class SaleProductDetailsService
     }
 
 
-    Object getSaleProductDetailsByBillIdAndBatch(String billId, String batchNumber)
+    Object getSaleProductDetailsByBillIdAndBatch(String billId, String batchNumber,String productId)
     {
         try
         {
-            return SaleProductDetails.findByBillIdAndBatchNumber(Long.parseLong(billId),batchNumber)
+            return SaleProductDetails.findByBillIdAndBatchNumberAndProductId(Long.parseLong(billId),batchNumber,Long.parseLong(productId))
         }
         catch (Exception ex)
         {

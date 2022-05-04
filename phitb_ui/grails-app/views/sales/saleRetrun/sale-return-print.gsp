@@ -178,7 +178,7 @@
             </sub>
         </td>
         <td colspan="5" style="vertical-align:top;">
-            <strong>TAX INVOICE</strong>
+            <strong>SALES RETURN</strong>
             <ul style="margin: 0;">
 
                 <li><b class="tab">Invoice No</b>: ${saleBillDetail.invoiceNumber}</li>
@@ -294,9 +294,9 @@
                 sgst.push(sp.sgstAmount / amount * 100)
                 igst.push(sp.igstAmount / amount * 100)
             %>
-            <td>${String.format("%.2f", sp.cgstAmount)}<br>${String.format("%.2f", sp.cgstAmount / amount * 100)}</td>
-            <td>${String.format("%.2f", sp.sgstAmount)}<br>${String.format("%.2f", sp.sgstAmount / amount * 100)}</td>
-            <td>${String.format("%.2f", sp.igstAmount)}<br>${String.format("%.2f", sp.igstAmount / amount * 100)}</td>
+            <td>${String.format("%.2f", sp.cgstAmount)}<br><g:if test="${sp.cgstAmount!=0}">${String.format("%.2f", sp.cgstAmount / amount * 100)}</g:if></td>
+            <td>${String.format("%.2f", sp.sgstAmount)}<br><g:if test="${sp.cgstAmount!=0}">${String.format("%.2f", sp.sgstAmount / amount * 100)}</g:if></td>
+            <td>${String.format("%.2f", sp.igstAmount)}<br><g:if test="${sp.cgstAmount!=0}">${String.format("%.2f", sp.igstAmount / amount * 100)}</g:if></td>
             <td>${String.format("%.2f", sp.amount)}</td>
         </tr>
 
