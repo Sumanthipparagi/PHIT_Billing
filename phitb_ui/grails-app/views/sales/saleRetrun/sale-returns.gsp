@@ -115,9 +115,14 @@
                                     <label class="checkbox-inline">
                                         <input type="radio" name="prev_sales" value="YES" class="prev_sales_yes"
                                                checked/>
-                                        Yes
+                                        <span>Yes</span>
                                         &emsp;
-                                        <input type="radio" name="prev_sales" value="NO" class="prev_sales_no"/> No
+%{--                                        <input type="radio" name="prev_sales" value="NO" class="prev_sales_no"/>  --}%
+%{--                                        <span>No</span>--}%
+                                    </label>
+                                    <label>
+                                        <input type="radio" name="prev_sales" value="NO" class="prev_sales_no"/>
+                                        <span>No</span>
                                     </label>
                                 </div>
                             </div>
@@ -228,10 +233,10 @@
 
             </div>
 
-            <div class="col-lg-4" style="margin-bottom: 10px;">
-                <p style="margin: 0; font-size: 10px;color: red;">Offers: <span id="offers"></span>
-                </p>
-            </div>
+%{--            <div class="col-lg-4" style="margin-bottom: 10px;">--}%
+%{--                <p style="margin: 0; font-size: 10px;color: red;">Offers: <span id="offers"></span>--}%
+%{--                </p>--}%
+%{--            </div>--}%
         </div>
 
         <div class="row clearfix">
@@ -366,7 +371,7 @@
         '<strong>S.Rate</strong>',
         '<strong>Exp.Date</strong>',
         '<strong>Amount</strong>',
-        '<strong>Sqty</strong>',
+        '<strong>S.qty</strong>',
         '<strong>FreeQty</strong>',
         '<strong>Pack</strong>',
         '<strong>Discount</strong>',
@@ -588,7 +593,7 @@
                         }
 
                     }
-                } else if (selection === 4 || selection === 5 || selection === 8 || selection === 6 || selection === 9) {
+                } else if (selection === 5 || selection === 8 || selection === 6 || selection === 9) {
                     if (e.keyCode === 13 || e.keyCode === 9) {
                         var discount = 0;
                         if (selection === 7) {
@@ -680,8 +685,6 @@
                                             }
                                         }
 
-
-
                                         if (!allowEntry) {
                                             // this.getActiveEditor().TEXTAREA.value = "";
                                             hot.setDataAtCell(row, 5, 0);
@@ -705,12 +708,11 @@
                             {
                                 $.ajax({
                                     type: "POST",
-                                    url: "/saleproductdetailsbillandbatch?billId="+billId+"&batch="+batch,
+                                    url: "/saleproductdetailsbillandbatch?billId="+billId+"&batch="+batch+"&productId="+pid,
                                     dataType: 'json',
                                     success: function (data) {
-                                        console.log(data);
-                                        remQty = remQty + data.sqtyReturn;
-                                        remFQty = remFQty + data.fqtyReturn;
+                                        remQty = remQty + data.sqty;
+                                        remFQty = remFQty + data.freeQty;
                                         if (remQty >= sQty) {
                                             allowEntry = true;
                                         }
@@ -1065,24 +1067,23 @@
                 url: url,
                 dataType: 'json',
                 success: function (data) {
-                    console.log(data);
+                    console.log(data)
                     if (data) {
                         billData = [];
                         for (var i = 0; i < data.length; i++) {
-                            var custId = data[i].bill.customerId
+                            var custId = data[i].bill.customerId;
                             var saledt = [];
-                            if (data[i].bill.billStatus !== "DRAFT" && data[i].bill.billStatus !== "CANCELLED" ) {
-                                if (custId === customer && data[i].sqtyReturn !== 0  || data[i].fqtyReturn !== 0) {
+                            if (data[i].bill.billStatus !== "DRAFT" && data[i].bill.billStatus !== "CANCELLED" && (data[i].sqty!==0 ||  data[i].freeQty!==0)) {
+                                if (custId === customer) {
                                     saledt.push(data[i].financialYear);
-                                    saledt.push(data[i].bill.invoiceNumber+" "+
-                                        moment(data[i].bill.entryDate).format('DD-MM-YYYY'));
+                                    saledt.push(data[i].bill.invoiceNumber+" "+ moment(data[i].bill.entryDate).format('DD-MM-YYYY'));
                                     saledt.push("INVOICE");
                                     saledt.push(data[i].batchNumber);
                                     saledt.push(data[i].sRate);
                                     saledt.push(data[i].expiryDate);
                                     saledt.push(data[i].amount);
-                                    saledt.push(data[i].sqtyReturn);
-                                    saledt.push(data[i].fqtyReturn);
+                                    saledt.push(data[i].sqty);
+                                    saledt.push(data[i].freeQty);
                                     saledt.push(data[i].batch?.product?.unitPacking);
                                     saledt.push(data[i].discount);
                                     saledt.push(data[i].mrp);
@@ -1096,10 +1097,8 @@
                                     saledt.push(data[i].igstPercentage);
                                     saledt.push(data[i].bill.id);
                                     billData.push(saledt);
-                                    console.log(billData)
                                 }
                             }
-
                         }
                         billHot.updateSettings({
                             data: []
@@ -1342,6 +1341,12 @@
                         hot.setCellMeta(j, i, 'readOnly', true);
                     }
                 }
+                billHot.updateSettings({
+                    data: []
+                });
+                batchHot.updateSettings({
+                    data: []
+                });
                 purchasebillid = data.saleReturnDetail.id;
                 var datepart = data.saleReturnDetail.entryDate.split("T")[0];
                 var month = datepart.split("-")[1];
@@ -1357,7 +1362,7 @@
                     $("#invNo").html(draftInvNo);
                 }
                 if (billStatus !== "DRAFT") {
-                    message = 'Sale Invoice Generated: ' + invoiceNumber;
+                    message = 'Sale Return Generated: ' + invoiceNumber;
                 } else {
                     message = 'Draft Invoice Generated: ' + data.saleReturnDetail.entityId + "/DR/S/" + month + year + "/"
                         + seriesCode + "/__";
@@ -1744,7 +1749,7 @@
                 console.log("KeyText: " + keyText);
                 self.$textarea.select2('search', keyText.slice(0, -1));
             }
-
+            Handsontable.renderers.cellDecorator.apply(this, arguments);
         };
 
         Select2Editor.prototype.init = function () {

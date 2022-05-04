@@ -84,9 +84,9 @@ class SaleReturnService {
             DecimalFormat mFormat = new DecimalFormat("00");
             month = mFormat.format(Double.valueOf(month));
             String invoiceNumber = null;
-//            String seriesCode = jsonObject.get("seriesCode")
+            String seriesCode = jsonObject.get("seriesCode")
             SaleReturn saleReturn1
-            invoiceNumber = saleReturn.entityId + "/SR/" + month + year + "/" + saleReturn.serBillId
+            invoiceNumber = saleReturn.entityId + "/S/" + month + year + "/" + seriesCode + "/" + saleReturn.serBillId
             println("Invoice Number generated: " + invoiceNumber)
             if (invoiceNumber)
             {

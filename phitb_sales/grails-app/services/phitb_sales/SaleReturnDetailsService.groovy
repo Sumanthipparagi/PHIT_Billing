@@ -95,27 +95,18 @@ class SaleReturnDetailsService {
     SaleReturnDetails save(JSONObject jsonObject)
     {
         SaleReturnDetails saleReturnDetails = new SaleReturnDetails()
-        String batchNumber = jsonObject.get("batchNumber").toString()
-        String productId = jsonObject.get("productId").toString()
-        String saleBillId = jsonObject.get("saleBillId").toString()
-        if(saleBillId!=0 && saleBillId!=null)
-        {
-            SaleProductDetails  saleProductDetails = SaleProductDetails.findByBatchNumberAndProductIdAndBillId(batchNumber, productId as long, saleBillId as long)
-            saleProductDetails.isUpdatable = true
-            if(saleProductDetails.getSqtyReturn()!=0)
-            {
-                saleProductDetails.sqtyReturn = saleProductDetails.getSqtyReturn() - Double.parseDouble(jsonObject.get("sqty").toString())
-            }
-            if(saleProductDetails.fqtyReturn!=0)
-            {
-                saleProductDetails.fqtyReturn = saleProductDetails.getFqtyReturn() - Double.parseDouble(jsonObject.get("freeQty").toString())
-            }
-            saleProductDetails.save(flush:true)
-        }
         saleReturnDetails.finId = Long.parseLong(jsonObject.get("finId").toString())
         saleReturnDetails.billId = Long.parseLong(jsonObject.get("billId").toString())
         saleReturnDetails.reason = jsonObject.get("reason").toString()
         saleReturnDetails.invoiceNumber = jsonObject.get("invoiceNumber").toString()
+        if(jsonObject.get("saleBillId").toString()!=null && jsonObject.get("saleBillId").toString()!="")
+        {
+            saleReturnDetails.saleBillId = Long.parseLong(jsonObject.get("saleBillId").toString())
+        }
+        else
+        {
+            saleReturnDetails.saleBillId = null
+        }
         saleReturnDetails.billType = Long.parseLong(jsonObject.get("billType").toString())
         saleReturnDetails.serBillId = Long.parseLong(jsonObject.get("serBillId").toString())
         saleReturnDetails.seriesId = Long.parseLong(jsonObject.get("seriesId").toString())
@@ -124,7 +115,6 @@ class SaleReturnDetailsService {
         saleReturnDetails.expiryDate = jsonObject.get("expiryDate").toString()
         saleReturnDetails.sqty = Double.parseDouble(jsonObject.get("sqty").toString())
         saleReturnDetails.freeQty = Double.parseDouble(jsonObject.get("freeQty").toString())
-        saleReturnDetails.repQty = Double.parseDouble(jsonObject.get("repQty").toString())
         saleReturnDetails.repQty = Double.parseDouble(jsonObject.get("repQty").toString())
         saleReturnDetails.pRate = Double.parseDouble("0")
         saleReturnDetails.sRate = Double.parseDouble(jsonObject.get("sRate").toString())
@@ -277,5 +267,10 @@ class SaleReturnDetailsService {
     def getSaleReturnDetailsByBill(String id)
     {
        return SaleReturnDetails.findByBillId(Long.parseLong(id))
+    }
+
+    def getSaleReturnDetailsByProductBatchSaleBill(String productId, String batch, String saleBillId)
+    {
+        return SaleReturnDetails.findAllByProductIdAndBatchNumberAndSaleBillId(productId as long,batch, saleBillId as Long)
     }
 }

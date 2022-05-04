@@ -36,6 +36,7 @@ class SaleReturnDetails implements Serializable, LogicalDelete<SaleReturnDetails
     long entityTypeId
     long entityId
     String invoiceNumber
+    Long saleBillId
     Date dateCreated
     Date lastUpdated
 
@@ -45,6 +46,8 @@ class SaleReturnDetails implements Serializable, LogicalDelete<SaleReturnDetails
     double igstPercentage
 
     static constraints = {
+        saleBillId nullable: true
+        invoiceNumber nullable: true
     }
 
     boolean isUpdatable

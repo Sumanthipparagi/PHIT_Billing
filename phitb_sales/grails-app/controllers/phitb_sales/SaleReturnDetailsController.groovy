@@ -260,6 +260,37 @@ class SaleReturnDetailsController {
         }
     }
 
+    def getSaleReturnDetailsByProductBatchSaleBill()
+    {
+        try
+        {
+            String productId = params.productId
+            String batch = params.batch
+            String saleBill = params.salebill
+            if(saleBill!=null && saleBill!="")
+            {
+                respond saleReturnDetailsService.getSaleReturnDetailsByProductBatchSaleBill(productId,batch,saleBill)
+            }
+            else {
+                return []
+            }
+        }
+        catch (ResourceNotFoundException ex)
+        {
+            System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
+            response.status = 404
+        }
+        catch (BadRequestException ex)
+        {
+            System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
+            response.status = 400
+        }
+        catch (Exception ex)
+        {
+            System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
+        }
+    }
+
 
     def getSaleProductDetailsOfSaleBillList()
     {
