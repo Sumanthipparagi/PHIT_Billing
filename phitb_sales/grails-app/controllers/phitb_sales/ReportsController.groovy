@@ -31,6 +31,14 @@ class ReportsController {
             SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy")
             Date fromDate = sdf.parse(daterange.split("-")[0].trim())
             Date toDate = sdf.parse(daterange.split("-")[1].trim())
+            Calendar cal = Calendar.getInstance();
+            cal.setTime(toDate)
+            cal.set(Calendar.HOUR_OF_DAY, 23)
+            cal.set(Calendar.MINUTE, 59)
+            cal.set(Calendar.SECOND, 59)
+            cal.set(Calendar.MILLISECOND, 999)
+            toDate = cal.getTime()
+
             JSONObject customerBills = new JSONObject()
             JSONArray bills = new JSONArray()
             ArrayList<SaleBillDetails> saleBillDetails = SaleBillDetails.findAllByEntityIdAndFinancialYearAndOrderDateBetweenAndBillStatusNotEqual(Long.parseLong(entityId), financialYear, fromDate, toDate, "DRAFT", [sort: sort, order: 'desc'])
@@ -70,6 +78,13 @@ class ReportsController {
             SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy")
             Date fromDate = sdf.parse(daterange.split("-")[0].trim())
             Date toDate = sdf.parse(daterange.split("-")[1].trim())
+            Calendar cal = Calendar.getInstance();
+            cal.setTime(toDate)
+            cal.set(Calendar.HOUR_OF_DAY, 23)
+            cal.set(Calendar.MINUTE, 59)
+            cal.set(Calendar.SECOND, 59)
+            cal.set(Calendar.MILLISECOND, 999)
+            toDate = cal.getTime()
             LinkedHashMap<String, LinkedList> customerBills = new LinkedHashMap<>()
             LinkedList bills = new LinkedList()
             ArrayList<SaleBillDetails> saleBillDetails = SaleBillDetails.findAllByEntityIdAndFinancialYearAndOrderDateBetweenAndBillStatusNotEqual(Long.parseLong(entityId), financialYear, fromDate, toDate, "DRAFT", [sort: sort, order: 'desc'])
@@ -108,6 +123,13 @@ class ReportsController {
             SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy")
             Date fromDate = sdf.parse(daterange.split("-")[0].trim())
             Date toDate = sdf.parse(daterange.split("-")[1].trim())
+            Calendar cal = Calendar.getInstance();
+            cal.setTime(toDate)
+            cal.set(Calendar.HOUR_OF_DAY, 23)
+            cal.set(Calendar.MINUTE, 59)
+            cal.set(Calendar.SECOND, 59)
+            cal.set(Calendar.MILLISECOND, 999)
+            toDate = cal.getTime()
             JSONObject customerBills = new JSONObject()
             JSONArray bills = new JSONArray()
 
@@ -157,6 +179,13 @@ class ReportsController {
             SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy")
             Date fromDate = sdf.parse(daterange.split("-")[0].trim())
             Date toDate = sdf.parse(daterange.split("-")[1].trim())
+            Calendar cal = Calendar.getInstance();
+            cal.setTime(toDate)
+            cal.set(Calendar.HOUR_OF_DAY, 23)
+            cal.set(Calendar.MINUTE, 59)
+            cal.set(Calendar.SECOND, 59)
+            cal.set(Calendar.MILLISECOND, 999)
+            toDate = cal.getTime()
             JSONObject customerBills = new JSONObject()
             JSONArray bills = new JSONArray()
             ArrayList<SaleBillDetails> saleBillDetails = SaleBillDetails
