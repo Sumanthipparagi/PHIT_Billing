@@ -593,7 +593,7 @@
                         }
 
                     }
-                } else if (selection === 4 || selection === 5 || selection === 8 || selection === 6 || selection === 9) {
+                } else if (selection === 5 || selection === 8 || selection === 6 || selection === 9) {
                     if (e.keyCode === 13 || e.keyCode === 9) {
                         var discount = 0;
                         if (selection === 7) {
@@ -684,8 +684,6 @@
                                                 alert("Entered Free quantity exceeds available quantity");
                                             }
                                         }
-
-
 
                                         if (!allowEntry) {
                                             // this.getActiveEditor().TEXTAREA.value = "";
