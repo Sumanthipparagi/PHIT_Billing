@@ -424,6 +424,7 @@ public class Links
     public static String STOCK_BOOK = "api/v1.0/inventory/stockbook";
     public static String STOCK_BOOK_DATATABLE = "api/v1.0/inventory/stockbook/datatable";
     public static String GET_STOCKS_OF_PRODUCT = "api/v1.0/inventory/stockbookbyproduct";
+    public static String GET_STOCKS_OF_PRODUCT_SALE_RETURN = "api/v1.0/inventory/stockbookbyproductsalereturn";
     public static String STOCK_BOOK_PURCHASE = "api/v1.0/inventory/stockbook/purchase/";
     public static String STOCK_BOOK_BY_USER = "api/v1.0/inventory/stockbook/user";
     public static String STOCK_BOOK_BY_BATCH = "api/v1.0/inventory/stockbook/batch";

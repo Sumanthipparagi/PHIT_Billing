@@ -202,7 +202,6 @@ class InventoryService {
     def getStocksOfProduct(String id) {
         Client client = ClientBuilder.newClient();
         WebTarget target = client.target(new Links().API_GATEWAY);
-
         try {
 
             Response apiResponse = target
@@ -210,6 +209,27 @@ class InventoryService {
                     .request(MediaType.APPLICATION_JSON_TYPE)
                     .get()
 
+            return apiResponse
+        }
+        catch (Exception ex) {
+            System.err.println('Service :InventoryService , action :  getBatchesOfProduct  , Ex:' + ex)
+            log.error('Service :InventoryService , action :  getBatchesOfProduct  , Ex:' + ex)
+        }
+
+    }
+
+
+    def getStocksOfProductSaleRetrun(String id) {
+        Client client = ClientBuilder.newClient();
+        WebTarget target = client.target(new Links().API_GATEWAY);
+
+        try {
+
+            Response apiResponse = target
+                    .path(new Links().GET_STOCKS_OF_PRODUCT_SALE_RETURN)
+                    .queryParam("id", URLEncoder.encode(id.toString(), "UTF-8"))
+                    .request(MediaType.APPLICATION_JSON_TYPE)
+                    .get()
             return apiResponse
         }
         catch (Exception ex) {

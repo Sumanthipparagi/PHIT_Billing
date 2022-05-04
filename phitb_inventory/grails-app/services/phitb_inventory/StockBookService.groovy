@@ -47,6 +47,16 @@ class StockBookService {
             return StockBook.findAllByProductIdAndExpDateGreaterThanEquals(productId, currentDate, [sort: 'id', max: l, offset: o, order: 'desc'])
     }
 
+    def getAllByProductSaleReturn(long limit, long offset, long productId) {
+        Date currentDate = new Date()
+        Integer o = offset ? Integer.parseInt(offset.toString()) : 0
+        Integer l = limit ? Integer.parseInt(limit.toString()) : 100
+        if (!productId)
+            return StockBook.findAllByExpDateGreaterThanEquals(currentDate, [sort: 'id', max: l, offset: o, order: 'desc'])
+        else
+            return StockBook.findAllByProductIdAndExpDateGreaterThanEquals(productId, currentDate, [sort: 'id', max: l, offset: o, order: 'desc'])
+    }
+
     JSONObject dataTables(JSONObject paramsJsonObject, String start, String length)
     {
         String searchTerm = paramsJsonObject.get("search[value]")

@@ -467,7 +467,6 @@ class UrlMappings {
         "/stockbook/purchase/batch"(controller: 'stockBook', action: 'stockPurchase')
 
 
-
 //        Temp Stock Book
         "/tempstockbook"(controller: "stockBook") {
             action = [POST: 'tempStockBookSave']
