@@ -17,6 +17,8 @@
     <asset:stylesheet rel="stylesheet" href="/themeassets/css/color_skins.css"/>
     <asset:stylesheet rel="stylesheet" href="/themeassets/plugins/sweetalert/sweetalert.css"/>
     <asset:stylesheet  src="/themeassets/plugins/bootstrap-select/css/bootstrap-select.css" rel="stylesheet" />
+    <asset:stylesheet  src="/themeassets/plugins/select-2-editor/select2.min.css" rel="stylesheet" />
+
     <style>
 
     div.dataTables_scrollBody table tbody  td {
@@ -150,6 +152,7 @@
 <asset:javascript src="/themeassets/js/pages/tables/jquery-datatable.js"/>
 <asset:javascript src="/themeassets/js/pages/ui/dialogs.js"/>
 <asset:javascript src="/themeassets/plugins/sweetalert/sweetalert.min.js"/>
+<asset:javascript  src="/themeassets/plugins/select-2-editor/select2.js" />
 
 <script>
 
@@ -269,6 +272,7 @@
     });
 
     $(document).on("click", ".addbtn", function () {
+        $('#entityRegister').select2();
         $(".formTitle").text("Add Form")
         $(".formForm")[0].reset();
         $('.entity').prop('selectedIndex',0);
@@ -283,6 +287,7 @@
         $(".entitytype").val($(this).attr('data-entitytype'));
         $("#configAllowed").val($(this).attr('data-configAllowed'));
         $("#entityRegister").val($(this).data('entity')).change()
+        $('#entityRegister').select2();
         $(".formTitle").text("Update Form");
     });
 

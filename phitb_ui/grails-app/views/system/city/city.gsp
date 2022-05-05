@@ -161,7 +161,6 @@
     });
 
     function cityTable() {
-
         citytable = $(".cityTable").DataTable({
             "order": [[0, "desc"]],
             sPaginationType: "simple_numbers",
