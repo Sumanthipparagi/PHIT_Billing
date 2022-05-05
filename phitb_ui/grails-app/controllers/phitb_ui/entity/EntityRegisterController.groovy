@@ -325,7 +325,27 @@ class EntityRegisterController
         return new EntityService().getEntityById(id)
     }
 
-
-
+    def getEntityTypeById()
+    {
+        try
+        {
+            def apiResponse = new EntityService().getEntityTypeById(params.id)
+            if (apiResponse?.status == 200)
+            {
+                JSONObject jsonObject = new JSONObject(apiResponse.readEntity(String.class));
+                respond jsonObject, formats: ['json'], status: 200
+            }
+            else
+            {
+                return []
+            }
+        }
+        catch (Exception ex)
+        {
+            System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
+            log.error('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
+            response.status = 400
+        }
+    }
 
 }

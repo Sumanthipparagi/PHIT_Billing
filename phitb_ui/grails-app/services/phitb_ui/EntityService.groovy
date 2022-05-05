@@ -1694,6 +1694,26 @@ class EntityService {
 
     }
 
+
+    def getEntityTypeById(String id) {
+        Client client = ClientBuilder.newClient()
+        WebTarget target = client.target(new Links().API_GATEWAY)
+        try {
+
+            Response apiResponse = target
+                    .path(new Links().ENTITY_TYPE_MASTER_SHOW+"/"+id)
+                    .request(MediaType.APPLICATION_JSON_TYPE)
+                    .get()
+            return apiResponse
+        }
+        catch (Exception ex) {
+            System.err.println('Service :EntityService , action :  getEntityType  , Ex:' + ex)
+            log.error('Service :EntityService , action :  getEntityType  , Ex:' + ex)
+        }
+
+    }
+
+
     def getUserRegister() {
         Client client = ClientBuilder.newClient()
         WebTarget target = client.target(new Links().API_GATEWAY)

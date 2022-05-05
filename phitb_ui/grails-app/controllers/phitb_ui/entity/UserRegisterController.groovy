@@ -262,13 +262,12 @@ class UserRegisterController
         try
         {
             JSONObject jsonObject = new JSONObject(params)
-            MultipartFile multipartFile = params.photo as MultipartFile
             def apiResponse = new EntityService().putUser(jsonObject)
             if (apiResponse.status == 200)
             {
                 JSONObject obj = new JSONObject(apiResponse.readEntity(String.class))
-                redirect(uri: "/user-register")
-//                respond obj, formats: ['json'], status: 200
+//                redirect(uri: "/user-register")
+                respond obj, formats: ['json'], status: 200
             }
             else
             {

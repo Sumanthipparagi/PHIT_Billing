@@ -143,6 +143,7 @@ class UserRegisterService {
 
     UserRegister update(JSONObject jsonObject, String id) {
         UserRegister userRegister = UserRegister.findById(Long.parseLong(id))
+        EntityRegister entityRegister =EntityRegister.findById(Long.parseLong(jsonObject.get("entity").toString()))
         if (userRegister) {
             userRegister.isUpdatable = true
             //userRegister.userName = jsonObject.get("userName").toString()
@@ -189,8 +190,8 @@ class UserRegisterService {
             userRegister.department = DepartmentMaster.findById(Long.parseLong(jsonObject.get("department").toString()))
             userRegister.account = AccountRegister.findById(Long.parseLong(jsonObject.get("account").toString()))
             userRegister.role = Role.findById(Long.parseLong(jsonObject.get("role").toString()))
-            userRegister.entityType = EntityTypeMaster.findById(Long.parseLong(jsonObject.get("entityType").toString()))
             userRegister.entity = EntityRegister.findById(Long.parseLong(jsonObject.get("entity").toString()))
+            userRegister.entityType = EntityTypeMaster.findById(Long.parseLong(entityRegister.entityType.id.toString()))
             userRegister.createdUser = Long.parseLong(jsonObject.get("createdUser").toString())
             userRegister.modifiedUser = Long.parseLong(jsonObject.get("modifiedUser").toString())
             userRegister.save(flush: true)
@@ -198,7 +199,7 @@ class UserRegisterService {
                 AuthRegister authRegister = AuthRegister.findByUser(userRegister)
                 authRegister.user = userRegister
                 authRegister.username = userRegister.userName
-                authRegister.password = new AuthRegisterService().hashPassword(jsonObject.get("password").toString())
+//                authRegister.password = new AuthRegisterService().hashPassword(jsonObject.get("password").toString())
                 authRegister.save(flush: true)
 
                 return userRegister

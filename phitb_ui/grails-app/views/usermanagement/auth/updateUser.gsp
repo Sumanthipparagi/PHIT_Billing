@@ -105,9 +105,9 @@
                                         </ul>
                                     </div>
                                     <div class="body m-b-10">
-                                        <form action="/user-register/update/${user.id}" id="form_validation" method="POST"
+                                        <form action="/user-register/update/${user.id}" id="updateUser" method="POST"
                                               role="form"
-                                              class="entityRegisterForm" id="updateUser" enctype="multipart/form-data">
+                                              class="entityRegisterForm"  enctype="multipart/form-data">
                                             <div class="row clearfix">
                                                 <div class="col-lg-6 form-group  form-float">
                                                     <label for="userName">
@@ -492,7 +492,8 @@
                                                     </select>
                                                 </div>
 
-                                                <input type="hidden" id="entityTypeId" class="entityType" name="entityType">
+                                                <input type="hidden" id="entityTypeId" class="entityType"
+                                                       name="entityType" value="${session.getAttribute('entityTypeId')}">
                                                 <input type="hidden" name="status" value="1">
                                                 <input type="hidden" name="syncStatus" value="1">
                                                 <input type="hidden" name="lastLoginDate" value="12/02/2020">
@@ -722,7 +723,6 @@
 
 <script>
     $(function () {
-
         var dob = new Date('${user.dob}');
         $('.dob').val(moment(dob).format('DD/MM/YYYY'));
 
@@ -763,6 +763,16 @@
             clearButton: true,
             time: false,
             weekStart: 1
+        });
+
+        var entityTypeId = $('.entity').find(':selected').attr('data-type')
+        $.ajax({
+            type: "POST",
+            url: "/getentitytypebyId?id="+ entityTypeId,
+            dataType: 'json',
+            success: function (data) {
+                $('#entityTypeId').val(data.id)
+            },
         });
     });
 
@@ -818,6 +828,7 @@
         });
         event.preventDefault();
     });
+
 </script>
 
 <script>

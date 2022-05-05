@@ -123,6 +123,8 @@ class UrlMappings {
         "/entity-register/update/$id"(controller:"entityRegister",action:"update")
         "/entity-register/delete/$id"(controller: "entityRegister",action:"delete")
 
+        "/getentitytypebyId"(controller: 'entityRegister', action: 'getEntityTypeById')
+
 
 //      User Register
         "/user-register"(controller: "userRegister") {
