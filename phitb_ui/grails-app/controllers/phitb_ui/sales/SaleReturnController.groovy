@@ -59,6 +59,7 @@ class SaleReturnController {
     def getSaleInvByProducts() {
         try {
             def products = new SalesService().getSaleProductDetailsByProductId(params.productId)
+            JSONArray productArray = new JSONArray()
             double sqty = 0;
             double fqty = 0;
             products.each {
@@ -92,6 +93,17 @@ class SaleReturnController {
                     }
                 }
             }
+//            JSONArray array = new JSONArray(products)
+//            for(int i = 0; i < array.length(); ++i)
+//            {
+//                JSONObject obj = array.getJSONObject(i);
+//                double sqty1 = obj.getDouble("sqty");
+//                double freeQty1 = obj.getDouble("freeQty");
+//                if(sqty1 > 0 || freeQty1 > 0)
+//                {
+//                    productArray.add(products)
+//                }
+//            }
             respond products, formats: ['json'], status: 200
         }
         catch (Exception ex) {

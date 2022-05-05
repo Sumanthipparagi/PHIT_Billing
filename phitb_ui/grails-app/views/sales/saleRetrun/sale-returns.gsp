@@ -1061,7 +1061,7 @@
         if (selectedId != null) {
             var customer = Number($("#customer").val());
             console.log("customer:" + customer)
-            var url = "/getinvoicedetails?productId=" + selectedId;
+            var url = "/getinvoicedetails?productId="+selectedId+"&customer="+ customer;
             $.ajax({
                 type: "GET",
                 url: url,
