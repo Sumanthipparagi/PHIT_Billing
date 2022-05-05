@@ -92,7 +92,6 @@ class SaleReturnController {
                     }
                 }
             }
-
             respond products, formats: ['json'], status: 200
         }
         catch (Exception ex) {
