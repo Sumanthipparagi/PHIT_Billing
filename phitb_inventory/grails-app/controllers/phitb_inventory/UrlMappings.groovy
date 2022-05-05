@@ -29,7 +29,7 @@ class UrlMappings {
             "/stockbook/$id(.$format)?"(controller: 'stockBook') { action = [GET: 'show', PUT: 'update', DELETE: 'delete'] }
             "/stockbookbyentity/$id(.$format)?"(controller: 'stockBook') { action = [GET: 'getByEntityId'] }
             "/stockbookbyproduct/$id(.$format)?"(controller: 'stockBook') { action = [GET: 'getByProductId'] }
-            "/stockbookbyproductsalereturn/$id(.$format)?"(controller: 'stockBook') { action = [GET: 'getStocksOfProductSaleReturn'] }
+            "/stockbookbyproductsalereturn(.$format)?"(controller: 'stockBook',action: 'getByProductIdForSaleReturn')
 
             "/stockbook/purchase/batch/$batch/qty/$purQty(.$format)?"(controller: 'stockBook') {
                 action = [GET:'stockPurchase'] }

@@ -291,7 +291,7 @@
 </script>
 <g:include view="controls/footer-content.gsp"/>
 <script>
-    selectSideMenu("accounts-menu");
+    selectSideMenu("system-menu");
 </script>
 </body>
 </html>

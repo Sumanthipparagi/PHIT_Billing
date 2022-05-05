@@ -1012,7 +1012,7 @@
 
     function batchSelection(selectedId, mainRow, selectCell = true) {
         if (selectedId != null) {
-            var url = "/stockbook/product/" + selectedId;
+            var url = "/stockbook/productreturn/" + selectedId;
             $.ajax({
                 type: "GET",
                 url: url,

@@ -52,9 +52,9 @@ class StockBookService {
         Integer o = offset ? Integer.parseInt(offset.toString()) : 0
         Integer l = limit ? Integer.parseInt(limit.toString()) : 100
         if (!productId)
-            return StockBook.findAllByExpDateGreaterThanEquals(currentDate, [sort: 'id', max: l, offset: o, order: 'desc'])
+            return StockBook.findAll()
         else
-            return StockBook.findAllByProductIdAndExpDateGreaterThanEquals(productId, currentDate, [sort: 'id', max: l, offset: o, order: 'desc'])
+            return StockBook.findAllByProductId(productId)
     }
 
     JSONObject dataTables(JSONObject paramsJsonObject, String start, String length)
