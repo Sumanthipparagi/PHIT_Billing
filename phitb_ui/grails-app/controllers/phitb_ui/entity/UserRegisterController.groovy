@@ -263,7 +263,7 @@ class UserRegisterController
         {
             JSONObject jsonObject = new JSONObject(params)
             MultipartFile multipartFile = params.photo as MultipartFile
-            def apiResponse = new EntityService().putUser(jsonObject,multipartFile)
+            def apiResponse = new EntityService().putUser(jsonObject)
             if (apiResponse.status == 200)
             {
                 JSONObject obj = new JSONObject(apiResponse.readEntity(String.class))

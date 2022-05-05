@@ -66,8 +66,8 @@
                                 <img src="${assetPath(src: '/themeassets/images/profile_av.jpg')}" class="user_pic rounded img-raised" alt="User">
                                 <div class="detail">
                                     <div class="u_name">
-                                        <h4><strong>${user.userName}</strong></h4>
-%{--                                        <span>Ui UX Designer</span>--}%
+                                        <h4><strong>${user.name}</strong></h4>
+                                        <span>${user.email}</span>
                                     </div>
                                     <div id="m_area_chart"></div>
                                 </div>
@@ -92,7 +92,7 @@
                             <div class="col-lg-12 col-md-12">
                                 <div class="card">
                                     <div class="header">
-                                        <h2><strong>Add</strong> Post</h2>
+                                        <h2><strong>Update</strong>User</h2>
                                         <ul class="header-dropdown">
                                             <li class="dropdown"> <a href="javascript:void(0);" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"> <i class="zmdi zmdi-more"></i> </a>
                                                 <ul class="dropdown-menu dropdown-menu-right">
