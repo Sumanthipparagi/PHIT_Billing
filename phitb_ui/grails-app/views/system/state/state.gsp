@@ -17,6 +17,7 @@
     <asset:stylesheet rel="stylesheet" href="/themeassets/css/color_skins.css"/>
     <asset:stylesheet rel="stylesheet" href="/themeassets/plugins/sweetalert/sweetalert.css"/>
     <asset:stylesheet  src="/themeassets/plugins/bootstrap-select/css/bootstrap-select.css" rel="stylesheet" />
+    <asset:stylesheet  src="/themeassets/plugins/select-2-editor/select2.min.css" rel="stylesheet" />
 
     <style>
 
@@ -148,6 +149,7 @@
 <asset:javascript src="/themeassets/js/pages/tables/jquery-datatable.js"/>
 <asset:javascript src="/themeassets/js/pages/ui/dialogs.js"/>
 <asset:javascript src="/themeassets/plugins/sweetalert/sweetalert.min.js"/>
+<asset:javascript  src="/themeassets/plugins/select-2-editor/select2.js" />
 
 
 
@@ -258,17 +260,23 @@
     });
 
     $(document).on("click", ".addbtn", function () {
-        $(".stateTitle").text("Add State Master")
         $(".stateForm")[0].reset();
+        $("#country").select2();
+        $("#zone").select2();
+        $(".entity").select2();
+        $(".stateTitle").text("Add State Master");
         id = null
     });
 
     $(document).on("click", ".editbtn", function () {
         id = $(this).data('id');
         $(".name").val($(this).data('name'));
-        $(".entity").val($(this).data('entity')).change()
-        $("#zone").val($(this).attr('data-zoneId')).change()
-        $("#country").val($(this).attr('data-countryId')).change()
+        $(".entity").val($(this).data('entity')).change().select2();
+        $("#zone").val($(this).attr('data-zoneId')).change().select2();
+        $("#country").val($(this).attr('data-countryId')).change().select2();
+        // $("#country").select2();
+        // $("#zone").select2();
+        // $(".entity").select2();
         $(".stateTitle").text("Update State Master");
     });
 

@@ -17,6 +17,8 @@
     <asset:stylesheet rel="stylesheet" href="/themeassets/css/color_skins.css"/>
     <asset:stylesheet rel="stylesheet" href="/themeassets/plugins/sweetalert/sweetalert.css"/>
     <asset:stylesheet  src="/themeassets/plugins/bootstrap-select/css/bootstrap-select.css" rel="stylesheet" />
+    <asset:stylesheet  src="/themeassets/plugins/select-2-editor/select2.min.css" rel="stylesheet" />
+
     <style>
 
     div.dataTables_scrollBody table tbody  td {
@@ -106,7 +108,6 @@
 %{--                                    <th style="width: 20%">ID</th>--}%
                                     <th style="width: 20%">Name</th>
                                     <th style="width: 20%">State</th>
-                                    <th style="width: 20%">Entity</th>
                                     <th style="width: 20%">Action</th>
                                 </tr>
                                 </thead>
@@ -147,6 +148,7 @@
 <asset:javascript src="/themeassets/js/pages/tables/jquery-datatable.js"/>
 <asset:javascript src="/themeassets/js/pages/ui/dialogs.js"/>
 <asset:javascript src="/themeassets/plugins/sweetalert/sweetalert.min.js"/>
+<asset:javascript  src="/themeassets/plugins/select-2-editor/select2.js" />
 
 
 
@@ -185,7 +187,6 @@
                     for (var i = 0; i < json.data.length; i++) {
                         var editbtn = '<button type="button" data-id="' + json.data[i].id +
                             '" data-name="' + json.data[i].name + '"' +
-                            '" data-entity="' + json.data[i].entityId + '"' +
                             '" data-state="' + json.data[i].state.id + '"' +
                             '"' +
                             ' class="editbtn btn btn-sm btn-warning  editbtn" data-toggle="modal" data-target="#addCityModal"><i class="material-icons"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">edit</font></font></i></button>'
@@ -195,7 +196,6 @@
                             // 'id': json.data[i].id,
                             'name': json.data[i].name,
                             'state': json.data[i].state.name,
-                            'entity': json.names[i].entityName,
                             'action': editbtn + ' ' + deletebtn
                         });
                     }
@@ -206,7 +206,6 @@
                 // {'data': 'id', 'width': '20%'},
                 {'data': 'name', 'width': '20%'},
                 {'data': 'state', 'width': '20%'},
-                {'data': 'entity', 'width': '20%'},
                 {'data': 'action', 'width': '20%'}
             ]
         });
@@ -230,7 +229,6 @@
             type = 'POST'
         }
 
-        console.log(type)
         $.ajax({
 
             url: url,
@@ -251,16 +249,17 @@
     });
 
     $(document).on("click", ".addbtn", function () {
-        $(".cityTitle").text("Add City")
         $(".cityForm")[0].reset();
+        $('.state').select2()
+        $(".cityTitle").text("Add City")
         id = null
     });
 
     $(document).on("click", ".editbtn", function () {
         id = $(this).data('id');
         $(".name").val($(this).data('name'));
-        $(".entity").val($(this).data('entity')).change()
         $(".state").val($(this).attr('data-state')).change()
+        $('.state').select2();
         $(".cityTitle").text("Update City");
     });
 

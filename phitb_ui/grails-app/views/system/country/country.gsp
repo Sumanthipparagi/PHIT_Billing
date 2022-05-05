@@ -6,7 +6,7 @@
     <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
     <meta name="description" content="Responsive Bootstrap 4 and web Application ui kit.">
 
-    <title>:: PharmIt ::  City</title>
+    <title>:: PharmIt ::  Country</title>
     <link rel="icon" type="image/x-icon" href="${assetPath(src: '/themeassets/images/favicon.ico')}"/>
     <!-- Favicon-->
     <asset:stylesheet rel="stylesheet" src="/themeassets/plugins/bootstrap/css/bootstrap.min.css"/>
@@ -17,6 +17,8 @@
     <asset:stylesheet rel="stylesheet" href="/themeassets/css/color_skins.css"/>
     <asset:stylesheet rel="stylesheet" href="/themeassets/plugins/sweetalert/sweetalert.css"/>
     <asset:stylesheet  src="/themeassets/plugins/bootstrap-select/css/bootstrap-select.css" rel="stylesheet" />
+    <asset:stylesheet  src="/themeassets/plugins/select-2-editor/select2.min.css" rel="stylesheet" />
+
     <style>
 
     div.dataTables_scrollBody table tbody  td {
@@ -146,7 +148,7 @@
 <asset:javascript src="/themeassets/js/pages/tables/jquery-datatable.js"/>
 <asset:javascript src="/themeassets/js/pages/ui/dialogs.js"/>
 <asset:javascript src="/themeassets/plugins/sweetalert/sweetalert.min.js"/>
-
+<asset:javascript  src="/themeassets/plugins/select-2-editor/select2.js" />
 
 
 <script>
@@ -185,7 +187,8 @@
                         var editbtn = '<button type="button" data-id="' + json.data[i].id +
                             '" data-name="' + json.data[i].name + '"' +
                             '" data-entity="' + json.data[i].entityId + '"' +
-                            ' class="editbtn btn btn-warning  editbtn" data-toggle="modal" data-target="#addCountryModal"><i class="material-icons"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">edit</font></font></i></button>'
+                            '"' +
+                            ' class="editbtn btn btn-sm btn-warning" data-toggle="modal" data-target="#addCountryModal"><i class="material-icons"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">edit</font></font></i></button>'
                         var deletebtn = '<button type="button" data-id="' + json.data[i].id +
                             '" class="btn btn-danger deletebtn" data-toggle="modal" data-target=".deleteModal"><i class="material-icons"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">delete</font></font></i></button>'
                         return_data.push({
@@ -246,6 +249,7 @@
     });
 
     $(document).on("click", ".addbtn", function () {
+        $('#entityId').select2()
         $(".countryTitle").text("Add Country")
         $(".countryForm")[0].reset();
         id = null
@@ -254,8 +258,10 @@
     $(document).on("click", ".editbtn", function () {
         id = $(this).data('id');
         $(".name").val($(this).data('name'));
-        $(".entity").val($(this).data('entity')).change()
-        $("#state").val($(this).attr('data-state')).change()
+        alert($(this).data('entity'));
+        var entity = $(this).data('entity')
+        $(".entity").val(entity).trigger('change');
+        $('.entity').select2();
         $(".countryTitle").text("Update Country");
     });
 

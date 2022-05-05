@@ -67,12 +67,12 @@ class CityMasterService {
             order(orderColumn, orderDir)
         }
 
-        def names = []
-        cityMasterArrayList.each {
-            println(it.entityId)
-            def apires = showCityByEntityId(it.entityId.toString())
-            names.push(apires)
-        }
+//        def names = []
+//        cityMasterArrayList.each {
+//            println(it.entityId)
+//            def apires = showCityByEntityId(it.entityId.toString())
+//            names.push(apires)
+//        }
 
         def recordsTotal = cityMasterArrayList.totalCount
         JSONObject jsonObject = new JSONObject()
@@ -80,7 +80,6 @@ class CityMasterService {
         jsonObject.put("recordsTotal", recordsTotal)
         jsonObject.put("recordsFiltered", recordsTotal)
         jsonObject.put("data", cityMasterArrayList)
-        jsonObject.put("names", names)
         return jsonObject
     }
 
@@ -88,7 +87,6 @@ class CityMasterService {
         CityMaster cityMaster = new CityMaster()
         cityMaster.name = jsonObject.get("name")
         cityMaster.state = StateMaster.findById(Long.parseLong(jsonObject.get("stateId").toString()))
-        cityMaster.entityId = Long.parseLong(jsonObject.get("entityId").toString())
         cityMaster.save(flush: true)
         if (!cityMaster.hasErrors())
             return cityMaster
@@ -103,7 +101,6 @@ class CityMasterService {
                 cityMaster.isUpdatable = true
                 cityMaster.name = jsonObject.get("name")
                 cityMaster.state = StateMaster.findById(Long.parseLong(jsonObject.get("stateId").toString()))
-                cityMaster.entityId = Long.parseLong(jsonObject.get("entityId").toString())
                 cityMaster.save(flush: true)
                 if (!cityMaster.hasErrors())
                     return cityMaster
@@ -130,19 +127,4 @@ class CityMasterService {
         }
     }
 
-    def showCityByEntityId(String id)
-    {
-        try
-        {
-            def url = Constants.API_GATEWAY+Constants.ENTITY_REGISTER_SHOW+"/"+id
-            URL apiUrl = new URL(url)
-            def entity = new JsonSlurper().parseText(apiUrl.text)
-            return entity
-        }
-        catch (Exception ex)
-        {
-            System.err.println('Service :CityMaster , action :  showCityByEntityId  , Ex:' + ex)
-            log.error('Service :CityMaster , action :  showCityByEntityId  , Ex:' + ex)
-        }
-    }
 }
