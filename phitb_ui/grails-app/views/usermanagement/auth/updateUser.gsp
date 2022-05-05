@@ -363,7 +363,7 @@
                             <div class="header">
                                 <h2><strong>Security</strong> Settings</h2>
                             </div>
-                            <form action="/user/update-password" method="post">
+                            <form action="/user/update-password" method="post" id="changePassword">
                             <div class="body">
 %{--                                <div class="form-group">--}%
 %{--                                    <input type="text" class="form-control" placeholder="Username">--}%
@@ -474,9 +474,17 @@
     $('#password, #confirm_password').on('keyup', function () {
         if ($('#password').val() == $('#confirm_password').val()) {
             $('#message').html('Matching').css('color', 'green');
+
         } else
+        {
             $('#message').html('Not Matching').css('color', 'red');
+        }
+
     });
+
+    // var text = $('#message').text()
+    // alert(text)
+
 </script>
 
 <script>

@@ -217,9 +217,11 @@ class UserRegisterService {
              if (userRegister)
              {
                  AuthRegister authRegister = AuthRegister.findByUser(userRegister)
+                 authRegister.isUpdatable = true
                  authRegister.user = userRegister
                  authRegister.username = userRegister.userName
                  authRegister.password = new AuthRegisterService().hashPassword(password)
+                 authRegister.save(flush:true)
              }
              else
              {

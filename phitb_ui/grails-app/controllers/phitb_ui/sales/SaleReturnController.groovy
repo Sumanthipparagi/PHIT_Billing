@@ -120,19 +120,22 @@ class SaleReturnController {
         def saleReturns = new SalesService().getReturnDetailsByBatchSalebillProductId(jsonObject.productId.toString()
                 , jsonObject.batchNumber.toString(), jsonObject.billId.toString())
         JSONArray saleReturnArray = JSON.parse(saleReturns.readEntity(String.class)) as JSONArray
+        double sqty = 0;
+        double fqty = 0;
         if(saleReturnArray.size() > 0)
         {
             for (JSONObject saleReturn : saleReturnArray) {
                 if (saleReturn.saleBillId == jsonObject.billId) {
                     if(saleReturn.sqty!=0)
                     {
-                        double sqty = jsonObject.sqty - saleReturn.sqty
-                        jsonObject.put("sqty",sqty)
+                        sqty =+ saleReturn.sqty
+                        jsonObject.put("sqty",jsonObject.sqty - sqty)
+
                     }
-                    if(saleReturn.sqty!=0)
+                    if(saleReturn.freeQty!=0)
                     {
-                        double fqty = jsonObject.freeQty - saleReturn.freeQty
-                        jsonObject.put("freeQty",fqty)
+                        fqty =+ saleReturn.freeQty
+                        jsonObject.put("freeQty",jsonObject.freeQty - fqty)
                     }
                 }
             }
