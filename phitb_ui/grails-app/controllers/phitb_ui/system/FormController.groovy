@@ -4,6 +4,7 @@ import groovy.json.JsonSlurper
 import org.grails.web.json.JSONObject
 import phitb_ui.Links
 import phitb_ui.SystemService
+import phitb_ui.entity.EntityRegisterController
 
 class FormController {
 
@@ -11,11 +12,9 @@ class FormController {
     {
         try
         {
-            def entityurl = Links.API_GATEWAY+Links.ENTITY_REGISTER_SHOW
             def entitytypeurl = Links.API_GATEWAY+Links.ENTITY_TYPE_MASTER_SHOW
-            URL api1Url = new URL(entityurl)
             URL api3Url = new URL(entitytypeurl)
-            def entity = new JsonSlurper().parseText(api1Url.text)
+            ArrayList<String> entity = new EntityRegisterController().show() as ArrayList<String>
             def entitytype = new JsonSlurper().parseText(api3Url.text)
             render(view: '/system/form/formmaster',model: [entity:entity, entitytype:entitytype])
         }

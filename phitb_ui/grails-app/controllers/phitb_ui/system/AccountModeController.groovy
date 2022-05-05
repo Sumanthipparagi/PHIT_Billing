@@ -5,6 +5,7 @@ import org.grails.web.json.JSONArray
 import org.grails.web.json.JSONObject
 import phitb_ui.Links
 import phitb_ui.SystemService
+import phitb_ui.entity.EntityRegisterController
 
 
 class AccountModeController
@@ -13,10 +14,7 @@ class AccountModeController
     def index()
     {
 
-        def url = Links.API_GATEWAY+Links.ENTITY_REGISTER_SHOW
-        println(url)
-        URL apiUrl = new URL(url)
-        def entity = new JsonSlurper().parseText(apiUrl.text)
+        ArrayList<String> entity = new EntityRegisterController().show() as ArrayList<String>
         render(view: '/system/accountMode/accountmodes',model: [entity:entity])
     }
 

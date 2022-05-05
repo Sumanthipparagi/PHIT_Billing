@@ -5,6 +5,7 @@ import org.grails.web.json.JSONArray
 import org.grails.web.json.JSONObject
 import phitb_ui.Links
 import phitb_ui.SystemService
+import phitb_ui.entity.EntityRegisterController
 
 class CityController {
 
@@ -12,9 +13,7 @@ class CityController {
     {
         try
         {
-            def entityurl = Links.API_GATEWAY+Links.ENTITY_REGISTER_SHOW
-            URL apiUrl = new URL(entityurl)
-            def entity = new JsonSlurper().parseText(apiUrl.text)
+            ArrayList<String> entity = new EntityRegisterController().show() as ArrayList<String>
             ArrayList<String> stateArrayList = new StateController().show() as ArrayList<String>
             render(view: '/system/city/city',model: [entity:entity, stateArrayList:stateArrayList])
         }
