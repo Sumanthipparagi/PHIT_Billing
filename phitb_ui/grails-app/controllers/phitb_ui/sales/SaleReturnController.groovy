@@ -59,6 +59,8 @@ class SaleReturnController {
     def getSaleInvByProducts() {
         try {
             def products = new SalesService().getSaleProductDetailsByProductId(params.productId)
+            double sqty = 0;
+            double fqty = 0;
             products.each {
                 def saleBillShow = new SalesService().getRequestWithId(it.billId.toString(), new Links().SALE_BILL_SHOW)
                 def batchResponse = new ProductService().getBatchesOfProduct(it.productId.toString())
@@ -78,13 +80,13 @@ class SaleReturnController {
                         if (saleReturn.saleBillId == it.billId) {
                             if(saleReturn.sqty!=0)
                             {
-                                double sqty = it.sqty - saleReturn.sqty
-                                it.put("sqty",sqty)
+                                sqty =+ saleReturn.sqty
+                                it.put("sqty",it.sqty-sqty)
                             }
                             if(saleReturn.freeQty!=0)
                             {
-                                double fqty = it.freeQty - saleReturn.freeQty
-                                it.put("freeQty",fqty)
+                                fqty =+ saleReturn.freeQty
+                                it.put("freeQty",it.freeQty-fqty)
                             }
                         }
                     }

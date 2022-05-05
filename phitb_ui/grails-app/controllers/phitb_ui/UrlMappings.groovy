@@ -465,6 +465,8 @@ class UrlMappings {
         "/stockbook/purchase/product/$id"(controller: "stockBook",action:"getStocksOfProductForPurchase")
         "/stockbook/purchase"(controller: "stockBook",action:"StockBookPurchase")
         "/stockbook/purchase/batch"(controller: 'stockBook', action: 'stockPurchase')
+        "/stockbook/productreturn/$id"(controller: "stockBook",action:"getStocksOfProduct")
+
 
 
 //        Temp Stock Book
