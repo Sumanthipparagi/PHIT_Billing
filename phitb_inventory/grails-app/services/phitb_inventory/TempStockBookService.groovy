@@ -176,6 +176,7 @@ class TempStockBookService {
         tempStockBook.entityTypeId = Long.parseLong(jsonObject.get("entityTypeId").toString())
         tempStockBook.entityId = Long.parseLong(jsonObject.get("entityId").toString())
         tempStockBook.originalId = Long.parseLong(jsonObject.get("originalId").toString())
+        tempStockBook.uuid = jsonObject.get("uuid")
         tempStockBook.save(flush: true)
         if (!tempStockBook.hasErrors())
             return tempStockBook
@@ -218,6 +219,7 @@ class TempStockBookService {
                 tempStockBook.entityTypeId = Long.parseLong(jsonObject.get("entityTypeId").toString())
                 tempStockBook.entityId = Long.parseLong(jsonObject.get("entityId").toString())
                 tempStockBook.originalId = Long.parseLong(jsonObject.get("originalId").toString())
+                tempStockBook.uuid = jsonObject.get("uuid")
                 tempStockBook.save(flush: true)
                 if (!tempStockBook.hasErrors())
                     return tempStockBook

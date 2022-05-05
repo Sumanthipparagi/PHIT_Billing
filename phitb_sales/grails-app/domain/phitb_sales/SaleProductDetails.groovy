@@ -44,8 +44,10 @@ class SaleProductDetails implements Serializable, LogicalDelete<SaleProductDetai
     double cgstPercentage
     double igstPercentage
 
-    static constraints = {
+    String uuid
 
+    static constraints = {
+        uuid unique: true
     }
 
     boolean isUpdatable

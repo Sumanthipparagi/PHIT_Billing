@@ -30,6 +30,7 @@ class StockBook implements LogicalDelete<StockBook> {
     long modifiedUser
 
     long openingStockQty
+    String uuid
 
     Date dateCreated
     Date lastUpdated
@@ -38,6 +39,10 @@ class StockBook implements LogicalDelete<StockBook> {
         packingDesc nullable: true
         purcProductValue nullable: true
         purcTradeDiscount nullable: true
+        remainingQty min: 0L
+        remainingFreeQty min: 0L
+        remainingReplQty min: 0L
+        uuid unique: true
     }
 
     boolean isUpdatable

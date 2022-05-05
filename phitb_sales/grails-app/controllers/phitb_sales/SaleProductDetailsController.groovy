@@ -13,7 +13,7 @@ import phitb_sales.Exception.BadRequestException
 class SaleProductDetailsController
 {
     static responseFormats = ['json', 'xml']
-    static allowedMethods = [index: "GET", show: "GET", save: "POST", update: "PUT", delete: "DELETE", dataTable: "GET"]
+    static allowedMethods = [index: "GET", show: "GET", save: "POST", update: "PUT", delete: "DELETE", dataTable: "GET", saveList: "POST"]
 
     SaleProductDetailsService saleProductDetailsService
     /**
@@ -109,6 +109,40 @@ class SaleProductDetailsController
         {
             JSONObject jsonObject = JSON.parse(request.reader.text) as JSONObject
             respond saleProductDetailsService.save(jsonObject)
+        }
+        catch (ResourceNotFoundException ex)
+        {
+            System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
+            response.status = 404
+        }
+        catch (BadRequestException ex)
+        {
+            System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
+            response.status = 400
+        }
+        catch (Exception ex)
+        {
+            System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
+        }
+    }
+
+    /**
+     * Save list of new Sale Product Details
+     * @param Sale Product Details
+     * @return saved Sale Product Details
+     */
+    def saveList()
+    {
+        try
+        {
+            JSONArray jsonArray = JSON.parse(request.reader.text) as JSONArray
+            JSONArray responseArray = new JSONArray()
+            for (JSONObject jsonObject : jsonArray) {
+               SaleProductDetails saleProductDetails = saleProductDetailsService.save(jsonObject)
+                if(saleProductDetails)
+                    responseArray.put(saleProductDetails)
+            }
+            respond responseArray
         }
         catch (ResourceNotFoundException ex)
         {

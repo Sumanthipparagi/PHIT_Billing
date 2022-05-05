@@ -180,6 +180,7 @@ class SaleBillDetailsService
         saleBillDetails.modifiedUser = Long.parseLong(jsonObject.get("modifiedUser").toString())
         saleBillDetails.entityId = Long.parseLong(jsonObject.get("entityId").toString())
         saleBillDetails.entityTypeId = Long.parseLong(jsonObject.get("entityTypeId").toString())
+        saleBillDetails.uuid = jsonObject.get("uuid").toString()
         saleBillDetails.save(flush: true)
         if (!saleBillDetails.hasErrors())
         {
@@ -271,6 +272,7 @@ class SaleBillDetailsService
         saleBillDetails.modifiedUser = Long.parseLong(jsonObject.get("modifiedUser").toString())
         saleBillDetails.entityId = Long.parseLong(jsonObject.get("entityId").toString())
         saleBillDetails.entityTypeId = Long.parseLong(jsonObject.get("entityTypeId").toString())
+        saleBillDetails.uuid = jsonObject.get("uuid").toString()
         saleBillDetails.save(flush: true)
         if (!saleBillDetails.hasErrors())
         {

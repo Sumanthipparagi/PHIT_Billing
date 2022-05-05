@@ -307,7 +307,6 @@
     var readOnly = false;
     var scheme = null;
     $(document).ready(function () {
-
         $("#customerSelect").select2();
         $('#date').val(moment().format('YYYY-MM-DD'));
         $('#date').attr("readonly");
@@ -440,7 +439,8 @@
                                 url: url,
                                 dataType: 'json',
                                 data: {
-                                    rowData: json
+                                    rowData: json,
+                                    uuid: self.crypto.randomUUID()
                                 },
                                 success: function (data) {
                                     console.log("Data saved");
@@ -971,7 +971,8 @@
                 duedate: duedate,
                 priority: priority,
                 billStatus: billStatus,
-                seriesCode: seriesCode
+                seriesCode: seriesCode,
+                uuid: self.crypto.randomUUID()
             },
             success: function (data) {
                 readOnly = true;

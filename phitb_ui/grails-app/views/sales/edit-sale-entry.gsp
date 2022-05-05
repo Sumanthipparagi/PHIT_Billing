@@ -1043,7 +1043,8 @@
                 duedate: duedate,
                 priority: priority,
                 billStatus: billStatus,
-                seriesCode: seriesCode
+                seriesCode: seriesCode,
+                uuid: self.crypto.randomUUID()
             },
             success: function (data) {
                 readOnly = true;

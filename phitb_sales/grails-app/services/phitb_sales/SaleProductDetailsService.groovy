@@ -131,6 +131,7 @@ class SaleProductDetailsService
         saleProductDetails.sgstPercentage = Double.parseDouble(jsonObject.get("sgstPercentage").toString())
         saleProductDetails.cgstPercentage = Double.parseDouble(jsonObject.get("cgstPercentage").toString())
         saleProductDetails.igstPercentage = Double.parseDouble(jsonObject.get("igstPercentage").toString())
+        saleProductDetails.uuid = jsonObject.get("uuid").toString()
 
         saleProductDetails.save(flush: true)
         if (!saleProductDetails.hasErrors())
@@ -185,7 +186,7 @@ class SaleProductDetailsService
             saleProductDetails.sgstPercentage = Double.parseDouble(jsonObject.get("sgstPercentage").toString())
             saleProductDetails.cgstPercentage = Double.parseDouble(jsonObject.get("cgstPercentage").toString())
             saleProductDetails.igstPercentage = Double.parseDouble(jsonObject.get("igstPercentage").toString())
-
+            saleProductDetails.uuid = jsonObject.get("uuid").toString()
             saleProductDetails.save(flush: true)
             if (!saleProductDetails.hasErrors())
             {

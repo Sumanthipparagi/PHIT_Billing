@@ -146,6 +146,7 @@ class UrlMappings {
                 action = [GET: 'index', POST:
                         'save']
             }
+            "/saleproductdetails/savelist(.$format)?"(controller: 'saleProductDetails', action: 'saveList')
             "/saleproductdetails/bill/$id(.$format)?"(controller: 'saleProductDetails') {
                 action = [GET: 'getSaleProductDetailsOfSaleBill']
             }

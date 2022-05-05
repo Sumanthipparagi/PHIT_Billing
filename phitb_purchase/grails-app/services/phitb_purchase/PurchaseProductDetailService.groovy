@@ -145,6 +145,7 @@ class PurchaseProductDetailService {
         purchaseProductDetail.sgstPercentage = Double.parseDouble(jsonObject.get("sgstPercentage").toString())
         purchaseProductDetail.cgstPercentage = Double.parseDouble(jsonObject.get("cgstPercentage").toString())
         purchaseProductDetail.igstPercentage = Double.parseDouble(jsonObject.get("igstPercentage").toString())
+        purchaseProductDetail.uuid = jsonObject.get("uuid").toString()
         purchaseProductDetail.save(flush: true)
         if (!purchaseProductDetail.hasErrors())
             return purchaseProductDetail
@@ -187,6 +188,7 @@ class PurchaseProductDetailService {
             purchaseProductDetail.financialYear = jsonObject.get("financialYear").toString()
             purchaseProductDetail.entityTypeId = Long.parseLong(jsonObject.get("entityTypeId").toString())
             purchaseProductDetail.entityId = Long.parseLong(jsonObject.get("entityId").toString())
+            purchaseProductDetail.uuid = jsonObject.get("uuid").toString()
             purchaseProductDetail.save(flush: true)
             if (!purchaseProductDetail.hasErrors())
                 return purchaseProductDetail

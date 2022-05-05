@@ -153,6 +153,7 @@ class StockBookService {
         stockBook.createdUser = Long.parseLong(jsonObject.get("createdUser").toString())
         stockBook.modifiedUser = Long.parseLong(jsonObject.get("modifiedUser").toString())
         stockBook.openingStockQty = Long.parseLong(jsonObject.get("openingStockQty").toString())
+        stockBook.uuid = jsonObject.get("uuid")
         stockBook.save(flush: true)
         if (!stockBook.hasErrors()) {
             StockActivity stockActivity = new StockActivity()
@@ -243,6 +244,7 @@ class StockBookService {
                 stockBook.createdUser = Long.parseLong(jsonObject.get("createdUser").toString())
                 stockBook.modifiedUser = Long.parseLong(jsonObject.get("modifiedUser").toString())
                 stockBook.openingStockQty = Long.parseLong(jsonObject.get("openingStockQty").toString())
+                stockBook.uuid = jsonObject.get("uuid")
                 stockBook.save(flush: true)
                 if (!stockBook.hasErrors()) {
                     StockActivity stockActivity = new StockActivity()

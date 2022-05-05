@@ -265,6 +265,26 @@ class SalesService
         }
     }
 
+    def saveSaleProductDetailList(JSONArray jsonArray)
+    {
+        Client client = ClientBuilder.newClient();
+        //WebTarget target = client.target(new Links().API_GATEWAY);
+        WebTarget target = client.target("http://localhost:8083");
+        try
+        {
+            println(jsonArray)
+            Response apiResponse = target
+                    .path(new Links().SALE_PRODUCT_SAVE_LIST)
+                    .request(MediaType.APPLICATION_JSON_TYPE)
+                    .post(Entity.entity(jsonArray.toString(), MediaType.APPLICATION_JSON_TYPE))
+            return apiResponse
+        }
+        catch (Exception ex)
+        {
+            System.err.println('Service :salesService , action :  saveSaleProductDetailList  , Ex:' + ex)
+            log.error('Service :salesService , action :  saveSaleProductDetailList  , Ex:' + ex)
+        }
+    }
 
     def updateSaleProductDetail(JSONObject jsonObject)
     {

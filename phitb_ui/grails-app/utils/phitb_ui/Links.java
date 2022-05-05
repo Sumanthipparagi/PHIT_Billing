@@ -380,6 +380,7 @@ public class Links
     //Sale Product Details
     public static String SALE_PRODUCT_SHOW = "api/v1.0/sales/saleproductdetails";
     public static String SALE_PRODUCT_SAVE = "api/v1.0/sales/saleproductdetails";
+    public static String SALE_PRODUCT_SAVE_LIST = "api/v1.0/sales/saleproductdetails/savelist";
     public static String SALE_PRODUCT_DATATABLE = "api/v1.0/sales/saleproductdetails/datatable";
     public static String SALE_PRODUCT_UPDATE = "api/v1.0/sales/saleproductdetails/{id}";
     public static String SALE_PRODUCT_DELETE = "api/v1.0/sales/saleproductdetails/{id}";
