@@ -799,12 +799,12 @@
             data        : formData.serialize(), // our data object
             success:function(data){
                 $("#validation-status").text(data);
-                alert('success','Password Changed Successfully',data);
+                swal('success','Password Changed Successfully',data);
             },
             error:function(data){
                 console.log("Failed");
                 $("#validation-status").text(data.responseText);
-                alert('error','Password Change Failed',data.responseText);
+                swal('error','Password Change Failed',data.responseText);
             }
         });
         event.preventDefault();
@@ -817,13 +817,13 @@
             url         : formData.attr('action'), // the url where we want to POST
             data        : formData.serialize(), // our data object
             success:function(data){
-                $("#validation-status").text(data);
-                alert('success','Password Changed Successfully',data);
+                // $("#validation-status").text(data);
+                swal('success','User updated Successfully',data);
             },
             error:function(data){
                 console.log("Failed");
-                $("#validation-status").text(data.responseText);
-                alert('error','Password Change Failed',data.responseText);
+                // $("#validation-status").text(data.responseText);
+                swal('error','User update Failed',data.responseText);
             }
         });
         event.preventDefault();
