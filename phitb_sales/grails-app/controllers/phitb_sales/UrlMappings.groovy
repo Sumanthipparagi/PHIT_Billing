@@ -309,6 +309,8 @@ class UrlMappings {
             "/reports/consolidated(.$format)?"(controller: 'reports', action: 'getConsolidatedBillDetails')
 
             "/salebilldetails/updateirn(.$format)?"(controller: 'saleBillDetails', action: 'updateIRNDetails')
+            "/salebilldetails/save-invoice(.$format)?"(controller: 'saleBillDetails', action: 'saveInvoice')
+            "/salebilldetails/update-invoice/$id(.$format)?"(controller: 'saleBillDetails', action: 'updateInvoice')
 
         }
     }

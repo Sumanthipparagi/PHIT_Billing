@@ -377,6 +377,9 @@ public class Links
     public static String SALE_SCHEME_CONFIG_GET_PRODUCT_BATCH = "api/v1.0/sales/schemeconfiguration/product/$productId/batch/$batchNumber";
 
 
+    public static String SALE_INVOICE_SAVE = "api/v1.0/sales/salebilldetails/save-invoice";
+    public static String SALE_INVOICE_UPDATE = "api/v1.0/sales/salebilldetails/update-invoice";
+
     //Sale Product Details
     public static String SALE_PRODUCT_SHOW = "api/v1.0/sales/saleproductdetails";
     public static String SALE_PRODUCT_SAVE = "api/v1.0/sales/saleproductdetails";

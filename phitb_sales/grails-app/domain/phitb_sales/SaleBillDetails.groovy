@@ -68,6 +68,9 @@ class SaleBillDetails implements Serializable, LogicalDelete<SaleBillDetails>
         cancelledDate nullable: true
         orderDate nullable: true
         uuid unique: true
+        totalSqty min: 0D
+        totalFqty min: 0D
+        totalQty min: 0D
     }
 
     static mapping = {

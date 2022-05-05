@@ -88,6 +88,58 @@ class SalesService
 
     }
 
+    /*
+    contains both sale bill and products
+     */
+    def saveSaleInvoice(JSONObject jsonObject)
+    {
+        Client client = ClientBuilder.newClient();
+        //WebTarget target = client.target(new Links().API_GATEWAY)
+        WebTarget target = client.target("http://localhost:8083")
+        try
+        {
+            println(jsonObject)
+            Response apiResponse = target
+                    .path(new Links().SALE_INVOICE_SAVE)
+                    .request(MediaType.APPLICATION_JSON_TYPE)
+                    .post(Entity.entity(jsonObject.toString(), MediaType.APPLICATION_JSON_TYPE))
+            println(apiResponse)
+            return apiResponse
+        }
+        catch (Exception ex)
+        {
+            System.err.println('Service :salesService , action :  saveSaleInvoice  , Ex:' + ex)
+            log.error('Service :salesService , action :  saveSaleInvoice  , Ex:' + ex)
+        }
+
+    }
+
+    /*
+contains both sale bill and products
+ */
+    def updateSaleInvoice(JSONObject jsonObject, String id)
+    {
+        Client client = ClientBuilder.newClient();
+        //WebTarget target = client.target(new Links().API_GATEWAY)
+        WebTarget target = client.target("http://localhost:8083")
+        try
+        {
+            println(jsonObject)
+            Response apiResponse = target
+                    .path(new Links().SALE_INVOICE_UPDATE + "/" +id)
+                    .request(MediaType.APPLICATION_JSON_TYPE)
+                    .put(Entity.entity(jsonObject.toString(), MediaType.APPLICATION_JSON_TYPE))
+            println(apiResponse)
+            return apiResponse
+        }
+        catch (Exception ex)
+        {
+            System.err.println('Service :salesService , action :  updateSaleInvoice  , Ex:' + ex)
+            log.error('Service :salesService , action :  updateSaleInvoice  , Ex:' + ex)
+        }
+
+    }
+
     def saveSaleBill(JSONObject jsonObject)
     {
         Client client = ClientBuilder.newClient();
