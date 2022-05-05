@@ -818,12 +818,12 @@
             data        : formData.serialize(), // our data object
             success:function(data){
                 // $("#validation-status").text(data);
-                swal('success','User updated Successfully',data);
+               alert('success','User updated Successfully',data);
             },
             error:function(data){
                 console.log("Failed");
                 // $("#validation-status").text(data.responseText);
-                swal('error','User update Failed',data.responseText);
+                alert('error','User update Failed',data.responseText);
             }
         });
         event.preventDefault();
