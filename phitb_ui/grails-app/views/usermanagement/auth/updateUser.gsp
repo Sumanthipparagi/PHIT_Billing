@@ -70,177 +70,24 @@
                                     <div id="m_area_chart"></div>
                                 </div>
                             </div>
-                            <div class="col-lg-2 col-md-12 user_earnings">
-                                <h6>Total Earnings</h6>
-                                <h4>$<small class="number count-to" data-from="0" data-to="2124" data-speed="1500" data-fresh-interval="1000">2124</small></h4>
-                                <input type="text" class="knob" value="39" data-width="80" data-height="80" data-thickness="0.1" data-bgcolor="#485058" data-fgColor="#f97c53">
-                                <span>Average 39% <i class="zmdi zmdi-caret-up text-success"></i></span>
-                            </div>
+%{--                            <div class="col-lg-2 col-md-12 user_earnings">--}%
+%{--                                <h6>Total Earnings</h6>--}%
+%{--                                <h4>$<small class="number count-to" data-from="0" data-to="2124" data-speed="1500" data-fresh-interval="1000">2124</small></h4>--}%
+%{--                                <input type="text" class="knob" value="39" data-width="80" data-height="80" data-thickness="0.1" data-bgcolor="#485058" data-fgColor="#f97c53">--}%
+%{--                                <span>Average 39% <i class="zmdi zmdi-caret-up text-success"></i></span>--}%
+%{--                            </div>--}%
                         </div>
                     </div>
                     <ul class="nav nav-tabs profile_tab">
-%{--                        <li class="nav-item"><a class="nav-link" data-toggle="tab" href="#overview">Overview</a></li>--}%
-%{--                        <li class="nav-item"><a class="nav-link" data-toggle="tab" href="#schedule">Schedule</a></li>--}%
-                        <li class="nav-item"><a class="nav-link active" data-toggle="tab" href="#usersettings">Settings</a></li>
+                        <li class="nav-item"><a class="nav-link active" data-toggle="tab" href="#overview">Overview</a></li>
+                        <li class="nav-item"><a class="nav-link" data-toggle="tab" href="#schedule">Schedule</a></li>
+                        <li class="nav-item"><a class="nav-link" data-toggle="tab" href="#usersettings">Settings</a></li>
                     </ul>
                 </div>
                 <div class="tab-content">
-                    <div role="tabpanel" class="tab-pane" id="overview">
+                    <div role="tabpanel" class="tab-pane active" id="overview">
                         <div class="row">
-                            <div class="col-lg-3 col-md-6 col-6">
-                                <div class="card text-center">
-                                    <div class="body">
-                                        <i class="zmdi zmdi-thumb-up zmdi-hc-2x"></i>
-                                        <h5 class="m-b-0 number count-to" data-from="0" data-to="1203" data-speed="1000" data-fresh-interval="700">1203</h5>
-                                        <small>Likes</small>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-lg-3 col-md-6 col-6">
-                                <div class="card text-center">
-                                    <div class="body">
-                                        <i class="zmdi zmdi-comment-text zmdi-hc-2x"></i>
-                                        <h5 class="m-b-0 number count-to" data-from="0" data-to="324" data-speed="1000" data-fresh-interval="700">324</h5>
-                                        <small>Comments</small>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-lg-3 col-md-6 col-6">
-                                <div class="card text-center">
-                                    <div class="body">
-                                        <i class="zmdi zmdi-eye zmdi-hc-2x"></i>
-                                        <h5 class="m-b-0 number count-to" data-from="0" data-to="1980" data-speed="1000" data-fresh-interval="700">1980</h5>
-                                        <small>Views</small>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-lg-3 col-md-6 col-6">
-                                <div class="card text-center">
-                                    <div class="body">
-                                        <i class="zmdi zmdi-attachment zmdi-hc-2x"></i>
-                                        <h5 class="m-b-0 number count-to" data-from="0" data-to="52" data-speed="1000" data-fresh-interval="700">52</h5>
-                                        <small>Attachment</small>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-lg-4 col-md-12">
-                                <div class="card">
-                                    <div class="header">
-                                        <h2><strong>Info</strong></h2>
-                                        <ul class="header-dropdown">
-                                            <li class="dropdown"> <a href="javascript:void(0);" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"> <i class="zmdi zmdi-more"></i> </a>
-                                                <ul class="dropdown-menu dropdown-menu-right">
-                                                    <li><a href="javascript:void(0);">Action</a></li>
-                                                    <li><a href="javascript:void(0);">Another action</a></li>
-                                                    <li><a href="javascript:void(0);">Something else</a></li>
-                                                    <li><a href="javascript:void(0);" class="boxs-close">Delete</a></li>
-                                                </ul>
-                                            </li>
-                                        </ul>
-                                    </div>
-                                    <div class="body">
-                                        <small class="text-muted">Address: </small>
-                                        <p>795 Folsom Ave, Suite 600 San Francisco, 94107</p>
-                                        <div>
-                                            <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d1923731.7533500232!2d-120.39098936853455!3d37.63767091877441!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x80859a6d00690021%3A0x4a501367f076adff!2sSan+Francisco%2C+CA%2C+USA!5e0!3m2!1sen!2sin!4v1522391841133" width="100%" height="150" frameborder="0" style="border:0" allowfullscreen></iframe>
-                                        </div>
-                                        <hr>
-                                        <small class="text-muted">Email address: </small>
-                                        <p>michael@gmail.com</p>
-                                        <hr>
-                                        <small class="text-muted">Phone: </small>
-                                        <p>+ 202-555-9191</p>
-                                        <hr>
-                                        <small class="text-muted">Mobile: </small>
-                                        <p>+ 202-555-2828</p>
-                                        <hr>
-                                        <small class="text-muted">Birth Date: </small>
-                                        <p class="m-b-0">October 22th, 1990</p>
-                                    </div>
-                                </div>
-                                <div class="card">
-                                    <div class="header">
-                                        <h2><strong>Who</strong> to follow</h2>
-                                        <ul class="header-dropdown">
-                                            <li class="dropdown"> <a href="javascript:void(0);" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"> <i class="zmdi zmdi-more"></i> </a>
-                                                <ul class="dropdown-menu dropdown-menu-right">
-                                                    <li><a href="javascript:void(0);">Action</a></li>
-                                                    <li><a href="javascript:void(0);">Another action</a></li>
-                                                    <li><a href="javascript:void(0);">Something else</a></li>
-                                                    <li><a href="javascript:void(0);" class="boxs-close">Delete</a></li>
-                                                </ul>
-                                            </li>
-                                        </ul>
-                                    </div>
-                                    <div class="body">
-                                        <ul class="follow_us list-unstyled m-b-0">
-                                            <li class="online">
-                                                <a href="javascript:void(0);">
-                                                    <div class="media">
-                                                        <img class="media-object " src="assets/images/xs/avatar4.jpg" alt="">
-                                                        <div class="media-body">
-                                                            <span class="name">Chris Fox</span>
-                                                            <span class="message">Designer, Blogger</span>
-                                                            <span class="badge badge-outline status"></span>
-                                                        </div>
-                                                    </div>
-                                                </a>
-                                            </li>
-                                            <li class="online">
-                                                <a href="javascript:void(0);">
-                                                    <div class="media">
-                                                        <img class="media-object " src="assets/images/xs/avatar5.jpg" alt="">
-                                                        <div class="media-body">
-                                                            <span class="name">Joge Lucky</span>
-                                                            <span class="message">Java Developer</span>
-                                                            <span class="badge badge-outline status"></span>
-                                                        </div>
-                                                    </div>
-                                                </a>
-                                            </li>
-                                            <li class="offline">
-                                                <a href="javascript:void(0);">
-                                                    <div class="media">
-                                                        <img class="media-object " src="assets/images/xs/avatar2.jpg" alt="">
-                                                        <div class="media-body">
-                                                            <span class="name">Isabella</span>
-                                                            <span class="message">CEO, Thememakker</span>
-                                                            <span class="badge badge-outline status"></span>
-                                                        </div>
-                                                    </div>
-                                                </a>
-                                            </li>
-                                            <li class="offline">
-                                                <a href="javascript:void(0);">
-                                                    <div class="media">
-                                                        <img class="media-object " src="assets/images/xs/avatar1.jpg" alt="">
-                                                        <div class="media-body">
-                                                            <span class="name">Folisise Chosielie</span>
-                                                            <span class="message">Art director, Movie Cut</span>
-                                                            <span class="badge badge-outline status"></span>
-                                                        </div>
-                                                    </div>
-                                                </a>
-                                            </li>
-                                            <li class="online">
-                                                <a href="javascript:void(0);">
-                                                    <div class="media">
-                                                        <img class="media-object " src="assets/images/xs/avatar3.jpg" alt="">
-                                                        <div class="media-body">
-                                                            <span class="name">Alexander</span>
-                                                            <span class="message">Writter, Mag Editor</span>
-                                                            <span class="badge badge-outline status"></span>
-                                                        </div>
-                                                    </div>
-                                                </a>
-                                            </li>
-                                        </ul>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-lg-8 col-md-12">
+                            <div class="col-lg-12 col-md-12">
                                 <div class="card">
                                     <div class="header">
                                         <h2><strong>Add</strong> Post</h2>
@@ -256,30 +103,416 @@
                                         </ul>
                                     </div>
                                     <div class="body m-b-10">
-                                        <div class="form-group">
-                                            <textarea rows="4" class="form-control no-resize" placeholder="Please type what you want..."></textarea>
-                                        </div>
-                                        <div class="post-toolbar-b">
-                                            <button class="btn btn-warning btn-icon btn-icon-mini btn-round"><i class="zmdi zmdi-attachment"></i></button>
-                                            <button class="btn btn-warning btn-icon btn-icon-mini btn-round"><i class="zmdi zmdi-camera"></i></button>
-                                            <button class="btn btn-primary btn-round">Post</button>
-                                        </div>
-                                    </div>
-                                    <div class="body">
-                                        <div class="post-img">
-                                            <img src="${assetPath(src: '/themeassets/images/profile_av.jpg')}" class="img-fluid" alt="">
-                                        </div>
-                                        <h5 class="m-t-20 m-b-0 post_title">It is a long established fact that a be distracted</h5>
-                                        <p>If you are going to use a passage of Lorem Ipsum, you need to be sure there isn't anything embarrassing hidden in the middle of text</p>
-                                        <div class="form-group m-b-0">
-                                            <button class="btn btn-info btn-round">Like 5</button>
-                                            <button class="btn btn-primary btn-simple btn-round">Reply</button>
-                                            <span class="date m-l-20"><i class="zmdi zmdi-alarm"></i> 7min ago</span>
-                                        </div>
+                                        <form action="/user-register/update/${user.id}" id="form_validation" method="POST"
+                                              role="form"
+                                              class="entityRegisterForm" enctype="multipart/form-data">
+                                            <div class="row clearfix">
+                                                <div class="col-lg-6 form-group  form-float">
+                                                    <label for="userName">
+                                                        User Name
+                                                    </label>
+                                                    <input type="text" id="userName" class="form-control userName" name="userName"
+                                                           placeholder="User Name" value="${user.userName}"
+                                                           required/>
+                                                </div>
+
+                                                <div class="col-lg-6 form-group  form-float">
+                                                    <label for="mobileNumber">
+                                                        Mobile Number
+                                                    </label>
+                                                    <input type="text" id="mobileNumber" class="form-control mobileNumber" name="mobileNumber"
+                                                           placeholder="Mobile Number" value="${user.mobileNumber}"
+                                                           required/>
+                                                </div>
+
+                                                <div class="col-lg-6 form-group  form-float">
+                                                    <label for="contactNumber">
+                                                        Contact Number
+                                                    </label>
+                                                    <input type="text" id="contactNumber" class="form-control contactNumber" name="contactNumber"
+                                                           placeholder="Contact Number"  value="${user.contactNumber}"
+                                                           required/>
+                                                </div>
+
+                                                <div class="col-lg-6 form-group  form-float">
+                                                    <label for="aadharId">
+                                                        Aadhar Id
+                                                    </label>
+                                                    <input type="text" id="aadharId" class="form-control aadharId" name="aadharId"
+                                                           placeholder="Aadhar Id"  value="${user.aadharId}"
+                                                           required/>
+                                                </div>
+
+
+                                                <div class="col-lg-6 form-group  form-float">
+                                                    <label for="reportTo">
+                                                        Report To
+                                                    </label>
+                                                    <select class="form-control show-tick reportTo" name="reportTo" id="reportTo">
+                                                        <g:each var="u" in="${userList}">
+                                                            <option value="${u.id}"
+                                                                    <g:if test="${u.id == user.reportTo}">selected</g:if>>${u.userName}</option>
+                                                        </g:each>
+                                                    </select>
+                                                </div>
+
+                                                <div class="col-lg-6 form-group  form-float">
+                                                    <label for="email">
+                                                        Email
+                                                    </label>
+                                                    <input type="email" id="email" class="form-control email"
+                                                           name="email" placeholder="Email" value="${user.email}"
+                                                           required/>
+                                                </div>
+
+
+                                                <div class="col-lg-6 form-group  form-float">
+                                                    <label for="genderId">
+                                                        Gender
+                                                    </label>
+                                                    <select class="form-control show-tick genderId" name="genderId" id="genderId">
+                                                        <g:each var="g" in="${genderList}">
+                                                            <option value="${g.id}" <g:if
+                                                                    test="${g.id == user.genderId}">selected</g:if>>${g.name}</option>
+                                                        </g:each>
+                                                    </select>
+                                                </div>
+
+                                                %{--                                <div class="col-lg-6 form-group  form-float">--}%
+                                                %{--                                    <label for="photo">--}%
+                                                %{--                                        Photo--}%
+                                                %{--                                    </label>--}%
+                                                %{--                                    --}%%{--                                    <input type="file" id="input-file-now photo" class="dropify"--}%
+                                                %{--                                    --}%%{--                                           data-default-file=""--}%
+                                                %{--                                    --}%%{--                                           name="photo"  accept="image/png, image/gif, image/jpeg"/>--}%
+                                                %{--                                    <input type="file" id="input-file-now photo" class="dropify"--}%
+                                                %{--                                           data-default-file="/api/media/user/${user.photo}"--}%
+                                                %{--                                           name="photo"  accept="image/png, image/gif, image/jpeg"/>--}%
+                                                %{--                                </div>--}%
+                                                <input type="hidden" id="photo" class="form-control photo"
+                                                       name="nationality" placeholder="Nationality"  value="1" />
+
+
+                                                <div class="col-lg-6 form-group  form-float">
+                                                    <label for="nationality">
+                                                        Nationality
+                                                    </label>
+                                                    <input type="text" id="nationality" class="form-control nationality"
+                                                           name="nationality" placeholder="Nationality"  value="${user.nationality}"
+                                                           required/>
+                                                </div>
+
+                                                <div class="col-lg-6 form-group  form-float">
+                                                    <label for="genderId">
+                                                        Address
+                                                    </label>
+                                                    <input type="text" id="address" class="form-control address"
+                                                           name="address" placeholder="Address" value="${user.address}"
+                                                           required/>
+                                                </div>
+
+                                                <div class="col-lg-6 form-group  form-float">
+                                                    <label for="countryId">
+                                                        Country
+                                                    </label>
+                                                    <select class="form-control show-tick countryId" name="countryId" id="countryId">
+                                                        <g:each var="country" in="${countrylist}">
+                                                            <option value="${country.id}"  <g:if test="${country.id == user.countryId}">selected</g:if>>${country.name}</option>
+                                                        </g:each>
+                                                    </select>
+                                                </div>
+
+                                                <div class="col-lg-6 form-group  form-float">
+                                                    <label for="stateId">
+                                                        State
+                                                    </label>
+                                                    <select class="form-control show-tick stateId" name="stateId" id="stateId">
+                                                        <g:each var="state" in="${statelist}">
+                                                            <option value="${state.id}"  <g:if test="${state.id == user.stateId}">selected</g:if>   >${state.name}</option>
+                                                        </g:each>
+                                                    </select>
+                                                </div>
+
+                                                <div class="col-lg-6 form-group  form-float">
+                                                    <label for="cityId">
+                                                        City
+                                                    </label>
+                                                    <select class="form-control show-tick cityId" name="cityId" id="cityId">
+                                                        <g:each var="city" in="${citylist}">
+                                                            <option value="${city.id}" <g:if test="${city.id == user.cityId}">selected</g:if> >${city.name}</option>
+                                                        </g:each>
+                                                    </select>
+                                                </div>
+
+                                                <div class="col-lg-6 form-group  form-float">
+                                                    <label for="referredBy">
+                                                        Referred By
+                                                    </label>
+                                                    <select class="form-control show-tick referredBy" name="referredBy" id="referredBy">
+                                                        <g:each var="u" in="${userregister}">
+                                                            <option value="${u.id}" <g:if test="${u.id == user.referredBy}">selected</g:if> >${u.userName}</option>
+                                                        </g:each>
+                                                    </select>
+                                                </div>
+
+                                                <div class="col-lg-6 form-group  form-float">
+                                                    <label for="referenceRelation">
+                                                        Reference Relation
+                                                    </label>
+                                                    <input type="text" id="referenceRelation" class="form-control referenceRelation"
+                                                           name="referenceRelation" placeholder="Reference Relation" value="${user.referenceRelation}"
+                                                           required/>
+                                                </div>
+
+                                                <div class="col-lg-6 form-group  form-float">
+                                                    <label for="pincode">
+                                                        Pincode
+                                                    </label>
+                                                    <input type="text" id="pincode" class="form-control pincode"
+                                                           name="pincode" placeholder="pincode"  value="${user.pincode}"
+                                                           required/>
+                                                </div>
+
+
+
+                                                <div class="col-lg-6 form-group  form-float">
+                                                    <label for="joiningDate">
+                                                        Joining Date
+                                                    </label>
+                                                    <input type="text" id="joiningDate" class="form-control joiningDate"
+                                                           name="joiningDate" placeholder="Joining Date"
+                                                           required/>
+                                                </div>
+
+
+                                                <div class="col-lg-6 form-group  form-float">
+                                                    <label for="department">
+                                                        Department
+                                                    </label>
+                                                    <select class="form-control show-tick department" name="department" id="department">
+                                                        <g:each var="d" in="${department}">
+                                                            <option value="${d.id}" <g:if
+                                                                    test="${d.id == user.department}">selected</g:if>>${d.name}</option>
+                                                        </g:each>
+                                                    </select>
+                                                </div>
+
+
+
+
+                                                <div class="col-lg-6 form-group  form-float">
+                                                    <label for="permissions">
+                                                        Permissions
+                                                    </label>
+                                                    <input type="text" id="permissions" class="form-control permissions"
+                                                           name="permissions" placeholder="Permissions" value="${user.permissions}"
+                                                           required/>
+                                                </div>
+
+                                                <div class="col-lg-6 form-group  form-float">
+                                                    <label for="dob">
+                                                        Date of Birth
+                                                    </label>
+                                                    <input type="text" id="dob" class="form-control dob"
+                                                           name="dob" placeholder="Date of Birth"
+                                                           required/>
+                                                </div>
+
+                                                <div class="col-lg-6 form-group  form-float">
+                                                    <label for="anniversaryDate">
+                                                        Anniversary Date
+                                                    </label>
+                                                    <input type="text" id="anniversaryDate" class="form-control anniversaryDate"
+                                                           name="anniversaryDate" placeholder="Anniversary Date"
+                                                           required/>
+                                                </div>
+
+                                                <div class="col-lg-6 form-group  form-float">
+                                                    <label for="approvedSalary">
+                                                        Approved Salary
+                                                    </label>
+                                                    <input type="number" id="approvedSalary" class="form-control approvedSalary"
+                                                           name="approvedSalary" placeholder="Approved Salary" value="${user.approvedSalary}"
+                                                           required/>
+                                                </div>
+
+
+                                                <div class="col-lg-6 form-group  form-float">
+                                                    <label for="designationSalary">
+                                                        Designation Salary
+                                                    </label>
+                                                    <input type="number" id="designationSalary" class="form-control designationSalary"
+                                                           name="designationSalary" placeholder="Designation Salary" value="${user.designationSalary}"
+                                                           required/>
+                                                </div>
+
+
+                                                <div class="col-lg-6 form-group  form-float">
+                                                    <label for="lastPaidDate">
+                                                        Last Paid Date
+                                                    </label>
+                                                    <input type="text" id="lastPaidDate" class="form-control lastPaidDate"
+                                                           name="lastPaidDate" placeholder="Last Paid Date"
+                                                           required/>
+                                                </div>
+
+                                                <div class="col-lg-6 form-group  form-float">
+                                                    <label for="paymentModeId">
+                                                        Payment Id
+                                                    </label>
+                                                    <input type="text" id="paymentModeId" class="form-control paymentModeId"
+                                                           name="paymentModeId" placeholder="Payment Id" value="${user.paymentModeId}"
+                                                           required/>
+                                                </div>
+
+                                                <div class="col-lg-6 form-group  form-float">
+                                                    <label for="bankAccount">
+                                                        Bank Account
+                                                    </label>
+                                                    <input type="text" id="bankAccount" class="form-control bankAccount"
+                                                           name="bankAccount" placeholder="Bank Account" value="${user.bankAccount}"
+                                                           required/>
+                                                </div>
+
+                                                <div class="col-lg-6 form-group  form-float">
+                                                    <label for="bankId">
+                                                        Bank
+                                                    </label>
+                                                    <select class="form-control show-tick bankId" name="bankId" id="bankId">
+                                                        <g:each var="b" in="${bank}">
+                                                            <option value="${b.id}"
+                                                                    <g:if test="${b.id == user.bankId}">selected</g:if>
+                                                            >${b.bankName}</option>
+                                                        </g:each>
+                                                    </select>
+                                                </div>
+
+
+                                                <div class="col-lg-6 form-group  form-float">
+                                                    <label for="assignedHolidays">
+                                                        Assigned Holidays
+                                                    </label>
+                                                    <input type="text" id="assignedHolidays" class="form-control assignedHolidays"
+                                                           name="assignedHolidays" placeholder="Assigned Holidays" value="${user.assignedHolidays}" required/>
+                                                </div>
+
+                                                <div class="col-lg-6 form-group  form-float">
+                                                    <label for="specialization">
+                                                        Specialization
+                                                    </label>
+                                                    <input type="text" id="specialization" class="form-control specialization"
+                                                           name="specialization" placeholder="Specialization" value="${user.specialization}"
+                                                           required/>
+                                                </div>
+
+                                                <div class="col-lg-6 form-group  form-float">
+                                                    <label for="licenceNumber">
+                                                        Licence Number
+                                                    </label>
+                                                    <input type="text" id="licenceNumber" class="form-control licenceNumber"
+                                                           name="licenceNumber" placeholder="Licence Number" value="${user.licenceNumber}"
+                                                           required/>
+                                                </div>
+
+                                                <div class="col-lg-6 form-group  form-float">
+                                                    <label for="account">
+                                                        Account
+                                                    </label>
+                                                    <select class="form-control show-tick account" name="account" id="account">
+                                                        <g:each var="a" in="${account}">
+                                                            <option value="${a.id}"
+                                                                    <g:if test="${a.id == user.account.id}">selected</g:if>
+                                                            >${a.accountName}</option>
+                                                        </g:each>
+                                                    </select>
+                                                </div>
+
+                                                <div class="col-lg-6 form-group  form-float">
+                                                    <label for="role">
+                                                        Role
+                                                    </label>
+                                                    <select class="form-control show-tick role" name="role" id="role">
+                                                        <g:each var="r" in="${roles}">
+                                                            <option value="${r.id}"
+                                                                    <g:if test="${r.id == user.role.id}">selected</g:if>
+                                                            >${r.name}</option>
+                                                        </g:each>
+                                                    </select>
+                                                </div>
+
+
+                                                <div class="col-lg-6 form-group  form-float">
+                                                    <label for="divisionId">
+                                                        Division
+                                                    </label>
+                                                    <select class="form-control show-tick divisionId" name="divisionId" id="divisionId">
+                                                        <g:each var="d" in="${division}">
+                                                            <option value="${d.id}"
+                                                                    <g:if test="${d.id == user.division}">selected</g:if>
+                                                            >${d.divisionName}</option>
+                                                        </g:each>
+                                                    </select>
+                                                </div>
+
+                                                %{--                                <div class="col-lg-6 form-group  form-float">--}%
+                                                %{--                                    <label for="entityType">--}%
+                                                %{--                                        Entity Type--}%
+                                                %{--                                    </label>--}%
+                                                %{--                                    <select class="form-control show-tick entityType" name="entityType" id="entityType">--}%
+                                                %{--                                        <g:each var="et" in="${entitytype}">--}%
+                                                %{--                                            <option value="${et.id}"  <g:if--}%
+                                                %{--                                                    test="${et.id == user.entityType}">selected</g:if> >${et.name}</option>--}%
+                                                %{--                                        </g:each>--}%
+                                                %{--                                    </select>--}%
+                                                %{--                                </div>--}%
+
+                                                <div class="col-lg-6 form-group  form-float">
+                                                    <label for="entity">
+                                                        Entity
+                                                    </label>
+                                                    <select class="form-control show-tick entity" name="entity" id="entity" required>
+                                                        <g:each var="e" in="${entity}">
+                                                            <option value="${e.id}" data-type="${e.entityType.id}" <g:if
+                                                                    test="${e.id == user.entity}">selected</g:if> >${e.entityName}</option>
+                                                        </g:each>
+                                                    </select>
+                                                </div>
+
+
+                                                <div class="col-lg-6 form-group  form-float">
+                                                    <label for="zoneId">
+                                                        Zone
+                                                    </label>
+                                                    <select class="form-control show-tick zoneId" name="zoneId" id="zoneId">
+                                                        <g:each var="zone" in="${zoneList}">
+                                                            <option value="${zone.id}" <g:if test="${zone.id == user.zoneId}">selected</g:if> >${zone.name}</option>
+                                                        </g:each>
+                                                    </select>
+                                                </div>
+
+                                                <input type="hidden" id="entityTypeId" class="entityType" name="entityType">
+                                                <input type="hidden" name="status" value="1">
+                                                <input type="hidden" name="syncStatus" value="1">
+                                                <input type="hidden" name="lastLoginDate" value="12/02/2020">
+                                                <input type="hidden" name="createdUser" value="1">
+                                                <input type="hidden" name="modifiedUser" value="1">
+                                                <div class="col-lg-12">
+                                                    <div class="" style="float: right;">
+                                                        <input name="id" id="id" class="id" type="hidden">
+                                                        <input name="type" class="type" value="add" type="hidden">
+                                                        <button type="submit" class="btn btn-primary btn-round" name="submituser"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">SUBMIT</font></font></button>
+                                                        <button type="reset" class="btn btn-danger btn-simple btn-round waves-effect"
+                                                                data-dismiss="modal"><font style="vertical-align: inherit;"><font
+                                                                style="vertical-align: inherit;">RESET</font></font></button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </form>
                                     </div>
                                 </div>
                             </div>
                         </div>
+
                     </div>
 
                     <div role="tabpanel" class="tab-pane page-calendar" id="schedule">
@@ -358,27 +591,41 @@
                         </div>
                     </div>
 
-                    <div role="tabpanel" class="tab-pane active" id="usersettings">
+                    <div role="tabpanel" class="tab-pane" id="usersettings">
                         <div class="card">
                             <div class="header">
                                 <h2><strong>Security</strong> Settings</h2>
                             </div>
-                            <form action="/user/update-password" method="post" id="changePassword">
+                            <form action="/user/update-password" method="post" id="updatePassword">
                             <div class="body">
 %{--                                <div class="form-group">--}%
 %{--                                    <input type="text" class="form-control" placeholder="Username">--}%
 %{--                                </div>--}%
                                 <div class="form-group">
-                                    <input type="password" name="password" id="password" class="form-control"
-                                           placeholder="Enter Password">
+                                <input
+                                       type="password"
+                                       class="form-control new_password"
+                                       id="new_password"
+                                       name="new_password"
+                                       placeholder="Enter New Password"
+                                       required>
                                 </div>
                                 <div class="form-group">
-                                    <input type="password" class="form-control" id="confirm_password" placeholder="Confirm Password">
-                                    <span id='message'></span>
+                                    <input type="password"
+                                           class="form-control repeat_password"
+                                           id="repeat_password"
+                                           name="repeat_password"
+                                           placeholder="Repeat Password"
+                                           onkeyup="validate();" required>
                                 </div>
+                                <br>
+
+                                <p>
+                                    <small class="validation-status"></small>
+                                </p>
                                 <input type="hidden" name="id" value="${user.id}">
 
-                                <button class="btn btn-info btn-round">Save Changes</button>
+                                <button class="btn btn-info btn-round passwordChangebtn">Save Changes</button>
                             </div>
                             </form>
                         </div>
@@ -471,20 +718,53 @@
 <g:include view="controls/footer-content.gsp"/>
 
 <script>
-    $('#password, #confirm_password').on('keyup', function () {
-        if ($('#password').val() == $('#confirm_password').val()) {
-            $('#message').html('Matching').css('color', 'green');
-
-        } else
-        {
-            $('#message').html('Not Matching').css('color', 'red');
-        }
-
-    });
+    // $('#password, #confirm_password').on('keyup', function () {
+    //     if ($('#password').val() == $('#confirm_password').val()) {
+    //         $('#message').html('Matching').css('color', 'green');
+    //
+    //     } else
+    //     {
+    //         $('#message').html('Not Matching').css('color', 'red');
+    //     }
+    //
+    // });
 
     // var text = $('#message').text()
     // alert(text)
 
+
+    function validate() {
+        var password1 = $(".new_password").val();
+        var password2 = $(".repeat_password").val();
+        if (password1 !== password2) {
+            $(".validation-status").text("Passwords do not match!");
+            $(".passwordChangebtn").attr("disabled", "disabled");
+
+        }
+        else {
+            $(".validation-status").text("Passwords matched!");
+            $(".passwordChangebtn").removeAttr('disabled');
+        }
+    }
+
+    $('#updatePassword').submit(function(event) {
+        var formData = $(this);
+        $.ajax({
+            type        : 'POST', // define the type of HTTP verb we want to use (POST for our form)
+            url         : formData.attr('action'), // the url where we want to POST
+            data        : formData.serialize(), // our data object
+            success:function(data){
+                $("#validation-status").text(data);
+                alert('success','Password Changed Successfully',data);
+            },
+            error:function(data){
+                console.log("Failed");
+                $("#validation-status").text(data.responseText);
+                alert('error','Password Change Failed',data.responseText);
+            }
+        });
+        event.preventDefault();
+    });
 </script>
 
 <script>

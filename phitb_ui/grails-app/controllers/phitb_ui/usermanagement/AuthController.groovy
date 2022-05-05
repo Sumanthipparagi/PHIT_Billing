@@ -5,6 +5,16 @@ import org.grails.web.json.JSONObject
 import phitb_ui.AuthService
 import phitb_ui.EInvoiceService
 import phitb_ui.EntityService
+import phitb_ui.SystemService
+import phitb_ui.accounts.BankRegisterController
+import phitb_ui.entity.AccountRegisterController
+import phitb_ui.entity.RoleController
+import phitb_ui.entity.UserRegisterController
+import phitb_ui.product.DivisionController
+import phitb_ui.system.CityController
+import phitb_ui.system.CountryController
+import phitb_ui.system.StateController
+import phitb_ui.system.ZoneController
 
 class AuthController {
 
@@ -112,7 +122,23 @@ class AuthController {
             if(params.id!="")
             {
                 def user = new EntityService().getUser(params.id)
-                render(view: '/usermanagement/auth/updateUser', model: [user: user])
+                ArrayList<String> statelist = new StateController().show() as ArrayList<String>
+                ArrayList<String> countrylist = new CountryController().show() as ArrayList<String>
+                ArrayList<String> citylist = new CityController().show() as ArrayList<String>
+                ArrayList<String> zoneList = new ZoneController().show() as ArrayList<String>
+                ArrayList<String> userList = new UserRegisterController().show() as ArrayList<String>
+                ArrayList <String> genderList = new SystemService().getAllGender()
+                ArrayList <String> bank = new BankRegisterController().show() as ArrayList<String>
+                ArrayList <String> roles = new RoleController().show() as ArrayList<String>
+                ArrayList <String> division  = new DivisionController().show() as ArrayList<String>
+                ArrayList <String> account = new AccountRegisterController().getAllAccounts() as ArrayList<String>
+                def  department = new EntityService().getAllDepartment() as ArrayList<String>
+                render(view: '/usermanagement/auth/updateUser', model: [user: user,statelist:statelist,
+                                                                        countrylist:countrylist,citylist:citylist,
+                                                                        zoneList:zoneList,userList:userList,
+                                                                        genderList:genderList,department:department,
+                                                                        bank:bank,roles:roles,account:account,
+                                                                        division:division])
             }
             else
             {

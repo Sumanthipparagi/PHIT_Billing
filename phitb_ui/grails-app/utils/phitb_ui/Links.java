@@ -13,6 +13,10 @@ public class Links
     public static String ACCOUNT_MODES_UPDATE = "api/v1.0/system/accountmodes/{id}";
     public static String ACCOUNT_MODES_DELETE = "api/v1.0/system/accountmodes/{id}";
 
+//    Gender Master
+    public static String GENDER_MASTER_SHOW = "api/v1.0/system/gender";
+
+
     //    Payment Mode show
     public static String PAYMENT_MODE_SHOW = "api/v1.0/system/paymentmode";
 

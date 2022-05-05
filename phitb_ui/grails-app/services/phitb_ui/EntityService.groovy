@@ -1,5 +1,6 @@
 package phitb_ui
 
+import grails.converters.JSON
 import grails.gorm.transactions.Transactional
 import org.glassfish.jersey.jackson.JacksonFeature
 import org.grails.web.json.JSONArray
@@ -270,11 +271,10 @@ class EntityService {
 
     }
 
-    def putUser(JSONObject jsonObject, MultipartFile multipartFile)
+    def putUser(JSONObject jsonObject)
     {
         Client client = ClientBuilder.newClient()
         WebTarget target = client.target(new Links().API_GATEWAY)
-        File file = convert(multipartFile)
         try
         {
             Response apiResponse = target
@@ -2110,5 +2110,75 @@ class EntityService {
         }
 
     }
+
+
+    /**
+     *
+     * @param jsonObject
+     * @return
+     */
+    def getAllDepartment()
+    {
+        Client client = ClientBuilder.newClient();
+        WebTarget target = client.target(new Links().API_GATEWAY);
+        try
+        {
+            Response apiResponse = target
+                    .path(new Links().DEPARTMENT_MASTER_SHOW)
+                    .request(MediaType.APPLICATION_JSON_TYPE)
+                    .get()
+            if(apiResponse.status == 200)
+            {
+                JSONArray jsonArray = new JSONArray(JSON.parse(apiResponse.readEntity(String.class)) as Collection)
+                return jsonArray
+            }
+            else {
+                return null
+            }
+
+        }
+        catch (Exception ex)
+        {
+            System.err.println('Service :showAccountModes , action :  show  , Ex:' + ex)
+            log.error('Service :showAccountModes , action :  show  , Ex:' + ex)
+        }
+
+    }
+
+
+    /**
+     *
+     * @param jsonObject
+     * @return
+     */
+    def getAllRoles()
+    {
+        Client client = ClientBuilder.newClient();
+        WebTarget target = client.target(new Links().API_GATEWAY);
+        try
+        {
+            Response apiResponse = target
+                    .path(new Links().ROLE_MASTER_SHOW)
+                    .request(MediaType.APPLICATION_JSON_TYPE)
+                    .get()
+            if(apiResponse.status == 200)
+            {
+                return apiResponse
+            }
+            else {
+                return null
+            }
+
+        }
+        catch (Exception ex)
+        {
+            System.err.println('Service :showAccountModes , action :  show  , Ex:' + ex)
+            log.error('Service :showAccountModes , action :  show  , Ex:' + ex)
+        }
+
+    }
+
+
+
 
 }

@@ -13,37 +13,51 @@
     <!-- JQuery DataTable Css -->
     <asset:stylesheet rel="stylesheet" src="/themeassets/plugins/jquery-datatable/dataTables.bootstrap4.min.css"/>
     <!-- Custom Css -->
-    <asset:stylesheet  rel="stylesheet" src="/themeassets/css/main.css"/>
+    <asset:stylesheet rel="stylesheet" src="/themeassets/css/main.css"/>
     <asset:stylesheet rel="stylesheet" href="/themeassets/css/color_skins.css"/>
     <asset:stylesheet rel="stylesheet" href="/themeassets/plugins/sweetalert/sweetalert.css"/>
-    <asset:stylesheet  src="/themeassets/plugins/bootstrap-select/css/bootstrap-select.css" rel="stylesheet" />
-    <asset:stylesheet  src="/themeassets/js/pages/forms/basic-form-elements.js" rel="stylesheet" />
-    <asset:stylesheet  src="/themeassets/plugins/bootstrap-material-datetimepicker/css/bootstrap-material-datetimepicker.css" rel="stylesheet" />
+    <asset:stylesheet src="/themeassets/plugins/bootstrap-select/css/bootstrap-select.css" rel="stylesheet"/>
+    <asset:stylesheet src="/themeassets/js/pages/forms/basic-form-elements.js" rel="stylesheet"/>
+    <asset:stylesheet
+            src="/themeassets/plugins/bootstrap-material-datetimepicker/css/bootstrap-material-datetimepicker.css"
+            rel="stylesheet"/>
 
     <style>
 
-table.dataTable tbody td {
-    word-break: break-word;
-    vertical-align: top;
-}
+        div.dataTables_scrollBody table tbody  td {
+            word-wrap:break-word;
+            overflow: hidden;
+        }
 
-/*
-    div.dataTables_scrollBody table tbody  td {
-        border-top: none;
-        padding: 0.9px;
-        text-align: center;
 
+    /*table !* give class of table*!*/
+    /*{*/
+    /*    table-layout: fixed;*/
+    /*}*/
+
+
+    .editbtn {
+        padding: 1px 9px;
     }
-*/
 
+    .deletebtn {
+        padding: 1px 9px;
+    }
+
+    tbody td {
+        padding: 0px;
+    }
     </style>
 
 </head>
+
 <body class="theme-black">
 <!-- Page Loader -->
 <div class="page-loader-wrapper">
     <div class="loader">
-        <div class="m-t-30"><img src="${assetPath(src: '/themeassets/images/logo.svg')}" width="48" height="48" alt="Alpino"></div>
+        <div class="m-t-30"><img src="${assetPath(src: '/themeassets/images/logo.svg')}" width="48" height="48"
+                                 alt="Alpino"></div>
+
         <p>Please wait...</p>
     </div>
 </div>
@@ -60,6 +74,7 @@ table.dataTable tbody td {
                         <li class="breadcrumb-item active">Entity Register</li>
                     </ul>
                 </div>
+
                 <div class="col-lg-7 col-md-7 col-sm-12">
                     <div class="input-group m-b-0">
                         <input type="text" class="form-control" placeholder="Search...">
@@ -90,20 +105,24 @@ table.dataTable tbody td {
                     %{--                        </ul>--}%
                     %{--                    </div>--}%
                     <div class="header">
-                      <a href="/entity-register/add-entity-register">  <button type="button" class="btn btn-round btn-primary m-t-15 addbtn" data-toggle="modal"><font style="vertical-align: inherit;"><font
-                                  style="vertical-align: inherit;">Add Entity Regsiter</font></font></button></a>
+                        <a href="/entity-register/add-entity-register"><button type="button"
+                                                                               class="btn btn-round btn-primary m-t-15 addbtn"
+                                                                               data-toggle="modal"><font
+                                    style="vertical-align: inherit;"><font
+                                        style="vertical-align: inherit;">Add Entity Regsiter</font></font></button></a>
                     </div>
+
                     <div class="body">
                         <div class="table-responsive">
                             <table class="table table-bordered table-striped table-hover entityRegisterTable dataTable">
                                 <thead>
-                                    <tr>
-                                        <th>Entity Name</th>
-                                        <th>Entity Type</th>
-                                        <th>GSTIN</th>
-                                        <th>Address</th>
-                                        <th>Action</th>
-                                    </tr>
+                                <tr>
+                                    <th>Entity Name</th>
+                                    <th>Entity Type</th>
+                                    <th>GSTIN</th>
+                                    <th>Address</th>
+                                    <th>Action</th>
+                                </tr>
                                 </thead>
                                 <tbody>
 
@@ -179,7 +198,7 @@ table.dataTable tbody td {
                     var return_data = [];
                     for (var i = 0; i < json.data.length; i++) {
                         var editbtn =
-                            '<a href="/entity-register/update-entity-register/' + json.data[i].id +'"><button type="button" data-id="' + json.data[i].id +'"class="editbtn btn btn-sm btn-warning  editbtn"><i class="material-icons"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">edit</font></font></i></button></a>'
+                            '<a href="/entity-register/update-entity-register/' + json.data[i].id + '"><button type="button" data-id="' + json.data[i].id + '"class="editbtn btn btn-sm btn-warning  editbtn"><i class="material-icons"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">edit</font></font></i></button></a>'
                         var deletebtn = '<button type="button" data-id="' + json.data[i].id +
                             '" class="btn btn-sm btn-danger deletebtn" data-toggle="modal" data-target=".deleteModal"><i class="material-icons"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">delete</font></font></i></button>'
                         return_data.push({
@@ -187,7 +206,7 @@ table.dataTable tbody td {
                             'entityName': json.data[i].entityName,
                             'entityType': json.data[i].entityType.name,
                             'gstin': json.data[i].gstn,
-                            'address': json.data[i].addressLine2 + "<br>" + json.data[i].addressLine2,
+                            'address': json.data[i].addressLine1 + " " + json.data[i].addressLine2,
                             'action': editbtn + ' ' + deletebtn
                         });
                     }
