@@ -21,6 +21,8 @@
     <asset:stylesheet  src="/themeassets/js/pages/forms/basic-form-elements.js" rel="stylesheet" />
     <asset:stylesheet  src="/themeassets/plugins/bootstrap-material-datetimepicker/css/bootstrap-material-datetimepicker.css" rel="stylesheet" />
     <asset:stylesheet src="/themeassets/plugins/dropify/dist/css/dropify.min.css"/>
+    <asset:stylesheet rel="stylesheet" href="/themeassets/plugins/sweetalert/sweetalert.css"/>
+    <asset:stylesheet  src="/themeassets/plugins/bootstrap-material-datetimepicker/css/bootstrap-material-datetimepicker.css" rel="stylesheet" />
 
 
 </head>
@@ -80,7 +82,7 @@
                     </div>
                     <ul class="nav nav-tabs profile_tab">
                         <li class="nav-item"><a class="nav-link active" data-toggle="tab" href="#overview">Overview</a></li>
-                        <li class="nav-item"><a class="nav-link" data-toggle="tab" href="#schedule">Schedule</a></li>
+%{--                        <li class="nav-item"><a class="nav-link" data-toggle="tab" href="#schedule">Schedule</a></li>--}%
                         <li class="nav-item"><a class="nav-link" data-toggle="tab" href="#usersettings">Settings</a></li>
                     </ul>
                 </div>
@@ -105,7 +107,7 @@
                                     <div class="body m-b-10">
                                         <form action="/user-register/update/${user.id}" id="form_validation" method="POST"
                                               role="form"
-                                              class="entityRegisterForm" enctype="multipart/form-data">
+                                              class="entityRegisterForm" id="updateUser" enctype="multipart/form-data">
                                             <div class="row clearfix">
                                                 <div class="col-lg-6 form-group  form-float">
                                                     <label for="userName">
@@ -249,7 +251,7 @@
                                                         Referred By
                                                     </label>
                                                     <select class="form-control show-tick referredBy" name="referredBy" id="referredBy">
-                                                        <g:each var="u" in="${userregister}">
+                                                        <g:each var="u" in="${userList}">
                                                             <option value="${u.id}" <g:if test="${u.id == user.referredBy}">selected</g:if> >${u.userName}</option>
                                                         </g:each>
                                                     </select>
@@ -714,23 +716,55 @@
 <asset:javascript src="/themeassets/bundles/knob.bundle.js"/>
 <asset:javascript src="/themeassets/bundles/morrisscripts.bundle.js"/>
 <asset:javascript src="/themeassets/bundles/fullcalendarscripts.bundle.js"/>
-
+<asset:javascript src="/themeassets/plugins/sweetalert/sweetalert.min.js"/>
+<asset:javascript src="/themeassets/plugins/bootstrap-material-datetimepicker/js/bootstrap-material-datetimepicker.js"/>
 <g:include view="controls/footer-content.gsp"/>
 
 <script>
-    // $('#password, #confirm_password').on('keyup', function () {
-    //     if ($('#password').val() == $('#confirm_password').val()) {
-    //         $('#message').html('Matching').css('color', 'green');
-    //
-    //     } else
-    //     {
-    //         $('#message').html('Not Matching').css('color', 'red');
-    //     }
-    //
-    // });
+    $(function () {
 
-    // var text = $('#message').text()
-    // alert(text)
+        var dob = new Date('${user.dob}');
+        $('.dob').val(moment(dob).format('DD/MM/YYYY'));
+
+        //Datetimepicker plugin
+        $('.dob').bootstrapMaterialDatePicker({
+            format: 'DD/MM/YYYY',
+            clearButton: true,
+            time: false,
+            weekStart: 1
+        });
+
+        var joiningDate = new Date('${user.joiningDate}');
+        $('.joiningDate').val(moment(joiningDate).format('DD/MM/YYYY'));
+
+
+        $('.joiningDate').bootstrapMaterialDatePicker({
+            format: 'DD/MM/YYYY',
+            clearButton: true,
+            time: false,
+            weekStart: 1
+        });
+
+        var lastPaidDate = new Date('${user.lastPaidDate}');
+        $('.lastPaidDate').val(moment(lastPaidDate).format('DD/MM/YYYY'));
+
+        $('.lastPaidDate').bootstrapMaterialDatePicker({
+            format: 'DD/MM/YYYY',
+            clearButton: true,
+            time: false,
+            weekStart: 1
+        });
+
+        var anniversaryDate = new Date('${user.anniversaryDate}');
+        $('.anniversaryDate').val(moment(anniversaryDate).format('DD/MM/YYYY'));
+
+        $('.anniversaryDate').bootstrapMaterialDatePicker({
+            format: 'DD/MM/YYYY',
+            clearButton: true,
+            time: false,
+            weekStart: 1
+        });
+    });
 
 
     function validate() {
@@ -748,6 +782,25 @@
     }
 
     $('#updatePassword').submit(function(event) {
+        var formData = $(this);
+        $.ajax({
+            type        : 'POST', // define the type of HTTP verb we want to use (POST for our form)
+            url         : formData.attr('action'), // the url where we want to POST
+            data        : formData.serialize(), // our data object
+            success:function(data){
+                $("#validation-status").text(data);
+                alert('success','Password Changed Successfully',data);
+            },
+            error:function(data){
+                console.log("Failed");
+                $("#validation-status").text(data.responseText);
+                alert('error','Password Change Failed',data.responseText);
+            }
+        });
+        event.preventDefault();
+    });
+
+    $('#updateUser').submit(function(event) {
         var formData = $(this);
         $.ajax({
             type        : 'POST', // define the type of HTTP verb we want to use (POST for our form)

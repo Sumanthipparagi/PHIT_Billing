@@ -8,6 +8,7 @@ import phitb_ui.EntityService
 import phitb_ui.SystemService
 import phitb_ui.accounts.BankRegisterController
 import phitb_ui.entity.AccountRegisterController
+import phitb_ui.entity.EntityRegisterController
 import phitb_ui.entity.RoleController
 import phitb_ui.entity.UserRegisterController
 import phitb_ui.product.DivisionController
@@ -133,12 +134,13 @@ class AuthController {
                 ArrayList <String> division  = new DivisionController().show() as ArrayList<String>
                 ArrayList <String> account = new AccountRegisterController().getAllAccounts() as ArrayList<String>
                 def  department = new EntityService().getAllDepartment() as ArrayList<String>
+                Object entity = new EntityRegisterController().show() as ArrayList<String>
                 render(view: '/usermanagement/auth/updateUser', model: [user: user,statelist:statelist,
                                                                         countrylist:countrylist,citylist:citylist,
                                                                         zoneList:zoneList,userList:userList,
                                                                         genderList:genderList,department:department,
                                                                         bank:bank,roles:roles,account:account,
-                                                                        division:division])
+                                                                        division:division,entity:entity])
             }
             else
             {
