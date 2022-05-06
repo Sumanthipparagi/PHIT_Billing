@@ -517,6 +517,7 @@ class StockBookController {
             jsonObject.put("entityTypeId", session.getAttribute("entityTypeId"))
             jsonObject.put("redundantBatch", "")
             jsonObject.put("originalId", stockBook.id)
+            jsonObject.put("uuid", params.uuid)
             def apiResponse = new InventoryService().tempStockBookSave(jsonObject)
             if (apiResponse?.status == 200)
             {
@@ -600,6 +601,7 @@ class StockBookController {
             jsonObject.put("entityTypeId", session.getAttribute("entityTypeId"))
             jsonObject.put("redundantBatch", "")
             jsonObject.put("originalId", stockBook.id)
+            jsonObject.put("uuid", params.uuid)
             def apiResponse = new InventoryService().stockBookSave(jsonObject)
             if (apiResponse?.status == 200)
             {

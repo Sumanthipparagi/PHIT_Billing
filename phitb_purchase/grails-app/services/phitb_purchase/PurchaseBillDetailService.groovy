@@ -114,6 +114,7 @@ class PurchaseBillDetailService {
         purchaseBillDetail.entityId = Long.parseLong(jsonObject.get("entityId").toString())
         purchaseBillDetail.createdUser = Long.parseLong(jsonObject.get("createdUser").toString())
         purchaseBillDetail.modifiedUser = Long.parseLong(jsonObject.get("modifiedUser").toString())
+        purchaseBillDetail.uuid = jsonObject.get("uuid").toString()
         purchaseBillDetail.save(flush: true)
         if (!purchaseBillDetail.hasErrors())
         {
@@ -214,6 +215,7 @@ class PurchaseBillDetailService {
             purchaseBillDetail.entityId = Long.parseLong(jsonObject.get("entityId").toString())
             purchaseBillDetail.createdUser = Long.parseLong(jsonObject.get("createdUser").toString())
             purchaseBillDetail.modifiedUser = Long.parseLong(jsonObject.get("modifiedUser").toString())
+            purchaseBillDetail.uuid = jsonObject.get("uuid").toString()
             purchaseBillDetail.save(flush: true)
             if (!purchaseBillDetail.hasErrors())
                 return purchaseBillDetail

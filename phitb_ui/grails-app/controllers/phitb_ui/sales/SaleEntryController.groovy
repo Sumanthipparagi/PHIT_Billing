@@ -257,30 +257,16 @@ class SaleEntryController
         saleBillDetails.put("cashDiscount", 0) //TODO: to be changed
         saleBillDetails.put("exempted", 0) //TODO: to be changed
         saleBillDetails.put("seriesCode", seriesCode)
-        Response response = new SalesService().saveSaleBill(saleBillDetails)
+        saleBillDetails.put("uuid", params.uuid)
+        JSONObject jsonObject = new JSONObject()
+        jsonObject.put("saleInvoice", saleBillDetails)
+        jsonObject.put("saleProducts", saleProductDetails)
+        Response response = new SalesService().saveSaleInvoice(jsonObject)
         if (response.status == 200)
         {
-            def saleBillDetail = new JSONObject(response.readEntity(String.class))
-            //save to sale product details
-            for (JSONObject saleProductDetail : saleProductDetails)
-            {
-                saleProductDetail.put("billId", saleBillDetail.get("id"))
-                saleProductDetail.put("billType", 0) //0 Sale, 1 Purchase
-                saleProductDetail.put("serBillId", saleBillDetail.get("serBillId"))
-                def resp = new SalesService().saveSaleProductDetail(saleProductDetail)
-                if (resp.status == 200)
-                {
-                    println("Product Detail Saved")
-                }
-                else
-                {
-                    println("Product Detail Failed")
-                }
-            }
-
+            JSONObject saleBillDetail = new JSONObject(response.readEntity(String.class))
             //update stockbook
-            for (JSONObject sale : saleData)
-            {
+            for (JSONObject sale : saleData) {
                 String tempStockRowId = sale.get("15")
                 def tmpStockBook = new InventoryService().getTempStocksById(Long.parseLong(tempStockRowId))
                 def stockBook = new InventoryService().getStockBookById(Long.parseLong(tmpStockBook.originalId))
@@ -297,31 +283,30 @@ class SaleEntryController
                 stockBook.put("expDate", expDate)
                 stockBook.put("purcDate", purcDate)
                 stockBook.put("manufacturingDate", manufacturingDate)
+                stockBook.put("uuid", params.uuid)
                 def apiRes = new InventoryService().updateStockBook(stockBook)
-                if (apiRes.status == 200)
-                {
+                if (apiRes.status == 200) {
                     //clear tempstockbook
                     new InventoryService().deleteTempStock(tempStockRowId)
                     try {
-                        //push the invoice to e-Invoice service and generate IRN, save IRN to Sale Bill Details
-                        new EInvoiceService().generateIRN(session, saleBillDetail, saleProductDetails)
+                        if (billStatus.equalsIgnoreCase("ACTIVE")) {
+                            //push the invoice to e-Invoice service and generate IRN, save IRN to Sale Bill Details
+                            new EInvoiceService().generateIRN(session, saleBillDetail, saleProductDetails)
+                        }
                     }
-                    catch (Exception ex)
-                    {
+                    catch (Exception ex) {
                         ex.printStackTrace()
                     }
                 }
             }
+
             JSONObject responseJson = new JSONObject()
             responseJson.put("series", series)
             responseJson.put("saleBillDetail", saleBillDetail)
             respond responseJson, formats: ['json']
-
         }
         else
-        {
-            response.status == 400
-        }
+            response.status = 400
     }
 
     def printSaleInvoice()
@@ -740,6 +725,7 @@ class SaleEntryController
             saleProductDetail.put("financialYear", session.getAttribute('financialYear').toString())
             saleProductDetail.put("entityId", session.getAttribute("entityId").toString())
             saleProductDetail.put("entityTypeId", session.getAttribute("entityTypeId").toString())
+            saleProductDetail.put("uuid", params.uuid)
             saleProductDetails.add(saleProductDetail)
 
             //save to sale transaction log
@@ -760,6 +746,7 @@ class SaleEntryController
                         stockBook.put("remainingQty", remainingQty.toLong())
                         stockBook.put("remainingFreeQty", remainingFreeQty.toLong())
                         stockBook.put("remainingReplQty", remainingReplQty.toLong())
+                        stockBook.put("uuid", params.uuid)
                         new InventoryService().updateStockBook(stockBook)
                     }
                     respond obj, formats: ['json'], status: 200
@@ -952,6 +939,7 @@ class SaleEntryController
             saleProductDetail.put("financialYear", financialYear)
             saleProductDetail.put("entityId", entityId)
             saleProductDetail.put("entityTypeId", session.getAttribute("entityTypeId").toString())
+            saleProductDetail.put("uuid", params.uuid)
             saleProductDetails.add(saleProductDetail)
 
         }
@@ -1007,30 +995,33 @@ class SaleEntryController
         saleBillDetails.put("cashDiscount", 0) //TODO: to be changed
         saleBillDetails.put("exempted", 0) //TODO: to be changed
         saleBillDetails.put("seriesCode", seriesCode)
-        Response response = new SalesService().updateSaleBill(saleBillDetails)
+        saleBillDetails.put("uuid", params.uuid)
+        JSONObject jsonObject = new JSONObject()
+        jsonObject.put("saleInvoice", saleBillDetails)
+        jsonObject.put("saleProducts", saleProductDetails)
+        Response response = new SalesService().updateSaleInvoice(jsonObject, saleBillDetails.get("id").toString())
         if (response.status == 200)
         {
             def saleBillDetail = new JSONObject(response.readEntity(String.class))
-            for (JSONObject saleProductDetail : saleProductDetails)
-            {
-                saleProductDetail.put("billId", saleBillDetail.get("id"))
-                saleProductDetail.put("billType", 0) //0 Sale, 1 Purchase
-                saleProductDetail.put("serBillId", saleBillDetail.get("serBillId"))
-                def resp = new SalesService().updateSaleProductDetail(saleProductDetail)
-                if (resp.status == 200)
-                {
-                    println("Product Detail Saved")
+            if(saleBillDetail) {
+                try {
+                    if (billStatus.equalsIgnoreCase("ACTIVE")) {
+                        //push the invoice to e-Invoice service and generate IRN, save IRN to Sale Bill Details
+                        new EInvoiceService().generateIRN(session, saleBillDetail, saleProductDetails)
+                    }
                 }
-                else
-                {
-                    println("Product Detail Failed")
+                catch (Exception ex) {
+                    ex.printStackTrace()
                 }
+                JSONObject responseJson = new JSONObject()
+                responseJson.put("series", series)
+                responseJson.put("saleBillDetail", saleBillDetail)
+                respond responseJson, formats: ['json']
             }
-//            //save to sale product details
-            JSONObject responseJson = new JSONObject()
-            responseJson.put("series", series)
-            responseJson.put("saleBillDetail", saleBillDetail)
-            respond responseJson, formats: ['json']
+            else
+            {
+                response.status == 400
+            }
         }
         else
         {

@@ -56,10 +56,13 @@ class PurchaseBillDetail implements LogicalDelete<PurchaseBillDetail> {
 
     Date dateCreated
     Date lastUpdated
+
+    String uuid
     
     static constraints = {
         invoiceNumber unique: true, nullable: true
         cancelledDate nullable: true
+        uuid unique: true
     }
 
     boolean isUpdatable

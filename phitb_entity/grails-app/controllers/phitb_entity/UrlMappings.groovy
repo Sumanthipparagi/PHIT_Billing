@@ -131,6 +131,17 @@ class UrlMappings
             }
 
 
+            //Entity Setting
+            "/entitysetting(.$format)?"(controller: 'entityTypeMaster') {
+                action = [GET: 'index', POST:
+                        'save']
+            }
+            "/entitysetting/datatable(.$format)?"(controller: 'entitySetting') {action = [GET: 'dataTable']}
+            "/entitysetting/$id(.$format)?"(controller: 'entitySetting') {
+                action = [GET: 'show', PUT: 'update', DELETE: 'delete']
+            }
+
+
 
 
             //Financial Year Master

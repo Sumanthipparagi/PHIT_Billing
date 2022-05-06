@@ -24,6 +24,10 @@ class StockActivity implements LogicalDelete<StockActivity>{
     Date lastUpdated
 
     static constraints = {
+        remainingQty min: 0L
+        remainingSchemeQty min: 0L
+        prevRemQty min: 0L
+        prevSchemeQty min: 0L
     }
 
     boolean isUpdatable

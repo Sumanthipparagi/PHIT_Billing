@@ -23,6 +23,7 @@ class TempStockBook implements LogicalDelete<TempStockBook> {
     long redundantBatch
     long entityTypeId
     long entityId
+    String uuid
 
     Date dateCreated
     Date lastUpdated
@@ -31,6 +32,13 @@ class TempStockBook implements LogicalDelete<TempStockBook> {
         originalId nullable: true
         entityTypeId nullable: true
         entityId nullable: true
+        uuid unique: true
+        remainingQty min: 0L
+        remainingFreeQty min: 0L
+        remainingReplQty min: 0L
+        userOrderQty min: 0L
+        userOrderFreeQty min: 0L
+        userOrderReplQty min: 0L
     }
 
     boolean isUpdatable

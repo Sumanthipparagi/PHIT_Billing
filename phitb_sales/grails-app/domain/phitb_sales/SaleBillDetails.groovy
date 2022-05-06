@@ -59,12 +59,18 @@ class SaleBillDetails implements Serializable, LogicalDelete<SaleBillDetails>
     Date dateCreated
     Date lastUpdated
 
+    String uuid
+
     String irnDetails
     static constraints = {
         invoiceNumber unique: true, nullable: true
         irnDetails nullable: true
         cancelledDate nullable: true
         orderDate nullable: true
+        uuid unique: true
+        totalSqty min: 0D
+        totalFqty min: 0D
+        totalQty min: 0D
     }
 
     static mapping = {

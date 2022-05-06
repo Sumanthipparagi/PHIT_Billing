@@ -445,7 +445,8 @@
                                 dataType: 'json',
                                 data: {
                                     rowData: json,
-                                    billId: '${params.saleBillId}'
+                                    billId: '${params.saleBillId}',
+                                    uuid: self.crypto.randomUUID()
                                 },
                                 success: function (data) {
                                     console.log("Data saved");
@@ -1043,7 +1044,8 @@
                 duedate: duedate,
                 priority: priority,
                 billStatus: billStatus,
-                seriesCode: seriesCode
+                seriesCode: seriesCode,
+                uuid: self.crypto.randomUUID()
             },
             success: function (data) {
                 readOnly = true;

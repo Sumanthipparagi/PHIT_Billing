@@ -43,11 +43,14 @@ class PurchaseProductDetail implements LogicalDelete<PurchaseProductDetail> {
     double cgstPercentage
     double igstPercentage
 
+    String uuid
+
     static constraints = {
         gstPercentage nullable:true
         sgstPercentage nullable:true
         cgstPercentage nullable:true
         igstPercentage nullable:true
+        uuid unique: true
     }
 
     boolean isUpdatable

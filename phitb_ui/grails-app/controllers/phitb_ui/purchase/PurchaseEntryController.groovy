@@ -128,7 +128,7 @@ class PurchaseEntryController {
         def series = new EntityService().getSeriesById(seriesId)
         if (!billStatus.equalsIgnoreCase("DRAFT")) {
             def recentPurchaseBill = new PurchaseService().getRecentPurchaseBill(financialYear, entityId, billStatus)
-            if (recentPurchaseBill != null && recentPurchaseBill.size()!=0) {
+            if (recentPurchaseBill != null && recentPurchaseBill.size() != 0) {
                 finId = Long.parseLong(recentPurchaseBill.get("finId").toString()) + 1
                 serBillId = Long.parseLong(recentPurchaseBill.get("serBillId").toString()) + 1
             } else {
@@ -203,27 +203,27 @@ class PurchaseEntryController {
             purchaseProductDetail.put("entityTypeId", session.getAttribute("entityTypeId").toString())
             //GST percentage Calculation
             double priceBeforeTaxes = UtilsService.round((Double.parseDouble(saleQty) * Double.parseDouble(saleRate)), 2)
-            if(discount > 0)
-            {
-                priceBeforeTaxes = priceBeforeTaxes - (priceBeforeTaxes * (discount/100))
+            if (discount > 0) {
+                priceBeforeTaxes = priceBeforeTaxes - (priceBeforeTaxes * (discount / 100))
             }
             double gstPercentage = 0.0
             double sgstPercentage = 0.0
             double cgstPercentage = 0.0
             double igstPercentage = 0.0
 
-            if(gst > 0)
+            if (gst > 0)
                 gstPercentage = (gst / priceBeforeTaxes) * 100
-            if(sgst > 0)
+            if (sgst > 0)
                 sgstPercentage = (sgst / priceBeforeTaxes) * 100
-            if(cgst > 0)
+            if (cgst > 0)
                 cgstPercentage = (cgst / priceBeforeTaxes) * 100
-            if(igst > 0)
+            if (igst > 0)
                 igstPercentage = (igst / priceBeforeTaxes) * 100
-            purchaseProductDetail.put("gstPercentage", UtilsService.round(gstPercentage,2))
-            purchaseProductDetail.put("sgstPercentage", UtilsService.round(sgstPercentage,2))
-            purchaseProductDetail.put("cgstPercentage", UtilsService.round(cgstPercentage,2))
-            purchaseProductDetail.put("igstPercentage", UtilsService.round(igstPercentage,2))
+            purchaseProductDetail.put("gstPercentage", UtilsService.round(gstPercentage, 2))
+            purchaseProductDetail.put("sgstPercentage", UtilsService.round(sgstPercentage, 2))
+            purchaseProductDetail.put("cgstPercentage", UtilsService.round(cgstPercentage, 2))
+            purchaseProductDetail.put("igstPercentage", UtilsService.round(igstPercentage, 2))
+            purchaseProductDetail.put("uuid", params.uuid)
             purchaseProductDetails.add(purchaseProductDetail)
 
             //save to sale transaction log
@@ -295,7 +295,8 @@ class PurchaseEntryController {
         purchaseBillDetails.put("taxable", "1") //TODO: to be changed
         purchaseBillDetails.put("cashDiscount", 0) //TODO: to be changed
         purchaseBillDetails.put("exempted", 0) //TODO: to be changed
-        purchaseBillDetails.put("seriesCode",seriesCode)
+        purchaseBillDetails.put("seriesCode", seriesCode)
+        purchaseBillDetails.put("uuid", params.uuid)
         Response resp = new PurchaseService().savePurchaseBillDetails(purchaseBillDetails)
         if (resp.status == 200) {
             def purchaseBillDetail = new JSONObject(resp.readEntity(String.class))
@@ -305,6 +306,7 @@ class PurchaseEntryController {
                 purchaseProductDetail.put("taxId", purchaseBillDetail.get("taxable"))
                 purchaseProductDetail.put("billType", 0) //0 Sale, 1 Purchase
                 purchaseProductDetail.put("serBillId", purchaseBillDetail.get("serBillId"))
+                purchaseProductDetail.put("uuid", params.uuid)
                 def resp1 = new PurchaseService().savePurchaseProductDetails(purchaseProductDetail)
                 if (resp1.status == 200) {
                     println("Product Detail Saved")
@@ -318,6 +320,7 @@ class PurchaseEntryController {
                 String productId = purchase.get("1")
                 String batchNumber = purchase.get("2")
                 JSONObject stockBook = new InventoryService().getStocksOfProductAndBatch(productId, batchNumber, session.getAttribute("entityId").toString())
+                stockBook.put("uuid", params.uuid)
                 if (stockBook) {
                     String saleQty = purchase.get("4")
                     String freeQty = purchase.get("5")
@@ -406,8 +409,7 @@ class PurchaseEntryController {
             def batchResponse = new ProductService().getBatchesOfProduct(it.productId.toString())
             JSONArray batchArray = JSON.parse(batchResponse.readEntity(String.class)) as JSONArray
             for (JSONObject batch : batchArray) {
-                if(batch.batchNumber == it.batchNumber)
-                {
+                if (batch.batchNumber == it.batchNumber) {
                     it.put("batch", batch)
                 }
             }
@@ -427,28 +429,26 @@ class PurchaseEntryController {
         for (Object it : purchaseProductDetails) {
             double amountBeforeTaxes = it.amount - it.cgstAmount - it.sgstAmount - it.igstAmount
             totalBeforeTaxes += amountBeforeTaxes
-            if(it.igstPercentage > 0) {
+            if (it.igstPercentage > 0) {
                 def igstPercentage = igstGroup.get(it.igstPercentage.toString())
                 if (igstPercentage == null)
                     igstGroup.put(it.igstPercentage.toString(), amountBeforeTaxes)
                 else
                     igstGroup.put(it.igstPercentage.toString(), igstPercentage.doubleValue() + amountBeforeTaxes)
-            }
-            else
-            {
+            } else {
                 def gstPercentage = gstGroup.get(it.gstPercentage.toString())
-                if(gstPercentage == null)
+                if (gstPercentage == null)
                     gstGroup.put(it.gstPercentage.toString(), amountBeforeTaxes)
                 else
                     gstGroup.put(it.gstPercentage.toString(), gstPercentage.doubleValue() + amountBeforeTaxes)
 
                 def sgstPercentage = sgstGroup.get(it.sgstPercentage.toString())
-                if(sgstPercentage == null)
+                if (sgstPercentage == null)
                     sgstGroup.put(it.sgstPercentage.toString(), amountBeforeTaxes)
                 else
                     sgstGroup.put(it.sgstPercentage.toString(), sgstPercentage.doubleValue() + amountBeforeTaxes)
                 def cgstPercentage = cgstGroup.get(it.cgstPercentage.toString())
-                if(cgstPercentage == null)
+                if (cgstPercentage == null)
                     cgstGroup.put(it.cgstPercentage.toString(), amountBeforeTaxes)
                 else
                     cgstGroup.put(it.cgstPercentage.toString(), cgstPercentage.doubleValue() + amountBeforeTaxes)
@@ -457,20 +457,20 @@ class PurchaseEntryController {
 
         def total = totalBeforeTaxes + totalcgst + totalsgst + totaligst
 
-        render(view: "/purchase/purchaseEntry/purchase-invoice", model: [purchaseBillDetail: purchaseBillDetail,
+        render(view: "/purchase/purchaseEntry/purchase-invoice", model: [purchaseBillDetail    : purchaseBillDetail,
                                                                          purchaseProductDetails: purchaseProductDetails,
-                                                                         series: series, entity: entity,
-                                                                         supplier: supplier, city: city, supcity: supcity,
-                                                                         total:total,
-                                                                         totalcgst: totalcgst, totalsgst: totalsgst,
-                                                                         totaligst: totaligst,
-                                                                         totaldiscount: totaldiscount,
-                                                                         termsConditions:termsConditions,
-                                                                         gstGroup:gstGroup,
-                                                                         sgstGroup:sgstGroup,
-                                                                         cgstGroup:cgstGroup,
-                                                                         igstGroup:igstGroup,
-                                                                         totalBeforeTaxes:totalBeforeTaxes
+                                                                         series                : series, entity: entity,
+                                                                         supplier              : supplier, city: city, supcity: supcity,
+                                                                         total                 : total,
+                                                                         totalcgst             : totalcgst, totalsgst: totalsgst,
+                                                                         totaligst             : totaligst,
+                                                                         totaldiscount         : totaldiscount,
+                                                                         termsConditions       : termsConditions,
+                                                                         gstGroup              : gstGroup,
+                                                                         sgstGroup             : sgstGroup,
+                                                                         cgstGroup             : cgstGroup,
+                                                                         igstGroup             : igstGroup,
+                                                                         totalBeforeTaxes      : totalBeforeTaxes
 
         ])
     }
