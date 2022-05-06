@@ -188,7 +188,7 @@
                     var return_data = [];
                     for (var i = 0; i < json.data.length; i++) {
                         var editbtn = '<button type="button" data-id="' + json.data[i].id +
-                            '" data-entity="' + json.data[i].entity.name + '"' +
+                            '" data-entity="' + json.data[i].entity.entityName + '"' +
                             '" data-code="' + json.data[i].code + '"' +
                             '" data-name="' + json.data[i].name + '"' +
                             '" data-value="' + json.data[i].value + '"' +
@@ -197,7 +197,7 @@
                         var deletebtn = '<button type="button" data-id="' + json.data[i].id +
                             '" class="btn btn-danger deletebtn" data-toggle="modal" data-target=".deleteModal"><i class="material-icons"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">delete</font></font></i></button>'
                         return_data.push({
-                            'entity': json.data[i].entity.name,
+                            'entity': json.data[i].entity.entityName,
                             'code': json.data[i].code,
                             'name': json.data[i].name ,
                             'value': json.data[i].value,
@@ -285,7 +285,7 @@
             success: function () {
                 $('.deleteModal').modal('hide');
                 entitySettingsTable();
-                swal("Success!", "Entity Register Deleted Successfully", "success");
+                swal("Success!", "Entity Settings Deleted Successfully", "success");
             }, error: function () {
                 swal("Error!", "Something went wrong", "error");
             }

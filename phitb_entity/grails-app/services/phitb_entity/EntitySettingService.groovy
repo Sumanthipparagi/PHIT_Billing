@@ -67,6 +67,9 @@ class EntitySettingService {
 
     EntitySetting save(JSONObject jsonObject) {
         EntitySetting entitySetting = new EntitySetting()
+        EntityRegister entityRegister = EntityRegister.findById(Long.parseLong(jsonObject.get("entity").toString()))
+        entitySetting.entity = EntityRegister.findById(Long.parseLong(jsonObject.get("entity").toString()))
+        entitySetting.entityType = EntityTypeMaster.findById(Long.parseLong(entityRegister.entityType.id.toString()))
         entitySetting.name = jsonObject.get("name").toString()
         entitySetting.code = jsonObject.get("code").toString()
         entitySetting.value = jsonObject.get("value").toString()
@@ -79,10 +82,12 @@ class EntitySettingService {
     }
 
     EntitySetting update(JSONObject jsonObject, String id) {
-
         EntitySetting entitySetting = EntitySetting.findById(Long.parseLong(id))
+        EntityRegister entityRegister = EntityRegister.findById(Long.parseLong(jsonObject.get("entity").toString()))
         if (entitySetting) {
             entitySetting.isUpdatable = true
+            entitySetting.entity = EntityRegister.findById(Long.parseLong(jsonObject.get("entity").toString()))
+            entitySetting.entityType = EntityTypeMaster.findById(Long.parseLong(entityRegister.entityType.id.toString()))
             entitySetting.name = jsonObject.get("name").toString()
             entitySetting.code = jsonObject.get("code").toString()
             entitySetting.value = jsonObject.get("value").toString()
