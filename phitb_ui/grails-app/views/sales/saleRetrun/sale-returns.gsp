@@ -380,8 +380,8 @@
         'SGST',
         'CGST',
         'IGST',
-        'P.Sqty',
-        'P.Fqty',
+        'PR.Sqty',
+        'PR.Fqty',
         '<strong>gst_p</strong>',
         '<strong>cgst_p</strong>',
         '<strong>sgst_p</strong>',
@@ -965,7 +965,7 @@
             },
             minSpareRows: 0,
             minSpareCols: 0,
-            fixedColumnsRight: 2,
+            fixedColumnsRight: 5,
             manualColumnFreeze: true,
             licenseKey: 'non-commercial-and-evaluation'
         });
