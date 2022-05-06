@@ -66,7 +66,7 @@
                                 <img src="${assetPath(src: '/themeassets/images/profile_av.jpg')}" class="user_pic rounded img-raised" alt="User">
                                 <div class="detail">
                                     <div class="u_name">
-                                        <h4><strong>${user.name}</strong></h4>
+                                        <h4><strong>${user.userName}</strong></h4>
                                         <span>${user.email}</span>
                                     </div>
                                     <div id="m_area_chart"></div>

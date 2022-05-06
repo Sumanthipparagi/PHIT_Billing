@@ -323,7 +323,7 @@
                 <li>
                     <div class="user-info m-b-20">
                         <div class="image">
-                            <a href="/user-register/update-user-register/${session.getAttribute("userId")}"><img
+                            <a href="/user/update-details/${session.getAttribute("userId")}"><img
                                     src="${assetPath(src: '/themeassets/images/profile_av.jpg')}" alt="User">
                             </a>
                         </div>

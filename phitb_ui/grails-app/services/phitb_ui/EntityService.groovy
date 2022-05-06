@@ -2199,6 +2199,100 @@ class EntityService {
     }
 
 
+//    Entity Settings
+    def saveSettings(JSONObject jsonObject)
+    {
+        Client client = ClientBuilder.newClient()
+        WebTarget target = client.target(new Links().API_GATEWAY)
+
+        try
+        {
+            println(jsonObject)
+            Response apiResponse = target
+                    .path(new Links().ENTITY_SETTINGS_SAVE)
+                    .request(MediaType.APPLICATION_JSON_TYPE)
+                    .post(Entity.entity(jsonObject.toString(),MediaType.APPLICATION_JSON_TYPE))
+            println(apiResponse)
+            return apiResponse
+        }
+        catch (Exception ex)
+        {
+            System.err.println('Service :EntityService , action :  saveCustomerGroup  , Ex:' + ex)
+            log.error('Service :EntityService , action :  saveCustomerGroup  , Ex:' + ex)
+        }
+
+    }
+
+    def showSettings(JSONObject jsonObject)
+    {
+        Client client = ClientBuilder.newClient()
+        WebTarget target = client.target(new Links().API_GATEWAY)
+
+        try
+        {
+            Response apiResponse = target
+                    .path(new Links().ENTITY_SETTINGS_SHOW)
+                    .queryParam("params", URLEncoder.encode(jsonObject.toString(), "UTF-8"))
+                    .request(MediaType.APPLICATION_JSON_TYPE)
+                    .get()
+            return apiResponse
+        }
+        catch (Exception ex)
+        {
+            System.err.println('Service :EntityService , action :  showUser  , Ex:' + ex)
+            log.error('Service :EntityService , action :  showUser  , Ex:' + ex)
+        }
+
+    }
+
+    def putSettings(JSONObject jsonObject)
+    {
+        Client client = ClientBuilder.newClient()
+        WebTarget target = client.target(new Links().API_GATEWAY)
+        try
+        {
+            Response apiResponse = target
+                    .path(new Links().ENTITY_SETTINGS_UPDATE)
+                    .resolveTemplate("id", jsonObject.id)
+                    .request(MediaType.APPLICATION_JSON_TYPE)
+                    .put(Entity.entity(jsonObject.toString(),MediaType.APPLICATION_JSON_TYPE))
+            println(jsonObject)
+            return apiResponse
+        }
+        catch (Exception ex)
+        {
+            System.err.println('Service :EntityService , action :  putUser  , Ex:' + ex)
+            log.error('Service :EntityService , action :  putUser  , Ex:' + ex)
+        }
+
+    }
+
+    /**
+     *
+     * @param jsonObject
+     * @return
+     */
+    def deleteSettings(JSONObject jsonObject)
+    {
+        Client client = ClientBuilder.newClient()
+        WebTarget target = client.target(new Links().API_GATEWAY)
+        try
+        {
+            Response apiResponse = target
+                    .path(new Links().ENTITY_SETTINGS_DELETE)
+                    .resolveTemplate("id", jsonObject.id)
+                    .request(MediaType.APPLICATION_JSON_TYPE)
+                    .delete()
+            return apiResponse
+        }
+        catch (Exception ex)
+        {
+            System.err.println('Service :EntityService , action :  deleteUser  , Ex:' + ex)
+            log.error('Service :EntityService , action :  deleteUser  , Ex:' + ex)
+        }
+
+    }
+
 
 
 }

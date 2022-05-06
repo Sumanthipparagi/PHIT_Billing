@@ -126,6 +126,16 @@ class UrlMappings {
         "/getentitytypebyId"(controller: 'entityRegister', action: 'getEntityTypeById')
 
 
+        //        godown
+
+        "/godown"(controller: "godown") {
+            action = [GET: "index", POST: "save"]
+        }
+        "/godown/datatable"(controller: "godown", action: "dataTable")
+        "/godown/update/$id"(controller: "godown",action:"update")
+        "/godown/delete/$id"(controller: "godown",action:"delete")
+
+
 //      User Register
         "/user-register"(controller: "userRegister") {
             action = [GET: "index", POST: "save"]

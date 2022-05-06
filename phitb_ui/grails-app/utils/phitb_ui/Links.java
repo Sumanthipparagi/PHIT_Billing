@@ -125,6 +125,15 @@ public class Links
     public static String ENTITY_REGISTER_DELETE = "api/v1.0/entity/entityregister/{id}";
     public static String ENTITY_REGISTER_AFFILIATE = "api/v1.0/entity/entityregister/affiliate";
 
+
+//    Entity Settings
+    public static String ENTITY_SETTINGS_SHOW = "api/v1.0/entity/entitysetting";
+    public static String ENTITY_SETTINGS_UPDATE = "api/v1.0/entity/entitysetting/{id}";
+    public static String ENTITY_SETTINGS_DELETE = "api/v1.0/entity/entitysetting/{id}";
+    public static String ENTITY_SETTINGS_SAVE = "api/v1.0/entity/entitysetting";
+    public static String ENTITY_SETTINGS_DATATABLE = "api/v1.0/entity/entitysetting/datatable";
+
+
     //Account Register
     public static String ACCOUNT_REGISTER_SHOW = "api/v1.0/entity/accountregister";
     public static String ACCOUNT_REGISTER_SAVE = "api/v1.0/entity/accountregister";
