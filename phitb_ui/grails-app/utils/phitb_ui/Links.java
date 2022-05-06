@@ -409,6 +409,7 @@ public class Links
     //Sale Return
     public static String SALE_RETURN_SHOW = "api/v1.0/sales/salereturn";
     public static String SALE_RETURN_SAVE = "api/v1.0/sales/salereturn";
+    public static String SALE_RETURN_DATATABLE = "api/v1.0/sales/salereturn/datatable";
     public static String SALE_RETURN_UNSETTLED = "api/v1.0/sales/saleretrununsettledbycustomer";
     public static String SALE_RETURN_SETTLED = "api/v1.0/sales/saleretrunsettledbycustomer";
     public static String SET_SALE_RETURN_STATUS = "api/v1.0/sales/setsalereturnstatus/{id}/type/{type}/adj/{adj}";

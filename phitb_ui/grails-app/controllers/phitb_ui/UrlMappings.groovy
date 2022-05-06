@@ -401,6 +401,8 @@ class UrlMappings {
         "/sale-return"(controller: "saleReturn") {
             action = [GET: "index", POST: 'saveSaleReturn']
         }
+        "/sale-return/list"(controller: "saleReturn", action: "salesReturnList")
+        "/sale-return/datatables"(controller: "saleReturn", action: "salesReturnDatatables")
         "/salebill/customer/$custid"(controller: 'saleReturn', action: 'getSaleBillByCustomer')
         "/getinvoicedetails"(controller:'saleReturn', action: 'getSaleInvByProducts')
         "/sale-return/print-invoice"(controller: "saleReturn", action: "printSaleReturn")

@@ -208,7 +208,7 @@ class SaleReturnController {
             }
             String invoiceNumber = sr.get("16")
             double discount = UtilsService.round(Double.parseDouble(sr.get("9").toString()), 2)
-            String packDesc = sr.get("10")
+            //String packDesc = sr.get("10")
             double gst = UtilsService.round(Double.parseDouble(sr.get("11").toString()), 2)
             double value = UtilsService.round(Double.parseDouble(sr.get("12").toString()), 2)
             double sgst = UtilsService.round(Double.parseDouble(sr.get("13").toString()), 2)
@@ -487,6 +487,52 @@ class SaleReturnController {
         } else {
 
             render("No Bill Found")
+        }
+    }
+
+    def salesReturnList()
+    {
+        render(view:'/sales/saleRetrun/sale-return-list')
+    }
+
+    def salesReturnDatatables()
+    {
+        try {
+            JSONObject jsonObject = new JSONObject(params)
+            def apiResponse = new SalesService().salesReturnDatatable(jsonObject)
+            if (apiResponse.status == 200) {
+                JSONObject responseObject = new JSONObject(apiResponse.readEntity(String.class))
+                /*if(responseObject)
+                {
+                    JSONArray jsonArray = responseObject.data
+                    JSONArray jsonArray2 = new JSONArray()
+                    JSONArray jsonArray3 = new JSONArray()
+                    JSONArray entityArray = new JSONArray()
+                    JSONArray cityArray = new JSONArray()
+                    for (JSONObject json : jsonArray) {
+                        json.put("customer", new EntityService().getEntityById(json.get("customerId").toString()))
+                        jsonArray2.put(json)
+                    }
+                    for(JSONObject json1 : jsonArray2)
+                    {
+                        entityArray.put(json1.get("customer"))
+                    }
+                    entityArray.each {
+                        def cityResp = new SystemService().getCityById(it.cityId.toString())
+                        it.put("cityId", cityResp)
+                    }
+                    responseObject.put("data", jsonArray2)
+                    responseObject.put("city",entityArray)
+                }*/
+                respond responseObject, formats: ['json'], status: 200
+            } else {
+                response.status = 400
+            }
+        }
+        catch (Exception ex) {
+            System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
+            log.error('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
+            response.status = 400
         }
     }
 }

@@ -375,7 +375,14 @@
                             <li><a href="/sale-bill-list">My Invoices</a></li>
                         </g:if>
                         <g:if test="${UtilsService.isPermitted("VIEW_SALE_RETURN", session.getAttribute("permittedFeatures").toString())}">
-                            <li><a href="/sale-return">Sale Return</a></li>
+                            <li><a href="javascript:void(0);" class="menu-toggle">Sales Return</span> <span
+                                    class="badge badge-success float-right"></span></a>
+                                <ul class="ml-menu">
+                                    <li><a href="/sale-return">Create Sales Return</a></li>
+                                    <li><a href="#">Sales Return List</a></li>
+
+                                </ul>
+                            </li>
                         </g:if>
                         <g:if test="${UtilsService.isPermitted("VIEW_SCHEME_ENTRY", session.getAttribute("permittedFeatures").toString())}">
                             <li><a href="/scheme-entry">Scheme Entry (Offers)</a></li>

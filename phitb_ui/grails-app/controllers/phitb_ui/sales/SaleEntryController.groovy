@@ -941,7 +941,6 @@ class SaleEntryController
             saleProductDetail.put("entityTypeId", session.getAttribute("entityTypeId").toString())
             saleProductDetail.put("uuid", params.uuid)
             saleProductDetails.add(saleProductDetail)
-
         }
 
         String entryDate = sdf.format(new Date())

@@ -239,6 +239,7 @@ class UrlMappings {
                 action = [GET: 'show', PUT: 'update', DELETE:
                         'delete']
             }
+            "/salereturn/datatable(.$format)?"(controller: 'saleReturn') {action = [GET: 'dataTable']}
             "/saleretrununsettledbycustomer/$id(.$format)?"(controller: 'saleReturn') {
                 action = [GET: 'getAllUnsettledByCustId']
             }
