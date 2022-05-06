@@ -290,15 +290,35 @@
     });
 
     <g:if test="${deletePermission}">
+    // $(document).on("click", ".deletebtn", function () {
+    //     var id = $(this).data('id');
+    //     var name = $(this).data('name');
+    //     $(".modal-title").text("Are you sure?");
+    //     $(".body-text").text("Delete role " + name + "?");
+    //     $(".positivebtnform").prop("method", "post");
+    //     $(".positivebtnform").prop("action", "/role/delete");
+    //     $(".positiveinput").prop("value", id);
+    // });
+
     $(document).on("click", ".deletebtn", function () {
-        var id = $(this).data('id');
-        var name = $(this).data('name');
-        $(".modal-title").text("Are you sure?");
-        $(".body-text").text("Delete role " + name + "?");
-        $(".positivebtnform").prop("method", "post");
-        $(".positivebtnform").prop("action", "role/delete");
-        $(".positiveinput").prop("value", id);
+        id = $(this).data('id');
     });
+
+    function deleteData() {
+        $.ajax({
+            type: 'POST',
+            url: '/role/delete/' + id,
+            dataType: 'json',
+            success: function (data) {
+                $('.deleteModal').modal('hide');
+                roleTable();
+                Swal.fire("Success!", "Role Deleted Successfully", "success");
+            }, error: function (data) {
+                Swal.fire("Error!", "Something went wrong", "error");
+            }
+
+        });
+    }
     </g:if>
 
     <g:if test="${addPermission}">
@@ -472,7 +492,7 @@
                             'data-id="' + json.data[i].id + '"' +
                             'data-name="' + json.data[i].name + '"' +
                             'class="deletebtn btn btn-danger waves-effect w-xs mr-2 mb-2"' +
-                            'data-toggle="modal" data-target="#deletemodal"' +
+                            'data-toggle="modal" data-target=".deleteModal"' +
                             'title="delete"><i class="fa fa-trash"></i> Delete</button>';
                         </g:if>
                         var action = editbtn + "  " + deletebtn;
