@@ -71,6 +71,8 @@ class SaleReturnController {
                         it.put("batch", batch)
                     }
                 }
+                it.put("prevsqty",0)
+                it.put("prevfqty",0)
                 it.put("bill", JSON.parse(saleBillShow.readEntity(String.class)) as JSONObject)
                 def saleReturns = new SalesService().getReturnDetailsByBatchSalebillProductId(it.productId.toString()
                         , it.batchNumber.toString(), it.billId.toString())
@@ -81,16 +83,16 @@ class SaleReturnController {
                         if (saleReturn.saleBillId == it.billId) {
                             if(saleReturn.sqty!=0)
                             {
-                                sqty =+ saleReturn.sqty
-                                it.put("sqty",it.sqty-sqty)
-                                it.put("prevsqty",sqty)
+                                sqty += Double.parseDouble(saleReturn.sqty.toString())
+                                print(sqty)
                             }
                             if(saleReturn.freeQty!=0)
                             {
-                                fqty =+ saleReturn.freeQty
-                                it.put("freeQty",it.freeQty-fqty)
-                                it.put("prevfqty",fqty)
+                                fqty += Double.parseDouble(saleReturn.freeQty.toString())
+                                print(fqty)
                             }
+                            it.put("prevsqty",sqty)
+                            it.put("prevfqty",fqty)
                         }
                     }
                 }
@@ -106,7 +108,7 @@ class SaleReturnController {
 //                    productArray.add(products)
 //                }
 //            }
-            println(products)
+//            println(products)
             respond products, formats: ['json'], status: 200
         }
         catch (Exception ex) {
@@ -144,7 +146,6 @@ class SaleReturnController {
 
             }
         }
-
         respond jsonObject, formats: ['json'], status: 200
     }
 

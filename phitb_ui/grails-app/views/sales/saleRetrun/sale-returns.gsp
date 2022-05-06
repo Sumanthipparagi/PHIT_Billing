@@ -380,6 +380,8 @@
         'SGST',
         'CGST',
         'IGST',
+        'P.Sqty',
+        'P.Fqty',
         '<strong>gst_p</strong>',
         '<strong>cgst_p</strong>',
         '<strong>sgst_p</strong>',
@@ -951,17 +953,20 @@
                 {type: 'text', readOnly: true},
                 {type: 'text', readOnly: true},
                 {type: 'text', readOnly: true},
+                {type: 'text', readOnly: true},
+                {type: 'text', readOnly: true},
                 {type: 'text', readOnly: true}
             ],
             hiddenColumns: true,
             hiddenColumns: {
                 copyPasteEnabled: true,
                 indicators: true,
-                columns:  [16, 17, 18, 19, 20]
+                columns:  [18, 19, 20, 21, 22]
             },
             minSpareRows: 0,
             minSpareCols: 0,
-            fixedColumnsLeft: 0,
+            fixedColumnsLeft: 2,
+            manualColumnFreeze: true,
             licenseKey: 'non-commercial-and-evaluation'
         });
         billHot.updateSettings({
@@ -990,11 +995,11 @@
                         hot.setDataAtCell(mainTableRow, 14, rowData[14]);
                         hot.setDataAtCell(mainTableRow, 15, rowData[15]);
                         hot.setDataAtCell(mainTableRow, 16, rowData[1]);
-                        hot.setDataAtCell(mainTableRow, 17, rowData[20]);
-                        gst = rowData[16];
-                        sgst = rowData[17];
-                        cgst = rowData[18];
-                        igst = rowData[19];
+                        hot.setDataAtCell(mainTableRow, 17, rowData[22]);
+                        gst = rowData[18];
+                        sgst = rowData[19];
+                        cgst = rowData[20];
+                        igst = rowData[21];
                         hot.selectCell(mainTableRow, 4);
                         remainingQty = rowData[8];
                         remainingFQty = rowData[9];
@@ -1073,7 +1078,10 @@
                         for (var i = 0; i < data.length; i++) {
                             var custId = data[i].bill.customerId;
                             var saledt = [];
-                            if (data[i].bill.billStatus !== "DRAFT" && data[i].bill.billStatus !== "CANCELLED" && (data[i].sqty!==0 ||  data[i].freeQty!==0)) {
+                            if (data[i].bill.billStatus !== "DRAFT" && data[i].bill.billStatus !== "CANCELLED" ) {
+                                var sqty = data[i].sqty - data[i].prevsqty;
+                                var fqty = data[i].freeQty - data[i].prevfqty;
+                                // console.log(sqty+""+fqty)
                                 if (custId === customer) {
                                     saledt.push(data[i].financialYear);
                                     saledt.push(data[i].bill.invoiceNumber+" "+ moment(data[i].bill.entryDate).format('DD-MM-YYYY'));
@@ -1082,8 +1090,8 @@
                                     saledt.push(data[i].sRate);
                                     saledt.push(data[i].expiryDate);
                                     saledt.push(data[i].amount);
-                                    saledt.push(data[i].sqty);
-                                    saledt.push(data[i].freeQty);
+                                    saledt.push(data[i].sqty - data[i].prevsqty);
+                                    saledt.push(data[i].freeQty - data[i].prevfqty);
                                     saledt.push(data[i].batch?.product?.unitPacking);
                                     saledt.push(data[i].discount);
                                     saledt.push(data[i].mrp);
@@ -1091,6 +1099,8 @@
                                     saledt.push(data[i].sgstAmount);
                                     saledt.push(data[i].cgstAmount);
                                     saledt.push(data[i].igstAmount);
+                                    saledt.push(data[i].prevsqty);
+                                    saledt.push(data[i].prevfqty);
                                     saledt.push(data[i].gstPercentage);
                                     saledt.push(data[i].cgstPercentage);
                                     saledt.push(data[i].sgstPercentage);
