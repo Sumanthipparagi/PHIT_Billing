@@ -965,7 +965,7 @@
             },
             minSpareRows: 0,
             minSpareCols: 0,
-            fixedColumnsLeft: 2,
+            fixedColumnsRight: 2,
             manualColumnFreeze: true,
             licenseKey: 'non-commercial-and-evaluation'
         });
@@ -1079,8 +1079,8 @@
                             var custId = data[i].bill.customerId;
                             var saledt = [];
                             if (data[i].bill.billStatus !== "DRAFT" && data[i].bill.billStatus !== "CANCELLED" ) {
-                                var sqty = data[i].sqty - data[i].prevsqty;
-                                var fqty = data[i].freeQty - data[i].prevfqty;
+                                // var sqty = data[i].sqty - data[i].prevsqty;
+                                // var fqty = data[i].freeQty - data[i].prevfqty;
                                 // console.log(sqty+""+fqty)
                                 if (custId === customer) {
                                     saledt.push(data[i].financialYear);
@@ -1090,8 +1090,10 @@
                                     saledt.push(data[i].sRate);
                                     saledt.push(data[i].expiryDate);
                                     saledt.push(data[i].amount);
-                                    saledt.push(data[i].sqty - data[i].prevsqty);
-                                    saledt.push(data[i].freeQty - data[i].prevfqty);
+                                    var sqty = data[i].sqty - data[i].prevsqty;
+                                    var fqty = data[i].freeQty - data[i].prevfqty;
+                                    saledt.push(sqty);
+                                    saledt.push(fqty);
                                     saledt.push(data[i].batch?.product?.unitPacking);
                                     saledt.push(data[i].discount);
                                     saledt.push(data[i].mrp);
@@ -1106,7 +1108,10 @@
                                     saledt.push(data[i].sgstPercentage);
                                     saledt.push(data[i].igstPercentage);
                                     saledt.push(data[i].bill.id);
-                                    billData.push(saledt);
+                                    if(sqty>0 || fqty>0)
+                                    {
+                                        billData.push(saledt);
+                                    }
                                 }
                             }
                         }
