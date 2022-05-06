@@ -38,8 +38,13 @@
     }
 
     tbody td {
-        padding: 0px;
+        padding: 0;
     }
+
+    table.dataTable td {
+        word-break: break-word!important;
+    }
+
 
     </style>
 
@@ -60,7 +65,7 @@
         <div class="block-header">
             <div class="row clearfix">
                 <div class="col-lg-5 col-md-5 col-sm-12">
-                    <h2>Enti</h2>
+                    <h2>Entity Settings</h2>
                     <ul class="breadcrumb padding-0">
                         <li class="breadcrumb-item"><a href="#"><i class="zmdi zmdi-home"></i></a></li>
                         <li class="breadcrumb-item active">Entity Settings</li>
@@ -188,18 +193,18 @@
                     var return_data = [];
                     for (var i = 0; i < json.data.length; i++) {
                         var editbtn = '<button type="button" data-id="' + json.data[i].id +
-                            '" data-entity="' + json.data[i].entity.entityName + '"' +
+                            '" data-entity="' + json.data[i].entity.id + '"' +
                             '" data-code="' + json.data[i].code + '"' +
                             '" data-name="' + json.data[i].name + '"' +
                             '" data-value="' + json.data[i].value + '"' +
                             '"' +
-                            ' class="editbtn btn btn-sm btn-warning  editbtn" data-toggle="modal" data-target="#addCityModal"><i class="material-icons"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">edit</font></font></i></button>'
+                            ' class="editbtn btn btn-sm btn-warning  editbtn" data-toggle="modal" data-target="#addEntitySettingModal"><i class="material-icons"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">edit</font></font></i></button>'
                         var deletebtn = '<button type="button" data-id="' + json.data[i].id +
                             '" class="btn btn-danger deletebtn" data-toggle="modal" data-target=".deleteModal"><i class="material-icons"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">delete</font></font></i></button>'
                         return_data.push({
                             'entity': json.data[i].entity.entityName,
                             'code': json.data[i].code,
-                            'name': json.data[i].name ,
+                            'name': "<div style='white-space:normal;'>"+json.data[i].name+"<div>" ,
                             'value': json.data[i].value,
                             'action': editbtn + ' ' + deletebtn
                         });
@@ -255,7 +260,7 @@
 
     $(document).on("click", ".addbtn", function () {
         $(".entitySettingsForm")[0].reset();
-        $('.entity').select2()
+        $('.entity').select2();
         $(".entitySettingTitle").text("Add Entity Settings");
         id = null
     });
@@ -263,10 +268,10 @@
     $(document).on("click", ".editbtn", function () {
         id = $(this).data('id');
         $(".name").val($(this).data('name'));
-        $(".code").val($(this).data('code'));
-        $(".value").val($(this).data('value'));
-        // $(".code").val($(this).attr('data-state')).change()
-        // $('.value').select2();
+        $(".entity").val($(this).data('entity')).trigger('change');
+        $(".code").val($(this).attr('data-code'));
+        $(".value").val($(this).attr('data-value'));
+        $('.entity').select2();
         $(".entitySettingTitle").text("Update Entity Settings");
     });
 

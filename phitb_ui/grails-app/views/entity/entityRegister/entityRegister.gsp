@@ -206,7 +206,8 @@
                             'entityName': json.data[i].entityName,
                             'entityType': json.data[i].entityType.name,
                             'gstin': json.data[i].gstn,
-                            'address': json.data[i].addressLine1 + " " + json.data[i].addressLine2,
+                            'address': "<div style='white-space:normal;'>"+json.data[i].addressLine1 + "<br>" +
+                                json.data[i].addressLine2+"</div>",
                             'action': editbtn + ' ' + deletebtn
                         });
                     }

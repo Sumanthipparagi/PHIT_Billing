@@ -204,7 +204,7 @@
                         return_data.push({
                             'id': json.data[i].id,
                             'userName': json.data[i].userName,
-                            'address': json.data[i].address,
+                            'address': "<div style='white-space:normal;'>"+json.data[i].address+"</div>",
                             'role': json.data[i].role.name,
                             'entity': json.data[i].entity.entityName,
                             'action': editbtn + ' ' + deletebtn
