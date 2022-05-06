@@ -111,8 +111,8 @@
                                     <th style="width: 20%">CCM Enabled</th>
                                     <th style="width: 20%">Premises</th>
                                     <th style="width: 20%">Manager</th>
-                                    <th style="width: 20%">Entity</th>
                                     <th style="width: 20%">Entity Type</th>
+                                    <th style="width: 20%">Entity</th>
                                     <th style="width: 20%">Action</th>
                                 </tr>
                                 </thead>
@@ -225,9 +225,9 @@
             columns: [
                 // {'data': 'id', 'width': '20%'},
                 {'data': 'godownName', 'width': '20%'},
-                {'data': 'ccmEnabled', 'width': '20%'},
-                {'data': 'premises', 'width': '20%'},
-                {'data': 'managerId', 'width': '20%'},
+                {'data': 'ccmEnabled', 'width': '10%'},
+                {'data': 'premises', 'width': '10%'},
+                {'data': 'managerId', 'width': '10%'},
                 {'data': 'entitytype', 'width': '20%'},
                 {'data': 'entity', 'width': '20%'},
                 {'data': 'action', 'width': '20%'}
