@@ -94,8 +94,8 @@ class SalesService
     def saveSaleInvoice(JSONObject jsonObject)
     {
         Client client = ClientBuilder.newClient();
-        //WebTarget target = client.target(new Links().API_GATEWAY)
-        WebTarget target = client.target("http://localhost:8083")
+        WebTarget target = client.target(new Links().API_GATEWAY)
+        //WebTarget target = client.target("http://localhost:8083")
         try
         {
             println(jsonObject)
@@ -120,8 +120,8 @@ contains both sale bill and products
     def updateSaleInvoice(JSONObject jsonObject, String id)
     {
         Client client = ClientBuilder.newClient();
-        //WebTarget target = client.target(new Links().API_GATEWAY)
-        WebTarget target = client.target("http://localhost:8083")
+        WebTarget target = client.target(new Links().API_GATEWAY)
+        //WebTarget target = client.target("http://localhost:8083")
         try
         {
             println(jsonObject)
@@ -320,8 +320,8 @@ contains both sale bill and products
     def saveSaleProductDetailList(JSONArray jsonArray)
     {
         Client client = ClientBuilder.newClient();
-        //WebTarget target = client.target(new Links().API_GATEWAY);
-        WebTarget target = client.target("http://localhost:8083");
+        WebTarget target = client.target(new Links().API_GATEWAY);
+        //WebTarget target = client.target("http://localhost:8083");
         try
         {
             println(jsonArray)
