@@ -95,7 +95,6 @@ class SalesService
     {
         Client client = ClientBuilder.newClient();
         WebTarget target = client.target(new Links().API_GATEWAY)
-        //WebTarget target = client.target("http://localhost:8083")
         try
         {
             println(jsonObject)
@@ -121,7 +120,6 @@ contains both sale bill and products
     {
         Client client = ClientBuilder.newClient();
         WebTarget target = client.target(new Links().API_GATEWAY)
-        //WebTarget target = client.target("http://localhost:8083")
         try
         {
             println(jsonObject)
@@ -321,7 +319,6 @@ contains both sale bill and products
     {
         Client client = ClientBuilder.newClient();
         WebTarget target = client.target(new Links().API_GATEWAY);
-        //WebTarget target = client.target("http://localhost:8083");
         try
         {
             println(jsonArray)
