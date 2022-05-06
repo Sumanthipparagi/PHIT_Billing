@@ -83,11 +83,13 @@ class SaleReturnController {
                             {
                                 sqty =+ saleReturn.sqty
                                 it.put("sqty",it.sqty-sqty)
+                                it.put("prevsqty",sqty)
                             }
                             if(saleReturn.freeQty!=0)
                             {
                                 fqty =+ saleReturn.freeQty
                                 it.put("freeQty",it.freeQty-fqty)
+                                it.put("prevfqty",fqty)
                             }
                         }
                     }
@@ -104,6 +106,7 @@ class SaleReturnController {
 //                    productArray.add(products)
 //                }
 //            }
+            println(products)
             respond products, formats: ['json'], status: 200
         }
         catch (Exception ex) {
@@ -138,6 +141,7 @@ class SaleReturnController {
                         jsonObject.put("freeQty",jsonObject.freeQty - fqty)
                     }
                 }
+
             }
         }
 
