@@ -60,7 +60,7 @@
         <div class="block-header">
             <div class="row clearfix">
                 <div class="col-lg-5 col-md-5 col-sm-12">
-                    <h2>City Master</h2>
+                    <h2>Enti</h2>
                     <ul class="breadcrumb padding-0">
                         <li class="breadcrumb-item"><a href="#"><i class="zmdi zmdi-home"></i></a></li>
                         <li class="breadcrumb-item active">Entity Settings</li>
@@ -102,7 +102,7 @@
                     </div>
                     <div class="body">
                         <div class="table-responsive">
-                            <table class="table table-bordered table-striped table-hover cityTable dataTable">
+                            <table class="table table-bordered table-striped table-hover entitySettingsTable dataTable">
                                 <thead>
                                 <tr>
                                     %{--                                    <th style="width: 20%">ID</th>--}%
@@ -156,14 +156,14 @@
 
 <script>
 
-    var citytable;
+    var entitySettingTable;
     var id = null;
     $(function () {
         entitySettingsTable();
     });
 
     function entitySettingsTable() {
-        citytable = $(".entitySettingsTable").DataTable({
+        entitySettingTable = $(".entitySettingsTable").DataTable({
             "order": [[0, "desc"]],
             sPaginationType: "simple_numbers",
             responsive: {
@@ -177,13 +177,14 @@
             processing: true,
             serverSide: true,
             language: {
-                searchPlaceholder: "Search City"
+                searchPlaceholder: "Search Entity Settings"
             },
             ajax: {
                 type: 'GET',
                 url: '/entity-settings/datatable',
                 dataType: 'json',
                 dataSrc: function (json) {
+                    console.log(json)
                     var return_data = [];
                     for (var i = 0; i < json.data.length; i++) {
                         var editbtn = '<button type="button" data-id="' + json.data[i].id +
@@ -254,7 +255,7 @@
 
     $(document).on("click", ".addbtn", function () {
         $(".entitySettingsForm")[0].reset();
-        // $('.state').select2()
+        $('.entity').select2()
         $(".entitySettingTitle").text("Add Entity Settings");
         id = null
     });
@@ -284,14 +285,12 @@
             success: function () {
                 $('.deleteModal').modal('hide');
                 entitySettingsTable();
-                swal("Success!", "City Deleted Successfully", "success");
+                swal("Success!", "Entity Register Deleted Successfully", "success");
             }, error: function () {
                 swal("Error!", "Something went wrong", "error");
             }
         });
     }
-
-
 </script>
 <g:include view="controls/footer-content.gsp"/>
 <script>

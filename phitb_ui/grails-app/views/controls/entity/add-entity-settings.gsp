@@ -1,22 +1,26 @@
 <div class="example-modal">
-    <div class="modal fade" id="addCityModal">
+    <div class="modal fade" id="addEntitySettingModal">
         <div class="modal-dialog modal-lg">
             <div class="modal-content">
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span></button>
-                    <h4 class="cityTitle"></h4>
+                    <h4 class="entitySettingTitle"></h4>
                 </div>
-                <form action="" id="form_validation" method="post" role="form" class="cityForm"
+                <form action="" id="form_validation" method="post" role="form" class="entitySettingsForm"
                       enctype="multipart/form-data">
                     <div class="modal-body">
                         <div class="row">
                             <div class="col-lg-6 form-group  form-float">
+
                                 <label for="entity">
                                     Entity
                                 </label>
-                                <input type="text" id="entity" class="form-control entity" name="entity" placeholder="Name"
-                                       required/>
+                                <select class="form-control show-tick entity" name="entity" id="entity">
+                                    <g:each var="e" in="${entity}">
+                                        <option value="${e.id}">${e.entityName}</option>
+                                    </g:each>
+                                </select>
                             </div>
 
                             <div class="col-lg-6 form-group  form-float">
@@ -28,12 +32,20 @@
                             </div>
 
 
+                            <div class="col-lg-6 form-group  form-float">
+                                <label for="code">
+                                    Name
+                                </label>
+                                <input type="text" id="name" class="form-control name" name="name" placeholder="Name"
+                                       required/>
+                            </div>
+
 
                             <div class="col-lg-6 form-group  form-float">
                                 <label for="value">
                                     Value
                                 </label>
-                                <input type="text" id="value" class="form-control value" name="code" placeholder="value"
+                                <input type="text" id="value" class="form-control value" name="value" placeholder="value"
                                        required/>
                             </div>
 %{--                            <div class="col-lg-6 form-group  form-float">--}%

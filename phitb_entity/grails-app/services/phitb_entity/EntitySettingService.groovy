@@ -45,8 +45,8 @@ class EntitySettingService {
         Integer offset = start ? Integer.parseInt(start.toString()) : 0
         Integer max = length ? Integer.parseInt(length.toString()) : 100
 
-        def walletMasterCriteria = EntitySetting.createCriteria()
-        def walletMasterArrayList = walletMasterCriteria.list(max: max, offset: offset) {
+        def entitySettingCriteria = EntitySetting.createCriteria()
+        def entitySettingArrayList = entitySettingCriteria.list(max: max, offset: offset) {
             or {
                 if (searchTerm != "") {
                     ilike('code', '%' + searchTerm + '%')
@@ -56,12 +56,12 @@ class EntitySettingService {
             order(orderColumn, orderDir)
         }
 
-        def recordsTotal = walletMasterArrayList.totalCount
+        def recordsTotal = entitySettingArrayList.totalCount
         JSONObject jsonObject = new JSONObject()
         jsonObject.put("draw", paramsJsonObject.draw)
         jsonObject.put("recordsTotal", recordsTotal)
         jsonObject.put("recordsFiltered", recordsTotal)
-        jsonObject.put("data", walletMasterArrayList)
+        jsonObject.put("data", entitySettingArrayList)
         return jsonObject
     }
 

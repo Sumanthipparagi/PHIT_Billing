@@ -132,7 +132,7 @@ class UrlMappings
 
 
             //Entity Setting
-            "/entitysetting(.$format)?"(controller: 'entityTypeMaster') {
+            "/entitysetting(.$format)?"(controller: 'entitySetting') {
                 action = [GET: 'index', POST:
                         'save']
             }

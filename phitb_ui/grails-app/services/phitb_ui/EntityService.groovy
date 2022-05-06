@@ -2231,7 +2231,7 @@ class EntityService {
         try
         {
             Response apiResponse = target
-                    .path(new Links().ENTITY_SETTINGS_SHOW)
+                    .path(new Links().ENTITY_SETTINGS_DATATABLE)
                     .queryParam("params", URLEncoder.encode(jsonObject.toString(), "UTF-8"))
                     .request(MediaType.APPLICATION_JSON_TYPE)
                     .get()
