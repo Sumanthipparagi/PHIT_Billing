@@ -1205,6 +1205,7 @@
                 success: function (data) {
                     console.log(data);
                     if (data) {
+
                         billData = [];
                         for (var i = 0; i < data.length; i++) {
                             var custId = data[i].bill.customerId;
@@ -1214,6 +1215,13 @@
                                 // var fqty = data[i].freeQty - data[i].prevfqty;
                                 // console.log(sqty+""+fqty)
                                 if (custId === customer) {
+                                    // var waitingSwal = Swal.fire({
+                                    //     title: "Loading, Please wait!",
+                                    //     showDenyButton: false,
+                                    //     showCancelButton: false,
+                                    //     showConfirmButton: false,
+                                    //     allowOutsideClick: false
+                                    // });
                                     saledt.push(data[i].financialYear);
                                     saledt.push(data[i].bill.invoiceNumber+" "+ moment(data[i].bill.entryDate).format('DD-MM-YYYY'));
                                     saledt.push("INVOICE");
@@ -1251,13 +1259,19 @@
                         billHot.updateSettings({
                             data: []
                         });
+
+                        //
+
                         if (billData?.length > 0) {
+
                             billHot.loadData(billData);
                             $("#billsTable").focus();
                             if (selectCell)
                                 billHot.selectCell(0, 0);
+
                         }
                     }
+                    // waitingSwal.close()
                 },
                 error: function (data) {
                     console.log("Failed");
