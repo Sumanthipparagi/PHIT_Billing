@@ -70,6 +70,7 @@ class AuthController {
                     session.setAttribute("entityId", entity?.get("id"))
                     session.setAttribute("entityName", entity?.get("entityName"))
                     session.setAttribute("userName", username)
+                    session.setAttribute("stateId", entity?.get("stateId"))
                     session.setAttribute("entityAddress1", entity?.get("addressLine1"))
                     session.setAttribute("entityAddress2", entity?.get("addressLine2"))
                     session.setAttribute("entityPinCode", entity?.get("pinCode"))

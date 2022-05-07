@@ -221,22 +221,22 @@ class SaleReturnController
             String freeQty = sr.get("6")
             String saleRate = sr.get("7")
             String mrp = sr.get("8")
-            if (sr.has("17"))
+            if (sr.has("18"))
             {
-                saleBillId = sr.get("17")
+                saleBillId = sr.get("18")
             }
             else
             {
                 saleBillId = ""
             }
-            String invoiceNumber = sr.get("16")
+            String invoiceNumber = sr.get("17")
             double discount = UtilsService.round(Double.parseDouble(sr.get("9").toString()), 2)
             String packDesc = sr.get("10")
-            double gst = UtilsService.round(Double.parseDouble(sr.get("11").toString()), 2)
-            double value = UtilsService.round(Double.parseDouble(sr.get("12").toString()), 2)
-            double sgst = UtilsService.round(Double.parseDouble(sr.get("13").toString()), 2)
-            double cgst = UtilsService.round(Double.parseDouble(sr.get("14").toString()), 2)
-            double igst = UtilsService.round(Double.parseDouble(sr.get("15").toString()), 2)
+            double gst = UtilsService.round(Double.parseDouble(sr.get("12").toString()), 2)
+            double value = UtilsService.round(Double.parseDouble(sr.get("13").toString()), 2)
+            double sgst = UtilsService.round(Double.parseDouble(sr.get("14").toString()), 2)
+            double cgst = UtilsService.round(Double.parseDouble(sr.get("15").toString()), 2)
+            double igst = UtilsService.round(Double.parseDouble(sr.get("16").toString()), 2)
             totalSqty += Long.parseLong(saleQty)
             totalFqty += Long.parseLong(freeQty)
             totalAmount += value

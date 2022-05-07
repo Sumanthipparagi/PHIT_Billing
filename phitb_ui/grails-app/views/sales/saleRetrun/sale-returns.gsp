@@ -100,7 +100,8 @@
                                         onchange="customerChanged()">
                                     <g:each in="${customers}" var="cs">
                                         <g:if test="${cs.id != session.getAttribute("entityId")}">
-                                            <option value="${cs.id}">${cs.entityName} (${cs.entityType.name})</option>
+                                            <option value="${cs.id}" data-stateId="${cs.stateId}">${cs.entityName} (${cs.entityType
+                                                    .name})</option>
                                         </g:if>
                                     </g:each>
                                 </select>
@@ -542,50 +543,50 @@
                             }
                         }
 
-                        if (prop === 11) //second col gst dropdown
-                        {
-                            mainTableRow = row;
-                            // alert(newValue)
-                            // var sR = hot.getDataAtCell(row, 7);
-                            // var sq = hot.getDataAtCell(row, 5);
-                            // var disc = hot.getDataAtCell(row,9)
-                            // var value = sR * sq;
-                            // var priceBeforeGst = value - (value * disc / 100);
-                            // var finalPrice = priceBeforeGst + (priceBeforeGst * (newValue / 100));
-                            // hot.setDataAtCell(row, 13, Number(finalPrice).toFixed(2));
-                            // if (newValue !== 0) {
-                            //     var gstAmount = priceBeforeGst * (newValue / 100);
-                            //     var sgstAmount = priceBeforeGst * (sgst / 100);
-                            //     var cgstAmount = priceBeforeGst * (cgst / 100);
-                            //     hot.setDataAtCell(row, 12, Number(gstAmount).toFixed(2)); //GST
-                            //     hot.setDataAtCell(row, 14, Number(sgstAmount).toFixed(2)); //SGST
-                            //     hot.setDataAtCell(row, 15, Number(cgstAmount).toFixed(2)); //CGST
-                            // } else {
-                            //     hot.setDataAtCell(row, 12, 0); //GST
-                            //     hot.setDataAtCell(row, 14, 0); //SGST
-                            //     hot.setDataAtCell(row, 15, 0); //CGST
-                            // }
-                            // if (igst !== "0") {
-                            //     var igstAmount = priceBeforeGst * (igst / 100);
-                            //     hot.setDataAtCell(row, 16, Number(igstAmount).toFixed(2)); //IGST
-                            // } else
-                            //     hot.setDataAtCell(row, 16, 0);
-
-
-                            // $.ajax({
-                            //     type: "POST",
-                            //     url: "/tax/show/"+newValue,
-                            //     dataType: 'json',
-                            //     success: function (data)
-                            //     {
-                            //         console.log(data)
-                            //     },
-                            //     error: function (data) {
-                            //         alert("Something went Wrong!")
-                            //     }
-                            // });
-
-                        }
+                        // if (prop === 11) //second col gst dropdown
+                        // {
+                        //     mainTableRow = row;
+                        //     // alert(newValue)
+                        //     // var sR = hot.getDataAtCell(row, 7);
+                        //     // var sq = hot.getDataAtCell(row, 5);
+                        //     // var disc = hot.getDataAtCell(row,9)
+                        //     // var value = sR * sq;
+                        //     // var priceBeforeGst = value - (value * disc / 100);
+                        //     // var finalPrice = priceBeforeGst + (priceBeforeGst * (newValue / 100));
+                        //     // hot.setDataAtCell(row, 13, Number(finalPrice).toFixed(2));
+                        //     // if (newValue !== 0) {
+                        //     //     var gstAmount = priceBeforeGst * (newValue / 100);
+                        //     //     var sgstAmount = priceBeforeGst * (sgst / 100);
+                        //     //     var cgstAmount = priceBeforeGst * (cgst / 100);
+                        //     //     hot.setDataAtCell(row, 12, Number(gstAmount).toFixed(2)); //GST
+                        //     //     hot.setDataAtCell(row, 14, Number(sgstAmount).toFixed(2)); //SGST
+                        //     //     hot.setDataAtCell(row, 15, Number(cgstAmount).toFixed(2)); //CGST
+                        //     // } else {
+                        //     //     hot.setDataAtCell(row, 12, 0); //GST
+                        //     //     hot.setDataAtCell(row, 14, 0); //SGST
+                        //     //     hot.setDataAtCell(row, 15, 0); //CGST
+                        //     // }
+                        //     // if (igst !== "0") {
+                        //     //     var igstAmount = priceBeforeGst * (igst / 100);
+                        //     //     hot.setDataAtCell(row, 16, Number(igstAmount).toFixed(2)); //IGST
+                        //     // } else
+                        //     //     hot.setDataAtCell(row, 16, 0);
+                        //
+                        //
+                        //     // $.ajax({
+                        //     //     type: "POST",
+                        //     //     url: "/tax/show/"+newValue,
+                        //     //     dataType: 'json',
+                        //     //     success: function (data)
+                        //     //     {
+                        //     //         console.log(data)
+                        //     //     },
+                        //     //     error: function (data) {
+                        //     //         alert("Something went Wrong!")
+                        //     //     }
+                        //     // });
+                        //
+                        // }
                     });
                 }
             },
@@ -874,6 +875,10 @@
             });
         });
 
+        var stateId = $('#customer option:selected').attr('data-stateId')
+        $('#customer').change(function(){
+           stateId = $('#customer option:selected').attr('data-stateId')
+        });
 
         function productsDropdownRenderer(instance, td, row, col, prop, value, cellProperties) {
             var selectedId;
@@ -895,9 +900,10 @@
                     value = taxRegister[index].id;
                 }
             }
+            Handsontable.renderers.TextRenderer.apply(this, arguments);
             if(selectedId!==undefined)
             {
-                taxId = selectedId.split('|')
+                taxId = selectedId.split('|');
                 $.ajax({
                     type: "POST",
                     url: "/tax/showtax/"+taxId[0].trim(),
@@ -905,38 +911,43 @@
                     success: function (data)
                     {
                         const row = hot.getSelected()[0][0];
-                        hot.setDataAtCell(row, 11, taxId[1])
+                        hot.setDataAtCell(row, 11, taxId[1]);
                         var sR = hot.getDataAtCell(row, 7);
                         var sq = hot.getDataAtCell(row, 5);
-                        var disc = hot.getDataAtCell(row,9)
+                        var disc = hot.getDataAtCell(row,9);
                         var value = sR * sq;
                         var priceBeforeGst = value - (value * disc / 100);
                         var finalPrice = priceBeforeGst + (priceBeforeGst * (taxId[1] / 100));
                         hot.setDataAtCell(row, 13, Number(finalPrice).toFixed(2));
-                        if (taxId[1] !== 0) {
-                            var gstAmount = priceBeforeGst * (taxId[1] / 100);
-                            var sgstAmount = priceBeforeGst * (data.salesSgst / 100);
-                            var cgstAmount = priceBeforeGst * (data.salesCgst / 100);
-                            hot.setDataAtCell(row, 12, Number(gstAmount).toFixed(2)); //GST
-                            hot.setDataAtCell(row, 14, Number(sgstAmount).toFixed(2)); //SGST
-                            hot.setDataAtCell(row, 15, Number(cgstAmount).toFixed(2)); //CGST
-                        } else {
-                            hot.setDataAtCell(row, 12, 0); //GST
-                            hot.setDataAtCell(row, 14, 0); //SGST
-                            hot.setDataAtCell(row, 15, 0); //CGST
+                        if(stateId === '${session.getAttribute('stateId')}') {
+                            if (taxId[1] !== 0) {
+                                var gstAmount = priceBeforeGst * (taxId[1] / 100);
+                                var sgstAmount = priceBeforeGst * (data.salesSgst / 100);
+                                var cgstAmount = priceBeforeGst * (data.salesCgst / 100);
+                                hot.setDataAtCell(row, 12, Number(gstAmount).toFixed(2)); //GST
+                                hot.setDataAtCell(row, 14, Number(sgstAmount).toFixed(2)); //SGST
+                                hot.setDataAtCell(row, 15, Number(cgstAmount).toFixed(2)); //CGST
+                            } else {
+                                hot.setDataAtCell(row, 12, 0); //GST
+                                hot.setDataAtCell(row, 14, 0); //SGST
+                                hot.setDataAtCell(row, 15, 0); //CGST
+                            }
                         }
-                        if (data.salesIgst !== 0) {
-                            var igstAmount = priceBeforeGst * (igst / 100);
-                            hot.setDataAtCell(row, 16, Number(igstAmount).toFixed(2)); //IGST
-                        } else
-                            hot.setDataAtCell(row, 16, 0);
+                        else
+                        {
+                            if (data.salesIgst !== 0) {
+                                var igstAmount = priceBeforeGst * (igst / 100);
+                                hot.setDataAtCell(row, 16, Number(igstAmount).toFixed(2)); //IGST
+                            } else
+                                hot.setDataAtCell(row, 16, 0);
+                        }
                     },
                     error: function (data) {
                         alert("Something went Wrong!")
                     }
                 });
             }
-            Handsontable.renderers.TextRenderer.apply(this, arguments);
+
         }
 
         function reasonDropdownRenderer(instance, td, row, col, prop, value, cellProperties) {
@@ -1008,7 +1019,7 @@
                         hot.setDataAtCell(mainTableRow, 8, rowData[7]);
                         hot.setDataAtCell(mainTableRow, 9, 0);
                         hot.setDataAtCell(mainTableRow, 10, rowData[8]);
-                        hot.setDataAtCell(mainTableRow, 11, rowData[9]);
+                        hot.setDataAtCell(mainTableRow, 11, rowData[9].toFixed(2));
                         hot.setDataAtCell(mainTableRow, 12, rowData[9]);
                         hot.setDataAtCell(mainTableRow, 14, rowData[10]);
                         hot.setDataAtCell(mainTableRow, 15, rowData[11]);
@@ -1107,7 +1118,7 @@
                         hot.setDataAtCell(mainTableRow, 8, rowData[15]);
                         hot.setDataAtCell(mainTableRow, 9, 0);
                         hot.setDataAtCell(mainTableRow, 10, rowData[13]);
-                        hot.setDataAtCell(mainTableRow, 11, rowData[20]);
+                        hot.setDataAtCell(mainTableRow, 11, rowData[20].toFixed(2));
                         hot.setDataAtCell(mainTableRow, 12, rowData[16]);
                         hot.setDataAtCell(mainTableRow, 13, rowData[12]);
                         hot.setDataAtCell(mainTableRow, 14, rowData[17]);
@@ -1289,14 +1300,14 @@
                 totalQty += Number(data[i][5]);
             if (data[i][6])
                 totalFQty += Number(data[i][6]);
-            if (data[i][12])
-                totalAmt += Number(data[i][12]);
-            if (data[i][11])
-                totalGst += Number(data[i][11]);
             if (data[i][13])
-                totalSgst += Number(data[i][13]);
+                totalAmt += Number(data[i][13]);
+            if (data[i][11])
+                totalGst += Number(data[i][12]);
+            if (data[i][13])
+                totalSgst += Number(data[i][14]);
             if (data[i][14])
-                totalCgst += Number(data[i][14]);
+                totalCgst += Number(data[i][15]);
             if (data[i][15])
                 totalIgst += Number(data[i][15]);
         }
