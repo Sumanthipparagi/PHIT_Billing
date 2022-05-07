@@ -819,7 +819,7 @@
                             }
                         }
                         applySchemes(row, sQty);
-                        if (selection === 7) {
+                        if (selection === 8) {
                             sRate = Number(this.getActiveEditor().TEXTAREA.value);
                         } else
                             sRate = hot.getDataAtCell(row, 7);
@@ -917,11 +917,12 @@
                         var disc = hot.getDataAtCell(row,9);
                         var value = sR * sq;
                         var priceBeforeGst = value - (value * disc / 100);
-                        var finalPrice = priceBeforeGst + (priceBeforeGst * (taxId[1] / 100));
+                        gst = taxId[1]
+                        var finalPrice = priceBeforeGst + (priceBeforeGst * (gst / 100));
                         hot.setDataAtCell(row, 13, Number(finalPrice).toFixed(2));
                         if(stateId === '${session.getAttribute('stateId')}') {
                             if (taxId[1] !== 0) {
-                                var gstAmount = priceBeforeGst * (taxId[1] / 100);
+                                var gstAmount = priceBeforeGst * (gst / 100);
                                 var sgstAmount = priceBeforeGst * (data.salesSgst / 100);
                                 var cgstAmount = priceBeforeGst * (data.salesCgst / 100);
                                 hot.setDataAtCell(row, 12, Number(gstAmount).toFixed(2)); //GST
