@@ -338,6 +338,7 @@
         '<strong>MRP</strong>',
         '<strong>Disc.(%)</strong>',
         '<strong>Pack</strong>',
+        '<strong>GST.(%)</strong>',
         '<strong>GST</strong>',
         '<strong>Value</strong>',
         'SGST',
@@ -370,9 +371,13 @@
         '<strong>Batch</strong>',
         '<strong>S.Rate</strong>',
         '<strong>Exp.Date</strong>',
+        '<strong>Bal.S.qty</strong>',
+        '<strong>Bal.Schm.qty</strong>',
+        '<strong>PR.Sqty</strong>',
+        '<strong>PR.Fqty</strong>',
+        '<strong>Inv. Sale Qty</strong>',
+        '<strong>Inv. Schm Qty</strong>',
         '<strong>Amount</strong>',
-        '<strong>S.qty</strong>',
-        '<strong>FreeQty</strong>',
         '<strong>Pack</strong>',
         '<strong>Discount</strong>',
         '<strong>MRP</strong>',
@@ -380,8 +385,6 @@
         'SGST',
         'CGST',
         'IGST',
-        'PR.Sqty',
-        'PR.Fqty',
         '<strong>gst_p</strong>',
         '<strong>cgst_p</strong>',
         '<strong>sgst_p</strong>',
@@ -411,6 +414,7 @@
     var reason = [];
     var products = [];
     var customers = [];
+    var taxRegister = [];
     var readOnly = false;
     var scheme = null;
     $(document).ready(function () {
@@ -435,6 +439,9 @@
         <g:each in="${customers}" var="cs">
         customers.push({"id": ${cs.id}, "noOfCrDays": ${cs.noOfCrDays}});
         </g:each>
+        <g:each in="${taxRegister}" var="tr">
+        taxRegister.push({"id": '${tr.taxValue}', "text": '${tr.taxName+" | "+tr.taxValue}'});
+        </g:each>
         <g:each in="${reason}" var="r">
         reason.push({"id": '${r.reasonCode}', "text": '${r.reasonName}'});
         %{--reason.push('${r.reasonName}')--}%
@@ -454,6 +461,7 @@
             colHeaders: headerRow,
             columns: [
                 {type: 'text'},
+
                 {
                     editor: 'select2',
                     renderer: reasonDropdownRenderer,
@@ -486,6 +494,16 @@
                 {type: 'text', readOnly: true},
                 {type: 'text'},
                 {type: 'text', readOnly: true},
+                {
+                    editor: 'select2',
+                    renderer: taxRegisterDropdownRenderer,
+                    select2Options: {
+                        data: taxRegister,
+                        dropdownAutoWidth: true,
+                        allowClear: true,
+                        width: 'auto'
+                    }
+                },
                 {type: 'text', readOnly: true},
                 {type: 'text', readOnly: true},
                 {type: 'text', readOnly: true},
@@ -498,7 +516,7 @@
             hiddenColumns: {
                 copyPasteEnabled: true,
                 indicators: true,
-                columns:  [17]
+                columns:  [18]
             },
             minSpareRows: 0,
             minSpareColumns: 0,
@@ -522,6 +540,36 @@
                                 mainTableRow = row;
                                 batchSelection(newValue, row);
                             }
+                        }
+
+                        if (prop === 11) //second col gst dropdown
+                        {
+                            mainTableRow = row;
+                            var sR = hot.getDataAtCell(row, 7);
+                            var sq = hot.getDataAtCell(row, 5);
+                            var disc = hot.getDataAtCell(row,9)
+                            var value = sR * sq;
+                            var priceBeforeGst = value - (value * disc / 100);
+                            var finalPrice = priceBeforeGst + (priceBeforeGst * (newValue / 100));
+                            hot.setDataAtCell(row, 13, Number(finalPrice).toFixed(2));
+                            if (newValue !== 0) {
+                                var gstAmount = priceBeforeGst * (newValue / 100);
+                                var sgstAmount = priceBeforeGst * (sgst / 100);
+                                var cgstAmount = priceBeforeGst * (cgst / 100);
+                                hot.setDataAtCell(row, 12, Number(gstAmount).toFixed(2)); //GST
+                                hot.setDataAtCell(row, 14, Number(sgstAmount).toFixed(2)); //SGST
+                                hot.setDataAtCell(row, 15, Number(cgstAmount).toFixed(2)); //CGST
+                            } else {
+                                hot.setDataAtCell(row, 12, 0); //GST
+                                hot.setDataAtCell(row, 14, 0); //SGST
+                                hot.setDataAtCell(row, 15, 0); //CGST
+                            }
+                            if (igst !== "0") {
+                                var igstAmount = priceBeforeGst * (igst / 100);
+                                hot.setDataAtCell(row, 16, Number(igstAmount).toFixed(2)); //IGST
+                            } else
+                                hot.setDataAtCell(row, 16, 0);
+
                         }
                     });
                 }
@@ -651,7 +699,7 @@
                         var remQty = 0;
                         var remFQty = 0;
                         var freeQtyEntry = false;
-                        var billId = hot.getDataAtCell(row, 17);
+                        var billId = hot.getDataAtCell(row, 18);
                         if (pid && batch) {
                             if(isCheckedYes!=="YES")
                             {
@@ -763,25 +811,25 @@
                         var value = sRate * sQty;
                         var priceBeforeGst = value - (value * discount / 100);
                         var finalPrice = priceBeforeGst + (priceBeforeGst * (gst / 100));
-                        hot.setDataAtCell(row, 12, Number(finalPrice).toFixed(2));
+                        hot.setDataAtCell(row, 13, Number(finalPrice).toFixed(2));
 
                         if (gst !== 0) {
                             var gstAmount = priceBeforeGst * (gst / 100);
                             var sgstAmount = priceBeforeGst * (sgst / 100);
                             var cgstAmount = priceBeforeGst * (cgst / 100);
-                            hot.setDataAtCell(row, 11, Number(gstAmount).toFixed(2)); //GST
-                            hot.setDataAtCell(row, 13, Number(sgstAmount).toFixed(2)); //SGST
-                            hot.setDataAtCell(row, 14, Number(cgstAmount).toFixed(2)); //CGST
+                            hot.setDataAtCell(row, 12, Number(gstAmount).toFixed(2)); //GST
+                            hot.setDataAtCell(row, 14, Number(sgstAmount).toFixed(2)); //SGST
+                            hot.setDataAtCell(row, 15, Number(cgstAmount).toFixed(2)); //CGST
                         } else {
-                            hot.setDataAtCell(row, 11, 0); //GST
-                            hot.setDataAtCell(row, 13, 0); //SGST
-                            hot.setDataAtCell(row, 14, 0); //CGST
+                            hot.setDataAtCell(row, 12, 0); //GST
+                            hot.setDataAtCell(row, 14, 0); //SGST
+                            hot.setDataAtCell(row, 15, 0); //CGST
                         }
                         if (igst !== "0") {
                             var igstAmount = priceBeforeGst * (igst / 100);
-                            hot.setDataAtCell(row, 15, Number(igstAmount).toFixed(2)); //IGST
+                            hot.setDataAtCell(row, 16, Number(igstAmount).toFixed(2)); //IGST
                         } else
-                            hot.setDataAtCell(row, 15, 0);
+                            hot.setDataAtCell(row, 16, 0);
                     }
                 }
             }
@@ -818,6 +866,17 @@
                 if (parseInt(value) === products[index].id) {
                     selectedId = products[index].id;
                     value = products[index].text;
+                }
+            }
+            Handsontable.renderers.TextRenderer.apply(this, arguments);
+        }
+
+        function taxRegisterDropdownRenderer(instance, td, row, col, prop, value, cellProperties) {
+            var selectedId;
+            for (var index = 0; index < taxRegister.length; index++) {
+                if (value === taxRegister[index].id) {
+                    selectedId = taxRegister[index].id;
+                    value = taxRegister[index].id;
                 }
             }
             Handsontable.renderers.TextRenderer.apply(this, arguments);
@@ -893,11 +952,11 @@
                         hot.setDataAtCell(mainTableRow, 9, 0);
                         hot.setDataAtCell(mainTableRow, 10, rowData[8]);
                         hot.setDataAtCell(mainTableRow, 11, rowData[9]);
-                        hot.setDataAtCell(mainTableRow, 13, rowData[10]);
-                        hot.setDataAtCell(mainTableRow, 14, rowData[11]);
-                        hot.setDataAtCell(mainTableRow, 15, rowData[12]);
-                        hot.setDataAtCell(mainTableRow, 16, "NA");
-
+                        hot.setDataAtCell(mainTableRow, 12, rowData[9]);
+                        hot.setDataAtCell(mainTableRow, 14, rowData[10]);
+                        hot.setDataAtCell(mainTableRow, 15, rowData[11]);
+                        hot.setDataAtCell(mainTableRow, 16, rowData[12]);
+                        hot.setDataAtCell(mainTableRow, 17, "NA");
                         gst = rowData[9];
                         sgst = rowData[10];
                         cgst = rowData[11];
@@ -955,13 +1014,15 @@
                 {type: 'text', readOnly: true},
                 {type: 'text', readOnly: true},
                 {type: 'text', readOnly: true},
+                {type: 'text', readOnly: true},
+                {type: 'text', readOnly: true},
                 {type: 'text', readOnly: true}
             ],
             hiddenColumns: true,
             hiddenColumns: {
                 copyPasteEnabled: true,
                 indicators: true,
-                columns:  [18, 19, 20, 21, 22]
+                columns:  [20, 21, 22, 23, 24]
             },
             minSpareRows: 0,
             minSpareCols: 0,
@@ -986,23 +1047,24 @@
                         hot.setDataAtCell(mainTableRow, 5, 0);
                         hot.setDataAtCell(mainTableRow, 6, 0);
                         hot.setDataAtCell(mainTableRow, 7, rowData[4]);
-                        hot.setDataAtCell(mainTableRow, 8, rowData[11]);
+                        hot.setDataAtCell(mainTableRow, 8, rowData[15]);
                         hot.setDataAtCell(mainTableRow, 9, 0);
-                        hot.setDataAtCell(mainTableRow, 10, rowData[9]);
-                        hot.setDataAtCell(mainTableRow, 11, rowData[12]);
-                        hot.setDataAtCell(mainTableRow, 12, rowData[6]);
-                        hot.setDataAtCell(mainTableRow, 13, rowData[13]);
-                        hot.setDataAtCell(mainTableRow, 14, rowData[14]);
-                        hot.setDataAtCell(mainTableRow, 15, rowData[15]);
-                        hot.setDataAtCell(mainTableRow, 16, rowData[1]);
-                        hot.setDataAtCell(mainTableRow, 17, rowData[22]);
-                        gst = rowData[18];
-                        sgst = rowData[19];
-                        cgst = rowData[20];
-                        igst = rowData[21];
+                        hot.setDataAtCell(mainTableRow, 10, rowData[13]);
+                        hot.setDataAtCell(mainTableRow, 11, rowData[20]);
+                        hot.setDataAtCell(mainTableRow, 12, rowData[16]);
+                        hot.setDataAtCell(mainTableRow, 13, rowData[12]);
+                        hot.setDataAtCell(mainTableRow, 14, rowData[17]);
+                        hot.setDataAtCell(mainTableRow, 15, rowData[18]);
+                        hot.setDataAtCell(mainTableRow, 16, rowData[19]);
+                        hot.setDataAtCell(mainTableRow, 17, rowData[1]);
+                        hot.setDataAtCell(mainTableRow, 18, rowData[24]);
+                        gst = rowData[20];
+                        sgst = rowData[21];
+                        cgst = rowData[22];
+                        igst = rowData[23];
                         hot.selectCell(mainTableRow, 4);
-                        remainingQty = rowData[8];
-                        remainingFQty = rowData[9];
+                        remainingQty = rowData[11];
+                        remainingFQty = rowData[12];
                         $("#saleReturnTable").focus();
                     } else {
                         alert("Selected product and batch already entered, duplicate entries not allowed");
@@ -1089,11 +1151,15 @@
                                     saledt.push(data[i].batchNumber);
                                     saledt.push(data[i].sRate);
                                     saledt.push(data[i].expiryDate);
-                                    saledt.push(data[i].amount);
                                     var sqty = data[i].sqty - data[i].prevsqty;
                                     var fqty = data[i].freeQty - data[i].prevfqty;
                                     saledt.push(sqty);
                                     saledt.push(fqty);
+                                    saledt.push(data[i].prevsqty);
+                                    saledt.push(data[i].prevfqty);
+                                    saledt.push(data[i].sqty);
+                                    saledt.push(data[i].freeQty);
+                                    saledt.push(data[i].amount);
                                     saledt.push(data[i].batch?.product?.unitPacking);
                                     saledt.push(data[i].discount);
                                     saledt.push(data[i].mrp);
@@ -1101,8 +1167,6 @@
                                     saledt.push(data[i].sgstAmount);
                                     saledt.push(data[i].cgstAmount);
                                     saledt.push(data[i].igstAmount);
-                                    saledt.push(data[i].prevsqty);
-                                    saledt.push(data[i].prevfqty);
                                     saledt.push(data[i].gstPercentage);
                                     saledt.push(data[i].cgstPercentage);
                                     saledt.push(data[i].sgstPercentage);
@@ -1320,21 +1384,17 @@
         duedate = moment(duedate, 'YYYY-MM-DD').toDate();
         duedate = moment(duedate).format('DD/MM/YYYY');
         var priority = $("#priority").val();
-
         if (!series) {
             alert("Please select series.");
             waitingSwal.close();
             return;
         }
-
         if (!customer) {
             alert("Please select customer.");
             waitingSwal.close();
             return;
         }
-
         var saleReturnData = JSON.stringify(hot.getSourceData());
-
         $.ajax({
             type: "POST",
             url: "/sale-return",
@@ -1484,6 +1544,7 @@
             }
         });
     }
+
 
     function checkSchemes(productId, batchNumber) {
         scheme = null;

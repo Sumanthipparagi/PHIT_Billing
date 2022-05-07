@@ -226,6 +226,7 @@ class UrlMappings {
         "/tax/datatable"(controller: "tax", action: "dataTable")
         "/tax/update/$id"(controller:"tax",action:"update")
         "/tax/delete/$id"(controller: "tax",action:"delete")
+        "/tax/show/$id"(controller: 'tax', action: 'show')
 
 
         //   Territory

@@ -273,6 +273,8 @@ class StockBookController {
             {
                 stockBook.remainingQty = remQty + Long.parseLong(params.purQty)
                 stockBook.remainingFreeQty = freeQty + Long.parseLong(params.fqty)
+                System.out.println("Remaining Qty After Sale Return"+stockBook.getRemainingQty())
+                System.out.println("Remaining Qty After Sale Return"+stockBook.getRemainingFreeQty())
             }
             else if (params.reason == "E")
             {
@@ -291,6 +293,8 @@ class StockBookController {
             {
                 stockBook.remainingQty = remQty + Long.parseLong(params.purQty)
                 stockBook.remainingFreeQty = freeQty + Long.parseLong(params.fqty)
+                System.out.println("Remaining Qty After Others(ADD)"+stockBook.getRemainingQty())
+                System.out.println("Remaining Qty After Others(ADD)"+stockBook.getRemainingFreeQty())
             }
             else if(params.reason == "ONE")
             {
