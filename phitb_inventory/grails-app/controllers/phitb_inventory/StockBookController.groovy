@@ -273,21 +273,32 @@ class StockBookController {
             {
                 stockBook.remainingQty = remQty + Long.parseLong(params.purQty)
                 stockBook.remainingFreeQty = freeQty + Long.parseLong(params.fqty)
+                System.out.println("Remaining Qty After Sale Return"+stockBook.getRemainingQty())
+                System.out.println("Remaining Qty After Sale Return"+stockBook.getRemainingFreeQty())
             }
             else if (params.reason == "E")
             {
-                stockBook.remainingQty = remQty - Long.parseLong(params.purQty)
-                stockBook.remainingFreeQty = freeQty - Long.parseLong(params.fqty)
+//                stockBook.remainingQty = remQty - Long.parseLong(params.purQty)
+//                stockBook.remainingFreeQty = freeQty - Long.parseLong(params.fqty)
+                println("Expiry - NO EFFECT ON CURRENT STOCK BOOK")
+
             }
             else if (params.reason == "B")
             {
-                stockBook.remainingQty = remQty - Long.parseLong(params.purQty)
-                stockBook.remainingFreeQty = freeQty - Long.parseLong(params.fqty)
+//                stockBook.remainingQty = remQty - Long.parseLong(params.purQty)
+//                stockBook.remainingFreeQty = freeQty - Long.parseLong(params.fqty)
+                println("Breakage - NO EFFECT ON CURRENT STOCK BOOK")
             }
             else if(params.reason == "O")
             {
                 stockBook.remainingQty = remQty + Long.parseLong(params.purQty)
                 stockBook.remainingFreeQty = freeQty + Long.parseLong(params.fqty)
+                System.out.println("Remaining Qty After Others(ADD)"+stockBook.getRemainingQty())
+                System.out.println("Remaining Qty After Others(ADD)"+stockBook.getRemainingFreeQty())
+            }
+            else if(params.reason == "ONE")
+            {
+                println("Others(No efft) - NO EFFECT ON CURRENT STOCK BOOK")
             }
             stockBook.isUpdatable = true
             StockBook savedStockBook = stockBook.save(flush:true)

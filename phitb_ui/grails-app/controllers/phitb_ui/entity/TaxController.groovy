@@ -190,4 +190,37 @@ class TaxController {
             response.status = 400
         }
     }
+
+
+    def showTaxForReturn(String id)
+    {
+        try
+        {
+            if(!id)
+                id = params.id
+            def apiResponse = new EntityService().getTaxRegister(id)
+            if (apiResponse?.status == 200)
+            {
+                if(id) {
+                    JSONObject jsonObject = new JSONObject(apiResponse.readEntity(String.class))
+                    respond jsonObject, formats: ['json'],status: 200;
+                }
+                else
+                {
+                    JSONArray jsonArray = new JSONArray(apiResponse.readEntity(String.class))
+                    respond jsonArray, formats: ['json'],status: 200;
+                }
+            }
+            else
+            {
+                return []
+            }
+        }
+        catch (Exception ex)
+        {
+            System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
+            log.error('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
+            response.status = 400
+        }
+    }
 }

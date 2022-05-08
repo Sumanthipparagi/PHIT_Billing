@@ -13,14 +13,17 @@ import phitb_ui.SystemService
 import phitb_ui.UtilsService
 import phitb_ui.entity.EntityRegisterController
 import phitb_ui.entity.SeriesController
+import phitb_ui.entity.TaxController
 import phitb_ui.entity.UserRegisterController
 
 import javax.ws.rs.core.Response
 import java.text.SimpleDateFormat
 
-class SaleReturnController {
+class SaleReturnController
+{
 
-    def index() {
+    def index()
+    {
         String entityId = session.getAttribute("entityId")?.toString()
         JSONArray divisions = new ProductService().getDivisionsByEntityId(entityId)
         ArrayList<String> users = new UserRegisterController().show() as ArrayList<String>
@@ -28,36 +31,42 @@ class SaleReturnController {
         def priorityList = new SystemService().getPriorityByEntity(entityId)
         def series = new SeriesController().getByEntity(entityId)
         def reason = new SalesService().getReason()
+        def taxRegister = new TaxController().show() as ArrayList<String>
         ArrayList<String> salesmanList = []
         users.each {
-            if (it.role.name.toString().equalsIgnoreCase(Constants.ROLE_SALESMAN)) {
+            if (it.role.name.toString().equalsIgnoreCase(Constants.ROLE_SALESMAN))
+            {
                 salesmanList.add(it)
             }
         }
-        render(view: '/sales/saleRetrun/sale-returns', model: [customers                   : customers, divisions: divisions, series: series,
-                                                               salesmanList                : salesmanList, priorityList:
-                                                                       priorityList, reason: reason])
+        render(view: '/sales/saleRetrun/sale-returns', model: [customers: customers, divisions: divisions, series: series,
+                                                               salesmanList: salesmanList, priorityList: priorityList, reason:reason,taxRegister:taxRegister])
     }
 
 
-    def getSaleBillByCustomer() {
+    def getSaleBillByCustomer()
+    {
         def salebills = new SalesService().getSaleBillByCustomer(params.custid, session.getAttribute('financialYear')
                 .toString(), session.getAttribute('entityId').toString())
         def apiResponse = new SalesService().getRequestWithIdList(salebills.id, new Links().SALE_PRODUCT_OF_BILLIDS)
         def prod = JSON.parse(apiResponse.readEntity(String.class))
-        prod.each { product ->
+        prod.each {product ->
             def index = salebills.findIndexOf({
                 it.id == product.billId
             })
             if (index != -1)
+            {
                 product.put("billId", salebills[index])
+            }
         }
         respond prod, formats: ['json'], status: 200
     }
 
 
-    def getSaleInvByProducts() {
-        try {
+    def getSaleInvByProducts()
+    {
+        try
+        {
             def products = new SalesService().getSaleProductDetailsByProductId(params.productId)
             JSONArray productArray = new JSONArray()
             double sqty = 0;
@@ -66,33 +75,37 @@ class SaleReturnController {
                 def saleBillShow = new SalesService().getRequestWithId(it.billId.toString(), new Links().SALE_BILL_SHOW)
                 def batchResponse = new ProductService().getBatchesOfProduct(it.productId.toString())
                 JSONArray batchArray = JSON.parse(batchResponse.readEntity(String.class)) as JSONArray
-                for (JSONObject batch : batchArray) {
-                    if (batch.batchNumber == it.batchNumber) {
+                for (JSONObject batch : batchArray)
+                {
+                    if (batch.batchNumber == it.batchNumber)
+                    {
                         it.put("batch", batch)
                     }
                 }
-                it.put("prevsqty",0)
-                it.put("prevfqty",0)
+                it.put("prevsqty", 0)
+                it.put("prevfqty", 0)
                 it.put("bill", JSON.parse(saleBillShow.readEntity(String.class)) as JSONObject)
                 def saleReturns = new SalesService().getReturnDetailsByBatchSalebillProductId(it.productId.toString()
                         , it.batchNumber.toString(), it.billId.toString())
                 JSONArray saleReturnArray = JSON.parse(saleReturns.readEntity(String.class)) as JSONArray
-                if(saleReturnArray.size() > 0)
+                if (saleReturnArray.size() > 0)
                 {
-                    for (JSONObject saleReturn : saleReturnArray) {
-                        if (saleReturn.saleBillId == it.billId) {
-                            if(saleReturn.sqty!=0)
+                    for (JSONObject saleReturn : saleReturnArray)
+                    {
+                        if (saleReturn.saleBillId == it.billId)
+                        {
+                            if (saleReturn.sqty != 0)
                             {
                                 sqty += Double.parseDouble(saleReturn.sqty.toString())
                                 print(sqty)
                             }
-                            if(saleReturn.freeQty!=0)
+                            if (saleReturn.freeQty != 0)
                             {
                                 fqty += Double.parseDouble(saleReturn.freeQty.toString())
                                 print(fqty)
                             }
-                            it.put("prevsqty",sqty)
-                            it.put("prevfqty",fqty)
+                            it.put("prevsqty", sqty)
+                            it.put("prevfqty", fqty)
                         }
                     }
                 }
@@ -111,7 +124,8 @@ class SaleReturnController {
 //            println(products)
             respond products, formats: ['json'], status: 200
         }
-        catch (Exception ex) {
+        catch (Exception ex)
+        {
             log.error(controllerName + ":" + ex)
             println(controllerName + ":" + ex)
         }
@@ -120,27 +134,29 @@ class SaleReturnController {
 
     def getSaleDetailsByProductAndBatch()
     {
-        def billAndBatch = new SalesService().getByBillBatchesProduct(params.billId,params.batch,params.productId)
+        def billAndBatch = new SalesService().getByBillBatchesProduct(params.billId, params.batch, params.productId)
         JSONObject jsonObject = new JSONObject(billAndBatch.readEntity(String.class))
         def saleReturns = new SalesService().getReturnDetailsByBatchSalebillProductId(jsonObject.productId.toString()
                 , jsonObject.batchNumber.toString(), jsonObject.billId.toString())
         JSONArray saleReturnArray = JSON.parse(saleReturns.readEntity(String.class)) as JSONArray
         double sqty = 0;
         double fqty = 0;
-        if(saleReturnArray.size() > 0)
+        if (saleReturnArray.size() > 0)
         {
-            for (JSONObject saleReturn : saleReturnArray) {
-                if (saleReturn.saleBillId == jsonObject.billId) {
-                    if(saleReturn.sqty!=0)
+            for (JSONObject saleReturn : saleReturnArray)
+            {
+                if (saleReturn.saleBillId == jsonObject.billId)
+                {
+                    if (saleReturn.sqty != 0)
                     {
-                        sqty =+ saleReturn.sqty
-                        jsonObject.put("sqty",jsonObject.sqty - sqty)
+                        sqty = +saleReturn.sqty
+                        jsonObject.put("sqty", jsonObject.sqty - sqty)
 
                     }
-                    if(saleReturn.freeQty!=0)
+                    if (saleReturn.freeQty != 0)
                     {
-                        fqty =+ saleReturn.freeQty
-                        jsonObject.put("freeQty",jsonObject.freeQty - fqty)
+                        fqty = +saleReturn.freeQty
+                        jsonObject.put("freeQty", jsonObject.freeQty - fqty)
                     }
                 }
 
@@ -150,7 +166,8 @@ class SaleReturnController {
     }
 
 
-    def saveSaleReturn() {
+    def saveSaleReturn()
+    {
         SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy")
         JSONObject saleReturn = new JSONObject()
         JSONArray saleReturnDetails = new JSONArray()
@@ -162,19 +179,24 @@ class SaleReturnController {
         String billStatus = params.billStatus
         String seriesCode = params.seriesCode
         String message = params.message
-        if (!message) {
+        if (!message)
+        {
             message = "NA"
         }
         long finId = 0
         long serBillId = 0
         String financialYear = session.getAttribute("financialYear")
         def series = new EntityService().getSeriesById(seriesId)
-        if (!billStatus.equalsIgnoreCase("DRAFT")) {
+        if (!billStatus.equalsIgnoreCase("DRAFT"))
+        {
             def recentReturn = new SalesService().getRecentSaleReturn(financialYear, entityId)
-            if (recentReturn != null && recentReturn.size() != 0) {
+            if (recentReturn != null && recentReturn.size() != 0)
+            {
                 finId = Long.parseLong(recentReturn.get("finId").toString()) + 1
                 serBillId = Long.parseLong(recentReturn.get("serBillId").toString()) + 1
-            } else {
+            }
+            else
+            {
                 finId = 1
                 serBillId = Long.parseLong(series.get("saleReturnId").toString())
             }
@@ -188,7 +210,8 @@ class SaleReturnController {
         double totalIgst = 0.00
         double totalDiscount = 0.00
         JSONArray saleRetrunData = new JSONArray(params.saleReturnData)
-        for (JSONObject sr : saleRetrunData) {
+        for (JSONObject sr : saleRetrunData)
+        {
             String saleBillId;
             String reason = sr.get("1")
             String productId = sr.get("2")
@@ -198,22 +221,22 @@ class SaleReturnController {
             String freeQty = sr.get("6")
             String saleRate = sr.get("7")
             String mrp = sr.get("8")
-            if (sr.has("17"))
+            if (sr.has("18"))
             {
-                saleBillId = sr.get("17")
+                saleBillId = sr.get("18")
             }
             else
             {
-                saleBillId =""
+                saleBillId = ""
             }
-            String invoiceNumber = sr.get("16")
+            String invoiceNumber = sr.get("17")
             double discount = UtilsService.round(Double.parseDouble(sr.get("9").toString()), 2)
-            //String packDesc = sr.get("10")
-            double gst = UtilsService.round(Double.parseDouble(sr.get("11").toString()), 2)
-            double value = UtilsService.round(Double.parseDouble(sr.get("12").toString()), 2)
-            double sgst = UtilsService.round(Double.parseDouble(sr.get("13").toString()), 2)
-            double cgst = UtilsService.round(Double.parseDouble(sr.get("14").toString()), 2)
-            double igst = UtilsService.round(Double.parseDouble(sr.get("15").toString()), 2)
+            String packDesc = sr.get("10")
+            double gst = UtilsService.round(Double.parseDouble(sr.get("12").toString()), 2)
+            double value = UtilsService.round(Double.parseDouble(sr.get("13").toString()), 2)
+            double sgst = UtilsService.round(Double.parseDouble(sr.get("14").toString()), 2)
+            double cgst = UtilsService.round(Double.parseDouble(sr.get("15").toString()), 2)
+            double igst = UtilsService.round(Double.parseDouble(sr.get("16").toString()), 2)
             totalSqty += Long.parseLong(saleQty)
             totalFqty += Long.parseLong(freeQty)
             totalAmount += value
@@ -228,11 +251,12 @@ class SaleReturnController {
             saleReturnDetail.put("billId", 0)
             saleReturnDetail.put("billType", 0)
             saleReturnDetail.put("serBillId", 0)
-            if(saleBillId!="")
+            if (saleBillId != "")
             {
                 saleReturnDetail.put("saleBillId", saleBillId)
             }
-            else {
+            else
+            {
                 saleReturnDetail.put("saleBillId", "")
             }
             saleReturnDetail.put("seriesId", seriesId)
@@ -265,7 +289,8 @@ class SaleReturnController {
             saleReturnDetail.put("entityTypeId", session.getAttribute("entityTypeId").toString())
             //GST percentage Calculation
             double priceBeforeTaxes = UtilsService.round((Double.parseDouble(saleQty) * Double.parseDouble(saleRate)), 2)
-            if (discount > 0) {
+            if (discount > 0)
+            {
                 priceBeforeTaxes = priceBeforeTaxes - (priceBeforeTaxes * (discount / 100))
             }
             double gstPercentage = 0.0
@@ -274,13 +299,21 @@ class SaleReturnController {
             double igstPercentage = 0.0
 
             if (gst > 0)
+            {
                 gstPercentage = (gst / priceBeforeTaxes) * 100
+            }
             if (sgst > 0)
+            {
                 sgstPercentage = (sgst / priceBeforeTaxes) * 100
+            }
             if (cgst > 0)
+            {
                 cgstPercentage = (cgst / priceBeforeTaxes) * 100
+            }
             if (igst > 0)
+            {
                 igstPercentage = (igst / priceBeforeTaxes) * 100
+            }
             saleReturnDetail.put("gstPercentage", UtilsService.round(gstPercentage, 2))
             saleReturnDetail.put("sgstPercentage", UtilsService.round(sgstPercentage, 2))
             saleReturnDetail.put("cgstPercentage", UtilsService.round(cgstPercentage, 2))
@@ -291,9 +324,12 @@ class SaleReturnController {
             //save to sale transportation details
 
             def stocks = new InventoryService().stocksIncrease(batchNumber, saleQty, freeQty, reason, productId)
-            if (stocks.status == 200) {
+            if (stocks.status == 200)
+            {
                 println("Stocks modified")
-            } else {
+            }
+            else
+            {
                 println("Stocks not modified")
             }
 
@@ -380,18 +416,23 @@ class SaleReturnController {
         saleReturn.put("exempted", 0) //TODO: to be changed
         saleReturn.put("seriesCode", seriesCode)
         Response resp = new SalesService().saveSaleRetrun(saleReturn)
-        if (resp.status == 200) {
+        if (resp.status == 200)
+        {
             def saleReturns = new JSONObject(resp.readEntity(String.class))
             //save to sale return details
-            for (JSONObject saleRetrunDetail : saleReturnDetails) {
+            for (JSONObject saleRetrunDetail : saleReturnDetails)
+            {
                 saleRetrunDetail.put("billId", saleReturns.get("id"))
                 saleRetrunDetail.put("taxId", saleReturns.get("taxable"))
                 saleRetrunDetail.put("billType", 0) //0 Sale, 1 Purchase
                 saleRetrunDetail.put("serBillId", saleReturns.get("serBillId"))
                 def resp1 = new SalesService().saveSaleRetrunDetails(saleRetrunDetail)
-                if (resp1.status == 200) {
+                if (resp1.status == 200)
+                {
                     println("Return Detail Saved")
-                } else {
+                }
+                else
+                {
                     println("Return Detail Failed")
                 }
             }
@@ -399,16 +440,20 @@ class SaleReturnController {
             responseJson.put("series", series)
             responseJson.put("saleReturnDetail", saleReturns)
             respond responseJson, formats: ['json']
-        } else {
+        }
+        else
+        {
             response.status == 400
         }
     }
 
-    def printSaleReturn() {
+    def printSaleReturn()
+    {
 
         String saleReturnId = params.id
         JSONObject saleReturnDetail = new SalesService().getSaleReturnDetailsById(saleReturnId)
-        if (saleReturnDetail != null) {
+        if (saleReturnDetail != null)
+        {
             JSONArray saleRetrunDetails = new SalesService().getSaleRetrunDetailsByBill(saleReturnId)
             JSONObject series = new EntityService().getSeriesById(saleReturnDetail.get("series").toString())
             JSONObject customer = new EntityService().getEntityById(saleReturnDetail.get("customerId").toString())
@@ -419,8 +464,10 @@ class SaleReturnController {
             saleRetrunDetails.each {
                 def batchResponse = new ProductService().getBatchesOfProduct(it.productId.toString())
                 JSONArray batchArray = JSON.parse(batchResponse.readEntity(String.class)) as JSONArray
-                for (JSONObject batch : batchArray) {
-                    if (batch.batchNumber == it.batchNumber) {
+                for (JSONObject batch : batchArray)
+                {
+                    if (batch.batchNumber == it.batchNumber)
+                    {
                         it.put("batch", batch)
                     }
                 }
@@ -436,34 +483,50 @@ class SaleReturnController {
             HashMap<String, Double> sgstGroup = new HashMap<>()
             HashMap<String, Double> cgstGroup = new HashMap<>()
             HashMap<String, Double> igstGroup = new HashMap<>()
-            for (Object it : saleRetrunDetails) {
+            for (Object it : saleRetrunDetails)
+            {
                 double amountBeforeTaxes = it.amount - it.cgstAmount - it.sgstAmount - it.igstAmount
                 totalBeforeTaxes += amountBeforeTaxes
-                if (it.igstPercentage > 0) {
+                if (it.igstPercentage > 0)
+                {
                     def igstPercentage = igstGroup.get(it.igstPercentage.toString())
-                    if (igstPercentage == null) {
+                    if (igstPercentage == null)
+                    {
                         igstGroup.put(it.igstPercentage.toString(), amountBeforeTaxes)
-                    } else {
+                    }
+                    else
+                    {
                         igstGroup.put(it.igstPercentage.toString(), igstPercentage.doubleValue() + amountBeforeTaxes)
                     }
-                } else {
+                }
+                else
+                {
                     def gstPercentage = gstGroup.get(it.gstPercentage.toString())
-                    if (gstPercentage == null) {
+                    if (gstPercentage == null)
+                    {
                         gstGroup.put(it.gstPercentage.toString(), amountBeforeTaxes)
-                    } else {
+                    }
+                    else
+                    {
                         gstGroup.put(it.gstPercentage.toString(), gstPercentage.doubleValue() + amountBeforeTaxes)
                     }
 
                     def sgstPercentage = sgstGroup.get(it.sgstPercentage.toString())
-                    if (sgstPercentage == null) {
+                    if (sgstPercentage == null)
+                    {
                         sgstGroup.put(it.sgstPercentage.toString(), amountBeforeTaxes)
-                    } else {
+                    }
+                    else
+                    {
                         sgstGroup.put(it.sgstPercentage.toString(), sgstPercentage.doubleValue() + amountBeforeTaxes)
                     }
                     def cgstPercentage = cgstGroup.get(it.cgstPercentage.toString())
-                    if (cgstPercentage == null) {
+                    if (cgstPercentage == null)
+                    {
                         cgstGroup.put(it.cgstPercentage.toString(), amountBeforeTaxes)
-                    } else {
+                    }
+                    else
+                    {
                         cgstGroup.put(it.cgstPercentage.toString(), cgstPercentage.doubleValue() + amountBeforeTaxes)
                     }
                 }
@@ -484,7 +547,9 @@ class SaleReturnController {
                                                                         igstGroup         : igstGroup,
                                                                         totalBeforeTaxes  : totalBeforeTaxes
             ])
-        } else {
+        }
+        else
+        {
 
             render("No Bill Found")
         }
