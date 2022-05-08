@@ -444,6 +444,7 @@
                                 <li><a href="/reports/sales/areawiseconsolidatedproducts">Area-wise (Products-Consolidated)</a></li>
                                 <li><a href="/reports/sales/consolidated">Consolidated</a></li>
                                 <li><a href="/reports/sales/productwise">Product-Wise</a></li>
+                                <li><a href="/reports/sales/gstreport">GST Report</a></li>
                             </ul>
                         </li>
                     </ul>

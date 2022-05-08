@@ -260,4 +260,72 @@ class ReportsController {
 
     }
 
+    def getSalesGSTReport()
+    {
+        JSONObject jsonObject = new JSONObject(request.reader.text)
+        String entityId = jsonObject.get("entityId")
+        String financialYear = jsonObject.get("financialYear")
+        String daterange = jsonObject.get("dateRange")
+        String sortby = jsonObject.get("sortBy")
+        String sort = "id"
+        if(sortby.equalsIgnoreCase("invoice-date"))
+            sort = "orderDate"
+
+        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy")
+        Date fromDate = sdf.parse(daterange.split("-")[0].trim())
+        Date toDate = sdf.parse(daterange.split("-")[1].trim())
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(toDate)
+        cal.set(Calendar.HOUR_OF_DAY, 23)
+        cal.set(Calendar.MINUTE, 59)
+        cal.set(Calendar.SECOND, 59)
+        cal.set(Calendar.MILLISECOND, 999)
+        toDate = cal.getTime()
+        JSONObject gstReport = new JSONObject()
+        ArrayList taxes = new ArrayList()
+        LinkedList invoiceGstDetails = new LinkedList()
+        ArrayList<SaleBillDetails> saleBillDetails = SaleBillDetails.findAllByOrderDateBetweenAndBillStatusAndEntityIdAndFinancialYear(fromDate, toDate, "ACTIVE", Long.parseLong(entityId), financialYear)
+        for (SaleBillDetails saleBillDetail  : saleBillDetails) {
+            ArrayList<SaleProductDetails> saleProductDetails = SaleProductDetails.findAllByBillId(saleBillDetail.id)
+            if(saleProductDetails?.size() > 0) {
+                LinkedHashMap gstDetail = new LinkedHashMap()
+                gstDetail.put("seriesId", saleBillDetail.seriesId)
+                gstDetail.put("customerId", saleBillDetail.customerId)
+                gstDetail.put("orderDate", saleBillDetail.orderDate)
+                gstDetail.put("invoiceNumber", saleBillDetail.invoiceNumber)
+                for (SaleProductDetails saleProductDetail : saleProductDetails) {
+                    if(!taxes.contains(saleProductDetail.gstPercentage))
+                        taxes.add(saleProductDetail.gstPercentage)
+
+                    if (gstDetail.containsKey(saleProductDetail.gstPercentage + "_gst"))
+                        gstDetail.put(saleProductDetail.gstPercentage + "_gst", saleProductDetail.gstAmount + (gstDetail.get(saleProductDetail.gstPercentage + "_gst") as Number))
+                    else
+                        gstDetail.put(saleProductDetail.gstPercentage + "_gst", saleProductDetail.gstAmount)
+
+                    if (gstDetail.containsKey(saleProductDetail.gstPercentage + "_cgst_" + saleProductDetail.cgstPercentage))
+                        gstDetail.put(saleProductDetail.gstPercentage + "_cgst_" + saleProductDetail.cgstPercentage, saleProductDetail.cgstAmount + (gstDetail.get(saleProductDetail.gstPercentage + "_cgst_" + saleProductDetail.cgstPercentage) as Number))
+                    else
+                        gstDetail.put(saleProductDetail.gstPercentage + "_cgst_" + saleProductDetail.cgstPercentage, saleProductDetail.cgstAmount)
+
+                    if (gstDetail.containsKey(saleProductDetail.gstPercentage + "_sgst_" + saleProductDetail.sgstPercentage))
+                        gstDetail.put(saleProductDetail.gstPercentage + "_sgst_" + saleProductDetail.sgstPercentage, saleProductDetail.sgstAmount + (gstDetail.get(saleProductDetail.gstPercentage + "_sgst_" + saleProductDetail.sgstPercentage) as Number))
+                    else
+                        gstDetail.put(saleProductDetail.gstPercentage + "_sgst_" + saleProductDetail.sgstPercentage, saleProductDetail.sgstAmount)
+
+                    if (gstDetail.containsKey(saleProductDetail.gstPercentage + "_igst_" + saleProductDetail.igstPercentage))
+                        gstDetail.put(saleProductDetail.gstPercentage + "_igst_" + saleProductDetail.igstPercentage, saleProductDetail.igstAmount + (gstDetail.get(saleProductDetail.gstPercentage + "_igst_" + saleProductDetail.igstPercentage) as Number))
+                    else
+                        gstDetail.put(saleProductDetail.gstPercentage + "_igst_" + saleProductDetail.igstPercentage, saleProductDetail.igstAmount)
+                }
+                gstDetail.put("invoiceTotal", saleBillDetail.invoiceTotal)
+                invoiceGstDetails.add(gstDetail)
+            }
+        }
+
+        gstReport.put("gstDetails", invoiceGstDetails)
+        gstReport.put("taxes", taxes)
+
+        respond gstReport
+    }
+
 }

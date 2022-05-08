@@ -11,6 +11,7 @@ import phitb_ui.EntityService
 import phitb_ui.ProductService
 import phitb_ui.ReportsService
 import phitb_ui.SystemService
+import phitb_ui.entity.SeriesController
 
 class SalesReportController {
 
@@ -352,5 +353,31 @@ class SalesReportController {
         }
         resultJson.addAll(products)
         respond resultJson, formats: ['json']
+    }
+
+    def salesGstReport()
+    {
+        render(view: '/reports/salesReport/gstreport')
+    }
+
+    def getSalesGstReport() {
+        String entityId = session.getAttribute("entityId")
+        String financialYear = session.getAttribute("financialYear")
+        String dateRange = params.dateRange
+        //String sortBy = params.sortBy
+        String sortBy = "id"
+        JSONObject gstData = reportsService.getSalesGstRport(entityId, dateRange, financialYear, sortBy)
+        JSONArray gstDetails = gstData.gstDetails
+        for (JSONObject jsonObject : gstDetails) {
+            JSONObject entity = new EntityService().getEntityById(jsonObject.get("customerId").toString())
+            JSONObject city = new SystemService().getCityById(entity.get("cityId").toString())
+            JSONObject series = new EntityService().getSeriesById(jsonObject.get("seriesId").toString())
+            jsonObject.put("customerId", entity.entityName)
+            jsonObject.put("town", city.name)
+            jsonObject.put("gstin", entity.gstn)
+            jsonObject.put("seriesId", series.seriesCode)
+        }
+        gstData.put("gstDetails", gstDetails)
+        respond gstData, formats: ['json']
     }
 }

@@ -231,7 +231,7 @@ class SaleReturnController
             }
             String invoiceNumber = sr.get("17")
             double discount = UtilsService.round(Double.parseDouble(sr.get("9").toString()), 2)
-            String packDesc = sr.get("10")
+            //String packDesc = sr.get("10")
             double gst = UtilsService.round(Double.parseDouble(sr.get("12").toString()), 2)
             double value = UtilsService.round(Double.parseDouble(sr.get("13").toString()), 2)
             double sgst = UtilsService.round(Double.parseDouble(sr.get("14").toString()), 2)

@@ -574,6 +574,9 @@ class UrlMappings {
         "/reports/sales/getconsolidated"(controller: "salesReport", action: "saleConsolidatedReport")
         "/reports/sales/productwise"(controller: "salesReport", action: "saleProductWise")
         "/reports/sales/getproductwise"(controller: "salesReport", action: "saleProductWiseReport")
+        "/reports/sales/gstreport"(controller: "salesReport", action: "saleProductWiseReport")
+        "/reports/sales/gstreport"(controller: "salesReport", action: "salesGstReport")
+        "/reports/sales/getgstreport"(controller: "salesReport", action: "getSalesGstReport")
 
     }
 }
