@@ -260,7 +260,7 @@
                     taxCols += "<td data-f-bold='true'><strong>"+gstTotals[i].toFixed(2)+"</strong></td>";
                 }
 
-                total += taxCols + "<td data-f-bold='true'><strong>"+totalInvoiceAmount+"</strong></td></tr>";
+                total += taxCols + "<td data-f-bold='true'><strong>"+totalInvoiceAmount.toFixed(2)+"</strong></td></tr>";
                 var mainTableFooter = "</tbody></table>";
                 $("#result").html(mainTableHeader + content + total + mainTableFooter);
                 loading.close();
