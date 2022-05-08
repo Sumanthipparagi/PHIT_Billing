@@ -257,7 +257,7 @@
                 var taxCols = "";
                 for(var i = 0; i<gstTotals.length;i++)
                 {
-                    taxCols += "<td data-f-bold='true'><strong>"+gstTotals[i]+"</strong></td>";
+                    taxCols += "<td data-f-bold='true'><strong>"+gstTotals[i].toFixed(2)+"</strong></td>";
                 }
 
                 total += taxCols + "<td data-f-bold='true'><strong>"+totalInvoiceAmount+"</strong></td></tr>";
