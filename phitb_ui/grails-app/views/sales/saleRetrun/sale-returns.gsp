@@ -1207,13 +1207,30 @@
     function saleSelection(selectedId, mainRow, selectCell = true) {
         if (selectedId != null) {
             var customer = Number($("#customer").val());
-            console.log("customer:" + customer)
+            console.log("customer:" + customer);
+            var beforeSendSwal;
             var url = "/getinvoicedetails?productId=" + selectedId + "&customer=" + customer;
             $.ajax({
                 type: "GET",
                 url: url,
                 dataType: 'json',
+                beforeSend: function() {
+                    billHot.updateSettings({
+                        data: []
+                    });
+                     beforeSendSwal = Swal.fire({
+                         // title: "Loading",
+                         html:
+                             '<img src="${assetPath(src: "/themeassets/images/1476.gif")}" width="100" height="100"/>',
+                         showDenyButton: false,
+                         showCancelButton: false,
+                         showConfirmButton: false,
+                         allowOutsideClick: false,
+                         background:'transparent'
+                    });
+                },
                 success: function (data) {
+                    beforeSendSwal.close()
                     console.log("saleData");
                     console.log(data);
                     if (data) {
@@ -1269,7 +1286,6 @@
                         billHot.updateSettings({
                             data: []
                         });
-
                         if (billData?.length > 0) {
                             billHot.loadData(billData);
                             $("#billsTable").focus();
