@@ -920,7 +920,7 @@
                     dataType: 'json',
                     success: function (data) {
                         const row = hot.getSelected()[0][0];
-                        hot.setDataAtCell(row, 11, taxId[1]);
+                        hot.setDataAtCell(row, 11, Number(taxId[1]).toFixed(2));
                         var sR = hot.getDataAtCell(row, 7);
                         var sq = hot.getDataAtCell(row, 5);
                         var disc = hot.getDataAtCell(row, 9);
@@ -1264,14 +1264,14 @@
                                     saledt.push(data[i].prevfqty);
                                     saledt.push(data[i].sqty);
                                     saledt.push(data[i].freeQty);
-                                    saledt.push(data[i].amount);
+                                    saledt.push(data[i].amount.toFixed(2));
                                     saledt.push(data[i].batch?.product?.unitPacking);
                                     saledt.push(data[i].discount);
                                     saledt.push(data[i].mrp);
-                                    saledt.push(data[i].gstAmount);
-                                    saledt.push(data[i].sgstAmount);
-                                    saledt.push(data[i].cgstAmount);
-                                    saledt.push(data[i].igstAmount);
+                                    saledt.push(data[i].gstAmount.toFixed(2));
+                                    saledt.push(data[i].sgstAmount.toFixed(2));
+                                    saledt.push(data[i].cgstAmount.toFixed(2));
+                                    saledt.push(data[i].igstAmount.toFixed(2));
                                     saledt.push(data[i].gstPercentage);
                                     saledt.push(data[i].cgstPercentage);
                                     saledt.push(data[i].sgstPercentage);
