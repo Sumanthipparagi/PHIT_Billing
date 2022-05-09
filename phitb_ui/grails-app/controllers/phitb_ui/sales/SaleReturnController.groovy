@@ -69,8 +69,6 @@ class SaleReturnController
         {
             def products = new SalesService().getSaleProductDetailsByProductId(params.productId)
             JSONArray productArray = new JSONArray()
-            double sqty = 0;
-            double fqty = 0;
             products.each {
                 def saleBillShow = new SalesService().getRequestWithId(it.billId.toString(), new Links().SALE_BILL_SHOW)
                 def batchResponse = new ProductService().getBatchesOfProduct(it.productId.toString())
@@ -92,20 +90,20 @@ class SaleReturnController
                 {
                     for (JSONObject saleReturn : saleReturnArray)
                     {
+                        double sqty = 0;
+                        double fqty = 0;
                         if (saleReturn.saleBillId == it.billId)
                         {
                             if (saleReturn.sqty != 0)
                             {
                                 sqty += Double.parseDouble(saleReturn.sqty.toString())
-                                print(sqty)
+                                it.put("prevsqty", sqty)
                             }
                             if (saleReturn.freeQty != 0)
                             {
                                 fqty += Double.parseDouble(saleReturn.freeQty.toString())
-                                print(fqty)
+                                it.put("prevfqty", fqty)
                             }
-                            it.put("prevsqty", sqty)
-                            it.put("prevfqty", fqty)
                         }
                     }
                 }
@@ -149,13 +147,13 @@ class SaleReturnController
                 {
                     if (saleReturn.sqty != 0)
                     {
-                        sqty = +saleReturn.sqty
+                        sqty+=saleReturn.sqty
                         jsonObject.put("sqty", jsonObject.sqty - sqty)
 
                     }
                     if (saleReturn.freeQty != 0)
                     {
-                        fqty = +saleReturn.freeQty
+                        fqty+=saleReturn.freeQty
                         jsonObject.put("freeQty", jsonObject.freeQty - fqty)
                     }
                 }

@@ -631,7 +631,7 @@
                         batchHot.selectCell(0, 0);
                         $("#batchTable").focus();
                     }
-                } else if (selection === 15 || selection === 8 || selection === 13) {
+                } else if (selection === 15 || selection === 8 || selection === 13 || selection === 17) {
                     if ((e.keyCode === 13 || e.keyCode === 9) && !readOnly) {
                         //check if sqty is empty
                         var fqty = hot.getDataAtCell(row, 6);
@@ -646,19 +646,19 @@
                             // hot.alter('insert_row');
                             // hot.selectCell(mainTableRow, 1);
                             if (selection === 13 || selection === 17) {
-                              if(sqty)
-                              {
+                              // if(sqty)
+                              // {
                                   mainTableRow = row + 1;
                                   hot.alter('insert_row');
                                   hot.selectCell(mainTableRow, 1);
                                   calculateTotalAmt();
-                              }
+                              // }
                             }
                         } else {
 
                             // else
                             // {
-                                alert("Invalid Quantity, please enter quantity greater than 0");
+                            //     alert("Invalid Quantity, please enter quantity greater than 0");
                             // }
                         }
 
@@ -1211,9 +1211,9 @@
                 url: url,
                 dataType: 'json',
                 success: function (data) {
+                    console.log("saleData");
                     console.log(data);
                     if (data) {
-
                         billData = [];
                         for (var i = 0; i < data.length; i++) {
                             var custId = data[i].bill.customerId;
@@ -1231,7 +1231,7 @@
                                     //     allowOutsideClick: false
                                     // });
                                     saledt.push(data[i].financialYear);
-                                    saledt.push(data[i].bill.invoiceNumber + " " + moment(data[i].bill.entryDate).format('DD-MM-YYYY'));
+                                    saledt.push(data[i].bill.invoiceNumber + " " + moment(data[i].bill.entryDate).format('DD-MM-YYYY'))
                                     saledt.push("INVOICE");
                                     saledt.push(data[i].batchNumber);
                                     saledt.push(data[i].sRate);
@@ -1257,9 +1257,9 @@
                                     saledt.push(data[i].sgstPercentage);
                                     saledt.push(data[i].igstPercentage);
                                     saledt.push(data[i].bill.id);
-                                    if (sqty > 0 || fqty > 0) {
+                                    // if (sqty > 0 || fqty > 0) {
                                         billData.push(saledt);
-                                    }
+                                    // }
                                 }
                             }
                         }
