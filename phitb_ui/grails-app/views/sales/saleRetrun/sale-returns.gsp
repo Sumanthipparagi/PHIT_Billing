@@ -636,7 +636,7 @@
                         //check if sqty is empty
                         var fqty = hot.getDataAtCell(row, 6);
                         var sqty = hot.getDataAtCell(row, 5);
-                        if (sqty) {
+                        // if (sqty) {
                             var batchId = hot.getCellMeta(row, 3)?.batchId; //batch
                             var dt = hot.getDataAtRow(row);
                             dt.push(batchId);
@@ -646,21 +646,24 @@
                             // hot.alter('insert_row');
                             // hot.selectCell(mainTableRow, 1);
                             if (selection === 13 || selection === 17) {
-                              // if(sqty)
-                              // {
+                              if(sqty > 0 || fqty > 0)
+                              {
                                   mainTableRow = row + 1;
                                   hot.alter('insert_row');
                                   hot.selectCell(mainTableRow, 1);
                                   calculateTotalAmt();
-                              // }
+                              }
+                            }else
+                            {
+                                alert("Invalid Quantity, please enter quantity greater than 0");
                             }
-                        } else {
-
-                            // else
-                            // {
-                            //     alert("Invalid Quantity, please enter quantity greater than 0");
-                            // }
-                        }
+                        // } else {
+                        //
+                        //     // else
+                        //     // {
+                        //         alert("Invalid Quantity, please enter quantity greater than 0");
+                        //     // }
+                        // }
 
                         // if(selection === 13 || selection === 17)
                         // {
@@ -1257,9 +1260,9 @@
                                     saledt.push(data[i].sgstPercentage);
                                     saledt.push(data[i].igstPercentage);
                                     saledt.push(data[i].bill.id);
-                                    // if (sqty > 0 || fqty > 0) {
+                                    if (sqty > 0 || fqty > 0) {
                                         billData.push(saledt);
-                                    // }
+                                    }
                                 }
                             }
                         }
