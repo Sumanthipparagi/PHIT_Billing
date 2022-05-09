@@ -788,27 +788,6 @@ contains both sale bill and products
 
     }
 
-    def salesReturnDatatable(JSONObject jsonObject)
-    {
-        Client client = ClientBuilder.newClient();
-        WebTarget target = client.target(new Links().API_GATEWAY);
-        try
-        {
-            Response apiResponse = target
-                    .path(new Links().SALE_RETURN_DATATABLE)
-                    .queryParam("params", URLEncoder.encode(jsonObject.toString(), "UTF-8"))
-                    .request(MediaType.APPLICATION_JSON_TYPE)
-                    .get()
-            return apiResponse
-        }
-        catch (Exception ex)
-        {
-            System.err.println('Service :showSalesService , action :  show  , Ex:' + ex)
-            log.error('Service :showSalesService , action :  show  , Ex:' + ex)
-        }
-
-    }
-
     def saveScheme(JSONObject jsonObject)
     {
         Client client = ClientBuilder.newClient()
