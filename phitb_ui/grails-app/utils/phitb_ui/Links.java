@@ -13,7 +13,7 @@ public class Links
     public static String ACCOUNT_MODES_UPDATE = "api/v1.0/system/accountmodes/{id}";
     public static String ACCOUNT_MODES_DELETE = "api/v1.0/system/accountmodes/{id}";
 
-//    Gender Master
+    //    Gender Master
     public static String GENDER_MASTER_SHOW = "api/v1.0/system/gender";
 
 
@@ -126,7 +126,7 @@ public class Links
     public static String ENTITY_REGISTER_AFFILIATE = "api/v1.0/entity/entityregister/affiliate";
 
 
-//    Entity Settings
+    //    Entity Settings
     public static String ENTITY_SETTINGS_SHOW = "api/v1.0/entity/entitysetting";
     public static String ENTITY_SETTINGS_UPDATE = "api/v1.0/entity/entitysetting/{id}";
     public static String ENTITY_SETTINGS_DELETE = "api/v1.0/entity/entitysetting/{id}";
@@ -420,8 +420,8 @@ public class Links
     public static String SALE_RETURN_RECENT = "api/v1.0/sales/salereturn/getrecent";
     public static String SALE_RETURN_PRODUCT_BATCH_BILL = "api/v1.0/sales/getsalereturndetailsby-product-batch-salebill";
 
-
-
+    public static String SALE_RETURN_DATATABLE = "api/v1.0/sales/salereturn/datatable";
+    public static String SALE_RETURN_CANCEL = "api/v1.0/sales/salereturn/cancel";
 
 
     //Sale Return Details
@@ -448,7 +448,7 @@ public class Links
     public static String STOCK_BOOK_PURCHASE = "api/v1.0/inventory/stockbook/purchase/";
     public static String STOCK_BOOK_BY_USER = "api/v1.0/inventory/stockbook/user";
     public static String STOCK_BOOK_BY_BATCH = "api/v1.0/inventory/stockbook/batch";
-    public static String STOCK_BOOK_BY_PROD_BATCH ="api/v1.0/inventory/stockbook/product/{productId}/batch/{batch}";
+    public static String STOCK_BOOK_BY_PROD_BATCH = "api/v1.0/inventory/stockbook/product/{productId}/batch/{batch}";
     public static String STOCK_INCREASE = "/stockbook/purchase/";
 
 //    /stockbook/purchase/batch/${batch}/qty/${purQty}/fqty/${fqty}/reason/${reason}
@@ -484,7 +484,7 @@ public class Links
     public static String RECIPT_DETAIL_UPDATE = "api/v1.0/accounts/receiptdetails/{id}";
     public static String RECIPT_DETAIL_DELETE = "api/v1.0/accounts/receiptdetails/{id}";
 
-//    Reciept detail log
+    //    Reciept detail log
     public static String RECIPT_DETAIL_LOG = "api/v1.0/accounts/reciptdetaillog";
     public static String RECIPT_DETAIL_LOG_INVS_ID = "api/v1.0/accounts/reciptdetailloginvbyreciptId";
     public static String RECIPT_DETAIL_LOG_CRNT_ID = "api/v1.0/accounts/reciptdetaillogcrntbyreciptId";
@@ -534,7 +534,6 @@ public class Links
     public static String PURCHASE_BILL_CUSTOMER = "api/v1.0/purchase/purchasebillbycustomer/{custid}";
 
 
-
     //purchase product bill details
     public static String PURCHASE_BILL_SHOW = "api/v1.0/purchase/billdetail";
     public static String PURCHASE_BILL_SAVE = "api/v1.0/purchase/billdetail";
@@ -562,11 +561,11 @@ public class Links
     public static String E_INVOICE_CANCEL_IRN = E_INVOICE_BASE_URL + "/ewb_v1.03/einv/can-irn";
     public static String E_INVOICE_GET_IRN = E_INVOICE_BASE_URL + "/ewb_v1.03/einv/get-irn";
 
-//    Bill detail log
-    public static  String BILL_DETAIL_LOG = "api/v1.0/accounts/reciptdetaillog";
+    //    Bill detail log
+    public static String BILL_DETAIL_LOG = "api/v1.0/accounts/reciptdetaillog";
 
 
-//      Update Password
+    //      Update Password
     public static String UPDATE_PASSWORD = "api/v1.0/entity/update-password/id/{id}/password/{password}";
 
 }

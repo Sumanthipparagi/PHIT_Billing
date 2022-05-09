@@ -81,8 +81,8 @@
                     <a class="icon" href="javascript:void(0);"><i class="zmdi zmdi-twitter"></i></a>
                     <a class="icon" href="javascript:void(0);"><i class="zmdi zmdi-linkedin"></i></a>
 
-%{--                    <p>Coded by WrapTheme<br> Designed by <a href="http://thememakker.com/"--}%
-%{--                                                             target="_blank">thememakker.com</a></p>--}%
+                    %{--                    <p>Coded by WrapTheme<br> Designed by <a href="http://thememakker.com/"--}%
+                    %{--                                                             target="_blank">thememakker.com</a></p>--}%
                 </div>
             </div>
         </div>
@@ -379,7 +379,7 @@
                                     class="badge badge-success float-right"></span></a>
                                 <ul class="ml-menu">
                                     <li><a href="/sale-return">Create Sales Return</a></li>
-                                    <li><a href="#">Sales Return List</a></li>
+                                    <li><a href="/sale-return/my-returns">Sales Return List</a></li>
 
                                 </ul>
                             </li>

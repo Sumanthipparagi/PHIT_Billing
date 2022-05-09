@@ -28,6 +28,7 @@ class SaleReturnDetails implements Serializable, LogicalDelete<SaleReturnDetails
     String reason
     long fridgeId
     long kitName
+    String returnStatus
     String saleFinId
     long redundantBatch
     long status
@@ -48,6 +49,7 @@ class SaleReturnDetails implements Serializable, LogicalDelete<SaleReturnDetails
     static constraints = {
         saleBillId nullable: true
         invoiceNumber nullable: true
+        returnStatus nullable: true
     }
 
     boolean isUpdatable
@@ -57,12 +59,12 @@ class SaleReturnDetails implements Serializable, LogicalDelete<SaleReturnDetails
 
         if (!this.isUpdatable)
         {
-            System.out.println("SaleProductDetails Domain update Prevented " + new Date().toString() + " ,id: " + this.id)
+            System.out.println("SaleReturnDetails Domain update Prevented " + new Date().toString() + " ,id: " + this.id)
             return false
         }
         else
         {
-            System.out.println("SaleProductDetails domain Updated " + new Date().toString() + " ,id: " + this.id)
+            System.out.println("SaleReturnDetails domain Updated " + new Date().toString() + " ,id: " + this.id)
         }
     }
 }

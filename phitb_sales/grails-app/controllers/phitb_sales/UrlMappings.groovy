@@ -247,6 +247,8 @@ class UrlMappings {
                 action = [GET: 'getAllsettledByCustId']
             }
 
+
+
             "/setsalereturnstatus/$id/type/$type/adj/$adj(.$format)?"(controller: 'saleReturn') {
                 action = [POST: 'updateStatus']
             }
@@ -260,6 +262,11 @@ class UrlMappings {
             "/salereturn/getrecent(.$format)?"(controller: 'saleReturn') {
                 action = [GET: 'getRecentByFinancialYearAndEntity']
             }
+
+            "/salereturn/datatable(.$format)?"(controller: 'saleReturn') {action = [GET: 'dataTable']}
+
+            "/salereturn/cancel(.$format)?"(controller: 'saleReturn') {action = [POST: 'cancelSaleReturn']}
+
 
 
 

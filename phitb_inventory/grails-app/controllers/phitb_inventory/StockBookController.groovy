@@ -289,7 +289,7 @@ class StockBookController {
 //                stockBook.remainingFreeQty = freeQty - Long.parseLong(params.fqty)
                 println("Breakage - NO EFFECT ON CURRENT STOCK BOOK")
             }
-            else if(params.reason == "O")
+            else if(params.reason == "OA")
             {
                 stockBook.remainingQty = remQty + Long.parseLong(params.purQty)
                 stockBook.remainingFreeQty = freeQty + Long.parseLong(params.fqty)

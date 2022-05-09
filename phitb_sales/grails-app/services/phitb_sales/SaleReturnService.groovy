@@ -3,6 +3,7 @@ package phitb_sales
 import grails.gorm.transactions.Transactional
 import org.grails.web.json.JSONObject
 import phitb_sales.Exception.BadRequestException
+import phitb_sales.Exception.ResourceNotFoundException
 
 import java.text.DecimalFormat
 import java.text.SimpleDateFormat
@@ -42,6 +43,7 @@ class SaleReturnService {
         saleReturn.type = jsonObject.get("type").toString()
         saleReturn.customerId = Long.parseLong(jsonObject.get("customer").toString())
         saleReturn.salesmanId = Long.parseLong(jsonObject.get("salesmanId").toString())
+        saleReturn.returnStatus = jsonObject.get("billStatus").toString()
         saleReturn.dispatchDate = sdf.parse(jsonObject.get("dispatchDate").toString())
         saleReturn.entryDate = sdf.parse(jsonObject.get("entryDate").toString())
         saleReturn.refId = jsonObject.get("refId").toString()
@@ -58,7 +60,7 @@ class SaleReturnService {
         saleReturn.cashDiscount = Double.parseDouble(jsonObject.get("cashDiscount").toString())
         saleReturn.items = Integer.parseInt(jsonObject.get("items").toString())
         saleReturn.quantity = Integer.parseInt(jsonObject.get("quantity").toString())
-        saleReturn.totalAmount = Double.parseDouble(jsonObject.get("quantity").toString())
+        saleReturn.totalAmount = Double.parseDouble(jsonObject.get("totalAmount").toString())
         saleReturn.balance = Double.parseDouble(jsonObject.get("balance").toString())
         saleReturn.dbAdjAmount = Double.parseDouble(jsonObject.get("dbAdjAmount").toString())
         saleReturn.totalDiscount = Double.parseDouble(jsonObject.get("totalDiscount").toString())
@@ -133,6 +135,84 @@ class SaleReturnService {
         return jsonObject
 
     }
+
+    JSONObject dataTables(JSONObject paramsJsonObject, String start, String length)
+    {
+        String searchTerm = paramsJsonObject.get("search[value]")
+        String orderColumnId = paramsJsonObject.get("order[0][column]")
+        String orderDir = paramsJsonObject.get("order[0][dir]")
+        String orderColumn = "id"
+        switch (orderColumnId)
+        {
+            case '0':
+                orderColumn = "id"
+                break;
+            case '1':
+                orderColumn = "financialYear"
+                break;
+        }
+        Integer offset = start ? Integer.parseInt(start.toString()) : 0
+        Integer max = length ? Integer.parseInt(length.toString()) : 100
+        def saleReturnCriteria = SaleReturn.createCriteria()
+        def saleReturnArrayList = saleReturnCriteria.list(max: max, offset: offset) {
+            or {
+                if (searchTerm != "")
+                {
+                    ilike('financialYear', '%' + searchTerm + '%')
+                }
+            }
+            eq('deleted', false)
+            order(orderColumn, orderDir)
+        }
+        def recordsTotal = saleReturnArrayList.totalCount
+        JSONObject jsonObject = new JSONObject()
+        jsonObject.put("draw", paramsJsonObject.draw)
+        jsonObject.put("recordsTotal", recordsTotal)
+//        jsonObject.put("entity", names)
+        jsonObject.put("recordsFiltered", recordsTotal)
+        jsonObject.put("data", saleReturnArrayList)
+        return jsonObject
+    }
+
+
+    def cancelSaleRetruns(JSONObject jsonObject)
+    {
+        String id = jsonObject.get("id")
+        String entityId = jsonObject.get("entityId")
+        String financialYear = jsonObject.get("financialYear")
+        JSONObject saleInvoice = new JSONObject()
+        SaleReturn saleReturn = SaleReturn.findById(Long.parseLong(id))
+        if (saleReturn)
+        {
+            if (saleReturn.financialYear.equalsIgnoreCase(financialYear) && saleReturn.entityId == Long.parseLong(entityId))
+            {
+                ArrayList<SaleReturnDetails> saleReturnDetails = SaleReturnDetails.findAllByBillId(saleReturn.id)
+                for (SaleReturnDetails saleReturnDetail : saleReturnDetails)
+                {
+                    saleReturnDetail.status = 0
+                    saleReturnDetail.isUpdatable = true
+                    saleReturnDetail.save(flush: true)
+                }
+                saleReturn.returnStatus = "CANCELLED"
+                saleReturn.cancelledDate = new Date()
+                saleReturn.isUpdatable = true
+                saleReturn.save(flush: true)
+
+                saleInvoice.put("products", saleReturnDetails)
+                saleInvoice.put("invoice", saleReturn)
+                return saleInvoice
+            }
+            else
+            {
+                throw new ResourceNotFoundException()
+            }
+        }
+        else
+        {
+            throw new ResourceNotFoundException()
+        }
+    }
+
 
 
     JSONObject dataTables(JSONObject paramsJsonObject, String start, String length)

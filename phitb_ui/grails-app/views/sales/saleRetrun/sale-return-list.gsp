@@ -59,21 +59,21 @@
         <div class="block-header">
             <div class="row clearfix">
                 <div class="col-lg-5 col-md-5 col-sm-12">
-                    <h2>Sale Invoices</h2>
+                    <h2>Sale Returns</h2>
                     <ul class="breadcrumb padding-0">
                         <li class="breadcrumb-item"><a href="index.html"><i class="zmdi zmdi-home"></i></a></li>
                         <li class="breadcrumb-item active">My Sales Return</li>
                     </ul>
                 </div>
 
-               %{-- <div class="col-lg-7 col-md-7 col-sm-12">
-                    <div class="input-group m-b-0">
-                        <input type="text" class="form-control" placeholder="Search...">
-                        <span class="input-group-addon">
-                            <i class="zmdi zmdi-search"></i>
-                        </span>
-                    </div>
-                </div>--}%
+                %{-- <div class="col-lg-7 col-md-7 col-sm-12">
+                     <div class="input-group m-b-0">
+                         <input type="text" class="form-control" placeholder="Search...">
+                         <span class="input-group-addon">
+                             <i class="zmdi zmdi-search"></i>
+                         </span>
+                     </div>
+                 </div>--}%
             </div>
         </div>
         <!-- Basic Examples -->
@@ -88,17 +88,17 @@
                             <div class="col-md-4">
                             </div>
 
-                           %{-- <div class="col-md-4">
-                                <div class="form-group">
-                                    <label for="invoiceStatus">Sales Return Status</label>
-                                    <select onchange="invoiceStatusChanged()" id="invoiceStatus" class="form-control">
-                                        <option>All</option>
-                                        <option>DRAFT</option>
-                                        <option>ACTIVE</option>
-                                        <option>CANCELLED</option>
-                                    </select>
-                                </div>
-                            </div>--}%
+                            %{-- <div class="col-md-4">
+                                 <div class="form-group">
+                                     <label for="invoiceStatus">Sales Return Status</label>
+                                     <select onchange="invoiceStatusChanged()" id="invoiceStatus" class="form-control">
+                                         <option>All</option>
+                                         <option>DRAFT</option>
+                                         <option>ACTIVE</option>
+                                         <option>CANCELLED</option>
+                                     </select>
+                                 </div>
+                             </div>--}%
                         </div>
                     </div>
 
@@ -111,7 +111,6 @@
                                     <th>Customer</th>
                                     <th>Invoice No.</th>
                                     <th>GST Amt</th>
-                                    <th>Gross Amt</th>
                                     <th>Net Amt</th>
                                     <th>City</th>
                                     <th>Bill Status</th>
@@ -212,11 +211,11 @@
                 }
             ],
             language: {
-                searchPlaceholder: "Search Sale Bill"
+                searchPlaceholder: "Search Sale Return"
             },
             ajax: {
                 type: 'GET',
-                url: '/sale-bill/datatable',
+                url: '/sale-return/datatables',
                 data: {
                     invoiceStatus: invoiceStatus
                 },
@@ -228,34 +227,35 @@
                         var approveInvoice = "";
                         var cancelInvoice = "";
                         var editInvoice = "";
-                        if (json.data[i].billStatus !== "CANCELLED") {
+                        if (json.data[i].returnStatus !== "CANCELLED") {
                             cancelInvoice = '<a class="btn btn-sm btn-info" title="Cancel" onclick="cancelBill(' + json.data[i].id +')" href="#"><i class="fa fa-times"></i></a>';
                         }
-                        else if(json.data[i].billStatus!== "DRAFT")
+                        else if(json.data[i].returnStatus!== "DRAFT")
                         {
                             approveInvoice =  '';
 
                         }
-                        var printbtn = '<a target="_blank" class="btn btn-sm btn-danger" data-id="' + json.data[i].id + '" href="/sale-entry/print-invoice?id=' + json.data[i].id + '"><i class="fa fa-print"></i></a>';
+                        var printbtn = '<a target="_blank" class="btn btn-sm btn-danger" data-id="' + json.data[i].id
+                            + '" href="/sale-return/print-invoice?id=' + json.data[i].id +
+                            '"><i class="fa fa-print"></i></a>';
                         var invoiceNumber = json.data[i].invoiceNumber;
                         if (invoiceNumber === undefined)
                             invoiceNumber = "";
-                        if(json.data[i].billStatus=== "DRAFT")
+                        if(json.data[i].returnStatus=== "DRAFT")
                         {
                             editInvoice = '<a class="btn btn-sm btn-warning"  href="/edit-sale-entry?saleBillId=' +
                                 json.data[i].id + '"><i class="fa fa-edit"></i></a>';
                         }
-                        var grossAmt = (json.data[i].invoiceTotal - json.data[i].totalGst).toFixed(2);
+                        var grossAmt = (json.data[i].totalAmount - json.data[i].totalGst).toFixed(2);
                         return_data.push({
                             'action': cancelInvoice + " " + approveInvoice + " " + printbtn+" "+editInvoice,
                             /*'action': '',*/
                             'customer': json.data[i].customer.entityName,
                             'invNo': invoiceNumber,
                             'gstAmt': json.data[i].totalGst.toFixed(2),
-                            'grossAmt': grossAmt,
-                            'netAmt': json.data[i].invoiceTotal.toFixed(2),
+                            'netAmt': json.data[i].totalAmount.toFixed(2),
                             'city': json.city[i].cityId.name,
-                            'bill_status': json.data[i].billStatus,
+                            'bill_status': json.data[i].returnStatus,
                             'balance': json.data[i].balance.toFixed(2),
                             'finYear': json.data[i].financialYear
 
@@ -269,45 +269,47 @@
                 {'data': 'customer', 'width': '10%'},
                 {'data': 'invNo'},
                 {'data': 'gstAmt'},
-                {'data': 'grossAmt'},
                 {'data': 'netAmt'},
                 {'data': 'city'},
                 {'data': 'bill_status'},
                 {'data': 'balance'},
                 {'data': 'finYear'}
-
-               /* {'data': 'action', 'width': '4%'},
-                {'data': 'customer', 'width': '5%'},
-                {'data': 'invNo', 'width': '10%'},
-                {'data': 'gstAmt', 'width': '10%'},
-                {'data': 'netAmt', 'width': '10%'},
-                {'data': 'grossAmt', 'width': '10%'},
-                {'data': 'city', 'width': '10%'},
-                {'data': 'bill_status', 'width': '5%'},
-                {'data': 'balance', 'width': '5%'},
-                {'data': 'finYear', 'width': '30%'}*/
             ]
         });
     }
 
     function cancelBill(id) {
         Swal.fire({
-            title: "Cancel this Sale Invoice? this can't be undone.",
+            title: "Cancel this Sale Return? this can't be undone.",
             showDenyButton: true,
             showCancelButton: false,
             confirmButtonText: 'Yes',
             denyButtonText: 'No',
         }).then((result) => {
             if (result.isConfirmed) {
-                var url = '/sale-entry/cancel-invoice?id=' + id;
+                var url = '/sale-return/cancel-invoice?id=' + id;
+                var beforeSendSwal
                 $.ajax({
                     type: "GET",
                     url: url,
                     dataType: 'json',
+                    beforeSend: function() {
+                        beforeSendSwal = Swal.fire({
+                            // title: "Loading",
+                            html:
+                                '<img src="${assetPath(src: "/themeassets/images/1476.gif")}" width="100" height="100"/>',
+                            showDenyButton: false,
+                            showCancelButton: false,
+                            showConfirmButton: false,
+                            allowOutsideClick: false,
+                            background:'transparent'
+                        });
+                    },
                     success: function (data) {
+                        beforeSendSwal.close();
                         Swal.fire(
                             'Success!',
-                            'Invoice Cancelled',
+                            'Return Cancelled',
                             'success'
                         );
                         saleInvoiceTable();
@@ -315,7 +317,7 @@
                     error: function () {
                         Swal.fire(
                             'Error!',
-                            'Unable to cancel invoice at the moment, try later.',
+                            'Unable to cancel return at the moment, try later.',
                             'danger'
                         );
                     }
@@ -331,7 +333,6 @@
     function invoiceStatusChanged() {
         saleInvoiceTable();
     }
-
 
 </script>
 <g:include view="controls/footer-content.gsp"/>
