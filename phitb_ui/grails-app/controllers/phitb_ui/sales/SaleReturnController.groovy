@@ -620,8 +620,8 @@ class SaleReturnController
                     double remainingFreeQty;
                     if(returnDetail.reason.toString() == "R")
                     {
-                         remainingQty = stockBook.get("remainingQty") + returnDetail.get("sqty")
-                         remainingFreeQty = stockBook.get("remainingFreeQty") + returnDetail.get("freeQty")
+                         remainingQty = stockBook.get("remainingQty") - returnDetail.get("sqty")
+                         remainingFreeQty = stockBook.get("remainingFreeQty") - returnDetail.get("freeQty")
                         System.out.println("Remaining Qty After Update"+remainingQty)
                         System.out.println("Remaining Qty After Update"+remainingFreeQty)
                     }
@@ -635,8 +635,8 @@ class SaleReturnController
                     }
                     else if(returnDetail.reason.toString()  == "OA")
                     {
-                         remainingQty = stockBook.get("remainingQty") + returnDetail.get("sqty")
-                         remainingFreeQty = stockBook.get("remainingFreeQty") + returnDetail.get("freeQty")
+                         remainingQty = stockBook.get("remainingQty") - returnDetail.get("sqty")
+                         remainingFreeQty = stockBook.get("remainingFreeQty") - returnDetail.get("freeQty")
                         System.out.println("Remaining Qty After Others(ADD)"+remainingQty)
                         System.out.println("Remaining Qty After Others(ADD)"+remainingFreeQty)
                     }

@@ -1563,6 +1563,7 @@
                         printInvoice();
                     } else if (result.isDenied) {
                         // resetPage();
+                        resetData();
                         hot.updateSettings({
                             data: []
                         });
@@ -1572,8 +1573,6 @@
                         billHot.updateSettings({
                             data: []
                         });
-
-
                     }
                 });
 
