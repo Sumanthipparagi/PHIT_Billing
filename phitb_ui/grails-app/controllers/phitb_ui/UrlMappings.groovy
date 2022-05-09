@@ -405,6 +405,9 @@ class UrlMappings {
         "/salebill/customer/$custid"(controller: 'saleReturn', action: 'getSaleBillByCustomer')
         "/getinvoicedetails"(controller:'saleReturn', action: 'getSaleInvByProducts')
         "/sale-return/print-invoice"(controller: "saleReturn", action: "printSaleReturn")
+        "/sale-return/my-returns"(controller: "saleReturn", action: "salesReturnList")
+        "/sale-return/datatables"(controller: "saleReturn", action: "salesReturnDatatables")
+        "/sale-return/cancel-invoice"(controller: "saleReturn", action: "cancelReturns")
 
 //        Purchase Return
         "/purchase-return"(controller: "purchaseReturn") {

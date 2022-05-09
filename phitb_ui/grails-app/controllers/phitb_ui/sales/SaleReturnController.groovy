@@ -4,6 +4,7 @@ import grails.converters.JSON
 import org.grails.web.json.JSONArray
 import org.grails.web.json.JSONObject
 import phitb_ui.Constants
+import phitb_ui.EInvoiceService
 import phitb_ui.EntityService
 import phitb_ui.InventoryService
 import phitb_ui.Links
@@ -275,7 +276,6 @@ class SaleReturnController
             saleReturnDetail.put("igstAmount", igst)
             saleReturnDetail.put("gstId", 1) //TODO: to be changed
             saleReturnDetail.put("amount", value)
-            saleReturnDetail.put("reason", "") //TODO: to be changed
             saleReturnDetail.put("fridgeId", 0) //TODO: to be changed
             saleReturnDetail.put("kitName", 0) //TODO: to be changed
             saleReturnDetail.put("saleFinId", "") //TODO: to be changed
@@ -395,7 +395,7 @@ class SaleReturnController
         saleReturn.put("quantity", 0)
         saleReturn.put("dbAdjAmount", 0)
         saleReturn.put("adjustmentStatus", 0)
-        saleReturn.put("balance", 0)
+        saleReturn.put("balance", totalAmount)
         saleReturn.put("ignoreSold", 0)
         saleReturn.put("lockStatus", 0) //TODO: to be changed
         saleReturn.put("syncStatus", "0") //TODO: to be changed
@@ -550,6 +550,113 @@ class SaleReturnController
         {
 
             render("No Bill Found")
+        }
+    }
+
+    def salesReturnList()
+    {
+        render(view:'/sales/saleRetrun/sale-return-list')
+    }
+
+    def salesReturnDatatables()
+    {
+        try {
+            JSONObject jsonObject = new JSONObject(params)
+            def apiResponse = new SalesService().salesReturnDatatable(jsonObject)
+            if (apiResponse.status == 200) {
+                JSONObject responseObject = new JSONObject(apiResponse.readEntity(String.class))
+                if(responseObject)
+                {
+                    JSONArray jsonArray = responseObject.data
+                    JSONArray jsonArray2 = new JSONArray()
+                    JSONArray jsonArray3 = new JSONArray()
+                    JSONArray entityArray = new JSONArray()
+                    JSONArray cityArray = new JSONArray()
+                    for (JSONObject json : jsonArray) {
+                        json.put("customer", new EntityService().getEntityById(json.get("customerId").toString()))
+                        jsonArray2.put(json)
+                    }
+                    for(JSONObject json1 : jsonArray2)
+                    {
+                        entityArray.put(json1.get("customer"))
+                    }
+                    entityArray.each {
+                        def cityResp = new SystemService().getCityById(it.cityId.toString())
+                        it.put("cityId", cityResp)
+                    }
+                    responseObject.put("data", jsonArray2)
+                    responseObject.put("city",entityArray)
+                }
+                respond responseObject, formats: ['json'], status: 200
+            } else {
+                response.status = 400
+            }
+        }
+        catch (Exception ex) {
+            System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
+            log.error('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
+            response.status = 400
+        }
+    }
+
+
+
+    def cancelReturns()
+    {
+        String id = params.id
+        String entityId = session.getAttribute("entityId")
+        String financialYear = session.getAttribute("financialYear")
+        JSONObject jsonObject = new SalesService().cancelReturns(id, entityId, financialYear)
+        if (jsonObject)
+        {
+            //adjust stocks
+            JSONArray returnDetails = jsonObject.get("products") as JSONArray
+            if (returnDetails)
+            {
+                for (JSONObject returnDetail : returnDetails)
+                {
+                    def stockBook = new InventoryService().getStocksOfProductAndBatch(returnDetail.productId.toString(), returnDetail.batchNumber, session.getAttribute("entityId").toString())
+                    double remainingQty;
+                    double remainingFreeQty;
+                    if(returnDetail.reason.toString() == "R")
+                    {
+                         remainingQty = stockBook.get("remainingQty") + returnDetail.get("sqty")
+                         remainingFreeQty = stockBook.get("remainingFreeQty") + returnDetail.get("freeQty")
+                        System.out.println("Remaining Qty After Update"+remainingQty)
+                        System.out.println("Remaining Qty After Update"+remainingFreeQty)
+                    }
+                    else if(returnDetail.reason.toString() == "E")
+                    {
+                        println("Expiry - NO EFFECT ON CURRENT STOCK BOOK")
+                    }
+                    else if(returnDetail.reason.toString() == "B")
+                    {
+                        println("Breakage - NO EFFECT ON CURRENT STOCK BOOK")
+                    }
+                    else if(returnDetail.reason.toString()  == "OA")
+                    {
+                         remainingQty = stockBook.get("remainingQty") + returnDetail.get("sqty")
+                         remainingFreeQty = stockBook.get("remainingFreeQty") + returnDetail.get("freeQty")
+                        System.out.println("Remaining Qty After Others(ADD)"+remainingQty)
+                        System.out.println("Remaining Qty After Others(ADD)"+remainingFreeQty)
+                    }
+                    else if(returnDetail.reason.toString()  == "ONE")
+                    {
+                        println("Others(No efft) - NO EFFECT ON CURRENT STOCK BOOK")
+                    }
+
+                    double remainingReplQty = stockBook.get("remainingReplQty") + returnDetail.get("repQty")
+                    stockBook.put("remainingQty", remainingQty.toLong())
+                    stockBook.put("remainingFreeQty", remainingFreeQty.toLong())
+                    stockBook.put("remainingReplQty", remainingReplQty.toLong())
+                    new InventoryService().updateStockBook(stockBook)
+                }
+            }
+            respond jsonObject, formats: ['json']
+        }
+        else
+        {
+            response.status = 400
         }
     }
 }

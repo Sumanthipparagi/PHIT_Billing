@@ -38,17 +38,21 @@ class SaleReturn implements Serializable, LogicalDelete<SaleReturn>
     int ignoreSold
     String financialYear
     String invoiceNumber
+    String returnStatus
     long entityId
     long entityTypeId
     long createdUser
     long modifiedUser
     Double adjAmount
+    Date cancelledDate
 
     Date dateCreated
     Date lastUpdated
 
     static constraints = {
         invoiceNumber nullable: true
+        returnStatus nullable: true
+        cancelledDate nullable: true
     }
 
     static mapping = {

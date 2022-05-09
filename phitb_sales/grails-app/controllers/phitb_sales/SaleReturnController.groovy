@@ -279,6 +279,25 @@ class SaleReturnController {
     }
 
 
+    def cancelSaleReturn() {
+        try {
+            JSONObject jsonObject = new JSONObject(request.reader.text)
+            JSONObject saleReturn = saleReturnService.cancelSaleRetruns(jsonObject)
+            respond saleReturn
+        }
+        catch (ResourceNotFoundException ex) {
+            System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
+            response.status = 404
+        }
+        catch (BadRequestException ex) {
+            System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
+            response.status = 400
+
+        }
+        catch (Exception ex) {
+            System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
+        }
+    }
 
 
 }

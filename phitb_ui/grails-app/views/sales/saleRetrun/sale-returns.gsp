@@ -1562,7 +1562,18 @@
                     if (result.isConfirmed) {
                         printInvoice();
                     } else if (result.isDenied) {
-                        resetPage();
+                        // resetPage();
+                        hot.updateSettings({
+                            data: []
+                        });
+                        batchHot.updateSettings({
+                            data: []
+                        });
+                        billHot.updateSettings({
+                            data: []
+                        });
+
+
                     }
                 });
 
