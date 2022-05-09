@@ -59,12 +59,12 @@ class SaleReturnDetails implements Serializable, LogicalDelete<SaleReturnDetails
 
         if (!this.isUpdatable)
         {
-            System.out.println("SaleProductDetails Domain update Prevented " + new Date().toString() + " ,id: " + this.id)
+            System.out.println("SaleReturnDetails Domain update Prevented " + new Date().toString() + " ,id: " + this.id)
             return false
         }
         else
         {
-            System.out.println("SaleProductDetails domain Updated " + new Date().toString() + " ,id: " + this.id)
+            System.out.println("SaleReturnDetails domain Updated " + new Date().toString() + " ,id: " + this.id)
         }
     }
 }
