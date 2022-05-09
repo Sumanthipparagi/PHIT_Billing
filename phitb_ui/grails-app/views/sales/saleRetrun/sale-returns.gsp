@@ -630,7 +630,7 @@
                         batchHot.selectCell(0, 0);
                         $("#batchTable").focus();
                     }
-                } else if (selection === 15 || selection === 8) {
+                } else if (selection === 15 || selection === 8 || selection === 13) {
                     if ((e.keyCode === 13 || e.keyCode === 9) && !readOnly) {
                         //check if sqty is empty
                         var sqty = hot.getDataAtCell(row, 5);
@@ -640,17 +640,21 @@
                             var dt = hot.getDataAtRow(row);
                             dt.push(batchId);
                             console.log("Data saved");
-                            mainTableRow = row + 1;
-                            calculateTotalAmt();
-                            hot.alter('insert_row');
-                            hot.selectCell(mainTableRow, 1);
+                            // mainTableRow = row + 1;
+                            // calculateTotalAmt();
+                            // hot.alter('insert_row');
+                            // hot.selectCell(mainTableRow, 1);
                         }
                         else {
                             if(isCheckedYes==="YES")
                             {
-                                mainTableRow = row + 1;
-                                hot.alter('insert_row');
-                                hot.selectCell(mainTableRow, 1);
+                                if(selection === 13 || selection === 17)
+                                {
+                                    mainTableRow = row + 1;
+                                    hot.alter('insert_row');
+                                    hot.selectCell(mainTableRow, 1);
+                                    calculateTotalAmt();
+                                }
                             }
                             else
                             {
@@ -658,8 +662,15 @@
                             }
                         }
 
+                        if(selection === 13 || selection === 17)
+                        {
+                            mainTableRow = row + 1;
+                            hot.alter('insert_row');
+                            hot.selectCell(mainTableRow, 1);
+                            calculateTotalAmt();
+                        }
                     }
-                } else if (selection === 5 || selection === 8 || selection === 6 || selection === 9) {
+                } else if (selection === 5 || selection === 8 || selection === 6 || selection === 9 || selection === 7) {
                     if (e.keyCode === 13 || e.keyCode === 9) {
                         var discount = 0;
                         if (selection === 7) {
@@ -915,9 +926,11 @@
                         var sR = hot.getDataAtCell(row, 7);
                         var sq = hot.getDataAtCell(row, 5);
                         var disc = hot.getDataAtCell(row,9);
+                        const selection = hot.getSelected()[0][1];
+                        hot.selectCell(row, selection+1);
                         var value = sR * sq;
                         var priceBeforeGst = value - (value * disc / 100);
-                        gst = taxId[1]
+                        gst = taxId[1];
                         var finalPrice = priceBeforeGst + (priceBeforeGst * (gst / 100));
                         hot.setDataAtCell(row, 13, Number(finalPrice).toFixed(2));
                         if(stateId === '${session.getAttribute('stateId')}') {
@@ -928,6 +941,7 @@
                                 hot.setDataAtCell(row, 12, Number(gstAmount).toFixed(2)); //GST
                                 hot.setDataAtCell(row, 14, Number(sgstAmount).toFixed(2)); //SGST
                                 hot.setDataAtCell(row, 15, Number(cgstAmount).toFixed(2)); //CGST
+                                calculateTotalAmt();
                             } else {
                                 hot.setDataAtCell(row, 12, 0); //GST
                                 hot.setDataAtCell(row, 14, 0); //SGST
@@ -939,6 +953,7 @@
                             if (data.salesIgst !== 0) {
                                 var igstAmount = priceBeforeGst * (igst / 100);
                                 hot.setDataAtCell(row, 16, Number(igstAmount).toFixed(2)); //IGST
+                                calculateTotalAmt();
                             } else
                                 hot.setDataAtCell(row, 16, 0);
                         }
@@ -1105,7 +1120,7 @@
                 var rowData = billHot.getDataAtRow(selection);
 
                 if (e.keyCode === 13) {
-                    if (!checkForDuplicateEntryBill(rowData[3],rowData[20])) {
+                    if (!checkForDuplicateEntryBill(rowData[3],rowData[24])) {
                         //check for schemes
                         checkSchemes(hot.getDataAtCell(mainTableRow, 2), rowData[0]); //product, batch
                         // var batchId = rowData[12];
@@ -1260,10 +1275,7 @@
                             data: []
                         });
 
-                        //
-
                         if (billData?.length > 0) {
-
                             billHot.loadData(billData);
                             $("#billsTable").focus();
                             if (selectCell)
@@ -1317,14 +1329,14 @@
                 totalFQty += Number(data[i][6]);
             if (data[i][13])
                 totalAmt += Number(data[i][13]);
-            if (data[i][11])
+            if (data[i][12])
                 totalGst += Number(data[i][12]);
-            if (data[i][13])
-                totalSgst += Number(data[i][14]);
             if (data[i][14])
-                totalCgst += Number(data[i][15]);
+                totalSgst += Number(data[i][14]);
             if (data[i][15])
-                totalIgst += Number(data[i][15]);
+                totalCgst += Number(data[i][15]);
+            if (data[i][16])
+                totalIgst += Number(data[i][16]);
         }
         $("#totalAmt").text(totalAmt.toFixed(2));
         $("#totalGST").text(totalGst.toFixed(2));
@@ -1354,7 +1366,8 @@
         var saleReturnTableData = hot.getData();
         for (var i = 0; i < saleReturnTableData.length; i++) {
             if (productId === saleReturnTableData[i][2]) {
-                if (saleReturnTableData[i][2] !== null && saleReturnTableData[i][3] === batchNumber && saleReturnTableData[i][17] === saleBillId)
+                if (saleReturnTableData[i][2] !== null && saleReturnTableData[i][3] === batchNumber &&
+                    saleReturnTableData[i][18] === saleBillId)
                     return true;
             }
         }
@@ -1449,7 +1462,7 @@
             alert("Can't change this now, invoice has been saved already.")
     }
 
-    var purchasebillid = 0;
+    var salereturnbillid = 0;
 
     function saveReturnInvoice(billStatus) {
         var waitingSwal = Swal.fire({
@@ -1506,7 +1519,7 @@
                 batchHot.updateSettings({
                     data: []
                 });
-                purchasebillid = data.saleReturnDetail.id;
+                salereturnbillid = data.saleReturnDetail.id;
                 var datepart = data.saleReturnDetail.entryDate.split("T")[0];
                 var month = datepart.split("-")[1];
                 var year = datepart.split("-")[0];
@@ -1557,7 +1570,7 @@
     function printInvoice() {
         if (readOnly) {
             window.open(
-                'sale-return/print-invoice?id=' + purchasebillid,
+                'sale-return/print-invoice?id=' + salereturnbillid,
                 '_blank'
             );
             resetData();
