@@ -287,7 +287,6 @@ class ReportsController {
         ArrayList<SaleBillDetails> saleBillDetails = SaleBillDetails.findAllByOrderDateBetweenAndBillStatusAndEntityIdAndFinancialYear(fromDate, toDate, "ACTIVE", Long.parseLong(entityId), financialYear)
         for (SaleBillDetails saleBillDetail  : saleBillDetails) {
             ArrayList<SaleProductDetails> saleProductDetails = SaleProductDetails.findAllByBillId(saleBillDetail.id)
-            double amount = 0.0
             if(saleProductDetails?.size() > 0) {
                 LinkedHashMap gstDetail = new LinkedHashMap()
                 gstDetail.put("seriesId", saleBillDetail.seriesId)
@@ -297,11 +296,13 @@ class ReportsController {
                 for (SaleProductDetails saleProductDetail : saleProductDetails) {
                     if(!taxes.contains(saleProductDetail.gstPercentage))
                         taxes.add(saleProductDetail.gstPercentage)
-                    amount += (saleProductDetail.amount - saleProductDetail.gstAmount)
-                    if (gstDetail.containsKey(saleProductDetail.gstPercentage + "_gst_amount"))
+                    double amount = saleProductDetail.amount - saleProductDetail.gstAmount
+                    if (gstDetail.containsKey(saleProductDetail.gstPercentage + "_gst_amount")) {
                         gstDetail.put(saleProductDetail.gstPercentage + "_gst_amount", amount + (gstDetail.get(saleProductDetail.gstPercentage + "_gst_amount") as Number))
-                    else
+                    }
+                    else {
                         gstDetail.put(saleProductDetail.gstPercentage + "_gst_amount", amount)
+                    }
 
                     if (gstDetail.containsKey(saleProductDetail.gstPercentage + "_gst"))
                         gstDetail.put(saleProductDetail.gstPercentage + "_gst", saleProductDetail.gstAmount + (gstDetail.get(saleProductDetail.gstPercentage + "_gst") as Number))
