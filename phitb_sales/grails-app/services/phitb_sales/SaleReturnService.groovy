@@ -134,5 +134,49 @@ class SaleReturnService {
 
     }
 
+    JSONObject dataTables(JSONObject paramsJsonObject, String start, String length)
+    {
+        String searchTerm = paramsJsonObject.get("search[value]")
+        String orderColumnId = paramsJsonObject.get("order[0][column]")
+        String orderDir = paramsJsonObject.get("order[0][dir]")
+        String invoiceStatus = paramsJsonObject.get("invoiceStatus")
+
+        String orderColumn = "id"
+        switch (orderColumnId)
+        {
+            case '0':
+                orderColumn = "id"
+                break;
+            case '1':
+                orderColumn = "financialYear"
+                break;
+        }
+        Integer offset = start ? Integer.parseInt(start.toString()) : 0
+        Integer max = length ? Integer.parseInt(length.toString()) : 100
+        def saleReturnCriteria = SaleReturn.createCriteria()
+        def saleReturnArrayList = saleReturnCriteria.list(max: max, offset: offset) {
+            or {
+                if (searchTerm != "")
+                {
+                    ilike('financialYear', '%' + searchTerm + '%')
+                }
+            }
+            if (!invoiceStatus.equalsIgnoreCase("ALL"))
+            {
+                eq('billStatus', invoiceStatus)
+            }
+            eq('deleted', false)
+            order(orderColumn, orderDir)
+        }
+        def recordsTotal = saleReturnArrayList.totalCount
+        JSONObject jsonObject = new JSONObject()
+        jsonObject.put("draw", paramsJsonObject.draw)
+        jsonObject.put("recordsTotal", recordsTotal)
+//        jsonObject.put("entity", names)
+        jsonObject.put("recordsFiltered", recordsTotal)
+        jsonObject.put("data", saleReturnArrayList)
+        return jsonObject
+    }
+
 
 }

@@ -417,6 +417,7 @@ public class Links
     public static String SALE_RETURN_RECENT = "api/v1.0/sales/salereturn/getrecent";
     public static String SALE_RETURN_PRODUCT_BATCH_BILL = "api/v1.0/sales/getsalereturndetailsby-product-batch-salebill";
 
+    public static String SALE_RETURN_DATATABLE = "api/v1.0/sales/salereturn/datatable";
 
 
 

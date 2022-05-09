@@ -260,6 +260,8 @@ class UrlMappings {
                 action = [GET: 'getRecentByFinancialYearAndEntity']
             }
 
+            "/salereturn/datatable(.$format)?"(controller: 'saleReturn') {action = [GET: 'dataTable']}
+
 
 
 

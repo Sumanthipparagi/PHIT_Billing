@@ -3,6 +3,7 @@ package phitb_sales
 
 import grails.rest.*
 import grails.converters.*
+import grails.web.servlet.mvc.GrailsParameterMap
 import org.grails.web.json.JSONObject
 import org.springframework.boot.context.config.ResourceNotFoundException
 import phitb_sales.Exception.BadRequestException
@@ -253,4 +254,31 @@ class SaleReturnController {
             System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
         }
     }
+
+
+    def dataTable() {
+        try {
+            GrailsParameterMap parameterMap = getParams()
+            JSONObject paramsJsonObject = new JSONObject(parameterMap.params)
+            String start = paramsJsonObject.get("start")
+            String length = paramsJsonObject.get("length")
+            def saleReturnDetails = saleReturnService.dataTables(paramsJsonObject, start, length)
+            respond saleReturnDetails
+        }
+        catch (ResourceNotFoundException ex) {
+            System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
+            response.status = 404
+        }
+        catch (BadRequestException ex) {
+            System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
+            response.status = 400
+        }
+        catch (Exception ex) {
+            System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
+        }
+    }
+
+
+
+
 }
