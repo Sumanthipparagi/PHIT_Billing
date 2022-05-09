@@ -28,7 +28,7 @@ class SaleReturnDetails implements Serializable, LogicalDelete<SaleReturnDetails
     String reason
     long fridgeId
     long kitName
-    String billStatus
+    String returnStatus
     String saleFinId
     long redundantBatch
     long status
@@ -49,7 +49,7 @@ class SaleReturnDetails implements Serializable, LogicalDelete<SaleReturnDetails
     static constraints = {
         saleBillId nullable: true
         invoiceNumber nullable: true
-        billStatus nullable: true
+        returnStatus nullable: true
     }
 
     boolean isUpdatable
