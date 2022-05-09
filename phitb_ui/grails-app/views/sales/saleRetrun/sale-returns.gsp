@@ -28,10 +28,10 @@
         border-radius: 7px !important;
     }
 
-    .handsontableInputHolder{
-        z-index: 0!important;
+    .handsontableInputHolder {
+        z-index: 0 !important;
     }
-</style>
+    </style>
 </head>
 
 <body class="theme-black">
@@ -100,7 +100,8 @@
                                         onchange="customerChanged()">
                                     <g:each in="${customers}" var="cs">
                                         <g:if test="${cs.id != session.getAttribute("entityId")}">
-                                            <option value="${cs.id}" data-stateId="${cs.stateId}">${cs.entityName} (${cs.entityType
+                                            <option value="${cs.id}"
+                                                    data-stateId="${cs.stateId}">${cs.entityName} (${cs.entityType
                                                     .name})</option>
                                         </g:if>
                                     </g:each>
@@ -118,8 +119,8 @@
                                                checked/>
                                         <span>Yes</span>
                                         &emsp;
-%{--                                        <input type="radio" name="prev_sales" value="NO" class="prev_sales_no"/>  --}%
-%{--                                        <span>No</span>--}%
+                                        %{--                                        <input type="radio" name="prev_sales" value="NO" class="prev_sales_no"/>  --}%
+                                        %{--                                        <span>No</span>--}%
                                     </label>
                                     <label>
                                         <input type="radio" name="prev_sales" value="NO" class="prev_sales_no"/>
@@ -133,18 +134,17 @@
                             %{--                                <input type="date" class="form-control date" name="duedate" id="duedate"/>--}%
                             %{--                            </div>--}%
 
-
-
                         </div>
                     </div>
                 </div>
             </div>
+
             <div class="col-lg-3">
                 <div class="card">
                     <div class="body">
                         <div class="row">
                             <div class="col-md-6">
-                                Total: <p>	&#8377;&nbsp;<span id="totalAmt">0.00</span></p>
+                                Total: <p>&#8377;&nbsp;<span id="totalAmt">0.00</span></p>
                             </div>
 
                             <div class="col-md-6">
@@ -156,35 +156,36 @@
                             <button onclick="resetPage()" class="btn btn-danger">Reset</button>
                             %{--                            <button id="saveDraftBtn" onclick="('DRAFT')" class="btn btn-primary">Save --}%
                             %{--                            Draft</button>--}%
-                            <button id="saveBtn" onclick="saveReturnInvoice('ACTIVE')" class="btn btn-primary">Save</button>
+                            <button id="saveBtn" onclick="saveReturnInvoice('ACTIVE')"
+                                    class="btn btn-primary">Save</button>
 
                         </div>
                     </div>
                 </div>
             </div>
-%{--            <div class="col-lg-4">--}%
-%{--                <div class="card">--}%
-%{--                    <div class="body">--}%
-%{--                        <div class="row">--}%
-%{--                            <div class="col-md-6">--}%
-%{--                                Total: <p>₹&nbsp;<span id="totalAmt">0.00</span></p>--}%
-%{--                            </div>--}%
+            %{--            <div class="col-lg-4">--}%
+            %{--                <div class="card">--}%
+            %{--                    <div class="body">--}%
+            %{--                        <div class="row">--}%
+            %{--                            <div class="col-md-6">--}%
+            %{--                                Total: <p>₹&nbsp;<span id="totalAmt">0.00</span></p>--}%
+            %{--                            </div>--}%
 
-%{--                            <div class="col-md-6">--}%
-%{--                                Inv No: <span id="invNo"></span>--}%
-%{--                            </div>--}%
-%{--                        </div>--}%
+            %{--                            <div class="col-md-6">--}%
+            %{--                                Inv No: <span id="invNo"></span>--}%
+            %{--                            </div>--}%
+            %{--                        </div>--}%
 
-%{--                        <div class="row">--}%
-%{--                            <button onclick="resetPage()" class="btn btn-danger">Reset</button>--}%
-%{--                            <button id="saveDraftBtn" onclick="('DRAFT')" class="btn btn-primary">Save --}%
-%{--                            Draft</button>--}%
-%{--                            <button id="saveBtn" onclick="saveReturnInvoice('ACTIVE')" class="btn btn-primary">Save</button>--}%
+            %{--                        <div class="row">--}%
+            %{--                            <button onclick="resetPage()" class="btn btn-danger">Reset</button>--}%
+            %{--                            <button id="saveDraftBtn" onclick="('DRAFT')" class="btn btn-primary">Save --}%
+            %{--                            Draft</button>--}%
+            %{--                            <button id="saveBtn" onclick="saveReturnInvoice('ACTIVE')" class="btn btn-primary">Save</button>--}%
 
-%{--                        </div>--}%
-%{--                    </div>--}%
-%{--                </div>--}%
-%{--            </div>--}%
+            %{--                        </div>--}%
+            %{--                    </div>--}%
+            %{--                </div>--}%
+            %{--            </div>--}%
         </div>
 
         <div class="row clearfix">
@@ -234,10 +235,10 @@
 
             </div>
 
-%{--            <div class="col-lg-4" style="margin-bottom: 10px;">--}%
-%{--                <p style="margin: 0; font-size: 10px;color: red;">Offers: <span id="offers"></span>--}%
-%{--                </p>--}%
-%{--            </div>--}%
+            %{--            <div class="col-lg-4" style="margin-bottom: 10px;">--}%
+            %{--                <p style="margin: 0; font-size: 10px;color: red;">Offers: <span id="offers"></span>--}%
+            %{--                </p>--}%
+            %{--            </div>--}%
         </div>
 
         <div class="row clearfix">
@@ -517,7 +518,7 @@
             hiddenColumns: {
                 copyPasteEnabled: true,
                 indicators: true,
-                columns:  [18]
+                columns: [18]
             },
             minSpareRows: 0,
             minSpareColumns: 0,
@@ -633,9 +634,9 @@
                 } else if (selection === 15 || selection === 8 || selection === 13) {
                     if ((e.keyCode === 13 || e.keyCode === 9) && !readOnly) {
                         //check if sqty is empty
-                        var sqty = hot.getDataAtCell(row, 5);
                         var fqty = hot.getDataAtCell(row, 6);
-                        if (sqty && sqty) {
+                        var sqty = hot.getDataAtCell(row, 5);
+                        if (sqty) {
                             var batchId = hot.getCellMeta(row, 3)?.batchId; //batch
                             var dt = hot.getDataAtRow(row);
                             dt.push(batchId);
@@ -644,31 +645,30 @@
                             // calculateTotalAmt();
                             // hot.alter('insert_row');
                             // hot.selectCell(mainTableRow, 1);
-                        }
-                        else {
-                            if(isCheckedYes==="YES")
-                            {
-                                if(selection === 13 || selection === 17)
-                                {
-                                    mainTableRow = row + 1;
-                                    hot.alter('insert_row');
-                                    hot.selectCell(mainTableRow, 1);
-                                    calculateTotalAmt();
-                                }
+                            if (selection === 13 || selection === 17) {
+                              if(sqty)
+                              {
+                                  mainTableRow = row + 1;
+                                  hot.alter('insert_row');
+                                  hot.selectCell(mainTableRow, 1);
+                                  calculateTotalAmt();
+                              }
                             }
-                            else
-                            {
+                        } else {
+
+                            // else
+                            // {
                                 alert("Invalid Quantity, please enter quantity greater than 0");
-                            }
+                            // }
                         }
 
-                        if(selection === 13 || selection === 17)
-                        {
-                            mainTableRow = row + 1;
-                            hot.alter('insert_row');
-                            hot.selectCell(mainTableRow, 1);
-                            calculateTotalAmt();
-                        }
+                        // if(selection === 13 || selection === 17)
+                        // {
+                        //     mainTableRow = row + 1;
+                        //     hot.alter('insert_row');
+                        //     hot.selectCell(mainTableRow, 1);
+                        //     calculateTotalAmt();
+                        // }
                     }
                 } else if (selection === 5 || selection === 8 || selection === 6 || selection === 9 || selection === 7) {
                     if (e.keyCode === 13 || e.keyCode === 9) {
@@ -728,8 +728,7 @@
                         var freeQtyEntry = false;
                         var billId = hot.getDataAtCell(row, 18);
                         if (pid && batch) {
-                            if(isCheckedYes!=="YES")
-                            {
+                            if (isCheckedYes !== "YES") {
                                 $.ajax({
                                     type: "POST",
                                     url: "/stockbook/product/" + pid + "/batch/" + batch,
@@ -780,12 +779,10 @@
                                         alert("Something went Wrong!")
                                     }
                                 });
-                            }
-                            else
-                            {
+                            } else {
                                 $.ajax({
                                     type: "POST",
-                                    url: "/saleproductdetailsbillandbatch?billId="+billId+"&batch="+batch+"&productId="+pid,
+                                    url: "/saleproductdetailsbillandbatch?billId=" + billId + "&batch=" + batch + "&productId=" + pid,
                                     dataType: 'json',
                                     success: function (data) {
                                         remQty = remQty + data.sqty;
@@ -887,8 +884,8 @@
         });
 
         var stateId = $('#customer option:selected').attr('data-stateId')
-        $('#customer').change(function(){
-           stateId = $('#customer option:selected').attr('data-stateId')
+        $('#customer').change(function () {
+            stateId = $('#customer option:selected').attr('data-stateId')
         });
 
         function productsDropdownRenderer(instance, td, row, col, prop, value, cellProperties) {
@@ -912,28 +909,26 @@
                 }
             }
             Handsontable.renderers.TextRenderer.apply(this, arguments);
-            if(selectedId!==undefined)
-            {
+            if (selectedId !== undefined) {
                 taxId = selectedId.split('|');
                 $.ajax({
                     type: "POST",
-                    url: "/tax/showtax/"+taxId[0].trim(),
+                    url: "/tax/showtax/" + taxId[0].trim(),
                     dataType: 'json',
-                    success: function (data)
-                    {
+                    success: function (data) {
                         const row = hot.getSelected()[0][0];
                         hot.setDataAtCell(row, 11, taxId[1]);
                         var sR = hot.getDataAtCell(row, 7);
                         var sq = hot.getDataAtCell(row, 5);
-                        var disc = hot.getDataAtCell(row,9);
+                        var disc = hot.getDataAtCell(row, 9);
                         const selection = hot.getSelected()[0][1];
-                        hot.selectCell(row, selection+1);
+                        hot.selectCell(row, selection + 1);
                         var value = sR * sq;
                         var priceBeforeGst = value - (value * disc / 100);
                         gst = taxId[1];
                         var finalPrice = priceBeforeGst + (priceBeforeGst * (gst / 100));
                         hot.setDataAtCell(row, 13, Number(finalPrice).toFixed(2));
-                        if(stateId === '${session.getAttribute('stateId')}') {
+                        if (stateId === '${session.getAttribute('stateId')}') {
                             if (taxId[1] !== 0) {
                                 var gstAmount = priceBeforeGst * (gst / 100);
                                 var sgstAmount = priceBeforeGst * (data.salesSgst / 100);
@@ -947,9 +942,7 @@
                                 hot.setDataAtCell(row, 14, 0); //SGST
                                 hot.setDataAtCell(row, 15, 0); //CGST
                             }
-                        }
-                        else
-                        {
+                        } else {
                             if (data.salesIgst !== 0) {
                                 var igstAmount = priceBeforeGst * (igst / 100);
                                 hot.setDataAtCell(row, 16, Number(igstAmount).toFixed(2)); //IGST
@@ -1106,7 +1099,7 @@
             hiddenColumns: {
                 copyPasteEnabled: true,
                 indicators: true,
-                columns:  [20, 21, 22, 23, 24]
+                columns: [20, 21, 22, 23, 24]
             },
             minSpareRows: 0,
             minSpareCols: 0,
@@ -1120,7 +1113,7 @@
                 var rowData = billHot.getDataAtRow(selection);
 
                 if (e.keyCode === 13) {
-                    if (!checkForDuplicateEntryBill(rowData[3],rowData[24])) {
+                    if (!checkForDuplicateEntryBill(rowData[3], rowData[24])) {
                         //check for schemes
                         checkSchemes(hot.getDataAtCell(mainTableRow, 2), rowData[0]); //product, batch
                         // var batchId = rowData[12];
@@ -1212,7 +1205,7 @@
         if (selectedId != null) {
             var customer = Number($("#customer").val());
             console.log("customer:" + customer)
-            var url = "/getinvoicedetails?productId="+selectedId+"&customer="+ customer;
+            var url = "/getinvoicedetails?productId=" + selectedId + "&customer=" + customer;
             $.ajax({
                 type: "GET",
                 url: url,
@@ -1225,7 +1218,7 @@
                         for (var i = 0; i < data.length; i++) {
                             var custId = data[i].bill.customerId;
                             var saledt = [];
-                            if (data[i].bill.billStatus !== "DRAFT" && data[i].bill.billStatus !== "CANCELLED" ) {
+                            if (data[i].bill.billStatus !== "DRAFT" && data[i].bill.billStatus !== "CANCELLED") {
                                 // var sqty = data[i].sqty - data[i].prevsqty;
                                 // var fqty = data[i].freeQty - data[i].prevfqty;
                                 // console.log(sqty+""+fqty)
@@ -1238,7 +1231,7 @@
                                     //     allowOutsideClick: false
                                     // });
                                     saledt.push(data[i].financialYear);
-                                    saledt.push(data[i].bill.invoiceNumber+" "+ moment(data[i].bill.entryDate).format('DD-MM-YYYY'));
+                                    saledt.push(data[i].bill.invoiceNumber + " " + moment(data[i].bill.entryDate).format('DD-MM-YYYY'));
                                     saledt.push("INVOICE");
                                     saledt.push(data[i].batchNumber);
                                     saledt.push(data[i].sRate);
@@ -1264,8 +1257,7 @@
                                     saledt.push(data[i].sgstPercentage);
                                     saledt.push(data[i].igstPercentage);
                                     saledt.push(data[i].bill.id);
-                                    if(sqty>0 || fqty>0)
-                                    {
+                                    if (sqty > 0 || fqty > 0) {
                                         billData.push(saledt);
                                     }
                                 }
@@ -1361,7 +1353,7 @@
     }
 
 
-    function checkForDuplicateEntryBill(batchNumber,saleBillId) {
+    function checkForDuplicateEntryBill(batchNumber, saleBillId) {
         var productId = hot.getDataAtCell(mainTableRow, 2);
         var saleReturnTableData = hot.getData();
         for (var i = 0; i < saleReturnTableData.length; i++) {
@@ -1377,6 +1369,7 @@
 
     function loadTempStockBookData() {
         /*  var userId = "
+
         ${session.getAttribute("userId")}";
         $.ajax({
             type: "GET",
@@ -1791,16 +1784,12 @@
             this.TEXTAREA = document.createElement('input');
             this.TEXTAREA.setAttribute('type', 'text');
             this.$textarea = $(this.TEXTAREA);
-
             Handsontable.dom.addClass(this.TEXTAREA, 'handsontableInput');
-
             this.textareaStyle = this.TEXTAREA.style;
             this.textareaStyle.width = 0;
             this.textareaStyle.height = 0;
-
             this.TEXTAREA_PARENT = document.createElement('DIV');
             Handsontable.dom.addClass(this.TEXTAREA_PARENT, 'handsontableInputHolder');
-
             this.textareaParentStyle = this.TEXTAREA_PARENT.style;
             this.textareaParentStyle.top = 0;
             this.textareaParentStyle.left = 0;
