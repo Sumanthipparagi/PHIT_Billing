@@ -176,7 +176,7 @@
                 var colSpan = 0;
                 var taxes = data.taxes;
                 var gstDetails = data.gstDetails;
-                colSpan = 6 + (taxes.length * 4) + 1;
+                colSpan = 6 + (taxes.length * 5) + 1;
                 var content = "";
                 var mainTableHeader = "<table class='table table-bordered table-sm table-responsive' style='width: 100%;'><thead>" +
                     "<tr><td data-f-bold='true' colspan='" + colSpan + "'><h3 style='margin-bottom:0 !important;'>${session.getAttribute('entityName')}</h3></td></tr>" +
@@ -187,6 +187,7 @@
                 var taxColumns = "";
                 $.each(taxes, function (key, tax) {
                     taxColumns += "<th data-f-bold='true'><strong>Taxable " + tax + "%</strong></th>";
+                    taxColumns += "<th data-f-bold='true'><strong>GST @" + tax + "%</strong></th>";
                     taxColumns += "<th data-f-bold='true'><strong>IGST @" + tax + "%</strong></th>";
                     taxColumns += "<th data-f-bold='true'><strong>CGST @" + tax / 2 + "%</strong></th>";
                     taxColumns += "<th data-f-bold='true'><strong>SCGST @" + tax / 2 + "%</strong></th>";
@@ -202,12 +203,22 @@
                     var index = 0;
                     var gstArray = [];
                     $.each(taxes, function (key, tax) {
+                        var gstAmountKey = tax.toFixed(1) + "_gst_amount";
                         var gstKey = tax.toFixed(1) + "_gst";
                         var cgstKey = tax.toFixed(1) + "_cgst_" + (tax / 2).toFixed(1);
                         var sgstKey = tax.toFixed(1) + "_sgst_" + (tax / 2).toFixed(1);
                         var igstKey = tax.toFixed(1) + "_igst_" + tax.toFixed(1);
 
                         //GST Calculation
+                        if (gstDetail[gstAmountKey]) {
+                            row += "<td>" + gstDetail[gstAmountKey].toFixed(2) + "</td>";
+                            gstArray.push(gstDetail[gstAmountKey]);
+                        }
+                        else {
+                            row += "<td>0.00</td>";
+                            gstArray.push(0);
+                        }
+
                         if (gstDetail[gstKey]) {
                             row += "<td>" + gstDetail[gstKey].toFixed(2) + "</td>";
                             gstArray.push(gstDetail[gstKey]);
