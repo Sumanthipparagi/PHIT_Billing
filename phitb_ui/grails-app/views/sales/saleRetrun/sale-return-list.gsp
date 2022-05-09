@@ -309,7 +309,7 @@
                         beforeSendSwal.close();
                         Swal.fire(
                             'Success!',
-                            'Invoice Cancelled',
+                            'Return Cancelled',
                             'success'
                         );
                         saleInvoiceTable();
@@ -317,7 +317,7 @@
                     error: function () {
                         Swal.fire(
                             'Error!',
-                            'Unable to cancel invoice at the moment, try later.',
+                            'Unable to cancel return at the moment, try later.',
                             'danger'
                         );
                     }
