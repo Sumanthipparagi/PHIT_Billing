@@ -920,7 +920,7 @@
                     dataType: 'json',
                     success: function (data) {
                         const row = hot.getSelected()[0][0];
-                        hot.setDataAtCell(row, 11, taxId[1].toFixed(2));
+                        hot.setDataAtCell(row, 11, taxId[1]);
                         var sR = hot.getDataAtCell(row, 7);
                         var sq = hot.getDataAtCell(row, 5);
                         var disc = hot.getDataAtCell(row, 9);
