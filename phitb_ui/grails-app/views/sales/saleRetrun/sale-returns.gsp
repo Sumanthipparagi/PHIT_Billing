@@ -908,7 +908,7 @@
             for (var index = 0; index < taxRegister.length; index++) {
                 if (value === taxRegister[index].id) {
                     selectedId = taxRegister[index].id;
-                    value = taxRegister[index].id;
+                    value = taxRegister[index].text;
                 }
             }
             Handsontable.renderers.TextRenderer.apply(this, arguments);
