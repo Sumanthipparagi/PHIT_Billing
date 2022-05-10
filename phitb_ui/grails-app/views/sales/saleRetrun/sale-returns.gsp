@@ -28,9 +28,10 @@
         border-radius: 7px !important;
     }
 
-    .handsontableInputHolder {
-        z-index: 0 !important;
-    }
+    /*.handsontableInputHolder {*/
+    /*   display: block!important;*/
+    /*}*/
+
 
     /*#select2-drop*/
     /*{*/

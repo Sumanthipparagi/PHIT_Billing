@@ -153,12 +153,12 @@ class SaleReturnController
                     if (saleReturn.sqty != 0)
                     {
                         sqty+=saleReturn.sqty
-                        jsonObject.put("sqty", jsonObject.sqty - sqty)
+                        jsonObject.put("sqty", jsonObject.sqty-sqty)
                     }
                     if (saleReturn.freeQty != 0)
                     {
                         fqty+=saleReturn.freeQty
-                        jsonObject.put("freeQty", jsonObject.freeQty- fqty)
+                        jsonObject.put("freeQty", jsonObject.freeQty-fqty)
                     }
                 }
 

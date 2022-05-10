@@ -54,6 +54,16 @@
     }
 
     @media print {
+        .print-watermark
+        {
+            position: fixed;
+            z-index:-1!important;
+            color: lightgrey!important;
+            opacity: 0.2!important;
+            font-size:120px!important;
+            top: 120px;
+
+        }
         .print {
             margin-left: 110px !important;
             /*white-space:nowrap;*/
@@ -105,6 +115,14 @@
     /*}*/
     .page-number{
         content: counter(page)
+    }
+    #watermark
+    {
+        position: fixed;
+        z-index:-1;
+        color: lightgrey;
+        opacity: 1;
+        font-size:120px;
     }
     </style>
 </head>
@@ -181,7 +199,7 @@
             <strong>PURCHASE INVOICE</strong>
             <ul style="margin: 0;">
 
-                <li><b class="tab">Invoice No</b>: ${purchaseBillDetail.invoiceNumber}</li>
+                <li><b class="tab">Invoice No</b>:  <g:if test="${purchaseBillDetail.billStatus == 'CANCELLED'}"><del>${purchaseBillDetail.invoiceNumber}</del></g:if><g:else>${purchaseBillDetail.invoiceNumber}</g:else></li>
                 <li><b class="tab">Inv Date</b>:&nbsp;<span id="invDate"></span></li>
                 %{--                <li><b class="tab">No of cases</b>:</li>--}%
                 %{--                <li><b class="tab">Weight in Kgs</b>:</li>--}%
@@ -325,7 +343,9 @@
 </table>
 
 %{--<div id="breakPage" style="page-break-after: avoid;"></div>--}%
-
+<g:if test="${purchaseBillDetail.billStatus == 'CANCELLED'}">
+    <div id="watermark" class="print-watermark">CANCELLED</div>
+</g:if>
 
 <div class="container" style="display: flex; ">
     %{--    height:200px--}%
