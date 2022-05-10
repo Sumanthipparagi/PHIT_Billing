@@ -1277,9 +1277,9 @@
                                     saledt.push(data[i].sgstPercentage);
                                     saledt.push(data[i].igstPercentage);
                                     saledt.push(data[i].bill.id);
-                                    // if (sqty > 0 || fqty > 0) {
+                                    if (sqty > 0 || fqty > 0) {
                                         billData.push(saledt);
-                                    // }
+                                    }
                                 }
                             }
                         }

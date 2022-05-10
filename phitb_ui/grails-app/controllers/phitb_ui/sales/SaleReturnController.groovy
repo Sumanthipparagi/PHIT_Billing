@@ -89,10 +89,11 @@ class SaleReturnController
                 JSONArray saleReturnArray = JSON.parse(saleReturns.readEntity(String.class)) as JSONArray
                 if (saleReturnArray.size() > 0)
                 {
+                    double sqty = 0;
+                    double fqty = 0;
                     for (JSONObject saleReturn : saleReturnArray)
                     {
-                        double sqty = 0;
-                        double fqty = 0;
+
                         if (saleReturn.saleBillId == it.billId)
                         {
                             if (saleReturn.sqty != 0)
@@ -142,24 +143,22 @@ class SaleReturnController
 
         if (saleReturnArray.size() > 0)
         {
-
-
+            double sqty = 0;
+            double fqty = 0;
             for (JSONObject saleReturn : saleReturnArray)
             {
-                def sqty = 0;
-                double fqty = 0;
+
                 if (saleReturn.saleBillId == jsonObject.billId)
                 {
                     if (saleReturn.sqty != 0)
                     {
                         sqty+=saleReturn.sqty
                         jsonObject.put("sqty", jsonObject.sqty - sqty)
-
                     }
                     if (saleReturn.freeQty != 0)
                     {
                         fqty+=saleReturn.freeQty
-                        jsonObject.put("freeQty", jsonObject.freeQty - fqty)
+                        jsonObject.put("freeQty", jsonObject.freeQty- fqty)
                     }
                 }
 
