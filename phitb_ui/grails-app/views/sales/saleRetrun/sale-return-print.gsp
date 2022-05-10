@@ -54,6 +54,16 @@
     }
 
     @media print {
+        .print-watermark
+        {
+            position: fixed;
+            z-index:-1!important;
+            color: lightgrey!important;
+            opacity: 0.2!important;
+            font-size:120px!important;
+            top: 120px;
+
+        }
         .print {
             margin-left: 110px !important;
             /*white-space:nowrap;*/
@@ -81,6 +91,8 @@
             font-size: 6pt;
             padding: 0px;
         }
+
+
     }
 
     ul {
@@ -105,6 +117,15 @@
     /*}*/
     .page-number{
         content: counter(page)
+    }
+
+    #watermark
+    {
+        position: fixed;
+        z-index:-1;
+        color: lightgrey;
+        opacity: 1;
+        font-size:120px;
     }
     </style>
 </head>
@@ -177,11 +198,12 @@
             <sub>${customer.addressLine1}${customer.addressLine2}
             </sub>
         </td>
-        <td colspan="5" style="vertical-align:top;">
+        <td colspan="6" style="vertical-align:top;">
             <strong>SALES RETURN</strong>
             <ul style="margin: 0;">
 
-                <li><b class="tab">Invoice No</b>: ${saleBillDetail.invoiceNumber}</li>
+                <li><b class="tab">Invoice No</b>:  <g:if
+                        test="${saleBillDetail.returnStatus == 'CANCELLED'}"><del>${saleBillDetail.invoiceNumber}</del></g:if><g:else>${saleBillDetail.invoiceNumber}</g:else></li>
                 <li><b class="tab">Inv Date</b>:&nbsp;<span id="invDate"></span></li>
                 %{--                <li><b class="tab">No of cases</b>:</li>--}%
                 %{--                <li><b class="tab">Weight in Kgs</b>:</li>--}%
@@ -211,7 +233,7 @@
                 <li><b class="tab">DL No1</b>: ${customer.drugLicence1}</li>
                 <li><b class="tab">DL No2</b>: ${customer.drugLicence2}</li>
                 <li><b class="tab">STATE NAME</b>: ${custcity.state.name}</li>
-                <li><b class="tab">Area pincode</b>: ${customer.pinCode}</li>s
+                <li><b class="tab">Area pincode</b>: ${customer.pinCode}</li>
                 <li><b class="tab">Goods Through</b>:</li>
                 <li><b class="tab">Place of Supply</b>: &nbsp;${custcity.name}</li>
                 %{--                <li><b class="tab">State Code</b>: </li>--}%
@@ -233,7 +255,7 @@
                 %{--                <li><b class="tab">State Code</b>: </li>--}%
             </ul>
         </td>
-        <td colspan="5" style="vertical-align:top;" >
+        <td colspan="6" style="vertical-align:top;" >
             <div class="qrCode" ></div>
         </td>
     </tr>
@@ -249,6 +271,7 @@
         %{--        <th>Mfg Date/ Use Before</th>--}%
         <th>MRP</th>
         <th>Invoice No. & Date</th>
+        <th>Reason</th>
         <th>PTR</th>
         <th>PTS</th>
         <th>QTY</th>
@@ -280,6 +303,11 @@
             %{--            <td></td>--}%
             <td>${sp.mrp}</td>
             <td>${sp.invoiceNumber}</td>
+            <td><g:if test="${sp.reason == 'R'}">SALE RETURN</g:if><g:elseif
+                    test="${sp.reason == 'E'}">PRODUCT EXPIRED</g:elseif><g:elseif
+                    test="${sp.reason == 'B'}">BREAKAGE</g:elseif><g:elseif
+                    test="${sp.reason == 'OA'}">OTHERS (ADD)</g:elseif><g:elseif
+                    test="${sp.reason == 'ONE'}">OTHERS (NO EFCT)</g:elseif></td>
             <td>${sp?.batch?.ptr}</td>
             <td>${sp.sRate}</td>
             <td>${sp.sqty}</td>
@@ -316,6 +344,7 @@
         <td class="hide"></td>
         <td class="hide"></td>
         <td class="hide"></td>
+        <td class="hide"></td>
         <td><b>Total</b></td>
         <td>${String.format("%.2f", totalBeforeTaxes)}</td>
         <td>${String.format("%.2f", totaldiscount)}</td>
@@ -329,7 +358,9 @@
 
 %{--<div id="breakPage" style="page-break-after: avoid;"></div>--}%
 
-
+<g:if test="${saleBillDetail.returnStatus == 'CANCELLED'}">
+<div id="watermark" class="print-watermark">CANCELLED</div>
+</g:if>
 <div class="container" style="display: flex; ">
     %{--    height:200px--}%
     <div style="width: 50%;">
@@ -339,6 +370,8 @@
             Party Ref No. : <br>
             Rev-Charge :</p>
         <p>${termsConditions[0].termCondition}</p>
+
+
     </div>
 
     <div style="float: right;">

@@ -31,6 +31,15 @@
     .handsontableInputHolder {
         z-index: 0 !important;
     }
+
+    /*#select2-drop*/
+    /*{*/
+    /*    left: 492px!important;*/
+    /*    top: 342px!important;*/
+    /*    bottom: auto!important;*/
+    /*    display: block!important;*/
+    /*    width: 219px!important;*/
+    /*}*/
     </style>
 </head>
 
@@ -193,20 +202,21 @@
                 <div class="card" style="margin-bottom: 10px;">
                     <div class="body" style="background-color: #313740;padding: 2px; color: #fff;">
                         <div class="row" style="margin: 0; font-size: 14px;">
-                            <div class="col-md-2"><strong>Total GST:</strong>&#x20b9;<span id="totalGST">0</span></div>
+                            <div class="col-md-2"><strong>Total GST:&nbsp;</strong>&#x20b9;
+                            <span id="totalGST">0</span></div>
 
-                            <div class="col-md-2"><strong>Total SGST:</strong>&#x20b9;<span id="totalSGST">0</span>
+                            <div class="col-md-2"><strong>Total SGST:&nbsp;</strong>&#x20b9;<span id="totalSGST">0</span>
                             </div>
 
-                            <div class="col-md-2"><strong>Total CGST:</strong>&#x20b9;<span id="totalCGST">0</span>
+                            <div class="col-md-2"><strong>Total CGST: &nbsp;</strong>&#x20b9;<span id="totalCGST">0</span>
                             </div>
 
-                            <div class="col-md-2"><strong>Total IGST:</strong>&nbsp;&#x20b9;<span
+                            <div class="col-md-2"><strong>Total IGST:&nbsp;</strong>&nbsp;&#x20b9;<span
                                     id="totalIGST">0</span></div>
 
-                            <div class="col-md-2"><strong>Total Qty:</strong> <span id="totalQty">0</span></div>
+                            <div class="col-md-2"><strong>Total Qty: &nbsp;</strong> <span id="totalQty">0</span></div>
 
-                            <div class="col-md-2"><strong>Total Free Qty:</strong> <span id="totalFQty">0</span></div>
+                            <div class="col-md-2"><strong>Total Free Qty: &nbsp;</strong> <span id="totalFQty">0</span></div>
                         </div>
                     </div>
                 </div>
@@ -1603,6 +1613,7 @@
                 'sale-return/print-invoice?id=' + salereturnbillid,
                 '_blank'
             );
+            window.location.href ="/sale-return"
             resetData();
         }
     }
@@ -1636,14 +1647,13 @@
         totalAmt = 0;
         readOnly = false;
         scheme = null;
-
         batchHot.updateSettings({
             data: []
         });
         hot.updateSettings({
             data: []
         });
-
+        hot.selectCell(0,1)
         calculateTotalAmt();
     }
 
@@ -1770,6 +1780,8 @@
         }
     }
 
+
+
     document.addEventListener("keydown", function (event) {
         var ctrl = event.ctrlKey;
         var alt = event.altKey;
@@ -1803,7 +1815,13 @@
         }
     });
 
-    /// select2 plugin
+
+    // $(document).ready(function () {
+    //     row
+    //
+    // });
+
+        /// select2 plugin
     (function (Handsontable) {
         "use strict";
 
@@ -1923,10 +1941,9 @@
 
         Select2Editor.prototype.open = function (keyboardEvent) {
             this.refreshDimensions();
-            this.textareaParentStyle.display = 'block';
             this.textareaParentStyle.zIndex = 20000;
             this.instance.addHook('beforeKeyDown', onBeforeKeyDown);
-
+            this.textareaParentStyle.display = 'block';
             this.$textarea.css({
                 height: $(this.TD).height() + 4,
                 'min-width': $(this.TD).outerWidth() - 4
