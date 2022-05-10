@@ -29,7 +29,7 @@
     }
 
     /*.handsontableInputHolder {*/
-    /*   display: block!important;*/
+    /*   display: none!important;*/
     /*}*/
 
 
@@ -1582,6 +1582,7 @@
                         printInvoice();
                     } else if (result.isDenied) {
                         // resetPage();
+                        location.reload();
                         resetData();
                         hot.updateSettings({
                             data: []
