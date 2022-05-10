@@ -4,6 +4,7 @@ package phitb_sales
 import grails.rest.*
 import grails.converters.*
 import grails.web.servlet.mvc.GrailsParameterMap
+import org.grails.web.json.JSONArray
 import org.grails.web.json.JSONObject
 import org.springframework.boot.context.config.ResourceNotFoundException
 import phitb_sales.Exception.BadRequestException
@@ -13,6 +14,7 @@ class SaleReturnController {
 
 
     SaleReturnService saleReturnService
+    SaleReturnDetailsService saleReturnDetailsService
     /**
      * Gets all Sale Product Details
      * @param query
@@ -293,6 +295,44 @@ class SaleReturnController {
             System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
             response.status = 400
 
+        }
+        catch (Exception ex) {
+            System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
+        }
+    }
+
+
+    /**
+     * Save new Sale Bill Details along with products
+     * @param Sale Bill Details
+     * @return saved Sale Bill Details
+     */
+    def saveSaleReturn() {
+        try {
+            JSONObject jsonObject = JSON.parse(request.reader.text) as JSONObject
+            SaleReturn saleReturn = saleReturnService.save(jsonObject.get("saleReturn"))
+            if(saleReturn){
+                UUID uuid
+                JSONArray saleProducts = jsonObject.get("saleReturnDetails")
+                for (JSONObject product : saleProducts) {
+                    uuid = UUID.randomUUID()
+                    product.put("uuid", uuid)
+                    product.put("billId", saleReturn.id)
+                    product.put("billType", 0) //0 Sale, 1 Purchase
+                    product.put("serBillId", saleReturn.serBillId)
+                    saleReturnDetailsService.save(product)
+                    println("product saved")
+                }
+            }
+            respond saleReturn
+        }
+        catch (ResourceNotFoundException ex) {
+            System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
+            response.status = 404
+        }
+        catch (BadRequestException ex) {
+            System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
+            response.status = 400
         }
         catch (Exception ex) {
             System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)

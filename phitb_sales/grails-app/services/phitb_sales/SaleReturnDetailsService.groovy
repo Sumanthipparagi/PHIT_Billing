@@ -120,6 +120,7 @@ class SaleReturnDetailsService {
         saleReturnDetails.sRate = Double.parseDouble(jsonObject.get("sRate").toString())
         saleReturnDetails.mrp = Double.parseDouble(jsonObject.get("mrp").toString())
         saleReturnDetails.discount = Double.parseDouble(jsonObject.get("discount").toString())
+        saleReturnDetails.returnStatus = jsonObject.get('billStatus').toString()
         saleReturnDetails.gstId = Double.parseDouble(jsonObject.get("gstId").toString())
         saleReturnDetails.gstAmount = Double.parseDouble(jsonObject.get("gstAmount").toString())
         saleReturnDetails.sgstAmount = Double.parseDouble(jsonObject.get("sgstAmount").toString())

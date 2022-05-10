@@ -70,8 +70,6 @@ class SaleReturnController
         {
             def products = new SalesService().getSaleProductDetailsByProductId(params.productId)
             JSONArray productArray = new JSONArray()
-            double sqty = 0;
-            double fqty = 0;
             products.each {
                 def saleBillShow = new SalesService().getRequestWithId(it.billId.toString(), new Links().SALE_BILL_SHOW)
                 def batchResponse = new ProductService().getBatchesOfProduct(it.productId.toString())
@@ -93,6 +91,8 @@ class SaleReturnController
                 {
                     for (JSONObject saleReturn : saleReturnArray)
                     {
+                        double sqty = 0;
+                        double fqty = 0;
                         if (saleReturn.saleBillId == it.billId)
                         {
                             if (saleReturn.sqty != 0)
@@ -139,22 +139,25 @@ class SaleReturnController
         def saleReturns = new SalesService().getReturnDetailsByBatchSalebillProductId(jsonObject.productId.toString()
                 , jsonObject.batchNumber.toString(), jsonObject.billId.toString())
         JSONArray saleReturnArray = JSON.parse(saleReturns.readEntity(String.class)) as JSONArray
+
         if (saleReturnArray.size() > 0)
         {
+
+
             for (JSONObject saleReturn : saleReturnArray)
             {
+                def sqty = 0;
+                double fqty = 0;
                 if (saleReturn.saleBillId == jsonObject.billId)
                 {
                     if (saleReturn.sqty != 0)
                     {
-                        def sqty = 0;
                         sqty+=saleReturn.sqty
                         jsonObject.put("sqty", jsonObject.sqty - sqty)
 
                     }
                     if (saleReturn.freeQty != 0)
                     {
-                        double fqty = 0;
                         fqty+=saleReturn.freeQty
                         jsonObject.put("freeQty", jsonObject.freeQty - fqty)
                     }
@@ -250,6 +253,7 @@ class SaleReturnController
             saleReturnDetail.put("reason", reason)
             saleReturnDetail.put("billId", 0)
             saleReturnDetail.put("billType", 0)
+            saleReturnDetail.put("billStatus", billStatus)
             saleReturnDetail.put("serBillId", 0)
             if (saleBillId != "")
             {
@@ -285,6 +289,7 @@ class SaleReturnController
             saleReturnDetail.put("syncStatus", 0)
             saleReturnDetail.put("financialYear", financialYear)
             saleReturnDetail.put("entityId", entityId)
+            saleReturnDetail.put("uuid", params.uuid)
             saleReturnDetail.put("entityTypeId", session.getAttribute("entityTypeId").toString())
             //GST percentage Calculation
             double priceBeforeTaxes = UtilsService.round((Double.parseDouble(saleQty) * Double.parseDouble(saleRate)), 2)
@@ -318,10 +323,8 @@ class SaleReturnController
             saleReturnDetail.put("cgstPercentage", UtilsService.round(cgstPercentage, 2))
             saleReturnDetail.put("igstPercentage", UtilsService.round(igstPercentage, 2))
             saleReturnDetails.add(saleReturnDetail)
-
             //save to sale transaction log
             //save to sale transportation details
-
             def stocks = new InventoryService().stocksIncrease(batchNumber, saleQty, freeQty, reason, productId)
             if (stocks.status == 200)
             {
@@ -331,7 +334,6 @@ class SaleReturnController
             {
                 println("Stocks not modified")
             }
-
         }
         String entryDate = sdf.format(new Date())
         String orderDate = sdf.format(new Date())
@@ -344,6 +346,7 @@ class SaleReturnController
         saleReturn.put("priorityId", priorityId)
         saleReturn.put("financialYear", financialYear)
         saleReturn.put("dueDate", duedate)
+        saleReturn.put("uuid", params.uuid)
         saleReturn.put("paymentStatus", 0)
         saleReturn.put("dispatchDate", 0)
         saleReturn.put("supplierContact", 0)
@@ -414,27 +417,31 @@ class SaleReturnController
         saleReturn.put("cashDiscount", 0) //TODO: to be changed
         saleReturn.put("exempted", 0) //TODO: to be changed
         saleReturn.put("seriesCode", seriesCode)
-        Response resp = new SalesService().saveSaleRetrun(saleReturn)
-        if (resp.status == 200)
+        JSONObject jsonObject = new JSONObject()
+        jsonObject.put("saleReturn", saleReturn)
+        jsonObject.put("saleReturnDetails", saleReturnDetails)
+        Response response = new SalesService().saveSaleRetrun(jsonObject)
+        if (response.status == 200)
         {
-            def saleReturns = new JSONObject(resp.readEntity(String.class))
+            def saleReturns = new JSONObject(response.readEntity(String.class))
+            println("Details Saved")
             //save to sale return details
-            for (JSONObject saleRetrunDetail : saleReturnDetails)
-            {
-                saleRetrunDetail.put("billId", saleReturns.get("id"))
-                saleRetrunDetail.put("taxId", saleReturns.get("taxable"))
-                saleRetrunDetail.put("billType", 0) //0 Sale, 1 Purchase
-                saleRetrunDetail.put("serBillId", saleReturns.get("serBillId"))
-                def resp1 = new SalesService().saveSaleRetrunDetails(saleRetrunDetail)
-                if (resp1.status == 200)
-                {
-                    println("Return Detail Saved")
-                }
-                else
-                {
-                    println("Return Detail Failed")
-                }
-            }
+//            for (JSONObject saleRetrunDetail : saleReturnDetails)
+//            {
+//                saleRetrunDetail.put("billId", saleReturns.get("id"))
+//                saleRetrunDetail.put("taxId", saleReturns.get("taxable"))
+//                saleRetrunDetail.put("billType", 0) //0 Sale, 1 Purchase
+//                saleRetrunDetail.put("serBillId", saleReturns.get("serBillId"))
+//                def resp1 = new SalesService().saveSaleRetrunDetails(saleRetrunDetail)
+//                if (resp1.status == 200)
+//                {
+//                    println("Return Detail Saved")
+//                }
+//                else
+//                {
+//                    println("Return Detail Failed")
+//                }
+//            }
             JSONObject responseJson = new JSONObject()
             responseJson.put("series", series)
             responseJson.put("saleReturnDetail", saleReturns)

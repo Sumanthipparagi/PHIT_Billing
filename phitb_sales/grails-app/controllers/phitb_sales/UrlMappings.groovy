@@ -233,7 +233,7 @@ class UrlMappings {
 
             //Sale return
             "/salereturn(.$format)?"(controller:'saleReturn') {
-                action = [GET: 'index', POST: 'save']
+                action = [GET: 'index', POST: 'saveSaleReturn']
             }
             "/salereturn/$id(.$format)?"(controller:'saleReturn') {
                 action = [GET: 'show', PUT: 'update', DELETE:
