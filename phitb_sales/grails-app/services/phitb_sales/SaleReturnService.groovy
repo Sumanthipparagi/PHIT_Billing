@@ -69,6 +69,7 @@ class SaleReturnService {
         saleReturn.syncStatus = Long.parseLong(jsonObject.get("syncStatus").toString())
         saleReturn.lockStatus = Long.parseLong(jsonObject.get("lockStatus").toString())
         saleReturn.adjustmentStatus = jsonObject.get("adjustmentStatus").toString()
+        saleReturn.uuid = jsonObject.get("uuid").toString()
         saleReturn.message = jsonObject.get("message").toString()
         saleReturn.ignoreSold = Integer.parseInt(jsonObject.get("ignoreSold").toString())
         saleReturn.financialYear = jsonObject.get("financialYear").toString()

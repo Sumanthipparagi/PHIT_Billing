@@ -49,10 +49,12 @@ class SaleReturn implements Serializable, LogicalDelete<SaleReturn>
     Date dateCreated
     Date lastUpdated
 
+    String uuid
     static constraints = {
         invoiceNumber nullable: true
         returnStatus nullable: true
         cancelledDate nullable: true
+        uuid nullable: true, unique: true
     }
 
     static mapping = {

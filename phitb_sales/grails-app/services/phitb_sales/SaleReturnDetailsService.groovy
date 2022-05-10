@@ -131,6 +131,8 @@ class SaleReturnDetailsService {
         saleReturnDetails.fridgeId = Long.parseLong(jsonObject.get("fridgeId").toString())
         saleReturnDetails.kitName = Long.parseLong(jsonObject.get("kitName").toString())
         saleReturnDetails.saleFinId = jsonObject.get("saleFinId").toString()
+        saleReturnDetails.uuid = jsonObject.get("uuid").toString()
+
         saleReturnDetails.redundantBatch = Long.parseLong(jsonObject.get("redundantBatch").toString())
         saleReturnDetails.status = Long.parseLong(jsonObject.get("status").toString())
         saleReturnDetails.syncStatus = Long.parseLong(jsonObject.get("syncStatus").toString())

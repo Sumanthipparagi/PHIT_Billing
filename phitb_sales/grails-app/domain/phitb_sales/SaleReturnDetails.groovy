@@ -41,6 +41,8 @@ class SaleReturnDetails implements Serializable, LogicalDelete<SaleReturnDetails
     Date dateCreated
     Date lastUpdated
 
+    String uuid
+
     double gstPercentage
     double sgstPercentage
     double cgstPercentage
@@ -50,6 +52,8 @@ class SaleReturnDetails implements Serializable, LogicalDelete<SaleReturnDetails
         saleBillId nullable: true
         invoiceNumber nullable: true
         returnStatus nullable: true
+        uuid nullable: true, unique: true
+
     }
 
     boolean isUpdatable
