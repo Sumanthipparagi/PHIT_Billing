@@ -1502,6 +1502,14 @@
             waitingSwal.close();
             return;
         }
+        var data = hot.getData();
+        for (var i = 0; i < data.length; i++) {
+            if(!data[i][1]){
+                alert("Please select Reason.");
+                waitingSwal.close();
+                return;
+            }
+        }
         var saleReturnData = JSON.stringify(hot.getSourceData());
         $.ajax({
             type: "POST",
@@ -1678,15 +1686,15 @@
                 scheme = data;
                 var offers = "";
 
-                if (data.slab1Status == 1) {
+                if (data.slab1Status === 1) {
                     offers = "S1: " + data.slab1MinQty + "+" + data.slab1SchemeQty;
                 }
 
-                if (data.slab2Status == 1) {
+                if (data.slab2Status === 1) {
                     offers += " | S2: " + data.slab2MinQty + "+" + data.slab2SchemeQty;
                 }
 
-                if (data.slab3Status == 1) {
+                if (data.slab3Status === 1) {
                     offers += " | S3: " + data.slab3MinQty + "+" + data.slab3SchemeQty;
                 }
 
