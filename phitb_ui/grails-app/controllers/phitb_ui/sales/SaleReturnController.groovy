@@ -143,11 +143,10 @@ class SaleReturnController
 
         if (saleReturnArray.size() > 0)
         {
-            double sqty = 0;
-            double fqty = 0;
             for (JSONObject saleReturn : saleReturnArray)
             {
-
+                double sqty = 0;
+                double fqty = 0;
                 if (saleReturn.saleBillId == jsonObject.billId)
                 {
                     if (saleReturn.sqty != 0)
