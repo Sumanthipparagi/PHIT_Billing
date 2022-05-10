@@ -1943,6 +1943,8 @@
             Handsontable.renderers.cellDecorator.apply(this, arguments);
         };
 
+
+
         Select2Editor.prototype.init = function () {
             Handsontable.editors.TextEditor.prototype.init.apply(this, arguments);
         };
