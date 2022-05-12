@@ -544,13 +544,52 @@
                             if (prop === 2) //second col product dropdown
                             {
                                 mainTableRow = row;
+                                hot.setDataAtCell(mainTableRow, 3, "");
+                                hot.setCellMeta(mainTableRow, 3, "");
+                                hot.setDataAtCell(mainTableRow, 4, "");
+                                hot.setDataAtCell(mainTableRow, 5, "");
+                                hot.setDataAtCell(mainTableRow, 6, "");
+                                hot.setDataAtCell(mainTableRow, 7, "");
+                                hot.setDataAtCell(mainTableRow, 8, "");
+                                hot.setDataAtCell(mainTableRow, 9, "");
+                                hot.setDataAtCell(mainTableRow, 10, "");
+                                hot.setDataAtCell(mainTableRow, 11, "");
+                                hot.setDataAtCell(mainTableRow, 12, "");
+                                hot.setDataAtCell(mainTableRow, 14, "");
+                                hot.setDataAtCell(mainTableRow, 15, "");
+                                hot.setDataAtCell(mainTableRow, 16, "");
+                                hot.setDataAtCell(mainTableRow, 17, "");
+                                hot.setDataAtCell(mainTableRow, 18, "");
+                                hot.setDataAtCell(mainTableRow, 19, "");
+                                hot.setDataAtCell(mainTableRow, 20, "");
+                                hot.setDataAtCell(mainTableRow, 21, "");
                                 saleSelection(newValue, row);
+
                             }
                         } else {
                             // alert("no")
                             if (prop === 2) //second col product dropdown
                             {
                                 mainTableRow = row;
+                                hot.setDataAtCell(mainTableRow, 3, "");
+                                hot.setCellMeta(mainTableRow, 3, "");
+                                hot.setDataAtCell(mainTableRow, 4, "");
+                                hot.setDataAtCell(mainTableRow, 5, "");
+                                hot.setDataAtCell(mainTableRow, 6, "");
+                                hot.setDataAtCell(mainTableRow, 7, "");
+                                hot.setDataAtCell(mainTableRow, 8, "");
+                                hot.setDataAtCell(mainTableRow, 9, "");
+                                hot.setDataAtCell(mainTableRow, 10, "");
+                                hot.setDataAtCell(mainTableRow, 11, "");
+                                hot.setDataAtCell(mainTableRow, 12, "");
+                                hot.setDataAtCell(mainTableRow, 14, "");
+                                hot.setDataAtCell(mainTableRow, 15, "");
+                                hot.setDataAtCell(mainTableRow, 16, "");
+                                hot.setDataAtCell(mainTableRow, 17, "");
+                                hot.setDataAtCell(mainTableRow, 18, "");
+                                hot.setDataAtCell(mainTableRow, 19, "");
+                                hot.setDataAtCell(mainTableRow, 20, "");
+                                hot.setDataAtCell(mainTableRow, 21, "");
                                 batchSelection(newValue, row);
                             }
                         }
