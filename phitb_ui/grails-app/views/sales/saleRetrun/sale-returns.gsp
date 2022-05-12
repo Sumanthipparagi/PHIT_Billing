@@ -1473,6 +1473,9 @@
               }
               else*/
             hot.alter("remove_row", row);
+            billHot.updateSettings({
+                data: []
+            });
         } else
             alert("Can't change this now, invoice has been saved already.")
     }
