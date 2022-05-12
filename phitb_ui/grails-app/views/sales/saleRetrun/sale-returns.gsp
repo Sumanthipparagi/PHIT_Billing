@@ -1161,7 +1161,7 @@
     });
 
     function batchSelection(selectedId, mainRow, selectCell = true) {
-        if (selectedId != null) {
+        if (selectedId!== null && selectedId!=="") {
             var url = "/stockbook/productreturn/" + selectedId;
             $.ajax({
                 type: "GET",
@@ -1204,11 +1204,15 @@
                 }
             });
         }
+        else
+        {
+            alert("Please select product")
+        }
     }
 
 
     function saleSelection(selectedId, mainRow, selectCell = true) {
-        if (selectedId != null) {
+        if (selectedId!== null && selectedId!=="") {
             var customer = Number($("#customer").val());
             console.log("customer:" + customer);
             var beforeSendSwal;
@@ -1303,6 +1307,10 @@
                     console.log("Failed");
                 }
             });
+        }
+        else
+        {
+            alert("Please select product")
         }
     }
 
