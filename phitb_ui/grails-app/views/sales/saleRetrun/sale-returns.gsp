@@ -555,6 +555,7 @@
                                 hot.setDataAtCell(mainTableRow, 10, "");
                                 hot.setDataAtCell(mainTableRow, 11, "");
                                 hot.setDataAtCell(mainTableRow, 12, "");
+                                hot.setDataAtCell(mainTableRow, 13, "");
                                 hot.setDataAtCell(mainTableRow, 14, "");
                                 hot.setDataAtCell(mainTableRow, 15, "");
                                 hot.setDataAtCell(mainTableRow, 16, "");
@@ -582,6 +583,7 @@
                                 hot.setDataAtCell(mainTableRow, 10, "");
                                 hot.setDataAtCell(mainTableRow, 11, "");
                                 hot.setDataAtCell(mainTableRow, 12, "");
+                                hot.setDataAtCell(mainTableRow, 13, "");
                                 hot.setDataAtCell(mainTableRow, 14, "");
                                 hot.setDataAtCell(mainTableRow, 15, "");
                                 hot.setDataAtCell(mainTableRow, 16, "");
@@ -2008,6 +2010,11 @@
                 var keyText = (String.fromCharCode((96 <= key && key <= 105) ? key - 48 : key)).toLowerCase();
                 console.log("KeyText: " + keyText);
                 self.$textarea.select2('search', keyText.slice(0, -1));
+                $('.handsontableInput').children().show()
+            }
+            else
+            {
+                $('.handsontableInput').children().hide()
             }
             Handsontable.renderers.cellDecorator.apply(this, arguments);
         };
@@ -2023,6 +2030,7 @@
             this.instance.removeHook('beforeKeyDown', onBeforeKeyDown);
             this.$textarea.off();
             this.$textarea.hide();
+            $('.handsontableInput').children().hide();
             Handsontable.editors.TextEditor.prototype.close.apply(this, arguments);
         };
 

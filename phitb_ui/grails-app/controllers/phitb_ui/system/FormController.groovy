@@ -1,6 +1,7 @@
 package phitb_ui.system
 
 import groovy.json.JsonSlurper
+import org.grails.web.json.JSONArray
 import org.grails.web.json.JSONObject
 import phitb_ui.Links
 import phitb_ui.SystemService
@@ -111,6 +112,31 @@ class FormController {
                 JSONObject data = new JSONObject()
                 data.put("success","success")
                 respond data, formats: ['json'], status: 200
+            }
+            else
+            {
+                response.status = 400
+            }
+        }
+        catch (Exception ex)
+        {
+            System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
+            log.error('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
+            response.status = 400
+        }
+    }
+
+    def show()
+    {
+        try
+        {
+            def apiResponse = new SystemService().getFormMaster()
+            if (apiResponse.status == 200)
+            {
+
+                JSONArray jsonArray = new JSONArray(apiResponse.readEntity(String.class));
+                ArrayList<String> arrayList = new ArrayList<>(jsonArray)
+                return arrayList
             }
             else
             {
