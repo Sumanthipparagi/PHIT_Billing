@@ -748,30 +748,22 @@
                                     url: "/stockbook/product/" + pid + "/batch/" + batch,
                                     dataType: 'json',
                                     success: function (data) {
-                                        remQty = remQty + data.remainingQty;
-                                        remFQty = remFQty + data.remainingFreeQty;
-                                        if (remQty >= sQty) {
-                                            allowEntry = true;
-                                        } else if (sQty >= remQty && remFQty >= sQty) {
-                                            allowEntry = true;
-                                        } else if ((remQty + remFQty) >= sQty) {
+                                        // remQty = remQty + data.remainingQty;
+                                        // remFQty = remFQty + data.remainingFreeQty;
+                                        if (sQty > 0) {
                                             allowEntry = true;
                                         }
-
                                         if (selection === 6) {
-                                            if (remFQty >= fQty) {
+                                            if (fQty > 0) {
                                                 freeQtyEntry = true;
-                                            } else if ((remQty + remFQty) >= sQty + fQty) {
-                                                freeQtyEntry = true;
-                                                allowEntry = true;
-                                            } else {
+                                            }  else {
                                                 freeQtyEntry = false;
                                                 allowEntry = false;
                                             }
 
                                             if (freeQtyEntry !== true) {
                                                 // hot.setDataAtCell(row, 5, 0);
-                                                alert("Entered Free quantity exceeds available quantity");
+                                                alert("Free Quantity should not be zero");
                                             }
                                         }
 
@@ -783,7 +775,7 @@
                                             hot.setDataAtCell(row, 13, 0);
                                             hot.setDataAtCell(row, 14, 0);
                                             hot.setDataAtCell(row, 15, 0);
-                                            alert("Entered quantity exceeds available quantity");
+                                            alert("Qunatity should not be zero");
                                             return;
                                         } else {
                                             hot.setDataAtCell(row, 6, fQty)
