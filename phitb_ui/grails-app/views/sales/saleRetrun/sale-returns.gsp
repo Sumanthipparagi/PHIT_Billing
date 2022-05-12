@@ -748,12 +748,11 @@
                                     url: "/stockbook/product/" + pid + "/batch/" + batch,
                                     dataType: 'json',
                                     success: function (data) {
-                                        remQty = remQty + data.remainingQty;
-                                        remFQty = remFQty + data.remainingFreeQty;
+                                        // remQty = remQty + data.remainingQty;
+                                        // remFQty = remFQty + data.remainingFreeQty;
                                         if (sQty > 0) {
                                             allowEntry = true;
                                         }
-
                                         if (selection === 6) {
                                             if (fQty > 0) {
                                                 freeQtyEntry = true;
