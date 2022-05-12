@@ -753,19 +753,19 @@
                                         if (sQty > 0) {
                                             allowEntry = true;
                                         }
-                                        if (selection === 6) {
-                                            if (fQty > 0) {
-                                                freeQtyEntry = true;
-                                            }  else {
-                                                freeQtyEntry = false;
-                                                allowEntry = false;
-                                            }
-
-                                            if (freeQtyEntry !== true) {
-                                                // hot.setDataAtCell(row, 5, 0);
-                                                alert("Free Quantity should not be zero");
-                                            }
-                                        }
+                                        // if (selection === 6) {
+                                        //     if (fQty > 0) {
+                                        //         freeQtyEntry = true;
+                                        //     }  else {
+                                        //         freeQtyEntry = false;
+                                        //         allowEntry = false;
+                                        //     }
+                                        //
+                                        //     if (freeQtyEntry !== true) {
+                                        //         // hot.setDataAtCell(row, 5, 0);
+                                        //         alert("Free Quantity should not be zero");
+                                        //     }
+                                        // }
 
                                         if (!allowEntry) {
                                             // this.getActiveEditor().TEXTAREA.value = "";
