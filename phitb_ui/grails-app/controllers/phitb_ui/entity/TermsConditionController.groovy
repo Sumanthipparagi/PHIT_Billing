@@ -21,7 +21,6 @@ class TermsConditionController {
             ArrayList<String> entity = new EntityRegisterController().show() as ArrayList<String>
             ArrayList<String> userregister = new UserRegisterController().show() as ArrayList<String>
             ArrayList<String> form = new FormController().show() as ArrayList<String>
-            ArrayList<String> ccm = new CcmController().show() as ArrayList<String>
             ArrayList<String> statelist = new StateController().show() as ArrayList<String>
             ArrayList<String> countrylist = new CountryController().show() as ArrayList<String>
             ArrayList<String> citylist = new CityController().show() as ArrayList<String>
@@ -43,7 +42,7 @@ class TermsConditionController {
             render(view: '/entity/termsCondition/termsCondition',model: [entity:entity,
                                                                statelist:statelist,countrylist:countrylist,
                                                                citylist:citylist,salesmanList:salesmanList,
-                                                               managerList:managerList,zoneList:zoneList,ccm:ccm,form:form])
+                                                               managerList:managerList,zoneList:zoneList,form:form])
         }
         catch (Exception ex)
         {
