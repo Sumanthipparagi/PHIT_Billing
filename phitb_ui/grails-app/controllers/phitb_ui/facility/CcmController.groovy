@@ -1,9 +1,12 @@
 package phitb_ui.facility
 
 import groovy.json.JsonSlurper
+import org.grails.web.json.JSONArray
 import org.grails.web.json.JSONObject
 import phitb_ui.FacilityService
 import phitb_ui.Links
+import phitb_ui.SystemService
+import phitb_ui.entity.EntityRegisterController
 
 class CcmController {
 
@@ -11,15 +14,9 @@ class CcmController {
     {
         try
         {
-            def entityurl = Links.API_GATEWAY+Links.ENTITY_REGISTER_SHOW
-            def entitytypeurl = Links.API_GATEWAY+Links.ENTITY_TYPE_MASTER_SHOW
-            URL apiUrl1 = new URL(entityurl)
-            URL apiUrl2 = new URL(entitytypeurl)
-            def entity = new JsonSlurper().parseText(apiUrl1.text)
-            def entitytype = new JsonSlurper().parseText(apiUrl2.text)
+            ArrayList<String> entity = new EntityRegisterController().show() as ArrayList<String>
             ArrayList<String> fridgeArrayList = new FridgeController().show() as ArrayList<String>
-            render(view: '/facility/ccm/ccm',model: [entity:entity,fridgeArrayList:fridgeArrayList,
-                                                     entitytype:entitytype])
+            render(view: '/facility/ccm/ccm',model: [entity:entity,fridgeArrayList:fridgeArrayList])
         }
         catch (Exception ex)
         {
@@ -118,6 +115,30 @@ class CcmController {
             else
             {
                 response.status = 400
+            }
+        }
+        catch (Exception ex)
+        {
+            System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
+            log.error('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
+            response.status = 400
+        }
+    }
+
+    def show()
+    {
+        try
+        {
+            def apiResponse = new FacilityService().getCCm()
+            if (apiResponse.status == 200)
+            {
+                JSONArray jsonArray = new JSONArray(apiResponse.readEntity(String.class));
+                ArrayList<String> arrayList = new ArrayList<>(jsonArray)
+                return arrayList
+            }
+            else
+            {
+               return []
             }
         }
         catch (Exception ex)

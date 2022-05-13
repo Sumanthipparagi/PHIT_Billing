@@ -19,6 +19,8 @@
     <asset:stylesheet  src="/themeassets/plugins/bootstrap-select/css/bootstrap-select.css" rel="stylesheet" />
     <asset:stylesheet  src="/themeassets/js/pages/forms/basic-form-elements.js" rel="stylesheet" />
     <asset:stylesheet  src="/themeassets/plugins/bootstrap-material-datetimepicker/css/bootstrap-material-datetimepicker.css" rel="stylesheet" />
+    <asset:stylesheet  src="/themeassets/plugins/select-2-editor/select2.min.css" rel="stylesheet" />
+
 
     <style>
 
@@ -157,6 +159,7 @@
 <asset:javascript src="/themeassets/plugins/momentjs/moment.js"/>
 <asset:javascript src="/themeassets/plugins/bootstrap-material-datetimepicker/js/bootstrap-material-datetimepicker.js"/>
 <asset:javascript src="/themeassets/js/pages/forms/basic-form-elements.js"/>
+<asset:javascript  src="/themeassets/plugins/select-2-editor/select2.js" />
 
 <script>
 
@@ -279,16 +282,19 @@
     });
 
     $(document).on("click", ".addbtn", function () {
-        $(".financialYearTitle").text("Add Financial year ")
         $(".financialYearForm")[0].reset();
-        id = null
+        id = null;
+        $(".entity").val("").change();
+        $('.entity').select2();
+        $(".financialYearTitle").text("Add Financial year ");
     });
 
     $(document).on("click", ".editbtn", function () {
         id = $(this).data('id');
         $(".startDate").val($(this).attr('data-startDate'));
         $(".endDate").val($(this).attr('data-endDate'));
-        $(".entity").val($(this).attr('data-entityRegister'));
+        $(".entity").val($(this).attr('data-entityRegister')).change();
+        $('.entity').select2();
         $("#entityTypeId").val($(this).attr('data-entitytype')).change()
         $(".customerGroupTitle").text("Update Financial year");
     });

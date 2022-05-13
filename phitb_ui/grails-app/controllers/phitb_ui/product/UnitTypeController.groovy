@@ -6,6 +6,10 @@ import org.grails.web.json.JSONObject
 import phitb_ui.Constants
 import phitb_ui.Links
 import phitb_ui.ProductService
+import phitb_ui.entity.CustomerGroupController
+import phitb_ui.entity.EntityRegisterController
+import phitb_ui.entity.SeriesController
+import phitb_ui.entity.UserRegisterController
 import phitb_ui.system.CityController
 import phitb_ui.system.CountryController
 import phitb_ui.system.StateController
@@ -17,21 +21,11 @@ class UnitTypeController {
     {
         try
         {
-            def entityurl = Links.API_GATEWAY+Links.ENTITY_REGISTER_SHOW
-            def entitytypeurl = Links.API_GATEWAY+Links.ENTITY_TYPE_MASTER_SHOW
-            def userregisterurl = Links.API_GATEWAY + Links.USER_REGISTER_SHOW
-            def customergroupurl = Links.API_GATEWAY + Links.CUSTOMER_GROUP_REGISTER_SHOW
-            def seriesurl = Links.API_GATEWAY + Links.SERIES_MASTER_SHOW
-            URL apiUrl1 = new URL(entityurl)
-            URL apiUrl2 = new URL(entitytypeurl)
-            URL apiUrl3 = new URL(userregisterurl)
-            URL apiUrl4 = new URL(customergroupurl)
-            URL apiUrl5 = new URL(seriesurl)
-            def entity = new JsonSlurper().parseText(apiUrl1.text)
-            def entitytype = new JsonSlurper().parseText(apiUrl2.text)
-            def userregister = new JsonSlurper().parseText(apiUrl3.text)
-            def customer = new JsonSlurper().parseText(apiUrl4.text)
-            def series = new JsonSlurper().parseText(apiUrl5.text)
+            ArrayList<String> customer = new CustomerGroupController().show() as ArrayList<String>
+            ArrayList<String> entity = new EntityRegisterController().show() as ArrayList<String>
+            ArrayList<String> userregister = new UserRegisterController().show() as ArrayList<String>
+            ArrayList<String> series = new SeriesController().show() as ArrayList<String>
+            ArrayList<String> division = new DivisionController().show() as ArrayList<String>
             ArrayList<String> statelist = new StateController().show() as ArrayList<String>
             ArrayList<String> countrylist = new CountryController().show() as ArrayList<String>
             ArrayList<String> citylist = new CityController().show() as ArrayList<String>
@@ -46,7 +40,7 @@ class UnitTypeController {
             render(view: '/product/unitType/unitType',model: [entity     :entity, statelist:statelist,
                                                                        countrylist:countrylist, citylist:citylist,
                                                                        zoneList   :zoneList,
-                                                                       entitytype :entitytype, customer:customer, series:series,
+                                                                        customer:customer, series:series,
                                                                        managerList:managerList])
         }
         catch (Exception ex)

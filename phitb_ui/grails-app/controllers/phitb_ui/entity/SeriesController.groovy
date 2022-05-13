@@ -6,6 +6,7 @@ import org.grails.web.json.JSONObject
 import phitb_ui.Constants
 import phitb_ui.EntityService
 import phitb_ui.Links
+import phitb_ui.facility.CcmController
 import phitb_ui.system.CityController
 import phitb_ui.system.CountryController
 import phitb_ui.system.StateController
@@ -18,18 +19,9 @@ class SeriesController
     {
         try
         {
-            def entityurl = Links.API_GATEWAY+Links.ENTITY_REGISTER_SHOW
-            def entitytypeurl = Links.API_GATEWAY+Links.ENTITY_TYPE_MASTER_SHOW
-            def userregisterurl = Links.API_GATEWAY + Links.USER_REGISTER_SHOW
-            def ccmurl = Links.API_GATEWAY + Links.CCM_SHOW
-            URL apiUrl1 = new URL(entityurl)
-            URL apiUrl2 = new URL(entitytypeurl)
-            URL apiUrl3 = new URL(userregisterurl)
-            URL apiUrl4 = new URL(ccmurl)
-            def entity = new JsonSlurper().parseText(apiUrl1.text)
-            def entitytype = new JsonSlurper().parseText(apiUrl2.text)
-            def userregister = new JsonSlurper().parseText(apiUrl3.text)
-            def ccm = new JsonSlurper().parseText(apiUrl4.text)
+            ArrayList<String> ccm = new CcmController().show() as ArrayList<String>
+            ArrayList<String> entity = new EntityRegisterController().show() as ArrayList<String>
+            ArrayList<String> userregister = new UserRegisterController().show() as ArrayList<String>
             ArrayList<String> statelist = new StateController().show() as ArrayList<String>
             ArrayList<String> countrylist = new CountryController().show() as ArrayList<String>
             ArrayList<String> citylist = new CityController().show() as ArrayList<String>
@@ -49,7 +41,7 @@ class SeriesController
                 }
             }
 
-            render(view: '/entity/series/series',model: [entity:entity, entitytype:entitytype,
+            render(view: '/entity/series/series',model: [entity:entity,
                                                        statelist:statelist,countrylist:countrylist,
                                                        citylist:citylist,salesmanList:salesmanList,
                                                        managerList:managerList,zoneList:zoneList,ccm:ccm])

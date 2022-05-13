@@ -6,6 +6,12 @@ import org.grails.web.json.JSONObject
 import phitb_entity.Exception.BadRequestException
 import phitb_entity.Exception.ResourceNotFoundException
 
+import javax.ws.rs.client.Client
+import javax.ws.rs.client.ClientBuilder
+import javax.ws.rs.client.Entity
+import javax.ws.rs.client.WebTarget
+import javax.ws.rs.core.MediaType
+import javax.ws.rs.core.Response
 import java.text.SimpleDateFormat
 
 @Transactional
@@ -138,19 +144,45 @@ class TermsConditionDetailsService {
         }
     }
 
+//    def showFormById(String id)
+//    {
+//        try
+//        {
+//            def url = Constants.API_GATEWAY+Constants.FORM_MASTER_SHOW+"/"+id
+//            URL apiUrl = new URL(url)
+//            def card = new JsonSlurper().parseText(apiUrl.text)
+//            return card
+//        }
+//        catch (Exception ex)
+//        {
+//            System.err.println('Service :showFormById , action :  show  , Ex:' + ex)
+//            log.error('Service :showFormById , action :  show  , Ex:' + ex)
+//        }
+//    }
+
+
     def showFormById(String id)
     {
+        Client client = ClientBuilder.newClient()
+        WebTarget target = client.target(new Constants().API_GATEWAY)
         try
         {
-            def url = Constants.API_GATEWAY+Constants.FORM_MASTER_SHOW+"/"+id
-            URL apiUrl = new URL(url)
-            def card = new JsonSlurper().parseText(apiUrl.text)
-            return card
+            Response apiResponse = target
+                    .path(new Constants().FORM_MASTER_SHOW+"/"+id)
+                    .request(MediaType.APPLICATION_JSON_TYPE)
+                    .get()
+            if(apiResponse.status == 200)
+            {
+                JSONObject obj = new JSONObject(apiResponse.readEntity(String.class))
+                return obj
+            }
+
         }
         catch (Exception ex)
         {
-            System.err.println('Service :showFormById , action :  show  , Ex:' + ex)
-            log.error('Service :showFormById , action :  show  , Ex:' + ex)
+            System.err.println('Service :EntityService , action :  putUser  , Ex:' + ex)
+            log.error('Service :EntityService , action :  putUser  , Ex:' + ex)
         }
+
     }
 }

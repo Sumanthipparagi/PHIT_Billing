@@ -2,6 +2,7 @@ package phitb_ui.product
 
 import phitb_ui.entity.CustomerGroupController
 import phitb_ui.entity.EntityRegisterController
+import phitb_ui.entity.SeriesController
 import phitb_ui.entity.UserRegisterController
 import groovy.json.JsonSlurper
 import org.grails.web.json.JSONArray
@@ -20,17 +21,12 @@ class DivisionGroupController {
     {
         try
         {
-            def entitytypeurl = Links.API_GATEWAY+Links.ENTITY_TYPE_MASTER_SHOW
-            def seriesurl = Links.API_GATEWAY + Links.SERIES_MASTER_SHOW
-            URL apiUrl2 = new URL(entitytypeurl)
-            URL apiUrl5 = new URL(seriesurl)
-            def entitytype = new JsonSlurper().parseText(apiUrl2.text)
-            def series = new JsonSlurper().parseText(apiUrl5.text)
-            ArrayList<String> statelist = new StateController().show() as ArrayList<String>
-            ArrayList<String> divisionList = new DivisionController().show() as ArrayList<String>
-            ArrayList<String> userregister = new UserRegisterController().show() as ArrayList<String>
-            ArrayList<String> entity = new EntityRegisterController().show() as ArrayList<String>
             ArrayList<String> customer = new CustomerGroupController().show() as ArrayList<String>
+            ArrayList<String> entity = new EntityRegisterController().show() as ArrayList<String>
+            ArrayList<String> userregister = new UserRegisterController().show() as ArrayList<String>
+            ArrayList<String> series = new SeriesController().show() as ArrayList<String>
+            ArrayList<String> division = new DivisionController().show() as ArrayList<String>
+            ArrayList<String> statelist = new StateController().show() as ArrayList<String>
             ArrayList<String> countrylist = new CountryController().show() as ArrayList<String>
             ArrayList<String> citylist = new CityController().show() as ArrayList<String>
             ArrayList<String> zoneList = new ZoneController().show() as ArrayList<String>
@@ -44,8 +40,8 @@ class DivisionGroupController {
             render(view: '/product/divisionGroup/divisionGroup',model: [entity     :entity, statelist:statelist,
                                                                                  countrylist:countrylist, citylist:citylist,
                                                                                  zoneList   :zoneList,
-                                                                                 entitytype :entitytype, customer:customer, series:series,
-                                                                                 managerList:managerList, divisionList:divisionList])
+                                                                                  customer:customer, series:series,
+                                                                                 managerList:managerList, divisionList:division])
         }
         catch (Exception ex)
         {

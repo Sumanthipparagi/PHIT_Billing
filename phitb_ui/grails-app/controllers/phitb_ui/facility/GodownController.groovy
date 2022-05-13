@@ -4,6 +4,12 @@ import groovy.json.JsonSlurper
 import org.grails.web.json.JSONObject
 import phitb_ui.FacilityService
 import phitb_ui.Links
+import phitb_ui.entity.EntityRegisterController
+import phitb_ui.entity.UserRegisterController
+import phitb_ui.system.CityController
+import phitb_ui.system.CountryController
+import phitb_ui.system.StateController
+import phitb_ui.system.ZoneController
 
 class GodownController
 {
@@ -11,15 +17,8 @@ class GodownController
     {
         try
         {
-            def entityurl = Links.API_GATEWAY + Links.ENTITY_REGISTER_SHOW
-            def entitytypeurl = Links.API_GATEWAY + Links.ENTITY_TYPE_MASTER_SHOW
-            def userregisterurl = Links.API_GATEWAY + Links.USER_REGISTER_SHOW
-            URL api1Url = new URL(entityurl)
-            URL api2Url = new URL(userregisterurl)
-            URL api3Url = new URL(entitytypeurl)
-            def userregister = new JsonSlurper().parseText(api2Url.text)
-            def entity = new JsonSlurper().parseText(api1Url.text)
-            def entitytype = new JsonSlurper().parseText(api3Url.text)
+            ArrayList<String> entity = new EntityRegisterController().show() as ArrayList<String>
+            ArrayList<String> userregister = new UserRegisterController().show() as ArrayList<String>
             ArrayList<String> userregsiterList = []
             userregister.each {
                 if (it.role.name.toString().equalsIgnoreCase('MANAGER'))
@@ -27,7 +26,7 @@ class GodownController
                     userregsiterList.add(it)
                 }
             }
-            render(view: '/facility/godown/godown', model: [entity: entity, entitytype: entitytype, userregsiterList: userregsiterList])
+            render(view: '/facility/godown/godown', model: [entity: entity, userregsiterList: userregsiterList])
         }
         catch (Exception ex)
         {

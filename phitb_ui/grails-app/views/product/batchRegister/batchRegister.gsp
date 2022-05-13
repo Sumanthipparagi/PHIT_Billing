@@ -15,7 +15,7 @@
     <!-- Custom Css -->
     <asset:stylesheet  rel="stylesheet" src="/themeassets/css/main.css"/>
     <asset:stylesheet rel="stylesheet" href="/themeassets/css/color_skins.css"/>
-    <asset:stylesheet rel="stylesheet" href="/themeassets/plugins/sweetalert/sweetalert.css"/>
+    <asset:stylesheet rel="stylesheet" href="/themeassets/plugins/sweetalert2/dist/sweetalert2.css"/>
     <asset:stylesheet rel="stylesheet" href="/themeassets/plugins/multi-select/css/multi-select.css"/>
     <asset:stylesheet  src="/themeassets/plugins/bootstrap-select/css/bootstrap-select.css" rel="stylesheet" />
     <asset:stylesheet  src="/themeassets/js/pages/forms/basic-form-elements.js" rel="stylesheet" />
@@ -162,7 +162,7 @@
 <asset:javascript src="/themeassets/bundles/mainscripts.bundle.js"/>
 <asset:javascript src="/themeassets/js/pages/tables/jquery-datatable.js"/>
 <asset:javascript src="/themeassets/js/pages/ui/dialogs.js"/>
-<asset:javascript src="/themeassets/plugins/sweetalert/sweetalert.min.js"/>
+<asset:javascript src="/themeassets/plugins/sweetalert2/dist/sweetalert2.all.js"/>
 <asset:javascript src="/themeassets/plugins/jquery-inputmask/jquery.inputmask.bundle.js"/>
 <asset:javascript src="/themeassets/plugins/momentjs/moment.js"/>
 <asset:javascript src="/themeassets/plugins/bootstrap-material-datetimepicker/js/bootstrap-material-datetimepicker.js"/>
@@ -299,7 +299,7 @@
             url = '/batch-register';
             type = 'POST'
         }
-
+        var beforeSendSwal;
         console.log(type);
         $.ajax({
             url: url,
@@ -307,13 +307,25 @@
             data: formData,
             contentType: false,
             processData: false,
+            beforeSend: function() {
+                beforeSendSwal = Swal.fire({
+                    // title: "Loading",
+                    html:
+                        '<img src="${assetPath(src: "/themeassets/images/1476.gif")}" width="100" height="100"/>',
+                    showDenyButton: false,
+                    showCancelButton: false,
+                    showConfirmButton: false,
+                    allowOutsideClick: false,
+                    background:'transparent'
+                });
+            },
             success: function () {
-                swal("Success!", "Batch Register Submitted Successfully", "success");
+                Swal.fire("Success!", "Batch Register Submitted Successfully", "success");
                 fridgeTable();
                 $('#addbatchModal').modal('hide');
             },
             error: function () {
-                swal("Error!", "Something went wrong", "error");
+                Swal.fire("Error!", "Something went wrong", "error");
 
             }
         });
@@ -364,9 +376,9 @@
             success: function () {
                 $('.deleteModal').modal('hide');
                 fridgeTable();
-                swal("Success!", "Batch Register Deleted Successfully", "success");
+                Swal.fire("Success!", "Batch Register Deleted Successfully", "success");
             }, error: function () {
-                swal("Error!", "Something went wrong", "error");
+                Swal.fire("Error!", "Something went wrong", "error");
             }
         });
     }

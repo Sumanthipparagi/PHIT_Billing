@@ -41,7 +41,10 @@
     /*    display: block!important;*/
     /*    width: 219px!important;*/
     /*}*/
-    </style>
+    /*.batches{*/
+    /*    width:100%;*/
+    /*}*/
+</style>
 </head>
 
 <body class="theme-black">
@@ -544,13 +547,54 @@
                             if (prop === 2) //second col product dropdown
                             {
                                 mainTableRow = row;
+                                hot.setDataAtCell(mainTableRow, 3, "");
+                                hot.setCellMeta(mainTableRow, 3, "");
+                                hot.setDataAtCell(mainTableRow, 4, "");
+                                hot.setDataAtCell(mainTableRow, 5, "");
+                                hot.setDataAtCell(mainTableRow, 6, "");
+                                hot.setDataAtCell(mainTableRow, 7, "");
+                                hot.setDataAtCell(mainTableRow, 8, "");
+                                hot.setDataAtCell(mainTableRow, 9, "");
+                                hot.setDataAtCell(mainTableRow, 10, "");
+                                hot.setDataAtCell(mainTableRow, 11, "");
+                                hot.setDataAtCell(mainTableRow, 12, "");
+                                hot.setDataAtCell(mainTableRow, 13, "");
+                                hot.setDataAtCell(mainTableRow, 14, "");
+                                hot.setDataAtCell(mainTableRow, 15, "");
+                                hot.setDataAtCell(mainTableRow, 16, "");
+                                hot.setDataAtCell(mainTableRow, 17, "");
+                                hot.setDataAtCell(mainTableRow, 18, "");
+                                hot.setDataAtCell(mainTableRow, 19, "");
+                                hot.setDataAtCell(mainTableRow, 20, "");
+                                hot.setDataAtCell(mainTableRow, 21, "");
                                 saleSelection(newValue, row);
+
                             }
                         } else {
                             // alert("no")
                             if (prop === 2) //second col product dropdown
                             {
                                 mainTableRow = row;
+                                hot.setDataAtCell(mainTableRow, 3, "");
+                                hot.setCellMeta(mainTableRow, 3, "");
+                                hot.setDataAtCell(mainTableRow, 4, "");
+                                hot.setDataAtCell(mainTableRow, 5, "");
+                                hot.setDataAtCell(mainTableRow, 6, "");
+                                hot.setDataAtCell(mainTableRow, 7, "");
+                                hot.setDataAtCell(mainTableRow, 8, "");
+                                hot.setDataAtCell(mainTableRow, 9, "");
+                                hot.setDataAtCell(mainTableRow, 10, "");
+                                hot.setDataAtCell(mainTableRow, 11, "");
+                                hot.setDataAtCell(mainTableRow, 12, "");
+                                hot.setDataAtCell(mainTableRow, 13, "");
+                                hot.setDataAtCell(mainTableRow, 14, "");
+                                hot.setDataAtCell(mainTableRow, 15, "");
+                                hot.setDataAtCell(mainTableRow, 16, "");
+                                hot.setDataAtCell(mainTableRow, 17, "");
+                                hot.setDataAtCell(mainTableRow, 18, "");
+                                hot.setDataAtCell(mainTableRow, 19, "");
+                                hot.setDataAtCell(mainTableRow, 20, "");
+                                hot.setDataAtCell(mainTableRow, 21, "");
                                 batchSelection(newValue, row);
                             }
                         }
@@ -743,48 +787,38 @@
                         var billId = hot.getDataAtCell(row, 18);
                         if (pid && batch) {
                             if (isCheckedYes !== "YES") {
-                                $.ajax({
-                                    type: "POST",
-                                    url: "/stockbook/product/" + pid + "/batch/" + batch,
-                                    dataType: 'json',
-                                    success: function (data) {
-                                        // remQty = remQty + data.remainingQty;
-                                        // remFQty = remFQty + data.remainingFreeQty;
-                                        if (sQty > 0) {
-                                            allowEntry = true;
-                                        }
-                                        // if (selection === 6) {
-                                        //     if (fQty > 0) {
-                                        //         freeQtyEntry = true;
-                                        //     }  else {
-                                        //         freeQtyEntry = false;
-                                        //         allowEntry = false;
-                                        //     }
-                                        //
-                                        //     if (freeQtyEntry !== true) {
-                                        //         // hot.setDataAtCell(row, 5, 0);
-                                        //         alert("Free Quantity should not be zero");
-                                        //     }
-                                        // }
+                                // remQty = remQty + data.remainingQty;
+                                // remFQty = remFQty + data.remainingFreeQty;
+                                if (sQty > 0) {
+                                    allowEntry = true;
+                                }
+                                // if (selection === 6) {
+                                //     if (fQty > 0) {
+                                //         freeQtyEntry = true;
+                                //     }  else {
+                                //         freeQtyEntry = false;
+                                //         allowEntry = false;
+                                //     }
+                                //
+                                //     if (freeQtyEntry !== true) {
+                                //         // hot.setDataAtCell(row, 5, 0);
+                                //         alert("Free Quantity should not be zero");
+                                //     }
+                                // }
 
-                                        if (!allowEntry) {
-                                            // this.getActiveEditor().TEXTAREA.value = "";
-                                            hot.setDataAtCell(row, 5, 0);
-                                            hot.setDataAtCell(row, 6, 0);
-                                            hot.setDataAtCell(row, 12, 0);
-                                            hot.setDataAtCell(row, 13, 0);
-                                            hot.setDataAtCell(row, 14, 0);
-                                            hot.setDataAtCell(row, 15, 0);
-                                            alert("Qunatity should not be zero");
-                                            return;
-                                        } else {
-                                            hot.setDataAtCell(row, 6, fQty)
-                                        }
-                                    },
-                                    error: function (data) {
-                                        alert("Something went Wrong!")
-                                    }
-                                });
+                                if (!allowEntry) {
+                                    // this.getActiveEditor().TEXTAREA.value = "";
+                                    hot.setDataAtCell(row, 5, 0);
+                                    hot.setDataAtCell(row, 6, 0);
+                                    hot.setDataAtCell(row, 12, 0);
+                                    hot.setDataAtCell(row, 13, 0);
+                                    hot.setDataAtCell(row, 14, 0);
+                                    hot.setDataAtCell(row, 15, 0);
+                                    alert("Qunatity should not be zero");
+                                    return;
+                                } else {
+                                    hot.setDataAtCell(row, 6, fQty)
+                                }
                             } else {
                                 $.ajax({
                                     type: "POST",
@@ -1161,7 +1195,7 @@
     });
 
     function batchSelection(selectedId, mainRow, selectCell = true) {
-        if (selectedId != null) {
+        if (selectedId!== null && selectedId!=="") {
             var url = "/stockbook/productreturn/" + selectedId;
             $.ajax({
                 type: "GET",
@@ -1204,11 +1238,15 @@
                 }
             });
         }
+        else
+        {
+            alert("Please select product")
+        }
     }
 
 
     function saleSelection(selectedId, mainRow, selectCell = true) {
-        if (selectedId != null) {
+        if (selectedId!== null && selectedId!=="") {
             var customer = Number($("#customer").val());
             console.log("customer:" + customer);
             var beforeSendSwal;
@@ -1303,6 +1341,10 @@
                     console.log("Failed");
                 }
             });
+        }
+        else
+        {
+            alert("Please select product")
         }
     }
 
@@ -1473,6 +1515,9 @@
               }
               else*/
             hot.alter("remove_row", row);
+            billHot.updateSettings({
+                data: []
+            });
         } else
             alert("Can't change this now, invoice has been saved already.")
     }
@@ -1933,10 +1978,21 @@
 
         };
 
+
+
+        var onBeforeMouseDown = function (event) {
+            var instance = this;
+            var that = instance.getActiveEditor();
+            this.$dropdownContainer.on('mousedown', function (evt) {
+                evt.stopPropagation();
+            });
+        };
+
         Select2Editor.prototype.open = function (keyboardEvent) {
             this.refreshDimensions();
             this.textareaParentStyle.zIndex = 20000;
             this.instance.addHook('beforeKeyDown', onBeforeKeyDown);
+            this.instance.addHook('afterOnCellMouseDown', onBeforeMouseDown);
             this.textareaParentStyle.display = 'block';
             this.$textarea.css({
                 height: $(this.TD).height() + 4,
@@ -1958,6 +2014,11 @@
                 var keyText = (String.fromCharCode((96 <= key && key <= 105) ? key - 48 : key)).toLowerCase();
                 console.log("KeyText: " + keyText);
                 self.$textarea.select2('search', keyText.slice(0, -1));
+                $('.handsontableInput').children().show()
+            }
+            else
+            {
+                $('.handsontableInput').children().hide()
             }
             Handsontable.renderers.cellDecorator.apply(this, arguments);
         };
@@ -1971,10 +2032,13 @@
         Select2Editor.prototype.close = function () {
             this.instance.listen();
             this.instance.removeHook('beforeKeyDown', onBeforeKeyDown);
+            this.instance.removeHook('afterOnCellMouseDown', onBeforeMouseDown);
             this.$textarea.off();
             this.$textarea.hide();
+            $('.handsontableInput').children().remove();
             Handsontable.editors.TextEditor.prototype.close.apply(this, arguments);
         };
+
 
         Select2Editor.prototype.val = function (value) {
             if (typeof value == 'undefined') {

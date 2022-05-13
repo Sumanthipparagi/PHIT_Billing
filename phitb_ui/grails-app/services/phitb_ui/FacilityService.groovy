@@ -216,6 +216,7 @@ class FacilityService {
 
     }
 
+
     /**
      *
      * @param jsonObject
@@ -240,9 +241,26 @@ class FacilityService {
             System.err.println('Service :systemService , action :  delete  , Ex:' + ex)
             log.error('Service :systemService , action :  delete  , Ex:' + ex)
         }
+    }
 
+    def getCCm() {
+        Client client = ClientBuilder.newClient();
+        WebTarget target = client.target(new Links().API_GATEWAY);
+        try {
+
+            Response apiResponse = target
+                    .path(new Links().CCM_SHOW)
+                    .request(MediaType.APPLICATION_JSON_TYPE)
+                    .get()
+            return apiResponse
+        }
+        catch (Exception ex) {
+            System.err.println('Service :ProductService , action :  getProducts  , Ex:' + ex)
+            log.error('Service :ProductService , action :  getProducts  , Ex:' + ex)
+        }
 
     }
+
 
 
     //    godown
@@ -480,5 +498,7 @@ class FacilityService {
         }
 
     }
+
+
 
 }
