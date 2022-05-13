@@ -2034,6 +2034,7 @@
             Handsontable.editors.TextEditor.prototype.close.apply(this, arguments);
         };
 
+
         Select2Editor.prototype.val = function (value) {
             if (typeof value == 'undefined') {
                 return this.$textarea.val();
