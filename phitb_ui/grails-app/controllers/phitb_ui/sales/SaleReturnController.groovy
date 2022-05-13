@@ -325,8 +325,8 @@ class SaleReturnController
             //save to sale transportation details
 
 
-            def stocks = new InventoryService().stocksIncrease(batchNumber, saleQty, freeQty, reason, productId,
-                    saleRate, expDate,packDesc)
+            def stocks = new InventoryService().stocksIncrease(batchNumber, saleQty, freeQty, reason, productId, saleRate, expDate,packDesc) //            This will be further changed to JsonObject
+
             if (stocks.status == 200)
             {
                 println("Stocks modified")
