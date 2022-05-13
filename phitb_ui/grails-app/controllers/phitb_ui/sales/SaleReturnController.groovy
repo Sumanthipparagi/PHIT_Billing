@@ -323,8 +323,6 @@ class SaleReturnController
             saleReturnDetails.add(saleReturnDetail)
             //save to sale transaction log
             //save to sale transportation details
-
-
             def stocks = new InventoryService().stocksIncrease(batchNumber, saleQty, freeQty, reason, productId, saleRate, expDate,packDesc) //            This will be further changed to JsonObject
 
             if (stocks.status == 200)
