@@ -362,6 +362,7 @@
         'IGST',
         '',
         'ID',
+        'tax_id',
     ];
 
     var batchHeaderRow = [
@@ -526,13 +527,14 @@
                 {type: 'text', readOnly: true},
                 {type: 'text', readOnly: true},
                 {type: 'text', readOnly: true},
+                {type: 'text', readOnly: true},
                 {type: 'text', readOnly: true}
             ],
             hiddenColumns: true,
             hiddenColumns: {
                 copyPasteEnabled: true,
                 indicators: true,
-                columns: [18]
+                columns: [18,19]
             },
             minSpareRows: 0,
             minSpareColumns: 0,
@@ -958,6 +960,7 @@
                     success: function (data) {
                         const row = hot.getSelected()[0][0];
                         hot.setDataAtCell(row, 11, Number(taxId[1]).toFixed(2));
+                        hot.setDataAtCell(row, 19, taxId[0].trim())
                         var sR = hot.getDataAtCell(row, 7);
                         var sq = hot.getDataAtCell(row, 5);
                         var disc = hot.getDataAtCell(row, 9);

@@ -96,7 +96,7 @@ class InventoryService {
 
 
     def stocksIncrease(String batch,String purQty, String freeQty,String reason, String productId , String saleRate,
-                       String expDate, String pakingDesc) {
+                       String expDate, String pakingDesc, String taxId) {
         Client client = ClientBuilder.newClient()
         WebTarget target = client.target(new Links().API_GATEWAY)
         try {
@@ -107,6 +107,7 @@ class InventoryService {
                     .queryParam("sQty", URLEncoder.encode(purQty.toString(), "UTF-8"))
                     .queryParam("expDate", URLEncoder.encode(expDate.toString(), "UTF-8"))
                     .queryParam("pakingDesc", URLEncoder.encode(pakingDesc.toString(), "UTF-8"))
+                    .queryParam("taxId", URLEncoder.encode(taxId.toString(), "UTF-8"))
                     .request(MediaType.APPLICATION_JSON_TYPE)
                     .get()
             return apiResponse

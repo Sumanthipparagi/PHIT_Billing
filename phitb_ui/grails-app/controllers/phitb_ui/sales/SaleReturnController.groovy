@@ -222,6 +222,7 @@ class SaleReturnController
             String freeQty = sr.get("6")
             String saleRate = sr.get("7")
             String mrp = sr.get("8")
+            String taxId = sr.get("19")
             if (sr.has("18"))
             {
                 saleBillId = sr.get("18")
@@ -323,7 +324,8 @@ class SaleReturnController
             saleReturnDetails.add(saleReturnDetail)
             //save to sale transaction log
             //save to sale transportation details
-            def stocks = new InventoryService().stocksIncrease(batchNumber, saleQty, freeQty, reason, productId, saleRate, expDate,packDesc) //            This will be further changed to JsonObject
+            def stocks = new InventoryService().stocksIncrease(batchNumber, saleQty, freeQty, reason, productId,
+                    saleRate, expDate,packDesc,taxId) //            This will be further changed to JsonObject
 
             if (stocks.status == 200)
             {

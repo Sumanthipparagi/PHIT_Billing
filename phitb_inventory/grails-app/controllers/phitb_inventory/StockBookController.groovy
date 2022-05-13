@@ -363,7 +363,7 @@ class StockBookController
                     stockBook1.setPurcDate(new Date())
                     stockBook1.setManufacturingDate(new Date())
 //                    stockBook1.setMergedWith("0")
-                    stockBook1.setTaxId(Long.parseLong("0"))
+                    stockBook1.setTaxId(Long.parseLong(params.taxId))
                     stockBook1.setPackingDesc(params.pakingDesc)
                     stockBook1.setUuid(UUID.randomUUID().toString())
                 }
@@ -392,7 +392,7 @@ class StockBookController
                     stockBook1.setPurcDate(new Date())
                     stockBook1.setManufacturingDate(new Date())
 //                    stockBook1.setMergedWith("0")
-                    stockBook1.setTaxId(Long.parseLong("0"))
+                    stockBook1.setTaxId(Long.parseLong(params.taxId))
                     stockBook1.setPackingDesc(params.pakingDesc)
                     stockBook1.setUuid(UUID.randomUUID().toString())
                 }
