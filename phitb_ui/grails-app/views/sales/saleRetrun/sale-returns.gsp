@@ -41,7 +41,10 @@
     /*    display: block!important;*/
     /*    width: 219px!important;*/
     /*}*/
-    </style>
+    /*.batches{*/
+    /*    width:100%;*/
+    /*}*/
+</style>
 </head>
 
 <body class="theme-black">
@@ -784,48 +787,38 @@
                         var billId = hot.getDataAtCell(row, 18);
                         if (pid && batch) {
                             if (isCheckedYes !== "YES") {
-                                $.ajax({
-                                    type: "POST",
-                                    url: "/stockbook/product/" + pid + "/batch/" + batch,
-                                    dataType: 'json',
-                                    success: function (data) {
-                                        // remQty = remQty + data.remainingQty;
-                                        // remFQty = remFQty + data.remainingFreeQty;
-                                        if (sQty > 0) {
-                                            allowEntry = true;
-                                        }
-                                        // if (selection === 6) {
-                                        //     if (fQty > 0) {
-                                        //         freeQtyEntry = true;
-                                        //     }  else {
-                                        //         freeQtyEntry = false;
-                                        //         allowEntry = false;
-                                        //     }
-                                        //
-                                        //     if (freeQtyEntry !== true) {
-                                        //         // hot.setDataAtCell(row, 5, 0);
-                                        //         alert("Free Quantity should not be zero");
-                                        //     }
-                                        // }
+                                // remQty = remQty + data.remainingQty;
+                                // remFQty = remFQty + data.remainingFreeQty;
+                                if (sQty > 0) {
+                                    allowEntry = true;
+                                }
+                                // if (selection === 6) {
+                                //     if (fQty > 0) {
+                                //         freeQtyEntry = true;
+                                //     }  else {
+                                //         freeQtyEntry = false;
+                                //         allowEntry = false;
+                                //     }
+                                //
+                                //     if (freeQtyEntry !== true) {
+                                //         // hot.setDataAtCell(row, 5, 0);
+                                //         alert("Free Quantity should not be zero");
+                                //     }
+                                // }
 
-                                        if (!allowEntry) {
-                                            // this.getActiveEditor().TEXTAREA.value = "";
-                                            hot.setDataAtCell(row, 5, 0);
-                                            hot.setDataAtCell(row, 6, 0);
-                                            hot.setDataAtCell(row, 12, 0);
-                                            hot.setDataAtCell(row, 13, 0);
-                                            hot.setDataAtCell(row, 14, 0);
-                                            hot.setDataAtCell(row, 15, 0);
-                                            alert("Qunatity should not be zero");
-                                            return;
-                                        } else {
-                                            hot.setDataAtCell(row, 6, fQty)
-                                        }
-                                    },
-                                    error: function (data) {
-                                        alert("Something went Wrong!")
-                                    }
-                                });
+                                if (!allowEntry) {
+                                    // this.getActiveEditor().TEXTAREA.value = "";
+                                    hot.setDataAtCell(row, 5, 0);
+                                    hot.setDataAtCell(row, 6, 0);
+                                    hot.setDataAtCell(row, 12, 0);
+                                    hot.setDataAtCell(row, 13, 0);
+                                    hot.setDataAtCell(row, 14, 0);
+                                    hot.setDataAtCell(row, 15, 0);
+                                    alert("Qunatity should not be zero");
+                                    return;
+                                } else {
+                                    hot.setDataAtCell(row, 6, fQty)
+                                }
                             } else {
                                 $.ajax({
                                     type: "POST",
@@ -1985,10 +1978,21 @@
 
         };
 
+
+
+        var onBeforeMouseDown = function (event) {
+            var instance = this;
+            var that = instance.getActiveEditor();
+            this.$dropdownContainer.on('mousedown', function (evt) {
+                evt.stopPropagation();
+            });
+        };
+
         Select2Editor.prototype.open = function (keyboardEvent) {
             this.refreshDimensions();
             this.textareaParentStyle.zIndex = 20000;
             this.instance.addHook('beforeKeyDown', onBeforeKeyDown);
+            this.instance.addHook('afterOnCellMouseDown', onBeforeMouseDown);
             this.textareaParentStyle.display = 'block';
             this.$textarea.css({
                 height: $(this.TD).height() + 4,
@@ -2028,9 +2032,10 @@
         Select2Editor.prototype.close = function () {
             this.instance.listen();
             this.instance.removeHook('beforeKeyDown', onBeforeKeyDown);
+            this.instance.removeHook('afterOnCellMouseDown', onBeforeMouseDown);
             this.$textarea.off();
             this.$textarea.hide();
-            $('.handsontableInput').children().hide();
+            $('.handsontableInput').children().remove();
             Handsontable.editors.TextEditor.prototype.close.apply(this, arguments);
         };
 

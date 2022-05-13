@@ -7,6 +7,10 @@ import org.springframework.web.multipart.MultipartFile
 import phitb_ui.Constants
 import phitb_ui.EntityService
 import phitb_ui.Links
+import phitb_ui.SystemService
+import phitb_ui.accounts.BankRegisterController
+import phitb_ui.facility.CcmController
+import phitb_ui.product.DivisionController
 import phitb_ui.system.CityController
 import phitb_ui.system.CountryController
 import phitb_ui.system.StateController
@@ -19,15 +23,9 @@ class UserRegisterController
     {
         try
         {
-            def entityurl = Links.API_GATEWAY + Links.ENTITY_REGISTER_SHOW
-            def entitytypeurl = Links.API_GATEWAY + Links.ENTITY_TYPE_MASTER_SHOW
-            def userregisterurl = Links.API_GATEWAY + Links.USER_REGISTER_SHOW
-            URL apiUrl1 = new URL(entityurl)
-            URL apiUrl2 = new URL(entitytypeurl)
-            URL apiUrl3 = new URL(userregisterurl)
-            def entity = new JsonSlurper().parseText(apiUrl1.text)
-            def entitytype = new JsonSlurper().parseText(apiUrl2.text)
-            def userregister = new JsonSlurper().parseText(apiUrl3.text)
+            ArrayList<String> ccm = new CcmController().show() as ArrayList<String>
+            ArrayList<String> entity = new EntityRegisterController().show() as ArrayList<String>
+            ArrayList<String> userregister = new UserRegisterController().show() as ArrayList<String>
             ArrayList<String> statelist = new StateController().show() as ArrayList<String>
             ArrayList<String> countrylist = new CountryController().show() as ArrayList<String>
             ArrayList<String> citylist = new CityController().show() as ArrayList<String>
@@ -46,7 +44,7 @@ class UserRegisterController
                     salesmanList.add(it)
                 }
             }
-            render(view: '/entity/userRegister/userRegister', model: [entity     : entity, entitytype: entitytype,
+            render(view: '/entity/userRegister/userRegister', model: [entity     : entity,
                                                                       statelist  : statelist, countrylist: countrylist,
                                                                       citylist   : citylist, salesmanList: salesmanList,
                                                                       managerList: managerList, zoneList: zoneList])
@@ -63,40 +61,21 @@ class UserRegisterController
     {
         try
         {
-            def entityurl = Links.API_GATEWAY + Links.ENTITY_REGISTER_SHOW
-            def entitytypeurl = Links.API_GATEWAY + Links.ENTITY_TYPE_MASTER_SHOW
-            def userregisterurl = Links.API_GATEWAY + Links.USER_REGISTER_SHOW
-            def routeregisterurl = Links.API_GATEWAY + Links.ROUTE_REGISTER_SHOW
-            def departmenturl = Links.API_GATEWAY + Links.DEPARTMENT_MASTER_SHOW
-            def roleurl = Links.API_GATEWAY + Links.ROLE_SHOW
-            def bankurl = Links.API_GATEWAY + Links.BANK_REGISTER_SHOW
-            def accounturl = Links.API_GATEWAY + Links.ACCOUNT_REGISTER_SHOW
-            def divisionurl = Links.API_GATEWAY + Links.DIVISION_SHOW
-            def genderurl = Links.API_GATEWAY + Links.GENDER_SHOW
-            URL apiUrl1 = new URL(entityurl)
-            URL apiUrl2 = new URL(entitytypeurl)
-            URL apiUrl3 = new URL(userregisterurl)
-            URL apiUrl4 = new URL(routeregisterurl)
-            URL apiUrl5 = new URL(departmenturl)
-            URL apiUrl6 = new URL(roleurl)
-            URL apiUrl7 = new URL(bankurl)
-            URL apiUrl8 = new URL(accounturl)
-            URL apiUrl9 = new URL(divisionurl)
-            URL apiUrl10 = new URL(genderurl)
-            def entity = new JsonSlurper().parseText(apiUrl1.text)
-            def entitytype = new JsonSlurper().parseText(apiUrl2.text)
-            def userregister = new JsonSlurper().parseText(apiUrl3.text)
-            def routeregister = new JsonSlurper().parseText(apiUrl4.text)
-            def department = new JsonSlurper().parseText(apiUrl5.text)
-            def role = new JsonSlurper().parseText(apiUrl6.text)
-            def bank = new JsonSlurper().parseText(apiUrl7.text)
-            def account = new JsonSlurper().parseText(apiUrl8.text)
-            def division = new JsonSlurper().parseText(apiUrl9.text)
-            def gender = new JsonSlurper().parseText(apiUrl10.text)
             ArrayList<String> statelist = new StateController().show() as ArrayList<String>
             ArrayList<String> countrylist = new CountryController().show() as ArrayList<String>
             ArrayList<String> citylist = new CityController().show() as ArrayList<String>
             ArrayList<String> zoneList = new ZoneController().show() as ArrayList<String>
+            ArrayList<String> routeRegister = new RouteController().show() as ArrayList<String>
+            ArrayList<String> userList = new UserRegisterController().show() as ArrayList<String>
+            ArrayList <String> genderList = new SystemService().getAllGender()
+            ArrayList <String> bank = new BankRegisterController().show() as ArrayList<String>
+            ArrayList <String> roles = new RoleController().show() as ArrayList<String>
+            ArrayList <String> division  = new DivisionController().show() as ArrayList<String>
+            ArrayList <String> account = new AccountRegisterController().getAllAccounts() as ArrayList<String>
+            def  department = new EntityService().getAllDepartment() as ArrayList<String>
+            Object entity = new EntityRegisterController().show() as ArrayList<String>
+            ArrayList<String> ccm = new CcmController().show() as ArrayList<String>
+            ArrayList<String> userregister = new UserRegisterController().show() as ArrayList<String>
             ArrayList<String> managerList = []
             userregister.each {
                 if (it.role.name.toString().equalsIgnoreCase(Constants.ROLE_MANAGER))
@@ -111,16 +90,16 @@ class UserRegisterController
                     salesmanList.add(it)
                 }
             }
-            render(view: '/entity/userRegister/add-user-register', model: [entity       : entity, entitytype: entitytype,
+            render(view: '/entity/userRegister/add-user-register', model: [entity       : entity,
                                                                            statelist    : statelist, countrylist: countrylist,
                                                                            citylist     : citylist, salesmanList: salesmanList,
                                                                            managerList  : managerList,
                                                                            zoneList     : zoneList,
-                                                                           routeregister: routeregister,
+                                                                           routeregister: routeRegister,
                                                                            userregister : userregister,
-                                                                           department: department,role:role,
+                                                                           department: department,role:roles,
                                                                            bank:bank,account:account,
-                                                                           division:division,gender:gender])
+                                                                           division:division,gender:genderList])
         }
         catch (Exception ex)
         {
@@ -135,43 +114,22 @@ class UserRegisterController
     {
         try
         {
-            def entityurl = Links.API_GATEWAY + Links.ENTITY_REGISTER_SHOW
-            def entitytypeurl = Links.API_GATEWAY + Links.ENTITY_TYPE_MASTER_SHOW
-            def userregisterbyidurl = Links.API_GATEWAY + Links.USER_REGISTER_SHOW+"/"+params.id
-            def userregisterurl = Links.API_GATEWAY + Links.USER_REGISTER_SHOW
-            def routeregisterurl = Links.API_GATEWAY + Links.ROUTE_REGISTER_SHOW
-            def departmenturl = Links.API_GATEWAY + Links.DEPARTMENT_MASTER_SHOW
-            def roleurl = Links.API_GATEWAY + Links.ROLE_MASTER_SHOW
-            def bankurl = Links.API_GATEWAY + Links.BANK_REGISTER_SHOW
-            def accounturl = Links.API_GATEWAY + Links.ACCOUNT_REGISTER_SHOW
-            def divisionurl = Links.API_GATEWAY + Links.DIVISION_SHOW
-            def genderurl = Links.API_GATEWAY + Links.GENDER_SHOW
-            URL apiUrl1 = new URL(entityurl)
-            URL apiUrl2 = new URL(entitytypeurl)
-            URL apiUrl3 = new URL(userregisterurl)
-            URL apiUrl4 = new URL(routeregisterurl)
-            URL apiUrl5 = new URL(departmenturl)
-            URL apiUrl6 = new URL(roleurl)
-            URL apiUrl7 = new URL(bankurl)
-            URL apiUrl8 = new URL(accounturl)
-            URL apiUrl9 = new URL(divisionurl)
-            URL apiUrl10 = new URL(genderurl)
-            URL apiUrl11 = new URL(userregisterbyidurl)
-            def entity = new JsonSlurper().parseText(apiUrl1.text)
-            def entitytype = new JsonSlurper().parseText(apiUrl2.text)
-            def userregister = new JsonSlurper().parseText(apiUrl3.text)
-            def routeregister = new JsonSlurper().parseText(apiUrl4.text)
-            def department = new JsonSlurper().parseText(apiUrl5.text)
-            def role = new JsonSlurper().parseText(apiUrl6.text)
-            def bank = new JsonSlurper().parseText(apiUrl7.text)
-            def account = new JsonSlurper().parseText(apiUrl8.text)
-            def division = new JsonSlurper().parseText(apiUrl9.text)
-            def gender = new JsonSlurper().parseText(apiUrl10.text)
-            def userregisterbyId = new JsonSlurper().parseText(apiUrl11.text)
             ArrayList<String> statelist = new StateController().show() as ArrayList<String>
+            Object user = new EntityService().getUser(params.id)
             ArrayList<String> countrylist = new CountryController().show() as ArrayList<String>
             ArrayList<String> citylist = new CityController().show() as ArrayList<String>
             ArrayList<String> zoneList = new ZoneController().show() as ArrayList<String>
+            ArrayList<String> routeRegister = new RouteController().show() as ArrayList<String>
+            ArrayList<String> userList = new UserRegisterController().show() as ArrayList<String>
+            ArrayList <String> genderList = new SystemService().getAllGender()
+            ArrayList <String> bank = new BankRegisterController().show() as ArrayList<String>
+            ArrayList <String> roles = new RoleController().show() as ArrayList<String>
+            ArrayList <String> division  = new DivisionController().show() as ArrayList<String>
+            ArrayList <String> account = new AccountRegisterController().getAllAccounts() as ArrayList<String>
+            def  department = new EntityService().getAllDepartment() as ArrayList<String>
+            Object entity = new EntityRegisterController().show() as ArrayList<String>
+            ArrayList<String> ccm = new CcmController().show() as ArrayList<String>
+            ArrayList<String> userregister = new UserRegisterController().show() as ArrayList<String>
             ArrayList<String> managerList = []
             userregister.each {
                 if (it.role.name.toString().equalsIgnoreCase(Constants.ROLE_MANAGER))
@@ -186,17 +144,17 @@ class UserRegisterController
                     salesmanList.add(it)
                 }
             }
-            render(view: '/entity/userRegister/update-user-register', model: [entity       : entity, entitytype: entitytype,
+            render(view: '/entity/userRegister/update-user-register', model: [entity       : entity,
                                                                            statelist    : statelist, countrylist: countrylist,
                                                                            citylist     : citylist, salesmanList: salesmanList,
                                                                            managerList  : managerList,
                                                                            zoneList     : zoneList,
-                                                                           routeregister: routeregister,
+                                                                           routeregister: routeRegister,
                                                                            userregister : userregister,
-                                                                           department: department,role:role,
+                                                                           department: department,role:roles,
                                                                            bank:bank,account:account,
-                                                                           division:division,gender:gender,
-                                                                           userregisterbyId:userregisterbyId])
+                                                                           division:division,gender:genderList,
+                                                                           userregisterbyId:user])
         }
         catch (Exception ex)
         {

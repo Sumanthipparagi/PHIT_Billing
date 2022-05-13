@@ -19,6 +19,7 @@
     <asset:stylesheet  src="/themeassets/plugins/bootstrap-select/css/bootstrap-select.css" rel="stylesheet" />
     <asset:stylesheet  src="/themeassets/js/pages/forms/basic-form-elements.js" rel="stylesheet" />
     <asset:stylesheet  src="/themeassets/plugins/bootstrap-material-datetimepicker/css/bootstrap-material-datetimepicker.css" rel="stylesheet" />
+    <asset:stylesheet  src="/themeassets/plugins/select-2-editor/select2.min.css" rel="stylesheet" />
 
     <style>
 
@@ -157,6 +158,7 @@
 <asset:javascript src="/themeassets/plugins/momentjs/moment.js"/>
 <asset:javascript src="/themeassets/plugins/bootstrap-material-datetimepicker/js/bootstrap-material-datetimepicker.js"/>
 <asset:javascript src="/themeassets/js/pages/forms/basic-form-elements.js"/>
+<asset:javascript  src="/themeassets/plugins/select-2-editor/select2.js" />
 
 <script>
 
@@ -232,7 +234,6 @@
         //grab all form data
         var formData = new FormData(this);
         console.log(formData);
-
         var url = '';
         var type = '';
         if (id) {
@@ -242,7 +243,6 @@
             url = '/day-end-master';
             type = 'POST'
         }
-
         console.log(type);
         $.ajax({
             url: url,
@@ -263,19 +263,24 @@
     });
 
     $(document).on("click", ".addbtn", function () {
-        $(".dayEndTitle").text("Add Day End Master")
         $(".dayEndForm")[0].reset();
-        id = null
+        id = null;
+        $(".entity").val("").change();
+        $('.entity').select2();
+        $(".dayEndTitle").text("Add Day End Master");
+
     });
 
     $(document).on("click", ".editbtn", function () {
         id = $(this).data('id');
         $(".date").val($(this).attr('data-date'));
+        $(".entity").val($(this).attr('data-entityRegister')).change()
+        $('.entity').select2();
         $(".endTime").val($(this).attr('data-endTime'));
-        $(".entity").val($(this).attr('data-entityRegister'));
         $("#entityTypeId").val($(this).attr('data-entitytype')).change()
-        $(".customerGroupTitle").text("Update Day End");
+        $(".dayEndTitle").text("Update Day End");
     });
+
 
     $('.entity').change(function(){
         var type = $('option:selected', this).attr('data-type');

@@ -16,15 +16,8 @@ class RegionMasterController {
     {
         try
         {
-            def entityurl = Links.API_GATEWAY+Links.ENTITY_REGISTER_SHOW
-            def entitytypeurl = Links.API_GATEWAY+Links.ENTITY_TYPE_MASTER_SHOW
-            def userregisterurl = Links.API_GATEWAY + Links.USER_REGISTER_SHOW
-            URL apiUrl1 = new URL(entityurl)
-            URL apiUrl2 = new URL(entitytypeurl)
-            URL apiUrl3 = new URL(userregisterurl)
-            def entity = new JsonSlurper().parseText(apiUrl1.text)
-            def entitytype = new JsonSlurper().parseText(apiUrl2.text)
-            def userregister = new JsonSlurper().parseText(apiUrl3.text)
+            ArrayList<String> entity = new EntityRegisterController().show() as ArrayList<String>
+            ArrayList<String> userregister = new UserRegisterController().show() as ArrayList<String>
             ArrayList<String> statelist = new StateController().show() as ArrayList<String>
             ArrayList<String> countrylist = new CountryController().show() as ArrayList<String>
             ArrayList<String> citylist = new CityController().show() as ArrayList<String>
@@ -44,7 +37,7 @@ class RegionMasterController {
                 }
             }
 
-            render(view: '/entity/regionMaster/regionMaster',model: [entity:entity, entitytype:entitytype,
+            render(view: '/entity/regionMaster/regionMaster',model: [entity:entity,
                                                                statelist:statelist,countrylist:countrylist,
                                                                citylist:citylist,salesmanList:salesmanList,
                                                                managerList:managerList,zoneList:zoneList])

@@ -811,6 +811,28 @@ class EntityService {
 
     }
 
+
+    def getRouteList()
+    {
+        Client client = ClientBuilder.newClient();
+        WebTarget target = client.target(new Links().API_GATEWAY);
+        try
+        {
+            Response apiResponse = target
+                    .path(new Links().ROUTE_REGISTER_SHOW)
+                    .request(MediaType.APPLICATION_JSON_TYPE)
+                    .get()
+
+            return apiResponse
+        }
+        catch (Exception ex)
+        {
+            System.err.println('Service :systemService , action :  getZoneList  , Ex:' + ex)
+            log.error('Service :systemService , action :  getZoneList  , Ex:' + ex)
+        }
+
+    }
+
     def putRoute(JSONObject jsonObject)
     {
         Client client = ClientBuilder.newClient()

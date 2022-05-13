@@ -1,7 +1,9 @@
 package phitb_ui.product
 
-
+import phitb_ui.entity.CustomerGroupController
 import phitb_ui.entity.EntityRegisterController
+import phitb_ui.entity.SeriesController
+import phitb_ui.entity.UserRegisterController
 import phitb_ui.facility.FridgeController
 import groovy.json.JsonSlurper
 import org.grails.web.json.JSONArray
@@ -20,17 +22,10 @@ class DivisionController {
     {
         try
         {
-            def entitytypeurl = Links.API_GATEWAY+Links.ENTITY_TYPE_MASTER_SHOW
-            def userregisterurl = Links.API_GATEWAY + Links.USER_REGISTER_SHOW
-            def seriesurl = Links.API_GATEWAY + Links.SERIES_MASTER_SHOW
-            URL apiUrl2 = new URL(entitytypeurl)
-            URL apiUrl3 = new URL(userregisterurl)
-            URL apiUrl5 = new URL(seriesurl)
-            def entitytype = new JsonSlurper().parseText(apiUrl2.text)
-            def userregister = new JsonSlurper().parseText(apiUrl3.text)
-            def series = new JsonSlurper().parseText(apiUrl5.text)
+            ArrayList<String> entity = new EntityRegisterController().show() as ArrayList<String>
+            ArrayList<String> userregister = new UserRegisterController().show() as ArrayList<String>
+            ArrayList<String> series = new SeriesController().show() as ArrayList<String>
             ArrayList<String> statelist = new StateController().show() as ArrayList<String>
-            ArrayList<String> entitylist = new EntityRegisterController().show() as ArrayList<String>
             ArrayList<String> countrylist = new CountryController().show() as ArrayList<String>
             ArrayList<String> citylist = new CityController().show() as ArrayList<String>
             ArrayList<String> zoneList = new ZoneController().show() as ArrayList<String>
@@ -42,7 +37,7 @@ class DivisionController {
                     managerList.add(it)
                 }
             }
-            entitylist.each {
+            entity.each {
                 if(it.entityType.name.toString().equalsIgnoreCase(Constants.ENTITY_CUSTOMER))
                 {
                     println(it)
@@ -51,10 +46,10 @@ class DivisionController {
             }
 
 
-            render(view: '/product/division/division',model: [entitylist:entitylist,statelist:statelist,
+            render(view: '/product/division/division',model: [entitylist:entity,statelist:statelist,
                                                               countrylist:countrylist,citylist:citylist,
                                                               zoneList:zoneList,
-                                                     entitytype:entitytype,customerList:customerList,series:series,
+                                                    customerList:customerList,series:series,
                                                               managerList:managerList])
         }
         catch (Exception ex)
