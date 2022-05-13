@@ -95,16 +95,22 @@ class InventoryService {
     }
 
 
-    def stocksIncrease(String batch,String purQty, String freeQty,String reason, String productId) {
+    def stocksIncrease(String batch,String purQty, String freeQty,String reason, String productId , String saleRate,
+                       String expDate, String pakingDesc) {
         Client client = ClientBuilder.newClient()
         WebTarget target = client.target(new Links().API_GATEWAY)
         try {
             Response apiResponse = target
                     .path(new Links().STOCK_BOOK_PURCHASE+"batch/"+ batch+"/qty/"+purQty+"/fqty/"+freeQty+"/reason/"+reason)
                     .queryParam("productId", URLEncoder.encode(productId.toString(), "UTF-8"))
+                    .queryParam("saleRate", URLEncoder.encode(saleRate.toString(), "UTF-8"))
+                    .queryParam("sQty", URLEncoder.encode(purQty.toString(), "UTF-8"))
+                    .queryParam("expDate", URLEncoder.encode(expDate.toString(), "UTF-8"))
+                    .queryParam("pakingDesc", URLEncoder.encode(pakingDesc.toString(), "UTF-8"))
                     .request(MediaType.APPLICATION_JSON_TYPE)
                     .get()
             return apiResponse
+
         }
         catch (Exception ex) {
             System.err.println('Service :EntityService , action :  getProducts  , Ex:' + ex)

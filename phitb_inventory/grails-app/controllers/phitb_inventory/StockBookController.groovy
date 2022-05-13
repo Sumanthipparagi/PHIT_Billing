@@ -6,10 +6,15 @@ import org.grails.web.json.JSONObject
 import phitb_inventory.Exception.BadRequestException
 import phitb_inventory.Exception.ResourceNotFoundException
 
-class StockBookController {
-	static responseFormats = ['json', 'xml']
+import java.text.SimpleDateFormat
+
+class StockBookController
+{
+    static responseFormats = ['json', 'xml']
 
     static allowedMethods = [index: "GET", show: "GET", save: "POST", update: "PUT", delete: "DELETE", dataTable: "GET"]
+
+    SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd")
 
     StockBookService stockBookService
     /**
@@ -19,12 +24,15 @@ class StockBookController {
      * @param limit
      * @return list of Stock Books
      */
-    def index() {
+    def index()
+    {
 
-        try {
+        try
+        {
             respond stockBookService.getAll(params.limit, params.offset, params.query)
         }
-        catch (Exception ex) {
+        catch (Exception ex)
+        {
             System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
         }
     }
@@ -34,10 +42,13 @@ class StockBookController {
      * @param id
      * @return get requested Stock Book
      */
-    def show() {
-        try {
+    def show()
+    {
+        try
+        {
             String id = params.id
-            if (id) {
+            if (id)
+            {
                 respond stockBookService.get(id)
             }
         }
@@ -51,7 +62,8 @@ class StockBookController {
             System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
             response.status = 400
         }
-        catch (Exception ex) {
+        catch (Exception ex)
+        {
             System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
         }
     }
@@ -61,10 +73,13 @@ class StockBookController {
      * @param id
      * @return get requested Stock Book
      */
-    def getByEntityId() {
-        try {
-            if (params.id) {
-                respond stockBookService.getAllByEntity(params.limit, params.offset,Long.parseLong(params.id))
+    def getByEntityId()
+    {
+        try
+        {
+            if (params.id)
+            {
+                respond stockBookService.getAllByEntity(params.limit, params.offset, Long.parseLong(params.id))
             }
         }
         catch (ResourceNotFoundException ex)
@@ -77,7 +92,8 @@ class StockBookController {
             System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
             response.status = 400
         }
-        catch (Exception ex) {
+        catch (Exception ex)
+        {
             System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
         }
     }
@@ -87,10 +103,13 @@ class StockBookController {
      * @param id
      * @return get requested Stock Book
      */
-    def getByProductId() {
-        try {
-            if (params.id) {
-                respond stockBookService.getAllByProduct(0,0,Long.parseLong(params.id))
+    def getByProductId()
+    {
+        try
+        {
+            if (params.id)
+            {
+                respond stockBookService.getAllByProduct(0, 0, Long.parseLong(params.id))
             }
         }
         catch (ResourceNotFoundException ex)
@@ -103,7 +122,8 @@ class StockBookController {
             System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
             response.status = 400
         }
-        catch (Exception ex) {
+        catch (Exception ex)
+        {
             System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
         }
     }
@@ -113,10 +133,13 @@ class StockBookController {
      * @param id
      * @return get requested Stock Book
      */
-    def getByProductIdForSaleReturn() {
-        try {
-            if (params.id) {
-                respond stockBookService.getAllByProductSaleReturn(0,0,Long.parseLong(params.id))
+    def getByProductIdForSaleReturn()
+    {
+        try
+        {
+            if (params.id)
+            {
+                respond stockBookService.getAllByProductSaleReturn(0, 0, Long.parseLong(params.id))
             }
         }
         catch (ResourceNotFoundException ex)
@@ -129,7 +152,8 @@ class StockBookController {
             System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
             response.status = 400
         }
-        catch (Exception ex) {
+        catch (Exception ex)
+        {
             System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
         }
     }
@@ -138,8 +162,10 @@ class StockBookController {
      * @param Stock Book
      * @return saved Stock Book
      */
-    def save() {
-        try {
+    def save()
+    {
+        try
+        {
             JSONObject jsonObject = JSON.parse(request.reader.text) as JSONObject
             respond stockBookService.save(jsonObject)
         }
@@ -153,7 +179,8 @@ class StockBookController {
             System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
             response.status = 400
         }
-        catch (Exception ex) {
+        catch (Exception ex)
+        {
             System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
         }
     }
@@ -164,11 +191,13 @@ class StockBookController {
      * @param Stock Book
      * @return updated Stock Books
      */
-    def update() {
-        try {
+    def update()
+    {
+        try
+        {
             String id = params.id
             JSONObject jsonObject = JSON.parse(request.reader.text) as JSONObject
-            respond stockBookService.update(jsonObject,id)
+            respond stockBookService.update(jsonObject, id)
         }
         catch (ResourceNotFoundException ex)
         {
@@ -180,7 +209,8 @@ class StockBookController {
             System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
             response.status = 400
         }
-        catch (Exception ex) {
+        catch (Exception ex)
+        {
             System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
         }
     }
@@ -190,8 +220,10 @@ class StockBookController {
      * @param id
      * @return returns status code 200
      */
-    def delete() {
-        try {
+    def delete()
+    {
+        try
+        {
             String id = params.id
             stockBookService.delete(id)
             response.status = 200
@@ -206,7 +238,8 @@ class StockBookController {
             System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
             response.status = 400
         }
-        catch (Exception ex) {
+        catch (Exception ex)
+        {
             System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
         }
     }
@@ -215,8 +248,10 @@ class StockBookController {
      * Gets all Stock Books in datatables format
      * @return list of Stock Books
      */
-    def dataTable() {
-        try {
+    def dataTable()
+    {
+        try
+        {
             String start = params.start
             String length = params.length
             GrailsParameterMap parameterMap = getParams()
@@ -233,7 +268,8 @@ class StockBookController {
             System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
             response.status = 400
         }
-        catch (Exception ex) {
+        catch (Exception ex)
+        {
             System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
         }
     }
@@ -246,7 +282,7 @@ class StockBookController {
             def remQty = stockBook.getRemainingQty()
             stockBook.remainingQty = remQty + Long.parseLong(params.purQty)
             stockBook.isUpdatable = true
-            StockBook savedStockBook = stockBook.save(flush:true)
+            StockBook savedStockBook = stockBook.save(flush: true)
             if (savedStockBook)
             {
                 respond savedStockBook
@@ -266,46 +302,113 @@ class StockBookController {
     {
         try
         {
-            StockBook stockBook = StockBook.findByBatchNumberAndProductId(params.batch,params.productId)
-            def remQty = stockBook.getRemainingQty()
-            def freeQty = stockBook.getRemainingFreeQty()
-            if(params.reason == "R")
+            println(params)
+            StockBook stockBook = StockBook.findByBatchNumberAndProductId(params.batch, params.productId)
+            if (stockBook)
             {
-                stockBook.remainingQty = remQty + Long.parseLong(params.purQty)
-                stockBook.remainingFreeQty = freeQty + Long.parseLong(params.fqty)
-                System.out.println("Remaining Qty After Sale Return"+stockBook.getRemainingQty())
-                System.out.println("Remaining Qty After Sale Return"+stockBook.getRemainingFreeQty())
-            }
-            else if (params.reason == "E")
-            {
+                def remQty = stockBook.getRemainingQty()
+                def freeQty = stockBook.getRemainingFreeQty()
+                if (params.reason == "R")
+                {
+                    stockBook.remainingQty = remQty + Long.parseLong(params.purQty)
+                    stockBook.remainingFreeQty = freeQty + Long.parseLong(params.fqty)
+                    System.out.println("Remaining Qty After Sale Return" + stockBook.getRemainingQty())
+                    System.out.println("Remaining Qty After Sale Return" + stockBook.getRemainingFreeQty())
+                }
+                else if (params.reason == "E")
+                {
 //                stockBook.remainingQty = remQty - Long.parseLong(params.purQty)
 //                stockBook.remainingFreeQty = freeQty - Long.parseLong(params.fqty)
-                println("Expiry - NO EFFECT ON CURRENT STOCK BOOK")
+                    println("Expiry - NO EFFECT ON CURRENT STOCK BOOK")
 
-            }
-            else if (params.reason == "B")
-            {
+                }
+                else if (params.reason == "B")
+                {
 //                stockBook.remainingQty = remQty - Long.parseLong(params.purQty)
 //                stockBook.remainingFreeQty = freeQty - Long.parseLong(params.fqty)
-                println("Breakage - NO EFFECT ON CURRENT STOCK BOOK")
+                    println("Breakage - NO EFFECT ON CURRENT STOCK BOOK")
+                }
+                else if (params.reason == "OA")
+                {
+                    stockBook.remainingQty = remQty + Long.parseLong(params.purQty)
+                    stockBook.remainingFreeQty = freeQty + Long.parseLong(params.fqty)
+                    System.out.println("Remaining Qty After Others(ADD)" + stockBook.getRemainingQty())
+                    System.out.println("Remaining Qty After Others(ADD)" + stockBook.getRemainingFreeQty())
+                }
+                else if (params.reason == "ONE")
+                {
+                    println("Others(No efft) - NO EFFECT ON CURRENT STOCK BOOK")
+                }
+                stockBook.isUpdatable = true
+                StockBook savedStockBook = stockBook.save(flush: true)
+                if (savedStockBook)
+                {
+                    respond savedStockBook
+                    return
+                }
             }
-            else if(params.reason == "OA")
+            else
             {
-                stockBook.remainingQty = remQty + Long.parseLong(params.purQty)
-                stockBook.remainingFreeQty = freeQty + Long.parseLong(params.fqty)
-                System.out.println("Remaining Qty After Others(ADD)"+stockBook.getRemainingQty())
-                System.out.println("Remaining Qty After Others(ADD)"+stockBook.getRemainingFreeQty())
-            }
-            else if(params.reason == "ONE")
-            {
-                println("Others(No efft) - NO EFFECT ON CURRENT STOCK BOOK")
-            }
-            stockBook.isUpdatable = true
-            StockBook savedStockBook = stockBook.save(flush:true)
-            if (savedStockBook)
-            {
-                respond savedStockBook
-                return
+                StockBook stockBook1 = new StockBook()
+                UUID uuid
+                if (params.reason == "R")
+                {
+                    stockBook1.setBatchNumber(params.batch)
+                    stockBook1.setProductId(Long.parseLong(params.productId))
+                    stockBook1.setRemainingQty(Long.parseLong(params.sQty))
+                    stockBook1.setRemainingFreeQty(Long.parseLong(params.fqty))
+                    stockBook1.setSaleRate(Double.parseDouble(params.saleRate))
+                    stockBook1.setExpDate(sdf.parse(params.expDate))
+                    stockBook1.setStatus("0")
+                    stockBook1.setPurcDate(new Date())
+                    stockBook1.setManufacturingDate(new Date())
+//                    stockBook1.setMergedWith("0")
+                    stockBook1.setTaxId(Long.parseLong("0"))
+                    stockBook1.setPackingDesc(params.pakingDesc)
+                    stockBook1.setUuid(UUID.randomUUID().toString())
+                }
+                else if (params.reason == "E")
+                {
+//                stockBook.remainingQty = remQty - Long.parseLong(params.purQty)
+//                stockBook.remainingFreeQty = freeQty - Long.parseLong(params.fqty)
+                    println("Expiry - NO EFFECT ON CURRENT STOCK BOOK")
+
+                }
+                else if (params.reason == "B")
+                {
+//                stockBook.remainingQty = remQty - Long.parseLong(params.purQty)
+//                stockBook.remainingFreeQty = freeQty - Long.parseLong(params.fqty)
+                    println("Breakage - NO EFFECT ON CURRENT STOCK BOOK")
+                }
+                else if (params.reason == "OA")
+                {
+                    stockBook1.setBatchNumber(params.batch)
+                    stockBook1.setProductId(Long.parseLong(params.productId))
+                    stockBook1.setRemainingQty(Long.parseLong(params.sQty))
+                    stockBook1.setRemainingFreeQty(Long.parseLong(params.fqty))
+                    stockBook1.setSaleRate(Double.parseDouble(params.saleRate))
+                    stockBook1.setExpDate(sdf.parse(params.expDate))
+                    stockBook1.setStatus("0")
+                    stockBook1.setPurcDate(new Date())
+                    stockBook1.setManufacturingDate(new Date())
+//                    stockBook1.setMergedWith("0")
+                    stockBook1.setTaxId(Long.parseLong("0"))
+                    stockBook1.setPackingDesc(params.pakingDesc)
+                    stockBook1.setUuid(UUID.randomUUID().toString())
+                }
+                else if (params.reason == "ONE")
+                {
+                    println("Others(No efft) - NO EFFECT ON CURRENT STOCK BOOK")
+                }
+                StockBook stockBook2 = stockBook1.save()
+                if(stockBook2)
+                {
+                    println("New batches stock updated")
+                }
+                else
+                {
+                    println("Something went Wrong!")
+                }
             }
         }
         catch (Exception ex)
@@ -321,10 +424,13 @@ class StockBookController {
      * @param id
      * @return get requested Stock Book
      */
-    def getByUserId() {
-        try {
+    def getByUserId()
+    {
+        try
+        {
 
-            if (params.id) {
+            if (params.id)
+            {
                 respond stockBookService.getAllByUserId(Long.parseLong(params.id))
             }
         }
@@ -338,17 +444,21 @@ class StockBookController {
             System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
             response.status = 400
         }
-        catch (Exception ex) {
+        catch (Exception ex)
+        {
             System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
         }
     }
 
-    def getByProductIdAndBatch() {
-        try {
+    def getByProductIdAndBatch()
+    {
+        try
+        {
             String id = params.id
             long entityId = Long.parseLong(params.entityId)
-            if (id) {
-                respond stockBookService.getByProductAndBatch(Long.parseLong(id),params.batch, entityId)
+            if (id)
+            {
+                respond stockBookService.getByProductAndBatch(Long.parseLong(id), params.batch, entityId)
             }
         }
         catch (ResourceNotFoundException ex)
@@ -361,7 +471,8 @@ class StockBookController {
             System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
             response.status = 400
         }
-        catch (Exception ex) {
+        catch (Exception ex)
+        {
             System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
         }
     }
