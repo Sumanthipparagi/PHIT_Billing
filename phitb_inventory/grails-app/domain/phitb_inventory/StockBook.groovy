@@ -43,6 +43,11 @@ class StockBook implements LogicalDelete<StockBook> {
         remainingFreeQty min: 0L
         remainingReplQty min: 0L
         uuid unique: true
+
+        purcDate nullable: true
+        manufacturingDate nullable:true
+        mergedWith nullable: true
+        purchaseRate nullable:true
     }
 
     boolean isUpdatable

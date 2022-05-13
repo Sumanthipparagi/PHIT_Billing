@@ -217,7 +217,6 @@ class StockBookService {
                 double prvSaleRate = stockBook.saleRate
                 long prvRemainingQty = stockBook.remainingQty
                 long prvRemainingFreeQty = stockBook.remainingFreeQty
-
                 stockBook.isUpdatable = true
                 stockBook.batchNumber = jsonObject.get("batchNumber")
                 stockBook.mergedWith = jsonObject.get("mergedWith")
