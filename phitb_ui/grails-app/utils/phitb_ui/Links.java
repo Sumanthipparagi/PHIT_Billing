@@ -347,6 +347,7 @@ public class Links
     public static String BATCH_REGISTER_DATATABLE = "api/v1.0/product/batchregister/datatable";
     public static String BATCH_REGISTER_UPDATE = "api/v1.0/product/batchregister/{id}";
     public static String BATCH_REGISTER_DELETE = "api/v1.0/product/batchregister/{id}";
+    public static String GET_BY_BATCH_AND_PRODUCT = "api/v1.0/product/batch-and-product";
 
     /*<--------------------------------------------Sales------------------------------------------------->*/
     //Sale Bill Details
@@ -447,9 +448,7 @@ public class Links
     public static String STOCK_BOOK_BY_USER = "api/v1.0/inventory/stockbook/user";
     public static String STOCK_BOOK_BY_BATCH = "api/v1.0/inventory/stockbook/batch";
     public static String STOCK_BOOK_BY_PROD_BATCH = "api/v1.0/inventory/stockbook/product/{productId}/batch/{batch}";
-    public static String STOCK_INCREASE = "/stockbook/purchase/";
-
-//    /stockbook/purchase/batch/${batch}/qty/${purQty}/fqty/${fqty}/reason/${reason}
+    public static String STOCK_INCREASE = "api/v1.0/inventory/stockbook/return";
 
     //Temp Stock Book
     public static String GET_TEMP_STOCK_PRODUCT = "api/v1.0/inventory/tempstockbook";

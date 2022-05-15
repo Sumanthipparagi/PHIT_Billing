@@ -302,36 +302,35 @@ class StockBookController
     {
         try
         {
-            println(params)
-            StockBook stockBook = StockBook.findByBatchNumberAndProductId(params.batch, params.productId)
+            JSONObject paramsJsonObject = new JSONObject(params)
+            JSONObject stockObject = new JSONObject(JSON.parse(paramsJsonObject.params))
+            StockBook stockBook = StockBook.findByBatchNumberAndProductId(stockObject.batchNumber, stockObject.productId)
             if (stockBook)
             {
                 def remQty = stockBook.getRemainingQty()
                 def freeQty = stockBook.getRemainingFreeQty()
                 if (params.reason == "R")
                 {
-                    stockBook.remainingQty = remQty + Long.parseLong(params.purQty)
-                    stockBook.remainingFreeQty = freeQty + Long.parseLong(params.fqty)
+                    stockBook.remainingQty = remQty + Long.parseLong(stockObject.saleQty)
+                    stockBook.remainingFreeQty = freeQty + Long.parseLong(stockObject.freeQty)
                     System.out.println("Remaining Qty After Sale Return" + stockBook.getRemainingQty())
                     System.out.println("Remaining Qty After Sale Return" + stockBook.getRemainingFreeQty())
                 }
                 else if (params.reason == "E")
                 {
-//                stockBook.remainingQty = remQty - Long.parseLong(params.purQty)
-//                stockBook.remainingFreeQty = freeQty - Long.parseLong(params.fqty)
+
                     println("Expiry - NO EFFECT ON CURRENT STOCK BOOK")
 
                 }
                 else if (params.reason == "B")
                 {
-//                stockBook.remainingQty = remQty - Long.parseLong(params.purQty)
-//                stockBook.remainingFreeQty = freeQty - Long.parseLong(params.fqty)
+
                     println("Breakage - NO EFFECT ON CURRENT STOCK BOOK")
                 }
                 else if (params.reason == "OA")
                 {
-                    stockBook.remainingQty = remQty + Long.parseLong(params.purQty)
-                    stockBook.remainingFreeQty = freeQty + Long.parseLong(params.fqty)
+                    stockBook.remainingQty = remQty + Long.parseLong(stockObject.saleQty)
+                    stockBook.remainingFreeQty = freeQty + Long.parseLong(stockObject.freeQty)
                     System.out.println("Remaining Qty After Others(ADD)" + stockBook.getRemainingQty())
                     System.out.println("Remaining Qty After Others(ADD)" + stockBook.getRemainingFreeQty())
                 }
@@ -351,59 +350,70 @@ class StockBookController
             {
                 StockBook stockBook1 = new StockBook()
                 UUID uuid
-                if (params.reason == "R")
+                if (stockObject.reason == "R")
                 {
-                    stockBook1.setBatchNumber(params.batch)
-                    stockBook1.setProductId(Long.parseLong(params.productId))
-                    stockBook1.setRemainingQty(Long.parseLong(params.sQty))
-                    stockBook1.setRemainingFreeQty(Long.parseLong(params.fqty))
-                    stockBook1.setSaleRate(Double.parseDouble(params.saleRate))
-                    stockBook1.setExpDate(sdf.parse(params.expDate))
-                    stockBook1.setStatus("0")
+                    stockBook1.setBatchNumber(stockObject.batchNumber)
+                    stockBook1.setProductId(Long.parseLong(stockObject.productId))
+                    stockBook1.setRemainingQty(Long.parseLong(stockObject.saleQty))
+                    stockBook1.setRemainingFreeQty(Long.parseLong(stockObject.freeQty))
+                    stockBook1.setSaleRate(Double.parseDouble(stockObject.batch.saleRate.toString()))
+                    String expDate = stockObject.batch.expiryDate.toString()
+                    stockBook1.setExpDate(sdf.parse(expDate.substring(0, 10)))
                     stockBook1.setPurcDate(new Date())
-                    stockBook1.setManufacturingDate(new Date())
-//                    stockBook1.setMergedWith("0")
-                    stockBook1.setTaxId(Long.parseLong(params.taxId))
-                    stockBook1.setPackingDesc(params.pakingDesc)
+                    String manfDate = stockObject.batch.manfDate.toString()
+                    stockBook1.setManufacturingDate(sdf.parse(manfDate.substring(0, 10)))
+                    stockBook1.setStatus("0")
+                    stockBook1.setTaxId(Long.parseLong(stockObject.taxId))
+                    stockBook1.setPackingDesc(stockObject.packDesc)
+                    long openStockQty = Long.parseLong(stockObject.saleQty.toString()) + Long.parseLong(stockObject.freeQty.toString())
+                    stockBook1.setOpeningStockQty(openStockQty)
+                    stockBook1.setEntityId(stockObject.entityId)
+                    stockBook1.setEntityTypeId(stockObject.entityTypeId)
+                    stockBook1.setCreatedUser(stockObject.userId)
+                    stockBook1.setModifiedUser(stockObject.userId)
                     stockBook1.setUuid(UUID.randomUUID().toString())
                 }
-                else if (params.reason == "E")
+                else if (stockObject.reason == "E")
                 {
-//                stockBook.remainingQty = remQty - Long.parseLong(params.purQty)
-//                stockBook.remainingFreeQty = freeQty - Long.parseLong(params.fqty)
                     println("Expiry - NO EFFECT ON CURRENT STOCK BOOK")
-
                 }
-                else if (params.reason == "B")
+                else if (stockObject.reason == "B")
                 {
-//                stockBook.remainingQty = remQty - Long.parseLong(params.purQty)
-//                stockBook.remainingFreeQty = freeQty - Long.parseLong(params.fqty)
                     println("Breakage - NO EFFECT ON CURRENT STOCK BOOK")
                 }
-                else if (params.reason == "OA")
+                else if (stockObject.reason == "OA")
                 {
-                    stockBook1.setBatchNumber(params.batch)
-                    stockBook1.setProductId(Long.parseLong(params.productId))
-                    stockBook1.setRemainingQty(Long.parseLong(params.sQty))
-                    stockBook1.setRemainingFreeQty(Long.parseLong(params.fqty))
-                    stockBook1.setSaleRate(Double.parseDouble(params.saleRate))
-                    stockBook1.setExpDate(sdf.parse(params.expDate))
-                    stockBook1.setStatus("0")
+                    stockBook1.setBatchNumber(stockObject.batchNumber)
+                    stockBook1.setProductId(Long.parseLong(stockObject.productId))
+                    stockBook1.setRemainingQty(Long.parseLong(stockObject.saleQty))
+                    stockBook1.setRemainingFreeQty(Long.parseLong(stockObject.freeQty))
+                    stockBook1.setSaleRate(Double.parseDouble(stockObject.batch.saleRate.toString()))
+                    String expDate = stockObject.batch.expiryDate.toString()
+                    stockBook1.setExpDate(sdf.parse(expDate.substring(0, 10)))
                     stockBook1.setPurcDate(new Date())
-                    stockBook1.setManufacturingDate(new Date())
-//                    stockBook1.setMergedWith("0")
-                    stockBook1.setTaxId(Long.parseLong(params.taxId))
-                    stockBook1.setPackingDesc(params.pakingDesc)
+                    String manfDate = stockObject.batch.manfDate.toString()
+                    stockBook1.setManufacturingDate(sdf.parse(manfDate.substring(0, 10)))
+                    stockBook1.setStatus("0")
+                    stockBook1.setTaxId(Long.parseLong(stockObject.taxId))
+                    stockBook1.setPackingDesc(stockObject.packDesc)
+                    long openStockQty = Long.parseLong(stockObject.saleQty.toString()) + Long.parseLong(stockObject.freeQty.toString())
+                    stockBook1.setOpeningStockQty(openStockQty)
+                    stockBook1.setEntityId(stockObject.entityId)
+                    stockBook1.setEntityTypeId(stockObject.entityTypeId)
+                    stockBook1.setCreatedUser(stockObject.userId)
+                    stockBook1.setModifiedUser(stockObject.userId)
                     stockBook1.setUuid(UUID.randomUUID().toString())
                 }
-                else if (params.reason == "ONE")
+                else if (stockObject.reason == "ONE")
                 {
                     println("Others(No efft) - NO EFFECT ON CURRENT STOCK BOOK")
                 }
                 StockBook stockBook2 = stockBook1.save()
-                if(stockBook2)
+                if (stockBook2)
                 {
                     println("New batches stock updated")
+                    respond stockBook2
+                    return
                 }
                 else
                 {
@@ -411,70 +421,71 @@ class StockBookController
                 }
             }
         }
-        catch (Exception ex)
+
+    catch (Exception ex)
+    {
+        System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
+        log.error('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
+    }
+    response.status = 400
+}
+
+/**
+ * Get requested Stock Book
+ * @param id
+ * @return get requested Stock Book
+ */
+def getByUserId()
+{
+    try
+    {
+
+        if (params.id)
         {
-            System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
-            log.error('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
+            respond stockBookService.getAllByUserId(Long.parseLong(params.id))
         }
+    }
+    catch (ResourceNotFoundException ex)
+    {
+        System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
+        response.status = 404
+    }
+    catch (BadRequestException ex)
+    {
+        System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
         response.status = 400
     }
-
-    /**
-     * Get requested Stock Book
-     * @param id
-     * @return get requested Stock Book
-     */
-    def getByUserId()
+    catch (Exception ex)
     {
-        try
-        {
+        System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
+    }
+}
 
-            if (params.id)
-            {
-                respond stockBookService.getAllByUserId(Long.parseLong(params.id))
-            }
-        }
-        catch (ResourceNotFoundException ex)
+def getByProductIdAndBatch()
+{
+    try
+    {
+        String id = params.id
+        long entityId = Long.parseLong(params.entityId)
+        if (id)
         {
-            System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
-            response.status = 404
-        }
-        catch (BadRequestException ex)
-        {
-            System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
-            response.status = 400
-        }
-        catch (Exception ex)
-        {
-            System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
+            respond stockBookService.getByProductAndBatch(Long.parseLong(id), params.batch, entityId)
         }
     }
-
-    def getByProductIdAndBatch()
+    catch (ResourceNotFoundException ex)
     {
-        try
-        {
-            String id = params.id
-            long entityId = Long.parseLong(params.entityId)
-            if (id)
-            {
-                respond stockBookService.getByProductAndBatch(Long.parseLong(id), params.batch, entityId)
-            }
-        }
-        catch (ResourceNotFoundException ex)
-        {
-            System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
-            response.status = 404
-        }
-        catch (BadRequestException ex)
-        {
-            System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
-            response.status = 400
-        }
-        catch (Exception ex)
-        {
-            System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
-        }
+        System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
+        response.status = 404
     }
+    catch (BadRequestException ex)
+    {
+        System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
+        response.status = 400
+    }
+    catch (Exception ex)
+    {
+        System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
+    }
+}
 
 }

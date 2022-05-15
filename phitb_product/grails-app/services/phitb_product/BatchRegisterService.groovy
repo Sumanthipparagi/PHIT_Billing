@@ -166,4 +166,16 @@ class BatchRegisterService {
             throw new BadRequestException()
         }
     }
+
+
+    def getByBatchAndProduct(String batch, String productId)
+    {
+        ProductRegister product = ProductRegister.findById(Long.parseLong(productId))
+        if(product)
+        {
+            def result = BatchRegister.findByProductAndBatchNumber(product,batch)
+            println(result)
+            return result
+        }
+    }
 }

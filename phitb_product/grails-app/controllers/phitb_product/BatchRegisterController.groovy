@@ -213,4 +213,31 @@ class BatchRegisterController {
             System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
         }
     }
+
+
+    /**
+     * Get requested Stock Activity
+     * @param id
+     * @return get requested Stock Activity
+     */
+    def getByBatchAndProduct() {
+        try {
+            if (params.productId && params.batch) {
+                respond batchRegisterService.getByBatchAndProduct(params.batch,params.productId)
+            }
+        }
+        catch (ResourceNotFoundException ex)
+        {
+            System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
+            response.status = 404
+        }
+        catch (BadRequestException ex)
+        {
+            System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
+            response.status = 400
+        }
+        catch (Exception ex) {
+            System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
+        }
+    }
 }
