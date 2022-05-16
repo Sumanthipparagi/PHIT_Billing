@@ -530,12 +530,12 @@
                 {type: 'text', readOnly: true},
                 {type: 'text', readOnly: true}
             ],
-            // hiddenColumns: true,
-            // hiddenColumns: {
-            //     copyPasteEnabled: true,
-            //     indicators: true,
-            //     columns: [18,19]
-            // },
+            hiddenColumns: true,
+            hiddenColumns: {
+                copyPasteEnabled: true,
+                indicators: true,
+                columns: [18,19]
+            },
             minSpareRows: 0,
             minSpareColumns: 0,
             enterMoves: {row: 0, col: 1},
