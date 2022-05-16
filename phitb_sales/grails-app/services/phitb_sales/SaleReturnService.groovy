@@ -12,7 +12,7 @@ import java.text.SimpleDateFormat
 class SaleReturnService {
 
     SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy")
-    SimpleDateFormat sdf1 = new SimpleDateFormat("DD/MM/YYYY")
+    SimpleDateFormat sdf1 = new SimpleDateFormat("dd/MM/yyyy hh:mm:ss")
 
     def getAll(String limit, String offset, String query)
     {
@@ -36,7 +36,7 @@ class SaleReturnService {
 
     SaleReturn save(JSONObject jsonObject)
     {
-
+        sdf.setTimeZone(TimeZone.getTimeZone("GMT"))
         SaleReturn saleReturn = new SaleReturn()
         saleReturn.finId =  Long.parseLong(jsonObject.get("finId").toString())
         saleReturn.serBillId = Long.parseLong(jsonObject.get("serBillId").toString())
@@ -54,7 +54,9 @@ class SaleReturnService {
         saleReturn.gross = Double.parseDouble(jsonObject.get("gross").toString())
         saleReturn.taxable = Double.parseDouble(jsonObject.get("taxable").toString())
         saleReturn.lrNo = jsonObject.get('lrNo').toString()
-        saleReturn.lrDate = sdf.parse(jsonObject.get('lrDate').toString())
+//        Date lrdate = new Date().parse('d/M/yyyy', jsonObject.get('lrDate').toString()).clearTime()
+//        saleReturn.lrDate = lrdate
+        saleReturn.lrDate = sdf1.parse(jsonObject.get('lrDate').toString()).clearTime()
         saleReturn.totalGst = Double.parseDouble(jsonObject.get("totalGst").toString())
         saleReturn.totalCgst = Double.parseDouble(jsonObject.get("totalCgst").toString())
         saleReturn.totalSgst = Double.parseDouble(jsonObject.get("totalCgst").toString())
