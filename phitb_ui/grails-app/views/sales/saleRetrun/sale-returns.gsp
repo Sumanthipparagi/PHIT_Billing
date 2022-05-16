@@ -530,12 +530,12 @@
                 {type: 'text', readOnly: true},
                 {type: 'text', readOnly: true}
             ],
-            hiddenColumns: true,
-            hiddenColumns: {
-                copyPasteEnabled: true,
-                indicators: true,
-                columns: [18,19]
-            },
+            // hiddenColumns: true,
+            // hiddenColumns: {
+            //     copyPasteEnabled: true,
+            //     indicators: true,
+            //     columns: [18,19]
+            // },
             minSpareRows: 0,
             minSpareColumns: 0,
             enterMoves: {row: 0, col: 1},
@@ -1082,10 +1082,10 @@
                         cgst = rowData[11];
                         igst = rowData[12];
                         hot.selectCell(mainTableRow, 4);
-                        hot.setDataAtCell(mainTableRow, 18, gst);
-                        hot.setDataAtCell(mainTableRow, 19, sgst);
-                        hot.setDataAtCell(mainTableRow, 20, cgst);
-                        hot.setDataAtCell(mainTableRow, 21, igst);
+                        hot.setDataAtCell(mainTableRow, 18, "");
+                        hot.setDataAtCell(mainTableRow, 19, 0);
+                        hot.setDataAtCell(mainTableRow, 20, 0);
+                        hot.setDataAtCell(mainTableRow, 21, 0);
                         remainingQty = rowData[3];
                         remainingFQty = rowData[4];
                         $("#saleReturnTable").focus();

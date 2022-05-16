@@ -309,32 +309,32 @@ class StockBookController
             {
                 def remQty = stockBook.getRemainingQty()
                 def freeQty = stockBook.getRemainingFreeQty()
-                if (params.reason == "R")
+                if (stockObject.reason == "R")
                 {
                     stockBook.remainingQty = remQty + Long.parseLong(stockObject.saleQty)
                     stockBook.remainingFreeQty = freeQty + Long.parseLong(stockObject.freeQty)
                     System.out.println("Remaining Qty After Sale Return" + stockBook.getRemainingQty())
                     System.out.println("Remaining Qty After Sale Return" + stockBook.getRemainingFreeQty())
                 }
-                else if (params.reason == "E")
+                else if (stockObject.reason == "E")
                 {
 
                     println("Expiry - NO EFFECT ON CURRENT STOCK BOOK")
 
                 }
-                else if (params.reason == "B")
+                else if (stockObject.reason == "B")
                 {
 
                     println("Breakage - NO EFFECT ON CURRENT STOCK BOOK")
                 }
-                else if (params.reason == "OA")
+                else if (stockObject.reason == "OA")
                 {
                     stockBook.remainingQty = remQty + Long.parseLong(stockObject.saleQty)
                     stockBook.remainingFreeQty = freeQty + Long.parseLong(stockObject.freeQty)
                     System.out.println("Remaining Qty After Others(ADD)" + stockBook.getRemainingQty())
                     System.out.println("Remaining Qty After Others(ADD)" + stockBook.getRemainingFreeQty())
                 }
-                else if (params.reason == "ONE")
+                else if (stockObject.reason == "ONE")
                 {
                     println("Others(No efft) - NO EFFECT ON CURRENT STOCK BOOK")
                 }
@@ -363,6 +363,7 @@ class StockBookController
                     stockBook1.setPurcDate(new Date())
                     String manfDate = stockObject.batch.manfDate.toString()
                     stockBook1.setManufacturingDate(sdf.parse(manfDate.substring(0, 10)))
+                    stockBook1.setMrp(Double.parseDouble(stockObject.batch.mrp.toString()))
                     stockBook1.setStatus("0")
                     stockBook1.setTaxId(Long.parseLong(stockObject.taxId))
                     stockBook1.setPackingDesc(stockObject.packDesc)
@@ -395,6 +396,7 @@ class StockBookController
                     stockBook1.setPurcDate(new Date())
                     String manfDate = stockObject.batch.manfDate.toString()
                     stockBook1.setManufacturingDate(sdf.parse(manfDate.substring(0, 10)))
+                    stockBook1.setMrp(Double.parseDouble(stockObject.batch.mrp.toString()))
                     stockBook1.setStatus("0")
                     stockBook1.setTaxId(Long.parseLong(stockObject.taxId))
                     stockBook1.setPackingDesc(stockObject.packDesc)
