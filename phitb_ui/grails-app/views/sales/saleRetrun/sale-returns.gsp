@@ -1557,7 +1557,7 @@
         const lrDateInput = document.getElementById('lrDate');
         if(lrDateInput.value) {
             var d = new Date(lrDate);
-         lrDate = moment(d.toUTCString()).format('DD/MM/YYYY');
+         lrDate = moment(d.toUTCString()).format('DD/MM/YYYY hh:mm:ss');
         }
         if (!series) {
             alert("Please select series.");
