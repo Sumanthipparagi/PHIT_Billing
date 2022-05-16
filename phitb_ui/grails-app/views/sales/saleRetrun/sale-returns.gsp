@@ -169,7 +169,7 @@
 
             <div class="col-lg-3">
                 <div class="card">
-                    <div class="body" style="padding: 42px;">
+                    <div class="body">
                         <div class="row">
                             <div class="col-md-6">
                                 Total: <p>&#8377;&nbsp;<span id="totalAmt">0.00</span></p>
