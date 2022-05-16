@@ -94,7 +94,7 @@ class SaleReturnController
                     for (JSONObject saleReturn : saleReturnArray)
                     {
 
-                        if (saleReturn.saleBillId == it.billId)
+                        if (saleReturn.saleBillId == it.billId && (saleReturn.returnStatus!="CANCELLED"))
                         {
                             if (saleReturn.sqty != 0)
                             {
@@ -147,7 +147,7 @@ class SaleReturnController
             {
                 double sqty = 0;
                 double fqty = 0;
-                if (saleReturn.saleBillId == jsonObject.billId)
+                if (saleReturn.saleBillId == jsonObject.billId && (saleReturn.returnStatus!="CANCELLED"))
                 {
                     if (saleReturn.sqty != 0)
                     {
@@ -181,6 +181,8 @@ class SaleReturnController
         String billStatus = params.billStatus
         String seriesCode = params.seriesCode
         String message = params.message
+        String lrNo = params.lrno
+        String lrDate = params.lrDate
         if (!message)
         {
             message = "NA"
@@ -357,6 +359,8 @@ class SaleReturnController
         //save to sale bill details
         saleReturn.put("serBillId", serBillId)
         saleReturn.put("customer", customer)
+        saleReturn.put("lrNo",lrNo)
+        saleReturn.put("lrDate",lrDate)
         saleReturn.put("customerNumber", 0) //TODO: to be changed
         saleReturn.put("finId", finId)
         saleReturn.put("seriesId", seriesId)
