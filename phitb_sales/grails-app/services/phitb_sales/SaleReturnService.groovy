@@ -85,7 +85,9 @@ class SaleReturnService {
         {
             Calendar cal = new GregorianCalendar()
             cal.setTime(saleReturn.entryDate)
-            String month = cal.get(Calendar.MONTH)
+            println(cal)
+            println(Calendar.MONTH)
+            String month = cal.get(Calendar.MONTH)+1;
             String year = cal.get(Calendar.YEAR)
             DecimalFormat mFormat = new DecimalFormat("00");
             month = mFormat.format(Double.valueOf(month));

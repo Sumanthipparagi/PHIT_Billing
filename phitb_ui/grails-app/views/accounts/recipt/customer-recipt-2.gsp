@@ -523,7 +523,7 @@
                                 '                                        <td id="' + "crntBal" + value.id + '" >' +
                                 "-"+value.balance.toFixed(2) +
                                 '</td>\n' +
-                                '                                        <td><input type="number" class="paidNowInv txt" id="paidNowInv' + value.id + '" name="paidNowInv" data-inid="' + value.id + '" data-bal="' + value.balance + '" style="width: 100px;" pattern="\\d{1,10}(?:\\.\\d{1,3})?$" value="0"></td>\n' +
+                                '                                        <td><input type="number" class="paidNowCrnt txt" id="paidNowCrnt' + value.id + '" name="paidNowCrnt" data-inid="' + value.id + '" data-bal="' + value.balance + '" style="width: 100px;" pattern="\\d{1,10}(?:\\.\\d{1,3})?$" value="0"></td>\n' +
                                 '                                        <td>' + value.totalAmount.toFixed(2) + '</td>\n' +
                                 '                                        <td>' + calculateNoOfDays(value.dateCreated) + '</td>\n' +
                                 '                                        <td>' + value.financialYear + '</td>\n' +
