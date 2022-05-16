@@ -45,7 +45,8 @@ class SaleReturn implements Serializable, LogicalDelete<SaleReturn>
     long modifiedUser
     Double adjAmount
     Date cancelledDate
-
+    String lrNo
+    Date lrDate
     Date dateCreated
     Date lastUpdated
 
@@ -54,9 +55,10 @@ class SaleReturn implements Serializable, LogicalDelete<SaleReturn>
         invoiceNumber nullable: true
         returnStatus nullable: true
         cancelledDate nullable: true
+        lrNo nullable: true
+        lrDate nullable: true
         uuid nullable: true, unique: true
     }
-
     static mapping = {
         debitIds  sqlType: 'longText'
         message  sqlType: 'longText'

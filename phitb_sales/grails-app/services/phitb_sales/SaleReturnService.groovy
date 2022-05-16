@@ -12,6 +12,7 @@ import java.text.SimpleDateFormat
 class SaleReturnService {
 
     SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy")
+    SimpleDateFormat sdf1 = new SimpleDateFormat("DD/MM/YYYY")
 
     def getAll(String limit, String offset, String query)
     {
@@ -52,6 +53,8 @@ class SaleReturnService {
         saleReturn.supplierEmail = jsonObject.get("supplierEmail").toString()
         saleReturn.gross = Double.parseDouble(jsonObject.get("gross").toString())
         saleReturn.taxable = Double.parseDouble(jsonObject.get("taxable").toString())
+        saleReturn.lrNo = jsonObject.get('lrNo').toString()
+        saleReturn.lrDate = sdf.parse(jsonObject.get('lrDate').toString())
         saleReturn.totalGst = Double.parseDouble(jsonObject.get("totalGst").toString())
         saleReturn.totalCgst = Double.parseDouble(jsonObject.get("totalCgst").toString())
         saleReturn.totalSgst = Double.parseDouble(jsonObject.get("totalCgst").toString())

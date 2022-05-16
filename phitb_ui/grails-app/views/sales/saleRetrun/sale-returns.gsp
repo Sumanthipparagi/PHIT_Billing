@@ -44,7 +44,7 @@
     /*.batches{*/
     /*    width:100%;*/
     /*}*/
-</style>
+    </style>
 </head>
 
 <body class="theme-black">
@@ -148,13 +148,28 @@
                             %{--                            </div>--}%
 
                         </div>
+                        <br>
+
+                        <div class="row">
+                            <div class="col-md-4">
+                                <label for="lrno">LR.No:</label>
+                                <input class="form-control show-tick" type="text" id="lrno" name="lrno"
+                                       placeholder="LR.No">
+                            </div>
+
+                            <div class="col-md-4">
+                                <label for="lrDate">LR.Date:</label>
+                                <input class="form-control show-tick" type="date" id="lrDate" name="lrDate"
+                                       placeholder="LR Date">
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
 
             <div class="col-lg-3">
                 <div class="card">
-                    <div class="body">
+                    <div class="body" style="padding: 42px;">
                         <div class="row">
                             <div class="col-md-6">
                                 Total: <p>&#8377;&nbsp;<span id="totalAmt">0.00</span></p>
@@ -207,12 +222,14 @@
                     <div class="body" style="background-color: #313740;padding: 2px; color: #fff;">
                         <div class="row" style="margin: 0; font-size: 14px;">
                             <div class="col-md-2"><strong>Total GST:&nbsp;</strong>&#x20b9;
-                            <span id="totalGST">0</span></div>
+                                <span id="totalGST">0</span></div>
 
-                            <div class="col-md-2"><strong>Total SGST:&nbsp;</strong>&#x20b9;<span id="totalSGST">0</span>
+                            <div class="col-md-2"><strong>Total SGST:&nbsp;</strong>&#x20b9;<span
+                                    id="totalSGST">0</span>
                             </div>
 
-                            <div class="col-md-2"><strong>Total CGST: &nbsp;</strong>&#x20b9;<span id="totalCGST">0</span>
+                            <div class="col-md-2"><strong>Total CGST: &nbsp;</strong>&#x20b9;<span
+                                    id="totalCGST">0</span>
                             </div>
 
                             <div class="col-md-2"><strong>Total IGST:&nbsp;</strong>&nbsp;&#x20b9;<span
@@ -220,7 +237,8 @@
 
                             <div class="col-md-2"><strong>Total Qty: &nbsp;</strong> <span id="totalQty">0</span></div>
 
-                            <div class="col-md-2"><strong>Total Free Qty: &nbsp;</strong> <span id="totalFQty">0</span></div>
+                            <div class="col-md-2"><strong>Total Free Qty: &nbsp;</strong> <span id="totalFQty">0</span>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -534,7 +552,7 @@
             hiddenColumns: {
                 copyPasteEnabled: true,
                 indicators: true,
-                columns: [18,19]
+                columns: [18, 19]
             },
             minSpareRows: 0,
             minSpareColumns: 0,
@@ -694,26 +712,24 @@
                         var fqty = hot.getDataAtCell(row, 6);
                         var sqty = hot.getDataAtCell(row, 5);
                         // if (sqty) {
-                            var batchId = hot.getCellMeta(row, 3)?.batchId; //batch
-                            var dt = hot.getDataAtRow(row);
-                            dt.push(batchId);
-                            console.log("Data saved");
-                            // mainTableRow = row + 1;
-                            // calculateTotalAmt();
-                            // hot.alter('insert_row');
-                            // hot.selectCell(mainTableRow, 1);
-                            if (selection === 13 || selection === 17) {
-                              if(sqty > 0 || fqty > 0)
-                              {
-                                  mainTableRow = row + 1;
-                                  hot.alter('insert_row');
-                                  hot.selectCell(mainTableRow, 1);
-                                  calculateTotalAmt();
-                              }
-                            }else
-                            {
-                                alert("Invalid Quantity, please enter quantity greater than 0");
+                        var batchId = hot.getCellMeta(row, 3)?.batchId; //batch
+                        var dt = hot.getDataAtRow(row);
+                        dt.push(batchId);
+                        console.log("Data saved");
+                        // mainTableRow = row + 1;
+                        // calculateTotalAmt();
+                        // hot.alter('insert_row');
+                        // hot.selectCell(mainTableRow, 1);
+                        if (selection === 13 || selection === 17) {
+                            if (sqty > 0 || fqty > 0) {
+                                mainTableRow = row + 1;
+                                hot.alter('insert_row');
+                                hot.selectCell(mainTableRow, 1);
+                                calculateTotalAmt();
                             }
+                        } else {
+                            alert("Invalid Quantity, please enter quantity greater than 0");
+                        }
                         // } else {
                         //
                         //     // else
@@ -1198,7 +1214,7 @@
     });
 
     function batchSelection(selectedId, mainRow, selectCell = true) {
-        if (selectedId!== null && selectedId!=="") {
+        if (selectedId !== null && selectedId !== "") {
             var url = "/stockbook/productreturn/" + selectedId;
             $.ajax({
                 type: "GET",
@@ -1240,16 +1256,14 @@
                     console.log("Failed");
                 }
             });
-        }
-        else
-        {
+        } else {
             alert("Please select product")
         }
     }
 
 
     function saleSelection(selectedId, mainRow, selectCell = true) {
-        if (selectedId!== null && selectedId!=="") {
+        if (selectedId !== null && selectedId !== "") {
             var customer = Number($("#customer").val());
             console.log("customer:" + customer);
             var beforeSendSwal;
@@ -1258,19 +1272,19 @@
                 type: "GET",
                 url: url,
                 dataType: 'json',
-                beforeSend: function() {
+                beforeSend: function () {
                     billHot.updateSettings({
                         data: []
                     });
-                     beforeSendSwal = Swal.fire({
-                         // title: "Loading",
-                         html:
-                             '<img src="${assetPath(src: "/themeassets/images/1476.gif")}" width="100" height="100"/>',
-                         showDenyButton: false,
-                         showCancelButton: false,
-                         showConfirmButton: false,
-                         allowOutsideClick: false,
-                         background:'transparent'
+                    beforeSendSwal = Swal.fire({
+                        // title: "Loading",
+                        html:
+                            '<img src="${assetPath(src: "/themeassets/images/1476.gif")}" width="100" height="100"/>',
+                        showDenyButton: false,
+                        showCancelButton: false,
+                        showConfirmButton: false,
+                        allowOutsideClick: false,
+                        background: 'transparent'
                     });
                 },
                 success: function (data) {
@@ -1344,9 +1358,7 @@
                     console.log("Failed");
                 }
             });
-        }
-        else
-        {
+        } else {
             alert("Please select product")
         }
     }
@@ -1436,6 +1448,7 @@
 
     function loadTempStockBookData() {
         /*  var userId = "
+
 
         ${session.getAttribute("userId")}";
         $.ajax({
@@ -1539,15 +1552,31 @@
         var customer = $("#customer").val();
         var series = $("#series").val();
         var seriesCode = $("#series").find(':selected').data('seriescode');
-        var duedate = $("#duedate").val();
-        duedate = moment(duedate, 'YYYY-MM-DD').toDate();
-        duedate = moment(duedate).format('DD/MM/YYYY');
-        var priority = $("#priority").val();
+        var lrno = $("#lrno").val();
+        var lrDate = $("#lrDate").val();
+        const lrDateInput = document.getElementById('lrDate');
+        if(lrDateInput.value) {
+            var d = new Date(lrDate);
+         lrDate = moment(d.toUTCString()).format('DD/MM/YYYY');
+        }
         if (!series) {
             alert("Please select series.");
             waitingSwal.close();
             return;
         }
+        if (!lrno) {
+            alert("Please enter LR number.");
+            waitingSwal.close();
+            return;
+        }
+
+        if(!lrDateInput.value)
+        {
+            alert("Please enter LR date.");
+            waitingSwal.close();
+            return;
+        }
+
         if (!customer) {
             alert("Please select customer.");
             waitingSwal.close();
@@ -1555,7 +1584,7 @@
         }
         var data = hot.getData();
         for (var i = 0; i < data.length; i++) {
-            if(!data[i][1]){
+            if (!data[i][1]) {
                 alert("Please select Reason.");
                 waitingSwal.close();
                 return;
@@ -1570,6 +1599,8 @@
                 saleReturnData: saleReturnData,
                 customer: customer,
                 series: series,
+                lrno: lrno,
+                lrDate: lrDate,
                 // duedate:duedate,
                 // priority:priority,
                 billStatus: billStatus,
@@ -1655,7 +1686,7 @@
                 'sale-return/print-invoice?id=' + salereturnbillid,
                 '_blank'
             );
-            window.location.href ="/sale-return"
+            window.location.href = "/sale-return"
             resetData();
         }
     }
@@ -1695,7 +1726,7 @@
         hot.updateSettings({
             data: []
         });
-        hot.selectCell(0,1)
+        hot.selectCell(0, 1)
         calculateTotalAmt();
     }
 
@@ -1823,7 +1854,6 @@
     }
 
 
-
     document.addEventListener("keydown", function (event) {
         var ctrl = event.ctrlKey;
         var alt = event.altKey;
@@ -1863,7 +1893,7 @@
     //
     // });
 
-        /// select2 plugin
+    /// select2 plugin
     (function (Handsontable) {
         "use strict";
 
@@ -1982,7 +2012,6 @@
         };
 
 
-
         var onBeforeMouseDown = function (event) {
             var instance = this;
             var that = instance.getActiveEditor();
@@ -2018,14 +2047,11 @@
                 console.log("KeyText: " + keyText);
                 self.$textarea.select2('search', keyText.slice(0, -1));
                 $('.handsontableInput').children().show()
-            }
-            else
-            {
+            } else {
                 $('.handsontableInput').children().hide()
             }
             Handsontable.renderers.cellDecorator.apply(this, arguments);
         };
-
 
 
         Select2Editor.prototype.init = function () {
