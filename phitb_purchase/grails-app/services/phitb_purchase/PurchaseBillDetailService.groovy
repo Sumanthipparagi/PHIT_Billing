@@ -120,7 +120,7 @@ class PurchaseBillDetailService {
         {
             Calendar cal = new GregorianCalendar()
             cal.setTime(purchaseBillDetail.entryDate)
-            String month = cal.get(Calendar.MONTH)
+            String month = cal.get(Calendar.MONTH)+1;
             String year = cal.get(Calendar.YEAR)
             DecimalFormat mFormat = new DecimalFormat("00");
             month = mFormat.format(Double.valueOf(month));
