@@ -913,7 +913,7 @@
                 hot.updateSettings({
                     data: []
                 });
-                hot.selectCell(0, 2);
+                hot.selectCell(0, 1);
                 var test = $(this).val();
                 if (test === 'YES') {
                     $('.batches').hide()
@@ -1356,7 +1356,7 @@
         hot.updateSettings({
             data: []
         });
-        hot.selectCell(0, 2);
+        hot.selectCell(0, 1);
         billHot.updateSettings({
             data: []
         });
