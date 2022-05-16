@@ -33,8 +33,8 @@ class UrlMappings {
 
             "/stockbook/purchase/batch/$batch/qty/$purQty(.$format)?"(controller: 'stockBook') {
                 action = [GET:'stockPurchase'] }
-            "/stockbook/purchase/batch/$batch/qty/$purQty/fqty/$fqty/reason/$reason(.$format)?"(controller:
-                    'stockBook') {
+
+            "/stockbook/return(.$format)?"(controller: 'stockBook') {
                 action = [GET:'stockIncrease'] }
             "/stockbook/product/$id/batch/$batch(.$format)?"(controller: 'stockBook') {
                 action = [GET:'getByProductIdAndBatch'] }

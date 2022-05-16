@@ -36,6 +36,10 @@ class UrlMappings {
                 action = [GET: 'getAllByProduct']
             }
 
+            "/batch-and-product(.$format)?"(controller: 'batchRegister') {
+                action = [GET: 'getByBatchAndProduct']
+            }
+
             //Composition Master Register
             "/compositionmasterregister(.$format)?"(controller: 'compositionMaster') {
                 action = [GET: 'index', POST:

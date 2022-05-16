@@ -172,6 +172,7 @@ class SaleReturnController
         SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy")
         JSONObject saleReturn = new JSONObject()
         JSONArray saleReturnDetails = new JSONArray()
+        JSONArray stockArray = new JSONArray()
         String entityId = session.getAttribute("entityId").toString()
         String customer = params.customer
         String priorityId = params.priority
@@ -324,17 +325,32 @@ class SaleReturnController
             saleReturnDetails.add(saleReturnDetail)
             //save to sale transaction log
             //save to sale transportation details
-            def stocks = new InventoryService().stocksIncrease(batchNumber, saleQty, freeQty, reason, productId,
-                    saleRate, expDate,packDesc,taxId) //            This will be further changed to JsonObject
 
-            if (stocks.status == 200)
+            JSONObject stock = new JSONObject()
+            stock.put("batchNumber", batchNumber)
+            stock.put("saleQty", saleQty)
+            stock.put("freeQty", freeQty)
+            stock.put("productId", productId)
+            stock.put("taxId", taxId)
+            stock.put("packDesc", packDesc)
+            stock.put("reason", reason)
+            stock.put("entityId",session.getAttribute('entityId'))
+            stock.put("entityTypeId",session.getAttribute('entityTypeId'))
+            stock.put("userId",session.getAttribute('userId'))
+            def batch = new ProductService().getByBatchAndProductId(batchNumber,productId)
+            if(batch.batchNumber == batchNumber && batch.product.id == Integer.parseInt(productId))
             {
-                println("Stocks modified")
+                stock.put("batch",batch)
             }
-            else
-            {
-                println("Stocks not modified")
-            }
+            stockArray.add(stock)
+//            if (stocks.status == 200)
+//            {
+//                println("Stocks modified")
+//            }
+//            else
+//            {
+//                println("Stocks not modified")
+//            }
         }
         String entryDate = sdf.format(new Date())
         String orderDate = sdf.format(new Date())
@@ -424,25 +440,20 @@ class SaleReturnController
         Response response = new SalesService().saveSaleRetrun(jsonObject)
         if (response.status == 200)
         {
+            for(JSONObject stock: stockArray)
+            {
+                def stocks = new InventoryService().stocksIncrease(stock)
+                if(stocks.status == 200)
+                {
+                    println("Stocks Updated!")
+                }
+                else {
+
+                    println("Stocks not updated!")
+                }
+            }
             def saleReturns = new JSONObject(response.readEntity(String.class))
             println("Details Saved")
-            //save to sale return details
-//            for (JSONObject saleRetrunDetail : saleReturnDetails)
-//            {
-//                saleRetrunDetail.put("billId", saleReturns.get("id"))
-//                saleRetrunDetail.put("taxId", saleReturns.get("taxable"))
-//                saleRetrunDetail.put("billType", 0) //0 Sale, 1 Purchase
-//                saleRetrunDetail.put("serBillId", saleReturns.get("serBillId"))
-//                def resp1 = new SalesService().saveSaleRetrunDetails(saleRetrunDetail)
-//                if (resp1.status == 200)
-//                {
-//                    println("Return Detail Saved")
-//                }
-//                else
-//                {
-//                    println("Return Detail Failed")
-//                }
-//            }
             JSONObject responseJson = new JSONObject()
             responseJson.put("series", series)
             responseJson.put("saleReturnDetail", saleReturns)

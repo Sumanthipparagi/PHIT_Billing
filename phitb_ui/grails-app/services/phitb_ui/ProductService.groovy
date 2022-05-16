@@ -1712,4 +1712,33 @@ class ProductService {
         }
     }
 
+
+    def getByBatchAndProductId(String batch, String productId) {
+        Client client = ClientBuilder.newClient();
+        WebTarget target = client.target(new Links().API_GATEWAY);
+        try {
+            Response apiResponse = target
+                    .path(new Links().GET_BY_BATCH_AND_PRODUCT)
+                    .queryParam("batch", URLEncoder.encode(batch.toString(), "UTF-8"))
+                    .queryParam("productId", URLEncoder.encode(productId.toString(), "UTF-8"))
+                    .request(MediaType.APPLICATION_JSON_TYPE)
+                    .get()
+            if (apiResponse?.status == 200)
+            {
+                JSONObject jsonObject = new JSONObject(apiResponse.readEntity(String.class))
+                return jsonObject
+            }
+            else
+            {
+                return []
+            }
+        }
+        catch (Exception ex) {
+            System.err.println('Service :ProductService , action :  getByBatchAndProductId  , Ex:' + ex)
+            log.error('Service :ProductService , action :  getByBatchAndProductId  , Ex:' + ex)
+        }
+
+    }
+
+
 }

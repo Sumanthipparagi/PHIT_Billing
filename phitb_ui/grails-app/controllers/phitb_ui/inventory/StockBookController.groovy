@@ -310,7 +310,6 @@ class StockBookController {
                         stockEntry.put("sgst", tax.salesSgst)
                         stockEntry.put("cgst", tax.salesCgst)
                         stockEntry.put("igst", tax.salesIgst)
-
                         responseArray.add(stockEntry)
                     }
                 }
