@@ -162,7 +162,7 @@
                             <div class="col-md-4">
                                 <label for="lrDate">Ref.Date:</label>
                                 <input class="form-control show-tick" type="date" id="lrDate" name="lrDate"
-                                       placeholder="Ref.No">
+                                       placeholder="Ref.Date:">
                             </div>
                         </div>
                     </div>
