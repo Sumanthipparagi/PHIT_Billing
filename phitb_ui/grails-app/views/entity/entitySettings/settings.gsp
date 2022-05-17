@@ -1,3 +1,4 @@
+<%@ page import="phitb_ui.Constants" %>
 <!doctype html>
 <html class="no-js " lang="en">
 <head>
@@ -13,7 +14,7 @@
     <!-- JQuery DataTable Css -->
     <asset:stylesheet rel="stylesheet" src="/themeassets/plugins/jquery-datatable/dataTables.bootstrap4.min.css"/>
     <!-- Custom Css -->
-    <asset:stylesheet  rel="stylesheet" src="/themeassets/css/main.css"/>
+    <asset:stylesheet  rel="stylesheet" src="/themeassets/css/main-2.css"/>
     <asset:stylesheet rel="stylesheet" href="/themeassets/css/color_skins.css"/>
     <asset:stylesheet rel="stylesheet" href="/themeassets/plugins/sweetalert/sweetalert.css"/>
     <asset:stylesheet  src="/themeassets/plugins/bootstrap-select/css/bootstrap-select.css" rel="stylesheet" />
@@ -62,130 +63,124 @@
                         <div class="row clearfix">
                             <div class="col-lg-6 col-md-6 col-sm-12 m-b-20">
                                 <b>Invoice Generation Methods</b>
-                                <select class="form-control show-tick">
-                                    <option>Single Invoice for EntireEntity</option>
-                                    <option>Separate Invoice for Each Division</option>
-                                    <option>Separate Inoice for Each Floor	</option>
+                                <select class="form-control show-tick" name="igm">
+                                    <option value="${Constants.SINGLE_INV_ENTIRE_ENTITY}">Single Invoice for EntireEntity</option>
+                                    <option  value="${Constants.SEPARATE_INV_ENTIRE_ENTITY}">Separate Invoice for Each Division</option>
+                                    <option  value="${Constants.SEPARATE_INV_EACH_FLOOR}">Separate Invoice for Each
+                                    Floor	</option>
                                 </select>
                             </div>
                             <div class="col-lg-6 col-md-6 col-sm-12 m-b-20">
                                 <b>Default Sales Invoice Series</b>
-                                <select class="form-control show-tick">
+                                <select class="form-control show-tick" name="dsi">
                                     <option>Yes</option>
                                     <option>No</option>
                                 </select>
                             </div>
                             <div class="col-lg-6 col-md-6 col-sm-12 m-b-20">
                                 <b>Invoice Print Grouping</b>
-                                <select class="form-control show-tick">
-                                    <option>Division Wise</option>
-                                    <option>Tax wise</option>
-                                    <option>Product Grouping</option>
-                                    <option>Category</option>
-                                    <option>Schedule</option>
-                                    <option>Floorwise</option>
+                                <select class="form-control show-tick" name="ipg">
+                                    <option value="${Constants.DIVISION_WISE}" >Division Wise</option>
+                                    <option value="${Constants.TAX_WISE}">Tax wise</option>
+                                    <option value="${Constants.PRODUCT_GROUPING}">Product Grouping</option>
+                                    <option value="${Constants.CATEGORY}">Category</option>
+                                    <option value="${Constants.SCHEDULE}">Schedule</option>
+                                    <option value="${Constants.FLOOR_WISE}">Floorwise</option>
                                 </select>
                             </div>
 
                             <div class="col-lg-6 col-md-6 col-sm-12 m-b-20">
                                 <b>Invoice Print Sorting</b>
-                                <select class="form-control show-tick">
-                                    <option>Alphabetic</option>
-                                    <option>Tax wise</option>
-                                    <option>Floor-Rack</option>
-                                    <option>Rack Only</option>
+                                <select class="form-control show-tick" name="ips">
+                                    <option value="${Constants.ALPHABETIC}">Alphabetic</option>
+                                    <option value="${Constants.TAX_WISE}">Tax wise</option>
+                                    <option value="${Constants.FLOOR_RACK}">Floor-Rack</option>
+                                    <option value="${Constants.RACK_ONLY}">Rack Only</option>
                                 </select>
                             </div>
 
-                            <div class="col-lg-6 col-md-6 col-sm-12 m-b-20">
+                            <div class="col-lg-6 col-md-6 col-sm-12 m-b-20" >
                                 <b>Advance Cheque Mandatory</b>
-                                <select class="form-control show-tick">
-                                    <option>Yes</option>
-                                    <option>No</option>
+                                <select class="form-control show-tick" name="acm">
+                                    <option value="${Constants.YES}">Yes</option>
+                                    <option value="${Constants.NO}">No</option>
                                 </select>
                             </div>
 
-                            <div class="col-lg-6 col-md-6 col-sm-12 m-b-20">
+                            <div class="col-lg-6 col-md-6 col-sm-12 m-b-20" >
                                 <b>Utilize Local or Universal Barcode</b>
-                                <select class="form-control show-tick">
-                                    <option>Local</option>
-                                    <option>Universal</option>
+                                <select class="form-control show-tick" name="ulub">
+                                    <option value="${Constants.LOCAL}">Local</option>
+                                    <option value="${Constants.UNIVERSAL}">Universal</option>
                                 </select>
                             </div>
 
                             <div class="col-lg-6 col-md-6 col-sm-12 m-b-20">
                                 <b>Max Utilization of a Single Cheque (For Invoices)</b>
-                                <select class="form-control show-tick">
-                                    <option>0</option>
-                                    <option>Null</option>
+                                <select class="form-control show-tick" name="accmu">
+                                    <option value="0">0</option>
+                                    <option value="NULL">Null</option>
                                 </select>
                             </div>
 
                             <div class="col-lg-6 col-md-6 col-sm-12 m-b-20">
                                 <b>Credit Limit Management</b>
-                                <select class="form-control show-tick">
-                                    <option>Single Limit Entire Entity</option>
-                                    <option>Individual Limit for each Division</option>
+                                <select class="form-control show-tick" name="clm">
+                                    <option value="${Constants.SINGLE_LIMIT_ENTIRE_ENTITY}">Single Limit Entire Entity</option>
+                                    <option value="${Constants.INDIVIDUAL_LIMIT_EACH_DIVISION}">Individual Limit for each Division</option>
                                 </select>
                             </div>
 
                             <div class="col-lg-6 col-md-6 col-sm-12 m-b-20">
                                 <b>Allow Same Batch to be repeated in a Single Sales Invoice?</b>
-                                <select class="form-control show-tick">
-                                    <option>Yes</option>
-                                    <option>No</option>
+                                <select class="form-control show-tick" name="asb">
+                                    <option value="${Constants.YES}">Yes</option>
+                                    <option value="${Constants.NO}">No</option>
                                 </select>
                             </div>
 
                             <div class="col-lg-6 col-md-6 col-sm-12 m-b-20">
                                 <b>Round Off the Scheme Quantity?</b>
-                                <select class="form-control show-tick">
-                                    <option>Higher Scheme (Loss)</option>
-                                    <option>Lower Scheme Auto Adjust (Profitable)	</option>
+                                <select class="form-control show-tick" name="ro">
+                                    <option value="${Constants.HIGHER_SCHEME}">Higher Scheme (Loss)</option>
+                                    <option value="${Constants.LOWER_SCHEME}">Lower Scheme Auto Adjust (Profitable)	</option>
                                 </select>
                             </div>
                             <div class="col-lg-6 col-md-6 col-sm-12 m-b-20">
                                 <b>Excess/Shortage stocks rounded off to be autoadjusted in Next Invoice?</b>
-                                <select class="form-control show-tick">
-                                    <option>Yes</option>
-                                    <option>No</option>
+                                <select class="form-control show-tick" name="essr">
+                                    <option value="${Constants.YES}">Yes</option>
+                                    <option value="${Constants.NO}">No</option>
                                 </select>
                             </div>
                             <div class="col-lg-6 col-md-6 col-sm-12 m-b-20">
                                 <b>How to Apply Scheme?</b>
-                                <select class="form-control show-tick">
-                                    <option>Follow Scheme Configurator (Recommended)</option>
-                                    <option>Manual Entry</option>
+                                <select class="form-control show-tick" name="as">
+                                    <option value="${Constants.FOLLOW_SCHEME_CONFIGURATOR}">Follow Scheme Configurator (Recommended)</option>
+                                    <option value="${Constants.MANUAL_ENTRY}">Manual Entry</option>
                                 </select>
                             </div>
                             <div class="col-lg-6 col-md-6 col-sm-12 m-b-20">
                                 <b>Round off Total Net Value to ?</b>
-                                <select class="form-control show-tick">
-                                    <option>Next Integer Value</option>
-                                    <option>Previous Interger Value</option>
-                                    <option>Remains Same (Recommended)</option>
+                                <select class="form-control show-tick" name="ron">
+                                    <option value="${Constants.NEXT_INTEGER_VALUE}">Next Integer Value</option>
+                                    <option value="${Constants.PREVIOUS_INTEGER_VALUE}">Previous Interger Value</option>
+                                    <option value="${Constants.REMAINS_SAME}">Remains Same (Recommended)</option>
                                 </select>
                             </div>
-                            <div class="col-lg-6 col-md-6 col-sm-12 m-b-20">
-                                <b>Round off Total Net Value to ?</b>
-                                <select class="form-control show-tick">
-                                    <option>Next Integer Value</option>
-                                    <option>Previous Interger Value</option>
-                                    <option>Remains Same (Recommended)</option>
-                                </select>
-                            </div>
+
                             <div class="col-lg-6 col-md-6 col-sm-12 m-b-20">
                                 <b>Can the Invoice Value be Zero?</b>
-                                <select class="form-control show-tick">
-                                    <option>Yes</option>
-                                    <option>No</option>
+                                <select class="form-control show-tick" name="ValZero">
+                                    <option value="${Constants.YES}">Yes</option>
+                                    <option value="${Constants.NO}">No</option>
                                 </select>
                             </div>
                             <div class="col-lg-6 col-md-6 col-sm-12 m-b-20">
                                 <b>Apply Transportation Chanrges to Customer? (Paid Amt.)</b>
-                                <select class="form-control show-tick">
-                                    <option>Yes</option>
-                                    <option>No</option>
+                                <select class="form-control show-tick" name="transportationCharges">
+                                    <option value="${Constants.YES}">Yes</option>
+                                    <option value="${Constants.NO}">No</option>
                                 </select>
                             </div>
                         </div>
@@ -208,7 +203,7 @@
 <asset:javascript src="/themeassets/plugins/jquery-datatable/buttons/buttons.colVis.min.js"/>
 <asset:javascript src="/themeassets/plugins/jquery-datatable/buttons/buttons.html5.min.js"/>
 <asset:javascript src="/themeassets/plugins/jquery-datatable/buttons/buttons.print.min.js"/>
-<asset:javascript src="/themeassets/bundles/mainscripts.bundle.js"/>
+<asset:javascript src="/themeassets/bundles/mainscripts-2.bundle.js"/>
 <asset:javascript src="/themeassets/js/pages/tables/jquery-datatable.js"/>
 <asset:javascript src="/themeassets/js/pages/ui/dialogs.js"/>
 <asset:javascript src="/themeassets/plugins/sweetalert/sweetalert.min.js"/>

@@ -59,4 +59,47 @@ public class Constants
     public static String FEATURE_ROLE = "ROLE";
     public static String FEATURE_SALE_ORDER = "SALE_ORDER";
     public static String FEATURE_SALE_ENTRY = "SALE_ENTRY";
+
+//Invoice Generation Methods
+    public static String SINGLE_INV_ENTIRE_ENTITY = "SINGLE_INV_ENTIRE_ENTITY";
+    public static String SEPARATE_INV_ENTIRE_ENTITY = "SEPARATE_INV_ENTIRE_ENTITY";
+    public static String SEPARATE_INV_EACH_FLOOR = "SEPARATE_INV_EACH_FLOOR";
+
+//Invoice Print Grouping
+    public static String DIVISION_WISE = "DIVISION_WISE";
+    public static String TAX_WISE = "TAX_WISE";
+    public static String PRODUCT_GROUPING = "PRODUCT_GROUPING";
+    public static String CATEGORY = "CATEGORY";
+    public static String SCHEDULE = "SCHEDULE";
+    public static String FLOOR_WISE = "FLOOR_WISE";
+
+//Invoice Print Sorting
+    public static String ALPHABETIC = "ALPHABETIC";
+    public static String FLOOR_RACK = "PRODUCT_GROUPING";
+    public static String RACK_ONLY = "RACK_ONLY";
+
+//    Utilize Local or Universal Barcode
+    public static String LOCAL = "LOCAL";
+    public static String UNIVERSAL = "UNIVERSAL";
+
+//    Credit Limit Management
+
+    public static  String SINGLE_LIMIT_ENTIRE_ENTITY = "SINGLE_LIMIT_ENTIRE_ENTITY";
+    public  static  String INDIVIDUAL_LIMIT_EACH_DIVISION = "INDIVIDUAL_LIMIT_EACH_DIVISION";
+
+//    Round Off the Scheme Quantity?
+    public  static  String HIGHER_SCHEME = "HIGHER_SCHEME";
+    public  static  String LOWER_SCHEME = "LOWER_SCHEME";
+
+//    How to Apply Scheme?
+    public  static  String FOLLOW_SCHEME_CONFIGURATOR = "FOLLOW_SCHEME_CONFIGURATOR";
+    public  static  String MANUAL_ENTRY = "MANUAL_ENTRY";
+
+    //    How to Apply Scheme?
+    public static  String NEXT_INTEGER_VALUE = "NEXT_INTEGER_VALUE";
+    public static  String PREVIOUS_INTEGER_VALUE = "PREVIOUS_INTEGER_VALUE";
+    public static  String REMAINS_SAME = "REMAINS_SAME";
+
+    public static String YES = "YES";
+    public static String NO = "NO";
 }
