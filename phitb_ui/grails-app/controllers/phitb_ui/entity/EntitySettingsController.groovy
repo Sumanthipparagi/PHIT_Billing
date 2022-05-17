@@ -123,6 +123,7 @@ class EntitySettingsController {
     def settings()
     {
         def entity = new EntityService().getEntityById(params.id)
-        render(view:'/entity/entitySettings/settings',model:[entity:entity])
+        def entitySettings = new EntityService().getEntitySettingsByEntity(params.id)
+        render(view:'/entity/entitySettings/settings',model:[entity:entity,entitySettings:entitySettings])
     }
 }

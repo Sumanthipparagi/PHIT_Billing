@@ -1,6 +1,7 @@
 package phitb_entity
 
 import grails.gorm.transactions.Transactional
+import org.grails.web.json.JSONArray
 import org.grails.web.json.JSONObject
 import phitb_entity.Exception.BadRequestException
 import phitb_entity.Exception.ResourceNotFoundException
@@ -75,7 +76,7 @@ class EntitySettingService
         return jsonObject
     }
 
-    EntitySetting save(JSONObject jsonObject)
+    def save(JSONObject jsonObject)
     {
 //        EntitySetting entitySetting = new EntitySetting()
 //        EntityRegister entityRegister = EntityRegister.findById(Long.parseLong(jsonObject.get("entityId").toString()))
@@ -465,5 +466,18 @@ class EntitySettingService
         {
             throw new BadRequestException()
         }
+    }
+
+
+    def getAllByEntityId(String id)
+    {
+        EntityRegister entityRegister = EntityRegister.findById(Long.parseLong(id.toString()))
+        ArrayList<EntitySetting> entitySetting = EntitySetting.findAllByEntity(entityRegister) as ArrayList<JSONArray>
+        JSONObject jsonObject1 = new JSONObject()
+        for(EntitySetting entitySetting1: entitySetting)
+        {
+            jsonObject1.put(entitySetting1.code, entitySetting1.value)
+        }
+       return  jsonObject1
     }
 }

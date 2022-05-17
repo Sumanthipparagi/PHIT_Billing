@@ -132,6 +132,7 @@ public class Links
     public static String ENTITY_SETTINGS_DELETE = "api/v1.0/entity/entitysetting/{id}";
     public static String ENTITY_SETTINGS_SAVE = "api/v1.0/entity/entitysetting";
     public static String ENTITY_SETTINGS_DATATABLE = "api/v1.0/entity/entitysetting/datatable";
+    public static String ENTITY_SETTINGS_BY_ENTITY = "api/v1.0/entity/entitysetting/getbyentityid";
 
 
     //Account Register
