@@ -55,11 +55,13 @@
         <!-- Basic Examples -->
         <div class="row clearfix">
             <div class="col-lg-12 col-md-12 col-sm-12">
+                <h2>${entity.entityName}</h2>
                 <div class="card">
                     <div class="header">
                         <h2>Update Settings</h2>
                     </div>
                     <div class="body">
+                        <form action="/entity-settings" method="post">
                         <div class="row clearfix">
                             <div class="col-lg-6 col-md-6 col-sm-12 m-b-20">
                                 <b>Invoice Generation Methods</b>
@@ -73,8 +75,8 @@
                             <div class="col-lg-6 col-md-6 col-sm-12 m-b-20">
                                 <b>Default Sales Invoice Series</b>
                                 <select class="form-control show-tick" name="dsi">
-                                    <option>Yes</option>
-                                    <option>No</option>
+                                    <option value="${Constants.YES}">Yes</option>
+                                    <option value="${Constants.NO}">No</option>
                                 </select>
                             </div>
                             <div class="col-lg-6 col-md-6 col-sm-12 m-b-20">
@@ -88,7 +90,6 @@
                                     <option value="${Constants.FLOOR_WISE}">Floorwise</option>
                                 </select>
                             </div>
-
                             <div class="col-lg-6 col-md-6 col-sm-12 m-b-20">
                                 <b>Invoice Print Sorting</b>
                                 <select class="form-control show-tick" name="ips">
@@ -98,7 +99,6 @@
                                     <option value="${Constants.RACK_ONLY}">Rack Only</option>
                                 </select>
                             </div>
-
                             <div class="col-lg-6 col-md-6 col-sm-12 m-b-20" >
                                 <b>Advance Cheque Mandatory</b>
                                 <select class="form-control show-tick" name="acm">
@@ -106,15 +106,13 @@
                                     <option value="${Constants.NO}">No</option>
                                 </select>
                             </div>
-
-                            <div class="col-lg-6 col-md-6 col-sm-12 m-b-20" >
+                            <div class="col-lg-6 col-md-6 col-sm-12 m-b-20">
                                 <b>Utilize Local or Universal Barcode</b>
                                 <select class="form-control show-tick" name="ulub">
                                     <option value="${Constants.LOCAL}">Local</option>
                                     <option value="${Constants.UNIVERSAL}">Universal</option>
                                 </select>
                             </div>
-
                             <div class="col-lg-6 col-md-6 col-sm-12 m-b-20">
                                 <b>Max Utilization of a Single Cheque (For Invoices)</b>
                                 <select class="form-control show-tick" name="accmu">
@@ -122,7 +120,6 @@
                                     <option value="NULL">Null</option>
                                 </select>
                             </div>
-
                             <div class="col-lg-6 col-md-6 col-sm-12 m-b-20">
                                 <b>Credit Limit Management</b>
                                 <select class="form-control show-tick" name="clm">
@@ -130,7 +127,6 @@
                                     <option value="${Constants.INDIVIDUAL_LIMIT_EACH_DIVISION}">Individual Limit for each Division</option>
                                 </select>
                             </div>
-
                             <div class="col-lg-6 col-md-6 col-sm-12 m-b-20">
                                 <b>Allow Same Batch to be repeated in a Single Sales Invoice?</b>
                                 <select class="form-control show-tick" name="asb">
@@ -138,7 +134,6 @@
                                     <option value="${Constants.NO}">No</option>
                                 </select>
                             </div>
-
                             <div class="col-lg-6 col-md-6 col-sm-12 m-b-20">
                                 <b>Round Off the Scheme Quantity?</b>
                                 <select class="form-control show-tick" name="ro">
@@ -168,7 +163,6 @@
                                     <option value="${Constants.REMAINS_SAME}">Remains Same (Recommended)</option>
                                 </select>
                             </div>
-
                             <div class="col-lg-6 col-md-6 col-sm-12 m-b-20">
                                 <b>Can the Invoice Value be Zero?</b>
                                 <select class="form-control show-tick" name="ValZero">
@@ -183,7 +177,13 @@
                                     <option value="${Constants.NO}">No</option>
                                 </select>
                             </div>
+                            <input type="hidden" name="entityId" value="${params.id}"/>
+
+
                         </div>
+                            <button type="submit" class="btn btn-default btn-round waves-effect"><font
+                                    style="vertical-align: inherit;"><font style="vertical-align: inherit;">SUBMIT</font></font></button>
+                        </form>
                     </div>
                 </div>
             </div>
@@ -191,7 +191,7 @@
     </div>
 </section>
 
-<g:include view="controls/entity/add-entity-settings.gsp"/>
+%{--<g:include view="controls/entity/add-entity-settings.gsp"/>--}%
 <g:include view="controls/delete-modal.gsp"/>
 
 <!-- Jquery Core Js -->

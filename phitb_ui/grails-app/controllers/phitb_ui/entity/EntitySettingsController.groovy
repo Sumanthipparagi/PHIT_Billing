@@ -53,7 +53,8 @@ class EntitySettingsController {
             if (apiResponse?.status == 200)
             {
                 JSONObject obj = new JSONObject(apiResponse.readEntity(String.class))
-                respond obj, formats: ['json'], status: 200
+//                respond obj, formats: ['json'], status: 200
+                redirect(uri:"/entity-settings")
             }
             else
             {
@@ -121,6 +122,7 @@ class EntitySettingsController {
 
     def settings()
     {
-        render(view:'/entity/entitySettings/settings')
+        def entity = new EntityService().getEntityById(params.id)
+        render(view:'/entity/entitySettings/settings',model:[entity:entity])
     }
 }

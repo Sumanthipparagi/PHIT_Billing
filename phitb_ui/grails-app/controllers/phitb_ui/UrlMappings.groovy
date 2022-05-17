@@ -135,6 +135,7 @@ class UrlMappings {
         "/entity-settings/datatable"(controller: "entitySettings", action: "dataTable")
         "/entity-settings/update/$id"(controller: "entitySettings",action:"update")
         "/entity-settings/delete/$id"(controller: "entitySettings",action:"delete")
+        "/entity-settings/settings"(controller: 'entitySettings', action: 'settings')
 
 //      User Register
         "/user-register"(controller: "userRegister") {

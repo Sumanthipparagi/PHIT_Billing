@@ -101,11 +101,11 @@
                     %{--                        </ul>--}%
                     %{--                    </div>--}%
 
-                    <div class="header">
-                        <button type="button" class="btn btn-round btn-primary m-t-15 addbtn" data-toggle="modal"
-                                data-target="#addEntitySettingModal"><font style="vertical-align: inherit;"><font
-                                style="vertical-align: inherit;">Add Entity Settings</font></font></button>
-                    </div>
+%{--                    <div class="header">--}%
+%{--                        <button type="button" class="btn btn-round btn-primary m-t-15 addbtn" data-toggle="modal"--}%
+%{--                                data-target="#addEntitySettingModal"><font style="vertical-align: inherit;"><font--}%
+%{--                                style="vertical-align: inherit;">Add Entity Settings</font></font></button>--}%
+%{--                    </div>--}%
                     <div class="body">
                         <div class="table-responsive">
                             <table class="table table-bordered table-striped table-hover entitySettingsTable dataTable">
@@ -113,9 +113,6 @@
                                 <tr>
                                     %{--                                    <th style="width: 20%">ID</th>--}%
                                     <th style="width: 20%">Entity</th>
-                                    <th style="width: 20%">Code</th>
-                                    <th style="width: 20%">Name</th>
-                                    <th style="width: 20%">Value</th>
                                     <th style="width: 20%">Action</th>
                                 </tr>
                                 </thead>
@@ -187,37 +184,28 @@
             },
             ajax: {
                 type: 'GET',
-                url: '/entity-settings/datatable',
+                url: '/entity-register/datatable',
                 dataType: 'json',
                 dataSrc: function (json) {
                     console.log(json)
                     var return_data = [];
                     for (var i = 0; i < json.data.length; i++) {
-                        var editbtn = '<button type="button" data-id="' + json.data[i].id +
-                            '" data-entity="' + json.data[i].entity.id + '"' +
-                            '" data-code="' + json.data[i].code + '"' +
-                            '" data-name="' + json.data[i].name + '"' +
-                            '" data-value="' + json.data[i].value + '"' +
-                            '"' +
-                            ' class="editbtn btn btn-sm btn-warning  editbtn" data-toggle="modal" data-target="#addEntitySettingModal"><i class="material-icons"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">edit</font></font></i></button>'
+                        var editbtn = '<a href="/entity-settings/settings?id='+json.data[i].id+'"><button type="button" data-id="' +
+                            json.data[i].id +
+                            '" data-entity="' + json.data[i].id + '"' +
+                            ' class="editbtn btn btn-sm btn-warning  editbtn"><i class="material-icons"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">edit</font></font></i></button></a>'
                         var deletebtn = '<button type="button" data-id="' + json.data[i].id +
                             '" class="btn btn-danger deletebtn" data-toggle="modal" data-target=".deleteModal"><i class="material-icons"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">delete</font></font></i></button>'
                         return_data.push({
-                            'entity': json.data[i].entity.entityName,
-                            'code': json.data[i].code,
-                            'name': "<div style='white-space:normal;'>"+json.data[i].name+"<div>" ,
-                            'value': json.data[i].value,
-                            'action': editbtn + ' ' + deletebtn
+                            'name': json.data[i].entityName,
+                            'action': editbtn
                         });
                     }
                     return return_data;
                 }
             },
             columns: [
-                {'data': 'entity', 'width': '20%'},
-                {'data': 'code', 'width': '20%'},
-                {'data': 'name', 'width': '20%'},
-                {'data': 'value', 'width': '20%'},
+                {'data': 'name', 'width': '70%'},
                 {'data': 'action', 'width': '20%'}
             ]
         });
