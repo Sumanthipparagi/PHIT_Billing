@@ -118,4 +118,9 @@ class EntitySettingsController {
         }
     }
 
+
+    def settings()
+    {
+        render(view:'/entity/entitySettings/settings')
+    }
 }

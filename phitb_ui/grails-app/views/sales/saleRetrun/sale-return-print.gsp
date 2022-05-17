@@ -202,11 +202,11 @@
             <strong>SALES RETURN</strong>
             <ul style="margin: 0;">
 
-                <li><b class="tab">Invoice No</b>:  <g:if
+                <li><b class="tab">CRNT No</b>:  <g:if
                         test="${saleBillDetail.returnStatus == 'CANCELLED'}"><del>${saleBillDetail.invoiceNumber}</del></g:if><g:else>${saleBillDetail.invoiceNumber}</g:else></li>
-                <li><b class="tab">Inv Date</b>:&nbsp;<span id="invDate"></span></li>
-                <li><b class="tab">LR No</b>:&nbsp;<span>${saleBillDetail.lrNo}</span></li>
-                <li><b class="tab">LR Date</b>:&nbsp;<span id="lrDate"></span></li>
+                <li><b class="tab">Date</b>:&nbsp;<span id="invDate"></span></li>
+                <li><b class="tab">Ref No</b>:&nbsp;<span>${saleBillDetail.lrNo}</span></li>
+                <li><b class="tab">Ref Date</b>:&nbsp;<span id="lrDate"></span></li>
                 %{--                <li><b class="tab">No of cases</b>:</li>--}%
                 %{--                <li><b class="tab">Weight in Kgs</b>:</li>--}%
                 %{--                <li><b class="tab">Party Ref No.</b>: 429803</li>--}%
@@ -379,7 +379,7 @@
     <div style="float: right;">
         <table class="print" style="margin-top: 10px;margin-left:78px;margin-right:10px;width: 78%;">
             <tr>
-                <th>Total</th>
+                <th>Sub Total</th>
                 <td>0.00</td>
                 <td>${String.format("%.2f", totalBeforeTaxes)}</td>
             </tr>
@@ -411,7 +411,7 @@
 
             </g:each>
             <tr>
-                <th>Net Invoice Amt.</th>
+                <th>Taxable Amt.</th>
                 <td>0.00</td>
                 <td id="netInvAmt"></td>
             </tr>
@@ -431,7 +431,7 @@
                 <td>0.00</td>
             </tr>
             <tr>
-                <th>Net Payable Amt.</th>
+                <th>Total</th>
                 <td>0.00</td>
                 <td id="netPayAmt"></td>
             </tr>

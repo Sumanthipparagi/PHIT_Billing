@@ -19,36 +19,6 @@
     <asset:stylesheet  src="/themeassets/plugins/bootstrap-select/css/bootstrap-select.css" rel="stylesheet" />
     <asset:stylesheet  src="/themeassets/plugins/select-2-editor/select2.min.css" rel="stylesheet" />
 
-    <style>
-
-    /*div.dataTables_scrollBody table tbody  td {*/
-    /*    border-top: none;*/
-    /*    padding: 0.9px;*/
-    /*    text-align: center;*/
-    /*    border-collapse: unset!important;*/
-    /*}*/
-
-    .editbtn
-    {
-        padding: 1px 9px;
-    }
-    .deletebtn
-    {
-        padding: 1px 9px;
-    }
-
-    tbody td {
-        padding: 0;
-    }
-
-    table.dataTable td {
-        word-break: break-word!important;
-    }
-
-
-    </style>
-
-
 </head>
 <body class="theme-black">
 <!-- Page Loader -->
@@ -83,60 +53,146 @@
         </div>
         <!-- Basic Examples -->
         <div class="row clearfix">
-            <div class="col-lg-12">
+            <div class="col-lg-12 col-md-12 col-sm-12">
                 <div class="card">
-                    %{--                    <div class="header">--}%
-                    %{--                        <h2><strong>Basic</strong> Examples </h2>--}%
-                    %{--                        <ul class="header-dropdown">--}%
-                    %{--                            <li class="dropdown"> <a href="javascript:void(0);" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"> <i class="zmdi zmdi-more"></i> </a>--}%
-                    %{--                                <ul class="dropdown-menu slideUp">--}%
-                    %{--                                    <li><a href="javascript:void(0);">Action</a></li>--}%
-                    %{--                                    <li><a href="javascript:void(0);">Another action</a></li>--}%
-                    %{--                                    <li><a href="javascript:void(0);">Something else</a></li>--}%
-                    %{--                                </ul>--}%
-                    %{--                            </li>--}%
-                    %{--                            <li class="remove">--}%
-                    %{--                                <a role="button" class="boxs-close"><i class="zmdi zmdi-close"></i></a>--}%
-                    %{--                            </li>--}%
-                    %{--                        </ul>--}%
-                    %{--                    </div>--}%
-
                     <div class="header">
-                        <button type="button" class="btn btn-round btn-primary m-t-15 addbtn" data-toggle="modal"
-                                data-target="#addEntitySettingModal"><font style="vertical-align: inherit;"><font
-                                style="vertical-align: inherit;">Add Entity Settings</font></font></button>
+                        <h2>Update Settings</h2>
                     </div>
                     <div class="body">
-                        <div class="table-responsive">
-                            <table class="table table-bordered table-striped table-hover entitySettingsTable dataTable">
-                                <thead>
-                                <tr>
-                                    %{--                                    <th style="width: 20%">ID</th>--}%
-                                    <th style="width: 20%">Entity</th>
-                                    <th style="width: 20%">Code</th>
-                                    <th style="width: 20%">Name</th>
-                                    <th style="width: 20%">Value</th>
-                                    <th style="width: 20%">Action</th>
-                                </tr>
-                                </thead>
-                                %{--                                <tfoot>--}%
-                                %{--                                <tr>--}%
-                                %{--                                    <th>ID</th>--}%
-                                %{--                                    <th>Name</th>--}%
-                                %{--                                    <th>entityRegister ID</th>--}%
-                                %{--                                    <th>Action</th>--}%
-                                %{--                                </tr>--}%
-                                %{--                                </tfoot>--}%
-                                <tbody>
+                        <div class="row clearfix">
+                            <div class="col-lg-6 col-md-6 col-sm-12 m-b-20">
+                                <b>Invoice Generation Methods</b>
+                                <select class="form-control show-tick">
+                                    <option>Single Invoice for EntireEntity</option>
+                                    <option>Separate Invoice for Each Division</option>
+                                    <option>Separate Inoice for Each Floor	</option>
+                                </select>
+                            </div>
+                            <div class="col-lg-6 col-md-6 col-sm-12 m-b-20">
+                                <b>Default Sales Invoice Series</b>
+                                <select class="form-control show-tick">
+                                    <option>Yes</option>
+                                    <option>No</option>
+                                </select>
+                            </div>
+                            <div class="col-lg-6 col-md-6 col-sm-12 m-b-20">
+                                <b>Invoice Print Grouping</b>
+                                <select class="form-control show-tick">
+                                    <option>Division Wise</option>
+                                    <option>Tax wise</option>
+                                    <option>Product Grouping</option>
+                                    <option>Category</option>
+                                    <option>Schedule</option>
+                                    <option>Floorwise</option>
+                                </select>
+                            </div>
 
-                                </tbody>
-                            </table>
+                            <div class="col-lg-6 col-md-6 col-sm-12 m-b-20">
+                                <b>Invoice Print Sorting</b>
+                                <select class="form-control show-tick">
+                                    <option>Alphabetic</option>
+                                    <option>Tax wise</option>
+                                    <option>Floor-Rack</option>
+                                    <option>Rack Only</option>
+                                </select>
+                            </div>
+
+                            <div class="col-lg-6 col-md-6 col-sm-12 m-b-20">
+                                <b>Advance Cheque Mandatory</b>
+                                <select class="form-control show-tick">
+                                    <option>Yes</option>
+                                    <option>No</option>
+                                </select>
+                            </div>
+
+                            <div class="col-lg-6 col-md-6 col-sm-12 m-b-20">
+                                <b>Utilize Local or Universal Barcode</b>
+                                <select class="form-control show-tick">
+                                    <option>Local</option>
+                                    <option>Universal</option>
+                                </select>
+                            </div>
+
+                            <div class="col-lg-6 col-md-6 col-sm-12 m-b-20">
+                                <b>Max Utilization of a Single Cheque (For Invoices)</b>
+                                <select class="form-control show-tick">
+                                    <option>0</option>
+                                    <option>Null</option>
+                                </select>
+                            </div>
+
+                            <div class="col-lg-6 col-md-6 col-sm-12 m-b-20">
+                                <b>Credit Limit Management</b>
+                                <select class="form-control show-tick">
+                                    <option>Single Limit Entire Entity</option>
+                                    <option>Individual Limit for each Division</option>
+                                </select>
+                            </div>
+
+                            <div class="col-lg-6 col-md-6 col-sm-12 m-b-20">
+                                <b>Allow Same Batch to be repeated in a Single Sales Invoice?</b>
+                                <select class="form-control show-tick">
+                                    <option>Yes</option>
+                                    <option>No</option>
+                                </select>
+                            </div>
+
+                            <div class="col-lg-6 col-md-6 col-sm-12 m-b-20">
+                                <b>Round Off the Scheme Quantity?</b>
+                                <select class="form-control show-tick">
+                                    <option>Higher Scheme (Loss)</option>
+                                    <option>Lower Scheme Auto Adjust (Profitable)	</option>
+                                </select>
+                            </div>
+                            <div class="col-lg-6 col-md-6 col-sm-12 m-b-20">
+                                <b>Excess/Shortage stocks rounded off to be autoadjusted in Next Invoice?</b>
+                                <select class="form-control show-tick">
+                                    <option>Yes</option>
+                                    <option>No</option>
+                                </select>
+                            </div>
+                            <div class="col-lg-6 col-md-6 col-sm-12 m-b-20">
+                                <b>How to Apply Scheme?</b>
+                                <select class="form-control show-tick">
+                                    <option>Follow Scheme Configurator (Recommended)</option>
+                                    <option>Manual Entry</option>
+                                </select>
+                            </div>
+                            <div class="col-lg-6 col-md-6 col-sm-12 m-b-20">
+                                <b>Round off Total Net Value to ?</b>
+                                <select class="form-control show-tick">
+                                    <option>Next Integer Value</option>
+                                    <option>Previous Interger Value</option>
+                                    <option>Remains Same (Recommended)</option>
+                                </select>
+                            </div>
+                            <div class="col-lg-6 col-md-6 col-sm-12 m-b-20">
+                                <b>Round off Total Net Value to ?</b>
+                                <select class="form-control show-tick">
+                                    <option>Next Integer Value</option>
+                                    <option>Previous Interger Value</option>
+                                    <option>Remains Same (Recommended)</option>
+                                </select>
+                            </div>
+                            <div class="col-lg-6 col-md-6 col-sm-12 m-b-20">
+                                <b>Can the Invoice Value be Zero?</b>
+                                <select class="form-control show-tick">
+                                    <option>Yes</option>
+                                    <option>No</option>
+                                </select>
+                            </div>
+                            <div class="col-lg-6 col-md-6 col-sm-12 m-b-20">
+                                <b>Apply Transportation Chanrges to Customer? (Paid Amt.)</b>
+                                <select class="form-control show-tick">
+                                    <option>Yes</option>
+                                    <option>No</option>
+                                </select>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-
     </div>
 </section>
 

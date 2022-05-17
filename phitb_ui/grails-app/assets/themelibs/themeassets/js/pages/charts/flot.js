@@ -144,7 +144,7 @@ $('#tracking_chart').on('bind','plothover', function(event, pos, item) {
     }
 });
 //====================================================================================================
-// phitb_ui.sales bar chart
+// sales bar chart
 
 $(function() {
     //some data
@@ -246,7 +246,7 @@ $(function() {
         }
     };
 
-    $.plot($(".phitb_ui.sales-bars-chart"), ds, options);
+    $.plot($(".sales-bars-chart"), ds, options);
 });
 //MULTIPLE AXIS ======================================================================================
 var oilprices = [
