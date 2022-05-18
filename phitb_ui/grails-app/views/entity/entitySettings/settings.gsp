@@ -133,7 +133,8 @@
                                             test="${entitySettings.ULUB == Constants.LOCAL}">selected</g:if>>Local
                                     </option>
                                     <option value="${Constants.UNIVERSAL}" <g:if
-                                            test="${entitySettings.ULUB == Constants.LOCAL}">selected</g:if>>Universal</option>
+                                            test="${entitySettings.ULUB == Constants.UNIVERSAL}">selected</g:if>>Universal
+                                    </option>
                                 </select>
                             </div>
                             <div class="col-lg-6 col-md-6 col-sm-12 m-b-20">
