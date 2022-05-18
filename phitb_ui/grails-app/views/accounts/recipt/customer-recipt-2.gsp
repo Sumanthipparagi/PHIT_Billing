@@ -515,7 +515,7 @@
                         var date = new Date(value.entryDate);
                         if (value.balance !== 0) {
                             trHTML += ' <tr id="' + "CN" + value.id + '">\n' +
-                                '                                        <td>' + invoice + '</td>\n' +
+                                '                                        <td>' + creditNote + '</td>\n' +
                                 '                                        <td>' + value.invoiceNumber + '</td>\n' +
                                 '                                        <td>' + moment(value.dateCreated).format('DD-MM-YYYY') + '</td>\n' +
                                 '                                        <td id="' + "crntAdjAmt" + value.id + '">' +

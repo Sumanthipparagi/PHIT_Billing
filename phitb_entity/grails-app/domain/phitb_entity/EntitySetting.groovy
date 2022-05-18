@@ -2,7 +2,7 @@ package phitb_entity
 
 import gorm.logical.delete.LogicalDelete
 
-class EntitySetting implements LogicalDelete<EntitySetting> {
+class EntitySetting {
 
     EntityRegister entity
     EntityTypeMaster entityType

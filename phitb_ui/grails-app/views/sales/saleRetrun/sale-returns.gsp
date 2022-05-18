@@ -44,6 +44,8 @@
     /*.batches{*/
     /*    width:100%;*/
     /*}*/
+
+    .hidden{display: none}
     </style>
 </head>
 
@@ -152,15 +154,15 @@
 
                         <div class="row">
                             <div class="col-md-4">
-                                <label for="lrno">LR.No:</label>
+                                <label for="lrno">Ref.No:</label>
                                 <input class="form-control show-tick" type="text" id="lrno" name="lrno"
-                                       placeholder="LR.No">
+                                       placeholder="Ref.No">
                             </div>
 
                             <div class="col-md-4">
-                                <label for="lrDate">LR.Date:</label>
+                                <label for="lrDate">Ref.Date:</label>
                                 <input class="form-control show-tick" type="date" id="lrDate" name="lrDate"
-                                       placeholder="LR Date">
+                                       placeholder="Ref.Date:">
                             </div>
                         </div>
                     </div>
@@ -169,7 +171,7 @@
 
             <div class="col-lg-3">
                 <div class="card">
-                    <div class="body" style="padding: 42px;">
+                    <div class="body">
                         <div class="row">
                             <div class="col-md-6">
                                 Total: <p>&#8377;&nbsp;<span id="totalAmt">0.00</span></p>

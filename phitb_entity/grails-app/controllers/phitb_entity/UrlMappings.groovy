@@ -136,11 +136,11 @@ class UrlMappings
                 action = [GET: 'index', POST:
                         'save']
             }
+            "/entitysetting/getbyentityid(.$format)?"(controller: 'entitySetting', action: 'getAllbyEntityId')
             "/entitysetting/datatable(.$format)?"(controller: 'entitySetting') {action = [GET: 'dataTable']}
             "/entitysetting/$id(.$format)?"(controller: 'entitySetting') {
                 action = [GET: 'show', PUT: 'update', DELETE: 'delete']
             }
-
 
 
 

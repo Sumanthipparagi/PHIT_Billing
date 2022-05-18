@@ -12,7 +12,6 @@
                     <div class="modal-body">
                         <div class="row">
                             <div class="col-lg-6 form-group  form-float">
-
                                 <label for="entity">
                                     Entity
                                 </label>

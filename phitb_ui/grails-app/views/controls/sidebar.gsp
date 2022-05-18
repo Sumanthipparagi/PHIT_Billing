@@ -600,6 +600,15 @@
                     </ul>
                 </li>
 
+
+                <li id="settings-menu" class="sidemenuitem"><a href="javascript:void(0);" class="menu-toggle"><i
+                        class="zmdi zmdi-chart"></i><span>Settings</span> <span
+                        class="badge badge-success float-right"></span></a>
+                    <ul class="ml-menu">
+                                <li><a href="/entity-settings">Entity Settings</a></li>
+                    </ul>
+                </li>
+
             </ul>
         </div>
     </div>
