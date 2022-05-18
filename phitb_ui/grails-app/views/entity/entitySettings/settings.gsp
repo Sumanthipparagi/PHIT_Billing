@@ -1812,7 +1812,7 @@
             return this.checked
         }).get();
         newBatchCreation.unshift($('.newBatchCreation').text());
-        newBatchCreation.push('NEW_BATCH_SELECTION');
+        newBatchCreation.push('NEW_BATCH_CREATION');
         newBatchCreation.push('${entity.id}')
         newBatchCreation.push('${entity.entityType.id}')
         configData.push(Object.assign({}, newBatchCreation));
@@ -1848,12 +1848,24 @@
         console.log(JSON.stringify(configData))
 
         var url = formData.attr('action')
+        var beforeSendSwal;
         $.ajax({
             type: 'POST',
             url: url,
             data: {
                 configData: JSON.stringify(configData),
                 entityId: '${entity.id}',
+            },
+            beforeSend: function () {
+                beforeSendSwal = Swal.fire({
+                    // title: "Loading",
+                    html: '<img src="${assetPath(src: "/themeassets/images/1476.gif")}" width="100" height="100"/>',
+                    showDenyButton: false,
+                    showCancelButton: false,
+                    showConfirmButton: false,
+                    allowOutsideClick: false,
+                    background: 'transparent'
+                });
             },
             success: function (data) {
                Swal.fire("Success")
