@@ -212,10 +212,10 @@
                                 <b>Can the Invoice Value be Zero?</b>
                                 <select class="form-control show-tick" name="ValZero">
                                     <option value="${Constants.YES}" <g:if
-                                            test="${entitySettings.ValZero == Constants.YES}">selected</g:if>>Yes
+                                            test="${entitySettings.ValZERO == Constants.YES}">selected</g:if>>Yes
                                     </option>
                                     <option value="${Constants.NO}" <g:if
-                                            test="${entitySettings.ValZero == Constants.NO}">selected</g:if>>No</option>
+                                            test="${entitySettings.ValZERO == Constants.NO}">selected</g:if>>No</option>
                                 </select>
                             </div>
                             <div class="col-lg-6 col-md-6 col-sm-12 m-b-20">
