@@ -258,6 +258,7 @@ class EntitySettingService
                     e.isUpdatable = true
                     e.delete()
                 }
+
                 if (jsonObject.get("igm").toString() != null)
                 {
                     EntitySetting entitySetting1 = new EntitySetting()
