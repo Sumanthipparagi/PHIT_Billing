@@ -25,7 +25,7 @@
 <!-- Page Loader -->
 <div class="page-loader-wrapper">
     <div class="loader">
-        <div class="m-t-30"><img src="${assetPath(src: '/themeassets/images/logo.svg')}" width="48" height="48" alt="Alpino"></div>
+        <div class="m-t-30"><img src="${assetPath(src: '/themeassets/images/logo.svg')}" width="48" height="48" alt="PharmIT"></div>
         <p>Please wait...</p>
     </div>
 </div>
@@ -55,7 +55,8 @@
         <!-- Basic Examples -->
         <div class="row clearfix">
             <div class="col-lg-12 col-md-12 col-sm-12">
-                <h2>${entity.entityName}</h2>
+                <h2>${entity.entityName}<br><span style="font-size: 15px;">${entity.entityType.name}</span></h2>
+
                 <div class="card">
                     <div class="header">
                         <h2>Update Settings</h2>
@@ -199,13 +200,12 @@
                             <div class="col-lg-6 col-md-6 col-sm-12 m-b-20">
                                 <b>Round off Total Net Value to ?</b>
                                 <select class="form-control show-tick" name="ron">
+                                    <option value="${Constants.REMAINS_SAME}" <g:if
+                                            test="${entitySettings.RON == Constants.REMAINS_SAME}">selected</g:if>>Remains Same (Recommended)</option>
                                     <option value="${Constants.NEXT_INTEGER_VALUE}" <g:if
                                             test="${entitySettings.RON == Constants.NEXT_INTEGER_VALUE}">selected</g:if>>Next Integer Value</option>
                                     <option value="${Constants.PREVIOUS_INTEGER_VALUE}" <g:if
-                                            test="${entitySettings.RON == Constants.PREVIOUS_INTEGER_VALUE}">selected</g:if>>Previous Interger
-                                    Value</option>
-                                    <option value="${Constants.REMAINS_SAME}" <g:if
-                                            test="${entitySettings.RON == Constants.REMAINS_SAME}">selected</g:if>>Remains Same (Recommended)</option>
+                                            test="${entitySettings.RON == Constants.PREVIOUS_INTEGER_VALUE}">selected</g:if>>Previous Interger Value</option>
                                 </select>
                             </div>
                             <div class="col-lg-6 col-md-6 col-sm-12 m-b-20">
