@@ -53,10 +53,10 @@ class SaleReturnService {
         saleReturn.supplierEmail = jsonObject.get("supplierEmail").toString()
         saleReturn.gross = Double.parseDouble(jsonObject.get("gross").toString())
         saleReturn.taxable = Double.parseDouble(jsonObject.get("taxable").toString())
-        saleReturn.lrNo = jsonObject.get('lrNo').toString()
+        saleReturn.refNo = jsonObject.get('lrNo').toString()
 //        Date lrdate = new Date().parse('d/M/yyyy', jsonObject.get('lrDate').toString()).clearTime()
 //        saleReturn.lrDate = lrdate
-        saleReturn.lrDate = sdf1.parse(jsonObject.get('lrDate').toString()).clearTime()
+        saleReturn.refDate = sdf1.parse(jsonObject.get('lrDate').toString()).clearTime()
         saleReturn.totalGst = Double.parseDouble(jsonObject.get("totalGst").toString())
         saleReturn.totalCgst = Double.parseDouble(jsonObject.get("totalCgst").toString())
         saleReturn.totalSgst = Double.parseDouble(jsonObject.get("totalCgst").toString())
