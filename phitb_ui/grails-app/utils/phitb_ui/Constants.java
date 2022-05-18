@@ -102,4 +102,26 @@ public class Constants
 
     public static String YES = "YES";
     public static String NO = "NO";
+
+
+//    Entity Configs
+    public static String DE = "DE";
+    public static String SEND_MAIL = "SEND_MAIL";
+    public static String REGEN_NEW_DOC = "REGEN_NEW_DOC";
+    public static String ALLOW_MANUAL = "ALLOW_MANUAL";
+    public static String CDE = "CDE";
+    public static String DAD = "DAD";
+    public static String DISCOUNT_BUTTON = "DISCOUNT_BUTTON";
+    public static String RE_CAL = "RE_CAL";
+    public static String PRESCRIPTION_UPLOAD = "PRESCRIPTION_UPLOAD";
+    public static String BLOCK = "BLOCK";
+    public static String DISABLE_SCHEME_QTY = "DISABLE_SCHEME_QTY";
+    public static String MAD = "MAD";
+    public static String AUTO = "AUTO";
+    public static String NEW_BATCH_SELECTION = "NEW_BATCH_SELECTION";
+    public static String ENABLE_CASH_DISC = "ENABLE_CASH_DISC";
+    public static String BLOCK_INV = "BLOCK_INV";
+    public static String WITHOUT_QR = "WITHOUT_QR";
+    public static String UPLOAD_PROOF = "UPLOAD_PROOF";
+
 }

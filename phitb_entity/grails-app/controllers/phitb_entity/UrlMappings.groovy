@@ -142,6 +142,9 @@ class UrlMappings
                 action = [GET: 'show', PUT: 'update', DELETE: 'delete']
             }
 
+//            Entity Config
+            "/entityconfig(.$format)?"(controller: 'entityConfig',action: 'save')
+            "/entityconfig/getbyentityid(.$format)?"(controller: 'entityConfig', action: 'getAllbyEntityId')
 
 
             //Financial Year Master

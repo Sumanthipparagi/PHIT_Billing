@@ -434,15 +434,29 @@
                             var json = JSON.stringify(dt);
                             var url = '/tempstockbook';
                             var type = 'POST';
+                            var beforeSendSwal;
                             $.ajax({
                                 type: type,
                                 url: url,
                                 dataType: 'json',
+                                beforeSend: function () {
+                                    beforeSendSwal = Swal.fire({
+                                        // title: "Loading",
+                                        html:
+                                            '<img src="${assetPath(src: "/themeassets/images/1476.gif")}" width="100" height="100"/>',
+                                        showDenyButton: false,
+                                        showCancelButton: false,
+                                        showConfirmButton: false,
+                                        allowOutsideClick: false,
+                                        background: 'transparent'
+                                    });
+                                },
                                 data: {
                                     rowData: json,
                                     uuid: self.crypto.randomUUID()
                                 },
                                 success: function (data) {
+                                    beforeSendSwal.close()
                                     console.log("Data saved");
                                     hot.setDataAtCell(row, 15, data.id);
                                     mainTableRow = row + 1;

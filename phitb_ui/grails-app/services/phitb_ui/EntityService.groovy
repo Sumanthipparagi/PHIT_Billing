@@ -11,6 +11,7 @@ import javax.ws.rs.client.Client
 import javax.ws.rs.client.ClientBuilder
 import javax.ws.rs.client.Entity
 import javax.ws.rs.client.WebTarget
+import javax.ws.rs.core.Form
 import javax.ws.rs.core.MediaType
 import javax.ws.rs.core.Response
 
@@ -2335,7 +2336,48 @@ class EntityService {
             System.err.println('Service :EntityService , action :  getEntity  , Ex:' + ex)
             log.error('Service :EntityService , action :  getEntity  , Ex:' + ex)
         }
-
     }
 
+    def getEntityConfigByEntity(String id) {
+        Client client = ClientBuilder.newClient()
+        WebTarget target = client.target(new Links().API_GATEWAY)
+        try {
+            Response apiResponse = target
+                    .path(new Links().ENTITY_CONFIG_BY_ENTITY)
+                    .queryParam("id", URLEncoder.encode(id.toString(), "UTF-8"))
+                    .request(MediaType.APPLICATION_JSON_TYPE)
+                    .get()
+            if(apiResponse.status == 200)
+            {
+                JSONObject jsonObject = new JSONObject(apiResponse.readEntity(String.class))
+                return jsonObject
+            }
+            else
+                return null
+        }
+        catch (Exception ex) {
+            System.err.println('Service :EntityService , action :  getEntity  , Ex:' + ex)
+            log.error('Service :EntityService , action :  getEntity  , Ex:' + ex)
+        }
+    }
+
+    def saveEntityConfig(JSONObject jsonObject)
+    {
+        Client client = ClientBuilder.newClient()
+        WebTarget target = client.target(new Links().API_GATEWAY)
+        try
+        {
+            Response apiResponse = target
+                    .path(new Links().ENTITY_CONFIG_SAVE)
+                    .request(MediaType.APPLICATION_JSON_TYPE)
+                    .post(Entity.entity(jsonObject.toString(),MediaType.APPLICATION_JSON_TYPE))
+            return apiResponse
+        }
+        catch (Exception ex)
+        {
+            System.err.println('Service :InventoryService , action :  save  , Ex:' + ex)
+            log.error('Service :InventoryService , action :  save  , Ex:' + ex)
+        }
+
+    }
 }

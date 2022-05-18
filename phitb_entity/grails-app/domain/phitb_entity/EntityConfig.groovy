@@ -3,11 +3,20 @@ package phitb_entity
 class EntityConfig {
 
 
+    String config
+    boolean purchaseOrder
+    boolean purchaseEntry
+    boolean purchaseReturn
+    boolean payments
+    boolean saleOrder
+    boolean saleEntry
+    boolean salesReturn
+    boolean recipts
+    boolean creditJv
+    boolean debitJv
+    String code
     EntityRegister entity
     EntityTypeMaster entityType
-    String code
-    String name
-    String value
 
     Date dateCreated
     Date lastUpdated

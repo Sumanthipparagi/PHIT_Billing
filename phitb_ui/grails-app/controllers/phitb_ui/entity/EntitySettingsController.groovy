@@ -124,6 +124,8 @@ class EntitySettingsController {
     {
         def entity = new EntityService().getEntityById(params.id)
         def entitySettings = new EntityService().getEntitySettingsByEntity(params.id)
-        render(view:'/entity/entitySettings/settings',model:[entity:entity,entitySettings:entitySettings])
+        def entityConfigs = new EntityService().getEntityConfigByEntity(params.id)
+        render(view:'/entity/entitySettings/settings',model:[entity:entity,entitySettings:entitySettings,
+                                                             entityConfigs:entityConfigs])
     }
 }

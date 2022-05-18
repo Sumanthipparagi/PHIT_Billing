@@ -134,6 +134,10 @@ public class Links
     public static String ENTITY_SETTINGS_DATATABLE = "api/v1.0/entity/entitysetting/datatable";
     public static String ENTITY_SETTINGS_BY_ENTITY = "api/v1.0/entity/entitysetting/getbyentityid";
 
+//    Entity Config
+    public static String ENTITY_CONFIG_SAVE = "api/v1.0/entity/entityconfig";
+    public static String ENTITY_CONFIG_BY_ENTITY = "api/v1.0/entity/entityconfig/getbyentityid";
+
 
     //Account Register
     public static String ACCOUNT_REGISTER_SHOW = "api/v1.0/entity/accountregister";
