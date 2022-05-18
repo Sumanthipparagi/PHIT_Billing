@@ -111,7 +111,8 @@
                                             test="${entitySettings.IPS == Constants.TAX_WISE}">selected</g:if>>Tax
                                     wise</option>
                                     <option value="${Constants.FLOOR_RACK}" <g:if
-                                            test="${entitySettings.IPS == Constants.FLOOR_RACK}">selected</g:if>>Floor-Rack</option>
+                                            test="${entitySettings.IPS == Constants.RACK_ONLY}">selected</g:if>>Floor
+                                    -Rack</option>
                                     <option value="${Constants.RACK_ONLY}" <g:if
                                             test="${entitySettings.IPS == Constants.FLOOR_RACK}">selected</g:if>>Rack Only</option>
                                 </select>
