@@ -62,7 +62,7 @@ public class Constants
 
 //Invoice Generation Methods
     public static String SINGLE_INV_ENTIRE_ENTITY = "SINGLE_INV_ENTIRE_ENTITY";
-    public static String SEPARATE_INV_ENTIRE_ENTITY = "SEPARATE_INV_ENTIRE_ENTITY";
+    public static String SEPARATE_INV_EACH_DIVISION = "SEPARATE_INV_EACH_DIVISION";
     public static String SEPARATE_INV_EACH_FLOOR = "SEPARATE_INV_EACH_FLOOR";
 
 //Invoice Print Grouping
