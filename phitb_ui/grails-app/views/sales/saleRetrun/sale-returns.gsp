@@ -77,12 +77,12 @@
 
         <div class="row clearfix">
             <div class="col-lg-9">
-                <div class="card" style="margin-bottom: 10px;">
+                <div class="card" style="margin-bottom: 8px;">
                     <div class="header" style="padding: 1px;">
 
                     </div>
 
-                    <div class="body">
+                    <div class="body" style="padding: 6px;">
                         <div class="row">
                             <div class="col-md-2">
                                 <label for="date">Date:</label>
@@ -150,9 +150,7 @@
                             %{--                            </div>--}%
 
                         </div>
-                        <br>
-
-                        <div class="row">
+                        <div class="row mt-2">
                             <div class="col-md-4">
                                 <label for="lrno">Ref.No:</label>
                                 <input class="form-control show-tick" type="text" id="lrno" name="lrno"
@@ -488,8 +486,9 @@
             data: saleReturnData,
             minRows: 1,
             height: '250',
-            width: 'auto',
+            // width: 'auto',
             rowHeights: 25,
+            stretchH: 'all',
             manualRowResize: true,
             manualColumnResize: true,
             persistentState: true,
@@ -934,11 +933,12 @@
                 hot.selectCell(0, 1);
                 var test = $(this).val();
                 if (test === 'YES') {
-                    $('.batches').hide()
+                    $('.batches').hide();
                     $('.bills').show()
                 } else {
-                    $('.batches').show()
-                    $('.bills').hide()
+                    $('.bills').hide();
+                    $('.batches').show();
+                    batchHot.render()
                 }
             });
         });
@@ -978,7 +978,7 @@
                     success: function (data) {
                         const row = hot.getSelected()[0][0];
                         hot.setDataAtCell(row, 11, Number(taxId[1]).toFixed(2));
-                        hot.setDataAtCell(row, 19, taxId[0].trim())
+                        hot.setDataAtCell(row, 19, taxId[0].trim());
                         var sR = hot.getDataAtCell(row, 7);
                         var sq = hot.getDataAtCell(row, 5);
                         var disc = hot.getDataAtCell(row, 9);
@@ -1036,8 +1036,10 @@
             data: batchData,
             minRows: 1,
             height: '120',
-            width: 'auto',
+            // width: 'auto',
             rowHeights: 25,
+            stretchH: 'all',
+            // colWidths: 72,
             manualRowResize: true,
             manualColumnResize: true,
             persistentState: true,
@@ -1120,7 +1122,8 @@
             data: billData,
             minRows: 1,
             height: '120',
-            width: 'auto',
+            // width: 'auto',
+            stretchH: 'all',
             rowHeights: 25,
             manualRowResize: true,
             manualColumnResize: true,
@@ -1290,7 +1293,7 @@
                     });
                 },
                 success: function (data) {
-                    beforeSendSwal.close()
+                    beforeSendSwal.close();
                     console.log("saleData");
                     console.log(data);
                     if (data) {
@@ -2016,7 +2019,7 @@
 
         var onBeforeMouseDown = function (event) {
             var instance = this;
-            var that = instance.getActiveEditor();
+            var that = instance.instance.getSelected()
             this.$dropdownContainer.on('mousedown', function (evt) {
                 evt.stopPropagation();
             });
@@ -2051,7 +2054,7 @@
                 $('.handsontableInput').children().show()
             } else {
                 $('.handsontableInput').children().hide()
-            }
+            };
             Handsontable.renderers.cellDecorator.apply(this, arguments);
         };
 
@@ -2066,8 +2069,9 @@
             this.instance.removeHook('afterOnCellMouseDown', onBeforeMouseDown);
             this.$textarea.off();
             this.$textarea.hide();
-            $('.handsontableInput').children().remove();
+            $('.handsontableInput').children().hide();
             Handsontable.editors.TextEditor.prototype.close.apply(this, arguments);
+            // $('.handsontableInput').children().show();
         };
 
 
