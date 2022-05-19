@@ -99,9 +99,11 @@
                                     <label for="affiliateId">
                                         Affiliate Id
                                     </label>
-                                    <input type="text" id="affiliateId" class="form-control affiliateId"
-                                           name="affiliateId" placeholder="Affliate Id"
-                                           required/>
+                                    <select class="form-control show-tick affiliateId" name="affiliateId" id="affiliateId">
+                                        <g:each var="af" in="${entityList}">
+                                            <option value="${af.id}">${af.entityName}</option>
+                                        </g:each>
+                                    </select>
                                 </div>
 
                                 <div class="col-lg-6 form-group  form-float">
@@ -202,12 +204,16 @@
 
                                 <div class="col-lg-6 form-group  form-float">
                                     <label for="priorityId">
-                                        Priority Id
+                                        Priority
                                     </label>
-                                    <input type="text" id="priorityId" class="form-control priorityId"
-                                           name="priorityId" placeholder="Priority Id"
-                                           required/>
+                                    <select class="form-control show-tick priorityId" name="priorityId" id="priorityId">
+                                        <g:each var="p" in="${priority}">
+                                            <option value="${p.id}"
+                                                    >${p.priority}</option>
+                                        </g:each>
+                                    </select>
                                 </div>
+
                                 <div class="col-lg-6 form-group  form-float">
                                     <label for="pan">
                                         PAN
@@ -235,14 +241,14 @@
                                            required/>
                                 </div>
 
-                                <div class="col-lg-6 form-group  form-float">
-                                    <label for="corpId">
-                                        Crop Id
-                                    </label>
-                                    <input type="number" id="corpId" class="form-control corpId"
-                                           name="corpId" placeholder="Crop Id"
-                                           required/>
-                                </div>
+%{--                                <div class="col-lg-6 form-group  form-float">--}%
+%{--                                    <label for="corpId">--}%
+%{--                                        Crop Id--}%
+%{--                                    </label>--}%
+%{--                                    <input type="number" id="corpId" class="form-control corpId"--}%
+%{--                                           name="corpId" placeholder="Crop Id"--}%
+%{--                                           required/>--}%
+%{--                                </div>--}%
 
                                 <div class="col-lg-6 form-group  form-float">
                                     <label for="drugLicence1">
@@ -276,6 +282,15 @@
                                     </label>
                                     <input type="text" id="foodLicenceValidity" class="form-control foodLicenceValidity"
                                            name="foodLicenceValidity" placeholder="Food Licence Validity"
+                                           required/>
+                                </div>
+
+                                <div class="col-lg-6 form-group  form-float">
+                                    <label for="foodLicense1">
+                                        Food Licence 1
+                                    </label>
+                                    <input type="text" id="foodLicense1" class="form-control foodLicence1"
+                                           name="foodLicence1" placeholder="Food License 1"
                                            required/>
                                 </div>
 
@@ -382,14 +397,14 @@
                                            required/>
                                 </div>
 
-                                <div class="col-lg-6 form-group  form-float">
-                                    <label for="transportTypeId">
-                                        Transport Type Id
-                                    </label>
-                                    <input type="number" id="transportTypeId" class="form-control transportTypeId"
-                                           name="transportTypeId" placeholder="Transport Type Id"
-                                           required/>
-                                </div>
+%{--                                <div class="col-lg-6 form-group  form-float">--}%
+%{--                                    <label for="transportTypeId">--}%
+%{--                                        Transport Type Id--}%
+%{--                                    </label>--}%
+%{--                                    <input type="number" id="transportTypeId" class="form-control transportTypeId"--}%
+%{--                                           name="transportTypeId" placeholder="Transport Type Id"--}%
+%{--                                           required/>--}%
+%{--                                </div>--}%
 
                                 <div class="col-lg-6 form-group  form-float">
                                     <label for="defaultCharge">
@@ -527,14 +542,14 @@
                                            required/>
                                 </div>
 
-                                <div class="col-lg-6 form-group  form-float">
-                                    <label for="password">
-                                        Password
-                                    </label>
-                                    <input type="password" id="password" class="form-control password"
-                                           name="password" placeholder="Password"
-                                           required/>
-                                </div>
+%{--                                <div class="col-lg-6 form-group  form-float">--}%
+%{--                                    <label for="password">--}%
+%{--                                        Password--}%
+%{--                                    </label>--}%
+%{--                                    <input type="password" id="password" class="form-control password"--}%
+%{--                                           name="password" placeholder="Password"--}%
+%{--                                           required/>--}%
+%{--                                </div>--}%
 
                                 <div class="col-lg-6 form-group  form-float">
                                     <label for="zoneId">
@@ -557,8 +572,8 @@
                                 </div>
                                 <input type="hidden" name="status" value="1">
                                 <input type="hidden" name="syncStatus" value="1">
-                                <input type="hidden" name="createdUser" value="1">
-                                <input type="hidden" name="modifiedUser" value="1">
+                                <input type="hidden" name="createdUser" value="${session.getAttribute('userId')}">
+                                <input type="hidden" name="modifiedUser" value="${session.getAttribute('userId')}">
                                 <div class="col-lg-12">
                                     <div class="" style="float: right;">
                                     <input name="id" id="id" class="id" type="hidden">
@@ -605,6 +620,18 @@
     $(function () {
         //Datetimepicker plugin
         $('.contactDob').bootstrapMaterialDatePicker({
+            format: 'DD/MM/YYYY',
+            clearButton: true,
+            time: false,
+            weekStart: 1
+        });
+        $('.foodLicenceValidity').bootstrapMaterialDatePicker({
+            format: 'DD/MM/YYYY',
+            clearButton: true,
+            time: false,
+            weekStart: 1
+        });
+        $('.drugLicenceValidity').bootstrapMaterialDatePicker({
             format: 'DD/MM/YYYY',
             clearButton: true,
             time: false,

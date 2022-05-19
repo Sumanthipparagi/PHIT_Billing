@@ -46,6 +46,8 @@
     /*}*/
 
     .hidden{display: none}
+
+
     </style>
 </head>
 
@@ -688,7 +690,7 @@
                         cellProperties
                     ) {
                         Handsontable.renderers.TextRenderer.apply(this, arguments);
-                        td.innerHTML = '<button class="btn-danger" style="margin: 2px;">Delete</button>';
+                        td.innerHTML = '<button class="btn-danger delete" style="margin: 2px;">Delete</button>';
                     };
                 }
                 return cellPrp;
@@ -1213,8 +1215,6 @@
                 }
             }
         });
-
-
         $('#series').trigger('change');
     });
 
@@ -1283,8 +1283,7 @@
                     });
                     beforeSendSwal = Swal.fire({
                         // title: "Loading",
-                        html:
-                            '<img src="${assetPath(src: "/themeassets/images/1476.gif")}" width="100" height="100"/>',
+                        html: '<img src="${assetPath(src: "/themeassets/images/1476.gif")}" width="100" height="100"/>',
                         showDenyButton: false,
                         showCancelButton: false,
                         showConfirmButton: false,
@@ -1570,14 +1569,14 @@
             return;
         }
         if (!lrno) {
-            alert("Please enter LR number.");
+            alert("Please enter Ref number.");
             waitingSwal.close();
             return;
         }
 
         if(!lrDateInput.value)
         {
-            alert("Please enter LR date.");
+            alert("Please enter Ref date.");
             waitingSwal.close();
             return;
         }
@@ -2030,11 +2029,13 @@
             this.textareaParentStyle.zIndex = 20000;
             this.instance.addHook('beforeKeyDown', onBeforeKeyDown);
             this.instance.addHook('afterOnCellMouseDown', onBeforeMouseDown);
-            this.textareaParentStyle.display = 'block';
+            // this.textareaParentStyle.display = 'block';
+
             this.$textarea.css({
                 height: $(this.TD).height() + 4,
                 'min-width': $(this.TD).outerWidth() - 4
             });
+
 
             //display the list
             this.$textarea.show();
@@ -2045,17 +2046,28 @@
                 .on('select2-close', onSelect2Closed.bind(this));
             self.$textarea.select2('open');
 
+
             // Pushes initial character entered into the search field, if available
             if (keyboardEvent && keyboardEvent.keyCode) {
                 var key = keyboardEvent.keyCode;
                 var keyText = (String.fromCharCode((96 <= key && key <= 105) ? key - 48 : key)).toLowerCase();
                 console.log("KeyText: " + keyText);
                 self.$textarea.select2('search', keyText.slice(0, -1));
+
+
+                // alert(rect)
                 $('.handsontableInput').children().show()
             } else {
                 $('.handsontableInput').children().hide()
-            };
+            }
             Handsontable.renderers.cellDecorator.apply(this, arguments);
+            // const element = document.getElementsByClassName("highlight")[0];
+            // const rect = element.getBoundingClientRect();
+            // var top = rect.top.toFixed();
+            // var left =  rect.left.toFixed();
+            // document.getElementById("select2-drop").setAttribute('style','top:'+top+'');
+            // document.getElementById("select2-drop").style.left = left;
+            // console.log(document.getElementById("select2-drop"));
         };
 
 

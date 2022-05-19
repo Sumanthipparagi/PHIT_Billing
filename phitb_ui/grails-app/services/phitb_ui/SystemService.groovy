@@ -753,6 +753,40 @@ class SystemService
      * @param jsonObject
      * @return
      */
+    def getAllPriority(String id)
+    {
+        Client client = ClientBuilder.newClient();
+        WebTarget target = client.target(new Links().API_GATEWAY);
+
+        try
+        {
+            Response apiResponse = target
+                    .path(new Links().PRIORITY_SHOW)
+                    .request(MediaType.APPLICATION_JSON_TYPE)
+                    .get()
+            if(apiResponse.status == 200)
+            {
+                JSONArray jsonArray = new JSONArray(apiResponse.readEntity(String.class).toString())
+                return jsonArray
+            }
+            else {
+                return null
+            }
+
+        }
+        catch (Exception ex)
+        {
+            System.err.println('Service :showAccountModes , action :  show  , Ex:' + ex)
+            log.error('Service :showAccountModes , action :  show  , Ex:' + ex)
+        }
+
+    }
+
+    /**
+     *
+     * @param jsonObject
+     * @return
+     */
     def getAllGender()
     {
         Client client = ClientBuilder.newClient();
