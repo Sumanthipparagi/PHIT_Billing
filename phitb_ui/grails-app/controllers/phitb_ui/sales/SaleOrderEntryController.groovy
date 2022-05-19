@@ -191,7 +191,6 @@ class SaleOrderEntryController {
             def saleOrder = new JSONObject(response.readEntity(String.class))
             //save to sale product details
             for (JSONObject saleProductDetail : saleProductDetails) {
-
                 saleProductDetail.put("billId",saleOrder.get("id"))
                 saleProductDetail.put("billType",0) //0 Sale, 1 Purchase
                 saleProductDetail.put("serBillId",saleOrder.get("serBillId"))
