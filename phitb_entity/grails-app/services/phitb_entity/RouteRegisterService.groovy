@@ -101,6 +101,7 @@ class RouteRegisterService
         routeRegister.areaManager = UserRegister.findById(Long.parseLong(jsonObject.get("areaManager").toString()))
         routeRegister.ccmEnabled = Long.parseLong(jsonObject.get("ccmEnabled").toString())
         routeRegister.daysOfWeek = jsonObject.get("daysOfWeek").toString()
+        routeRegister.salesman = UserRegister.findById(Long.parseLong(jsonObject.get("areaManager").toString()))
         routeRegister.ccmId = jsonObject.get("ccmId").toString()
         routeRegister.apprExpense = Double.parseDouble(jsonObject.get("apprExpense").toString())
         routeRegister.status = jsonObject.get("status").toString()
