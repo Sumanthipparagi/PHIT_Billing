@@ -29,6 +29,7 @@ class DivisionController {
             ArrayList<String> countrylist = new CountryController().show() as ArrayList<String>
             ArrayList<String> citylist = new CityController().show() as ArrayList<String>
             ArrayList<String> zoneList = new ZoneController().show() as ArrayList<String>
+            ArrayList<String> customerGroup = new CustomerGroupController().show() as ArrayList<String>
             ArrayList<String> managerList = []
             ArrayList<String> customerList = []
             userregister.each {
@@ -49,7 +50,7 @@ class DivisionController {
             render(view: '/product/division/division',model: [entitylist:entity,statelist:statelist,
                                                               countrylist:countrylist,citylist:citylist,
                                                               zoneList:zoneList,
-                                                    customerList:customerList,series:series,
+                                                    customerList:customerGroup,series:series,
                                                               managerList:managerList])
         }
         catch (Exception ex)

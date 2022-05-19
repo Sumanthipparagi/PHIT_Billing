@@ -99,7 +99,7 @@
                                 <select class="form-control show-tick customerIds" name="customerIds"
                                         id="customerIds"  multiple="multiple" required>
                                     <g:each var="cust" in="${customerList}">
-                                        <option value="${cust.id}">${cust.entityName}</option>
+                                        <option value="${cust.id}">${cust.customerGroupName}</option>
                                     </g:each>
                                 </select>
                             </div>

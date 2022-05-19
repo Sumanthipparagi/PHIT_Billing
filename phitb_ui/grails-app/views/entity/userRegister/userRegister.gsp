@@ -136,7 +136,7 @@
 </section>
 
 
-<g:include view="controls/entity/add-entity-register.gsp"/>
+%{--<g:include view="controls/entity/add-entity-register.gsp"/>--}%
 <g:include view="controls/delete-modal.gsp"/>
 
 <!-- Jquery Core Js -->
@@ -197,7 +197,7 @@
                     for (var i = 0; i < json.data.length; i++) {
                         console.log(json);
                         var editbtn =
-                            '<a href="/user-register/update-user-register/' + json.data[i].id
+                            '<a href="/user/update-details/' + json.data[i].id
                             +'"><button type="button" data-id="' + json.data[i].id +'"class="editbtn btn btn-sm btn-warning  editbtn"><i class="material-icons"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">edit</font></font></i></button></a>'
                         var deletebtn = '<button type="button" data-id="' + json.data[i].id +
                             '" class="btn btn-sm btn-danger deletebtn" data-toggle="modal" data-target=".deleteModal"><i class="material-icons"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">delete</font></font></i></button>'
