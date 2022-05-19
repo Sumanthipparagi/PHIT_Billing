@@ -47,7 +47,7 @@ class SaleProductDetails implements Serializable, LogicalDelete<SaleProductDetai
     String uuid
 
     static constraints = {
-        uuid unique: true
+        uuid unique: true, nullable: true
         sqty min: 0D
         freeQty min: 0D
         repQty min: 0D

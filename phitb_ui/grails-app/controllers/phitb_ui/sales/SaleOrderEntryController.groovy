@@ -36,6 +36,7 @@ class SaleOrderEntryController {
         String duedate = params.duedate
         String billStatus = params.billStatus
         String message = params.message
+        String uuid = params.uuid
         if(!message)
             message = "NA"
         long finId = 0
@@ -108,6 +109,7 @@ class SaleOrderEntryController {
             saleProductDetail.put("sgstAmount", sgst)
             saleProductDetail.put("cgstAmount", cgst)
             saleProductDetail.put("igstAmount", igst)
+            saleProductDetail.put("uuid", uuid)
             saleProductDetail.put("gstId", 1) //TODO: to be changed
             saleProductDetail.put("amount", value)
             saleProductDetail.put("reason", "") //TODO: to be changed
@@ -118,6 +120,10 @@ class SaleOrderEntryController {
             saleProductDetail.put("status", 0)
             saleProductDetail.put("syncStatus", 0)
             saleProductDetail.put("financialYear", financialYear)
+            saleProductDetail.put("gstPercentage", sale.get("16").toString())
+            saleProductDetail.put("sgstPercentage", sale.get("17").toString())
+            saleProductDetail.put("cgstPercentage", sale.get("18").toString())
+            saleProductDetail.put("igstPercentage", sale.get("19").toString())
             saleProductDetail.put("", financialYear)
             saleProductDetail.put("entityId", entityId)
             saleProductDetail.put("entityTypeId", session.getAttribute("entityTypeId").toString())
@@ -210,6 +216,7 @@ class SaleOrderEntryController {
                 stockBook.put("remainingQty", tmpStockBook.get("remainingQty"))
                 stockBook.put("remainingFreeQty", tmpStockBook.get("remainingFreeQty"))
                 stockBook.put("remainingReplQty", tmpStockBook.get("remainingReplQty"))
+                stockBook.put("mergedWith", 0)
                 String expDate = stockBook.get("expDate").toString().split("T")[0]
                 String purcDate = stockBook.get("purcDate").toString().split("T")[0]
                 String manufacturingDate = stockBook.get("manufacturingDate").toString().split("T")[0]

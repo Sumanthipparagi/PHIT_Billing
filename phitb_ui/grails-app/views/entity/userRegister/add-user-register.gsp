@@ -155,17 +155,17 @@
                                     </select>
                                 </div>
 
-                                <div class="col-lg-6 form-group  form-float">
-                                    <label for="photo">
-                                        Photo
-                                    </label>
+%{--                                <div class="col-lg-6 form-group  form-float">--}%
+%{--                                    <label for="photo">--}%
+%{--                                        Photo--}%
+%{--                                    </label>--}%
 %{--                                    <input type="file" id="input-file-now photo" class="dropify"--}%
 %{--                                           data-default-file=""--}%
 %{--                                           name="photo"  accept="image/png, image/gif, image/jpeg"/>--}%
-                                    <input type="file" id="input-file-now photo" class="dropify"
-                                           data-default-file=""
-                                           name="photo"  accept="image/png, image/gif, image/jpeg"/>
-                                </div>
+%{--                                    <input type="file" id="input-file-now photo" class="dropify"--}%
+%{--                                           data-default-file=""--}%
+%{--                                           name="photo"  accept="image/png, image/gif, image/jpeg"/>--}%
+%{--                                </div>--}%
 
                                 <div class="col-lg-6 form-group  form-float">
                                     <label for="genderId">
@@ -420,16 +420,16 @@
                                     </select>
                                 </div>
 
-%{--                                <div class="col-lg-6 form-group  form-float">--}%
-%{--                                    <label for="entityType">--}%
-%{--                                        Entity Type--}%
-%{--                                    </label>--}%
-%{--                                    <select class="form-control show-tick entityType" name="entityType" id="entityType">--}%
-%{--                                        <g:each var="et" in="${entitytype}">--}%
-%{--                                            <option value="${et.id}">${et.name}</option>--}%
-%{--                                        </g:each>--}%
-%{--                                    </select>--}%
-%{--                                </div>--}%
+                                <div class="col-lg-6 form-group  form-float">
+                                    <label for="entityType">
+                                        Entity Type
+                                    </label>
+                                    <select class="form-control show-tick entityType" name="entityType" id="entityType">
+                                        <g:each var="et" in="${entitytype}">
+                                            <option value="${et.id}">${et.name}</option>
+                                        </g:each>
+                                    </select>
+                                </div>
 
                                 <div class="col-lg-6 form-group  form-float">
                                     <label for="entity">
@@ -459,7 +459,7 @@
                                 <input type="hidden" name="status" value="1">
                                 <input type="hidden" name="syncStatus" value="1">
                                 <input type="hidden" name="lastLoginDate" value="12/02/2020">
-                                <input type="hidden" name="createdUser" value="1">
+                                <input type="hidden" name="createdUser" value="${session.getAttribute('userId')}">
                                 <input type="hidden" name="modifiedUser" value="1">
                                 <div class="col-lg-12">
                                     <div class="" style="float: right;">
