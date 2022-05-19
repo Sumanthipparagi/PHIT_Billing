@@ -137,6 +137,10 @@ class UrlMappings {
         "/entity-settings/delete/$id"(controller: "entitySettings",action:"delete")
         "/entity-settings/settings"(controller: 'entitySettings', action: 'settings')
 
+
+//        Entity Config
+        "/entity-config"(controller: 'entityConfig', action: 'saveEntityConfig')
+
 //      User Register
         "/user-register"(controller: "userRegister") {
             action = [GET: "index", POST: "save"]
