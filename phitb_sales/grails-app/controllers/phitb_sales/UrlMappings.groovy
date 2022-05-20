@@ -178,7 +178,7 @@ class UrlMappings {
                         'save']
             }
             "/saleorderproductdetails/bill/$id(.$format)?"(controller: 'saleOrderProductDetails') {
-                action = [GET: 'getSaleProductDetailsOfSaleBill']
+                action = [GET: 'getSaleOrderProductDetailsOfBill']
             }
 
             "/saleproductdetailslist/bill/$salebillsIds(.$format)?"(controller: 'saleOrderProductDetails') {
@@ -259,6 +259,10 @@ class UrlMappings {
             "/saleorderdetails(.$format)?"(controller: 'saleOrderEntry') {
                 action = [GET: 'index', POST:
                         'saveSaleOrder']
+            }
+            "/saleorderdetails/$id(.$format)?"(controller:'saleOrderEntry') {
+                action = [GET: 'show', PUT: 'update', DELETE:
+                        'delete']
             }
 
             "/saleorderdetails/getrecent(.$format)?"(controller: 'saleOrderEntry') {

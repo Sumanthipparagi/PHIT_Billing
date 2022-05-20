@@ -487,6 +487,34 @@ contains both sale bill and products
 
     }
 
+    def getSaleOrderDetailsById(String id)
+    {
+        Client client = ClientBuilder.newClient();
+        WebTarget target = client.target(new Links().API_GATEWAY);
+        try
+        {
+            Response apiResponse = target
+                    .path(new Links().SALE_ORDER_SHOW + "/" + id)
+                    .request(MediaType.APPLICATION_JSON_TYPE)
+                    .get()
+            if (apiResponse.status == 200)
+            {
+                JSONObject saleBillDetail = new JSONObject(apiResponse.readEntity(String.class))
+                return saleBillDetail
+            }
+            else
+            {
+                return null
+            }
+        }
+        catch (Exception ex)
+        {
+            System.err.println('Service :SalesService , action :  getProducts  , Ex:' + ex)
+            log.error('Service :SalesService , action :  getProducts  , Ex:' + ex)
+        }
+
+    }
+
     def getSaleReturnDetailsById(String id)
     {
         Client client = ClientBuilder.newClient();
@@ -552,6 +580,35 @@ contains both sale bill and products
         {
             Response apiResponse = target
                     .path(new Links().SALE_PRODUCT_OF_BILL+"/"+id)
+                    .request(MediaType.APPLICATION_JSON_TYPE)
+                    .get()
+            if (apiResponse.status == 200)
+            {
+                JSONArray saleProductDetail = new JSONArray(apiResponse.readEntity(String.class))
+                return saleProductDetail
+            }
+            else
+            {
+                return null
+            }
+        }
+        catch (Exception ex)
+        {
+            System.err.println('Service :SalesService , action :  getProducts  , Ex:' + ex)
+            log.error('Service :SalesService , action :  getProducts  , Ex:' + ex)
+        }
+
+    }
+
+
+    def getSaleProductDetailsByOrder(String id)
+    {
+        Client client = ClientBuilder.newClient();
+        WebTarget target = client.target(new Links().API_GATEWAY);
+        try
+        {
+            Response apiResponse = target
+                    .path(new Links().SALE_PRODUCT_ORDER+"/"+id)
                     .request(MediaType.APPLICATION_JSON_TYPE)
                     .get()
             if (apiResponse.status == 200)

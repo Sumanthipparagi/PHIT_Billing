@@ -222,7 +222,7 @@ class SaleOrderProductDetailsService {
         }
     }
 
-    def getBySaleBill(String id)
+    def getBySaleOrder(String id)
     {
         if (id)
         {

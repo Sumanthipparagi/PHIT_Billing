@@ -437,6 +437,8 @@ public class Links
 
     //Sale Order Details
     public static String SALE_ORDER_SAVE = "api/v1.0/sales/saleorderdetails";
+    public static String SALE_ORDER_SHOW = "api/v1.0/sales/saleorderdetails";
+    public static String SALE_PRODUCT_ORDER = "api/v1.0/sales/saleorderproductdetails/bill";
     public static String SALE_ORDER_DATATABLE = "api/v1.0/sales/saleorderdetails/datatable";
     public static String SALE_ORDER_RECENT = "api/v1.0/sales/saleorderdetails/getrecent";
 

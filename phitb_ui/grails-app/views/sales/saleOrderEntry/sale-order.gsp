@@ -510,59 +510,59 @@
                                     url: "/stockbook/product/" + pid + "/batch/" + batch,
                                     dataType: 'json',
                                     success: function (data) {
-                                        remQty = remQty + data.remainingQty;
-                                        remFQty = remFQty + data.remainingFreeQty;
-                                        if (remQty >= sQty) {
-                                            allowEntry = true;
-                                        }
-                                        else if (sQty >= remQty && remFQty >= sQty) {
-                                            allowEntry = true;
-                                        }
+                                    remQty = remQty + data.remainingQty;
+                                    remFQty = remFQty + data.remainingFreeQty;
+                                    if (remQty >= sQty) {
+                                        allowEntry = true;
+                                    }
+                                    else if (sQty >= remQty && remFQty >= sQty) {
+                                        allowEntry = true;
+                                    }
 
-                                        else if ((remQty + remFQty) >= sQty) {
-                                            allowEntry = true;
-                                        }
+                                    else if ((remQty + remFQty) >= sQty) {
+                                        allowEntry = true;
+                                    }
 
-                                        if(selection === 5)
+                                    if(selection === 5)
+                                    {
+                                        if(remFQty >= fQty)
                                         {
-                                            if(remFQty >= fQty)
-                                            {
-                                                freeQtyEntry = true;
-                                            }
-
-                                            else if ((remQty + remFQty) >= sQty+fQty) {
-                                                freeQtyEntry = true;
-                                                allowEntry = true;
-                                            }
-                                            else
-                                            {
-                                                freeQtyEntry = false;
-                                                allowEntry = false;
-                                            }
-
-                                            if(freeQtyEntry!==true)
-                                            {
-                                                // hot.setDataAtCell(row, 5, 0);
-                                                alert("Entered Free quantity exceeds available quantity");
-                                            }
+                                            freeQtyEntry = true;
                                         }
-                                        if (!allowEntry) {
-                                            // this.getActiveEditor().TEXTAREA.value = "";
-                                            hot.setDataAtCell(row, 4, 0);
-                                            hot.setDataAtCell(row, 5, 0);
-                                            hot.setDataAtCell(row, 10, 0);
-                                            hot.setDataAtCell(row, 11, 0);
-                                            hot.setDataAtCell(row, 12, 0);
-                                            hot.setDataAtCell(row, 13, 0);
-                                            hot.setDataAtCell(row, 14, 0);
-                                            alert("Entered quantity exceeds available quantity");
-                                            return;
+
+                                        else if ((remQty + remFQty) >= sQty+fQty) {
+                                            freeQtyEntry = true;
+                                            allowEntry = true;
                                         }
                                         else
                                         {
-                                            hot.setDataAtCell(row,5,fQty)
+                                            freeQtyEntry = false;
+                                            allowEntry = false;
                                         }
-                                    },
+
+                                        if(freeQtyEntry!==true)
+                                        {
+                                            // hot.setDataAtCell(row, 5, 0);
+                                            alert("Entered Free quantity exceeds available quantity");
+                                        }
+                                    }
+                                    if (!allowEntry) {
+                                        // this.getActiveEditor().TEXTAREA.value = "";
+                                        hot.setDataAtCell(row, 4, 0);
+                                        hot.setDataAtCell(row, 5, 0);
+                                        hot.setDataAtCell(row, 10, 0);
+                                        hot.setDataAtCell(row, 11, 0);
+                                        hot.setDataAtCell(row, 12, 0);
+                                        hot.setDataAtCell(row, 13, 0);
+                                        hot.setDataAtCell(row, 14, 0);
+                                        alert("Entered quantity exceeds available quantity");
+                                        return;
+                                    }
+                                    else
+                                    {
+                                        hot.setDataAtCell(row,5,fQty)
+                                    }
+                                },
                                     error: function (data) {
                                         alert("Something went Wrong!")
                                     }
@@ -886,18 +886,18 @@
 
     function deleteTempStockRow(id, row) {
         if (!readOnly) {
-            if (id) {
-                $.ajax({
-                    type: "POST",
-                    url: "tempstockbook/delete/" + id,
-                    dataType: 'json',
-                    success: function (data) {
-                        hot.alter("remove_row", row);
-                        swal("Success", "Row Deleted", "").fire();
-                    }
-                });
-            } else
-                hot.alter("remove_row", row);
+            // if (id) {
+            //     $.ajax({
+            //         type: "POST",
+            //         url: "tempstockbook/delete/" + id,
+            //         dataType: 'json',
+            //         success: function (data) {
+            //             hot.alter("remove_row", row);
+            //             swal("Success", "Row Deleted", "").fire();
+            //         }
+            //     });
+            // } else
+            hot.alter("remove_row", row);
         } else
             alert("Can't change this now, invoice has been saved already.")
     }

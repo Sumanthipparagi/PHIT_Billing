@@ -1,11 +1,8 @@
 package phitb_sales
 
 
-import grails.rest.*
 import grails.converters.*
 import grails.web.servlet.mvc.GrailsParameterMap
-import groovy.json.internal.ArrayUtils
-import org.grails.web.json.JSONArray
 import org.grails.web.json.JSONObject
 import org.springframework.boot.context.config.ResourceNotFoundException
 import phitb_sales.Exception.BadRequestException
@@ -216,12 +213,12 @@ class SaleOrderProductDetailsController
         }
     }
 
-    def getSaleOrderProductDetailsOfSaleBill()
+    def getSaleOrderProductDetailsOfBill()
     {
         try
         {
             String id = params.id
-            respond saleOrderProductDetailsService.getBySaleBill(id)
+            respond saleOrderProductDetailsService.getBySaleOrder(id)
         }
         catch (ResourceNotFoundException ex)
         {
