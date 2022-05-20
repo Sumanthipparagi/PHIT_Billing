@@ -152,6 +152,17 @@ class SaleOrderEntryController {
         //save to sale bill details
         saleOrderDetails.put("serBillId", serBillId)
         saleOrderDetails.put("customerId", customerId)
+        saleOrderDetails.put("refNumber", "0")
+        saleOrderDetails.put("refDate", entryDate)
+        saleOrderDetails.put("orderValidity", entryDate)
+        saleOrderDetails.put("salesmanId", 0)
+        saleOrderDetails.put("transportTypeId", 0)
+        saleOrderDetails.put("totalEstimate", 0)
+        saleOrderDetails.put("orderId", 0)
+        saleOrderDetails.put("gstId", 0)
+        saleOrderDetails.put("orderMechanism", 0)
+        saleOrderDetails.put("purchaseQuotationId", 0)
+        saleOrderDetails.put("confirmationStatus", 0)
         saleOrderDetails.put("customerNumber", 0) //TODO: to be changed
         saleOrderDetails.put("finId", finId)
         saleOrderDetails.put("seriesId", seriesId)
@@ -205,7 +216,6 @@ class SaleOrderEntryController {
         if (response.status == 200)
         {
             JSONObject saleBillDetail = new JSONObject(response.readEntity(String.class))
-            //update stockbook
             //update stockbook
             for (JSONObject saleOrder : saleOrderData) {
                 //check if selected product and batch exists for the entity, if so update data, else add new

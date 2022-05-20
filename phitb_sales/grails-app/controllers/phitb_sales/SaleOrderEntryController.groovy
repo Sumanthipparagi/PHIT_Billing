@@ -4,6 +4,7 @@ package phitb_sales
 import grails.rest.*
 import grails.converters.*
 import grails.web.servlet.mvc.GrailsParameterMap
+import org.grails.web.json.JSONArray
 import org.grails.web.json.JSONObject
 import org.springframework.boot.context.config.ResourceNotFoundException
 import phitb_sales.Exception.BadRequestException
@@ -12,6 +13,7 @@ class SaleOrderEntryController {
 	static responseFormats = ['json', 'xml']
     static allowedMethods = [index: "GET", show: "GET", save: "POST", update: "PUT", delete: "DELETE", dataTable: "GET"]
     SalesOrderEntryService salesOrderEntryService
+    SaleOrderProductDetailsService saleOrderProductDetailsService
     /**
      * Gets all Sale Order Entry
      * @param query
@@ -196,6 +198,43 @@ class SaleOrderEntryController {
             String entityId = params.entityId
             String billStatus = params.billStatus
             respond salesOrderEntryService.getRecentByFinancialYearAndEntity(financialYear, entityId, billStatus)
+        }
+        catch (ResourceNotFoundException ex) {
+            System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
+            response.status = 404
+        }
+        catch (BadRequestException ex) {
+            System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
+            response.status = 400
+        }
+        catch (Exception ex) {
+            System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
+        }
+    }
+
+    /**
+     * Save new Sale Bill Details along with products
+     * @param Sale Bill Details
+     * @return saved Sale Bill Details
+     */
+    def saveSaleOrder() {
+        try {
+            JSONObject jsonObject = JSON.parse(request.reader.text) as JSONObject
+            SalesOrderEntry salesOrderEntry = salesOrderEntryService.save(jsonObject.get("saleOrder"))
+            if(salesOrderEntry) {
+                UUID uuid
+                JSONArray saleOrderProducts = jsonObject.get("saleOrderProducts")
+                for (JSONObject product : saleOrderProducts) {
+                    uuid = UUID.randomUUID()
+                    product.put("uuid", uuid)
+                    product.put("billId", salesOrderEntry.id)
+                    product.put("billType", 0) //0 Sale, 1 Purchase
+                    product.put("serBillId", salesOrderEntry.serBillId)
+                    saleOrderProductDetailsService.save(product)
+                    println("product saved")
+                }
+            }
+            respond salesOrderEntry
         }
         catch (ResourceNotFoundException ex) {
             System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)

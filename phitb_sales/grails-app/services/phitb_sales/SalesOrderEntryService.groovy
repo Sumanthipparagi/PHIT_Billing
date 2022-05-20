@@ -5,6 +5,7 @@ import org.grails.web.json.JSONObject
 import phitb_sales.Exception.BadRequestException
 import phitb_sales.Exception.ResourceNotFoundException
 
+import java.text.DecimalFormat
 import java.text.SimpleDateFormat
 
 @Transactional
@@ -113,6 +114,7 @@ class SalesOrderEntryService {
         salesOrderEntry.purchaseQuotationId = jsonObject.get("purchaseQuotationId").toString()
         salesOrderEntry.confirmationStatus = jsonObject.get("gstId").toString()
         salesOrderEntry.financialYear = jsonObject.get("financialYear").toString()
+        salesOrderEntry.uuid = jsonObject.get('uuid').toString()
         salesOrderEntry.entityTypeId = Long.parseLong(jsonObject.get("entityTypeId").toString())
         salesOrderEntry.entityId = Long.parseLong(jsonObject.get("entityId").toString())
         salesOrderEntry.createdUser = Long.parseLong(jsonObject.get("createdUser").toString())
@@ -120,6 +122,33 @@ class SalesOrderEntryService {
         salesOrderEntry.save(flush: true)
         if (!salesOrderEntry.hasErrors())
         {
+            Calendar cal = new GregorianCalendar()
+            cal.setTime(salesOrderEntry.entryDate)
+            String month = cal.get(Calendar.MONTH)+1
+            String year = cal.get(Calendar.YEAR)
+            DecimalFormat mFormat = new DecimalFormat("00");
+            month = mFormat.format(Double.valueOf(month));
+            String invoiceNumber = null;
+            String seriesCode = jsonObject.get("seriesCode")
+            SaleBillDetails saleBillDetails1
+            if (salesOrderEntry.billStatus == "DRAFT")
+            {
+                println(salesOrderEntry.billStatus)
+//                invoiceNumber = saleBillDetails.entityId+"/DR/S/" + month + year + "/" + seriesCode + "/__";'
+                salesOrderEntry.invoiceNumber = null
+            }
+            else
+            {
+                invoiceNumber = salesOrderEntry.entityId + "/SO/" + month + year + "/" + seriesCode + "/" +
+                        salesOrderEntry.serBillId
+                println("Invoice Number generated: " + invoiceNumber)
+            }
+            if (invoiceNumber)
+            {
+                salesOrderEntry.invoiceNumber = invoiceNumber
+                salesOrderEntry.isUpdatable = true
+                salesOrderEntry.save(flush: true)
+            }
             return salesOrderEntry
         }
         else

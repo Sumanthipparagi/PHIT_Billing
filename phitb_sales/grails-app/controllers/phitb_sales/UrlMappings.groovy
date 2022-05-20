@@ -258,7 +258,7 @@ class UrlMappings {
 //            Sale order Details
             "/saleorderdetails(.$format)?"(controller: 'saleOrderEntry') {
                 action = [GET: 'index', POST:
-                        'save']
+                        'saveSaleOrder']
             }
 
             "/saleorderdetails/getrecent(.$format)?"(controller: 'saleOrderEntry') {

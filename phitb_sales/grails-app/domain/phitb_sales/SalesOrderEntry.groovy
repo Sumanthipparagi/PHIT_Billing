@@ -27,6 +27,7 @@ class SalesOrderEntry implements Serializable, LogicalDelete<SalesOrderEntry>
     String purchaseQuotationId
     String confirmationStatus
     String financialYear
+    String invoiceNumber
 
     String uuid
 
@@ -36,6 +37,7 @@ class SalesOrderEntry implements Serializable, LogicalDelete<SalesOrderEntry>
     long modifiedUser
     static constraints = {
         orderNumber nullable: true
+        invoiceNumber nullable: true, unique: true
         uuid unique: true
     }
     boolean isUpdatable

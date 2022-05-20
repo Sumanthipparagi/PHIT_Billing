@@ -977,12 +977,12 @@
                         + seriesCode + "/__"+'<p><strong>';
                     $("#invNo").html(draftInvNo);
                 }
-                if (billStatus !== "DRAFT") {
-                    message = 'Sale Order Generated: ' + data.saleBillDetail.entityId + "/SO/" + month + year + "/"
-                        + seriesCode +"/"+saleBillId;
+                if (billStatus === "DRAFT") {
+                    message = 'Draft Sale Order Generated: ' + data.saleBillDetail.entityId + "/SO/" + month + year +
+                        "/"
+                        + seriesCode +"/"+"__";
                 } else {
-                    message = 'Sale Order Generated: ' + data.saleBillDetail.entityId + "/DR/SO/" + month + year + "/"
-                        + seriesCode + "/__";
+                    message = 'Sale Order Generated: '+ invoiceNumber;
                 }
                 waitingSwal.close();
                 Swal.fire({
