@@ -435,9 +435,7 @@
                         batchHot.selectCell(0, 0);
                         $("#batchTable").focus();
                     }
-                }
-
-                else if (selection === 14 || selection === 7) {
+                } else if (selection === 14 || selection === 7) {
                     if ((e.keyCode === 13 || e.keyCode === 9) && !readOnly) {
                         //check if sqty is empty
                         var sqty = hot.getDataAtCell(row, 4);
@@ -489,28 +487,25 @@
                         }
 
                     }
-                }
-
-
-                else if (selection === 4 || selection === 5 || selection === 8 || selection === 6 ) {
+                } else if (selection === 4 || selection === 5 || selection === 8 || selection === 6 ) {
                     if (e.keyCode === 13 || e.keyCode === 9) {
                         var discount = 0;
-                        // if(selection === 6)
-                        // {
-                        //     var mrp = hot.getDataAtCell(row, 7);
-                        //     var oldSaleRate = hot.getDataAtCell(row, 6);
-                        //     var saleRate = Number(this.getActiveEditor().TEXTAREA.value);
-                        //     if(saleRate > mrp)
-                        //     {
-                        //         hot.setDataAtCell(row, 6,  oldSaleRate);
-                        //         this.getActiveEditor().TEXTAREA.value = oldSaleRate;
-                        //         alert("Sale Rate exceeds MRP!");
-                        //     }
-                        //     else {
-                        //         hot.setDataAtCell(row, 6,  Number(this.getActiveEditor().TEXTAREA.value));
-                        //         this.selectCell(row, selection + 1);
-                        //     }
-                        // }
+                        if(selection === 6)
+                        {
+                            var mrp = hot.getDataAtCell(row, 7);
+                            var oldSaleRate = hot.getDataAtCell(row, 6);
+                            var saleRate = Number(this.getActiveEditor().TEXTAREA.value);
+                            if(saleRate > mrp)
+                            {
+                                hot.setDataAtCell(row, 6,  oldSaleRate);
+                                this.getActiveEditor().TEXTAREA.value = oldSaleRate;
+                                alert("Sale Rate exceeds MRP!");
+                            }
+                            else {
+                                hot.setDataAtCell(row, 6,  Number(this.getActiveEditor().TEXTAREA.value));
+                                this.selectCell(row, selection + 1);
+                            }
+                        }
                         if (selection === 4) {
                             this.getActiveEditor().enableFullEditMode();
                             this.getActiveEditor().beginEditing();
@@ -561,59 +556,59 @@
                                     url: "/stockbook/product/" + pid + "/batch/" + batch,
                                     dataType: 'json',
                                     success: function (data) {
-                                    remQty = remQty + data.remainingQty;
-                                    remFQty = remFQty + data.remainingFreeQty;
-                                    if (remQty >= sQty) {
-                                        allowEntry = true;
-                                    }
-                                    else if (sQty >= remQty && remFQty >= sQty) {
-                                        allowEntry = true;
-                                    }
-
-                                    else if ((remQty + remFQty) >= sQty) {
-                                        allowEntry = true;
-                                    }
-
-                                    if(selection === 5)
-                                    {
-                                        if(remFQty >= fQty)
-                                        {
-                                            freeQtyEntry = true;
+                                        remQty = remQty + data.remainingQty;
+                                        remFQty = remFQty + data.remainingFreeQty;
+                                        if (remQty >= sQty) {
+                                            allowEntry = true;
+                                        }
+                                        else if (sQty >= remQty && remFQty >= sQty) {
+                                            allowEntry = true;
                                         }
 
-                                        else if ((remQty + remFQty) >= sQty+fQty) {
-                                            freeQtyEntry = true;
+                                        else if ((remQty + remFQty) >= sQty) {
                                             allowEntry = true;
+                                        }
+
+                                        if(selection === 5)
+                                        {
+                                            if(remFQty >= fQty)
+                                            {
+                                                freeQtyEntry = true;
+                                            }
+
+                                            else if ((remQty + remFQty) >= sQty+fQty) {
+                                                freeQtyEntry = true;
+                                                allowEntry = true;
+                                            }
+                                            else
+                                            {
+                                                freeQtyEntry = false;
+                                                allowEntry = false;
+                                            }
+
+                                            if(freeQtyEntry!==true)
+                                            {
+                                                // hot.setDataAtCell(row, 5, 0);
+                                                alert("Entered Free quantity exceeds available quantity");
+                                            }
+                                        }
+                                        if (!allowEntry) {
+                                            // this.getActiveEditor().TEXTAREA.value = "";
+                                            hot.setDataAtCell(row, 4, 0);
+                                            hot.setDataAtCell(row, 5, 0);
+                                            hot.setDataAtCell(row, 10, 0);
+                                            hot.setDataAtCell(row, 11, 0);
+                                            hot.setDataAtCell(row, 12, 0);
+                                            hot.setDataAtCell(row, 13, 0);
+                                            hot.setDataAtCell(row, 14, 0);
+                                            alert("Entered quantity exceeds available quantity");
+                                            return;
                                         }
                                         else
                                         {
-                                            freeQtyEntry = false;
-                                            allowEntry = false;
+                                            hot.setDataAtCell(row,5,fQty)
                                         }
-
-                                        if(freeQtyEntry!==true)
-                                        {
-                                            // hot.setDataAtCell(row, 5, 0);
-                                            alert("Entered Free quantity exceeds available quantity");
-                                        }
-                                    }
-                                    if (!allowEntry) {
-                                        // this.getActiveEditor().TEXTAREA.value = "";
-                                        hot.setDataAtCell(row, 4, 0);
-                                        hot.setDataAtCell(row, 5, 0);
-                                        hot.setDataAtCell(row, 10, 0);
-                                        hot.setDataAtCell(row, 11, 0);
-                                        hot.setDataAtCell(row, 12, 0);
-                                        hot.setDataAtCell(row, 13, 0);
-                                        hot.setDataAtCell(row, 14, 0);
-                                        alert("Entered quantity exceeds available quantity");
-                                        return;
-                                    }
-                                    else
-                                    {
-                                        hot.setDataAtCell(row,5,fQty)
-                                    }
-                                },
+                                    },
                                     error: function (data) {
                                         alert("Something went Wrong!")
                                     }
@@ -623,7 +618,8 @@
                         applySchemes(row, sQty);
                         if(selection === 6)
                         {
-                            sRate = Number(this.getActiveEditor().TEXTAREA.value);
+                            // sRate = Number(this.getActiveEditor().TEXTAREA.value);
+                            sRate = hot.getDataAtCell(row, 6);
                         }
                         else
                             sRate = hot.getDataAtCell(row, 6);
