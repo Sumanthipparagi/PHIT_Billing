@@ -225,7 +225,7 @@
                         var approveInvoice = "";
                         var cancelInvoice = "";
                         var editInvoice = "";
-                        if (json.data[i].returnStatus !== "CANCELLED") {
+                        if (json.data[i].billStatus !== "CANCELLED") {
                             cancelInvoice = '<a class="btn btn-sm btn-info" title="Cancel" onclick="cancelBill(' + json.data[i].id +')" href="#"><i class="fa fa-times"></i></a>';
                         }
                         else if(json.data[i].returnStatus!== "DRAFT")
