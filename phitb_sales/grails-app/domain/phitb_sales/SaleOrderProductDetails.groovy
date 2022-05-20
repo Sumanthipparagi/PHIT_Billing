@@ -1,9 +1,7 @@
 package phitb_sales
 
-import gorm.logical.delete.LogicalDelete
+class SaleOrderProductDetails {
 
-class SaleProductDetails implements Serializable, LogicalDelete<SaleProductDetails>
-{
     long finId
     long billId
     long billType
@@ -35,15 +33,12 @@ class SaleProductDetails implements Serializable, LogicalDelete<SaleProductDetai
     String financialYear
     long entityTypeId
     long entityId
-
     Date dateCreated
     Date lastUpdated
-
     double gstPercentage
     double sgstPercentage
     double cgstPercentage
     double igstPercentage
-
     String uuid
 
     static constraints = {

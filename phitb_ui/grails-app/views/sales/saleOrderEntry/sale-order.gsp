@@ -431,44 +431,11 @@
                             var batchId = hot.getCellMeta(row, 2)?.batchId; //batch
                             var dt = hot.getDataAtRow(row);
                             dt.push(batchId);
-                            var json = JSON.stringify(dt);
-                            var url = '/tempstockbook';
-                            var type = 'POST';
-                            var beforeSendSwal;
-                            $.ajax({
-                                type: type,
-                                url: url,
-                                dataType: 'json',
-                                beforeSend: function () {
-                                    beforeSendSwal = Swal.fire({
-                                        // title: "Loading",
-                                        html:
-                                            '<img src="${assetPath(src: "/themeassets/images/1476.gif")}" width="100" height="100"/>',
-                                        showDenyButton: false,
-                                        showCancelButton: false,
-                                        showConfirmButton: false,
-                                        allowOutsideClick: false,
-                                        background: 'transparent'
-                                    });
-                                },
-                                data: {
-                                    rowData: json,
-                                    uuid: self.crypto.randomUUID()
-                                },
-                                success: function (data) {
-                                    beforeSendSwal.close()
-                                    console.log("Data saved");
-                                    hot.setDataAtCell(row, 15, data.id);
-                                    mainTableRow = row + 1;
-                                    hot.alter('insert_row');
-                                    hot.selectCell(mainTableRow, 1);
-                                    calculateTotalAmt();
-                                },
-                                error: function (data) {
-                                    console.log("Failed");
-                                    alert("Unable to save the row, please delete it and add again.");
-                                }
-                            });
+                            console.log("Data saved");
+                            mainTableRow = row + 1;
+                            calculateTotalAmt();
+                            hot.alter('insert_row');
+                            hot.selectCell(mainTableRow, 1);
                         } else {
                             alert("Invalid Quantity, please enter quantity greater than 0");
                         }
@@ -1132,7 +1099,6 @@
                 for (var i = 0; i < data.length; i++) {
                     products.push({id: data[i].id, text: data[i].productName});
                 }
-                loadTempStockBookData();
             },
             error: function () {
                 products.length = 0; //remove all elements

@@ -2029,7 +2029,7 @@
             this.textareaParentStyle.zIndex = 20000;
             this.instance.addHook('beforeKeyDown', onBeforeKeyDown);
             this.instance.addHook('afterOnCellMouseDown', onBeforeMouseDown);
-            // this.textareaParentStyle.display = 'block';
+            this.textareaParentStyle.display = 'block';
 
             this.$textarea.css({
                 height: $(this.TD).height() + 4,

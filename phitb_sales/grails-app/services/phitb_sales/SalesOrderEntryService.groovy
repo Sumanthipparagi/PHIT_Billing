@@ -194,4 +194,17 @@ class SalesOrderEntryService {
             throw new BadRequestException()
         }
     }
+
+    JSONObject getRecentByFinancialYearAndEntity(String financialYear, String entityId, billStatus)
+    {
+
+        JSONObject jsonObject = new JSONObject()
+        ArrayList<SalesOrderEntry> salesOrderEntry =
+                SalesOrderEntry.findAllByFinancialYearAndEntityIdAndBillStatusNotEqual(financialYear, Long.parseLong(entityId), 'DRAFT', [sort: 'id', order: 'desc'])
+        println(salesOrderEntry.serBillId)
+        jsonObject.put("serBillId", salesOrderEntry.serBillId.max())
+        jsonObject.put("finId", salesOrderEntry.finId.max())
+        return jsonObject
+
+    }
 }

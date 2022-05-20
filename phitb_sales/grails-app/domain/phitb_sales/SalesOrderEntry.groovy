@@ -4,6 +4,7 @@ import gorm.logical.delete.LogicalDelete
 
 class SalesOrderEntry implements Serializable, LogicalDelete<SalesOrderEntry>
 {
+    String orderNumber
     long finId
     long serBillId
     Date entryDate
@@ -26,11 +27,16 @@ class SalesOrderEntry implements Serializable, LogicalDelete<SalesOrderEntry>
     String purchaseQuotationId
     String confirmationStatus
     String financialYear
+
+    String uuid
+
     long entityTypeId
     long entityId
     long createdUser
     long modifiedUser
     static constraints = {
+        orderNumber nullable: true
+        uuid unique: true
     }
     boolean isUpdatable
     static transients = ['isUpdatable']

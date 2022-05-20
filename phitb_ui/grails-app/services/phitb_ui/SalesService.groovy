@@ -138,6 +138,32 @@ contains both sale bill and products
 
     }
 
+
+    /*
+   contains both sale bill and products
+    */
+    def saveSaleOrder(JSONObject jsonObject)
+    {
+        Client client = ClientBuilder.newClient();
+        WebTarget target = client.target(new Links().API_GATEWAY)
+        try
+        {
+            println(jsonObject)
+            Response apiResponse = target
+                    .path(new Links().SALE_ORDER_SAVE)
+                    .request(MediaType.APPLICATION_JSON_TYPE)
+                    .post(Entity.entity(jsonObject.toString(), MediaType.APPLICATION_JSON_TYPE))
+            println(apiResponse)
+            return apiResponse
+        }
+        catch (Exception ex)
+        {
+            System.err.println('Service :salesService , action :  saveSaleInvoice  , Ex:' + ex)
+            log.error('Service :salesService , action :  saveSaleInvoice  , Ex:' + ex)
+        }
+
+    }
+
     def saveSaleBill(JSONObject jsonObject)
     {
         Client client = ClientBuilder.newClient();
@@ -205,27 +231,6 @@ contains both sale bill and products
 
     }
 
-    def saveSaleOrder(JSONObject jsonObject)
-    {
-        Client client = ClientBuilder.newClient();
-        WebTarget target = client.target(new Links().API_GATEWAY);
-        try
-        {
-            println(jsonObject)
-            Response apiResponse = target
-                    .path(new Links().SALE_ORDER_SAVE)
-                    .request(MediaType.APPLICATION_JSON_TYPE)
-                    .post(Entity.entity(jsonObject.toString(), MediaType.APPLICATION_JSON_TYPE))
-            println(apiResponse)
-            return apiResponse
-        }
-        catch (Exception ex)
-        {
-            System.err.println('Service :saveStateMaster , action :  save  , Ex:' + ex)
-            log.error('Service :saveStateMaster , action :  save  , Ex:' + ex)
-        }
-
-    }
 
     def saveSaleRetrun(JSONObject jsonObject)
     {
@@ -401,6 +406,38 @@ contains both sale bill and products
                     .path(new Links().SALE_RETURN_RECENT)
                     .queryParam("financialYear", financialYear)
                     .queryParam("entityId", entityId)
+                    .request(MediaType.APPLICATION_JSON_TYPE)
+                    .get()
+
+            if (apiResponse.status == 200)
+            {
+                JSONObject jsonObject = new JSONObject(apiResponse.readEntity(String.class))
+                return jsonObject
+            }
+            else
+            {
+                return null
+            }
+        }
+        catch (Exception ex)
+        {
+            System.err.println('Service :saveStateMaster , action :  save  , Ex:' + ex)
+            log.error('Service :saveStateMaster , action :  save  , Ex:' + ex)
+        }
+
+    }
+
+    def getRecentSaleOrder(String financialYear, String entityId, String billStatus)
+    {
+        Client client = ClientBuilder.newClient();
+        WebTarget target = client.target(new Links().API_GATEWAY);
+        try
+        {
+            Response apiResponse = target
+                    .path(new Links().SALE_ORDER_RECENT)
+                    .queryParam("financialYear", financialYear)
+                    .queryParam("entityId", entityId)
+                    .queryParam("billStatus", billStatus)
                     .request(MediaType.APPLICATION_JSON_TYPE)
                     .get()
 
