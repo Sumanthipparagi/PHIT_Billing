@@ -412,6 +412,7 @@
 
         if ($('#paymentMode option:selected').attr('data-mode') === "CARD") {
             $("#mode").addClass('col-lg-6')
+            $("#mode").show()
             html = '<label for="cardNumber">\n' +
                 '        Card Number\n' +
                 '    </label>\n' +
@@ -428,9 +429,9 @@
             $("#mode").hide().prop('required', false)
             $(".cheque").hide().prop('required', false)
         }
-        if ($('#paymentMode option:selected').attr('data-mode') === "") {
-            $('#mode').removeClass('col-lg-6');
-        }
+        // if ($('#paymentMode option:selected').attr('data-mode') === "") {
+        //     $('#mode').removeClass('col-lg-6');
+        // }
         $('#mode').html(html)
     }
 
