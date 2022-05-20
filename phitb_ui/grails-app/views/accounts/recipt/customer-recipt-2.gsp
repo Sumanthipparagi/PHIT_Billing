@@ -490,7 +490,7 @@
                     $('.tba').val(total_bal_s.toFixed(2));
                     $('.amountPaid').val(total_bal_s.toFixed(2));
                     $.each(data[0], function (key, value) {
-                        if (value.balance !== 0 && value.billStatus !== 'DRAFT') {
+                        if (value.balance !== 0 && value.billStatus !== 'DRAFT' && value.billStatus !== 'CANCELLED') {
                             trHTML += ' <tr id="' + "IN" + value.id + '">\n' +
                                 '                                        <td>' + invoice + '</td>\n' +
                                 '                                        <td>' + value.invoiceNumber + '</td>\n' +

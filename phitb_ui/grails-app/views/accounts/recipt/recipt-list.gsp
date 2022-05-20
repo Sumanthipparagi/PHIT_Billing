@@ -107,7 +107,7 @@
                                 <tr>
                                     %{--
                                                                    <th style="width: 20%">ID</th>--}%
-                                    <th style="width: 20%">Payment Date</th>
+                                    <th style="width: 20%">Recipt Date</th>
                                     <th style="width: 20%">Receipt Id</th>
                                     <th style="width: 20%">Received From</th>
                                     <th style="width: 20%">Deposit To</th>
@@ -219,7 +219,7 @@
             },
             columns: [
                 // {'data': 'date', 'width': '20%'},
-                {'data': 'pd', 'width': '20%'},
+                {'data': 'date', 'width': '20%'},
                 {'data': 'id', 'width': '20%'},
                 {'data': 'receivedFrom', 'width': '20%'},
                 {'data': 'depositTo', 'width': '20%'},
