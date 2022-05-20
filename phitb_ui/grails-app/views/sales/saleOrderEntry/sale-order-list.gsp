@@ -114,7 +114,6 @@
                                     <th>Net Amt</th>
                                     <th>City</th>
                                     <th>Bill Status</th>
-                                    <th>Balance</th>
                                     <th>Financial Year</th>
                                 </tr>
                                 </thead>
@@ -255,7 +254,6 @@
                             'netAmt': json.data[i].totalAmount.toFixed(2),
                             'city': json.city[i].cityId.name,
                             'bill_status': json.data[i].returnStatus,
-                            'balance': json.data[i].balance.toFixed(2),
                             'finYear': json.data[i].financialYear
 
                         });
@@ -271,7 +269,6 @@
                 {'data': 'netAmt'},
                 {'data': 'city'},
                 {'data': 'bill_status'},
-                {'data': 'balance'},
                 {'data': 'finYear'}
             ]
         });
