@@ -24,12 +24,12 @@
 
     <style>
 
-    div.dataTables_scrollBody table tbody  td {
-        border-top: none;
-        padding: 0.9px;
-        text-align: center;
-        border-collapse: unset!important;
-    }
+    /*div.dataTables_scrollBody table tbody  td {*/
+    /*    border-top: none;*/
+    /*    padding: 0.9px;*/
+    /*    text-align: center;*/
+    /*    border-collapse: unset!important;*/
+    /*}*/
 
     .editbtn
     {
@@ -62,7 +62,7 @@
         <div class="block-header">
             <div class="row clearfix">
                 <div class="col-lg-5 col-md-5 col-sm-12">
-                    <h2>Product Category</h2>
+                    <h2>Product Composition</h2>
                     <ul class="breadcrumb padding-0">
                         <li class="breadcrumb-item"><a href="index.html"><i class="zmdi zmdi-home"></i></a></li>
                         <li class="breadcrumb-item active">Product Composition</li>
@@ -276,7 +276,7 @@
 
     $('.entityId').change(function(){
         var type = $('option:selected', this).attr('data-type');
-        $(".entityTypeId").val(type);
+        $(".entityType").val(type);
     });
 
 

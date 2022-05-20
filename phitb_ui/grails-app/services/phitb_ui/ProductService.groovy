@@ -359,7 +359,7 @@ class ProductService {
         try {
 
             Response apiResponse = target
-                    .path(new Links().UNIT_TYPE_SHOW)
+                    .path(new Links().CUSTOMER_GROUP_REGISTER_SHOW)
                     .request(MediaType.APPLICATION_JSON_TYPE)
                     .get()
 

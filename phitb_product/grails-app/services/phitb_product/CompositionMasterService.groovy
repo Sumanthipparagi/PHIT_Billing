@@ -2,10 +2,15 @@ package phitb_product
 
 import grails.gorm.transactions.Transactional
 import groovy.json.JsonSlurper
+import javax.ws.rs.core.Response
 import org.grails.web.json.JSONObject
 import org.springframework.boot.context.config.ResourceNotFoundException
 import phitb_product.Exception.BadRequestException
 
+import javax.ws.rs.client.Client
+import javax.ws.rs.client.ClientBuilder
+import javax.ws.rs.client.WebTarget
+import javax.ws.rs.core.MediaType
 import java.text.SimpleDateFormat
 
 @Transactional
@@ -59,7 +64,6 @@ class CompositionMasterService {
 
         def entity = []
         compositionMasterArrayList.each {
-            println(it.entityId)
             def apires1 = showCompostionByEntityId(it.entityId.toString())
             entity.push(apires1)
         }
@@ -129,36 +133,63 @@ class CompositionMasterService {
         }
     }
 
+
     def showCompostionByEntityId(String id)
     {
+        Client client = ClientBuilder.newClient()
+        WebTarget target = client.target(new Constants().API_GATEWAY);
         try
         {
-            def url = Constants.API_GATEWAY+Constants.ENTITY_REGISTER_SHOW+"/"+id
-            URL apiUrl = new URL(url)
-            def entity = new JsonSlurper().parseText(apiUrl.text)
-            return entity
+            Response apiResponse = target
+                    .path(new Constants().ENTITY_REGISTER_SHOW + "/" +id)
+                    .request(MediaType.APPLICATION_JSON_TYPE)
+                    .get()
+            if (apiResponse?.status == 200)
+            {
+                JSONObject jsonObject = new JSONObject(apiResponse.readEntity(String.class))
+                return jsonObject
+            }
+            else
+            {
+                return null
+            }
         }
         catch (Exception ex)
         {
-            System.err.println('Service :CountryMaster , action :  show  , Ex:' + ex)
-            log.error('Service :CountryMaster , action :  show  , Ex:' + ex)
+            System.err.println('Service : CompositionMasterService , action :  showCompostionByEntityId  , Ex:' + ex)
+            log.error('Service :CompositionMasterService , action :  showCompostionByEntityId  , Ex:' + ex)
         }
+
     }
+
+
 
     def showCompostionByEntityTypeId(String id)
     {
+        Client client = ClientBuilder.newClient()
+        WebTarget target = client.target(new Constants().API_GATEWAY);
         try
         {
-            def url = Constants.API_GATEWAY+Constants.ENTITY_TYPE_SHOW+"/"+id
-            URL apiUrl = new URL(url)
-            def entity = new JsonSlurper().parseText(apiUrl.text)
-            return entity
+            Response apiResponse = target
+                    .path(new Constants().ENTITY_TYPE_SHOW + "/" +id)
+                    .request(MediaType.APPLICATION_JSON_TYPE)
+                    .get()
+            if (apiResponse?.status == 200)
+            {
+                JSONObject jsonObject = new JSONObject(apiResponse.readEntity(String.class))
+                return jsonObject
+            }
+            else
+            {
+                return null
+            }
         }
         catch (Exception ex)
         {
-            System.err.println('Service :CountryMaster , action :  show  , Ex:' + ex)
-            log.error('Service :CountryMaster , action :  show  , Ex:' + ex)
+            System.err.println('Service : CompositionMasterService , action :  showCompostionByEntityId  , Ex:' + ex)
+            log.error('Service :CompositionMasterService , action :  showCompostionByEntityId  , Ex:' + ex)
         }
+
     }
 
 }

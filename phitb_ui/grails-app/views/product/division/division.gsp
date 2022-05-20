@@ -24,12 +24,12 @@
 
     <style>
 
-    div.dataTables_scrollBody table tbody  td {
-        border-top: none;
-        padding: 0.9px;
-        text-align: center;
-        border-collapse: unset!important;
-    }
+    /*div.dataTables_scrollBody table tbody  td {*/
+    /*    border-top: none;*/
+    /*    padding: 0.9px;*/
+    /*    text-align: center;*/
+    /*    border-collapse: unset!important;*/
+    /*}*/
 
     .editbtn
     {
@@ -208,17 +208,17 @@
                     var return_data = [];
                     for (var i = 0; i < json.data.length; i++) {
                         console.log(json)
-                        var editbtn = '<button type="button" data-id="' + json.data[i].id +
-                            '" data-divisionName="' + json.data[i].divisionName + '"' +
-                            '" data-divisionShortName="' + json.data[i].divisionShortName + '"' +
-                            '" data-zoneIds="' + json.data[i].zoneIds + '"' +
-                            '" data-stateIds="' + json.data[i].stateIds + '"' +
-                            '" data-cityIds="' + json.data[i].cityIds + '"' +
-                            '" data-seriesId="' + json.data[i].seriesId + '"' +
-                            '" data-managerId="' + json.data[i].managerId + '"' +
-                            '" data-customerIds="' + json.data[i].customerIds + '"' +
-                            '" data-entityId="' + json.data[i].entityId + '"' +
-                            '" data-entityType="' + json.data[i].entityTypeId + '"' +
+                        var editbtn = '<button type="button" ' + 'data-id="' + json.data[i].id +'"'+
+                            'data-divisionName="' + json.data[i].divisionName + '"' +
+                            'data-divisionShortName= "' + json.data[i].divisionShortName + '"' +
+                            'data-zoneids="' + json.data[i].zoneIds + '"' +
+                            'data-stateids="' + json.data[i].stateIds + '"' +
+                            'data-cityids="' + json.data[i].cityIds + '"' +
+                            'data-seriesId="' + json.data[i].seriesId + '"' +
+                            'data-managerId="' + json.data[i].managerId + '"' +
+                            'data-customerids="' + json.data[i].customerIds + '"' +
+                            'data-entityId="' + json.data[i].entityId + '"' +
+                            'data-entityType="' + json.data[i].entityTypeId + '"' +
                             '"' +
                             ' class="editbtn btn btn-sm btn-warning  editbtn" data-toggle="modal" data-target="#adddivisionModal"><i class="material-icons"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">edit</font></font></i></button>'
                         var deletebtn = '<button type="button" data-id="' + json.data[i].id +
@@ -229,7 +229,6 @@
                             'divisionShortName': json.data[i].divisionShortName,
                             'manager': json.manager[i].userName,
                             'entity': json.entity[i].entityName,
-                            'entitytype': json.entityType[i].name,
                             'action': editbtn + ' ' + deletebtn
                         });
                     }
@@ -287,8 +286,8 @@
     });
 
     $(document).on("click", ".addbtn", function () {
-        $(".divisionTitle").text("Add Division")
         $(".divisionForm")[0].reset();
+        $(".divisionTitle").text("Add Division")
         id = null
     });
 
@@ -296,23 +295,24 @@
         id = $(this).data('id');
         $(".divisionName").val($(this).attr('data-divisionName'));
         $(".divisionShortName").val($(this).attr('data-divisionShortName'));
-        var zoneIds =$(this).attr('data-zoneIds');
+        var zoneIds =$(this).attr('data-zoneids');
         $(".zoneIds").val(zoneIds.split(",")).change();
-        var stateIds =$(this).attr('data-stateIds');
+        var stateIds =$(this).attr('data-stateids');
         $(".stateIds").val(stateIds.split(",")).change();
         var cityIds =$(this).attr('data-cityIds');
         $(".cityIds").val(cityIds.split(",")).change();
-        var customerIds =$(this).attr('data-customerIds');
+        var customerIds =$(this).attr('data-customerids');
         $(".customerIds").val(customerIds.split(",")).change();
         $(".entityId").val($(this).attr('data-entityId')).change();
         $(".entityType").val($(this).attr('data-entityType')).change();
+
         $(".divisionTitle").text("Update Division");
     });
 
 
     $('.entityId').change(function(){
         var type = $('option:selected', this).attr('data-type');
-        $(".entityTypeId").val(type);
+        $(".entityType").val(type);
     });
 
     $(document).on("click", ".deletebtn", function () {

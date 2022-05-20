@@ -40,8 +40,8 @@ class ProductClassController {
             render(view: '/product/productClass/productClass',model: [entity     :entity, statelist:statelist,
                                                                                countrylist:countrylist, citylist:citylist,
                                                                                zoneList   :zoneList,
-                                                                               entitytype :entitytype, customer:customer, series:series,
-                                                                               managerList:managerList, divisionList:divisionList])
+                                                                                customer:customer, series:series,
+                                                                               managerList:managerList, divisionList:division])
         }
         catch (Exception ex)
         {
