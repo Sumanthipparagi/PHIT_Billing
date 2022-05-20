@@ -435,7 +435,9 @@
                         batchHot.selectCell(0, 0);
                         $("#batchTable").focus();
                     }
-                } else if (selection === 14 || selection === 7) {
+                }
+
+                else if (selection === 14 || selection === 7) {
                     if ((e.keyCode === 13 || e.keyCode === 9) && !readOnly) {
                         //check if sqty is empty
                         var sqty = hot.getDataAtCell(row, 4);
@@ -444,35 +446,71 @@
                             var batchId = hot.getCellMeta(row, 2)?.batchId; //batch
                             var dt = hot.getDataAtRow(row);
                             dt.push(batchId);
-                            console.log("Data saved");
-                            mainTableRow = row + 1;
-                            calculateTotalAmt();
-                            hot.alter('insert_row');
-                            hot.selectCell(mainTableRow, 1);
+                            var json = JSON.stringify(dt);
+                            var url = '/tempstockbook';
+                            var type = 'POST';
+                            var beforeSendSwal;
+                            $.ajax({
+                                type: type,
+                                url: url,
+                                dataType: 'json',
+                                beforeSend: function () {
+                                    beforeSendSwal = Swal.fire({
+                                        // title: "Loading",
+                                        html:
+                                            '<img src="${assetPath(src: "/themeassets/images/1476.gif")}" width="100" height="100"/>',
+                                        showDenyButton: false,
+                                        showCancelButton: false,
+                                        showConfirmButton: false,
+                                        allowOutsideClick: false,
+                                        background: 'transparent'
+                                    });
+                                },
+                                data: {
+                                    rowData: json,
+                                    uuid: self.crypto.randomUUID()
+                                },
+                                success: function (data) {
+                                    beforeSendSwal.close()
+                                    console.log("Data saved");
+                                    hot.setDataAtCell(row, 15, data.id);
+                                    mainTableRow = row + 1;
+                                    hot.alter('insert_row');
+                                    hot.selectCell(mainTableRow, 1);
+                                    calculateTotalAmt();
+                                },
+                                error: function (data) {
+                                    console.log("Failed");
+                                    alert("Unable to save the row, please delete it and add again.");
+                                }
+                            });
                         } else {
                             alert("Invalid Quantity, please enter quantity greater than 0");
                         }
 
                     }
-                } else if (selection === 4 || selection === 5 || selection === 8 || selection === 6 ) {
+                }
+
+
+                else if (selection === 4 || selection === 5 || selection === 8 || selection === 6 ) {
                     if (e.keyCode === 13 || e.keyCode === 9) {
                         var discount = 0;
-                        if(selection === 6)
-                        {
-                            var mrp = hot.getDataAtCell(row, 7);
-                            var oldSaleRate = hot.getDataAtCell(row, 6);
-                            var saleRate = Number(this.getActiveEditor().TEXTAREA.value);
-                            if(saleRate > mrp)
-                            {
-                                hot.setDataAtCell(row, 6,  oldSaleRate);
-                                this.getActiveEditor().TEXTAREA.value = oldSaleRate;
-                                alert("Sale Rate exceeds MRP!");
-                            }
-                            else {
-                                hot.setDataAtCell(row, 6,  Number(this.getActiveEditor().TEXTAREA.value));
-                                this.selectCell(row, selection + 1);
-                            }
-                        }
+                        // if(selection === 6)
+                        // {
+                        //     var mrp = hot.getDataAtCell(row, 7);
+                        //     var oldSaleRate = hot.getDataAtCell(row, 6);
+                        //     var saleRate = Number(this.getActiveEditor().TEXTAREA.value);
+                        //     if(saleRate > mrp)
+                        //     {
+                        //         hot.setDataAtCell(row, 6,  oldSaleRate);
+                        //         this.getActiveEditor().TEXTAREA.value = oldSaleRate;
+                        //         alert("Sale Rate exceeds MRP!");
+                        //     }
+                        //     else {
+                        //         hot.setDataAtCell(row, 6,  Number(this.getActiveEditor().TEXTAREA.value));
+                        //         this.selectCell(row, selection + 1);
+                        //     }
+                        // }
                         if (selection === 4) {
                             this.getActiveEditor().enableFullEditMode();
                             this.getActiveEditor().beginEditing();
@@ -899,17 +937,17 @@
 
     function deleteTempStockRow(id, row) {
         if (!readOnly) {
-            // if (id) {
-            //     $.ajax({
-            //         type: "POST",
-            //         url: "tempstockbook/delete/" + id,
-            //         dataType: 'json',
-            //         success: function (data) {
-            //             hot.alter("remove_row", row);
-            //             swal("Success", "Row Deleted", "").fire();
-            //         }
-            //     });
-            // } else
+            if (id) {
+                $.ajax({
+                    type: "POST",
+                    url: "tempstockbook/delete/" + id,
+                    dataType: 'json',
+                    success: function (data) {
+                        hot.alter("remove_row", row);
+                        swal("Success", "Row Deleted", "").fire();
+                    }
+                });
+            } else
             hot.alter("remove_row", row);
         } else
             alert("Can't change this now, invoice has been saved already.")

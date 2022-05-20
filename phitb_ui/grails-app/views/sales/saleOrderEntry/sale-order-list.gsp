@@ -62,7 +62,7 @@
                     <h2>Sale Returns</h2>
                     <ul class="breadcrumb padding-0">
                         <li class="breadcrumb-item"><a href="index.html"><i class="zmdi zmdi-home"></i></a></li>
-                        <li class="breadcrumb-item active">My Sale order</li>
+                        <li class="breadcrumb-item active">My Sale Orders</li>
                     </ul>
                 </div>
 
@@ -90,7 +90,7 @@
 
                             %{-- <div class="col-md-4">
                                  <div class="form-group">
-                                     <label for="invoiceStatus">Sales Return Status</label>
+                                     <label for="invoiceStatus">Sales Order Status</label>
                                      <select onchange="invoiceStatusChanged()" id="invoiceStatus" class="form-control">
                                          <option>All</option>
                                          <option>DRAFT</option>
@@ -209,7 +209,7 @@
                 }
             ],
             language: {
-                searchPlaceholder: "Search Sale Return"
+                searchPlaceholder: "Search Sale Order"
             },
             ajax: {
                 type: 'GET',
@@ -253,7 +253,7 @@
                             'gstAmt': json.data[i].totalGst.toFixed(2),
                             'netAmt': json.data[i].totalAmount.toFixed(2),
                             'city': json.city[i].cityId.name,
-                            'bill_status': json.data[i].returnStatus,
+                            'bill_status': json.data[i].billStatus,
                             'finYear': json.data[i].financialYear
 
                         });
@@ -276,7 +276,7 @@
 
     function cancelBill(id) {
         Swal.fire({
-            title: "Cancel this Sale Return? this can't be undone.",
+            title: "Cancel this Sale Order? this can't be undone.",
             showDenyButton: true,
             showCancelButton: false,
             confirmButtonText: 'Yes',
@@ -305,7 +305,7 @@
                         beforeSendSwal.close();
                         Swal.fire(
                             'Success!',
-                            'Return Cancelled',
+                            'Order Cancelled',
                             'success'
                         );
                         saleInvoiceTable();

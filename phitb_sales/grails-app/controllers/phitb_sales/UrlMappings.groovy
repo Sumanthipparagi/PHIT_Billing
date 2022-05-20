@@ -269,7 +269,7 @@ class UrlMappings {
                 action = [GET: 'getRecentByFinancialYearAndEntity']
             }
             "/saleorderdetails/datatable(.$format)?"(controller: 'saleOrderEntry') {action = [GET: 'dataTable']}
-            "/saleorderdetails/cancel(.$format)?"(controller: 'saleReturn') {action = [POST: 'cancelSaleOrder']}
+            "/saleorderdetails/cancel(.$format)?"(controller: 'saleOrderEntry') {action = [POST: 'cancelSaleOrder']}
 
             //Sale return
             "/salereturn(.$format)?"(controller:'saleReturn') {

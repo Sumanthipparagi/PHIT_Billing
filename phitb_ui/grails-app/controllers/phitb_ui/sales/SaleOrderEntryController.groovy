@@ -76,6 +76,34 @@ class SaleOrderEntryController {
         double totalIgst = 0.00
         double totalDiscount = 0.00
         JSONArray saleOrderData = new JSONArray(params.saleData)
+        boolean tempStocksSavedCheck = true
+        for (JSONObject sale : saleOrderData)
+        {
+            if (sale.has("15"))
+            {
+                String tempStockRowId = sale.get("15")
+                if (tempStockRowId && Long.parseLong(tempStockRowId) > 0)
+                {
+                    tempStocksSavedCheck = true
+                }
+                else
+                {
+                    tempStocksSavedCheck = false
+                }
+            }
+            else
+            {
+                tempStocksSavedCheck = false
+            }
+        }
+
+        //safety check
+        if (!tempStocksSavedCheck)
+        {
+            println("Safety Check Failed! attempted to generate sale invoice, but temp stock was not saved.")
+            response.status == 400
+            return
+        }
 
         for (JSONObject sale : saleOrderData)
         {
@@ -220,32 +248,28 @@ class SaleOrderEntryController {
         {
             JSONObject saleBillDetail = new JSONObject(response.readEntity(String.class))
             //update stockbook
-            for (JSONObject saleOrder : saleOrderData) {
-                //check if selected product and batch exists for the entity, if so update data, else add new
-                String productId = saleOrder.get("1")
-                String batchNumber = saleOrder.get("2")
-                JSONObject stockBook = new InventoryService().getStocksOfProductAndBatch(productId, batchNumber, session.getAttribute("entityId").toString())
-                if (stockBook) {
-                    String saleQty = saleOrder.get("4")
-                    String freeQty = saleOrder.get("5")
-                    long sQty = Long.parseLong(stockBook.get("remainingQty").toString()) - Long.parseLong(saleQty)
-                    long fQty = Long.parseLong(stockBook.get("remainingFreeQty").toString()) - Long.parseLong(freeQty)
-                    String expDate = stockBook.get("expDate").toString().split("T")[0]
-                    String purcDate = stockBook.get("purcDate").toString().split("T")[0]
-                    String manufacturingDate = stockBook.get("manufacturingDate").toString().split("T")[0]
-                    SimpleDateFormat sdf1 = new SimpleDateFormat("yyyy-MM-dd")
-                    expDate = sdf1.parse(expDate).format("dd-MM-yyyy")
-                    purcDate = sdf1.parse(purcDate).format("dd-MM-yyyy")
-                    manufacturingDate = sdf1.parse(manufacturingDate).format("dd-MM-yyyy")
-                    stockBook.put("expDate", expDate)
-                    stockBook.put("purcDate", purcDate)
-                    stockBook.put("manufacturingDate", manufacturingDate)
-                    stockBook.put("remainingQty", sQty)
-                    stockBook.put("remainingFreeQty", fQty)
-                    stockBook.put("remainingReplQty", 0)
-                    stockBook.put("modifiedUser", session.getAttribute("userId"))
-                    stockBook.put("uuid", params.uuid)
-                    new InventoryService().updateStockBook(stockBook)
+            for (JSONObject sale : saleOrderData) {
+                String tempStockRowId = sale.get("15")
+                def tmpStockBook = new InventoryService().getTempStocksById(Long.parseLong(tempStockRowId))
+                def stockBook = new InventoryService().getStockBookById(Long.parseLong(tmpStockBook.originalId))
+                stockBook.put("remainingQty", tmpStockBook.get("remainingQty"))
+                stockBook.put("remainingFreeQty", tmpStockBook.get("remainingFreeQty"))
+                stockBook.put("remainingReplQty", tmpStockBook.get("remainingReplQty"))
+                String expDate = stockBook.get("expDate").toString().split("T")[0]
+                String purcDate = stockBook.get("purcDate").toString().split("T")[0]
+                String manufacturingDate = stockBook.get("manufacturingDate").toString().split("T")[0]
+                SimpleDateFormat sdf1 = new SimpleDateFormat("yyyy-MM-dd")
+                expDate = sdf1.parse(expDate).format("dd-MM-yyyy")
+                purcDate = sdf1.parse(purcDate).format("dd-MM-yyyy")
+                manufacturingDate = sdf1.parse(manufacturingDate).format("dd-MM-yyyy")
+                stockBook.put("expDate", expDate)
+                stockBook.put("purcDate", purcDate)
+                stockBook.put("manufacturingDate", manufacturingDate)
+                stockBook.put("uuid", params.uuid)
+                def apiRes = new InventoryService().updateStockBook(stockBook)
+                if (apiRes.status == 200) {
+                    //clear tempstockbook
+                    new InventoryService().deleteTempStock(tempStockRowId)
                 }
             }
             JSONObject responseJson = new JSONObject()
@@ -410,7 +434,7 @@ class SaleOrderEntryController {
         render(view:'/sales/saleOrderEntry/sale-order-list')
     }
 
-    def cancelInvoice()
+    def cancelOrder()
     {
         String id = params.id
         String entityId = session.getAttribute("entityId")
