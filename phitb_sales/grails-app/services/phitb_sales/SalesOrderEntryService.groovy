@@ -100,6 +100,7 @@ class SalesOrderEntryService {
         salesOrderEntry.refNumber = jsonObject.get("refNumber").toString()
         salesOrderEntry.seriesId = Long.parseLong(jsonObject.get("seriesId").toString())
         salesOrderEntry.refDate =sdf.parse(jsonObject.get("refDate").toString())
+        salesOrderEntry.totalAmount = Double.parseDouble(jsonObject.get("totalAmount").toString())
         salesOrderEntry.customerId = Long.parseLong(jsonObject.get("customerId").toString())
         salesOrderEntry.transportTypeId = Long.parseLong(jsonObject.get("transportTypeId").toString())
         salesOrderEntry.salesmanId = Long.parseLong(jsonObject.get("salesmanId").toString())
@@ -169,6 +170,7 @@ class SalesOrderEntryService {
             salesOrderEntry.refNumber = jsonObject.get("refNumber").toString()
             salesOrderEntry.seriesId = Long.parseLong(jsonObject.get("seriesId").toString())
             salesOrderEntry.refDate =sdf.parse(jsonObject.get("refDate").toString())
+            salesOrderEntry.totalAmount = Double.parseDouble(jsonObject.get("totalAmount").toString())
             salesOrderEntry.customerId = Long.parseLong(jsonObject.get("customerId").toString())
             salesOrderEntry.transportTypeId = Long.parseLong(jsonObject.get("transportTypeId").toString())
             salesOrderEntry.salesmanId = Long.parseLong(jsonObject.get("salesmanId").toString())
@@ -235,5 +237,43 @@ class SalesOrderEntryService {
         jsonObject.put("finId", salesOrderEntry.finId.max())
         return jsonObject
 
+    }
+
+    def cancelSaleOrder(JSONObject jsonObject)
+    {
+        String id = jsonObject.get("id")
+        String entityId = jsonObject.get("entityId")
+        String financialYear = jsonObject.get("financialYear")
+        JSONObject saleInvoice = new JSONObject()
+        SalesOrderEntry saleOrderentry = SalesOrderEntry.findById(Long.parseLong(id))
+        if (saleOrderentry)
+        {
+            if (saleOrderentry.financialYear.equalsIgnoreCase(financialYear) && saleOrderentry.entityId == Long.parseLong(entityId))
+            {
+                ArrayList<SaleProductDetails> saleProductDetails = SaleProductDetails.findAllByBillId(saleOrderentry.id)
+                for (SaleProductDetails saleProductDetail : saleProductDetails)
+                {
+                    saleProductDetail.status = 0
+                    saleProductDetail.isUpdatable = true
+                    saleProductDetail.save(flush: true)
+                }
+                saleOrderentry.billStatus = "CANCELLED"
+                saleOrderentry.cancelledDate = new Date()
+                saleOrderentry.isUpdatable = true
+                saleOrderentry.save(flush: true)
+
+                saleInvoice.put("products", saleProductDetails)
+                saleInvoice.put("invoice", saleOrderentry)
+                return saleInvoice
+            }
+            else
+            {
+                throw new ResourceNotFoundException()
+            }
+        }
+        else
+        {
+            throw new ResourceNotFoundException()
+        }
     }
 }

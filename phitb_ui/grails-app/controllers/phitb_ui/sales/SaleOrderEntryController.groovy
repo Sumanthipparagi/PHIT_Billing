@@ -3,6 +3,7 @@ package phitb_ui.sales
 import grails.converters.JSON
 import org.grails.web.json.JSONArray
 import org.grails.web.json.JSONObject
+import org.springframework.boot.context.config.ResourceNotFoundException
 import phitb_ui.EInvoiceService
 import phitb_ui.EntityService
 import phitb_ui.InventoryService
@@ -154,8 +155,8 @@ class SaleOrderEntryController {
         //save to sale bill details
         saleOrderDetails.put("serBillId", serBillId)
         saleOrderDetails.put("customerId", customerId)
-        saleOrderDetails.put("refNumber", "0")
-        saleOrderDetails.put("refDate", entryDate)
+        saleOrderDetails.put("refNumber", params.refno)
+        saleOrderDetails.put("refDate", params.refDate)
         saleOrderDetails.put("orderValidity", entryDate)
         saleOrderDetails.put("salesmanId", 0)
         saleOrderDetails.put("transportTypeId", 0)
@@ -360,6 +361,84 @@ class SaleOrderEntryController {
         {
 
             render("No Bill Found")
+        }
+    }
+
+    def dataTable() {
+        try {
+            JSONObject jsonObject = new JSONObject(params)
+            def apiResponse = new SalesService().showSaleOrder(jsonObject)
+            if (apiResponse.status == 200) {
+                JSONObject responseObject = new JSONObject(apiResponse.readEntity(String.class))
+                if(responseObject)
+                {
+                    JSONArray jsonArray = responseObject.data
+                    JSONArray jsonArray2 = new JSONArray()
+                    JSONArray jsonArray3 = new JSONArray()
+                    JSONArray entityArray = new JSONArray()
+                    JSONArray cityArray = new JSONArray()
+                    for (JSONObject json : jsonArray) {
+                        json.put("customer", new EntityService().getEntityById(json.get("customerId").toString()))
+                        jsonArray2.put(json)
+                    }
+                    for(JSONObject json1 : jsonArray2)
+                    {
+                        entityArray.put(json1.get("customer"))
+                    }
+                    entityArray.each {
+                        def cityResp = new SystemService().getCityById(it.cityId.toString())
+                        it.put("cityId", cityResp)
+                    }
+                    responseObject.put("data", jsonArray2)
+                    responseObject.put("city",entityArray)
+                }
+                respond responseObject, formats: ['json'], status: 200
+            } else {
+                response.status = 400
+            }
+        }
+        catch (Exception ex) {
+            System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
+            log.error('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
+            response.status = 400
+        }
+    }
+
+
+    def saleOrderList()
+    {
+        render(view:'/sales/saleOrderEntry/sale-order-list')
+    }
+
+    def cancelInvoice()
+    {
+        String id = params.id
+        String entityId = session.getAttribute("entityId")
+        String financialYear = session.getAttribute("financialYear")
+        JSONObject jsonObject = new SalesService().cancelOrder(id, entityId, financialYear)
+        if (jsonObject)
+        {
+            //adjust stocks
+            JSONArray productOrderDetails = jsonObject.get("products")
+            if (productOrderDetails)
+            {
+                for (JSONObject productOrderDetail : productOrderDetails)
+                {
+                    def stockBook = new InventoryService().getStocksOfProductAndBatch(productOrderDetail.productId.toString(), productOrderDetail.batchNumber, session.getAttribute("entityId").toString())
+                    double remainingQty = stockBook.get("remainingQty") + productOrderDetail.get("sqty")
+                    double remainingFreeQty = stockBook.get("remainingFreeQty") + productOrderDetail.get("freeQty")
+                    double remainingReplQty = stockBook.get("remainingReplQty") + productOrderDetail.get("repQty")
+                    stockBook.put("remainingQty", remainingQty.toLong())
+                    stockBook.put("remainingFreeQty", remainingFreeQty.toLong())
+                    stockBook.put("remainingReplQty", remainingReplQty.toLong())
+                    new InventoryService().updateStockBook(stockBook)
+                }
+            }
+            respond jsonObject, formats: ['json']
+        }
+        else
+        {
+            response.status = 400
         }
     }
 

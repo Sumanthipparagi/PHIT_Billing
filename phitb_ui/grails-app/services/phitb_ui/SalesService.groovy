@@ -629,6 +629,26 @@ contains both sale bill and products
 
     }
 
+    def showSaleOrder(JSONObject jsonObject)
+    {
+        Client client = ClientBuilder.newClient();
+        WebTarget target = client.target(new Links().API_GATEWAY);
+        try
+        {
+            Response apiResponse = target
+                    .path(new Links().SALE_ORDER_DATATABLE)
+                    .queryParam("params", URLEncoder.encode(jsonObject.toString(), "UTF-8"))
+                    .request(MediaType.APPLICATION_JSON_TYPE)
+                    .get()
+            return apiResponse
+        }
+        catch (Exception ex)
+        {
+            System.err.println('Service :showSalesService , action :  show  , Ex:' + ex)
+            log.error('Service :showSalesService , action :  show  , Ex:' + ex)
+        }
+
+    }
 
     def getSaleRetrunDetailsByBill(String id)
     {
@@ -1104,6 +1124,33 @@ contains both sale bill and products
         try {
             Response apiResponse = target
                     .path(new Links().SALE_BILL_CANCEL)
+                    .request(MediaType.APPLICATION_JSON_TYPE)
+                    .post(Entity.json(jsonObject))
+            if(apiResponse.status == 200)
+            {
+                JSONObject jsonObject1 = new JSONObject(apiResponse.readEntity(String.class))
+                return jsonObject1
+            }
+            else
+                return null
+        }
+        catch (Exception ex) {
+            System.err.println('Service :SalesService , action :  cancelInvoice  , Ex:' + ex)
+            log.error('Service :SalesService , action :  cancelInvoice  , Ex:' + ex)
+        }
+    }
+
+    def cancelOrder(String id, String entityId, String financialYear)
+    {
+        JSONObject jsonObject = new JSONObject()
+        jsonObject.put("id", id)
+        jsonObject.put("entityId", entityId)
+        jsonObject.put("financialYear", financialYear)
+        Client client = ClientBuilder.newClient();
+        WebTarget target = client.target(new Links().API_GATEWAY)
+        try {
+            Response apiResponse = target
+                    .path(new Links().SALE_ORDER_CANCEL)
                     .request(MediaType.APPLICATION_JSON_TYPE)
                     .post(Entity.json(jsonObject))
             if(apiResponse.status == 200)

@@ -71,7 +71,7 @@
 
                     </div>
 
-                    <div class="body">
+                    <div class="body" style="padding: 7px;">
                         <div class="row">
                             <div class="col-md-2">
                                 <label for="date">Date:</label>
@@ -116,6 +116,19 @@
                                 <input type="date" class="form-control date" name="duedate" id="duedate"/>
                             </div>
 
+                        </div>
+                        <div class="row mt-1">
+                            <div class="col-md-4">
+                                <label for="refno">Ref.No:</label>
+                                <input class="form-control show-tick" type="text" id="refno" name="refno"
+                                       placeholder="Ref.No">
+                            </div>
+
+                            <div class="col-md-4">
+                                <label for="refDate">Ref.Date:</label>
+                                <input class="form-control show-tick" type="date" id="refDate" name="refDate"
+                                       placeholder="Ref.Date:">
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -902,7 +915,7 @@
             alert("Can't change this now, invoice has been saved already.")
     }
 
-    var saleBillId = 0;
+    var saleOrderId = 0;
 
     function saveSaleInvoice(billStatus) {
         $("#saveBtn").prop("disabled", true);
@@ -922,6 +935,26 @@
         duedate = moment(duedate, 'YYYY-MM-DD').toDate();
         duedate = moment(duedate).format('DD/MM/YYYY');
         var priority = $("#priority").val();
+        var refno = $("#refno").val();
+        var refDate = $("#refDate").val();
+        const refDateInput = document.getElementById('refDate');
+        if(refDateInput.value) {
+            var d = new Date(refDate);
+            refDate = moment(d.toUTCString()).format('DD/MM/YYYY hh:mm:ss');
+        }
+
+        if (!refno) {
+            alert("Please enter Ref number.");
+            waitingSwal.close();
+            return;
+        }
+
+        if(!refDateInput.value)
+        {
+            alert("Please enter Ref date.");
+            waitingSwal.close();
+            return;
+        }
 
         if (!series) {
             alert("Please select series.");
@@ -950,6 +983,8 @@
                 customer: customer,
                 series: series,
                 duedate: duedate,
+                refno: refno,
+                refDate: refDate,
                 priority: priority,
                 billStatus: billStatus,
                 seriesCode: seriesCode,
@@ -963,7 +998,7 @@
                         hot.setCellMeta(j, i, 'readOnly', true);
                     }
                 }
-                saleBillId = data.saleBillDetail.id;
+                saleOrderId = data.saleBillDetail.id;
                 var datepart = data.saleBillDetail.entryDate.split("T")[0];
                 var month = datepart.split("-")[1];
                 var year = datepart.split("-")[0];
@@ -1020,7 +1055,7 @@
     function printInvoice() {
         if (readOnly) {
             window.open(
-                '#',
+                '/sale-order-entry/print-order?id='+saleOrderId,
             );
             resetData();
         }

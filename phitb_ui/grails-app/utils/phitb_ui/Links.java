@@ -441,6 +441,7 @@ public class Links
     public static String SALE_PRODUCT_ORDER = "api/v1.0/sales/saleorderproductdetails/bill";
     public static String SALE_ORDER_DATATABLE = "api/v1.0/sales/saleorderdetails/datatable";
     public static String SALE_ORDER_RECENT = "api/v1.0/sales/saleorderdetails/getrecent";
+    public static String SALE_ORDER_CANCEL = "api/v1.0/sales/saleorderdetails/cancel";
 
 //    public static String SALE_ORDER_DATATABLE = "api/v1.0/sales/saleproductdetails/datatable";
 //    public static String SALE_ORDER_UPDATE = "api/v1.0/sales/saleproductdetails/{id}";

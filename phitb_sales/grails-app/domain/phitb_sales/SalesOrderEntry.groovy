@@ -20,6 +20,8 @@ class SalesOrderEntry implements Serializable, LogicalDelete<SalesOrderEntry>
     String orderId
     long totalEstimate
     double totalGst
+    double totalAmount
+    Date cancelledDate
     String billStatus
     long lockStatus
     long syncStatus
@@ -38,6 +40,7 @@ class SalesOrderEntry implements Serializable, LogicalDelete<SalesOrderEntry>
     static constraints = {
         orderNumber nullable: true
         invoiceNumber nullable: true, unique: true
+        cancelledDate nullable:true
         uuid unique: true
     }
     boolean isUpdatable
