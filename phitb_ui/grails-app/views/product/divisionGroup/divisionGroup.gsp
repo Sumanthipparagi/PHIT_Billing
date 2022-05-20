@@ -24,12 +24,12 @@
 
     <style>
 
-    div.dataTables_scrollBody table tbody  td {
-        border-top: none;
-        padding: 0.9px;
-        text-align: center;
-        border-collapse: unset!important;
-    }
+    /*div.dataTables_scrollBody table tbody  td {*/
+    /*    border-top: none;*/
+    /*    padding: 0.9px;*/
+    /*    text-align: center;*/
+    /*    border-collapse: unset!important;*/
+    /*}*/
 
     .editbtn
     {
@@ -152,7 +152,7 @@
 <asset:javascript src="/themeassets/plugins/jquery-datatable/buttons/buttons.colVis.min.js"/>
 <asset:javascript src="/themeassets/plugins/jquery-datatable/buttons/buttons.html5.min.js"/>
 <asset:javascript src="/themeassets/plugins/jquery-datatable/buttons/buttons.print.min.js"/>
-<asset:javascript src="/themeassets/bundles/mainscripts.bundle.js"/>
+<asset:javascript src="/themeassets/bundles/mainscripts-2.bundle.js"/>
 <asset:javascript src="/themeassets/js/pages/tables/jquery-datatable.js"/>
 <asset:javascript src="/themeassets/js/pages/ui/dialogs.js"/>
 <asset:javascript src="/themeassets/plugins/sweetalert/sweetalert.min.js"/>
@@ -292,7 +292,7 @@
 
     $('.entityId').change(function(){
         var type = $('option:selected', this).attr('data-type');
-        $(".entityTypeId").val(type);
+        $(".entityType").val(type);
     });
 
 

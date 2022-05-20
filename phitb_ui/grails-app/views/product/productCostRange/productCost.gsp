@@ -24,12 +24,12 @@
 
     <style>
 
-    div.dataTables_scrollBody table tbody  td {
-        border-top: none;
-        padding: 0.9px;
-        text-align: center;
-        border-collapse: unset!important;
-    }
+    /*div.dataTables_scrollBody table tbody  td {*/
+    /*    border-top: none;*/
+    /*    padding: 0.9px;*/
+    /*    text-align: center;*/
+    /*    border-collapse: unset!important;*/
+    /*}*/
 
     .editbtn
     {
@@ -286,7 +286,7 @@
 
     $('.entityId').change(function(){
         var type = $('option:selected', this).attr('data-type');
-        $(".entityTypeId").val(type);
+        $(".entityType").val(type);
     });
 
 

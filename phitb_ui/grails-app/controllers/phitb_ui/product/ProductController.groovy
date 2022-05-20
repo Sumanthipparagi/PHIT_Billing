@@ -46,6 +46,7 @@ class ProductController {
     def index() {
         try {
             ArrayList<String> productTypes = new ProductTypeController().show() as ArrayList<String>
+            ArrayList<String> entity = new EntityRegisterController().show() as ArrayList<String>
             ArrayList<String> productGroups = new ProductGroupController().show() as ArrayList<String>
             ArrayList<String> divisions = new DivisionController().show() as ArrayList<String>
             ArrayList<String> productCategories = new ProductCategoryController().show() as ArrayList<String>
@@ -58,7 +59,7 @@ class ProductController {
                                                                              productSchedules : productSchedules,
                                                                              racks            : racks,
                                                                              compositions     : compositions,
-                                                                             divisions        : divisions])
+                                                                             divisions        : divisions,entity:entity])
 
         }
         catch (Exception ex) {
