@@ -97,13 +97,18 @@
                                         </g:each>
                                     </select>
                                 </div>
+
+
                                 <div class="col-lg-6 form-group  form-float">
-                                    <label for="entityName">
+                                    <label for="affiliateId">
                                         Affiliate Id
                                     </label>
-                                    <input type="text" id="affiliateId" class="form-control affiliateId"
-                                           name="affiliateId" placeholder="Affliate Id" value="${entity.affiliateId}"
-                                           required/>
+                                    <select class="form-control show-tick affiliateId" name="affiliateId" id="affiliateId">
+                                        <g:each var="af" in="${entityList}">
+                                            <option value="${af.id}"
+                                                    <g:if test="${af.id == entity.entityType.id}">selected</g:if>>${af.entityName}</option>
+                                        </g:each>
+                                    </select>
                                 </div>
 
                                 <div class="col-lg-6 form-group  form-float">
@@ -205,14 +210,21 @@
                                            required/>
                                 </div>
 
+
+
                                 <div class="col-lg-6 form-group  form-float">
                                     <label for="priorityId">
-                                        Priority Id
+                                        Priority
                                     </label>
-                                    <input type="text" id="priorityId" class="form-control priorityId"
-                                           name="priorityId" placeholder="Priority Id" value="${entity.priorityId}"
-                                           required/>
+                                    <select class="form-control show-tick priorityId" name="priorityId" id="priorityId">
+                                        <g:each var="p" in="${priority}">
+                                            <option value="${p.id}"
+                                                    <g:if test="${p.id == entity.priorityId}">selected</g:if>>${p.priority}</option>
+                                        </g:each>
+                                    </select>
                                 </div>
+
+
                                 <div class="col-lg-6 form-group  form-float">
                                     <label for="pan">
                                         PAN
@@ -240,14 +252,14 @@
                                            required/>
                                 </div>
 
-                                <div class="col-lg-6 form-group  form-float">
-                                    <label for="corpId">
-                                        Crop Id
-                                    </label>
-                                    <input type="number" id="corpId" class="form-control corpId"
-                                           name="corpId" placeholder="Crop Id" value="${entity.corpId}"
-                                           required/>
-                                </div>
+%{--                                <div class="col-lg-6 form-group  form-float">--}%
+%{--                                    <label for="corpId">--}%
+%{--                                        Crop Id--}%
+%{--                                    </label>--}%
+%{--                                    <input type="number" id="corpId" class="form-control corpId"--}%
+%{--                                           name="corpId" placeholder="Crop Id" value="${entity.corpId}"--}%
+%{--                                           required/>--}%
+%{--                                </div>--}%
 
                                 <div class="col-lg-6 form-group  form-float">
                                     <label for="drugLicence1">
@@ -281,6 +293,15 @@
                                     </label>
                                     <input type="text" id="foodLicenceValidity" class="form-control foodLicenceValidity"
                                            name="foodLicenceValidity" placeholder="Food Licence Validity" value="${entity.foodLicenceValidity}"
+                                           required/>
+                                </div>
+
+                                <div class="col-lg-6 form-group  form-float">
+                                    <label for="foodLicence1">
+                                        Food Licence
+                                    </label>
+                                    <input type="text" id="foodLicence1" class="form-control foodLicence1"
+                                           name="foodLicense1" placeholder="Food Licence" value="${entity.foodLicence1}"
                                            required/>
                                 </div>
 
@@ -388,14 +409,14 @@
                                            required/>
                                 </div>
 
-                                <div class="col-lg-6 form-group  form-float">
-                                    <label for="transportTypeId">
-                                        Transport Type Id
-                                    </label>
-                                    <input type="number" id="transportTypeId" class="form-control transportTypeId"
-                                           name="transportTypeId" placeholder="Transport Type Id"  value="${entity.transportTypeId}"
-                                           required/>
-                                </div>
+%{--                                <div class="col-lg-6 form-group  form-float">--}%
+%{--                                    <label for="transportTypeId">--}%
+%{--                                        Transport Type Id--}%
+%{--                                    </label>--}%
+%{--                                    <input type="number" id="transportTypeId" class="form-control transportTypeId"--}%
+%{--                                           name="transportTypeId" placeholder="Transport Type Id"  value="${entity.transportTypeId}"--}%
+%{--                                           required/>--}%
+%{--                                </div>--}%
 
                                 <div class="col-lg-6 form-group  form-float">
                                     <label for="defaultCharge">
@@ -535,14 +556,7 @@
                                            required/>
                                 </div>
 
-                                <div class="col-lg-6 form-group  form-float">
-                                    <label for="password">
-                                        Password
-                                    </label>
-                                    <input type="password" id="password" class="form-control password"
-                                           name="password" placeholder="Password" value="${entity.password}"
-                                           required/>
-                                </div>
+
 
                                 <div class="col-lg-6 form-group  form-float">
                                     <label for="zoneId">
@@ -615,7 +629,19 @@
     $(function () {
         //Datetimepicker plugin
         $('.contactDob').bootstrapMaterialDatePicker({
-            format: 'DD/MM/YYYY',
+            format: 'YYYY-MM-DD',
+            clearButton: true,
+            time: false,
+            weekStart: 1
+        });
+        $('.foodLicenceValidity').bootstrapMaterialDatePicker({
+            format: 'YYYY-MM-DD',
+            clearButton: true,
+            time: false,
+            weekStart: 1
+        });
+        $('.drugLicenceValidity').bootstrapMaterialDatePicker({
+            format: 'YYYY-MM-DD',
             clearButton: true,
             time: false,
             weekStart: 1

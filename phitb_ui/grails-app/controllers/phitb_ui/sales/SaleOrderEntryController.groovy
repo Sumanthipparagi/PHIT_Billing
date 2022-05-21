@@ -1,12 +1,18 @@
 package phitb_ui.sales
 
+import grails.converters.JSON
 import org.grails.web.json.JSONArray
 import org.grails.web.json.JSONObject
+import org.springframework.boot.context.config.ResourceNotFoundException
+import phitb_ui.EInvoiceService
 import phitb_ui.EntityService
 import phitb_ui.InventoryService
+import phitb_ui.Links
 import phitb_ui.ProductService
+import phitb_ui.PurchaseService
 import phitb_ui.SalesService
 import phitb_ui.SystemService
+import phitb_ui.UtilsService
 import phitb_ui.entity.EntityRegisterController
 import phitb_ui.entity.SeriesController
 
@@ -24,33 +30,38 @@ class SaleOrderEntryController {
         render(view: '/sales/saleOrderEntry/sale-order',model: [divisions:divisions,customers:customers, priorityList:priorityList,series:series])
     }
 
+
     def saveSaleOrder()
     {
         SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy")
         JSONObject saleOrderDetails = new JSONObject()
-        JSONArray saleProductDetails = new JSONArray()
+        JSONArray saleOrderProductDetails = new JSONArray()
         String entityId = session.getAttribute("entityId").toString()
         String customerId = params.customer
         String priorityId = params.priority
         String seriesId = params.series
         String duedate = params.duedate
         String billStatus = params.billStatus
+        String seriesCode = params.seriesCode
         String message = params.message
-        if(!message)
+        if (!message)
+        {
             message = "NA"
+        }
         long finId = 0
         long serBillId = 0
         String financialYear = session.getAttribute("financialYear")
         def series = new EntityService().getSeriesById(seriesId)
-        if(!billStatus.equalsIgnoreCase("DRAFT"))
+        if (!billStatus.equalsIgnoreCase("DRAFT"))
         {
-            def recentSaleBill = new SalesService().getRecentSaleBill(financialYear, entityId, billStatus)
-            if(recentSaleBill != null)
+            def recentSaleOrder = new SalesService().getRecentSaleOrder(financialYear, entityId, billStatus)
+            if (recentSaleOrder != null && recentSaleOrder.size()!=0)
             {
-                finId = Long.parseLong(recentSaleBill.get("finId").toString()) + 1
-                serBillId = Long.parseLong(recentSaleBill.get("serBillId").toString()) + 1
+                finId = Long.parseLong(recentSaleOrder.get("finId").toString()) + 1
+                serBillId = Long.parseLong(recentSaleOrder.get("serBillId").toString()) + 1
             }
-            else {
+            else
+            {
                 finId = 1
                 serBillId = Long.parseLong(series.get("saleId").toString())
             }
@@ -64,8 +75,38 @@ class SaleOrderEntryController {
         double totalSgst = 0.00
         double totalIgst = 0.00
         double totalDiscount = 0.00
-        JSONArray saleData = new JSONArray(params.saleData)
-        for (JSONObject sale : saleData) {
+        JSONArray saleOrderData = new JSONArray(params.saleData)
+        boolean tempStocksSavedCheck = true
+        for (JSONObject sale : saleOrderData)
+        {
+            if (sale.has("15"))
+            {
+                String tempStockRowId = sale.get("15")
+                if (tempStockRowId && Long.parseLong(tempStockRowId) > 0)
+                {
+                    tempStocksSavedCheck = true
+                }
+                else
+                {
+                    tempStocksSavedCheck = false
+                }
+            }
+            else
+            {
+                tempStocksSavedCheck = false
+            }
+        }
+
+        //safety check
+        if (!tempStocksSavedCheck)
+        {
+            println("Safety Check Failed! attempted to generate sale invoice, but temp stock was not saved.")
+            response.status == 400
+            return
+        }
+
+        for (JSONObject sale : saleOrderData)
+        {
             String productId = sale.get("1")
             String batchNumber = sale.get("2")
             String expDate = sale.get("3")
@@ -73,84 +114,96 @@ class SaleOrderEntryController {
             String freeQty = sale.get("5")
             String saleRate = sale.get("6")
             String mrp = sale.get("7")
-            String discount = sale.get("8")
+            double discount = UtilsService.round(Double.parseDouble(sale.get("8").toString()), 2)
             String packDesc = sale.get("9")
-            String gst = sale.get("10")
-            String value = sale.get("11")
-            String sgst = sale.get("12")
-            String cgst = sale.get("13")
-            String igst = sale.get("14")
+            double gst = UtilsService.round(Double.parseDouble(sale.get("10").toString()), 2)
+            double value = UtilsService.round(Double.parseDouble(sale.get("11").toString()), 2)
+            double sgst = UtilsService.round(Double.parseDouble(sale.get("12").toString()), 2)
+            double cgst = UtilsService.round(Double.parseDouble(sale.get("13").toString()), 2)
+            double igst = UtilsService.round(Double.parseDouble(sale.get("14").toString()), 2)
             totalSqty += Long.parseLong(saleQty)
             totalFqty += Long.parseLong(freeQty)
-            totalAmount += Double.parseDouble(value)
-            totalGst += Double.parseDouble(gst)
-            totalSgst += Double.parseDouble(sgst)
-            totalCgst += Double.parseDouble(cgst)
-            totalIgst += Double.parseDouble(igst)
-            totalDiscount += Double.parseDouble(discount)
-            JSONObject saleProductDetail = new JSONObject()
-            saleProductDetail.put("finId", finId)
-            saleProductDetail.put("billId",0)
-            saleProductDetail.put("billType",0)
-            saleProductDetail.put("serBillId",0)
-            saleProductDetail.put("seriesId", seriesId)
-            saleProductDetail.put("productId", productId)
-            saleProductDetail.put("batchNumber", batchNumber)
-            saleProductDetail.put("expiryDate", expDate)
-            saleProductDetail.put("sqty", saleQty)
-            saleProductDetail.put("freeQty", freeQty)
-            saleProductDetail.put("repQty", 0)
-            saleProductDetail.put("pRate", 0) //TODO: to be changed
-            saleProductDetail.put("sRate", saleRate)
-            saleProductDetail.put("mrp", mrp)
-            saleProductDetail.put("discount", discount)
-            saleProductDetail.put("gstAmount", gst)
-            saleProductDetail.put("sgstAmount", sgst)
-            saleProductDetail.put("cgstAmount", cgst)
-            saleProductDetail.put("igstAmount", igst)
-            saleProductDetail.put("gstId", 1) //TODO: to be changed
-            saleProductDetail.put("amount", value)
-            saleProductDetail.put("reason", "") //TODO: to be changed
-            saleProductDetail.put("fridgeId", 0) //TODO: to be changed
-            saleProductDetail.put("kitName", 0) //TODO: to be changed
-            saleProductDetail.put("saleFinId", "") //TODO: to be changed
-            saleProductDetail.put("redundantBatch", 0) //TODO: to be changed
-            saleProductDetail.put("status", 0)
-            saleProductDetail.put("syncStatus", 0)
-            saleProductDetail.put("financialYear", financialYear)
-            saleProductDetail.put("", financialYear)
-            saleProductDetail.put("entityId", entityId)
-            saleProductDetail.put("entityTypeId", session.getAttribute("entityTypeId").toString())
-            saleProductDetails.add(saleProductDetail)
+            totalAmount += value
+            totalGst += gst
+            totalSgst += sgst
+            totalCgst += cgst
+            totalIgst += igst
+            totalDiscount += discount
+
+            JSONObject saleOrderProductDetail = new JSONObject()
+            saleOrderProductDetail.put("finId", finId)
+            saleOrderProductDetail.put("billId", 0)
+            saleOrderProductDetail.put("billType", 0)
+            saleOrderProductDetail.put("serBillId", 0)
+            saleOrderProductDetail.put("seriesId", seriesId)
+            saleOrderProductDetail.put("productId", productId)
+            saleOrderProductDetail.put("batchNumber", batchNumber)
+            saleOrderProductDetail.put("expiryDate", expDate)
+            saleOrderProductDetail.put("sqty", saleQty)
+            saleOrderProductDetail.put("freeQty", freeQty)
+            saleOrderProductDetail.put("sqtyReturn", saleQty)
+            saleOrderProductDetail.put("fqtyReturn", freeQty)
+            saleOrderProductDetail.put("repQty", 0)
+            saleOrderProductDetail.put("pRate", 0) //TODO: to be changed
+            saleOrderProductDetail.put("sRate", saleRate)
+            saleOrderProductDetail.put("mrp", mrp)
+            saleOrderProductDetail.put("discount", discount)
+            saleOrderProductDetail.put("gstAmount", gst)
+            saleOrderProductDetail.put("sgstAmount", sgst)
+            saleOrderProductDetail.put("cgstAmount", cgst)
+            saleOrderProductDetail.put("igstAmount", igst)
+
+
+
+            saleOrderProductDetail.put("gstPercentage", sale.get("16").toString())
+            saleOrderProductDetail.put("sgstPercentage", sale.get("17").toString())
+            saleOrderProductDetail.put("cgstPercentage", sale.get("18").toString())
+            saleOrderProductDetail.put("igstPercentage", sale.get("19").toString())
+
+            saleOrderProductDetail.put("gstId", 0) //TODO: to be changed
+            saleOrderProductDetail.put("amount", value)
+            saleOrderProductDetail.put("reason", "") //TODO: to be changed
+            saleOrderProductDetail.put("fridgeId", 0) //TODO: to be changed
+            saleOrderProductDetail.put("kitName", 0) //TODO: to be changed
+            saleOrderProductDetail.put("saleFinId", "") //TODO: to be changed
+            saleOrderProductDetail.put("redundantBatch", 0) //TODO: to be changed
+            saleOrderProductDetail.put("status", 0)
+            saleOrderProductDetail.put("syncStatus", 0)
+            saleOrderProductDetail.put("financialYear", financialYear)
+            saleOrderProductDetail.put("entityId", entityId)
+            saleOrderProductDetail.put("entityTypeId", session.getAttribute("entityTypeId").toString())
+            saleOrderProductDetails.add(saleOrderProductDetail)
+
             //save to sale transaction log
             //save to sale transportation details
-        }
 
+        }
         String entryDate = sdf.format(new Date())
         String orderDate = sdf.format(new Date())
         //save to sale bill details
         saleOrderDetails.put("serBillId", serBillId)
         saleOrderDetails.put("customerId", customerId)
+        saleOrderDetails.put("refNumber", params.refno)
+        saleOrderDetails.put("refDate", params.refDate)
+        saleOrderDetails.put("orderValidity", entryDate)
+        saleOrderDetails.put("salesmanId", 0)
+        saleOrderDetails.put("transportTypeId", 0)
+        saleOrderDetails.put("totalEstimate", 0)
+        saleOrderDetails.put("orderId", 0)
+        saleOrderDetails.put("gstId", 0)
+        saleOrderDetails.put("orderMechanism", 0)
+        saleOrderDetails.put("purchaseQuotationId", 0)
+        saleOrderDetails.put("confirmationStatus", 0)
         saleOrderDetails.put("customerNumber", 0) //TODO: to be changed
         saleOrderDetails.put("finId", finId)
         saleOrderDetails.put("seriesId", seriesId)
         saleOrderDetails.put("priorityId", priorityId)
         saleOrderDetails.put("financialYear", financialYear)
         saleOrderDetails.put("dueDate", duedate)
-        saleOrderDetails.put("transportTypeId", 1)
-        saleOrderDetails.put("salesmanId", 1)
-        saleOrderDetails.put("orderValidity", "20/01/2021")
-        saleOrderDetails.put("orderId", 1)
-        saleOrderDetails.put("orderMechanism", "1")
-        saleOrderDetails.put("orderMechanism", "1")
-        saleOrderDetails.put("gstId", 1)
-        saleOrderDetails.put("refNumber", 1)
-        saleOrderDetails.put("purchaseQuotationId", 1)
+        saleOrderDetails.put("paymentStatus", 0)
         saleOrderDetails.put("userId", session.getAttribute("userId"))
         saleOrderDetails.put("entryDate", entryDate)
         saleOrderDetails.put("orderDate", orderDate)
-        saleOrderDetails.put("refDate", orderDate)
-        saleOrderDetails.put("totalEstimate", 1)
         saleOrderDetails.put("dispatchDate", sdf.format(new Date())) //TODO: to be changed
         saleOrderDetails.put("salesmanId", "0") //TODO: to be changed
         saleOrderDetails.put("salesmanComm", "0") //TODO: to be changed
@@ -185,26 +238,17 @@ class SaleOrderEntryController {
         saleOrderDetails.put("taxable", "1") //TODO: to be changed
         saleOrderDetails.put("cashDiscount", 0) //TODO: to be changed
         saleOrderDetails.put("exempted", 0) //TODO: to be changed
-        Response response = new SalesService().saveSaleOrder(saleOrderDetails)
-        if(response.status == 200)
+        saleOrderDetails.put("seriesCode", seriesCode)
+        saleOrderDetails.put("uuid", params.uuid)
+        JSONObject jsonObject = new JSONObject()
+        jsonObject.put("saleOrder", saleOrderDetails)
+        jsonObject.put("saleOrderProducts", saleOrderProductDetails)
+        Response response = new SalesService().saveSaleOrder(jsonObject)
+        if (response.status == 200)
         {
-            def saleOrder = new JSONObject(response.readEntity(String.class))
-            //save to sale product details
-            for (JSONObject saleProductDetail : saleProductDetails) {
-
-                saleProductDetail.put("billId",saleOrder.get("id"))
-                saleProductDetail.put("billType",0) //0 Sale, 1 Purchase
-                saleProductDetail.put("serBillId",saleOrder.get("serBillId"))
-                saleProductDetail.put("saleFinId",saleOrder.get("finId"))
-                def resp = new SalesService().saveSaleProductDetail(saleProductDetail)
-                if(resp.status == 200)
-                    println("Product Detail Saved")
-                else {
-                    println("Product Detail Failed")
-                }
-            }
+            JSONObject saleBillDetail = new JSONObject(response.readEntity(String.class))
             //update stockbook
-            for (JSONObject sale : saleData) {
+            for (JSONObject sale : saleOrderData) {
                 String tempStockRowId = sale.get("15")
                 def tmpStockBook = new InventoryService().getTempStocksById(Long.parseLong(tempStockRowId))
                 def stockBook = new InventoryService().getStockBookById(Long.parseLong(tmpStockBook.originalId))
@@ -221,23 +265,205 @@ class SaleOrderEntryController {
                 stockBook.put("expDate", expDate)
                 stockBook.put("purcDate", purcDate)
                 stockBook.put("manufacturingDate", manufacturingDate)
+                stockBook.put("uuid", params.uuid)
                 def apiRes = new InventoryService().updateStockBook(stockBook)
-                if(apiRes.status == 200) {
+                if (apiRes.status == 200) {
                     //clear tempstockbook
-                    apiRes = new InventoryService().deleteTempStock(tempStockRowId)
-                    if(apiRes.status == 200) {
-                        JSONObject responseJson = new JSONObject()
-                        responseJson.put("series", series)
-                        responseJson.put("saleBillDetail", saleOrder)
-                        respond responseJson, formats: ['json']
+                    new InventoryService().deleteTempStock(tempStockRowId)
+                }
+            }
+            JSONObject responseJson = new JSONObject()
+            responseJson.put("series", series)
+            responseJson.put("saleBillDetail", saleBillDetail)
+            respond responseJson, formats: ['json']
+        }
+        else
+            response.status = 400
+    }
+
+
+    def printSaleOrder()
+    {
+        String saleOrderId = params.id
+        JSONObject saleOrderDetail = new SalesService().getSaleOrderDetailsById(saleOrderId)
+        if (saleOrderDetail != null)
+        {
+            JSONArray saleProductDetails = new SalesService().getSaleProductDetailsByOrder(saleOrderId)
+            JSONObject series = new EntityService().getSeriesById(saleOrderDetail.get("seriesId").toString())
+            JSONObject customer = new EntityService().getEntityById(saleOrderDetail.get("customerId").toString())
+            JSONObject entity = new EntityService().getEntityById(session.getAttribute("entityId").toString())
+            JSONObject city = new SystemService().getCityById(entity.get('cityId').toString())
+            JSONObject custcity = new SystemService().getCityById(customer.get('cityId').toString())
+            JSONArray termsConditions = new EntityService().getTermsContionsByEntity(session.getAttribute("entityId").toString())
+            saleProductDetails.each {
+                def batchResponse = new ProductService().getBatchesOfProduct(it.productId.toString())
+                JSONArray batchArray = JSON.parse(batchResponse.readEntity(String.class)) as JSONArray
+                for (JSONObject batch : batchArray)
+                {
+                    if (batch.batchNumber == it.batchNumber)
+                    {
+                        it.put("batch", batch)
+                    }
+                }
+                def apiResponse = new SalesService().getRequestWithId(it.productId.toString(), new Links().PRODUCT_REGISTER_SHOW)
+                it.put("productId", JSON.parse(apiResponse.readEntity(String.class)) as JSONObject)
+            }
+            def totalcgst = UtilsService.round(saleProductDetails.cgstAmount.sum(), 2)
+            def totalsgst = UtilsService.round(saleProductDetails.sgstAmount.sum(), 2)
+            def totaligst = UtilsService.round(saleProductDetails.igstAmount.sum(), 2)
+            def totaldiscount = UtilsService.round(saleProductDetails.discount.sum(), 2)
+            def totalBeforeTaxes = 0
+            HashMap<String, Double> gstGroup = new HashMap<>()
+            HashMap<String, Double> sgstGroup = new HashMap<>()
+            HashMap<String, Double> cgstGroup = new HashMap<>()
+            HashMap<String, Double> igstGroup = new HashMap<>()
+            for (Object it : saleProductDetails)
+            {
+                double amountBeforeTaxes = it.amount - it.cgstAmount - it.sgstAmount - it.igstAmount
+                totalBeforeTaxes += amountBeforeTaxes
+                if (it.igstPercentage > 0)
+                {
+                    def igstPercentage = igstGroup.get(it.igstPercentage.toString())
+                    if (igstPercentage == null)
+                    {
+                        igstGroup.put(it.igstPercentage.toString(), amountBeforeTaxes)
+                    }
+                    else
+                    {
+                        igstGroup.put(it.igstPercentage.toString(), igstPercentage.doubleValue() + amountBeforeTaxes)
+                    }
+                }
+                else
+                {
+                    def gstPercentage = gstGroup.get(it.gstPercentage.toString())
+                    if (gstPercentage == null)
+                    {
+                        gstGroup.put(it.gstPercentage.toString(), amountBeforeTaxes)
+                    }
+                    else
+                    {
+                        gstGroup.put(it.gstPercentage.toString(), gstPercentage.doubleValue() + amountBeforeTaxes)
+                    }
+
+                    def sgstPercentage = sgstGroup.get(it.sgstPercentage.toString())
+                    if (sgstPercentage == null)
+                    {
+                        sgstGroup.put(it.sgstPercentage.toString(), amountBeforeTaxes)
+                    }
+                    else
+                    {
+                        sgstGroup.put(it.sgstPercentage.toString(), sgstPercentage.doubleValue() + amountBeforeTaxes)
+                    }
+                    def cgstPercentage = cgstGroup.get(it.cgstPercentage.toString())
+                    if (cgstPercentage == null)
+                    {
+                        cgstGroup.put(it.cgstPercentage.toString(), amountBeforeTaxes)
+                    }
+                    else
+                    {
+                        cgstGroup.put(it.cgstPercentage.toString(), cgstPercentage.doubleValue() + amountBeforeTaxes)
                     }
                 }
             }
-            response.status == 400
+
+            def total = totalBeforeTaxes + totalcgst + totalsgst + totaligst
+            render(view: "/sales/saleOrderEntry/sale-order-print", model: [saleBillDetail    : saleOrderDetail,
+                                                        saleProductDetails: saleProductDetails,
+                                                        series            : series, entity: entity, customer: customer, city: city,
+                                                        total             : total, custcity: custcity,
+                                                        termsConditions   : termsConditions,
+                                                        totalcgst         : totalcgst, totalsgst: totalsgst, totaligst: totaligst,
+                                                        totaldiscount     : totaldiscount,
+                                                        gstGroup          : gstGroup,
+                                                        sgstGroup         : sgstGroup,
+                                                        cgstGroup         : cgstGroup,
+                                                        igstGroup         : igstGroup,
+                                                        totalBeforeTaxes  : totalBeforeTaxes,
+            ])
         }
         else
         {
-            response.status == 400
+
+            render("No Bill Found")
         }
     }
+
+    def dataTable() {
+        try {
+            JSONObject jsonObject = new JSONObject(params)
+            def apiResponse = new SalesService().showSaleOrder(jsonObject)
+            if (apiResponse.status == 200) {
+                JSONObject responseObject = new JSONObject(apiResponse.readEntity(String.class))
+                if(responseObject)
+                {
+                    JSONArray jsonArray = responseObject.data
+                    JSONArray jsonArray2 = new JSONArray()
+                    JSONArray jsonArray3 = new JSONArray()
+                    JSONArray entityArray = new JSONArray()
+                    JSONArray cityArray = new JSONArray()
+                    for (JSONObject json : jsonArray) {
+                        json.put("customer", new EntityService().getEntityById(json.get("customerId").toString()))
+                        jsonArray2.put(json)
+                    }
+                    for(JSONObject json1 : jsonArray2)
+                    {
+                        entityArray.put(json1.get("customer"))
+                    }
+                    entityArray.each {
+                        def cityResp = new SystemService().getCityById(it.cityId.toString())
+                        it.put("cityId", cityResp)
+                    }
+                    responseObject.put("data", jsonArray2)
+                    responseObject.put("city",entityArray)
+                }
+                respond responseObject, formats: ['json'], status: 200
+            } else {
+                response.status = 400
+            }
+        }
+        catch (Exception ex) {
+            System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
+            log.error('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
+            response.status = 400
+        }
+    }
+
+
+    def saleOrderList()
+    {
+        render(view:'/sales/saleOrderEntry/sale-order-list')
+    }
+
+    def cancelOrder()
+    {
+        String id = params.id
+        String entityId = session.getAttribute("entityId")
+        String financialYear = session.getAttribute("financialYear")
+        JSONObject jsonObject = new SalesService().cancelOrder(id, entityId, financialYear)
+        if (jsonObject)
+        {
+            //adjust stocks
+            JSONArray productOrderDetails = jsonObject.get("products")
+            if (productOrderDetails)
+            {
+                for (JSONObject productOrderDetail : productOrderDetails)
+                {
+                    def stockBook = new InventoryService().getStocksOfProductAndBatch(productOrderDetail.productId.toString(), productOrderDetail.batchNumber, session.getAttribute("entityId").toString())
+                    double remainingQty = stockBook.get("remainingQty") + productOrderDetail.get("sqty")
+                    double remainingFreeQty = stockBook.get("remainingFreeQty") + productOrderDetail.get("freeQty")
+                    double remainingReplQty = stockBook.get("remainingReplQty") + productOrderDetail.get("repQty")
+                    stockBook.put("remainingQty", remainingQty.toLong())
+                    stockBook.put("remainingFreeQty", remainingFreeQty.toLong())
+                    stockBook.put("remainingReplQty", remainingReplQty.toLong())
+                    new InventoryService().updateStockBook(stockBook)
+                }
+            }
+            respond jsonObject, formats: ['json']
+        }
+        else
+        {
+            response.status = 400
+        }
+    }
+
 }

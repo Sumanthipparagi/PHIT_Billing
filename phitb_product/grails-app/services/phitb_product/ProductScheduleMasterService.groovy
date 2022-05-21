@@ -97,7 +97,7 @@ class ProductScheduleMasterService {
     }
 
     ProductScheduleMaster save(JSONObject jsonObject) {
-       ProductScheduleMaster productScheduleMaster = new ProductScheduleMaster()
+        ProductScheduleMaster productScheduleMaster = new ProductScheduleMaster()
         productScheduleMaster.scheduleCode = jsonObject.get("scheduleCode").toString()
         productScheduleMaster.scheduleDescription = jsonObject.get("scheduleDescription").toString()
         productScheduleMaster.status =  Long.parseLong(jsonObject.get("status").toString())

@@ -1707,8 +1707,14 @@ class EntityService {
                     .path(new Links().ENTITY_TYPE_MASTER_SHOW)
                     .request(MediaType.APPLICATION_JSON_TYPE)
                     .get()
-
-            return apiResponse
+            if(apiResponse.status == 200)
+            {
+                JSONArray jsonArray = new JSONArray(apiResponse.readEntity(String.class))
+                return jsonArray
+            }
+            else {
+                return []
+            }
         }
         catch (Exception ex) {
             System.err.println('Service :EntityService , action :  getEntityType  , Ex:' + ex)

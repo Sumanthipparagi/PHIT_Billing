@@ -516,6 +516,10 @@ class UrlMappings {
         "/sale-order-entry"(controller: "saleOrderEntry") {
             action = [GET: "index", POST: 'saveSaleOrder']
         }
+        "/sale-order-entry/print-order"(controller: 'saleOrderEntry', action: 'printSaleOrder')
+        "/sale-order-entry/datatable"(controller: 'saleOrderEntry', action: 'dataTable')
+        "/sale-order-entry/my-orders"(controller: 'saleOrderEntry', action: 'saleOrderList')
+        "/sale-order-entry/cancel"(controller: 'saleOrderEntry', action: 'cancelOrder')
 
 
 

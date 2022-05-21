@@ -172,6 +172,37 @@ class UrlMappings {
                     'getSaleProductDetailsbybatchAndBill')
 
 
+//            Sale Order Product Details
+            "/saleorderproductdetails(.$format)?"(controller: 'saleOrderProductDetails') {
+                action = [GET: 'index', POST:
+                        'save']
+            }
+            "/saleorderproductdetails/bill/$id(.$format)?"(controller: 'saleOrderProductDetails') {
+                action = [GET: 'getSaleOrderProductDetailsOfBill']
+            }
+
+            "/saleproductdetailslist/bill/$salebillsIds(.$format)?"(controller: 'saleOrderProductDetails') {
+                action = [GET: 'getSaleProductDetailsOfSaleBillList']
+            }
+
+            "/saleproductdetails/datatable(.$format)?"(controller: 'saleOrderProductDetails') {action = [GET: 'dataTable']}
+            "/saleproductdetails/$id(.$format)?"(controller: 'saleOrderProductDetails') {
+                action = [GET: 'show', PUT: 'update', DELETE:
+                        'delete']
+            }
+            "/saleproductdetailsbydays/$days(.$format)?"(controller: 'saleOrderProductDetails') {
+                action = [GET: 'getAllByDays']
+            }
+
+            "/saleproductdetailsbyproductId(.$format)?"(controller: 'saleOrderProductDetails') {
+                action = [GET: 'getSaleOrderProductDetailsbyProductId']
+            }
+
+            "/saleproductdetailsbillandbatch(.$format)?"(controller: 'saleOrderProductDetails', action:
+                    'getSaleProductDetailsbybatchAndBill')
+
+
+
             //Sale Transaction Log
             "/saletransactionlog(.$format)?"(controller: 'saleTransactionLog') {
                 action = [GET: 'index', POST: 'save']
@@ -227,9 +258,18 @@ class UrlMappings {
 //            Sale order Details
             "/saleorderdetails(.$format)?"(controller: 'saleOrderEntry') {
                 action = [GET: 'index', POST:
-                        'save']
+                        'saveSaleOrder']
+            }
+            "/saleorderdetails/$id(.$format)?"(controller:'saleOrderEntry') {
+                action = [GET: 'show', PUT: 'update', DELETE:
+                        'delete']
             }
 
+            "/saleorderdetails/getrecent(.$format)?"(controller: 'saleOrderEntry') {
+                action = [GET: 'getRecentByFinancialYearAndEntity']
+            }
+            "/saleorderdetails/datatable(.$format)?"(controller: 'saleOrderEntry') {action = [GET: 'dataTable']}
+            "/saleorderdetails/cancel(.$format)?"(controller: 'saleOrderEntry') {action = [POST: 'cancelSaleOrder']}
 
             //Sale return
             "/salereturn(.$format)?"(controller:'saleReturn') {

@@ -99,7 +99,7 @@
                                 <select class="form-control show-tick customerIds" name="customerIds"
                                         id="customerIds"  multiple="multiple" required>
                                     <g:each var="cust" in="${customerList}">
-                                        <option value="${cust.id}">${cust.entityName}</option>
+                                        <option value="${cust.id}">${cust.customerGroupName}</option>
                                     </g:each>
                                 </select>
                             </div>
@@ -131,7 +131,9 @@
 %{--                                </select>--}%
 %{--                            </div>--}%
 
-                            <input type="hidden" class="entityType" name="entityTypeId">
+                            <input type="hidden" class="entityType" name="entityTypeId" value="">
+                            <input type="hidden" class="createdUser" name="createdUser" value="${session.getAttribute('userId')}">
+                            <input type="hidden" class="createdUser" name="modifiedUser" value="${session.getAttribute('userId')}">
                             <input type="hidden" name="status" value="1">
                             <input type="hidden" name="syncStatus" value="1">
                         </div>

@@ -5,6 +5,7 @@ import org.grails.web.json.JSONObject
 import phitb_sales.Exception.BadRequestException
 import phitb_sales.Exception.ResourceNotFoundException
 
+import java.text.DecimalFormat
 import java.text.SimpleDateFormat
 
 @Transactional
@@ -99,6 +100,7 @@ class SalesOrderEntryService {
         salesOrderEntry.refNumber = jsonObject.get("refNumber").toString()
         salesOrderEntry.seriesId = Long.parseLong(jsonObject.get("seriesId").toString())
         salesOrderEntry.refDate =sdf.parse(jsonObject.get("refDate").toString())
+        salesOrderEntry.totalAmount = Double.parseDouble(jsonObject.get("totalAmount").toString())
         salesOrderEntry.customerId = Long.parseLong(jsonObject.get("customerId").toString())
         salesOrderEntry.transportTypeId = Long.parseLong(jsonObject.get("transportTypeId").toString())
         salesOrderEntry.salesmanId = Long.parseLong(jsonObject.get("salesmanId").toString())
@@ -113,6 +115,7 @@ class SalesOrderEntryService {
         salesOrderEntry.purchaseQuotationId = jsonObject.get("purchaseQuotationId").toString()
         salesOrderEntry.confirmationStatus = jsonObject.get("gstId").toString()
         salesOrderEntry.financialYear = jsonObject.get("financialYear").toString()
+        salesOrderEntry.uuid = jsonObject.get('uuid').toString()
         salesOrderEntry.entityTypeId = Long.parseLong(jsonObject.get("entityTypeId").toString())
         salesOrderEntry.entityId = Long.parseLong(jsonObject.get("entityId").toString())
         salesOrderEntry.createdUser = Long.parseLong(jsonObject.get("createdUser").toString())
@@ -120,6 +123,33 @@ class SalesOrderEntryService {
         salesOrderEntry.save(flush: true)
         if (!salesOrderEntry.hasErrors())
         {
+            Calendar cal = new GregorianCalendar()
+            cal.setTime(salesOrderEntry.entryDate)
+            String month = cal.get(Calendar.MONTH)+1
+            String year = cal.get(Calendar.YEAR)
+            DecimalFormat mFormat = new DecimalFormat("00");
+            month = mFormat.format(Double.valueOf(month));
+            String invoiceNumber = null;
+            String seriesCode = jsonObject.get("seriesCode")
+            SaleBillDetails saleBillDetails1
+            if (salesOrderEntry.billStatus == "DRAFT")
+            {
+                println(salesOrderEntry.billStatus)
+//                invoiceNumber = saleBillDetails.entityId+"/DR/S/" + month + year + "/" + seriesCode + "/__";'
+                salesOrderEntry.invoiceNumber = null
+            }
+            else
+            {
+                invoiceNumber = salesOrderEntry.entityId + "/SO/" + month + year + "/" + seriesCode + "/" +
+                        salesOrderEntry.serBillId
+                println("Invoice Number generated: " + invoiceNumber)
+            }
+            if (invoiceNumber)
+            {
+                salesOrderEntry.invoiceNumber = invoiceNumber
+                salesOrderEntry.isUpdatable = true
+                salesOrderEntry.save(flush: true)
+            }
             return salesOrderEntry
         }
         else
@@ -140,6 +170,7 @@ class SalesOrderEntryService {
             salesOrderEntry.refNumber = jsonObject.get("refNumber").toString()
             salesOrderEntry.seriesId = Long.parseLong(jsonObject.get("seriesId").toString())
             salesOrderEntry.refDate =sdf.parse(jsonObject.get("refDate").toString())
+            salesOrderEntry.totalAmount = Double.parseDouble(jsonObject.get("totalAmount").toString())
             salesOrderEntry.customerId = Long.parseLong(jsonObject.get("customerId").toString())
             salesOrderEntry.transportTypeId = Long.parseLong(jsonObject.get("transportTypeId").toString())
             salesOrderEntry.salesmanId = Long.parseLong(jsonObject.get("salesmanId").toString())
@@ -192,6 +223,57 @@ class SalesOrderEntryService {
         else
         {
             throw new BadRequestException()
+        }
+    }
+
+    JSONObject getRecentByFinancialYearAndEntity(String financialYear, String entityId, billStatus)
+    {
+
+        JSONObject jsonObject = new JSONObject()
+        ArrayList<SalesOrderEntry> salesOrderEntry =
+                SalesOrderEntry.findAllByFinancialYearAndEntityIdAndBillStatusNotEqual(financialYear, Long.parseLong(entityId), 'DRAFT', [sort: 'id', order: 'desc'])
+        println(salesOrderEntry.serBillId)
+        jsonObject.put("serBillId", salesOrderEntry.serBillId.max())
+        jsonObject.put("finId", salesOrderEntry.finId.max())
+        return jsonObject
+
+    }
+
+    def cancelSaleOrder(JSONObject jsonObject)
+    {
+        String id = jsonObject.get("id")
+        String entityId = jsonObject.get("entityId")
+        String financialYear = jsonObject.get("financialYear")
+        JSONObject saleInvoice = new JSONObject()
+        SalesOrderEntry saleOrderentry = SalesOrderEntry.findById(Long.parseLong(id))
+        if (saleOrderentry)
+        {
+            if (saleOrderentry.financialYear.equalsIgnoreCase(financialYear) && saleOrderentry.entityId == Long.parseLong(entityId))
+            {
+                ArrayList<SaleProductDetails> saleProductDetails = SaleProductDetails.findAllByBillId(saleOrderentry.id)
+                for (SaleProductDetails saleProductDetail : saleProductDetails)
+                {
+                    saleProductDetail.status = 0
+                    saleProductDetail.isUpdatable = true
+                    saleProductDetail.save(flush: true)
+                }
+                saleOrderentry.billStatus = "CANCELLED"
+                saleOrderentry.cancelledDate = new Date()
+                saleOrderentry.isUpdatable = true
+                saleOrderentry.save(flush: true)
+
+                saleInvoice.put("products", saleProductDetails)
+                saleInvoice.put("invoice", saleOrderentry)
+                return saleInvoice
+            }
+            else
+            {
+                throw new ResourceNotFoundException()
+            }
+        }
+        else
+        {
+            throw new ResourceNotFoundException()
         }
     }
 }

@@ -110,8 +110,8 @@
                   <th style="width: 20%">Category Name</th>
                   <th style="width: 20%">Restricted Category</th>
                   <th style="width: 20%">Access Restriction</th>
-                  <th style="width: 20%">Entity</th>
-                  <th style="width: 20%">Entity Type</th>
+%{--                  <th style="width: 20%">Entity</th>--}%
+%{--                  <th style="width: 20%">Entity Type</th>--}%
                   <th style="width: 20%">Action</th>
                 </tr>
                 </thead>
@@ -210,8 +210,8 @@
               'categoryName': json.data[i].categoryName,
               'restrictedCategory': json.data[i].restrictedCategory,
               'accessRestriction': json.data[i].accessRestriction,
-              'entity':json.entity[i].entityName,
-              'entitytype': json.entityType[i].name,
+              // 'entity':json.entity[i].entityName,
+              // 'entitytype': json.entityType[i].name,
               'action': editbtn + ' ' + deletebtn
             });
           }
@@ -223,8 +223,8 @@
         {'data': 'categoryName', 'width': '20%'},
         {'data': 'restrictedCategory', 'width': '20%'},
         {'data': 'accessRestriction', 'width': '20%'},
-        {'data': 'entity', 'width': '20%'},
-        {'data': 'entitytype', 'width': '20%'},
+        // {'data': 'entity', 'width': '20%'},
+        // {'data': 'entitytype', 'width': '20%'},
         {'data': 'action', 'width': '20%'}
       ]
     });

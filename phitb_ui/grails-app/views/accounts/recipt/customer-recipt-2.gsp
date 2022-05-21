@@ -412,6 +412,7 @@
 
         if ($('#paymentMode option:selected').attr('data-mode') === "CARD") {
             $("#mode").addClass('col-lg-6')
+            $("#mode").show()
             html = '<label for="cardNumber">\n' +
                 '        Card Number\n' +
                 '    </label>\n' +
@@ -428,9 +429,9 @@
             $("#mode").hide().prop('required', false)
             $(".cheque").hide().prop('required', false)
         }
-        if ($('#paymentMode option:selected').attr('data-mode') === "") {
-            $('#mode').removeClass('col-lg-6');
-        }
+        // if ($('#paymentMode option:selected').attr('data-mode') === "") {
+        //     $('#mode').removeClass('col-lg-6');
+        // }
         $('#mode').html(html)
     }
 
@@ -490,7 +491,7 @@
                     $('.tba').val(total_bal_s.toFixed(2));
                     $('.amountPaid').val(total_bal_s.toFixed(2));
                     $.each(data[0], function (key, value) {
-                        if (value.balance !== 0 && value.billStatus !== 'DRAFT') {
+                        if (value.balance !== 0 && value.billStatus !== 'DRAFT' && value.billStatus !== 'CANCELLED') {
                             trHTML += ' <tr id="' + "IN" + value.id + '">\n' +
                                 '                                        <td>' + invoice + '</td>\n' +
                                 '                                        <td>' + value.invoiceNumber + '</td>\n' +

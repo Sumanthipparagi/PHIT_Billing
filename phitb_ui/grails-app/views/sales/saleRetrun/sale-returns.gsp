@@ -46,6 +46,8 @@
     /*}*/
 
     .hidden{display: none}
+
+
     </style>
 </head>
 
@@ -77,12 +79,12 @@
 
         <div class="row clearfix">
             <div class="col-lg-9">
-                <div class="card" style="margin-bottom: 10px;">
+                <div class="card" style="margin-bottom: 8px;">
                     <div class="header" style="padding: 1px;">
 
                     </div>
 
-                    <div class="body">
+                    <div class="body" style="padding: 6px;">
                         <div class="row">
                             <div class="col-md-2">
                                 <label for="date">Date:</label>
@@ -150,9 +152,7 @@
                             %{--                            </div>--}%
 
                         </div>
-                        <br>
-
-                        <div class="row">
+                        <div class="row mt-2">
                             <div class="col-md-4">
                                 <label for="lrno">Ref.No:</label>
                                 <input class="form-control show-tick" type="text" id="lrno" name="lrno"
@@ -488,8 +488,9 @@
             data: saleReturnData,
             minRows: 1,
             height: '250',
-            width: 'auto',
+            // width: 'auto',
             rowHeights: 25,
+            stretchH: 'all',
             manualRowResize: true,
             manualColumnResize: true,
             persistentState: true,
@@ -689,7 +690,7 @@
                         cellProperties
                     ) {
                         Handsontable.renderers.TextRenderer.apply(this, arguments);
-                        td.innerHTML = '<button class="btn-danger" style="margin: 2px;">Delete</button>';
+                        td.innerHTML = '<button class="btn-danger delete" style="margin: 2px;">Delete</button>';
                     };
                 }
                 return cellPrp;
@@ -934,11 +935,12 @@
                 hot.selectCell(0, 1);
                 var test = $(this).val();
                 if (test === 'YES') {
-                    $('.batches').hide()
+                    $('.batches').hide();
                     $('.bills').show()
                 } else {
-                    $('.batches').show()
-                    $('.bills').hide()
+                    $('.bills').hide();
+                    $('.batches').show();
+                    batchHot.render()
                 }
             });
         });
@@ -978,7 +980,7 @@
                     success: function (data) {
                         const row = hot.getSelected()[0][0];
                         hot.setDataAtCell(row, 11, Number(taxId[1]).toFixed(2));
-                        hot.setDataAtCell(row, 19, taxId[0].trim())
+                        hot.setDataAtCell(row, 19, taxId[0].trim());
                         var sR = hot.getDataAtCell(row, 7);
                         var sq = hot.getDataAtCell(row, 5);
                         var disc = hot.getDataAtCell(row, 9);
@@ -1036,8 +1038,10 @@
             data: batchData,
             minRows: 1,
             height: '120',
-            width: 'auto',
+            // width: 'auto',
             rowHeights: 25,
+            stretchH: 'all',
+            // colWidths: 72,
             manualRowResize: true,
             manualColumnResize: true,
             persistentState: true,
@@ -1120,7 +1124,8 @@
             data: billData,
             minRows: 1,
             height: '120',
-            width: 'auto',
+            // width: 'auto',
+            stretchH: 'all',
             rowHeights: 25,
             manualRowResize: true,
             manualColumnResize: true,
@@ -1210,8 +1215,6 @@
                 }
             }
         });
-
-
         $('#series').trigger('change');
     });
 
@@ -1280,8 +1283,7 @@
                     });
                     beforeSendSwal = Swal.fire({
                         // title: "Loading",
-                        html:
-                            '<img src="${assetPath(src: "/themeassets/images/1476.gif")}" width="100" height="100"/>',
+                        html: '<img src="${assetPath(src: "/themeassets/images/1476.gif")}" width="100" height="100"/>',
                         showDenyButton: false,
                         showCancelButton: false,
                         showConfirmButton: false,
@@ -1290,7 +1292,7 @@
                     });
                 },
                 success: function (data) {
-                    beforeSendSwal.close()
+                    beforeSendSwal.close();
                     console.log("saleData");
                     console.log(data);
                     if (data) {
@@ -1567,14 +1569,14 @@
             return;
         }
         if (!lrno) {
-            alert("Please enter LR number.");
+            alert("Please enter Ref number.");
             waitingSwal.close();
             return;
         }
 
         if(!lrDateInput.value)
         {
-            alert("Please enter LR date.");
+            alert("Please enter Ref date.");
             waitingSwal.close();
             return;
         }
@@ -2016,7 +2018,7 @@
 
         var onBeforeMouseDown = function (event) {
             var instance = this;
-            var that = instance.getActiveEditor();
+            var that = instance.instance.getSelected()
             this.$dropdownContainer.on('mousedown', function (evt) {
                 evt.stopPropagation();
             });
@@ -2028,10 +2030,12 @@
             this.instance.addHook('beforeKeyDown', onBeforeKeyDown);
             this.instance.addHook('afterOnCellMouseDown', onBeforeMouseDown);
             this.textareaParentStyle.display = 'block';
+
             this.$textarea.css({
                 height: $(this.TD).height() + 4,
                 'min-width': $(this.TD).outerWidth() - 4
             });
+
 
             //display the list
             this.$textarea.show();
@@ -2042,17 +2046,28 @@
                 .on('select2-close', onSelect2Closed.bind(this));
             self.$textarea.select2('open');
 
+
             // Pushes initial character entered into the search field, if available
             if (keyboardEvent && keyboardEvent.keyCode) {
                 var key = keyboardEvent.keyCode;
                 var keyText = (String.fromCharCode((96 <= key && key <= 105) ? key - 48 : key)).toLowerCase();
                 console.log("KeyText: " + keyText);
                 self.$textarea.select2('search', keyText.slice(0, -1));
+
+
+                // alert(rect)
                 $('.handsontableInput').children().show()
             } else {
                 $('.handsontableInput').children().hide()
             }
             Handsontable.renderers.cellDecorator.apply(this, arguments);
+            // const element = document.getElementsByClassName("highlight")[0];
+            // const rect = element.getBoundingClientRect();
+            // var top = rect.top.toFixed();
+            // var left =  rect.left.toFixed();
+            // document.getElementById("select2-drop").setAttribute('style','top:'+top+'');
+            // document.getElementById("select2-drop").style.left = left;
+            // console.log(document.getElementById("select2-drop"));
         };
 
 
@@ -2066,8 +2081,9 @@
             this.instance.removeHook('afterOnCellMouseDown', onBeforeMouseDown);
             this.$textarea.off();
             this.$textarea.hide();
-            $('.handsontableInput').children().remove();
+            $('.handsontableInput').children().hide();
             Handsontable.editors.TextEditor.prototype.close.apply(this, arguments);
+            // $('.handsontableInput').children().show();
         };
 
 

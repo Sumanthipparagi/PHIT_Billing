@@ -8,8 +8,11 @@ import phitb_ui.AccountsService
 import phitb_ui.Constants
 import phitb_ui.EntityService
 import phitb_ui.Links
+import phitb_ui.SystemService
+import phitb_ui.accounts.BankRegisterController
 import phitb_ui.system.CityController
 import phitb_ui.system.CountryController
+import phitb_ui.system.PriorityController
 import phitb_ui.system.StateController
 import phitb_ui.system.ZoneController
 
@@ -21,6 +24,7 @@ class EntityRegisterController
         try
         {
             ArrayList<String> entity = new EntityRegisterController().show() as ArrayList<String>
+            ArrayList<String> entitytype = new EntityService().getEntityType() as ArrayList<String>
             ArrayList<String> userregister = new UserRegisterController().show() as ArrayList<String>
             ArrayList<String> statelist = new StateController().show() as ArrayList<String>
             ArrayList<String> countrylist = new CountryController().show() as ArrayList<String>
@@ -44,7 +48,8 @@ class EntityRegisterController
             render(view: '/entity/entityRegister/entityRegister',model: [entity:entity,
                                                                          statelist:statelist,countrylist:countrylist,
                                                                          citylist:citylist,salesmanList:salesmanList,
-                                                                         managerList:managerList,zoneList:zoneList])
+                                                                         managerList:managerList,zoneList:zoneList,
+                                                                         entitytype:entitytype])
         }
         catch (Exception ex)
         {
@@ -58,12 +63,16 @@ class EntityRegisterController
     {
         try
         {
-            ArrayList<String> entity = new EntityRegisterController().show() as ArrayList<String>
+            ArrayList<String> entityList = new EntityRegisterController().show() as ArrayList<String>
+            ArrayList<String> routeregister = new RouteController().show() as ArrayList<String>
+            ArrayList<String> bank = new BankRegisterController().show() as ArrayList<String>
+            ArrayList<String> entitytype = new EntityService().getEntityType() as ArrayList<String>
             ArrayList<String> userregister = new UserRegisterController().show() as ArrayList<String>
             ArrayList<String> statelist = new StateController().show() as ArrayList<String>
             ArrayList<String> countrylist = new CountryController().show() as ArrayList<String>
             ArrayList<String> citylist = new CityController().show() as ArrayList<String>
             ArrayList<String> zoneList = new ZoneController().show() as ArrayList<String>
+            def priority = new SystemService().getAllPriority()
             ArrayList<String> managerList = []
             userregister.each {
                 if (it.role.name.toString().equalsIgnoreCase(Constants.ROLE_MANAGER))
@@ -78,12 +87,14 @@ class EntityRegisterController
                     salesmanList.add(it)
                 }
             }
-            render(view: '/entity/entityRegister/add-entity-register',model: [entity:entity, entitytype:entitytype,
+            render(view: '/entity/entityRegister/add-entity-register',model: [ entitytype:entitytype,
                                                                               statelist:statelist,countrylist:countrylist,
                                                                               citylist:citylist,salesmanList:salesmanList,
                                                                               managerList:managerList,
                                                                               zoneList:zoneList,
-                                                                              routeregister:routeregister,bank:bank])
+                                                                              routeregister:routeregister,
+                                                                              bank:bank,entityList:entityList,
+                                                                              priority:priority])
         }
         catch (Exception ex)
         {
@@ -97,12 +108,17 @@ class EntityRegisterController
     {
         try
         {
-            ArrayList<String> entity = new EntityRegisterController().show() as ArrayList<String>
+            JSONObject entity = new EntityService().getEntityById(params.id)
+            ArrayList<String> entityList = new EntityRegisterController().show() as ArrayList<String>
+            ArrayList<String> routeregister = new RouteController().show() as ArrayList<String>
+            ArrayList<String> bank = new BankRegisterController().show() as ArrayList<String>
+            ArrayList<String> entitytype = new EntityService().getEntityType() as ArrayList<String>
             ArrayList<String> userregister = new UserRegisterController().show() as ArrayList<String>
             ArrayList<String> statelist = new StateController().show() as ArrayList<String>
             ArrayList<String> countrylist = new CountryController().show() as ArrayList<String>
             ArrayList<String> citylist = new CityController().show() as ArrayList<String>
             ArrayList<String> zoneList = new ZoneController().show() as ArrayList<String>
+            def priority = new SystemService().getAllPriority()
             ArrayList<String> managerList = []
             userregister.each {
                 if (it.role.name.toString().equalsIgnoreCase(Constants.ROLE_MANAGER))
@@ -123,7 +139,9 @@ class EntityRegisterController
                                                                                  citylist:citylist,salesmanList:salesmanList,
                                                                                  managerList:managerList,
                                                                                  zoneList:zoneList,
-                                                                                 routeregister:routeregister,bank:bank])
+                                                                                 routeregister:routeregister,
+                                                                                 bank:bank,entityList:entityList,
+                                                                                 priority:priority])
         }
         catch (Exception ex)
         {

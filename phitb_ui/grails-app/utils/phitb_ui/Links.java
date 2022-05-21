@@ -266,6 +266,8 @@ public class Links
     public static String SERVICE_TYPE_UPDATE = "api/v1.0/entity/servicetype/{id}";
     public static String SERVICE_TYPE_DELETE = "api/v1.0/entity/servicetype/{id}";
 
+
+
     /*<-------------------------------------------Product ------------------------------------------------->*/
     //Product Register
     public static String PRODUCT_REGISTER_SHOW = "api/v1.0/product/productregister";
@@ -276,7 +278,7 @@ public class Links
     public static String PRODUCT_REGISTER_UPDATE = "api/v1.0/product/productregister/{id}";
     public static String PRODUCT_REGISTER_DELETE = "api/v1.0/product/productregister/{id}";
 
-    //Product TYPE
+    //Product Type
     public static String PRODUCT_TYPE_SHOW = "api/v1.0/product/producttypemaster";
     public static String PRODUCT_TYPE_SAVE = "api/v1.0/product/producttypemaster";
     public static String PRODUCT_TYPE_DATATABLE = "api/v1.0/product/producttypemaster/datatable";
@@ -336,7 +338,6 @@ public class Links
     public static String PRODUCT_CLASS_DATATABLE = "api/v1.0/product/productclass/datatable";
     public static String PRODUCT_CLASS_UPDATE = "api/v1.0/product/productclass/{id}";
     public static String PRODUCT_CLASS_DELETE = "api/v1.0/product/productclass/{id}";
-
 
     //Product Cost
     public static String PRODUCT_COST_SHOW = "api/v1.0/product/productcostrange";
@@ -436,6 +437,12 @@ public class Links
 
     //Sale Order Details
     public static String SALE_ORDER_SAVE = "api/v1.0/sales/saleorderdetails";
+    public static String SALE_ORDER_SHOW = "api/v1.0/sales/saleorderdetails";
+    public static String SALE_PRODUCT_ORDER = "api/v1.0/sales/saleorderproductdetails/bill";
+    public static String SALE_ORDER_DATATABLE = "api/v1.0/sales/saleorderdetails/datatable";
+    public static String SALE_ORDER_RECENT = "api/v1.0/sales/saleorderdetails/getrecent";
+    public static String SALE_ORDER_CANCEL = "api/v1.0/sales/saleorderdetails/cancel";
+
 //    public static String SALE_ORDER_DATATABLE = "api/v1.0/sales/saleproductdetails/datatable";
 //    public static String SALE_ORDER_UPDATE = "api/v1.0/sales/saleproductdetails/{id}";
 //    public static String SALE_ORDER_DELETE = "api/v1.0/sales/saleproductdetails/{id}";

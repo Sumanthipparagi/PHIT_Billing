@@ -56,7 +56,7 @@ class CompositionController {
         try
         {
             JSONObject jsonObject = new JSONObject(params)
-            def apiResponse = new ProductService().showBatchRegister(jsonObject)
+            def apiResponse = new ProductService().showProductComposition(jsonObject)
             if (apiResponse.status == 200)
             {
                 JSONObject responseObject = new JSONObject(apiResponse.readEntity(String.class))
@@ -80,7 +80,7 @@ class CompositionController {
         try
         {
             JSONObject jsonObject = new JSONObject(params)
-            def apiResponse = new ProductService().saveBatchRegister(jsonObject)
+            def apiResponse = new ProductService().saveProductComposition(jsonObject)
             if (apiResponse?.status == 200)
             {
                 JSONObject obj = new JSONObject(apiResponse.readEntity(String.class))
@@ -105,7 +105,7 @@ class CompositionController {
         {
             println(params)
             JSONObject jsonObject = new JSONObject(params)
-            def apiResponse = new ProductService().putBatchRegister(jsonObject)
+            def apiResponse = new ProductService().putProductComposition(jsonObject)
             if (apiResponse.status == 200)
             {
                 JSONObject obj = new JSONObject(apiResponse.readEntity(String.class))
@@ -129,7 +129,7 @@ class CompositionController {
         try
         {
             JSONObject jsonObject = new JSONObject(params)
-            def apiResponse = new ProductService().deleteBatchRegister(jsonObject)
+            def apiResponse = new ProductService().deleteProductComposition(jsonObject)
             if (apiResponse.status == 200)
             {
                 JSONObject data = new JSONObject()

@@ -85,8 +85,7 @@ class UserRegisterService {
             userRegister.contactNumber = jsonObject.get("contactNumber").toString()
             userRegister.aadharId = jsonObject.get("aadharId").toString()
             userRegister.email = jsonObject.get("email").toString()
-            userRegister.photo = jsonObject.get("photo").toString()
-            userRegister.photo = userRegister.getPhoto()
+            userRegister.photo = "0"
             userRegister.nationality = jsonObject.get("nationality").toString()
             userRegister.address = jsonObject.get("address").toString()
             userRegister.referenceRelation = jsonObject.get("referenceRelation").toString()
