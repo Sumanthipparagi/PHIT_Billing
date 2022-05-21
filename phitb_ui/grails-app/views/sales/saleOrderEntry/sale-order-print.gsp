@@ -202,7 +202,7 @@
 
                 <li><b class="tab">Order No</b>:  <g:if test="${saleBillDetail.billStatus == 'CANCELLED'}"><del>${saleBillDetail.invoiceNumber}</del></g:if><g:else>${saleBillDetail.invoiceNumber}</g:else></li>
                 <li><b class="tab">Order Date</b>:&nbsp;<span id="invDate"></span></li>
-                <li><b class="tab">Ref No</b>:&nbsp;<span></span></li>
+                <li><b class="tab">Ref No</b>:&nbsp;<span>${saleBillDetail.refNumber}</span></li>
                 <li><b class="tab">Ref Date</b>:&nbsp;<span id="refDate"></span></li>
                 %{--                <li><b class="tab">No of cases</b>:</li>--}%
                 %{--                <li><b class="tab">Weight in Kgs</b>:</li>--}%
@@ -473,9 +473,9 @@
         var d = moment(new Date()).format('DD/MM/YYYY') + " " + new Date().toLocaleTimeString();
         document.getElementById("date").innerHTML = d;
         var invDate = new Date('${saleBillDetail.entryDate}');
-        var dueDate = new Date('${saleBillDetail.dueDate}');
+        var dueDate = new Date('${saleBillDetail.refDate}');
         $("#invDate").text(moment(invDate).format('DD-MM-YYYY'));
-        $("#dueDate").text(moment(dueDate).format('DD-MM-YYYY'));
+        $("#refDate").text(moment(dueDate).format('DD-MM-YYYY'));
 
         <g:each var="spd" in="${saleProductDetails}">
         var expDate = new Date('${spd.expiryDate}');
