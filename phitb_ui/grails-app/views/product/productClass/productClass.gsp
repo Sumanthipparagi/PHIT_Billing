@@ -109,8 +109,8 @@
                                 <tr>
                                     <th style="width: 20%">Product Class Name</th>
                                     <th style="width: 20%">Short Name</th>
-                                    <th style="width: 20%">Entity</th>
-                                    <th style="width: 20%">Entity Type</th>
+%{--                                    <th style="width: 20%">Entity</th>--}%
+%{--                                    <th style="width: 20%">Entity Type</th>--}%
                                     <th style="width: 20%">Action</th>
                                 </tr>
                                 </thead>

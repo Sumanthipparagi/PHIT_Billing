@@ -108,8 +108,8 @@
                                 <thead>
                                 <tr>
                                     <th style="width: 20%">Composition Name</th>
-                                    <th style="width: 20%">Entity</th>
-                                    <th style="width: 20%">Entity Type</th>
+%{--                                    <th style="width: 20%">Entity</th>--}%
+%{--                                    <th style="width: 20%">Entity Type</th>--}%
                                     <th style="width: 20%">Action</th>
                                 </tr>
                                 </thead>

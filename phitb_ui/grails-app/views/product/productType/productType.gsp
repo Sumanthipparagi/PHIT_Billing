@@ -219,8 +219,8 @@
                 // {'data': 'id', 'width': '20%'},
                 {'data': 'productType', 'width': '20%'},
                 {'data': 'productDescription', 'width': '20%'},
-                {'data': 'entity', 'width': '20%'},
-                {'data': 'entitytype', 'width': '20%'},
+                // {'data': 'entity', 'width': '20%'},
+                // {'data': 'entitytype', 'width': '20%'},
                 {'data': 'action', 'width': '20%'}
             ]
         });

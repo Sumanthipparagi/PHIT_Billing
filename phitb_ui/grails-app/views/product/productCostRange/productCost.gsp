@@ -110,8 +110,8 @@
                                     <th style="width: 20%">Price Type</th>
                                     <th style="width: 20%">Minimum Rate</th>
                                     <th style="width: 20%">Maximum Rate</th>
-                                    <th style="width: 20%">Entity</th>
-                                    <th style="width: 20%">Entity Type</th>
+%{--                                    <th style="width: 20%">Entity</th>--}%
+%{--                                    <th style="width: 20%">Entity Type</th>--}%
                                     <th style="width: 20%">Action</th>
                                 </tr>
                                 </thead>
