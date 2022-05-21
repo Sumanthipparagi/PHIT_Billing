@@ -58,6 +58,7 @@ class ProductScheduleController {
         try
         {
             JSONObject jsonObject = new JSONObject(params)
+            jsonObject.put("entityId",session.getAttribute('entityId'))
             def apiResponse = new ProductService().showProductSchedule(jsonObject)
             if (apiResponse.status == 200)
             {

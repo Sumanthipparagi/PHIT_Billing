@@ -57,6 +57,7 @@ class UnitTypeController {
         try
         {
             JSONObject jsonObject = new JSONObject(params)
+            jsonObject.put("entityId",session.getAttribute('entityId'))
             def apiResponse = new ProductService().showUnitType(jsonObject)
             if (apiResponse.status == 200)
             {

@@ -58,6 +58,7 @@ class ProductCostRangeController {
         try
         {
             JSONObject jsonObject = new JSONObject(params)
+            jsonObject.put("entityId",session.getAttribute('entityId'))
             def apiResponse = new ProductService().showProductCost(jsonObject)
             if (apiResponse.status == 200)
             {

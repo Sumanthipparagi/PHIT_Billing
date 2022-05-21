@@ -207,8 +207,8 @@
                             'id': json.data[i].id,
                             'groupName': json.data[i].groupName,
                             'groupDescription': json.data[i].groupDescription,
-                            'entity':json.entity[i].entityName,
-                            'entitytype': json.entityType[i].name,
+                            // 'entity':json.entity[i].entityName,
+                            // 'entitytype': json.entityType[i].name,
                             'action': editbtn + ' ' + deletebtn
                         });
                     }
@@ -219,8 +219,8 @@
                 // {'data': 'id', 'width': '20%'},
                 {'data': 'groupName', 'width': '20%'},
                 {'data': 'groupDescription', 'width': '20%'},
-                {'data': 'entity', 'width': '20%'},
-                {'data': 'entitytype', 'width': '20%'},
+                // {'data': 'entity', 'width': '20%'},
+                // {'data': 'entitytype', 'width': '20%'},
                 {'data': 'action', 'width': '20%'}
             ]
         });

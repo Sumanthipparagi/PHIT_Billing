@@ -46,6 +46,7 @@ class ProductCategoryMasterService {
 
     JSONObject dataTables(JSONObject paramsJsonObject, String start, String length) {
         String searchTerm = paramsJsonObject.get("search[value]")
+        long entityId = paramsJsonObject.get("entityId")
         String orderColumnId = paramsJsonObject.get("order[0][column]")
         String orderDir = paramsJsonObject.get("order[0][dir]")
 
@@ -69,28 +70,29 @@ class ProductCategoryMasterService {
                     ilike('categoryName', '%' + searchTerm + '%')
                 }
             }
+            eq('entityId', entityId)
             eq('deleted', false)
             order(orderColumn, orderDir)
         }
 
-        def entity = []
-        productCategoryMasterArrayList.each {
-            def apires1 = showProductCatByEntityId(it.entityId.toString())
-            entity.push(apires1)
-        }
-        def entityType = []
-        productCategoryMasterArrayList.each {
-            def apires2 = showProductCatByEntityTypeId(it.entityTypeId.toString())
-            entityType.push(apires2)
-        }
+//        def entity = []
+//        productCategoryMasterArrayList.each {
+//            def apires1 = showProductCatByEntityId(it.entityId.toString())
+//            entity.push(apires1)
+//        }
+//        def entityType = []
+//        productCategoryMasterArrayList.each {
+//            def apires2 = showProductCatByEntityTypeId(it.entityTypeId.toString())
+//            entityType.push(apires2)
+//        }
 
         def recordsTotal = productCategoryMasterArrayList.totalCount
         JSONObject jsonObject = new JSONObject()
         jsonObject.put("draw", paramsJsonObject.draw)
         jsonObject.put("recordsTotal", recordsTotal)
         jsonObject.put("recordsFiltered", recordsTotal)
-        jsonObject.put("entity", entity)
-        jsonObject.put("entityType", entityType)
+//        jsonObject.put("entity", entity)
+//        jsonObject.put("entityType", entityType)
         jsonObject.put("data", productCategoryMasterArrayList)
         return jsonObject
     }
@@ -150,35 +152,35 @@ class ProductCategoryMasterService {
     }
 
 
-    def showProductCatByEntityId(String id)
-    {
-        try
-        {
-            def url = Constants.API_GATEWAY+Constants.ENTITY_REGISTER_SHOW+"/"+id
-            URL apiUrl = new URL(url)
-            def entity = new JsonSlurper().parseText(apiUrl.text)
-            return entity
-        }
-        catch (Exception ex)
-        {
-            System.err.println('Service :CountryMaster , action :  show  , Ex:' + ex)
-            log.error('Service :CountryMaster , action :  show  , Ex:' + ex)
-        }
-    }
-
-    def showProductCatByEntityTypeId(String id)
-    {
-        try
-        {
-            def url = Constants.API_GATEWAY+Constants.ENTITY_TYPE_SHOW+"/"+id
-            URL apiUrl = new URL(url)
-            def entity = new JsonSlurper().parseText(apiUrl.text)
-            return entity
-        }
-        catch (Exception ex)
-        {
-            System.err.println('Service :CountryMaster , action :  show  , Ex:' + ex)
-            log.error('Service :CountryMaster , action :  show  , Ex:' + ex)
-        }
-    }
+//    def showProductCatByEntityId(String id)
+//    {
+//        try
+//        {
+//            def url = Constants.API_GATEWAY+Constants.ENTITY_REGISTER_SHOW+"/"+id
+//            URL apiUrl = new URL(url)
+//            def entity = new JsonSlurper().parseText(apiUrl.text)
+//            return entity
+//        }
+//        catch (Exception ex)
+//        {
+//            System.err.println('Service :CountryMaster , action :  show  , Ex:' + ex)
+//            log.error('Service :CountryMaster , action :  show  , Ex:' + ex)
+//        }
+//    }
+//
+//    def showProductCatByEntityTypeId(String id)
+//    {
+//        try
+//        {
+//            def url = Constants.API_GATEWAY+Constants.ENTITY_TYPE_SHOW+"/"+id
+//            URL apiUrl = new URL(url)
+//            def entity = new JsonSlurper().parseText(apiUrl.text)
+//            return entity
+//        }
+//        catch (Exception ex)
+//        {
+//            System.err.println('Service :CountryMaster , action :  show  , Ex:' + ex)
+//            log.error('Service :CountryMaster , action :  show  , Ex:' + ex)
+//        }
+//    }
 }

@@ -50,6 +50,7 @@ class DivisionGroupRegisterService {
 
     JSONObject dataTables(JSONObject paramsJsonObject, String start, String length) {
         String searchTerm = paramsJsonObject.get("search[value]")
+        long entityId = paramsJsonObject.get("entityId")
         String orderColumnId = paramsJsonObject.get("order[0][column]")
         String orderDir = paramsJsonObject.get("order[0][dir]")
 
@@ -73,28 +74,29 @@ class DivisionGroupRegisterService {
                     ilike('divisionGroupName', '%' + searchTerm + '%')
                 }
             }
+            eq('entityId', entityId)
             eq('deleted', false)
             order(orderColumn, orderDir)
         }
 
-        JSONArray division= []
-        divisiongroupRegisterArrayList.each {
-            def id = it.divisionIds
-            def apires3 = showDivisionGroupByDivisionIds(id.toString().split(",") as List<String>)
-            println(apires3)
-            division.add(apires3 as String)
-        }
-
-        def entity = []
-        divisiongroupRegisterArrayList.each {
-            def apires1 = showDivisionGroupByEntityId(it.entityId.toString())
-            entity.push(apires1)
-        }
-        def entityType = []
-        divisiongroupRegisterArrayList.each {
-            def apires2 = showDivisionGroupByEntityTypeId(it.entityTypeId.toString())
-            entityType.push(apires2)
-        }
+//        JSONArray division= []
+//        divisiongroupRegisterArrayList.each {
+//            def id = it.divisionIds
+//            def apires3 = showDivisionGroupByDivisionIds(id.toString().split(",") as List<String>)
+//            println(apires3)
+//            division.add(apires3 as String)
+//        }
+//
+//        def entity = []
+//        divisiongroupRegisterArrayList.each {
+//            def apires1 = showDivisionGroupByEntityId(it.entityId.toString())
+//            entity.push(apires1)
+//        }
+//        def entityType = []
+//        divisiongroupRegisterArrayList.each {
+//            def apires2 = showDivisionGroupByEntityTypeId(it.entityTypeId.toString())
+//            entityType.push(apires2)
+//        }
 
 
         def recordsTotal = divisiongroupRegisterArrayList.totalCount
@@ -103,9 +105,9 @@ class DivisionGroupRegisterService {
         jsonObject.put("recordsTotal", recordsTotal)
         jsonObject.put("recordsFiltered", recordsTotal)
         jsonObject.put("data", divisiongroupRegisterArrayList)
-        jsonObject.put("entity", entity)
-        jsonObject.put("division", division)
-        jsonObject.put("entityType", entityType)
+//        jsonObject.put("entity", entity)
+//        jsonObject.put("division", division)
+//        jsonObject.put("entityType", entityType)
         return jsonObject
     }
 

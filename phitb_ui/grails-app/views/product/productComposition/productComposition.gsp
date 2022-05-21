@@ -204,8 +204,8 @@
                         return_data.push({
                             'id': json.data[i].id,
                             'compositionName': json.data[i].compositionName,
-                            'entity':json.entity[i].entityName,
-                            'entitytype': json.entityType[i].name,
+                            // 'entity':json.entity[i].entityName,
+                            // 'entitytype': json.entityType[i].name,
                             'action': editbtn + ' ' + deletebtn
                         });
                     }
@@ -215,8 +215,8 @@
             columns: [
                 // {'data': 'id', 'width': '20%'},
                 {'data': 'compositionName', 'width': '20%'},
-                {'data': 'entity', 'width': '20%'},
-                {'data': 'entitytype', 'width': '20%'},
+                // {'data': 'entity', 'width': '20%'},
+                // {'data': 'entitytype', 'width': '20%'},
                 {'data': 'action', 'width': '20%'}
             ]
         });

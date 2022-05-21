@@ -215,8 +215,8 @@
                             'divisionGroupName': json.data[i].divisionGroupName,
                             'divGroupShortName': json.data[i].divGroupShortName,
                             // 'division': json.data[i].divisionIds,
-                            'entity': json.entity[i].entityName,
-                            'entitytype': json.entityType[i].name,
+                            // 'entity': json.entity[i].entityName,
+                            // 'entitytype': json.entityType[i].name,
                             'action': editbtn + ' ' + deletebtn
                         });
                     }
@@ -228,8 +228,8 @@
                 {'data': 'divisionGroupName', 'width': '20%'},
                 {'data': 'divGroupShortName', 'width': '20%'},
                 // {'data': 'division', 'width': '20%'},
-                {'data': 'entity', 'width': '20%'},
-                {'data': 'entitytype', 'width': '20%'},
+                // {'data': 'entity', 'width': '20%'},
+                // {'data': 'entitytype', 'width': '20%'},
                 {'data': 'action', 'width': '20%'}
             ]
         });

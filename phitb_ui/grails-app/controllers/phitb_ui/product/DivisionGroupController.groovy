@@ -57,6 +57,7 @@ class DivisionGroupController {
         try
         {
             JSONObject jsonObject = new JSONObject(params)
+            jsonObject.put("entityId",session.getAttribute('entityId'))
             def apiResponse = new ProductService().showDivisionGroup(jsonObject)
             if (apiResponse.status == 200)
             {

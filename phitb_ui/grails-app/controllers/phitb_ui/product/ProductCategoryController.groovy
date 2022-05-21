@@ -58,6 +58,7 @@ class ProductCategoryController {
         try
         {
             JSONObject jsonObject = new JSONObject(params)
+            jsonObject.put("entityId",session.getAttribute('entityId'))
             def apiResponse = new ProductService().showProductCategory(jsonObject)
             if (apiResponse.status == 200)
             {

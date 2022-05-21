@@ -109,8 +109,8 @@
                                 <tr>
                                     <th style="width: 20%">Product Type</th>
                                     <th style="width: 20%">Product Description</th>
-                                    <th style="width: 20%">Entity</th>
-                                    <th style="width: 20%">Entity Type</th>
+%{--                                    <th style="width: 20%">Entity</th>--}%
+%{--                                    <th style="width: 20%">Entity Type</th>--}%
                                     <th style="width: 20%">Action</th>
                                 </tr>
                                 </thead>
@@ -207,8 +207,8 @@
                             'id': json.data[i].id,
                             'productType': json.data[i].productType,
                             'productDescription': json.data[i].productDescription,
-                            'entity':json.entity[i].entityName,
-                            'entitytype': json.entityType[i].name,
+                            // 'entity':json.entity[i].entityName,
+                            // 'entitytype': json.entityType[i].name,
                             'action': editbtn + ' ' + deletebtn
                         });
                     }

@@ -56,6 +56,7 @@ class CompositionController {
         try
         {
             JSONObject jsonObject = new JSONObject(params)
+            jsonObject.put("entityId",session.getAttribute('entityId'))
             def apiResponse = new ProductService().showProductComposition(jsonObject)
             if (apiResponse.status == 200)
             {

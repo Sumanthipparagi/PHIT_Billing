@@ -210,8 +210,8 @@
                             'priceType': json.data[i].priceType,
                             'minimumRate': json.data[i].minimumRate,
                             'maximumRate': json.data[i].maximumRate,
-                            'entity':json.entity[i].entityName,
-                            'entitytype': json.entityType[i].name,
+                            // 'entity':json.entity[i].entityName,
+                            // 'entitytype': json.entityType[i].name,
                             'action': editbtn + ' ' + deletebtn
                         });
                     }
@@ -223,8 +223,8 @@
                 {'data': 'priceType', 'width': '20%'},
                 {'data': 'minimumRate', 'width': '20%'},
                 {'data': 'maximumRate', 'width': '20%'},
-                {'data': 'entity', 'width': '20%'},
-                {'data': 'entitytype', 'width': '20%'},
+                // {'data': 'entity', 'width': '20%'},
+                // {'data': 'entitytype', 'width': '20%'},
                 {'data': 'action', 'width': '20%'}
             ]
         });

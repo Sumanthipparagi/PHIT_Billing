@@ -109,8 +109,8 @@
                                 <tr>
                                     <th style="width: 20%">Schedule Code</th>
                                     <th style="width: 20%">Schedule Description</th>
-                                    <th style="width: 20%">Entity</th>
-                                    <th style="width: 20%">Entity Type</th>
+%{--                                    <th style="width: 20%">Entity</th>--}%
+%{--                                    <th style="width: 20%">Entity Type</th>--}%
                                     <th style="width: 20%">Action</th>
                                 </tr>
                                 </thead>
@@ -208,8 +208,8 @@
                             'scheduleCode': json.data[i].scheduleCode,
                             'scheduleDescription': json.data[i].scheduleDescription,
                             'accessRestriction': json.data[i].accessRestriction,
-                            'entity':json.entity[i].entityName,
-                            'entitytype': json.entityType[i].name,
+                            // 'entity':json.entity[i].entityName,
+                            // 'entitytype': json.entityType[i].name,
                             'action': editbtn + ' ' + deletebtn
                         });
                     }
@@ -220,8 +220,8 @@
                 // {'data': 'id', 'width': '20%'},
                 {'data': 'scheduleCode', 'width': '20%'},
                 {'data': 'scheduleDescription', 'width': '20%'},
-                {'data': 'entity', 'width': '20%'},
-                {'data': 'entitytype', 'width': '20%'},
+                // {'data': 'entity', 'width': '20%'},
+                // {'data': 'entitytype', 'width': '20%'},
                 {'data': 'action', 'width': '20%'}
             ]
         });

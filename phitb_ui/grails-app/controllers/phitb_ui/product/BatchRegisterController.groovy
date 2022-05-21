@@ -61,6 +61,7 @@ class BatchRegisterController {
         try
         {
             JSONObject jsonObject = new JSONObject(params)
+            jsonObject.put("entityId",session.getAttribute('entityId'))
             def apiResponse = new ProductService().showBatchRegister(jsonObject)
             if (apiResponse.status == 200)
             {

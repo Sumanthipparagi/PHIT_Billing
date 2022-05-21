@@ -207,8 +207,8 @@
                             'id': json.data[i].id,
                             'productClassName': json.data[i].productClassName,
                             'shortName': json.data[i].shortName,
-                            'entity':json.entity[i].entityName,
-                            'entitytype': json.entityType[i].name,
+                            // 'entity':json.entity[i].entityName,
+                            // 'entitytype': json.entityType[i].name,
                             'action': editbtn + ' ' + deletebtn
                         });
                     }
@@ -219,8 +219,8 @@
                 // {'data': 'id', 'width': '20%'},
                 {'data': 'productClassName', 'width': '20%'},
                 {'data': 'shortName', 'width': '20%'},
-                {'data': 'entity', 'width': '20%'},
-                {'data': 'entitytype', 'width': '20%'},
+                // {'data': 'entity', 'width': '20%'},
+                // {'data': 'entitytype', 'width': '20%'},
                 {'data': 'action', 'width': '20%'}
             ]
         });

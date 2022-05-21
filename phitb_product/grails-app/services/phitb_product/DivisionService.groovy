@@ -56,6 +56,7 @@ class DivisionService
     JSONObject dataTables(JSONObject paramsJsonObject, String start, String length)
     {
         String searchTerm = paramsJsonObject.get("search[value]")
+        long entityId = paramsJsonObject.get("entityId")
         String orderColumnId = paramsJsonObject.get("order[0][column]")
         String orderDir = paramsJsonObject.get("order[0][dir]")
 
@@ -81,27 +82,28 @@ class DivisionService
                     ilike('divisionShortName', '%' + searchTerm + '%')
                 }
             }
+            eq('entityId', entityId)
             eq('deleted', false)
             order(orderColumn, orderDir)
         }
 
-        def entity = []
-        divisionArrayList.each {
-            println(it.entityId)
-            def apires1 = showDivisionByEntityId(it.entityId.toString())
-            entity.push(apires1)
-        }
-        def entityType = []
-        divisionArrayList.each {
-            def apires2 = showDivisionByEntityTypeId(it.entityTypeId.toString())
-            entityType.push(apires2)
-        }
-        def manager = []
-        divisionArrayList.each {
-            println(it.managerId)
-            def apires3 = showDivisionManagerId(it.managerId.toString())
-            manager.push(apires3)
-        }
+//        def entity = []
+//        divisionArrayList.each {
+//            println(it.entityId)
+//            def apires1 = showDivisionByEntityId(it.entityId.toString())
+//            entity.push(apires1)
+//        }
+//        def entityType = []
+//        divisionArrayList.each {
+//            def apires2 = showDivisionByEntityTypeId(it.entityTypeId.toString())
+//            entityType.push(apires2)
+//        }
+//        def manager = []
+//        divisionArrayList.each {
+//            println(it.managerId)
+//            def apires3 = showDivisionManagerId(it.managerId.toString())
+//            manager.push(apires3)
+//        }
 
         def recordsTotal = divisionArrayList.totalCount
         JSONObject jsonObject = new JSONObject()
@@ -109,9 +111,9 @@ class DivisionService
         jsonObject.put("recordsTotal", recordsTotal)
         jsonObject.put("recordsFiltered", recordsTotal)
         jsonObject.put("data", divisionArrayList)
-        jsonObject.put("entity", entity)
-        jsonObject.put("entityType", entityType)
-        jsonObject.put("manager", manager)
+//        jsonObject.put("entity", entity)
+//        jsonObject.put("entityType", entityType)
+//        jsonObject.put("manager", manager)
         return jsonObject
     }
 
@@ -201,54 +203,54 @@ class DivisionService
     }
 
 
-    def showDivisionByEntityId(String id)
-    {
-        try
-        {
-            def url = Constants.API_GATEWAY+Constants.ENTITY_REGISTER_SHOW+"/"+id
-            URL apiUrl = new URL(url)
-            def entity = new JsonSlurper().parseText(apiUrl.text)
-            return entity
-        }
-        catch (Exception ex)
-        {
-            System.err.println('Service :CountryMaster , action :  show  , Ex:' + ex)
-            log.error('Service :CountryMaster , action :  show  , Ex:' + ex)
-        }
-    }
-
-    def showDivisionByEntityTypeId(String id)
-    {
-        try
-        {
-            def url = Constants.API_GATEWAY+Constants.ENTITY_TYPE_SHOW+"/"+id
-            URL apiUrl = new URL(url)
-            def entity = new JsonSlurper().parseText(apiUrl.text)
-            return entity
-        }
-        catch (Exception ex)
-        {
-            System.err.println('Service :CountryMaster , action :  show  , Ex:' + ex)
-            log.error('Service :CountryMaster , action :  show  , Ex:' + ex)
-        }
-    }
-
-
-    def showDivisionManagerId(String id)
-    {
-        try
-        {
-            def url = Constants.API_GATEWAY+Constants.USER_REGISTER_SHOW+"/"+id
-            URL apiUrl = new URL(url)
-            def mananger = new JsonSlurper().parseText(apiUrl.text)
-            return mananger
-        }
-        catch (Exception ex)
-        {
-            System.err.println('Service :CountryMaster , action :  show  , Ex:' + ex)
-            log.error('Service :CountryMaster , action :  show  , Ex:' + ex)
-        }
-    }
+//    def showDivisionByEntityId(String id)
+//    {
+//        try
+//        {
+//            def url = Constants.API_GATEWAY+Constants.ENTITY_REGISTER_SHOW+"/"+id
+//            URL apiUrl = new URL(url)
+//            def entity = new JsonSlurper().parseText(apiUrl.text)
+//            return entity
+//        }
+//        catch (Exception ex)
+//        {
+//            System.err.println('Service :CountryMaster , action :  show  , Ex:' + ex)
+//            log.error('Service :CountryMaster , action :  show  , Ex:' + ex)
+//        }
+//    }
+//
+//    def showDivisionByEntityTypeId(String id)
+//    {
+//        try
+//        {
+//            def url = Constants.API_GATEWAY+Constants.ENTITY_TYPE_SHOW+"/"+id
+//            URL apiUrl = new URL(url)
+//            def entity = new JsonSlurper().parseText(apiUrl.text)
+//            return entity
+//        }
+//        catch (Exception ex)
+//        {
+//            System.err.println('Service :CountryMaster , action :  show  , Ex:' + ex)
+//            log.error('Service :CountryMaster , action :  show  , Ex:' + ex)
+//        }
+//    }
+//
+//
+//    def showDivisionManagerId(String id)
+//    {
+//        try
+//        {
+//            def url = Constants.API_GATEWAY+Constants.USER_REGISTER_SHOW+"/"+id
+//            URL apiUrl = new URL(url)
+//            def mananger = new JsonSlurper().parseText(apiUrl.text)
+//            return mananger
+//        }
+//        catch (Exception ex)
+//        {
+//            System.err.println('Service :CountryMaster , action :  show  , Ex:' + ex)
+//            log.error('Service :CountryMaster , action :  show  , Ex:' + ex)
+//        }
+//    }
 
 
 }

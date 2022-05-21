@@ -110,9 +110,9 @@
 %{--                                    <th style="width: 20%">ID</th>--}%
                                     <th style="width: 20%">Division</th>
                                     <th style="width: 20%">Division Short Name</th>
-                                    <th style="width: 20%">Manager</th>
-                                    <th style="width: 20%">Entity</th>
-                                    <th style="width: 20%">Entity Type</th>
+%{--                                    <th style="width: 20%">Manager</th>--}%
+%{--                                    <th style="width: 20%">Entity</th>--}%
+%{--                                    <th style="width: 20%">Entity Type</th>--}%
                                     <th style="width: 20%">Action</th>
                                 </tr>
                                 </thead>
@@ -227,8 +227,8 @@
                             'id': json.data[i].id,
                             'divisionName': json.data[i].divisionName,
                             'divisionShortName': json.data[i].divisionShortName,
-                            'manager': json.manager[i].userName,
-                            'entity': json.entity[i].entityName,
+                            // 'manager': json.manager[i].userName,
+                            // 'entity': json.entity[i].entityName,
                             'action': editbtn + ' ' + deletebtn
                         });
                     }
@@ -239,9 +239,9 @@
                 // {'data': 'id', 'width': '20%'},
                 {'data': 'divisionName', 'width': '20%'},
                 {'data': 'divisionShortName', 'width': '20%'},
-                {'data': 'manager', 'width': '20%'},
-                {'data': 'entity', 'width': '20%'},
-                {'data': 'entitytype', 'width': '20%'},
+                // {'data': 'manager', 'width': '20%'},
+                // {'data': 'entity', 'width': '20%'},
+                // {'data': 'entitytype', 'width': '20%'},
                 {'data': 'action', 'width': '20%'}
             ]
         });

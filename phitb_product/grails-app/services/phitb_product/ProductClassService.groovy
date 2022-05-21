@@ -50,6 +50,7 @@ class ProductClassService {
 
     JSONObject dataTables(JSONObject paramsJsonObject, String start, String length) {
         String searchTerm = paramsJsonObject.get("search[value]")
+        long entityId = paramsJsonObject.get("entityId")
         String orderColumnId = paramsJsonObject.get("order[0][column]")
         String orderDir = paramsJsonObject.get("order[0][dir]")
 
@@ -73,20 +74,21 @@ class ProductClassService {
                     ilike('productClassName', '%' + searchTerm + '%')
                 }
             }
+            eq('entityId', entityId)
             eq('deleted', false)
             order(orderColumn, orderDir)
         }
 
-        def entity = []
-        productClassArrayList.each {
-            def apires1 = showProductClassByEntityId(it.entityId.toString())
-            entity.push(apires1)
-        }
-        def entityType = []
-        productClassArrayList.each {
-            def apires2 = showProductClassByEntityTypeId(it.entityTypeId.toString())
-            entityType.push(apires2)
-        }
+//        def entity = []
+//        productClassArrayList.each {
+//            def apires1 = showProductClassByEntityId(it.entityId.toString())
+//            entity.push(apires1)
+//        }
+//        def entityType = []
+//        productClassArrayList.each {
+//            def apires2 = showProductClassByEntityTypeId(it.entityTypeId.toString())
+//            entityType.push(apires2)
+//        }
 
         def recordsTotal = productClassArrayList.totalCount
         JSONObject jsonObject = new JSONObject()
@@ -94,8 +96,8 @@ class ProductClassService {
         jsonObject.put("recordsTotal", recordsTotal)
         jsonObject.put("recordsFiltered", recordsTotal)
         jsonObject.put("data", productClassArrayList)
-        jsonObject.put("entity", entity)
-        jsonObject.put("entityType", entityType)
+//        jsonObject.put("entity", entity)
+//        jsonObject.put("entityType", entityType)
         return jsonObject
     }
 
@@ -154,61 +156,60 @@ class ProductClassService {
 
 
 
-    def showProductClassByEntityId(String id)
-    {
-        Client client = ClientBuilder.newClient()
-        WebTarget target = client.target(new Constants().API_GATEWAY);
-        try
-        {
-            Response apiResponse = target
-                    .path(new Constants().ENTITY_REGISTER_SHOW + "/" +id)
-                    .request(MediaType.APPLICATION_JSON_TYPE)
-                    .get()
-            if (apiResponse?.status == 200)
-            {
-                JSONObject jsonObject = new JSONObject(apiResponse.readEntity(String.class))
-                return jsonObject
-            }
-            else
-            {
-                return []
-            }
-        }
-        catch (Exception ex)
-        {
-            System.err.println('Service : CompositionMasterService , action :  showCompostionByEntityId  , Ex:' + ex)
-            log.error('Service :CompositionMasterService , action :  showCompostionByEntityId  , Ex:' + ex)
-        }
-
-    }
-
-
-
-    def showProductClassByEntityTypeId(String id)
-    {
-        Client client = ClientBuilder.newClient()
-        WebTarget target = client.target(new Constants().API_GATEWAY);
-        try
-        {
-            Response apiResponse = target
-                    .path(new Constants().ENTITY_TYPE_SHOW + "/" +id)
-                    .request(MediaType.APPLICATION_JSON_TYPE)
-                    .get()
-            if (apiResponse?.status == 200)
-            {
-                JSONObject jsonObject = new JSONObject(apiResponse.readEntity(String.class))
-                return jsonObject
-            }
-            else
-            {
-                return []
-            }
-        }
-        catch (Exception ex)
-        {
-            System.err.println('Service : CompositionMasterService , action :  showCompostionByEntityId  , Ex:' + ex)
-            log.error('Service :CompositionMasterService , action :  showCompostionByEntityId  , Ex:' + ex)
-        }
-
-    }
+//    def showProductClassByEntityId(String id)
+//    {
+//        Client client = ClientBuilder.newClient()
+//        WebTarget target = client.target(new Constants().API_GATEWAY);
+//        try
+//        {
+//            Response apiResponse = target
+//                    .path(new Constants().ENTITY_REGISTER_SHOW + "/" +id)
+//                    .request(MediaType.APPLICATION_JSON_TYPE)
+//                    .get()
+//            if (apiResponse?.status == 200)
+//            {
+//                JSONObject jsonObject = new JSONObject(apiResponse.readEntity(String.class))
+//                return jsonObject
+//            }
+//            else
+//            {
+//                return []
+//            }
+//        }
+//        catch (Exception ex)
+//        {
+//            System.err.println('Service : CompositionMasterService , action :  showCompostionByEntityId  , Ex:' + ex)
+//            log.error('Service :CompositionMasterService , action :  showCompostionByEntityId  , Ex:' + ex)
+//        }
+//
+//    }
+//
+//
+//    def showProductClassByEntityTypeId(String id)
+//    {
+//        Client client = ClientBuilder.newClient()
+//        WebTarget target = client.target(new Constants().API_GATEWAY);
+//        try
+//        {
+//            Response apiResponse = target
+//                    .path(new Constants().ENTITY_TYPE_SHOW + "/" +id)
+//                    .request(MediaType.APPLICATION_JSON_TYPE)
+//                    .get()
+//            if (apiResponse?.status == 200)
+//            {
+//                JSONObject jsonObject = new JSONObject(apiResponse.readEntity(String.class))
+//                return jsonObject
+//            }
+//            else
+//            {
+//                return []
+//            }
+//        }
+//        catch (Exception ex)
+//        {
+//            System.err.println('Service : CompositionMasterService , action :  showCompostionByEntityId  , Ex:' + ex)
+//            log.error('Service :CompositionMasterService , action :  showCompostionByEntityId  , Ex:' + ex)
+//        }
+//
+//    }
 }

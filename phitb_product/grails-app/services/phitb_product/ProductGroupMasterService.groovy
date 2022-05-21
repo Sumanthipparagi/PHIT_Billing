@@ -46,6 +46,7 @@ class ProductGroupMasterService {
 
     JSONObject dataTables(JSONObject paramsJsonObject, String start, String length) {
         String searchTerm = paramsJsonObject.get("search[value]")
+        long entityId = paramsJsonObject.get("entityId")
         String orderColumnId = paramsJsonObject.get("order[0][column]")
         String orderDir = paramsJsonObject.get("order[0][dir]")
 
@@ -70,21 +71,22 @@ class ProductGroupMasterService {
                     ilike('caseWt', '%' + searchTerm + '%')
                 }
             }
+            eq('entityId', entityId)
             eq('deleted', false)
             order(orderColumn, orderDir)
         }
 
-        def entity = []
-        productGroupMasterArrayList.each {
-            println(it.entityId)
-            def apires1 = showProductGroupByEntityId(it.entityId.toString())
-            entity.push(apires1)
-        }
-        def entityType = []
-        productGroupMasterArrayList.each {
-            def apires2 = showProductGroupByEntityTypeId(it.entityTypeId.toString())
-            entityType.push(apires2)
-        }
+//        def entity = []
+//        productGroupMasterArrayList.each {
+//            println(it.entityId)
+//            def apires1 = showProductGroupByEntityId(it.entityId.toString())
+//            entity.push(apires1)
+//        }
+//        def entityType = []
+//        productGroupMasterArrayList.each {
+//            def apires2 = showProductGroupByEntityTypeId(it.entityTypeId.toString())
+//            entityType.push(apires2)
+//        }
 
         def recordsTotal = productGroupMasterArrayList.totalCount
         JSONObject jsonObject = new JSONObject()
@@ -92,8 +94,6 @@ class ProductGroupMasterService {
         jsonObject.put("recordsTotal", recordsTotal)
         jsonObject.put("recordsFiltered", recordsTotal)
         jsonObject.put("data", productGroupMasterArrayList)
-        jsonObject.put("entity", entity)
-        jsonObject.put("entityType", entityType)
         return jsonObject
     }
 
@@ -149,35 +149,35 @@ class ProductGroupMasterService {
         }
     }
 
-    def showProductGroupByEntityId(String id)
-    {
-        try
-        {
-            def url = Constants.API_GATEWAY+Constants.ENTITY_REGISTER_SHOW+"/"+id
-            URL apiUrl = new URL(url)
-            def entity = new JsonSlurper().parseText(apiUrl.text)
-            return entity
-        }
-        catch (Exception ex)
-        {
-            System.err.println('Service :CountryMaster , action :  show  , Ex:' + ex)
-            log.error('Service :CountryMaster , action :  show  , Ex:' + ex)
-        }
-    }
-
-    def showProductGroupByEntityTypeId(String id)
-    {
-        try
-        {
-            def url = Constants.API_GATEWAY+Constants.ENTITY_TYPE_SHOW+"/"+id
-            URL apiUrl = new URL(url)
-            def entity = new JsonSlurper().parseText(apiUrl.text)
-            return entity
-        }
-        catch (Exception ex)
-        {
-            System.err.println('Service :CountryMaster , action :  show  , Ex:' + ex)
-            log.error('Service :CountryMaster , action :  show  , Ex:' + ex)
-        }
-    }
+//    def showProductGroupByEntityId(String id)
+//    {
+//        try
+//        {
+//            def url = Constants.API_GATEWAY+Constants.ENTITY_REGISTER_SHOW+"/"+id
+//            URL apiUrl = new URL(url)
+//            def entity = new JsonSlurper().parseText(apiUrl.text)
+//            return entity
+//        }
+//        catch (Exception ex)
+//        {
+//            System.err.println('Service :CountryMaster , action :  show  , Ex:' + ex)
+//            log.error('Service :CountryMaster , action :  show  , Ex:' + ex)
+//        }
+//    }
+//
+//    def showProductGroupByEntityTypeId(String id)
+//    {
+//        try
+//        {
+//            def url = Constants.API_GATEWAY+Constants.ENTITY_TYPE_SHOW+"/"+id
+//            URL apiUrl = new URL(url)
+//            def entity = new JsonSlurper().parseText(apiUrl.text)
+//            return entity
+//        }
+//        catch (Exception ex)
+//        {
+//            System.err.println('Service :CountryMaster , action :  show  , Ex:' + ex)
+//            log.error('Service :CountryMaster , action :  show  , Ex:' + ex)
+//        }
+//    }
 }
