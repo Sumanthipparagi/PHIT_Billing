@@ -365,7 +365,6 @@ class SaleOrderEntryController {
                     }
                 }
             }
-
             def total = totalBeforeTaxes + totalcgst + totalsgst + totaligst
             render(view: "/sales/saleOrderEntry/sale-order-print", model: [saleBillDetail    : saleOrderDetail,
                                                         saleProductDetails: saleProductDetails,
