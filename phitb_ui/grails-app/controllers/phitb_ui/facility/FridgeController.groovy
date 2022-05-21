@@ -31,6 +31,7 @@ class FridgeController {
         try
         {
             JSONObject jsonObject = new JSONObject(params)
+            jsonObject.put("entityId",session.getAttribute('entityId'))
             def apiResponse = new FacilityService().showFridge(jsonObject)
             if (apiResponse.status == 200)
             {

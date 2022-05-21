@@ -36,6 +36,7 @@ class RackMasterService {
 
     JSONObject dataTables(JSONObject paramsJsonObject, String start, String length)
     {
+        long entityId = paramsJsonObject.get("entityId")
         String searchTerm = paramsJsonObject.get("search[value]")
         String orderColumnId = paramsJsonObject.get("order[0][column]")
         String orderDir = paramsJsonObject.get("order[0][dir]")
@@ -61,22 +62,23 @@ class RackMasterService {
                     ilike('rackCodeName', '%' + searchTerm + '%')
                 }
             }
+            eq('entityId', entityId)
             eq('deleted', false)
             order(orderColumn, orderDir)
         }
 
-        def entity = []
-        rackMasterArrayList.each {
-            println(it.entityId)
-            def apires1 = showFormByEntityId(it.entityId.toString())
-            entity.push(apires1)
-        }
-        def entityType = []
-        rackMasterArrayList.each {
-            println(it.entityTypeId)
-            def apires2 = showFormByEntityTypeId(it.entityTypeId.toString())
-            entityType.push(apires2)
-        }
+//        def entity = []
+//        rackMasterArrayList.each {
+//            println(it.entityId)
+//            def apires1 = showFormByEntityId(it.entityId.toString())
+//            entity.push(apires1)
+//        }
+//        def entityType = []
+//        rackMasterArrayList.each {
+//            println(it.entityTypeId)
+//            def apires2 = showFormByEntityTypeId(it.entityTypeId.toString())
+//            entityType.push(apires2)
+//        }
 
         def recordsTotal = rackMasterArrayList.totalCount
         JSONObject jsonObject = new JSONObject()
@@ -84,8 +86,8 @@ class RackMasterService {
         jsonObject.put("recordsTotal", recordsTotal)
         jsonObject.put("recordsFiltered", recordsTotal)
         jsonObject.put("data", rackMasterArrayList)
-        jsonObject.put("entity", entity)
-        jsonObject.put("entityType", entityType)
+//        jsonObject.put("entity", entity)
+//        jsonObject.put("entityType", entityType)
         return jsonObject
     }
 
@@ -153,36 +155,36 @@ class RackMasterService {
         }
     }
 
-    def showFormByEntityId(String id)
-    {
-        try
-        {
-            def url = Constants.API_GATEWAY+Constants.USER_REGISTER_SHOW+"/"+id
-            URL apiUrl = new URL(url)
-            def entity = new JsonSlurper().parseText(apiUrl.text)
-            return entity
-        }
-        catch (Exception ex)
-        {
-            System.err.println('Service :CountryMaster , action :  show  , Ex:' + ex)
-            log.error('Service :CountryMaster , action :  show  , Ex:' + ex)
-        }
-    }
-
-    def showFormByEntityTypeId(String id)
-    {
-        try
-        {
-            def url = Constants.API_GATEWAY+Constants.ENTITY_TYPE_SHOW+"/"+id
-            URL apiUrl = new URL(url)
-            def entity = new JsonSlurper().parseText(apiUrl.text)
-            return entity
-        }
-        catch (Exception ex)
-        {
-            System.err.println('Service :CountryMaster , action :  show  , Ex:' + ex)
-            log.error('Service :CountryMaster , action :  show  , Ex:' + ex)
-        }
-    }
+//    def showFormByEntityId(String id)
+//    {
+//        try
+//        {
+//            def url = Constants.API_GATEWAY+Constants.USER_REGISTER_SHOW+"/"+id
+//            URL apiUrl = new URL(url)
+//            def entity = new JsonSlurper().parseText(apiUrl.text)
+//            return entity
+//        }
+//        catch (Exception ex)
+//        {
+//            System.err.println('Service :CountryMaster , action :  show  , Ex:' + ex)
+//            log.error('Service :CountryMaster , action :  show  , Ex:' + ex)
+//        }
+//    }
+//
+//    def showFormByEntityTypeId(String id)
+//    {
+//        try
+//        {
+//            def url = Constants.API_GATEWAY+Constants.ENTITY_TYPE_SHOW+"/"+id
+//            URL apiUrl = new URL(url)
+//            def entity = new JsonSlurper().parseText(apiUrl.text)
+//            return entity
+//        }
+//        catch (Exception ex)
+//        {
+//            System.err.println('Service :CountryMaster , action :  show  , Ex:' + ex)
+//            log.error('Service :CountryMaster , action :  show  , Ex:' + ex)
+//        }
+//    }
 
 }

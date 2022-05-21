@@ -111,8 +111,8 @@
                                     <th style="width: 20%">Fridge Name</th>
                                     <th style="width: 20%">Expiry Date</th>
                                     <th style="width: 20%">Purchase Date</th>
-                                    <th style="width: 20%">Entity Type</th>
-                                    <th style="width: 20%">Entity</th>
+%{--                                    <th style="width: 20%">Entity Type</th>--}%
+%{--                                    <th style="width: 20%">Entity</th>--}%
                                     <th style="width: 20%">Action</th>
                                 </tr>
                                 </thead>
@@ -216,8 +216,8 @@
                             'kitNumber': json.data[i].kitNumber,
                             'expiryDate':  moment(expDate).format('DD/MM/YYYY'),
                             'purchaseDate': moment(purDate).format('DD/MM/YYYY'),
-                            'entity': json.entity[i].entityName,
-                            'entitytype': json.entityType[i].name,
+                            // 'entity': json.entity[i].entityName,
+                            // 'entitytype': json.entityType[i].name,
                             'action': editbtn + ' ' + deletebtn
                         });
                     }
@@ -231,8 +231,8 @@
                 {'data': 'fridgeName', 'width': '20%'},
                 {'data': 'expiryDate', 'width': '20%'},
                 {'data': 'purchaseDate', 'width': '20%'},
-                {'data': 'entity', 'width': '20%'},
-                {'data': 'entitytype', 'width': '20%'},
+                // {'data': 'entity', 'width': '20%'},
+                // {'data': 'entitytype', 'width': '20%'},
                 {'data': 'action', 'width': '20%'}
             ]
         });

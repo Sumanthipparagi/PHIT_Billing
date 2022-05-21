@@ -113,8 +113,8 @@
                                     <th style="width: 20%">Genaral Info</th>
                                     <th style="width: 20%">Companies</th>
                                     <th style="width: 20%">Floor Number</th>
-                                    <th style="width: 20%">Entity</th>
-                                    <th style="width: 20%">Entity Type</th>
+%{--                                    <th style="width: 20%">Entity</th>--}%
+%{--                                    <th style="width: 20%">Entity Type</th>--}%
                                     <th style="width: 20%">Action</th>
                                 </tr>
                                 </thead>
@@ -220,8 +220,8 @@
                             'rackCodeName': json.data[i].rackCodeName,
                             'companies': json.data[i].companies,
                             'cccEnabled': json.data[i].cccEnabled,
-                            'entity': json.entity[i].entityName,
-                            'entitytype': json.entityType[i].name,
+                            // 'entity': json.entity[i].entityName,
+                            // 'entitytype': json.entityType[i].name,
                             'action': editbtn + ' ' + deletebtn
                         });
                     }
@@ -236,8 +236,8 @@
                 {'data': 'generalInfo', 'width': '20%'},
                 {'data': 'companies', 'width': '20%'},
                 {'data': 'floorNumber', 'width': '20%'},
-                {'data': 'entity', 'width': '20%'},
-                {'data': 'entitytype', 'width': '20%'},
+                // {'data': 'entity', 'width': '20%'},
+                // {'data': 'entitytype', 'width': '20%'},
                 {'data': 'action', 'width': '20%'}
             ]
         });

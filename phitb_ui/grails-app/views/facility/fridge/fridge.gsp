@@ -107,8 +107,8 @@
                                 <tr>
 %{--                                    <th style="width: 20%">ID</th>--}%
                                     <th style="width: 20%">Fridge Name</th>
-                                    <th style="width: 20%">Entity</th>
-                                    <th style="width: 20%">Entity Type</th>
+%{--                                    <th style="width: 20%">Entity</th>--}%
+%{--                                    <th style="width: 20%">Entity Type</th>--}%
                                     <th style="width: 20%">Date of purchase</th>
                                     <th style="width: 20%">Machine Part Number</th>
                                     <th style="width: 20%">Floor</th>
@@ -215,9 +215,9 @@
                             'floor': json.data[i].floor,
                             'machinePartNumber': json.data[i].machinePartNumber,
                             'dateOfPurchase': moment(dateOfPur).format('DD/MM/YYYY'),
-                            'entity': json.entity[i].entityName,
+                            // 'entity': json.entity[i].entityName,
                             'status': json.data[i].status,
-                            'entitytype': json.entityType[i].name,
+                            // 'entitytype': json.entityType[i].name,
                             'action': editbtn + ' ' + deletebtn
                         });
                     }
@@ -227,8 +227,8 @@
             columns: [
                 // {'data': 'id', 'width': '20%'},
                 {'data': 'fridgename', 'width': '20%'},
-                {'data': 'entitytype', 'width': '20%'},
-                {'data': 'entity', 'width': '20%'},
+                // {'data': 'entitytype', 'width': '20%'},
+                // {'data': 'entity', 'width': '20%'},
                 {'data': 'dateOfPurchase', 'width': '20%'},
                 {'data': 'machinePartNumber', 'width': '20%'},
                 {'data': 'floor', 'width': '20%'},

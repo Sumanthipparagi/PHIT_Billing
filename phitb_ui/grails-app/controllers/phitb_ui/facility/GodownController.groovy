@@ -42,6 +42,7 @@ class GodownController
         try
         {
             JSONObject jsonObject = new JSONObject(params)
+            jsonObject.put("entityId",session.getAttribute('entityId'))
             def apiResponse = new FacilityService().showGodown(jsonObject)
             if (apiResponse.status == 200)
             {

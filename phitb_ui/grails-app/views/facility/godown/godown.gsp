@@ -111,8 +111,8 @@
                                     <th style="width: 20%">CCM Enabled</th>
                                     <th style="width: 20%">Premises</th>
                                     <th style="width: 20%">Manager</th>
-                                    <th style="width: 20%">Entity Type</th>
-                                    <th style="width: 20%">Entity</th>
+%{--                                    <th style="width: 20%">Entity Type</th>--}%
+%{--                                    <th style="width: 20%">Entity</th>--}%
                                     <th style="width: 20%">Action</th>
                                 </tr>
                                 </thead>
@@ -214,8 +214,8 @@
                             'ccmEnabled': (json.data[i].ccmEnabled == 1) ?  "YES" : "NO",
                             'premises': json.data[i].premises,
                             'managerId': json.manager[i].userName,
-                            'entity': json.entity[i].entityName,
-                            'entitytype': json.entityType[i].name,
+                            // 'entity': json.entity[i].entityName,
+                            // 'entitytype': json.entityType[i].name,
                             'action': editbtn + ' ' + deletebtn
                         });
                     }
@@ -228,8 +228,8 @@
                 {'data': 'ccmEnabled', 'width': '10%'},
                 {'data': 'premises', 'width': '10%'},
                 {'data': 'managerId', 'width': '10%'},
-                {'data': 'entitytype', 'width': '20%'},
-                {'data': 'entity', 'width': '20%'},
+                // {'data': 'entitytype', 'width': '20%'},
+                // {'data': 'entity', 'width': '20%'},
                 {'data': 'action', 'width': '20%'}
             ]
         });

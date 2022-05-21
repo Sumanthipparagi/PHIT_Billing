@@ -41,6 +41,7 @@ class FridgeMasterService {
     JSONObject dataTables(JSONObject paramsJsonObject, String start, String length)
     {
         String searchTerm = paramsJsonObject.get("search[value]")
+        long entityId = paramsJsonObject.get("entityId")
         String orderColumnId = paramsJsonObject.get("order[0][column]")
         String orderDir = paramsJsonObject.get("order[0][dir]")
 
@@ -65,44 +66,45 @@ class FridgeMasterService {
                     ilike('machinePartNumber', '%' + searchTerm + '%')
                 }
             }
+            eq('entityId', entityId)
             eq('deleted', false)
             order(orderColumn, orderDir)
         }
 
-        def entity = []
-        fridgeMasterArrayList.each {
-            println(it.entityId)
-            def apires1 = showFormByEntityId(it.entityId.toString())
-            entity.push(apires1)
-        }
-        def entityType = []
-        fridgeMasterArrayList.each {
-            println(it.entityTypeId)
-            def apires2 = showFormByEntityTypeId(it.entityTypeId.toString())
-            entityType.push(apires2)
-        }
-        def createduser = []
-        fridgeMasterArrayList.each {
-            println(it.createdUser)
-            def apires3 = showFormBycreatedUser(it.createdUser.toString())
-            createduser.push(apires3)
-        }
-        def modifieduser = []
-        fridgeMasterArrayList.each {
-            println(it.modifiedUser)
-            def apires4 = showFormBymodifiedUser(it.modifiedUser.toString())
-            modifieduser.push(apires4)
-        }
+//        def entity = []
+//        fridgeMasterArrayList.each {
+//            println(it.entityId)
+//            def apires1 = showFormByEntityId(it.entityId.toString())
+//            entity.push(apires1)
+//        }
+//        def entityType = []
+//        fridgeMasterArrayList.each {
+//            println(it.entityTypeId)
+//            def apires2 = showFormByEntityTypeId(it.entityTypeId.toString())
+//            entityType.push(apires2)
+//        }
+//        def createduser = []
+//        fridgeMasterArrayList.each {
+//            println(it.createdUser)
+//            def apires3 = showFormBycreatedUser(it.createdUser.toString())
+//            createduser.push(apires3)
+//        }
+//        def modifieduser = []
+//        fridgeMasterArrayList.each {
+//            println(it.modifiedUser)
+//            def apires4 = showFormBymodifiedUser(it.modifiedUser.toString())
+//            modifieduser.push(apires4)
+//        }
 
         def recordsTotal = fridgeMasterArrayList.totalCount
         JSONObject jsonObject = new JSONObject()
         jsonObject.put("draw", paramsJsonObject.draw)
         jsonObject.put("recordsTotal", recordsTotal)
         jsonObject.put("recordsFiltered", recordsTotal)
-        jsonObject.put("entity", entity)
-        jsonObject.put("entityType", entityType)
-        jsonObject.put("createduser", createduser)
-        jsonObject.put("modifieduser", modifieduser)
+//        jsonObject.put("entity", entity)
+//        jsonObject.put("entityType", entityType)
+//        jsonObject.put("createduser", createduser)
+//        jsonObject.put("modifieduser", modifieduser)
         jsonObject.put("data", fridgeMasterArrayList)
         return jsonObject
     }
@@ -168,67 +170,67 @@ class FridgeMasterService {
         }
     }
 
-    def showFormByEntityId(String id)
-    {
-        try
-        {
-            def url = Constants.API_GATEWAY+Constants.ENTITY_REGISTER_SHOW+"/"+id
-            URL apiUrl = new URL(url)
-            def entity = new JsonSlurper().parseText(apiUrl.text)
-            return entity
-        }
-        catch (Exception ex)
-        {
-            System.err.println('Service :CountryMaster , action :  show  , Ex:' + ex)
-            log.error('Service :CountryMaster , action :  show  , Ex:' + ex)
-        }
-    }
-
-    def showFormByEntityTypeId(String id)
-    {
-        try
-        {
-            def url = Constants.API_GATEWAY+Constants.ENTITY_TYPE_SHOW+"/"+id
-            URL apiUrl = new URL(url)
-            def entity = new JsonSlurper().parseText(apiUrl.text)
-            return entity
-        }
-        catch (Exception ex)
-        {
-            System.err.println('Service :CountryMaster , action :  show  , Ex:' + ex)
-            log.error('Service :CountryMaster , action :  show  , Ex:' + ex)
-        }
-    }
-
-    def showFormBycreatedUser(String id)
-    {
-        try
-        {
-            def url = Constants.API_GATEWAY+Constants.USER_REGISTER_SHOW+"/"+id
-            URL apiUrl = new URL(url)
-            def entity = new JsonSlurper().parseText(apiUrl.text)
-            return entity
-        }
-        catch (Exception ex)
-        {
-            System.err.println('Service :CountryMaster , action :  show  , Ex:' + ex)
-            log.error('Service :CountryMaster , action :  show  , Ex:' + ex)
-        }
-    }
-
-    def showFormBymodifiedUser(String id)
-    {
-        try
-        {
-            def url = Constants.API_GATEWAY+Constants.USER_REGISTER_SHOW+"/"+id
-            URL apiUrl = new URL(url)
-            def entity = new JsonSlurper().parseText(apiUrl.text)
-            return entity
-        }
-        catch (Exception ex)
-        {
-            System.err.println('Service :CountryMaster , action :  show  , Ex:' + ex)
-            log.error('Service :CountryMaster , action :  show  , Ex:' + ex)
-        }
-    }
+//    def showFormByEntityId(String id)
+//    {
+//        try
+//        {
+//            def url = Constants.API_GATEWAY+Constants.ENTITY_REGISTER_SHOW+"/"+id
+//            URL apiUrl = new URL(url)
+//            def entity = new JsonSlurper().parseText(apiUrl.text)
+//            return entity
+//        }
+//        catch (Exception ex)
+//        {
+//            System.err.println('Service :CountryMaster , action :  show  , Ex:' + ex)
+//            log.error('Service :CountryMaster , action :  show  , Ex:' + ex)
+//        }
+//    }
+//
+//    def showFormByEntityTypeId(String id)
+//    {
+//        try
+//        {
+//            def url = Constants.API_GATEWAY+Constants.ENTITY_TYPE_SHOW+"/"+id
+//            URL apiUrl = new URL(url)
+//            def entity = new JsonSlurper().parseText(apiUrl.text)
+//            return entity
+//        }
+//        catch (Exception ex)
+//        {
+//            System.err.println('Service :CountryMaster , action :  show  , Ex:' + ex)
+//            log.error('Service :CountryMaster , action :  show  , Ex:' + ex)
+//        }
+//    }
+//
+//    def showFormBycreatedUser(String id)
+//    {
+//        try
+//        {
+//            def url = Constants.API_GATEWAY+Constants.USER_REGISTER_SHOW+"/"+id
+//            URL apiUrl = new URL(url)
+//            def entity = new JsonSlurper().parseText(apiUrl.text)
+//            return entity
+//        }
+//        catch (Exception ex)
+//        {
+//            System.err.println('Service :CountryMaster , action :  show  , Ex:' + ex)
+//            log.error('Service :CountryMaster , action :  show  , Ex:' + ex)
+//        }
+//    }
+//
+//    def showFormBymodifiedUser(String id)
+//    {
+//        try
+//        {
+//            def url = Constants.API_GATEWAY+Constants.USER_REGISTER_SHOW+"/"+id
+//            URL apiUrl = new URL(url)
+//            def entity = new JsonSlurper().parseText(apiUrl.text)
+//            return entity
+//        }
+//        catch (Exception ex)
+//        {
+//            System.err.println('Service :CountryMaster , action :  show  , Ex:' + ex)
+//            log.error('Service :CountryMaster , action :  show  , Ex:' + ex)
+//        }
+//    }
 }
