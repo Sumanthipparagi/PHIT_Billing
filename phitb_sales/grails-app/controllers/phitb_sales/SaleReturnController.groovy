@@ -202,26 +202,26 @@ class SaleReturnController {
     {
         try
         {
-            SaleReturnDetails saleReturnDetails = SaleReturnDetails.findById(Long.parseLong(params.id))
-            if (saleReturnDetails)
+            SaleReturn saleReturn = SaleReturn.findById(Long.parseLong(params.id))
+            if (saleReturn)
             {
-                saleReturnDetails.isUpdatable = true
+                saleReturn.isUpdatable = true
                 Double balance = Double.parseDouble(params.balance)
                 if (balance > 0 && balance!="" && balance!=null)
                 {
-                    double diffBalance = Double.parseDouble(saleReturnDetails.getBalance().toString()) - balance
-                    saleReturnDetails.balance = diffBalance
-                    saleReturnDetails.adjAmount = saleReturnDetails.getAdjAmount() + balance
+                    double diffBalance = Double.parseDouble(saleReturn.getBalance().toString()) - balance
+                    saleReturn.balance = diffBalance
+                    saleReturn.adjAmount = saleReturn.getAdjAmount() + balance
                 }
                 else
                 {
-                    saleReturnDetails.balance = saleReturnDetails.getBalance()
-                    saleReturnDetails.adjAmount = saleReturnDetails.getAdjAmount()
+                    saleReturn.balance = saleReturn.getBalance()
+                    saleReturn.adjAmount = saleReturn.getAdjAmount()
                 }
-                SaleReturnDetails saleReturnDetails1 = saleReturnDetails.save(flush: true)
-                if (saleReturnDetails1)
+                SaleReturn saleReturn1 = saleReturn.save(flush: true)
+                if (saleReturn1)
                 {
-                    respond saleReturnDetails1
+                    respond saleReturn1
                     return
                 }
             }

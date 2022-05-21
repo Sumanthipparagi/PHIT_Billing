@@ -524,7 +524,7 @@
                                 '                                        <td id="' + "crntBal" + value.id + '" >' +
                                 "-"+value.balance.toFixed(2) +
                                 '</td>\n' +
-                                '                                        <td><input type="number" class="paidNowCrnt txt" id="paidNowCrnt' + value.id + '" name="paidNowCrnt" data-inid="' + value.id + '" data-bal="' + value.balance + '" style="width: 100px;" pattern="\\d{1,10}(?:\\.\\d{1,3})?$" value="0"></td>\n' +
+                                '                                        <td><input type="number" class="paidNowCrnt txt txtcrnt" id="paidNowCrnt' + value.id + '" name="paidNowCrnt" data-cnid="' + value.id + '" data-crbal="' + value.balance + '" style="width: 100px;" pattern="\\d{1,10}(?:\\.\\d{1,3})?$" value="0"></td>\n' +
                                 '                                        <td>' + value.totalAmount.toFixed(2) + '</td>\n' +
                                 '                                        <td>' + calculateNoOfDays(value.dateCreated) + '</td>\n' +
                                 '                                        <td>' + value.financialYear + '</td>\n' +
@@ -587,6 +587,22 @@
             //     $(this).next('.paidNowInv').focus();
             // }
 
+        }
+    });
+
+    $(document).on('keyup', '.txtcrnt', function (e) {
+        var id = $(this).attr('data-cnid');
+        var bal = Number($(this).attr('data-crbal')).toFixed(2)
+        var value = $('#paidNowCrnt' + id).val();
+        if (Number(value) > Number(bal)) {
+            Swal.fire({
+                position: 'top-end',
+                icon: 'error',
+                title: 'Amount should not be greater!',
+                showConfirmButton: false,
+                timer: 1000
+            });
+            $('#paidNowCrnt' + id).val(0);
         }
     });
 
