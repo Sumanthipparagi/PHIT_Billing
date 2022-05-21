@@ -491,14 +491,14 @@
                     $('.tba').val(total_bal_s.toFixed(2));
                     $('.amountPaid').val(total_bal_s.toFixed(2));
                     $.each(data[0], function (key, value) {
-                        if (value.balance !== 0 && value.billStatus !== 'DRAFT' && value.billStatus !== 'CANCELLED') {
+                        var balance = value.balance.toFixed()
+                        if (Number(balance)!== 0 && value.billStatus!== 'DRAFT' && value.billStatus!== 'CANCELLED') {
                             trHTML += ' <tr id="' + "IN" + value.id + '">\n' +
                                 '                                        <td>' + invoice + '</td>\n' +
                                 '                                        <td>' + value.invoiceNumber + '</td>\n' +
                                 '                                        <td>' + moment(value.dateCreated).format('DD-MM-YYYY') + '</td>\n' +
                                 '                                        <td id="' + "invAdjAmt" + value.id + '">' + value.adjAmount.toFixed(2) + '</td>\n' +
-                                '                                        <td id="' + "invBal" + value.id + '" >' +
-                                value.balance.toFixed(2) +
+                                '                                        <td id="' + "invBal" + value.id + '" >' + value.balance.toFixed(2) +
                                 '</td>\n' +
                                 '                                        <td><input type="number" class="paidNowInv txt" id="paidNowInv' + value.id + '" name="paidNowInv" data-inid="' + value.id + '" data-bal="' + value.balance + '" style="width: 100px;" pattern="\\d{1,10}(?:\\.\\d{1,3})?$" value="0"></td>\n' +
                                 '                                        <td>' + value.totalAmount.toFixed(2) + '</td>\n' +
@@ -562,9 +562,9 @@
 
     $(document).on('keyup', '.txt', function (e) {
         var id = $(this).attr('data-inid');
-        var bal = $(this).attr('data-bal');
+        var bal = Number($(this).attr('data-bal')).toFixed(2)
         var value = $('#paidNowInv' + id).val();
-        if (Number(value) > Number(bal).toFixed()) {
+        if (Number(value) > Number(bal)) {
             Swal.fire({
                 position: 'top-end',
                 icon: 'error',
