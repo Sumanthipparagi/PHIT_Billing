@@ -361,6 +361,66 @@ class UrlMappings {
             "/salebilldetails/save-invoice(.$format)?"(controller: 'saleBillDetails', action: 'saveInvoice')
             "/salebilldetails/update-invoice/$id(.$format)?"(controller: 'saleBillDetails', action: 'updateInvoice')
 
+
+            //Goods Transfer Note
+            "/gtn(.$format)?"(controller: 'goodsTransferNote') {
+                action = [GET: 'index', POST:
+                        'save']
+            }
+            "/draftgtn(.$format)?"(controller: 'goodsTransferNote') {
+                action = [GET: 'getDraftBillById']
+            }
+            "/gtn/datatable(.$format)?"(controller: 'goodsTransferNote') {action = [GET: 'dataTable']}
+            "/gtn/cancel(.$format)?"(controller: 'goodsTransferNote') {action = [POST: 'cancelGTN']}
+            "/gtn/$id(.$format)?"(controller: 'goodsTransferNote') {
+                action = [GET: 'show', PUT: 'update', DELETE:
+                        'delete']
+            }
+            "/gtnbydays/$days(.$format)?"(controller: 'goodsTransferNote') {
+                action = [GET: 'getAllByDays']
+            }
+            "/gtnunsettledbycustomer/$id(.$format)?"(controller: 'goodsTransferNote') {
+                action = [GET: 'getAllUnsettledByCustId']
+            }
+            "/gtnsettledbycustomer/$id(.$format)?"(controller: 'goodsTransferNote') {
+                action = [GET: 'getAllsettledByCustId']
+            }
+
+            "/gtnbycustomer/$id(.$format)?"(controller: 'goodsTransferNote') {
+                action = [GET: 'getAllByCustomerId']
+            }
+
+
+            //Sale Product Details
+            "/gtnproduct(.$format)?"(controller: 'goodsTransferNoteProduct') {
+                action = [GET: 'index', POST:
+                        'save']
+            }
+            "/gtnproduct/savelist(.$format)?"(controller: 'goodsTransferNoteProduct', action: 'saveList')
+            "/gtnproduct/bill/$id(.$format)?"(controller: 'goodsTransferNoteProduct') {
+                action = [GET: 'getSaleProductDetailsOfSaleBill']
+            }
+
+            "/gtnproductlist/bill/$salebillsIds(.$format)?"(controller: 'goodsTransferNoteProduct') {
+                action = [GET: 'getSaleProductDetailsOfSaleBillList']
+            }
+
+            "/gtnproduct/datatable(.$format)?"(controller: 'goodsTransferNoteProduct') {action = [GET: 'dataTable']}
+            "/gtnproduct/$id(.$format)?"(controller: 'goodsTransferNoteProduct') {
+                action = [GET: 'show', PUT: 'update', DELETE:
+                        'delete']
+            }
+            "/gtnproductbydays/$days(.$format)?"(controller: 'goodsTransferNoteProduct') {
+                action = [GET: 'getAllByDays']
+            }
+
+            "/gtnproductbyproductId(.$format)?"(controller: 'goodsTransferNoteProduct') {
+                action = [GET: 'getGoodsTransferNoteProductbyProductId']
+            }
+
+            "/gtnproductbillandbatch(.$format)?"(controller: 'goodsTransferNoteProduct', action:
+                    'getGoodsTransferNoteProductbybatchAndBill')
+
         }
     }
 }

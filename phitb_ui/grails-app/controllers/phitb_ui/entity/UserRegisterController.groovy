@@ -66,7 +66,7 @@ class UserRegisterController
             ArrayList<String> citylist = new CityController().show() as ArrayList<String>
             ArrayList<String> zoneList = new ZoneController().show() as ArrayList<String>
             ArrayList<String> routeRegister = new RouteController().show() as ArrayList<String>
-            ArrayList<String> userList = new UserRegisterController().show() as ArrayList<String>
+            //ArrayList<String> userList = new UserRegisterController().show() as ArrayList<String>
             ArrayList <String> genderList = new SystemService().getAllGender()
             ArrayList <String> bank = new BankRegisterController().show() as ArrayList<String>
             ArrayList <String> roles = new RoleController().show() as ArrayList<String>
@@ -90,6 +90,7 @@ class UserRegisterController
                     salesmanList.add(it)
                 }
             }
+           // ArrayList<String> entityTypes = new EntityService().getEntityType()
             render(view: '/entity/userRegister/add-user-register', model: [entity       : entity,
                                                                            statelist    : statelist, countrylist: countrylist,
                                                                            citylist     : citylist, salesmanList: salesmanList,
@@ -99,6 +100,7 @@ class UserRegisterController
                                                                            userregister : userregister,
                                                                            department: department,role:roles,
                                                                            bank:bank,account:account,
+                                                                        //   entityTypes:entityTypes,
                                                                            division:division,gender:genderList])
         }
         catch (Exception ex)

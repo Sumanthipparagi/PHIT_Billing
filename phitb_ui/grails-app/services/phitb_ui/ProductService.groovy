@@ -79,7 +79,24 @@ class ProductService {
             System.err.println('Service :ProductService , action :  getProducts  , Ex:' + ex)
             log.error('Service :ProductService , action :  getProducts  , Ex:' + ex)
         }
+    }
 
+    def getProductTypesByEntity(String entityId) {
+        Client client = ClientBuilder.newClient();
+        WebTarget target = client.target(new Links().API_GATEWAY);
+
+        try {
+            Response apiResponse = target
+                    .path(new Links().PRODUCT_TYPE_SHOW_BY_ENTITY + "/" + entityId)
+                    .request(MediaType.APPLICATION_JSON_TYPE)
+                    .get()
+
+            return apiResponse
+        }
+        catch (Exception ex) {
+            System.err.println('Service :ProductService , action :  getProducts  , Ex:' + ex)
+            log.error('Service :ProductService , action :  getProducts  , Ex:' + ex)
+        }
     }
 
     def getProductRegister() {
@@ -118,6 +135,25 @@ class ProductService {
         catch (Exception ex) {
             System.err.println('Service :ProductService , action :  getProducts  , Ex:' + ex)
             log.error('Service :ProductService , action :  getProducts  , Ex:' + ex)
+        }
+
+    }
+
+    def getProductGroupsByEntity(String entityId) {
+        Client client = ClientBuilder.newClient();
+        WebTarget target = client.target(new Links().API_GATEWAY);
+
+        try {
+            Response apiResponse = target
+                    .path(new Links().PRODUCT_GROUP_SHOW_BY_ENTITY+ "/"+ entityId)
+                    .request(MediaType.APPLICATION_JSON_TYPE)
+                    .get()
+
+            return apiResponse
+        }
+        catch (Exception ex) {
+            System.err.println('Service :ProductService , action :  getProductGroupsByEntity  , Ex:' + ex)
+            log.error('Service :ProductService , action :  getProductGroupsByEntity  , Ex:' + ex)
         }
 
     }
@@ -181,12 +217,30 @@ class ProductService {
 
     }
 
+    def getProductCostByEntity(String entityId) {
+        Client client = ClientBuilder.newClient();
+        WebTarget target = client.target(new Links().API_GATEWAY);
+
+        try {
+
+            Response apiResponse = target
+                    .path(new Links().PRODUCT_COST_SHOW_BY_ENTITY + "/"+ entityId)
+                    .request(MediaType.APPLICATION_JSON_TYPE)
+                    .get()
+            return apiResponse
+        }
+        catch (Exception ex) {
+            System.err.println('Service :ProductService , action :  getProducts  , Ex:' + ex)
+            log.error('Service :ProductService , action :  getProducts  , Ex:' + ex)
+        }
+
+    }
+
     def getProductCategories() {
         Client client = ClientBuilder.newClient();
         WebTarget target = client.target(new Links().API_GATEWAY);
         
         try {
-
             Response apiResponse = target
                     .path(new Links().PRODUCT_CATEGORY_SHOW)
                     .request(MediaType.APPLICATION_JSON_TYPE)
@@ -197,6 +251,23 @@ class ProductService {
         catch (Exception ex) {
             System.err.println('Service :ProductService , action :  getProducts  , Ex:' + ex)
             log.error('Service :ProductService , action :  getProducts  , Ex:' + ex)
+        }
+    }
+
+    def getProductCategoriesByEntity(String entityId) {
+        Client client = ClientBuilder.newClient();
+        WebTarget target = client.target(new Links().API_GATEWAY);
+
+        try {
+            Response apiResponse = target
+                    .path(new Links().PRODUCT_CATEGORY_BY_ENTITY_SHOW+"/"+ entityId)
+                    .request(MediaType.APPLICATION_JSON_TYPE)
+                    .get()
+            return apiResponse
+        }
+        catch (Exception ex) {
+            System.err.println('Service :ProductService , action :  getProductCategoriesByEntity  , Ex:' + ex)
+            log.error('Service :ProductService , action :  getProductCategoriesByEntity  , Ex:' + ex)
         }
 
     }
@@ -246,6 +317,30 @@ class ProductService {
 
     }
 
+
+    /**
+     *
+     * @param jsonObject
+     * @return
+     */
+    def getProductSchedulesByEntity(String entityId) {
+        Client client = ClientBuilder.newClient();
+        WebTarget target = client.target(new Links().API_GATEWAY);
+        try {
+            Response apiResponse = target
+                    .path(new Links().PRODUCT_SCHEDULE_SHOW_BY_ENTITY+ "/"+entityId)
+                    .request(MediaType.APPLICATION_JSON_TYPE)
+                    .get()
+
+            return apiResponse
+        }
+        catch (Exception ex) {
+            System.err.println('Service :ProductService , action :  getProductSchedulesByEntity  , Ex:' + ex)
+            log.error('Service :ProductService , action :  getProductSchedulesByEntity  , Ex:' + ex)
+        }
+
+    }
+
     def getCompositions() {
         Client client = ClientBuilder.newClient();
         WebTarget target = client.target(new Links().API_GATEWAY);
@@ -262,6 +357,25 @@ class ProductService {
         catch (Exception ex) {
             System.err.println('Service :ProductService , action :  getProducts  , Ex:' + ex)
             log.error('Service :ProductService , action :  getProducts  , Ex:' + ex)
+        }
+
+    }
+
+    def getByEntity(String entityId) {
+        Client client = ClientBuilder.newClient();
+        WebTarget target = client.target(new Links().API_GATEWAY);
+
+        try {
+            Response apiResponse = target
+                    .path(new Links().PRODUCT_COMPOSITION_SHOW_BY_ENTITY + "/" + entityId)
+                    .request(MediaType.APPLICATION_JSON_TYPE)
+                    .get()
+
+            return apiResponse
+        }
+        catch (Exception ex) {
+            System.err.println('Service :ProductService , action :  getCompositions  , Ex:' + ex)
+            log.error('Service :ProductService , action :  getCompositions  , Ex:' + ex)
         }
 
     }
@@ -347,6 +461,26 @@ class ProductService {
         catch (Exception ex) {
             System.err.println('Service :ProductService , action :  getProducts  , Ex:' + ex)
             log.error('Service :ProductService , action :  getProducts  , Ex:' + ex)
+        }
+
+    }
+
+    def getUnitTypeByEntity(String entityId) {
+        Client client = ClientBuilder.newClient();
+        WebTarget target = client.target(new Links().API_GATEWAY);
+
+        try {
+
+            Response apiResponse = target
+                    .path(new Links().UNIT_TYPE_SHOW_BY_ENTITY + "/"+ entityId)
+                    .request(MediaType.APPLICATION_JSON_TYPE)
+                    .get()
+
+            return apiResponse
+        }
+        catch (Exception ex) {
+            System.err.println('Service :ProductService , action :  getUnitTypeByEntity  , Ex:' + ex)
+            log.error('Service :ProductService , action :  getUnitTypeByEntity  , Ex:' + ex)
         }
 
     }

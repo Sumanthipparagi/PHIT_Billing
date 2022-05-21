@@ -57,6 +57,7 @@ class BatchRegisterService {
     }
 
     JSONObject dataTables(JSONObject paramsJsonObject, String start, String length) {
+        long entityId = paramsJsonObject.get("entityId")
         String searchTerm = paramsJsonObject.get("search[value]")
         String orderColumnId = paramsJsonObject.get("order[0][column]")
         String orderDir = paramsJsonObject.get("order[0][dir]")
@@ -82,6 +83,7 @@ class BatchRegisterService {
                     ilike('caseWt', '%' + searchTerm + '%')
                 }
             }
+            eq('entityId', entityId)
             eq('deleted', false)
             order(orderColumn, orderDir)
         }

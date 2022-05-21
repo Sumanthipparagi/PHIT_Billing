@@ -117,8 +117,9 @@ class UserRegisterService {
             userRegister.department = DepartmentMaster.findById(Long.parseLong(jsonObject.get("department").toString()))
             userRegister.account = AccountRegister.findById(Long.parseLong(jsonObject.get("account").toString()))
             userRegister.role = Role.findById(Long.parseLong(jsonObject.get("role").toString()))
-            userRegister.entityType = EntityTypeMaster.findById(Long.parseLong(jsonObject.get("entityType").toString()))
-            userRegister.entity = EntityRegister.findById(Long.parseLong(jsonObject.get("entity").toString()))
+            EntityRegister entityRegister = EntityRegister.findById(Long.parseLong(jsonObject.get("entity").toString()))
+            userRegister.entityType = entityRegister.entityType
+            userRegister.entity = entityRegister
             userRegister.createdUser = Long.parseLong(jsonObject.get("createdUser").toString())
             userRegister.modifiedUser = Long.parseLong(jsonObject.get("modifiedUser").toString())
             userRegister.save(flush: true)

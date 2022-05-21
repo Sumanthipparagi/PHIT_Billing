@@ -420,16 +420,16 @@
                                     </select>
                                 </div>
 
-                                <div class="col-lg-6 form-group  form-float">
+                                %{--<div class="col-lg-6 form-group  form-float">
                                     <label for="entityType">
                                         Entity Type
                                     </label>
                                     <select class="form-control show-tick entityType" name="entityType" id="entityType">
-                                        <g:each var="et" in="${entitytype}">
+                                        <g:each var="et" in="${entityTypes}">
                                             <option value="${et.id}">${et.name}</option>
                                         </g:each>
                                     </select>
-                                </div>
+                                </div>--}%
 
                                 <div class="col-lg-6 form-group  form-float">
                                     <label for="entity">

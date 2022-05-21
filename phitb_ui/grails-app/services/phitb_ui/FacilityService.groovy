@@ -500,5 +500,31 @@ class FacilityService {
     }
 
 
+    /**
+     *
+     * @param jsonObject
+     * @return
+     */
+    def getByEntity(String entityId)
+    {
+        Client client = ClientBuilder.newClient()
+        WebTarget target = client.target(new Links().API_GATEWAY)
+
+        try {
+
+            Response apiResponse = target
+                    .path(new Links().RACK_SHOW_BY_ENTITY + "/"+ entityId)
+                    .request(MediaType.APPLICATION_JSON_TYPE)
+                    .get()
+
+            return apiResponse
+        }
+        catch (Exception ex) {
+            System.err.println('Service :ProductService , action :  getProductSchedules  , Ex:' + ex)
+            log.error('Service :ProductService , action :  getProductSchedules  , Ex:' + ex)
+        }
+
+    }
+
 
 }
