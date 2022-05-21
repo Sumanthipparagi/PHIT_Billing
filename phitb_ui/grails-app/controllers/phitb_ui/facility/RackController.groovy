@@ -36,6 +36,7 @@ class RackController {
         try
         {
             JSONObject jsonObject = new JSONObject(params)
+            jsonObject.put("entityId",session.getAttribute('entityId'))
             def apiResponse = new FacilityService().showRack(jsonObject)
             if (apiResponse.status == 200)
             {
@@ -60,7 +61,6 @@ class RackController {
         try
         {
             JSONObject jsonObject = new JSONObject(params)
-            jsonObject.put("entityId",session.getAttribute('entityId'))
             def apiResponse = new FacilityService().saveRack(jsonObject)
             if (apiResponse?.status == 200)
             {
