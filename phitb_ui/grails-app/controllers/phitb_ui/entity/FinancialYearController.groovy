@@ -55,6 +55,8 @@ class FinancialYearController {
         try
         {
             JSONObject jsonObject = new JSONObject(params)
+            jsonObject.put("entityId", session.getAttribute("entityId"))
+
             def apiResponse = new EntityService().showFinancialYear(jsonObject)
             if (apiResponse.status == 200)
             {
@@ -79,7 +81,6 @@ class FinancialYearController {
         try
         {
             JSONObject jsonObject = new JSONObject(params)
-            jsonObject.put("entityId", session.getAttribute("entityId"))
             def apiResponse = new EntityService().saveFinancialYear(jsonObject)
             if (apiResponse?.status == 200)
             {

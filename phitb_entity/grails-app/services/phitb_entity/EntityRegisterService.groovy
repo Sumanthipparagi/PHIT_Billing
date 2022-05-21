@@ -56,7 +56,6 @@ class EntityRegisterService {
     JSONObject dataTables(JSONObject paramsJsonObject, String start, String length)
     {
         String searchTerm = paramsJsonObject.get("search[value]")
-        long entityId = paramsJsonObject.get("entityId")
         String orderColumnId = paramsJsonObject.get("order[0][column]")
         String orderDir = paramsJsonObject.get("order[0][dir]")
 
@@ -83,7 +82,7 @@ class EntityRegisterService {
                     ilike('entityName', '%' + searchTerm + '%')
                 }
             }
-            eq('entityId', entityId)
+
             eq('deleted', false)
             order(orderColumn, orderDir)
         }

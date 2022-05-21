@@ -107,7 +107,7 @@
                                 <tr>
                                     %{--                                    <th style="width: 20%">ID</th>--}%
                                     <th style="width: 20%">Term Conditions</th>
-                                    <th style="width: 20%">Form</th>
+%{--                                    <th style="width: 20%">Form</th>--}%
 %{--                                    <th style="width: 20%">Entity</th>--}%
 %{--                                    <th style="width: 20%">Entity Type</th>--}%
                                     <th style="width: 20%">Action</th>
@@ -203,20 +203,21 @@
                             '" class="btn btn-sm btn-danger deletebtn" data-toggle="modal" data-target=".deleteModal"><i class="material-icons"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">delete</font></font></i></button>'
                         return_data.push({
                             'id': json.data[i].id,
-                            'termCondition': json.data[i].termCondition,
-                            'formId': json.form[i].formName,
+                            'termCondition': "<div style='white-space:normal;'>"+json.data[i].termCondition + "</div>",
+                            // 'formId': json.form[i].formName,
                             // 'entity': json.data[i].entity.entityName,
                             // 'entitytype': json.data[i].entityType.name,
                             'action': editbtn + ' ' + deletebtn
                         });
                     }
+
                     return return_data;
                 }
             },
             columns: [
                 // {'data': 'id', 'width': '20%'},
                 {'data': 'termCondition', 'width': '20%'},
-                {'data': 'formId', 'width': '20%'},
+                // {'data': 'formId', 'width': '20%'},
                 // {'data': 'entity', 'width': '20%'},
                 // {'data': 'entitytype', 'width': '20%'},
                 {'data': 'action', 'width': '20%'}

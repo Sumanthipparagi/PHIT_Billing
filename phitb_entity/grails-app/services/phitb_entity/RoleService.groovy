@@ -45,7 +45,9 @@ class RoleService {
                     ilike('name', '%' + searchTerm + '%')
                 }
             }
-            eq('entityId', entityId)
+//            entity {
+//                eq('id',entityId)
+//            }
             eq('deleted', false)
             order(orderColumn, orderDir)
         }

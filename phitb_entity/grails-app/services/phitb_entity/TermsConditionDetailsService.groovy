@@ -54,6 +54,8 @@ class TermsConditionDetailsService {
         String searchTerm = paramsJsonObject.get("search[value]")
         String orderColumnId = paramsJsonObject.get("order[0][column]")
         String orderDir = paramsJsonObject.get("order[0][dir]")
+        long entityId = paramsJsonObject.get("entityId")
+
 
         String orderColumn = "id"
         switch (orderColumnId) {
@@ -73,6 +75,9 @@ class TermsConditionDetailsService {
                     ilike('termCondition', '%' + searchTerm + '%')
                 }
             }
+            entity {
+                eq('id',entityId)
+            }
             eq('deleted', false)
             order(orderColumn, orderDir)
         }
@@ -87,7 +92,7 @@ class TermsConditionDetailsService {
         jsonObject.put("draw", paramsJsonObject.draw)
         jsonObject.put("recordsTotal", recordsTotal)
         jsonObject.put("recordsFiltered", recordsTotal)
-        jsonObject.put("form", form)
+//        jsonObject.put("form", form)
         jsonObject.put("data", termConditionDetailsArrayList)
         return jsonObject
     }

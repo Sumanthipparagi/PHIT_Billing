@@ -65,7 +65,9 @@ class UserRegisterService {
                     ilike('userName', '%' + searchTerm + '%')
                 }
             }
-            eq('entityId', entityId)
+            entity {
+                eq('id',entityId)
+            }
             eq('deleted', false)
             order(orderColumn, orderDir)
         }

@@ -108,7 +108,7 @@
                                     %{--                                    <th style="width: 20%">ID</th>--}%
                                     <th style="width: 20%">Region Name</th>
                                     <th style="width: 20%">Short Name</th>
-                                    <th style="width: 20%">Country</th>
+%{--                                    <th style="width: 20%">Country</th>--}%
 %{--                                    <th style="width: 20%">Entity Type</th>--}%
 %{--                                    <th style="width: 20%">Entity</th>--}%
                                     <th style="width: 20%">Action</th>
@@ -222,7 +222,7 @@
                 // {'data': 'id', 'width': '20%'},
                 {'data': 'regionName', 'width': '20%'},
                 {'data': 'shortName', 'width': '20%'},
-                {'data': 'country', 'width': '20%'},
+                // {'data': 'country', 'width': '20%'},
                 // {'data': 'entity', 'width': '20%'},
                 // {'data': 'entitytype', 'width': '20%'},
                 {'data': 'action', 'width': '20%'}
