@@ -564,7 +564,7 @@
         var id = $(this).attr('data-inid');
         var bal = $(this).attr('data-bal');
         var value = $('#paidNowInv' + id).val();
-        if (Number(value) > Number(bal)) {
+        if (Number(value) > Number(bal).toFixed()) {
             Swal.fire({
                 position: 'top-end',
                 icon: 'error',
@@ -597,11 +597,11 @@
             $.each(invIdArray, function (key, value) {
                 var invBal = Number($('#invBal' + value).text());
                 if (invBal > amountPaid) {
-                    $('#paidNowInv' + value).val(amountPaid)
+                    $('#paidNowInv' + value).val(amountPaid);
                     amountPaid = 0;
                 } else {
                     amountPaid = amountPaid - invBal;
-                    $('#paidNowInv' + value).val(invBal)
+                    $('#paidNowInv' + value).val(invBal);
                 }
             });
         }
