@@ -220,7 +220,7 @@
                 // {'data': 'formId', 'width': '20%'},
                 // {'data': 'entity', 'width': '20%'},
                 // {'data': 'entitytype', 'width': '20%'},
-                {'data': 'action', 'width': '20%'}
+                {'data': 'action', 'width': '5%'}
             ]
         });
     }
