@@ -110,8 +110,8 @@
                                     <th style="width: 20%">Appr Expense</th>
                                     <th style="width: 20%">Salesman</th>
                                     <th style="width: 20%">Manager</th>
-                                    <th style="width: 20%">Entity Type</th>
-                                    <th style="width: 20%">Entity</th>
+%{--                                    <th style="width: 20%">Entity Type</th>--}%
+%{--                                    <th style="width: 20%">Entity</th>--}%
                                     <th style="width: 20%">Action</th>
                                 </tr>
                                 </thead>
@@ -217,8 +217,8 @@
                             'apprExpense': json.data[i].apprExpense,
                             'salesman': json.data[i].salesman.userName,
                             'areaManager': json.data[i].areaManager.userName,
-                            'entity': json.data[i].entity.entityName,
-                            'entitytype': json.data[i].entityType.name,
+                            // 'entity': json.data[i].entity.entityName,
+                            // 'entitytype': json.data[i].entityType.name,
                             'action': editbtn + ' ' + deletebtn
                         });
                     }
@@ -231,8 +231,8 @@
                 {'data': 'apprExpense', 'width': '20%'},
                 {'data': 'salesman', 'width': '20%'},
                 {'data': 'areaManager', 'width': '20%'},
-                {'data': 'entity', 'width': '20%'},
-                {'data': 'entitytype', 'width': '20%'},
+                // {'data': 'entity', 'width': '20%'},
+                // {'data': 'entitytype', 'width': '20%'},
                 {'data': 'action', 'width': '20%'}
             ]
         });

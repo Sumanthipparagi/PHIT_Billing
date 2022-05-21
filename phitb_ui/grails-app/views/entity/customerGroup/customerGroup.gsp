@@ -108,8 +108,8 @@
 %{--                                    <th style="width: 20%">ID</th>--}%
                                     <th style="width: 20%">Customer Group Name</th>
                                     <th style="width: 20%">Short Name</th>
-                                    <th style="width: 20%">Entity Type</th>
-                                    <th style="width: 20%">Entity</th>
+%{--                                    <th style="width: 20%">Entity Type</th>--}%
+%{--                                    <th style="width: 20%">Entity</th>--}%
                                     <th style="width: 20%">Action</th>
                                 </tr>
                                 </thead>
@@ -206,8 +206,8 @@
                             'custGroup': json.data[i].customerGroupName,
                             'shortName': json.data[i].shortName,
                             'kitNumber': json.data[i].kitNumber,
-                            'entity': json.data[i].entity.entityName,
-                            'entitytype': json.data[i].entityType.name,
+                            // 'entity': json.data[i].entity.entityName,
+                            // 'entitytype': json.data[i].entityType.name,
                             'action': editbtn + ' ' + deletebtn
                         });
                     }
@@ -218,8 +218,8 @@
                 // {'data': 'id', 'width': '20%'},
                 {'data': 'custGroup', 'width': '20%'},
                 {'data': 'shortName', 'width': '20%'},
-                {'data': 'entity', 'width': '20%'},
-                {'data': 'entitytype', 'width': '20%'},
+                // {'data': 'entity', 'width': '20%'},
+                // {'data': 'entitytype', 'width': '20%'},
                 {'data': 'action', 'width': '20%'}
             ]
         });

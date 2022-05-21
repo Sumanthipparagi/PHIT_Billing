@@ -56,6 +56,8 @@ class ServiceTypeController {
         try
         {
             JSONObject jsonObject = new JSONObject(params)
+            jsonObject.put("entityId", session.getAttribute("entityId"))
+
             def apiResponse = new EntityService().showServiceType(jsonObject)
             if (apiResponse.status == 200)
             {

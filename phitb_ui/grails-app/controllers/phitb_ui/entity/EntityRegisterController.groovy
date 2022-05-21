@@ -157,6 +157,7 @@ class EntityRegisterController
         try
         {
             JSONObject jsonObject = new JSONObject(params)
+            jsonObject.put("entityId", session.getAttribute("entityId"))
             def apiResponse = new EntityService().showEntity(jsonObject)
             if (apiResponse.status == 200)
             {

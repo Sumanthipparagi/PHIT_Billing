@@ -56,6 +56,8 @@ class TerritoryController {
         try
         {
             JSONObject jsonObject = new JSONObject(params)
+            jsonObject.put("entityId", session.getAttribute("entityId"))
+
             def apiResponse = new EntityService().showTerritory(jsonObject)
             if (apiResponse.status == 200)
             {

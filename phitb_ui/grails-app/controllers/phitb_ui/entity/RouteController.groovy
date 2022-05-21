@@ -59,6 +59,8 @@ class RouteController {
         try
         {
             JSONObject jsonObject = new JSONObject(params)
+            jsonObject.put("entityId", session.getAttribute("entityId"))
+
             def apiResponse = new EntityService().showRoute(jsonObject)
             if (apiResponse.status == 200)
             {

@@ -108,7 +108,7 @@
                                     %{--                                    <th style="width: 20%">ID</th>--}%
                                     <th style="width: 20%">Name</th>
                                     <th style="width: 20%">Description</th>
-                                    <th style="width: 20%">Entity</th>
+%{--                                    <th style="width: 20%">Entity</th>--}%
                                     <th style="width: 20%">Action</th>
                                 </tr>
                                 </thead>
@@ -203,7 +203,7 @@
                             'id': json.data[i].id,
                             'name': json.data[i].name,
                             'description': json.data[i].description,
-                            'entity': json.data[i].entity.entityName,
+                            // 'entity': json.data[i].entity.entityName,
                             'action': editbtn + ' ' + deletebtn
                         });
                     }
@@ -214,7 +214,7 @@
                 // {'data': 'id', 'width': '20%'},
                 {'data': 'name', 'width': '20%'},
                 {'data': 'description', 'width': '20%'},
-                {'data': 'entity', 'width': '20%'},
+                // {'data': 'entity', 'width': '20%'},
                 {'data': 'action', 'width': '20%'}
             ]
         });

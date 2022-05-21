@@ -70,6 +70,7 @@ class RoleController {
         try
         {
             JSONObject jsonObject = new JSONObject(params)
+            jsonObject.put("entityId", session.getAttribute("entityId"))
             def apiResponse = new EntityService().showRole(jsonObject)
             if (apiResponse.status == 200)
             {

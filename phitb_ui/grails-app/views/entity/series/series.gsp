@@ -108,8 +108,8 @@
                                     %{--                                    <th style="width: 20%">ID</th>--}%
                                     <th style="width: 20%">Series Name</th>
                                     <th style="width: 20%">Series Code</th>
-                                    <th style="width: 20%">Entity</th>
-                                    <th style="width: 20%">Entity Type</th>
+%{--                                    <th style="width: 20%">Entity</th>--}%
+%{--                                    <th style="width: 20%">Entity Type</th>--}%
                                     <th style="width: 20%">Action</th>
                                 </tr>
                                 </thead>
@@ -209,8 +209,8 @@
                             'id': json.data[i].id,
                             'seriesName': json.data[i].seriesName,
                             'seriesCode': json.data[i].seriesCode,
-                            'entity': json.data[i].entity.entityName,
-                            'entitytype': json.data[i].entityType.name,
+                            // 'entity': json.data[i].entity.entityName,
+                            // 'entitytype': json.data[i].entityType.name,
                             'action': editbtn + ' ' + deletebtn
                         });
                     }
@@ -221,8 +221,8 @@
                 // {'data': 'id', 'width': '20%'},
                 {'data': 'seriesName', 'width': '20%'},
                 {'data': 'seriesCode', 'width': '20%'},
-                {'data': 'entity', 'width': '20%'},
-                {'data': 'entitytype', 'width': '20%'},
+                // {'data': 'entity', 'width': '20%'},
+                // {'data': 'entitytype', 'width': '20%'},
                 {'data': 'action', 'width': '20%'}
             ]
         });

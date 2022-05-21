@@ -110,8 +110,8 @@
                                     <th style="width: 20%">DL expired</th>
                                     <th style="width: 20%">Food License Expired</th>
                                     <th style="width: 20%">Sales Value Limit</th>
-                                    <th style="width: 20%">Entity</th>
-                                    <th style="width: 20%">Entity Type</th>
+%{--                                    <th style="width: 20%">Entity</th>--}%
+%{--                                    <th style="width: 20%">Entity Type</th>--}%
                                     <th style="width: 20%">Action</th>
                                 </tr>
                                 </thead>
@@ -213,8 +213,8 @@
                             'dlExpired': json.data[i].dlExpired,
                             'foodLicenseExpired': json.data[i].foodLicenseExpired,
                             'salesValueLimit': json.data[i].salesValueLimit,
-                            'entity': json.data[i].entity.entityName,
-                            'entitytype': json.data[i].entityType.name,
+                            // 'entity': json.data[i].entity.entityName,
+                            // 'entitytype': json.data[i].entityType.name,
                             'action': editbtn + ' ' + deletebtn
                         });
                     }
@@ -227,8 +227,8 @@
                 {'data': 'dlExpired', 'width': '20%'},
                 {'data': 'foodLicenseExpired', 'width': '20%'},
                 {'data': 'salesValueLimit', 'width': '20%'},
-                {'data': 'entity', 'width': '20%'},
-                {'data': 'entitytype', 'width': '20%'},
+                // {'data': 'entity', 'width': '20%'},
+                // {'data': 'entitytype', 'width': '20%'},
                 {'data': 'action', 'width': '20%'}
             ]
         });

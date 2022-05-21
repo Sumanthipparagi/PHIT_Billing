@@ -56,6 +56,8 @@ class RuleController {
         try
         {
             JSONObject jsonObject = new JSONObject(params)
+            jsonObject.put("entityId", session.getAttribute("entityId"))
+
             def apiResponse = new EntityService().showRule(jsonObject)
             if (apiResponse.status == 200)
             {

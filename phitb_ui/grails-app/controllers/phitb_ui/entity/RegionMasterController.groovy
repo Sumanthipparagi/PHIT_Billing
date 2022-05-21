@@ -55,6 +55,7 @@ class RegionMasterController {
         try
         {
             JSONObject jsonObject = new JSONObject(params)
+            jsonObject.put("entityId", session.getAttribute("entityId"))
             def apiResponse = new EntityService().showRegionMaster(jsonObject)
             if (apiResponse.status == 200)
             {

@@ -110,7 +110,7 @@
                                     <th style="width: 20%">Username</th>
                                     <th style="width: 20%">Address</th>
                                     <th style="width: 20%">Role</th>
-                                    <th style="width: 20%">Entity</th>
+%{--                                    <th style="width: 20%">Entity</th>--}%
                                     <th style="width: 20%">Action</th>
                                 </tr>
                                 </thead>
@@ -206,7 +206,7 @@
                             'userName': json.data[i].userName,
                             'address': "<div style='white-space:normal;'>"+json.data[i].address+"</div>",
                             'role': json.data[i].role.name,
-                            'entity': json.data[i].entity.entityName,
+                            // 'entity': json.data[i].entity.entityName,
                             'action': editbtn + ' ' + deletebtn
                         });
                     }
@@ -218,7 +218,7 @@
                 {'data': 'userName', 'width': '20%'},
                 {'data': 'address', 'width': '20%'},
                 {'data': 'role', 'width': '20%'},
-                {'data': 'entity', 'width': '20%'},
+                // {'data': 'entity', 'width': '20%'},
                 {'data': 'action', 'width': '20%'}
             ]
         });

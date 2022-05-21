@@ -76,12 +76,12 @@ class TermsConditionDetailsService {
             eq('deleted', false)
             order(orderColumn, orderDir)
         }
-        def form = []
-        termConditionDetailsArrayList.each {
-            println(it.formId)
-            def apires = showFormById(it.formId.toString())
-            form.push(apires)
-        }
+//        def form = []
+//        termConditionDetailsArrayList.each {
+//            println(it.formId)
+//            def apires = showFormById(it.formId.toString())
+//            form.push(apires)
+//        }
         def recordsTotal = termConditionDetailsArrayList.totalCount
         JSONObject jsonObject = new JSONObject()
         jsonObject.put("draw", paramsJsonObject.draw)
@@ -161,28 +161,28 @@ class TermsConditionDetailsService {
 //    }
 
 
-    def showFormById(String id)
-    {
-        Client client = ClientBuilder.newClient()
-        WebTarget target = client.target(new Constants().API_GATEWAY)
-        try
-        {
-            Response apiResponse = target
-                    .path(new Constants().FORM_MASTER_SHOW+"/"+id)
-                    .request(MediaType.APPLICATION_JSON_TYPE)
-                    .get()
-            if(apiResponse.status == 200)
-            {
-                JSONObject obj = new JSONObject(apiResponse.readEntity(String.class))
-                return obj
-            }
-
-        }
-        catch (Exception ex)
-        {
-            System.err.println('Service :EntityService , action :  putUser  , Ex:' + ex)
-            log.error('Service :EntityService , action :  putUser  , Ex:' + ex)
-        }
-
-    }
+//    def showFormById(String id)
+//    {
+//        Client client = ClientBuilder.newClient()
+//        WebTarget target = client.target(new Constants().API_GATEWAY)
+//        try
+//        {
+//            Response apiResponse = target
+//                    .path(new Constants().FORM_MASTER_SHOW+"/"+id)
+//                    .request(MediaType.APPLICATION_JSON_TYPE)
+//                    .get()
+//            if(apiResponse.status == 200)
+//            {
+//                JSONObject obj = new JSONObject(apiResponse.readEntity(String.class))
+//                return obj
+//            }
+//
+//        }
+//        catch (Exception ex)
+//        {
+//            System.err.println('Service :EntityService , action :  putUser  , Ex:' + ex)
+//            log.error('Service :EntityService , action :  putUser  , Ex:' + ex)
+//        }
+//
+//    }
 }

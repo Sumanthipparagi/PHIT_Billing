@@ -57,6 +57,8 @@ class TaxController {
         try
         {
             JSONObject jsonObject = new JSONObject(params)
+            jsonObject.put("entityId", session.getAttribute("entityId"))
+
             def apiResponse = new EntityService().showTax(jsonObject)
             if (apiResponse.status == 200)
             {

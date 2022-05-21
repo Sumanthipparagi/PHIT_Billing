@@ -108,8 +108,8 @@
                                     %{--                                    <th style="width: 20%">ID</th>--}%
                                     <th style="width: 20%">Service Type</th>
                                     <th style="width: 20%">Description</th>
-                                    <th style="width: 20%">Entity</th>
-                                    <th style="width: 20%">Entity Type</th>
+%{--                                    <th style="width: 20%">Entity</th>--}%
+%{--                                    <th style="width: 20%">Entity Type</th>--}%
                                     <th style="width: 20%">Action</th>
                                 </tr>
                                 </thead>
@@ -205,8 +205,8 @@
                             'id': json.data[i].id,
                             'serviceType': json.data[i].serviceType,
                             'description': json.data[i].description,
-                            'entity': json.data[i].entity.entityName,
-                            'entitytype': json.data[i].entityType.name,
+                            // 'entity': json.data[i].entity.entityName,
+                            // 'entitytype': json.data[i].entityType.name,
                             'action': editbtn + ' ' + deletebtn
                         });
                     }
@@ -217,8 +217,8 @@
                 // {'data': 'id', 'width': '20%'},
                 {'data': 'serviceType', 'width': '20%'},
                 {'data': 'description', 'width': '20%'},
-                {'data': 'entity', 'width': '20%'},
-                {'data': 'entitytype', 'width': '20%'},
+                // {'data': 'entity', 'width': '20%'},
+                // {'data': 'entitytype', 'width': '20%'},
                 {'data': 'action', 'width': '20%'}
             ]
         });

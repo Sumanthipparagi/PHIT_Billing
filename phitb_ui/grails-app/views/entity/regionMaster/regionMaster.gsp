@@ -109,8 +109,8 @@
                                     <th style="width: 20%">Region Name</th>
                                     <th style="width: 20%">Short Name</th>
                                     <th style="width: 20%">Country</th>
-                                    <th style="width: 20%">Entity Type</th>
-                                    <th style="width: 20%">Entity</th>
+%{--                                    <th style="width: 20%">Entity Type</th>--}%
+%{--                                    <th style="width: 20%">Entity</th>--}%
                                     <th style="width: 20%">Action</th>
                                 </tr>
                                 </thead>
@@ -210,8 +210,8 @@
                             'regionName': json.data[i].regionName,
                             'shortName': json.data[i].shortName,
                             'country': json.countries[i].name,
-                            'entity': json.data[i].entity.entityName,
-                            'entitytype': json.data[i].entityType.name,
+                            // 'entity': json.data[i].entity.entityName,
+                            // 'entitytype': json.data[i].entityType.name,
                             'action': editbtn + ' ' + deletebtn
                         });
                     }
@@ -223,8 +223,8 @@
                 {'data': 'regionName', 'width': '20%'},
                 {'data': 'shortName', 'width': '20%'},
                 {'data': 'country', 'width': '20%'},
-                {'data': 'entity', 'width': '20%'},
-                {'data': 'entitytype', 'width': '20%'},
+                // {'data': 'entity', 'width': '20%'},
+                // {'data': 'entitytype', 'width': '20%'},
                 {'data': 'action', 'width': '20%'}
             ]
         });

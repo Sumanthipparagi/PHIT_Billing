@@ -109,8 +109,8 @@
                                     <th style="width: 20%">Tax Name</th>
                                     <th style="width: 20%">Tax Value</th>
                                     <th style="width: 20%">Tax Description</th>
-                                    <th style="width: 20%">Entity</th>
-                                    <th style="width: 20%">Entity Type</th>
+%{--                                    <th style="width: 20%">Entity</th>--}%
+%{--                                    <th style="width: 20%">Entity Type</th>--}%
                                     <th style="width: 20%">Action</th>
                                 </tr>
                                 </thead>
@@ -224,8 +224,8 @@
                             'taxName': json.data[i].taxName,
                             'taxValue': json.data[i].taxValue,
                             'taxDescription': json.data[i].taxDescription,
-                            'entity': json.data[i].entity.entityName,
-                            'entitytype': json.data[i].entityType.name,
+                            // 'entity': json.data[i].entity.entityName,
+                            // 'entitytype': json.data[i].entityType.name,
                             'action': editbtn + ' ' + deletebtn
                         });
                     }
@@ -237,8 +237,8 @@
                 {'data': 'taxName', 'width': '20%'},
                 {'data': 'taxValue', 'width': '20%'},
                 {'data': 'taxDescription', 'width': '20%'},
-                {'data': 'entity', 'width': '20%'},
-                {'data': 'entitytype', 'width': '20%'},
+                // {'data': 'entity', 'width': '20%'},
+                // {'data': 'entitytype', 'width': '20%'},
                 {'data': 'action', 'width': '20%'}
             ]
         });

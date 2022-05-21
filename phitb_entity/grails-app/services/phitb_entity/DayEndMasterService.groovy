@@ -59,6 +59,8 @@ class DayEndMasterService
         String searchTerm = paramsJsonObject.get("search[value]")
         String orderColumnId = paramsJsonObject.get("order[0][column]")
         String orderDir = paramsJsonObject.get("order[0][dir]")
+        long entityId = paramsJsonObject.get("entityId")
+
 
         String orderColumn = "id"
         switch (orderColumnId)
@@ -80,6 +82,8 @@ class DayEndMasterService
                     ilike('endTime', '%' + searchTerm + '%')
                 }
             }
+            eq('entityId', entityId)
+
             eq('deleted', false)
             order(orderColumn, orderDir)
         }

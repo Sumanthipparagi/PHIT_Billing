@@ -46,6 +46,8 @@ class RegionRegisterService {
         String searchTerm = paramsJsonObject.get("search[value]")
         String orderColumnId = paramsJsonObject.get("order[0][column]")
         String orderDir = paramsJsonObject.get("order[0][dir]")
+        long entityId = paramsJsonObject.get("entityId")
+
 
         String orderColumn = "id"
         switch (orderColumnId) {
@@ -65,22 +67,23 @@ class RegionRegisterService {
                     ilike('regionName', '%' + searchTerm + '%')
                 }
             }
+            eq('entityId', entityId)
             eq('deleted', false)
             order(orderColumn, orderDir)
         }
 
-        def countries = []
-        regionRegisterCriteriaArrayList.each {
-            println(it.countryId)
-            def apires = showCountryById(it.countryId.toString())
-            countries.push(apires)
-        }
+//        def countries = []
+//        regionRegisterCriteriaArrayList.each {
+//            println(it.countryId)
+//            def apires = showCountryById(it.countryId.toString())
+//            countries.push(apires)
+//        }
         def recordsTotal = regionRegisterCriteriaArrayList.totalCount
         JSONObject jsonObject = new JSONObject()
         jsonObject.put("draw", paramsJsonObject.draw)
         jsonObject.put("recordsTotal", recordsTotal)
         jsonObject.put("recordsFiltered", recordsTotal)
-        jsonObject.put("countries", countries)
+//        jsonObject.put("countries", countries)
         jsonObject.put("data", regionRegisterCriteriaArrayList)
         return jsonObject
     }
@@ -138,19 +141,19 @@ class RegionRegisterService {
     }
 
 
-    def showCountryById(String id)
-    {
-        try
-        {
-            def url = Constants.API_GATEWAY+Constants.COUNTRY_MASTER_SHOW+"/"+id
-            URL apiUrl = new URL(url)
-            def card = new JsonSlurper().parseText(apiUrl.text)
-            return card
-        }
-        catch (Exception ex)
-        {
-            System.err.println('Service :showCountryById , action :  show  , Ex:' + ex)
-            log.error('Service :showCountryById , action :  show  , Ex:' + ex)
-        }
-    }
+//    def showCountryById(String id)
+//    {
+//        try
+//        {
+//            def url = Constants.API_GATEWAY+Constants.COUNTRY_MASTER_SHOW+"/"+id
+//            URL apiUrl = new URL(url)
+//            def card = new JsonSlurper().parseText(apiUrl.text)
+//            return card
+//        }
+//        catch (Exception ex)
+//        {
+//            System.err.println('Service :showCountryById , action :  show  , Ex:' + ex)
+//            log.error('Service :showCountryById , action :  show  , Ex:' + ex)
+//        }
+//    }
 }
