@@ -1,16 +1,10 @@
 package phitb_product
 
 import grails.gorm.transactions.Transactional
-import groovy.json.JsonSlurper
-import javax.ws.rs.core.Response
 import org.grails.web.json.JSONObject
-import org.springframework.boot.context.config.ResourceNotFoundException
 import phitb_product.Exception.BadRequestException
+import phitb_product.Exception.ResourceNotFoundException
 
-import javax.ws.rs.client.Client
-import javax.ws.rs.client.ClientBuilder
-import javax.ws.rs.client.WebTarget
-import javax.ws.rs.core.MediaType
 import java.text.SimpleDateFormat
 
 @Transactional
@@ -33,6 +27,9 @@ class CompositionMasterService {
         return CompositionMaster.findById(Long.parseLong(id))
     }
 
+    ArrayList<CompositionMaster> getByEntity(String id) {
+        return CompositionMaster.findAllByEntityId(Long.parseLong(id))
+    }
     JSONObject dataTables(JSONObject paramsJsonObject, String start, String length) {
         String searchTerm = paramsJsonObject.get("search[value]")
         long entityId = paramsJsonObject.get("entityId")

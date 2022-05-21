@@ -115,6 +115,7 @@ class UrlMappings
             "/entityregister/affiliate/$id(.$format)?"(controller: 'entityRegister') {
                 action = [GET: 'getByAffiliateId']
             }
+            "/entityregister/getbyentity/$id"(controller: 'entityRegister',  action: 'getByParentEntity')
 
 
 
@@ -331,6 +332,8 @@ class UrlMappings
             "/userregisterbydivision/$id(.$format)?"(controller: 'userRegister') {
                 action = [GET: 'getAllByDivision']
             }
+            "/userregisterbyentity(.$format)?"(controller: 'userRegister', action: 'getUsersByEntity')
+
 
 
             //service Type

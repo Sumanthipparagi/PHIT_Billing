@@ -4,6 +4,7 @@ import groovy.json.JsonSlurper
 import org.grails.web.json.JSONArray
 import org.grails.web.json.JSONObject
 import phitb_ui.Constants
+import phitb_ui.EntityService
 import phitb_ui.Links
 import phitb_ui.ProductService
 import phitb_ui.entity.CustomerGroupController
@@ -83,6 +84,8 @@ class ProductCategoryController {
         try
         {
             JSONObject jsonObject = new JSONObject(params)
+            JSONObject entityRegister = new EntityService().getEntityById(jsonObject.get("entityId").toString())
+            jsonObject.put("entityTypeId", entityRegister.get("entityType")["id"])
             def apiResponse = new ProductService().saveProductCategory(jsonObject)
             if (apiResponse?.status == 200)
             {

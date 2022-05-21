@@ -50,6 +50,7 @@ class UrlMappings {
                 action = [GET: 'show', PUT: 'update', DELETE:
                         'delete']
             }
+            "/composition/getbyentity/$id(.$format)?" (controller: 'compositionMaster', action: 'getByEntity')
 
             //Division
             "/division(.$format)?"(controller: 'division') {

@@ -41,6 +41,18 @@ class UserRegisterService {
         return UserRegister.findByUserName(username)
     }
 
+    ArrayList<UserRegister> getByEntity(String entityId) {
+        if(entityId) {
+            EntityRegister entityRegister = EntityRegister.findById(Long.parseLong(entityId))
+            if (entityRegister)
+                return UserRegister.findAllByEntity(entityRegister)
+            else
+                throw new ResourceNotFoundException()
+        }
+        else
+            throw new BadRequestException()
+    }
+
     JSONObject dataTables(JSONObject paramsJsonObject, String start, String length) {
         String searchTerm = paramsJsonObject.get("search[value]")
         String orderColumnId = paramsJsonObject.get("order[0][column]")

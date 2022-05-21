@@ -615,7 +615,7 @@ class ProductService {
     {
         Client client = ClientBuilder.newClient().register(JacksonFeature.class)
         WebTarget target = client.target(new Links().API_GATEWAY);
-        
+
         try
         {
             println(jsonObject)

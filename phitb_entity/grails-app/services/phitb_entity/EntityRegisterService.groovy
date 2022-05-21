@@ -55,6 +55,7 @@ class EntityRegisterService {
 
     JSONObject dataTables(JSONObject paramsJsonObject, String start, String length)
     {
+        long entityId = paramsJsonObject.get("entityId")
         String searchTerm = paramsJsonObject.get("search[value]")
         String orderColumnId = paramsJsonObject.get("order[0][column]")
         String orderDir = paramsJsonObject.get("order[0][dir]")
@@ -83,6 +84,7 @@ class EntityRegisterService {
                 }
             }
 
+            eq('parentEntity', entityId)
             eq('deleted', false)
             order(orderColumn, orderDir)
         }
@@ -325,6 +327,18 @@ class EntityRegisterService {
 
             //ArrayList<EntityRegister> entityRegisters = EntityRegister.findAllByAffiliateId(affiliateId, [sort: 'entityName', order: 'asc'])
 
+        }
+        catch (Exception ex)
+        {
+            println(ex.stackTrace)
+            throw new BadRequestException()
+        }
+    }
+
+
+    def getByParentEntity(long entityId) {
+        try {
+           return EntityRegister.findAllByParentEntity(entityId)
         }
         catch (Exception ex)
         {

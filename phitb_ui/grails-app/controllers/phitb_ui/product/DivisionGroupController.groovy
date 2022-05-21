@@ -25,7 +25,7 @@ class DivisionGroupController {
             ArrayList<String> entity = new EntityRegisterController().show() as ArrayList<String>
             ArrayList<String> userregister = new UserRegisterController().show() as ArrayList<String>
             ArrayList<String> series = new SeriesController().show() as ArrayList<String>
-            ArrayList<String> division = new DivisionController().show() as ArrayList<String>
+            ArrayList<String> division = new DivisionController().getByEntity() as ArrayList<String>
             ArrayList<String> statelist = new StateController().show() as ArrayList<String>
             ArrayList<String> countrylist = new CountryController().show() as ArrayList<String>
             ArrayList<String> citylist = new CityController().show() as ArrayList<String>

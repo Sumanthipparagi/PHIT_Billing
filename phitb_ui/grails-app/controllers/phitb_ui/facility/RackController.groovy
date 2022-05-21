@@ -3,6 +3,7 @@ package phitb_ui.facility
 import groovy.json.JsonSlurper
 import org.grails.web.json.JSONArray
 import org.grails.web.json.JSONObject
+import phitb_ui.EntityService
 import phitb_ui.FacilityService
 import phitb_ui.Links
 import phitb_ui.entity.EntityRegisterController
@@ -18,8 +19,7 @@ class RackController {
     {
         try
         {
-            ArrayList<String> entity = new EntityRegisterController().show() as ArrayList<String>
-
+            ArrayList<String> entity = new EntityService().getByEntity(session.getAttribute("entityId").toString())
             render(view: '/facility/rack/rack', model: [entity: entity])
         }
         catch (Exception ex)

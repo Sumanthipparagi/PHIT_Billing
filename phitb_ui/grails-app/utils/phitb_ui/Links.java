@@ -120,6 +120,7 @@ public class Links
 
     //Entity Register
     public static String ENTITY_REGISTER_SHOW = "api/v1.0/entity/entityregister";
+    public static String ENTITY_REGISTER_SHOW_BY_ENTITY = "api/v1.0/entity/entityregister/getbyentity";
     public static String ENTITY_REGISTER_SAVE = "api/v1.0/entity/entityregister";
     public static String ENTITY_REGISTER_DATATABLE = "api/v1.0/entity/entityregister/datatable";
     public static String ENTITY_REGISTER_UPDATE = "api/v1.0/entity/entityregister/{id}";
@@ -160,6 +161,7 @@ public class Links
 
     //User Register
     public static String USER_REGISTER_SHOW = "api/v1.0/entity/userregister";
+    public static String USER_REGISTER_SHOW_BY_ENTITY = "api/v1.0/entity/userregisterbyentity";
     public static String USER_REGISTER_SAVE = "api/v1.0/entity/userregister";
     public static String USER_REGISTER_DATATABLE = "api/v1.0/entity/userregister/datatable";
     public static String USER_REGISTER_UPDATE = "api/v1.0/entity/userregister/{id}";
@@ -333,7 +335,7 @@ public class Links
 
     //Product Composition
     public static String PRODUCT_COMPOSITION_SHOW = "api/v1.0/product/compositionmasterregister";
-    public static String PRODUCT_COMPOSITION_SHOW_BY_ENTITY = "api/v1.0/product/compositionmasterregisterbyentity";
+    public static String PRODUCT_COMPOSITION_SHOW_BY_ENTITY = "api/v1.0/product/composition/getbyentity";
     public static String PRODUCT_COMPOSITION_SAVE = "api/v1.0/product/compositionmasterregister";
     public static String PRODUCT_COMPOSITION_DATATABLE = "api/v1.0/product/compositionmasterregister/datatable";
     public static String PRODUCT_COMPOSITION_UPDATE = "api/v1.0/product/compositionmasterregister/{id}";

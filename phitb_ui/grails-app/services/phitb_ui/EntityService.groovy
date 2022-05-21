@@ -49,7 +49,6 @@ class EntityService {
     {
         Client client = ClientBuilder.newClient()
         WebTarget target = client.target(new Links().API_GATEWAY)
-       
         try
         {
             Response apiResponse = target
@@ -170,8 +169,7 @@ class EntityService {
     def saveUser(JSONObject jsonObject)
     {
         Client client = ClientBuilder.newClient()
-        //WebTarget target = client.target(new Links().API_GATEWAY)
-        WebTarget target = client.target("http://localhost:8088")
+        WebTarget target = client.target(new Links().API_GATEWAY)
         try
         {
             Response apiResponse = target
@@ -1763,6 +1761,25 @@ class EntityService {
 
     }
 
+    def getUserRegisterByEntity(String entityId) {
+        Client client = ClientBuilder.newClient()
+        WebTarget target = client.target(new Links().API_GATEWAY)
+        try {
+
+            Response apiResponse = target
+                    .path(new Links().USER_REGISTER_SHOW_BY_ENTITY + "/" + entityId)
+                    .request(MediaType.APPLICATION_JSON_TYPE)
+                    .get()
+
+            return apiResponse
+        }
+        catch (Exception ex) {
+            System.err.println('Service :EntityService , action :  getUserRegisterByEntity  , Ex:' + ex)
+            log.error('Service :EntityService , action :  getUserRegisterByEntity  , Ex:' + ex)
+        }
+
+    }
+
     def getSeries(String id = null) {
         Client client = ClientBuilder.newClient()
         WebTarget target = client.target(new Links().API_GATEWAY)
@@ -2384,6 +2401,30 @@ class EntityService {
         {
             System.err.println('Service :InventoryService , action :  save  , Ex:' + ex)
             log.error('Service :InventoryService , action :  save  , Ex:' + ex)
+        }
+
+    }
+
+
+    def getByEntity(String id) {
+        Client client = ClientBuilder.newClient()
+        WebTarget target = client.target(new Links().API_GATEWAY)
+        try {
+            Response apiResponse = target
+                    .path(new Links().ENTITY_REGISTER_SHOW_BY_ENTITY + "/" + id)
+                    .request(MediaType.APPLICATION_JSON_TYPE)
+                    .get()
+            if(apiResponse.status == 200)
+            {
+                JSONArray jsonArray = new JSONArray(apiResponse.readEntity(String.class))
+                return jsonArray
+            }
+            else
+                return null
+        }
+        catch (Exception ex) {
+            System.err.println('Service :EntityService , action :  getByEntity  , Ex:' + ex)
+            log.error('Service :EntityService , action :  getByEntity  , Ex:' + ex)
         }
 
     }
