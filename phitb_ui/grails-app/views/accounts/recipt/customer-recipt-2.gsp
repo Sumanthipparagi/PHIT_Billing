@@ -514,7 +514,7 @@
 
                     $.each(data[1], function (key, value) {
                         var date = new Date(value.entryDate);
-                        if (value.balance !== 0) {
+                        if (value.balance !== 0 && value.returnStatus !== 'CANCELLED') {
                             trHTML += ' <tr id="' + "CN" + value.id + '">\n' +
                                 '                                        <td>' + creditNote + '</td>\n' +
                                 '                                        <td>' + value.invoiceNumber + '</td>\n' +
