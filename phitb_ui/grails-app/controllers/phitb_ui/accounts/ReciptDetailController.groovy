@@ -291,7 +291,7 @@ class ReciptDetailController {
                     String docType = bills.get("Doc.Type")
                     String billId = bills.get("BillId")
                     String recieptId = jsonObject1.id.toString()
-                    if (docType == "INVS") {
+                    if (docType == "INVS" && paidNow.toInteger()!=0) {
                         JSONObject invObject = new JSONObject()
                         invObject.put("id", billId)
                         invObject.put("paidNow", paidNow)
@@ -301,7 +301,7 @@ class ReciptDetailController {
                             invObject.remove("paidNow");
                         }
                     }
-                    if (docType == "CRNT") {
+                    if (docType == "CRNT" && paidNow.toInteger()!= 0) {
                         JSONObject crntObject = new JSONObject();
                         crntObject.put("id", billId)
                         crntObject.put("paidNow", paidNow)
@@ -312,7 +312,7 @@ class ReciptDetailController {
                         }
                     }
                     JSONObject billLog = new JSONObject()
-                    if (paidNow != 0) {
+                    if (paidNow.toInteger()!= 0) {
                         billLog.put("billId", billId)
                         billLog.put("billType", docType)
                         billLog.put("amountPaid", paidNow)
