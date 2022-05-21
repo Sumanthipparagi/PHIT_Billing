@@ -371,8 +371,9 @@
                             <li><a href="/sale-order-entry">Sale Order</a></li>
                         </g:if>
                         <g:if test="${UtilsService.isPermitted("VIEW_SALE_ENTRY", session.getAttribute("permittedFeatures").toString())}">
-                            <li><a href="/sale-entry">Sale Entry</a></li>
+                            <li><a href="/sale-order-entry/my-orders">Sale Entry</a></li>
                             <li><a href="/sale-bill-list">My Invoices</a></li>
+                            <li><a href="/sale-bill-list">My Orders</a></li>
                         </g:if>
                         <g:if test="${UtilsService.isPermitted("VIEW_SALE_RETURN", session.getAttribute("permittedFeatures").toString())}">
                             <li><a href="javascript:void(0);" class="menu-toggle">Sales Return</span> <span
