@@ -182,7 +182,7 @@
                                             </label>
                                             <select class="form-control show-tick productType" name="productType"
                                                     id="productType">
-                                                <g:each var="c" in="${producttype}">
+                                                <g:each var="c" in="${productTypes}">
                                                     <option value="${c.id}">${c.productType}</option>
                                                 </g:each>
                                             </select>
@@ -209,7 +209,7 @@
                                         </div>
                                         <div class="col-lg-6 form-group  form-float">
                                             <label for="productMoo">
-                                                Product Moo
+                                                Product MOQ
                                             </label>
                                             <input type="number" id="productMoo" class="form-control productMoo"
                                                    name="productMoo"
@@ -239,7 +239,7 @@
                                                 Purchase Rate
                                             </label>
                                             <input type="number" id="purchaseRate" class="form-control purchaseRate"
-                                                   name="purchaseRate"
+                                                   name="purchaseRate" onblur="setTwoNumberDecimal" step="0.25" value="0.00"
                                                    placeholder="Purchase Rate"
                                                    required/>
                                         </div>
@@ -247,90 +247,90 @@
                                             <label for="purchaseTradeDiscount">
                                                 Purchase Trade Discount
                                             </label>
-                                            <input type="number" id="purchaseTradeDiscount"
+                                            <input type="number" id="purchaseTradeDiscount" onblur="setTwoNumberDecimal"
                                                    class="form-control purchaseTradeDiscount" name="purchaseTradeDiscount"
-                                                   placeholder="Purchase Trade Discount"
+                                                   placeholder="Purchase Trade Discount" step="0.25" value="0.00"
                                                    required/>
                                         </div>
                                         <div class="col-lg-6 form-group  form-float">
                                             <label for="purchaseMarginPercent">
                                                 Purchase Margin percent
                                             </label>
-                                            <input type="number" id="purchaseMarginPercent"
+                                            <input type="number" id="purchaseMarginPercent" onblur="setTwoNumberDecimal"
                                                    class="form-control purchaseMarginPercent" name="purchaseMarginPercent"
-                                                   placeholder="Purchase Margin Percent"
+                                                   placeholder="Purchase Margin Percent" step="0.25" value="0.00"
                                                    required/>
                                         </div>
                                         <div class="col-lg-6 form-group  form-float">
                                             <label for="saleRate">
                                                 Sale Rate
                                             </label>
-                                            <input type="number" id="saleRate"
+                                            <input type="number" id="saleRate" onblur="setTwoNumberDecimal"
                                                    class="form-control saleRate" name="saleRate"
-                                                   placeholder="Sale Rate"
+                                                   placeholder="Sale Rate" step="0.25" value="0.00"
                                                    required/>
                                         </div>
                                         <div class="col-lg-6 form-group  form-float">
                                             <label for="saleTradeDiscount">
                                                 Sale Trade Discount
                                             </label>
-                                            <input type="number" id="saleTradeDiscount"
+                                            <input type="number" id="saleTradeDiscount" onblur="setTwoNumberDecimal"
                                                    class="form-control saleTradeDiscount" name="saleTradeDiscount"
-                                                   placeholder="Sale Trade Discount"
+                                                   placeholder="Sale Trade Discount" step="0.25" value="0.00"
                                                    required/>
                                         </div>
                                         <div class="col-lg-6 form-group  form-float">
                                             <label for="salesmenPercent">
                                                 Sale Margin Percent
                                             </label>
-                                            <input type="number" id="salesmenPercent"
+                                            <input type="number" id="salesmenPercent" onblur="setTwoNumberDecimal"
                                                    class="form-control saleTradeDiscount" name="salesmenPercent"
-                                                   placeholder="Sale Margin Percent"
+                                                   placeholder="Sale Margin Percent" step="0.25" value="0.00"
                                                    required/>
                                         </div>
                                         <div class="col-lg-6 form-group  form-float">
                                             <label for="vipPRate">
                                                 vipPRate
                                             </label>
-                                            <input type="number" id="vipPRate"
+                                            <input type="number" id="vipPRate" onblur="setTwoNumberDecimal"
                                                    class="form-control vipPRate" name="vipPRate"
-                                                   placeholder="vipPRate"
+                                                   placeholder="vipPRate" step="0.25" value="0.00"
                                                    required/>
                                         </div>
                                         <div class="col-lg-6 form-group  form-float">
                                             <label for="vipSRate">
                                                 vipSRate
                                             </label>
-                                            <input type="number" id="vipSRate"
+                                            <input type="number" id="vipSRate" onblur="setTwoNumberDecimal"
                                                    class="form-control vipPRate" name="vipSRate"
-                                                   placeholder="vipSRate"
+                                                   placeholder="vipSRate" step="0.25" value="0.00"
                                                    required/>
                                         </div>
                                         <div class="col-lg-6 form-group  form-float">
                                             <label for="mrp">
                                                 MRP
                                             </label>
-                                            <input type="number" id="mrp"
+                                            <input type="number" id="mrp" onblur="setTwoNumberDecimal"
                                                    class="form-control mrp" name="mrp"
-                                                   placeholder="MRP"
+                                                   placeholder="MRP" step="0.25" value="0.00"
                                                    required/>
                                         </div>
                                         <div class="col-lg-6 form-group  form-float">
                                             <label for="ptr">
                                                 PTR
                                             </label>
-                                            <input type="number" id="ptr"
+                                            <input type="number" id="ptr" onblur="setTwoNumberDecimal"
                                                    class="form-control ptr" name="ptr"
-                                                   placeholder="PTR"
+                                                   placeholder="PTR" step="0.25" value="0.00"
                                                    required/>
                                         </div>
                                         <div class="col-lg-6 form-group  form-float">
                                             <label for="restrictedRate">
                                                 Restricted Rate
                                             </label>
-                                            <input type="number" id="restrictedRate"
+                                            <input type="number" id="restrictedRate" onblur="setTwoNumberDecimal"
                                                    class="form-control ptr" name="restrictedRate"
-                                                   placeholder="Restricted Rate"
+                                                   placeholder="Restricted Rate" step="0.25" value="0.00"
                                                    required/>
                                         </div>
                                     </div>
@@ -349,27 +349,27 @@
                                             <label for="nriRate">
                                                 NRI Rate
                                             </label>
-                                            <input type="number" id="nriRate"
+                                            <input type="number" id="nriRate" onblur="setTwoNumberDecimal"
                                                    class="form-control ptr" name="nriRate"
-                                                   placeholder="NRI Rate"
+                                                   placeholder="NRI Rate" step="0.25" value="0.00"
                                                    required/>
                                         </div>
                                         <div class="col-lg-6 form-group  form-float">
                                             <label for="salesmanCommission">
                                                 Salesman Commission
                                             </label>
-                                            <input type="number" id="salesmanCommission"
+                                            <input type="number" id="salesmanCommission" onblur="setTwoNumberDecimal"
                                                    class="form-control salesmanCommission" name="salesmanCommission"
-                                                   placeholder="Salesman Commission"
+                                                   placeholder="Salesman Commission" step="0.25" value="0.00"
                                                    required/>
                                         </div>
                                         <div class="col-lg-6 form-group  form-float">
                                             <label for="grossProfitPercentage">
                                                 Gross Profit Percentage
                                             </label>
-                                            <input type="number" id="grossProfitPercentage"
+                                            <input type="number" id="grossProfitPercentage" onblur="setTwoNumberDecimal"
                                                    class="form-control grossProfitPercentage" name="grossProfitPercentage"
-                                                   placeholder="Gross Profit Percentage"
+                                                   placeholder="Gross Profit Percentage" step="0.25" value="0.00"
                                                    required/>
                                         </div>
                                         <div class="col-lg-6 form-group  form-float">
@@ -482,7 +482,7 @@
                                                    placeholder="Sale Margin Percent"
                                                    required/>
                                         </div>
-                                        <div class="col-lg-6 form-group  form-float">
+                                       %{-- <div class="col-lg-6 form-group  form-float">
                                             <label for="soundexCode">
                                                 Soundex Code
                                             </label>
@@ -490,15 +490,15 @@
                                                    class="form-control soundexCode" name="soundexCode"
                                                    placeholder="Soundex Code"
                                                    required/>
-                                        </div>
-                                        <div class="col-lg-6 form-group  form-float">
+                                        </div>--}%
+                                        <div class="col-lg-12 form-group  form-float">
                                             <label for="narration">
                                                 Narration
                                             </label>
-                                            <input type="text" id="narration"
+                                            <textarea type="text" id="narration"
                                                    class="form-control narration" name="narration"
                                                    placeholder="Narration"
-                                                   required/>
+                                                   required></textarea>
                                         </div>
                                         <div class="col-lg-6 form-group  form-float">
                                             <label for="restrictedAssignment">
@@ -509,7 +509,7 @@
                                                    placeholder="Restricted Assignment"
                                                    required/>
                                         </div>
-                                        <div class="col-lg-6 form-group  form-float">
+                                       %{-- <div class="col-lg-6 form-group  form-float">
                                             <label for="entityType">
                                                 Entity Type
                                             </label>
@@ -529,7 +529,7 @@
                                                     <option value="${e.id}">${e.entityName}</option>
                                                 </g:each>
                                             </select>
-                                        </div>
+                                        </div>--}%
                                     </div>
                                 </div>
 
@@ -634,6 +634,10 @@
             }
         })
     });
+
+    function setTwoNumberDecimal(event) {
+        this.value = parseFloat(this.value.toFixed(2));
+    }
 
 </script>
 <g:include view="controls/footer-content.gsp"/>

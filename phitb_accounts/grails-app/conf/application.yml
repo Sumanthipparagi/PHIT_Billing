@@ -80,8 +80,8 @@ dataSource:
     pooled: true
     jmxExport: true
     driverClassName: com.mysql.cj.jdbc.Driver
-    username: root
-    password: ''
+    username:  phitb_user
+    password: 'zsTEM2%9%3'
 
 #172.16.17.10:3306
 environments:

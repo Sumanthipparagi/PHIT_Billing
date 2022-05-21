@@ -94,6 +94,7 @@ public class Links
 
     //rack
     public static String RACK_SHOW = "api/v1.0/facility/rack";
+    public static String RACK_SHOW_BY_ENTITY = "api/v1.0/facility/rackbyentity";
     public static String RACK_SAVE = "api/v1.0/facility/rack";
     public static String RACK_DATATABLE = "api/v1.0/facility/rack/datatable";
     public static String RACK_UPDATE = "api/v1.0/facility/rack/{id}";
@@ -280,6 +281,7 @@ public class Links
 
     //Product Type
     public static String PRODUCT_TYPE_SHOW = "api/v1.0/product/producttypemaster";
+    public static String PRODUCT_TYPE_SHOW_BY_ENTITY = "api/v1.0/product/producttypemasterbyentity";
     public static String PRODUCT_TYPE_SAVE = "api/v1.0/product/producttypemaster";
     public static String PRODUCT_TYPE_DATATABLE = "api/v1.0/product/producttypemaster/datatable";
     public static String PRODUCT_TYPE_UPDATE = "api/v1.0/product/producttypemaster/{id}";
@@ -287,6 +289,7 @@ public class Links
 
     //Product Group
     public static String PRODUCT_GROUP_SHOW = "api/v1.0/product/productgroupmaster";
+    public static String PRODUCT_GROUP_SHOW_BY_ENTITY = "api/v1.0/product/productgroupmasterbyentity";
     public static String PRODUCT_GROUP_SAVE = "api/v1.0/product/productgroupmaster";
     public static String PRODUCT_GROUP_DATATABLE = "api/v1.0/product/productgroupmaster/datatable";
     public static String PRODUCT_GROUP_UPDATE = "api/v1.0/product/productgroupmaster/{id}";
@@ -294,6 +297,7 @@ public class Links
 
     //unit type
     public static String UNIT_TYPE_SHOW = "api/v1.0/product/unittypemaster";
+    public static String UNIT_TYPE_SHOW_BY_ENTITY = "api/v1.0/product/unittypemasterbyentity";
     public static String UNIT_TYPE_SAVE = "api/v1.0/product/unittypemaster";
     public static String UNIT_TYPE_DATATABLE = "api/v1.0/product/unittypemaster/datatable";
     public static String UNIT_TYPE_UPDATE = "api/v1.0/product/unittypemaster/{id}";
@@ -313,6 +317,7 @@ public class Links
 
     //Product Category
     public static String PRODUCT_CATEGORY_SHOW = "api/v1.0/product/productcategorymaster";
+    public static String PRODUCT_CATEGORY_BY_ENTITY_SHOW = "api/v1.0/product/productcategorymasterbyentity";
     public static String PRODUCT_CATEGORY_SAVE = "api/v1.0/product/productcategorymaster";
     public static String PRODUCT_CATEGORY_DATATABLE = "api/v1.0/product/productcategorymaster/datatable";
     public static String PRODUCT_CATEGORY_UPDATE = "api/v1.0/product/productcategorymaster/{id}";
@@ -320,6 +325,7 @@ public class Links
 
     //Product Schedule
     public static String PRODUCT_SCHEDULE_SHOW = "api/v1.0/product/productschdulemaster";
+    public static String PRODUCT_SCHEDULE_SHOW_BY_ENTITY = "api/v1.0/product/productschdulemasterbyentity";
     public static String PRODUCT_SCHEDULE_SAVE = "api/v1.0/product/productschdulemaster";
     public static String PRODUCT_SCHEDULE_DATATABLE = "api/v1.0/product/productschdulemaster/datatable";
     public static String PRODUCT_SCHEDULE_UPDATE = "api/v1.0/product/productschdulemaster/{id}";
@@ -327,6 +333,7 @@ public class Links
 
     //Product Composition
     public static String PRODUCT_COMPOSITION_SHOW = "api/v1.0/product/compositionmasterregister";
+    public static String PRODUCT_COMPOSITION_SHOW_BY_ENTITY = "api/v1.0/product/compositionmasterregisterbyentity";
     public static String PRODUCT_COMPOSITION_SAVE = "api/v1.0/product/compositionmasterregister";
     public static String PRODUCT_COMPOSITION_DATATABLE = "api/v1.0/product/compositionmasterregister/datatable";
     public static String PRODUCT_COMPOSITION_UPDATE = "api/v1.0/product/compositionmasterregister/{id}";
@@ -341,6 +348,7 @@ public class Links
 
     //Product Cost
     public static String PRODUCT_COST_SHOW = "api/v1.0/product/productcostrange";
+    public static String PRODUCT_COST_SHOW_BY_ENTITY = "api/v1.0/product/productcostrangebyentity";
     public static String PRODUCT_COST_SAVE = "api/v1.0/product/productcostrange";
     public static String PRODUCT_COST_DATATABLE = "api/v1.0/product/productcostrange/datatable";
     public static String PRODUCT_COST_UPDATE = "api/v1.0/product/productcostrange/{id}";

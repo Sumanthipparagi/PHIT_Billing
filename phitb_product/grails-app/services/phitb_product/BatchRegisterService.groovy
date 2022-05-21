@@ -57,6 +57,7 @@ class BatchRegisterService {
     }
 
     JSONObject dataTables(JSONObject paramsJsonObject, String start, String length) {
+        long entityId = paramsJsonObject.get("entityId")
         String searchTerm = paramsJsonObject.get("search[value]")
         String orderColumnId = paramsJsonObject.get("order[0][column]")
         String orderDir = paramsJsonObject.get("order[0][dir]")
@@ -82,6 +83,7 @@ class BatchRegisterService {
                     ilike('caseWt', '%' + searchTerm + '%')
                 }
             }
+            eq('entityId', entityId)
             eq('deleted', false)
             order(orderColumn, orderDir)
         }
@@ -96,30 +98,37 @@ class BatchRegisterService {
     }
 
     BatchRegister save(JSONObject jsonObject) {
-        BatchRegister batchRegister = new BatchRegister()
-        batchRegister.product = ProductRegister.findById(Long.parseLong(jsonObject.get("product").toString()))
-        batchRegister.manfDate = sdf.parse(jsonObject.get("manfDate").toString())
-        batchRegister.expiryDate = sdf.parse(jsonObject.get("expiryDate").toString())
-        batchRegister.purchaseRate = Double.parseDouble(jsonObject.get("purchaseRate").toString())
-        batchRegister.saleRate = Double.parseDouble(jsonObject.get("saleRate").toString())
-        batchRegister.ptr = Double.parseDouble(jsonObject.get("ptr").toString())
-        batchRegister.mrp = Double.parseDouble(jsonObject.get("mrp").toString())
-        batchRegister.qty = Long.parseLong(jsonObject.get("qty").toString())
-        batchRegister.box = Long.parseLong(jsonObject.get("box").toString())
-        batchRegister.caseWt = jsonObject.get("caseWt").toString()
-        batchRegister.batchNumber = jsonObject.get("batchNumber").toString()
-        batchRegister.productCat = ProductCategoryMaster.findById(Long.parseLong(jsonObject.get("productCat").toString()))
-        batchRegister.status =  Long.parseLong(jsonObject.get("status").toString())
-        batchRegister.syncStatus =  Long.parseLong(jsonObject.get("syncStatus").toString())
-        batchRegister.entityTypeId =  Long.parseLong(jsonObject.get("entityTypeId").toString())
-        batchRegister.entityId =  Long.parseLong(jsonObject.get("entityId").toString())
-        batchRegister.createdUser =  Long.parseLong(jsonObject.get("createdUser").toString())
-        batchRegister.modifiedUser =  Long.parseLong(jsonObject.get("modifiedUser").toString())
-        batchRegister.save(flush: true)
-        if (!batchRegister.hasErrors())
-            return batchRegister
+        ProductRegister product = ProductRegister.findById(Long.parseLong(jsonObject.get("product").toString()))
+        BatchRegister batchRegister = BatchRegister.findByBatchNumberAndProduct(jsonObject.get("batchNumber").toString(), product)
+        if(batchRegister == null) {
+            batchRegister = new BatchRegister()
+
+            batchRegister.product = product
+            batchRegister.manfDate = sdf.parse(jsonObject.get("manfDate").toString())
+            batchRegister.expiryDate = sdf.parse(jsonObject.get("expiryDate").toString())
+            batchRegister.purchaseRate = Double.parseDouble(jsonObject.get("purchaseRate").toString())
+            batchRegister.saleRate = Double.parseDouble(jsonObject.get("saleRate").toString())
+            batchRegister.ptr = Double.parseDouble(jsonObject.get("ptr").toString())
+            batchRegister.mrp = Double.parseDouble(jsonObject.get("mrp").toString())
+            batchRegister.qty = Long.parseLong(jsonObject.get("qty").toString())
+            batchRegister.box = Long.parseLong(jsonObject.get("box").toString())
+            batchRegister.caseWt = jsonObject.get("caseWt").toString()
+            batchRegister.batchNumber = jsonObject.get("batchNumber").toString()
+            batchRegister.productCat = ProductCategoryMaster.findById(Long.parseLong(jsonObject.get("productCat").toString()))
+            batchRegister.status = Long.parseLong(jsonObject.get("status").toString())
+            batchRegister.syncStatus = Long.parseLong(jsonObject.get("syncStatus").toString())
+            batchRegister.entityTypeId = Long.parseLong(jsonObject.get("entityTypeId").toString())
+            batchRegister.entityId = Long.parseLong(jsonObject.get("entityId").toString())
+            batchRegister.createdUser = Long.parseLong(jsonObject.get("createdUser").toString())
+            batchRegister.modifiedUser = Long.parseLong(jsonObject.get("modifiedUser").toString())
+            batchRegister.save(flush: true)
+            if (!batchRegister.hasErrors())
+                return batchRegister
+            else
+                throw new BadRequestException()
+        }
         else
-            throw new BadRequestException()
+            return null
     }
 
     BatchRegister update(JSONObject jsonObject, String id) {

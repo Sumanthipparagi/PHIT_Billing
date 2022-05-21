@@ -1,6 +1,7 @@
 package phitb_ui.product
 
 import phitb_ui.Constants
+import phitb_ui.EntityService
 import phitb_ui.entity.EntityRegisterController
 import phitb_ui.entity.TaxController
 import phitb_ui.entity.UserRegisterController
@@ -13,46 +14,16 @@ import phitb_ui.ProductService
 
 class ProductController {
 
-//    def index()
-//    {
-//        try
-//        {
-//            ArrayList<String> productTypes = new ProductTypeController().show() as ArrayList<String>
-//            ArrayList<String> productGroups = new ProductGroupController().show() as ArrayList<String>
-//            ArrayList<String> divisions = new DivisionController().show() as ArrayList<String>
-//            ArrayList<String> productCategories = new ProductCategoryController().show() as ArrayList<String>
-//            ArrayList<String> productSchedules = new ProductScheduleController().show() as ArrayList<String>
-//            ArrayList<String> racks = new RackController().show() as ArrayList<String>
-//            ArrayList<String> compositions = new CompositionController().show() as ArrayList<String>
-//            render(view: '/phitb_ui.product/productRegister/index', model: [productTypes: productTypes,
-//                                                                   productGroups:productGroups,
-//                                                                   productCategories: productCategories,
-//                                                                   productSchedules:productSchedules,
-//                                                                   racks:racks,
-//                                                                   compositions:compositions,
-//                                                                   divisions: divisions])
-//
-//        }
-//        catch (Exception ex)
-//        {
-//            System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
-//            log.error('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
-//            response.status = 400
-//        }
-//
-//    }
-
-
     def index() {
         try {
-            ArrayList<String> productTypes = new ProductTypeController().show() as ArrayList<String>
+            ArrayList<String> productTypes = new ProductTypeController().getByEntity() as ArrayList<String>
             ArrayList<String> entity = new EntityRegisterController().show() as ArrayList<String>
-            ArrayList<String> productGroups = new ProductGroupController().show() as ArrayList<String>
-            ArrayList<String> divisions = new DivisionController().show() as ArrayList<String>
-            ArrayList<String> productCategories = new ProductCategoryController().show() as ArrayList<String>
-            ArrayList<String> productSchedules = new ProductScheduleController().show() as ArrayList<String>
-            ArrayList<String> racks = new RackController().show() as ArrayList<String>
-            ArrayList<String> compositions = new CompositionController().show() as ArrayList<String>
+            ArrayList<String> productGroups = new ProductGroupController().getByEntity() as ArrayList<String>
+            ArrayList<String> divisions = new DivisionController().getByEntity() as ArrayList<String>
+            ArrayList<String> productCategories = new ProductCategoryController().getByEntity() as ArrayList<String>
+            ArrayList<String> productSchedules = new ProductScheduleController().getByEntity() as ArrayList<String>
+            ArrayList<String> racks = new RackController().getByEntity() as ArrayList<String>
+            ArrayList<String> compositions = new CompositionController().getByEntity() as ArrayList<String>
             render(view: '/product/productRegister/productRegister', model: [productTypes     : productTypes,
                                                                              productGroups    : productGroups,
                                                                              productCategories: productCategories,
@@ -73,21 +44,17 @@ class ProductController {
 
     def addProduct() {
         try {
-            ArrayList<String> productTypes = new ProductTypeController().show() as ArrayList<String>
-            def entitytypeurl = Links.API_GATEWAY + Links.ENTITY_TYPE_MASTER_SHOW
-            URL apiUrl1 = new URL(entitytypeurl)
-            def entitytype = new JsonSlurper().parseText(apiUrl1.text)
             ArrayList<String> entity = new EntityRegisterController().show() as ArrayList<String>
             ArrayList<String> tax = new TaxController().show() as ArrayList<String>
-            ArrayList<String> productGroups = new ProductGroupController().show() as ArrayList<String>
-            ArrayList<String> divisions = new DivisionController().show() as ArrayList<String>
-            ArrayList<String> productCategories = new ProductCategoryController().show() as ArrayList<String>
-            ArrayList<String> productSchedules = new ProductScheduleController().show() as ArrayList<String>
-            ArrayList<String> racks = new RackController().show() as ArrayList<String>
-            ArrayList<String> compositions = new CompositionController().show() as ArrayList<String>
-            ArrayList<String> producttype = new ProductTypeController().show() as ArrayList<String>
-            ArrayList<String> productcost = new ProductCostRangeController().show() as ArrayList<String>
-            ArrayList<String> unittype = new UnitTypeController().show() as ArrayList<String>
+            ArrayList<String> productTypes = new ProductTypeController().getByEntity() as ArrayList<String>
+            ArrayList<String> productGroups = new ProductGroupController().getByEntity() as ArrayList<String>
+            ArrayList<String> divisions = new DivisionController().getByEntity() as ArrayList<String>
+            ArrayList<String> productCategories = new ProductCategoryController().getByEntity() as ArrayList<String>
+            ArrayList<String> productSchedules = new ProductScheduleController().getByEntity() as ArrayList<String>
+            ArrayList<String> racks = new RackController().getByEntity() as ArrayList<String>
+            ArrayList<String> compositions = new CompositionController().getByEntity() as ArrayList<String>
+            ArrayList<String> productcost = new ProductCostRangeController().getByEntity() as ArrayList<String>
+            ArrayList<String> unittype = new UnitTypeController().getByEntity() as ArrayList<String>
             ArrayList<String> manufacturerList = []
             ArrayList<String> companyList = []
             entity.each {
@@ -105,9 +72,8 @@ class ProductController {
                                                                          productSchedules : productSchedules,
                                                                          racks            : racks,
                                                                          compositions     : compositions,
-                                                                         divisions        : divisions, entity: entity,
-                                                                         entitytype       : entitytype,
-                                                                         producttype      : producttype,
+                                                                         divisions        : divisions,
+                                                                         entity: entity,
                                                                          productcost      : productcost,
                                                                          unittype         : unittype,
                                                                          tax              : tax,
@@ -127,23 +93,23 @@ class ProductController {
     def updateProduct() {
         try {
             ArrayList<String> productTypes = new ProductTypeController().show() as ArrayList<String>
-            def entitytypeurl = Links.API_GATEWAY + Links.ENTITY_TYPE_MASTER_SHOW
+/*            def entitytypeurl = Links.API_GATEWAY + Links.ENTITY_TYPE_MASTER_SHOW
             def productregisterbyidurl = Links.API_GATEWAY + Links.PRODUCT_REGISTER_SHOW + "/" + params.id
             URL apiUrl1 = new URL(entitytypeurl)
             URL apiUrl2 = new URL(productregisterbyidurl)
             def entitytype = new JsonSlurper().parseText(apiUrl1.text)
-            def productregsiter = new JsonSlurper().parseText(apiUrl2.text)
+            def productregsiter = new JsonSlurper().parseText(apiUrl2.text)*/
             ArrayList<String> entity = new EntityRegisterController().show() as ArrayList<String>
             ArrayList<String> tax = new TaxController().show() as ArrayList<String>
-            ArrayList<String> productGroups = new ProductGroupController().show() as ArrayList<String>
-            ArrayList<String> divisions = new DivisionController().show() as ArrayList<String>
-            ArrayList<String> productCategories = new ProductCategoryController().show() as ArrayList<String>
-            ArrayList<String> productSchedules = new ProductScheduleController().show() as ArrayList<String>
-            ArrayList<String> racks = new RackController().show() as ArrayList<String>
-            ArrayList<String> compositions = new CompositionController().show() as ArrayList<String>
-            ArrayList<String> producttype = new ProductTypeController().show() as ArrayList<String>
-            ArrayList<String> productcost = new ProductCostRangeController().show() as ArrayList<String>
-            ArrayList<String> unittype = new UnitTypeController().show() as ArrayList<String>
+            ArrayList<String> productGroups = new ProductGroupController().getByEntity() as ArrayList<String>
+            ArrayList<String> divisions = new DivisionController().getByEntity() as ArrayList<String>
+            ArrayList<String> productCategories = new ProductCategoryController().getByEntity() as ArrayList<String>
+            ArrayList<String> productSchedules = new ProductScheduleController().getByEntity() as ArrayList<String>
+            ArrayList<String> racks = new RackController().getByEntity() as ArrayList<String>
+            ArrayList<String> compositions = new CompositionController().getByEntity() as ArrayList<String>
+            ArrayList<String> producttype = new ProductTypeController().getByEntity() as ArrayList<String>
+            ArrayList<String> productcost = new ProductCostRangeController().getByEntity() as ArrayList<String>
+            ArrayList<String> unittype = new UnitTypeController().getByEntity() as ArrayList<String>
             ArrayList<String> manufacturerList = []
             ArrayList<String> companyList = []
             entity.each {
@@ -162,9 +128,9 @@ class ProductController {
                                                                             racks            : racks,
                                                                             compositions     : compositions,
                                                                             divisions        : divisions, entity: entity,
-                                                                            entitytype       : entitytype,
+                                                                           // entitytype       : entitytype,
                                                                             producttype      : producttype,
-                                                                            productregsiter  : productregsiter,
+                                                                            //productregsiter  : productregsiter,
                                                                             productcost      : productcost,
                                                                             unittype         : unittype,
                                                                             tax              : tax,
@@ -185,6 +151,7 @@ class ProductController {
     def dataTable() {
         try {
             JSONObject jsonObject = new JSONObject(params)
+            jsonObject.put("entityId", session.getAttribute("entityId"))
             def apiResponse = new ProductService().showProductRegister(jsonObject)
             if (apiResponse.status == 200) {
                 JSONObject responseObject = new JSONObject(apiResponse.readEntity(String.class))

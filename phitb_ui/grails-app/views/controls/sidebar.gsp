@@ -385,6 +385,9 @@
                                 </ul>
                             </li>
                         </g:if>
+                        <g:if test="${UtilsService.isPermitted("VIEW_SALE_ORDER", session.getAttribute("permittedFeatures").toString())}">
+                            <li><a href="/gtn">Goods Transfer Note</a></li>
+                        </g:if>
                         <g:if test="${UtilsService.isPermitted("VIEW_SCHEME_ENTRY", session.getAttribute("permittedFeatures").toString())}">
                             <li><a href="/scheme-entry">Scheme Entry (Offers)</a></li>
                         </g:if>

@@ -466,6 +466,11 @@ class UrlMappings {
 
         "/saleproductdetailsbillandbatch"(controller: 'saleReturn', action: 'getSaleDetailsByProductAndBatch')
 
+        //GTN
+        "/gtn"(controller: "goodsTransferNote") {
+            action = [GET: "index", POST: 'saveSaleEntry']
+        }
+
         /*<-------------------------------------------Purchase Entry------------------------------------------------->*/
 
 
