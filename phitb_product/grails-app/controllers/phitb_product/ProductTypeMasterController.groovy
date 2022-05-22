@@ -65,7 +65,7 @@ class ProductTypeMasterController {
     def getAllByEntityId() {
         try {
             if (params.id) {
-                respond productTypeMasterService.getAllByEntity(params.limit, params.offset,Long.parseLong(params.id))
+                respond productTypeMasterService.getAllByEntity(Long.parseLong(params.id))
             }
         }
         catch (ResourceNotFoundException ex)

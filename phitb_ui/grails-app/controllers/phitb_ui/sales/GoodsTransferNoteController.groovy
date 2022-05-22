@@ -40,8 +40,8 @@ class GoodsTransferNoteController {
     def saveSaleEntry()
     {
         SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy")
-        JSONObject saleBillDetails = new JSONObject()
-        JSONArray saleProductDetails = new JSONArray()
+        JSONObject gtn = new JSONObject()
+        JSONArray gtnProducts = new JSONArray()
         String entityId = session.getAttribute("entityId").toString()
         String customerId = params.customer
         String priorityId = params.priority
@@ -136,28 +136,28 @@ class GoodsTransferNoteController {
             totalIgst += igst
             totalDiscount += discount
 
-            JSONObject saleProductDetail = new JSONObject()
-            saleProductDetail.put("finId", finId)
-            saleProductDetail.put("billId", 0)
-            saleProductDetail.put("billType", 0)
-            saleProductDetail.put("serBillId", 0)
-            saleProductDetail.put("seriesId", seriesId)
-            saleProductDetail.put("productId", productId)
-            saleProductDetail.put("batchNumber", batchNumber)
-            saleProductDetail.put("expiryDate", expDate)
-            saleProductDetail.put("sqty", saleQty)
-            saleProductDetail.put("freeQty", freeQty)
-            saleProductDetail.put("sqtyReturn", saleQty)
-            saleProductDetail.put("fqtyReturn", freeQty)
-            saleProductDetail.put("repQty", 0)
-            saleProductDetail.put("pRate", 0) //TODO: to be changed
-            saleProductDetail.put("sRate", saleRate)
-            saleProductDetail.put("mrp", mrp)
-            saleProductDetail.put("discount", discount)
-            saleProductDetail.put("gstAmount", gst)
-            saleProductDetail.put("sgstAmount", sgst)
-            saleProductDetail.put("cgstAmount", cgst)
-            saleProductDetail.put("igstAmount", igst)
+            JSONObject gtnProduct = new JSONObject()
+            gtnProduct.put("finId", finId)
+            gtnProduct.put("billId", 0)
+            gtnProduct.put("billType", 0)
+            gtnProduct.put("serBillId", 0)
+            gtnProduct.put("seriesId", seriesId)
+            gtnProduct.put("productId", productId)
+            gtnProduct.put("batchNumber", batchNumber)
+            gtnProduct.put("expiryDate", expDate)
+            gtnProduct.put("sqty", saleQty)
+            gtnProduct.put("freeQty", freeQty)
+            gtnProduct.put("sqtyReturn", saleQty)
+            gtnProduct.put("fqtyReturn", freeQty)
+            gtnProduct.put("repQty", 0)
+            gtnProduct.put("pRate", 0) //TODO: to be changed
+            gtnProduct.put("sRate", saleRate)
+            gtnProduct.put("mrp", mrp)
+            gtnProduct.put("discount", discount)
+            gtnProduct.put("gstAmount", gst)
+            gtnProduct.put("sgstAmount", sgst)
+            gtnProduct.put("cgstAmount", cgst)
+            gtnProduct.put("igstAmount", igst)
 
             //GST percentage Calculation
 /*            double priceBeforeTaxes = UtilsService.round((Double.parseDouble(saleQty) * Double.parseDouble(saleRate)), 2)
@@ -183,24 +183,24 @@ class GoodsTransferNoteController {
             saleProductDetail.put("cgstPercentage", UtilsService.round(cgstPercentage,2))
             saleProductDetail.put("igstPercentage", UtilsService.round(igstPercentage,2))*/
 
-            saleProductDetail.put("gstPercentage", sale.get("16").toString())
-            saleProductDetail.put("sgstPercentage", sale.get("17").toString())
-            saleProductDetail.put("cgstPercentage", sale.get("18").toString())
-            saleProductDetail.put("igstPercentage", sale.get("19").toString())
+            gtnProduct.put("gstPercentage", sale.get("16").toString())
+            gtnProduct.put("sgstPercentage", sale.get("17").toString())
+            gtnProduct.put("cgstPercentage", sale.get("18").toString())
+            gtnProduct.put("igstPercentage", sale.get("19").toString())
 
-            saleProductDetail.put("gstId", 0) //TODO: to be changed
-            saleProductDetail.put("amount", value)
-            saleProductDetail.put("reason", "") //TODO: to be changed
-            saleProductDetail.put("fridgeId", 0) //TODO: to be changed
-            saleProductDetail.put("kitName", 0) //TODO: to be changed
-            saleProductDetail.put("saleFinId", "") //TODO: to be changed
-            saleProductDetail.put("redundantBatch", 0) //TODO: to be changed
-            saleProductDetail.put("status", 0)
-            saleProductDetail.put("syncStatus", 0)
-            saleProductDetail.put("financialYear", financialYear)
-            saleProductDetail.put("entityId", entityId)
-            saleProductDetail.put("entityTypeId", session.getAttribute("entityTypeId").toString())
-            saleProductDetails.add(saleProductDetail)
+            gtnProduct.put("gstId", 0) //TODO: to be changed
+            gtnProduct.put("amount", value)
+            gtnProduct.put("reason", "") //TODO: to be changed
+            gtnProduct.put("fridgeId", 0) //TODO: to be changed
+            gtnProduct.put("kitName", 0) //TODO: to be changed
+            gtnProduct.put("saleFinId", "") //TODO: to be changed
+            gtnProduct.put("redundantBatch", 0) //TODO: to be changed
+            gtnProduct.put("status", 0)
+            gtnProduct.put("syncStatus", 0)
+            gtnProduct.put("financialYear", financialYear)
+            gtnProduct.put("entityId", entityId)
+            gtnProduct.put("entityTypeId", session.getAttribute("entityTypeId").toString())
+            gtnProducts.add(gtnProduct)
 
             //save to sale transaction log
             //save to sale transportation details
@@ -209,57 +209,57 @@ class GoodsTransferNoteController {
         String entryDate = sdf.format(new Date())
         String orderDate = sdf.format(new Date())
         //save to sale bill details
-        saleBillDetails.put("serBillId", serBillId)
-        saleBillDetails.put("customerId", customerId)
-        saleBillDetails.put("customerNumber", 0) //TODO: to be changed
-        saleBillDetails.put("finId", finId)
-        saleBillDetails.put("seriesId", seriesId)
-        saleBillDetails.put("priorityId", priorityId)
-        saleBillDetails.put("financialYear", financialYear)
-        saleBillDetails.put("dueDate", duedate)
-        saleBillDetails.put("paymentStatus", 0)
-        saleBillDetails.put("userId", session.getAttribute("userId"))
-        saleBillDetails.put("entryDate", entryDate)
-        saleBillDetails.put("orderDate", orderDate)
-        saleBillDetails.put("dispatchDate", sdf.format(new Date())) //TODO: to be changed
-        saleBillDetails.put("salesmanId", "0") //TODO: to be changed
-        saleBillDetails.put("salesmanComm", "0") //TODO: to be changed
-        saleBillDetails.put("refOrderId", "") //TODO: to be changed this is for sale order conversion
-        saleBillDetails.put("deliveryManId", "0") //TODO: to be changed
-        saleBillDetails.put("accountModeId", "0") //TODO: to be changed
-        saleBillDetails.put("totalSqty", totalSqty)
-        saleBillDetails.put("totalFqty", totalFqty)
-        saleBillDetails.put("totalGst", totalGst)
-        saleBillDetails.put("totalSgst", totalSgst)
-        saleBillDetails.put("totalCgst", totalCgst)
-        saleBillDetails.put("totalIgst", totalIgst)
-        saleBillDetails.put("totalQty", totalSqty + totalFqty)
-        saleBillDetails.put("totalItems", totalSqty + totalFqty)
-        saleBillDetails.put("totalDiscount", totalDiscount)
-        saleBillDetails.put("grossAmount", totalAmount + totalDiscount) //TODO: to be checked once
-        saleBillDetails.put("invoiceTotal", totalAmount) //TODO: adjusted amount
-        saleBillDetails.put("totalAmount", totalAmount)
-        saleBillDetails.put("balance", totalAmount)
-        saleBillDetails.put("entityId", entityId)
-        saleBillDetails.put("entityTypeId", session.getAttribute("entityTypeId"))
-        saleBillDetails.put("createdUser", session.getAttribute("userId"))
-        saleBillDetails.put("modifiedUser", session.getAttribute("userId"))
-        saleBillDetails.put("message", message) //TODO: to be changed
-        saleBillDetails.put("gstStatus", "0") //TODO: to be changed
-        saleBillDetails.put("billStatus", billStatus)
-        saleBillDetails.put("lockStatus", 0) //TODO: to be changed
-        saleBillDetails.put("syncStatus", "0") //TODO: to be changed
-        saleBillDetails.put("creditadjAmount", 0) //TODO: to be changed
-        saleBillDetails.put("creditIds", "0") //TODO: to be changed
-        saleBillDetails.put("referralDoctor", "0") //TODO: to be changed
-        saleBillDetails.put("taxable", "1") //TODO: to be changed
-        saleBillDetails.put("cashDiscount", 0) //TODO: to be changed
-        saleBillDetails.put("exempted", 0) //TODO: to be changed
-        saleBillDetails.put("seriesCode", seriesCode)
-        saleBillDetails.put("uuid", params.uuid)
+        gtn.put("serBillId", serBillId)
+        gtn.put("customerId", customerId)
+        gtn.put("customerNumber", 0) //TODO: to be changed
+        gtn.put("finId", finId)
+        gtn.put("seriesId", seriesId)
+        gtn.put("priorityId", priorityId)
+        gtn.put("financialYear", financialYear)
+        gtn.put("dueDate", duedate)
+        gtn.put("paymentStatus", 0)
+        gtn.put("userId", session.getAttribute("userId"))
+        gtn.put("entryDate", entryDate)
+        gtn.put("orderDate", orderDate)
+        gtn.put("dispatchDate", sdf.format(new Date())) //TODO: to be changed
+        gtn.put("salesmanId", "0") //TODO: to be changed
+        gtn.put("salesmanComm", "0") //TODO: to be changed
+        gtn.put("refOrderId", "") //TODO: to be changed this is for sale order conversion
+        gtn.put("deliveryManId", "0") //TODO: to be changed
+        gtn.put("accountModeId", "0") //TODO: to be changed
+        gtn.put("totalSqty", totalSqty)
+        gtn.put("totalFqty", totalFqty)
+        gtn.put("totalGst", totalGst)
+        gtn.put("totalSgst", totalSgst)
+        gtn.put("totalCgst", totalCgst)
+        gtn.put("totalIgst", totalIgst)
+        gtn.put("totalQty", totalSqty + totalFqty)
+        gtn.put("totalItems", totalSqty + totalFqty)
+        gtn.put("totalDiscount", totalDiscount)
+        gtn.put("grossAmount", totalAmount + totalDiscount) //TODO: to be checked once
+        gtn.put("invoiceTotal", totalAmount) //TODO: adjusted amount
+        gtn.put("totalAmount", totalAmount)
+        gtn.put("balance", totalAmount)
+        gtn.put("entityId", entityId)
+        gtn.put("entityTypeId", session.getAttribute("entityTypeId"))
+        gtn.put("createdUser", session.getAttribute("userId"))
+        gtn.put("modifiedUser", session.getAttribute("userId"))
+        gtn.put("message", message) //TODO: to be changed
+        gtn.put("gstStatus", "0") //TODO: to be changed
+        gtn.put("billStatus", billStatus)
+        gtn.put("lockStatus", 0) //TODO: to be changed
+        gtn.put("syncStatus", "0") //TODO: to be changed
+        gtn.put("creditadjAmount", 0) //TODO: to be changed
+        gtn.put("creditIds", "0") //TODO: to be changed
+        gtn.put("referralDoctor", "0") //TODO: to be changed
+        gtn.put("taxable", "1") //TODO: to be changed
+        gtn.put("cashDiscount", 0) //TODO: to be changed
+        gtn.put("exempted", 0) //TODO: to be changed
+        gtn.put("seriesCode", seriesCode)
+        gtn.put("uuid", params.uuid)
         JSONObject jsonObject = new JSONObject()
-        jsonObject.put("saleInvoice", saleBillDetails)
-        jsonObject.put("saleProducts", saleProductDetails)
+        jsonObject.put("saleInvoice", gtn)
+        jsonObject.put("saleProducts", gtnProducts)
         Response response = new SalesService().saveSaleInvoice(jsonObject)
         if (response.status == 200)
         {
@@ -290,7 +290,7 @@ class GoodsTransferNoteController {
                     try {
                         if (billStatus.equalsIgnoreCase("ACTIVE")) {
                             //push the invoice to e-Invoice service and generate IRN, save IRN to Sale Bill Details
-                            new EInvoiceService().generateIRN(session, saleBillDetail, saleProductDetails)
+                            new EInvoiceService().generateIRN(session, saleBillDetail, gtnProducts)
                         }
                     }
                     catch (Exception ex) {
@@ -301,7 +301,7 @@ class GoodsTransferNoteController {
 
             JSONObject responseJson = new JSONObject()
             responseJson.put("series", series)
-            responseJson.put("saleBillDetail", saleBillDetail)
+            responseJson.put("gtn", saleBillDetail)
             respond responseJson, formats: ['json']
         }
         else

@@ -25,19 +25,9 @@ class ProductGroupMasterService {
                     'desc'])
     }
 
-    def getAllByEntity(long limit, long offset, long entityId)
+    def getAllByEntity(long entityId)
     {
-        Integer o = offset ? Integer.parseInt(offset.toString()) : 0
-        Integer l = limit ? Integer.parseInt(limit.toString()) : 100
-
-        if (!entityId)
-        {
-            return ProductGroupMaster.findAll([sort: 'id', max: l, offset: o, order: 'desc'])
-        }
-        else
-        {
-            return ProductGroupMaster.findAllByEntityId(entityId, [sort: 'id', max: l, offset: o, order: 'desc'])
-        }
+        return ProductGroupMaster.findAllByEntityId(entityId)
     }
 
     ProductGroupMaster get(String id) {
@@ -101,12 +91,12 @@ class ProductGroupMasterService {
         ProductGroupMaster productGroupMaster = new ProductGroupMaster()
         productGroupMaster.groupName = jsonObject.get("groupName").toString()
         productGroupMaster.groupDescription = jsonObject.get("groupDescription").toString()
-        productGroupMaster.status =  Long.parseLong(jsonObject.get("status").toString())
-        productGroupMaster.syncStatus =  Long.parseLong(jsonObject.get("syncStatus").toString())
-        productGroupMaster.entityTypeId =  Long.parseLong(jsonObject.get("entityTypeId").toString())
-        productGroupMaster.entityId =  Long.parseLong(jsonObject.get("entityId").toString())
-        productGroupMaster.createdUser =  Long.parseLong(jsonObject.get("createdUser").toString())
-        productGroupMaster.modifiedUser =  Long.parseLong(jsonObject.get("modifiedUser").toString())
+        productGroupMaster.status = Long.parseLong(jsonObject.get("status").toString())
+        productGroupMaster.syncStatus = Long.parseLong(jsonObject.get("syncStatus").toString())
+        productGroupMaster.entityTypeId = Long.parseLong(jsonObject.get("entityTypeId").toString())
+        productGroupMaster.entityId = Long.parseLong(jsonObject.get("entityId").toString())
+        productGroupMaster.createdUser = Long.parseLong(jsonObject.get("createdUser").toString())
+        productGroupMaster.modifiedUser = Long.parseLong(jsonObject.get("modifiedUser").toString())
         productGroupMaster.save(flush: true)
         if (!productGroupMaster.hasErrors())
             return productGroupMaster
@@ -120,12 +110,12 @@ class ProductGroupMasterService {
             productGroupMaster.isUpdatable = true
             productGroupMaster.groupName = jsonObject.get("groupName").toString()
             productGroupMaster.groupDescription = jsonObject.get("groupDescription").toString()
-            productGroupMaster.status =  Long.parseLong(jsonObject.get("status").toString())
-            productGroupMaster.syncStatus =  Long.parseLong(jsonObject.get("syncStatus").toString())
-            productGroupMaster.entityTypeId =  Long.parseLong(jsonObject.get("entityTypeId").toString())
-            productGroupMaster.entityId =  Long.parseLong(jsonObject.get("entityId").toString())
-            productGroupMaster.createdUser =  Long.parseLong(jsonObject.get("createdUser").toString())
-            productGroupMaster.modifiedUser =  Long.parseLong(jsonObject.get("modifiedUser").toString())
+            productGroupMaster.status = Long.parseLong(jsonObject.get("status").toString())
+            productGroupMaster.syncStatus = Long.parseLong(jsonObject.get("syncStatus").toString())
+            productGroupMaster.entityTypeId = Long.parseLong(jsonObject.get("entityTypeId").toString())
+            productGroupMaster.entityId = Long.parseLong(jsonObject.get("entityId").toString())
+            productGroupMaster.createdUser = Long.parseLong(jsonObject.get("createdUser").toString())
+            productGroupMaster.modifiedUser = Long.parseLong(jsonObject.get("modifiedUser").toString())
             productGroupMaster.save(flush: true)
             if (!productGroupMaster.hasErrors())
                 return productGroupMaster

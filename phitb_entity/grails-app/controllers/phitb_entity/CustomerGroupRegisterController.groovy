@@ -65,7 +65,7 @@ class CustomerGroupRegisterController {
     def getAllByEntityId() {
         try {
             if (params.id) {
-                respond customerGroupRegisterService.getAllByEntity(params.limit, params.offset, Long.parseLong(params.id))
+                respond customerGroupRegisterService.getAllByEntity(Long.parseLong(params.id))
             }
         }
         catch (ResourceNotFoundException ex)

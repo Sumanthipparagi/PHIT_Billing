@@ -170,6 +170,7 @@ public class Links
 
     //Customer Group Register
     public static String CUSTOMER_GROUP_REGISTER_SHOW = "api/v1.0/entity/customergroupregister";
+    public static String CUSTOMER_GROUP_REGISTER_SHOW_BY_ENTITY = "api/v1.0/entity/customergroupregisterbyentity";
     public static String CUSTOMER_GROUP_REGISTER_SAVE = "api/v1.0/entity/customergroupregister";
     public static String CUSTOMER_GROUP_REGISTER_DATATABLE = "api/v1.0/entity/customergroupregister/datatable";
     public static String CUSTOMER_GROUP_REGISTER_UPDATE = "api/v1.0/entity/customergroupregister/{id}";

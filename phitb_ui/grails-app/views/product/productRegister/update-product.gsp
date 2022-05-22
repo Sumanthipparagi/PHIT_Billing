@@ -75,7 +75,7 @@
                     %{--                    </div>--}%
 
                     <div class="body">
-                        <form action="/product/update/${productregsiter.id}" id="form_validation" method="POST"
+                        <form action="/product/update/${product.id}" id="form_validation" method="POST"
                               role="form"
                               class="entityRegisterForm" enctype="multipart/form-data">
 
@@ -90,7 +90,7 @@
                                             </label>
                                             <input type="text" id="productCode" class="form-control productCode"
                                                    name="productCode"
-                                                   placeholder="Product Code"  value="${productregsiter.productCode}"
+                                                   placeholder="Product Code"  value="${product.productCode}"
                                                    required/>
                                         </div>
                                         <div class="col-md-6 form-group  form-float">
@@ -99,7 +99,7 @@
                                             </label>
                                             <input type="text" id="productName" class="form-control productName"
                                                    name="productName"
-                                                   placeholder="Product Name"  value="${productregsiter.productName}"
+                                                   placeholder="Product Name"  value="${product.productName}"
                                                    required/>
                                         </div>
                                         <div class="col-md-6 form-group  form-float">
@@ -109,17 +109,17 @@
 
                                             <select class="form-control show-tick manufacturerId" name="manufacturerId" id="manufacturerId">
                                                 <g:each var="c" in="${manufacturerList}">
-                                                    <option value="${c.id}"  <g:if test="${c.id == productregsiter.manufacturerId}">selected</g:if>>${c.entityName}</option>
+                                                    <option value="${c.id}"  <g:if test="${c.id == product.manufacturerId}">selected</g:if>>${c.entityName}</option>
                                                 </g:each>
                                             </select>
                                         </div>
                                         <div class="col-md-6 form-group  form-float">
                                             <label for="mktCompanyId">
-                                                Makerting Company
+                                                Marketing Company
                                             </label>
                                             <select class="form-control show-tick mktCompanyId" name="mktCompanyId" id="mktCompanyId">
                                                 <g:each var="c" in="${companyList}">
-                                                    <option value="${c.id}" <g:if test="${c.id == productregsiter.mktCompanyId}">selected</g:if>>${c.entityName}</option>
+                                                    <option value="${c.id}" <g:if test="${c.id == product.mktCompanyId}">selected</g:if>>${c.entityName}</option>
                                                 </g:each>
                                             </select>
                                         </div>
@@ -129,7 +129,7 @@
                                             </label>
                                             <select class="form-control show-tick rackId" name="rackId" id="rackId">
                                                 <g:each var="r" in="${racks}">
-                                                    <option value="${r.id}" <g:if test="${r.id == productregsiter.rackId}">selected</g:if> >${r.rackName}</option>
+                                                    <option value="${r.id}" <g:if test="${r.id == product.rackId}">selected</g:if> >${r.rackName}</option>
                                                 </g:each>
                                             </select>
                                         </div>
@@ -139,7 +139,7 @@
                                             </label>
                                             <select class="form-control show-tick division" name="division" id="division">
                                                 <g:each var="d" in="${divisions}">
-                                                    <option value="${d.id}" <g:if test="${d.id == productregsiter.division.id}">selected</g:if> >${d.divisionName}</option>
+                                                    <option value="${d.id}" <g:if test="${d.id == product.division.id}">selected</g:if> >${d.divisionName}</option>
                                                 </g:each>
                                             </select>
                                         </div>
@@ -157,7 +157,7 @@
                                             <select class="form-control show-tick composition" name="composition"
                                                     id="composition">
                                                 <g:each var="c" in="${compositions}">
-                                                    <option value="${c.id}"  <g:if test="${c.id == productregsiter.composition.id}">selected</g:if>  >${c.compositionName}</option>
+                                                    <option value="${c.id}"  <g:if test="${c.id == product.composition.id}">selected</g:if>  >${c.compositionName}</option>
                                                 </g:each>
                                             </select>
                                         </div>
@@ -168,7 +168,7 @@
                                             <select class="form-control show-tick costRange" name="costRange" id="costRange">
                                                 <g:each var="c" in="${productcost}">
                                                     <option value="${c.id}"  <g:if test="${c.id ==
-                                                            productregsiter.costRange.id}">selected</g:if>>${c.priceType}</option>
+                                                            product.costRange.id}">selected</g:if>>${c.priceType}</option>
                                                 </g:each>
                                             </select>
                                         </div>
@@ -179,7 +179,7 @@
                                             <select class="form-control show-tick productType" name="productType"
                                                     id="productType">
                                                 <g:each var="c" in="${producttype}">
-                                                    <option value="${c.id}" <g:if test="${c.id == productregsiter.productType.id}">selected</g:if>>${c.productType}</option>
+                                                    <option value="${c.id}" <g:if test="${c.id == product.productType.id}">selected</g:if>>${c.productType}</option>
                                                 </g:each>
                                             </select>
                                         </div>
@@ -189,7 +189,7 @@
                                             </label>
                                             <select class="form-control show-tick unit" name="unit" id="unit">
                                                 <g:each var="u" in="${unittype}">
-                                                    <option value="${u.id}" <g:if test="${u.id == productregsiter.unit.id}">selected</g:if> >${u.unitName}</option>
+                                                    <option value="${u.id}" <g:if test="${u.id == product.unit.id}">selected</g:if> >${u.unitName}</option>
                                                 </g:each>
                                             </select>
 
@@ -199,17 +199,17 @@
                                                 Unit Packing
                                             </label>
                                             <input type="text" id="unitPacking" class="form-control unitPacking"
-                                                   name="unitPacking" value="${productregsiter.unitPacking}"
+                                                   name="unitPacking" value="${product.unitPacking}"
                                                    placeholder="Unit Packing"
                                                    required/>
                                         </div>
                                         <div class="col-lg-6 form-group  form-float">
                                             <label for="productMoo">
-                                                Product Moo
+                                                Product MOQ
                                             </label>
                                             <input type="number" id="productMoo" class="form-control productMoo"
-                                                   name="productMoo" value="${productregsiter.productMoo}"
-                                                   placeholder="Product Moo"
+                                                   name="productMoo" value="${product.productMoo}"
+                                                   placeholder="Product MOQ"
                                                    required/>
                                         </div>
                                     </div>
@@ -226,16 +226,16 @@
                                                 Per Lot quantity
                                             </label>
                                             <input type="number" id="perLotQuantity" class="form-control perLotQuantity"
-                                                   name="perLotQuantity" value="${productregsiter.perLotQuantity}"
-                                                   placeholder="Product Moo"
+                                                   name="perLotQuantity" value="${product.perLotQuantity}"
+                                                   placeholder="Per Lot Quantity"
                                                    required/>
                                         </div>
                                         <div class="col-lg-6 form-group  form-float">
                                             <label for="purchaseRate">
                                                 Purchase Rate
                                             </label>
-                                            <input type="number" id="purchaseRate" class="form-control purchaseRate"
-                                                   name="purchaseRate" value="${productregsiter.purchaseRate}"
+                                            <input type="text" id="purchaseRate" onblur="setTwoNumberDecimal" step="0.25" class="form-control purchaseRate"
+                                                   name="purchaseRate" value="${product.purchaseRate}"
                                                    placeholder="Purchase Rate"
                                                    required/>
                                         </div>
@@ -243,9 +243,9 @@
                                             <label for="purchaseTradeDiscount">
                                                 Purchase Trade Discount
                                             </label>
-                                            <input type="number" id="purchaseTradeDiscount"
+                                            <input type="text" id="purchaseTradeDiscount" onblur="setTwoNumberDecimal" step="0.25"
                                                    class="form-control purchaseTradeDiscount" name="purchaseTradeDiscount"
-                                                   value="${productregsiter.purchaseTradeDiscount}"
+                                                   value="${product.purchaseTradeDiscount}"
                                                    placeholder="Purchase Trade Discount"
                                                    required/>
                                         </div>
@@ -253,81 +253,81 @@
                                             <label for="purchaseMarginPercent">
                                                 Purchase Margin percent
                                             </label>
-                                            <input type="number" id="purchaseMarginPercent"
+                                            <input type="text" id="purchaseMarginPercent" onblur="setTwoNumberDecimal" step="0.25"
                                                    class="form-control purchaseMarginPercent" name="purchaseMarginPercent"
-                                                   placeholder="Purchase Margin Percent" value="${productregsiter.purchaseMarginPercent}"
+                                                   placeholder="Purchase Margin Percent" value="${product.purchaseMarginPercent}"
                                                    required/>
                                         </div>
                                         <div class="col-lg-6 form-group  form-float">
                                             <label for="saleRate">
                                                 Sale Rate
                                             </label>
-                                            <input type="number" id="saleRate"
+                                            <input type="text" id="saleRate" onblur="setTwoNumberDecimal" step="0.25"
                                                    class="form-control saleRate" name="saleRate"
-                                                   placeholder="Sale Rate" value="${productregsiter.saleRate}"
+                                                   placeholder="Sale Rate" value="${product.saleRate}"
                                                    required/>
                                         </div>
                                         <div class="col-lg-6 form-group  form-float">
                                             <label for="saleTradeDiscount">
                                                 Sale Trade Discount
                                             </label>
-                                            <input type="number" id="saleTradeDiscount"
+                                            <input type="text" id="saleTradeDiscount" onblur="setTwoNumberDecimal" step="0.25"
                                                    class="form-control saleTradeDiscount" name="saleTradeDiscount"
-                                                   placeholder="Sale Trade Discount" value="${productregsiter.saleTradeDiscount}"
+                                                   placeholder="Sale Trade Discount" value="${product.saleTradeDiscount}"
                                                    required/>
                                         </div>
                                         <div class="col-lg-6 form-group  form-float">
                                             <label for="salesmenPercent">
                                                 Sale Margin Percent
                                             </label>
-                                            <input type="number" id="salesmenPercent"
+                                            <input type="text" id="salesmenPercent" onblur="setTwoNumberDecimal" step="0.25"
                                                    class="form-control saleTradeDiscount" name="salesmenPercent"
-                                                   placeholder="Sale Margin Percent" value="${productregsiter.saleMarginPercent}"
+                                                   placeholder="Sale Margin Percent" value="${product.saleMarginPercent}"
                                                    required/>
                                         </div>
                                         <div class="col-lg-6 form-group  form-float">
                                             <label for="vipPRate">
-                                                vipPRate
+                                                VIP Purchase Rate
                                             </label>
-                                            <input type="number" id="vipPRate"
+                                            <input type="text" id="vipPRate" onblur="setTwoNumberDecimal" step="0.25"
                                                    class="form-control vipPRate" name="vipPRate"
-                                                   placeholder="vipPRate" value="${productregsiter.vipPRate}"
+                                                   placeholder="vipPRate" value="${product.vipPRate}"
                                                    required/>
                                         </div>
                                         <div class="col-lg-6 form-group  form-float">
                                             <label for="vipSRate">
-                                                vipSRate
+                                                VIP Sale Rate
                                             </label>
-                                            <input type="number" id="vipSRate"
+                                            <input type="text" id="vipSRate" onblur="setTwoNumberDecimal" step="0.25"
                                                    class="form-control vipPRate" name="vipSRate"
-                                                   placeholder="vipSRate" value="${productregsiter.vipSRate}"
+                                                   placeholder="vipSRate" value="${product.vipSRate}"
                                                    required/>
                                         </div>
                                         <div class="col-lg-6 form-group  form-float">
                                             <label for="mrp">
                                                 MRP
                                             </label>
-                                            <input type="number" id="mrp"
+                                            <input type="text" id="mrp" onblur="setTwoNumberDecimal" step="0.25"
                                                    class="form-control mrp" name="mrp"
-                                                   placeholder="MRP" value="${productregsiter.mrp}"
+                                                   placeholder="MRP" value="${product.mrp}"
                                                    required/>
                                         </div>
                                         <div class="col-lg-6 form-group  form-float">
                                             <label for="ptr">
                                                 PTR
                                             </label>
-                                            <input type="number" id="ptr"
+                                            <input type="text" id="ptr" onblur="setTwoNumberDecimal" step="0.25"
                                                    class="form-control ptr" name="ptr"
-                                                   placeholder="PTR" value="${productregsiter.ptr}"
+                                                   placeholder="PTR" value="${product.ptr}"
                                                    required/>
                                         </div>
                                         <div class="col-lg-6 form-group  form-float">
                                             <label for="restrictedRate">
                                                 Restricted Rate
                                             </label>
-                                            <input type="number" id="restrictedRate"
+                                            <input type="text" id="restrictedRate" onblur="setTwoNumberDecimal" step="0.25"
                                                    class="form-control ptr" name="restrictedRate"
-                                                   placeholder="Restricted Rate" value="${productregsiter.restrictedRate}"
+                                                   placeholder="Restricted Rate" value="${product.restrictedRate}"
                                                    required/>
                                         </div>
                                     </div>
@@ -346,27 +346,27 @@
                                             <label for="nriRate">
                                                 NRI Rate
                                             </label>
-                                            <input type="number" id="nriRate"
+                                            <input type="text" id="nriRate" onblur="setTwoNumberDecimal" step="0.25"
                                                    class="form-control ptr" name="nriRate"
-                                                   placeholder="NRI Rate" value="${productregsiter.nriRate}"
+                                                   placeholder="NRI Rate" value="${product.nriRate}"
                                                    required/>
                                         </div>
                                         <div class="col-lg-6 form-group  form-float">
                                             <label for="salesmanCommission">
                                                 Salesman Commission
                                             </label>
-                                            <input type="number" id="salesmanCommission"
+                                            <input type="text" id="salesmanCommission" onblur="setTwoNumberDecimal" step="0.25"
                                                    class="form-control salesmanCommission" name="salesmanCommission"
-                                                   placeholder="Salesman Commission" value="${productregsiter.salesmanCommission}"
+                                                   placeholder="Salesman Commission" value="${product.salesmanCommission}"
                                                    required/>
                                         </div>
                                         <div class="col-lg-6 form-group  form-float">
                                             <label for="grossProfitPercentage">
                                                 Gross Profit Percentage
                                             </label>
-                                            <input type="number" id="grossProfitPercentage"
+                                            <input type="text" id="grossProfitPercentage" onblur="setTwoNumberDecimal" step="0.25"
                                                    class="form-control grossProfitPercentage" name="grossProfitPercentage"
-                                                   placeholder="Gross Profit Percentage" value="${productregsiter.grossProfitPercentage}"
+                                                   placeholder="Gross Profit Percentage" value="${product.grossProfitPercentage}"
                                                    required/>
                                         </div>
                                         <div class="col-lg-6 form-group  form-float">
@@ -375,7 +375,7 @@
                                             </label>
                                             <select class="form-control show-tick taxId" name="taxId" id="taxId">
                                                 <g:each var="t" in="${tax}">
-                                                    <option value="${t.id}"  <g:if test="${t.id == productregsiter.taxId}">selected</g:if>  >${t.taxName}</option>
+                                                    <option value="${t.id}"  <g:if test="${t.id == product.taxId}">selected</g:if>>${t.taxName}</option>
                                                 </g:each>
                                             </select>
                                         </div>
@@ -385,7 +385,7 @@
                                             </label>
                                             <input type="text" id="thresholdLevel"
                                                    class="form-control thresholdLevel" name="thresholdLevel"
-                                                   placeholder="Threshold Level" value="${productregsiter.thresholdLevel}"
+                                                   placeholder="Threshold Level" value="${product.thresholdLevel}"
                                                    required/>
                                         </div>
                                         <div class="col-lg-6 form-group  form-float">
@@ -394,7 +394,7 @@
                                             </label>
                                             <input type="number" id="orderQuantity"
                                                    class="form-control orderQuantity" name="orderQuantity"
-                                                   placeholder="Order Quantity" value="${productregsiter.orderQuantity}"
+                                                   placeholder="Order Quantity" value="${product.orderQuantity}"
                                                    required/>
                                         </div>
                                         <div class="col-lg-6 form-group  form-float">
@@ -403,7 +403,7 @@
                                             </label>
                                             <select class="form-control show-tick group" name="group" id="group">
                                                 <g:each var="c" in="${productGroups}">
-                                                    <option value="${c.id}" <g:if test="${c.id == productregsiter.group.id}">selected</g:if>  >${c.groupName}</option>
+                                                    <option value="${c.id}" <g:if test="${c.id == product.group.id}">selected</g:if>  >${c.groupName}</option>
                                                 </g:each>
                                             </select>
                                         </div>
@@ -413,7 +413,7 @@
                                             </label>
                                             <select class="form-control show-tick schedule" name="schedule" id="schedule">
                                                 <g:each var="c" in="${productSchedules}">
-                                                    <option value="${c.id}" <g:if test="${c.id == productregsiter.schedule.id}">selected</g:if> >${c.scheduleCode}</option>
+                                                    <option value="${c.id}" <g:if test="${c.id == product.schedule.id}">selected</g:if> >${c.scheduleCode}</option>
                                                 </g:each>
                                             </select>
                                         </div>
@@ -423,7 +423,7 @@
                                             </label>
                                             <select class="form-control show-tick category1" name="category" id="category1">
                                                 <g:each var="c" in="${productCategories}">
-                                                    <option value="${c.id}" <g:if test="${c.id == productregsiter.category.id}">selected</g:if>  >${c.categoryName}</option>
+                                                    <option value="${c.id}" <g:if test="${c.id == product.category.id}">selected</g:if>  >${c.categoryName}</option>
                                                 </g:each>
                                             </select>
                                         </div>
@@ -433,7 +433,7 @@
                                             </label>
                                             <input type="text" id="sendMail"
                                                    class="form-control sendMail" name="sendMail"
-                                                   placeholder="Send Mail" value="${productregsiter.sendMail}"
+                                                   placeholder="Send Mail" value="${product.sendMail}"
                                                    required/>
                                         </div>
                                         <div class="col-lg-6 form-group  form-float">
@@ -442,7 +442,7 @@
                                             </label>
                                             <input type="text" id="discountAllowed"
                                                    class="form-control discountAllowed" name="discountAllowed"
-                                                   placeholder="Discount Allowed" value="${productregsiter.discountAllowed}"
+                                                   placeholder="Discount Allowed" value="${product.discountAllowed}"
                                                    required/>
                                         </div>
                                         <div class="col-lg-6 form-group  form-float">
@@ -453,9 +453,9 @@
                                             <select class="form-control show-tick ccmProduct" name="ccmProduct" id="ccmProduct">
                                                 <option value="1"
                                                         <g:if
-                                                                test="${"YES" == productregsiter.ccmProduct}">selected</g:if> >YES</option>
+                                                                test="${"YES" == product.ccmProduct}">selected</g:if> >YES</option>
                                                 <option value="0" <g:if
-                                                        test="${"NO" == productregsiter.ccmProduct}">selected</g:if>>NO
+                                                        test="${"NO" == product.ccmProduct}">selected</g:if>>NO
                                                 </option>
                                             </select>
                                         </div>
@@ -472,7 +472,7 @@
                                                 HSN Code
                                             </label>
                                             <input type="text" id="hsnCode" class="form-control hsnCode" name="hsnCode"
-                                                   placeholder="HSN Code" value="${productregsiter.hsnCode}"
+                                                   placeholder="HSN Code" value="${product.hsnCode}"
                                                    required/>
                                         </div>
 
@@ -480,27 +480,27 @@
                                             <label for="saleMarginPercent">
                                                 Sale Margin Percent
                                             </label>
-                                            <input type="number" id="saleMarginPercent"
+                                            <input type="text" id="saleMarginPercent" onblur="setTwoNumberDecimal" step="0.25"
                                                    class="form-control saleMarginPercent" name="saleMarginPercent"
-                                                   placeholder="Sale Margin Percent" value="${productregsiter.saleMarginPercent}"
+                                                   placeholder="Sale Margin Percent" value="${product.saleMarginPercent}"
                                                    required/>
                                         </div>
-                                        <div class="col-lg-6 form-group  form-float">
+                                        %{--<div class="col-lg-6 form-group  form-float">
                                             <label for="soundexCode">
                                                 Soundex Code
                                             </label>
                                             <input type="text" id="soundexCode"
                                                    class="form-control soundexCode" name="soundexCode"
-                                                   placeholder="Soundex Code" value="${productregsiter.soundexCode}"
+                                                   placeholder="Soundex Code" value="${product.soundexCode}"
                                                    required/>
-                                        </div>
+                                        </div>--}%
                                         <div class="col-lg-6 form-group  form-float">
                                             <label for="narration">
                                                 Narration
                                             </label>
                                             <input type="text" id="narration"
                                                    class="form-control narration" name="narration"
-                                                   placeholder="Narration" value="${productregsiter.narration}"
+                                                   placeholder="Narration" value="${product.narration}"
                                                    required/>
                                         </div>
                                         <div class="col-lg-6 form-group  form-float">
@@ -509,10 +509,10 @@
                                             </label>
                                             <input type="text" id="restrictedAssignment"
                                                    class="form-control restrictedAssignment" name="restrictedAssignment"
-                                                   placeholder="Restricted Assignment" value="${productregsiter.restrictedAssignment}"
+                                                   placeholder="Restricted Assignment" value="${product.restrictedAssignment}"
                                                    required/>
                                         </div>
-                                        <div class="col-lg-6 form-group  form-float">
+                                       %{-- <div class="col-lg-6 form-group  form-float">
                                             <label for="entityType">
                                                 Entity Type
                                             </label>
@@ -532,7 +532,7 @@
                                                     <option value="${e.id}">${e.entityName}</option>
                                                 </g:each>
                                             </select>
-                                        </div>
+                                        </div>--}%
                                     </div>
                                 </div>
 
@@ -662,6 +662,10 @@
             }
         })
     });
+
+    function setTwoNumberDecimal(event) {
+        this.value = parseFloat(this.value.toFixed(2));
+    }
 
 </script>
 

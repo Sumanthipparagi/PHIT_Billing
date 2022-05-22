@@ -1697,6 +1697,32 @@ class EntityService {
 
     }
 
+    def getTaxes() {
+        Client client = ClientBuilder.newClient()
+        WebTarget target = client.target(new Links().API_GATEWAY)
+        String link = new Links().TAX_MASTER_SHOW
+        try {
+
+            Response apiResponse = target
+                    .path(link)
+                    .request(MediaType.APPLICATION_JSON_TYPE)
+                    .get()
+
+            if (apiResponse?.status == 200)
+            {
+                JSONArray jsonArray = new JSONArray(apiResponse.readEntity(String.class))
+                return jsonArray
+            }
+            else
+                return null
+        }
+        catch (Exception ex) {
+            System.err.println('Service :EntityService , action :  getTaxRegister  , Ex:' + ex)
+            log.error('Service :EntityService , action :  getTaxRegister  , Ex:' + ex)
+        }
+
+    }
+
     def getEntityType() {
         Client client = ClientBuilder.newClient()
         WebTarget target = client.target(new Links().API_GATEWAY)

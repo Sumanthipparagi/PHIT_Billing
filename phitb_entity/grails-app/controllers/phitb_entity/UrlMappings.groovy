@@ -332,7 +332,7 @@ class UrlMappings
             "/userregisterbydivision/$id(.$format)?"(controller: 'userRegister') {
                 action = [GET: 'getAllByDivision']
             }
-            "/userregisterbyentity(.$format)?"(controller: 'userRegister', action: 'getUsersByEntity')
+            "/userregisterbyentity/$id(.$format)?"(controller: 'userRegister', action: 'getUsersByEntity')
 
 
 

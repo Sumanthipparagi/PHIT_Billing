@@ -996,24 +996,24 @@
                         hot.setCellMeta(j, i, 'readOnly', true);
                     }
                 }
-                saleBillId = data.saleBillDetail.id;
-                var datepart = data.saleBillDetail.entryDate.split("T")[0];
+                saleBillId = data.gtn.id;
+                var datepart = data.gtn.entryDate.split("T")[0];
                 var month = datepart.split("-")[1];
                 var year = datepart.split("-")[0];
                 var seriesCode = data.series.seriesCode;
-                var invoiceNumber = data.saleBillDetail.invoiceNumber;
+                var invoiceNumber = data.gtn.invoiceNumber;
                 $("#invNo").html("<p><strong>" + invoiceNumber + "</strong></p>");
                 var message = "";
                 var draftInvNo ="";
                 if(billStatus === "DRAFT"){
-                    draftInvNo = '<p><strong>' + data.saleBillDetail.entityId + "/DR/S/" + month + year + "/"
+                    draftInvNo = '<p><strong>' + data.gtn.entityId + "/DR/GTN/" + month + year + "/"
                         + seriesCode + "/__"+'<p><strong>';
                     $("#invNo").html(draftInvNo);
                 }
                 if (billStatus !== "DRAFT") {
-                    message = 'Sale Invoice Generated: ' + invoiceNumber;
+                    message = 'GTN Generated: ' + invoiceNumber;
                 } else {
-                    message = 'Draft Invoice Generated: ' + data.saleBillDetail.entityId + "/DR/S/" + month + year + "/"
+                    message = 'Draft GTN Generated: ' + data.gtn.entityId + "/DR/GTN/" + month + year + "/"
                         + seriesCode + "/__";
                 }
                 waitingSwal.close();

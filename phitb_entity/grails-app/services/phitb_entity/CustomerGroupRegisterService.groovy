@@ -30,22 +30,13 @@ class CustomerGroupRegisterService
         }
     }
 
-    def getAllByEntity(String limit, String offset, long entityId)
+    def getAllByEntity(long entityId)
     {
-        Integer o = offset ? Integer.parseInt(offset.toString()) : 0
-        Integer l = limit ? Integer.parseInt(limit.toString()) : 100
-        if (!entityId)
-        {
-            return CustomerGroupRegister.findAll([sort: 'id', max: l, offset: o, order: 'desc'])
-        }
+        EntityRegister entityRegister = EntityRegister.findById(entityId)
+        if(entityRegister)
+            return CustomerGroupRegister.findAllByEntity(entityRegister)
         else
-        {
-            return CustomerGroupRegister.createCriteria().list(max: l,offset:o){
-                entity{
-                    eq('id',entityId)
-                }
-            }
-        }
+            throw new BadRequestException()
     }
 
 

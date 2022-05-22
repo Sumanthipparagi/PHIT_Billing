@@ -181,7 +181,7 @@ class ProductGroupController {
     {
         try
         {
-            def apiResponse = new ProductService().getProductGroupsByEntity()
+            def apiResponse = new ProductService().getProductGroupsByEntity(session.getAttribute("entityId").toString())
             if (apiResponse?.status == 200)
             {
                 JSONArray jsonArray = new JSONArray(apiResponse.readEntity(String.class));

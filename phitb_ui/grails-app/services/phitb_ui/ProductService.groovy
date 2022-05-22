@@ -361,7 +361,7 @@ class ProductService {
 
     }
 
-    def getByEntity(String entityId) {
+    def getProductCompositionByEntity(String entityId) {
         Client client = ClientBuilder.newClient();
         WebTarget target = client.target(new Links().API_GATEWAY);
 
@@ -380,6 +380,29 @@ class ProductService {
 
     }
 
+    def getProductByEntity(String entityId) {
+        Client client = ClientBuilder.newClient();
+        WebTarget target = client.target(new Links().API_GATEWAY);
+
+        try {
+            Response apiResponse = target
+                    .path(new Links().PRODUCT_REGISTER_BY_ENTITY + "/" + entityId)
+                    .request(MediaType.APPLICATION_JSON_TYPE)
+                    .get()
+            if(apiResponse.status == 200)
+            {
+                JSONArray jsonArray = new JSONArray(apiResponse.readEntity(String.class))
+                return jsonArray
+            }
+            else
+                return null
+        }
+        catch (Exception ex) {
+            System.err.println('Service :ProductService , action :  getProductByEntity  , Ex:' + ex)
+            log.error('Service :ProductService , action :  getProductByEntity  , Ex:' + ex)
+        }
+
+    }
 
     def getBatchRegister() {
         Client client = ClientBuilder.newClient();
@@ -494,6 +517,25 @@ class ProductService {
 
             Response apiResponse = target
                     .path(new Links().CUSTOMER_GROUP_REGISTER_SHOW)
+                    .request(MediaType.APPLICATION_JSON_TYPE)
+                    .get()
+
+            return apiResponse
+        }
+        catch (Exception ex) {
+            System.err.println('Service :ProductService , action :  getProducts  , Ex:' + ex)
+            log.error('Service :ProductService , action :  getProducts  , Ex:' + ex)
+        }
+
+    }
+
+    def getCustomerGroupByEntity(String entityId) {
+        Client client = ClientBuilder.newClient();
+        WebTarget target = client.target(new Links().API_GATEWAY);
+
+        try {
+            Response apiResponse = target
+                    .path(new Links().CUSTOMER_GROUP_REGISTER_SHOW_BY_ENTITY + "/" + entityId)
                     .request(MediaType.APPLICATION_JSON_TYPE)
                     .get()
 
@@ -1691,7 +1733,6 @@ class ProductService {
     {
         Client client = ClientBuilder.newClient().register(JacksonFeature.class)
         WebTarget target = client.target(new Links().API_GATEWAY);
-        
         try
         {
             println(jsonObject)

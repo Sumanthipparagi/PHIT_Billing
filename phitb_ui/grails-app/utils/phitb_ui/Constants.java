@@ -20,6 +20,7 @@ public class Constants
     public static String ENTITY_MANUFACTURER_AND_MARKETING = "MANUFACTURER_AND_MARKETING";
     public static String ENTITY_COMPANY = "COMPANY";
     public static String ENTITY_DISTRIBUTOR = "DISTRIBUTOR";
+    public static String ENTITY_C_F = "C_F";
 
     public static String DOCTYPE_SALE_INVOICE = "SLINV";
     public static String DOCTYPE_PURCHASE_INVOICE = "PRINV";

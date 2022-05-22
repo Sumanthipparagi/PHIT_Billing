@@ -63,11 +63,11 @@ class ProductGroupMasterController
      * @param id
      * @return get requested Stock Activity
      */
-
-    def getAllByEntityId() {
+    def getAllByEntityId()
+    {
         try {
             if (params.id) {
-                respond productGroupMasterService.getAllByEntity(params.limit, params.offset,Long.parseLong(params.id))
+                respond productGroupMasterService.getAllByEntity(Long.parseLong(params.id))
             }
         }
         catch (ResourceNotFoundException ex)

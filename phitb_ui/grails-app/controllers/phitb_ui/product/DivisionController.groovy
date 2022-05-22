@@ -30,7 +30,7 @@ class DivisionController {
             ArrayList<String> countrylist = new CountryController().show() as ArrayList<String>
             ArrayList<String> citylist = new CityController().show() as ArrayList<String>
             ArrayList<String> zoneList = new ZoneController().show() as ArrayList<String>
-            ArrayList<String> customerGroup = new CustomerGroupController().show() as ArrayList<String>
+            ArrayList<String> customerGroup = new CustomerGroupController().getByEntity() as ArrayList<String>
             ArrayList<String> managerList = []
             ArrayList<String> customerList = []
             userregister.each {

@@ -1,14 +1,12 @@
 package phitb_ui.product
 
-import groovy.json.JsonSlurper
+
 import org.grails.web.json.JSONArray
 import org.grails.web.json.JSONObject
 import phitb_ui.Constants
-import phitb_ui.Links
+import phitb_ui.EntityService
 import phitb_ui.ProductService
-import phitb_ui.SalesService
 import phitb_ui.entity.CustomerGroupController
-import phitb_ui.entity.EntityRegisterController
 import phitb_ui.entity.SeriesController
 import phitb_ui.entity.TaxController
 import phitb_ui.entity.UserRegisterController
@@ -23,12 +21,12 @@ class BatchRegisterController {
     {
         try
         {
-            ArrayList<String> customer = new CustomerGroupController().show() as ArrayList<String>
-            ArrayList<String> entity = new EntityRegisterController().show() as ArrayList<String>
-            ArrayList<String> userregister = new UserRegisterController().show() as ArrayList<String>
-            ArrayList<String> series = new SeriesController().show() as ArrayList<String>
-            ArrayList<String> productlist = new ProductController().show() as ArrayList<String>
-            ArrayList<String> productcatList = new ProductCategoryController().show() as ArrayList<String>
+            ArrayList<String> customer = new CustomerGroupController().getByEntity() as ArrayList<String>
+            ArrayList<String> entity = new EntityService().getByEntity(session.getAttribute("entityId").toString()) as ArrayList<String>
+            ArrayList<String> userregister = new UserRegisterController().getByEntity() as ArrayList<String>
+            ArrayList<String> series = new SeriesController().getByEntity(session.getAttribute("entityId").toString()) as ArrayList<String>
+            ArrayList<String> productlist = new ProductService().getProductByEntity(session.getAttribute("entityId").toString()) as ArrayList<String>
+            ArrayList<String> productcatList = new ProductCategoryController().getByEntity() as ArrayList<String>
             ArrayList<String> statelist = new StateController().show() as ArrayList<String>
             ArrayList<String> countrylist = new CountryController().show() as ArrayList<String>
             ArrayList<String> citylist = new CityController().show() as ArrayList<String>
@@ -40,7 +38,7 @@ class BatchRegisterController {
                     managerList.add(it)
                 }
             }
-            render(view: '/product/batchRegister/batchRegister',model: [entity     :entity, statelist:statelist,
+            render(view: '/product/batchRegister/batchRegister', model: [entity:entity, statelist:statelist,
                                                                                  countrylist:countrylist, citylist:citylist,
                                                                                  zoneList   :zoneList,
                                                                                  customer:customer, series:series,

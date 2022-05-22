@@ -29,19 +29,9 @@ class ProductTypeMasterService {
                     'desc'])
     }
 
-    def getAllByEntity(String limit, String offset, long entityId)
+    def getAllByEntity(long entityId)
     {
-        Integer o = offset ? Integer.parseInt(offset.toString()) : 0
-        Integer l = limit ? Integer.parseInt(limit.toString()) : 100
-
-        if (!entityId)
-        {
-            return ProductGroupMaster.findAll([sort: 'id', max: l, offset: o, order: 'desc'])
-        }
-        else
-        {
-            return ProductGroupMaster.findAllByEntityId(entityId, [sort: 'id', max: l, offset: o, order: 'desc'])
-        }
+        return ProductTypeMaster.findAllByEntityId(entityId)
     }
 
     ProductTypeMaster get(String id) {

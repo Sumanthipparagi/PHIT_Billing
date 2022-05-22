@@ -44,11 +44,11 @@ class ProductController {
 
     def addProduct() {
         try {
-            ArrayList<String> entity = new EntityRegisterController().show() as ArrayList<String>
+            ArrayList<String> entity = new EntityService().getByEntity(session.getAttribute("entityId").toString()) as ArrayList<String>
             ArrayList<String> tax = new TaxController().show() as ArrayList<String>
             ArrayList<String> productTypes = new ProductTypeController().getByEntity() as ArrayList<String>
             ArrayList<String> productGroups = new ProductGroupController().getByEntity() as ArrayList<String>
-            ArrayList<String> divisions = new DivisionController().getByEntity() as ArrayList<String>
+            ArrayList<String> divisions = new ProductService().getDivisionsByEntityId(session.getAttribute("entityId").toString()) as ArrayList<String>
             ArrayList<String> productCategories = new ProductCategoryController().getByEntity() as ArrayList<String>
             ArrayList<String> productSchedules = new ProductScheduleController().getByEntity() as ArrayList<String>
             ArrayList<String> racks = new RackController().getByEntity() as ArrayList<String>
@@ -62,7 +62,8 @@ class ProductController {
                     manufacturerList.add(it)
                 }
 
-                if (it.entityType.name.toString().equalsIgnoreCase(Constants.ENTITY_MANUFACTURER_AND_MARKETING)) {
+                if (it.entityType.name.toString().equalsIgnoreCase(Constants.ENTITY_MANUFACTURER_AND_MARKETING)
+                || it.entityType.name.toString().equalsIgnoreCase(Constants.ENTITY_C_F)) {
                     companyList.add(it)
                 }
             }
@@ -93,16 +94,10 @@ class ProductController {
     def updateProduct() {
         try {
             ArrayList<String> productTypes = new ProductTypeController().show() as ArrayList<String>
-/*            def entitytypeurl = Links.API_GATEWAY + Links.ENTITY_TYPE_MASTER_SHOW
-            def productregisterbyidurl = Links.API_GATEWAY + Links.PRODUCT_REGISTER_SHOW + "/" + params.id
-            URL apiUrl1 = new URL(entitytypeurl)
-            URL apiUrl2 = new URL(productregisterbyidurl)
-            def entitytype = new JsonSlurper().parseText(apiUrl1.text)
-            def productregsiter = new JsonSlurper().parseText(apiUrl2.text)*/
             ArrayList<String> entity = new EntityRegisterController().show() as ArrayList<String>
-            ArrayList<String> tax = new TaxController().show() as ArrayList<String>
+            ArrayList<String> tax = new EntityService().getTaxes() as ArrayList<String>
             ArrayList<String> productGroups = new ProductGroupController().getByEntity() as ArrayList<String>
-            ArrayList<String> divisions = new DivisionController().getByEntity() as ArrayList<String>
+            ArrayList<String> divisions = new ProductService().getDivisionsByEntityId(session.getAttribute("entityId").toString()) as ArrayList<String>
             ArrayList<String> productCategories = new ProductCategoryController().getByEntity() as ArrayList<String>
             ArrayList<String> productSchedules = new ProductScheduleController().getByEntity() as ArrayList<String>
             ArrayList<String> racks = new RackController().getByEntity() as ArrayList<String>
@@ -117,10 +112,12 @@ class ProductController {
                     manufacturerList.add(it)
                 }
 
-                if (it.entityType.name.toString().equalsIgnoreCase(Constants.ENTITY_COMPANY)) {
+                if (it.entityType.name.toString().equalsIgnoreCase(Constants.ENTITY_COMPANY)
+                        || it.entityType.name.toString().equalsIgnoreCase(Constants.ENTITY_C_F)) {
                     companyList.add(it)
                 }
             }
+            def product = new ProductService().getProductById(params.id)
             render(view: '/product/productRegister/update-product', model: [productTypes     : productTypes,
                                                                             productGroups    : productGroups,
                                                                             productCategories: productCategories,
@@ -130,7 +127,7 @@ class ProductController {
                                                                             divisions        : divisions, entity: entity,
                                                                            // entitytype       : entitytype,
                                                                             producttype      : producttype,
-                                                                            //productregsiter  : productregsiter,
+                                                                            product  : product,
                                                                             productcost      : productcost,
                                                                             unittype         : unittype,
                                                                             tax              : tax,
@@ -170,6 +167,9 @@ class ProductController {
     def save() {
         try {
             JSONObject jsonObject = new JSONObject(params)
+            jsonObject.put("entityId", session.getAttribute("entityId").toString())
+            jsonObject.put("entityTypeId", session.getAttribute("entityTypeId").toString())
+            jsonObject.put("soundexCode", "NA")
             def apiResponse = new ProductService().saveProductRegister(jsonObject)
             if (apiResponse?.status == 200) {
                 JSONObject obj = new JSONObject(apiResponse.readEntity(String.class))
@@ -191,6 +191,9 @@ class ProductController {
         try {
             println(params)
             JSONObject jsonObject = new JSONObject(params)
+            jsonObject.put("entityId", session.getAttribute("entityId").toString())
+            jsonObject.put("entityTypeId", session.getAttribute("entityTypeId").toString())
+            jsonObject.put("soundexCode", "NA")
             def apiResponse = new ProductService().putProductRegister(jsonObject)
             if (apiResponse.status == 200) {
                 JSONObject obj = new JSONObject(apiResponse.readEntity(String.class))

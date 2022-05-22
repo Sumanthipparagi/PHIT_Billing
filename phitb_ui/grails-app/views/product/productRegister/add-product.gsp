@@ -213,7 +213,7 @@
                                             </label>
                                             <input type="number" id="productMoo" class="form-control productMoo"
                                                    name="productMoo"
-                                                   placeholder="Product Moo"
+                                                   placeholder="Product MOQ"
                                                    required/>
                                         </div>
                                     </div>
@@ -231,14 +231,14 @@
                                             </label>
                                             <input type="number" id="perLotQuantity" class="form-control perLotQuantity"
                                                    name="perLotQuantity"
-                                                   placeholder="Product Moo"
+                                                   placeholder="Per Lot Quantity"
                                                    required/>
                                         </div>
                                         <div class="col-lg-6 form-group  form-float">
                                             <label for="purchaseRate">
                                                 Purchase Rate
                                             </label>
-                                            <input type="number" id="purchaseRate" class="form-control purchaseRate"
+                                            <input type="text" id="purchaseRate" class="form-control purchaseRate"
                                                    name="purchaseRate" onblur="setTwoNumberDecimal" step="0.25" value="0.00"
                                                    placeholder="Purchase Rate"
                                                    required/>
@@ -247,7 +247,7 @@
                                             <label for="purchaseTradeDiscount">
                                                 Purchase Trade Discount
                                             </label>
-                                            <input type="number" id="purchaseTradeDiscount" onblur="setTwoNumberDecimal"
+                                            <input type="text" id="purchaseTradeDiscount" onblur="setTwoNumberDecimal"
                                                    class="form-control purchaseTradeDiscount" name="purchaseTradeDiscount"
                                                    placeholder="Purchase Trade Discount" step="0.25" value="0.00"
                                                    required/>
@@ -256,7 +256,7 @@
                                             <label for="purchaseMarginPercent">
                                                 Purchase Margin percent
                                             </label>
-                                            <input type="number" id="purchaseMarginPercent" onblur="setTwoNumberDecimal"
+                                            <input type="text" id="purchaseMarginPercent" onblur="setTwoNumberDecimal"
                                                    class="form-control purchaseMarginPercent" name="purchaseMarginPercent"
                                                    placeholder="Purchase Margin Percent" step="0.25" value="0.00"
                                                    required/>
@@ -265,7 +265,7 @@
                                             <label for="saleRate">
                                                 Sale Rate
                                             </label>
-                                            <input type="number" id="saleRate" onblur="setTwoNumberDecimal"
+                                            <input type="text" id="saleRate" onblur="setTwoNumberDecimal"
                                                    class="form-control saleRate" name="saleRate"
                                                    placeholder="Sale Rate" step="0.25" value="0.00"
                                                    required/>
@@ -274,7 +274,7 @@
                                             <label for="saleTradeDiscount">
                                                 Sale Trade Discount
                                             </label>
-                                            <input type="number" id="saleTradeDiscount" onblur="setTwoNumberDecimal"
+                                            <input type="text" id="saleTradeDiscount" onblur="setTwoNumberDecimal"
                                                    class="form-control saleTradeDiscount" name="saleTradeDiscount"
                                                    placeholder="Sale Trade Discount" step="0.25" value="0.00"
                                                    required/>
@@ -283,25 +283,25 @@
                                             <label for="salesmenPercent">
                                                 Sale Margin Percent
                                             </label>
-                                            <input type="number" id="salesmenPercent" onblur="setTwoNumberDecimal"
+                                            <input type="text" id="salesmenPercent" onblur="setTwoNumberDecimal"
                                                    class="form-control saleTradeDiscount" name="salesmenPercent"
                                                    placeholder="Sale Margin Percent" step="0.25" value="0.00"
                                                    required/>
                                         </div>
                                         <div class="col-lg-6 form-group  form-float">
                                             <label for="vipPRate">
-                                                vipPRate
+                                                VIP Purchase Rate
                                             </label>
-                                            <input type="number" id="vipPRate" onblur="setTwoNumberDecimal"
+                                            <input type="text" id="vipPRate" onblur="setTwoNumberDecimal"
                                                    class="form-control vipPRate" name="vipPRate"
                                                    placeholder="vipPRate" step="0.25" value="0.00"
                                                    required/>
                                         </div>
                                         <div class="col-lg-6 form-group  form-float">
                                             <label for="vipSRate">
-                                                vipSRate
+                                                VIP Sale Rate
                                             </label>
-                                            <input type="number" id="vipSRate" onblur="setTwoNumberDecimal"
+                                            <input type="text" id="vipSRate" onblur="setTwoNumberDecimal"
                                                    class="form-control vipPRate" name="vipSRate"
                                                    placeholder="vipSRate" step="0.25" value="0.00"
                                                    required/>
@@ -310,7 +310,7 @@
                                             <label for="mrp">
                                                 MRP
                                             </label>
-                                            <input type="number" id="mrp" onblur="setTwoNumberDecimal"
+                                            <input type="text" id="mrp" onblur="setTwoNumberDecimal"
                                                    class="form-control mrp" name="mrp"
                                                    placeholder="MRP" step="0.25" value="0.00"
                                                    required/>
@@ -319,7 +319,7 @@
                                             <label for="ptr">
                                                 PTR
                                             </label>
-                                            <input type="number" id="ptr" onblur="setTwoNumberDecimal"
+                                            <input type="text" id="ptr" onblur="setTwoNumberDecimal"
                                                    class="form-control ptr" name="ptr"
                                                    placeholder="PTR" step="0.25" value="0.00"
                                                    required/>
@@ -328,7 +328,7 @@
                                             <label for="restrictedRate">
                                                 Restricted Rate
                                             </label>
-                                            <input type="number" id="restrictedRate" onblur="setTwoNumberDecimal"
+                                            <input type="text" id="restrictedRate" onblur="setTwoNumberDecimal"
                                                    class="form-control ptr" name="restrictedRate"
                                                    placeholder="Restricted Rate" step="0.25" value="0.00"
                                                    required/>

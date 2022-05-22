@@ -1,10 +1,9 @@
 package phitb_ui.product
 
-import groovy.json.JsonSlurper
+
 import org.grails.web.json.JSONArray
 import org.grails.web.json.JSONObject
 import phitb_ui.Constants
-import phitb_ui.Links
 import phitb_ui.ProductService
 import phitb_ui.entity.CustomerGroupController
 import phitb_ui.entity.EntityRegisterController
@@ -178,7 +177,7 @@ class CompositionController {
     {
         try
         {
-            def apiResponse = new ProductService().getByEntity(session.getAttribute("entityId").toString())
+            def apiResponse = new ProductService().getProductCompositionByEntity(session.getAttribute("entityId").toString())
             if (apiResponse?.status == 200)
             {
                 JSONArray jsonArray = new JSONArray(apiResponse.readEntity(String.class));

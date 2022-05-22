@@ -18,7 +18,7 @@ class CustomerGroupController {
     {
         try
         {
-            ArrayList<String> entity = new EntityService().getByEntity(session.getAttribute("entiityId").toString())
+            ArrayList<String> entity = new EntityService().getByEntity(session.getAttribute("entityId").toString())
             ArrayList<String> userregister = new UserRegisterController().getByEntity() as ArrayList<String>
             ArrayList<String> statelist = new StateController().show() as ArrayList<String>
             ArrayList<String> countrylist = new CountryController().show() as ArrayList<String>
@@ -177,4 +177,27 @@ class CustomerGroupController {
         }
     }
 
+    def getByEntity()
+    {
+        try
+        {
+            def apiResponse = new ProductService().getCustomerGroupByEntity(session.getAttribute("entityId").toString())
+            if (apiResponse?.status == 200)
+            {
+                JSONArray jsonArray = new JSONArray(apiResponse.readEntity(String.class));
+                ArrayList<String> arrayList = new ArrayList<>(jsonArray)
+                return arrayList
+            }
+            else
+            {
+                return []
+            }
+        }
+        catch (Exception ex)
+        {
+            System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
+            log.error('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
+            response.status = 400
+        }
+    }
 }
