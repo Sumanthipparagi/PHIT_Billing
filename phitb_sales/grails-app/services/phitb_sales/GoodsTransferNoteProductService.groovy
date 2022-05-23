@@ -224,7 +224,7 @@ class GoodsTransferNoteProductService {
         }
     }
 
-    def getBySaleBill(String id)
+    def getByGtn(String id)
     {
         if (id)
         {

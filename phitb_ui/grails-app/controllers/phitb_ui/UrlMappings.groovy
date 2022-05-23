@@ -476,6 +476,7 @@ class UrlMappings {
         //grn
         "/grn"(controller: 'goodsTransferNote', action: 'grn')
         "/grn/datatable"(controller: "goodsTransferNote",action:"dataTable")
+        "/grn/approveGRN"(controller: 'goodsTransferNote', action: 'approveGRN')
 
 
 

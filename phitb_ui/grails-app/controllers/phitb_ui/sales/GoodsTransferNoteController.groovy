@@ -1,5 +1,6 @@
 package phitb_ui.sales
 
+import com.google.gson.JsonObject
 import grails.converters.JSON
 import org.grails.web.json.JSONArray
 import org.grails.web.json.JSONObject
@@ -1066,5 +1067,168 @@ class GoodsTransferNoteController {
     def grn()
     {
         render(view:'/sales/goodsTransferNote/grn')
+    }
+
+
+    def approveGRN()
+    {
+        def gtn = new SalesService().getGTNById(params.gtn)
+        if(gtn!=null)
+        {
+            def gtnProduct = new SalesService().getgtnProductDetailsByGtn(gtn.id.toString())
+            println(session.getAttribute('entityId').toString())
+            UUID uuid
+            for(JSONObject gtnObject: gtnProduct)
+            {
+                def stockBook = new InventoryService().getStocksOfProductAndBatch(gtnObject.productId.toString(),
+                        gtnObject.batchNumber, session.getAttribute('entityId').toString())
+                if(stockBook!=null)
+                {
+                    double remainingQty = stockBook.get("remainingQty") + Double.parseDouble(gtnObject.sqty.toString())
+                    double remainingFreeQty = stockBook.get("remainingFreeQty") + Double.parseDouble(gtnObject.freeQty.toString())
+                    double remainingReplQty = stockBook.get("remainingReplQty") + Double.parseDouble(gtnObject.repQty.toString())
+                    stockBook.put("remainingQty", remainingQty.toLong())
+                    stockBook.put("remainingFreeQty", remainingFreeQty.toLong())
+                    stockBook.put("remainingReplQty", remainingReplQty.toLong())
+                    new InventoryService().updateStockBook(stockBook)
+                    new SalesService().approveGTN(gtn.id.toString(), gtn.entityId.toString(), gtn.financialYear
+                            .toString())
+                }
+                else {
+                    JSONArray stockArray = new JSONArray()
+                    JSONObject stock = new JSONObject()
+                    def stockBook1 = new InventoryService().getStocksOfProductAndBatch(gtnObject.productId.toString(),
+                     gtnObject.batchNumber.toString(),  gtnObject.entityId.toString())
+                    stockBook1.put("remainingQty",Double.valueOf(Double.parseDouble(gtnObject.sqty.toString())).longValue())
+                    stockBook1.put("remainingFreeQty",Double.valueOf(Double.parseDouble(gtnObject.freeQty.toString())).longValue())
+                    stockBook1.put("remainingReplQty",Double.valueOf(Double.parseDouble(gtnObject.repQty.toString())).longValue())
+                    stockBook1.put("entityId",session.getAttribute('entityId').toString())
+                    stockBook1.put("uuid",UUID.randomUUID())
+                    stockBook1.put("entityTypeId",session.getAttribute('entityTypeId').toString())
+                    def apires =new InventoryService().stockBookSave(stockBook1)
+                    new SalesService().approveGTN(gtn.id.toString(), gtn.entityId.toString(), gtn.financialYear
+                            .toString())
+                }
+            }
+
+            respond gtn,formats: ['json'], status: 200
+        }
+      else
+        {
+            response.status = 400
+        }
+    }
+
+    def printGRN()
+    {
+
+        String gtnId = params.id
+        JSONObject gtnDetail = new SalesService().getGTNDetailsById(gtnId)
+        if (gtnDetail != null)
+        {
+            JSONArray gtnProductDetails = new SalesService().getgtnProductDetailsByGtn(gtnId)
+            JSONObject series = new EntityService().getSeriesById(gtnDetail.get("seriesId").toString())
+            JSONObject customer = new EntityService().getEntityById(gtnDetail.get("customerId").toString())
+            JSONObject entity = new EntityService().getEntityById(session.getAttribute("entityId").toString())
+            JSONObject city = new SystemService().getCityById(entity.get('cityId').toString())
+            JSONObject custcity = new SystemService().getCityById(customer.get('cityId').toString())
+            JSONArray termsConditions = new EntityService().getTermsContionsByEntity(session.getAttribute("entityId").toString())
+            gtnProductDetails.each {
+                def batchResponse = new ProductService().getBatchesOfProduct(it.productId.toString())
+                JSONArray batchArray = JSON.parse(batchResponse.readEntity(String.class)) as JSONArray
+                for (JSONObject batch : batchArray)
+                {
+                    if (batch.batchNumber == it.batchNumber)
+                    {
+                        it.put("batch", batch)
+                    }
+                }
+                def apiResponse = new SalesService().getRequestWithId(it.productId.toString(), new Links().PRODUCT_REGISTER_SHOW)
+                it.put("productId", JSON.parse(apiResponse.readEntity(String.class)) as JSONObject)
+            }
+            def totalcgst = UtilsService.round(gtnProductDetails.cgstAmount.sum(), 2)
+            def totalsgst = UtilsService.round(gtnProductDetails.sgstAmount.sum(), 2)
+            def totaligst = UtilsService.round(gtnProductDetails.igstAmount.sum(), 2)
+            def totaldiscount = UtilsService.round(gtnProductDetails.discount.sum(), 2)
+            def totalBeforeTaxes = 0
+            HashMap<String, Double> gstGroup = new HashMap<>()
+            HashMap<String, Double> sgstGroup = new HashMap<>()
+            HashMap<String, Double> cgstGroup = new HashMap<>()
+            HashMap<String, Double> igstGroup = new HashMap<>()
+            for (Object it : gtnProductDetails)
+            {
+                double amountBeforeTaxes = it.amount - it.cgstAmount - it.sgstAmount - it.igstAmount
+                totalBeforeTaxes += amountBeforeTaxes
+                if (it.igstPercentage > 0)
+                {
+                    def igstPercentage = igstGroup.get(it.igstPercentage.toString())
+                    if (igstPercentage == null)
+                    {
+                        igstGroup.put(it.igstPercentage.toString(), amountBeforeTaxes)
+                    }
+                    else
+                    {
+                        igstGroup.put(it.igstPercentage.toString(), igstPercentage.doubleValue() + amountBeforeTaxes)
+                    }
+                }
+                else
+                {
+                    def gstPercentage = gstGroup.get(it.gstPercentage.toString())
+                    if (gstPercentage == null)
+                    {
+                        gstGroup.put(it.gstPercentage.toString(), amountBeforeTaxes)
+                    }
+                    else
+                    {
+                        gstGroup.put(it.gstPercentage.toString(), gstPercentage.doubleValue() + amountBeforeTaxes)
+                    }
+
+                    def sgstPercentage = sgstGroup.get(it.sgstPercentage.toString())
+                    if (sgstPercentage == null)
+                    {
+                        sgstGroup.put(it.sgstPercentage.toString(), amountBeforeTaxes)
+                    }
+                    else
+                    {
+                        sgstGroup.put(it.sgstPercentage.toString(), sgstPercentage.doubleValue() + amountBeforeTaxes)
+                    }
+                    def cgstPercentage = cgstGroup.get(it.cgstPercentage.toString())
+                    if (cgstPercentage == null)
+                    {
+                        cgstGroup.put(it.cgstPercentage.toString(), amountBeforeTaxes)
+                    }
+                    else
+                    {
+                        cgstGroup.put(it.cgstPercentage.toString(), cgstPercentage.doubleValue() + amountBeforeTaxes)
+                    }
+                }
+            }
+
+            def total = totalBeforeTaxes + totalcgst + totalsgst + totaligst
+
+//            JSONObject irnDetails = null
+//            if(gtnDetail.has("irnDetails") && gtnDetail.get("irnDetails") != null)
+//                irnDetails = new JSONObject(gtnDetail.get("irnDetails").toString())
+
+            render(view: "/sales/goodsTransferNote/grn-print", model: [saleBillDetail    : gtnDetail,
+                                                        saleProductDetails: gtnProductDetails,
+                                                        series            : series, entity: entity, customer: customer, city: city,
+                                                        total             : total, custcity: custcity,
+                                                        termsConditions   : termsConditions,
+                                                        totalcgst         : totalcgst, totalsgst: totalsgst, totaligst: totaligst,
+                                                        totaldiscount     : totaldiscount,
+                                                        gstGroup          : gstGroup,
+                                                        sgstGroup         : sgstGroup,
+                                                        cgstGroup         : cgstGroup,
+                                                        igstGroup         : igstGroup,
+                                                        totalBeforeTaxes  : totalBeforeTaxes,
+
+            ])
+        }
+        else
+        {
+
+            render("No Bill Found")
+        }
     }
 }

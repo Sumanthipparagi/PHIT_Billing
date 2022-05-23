@@ -397,7 +397,11 @@ class UrlMappings {
             "/gtn/getrecent(.$format)?"(controller: 'goodsTransferNote', action: 'getRecentByFinancialYearAndEntity')
 
             "/gtn/datatable(.$format)?"(controller: 'goodsTransferNote') {action = [GET: 'dataTable']}
+
             "/gtn/cancel(.$format)?"(controller: 'goodsTransferNote') {action = [POST: 'cancelGTN']}
+
+            "/gtn/approve(.$format)?"(controller: 'goodsTransferNote', action: 'approveGTN')
+
             "/gtn/$id(.$format)?"(controller: 'goodsTransferNote') {
                 action = [GET: 'show', PUT: 'update', DELETE:
                         'delete']
@@ -423,8 +427,8 @@ class UrlMappings {
                         'save']
             }
             "/gtnproduct/savelist(.$format)?"(controller: 'goodsTransferNoteProduct', action: 'saveList')
-            "/gtnproduct/bill/$id(.$format)?"(controller: 'goodsTransferNoteProduct') {
-                action = [GET: 'getSaleProductDetailsOfSaleBill']
+            "/gtnproduct/gtn/$id(.$format)?"(controller: 'goodsTransferNoteProduct') {
+                action = [GET: 'getByGtn']
             }
 
             "/gtnproductlist/bill/$salebillsIds(.$format)?"(controller: 'goodsTransferNoteProduct') {

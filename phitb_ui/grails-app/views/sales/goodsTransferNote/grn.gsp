@@ -236,13 +236,14 @@
                         var approveInvoice = "";
                         var cancelInvoice = "";
                         var editInvoice = "";
-                        if (json.data[i].returnStatus !== "CANCELLED") {
+                        if (json.data[i].billStatus !== "CANCELLED") {
                             cancelInvoice = '<a class="btn btn-sm btn-info" title="Cancel" onclick="cancelBill(' + json.data[i].id +')" href="#"><i class="fa fa-times"></i></a>';
                         }
-                         if("${session.getAttribute('entityTypeName')}" === "C_F")
+                         if("${session.getAttribute('entityTypeName')}" === "C_F" && json.data[i].billStatus !== "APPROVED")
                         {
                             approveInvoice =
-                                '<a class="btn btn-sm btn-success" title="Approved" onclick="cancelBill(' + json.data[i].id +')" href="#"><i class="fa fa-check"></i></a>';
+                                '<a class="btn btn-sm btn-success" title="Approved" onclick="approveGrn(' + json.data[i].id
+                                +')" href="#"><i class="fa fa-check"></i></a>';
 
                         }
                         var printbtn = '<a target="_blank" class="btn btn-sm btn-danger" data-id="' + json.data[i].id
@@ -339,6 +340,60 @@
 
 
     }
+
+
+    function approveGrn(gtn) {
+        Swal.fire({
+            title: "Approve GRN ?",
+            showDenyButton: true,
+            showCancelButton: false,
+            confirmButtonText: 'Yes',
+            denyButtonText: 'No',
+        }).then((result) => {
+            if (result.isConfirmed) {
+                var url = '/grn/approveGRN?gtn=' + gtn;
+                var beforeSendSwal;
+                $.ajax({
+                    type: "GET",
+                    url: url,
+                    dataType: 'json',
+                    beforeSend: function() {
+                        beforeSendSwal = Swal.fire({
+                            // title: "Loading",
+                            html:
+                                '<img src="${assetPath(src: "/themeassets/images/1476.gif")}" width="100" height="100"/>',
+                            showDenyButton: false,
+                            showCancelButton: false,
+                            showConfirmButton: false,
+                            allowOutsideClick: false,
+                            background:'transparent'
+                        });
+                    },
+                    success: function (data) {
+                        beforeSendSwal.close();
+                        Swal.fire(
+                            'Success!',
+                            'GRN Approved',
+                            'success'
+                        );
+                        saleInvoiceTable();
+                    },
+                    error: function () {
+                        Swal.fire(
+                            'Error!',
+                            'Unable to approve GRN at the moment, try later.',
+                            'danger'
+                        );
+                    }
+                });
+            } else if (result.isDenied) {
+
+            }
+        });
+
+
+    }
+
 
     function invoiceStatusChanged() {
         saleInvoiceTable();

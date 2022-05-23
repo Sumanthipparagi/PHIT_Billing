@@ -412,6 +412,43 @@ class GoodsTransferNoteService {
         }
     }
 
+    def approveGTN(JSONObject jsonObject)
+    {
+        String id = jsonObject.get("id")
+        String entityId = jsonObject.get("entityId")
+        String financialYear = jsonObject.get("financialYear")
+        JSONObject gtn = new JSONObject()
+        GoodsTransferNote goodsTransferNote = GoodsTransferNote.findById(Long.parseLong(id))
+        if (goodsTransferNote)
+        {
+            if (goodsTransferNote.financialYear.equalsIgnoreCase(financialYear) && goodsTransferNote.entityId == Long.parseLong(entityId))
+            {
+                ArrayList<GoodsTransferNoteProduct> goodsTransferNoteProducts = GoodsTransferNoteProduct.findAllByBillId(goodsTransferNote.id)
+                for (GoodsTransferNoteProduct GoodsTransferNoteProduct : goodsTransferNoteProducts)
+                {
+                    GoodsTransferNoteProduct.status = 0
+                    GoodsTransferNoteProduct.isUpdatable = true
+                    GoodsTransferNoteProduct.save(flush: true)
+                }
+                goodsTransferNote.billStatus = "APPROVED"
+//                goodsTransferNote.cancelledDate = new Date()
+                goodsTransferNote.isUpdatable = true
+                goodsTransferNote.save(flush: true)
+                gtn.put("products", goodsTransferNoteProducts)
+                gtn.put("gtn", goodsTransferNote)
+                return gtn
+            }
+            else
+            {
+                throw new ResourceNotFoundException()
+            }
+        }
+        else
+        {
+            throw new ResourceNotFoundException()
+        }
+    }
+
 
     def updateIRNDetails(JSONObject jsonObject)
     {

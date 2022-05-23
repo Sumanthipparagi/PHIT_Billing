@@ -466,10 +466,11 @@ public class Links
     public static String GTN_DATATABLE = "api/v1.0/sales/gtn/datatable";
     public static String GTN_RECENT = "api/v1.0/sales/gtn/getrecent";
     public static String GTN_CANCEL = "api/v1.0/sales/gtn/cancel";
+    public static String GTN_APPROVE = "api/v1.0/sales/gtn/approve";
 
 //    Goods transfer note products
-    public static String GTN_PRODUCTS_SAVE = "api/v1.0/sales/gtn-products";
-
+    public static String GTN_PRODUCTS_SAVE = "api/v1.0/sales/gtnproduct";
+    public static String GTN_PRODUCTS_BY_GTN = "api/v1.0/sales/gtnproduct/gtn";
 
     /*<--------------------------------------------Inventory ------------------------------------------------->*/
 

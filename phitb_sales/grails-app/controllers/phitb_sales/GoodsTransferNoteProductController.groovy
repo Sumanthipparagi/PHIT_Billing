@@ -247,12 +247,12 @@ class GoodsTransferNoteProductController {
         }
     }
 
-    def getGoodsTransferNoteProductOfSaleBill()
+    def getByGtn()
     {
         try
         {
             String id = params.id
-            respond goodsTransferNoteProductService.getBySaleBill(id)
+            respond goodsTransferNoteProductService.getByGtn(id)
         }
         catch (ResourceNotFoundException ex)
         {

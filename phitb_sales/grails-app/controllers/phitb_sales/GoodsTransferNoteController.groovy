@@ -340,6 +340,26 @@ class GoodsTransferNoteController {
         }
     }
 
+    def approveGTN() {
+        try {
+            JSONObject jsonObject = new JSONObject(request.reader.text)
+            JSONObject goodsTransferNote = goodsTransferNoteService.approveGTN(jsonObject)
+            respond goodsTransferNote
+        }
+        catch (ResourceNotFoundException ex) {
+            System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
+            response.status = 404
+        }
+        catch (BadRequestException ex) {
+            System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
+            response.status = 400
+
+        }
+        catch (Exception ex) {
+            System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
+        }
+    }
+
     def updateIRNDetails() {
         try {
             JSONObject jsonObject = new JSONObject(request.reader.text)
