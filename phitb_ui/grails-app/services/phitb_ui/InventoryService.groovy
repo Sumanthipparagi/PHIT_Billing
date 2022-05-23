@@ -386,14 +386,11 @@ class InventoryService {
     def deleteTempStock(String id) {
         Client client = ClientBuilder.newClient();
         WebTarget target = client.target(new Links().API_GATEWAY);
-
         try {
-
             Response apiResponse = target
                     .path(new Links().GET_TEMP_STOCK_PRODUCT+"/"+id)
                     .request(MediaType.APPLICATION_JSON_TYPE)
                     .delete()
-
             return apiResponse
         }
         catch (Exception ex) {

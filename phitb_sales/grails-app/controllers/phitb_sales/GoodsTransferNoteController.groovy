@@ -1,7 +1,6 @@
 package phitb_sales
 
 
-import grails.rest.*
 import grails.converters.*
 import grails.web.servlet.mvc.GrailsParameterMap
 import org.grails.web.json.JSONArray
@@ -12,8 +11,8 @@ import phitb_sales.Exception.BadRequestException
 class GoodsTransferNoteController {
     static responseFormats = ['json', 'xml']
 
-    static allowedMethods = [index: "GET", show: "GET", save: "POST", update: "PUT", delete: "DELETE",
-                             dataTable: "GET", updateIRNDetails: "PUT", saveInvoice: "POST", updateInvoice: "PUT"]
+    static allowedMethods = [index    : "GET", show: "GET", save: "POST", update: "PUT", delete: "DELETE",
+                             dataTable: "GET", updateIRNDetails: "PUT", saveGTN: "POST", updateInvoice: "PUT"]
     GoodsTransferNoteService goodsTransferNoteService
     GoodsTransferNoteProductService goodsTransferNoteProductService
     /**
@@ -366,13 +365,13 @@ class GoodsTransferNoteController {
      * @param Goods Transfer Note
      * @return saved Goods Transfer Note
      */
-    def saveInvoice() {
+    def saveGTN() {
         try {
             JSONObject jsonObject = JSON.parse(request.reader.text) as JSONObject
-            GoodsTransferNote goodsTransferNote = goodsTransferNoteService.save(jsonObject.get("saleInvoice"))
+            GoodsTransferNote goodsTransferNote = goodsTransferNoteService.save(jsonObject.get("gtn"))
             if(goodsTransferNote) {
                 UUID uuid
-                JSONArray saleProducts = jsonObject.get("saleProducts")
+                JSONArray saleProducts = jsonObject.get("gtnProducts")
                 for (JSONObject product : saleProducts) {
                     uuid = UUID.randomUUID()
                     product.put("uuid", uuid)

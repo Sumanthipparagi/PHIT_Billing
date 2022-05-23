@@ -113,6 +113,10 @@ class SalesService
 
     }
 
+
+
+
+
     /*
 contains both sale bill and products
  */
@@ -371,6 +375,39 @@ contains both sale bill and products
         {
             Response apiResponse = target
                     .path(new Links().SALE_BILL_RECENT)
+                    .queryParam("financialYear", financialYear)
+                    .queryParam("entityId", entityId)
+                    .queryParam("billStatus", billStatus)
+                    .request(MediaType.APPLICATION_JSON_TYPE)
+                    .get()
+
+            if (apiResponse.status == 200)
+            {
+                JSONObject jsonObject = new JSONObject(apiResponse.readEntity(String.class))
+                return jsonObject
+            }
+            else
+            {
+                return null
+            }
+        }
+        catch (Exception ex)
+        {
+            System.err.println('Service :saveStateMaster , action :  save  , Ex:' + ex)
+            log.error('Service :saveStateMaster , action :  save  , Ex:' + ex)
+        }
+
+    }
+
+
+    def getRecentGTN(String financialYear, String entityId, String billStatus)
+    {
+        Client client = ClientBuilder.newClient();
+        WebTarget target = client.target(new Links().API_GATEWAY);
+        try
+        {
+            Response apiResponse = target
+                    .path(new Links().GTN_RECENT)
                     .queryParam("financialYear", financialYear)
                     .queryParam("entityId", entityId)
                     .queryParam("billStatus", billStatus)
@@ -1243,6 +1280,53 @@ contains both sale bill and products
         {
             Response apiResponse = target
                     .path(new Links().SALE_RETURN_DATATABLE)
+                    .queryParam("params", URLEncoder.encode(jsonObject.toString(), "UTF-8"))
+                    .request(MediaType.APPLICATION_JSON_TYPE)
+                    .get()
+            return apiResponse
+        }
+        catch (Exception ex)
+        {
+            System.err.println('Service :showSalesService , action :  show  , Ex:' + ex)
+            log.error('Service :showSalesService , action :  show  , Ex:' + ex)
+        }
+
+    }
+
+
+    /*
+ contains both sale bill and products
+  */
+    def saveGTN(JSONObject jsonObject)
+    {
+        Client client = ClientBuilder.newClient();
+        WebTarget target = client.target(new Links().API_GATEWAY)
+        try
+        {
+            println(jsonObject)
+            Response apiResponse = target
+                    .path(new Links().GTN_SAVE)
+                    .request(MediaType.APPLICATION_JSON_TYPE)
+                    .post(Entity.entity(jsonObject.toString(), MediaType.APPLICATION_JSON_TYPE))
+            println(apiResponse)
+            return apiResponse
+        }
+        catch (Exception ex)
+        {
+            System.err.println('Service :salesService , action :  saveSaleInvoice  , Ex:' + ex)
+            log.error('Service :salesService , action :  saveSaleInvoice  , Ex:' + ex)
+        }
+    }
+
+
+    def showGTN(JSONObject jsonObject)
+    {
+        Client client = ClientBuilder.newClient();
+        WebTarget target = client.target(new Links().API_GATEWAY);
+        try
+        {
+            Response apiResponse = target
+                    .path(new Links().GTN_DATATABLE)
                     .queryParam("params", URLEncoder.encode(jsonObject.toString(), "UTF-8"))
                     .request(MediaType.APPLICATION_JSON_TYPE)
                     .get()

@@ -238,7 +238,8 @@ class TempStockBookService {
             if (tempStockBook) {
                 tempStockBook.isUpdatable = true
                 tempStockBook.delete()
-            } else {
+            }
+            else {
                 throw new ResourceNotFoundException()
             }
         } else {

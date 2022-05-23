@@ -460,6 +460,17 @@ public class Links
 //    public static String SALE_ORDER = "api/v1.0/sales/saleproductdetails";
 
 
+//    Goods Transfer Note
+    public static String GTN_SAVE = "api/v1.0/sales/gtn";
+    public static String GTN_SHOW = "api/v1.0/sales/gtn";
+    public static String GTN_DATATABLE = "api/v1.0/sales/gtn/datatable";
+    public static String GTN_RECENT = "api/v1.0/sales/gtn/getrecent";
+    public static String GTN_CANCEL = "api/v1.0/sales/gtn/cancel";
+
+//    Goods transfer note products
+    public static String GTN_PRODUCTS_SAVE = "api/v1.0/sales/gtn-products";
+
+
     /*<--------------------------------------------Inventory ------------------------------------------------->*/
 
     //Stock book
@@ -489,6 +500,8 @@ public class Links
     public static String BANK_REGISTER_DATATABLE = "api/v1.0/accounts/bankregister/datatable";
     public static String BANK_REGISTER_UPDATE = "api/v1.0/accounts/bankregister/{id}";
     public static String BANK_REGISTER_DELETE = "api/v1.0/accounts/bankregister/{id}";
+
+
 
 
     //GL

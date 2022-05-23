@@ -468,8 +468,16 @@ class UrlMappings {
 
         //GTN
         "/gtn"(controller: "goodsTransferNote") {
-            action = [GET: "index", POST: 'saveSaleEntry']
+            action = [GET: "index", POST: 'saveGtn']
         }
+
+
+
+        //grn
+        "/grn"(controller: 'goodsTransferNote', action: 'grn')
+        "/grn/datatable"(controller: "goodsTransferNote",action:"dataTable")
+
+
 
         /*<-------------------------------------------Purchase Entry------------------------------------------------->*/
 

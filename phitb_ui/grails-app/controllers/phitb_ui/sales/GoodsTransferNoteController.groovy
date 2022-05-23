@@ -37,7 +37,7 @@ class GoodsTransferNoteController {
                                                   salesmanList: salesmanList, priorityList: priorityList])
     }
 
-    def saveSaleEntry()
+    def saveGtn()
     {
         SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy")
         JSONObject gtn = new JSONObject()
@@ -60,11 +60,11 @@ class GoodsTransferNoteController {
         def series = new EntityService().getSeriesById(seriesId)
         if (!billStatus.equalsIgnoreCase("DRAFT"))
         {
-            def recentSaleBill = new SalesService().getRecentSaleBill(financialYear, entityId, billStatus)
-            if (recentSaleBill != null && recentSaleBill.size()!=0)
+            def recentGTN = new SalesService().getRecentGTN(financialYear, entityId, billStatus)
+            if (recentGTN != null && recentGTN.size()!=0)
             {
-                finId = Long.parseLong(recentSaleBill.get("finId").toString()) + 1
-                serBillId = Long.parseLong(recentSaleBill.get("serBillId").toString()) + 1
+                finId = Long.parseLong(recentGTN.get("finId").toString()) + 1
+                serBillId = Long.parseLong(recentGTN.get("serBillId").toString()) + 1
             }
             else
             {
@@ -258,14 +258,16 @@ class GoodsTransferNoteController {
         gtn.put("seriesCode", seriesCode)
         gtn.put("uuid", params.uuid)
         JSONObject jsonObject = new JSONObject()
-        jsonObject.put("saleInvoice", gtn)
-        jsonObject.put("saleProducts", gtnProducts)
-        Response response = new SalesService().saveSaleInvoice(jsonObject)
+        jsonObject.put("gtn", gtn)
+        jsonObject.put("gtnProducts", gtnProducts)
+        Response response = new SalesService().saveGTN(jsonObject)
         if (response.status == 200)
         {
+            UUID uuid
             JSONObject saleBillDetail = new JSONObject(response.readEntity(String.class))
             //update stockbook
             for (JSONObject sale : saleData) {
+                uuid = UUID.randomUUID()
                 String tempStockRowId = sale.get("15")
                 def tmpStockBook = new InventoryService().getTempStocksById(Long.parseLong(tempStockRowId))
                 def stockBook = new InventoryService().getStockBookById(Long.parseLong(tmpStockBook.originalId))
@@ -282,23 +284,14 @@ class GoodsTransferNoteController {
                 stockBook.put("expDate", expDate)
                 stockBook.put("purcDate", purcDate)
                 stockBook.put("manufacturingDate", manufacturingDate)
-                stockBook.put("uuid", params.uuid)
+                stockBook.put("uuid",uuid)
                 def apiRes = new InventoryService().updateStockBook(stockBook)
                 if (apiRes.status == 200) {
-                    //clear tempstockbook
-                    new InventoryService().deleteTempStock(tempStockRowId)
-                    try {
-                        if (billStatus.equalsIgnoreCase("ACTIVE")) {
-                            //push the invoice to e-Invoice service and generate IRN, save IRN to Sale Bill Details
-                            new EInvoiceService().generateIRN(session, saleBillDetail, gtnProducts)
-                        }
-                    }
-                    catch (Exception ex) {
-                        ex.printStackTrace()
-                    }
+//                    //clear tempstockbook
+                    def deleteTemp =   new InventoryService().deleteTempStock(tempStockRowId)
+                    println(deleteTemp)
                 }
             }
-
             JSONObject responseJson = new JSONObject()
             responseJson.put("series", series)
             responseJson.put("gtn", saleBillDetail)
@@ -1026,5 +1019,52 @@ class GoodsTransferNoteController {
             response.status == 400
         }
 
+    }
+
+
+    def dataTable() {
+        try {
+            JSONObject jsonObject = new JSONObject(params)
+            def apiResponse = new SalesService().showGTN(jsonObject)
+            if (apiResponse.status == 200) {
+                JSONObject responseObject = new JSONObject(apiResponse.readEntity(String.class))
+                if(responseObject)
+                {
+                    JSONArray jsonArray = responseObject.data
+                    JSONArray jsonArray2 = new JSONArray()
+                    JSONArray jsonArray3 = new JSONArray()
+                    JSONArray entityArray = new JSONArray()
+                    JSONArray cityArray = new JSONArray()
+                    for (JSONObject json : jsonArray) {
+                        json.put("customer", new EntityService().getEntityById(json.get("customerId").toString()))
+                        jsonArray2.put(json)
+                    }
+                    for(JSONObject json1 : jsonArray2)
+                    {
+                        entityArray.put(json1.get("customer"))
+                    }
+                    entityArray.each {
+                        def cityResp = new SystemService().getCityById(it.cityId.toString())
+                        it.put("cityId", cityResp)
+                    }
+                    responseObject.put("data", jsonArray2)
+                    responseObject.put("city",entityArray)
+                }
+                respond responseObject, formats: ['json'], status: 200
+            } else {
+                response.status = 400
+            }
+        }
+        catch (Exception ex) {
+            System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
+            log.error('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
+            response.status = 400
+        }
+    }
+
+
+    def grn()
+    {
+        render(view:'/sales/goodsTransferNote/grn')
     }
 }

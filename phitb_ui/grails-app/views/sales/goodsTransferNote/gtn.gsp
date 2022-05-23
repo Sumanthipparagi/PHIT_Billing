@@ -605,7 +605,8 @@
                         applySchemes(row, sQty);
                         if(selection === 6)
                         {
-                            sRate = Number(this.getActiveEditor().TEXTAREA.value);
+                            // sRate = Number(this.getActiveEditor().TEXTAREA.value);
+                            sRate = hot.getDataAtCell(row, 6);
                         }
                         else
                             sRate = hot.getDataAtCell(row, 6);
@@ -976,7 +977,7 @@
 
         $.ajax({
             type: "POST",
-            url: "sale-entry",
+            url: "/gtn",
             dataType: 'json',
             data: {
                 saleData: saleData,
@@ -1052,7 +1053,7 @@
     function printInvoice() {
         if (readOnly) {
             window.open(
-                'sale-entry/print-invoice?id=' + saleBillId,
+                'gtn/print-invoice?id=' + saleBillId,
                 '_blank'
             );
             resetData();

@@ -202,6 +202,30 @@ class UrlMappings {
                     'getSaleProductDetailsbybatchAndBill')
 
 
+////            Goods transfer  note
+//            "/gtn(.$format)?"(controller: 'goodsTransferNote') {
+//                action = [GET: 'index', POST:
+//                        'save']
+//            }
+//            "/gtn/datatable(.$format)?"(controller: 'goodsTransferNote') {action = [GET: 'dataTable']}
+//            "/gtn/$id(.$format)?"(controller: 'goodsTransferNote') {
+//                action = [GET: 'show', PUT: 'update', DELETE:
+//                        'delete']
+//            }
+//            "/gtn/getrecent(.$format)?"(controller: 'goodsTransferNote', action: 'getRecentByFinancialYearAndEntity')
+//            "/gtn/cancel(.$format)?"(controller: 'goodsTransferNote') {action = [POST: 'cancelGTN']}
+//
+//
+//            //            Goods transfer  note products
+//            "/gtn-products(.$format)?"(controller: 'goodsTransferNoteProduct') {
+//                action = [GET: 'index', POST:
+//                        'save']
+//            }
+//            "/gtn-products/datatable(.$format)?"(controller: 'goodsTransferNoteProduct') {action = [GET: 'dataTable']}
+//            "/gtn-products/$id(.$format)?"(controller: 'goodsTransferNoteProduct') {
+//                action = [GET: 'show', PUT: 'update', DELETE: 'delete']
+//            }
+
 
             //Sale Transaction Log
             "/saletransactionlog(.$format)?"(controller: 'saleTransactionLog') {
@@ -365,11 +389,13 @@ class UrlMappings {
             //Goods Transfer Note
             "/gtn(.$format)?"(controller: 'goodsTransferNote') {
                 action = [GET: 'index', POST:
-                        'save']
+                        'saveGTN']
             }
             "/draftgtn(.$format)?"(controller: 'goodsTransferNote') {
                 action = [GET: 'getDraftBillById']
             }
+            "/gtn/getrecent(.$format)?"(controller: 'goodsTransferNote', action: 'getRecentByFinancialYearAndEntity')
+
             "/gtn/datatable(.$format)?"(controller: 'goodsTransferNote') {action = [GET: 'dataTable']}
             "/gtn/cancel(.$format)?"(controller: 'goodsTransferNote') {action = [POST: 'cancelGTN']}
             "/gtn/$id(.$format)?"(controller: 'goodsTransferNote') {
