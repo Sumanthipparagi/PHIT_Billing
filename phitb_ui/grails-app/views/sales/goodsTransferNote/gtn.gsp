@@ -938,7 +938,7 @@
             alert("Can't change this now, invoice has been saved already.")
     }
 
-    var saleBillId = 0;
+    var gtnId = 0;
 
     function saveSaleInvoice(billStatus) {
         $("#saveBtn").prop("disabled", true);
@@ -999,7 +999,7 @@
                         hot.setCellMeta(j, i, 'readOnly', true);
                     }
                 }
-                saleBillId = data.gtn.id;
+                gtnId = data.gtn.id;
                 var datepart = data.gtn.entryDate.split("T")[0];
                 var month = datepart.split("-")[1];
                 var year = datepart.split("-")[0];
@@ -1055,7 +1055,7 @@
     function printInvoice() {
         if (readOnly) {
             window.open(
-                '/grn/print-grn?id=' + saleBillId,
+                '/grn/print-grn?id=' + gtnId,
                 '_blank'
             );
             resetData();

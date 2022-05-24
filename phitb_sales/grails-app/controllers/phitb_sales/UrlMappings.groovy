@@ -194,9 +194,9 @@ class UrlMappings {
                 action = [GET: 'getAllByDays']
             }
 
-            "/saleproductdetailsbyproductId(.$format)?"(controller: 'saleOrderProductDetails') {
-                action = [GET: 'getSaleOrderProductDetailsbyProductId']
-            }
+//            "/saleproductdetailsbyproductId(.$format)?"(controller: 'saleOrderProductDetails') {
+//                action = [GET: 'getSaleOrderProductDetailsbyProductId']
+//            }
 
             "/saleproductdetailsbillandbatch(.$format)?"(controller: 'saleOrderProductDetails', action:
                     'getSaleProductDetailsbybatchAndBill')

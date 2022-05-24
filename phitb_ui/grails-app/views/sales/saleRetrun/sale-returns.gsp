@@ -1229,22 +1229,24 @@
                     if (data) {
                         batchData = [];
                         for (var i = 0; i < data.length; i++) {
-                            var batchdt = [];
-                            batchdt.push(data[i].batchNumber);
-                            batchdt.push(data[i].expDate.split("T")[0]);
-                            batchdt.push(data[i].manufacturingDate.split("T")[0]);
-                            batchdt.push(data[i].remainingQty);
-                            batchdt.push(data[i].remainingFreeQty);
-                            batchdt.push(data[i].purchaseRate);
-                            batchdt.push(data[i].saleRate);
-                            batchdt.push(data[i].mrp);
-                            batchdt.push(data[i].packingDesc);
-                            batchdt.push(data[i].gst);
-                            batchdt.push(data[i].sgst);
-                            batchdt.push(data[i].cgst);
-                            batchdt.push(data[i].igst);
-                            batchdt.push(data[i].id);
-                            batchData.push(batchdt);
+                            if(Number('${session.getAttribute('entityId')}')=== data[i].entityId) {
+                                var batchdt = [];
+                                batchdt.push(data[i].batchNumber);
+                                batchdt.push(data[i].expDate.split("T")[0]);
+                                batchdt.push(data[i].manufacturingDate.split("T")[0]);
+                                batchdt.push(data[i].remainingQty);
+                                batchdt.push(data[i].remainingFreeQty);
+                                batchdt.push(data[i].purchaseRate);
+                                batchdt.push(data[i].saleRate);
+                                batchdt.push(data[i].mrp);
+                                batchdt.push(data[i].packingDesc);
+                                batchdt.push(data[i].gst);
+                                batchdt.push(data[i].sgst);
+                                batchdt.push(data[i].cgst);
+                                batchdt.push(data[i].igst);
+                                batchdt.push(data[i].id);
+                                batchData.push(batchdt);
+                            }
                         }
                         batchHot.updateSettings({
                             data: []
