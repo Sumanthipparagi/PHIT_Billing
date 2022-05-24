@@ -806,7 +806,7 @@
         var noOfCrDays = 0;
         var customerId = $("#customerSelect").val();
         for (var i = 0; i < customers.length; i++) {
-            if (customerId == customers[i].id) {
+            if (customerId === customers[i].id) {
                 noOfCrDays = customers[i].noOfCrDays;
             }
         }
