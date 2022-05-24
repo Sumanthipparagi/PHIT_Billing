@@ -439,7 +439,6 @@ public class Links
     public static String SALE_RETURN_PRODUCT_BATCH_BILL = "api/v1.0/sales/getsalereturndetailsby-product-batch-salebill";
     public static String SALE_RETURN_CANCEL = "api/v1.0/sales/salereturn/cancel";
 
-
     //Sale Return Details
     public static String SALE_RETURN_DETAIL_SHOW = "api/v1.0/sales/salereturndetails";
     public static String SALE_RETURN_DETAIL_SAVE = "api/v1.0/sales/salereturndetails";

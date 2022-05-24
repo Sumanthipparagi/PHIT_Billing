@@ -385,20 +385,20 @@ class GoodsTransferNoteService {
         {
             if (goodsTransferNote.financialYear.equalsIgnoreCase(financialYear) && goodsTransferNote.entityId == Long.parseLong(entityId))
             {
-                ArrayList<SaleProductDetails> saleProductDetails = SaleProductDetails.findAllByBillId(goodsTransferNote.id)
-                for (SaleProductDetails saleProductDetail : saleProductDetails)
+                ArrayList<GoodsTransferNoteProduct> goodsTransferNoteProducts = GoodsTransferNoteProduct.findAllByBillId(goodsTransferNote.id)
+                for (GoodsTransferNoteProduct goodsTransferNoteProduct : goodsTransferNoteProducts)
                 {
-                    saleProductDetail.status = 0
-                    saleProductDetail.isUpdatable = true
-                    saleProductDetail.save(flush: true)
+                    goodsTransferNoteProduct.status = 0
+                    goodsTransferNoteProduct.isUpdatable = true
+                    goodsTransferNoteProduct.save(flush: true)
                 }
                 goodsTransferNote.billStatus = "CANCELLED"
                 goodsTransferNote.cancelledDate = new Date()
                 goodsTransferNote.isUpdatable = true
                 goodsTransferNote.save(flush: true)
 
-                saleInvoice.put("products", saleProductDetails)
-                saleInvoice.put("invoice", goodsTransferNote)
+                saleInvoice.put("products", goodsTransferNoteProducts)
+                saleInvoice.put("gtn", goodsTransferNote)
                 return saleInvoice
             }
             else

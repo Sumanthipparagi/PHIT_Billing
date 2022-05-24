@@ -470,6 +470,7 @@ class UrlMappings {
         "/gtn"(controller: "goodsTransferNote") {
             action = [GET: "index", POST: 'saveGtn']
         }
+        "/gtn/cancel"(controller: 'goodsTransferNote', action: 'cancelGTN')
 
 
 

@@ -220,7 +220,7 @@
                 }
             ],
             language: {
-                searchPlaceholder: "Search Sale Return"
+                searchPlaceholder: "Search GRN"
             },
             ajax: {
                 type: 'GET',
@@ -236,13 +236,13 @@
                         var approveInvoice = "";
                         var cancelInvoice = "";
                         var editInvoice = "";
-                        if (json.data[i].billStatus !== "CANCELLED") {
+                        if (json.data[i].billStatus !== "CANCELLED" && json.data[i].billStatus !== "APPROVED") {
                             cancelInvoice = '<a class="btn btn-sm btn-info" title="Cancel" onclick="cancelBill(' + json.data[i].id +')" href="#"><i class="fa fa-times"></i></a>';
                         }
-                         if("${session.getAttribute('entityTypeName')}" === "C_F" && json.data[i].billStatus !== "APPROVED")
+                         if("${session.getAttribute('entityTypeName')}" === "C_F" && json.data[i].billStatus !== "APPROVED" && json.data[i].billStatus !== "CANCELLED")
                         {
-                            approveInvoice =
-                                '<a class="btn btn-sm btn-success" title="Approved" onclick="approveGrn(' + json.data[i].id
+
+                            approveInvoice = '<a class="btn btn-sm btn-success" title="Approved" onclick="approveGrn(' + json.data[i].id
                                 +')" href="#"><i class="fa fa-check"></i></a>';
 
                         }
@@ -254,8 +254,8 @@
                             invoiceNumber = "";
                         if(json.data[i].returnStatus=== "DRAFT")
                         {
-                            editInvoice = '<a class="btn btn-sm btn-warning"  href="/edit-sale-entry?saleBillId=' +
-                                json.data[i].id + '"><i class="fa fa-edit"></i></a>';
+                            // editInvoice = '<a class="btn btn-sm btn-warning"  href="/edit-sale-entry?saleBillId=' +
+                            //     json.data[i].id + '"><i class="fa fa-edit"></i></a>';
                         }
                         var grossAmt = (json.data[i].totalAmount - json.data[i].totalGst).toFixed(2);
                         return_data.push({
@@ -291,14 +291,14 @@
 
     function cancelBill(id) {
         Swal.fire({
-            title: "Cancel this Sale Return? this can't be undone.",
+            title: "Cancel this GRN? this can't be undone.",
             showDenyButton: true,
             showCancelButton: false,
             confirmButtonText: 'Yes',
             denyButtonText: 'No',
         }).then((result) => {
             if (result.isConfirmed) {
-                var url = '/grn/cancel-invoice?id=' + id;
+                var url = '/gtn/cancel?id=' + id;
                 var beforeSendSwal;
                 $.ajax({
                     type: "GET",
@@ -307,8 +307,7 @@
                     beforeSend: function() {
                         beforeSendSwal = Swal.fire({
                             // title: "Loading",
-                            html:
-                                '<img src="${assetPath(src: "/themeassets/images/1476.gif")}" width="100" height="100"/>',
+                            html: '<img src="${assetPath(src: "/themeassets/images/1476.gif")}" width="100" height="100"/>',
                             showDenyButton: false,
                             showCancelButton: false,
                             showConfirmButton: false,
@@ -344,7 +343,7 @@
 
     function approveGrn(gtn) {
         Swal.fire({
-            title: "Approve GRN ?",
+            title: "Approve this GRN? this can't be undone.",
             showDenyButton: true,
             showCancelButton: false,
             confirmButtonText: 'Yes',
