@@ -213,9 +213,9 @@
 
                         <div class="row">
                             <button onclick="resetPage()" class="btn btn-danger">Reset</button>
-                            <button id="saveDraftBtn" onclick="saveSaleInvoice('DRAFT')"
+                            <button id="saveDraftBtn" onclick="saveGTN('DRAFT')"
                                     class="btn btn-primary">Save Draft</button>
-                            <button id="saveBtn" onclick="saveSaleInvoice('ACTIVE')"
+                            <button id="saveBtn" onclick="saveGTN('ACTIVE')"
                                     class="btn btn-primary">Save</button>
                             %{--<button onclick="printInvoice()" class="btn btn-secondary">Print</button>--}%
                         </div>
@@ -753,7 +753,7 @@
                     if (data) {
                         batchData = [];
                         for (var i = 0; i < data.length; i++) {
-                            if(Number('${session.getAttribute('entityId')}')=== data[i].entityId) {
+                            if(Number('${session.getAttribute('entityId')}')===data[i].entityId) {
                                 var batchdt = [];
                                 batchdt.push(data[i].batchNumber);
                                 batchdt.push(data[i].expDate.split("T")[0]);
@@ -940,11 +940,11 @@
 
     var gtnId = 0;
 
-    function saveSaleInvoice(billStatus) {
+    function saveGTN(billStatus) {
         $("#saveBtn").prop("disabled", true);
         $("#saveDraftBtn").prop("disabled", true);
         var waitingSwal = Swal.fire({
-            title: "Generating Invoice, Please wait!",
+            title: "Generating GRN, Please wait!",
             showDenyButton: false,
             showCancelButton: false,
             showConfirmButton: false,
