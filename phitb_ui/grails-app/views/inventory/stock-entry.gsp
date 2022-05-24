@@ -156,6 +156,16 @@
 %{--<asset:javascript src="/themeassets/js/pages/forms/basic-form-elements.js"/>--}%
 <asset:javascript src="/themeassets/plugins/select2/dist/js/select2.full.js" type="text/javascript"/>
 
+<script type="text/javascript" src="https://cdn.datatables.net/buttons/1.4.1/js/dataTables.buttons.min.js"></script>
+<script type="text/javascript" src="https://cdn.datatables.net/buttons/1.4.1/js/buttons.flash.min.js"></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.32/pdfmake.min.js"></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.32/vfs_fonts.js"></script>
+<script type="text/javascript" src="https://cdn.datatables.net/buttons/1.4.1/js/buttons.html5.min.js"></script>
+<script type="text/javascript" src="https://cdn.datatables.net/buttons/1.4.1/js/buttons.print.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.2/js/all.js" integrity="sha256-2JRzNxMJiS0aHOJjG+liqsEOuBb6++9cY4dSOyiijX4=" crossorigin="anonymous"></script>
+<asset:javascript src="/themeassets/plugins/icons/all.js"/>
+
 <script>
 
     var stockentrytable;
@@ -208,8 +218,28 @@
             info: true,
             processing: true,
             serverSide: true,
+            dom: 'lBfrtip',
+            // buttons: [
+            //     {
+            //         'copy', 'csv', 'excel', 'pdf', 'print'
+            //     },
+            // ],
+            buttons: [
+                {
+                    'extend': 'excel',
+                    exportOptions: { columns: ':visible:not(:first-child)' }
+                },
+                {
+                    'extend': 'pdf',
+                    exportOptions: { columns: ':visible:not(:first-child)' }
+                },
+                {
+                    'extend': 'print',
+                    exportOptions: { columns: ':visible:not(:first-child)' }
+                }
+            ],
             language: {
-                searchPlaceholder: "Search Batch Register"
+                searchPlaceholder: "Search Stocks"
             },
             ajax: {
                 type: 'GET',
