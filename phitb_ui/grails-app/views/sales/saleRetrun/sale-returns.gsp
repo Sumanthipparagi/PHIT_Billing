@@ -2048,6 +2048,19 @@
                 .on('select2-close', onSelect2Closed.bind(this));
             self.$textarea.select2('open');
 
+            const element = document.getElementsByClassName("highlight")[0];
+            const rect = element.getBoundingClientRect();
+            var top = rect.top.toFixed();
+            var left =  rect.left.toFixed();
+            var bottom =  rect.bottom.toFixed();
+            $("#select2-drop").css("top","");
+            $("#select2-drop").css("left","");
+            document.getElementById("select2-drop").style.top = top+"px";
+            document.getElementById("select2-drop").style.left = left+"px";
+            document.getElementById("select2-drop").style.bottom = bottom+"px";
+            document.getElementById("select2-drop").style.width = 229+"px";
+            console.log(document.getElementById("select2-drop"));
+
 
             // Pushes initial character entered into the search field, if available
             if (keyboardEvent && keyboardEvent.keyCode) {
@@ -2055,21 +2068,23 @@
                 var keyText = (String.fromCharCode((96 <= key && key <= 105) ? key - 48 : key)).toLowerCase();
                 console.log("KeyText: " + keyText);
                 self.$textarea.select2('search', keyText.slice(0, -1));
-
-
-                // alert(rect)
                 $('.handsontableInput').children().show()
             } else {
-                $('.handsontableInput').children().hide()
+                // $('.handsontableInput').children().hide()
+                const element = document.getElementsByClassName("highlight")[0];
+                const rect = element.getBoundingClientRect();
+                var top = rect.top.toFixed();
+                var left =  rect.left.toFixed();
+                var bottom =  rect.bottom.toFixed();
+                $("#select2-drop").css("top","");
+                $("#select2-drop").css("left","");
+                document.getElementById("select2-drop").style.top = top+"px";
+                document.getElementById("select2-drop").style.left = left+"px";
+                document.getElementById("select2-drop").style.bottom = bottom+"px";
+                document.getElementById("select2-drop").style.width = 229+"px";
+                console.log(document.getElementById("select2-drop"));
             }
             Handsontable.renderers.cellDecorator.apply(this, arguments);
-            // const element = document.getElementsByClassName("highlight")[0];
-            // const rect = element.getBoundingClientRect();
-            // var top = rect.top.toFixed();
-            // var left =  rect.left.toFixed();
-            // document.getElementById("select2-drop").setAttribute('style','top:'+top+'');
-            // document.getElementById("select2-drop").style.left = left;
-            // console.log(document.getElementById("select2-drop"));
         };
 
 
