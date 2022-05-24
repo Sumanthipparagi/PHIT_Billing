@@ -26,7 +26,6 @@ class StockBookController
      */
     def index()
     {
-
         try
         {
             respond stockBookService.getAll(params.limit, params.offset, params.query)

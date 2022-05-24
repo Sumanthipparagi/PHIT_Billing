@@ -90,7 +90,7 @@
 
                              <div class="col-md-4">
                                  <div class="form-group">
-                                     <label for="invoiceStatus">Sales Return Status</label>
+                                     <label for="invoiceStatus">GRN status</label>
                                      <select onchange="invoiceStatusChanged()" id="invoiceStatus" class="form-control">
                                          <option>All</option>
                                          <option>DRAFT</option>
@@ -247,7 +247,7 @@
 
                         }
                         var printbtn = '<a target="_blank" class="btn btn-sm btn-danger" data-id="' + json.data[i].id
-                            + '" href="/sale-return/print-invoice?id=' + json.data[i].id +
+                            + '" href="/grn/print-grn?id=' + json.data[i].id +
                             '"><i class="fa fa-print"></i></a>';
                         var invoiceNumber = json.data[i].invoiceNumber;
                         if (invoiceNumber === undefined)

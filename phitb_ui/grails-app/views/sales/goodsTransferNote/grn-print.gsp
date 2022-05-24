@@ -197,11 +197,11 @@
             </sub>
         </td>
         <td colspan="4" style="vertical-align:top;">
-            <strong>TAX INVOICE</strong>
+            <strong>Goods Receipt Note</strong>
             <ul style="margin: 0;">
 
-                <li><b class="tab">Invoice No</b>:  <g:if test="${saleBillDetail.billStatus == 'CANCELLED'}"><del>${saleBillDetail.invoiceNumber}</del></g:if><g:else>${saleBillDetail.invoiceNumber}</g:else></li>
-                <li><b class="tab">Inv Date</b>:&nbsp;<span id="invDate"></span></li>
+                <li><b class="tab">GRN No</b>:  <g:if test="${saleBillDetail.billStatus == 'CANCELLED'}"><del>${saleBillDetail.invoiceNumber}</del></g:if><g:else>${saleBillDetail.invoiceNumber}</g:else></li>
+                <li><b class="tab">GRN Date</b>:&nbsp;<span id="invDate"></span></li>
                 <li><b class="tab">Due Date</b>:&nbsp;<span id="dueDate"></span></li>
                 %{--                <li><b class="tab">No of cases</b>:</li>--}%
                 %{--                <li><b class="tab">Weight in Kgs</b>:</li>--}%
