@@ -69,21 +69,21 @@ class BillPaymentLogService {
 
     BillPaymentLog save(JSONObject jsonObject) {
         BillPaymentLog billPaymentLog = new BillPaymentLog()
-
         billPaymentLog.billId = Long.parseLong(jsonObject.get("billId").toString())
-        billPaymentLog.paymentId = Long.parseLong(jsonObject.get("paymentId").toString())
         billPaymentLog.billType = jsonObject.get("billType").toString()
         billPaymentLog.amountPaid = Double.parseDouble(jsonObject.get("amountPaid").toString())
-        billPaymentLog.paymentRecord = jsonObject.get("paymentRecord").toString()
-        billPaymentLog.approvedBy = Long.parseLong(jsonObject.get("approvedBy").toString())
+        billPaymentLog.paymentRecord = "0"
+        billPaymentLog.approvedBy = Long.parseLong("1")
         billPaymentLog.currentFinancialYear = jsonObject.get("currentFinancialYear").toString()
+        billPaymentLog.paymentId = Long.parseLong(jsonObject.get("paymentId").toString())
+        billPaymentLog.transId = Long.parseLong(jsonObject.get("transId").toString())
         billPaymentLog.financialYear = jsonObject.get("financialYear").toString()
-        billPaymentLog.status = Long.parseLong(jsonObject.get("status").toString())
-        billPaymentLog.syncStatus = Long.parseLong(jsonObject.get("syncStatus").toString())
-        billPaymentLog.entityTypeId = Long.parseLong(jsonObject.get("entityTypeId").toString())
-        billPaymentLog.entityId = Long.parseLong(jsonObject.get("entityId").toString())
-        billPaymentLog.modifiedUser = Long.parseLong(jsonObject.get("modifiedUser").toString())
-        billPaymentLog.createdUser = Long.parseLong(jsonObject.get("createdUser").toString())
+        billPaymentLog.status = Long.parseLong("1")
+        billPaymentLog.syncStatus = Long.parseLong("1")
+        billPaymentLog.entityTypeId = Long.parseLong("1")
+        billPaymentLog.entityId = Long.parseLong("1")
+        billPaymentLog.modifiedUser = Long.parseLong("1")
+        billPaymentLog.createdUser = Long.parseLong("1")
 
         billPaymentLog.save(flush: true)
         if (!billPaymentLog.hasErrors())

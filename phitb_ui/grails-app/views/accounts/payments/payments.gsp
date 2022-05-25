@@ -511,16 +511,16 @@
                     var crntData = [];
                     var gtnData = [];
                     $.each(data[0], function (key, value) {
-                        var balance = value.balance.toFixed()
+                        var balance = value.balAmount.toFixed()
                         if (Number(balance)!== 0 && value.billStatus!== 'DRAFT' && value.billStatus!== 'CANCELLED') {
                             trHTML += ' <tr id="' + "IN" + value.id + '">\n' +
                                 '                                        <td>' + invoice + '</td>\n' +
                                 '                                        <td>' + value.invoiceNumber + '</td>\n' +
                                 '                                        <td>' + moment(value.dateCreated).format('DD-MM-YYYY') + '</td>\n' +
-                                '                                        <td id="' + "invAdjAmt" + value.id + '">' + value.adjAmount.toFixed(2) + '</td>\n' +
-                                '                                        <td id="' + "invBal" + value.id + '" >' + value.balance.toFixed(2) +
+                                '                                        <td id="' + "invAdjAmt" + value.id + '">' + value.adjustedAmount.toFixed(2) + '</td>\n' +
+                                '                                        <td id="' + "invBal" + value.id + '" >' + value.balAmount.toFixed(2) +
                                 '</td>\n' +
-                                '                                        <td><input type="number" class="paidNowInv txt" id="paidNowInv' + value.id + '" name="paidNowInv" data-inid="' + value.id + '" data-bal="' + value.balance + '" style="width: 100px;" pattern="\\d{1,10}(?:\\.\\d{1,3})?$" value="0"></td>\n' +
+                                '                                        <td><input type="number" class="paidNowInv txt" id="paidNowInv' + value.id + '" name="paidNowInv" data-inid="' + value.id + '" data-bal="' + value.balAmount + '" style="width: 100px;" pattern="\\d{1,10}(?:\\.\\d{1,3})?$" value="0"></td>\n' +
                                 '                                        <td>' + value.totalAmount.toFixed(2) + '</td>\n' +
                                 '                                        <td>' + calculateNoOfDays(value.dateCreated) + '</td>\n' +
                                 '                                        <td>' + value.financialYear + '</td>\n' +
@@ -535,7 +535,7 @@
 
                     $.each(data[1], function (key, value) {
                         var date = new Date(value.entryDate);
-                        if (value.balance !== 0 && value.returnStatus !== 'CANCELLED') {
+                        if (value.balance !== 0 ) {
                             trHTML += ' <tr id="' + "CN" + value.id + '">\n' +
                                 '                                        <td>' + creditNote + '</td>\n' +
                                 '                                        <td>' + value.invoiceNumber + '</td>\n' +
@@ -842,7 +842,7 @@
                             location.reload();
                         }else if (result.isDenied) {
                             location.reload();
-                            window.open("/print-recipt/"+data.receivedFrom+"/recipt/"+data.id, '_blank');
+                            window.open("/print-payment/"+data.transferFrom+"/payment/"+data.id, '_blank');
                         }
                     });
                 },

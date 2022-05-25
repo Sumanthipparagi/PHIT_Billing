@@ -244,8 +244,7 @@ class PurchaseBillDetailService {
     {
         if(id)
         {
-            return PurchaseBillDetail.findAllBySupplierIdAndFinancialYearAndEntityId(Long.parseLong(id),
-                    financialYear,Long.parseLong(entityId))
+            return PurchaseBillDetail.findAllBySupplierIdAndFinancialYearAndEntityId(Long.parseLong(id), financialYear,Long.parseLong(entityId))
         }
     }
 }

@@ -584,7 +584,7 @@ class UrlMappings {
         "/payments"(controller: "paymentDetail") { action = [GET: "index", POST: "save"]}
         "/payments-list/datatable"(controller: "paymentDetail", action: "dataTable")
         "/payments-list"(controller: "paymentDetail", action: 'paymentList')
-        "/print-payment/$custid/recipt/$id"(controller: "paymentDetail", action: 'printPayment')
+        "/print-payment/$custid/payment/$id"(controller: "paymentDetail", action: 'printPayment')
         "/payments/getallbilldetails"(controller: 'paymentDetail', action: 'getAllBillDetailsBySupplierId')
 
 

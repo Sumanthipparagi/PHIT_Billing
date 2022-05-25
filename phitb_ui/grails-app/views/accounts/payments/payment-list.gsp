@@ -110,9 +110,9 @@
                                     <th style="width: 20%">Payment Date</th>
                                     <th style="width: 20%">Payment Id</th>
                                     <th style="width: 20%">Transfer From</th>
-                                    <th style="width: 20%">Payment To</th>
+%{--                                    <th style="width: 20%">Payment To</th>--}%
                                     <th style="width: 20%">Financial Year</th>
-                                    <th style="width: 20%">Amount paid</th>
+%{--                                    <th style="width: 20%">Amount paid</th>--}%
                                     %{--                                    <th style="width: 20%">Bank</th>--}%
                                     <th style="width: 20%">Action</th>
                                 </tr>
@@ -199,7 +199,7 @@
                         var date = new Date(json.data[i].date);
                         var pd = new Date(json.data[i].paymentDate)
                         var editbtn =
-                            ' <button type="button" data-id="'+json.data[i].id+'" data-transferFrom="'+json.data[i].transferFrom.id+'" class="print btn btn-sm btn-warning editbtn"><i class="material-icons"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">print</font></font></i></button>';
+                            ' <button type="button" data-id="'+json.data[i].id+'" data-transferFrom="'+json.data[i].transferFrom+'" class="print btn btn-sm btn-warning editbtn"><i class="material-icons"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">print</font></font></i></button>';
                         // var deletebtn = '<button type="button" data-id="' + json.data[i].id +
                         //     '" class="btn btn-sm btn-danger deletebtn" data-toggle="modal" data-target=".deleteModal"><i class="material-icons"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">delete</font></font></i></button>'
                         return_data.push({
@@ -207,8 +207,6 @@
                             'date': moment(date).format('DD/MM/YYYY'),
                             'fy': json.data[i].financialYear,
                             'amountPaid': json.data[i].amountPaid,
-                            'receivedFrom': json.data[i].transferFrom.entityName,
-                            'depositTo': json.data[i]?.paymentTo?.accountName,
                             'pd': moment(pd).format('DD/MM/YYYY'),
                             // 'bank': json.data[i].bank.bankName,
                             'action': editbtn
@@ -220,8 +218,6 @@
             columns: [
                 {'data': 'date', 'width': '20%'},
                 {'data': 'id', 'width': '20%'},
-                {'data': 'receivedFrom', 'width': '20%'},
-                {'data': 'depositTo', 'width': '20%'},
                 {'data': 'fy', 'width': '20%'},
                 {'data': 'amountPaid', 'width': '20%'},
                 // {'data': 'bank', 'width': '20%'},
@@ -325,7 +321,7 @@
     }
 
     $(document).on("click", ".print", function () {
-        var custId =  $(this).data('recievedfrom');
+        var custId =  $(this).data('transferfrom');
         var id =  $(this).data('id');
         $("#printabel").remove();
         reciptPrint(custId,id)
@@ -334,7 +330,7 @@
     function reciptPrint(custId,id) {
         $("<iframe id='printabel'>")
             .hide()
-            .attr("src", "/print-recipt/"+custId+"/recipt/"+id)
+            .attr("src", "/print-payment/"+custId+"/payment/"+id)
             .appendTo("body");
     }
 

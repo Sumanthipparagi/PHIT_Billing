@@ -113,7 +113,7 @@ class PaymentDetailService {
         }
         else
         {
-            paymentDetail.cardNumber = null
+            paymentDetail.cardNumber = 0
         }
         paymentDetail.paymentDate = sdf.parse(jsonObject.get("paymentDate").toString())
         paymentDetail.transId = "1"
@@ -136,7 +136,7 @@ class PaymentDetailService {
         else {
             paymentDetail.accountModeId = 0
         }
-        paymentDetail.wallet = WalletMaster.findById(Long.parseLong(jsonObject.get("wallet").toString()))
+        paymentDetail.wallet = WalletMaster.findById(Long.parseLong("0"))
         paymentDetail.financialYear = jsonObject.get("financialYear").toString()
         paymentDetail.status = Long.parseLong("1")
         paymentDetail.syncStatus = Long.parseLong("1")
@@ -155,7 +155,7 @@ class PaymentDetailService {
             month = mFormat.format(Double.valueOf(month));
             String paymentId = null;
             ReceiptDetail receiptDetail1
-            paymentId = paymentDetail.entityId + "/R/" + month + year + "/" + receiptDetail.id
+            paymentId = paymentDetail.entityId + "/R/" + month + year + "/" + paymentDetail.id
             println("Invoice Number generated: " + paymentId)
             if (paymentId)
             {
@@ -173,7 +173,6 @@ class PaymentDetailService {
     }
 
     PaymentDetail update(JSONObject jsonObject, String id) {
-
         PaymentDetail paymentDetail = PaymentDetail.findById(Long.parseLong(id))
         if (paymentDetail) {
             paymentDetail.isUpdatable = true

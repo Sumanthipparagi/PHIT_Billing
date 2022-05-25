@@ -90,22 +90,22 @@ class PaymentDetailController {
             def apiResponse = new AccountsService().showPayments(jsonObject)
             if (apiResponse.status == 200) {
                 JSONObject responseObject = new JSONObject(apiResponse.readEntity(String.class))
-                if (responseObject) {
-                    JSONArray jsonArray = responseObject.data
-                    JSONArray jsonArray2 = new JSONArray()
-                    JSONArray depositArray = new JSONArray()
-                    for (JSONObject json : jsonArray) {
-                        json.put("transferFrom", new EntityService().getEntityById(json.get("transferFrom").toString()))
-                        jsonArray2.put(json)
-                    }
-                    jsonArray.each {
-                        if (it.has("paymentTo")) {
-                            def accountResp = new AccountRegisterController().getAllAccountsById(it.get("paymentTo")?.toString())
-                            it.put("paymentTo", accountResp)
-                        }
-                    }
-                    responseObject.put("data", jsonArray2)
-                }
+//                if (responseObject) {
+//                    JSONArray jsonArray = responseObject.data
+//                    JSONArray jsonArray2 = new JSONArray()
+//                    JSONArray depositArray = new JSONArray()
+//                    for (JSONObject json : jsonArray) {
+//                        json.put("transferFrom", new EntityService().getEntityById(json.get("transferFrom").toString()))
+//                        jsonArray2.put(json)
+//                    }
+//                    jsonArray.each {
+//                        if (it.has("paymentTo")) {
+//                            def accountResp = new AccountRegisterController().getAllAccountsById(it.get("paymentTo")?.toString())
+//                            it.put("paymentTo", accountResp)
+//                        }
+//                    }
+//                    responseObject.put("data", jsonArray2)
+//                }
                 respond responseObject, formats: ['json'], status: 200
             } else {
                 response.status = 400
@@ -221,7 +221,7 @@ class PaymentDetailController {
             JSONObject jsonObject = new JSONObject(params)
             jsonObject.put("entityId", session.getAttribute('entityId').toString())
             JSONArray billArray = new JSONArray(params.paymentData)
-            def apiResponse = new AccountsService().saveRecipt(jsonObject, session.getAttribute('financialYear') as String)
+            def apiResponse = new AccountsService().savePaymentDetail(jsonObject, session.getAttribute('financialYear') as String)
             if (apiResponse?.status == 200) {
                 JSONObject jsonObject1 = new JSONObject(apiResponse.readEntity(String.class))
                 for (JSONObject bills : billArray) {
@@ -230,7 +230,7 @@ class PaymentDetailController {
                     String transactionId = bills.get("Trans_Id")
                     String docType = bills.get("Doc.Type")
                     String billId = bills.get("BillId")
-                    String recieptId = jsonObject1.id.toString()
+                    String paymentId = jsonObject1.id.toString()
                     if (docType == "INVS" && paidNow.toDouble()!=0) {
                         JSONObject invObject = new JSONObject()
                         invObject.put("id", billId)
@@ -268,9 +268,9 @@ class PaymentDetailController {
                         billLog.put("amountPaid", paidNow)
                         billLog.put("currentFinancialYear", session.getAttribute('financialYear').toString())
                         billLog.put("financialYear", session.getAttribute('financialYear').toString())
-                        billLog.put("recieptId", recieptId)
+                        billLog.put("paymentId", paymentId)
                         billLog.put("transId", transactionId)
-                        def billLogResponse = new AccountsService().updateReceiptDetailLog(billLog)
+                        def billLogResponse = new AccountsService().updatePaymentDetailLog(billLog)
                         if (billLogResponse?.status == 200) {
                             println("Bill Log Saved!")
                         }
@@ -378,15 +378,13 @@ class PaymentDetailController {
     }
 
 
-    def getPaymentById(String id)
-    {
-        def payment1 = new AccountsService().getPaymentById(id)
-        if(payment1.status==200)
-        {
-            JSONObject payment = new JSONObject(payment1.readEntity(String.class))
-            return payment
-        }
-        else {
+
+    def getPaymentById(String id) {
+        def payment = new AccountsService().getPaymentById(id)
+        if (payment.status == 200) {
+            JSONObject p1 = new JSONObject(payment.readEntity(String.class))
+            return p1
+        } else {
 
             return []
         }
@@ -395,17 +393,19 @@ class PaymentDetailController {
 
     def printPayment() {
         JSONObject customer = new EntityRegisterController().getEnitityById(params.custid) as JSONObject
-        JSONObject recipt = new ReciptDetailController().getReciptById(params.id) as JSONObject
+        JSONObject recipt = new PaymentDetailController().getPaymentById(params.id) as JSONObject
         JSONObject entity = new EntityRegisterController().getEnitityById(session.getAttribute('entityId').toString()) as
                 JSONObject
-        def reciptlogsinv = new AccountsService().getReceiptLogInvById(params.id)
-        def reciptlogscrnt = new AccountsService().getReceiptLogcrntById(params.id)
+        def reciptlogsinv = new AccountsService().getPaymentLogInvById(params.id)
+        def reciptlogscrnt = new AccountsService().getPaymentLogcrntById(params.id)
+        def reciptlogsgtn = new AccountsService().getPaymentLogGRNById(params.id)
         JSONArray reciptloginvArray = new JSONArray(reciptlogsinv.readEntity(String.class))
         JSONArray reciptlogcrntArray = new JSONArray(reciptlogscrnt.readEntity(String.class))
-        println(reciptloginvArray.amountPaid.sum())
+        JSONArray reciptloggtnArray = new JSONArray(reciptlogsgtn.readEntity(String.class))
         render(view: '/accounts/payments/payment-vocher', model: [customer          : customer, recipt: recipt,
                                                              entity            : entity, reciptloginvArray: reciptloginvArray,
-                                                             reciptlogcrntArray: reciptlogcrntArray])
+                                                             reciptlogcrntArray: reciptlogcrntArray,
+                                                             reciptloggtnArray:reciptloggtnArray])
     }
 
 

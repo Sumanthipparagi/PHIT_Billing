@@ -434,6 +434,9 @@ class ReciptDetailController {
     }
 
 
+
+
+
     def printRecipt() {
         JSONObject customer = new EntityRegisterController().getEnitityById(params.custid) as JSONObject
         JSONObject recipt = new ReciptDetailController().getReciptById(params.id) as JSONObject

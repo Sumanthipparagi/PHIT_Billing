@@ -544,7 +544,7 @@ public class Links
 
 
     //   payment detail log
-    public static String PAYMENT_DETAIL_LOG = "api/v1.0/accounts/reciptdetaillog";
+    public static String PAYMENT_DETAIL_LOG = "api/v1.0/accounts/billpaymentlog";
     public static String PAYMENT_DETAIL_LOG_INVS_ID = "api/v1.0/accounts/billpaymentloginvbypaymentId";
     public static String PAYMENT_DETAIL_LOG_CRNT_ID = "api/v1.0/accounts/billpaymentlogcrntbypaymentId";
     public static String PAYMENT_DETAIL_LOG_GRN_ID = "api/v1.0/accounts/billpaymentloggrnbypaymentId";
@@ -576,9 +576,9 @@ public class Links
     public static String PURCHASE_PRODUCT_UPDATE = "api/v1.0/purchase/productdetail/{id}";
     public static String PURCHASE_PRODUCT_DELETE = "api/v1.0/purchase/productdetail/{id}";
     public static String PURCHASE_PRODUCT_OF_BILL = "api/v1.0/purchase/productdetail/bill";
-    public static String PURCHASE_BILL_CUSTOMER = "api/v1.0/purchase/purchasebillbycustomer/{custid}";
-    public static String PURCHASE_BILL_BALANCE_UPDATE = "api/v1.0/sales/updatebillbalancebyid";
-    public static String PURCHASE_RETURN_BALANCE_UPDATE = "api/v1.0/sales/updatereturnbalancebyid";
+    public static String PURCHASE_BILL_CUSTOMER = "api/v1.0/purchase/purchasebillbysupplier";
+    public static String PURCHASE_BILL_BALANCE_UPDATE = "api/v1.0/purchase/updatebillbalancebyid";
+    public static String PURCHASE_RETURN_BALANCE_UPDATE = "api/v1.0/purchase/updatereturnbalancebyid";
 
 
     //purchase product bill details

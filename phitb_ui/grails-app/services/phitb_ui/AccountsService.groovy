@@ -473,7 +473,7 @@ class AccountsService
         {
             Response apiResponse = target
                     .path(new Links().PURCHASE_BILL_SUPPLIER)
-                    .resolveTemplate("custid",id)
+                    .queryParam("id", URLEncoder.encode(id, "UTF-8"))
                     .queryParam("financialYear", URLEncoder.encode(financialYear, "UTF-8"))
                     .queryParam("entityId", URLEncoder.encode(entityId, "UTF-8"))
                     .request(MediaType.APPLICATION_JSON_TYPE)
@@ -639,7 +639,7 @@ class AccountsService
         try
         {
             Response apiResponse = target
-                    .path(new Links().PURCHASE_BILL_BALANCE_UPDATE+"/id/"+jsonObject.id+"/balance/"+jsonObject.paidNow)
+                    .path(new Links().PURCHASE_RETURN_BALANCE_UPDATE+"/id/"+jsonObject.id+"/balance/"+jsonObject.paidNow)
                     .request(MediaType.APPLICATION_JSON_TYPE)
                     .post(Entity.form(form))
             println(apiResponse)
@@ -675,6 +675,25 @@ class AccountsService
 
     }
 
+    def updatePaymentDetailLog(JSONObject jsonObject)
+    {
+        Client client = ClientBuilder.newClient();
+        WebTarget target = client.target(new Links().API_GATEWAY);
+        try
+        {
+            Response apiResponse = target
+                    .path(new Links().PAYMENT_DETAIL_LOG)
+                    .request(MediaType.APPLICATION_JSON_TYPE)
+                    .post(Entity.entity(jsonObject.toString(), MediaType.APPLICATION_JSON_TYPE))
+            return apiResponse
+        }
+        catch (Exception ex)
+        {
+            System.err.println('Service :saveStateMaster , action :  save  , Ex:' + ex)
+            log.error('Service :saveStateMaster , action :  save  , Ex:' + ex)
+        }
+
+    }
 
     def getReceiptLogInvById(String id)
     {
@@ -744,6 +763,9 @@ class AccountsService
         }
 
     }
+
+
+
 
 //   move invoice to settled vocher
 //    def updateSettledVocher(JSONObject jsonObject)
@@ -1077,7 +1099,7 @@ class AccountsService
         try
         {
             Response apiResponse = target
-                    .path(new Links().RECIPT_DETAIL_LOG_INVS_ID + "/" + id)
+                    .path(new Links().PAYMENT_DETAIL_LOG_INVS_ID + "/" + id)
                     .request(MediaType.APPLICATION_JSON_TYPE)
                     .get()
             if(apiResponse.status == 200)
@@ -1100,7 +1122,30 @@ class AccountsService
         try
         {
             Response apiResponse = target
-                    .path(new Links().RECIPT_DETAIL_LOG_CRNT_ID + "/" + id)
+                    .path(new Links().PAYMENT_DETAIL_LOG_CRNT_ID + "/" + id)
+                    .request(MediaType.APPLICATION_JSON_TYPE)
+                    .get()
+            if(apiResponse.status == 200)
+            {
+                return apiResponse
+            }
+        }
+        catch (Exception ex)
+        {
+            System.err.println('Service :AccountsService , action :  getProducts  , Ex:' + ex)
+            log.error('Service :AccountsService , action :  getProducts  , Ex:' + ex)
+        }
+
+    }
+
+    def getPaymentLogGRNById(String id)
+    {
+        Client client = ClientBuilder.newClient()
+        WebTarget target = client.target(new Links().API_GATEWAY)
+        try
+        {
+            Response apiResponse = target
+                    .path(new Links().PAYMENT_DETAIL_LOG_GRN_ID + "/" + id)
                     .request(MediaType.APPLICATION_JSON_TYPE)
                     .get()
             if(apiResponse.status == 200)
