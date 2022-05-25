@@ -76,7 +76,7 @@ class BillPaymentLogService {
         billPaymentLog.approvedBy = Long.parseLong("1")
         billPaymentLog.currentFinancialYear = jsonObject.get("currentFinancialYear").toString()
         billPaymentLog.paymentId = Long.parseLong(jsonObject.get("paymentId").toString())
-        billPaymentLog.transId = Long.parseLong(jsonObject.get("transId").toString())
+        billPaymentLog.transId = jsonObject.get("transId").toString()
         billPaymentLog.financialYear = jsonObject.get("financialYear").toString()
         billPaymentLog.status = Long.parseLong("1")
         billPaymentLog.syncStatus = Long.parseLong("1")
