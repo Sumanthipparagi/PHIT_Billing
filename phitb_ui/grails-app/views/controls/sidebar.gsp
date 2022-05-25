@@ -501,6 +501,8 @@
                         class="zmdi zmdi-library"></i><span>Entity</span> <span
                         class="badge badge-success float-right"></span></a>
                     <ul class="ml-menu">
+                        <li><a href="/accounts">Account Register</a></li>
+
                         <g:if test="${UtilsService.isPermitted("VIEW_ENTITY_REGISTER", session.getAttribute("permittedFeatures").toString())}">
                             <li><a href="/entity-register">Entity Register</a></li>
                         </g:if>
