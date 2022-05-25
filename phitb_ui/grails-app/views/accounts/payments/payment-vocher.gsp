@@ -90,8 +90,8 @@
         </td>
         <td style="width: 15%;vertical-align:top;">
             <ul style="margin: 0;">
-                <li><b class="tab">Receipt No.</b>: ${recipt.paymentId}</li>
-                <li><b class="tab">Receipt Date</b>:${recipt.date.split("T")[0]}</li>
+                <li><b class="tab">Payment No.</b>: ${recipt.paymentId}</li>
+                <li><b class="tab">Payment Date</b>:${recipt.date.split("T")[0]}</li>
             </ul>
         </td>
         <td style="width: 25%;vertical-align:top;">
