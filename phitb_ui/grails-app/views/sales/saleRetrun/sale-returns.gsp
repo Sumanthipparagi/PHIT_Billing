@@ -2031,7 +2031,7 @@
             this.textareaParentStyle.zIndex = 20000;
             this.instance.addHook('beforeKeyDown', onBeforeKeyDown);
             this.instance.addHook('afterOnCellMouseDown', onBeforeMouseDown);
-            this.textareaParentStyle.display = 'block';
+            // this.textareaParentStyle.display = 'block';
 
             this.$textarea.css({
                 height: $(this.TD).height() + 4,
@@ -2041,6 +2041,8 @@
 
             //display the list
             this.$textarea.show();
+
+
 
             var self = this;
             this.$textarea.select2(this.options)
@@ -2061,16 +2063,12 @@
             document.getElementById("select2-drop").style.width = 229+"px";
             console.log(document.getElementById("select2-drop"));
 
-
             // Pushes initial character entered into the search field, if available
             if (keyboardEvent && keyboardEvent.keyCode) {
                 var key = keyboardEvent.keyCode;
                 var keyText = (String.fromCharCode((96 <= key && key <= 105) ? key - 48 : key)).toLowerCase();
                 console.log("KeyText: " + keyText);
                 self.$textarea.select2('search', keyText.slice(0, -1));
-                $('.handsontableInput').children().show()
-            } else {
-                // $('.handsontableInput').children().hide()
                 const element = document.getElementsByClassName("highlight")[0];
                 const rect = element.getBoundingClientRect();
                 var top = rect.top.toFixed();
@@ -2083,9 +2081,21 @@
                 document.getElementById("select2-drop").style.bottom = bottom+"px";
                 document.getElementById("select2-drop").style.width = 229+"px";
                 console.log(document.getElementById("select2-drop"));
+
+                // Handsontable.renderers.cellDecorator.apply(this, arguments);
+
+                // $('.handsontableInput').children().show()
             }
-            Handsontable.renderers.cellDecorator.apply(this, arguments);
+            // else {
+            //
+            // }
+
+
+
+
         };
+
+
 
 
         Select2Editor.prototype.init = function () {
@@ -2098,7 +2108,7 @@
             this.instance.removeHook('afterOnCellMouseDown', onBeforeMouseDown);
             this.$textarea.off();
             this.$textarea.hide();
-            $('.handsontableInput').children().hide();
+            // $('.handsontableInput').children().hide();
             Handsontable.editors.TextEditor.prototype.close.apply(this, arguments);
             // $('.handsontableInput').children().show();
         };
