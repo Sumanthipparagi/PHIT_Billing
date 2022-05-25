@@ -155,7 +155,7 @@ class PaymentDetailService {
             month = mFormat.format(Double.valueOf(month));
             String paymentId = null;
             ReceiptDetail receiptDetail1
-            paymentId = paymentDetail.entityId + "/R/" + month + year + "/" + paymentDetail.id
+            paymentId = paymentDetail.entityId + "/P/" + month + year + "/" + paymentDetail.id
             println("Invoice Number generated: " + paymentId)
             if (paymentId)
             {
