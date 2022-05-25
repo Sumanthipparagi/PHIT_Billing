@@ -166,6 +166,18 @@
                         </tr>
                     </g:if>
                 </g:each>
+
+                <g:each var="gtn" in="${reciptloggtnArray}">
+
+                    <g:if test="${gtn.amountPaid != 0}">
+                        <tr>
+                            <td>${gtn.transId}</td>
+                            <td>${gtn.billType}</td>
+                            <td>${gtn.dateCreated.split("T")[0]}</td>
+                            <td>${UtilsService.round(gtn.amountPaid, 2)}</td>
+                        </tr>
+                    </g:if>
+                </g:each>
             %{--                <g:each var="csv" in="${creditNoteArry}">--}%
             %{--                    <g:if test="${csv.balance!=0}">--}%
             %{--                    <tr>--}%
@@ -178,10 +190,32 @@
             %{--                </g:each>--}%
             </table>
         </td>
-        <td colspan="4"><b>${UtilsService.round(reciptloginvArray.amountPaid.sum(), 2)}</b></td>
+
+        <%
+            double inv = 0
+            double crnt = 0
+            double gtn = 0
+
+            if(reciptloginvArray.amountPaid.sum()!=null)
+            {
+                 inv = reciptloginvArray.amountPaid.sum()
+            }
+            else {
+                inv = 0
+            }
+
+            if(reciptloggtnArray.amountPaid.sum()!=null)
+            {
+                gtn = reciptloggtnArray.amountPaid.sum()
+            }
+            else {
+                gtn = 0
+            }
+        %>
+        <td colspan="4"><b>${UtilsService.round(inv+gtn, 2)}</b></td>
     <tr>
 
-        <% double data = reciptloginvArray.amountPaid.sum()
+        <% double data = inv+gtn
         int value = (int) data;
         System.out.println(value)
         %>

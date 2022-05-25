@@ -22,12 +22,12 @@
 
     <style>
 
-    div.dataTables_scrollBody table tbody  td {
-        border-top: none;
-        padding: 0.9px;
-        text-align: center;
-        border-collapse: unset!important;
-    }
+    /*    div.dataTables_scrollBody table tbody  td {*/
+    /*        border-top: none;*/
+    /*        padding: 0.9px;*/
+    /*        text-align: center;*/
+    /*        border-collapse: unset!important;*/
+    /*    }*/
 
     .editbtn
     {
@@ -38,9 +38,9 @@
         padding: 1px 9px;
     }
 
-    tbody td {
-        padding: 0px;
-    }
+    /*tbody td {*/
+    /*    padding: 0px;*/
+    /*}*/
 
     </style>
 
@@ -60,9 +60,9 @@
         <div class="block-header">
             <div class="row clearfix">
                 <div class="col-lg-5 col-md-5 col-sm-12">
-                    <h2>Payments</h2>
+                    <h2>Payments </h2>
                     <ul class="breadcrumb padding-0">
-                        <li class="breadcrumb-item"><a href="/"><i class="zmdi zmdi-home"></i></a></li>
+                        <li class="breadcrumb-item"><a href="index.html"><i class="zmdi zmdi-home"></i></a></li>
                         <li class="breadcrumb-item active">Payments</li>
                     </ul>
                 </div>
@@ -105,12 +105,15 @@
                             <table class="table table-bordered table-striped table-hover customerGroupTable dayEndTable">
                                 <thead>
                                 <tr>
-                                    %{--                                    <th style="width: 20%">ID</th>--}%
-                                    <th style="width: 20%">Date</th>
-                                    <th style="width: 20%">Payment Id</th>
-                                    <th style="width: 20%">Financial Year</th>
+                                    %{--
+                                                                   <th style="width: 20%">ID</th>--}%
                                     <th style="width: 20%">Payment Date</th>
-                                    <th style="width: 20%">Bank</th>
+                                    <th style="width: 20%">Payment Id</th>
+                                    <th style="width: 20%">Transfer From</th>
+                                    <th style="width: 20%">Payment To</th>
+                                    <th style="width: 20%">Financial Year</th>
+                                    <th style="width: 20%">Amount paid</th>
+                                    %{--                                    <th style="width: 20%">Bank</th>--}%
                                     <th style="width: 20%">Action</th>
                                 </tr>
                                 </thead>
@@ -183,27 +186,31 @@
             processing: true,
             serverSide: true,
             language: {
-                searchPlaceholder: "Search Payment"
+                searchPlaceholder: "Search Payments"
             },
             ajax: {
                 type: 'GET',
                 url: '/payments-list/datatable',
                 dataType: 'json',
                 dataSrc: function (json) {
+                    console.log(json)
                     var return_data = [];
                     for (var i = 0; i < json.data.length; i++) {
                         var date = new Date(json.data[i].date);
                         var pd = new Date(json.data[i].paymentDate)
                         var editbtn =
-                            ' <button type="button" data-id="'+json.data[i].id+'" data-transferFrom="'+json.data[i].transferFrom+'" class="print btn btn-sm btn-warning editbtn"><i class="material-icons"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">print</font></font></i></button>'
+                            ' <button type="button" data-id="'+json.data[i].id+'" data-transferFrom="'+json.data[i].transferFrom.id+'" class="print btn btn-sm btn-warning editbtn"><i class="material-icons"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">print</font></font></i></button>';
                         // var deletebtn = '<button type="button" data-id="' + json.data[i].id +
                         //     '" class="btn btn-sm btn-danger deletebtn" data-toggle="modal" data-target=".deleteModal"><i class="material-icons"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">delete</font></font></i></button>'
                         return_data.push({
                             'id': json.data[i].paymentId,
                             'date': moment(date).format('DD/MM/YYYY'),
                             'fy': json.data[i].financialYear,
-                            'pd': json.data[i].paymentDate,
-                            'bank': json.data[i].bank.bankName,
+                            'amountPaid': json.data[i].amountPaid,
+                            'receivedFrom': json.data[i].transferFrom.entityName,
+                            'depositTo': json.data[i]?.paymentTo?.accountName,
+                            'pd': moment(pd).format('DD/MM/YYYY'),
+                            // 'bank': json.data[i].bank.bankName,
                             'action': editbtn
                         });
                     }
@@ -213,9 +220,11 @@
             columns: [
                 {'data': 'date', 'width': '20%'},
                 {'data': 'id', 'width': '20%'},
+                {'data': 'receivedFrom', 'width': '20%'},
+                {'data': 'depositTo', 'width': '20%'},
                 {'data': 'fy', 'width': '20%'},
-                {'data': 'pd', 'width': '20%'},
-                {'data': 'bank', 'width': '20%'},
+                {'data': 'amountPaid', 'width': '20%'},
+                // {'data': 'bank', 'width': '20%'},
                 {'data': 'action', 'width': '20%'}
             ]
         });
@@ -304,9 +313,9 @@
 
 
 
-    function paymentRecipt() {
+    function printRecipt() {
         /* window.addEventListener('load', function () {*/
-        $('#paymentPrint').printThis({
+        $('#reciptPrint').printThis({
             importCSS: true,
             printDelay: 2000,
             importStyle: true,
@@ -316,16 +325,16 @@
     }
 
     $(document).on("click", ".print", function () {
-        var custId =  $(this).attr('data-transferFrom');
+        var custId =  $(this).data('recievedfrom');
         var id =  $(this).data('id');
         $("#printabel").remove();
-        paymentPrint(custId,id)
+        reciptPrint(custId,id)
     });
 
-    function paymentPrint(custId,id) {
+    function reciptPrint(custId,id) {
         $("<iframe id='printabel'>")
             .hide()
-            .attr("src", "/print-payment/"+custId+"/recipt/"+id)
+            .attr("src", "/print-recipt/"+custId+"/recipt/"+id)
             .appendTo("body");
     }
 

@@ -265,6 +265,7 @@ class SaleEntryController
         if (response.status == 200)
         {
             JSONObject saleBillDetail = new JSONObject(response.readEntity(String.class))
+            UUID uuid
             //update stockbook
             for (JSONObject sale : saleData) {
                 String tempStockRowId = sale.get("15")
@@ -283,7 +284,7 @@ class SaleEntryController
                 stockBook.put("expDate", expDate)
                 stockBook.put("purcDate", purcDate)
                 stockBook.put("manufacturingDate", manufacturingDate)
-                stockBook.put("uuid", params.uuid)
+                stockBook.put("uuid", UUID.randomUUID())
                 def apiRes = new InventoryService().updateStockBook(stockBook)
                 if (apiRes.status == 200) {
                     //clear tempstockbook
@@ -299,7 +300,6 @@ class SaleEntryController
                     }
                 }
             }
-
             JSONObject responseJson = new JSONObject()
             responseJson.put("series", series)
             responseJson.put("saleBillDetail", saleBillDetail)

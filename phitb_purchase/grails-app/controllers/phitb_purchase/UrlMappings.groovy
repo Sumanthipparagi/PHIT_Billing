@@ -23,9 +23,11 @@ class UrlMappings {
             "/billdetail/datatable(.$format)?"(controller: 'purchaseBillDetail') { action = [GET: 'dataTable'] }
             "/billdetail/getrecent(.$format)?"(controller: 'purchaseBillDetail') { action = [GET: 'getRecentByFinancialYearAndEntity'] }
             "/billdetail/$id(.$format)?"(controller: 'purchaseBillDetail') { action = [GET: 'show', PUT: 'update', DELETE: 'delete'] }
-            "/purchasebillbysupplier/$id(.$format)?"(controller: 'purchaseBillDetail') {
+            "/purchasebillbysupplier(.$format)?"(controller: 'purchaseBillDetail') {
                 action = [GET: 'getAllBySupplierId']
             }
+            "/updatebillbalancebyid/id/$id/balance/$balance"(controller: 'purchaseBillDetail')
+                    {action=[POST: 'updateBalance']}
 
             //Purchase Order
             "/purchaseorder(.$format)?"(controller: 'purchaseOrder') { action = [GET: 'index', POST: 'save'] }
@@ -46,8 +48,13 @@ class UrlMappings {
             "/returndetail(.$format)?"(controller: 'purchaseReturnDetail') { action = [GET: 'index', POST: 'save'] }
             "/returndetail/datatable(.$format)?"(controller: 'purchaseReturnDetail') { action = [GET: 'dataTable'] }
             "/returndetail/$id(.$format)?"(controller: 'purchaseReturnDetail') { action = [GET: 'show', PUT: 'update', DELETE: 'delete'] }
-            "/returndetailbydays/$days(.$format)?"(controller: 'purchaseReturnDetail') { action = [GET: 'getAllByDays'] }
 
+            "/returndetailbysupplier(.$format)?"(controller: 'purchaseReturnDetail') {
+                action = [GET: 'getAllBySupplierId']
+            }
+            "/returndetailbydays/$days(.$format)?"(controller: 'purchaseReturnDetail') { action = [GET: 'getAllByDays'] }
+            "/updatereturnbalancebyid/id/$id/balance/$balance"(controller: 'purchaseReturnDetail')
+                    {action=[POST: 'updateBalance']}
             //Purchase Transaction log
             "/transactionlog(.$format)?"(controller: 'purchaseTransactionLog') { action = [GET: 'index', POST: 'save'] }
             "/transactionlog/datatable(.$format)?"(controller: 'purchaseTransactionLog') { action = [GET: 'dataTable'] }

@@ -10,6 +10,7 @@ class PurchaseReturnDetail implements LogicalDelete<PurchaseReturnDetail> {
     String type
     long supplierId
     Date dispatchDate
+    double adjAmount
     Date entryDate
     String refId
     double maxDnAmount
@@ -47,6 +48,7 @@ class PurchaseReturnDetail implements LogicalDelete<PurchaseReturnDetail> {
     Date lastUpdated
 
     static constraints = {
+        adjAmount nullable:true
     }
 
     static mapping = {

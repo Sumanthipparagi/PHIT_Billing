@@ -6,7 +6,7 @@
     <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
     <meta name="description" content="Responsive Bootstrap 4 and web Application ui kit.">
 
-    <title>:: PharmIt :: Receipt</title>
+    <title>:: PharmIt :: Payments</title>
     <link rel="icon" type="image/x-icon" href="${assetPath(src: '/themeassets/images/favicon.ico')}"/>
     <!-- Favicon-->
     <asset:stylesheet rel="stylesheet" src="/themeassets/plugins/bootstrap/css/bootstrap.min.css"/>
@@ -104,11 +104,11 @@
         <div class="block-header">
             <div class="row">
                 <div class="col-lg-5 col-md-5 col-sm-12">
-                    <h2>Receipt</h2>
+                    <h2>Payments</h2>
                     <ul class="breadcrumb padding-0">
                         <li class="breadcrumb-item"><a href="index.html"><i class="zmdi zmdi-home"></i></a></li>
                         <li class="breadcrumb-item"><a href="/recipt">Accounts</a></li>
-                        <li class="breadcrumb-item active">Receipt</li>
+                        <li class="breadcrumb-item active">Payments</li>
                     </ul>
                 </div>
 
@@ -154,7 +154,7 @@
 
                             <div class="col-lg-6">
                                 <label for="receivedFrom">
-                                    Customer
+                                    Supplier
                                 </label><br>
                                 <select class=" show-tick receivedFrom" name="receivedFrom"
                                         id="receivedFrom" onchange="getAddress(this.value)" required
@@ -188,18 +188,18 @@
 
                             </div>
 
-                                <div class="col-lg-3 form-group form-float accountMode">
-                                    <label for="accountMode">
-                                        Payment method
-                                    </label>
-                                    <select class="form-control show-tick accountMode" name="accountModeId"
-                                            id="accountMode" required>
-                                        <option value="">-- Please select --</option>
-                                        <g:each var="am" in="${accountMode}">
-                                            <option value="${am.id}">${am.mode}</option>
-                                        </g:each>
-                                    </select>
-                                </div>
+                            <div class="col-lg-3 form-group form-float accountMode">
+                                <label for="accountMode">
+                                    Payment method
+                                </label>
+                                <select class="form-control show-tick accountMode" name="accountModeId"
+                                        id="accountMode" required>
+                                    <option value="">-- Please select --</option>
+                                    <g:each var="am" in="${accountMode}">
+                                        <option value="${am.id}">${am.mode}</option>
+                                    </g:each>
+                                </select>
+                            </div>
 
                             <div class="col-lg-3 form-group  form-float" id="deposit">
                                 <label for="depositTo">
@@ -270,28 +270,28 @@
 
                             <div class="col-lg-8">
                                 <div class="row">
-                                <div class="col-lg-4 form-group  form-float">
-                                <label for="amountPaid">
-                                    Amount
-                                </label>
-                                <input type="text" id="amountPaid" class="note form-control "
-                                       name="amountPaid"
-                                       placeholder="Amount" value="0" style="border-radius: 0;"
-                                       required/>
-                                </div>
-                                <div class="col-lg-4 form-group  form-float">
-                                <button type="button" class="btn btn-secondary" id="autoAdj"
-                                        style="margin-top: 29px;margin-left: -31px;
-                                ">Auto Adjust</button>
-                                </div>
+                                    <div class="col-lg-4 form-group  form-float">
+                                        <label for="amountPaid">
+                                            Amount
+                                        </label>
+                                        <input type="text" id="amountPaid" class="note form-control "
+                                               name="amountPaid"
+                                               placeholder="Amount" value="0" style="border-radius: 0;"
+                                               required/>
+                                    </div>
+                                    <div class="col-lg-4 form-group  form-float">
+                                        <button type="button" class="btn btn-secondary" id="autoAdj"
+                                                style="margin-top: 29px;margin-left: -31px;
+                                                ">Auto Adjust</button>
+                                    </div>
                                 </div>
                             </div>
 
-%{--                            <div class="col-lg-3 form-group  form-float mt-4">--}%
-%{--                            </div>--}%
+                            %{--                            <div class="col-lg-3 form-group  form-float mt-4">--}%
+                            %{--                            </div>--}%
 
                             <input type="hidden" id="date" class="date" name="date"
-                                   placeholder="Receipt Date" readonly
+                                   placeholder="Payments Date" readonly
                                    required/>
 
                             <div class="container mt-5">
@@ -406,7 +406,7 @@
             $("#mode").show()
             $("#mode").addClass('col-lg-6')
             html = ' <label for="bank">\n' +
-                '                                        Payee Banker\n' +
+                '                                        Banker\n' +
                 '                                    </label>\n' +
                 '                                    <select class="form-control show-tick bank" name="bank"\n' +
                 '                                            id="bank" required>\n' +
@@ -488,7 +488,7 @@
         if (id) {
             $.ajax({
                 type: 'GET',
-                url: '/recipts/getallbilldetails?id=' + id,
+                url: '/payments/getallbilldetails?id=' + id,
                 dataType: 'json',
                 success: function (data) {
                     console.log(data)
@@ -498,7 +498,7 @@
                     trHTML1 += '';
                     var invoice = "INVS";
                     var creditNote = "CRNT";
-                    var gtn = "GTN";
+                    var grn = "GRN";
                     var inv = data[0].map(data => data.balance).reduce((acc, amount) => acc + amount, 0);
                     var invAdjAmt = data[0].map(data => data.adjAmount).reduce((acc, adjAmt) => acc + adjAmt, 0);
                     var crnt = data[1].map(data => data.balance).reduce((acc, amount) => acc + amount, 0);
@@ -560,7 +560,7 @@
                         var date = new Date(value.entryDate);
                         if (value.balance !== 0 && value.billStatus !== 'CANCELLED') {
                             trHTML += ' <tr id="' + "GTN" + value.id + '">\n' +
-                                '                                        <td>' + gtn + '</td>\n' +
+                                '                                        <td>' + grn + '</td>\n' +
                                 '                                        <td>' + value.invoiceNumber + '</td>\n' +
                                 '                                        <td>' + moment(value.dateCreated).format('DD-MM-YYYY') + '</td>\n' +
                                 '                                        <td id="' + "crntAdjAmt" + value.id + '">' +
@@ -574,7 +574,7 @@
                                 '                                        <td>' + value.financialYear + '</td>\n' +
                                 '                                        <td style="display: none;">' + value.id + '</td>\n' +
                                 '                                        </tr>';
-                                gtnData.push(value.id)
+                            gtnData.push(value.id)
                         }
                     });
                     $('#billDetails').html(trHTML + trHTML1);
@@ -798,7 +798,7 @@
                 });
                 return retVal;
             }).get();
-            var reciptData = JSON.stringify(tbl).replace(/\s(?=\w+":)/g, "");
+            var paymentData = JSON.stringify(tbl).replace(/\s(?=\w+":)/g, "");
             var waitingSwal = Swal.fire({
                 title: "Saving, Please wait!",
                 showDenyButton: false,
@@ -808,10 +808,10 @@
             });
             $.ajax({
                 type: "POST",
-                url: "/recipt",
+                url: "/payments",
                 dataType: 'json',
                 data: {
-                    reciptData: reciptData,
+                    paymentData: paymentData,
                     receivedFrom: receivedFrom,
                     paymentMode: paymentMode,
                     cardNumber: cardNumber,

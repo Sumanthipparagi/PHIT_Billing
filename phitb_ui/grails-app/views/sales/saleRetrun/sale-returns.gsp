@@ -223,14 +223,13 @@
                 <div class="card" style="margin-bottom: 10px;">
                     <div class="body" style="background-color: #313740;padding: 2px; color: #fff;">
                         <div class="row" style="margin: 0; font-size: 14px;">
-                            <div class="col-md-2"><strong>Total GST:&nbsp;</strong>&#x20b9;
-                                <span id="totalGST">0</span></div>
+                            <div class="col-md-2"><strong>Total GST:&nbsp;</strong>&#x20b9;<span id="totalGST">0</span></div>
 
                             <div class="col-md-2"><strong>Total SGST:&nbsp;</strong>&#x20b9;<span
                                     id="totalSGST">0</span>
                             </div>
 
-                            <div class="col-md-2"><strong>Total CGST: &nbsp;</strong>&#x20b9;<span
+                            <div class="col-md-2"><strong>Total CGST:&nbsp;</strong>&#x20b9;<span
                                     id="totalCGST">0</span>
                             </div>
 

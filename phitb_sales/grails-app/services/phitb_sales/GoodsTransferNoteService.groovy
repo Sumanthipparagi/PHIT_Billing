@@ -370,6 +370,8 @@ class GoodsTransferNoteService {
     {
         if (id)
         {
+            Object a = GoodsTransferNote.findAllByCustomerIdAndFinancialYearAndEntityId(Long.parseLong(id),financialYear,Long.parseLong(entityId))
+            println(a)
             return GoodsTransferNote.findAllByCustomerIdAndFinancialYearAndEntityId(Long.parseLong(id),financialYear,Long.parseLong(entityId))
         }
     }

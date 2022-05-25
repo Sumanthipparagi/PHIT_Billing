@@ -196,11 +196,40 @@ class PurchaseBillDetailController {
     {
         try
         {
-            respond purchaseBillDetailService.getAllBySupplierId(params.id)
+            respond purchaseBillDetailService.getAllBySupplierId(params.id,params.financialYear,params.entityId)
         }
         catch (Exception ex)
         {
             System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
         }
     }
+
+    def updateBalance() {
+        try {
+            PurchaseBillDetail purchaseBillDetail = PurchaseBillDetail.findById(Long.parseLong(params.id))
+            if (purchaseBillDetail) {
+                purchaseBillDetail.isUpdatable = true
+                Double balance = Double.parseDouble(params.balance)
+                if (balance > 0 && balance != "" && balance != null) {
+                    double diffBalance = Double.parseDouble(purchaseBillDetail.getBalAmount().toString()) - balance
+                    purchaseBillDetail.balAmount = diffBalance
+                    purchaseBillDetail.adjustedAmount = purchaseBillDetail.getAdjustedAmount() + balance
+                } else {
+                    purchaseBillDetail.balAmount = purchaseBillDetail.getBalAmount()
+                    purchaseBillDetail.adjustedAmount = purchaseBillDetail.getAdjustedAmount()
+                }
+                PurchaseBillDetail purchaseBillDetail1 = purchaseBillDetail.save(flush: true)
+                if (purchaseBillDetail1) {
+                    respond purchaseBillDetail1
+                    return
+                }
+            }
+        }
+        catch (Exception ex) {
+            System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
+            log.error('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
+        }
+        response.status = 400
+    }
+
 }

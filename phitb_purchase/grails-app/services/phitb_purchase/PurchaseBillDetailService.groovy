@@ -102,6 +102,7 @@ class PurchaseBillDetailService {
         purchaseBillDetail.exempted = Double.parseDouble(jsonObject.get("exempted").toString())
         purchaseBillDetail.totalDiscount = Double.parseDouble(jsonObject.get("totalDiscount").toString())
         purchaseBillDetail.balAmount = Double.parseDouble(jsonObject.get("balAmount").toString())
+        purchaseBillDetail.totalAmount = Double.parseDouble(jsonObject.get("totalAmount").toString())
         purchaseBillDetail.submitStatus = jsonObject.get("submitStatus").toString()
         purchaseBillDetail.billStatus = jsonObject.get("billStatus").toString()
         purchaseBillDetail.gstStatus = jsonObject.get("gstStatus").toString()
@@ -239,11 +240,12 @@ class PurchaseBillDetailService {
         }
     }
 
-    def getAllBySupplierId(String id)
+    def getAllBySupplierId(String id,String financialYear,String entityId)
     {
         if(id)
         {
-            return PurchaseBillDetail.findAllBySupplierId(Long.parseLong(id))
+            return PurchaseBillDetail.findAllBySupplierIdAndFinancialYearAndEntityId(Long.parseLong(id),
+                    financialYear,Long.parseLong(entityId))
         }
     }
 }

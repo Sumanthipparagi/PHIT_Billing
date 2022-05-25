@@ -71,6 +71,7 @@ class BillPaymentLogService {
         BillPaymentLog billPaymentLog = new BillPaymentLog()
 
         billPaymentLog.billId = Long.parseLong(jsonObject.get("billId").toString())
+        billPaymentLog.paymentId = Long.parseLong(jsonObject.get("paymentId").toString())
         billPaymentLog.billType = jsonObject.get("billType").toString()
         billPaymentLog.amountPaid = Double.parseDouble(jsonObject.get("amountPaid").toString())
         billPaymentLog.paymentRecord = jsonObject.get("paymentRecord").toString()
@@ -98,6 +99,7 @@ class BillPaymentLogService {
         if (billPaymentLog) {
             billPaymentLog.isUpdatable = true
             billPaymentLog.billId = Long.parseLong(jsonObject.get("billId").toString())
+            billPaymentLog.paymentId = Long.parseLong(jsonObject.get("paymentId").toString())
             billPaymentLog.billType = jsonObject.get("billType").toString()
             billPaymentLog.amountPaid = Double.parseDouble(jsonObject.get("amountPaid").toString())
             billPaymentLog.paymentRecord = jsonObject.get("paymentRecord").toString()

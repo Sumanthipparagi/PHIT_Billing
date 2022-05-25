@@ -187,4 +187,53 @@ class PurchaseReturnDetailController {
             System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
         }
     }
+
+    def getAllBySupplierId()
+    {
+        try
+        {
+            respond purchaseReturnDetailService.getAllBySupplierId(params.id,params.financialYear,params.entityId)
+        }
+        catch (Exception ex)
+        {
+            System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
+        }
+    }
+
+
+    def updateBalance()
+    {
+        try
+        {
+            PurchaseReturnDetail purchaseReturn = PurchaseReturnDetail.findById(Long.parseLong(params.id))
+            if (purchaseReturn)
+            {
+                purchaseReturn.isUpdatable = true
+                Double balance = Double.parseDouble(params.balance)
+                if (balance > 0 && balance!="" && balance!=null)
+                {
+                    double diffBalance = Double.parseDouble(purchaseReturn.getBalance().toString()) - balance
+                    purchaseReturn.balance = diffBalance
+                    purchaseReturn.adjAmount = purchaseReturn.getAdjAmount() + balance
+                }
+                else
+                {
+                    purchaseReturn.balance = purchaseReturn.getBalance()
+                    purchaseReturn.adjAmount = purchaseReturn.getAdjAmount()
+                }
+                PurchaseReturnDetail purchaseReturnDetail = purchaseReturn.save(flush: true)
+                if (purchaseReturnDetail)
+                {
+                    respond purchaseReturnDetail
+                    return
+                }
+            }
+        }
+        catch (Exception ex)
+        {
+            System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
+            log.error('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
+        }
+        response.status = 400
+    }
 }

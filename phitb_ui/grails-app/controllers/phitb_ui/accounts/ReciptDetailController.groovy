@@ -198,12 +198,16 @@ class ReciptDetailController {
             JSONArray jsonArray = new JSONArray();
             def salebill = new AccountsService().getAllSaleBillById(params.id, session.getAttribute("entityId").toString(), session.getAttribute("financialYear").toString())
             def creditNote = new AccountsService().getAllSaleReturnById(params.id, session.getAttribute("entityId").toString(), session.getAttribute("financialYear").toString())
+            def gtn = new AccountsService().getAllGTNById(params.id, session.getAttribute("entityId").toString()
+                    , session.getAttribute("financialYear").toString())
             if (salebill.status == 200 && creditNote.status == 200) {
 //                def tmp = creditNote.readEntity(String.class)
                 JSONArray salearray = new JSONArray(salebill.readEntity(String.class))
                 JSONArray creditNoteArry = new JSONArray(creditNote.readEntity(String.class))
+                JSONArray gtnArray = new JSONArray(gtn.readEntity(String.class))
                 jsonArray.add(salearray)
                 jsonArray.add(creditNoteArry)
+                jsonArray.add(gtnArray)
                 respond jsonArray, formats: ['json'], status: 200
             } else {
                 response.status = 400
@@ -276,6 +280,7 @@ class ReciptDetailController {
         }
     }
 
+
     def save() {
         try {
             JSONObject jsonObject = new JSONObject(params)
@@ -311,6 +316,16 @@ class ReciptDetailController {
                             crntObject.remove("paidNow");
                         }
                     }
+                    if (docType == "GTN" && paidNow.toDouble()!= 0) {
+                        JSONObject gtnObject = new JSONObject();
+                        gtnObject.put("id", billId)
+                        gtnObject.put("paidNow", paidNow)
+                        def gtn = new AccountsService().updateGTNBalance(gtnObject)
+                        if (gtn?.status == 200) {
+                            gtnObject.remove("id");
+                            gtnObject.remove("paidNow");
+                        }
+                    }
                     JSONObject billLog = new JSONObject()
                     if (paidNow.toDouble()!= 0) {
                         billLog.put("billId", billId)
@@ -320,10 +335,10 @@ class ReciptDetailController {
                         billLog.put("financialYear", session.getAttribute('financialYear').toString())
                         billLog.put("recieptId", recieptId)
                         billLog.put("transId", transactionId)
-                    }
-                    def billLogResponse = new AccountsService().updateReceiptDetailLog(billLog)
-                    if (billLogResponse?.status == 200) {
-                        println("Bill Log Saved!")
+                        def billLogResponse = new AccountsService().updateReceiptDetailLog(billLog)
+                        if (billLogResponse?.status == 200) {
+                            println("Bill Log Saved!")
+                        }
                     }
                 }
                 respond jsonObject1, formats: ['json'], status: 200
@@ -426,12 +441,14 @@ class ReciptDetailController {
                 JSONObject
         def reciptlogsinv = new AccountsService().getReceiptLogInvById(params.id)
         def reciptlogscrnt = new AccountsService().getReceiptLogcrntById(params.id)
+        def reciptlogsgtn = new AccountsService().getReceiptLoggtnById(params.id)
         JSONArray reciptloginvArray = new JSONArray(reciptlogsinv.readEntity(String.class))
         JSONArray reciptlogcrntArray = new JSONArray(reciptlogscrnt.readEntity(String.class))
-        println(reciptloginvArray.amountPaid.sum())
+        JSONArray reciptloggtnArray = new JSONArray(reciptlogsgtn.readEntity(String.class))
         render(view: '/accounts/recipt/recipt-temp', model: [customer          : customer, recipt: recipt,
                                                              entity            : entity, reciptloginvArray: reciptloginvArray,
-                                                             reciptlogcrntArray: reciptlogcrntArray])
+                                                             reciptlogcrntArray: reciptlogcrntArray,
+                                                             reciptloggtnArray:reciptloggtnArray])
     }
 
 

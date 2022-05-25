@@ -2,6 +2,7 @@ package phitb_accounts
 
 import grails.converters.JSON
 import grails.web.servlet.mvc.GrailsParameterMap
+import org.grails.web.json.JSONArray
 import org.grails.web.json.JSONObject
 import phitb_accounts.Exception.BadRequestException
 import phitb_accounts.Exception.ResourceNotFoundException
@@ -144,6 +145,93 @@ class BillPaymentLogController {
             GrailsParameterMap parameterMap = getParams()
             JSONObject paramsJsonObject = new JSONObject(parameterMap.params)
             respond billPaymentLogService.dataTables(paramsJsonObject, start, length)
+        }
+        catch (ResourceNotFoundException ex)
+        {
+            System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
+            response.status = 404
+        }
+        catch (BadRequestException ex)
+        {
+            System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
+            response.status = 400
+        }
+        catch (Exception ex) {
+            System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
+        }
+    }
+
+    /**
+     * Get requested bill payment log
+     * @param id
+     * @return get requested bill payment log
+     */
+    def paymentDetailsByInvId() {
+        try {
+            String id = params.id
+            if (id) {
+                def bill = BillPaymentLog.findAllByPaymentIdAndBillType(Long.parseLong(id),"INVS")
+                JSONArray jsonArray = new JSONArray(bill)
+                respond jsonArray,formats: ['json']
+            }
+        }
+        catch (ResourceNotFoundException ex)
+        {
+            System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
+            response.status = 404
+        }
+        catch (BadRequestException ex)
+        {
+            System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
+            response.status = 400
+        }
+        catch (Exception ex) {
+            System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
+        }
+    }
+
+    /**
+     * Get requested bill payment log
+     * @param id
+     * @return get requested bill payment log
+     */
+    def paymentDetailsByCrntId() {
+        try {
+            String id = params.id
+            if (id) {
+                def bill = BillPaymentLog.findAllByPaymentIdAndBillType(Long.parseLong(id),"CRNT")
+                JSONArray jsonArray = new JSONArray(bill)
+                respond jsonArray,formats: ['json']
+            }
+        }
+        catch (ResourceNotFoundException ex)
+        {
+            System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
+            response.status = 404
+        }
+        catch (BadRequestException ex)
+        {
+            System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
+            response.status = 400
+        }
+        catch (Exception ex) {
+            System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
+        }
+    }
+
+    /**
+     * Get requested bill payment log
+     * @param id
+     * @return get requested bill payment log
+     */
+    def paymentDetailsByGRNId() {
+        try {
+            String id = params.id
+            if (id) {
+                def bill = BillPaymentLog.findAllByPaymentIdAndBillType(Long.parseLong(id),"GRN")
+                JSONArray jsonArray = new JSONArray(bill)
+                respond jsonArray,formats: ['json']
+            }
         }
         catch (ResourceNotFoundException ex)
         {

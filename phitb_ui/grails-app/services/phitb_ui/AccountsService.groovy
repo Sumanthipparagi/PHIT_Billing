@@ -140,7 +140,7 @@ class AccountsService
     }
 
 
-    //Recipt Detail
+    //Payment Detail
     def savePaymentDetail(JSONObject jsonObject, String financialYear)
     {
         Client client = ClientBuilder.newClient();
@@ -392,7 +392,7 @@ class AccountsService
     }
 
 
-
+// Sales
     def getAllSaleBillById(String id,String entityId,String financialYear)
     {
         Client client = ClientBuilder.newClient()
@@ -439,6 +439,103 @@ class AccountsService
 
     }
 
+    def getAllGTNById(String id,String entityId,String financialYear)
+    {
+        Client client = ClientBuilder.newClient()
+        WebTarget target = client.target(new Links().API_GATEWAY)
+        try
+        {
+            Response apiResponse = target
+                    .path(new Links().GTN_CUSTOMER)
+                    .queryParam("id", URLEncoder.encode(id, "UTF-8"))
+                    .queryParam("financialYear", URLEncoder.encode(financialYear, "UTF-8"))
+                    .queryParam("entityId", URLEncoder.encode(entityId, "UTF-8"))
+                    .request(MediaType.APPLICATION_JSON_TYPE)
+                    .get()
+            return apiResponse
+        }
+        catch (Exception ex)
+        {
+            System.err.println('Service :AccountsService , action :  getProducts  , Ex:' + ex)
+            log.error('Service :AccountsService , action :  getProducts  , Ex:' + ex)
+        }
+
+    }
+
+
+//    purchase
+
+    def getAllPurchaseBillById(String id,String entityId,String financialYear)
+    {
+        Client client = ClientBuilder.newClient()
+        WebTarget target = client.target(new Links().API_GATEWAY)
+        try
+        {
+            Response apiResponse = target
+                    .path(new Links().PURCHASE_BILL_SUPPLIER)
+                    .resolveTemplate("custid",id)
+                    .queryParam("financialYear", URLEncoder.encode(financialYear, "UTF-8"))
+                    .queryParam("entityId", URLEncoder.encode(entityId, "UTF-8"))
+                    .request(MediaType.APPLICATION_JSON_TYPE)
+                    .get()
+            return apiResponse
+        }
+        catch (Exception ex)
+        {
+            System.err.println('Service :AccountsService , action :  getProducts  , Ex:' + ex)
+            log.error('Service :AccountsService , action :  getProducts  , Ex:' + ex)
+        }
+
+    }
+
+    def getAllPurchaseReturnById(String id,String entityId,String financialYear)
+    {
+        Client client = ClientBuilder.newClient()
+        WebTarget target = client.target(new Links().API_GATEWAY)
+        try
+        {
+            Response apiResponse = target
+                    .path(new Links().PURCHASE_RETURN_CUSTOMER)
+                    .queryParam("id", URLEncoder.encode(id, "UTF-8"))
+                    .queryParam("financialYear", URLEncoder.encode(financialYear, "UTF-8"))
+                    .queryParam("entityId", URLEncoder.encode(entityId, "UTF-8"))
+                    .request(MediaType.APPLICATION_JSON_TYPE)
+                    .get()
+            return apiResponse
+        }
+        catch (Exception ex)
+        {
+            System.err.println('Service :AccountsService , action :  getProducts  , Ex:' + ex)
+            log.error('Service :AccountsService , action :  getProducts  , Ex:' + ex)
+        }
+
+    }
+
+    def getAllGRNById(String id,String entityId,String financialYear)
+    {
+        Client client = ClientBuilder.newClient()
+        WebTarget target = client.target(new Links().API_GATEWAY)
+        try
+        {
+            Response apiResponse = target
+                    .path(new Links().GTN_CUSTOMER)
+                    .queryParam("id", URLEncoder.encode(id, "UTF-8"))
+                    .queryParam("financialYear", URLEncoder.encode(financialYear, "UTF-8"))
+                    .queryParam("entityId", URLEncoder.encode(entityId, "UTF-8"))
+                    .request(MediaType.APPLICATION_JSON_TYPE)
+                    .get()
+            return apiResponse
+        }
+        catch (Exception ex)
+        {
+            System.err.println('Service :AccountsService , action :  getProducts  , Ex:' + ex)
+            log.error('Service :AccountsService , action :  getProducts  , Ex:' + ex)
+        }
+
+    }
+
+
+
 
     //   update Sale invoice balance
     def updateSaleBalance(JSONObject jsonObject)
@@ -472,6 +569,77 @@ class AccountsService
         {
             Response apiResponse = target
                     .path(new Links().UPDATE_SALE_RETURN_BALANCE+"/id/"+jsonObject.id+"/balance/"+jsonObject.paidNow)
+                    .request(MediaType.APPLICATION_JSON_TYPE)
+                    .post(Entity.form(form))
+            println(apiResponse)
+            return apiResponse
+        }
+        catch (Exception ex)
+        {
+            System.err.println('Service :saveStateMaster , action :  save  , Ex:' + ex)
+            log.error('Service :saveStateMaster , action :  save  , Ex:' + ex)
+        }
+
+    }
+
+
+    //   update GTN balance
+    def updateGTNBalance(JSONObject jsonObject)
+    {
+        Form form = UtilsService.jsonToFormDataConverter(jsonObject)
+        Client client = ClientBuilder.newClient();
+        WebTarget target = client.target(new Links().API_GATEWAY);
+        try
+        {
+            Response apiResponse = target
+                    .path(new Links().UPDATE_GTN_BALANCE+"/id/"+jsonObject.id+"/balance/"+jsonObject.paidNow)
+                    .request(MediaType.APPLICATION_JSON_TYPE)
+                    .post(Entity.form(form))
+            println(apiResponse)
+            return apiResponse
+        }
+        catch (Exception ex)
+        {
+            System.err.println('Service :saveStateMaster , action :  save  , Ex:' + ex)
+            log.error('Service :saveStateMaster , action :  save  , Ex:' + ex)
+        }
+
+    }
+
+
+
+    //   update Sale invoice balance
+    def updatePurchaseBalance(JSONObject jsonObject)
+    {
+        Form form = UtilsService.jsonToFormDataConverter(jsonObject)
+        Client client = ClientBuilder.newClient();
+        WebTarget target = client.target(new Links().API_GATEWAY);
+        try
+        {
+            Response apiResponse = target
+                    .path(new Links().PURCHASE_BILL_BALANCE_UPDATE+"/id/"+jsonObject.id+"/balance/"+jsonObject.paidNow)
+                    .request(MediaType.APPLICATION_JSON_TYPE)
+                    .post(Entity.form(form))
+            return apiResponse
+        }
+        catch (Exception ex)
+        {
+            System.err.println('Service :saveStateMaster , action :  save  , Ex:' + ex)
+            log.error('Service :saveStateMaster , action :  save  , Ex:' + ex)
+        }
+
+    }
+
+    //   update Sale return balance
+    def updatePurchaseReturnBalance(JSONObject jsonObject)
+    {
+        Form form = UtilsService.jsonToFormDataConverter(jsonObject)
+        Client client = ClientBuilder.newClient();
+        WebTarget target = client.target(new Links().API_GATEWAY);
+        try
+        {
+            Response apiResponse = target
+                    .path(new Links().PURCHASE_BILL_BALANCE_UPDATE+"/id/"+jsonObject.id+"/balance/"+jsonObject.paidNow)
                     .request(MediaType.APPLICATION_JSON_TYPE)
                     .post(Entity.form(form))
             println(apiResponse)
@@ -539,6 +707,29 @@ class AccountsService
         {
             Response apiResponse = target
                     .path(new Links().RECIPT_DETAIL_LOG_CRNT_ID + "/" + id)
+                    .request(MediaType.APPLICATION_JSON_TYPE)
+                    .get()
+            if(apiResponse.status == 200)
+            {
+                return apiResponse
+            }
+        }
+        catch (Exception ex)
+        {
+            System.err.println('Service :AccountsService , action :  getProducts  , Ex:' + ex)
+            log.error('Service :AccountsService , action :  getProducts  , Ex:' + ex)
+        }
+
+    }
+
+    def getReceiptLoggtnById(String id)
+    {
+        Client client = ClientBuilder.newClient()
+        WebTarget target = client.target(new Links().API_GATEWAY)
+        try
+        {
+            Response apiResponse = target
+                    .path(new Links().RECIPT_DETAIL_LOG_GTN_ID + "/" + id)
                     .request(MediaType.APPLICATION_JSON_TYPE)
                     .get()
             if(apiResponse.status == 200)
@@ -873,6 +1064,54 @@ class AccountsService
         {
             System.err.println('Service :AccountsService , action :  debitJvApprove  , Ex:' + ex)
             log.error('Service :AccountsService , action :  debitJvApprove  , Ex:' + ex)
+        }
+
+    }
+
+
+
+    def getPaymentLogInvById(String id)
+    {
+        Client client = ClientBuilder.newClient()
+        WebTarget target = client.target(new Links().API_GATEWAY)
+        try
+        {
+            Response apiResponse = target
+                    .path(new Links().RECIPT_DETAIL_LOG_INVS_ID + "/" + id)
+                    .request(MediaType.APPLICATION_JSON_TYPE)
+                    .get()
+            if(apiResponse.status == 200)
+            {
+                return apiResponse
+            }
+        }
+        catch (Exception ex)
+        {
+            System.err.println('Service :AccountsService , action :  getProducts  , Ex:' + ex)
+            log.error('Service :AccountsService , action :  getProducts  , Ex:' + ex)
+        }
+
+    }
+
+    def getPaymentLogcrntById(String id)
+    {
+        Client client = ClientBuilder.newClient()
+        WebTarget target = client.target(new Links().API_GATEWAY)
+        try
+        {
+            Response apiResponse = target
+                    .path(new Links().RECIPT_DETAIL_LOG_CRNT_ID + "/" + id)
+                    .request(MediaType.APPLICATION_JSON_TYPE)
+                    .get()
+            if(apiResponse.status == 200)
+            {
+                return apiResponse
+            }
+        }
+        catch (Exception ex)
+        {
+            System.err.println('Service :AccountsService , action :  getProducts  , Ex:' + ex)
+            log.error('Service :AccountsService , action :  getProducts  , Ex:' + ex)
         }
 
     }
