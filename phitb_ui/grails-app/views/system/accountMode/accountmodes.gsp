@@ -17,6 +17,7 @@
     <asset:stylesheet rel="stylesheet" href="/themeassets/css/color_skins.css"/>
     <asset:stylesheet rel="stylesheet" href="/themeassets/plugins/sweetalert/sweetalert.css"/>
     <asset:stylesheet  src="/themeassets/plugins/bootstrap-select/css/bootstrap-select.css" rel="stylesheet" />
+    <asset:stylesheet  src="/themeassets/plugins/select-2-editor/select2.min.css" rel="stylesheet" />
 
     <style>
 
@@ -146,6 +147,7 @@
 <asset:javascript src="/themeassets/js/pages/tables/jquery-datatable.js"/>
 <asset:javascript src="/themeassets/js/pages/ui/dialogs.js"/>
 <asset:javascript src="/themeassets/plugins/sweetalert/sweetalert.min.js"/>
+<asset:javascript  src="/themeassets/plugins/select-2-editor/select2.js" />
 
 
 
@@ -185,7 +187,7 @@
                     for (var i = 0; i < json.data.length; i++) {
                         var editbtn = '<button type="button" data-id="' + json.data[i].id +
                             '" data-mode="' + json.data[i].mode + '"' +
-                            '" data-entityRegister="' + json.data[i].entityId + '"' +
+                            'data-entityRegister="' + json.data[i].entityId + '"' +
                             ' class="editbtn btn btn-warning  editbtn" data-toggle="modal" data-target="#addAccountModeModal"><i class="material-icons"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">edit</font></font></i></button>'
                         var deletebtn = '<button type="button" data-id="' + json.data[i].id +
                             '" class="btn btn-danger deletebtn" data-toggle="modal" data-target=".deleteModal"><i class="material-icons"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">delete</font></font></i></button>'
@@ -251,6 +253,7 @@
 
     $(document).on("click", ".addbtn", function () {
         $(".accountModeTitle").text("Add Account Mode Master")
+        $('.entity').select2()
         $(".accountModeForm")[0].reset();
         id = null
     });
@@ -258,9 +261,10 @@
     $(document).on("click", ".editbtn", function () {
         id = $(this).data('id');
         $(".mode").val($(this).data('mode'));
-        $(".entityRegister").val($(this).data('entity'));
-        var a = $(this).data('entity');
-        $("#entityRegister").val(a).change()
+        $(".entity").val($(this).data('entity'));
+        var a = $(this).attr('data-entityregister');
+        $(".entity").val(a).change()
+        $('.entity').select2();
         $(".accountModeTitle").text("Update Account Mode Master");
     });
 
