@@ -11,6 +11,15 @@ import phitb_ui.system.ZoneController
 
 class AccountRegisterController {
 
+    def index() {
+        JSONArray accountList = new EntityService().getAllAccountByEntity(session.getAttribute("entityId").toString())
+        JSONArray accountTypes = new SystemService().getAccountTypes(session.getAttribute("entityId").toString())
+        ArrayList<String> accountMode = new AccountModeController().show() as ArrayList<String>
+        ArrayList<String> entity = new EntityRegisterController().show() as ArrayList<String>
+        render(view: '/entity/accountRegister/accounts',model: [account:accountList,accountMode:accountMode,entity:entity, accountTypes: accountTypes])
+    }
+
+
     def getAllAccounts()
     {
         def apiResponse = new EntityService().getAllAccount()
@@ -35,32 +44,6 @@ class AccountRegisterController {
         else {
             return []
         }
-    }
-
-
-    def getTreeData()
-    {
-//        ArrayList<String> account = new AccountRegisterController().getAllAccounts()
-//        JSONArray array = new JSONArray();
-//        JSONObject item
-//        account.each {
-//            item = new JSONObject();
-//            item.put("text", it.accountName)
-//            array.put(item)
-//        }
-//        account.each {
-//            item = new JSONObject();
-//            item.put("nodes", it.subAccountType)
-//            array.put(item)
-//        }
-
-        ArrayList<String> account = new AccountRegisterController().getAllAccounts()
-        def map = [:]
-        account.each {val ->
-            map['text'] = val.accountName
-            map['nodes'] = val.accountName
-        }
-       render map as JSON
     }
 
 
@@ -125,11 +108,138 @@ class AccountRegisterController {
         }
     }
 
-    def index() {
+
+    def dataTable()
+    {
+        try
+        {
+            JSONObject jsonObject = new JSONObject(params)
+            jsonObject.put("entityId", session.getAttribute("entityId"))
+            def apiResponse = new EntityService().showAccountRegister(jsonObject)
+            if (apiResponse.status == 200)
+            {
+                JSONObject responseObject = new JSONObject(apiResponse.readEntity(String.class))
+                respond responseObject, formats: ['json'], status: 200
+            }
+            else
+            {
+                response.status = 400
+            }
+        }
+        catch (Exception ex)
+        {
+            System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
+            log.error('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
+            response.status = 400
+        }
+    }
+
+
+    def update()
+    {
+        try
+        {
+            JSONObject jsonObject = new JSONObject(params)
+            jsonObject.put("generalId", "1")
+            jsonObject.put("accountStatus", "1")
+            jsonObject.put("responsibleUserId", session.getAttribute("userId"))
+            jsonObject.put("entityType", session.getAttribute("entityTypeId"))
+            jsonObject.put("entity", session.getAttribute("entityId"))
+//            if(params.showInCredit==null)
+//            {
+//                jsonObject.put("showInCredit", "off")
+//            }
+//            if(params.showInDebit==null)
+//            {
+//                jsonObject.put("showInDebit", "off")
+//            }
+            if(params.subAccountType==null)
+            {
+                jsonObject.put("subAccountType", 0)
+            }
+            if(jsonObject.has("showInDebit"))
+            {
+                if(jsonObject.get("showInDebit").toString().equalsIgnoreCase("on"))
+                {
+                    jsonObject.put("showInDebit", true)
+                }
+                else
+                {
+                    jsonObject.put("showInDebit", false)
+                }
+            }
+            else
+            {
+                jsonObject.put("showInDebit", false)
+            }
+
+            if(jsonObject.has("showInCredit"))
+            {
+                if(jsonObject.get("showInCredit").toString().equalsIgnoreCase("on"))
+                {
+                    jsonObject.put("showInCredit", true)
+                }
+                else
+                {
+                    jsonObject.put("showInCredit", false)
+                }
+            }
+            else
+            {
+                jsonObject.put("showInCredit", false)
+            }
+
+            def apiResponse = new EntityService().putAccountRegister(jsonObject)
+            if (apiResponse.status == 200)
+            {
+                JSONObject obj = new JSONObject(apiResponse.readEntity(String.class))
+                respond obj, formats: ['json'], status: 200
+            }
+            else
+            {
+                response.status = 400
+            }
+        }
+        catch (Exception ex)
+        {
+            System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
+            log.error('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
+            response.status = 400
+        }
+    }
+
+    def delete()
+    {
+        try
+        {
+            JSONObject jsonObject = new JSONObject(params)
+            def apiResponse = new EntityService().deleteAccountRegister(jsonObject)
+            if (apiResponse.status == 200)
+            {
+                JSONObject data = new JSONObject()
+                data.put("success","success")
+                respond data, formats: ['json'], status: 200
+            }
+            else
+            {
+                response.status = 400
+            }
+        }
+        catch (Exception ex)
+        {
+            System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
+            log.error('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
+            response.status = 400
+        }
+    }
+
+    def accountsList()
+    {
         JSONArray accountList = new EntityService().getAllAccountByEntity(session.getAttribute("entityId").toString())
         JSONArray accountTypes = new SystemService().getAccountTypes(session.getAttribute("entityId").toString())
         ArrayList<String> accountMode = new AccountModeController().show() as ArrayList<String>
         ArrayList<String> entity = new EntityRegisterController().show() as ArrayList<String>
-        render(view: '/entity/accountRegister/accounts',model: [account:accountList,accountMode:accountMode,entity:entity, accountTypes: accountTypes])
+        render(view:'/entity/accountRegister/accounts-list',model: [account:accountList,accountMode:accountMode,entity:entity, accountTypes: accountTypes])
     }
+
 }

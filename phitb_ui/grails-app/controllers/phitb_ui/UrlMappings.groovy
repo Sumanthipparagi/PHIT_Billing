@@ -211,6 +211,7 @@ class UrlMappings {
         "/accounts"(controller: "accountRegister") {
             action = [GET: 'index', POST: 'save']
         }
+        "/accounts-list"(controller: "accountRegister", action: 'accountsList')
         "/accounts/datatable"(controller: "accountRegister", action: 'dataTable')
         "/accounts/update/$id"(controller:"accountRegister",action:"update")
         "/accounts/delete/$id"(controller: "accountRegister",action:"delete")
