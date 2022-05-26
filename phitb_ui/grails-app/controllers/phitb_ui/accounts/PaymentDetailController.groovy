@@ -90,22 +90,23 @@ class PaymentDetailController {
             def apiResponse = new AccountsService().showPayments(jsonObject)
             if (apiResponse.status == 200) {
                 JSONObject responseObject = new JSONObject(apiResponse.readEntity(String.class))
-//                if (responseObject) {
-//                    JSONArray jsonArray = responseObject.data
-//                    JSONArray jsonArray2 = new JSONArray()
-//                    JSONArray depositArray = new JSONArray()
-//                    for (JSONObject json : jsonArray) {
-//                        json.put("transferFrom", new EntityService().getEntityById(json.get("transferFrom").toString()))
-//                        jsonArray2.put(json)
-//                    }
-//                    jsonArray.each {
-//                        if (it.has("paymentTo")) {
-//                            def accountResp = new AccountRegisterController().getAllAccountsById(it.get("paymentTo")?.toString())
-//                            it.put("paymentTo", accountResp)
-//                        }
-//                    }
-//                    responseObject.put("data", jsonArray2)
-//                }
+                if (responseObject) {
+                    JSONArray jsonArray = responseObject.data
+                    JSONArray jsonArray2 = new JSONArray()
+                    JSONArray depositArray = new JSONArray()
+                    for (JSONObject json : jsonArray) {
+                        json.put("transferFrom", new EntityService().getEntityById(json.get("transferFrom").toString()))
+                        jsonArray2.put(json)
+                    }
+
+                    jsonArray.each {
+                        if (it.has("paymentTo")) {
+                            def accountResp = new EntityService().getAccountById(it.get("paymentTo")?.toString())
+                            it.put("paymentTo", accountResp)
+                        }
+                    }
+                    responseObject.put("data", jsonArray2)
+                }
                 respond responseObject, formats: ['json'], status: 200
             } else {
                 response.status = 400
@@ -117,6 +118,7 @@ class PaymentDetailController {
             response.status = 400
         }
     }
+
 
     def getAllEntityById()
     {

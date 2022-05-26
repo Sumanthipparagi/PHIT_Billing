@@ -108,8 +108,8 @@
                                     <th style="width: 20%">Form Name</th>
                                     <th style="width: 20%">Form button Name</th>
                                     <th style="width: 20%">Config Allowed</th>
-                                    <th style="width: 20%">Entity Type</th>
-                                    <th style="width: 20%">Entity</th>
+%{--                                    <th style="width: 20%">Entity Type</th>--}%
+%{--                                    <th style="width: 20%">Entity</th>--}%
 %{--                                    <th style="width: 20%">Created User</th>--}%
 %{--                                    <th style="width: 20%">Modified User</th>--}%
                                     <th style="width: 20%">Action</th>
@@ -208,8 +208,8 @@
                             'formname': json.data[i].formName,
                             'formbtnname': json.data[i].formButtonName,
                             'confallowed': json.data[i].configAllowed,
-                            'entity': json.entity[i].entityName,
-                            'entitytype': json.entityType[i].name,
+                            // 'entity': json.entity[i].entityName,
+                            // 'entitytype': json.entityType[i].name,
                             // 'createduser': json.createduser[i].userName,
                             // 'modifieduser': json.modifiedUser[i].userName,
                             'action': editbtn + ' ' + deletebtn
@@ -223,8 +223,8 @@
                 {'data': 'formname', 'width': '20%'},
                 {'data': 'formbtnname', 'width': '20%'},
                 {'data': 'confallowed', 'width': '20%'},
-                {'data': 'entitytype', 'width': '20%'},
-                {'data': 'entity', 'width': '20%'},
+                // {'data': 'entitytype', 'width': '20%'},
+                // {'data': 'entity', 'width': '20%'},
                 // {'data': 'createduser', 'width': '20%'},
                 // {'data': 'modifieduser', 'width': '20%'},
                 {'data': 'action', 'width': '20%'}

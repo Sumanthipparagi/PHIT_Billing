@@ -109,11 +109,12 @@
                                                                    <th style="width: 20%">ID</th>--}%
                                     <th style="width: 20%">Payment Date</th>
                                     <th style="width: 20%">Payment Id</th>
+                                    <th style="width: 20%">Financial Year</th>
                                     <th style="width: 20%">Transfer From</th>
 %{--                                    <th style="width: 20%">Payment To</th>--}%
-                                    <th style="width: 20%">Financial Year</th>
+
 %{--                                    <th style="width: 20%">Amount paid</th>--}%
-                                    %{--                                    <th style="width: 20%">Bank</th>--}%
+                                    <th style="width: 20%">Amount Paid</th>
                                     <th style="width: 20%">Action</th>
                                 </tr>
                                 </thead>
@@ -206,9 +207,9 @@
                             'id': json.data[i].paymentId,
                             'date': moment(date).format('DD/MM/YYYY'),
                             'fy': json.data[i].financialYear,
+                            'trasferfrom':  json.data[i].transferFrom.entityName,
                             'amountPaid': json.data[i].amountPaid,
                             'pd': moment(pd).format('DD/MM/YYYY'),
-                            // 'bank': json.data[i].bank.bankName,
                             'action': editbtn
                         });
                     }
@@ -219,8 +220,8 @@
                 {'data': 'date', 'width': '20%'},
                 {'data': 'id', 'width': '20%'},
                 {'data': 'fy', 'width': '20%'},
+                {'data': 'trasferfrom', 'width': '20%'},
                 {'data': 'amountPaid', 'width': '20%'},
-                // {'data': 'bank', 'width': '20%'},
                 {'data': 'action', 'width': '20%'}
             ]
         });

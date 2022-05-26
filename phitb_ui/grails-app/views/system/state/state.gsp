@@ -108,7 +108,7 @@
                                     <th>Name</th>
                                     <th>Zone</th>
                                     <th>Country</th>
-                                    <th>Entity</th>
+%{--                                    <th>Entity</th>--}%
                                     <th>Action</th>
                                 </tr>
                                 </thead>
@@ -202,7 +202,7 @@
                             'name': json.data[i].name,
                             'zone': json.data[i].zone.name,
                             'country': json.data[i].country.name,
-                            'entity': json.names[i].entityName,
+                            // 'entity': json.names[i].entityName,
                             'action': editbtn + ' ' + deletebtn
                         });
                     }
@@ -213,7 +213,7 @@
                 {'data': 'name', 'width': '5%'},
                 {'data': 'zone', 'width': '5%'},
                 {'data': 'country', 'width': '5%'},
-                {'data': 'entity', 'width': '5%'},
+                // {'data': 'entity', 'width': '5%'},
                 {'data': 'action', 'width': '5%'}
             ]
         });

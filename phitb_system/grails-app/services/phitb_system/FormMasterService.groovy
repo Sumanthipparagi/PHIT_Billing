@@ -94,10 +94,10 @@ class FormMasterService {
         jsonObject.put("recordsTotal", recordsTotal)
         jsonObject.put("recordsFiltered", recordsTotal)
         jsonObject.put("data", formMasterArrayList)
-        jsonObject.put("entity", entity)
-        jsonObject.put("entityType", entityType)
-        jsonObject.put("createduser", createduser)
-        jsonObject.put("modifieduser", modifieduser)
+//        jsonObject.put("entity", entity)
+//        jsonObject.put("entityType", entityType)
+//        jsonObject.put("createduser", createduser)
+//        jsonObject.put("modifieduser", modifieduser)
         return jsonObject
     }
 
