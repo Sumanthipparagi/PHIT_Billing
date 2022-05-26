@@ -263,7 +263,7 @@
         $(".mode").val($(this).data('mode'));
         $(".entity").val($(this).data('entity'));
         var a = $(this).attr('data-entityregister');
-        $(".entity").val(a).change()
+        $(".entity").val(a).change();
         $('.entity').select2();
         $(".accountModeTitle").text("Update Account Mode Master");
     });
