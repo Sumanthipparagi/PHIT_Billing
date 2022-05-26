@@ -136,10 +136,10 @@ class AccountRegisterService {
 
     void delete(String id) {
         if (id) {
-            AccountRegister bankRegister = AccountRegister.findById(Long.parseLong(id))
-            if (bankRegister) {
-                bankRegister.isUpdatable = true
-                bankRegister.delete()
+            AccountRegister accountRegister = AccountRegister.findById(Long.parseLong(id))
+            if (accountRegister) {
+                accountRegister.isUpdatable = true
+                accountRegister.delete()
             } else {
                 throw new ResourceNotFoundException()
             }

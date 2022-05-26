@@ -309,7 +309,7 @@
 
     $(document).on("click", ".deletebtn", function () {
         id = $(this).data('id');
-        $("#myModalLabel").text("Delete Customer Group?");
+        $("#myModalLabel").text("Delete Accounts ?");
 
     });
 
@@ -321,7 +321,7 @@
             success: function () {
                 $('.deleteModal').modal('hide');
                 accountsTable();
-                swal("Success!", "Customer Group Deleted Successfully", "success");
+                swal("Success!", "Account Modes Deleted Successfully", "success");
             }, error: function () {
                 swal("Error!", "Something went wrong", "error");
             }
