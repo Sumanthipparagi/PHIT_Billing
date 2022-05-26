@@ -391,6 +391,8 @@ public class Links
     public static String SALE_BILL_CONSOLIDATED_REPORTS = "api/v1.0/sales/reports/consolidated";
     public static String SALE_BILL_UPDATE_IRN = "api/v1.0/sales/salebilldetails/updateirn";
 
+    public static String GET_OUTSTANDING_REPORT = "api/v1.0/accounts/reports/outstanding";
+
     public static String GST_SALES_REPORTS = "api/v1.0/sales/reports/salesgst";
 
     public static String SALE_SCHEME_UPDATE = "api/v1.0/sales/schemeconfiguration/{id}";
