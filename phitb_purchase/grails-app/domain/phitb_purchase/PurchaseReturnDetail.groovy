@@ -29,6 +29,7 @@ class PurchaseReturnDetail implements LogicalDelete<PurchaseReturnDetail> {
     long quantity
     double totalAmount
     double balance
+    String invoiceNumber
     double crdAdjAmount
     double totalDiscount
     String creditIds
@@ -49,6 +50,7 @@ class PurchaseReturnDetail implements LogicalDelete<PurchaseReturnDetail> {
 
     static constraints = {
         adjAmount nullable:true
+        invoiceNumber nullable: true
     }
 
     static mapping = {

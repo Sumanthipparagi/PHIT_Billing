@@ -106,7 +106,7 @@
                                 <tr>
                                     <th>ID</th>
                                     <th>Name</th>
-                                    <th>entityRegister</th>
+%{--                                    <th>entityRegister</th>--}%
                                     <th>Action</th>
                                 </tr>
                                 </thead>
@@ -175,7 +175,7 @@
             processing: true,
             serverSide: true,
             language: {
-                searchPlaceholder: "Search State"
+                searchPlaceholder: "Search Account Modes"
             },
             ajax: {
                 type: 'GET',
@@ -194,7 +194,7 @@
                         return_data.push({
                             'id': json.data[i].id,
                             'name': json.data[i].mode,
-                            'entity': json.names[i].entityName,
+                            // 'entity': json.names[i].entityName,
                             'action': editbtn + ' ' + deletebtn
 
                         });
@@ -205,7 +205,7 @@
             columns: [
                 {'data': 'id'},
                 {'data': 'name'},
-                {'data': 'entity'},
+                // {'data': 'entity'},
                 {'data': 'action', 'width': '20%'}
             ]
         });
@@ -252,10 +252,10 @@
     });
 
     $(document).on("click", ".addbtn", function () {
-        $(".accountModeTitle").text("Add Account Mode Master")
-        $('.entity').select2()
         $(".accountModeForm")[0].reset();
+        $(".accountModeTitle").text("Add Account Mode Master");
         id = null
+        $('.entity').select2()
     });
 
     $(document).on("click", ".editbtn", function () {
