@@ -482,7 +482,7 @@
     }
 
 
-    let invIdArray = [];
+
 
     function getAllSaleBillDetails(id) {
         if (id) {
@@ -510,6 +510,7 @@
                     var invoiceData = [];
                     var crntData = [];
                     var gtnData = [];
+                    var invIdArray = [];
                     $.each(data[0], function (key, value) {
                         var balance = value.balAmount.toFixed()
                         if (Number(balance)!== 0 && value.billStatus!== 'DRAFT' && value.billStatus!== 'CANCELLED') {
@@ -526,9 +527,8 @@
                                 '                                        <td>' + value.financialYear + '</td>\n' +
                                 '                                        <td style="display: none;">' + value.id + '</td>\n' +
                                 '                                        </tr>';
-
-                            invoiceData.push(value.id);
                             invIdArray.push(value.id);
+                            invoiceData.push(value.id);
                             console.log(invIdArray)
                         }
                     });
