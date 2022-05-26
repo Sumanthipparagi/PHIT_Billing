@@ -104,7 +104,7 @@
                             <table class="table table-bordered table-striped table-hover accountmodeTable dataTable">
                                 <thead>
                                 <tr>
-                                    <th>ID</th>
+%{--                                    <th>ID</th>--}%
                                     <th>Name</th>
 %{--                                    <th>entityRegister</th>--}%
                                     <th>Action</th>
@@ -203,7 +203,7 @@
                 }
             },
             columns: [
-                {'data': 'id'},
+                // {'data': 'id'},
                 {'data': 'name'},
                 // {'data': 'entity'},
                 {'data': 'action', 'width': '20%'}

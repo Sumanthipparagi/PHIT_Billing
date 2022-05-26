@@ -75,7 +75,8 @@
                     %{--                        </ul>--}%
                     %{--                    </div>--}%
                     <div class="body">
-                    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#addaccountsModal">Add Accounts</button>
+                    <button type="button" class="btn btn-primary addbtn" data-toggle="modal"
+                            data-target="#addaccountsModal">Add Accounts</button>
                     <div class="col-md-12">
                         <h4 class="card-title"></h4>
                         <div id="treeview1" class=""></div>
@@ -205,7 +206,6 @@
     $(document).on("click", ".addbtn", function () {
         $(".addaccountsTitle").text("Add Account");
         $(".addaccountsForm")[0].reset();
-        id = null
     });
 </script>
 

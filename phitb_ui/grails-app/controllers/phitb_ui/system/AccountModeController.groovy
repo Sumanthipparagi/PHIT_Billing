@@ -3,6 +3,7 @@ package phitb_ui.system
 import groovy.json.JsonSlurper
 import org.grails.web.json.JSONArray
 import org.grails.web.json.JSONObject
+import phitb_ui.EntityService
 import phitb_ui.Links
 import phitb_ui.SystemService
 import phitb_ui.entity.EntityRegisterController
@@ -14,7 +15,7 @@ class AccountModeController
     def index()
     {
 
-        ArrayList<String> entity = new EntityRegisterController().show() as ArrayList<String>
+        ArrayList<String> entity = new EntityService().getByEntity(session.getAttribute("entityId").toString()) as ArrayList<String>
         render(view: '/system/accountMode/accountmodes',model: [entity:entity])
     }
 
@@ -47,6 +48,7 @@ class AccountModeController
         try
         {
             JSONObject jsonObject = new JSONObject(params)
+            jsonObject.put("entityId", session.getAttribute("entityId"))
             def apiResponse = new SystemService().showAccountModes(jsonObject)
             if (apiResponse.status == 200)
             {
