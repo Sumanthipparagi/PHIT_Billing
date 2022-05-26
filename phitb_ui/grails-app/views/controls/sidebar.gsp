@@ -462,6 +462,7 @@
                         class="zmdi zmdi-book-image"></i><span>System</span> <span
                         class="badge badge-success float-right"></span></a>
                     <ul class="ml-menu">
+                        <li><a href="/accountmodes">Account Modes</a></li>
                         <g:if test="${UtilsService.isPermitted("VIEW_STATE", session.getAttribute("permittedFeatures").toString())}">
                             <li><a href="/state">State</a></li>
                         </g:if>
