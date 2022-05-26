@@ -395,7 +395,7 @@ class PaymentDetailController {
 
     def printPayment() {
         JSONObject customer = new EntityRegisterController().getEnitityById(params.custid) as JSONObject
-        JSONObject recipt = new PaymentDetailController().getPaymentById(params.id) as JSONObject
+        JSONObject payments = new PaymentDetailController().getPaymentById(params.id) as JSONObject
         JSONObject entity = new EntityRegisterController().getEnitityById(session.getAttribute('entityId').toString()) as
                 JSONObject
         def reciptlogsinv = new AccountsService().getPaymentLogInvById(params.id)
@@ -404,10 +404,10 @@ class PaymentDetailController {
         JSONArray reciptloginvArray = new JSONArray(reciptlogsinv.readEntity(String.class))
         JSONArray reciptlogcrntArray = new JSONArray(reciptlogscrnt.readEntity(String.class))
         JSONArray reciptloggtnArray = new JSONArray(reciptlogsgtn.readEntity(String.class))
-        render(view: '/accounts/payments/payment-vocher', model: [customer          : customer, recipt: recipt,
-                                                             entity            : entity, reciptloginvArray: reciptloginvArray,
-                                                             reciptlogcrntArray: reciptlogcrntArray,
-                                                             reciptloggtnArray:reciptloggtnArray])
+        render(view: '/accounts/payments/payment-vocher', model: [customer            : customer, payments: payments,
+                                                                  entity              : entity, paymentsloginvArray: reciptloginvArray,
+                                                                  paymentslogcrntArray: reciptlogcrntArray,
+                                                                  paymentsloggtnArray :reciptloggtnArray])
     }
 
 

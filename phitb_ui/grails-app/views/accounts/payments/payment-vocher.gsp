@@ -90,14 +90,14 @@
         </td>
         <td style="width: 15%;vertical-align:top;">
             <ul style="margin: 0;">
-                <li><b class="tab">Payment No.</b>: ${recipt.paymentId}</li>
-                <li><b class="tab">Payment Date</b>:${recipt.date.split("T")[0]}</li>
+                <li><b class="tab">Payment No.</b>: ${payments.paymentId}</li>
+                <li><b class="tab">Payment Date</b>:${payments.date.split("T")[0]}</li>
             </ul>
         </td>
         <td style="width: 25%;vertical-align:top;">
             <input id="text" type="hidden" value="PharmIT" style="Width:20%" onblur='generateBarCode();'/>
             <img id='barcode'
-                 src="https://api.qrserver.com/v1/create-qr-code/?data=${recipt.id}&amp;size=100x100"
+                 src="https://api.qrserver.com/v1/create-qr-code/?data=${payments.id}&amp;size=100x100"
                  alt=""
                  title="PhramIT"
                  style="display: block;
@@ -116,10 +116,10 @@
     </tr>
     <tr>
         <td>
-            <g:if test="${recipt.bank != null && recipt.bank != ""}">
-                <p>By Cheque No.: ${recipt.chequeNumber} of ${recipt.bank.bankName} dated ${recipt.paymentDate.split("T")[0]}</p>
+            <g:if test="${payments.bank != null && payments.bank != ""}">
+                <p>By Cheque No.: ${payments.chequeNumber} of ${payments.bank.bankName} dated ${payments.dateCreated.split("T")[0]}</p>
             </g:if>
-            <g:elseif test="${recipt?.cardNumber != null && recipt?.cardNumber != ""}">
+            <g:elseif test="${payments?.cardNumber != null && payments?.cardNumber != ""}">
                 BY CARD
                 <br>
                 <br>
@@ -144,7 +144,7 @@
                         Adj. Amount
                     </th>
                 </tr>
-                <g:each var="inv" in="${reciptloginvArray}">
+                <g:each var="inv" in="${paymentsloginvArray}">
 
                     <g:if test="${inv.amountPaid != 0}">
                         <tr>
@@ -155,7 +155,7 @@
                         </tr>
                     </g:if>
                 </g:each>
-                <g:each var="crnt" in="${reciptlogcrntArray}">
+                <g:each var="crnt" in="${paymentslogcrntArray}">
 
                     <g:if test="${crnt.amountPaid != 0}">
                         <tr>
@@ -167,7 +167,7 @@
                     </g:if>
                 </g:each>
 
-                <g:each var="gtn" in="${reciptloggtnArray}">
+                <g:each var="gtn" in="${paymentsloggtnArray}">
 
                     <g:if test="${gtn.amountPaid != 0}">
                         <tr>
@@ -196,17 +196,17 @@
             double crnt = 0
             double gtn = 0
 
-            if(reciptloginvArray.amountPaid.sum()!=null)
+            if(paymentsloginvArray.amountPaid.sum()!=null)
             {
-                inv = reciptloginvArray.amountPaid.sum()
+                inv = paymentsloginvArray.amountPaid.sum()
             }
             else {
                 inv = 0
             }
 
-            if(reciptloggtnArray.amountPaid.sum()!=null)
+            if(paymentsloggtnArray.amountPaid.sum()!=null)
             {
-                gtn = reciptloggtnArray.amountPaid.sum()
+                gtn = paymentsloggtnArray.amountPaid.sum()
             }
             else {
                 gtn = 0
@@ -229,7 +229,7 @@
 
     <tr>
         <td colspan="5">
-            <p><strong>Note:</strong>${recipt.narration}
+            <p><strong>Note:</strong>${payments.narration}
             </p>
         </td>
     </tr>
@@ -237,7 +237,7 @@
     <tr>
         <td style="border-left: none;border-right: none;">
             <p><strong><g:if
-                    test="${recipt.bank != null && recipt.bank != ""}">Deposit Bank :${recipt.bank.bankName}</g:if></strong>
+                    test="${payments.bank != null && payments.bank != ""}">Deposit Bank :${payments.bank.bankName}</g:if></strong>
             </p>
 
             <p>&nbsp;</p>
