@@ -47,6 +47,14 @@ class UrlMappings {
         "/city/delete/$id"(controller: "city",action:"delete")
 
 
+//        //      Priority
+//        "/priority"(controller: "priority") {
+//            action = [GET: "index", POST: "save"]
+//        }
+//        "/priority/datatable"(controller: "priority", action: "dataTable")
+//        "/priority/update/$id"(controller: "priority",action:"update")
+//        "/priority/delete/$id"(controller: "priority",action:"delete")
+
 
 //      Country
         "/country"(controller: "country") {
@@ -66,8 +74,8 @@ class UrlMappings {
         "/form/delete/$id"(controller: "form",action:"delete")
 
 
-        //      Form Master
-        "/priority"(controller: "form") {
+        //      Priority
+        "/priority"(controller: "priority") {
             action = [GET: "index", POST: "save"]
         }
         "/priority/datatable"(controller: "priority", action: "dataTable")

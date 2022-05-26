@@ -482,7 +482,7 @@
     }
 
 
-
+    let invIdArray = [];
 
     function getAllSaleBillDetails(id) {
         if (id) {
@@ -510,7 +510,6 @@
                     var invoiceData = [];
                     var crntData = [];
                     var gtnData = [];
-                    var invIdArray = [];
                     $.each(data[0], function (key, value) {
                         var balance = value.balAmount.toFixed()
                         if (Number(balance)!== 0 && value.billStatus!== 'DRAFT' && value.billStatus!== 'CANCELLED') {

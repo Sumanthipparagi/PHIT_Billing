@@ -39,6 +39,7 @@ class PriorityMasterService {
         String searchTerm = paramsJsonObject.get("search[value]")
         String orderColumnId = paramsJsonObject.get("order[0][column]")
         String orderDir = paramsJsonObject.get("order[0][dir]")
+        long entityId = paramsJsonObject.get("entityId")
 
         String orderColumn = "id"
         switch (orderColumnId) {
@@ -60,6 +61,7 @@ class PriorityMasterService {
                     ilike('priority', '%' + searchTerm + '%')
                 }
             }
+            eq('entityId',entityId)
             eq('deleted', false)
             order(orderColumn, orderDir)
         }
@@ -78,6 +80,7 @@ class PriorityMasterService {
         if (priority) {
             PriorityMaster priorityMaster = new PriorityMaster()
             priorityMaster.priority = priority
+            priorityMaster.entityId = Long.parseLong(jsonObject.get("entity").toString())
             priorityMaster.save(flush: true)
             if (!priorityMaster.hasErrors())
                 return priorityMaster

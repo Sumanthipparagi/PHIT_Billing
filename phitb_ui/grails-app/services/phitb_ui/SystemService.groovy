@@ -156,7 +156,6 @@ class SystemService
 
     }
 
-
     /**
      *
      * @param jsonObject
@@ -863,5 +862,139 @@ class SystemService
         }
 
     }
+
+
+    //Priority
+    /**
+     *
+     */
+    def savePriority(JSONObject jsonObject)
+    {
+        Client client = ClientBuilder.newClient();
+        WebTarget target = client.target(new Links().API_GATEWAY);
+
+        try
+        {
+            println(jsonObject)
+            Response apiResponse = target
+                    .path(new Links().PRIORITY_SHOW)
+                    .request(MediaType.APPLICATION_JSON_TYPE)
+                    .post(Entity.entity(jsonObject.toString(),MediaType.APPLICATION_JSON_TYPE))
+            println(apiResponse)
+            return apiResponse
+        }
+        catch (Exception ex)
+        {
+            System.err.println('Service :saveStateMaster , action :  save  , Ex:' + ex)
+            log.error('Service :saveStateMaster , action :  save  , Ex:' + ex)
+        }
+
+    }
+
+    /**
+     *
+     * @param jsonObject
+     * @return
+     */
+    def showPriority(JSONObject jsonObject)
+    {
+        Client client = ClientBuilder.newClient();
+        WebTarget target = client.target(new Links().API_GATEWAY);
+
+        try
+        {
+            Response apiResponse = target
+                    .path(new Links().PRIORITY_DATATABLE)
+                    .queryParam("params", URLEncoder.encode(jsonObject.toString(), "UTF-8"))
+                    .request(MediaType.APPLICATION_JSON_TYPE)
+                    .get()
+            return apiResponse
+        }
+        catch (Exception ex)
+        {
+            System.err.println('Service :getAccountModes , action :  show  , Ex:' + ex)
+            log.error('Service :getAccountModes , action :  show  , Ex:' + ex)
+        }
+
+    }
+
+    /**
+     *
+     * @param jsonObject
+     * @return
+     */
+    def putPriority(JSONObject jsonObject)
+    {
+        Client client = ClientBuilder.newClient();
+        WebTarget target = client.target(new Links().API_GATEWAY);
+
+        try
+        {
+            Response apiResponse = target
+                    .path(new Links().PRIORITY_UPDATE)
+                    .resolveTemplate("id", jsonObject.id)
+                    .request(MediaType.APPLICATION_JSON_TYPE)
+                    .put(Entity.entity(jsonObject.toString(),MediaType.APPLICATION_JSON_TYPE))
+            println(jsonObject)
+            return apiResponse
+        }
+        catch (Exception ex)
+        {
+            System.err.println('Service :putAccountMode , action :  put  , Ex:' + ex)
+            log.error('Service :putAccountMode , action :  put  , Ex:' + ex)
+        }
+
+    }
+
+    /**
+     *
+     * @param jsonObject
+     * @return
+     */
+    def deletePriority(JSONObject jsonObject)
+    {
+        Client client = ClientBuilder.newClient();
+        WebTarget target = client.target(new Links().API_GATEWAY);
+
+        try
+        {
+            Response apiResponse = target
+                    .path(new Links().PRIORITY_DELETE)
+                    .resolveTemplate("id", jsonObject.id)
+                    .request(MediaType.APPLICATION_JSON_TYPE)
+//                    .po(Entity.entity(jsonObject.toString(),MediaType.APPLICATION_JSON_TYPE))
+                    .delete()
+            return apiResponse
+        }
+        catch (Exception ex)
+        {
+            System.err.println('Service :systemService , action :  delete  , Ex:' + ex)
+            log.error('Service :systemService , action :  delete  , Ex:' + ex)
+        }
+
+    }
+
+
+    def getPriorityList()
+    {
+        Client client = ClientBuilder.newClient();
+        WebTarget target = client.target(new Links().API_GATEWAY);
+
+        try
+        {
+            Response apiResponse = target
+                    .path(new Links().PRIORITY_SHOW)
+                    .request(MediaType.APPLICATION_JSON_TYPE)
+                    .get()
+            return apiResponse
+        }
+        catch (Exception ex)
+        {
+            System.err.println('Service :systemService , action :  getCountryList  , Ex:' + ex)
+            log.error('Service :systemService , action :  getCountryList  , Ex:' + ex)
+        }
+
+    }
+
 
 }
