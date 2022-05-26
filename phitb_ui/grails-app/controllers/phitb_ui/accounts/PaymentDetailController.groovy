@@ -401,13 +401,13 @@ class PaymentDetailController {
         def reciptlogsinv = new AccountsService().getPaymentLogInvById(params.id)
         def reciptlogscrnt = new AccountsService().getPaymentLogcrntById(params.id)
         def reciptlogsgtn = new AccountsService().getPaymentLogGRNById(params.id)
-        JSONArray reciptloginvArray = new JSONArray(reciptlogsinv.readEntity(String.class))
-        JSONArray reciptlogcrntArray = new JSONArray(reciptlogscrnt.readEntity(String.class))
-        JSONArray reciptloggtnArray = new JSONArray(reciptlogsgtn.readEntity(String.class))
+        JSONArray paymentsloginvArray = new JSONArray(reciptlogsinv.readEntity(String.class))
+        JSONArray paymentslogcrntArray = new JSONArray(reciptlogscrnt.readEntity(String.class))
+        JSONArray paymentsloggtnArray = new JSONArray(reciptlogsgtn.readEntity(String.class))
         render(view: '/accounts/payments/payment-vocher', model: [customer            : customer, payments: payments,
-                                                                  entity              : entity, paymentsloginvArray: reciptloginvArray,
-                                                                  paymentslogcrntArray: reciptlogcrntArray,
-                                                                  paymentsloggtnArray :reciptloggtnArray])
+                                                                  entity              : entity, paymentsloginvArray: paymentsloginvArray,
+                                                                  paymentslogcrntArray: paymentslogcrntArray,
+                                                                  paymentsloggtnArray :paymentsloggtnArray])
     }
 
 
