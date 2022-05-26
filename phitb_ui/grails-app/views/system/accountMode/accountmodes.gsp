@@ -266,6 +266,7 @@
 
     $(document).on("click", ".deletebtn", function () {
         id = $(this).data('id');
+        $("#myModalLabel").text("Delete Account Mode Master ?");
     });
 
     function deleteData() {
