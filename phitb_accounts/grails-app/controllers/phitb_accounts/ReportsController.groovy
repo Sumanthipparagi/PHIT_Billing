@@ -30,6 +30,7 @@ class ReportsController {
                 outstandingReport.due = due
                 outstandingReport.dueDate = jsonObject.get("dueDate").toString()
                 outstandingReport.balance = Double.parseDouble(jsonObject.get("balance").toString())
+                outstandingReport.entityId = Long.parseLong(jsonObject.get("customerId").toString())
                 outstandingReports.add(outstandingReport)
             }
         }
@@ -39,6 +40,7 @@ class ReportsController {
 }
 
 class OutstandingReport{
+    long entityId
     String transactionType
     String transactionNumber
     String transactionDate

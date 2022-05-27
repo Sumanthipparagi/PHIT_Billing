@@ -2,6 +2,7 @@ package phitb_ui.reports
 
 import org.grails.web.json.JSONArray
 import org.grails.web.json.JSONObject
+import phitb_ui.EntityService
 import phitb_ui.ProductService
 import phitb_ui.ReportsService
 import phitb_ui.SystemService
@@ -28,8 +29,31 @@ class AccountsReportController {
             //get outstanding details
             def cityDetail = new SystemService().getCityById(key.toString())
             JSONArray outstandingReport = reportsService.getOutstandingReport(areaWiseBills)
+            //group by customer
+            HashMap<Long, JSONArray> customers = new HashMap<>()
+            HashMap<String, JSONArray> customers2 = new HashMap<>()
+            for (JSONObject otr : outstandingReport) {
+                JSONArray customerOutstanding = new JSONArray()
+                long entityId1 = Long.parseLong(otr.get("entityId").toString())
+                if(customers.containsKey(entityId1))
+                {
+                    customerOutstanding = customers.get(entityId1)
+                    customerOutstanding.add(otr)
+                }
+                else
+                {
+                    customerOutstanding.add(otr)
+                }
+                customers.put(entityId1, customerOutstanding)
+            }
+
+            for (Long e : customers.keySet()) {
+                JSONObject entity = new EntityService().getEntityById(e.toString())
+                customers2.put(entity.get("entityName").toString(), customers.get(e))
+            }
+            //get city name
             if(outstandingReport?.size() > 0)
-                resultJson.put(cityDetail.name.toString(), outstandingReport)
+                resultJson.put(cityDetail.name.toString(), customers2)
         }
         respond resultJson, formats: ['json']
     }

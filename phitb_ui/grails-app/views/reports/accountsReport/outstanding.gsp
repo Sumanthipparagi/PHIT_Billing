@@ -165,73 +165,51 @@
             processData: false,
             success: function (data) {
                 var content = "";
-                var grandTotal = 0.00;
-                var totalNetAmt = 0.00;
                 var mainTableHeader = "<table class='table table-bordered table-sm' style='width: 100%;'><thead>" +
                     "<tr><td data-f-bold='true' colspan='10'><h3 style='margin-bottom:0 !important;'>${session.getAttribute('entityName')}</h3></td></tr>" +
                     "<tr><td colspan='10'>${session.getAttribute('entityAddress1')} ${session.getAttribute('entityAddress2')} ${session.getAttribute('entityPinCode')}, ph: ${session.getAttribute('entityMobileNumber')}</td></tr>" +
-                    "<tr><th data-f-bold='true' colspan='10'>Customer-Bill-Area-wise Sales* Detail, Date: " +
+                    "<tr><th data-f-bold='true' colspan='10'>Outstanding Report, Date: " +
                     dateRange + "</th></tr>" +
-                    "<tr><th colspan='6'></th><th data-f-bold='true'><strong>Grand Total:</strong> <span id='grandTotal'></span></th></tr>" +
+                    //"<tr><th colspan='6'></th><th data-f-bold='true'><strong>Grand Total:</strong> <span id='grandTotal'></span></th></tr>" +
                     //"<tr><th data-f-bold='true'>Customer</th><th data-f-bold='true'>Net Amount</th>"+
                     "<th data-f-bold='true'>Customer</th><th data-f-bold='true'>Tran. Type</th><th data-f-bold='true'>Tran. No.</th><th data-f-bold='true'>Date</th><th data-f-bold='true'>Due Date</th><th data-f-bold='true'>Due On "+today()+"</th><th data-f-bold='true'>Not Due</th><th data-f-bold='true'>Total Due</th><th data-f-bold='true'>Days</th></tr></thead><tbody>";
                 var billDetails = "";
-                var totalSqty = 0;
-                var totalfQty = 0;
-                var totalNtv = 0;
-                var totalDiscount = 0;
-                var totalGst = 0;
                 $.each(data, function (key, city) {
                     billDetails = "";
-                    var cityName = "<tr><td colspan='8' data-f-bold='true'><span class='customerData cust" +
+                    var cityName = "<tr><td colspan='8' data-f-bold='true'>Area: <span class='customerData cust" +
                         key + "'><strong>" + key + "</strong></span></td></tr>";
-                    var cityNetAmtTotal = 0;
-                    var cityTotalSqty = 0;
-                    var cityTotalfQty = 0;
-                    var cityTotalNtv = 0;
-                    var cityTotalDiscount = 0;
-                    var cityTotalGst = 0;
-                    var bills = "";
-                    $.each(city, function (key, bill) {
-/*                        cityNetAmtTotal += product.netAmount;
-                        cityTotalSqty += product.sQty;
-                        cityTotalfQty += product.fQty;
-                        cityTotalNtv += product.ntv;
-                        cityTotalDiscount += product.discount;
-                        cityTotalGst += product.gst;*/
-                        var totalDue = bill.balance - bill.due;
-                        bills += "<tr><td></td>" +
-                            "<td>" + bill.transactionType + "</td>" +
-                            "<td>" + bill.transactionNumber + "</td>" +
-                            "<td>" + dateFormat(bill.transactionDate) + "</td>" +
-                            "<td>" + dateFormat(bill.dueDate) + "</td>" +
-                            "<td>" + bill.due + "</td>" +
-                            "<td>" + bill.balance + "</td>"+
-                            "<td>" + totalDue + "</td>"+
-                            "<td>"+moment(new Date()).diff(moment(dateFormat(bill.dueDate), "DD/MM/YYYY"), 'days')+"</td></tr>";
-                    });
-                    billDetails += bills;
-                   /* totalSqty += cityTotalSqty;
-                    totalfQty += cityTotalfQty;
-                    totalNtv += cityTotalNtv;
-                    totalDiscount += cityTotalDiscount;
-                    totalGst += cityTotalGst;
-                    billDetails += products;
-                    grandTotal += cityNetAmtTotal;
-                    var cityFooter = "<tr><td></td><td data-f-bold='true'><strong>Area Total:</strong></td><td data-f-bold='true'><u><strong>" + cityTotalSqty + "</strong></u></td><td data-f-bold='true'><u><strong>" + cityTotalfQty + "</u></strong></td><td data-f-bold='true'><u><strong>" + cityTotalNtv.toFixed(2) + "</strong></u></td><td data-f-bold='true'><u><strong>" + cityTotalDiscount.toFixed(2) + "</strong></u></td><td data-f-bold='true'><u><strong>" + cityTotalGst.toFixed(2) + "</strong></u></td><td data-f-bold='true'><u><strong>" + cityNetAmtTotal.toFixed(2) + "</strong></u></td></tr>";
-                    content += cityName + billDetails + cityFooter;*/
+                    var customerDue = 0;
+                    var customerBalance = 0;
+                    var customerTotalDue = 0;
+                    var customerInfo = "";
+                    $.each(city, function (customer, invs) {
+                        var bills = "<tr><td colspan='10' data-f-bold='true'>"+customer+"</td></tr>";
+                        $.each(invs, function (key, bill) {
+                            var totalDue = bill.balance - bill.due;
+                            customerDue += bill.due;
+                            customerBalance += bill.balance;
+                            customerTotalDue += totalDue;
 
+                            bills += "<tr><td></td>" +
+                                "<td>" + bill.transactionType + "</td>" +
+                                "<td>" + bill.transactionNumber + "</td>" +
+                                "<td>" + dateFormat(bill.transactionDate) + "</td>" +
+                                "<td>" + dateFormat(bill.dueDate) + "</td>" +
+                                "<td>" + bill.due.toFixed(2) + "</td>" +
+                                "<td>" + bill.balance.toFixed(2) + "</td>" +
+                                "<td>" + totalDue.toFixed(2) + "</td>" +
+                                "<td>" + moment(new Date()).diff(moment(dateFormat(bill.dueDate), "DD/MM/YYYY"), 'days') + "</td></tr>";
+                        });
+                        var customerTotal = "<tr><td colspan='5'></td><td data-f-bold='true'><u><strong>"+customerDue.toFixed(2)+"</strong></u></td><td data-f-bold='true'><u><strong>"+customerBalance.toFixed(2)+"</strong></u></td>" +
+                            "<td data-f-bold='true'><u><strong>"+customerTotalDue.toFixed(2)+"</strong></u></td><td data-f-bold='true'></td></tr>";
+                        customerInfo += (bills + customerTotal);
+                    });
+                    billDetails += customerInfo;
                     content += cityName + billDetails;
                 });
-               /* var total = "<tr><th></th><th></th><th data-f-bold='true'><u>" + totalSqty + "</u></th data-f-bold='true'><th><u>" + totalfQty + "</u></th><th data-f-bold='true'><u>" + totalNtv.toFixed(2) + "</u></th><th><u>" + totalDiscount.toFixed(2) + "</u></th><th data-f-bold='true'><u>" + totalGst.toFixed(2) + "</u></th><th data-f-bold='true'><strong><u><span id='Total'>" + grandTotal.toFixed(2) + "</span></u></strong></th></tr>"
                 var mainTableFooter = "</tbody></table>";
-
-                $("#result").html(mainTableHeader + content + total + mainTableFooter);*/
-                var mainTableFooter = "</tbody></table>";
-                $("#result").html(mainTableHeader + content);
+                $("#result").html(mainTableHeader + content + mainTableFooter);
                 loading.close();
-               /* $("#grandTotal").text(grandTotal.toFixed(2));
-                $("#Total").text(grandTotal.toFixed(2));*/
             },
             error: function () {
                 loading.close();
