@@ -80,7 +80,7 @@ dataSource:
     pooled: true
     jmxExport: true
     driverClassName: com.mysql.cj.jdbc.Driver
-    username:  root
+    username: root
     password: ''
 
 #172.16.17.10:3306
