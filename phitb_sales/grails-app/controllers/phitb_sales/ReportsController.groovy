@@ -140,6 +140,7 @@ class ReportsController {
                 def saleBillJson = new JSONObject((saleBillDetail as JSON).toString())
                 ArrayList<SaleProductDetails> saleProductDetails = SaleProductDetails.findAllByBillId(saleBillDetail.id)
                 saleBillJson.put("products", saleProductDetails)
+                saleBillJson.put("docType", "INVS")
                 def customerJson = getEntityById(saleBillJson.customerId.toString())
 //                customerJson.put("netAmt",saleBillJson.balance.sum())
 //                if(!custIds.contains(customerJson.id)){
@@ -335,4 +336,58 @@ class ReportsController {
         respond gstReport
     }
 
+
+    def getSaleReturnAreaWiseBillDetails() {
+        try {
+            JSONObject jsonObject = new JSONObject(request.reader.text)
+            String entityId = jsonObject.get("entityId")
+            String financialYear = jsonObject.get("financialYear")
+            String daterange = jsonObject.get("dateRange")
+            String sortby = jsonObject.get("sortBy")
+            String sort = "id"
+            if(sortby.equalsIgnoreCase("invoice-date"))
+                sort = "orderDate"
+
+            SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy")
+            Date fromDate = sdf.parse(daterange.split("-")[0].trim())
+            Date toDate = sdf.parse(daterange.split("-")[1].trim())
+            Calendar cal = Calendar.getInstance();
+            cal.setTime(toDate)
+            cal.set(Calendar.HOUR_OF_DAY, 23)
+            cal.set(Calendar.MINUTE, 59)
+            cal.set(Calendar.SECOND, 59)
+            cal.set(Calendar.MILLISECOND, 999)
+            toDate = cal.getTime()
+            JSONObject customerBills = new JSONObject()
+            JSONArray bills = new JSONArray()
+
+            ArrayList<SaleReturn> saleReturns = SaleReturn.findAllByEntityIdAndFinancialYearAndEntryDateBetweenAndCancelledDateIsNull(Long.parseLong(entityId), financialYear, fromDate, toDate, [sort: sort, order: 'desc'])
+            ArrayList<String> custIds = [];
+            for (SaleReturn saleReturn : saleReturns) {
+                def saleReturnJson = new JSONObject((saleReturn as JSON).toString())
+                saleReturnJson.put("docType", "CRNT")
+                ArrayList<SaleReturnDetails> saleReturnDetails = SaleReturnDetails.findAllByBillId(saleReturn.id)
+                saleReturnJson.put("products", saleReturnDetails)
+                def customerJson = getEntityById(saleReturnJson.customerId.toString())
+                def cityJson = getCityById(customerJson.cityId.toString())
+                customerJson.put("cityId",cityJson)
+                customerJson.put("salebill",saleReturnJson)
+                saleReturnJson.put("customer",customerJson)
+                if (customerBills.containsKey(saleReturnJson.customer.cityId.id)) {
+                    bills = customerBills.get(saleReturnJson.customer.cityId.id) as JSONArray
+                    bills.add(saleReturnJson)
+                    customerBills.put(saleReturnJson.customer.cityId.id, bills)
+                } else {
+                    bills = new JSONArray()
+                    bills.add(saleReturnJson)
+                    customerBills.put(saleReturnJson.customer.cityId.id, bills)
+                }
+                custIds.add(customerJson.id)
+            }
+            render customerBills as JSON
+        }
+        catch (Exception ex) {
+            println(ex.stackTrace)
+        }
+    }
 }

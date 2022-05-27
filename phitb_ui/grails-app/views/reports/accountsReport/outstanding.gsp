@@ -139,10 +139,15 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.23/jspdf.plugin.autotable.js" integrity="sha512-P3z5YHtqjIxRAu1AjkWiIPWmMwO9jApnCMsa5s0UTgiDDEjTBjgEqRK0Wn0Uo8Ku3IDa1oer1CIBpTWAvqbmCA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 --}%
 <script>
+    var dueOnDate = "";
     $('.dateRange').daterangepicker({
         locale: {
             format: "DD/MM/YYYY"
-        }
+        },
+        maxDate: moment()
+    }).on('apply.daterangepicker', function(ev, picker) {
+        alert (moment(picker.endDate).format('DD/MM/YYYY'));
+        dueOnDate = moment(picker.endDate).format('DD/MM/YYYY');
     });
 
     function getReport() {
@@ -172,7 +177,7 @@
                     dateRange + "</th></tr>" +
                     //"<tr><th colspan='6'></th><th data-f-bold='true'><strong>Grand Total:</strong> <span id='grandTotal'></span></th></tr>" +
                     //"<tr><th data-f-bold='true'>Customer</th><th data-f-bold='true'>Net Amount</th>"+
-                    "<th data-f-bold='true'>Customer</th><th data-f-bold='true'>Tran. Type</th><th data-f-bold='true'>Tran. No.</th><th data-f-bold='true'>Date</th><th data-f-bold='true'>Due Date</th><th data-f-bold='true'>Due On "+today()+"</th><th data-f-bold='true'>Not Due</th><th data-f-bold='true'>Total Due</th><th data-f-bold='true'>Days</th></tr></thead><tbody>";
+                    "<th data-f-bold='true'>Customer</th><th data-f-bold='true'>Tran. Type</th><th data-f-bold='true'>Tran. No.</th><th data-f-bold='true'>Date</th><th data-f-bold='true'>Due Date</th><th data-f-bold='true'>Due On "+dueOnDate+"</th><th data-f-bold='true'>Not Due</th><th data-f-bold='true'>Total Due</th><th data-f-bold='true'>Days</th></tr></thead><tbody>";
                 var billDetails = "";
                 $.each(data, function (key, city) {
                     billDetails = "";
