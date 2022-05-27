@@ -22,6 +22,7 @@ class ReceiptDetail implements LogicalDelete<ReceiptDetail> {
     long lockStatus
     long approvedBy
     Date approvedDate
+    String approvedStatus
     String financialYear
     long status
     long syncStatus
@@ -41,6 +42,7 @@ class ReceiptDetail implements LogicalDelete<ReceiptDetail> {
         wallet nullable: true
         narration nullable: true
         accountModeId nullable:true
+        approvedStatus nullable: true
     }
 
     static mapping = {

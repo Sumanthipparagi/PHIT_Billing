@@ -206,7 +206,7 @@
                             'id': json.data[i].receiptId,
                             'date': moment(date).format('DD/MM/YYYY'),
                             'fy': json.data[i].financialYear,
-                            'amountPaid': json.data[i].amountPaid,
+                            'amountPaid': json.data[i].amountPaid.toFixed(2),
                             'receivedFrom': json.data[i].receivedFrom.entityName,
                             'depositTo': json.data[i]?.deposit === "NA" ? '' : json.data[i]?.deposit?.accountName,
                             'pd': moment(pd).format('DD/MM/YYYY'),

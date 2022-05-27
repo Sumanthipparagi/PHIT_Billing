@@ -62,7 +62,7 @@
                 <div class="col-lg-5 col-md-5 col-sm-12">
                     <h2>Receipt Approval</h2>
                     <ul class="breadcrumb padding-0">
-                        <li class="breadcrumb-item"><a href="index.html"><i class="zmdi zmdi-home"></i></a></li>
+                        <li class="breadcrumb-item"><a href="#"><i class="zmdi zmdi-home"></i></a></li>
                         <li class="breadcrumb-item active">Receipt Approval</li>
                     </ul>
                 </div>
@@ -211,7 +211,7 @@
                             'id': json.data[i].receiptId,
                             'date': moment(date).format('DD/MM/YYYY'),
                             'fy': json.data[i].financialYear,
-                            'amountPaid': json.data[i].amountPaid,
+                            'amountPaid': json.data[i].amountPaid.toFixed(2),
                             'receivedFrom': json.data[i].receivedFrom.entityName,
                             'depositTo': json.data[i]?.deposit === "NA" ? '' : json.data[i]?.deposit?.accountName,
                             'pd': moment(pd).format('DD/MM/YYYY'),
