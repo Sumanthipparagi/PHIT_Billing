@@ -568,10 +568,12 @@ class UrlMappings {
         "/recipt-list/datatable"(controller: "reciptDetail", action: "dataTable")
         "/add-recipt"(controller: "reciptDetail", action: 'addRecipt')
         "/print-recipt/$custid/recipt/$id"(controller: "reciptDetail", action: 'printRecipt')
+        "/receipt-approval"(controller: 'reciptDetail', action: 'recieptApproval')
+
+
 
         "/salesettledvocher/$id"(controller: "reciptDetail", action: 'settledVocher')
         "/saleunsettledvocher/$id"(controller: "reciptDetail", action: 'unsettledVocher')
-
         "/creditsettledvocher/$id"(controller: "reciptDetail", action: 'creditSettledVocher')
         "/creditunsettledvocher/$id"(controller: "reciptDetail", action: 'creditUnsettledVocher')
 

@@ -290,6 +290,21 @@ class ReciptDetailController {
             JSONObject jsonObject = new JSONObject(params)
             jsonObject.put("entityId", session.getAttribute('entityId').toString())
             JSONArray billArray = new JSONArray(params.reciptData)
+            double invoice = 0;
+            double credit = 0;
+            double goodsTransferNote = 0;
+            for (JSONObject bills : billArray) {
+                if (bills.get("Doc.Type") == "INVS" && bills.get("PaidNow").toString().toDouble()!=0) {
+                    invoice += Double.parseDouble(bills.PaidNow)
+                }
+                if (bills.get("Doc.Type") == "CRNT" && bills.get("PaidNow").toString().toDouble()!= 0) {
+                    credit += Double.parseDouble(bills.PaidNow)
+                }
+                if (bills.get("Doc.Type") == "GTN" && bills.get("PaidNow").toString().toDouble()!= 0) {
+                    goodsTransferNote += Double.parseDouble(bills.PaidNow)
+                }
+                jsonObject.put("amountPaid",invoice+goodsTransferNote)
+            }
             def apiResponse = new AccountsService().saveRecipt(jsonObject, session.getAttribute('financialYear') as String)
             if (apiResponse?.status == 200) {
                 JSONObject jsonObject1 = new JSONObject(apiResponse.readEntity(String.class))
@@ -304,8 +319,8 @@ class ReciptDetailController {
                         JSONObject invObject = new JSONObject()
                         invObject.put("id", billId)
                         invObject.put("paidNow", paidNow)
-                        def invoice = new AccountsService().updateSaleBalance(invObject)
-                        if (invoice?.status == 200) {
+                        def invs = new AccountsService().updateSaleBalance(invObject)
+                        if (invs?.status == 200) {
                             invObject.remove("id");
                             invObject.remove("paidNow");
                         }
