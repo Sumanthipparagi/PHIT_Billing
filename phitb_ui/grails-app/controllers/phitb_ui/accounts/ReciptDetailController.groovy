@@ -537,7 +537,8 @@ class ReciptDetailController {
 
     def recieptApproval()
     {
-        render(view: '/accounts/recipt/receipt-approval')
+        ArrayList<String> entity = new EntityRegisterController().show() as ArrayList
+        render(view: '/accounts/recipt/receipt-approval',model:[entity:entity])
     }
 
 }

@@ -19,6 +19,8 @@
     <asset:stylesheet  src="/themeassets/plugins/bootstrap-select/css/bootstrap-select.css" rel="stylesheet" />
     <asset:stylesheet  src="/themeassets/js/pages/forms/basic-form-elements.js" rel="stylesheet" />
     <asset:stylesheet  src="/themeassets/plugins/bootstrap-material-datetimepicker/css/bootstrap-material-datetimepicker.css" rel="stylesheet" />
+    <asset:stylesheet src="/themeassets/plugins/daterangepicker/daterangepicker.css" rel="stylesheet"/>
+    <asset:stylesheet src="/themeassets/plugins/bootstrap-select/css/bootstrap-select.css" rel="stylesheet"/>
 
     <style>
 
@@ -100,6 +102,33 @@
                     %{--                                data-target="#adddayEndModal"><font style="vertical-align: inherit;"><font--}%
                     %{--                                style="vertical-align: inherit;">Add Day End</font></font></button>--}%
                     %{--                    </div>--}%
+
+                    <div class="row">
+                    <div class="col-lg-6">
+                        <label for="customer">
+                            Customer
+                        </label><br>
+                        <select class=" show-tick customer" name="customer"
+                                id="customer">
+                            <option value="All">All</option>
+                            <g:each var="e" in="${entity}">
+                                <option value="${e.id}" data-type="${e.entityType.id}">${e.entityName}</option>
+                            </g:each>
+                        </select>
+                    </div>
+
+                    <div class="col-lg-6">
+                        <div class="form-group">
+                            <label>Date Range:</label>
+                            <div class="input-group">
+                                <input class="dateRange" type="text" name="dateRange"
+                                       style="border-radius: 6px;margin: 4px;"/>
+                                <button class="input-group-btn btn btn-info" onclick="">Search</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
                     <div class="body">
                         <div class="table-responsive">
                             <table class="table table-bordered table-striped table-hover customerGroupTable dayEndTable">
@@ -163,9 +192,18 @@
 <asset:javascript src="/themeassets/plugins/bootstrap-material-datetimepicker/js/bootstrap-material-datetimepicker.js"/>
 <asset:javascript src="/themeassets/js/pages/forms/basic-form-elements.js"/>
 <asset:javascript src="/themeassets/plugins/icons/all.js"/>
+<asset:javascript src="/themeassets/plugins/daterangepicker/moment.min.js"/>
+<asset:javascript src="/themeassets/plugins/daterangepicker/daterangepicker.js"/>
 
 <script>
 
+    $('.dateRange').daterangepicker({
+        locale: {
+            format: "DD/MM/YYYY"
+        }
+    });
+
+    $(".customer").select2()
     var dayendtable;
     var id = null;
     $(function () {
@@ -263,7 +301,6 @@
             .appendTo("body");
     }
 
-    
     function approveReceipt() {
         swal("approved!")
     }
