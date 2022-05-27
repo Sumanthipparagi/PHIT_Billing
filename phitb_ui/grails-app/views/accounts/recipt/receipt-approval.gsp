@@ -203,8 +203,7 @@
                         var editbtn =
                             ' <button type="button" data-id="'+json.data[i].id+'" data-recievedfrom="'+json.data[i].receivedFrom.id+'" class="print btn btn-sm btn-warning editbtn"><i class="material-icons"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">print</font></font></i></button>'
 
-                        var approveBtn = '<a class="btn btn-sm btn-success" title="Approved" onclick="approveGrn(' + json.data[i].id
-                            +')" href="#"><i class="fa fa-check"></i></a>'
+                        var approveBtn = '<a class="btn btn-sm btn-success" title="Approved" onclick="approveReceipt(' + json.data[i].id +')" href="#"><i class="fa fa-check"></i></a>'
                         // var deletebtn = '<button type="button" data-id="' + json.data[i].id +
                         //     '" class="btn btn-sm btn-danger deletebtn" data-toggle="modal" data-target=".deleteModal"><i class="material-icons"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">delete</font></font></i></button>'
                         return_data.push({
@@ -264,6 +263,10 @@
             .appendTo("body");
     }
 
+    
+    function approveReceipt() {
+        swal("approved!")
+    }
 </script>
 
 <g:include view="controls/footer-content.gsp"/>
