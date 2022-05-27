@@ -113,7 +113,7 @@ class ReciptDetailController {
 //                    }
                     jsonArray.each {
                         if (it.has("depositTo")) {
-                            def accountResp = new AccountRegisterController().getAllAccountsById(it.get("depositTo")?.toString())
+                            def accountResp = new EntityService().getAccountById(it.get("depositTo")?.toString())
                             it.put("deposit", accountResp)
                         }
                     }

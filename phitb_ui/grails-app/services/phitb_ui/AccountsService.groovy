@@ -653,7 +653,7 @@ class AccountsService
 
     }
 
-    //   update balance
+    //   update Receipt Detail Log
     def updateReceiptDetailLog(JSONObject jsonObject)
     {
         Form form = UtilsService.jsonToFormDataConverter(jsonObject)
