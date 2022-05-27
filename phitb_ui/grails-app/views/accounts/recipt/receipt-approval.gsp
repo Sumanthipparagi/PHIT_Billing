@@ -6,7 +6,7 @@
     <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
     <meta name="description" content="Responsive Bootstrap 4 and web Application ui kit.">
 
-    <title>:: PharmIt :: Receipts</title>
+    <title>:: PharmIt :: Receipt Approval</title>
     <link rel="icon" type="image/x-icon" href="${assetPath(src: '/themeassets/images/favicon.ico')}"/>
     <!-- Favicon-->
     <asset:stylesheet rel="stylesheet" src="/themeassets/plugins/bootstrap/css/bootstrap.min.css"/>
@@ -60,10 +60,10 @@
         <div class="block-header">
             <div class="row clearfix">
                 <div class="col-lg-5 col-md-5 col-sm-12">
-                    <h2>Receipt </h2>
+                    <h2>Receipt Approval</h2>
                     <ul class="breadcrumb padding-0">
                         <li class="breadcrumb-item"><a href="index.html"><i class="zmdi zmdi-home"></i></a></li>
-                        <li class="breadcrumb-item active">Receipt</li>
+                        <li class="breadcrumb-item active">Receipt Approval</li>
                     </ul>
                 </div>
                 <div class="col-lg-7 col-md-7 col-sm-12">
@@ -110,11 +110,12 @@
                                     <th style="width: 20%">Recipt Date</th>
                                     <th style="width: 20%">Receipt Id</th>
                                     <th style="width: 20%">Received From</th>
-                                    <th style="width: 20%">Deposit To</th>
+%{--                                    <th style="width: 20%">Deposit To</th>--}%
                                     <th style="width: 20%">Financial Year</th>
                                     <th style="width: 20%">Amount paid</th>
                                     %{--                                    <th style="width: 20%">Bank</th>--}%
                                     <th style="width: 20%">Action</th>
+                                    <th style="width: 20%">Approve</th>
                                 </tr>
                                 </thead>
                                 %{--                                <tfoot>--}%
@@ -161,6 +162,7 @@
 <asset:javascript src="/themeassets/plugins/momentjs/moment.js"/>
 <asset:javascript src="/themeassets/plugins/bootstrap-material-datetimepicker/js/bootstrap-material-datetimepicker.js"/>
 <asset:javascript src="/themeassets/js/pages/forms/basic-form-elements.js"/>
+<asset:javascript src="/themeassets/plugins/icons/all.js"/>
 
 <script>
 
@@ -200,6 +202,9 @@
                         var pd = new Date(json.data[i].paymentDate)
                         var editbtn =
                             ' <button type="button" data-id="'+json.data[i].id+'" data-recievedfrom="'+json.data[i].receivedFrom.id+'" class="print btn btn-sm btn-warning editbtn"><i class="material-icons"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">print</font></font></i></button>'
+
+                        var approveBtn = '<a class="btn btn-sm btn-success" title="Approved" onclick="approveGrn(' + json.data[i].id
+                            +')" href="#"><i class="fa fa-check"></i></a>'
                         // var deletebtn = '<button type="button" data-id="' + json.data[i].id +
                         //     '" class="btn btn-sm btn-danger deletebtn" data-toggle="modal" data-target=".deleteModal"><i class="material-icons"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">delete</font></font></i></button>'
                         return_data.push({
@@ -211,7 +216,8 @@
                             'depositTo': json.data[i]?.deposit === "NA" ? '' : json.data[i]?.deposit?.accountName,
                             'pd': moment(pd).format('DD/MM/YYYY'),
                             // 'bank': json.data[i].bank.bankName,
-                            'action': editbtn
+                            'action': editbtn,
+                            'aprBtn': approveBtn
                         });
                     }
                     return return_data;
@@ -222,96 +228,15 @@
                 {'data': 'date', 'width': '20%'},
                 {'data': 'id', 'width': '20%'},
                 {'data': 'receivedFrom', 'width': '20%'},
-                {'data': 'depositTo', 'width': '20%'},
+                // {'data': 'depositTo', 'width': '20%'},
                 {'data': 'fy', 'width': '20%'},
                 {'data': 'amountPaid', 'width': '20%'},
                 // {'data': 'bank', 'width': '20%'},
-                {'data': 'action', 'width': '20%'}
+                {'data': 'action', 'width': '20%'},
+                {'data': 'aprBtn', 'width': '20%'}
             ]
         });
     }
-
-    $(".dayEndForm").submit(function (event) {
-
-        //disable the default form submission
-        event.preventDefault();
-
-        //grab all form data
-        var formData = new FormData(this);
-        console.log(formData);
-
-        var url = '';
-        var type = '';
-        if (id) {
-            url = '/day-end-master/update/' + id;
-            type = 'POST'
-        } else {
-            url = '/day-end-master';
-            type = 'POST'
-        }
-
-        console.log(type);
-        $.ajax({
-            url: url,
-            type: type,
-            data: formData,
-            contentType: false,
-            processData: false,
-            success: function () {
-                swal("Success!", "CCm Submitted Successfully", "success");
-                dayEndTable();
-                $('#adddayEndModal').modal('hide');
-            },
-            error: function () {
-                swal("Error!", "Something went wrong", "error");
-
-            }
-        });
-    });
-
-    $(document).on("click", ".addbtn", function () {
-        $(".dayEndTitle").text("Add Day End Master")
-        $(".dayEndForm")[0].reset();
-        id = null
-    });
-
-    $(document).on("click", ".editbtn", function () {
-        id = $(this).data('id');
-        $(".date").val($(this).attr('data-date'));
-        $(".endTime").val($(this).attr('data-endTime'));
-        $(".entity").val($(this).attr('data-entityRegister'));
-        $("#entityTypeId").val($(this).attr('data-entitytype')).change()
-        $(".customerGroupTitle").text("Update Day End");
-    });
-
-    $('.entity').change(function(){
-        var type = $('option:selected', this).attr('data-type');
-        $(".entityType").val(type);
-    });
-
-
-
-    $(document).on("click", ".deletebtn", function () {
-        id = $(this).data('id');
-        $("#myModalLabel").text("Delete Day End?");
-
-    });
-
-    function deleteData() {
-        $.ajax({
-            type: 'POST',
-            url: '/day-end-master/delete/' + id,
-            dataType: 'json',
-            success: function () {
-                $('.deleteModal').modal('hide');
-                dayEndTable();
-                swal("Success!", "Day End Deleted Successfully", "success");
-            }, error: function () {
-                swal("Error!", "Something went wrong", "error");
-            }
-        });
-    }
-
 
 
     function printRecipt() {
