@@ -98,7 +98,6 @@ class PaymentDetailController {
                         json.put("transferFrom", new EntityService().getEntityById(json.get("transferFrom").toString()))
                         jsonArray2.put(json)
                     }
-
                     jsonArray.each {
                         if (it.has("paymentTo")) {
                             def accountResp = new EntityService().getAccountById(it.get("paymentTo")?.toString())
