@@ -200,7 +200,7 @@
                         var date = new Date(json.data[i].date);
                         var pd = new Date(json.data[i].paymentDate)
                         var editbtn =
-                            ' <button type="button" data-id="'+json.data[i].id+'" data-transferFrom="'+json.data[i].transferFrom+'" class="print btn btn-sm btn-warning editbtn"><i class="material-icons"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">print</font></font></i></button>';
+                            ' <button type="button" data-id="'+json.data[i].id+'" data-transferFrom="'+json.data[i].transferFrom.id+'" class="print btn btn-sm btn-warning editbtn"><i class="material-icons"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">print</font></font></i></button>';
                         // var deletebtn = '<button type="button" data-id="' + json.data[i].id +
                         //     '" class="btn btn-sm btn-danger deletebtn" data-toggle="modal" data-target=".deleteModal"><i class="material-icons"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">delete</font></font></i></button>'
                         return_data.push({

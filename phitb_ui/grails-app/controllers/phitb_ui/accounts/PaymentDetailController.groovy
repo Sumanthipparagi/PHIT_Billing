@@ -99,9 +99,13 @@ class PaymentDetailController {
                         jsonArray2.put(json)
                     }
                     jsonArray.each {
-                        if (it.has("paymentTo")) {
+                        if (it.paymentTo!="" && it.paymentTo!=null) {
                             def accountResp = new EntityService().getAccountById(it.get("paymentTo")?.toString())
                             it.put("paymentTo", accountResp)
+                        }
+                        else
+                        {
+                            it.put("paymentTo", "NA")
                         }
                     }
                     responseObject.put("data", jsonArray2)
@@ -222,6 +226,21 @@ class PaymentDetailController {
             JSONObject jsonObject = new JSONObject(params)
             jsonObject.put("entityId", session.getAttribute('entityId').toString())
             JSONArray billArray = new JSONArray(params.paymentData)
+            double invoice = 0;
+            double credit = 0;
+            double goodsTransferNote = 0;
+            for (JSONObject bills : billArray) {
+                if (bills.get("Doc.Type") == "INVS" && bills.get("PaidNow").toString().toDouble()!=0) {
+                    invoice += Double.parseDouble(bills.PaidNow)
+                }
+                if (bills.get("Doc.Type") == "CRNT" && bills.get("PaidNow").toString().toDouble()!= 0) {
+                    credit += Double.parseDouble(bills.PaidNow)
+                }
+                if (bills.get("Doc.Type") == "GRN" && bills.get("PaidNow").toString().toDouble()!= 0) {
+                    goodsTransferNote += Double.parseDouble(bills.PaidNow)
+                }
+                jsonObject.put("amountPaid",invoice+goodsTransferNote)
+            }
             def apiResponse = new AccountsService().savePaymentDetail(jsonObject, session.getAttribute('financialYear') as String)
             if (apiResponse?.status == 200) {
                 JSONObject jsonObject1 = new JSONObject(apiResponse.readEntity(String.class))
@@ -236,8 +255,8 @@ class PaymentDetailController {
                         JSONObject invObject = new JSONObject()
                         invObject.put("id", billId)
                         invObject.put("paidNow", paidNow)
-                        def invoice = new AccountsService().updatePurchaseBalance(invObject)
-                        if (invoice?.status == 200) {
+                        def inv = new AccountsService().updatePurchaseBalance(invObject)
+                        if (inv?.status == 200) {
                             invObject.remove("id");
                             invObject.remove("paidNow");
                         }
