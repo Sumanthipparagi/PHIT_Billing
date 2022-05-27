@@ -463,6 +463,7 @@
                         class="badge badge-success float-right"></span></a>
                     <ul class="ml-menu">
                         <li><a href="/accountmodes">Account Modes</a></li>
+                        <li><a href="/priority">Priority</a></li>
                         <g:if test="${UtilsService.isPermitted("VIEW_STATE", session.getAttribute("permittedFeatures").toString())}">
                             <li><a href="/state">State</a></li>
                         </g:if>
@@ -475,6 +476,7 @@
                         <g:if test="${UtilsService.isPermitted("VIEW_FORM", session.getAttribute("permittedFeatures").toString())}">
                             <li><a href="/form">Form</a></li>
                         </g:if>
+
                     </ul>
                 </li>
 
