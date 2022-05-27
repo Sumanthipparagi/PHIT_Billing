@@ -112,9 +112,13 @@ class ReciptDetailController {
 //                        entityArray.put(json1.get("customer"))
 //                    }
                     jsonArray.each {
-                        if (it.has("depositTo")) {
+                        if (it.depositTo!="" && it.depositTo!=null) {
                             def accountResp = new EntityService().getAccountById(it.get("depositTo")?.toString())
                             it.put("deposit", accountResp)
+                        }
+                        else
+                        {
+                            it.put("deposit", "NA")
                         }
                     }
                     responseObject.put("data", jsonArray2)
