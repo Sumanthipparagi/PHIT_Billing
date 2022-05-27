@@ -135,7 +135,7 @@ class ReceiptDetailService {
         }
         receiptDetail.wallet = WalletMaster.findById(Long.parseLong(jsonObject.get("wallet").toString()))
         receiptDetail.lockStatus = Long.parseLong("1")
-        receiptDetail.approvedBy = Long.parseLong("1")
+        receiptDetail.approvedBy = Long.parseLong("0")
         receiptDetail.approvedDate = sdf.parse(jsonObject.get("date").toString())
         receiptDetail.financialYear = jsonObject.get("financialYear").toString()
         receiptDetail.status = Long.parseLong("1")
@@ -149,7 +149,7 @@ class ReceiptDetailService {
         {
             Calendar cal = new GregorianCalendar()
             cal.setTime(receiptDetail.paymentDate)
-            String month = cal.get(Calendar.MONTH)
+            String month = cal.get(Calendar.MONTH)+1
             String year = cal.get(Calendar.YEAR)
             DecimalFormat mFormat = new DecimalFormat("00");
             month = mFormat.format(Double.valueOf(month));

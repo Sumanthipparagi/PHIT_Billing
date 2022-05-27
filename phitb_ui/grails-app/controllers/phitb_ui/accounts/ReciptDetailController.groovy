@@ -520,4 +520,9 @@ class ReciptDetailController {
     }
 
 
+    def recieptApproval()
+    {
+        render(view: '/accounts/recipt/receipt-approval')
+    }
+
 }
