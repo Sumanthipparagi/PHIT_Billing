@@ -21,6 +21,7 @@
     <asset:stylesheet  src="/themeassets/plugins/bootstrap-material-datetimepicker/css/bootstrap-material-datetimepicker.css" rel="stylesheet" />
     <asset:stylesheet src="/themeassets/plugins/daterangepicker/daterangepicker.css" rel="stylesheet"/>
     <asset:stylesheet src="/themeassets/plugins/bootstrap-select/css/bootstrap-select.css" rel="stylesheet"/>
+    <link rel="stylesheet" media="screen" href="https://cdnjs.cloudflare.com/ajax/libs/select2/3.5.2/select2.min.css">
 
     <style>
 
@@ -109,7 +110,7 @@
                             Customer
                         </label><br>
                         <select class=" show-tick customer" name="customer"
-                                id="customer">
+                                id="customer" style="width: 300px;">
                             <option value="All">All</option>
                             <g:each var="e" in="${entity}">
                                 <option value="${e.id}" data-type="${e.entityType.id}">${e.entityName}</option>
@@ -194,6 +195,7 @@
 <asset:javascript src="/themeassets/plugins/icons/all.js"/>
 <asset:javascript src="/themeassets/plugins/daterangepicker/moment.min.js"/>
 <asset:javascript src="/themeassets/plugins/daterangepicker/daterangepicker.js"/>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/3.5.2/select2.js"></script>
 
 <script>
 
