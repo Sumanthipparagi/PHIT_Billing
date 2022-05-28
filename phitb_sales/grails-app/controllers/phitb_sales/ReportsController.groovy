@@ -145,7 +145,7 @@ class ReportsController {
             else
             {
                 saleBillDetails = SaleBillDetails
-                        .findAllByEntityIdAndFinancialYearAndOrderDateBetweenAndBillStatusNotEqualAndBalance(Long.parseLong(entityId), financialYear, fromDate, toDate, "DRAFT", 0, [sort: sort, order: 'desc'])
+                        .findAllByEntityIdAndFinancialYearAndOrderDateBetweenAndBillStatusNotEqualAndBalanceGreaterThan(Long.parseLong(entityId), financialYear, fromDate, toDate, "DRAFT", 0, [sort: sort, order: 'desc'])
             }
             ArrayList<String> custIds = [];
             for (SaleBillDetails saleBillDetail : saleBillDetails) {
@@ -384,7 +384,7 @@ class ReportsController {
             }
             else
             {
-                saleReturns = SaleReturn.findAllByEntityIdAndFinancialYearAndEntryDateBetweenAndCancelledDateIsNullAndBalance(Long.parseLong(entityId), financialYear, fromDate, toDate, 0, [sort: sort, order: 'desc'])
+                saleReturns = SaleReturn.findAllByEntityIdAndFinancialYearAndEntryDateBetweenAndCancelledDateIsNullAndBalanceGreaterThan(Long.parseLong(entityId), financialYear, fromDate, toDate, 0, [sort: sort, order: 'desc'])
             }
             ArrayList<String> custIds = [];
             for (SaleReturn saleReturn : saleReturns) {
