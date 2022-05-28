@@ -4,9 +4,9 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=Edge">
     <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
-    <meta name="description" content="Responsive Bootstrap 4 and web Application ui kit.">
+    <meta name="description" content="PharmIT">
 
-    <title>:: PharmIt ::  Date-wise Sales Report</title>
+    <title>:: PharmIt ::  Outstanding Report</title>
     <link rel="icon" type="image/x-icon" href="${assetPath(src: '/themeassets/images/favicon.ico')}"/>
     <!-- Favicon-->
     <asset:stylesheet rel="stylesheet" src="/themeassets/plugins/bootstrap/css/bootstrap.min.css"/>
@@ -50,10 +50,10 @@
         <div class="block-header">
             <div class="row clearfix">
                 <div class="col-lg-5 col-md-5 col-sm-12">
-                    <h2>Date-wise Sales Report</h2>
+                    <h2>Outstanding Report</h2>
                     <ul class="breadcrumb padding-0">
                         <li class="breadcrumb-item"><a href="#"><i class="zmdi zmdi-home"></i></a></li>
-                        <li class="breadcrumb-item active">Date-wise Sales Report</li>
+                        <li class="breadcrumb-item active">Outstanding Report</li>
                     </ul>
                 </div>
 
@@ -73,36 +73,34 @@
                 <div class="card">
                     <div class="header">
                         <div class="row">
-                            %{--<div class="col-md-2">
+                            <div class="col-md-5">
                                 <div class="form-group">
-                                    <label for="sortBy">Sort By:</label>
-                                    <select style="margin-top: 5px; border-radius: 6px;" id="sortBy" class="sortBy form-control" name="sortBy">
-                                        <option value="default">DEFAULT</option>
-                                        <option value="invoice-date">INVOICE DATE</option>
-                                    </select>
-                                </div>
-                            </div>--}%
-                            <div class="col-lg-6">
-                                <div class="form-group">
-                                    <label>Date Range:</label>
-
-                                    <div class="input-group">
-                                        <input class="dateRange" type="text" name="dateRange"
+                                    <div class="input-group inlineblock">
+                                        <label for="dateRange">Date Range:</label>
+                                        <input id="dateRange" class="dateRange" type="text" name="dateRange"
                                                style="border-radius: 6px;margin: 4px;"/>
-                                        <button class="input-group-btn btn btn-info"
+                                        <button class="input-group-btn btn btn-info btn-sm"
                                                 onclick="getReport()">Get Report</button>
                                     </div>
                                 </div>
                             </div>
-                            <div class="col-lg-6  d-flex justify-content-center">
-                                <div class="form-group">
-                                    <label>Export</label>
 
-                                    <div class="input-group">
-                                        <button class="input-group-btn btn btn-info" id="btnExport">Excel</button>
-                                        %{-- <button class="input-group-btn btn btn-success" id="btnPdf">PDF</button>--}%
-                                        <button class="input-group-btn btn btn-danger" id="btnPrint">Print</button>
+                            <div class="col-md-5 d-flex justify-content-center">
+                                <div class="form-group">
+                                    <div class="input-group inlineblock">
+                                        <label>Export:</label>
+                                        <button class="input-group-btn btn btn-info btn-sm" id="btnExport"><i class="fa fa-file-excel-o"></i> Excel</button>
+                                        <button class="input-group-btn btn btn-danger btn-sm" id="btnPrint"><i class="fa fa-print"></i> Print</button>
                                     </div>
+                                </div>
+                            </div>
+
+                            <div class="col-md-2 d-flex justify-content-center">
+                                <div class="checkbox inlineblock">
+                                    <input id="paidInvoice" type="checkbox" checked/>
+                                    <label for="paidInvoice">
+                                        Show Paid Invoices
+                                    </label>
                                 </div>
                             </div>
                         </div>
@@ -148,10 +146,14 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.23/jspdf.plugin.autotable.js" integrity="sha512-P3z5YHtqjIxRAu1AjkWiIPWmMwO9jApnCMsa5s0UTgiDDEjTBjgEqRK0Wn0Uo8Ku3IDa1oer1CIBpTWAvqbmCA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 --}%
 <script>
+    var dueOnDate = "";
     $('.dateRange').daterangepicker({
         locale: {
             format: "DD/MM/YYYY"
-        }
+        },
+        maxDate: moment()
+    }).on('apply.daterangepicker', function(ev, picker) {
+        dueOnDate = moment(picker.endDate).format('DD/MM/YYYY');
     });
 
     function getReport() {
@@ -165,78 +167,65 @@
             closeOnClickOutside: false
         });
         var dateRange = $('.dateRange').val();
-        var sortBy = $('.sortBy').val();
+        // var sortBy = $('.sortBy').val();
+        var paidInvoice = $("#paidInvoice").is(":checked") ? "true" : "false";
         $.ajax({
-            url: "getdatewise?dateRange=" + dateRange,
+            url: "/reports/accounts/getoutstanding?dateRange=" + dateRange + "&paidInvoice="+paidInvoice,
             type: "GET",
             contentType: false,
             processData: false,
             success: function (data) {
-                console.log(data)
                 var content = "";
-                var grandTotal = 0.00;
-                var mainTableHeader = "<table class='table-bordered table-sm' style='width: 100%;color: #212529;'><thead>" +
-                    "<tr><td data-f-bold='true' colspan='11'><h3 style='margin-bottom:0 !important;'>${session.getAttribute('entityName')}</h3></td></tr>" +
-                    "<tr><td colspan='11'>${session.getAttribute('entityAddress1')} ${session.getAttribute('entityAddress2')} ${session.getAttribute('entityPinCode')}, ph: ${session.getAttribute('entityMobileNumber')}</td></tr>" +
-                    "<tr><th data-f-bold='true' colspan='11'>Customer-Bill-Itemwise Sales* Detail, Date: " + dateRange + "</th></tr>" +
-                    "<tr><th colspan='10'></th><th data-f-bold='true'><strong>Grand Total:</strong> <span id='grandTotal'></span></th></tr>" +
-                    "<tr><th data-f-bold='true'>Sl No.</th><th data-f-bold='true'>Item Name</th><th data-f-bold='true'>Batch No.</th><th data-f-bold='true'>Expiry</th>" +
-                    "<th data-f-bold='true'>Sale Qty</th><th data-f-bold='true'>Fr. Qty</th><th data-f-bold='true'>Rate</th><th data-f-bold='true'>N T V</th><th data-f-bold='true'>Discount</th><th data-f-bold='true'>GST</th><th data-f-bold='true'>Net Amount</th></tr></thead><tbody>";
-                $.each(data, function (key, customer) {
-                    var billDate = "<tr><td colspan='11'>"+dateFormat(key)+"</td></tr>";
-                    var billDetails = "";
-                    var custNtvTotal = 0;
-                    var custDiscountTotal = 0;
-                    var custGstTotal = 0;
-                    var custNetAmtTotal = 0;
-                    $.each(customer, function (key, bill) {
-                        var billStatusColor = "green";
-                        if(bill.billStatus == "CANCELLED")
-                            billStatusColor = "red";
-                        var customerName = "<tr><td data-f-bold='true' colspan='11'><strong>Customer: </strong><span class='customerData cust" + key + "'>" + customer[key].customerDetail.entityName + "</span></td></tr>";
-                        billDetails += customerName + "<tr><td colspan='2'><strong>Invoice No: </strong> " + bill.invoiceNumber + "</td><td><strong>Date:</strong> " + dateFormat(bill.orderDate) + "</td><td colspan='9'><strong>Invoice Status: <span style='color: "+billStatusColor+";'>" + bill.billStatus + "</span></strong></td></tr>";
-                        var products = "";
-                        var ntvTotal = 0;
-                        var discountTotal = 0;
-                        var gstTotal = 0;
-                        var netAmtTotal = 0;
-                        $.each(bill.products, function (key, product) {
-                            var ntv = product.amount - product.gstAmount;
-                            ntvTotal += ntv;
-                            discountTotal += product.discount;
-                            gstTotal += product.gstAmount;
-                            netAmtTotal += product.amount;
-                            products += "<tr><td>" + (key + 1) + "</td><td><span class='itemData item" + product.productId + "'>" + product.productDetail.productName + "</span></td><td>" + product.batchNumber + "</td><td>" + product.expiryDate + "</td><td>" + product.sqty + "</td>" +
-                                "<td>" + product.freeQty + "</td><td>" + product.sRate.toFixed(2) + "</td><td>" + ntv.toFixed(2) + "</td><td>" + product.discount.toFixed(2) + "</td><td>" + product.gstAmount.toFixed(2) + "</td><td>" + product.amount.toFixed(2) + "</td></tr>"
-                        });
-                        var totals = "<tr><td></td><td></td><td></td><td></td><td></td><td></td><td></td>" +
-                            "<td data-f-underline='true'><u>" + ntvTotal.toFixed(2) + "</u></td><td data-f-underline='true'><u>" + discountTotal.toFixed(2) + "</u></td>" +
-                            "<td data-f-underline='true'><u>" + gstTotal.toFixed(2) + "</u></td><td data-f-underline='true'><u>" + netAmtTotal.toFixed(2) + "</u></td></tr>";
-                        if(bill.billStatus != "CANCELLED") {
-                            custNtvTotal += ntvTotal;
-                            custDiscountTotal += discountTotal;
-                            custGstTotal += gstTotal;
-                            custNetAmtTotal += netAmtTotal;
-                        }
-                        billDetails += products + totals;
-                    });
-                    var space = "<tr class='pagebreak' style='background-color: #ceecf5 !important;'><td data-f-fill='ceecf500' colspan='11'></td></tr>";
-                    var custTotals = "<tr><td></td><td></td><td></td><td></td><td></td><td></td><td></td>" +
-                        "<td data-f-underline='true' data-f-bold='true'><strong><u>" + custNtvTotal.toFixed(2) + "</u></strong></td><td data-f-underline='true' data-f-bold='true'><strong><u>" + custDiscountTotal.toFixed(2) + "</u></strong></td>" +
-                        "<td data-f-underline='true' data-f-bold='true'><strong><u>" + custGstTotal.toFixed(2) + "</u></strong></td><td data-f-underline='true' data-f-bold='true'><strong><u>" + custNetAmtTotal.toFixed(2) + "</u></strong></td></tr>";
+                var mainTableHeader = "<table class='table table-bordered table-sm' style='width: 100%;'><thead>" +
+                    "<tr><td data-f-bold='true' colspan='10'><h3 style='margin-bottom:0 !important;'>${session.getAttribute('entityName')}</h3></td></tr>" +
+                    "<tr><td colspan='10'>${session.getAttribute('entityAddress1')} ${session.getAttribute('entityAddress2')} ${session.getAttribute('entityPinCode')}, ph: ${session.getAttribute('entityMobileNumber')}</td></tr>" +
+                    "<tr><th data-f-bold='true' colspan='10'>Outstanding Report, Date: " +
+                    dateRange + "</th></tr>" +
+                    //"<tr><th colspan='6'></th><th data-f-bold='true'><strong>Grand Total:</strong> <span id='grandTotal'></span></th></tr>" +
+                    //"<tr><th data-f-bold='true'>Customer</th><th data-f-bold='true'>Net Amount</th>"+
+                    "<th data-f-bold='true'>Customer</th><th data-f-bold='true'>Fin. Year</th><th data-f-bold='true'>Tran. Type</th><th data-f-bold='true'>Tran. No.</th><th data-f-bold='true'>Date</th><th data-f-bold='true'>Due Date</th><th data-f-bold='true'>Due On "+dueOnDate+"</th><th data-f-bold='true'>Not Due</th><th data-f-bold='true'>Total Due</th><th data-f-bold='true'>Days</th></tr></thead><tbody>";
+                var billDetails = "";
+                $.each(data, function (key, city) {
+                    billDetails = "";
+                    var cityName = "<tr><td colspan='9' data-f-bold='true'>Area: <span class='customerData cust" +
+                        key + "'><strong>" + key + "</strong></span></td></tr>";
+                    var customerDue = 0;
+                    var customerBalance = 0;
+                    var customerTotalDue = 0;
+                    var customerInfo = "";
+                    $.each(city, function (customer, invs) {
+                        var bills = "<tr><td colspan='10' data-f-bold='true'>"+customer+"</td></tr>";
+                        $.each(invs, function (key, bill) {
+                            var totalDue = bill.balance - bill.due;
+                            customerDue += bill.due;
+                            customerBalance += bill.balance;
+                            customerTotalDue += totalDue;
 
-                    grandTotal += custNetAmtTotal;
-                    content += billDate + billDetails + custTotals + space;
+                            bills += "<tr><td></td>" +
+                                "<td>" + bill.financialYear + "</td>" +
+                                "<td>" + bill.transactionType + "</td>" +
+                                "<td>" + bill.transactionNumber + "</td>" +
+                                "<td>" + dateFormat(bill.transactionDate) + "</td>" +
+                                "<td>" + dateFormat(bill.dueDate) + "</td>" +
+                                "<td>" + bill.due.toFixed(2) + "</td>" +
+                                "<td>" + bill.balance.toFixed(2) + "</td>" +
+                                "<td>" + totalDue.toFixed(2) + "</td>" +
+                                "<td>" + moment(new Date()).diff(moment(dateFormat(bill.dueDate), "DD/MM/YYYY"), 'days') + "</td></tr>";
+                        });
+                        var customerTotal = "<tr><td colspan='6'></td><td data-f-bold='true'><u><strong>"+customerDue.toFixed(2)+"</strong></u></td><td data-f-bold='true'><u><strong>"+customerBalance.toFixed(2)+"</strong></u></td>" +
+                            "<td data-f-bold='true'><u><strong>"+customerTotalDue.toFixed(2)+"</strong></u></td><td data-f-bold='true'></td></tr>";
+                        customerInfo += (bills + customerTotal);
+                    });
+                    billDetails += customerInfo;
+                    content += cityName + billDetails;
                 });
                 var mainTableFooter = "</tbody></table>";
-
                 $("#result").html(mainTableHeader + content + mainTableFooter);
                 loading.close();
-                $("#grandTotal").text(grandTotal.toFixed(2));
             },
             error: function () {
                 loading.close();
-                swal("Error!", "Unable to generate report at the moment", "error");
+                Swal.fire("Error!", "Unable to generate report at the moment", "error");
             }
         })
     }
@@ -244,7 +233,7 @@
     $("#btnExport").click(function () {
         let table = document.getElementById("result");
         TableToExcel.convert(table, {
-            name: 'customerwise-sales-report.xlsx',
+            name: 'areawise-sales-report.xlsx',
             sheet: {
                 name: 'Sheet 1' // sheetName
             }
@@ -281,7 +270,13 @@
     {
         dt = dt.replace("T", " ").replace("Z", '');
         var date = new Date(dt);
-        return moment(date).format('DD/MM/YYYY hh:mm:ss a');
+        //return moment(date).format('DD/MM/YYYY hh:mm:ss a');
+        return moment(date).format('DD/MM/YYYY');
+    }
+
+    function today() {
+        var date = new Date();
+        return moment(date).format('DD/MM/YYYY');
     }
 
 

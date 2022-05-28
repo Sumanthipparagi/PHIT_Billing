@@ -389,7 +389,10 @@ public class Links
     public static String SALE_BILL_DATEWISE_REPORTS = "api/v1.0/sales/reports/datewise";
     public static String SALE_BILL_AREAWISE_REPORTS = "api/v1.0/sales/reports/areawise";
     public static String SALE_BILL_CONSOLIDATED_REPORTS = "api/v1.0/sales/reports/consolidated";
+    public static String SALE_RETURN_AREAWISE = "api/v1.0/sales/reports/salesreturn-areawise";
     public static String SALE_BILL_UPDATE_IRN = "api/v1.0/sales/salebilldetails/updateirn";
+
+    public static String GET_OUTSTANDING_REPORT = "api/v1.0/accounts/reports/outstanding";
 
     public static String GST_SALES_REPORTS = "api/v1.0/sales/reports/salesgst";
 

@@ -126,6 +126,9 @@ class UrlMappings {
             "/wallet/$id(.$format)?"(controller: 'walletMaster') { action = [GET: 'show', PUT: 'update', DELETE: 'delete'] }
             "/walletbyentity/$id(.$format)?"(controller: 'walletMaster') { action = [GET: 'getByEntityId'] }
 
+            //Report
+            "/reports/outstanding(.$format)?"(controller: 'reports') { action = [GET: 'outstanding'] }
+
         }
     }
 }

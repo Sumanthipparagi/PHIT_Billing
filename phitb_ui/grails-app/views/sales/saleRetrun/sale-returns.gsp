@@ -498,7 +498,6 @@
             colHeaders: headerRow,
             columns: [
                 {type: 'text'},
-
                 {
                     editor: 'select2',
                     renderer: reasonDropdownRenderer,
@@ -530,7 +529,7 @@
                 {type: 'text'},
                 {type: 'text', readOnly: true},
                 {type: 'text'},
-                {type: 'text', readOnly: true},
+                {type: 'text'},
                 {
                     editor: 'select2',
                     renderer: taxRegisterDropdownRenderer,
