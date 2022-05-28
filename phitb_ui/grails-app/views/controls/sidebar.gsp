@@ -615,7 +615,7 @@
                             <li><a href="/debit-jv/approval">Debit JV Approval</a></li>
                         </g:if>
                         <g:if test="${UtilsService.isPermitted("VIEW_RECEIPT", session.getAttribute("permittedFeatures").toString())}">
-                            <li><a href="#">Receipt Approval</a></li>
+                            <li><a href="/receipt-approval">Receipt Approval</a></li>
                         </g:if>
                     </ul>
                 </li>

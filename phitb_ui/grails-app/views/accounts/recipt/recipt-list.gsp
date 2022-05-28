@@ -192,6 +192,11 @@
                 type: 'GET',
                 url: '/recipt-list/datatable',
                 dataType: 'json',
+                data: {
+                    customer: "ALL",
+                    fromDate:"",
+                    toDate:"",
+                },
                 dataSrc: function (json) {
                     console.log(json)
                     var return_data = [];

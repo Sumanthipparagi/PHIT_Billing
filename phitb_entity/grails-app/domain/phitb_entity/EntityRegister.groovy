@@ -78,6 +78,8 @@ class EntityRegister implements LogicalDelete<EntityRegister>
         password nullable: true
         contact nullable: true
         foodLicence1 nullable: true
+        manager nullable:true
+        salesman nullable:true
     }
 
     boolean isUpdatable

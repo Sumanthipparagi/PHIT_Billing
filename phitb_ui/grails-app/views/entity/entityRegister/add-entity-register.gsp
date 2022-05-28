@@ -470,7 +470,7 @@
                                     </label>
                                     <input type="text" id="salesmanCommission" class="form-control salesmanCommission"
                                            name="salesmanCommission" placeholder="Salesman Commission"
-                                           required/>
+                                           />
                                 </div>
 
                                 <div class="col-lg-6 form-group  form-float">
