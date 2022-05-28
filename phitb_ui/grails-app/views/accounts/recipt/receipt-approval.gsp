@@ -308,7 +308,6 @@
         swal("approved!")
     }
 </script>
-
 <g:include view="controls/footer-content.gsp"/>
 <script>
     selectSideMenu("accounts-menu");
