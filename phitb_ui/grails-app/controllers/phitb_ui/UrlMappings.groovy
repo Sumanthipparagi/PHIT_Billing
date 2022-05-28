@@ -569,6 +569,7 @@ class UrlMappings {
         "/add-recipt"(controller: "reciptDetail", action: 'addRecipt')
         "/print-recipt/$custid/recipt/$id"(controller: "reciptDetail", action: 'printRecipt')
         "/receipt-approval"(controller: 'reciptDetail', action: 'recieptApproval')
+        "/receipt-approve"(controller: 'reciptDetail', action: 'receiptApprove')
 
 
 

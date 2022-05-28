@@ -220,11 +220,10 @@ class EntityService {
     {
         Client client = ClientBuilder.newClient()
         WebTarget target = client.target(new Links().API_GATEWAY)
-       
         try
         {
             Response apiResponse = target
-                    .path(new Links().USER_REGISTER_SHOW + "/"+id)
+                    .path(new Links().USER_REGISTER_SHOW+"/"+id)
                     .request(MediaType.APPLICATION_JSON_TYPE)
                     .get()
             if (apiResponse?.status == 200)

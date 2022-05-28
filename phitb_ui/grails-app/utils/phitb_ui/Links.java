@@ -522,6 +522,7 @@ public class Links
     public static String RECIPT_DETAIL_DATATABLE = "api/v1.0/accounts/receiptdetails/datatable";
     public static String RECIPT_DETAIL_UPDATE = "api/v1.0/accounts/receiptdetails/{id}";
     public static String RECIPT_DETAIL_DELETE = "api/v1.0/accounts/receiptdetails/{id}";
+    public static String RECIPT_APPROVE = "api/v1.0/accounts/receipt-approve";
 
     //    Reciept detail log
     public static String RECIPT_DETAIL_LOG = "api/v1.0/accounts/reciptdetaillog";

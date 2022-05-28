@@ -61,6 +61,9 @@ class ReceiptDetailService {
         String searchTerm = paramsJsonObject.get("search[value]")
         String orderColumnId = paramsJsonObject.get("order[0][column]")
         String orderDir = paramsJsonObject.get("order[0][dir]")
+        String customer = paramsJsonObject.get("customer").toString()
+        String fromDate  =  paramsJsonObject.get("fromDate").toString()
+        String toDate  =  paramsJsonObject.get("toDate").toString()
 
         String orderColumn = "id"
         switch (orderColumnId) {
@@ -81,6 +84,13 @@ class ReceiptDetailService {
                 if (searchTerm != "") {
                     ilike('receiptId', '%' + searchTerm + '%')
                 }
+            }
+            if (!customer.equalsIgnoreCase('all') && customer != '') {
+                eq("receivedFrom", customer)
+            }
+            if ((fromDate != null && fromDate != "") && (toDate != null && toDate != ""))
+            {
+                between('dateCreated',sdf.parse(fromDate),sdf.parse(toDate))
             }
             eq('deleted', false)
             order(orderColumn, orderDir)
@@ -224,6 +234,27 @@ class ReceiptDetailService {
             }
         } else {
             throw new BadRequestException()
+        }
+    }
+
+    def approveReceipt(JSONObject jsonObject)
+    {
+        String id = jsonObject.get("id")
+        String userId = jsonObject.get("userId")
+        JSONObject receiptApprove = new JSONObject()
+        ReceiptDetail receiptDetail = ReceiptDetail.findById(Long.parseLong(id))
+        if (receiptDetail)
+        {
+                receiptDetail.approvedStatus = "APPROVED"
+                receiptDetail.approvedBy = Long.parseLong(userId)
+                receiptDetail.approvedDate = new Date()
+                receiptDetail.isUpdatable = true
+                receiptDetail.save(flush: true)
+                return receiptApprove
+        }
+        else
+        {
+            throw new ResourceNotFoundException()
         }
     }
 }

@@ -213,4 +213,25 @@ class ReceiptDetailController {
             System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
         }
     }
+
+
+    def approveReceipt() {
+        try {
+            JSONObject jsonObject = new JSONObject(request.reader.text)
+            JSONObject approveReceipt = receiptDetailService.approveReceipt(jsonObject)
+            respond approveReceipt
+        }
+        catch (org.springframework.boot.context.config.ResourceNotFoundException ex) {
+            System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
+            response.status = 404
+        }
+        catch (BadRequestException ex) {
+            System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
+            response.status = 400
+
+        }
+        catch (Exception ex) {
+            System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
+        }
+    }
 }

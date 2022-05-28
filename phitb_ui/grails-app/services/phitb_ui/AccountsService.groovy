@@ -208,6 +208,25 @@ class AccountsService
         }
     }
 
+    def approveReceipt(JSONObject jsonObject)
+    {
+        Client client = ClientBuilder.newClient();
+        WebTarget target = client.target(new Links().API_GATEWAY);
+        try
+        {
+            Response apiResponse = target
+                    .path(new Links().RECIPT_APPROVE)
+                    .request(MediaType.APPLICATION_JSON_TYPE)
+                    .post(Entity.entity(jsonObject.toString(), MediaType.APPLICATION_JSON_TYPE))
+            return apiResponse
+        }
+        catch (Exception ex)
+        {
+            System.err.println('Service :getAccountModes , action :  show  , Ex:' + ex)
+            log.error('Service :getAccountModes , action :  show  , Ex:' + ex)
+        }
+    }
+
     def showPayments(JSONObject jsonObject)
     {
         Client client = ClientBuilder.newClient();
