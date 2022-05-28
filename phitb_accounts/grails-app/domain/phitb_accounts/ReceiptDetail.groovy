@@ -3,7 +3,6 @@ package phitb_accounts
 import gorm.logical.delete.LogicalDelete
 
 class ReceiptDetail implements LogicalDelete<ReceiptDetail> {
-    
     String receiptId
     Date date
     long paymentModeId
@@ -23,6 +22,7 @@ class ReceiptDetail implements LogicalDelete<ReceiptDetail> {
     long lockStatus
     long approvedBy
     Date approvedDate
+    String approvedStatus
     String financialYear
     long status
     long syncStatus
@@ -41,6 +41,8 @@ class ReceiptDetail implements LogicalDelete<ReceiptDetail> {
         cardNumber nullable: true
         wallet nullable: true
         narration nullable: true
+        accountModeId nullable:true
+        approvedStatus nullable: true
     }
 
     static mapping = {

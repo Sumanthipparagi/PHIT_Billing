@@ -17,6 +17,7 @@
     <asset:stylesheet rel="stylesheet" href="/themeassets/css/color_skins.css"/>
     <asset:stylesheet rel="stylesheet" href="/themeassets/plugins/sweetalert/sweetalert.css"/>
     <asset:stylesheet  src="/themeassets/plugins/bootstrap-select/css/bootstrap-select.css" rel="stylesheet" />
+    <asset:stylesheet  src="/themeassets/plugins/select-2-editor/select2.min.css" rel="stylesheet" />
 
     <style>
 
@@ -103,9 +104,9 @@
                             <table class="table table-bordered table-striped table-hover accountmodeTable dataTable">
                                 <thead>
                                 <tr>
-                                    <th>ID</th>
+%{--                                    <th>ID</th>--}%
                                     <th>Name</th>
-                                    <th>entityRegister</th>
+%{--                                    <th>entityRegister</th>--}%
                                     <th>Action</th>
                                 </tr>
                                 </thead>
@@ -146,6 +147,7 @@
 <asset:javascript src="/themeassets/js/pages/tables/jquery-datatable.js"/>
 <asset:javascript src="/themeassets/js/pages/ui/dialogs.js"/>
 <asset:javascript src="/themeassets/plugins/sweetalert/sweetalert.min.js"/>
+<asset:javascript  src="/themeassets/plugins/select-2-editor/select2.js" />
 
 
 
@@ -173,7 +175,7 @@
             processing: true,
             serverSide: true,
             language: {
-                searchPlaceholder: "Search State"
+                searchPlaceholder: "Search Account Modes"
             },
             ajax: {
                 type: 'GET',
@@ -185,14 +187,14 @@
                     for (var i = 0; i < json.data.length; i++) {
                         var editbtn = '<button type="button" data-id="' + json.data[i].id +
                             '" data-mode="' + json.data[i].mode + '"' +
-                            '" data-entityRegister="' + json.data[i].entityId + '"' +
+                            'data-entityRegister="' + json.data[i].entityId + '"' +
                             ' class="editbtn btn btn-warning  editbtn" data-toggle="modal" data-target="#addAccountModeModal"><i class="material-icons"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">edit</font></font></i></button>'
                         var deletebtn = '<button type="button" data-id="' + json.data[i].id +
                             '" class="btn btn-danger deletebtn" data-toggle="modal" data-target=".deleteModal"><i class="material-icons"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">delete</font></font></i></button>'
                         return_data.push({
                             'id': json.data[i].id,
                             'name': json.data[i].mode,
-                            'entity': json.names[i].entityName,
+                            // 'entity': json.names[i].entityName,
                             'action': editbtn + ' ' + deletebtn
 
                         });
@@ -201,9 +203,9 @@
                 }
             },
             columns: [
-                {'data': 'id'},
+                // {'data': 'id'},
                 {'data': 'name'},
-                {'data': 'entity'},
+                // {'data': 'entity'},
                 {'data': 'action', 'width': '20%'}
             ]
         });
@@ -250,22 +252,25 @@
     });
 
     $(document).on("click", ".addbtn", function () {
-        $(".accountModeTitle").text("Add Account Mode Master")
         $(".accountModeForm")[0].reset();
+        $(".accountModeTitle").text("Add Account Mode Master");
         id = null
+        $('.entity').select2()
     });
 
     $(document).on("click", ".editbtn", function () {
         id = $(this).data('id');
         $(".mode").val($(this).data('mode'));
-        $(".entityRegister").val($(this).data('entity'));
-        var a = $(this).data('entity');
-        $("#entityRegister").val(a).change()
+        $(".entity").val($(this).data('entity'));
+        var a = $(this).attr('data-entityregister');
+        $(".entity").val(a).change();
+        $('.entity').select2();
         $(".accountModeTitle").text("Update Account Mode Master");
     });
 
     $(document).on("click", ".deletebtn", function () {
         id = $(this).data('id');
+        $("#myModalLabel").text("Delete Account Mode Master ?");
     });
 
     function deleteData() {

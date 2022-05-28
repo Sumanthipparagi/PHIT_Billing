@@ -36,6 +36,9 @@ class PaymentDetail implements LogicalDelete<PaymentDetail> {
     Date lastUpdated
 
     static constraints = {
+        cardNumber nullable: true
+        wallet nullable: true
+        bank nullable: true
     }
 
     static mapping = {

@@ -39,6 +39,7 @@ class PurchaseBillDetail implements LogicalDelete<PurchaseBillDetail> {
     double exempted
     double totalDiscount
     double balAmount
+    double totalAmount
     String submitStatus
     String billStatus
     String gstStatus
@@ -62,6 +63,7 @@ class PurchaseBillDetail implements LogicalDelete<PurchaseBillDetail> {
     static constraints = {
         invoiceNumber unique: true, nullable: true
         cancelledDate nullable: true
+        totalAmount nullable: true
         uuid unique: true
     }
 

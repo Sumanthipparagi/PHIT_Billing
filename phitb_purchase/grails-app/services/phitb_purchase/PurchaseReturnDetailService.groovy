@@ -199,4 +199,13 @@ class PurchaseReturnDetailService {
             throw new BadRequestException()
         }
     }
+
+    def getAllBySupplierId(String id,String financialYear,String entityId)
+    {
+        if(id)
+        {
+            return PurchaseReturnDetail.findAllBySupplierIdAndFinancialYearAndEntityId(Long.parseLong(id),
+                    financialYear,Long.parseLong(entityId))
+        }
+    }
 }

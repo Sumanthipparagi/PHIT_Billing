@@ -63,6 +63,7 @@ class AccountModeMasterService
         String searchTerm = paramsJsonObject.get("search[value]")
         String orderColumnId = paramsJsonObject.get("order[0][column]")
         String orderDir = paramsJsonObject.get("order[0][dir]")
+        long entityId = paramsJsonObject.get("entityId")
         String orderColumn = "id"
         switch (orderColumnId)
         {
@@ -85,21 +86,21 @@ class AccountModeMasterService
                     ilike('mode', '%' + searchTerm + '%')
                 }
             }
+            eq('entityId', entityId)
             eq('deleted', false)
             order(orderColumn, orderDir)
         }
-        def names = []
-        accountModesMasterArrayList.each {
-            println(it.entityId)
-            def apires = showAccountModesByEntityId(it.entityId.toString())
-            names.push(apires)
-        }
+//        def names = []
+//        accountModesMasterArrayList.each {
+//            println(it.entityId)
+//            def apires = showAccountModesByEntityId(it.entityId.toString())
+//            names.push(apires)
+//        }
         def recordsTotal = accountModesMasterArrayList.totalCount
         JSONObject jsonObject = new JSONObject()
         jsonObject.put("draw", paramsJsonObject.draw)
         jsonObject.put("recordsTotal", recordsTotal)
         jsonObject.put("recordsFiltered", recordsTotal)
-        jsonObject.put("names", names)
         jsonObject.put("data", accountModesMasterArrayList)
         return jsonObject
     }
@@ -185,21 +186,21 @@ class AccountModeMasterService
         }
     }
 
-    def showAccountModesByEntityId(String id)
-    {
-        try
-        {
-            def url = Constants.API_GATEWAY+Constants.ENTITY_REGISTER_SHOW+"/"+id
-            URL apiUrl = new URL(url)
-            def card = new JsonSlurper().parseText(apiUrl.text)
-            return card
-        }
-        catch (Exception ex)
-        {
-            System.err.println('Service :showAccountModesByEntityId , action :  show  , Ex:' + ex)
-            log.error('Service :showAccountModesByEntityId , action :  show  , Ex:' + ex)
-        }
-    }
+//    def showAccountModesByEntityId(String id)
+//    {
+//        try
+//        {
+//            def url = Constants.API_GATEWAY+Constants.ENTITY_REGISTER_SHOW+"/"+id
+//            URL apiUrl = new URL(url)
+//            def card = new JsonSlurper().parseText(apiUrl.text)
+//            return card
+//        }
+//        catch (Exception ex)
+//        {
+//            System.err.println('Service :showAccountModesByEntityId , action :  show  , Ex:' + ex)
+//            log.error('Service :showAccountModesByEntityId , action :  show  , Ex:' + ex)
+//        }
+//    }
 
 
 }

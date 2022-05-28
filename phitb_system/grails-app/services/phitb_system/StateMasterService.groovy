@@ -83,18 +83,17 @@ class StateMasterService
             eq('deleted', false)
             order(orderColumn, orderDir)
         }
-        def names = []
-        stateMasterArrayList.each {
-            println(it.entityId)
-            def apires = showStateByEntityId(it.entityId.toString())
-            names.push(apires)
-        }
+//        def names = []
+//        stateMasterArrayList.each {
+//            println(it.entityId)
+//            def apires = showStateByEntityId(it.entityId.toString())
+//            names.push(apires)
+//        }
 
         def recordsTotal = stateMasterArrayList.totalCount
         JSONObject jsonObject = new JSONObject()
         jsonObject.put("draw", paramsJsonObject.draw)
         jsonObject.put("recordsTotal", recordsTotal)
-        jsonObject.put("names", names)
         jsonObject.put("recordsFiltered", recordsTotal)
         jsonObject.put("data", stateMasterArrayList)
         return jsonObject
@@ -177,19 +176,19 @@ class StateMasterService
     }
 
 
-    def showStateByEntityId(String id)
-    {
-        try
-        {
-            def url = Constants.API_GATEWAY+Constants.ENTITY_REGISTER_SHOW+"/"+id
-            URL apiUrl = new URL(url)
-            def entity = new JsonSlurper().parseText(apiUrl.text)
-            return entity
-        }
-        catch (Exception ex)
-        {
-            System.err.println('Service :showAccountModesByEntityId , action :  show  , Ex:' + ex)
-            log.error('Service :showAccountModesByEntityId , action :  show  , Ex:' + ex)
-        }
-    }
+//    def showStateByEntityId(String id)
+//    {
+//        try
+//        {
+//            def url = Constants.API_GATEWAY+Constants.ENTITY_REGISTER_SHOW+"/"+id
+//            URL apiUrl = new URL(url)
+//            def entity = new JsonSlurper().parseText(apiUrl.text)
+//            return entity
+//        }
+//        catch (Exception ex)
+//        {
+//            System.err.println('Service :showAccountModesByEntityId , action :  show  , Ex:' + ex)
+//            log.error('Service :showAccountModesByEntityId , action :  show  , Ex:' + ex)
+//        }
+//    }
 }

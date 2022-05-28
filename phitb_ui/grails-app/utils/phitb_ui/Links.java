@@ -469,8 +469,11 @@ public class Links
     public static String GTN_RECENT = "api/v1.0/sales/gtn/getrecent";
     public static String GTN_CANCEL = "api/v1.0/sales/gtn/cancel";
     public static String GTN_APPROVE = "api/v1.0/sales/gtn/approve";
+    public static String GTN_CUSTOMER = "api/v1.0/sales/gtnbycustomer";
+    public static String UPDATE_GTN_BALANCE = "api/v1.0/sales/updategtnbalancebyid";
 
-//    Goods transfer note products
+
+    //    Goods transfer note products
     public static String GTN_PRODUCTS_SAVE = "api/v1.0/sales/gtnproduct";
     public static String GTN_PRODUCTS_BY_GTN = "api/v1.0/sales/gtnproduct/gtn";
 
@@ -524,6 +527,7 @@ public class Links
     public static String RECIPT_DETAIL_LOG = "api/v1.0/accounts/reciptdetaillog";
     public static String RECIPT_DETAIL_LOG_INVS_ID = "api/v1.0/accounts/reciptdetailloginvbyreciptId";
     public static String RECIPT_DETAIL_LOG_CRNT_ID = "api/v1.0/accounts/reciptdetaillogcrntbyreciptId";
+    public static String RECIPT_DETAIL_LOG_GTN_ID = "api/v1.0/accounts/reciptdetailloggtnbyreciptId";
 
 
     //Wallet
@@ -540,6 +544,14 @@ public class Links
     public static String PAYMENT_DATATABLE = "api/v1.0/accounts/paymentdetails/datatable";
     public static String PAYMENT_UPDATE = "api/v1.0/accounts/paymentdetails/{id}";
     public static String PAYMENT_DELETE = "api/v1.0/accounts/paymentdetails/{id}";
+
+
+    //   payment detail log
+    public static String PAYMENT_DETAIL_LOG = "api/v1.0/accounts/billpaymentlog";
+    public static String PAYMENT_DETAIL_LOG_INVS_ID = "api/v1.0/accounts/billpaymentloginvbypaymentId";
+    public static String PAYMENT_DETAIL_LOG_CRNT_ID = "api/v1.0/accounts/billpaymentlogcrntbypaymentId";
+    public static String PAYMENT_DETAIL_LOG_GRN_ID = "api/v1.0/accounts/billpaymentloggrnbypaymentId";
+
 
 
     //Credit
@@ -567,7 +579,9 @@ public class Links
     public static String PURCHASE_PRODUCT_UPDATE = "api/v1.0/purchase/productdetail/{id}";
     public static String PURCHASE_PRODUCT_DELETE = "api/v1.0/purchase/productdetail/{id}";
     public static String PURCHASE_PRODUCT_OF_BILL = "api/v1.0/purchase/productdetail/bill";
-    public static String PURCHASE_BILL_CUSTOMER = "api/v1.0/purchase/purchasebillbycustomer/{custid}";
+    public static String PURCHASE_BILL_CUSTOMER = "api/v1.0/purchase/purchasebillbysupplier";
+    public static String PURCHASE_BILL_BALANCE_UPDATE = "api/v1.0/purchase/updatebillbalancebyid";
+    public static String PURCHASE_RETURN_BALANCE_UPDATE = "api/v1.0/purchase/updatereturnbalancebyid";
 
 
     //purchase product bill details
@@ -578,16 +592,17 @@ public class Links
     public static String PURCHASE_BILL_DELETE = "api/v1.0/purchase/billdetail/{id}";
 
     public static String PURCHASE_BILL_RECENT = "api/v1.0/purchase/billdetail/getrecent";
-    public static String PURCHASE_BILL_SUPPLIER = "api/v1.0/purchase/purchasebillbysupplier/{supplierId}";
+    public static String PURCHASE_BILL_SUPPLIER = "api/v1.0/purchase/purchasebillbysupplier";
     public static String PURCHASE_PRODUCT_OF_BILLIDS = "api/v1.0/purchase/purchaseproductdetailslist/bill" +
             "/{purbillsIds}";
 
-    //purchase product bill details
+    //purchase return
     public static String PURCHASE_RETURN_SHOW = "api/v1.0/purchase/returndetail";
     public static String PURCHASE_RETURN_SAVE = "api/v1.0/purchase/returndetail";
     public static String PURCHASE_RETURN_DATATABLE = "api/v1.0/purchase/returndetail/datatable";
     public static String PURCHASE_RETURN_UPDATE = "api/v1.0/purchase/returndetail/{id}";
     public static String PURCHASE_RETURN_DELETE = "api/v1.0/purchase/returndetail/{id}";
+    public static String PURCHASE_RETURN_CUSTOMER = "api/v1.0/purchase/returndetailbysupplier";
 
     //e-Invoice
     public static String E_INVOICE_BASE_URL = "https://test.nsdlgsp.co.in";

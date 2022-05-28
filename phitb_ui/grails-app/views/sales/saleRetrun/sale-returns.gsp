@@ -223,14 +223,13 @@
                 <div class="card" style="margin-bottom: 10px;">
                     <div class="body" style="background-color: #313740;padding: 2px; color: #fff;">
                         <div class="row" style="margin: 0; font-size: 14px;">
-                            <div class="col-md-2"><strong>Total GST:&nbsp;</strong>&#x20b9;
-                                <span id="totalGST">0</span></div>
+                            <div class="col-md-2"><strong>Total GST:&nbsp;</strong>&#x20b9;<span id="totalGST">0</span></div>
 
                             <div class="col-md-2"><strong>Total SGST:&nbsp;</strong>&#x20b9;<span
                                     id="totalSGST">0</span>
                             </div>
 
-                            <div class="col-md-2"><strong>Total CGST: &nbsp;</strong>&#x20b9;<span
+                            <div class="col-md-2"><strong>Total CGST:&nbsp;</strong>&#x20b9;<span
                                     id="totalCGST">0</span>
                             </div>
 
@@ -2025,23 +2024,20 @@
             });
         };
 
+
         Select2Editor.prototype.open = function (keyboardEvent) {
             this.refreshDimensions();
             this.textareaParentStyle.zIndex = 20000;
             this.instance.addHook('beforeKeyDown', onBeforeKeyDown);
             this.instance.addHook('afterOnCellMouseDown', onBeforeMouseDown);
-            // this.textareaParentStyle.display = 'block';
-
+            this.textareaParentStyle.display = 'block';
             this.$textarea.css({
                 height: $(this.TD).height() + 4,
                 'min-width': $(this.TD).outerWidth() - 4
             });
 
-
             //display the list
             this.$textarea.show();
-
-
 
             var self = this;
             this.$textarea.select2(this.options)
@@ -2049,52 +2045,18 @@
                 .on('select2-close', onSelect2Closed.bind(this));
             self.$textarea.select2('open');
 
-            const element = document.getElementsByClassName("highlight")[0];
-            const rect = element.getBoundingClientRect();
-            var top = rect.top.toFixed();
-            var left =  rect.left.toFixed();
-            var bottom =  rect.bottom.toFixed();
-            $("#select2-drop").css("top","");
-            $("#select2-drop").css("left","");
-            document.getElementById("select2-drop").style.top = top+"px";
-            document.getElementById("select2-drop").style.left = left+"px";
-            document.getElementById("select2-drop").style.bottom = bottom+"px";
-            document.getElementById("select2-drop").style.width = 229+"px";
-            console.log(document.getElementById("select2-drop"));
-
             // Pushes initial character entered into the search field, if available
             if (keyboardEvent && keyboardEvent.keyCode) {
                 var key = keyboardEvent.keyCode;
                 var keyText = (String.fromCharCode((96 <= key && key <= 105) ? key - 48 : key)).toLowerCase();
                 console.log("KeyText: " + keyText);
                 self.$textarea.select2('search', keyText.slice(0, -1));
-                const element = document.getElementsByClassName("highlight")[0];
-                const rect = element.getBoundingClientRect();
-                var top = rect.top.toFixed();
-                var left =  rect.left.toFixed();
-                var bottom =  rect.bottom.toFixed();
-                $("#select2-drop").css("top","");
-                $("#select2-drop").css("left","");
-                document.getElementById("select2-drop").style.top = top+"px";
-                document.getElementById("select2-drop").style.left = left+"px";
-                document.getElementById("select2-drop").style.bottom = bottom+"px";
-                document.getElementById("select2-drop").style.width = 229+"px";
-                console.log(document.getElementById("select2-drop"));
-
-                // Handsontable.renderers.cellDecorator.apply(this, arguments);
-
-                // $('.handsontableInput').children().show()
+                $('.handsontableInput').children().show()
+            } else {
+                $('.handsontableInput').children().hide()
             }
-            // else {
-            //
-            // }
-
-
-
-
+            Handsontable.renderers.cellDecorator.apply(this, arguments);
         };
-
-
 
 
         Select2Editor.prototype.init = function () {
@@ -2107,9 +2069,9 @@
             this.instance.removeHook('afterOnCellMouseDown', onBeforeMouseDown);
             this.$textarea.off();
             this.$textarea.hide();
-            // $('.handsontableInput').children().hide();
+            $('.handsontableInput').children().hide();
             Handsontable.editors.TextEditor.prototype.close.apply(this, arguments);
-            // $('.handsontableInput').children().show();
+            $('.handsontableInput').children().show();
         };
 
 

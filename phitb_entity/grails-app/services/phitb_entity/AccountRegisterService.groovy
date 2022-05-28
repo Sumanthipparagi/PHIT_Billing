@@ -72,7 +72,14 @@ class AccountRegisterService {
         accountRegister.generalId = Long.parseLong(jsonObject.get("generalId").toString())
         accountRegister.accountName = jsonObject.get("accountName").toString()
         accountRegister.accountStatus = Long.parseLong(jsonObject.get("accountStatus").toString())
-        accountRegister.subAccountType = Long.parseLong(jsonObject.get("subAccountType").toString())
+        if(jsonObject.get("subAccountType").toString()!="" && jsonObject.get("subAccountType").toString()!=null)
+        {
+            accountRegister.subAccountType = Long.parseLong(jsonObject.get("subAccountType").toString())
+        }
+        else
+        {
+            accountRegister.subAccountType = 0
+        }
         accountRegister.accountMode = Long.parseLong(jsonObject.get("accountMode").toString())
         accountRegister.responsibleUserId = Long.parseLong(jsonObject.get("responsibleUserId").toString())
         accountRegister.yearlyBudget = jsonObject.get("yearlyBudget").toString()
@@ -99,7 +106,14 @@ class AccountRegisterService {
             accountRegister.generalId = Long.parseLong(jsonObject.get("generalId").toString())
             accountRegister.accountName = jsonObject.get("accountName").toString()
             accountRegister.accountStatus = Long.parseLong(jsonObject.get("accountStatus").toString())
-            accountRegister.subAccountType = Long.parseLong(jsonObject.get("subAccountType").toString())
+            if(jsonObject.get("subAccountType").toString()!="" && jsonObject.get("subAccountType").toString()!=null)
+            {
+                accountRegister.subAccountType = Long.parseLong(jsonObject.get("subAccountType").toString())
+            }
+            else
+            {
+                accountRegister.subAccountType = 0
+            }
             accountRegister.accountMode = Long.parseLong(jsonObject.get("accountMode").toString())
             accountRegister.responsibleUserId = Long.parseLong(jsonObject.get("accountMode").toString())
             accountRegister.yearlyBudget = jsonObject.get("yearlyBudget").toString()
@@ -122,10 +136,10 @@ class AccountRegisterService {
 
     void delete(String id) {
         if (id) {
-            AccountRegister bankRegister = AccountRegister.findById(Long.parseLong(id))
-            if (bankRegister) {
-                bankRegister.isUpdatable = true
-                bankRegister.delete()
+            AccountRegister accountRegister = AccountRegister.findById(Long.parseLong(id))
+            if (accountRegister) {
+                accountRegister.isUpdatable = true
+                accountRegister.delete()
             } else {
                 throw new ResourceNotFoundException()
             }

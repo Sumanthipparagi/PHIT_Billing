@@ -37,6 +37,9 @@ class UrlMappings {
             "/reciptdetaillog/$id(.$format)?"(controller: 'billDetailLog') { action = [GET: 'show', PUT: 'update', DELETE: 'delete'] }
             "/reciptdetailloginvbyreciptId/$id(.$format)?"(controller: 'billDetailLog'){action = [GET: 'recieptDetailsByInvId']}
             "/reciptdetaillogcrntbyreciptId/$id(.$format)?"(controller: 'billDetailLog'){action = [GET: 'recieptDetailsByCrntId']}
+            "/reciptdetailloggtnbyreciptId/$id(.$format)?"(controller: 'billDetailLog'){action = [GET: 'recieptDetailsByGTNId']}
+
+
 
 
 
@@ -44,6 +47,9 @@ class UrlMappings {
             "/billpaymentlog(.$format)?"(controller: 'billPaymentLog') { action = [GET: 'index', POST: 'save'] }
             "/billpaymentlog/datatable(.$format)?"(controller: 'billPaymentLog') { action = [GET: 'dataTable'] }
             "/billpaymentlog/$id(.$format)?"(controller: 'billPaymentLog') { action = [GET: 'show', PUT: 'update', DELETE: 'delete'] }
+            "/billpaymentloginvbypaymentId/$id(.$format)?"(controller: 'billPaymentLog'){action = [GET: 'paymentDetailsByInvId']}
+            "/billpaymentlogcrntbypaymentId/$id(.$format)?"(controller: 'billPaymentLog'){action = [GET: 'paymentDetailsByCrntId']}
+            "/billpaymentloggrnbypaymentId/$id(.$format)?"(controller: 'billPaymentLog'){action = [GET: 'paymentDetailsByGRNId']}
 
 
             //cheque returns

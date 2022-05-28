@@ -47,6 +47,14 @@ class UrlMappings {
         "/city/delete/$id"(controller: "city",action:"delete")
 
 
+//        //      Priority
+//        "/priority"(controller: "priority") {
+//            action = [GET: "index", POST: "save"]
+//        }
+//        "/priority/datatable"(controller: "priority", action: "dataTable")
+//        "/priority/update/$id"(controller: "priority",action:"update")
+//        "/priority/delete/$id"(controller: "priority",action:"delete")
+
 
 //      Country
         "/country"(controller: "country") {
@@ -66,8 +74,8 @@ class UrlMappings {
         "/form/delete/$id"(controller: "form",action:"delete")
 
 
-        //      Form Master
-        "/priority"(controller: "form") {
+        //      Priority
+        "/priority"(controller: "priority") {
             action = [GET: "index", POST: "save"]
         }
         "/priority/datatable"(controller: "priority", action: "dataTable")
@@ -203,6 +211,7 @@ class UrlMappings {
         "/accounts"(controller: "accountRegister") {
             action = [GET: 'index', POST: 'save']
         }
+        "/accounts-list"(controller: "accountRegister", action: 'accountsList')
         "/accounts/datatable"(controller: "accountRegister", action: 'dataTable')
         "/accounts/update/$id"(controller:"accountRegister",action:"update")
         "/accounts/delete/$id"(controller: "accountRegister",action:"delete")
@@ -559,10 +568,12 @@ class UrlMappings {
         "/recipt-list/datatable"(controller: "reciptDetail", action: "dataTable")
         "/add-recipt"(controller: "reciptDetail", action: 'addRecipt')
         "/print-recipt/$custid/recipt/$id"(controller: "reciptDetail", action: 'printRecipt')
+        "/receipt-approval"(controller: 'reciptDetail', action: 'recieptApproval')
+
+
 
         "/salesettledvocher/$id"(controller: "reciptDetail", action: 'settledVocher')
         "/saleunsettledvocher/$id"(controller: "reciptDetail", action: 'unsettledVocher')
-
         "/creditsettledvocher/$id"(controller: "reciptDetail", action: 'creditSettledVocher')
         "/creditunsettledvocher/$id"(controller: "reciptDetail", action: 'creditUnsettledVocher')
 
@@ -584,7 +595,8 @@ class UrlMappings {
         "/payments"(controller: "paymentDetail") { action = [GET: "index", POST: "save"]}
         "/payments-list/datatable"(controller: "paymentDetail", action: "dataTable")
         "/payments-list"(controller: "paymentDetail", action: 'paymentList')
-        "/print-payment/$custid/recipt/$id"(controller: "paymentDetail", action: 'printPayment')
+        "/print-payment/$custid/payment/$id"(controller: "paymentDetail", action: 'printPayment')
+        "/payments/getallbilldetails"(controller: 'paymentDetail', action: 'getAllBillDetailsBySupplierId')
 
 
         //reports

@@ -6,7 +6,7 @@
     <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
     <meta name="description" content="Responsive Bootstrap 4 and web Application ui kit.">
 
-    <title>:: PharmIt :: Payments</title>
+    <title>:: PharmIt :: Accounts List</title>
     <link rel="icon" type="image/x-icon" href="${assetPath(src: '/themeassets/images/favicon.ico')}"/>
     <!-- Favicon-->
     <asset:stylesheet rel="stylesheet" src="/themeassets/plugins/bootstrap/css/bootstrap.min.css"/>
@@ -22,12 +22,12 @@
 
     <style>
 
-    div.dataTables_scrollBody table tbody  td {
-        border-top: none;
-        padding: 0.9px;
-        text-align: center;
-        border-collapse: unset!important;
-    }
+    /*    div.dataTables_scrollBody table tbody  td {*/
+    /*        border-top: none;*/
+    /*        padding: 0.9px;*/
+    /*        text-align: center;*/
+    /*        border-collapse: unset!important;*/
+    /*    }*/
 
     .editbtn
     {
@@ -60,10 +60,10 @@
         <div class="block-header">
             <div class="row clearfix">
                 <div class="col-lg-5 col-md-5 col-sm-12">
-                    <h2>Payments</h2>
+                    <h2>Account Register</h2>
                     <ul class="breadcrumb padding-0">
-                        <li class="breadcrumb-item"><a href="/"><i class="zmdi zmdi-home"></i></a></li>
-                        <li class="breadcrumb-item active">Payments</li>
+                        <li class="breadcrumb-item"><a href="#"><i class="zmdi zmdi-home"></i></a></li>
+                        <li class="breadcrumb-item active">Account Register</li>
                     </ul>
                 </div>
                 <div class="col-lg-7 col-md-7 col-sm-12">
@@ -95,22 +95,21 @@
                     %{--                            </li>--}%
                     %{--                        </ul>--}%
                     %{--                    </div>--}%
-                    %{--                    <div class="header">--}%
-                    %{--                        <button type="button" class="btn btn-round btn-primary m-t-15 addbtn" data-toggle="modal"--}%
-                    %{--                                data-target="#adddayEndModal"><font style="vertical-align: inherit;"><font--}%
-                    %{--                                style="vertical-align: inherit;">Add Day End</font></font></button>--}%
-                    %{--                    </div>--}%
+                    <div class="header">
+                        <button type="button" class="btn btn-round btn-primary m-t-15 addbtn" data-toggle="modal"
+                                data-target="#addaccountsModal"><font style="vertical-align: inherit;"><font
+                                style="vertical-align: inherit;">Add Account Register</font></font></button>
+                    </div>
                     <div class="body">
                         <div class="table-responsive">
-                            <table class="table table-bordered table-striped table-hover customerGroupTable dayEndTable">
+                            <table class="table table-bordered table-striped table-hover accountsTable dataTable">
                                 <thead>
                                 <tr>
                                     %{--                                    <th style="width: 20%">ID</th>--}%
-                                    <th style="width: 20%">Date</th>
-                                    <th style="width: 20%">Payment Id</th>
-                                    <th style="width: 20%">Financial Year</th>
-                                    <th style="width: 20%">Payment Date</th>
-                                    <th style="width: 20%">Bank</th>
+                                    <th style="width: 20%">Account Name</th>
+                                    <th style="width: 20%">Balance</th>
+                                    %{--                                    <th style="width: 20%">Entity Type</th>--}%
+                                    %{--                                    <th style="width: 20%">Entity</th>--}%
                                     <th style="width: 20%">Action</th>
                                 </tr>
                                 </thead>
@@ -136,7 +135,7 @@
 </section>
 
 
-<g:include view="controls/entity/add-day-end.gsp"/>
+<g:include view="controls/entity/add-accounts.gsp"/>
 <g:include view="controls/delete-modal.gsp"/>
 
 <!-- Jquery Core Js -->
@@ -161,15 +160,15 @@
 
 <script>
 
-    var dayendtable;
+    var accountTable;
     var id = null;
     $(function () {
-        dayEndTable();
+        accountsTable();
 
     });
 
-    function dayEndTable() {
-        dayendtable = $(".dayEndTable").DataTable({
+    function accountsTable() {
+        accountTable = $(".accountsTable").DataTable({
             "order": [[0, "desc"]],
             sPaginationType: "simple_numbers",
             responsive: {
@@ -183,45 +182,54 @@
             processing: true,
             serverSide: true,
             language: {
-                searchPlaceholder: "Search Payment"
+                searchPlaceholder: "Search Accounts"
             },
             ajax: {
                 type: 'GET',
-                url: '/payments-list/datatable',
+                url: '/accounts/datatable',
                 dataType: 'json',
                 dataSrc: function (json) {
                     var return_data = [];
                     for (var i = 0; i < json.data.length; i++) {
-                        var date = new Date(json.data[i].date);
-                        var pd = new Date(json.data[i].paymentDate)
-                        var editbtn =
-                            ' <button type="button" data-id="'+json.data[i].id+'" data-transferFrom="'+json.data[i].transferFrom+'" class="print btn btn-sm btn-warning editbtn"><i class="material-icons"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">print</font></font></i></button>'
-                        // var deletebtn = '<button type="button" data-id="' + json.data[i].id +
-                        //     '" class="btn btn-sm btn-danger deletebtn" data-toggle="modal" data-target=".deleteModal"><i class="material-icons"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">delete</font></font></i></button>'
+
+                        var editbtn = '<button type="button" data-id="' + json.data[i].id +
+                            '" data-accountName="' + json.data[i].accountName + '"' +
+                            '" data-accountMode="' + json.data[i].accountMode + '"' +
+                            '" data-balance="' + json.data[i].balance + '"' +
+                            '" data-yearlyBudget="' + json.data[i].yearlyBudget + '"' +
+                            '" data-subAccountType="' + json.data[i].subAccountType + '"' +
+                            '" data-accountType="' + json.data[i].accountType + '"' +
+                            '" data-showInDebit="' + json.data[i].showInDebit + '"' +
+                            '" data-showInCredit="' + json.data[i].showInCredit + '"' +
+                            '"' +
+                            ' class="editbtn btn btn-sm btn-warning  editbtn" data-toggle="modal" data-target="#addaccountsModal"><i class="material-icons"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">edit</font></font></i></button>'
+                        var deletebtn = '<button type="button" data-id="' + json.data[i].id +
+                            '" class="btn btn-sm btn-danger deletebtn" data-toggle="modal" data-target=".deleteModal"><i class="material-icons"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">delete</font></font></i></button>'
                         return_data.push({
-                            'id': json.data[i].paymentId,
-                            'date': moment(date).format('DD/MM/YYYY'),
-                            'fy': json.data[i].financialYear,
-                            'pd': json.data[i].paymentDate,
-                            'bank': json.data[i].bank.bankName,
-                            'action': editbtn
+                            'id': json.data[i].id,
+                            'accountName': json.data[i].accountName,
+                            'balance': json.data[i].balance,
+                            // 'kitNumber': json.data[i].kitNumber,
+                            // 'entity': json.data[i].entity.entityName,
+                            // 'entitytype': json.data[i].entityType.name,
+                            'action': editbtn + ' ' + deletebtn
                         });
                     }
                     return return_data;
                 }
             },
             columns: [
-                {'data': 'date', 'width': '20%'},
-                {'data': 'id', 'width': '20%'},
-                {'data': 'fy', 'width': '20%'},
-                {'data': 'pd', 'width': '20%'},
-                {'data': 'bank', 'width': '20%'},
+                // {'data': 'id', 'width': '20%'},
+                {'data': 'accountName', 'width': '20%'},
+                {'data': 'balance', 'width': '20%'},
+                // {'data': 'entity', 'width': '20%'},
+                // {'data': 'entitytype', 'width': '20%'},
                 {'data': 'action', 'width': '20%'}
             ]
         });
     }
 
-    $(".dayEndForm").submit(function (event) {
+    $(".addaccountsForm").submit(function (event) {
 
         //disable the default form submission
         event.preventDefault();
@@ -233,10 +241,10 @@
         var url = '';
         var type = '';
         if (id) {
-            url = '/day-end-master/update/' + id;
+            url = '/accounts/update/' + id;
             type = 'POST'
         } else {
-            url = '/day-end-master';
+            url = '/accounts';
             type = 'POST'
         }
 
@@ -248,9 +256,9 @@
             contentType: false,
             processData: false,
             success: function () {
-                swal("Success!", "CCm Submitted Successfully", "success");
-                dayEndTable();
-                $('#adddayEndModal').modal('hide');
+                swal("Success!", "Accounts Submitted Successfully", "success");
+                accountsTable();
+                $('#addaccountsModal').modal('hide');
             },
             error: function () {
                 swal("Error!", "Something went wrong", "error");
@@ -260,18 +268,36 @@
     });
 
     $(document).on("click", ".addbtn", function () {
-        $(".dayEndTitle").text("Add Day End Master")
-        $(".dayEndForm")[0].reset();
+        $(".addaccountsTitle").text("Add Accounts")
+        $(".addaccountsForm")[0].reset();
         id = null
     });
 
+
     $(document).on("click", ".editbtn", function () {
         id = $(this).data('id');
-        $(".date").val($(this).attr('data-date'));
-        $(".endTime").val($(this).attr('data-endTime'));
-        $(".entity").val($(this).attr('data-entityRegister'));
-        $("#entityTypeId").val($(this).attr('data-entitytype')).change()
-        $(".customerGroupTitle").text("Update Day End");
+        $(".accountName").val($(this).attr('data-accountName'));
+        $(".accountMode").val($(this).attr('data-accountMode')).change();
+        $(".balance").val($(this).attr('data-balance'));
+        $(".yearlyBudget").val($(this).attr('data-yearlyBudget'));
+        $(".subAccountType").val($(this).attr('data-subAccountType')).change();
+        $(".accountType").val($(this).attr('data-accountType')).change();
+        if($(this).attr('data-showInDebit')!=="false")
+        {
+            $(".showInDebit").attr('checked', true);
+        }
+        else
+        {
+            $(".showInDebit").attr('checked', false);
+        }
+        if($(this).attr('data-showInCredit')!=="false")
+        {
+            $(".showInCredit").attr('checked', true);
+        }
+        else {
+            $(".showInCredit").attr('checked', false);
+        }
+        $(".addaccountsModal").text("Update Accounts");
     });
 
     $('.entity').change(function(){
@@ -283,19 +309,19 @@
 
     $(document).on("click", ".deletebtn", function () {
         id = $(this).data('id');
-        $("#myModalLabel").text("Delete Day End?");
+        $("#myModalLabel").text("Delete Accounts ?");
 
     });
 
     function deleteData() {
         $.ajax({
             type: 'POST',
-            url: '/day-end-master/delete/' + id,
+            url: '/accounts/delete/' + id,
             dataType: 'json',
             success: function () {
                 $('.deleteModal').modal('hide');
-                dayEndTable();
-                swal("Success!", "Day End Deleted Successfully", "success");
+                accountsTable();
+                swal("Success!", "Account Modes Deleted Successfully", "success");
             }, error: function () {
                 swal("Error!", "Something went wrong", "error");
             }
@@ -303,37 +329,12 @@
     }
 
 
-
-    function paymentRecipt() {
-        /* window.addEventListener('load', function () {*/
-        $('#paymentPrint').printThis({
-            importCSS: true,
-            printDelay: 2000,
-            importStyle: true,
-            base: "",
-            pageTitle: ""
-        });
-    }
-
-    $(document).on("click", ".print", function () {
-        var custId =  $(this).attr('data-transferFrom');
-        var id =  $(this).data('id');
-        $("#printabel").remove();
-        paymentPrint(custId,id)
-    });
-
-    function paymentPrint(custId,id) {
-        $("<iframe id='printabel'>")
-            .hide()
-            .attr("src", "/print-payment/"+custId+"/recipt/"+id)
-            .appendTo("body");
-    }
-
 </script>
 
 <g:include view="controls/footer-content.gsp"/>
 <script>
-    selectSideMenu("accounts-menu");
+    selectSideMenu("entity-menu");
 </script>
+
 </body>
 </html>

@@ -64,40 +64,40 @@ class FormMasterService {
             eq('deleted', false)
             order(orderColumn, orderDir)
         }
-        def entity = []
-        formMasterArrayList.each {
-            println(it.entityId)
-            def apires1 = showFormByEntityId(it.entityId.toString())
-            entity.push(apires1)
-        }
-        def entityType = []
-        formMasterArrayList.each {
-            println(it.entityTypeId)
-            def apires2 = showFormByEntityTypeId(it.entityTypeId.toString())
-            entityType.push(apires2)
-        }
-        def createduser = []
-        formMasterArrayList.each {
-            println(it.createdUser)
-            def apires3 = showFormBycreatedUser(it.createdUser.toString())
-            createduser.push(apires3)
-        }
-        def modifieduser = []
-        formMasterArrayList.each {
-            println(it.modifiedUser)
-            def apires4 = showFormBymodifiedUser(it.modifiedUser.toString())
-            modifieduser.push(apires4)
-        }
+//        def entity = []
+//        formMasterArrayList.each {
+//            println(it.entityId)
+//            def apires1 = showFormByEntityId(it.entityId.toString())
+//            entity.push(apires1)
+//        }
+//        def entityType = []
+//        formMasterArrayList.each {
+//            println(it.entityTypeId)
+//            def apires2 = showFormByEntityTypeId(it.entityTypeId.toString())
+//            entityType.push(apires2)
+//        }
+//        def createduser = []
+//        formMasterArrayList.each {
+//            println(it.createdUser)
+//            def apires3 = showFormBycreatedUser(it.createdUser.toString())
+//            createduser.push(apires3)
+//        }
+//        def modifieduser = []
+//        formMasterArrayList.each {
+//            println(it.modifiedUser)
+//            def apires4 = showFormBymodifiedUser(it.modifiedUser.toString())
+//            modifieduser.push(apires4)
+//        }
         def recordsTotal = formMasterArrayList.totalCount
         JSONObject jsonObject = new JSONObject()
         jsonObject.put("draw", paramsJsonObject.draw)
         jsonObject.put("recordsTotal", recordsTotal)
         jsonObject.put("recordsFiltered", recordsTotal)
         jsonObject.put("data", formMasterArrayList)
-        jsonObject.put("entity", entity)
-        jsonObject.put("entityType", entityType)
-        jsonObject.put("createduser", createduser)
-        jsonObject.put("modifieduser", modifieduser)
+//        jsonObject.put("entity", entity)
+//        jsonObject.put("entityType", entityType)
+//        jsonObject.put("createduser", createduser)
+//        jsonObject.put("modifieduser", modifieduser)
         return jsonObject
     }
 
@@ -157,67 +157,67 @@ class FormMasterService {
         }
     }
 
-    def showFormByEntityId(String id)
-    {
-        try
-        {
-            def url = "http://localhost/api/v1.0/entity/entityregister/"+id
-            URL apiUrl = new URL(url)
-            def entity = new JsonSlurper().parseText(apiUrl.text)
-            return entity
-        }
-        catch (Exception ex)
-        {
-            System.err.println('Service :CountryMaster , action :  show  , Ex:' + ex)
-            log.error('Service :CountryMaster , action :  show  , Ex:' + ex)
-        }
-    }
+//    def showFormByEntityId(String id)
+//    {
+//        try
+//        {
+//            def url = "http://localhost/api/v1.0/entity/entityregister/"+id
+//            URL apiUrl = new URL(url)
+//            def entity = new JsonSlurper().parseText(apiUrl.text)
+//            return entity
+//        }
+//        catch (Exception ex)
+//        {
+//            System.err.println('Service :CountryMaster , action :  show  , Ex:' + ex)
+//            log.error('Service :CountryMaster , action :  show  , Ex:' + ex)
+//        }
+//    }
+//
+//    def showFormByEntityTypeId(String id)
+//    {
+//        try
+//        {
+//            def url = "http://localhost/api/v1.0/entity/entitytypemaster/"+id
+//            URL apiUrl = new URL(url)
+//            def entity = new JsonSlurper().parseText(apiUrl.text)
+//            return entity
+//        }
+//        catch (Exception ex)
+//        {
+//            System.err.println('Service :CountryMaster , action :  show  , Ex:' + ex)
+//            log.error('Service :CountryMaster , action :  show  , Ex:' + ex)
+//        }
+//    }
 
-    def showFormByEntityTypeId(String id)
-    {
-        try
-        {
-            def url = "http://localhost/api/v1.0/entity/entitytypemaster/"+id
-            URL apiUrl = new URL(url)
-            def entity = new JsonSlurper().parseText(apiUrl.text)
-            return entity
-        }
-        catch (Exception ex)
-        {
-            System.err.println('Service :CountryMaster , action :  show  , Ex:' + ex)
-            log.error('Service :CountryMaster , action :  show  , Ex:' + ex)
-        }
-    }
-
-    def showFormBycreatedUser(String id)
-    {
-        try
-        {
-            def url = "http://localhost/api/v1.0/entity/userregister/"+id
-            URL apiUrl = new URL(url)
-            def entity = new JsonSlurper().parseText(apiUrl.text)
-            return entity
-        }
-        catch (Exception ex)
-        {
-            System.err.println('Service :CountryMaster , action :  show  , Ex:' + ex)
-            log.error('Service :CountryMaster , action :  show  , Ex:' + ex)
-        }
-    }
-
-    def showFormBymodifiedUser(String id)
-    {
-        try
-        {
-            def url = Constants.API_GATEWAY+Constants.ENTITY_REGISTER_SHOW+"/"+id
-            URL apiUrl = new URL(url)
-            def entity = new JsonSlurper().parseText(apiUrl.text)
-            return entity
-        }
-        catch (Exception ex)
-        {
-            System.err.println('Service :CountryMaster , action :  show  , Ex:' + ex)
-            log.error('Service :CountryMaster , action :  show  , Ex:' + ex)
-        }
-    }
+//    def showFormBycreatedUser(String id)
+//    {
+//        try
+//        {
+//            def url = "http://localhost/api/v1.0/entity/userregister/"+id
+//            URL apiUrl = new URL(url)
+//            def entity = new JsonSlurper().parseText(apiUrl.text)
+//            return entity
+//        }
+//        catch (Exception ex)
+//        {
+//            System.err.println('Service :CountryMaster , action :  show  , Ex:' + ex)
+//            log.error('Service :CountryMaster , action :  show  , Ex:' + ex)
+//        }
+//    }
+//
+//    def showFormBymodifiedUser(String id)
+//    {
+//        try
+//        {
+//            def url = Constants.API_GATEWAY+Constants.ENTITY_REGISTER_SHOW+"/"+id
+//            URL apiUrl = new URL(url)
+//            def entity = new JsonSlurper().parseText(apiUrl.text)
+//            return entity
+//        }
+//        catch (Exception ex)
+//        {
+//            System.err.println('Service :CountryMaster , action :  show  , Ex:' + ex)
+//            log.error('Service :CountryMaster , action :  show  , Ex:' + ex)
+//        }
+//    }
 }

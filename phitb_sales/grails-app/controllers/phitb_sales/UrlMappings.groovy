@@ -417,12 +417,15 @@ class UrlMappings {
                 action = [GET: 'getAllsettledByCustId']
             }
 
-            "/gtnbycustomer/$id(.$format)?"(controller: 'goodsTransferNote') {
+            "/gtnbycustomer(.$format)?"(controller: 'goodsTransferNote') {
                 action = [GET: 'getAllByCustomerId']
             }
 
+            "/updategtnbalancebyid/id/$id/balance/$balance"(controller: 'goodsTransferNote')
+                    {action=[POST: 'updateBalance']}
 
-            //Sale Product Details
+
+            //GTN Product Details
             "/gtnproduct(.$format)?"(controller: 'goodsTransferNoteProduct') {
                 action = [GET: 'index', POST:
                         'save']

@@ -8,6 +8,8 @@ class BillPaymentLog implements LogicalDelete<BillPaymentLog> {
     String billType
     double amountPaid
     String paymentRecord
+    long paymentId
+    String transId
     long approvedBy
     String currentFinancialYear
     String financialYear
@@ -22,6 +24,8 @@ class BillPaymentLog implements LogicalDelete<BillPaymentLog> {
     Date lastUpdated
 
     static constraints = {
+        paymentId nullable:true
+        transId nullable: true
     }
 
     boolean isUpdatable

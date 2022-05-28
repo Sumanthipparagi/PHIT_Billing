@@ -112,9 +112,13 @@ class ReciptDetailController {
 //                        entityArray.put(json1.get("customer"))
 //                    }
                     jsonArray.each {
-                        if (it.has("depositTo")) {
-                            def accountResp = new AccountRegisterController().getAllAccountsById(it.get("depositTo")?.toString())
+                        if (it.depositTo!="" && it.depositTo!=null) {
+                            def accountResp = new EntityService().getAccountById(it.get("depositTo")?.toString())
                             it.put("deposit", accountResp)
+                        }
+                        else
+                        {
+                            it.put("deposit", "NA")
                         }
                     }
                     responseObject.put("data", jsonArray2)
@@ -198,12 +202,16 @@ class ReciptDetailController {
             JSONArray jsonArray = new JSONArray();
             def salebill = new AccountsService().getAllSaleBillById(params.id, session.getAttribute("entityId").toString(), session.getAttribute("financialYear").toString())
             def creditNote = new AccountsService().getAllSaleReturnById(params.id, session.getAttribute("entityId").toString(), session.getAttribute("financialYear").toString())
+            def gtn = new AccountsService().getAllGTNById(params.id, session.getAttribute("entityId").toString()
+                    , session.getAttribute("financialYear").toString())
             if (salebill.status == 200 && creditNote.status == 200) {
 //                def tmp = creditNote.readEntity(String.class)
                 JSONArray salearray = new JSONArray(salebill.readEntity(String.class))
                 JSONArray creditNoteArry = new JSONArray(creditNote.readEntity(String.class))
+                JSONArray gtnArray = new JSONArray(gtn.readEntity(String.class))
                 jsonArray.add(salearray)
                 jsonArray.add(creditNoteArry)
+                jsonArray.add(gtnArray)
                 respond jsonArray, formats: ['json'], status: 200
             } else {
                 response.status = 400
@@ -276,11 +284,27 @@ class ReciptDetailController {
         }
     }
 
+
     def save() {
         try {
             JSONObject jsonObject = new JSONObject(params)
             jsonObject.put("entityId", session.getAttribute('entityId').toString())
             JSONArray billArray = new JSONArray(params.reciptData)
+            double invoice = 0;
+            double credit = 0;
+            double goodsTransferNote = 0;
+            for (JSONObject bills : billArray) {
+                if (bills.get("Doc.Type") == "INVS" && bills.get("PaidNow").toString().toDouble()!=0) {
+                    invoice += Double.parseDouble(bills.PaidNow)
+                }
+                if (bills.get("Doc.Type") == "CRNT" && bills.get("PaidNow").toString().toDouble()!= 0) {
+                    credit += Double.parseDouble(bills.PaidNow)
+                }
+                if (bills.get("Doc.Type") == "GTN" && bills.get("PaidNow").toString().toDouble()!= 0) {
+                    goodsTransferNote += Double.parseDouble(bills.PaidNow)
+                }
+                jsonObject.put("amountPaid",invoice+goodsTransferNote)
+            }
             def apiResponse = new AccountsService().saveRecipt(jsonObject, session.getAttribute('financialYear') as String)
             if (apiResponse?.status == 200) {
                 JSONObject jsonObject1 = new JSONObject(apiResponse.readEntity(String.class))
@@ -295,8 +319,8 @@ class ReciptDetailController {
                         JSONObject invObject = new JSONObject()
                         invObject.put("id", billId)
                         invObject.put("paidNow", paidNow)
-                        def invoice = new AccountsService().updateSaleBalance(invObject)
-                        if (invoice?.status == 200) {
+                        def invs = new AccountsService().updateSaleBalance(invObject)
+                        if (invs?.status == 200) {
                             invObject.remove("id");
                             invObject.remove("paidNow");
                         }
@@ -311,6 +335,16 @@ class ReciptDetailController {
                             crntObject.remove("paidNow");
                         }
                     }
+                    if (docType == "GTN" && paidNow.toDouble()!= 0) {
+                        JSONObject gtnObject = new JSONObject();
+                        gtnObject.put("id", billId)
+                        gtnObject.put("paidNow", paidNow)
+                        def gtn = new AccountsService().updateGTNBalance(gtnObject)
+                        if (gtn?.status == 200) {
+                            gtnObject.remove("id");
+                            gtnObject.remove("paidNow");
+                        }
+                    }
                     JSONObject billLog = new JSONObject()
                     if (paidNow.toDouble()!= 0) {
                         billLog.put("billId", billId)
@@ -320,10 +354,10 @@ class ReciptDetailController {
                         billLog.put("financialYear", session.getAttribute('financialYear').toString())
                         billLog.put("recieptId", recieptId)
                         billLog.put("transId", transactionId)
-                    }
-                    def billLogResponse = new AccountsService().updateReceiptDetailLog(billLog)
-                    if (billLogResponse?.status == 200) {
-                        println("Bill Log Saved!")
+                        def billLogResponse = new AccountsService().updateReceiptDetailLog(billLog)
+                        if (billLogResponse?.status == 200) {
+                            println("Bill Log Saved!")
+                        }
                     }
                 }
                 respond jsonObject1, formats: ['json'], status: 200
@@ -419,6 +453,9 @@ class ReciptDetailController {
     }
 
 
+
+
+
     def printRecipt() {
         JSONObject customer = new EntityRegisterController().getEnitityById(params.custid) as JSONObject
         JSONObject recipt = new ReciptDetailController().getReciptById(params.id) as JSONObject
@@ -426,12 +463,14 @@ class ReciptDetailController {
                 JSONObject
         def reciptlogsinv = new AccountsService().getReceiptLogInvById(params.id)
         def reciptlogscrnt = new AccountsService().getReceiptLogcrntById(params.id)
+        def reciptlogsgtn = new AccountsService().getReceiptLoggtnById(params.id)
         JSONArray reciptloginvArray = new JSONArray(reciptlogsinv.readEntity(String.class))
         JSONArray reciptlogcrntArray = new JSONArray(reciptlogscrnt.readEntity(String.class))
-        println(reciptloginvArray.amountPaid.sum())
+        JSONArray reciptloggtnArray = new JSONArray(reciptlogsgtn.readEntity(String.class))
         render(view: '/accounts/recipt/recipt-temp', model: [customer          : customer, recipt: recipt,
                                                              entity            : entity, reciptloginvArray: reciptloginvArray,
-                                                             reciptlogcrntArray: reciptlogcrntArray])
+                                                             reciptlogcrntArray: reciptlogcrntArray,
+                                                             reciptloggtnArray:reciptloggtnArray])
     }
 
 
@@ -495,5 +534,11 @@ class ReciptDetailController {
         }
     }
 
+
+    def recieptApproval()
+    {
+        ArrayList<String> entity = new EntityRegisterController().show() as ArrayList
+        render(view: '/accounts/recipt/receipt-approval',model:[entity:entity])
+    }
 
 }

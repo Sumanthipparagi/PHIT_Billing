@@ -5,6 +5,7 @@ import org.grails.web.json.JSONObject
 import phitb_accounts.Exception.BadRequestException
 import phitb_accounts.Exception.ResourceNotFoundException
 
+import java.text.DecimalFormat
 import java.text.SimpleDateFormat
 
 @Transactional
@@ -99,40 +100,79 @@ class PaymentDetailService {
 
     PaymentDetail save(JSONObject jsonObject) {
         PaymentDetail paymentDetail = new PaymentDetail()
-        paymentDetail.paymentId = "001"
+        paymentDetail.paymentId = ""
         paymentDetail.date = sdf.parse(jsonObject.get("date").toString())
+        paymentDetail.paymentTo = jsonObject.get("depositTo").toString()
         paymentDetail.paymentModeId = Long.parseLong(jsonObject.get("paymentMode").toString())
-        paymentDetail.accountModeId = Long.parseLong(jsonObject.get("accountModeId").toString())
         paymentDetail.transferFrom = jsonObject.get("receivedFrom").toString()
         paymentDetail.amountPaid = Double.parseDouble(jsonObject.get("amountPaid").toString())
         paymentDetail.narration = jsonObject.get("narration").toString()
-        paymentDetail.cardNumber = Long.parseLong("1")
-        paymentDetail.paymentDate = jsonObject.get("paymentDate").toString()
+        if(!jsonObject.isNull("cardNumber"))
+        {
+            paymentDetail.cardNumber = jsonObject.get("cardNumber").toString()
+        }
+        else
+        {
+            paymentDetail.cardNumber = 0
+        }
+        paymentDetail.paymentDate = sdf.parse(jsonObject.get("paymentDate").toString())
         paymentDetail.transId = "1"
+        paymentDetail.employeeName = Long.parseLong("1")
         paymentDetail.commission = Double.parseDouble("1")
         paymentDetail.totalNotes = Long.parseLong("1")
-        paymentDetail.chequeNumber = "1"
-        paymentDetail.employeeName = Long.parseLong("1")
-        paymentDetail.bank = BankRegister.findById(Long.parseLong(jsonObject.get("bank").toString()))
-        paymentDetail.wallet = WalletMaster.findById(Long.parseLong(jsonObject.get("wallet").toString()))
+        paymentDetail.chequeNumber = jsonObject.get("chequeNumber").toString()
+        if(!jsonObject.isNull("bank"))
+        {
+            paymentDetail.bank = BankRegister.findById(Long.parseLong(jsonObject.get("bank").toString()))
+        }
+        else {
+            paymentDetail.bank = null
+        }
+
+        if(!jsonObject.isNull("accountModeId") && jsonObject.get("accountModeId").toString()!="")
+        {
+            paymentDetail.accountModeId = Long.parseLong(jsonObject.get("accountModeId").toString())
+        }
+        else {
+            paymentDetail.accountModeId = 0
+        }
+        paymentDetail.wallet = WalletMaster.findById(Long.parseLong("0"))
         paymentDetail.financialYear = jsonObject.get("financialYear").toString()
         paymentDetail.status = Long.parseLong("1")
-        paymentDetail.paymentTo = jsonObject.get("receivedFrom").toString()
         paymentDetail.syncStatus = Long.parseLong("1")
         paymentDetail.entityTypeId = Long.parseLong("1")
-        paymentDetail.entityId = Long.parseLong("1")
+        paymentDetail.entityId = Long.parseLong(jsonObject.get("entityId").toString())
         paymentDetail.modifiedUser = Long.parseLong("1")
         paymentDetail.createdUser = Long.parseLong(jsonObject.get("createdUser").toString())
         paymentDetail.save(flush: true)
         if (!paymentDetail.hasErrors())
+        {
+            Calendar cal = new GregorianCalendar()
+            cal.setTime(paymentDetail.dateCreated)
+            String month = cal.get(Calendar.MONTH)+1
+            String year = cal.get(Calendar.YEAR)
+            DecimalFormat mFormat = new DecimalFormat("00");
+            month = mFormat.format(Double.valueOf(month));
+            String paymentId = null;
+            ReceiptDetail receiptDetail1
+            paymentId = paymentDetail.entityId + "/P/" + month + year + "/" + paymentDetail.id
+            println("Invoice Number generated: " + paymentId)
+            if (paymentId)
+            {
+                paymentDetail.paymentId = paymentId
+                paymentDetail.isUpdatable = true
+                paymentDetail.save(flush: true)
+            }
             return paymentDetail
+        }
         else
+        {
             throw new BadRequestException()
+        }
 
     }
 
     PaymentDetail update(JSONObject jsonObject, String id) {
-
         PaymentDetail paymentDetail = PaymentDetail.findById(Long.parseLong(id))
         if (paymentDetail) {
             paymentDetail.isUpdatable = true

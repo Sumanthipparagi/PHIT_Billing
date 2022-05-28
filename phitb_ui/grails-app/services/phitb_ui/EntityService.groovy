@@ -2021,6 +2021,78 @@ class EntityService {
 
     }
 
+    def showAccountRegister(JSONObject jsonObject)
+    {
+        Client client = ClientBuilder.newClient()
+        WebTarget target = client.target(new Links().API_GATEWAY)
+
+        try
+        {
+            Response apiResponse = target
+                    .path(new Links().ACCOUNT_REGISTER_DATATABLE)
+                    .queryParam("params", URLEncoder.encode(jsonObject.toString(), "UTF-8"))
+                    .request(MediaType.APPLICATION_JSON_TYPE)
+                    .get()
+            return apiResponse
+        }
+        catch (Exception ex)
+        {
+            System.err.println('Service :EntityService , action :  showUser  , Ex:' + ex)
+            log.error('Service :EntityService , action :  showUser  , Ex:' + ex)
+        }
+
+    }
+
+    def putAccountRegister(JSONObject jsonObject)
+    {
+        Client client = ClientBuilder.newClient()
+        WebTarget target = client.target(new Links().API_GATEWAY)
+
+        try
+        {
+            Response apiResponse = target
+                    .path(new Links().ACCOUNT_REGISTER_UPDATE)
+                    .resolveTemplate("id", jsonObject.id)
+                    .request(MediaType.APPLICATION_JSON_TYPE)
+                    .put(Entity.entity(jsonObject.toString(),MediaType.APPLICATION_JSON_TYPE))
+            println(jsonObject)
+            return apiResponse
+        }
+        catch (Exception ex)
+        {
+            System.err.println('Service : EntityService, action :  putCustomerGroup  , Ex:' + ex)
+            log.error('Service :EntityService , action :  putCustomerGroup  , Ex:' + ex)
+        }
+
+    }
+
+
+    /**
+     *
+     * @param jsonObject
+     * @return
+     */
+    def deleteAccountRegister(JSONObject jsonObject)
+    {
+        Client client = ClientBuilder.newClient()
+        WebTarget target = client.target(new Links().API_GATEWAY)
+        try
+        {
+            Response apiResponse = target
+                    .path(new Links().ACCOUNT_REGISTER_DELETE)
+                    .resolveTemplate("id", jsonObject.id)
+                    .request(MediaType.APPLICATION_JSON_TYPE)
+                    .delete()
+            return apiResponse
+        }
+        catch (Exception ex)
+        {
+            System.err.println('Service :EntityService , action :  deleteUser  , Ex:' + ex)
+            log.error('Service :EntityService , action :  deleteUser  , Ex:' + ex)
+        }
+
+    }
+
     def getAllAccountById(String id) {
         Client client = ClientBuilder.newClient()
         WebTarget target = client.target(new Links().API_GATEWAY)

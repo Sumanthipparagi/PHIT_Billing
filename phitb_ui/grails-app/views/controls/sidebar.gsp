@@ -468,6 +468,8 @@
                         class="zmdi zmdi-book-image"></i><span>System</span> <span
                         class="badge badge-success float-right"></span></a>
                     <ul class="ml-menu">
+                        <li><a href="/accountmodes">Account Modes</a></li>
+                        <li><a href="/priority">Priority</a></li>
                         <g:if test="${UtilsService.isPermitted("VIEW_STATE", session.getAttribute("permittedFeatures").toString())}">
                             <li><a href="/state">State</a></li>
                         </g:if>
@@ -480,6 +482,7 @@
                         <g:if test="${UtilsService.isPermitted("VIEW_FORM", session.getAttribute("permittedFeatures").toString())}">
                             <li><a href="/form">Form</a></li>
                         </g:if>
+
                     </ul>
                 </li>
 
@@ -507,6 +510,9 @@
                         class="zmdi zmdi-library"></i><span>Entity</span> <span
                         class="badge badge-success float-right"></span></a>
                     <ul class="ml-menu">
+                        <li><a href="/accounts">Account Register</a></li>
+                        <li><a href="/accounts-list">Accounts List</a></li>
+
                         <g:if test="${UtilsService.isPermitted("VIEW_ENTITY_REGISTER", session.getAttribute("permittedFeatures").toString())}">
                             <li><a href="/entity-register">Entity Register</a></li>
                         </g:if>

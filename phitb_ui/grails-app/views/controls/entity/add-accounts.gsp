@@ -68,7 +68,7 @@
                                     Sub Account Type
                                 </label>
                                 <select class="form-control show-tick subAccountType" name="subAccountType"
-                                        id="subAccountType" required>
+                                        id="subAccountType">
                                     <option value="">-- Please select --</option>
                                     <g:each var="am" in="${account}">
                                         <option value="${am.id}">${am.accountName}</option>
@@ -94,18 +94,18 @@
                             <div class="col-lg-6">
                                 <div class="row">
                                     <div class="col-lg-6">
-                                        <div class="checkbox">
+                                        <div class="">
                                             <label for="showInDebit">Show in Debit</label>
                                             <input type="checkbox" id="showInDebit" class="showInDebit"
-                                                   name="showInDebit"/>
+                                                   name="showInDebit" style="width: 23px;height: 18px;"/>
                                         </div>
                                     </div>
 
                                     <div class="col-lg-6">
-                                        <div class="checkbox">
+                                        <div class="">
                                             <label for="showInCredit">Show in Credit</label>
                                             <input type="checkbox" id="showInCredit" class="showInCredit"
-                                                   name="showInCredit"/>
+                                                   name="showInCredit" style="width: 23px;height: 18px;"/>
                                         </div>
                                     </div>
                                 </div>

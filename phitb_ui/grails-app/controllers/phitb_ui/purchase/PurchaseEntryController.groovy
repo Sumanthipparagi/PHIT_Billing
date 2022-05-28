@@ -268,6 +268,7 @@ class PurchaseEntryController {
         purchaseBillDetails.put("supplierBillId", 0)
         purchaseBillDetails.put("billingDate", entryDate)
         purchaseBillDetails.put("balAmount", totalAmount)
+        purchaseBillDetails.put("totalAmount", totalAmount)
         purchaseBillDetails.put("submitStatus", 0)//TODO: to be changed
         purchaseBillDetails.put("addAmount", 0)//TODO: to be changed
         purchaseBillDetails.put("lessAmount", 0)//TODO: to be changed

@@ -6,7 +6,7 @@
     <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
     <meta name="description" content="Responsive Bootstrap 4 and web Application ui kit.">
 
-    <title>:: PharmIt ::  State Master</title>
+    <title>:: PharmIt ::  Priority</title>
     <link rel="icon" type="image/x-icon" href="${assetPath(src: '/themeassets/images/favicon.ico')}"/>
     <!-- Favicon-->
     <asset:stylesheet rel="stylesheet" src="/themeassets/plugins/bootstrap/css/bootstrap.min.css"/>
@@ -60,10 +60,10 @@
         <div class="block-header">
             <div class="row clearfix">
                 <div class="col-lg-5 col-md-5 col-sm-12">
-                    <h2>State Master</h2>
+                    <h2>Priority Master</h2>
                     <ul class="breadcrumb padding-0">
                         <li class="breadcrumb-item"><a href="index.html"><i class="zmdi zmdi-home"></i></a></li>
-                        <li class="breadcrumb-item active">State Master</li>
+                        <li class="breadcrumb-item active">Priority Master</li>
                     </ul>
                 </div>
                 <div class="col-lg-7 col-md-7 col-sm-12">
@@ -97,19 +97,17 @@
                     %{--                    </div>--}%
                     <div class="header">
                         <button type="button" class="btn btn-round btn-primary m-t-15 addbtn" data-toggle="modal"
-                                data-target="#addStateModal"><font style="vertical-align: inherit;"><font
-                                style="vertical-align: inherit;">Add State</font></font></button>
+                                data-target="#addPriorityModal"><font style="vertical-align: inherit;"><font
+                                style="vertical-align: inherit;">Add Priority</font></font></button>
                     </div>
                     <div class="body">
                         <div class="table-responsive">
-                            <table class="table table-bordered table-striped table-hover stateTable dataTable">
+                            <table class="table table-bordered table-striped table-hover priorityTable dataTable">
                                 <thead>
                                 <tr>
-                                    <th>Name</th>
-                                    <th>Zone</th>
-                                    <th>Country</th>
-%{--                                    <th>Entity</th>--}%
-                                    <th>Action</th>
+                                    %{--                                    <th style="width: 20%">ID</th>--}%
+                                    <th style="width: 20%">Priority</th>
+                                    <th style="width: 20%">Action</th>
                                 </tr>
                                 </thead>
                                 %{--                                <tfoot>--}%
@@ -133,7 +131,7 @@
     </div>
 </section>
 
-<g:include view="controls/add-state.gsp"/>
+<g:include view="controls/add-priority.gsp"/>
 <g:include view="controls/delete-modal.gsp"/>
 
 <!-- Jquery Core Js -->
@@ -155,15 +153,14 @@
 
 <script>
 
-    var statetable;
+    var prioritytable;
     var id = null;
     $(function () {
-       stateTable();
+        priorityTable();
     });
 
-    function stateTable() {
-
-        statetable = $(".stateTable").DataTable({
+    function priorityTable() {
+        prioritytable = $(".priorityTable").DataTable({
             "order": [[0, "desc"]],
             sPaginationType: "simple_numbers",
             responsive: {
@@ -177,32 +174,24 @@
             processing: true,
             serverSide: true,
             language: {
-                searchPlaceholder: "Search State"
+                searchPlaceholder: "Search Priority"
             },
             ajax: {
                 type: 'GET',
-                url: '/state/datatable',
+                url: '/priority/datatable',
                 dataType: 'json',
                 dataSrc: function (json) {
                     var return_data = [];
-
                     for (var i = 0; i < json.data.length; i++) {
                         var editbtn = '<button type="button" data-id="' + json.data[i].id +
-                            '" data-name="' + json.data[i].name + '"' +
-                            '" data-entity="' + json.data[i].entityId + '"' +
-                            '" data-zoneId="' + json.data[i].zone.id + '"' +
-                            '" data-countryId="' + json.data[i].country.id + '"' +
-                            '"' +
-                            ' class="editbtn btn btn-sm btn-warning  editbtn" data-toggle="modal" data-target="#addStateModal"><i class="material-icons"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">edit</font></font></i></button>'
+                            '" data-priority="' + json.data[i].priority + '"' +
+                            ' data-entity="' + json.data[i].entityId + '"' +
+                            ' class="editbtn btn btn-sm btn-warning  editbtn" data-toggle="modal" data-target="#addPriorityModal"><i class="material-icons"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">edit</font></font></i></button>'
                         var deletebtn = '<button type="button" data-id="' + json.data[i].id +
-                            '" class="btn btn-sm btn-danger deletebtn" data-toggle="modal" data-target=".deleteModal"><i class="material-icons"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">delete</font></font></i></button>'
-                        console.log(json.data[i].zone.id)
+                            '" class="btn btn-danger deletebtn" data-toggle="modal" data-target=".deleteModal"><i class="material-icons"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">delete</font></font></i></button>'
                         return_data.push({
-                            'id': json.data[i].id,
-                            'name': json.data[i].name,
-                            'zone': json.data[i].zone.name,
-                            'country': json.data[i].country.name,
-                            // 'entity': json.names[i].entityName,
+                            // 'id': json.data[i].id,
+                            'priority': json.data[i].priority,
                             'action': editbtn + ' ' + deletebtn
                         });
                     }
@@ -210,47 +199,37 @@
                 }
             },
             columns: [
-                {'data': 'name', 'width': '5%'},
-                {'data': 'zone', 'width': '5%'},
-                {'data': 'country', 'width': '5%'},
-                // {'data': 'entity', 'width': '5%'},
+                // {'data': 'id', 'width': '20%'},
+                {'data': 'priority', 'width': '20%'},
                 {'data': 'action', 'width': '5%'}
             ]
         });
     }
 
-    $(".stateForm").submit(function (event) {
-
+    $(".priorityForm").submit(function (event) {
         //disable the default form submission
         event.preventDefault();
-
         //grab all form data
         var formData = new FormData(this);
-        console.log(formData)
-
         var url = '';
         var type = '';
         if (id) {
-            url = '/state/update/' + id;
+            url = '/priority/update/' + id;
             type = 'POST'
         } else {
-            url = '/state';
+            url = '/priority';
             type = 'POST'
         }
-
-        console.log(type)
         $.ajax({
-
             url: url,
             type: type,
             data: formData,
             contentType: false,
             processData: false,
             success: function () {
-
-                swal("Success!", "State Submitted Successfully", "success");
-                stateTable();
-                $('#addStateModal').modal('hide');
+                swal("Success!", "Priority Submitted Successfully", "success");
+                priorityTable();
+                $('#addPriorityModal').modal('hide');
             },
             error: function () {
                 swal("Error!", "Something went wrong", "error");
@@ -260,41 +239,36 @@
     });
 
     $(document).on("click", ".addbtn", function () {
-        $(".stateForm")[0].reset();
-        $("#country").select2();
-        $("#zone").select2();
-        $(".entity").select2();
-        $(".stateTitle").text("Add State Master");
+        $(".priorityForm")[0].reset();
+        $(".priorityTitle").text("Add Priority")
         id = null
+        $('.entity').select2()
     });
 
     $(document).on("click", ".editbtn", function () {
         id = $(this).data('id');
         $(".name").val($(this).data('name'));
-        $(".entity").val($(this).data('entity')).change().select2();
-        $("#zone").val($(this).attr('data-zoneId')).change().select2();
-        $("#country").val($(this).attr('data-countryId')).change().select2();
-        // $("#country").select2();
-        // $("#zone").select2();
-        // $(".entity").select2();
-        $(".stateTitle").text("Update State Master");
+        $(".priority").val($(this).attr('data-priority')).change()
+        $(".priorityTitle").text("Update Priority");
+        $('.entity').select2();
     });
+
 
     $(document).on("click", ".deletebtn", function () {
         id = $(this).data('id');
-        $("#myModalLabel").text("Delete State ?");
+        $("#myModalLabel").text("Delete Priority ?");
 
     });
 
     function deleteData() {
         $.ajax({
             type: 'POST',
-            url: '/state/delete/' + id,
+            url: '/priority/delete/' + id,
             dataType: 'json',
             success: function () {
                 $('.deleteModal').modal('hide');
-                stateTable();
-                swal("Success!", "State Deleted Successfully", "success");
+                priorityTable();
+                swal("Success!", "Priority Deleted Successfully", "success");
             }, error: function () {
                 swal("Error!", "Something went wrong", "error");
             }
