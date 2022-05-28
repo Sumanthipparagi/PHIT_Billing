@@ -20,6 +20,7 @@ class AccountsReportController {
         String entityId = session.getAttribute("entityId")
         String financialYear = session.getAttribute("financialYear")
         String dateRange = params.dateRange
+        boolean paidInvoice = Boolean.parseBoolean(params.paidInvoice)
         //String sortBy = params.sortBy
         String sortBy = "id"
         JSONObject resultJson = new JSONObject()

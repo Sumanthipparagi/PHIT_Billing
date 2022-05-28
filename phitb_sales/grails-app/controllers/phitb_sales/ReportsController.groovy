@@ -115,6 +115,9 @@ class ReportsController {
             String entityId = jsonObject.get("entityId")
             String financialYear = jsonObject.get("financialYear")
             String daterange = jsonObject.get("dateRange")
+            boolean paidInvoice = true
+            if(jsonObject.has("paidInvoice"))
+                paidInvoice = jsonObject.get("paidInvoice")
             String sortby = jsonObject.get("sortBy")
             String sort = "id"
             if(sortby.equalsIgnoreCase("invoice-date"))
@@ -132,9 +135,18 @@ class ReportsController {
             toDate = cal.getTime()
             JSONObject customerBills = new JSONObject()
             JSONArray bills = new JSONArray()
+            ArrayList<SaleBillDetails> saleBillDetails = new ArrayList<>()
+            if(paidInvoice)
+            {
+                saleBillDetails = SaleBillDetails
+                        .findAllByEntityIdAndFinancialYearAndOrderDateBetweenAndBillStatusNotEqual(Long.parseLong(entityId), financialYear, fromDate, toDate, "DRAFT", [sort: sort, order: 'desc'])
 
-            ArrayList<SaleBillDetails> saleBillDetails = SaleBillDetails
-                    .findAllByEntityIdAndFinancialYearAndOrderDateBetweenAndBillStatusNotEqual(Long.parseLong(entityId), financialYear, fromDate, toDate, "DRAFT", [sort: sort, order: 'desc'])
+            }
+            else
+            {
+                saleBillDetails = SaleBillDetails
+                        .findAllByEntityIdAndFinancialYearAndOrderDateBetweenAndBillStatusNotEqualAndBalance(Long.parseLong(entityId), financialYear, fromDate, toDate, "DRAFT", 0, [sort: sort, order: 'desc'])
+            }
             ArrayList<String> custIds = [];
             for (SaleBillDetails saleBillDetail : saleBillDetails) {
                 def saleBillJson = new JSONObject((saleBillDetail as JSON).toString())
@@ -344,6 +356,11 @@ class ReportsController {
             String financialYear = jsonObject.get("financialYear")
             String daterange = jsonObject.get("dateRange")
             String sortby = jsonObject.get("sortBy")
+
+            boolean paidInvoice = true
+            if(jsonObject.has("paidInvoice"))
+                paidInvoice = jsonObject.get("paidInvoice")
+
             String sort = "id"
             if(sortby.equalsIgnoreCase("invoice-date"))
                 sort = "orderDate"
@@ -360,8 +377,15 @@ class ReportsController {
             toDate = cal.getTime()
             JSONObject customerBills = new JSONObject()
             JSONArray bills = new JSONArray()
-
-            ArrayList<SaleReturn> saleReturns = SaleReturn.findAllByEntityIdAndFinancialYearAndEntryDateBetweenAndCancelledDateIsNull(Long.parseLong(entityId), financialYear, fromDate, toDate, [sort: sort, order: 'desc'])
+            ArrayList<SaleReturn> saleReturns = new ArrayList<>()
+            if(paidInvoice)
+            {
+                saleReturns = SaleReturn.findAllByEntityIdAndFinancialYearAndEntryDateBetweenAndCancelledDateIsNull(Long.parseLong(entityId), financialYear, fromDate, toDate, [sort: sort, order: 'desc'])
+            }
+            else
+            {
+                saleReturns = SaleReturn.findAllByEntityIdAndFinancialYearAndEntryDateBetweenAndCancelledDateIsNullAndBalance(Long.parseLong(entityId), financialYear, fromDate, toDate, 0, [sort: sort, order: 'desc'])
+            }
             ArrayList<String> custIds = [];
             for (SaleReturn saleReturn : saleReturns) {
                 def saleReturnJson = new JSONObject((saleReturn as JSON).toString())

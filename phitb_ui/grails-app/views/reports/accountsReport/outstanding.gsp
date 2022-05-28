@@ -73,27 +73,34 @@
                 <div class="card">
                     <div class="header">
                         <div class="row">
-                            <div class="col-lg-6">
+                            <div class="col-md-5">
                                 <div class="form-group">
-                                    <label>Date Range:</label>
-
-                                    <div class="input-group">
-                                        <input class="dateRange" type="text" name="dateRange"
+                                    <div class="input-group inlineblock">
+                                        <label for="dateRange">Date Range:</label>
+                                        <input id="dateRange" class="dateRange" type="text" name="dateRange"
                                                style="border-radius: 6px;margin: 4px;"/>
-                                        <button class="input-group-btn btn btn-info"
+                                        <button class="input-group-btn btn btn-info btn-sm"
                                                 onclick="getReport()">Get Report</button>
                                     </div>
                                 </div>
                             </div>
 
-                            <div class="col-lg-6 d-flex justify-content-center">
+                            <div class="col-md-5 d-flex justify-content-center">
                                 <div class="form-group">
-                                    <label>Export</label>
-
-                                    <div class="input-group">
-                                        <button class="input-group-btn btn btn-info" id="btnExport">Excel</button>
-                                        <button class="input-group-btn btn btn-danger" id="btnPrint">Print</button>
+                                    <div class="input-group inlineblock">
+                                        <label>Export:</label>
+                                        <button class="input-group-btn btn btn-info btn-sm" id="btnExport"><i class="fa fa-file-excel-o"></i> Excel</button>
+                                        <button class="input-group-btn btn btn-danger btn-sm" id="btnPrint"><i class="fa fa-print"></i> Print</button>
                                     </div>
+                                </div>
+                            </div>
+
+                            <div class="col-md-2 d-flex justify-content-center">
+                                <div class="checkbox inlineblock">
+                                    <input id="paidInvoice" type="checkbox" checked/>
+                                    <label for="paidInvoice">
+                                        Show Paid Invoices
+                                    </label>
                                 </div>
                             </div>
                         </div>
@@ -146,7 +153,6 @@
         },
         maxDate: moment()
     }).on('apply.daterangepicker', function(ev, picker) {
-        alert (moment(picker.endDate).format('DD/MM/YYYY'));
         dueOnDate = moment(picker.endDate).format('DD/MM/YYYY');
     });
 
@@ -162,9 +168,9 @@
         });
         var dateRange = $('.dateRange').val();
         // var sortBy = $('.sortBy').val();
-
+        var paidInvoice = $("#paidInvoice").is(":checked") ? "true" : "false";
         $.ajax({
-            url: "/reports/accounts/getoutstanding?dateRange=" + dateRange,
+            url: "/reports/accounts/getoutstanding?dateRange=" + dateRange + "&paidInvoice="+paidInvoice,
             type: "GET",
             contentType: false,
             processData: false,
@@ -177,11 +183,11 @@
                     dateRange + "</th></tr>" +
                     //"<tr><th colspan='6'></th><th data-f-bold='true'><strong>Grand Total:</strong> <span id='grandTotal'></span></th></tr>" +
                     //"<tr><th data-f-bold='true'>Customer</th><th data-f-bold='true'>Net Amount</th>"+
-                    "<th data-f-bold='true'>Customer</th><th data-f-bold='true'>Tran. Type</th><th data-f-bold='true'>Tran. No.</th><th data-f-bold='true'>Date</th><th data-f-bold='true'>Due Date</th><th data-f-bold='true'>Due On "+dueOnDate+"</th><th data-f-bold='true'>Not Due</th><th data-f-bold='true'>Total Due</th><th data-f-bold='true'>Days</th></tr></thead><tbody>";
+                    "<th data-f-bold='true'>Customer</th><th data-f-bold='true'>Fin. Year</th><th data-f-bold='true'>Tran. Type</th><th data-f-bold='true'>Tran. No.</th><th data-f-bold='true'>Date</th><th data-f-bold='true'>Due Date</th><th data-f-bold='true'>Due On "+dueOnDate+"</th><th data-f-bold='true'>Not Due</th><th data-f-bold='true'>Total Due</th><th data-f-bold='true'>Days</th></tr></thead><tbody>";
                 var billDetails = "";
                 $.each(data, function (key, city) {
                     billDetails = "";
-                    var cityName = "<tr><td colspan='8' data-f-bold='true'>Area: <span class='customerData cust" +
+                    var cityName = "<tr><td colspan='9' data-f-bold='true'>Area: <span class='customerData cust" +
                         key + "'><strong>" + key + "</strong></span></td></tr>";
                     var customerDue = 0;
                     var customerBalance = 0;
@@ -196,6 +202,7 @@
                             customerTotalDue += totalDue;
 
                             bills += "<tr><td></td>" +
+                                "<td>" + bill.financialYear + "</td>" +
                                 "<td>" + bill.transactionType + "</td>" +
                                 "<td>" + bill.transactionNumber + "</td>" +
                                 "<td>" + dateFormat(bill.transactionDate) + "</td>" +
@@ -205,7 +212,7 @@
                                 "<td>" + totalDue.toFixed(2) + "</td>" +
                                 "<td>" + moment(new Date()).diff(moment(dateFormat(bill.dueDate), "DD/MM/YYYY"), 'days') + "</td></tr>";
                         });
-                        var customerTotal = "<tr><td colspan='5'></td><td data-f-bold='true'><u><strong>"+customerDue.toFixed(2)+"</strong></u></td><td data-f-bold='true'><u><strong>"+customerBalance.toFixed(2)+"</strong></u></td>" +
+                        var customerTotal = "<tr><td colspan='6'></td><td data-f-bold='true'><u><strong>"+customerDue.toFixed(2)+"</strong></u></td><td data-f-bold='true'><u><strong>"+customerBalance.toFixed(2)+"</strong></u></td>" +
                             "<td data-f-bold='true'><u><strong>"+customerTotalDue.toFixed(2)+"</strong></u></td><td data-f-bold='true'></td></tr>";
                         customerInfo += (bills + customerTotal);
                     });
