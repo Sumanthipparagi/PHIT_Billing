@@ -216,8 +216,7 @@ class ReportsService {
     def getOutstandingReport(JSONArray jsonArray)
     {
         Client client = ClientBuilder.newClient()
-        //WebTarget target = client.target(new Links().API_GATEWAY)
-        WebTarget target = client.target("http://localhost:8089")
+        WebTarget target = client.target(new Links().API_GATEWAY)
         try
         {
             Response apiResponse = target
