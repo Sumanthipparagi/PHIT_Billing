@@ -88,7 +88,7 @@ class ReceiptDetailService {
             if (!customer.equalsIgnoreCase('all') && customer != '') {
                 eq("receivedFrom", customer)
             }
-            if ((fromDate != null && fromDate != "") && (toDate != null && toDate != ""))
+            if (fromDate!= null && fromDate!=''&& toDate!= null && toDate!='')
             {
                 between('dateCreated',sdf.parse(fromDate),sdf.parse(toDate))
             }

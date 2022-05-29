@@ -200,7 +200,6 @@
                             customerDue += bill.due;
                             customerBalance += bill.balance;
                             customerTotalDue += totalDue;
-
                             bills += "<tr><td></td>" +
                                 "<td>" + bill.financialYear + "</td>" +
                                 "<td>" + bill.transactionType + "</td>" +
@@ -229,7 +228,6 @@
             }
         })
     }
-
     $("#btnExport").click(function () {
         let table = document.getElementById("result");
         TableToExcel.convert(table, {
