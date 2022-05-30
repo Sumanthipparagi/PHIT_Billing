@@ -216,13 +216,13 @@
     <tr>
 
         <% double data = inv+gtn
-        int value = (int) data;
-        System.out.println(value)
+//        int value = (int) data;
+        System.out.println(data)
         %>
     </tr>
     <tr>
         <td colspan="5">
-            <p><strong>${WordsToNumbersUtil.convert(value)} Ruppees Only
+            <p><strong>${WordsToNumbersUtil.convertToIndianCurrency(data.toString())}
             </strong></p>
         </td>
     </tr>
