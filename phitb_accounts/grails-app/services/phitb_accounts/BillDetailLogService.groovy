@@ -85,6 +85,7 @@ class BillDetailLogService
         receiptDetailLog.approvedBy = Long.parseLong("1")
         receiptDetailLog.currentFinancialYear = jsonObject.get("currentFinancialYear").toString()
         receiptDetailLog.receiptId = jsonObject.get("recieptId").toString()
+        receiptDetailLog.receiptStatus = ""
         receiptDetailLog.financialYear = jsonObject.get("financialYear").toString()
         receiptDetailLog.status = Long.parseLong("1")
         receiptDetailLog.syncStatus = Long.parseLong("1")

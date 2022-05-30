@@ -257,21 +257,53 @@ class GoodsTransferNoteController {
     def updateBalance() {
         try {
             GoodsTransferNote goodsTransferNote = GoodsTransferNote.findById(Long.parseLong(params.id))
-            if (goodsTransferNote) {
-                goodsTransferNote.isUpdatable = true
-                Double balance = Double.parseDouble(params.balance)
-                if (balance > 0 && balance != "" && balance != null) {
-                    double diffBalance = Double.parseDouble(goodsTransferNote.getBalance().toString()) - balance
-                    goodsTransferNote.balance = diffBalance
-                    goodsTransferNote.adjAmount = goodsTransferNote.getAdjAmount() + balance
-                } else {
-                    goodsTransferNote.balance = goodsTransferNote.getBalance()
-                    goodsTransferNote.adjAmount = goodsTransferNote.getAdjAmount()
+            if(params.status=="NA" || params.status==null)
+            {
+                if (goodsTransferNote)
+                {
+                    goodsTransferNote.isUpdatable = true
+                    Double balance = Double.parseDouble(params.balance)
+                    if (balance > 0 && balance != "" && balance != null)
+                    {
+                        double diffBalance = Double.parseDouble(goodsTransferNote.getBalance().toString()) - balance
+                        goodsTransferNote.balance = diffBalance
+                        goodsTransferNote.adjAmount = goodsTransferNote.getAdjAmount() + balance
+                    }
+                    else
+                    {
+                        goodsTransferNote.balance = goodsTransferNote.getBalance()
+                        goodsTransferNote.adjAmount = goodsTransferNote.getAdjAmount()
+                    }
+                    GoodsTransferNote goodsTransferNote1 = goodsTransferNote.save(flush: true)
+                    if (goodsTransferNote1)
+                    {
+                        respond goodsTransferNote1
+                        return
+                    }
                 }
-                GoodsTransferNote goodsTransferNote1 = goodsTransferNote.save(flush: true)
-                if (goodsTransferNote1) {
-                    respond goodsTransferNote1
-                    return
+            }
+            else {
+                if (goodsTransferNote)
+                {
+                    goodsTransferNote.isUpdatable = true
+                    Double balance = Double.parseDouble(params.balance)
+                    if (balance > 0 && balance != "" && balance != null)
+                    {
+                        double updateBalance = Double.parseDouble(goodsTransferNote.getBalance().toString()) + balance
+                        goodsTransferNote.balance = updateBalance
+                        goodsTransferNote.adjAmount = goodsTransferNote.getAdjAmount() - balance
+                    }
+                    else
+                    {
+                        goodsTransferNote.balance = goodsTransferNote.getBalance()
+                        goodsTransferNote.adjAmount = goodsTransferNote.getAdjAmount()
+                    }
+                    GoodsTransferNote goodsTransferNote1 = goodsTransferNote.save(flush: true)
+                    if (goodsTransferNote1)
+                    {
+                        respond goodsTransferNote1
+                        return
+                    }
                 }
             }
         }

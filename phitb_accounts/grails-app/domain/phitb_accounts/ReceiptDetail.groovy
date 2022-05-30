@@ -31,6 +31,7 @@ class ReceiptDetail implements LogicalDelete<ReceiptDetail> {
     long modifiedUser
     long createdUser
     String cardNumber
+    Date cancelledDate
 
     Date dateCreated
     Date lastUpdated
@@ -43,6 +44,7 @@ class ReceiptDetail implements LogicalDelete<ReceiptDetail> {
         narration nullable: true
         accountModeId nullable:true
         approvedStatus nullable: true
+        cancelledDate nullable: true
     }
 
     static mapping = {

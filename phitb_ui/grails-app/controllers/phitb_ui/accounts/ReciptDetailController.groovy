@@ -4,8 +4,11 @@ package phitb_ui.accounts
 import org.grails.web.json.JSONArray
 import org.grails.web.json.JSONObject
 import phitb_ui.AccountsService
+import phitb_ui.EInvoiceService
 import phitb_ui.EntityService
+import phitb_ui.InventoryService
 import phitb_ui.ProductService
+import phitb_ui.SalesService
 import phitb_ui.entity.AccountRegisterController
 import phitb_ui.entity.EntityRegisterController
 import phitb_ui.sales.SalebillDetailsController
@@ -336,6 +339,7 @@ class ReciptDetailController {
                         JSONObject invObject = new JSONObject()
                         invObject.put("id", billId)
                         invObject.put("paidNow", paidNow)
+                        invObject.put("status","NA")
                         def invs = new AccountsService().updateSaleBalance(invObject)
                         if (invs?.status == 200) {
                             invObject.remove("id");
@@ -346,6 +350,7 @@ class ReciptDetailController {
                         JSONObject crntObject = new JSONObject();
                         crntObject.put("id", billId)
                         crntObject.put("paidNow", paidNow)
+                        crntObject.put("status","NA")
                         def crnt = new AccountsService().updateSaleReturnBalance(crntObject)
                         if (crnt?.status == 200) {
                             crntObject.remove("id");
@@ -356,6 +361,7 @@ class ReciptDetailController {
                         JSONObject gtnObject = new JSONObject();
                         gtnObject.put("id", billId)
                         gtnObject.put("paidNow", paidNow)
+                        gtnObject.put("status","NA")
                         def gtn = new AccountsService().updateGTNBalance(gtnObject)
                         if (gtn?.status == 200) {
                             gtnObject.remove("id");
@@ -578,4 +584,56 @@ class ReciptDetailController {
         }
     }
 
+    def cancelReceipt()
+    {
+        String id = params.id
+        String entityId = session.getAttribute("entityId")
+        String financialYear = session.getAttribute("financialYear")
+        JSONObject jsonObject = new AccountsService().cancelReceipt(id, entityId, financialYear)
+        def saleBillResponse
+        def saleReturnResponse
+        def gtnResponse
+        if (jsonObject)
+        {
+            JSONArray billDetailLogs = jsonObject.get("billDetailLogs")
+            if (billDetailLogs)
+            {
+                for (JSONObject billDetailLog : billDetailLogs)
+                {
+                    billDetailLog.put("status","CANCELLED")
+                    billDetailLog.put('paidNow',billDetailLog.amountPaid)
+                    billDetailLog.put('id',billDetailLog.billId)
+                    if(billDetailLog.billType == "INVS")
+                    {
+                        saleBillResponse = new AccountsService().updateSaleBalance(billDetailLog)
+                        if(saleBillResponse?.status==200)
+                        {
+                            println("Sale balance updated successfully!")
+                        }
+                    }
+                    if(billDetailLog.billType == "CRNT")
+                    {
+                        saleReturnResponse = new AccountsService().updateSaleReturnBalance(billDetailLog)
+                        if(saleReturnResponse?.status==200)
+                        {
+                            println("Sale Return balance updated successfully!")
+                        }
+                    }
+                    if(billDetailLog.billType == "GTN")
+                    {
+                        gtnResponse = new AccountsService().updateGTNBalance(billDetailLog)
+                        if(gtnResponse?.status==200)
+                        {
+                            println("Sale Return balance updated successfully!")
+                        }
+                    }
+                }
+            }
+            respond jsonObject, formats: ['json']
+        }
+        else
+        {
+            response.status = 400
+        }
+    }
 }

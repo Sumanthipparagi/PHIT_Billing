@@ -138,7 +138,7 @@ class UrlMappings {
                 action = [POST: 'updatePaymentStatus']
             }
 
-            "/updatebalancebyid/id/$id/balance/$balance"(controller: 'saleBillDetails')
+            "/updatebalancebyid/id/$id/balance/$balance/status/$status"(controller: 'saleBillDetails')
                     {action=[POST: 'updateBalance']}
 
             //Sale Product Details
@@ -316,7 +316,7 @@ class UrlMappings {
             "/setsalereturnstatus/$id/type/$type/adj/$adj(.$format)?"(controller: 'saleReturn') {
                 action = [POST: 'updateStatus']
             }
-            "/updatereturnbalancebyid/id/$id/balance/$balance"(controller: 'saleReturn')
+            "/updatereturnbalancebyid/id/$id/balance/$balance/status/$status"(controller: 'saleReturn')
                     {action=[POST: 'updateBalance']}
 
             "/salereturnbycustomer(.$format)?"(controller: 'saleReturn') {

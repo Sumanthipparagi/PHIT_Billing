@@ -295,13 +295,33 @@ class SaleBillDetailsController {
     def updateBalance() {
         try {
             SaleBillDetails saleBillDetails = SaleBillDetails.findById(Long.parseLong(params.id))
-            if (saleBillDetails) {
+            if(params.status=="NA" || params.status==null)
+            {
+                if (saleBillDetails) {
+                    saleBillDetails.isUpdatable = true
+                    Double balance = Double.parseDouble(params.balance)
+                    if (balance > 0 && balance != "" && balance != null) {
+                        double diffBalance = Double.parseDouble(saleBillDetails.getBalance().toString()) - balance
+                        saleBillDetails.balance = diffBalance
+                        saleBillDetails.adjAmount = saleBillDetails.getAdjAmount() + balance
+                    } else {
+                        saleBillDetails.balance = saleBillDetails.getBalance()
+                        saleBillDetails.adjAmount = saleBillDetails.getAdjAmount()
+                    }
+                    SaleBillDetails saleBillDetails1 = saleBillDetails.save(flush: true)
+                    if (saleBillDetails1) {
+                        respond saleBillDetails1
+                        return
+                    }
+                }
+            }
+            else {
                 saleBillDetails.isUpdatable = true
                 Double balance = Double.parseDouble(params.balance)
                 if (balance > 0 && balance != "" && balance != null) {
-                    double diffBalance = Double.parseDouble(saleBillDetails.getBalance().toString()) - balance
-                    saleBillDetails.balance = diffBalance
-                    saleBillDetails.adjAmount = saleBillDetails.getAdjAmount() + balance
+                    double updateBalance = Double.parseDouble(saleBillDetails.getBalance().toString()) + balance
+                    saleBillDetails.balance = updateBalance
+                    saleBillDetails.adjAmount = saleBillDetails.getAdjAmount() - balance
                 } else {
                     saleBillDetails.balance = saleBillDetails.getBalance()
                     saleBillDetails.adjAmount = saleBillDetails.getAdjAmount()

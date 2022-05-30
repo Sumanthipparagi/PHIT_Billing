@@ -118,6 +118,7 @@ class UrlMappings {
             "/receiptdetailsbyentity/$id(.$format)?"(controller: 'receiptDetail') { action = [GET: 'getByEntityId'] }
             "/receiptdetailsbydays/$days(.$format)?"(controller: 'receiptDetail') { action = [GET: 'getAllByDays'] }
             "/receipt-approve(.$format)?"(controller: 'receiptDetail') { action = [POST: 'approveReceipt'] }
+            "/receipt/cancel(.$format)?"(controller: 'receiptDetail') { action = [POST: 'cancelReceipt'] }
 
 
 

@@ -529,6 +529,7 @@ public class Links
     public static String RECIPT_DETAIL_LOG_INVS_ID = "api/v1.0/accounts/reciptdetailloginvbyreciptId";
     public static String RECIPT_DETAIL_LOG_CRNT_ID = "api/v1.0/accounts/reciptdetaillogcrntbyreciptId";
     public static String RECIPT_DETAIL_LOG_GTN_ID = "api/v1.0/accounts/reciptdetailloggtnbyreciptId";
+    public static String RECIPT_CANCEL = "api/v1.0/accounts/receipt/cancel";
 
 
     //Wallet
