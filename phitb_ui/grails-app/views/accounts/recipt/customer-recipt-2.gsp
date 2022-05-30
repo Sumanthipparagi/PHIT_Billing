@@ -221,7 +221,7 @@
                                 </label>
                                 <input type="number" id="chequeNumber" class="chequeNumber form-control"
                                        name="chequeNumber"
-                                       placeholder="Cheque Number"/>
+                                       placeholder="Instrument ID"/>
                             </div>
 
                             <div class="col-lg-3 form-group  form-float">

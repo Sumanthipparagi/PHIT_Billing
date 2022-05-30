@@ -160,12 +160,31 @@ class EntityRegisterService {
         entityRegister.careTaker = Long.parseLong(jsonObject.get("careTaker").toString())
         entityRegister.contact = jsonObject.get("contact").toString()
         entityRegister.terms = jsonObject.get("terms").toString()
-        entityRegister.salesman = Long.parseLong(jsonObject.get("salesman").toString())
-        entityRegister.manager = Long.parseLong(jsonObject.get("manager").toString())
+        if(!jsonObject.isNull("salesman"))
+        {
+            entityRegister.salesman = Long.parseLong(jsonObject.get("salesman").toString())
+        }
+        else {
+            entityRegister.salesman = 0
+        }
+        if(!jsonObject.isNull("manager"))
+        {
+            entityRegister.manager = Long.parseLong(jsonObject.get("manager").toString())
+        }
+        else {
+            entityRegister.manager = 0
+        }
+
+        if(!jsonObject.isNull("routeId"))
+        {
+            entityRegister.routeId = Long.parseLong(jsonObject.get("routeId").toString())
+        }
+        else {
+            entityRegister.routeId = 0
+        }
         entityRegister.status = Long.parseLong(jsonObject.get("status").toString())
         entityRegister.salesmanCommission = Double.parseDouble(jsonObject.get("salesmanCommission").toString())
         entityRegister.syncStatus = Long.parseLong(jsonObject.get("syncStatus").toString())
-        entityRegister.routeId = Long.parseLong(jsonObject.get("routeId").toString())
         entityRegister.accountId = jsonObject.get("accountId").toString()
         entityRegister.aadharId = jsonObject.get("aadharId").toString()
         entityRegister.companyCode = jsonObject.get("companyCode").toString()
@@ -236,12 +255,30 @@ class EntityRegisterService {
             entityRegister.careTaker = Long.parseLong(jsonObject.get("careTaker").toString())
             entityRegister.contact = jsonObject.get("contact").toString()
             entityRegister.terms = jsonObject.get("terms").toString()
-            entityRegister.salesman = Long.parseLong(jsonObject.get("salesman").toString())
-            entityRegister.manager = Long.parseLong(jsonObject.get("manager").toString())
+            if(!jsonObject.isNull("salesman"))
+            {
+                entityRegister.salesman = Long.parseLong(jsonObject.get("salesman").toString())
+            }
+            else {
+                entityRegister.salesman = 0
+            }
+            if(!jsonObject.isNull("manager"))
+            {
+                entityRegister.manager = Long.parseLong(jsonObject.get("manager").toString())
+            }
+            else {
+                entityRegister.manager = 0
+            }
+            if(!jsonObject.isNull("routeId"))
+            {
+                entityRegister.routeId = Long.parseLong(jsonObject.get("routeId").toString())
+            }
+            else {
+                entityRegister.routeId = 0
+            }
             entityRegister.status = Long.parseLong(jsonObject.get("status").toString())
             entityRegister.salesmanCommission = Double.parseDouble(jsonObject.get("salesmanCommission").toString())
             entityRegister.syncStatus = Long.parseLong(jsonObject.get("syncStatus").toString())
-            entityRegister.routeId = Long.parseLong(jsonObject.get("routeId").toString())
             entityRegister.accountId = jsonObject.get("accountId").toString()
             entityRegister.aadharId = jsonObject.get("aadharId").toString()
             entityRegister.companyCode = jsonObject.get("companyCode").toString()
