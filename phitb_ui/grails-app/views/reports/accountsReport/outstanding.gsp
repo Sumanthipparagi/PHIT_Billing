@@ -207,7 +207,6 @@
                             customerDue += bill.due;
                             customerBalance += bill.balance;
                             customerTotalDue += totalDue;
-                            console.log(bill.balance)
                             bills += "<tr><td></td>" +
                                 "<td>" + bill.financialYear + "</td>" +
                                 "<td>" + bill.transactionType + "</td>" +
