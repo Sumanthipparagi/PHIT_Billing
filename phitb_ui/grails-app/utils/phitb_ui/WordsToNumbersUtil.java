@@ -124,7 +124,11 @@ public static String convertToIndianCurrency(String num) {
 
 //    String paise = (decimal) > 0 ? " And Paise " + words.get( (decimal - decimal % 10)) + " " + words.get( (decimal % 10)) : "";
     String paise = (decimal) > 0 ? " And Paise " + convert(decimal) : "";
+    if(!Rupees.equals("") && !paise.equals(""))
+    {
+        return "Rupees " + Rupees + paise + " Only";
+    }
 
-    return "Rupees " + Rupees + paise + " Only";
+    return "Rupees " + "Zero and " + " Zero " + "paise  Only";
 }
 }

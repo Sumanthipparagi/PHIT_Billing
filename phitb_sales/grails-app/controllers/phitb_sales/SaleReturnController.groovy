@@ -237,6 +237,7 @@ class SaleReturnController {
                     {
                         double updatebalance = Double.parseDouble(saleReturn.getBalance().toString()) + balance
                         saleReturn.balance = updatebalance
+                        println(saleReturn.getAdjAmount())
                         saleReturn.adjAmount = saleReturn.getAdjAmount() - balance
                     }
                     else

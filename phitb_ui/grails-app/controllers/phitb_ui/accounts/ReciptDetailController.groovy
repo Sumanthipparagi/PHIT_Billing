@@ -323,7 +323,7 @@ class ReciptDetailController {
                 if (bills.get("Doc.Type") == "GTN" && bills.get("PaidNow").toString().toDouble()!= 0) {
                     goodsTransferNote += Double.parseDouble(bills.PaidNow)
                 }
-                jsonObject.put("amountPaid",invoice+goodsTransferNote)
+                jsonObject.put("amountPaid",invoice+goodsTransferNote-credit)
             }
             def apiResponse = new AccountsService().saveRecipt(jsonObject, session.getAttribute('financialYear') as String)
             if (apiResponse?.status == 200) {
@@ -490,10 +490,10 @@ class ReciptDetailController {
         JSONArray reciptloginvArray = new JSONArray(reciptlogsinv.readEntity(String.class))
         JSONArray reciptlogcrntArray = new JSONArray(reciptlogscrnt.readEntity(String.class))
         JSONArray reciptloggtnArray = new JSONArray(reciptlogsgtn.readEntity(String.class))
-        render(view: '/accounts/recipt/recipt-temp', model: [customer          : customer, recipt: recipt,
+        render(view: '/accounts/recipt/recipt-temp', model: [customer          : customer, receipt: recipt,
                                                              entity            : entity, reciptloginvArray: reciptloginvArray,
                                                              reciptlogcrntArray: reciptlogcrntArray,
-                                                             reciptloggtnArray:reciptloggtnArray])
+                                                             reciptloggtnArray :reciptloggtnArray])
     }
 
 

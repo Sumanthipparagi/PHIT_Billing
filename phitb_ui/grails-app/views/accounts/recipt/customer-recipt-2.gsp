@@ -472,6 +472,8 @@
         return diffDays
     }
 
+    let invIdArray = [];
+
     function getAddress(id) {
         if (id) {
             $.ajax({
@@ -479,6 +481,7 @@
                 url: '/getbyentity/' + id,
                 dataType: 'json',
                 success: function (data) {
+                    invIdArray=[]
                     getAllSaleBillDetails(id)
                     var trHTML = '';
                     trHTML += '<p><b>' + data.entityName + '</b><br>' + data.addressLine1 + '' + data.addressLine2 + '</p>';
@@ -495,7 +498,7 @@
     }
 
 
-    let invIdArray = [];
+
 
     function getAllSaleBillDetails(id) {
         if (id) {
@@ -539,6 +542,7 @@
                                 '                                        <td>' + value.financialYear + '</td>\n' +
                                 '                                        <td style="display: none;">' + value.id + '</td>\n' +
                                 '                                        </tr>';
+
 
                             invoiceData.push(value.id);
                             invIdArray.push(value.id);
