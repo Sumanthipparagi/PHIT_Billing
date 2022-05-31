@@ -167,6 +167,9 @@
             closeOnClickOutside: false
         });
         var dateRange = $('.dateRange').val();
+        var customerDue = 0;
+        var customerBalance = 0;
+        var customerTotalDue = 0;
         // var sortBy = $('.sortBy').val();
         var paidInvoice = $("#paidInvoice").is(":checked") ? "true" : "false";
         $.ajax({
@@ -175,6 +178,7 @@
             contentType: false,
             processData: false,
             success: function (data) {
+                console.log(data);
                 var content = "";
                 var mainTableHeader = "<table class='table table-bordered table-sm' style='width: 100%;'><thead>" +
                     "<tr><td data-f-bold='true' colspan='10'><h3 style='margin-bottom:0 !important;'>${session.getAttribute('entityName')}</h3></td></tr>" +
@@ -189,17 +193,21 @@
                     billDetails = "";
                     var cityName = "<tr><td colspan='9' data-f-bold='true'>Area: <span class='customerData cust" +
                         key + "'><strong>" + key + "</strong></span></td></tr>";
+                    var customerInfo = "";
                     var customerDue = 0;
                     var customerBalance = 0;
                     var customerTotalDue = 0;
-                    var customerInfo = "";
                     $.each(city, function (customer, invs) {
                         var bills = "<tr><td colspan='10' data-f-bold='true'>"+customer+"</td></tr>";
+                        var customerDue = 0;
+                        var customerBalance = 0;
+                        var customerTotalDue = 0;
                         $.each(invs, function (key, bill) {
                             var totalDue = bill.balance - bill.due;
                             customerDue += bill.due;
                             customerBalance += bill.balance;
                             customerTotalDue += totalDue;
+                            console.log(bill.balance)
                             bills += "<tr><td></td>" +
                                 "<td>" + bill.financialYear + "</td>" +
                                 "<td>" + bill.transactionType + "</td>" +
