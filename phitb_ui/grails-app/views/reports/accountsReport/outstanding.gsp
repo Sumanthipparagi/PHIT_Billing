@@ -216,12 +216,12 @@
                                 "<td>" + dateFormat(bill.dueDate) + "</td>" +
                                 "<td>" + formatNumber(bill.due.toFixed(2)) + "</td>" +
                                 "<td>" + formatNumber(bill.balance.toFixed(2)) + "</td>" +
-                                "<td>" + totalDue.toFixed(2) + "</td>" +
+                                "<td>" + formatNumber(totalDue.toFixed(2)) + "</td>" +
                                 "<td>" + moment(new Date()).diff(moment(dateFormat(bill.dueDate), "DD/MM/YYYY"), 'days') + "</td></tr>";
                         });
                         var customerTotal =
                             "<tr><td colspan='6'></td><td data-f-bold='true'><u><strong>"+formatNumber(customerDue.toFixed(2))+"</strong></u></td><td data-f-bold='true'><u><strong>"+formatNumber(customerBalance.toFixed(2))+"</strong></u></td>" +
-                            "<td data-f-bold='true'><u><strong>"+customerTotalDue.toFixed(2)+"</strong></u></td><td data-f-bold='true'></td></tr>";
+                            "<td data-f-bold='true'><u><strong>"+formatNumber(customerTotalDue.toFixed(2))+"</strong></u></td><td data-f-bold='true'></td></tr>";
                         customerInfo += (bills + customerTotal);
                     });
                     billDetails += customerInfo;

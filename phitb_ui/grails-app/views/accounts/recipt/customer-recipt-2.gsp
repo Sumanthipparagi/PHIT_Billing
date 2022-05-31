@@ -84,6 +84,19 @@
         color: white;
     }
 
+
+    /* Chrome, Safari, Edge, Opera  - hide input arrow keys*/
+    input::-webkit-outer-spin-button,
+    input::-webkit-inner-spin-button {
+        -webkit-appearance: none;
+        margin: 0;
+    }
+
+    /* Firefox */
+    input[type=number] {
+        -moz-appearance: textfield;
+    }
+
     </style>
 </head>
 
@@ -620,7 +633,6 @@
         if (e.keyCode === 13 || e.which === '13') {
             var index = $('.txt').index(this) + 1;
             $('.txt').eq(index).focus();
-
             // var prevPaid = $('table#table1 tr#IN'+id+' td#invAdjAmt'+id+'').text();
             // var paid = parseFloat(prevPaid) + parseFloat($('#paidNowInv').val());
             // $('table#table1 tr#IN'+id+' td#invAdjAmt'+id+'').text(parseFloat(paid).toFixed());
@@ -629,7 +641,10 @@
             //     alert(id)
             //     $(this).next('.paidNowInv').focus();
             // }
-
+        }
+        if (e.keyCode === 38 || e.which === '38') {
+            var index = $('.txt').index(this) - 1;
+            $('.txt').eq(index).focus();
         }
     });
 
