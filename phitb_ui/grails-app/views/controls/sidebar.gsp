@@ -599,7 +599,7 @@
                         class="badge badge-success float-right"></span></a>
                     <ul class="ml-menu">
                         <g:if test="${UtilsService.isPermitted("VIEW_STOCKBOOK_ENTRY", session.getAttribute("permittedFeatures").toString())}">
-                            <li><a href="stockbook">Stock Entry</a></li>
+                            <li><a href="/stockbook">Stock Entry</a></li>
                         </g:if>
                     </ul>
                 </li>
