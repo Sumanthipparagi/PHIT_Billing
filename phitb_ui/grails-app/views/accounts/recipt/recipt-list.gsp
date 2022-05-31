@@ -373,7 +373,7 @@
                     success: function (data) {
                         Swal.fire(
                             'Success!',
-                            'Invoice Cancelled',
+                            'Receipt Cancelled',
                             'success'
                         );
                         receiptTable();
@@ -381,7 +381,7 @@
                     error: function () {
                         Swal.fire(
                             'Error!',
-                            'Unable to cancel invoice at the moment, try later.',
+                            'Unable to cancel Receipt at the moment, try later.',
                             'danger'
                         );
                     }
