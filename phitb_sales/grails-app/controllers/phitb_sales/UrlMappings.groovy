@@ -421,7 +421,7 @@ class UrlMappings {
                 action = [GET: 'getAllByCustomerId']
             }
 
-            "/updategtnbalancebyid/id/$id/balance/$balance"(controller: 'goodsTransferNote')
+            "/updategtnbalancebyid/id/$id/balance/$balance/status/$status"(controller: 'goodsTransferNote')
                     {action=[POST: 'updateBalance']}
 
 
