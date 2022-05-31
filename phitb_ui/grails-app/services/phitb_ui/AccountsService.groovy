@@ -571,8 +571,8 @@ class AccountsService
         }
         catch (Exception ex)
         {
-            System.err.println('Service :saveStateMaster , action :  save  , Ex:' + ex)
-            log.error('Service :saveStateMaster , action :  save  , Ex:' + ex)
+            System.err.println('Service :AccountsService , action :  updatePurchaseBalance  , Ex:' + ex)
+            log.error('Service :AccountsService , action :  updatePurchaseBalance  , Ex:' + ex)
         }
 
     }
@@ -594,8 +594,8 @@ class AccountsService
         }
         catch (Exception ex)
         {
-            System.err.println('Service :saveStateMaster , action :  save  , Ex:' + ex)
-            log.error('Service :saveStateMaster , action :  save  , Ex:' + ex)
+            System.err.println('Service :AccountsService , action :  updateSaleReturnBalance  , Ex:' + ex)
+            log.error('Service :AccountsService , action :  updateSaleReturnBalance  , Ex:' + ex)
         }
 
     }
@@ -618,8 +618,8 @@ class AccountsService
         }
         catch (Exception ex)
         {
-            System.err.println('Service :saveStateMaster , action :  save  , Ex:' + ex)
-            log.error('Service :saveStateMaster , action :  save  , Ex:' + ex)
+            System.err.println('Service :AccountsService , action :  updateGTNBalance  , Ex:' + ex)
+            log.error('Service :AccountsService , action :  updateGTNBalance  , Ex:' + ex)
         }
 
     }
@@ -642,8 +642,8 @@ class AccountsService
         }
         catch (Exception ex)
         {
-            System.err.println('Service :saveStateMaster , action :  save  , Ex:' + ex)
-            log.error('Service :saveStateMaster , action :  save  , Ex:' + ex)
+            System.err.println('Service :AccountsService , action :  updatePurchaseBalance  , Ex:' + ex)
+            log.error('Service :AccountsService , action :  updatePurchaseBalance  , Ex:' + ex)
         }
 
     }
