@@ -85,7 +85,7 @@ class BillDetailLogService
         receiptDetailLog.approvedBy = Long.parseLong("1")
         receiptDetailLog.currentFinancialYear = jsonObject.get("currentFinancialYear").toString()
         receiptDetailLog.receiptId = jsonObject.get("recieptId").toString()
-        receiptDetailLog.receiptStatus = ""
+        receiptDetailLog.receiptStatus = "ACTIVE";
         receiptDetailLog.financialYear = jsonObject.get("financialYear").toString()
         receiptDetailLog.status = Long.parseLong("1")
         receiptDetailLog.syncStatus = Long.parseLong("1")
@@ -112,7 +112,7 @@ class BillDetailLogService
             receiptDetailLog.approvedBy = Long.parseLong(jsonObject.get("approvedBy").toString())
             receiptDetailLog.currentFinancialYear = jsonObject.get("currentFinancialYear").toString()
             receiptDetailLog.financialYear = jsonObject.get("financialYear").toString()
-            receiptDetailLog.recieptId = Long.parseLong(jsonObject.get("recieptId").toString())
+            receiptDetailLog.receiptId = Long.parseLong(jsonObject.get("recieptId").toString())
             receiptDetailLog.status = Long.parseLong(jsonObject.get("status").toString())
             receiptDetailLog.syncStatus = Long.parseLong(jsonObject.get("syncStatus").toString())
             receiptDetailLog.entityTypeId = Long.parseLong(jsonObject.get("entityTypeId").toString())

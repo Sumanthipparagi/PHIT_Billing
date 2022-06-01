@@ -183,7 +183,14 @@ class EntityRegisterService {
             entityRegister.routeId = 0
         }
         entityRegister.status = Long.parseLong(jsonObject.get("status").toString())
-        entityRegister.salesmanCommission = Double.parseDouble(jsonObject.get("salesmanCommission").toString())
+        if(!jsonObject.isNull("salesmanCommission"))
+        {
+            entityRegister.salesmanCommission = Double.parseDouble(jsonObject.get("salesmanCommission").toString())
+        }
+        else
+        {
+            entityRegister.salesmanCommission = 0
+        }
         entityRegister.syncStatus = Long.parseLong(jsonObject.get("syncStatus").toString())
         entityRegister.accountId = jsonObject.get("accountId").toString()
         entityRegister.aadharId = jsonObject.get("aadharId").toString()
