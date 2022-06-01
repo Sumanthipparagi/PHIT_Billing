@@ -2,7 +2,7 @@
 grails:
     profile: rest-api
     codegen:
-        defaultPackage: phitb_inventory
+        defaultPackage: inventory
     gorm:
         reactor:
             # Whether to translate GORM events into Reactor events

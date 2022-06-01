@@ -206,7 +206,7 @@
                         var cancelInvoice = "";
                         var date = new Date(json.data[i].date);
                         var pd = new Date(json.data[i].paymentDate);
-                        if (json.data[i].approvedStatus !== "CANCELLED") {
+                        if (json.data[i].approvedStatus !== "CANCELLED" && json.data[i].approvedStatus !== "APPROVED") {
                             cancelInvoice = '<a class="btn btn-sm btn-info" title="Cancel" onclick="cancelReceipt(' + json.data[i].id +')" href="#"><i class="fa fa-times"></i></a>';
                         }
                         else

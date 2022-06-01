@@ -280,7 +280,8 @@
                             'pd': moment(pd).format('DD/MM/YYYY'),
                             // 'bank': json.data[i].bank.bankName,
                             'action': editbtn,
-                            'aprBtn': json.data[i]?.approvedBy === 0 ? approveBtn : "APPROVED BY "+json.data[i]?.approved.userName
+                            'aprBtn': json.data[i]?.approvedBy === 0 && json.data[i]?.approvedStatus !=="CANCELLED" ? approveBtn :
+                                ""
                         });
                     }
                     return return_data;

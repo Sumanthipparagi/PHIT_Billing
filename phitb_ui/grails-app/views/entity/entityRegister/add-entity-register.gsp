@@ -468,7 +468,7 @@
                                     <label for="salesmanCommission">
                                         Salesman Commission
                                     </label>
-                                    <input type="text" id="salesmanCommission" class="form-control salesmanCommission"
+                                    <input type="number" id="salesmanCommission" class="form-control salesmanCommission"
                                            name="salesmanCommission" placeholder="Salesman Commission"
                                            />
                                 </div>
