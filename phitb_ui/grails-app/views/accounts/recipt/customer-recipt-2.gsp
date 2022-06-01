@@ -289,7 +289,7 @@
                                 </label>
                                 <input type="text" id="amountPaid" class="note form-control "
                                        name="amountPaid"
-                                       placeholder="Amount" value="0" style="border-radius: 0;"
+                                       placeholder="Amount" value="0" style="border-radius: 0;"  autocomplete="off"
                                        required/>
                                 </div>
                                 <div class="col-lg-4 form-group  form-float">
@@ -481,7 +481,7 @@
                 url: '/getbyentity/' + id,
                 dataType: 'json',
                 success: function (data) {
-                    invIdArray=[]
+                    invIdArray=[];
                     getAllSaleBillDetails(id)
                     var trHTML = '';
                     trHTML += '<p><b>' + data.entityName + '</b><br>' + data.addressLine1 + '' + data.addressLine2 + '</p>';
