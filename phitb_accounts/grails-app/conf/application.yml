@@ -2,7 +2,7 @@
 grails:
     profile: rest-api
     codegen:
-        defaultPackage: accounts
+        defaultPackage: phitb_accounts
     gorm:
         reactor:
             # Whether to translate GORM events into Reactor events
