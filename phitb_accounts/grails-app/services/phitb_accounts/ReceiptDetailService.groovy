@@ -257,6 +257,18 @@ class ReceiptDetailService {
         ReceiptDetail receiptDetail = ReceiptDetail.findById(Long.parseLong(id))
         if (receiptDetail)
         {
+            ArrayList<BillDetailLog> billDetailLogs = BillDetailLog.findAllByReceiptId(receiptDetail.id.toString())
+            if(billDetailLogs)
+            {
+                for (BillDetailLog billDetailLog : billDetailLogs)
+                {
+                    billDetailLog.status = 0
+                    billDetailLog.receiptStatus = "APPROVED"
+                    billDetailLog.isUpdatable = true
+                    billDetailLog.save(flush: true)
+                }
+
+            }
                 receiptDetail.approvedStatus = "APPROVED"
                 receiptDetail.approvedBy = Long.parseLong(userId)
                 receiptDetail.approvedDate = new Date()
