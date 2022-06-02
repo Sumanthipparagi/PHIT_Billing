@@ -139,6 +139,7 @@
                                     <th style="width: 20%">Recipt Date</th>
                                     <th style="width: 20%">Receipt Id</th>
                                     <th style="width: 20%">Received From</th>
+                                    <th style="width: 20%">Status</th>
 %{--                                    <th style="width: 20%">Deposit To</th>--}%
                                     <th style="width: 20%">Financial Year</th>
                                     <th style="width: 20%">Amount paid</th>
@@ -274,6 +275,7 @@
                             'id': json.data[i].receiptId,
                             'date': moment(date).format('DD/MM/YYYY'),
                             'fy': json.data[i].financialYear,
+                            'status': json.data[i].approvedStatus,
                             'amountPaid': json.data[i].amountPaid.toFixed(2),
                             'receivedFrom': json.data[i].receivedFrom.entityName,
                             'depositTo': json.data[i]?.deposit === "NA" ? '' : json.data[i]?.deposit?.accountName,
@@ -292,6 +294,7 @@
                 {'data': 'date', 'width': '20%'},
                 {'data': 'id', 'width': '20%'},
                 {'data': 'receivedFrom', 'width': '20%'},
+                {'data': 'status', 'width': '20%'},
                 // {'data': 'depositTo', 'width': '20%'},
                 {'data': 'fy', 'width': '20%'},
                 {'data': 'amountPaid', 'width': '20%'},
