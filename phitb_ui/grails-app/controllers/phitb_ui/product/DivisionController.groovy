@@ -23,7 +23,7 @@ class DivisionController {
     {
         try
         {
-            ArrayList<String> entity = new EntityService().getByEntity(session.getAttribute("entityId").toString())
+            ArrayList<String> entity = new EntityService().getByEntity(session.getAttribute("entityId").toString()) as ArrayList<String>
             ArrayList<String> userregister = new UserRegisterController().getByEntity() as ArrayList<String>
             ArrayList<String> series = new SeriesController().getByEntity(session.getAttribute("entityId").toString()) as ArrayList<String>
             ArrayList<String> statelist = new StateController().show() as ArrayList<String>
@@ -93,6 +93,14 @@ class DivisionController {
         try
         {
             JSONObject jsonObject = new JSONObject(params)
+            if(params.entityId!=null || params.entityId!="")
+            {
+                jsonObject.put("entityId", session.getAttribute("entityId"))
+            }
+            if(params.entityTypeId!=null || params.entityTypeId!="")
+            {
+                jsonObject.put("entityTypeId", session.getAttribute("entityTypeId"))
+            }
             def apiResponse = new ProductService().saveDivision(jsonObject)
             if (apiResponse?.status == 200)
             {
@@ -118,6 +126,14 @@ class DivisionController {
         {
             println(params)
             JSONObject jsonObject = new JSONObject(params)
+            if(params.entityId!=null || params.entityId!="")
+            {
+                jsonObject.put("entityId", session.getAttribute("entityId"))
+            }
+            if(params.entityTypeId!=null || params.entityTypeId!="")
+            {
+                jsonObject.put("entityTypeId", session.getAttribute("entityTypeId"))
+            }
             def apiResponse = new ProductService().putDivision(jsonObject)
             if (apiResponse.status == 200)
             {

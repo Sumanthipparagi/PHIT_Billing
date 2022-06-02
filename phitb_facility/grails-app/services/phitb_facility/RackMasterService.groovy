@@ -104,7 +104,7 @@ class RackMasterService {
         rackMaster.entityId = Long.parseLong(jsonObject.get("entityId").toString())
         rackMaster.createdUser = Long.parseLong(jsonObject.get("createdUser").toString())
         rackMaster.modifiedUser = Long.parseLong(jsonObject.get("modifiedUser").toString())
-        rackMaster.cccEnabled = Long.parseLong(jsonObject.get("cccEnabled").toString())
+        rackMaster.cccEnabled = Long.parseLong(jsonObject.get("ccmEnabled").toString())
         rackMaster.save(flush: true)
         if (!rackMaster.hasErrors())
             return rackMaster
@@ -128,7 +128,7 @@ class RackMasterService {
                 rackMaster.entityId = Long.parseLong(jsonObject.get("entityId").toString())
                 rackMaster.createdUser = Long.parseLong(jsonObject.get("createdUser").toString())
                 rackMaster.modifiedUser = Long.parseLong(jsonObject.get("modifiedUser").toString())
-                rackMaster.cccEnabled = Long.parseLong(jsonObject.get("cccEnabled").toString())
+                rackMaster.cccEnabled = Long.parseLong(jsonObject.get("ccmEnabled").toString())
                 rackMaster.save(flush: true)
                 if (!rackMaster.hasErrors())
                     return rackMaster

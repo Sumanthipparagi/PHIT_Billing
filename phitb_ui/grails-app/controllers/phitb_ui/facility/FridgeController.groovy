@@ -3,6 +3,7 @@ package phitb_ui.facility
 import groovy.json.JsonSlurper
 import org.grails.web.json.JSONArray
 import org.grails.web.json.JSONObject
+import phitb_ui.EntityService
 import phitb_ui.FacilityService
 import phitb_ui.Links
 import phitb_ui.entity.EntityRegisterController
@@ -13,8 +14,7 @@ class FridgeController {
     {
         try
         {
-            ArrayList<String> entity = new EntityRegisterController().show() as ArrayList<String>
-
+            JSONArray entity = new EntityService().getByEntity(session.getAttribute("entityId").toString())
             render(view: '/facility/fridge/fridge',model: [entity:entity])
         }
         catch (Exception ex)
@@ -56,6 +56,14 @@ class FridgeController {
         try
         {
             JSONObject jsonObject = new JSONObject(params)
+            if(params.entityId!=null || params.entityId!="")
+            {
+                jsonObject.put("entityId", session.getAttribute("entityId"))
+            }
+            if(params.entityTypeId!=null || params.entityTypeId!="")
+            {
+                jsonObject.put("entityTypeId", session.getAttribute("entityTypeId"))
+            }
             def apiResponse = new FacilityService().saveFridge(jsonObject)
             if (apiResponse?.status == 200)
             {
@@ -103,8 +111,15 @@ class FridgeController {
     {
         try
         {
-            println(params)
             JSONObject jsonObject = new JSONObject(params)
+            if(params.entityId!=null || params.entityId!="")
+            {
+                jsonObject.put("entityId", session.getAttribute("entityId"))
+            }
+            if(params.entityTypeId!=null || params.entityTypeId!="")
+            {
+                jsonObject.put("entityTypeId", session.getAttribute("entityTypeId"))
+            }
             def apiResponse = new FacilityService().putFridge(jsonObject)
             if (apiResponse.status == 200)
             {

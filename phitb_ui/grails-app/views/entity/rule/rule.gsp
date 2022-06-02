@@ -209,9 +209,9 @@
                             '" class="btn btn-sm btn-danger deletebtn" data-toggle="modal" data-target=".deleteModal"><i class="material-icons"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">delete</font></font></i></button>'
                         return_data.push({
                             'id': json.data[i].id,
-                            'checkDate': json.data[i].checkDate,
-                            'dlExpired': json.data[i].dlExpired,
-                            'foodLicenseExpired': json.data[i].foodLicenseExpired,
+                            'checkDate': (json.data[i].checkDate === 1) ?  "YES" : "NO",
+                            'dlExpired': (json.data[i].dlExpired === 1) ?  "YES" : "NO",
+                            'foodLicenseExpired':  (json.data[i].foodLicenseExpired === 1) ?  "YES" : "NO",
                             'salesValueLimit': json.data[i].salesValueLimit,
                             // 'entity': json.data[i].entity.entityName,
                             // 'entitytype': json.data[i].entityType.name,

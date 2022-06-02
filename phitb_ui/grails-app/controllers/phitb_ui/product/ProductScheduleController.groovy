@@ -4,6 +4,7 @@ import groovy.json.JsonSlurper
 import org.grails.web.json.JSONArray
 import org.grails.web.json.JSONObject
 import phitb_ui.Constants
+import phitb_ui.EntityService
 import phitb_ui.Links
 import phitb_ui.ProductService
 import phitb_ui.entity.CustomerGroupController
@@ -23,7 +24,7 @@ class ProductScheduleController {
         try
         {
             ArrayList<String> customer = new CustomerGroupController().show() as ArrayList<String>
-            ArrayList<String> entity = new EntityRegisterController().show() as ArrayList<String>
+            ArrayList<String> entity = new EntityService().getByEntity(session.getAttribute("entityId").toString()) as ArrayList<String>
             ArrayList<String> userregister = new UserRegisterController().show() as ArrayList<String>
             ArrayList<String> series = new SeriesController().show() as ArrayList<String>
             ArrayList<String> division = new DivisionController().show() as ArrayList<String>
@@ -83,6 +84,14 @@ class ProductScheduleController {
         try
         {
             JSONObject jsonObject = new JSONObject(params)
+            if(params.entityId!=null || params.entityId!="")
+            {
+                jsonObject.put("entityId", session.getAttribute("entityId"))
+            }
+            if(params.entityTypeId!=null || params.entityTypeId!="")
+            {
+                jsonObject.put("entityTypeId", session.getAttribute("entityTypeId"))
+            }
             def apiResponse = new ProductService().saveProductSchedule(jsonObject)
             if (apiResponse?.status == 200)
             {
@@ -108,6 +117,14 @@ class ProductScheduleController {
         {
             println(params)
             JSONObject jsonObject = new JSONObject(params)
+            if(params.entityId!=null || params.entityId!="")
+            {
+                jsonObject.put("entityId", session.getAttribute("entityId"))
+            }
+            if(params.entityTypeId!=null || params.entityTypeId!="")
+            {
+                jsonObject.put("entityTypeId", session.getAttribute("entityTypeId"))
+            }
             def apiResponse = new ProductService().putProductSchedule(jsonObject)
             if (apiResponse.status == 200)
             {

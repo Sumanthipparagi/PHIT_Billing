@@ -107,7 +107,7 @@
                                 <tr>
 %{--                                    <th style="width: 20%">ID</th>--}%
                                     <th style="width: 20%">Name</th>
-                                    <th style="width: 20%">Entity</th>
+%{--                                    <th style="width: 20%">Entity</th>--}%
                                     <th style="width: 20%">Action</th>
                                 </tr>
                                 </thead>
@@ -194,7 +194,6 @@
                         return_data.push({
                             // 'id': json.data[i].id,
                             'name': json.data[i].name,
-                            'entity': json.names[i].entityName,
                             'action': editbtn + ' ' + deletebtn
                         });
                     }
@@ -204,7 +203,7 @@
             columns: [
                 // {'data': 'id', 'width': '20%'},
                 {'data': 'name', 'width': '20%'},
-                {'data': 'entity', 'width': '20%'},
+                // {'data': 'entity', 'width': '20%'},
                 {'data': 'action', 'width': '20%'}
             ]
         });
@@ -258,7 +257,6 @@
     $(document).on("click", ".editbtn", function () {
         id = $(this).data('id');
         $(".name").val($(this).data('name'));
-        alert($(this).data('entity'));
         var entity = $(this).data('entity')
         $(".entity").val(entity).trigger('change');
         $('.entity').select2();

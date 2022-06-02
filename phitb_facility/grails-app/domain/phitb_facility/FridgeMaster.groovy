@@ -18,6 +18,10 @@ class FridgeMaster implements LogicalDelete<FridgeMaster> {
     Date dateCreated
     Date lastUpdated
     static constraints = {
+        floor nullable: true
+        dateOfPurchase nullable: true
+        machinePartNumber nullable: true
+        machinePartNumber nullable: true
     }
 
     boolean isUpdatable

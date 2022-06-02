@@ -409,6 +409,8 @@ class FacilityService {
             Response apiResponse = target
                     .path(new Links().RACK_DATATABLE)
                     .queryParam("params", URLEncoder.encode(jsonObject.toString(), "UTF-8"))
+                    .queryParam("start", URLEncoder.encode(jsonObject.start, "UTF-8"))
+                    .queryParam("length", URLEncoder.encode(jsonObject.length, "UTF-8"))
                     .request(MediaType.APPLICATION_JSON_TYPE)
                     .get()
             return apiResponse

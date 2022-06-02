@@ -27,6 +27,7 @@ class RouteRegister implements LogicalDelete<RouteRegister>
     Date lastUpdated
     static constraints = {
         salesman nullable: true
+        areaManager nullable: true
     }
 
     boolean isUpdatable

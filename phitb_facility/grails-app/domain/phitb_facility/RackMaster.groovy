@@ -20,8 +20,10 @@ class RackMaster implements LogicalDelete<RackMaster> {
     Date dateCreated
     Date lastUpdated
     static constraints = {
-        generalInfo sqlType: "longText"
-        companies sqlType: "longText"
+        generalInfo sqlType: "longText", nullable: true
+        companies sqlType: "longText" , nullable: true
+        floorNumber nullable:true
+        cccEnabled nullable:true
     }
 
     boolean isUpdatable

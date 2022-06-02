@@ -85,7 +85,7 @@
                                 <label for="managerId">
                                     Manager
                                 </label>
-                                <select class="form-control show-tick managerId" name="managerId" id="managerId" required>
+                                <select class="form-control show-tick managerId" name="managerId" id="managerId">
                                     <g:each var="m" in="${managerList}">
                                         <option value="${m.id}">${m.userName}</option>
                                     </g:each>
@@ -97,7 +97,7 @@
                                     Customer group
                                 </label>
                                 <select class="form-control show-tick customerIds" name="customerIds"
-                                        id="customerIds"  multiple="multiple" required>
+                                        id="customerIds"  multiple="multiple" >
                                     <g:each var="cust" in="${customerList}">
                                         <option value="${cust.id}">${cust.customerGroupName}</option>
                                     </g:each>
@@ -109,7 +109,7 @@
                                 <label for="entityId">
                                     Entity
                                 </label>
-                                <select class="form-control show-tick entityId" name="entityId" id="entityId" required>
+                                <select class="form-control show-tick entityId" name="entityId" id="entityId" >
                                     <option value="">-- Please select --</option>
 
                                     <g:each var="e" in="${entitylist}">

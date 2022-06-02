@@ -211,8 +211,8 @@
                         return_data.push({
                             // 'id': json.data[i].id,
                             'godownName': json.data[i].godownName,
-                            'ccmEnabled': (json.data[i].ccmEnabled == 1) ?  "YES" : "NO",
-                            'premises': json.data[i].premises,
+                            'ccmEnabled': (json.data[i].ccmEnabled === 1) ?  "YES" : "NO",
+                            'premises': (json.data[i].premises === 1) ?  "YES" : "NO",
                             // 'managerId': json.manager[i].userName,
                             // 'entity': json.entity[i].entityName,
                             // 'entitytype': json.entityType[i].name,
@@ -286,6 +286,13 @@
         $(".premises").val($(this).attr('data-premises'));
         $(".entityRegister").val($(this).attr('data-entity'));
         $("#entityRegister").val($(this).attr('data-entity')).change()
+        if($(this).attr('data-managerId')!==0)
+        {
+            $(".companies").val($(this).attr(companies.split(","))).change()
+        }
+        else {
+            $(".companies").val(0);
+        }
         $(".managerId").val($(this).attr('data-managerId')).change()
         $(".entityType").val($(this).attr('data-entitytype')).change()
         $('.datetimepicker').bootstrapMaterialDatePicker('setDate',moment($(this).attr('data-dateOfPurchase')));

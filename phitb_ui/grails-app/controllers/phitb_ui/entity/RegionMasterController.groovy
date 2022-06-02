@@ -80,6 +80,14 @@ class RegionMasterController {
         try
         {
             JSONObject jsonObject = new JSONObject(params)
+            if(params.entity!=null || params.entity!="")
+            {
+                jsonObject.put("entity", session.getAttribute("entityId"))
+            }
+            if(params.entityType!=null || params.entityType!="")
+            {
+                jsonObject.put("entityType", session.getAttribute("entityTypeId"))
+            }
             def apiResponse = new EntityService().saveRegionMaster(jsonObject)
             if (apiResponse?.status == 200)
             {
@@ -105,6 +113,14 @@ class RegionMasterController {
         {
             println(params)
             JSONObject jsonObject = new JSONObject(params)
+            if(params.entity!=null || params.entity!="")
+            {
+                jsonObject.put("entity", session.getAttribute("entityId"))
+            }
+            if(params.entityType!=null || params.entityType!="")
+            {
+                jsonObject.put("entityType", session.getAttribute("entityTypeId"))
+            }
             def apiResponse = new EntityService().putRegionMaster(jsonObject)
             if (apiResponse.status == 200)
             {

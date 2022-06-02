@@ -17,7 +17,7 @@ class ProductController {
     def index() {
         try {
             ArrayList<String> productTypes = new ProductTypeController().getByEntity() as ArrayList<String>
-            ArrayList<String> entity = new EntityRegisterController().show() as ArrayList<String>
+            ArrayList<String> entity = new EntityService().getByEntity(session.getAttribute("entityId").toString()) as ArrayList<String>
             ArrayList<String> productGroups = new ProductGroupController().getByEntity() as ArrayList<String>
             ArrayList<String> divisions = new DivisionController().getByEntity() as ArrayList<String>
             ArrayList<String> productCategories = new ProductCategoryController().getByEntity() as ArrayList<String>

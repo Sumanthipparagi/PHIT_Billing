@@ -81,6 +81,7 @@ class StockBookController {
         try
         {
             JSONObject jsonObject = new JSONObject(params)
+            jsonObject.put("entityId",session.getAttribute('entityId'))
             def apiResponse = new InventoryService().showStockBooks(jsonObject)
             if (apiResponse.status == 200)
             {

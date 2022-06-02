@@ -1,7 +1,10 @@
 package phitb_ui.facility
 
 import groovy.json.JsonSlurper
+import org.grails.web.json.JSONArray
 import org.grails.web.json.JSONObject
+import phitb_ui.Constants
+import phitb_ui.EntityService
 import phitb_ui.FacilityService
 import phitb_ui.Links
 import phitb_ui.entity.EntityRegisterController
@@ -17,11 +20,11 @@ class GodownController
     {
         try
         {
-            ArrayList<String> entity = new EntityRegisterController().show() as ArrayList<String>
+            JSONArray entity = new EntityService().getByEntity(session.getAttribute("entityId").toString())
             ArrayList<String> userregister = new UserRegisterController().show() as ArrayList<String>
             ArrayList<String> userregsiterList = []
             userregister.each {
-                if (it.role.name.toString().equalsIgnoreCase('MANAGER'))
+                if (it.role.name.toString().equalsIgnoreCase(Constants.ROLE_MANAGER))
                 {
                     userregsiterList.add(it)
                 }
@@ -67,6 +70,14 @@ class GodownController
         try
         {
             JSONObject jsonObject = new JSONObject(params)
+            if(params.entityId!=null || params.entityId!="")
+            {
+                jsonObject.put("entityId", session.getAttribute("entityId"))
+            }
+            if(params.entityTypeId!=null || params.entityTypeId!="")
+            {
+                jsonObject.put("entityTypeId", session.getAttribute("entityTypeId"))
+            }
             def apiResponse = new FacilityService().saveGodown(jsonObject)
             if (apiResponse?.status == 200)
             {
@@ -92,6 +103,14 @@ class GodownController
         {
             println(params)
             JSONObject jsonObject = new JSONObject(params)
+            if(params.entityId!=null || params.entityId!="")
+            {
+                jsonObject.put("entityId", session.getAttribute("entityId"))
+            }
+            if(params.entityTypeId!=null || params.entityTypeId!="")
+            {
+                jsonObject.put("entityTypeId", session.getAttribute("entityTypeId"))
+            }
             def apiResponse = new FacilityService().putGodown(jsonObject)
             if (apiResponse.status == 200)
             {

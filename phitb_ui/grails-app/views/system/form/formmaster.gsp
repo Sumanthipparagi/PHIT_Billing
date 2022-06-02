@@ -207,7 +207,7 @@
                             // 'id': json.data[i].id,
                             'formname': json.data[i].formName,
                             'formbtnname': json.data[i].formButtonName,
-                            'confallowed': json.data[i].configAllowed,
+                            'confallowed':  (json.data[i].configAllowed === 1) ?  "YES" : "NO",
                             // 'entity': json.entity[i].entityName,
                             // 'entitytype': json.entityType[i].name,
                             // 'createduser': json.createduser[i].userName,
