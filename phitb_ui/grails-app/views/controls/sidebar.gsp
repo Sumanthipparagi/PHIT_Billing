@@ -592,6 +592,7 @@
                         <g:if test="${UtilsService.isPermitted("VIEW_PRODUCT_COST_RANGE", session.getAttribute("permittedFeatures").toString())}">
                             <li><a href="/product-cost-range">Product Cost Range</a></li>
                         </g:if>
+                        <li><a href="/unit-type">Product Register</a></li>
                     </ul>
                 </li>
                 <li id="inventory-menu" class="sidemenuitem"><a href="javascript:void(0);" class="menu-toggle"><i
