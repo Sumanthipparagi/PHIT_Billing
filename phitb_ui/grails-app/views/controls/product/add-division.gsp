@@ -16,7 +16,7 @@
                                     Division Name
                                 </label>
                                 <input type="text" id="divisionName" class="form-control divisionName" name="divisionName"
-                                       placeholder="Customer Group Name"
+                                       placeholder="Division Name"
                                        required/>
                             </div>
 
@@ -25,7 +25,7 @@
                                     Division Short Name
                                 </label>
                                 <input type="text" id="divisionShortName" class="form-control divisionShortName" name="divisionShortName"
-                                       placeholder="Short Name"
+                                       placeholder="Division Short Name"
                                        required/>
                             </div>
 
@@ -36,6 +36,8 @@
                                 </label>
                                 <select class="form-control show-tick cityIds" name="cityIds" id="cityIds"
                                         multiple="multiple" required>
+                                    <option value="0">Please Select</option>
+
                                     <g:each var="c" in="${citylist}">
                                         <option value="${c.id}">${c.name}</option>
                                     </g:each>
@@ -49,6 +51,8 @@
                                 </label>
                                 <select class="form-control show-tick stateIds" name="stateIds" id="stateIds"
                                         multiple="multiple" required>
+                                    <option value="0">Please Select</option>
+
                                     <g:each var="s" in="${statelist}">
                                         <option value="${s.id}">${s.name}</option>
                                     </g:each>
@@ -63,6 +67,7 @@
                                 </label>
                                 <select class="form-control show-tick zoneIds" name="zoneIds" id="zoneIds"
                                         multiple="multiple" required>
+                                    <option value="0">Please Select</option>
                                     <g:each var="z" in="${zoneList}">
                                         <option value="${z.id}">${z.name}</option>
                                     </g:each>
@@ -75,6 +80,7 @@
                                     Series
                                 </label>
                                 <select class="form-control show-tick seriesId" name="seriesId" id="seriesId" required>
+                                    <option value="0">Please Select</option>
                                     <g:each var="s" in="${series}">
                                         <option value="${s.id}">${s.seriesName}</option>
                                     </g:each>
@@ -85,7 +91,9 @@
                                 <label for="managerId">
                                     Manager
                                 </label>
+
                                 <select class="form-control show-tick managerId" name="managerId" id="managerId">
+                                    <option value="0">Please Select</option>
                                     <g:each var="m" in="${managerList}">
                                         <option value="${m.id}">${m.userName}</option>
                                     </g:each>
@@ -98,6 +106,7 @@
                                 </label>
                                 <select class="form-control show-tick customerIds" name="customerIds"
                                         id="customerIds"  multiple="multiple" >
+                                    <option value="">-- Please select --</option>
                                     <g:each var="cust" in="${customerList}">
                                         <option value="${cust.id}">${cust.customerGroupName}</option>
                                     </g:each>
@@ -111,7 +120,6 @@
                                 </label>
                                 <select class="form-control show-tick entityId" name="entityId" id="entityId" >
                                     <option value="">-- Please select --</option>
-
                                     <g:each var="e" in="${entitylist}">
                                         <option value="${e.id}"  data-type="${e.entityType.id}">${e.entityName}</option>
                                     </g:each>

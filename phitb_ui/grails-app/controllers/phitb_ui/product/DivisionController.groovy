@@ -208,10 +208,10 @@ class DivisionController {
         try
         {
             def apiResponse = new ProductService().getDivisionsByEntityId(session.getAttribute("entityId").toString())
-            if (apiResponse?.status == 200)
+            if (apiResponse!=null)
             {
-                JSONArray jsonArray = new JSONArray(apiResponse.readEntity(String.class));
-                ArrayList<String> arrayList = new ArrayList<>(jsonArray)
+//                JSONArray jsonArray = new JSONArray(apiResponse.readEntity(String.class));
+                ArrayList<String> arrayList = new ArrayList<>(apiResponse)
                 return arrayList
             }
             else
