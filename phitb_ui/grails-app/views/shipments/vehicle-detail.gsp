@@ -166,11 +166,10 @@
                     for (var i = 0; i < json.data.length; i++) {
                         var editbtn = '<button type="button" data-id="' + json.data[i].id +
                             '" data-transportType="' + json.data[i].transportType.id + '"' +
-                            '" data-vehicleId="' + json.data[i].vehicleId + '"' +
+                            '" data-vehicleName="' + json.data[i].vehicleName + '"' +
                             '" data-vehicleRegNo="' + json.data[i].vehicleRegNo + '"' +
                             '" data-vehiclePurcDate="' + json.data[i].vehiclePurcDate + '"' +
                             '" data-managerId="' + json.data[i].managerId + '"' +
-                            '" data-gpsKitId="' + json.data[i].gpsKitId + '"' +
                             '" data-gpsKitId="' + json.data[i].gpsKitId + '"' +
                             '"' +
                             ' class="editbtn btn btn-sm btn-warning  editbtn" data-toggle="modal" data-target="#addVehicleDetailModal"><i class="material-icons"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">edit</font></font></i></button>'
@@ -239,7 +238,11 @@
     $(document).on("click", ".editbtn", function () {
         id = $(this).data('id');
         $(".transportType").val($(this).attr('data-transportType'));
-        $(".vehicleId").val($(this).attr('data-vehicleId'));
+        $(".vehicleRegNo").val($(this).attr('data-vehicleRegNo'));
+        $(".vehiclePurcDate").val(moment($(this).attr('data-vehiclePurcDate')).format('DD/MM/YYYY'));
+        $(".managerId").val($(this).attr('data-managerId'));
+        $(".gpsKitId").val($(this).attr('data-gpsKitId'));
+        $(".vehicleName").val($(this).attr('data-vehicleName'));
         $(".vehicleTitle").text("Update Vehicle details");
     });
 

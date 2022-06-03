@@ -100,7 +100,7 @@ class VehicleDetailService {
                 vehicleDetail.gpsKitId = jsonObject.get("gpsKitId")
                 vehicleDetail.managerId = Long.parseLong(jsonObject.get("managerId").toString())
                 vehicleDetail.vehiclePurcDate = sdf.parse(jsonObject.get("vehiclePurcDate").toString())
-                vehicleDetail.vehicleRegNo = Long.parseLong(jsonObject.get("vehicleRegNo").toString())
+                vehicleDetail.vehicleRegNo = jsonObject.get("vehicleRegNo").toString()
                 vehicleDetail.transportType = TransportType.findById(Long.parseLong(jsonObject.get("transportType").toString()))
                 vehicleDetail.entityTypeId = Long.parseLong(jsonObject.get("entityTypeId").toString())
                 vehicleDetail.entityId = Long.parseLong(jsonObject.get("entityId").toString())
