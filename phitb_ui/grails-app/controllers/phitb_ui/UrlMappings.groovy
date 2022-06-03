@@ -623,5 +623,24 @@ class UrlMappings {
         "/reports/accounts/outstanding"(controller: "accountsReport", action: "outstandingReport")
         "/reports/accounts/getoutstanding"(controller: "accountsReport", action: "getOutstandingReport")
 
+
+        /*<-------------------------------------------Shipments------------------------------------------------->*/
+
+        //Transport Type
+        "/transport-type"(controller: "transportType") {
+            action = [GET: "index", POST: "save"]
+        }
+        "/transport-type/datatable"(controller: "transportType", action: "dataTable")
+        "/transport-type/update/$id"(controller:"transportType",action:"update")
+        "/transport-type/delete/$id"(controller: "transportType",action:"delete")
+
+        //Vehicle Details
+        "/vehicle-detail"(controller: "vehicleDetail") {
+            action = [GET: "index", POST: "save"]
+        }
+        "/vehicle-detail/datatable"(controller: "vehicleDetail", action: "dataTable")
+        "/vehicle-detail/update/$id"(controller:"vehicleDetail",action:"update")
+        "/vehicle-detail/delete/$id"(controller: "vehicleDetail",action:"delete")
+
     }
 }

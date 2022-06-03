@@ -59,5 +59,10 @@
         else
             $('#settings-menu').removeClass("hidden");
 
+        if($('#shipments-menu').find('.ml-menu').children().length === 0)
+            $('#shipments-menu').addClass("hidden");
+        else
+            $('#shipments-menu').removeClass("hidden");
+
     }
 </script>

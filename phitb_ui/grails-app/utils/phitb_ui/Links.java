@@ -621,4 +621,21 @@ public class Links
     //      Update Password
     public static String UPDATE_PASSWORD = "api/v1.0/entity/update-password/id/{id}/password/{password}";
 
+
+
+    /*<-------------------------------------------Product ------------------------------------------------->*/
+
+    //Transport Type
+    public static String TRANSPORT_TYPE_SHOW = "api/v1.0/shipments/transporttype";
+    public static String TRANSPORT_TYPE_SAVE = "api/v1.0/shipments/transporttype";
+    public static String TRANSPORT_TYPE_DATATABLE = "api/v1.0/shipments/transporttype/datatable";
+    public static String TRANSPORT_TYPE_UPDATE = "api/v1.0/shipments/transporttype/{id}";
+    public static String TRANSPORT_TYPE_DELETE = "api/v1.0/shipments/transporttype/{id}";
+
+    //Vechicle Detail
+    public static String VECHILE_DETAIL_SHOW = "api/v1.0/shipments/vehicledetail";
+    public static String VECHILE_DETAIL_SAVE = "api/v1.0/shipments/vehicledetail";
+    public static String VECHILE_DETAIL_DATATABLE = "api/v1.0/shipments/vehicledetail/datatable";
+    public static String VECHILE_DETAIL_UPDATE = "api/v1.0/shipments/vehicledetail/{id}";
+    public static String VECHILE_DETAIL_DELETE = "api/v1.0/shipments/vehicledetail/{id}";
 }

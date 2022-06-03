@@ -558,6 +558,8 @@
                     </ul>
                 </li>
 
+
+
                 <li id="product-menu" class="sidemenuitem"><a href="javascript:void(0);" class="menu-toggle"><i
                         class="zmdi zmdi-apps"></i><span>Product</span> <span
                         class="badge badge-success float-right"></span></a>
@@ -604,6 +606,17 @@
                         </g:if>
                     </ul>
                 </li>
+
+
+                <li id="shipments-menu" class="sidemenuitem"><a href="javascript:void(0);" class="menu-toggle"><i
+                        class="zmdi zmdi-truck"></i><span>Shipments</span> <span
+                        class="badge badge-success float-right"></span></a>
+                    <ul class="ml-menu">
+                        <li><a href="/transport-type">Transport Type</a></li>
+                        <li><a href="/vehicle-detail">Vehicle Details</a></li>
+                    </ul>
+                </li>
+
 
                 <li id="approvals-menu" class="sidemenuitem"><a href="javascript:void(0);" class="menu-toggle"><i
                         class="zmdi zmdi-check-circle"></i><span>Approvals</span> <span
