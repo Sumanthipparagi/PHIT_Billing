@@ -36,8 +36,7 @@
                                 </label>
                                 <select class="form-control show-tick cityIds" name="cityIds" id="cityIds"
                                         multiple="multiple" required>
-                                    <option value="0">Please Select</option>
-
+%{--                                    <option value="0">Please Select</option>--}%
                                     <g:each var="c" in="${citylist}">
                                         <option value="${c.id}">${c.name}</option>
                                     </g:each>
@@ -51,8 +50,7 @@
                                 </label>
                                 <select class="form-control show-tick stateIds" name="stateIds" id="stateIds"
                                         multiple="multiple" required>
-                                    <option value="0">Please Select</option>
-
+%{--                                    <option value="0">Please Select</option>--}%
                                     <g:each var="s" in="${statelist}">
                                         <option value="${s.id}">${s.name}</option>
                                     </g:each>
@@ -67,7 +65,7 @@
                                 </label>
                                 <select class="form-control show-tick zoneIds" name="zoneIds" id="zoneIds"
                                         multiple="multiple" required>
-                                    <option value="0">Please Select</option>
+%{--                                    <option value="0">Please Select</option>--}%
                                     <g:each var="z" in="${zoneList}">
                                         <option value="${z.id}">${z.name}</option>
                                     </g:each>

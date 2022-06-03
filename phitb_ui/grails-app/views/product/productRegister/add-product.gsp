@@ -32,7 +32,7 @@
 <div class="page-loader-wrapper">
     <div class="loader">
         <div class="m-t-30"><img src="${assetPath(src: '/themeassets/images/logo.svg')}" width="48" height="48"
-                                 alt="Alpino"></div>
+                                 alt="PharmIT"></div>
 
         <p>Please wait...</p>
     </div>
@@ -112,6 +112,7 @@
                                             </label>
                                             <select class="form-control show-tick manufacturerId"
                                                     name="manufacturerId" id="manufacturerId" style="border: 0">
+                                                <option value="0">Please Select</option>
                                                 <g:each var="c" in="${manufacturerList}">
                                                     <option value="${c.id}">${c.entityName}</option>
                                                 </g:each>
@@ -123,6 +124,7 @@
                                             </label>
                                             <select class="form-control show-tick mktCompanyId" name="mktCompanyId"
                                                     id="mktCompanyId" style="border: 0;">
+                                                <option value="0">Please Select</option>
                                                 <g:each var="c" in="${companyList}" >
                                                     <option value="${c.id}">${c.entityName}</option>
                                                 </g:each>
@@ -133,6 +135,7 @@
                                                 Rack
                                             </label>
                                             <select class="form-control show-tick rackId" name="rackId" id="rackId">
+                                                <option value="0">Please Select</option>
                                                 <g:each var="r" in="${racks}">
                                                     <option value="${r.id}">${r.rackName}</option>
                                                 </g:each>
@@ -142,7 +145,9 @@
                                             <label for="division">
                                                 Division
                                             </label>
-                                            <select class="form-control show-tick division" name="division" id="division">
+                                            <select class="form-control show-tick division" name="division"
+                                                    id="division" required>
+                                                <option value="">Please Select</option>
                                                 <g:each var="d" in="${divisions}">
                                                     <option value="${d.id}">${d.divisionName}</option>
                                                 </g:each>
@@ -161,6 +166,7 @@
 
                                             <select class="form-control show-tick composition" name="composition"
                                                     id="composition">
+                                                <option value="0">Please Select</option>
                                                 <g:each var="c" in="${compositions}">
                                                     <option value="${c.id}">${c.compositionName}</option>
                                                 </g:each>
@@ -198,24 +204,22 @@
                                             </select>
 
                                         </div>
-                                        <div class="col-lg-6 form-group  form-float">
+                                        <div class="col-lg-12 form-group  form-float">
                                             <label for="unitPacking">
                                                 Unit Packing
                                             </label>
                                             <input type="text" id="unitPacking" class="form-control unitPacking"
                                                    name="unitPacking"
-                                                   placeholder="Unit Packing"
-                                                   required/>
+                                                   placeholder="Unit Packing"/>
                                         </div>
-                                        <div class="col-lg-6 form-group  form-float">
-                                            <label for="productMoo">
-                                                Product MOQ
-                                            </label>
-                                            <input type="number" id="productMoo" class="form-control productMoo"
-                                                   name="productMoo"
-                                                   placeholder="Product MOQ"
-                                                   required/>
-                                        </div>
+%{--                                        <div class="col-lg-6 form-group  form-float">--}%
+%{--                                            <label for="productMoo">--}%
+%{--                                                Product MOQ--}%
+%{--                                            </label>--}%
+%{--                                            <input type="number" id="productMoo" class="form-control productMoo"--}%
+%{--                                                   name="productMoo"--}%
+%{--                                                   placeholder="Product MOQ"/>--}%
+%{--                                        </div>--}%
                                     </div>
                                 </div>
 
@@ -389,7 +393,7 @@
                                             <input type="text" id="thresholdLevel"
                                                    class="form-control thresholdLevel" name="thresholdLevel"
                                                    placeholder="Threshold Level"
-                                                   required/>
+                                                   />
                                         </div>
                                         <div class="col-lg-6 form-group  form-float">
                                             <label for="orderQuantity">
@@ -397,8 +401,8 @@
                                             </label>
                                             <input type="number" id="orderQuantity"
                                                    class="form-control orderQuantity" name="orderQuantity"
-                                                   placeholder="Order Quantity"
-                                                   required/>
+                                                   placeholder="Order Quantity" value="0"
+                                                   />
                                         </div>
                                         <div class="col-lg-6 form-group  form-float">
                                             <label for="group">
@@ -434,19 +438,19 @@
                                             <label for="sendMail">
                                                 Send Mail
                                             </label>
-                                            <input type="text" id="sendMail"
-                                                   class="form-control sendMail" name="sendMail"
-                                                   placeholder="Send Mail"
-                                                   required/>
+                                            <select class="form-control show-tick sendMail" name="sendMail" id="sendMail">
+                                                    <option value="0">YES</option>
+                                                    <option value="1">NO</option>
+                                            </select>
                                         </div>
                                         <div class="col-lg-6 form-group  form-float">
                                             <label for="discountAllowed">
                                                 Discount Allowed
                                             </label>
-                                            <input type="text" id="discountAllowed"
-                                                   class="form-control discountAllowed" name="discountAllowed"
-                                                   placeholder="Discount Allowed"
-                                                   required/>
+                                            <select class="form-control show-tick discountAllowed" name="discountAllowed"id="discountAllowed">
+                                                <option value="0">YES</option>
+                                                <option value="1">NO</option>
+                                            </select>
                                         </div>
                                         <div class="col-lg-6 form-group  form-float">
                                             <label for="ccmProduct">
@@ -470,7 +474,7 @@
                                             </label>
                                             <input type="text" id="hsnCode" class="form-control hsnCode" name="hsnCode"
                                                    placeholder="HSN Code"
-                                                   required/>
+                                                   />
                                         </div>
 
                                         <div class="col-lg-6 form-group  form-float">
@@ -537,8 +541,8 @@
                                 <input type="hidden" name="status" value="1">
                                 <input type="hidden" name="syncStatus" value="1">
                                 <input type="hidden" name="lastLoginDate" value="12/02/2020">
-                                <input type="hidden" name="createdUser" value="1">
-                                <input type="hidden" name="modifiedUser" value="1">
+                                <input type="hidden" name="createdUser" value="${session.getAttribute('userId')}">
+                                <input type="hidden" name="modifiedUser" value="${session.getAttribute('userId')}">
 
                                 <div class="col-lg-12">
                                     <div class="" style="float: right;">
