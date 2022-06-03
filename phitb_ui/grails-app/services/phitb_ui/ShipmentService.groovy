@@ -224,7 +224,7 @@ class ShipmentService {
         try
         {
             Response apiResponse = target
-                    .path(new Links().VECHILE_DETAIL_UPDATE)
+                    .path(new Links().VECHILE_DETAIL_DELETE)
                     .resolveTemplate("id", jsonObject.id)
                     .request(MediaType.APPLICATION_JSON_TYPE)
                     .delete()

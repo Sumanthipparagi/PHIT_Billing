@@ -5,9 +5,9 @@
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span></button>
-                    <h4 class="transportTitle"></h4>
+                    <h4 class="vehicleTitle"></h4>
                 </div>
-                <form action="" id="form_validation" method="post" role="form" class="transportForm"
+                <form action="" id="form_validation" method="post" role="form" class="vehicleForm"
                       enctype="multipart/form-data">
                     <div class="modal-body">
                         <div class="row">
@@ -16,9 +16,9 @@
                                     Transport Type
                                 </label>
                                 <select class="form-control show-tick transportType" name="transportType" id="transportType" required>
-                                    <option value="0">Please Select</option>
+                                    <option value="">Please Select</option>
                                     <g:each var="t" in="${transportType}">
-                                        <option value="${t.id}">${s.transportType}</option>
+                                        <option value="${t.id}">${t.transportType}</option>
                                     </g:each>
                                 </select>
                             </div>
@@ -47,7 +47,7 @@
                                 <label for="managerId">
                                    Manager
                                 </label>
-                                <select class="form-control show-tick transportType" name="managerId" id="managerId" required>
+                                <select class="form-control show-tick managerId" name="managerId" id="managerId" required>
                                     <option value="0">Please Select</option>
                                     <g:each var="s" in="${series}">
                                         <option value="${s.id}">${s.seriesName}</option>

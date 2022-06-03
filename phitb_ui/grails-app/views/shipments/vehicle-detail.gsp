@@ -17,8 +17,8 @@
     <asset:stylesheet rel="stylesheet" href="/themeassets/css/color_skins.css"/>
     <asset:stylesheet rel="stylesheet" href="/themeassets/plugins/sweetalert/sweetalert.css"/>
     <asset:stylesheet  src="/themeassets/plugins/bootstrap-select/css/bootstrap-select.css" rel="stylesheet" />
-    <asset:stylesheet  src="/themeassets/plugins/select-2-editor/select2.min.css" rel="stylesheet" />
-
+    <asset:stylesheet  src="/themeassets/js/pages/forms/basic-form-elements.js" rel="stylesheet" />
+    <asset:stylesheet  src="/themeassets/plugins/bootstrap-material-datetimepicker/css/bootstrap-material-datetimepicker.css" rel="stylesheet" />
     <style>
 
     /*div.dataTables_scrollBody table tbody  td {*/
@@ -106,6 +106,8 @@
 <!-- Jquery Core Js -->
 <asset:javascript src="/themeassets/bundles/libscripts.bundle.js"/>
 <asset:javascript src="/themeassets/bundles/vendorscripts.bundle.js"/>
+<asset:javascript src="/themeassets/plugins/bootstrap-colorpicker/js/bootstrap-colorpicker.js"/>
+<asset:javascript src="/themeassets/plugins/multi-select/js/jquery.multi-select.js"/>
 <asset:javascript src="/themeassets/bundles/datatablescripts.bundle.js"/>
 <asset:javascript src="/themeassets/plugins/jquery-datatable/buttons/dataTables.buttons.min.js"/>
 <asset:javascript src="/themeassets/plugins/jquery-datatable/buttons/buttons.bootstrap4.min.js"/>
@@ -116,11 +118,21 @@
 <asset:javascript src="/themeassets/js/pages/tables/jquery-datatable.js"/>
 <asset:javascript src="/themeassets/js/pages/ui/dialogs.js"/>
 <asset:javascript src="/themeassets/plugins/sweetalert/sweetalert.min.js"/>
-<asset:javascript  src="/themeassets/plugins/select-2-editor/select2.js" />
-
+<asset:javascript src="/themeassets/plugins/jquery-inputmask/jquery.inputmask.bundle.js"/>
+<asset:javascript src="/themeassets/plugins/momentjs/moment.js"/>
+<asset:javascript src="/themeassets/plugins/bootstrap-material-datetimepicker/js/bootstrap-material-datetimepicker.js"/>
+<asset:javascript src="/themeassets/js/pages/forms/basic-form-elements.js"/>
 
 
 <script>
+
+    $('.vehiclePurcDate').bootstrapMaterialDatePicker({
+        time:false,
+        format: 'DD/MM/YYYY',
+        clearButton: true,
+        shortTime: true,
+        weekStart: 1
+    });
 
     var vehicledetailtable;
     var id = null;
@@ -175,14 +187,14 @@
             },
             columns: [
                 // {'data': 'id', 'width': '20%'},
-                {'data': 'transportType', 'width': '20%'},
-                {'data': 'vechicleId', 'width': '20%'},
+                {'data': 'vehicleName', 'width': '20%'},
+                {'data': 'vehicleRegNo', 'width': '20%'},
                 {'data': 'action', 'width': '20%'}
             ]
         });
     }
 
-    $(".transportForm").submit(function (event) {
+    $(".vehicleForm").submit(function (event) {
 
         //disable the default form submission
         event.preventDefault();
@@ -209,7 +221,7 @@
             success: function () {
                 swal("Success!", "Transport Type Submitted Successfully", "success");
                 vehicleDetailTable();
-                $('#addTransportModal').modal('hide');
+                $('#addVehicleDetailModal').modal('hide');
             },
             error: function () {
                 swal("Error!", "Something went wrong", "error");
@@ -219,8 +231,8 @@
     });
 
     $(document).on("click", ".addbtn", function () {
-        $(".transportForm")[0].reset();
-        $(".transportTitle").text("Add Vehicle details")
+        $(".vehicleForm")[0].reset();
+        $(".vehicleTitle").text("Add Vehicle details");
         id = null
     });
 
@@ -228,7 +240,7 @@
         id = $(this).data('id');
         $(".transportType").val($(this).attr('data-transportType'));
         $(".vehicleId").val($(this).attr('data-vehicleId'));
-        $(".transportTitle").text("Update Vehicle details");
+        $(".vehicleTitle").text("Update Vehicle details");
     });
 
 
