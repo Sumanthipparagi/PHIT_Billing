@@ -614,38 +614,9 @@
 <asset:javascript src="/themeassets/js/pages/forms/basic-form-elements.js"/>
 <asset:javascript src="/themeassets/plugins/dropify/dist/js/dropify.min.js"/>
 
+
+
 <script>
-
-    $(function () {
-        //Datetimepicker plugin
-        $('.contactDob').bootstrapMaterialDatePicker({
-            format: 'DD/MM/YYYY',
-            clearButton: true,
-            time: false,
-            weekStart: 1
-        });
-        $('.foodLicenceValidity').bootstrapMaterialDatePicker({
-            format: 'DD/MM/YYYY',
-            clearButton: true,
-            time: false,
-            weekStart: 1
-        });
-        $('.drugLicenceValidity').bootstrapMaterialDatePicker({
-            format: 'DD/MM/YYYY',
-            clearButton: true,
-            time: false,
-            weekStart: 1
-        });
-    });
-<script>
-
-    $(function () {
-
-        $('#manufacturerId').select2()
-        $('#mktCompanyId').select2()
-    });
-
-    <script>
 
         $(function () {
         //Datetimepicker plugin
@@ -713,8 +684,8 @@
     function setTwoNumberDecimal(event) {
         this.value = parseFloat(this.value.toFixed(2));
     }
-
 </script>
+
 <g:include view="controls/footer-content.gsp"/>
 <script>
     selectSideMenu("product-menu");
