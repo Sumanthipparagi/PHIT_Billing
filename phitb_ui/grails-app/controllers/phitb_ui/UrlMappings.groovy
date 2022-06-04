@@ -135,6 +135,25 @@ class UrlMappings {
 
 
 
+        //HQ- areas
+        "/hq-area"(controller: "HQAreas") {
+            action = [GET: "index", POST: "save"]
+        }
+        "/hq-area/datatable"(controller: "HQAreas", action: "dataTable")
+        "/hq-area/update/$id"(controller:"HQAreas",action:"update")
+        "/hq-area/delete/$id"(controller: "HQAreas",action:"delete")
+
+
+
+        //entity-irn
+        "/entity-irn"(controller: "entityIRN") {
+            action = [GET: "index", POST: "save"]
+        }
+        "/entity-irn/datatable"(controller: "entityIRN", action: "dataTable")
+        "/entity-irn/update/$id"(controller:"entityIRN",action:"update")
+        "/entity-irn/delete/$id"(controller: "entityIRN",action:"delete")
+
+
         //  Entity Settings
 
         "/entity-settings"(controller: "entitySettings") {

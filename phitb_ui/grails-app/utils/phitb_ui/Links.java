@@ -183,6 +183,13 @@ public class Links
     public static String DAY_END_MASTER_UPDATE = "api/v1.0/entity/dayendmaster/{id}";
     public static String DAY_END_MASTER_DELETE = "api/v1.0/entity/dayendmaster/{id}";
 
+    //Day End Master
+    public static String HQ_AREA_SHOW = "api/v1.0/entity/hqareas";
+    public static String HQ_AREA_SAVE = "api/v1.0/entity/hqareas";
+    public static String HQ_AREA_DATATABLE = "api/v1.0/entity/hqareas/datatable";
+    public static String HQ_AREA_UPDATE = "api/v1.0/entity/hqareas/{id}";
+    public static String HQ_AREA_DELETE = "api/v1.0/entity/hqareas/{id}";
+
 
     //Financial Year master
     public static String FINANCIAL_YEAR_SHOW = "api/v1.0/entity/financialyearmaster";

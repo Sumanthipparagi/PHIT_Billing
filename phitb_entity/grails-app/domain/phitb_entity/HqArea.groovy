@@ -1,8 +1,21 @@
 package phitb_entity
 
-class HqArea {
+import gorm.logical.delete.LogicalDelete
+
+class HqArea implements LogicalDelete<HqArea>
+{
     String hqName
     String cityId
+    EntityRegister entity
+    EntityTypeMaster entityType
+
+    UserRegister createdUser
+    UserRegister modifiedUser
+
+    Date dateCreated
+    Date lastUpdated
+
+
     static constraints = {
         cityId nullable: true
     }

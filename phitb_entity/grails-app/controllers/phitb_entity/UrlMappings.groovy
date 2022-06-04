@@ -347,8 +347,21 @@ class UrlMappings
                         'delete']
             }
 
+            //service Type
+            "/hqareas(.$format)?"(controller: 'hqAreas') {
+                action = [GET: 'index', POST:
+                        'save']
+            }
+            "/hqareas/datatable(.$format)?"(controller: 'hqAreas') {action = [GET: 'dataTable']}
+            "/hqareas/$id(.$format)?"(controller: 'hqAreas') {
+                action = [GET: 'show', PUT: 'update', DELETE:
+                        'delete']
+            }
+
 //            Update Password
             "/update-password/id/$id/password/$password(.$format)?"(controller: 'userRegister', action: 'updatePassword')
+
+
         }
     }
 }

@@ -555,6 +555,7 @@
                         <g:if test="${UtilsService.isPermitted("VIEW_SERVICE_TYPE", session.getAttribute("permittedFeatures").toString())}">
                             <li><a href="/service-type">Service Type</a></li>
                         </g:if>
+                        <li><a href="/hq-area">HQ areas</a></li>
                     </ul>
                 </li>
 
