@@ -189,7 +189,7 @@ class EntityRegisterController
             if (apiResponse?.status == 200)
             {
                 JSONObject obj = new JSONObject(apiResponse.readEntity(String.class))
-                render(view: '/entity/entityRegister/add-entity-register')
+                render(view: '/entity/entityRegister/entityRegister')
 //                respond obj, formats: ['json'], status: 200
             }
             else

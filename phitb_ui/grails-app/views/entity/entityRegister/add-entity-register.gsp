@@ -294,7 +294,7 @@
                                             </label>
                                             <input type="text" id="ptr" onblur="setTwoNumberDecimal"
                                                    class="form-control ptr" name="ptr"
-                                                   placeholder="PTR" step="0.25" value="0.00"
+                                                   placeholder="PTR" step="0.25" value="0.00" required
                                                    />
                                         </div>
                                         <div class="col-lg-6 form-group  form-float">
@@ -303,7 +303,7 @@
                                             </label>
                                             <input type="number" id="salesBalanceLimit" class="form-control salesBalanceLimit"
                                                    name="salesBalanceLimit" placeholder="Sales Balance Limit"
-                                                   onblur="setTwoNumberDecimal" step="0.25" value="0.00"
+                                                   onblur="setTwoNumberDecimal" step="0.25" value="0.00" required
                                                    />
                                         </div>
                                     </div>
@@ -373,7 +373,7 @@
                                             </label>
                                             <input type="number" id="openingBalance"
                                                    class="form-control openingBalance" onblur="setTwoNumberDecimal()" step="0.25" value="0.00"
-                                                   name="openingBalance" placeholder="Opening Balance"/>
+                                                   name="openingBalance" placeholder="Opening Balance" required/>
                                         </div>
                                         <div class="col-lg-6 form-group  form-float">
                                             <label for="currentBalance">
@@ -381,7 +381,7 @@
                                             </label>
                                             <input type="number" id="currentBalance"
                                                    class="form-control currentBalance"  onblur="setTwoNumberDecimal()" step="0.25" value="0.00"
-                                                   name="currentBalance" placeholder="Current Balance"/>
+                                                   name="currentBalance" placeholder="Current Balance" required/>
                                         </div>
                                         <div class="col-lg-6 form-group  form-float">
                                             <label for="discount">
@@ -389,7 +389,7 @@
                                             </label>
                                             <input type="number" id="discount" class="form-control discount"
                                                    name="discount" placeholder="Discount"
-                                                   onblur="setTwoNumberDecimal()" step="0.25" value="0.00"
+                                                   onblur="setTwoNumberDecimal()" step="0.25" value="0.00" required
                                                    />
                                         </div>
                                         <div class="col-lg-6 form-group  form-float">
@@ -398,7 +398,7 @@
                                             </label>
                                             <input type="number" id="bankCommision" class="form-control bankCommision"  onblur="setTwoNumberDecimal()" step="0.25" value="0.00"
                                                    name="bankCommision" placeholder="Bank Commision"
-                                                   />
+                                                   required/>
                                             </select>
                                         </div>
                                         <div class="col-lg-6 form-group  form-float">
@@ -407,7 +407,7 @@
                                             </label>
                                             <input type="number" id="defaultCharge" class="form-control defaultCharge"  onblur="setTwoNumberDecimal()" step="0.25" value="0.00"
                                                    name="defaultCharge" placeholder="Default Charge"
-                                                   />
+                                                   required/>
                                         </div>
 %{--                                        <div class="col-lg-6 form-group  form-float">--}%
 %{--                                            <label for="careTaker">--}%
@@ -460,7 +460,7 @@
                                             </label>
                                             <input type="number" id="salesmanCommission" class="form-control salesmanCommission"
                                                    name="salesmanCommission" placeholder="Salesman Commission"  onblur="setTwoNumberDecimal()" step="0.25" value="0.00"
-                                            />
+                                                   required />
                                         </div>
                                         <div class="col-lg-6 form-group  form-float">
                                             <label for="routeId">
