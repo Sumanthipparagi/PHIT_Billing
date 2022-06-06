@@ -61,7 +61,7 @@
         <div class="block-header">
             <div class="row clearfix">
                 <div class="col-lg-5 col-md-5 col-sm-12">
-                    <h2>Hq Areas</h2>
+                    <h2>Entity IRN</h2>
                     <ul class="breadcrumb padding-0">
                         <li class="breadcrumb-item"><a href="#"><i class="zmdi zmdi-home"></i></a></li>
                         <li class="breadcrumb-item active">Entity IRN</li>
@@ -98,7 +98,7 @@
                     %{--                    </div>--}%
                     <div class="header">
                         <button type="button" class="btn btn-round btn-primary m-t-15 addbtn" data-toggle="modal"
-                                data-target="#addHqareaModal"><font style="vertical-align: inherit;"><font
+                                data-target="#addEntityIRNModal"><font style="vertical-align: inherit;"><font
                                 style="vertical-align: inherit;">Add Entity IRN</font></font></button>
                     </div>
                     <div class="body">
@@ -108,7 +108,8 @@
                                 <thead>
                                 <tr>
                                     %{--                                    <th style="width: 20%">ID</th>--}%
-                                    <th style="width: 20%">HQ area</th>
+                                    <th style="width: 20%">username</th>
+                                    <th style="width: 20%">Active</th>
                                     <th style="width: 20%">Action</th>
                                 </tr>
                                 </thead>
@@ -134,7 +135,7 @@
 </section>
 
 
-<g:include view="controls/entity/add-hqarea.gsp"/>
+<g:include view="controls/entity/add-entityirn.gsp"/>
 <g:include view="controls/delete-modal.gsp"/>
 
 <!-- Jquery Core Js -->
@@ -197,7 +198,7 @@
                             '" data-irnpassword="' + json.data[i].irnPassword + '"' +
                             '" data-active="' + json.data[i].active + '"' +
                             '"' +
-                            ' class="editbtn btn btn-sm btn-warning  editbtn" data-toggle="modal" data-target="#addHqareaModal"><i class="material-icons"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">edit</font></font></i></button>'
+                            ' class="editbtn btn btn-sm btn-warning  editbtn" data-toggle="modal" data-target="#addEntityIRNModal"><i class="material-icons"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">edit</font></font></i></button>'
                         var deletebtn = '<button type="button" data-id="' + json.data[i].id +
                             '" class="btn btn-sm btn-danger deletebtn" data-toggle="modal" data-target=".deleteModal"><i class="material-icons"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">delete</font></font></i></button>'
                         return_data.push({
@@ -243,7 +244,7 @@
             success: function () {
                 swal("Success!", "Entit IRN  Submitted Successfully", "success");
                 entityIRN();
-                $('#addHqareaModal').modal('hide');
+                $('#addEntityIRNModal').modal('hide');
             },
             error: function () {
                 swal("Error!", "Something went wrong", "error");
@@ -253,18 +254,17 @@
     });
 
     $(document).on("click", ".addbtn", function () {
-        $(".hqAreaForm")[0].reset();
+        $(".entityIrnForm")[0].reset();
         id = null;
-        $(".hqAreaTitle").text("Add Entity IRN ?");
+        $(".entityIrnTitle").text("Add Entity IRN ?");
 
     });
 
     $(document).on("click", ".editbtn", function () {
         id = $(this).data('id');
-        $(".hqname").val($(this).attr('data-date'));
-        var cityIds =$(this).attr('data-cityIds');
-        $(".cityIds").val(cityIds.split(",")).change();
-        $(".hqAreaTitle").text("Update Entity IRN ?");
+        $(".irnUsername").val($(this).attr('data-date'));
+        $(".irnPassword").val($(this).attr('data-cityIds'));
+        $(".entityIrnTitle").text("Update Entity IRN ?");
     });
 
 

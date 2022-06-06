@@ -35,7 +35,7 @@ class EntityIRNController {
                 }
             }
 
-            render(view: '/entity/HQAreas/hqAreas',model: [entity:entity,
+            render(view: '/entity/entityIRN/entityIRN',model: [entity:entity,
                                                            statelist:statelist,countrylist:countrylist,
                                                            citylist:citylist,salesmanList:salesmanList,
                                                            managerList:managerList,zoneList:zoneList])
