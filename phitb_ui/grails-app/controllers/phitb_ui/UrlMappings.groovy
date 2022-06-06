@@ -509,6 +509,8 @@ class UrlMappings {
         "/grn/print-grn"(controller: "goodsTransferNote", action: "printGRN")
 
 
+//        Sample conversion
+        "/sample-conversion/promotional-gdv"(controller: 'sampleConversion', action: 'index')
 
         /*<-------------------------------------------Purchase Entry------------------------------------------------->*/
 

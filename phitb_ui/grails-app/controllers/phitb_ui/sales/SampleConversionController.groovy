@@ -29,7 +29,7 @@ class SampleConversionController {
                 salesmanList.add(it)
             }
         }
-        render(view: '/sales/saleRetrun/sale-returns', model: [customers: customers, divisions: divisions, series: series,
+        render(view: '/sales/sampleConversion/sample-promotional-gdv', model: [customers: customers, divisions: divisions, series: series,
                                                                salesmanList: salesmanList, priorityList: priorityList, reason:reason,taxRegister:taxRegister])
     }
 }

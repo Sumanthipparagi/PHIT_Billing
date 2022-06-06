@@ -290,7 +290,7 @@
                                             />
                                         </div>
 
-                                        <div class="col-lg-6 form-group  form-float">
+                                        <div class="col-lg-12 form-group  form-float">
                                             <label for="salesBalanceLimit">
                                                 Sales Balance Limit
                                             </label>
