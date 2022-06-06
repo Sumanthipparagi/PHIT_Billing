@@ -403,14 +403,11 @@ class InventoryService {
     def deleteStockBook(String id) {
         Client client = ClientBuilder.newClient();
         WebTarget target = client.target(new Links().API_GATEWAY);
-
         try {
-
             Response apiResponse = target
                     .path(new Links().STOCK_BOOK+"/"+id)
                     .request(MediaType.APPLICATION_JSON_TYPE)
                     .delete()
-
             return apiResponse
         }
         catch (Exception ex) {

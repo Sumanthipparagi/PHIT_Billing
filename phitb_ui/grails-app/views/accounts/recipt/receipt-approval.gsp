@@ -109,9 +109,9 @@
                         <label for="customer">
                             Customer
                         </label><br>
-                        <select class=" show-tick customer" name="customer"
+                        <select onchange="customerChanged()" class="show-tick customer" name="customer"
                                 id="customer" style="width: 300px;">
-                            <option value="All">All</option>
+                            <option value="all">ALL</option>
                             <g:each var="e" in="${entity}">
                                 <option value="${e.id}" data-type="${e.entityType.id}">${e.entityName}</option>
                             </g:each>
@@ -122,9 +122,8 @@
                         <div class="form-group">
                             <label>Date Range:</label>
                             <div class="input-group">
-                                <input class="dateRange" type="text" name="dateRange"
-                                       style="border-radius: 6px;margin: 4px;"/>
-                                <button class="input-group-btn btn btn-info" onclick="">Search</button>
+                                <input id="dateRange" class="dateRange" type="text" name="dateRange"
+                                       style="border-radius: 6px;margin: 4px;" autocomplete="off">
                             </div>
                         </div>
                     </div>
@@ -132,7 +131,7 @@
 
                     <div class="body">
                         <div class="table-responsive">
-                            <table class="table table-bordered table-striped table-hover customerGroupTable dayEndTable">
+                            <table class="table table-bordered table-striped table-hover recieptTable">
                                 <thead>
                                 <tr>
                                     %{--
@@ -140,6 +139,7 @@
                                     <th style="width: 20%">Recipt Date</th>
                                     <th style="width: 20%">Receipt Id</th>
                                     <th style="width: 20%">Received From</th>
+                                    <th style="width: 20%">Status</th>
 %{--                                    <th style="width: 20%">Deposit To</th>--}%
                                     <th style="width: 20%">Financial Year</th>
                                     <th style="width: 20%">Amount paid</th>
@@ -200,21 +200,41 @@
 <script>
 
     $('.dateRange').daterangepicker({
+        autoUpdateInput: false,
         locale: {
-            format: "DD/MM/YYYY"
-        }
+            cancelLabel: 'Clear'
+        },
     });
+    $('.dateRange').on('apply.daterangepicker', function(ev, picker) {
+        $(this).val(picker.startDate.format('DD/MM/YYYY') + ' - ' + picker.endDate.format('DD/MM/YYYY'));
+        recieptTable();
+    });
+    recieptTable();
+
+    $('.dateRange').on('cancel.daterangepicker', function(ev, picker) {
+        $(this).val('');
+        recieptTable();
+    });
+
+    function date()
+    {
+        alert($('.dateRange').val())
+    }
+
+
 
     $(".customer").select2()
-    var dayendtable;
+    var reciepttable;
     var id = null;
     $(function () {
-        dayEndTable();
+        recieptTable();
 
     });
 
-    function dayEndTable() {
-        dayendtable = $(".dayEndTable").DataTable({
+    function recieptTable() {
+        var customer = $("#customer").val();
+        var daterange = $(".dateRange").val();
+        reciepttable = $(".recieptTable").DataTable({
             "order": [[0, "desc"]],
             sPaginationType: "simple_numbers",
             responsive: {
@@ -234,6 +254,10 @@
                 type: 'GET',
                 url: '/recipt-list/datatable',
                 dataType: 'json',
+                data: {
+                    customer: customer,
+                    daterange: daterange,
+                },
                 dataSrc: function (json) {
                     console.log(json)
                     var return_data = [];
@@ -243,20 +267,23 @@
                         var editbtn =
                             ' <button type="button" data-id="'+json.data[i].id+'" data-recievedfrom="'+json.data[i].receivedFrom.id+'" class="print btn btn-sm btn-warning editbtn"><i class="material-icons"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">print</font></font></i></button>'
 
-                        var approveBtn = '<a class="btn btn-sm btn-success" title="Approved" onclick="approveReceipt(' + json.data[i].id +')" href="#"><i class="fa fa-check"></i></a>'
+                        var approveBtn =
+                            '<a class="btn btn-sm btn-success" title="Approved" onclick="approveReceipt(' + json.data[i].id +')" href="#"><i class="fa fa-check"></i></a>';
                         // var deletebtn = '<button type="button" data-id="' + json.data[i].id +
                         //     '" class="btn btn-sm btn-danger deletebtn" data-toggle="modal" data-target=".deleteModal"><i class="material-icons"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">delete</font></font></i></button>'
                         return_data.push({
                             'id': json.data[i].receiptId,
                             'date': moment(date).format('DD/MM/YYYY'),
                             'fy': json.data[i].financialYear,
+                            'status': json.data[i].approvedStatus,
                             'amountPaid': json.data[i].amountPaid.toFixed(2),
                             'receivedFrom': json.data[i].receivedFrom.entityName,
                             'depositTo': json.data[i]?.deposit === "NA" ? '' : json.data[i]?.deposit?.accountName,
                             'pd': moment(pd).format('DD/MM/YYYY'),
                             // 'bank': json.data[i].bank.bankName,
                             'action': editbtn,
-                            'aprBtn': approveBtn
+                            'aprBtn': json.data[i]?.approvedBy === 0 && json.data[i]?.approvedStatus !=="CANCELLED" ?
+                                approveBtn : json.data[i]?.approvedBy!== 0 ? json.data[i]?.approved.userName :""
                         });
                     }
                     return return_data;
@@ -267,6 +294,7 @@
                 {'data': 'date', 'width': '20%'},
                 {'data': 'id', 'width': '20%'},
                 {'data': 'receivedFrom', 'width': '20%'},
+                {'data': 'status', 'width': '20%'},
                 // {'data': 'depositTo', 'width': '20%'},
                 {'data': 'fy', 'width': '20%'},
                 {'data': 'amountPaid', 'width': '20%'},
@@ -303,11 +331,25 @@
             .appendTo("body");
     }
 
-    function approveReceipt() {
-        swal("approved!")
+    function approveReceipt(id) {
+        $.ajax({
+            type: 'POST',
+            url: '/receipt-approve?id='+id,
+            dataType: 'json',
+            success: function () {
+                recieptTable();
+                swal("Success!", "Receipt Approved", "success");
+            }, error: function () {
+                swal("Error!", "Something went wrong", "error");
+            }
+        });
+    }
+
+
+    function customerChanged() {
+        recieptTable();
     }
 </script>
-
 <g:include view="controls/footer-content.gsp"/>
 <script>
     selectSideMenu("accounts-menu");

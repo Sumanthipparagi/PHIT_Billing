@@ -111,7 +111,6 @@
                                     <th style="width: 20%">Rack Code Name</th>
                                     <th style="width: 20%">CCM Enabled</th>
                                     <th style="width: 20%">Genaral Info</th>
-                                    <th style="width: 20%">Companies</th>
                                     <th style="width: 20%">Floor Number</th>
 %{--                                    <th style="width: 20%">Entity</th>--}%
 %{--                                    <th style="width: 20%">Entity Type</th>--}%
@@ -154,7 +153,7 @@
 <asset:javascript src="/themeassets/plugins/jquery-datatable/buttons/buttons.colVis.min.js"/>
 <asset:javascript src="/themeassets/plugins/jquery-datatable/buttons/buttons.html5.min.js"/>
 <asset:javascript src="/themeassets/plugins/jquery-datatable/buttons/buttons.print.min.js"/>
-<asset:javascript src="/themeassets/bundles/mainscripts.bundle.js"/>
+<asset:javascript src="/themeassets/bundles/mainscripts-2.bundle.js"/>
 <asset:javascript src="/themeassets/js/pages/tables/jquery-datatable.js"/>
 <asset:javascript src="/themeassets/js/pages/ui/dialogs.js"/>
 <asset:javascript src="/themeassets/plugins/sweetalert/sweetalert.min.js"/>
@@ -234,7 +233,6 @@
                 {'data': 'rackCodeName', 'width': '20%'},
                 {'data': 'cccEnabled', 'width': '20%'},
                 {'data': 'generalInfo', 'width': '20%'},
-                {'data': 'companies', 'width': '20%'},
                 {'data': 'floorNumber', 'width': '20%'},
                 // {'data': 'entity', 'width': '20%'},
                 // {'data': 'entitytype', 'width': '20%'},
@@ -293,7 +291,15 @@
         $(".floorNumber").val($(this).attr('data-floorNumber'));
         $(".generalInfo").val($(this).attr('data-generalInfo'));
         $(".rackCodeName").val($(this).attr('data-rackCodeName'));
-        $(".companies").val($(this).attr('data-companies'));
+        alert($(this).attr('data-companies'));
+        var companies = $(this).attr('data-companies');
+        if(companies!=="")
+        {
+            $(".companies").val($(this).attr(companies.split(","))).change()
+        }
+        else {
+            $(".companies").val("");
+        }
         $(".ccmEnabled").val($(this).attr('data-cccEnabled'));
         $(".entityRegister").val($(this).attr('data-entity'));
         $("#entityRegister").val($(this).attr('data-entity')).change()

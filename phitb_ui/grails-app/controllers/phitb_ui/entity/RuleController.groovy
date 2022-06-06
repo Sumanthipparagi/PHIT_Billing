@@ -82,6 +82,14 @@ class RuleController {
         try
         {
             JSONObject jsonObject = new JSONObject(params)
+            if(params.entity!=null || params.entity!="")
+            {
+                jsonObject.put("entity", session.getAttribute("entityId"))
+            }
+            if(params.entityType!=null || params.entityType!="")
+            {
+                jsonObject.put("entityType", session.getAttribute("entityTypeId"))
+            }
             def apiResponse = new EntityService().saveRule(jsonObject)
             if (apiResponse?.status == 200)
             {
@@ -107,6 +115,14 @@ class RuleController {
         {
             println(params)
             JSONObject jsonObject = new JSONObject(params)
+            if(params.entity!=null || params.entity!="")
+            {
+                jsonObject.put("entity", session.getAttribute("entityId"))
+            }
+            if(params.entityType!=null || params.entityType!="")
+            {
+                jsonObject.put("entityType", session.getAttribute("entityTypeId"))
+            }
             def apiResponse = new EntityService().putRule(jsonObject)
             if (apiResponse.status == 200)
             {

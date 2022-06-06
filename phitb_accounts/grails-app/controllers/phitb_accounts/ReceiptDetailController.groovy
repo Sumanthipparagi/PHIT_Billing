@@ -2,6 +2,7 @@ package phitb_accounts
 
 import grails.converters.JSON
 import grails.web.servlet.mvc.GrailsParameterMap
+import org.grails.web.json.JSONArray
 import org.grails.web.json.JSONObject
 import phitb_accounts.Exception.BadRequestException
 import phitb_accounts.Exception.ResourceNotFoundException
@@ -193,10 +194,10 @@ class ReceiptDetailController {
      */
     def dataTable() {
         try {
-            String start = params.start
-            String length = params.length
             GrailsParameterMap parameterMap = getParams()
             JSONObject paramsJsonObject = new JSONObject(parameterMap.params)
+            String start = paramsJsonObject?.start
+            String length = paramsJsonObject?.length
             respond receiptDetailService.dataTables(paramsJsonObject, start, length)
         }
         catch (ResourceNotFoundException ex)
@@ -211,6 +212,71 @@ class ReceiptDetailController {
         }
         catch (Exception ex) {
             System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
+        }
+    }
+
+
+    def approveReceipt() {
+        try {
+            JSONObject jsonObject = new JSONObject(request.reader.text)
+            JSONObject approveReceipt = receiptDetailService.approveReceipt(jsonObject)
+            respond approveReceipt
+        }
+        catch (org.springframework.boot.context.config.ResourceNotFoundException ex) {
+            System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
+            response.status = 404
+        }
+        catch (BadRequestException ex) {
+            System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
+            response.status = 400
+
+        }
+        catch (Exception ex) {
+            System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
+        }
+    }
+
+    /**
+     * Update Sale Bill Details along with products
+     * @param Sale Bill Details
+     * @return saved Sale Bill Details
+     */
+    def cancelReceipt()
+    {
+        JSONObject jsonObject = new JSONObject(request.reader.text)
+        String id = jsonObject.get("id")
+        String entityId = jsonObject.get("entityId")
+        String financialYear = jsonObject.get("financialYear")
+        JSONObject receipt = new JSONObject()
+        ReceiptDetail receiptDetail = ReceiptDetail.findById(Long.parseLong(id))
+        if (receiptDetail)
+        {
+            if (receiptDetail.financialYear.equalsIgnoreCase(financialYear) && receiptDetail.entityId == Long.parseLong(entityId))
+            {
+                ArrayList<BillDetailLog> billDetailLogs = BillDetailLog.findAllByReceiptId(receiptDetail.id.toString())
+                for (BillDetailLog billDetailLog : billDetailLogs)
+                {
+                    billDetailLog.status = 0
+                    billDetailLog.receiptStatus = "CANCELLED"
+                    billDetailLog.isUpdatable = true
+                    billDetailLog.save(flush: true)
+                }
+                receiptDetail.approvedStatus = "CANCELLED"
+                receiptDetail.cancelledDate = new Date()
+                receiptDetail.isUpdatable = true
+                receiptDetail.save(flush: true)
+                receipt.put("receiptDetails", receiptDetail)
+                receipt.put("billDetailLogs", billDetailLogs)
+                respond receipt
+            }
+            else
+            {
+                throw new ResourceNotFoundException()
+            }
+        }
+        else
+        {
+            throw new ResourceNotFoundException()
         }
     }
 }

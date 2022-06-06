@@ -58,41 +58,62 @@ class ReceiptDetailService {
     }
 
     JSONObject dataTables(JSONObject paramsJsonObject, String start, String length) {
-        String searchTerm = paramsJsonObject.get("search[value]")
-        String orderColumnId = paramsJsonObject.get("order[0][column]")
-        String orderDir = paramsJsonObject.get("order[0][dir]")
 
-        String orderColumn = "id"
-        switch (orderColumnId) {
-            case '0':
-                orderColumn = "receiptId"
-                break;
-            case '1':
-                orderColumn = "accountModeId"
-                break;
-        }
+        try
+        {
+            String searchTerm = paramsJsonObject.get("search[value]")
+            String orderColumnId = paramsJsonObject.get("order[0][column]")
+            String orderDir = paramsJsonObject.get("order[0][dir]")
+            String customer = paramsJsonObject.get("customer").toString()
+            String fromDate = paramsJsonObject.get("fromDate").toString()
+            String toDate = paramsJsonObject.get("toDate").toString()
 
-        Integer offset = start ? Integer.parseInt(start.toString()) : 0
-        Integer max = length ? Integer.parseInt(length.toString()) : 100
-
-        def receiptDetailCriteria = ReceiptDetail.createCriteria()
-        def receiptDetailArrayList = receiptDetailCriteria.list(max: max, offset: offset) {
-            or {
-                if (searchTerm != "") {
-                    ilike('receiptId', '%' + searchTerm + '%')
-                }
+            String orderColumn = "id"
+            switch (orderColumnId)
+            {
+                case '0':
+                    orderColumn = "receiptId"
+                    break;
+                case '1':
+                    orderColumn = "accountModeId"
+                    break;
             }
-            eq('deleted', false)
-            order(orderColumn, orderDir)
-        }
 
-        def recordsTotal = receiptDetailArrayList.totalCount
-        JSONObject jsonObject = new JSONObject()
-        jsonObject.put("draw", paramsJsonObject.draw)
-        jsonObject.put("recordsTotal", recordsTotal)
-        jsonObject.put("recordsFiltered", recordsTotal)
-        jsonObject.put("data", receiptDetailArrayList)
-        return jsonObject
+            Integer offset = start ? Integer.parseInt(start.toString()) : 0
+            Integer max = length ? Integer.parseInt(length.toString()) : 100
+
+            def receiptDetailCriteria = ReceiptDetail.createCriteria()
+            def receiptDetailArrayList = receiptDetailCriteria.list(max: max, offset: offset) {
+                or {
+                    if (searchTerm != "")
+                    {
+                        ilike('receiptId', '%' + searchTerm + '%')
+                    }
+                }
+                if (!customer.equalsIgnoreCase('all') && customer != '')
+                {
+                    eq("receivedFrom", customer)
+                }
+                if (fromDate != null && fromDate != '' && toDate != null && toDate != '')
+                {
+                    between('dateCreated', sdf.parse(fromDate), sdf.parse(toDate))
+                }
+                eq('deleted', false)
+                order(orderColumn, orderDir)
+            }
+
+            def recordsTotal = receiptDetailArrayList.totalCount
+            JSONObject jsonObject = new JSONObject()
+            jsonObject.put("draw", paramsJsonObject.draw)
+            jsonObject.put("recordsTotal", recordsTotal)
+            jsonObject.put("recordsFiltered", recordsTotal)
+            jsonObject.put("data", receiptDetailArrayList)
+            return jsonObject
+        }
+        catch(Exception ex)
+        {
+            System.out.println("Datatables"+ex)
+        }
     }
 
     ReceiptDetail save(JSONObject jsonObject) {
@@ -138,6 +159,7 @@ class ReceiptDetailService {
         receiptDetail.approvedBy = Long.parseLong("0")
         receiptDetail.approvedDate = sdf.parse(jsonObject.get("date").toString())
         receiptDetail.financialYear = jsonObject.get("financialYear").toString()
+        receiptDetail.approvedStatus = "ACTIVE"
         receiptDetail.status = Long.parseLong("1")
         receiptDetail.syncStatus = Long.parseLong("1")
         receiptDetail.entityTypeId = Long.parseLong("1")
@@ -224,6 +246,39 @@ class ReceiptDetailService {
             }
         } else {
             throw new BadRequestException()
+        }
+    }
+
+    def approveReceipt(JSONObject jsonObject)
+    {
+        String id = jsonObject.get("id")
+        String userId = jsonObject.get("userId")
+        JSONObject receiptApprove = new JSONObject()
+        ReceiptDetail receiptDetail = ReceiptDetail.findById(Long.parseLong(id))
+        if (receiptDetail)
+        {
+            ArrayList<BillDetailLog> billDetailLogs = BillDetailLog.findAllByReceiptId(receiptDetail.id.toString())
+            if(billDetailLogs)
+            {
+                for (BillDetailLog billDetailLog : billDetailLogs)
+                {
+                    billDetailLog.status = 0
+                    billDetailLog.receiptStatus = "APPROVED"
+                    billDetailLog.isUpdatable = true
+                    billDetailLog.save(flush: true)
+                }
+
+            }
+                receiptDetail.approvedStatus = "APPROVED"
+                receiptDetail.approvedBy = Long.parseLong(userId)
+                receiptDetail.approvedDate = new Date()
+                receiptDetail.isUpdatable = true
+                receiptDetail.save(flush: true)
+                return receiptApprove
+        }
+        else
+        {
+            throw new ResourceNotFoundException()
         }
     }
 }

@@ -1,5 +1,6 @@
 package phitb_ui.product
 
+import phitb_ui.EntityService
 import phitb_ui.entity.CustomerGroupController
 import phitb_ui.entity.EntityRegisterController
 import phitb_ui.entity.SeriesController
@@ -22,7 +23,7 @@ class ProductClassController {
         try
         {
             ArrayList<String> customer = new CustomerGroupController().show() as ArrayList<String>
-            ArrayList<String> entity = new EntityRegisterController().show() as ArrayList<String>
+            ArrayList<String> entity = new EntityService().getByEntity(session.getAttribute("entityId").toString()) as ArrayList<String>
             ArrayList<String> userregister = new UserRegisterController().show() as ArrayList<String>
             ArrayList<String> series = new SeriesController().show() as ArrayList<String>
             ArrayList<String> division = new DivisionController().show() as ArrayList<String>
@@ -82,6 +83,14 @@ class ProductClassController {
         try
         {
             JSONObject jsonObject = new JSONObject(params)
+            if(params.entityId!=null || params.entityId!="")
+            {
+                jsonObject.put("entityId", session.getAttribute("entityId"))
+            }
+            if(params.entityTypeId!=null || params.entityTypeId!="")
+            {
+                jsonObject.put("entityTypeId", session.getAttribute("entityTypeId"))
+            }
             def apiResponse = new ProductService().saveProductClass(jsonObject)
             if (apiResponse?.status == 200)
             {
@@ -107,6 +116,14 @@ class ProductClassController {
         {
             println(params)
             JSONObject jsonObject = new JSONObject(params)
+            if(params.entityId!=null || params.entityId!="")
+            {
+                jsonObject.put("entityId", session.getAttribute("entityId"))
+            }
+            if(params.entityTypeId!=null || params.entityTypeId!="")
+            {
+                jsonObject.put("entityTypeId", session.getAttribute("entityTypeId"))
+            }
             def apiResponse = new ProductService().putProductClass(jsonObject)
             if (apiResponse.status == 200)
             {

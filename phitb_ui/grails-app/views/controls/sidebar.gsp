@@ -555,8 +555,11 @@
                         <g:if test="${UtilsService.isPermitted("VIEW_SERVICE_TYPE", session.getAttribute("permittedFeatures").toString())}">
                             <li><a href="/service-type">Service Type</a></li>
                         </g:if>
+                        <li><a href="/hq-area">HQ areas</a></li>
                     </ul>
                 </li>
+
+
 
                 <li id="product-menu" class="sidemenuitem"><a href="javascript:void(0);" class="menu-toggle"><i
                         class="zmdi zmdi-apps"></i><span>Product</span> <span
@@ -592,6 +595,7 @@
                         <g:if test="${UtilsService.isPermitted("VIEW_PRODUCT_COST_RANGE", session.getAttribute("permittedFeatures").toString())}">
                             <li><a href="/product-cost-range">Product Cost Range</a></li>
                         </g:if>
+                        <li><a href="/unit-type">Unit Type</a></li>
                     </ul>
                 </li>
                 <li id="inventory-menu" class="sidemenuitem"><a href="javascript:void(0);" class="menu-toggle"><i
@@ -599,10 +603,21 @@
                         class="badge badge-success float-right"></span></a>
                     <ul class="ml-menu">
                         <g:if test="${UtilsService.isPermitted("VIEW_STOCKBOOK_ENTRY", session.getAttribute("permittedFeatures").toString())}">
-                            <li><a href="stockbook">Stock Entry</a></li>
+                            <li><a href="/stockbook">Stock Entry</a></li>
                         </g:if>
                     </ul>
                 </li>
+
+
+                <li id="shipments-menu" class="sidemenuitem"><a href="javascript:void(0);" class="menu-toggle"><i
+                        class="zmdi zmdi-truck"></i><span>Shipments</span> <span
+                        class="badge badge-success float-right"></span></a>
+                    <ul class="ml-menu">
+                        <li><a href="/transport-type">Transport Type</a></li>
+                        <li><a href="/vehicle-detail">Vehicle Details</a></li>
+                    </ul>
+                </li>
+
 
                 <li id="approvals-menu" class="sidemenuitem"><a href="javascript:void(0);" class="menu-toggle"><i
                         class="zmdi zmdi-check-circle"></i><span>Approvals</span> <span
@@ -615,7 +630,7 @@
                             <li><a href="/debit-jv/approval">Debit JV Approval</a></li>
                         </g:if>
                         <g:if test="${UtilsService.isPermitted("VIEW_RECEIPT", session.getAttribute("permittedFeatures").toString())}">
-                            <li><a href="#">Receipt Approval</a></li>
+                            <li><a href="/receipt-approval">Receipt Approval</a></li>
                         </g:if>
                     </ul>
                 </li>

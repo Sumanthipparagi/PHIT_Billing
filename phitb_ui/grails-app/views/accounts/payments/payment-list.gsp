@@ -208,7 +208,7 @@
                             'date': moment(date).format('DD/MM/YYYY'),
                             'fy': json.data[i].financialYear,
                             'trasferfrom':  json.data[i].transferFrom.entityName,
-                            'amountPaid': json.data[i].amountPaid,
+                            'amountPaid': json.data[i].amountPaid.toFixed(2),
                             'pd': moment(pd).format('DD/MM/YYYY'),
                             'action': editbtn
                         });

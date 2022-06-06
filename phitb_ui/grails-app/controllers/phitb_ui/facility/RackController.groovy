@@ -3,6 +3,7 @@ package phitb_ui.facility
 import groovy.json.JsonSlurper
 import org.grails.web.json.JSONArray
 import org.grails.web.json.JSONObject
+import phitb_ui.Constants
 import phitb_ui.EntityService
 import phitb_ui.FacilityService
 import phitb_ui.Links
@@ -19,8 +20,18 @@ class RackController {
     {
         try
         {
-            ArrayList<String> entity = new EntityService().getByEntity(session.getAttribute("entityId").toString())
-            render(view: '/facility/rack/rack', model: [entity: entity])
+            JSONArray entity = new EntityService().getByEntity(session.getAttribute("entityId").toString())
+            ArrayList<String> company = new EntityRegisterController().show() as ArrayList
+            println(company)
+            ArrayList<String> companyList = []
+            companyList.each {
+                println(it.entityType)
+                if (it.entityType.name.toString().equalsIgnoreCase(Constants.ENTITY_COMPANY))
+                {
+                    companyList.add(it)
+                }
+            }
+            render(view: '/facility/rack/rack', model: [entity: entity,companyList:companyList])
         }
         catch (Exception ex)
         {
@@ -61,6 +72,14 @@ class RackController {
         try
         {
             JSONObject jsonObject = new JSONObject(params)
+            if(params.entityId!=null || params.entityId!="")
+            {
+                jsonObject.put("entityId", session.getAttribute("entityId"))
+            }
+            if(params.entityTypeId!=null || params.entityTypeId!="")
+            {
+                jsonObject.put("entityTypeId", session.getAttribute("entityTypeId"))
+            }
             def apiResponse = new FacilityService().saveRack(jsonObject)
             if (apiResponse?.status == 200)
             {
@@ -84,8 +103,16 @@ class RackController {
     {
         try
         {
-            println(params)
             JSONObject jsonObject = new JSONObject(params)
+            println(params)
+            if(params.entityId!=null || params.entityId!="")
+            {
+                jsonObject.put("entityId", session.getAttribute("entityId"))
+            }
+            if(params.entityTypeId!=null || params.entityTypeId!="")
+            {
+                jsonObject.put("entityTypeId", session.getAttribute("entityTypeId"))
+            }
             def apiResponse = new FacilityService().putRack(jsonObject)
             if (apiResponse.status == 200)
             {

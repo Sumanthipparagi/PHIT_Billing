@@ -116,8 +116,10 @@ class UrlMappings {
             "/receiptdetails/datatable(.$format)?"(controller: 'receiptDetail') { action = [GET: 'dataTable'] }
             "/receiptdetails/$id(.$format)?"(controller: 'receiptDetail') { action = [GET: 'show', PUT: 'update', DELETE: 'delete'] }
             "/receiptdetailsbyentity/$id(.$format)?"(controller: 'receiptDetail') { action = [GET: 'getByEntityId'] }
-            "/receiptdetailsbydays/$days(.$format)?"(controller: 'receiptDetail') { action = [GET:
-                                                                                                            'getAllByDays'] }
+            "/receiptdetailsbydays/$days(.$format)?"(controller: 'receiptDetail') { action = [GET: 'getAllByDays'] }
+            "/receipt-approve(.$format)?"(controller: 'receiptDetail') { action = [POST: 'approveReceipt'] }
+            "/receipt/cancel(.$format)?"(controller: 'receiptDetail') { action = [POST: 'cancelReceipt'] }
+
 
 
             //wallet master

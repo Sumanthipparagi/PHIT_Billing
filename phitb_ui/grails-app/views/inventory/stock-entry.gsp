@@ -366,9 +366,11 @@
         $(".stockTitle").text("Add Stocks");
         $(".stockForm")[0].reset();
         id = null
+        $(".uuid").val(self.crypto.randomUUID())
     });
 
     $(document).on("click", ".editbtn", function () {
+        $(".uuid").val(self.crypto.randomUUID())
         id = $(this).data('id');
         $(".product").val($(this).attr('data-product')).change();
         $(".batchNumber").val($(this).attr('data-batchNumber'));
@@ -395,7 +397,7 @@
 
     $(document).on("click", ".deletebtn", function () {
         id = $(this).data('id');
-        $("#myModalLabel").text("Delete Batch Register ?");
+        $("#myModalLabel").text("Delete Stock Book ?");
 
     });
 

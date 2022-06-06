@@ -15,7 +15,7 @@
     <!-- Custom Css -->
     <asset:stylesheet  rel="stylesheet" src="/themeassets/css/main.css"/>
     <asset:stylesheet rel="stylesheet" href="/themeassets/css/color_skins.css"/>
-    <asset:stylesheet rel="stylesheet" href="/themeassets/plugins/sweetalert/sweetalert.css"/>
+    <asset:stylesheet rel="stylesheet" href="/themeassets/plugins/sweetalert2/dist/sweetalert2.css"/>
     <asset:stylesheet  src="/themeassets/plugins/bootstrap-select/css/bootstrap-select.css" rel="stylesheet" />
     <asset:stylesheet  src="/themeassets/js/pages/forms/basic-form-elements.js" rel="stylesheet" />
     <asset:stylesheet  src="/themeassets/plugins/bootstrap-material-datetimepicker/css/bootstrap-material-datetimepicker.css" rel="stylesheet" />
@@ -113,6 +113,7 @@
                                     <th style="width: 20%">Deposit To</th>
                                     <th style="width: 20%">Financial Year</th>
                                     <th style="width: 20%">Amount paid</th>
+                                    <th style="width: 20%">Approved Status</th>
 %{--                                    <th style="width: 20%">Bank</th>--}%
                                     <th style="width: 20%">Action</th>
                                 </tr>
@@ -156,22 +157,23 @@
 <asset:javascript src="/themeassets/bundles/mainscripts.bundle.js"/>
 <asset:javascript src="/themeassets/js/pages/tables/jquery-datatable.js"/>
 <asset:javascript src="/themeassets/js/pages/ui/dialogs.js"/>
-<asset:javascript src="/themeassets/plugins/sweetalert/sweetalert.min.js"/>
+<asset:javascript src="/themeassets/plugins/sweetalert2/dist/sweetalert2.js"/>
 <asset:javascript src="/themeassets/plugins/jquery-inputmask/jquery.inputmask.bundle.js"/>
 <asset:javascript src="/themeassets/plugins/momentjs/moment.js"/>
 <asset:javascript src="/themeassets/plugins/bootstrap-material-datetimepicker/js/bootstrap-material-datetimepicker.js"/>
 <asset:javascript src="/themeassets/js/pages/forms/basic-form-elements.js"/>
+<asset:javascript src="/themeassets/plugins/icons/all.js"/>
 
 <script>
 
     var dayendtable;
     var id = null;
     $(function () {
-        dayEndTable();
+        receiptTable();
 
     });
 
-    function dayEndTable() {
+    function receiptTable() {
         dayendtable = $(".dayEndTable").DataTable({
             "order": [[0, "desc"]],
             sPaginationType: "simple_numbers",
@@ -192,12 +194,26 @@
                 type: 'GET',
                 url: '/recipt-list/datatable',
                 dataType: 'json',
+                data: {
+                    customer: "ALL",
+                    fromDate:"",
+                    toDate:"",
+                },
                 dataSrc: function (json) {
                     console.log(json)
                     var return_data = [];
                     for (var i = 0; i < json.data.length; i++) {
+                        var cancelInvoice = "";
                         var date = new Date(json.data[i].date);
-                        var pd = new Date(json.data[i].paymentDate)
+                        var pd = new Date(json.data[i].paymentDate);
+                        if (json.data[i].approvedStatus !== "CANCELLED" && json.data[i].approvedStatus !== "APPROVED") {
+                            cancelInvoice = '<a class="btn btn-sm btn-info" title="Cancel" onclick="cancelReceipt(' + json.data[i].id +')" href="#"><i class="fa fa-times"></i></a>';
+                        }
+                        else
+                        {
+                            cancelInvoice =  '';
+
+                        }
                         var editbtn =
                             ' <button type="button" data-id="'+json.data[i].id+'" data-recievedfrom="'+json.data[i].receivedFrom.id+'" class="print btn btn-sm btn-warning editbtn"><i class="material-icons"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">print</font></font></i></button>'
                         // var deletebtn = '<button type="button" data-id="' + json.data[i].id +
@@ -207,11 +223,11 @@
                             'date': moment(date).format('DD/MM/YYYY'),
                             'fy': json.data[i].financialYear,
                             'amountPaid': json.data[i].amountPaid.toFixed(2),
+                            'approvedStatus': json.data[i].approvedStatus,
                             'receivedFrom': json.data[i].receivedFrom.entityName,
                             'depositTo': json.data[i]?.deposit === "NA" ? '' : json.data[i]?.deposit?.accountName,
                             'pd': moment(pd).format('DD/MM/YYYY'),
-                            // 'bank': json.data[i].bank.bankName,
-                            'action': editbtn
+                            'action': editbtn+"  "+cancelInvoice
                         });
                     }
                     return return_data;
@@ -225,6 +241,7 @@
                 {'data': 'depositTo', 'width': '20%'},
                 {'data': 'fy', 'width': '20%'},
                 {'data': 'amountPaid', 'width': '20%'},
+                {'data': 'approvedStatus', 'width': '20%'},
                 // {'data': 'bank', 'width': '20%'},
                 {'data': 'action', 'width': '20%'}
             ]
@@ -259,7 +276,7 @@
             processData: false,
             success: function () {
                 swal("Success!", "CCm Submitted Successfully", "success");
-                dayEndTable();
+                receiptTable();
                 $('#adddayEndModal').modal('hide');
             },
             error: function () {
@@ -304,7 +321,7 @@
             dataType: 'json',
             success: function () {
                 $('.deleteModal').modal('hide');
-                dayEndTable();
+                receiptTable();
                 swal("Success!", "Day End Deleted Successfully", "success");
             }, error: function () {
                 swal("Error!", "Something went wrong", "error");
@@ -338,6 +355,45 @@
             .attr("src", "/print-recipt/"+custId+"/recipt/"+id)
             .appendTo("body");
     }
+
+    function cancelReceipt(id) {
+        Swal.fire({
+            title: "Cancel this Receipt? this can't be undone.",
+            showDenyButton: true,
+            showCancelButton: false,
+            confirmButtonText: 'Yes',
+            denyButtonText: 'No',
+        }).then((result) => {
+            if (result.isConfirmed) {
+                var url = '/receipt/cancel?id=' + id;
+                $.ajax({
+                    type: "GET",
+                    url: url,
+                    dataType: 'json',
+                    success: function (data) {
+                        Swal.fire(
+                            'Success!',
+                            'Receipt Cancelled',
+                            'success'
+                        );
+                        receiptTable();
+                    },
+                    error: function () {
+                        Swal.fire(
+                            'Error!',
+                            'Unable to cancel Receipt at the moment, try later.',
+                            'danger'
+                        );
+                    }
+                });
+            } else if (result.isDenied) {
+
+            }
+        });
+
+
+    }
+
 
 </script>
 

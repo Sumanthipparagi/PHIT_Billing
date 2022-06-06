@@ -43,7 +43,6 @@
                     <h2>Profile</h2>
                     <ul class="breadcrumb padding-0">
                         <li class="breadcrumb-item"><a href="/"><i class="zmdi zmdi-home"></i></a></li>
-                        <li class="breadcrumb-item"><a href="javascript:void(0);">Pages</a></li>
                         <li class="breadcrumb-item active">Profile</li>
                     </ul>
                 </div>
@@ -92,7 +91,7 @@
                             <div class="col-lg-12 col-md-12">
                                 <div class="card">
                                     <div class="header">
-                                        <h2><strong>Update</strong>User</h2>
+                                        <h2><strong>Update</strong> User</h2>
                                         <ul class="header-dropdown">
                                             <li class="dropdown"> <a href="javascript:void(0);" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"> <i class="zmdi zmdi-more"></i> </a>
                                                 <ul class="dropdown-menu dropdown-menu-right">

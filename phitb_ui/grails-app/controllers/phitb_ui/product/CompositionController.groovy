@@ -4,6 +4,7 @@ package phitb_ui.product
 import org.grails.web.json.JSONArray
 import org.grails.web.json.JSONObject
 import phitb_ui.Constants
+import phitb_ui.EntityService
 import phitb_ui.ProductService
 import phitb_ui.entity.CustomerGroupController
 import phitb_ui.entity.EntityRegisterController
@@ -21,7 +22,7 @@ class CompositionController {
         try
         {
             ArrayList<String> customer = new CustomerGroupController().show() as ArrayList<String>
-            ArrayList<String> entity = new EntityRegisterController().show() as ArrayList<String>
+            ArrayList<String> entity = new EntityService().getByEntity(session.getAttribute("entityId").toString()) as ArrayList<String>
             ArrayList<String> userregister = new UserRegisterController().show() as ArrayList<String>
             ArrayList<String> series = new SeriesController().show() as ArrayList<String>
             ArrayList<String> statelist = new StateController().show() as ArrayList<String>
@@ -80,6 +81,14 @@ class CompositionController {
         try
         {
             JSONObject jsonObject = new JSONObject(params)
+            if(params.entityId!=null || params.entityId!="")
+            {
+                jsonObject.put("entityId", session.getAttribute("entityId"))
+            }
+            if(params.entityTypeId!=null || params.entityTypeId!="")
+            {
+                jsonObject.put("entityTypeId", session.getAttribute("entityTypeId"))
+            }
             def apiResponse = new ProductService().saveProductComposition(jsonObject)
             if (apiResponse?.status == 200)
             {
@@ -105,6 +114,14 @@ class CompositionController {
         {
             println(params)
             JSONObject jsonObject = new JSONObject(params)
+            if(params.entityId!=null || params.entityId!="")
+            {
+                jsonObject.put("entityId", session.getAttribute("entityId"))
+            }
+            if(params.entityTypeId!=null || params.entityTypeId!="")
+            {
+                jsonObject.put("entityTypeId", session.getAttribute("entityTypeId"))
+            }
             def apiResponse = new ProductService().putProductComposition(jsonObject)
             if (apiResponse.status == 200)
             {

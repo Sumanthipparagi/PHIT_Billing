@@ -69,6 +69,14 @@ class PriorityController {
         try
         {
             JSONObject jsonObject = new JSONObject(params)
+            if(params.entity!=null || params.entity!="")
+            {
+                jsonObject.put("entity", session.getAttribute("entityId"))
+            }
+            if(params.entityTypeId!=null || params.entityTypeId!="")
+            {
+                jsonObject.put("entityTypeId", session.getAttribute("entityTypeId"))
+            }
             def apiResponse = new SystemService().savePriority(jsonObject)
             if (apiResponse?.status == 200)
             {
@@ -94,6 +102,14 @@ class PriorityController {
         {
             println(params)
             JSONObject jsonObject = new JSONObject(params)
+            if(params.entity!=null || params.entity!="")
+            {
+                jsonObject.put("entity", session.getAttribute("entityId"))
+            }
+            if(params.entityTypeId!=null || params.entityTypeId!="")
+            {
+                jsonObject.put("entityTypeId", session.getAttribute("entityTypeId"))
+            }
             def apiResponse = new SystemService().putPriority(jsonObject)
             if (apiResponse.status == 200)
             {

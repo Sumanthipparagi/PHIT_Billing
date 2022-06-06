@@ -77,7 +77,7 @@
                                 <label for="entity">
                                     Entity
                                 </label>
-                                <select class="form-control show-tick entity" name="entity" id="entity" required>
+                                <select class="form-control show-tick entity" name="entity" id="entity">
                                     <option value="">-- Please select --</option>
                                     <g:each var="e" in="${entity}">
                                         <option value="${e.id}"  data-type="${e.entityType.id}">${e.entityName}</option>
@@ -99,8 +99,8 @@
 
 
                             <input type="hidden" id="entityTypeId" class="entityType" name="entityType">
-                            <input type="hidden" name="createdUser" value="1">
-                            <input type="hidden" name="modifiedUser" value="1">
+                            <input type="hidden" name="createdUser" value="${session.getAttribute('userId')}">
+                            <input type="hidden" name="modifiedUser" value="${session.getAttribute('userId')}">
                             <input type="hidden" name="regionStateIds" value="1">
                             <input type="hidden" name="status" value="1">
                             <input type="hidden" name="syncStatus" value="1">

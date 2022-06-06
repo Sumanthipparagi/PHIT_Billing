@@ -11,7 +11,7 @@ import java.text.SimpleDateFormat
 @Transactional
 class VehicleDetailService {
 
-    SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss")
+    SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy")
     def getAll(String limit, String offset, String query) {
 
         Integer o = offset ? Integer.parseInt(offset.toString()) : 0
@@ -73,8 +73,8 @@ class VehicleDetailService {
         vehicleDetail.gpsKitId = jsonObject.get("gpsKitId")
         vehicleDetail.managerId = Long.parseLong(jsonObject.get("managerId").toString())
         vehicleDetail.vehiclePurcDate = sdf.parse(jsonObject.get("vehiclePurcDate").toString())
-        vehicleDetail.vehicleRegNo = Long.parseLong(jsonObject.get("vehicleRegNo").toString())
-        vehicleDetail.transportType = TransportType.findById(Long.parseLong(jsonObject.get("entityTypeId").toString()))
+        vehicleDetail.vehicleRegNo = jsonObject.get("vehicleRegNo").toString()
+        vehicleDetail.transportType = TransportType.findById(Long.parseLong(jsonObject.get("transportType").toString()))
         vehicleDetail.entityTypeId = Long.parseLong(jsonObject.get("entityTypeId").toString())
         vehicleDetail.entityId = Long.parseLong(jsonObject.get("entityId").toString())
         vehicleDetail.createdUser = Long.parseLong(jsonObject.get("createdUser").toString())
@@ -100,8 +100,8 @@ class VehicleDetailService {
                 vehicleDetail.gpsKitId = jsonObject.get("gpsKitId")
                 vehicleDetail.managerId = Long.parseLong(jsonObject.get("managerId").toString())
                 vehicleDetail.vehiclePurcDate = sdf.parse(jsonObject.get("vehiclePurcDate").toString())
-                vehicleDetail.vehicleRegNo = Long.parseLong(jsonObject.get("vehicleRegNo").toString())
-                vehicleDetail.transportType = TransportType.findById(Long.parseLong(jsonObject.get("entityTypeId").toString()))
+                vehicleDetail.vehicleRegNo = jsonObject.get("vehicleRegNo").toString()
+                vehicleDetail.transportType = TransportType.findById(Long.parseLong(jsonObject.get("transportType").toString()))
                 vehicleDetail.entityTypeId = Long.parseLong(jsonObject.get("entityTypeId").toString())
                 vehicleDetail.entityId = Long.parseLong(jsonObject.get("entityId").toString())
                 vehicleDetail.createdUser = Long.parseLong(jsonObject.get("createdUser").toString())

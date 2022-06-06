@@ -58,6 +58,16 @@
     }
 
     @media print {
+        .print-watermark
+        {
+            position: fixed;
+            z-index:-1!important;
+            color: lightgrey!important;
+            opacity: 0.2!important;
+            font-size:120px!important;
+            top: 120px;
+
+        }
         .print {
             margin-left: 200px !important;
         }
@@ -69,6 +79,15 @@
 
     .print {
         margin-left: 200px;
+    }
+
+    #watermark
+    {
+        position: fixed;
+        z-index:-1;
+        color: lightgrey;
+        opacity: 1;
+        font-size:120px;
     }
     </style>
 </head>
@@ -90,14 +109,14 @@
         </td>
         <td style="width: 15%;vertical-align:top;">
             <ul style="margin: 0;">
-                <li><b class="tab">Receipt No.</b>: ${recipt.receiptId}</li>
-                <li><b class="tab">Receipt Date</b>:${recipt.date.split("T")[0]}</li>
+                <li><b class="tab">Receipt No.</b>: ${receipt.receiptId}</li>
+                <li><b class="tab">Receipt Date</b>:${receipt.date.split("T")[0]}</li>
             </ul>
         </td>
         <td style="width: 25%;vertical-align:top;">
             <input id="text" type="hidden" value="PharmIT" style="Width:20%" onblur='generateBarCode();'/>
             <img id='barcode'
-                 src="https://api.qrserver.com/v1/create-qr-code/?data=${recipt.id}&amp;size=100x100"
+                 src="https://api.qrserver.com/v1/create-qr-code/?data=${receipt.id}&amp;size=100x100"
                  alt=""
                  title="PhramIT"
                  style="display: block;
@@ -116,10 +135,10 @@
     </tr>
     <tr>
         <td>
-            <g:if test="${recipt.bank != null && recipt.bank != ""}">
-                <p>By Cheque No.: ${recipt.chequeNumber} of ${recipt.bank.bankName} dated ${recipt.paymentDate.split("T")[0]}</p>
+            <g:if test="${receipt.bank != null && receipt.bank != ""}">
+                <p>By Cheque No.: ${receipt.chequeNumber} of ${receipt.bank.bankName} dated ${receipt.paymentDate.split("T")[0]}</p>
             </g:if>
-            <g:elseif test="${recipt?.cardNumber != null && recipt?.cardNumber != ""}">
+            <g:elseif test="${receipt?.cardNumber != null && receipt?.cardNumber != ""}">
                 BY CARD
                 <br>
                 <br>
@@ -204,6 +223,13 @@
                 inv = 0
             }
 
+            if(reciptlogcrntArray.amountPaid.sum()!=null)
+            {
+                crnt = reciptlogcrntArray.amountPaid.sum()
+            }
+            else {
+                crnt = 0
+            }
             if(reciptloggtnArray.amountPaid.sum()!=null)
             {
                 gtn = reciptloggtnArray.amountPaid.sum()
@@ -212,24 +238,24 @@
                 gtn = 0
             }
         %>
-        <td colspan="4"><b>${UtilsService.round(inv+gtn, 2)}</b></td>
+        <td colspan="4"><b>${UtilsService.round(inv+gtn-crnt, 2)}</b></td>
     <tr>
 
-        <% double data = inv+gtn
-        int value = (int) data;
-        System.out.println(value)
+        <% double data = inv+gtn-crnt
+//        int value = (int) data;
+        System.out.println(data)
         %>
     </tr>
     <tr>
         <td colspan="5">
-            <p><strong>${WordsToNumbersUtil.convert(value)} Ruppees Only
+            <p><strong>${WordsToNumbersUtil.convertToIndianCurrency(data.toString())}
             </strong></p>
         </td>
     </tr>
 
     <tr>
         <td colspan="5">
-            <p><strong>Note:</strong>${recipt.narration}
+            <p><strong>Note:</strong>${receipt.narration}
             </p>
         </td>
     </tr>
@@ -237,7 +263,7 @@
     <tr>
         <td style="border-left: none;border-right: none;">
             <p><strong><g:if
-                    test="${recipt.bank != null && recipt.bank != ""}">Deposit Bank :${recipt.bank.bankName}</g:if></strong>
+                    test="${receipt.bank != null && receipt.bank != ""}">Deposit Bank :${receipt.bank.bankName}</g:if></strong>
             </p>
 
             <p>&nbsp;</p>
@@ -246,7 +272,11 @@
 
             <p>Cashier / Accountant</p>
         </td>
-
+        <div style="width: 50%;">
+            <g:if test="${receipt.approvedStatus == 'CANCELLED'}">
+                <div id="watermark" class="print-watermark">CANCELLED</div>
+            </g:if>
+        </div>
         <td style="border-left:none; border-right:none;">
             <p>&nbsp;</p>
 

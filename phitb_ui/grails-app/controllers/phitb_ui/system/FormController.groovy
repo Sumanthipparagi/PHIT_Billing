@@ -3,6 +3,7 @@ package phitb_ui.system
 import groovy.json.JsonSlurper
 import org.grails.web.json.JSONArray
 import org.grails.web.json.JSONObject
+import phitb_ui.EntityService
 import phitb_ui.Links
 import phitb_ui.SystemService
 import phitb_ui.entity.EntityRegisterController
@@ -13,11 +14,8 @@ class FormController {
     {
         try
         {
-            def entitytypeurl = Links.API_GATEWAY+Links.ENTITY_TYPE_MASTER_SHOW
-            URL api3Url = new URL(entitytypeurl)
-            ArrayList<String> entity = new EntityRegisterController().show() as ArrayList<String>
-            def entitytype = new JsonSlurper().parseText(api3Url.text)
-            render(view: '/system/form/formmaster',model: [entity:entity, entitytype:entitytype])
+            ArrayList<String> entity = new EntityService().getByEntity(session.getAttribute("entityId").toString()) as ArrayList<String>
+            render(view: '/system/form/formmaster',model: [entity:entity])
         }
         catch (Exception ex)
         {
@@ -57,6 +55,14 @@ class FormController {
         try
         {
             JSONObject jsonObject = new JSONObject(params)
+            if(params.entity!=null || params.entity!="")
+            {
+                jsonObject.put("entity", session.getAttribute("entityId"))
+            }
+            if(params.entityTypeId!=null || params.entityTypeId!="")
+            {
+                jsonObject.put("entityTypeId", session.getAttribute("entityTypeId"))
+            }
             def apiResponse = new SystemService().saveForm(jsonObject)
             if (apiResponse?.status == 200)
             {
@@ -82,6 +88,14 @@ class FormController {
         {
             println(params)
             JSONObject jsonObject = new JSONObject(params)
+            if(params.entity!=null || params.entity!="")
+            {
+                jsonObject.put("entity", session.getAttribute("entityId"))
+            }
+            if(params.entityTypeId!=null || params.entityTypeId!="")
+            {
+                jsonObject.put("entityTypeId", session.getAttribute("entityTypeId"))
+            }
             def apiResponse = new SystemService().putForm(jsonObject)
             if (apiResponse.status == 200)
             {

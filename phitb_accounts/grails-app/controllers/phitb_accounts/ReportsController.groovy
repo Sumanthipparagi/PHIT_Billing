@@ -29,7 +29,9 @@ class ReportsController {
                 if(docType.equalsIgnoreCase("INVS")) {
                     dueDate = jsonObject.get("dueDate").toString()
                     entryDate = jsonObject.get("orderDate").toString()
-                    ArrayList<BillDetailLog> billDetailLogs = BillDetailLog.findAllByEntityIdAndFinancialYearAndBillTypeAndBillId(entityId, financialYear, billType, Long.parseLong(jsonObject.get("id").toString()))
+                    ArrayList<BillDetailLog> billDetailLogs = BillDetailLog
+                            .findAllByEntityIdAndFinancialYearAndBillTypeAndBillId(entityId,
+                                    financialYear, billType, Long.parseLong(jsonObject.get("id").toString()))
                     for (BillDetailLog billDetailLog : billDetailLogs) {
                         due += billDetailLog.amountPaid
                     }

@@ -183,6 +183,15 @@ public class Links
     public static String DAY_END_MASTER_UPDATE = "api/v1.0/entity/dayendmaster/{id}";
     public static String DAY_END_MASTER_DELETE = "api/v1.0/entity/dayendmaster/{id}";
 
+    //Day End Master
+    public static String HQ_AREA_SHOW = "api/v1.0/entity/hqareas";
+    public static String HQ_AREA_SAVE = "api/v1.0/entity/hqareas";
+    public static String HQ_AREA_DATATABLE = "api/v1.0/entity/hqareas/datatable";
+    public static String HQ_AREA_UPDATE = "api/v1.0/entity/hqareas/{id}";
+    public static String HQ_AREA_DELETE = "api/v1.0/entity/hqareas/{id}";
+    public static String HQ_AREA_SHOW_BY_ENTITY = "api/v1.0/entity/hqbyentity";
+
+
 
     //Financial Year master
     public static String FINANCIAL_YEAR_SHOW = "api/v1.0/entity/financialyearmaster";
@@ -522,12 +531,14 @@ public class Links
     public static String RECIPT_DETAIL_DATATABLE = "api/v1.0/accounts/receiptdetails/datatable";
     public static String RECIPT_DETAIL_UPDATE = "api/v1.0/accounts/receiptdetails/{id}";
     public static String RECIPT_DETAIL_DELETE = "api/v1.0/accounts/receiptdetails/{id}";
+    public static String RECIPT_APPROVE = "api/v1.0/accounts/receipt-approve";
 
     //    Reciept detail log
     public static String RECIPT_DETAIL_LOG = "api/v1.0/accounts/reciptdetaillog";
     public static String RECIPT_DETAIL_LOG_INVS_ID = "api/v1.0/accounts/reciptdetailloginvbyreciptId";
     public static String RECIPT_DETAIL_LOG_CRNT_ID = "api/v1.0/accounts/reciptdetaillogcrntbyreciptId";
     public static String RECIPT_DETAIL_LOG_GTN_ID = "api/v1.0/accounts/reciptdetailloggtnbyreciptId";
+    public static String RECIPT_CANCEL = "api/v1.0/accounts/receipt/cancel";
 
 
     //Wallet
@@ -619,4 +630,21 @@ public class Links
     //      Update Password
     public static String UPDATE_PASSWORD = "api/v1.0/entity/update-password/id/{id}/password/{password}";
 
+
+
+    /*<-------------------------------------------Product ------------------------------------------------->*/
+
+    //Transport Type
+    public static String TRANSPORT_TYPE_SHOW = "api/v1.0/shipments/transporttype";
+    public static String TRANSPORT_TYPE_SAVE = "api/v1.0/shipments/transporttype";
+    public static String TRANSPORT_TYPE_DATATABLE = "api/v1.0/shipments/transporttype/datatable";
+    public static String TRANSPORT_TYPE_UPDATE = "api/v1.0/shipments/transporttype/{id}";
+    public static String TRANSPORT_TYPE_DELETE = "api/v1.0/shipments/transporttype/{id}";
+
+    //Vechicle Detail
+    public static String VECHILE_DETAIL_SHOW = "api/v1.0/shipments/vehicledetail";
+    public static String VECHILE_DETAIL_SAVE = "api/v1.0/shipments/vehicledetail";
+    public static String VECHILE_DETAIL_DATATABLE = "api/v1.0/shipments/vehicledetail/datatable";
+    public static String VECHILE_DETAIL_UPDATE = "api/v1.0/shipments/vehicledetail/{id}";
+    public static String VECHILE_DETAIL_DELETE = "api/v1.0/shipments/vehicledetail/{id}";
 }

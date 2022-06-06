@@ -62,18 +62,17 @@ class CountryMasterService {
             eq('deleted', false)
             order(orderColumn, orderDir)
         }
-        def names = []
-        countryMasterArrayList.each {
-            println(it.entityId)
-            def apires = showCountryByEntityId(it.entityId.toString())
-            names.push(apires)
-        }
+//        def names = []
+//        countryMasterArrayList.each {
+//            println(it.entityId)
+//            def apires = showCountryByEntityId(it.entityId.toString())
+//            names.push(apires)
+//        }
         def recordsTotal = countryMasterArrayList.totalCount
         JSONObject jsonObject = new JSONObject()
         jsonObject.put("draw", paramsJsonObject.draw)
         jsonObject.put("recordsTotal", recordsTotal)
         jsonObject.put("recordsFiltered", recordsTotal)
-        jsonObject.put("names", names)
         jsonObject.put("data", countryMasterArrayList)
         return jsonObject
     }

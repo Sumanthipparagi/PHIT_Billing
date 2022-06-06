@@ -135,6 +135,25 @@ class UrlMappings {
 
 
 
+        //HQ- areas
+        "/hq-area"(controller: "HQAreas") {
+            action = [GET: "index", POST: "save"]
+        }
+        "/hq-area/datatable"(controller: "HQAreas", action: "dataTable")
+        "/hq-area/update/$id"(controller:"HQAreas",action:"update")
+        "/hq-area/delete/$id"(controller: "HQAreas",action:"delete")
+
+
+
+        //entity-irn
+        "/entity-irn"(controller: "entityIRN") {
+            action = [GET: "index", POST: "save"]
+        }
+        "/entity-irn/datatable"(controller: "entityIRN", action: "dataTable")
+        "/entity-irn/update/$id"(controller:"entityIRN",action:"update")
+        "/entity-irn/delete/$id"(controller: "entityIRN",action:"delete")
+
+
         //  Entity Settings
 
         "/entity-settings"(controller: "entitySettings") {
@@ -504,6 +523,7 @@ class UrlMappings {
         "/stockbook"(controller: "stockBook"){
             action = [GET: "index", POST: "save"]
         }
+        "/stockbook/delete/$id"(controller: 'stockBook',action: 'delete')
         "/stockbook/save"(controller: "stockBook"){action = [POST: "save"]}
         "/stockbook/update/$id"(controller: "stockBook"){
             action = [POST: 'update']
@@ -569,6 +589,8 @@ class UrlMappings {
         "/add-recipt"(controller: "reciptDetail", action: 'addRecipt')
         "/print-recipt/$custid/recipt/$id"(controller: "reciptDetail", action: 'printRecipt')
         "/receipt-approval"(controller: 'reciptDetail', action: 'recieptApproval')
+        "/receipt-approve"(controller: 'reciptDetail', action: 'receiptApprove')
+        "/receipt/cancel"(controller: 'reciptDetail', action: 'cancelReceipt')
 
 
 
@@ -622,6 +644,26 @@ class UrlMappings {
         "/reports/accounts/getoutstanding"(controller: "accountsReport", action: "getOutstandingReport")
 
         "/reports/inventory/statement"(controller: "inventoryReport", action: "statement")
+
+
+        /*<-------------------------------------------Shipments------------------------------------------------->*/
+
+        //Transport Type
+        "/transport-type"(controller: "transportType") {
+            action = [GET: "index", POST: "save"]
+        }
+        "/transport-type/datatable"(controller: "transportType", action: "dataTable")
+        "/transport-type/update/$id"(controller:"transportType",action:"update")
+        "/transport-type/delete/$id"(controller: "transportType",action:"delete")
+
+        //Vehicle Details
+        "/vehicle-detail"(controller: "vehicleDetail") {
+            action = [GET: "index", POST: "save"]
+        }
+        "/vehicle-detail/datatable"(controller: "vehicleDetail", action: "dataTable")
+        "/vehicle-detail/update/$id"(controller:"vehicleDetail",action:"update")
+        "/vehicle-detail/delete/$id"(controller: "vehicleDetail",action:"delete")
+
 
     }
 }

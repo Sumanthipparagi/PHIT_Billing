@@ -12,7 +12,7 @@ class TransportType  implements LogicalDelete<TransportType> {
     long modifiedUser
 
     Date dateCreated
-    Date lastupdated
+    Date lastUpdated
 
     static constraints = {
     }

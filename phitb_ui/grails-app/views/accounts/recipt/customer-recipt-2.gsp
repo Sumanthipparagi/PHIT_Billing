@@ -84,6 +84,19 @@
         color: white;
     }
 
+
+    /* Chrome, Safari, Edge, Opera  - hide input arrow keys*/
+    input::-webkit-outer-spin-button,
+    input::-webkit-inner-spin-button {
+        -webkit-appearance: none;
+        margin: 0;
+    }
+
+    /* Firefox */
+    input[type=number] {
+        -moz-appearance: textfield;
+    }
+
     </style>
 </head>
 
@@ -217,11 +230,11 @@
 
                             <div class="col-lg-3 form-group  form-float cheque">
                                 <label for="chequeNumber">
-                                    Cheque Number
+                                   Instrument ID
                                 </label>
                                 <input type="number" id="chequeNumber" class="chequeNumber form-control"
                                        name="chequeNumber"
-                                       placeholder="Cheque Number"/>
+                                       placeholder="Instrument ID"/>
                             </div>
 
                             <div class="col-lg-3 form-group  form-float">
@@ -276,7 +289,7 @@
                                 </label>
                                 <input type="text" id="amountPaid" class="note form-control "
                                        name="amountPaid"
-                                       placeholder="Amount" value="0" style="border-radius: 0;"
+                                       placeholder="Amount" value="0" style="border-radius: 0;"  autocomplete="off"
                                        required/>
                                 </div>
                                 <div class="col-lg-4 form-group  form-float">
@@ -459,6 +472,8 @@
         return diffDays
     }
 
+    let invIdArray = [];
+
     function getAddress(id) {
         if (id) {
             $.ajax({
@@ -466,6 +481,7 @@
                 url: '/getbyentity/' + id,
                 dataType: 'json',
                 success: function (data) {
+                    invIdArray=[];
                     getAllSaleBillDetails(id)
                     var trHTML = '';
                     trHTML += '<p><b>' + data.entityName + '</b><br>' + data.addressLine1 + '' + data.addressLine2 + '</p>';
@@ -482,7 +498,7 @@
     }
 
 
-    let invIdArray = [];
+
 
     function getAllSaleBillDetails(id) {
         if (id) {
@@ -526,6 +542,7 @@
                                 '                                        <td>' + value.financialYear + '</td>\n' +
                                 '                                        <td style="display: none;">' + value.id + '</td>\n' +
                                 '                                        </tr>';
+
 
                             invoiceData.push(value.id);
                             invIdArray.push(value.id);
@@ -620,7 +637,6 @@
         if (e.keyCode === 13 || e.which === '13') {
             var index = $('.txt').index(this) + 1;
             $('.txt').eq(index).focus();
-
             // var prevPaid = $('table#table1 tr#IN'+id+' td#invAdjAmt'+id+'').text();
             // var paid = parseFloat(prevPaid) + parseFloat($('#paidNowInv').val());
             // $('table#table1 tr#IN'+id+' td#invAdjAmt'+id+'').text(parseFloat(paid).toFixed());
@@ -629,7 +645,10 @@
             //     alert(id)
             //     $(this).next('.paidNowInv').focus();
             // }
-
+        }
+        if (e.keyCode === 38 || e.which === '38') {
+            var index = $('.txt').index(this) - 1;
+            $('.txt').eq(index).focus();
         }
     });
 

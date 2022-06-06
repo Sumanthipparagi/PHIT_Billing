@@ -11,6 +11,7 @@ class BillDetailLog implements LogicalDelete<BillDetailLog>
     String paymentRecord
     long approvedBy
     String currentFinancialYear
+    String receiptStatus
     String financialYear
     String receiptId
     long status
@@ -24,6 +25,7 @@ class BillDetailLog implements LogicalDelete<BillDetailLog>
     Date lastUpdated
 
     static constraints = {
+        receiptStatus nullable: true
     }
 
     boolean isUpdatable

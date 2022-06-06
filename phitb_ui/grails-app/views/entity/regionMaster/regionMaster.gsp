@@ -209,7 +209,7 @@
                             'id': json.data[i].id,
                             'regionName': json.data[i].regionName,
                             'shortName': json.data[i].shortName,
-                            'country': json.countries[i].name,
+                            // 'country': json.countries[i].name,
                             // 'entity': json.data[i].entity.entityName,
                             // 'entitytype': json.data[i].entityType.name,
                             'action': editbtn + ' ' + deletebtn

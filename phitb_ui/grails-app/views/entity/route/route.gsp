@@ -108,8 +108,8 @@
                                     %{--                                    <th style="width: 20%">ID</th>--}%
                                     <th style="width: 20%">Route Name</th>
                                     <th style="width: 20%">Appr Expense</th>
-                                    <th style="width: 20%">Salesman</th>
-                                    <th style="width: 20%">Manager</th>
+%{--                                    <th style="width: 20%">Salesman</th>--}%
+%{--                                    <th style="width: 20%">Manager</th>--}%
 %{--                                    <th style="width: 20%">Entity Type</th>--}%
 %{--                                    <th style="width: 20%">Entity</th>--}%
                                     <th style="width: 20%">Action</th>
@@ -199,8 +199,8 @@
                             '" data-cityId="' + json.data[i].cityId + '"' +
                             '" data-countryId="' + json.data[i].countryId + '"' +
                             '" data-stateId="' + json.data[i].stateId + '"' +
-                            '" data-salesman="' + json.data[i].salesman.id + '"' +
-                            '" data-areaManager="' + json.data[i].areaManager.id + '"' +
+                            '" data-salesman="' + json.data[i]?.salesman?.id + '"' +
+                            '" data-areaManager="' + json.data[i]?.areaManager?.id + '"' +
                             '" data-ccmEnabled="' + json.data[i].ccmEnabled + '"' +
                             '" data-daysOfWeek="' + json.data[i].daysOfWeek + '"' +
                             '" data-ccmId="' + json.data[i].ccmId + '"' +
@@ -215,8 +215,8 @@
                             'id': json.data[i].id,
                             'routeName': json.data[i].routeName,
                             'apprExpense': json.data[i].apprExpense,
-                            'salesman': json.data[i].salesman.userName,
-                            'areaManager': json.data[i].areaManager.userName,
+                            // 'salesman': json.data[i].salesman.userName,
+                            // 'areaManager': json.data[i].areaManager.userName,
                             // 'entity': json.data[i].entity.entityName,
                             // 'entitytype': json.data[i].entityType.name,
                             'action': editbtn + ' ' + deletebtn
@@ -229,8 +229,8 @@
                 // {'data': 'id', 'width': '20%'},
                 {'data': 'routeName', 'width': '20%'},
                 {'data': 'apprExpense', 'width': '20%'},
-                {'data': 'salesman', 'width': '20%'},
-                {'data': 'areaManager', 'width': '20%'},
+                // {'data': 'salesman', 'width': '20%'},
+                // {'data': 'areaManager', 'width': '20%'},
                 // {'data': 'entity', 'width': '20%'},
                 // {'data': 'entitytype', 'width': '20%'},
                 {'data': 'action', 'width': '20%'}

@@ -25,7 +25,7 @@
                                    Floor
                                 </label>
                                 <input type="text" id="floor" class="form-control floor" name="floor" placeholder="Floor"
-                                       required/>
+                                       />
                             </div>
 
                             <div class="col-lg-6 form-group  form-float">
@@ -34,7 +34,7 @@
                                 </label>
                                 <input type="text" id="machinePartNumber" class="form-control machinePartNumber"
                                        name="machinePartNumber" placeholder="Machine Part Number"
-                                       required/>
+                                       />
                             </div>
 
                             <div class="col-lg-6 form-group  form-float">
@@ -52,7 +52,7 @@
                                 <label for="entity">
                                     Entity
                                 </label>
-                                <select class="form-control show-tick entity" name="entityId" id="entity" required>
+                                <select class="form-control show-tick entity" name="entityId" id="entity" >
                                     <option value="">Please Select</option>
 
                                     <g:each var="e" in="${entity}">
@@ -63,8 +63,8 @@
 
 
                             <input type="hidden" class="entityTypeId" name="entityTypeId">
-                            <input type="hidden" name="createdUser" value="1">
-                            <input type="hidden" name="modifiedUser" value="1">
+                            <input type="hidden" name="createdUser" value="${session.getAttribute('userId')}">
+                            <input type="hidden" name="modifiedUser" value="${session.getAttribute('userId')}">
                             <input type="hidden" name="status" value="1">
                             <input type="hidden" name="syncStatus" value="1">
                         </div>

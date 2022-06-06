@@ -32,8 +32,11 @@
                                 <label for="configAllowed">
                                     Config Allowed
                                 </label>
-                                <input type="text" id="configAllowed" class="form-control configAllowed" name="configAllowed" placeholder="Config Allowed"
-                                       required/>
+
+                                <select class="form-control show-tick configAllowed" name="configAllowed" id="configAllowed">
+                                    <option value="1">YES</option>
+                                    <option value="0">NO</option>
+                                </select>
                             </div>
 
                             <div class="col-lg-6 form-group  form-float">
@@ -41,7 +44,7 @@
                                 <label for="entity">
                                    Entity
                                 </label>
-                                <select class="form-control show-tick entity" name="entityId" id="entity" required>
+                                <select class="form-control show-tick entity" name="entityId" id="entity">
                                     <option value="">-- Please select --</option>
                                     <g:each var="e" in="${entity}">
                                         <option value="${e.id}" data-type="${e.entityType.id}">${e.entityName}</option>
@@ -61,8 +64,8 @@
 %{--                                </select>--}%
 %{--                            </div>--}%
                             <input type="hidden" class="entityTypeId"  name="entityTypeId">
-                            <input type="hidden" name="createdUser" value="1">
-                            <input type="hidden" name="modifiedUser" value="1">
+                            <input type="hidden" name="createdUser" value="${session.getAttribute('userId').toString()}">
+                            <input type="hidden" name="modifiedUser" value="${session.getAttribute('userId').toString()}">
                         </div>
                     </div>
 

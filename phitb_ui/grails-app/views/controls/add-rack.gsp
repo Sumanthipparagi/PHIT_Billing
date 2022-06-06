@@ -24,9 +24,10 @@
                                 <label for="ccmEnabled">
                                     CCM Enabled
                                 </label>
-                                <input type="number" id="ccmEnabled" class="form-control ccmEnabled" name="cccEnabled"
-                                       placeholder="CCM Enabled"
-                                       required/>
+                                <select class="form-control show-tick ccmEnabled" name="ccmEnabled" id="ccmEnabled" required>
+                                    <option value="0">YES</option>
+                                    <option value="1">NO</option>
+                                </select>
                             </div>
 
                             <div class="col-lg-6 form-group  form-float">
@@ -35,7 +36,7 @@
                                 </label>
                                 <input type="text" id="rackCodeName" class="form-control rackCodeName" name="rackCodeName"
                                        placeholder="Rack Code Name"
-                                       required/>
+                                       />
                             </div>
 
 
@@ -45,7 +46,7 @@
                                 </label>
                                 <input type="text" id="genralinfo" class="form-control generalInfo"
                                        name="generalInfo" placeholder="Genaral Info"
-                                       required/>
+                                       />
                             </div>
 
 
@@ -55,23 +56,26 @@
                                 </label>
                                 <input type="text" id="floorNumber" class="form-control floorNumber"
                                        name="floorNumber" placeholder="Floor Number"
-                                       required/>
+                                       />
                             </div>
 
                             <div class="col-lg-6 form-group  form-float">
                                 <label for="companies">
                                    Companies
                                 </label>
-                                <input type="text" id="companies" class="form-control companies"
-                                       name="companies" placeholder="Companies"
-                                       required/>
+                                <select class="form-control show-tick companies" name="companies" id="companies" multiple>
+                                    <option value="">Please Select</option>
+                                    <g:each var="c" in="${companyList}">
+                                        <option value="${c.id}"  >${c.entityName}</option>
+                                    </g:each>
+                                </select>
                             </div>
 
                             <div class="col-lg-6 form-group  form-float">
                                 <label for="entity">
                                     Entity
                                 </label>
-                                <select class="form-control show-tick entity" name="entityId" id="entity" required>
+                                <select class="form-control show-tick entity" name="entityId" id="entity" >
                                     <option value="">Please select</option>
                                     <g:each var="e" in="${entity}">
                                         <option value="${e.id}"  data-type="${e.entityType.id}">${e.entityName}</option>
@@ -92,8 +96,8 @@
 %{--                </div>--}%
 
                     <input type="hidden" class="entityTypeId" name="entityTypeId">
-                    <input type="hidden" name="createdUser" value="1">
-                    <input type="hidden" name="modifiedUser" value="1">
+                    <input type="hidden" name="createdUser" value="${session.getAttribute('userId')}">
+                    <input type="hidden" name="modifiedUser" value="${session.getAttribute('userId')}">
                     <input type="hidden" name="status" value="1">
                     <input type="hidden" name="syncStatus" value="1">
             </div>

@@ -102,12 +102,44 @@ class RouteRegisterService
         routeRegister.cityId = Long.parseLong(jsonObject.get("cityId").toString())
         routeRegister.stateId = Long.parseLong(jsonObject.get("stateId").toString())
         routeRegister.countryId = Long.parseLong(jsonObject.get("countryId").toString())
-        routeRegister.salesman = UserRegister.findById(Long.parseLong(jsonObject.get("salesman").toString()))
-        routeRegister.areaManager = UserRegister.findById(Long.parseLong(jsonObject.get("areaManager").toString()))
+        if(jsonObject.get("salesman")!= "0")
+        {
+            routeRegister.salesman = UserRegister.findById(Long.parseLong(jsonObject.get("salesman").toString()))
+        }
+        else
+        {
+            routeRegister.salesman = null
+        }
+
+        if(jsonObject.get("areaManager")!= "0")
+        {
+            routeRegister.areaManager = UserRegister.findById(Long.parseLong(jsonObject.get("areaManager").toString()))
+        }
+        else
+        {
+            routeRegister.areaManager = null
+        }
+
         routeRegister.ccmEnabled = Long.parseLong(jsonObject.get("ccmEnabled").toString())
         routeRegister.daysOfWeek = jsonObject.get("daysOfWeek").toString()
-        routeRegister.salesman = UserRegister.findById(Long.parseLong(jsonObject.get("areaManager").toString()))
+        if(jsonObject.get("salesman")!= "0")
+        {
+            routeRegister.salesman = UserRegister.findById(Long.parseLong(jsonObject.get("salesman").toString()))
+        }
+        else
+        {
+            routeRegister.salesman = null
+        }
+
         routeRegister.ccmId = jsonObject.get("ccmId").toString()
+        if(jsonObject.get("ccmId")!="0")
+        {
+            routeRegister.ccmId = jsonObject.get("ccmId").toString()
+        }
+        else
+        {
+            routeRegister.ccmId = 0
+        }
         routeRegister.apprExpense = Double.parseDouble(jsonObject.get("apprExpense").toString())
         routeRegister.status = jsonObject.get("status").toString()
         routeRegister.syncStatus = Long.parseLong(jsonObject.get("syncStatus").toString())

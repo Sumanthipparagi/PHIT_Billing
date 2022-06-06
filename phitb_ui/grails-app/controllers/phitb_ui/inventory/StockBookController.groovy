@@ -81,6 +81,7 @@ class StockBookController {
         try
         {
             JSONObject jsonObject = new JSONObject(params)
+            jsonObject.put("entityId",session.getAttribute('entityId'))
             def apiResponse = new InventoryService().showStockBooks(jsonObject)
             if (apiResponse.status == 200)
             {
@@ -714,6 +715,30 @@ class StockBookController {
         {
             return null
         }
+    }
 
+    def delete()
+    {
+        try
+        {
+            JSONObject jsonObject = new JSONObject(params)
+            def apiResponse = new InventoryService().deleteStockBook(jsonObject.id)
+            if (apiResponse.status == 200)
+            {
+                JSONObject data = new JSONObject()
+                data.put("success","success")
+                respond data, formats: ['json'], status: 200
+            }
+            else
+            {
+                response.status = 400
+            }
+        }
+        catch (Exception ex)
+        {
+            System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
+            log.error('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
+            response.status = 400
+        }
     }
 }

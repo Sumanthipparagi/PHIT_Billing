@@ -70,6 +70,14 @@ class CityController {
         try
         {
             JSONObject jsonObject = new JSONObject(params)
+            if(params.entityId!=null || params.entityId!="")
+            {
+                jsonObject.put("entityId", session.getAttribute("entityId"))
+            }
+            if(params.entityTypeId!=null || params.entityTypeId!="")
+            {
+                jsonObject.put("entityTypeId", session.getAttribute("entityTypeId"))
+            }
             def apiResponse = new SystemService().saveCity(jsonObject)
             if (apiResponse?.status == 200)
             {
@@ -95,6 +103,14 @@ class CityController {
         {
             println(params)
             JSONObject jsonObject = new JSONObject(params)
+            if(params.entityId!=null || params.entityId!="")
+            {
+                jsonObject.put("entityId", session.getAttribute("entityId"))
+            }
+            if(params.entityTypeId!=null || params.entityTypeId!="")
+            {
+                jsonObject.put("entityTypeId", session.getAttribute("entityTypeId"))
+            }
             def apiResponse = new SystemService().putCity(jsonObject)
             if (apiResponse.status == 200)
             {

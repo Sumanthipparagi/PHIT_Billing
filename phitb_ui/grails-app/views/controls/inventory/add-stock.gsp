@@ -176,6 +176,8 @@
 
 %{--                            <input type="hidden" name="entityId" >
                             <input type="hidden" name="entityTypeId">--}%
+                            <input type="hidden" class="uuid" name="uuid">
+
                             <input type="hidden" name="mergedWith">
                             <input type="hidden" name="createdUser">
                             <input type="hidden" name="modifiedUser">

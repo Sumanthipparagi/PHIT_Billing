@@ -4,13 +4,18 @@ package phitb_ui.accounts
 import org.grails.web.json.JSONArray
 import org.grails.web.json.JSONObject
 import phitb_ui.AccountsService
+import phitb_ui.EInvoiceService
 import phitb_ui.EntityService
+import phitb_ui.InventoryService
 import phitb_ui.ProductService
+import phitb_ui.SalesService
 import phitb_ui.entity.AccountRegisterController
 import phitb_ui.entity.EntityRegisterController
 import phitb_ui.sales.SalebillDetailsController
 import phitb_ui.system.AccountModeController
 import phitb_ui.system.PaymentModeController
+
+import java.text.SimpleDateFormat
 
 class ReciptDetailController {
 
@@ -94,7 +99,23 @@ class ReciptDetailController {
 
     def dataTable() {
         try {
+            String fromDate, toDate
             JSONObject jsonObject = new JSONObject(params)
+            if ((params.daterange != null) && (params.daterange != ""))
+            {
+                System.out.println("date=" + params.daterange.toString())
+                SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy")
+                fromDate = params.daterange.split("-")[0]
+                System.out.println("fromdate=" + fromDate.trim())
+                jsonObject.put("fromDate",fromDate.trim())
+                toDate = params.daterange.split("-")[1]
+                jsonObject.put("toDate",toDate.trim())
+                System.out.println("toDate=" + toDate.trim())
+            }
+            else {
+                jsonObject.put("fromDate","")
+                jsonObject.put("toDate","")
+            }
             def apiResponse = new AccountsService().showRecipt(jsonObject)
             if (apiResponse.status == 200) {
                 JSONObject responseObject = new JSONObject(apiResponse.readEntity(String.class))
@@ -106,11 +127,6 @@ class ReciptDetailController {
                         json.put("receivedFrom", new EntityService().getEntityById(json.get("receivedFrom").toString()))
                         jsonArray2.put(json)
                     }
-
-//                    for(JSONObject json1 : jsonArray2)
-//                    {
-//                        entityArray.put(json1.get("customer"))
-//                    }
                     jsonArray.each {
                         if (it.depositTo!="" && it.depositTo!=null) {
                             def accountResp = new EntityService().getAccountById(it.get("depositTo")?.toString())
@@ -119,6 +135,10 @@ class ReciptDetailController {
                         else
                         {
                             it.put("deposit", "NA")
+                        }
+                        if (it.approvedBy!=0) {
+                            def userResp = new EntityService().getUser(it.get("approvedBy")?.toString())
+                            it.put("approved", userResp)
                         }
                     }
                     responseObject.put("data", jsonArray2)
@@ -303,7 +323,7 @@ class ReciptDetailController {
                 if (bills.get("Doc.Type") == "GTN" && bills.get("PaidNow").toString().toDouble()!= 0) {
                     goodsTransferNote += Double.parseDouble(bills.PaidNow)
                 }
-                jsonObject.put("amountPaid",invoice+goodsTransferNote)
+                jsonObject.put("amountPaid",invoice+goodsTransferNote-credit)
             }
             def apiResponse = new AccountsService().saveRecipt(jsonObject, session.getAttribute('financialYear') as String)
             if (apiResponse?.status == 200) {
@@ -319,6 +339,7 @@ class ReciptDetailController {
                         JSONObject invObject = new JSONObject()
                         invObject.put("id", billId)
                         invObject.put("paidNow", paidNow)
+                        invObject.put("status","NA")
                         def invs = new AccountsService().updateSaleBalance(invObject)
                         if (invs?.status == 200) {
                             invObject.remove("id");
@@ -329,6 +350,7 @@ class ReciptDetailController {
                         JSONObject crntObject = new JSONObject();
                         crntObject.put("id", billId)
                         crntObject.put("paidNow", paidNow)
+                        crntObject.put("status","NA")
                         def crnt = new AccountsService().updateSaleReturnBalance(crntObject)
                         if (crnt?.status == 200) {
                             crntObject.remove("id");
@@ -339,6 +361,7 @@ class ReciptDetailController {
                         JSONObject gtnObject = new JSONObject();
                         gtnObject.put("id", billId)
                         gtnObject.put("paidNow", paidNow)
+                        gtnObject.put("status","NA")
                         def gtn = new AccountsService().updateGTNBalance(gtnObject)
                         if (gtn?.status == 200) {
                             gtnObject.remove("id");
@@ -467,10 +490,10 @@ class ReciptDetailController {
         JSONArray reciptloginvArray = new JSONArray(reciptlogsinv.readEntity(String.class))
         JSONArray reciptlogcrntArray = new JSONArray(reciptlogscrnt.readEntity(String.class))
         JSONArray reciptloggtnArray = new JSONArray(reciptlogsgtn.readEntity(String.class))
-        render(view: '/accounts/recipt/recipt-temp', model: [customer          : customer, recipt: recipt,
+        render(view: '/accounts/recipt/recipt-temp', model: [customer          : customer, receipt: recipt,
                                                              entity            : entity, reciptloginvArray: reciptloginvArray,
                                                              reciptlogcrntArray: reciptlogcrntArray,
-                                                             reciptloggtnArray:reciptloggtnArray])
+                                                             reciptloggtnArray :reciptloggtnArray])
     }
 
 
@@ -541,4 +564,76 @@ class ReciptDetailController {
         render(view: '/accounts/recipt/receipt-approval',model:[entity:entity])
     }
 
+    def receiptApprove()
+    {
+        try {
+            JSONObject jsonObject = new JSONObject(params)
+            jsonObject.put("userId",session.getAttribute("userId").toString())
+            def apiResponse = new AccountsService().approveReceipt(jsonObject)
+            if (apiResponse?.status == 200) {
+                JSONObject obj = new JSONObject(apiResponse.readEntity(String.class))
+                respond obj, formats: ['json'], status: 200
+            } else {
+                response.status = apiResponse?.status ?: 400
+            }
+        }
+        catch (Exception ex) {
+            System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
+            log.error('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
+            response.status = 400
+        }
+    }
+
+    def cancelReceipt()
+    {
+        String id = params.id
+        String entityId = session.getAttribute("entityId")
+        String financialYear = session.getAttribute("financialYear")
+        JSONObject jsonObject = new AccountsService().cancelReceipt(id, entityId, financialYear)
+        def saleBillResponse
+        def saleReturnResponse
+        def gtnResponse
+        if (jsonObject)
+        {
+            JSONArray billDetailLogs = jsonObject.get("billDetailLogs")
+            if (billDetailLogs)
+            {
+                for (JSONObject billDetailLog : billDetailLogs)
+                {
+                    billDetailLog.put("status","CANCELLED")
+                    billDetailLog.put('paidNow',billDetailLog.amountPaid)
+                    billDetailLog.put('id',billDetailLog.billId)
+                    if(billDetailLog.billType == "INVS")
+                    {
+                        saleBillResponse = new AccountsService().updateSaleBalance(billDetailLog)
+                        if(saleBillResponse?.status==200)
+                        {
+                            println("Sale balance updated successfully!")
+                        }
+                    }
+                    if(billDetailLog.billType == "CRNT")
+                    {
+                        saleReturnResponse = new AccountsService().updateSaleReturnBalance(billDetailLog)
+                        if(saleReturnResponse?.status==200)
+                        {
+                            println("Sale Return balance updated successfully!")
+                        }
+                    }
+                    if(billDetailLog.billType == "GTN")
+                    {
+                        gtnResponse = new AccountsService().updateGTNBalance(billDetailLog)
+                        if(gtnResponse?.status==200)
+                        {
+                            println("Sale Return balance updated successfully!")
+                        }
+                    }
+                }
+            }
+            respond jsonObject, formats: ['json']
+        }
+        else
+        {
+            response.status = 400
+        }
+    }
 }

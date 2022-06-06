@@ -203,26 +203,54 @@ class SaleReturnController {
         try
         {
             SaleReturn saleReturn = SaleReturn.findById(Long.parseLong(params.id))
-            if (saleReturn)
+            if(params.status==null || params.status=="NA")
             {
-                saleReturn.isUpdatable = true
-                Double balance = Double.parseDouble(params.balance)
-                if (balance > 0 && balance!="" && balance!=null)
+                if (saleReturn)
                 {
-                    double diffBalance = Double.parseDouble(saleReturn.getBalance().toString()) - balance
-                    saleReturn.balance = diffBalance
-                    saleReturn.adjAmount = saleReturn.getAdjAmount() + balance
+                    saleReturn.isUpdatable = true
+                    Double balance = Double.parseDouble(params.balance)
+                    if (balance > 0 && balance!="" && balance!=null)
+                    {
+                        double diffBalance = Double.parseDouble(saleReturn.getBalance().toString()) - balance
+                        saleReturn.balance = diffBalance
+                        saleReturn.adjAmount = saleReturn.getAdjAmount() + balance
+                    }
+                    else
+                    {
+                        saleReturn.balance = saleReturn.getBalance()
+                        saleReturn.adjAmount = saleReturn.getAdjAmount()
+                    }
+                    SaleReturn saleReturn1 = saleReturn.save(flush: true)
+                    if (saleReturn1)
+                    {
+                        respond saleReturn1
+                        return
+                    }
                 }
-                else
+            }
+            else {
+                if (saleReturn)
                 {
-                    saleReturn.balance = saleReturn.getBalance()
-                    saleReturn.adjAmount = saleReturn.getAdjAmount()
-                }
-                SaleReturn saleReturn1 = saleReturn.save(flush: true)
-                if (saleReturn1)
-                {
-                    respond saleReturn1
-                    return
+                    saleReturn.isUpdatable = true
+                    Double balance = Double.parseDouble(params.balance)
+                    if (balance > 0 && balance!="" && balance!=null)
+                    {
+                        double updatebalance = Double.parseDouble(saleReturn.getBalance().toString()) + balance
+                        saleReturn.balance = updatebalance
+                        println(saleReturn.getAdjAmount())
+                        saleReturn.adjAmount = saleReturn.getAdjAmount() - balance
+                    }
+                    else
+                    {
+                        saleReturn.balance = saleReturn.getBalance()
+                        saleReturn.adjAmount = saleReturn.getAdjAmount()
+                    }
+                    SaleReturn saleReturn1 = saleReturn.save(flush: true)
+                    if (saleReturn1)
+                    {
+                        respond saleReturn1
+                        return
+                    }
                 }
             }
         }

@@ -87,6 +87,7 @@
                                     Area Manager
                                 </label>
                                 <select class="form-control show-tick areaManager" name="areaManager" id="areaManager">
+                                    <option value="0">Please Select</option>
                                     <g:each var="manager" in="${managerList}">
                                         <option value="${manager.id}">${manager.userName}</option>
                                     </g:each>
@@ -98,6 +99,7 @@
                                     Salesman
                                 </label>
                                 <select class="form-control show-tick salesman" name="salesman" id="salesman">
+                                    <option value="0">Please Select</option>
                                     <g:each var="salesman" in="${salesmanList}">
                                         <option value="${salesman.id}">${salesman.userName}</option>
                                     </g:each>
@@ -109,6 +111,7 @@
                                     CCM
                                 </label>
                                 <select class="form-control show-tick ccmId" name="ccmId" id="ccmId">
+                                    <option value="0">Please Select</option>
                                     <g:each var="cc" in="${ccm}">
                                         <option value="${cc.id}">${cc.kitName}</option>
                                     </g:each>
@@ -119,11 +122,10 @@
                             <label for="entity">
                                 Entity
                             </label>
-                            <select class="form-control show-tick entity" name="entity" id="entity" required>
+                            <select class="form-control show-tick entity" name="entity" id="entity" >
                                 <option value="">-- Please select --</option>
-
                                 <g:each var="e" in="${entity}">
-                                    <option value="${e.id}"  data-type="${e.entityType.id}">${e.entityName}</option>
+                                    <option value="${e.id}"  data-type="${e.entityType.id}s">${e.entityName}</option>
                                 </g:each>
                             </select>
                         </div>
@@ -141,8 +143,8 @@
 %{--                            </div>--}%
 
                             <input type="hidden" id="entityTypeId" class="entityType" name="entityType">
-                            <input type="hidden" name="createdUser" value="1">
-                            <input type="hidden" name="modifiedUser" value="1">
+                            <input type="hidden" name="createdUser" value="${session.getAttribute('userId')}">
+                            <input type="hidden" name="modifiedUser" value="${session.getAttribute('userId')}">
                             <input type="hidden" name="regionStateIds" value="1">
                             <input type="hidden" name="status" value="1">
                             <input type="hidden" name="syncStatus" value="1">

@@ -217,11 +217,11 @@
 
                             <div class="col-lg-3 form-group  form-float cheque">
                                 <label for="chequeNumber">
-                                    Cheque Number
+                                    Instrument ID
                                 </label>
                                 <input type="number" id="chequeNumber" class="chequeNumber form-control"
                                        name="chequeNumber"
-                                       placeholder="Cheque Number"/>
+                                       placeholder="Instrument ID"/>
                             </div>
 
                             <div class="col-lg-3 form-group  form-float">
@@ -277,7 +277,8 @@
                                         <input type="text" id="amountPaid" class="note form-control "
                                                name="amountPaid"
                                                placeholder="Amount" value="0" style="border-radius: 0;"
-                                               required/>
+                                               autocomplete="off"
+                                               />
                                     </div>
                                     <div class="col-lg-4 form-group  form-float">
                                         <button type="button" class="btn btn-secondary" id="autoAdj"
@@ -459,6 +460,8 @@
         return diffDays
     }
 
+    let invIdArray = [];
+
     function getAddress(id) {
         if (id) {
             $.ajax({
@@ -466,7 +469,8 @@
                 url: '/getbyentity/' + id,
                 dataType: 'json',
                 success: function (data) {
-                    getAllSaleBillDetails(id)
+                    invIdArray=[];
+                    getAllPurchaseDetails(id)
                     var trHTML = '';
                     trHTML += '<p><b>' + data.entityName + '</b><br>' + data.addressLine1 + '' + data.addressLine2 + '</p>';
                     $('#caddress').html(trHTML);
@@ -476,22 +480,21 @@
                 }
             });
         } else {
-            getAllSaleBillDetails(id)
+            getAllPurchaseDetails(id)
             $('#caddress').html("");
         }
     }
 
 
-    let invIdArray = [];
 
-    function getAllSaleBillDetails(id) {
+    function getAllPurchaseDetails(id) {
         if (id) {
             $.ajax({
                 type: 'GET',
                 url: '/payments/getallbilldetails?id=' + id,
                 dataType: 'json',
                 success: function (data) {
-                    console.log(data)
+                    console.log(data);
                     var trHTML = '';
                     var trHTML1 = '';
                     trHTML += '';
