@@ -191,6 +191,14 @@ class EntityRegisterService {
         {
             entityRegister.salesmanCommission = 0
         }
+        if(jsonObject.get("hqarea")!=0 || jsonObject.get("hqarea")!="")
+        {
+            entityRegister.hqAreaId = Long.parseLong(jsonObject.get("hqarea").toString())
+        }
+        else
+        {
+            entityRegister.hqAreaId = 0;
+        }
         entityRegister.syncStatus = Long.parseLong(jsonObject.get("syncStatus").toString())
         entityRegister.accountId = jsonObject.get("accountId").toString()
         entityRegister.aadharId = jsonObject.get("aadharId").toString()
@@ -292,6 +300,14 @@ class EntityRegisterService {
             else
             {
                 entityRegister.salesmanCommission = 0
+            }
+            if(jsonObject.get("hqarea")!=0 || jsonObject.get("hqarea")!="")
+            {
+                entityRegister.hqAreaId = Long.parseLong(jsonObject.get("hqarea").toString())
+            }
+            else
+            {
+                entityRegister.hqAreaId = 0;
             }
             entityRegister.syncStatus = Long.parseLong(jsonObject.get("syncStatus").toString())
             entityRegister.accountId = jsonObject.get("accountId").toString()

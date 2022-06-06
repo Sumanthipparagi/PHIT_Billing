@@ -25,7 +25,7 @@ class HqAreasService {
         }
         else
         {
-            return HqArea.findAllByEndTimeIlike("%" + query + "%", [sort: 'id', max: l, offset: o, order:
+            return HqArea.findAllByHqName("%" + query + "%", [sort: 'id', max: l, offset: o, order:
                     'desc'])
         }
     }
@@ -69,7 +69,7 @@ class HqAreasService {
                 orderColumn = "id"
                 break;
             case '1':
-                orderColumn = "customerGroupName"
+                orderColumn = "hqName"
                 break;
         }
         Integer offset = start ? Integer.parseInt(start.toString()) : 0
@@ -79,7 +79,7 @@ class HqAreasService {
             or {
                 if (searchTerm != "")
                 {
-                    ilike('endTime', '%' + searchTerm + '%')
+                    ilike('hqName', '%' + searchTerm + '%')
                 }
             }
             entity {
@@ -167,7 +167,7 @@ class HqAreasService {
         }
     }
 
-    ArrayList<HqArea> getByEntity(String entityId) {
+    def getByEntity(String entityId) {
         if(entityId) {
             EntityRegister entityRegister = EntityRegister.findById(Long.parseLong(entityId))
             if (entityRegister)

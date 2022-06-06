@@ -199,7 +199,7 @@ class HqAreasController {
         try {
             String id = params.id
             if (id) {
-                respond HqAreasService.getByEntity(id)
+                respond hqAreasService.getByEntity(id)
             }
             else
                 response.status = 400

@@ -95,7 +95,7 @@ class EntityRegisterController
                                                                               zoneList:zoneList,
                                                                               routeregister:routeregister,
                                                                               bank:bank,entityList:entityList,
-                                                                              priority:priority])
+                                                                              priority:priority,hqareas:hqareas])
         }
         catch (Exception ex)
         {
@@ -112,6 +112,7 @@ class EntityRegisterController
             JSONObject entity = new EntityService().getEntityById(params.id)
             ArrayList<String> entityList = new EntityRegisterController().show() as ArrayList<String>
             ArrayList<String> routeregister = new RouteController().show() as ArrayList<String>
+            ArrayList<String> hqareas = new HQAreasController().getByEntity() as ArrayList<String>
             ArrayList<String> bank = new BankRegisterController().show() as ArrayList<String>
             ArrayList<String> entitytype = new EntityService().getEntityType() as ArrayList<String>
             ArrayList<String> userregister = new UserRegisterController().show() as ArrayList<String>
@@ -142,7 +143,7 @@ class EntityRegisterController
                                                                                  zoneList:zoneList,
                                                                                  routeregister:routeregister,
                                                                                  bank:bank,entityList:entityList,
-                                                                                 priority:priority])
+                                                                                 priority:priority,hqareas:hqareas])
         }
         catch (Exception ex)
         {

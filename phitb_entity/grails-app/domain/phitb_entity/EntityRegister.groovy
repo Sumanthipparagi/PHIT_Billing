@@ -50,7 +50,7 @@ class EntityRegister implements LogicalDelete<EntityRegister>
     long syncStatus
     long routeId
     String accountId
-    long hqAreaId
+    Long hqAreaId
     String aadharId
     String companyCode
     String faxNumber

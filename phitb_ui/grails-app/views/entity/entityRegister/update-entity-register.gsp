@@ -402,6 +402,18 @@
                                                    name="defaultCharge" placeholder="Default Charge"
                                                    required />
                                         </div>
+                                        <div class="col-lg-6 form-group  form-float">
+                                            <label for="hqarea">
+                                                HQ area
+                                            </label>
+                                            <select class="form-control show-tick hqarea" name="hqarea" id="hqarea">
+                                                <g:each var="hq" in="${hqareas}">
+                                                    <option value="${hq.id}" <g:if
+                                                            test="${hq.id == entity.hqAreaId}">selected</g:if>>${hq.hqName}</option>
+                                                </g:each>
+                                            </select>
+                                        </div>
+
                                         %{--                                        <div class="col-lg-6 form-group  form-float">--}%
                                         %{--                                            <label for="careTaker">--}%
                                         %{--                                                Care Taker--}%

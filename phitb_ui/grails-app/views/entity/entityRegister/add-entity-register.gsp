@@ -288,16 +288,16 @@
                                                    name="foodLicenceValidity" placeholder="Food Licence Validity"
                                                    />
                                         </div>
-                                        <div class="col-lg-6 form-group  form-float">
-                                            <label for="ptr">
-                                                PTR
-                                            </label>
-                                            <input type="text" id="ptr" onblur="setTwoNumberDecimal"
-                                                   class="form-control ptr" name="ptr"
-                                                   placeholder="PTR" step="0.25" value="0.00" required
-                                                   />
-                                        </div>
-                                        <div class="col-lg-6 form-group  form-float">
+%{--                                        <div class="col-lg-6 form-group  form-float">--}%
+%{--                                            <label for="ptr">--}%
+%{--                                                PTR--}%
+%{--                                            </label>--}%
+%{--                                            <input type="text" id="ptr" onblur="setTwoNumberDecimal"--}%
+%{--                                                   class="form-control ptr" name="ptr"--}%
+%{--                                                   placeholder="PTR" step="0.25" value="0.00" required--}%
+%{--                                                   />--}%
+%{--                                        </div>--}%
+                                        <div class="col-lg-12 form-group  form-float">
                                             <label for="salesBalanceLimit">
                                                 Sales Balance Limit
                                             </label>
@@ -408,6 +408,17 @@
                                             <input type="number" id="defaultCharge" class="form-control defaultCharge"  onblur="setTwoNumberDecimal()" step="0.25" value="0.00"
                                                    name="defaultCharge" placeholder="Default Charge"
                                                    required/>
+                                        </div>
+
+                                        <div class="col-lg-6 form-group  form-float">
+                                            <label for="hqarea">
+                                                HQ area
+                                            </label>
+                                            <select class="form-control show-tick hqarea" name="hqarea" id="hqarea">
+                                                <g:each var="hq" in="${hqareas}">
+                                                    <option value="${hq.id}">${hq.hqName}</option>
+                                                </g:each>
+                                            </select>
                                         </div>
 %{--                                        <div class="col-lg-6 form-group  form-float">--}%
 %{--                                            <label for="careTaker">--}%
