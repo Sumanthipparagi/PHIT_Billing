@@ -622,6 +622,22 @@ class EntityService {
 
     }
 
+    def getHqAreaByEntity(String entityId) {
+        Client client = ClientBuilder.newClient()
+        WebTarget target = client.target(new Links().API_GATEWAY)
+        try {
+            Response apiResponse = target
+                    .path(new Links().HQ_AREA_SHOW_BY_ENTITY + "/" + entityId)
+                    .request(MediaType.APPLICATION_JSON_TYPE)
+                    .get()
+            return apiResponse
+        }
+        catch (Exception ex) {
+            System.err.println('Service :EntityService , action :  getUserRegisterByEntity  , Ex:' + ex)
+            log.error('Service :EntityService , action :  getUserRegisterByEntity  , Ex:' + ex)
+        }
+
+    }
 
 
     //Entity IRN

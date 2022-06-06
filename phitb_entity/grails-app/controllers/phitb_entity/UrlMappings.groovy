@@ -357,6 +357,7 @@ class UrlMappings
                 action = [GET: 'show', PUT: 'update', DELETE:
                         'delete']
             }
+            "/hqbyentity/$id(.$format)?"(controller: 'hqAreas', action: 'getHqByEntity')
 
 //            Update Password
             "/update-password/id/$id/password/$password(.$format)?"(controller: 'userRegister', action: 'updatePassword')

@@ -64,6 +64,7 @@ class EntityRegisterController
         try
         {
             ArrayList<String> entityList = new EntityRegisterController().show() as ArrayList<String>
+            ArrayList<String> hqareas = new HQAreasController().getByEntity() as ArrayList<String>
             ArrayList<String> routeregister = new RouteController().show() as ArrayList<String>
             ArrayList<String> bank = new BankRegisterController().show() as ArrayList<String>
             ArrayList<String> entitytype = new EntityService().getEntityType() as ArrayList<String>

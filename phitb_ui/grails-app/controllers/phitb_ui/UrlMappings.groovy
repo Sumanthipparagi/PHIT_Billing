@@ -523,6 +523,7 @@ class UrlMappings {
         "/stockbook"(controller: "stockBook"){
             action = [GET: "index", POST: "save"]
         }
+        "/stockbook/delete/$id"(controller: 'stockBook',action: 'delete')
         "/stockbook/save"(controller: "stockBook"){action = [POST: "save"]}
         "/stockbook/update/$id"(controller: "stockBook"){
             action = [POST: 'update']

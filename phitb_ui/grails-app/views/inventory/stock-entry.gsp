@@ -397,7 +397,7 @@
 
     $(document).on("click", ".deletebtn", function () {
         id = $(this).data('id');
-        $("#myModalLabel").text("Delete Batch Register ?");
+        $("#myModalLabel").text("Delete Stock Book ?");
 
     });
 

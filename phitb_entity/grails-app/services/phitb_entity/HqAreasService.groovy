@@ -166,4 +166,17 @@ class HqAreasService {
             throw new BadRequestException()
         }
     }
+
+    ArrayList<HqArea> getByEntity(String entityId) {
+        if(entityId) {
+            EntityRegister entityRegister = EntityRegister.findById(Long.parseLong(entityId))
+            if (entityRegister)
+                return HqArea.findAllByEntity(entityRegister)
+            else
+                throw new ResourceNotFoundException()
+        }
+        else
+            throw new BadRequestException()
+    }
+
 }

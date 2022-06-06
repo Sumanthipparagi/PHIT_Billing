@@ -189,6 +189,8 @@ public class Links
     public static String HQ_AREA_DATATABLE = "api/v1.0/entity/hqareas/datatable";
     public static String HQ_AREA_UPDATE = "api/v1.0/entity/hqareas/{id}";
     public static String HQ_AREA_DELETE = "api/v1.0/entity/hqareas/{id}";
+    public static String HQ_AREA_SHOW_BY_ENTITY = "api/v1.0/entity/hqbyentity";
+
 
 
     //Financial Year master

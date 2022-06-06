@@ -188,4 +188,34 @@ class HqAreasController {
             System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
         }
     }
+
+
+    /**
+     * Get user register by entity
+     * @param id
+     * @return get requested user register
+     */
+    def getHqByEntity() {
+        try {
+            String id = params.id
+            if (id) {
+                respond HqAreasService.getByEntity(id)
+            }
+            else
+                response.status = 400
+        }
+        catch (ResourceNotFoundException ex)
+        {
+            System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
+            response.status = 404
+        }
+        catch (BadRequestException ex)
+        {
+            System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
+            response.status = 400
+        }
+        catch (Exception ex) {
+            System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
+        }
+    }
 }
