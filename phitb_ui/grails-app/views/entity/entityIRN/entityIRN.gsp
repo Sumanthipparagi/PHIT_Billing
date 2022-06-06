@@ -183,11 +183,11 @@
             processing: true,
             serverSide: true,
             language: {
-                searchPlaceholder: "Search HQ area table"
+                searchPlaceholder: "Search Entity IRN"
             },
             ajax: {
                 type: 'GET',
-                url: '/hq-area/datatable',
+                url: '/entity-irn/datatable',
                 dataType: 'json',
                 dataSrc: function (json) {
                     var return_data = [];
@@ -218,7 +218,7 @@
         });
     }
 
-    $(".hqAreaForm").submit(function (event) {
+    $(".entityIrnForm").submit(function (event) {
 
         //disable the default form submission
         event.preventDefault();
@@ -242,7 +242,7 @@
             contentType: false,
             processData: false,
             success: function () {
-                swal("Success!", "Entit IRN  Submitted Successfully", "success");
+                swal("Success!", "Entity IRN  Submitted Successfully", "success");
                 entityIRN();
                 $('#addEntityIRNModal').modal('hide');
             },
@@ -289,7 +289,7 @@
             success: function () {
                 $('.deleteModal').modal('hide');
                 entityIRN();
-                swal("Success!", "HQ area Deleted Successfully", "success");
+                swal("Success!", "Entity IRN Deleted Successfully", "success");
             }, error: function () {
                 swal("Error!", "Something went wrong", "error");
             }

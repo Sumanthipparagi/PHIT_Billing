@@ -50,6 +50,7 @@ class EntityRegister implements LogicalDelete<EntityRegister>
     long syncStatus
     long routeId
     String accountId
+    long hqAreaId
     String aadharId
     String companyCode
     String faxNumber
@@ -80,6 +81,7 @@ class EntityRegister implements LogicalDelete<EntityRegister>
         foodLicence1 nullable: true
         manager nullable:true
         salesman nullable:true
+        hqAreaId nullable:true
     }
 
     boolean isUpdatable
