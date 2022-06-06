@@ -621,5 +621,7 @@ class UrlMappings {
         "/reports/accounts/outstanding"(controller: "accountsReport", action: "outstandingReport")
         "/reports/accounts/getoutstanding"(controller: "accountsReport", action: "getOutstandingReport")
 
+        "/reports/inventory/statement"(controller: "inventoryReport", action: "statement")
+
     }
 }
