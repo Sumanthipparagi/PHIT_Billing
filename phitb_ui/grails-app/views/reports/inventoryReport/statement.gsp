@@ -20,7 +20,7 @@
     <asset:stylesheet src="/themeassets/plugins/daterangepicker/daterangepicker.css" rel="stylesheet"/>
 
     <asset:stylesheet rel="stylesheet" href="/themeassets/plugins/sweetalert2/dist/sweetalert2.css"/>
-
+    <link rel="stylesheet" media="screen" href="https://cdnjs.cloudflare.com/ajax/libs/select2/3.5.2/select2.min.css">
     <style>
 
     @media print {
@@ -73,36 +73,51 @@
                 <div class="card">
                     <div class="header">
                         <div class="row">
-                            <div class="col-md-5">
+                            <div class="col-md-9">
                                 <div class="form-group">
                                     <div class="input-group inlineblock">
                                         <label for="dateRange">Date Range:</label>
                                         <input id="dateRange" class="dateRange" type="text" name="dateRange"
                                                style="border-radius: 6px;margin: 4px;"/>
+
+                                        <label for="entitySelect">Entity:</label>
+                                        <select name="entity" id="entitySelect">
+                                            <g:each in="${entities}" var="en">
+                                                <option value="${en.id}">${en.entityName}</option>
+                                            </g:each>
+                                        </select>
+
                                         <button class="input-group-btn btn btn-info btn-sm"
                                                 onclick="getReport()">Get Report</button>
                                     </div>
                                 </div>
                             </div>
 
-                            <div class="col-md-5 d-flex justify-content-center">
+                        %{--    <div class="col-md-2 d-flex justify-content-center">
+                                <div class="form-group">
+                                    <div class="input-group inlineblock">
+                                        <label for="entitySelect">Entity:</label>
+                                        <select name="entity" id="entitySelect">
+                                            <g:each in="${entities}" var="en">
+                                                <option value="${en.id}">${en.entityName}</option>
+                                            </g:each>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>--}%
+
+                            <div class="col-md-3 d-flex justify-content-center">
                                 <div class="form-group">
                                     <div class="input-group inlineblock">
                                         <label>Export:</label>
-                                        <button class="input-group-btn btn btn-info btn-sm" id="btnExport"><i class="fa fa-file-excel-o"></i> Excel</button>
-                                        <button class="input-group-btn btn btn-danger btn-sm" id="btnPrint"><i class="fa fa-print"></i> Print</button>
+                                        <button class="input-group-btn btn btn-info btn-sm" id="btnExport"><i
+                                                class="fa fa-file-excel-o"></i> Excel</button>
+                                        <button class="input-group-btn btn btn-danger btn-sm" id="btnPrint"><i
+                                                class="fa fa-print"></i> Print</button>
                                     </div>
                                 </div>
                             </div>
 
-                            <div class="col-md-2 d-flex justify-content-center">
-                                <div class="checkbox inlineblock">
-                                    <input id="paidInvoice" type="checkbox" checked/>
-                                    <label for="paidInvoice">
-                                        Show Paid Invoices
-                                    </label>
-                                </div>
-                            </div>
                         </div>
                     </div>
 
@@ -145,6 +160,8 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.js" integrity="sha512-Bw9Zj8x4giJb3OmlMiMaGbNrFr0ERD2f9jL3en5FmcTXLhkI+fKyXVeyGyxKMIl1RfgcCBDprJJt4JvlglEb3A==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.23/jspdf.plugin.autotable.js" integrity="sha512-P3z5YHtqjIxRAu1AjkWiIPWmMwO9jApnCMsa5s0UTgiDDEjTBjgEqRK0Wn0Uo8Ku3IDa1oer1CIBpTWAvqbmCA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 --}%
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/3.5.2/select2.js"></script>
 <script>
     var dueOnDate = "";
     $('.dateRange').daterangepicker({
@@ -152,9 +169,11 @@
             format: "DD/MM/YYYY"
         },
         maxDate: moment()
-    }).on('apply.daterangepicker', function(ev, picker) {
+    }).on('apply.daterangepicker', function (ev, picker) {
         dueOnDate = moment(picker.endDate).format('DD/MM/YYYY');
     });
+
+    $("#entitySelect").select2();
 
     function getReport() {
         var loading = Swal.fire({
@@ -170,7 +189,7 @@
         // var sortBy = $('.sortBy').val();
         var paidInvoice = $("#paidInvoice").is(":checked") ? "true" : "false";
         $.ajax({
-            url: "/reports/accounts/getoutstanding?dateRange=" + dateRange + "&paidInvoice="+paidInvoice,
+            url: "/reports/accounts/getoutstanding?dateRange=" + dateRange + "&paidInvoice=" + paidInvoice,
             type: "GET",
             contentType: false,
             processData: false,
@@ -183,7 +202,7 @@
                     dateRange + "</th></tr>" +
                     //"<tr><th colspan='6'></th><th data-f-bold='true'><strong>Grand Total:</strong> <span id='grandTotal'></span></th></tr>" +
                     //"<tr><th data-f-bold='true'>Customer</th><th data-f-bold='true'>Net Amount</th>"+
-                    "<th data-f-bold='true'>Customer</th><th data-f-bold='true'>Fin. Year</th><th data-f-bold='true'>Tran. Type</th><th data-f-bold='true'>Tran. No.</th><th data-f-bold='true'>Date</th><th data-f-bold='true'>Due Date</th><th data-f-bold='true'>Due On "+dueOnDate+"</th><th data-f-bold='true'>Not Due</th><th data-f-bold='true'>Total Due</th><th data-f-bold='true'>Days</th></tr></thead><tbody>";
+                    "<th data-f-bold='true'>Customer</th><th data-f-bold='true'>Fin. Year</th><th data-f-bold='true'>Tran. Type</th><th data-f-bold='true'>Tran. No.</th><th data-f-bold='true'>Date</th><th data-f-bold='true'>Due Date</th><th data-f-bold='true'>Due On " + dueOnDate + "</th><th data-f-bold='true'>Not Due</th><th data-f-bold='true'>Total Due</th><th data-f-bold='true'>Days</th></tr></thead><tbody>";
                 var billDetails = "";
                 $.each(data, function (key, city) {
                     billDetails = "";
@@ -194,7 +213,7 @@
                     var customerTotalDue = 0;
                     var customerInfo = "";
                     $.each(city, function (customer, invs) {
-                        var bills = "<tr><td colspan='10' data-f-bold='true'>"+customer+"</td></tr>";
+                        var bills = "<tr><td colspan='10' data-f-bold='true'>" + customer + "</td></tr>";
                         $.each(invs, function (key, bill) {
                             var totalDue = bill.balance - bill.due;
                             customerDue += bill.due;
@@ -212,8 +231,8 @@
                                 "<td>" + totalDue.toFixed(2) + "</td>" +
                                 "<td>" + moment(new Date()).diff(moment(dateFormat(bill.dueDate), "DD/MM/YYYY"), 'days') + "</td></tr>";
                         });
-                        var customerTotal = "<tr><td colspan='6'></td><td data-f-bold='true'><u><strong>"+customerDue.toFixed(2)+"</strong></u></td><td data-f-bold='true'><u><strong>"+customerBalance.toFixed(2)+"</strong></u></td>" +
-                            "<td data-f-bold='true'><u><strong>"+customerTotalDue.toFixed(2)+"</strong></u></td><td data-f-bold='true'></td></tr>";
+                        var customerTotal = "<tr><td colspan='6'></td><td data-f-bold='true'><u><strong>" + customerDue.toFixed(2) + "</strong></u></td><td data-f-bold='true'><u><strong>" + customerBalance.toFixed(2) + "</strong></u></td>" +
+                            "<td data-f-bold='true'><u><strong>" + customerTotalDue.toFixed(2) + "</strong></u></td><td data-f-bold='true'></td></tr>";
                         customerInfo += (bills + customerTotal);
                     });
                     billDetails += customerInfo;
@@ -266,8 +285,7 @@
           });
       });*/
 
-    function dateFormat(dt)
-    {
+    function dateFormat(dt) {
         dt = dt.replace("T", " ").replace("Z", '');
         var date = new Date(dt);
         //return moment(date).format('DD/MM/YYYY hh:mm:ss a');
