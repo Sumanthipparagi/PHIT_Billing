@@ -32,4 +32,9 @@ class SampleConversionController {
         render(view: '/sales/sampleConversion/sample-promotional-gdv', model: [customers: customers, divisions: divisions, series: series,
                                                                salesmanList: salesmanList, priorityList: priorityList, reason:reason,taxRegister:taxRegister])
     }
+
+    def sampleConversion()
+    {
+        render(view: '/sales/sampleConversion/sample-conversion')
+    }
 }

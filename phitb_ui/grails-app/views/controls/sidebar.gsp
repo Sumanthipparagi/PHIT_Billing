@@ -401,6 +401,8 @@
                         <g:if test="${UtilsService.isPermitted("VIEW_CREDIT_DEBIT_SETTLEMENT", session.getAttribute("permittedFeatures").toString())}">
                             <li><a href="#">Credit Debit Settlement</a></li>
                         </g:if>
+                        <li><a href="/sample-conversion">Sample Conversion</a></li>
+
                     </ul>
                 </li>
 
@@ -641,6 +643,7 @@
                         class="badge badge-success float-right"></span></a>
                     <ul class="ml-menu">
                                 <li><a href="/entity-settings">Entity Settings</a></li>
+                                <li><a href="/entity-irn">Entity IRN</a></li>
                     </ul>
                 </li>
 
