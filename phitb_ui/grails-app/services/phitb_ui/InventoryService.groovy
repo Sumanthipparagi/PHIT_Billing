@@ -48,6 +48,35 @@ class InventoryService {
 
     }
 
+    def getStockBookByEntity(long id)
+    {
+        Client client = ClientBuilder.newClient().register(JacksonFeature.class)
+        WebTarget target = client.target(new Links().API_GATEWAY);
+
+        try
+        {
+            Response apiResponse = target
+                    .path(new Links().STOCK_BOOK_BY_ENTITY + "/" +id)
+                    .request(MediaType.APPLICATION_JSON_TYPE)
+                    .get()
+            if (apiResponse?.status == 200)
+            {
+                JSONArray jSONArray = new JSONArray(apiResponse.readEntity(String.class))
+                return jSONArray
+            }
+            else
+            {
+                return null
+            }
+        }
+        catch (Exception ex)
+        {
+            System.err.println('Service : InventoryService , action :  getStockBookByEntity  , Ex:' + ex)
+            log.error('Service :InventoryService , action :  getStockBookByEntity  , Ex:' + ex)
+        }
+
+    }
+
 //    def stockPurchase(String batch,String sqty)
 //    {
 //        Client client = ClientBuilder.newClient().register(JacksonFeature.class)

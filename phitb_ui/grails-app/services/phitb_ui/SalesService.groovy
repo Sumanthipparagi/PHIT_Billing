@@ -114,6 +114,62 @@ class SalesService
     }
 
 
+    def getSaleBillByDateRange(String dateRange, String entityId)
+    {
+        Client client = ClientBuilder.newClient();
+        WebTarget target = client.target(new Links().API_GATEWAY)
+        try
+        {
+            JSONObject jsonObject = new JSONObject()
+            jsonObject.put("dateRange", dateRange)
+            jsonObject.put("entityId", entityId)
+            Response apiResponse = target
+                    .path(new Links().SALE_BILL_BY_DATERANGE)
+                    .request(MediaType.APPLICATION_JSON_TYPE)
+                    .post(Entity.entity(jsonObject.toString(), MediaType.APPLICATION_JSON_TYPE))
+            println(apiResponse)
+            if(apiResponse.status == 200)
+            {
+                JSONArray jsonArray = new JSONArray(apiResponse.readEntity(String.class))
+                return jsonArray
+            }
+        }
+        catch (Exception ex)
+        {
+            System.err.println('Service :salesService , action :  getSaleBillByDateRange  , Ex:' + ex)
+            log.error('Service :salesService , action :  getSaleBillByDateRange  , Ex:' + ex)
+        }
+
+    }
+
+    def getSaleReturnByDateRange(String dateRange, String entityId)
+    {
+        Client client = ClientBuilder.newClient();
+        //WebTarget target = client.target(new Links().API_GATEWAY)
+        WebTarget target = client.target("http://localhost:8083/")
+        try
+        {
+            JSONObject jsonObject = new JSONObject()
+            jsonObject.put("dateRange", dateRange)
+            jsonObject.put("entityId", entityId)
+            Response apiResponse = target
+                    .path(new Links().SALE_RETURN_BY_DATERANGE)
+                    .request(MediaType.APPLICATION_JSON_TYPE)
+                    .post(Entity.entity(jsonObject.toString(), MediaType.APPLICATION_JSON_TYPE))
+            println(apiResponse)
+            if(apiResponse.status == 200)
+            {
+                JSONArray jsonArray = new JSONArray(apiResponse.readEntity(String.class))
+                return jsonArray
+            }
+        }
+        catch (Exception ex)
+        {
+            System.err.println('Service :salesService , action :  getSaleBillByDateRange  , Ex:' + ex)
+            log.error('Service :salesService , action :  getSaleBillByDateRange  , Ex:' + ex)
+        }
+
+    }
 
 
 

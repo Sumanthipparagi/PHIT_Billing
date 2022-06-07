@@ -13,7 +13,7 @@ class SaleBillDetailsController {
     static responseFormats = ['json', 'xml']
 
     static allowedMethods = [index: "GET", show: "GET", save: "POST", update: "PUT", delete: "DELETE",
-                             dataTable: "GET", updateIRNDetails: "PUT", saveInvoice: "POST", updateInvoice: "PUT"]
+                             dataTable: "GET", updateIRNDetails: "PUT", saveInvoice: "POST", updateInvoice: "PUT", getByDateRangeAndEntity: "POST"]
     SaleBillDetailsService saleBillDetailsService
     SaleProductDetailsService saleProductDetailsService
     /**
@@ -480,6 +480,34 @@ class SaleBillDetailsController {
                 }
             }
             respond saleBillDetails
+        }
+        catch (ResourceNotFoundException ex) {
+            System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
+            response.status = 404
+        }
+        catch (BadRequestException ex) {
+            System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
+            response.status = 400
+        }
+        catch (Exception ex) {
+            System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
+        }
+    }
+
+    def getByDateRangeAndEntity()
+    {
+        try {
+            JSONObject jsonObject = JSON.parse(request.reader.text) as JSONObject
+            String dateRange = jsonObject.get("dateRange")
+            String entityId = jsonObject.get("entityId")
+            if (dateRange && entityId) {
+                JSONArray saleBillDetails = saleBillDetailsService.getByDateRangeAndEntity(dateRange, entityId)
+                render saleBillDetails, formats: ['json']
+            }
+            else
+            {
+                response.status = 400
+            }
         }
         catch (ResourceNotFoundException ex) {
             System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)

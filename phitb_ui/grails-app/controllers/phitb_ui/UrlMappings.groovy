@@ -646,6 +646,9 @@ class UrlMappings {
         "/reports/accounts/outstanding"(controller: "accountsReport", action: "outstandingReport")
         "/reports/accounts/getoutstanding"(controller: "accountsReport", action: "getOutstandingReport")
 
+        "/reports/inventory/statement"(controller: "inventoryReport", action: "statement")
+        "/reports/inventory/getstatement"(controller: "inventoryReport", action: "getStatement")
+
 
         /*<-------------------------------------------Shipments------------------------------------------------->*/
 
@@ -664,6 +667,7 @@ class UrlMappings {
         "/vehicle-detail/datatable"(controller: "vehicleDetail", action: "dataTable")
         "/vehicle-detail/update/$id"(controller:"vehicleDetail",action:"update")
         "/vehicle-detail/delete/$id"(controller: "vehicleDetail",action:"delete")
+
 
     }
 }

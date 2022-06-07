@@ -1,5 +1,6 @@
 package phitb_sales
 
+import grails.converters.JSON
 import grails.gorm.transactions.Transactional
 import org.grails.web.json.JSONObject
 import phitb_sales.Exception.BadRequestException
@@ -443,6 +444,34 @@ class SaleBillDetailsService
         else
         {
             throw new ResourceNotFoundException()
+        }
+    }
+
+    def getByDateRangeAndEntity(String dateRange, String entityId)
+    {
+        try {
+            SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy")
+            Date fromDate = sdf.parse(dateRange.split("-")[0].trim().toString())
+            Date toDate = sdf.parse(dateRange.split("-")[1].trim().toString())
+            long eid = Long.parseLong(entityId)
+            JSONArray finalBills = new JSONArray()
+            ArrayList<SaleBillDetails> saleBillDetails = SaleBillDetails.findAllByEntityIdAndOrderDateBetween(eid, fromDate, toDate)
+            for (SaleBillDetails saleBillDetail : saleBillDetails) {
+                JSONObject saleBillDetail1 = new JSONObject((saleBillDetail as JSON).toString())
+                ArrayList<SaleProductDetails> productDetails = SaleProductDetails.findAllByBillId(saleBillDetail.id)
+                if (productDetails) {
+                    JSONArray prdt = productDetails as JSONArray
+                    saleBillDetail1.put("products", prdt)
+                }
+
+                finalBills.add(saleBillDetail1)
+            }
+            return finalBills
+        }
+        catch (Exception ex)
+        {
+            ex.printStackTrace()
+            throw new BadRequestException()
         }
     }
 }
