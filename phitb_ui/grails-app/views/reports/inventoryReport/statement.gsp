@@ -186,10 +186,8 @@
             closeOnClickOutside: false
         });
         var dateRange = $('.dateRange').val();
-        // var sortBy = $('.sortBy').val();
-        var paidInvoice = $("#paidInvoice").is(":checked") ? "true" : "false";
         $.ajax({
-            url: "/reports/accounts/getoutstanding?dateRange=" + dateRange + "&paidInvoice=" + paidInvoice,
+            url: "/reports/inventory/getstatement?dateRange=" + dateRange,
             type: "GET",
             contentType: false,
             processData: false,

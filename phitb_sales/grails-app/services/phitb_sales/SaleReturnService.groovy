@@ -1,6 +1,8 @@
 package phitb_sales
 
+import grails.converters.JSON
 import grails.gorm.transactions.Transactional
+import org.grails.web.json.JSONArray
 import org.grails.web.json.JSONObject
 import phitb_sales.Exception.BadRequestException
 import phitb_sales.Exception.ResourceNotFoundException
@@ -267,4 +269,32 @@ class SaleReturnService {
         return jsonObject
     }
 */
+
+    def getByDateRangeAndEntity(String dateRange, String entityId)
+    {
+        try {
+            SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy")
+            Date fromDate = sdf.parse(dateRange.split("-")[0].trim().toString())
+            Date toDate = sdf.parse(dateRange.split("-")[1].trim().toString())
+            long eid = Long.parseLong(entityId)
+            JSONArray finalBills = new JSONArray()
+            ArrayList<SaleReturn> salesReturns = SaleReturn.findAllByEntityIdAndEntryDateBetween(eid, fromDate, toDate)
+            for (SaleReturn saleReturn : salesReturns) {
+                JSONObject salesReturn1 = new JSONObject((saleReturn as JSON).toString())
+                ArrayList<SaleReturnDetails> productDetails = SaleReturnDetails.findAllByBillId(saleReturn.id)
+                if (productDetails) {
+                    JSONArray prdt = productDetails as JSONArray
+                    salesReturn1.put("products", prdt)
+                }
+
+                finalBills.add(salesReturn1)
+            }
+            return finalBills
+        }
+        catch (Exception ex)
+        {
+            ex.printStackTrace()
+            throw new BadRequestException()
+        }
+    }
 }

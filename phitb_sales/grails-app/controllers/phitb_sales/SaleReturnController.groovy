@@ -368,4 +368,32 @@ class SaleReturnController {
     }
 
 
+    def getByDateRangeAndEntity()
+    {
+        try {
+            JSONObject jsonObject = JSON.parse(request.reader.text) as JSONObject
+            String dateRange = jsonObject.get("dateRange")
+            String entityId = jsonObject.get("entityId")
+            if (dateRange && entityId) {
+                JSONArray salesReturns = saleReturnService.getByDateRangeAndEntity(dateRange, entityId)
+                render salesReturns, formats: ['json']
+            }
+            else
+            {
+                response.status = 400
+            }
+        }
+        catch (ResourceNotFoundException ex) {
+            System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
+            response.status = 404
+        }
+        catch (BadRequestException ex) {
+            System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
+            response.status = 400
+        }
+        catch (Exception ex) {
+            System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
+        }
+    }
+
 }

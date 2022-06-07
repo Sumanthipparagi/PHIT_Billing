@@ -644,6 +644,7 @@ class UrlMappings {
         "/reports/accounts/getoutstanding"(controller: "accountsReport", action: "getOutstandingReport")
 
         "/reports/inventory/statement"(controller: "inventoryReport", action: "statement")
+        "/reports/inventory/getstatement"(controller: "inventoryReport", action: "getStatement")
 
 
         /*<-------------------------------------------Shipments------------------------------------------------->*/

@@ -381,6 +381,7 @@ public class Links
 
     //Sale Bill Details
     public static String SALE_BILL_SHOW = "api/v1.0/sales/salebilldetails";
+    public static String SALE_BILL_BY_DATERANGE = "api/v1.0/sales/salebillbydaterange";
     public static String DRAFT_SALE_BILL_SHOW = "api/v1.0/sales/draftsalebilldetails";
     public static String SALE_BILL_BALANCE_UPDATE = "api/v1.0/sales/updatebalancebyid";
     public static String SALE_BILL_SAVE = "api/v1.0/sales/salebilldetails";
@@ -400,6 +401,7 @@ public class Links
     public static String SALE_BILL_CONSOLIDATED_REPORTS = "api/v1.0/sales/reports/consolidated";
     public static String SALE_RETURN_AREAWISE = "api/v1.0/sales/reports/salesreturn-areawise";
     public static String SALE_BILL_UPDATE_IRN = "api/v1.0/sales/salebilldetails/updateirn";
+    public static String SALE_RETURN_BY_DATERANGE = "api/v1.0/sales/salereturnbydaterange";
 
     public static String GET_OUTSTANDING_REPORT = "api/v1.0/accounts/reports/outstanding";
 
@@ -490,6 +492,7 @@ public class Links
 
     //Stock book
     public static String STOCK_BOOK = "api/v1.0/inventory/stockbook";
+    public static String STOCK_BOOK_BY_ENTITY = "api/v1.0/inventory/stockbookbyentity";
     public static String STOCK_BOOK_DATATABLE = "api/v1.0/inventory/stockbook/datatable";
     public static String GET_STOCKS_OF_PRODUCT = "api/v1.0/inventory/stockbookbyproduct";
     public static String GET_STOCKS_OF_PRODUCT_SALE_RETURN = "api/v1.0/inventory/stockbookbyproductsalereturn";

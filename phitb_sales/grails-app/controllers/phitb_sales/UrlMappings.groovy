@@ -119,6 +119,9 @@ class UrlMappings {
                 action = [GET: 'getAllByCustomerId']
             }
 
+            "/salebillbydaterange(.$format)?"(controller: 'saleBillDetails', action: 'getByDateRangeAndEntity')
+
+
 //            //Sale Order entry Controller
 //            "/salebilldetails(.$format)?"(controller: 'saleBillDetails') {
 //                action = [GET: 'index', POST:
@@ -331,7 +334,7 @@ class UrlMappings {
 
             "/salereturn/cancel(.$format)?"(controller: 'saleReturn') {action = [POST: 'cancelSaleReturn']}
 
-
+            "/salereturnbydaterange(.$format)?"(controller: 'saleReturn', action: 'getByDateRangeAndEntity')
 
 
 
