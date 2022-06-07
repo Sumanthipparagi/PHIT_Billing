@@ -203,7 +203,7 @@
                             '" class="btn btn-sm btn-danger deletebtn" data-toggle="modal" data-target=".deleteModal"><i class="material-icons"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">delete</font></font></i></button>'
                         return_data.push({
                             'irnusername': json.data[i].irnUsername,
-                            'irnpassword': json.data[i].irnPassword,
+                            'isActive': json.data[i].active,
                             'action': editbtn + ' ' + deletebtn
                         });
                     }
@@ -212,7 +212,7 @@
             },
             columns: [
                 {'data': 'irnusername', 'width': '20%'},
-                {'data': 'irnpassword', 'width': '20%'},
+                {'data': 'isActive', 'width': '20%'},
                 {'data': 'action', 'width': '20%'}
             ]
         });

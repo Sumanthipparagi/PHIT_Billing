@@ -65,7 +65,7 @@
                     <h2>Product Group</h2>
                     <ul class="breadcrumb padding-0">
                         <li class="breadcrumb-item"><a href="index.html"><i class="zmdi zmdi-home"></i></a></li>
-                        <li class="breadcrumb-item active">Product Group</li>
+                        <li class="breadcrumb-item active">Unit Type</li>
                     </ul>
                 </div>
                 <div class="col-lg-7 col-md-7 col-sm-12">
@@ -111,7 +111,7 @@
 %{--                                   <th style="width: 20%">Entity</th>--}%
 %{--                                    <th style="width: 20%">Entity Type</th>--}%
                                     <th style="width: 20%">Action</th>
-                                </tr>
+                                </tr>s
                                 </thead>
                                 %{--                                <tfoot>--}%
                                 %{--                                <tr>--}%

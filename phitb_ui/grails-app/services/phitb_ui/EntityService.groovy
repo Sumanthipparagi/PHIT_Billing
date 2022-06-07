@@ -725,7 +725,7 @@ class EntityService {
         try
         {
             Response apiResponse = target
-                    .path(new Links().HQ_AREA_DELETE)
+                    .path(new Links().ENTITY_IRN_DELETE)
                     .resolveTemplate("id", jsonObject.id)
                     .request(MediaType.APPLICATION_JSON_TYPE)
                     .delete()
