@@ -70,17 +70,17 @@ class InventoryReportController
                     }
                 }
 
-//                for (JSONObject salereturn : saleReturns)
-//                {
-//                    for (JSONObject saleproducts : salereturn.products)
-//                    {
-//                        if (stock.productId == saleproducts.productId)
-//                        {
-//                            inventoryStatement.saleReturnQty = saleproducts.sqty
-//                            inventoryStatement.saleReturnAmt = saleproducts.mrp
-//                        }
-//                    }
-//                }
+                for (JSONObject salereturn : saleReturns)
+                {
+                    for (JSONObject salereturnproducts : salereturn.products)
+                    {
+                        if (stock.productId == salereturnproducts.productId)
+                        {
+                            inventoryStatement.saleReturnQty = salereturnproducts.sqty
+                            inventoryStatement.saleReturnAmt = salereturnproducts.mrp
+                        }
+                    }
+                }
 
 
 //                for (JSONObject purchaseinv : purchaseInvoices)

@@ -80,12 +80,6 @@
                                         <input id="dateRange" class="dateRange" type="text" name="dateRange"
                                                style="border-radius: 6px;margin: 4px;"/>
 
-                                        <label for="entitySelect">Entity:</label>
-                                        <select name="entity" id="entitySelect">
-                                            <g:each in="${entities}" var="en">
-                                                <option value="${en.id}">${en.entityName}</option>
-                                            </g:each>
-                                        </select>
 
                                         <button class="input-group-btn btn btn-info btn-sm"
                                                 onclick="getReport()">Get Report</button>
@@ -116,6 +110,17 @@
                                                 class="fa fa-print"></i> Print</button>
                                     </div>
                                 </div>
+                            </div>
+
+                            <div class="col-lg-6">
+                            <div class="form-group">
+                            <label for="entitySelect">Entity:</label>
+                            <select name="entity" id="entitySelect">
+                                <g:each in="${entities}" var="en">
+                                    <option value="${en.id}">${en.entityName}</option>
+                                </g:each>
+                            </select>
+                            </div>
                             </div>
 
                         </div>
