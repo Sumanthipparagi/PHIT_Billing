@@ -283,7 +283,7 @@ class SaleReturnService {
                 JSONObject salesReturn1 = new JSONObject((saleReturn as JSON).toString())
                 ArrayList<SaleReturnDetails> productDetails = SaleReturnDetails.findAllByBillId(saleReturn.id)
                 if (productDetails) {
-                    JSONArray prdt = productDetails as JSONArray
+                    JSONArray prdt =  new  JSONArray((productDetails as JSON).toString())
                     salesReturn1.put("products", prdt)
                 }
 

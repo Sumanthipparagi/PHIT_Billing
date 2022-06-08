@@ -1,6 +1,8 @@
 package phitb_inventory
 
+import grails.converters.JSON
 import grails.gorm.transactions.Transactional
+import org.grails.web.json.JSONArray
 import org.grails.web.json.JSONObject
 import phitb_inventory.Exception.BadRequestException
 import phitb_inventory.Exception.ResourceNotFoundException
@@ -132,4 +134,22 @@ class StockActivityService {
             throw new BadRequestException()
         }
     }
+
+    def getByDateRangeAndEntity(String dateRange, String entityId)
+    {
+        try {
+            SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy")
+            Date fromDate = sdf.parse(dateRange.split("-")[0].replace("+", "").trim().toString())
+            Date toDate = sdf.parse(dateRange.split("-")[1].replace("+", "").trim().toString())
+            long eid = Long.parseLong(entityId)
+            def s = StockActivity.findAllByEntityIdAndDateCreatedBetween(eid, fromDate, toDate)
+            return StockActivity.findAllByEntityIdAndDateCreatedBetween(eid, fromDate, toDate)
+        }
+        catch (Exception ex)
+        {
+            ex.printStackTrace()
+            throw new BadRequestException()
+        }
+    }
+
 }

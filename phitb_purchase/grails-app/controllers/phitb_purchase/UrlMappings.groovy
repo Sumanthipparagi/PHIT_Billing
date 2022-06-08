@@ -40,6 +40,8 @@ class UrlMappings {
             "/productdetail/datatable(.$format)?"(controller: 'purchaseProductDetail') { action = [GET: 'dataTable'] }
             "/productdetail/$id(.$format)?"(controller: 'purchaseProductDetail') { action = [GET: 'show', PUT: 'update', DELETE: 'delete'] }
             "/productdetail/bill/$id(.$format)?"(controller: 'purchaseProductDetail') { action = [GET: 'getPurchaseProductDetailsOfSaleBill'] }
+            "/purchasebillbydaterange"(controller: 'purchaseBillDetail', action: 'getByDateRangeAndEntity')
+
             "/purchaseproductdetailslist/bill/$purbillsIds(.$format)?"(controller: 'purchaseProductDetail') { action = [GET: 'getPurchaseProductDetailsOfPurBillList'] }
 
 
@@ -55,6 +57,8 @@ class UrlMappings {
             "/returndetailbydays/$days(.$format)?"(controller: 'purchaseReturnDetail') { action = [GET: 'getAllByDays'] }
             "/updatereturnbalancebyid/id/$id/balance/$balance"(controller: 'purchaseReturnDetail')
                     {action=[POST: 'updateBalance']}
+
+            "/returndetailbydaterange"(controller: 'purchaseReturnDetail', action: 'getByDateRangeAndEntity')
             //Purchase Transaction log
             "/transactionlog(.$format)?"(controller: 'purchaseTransactionLog') { action = [GET: 'index', POST: 'save'] }
             "/transactionlog/datatable(.$format)?"(controller: 'purchaseTransactionLog') { action = [GET: 'dataTable'] }

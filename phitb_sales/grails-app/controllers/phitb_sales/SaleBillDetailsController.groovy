@@ -502,7 +502,7 @@ class SaleBillDetailsController {
             String entityId = jsonObject.get("entityId")
             if (dateRange && entityId) {
                 JSONArray saleBillDetails = saleBillDetailsService.getByDateRangeAndEntity(dateRange, entityId)
-                render saleBillDetails, formats: ['json']
+                respond saleBillDetails, formats: ['json']
             }
             else
             {

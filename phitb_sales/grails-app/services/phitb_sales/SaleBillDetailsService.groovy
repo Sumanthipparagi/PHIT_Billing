@@ -458,12 +458,11 @@ class SaleBillDetailsService
             ArrayList<SaleBillDetails> saleBillDetails = SaleBillDetails.findAllByEntityIdAndOrderDateBetween(eid, fromDate, toDate)
             for (SaleBillDetails saleBillDetail : saleBillDetails) {
                 JSONObject saleBillDetail1 = new JSONObject((saleBillDetail as JSON).toString())
-                ArrayList<SaleProductDetails> productDetails = SaleProductDetails.findAllByBillId(saleBillDetail.id)
+                def productDetails = SaleProductDetails.findAllByBillId(saleBillDetail.id)
                 if (productDetails) {
-                    JSONArray prdt = productDetails as JSONArray
+                    JSONArray prdt =  new  JSONArray((productDetails as JSON).toString())
                     saleBillDetail1.put("products", prdt)
                 }
-
                 finalBills.add(saleBillDetail1)
             }
             return finalBills
@@ -474,4 +473,5 @@ class SaleBillDetailsService
             throw new BadRequestException()
         }
     }
+
 }

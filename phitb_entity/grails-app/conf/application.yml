@@ -104,7 +104,7 @@ environments:
   production:
     dataSource:
       dbCreate: update
-      url: jdbc:mysql://172.16.17.10:3306/phitb_entity?useSSL=false&autoReconnect=true&useUnicode=true&characterEncoding=UTF-8&serverTimezone=UTC
+      url: jdbc:mysql://localhost/phitb_entity?useSSL=false&autoReconnect=true&useUnicode=true&characterEncoding=UTF-8&serverTimezone=UTC
       properties:
         jmxEnabled: true
         initialSize: 5

@@ -2,6 +2,7 @@ package phitb_inventory
 
 import grails.converters.JSON
 import grails.web.servlet.mvc.GrailsParameterMap
+import org.grails.web.json.JSONArray
 import org.grails.web.json.JSONObject
 import phitb_inventory.Exception.BadRequestException
 import phitb_inventory.Exception.ResourceNotFoundException
@@ -152,6 +153,33 @@ class StockActivityController {
         }
         catch (BadRequestException ex)
         {
+            System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
+            response.status = 400
+        }
+        catch (Exception ex) {
+            System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
+        }
+    }
+
+    def getByDateRangeAndEntity()
+    {
+        try {
+            String dateRange = params.daterange
+            String entityId = params.entityId
+            if (dateRange && entityId) {
+                JSONArray stockbook = stockActivityService.getByDateRangeAndEntity(dateRange, entityId)
+                respond stockbook, formats: ['json']
+            }
+            else
+            {
+                response.status = 400
+            }
+        }
+        catch (org.springframework.boot.context.config.ResourceNotFoundException ex) {
+            System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
+            response.status = 404
+        }
+        catch (BadRequestException ex) {
             System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
             response.status = 400
         }

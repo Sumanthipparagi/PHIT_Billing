@@ -196,45 +196,22 @@
                 var mainTableHeader = "<table class='table table-bordered table-sm' style='width: 100%;'><thead>" +
                     "<tr><td data-f-bold='true' colspan='10'><h3 style='margin-bottom:0 !important;'>${session.getAttribute('entityName')}</h3></td></tr>" +
                     "<tr><td colspan='10'>${session.getAttribute('entityAddress1')} ${session.getAttribute('entityAddress2')} ${session.getAttribute('entityPinCode')}, ph: ${session.getAttribute('entityMobileNumber')}</td></tr>" +
-                    "<tr><th data-f-bold='true' colspan='10'>Outstanding Report, Date: " +
+                    "<tr><th data-f-bold='true' colspan='10'>Inventory Report, Date: " +
                     dateRange + "</th></tr>" +
                     //"<tr><th colspan='6'></th><th data-f-bold='true'><strong>Grand Total:</strong> <span id='grandTotal'></span></th></tr>" +
                     //"<tr><th data-f-bold='true'>Customer</th><th data-f-bold='true'>Net Amount</th>"+
-                    "<th data-f-bold='true'>Customer</th><th data-f-bold='true'>Fin. Year</th><th data-f-bold='true'>Tran. Type</th><th data-f-bold='true'>Tran. No.</th><th data-f-bold='true'>Date</th><th data-f-bold='true'>Due Date</th><th data-f-bold='true'>Due On " + dueOnDate + "</th><th data-f-bold='true'>Not Due</th><th data-f-bold='true'>Total Due</th><th data-f-bold='true'>Days</th></tr></thead><tbody>";
-                var billDetails = "";
-                $.each(data, function (key, city) {
-                    billDetails = "";
-                    var cityName = "<tr><td colspan='9' data-f-bold='true'>Area: <span class='customerData cust" +
-                        key + "'><strong>" + key + "</strong></span></td></tr>";
-                    var customerDue = 0;
-                    var customerBalance = 0;
-                    var customerTotalDue = 0;
-                    var customerInfo = "";
-                    $.each(city, function (customer, invs) {
-                        var bills = "<tr><td colspan='10' data-f-bold='true'>" + customer + "</td></tr>";
-                        $.each(invs, function (key, bill) {
-                            var totalDue = bill.balance - bill.due;
-                            customerDue += bill.due;
-                            customerBalance += bill.balance;
-                            customerTotalDue += totalDue;
-
-                            bills += "<tr><td></td>" +
-                                "<td>" + bill.financialYear + "</td>" +
-                                "<td>" + bill.transactionType + "</td>" +
-                                "<td>" + bill.transactionNumber + "</td>" +
-                                "<td>" + dateFormat(bill.transactionDate) + "</td>" +
-                                "<td>" + dateFormat(bill.dueDate) + "</td>" +
-                                "<td>" + bill.due.toFixed(2) + "</td>" +
-                                "<td>" + bill.balance.toFixed(2) + "</td>" +
-                                "<td>" + totalDue.toFixed(2) + "</td>" +
-                                "<td>" + moment(new Date()).diff(moment(dateFormat(bill.dueDate), "DD/MM/YYYY"), 'days') + "</td></tr>";
-                        });
-                        var customerTotal = "<tr><td colspan='6'></td><td data-f-bold='true'><u><strong>" + customerDue.toFixed(2) + "</strong></u></td><td data-f-bold='true'><u><strong>" + customerBalance.toFixed(2) + "</strong></u></td>" +
-                            "<td data-f-bold='true'><u><strong>" + customerTotalDue.toFixed(2) + "</strong></u></td><td data-f-bold='true'></td></tr>";
-                        customerInfo += (bills + customerTotal);
-                    });
-                    billDetails += customerInfo;
-                    content += cityName + billDetails;
+                    "<th data-f-bold='true'>Product Name</th><th data-f-bold='true'>Packing</th><th data-f-bold='true'>Opening<br>Qty &emsp;Amt</th><th data-f-bold='true'>Purchase/P.Return</th><th data-f-bold='true'>Sales/S.Return</th><th data-f-bold='true'>Closing<br>Qty &emsp;Amt</th></tr></thead><tbody>";
+                var stockDetails = "";
+                $.each(data, function (key, value) {
+                    stockDetails += "<tr>" +
+                                "<td>" + value.productName + "</td>" +
+                                "<td>" + value.packing + "</td></td>"+
+                                "<td>" + value.openingQty + "&emsp;&emsp;"+ value.openingAmt + "</td>"+
+                                "<td>" + value.purchaseQty + "&emsp;&emsp;"+ value.purchaseAmt + "</td>"+
+                                "<td>" + value.saleQty + "&emsp;&emsp;"+ value.saleAmt + "</td>"+
+                                "<td>" + value.openingQty + "&emsp;&emsp;"+ value.openingAmt +
+                        "</td></tr>";
+                    content += stockDetails
                 });
                 var mainTableFooter = "</tbody></table>";
                 $("#result").html(mainTableHeader + content + mainTableFooter);

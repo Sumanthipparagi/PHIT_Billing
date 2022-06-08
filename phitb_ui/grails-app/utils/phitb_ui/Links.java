@@ -501,6 +501,8 @@ public class Links
     public static String STOCK_BOOK_BY_BATCH = "api/v1.0/inventory/stockbook/batch";
     public static String STOCK_BOOK_BY_PROD_BATCH = "api/v1.0/inventory/stockbook/product/{productId}/batch/{batch}";
     public static String STOCK_INCREASE = "api/v1.0/inventory/stockbook/return";
+    public static String STOCK_ACTIVITY_DATERANGE_ENTITY = "api/v1.0/inventory/stockactivitydaterangeentity";
+
 
     //Temp Stock Book
     public static String GET_TEMP_STOCK_PRODUCT = "api/v1.0/inventory/tempstockbook";
@@ -588,6 +590,7 @@ public class Links
     /*<--------------------------------------------Purchase ------------------------------------------------->*/
     //purchase product details
     public static String PURCHASE_PRODUCT_SHOW = "api/v1.0/purchase/productdetail";
+    public static String PURCHASE_BILL_BY_DATERANGE = "api/v1.0/purchase/purchasebillbydaterange";
     public static String PURCHASE_PRODUCT_SAVE = "api/v1.0/purchase/productdetail";
     public static String PURCHASE_PRODUCT_DATATABLE = "api/v1.0/purchase/productdetail/datatable";
     public static String PURCHASE_PRODUCT_UPDATE = "api/v1.0/purchase/productdetail/{id}";
@@ -617,6 +620,8 @@ public class Links
     public static String PURCHASE_RETURN_UPDATE = "api/v1.0/purchase/returndetail/{id}";
     public static String PURCHASE_RETURN_DELETE = "api/v1.0/purchase/returndetail/{id}";
     public static String PURCHASE_RETURN_CUSTOMER = "api/v1.0/purchase/returndetailbysupplier";
+    public static String PURCHASE_RETURN_BY_DATERANGE = "api/v1.0/purchase/returndetailbydaterange";
+
 
     //e-Invoice
     public static String E_INVOICE_BASE_URL = "https://test.nsdlgsp.co.in";
