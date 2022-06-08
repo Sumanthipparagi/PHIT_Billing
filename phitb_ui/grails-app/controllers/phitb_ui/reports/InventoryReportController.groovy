@@ -41,9 +41,9 @@ class InventoryReportController
             //get sale invoice and sales return
             JSONArray saleInvoices = new SalesService().getSaleBillByDateRange(dateRange, entityId)
             JSONArray saleReturns = new SalesService().getSaleReturnByDateRange(dateRange, entityId)
+            //get purchase invoice and purchase return
             JSONArray purchaseInvoices = new PurchaseService().getPurchaseBillByDateRange(dateRange, entityId)
             JSONArray purchaseReturns = new PurchaseService().getPurchaseRetrunByDateRange(dateRange, entityId)
-            //get purchase invoice and purchase return
             //get stocks
             JSONArray stockActivity = new InventoryService().getStockActivityDateRangeAndEntity(dateRange, Long.parseLong(entityId))
             ArrayList<InventoryStatement> inventoryStatements = new ArrayList<>()
