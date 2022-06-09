@@ -255,7 +255,8 @@ class PurchaseService {
     def getPurchaseBillByDateRange(String dateRange, String entityId)
     {
         Client client = ClientBuilder.newClient();
-        WebTarget target = client.target(new Links().API_GATEWAY)
+        //WebTarget target = client.target(new Links().API_GATEWAY)
+        WebTarget target = client.target("http://localhost:8084")
         try
         {
             JSONObject jsonObject = new JSONObject()
@@ -283,8 +284,8 @@ class PurchaseService {
     def getPurchaseRetrunByDateRange(String dateRange, String entityId)
     {
         Client client = ClientBuilder.newClient();
-        //WebTarget target = client.target(new Links().API_GATEWAY)
         WebTarget target = client.target(new Links().API_GATEWAY)
+        //WebTarget target = client.target("http://localhost:8084")
         try
         {
             JSONObject jsonObject = new JSONObject()

@@ -23,6 +23,7 @@ class UrlMappings {
             "/stockactivity/datatable(.$format)?"(controller: 'stockActivity') { action = [GET: 'dataTable'] }
             "/stockactivity/$id(.$format)?"(controller: 'stockActivity') { action = [GET: 'show', PUT: 'update', DELETE: 'delete'] }
             "/stockactivitydaterangeentity"(controller: 'stockActivity', action: 'getByDateRangeAndEntity')
+            "/stockactivity/closing"(controller: 'stockActivity', action: 'getClosingStockOfProduct')
 
             //Stock Book
             "/stockbook(.$format)?"(controller: 'stockBook') { action = [GET: 'index', POST: 'save'] }

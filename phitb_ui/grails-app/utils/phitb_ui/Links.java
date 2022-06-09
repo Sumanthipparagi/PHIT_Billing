@@ -502,6 +502,7 @@ public class Links
     public static String STOCK_BOOK_BY_PROD_BATCH = "api/v1.0/inventory/stockbook/product/{productId}/batch/{batch}";
     public static String STOCK_INCREASE = "api/v1.0/inventory/stockbook/return";
     public static String STOCK_ACTIVITY_DATERANGE_ENTITY = "api/v1.0/inventory/stockactivitydaterangeentity";
+    public static String STOCK_ACTIVITY_CLOSING = "api/v1.0/inventory/stockactivity/closing";
 
 
     //Temp Stock Book

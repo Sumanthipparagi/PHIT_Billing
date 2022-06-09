@@ -87,7 +87,7 @@ environments:
     development:
         dataSource:
             dbCreate: update
-            url: jdbc:mysql://localhost/phitb_inventory?useSSL=false&autoReconnect=true&useUnicode=true&characterEncoding=UTF-8&serverTimezone=UTC
+            url: jdbc:mysql://172.16.17.143:3306/phitb_inventory?useSSL=false&autoReconnect=true&useUnicode=true&characterEncoding=UTF-8&serverTimezone=UTC
 #            url: jdbc:mysql://localhost/phitb_inventory?useSSL=false&autoReconnect=true&useUnicode=true&characterEncoding=UTF-8&serverTimezone=UTC
     test:
         dataSource:
