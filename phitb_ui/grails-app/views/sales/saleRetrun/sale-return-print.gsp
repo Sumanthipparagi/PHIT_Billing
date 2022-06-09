@@ -205,8 +205,8 @@
                 <li><b class="tab">CRNT No</b>:  <g:if
                         test="${saleBillDetail.returnStatus == 'CANCELLED'}"><del>${saleBillDetail.invoiceNumber}</del></g:if><g:else>${saleBillDetail.invoiceNumber}</g:else></li>
                 <li><b class="tab">Date</b>:&nbsp;<span id="invDate"></span></li>
-                <li><b class="tab">Ref No</b>:&nbsp;<span>${saleBillDetail.lrNo}</span></li>
-                <li><b class="tab">Ref Date</b>:&nbsp;<span id="lrDate"></span></li>
+                <li><b class="tab">Ref No</b>:&nbsp;<span>${saleBillDetail.refNo}</span></li>
+                <li><b class="tab">Ref Date</b>:&nbsp;<span id="refDate"></span></li>
                 %{--                <li><b class="tab">No of cases</b>:</li>--}%
                 %{--                <li><b class="tab">Weight in Kgs</b>:</li>--}%
                 %{--                <li><b class="tab">Party Ref No.</b>: 429803</li>--}%
@@ -475,9 +475,9 @@
         var d = moment(new Date()).format('DD/MM/YYYY') + " " +  new Date().toLocaleTimeString();
         document.getElementById("date").innerHTML = d;
         var invDate = new Date('${saleBillDetail.entryDate}');
-        var lrDate = new Date('${saleBillDetail.lrDate}');
+        var refDate = new Date('${saleBillDetail.refDate}');
         $("#invDate").text(moment(invDate).format('DD-MM-YYYY'));
-        $("#lrDate").text(moment(lrDate).format('DD-MM-YYYY'));
+        $("#refDate").text(moment(refDate).format('DD-MM-YYYY'));
 
         <g:each var="spd" in="${saleProductDetails}">
         var expDate = new Date('${spd.expiryDate}');
