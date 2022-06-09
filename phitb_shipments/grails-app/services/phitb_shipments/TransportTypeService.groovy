@@ -27,42 +27,52 @@ class TransportTypeService {
 
     JSONObject dataTables(JSONObject paramsJsonObject, String start, String length)
     {
-        String searchTerm = paramsJsonObject.get("search[value]")
-        String orderColumnId = paramsJsonObject.get("order[0][column]")
-        String orderDir = paramsJsonObject.get("order[0][dir]")
+        try
+        {
 
-        String orderColumn = "id"
-        switch (orderColumnId) {
-            case '0':
-                orderColumn = "id"
-                break;
-            case '1':
-                orderColumn = "transportType"
-                break;
-        }
+            String searchTerm = paramsJsonObject.get("search[value]")
+            String orderColumnId = paramsJsonObject.get("order[0][column]")
+            String orderDir = paramsJsonObject.get("order[0][dir]")
 
-        Integer offset = start ? Integer.parseInt(start.toString()) : 0
-        Integer max = length ? Integer.parseInt(length.toString()) : 100
-
-        def dayMasterCriteria = TransportType.createCriteria()
-        def dayMasterArrayList = dayMasterCriteria.list(max: max, offset: offset) {
-            or {
-                if (searchTerm != "") {
-                    ilike('transportType', '%' + searchTerm + '%')
-                    ilike('vehicleId', '%' + searchTerm + '%')
-                }
+            String orderColumn = "id"
+            switch (orderColumnId)
+            {
+                case '0':
+                    orderColumn = "id"
+                    break;
+                case '1':
+                    orderColumn = "transportType"
+                    break;
             }
-            eq('deleted', false)
-            order(orderColumn, orderDir)
-        }
 
-        def recordsTotal = dayMasterArrayList.totalCount
-        JSONObject jsonObject = new JSONObject()
-        jsonObject.put("draw", paramsJsonObject.draw)
-        jsonObject.put("recordsTotal", recordsTotal)
-        jsonObject.put("recordsFiltered", recordsTotal)
-        jsonObject.put("data", dayMasterArrayList)
-        return jsonObject
+            Integer offset = start ? Integer.parseInt(start.toString()) : 0
+            Integer max = length ? Integer.parseInt(length.toString()) : 100
+
+            def transportTypeCriteria = TransportType.createCriteria()
+            def dayMasterArrayList = transportTypeCriteria.list(max: max, offset: offset) {
+                or {
+                    if (searchTerm != "")
+                    {
+                        ilike('transportType', '%' + searchTerm + '%')
+                        ilike('vehicleId', '%' + searchTerm + '%')
+                    }
+                }
+                eq('deleted', false)
+                order(orderColumn, orderDir)
+            }
+
+            def recordsTotal = dayMasterArrayList.totalCount
+            JSONObject jsonObject = new JSONObject()
+            jsonObject.put("draw", paramsJsonObject.draw)
+            jsonObject.put("recordsTotal", recordsTotal)
+            jsonObject.put("recordsFiltered", recordsTotal)
+            jsonObject.put("data", dayMasterArrayList)
+            return jsonObject
+        }
+        catch(Exception ex)
+        {
+            System.out.println(ex)
+        }
     }
 
     TransportType save(JSONObject jsonObject) {
