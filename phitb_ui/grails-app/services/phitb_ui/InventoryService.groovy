@@ -1,7 +1,9 @@
 package phitb_ui
 
+import com.google.gson.Gson
 import grails.gorm.transactions.Transactional
 import grails.web.servlet.mvc.GrailsHttpSession
+import org.apache.commons.lang.StringUtils
 import org.glassfish.jersey.jackson.JacksonFeature
 import org.grails.web.json.JSONArray
 import org.grails.web.json.JSONObject
@@ -81,7 +83,8 @@ class InventoryService {
     def getStockActivityDateRangeAndEntity(String dateRange,long id)
     {
         Client client = ClientBuilder.newClient().register(JacksonFeature.class)
-        WebTarget target = client.target(new Links().API_GATEWAY);
+       // WebTarget target = client.target(new Links().API_GATEWAY);
+        WebTarget target = client.target("http://localhost:8086");
         try
         {
             Response apiResponse = target
@@ -90,6 +93,43 @@ class InventoryService {
                     .queryParam("daterange", URLEncoder.encode(dateRange.toString(), "UTF-8"))
                     .request(MediaType.APPLICATION_JSON_TYPE)
                     .get()
+            if (apiResponse?.status == 200)
+            {
+                JSONArray jSONArray = new JSONArray(apiResponse.readEntity(String.class))
+                return jSONArray
+            }
+            else
+            {
+                return null
+            }
+        }
+        catch (Exception ex)
+        {
+            System.err.println('Service : InventoryService , action :  getStockBookByEntity  , Ex:' + ex)
+            log.error('Service :InventoryService , action :  getStockBookByEntity  , Ex:' + ex)
+        }
+
+    }
+
+    def getClosingStock(String date,long entityId, Set pids, HashMap productBatches)
+    {
+        String productIds = StringUtils.join(pids, ',')
+        Client client = ClientBuilder.newClient().register(JacksonFeature.class)
+         WebTarget target = client.target(new Links().API_GATEWAY);
+        //WebTarget target = client.target("http://localhost:8086");
+        try
+        {
+            Gson gson = new Gson()
+            String json = gson.toJson(productBatches);
+            JSONObject jsonObject = new JSONObject()
+            jsonObject.put("date", date)
+            jsonObject.put("entityId", entityId)
+            jsonObject.put("productIds", productIds)
+            jsonObject.put("productBatches", new JSONObject(json))
+            Response apiResponse = target
+                    .path(new Links().STOCK_ACTIVITY_CLOSING)
+                    .request(MediaType.APPLICATION_JSON_TYPE)
+                    .post(Entity.entity(jsonObject.toString(), MediaType.APPLICATION_JSON_TYPE))
             if (apiResponse?.status == 200)
             {
                 JSONArray jSONArray = new JSONArray(apiResponse.readEntity(String.class))

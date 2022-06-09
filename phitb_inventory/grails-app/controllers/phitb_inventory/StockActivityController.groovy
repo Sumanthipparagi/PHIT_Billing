@@ -8,8 +8,8 @@ import phitb_inventory.Exception.BadRequestException
 import phitb_inventory.Exception.ResourceNotFoundException
 
 class StockActivityController {
-	static responseFormats = ['json', 'xml']
-    static allowedMethods = [index: "GET", show: "GET", save: "POST", update: "PUT", delete: "DELETE", dataTable: "GET"]
+    static responseFormats = ['json', 'xml']
+    static allowedMethods = [index: "GET", show: "GET", save: "POST", update: "PUT", delete: "DELETE", dataTable: "GET", getClosingStockOfProduct:"POST"]
 
     StockActivityService stockActivityService
     /**
@@ -41,13 +41,11 @@ class StockActivityController {
                 respond stockActivityService.get(id)
             }
         }
-        catch (ResourceNotFoundException ex)
-        {
+        catch (ResourceNotFoundException ex) {
             System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
             response.status = 404
         }
-        catch (BadRequestException ex)
-        {
+        catch (BadRequestException ex) {
             System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
             response.status = 400
         }
@@ -66,13 +64,11 @@ class StockActivityController {
             JSONObject jsonObject = JSON.parse(request.reader.text) as JSONObject
             respond stockActivityService.save(jsonObject)
         }
-        catch (ResourceNotFoundException ex)
-        {
+        catch (ResourceNotFoundException ex) {
             System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
             response.status = 404
         }
-        catch (BadRequestException ex)
-        {
+        catch (BadRequestException ex) {
             System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
             response.status = 400
         }
@@ -91,15 +87,13 @@ class StockActivityController {
         try {
             String id = params.id
             JSONObject jsonObject = JSON.parse(request.reader.text) as JSONObject
-            respond stockActivityService.update(jsonObject,id)
+            respond stockActivityService.update(jsonObject, id)
         }
-        catch (ResourceNotFoundException ex)
-        {
+        catch (ResourceNotFoundException ex) {
             System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
             response.status = 404
         }
-        catch (BadRequestException ex)
-        {
+        catch (BadRequestException ex) {
             System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
             response.status = 400
         }
@@ -119,13 +113,11 @@ class StockActivityController {
             stockActivityService.delete(id)
             response.status = 200
         }
-        catch (ResourceNotFoundException ex)
-        {
+        catch (ResourceNotFoundException ex) {
             System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
             response.status = 404
         }
-        catch (BadRequestException ex)
-        {
+        catch (BadRequestException ex) {
             System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
             response.status = 400
         }
@@ -146,13 +138,11 @@ class StockActivityController {
             JSONObject paramsJsonObject = new JSONObject(parameterMap.params)
             respond stockActivityService.dataTables(paramsJsonObject, start, length)
         }
-        catch (ResourceNotFoundException ex)
-        {
+        catch (ResourceNotFoundException ex) {
             System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
             response.status = 404
         }
-        catch (BadRequestException ex)
-        {
+        catch (BadRequestException ex) {
             System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
             response.status = 400
         }
@@ -161,21 +151,45 @@ class StockActivityController {
         }
     }
 
-    def getByDateRangeAndEntity()
-    {
+    def getByDateRangeAndEntity() {
         try {
             String dateRange = params.daterange
             String entityId = params.entityId
             if (dateRange && entityId) {
-                JSONArray stockbook = stockActivityService.getByDateRangeAndEntity(dateRange, entityId)
-                respond stockbook, formats: ['json']
-            }
-            else
-            {
+                JSONArray stockActivities = stockActivityService.getByDateRangeAndEntity(dateRange, entityId)
+                respond stockActivities, formats: ['json']
+            } else {
                 response.status = 400
             }
         }
-        catch (org.springframework.boot.context.config.ResourceNotFoundException ex) {
+        catch (ResourceNotFoundException ex) {
+            System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
+            response.status = 404
+        }
+        catch (BadRequestException ex) {
+            System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
+            response.status = 400
+        }
+        catch (Exception ex) {
+            System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
+        }
+    }
+
+    def getClosingStockOfProduct() {
+        try {
+            JSONObject jsonObject = JSON.parse(request.reader.text) as JSONObject
+            String date = jsonObject.get("date")
+            String entityId = jsonObject.get("entityId")
+            //String productIds = jsonObject.get("productIds")
+            def productBatches = jsonObject.get("productBatches")
+            if (date && entityId && productBatches) {
+                JSONArray stockActivities = stockActivityService.getClosingStocksOfProduct(date, entityId, productBatches)
+                respond stockActivities, formats: ['json']
+            } else {
+                response.status = 400
+            }
+        }
+        catch (ResourceNotFoundException ex) {
             System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
             response.status = 404
         }

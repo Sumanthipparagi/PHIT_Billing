@@ -141,9 +141,40 @@ class StockActivityService {
             SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy")
             Date fromDate = sdf.parse(dateRange.split("-")[0].replace("+", "").trim().toString())
             Date toDate = sdf.parse(dateRange.split("-")[1].replace("+", "").trim().toString())
+            Calendar cal = Calendar.getInstance();
+            cal.setTime(toDate)
+            cal.set(Calendar.HOUR_OF_DAY, 23)
+            cal.set(Calendar.MINUTE, 59)
+            cal.set(Calendar.SECOND, 59)
+            cal.set(Calendar.MILLISECOND, 999)
+            toDate = cal.getTime()
             long eid = Long.parseLong(entityId)
-            def s = StockActivity.findAllByEntityIdAndDateCreatedBetween(eid, fromDate, toDate)
             return StockActivity.findAllByEntityIdAndDateCreatedBetween(eid, fromDate, toDate)
+        }
+        catch (Exception ex)
+        {
+            ex.printStackTrace()
+            throw new BadRequestException()
+        }
+    }
+
+    def getClosingStocksOfProduct(String date, String entityId, JSONObject productBatches)
+    {
+        try {
+            ArrayList<StockActivity> stockActivities = new ArrayList<>()
+            SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy")
+            Date dt = sdf.parse(date)
+            long eid = Long.parseLong(entityId)
+            for (def pd : productBatches.keySet()) {
+                def batches = productBatches.get(pd)
+                for (Object batch : batches) {
+                    StockActivity stockActivity = StockActivity.findByEntityIdAndDateCreatedLessThanAndProductIdAndBatch(eid, dt, pd, batch, [sort: 'id', order: 'desc'])
+                    if (stockActivity) {
+                        stockActivities.add(stockActivity)
+                    }
+                }
+            }
+            return stockActivities
         }
         catch (Exception ex)
         {

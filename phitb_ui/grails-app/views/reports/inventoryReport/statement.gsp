@@ -181,6 +181,7 @@
     $("#entitySelect").select2();
 
     function getReport() {
+        var entitySelect = $("#entitySelect").val();
         var loading = Swal.fire({
             title: "Getting reports, Please wait!",
             html: '<img src="${assetPath(src: "/themeassets/images/3.gif")}" width="25" height="25"/>',
@@ -192,7 +193,7 @@
         });
         var dateRange = $('.dateRange').val();
         $.ajax({
-            url: "/reports/inventory/getstatement?dateRange=" + dateRange,
+            url: "/reports/inventory/getstatement?dateRange=" + dateRange+"&entityId="+entitySelect,
             type: "GET",
             contentType: false,
             processData: false,
@@ -205,16 +206,23 @@
                     dateRange + "</th></tr>" +
                     //"<tr><th colspan='6'></th><th data-f-bold='true'><strong>Grand Total:</strong> <span id='grandTotal'></span></th></tr>" +
                     //"<tr><th data-f-bold='true'>Customer</th><th data-f-bold='true'>Net Amount</th>"+
-                    "<th data-f-bold='true'>Product Name</th><th data-f-bold='true'>Packing</th><th data-f-bold='true'>Opening<br>Qty &emsp;Amt</th><th data-f-bold='true'>Purchase/P.Return</th><th data-f-bold='true'>Sales/S.Return</th><th data-f-bold='true'>Closing<br>Qty &emsp;Amt</th></tr></thead><tbody>";
+                    "<tr><th data-f-bold='true'>Product Name</th><th data-f-bold='true'>Packing</th><th data-f-bold='true' colspan='2'>Opening<br>Qty &emsp;Amt</th><th data-f-bold='true' colspan='2'>Purchase/P.Return<br>Qty &emsp;Amt</th><th data-f-bold='true' colspan='2'>Sales/S.Return<br>Qty &emsp;Amt</th><th data-f-bold='true' colspan='2'>Closing<br>Qty &emsp;Amt</th></tr>" +
+                    "</thead><tbody>";
                 var stockDetails = "";
                 $.each(data, function (key, value) {
-                    stockDetails += "<tr>" +
-                                "<td>" + value.productName + "</td>" +
-                                "<td>" + value.packing + "</td></td>"+
-                                "<td>" + value.openingQty + "&emsp;&emsp;"+ value.openingAmt + "</td>"+
-                                "<td>" + value.purchaseQty + "&emsp;&emsp;"+ value.purchaseAmt + "</td>"+
-                                "<td>" + value.saleQty + "&emsp;&emsp;"+ value.saleAmt + "</td>"+
-                                "<td>" + value.openingQty + "&emsp;&emsp;"+ value.openingAmt +
+                    var closingQty = (value?.openingQty - value?.saleQty);
+                    closingQty = closingQty + value?.purchaseQty;
+
+                    var closingAmt = (value?.openingAmt - value?.saleAmt);
+                    closingAmt = closingAmt + value?.purchaseAmt;
+
+                    stockDetails = "<tr>" +
+                                "<td>" + value?.productName + "</td>" +
+                                "<td>" + value?.packing + "</td></td>"+
+                                "<td>" + value?.openingQty + "</td><td>"+ value?.openingAmt.toFixed(2) + "</td>"+
+                                "<td>" + value?.purchaseQty + "</td><td>"+ value?.purchaseAmt.toFixed(2) + "</td>"+
+                                "<td>" + value?.saleQty + "</td><td>"+ value?.saleAmt.toFixed(2) + "</td>"+
+                                "<td>" + closingQty + "</td><td>"+ closingAmt.toFixed(2) +
                         "</td></tr>";
                     content += stockDetails
                 });
