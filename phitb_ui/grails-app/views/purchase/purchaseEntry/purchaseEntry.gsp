@@ -572,7 +572,7 @@
                         hot.setDataAtCell(row, 13, Number(finalPrice).toFixed(2));
                         var gstAmount;
                         var supplier = $('#supplier').find(':selected').data('state')
-                        if(supplier === '${session.getAttribute('stateId')}')
+                        if(supplier === ${session.getAttribute('stateId')})
                         {
                             if (gst !== 0) {
                                  gstAmount = priceBeforeGst * (gst / 100);
@@ -1526,6 +1526,7 @@
         Handsontable.editors.registerEditor('select2', Select2Editor);
 
     })(Handsontable);
+
 
 
     // window.onbeforeunload = function() {
