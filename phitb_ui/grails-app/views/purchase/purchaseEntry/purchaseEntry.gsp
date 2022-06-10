@@ -570,12 +570,12 @@
                         var priceBeforeGst = value - (value * discount / 100);
                         var finalPrice = priceBeforeGst + (priceBeforeGst * (gst / 100));
                         hot.setDataAtCell(row, 13, Number(finalPrice).toFixed(2));
-
-                        %{--var supplier = $('#supplier').find(':selected').data('state')--}%
-                        %{--if(supplier!== '${session.getAttribute('stateId')}')--}%
-                        %{--{--}%
+                        var gstAmount;
+                        var supplier = $('#supplier').find(':selected').data('state')
+                        if(supplier === '${session.getAttribute('stateId')}')
+                        {
                             if (gst !== 0) {
-                                var gstAmount = priceBeforeGst * (gst / 100);
+                                 gstAmount = priceBeforeGst * (gst / 100);
                                 var sgstAmount = priceBeforeGst * (sgst / 100);
                                 var cgstAmount = priceBeforeGst * (cgst / 100);
                                 hot.setDataAtCell(row, 12, Number(gstAmount).toFixed(2)); //GST
@@ -586,16 +586,17 @@
                                 hot.setDataAtCell(row, 14, 0); //SGST
                                 hot.setDataAtCell(row, 15, 0); //CGST
                             }
-                            if (igst !== "0") {
-                                var igstAmount = priceBeforeGst * (igst / 100);
-                                hot.setDataAtCell(row, 16, Number(igstAmount).toFixed(2)); //IGST
-                            } else{hot.setDataAtCell(row, 16, 0);}
-                        // }
-                        // else
-                        // {
-                        //     hot.setDataAtCell(row, 16, gst)
-                        // }
-
+                            hot.setDataAtCell(row, 16, 0);
+                            // if (igst !== "0") {
+                            //     var igstAmount = priceBeforeGst * (igst / 100);
+                            //     hot.setDataAtCell(row, 16, Number(igstAmount).toFixed(2)); //IGST
+                            // } else{hot.setDataAtCell(row, 16, 0);}
+                        }
+                        else
+                        {
+                            gstAmount = priceBeforeGst * (gst / 100);
+                            hot.setDataAtCell(row, 16, gstAmount)
+                        }
                         if(selection === 11)
                         {
                             this.selectCell(row, selection + 1);
@@ -658,9 +659,10 @@
                         gst = taxId[1];
                         var finalPrice = priceBeforeGst + (priceBeforeGst * (gst / 100));
                         hot.setDataAtCell(row, 13, Number(finalPrice).toFixed(2));
+                        var gstAmount;
                         if (stateId === '${session.getAttribute('stateId')}') {
                             if (taxId[1] !== 0) {
-                                var gstAmount = priceBeforeGst * (gst / 100);
+                                gstAmount = priceBeforeGst * (gst / 100);
                                 var sgstAmount = priceBeforeGst * (data.purchaseSgst / 100);
                                 var cgstAmount = priceBeforeGst * (data.purchaseCgst / 100);
                                 hot.setDataAtCell(row, 12, Number(gstAmount).toFixed(2)); //GST
@@ -676,14 +678,16 @@
                             // hot.setDataAtCell(row, 12, 0); //GST
                             hot.setDataAtCell(row, 14, 0); //SGST
                             hot.setDataAtCell(row, 15, 0); //CGST
-                            if (data.purchaseIgst !== 0) {
-                                var igstAmount = priceBeforeGst * (data.purchaseIgst / 100);
-                                hot.setDataAtCell(row, 16, Number(igstAmount).toFixed(2)); //IGST
-                                calculateTotalAmt();
-                            } else
-                            {
-                                hot.setDataAtCell(row, 16, 0);
-                            }
+                            // if (data.purchaseIgst !== 0) {
+                            //     var igstAmount = priceBeforeGst * (data.purchaseIgst / 100);
+                            //     hot.setDataAtCell(row, 16, Number(igstAmount).toFixed(2)); //IGST
+                            //     calculateTotalAmt();
+                            // } else
+                            // {
+                            //     hot.setDataAtCell(row, 16, 0);
+                            // }
+                            gstAmount = priceBeforeGst * (gst / 100);
+                            hot.setDataAtCell(row, 16, gstAmount.toFixed());
                         }
                     },
                     error: function (data) {

@@ -6,7 +6,7 @@
 
     <script type="text/javascript">
         %{--function generateBarCode() {--}%
-        %{--    var nric = '${purchaseBillDetail.invoiceNumber}';--}%
+        %{--    var nric = '${saleBillDetail.invoiceNumber}';--}%
         %{--    var url = 'https://api.qrserver.com/v1/create-qr-code/?data=' + nric + '&amp;size=50x50';--}%
         %{--    $('#barcode').attr('src', url);--}%
         %{--}--}%
@@ -21,7 +21,6 @@
         font-size: 7pt;
         page-break-before: always;
     }
-
 
 
     th, td {
@@ -40,7 +39,6 @@
         /*color: #fff;*/
         /*background: #000;*/
     }
-
 
 
     body {
@@ -64,6 +62,7 @@
             top: 120px;
 
         }
+
         .print {
             margin-left: 110px !important;
             /*white-space:nowrap;*/
@@ -86,8 +85,8 @@
             display: table-cell;
             padding-right: 1em;
         }
-        thead
-        {
+
+        thead {
             font-size: 6pt;
             padding: 0px;
         }
@@ -106,6 +105,7 @@
     li {
         display: table-row;
     }
+
     .print {
         margin-left: 200px;
     }
@@ -113,9 +113,10 @@
     /*thead{*/
     /*    display:table-header-group;!*repeat table headers on each page*!*/
     /*}*/
-    .page-number{
+    .page-number {
         content: counter(page)
     }
+
     #watermark
     {
         position: fixed;
@@ -146,10 +147,10 @@
 %{--        <td style="width: 25%;vertical-align:top;">--}%
 %{--            <ul>--}%
 %{--                <li><b class="tab">DELIVERY AT</b>:&nbsp;${custcity.name}</li>--}%
-%{--                <li><b class="tab">GST NO</b>: ${supplier.gstn}</li>--}%
-%{--                <li><b class="tab">PAN</b>: ${supplier.pan}</li>--}%
-%{--                <li><b class="tab">DL No1</b>: ${supplier.drugLicence1}</li>--}%
-%{--                <li><b class="tab">DL No2</b>: ${supplier.drugLicence2}</li>--}%
+%{--                <li><b class="tab">GST NO</b>: ${customer.gstn}</li>--}%
+%{--                <li><b class="tab">PAN</b>: ${customer.pan}</li>--}%
+%{--                <li><b class="tab">DL No1</b>: ${customer.drugLicence1}</li>--}%
+%{--                <li><b class="tab">DL No2</b>: ${customer.drugLicence2}</li>--}%
 %{--                <li><b class="tab">STATE NAME</b>: ${custcity.state.name}</li>--}%
 %{--                <li><b class="tab">Goods Through</b>:</li>--}%
 %{--                <li><b class="tab">Place of Supply</b>: &nbsp;${custcity.name}</li>--}%
@@ -159,10 +160,10 @@
 %{--        <td style="width: 25%;vertical-align:top;">--}%
 %{--            <ul>--}%
 %{--                <li><b class="tab">DELIVERY AT</b>:&nbsp;${custcity.name}</li>--}%
-%{--                <li><b class="tab">GST NO</b>: ${supplier.gstn}</li>--}%
-%{--                <li><b class="tab">PAN</b>: ${supplier.pan}</li>--}%
-%{--                <li><b class="tab">DL No1</b>: ${supplier.drugLicence1}</li>--}%
-%{--                <li><b class="tab">DL No2</b>: ${supplier.drugLicence2}</li>--}%
+%{--                <li><b class="tab">GST NO</b>: ${customer.gstn}</li>--}%
+%{--                <li><b class="tab">PAN</b>: ${customer.pan}</li>--}%
+%{--                <li><b class="tab">DL No1</b>: ${customer.drugLicence1}</li>--}%
+%{--                <li><b class="tab">DL No2</b>: ${customer.drugLicence2}</li>--}%
 %{--                <li><b class="tab">STATE NAME</b>: ${custcity.state.name}</li>--}%
 %{--                <li><b class="tab">Goods Through</b>:</li>--}%
 %{--                <li><b class="tab">Place of Supply</b>:  &nbsp;${custcity.name}</li>--}%
@@ -175,7 +176,7 @@
 %{--    </tr>--}%
 %{--    </thead>--}%
 %{--</table>--}%
-<table  id="prodDetails" class="extended">
+<table id="prodDetails" class="extended" style="width: 100%; padding: 5%;">
     <thead>
     <tr>
         <td colspan="4" style="vertical-align:top;">
@@ -196,11 +197,14 @@
             </sub>
         </td>
         <td colspan="4" style="vertical-align:top;">
-            <strong>PURCHASE INVOICE</strong>
+            <strong>TAX INVOICE</strong>
             <ul style="margin: 0;">
 
-                <li><b class="tab">Invoice No</b>:  <g:if test="${purchaseBillDetail.billStatus == 'CANCELLED'}"><del>${purchaseBillDetail.invoiceNumber}</del></g:if><g:else>${purchaseBillDetail.invoiceNumber}</g:else></li>
+%{--                <li><b class="tab">Invoice No</b>:  <g:if test="${purchaseBillDetail.billStatus == 'CANCELLED'}"><del>${purchaseBillDetail.invoiceNumber}</del></g:if><g:else>${purchaseBillDetail.invoiceNumber}</g:else></li>--}%
+
+                <li><b class="tab">Invoice No</b>: ${purchaseBillDetail.invoiceNumber}  </li>
                 <li><b class="tab">Inv Date</b>:&nbsp;<span id="invDate"></span></li>
+                <li><b class="tab">Due Date</b>:&nbsp;<span id="dueDate"></span></li>
                 %{--                <li><b class="tab">No of cases</b>:</li>--}%
                 %{--                <li><b class="tab">Weight in Kgs</b>:</li>--}%
                 %{--                <li><b class="tab">Party Ref No.</b>: 429803</li>--}%
@@ -229,7 +233,7 @@
                 <li><b class="tab">DL No1</b>: ${supplier.drugLicence1}</li>
                 <li><b class="tab">DL No2</b>: ${supplier.drugLicence2}</li>
                 <li><b class="tab">STATE NAME</b>: ${supcity.state.name}</li>
-                <li><b class="tab">Area pincode</b>: ${supplier.pinCode}</li>s
+                <li><b class="tab">Area PIN</b>: ${supplier.pinCode}</li>
                 <li><b class="tab">Goods Through</b>:</li>
                 <li><b class="tab">Place of Supply</b>: &nbsp;${supcity.name}</li>
                 %{--                <li><b class="tab">State Code</b>: </li>--}%
@@ -245,17 +249,29 @@
                 <li><b class="tab">DL No1</b>: ${supplier.drugLicence1}</li>
                 <li><b class="tab">DL No2</b>: ${supplier.drugLicence2}</li>
                 <li><b class="tab">STATE NAME</b>: ${supcity.state.name}</li>
-                <li><b class="tab">Area pincode</b>: ${supplier.pinCode}</li>
+                <li><b class="tab">Area PIN</b>: ${supplier.pinCode}</li>
                 <li><b class="tab">Goods Through</b>:</li>
                 <li><b class="tab">Place of Supply</b>:  &nbsp;${supcity.name}</li>
                 %{--                <li><b class="tab">State Code</b>: </li>--}%
             </ul>
         </td>
-        <td colspan="4" style="vertical-align:top;" >
-            <div class="qrCode" ></div>
+        <td colspan="4" style="vertical-align:center;padding: 10px;">
+            <div class="qrCode"></div>
         </td>
     </tr>
-
+%{--    <g:if test="${irnDetails != null}">--}%
+%{--        <tr>--}%
+%{--            <td colspan="4">--}%
+%{--                <strong>Ack No</strong>:&nbsp;${irnDetails.AckNo}--}%
+%{--            </td>--}%
+%{--            <td colspan="5">--}%
+%{--                <strong>Ack Dt</strong>:&nbsp;${irnDetails.AckDt}--}%
+%{--            </td>--}%
+%{--            <td colspan="9">--}%
+%{--                <strong>IRN</strong>:&nbsp;${irnDetails.Irn}--}%
+%{--            </td>--}%
+%{--        </tr>--}%
+%{--    </g:if>--}%
     <tr>
         <th>Sl.No</th>
         <th>Material HSN Code</th>
@@ -287,7 +303,7 @@
     <tbody style="padding: 5px!important;">
     <g:each var="sp" in="${purchaseProductDetails}" status="i">
         <tr>
-            <td>${i+1}</td>
+            <td>${i + 1}</td>
             <td>${sp.productId.hsnCode}</td>
             <td><b>${sp.productId.productName}</b></td>
             <td><b>${sp.productId.unitPacking}</b></td>
@@ -316,7 +332,6 @@
             <td>${String.format("%.2f", sp.amount)}</td>
         </tr>
 
-
     </g:each>
 
     <tr>
@@ -343,83 +358,84 @@
 </table>
 
 %{--<div id="breakPage" style="page-break-after: avoid;"></div>--}%
-<g:if test="${purchaseBillDetail.billStatus == 'CANCELLED'}">
-    <div id="watermark" class="print-watermark">CANCELLED</div>
-</g:if>
 
-<div class="container" style="display: flex; ">
-    %{--    height:200px--}%
-    <div style="width: 50%;">
 
-        <p>No of cases <br>
-            Weight in Kgs :<br>
-            Party Ref No. : <br>
-            Rev-Charge :</p>
-        <p>${termsConditions[0].termCondition}</p>
-    </div>
+%{--<div class="container" style="display: flex; ">--}%
+%{--    --}%%{--    height:200px--}%
+%{--    <div style="width: 50%;">--}%
+%{--        <g:if test="${saleBillDetail.billStatus == 'CANCELLED'}">--}%
+%{--            <div id="watermark" class="print-watermark">CANCELLED</div>--}%
+%{--        </g:if>--}%
+%{--        <p>No of cases <br>--}%
+%{--            Weight in Kgs :<br>--}%
+%{--            Party Ref No. : <br>--}%
+%{--            Rev-Charge :</p>--}%
 
-    <div style="float: right;">
-        <table class="print" style="margin-top: 10px;margin-left:78px;margin-right:10px;width: 78%;">
-            <tr>
-                <th>Total</th>
-                <td>0.00</td>
-                <td>${String.format("%.2f", totalBeforeTaxes)}</td>
-            </tr>
+%{--        <p>${termsConditions[0].termCondition}</p>--}%
+%{--    </div>--}%
 
-            <g:each in="${sgstGroup}" var="sg">
-                <tr>
-                    <th>Add SGST ${sg.key}% on</th>
-                    <td>${String.format("%.2f", sg.value)}</td>
-                    <td class="totalgst">${String.format("%.2f",sg.value * (Double.parseDouble(sg.key.toString())/100))}</td>
-                </tr>
+%{--    <div style="float: right;">--}%
+%{--        <table class="print" style="margin-top: 10px;margin-left:78px;margin-right:10px;width: 78%;">--}%
+%{--            <tr>--}%
+%{--                <th>Total</th>--}%
+%{--                <td>0.00</td>--}%
+%{--                <td>${String.format("%.2f", totalBeforeTaxes)}</td>--}%
+%{--            </tr>--}%
 
-            </g:each>
+%{--            <g:each in="${sgstGroup}" var="sg">--}%
+%{--                <tr>--}%
+%{--                    <th>Add SGST ${sg.key}% on</th>--}%
+%{--                    <td>${String.format("%.2f", sg.value)}</td>--}%
+%{--                    <td class="totalgst">${String.format("%.2f", sg.value * (Double.parseDouble(sg.key.toString()) / 100))}</td>--}%
+%{--                </tr>--}%
 
-            <g:each in="${cgstGroup}" var="cg">
-                <tr>
-                    <th>Add CGST ${cg.key}% on</th>
-                    <td>${String.format("%.2f", cg.value)}</td>
-                    <td class="totalgst">${String.format("%.2f",cg.value * (Double.parseDouble(cg.key.toString())/100))}</td>
-                </tr>
+%{--            </g:each>--}%
 
-            </g:each>
+%{--            <g:each in="${cgstGroup}" var="cg">--}%
+%{--                <tr>--}%
+%{--                    <th>Add CGST ${cg.key}% on</th>--}%
+%{--                    <td>${String.format("%.2f", cg.value)}</td>--}%
+%{--                    <td class="totalgst">${String.format("%.2f", cg.value * (Double.parseDouble(cg.key.toString()) / 100))}</td>--}%
+%{--                </tr>--}%
 
-            <g:each in="${igstGroup}" var="ig">
-                <tr>
-                    <th>Add IGST ${ig.key}% on</th>
-                    <td>${String.format("%.2f", ig.value)}</td>
-                    <td class="totalgst">${String.format("%.2f",ig.value * (Double.parseDouble(ig.key.toString())/100))}</td>
-                </tr>
+%{--            </g:each>--}%
 
-            </g:each>
-            <tr>
-                <th>Net Invoice Amt.</th>
-                <td>0.00</td>
-                <td id="netInvAmt"></td>
-            </tr>
-            <tr>
-                <th>Less Cr. Nt*</th>
-                <td>0.00</td>
-                <td>0.00</td>
-            </tr>
-            <tr>
-                <th>Add Debit Nt*</th>
-                <td>0.00</td>
-                <td>0.00</td>
-            </tr>
-            <tr>
-                <th>Add Rounding off*</th>
-                <td>0.00</td>
-                <td>0.00</td>
-            </tr>
-            <tr>
-                <th>Net Payable Amt.</th>
-                <td>0.00</td>
-                <td id="netPayAmt"></td>
-            </tr>
-        </table>
-    </div>
-</div>
+%{--            <g:each in="${igstGroup}" var="ig">--}%
+%{--                <tr>--}%
+%{--                    <th>Add IGST ${ig.key}% on</th>--}%
+%{--                    <td>${String.format("%.2f", ig.value)}</td>--}%
+%{--                    <td class="totalgst">${String.format("%.2f", ig.value * (Double.parseDouble(ig.key.toString()) / 100))}</td>--}%
+%{--                </tr>--}%
+
+%{--            </g:each>--}%
+%{--            <tr>--}%
+%{--                <th>Net Invoice Amt.</th>--}%
+%{--                <td>0.00</td>--}%
+%{--                <td id="netInvAmt"></td>--}%
+%{--            </tr>--}%
+%{--            <tr>--}%
+%{--                <th>Less Cr. Nt*</th>--}%
+%{--                <td>0.00</td>--}%
+%{--                <td>0.00</td>--}%
+%{--            </tr>--}%
+%{--            <tr>--}%
+%{--                <th>Add Debit Nt*</th>--}%
+%{--                <td>0.00</td>--}%
+%{--                <td>0.00</td>--}%
+%{--            </tr>--}%
+%{--            <tr>--}%
+%{--                <th>Add Rounding off*</th>--}%
+%{--                <td>0.00</td>--}%
+%{--                <td>0.00</td>--}%
+%{--            </tr>--}%
+%{--            <tr>--}%
+%{--                <th>Net Payable Amt.</th>--}%
+%{--                <td>0.00</td>--}%
+%{--                <td id="netPayAmt"></td>--}%
+%{--            </tr>--}%
+%{--        </table>--}%
+%{--    </div>--}%
+%{--</div>--}%
 <br>
 <br>
 
@@ -433,6 +449,7 @@
 
 <br>
 <br>
+
 <div id="breakPageContent"></div>
 </body>
 <asset:javascript src="/themeassets/bundles/libscripts.bundle.js"/>
@@ -445,7 +462,7 @@
     window.onload = function () {
 
         %{--const qrcode = new QRCode(document.getElementsByClassName('qrcode'), {--}%
-        %{--    text: ' ${purchaseBillDetail.invoiceNumber}',--}%
+        %{--    text: ' ${saleBillDetail.invoiceNumber}',--}%
         %{--    width: 128,--}%
         %{--    height: 128,--}%
         %{--    colorDark : '#000000',--}%
@@ -454,24 +471,26 @@
         %{--});--}%
 
         window.print();
-        var d = moment(new Date()).format('DD/MM/YYYY') + " " +  new Date().toLocaleTimeString();
+        var d = moment(new Date()).format('DD/MM/YYYY') + " " + new Date().toLocaleTimeString();
         document.getElementById("date").innerHTML = d;
         var invDate = new Date('${purchaseBillDetail.entryDate}');
+        var dueDate = new Date('${purchaseBillDetail.dueDate}');
         $("#invDate").text(moment(invDate).format('DD-MM-YYYY'));
+        $("#dueDate").text(moment(dueDate).format('DD-MM-YYYY'));
 
-        <g:each var="spd" in="${purchaseProductDetails}">
+        <g:each var="spd" in="${saleProductDetails}">
         var expDate = new Date('${spd.expiryDate}');
         $("#expDate${spd.id}").text(moment(expDate).format('MMM-YY').toUpperCase());
         </g:each>
         var totalGst = 0.0;
         var totalgstField = $(".totalgst");
-        totalgstField.each(function(i)
-        {
+        totalgstField.each(function (i) {
             var totGst = totalgstField.eq(i)[0].innerText;
-            if(totGst !== "")
+            if (totGst !== "")
                 totalGst += parseFloat(totGst);
         });
-        var netAmount = ${totalBeforeTaxes}
+        var netAmount =
+        ${totalBeforeTaxes}
         var netInvAmt = parseFloat(totalGst) + netAmount;
         $("#netInvAmt").text(netInvAmt.toFixed(2));
         $("#netPayAmt").text(netInvAmt.toFixed(2));
@@ -521,25 +540,26 @@
 
     };
 
-
-
+    var qrText = '${purchaseBillDetail.invoiceNumber}';
+%{--    <g:if test="${irnDetails != null}">--}%
+%{--    qrText = '${irnDetails.SignedQRCode}';--}%
+%{--    </g:if>--}%
     jQuery('.qrCode').qrcode({
         // width: 100,
         // height: 100,
-        render : "image",
+        minVersion: 1,
+        maxVersion: 40,
+        render: "canvas",
         size: 100,
         // code color or image element
         fill: '#000',
-
         // background color or image element, null for transparent background
         background: null,
-
         // corner radius relative to module width: 0.0 .. 0.5
         radius: 0,
-
         // quiet zone in modules
-        quiet: 0,
-
+        quiet: 1,
+        ecLevel: 'L',
         // modes
         // 0: normal
         // 1: label strip
@@ -551,13 +571,11 @@
         mSize: 0.1,
         mPosX: 0.5,
         mPosY: 0.5,
-
-        label: '${purchaseBillDetail.invoiceNumber}',
+        label: qrText,
         fontname: 'sans',
         fontcolor: '#000',
-
         image: null,
-        text : "${purchaseBillDetail.invoiceNumber}"
+        text: qrText
     });
 
 
