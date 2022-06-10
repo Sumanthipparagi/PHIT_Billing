@@ -371,7 +371,7 @@
             Weight in Kgs :<br>
             Party Ref No. : <br>
             Rev-Charge :</p>
-        <p>${termsConditions[0].termCondition}</p>
+%{--        <p>${termsConditions[0].termCondition}</p>--}%
 
 
     </div>
