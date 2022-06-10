@@ -334,6 +334,7 @@ class SaleReturnController
             stock.put("productId", productId)
             stock.put("taxId", taxId)
             stock.put("packDesc", packDesc)
+            stock.put("saleRate", saleRate)
             stock.put("reason", reason)
             stock.put("entityId",session.getAttribute('entityId'))
             stock.put("entityTypeId",session.getAttribute('entityTypeId'))
