@@ -14,6 +14,7 @@ import phitb_ui.SystemService
 import phitb_ui.UtilsService
 import phitb_ui.entity.EntityRegisterController
 import phitb_ui.entity.SeriesController
+import phitb_ui.entity.TaxController
 import phitb_ui.entity.UserRegisterController
 import phitb_ui.inventory.StockBookController
 import phitb_ui.product.ProductController
@@ -64,8 +65,10 @@ class PurchaseEntryController {
         ArrayList<String> customers = new EntityRegisterController().show() as ArrayList<String>
         def priorityList = new SystemService().getPriorityByEntity(entityId)
         def series = new SeriesController().getByEntity(entityId)
+        def taxRegister = new TaxController().show() as ArrayList<String>
         render(view: '/purchase/purchaseEntry/purchaseEntry', model: [divisions   : divisions, customers: customers,
-                                                                      priorityList: priorityList, series: series])
+                                                                      priorityList: priorityList, series: series,
+                                                                      taxRegister:taxRegister])
     }
 
 

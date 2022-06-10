@@ -304,16 +304,45 @@ class StockBookController
             JSONObject paramsJsonObject = new JSONObject(params)
             JSONObject stockObject = new JSONObject(JSON.parse(paramsJsonObject.params))
             StockBook stockBook = StockBook.findByBatchNumberAndProductId(stockObject.batchNumber, stockObject.productId)
+            stockBook.isUpdatable = true
             if (stockBook)
             {
                 def remQty = stockBook.getRemainingQty()
                 def freeQty = stockBook.getRemainingFreeQty()
                 if (stockObject.reason == "R")
                 {
+                    StockActivity stockActivity = new StockActivity()
+                    stockActivity.setPrevRemQty(Long.parseLong(stockBook.remainingQty.toString()))
+                    stockActivity.setPrevSchemeQty(Long.parseLong(stockBook.remainingFreeQty.toString()))
+
+//                   Update Stock book
                     stockBook.remainingQty = remQty + Long.parseLong(stockObject.saleQty)
                     stockBook.remainingFreeQty = freeQty + Long.parseLong(stockObject.freeQty)
-                    System.out.println("Remaining Qty After Sale Return" + stockBook.getRemainingQty())
-                    System.out.println("Remaining Qty After Sale Return" + stockBook.getRemainingFreeQty())
+                    System.out.println("Remaining Qty After Sale Return " + stockBook.getRemainingQty())
+                    System.out.println("Remaining Free Qty After Sale Return " + stockBook.getRemainingFreeQty())
+
+                    stockActivity.setProductId(Long.parseLong(stockObject.productId))
+                    stockActivity.setBatch(stockObject.batchNumber)
+                    stockActivity.setRemainingQty(Long.parseLong(stockObject.saleQty.toString()))
+                    stockActivity.setRemainingSchemeQty(Long.parseLong(stockObject.freeQty.toString()))
+                    stockActivity.setPrevSaleRate(Double.parseDouble(stockBook.saleRate.toString()))
+                    stockActivity.setSaleRate(Double.parseDouble(stockBook.saleRate.toString()))
+                    stockActivity.setStatus(0)
+                    stockActivity.setSyncStatus(0)
+                    stockActivity.setEntityTypeId(Long.parseLong(stockObject.entityTypeId.toString()))
+                    stockActivity.setEntityId(Long.parseLong(stockObject.entityId.toString()))
+                    stockActivity.setCreatedUser(Long.parseLong(stockObject.userId.toString()))
+                    stockActivity.setModifiedUser(Long.parseLong(stockObject.userId.toString()))
+                    stockActivity.save(flush:true)
+                    StockActivity stockActivity1 = stockActivity.save(flush:true)
+                    if(stockActivity1)
+                    {
+                        println("Stock Activity Updated")
+                    }
+                    else
+                    {
+                        println("Unable to update Stock Activity")
+                    }
                 }
                 else if (stockObject.reason == "E")
                 {
@@ -328,16 +357,44 @@ class StockBookController
                 }
                 else if (stockObject.reason == "OA")
                 {
+
+                    StockActivity stockActivity = new StockActivity()
+                    stockActivity.setPrevRemQty(Long.parseLong(stockBook.remainingQty.toString()))
+                    stockActivity.setPrevSchemeQty(Long.parseLong(stockBook.remainingFreeQty.toString()))
+
                     stockBook.remainingQty = remQty + Long.parseLong(stockObject.saleQty)
                     stockBook.remainingFreeQty = freeQty + Long.parseLong(stockObject.freeQty)
                     System.out.println("Remaining Qty After Others(ADD)" + stockBook.getRemainingQty())
-                    System.out.println("Remaining Qty After Others(ADD)" + stockBook.getRemainingFreeQty())
+                    System.out.println("Remaining Free Qty After Others(ADD)" + stockBook.getRemainingFreeQty())
+
+                    stockActivity.setProductId(Long.parseLong(stockObject.productId))
+                    stockActivity.setBatch(stockObject.batchNumber)
+                    stockActivity.setRemainingQty(Long.parseLong(stockObject.saleQty.toString()))
+                    stockActivity.setRemainingSchemeQty(Long.parseLong(stockObject.freeQty.toString()))
+                    stockActivity.setPrevSaleRate(Double.parseDouble(stockBook.saleRate.toString()))
+                    stockActivity.setSaleRate(Double.parseDouble(stockBook.saleRate.toString()))
+                    stockActivity.setStatus(0)
+                    stockActivity.setSyncStatus(0)
+                    stockActivity.setEntityTypeId(Long.parseLong(stockObject.entityTypeId.toString()))
+                    stockActivity.setEntityId(Long.parseLong(stockObject.entityId.toString()))
+                    stockActivity.setCreatedUser(Long.parseLong(stockObject.userId.toString()))
+                    stockActivity.setModifiedUser(Long.parseLong(stockObject.userId.toString()))
+                    stockActivity.save(flush:true)
+                    StockActivity stockActivity1 = stockActivity.save(flush:true)
+                    if(stockActivity1)
+                    {
+                        println("Stock Activity Updated")
+                    }
+                    else
+                    {
+                        println("Unable to update Stock Activity")
+                    }
+
                 }
                 else if (stockObject.reason == "ONE")
                 {
                     println("Others(No efft) - NO EFFECT ON CURRENT STOCK BOOK")
                 }
-                stockBook.isUpdatable = true
                 StockBook savedStockBook = stockBook.save(flush: true)
                 if (savedStockBook)
                 {

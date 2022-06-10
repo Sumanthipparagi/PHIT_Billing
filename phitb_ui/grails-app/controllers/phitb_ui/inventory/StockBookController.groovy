@@ -680,24 +680,24 @@ class StockBookController {
 
     }
 
-    def stockIncrease()
-    {
-        def batch = params.batch
-        def purqty = params.sqty
-        def freeqty = params.fqty
-        def reason = params.reason
-        def apiResponse = new InventoryService().stocksIncrease(batch,purqty,freeqty,reason)
-        if (apiResponse?.status == 200)
-        {
-            JSONObject jsonObject = new JSONObject(apiResponse.readEntity(String.class))
-            respond jsonObject,formats: ['json'],status: 200
-        }
-        else
-        {
-            return null
-        }
-
-    }
+//    def stockIncrease()
+//    {
+//        def batch = params.batch
+//        def purqty = params.sqty
+//        def freeqty = params.fqty
+//        def reason = params.reason
+//        def apiResponse = new InventoryService().stocksIncrease(batch,purqty,freeqty,reason)
+//        if (apiResponse?.status == 200)
+//        {
+//            JSONObject jsonObject = new JSONObject(apiResponse.readEntity(String.class))
+//            respond jsonObject,formats: ['json'],status: 200
+//        }
+//        else
+//        {
+//            return null
+//        }
+//
+//    }
 
 
     def stockByProductAndBatch()

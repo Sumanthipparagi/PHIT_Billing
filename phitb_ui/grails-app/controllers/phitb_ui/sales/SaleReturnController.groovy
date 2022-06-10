@@ -4,7 +4,6 @@ import grails.converters.JSON
 import org.grails.web.json.JSONArray
 import org.grails.web.json.JSONObject
 import phitb_ui.Constants
-import phitb_ui.EInvoiceService
 import phitb_ui.EntityService
 import phitb_ui.InventoryService
 import phitb_ui.Links
@@ -446,7 +445,7 @@ class SaleReturnController
         {
             for(JSONObject stock: stockArray)
             {
-                def stocks = new InventoryService().stocksIncrease(stock)
+                def stocks = new InventoryService().stocksReturn(stock)
                 if(stocks.status == 200)
                 {
                     println("Stocks Updated!")

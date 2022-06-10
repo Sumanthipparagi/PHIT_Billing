@@ -196,7 +196,7 @@ class InventoryService {
     }
 
 
-    def stocksIncrease(JSONObject jsonObject) {
+    def stocksReturn(JSONObject jsonObject) {
         Client client = ClientBuilder.newClient()
         WebTarget target = client.target(new Links().API_GATEWAY)
         try {

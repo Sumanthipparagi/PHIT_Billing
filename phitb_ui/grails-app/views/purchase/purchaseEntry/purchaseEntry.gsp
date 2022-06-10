@@ -90,11 +90,9 @@
                                 <label for="supplier">Supplier:</label>
                                 <select class="form-control show-tick" id="supplier"
                                         onchange="supplierChanged()">
-                                    <option selected disabled>--SELECT--</option>
                                     <g:each in="${customers}" var="cs">
-
-                                        <g:if test="${cs.id != session.getAttribute("entityId")}">
-                                            <option value="${cs.id}">${cs.entityName} (${cs.entityType.name})</option>
+                                        <g:if test="${cs.id != session.getAttribute("entityId")}"><option value="${cs.id}"  data-state="${cs.stateId}"  >${cs.entityName} (${cs.entityType
+                                                    .name})</option>
                                         </g:if>
                                     </g:each>
                                 </select>
@@ -239,6 +237,7 @@
         '<strong>MRP</strong>',
         '<strong>Disc.(%)</strong>',
         '<strong>Pack</strong>',
+        '<strong>GST.(%)</strong>',
         '<strong>GST</strong>',
         '<strong>Value</strong>',
         'SGST',
@@ -268,6 +267,7 @@
     var hot;
     var purchaseData = [];
     var batchData = [];
+    var taxRegister = [];
     var mainTableRow = 0;
     var gst = 0;
     var cgst = 0;
@@ -290,6 +290,10 @@
         <g:each in="${customers}" var="cs">
         customers.push({"id": ${cs.id}, "noOfCrDays": ${cs.noOfCrDays}});
         </g:each>
+        <g:each in="${taxRegister}" var="tr">
+        taxRegister.push({"id": '${tr.id+"|"+tr.taxValue}', "text": '${tr.taxName+" | "+tr.taxValue}'});
+        </g:each>
+        supplierChanged();
         const container = document.getElementById('purchaseTable');
         hot = new Handsontable(container, {
             data: purchaseData,
@@ -319,12 +323,22 @@
                 {type: 'text', readOnly: true},
                 {type: 'numeric'},
                 {type: 'numeric'},
-                {type: 'text', readOnly: true},
-                {type: 'text', readOnly: true},
-                {type: 'text', readOnly: true},
                 {type: 'text'},
                 {type: 'text'},
                 {type: 'text', readOnly: true},
+                {type: 'text'},
+                {type: 'text', readOnly: true},
+                {
+                    editor: 'select2',
+                    renderer: taxRegisterDropdownRenderer,
+                    select2Options: {
+                        data: taxRegister,
+                        dropdownAutoWidth: true,
+                        allowClear: true,
+                        width: 'auto'
+                    }
+                },
+                {type: 'text',readOnly:true},
                 {type: 'text', readOnly: true},
                 {type: 'text', readOnly: true},
                 {type: 'text', readOnly: true},
@@ -377,7 +391,7 @@
         hot.selectCell(0, 1);
         hot.updateSettings({
             beforeKeyDown(e) {
-                var sRate = 0;
+                var pRate = 0;
                 var sQty = 0;
                 var fQty = 0;
                 const row = hot.getSelected()[0][0];
@@ -387,7 +401,7 @@
                         batchHot.selectCell(0, 0);
                         $("#batchTable").focus();
                     }
-                } else if (selection === 14 || selection === 7) {
+                } else if (selection === 15) {
                     if ((e.keyCode === 13 || e.keyCode === 9) && !readOnly) {
                         //check if sqty is empty
                         var sqty = hot.getDataAtCell(row, 4);
@@ -407,22 +421,23 @@
                         }
 
                     }
-                } else if (selection === 4 || selection === 5 || selection === 8 || selection === 6  || selection === 9) {
+                } else if (selection === 4 || selection === 5 || selection === 8 || selection === 6  || selection ===
+                    9 || selection === 11) {
                     if (e.keyCode === 13 || e.keyCode === 9) {
                         var discount = 0;
-                        if(selection === 7)
+                        if(selection === 6)
                         {
                             var mrp = hot.getDataAtCell(row, 8);
-                            var oldSaleRate = hot.getDataAtCell(row, 7);
+                            var oldSaleRate = hot.getDataAtCell(row, 6);
                             var saleRate = Number(this.getActiveEditor().TEXTAREA.value);
                             if(saleRate > mrp)
                             {
-                                hot.setDataAtCell(row, 7,  oldSaleRate);
+                                hot.setDataAtCell(row, 6,  oldSaleRate);
                                 this.getActiveEditor().TEXTAREA.value = oldSaleRate;
                                 alert("Sale Rate exceeds MRP!");
                             }
                             else {
-                                hot.setDataAtCell(row, 7,  Number(this.getActiveEditor().TEXTAREA.value));
+                                hot.setDataAtCell(row, 6,  Number(this.getActiveEditor().TEXTAREA.value));
                                 this.selectCell(row, selection + 1);
                             }
                         }
@@ -447,6 +462,7 @@
                         {
                             fQty = Number(this.getDataAtCell(row, 5));
                         }
+
                         if (selection === 9) {
                             discount = Number(this.getActiveEditor().TEXTAREA.value);
                             if (discount > 100) {
@@ -464,6 +480,7 @@
                         } else {
                             discount = hot.getDataAtCell(row, 9);
                         }
+
                         var allowEntry = false;
                         var pid = hot.getDataAtCell(row, 1);
                         var batch = hot.getDataAtCell(row, 2);
@@ -536,36 +553,55 @@
                             );
                         }
                         applySchemes(row, sQty);
-                        if(selection === 7)
+                        if(selection === 6)
                         {
-                            sRate = Number(this.getActiveEditor().TEXTAREA.value);
+                            pRate = Number(this.getActiveEditor().TEXTAREA.value);
+                            if(pRate === 0)
+                            {
+                                pRate = hot.getDataAtCell(row, 6);
+                            }
                         }
                         else
-                            sRate = hot.getDataAtCell(row, 7);
+                        {
+                            pRate = hot.getDataAtCell(row, 6);
+                        }
 
-                        var value = sRate * sQty;
+                        var value = pRate * sQty;
                         var priceBeforeGst = value - (value * discount / 100);
                         var finalPrice = priceBeforeGst + (priceBeforeGst * (gst / 100));
-                        hot.setDataAtCell(row, 12, Number(finalPrice).toFixed(2));
+                        hot.setDataAtCell(row, 13, Number(finalPrice).toFixed(2));
 
-                        if (gst !== 0) {
-                            var gstAmount = priceBeforeGst * (gst / 100);
-                            var sgstAmount = priceBeforeGst * (sgst / 100);
-                            var cgstAmount = priceBeforeGst * (cgst / 100);
-                            hot.setDataAtCell(row, 11, Number(gstAmount).toFixed(2)); //GST
-                            hot.setDataAtCell(row, 13, Number(sgstAmount).toFixed(2)); //SGST
-                            hot.setDataAtCell(row, 14, Number(cgstAmount).toFixed(2)); //CGST
-                        } else {
-                            hot.setDataAtCell(row, 11, 0); //GST
-                            hot.setDataAtCell(row, 13, 0); //SGST
-                            hot.setDataAtCell(row, 14, 0); //CGST
+                        %{--var supplier = $('#supplier').find(':selected').data('state')--}%
+                        %{--if(supplier!== '${session.getAttribute('stateId')}')--}%
+                        %{--{--}%
+                            if (gst !== 0) {
+                                var gstAmount = priceBeforeGst * (gst / 100);
+                                var sgstAmount = priceBeforeGst * (sgst / 100);
+                                var cgstAmount = priceBeforeGst * (cgst / 100);
+                                hot.setDataAtCell(row, 12, Number(gstAmount).toFixed(2)); //GST
+                                hot.setDataAtCell(row, 14, Number(sgstAmount).toFixed(2)); //SGST
+                                hot.setDataAtCell(row, 15, Number(cgstAmount).toFixed(2)); //CGST
+                            } else {
+                                hot.setDataAtCell(row, 12, 0); //GST
+                                hot.setDataAtCell(row, 14, 0); //SGST
+                                hot.setDataAtCell(row, 15, 0); //CGST
+                            }
+                            if (igst !== "0") {
+                                var igstAmount = priceBeforeGst * (igst / 100);
+                                hot.setDataAtCell(row, 16, Number(igstAmount).toFixed(2)); //IGST
+                            } else{hot.setDataAtCell(row, 16, 0);}
+                        // }
+                        // else
+                        // {
+                        //     hot.setDataAtCell(row, 16, gst)
+                        // }
+
+                        if(selection === 11)
+                        {
+                            this.selectCell(row, selection + 1);
                         }
-                        if (igst !== "0") {
-                            var igstAmount = priceBeforeGst * (igst / 100);
-                            hot.setDataAtCell(row, 15, Number(igstAmount).toFixed(2)); //IGST
-                        } else
-                            hot.setDataAtCell(row, 15, 0);
                     }
+
                 }
             }
         });
@@ -574,6 +610,11 @@
             if(col === 2) {
                 batchSelection(hot.getDataAtCell(row,1),row,false);
             }
+        });
+
+        var stateId = $('#supplier option:selected').attr('data-state')
+        $('#supplier').change(function () {
+            stateId = $('#supplier option:selected').attr('data-state')
         });
 
         function productsDropdownRenderer(instance, td, row, col, prop, value, cellProperties) {
@@ -585,6 +626,72 @@
                 }
             }
             Handsontable.renderers.TextRenderer.apply(this, arguments);
+        }
+
+        function taxRegisterDropdownRenderer(instance, td, row, col, prop, value, cellProperties) {
+            var selectedId;
+            var taxId;
+            for (var index = 0; index < taxRegister.length; index++) {
+                if (value === taxRegister[index].id) {
+                    selectedId = taxRegister[index].id;
+                    value = taxRegister[index].text;
+                }
+            }
+            Handsontable.renderers.TextRenderer.apply(this, arguments);
+            if (selectedId !== undefined) {
+                taxId = selectedId.split('|');
+                $.ajax({
+                    type: "POST",
+                    url: "/tax/showtax/" + taxId[0].trim(),
+                    dataType: 'json',
+                    success: function (data) {
+                        const row = hot.getSelected()[0][0];
+                        hot.setDataAtCell(row, 11, Number(taxId[1]).toFixed(2));
+                        hot.setDataAtCell(row, 19, taxId[0].trim());
+                        var pR = hot.getDataAtCell(row, 6);
+                        var sq = hot.getDataAtCell(row, 4);
+                        var disc = hot.getDataAtCell(row, 9);
+                        const selection = hot.getSelected()[0][1];
+                        hot.selectCell(row, selection + 1);
+                        var value = pR * sq;
+                        var priceBeforeGst = value - (value * disc / 100);
+                        gst = taxId[1];
+                        var finalPrice = priceBeforeGst + (priceBeforeGst * (gst / 100));
+                        hot.setDataAtCell(row, 13, Number(finalPrice).toFixed(2));
+                        if (stateId === '${session.getAttribute('stateId')}') {
+                            if (taxId[1] !== 0) {
+                                var gstAmount = priceBeforeGst * (gst / 100);
+                                var sgstAmount = priceBeforeGst * (data.purchaseSgst / 100);
+                                var cgstAmount = priceBeforeGst * (data.purchaseCgst / 100);
+                                hot.setDataAtCell(row, 12, Number(gstAmount).toFixed(2)); //GST
+                                hot.setDataAtCell(row, 14, Number(sgstAmount).toFixed(2)); //SGST
+                                hot.setDataAtCell(row, 15, Number(cgstAmount).toFixed(2)); //CGST
+                                calculateTotalAmt();
+                            } else {
+                                hot.setDataAtCell(row, 12, 0); //GST
+                                hot.setDataAtCell(row, 14, 0); //SGST
+                                hot.setDataAtCell(row, 15, 0); //CGST
+                            }
+                        } else {
+                            // hot.setDataAtCell(row, 12, 0); //GST
+                            hot.setDataAtCell(row, 14, 0); //SGST
+                            hot.setDataAtCell(row, 15, 0); //CGST
+                            if (data.purchaseIgst !== 0) {
+                                var igstAmount = priceBeforeGst * (data.purchaseIgst / 100);
+                                hot.setDataAtCell(row, 16, Number(igstAmount).toFixed(2)); //IGST
+                                calculateTotalAmt();
+                            } else
+                            {
+                                hot.setDataAtCell(row, 16, 0);
+                            }
+                        }
+                    },
+                    error: function (data) {
+                        alert("Something went Wrong!")
+                    }
+                });
+            }
+
         }
 
         batchHot = new Handsontable(batchContainer, {
@@ -647,16 +754,17 @@
                         hot.setDataAtCell(mainTableRow, 8, rowData[7]);
                         hot.setDataAtCell(mainTableRow, 9, 0);
                         hot.setDataAtCell(mainTableRow, 10, rowData[8]);
-                        hot.setDataAtCell(mainTableRow, 16, rowData[2]);
+                        hot.setDataAtCell(mainTableRow, 11, rowData[9].toFixed(2));
+                        hot.setDataAtCell(mainTableRow, 17, rowData[2]);
                         gst = rowData[9];
                         sgst = rowData[10];
                         cgst = rowData[11];
                         igst = rowData[12];
                         hot.selectCell(mainTableRow, 4);
-                        hot.setDataAtCell(mainTableRow, 17, gst);
-                        hot.setDataAtCell(mainTableRow, 18, sgst);
-                        hot.setDataAtCell(mainTableRow, 19, cgst);
-                        hot.setDataAtCell(mainTableRow, 20, igst);
+                        hot.setDataAtCell(mainTableRow, 18, gst);
+                        hot.setDataAtCell(mainTableRow, 19, sgst);
+                        hot.setDataAtCell(mainTableRow, 20, cgst);
+                        hot.setDataAtCell(mainTableRow, 21, igst);
                         remainingQty = rowData[3];
                         remainingFQty = rowData[4];
                         $("#purchaseTable").focus();
@@ -1220,16 +1328,12 @@
             this.TEXTAREA = document.createElement('input');
             this.TEXTAREA.setAttribute('type', 'text');
             this.$textarea = $(this.TEXTAREA);
-
             Handsontable.dom.addClass(this.TEXTAREA, 'handsontableInput');
-
             this.textareaStyle = this.TEXTAREA.style;
             this.textareaStyle.width = 0;
             this.textareaStyle.height = 0;
-
             this.TEXTAREA_PARENT = document.createElement('DIV');
             Handsontable.dom.addClass(this.TEXTAREA_PARENT, 'handsontableInputHolder');
-
             this.textareaParentStyle = this.TEXTAREA_PARENT.style;
             this.textareaParentStyle.top = 0;
             this.textareaParentStyle.left = 0;
@@ -1324,12 +1428,22 @@
 
         };
 
+
+        var onBeforeMouseDown = function (event) {
+            var instance = this;
+            var that = instance.instance.getSelected()
+            this.$dropdownContainer.on('mousedown', function (evt) {
+                evt.stopPropagation();
+            });
+        };
+
+
         Select2Editor.prototype.open = function (keyboardEvent) {
             this.refreshDimensions();
-            this.textareaParentStyle.display = 'block';
             this.textareaParentStyle.zIndex = 20000;
             this.instance.addHook('beforeKeyDown', onBeforeKeyDown);
-
+            this.instance.addHook('afterOnCellMouseDown', onBeforeMouseDown);
+            this.textareaParentStyle.display = 'block';
             this.$textarea.css({
                 height: $(this.TD).height() + 4,
                 'min-width': $(this.TD).outerWidth() - 4
@@ -1350,9 +1464,13 @@
                 var keyText = (String.fromCharCode((96 <= key && key <= 105) ? key - 48 : key)).toLowerCase();
                 console.log("KeyText: " + keyText);
                 self.$textarea.select2('search', keyText.slice(0, -1));
+                $('.handsontableInput').children().show()
+            } else {
+                $('.handsontableInput').children().hide()
             }
-
+            Handsontable.renderers.cellDecorator.apply(this, arguments);
         };
+
 
         Select2Editor.prototype.init = function () {
             Handsontable.editors.TextEditor.prototype.init.apply(this, arguments);
@@ -1361,10 +1479,14 @@
         Select2Editor.prototype.close = function () {
             this.instance.listen();
             this.instance.removeHook('beforeKeyDown', onBeforeKeyDown);
+            this.instance.removeHook('afterOnCellMouseDown', onBeforeMouseDown);
             this.$textarea.off();
             this.$textarea.hide();
+            $('.handsontableInput').children().hide();
             Handsontable.editors.TextEditor.prototype.close.apply(this, arguments);
+            $('.handsontableInput').children().show();
         };
+
 
         Select2Editor.prototype.val = function (value) {
             if (typeof value == 'undefined') {
@@ -1400,6 +1522,7 @@
         Handsontable.editors.registerEditor('select2', Select2Editor);
 
     })(Handsontable);
+
 
     // window.onbeforeunload = function() {
     //     return "Data will be lost if you leave the page, are you sure?";
