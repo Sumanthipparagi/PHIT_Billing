@@ -472,7 +472,7 @@
         window.print();
         var d = moment(new Date()).format('DD/MM/YYYY') + " " + new Date().toLocaleTimeString();
         document.getElementById("date").innerHTML = d;
-        var invDate = new Date('${saleBillDetail.entryDate}');
+        var invDate = new Date('${saleBillDetail.dateCreated}');
         var dueDate = new Date('${saleBillDetail.refDate}');
         $("#invDate").text(moment(invDate).format('DD-MM-YYYY'));
         $("#refDate").text(moment(dueDate).format('DD-MM-YYYY'));

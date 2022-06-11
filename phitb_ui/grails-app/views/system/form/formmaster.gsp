@@ -202,12 +202,11 @@
                             ' class="editbtn btn btn-sm btn-warning  editbtn" data-toggle="modal" data-target="#addFormModal"><i class="material-icons"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">edit</font></font></i></button>'
                         var deletebtn = '<button type="button" data-id="' + json.data[i].id +
                             '" class="btn btn-sm btn-danger deletebtn" data-toggle="modal" data-target=".deleteModal"><i class="material-icons"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">delete</font></font></i></button>'
-                        console.log(json)
                         return_data.push({
                             // 'id': json.data[i].id,
                             'formname': json.data[i].formName,
                             'formbtnname': json.data[i].formButtonName,
-                            'confallowed':  (json.data[i].configAllowed === 1) ?  "YES" : "NO",
+                            'confallowed': json.data[i].configAllowed === "1" ? "YES" : "NO",
                             // 'entity': json.entity[i].entityName,
                             // 'entitytype': json.entityType[i].name,
                             // 'createduser': json.createduser[i].userName,

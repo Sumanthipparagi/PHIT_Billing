@@ -251,7 +251,9 @@
         'SGST',
         'CGST',
         'IGST',
-        'Manf. Date'];
+        'Manf. Date',
+        'tax_id'
+    ];
 
     var batchHeaderRow = [
         '<strong>Batch</strong>',
@@ -351,8 +353,14 @@
                 {type: 'text', readOnly: true},
                 {type: 'text', readOnly: true},
                 {type: 'text', readOnly: true},
+                {type: 'text', readOnly: true},
                 {type: 'text', readOnly: true}
             ],
+            hiddenColumns: true,
+            hiddenColumns: {
+                // specify columns hidden by default
+                columns: [18]
+            },
             minSpareRows: 0,
             minSpareColumns: 0,
             enterMoves: {row: 0, col: 1},
@@ -576,11 +584,11 @@
 
                         var value = pRate * sQty;
                         var priceBeforeGst = value - (value * discount / 100);
-                        var finalPrice = priceBeforeGst + (priceBeforeGst * (gst / 100));
+                        var finalPrice = priceBeforeGst + (priceBeforeGst * (Number(gst) / 100));
                         hot.setDataAtCell(row, 13, Number(finalPrice).toFixed(2));
                         var gstAmount;
-                        var supplier = $('#supplier').find(':selected').data('state');
-                        if(supplier === ${session.getAttribute('stateId')})
+                        var supplierState = $('#supplier').find(':selected').data('state');
+                        if(supplierState === ${session.getAttribute('stateId')})
                         {
                             if (gst !== 0) {
                                 gstAmount = priceBeforeGst * (gst / 100);
@@ -660,7 +668,7 @@
                     success: function (data) {
                         const row = hot.getSelected()[0][0];
                         hot.setDataAtCell(row, 11, Number(taxId[1]).toFixed(2));
-                        hot.setDataAtCell(row, 19, taxId[0].trim());
+                        hot.setDataAtCell(row, 18, taxId[0].trim());
                         var pR = hot.getDataAtCell(row, 6);
                         var sq = hot.getDataAtCell(row, 4);
                         var disc = hot.getDataAtCell(row, 9);
@@ -669,6 +677,8 @@
                         var value = pR * sq;
                         var priceBeforeGst = value - (value * disc / 100);
                         gst = taxId[1];
+                        sgst = data.purchaseSgst;
+                        cgst = data.purchaseCgst;
                         var finalPrice = priceBeforeGst + (priceBeforeGst * (gst / 100));
                         hot.setDataAtCell(row, 13, Number(finalPrice).toFixed(2));
                         var gstAmount;
@@ -777,7 +787,7 @@
                         cgst = rowData[11];
                         igst = rowData[12];
                         hot.selectCell(mainTableRow, 4);
-                        hot.setDataAtCell(mainTableRow, 18, gst);
+                        hot.setDataAtCell(mainTableRow, 18, 0);
                         hot.setDataAtCell(mainTableRow, 19, sgst);
                         hot.setDataAtCell(mainTableRow, 20, cgst);
                         hot.setDataAtCell(mainTableRow, 21, igst);
@@ -1209,17 +1219,17 @@
                 scheme = data;
                 var offers = "";
 
-                if(data.slab1Status == 1)
+                if(data.slab1Status === 1)
                 {
                     offers = "S1: "+data.slab1MinQty + "+" + data.slab1SchemeQty;
                 }
 
-                if(data.slab2Status == 1)
+                if(data.slab2Status === 1)
                 {
                     offers += " | S2: "+data.slab2MinQty + "+" + data.slab2SchemeQty;
                 }
 
-                if(data.slab3Status == 1)
+                if(data.slab3Status === 1)
                 {
                     offers += " | S3: "+data.slab3MinQty + "+" + data.slab3SchemeQty;
                 }

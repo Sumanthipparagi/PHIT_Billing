@@ -267,9 +267,9 @@ class StockBookController {
                 String id = json["taxId"]
                 def tax = new TaxController().show(id)
                 json.put("gst", tax.taxValue)
-                json.put("sgst", tax.salesSgst)
-                json.put("cgst", tax.salesCgst)
-                json.put("igst", tax.salesIgst)
+                json.put("sgst", tax.purchaseSgst)
+                json.put("cgst", tax.purchaseCgst)
+                json.put("igst", tax.purchaseIgst)
                 responseArray.put(json)
             }
             //Add New Batches
