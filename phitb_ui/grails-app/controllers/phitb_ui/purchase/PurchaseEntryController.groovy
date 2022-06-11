@@ -388,7 +388,7 @@ class PurchaseEntryController {
                     stockBook.put("remainingQty", saleQty)
                     stockBook.put("remainingFreeQty", freeQty)
                     stockBook.put("remainingReplQty", 0)
-                    if(taxId!="")
+                    if(taxId!="" || taxId!=0)
                     {
                         stockBook.put("taxId", taxId) //TODO: to be set from front end
                     }
