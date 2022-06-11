@@ -387,7 +387,7 @@ class PurchaseEntryController {
                     stockBook.put("remainingQty", saleQty)
                     stockBook.put("remainingFreeQty", freeQty)
                     stockBook.put("remainingReplQty", 0)
-                    stockBook.put("taxId", jsonObject.get("taxId"))
+                    stockBook.put("taxId", jsonObject.get("taxId")) //TODO: to be set from front end
                     stockBook.put("manufacturingDate", manfDate)
                     stockBook.put("openingStockQty", saleQty) //opening stock is same as sale while adding
                     stockBook.put("uuid", params.uuid)
