@@ -160,7 +160,7 @@ class PurchaseEntryController {
             String saleRate = purchase.get("7")
             String mrp = purchase.get("8")
             double discount = UtilsService.round(Double.parseDouble(purchase.get("9").toString()), 2)
-            String packDesc = purchase.get("10")
+            String packDesc = purchase?.get("10")
             double gst = UtilsService.round(Double.parseDouble(purchase.get("12").toString()), 2)
             double value = UtilsService.round(Double.parseDouble(purchase.get("13").toString()), 2)
             double sgst = UtilsService.round(Double.parseDouble(purchase.get("14").toString()), 2)
@@ -339,6 +339,7 @@ class PurchaseEntryController {
                     expDate = sdf1.parse(expDate).format("dd-MM-yyyy")
                     purcDate = sdf1.parse(purcDate).format("dd-MM-yyyy")
                     manufacturingDate = sdf1.parse(manufacturingDate).format("dd-MM-yyyy")
+                    stockBook.put("packingDesc", purchase.get("10"))
                     stockBook.put("expDate", expDate)
                     stockBook.put("purcDate", purcDate)
                     stockBook.put("manufacturingDate", manufacturingDate)
@@ -359,7 +360,7 @@ class PurchaseEntryController {
                     String expDate = purchase.get("3")
                     String saleQty = purchase.get("4")
                     String freeQty = purchase.get("5")
-                    String manfDate = purchase.get("16")
+                    String manfDate = purchase.get("17")
                     String purchaseDate = new SimpleDateFormat("dd-MM-yyyy").format(new Date())
                     expDate = new SimpleDateFormat("yyyy-MM-dd").parse(expDate).format("dd-MM-yyyy")
                     manfDate = new SimpleDateFormat("yyyy-MM-dd").parse(manfDate).format("dd-MM-yyyy")
@@ -414,6 +415,7 @@ class PurchaseEntryController {
         JSONObject city = new SystemService().getCityById(entity.get('cityId').toString())
         JSONArray termsConditions = new EntityService().getTermsContionsByEntity(session.getAttribute("entityId").toString())
         purchaseProductDetails.each {
+            JSONObject stockBook = new InventoryService().getStocksOfProductAndBatch(it.productId.toString(), it.batchNumber, session.getAttribute("entityId").toString())
             def batchResponse = new ProductService().getBatchesOfProduct(it.productId.toString())
             JSONArray batchArray = JSON.parse(batchResponse.readEntity(String.class)) as JSONArray
             for (JSONObject batch : batchArray) {
@@ -423,6 +425,7 @@ class PurchaseEntryController {
             }
             def apiResponse = new SalesService().getRequestWithId(it.productId.toString(), new Links().PRODUCT_REGISTER_SHOW)
             it.put("productId", JSON.parse(apiResponse.readEntity(String.class)) as JSONObject)
+            it.put("packingDesc",stockBook.packingDesc)
         }
 
         def totalcgst = UtilsService.round(purchaseProductDetails.cgstAmount.sum(), 2)
@@ -464,7 +467,6 @@ class PurchaseEntryController {
         }
 
         def total = totalBeforeTaxes + totalcgst + totalsgst + totaligst
-
         render(view: "/purchase/purchaseEntry/purchase-invoice", model: [purchaseBillDetail    : purchaseBillDetail,
                                                                          purchaseProductDetails: purchaseProductDetails,
                                                                          series                : series, entity: entity,
