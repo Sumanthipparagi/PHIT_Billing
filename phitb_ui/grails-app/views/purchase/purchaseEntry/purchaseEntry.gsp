@@ -230,9 +230,9 @@
         '<strong>Product</strong>',
         '<strong>Batch</strong>',
         '<strong>Exp Dt</strong>',
-        '<strong>Sale Qty</strong>',
+        '<strong>Pur. Qty</strong>',
         '<strong>Free Qty</strong>',
-        '<strong>Purchase Rate</strong>',
+        '<strong>Pur. Rate</strong>',
         '<strong>Sale Rate</strong>',
         '<strong>MRP</strong>',
         '<strong>Disc.(%)</strong>',
@@ -571,11 +571,11 @@
                         var finalPrice = priceBeforeGst + (priceBeforeGst * (gst / 100));
                         hot.setDataAtCell(row, 13, Number(finalPrice).toFixed(2));
                         var gstAmount;
-                        var supplier = $('#supplier').find(':selected').data('state')
+                        var supplier = $('#supplier').find(':selected').data('state');
                         if(supplier === ${session.getAttribute('stateId')})
                         {
                             if (gst !== 0) {
-                                 gstAmount = priceBeforeGst * (gst / 100);
+                                gstAmount = priceBeforeGst * (gst / 100);
                                 var sgstAmount = priceBeforeGst * (sgst / 100);
                                 var cgstAmount = priceBeforeGst * (cgst / 100);
                                 hot.setDataAtCell(row, 12, Number(gstAmount).toFixed(2)); //GST
