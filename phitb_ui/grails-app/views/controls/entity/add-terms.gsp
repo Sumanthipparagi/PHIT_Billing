@@ -1,4 +1,4 @@
-<div class="example-modal">
+<div class="example-modal" xmlns="http://www.w3.org/1999/html">
     <div class="modal fade" id="addtermModal">
         <div class="modal-dialog modal-lg">
             <div class="modal-content">
@@ -15,9 +15,10 @@
                                 <label for="termCondition">
                                     Term Condition
                                 </label>
-                                <input type="text" id="termCondition" class="form-control termCondition" name="termCondition"
+                                <textarea  id="termCondition" class="form-control termCondition"
+                                   name="termCondition"
                                        placeholder="Term Condition"
-                                       required/>
+                                          required></textarea>
                             </div>
 
 
