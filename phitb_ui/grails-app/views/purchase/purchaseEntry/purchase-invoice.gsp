@@ -179,27 +179,27 @@
 <table id="prodDetails" class="extended" style="width: 100%; padding: 5%;">
     <thead>
     <tr>
-        <td colspan="5" style="vertical-align:top;"><b>Bill from Address :(${supplier.id})</b><br>
+        <td colspan="5" style="vertical-align:top;font-size:8pt;"><b>Bill from Address :(${supplier.id})</b><br>
             <b>${supplier.entityName}</b><br>
             <sub>${supplier.addressLine1}${supplier.addressLine2}
             </sub>
         </td>
-        <td colspan="5" style="vertical-align:top;"><b>Ship from Address :(${supplier.id})</b><br>
+        <td colspan="5" style="vertical-align:top;font-size:8pt;"><b>Ship from Address :(${supplier.id})</b><br>
             <b>${supplier.entityName}</b><br>
             <sub>${supplier.addressLine1}${supplier.addressLine2}
             </sub>
         </td>
-        <td colspan="4" style="vertical-align:top;"><b>Received at :(${supplier.id})</b><br>
+        <td colspan="4" style="vertical-align:top;font-size:8pt;"><b>Received at :(${supplier.id})</b><br>
             <b>${entity.entityName}</b><br>
             <sub>${entity.addressLine1}<br>${entity.addressLine2}</sub>
         </td>
-        <td colspan="4" style="vertical-align:top;">
+        <td colspan="4" style="vertical-align:top;font-size:8pt;">
             <strong>PURCHASE TAX INVOICE</strong>
             <ul style="margin: 0;">
 
 %{--                <li><b class="tab">Invoice No</b>:  <g:if test="${purchaseBillDetail.billStatus == 'CANCELLED'}"><del>${purchaseBillDetail.invoiceNumber}</del></g:if><g:else>${purchaseBillDetail.invoiceNumber}</g:else></li>--}%
 
-                <li><b class="tab">Invoice No</b>: ${purchaseBillDetail.invoiceNumber}  </li>
+                <li><b class="tab">Invoice No</b>: <strong>${purchaseBillDetail.invoiceNumber}</strong></li>
                 <li><b class="tab">Inv Date</b>:&nbsp;<span id="invDate"></span></li>
                 <li><b class="tab">Due Date</b>:&nbsp;<span id="dueDate"></span></li>
                 <li><b class="tab">Sup. Inv No.</b>:&nbsp;${purchaseBillDetail.supplierBillId}</li>

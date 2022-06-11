@@ -179,28 +179,28 @@
 <table id="prodDetails" class="extended" style="width: 100%; padding: 5%;">
     <thead>
     <tr>
-        <td colspan="4" style="vertical-align:top;">
+        <td colspan="4" style="vertical-align:top;font-size:8pt;">
             %{--            <img width="109" height="43"--}%
             %{--                                                        src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAG0AAAArCAMAAABFJ/YVAAAAD1BMVEUAIgAFKwAIKQAJLgD///9auxmhAAAAAWJLR0QAiAUdSAAAAAlwSFlzAAAOxAAADsQBlSsOGwAAAZFJREFUWIXtlttywyAMRN1Z/f83t1N0WYHwJTFuH8IkwlZknwjEwiatAfJA2wz2CO5D+9D+Iw3e/oo2QYNshNavLtwT2izRW2nYibxMK1pPw+00/rWjHVXKrTSJ7DQQom69aZdunIbO314E/zbT0yw40WyModWjf2yo4Wys836kYaRxD3KF0fv6lp4fVoAOpd6MNDlBkwu0Nj7v0dgc0WgYC1p8wDQtDbHeQ2ieB1WmRYCSFjnHKHS14TQwzWvyEi1XT8xS1H3QUlyjddN1QOtG2In0jBTPN09Pk5dobiiipqGjCVcJLtBkTkNJg88MaQZXBdNIB1BrSaxa15JMo4uAR5Gn0dqhuU4mmqR5G9Tv7rYhFqatwsU0m8RQ5fU03d4Wwn5psYU9QUvbzUrYD83WgmdYNj4WIHk46BTtYkH6RiC24vJCqyVUabG/yTQ1MXkg0cs410N3fdW5yRmYZpUtaYILLEx2ipdtSUrmNEQP8kxyi9kdabS17af2dtvoVLIc1lT5KVg6cy2HtTPXQyyRb24URU7+XmydAAAAAElFTkSuQmCC"/>--}%
             %{--            <br><br>--}%
             <b>${entity.entityName}</b><br>
             <sub>${entity.addressLine1}<br>${entity.addressLine2}</sub>
         </td>
-        <td colspan="5" style="vertical-align:top;"><b>Bill to Address :(${customer.id})</b><br>
+        <td colspan="5" style="vertical-align:top;font-size:8pt;"><b>Bill to Address :(${customer.id})</b><br>
             <b>${customer.entityName}</b><br>
             <sub>${customer.addressLine1}${customer.addressLine2}
             </sub>
         </td>
-        <td colspan="5" style="vertical-align:top;"><b>Ship to Address :(${customer.id})</b><br>
+        <td colspan="5" style="vertical-align:top;font-size:8pt;"><b>Ship to Address :(${customer.id})</b><br>
             <b>${customer.entityName}</b><br>
             <sub>${customer.addressLine1}${customer.addressLine2}
             </sub>
         </td>
-        <td colspan="4" style="vertical-align:top;">
+        <td colspan="4" style="vertical-align:top;font-size:8pt;">
             <strong>TAX INVOICE</strong>
             <ul style="margin: 0;">
 
-                <li><b class="tab">Invoice No</b>:  <g:if test="${saleBillDetail.billStatus == 'CANCELLED'}"><del>${saleBillDetail.invoiceNumber}</del></g:if><g:else>${saleBillDetail.invoiceNumber}</g:else></li>
+                <li><b class="tab">Invoice No</b>:  <strong><g:if test="${saleBillDetail.billStatus == 'CANCELLED'}"><del>${saleBillDetail.invoiceNumber}</del></g:if><g:else>${saleBillDetail.invoiceNumber}</g:else></strong></li>
                 <li><b class="tab">Inv Date</b>:&nbsp;<span id="invDate"></span></li>
                 <li><b class="tab">Due Date</b>:&nbsp;<span id="dueDate"></span></li>
             %{--                <li><b class="tab">No of cases</b>:</li>--}%
@@ -369,7 +369,7 @@
             Party Ref No. : <br>
             Rev-Charge :</p>
 
-        <p>${raw(termsConditions[0].termCondition)}</p>
+        <p style="font-size:7pt;">${raw(termsConditions[0].termCondition)}</p>
     </div>
 
     <div style="float: right;">
