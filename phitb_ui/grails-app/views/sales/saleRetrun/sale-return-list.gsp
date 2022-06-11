@@ -110,6 +110,7 @@
                                     <th>-</th>
                                     <th>Customer</th>
                                     <th>Invoice No.</th>
+                                    <th>Date & Time</th>
                                     <th>GST Amt</th>
                                     <th>Net Amt</th>
                                     <th>City</th>
@@ -253,6 +254,7 @@
                             'customer': json.data[i].customer.entityName,
                             'invNo': invoiceNumber,
                             'gstAmt': json.data[i].totalGst.toFixed(2),
+                            'date': moment(json.data[i].dateCreated).format('DD-MM-YYYY  h:mm a'),
                             'netAmt': json.data[i].totalAmount.toFixed(2),
                             'city': json.city[i].cityId.name,
                             'bill_status': json.data[i].returnStatus,
@@ -268,6 +270,7 @@
                 {'data': 'action'},
                 {'data': 'customer', 'width': '10%'},
                 {'data': 'invNo'},
+                {'data': 'date'},
                 {'data': 'gstAmt'},
                 {'data': 'netAmt'},
                 {'data': 'city'},
