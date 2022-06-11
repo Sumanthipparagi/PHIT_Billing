@@ -11,6 +11,7 @@ class PurchaseBillDetail implements LogicalDelete<PurchaseBillDetail> {
     long serBillId
     String purcId
     String supplierBillId
+    Date supplierBillDate
     Date billingDate
     Date entryDate
     String dispatchStatus
@@ -64,6 +65,7 @@ class PurchaseBillDetail implements LogicalDelete<PurchaseBillDetail> {
         invoiceNumber unique: true, nullable: true
         cancelledDate nullable: true
         totalAmount nullable: true
+        supplierBillDate nullable: true
         uuid unique: true
     }
 

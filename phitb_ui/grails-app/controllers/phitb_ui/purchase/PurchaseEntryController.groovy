@@ -121,6 +121,8 @@ class PurchaseEntryController {
         String duedate = params.duedate
         String billStatus = params.billStatus
         String seriesCode = params.seriesCode
+        String supplierBillId = params.supplierBillId
+        String supplierBillDate = params.supplierBillDate
         String message = params.message
         if (!message) {
             message = "NA"
@@ -268,7 +270,8 @@ class PurchaseEntryController {
         purchaseBillDetails.put("totalAmount", totalAmount)
         purchaseBillDetails.put("godownId", 0)
         purchaseBillDetails.put("purcId", 0)
-        purchaseBillDetails.put("supplierBillId", 0)
+        purchaseBillDetails.put("supplierBillId", supplierBillId)
+        purchaseBillDetails.put("supplierBillDate", supplierBillDate)
         purchaseBillDetails.put("billingDate", entryDate)
         purchaseBillDetails.put("balAmount", totalAmount)
         purchaseBillDetails.put("totalAmount", totalAmount)

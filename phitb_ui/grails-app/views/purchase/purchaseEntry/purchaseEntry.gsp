@@ -64,24 +64,16 @@
                     </div>
                     <div class="body">
                         <div class="row">
-                            <div class="col-md-2">
+                            <div class="col-md-4">
                                 <label for="date">Date:</label>
                                 <input type="date" class="form-control date" name="date" id="date"/>
                             </div>
 
-                            <div class="col-md-2">
+                            <div class="col-md-4">
                                 <label for="series">Series:</label>
                                 <select onchange="seriesChanged()" class="form-control" id="series" name="series">
                                     <g:each in="${series}" var="sr">
                                         <option data-seriescode="${sr.seriesCode}" value="${sr.id}">${sr.seriesName} (${sr.seriesCode})</option>
-                                    </g:each>
-                                </select>
-                            </div>
-                            <div class="col-md-2">
-                                <label for="priority">Priority:</label>
-                                <select class="form-control" id="priority" name="priority">
-                                    <g:each in="${priorityList}" var="pr">
-                                        <option value="${pr.id}">${pr.priority}</option>
                                     </g:each>
                                 </select>
                             </div>
@@ -97,12 +89,28 @@
                                     </g:each>
                                 </select>
                             </div>
-
-                            <div class="col-md-2">
+                        </div>
+                        <div class="row">
+                            <div class="col-md-3">
+                                <label for="priority">Priority:</label>
+                                <select class="form-control" id="priority" name="priority">
+                                    <g:each in="${priorityList}" var="pr">
+                                        <option value="${pr.id}">${pr.priority}</option>
+                                    </g:each>
+                                </select>
+                            </div>
+                            <div class="col-md-3">
+                                <label for="supplierBillId">Supplier Invoice Number:</label>
+                                <input type="text" maxlength="100" class="form-control" name="supplierBillId" id="supplierBillId"/>
+                            </div>
+                            <div class="col-md-3">
+                                <label for="supplierBillDate">Supplier Invoice Date:</label>
+                                <input type="date" class="form-control date" name="supplierBillDate" id="supplierBillDate"/>
+                            </div>
+                            <div class="col-md-3">
                                 <label for="duedate">Due Date:</label>
                                 <input type="date" class="form-control date" name="duedate" id="duedate"/>
                             </div>
-
                         </div>
                     </div>
                 </div>
@@ -114,9 +122,9 @@
                 <div class="card" style="margin-bottom: 10px;">
                     <div class="body" style="background-color: #313740;padding: 2px; color: #fff;">
                         <div class="row" style="margin: 0; font-size: 14px;">
-                            <div class="col-md-2"><strong>Total GST:</strong>&#x20b9;<span id="totalGST">0</span></div>
-                            <div class="col-md-2"><strong>Total SGST:</strong>&#x20b9;<span id="totalSGST">0</span></div>
-                            <div class="col-md-2"><strong>Total CGST:</strong>&#x20b9;<span id="totalCGST">0</span></div>
+                            <div class="col-md-2"><strong>Total GST:</strong> &#x20b9;<span id="totalGST">0</span></div>
+                            <div class="col-md-2"><strong>Total SGST:</strong> &#x20b9;<span id="totalSGST">0</span></div>
+                            <div class="col-md-2"><strong>Total CGST:</strong> &#x20b9;<span id="totalCGST">0</span></div>
                             <div class="col-md-2"><strong>Total IGST:</strong>&nbsp;&#x20b9;<span id="totalIGST">0</span></div>
                             <div class="col-md-2"><strong>Total Qty:</strong> <span id="totalQty">0</span></div>
                             <div class="col-md-2"><strong>Total Free Qty:</strong> <span id="totalFQty">0</span></div>
@@ -327,7 +335,7 @@
                 {type: 'text'},
                 {type: 'text', readOnly: true},
                 {type: 'text'},
-                {type: 'text', readOnly: true},
+                {type: 'text'},
                 {
                     editor: 'select2',
                     renderer: taxRegisterDropdownRenderer,
@@ -401,7 +409,7 @@
                         batchHot.selectCell(0, 0);
                         $("#batchTable").focus();
                     }
-                } else if (selection === 15) {
+                } else if (selection === 16) {
                     if ((e.keyCode === 13 || e.keyCode === 9) && !readOnly) {
                         //check if sqty is empty
                         var sqty = hot.getDataAtCell(row, 4);
@@ -594,8 +602,12 @@
                         }
                         else
                         {
+                            //setting up igst
                             gstAmount = priceBeforeGst * (gst / 100);
-                            hot.setDataAtCell(row, 16, gstAmount)
+                            hot.setDataAtCell(row, 12, gstAmount.toFixed(2)); //GST
+                            hot.setDataAtCell(row, 14, 0); //SGST
+                            hot.setDataAtCell(row, 15, 0); //CGST
+                            hot.setDataAtCell(row, 16, gstAmount.toFixed(2))
                         }
                         if(selection === 11)
                         {
@@ -859,16 +871,16 @@
                 totalQty += Number(data[i][4]);
             if (data[i][5])
                 totalFQty +=  Number(data[i][5]);
-            if (data[i][12])
-                totalAmt += Number(data[i][12]);
-            if (data[i][11])
-                totalGst += Number(data[i][11]);
             if (data[i][13])
-                totalSgst += Number(data[i][13]);
+                totalAmt += Number(data[i][13]);
+            if (data[i][12])
+                totalGst += Number(data[i][12]);
             if (data[i][14])
-                totalCgst += Number(data[i][14]);
+                totalSgst += Number(data[i][14]);
             if (data[i][15])
-                totalIgst += Number(data[i][15]);
+                totalCgst += Number(data[i][15]);
+            if (data[i][16])
+                totalIgst += Number(data[i][16]);
         }
         $("#totalAmt").text(totalAmt.toFixed(2));
         $("#totalGST").text(totalGst.toFixed(2));
@@ -992,12 +1004,29 @@
             allowOutsideClick: false
         });
 
+        var supplierBillId = $("#supplierBillId").val();
+        var supplierBillDate = $("#supplierBillDate").val();
+        if(supplierBillId?.length === 0 || supplierBillDate?.length === 0)
+        {
+            Swal.fire({
+                title: "Please enter supplier invoice number and date",
+                showDenyButton: false,
+                showCancelButton: false,
+                showConfirmButton: true,
+                allowOutsideClick: false
+            });
+            return;
+        }
         var supplier = $("#supplier").val();
         var series = $("#series").val();
         var seriesCode = $("#series").find(':selected').data('seriescode');
         var duedate = $("#duedate").val();
         duedate = moment(duedate, 'YYYY-MM-DD').toDate();
         duedate = moment(duedate).format('DD/MM/YYYY');
+
+        supplierBillDate = moment(supplierBillDate, 'YYYY-MM-DD').toDate();
+        supplierBillDate = moment(supplierBillDate).format('DD/MM/YYYY');
+
         var priority = $("#priority").val();
 
         if(!series) {
@@ -1026,6 +1055,8 @@
                 priority:priority,
                 billStatus: billStatus,
                 seriesCode:seriesCode,
+                supplierBillDate:supplierBillDate,
+                supplierBillId: supplierBillId,
                 uuid: self.crypto.randomUUID()
             },
             success: function (data) {

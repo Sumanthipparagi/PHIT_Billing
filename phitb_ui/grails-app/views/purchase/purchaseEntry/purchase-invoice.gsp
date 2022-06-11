@@ -179,25 +179,22 @@
 <table id="prodDetails" class="extended" style="width: 100%; padding: 5%;">
     <thead>
     <tr>
-        <td colspan="4" style="vertical-align:top;">
-            %{--            <img width="109" height="43"--}%
-            %{--                                                        src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAG0AAAArCAMAAABFJ/YVAAAAD1BMVEUAIgAFKwAIKQAJLgD///9auxmhAAAAAWJLR0QAiAUdSAAAAAlwSFlzAAAOxAAADsQBlSsOGwAAAZFJREFUWIXtlttywyAMRN1Z/f83t1N0WYHwJTFuH8IkwlZknwjEwiatAfJA2wz2CO5D+9D+Iw3e/oo2QYNshNavLtwT2izRW2nYibxMK1pPw+00/rWjHVXKrTSJ7DQQom69aZdunIbO314E/zbT0yw40WyModWjf2yo4Wys836kYaRxD3KF0fv6lp4fVoAOpd6MNDlBkwu0Nj7v0dgc0WgYC1p8wDQtDbHeQ2ieB1WmRYCSFjnHKHS14TQwzWvyEi1XT8xS1H3QUlyjddN1QOtG2In0jBTPN09Pk5dobiiipqGjCVcJLtBkTkNJg88MaQZXBdNIB1BrSaxa15JMo4uAR5Gn0dqhuU4mmqR5G9Tv7rYhFqatwsU0m8RQ5fU03d4Wwn5psYU9QUvbzUrYD83WgmdYNj4WIHk46BTtYkH6RiC24vJCqyVUabG/yTQ1MXkg0cs410N3fdW5yRmYZpUtaYILLEx2ipdtSUrmNEQP8kxyi9kdabS17af2dtvoVLIc1lT5KVg6cy2HtTPXQyyRb24URU7+XmydAAAAAElFTkSuQmCC"/>--}%
-            %{--            <br><br>--}%
+        <td colspan="5" style="vertical-align:top;"><b>Bill from Address :(${supplier.id})</b><br>
+            <b>${supplier.entityName}</b><br>
+            <sub>${supplier.addressLine1}${supplier.addressLine2}
+            </sub>
+        </td>
+        <td colspan="5" style="vertical-align:top;"><b>Ship from Address :(${supplier.id})</b><br>
+            <b>${supplier.entityName}</b><br>
+            <sub>${supplier.addressLine1}${supplier.addressLine2}
+            </sub>
+        </td>
+        <td colspan="4" style="vertical-align:top;"><b>Received at :(${supplier.id})</b><br>
             <b>${entity.entityName}</b><br>
             <sub>${entity.addressLine1}<br>${entity.addressLine2}</sub>
         </td>
-        <td colspan="5" style="vertical-align:top;"><b>Bill to Address :(${supplier.id})</b><br>
-            <b>${supplier.entityName}</b><br>
-            <sub>${supplier.addressLine1}${supplier.addressLine2}
-            </sub>
-        </td>
-        <td colspan="5" style="vertical-align:top;"><b>Ship to Address :(${supplier.id})</b><br>
-            <b>${supplier.entityName}</b><br>
-            <sub>${supplier.addressLine1}${supplier.addressLine2}
-            </sub>
-        </td>
         <td colspan="4" style="vertical-align:top;">
-            <strong>TAX INVOICE</strong>
+            <strong>PURCHASE TAX INVOICE</strong>
             <ul style="margin: 0;">
 
 %{--                <li><b class="tab">Invoice No</b>:  <g:if test="${purchaseBillDetail.billStatus == 'CANCELLED'}"><del>${purchaseBillDetail.invoiceNumber}</del></g:if><g:else>${purchaseBillDetail.invoiceNumber}</g:else></li>--}%
@@ -205,25 +202,13 @@
                 <li><b class="tab">Invoice No</b>: ${purchaseBillDetail.invoiceNumber}  </li>
                 <li><b class="tab">Inv Date</b>:&nbsp;<span id="invDate"></span></li>
                 <li><b class="tab">Due Date</b>:&nbsp;<span id="dueDate"></span></li>
-                %{--                <li><b class="tab">No of cases</b>:</li>--}%
-                %{--                <li><b class="tab">Weight in Kgs</b>:</li>--}%
-                %{--                <li><b class="tab">Party Ref No.</b>: 429803</li>--}%
-                %{--                <li><b class="tab">Rev-Charge</b>: No Dist.Chnl.01</li>--}%
+                <li><b class="tab">Sup. Inv No.</b>:&nbsp;${purchaseBillDetail.supplierBillId}</li>
+                <li><b class="tab">Sup. Inv Dt.</b>:&nbsp;<span id="supInvDt"></span></li>
+
             </ul>
         </td>
     </tr>
     <tr>
-        <td colspan="4" style="vertical-align:top;">
-            <ul>
-                <li><b class="tab">Location</b>: ${city.name}</li>
-                <li><b class="tab">Phone</b>: ${entity.phoneNumber}</li>
-                <li><b class="tab">GST No</b>: ${entity.gstn}</li>
-                <li><b class="tab">FAX No</b>: ${entity.faxNumber}</li>
-                <li><b class="tab">DL No1</b>: ${entity.drugLicence1}</li>
-                <li><b class="tab">DL No2</b>: ${entity.drugLicence2}</li>
-                <li><b class="tab">Food Lic. No.</b>:  ${entity.foodLicence1}</li>
-            </ul>
-        </td>
         <td colspan="5" style="vertical-align:top;">
             <ul>
                 <li><b class="tab">DELIVERY AT</b>:&nbsp;${supcity.name}</li>
@@ -253,6 +238,17 @@
                 <li><b class="tab">Goods Through</b>:</li>
                 <li><b class="tab">Place of Supply</b>:  &nbsp;${supcity.name}</li>
                 %{--                <li><b class="tab">State Code</b>: </li>--}%
+            </ul>
+        </td>
+        <td colspan="4" style="vertical-align:top;">
+            <ul>
+                <li><b class="tab">Location</b>: ${city.name}</li>
+                <li><b class="tab">Phone</b>: ${entity.phoneNumber}</li>
+                <li><b class="tab">GST No</b>: ${entity.gstn}</li>
+                <li><b class="tab">FAX No</b>: ${entity.faxNumber}</li>
+                <li><b class="tab">DL No1</b>: ${entity.drugLicence1}</li>
+                <li><b class="tab">DL No2</b>: ${entity.drugLicence2}</li>
+                <li><b class="tab">Food Lic. No.</b>:  ${entity.foodLicence1}</li>
             </ul>
         </td>
         <td colspan="4" style="vertical-align:center;padding: 10px;">
@@ -475,10 +471,13 @@
         document.getElementById("date").innerHTML = d;
         var invDate = new Date('${purchaseBillDetail.entryDate}');
         var dueDate = new Date('${purchaseBillDetail.dueDate}');
+        var supInvDt = new Date('${purchaseBillDetail.supplierBillDate}');
         $("#invDate").text(moment(invDate).format('DD-MM-YYYY'));
         $("#dueDate").text(moment(dueDate).format('DD-MM-YYYY'));
+        if(supInvDt?.length > 0)
+            $("#supInvDt").text(moment(supInvDt).format('DD-MM-YYYY'));
 
-        <g:each var="spd" in="${saleProductDetails}">
+        <g:each var="spd" in="${purchaseProductDetails}">
         var expDate = new Date('${spd.expiryDate}');
         $("#expDate${spd.id}").text(moment(expDate).format('MMM-YY').toUpperCase());
         </g:each>
@@ -489,8 +488,7 @@
             if (totGst !== "")
                 totalGst += parseFloat(totGst);
         });
-        var netAmount =
-        ${totalBeforeTaxes}
+        var netAmount = ${totalBeforeTaxes}
         var netInvAmt = parseFloat(totalGst) + netAmount;
         $("#netInvAmt").text(netInvAmt.toFixed(2));
         $("#netPayAmt").text(netInvAmt.toFixed(2));
