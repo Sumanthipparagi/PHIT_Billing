@@ -369,7 +369,7 @@
             Party Ref No. : <br>
             Rev-Charge :</p>
 
-        <p>${termsConditions[0].termCondition}</p>
+        <p>${raw(termsConditions[0].termCondition)}</p>
     </div>
 
     <div style="float: right;">
