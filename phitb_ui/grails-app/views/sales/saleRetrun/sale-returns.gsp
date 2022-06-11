@@ -987,6 +987,8 @@
                         var value = sR * sq;
                         var priceBeforeGst = value - (value * disc / 100);
                         gst = taxId[1];
+                        sgst = data.salesSgst;
+                        cgst = data.salesCgst;
                         var finalPrice = priceBeforeGst + (priceBeforeGst * (gst / 100));
                         hot.setDataAtCell(row, 13, Number(finalPrice).toFixed(2));
                         if (stateId === '${session.getAttribute('stateId')}') {
