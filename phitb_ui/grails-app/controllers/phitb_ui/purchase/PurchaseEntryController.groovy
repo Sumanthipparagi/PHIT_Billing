@@ -361,6 +361,7 @@ class PurchaseEntryController {
                     String saleQty = purchase.get("4")
                     String freeQty = purchase.get("5")
                     String manfDate = purchase.get("17")
+                    String taxId = purchase.get("18")
                     String purchaseDate = new SimpleDateFormat("dd-MM-yyyy").format(new Date())
                     expDate = new SimpleDateFormat("yyyy-MM-dd").parse(expDate).format("dd-MM-yyyy")
                     manfDate = new SimpleDateFormat("yyyy-MM-dd").parse(manfDate).format("dd-MM-yyyy")
@@ -387,7 +388,14 @@ class PurchaseEntryController {
                     stockBook.put("remainingQty", saleQty)
                     stockBook.put("remainingFreeQty", freeQty)
                     stockBook.put("remainingReplQty", 0)
-                    stockBook.put("taxId", jsonObject.get("taxId")) //TODO: to be set from front end
+                    if(taxId!="")
+                    {
+                        stockBook.put("taxId", taxId) //TODO: to be set from front end
+                    }
+                    else
+                    {
+                        stockBook.put("taxId", 0)
+                    }
                     stockBook.put("manufacturingDate", manfDate)
                     stockBook.put("openingStockQty", saleQty) //opening stock is same as sale while adding
                     stockBook.put("uuid", params.uuid)
