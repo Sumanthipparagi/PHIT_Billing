@@ -53,6 +53,7 @@
                                     <option value="${Constants.PURCHASE_ORDER}">PURCHASE ORDER</option>
                                     <option value="${Constants.PURCHASE_INVOICE}">PURCHASE INVOICE</option>
                                     <option value="${Constants.PURCHASE_RETURN}">PURCHASE RETURN</option>
+                                    <option value="${Constants.GRN}">GRN</option>
                                 </select>
                             </div>
 
