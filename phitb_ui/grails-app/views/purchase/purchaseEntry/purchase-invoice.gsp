@@ -474,11 +474,10 @@
         document.getElementById("date").innerHTML = d;
         var invDate = new Date('${purchaseBillDetail.entryDate}');
         var dueDate = new Date('${purchaseBillDetail.dueDate}');
-        var supInvDt = new Date('${purchaseBillDetail.supplierBillDate}');
+        var supInvDt = new Date('${purchaseBillDetail?.supplierBillDate}');
         $("#invDate").text(moment(invDate).format('DD-MM-YYYY'));
         $("#dueDate").text(moment(dueDate).format('DD-MM-YYYY'));
-        if(supInvDt?.length > 0)
-            $("#supInvDt").text(moment(supInvDt).format('DD-MM-YYYY'));
+        $("#supInvDt").text(moment(supInvDt).format('DD-MM-YYYY'));
 
         <g:each var="spd" in="${purchaseProductDetails}">
         var expDate = new Date('${spd.expiryDate}');
