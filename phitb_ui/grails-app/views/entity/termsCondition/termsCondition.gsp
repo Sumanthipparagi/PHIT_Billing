@@ -155,6 +155,8 @@
 <asset:javascript src="/themeassets/plugins/sweetalert/sweetalert.min.js"/>
 <asset:javascript src="/themeassets/plugins/jquery-inputmask/jquery.inputmask.bundle.js"/>
 <asset:javascript src="/themeassets/plugins/momentjs/moment.js"/>
+<asset:javascript src="/themeassets/plugins/ckeditor/ckeditor.js"/>
+<asset:javascript src="/themeassets/js/pages/forms/editors.js"/>
 <asset:javascript src="/themeassets/plugins/bootstrap-material-datetimepicker/js/bootstrap-material-datetimepicker.js"/>
 <asset:javascript src="/themeassets/js/pages/forms/basic-form-elements.js"/>
 
