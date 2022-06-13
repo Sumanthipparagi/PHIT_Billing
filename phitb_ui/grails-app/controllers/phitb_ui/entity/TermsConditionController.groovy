@@ -1,10 +1,12 @@
 package phitb_ui.entity
 
 import groovy.json.JsonSlurper
+import org.grails.web.json.JSONArray
 import org.grails.web.json.JSONObject
 import phitb_ui.Constants
 import phitb_ui.EntityService
 import phitb_ui.Links
+import phitb_ui.SystemService
 import phitb_ui.facility.CcmController
 import phitb_ui.system.CityController
 import phitb_ui.system.CountryController
@@ -58,11 +60,20 @@ class TermsConditionController {
         {
             JSONObject jsonObject = new JSONObject(params)
             jsonObject.put("entityId", session.getAttribute("entityId"))
-
             def apiResponse = new EntityService().showTermsCondition(jsonObject)
             if (apiResponse.status == 200)
             {
                 JSONObject responseObject = new JSONObject(apiResponse.readEntity(String.class))
+                if(responseObject)
+                {
+                    JSONArray jsonArray = responseObject.data
+                    JSONArray formArray = new JSONArray()
+                    for (JSONObject json : jsonArray) {
+                        json.put("form", new SystemService().getFormById(json.get("formId").toString()))
+                        formArray.put(json)
+                    }
+                    responseObject.put("data", formArray)
+                }
                 respond responseObject, formats: ['json'], status: 200
             }
             else
