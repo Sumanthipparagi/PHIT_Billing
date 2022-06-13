@@ -7,6 +7,7 @@ class FormMaster implements LogicalDelete<FormMaster> {
     String formName
     String formButtonName
     String configAllowed
+    String formType
     long entityType
     long entityId
     long entityTypeId
@@ -19,6 +20,7 @@ class FormMaster implements LogicalDelete<FormMaster> {
         formName maxSize: 100
         formButtonName maxSize: 100
         configAllowed maxSize: 50
+        formType nullable:true
     }
 
     boolean isUpdatable

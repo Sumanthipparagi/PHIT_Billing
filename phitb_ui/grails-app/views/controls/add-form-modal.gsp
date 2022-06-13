@@ -1,3 +1,4 @@
+<%@ page import="phitb_ui.Constants" %>
 <div class="example-modal">
     <div class="modal fade" id="addFormModal">
         <div class="modal-dialog modal-lg">
@@ -36,6 +37,22 @@
                                 <select class="form-control show-tick configAllowed" name="configAllowed" id="configAllowed">
                                     <option value="1">YES</option>
                                     <option value="0">NO</option>
+                                </select>
+                            </div>
+
+
+                            <div class="col-lg-6 form-group  form-float">
+                                <label for="formType">
+                                    Form Type
+                                </label>
+
+                                <select class="form-control show-tick formType" name="formType" id="formType">
+                                    <option value="${Constants.SALE_ORDER}">SALE ORDER</option>
+                                    <option value="${Constants.SALE_INVOICE}">SALE INVOICE</option>
+                                    <option value="${Constants.SALE_RETURN}">SALE RETURN</option>
+                                    <option value="${Constants.PURCHASE_ORDER}">PURCHASE ORDER</option>
+                                    <option value="${Constants.PURCHASE_INVOICE}">PURCHASE INVOICE</option>
+                                    <option value="${Constants.PURCHASE_RETURN}">PURCHASE RETURN</option>
                                 </select>
                             </div>
 

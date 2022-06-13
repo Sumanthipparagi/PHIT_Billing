@@ -125,4 +125,17 @@ public class Constants
     public static String WITHOUT_QR = "WITHOUT_QR";
     public static String UPLOAD_PROOF = "UPLOAD_PROOF";
 
+
+
+    //    Form Types
+
+    public static String SALE_ORDER = "SALE_ORDER";
+    public static String SALE_INVOICE = "SALE_INVOICE";
+    public static String SALE_RETURN = "SALE_RETURN";
+
+    public static String PURCHASE_ORDER = "PURCHASE_ORDER";
+    public static String PURCHASE_INVOICE = "PURCHASE_INVOICE";
+    public static String PURCHASE_RETURN = "PURCHASE_RETURN";
+
+
 }

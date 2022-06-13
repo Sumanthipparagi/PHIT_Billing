@@ -61,8 +61,8 @@
                 <div class="col-lg-5 col-md-5 col-sm-12">
                     <h2>Purchase Invoices</h2>
                     <ul class="breadcrumb padding-0">
-                        <li class="breadcrumb-item"><a href="index.html"><i class="zmdi zmdi-home"></i></a></li>
-                        <li class="breadcrumb-item active">My Invoices</li>
+                        <li class="breadcrumb-item"><a href="#"><i class="zmdi zmdi-home"></i></a></li>
+                        <li class="breadcrumb-item active">Purchase Invoices</li>
                     </ul>
                 </div>
 
@@ -110,6 +110,7 @@
                                     <th>-</th>
                                     <th>Customer</th>
                                     <th>Invoice No.</th>
+                                    <th>Date & Time</th>
                                     <th>GST Amt</th>
                                     <th>Gross Amt</th>
                                     <th>Net Amt</th>
@@ -216,7 +217,7 @@
             },
             ajax: {
                 type: 'GET',
-                url: '/purchase-entry/datatable',
+                url: '/purchase-bill/datatable',
                 data: {
                     invoiceStatus: invoiceStatus
                 },
@@ -236,7 +237,9 @@
                             approveInvoice =  '';
 
                         }
-                        var printbtn = '<a target="_blank" class="btn btn-sm btn-danger" data-id="' + json.data[i].id + '" href="/sale-entry/print-invoice?id=' + json.data[i].id + '"><i class="fa fa-print"></i></a>';
+                        var printbtn = '<a target="_blank" class="btn btn-sm btn-danger" data-id="' + json.data[i].id
+                            + '" href="/purchase-entry/print-invoice?id=' + json.data[i].id +
+                            '"><i class="fa fa-print"></i></a>';
                         var invoiceNumber = json.data[i].invoiceNumber;
                         if (invoiceNumber === undefined)
                             invoiceNumber = "";
@@ -245,18 +248,19 @@
                             editInvoice = '<a class="btn btn-sm btn-warning"  href="/edit-sale-entry?saleBillId=' +
                                 json.data[i].id + '"><i class="fa fa-edit"></i></a>';
                         }
-                        var grossAmt = (json.data[i].invoiceTotal - json.data[i].totalGst).toFixed(2);
+                        var grossAmt = (json.data[i].totalAmount - json.data[i].totalGst).toFixed(2);
                         return_data.push({
                             'action': cancelInvoice + " " + approveInvoice + " " + printbtn+" "+editInvoice,
                             /*'action': '',*/
-                            'customer': json.data[i].customer.entityName,
+                            'customer': json.data[i].supplier.entityName,
                             'invNo': invoiceNumber,
                             'gstAmt': json.data[i].totalGst.toFixed(2),
                             'grossAmt': grossAmt,
-                            'netAmt': json.data[i].invoiceTotal.toFixed(2),
+                            'date': moment(json.data[i].dateCreated).format('DD-MM-YYYY  h:mm a'),
+                            'netAmt': json.data[i].totalAmount.toFixed(2),
                             'city': json.city[i].cityId.name,
                             'bill_status': json.data[i].billStatus,
-                            'balance': json.data[i].balance.toFixed(2),
+                            'balance': json.data[i].balAmount.toFixed(2),
                             'finYear': json.data[i].financialYear
 
                         });
@@ -268,6 +272,7 @@
                 {'data': 'action'},
                 {'data': 'customer', 'width': '10%'},
                 {'data': 'invNo'},
+                {'data': 'date'},
                 {'data': 'gstAmt'},
                 {'data': 'grossAmt'},
                 {'data': 'netAmt'},
@@ -292,7 +297,7 @@
 
     function cancelBill(id) {
         Swal.fire({
-            title: "Cancel this Sale Invoice? this can't be undone.",
+            title: "Cancel this Purchase Invoice? this can't be undone.",
             showDenyButton: true,
             showCancelButton: false,
             confirmButtonText: 'Yes',

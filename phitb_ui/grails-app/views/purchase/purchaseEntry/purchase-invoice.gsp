@@ -1,4 +1,4 @@
-<%@ page import="phitb_ui.SalesService; java.text.SimpleDateFormat" contentType="text/html;charset=UTF-8" %>
+<%@ page import="phitb_ui.Constants; phitb_ui.SalesService; java.text.SimpleDateFormat" contentType="text/html;charset=UTF-8" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -197,9 +197,8 @@
             <strong>PURCHASE TAX INVOICE</strong>
             <ul style="margin: 0;">
 
-%{--                <li><b class="tab">Invoice No</b>:  <g:if test="${purchaseBillDetail.billStatus == 'CANCELLED'}"><del>${purchaseBillDetail.invoiceNumber}</del></g:if><g:else>${purchaseBillDetail.invoiceNumber}</g:else></li>--}%
-
-                <li><b class="tab">Invoice No</b>: ${purchaseBillDetail.invoiceNumber}  </li>
+                <li><b class="tab">Invoice No</b>:  <g:if test="${purchaseBillDetail.billStatus == 'CANCELLED'}"><del>${purchaseBillDetail.invoiceNumber}</del></g:if><g:else>${purchaseBillDetail.invoiceNumber}</g:else></li>
+%{--                <li><b class="tab">Invoice No</b>: ${purchaseBillDetail.invoiceNumber}  </li>--}%
                 <li><b class="tab">Inv Date</b>:&nbsp;<span id="invDate"></span></li>
                 <li><b class="tab">Due Date</b>:&nbsp;<span id="dueDate"></span></li>
                 <li><b class="tab">Sup. Inv No.</b>:&nbsp;${purchaseBillDetail.supplierBillId}</li>
@@ -353,85 +352,89 @@
     </tbody>
 </table>
 
-%{--<div id="breakPage" style="page-break-after: avoid;"></div>--}%
+<div id="breakPage" style="page-break-after: avoid;"></div>
 
 
-%{--<div class="container" style="display: flex; ">--}%
-%{--    --}%%{--    height:200px--}%
-%{--    <div style="width: 50%;">--}%
-%{--        <g:if test="${saleBillDetail.billStatus == 'CANCELLED'}">--}%
-%{--            <div id="watermark" class="print-watermark">CANCELLED</div>--}%
-%{--        </g:if>--}%
-%{--        <p>No of cases <br>--}%
-%{--            Weight in Kgs :<br>--}%
-%{--            Party Ref No. : <br>--}%
-%{--            Rev-Charge :</p>--}%
+<div class="container" style="display: flex; ">
+%{--        height:200px--}%
+    <div style="width: 50%;">
+        <g:if test="${purchaseBillDetail.billStatus == 'CANCELLED'}">
+            <div id="watermark" class="print-watermark">CANCELLED</div>
+        </g:if>
+        <p>No of cases <br>
+            Weight in Kgs :<br>
+            Party Ref No. : <br>
+            Rev-Charge :</p>
 
-%{--        <p>${termsConditions[0].termCondition}</p>--}%
-%{--    </div>--}%
+    <g:each var="t" in="${termsConditions}" status="i">
+        <g:if test="${t?.form?.formType == Constants.PURCHASE_INVOICE && t?.deleted == false}">
+            <p>${t?.termCondition}</p>
+        </g:if>
+    </g:each>
+    </div>
 
-%{--    <div style="float: right;">--}%
-%{--        <table class="print" style="margin-top: 10px;margin-left:78px;margin-right:10px;width: 78%;">--}%
-%{--            <tr>--}%
-%{--                <th>Total</th>--}%
-%{--                <td>0.00</td>--}%
-%{--                <td>${String.format("%.2f", totalBeforeTaxes)}</td>--}%
-%{--            </tr>--}%
+    <div style="float: right;">
+        <table class="print" style="margin-top: 10px;margin-left:78px;margin-right:10px;width: 78%;">
+            <tr>
+                <th>Total</th>
+                <td>0.00</td>
+                <td>${String.format("%.2f", totalBeforeTaxes)}</td>
+            </tr>
 
-%{--            <g:each in="${sgstGroup}" var="sg">--}%
-%{--                <tr>--}%
-%{--                    <th>Add SGST ${sg.key}% on</th>--}%
-%{--                    <td>${String.format("%.2f", sg.value)}</td>--}%
-%{--                    <td class="totalgst">${String.format("%.2f", sg.value * (Double.parseDouble(sg.key.toString()) / 100))}</td>--}%
-%{--                </tr>--}%
+            <g:each in="${sgstGroup}" var="sg">
+                <tr>
+                    <th>Add SGST ${sg.key}% on</th>
+                    <td>${String.format("%.2f", sg.value)}</td>
+                    <td class="totalgst">${String.format("%.2f", sg.value * (Double.parseDouble(sg.key.toString()) / 100))}</td>
+                </tr>
 
-%{--            </g:each>--}%
+            </g:each>
 
-%{--            <g:each in="${cgstGroup}" var="cg">--}%
-%{--                <tr>--}%
-%{--                    <th>Add CGST ${cg.key}% on</th>--}%
-%{--                    <td>${String.format("%.2f", cg.value)}</td>--}%
-%{--                    <td class="totalgst">${String.format("%.2f", cg.value * (Double.parseDouble(cg.key.toString()) / 100))}</td>--}%
-%{--                </tr>--}%
+            <g:each in="${cgstGroup}" var="cg">
+                <tr>
+                    <th>Add CGST ${cg.key}% on</th>
+                    <td>${String.format("%.2f", cg.value)}</td>
+                    <td class="totalgst">${String.format("%.2f", cg.value * (Double.parseDouble(cg.key.toString()) / 100))}</td>
+                </tr>
 
-%{--            </g:each>--}%
+            </g:each>
 
-%{--            <g:each in="${igstGroup}" var="ig">--}%
-%{--                <tr>--}%
-%{--                    <th>Add IGST ${ig.key}% on</th>--}%
-%{--                    <td>${String.format("%.2f", ig.value)}</td>--}%
-%{--                    <td class="totalgst">${String.format("%.2f", ig.value * (Double.parseDouble(ig.key.toString()) / 100))}</td>--}%
-%{--                </tr>--}%
+            <g:each in="${igstGroup}" var="ig">
+                <tr>
+                    <th>Add IGST ${ig.key}% on</th>
+                    <td>${String.format("%.2f", ig.value)}</td>
+                    <td class="totalgst">${String.format("%.2f", ig.value * (Double.parseDouble(ig.key.toString()) / 100))}</td>
+                </tr>
 
-%{--            </g:each>--}%
-%{--            <tr>--}%
-%{--                <th>Net Invoice Amt.</th>--}%
-%{--                <td>0.00</td>--}%
-%{--                <td id="netInvAmt"></td>--}%
-%{--            </tr>--}%
-%{--            <tr>--}%
-%{--                <th>Less Cr. Nt*</th>--}%
-%{--                <td>0.00</td>--}%
-%{--                <td>0.00</td>--}%
-%{--            </tr>--}%
-%{--            <tr>--}%
-%{--                <th>Add Debit Nt*</th>--}%
-%{--                <td>0.00</td>--}%
-%{--                <td>0.00</td>--}%
-%{--            </tr>--}%
-%{--            <tr>--}%
-%{--                <th>Add Rounding off*</th>--}%
-%{--                <td>0.00</td>--}%
-%{--                <td>0.00</td>--}%
-%{--            </tr>--}%
-%{--            <tr>--}%
-%{--                <th>Net Payable Amt.</th>--}%
-%{--                <td>0.00</td>--}%
-%{--                <td id="netPayAmt"></td>--}%
-%{--            </tr>--}%
-%{--        </table>--}%
-%{--    </div>--}%
-%{--</div>--}%
+            </g:each>
+            <tr>
+                <th>Net Invoice Amt.</th>
+                <td>0.00</td>
+                <td id="netInvAmt"></td>
+            </tr>
+            <tr>
+                <th>Less Cr. Nt*</th>
+                <td>0.00</td>
+                <td>0.00</td>
+            </tr>
+            <tr>
+                <th>Add Debit Nt*</th>
+                <td>0.00</td>
+                <td>0.00</td>
+            </tr>
+            <tr>
+                <th>Add Rounding off*</th>
+                <td>0.00</td>
+                <td>0.00</td>
+            </tr>
+            <tr>
+                <th>Net Payable Amt.</th>
+                <td>0.00</td>
+                <td id="netPayAmt"></td>
+            </tr>
+        </table>
+    </div>
+</div>
 <br>
 <br>
 

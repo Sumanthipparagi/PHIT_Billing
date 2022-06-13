@@ -600,6 +600,8 @@ public class Links
     public static String PURCHASE_BILL_CUSTOMER = "api/v1.0/purchase/purchasebillbysupplier";
     public static String PURCHASE_BILL_BALANCE_UPDATE = "api/v1.0/purchase/updatebillbalancebyid";
     public static String PURCHASE_RETURN_BALANCE_UPDATE = "api/v1.0/purchase/updatereturnbalancebyid";
+    public static String PURCHASE_BILL_CANCEL = "api/v1.0/purchase/billdetail/cancel";
+
 
 
     //purchase product bill details
@@ -656,4 +658,10 @@ public class Links
     public static String VECHILE_DETAIL_DATATABLE = "api/v1.0/shipments/vehicledetail/datatable";
     public static String VECHILE_DETAIL_UPDATE = "api/v1.0/shipments/vehicledetail/{id}";
     public static String VECHILE_DETAIL_DELETE = "api/v1.0/shipments/vehicledetail/{id}";
+
+
+
+
+
+
 }

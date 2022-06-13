@@ -287,4 +287,42 @@ class PurchaseBillDetailService {
             throw new BadRequestException()
         }
     }
+
+    def cancelPurchaseBill(JSONObject jsonObject)
+    {
+        String id = jsonObject.get("id")
+        String entityId = jsonObject.get("entityId")
+        String financialYear = jsonObject.get("financialYear")
+        JSONObject saleInvoice = new JSONObject()
+        PurchaseBillDetail purchaseBillDetails = PurchaseBillDetail.findById(Long.parseLong(id))
+        if (purchaseBillDetails)
+        {
+            if (purchaseBillDetails.financialYear.equalsIgnoreCase(financialYear) && purchaseBillDetails.entityId == Long.parseLong(entityId))
+            {
+                ArrayList<PurchaseProductDetail> purchaseProductDetails = PurchaseProductDetail.findAllByBillId(purchaseBillDetails.id)
+                for (PurchaseProductDetail saleProductDetail : purchaseProductDetails)
+                {
+                    saleProductDetail.status = 0
+                    saleProductDetail.isUpdatable = true
+                    saleProductDetail.save(flush: true)
+                }
+                purchaseBillDetails.billStatus = "CANCELLED"
+                purchaseBillDetails.cancelledDate = new Date()
+                purchaseBillDetails.isUpdatable = true
+                purchaseBillDetails.save(flush: true)
+                saleInvoice.put("products", purchaseProductDetails)
+                saleInvoice.put("invoice", purchaseBillDetails)
+                return saleInvoice
+            }
+            else
+            {
+                throw new ResourceNotFoundException()
+            }
+        }
+        else
+        {
+            throw new ResourceNotFoundException()
+        }
+    }
+
 }

@@ -411,6 +411,42 @@ class PurchaseEntryController {
         }
     }
 
+    def cancelPurchaseInvoice()
+    {
+        String id = params.id
+        String entityId = session.getAttribute("entityId")
+        String financialYear = session.getAttribute("financialYear")
+        JSONObject jsonObject = new PurchaseService().cancelPurchaseInvoice(id, entityId, financialYear)
+        if (jsonObject)
+        {
+            //adjust stocks
+            JSONArray productDetails = jsonObject.get("products")
+            if (productDetails)
+            {
+                for (JSONObject productDetail : productDetails)
+                {
+                    def stockBook = new InventoryService().getStocksOfProductAndBatch(productDetail.productId.toString(), productDetail.batchNumber, session.getAttribute("entityId").toString())
+                    double remainingQty = stockBook.get("remainingQty") - productDetail.get("sqty")
+                    double remainingFreeQty = stockBook.get("remainingFreeQty") - productDetail.get("freeQty")
+                    double remainingReplQty = stockBook.get("remainingReplQty") - productDetail.get("repQty")
+                    stockBook.put("remainingQty", remainingQty.toLong())
+                    stockBook.put("remainingFreeQty", remainingFreeQty.toLong())
+                    stockBook.put("remainingReplQty", remainingReplQty.toLong())
+                    new InventoryService().updateStockBook(stockBook)
+                }
+            }
+            JSONObject invoice = jsonObject.get("invoice") as JSONObject
+//            if(invoice.has("irnDetails")) {
+//                JSONObject irnDetails = new JSONObject(invoice.get("irnDetails").toString())
+//                new EInvoiceService().cancelIRN(session, irnDetails.get("Irn").toString(), invoice.get("id").toString())
+//            }
+            respond jsonObject, formats: ['json']
+        }
+        else
+        {
+            response.status = 400
+        }
+    }
 
     def printPurchaseEntry() {
         String purchaseBillId = params.id
@@ -422,6 +458,17 @@ class PurchaseEntryController {
         JSONObject entity = new EntityService().getEntityById(session.getAttribute("entityId").toString())
         JSONObject city = new SystemService().getCityById(entity.get('cityId').toString())
         JSONArray termsConditions = new EntityService().getTermsContionsByEntity(session.getAttribute("entityId").toString())
+        termsConditions.each {
+            JSONObject formMaster =  new SystemService().getFormById(it.formId.toString())
+            if(formMaster!=null)
+            {
+                if(it.formId == formMaster.id)
+                {
+                    it.put("form", formMaster)
+                }
+            }
+        }
+        println(termsConditions)
         purchaseProductDetails.each {
             JSONObject stockBook = new InventoryService().getStocksOfProductAndBatch(it.productId.toString(), it.batchNumber, session.getAttribute("entityId").toString())
             def batchResponse = new ProductService().getBatchesOfProduct(it.productId.toString())
@@ -496,5 +543,51 @@ class PurchaseEntryController {
     def purchaseReturn() {
         ArrayList<String> tempStockBook = new StockBookController().tempStockShow() as ArrayList<String>
         render(view: '/purchase/purchaseRetun', model: [tempStockBook: tempStockBook])
+    }
+
+    def dataTable() {
+        try {
+            JSONObject jsonObject = new JSONObject(params)
+            def apiResponse = new PurchaseService().showPurchaseBillDetails(jsonObject)
+            if (apiResponse.status == 200) {
+                JSONObject responseObject = new JSONObject(apiResponse.readEntity(String.class))
+                if(responseObject)
+                {
+                    JSONArray jsonArray = responseObject.data
+                    JSONArray jsonArray2 = new JSONArray()
+                    JSONArray jsonArray3 = new JSONArray()
+                    JSONArray entityArray = new JSONArray()
+                    JSONArray cityArray = new JSONArray()
+                    for (JSONObject json : jsonArray) {
+                        json.put("supplier", new EntityService().getEntityById(json.get("supplierId").toString()))
+                        jsonArray2.put(json)
+                    }
+                    for(JSONObject json1 : jsonArray2)
+                    {
+                        entityArray.put(json1.get("supplier"))
+                    }
+                    entityArray.each {
+                        def cityResp = new SystemService().getCityById(it.cityId.toString())
+                        it.put("cityId", cityResp)
+                    }
+                    responseObject.put("data", jsonArray2)
+                    responseObject.put("city",entityArray)
+                }
+                respond responseObject, formats: ['json'], status: 200
+            } else {
+                response.status = 400
+            }
+        }
+        catch (Exception ex) {
+            System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
+            log.error('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
+            response.status = 400
+        }
+    }
+
+
+    def purchasebillList()
+    {
+        render(view:'/purchase/purchaseEntry/purchase-invoice-list')
     }
 }
