@@ -216,7 +216,6 @@
                             'action': editbtn + ' ' + deletebtn
                         });
                     }
-
                     return return_data;
                 }
             },
