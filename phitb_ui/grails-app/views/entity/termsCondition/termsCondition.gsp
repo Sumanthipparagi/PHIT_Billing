@@ -197,7 +197,7 @@
                 dataSrc: function (json) {
                     var return_data = [];
                     for (var i = 0; i < json.data.length; i++) {
-                        console.log(json)
+                        console.log(json);
                         var editbtn = '<button type="button" data-id="' + json.data[i].id +
                             '" data-formId="' + json.data[i].formId + '"' +
                             '" data-termCondition="' + json.data[i].termCondition + '"' +
