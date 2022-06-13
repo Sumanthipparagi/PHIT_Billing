@@ -168,6 +168,7 @@
         //CKEditor
         // CKEDITOR.replace('termCondition');
         // CKEDITOR.config.height = 100;
+
         termsTable();
 
     });
