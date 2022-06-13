@@ -107,7 +107,7 @@
                                 <tr>
                                     %{--                                    <th style="width: 20%">ID</th>--}%
                                     <th style="width: 20%">Term Conditions</th>
-%{--                                    <th style="width: 20%">Form</th>--}%
+                                    <th style="width: 20%">Form</th>
 %{--                                    <th style="width: 20%">Entity</th>--}%
 %{--                                    <th style="width: 20%">Entity Type</th>--}%
                                     <th style="width: 20%">Action</th>
@@ -210,7 +210,7 @@
                         return_data.push({
                             'id': json.data[i].id,
                             'termCondition': "<div style='white-space:normal;'>"+json.data[i].termCondition + "</div>",
-                            // 'formId': json.form[i].formName,
+                            'formId': json.data[i]?.form?.formName,
                             // 'entity': json.data[i].entity.entityName,
                             // 'entitytype': json.data[i].entityType.name,
                             'action': editbtn + ' ' + deletebtn
@@ -223,7 +223,7 @@
             columns: [
                 // {'data': 'id', 'width': '20%'},
                 {'data': 'termCondition', 'width': '20%'},
-                // {'data': 'formId', 'width': '20%'},
+                {'data': 'formId', 'width': '20%'},
                 // {'data': 'entity', 'width': '20%'},
                 // {'data': 'entitytype', 'width': '20%'},
                 {'data': 'action', 'width': '5%'}
