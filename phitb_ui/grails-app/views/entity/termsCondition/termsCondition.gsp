@@ -156,7 +156,7 @@
 <asset:javascript src="/themeassets/plugins/jquery-inputmask/jquery.inputmask.bundle.js"/>
 <asset:javascript src="/themeassets/plugins/momentjs/moment.js"/>
 <asset:javascript src="/themeassets/plugins/ckeditor/ckeditor.js"/>
-<asset:javascript src="/themeassets/js/pages/forms/editors.js"/>
+%{--<asset:javascript src="/themeassets/js/pages/forms/editors.js"/>--}%
 <asset:javascript src="/themeassets/plugins/bootstrap-material-datetimepicker/js/bootstrap-material-datetimepicker.js"/>
 <asset:javascript src="/themeassets/js/pages/forms/basic-form-elements.js"/>
 
@@ -165,6 +165,9 @@
     var termstable;
     var id = null;
     $(function () {
+        //CKEditor
+        // CKEDITOR.replace('termCondition');
+        // CKEDITOR.config.height = 100;
         termsTable();
 
     });
@@ -267,7 +270,8 @@
     });
 
     $(document).on("click", ".addbtn", function () {
-        $(".termsTitle").text("Add Terms & Conditions")
+        $(".termsTitle").text("Add Terms & Conditions");
+        // CKEDITOR.instances['termCondition'].setData("");
         $(".termsForm")[0].reset();
         id = null
     });
@@ -275,6 +279,7 @@
     $(document).on("click", ".editbtn", function () {
         id = $(this).data('id');
         $(".termCondition").val($(this).attr('data-termCondition'));
+        // CKEDITOR.instances['termCondition'].setData($(this).attr('data-termCondition'));
         $(".formId").val($(this).attr('data-formId')).change();
         $(".entity").val($(this).attr('data-entityRegister')).change();
         $("#entityTypeId").val($(this).attr('data-entitytype')).change();
@@ -308,6 +313,7 @@
             }
         });
     }
+
 
 
 </script>
