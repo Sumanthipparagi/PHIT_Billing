@@ -261,7 +261,8 @@ class InventoryService {
     def updateStockBook(JSONObject jsonObject)
     {
         Client client = ClientBuilder.newClient().register(JacksonFeature.class)
-        WebTarget target = client.target(new Links().API_GATEWAY);
+       // WebTarget target = client.target(new Links().API_GATEWAY);
+        WebTarget target = client.target("http://localhost:8086");
         try
         {
             Response apiResponse = target
@@ -439,7 +440,8 @@ class InventoryService {
     def tempStockBookSave(JSONObject jsonObject)
     {
         Client client = ClientBuilder.newClient()
-        WebTarget target = client.target(new Links().API_GATEWAY)
+       // WebTarget target = client.target(new Links().API_GATEWAY)
+        WebTarget target = client.target("http://localhost:8086")
         try
         {
             println(jsonObject)

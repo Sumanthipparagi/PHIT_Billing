@@ -38,7 +38,6 @@ class SaleReturnService {
 
     SaleReturn save(JSONObject jsonObject)
     {
-        sdf.setTimeZone(TimeZone.getTimeZone("GMT"))
         SaleReturn saleReturn = new SaleReturn()
         saleReturn.finId =  Long.parseLong(jsonObject.get("finId").toString())
         saleReturn.serBillId = Long.parseLong(jsonObject.get("serBillId").toString())
