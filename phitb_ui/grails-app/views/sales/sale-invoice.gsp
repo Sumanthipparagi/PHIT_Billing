@@ -1,4 +1,4 @@
-<%@ page import="phitb_ui.SalesService; java.text.SimpleDateFormat" contentType="text/html;charset=UTF-8" %>
+<%@ page import="phitb_ui.Constants; phitb_ui.SalesService; java.text.SimpleDateFormat" contentType="text/html;charset=UTF-8" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -369,8 +369,14 @@
             Party Ref No. : <br>
             Rev-Charge :</p>
 
-        <p style="font-size:7pt;">${raw(termsConditions[0].termCondition)}</p>
-    </div>
+%{--        <p>${termsConditions[0].termCondition}</p>--}%
+    <g:each var="t" in="${termsConditions}" status="i">
+        <g:if test="${t?.form?.formType == Constants.SALE_INVOICE && t?.deleted == false}">
+            <p>${raw(t?.termCondition)}</p>
+        </g:if>
+    </g:each>
+
+</div>
 
     <div style="float: right;">
         <table class="print" style="margin-top: 10px;margin-left:78px;margin-right:10px;width: 78%;">

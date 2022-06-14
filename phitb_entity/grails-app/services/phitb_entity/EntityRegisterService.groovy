@@ -147,7 +147,13 @@ class EntityRegisterService {
         entityRegister.noOfCrDays = Long.parseLong(jsonObject.get("noOfCrDays").toString())
         entityRegister.noOfGraceDays = Long.parseLong(jsonObject.get("noOfGraceDays").toString())
         entityRegister.calculateOn = Long.parseLong(jsonObject.get("calculateOn").toString())
-        entityRegister.bankId = Long.parseLong(jsonObject.get("bankId").toString())
+        if(jsonObject.get("bankId")!="0" || jsonObject.get("bankId")!="")
+        {
+            entityRegister.bankId = Long.parseLong(jsonObject.get("bankId").toString())
+        }
+        else {
+            entityRegister.bankId = 0
+        }
         entityRegister.accountNo = jsonObject.get("accountNo").toString()
         entityRegister.upiId = jsonObject.get("upiId").toString()
         entityRegister.noOfCrDays = Long.parseLong(jsonObject.get("noOfCrDays").toString())
@@ -191,7 +197,7 @@ class EntityRegisterService {
         {
             entityRegister.salesmanCommission = 0
         }
-        if(jsonObject.get("hqarea")!=0 || jsonObject.get("hqarea")!="")
+        if(jsonObject.get("hqarea")!="0" || jsonObject.get("hqarea")!="")
         {
             entityRegister.hqAreaId = Long.parseLong(jsonObject.get("hqarea").toString())
         }
@@ -257,7 +263,13 @@ class EntityRegisterService {
             entityRegister.noOfCrDays = Long.parseLong(jsonObject.get("noOfCrDays").toString())
             entityRegister.noOfGraceDays = Long.parseLong(jsonObject.get("noOfGraceDays").toString())
             entityRegister.calculateOn = Long.parseLong(jsonObject.get("calculateOn").toString())
-            entityRegister.bankId = Long.parseLong(jsonObject.get("bankId").toString())
+            if(jsonObject.get("bankId")!="0" || jsonObject.get("bankId")!="")
+            {
+                entityRegister.bankId = Long.parseLong(jsonObject.get("bankId").toString())
+            }
+            else {
+                entityRegister.bankId = 0
+            }
             entityRegister.accountNo = jsonObject.get("accountNo").toString()
             entityRegister.upiId = jsonObject.get("upiId").toString()
             entityRegister.noOfCrDays = Long.parseLong(jsonObject.get("noOfCrDays").toString())
@@ -301,7 +313,7 @@ class EntityRegisterService {
             {
                 entityRegister.salesmanCommission = 0
             }
-            if(jsonObject.get("hqarea")!=0 || jsonObject.get("hqarea")!="")
+            if(jsonObject.get("hqarea")!="0" || jsonObject.get("hqarea")!="")
             {
                 entityRegister.hqAreaId = Long.parseLong(jsonObject.get("hqarea").toString())
             }

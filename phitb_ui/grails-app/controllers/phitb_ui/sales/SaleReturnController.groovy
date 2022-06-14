@@ -483,6 +483,17 @@ class SaleReturnController
             JSONObject city = new SystemService().getCityById(entity.get('cityId').toString())
             JSONObject custcity = new SystemService().getCityById(customer.get('cityId').toString())
             JSONArray termsConditions = new EntityService().getTermsContionsByEntity(session.getAttribute("entityId").toString())
+            termsConditions.each {
+                JSONObject formMaster =  new SystemService().getFormById(it.formId.toString())
+                if(formMaster!=null)
+                {
+                    if(it.formId == formMaster.id)
+                    {
+                        it.put("form", formMaster)
+                    }
+                }
+            }
+            println(termsConditions)
             saleRetrunDetails.each {
                 def batchResponse = new ProductService().getBatchesOfProduct(it.productId.toString())
                 JSONArray batchArray = JSON.parse(batchResponse.readEntity(String.class)) as JSONArray

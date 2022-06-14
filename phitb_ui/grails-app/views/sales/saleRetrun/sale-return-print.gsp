@@ -1,4 +1,4 @@
-<%@ page import="phitb_ui.SalesService; java.text.SimpleDateFormat" contentType="text/html;charset=UTF-8" %>
+<%@ page import="phitb_ui.Constants; phitb_ui.SalesService; java.text.SimpleDateFormat" contentType="text/html;charset=UTF-8" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -371,8 +371,15 @@
             Weight in Kgs :<br>
             Party Ref No. : <br>
             Rev-Charge :</p>
+%{--        <g:if test="${termsConditions[0].form.formName == "SALE_RETURN"}">--}%
 %{--        <p>${termsConditions[0].termCondition}</p>--}%
+%{--        </g:if>--}%
 
+        <g:each var="t" in="${termsConditions}" status="i">
+            <g:if test="${t?.form?.formType == Constants.SALE_RETURN && t?.deleted == false}">
+                    <p>${t?.termCondition}</p>
+            </g:if>
+        </g:each>
 
     </div>
 

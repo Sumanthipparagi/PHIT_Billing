@@ -605,7 +605,6 @@ class SystemService
     {
         Client client = ClientBuilder.newClient();
         WebTarget target = client.target(new Links().API_GATEWAY);
-
         try
         {
             println(jsonObject)
@@ -639,6 +638,36 @@ class SystemService
                     .put(Entity.entity(jsonObject.toString(),MediaType.APPLICATION_JSON_TYPE))
             println(jsonObject)
             return apiResponse
+        }
+        catch (Exception ex)
+        {
+            System.err.println('Service :putAccountMode , action :  put  , Ex:' + ex)
+            log.error('Service :putAccountMode , action :  put  , Ex:' + ex)
+        }
+
+    }
+
+
+    def getFormById(String id)
+    {
+        Client client = ClientBuilder.newClient();
+        WebTarget target = client.target(new Links().API_GATEWAY);
+
+        try
+        {
+            Response apiResponse = target
+                    .path(new Links().FORM_MASTER_SHOW+"/"+id)
+                    .request(MediaType.APPLICATION_JSON_TYPE)
+                    .get()
+            if(apiResponse?.status == 200)
+            {
+                JSONObject obj = new JSONObject(apiResponse.readEntity(String.class))
+                return obj
+            }
+            else
+            {
+                return null
+            }
         }
         catch (Exception ex)
         {

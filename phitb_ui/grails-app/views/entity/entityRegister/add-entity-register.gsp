@@ -338,7 +338,7 @@
                                             <label for="calculateOn">
                                                 Calculate On
                                             </label>
-                                            <input type="text" id="calculateOn" class="form-control calculateOn"
+                                            <input type="number" id="calculateOn" class="form-control calculateOn"
                                                    name="calculateOn" placeholder="Calculate On"
                                                    required/>
                                         </div>
@@ -415,6 +415,7 @@
                                                 HQ area
                                             </label>
                                             <select class="form-control show-tick hqarea" name="hqarea" id="hqarea">
+                                                <option value="0">Please Select</option>
                                                 <g:each var="hq" in="${hqareas}">
                                                     <option value="${hq.id}">${hq.hqName}</option>
                                                 </g:each>

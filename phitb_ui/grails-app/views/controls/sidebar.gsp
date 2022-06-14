@@ -351,6 +351,7 @@
                         <g:if test="${UtilsService.isPermitted("VIEW_PURCHASE_ENTRY", session.getAttribute("permittedFeatures").toString())}">
                             <li><a href="/purchase-entry">Purchase Entry</a></li>
                         </g:if>
+                        <li><a href="/purchase-bill-list">Purchase Invoices</a></li>
                         <g:if test="${UtilsService.isPermitted("VIEW_PURCHASE_RETURN", session.getAttribute("permittedFeatures").toString())}">
                             <li><a href="#">Purchase Return</a></li>
                         </g:if>

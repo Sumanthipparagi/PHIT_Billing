@@ -106,8 +106,8 @@
                                 <tr>
 %{--                                    <th style="width: 20%">ID</th>--}%
                                     <th style="width: 20%">Form Name</th>
-                                    <th style="width: 20%">Form button Name</th>
-                                    <th style="width: 20%">Config Allowed</th>
+                                    <th style="width: 20%">Form Type</th>
+%{--                                    <th style="width: 20%">Config Allowed</th>--}%
 %{--                                    <th style="width: 20%">Entity Type</th>--}%
 %{--                                    <th style="width: 20%">Entity</th>--}%
 %{--                                    <th style="width: 20%">Created User</th>--}%
@@ -197,6 +197,7 @@
                             '" data-createduser="' + json.data[i].createdUser + '"' +
                             '" data-modifieduser="' + json.data[i].modifiedUser + '"' +
                             '" data-formButtonName="' + json.data[i].formButtonName + '"' +
+                            '" data-formType="' + json.data[i].formType + '"' +
                             '" data-formname="' + json.data[i].formName + '"' +
                             '" data-configAllowed="' + json.data[i].configAllowed + '"' +
                             ' class="editbtn btn btn-sm btn-warning  editbtn" data-toggle="modal" data-target="#addFormModal"><i class="material-icons"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">edit</font></font></i></button>'
@@ -205,7 +206,7 @@
                         return_data.push({
                             // 'id': json.data[i].id,
                             'formname': json.data[i].formName,
-                            'formbtnname': json.data[i].formButtonName,
+                            'formType': json.data[i].formType,
                             'confallowed': json.data[i].configAllowed === "1" ? "YES" : "NO",
                             // 'entity': json.entity[i].entityName,
                             // 'entitytype': json.entityType[i].name,
@@ -220,8 +221,8 @@
             columns: [
                 // {'data': 'id', 'width': '20%'},
                 {'data': 'formname', 'width': '20%'},
-                {'data': 'formbtnname', 'width': '20%'},
-                {'data': 'confallowed', 'width': '20%'},
+                {'data': 'formType', 'width': '20%'},
+                // {'data': 'confallowed', 'width': '20%'},
                 // {'data': 'entitytype', 'width': '20%'},
                 // {'data': 'entity', 'width': '20%'},
                 // {'data': 'createduser', 'width': '20%'},
@@ -282,6 +283,7 @@
         id = $(this).data('id');
         $(".formName").val($(this).attr('data-formName'));
         $(".formButtonName").val($(this).attr('data-formButtonName'));
+        $(".formType").val($(this).attr('data-formType'));
         $(".entity").val($(this).data('entity')).change();
         $(".entitytype").val($(this).attr('data-entitytype'));
         $("#configAllowed").val($(this).attr('data-configAllowed'));

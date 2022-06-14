@@ -29,6 +29,9 @@ class UrlMappings {
             "/updatebillbalancebyid/id/$id/balance/$balance"(controller: 'purchaseBillDetail')
                     {action=[POST: 'updateBalance']}
 
+            "/billdetail/cancel(.$format)?"(controller: 'purchaseBillDetail') {action = [POST: 'cancelPurchaseBill']}
+
+
             //Purchase Order
             "/purchaseorder(.$format)?"(controller: 'purchaseOrder') { action = [GET: 'index', POST: 'save'] }
             "/purchaseorder/datatable(.$format)?"(controller: 'purchaseOrder') { action = [GET: 'dataTable'] }
@@ -43,6 +46,8 @@ class UrlMappings {
             "/purchasebillbydaterange"(controller: 'purchaseBillDetail', action: 'getByDateRangeAndEntity')
 
             "/purchaseproductdetailslist/bill/$purbillsIds(.$format)?"(controller: 'purchaseProductDetail') { action = [GET: 'getPurchaseProductDetailsOfPurBillList'] }
+
+
 
 
 

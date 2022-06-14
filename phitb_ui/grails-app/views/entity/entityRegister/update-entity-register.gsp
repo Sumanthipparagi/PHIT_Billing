@@ -407,6 +407,7 @@
                                                 HQ area
                                             </label>
                                             <select class="form-control show-tick hqarea" name="hqarea" id="hqarea">
+                                                <option value="0">Please Select</option>
                                                 <g:each var="hq" in="${hqareas}">
                                                     <option value="${hq.id}" <g:if
                                                             test="${hq.id == entity.hqAreaId}">selected</g:if>>${hq.hqName}</option>

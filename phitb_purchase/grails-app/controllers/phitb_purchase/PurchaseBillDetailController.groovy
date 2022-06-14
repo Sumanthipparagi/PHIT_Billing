@@ -261,4 +261,25 @@ class PurchaseBillDetailController {
         }
     }
 
+    def cancelPurchaseBill() {
+        try {
+            JSONObject jsonObject = new JSONObject(request.reader.text)
+            JSONObject saleBillDetails = purchaseBillDetailService.cancelPurchaseBill(jsonObject)
+            respond saleBillDetails
+        }
+        catch (org.springframework.boot.context.config.ResourceNotFoundException ex) {
+            System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
+            response.status = 404
+        }
+        catch (BadRequestException ex) {
+            System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
+            response.status = 400
+
+        }
+        catch (Exception ex) {
+            System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
+        }
+    }
+
+
 }
