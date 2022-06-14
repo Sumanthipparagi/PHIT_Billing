@@ -360,11 +360,13 @@
                 {type: 'text', readOnly: true}, //GST Percentage
                 {type: 'text', readOnly: true}, //SGST Percentage
                 {type: 'text', readOnly: true}, //CGST Percentage
-                {type: 'text', readOnly: true} //IGST Percentage
+                {type: 'text', readOnly: true}, //IGST Percentage
+                {type: 'text', readOnly: true},//originalSqty
+                {type: 'text', readOnly: true} //originalFqty
             ],
             hiddenColumns: true,
             hiddenColumns: {
-                columns: [15, 16, 17, 18, 19]
+                columns: [15, 16, 17, 18, 19, 20, 21]
             },
             minSpareRows: 0,
             minSpareColumns: 0,
@@ -433,7 +435,13 @@
                         var sqty = hot.getDataAtCell(row, 4);
                         var fqty = hot.getDataAtCell(row, 5);
                         if (sqty && sqty > 0) {
-                            var batchId = hot.getCellMeta(row, 2)?.batchId; //batch
+                            console.log("Data saved");
+                            hot.setDataAtCell(row, 15, data.id);
+                            mainTableRow = row + 1;
+                            hot.alter('insert_row');
+                            hot.selectCell(mainTableRow, 1);
+                            calculateTotalAmt();
+                           /* var batchId = hot.getCellMeta(row, 2)?.batchId; //batch
                             var dt = hot.getDataAtRow(row);
                             dt.push(batchId);
                             var json = JSON.stringify(dt);
@@ -460,7 +468,7 @@
                                     console.log("Failed");
                                     alert("Unable to save the row, please delete it and add again.");
                                 }
-                            });
+                            });*/
                         } else {
                             alert("Invalid Quantity, please enter quantity greater than 0");
                         }
@@ -891,6 +899,8 @@
     %{--                hot.setDataAtCell(i, 17, sgst);--}%
     %{--                hot.setDataAtCell(i, 18, cgst);--}%
     %{--                hot.setDataAtCell(i, 19, igst);--}%
+    %{-- hot.setDataAtCell(i, 20, saleData[i]["originalSqty"]);
+    hot.setDataAtCell(i, 21, saleData[i]["originalFqty"]);--}%
     %{--            }--}%
 
     %{--            // setTimeout(function () {--}%
@@ -914,7 +924,7 @@
             dataType: 'json',
             success: function (data) {
                 saleData = data;
-                console.log(data)
+                console.log(data);
                 for (var i = 0; i < saleData.length; i++) {
                     hot.selectCell(i, 1);
                     var sRate = saleData[i].sRate;
@@ -961,6 +971,8 @@
                     hot.setDataAtCell(i, 17, sgst);
                     hot.setDataAtCell(i, 18, cgst);
                     hot.setDataAtCell(i, 19, igst);
+                    hot.setDataAtCell(i, 20, saleData[i]["originalSqty"]);
+                    hot.setDataAtCell(i, 21, saleData[i]["originalFqty"]);
                 }
 
                 // setTimeout(function () {

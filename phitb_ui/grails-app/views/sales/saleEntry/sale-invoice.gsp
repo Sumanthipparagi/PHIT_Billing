@@ -456,9 +456,9 @@
 
 <div id="breakPageContent"></div>
 </body>
-<asset:javascript src="/themeassets/bundles/libscripts.bundle.js"/>
-<asset:javascript src="/themeassets/plugins/momentjs/moment.js"/>
-<asset:javascript src="/themeassets/plugins/qr-code/jquery-qrcode-0.18.0.min.js"/>
+<asset:javascript src="/assets/themelibs/themeassets/bundles/libscripts.bundle.js"/>
+<asset:javascript src="/assets/themelibs/themeassets/plugins/momentjs/moment.js"/>
+<asset:javascript src="/assets/themelibs/themeassets/plugins/qr-code/jquery-qrcode-0.18.0.min.js"/>
 %{--<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.5.3/jspdf.min.js"></script>--}%
 %{--<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.6/jspdf.plugin.autotable.min.js"></script>--}%
 

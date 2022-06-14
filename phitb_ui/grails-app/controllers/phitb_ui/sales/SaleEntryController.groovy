@@ -34,8 +34,8 @@ class SaleEntryController
                 salesmanList.add(it)
             }
         }*/
-        render(view: '/sales/sale-entry', model: [customers   : customers, divisions: divisions, series: series,
-                                                  salesmanList: salesmanList, priorityList: priorityList])
+        render(view: '/sales/saleEntry/sale-entry', model: [customers   : customers, divisions: divisions, series: series,
+                                                            salesmanList: salesmanList, priorityList: priorityList])
     }
 
     def saveSaleEntry()
@@ -414,19 +414,19 @@ class SaleEntryController
             if(saleBillDetail.has("irnDetails") && saleBillDetail.get("irnDetails") != null)
                 irnDetails = new JSONObject(saleBillDetail.get("irnDetails").toString())
 
-            render(view: "/sales/sale-invoice", model: [saleBillDetail    : saleBillDetail,
-                                                        saleProductDetails: saleProductDetails,
-                                                        series            : series, entity: entity, customer: customer, city: city,
-                                                        total             : total, custcity: custcity,
-                                                        termsConditions   : termsConditions,
-                                                        totalcgst         : totalcgst, totalsgst: totalsgst, totaligst: totaligst,
-                                                        totaldiscount     : totaldiscount,
-                                                        gstGroup          : gstGroup,
-                                                        sgstGroup         : sgstGroup,
-                                                        cgstGroup         : cgstGroup,
-                                                        igstGroup         : igstGroup,
-                                                        totalBeforeTaxes  : totalBeforeTaxes,
-                                                        irnDetails: irnDetails
+            render(view: "/sales/saleEntry/sale-invoice", model: [saleBillDetail    : saleBillDetail,
+                                                                  saleProductDetails: saleProductDetails,
+                                                                  series            : series, entity: entity, customer: customer, city: city,
+                                                                  total             : total, custcity: custcity,
+                                                                  termsConditions   : termsConditions,
+                                                                  totalcgst         : totalcgst, totalsgst: totalsgst, totaligst: totaligst,
+                                                                  totaldiscount     : totaldiscount,
+                                                                  gstGroup          : gstGroup,
+                                                                  sgstGroup         : sgstGroup,
+                                                                  cgstGroup         : cgstGroup,
+                                                                  igstGroup         : igstGroup,
+                                                                  totalBeforeTaxes  : totalBeforeTaxes,
+                                                                  irnDetails: irnDetails
             ])
         }
         else
@@ -624,9 +624,9 @@ class SaleEntryController
         if (saleBillDetail != null && saleBillDetail.billStatus=='DRAFT')
         {
             JSONArray saleProductDetails = new SalesService().getSaleProductDetailsByBill(saleBillId)
-            render(view: '/sales/edit-sale-entry', model: [customers         : customers, divisions: divisions, series: series,
-                                                           priorityList      : priorityList, saleBillDetail: saleBillDetail,
-                                                           saleProductDetails: saleProductDetails])
+            render(view: '/sales/saleEntry/edit-sale-entry', model: [customers         : customers, divisions: divisions, series: series,
+                                                                     priorityList      : priorityList, saleBillDetail: saleBillDetail,
+                                                                     saleProductDetails: saleProductDetails])
         }
         else {
             render('No Draft invoice found!!')
