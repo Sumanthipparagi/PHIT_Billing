@@ -483,7 +483,7 @@
 
                                         <div class="col-lg-6 form-group  form-float">
                                             <label for="accountId">
-                                                Account${entity.accountId}
+                                                Account
                                             </label>
                                             <select class="form-control show-tick accountId" name="accountId" id="accountId">
                                                 <option value="0">Please Select</option>
