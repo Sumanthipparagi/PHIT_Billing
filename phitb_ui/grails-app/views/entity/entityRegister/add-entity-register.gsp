@@ -487,11 +487,15 @@
 
                                         <div class="col-lg-6 form-group  form-float">
                                             <label for="accountId">
-                                                Account Id
+                                                Account
                                             </label>
-                                            <input type="text" id="accountId" class="form-control accountId"
-                                                   name="accountId" placeholder="Account Id"
-                                                   />
+                                            <select class="form-control show-tick accountId" name="accountId" id="accountId">
+                                                <option value="0">Please Select</option>
+                                                <g:each var="a" in="${account}">
+                                                    <option value="${a.id}">${a.accountName}</option>
+                                                </g:each>
+                                            </select>
+
                                         </div>
 
 

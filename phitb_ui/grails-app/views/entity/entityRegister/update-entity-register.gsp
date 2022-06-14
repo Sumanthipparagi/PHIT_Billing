@@ -483,11 +483,14 @@
 
                                         <div class="col-lg-6 form-group  form-float">
                                             <label for="accountId">
-                                                Account Id
+                                                Account${entity.accountId}
                                             </label>
-                                            <input type="text" id="accountId" class="form-control accountId" value="${entity.accountId}"
-                                                   name="accountId" placeholder="Account Id"
-                                            />
+                                            <select class="form-control show-tick accountId" name="accountId" id="accountId">
+                                                <option value="0">Please Select</option>
+                                                <g:each var="a" in="${account}">
+                                                    <option value="${a.id}" <g:if test="${a.id == entity.accountId}">selected</g:if>>${a.accountName}</option>
+                                                </g:each>
+                                            </select>
                                         </div>
 
 
@@ -688,6 +691,7 @@
     });
 
     function setTwoNumberDecimal(event) {
+        console.log(this.value)
         this.value = parseFloat(this.value.toFixed(2));
     }
 </script>

@@ -30,6 +30,7 @@ class EntityRegisterController
             ArrayList<String> countrylist = new CountryController().show() as ArrayList<String>
             ArrayList<String> citylist = new CityController().show() as ArrayList<String>
             ArrayList<String> zoneList = new ZoneController().show() as ArrayList<String>
+            ArrayList<String> account = new AccountRegisterController().show() as ArrayList<String>
             ArrayList<String> managerList = []
             userregister.each {
                 if (it.role.name.toString().equalsIgnoreCase('MANAGER'))
@@ -49,7 +50,8 @@ class EntityRegisterController
                                                                          statelist:statelist,countrylist:countrylist,
                                                                          citylist:citylist,salesmanList:salesmanList,
                                                                          managerList:managerList,zoneList:zoneList,
-                                                                         entitytype:entitytype])
+                                                                         entitytype:entitytype,account:account
+            ])
         }
         catch (Exception ex)
         {
@@ -67,6 +69,7 @@ class EntityRegisterController
             ArrayList<String> hqareas = new HQAreasController().getByEntity() as ArrayList<String>
             ArrayList<String> routeregister = new RouteController().show() as ArrayList<String>
             ArrayList<String> bank = new BankRegisterController().show() as ArrayList<String>
+            ArrayList<String> account = new EntityService().getAllAccountByEntity(session.getAttribute('entityId').toString()) as ArrayList<String>
             ArrayList<String> entitytype = new EntityService().getEntityType() as ArrayList<String>
             ArrayList<String> userregister = new UserRegisterController().getByEntity() as ArrayList<String>
             ArrayList<String> statelist = new StateController().show() as ArrayList<String>
@@ -95,7 +98,8 @@ class EntityRegisterController
                                                                               zoneList:zoneList,
                                                                               routeregister:routeregister,
                                                                               bank:bank,entityList:entityList,
-                                                                              priority:priority,hqareas:hqareas])
+                                                                              priority:priority,hqareas:hqareas, account:account
+            ])
         }
         catch (Exception ex)
         {
@@ -114,6 +118,7 @@ class EntityRegisterController
             ArrayList<String> routeregister = new RouteController().show() as ArrayList<String>
             ArrayList<String> hqareas = new HQAreasController().getByEntity() as ArrayList<String>
             ArrayList<String> bank = new BankRegisterController().show() as ArrayList<String>
+            ArrayList<String> account = new EntityService().getAllAccountByEntity(session.getAttribute('entityId').toString()) as ArrayList<String>
             ArrayList<String> entitytype = new EntityService().getEntityType() as ArrayList<String>
             ArrayList<String> userregister = new UserRegisterController().show() as ArrayList<String>
             ArrayList<String> statelist = new StateController().show() as ArrayList<String>
@@ -143,7 +148,9 @@ class EntityRegisterController
                                                                                  zoneList:zoneList,
                                                                                  routeregister:routeregister,
                                                                                  bank:bank,entityList:entityList,
-                                                                                 priority:priority,hqareas:hqareas])
+                                                                                 priority:priority,hqareas:hqareas,
+                                                                                 account:account
+            ])
         }
         catch (Exception ex)
         {
