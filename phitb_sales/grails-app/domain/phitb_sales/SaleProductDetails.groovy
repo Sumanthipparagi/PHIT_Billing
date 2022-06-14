@@ -36,6 +36,10 @@ class SaleProductDetails implements Serializable, LogicalDelete<SaleProductDetai
     long entityTypeId
     long entityId
 
+    //this is added to keep track from where the qty came from, helpful in case of cancellation to put into right coloumn
+    double originalSqty
+    double originalFqty
+
     Date dateCreated
     Date lastUpdated
 
@@ -51,6 +55,8 @@ class SaleProductDetails implements Serializable, LogicalDelete<SaleProductDetai
         sqty min: 0D
         freeQty min: 0D
         repQty min: 0D
+        originalSqty min: 0D
+        originalFqty min: 0D
     }
 
     boolean isUpdatable

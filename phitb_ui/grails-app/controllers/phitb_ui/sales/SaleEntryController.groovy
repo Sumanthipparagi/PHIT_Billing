@@ -159,7 +159,7 @@ class SaleEntryController
             saleProductDetail.put("sgstAmount", sgst)
             saleProductDetail.put("cgstAmount", cgst)
             saleProductDetail.put("igstAmount", igst)
-
+            saleProductDetail.put("igstAmount", igst)
             //GST percentage Calculation
 /*            double priceBeforeTaxes = UtilsService.round((Double.parseDouble(saleQty) * Double.parseDouble(saleRate)), 2)
             if(discount>0)
@@ -188,6 +188,9 @@ class SaleEntryController
             saleProductDetail.put("sgstPercentage", sale.get("17").toString())
             saleProductDetail.put("cgstPercentage", sale.get("18").toString())
             saleProductDetail.put("igstPercentage", sale.get("19").toString())
+            saleProductDetail.put("originalSqty", sale.get("20").toString())
+            saleProductDetail.put("originalFqty", sale.get("21").toString())
+
 
             saleProductDetail.put("gstId", 0) //TODO: to be changed
             saleProductDetail.put("amount", value)
@@ -565,8 +568,30 @@ class SaleEntryController
                 for (JSONObject productDetail : productDetails)
                 {
                     def stockBook = new InventoryService().getStocksOfProductAndBatch(productDetail.productId.toString(), productDetail.batchNumber, session.getAttribute("entityId").toString())
-                    double remainingQty = stockBook.get("remainingQty") + productDetail.get("sqty")
-                    double remainingFreeQty = stockBook.get("remainingFreeQty") + productDetail.get("freeQty")
+                    double remainingQty = stockBook.get("remainingQty")
+                    double remainingFreeQty = stockBook.get("remainingFreeQty")
+
+                    //checking to where the stocks to be returned
+                    double originalSqty = productDetail.get("originalSqty") //0
+                    double originalFqty = productDetail.get("originalFqty") //100
+                    double sqty = productDetail.get("sqty") //50
+                    double freeQty = productDetail.get("freeQty") //50
+                    if(originalSqty >= sqty)
+                    {
+                        remainingQty +=  sqty
+                    }
+                    else
+                    {
+                        remainingFreeQty += sqty
+                    }
+                    if(originalFqty >= freeQty)
+                    {
+                        remainingFreeQty += freeQty
+                    }
+                    else
+                    {
+                        remainingQty += freeQty
+                    }
                     double remainingReplQty = stockBook.get("remainingReplQty") + productDetail.get("repQty")
                     stockBook.put("remainingQty", remainingQty.toLong())
                     stockBook.put("remainingFreeQty", remainingFreeQty.toLong())

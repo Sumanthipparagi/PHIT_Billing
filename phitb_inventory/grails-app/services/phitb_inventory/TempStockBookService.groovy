@@ -176,6 +176,8 @@ class TempStockBookService {
         tempStockBook.entityTypeId = Long.parseLong(jsonObject.get("entityTypeId").toString())
         tempStockBook.entityId = Long.parseLong(jsonObject.get("entityId").toString())
         tempStockBook.originalId = Long.parseLong(jsonObject.get("originalId").toString())
+        tempStockBook.originalSqty = Long.parseLong(jsonObject.get("originalSqty").toString())
+        tempStockBook.originalFqty = Long.parseLong(jsonObject.get("originalFqty").toString())
         tempStockBook.uuid = jsonObject.get("uuid")
         tempStockBook.save(flush: true)
         if (!tempStockBook.hasErrors())
@@ -220,6 +222,8 @@ class TempStockBookService {
                 tempStockBook.entityId = Long.parseLong(jsonObject.get("entityId").toString())
                 tempStockBook.originalId = Long.parseLong(jsonObject.get("originalId").toString())
                 tempStockBook.uuid = jsonObject.get("uuid")
+                tempStockBook.originalSqty = Long.parseLong(jsonObject.get("originalSqty").toString())
+                tempStockBook.originalFqty = Long.parseLong(jsonObject.get("originalFqty").toString())
                 tempStockBook.save(flush: true)
                 if (!tempStockBook.hasErrors())
                     return tempStockBook

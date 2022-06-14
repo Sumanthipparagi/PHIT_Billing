@@ -25,6 +25,9 @@ class TempStockBook implements LogicalDelete<TempStockBook> {
     long entityId
     String uuid
 
+    long originalSqty
+    long originalFqty
+
     Date dateCreated
     Date lastUpdated
 
@@ -39,6 +42,8 @@ class TempStockBook implements LogicalDelete<TempStockBook> {
         userOrderQty min: 0L
         userOrderFreeQty min: 0L
         userOrderReplQty min: 0L
+        originalSqty min: 0L
+        originalFqty min: 0L
     }
 
     boolean isUpdatable

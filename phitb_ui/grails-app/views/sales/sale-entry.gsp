@@ -356,11 +356,13 @@
                 {type: 'text', readOnly: true}, //GST Percentage
                 {type: 'text', readOnly: true}, //SGST Percentage
                 {type: 'text', readOnly: true}, //CGST Percentage
-                {type: 'text', readOnly: true} //IGST Percentage
+                {type: 'text', readOnly: true}, //IGST Percentage
+                {type: 'text', readOnly: true} ,//originalSqty
+                {type: 'text', readOnly: true} //originalFqty
             ],
             hiddenColumns: true,
             hiddenColumns: {
-                columns: [15, 16, 17, 18, 19]
+                columns: [15, 16, 17, 18, 19, 20, 21]
             },
             minSpareRows: 0,
             minSpareColumns: 0,
@@ -728,6 +730,8 @@
                         hot.setDataAtCell(mainTableRow, 17, sgst);
                         hot.setDataAtCell(mainTableRow, 18, cgst);
                         hot.setDataAtCell(mainTableRow, 19, igst);
+                        hot.setDataAtCell(mainTableRow, 20, rowData[2]);
+                        hot.setDataAtCell(mainTableRow, 21, rowData[3]);
                         remainingQty = rowData[2];
                         remainingFQty = rowData[3];
                         $("#saleTable").focus();
@@ -907,6 +911,9 @@
                     hot.setDataAtCell(i, 17, sgst);
                     hot.setDataAtCell(i, 18, cgst);
                     hot.setDataAtCell(i, 19, igst);
+
+                    hot.setDataAtCell(i, 20, saleData[i]["originalSqty"]);
+                    hot.setDataAtCell(i, 21, saleData[i]["originalFqty"]);
                 }
 
                 // setTimeout(function () {
