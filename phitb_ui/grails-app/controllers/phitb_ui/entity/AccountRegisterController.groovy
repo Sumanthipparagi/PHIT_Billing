@@ -242,4 +242,20 @@ class AccountRegisterController {
         render(view:'/entity/accountRegister/accounts-list',model: [account:accountList,accountMode:accountMode,entity:entity, accountTypes: accountTypes])
     }
 
+
+    def show()
+    {
+        def apiResponse = new EntityService().getAllAccount()
+        if (apiResponse?.status == 200)
+        {
+            JSONArray jsonArray = new JSONArray(apiResponse.readEntity(String.class));
+            ArrayList<String> arrayList = new ArrayList<>(jsonArray)
+            return arrayList
+        }
+        else
+        {
+            return []
+        }
+    }
+
 }
