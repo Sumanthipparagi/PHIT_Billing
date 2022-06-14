@@ -339,7 +339,7 @@
                                                 Calculate On
                                             </label>
                                             <input type="number" id="calculateOn" class="form-control calculateOn"
-                                                   name="calculateOn" placeholder="Calculate On"
+                                                   name="calculateOn" placeholder="Calculate On" value="0"
                                                    required/>
                                         </div>
                                         <div class="col-lg-6 form-group  form-float">
