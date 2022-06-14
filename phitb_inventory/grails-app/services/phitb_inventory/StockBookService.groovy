@@ -106,7 +106,6 @@ class StockBookService {
         String expDate = jsonObject.get("expDate")
         String purcDate = jsonObject.get("purcDate")
         SimpleDateFormat sdf1 = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'")
-        sdf.setTimeZone(TimeZone.getTimeZone("GMT"))
         if(manufacturingDate.contains("T"))
         {
             manufacturingDate = sdf.format(sdf1.parse(manufacturingDate))
@@ -192,7 +191,6 @@ class StockBookService {
             String expDate = jsonObject.get("expDate")
             String purcDate = jsonObject.get("purcDate")
             SimpleDateFormat sdf1 = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'")
-            sdf.setTimeZone(TimeZone.getTimeZone("GMT"))
             if(manufacturingDate.contains("T"))
             {
                 manufacturingDate = sdf.format(sdf1.parse(manufacturingDate))

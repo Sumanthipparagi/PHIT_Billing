@@ -139,7 +139,6 @@ class TempStockBookService {
         //Date sanitize
         String expDate = jsonObject.get("expDate")
         SimpleDateFormat sdf1 = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'")
-        sdf.setTimeZone(TimeZone.getTimeZone("GMT"))
         if(expDate.contains("T"))
         {
             expDate = sdf.format(sdf1.parse(expDate))
@@ -192,7 +191,6 @@ class TempStockBookService {
             //Date sanitize
             String expDate = jsonObject.get("expDate")
             SimpleDateFormat sdf1 = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'")
-            sdf.setTimeZone(TimeZone.getTimeZone("GMT"))
             if(expDate.contains("T"))
             {
                 expDate = sdf.format(sdf1.parse(expDate))
