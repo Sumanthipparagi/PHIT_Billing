@@ -499,8 +499,7 @@
                                                 Aadhar Id
                                             </label>
                                             <input type="text" id="aadharId" class="form-control aadharId"
-                                                   name="aadharId" placeholder="Aadhar Id" value="${entity.aadharId}"
-                                            />
+                                                   name="aadharId" placeholder="Aadhar Id" value="${entity.aadharId}"/>
                                         </div>
 
 
