@@ -456,8 +456,11 @@ class UrlMappings {
             action = [GET: "index", POST: 'saveSaleEntry']
         }
         "/edit-sale-entry"(controller: "saleEntry") {
-            action = [GET: "editSaleBillDetails", POST: 'updateSaleBillDetails']
+            action = [GET: "editSaleBillDetails", POST: 'saveSaleEntry']
         }
+/*        "/edit-sale-entry"(controller: "saleEntry") {
+            action = [GET: "editSaleBillDetails", POST: 'updateSaleBillDetails']
+        }*/
         "/edit-sale-products"(controller: 'saleEntry'){
             action=[POST:'updateSaleProductDetails']
         }

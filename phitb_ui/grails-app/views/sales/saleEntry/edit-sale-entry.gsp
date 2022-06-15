@@ -441,7 +441,7 @@
                             hot.alter('insert_row');
                             hot.selectCell(mainTableRow, 1);
                             calculateTotalAmt();
-                           /* var batchId = hot.getCellMeta(row, 2)?.batchId; //batch
+                           <%-- var batchId = hot.getCellMeta(row, 2)?.batchId; //batch
                             var dt = hot.getDataAtRow(row);
                             dt.push(batchId);
                             var json = JSON.stringify(dt);
@@ -468,7 +468,7 @@
                                     console.log("Failed");
                                     alert("Unable to save the row, please delete it and add again.");
                                 }
-                            });*/
+                            }); --%>
                         } else {
                             alert("Invalid Quantity, please enter quantity greater than 0");
                         }

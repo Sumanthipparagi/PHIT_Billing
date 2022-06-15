@@ -83,7 +83,7 @@
                                 <select onchange="seriesChanged()" class="form-control" id="series" name="series">
                                     <g:each in="${series}" var="sr">
                                         <option data-seriescode="${sr.seriesCode}"
-                                                value="${sr.id}">${sr.seriesName} (${sr.seriesCode})</option>
+                                                value="${sr.id}" <g:if test="${saleBillDetail?.seriesId == sr.id}">selected</g:if>>${sr.seriesName} (${sr.seriesCode})</option>
                                     </g:each>
                                 </select>
                             </div>
@@ -92,7 +92,7 @@
                                 <label for="priority">Priority:</label>
                                 <select class="form-control" id="priority" name="priority">
                                     <g:each in="${priorityList}" var="pr">
-                                        <option value="${pr.id}">${pr.priority}</option>
+                                        <option value="${pr.id}" <g:if test="${saleBillDetail?.priorityId == pr.id}">selected</g:if> >${pr.priority}</option>
                                     </g:each>
                                 </select>
                             </div>
@@ -105,7 +105,7 @@
                                     <g:each in="${customers}" var="cs">
 
                                         <g:if test="${cs.id != session.getAttribute("entityId")}">
-                                            <option value="${cs.id}">${cs.entityName} (${cs.entityType.name})</option>
+                                            <option value="${cs.id}" <g:if test="${saleBillDetail?.customerId == cs.id}">selected</g:if> >${cs.entityName} (${cs.entityType.name})</option>
                                         </g:if>
                                     </g:each>
                                 </select>
@@ -928,6 +928,77 @@
         })
     }
 
+    function loadDraftProducts() {
+        var userId = "${session.getAttribute("userId")}";
+        $.ajax({
+            type: "GET",
+            url: "/sale-product-details/sale-bill?id="+${saleBillDetail.id},
+            dataType: 'json',
+            success: function (data) {
+                saleData = data;
+                console.log(data);
+                for (var i = 0; i < saleData.length; i++) {
+                    hot.selectCell(i, 1);
+                    var sRate = saleData[i].sRate;
+                    var sQty = saleData[i].sqty;
+                    var fQty = saleData[i].freeQty;
+                    batchSelection(saleData[i].productId, null, false);
+                    var batchId = saleData[i][12];
+                    hot.setDataAtCell(i, 1, saleData[i].productId.id);
+                    hot.setDataAtCell(i, 2, saleData[i].batchNumber);
+                    hot.setCellMeta(i, 2, "batchId", batchId);
+                    hot.setDataAtCell(i, 3, saleData[i].expiryDate.split("T")[0]);
+                    hot.setDataAtCell(i, 6, sRate);
+                    hot.setDataAtCell(i, 4, sQty);
+                    hot.setDataAtCell(i, 5, fQty);
+                    hot.setDataAtCell(i, 7, saleData[i].mrp);
+                    hot.setDataAtCell(i, 8, 0);
+                    hot.setDataAtCell(i, 9, saleData[i].productId.unitPacking);
+                    gst =  saleData[i].gst;
+                    sgst = saleData[i].sgst;
+                    cgst = saleData[i].cgst;
+                    igst = saleData[i].igst;
+                    // alert(sgst)
+                    // var discount = hot.getDataAtCell(i, 8);
+                    // alert(saleData[i].id)
+                    var discount = 0; //TODO: discount to be set
+                    var priceBeforeGst = (sRate * sQty) - ((sRate * sQty) * discount) / 100;
+                    var finalPrice = priceBeforeGst + (priceBeforeGst * (gst / 100));
+                    hot.setDataAtCell(i, 11, Number(finalPrice).toFixed(2));
+                    if (gst !== 0) {
+                        hot.setDataAtCell(i, 10, Number(priceBeforeGst * (gst / 100)).toFixed(2)); //GST
+                        hot.setDataAtCell(i, 12, Number(priceBeforeGst * (sgst / 100)).toFixed(2)); //SGST
+                        hot.setDataAtCell(i, 13, Number(priceBeforeGst * (cgst / 100)).toFixed(2)); //CGST
+                    } else {
+                        hot.setDataAtCell(i, 10, 0); //GST
+                        hot.setDataAtCell(i, 12, 0); //SGST
+                        hot.setDataAtCell(i, 13, 0); //CGST
+                    }
+                    if (igst !== "0")
+                        hot.setDataAtCell(i, 14, Number(priceBeforeGst * (igst / 100)).toFixed(2)); //IGST
+                    else
+                        hot.setDataAtCell(i, 14, 0);
+                    hot.setDataAtCell(i, 15, saleData[i].id);
+                    hot.setDataAtCell(i, 16, gst);
+                    hot.setDataAtCell(i, 17, sgst);
+                    hot.setDataAtCell(i, 18, cgst);
+                    hot.setDataAtCell(i, 19, igst);
+                    hot.setDataAtCell(i, 20, saleData[i]["originalSqty"]);
+                    hot.setDataAtCell(i, 21, saleData[i]["originalFqty"]);
+                }
+
+                // setTimeout(function () {
+                //     $('#saleTable').show()
+                // }, 2000);
+
+                setTimeout(function () {
+                    hot.selectCell(0, 1);
+                    calculateTotalAmt();
+                }, 1000);
+            }
+        })
+    }
+
     function deleteTempStockRow(id, row) {
         if (!readOnly) {
             if (id) {
@@ -1143,7 +1214,12 @@
                 for (var i = 0; i < data.length; i++) {
                     products.push({id: data[i].id, text: data[i].productName});
                 }
-                loadTempStockBookData();
+                <g:if test="${params.saleBillId}">
+                    loadDraftProducts();
+                </g:if>
+                <g:else>
+                    loadTempStockBookData();
+                </g:else>
             },
             error: function () {
                 products.length = 0; //remove all elements
