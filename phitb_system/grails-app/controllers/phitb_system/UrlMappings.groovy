@@ -81,6 +81,27 @@ class UrlMappings {
 
 
 
+            //Region
+            "/region(.$format)?"(controller: 'regionMaster') { action = [GET: 'index', POST: 'save'] }
+            "/region/datatable(.$format)?"(controller: 'regionMaster') { action = [GET: 'dataTable'] }
+            "/region/$id(.$format)?"(controller: 'regionMaster') { action = [GET: 'show', PUT: 'update', DELETE: 'delete'] }
+
+
+
+            //Division
+            "/division(.$format)?"(controller: 'division') { action = [GET: 'index', POST: 'save'] }
+            "/division/datatable(.$format)?"(controller: 'division') { action = [GET: 'dataTable'] }
+            "/division/$id(.$format)?"(controller: 'division') { action = [GET: 'show', PUT: 'update', DELETE: 'delete'] }
+
+
+            //District
+            "/district(.$format)?"(controller: 'district') { action = [GET: 'index', POST: 'save'] }
+            "/district/datatable(.$format)?"(controller: 'district') { action = [GET: 'dataTable'] }
+            "/district/$id(.$format)?"(controller: 'district') { action = [GET: 'show', PUT: 'update', DELETE: 'delete'] }
+
+
+
+
             //State Master
             "/state(.$format)?"(controller: 'stateMaster') { action = [GET: 'index', POST: 'save'] }
             "/state/datatable(.$format)?"(controller: 'stateMaster') { action = [GET: 'dataTable'] }

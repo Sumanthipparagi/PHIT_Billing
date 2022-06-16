@@ -5,18 +5,20 @@ import gorm.logical.delete.LogicalDelete
 class StateMaster implements Serializable, LogicalDelete<StateMaster> {
 
     String name
-    CountryMaster country
-    long entityId
-    ZoneMaster zone
-
+    String stateCode
+    String alphaCode
+    String gstStateCode
     String irnStateCode
 
     Date dateCreated
     Date lastUpdated
 
     static constraints = {
-        name maxSize: 50
+        name nullable: true, maxSize: 50
         irnStateCode nullable: true
+        name nullable: true
+        stateCode nullable: true
+        alphaCode nullable: true
     }
 
 

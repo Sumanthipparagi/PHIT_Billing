@@ -185,15 +185,22 @@
                     var return_data = [];
                     for (var i = 0; i < json.data.length; i++) {
                         var editbtn = '<button type="button" data-id="' + json.data[i].id +
-                            '" data-name="' + json.data[i].name + '"' +
-                            '" data-state="' + json.data[i].state.id + '"' +
-                            '"' +
+                            '" data-areaName="' + json.data[i].areaName + '"' +
+                            'data-areaCode="' + json.data[i].areaCode + '"' +
+                            ' data-circleName="' + json.data[i].circleName + '"' +
+                            ' data-pincode="' + json.data[i].pincode + '"' +
+                            ' data-latitude="' + json.data[i].latitude + '"' +
+                            ' data-logitude="' + json.data[i].logitude + '"' +
+                            ' data-region="' + json.data[i].region.id + '"' +
+                            ' data-division="' + json.data[i].division.id + '"' +
+                            ' data-district="' + json.data[i].district.id + '"' +
+                            ' data-state="' + json.data[i].state.id + '"' +
                             ' class="editbtn btn btn-sm btn-warning  editbtn" data-toggle="modal" data-target="#addCityModal"><i class="material-icons"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">edit</font></font></i></button>'
                         var deletebtn = '<button type="button" data-id="' + json.data[i].id +
                             '" class="btn btn-danger deletebtn" data-toggle="modal" data-target=".deleteModal"><i class="material-icons"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">delete</font></font></i></button>'
                         return_data.push({
                             // 'id': json.data[i].id,
-                            'name': json.data[i].name,
+                            'name': json.data[i].areaName,
                             'state': json.data[i].state.name,
                             'action': editbtn + ' ' + deletebtn
                         });
@@ -249,15 +256,25 @@
 
     $(document).on("click", ".addbtn", function () {
         $(".cityForm")[0].reset();
-        $('.state').select2()
-        $(".cityTitle").text("Add City")
-        id = null
+        $(".cityTitle").text("Add City");
+        id = null;
+        $('.state').val("").change();
+        $('.state').select2();
+
     });
 
     $(document).on("click", ".editbtn", function () {
         id = $(this).data('id');
-        $(".name").val($(this).data('name'));
-        $(".state").val($(this).attr('data-state')).change()
+        $(".areaName").val($(this).attr('data-areaName'));
+        $(".areaCode").val($(this).attr('data-areaCode'));
+        $(".circleName").val($(this).attr('data-circleName'));
+        $(".pincode").val($(this).attr('data-pincode'));
+        $(".latitude").val($(this).attr('data-latitude'));
+        $(".logitude").val($(this).attr('data-logitude'));
+        $(".region").val($(this).attr('data-region')).change();
+        $(".division").val($(this).attr('data-division')).change();
+        $(".district").val($(this).attr('data-district')).change();
+        $(".state").val($(this).attr('data-state')).change();
         $('.state').select2();
         $(".cityTitle").text("Update City");
     });

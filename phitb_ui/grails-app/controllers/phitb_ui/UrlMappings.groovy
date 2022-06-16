@@ -56,6 +56,34 @@ class UrlMappings {
 //        "/priority/delete/$id"(controller: "priority",action:"delete")
 
 
+        //   Region
+        "/region"(controller: "region") {
+            action = [GET: "index", POST: "save"]
+        }
+        "/region/datatable"(controller: "region", action: "dataTable")
+        "/region/update/$id"(controller:"region",action:"update")
+        "/region/delete/$id"(controller: "region",action:"delete")
+
+
+        //   Division
+        "/division-master"(controller: "divisionMaster") {
+            action = [GET: "index", POST: "save"]
+        }
+        "/division-master/datatable"(controller: "divisionMaster", action: "dataTable")
+        "/division-master/update/$id"(controller:"divisionMaster",action:"update")
+        "/division-master/delete/$id"(controller: "divisionMaster",action:"delete")
+
+
+        //   District
+        "/district"(controller: "district") {
+            action = [GET: "index", POST: "save"]
+        }
+        "/district/datatable"(controller: "district", action: "dataTable")
+        "/district/update/$id"(controller:"district",action:"update")
+        "/district/delete/$id"(controller: "district",action:"delete")
+
+
+
 //      Country
         "/country"(controller: "country") {
             action = [GET: "index", POST: "save"]
@@ -324,12 +352,12 @@ class UrlMappings {
 
 
         //      Division
-        "/division"(controller: "division") {
+        "/division"(controller: "divisionMaster") {
             action = [GET: "index", POST: "save"]
         }
-        "/division/datatable"(controller: "division", action: "dataTable")
-        "/division/update/$id"(controller:"division",action:"update")
-        "/division/delete/$id"(controller: "division",action:"delete")
+        "/division/datatable"(controller: "divisionMaster", action: "dataTable")
+        "/division/update/$id"(controller:"divisionMaster",action:"update")
+        "/division/delete/$id"(controller: "divisionMaster",action:"delete")
 
 
         // Product Category

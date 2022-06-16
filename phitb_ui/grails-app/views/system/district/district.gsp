@@ -6,7 +6,7 @@
     <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
     <meta name="description" content="Responsive Bootstrap 4 and web Application ui kit.">
 
-    <title>:: PharmIt :: Division Group</title>
+    <title>:: PharmIt ::  District</title>
     <link rel="icon" type="image/x-icon" href="${assetPath(src: '/themeassets/images/favicon.ico')}"/>
     <!-- Favicon-->
     <asset:stylesheet rel="stylesheet" src="/themeassets/plugins/bootstrap/css/bootstrap.min.css"/>
@@ -16,11 +16,8 @@
     <asset:stylesheet  rel="stylesheet" src="/themeassets/css/main.css"/>
     <asset:stylesheet rel="stylesheet" href="/themeassets/css/color_skins.css"/>
     <asset:stylesheet rel="stylesheet" href="/themeassets/plugins/sweetalert/sweetalert.css"/>
-    <asset:stylesheet rel="stylesheet" href="/themeassets/plugins/multi-select/css/multi-select.css"/>
     <asset:stylesheet  src="/themeassets/plugins/bootstrap-select/css/bootstrap-select.css" rel="stylesheet" />
-    <asset:stylesheet  src="/themeassets/js/pages/forms/basic-form-elements.js" rel="stylesheet" />
-    <asset:stylesheet  src="/themeassets/plugins/bootstrap-material-datetimepicker/css/bootstrap-material-datetimepicker.css" rel="stylesheet" />
-
+    <asset:stylesheet  src="/themeassets/plugins/select-2-editor/select2.min.css" rel="stylesheet" />
 
     <style>
 
@@ -46,6 +43,7 @@
 
     </style>
 
+
 </head>
 <body class="theme-black">
 <!-- Page Loader -->
@@ -62,10 +60,10 @@
         <div class="block-header">
             <div class="row clearfix">
                 <div class="col-lg-5 col-md-5 col-sm-12">
-                    <h2>Division Group</h2>
+                    <h2>District</h2>
                     <ul class="breadcrumb padding-0">
-                        <li class="breadcrumb-item"><a href="index.html"><i class="zmdi zmdi-home"></i></a></li>
-                        <li class="breadcrumb-item active">Division Group</li>
+                        <li class="breadcrumb-item"><a href="#"><i class="zmdi zmdi-home"></i></a></li>
+                        <li class="breadcrumb-item active">District</li>
                     </ul>
                 </div>
                 <div class="col-lg-7 col-md-7 col-sm-12">
@@ -99,24 +97,22 @@
                     %{--                    </div>--}%
                     <div class="header">
                         <button type="button" class="btn btn-round btn-primary m-t-15 addbtn" data-toggle="modal"
-                                data-target="#adddivisionGroupModal"><font style="vertical-align: inherit;"><font
-                                style="vertical-align: inherit;">Add Division Group</font></font></button>
+                                data-target="#addDistrictModal"><font style="vertical-align: inherit;"><font
+                                style="vertical-align: inherit;">Add District</font></font></button>
                     </div>
                     <div class="body">
                         <div class="table-responsive">
-                            <table class="table table-bordered table-striped table-hover fridgeTable dataTable">
+                            <table class="table table-bordered table-striped table-hover districtTable dataTable">
                                 <thead>
                                 <tr>
                                     %{--                                    <th style="width: 20%">ID</th>--}%
-                                    <th style="width: 20%">Division Group Name</th>
-                                    <th style="width: 20%">Group Short Name</th>
-%{--                                    <th style="width: 20%">Division</th>--}%
-%{--                                    <th style="width: 20%">Entity</th>--}%
-%{--                                    <th style="width: 20%">Entity Type</th>--}%
+                                    <th style="width: 20%">District Name</th>
+                                    <th style="width: 20%">District Code</th>
+                                    <th style="width: 20%">State</th>
                                     <th style="width: 20%">Action</th>
                                 </tr>
                                 </thead>
-                                %{--                           Division     <tfoot>--}%
+                                %{--                                <tfoot>--}%
                                 %{--                                <tr>--}%
                                 %{--                                    <th>ID</th>--}%
                                 %{--                                    <th>Name</th>--}%
@@ -137,42 +133,36 @@
     </div>
 </section>
 
-
-<g:include view="controls/product/add-division-group.gsp"/>
+<g:include view="controls/add-district.gsp"/>
 <g:include view="controls/delete-modal.gsp"/>
 
 <!-- Jquery Core Js -->
 <asset:javascript src="/themeassets/bundles/libscripts.bundle.js"/>
 <asset:javascript src="/themeassets/bundles/vendorscripts.bundle.js"/>
-<asset:javascript src="/themeassets/plugins/bootstrap-colorpicker/js/bootstrap-colorpicker.js"/>
-<asset:javascript src="/themeassets/plugins/multi-select/js/jquery.multi-select.js"/>
 <asset:javascript src="/themeassets/bundles/datatablescripts.bundle.js"/>
 <asset:javascript src="/themeassets/plugins/jquery-datatable/buttons/dataTables.buttons.min.js"/>
 <asset:javascript src="/themeassets/plugins/jquery-datatable/buttons/buttons.bootstrap4.min.js"/>
 <asset:javascript src="/themeassets/plugins/jquery-datatable/buttons/buttons.colVis.min.js"/>
 <asset:javascript src="/themeassets/plugins/jquery-datatable/buttons/buttons.html5.min.js"/>
 <asset:javascript src="/themeassets/plugins/jquery-datatable/buttons/buttons.print.min.js"/>
-<asset:javascript src="/themeassets/bundles/mainscripts-2.bundle.js"/>
+<asset:javascript src="/themeassets/bundles/mainscripts.bundle.js"/>
 <asset:javascript src="/themeassets/js/pages/tables/jquery-datatable.js"/>
 <asset:javascript src="/themeassets/js/pages/ui/dialogs.js"/>
 <asset:javascript src="/themeassets/plugins/sweetalert/sweetalert.min.js"/>
-<asset:javascript src="/themeassets/plugins/jquery-inputmask/jquery.inputmask.bundle.js"/>
-<asset:javascript src="/themeassets/plugins/momentjs/moment.js"/>
-<asset:javascript src="/themeassets/plugins/bootstrap-material-datetimepicker/js/bootstrap-material-datetimepicker.js"/>
-<asset:javascript src="/themeassets/js/pages/forms/basic-form-elements.js"/>
-<asset:javascript src="/themeassets/plugins/multi-select/js/jquery.multi-select.js" type="text/javascript"/>
+<asset:javascript  src="/themeassets/plugins/select-2-editor/select2.js" />
+
+
 
 <script>
 
-    var fridgetable;
+    var districttable;
     var id = null;
     $(function () {
-        fridgeTable();
-
+        districtTable();
     });
 
-    function fridgeTable() {
-        fridgetable = $(".fridgeTable").DataTable({
+    function districtTable() {
+        districttable = $(".districtTable").DataTable({
             "order": [[0, "desc"]],
             sPaginationType: "simple_numbers",
             responsive: {
@@ -186,37 +176,27 @@
             processing: true,
             serverSide: true,
             language: {
-                searchPlaceholder: "Search Division Group"
+                searchPlaceholder: "Search District"
             },
             ajax: {
                 type: 'GET',
-                url: '/division-group/datatable',
+                url: '/district/datatable',
                 dataType: 'json',
                 dataSrc: function (json) {
                     var return_data = [];
-
                     for (var i = 0; i < json.data.length; i++) {
-                        // var divarray =  "`"+json.divisionMaster.join().replace(/\[/g, '{').replace(/]/g, '}').slice(1, -1)+"`"
-                        // var regEx = new RegExp("/^[ \\t]+([a-zA-Z0-9_]*):/mg", "g");
-                        // var replaced = divarray.replace(regEx, '"$1":')
-                        // console.log(replaced)
                         var editbtn = '<button type="button" data-id="' + json.data[i].id +
-                            '" data-divisionGroupName="' + json.data[i].divisionGroupName + '"' +
-                            '" data-divGroupShortName="' + json.data[i].divGroupShortName + '"' +
-                            '" data-divisionIds="' + json.data[i].divisionIds + '"' +
-                            '" data-entityId="' + json.data[i].entityId + '"' +
-                            '" data-entityType="' + json.data[i].entityTypeId + '"' +
-                            '"' +
-                            ' class="editbtn btn btn-sm btn-warning  editbtn" data-toggle="modal" data-target="#adddivisionGroupModal"><i class="material-icons"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">edit</font></font></i></button>'
+                            '" data-districtName="' + json.data[i].district + '"' +
+                            ' data-districtCode="' + json.data[i].districtCode + '"' +
+                            ' data-state="' + json.data[i].state.id + '"' +
+                            ' class="editbtn btn btn-sm btn-warning  editbtn" data-toggle="modal" data-target="#addDistrictModal"><i class="material-icons"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">edit</font></font></i></button>'
                         var deletebtn = '<button type="button" data-id="' + json.data[i].id +
-                            '" class="btn btn-sm btn-danger deletebtn" data-toggle="modal" data-target=".deleteModal"><i class="material-icons"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">delete</font></font></i></button>'
+                            '" class="btn btn-danger deletebtn" data-toggle="modal" data-target=".deleteModal"><i class="material-icons"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">delete</font></font></i></button>'
                         return_data.push({
-                            'id': json.data[i].id,
-                            'divisionGroupName': json.data[i].divisionGroupName,
-                            'divGroupShortName': json.data[i].divGroupShortName,
-                            // 'divisionMaster': json.data[i].divisionIds,
-                            // 'entity': json.entity[i].entityName,
-                            // 'entitytype': json.entityType[i].name,
+                            // 'id': json.data[i].id,
+                            'district': json.data[i].district,
+                            'districtCode': json.data[i].districtCode,
+                            'state': json.data[i].state.name,
                             'action': editbtn + ' ' + deletebtn
                         });
                     }
@@ -225,36 +205,28 @@
             },
             columns: [
                 // {'data': 'id', 'width': '20%'},
-                {'data': 'divisionGroupName', 'width': '20%'},
-                {'data': 'divGroupShortName', 'width': '20%'},
-                // {'data': 'divisionMaster', 'width': '20%'},
-                // {'data': 'entity', 'width': '20%'},
-                // {'data': 'entitytype', 'width': '20%'},
-                {'data': 'action', 'width': '20%'}
+                {'data': 'district', 'width': '20%'},
+                {'data': 'districtCode', 'width': '20%'},
+                {'data': 'state', 'width': '20%'},
+                {'data': 'action', 'width': '5%'}
             ]
         });
     }
 
-    $(".divisionGroupForm").submit(function (event) {
-
+    $(".districtForm").submit(function (event) {
         //disable the default form submission
         event.preventDefault();
-
         //grab all form data
         var formData = new FormData(this);
-        console.log(formData);
-
         var url = '';
         var type = '';
         if (id) {
-            url = '/division-group/update/' + id;
+            url = '/district/update/' + id;
             type = 'POST'
         } else {
-            url = '/division-group';
+            url = '/district';
             type = 'POST'
         }
-
-        console.log(type);
         $.ajax({
             url: url,
             type: type,
@@ -262,9 +234,9 @@
             contentType: false,
             processData: false,
             success: function () {
-                swal("Success!", "Division Group Submitted Successfully", "success");
-                fridgeTable();
-                $('#adddivisionGroupModal').modal('hide');
+                swal("Success!", "District Submitted Successfully", "success");
+                districtTable();
+                $('#addDistrictModal').modal('hide');
             },
             error: function () {
                 swal("Error!", "Something went wrong", "error");
@@ -274,44 +246,37 @@
     });
 
     $(document).on("click", ".addbtn", function () {
-        $(".divisionGroupTitle").text("Add Division Group")
-        $(".divisionGroupForm")[0].reset();
-        id = null
+        $(".districtForm")[0].reset();
+        $(".districtTitle").text("Add District");
+        id = null;
+        $('.state').select2();
     });
 
     $(document).on("click", ".editbtn", function () {
         id = $(this).data('id');
-        $(".divisionGroupName").val($(this).attr('data-divisionGroupName'));
-        $(".divGroupShortName").val($(this).attr('data-divGroupShortName'));
-        var divisionIds = $(this).attr('data-divisionIds');
-        $(".divisionIds").val(divisionIds.split(",")).change();
-        $(".entityId").val($(this).attr('data-entityId')).change();
-        $(".entityType").val($(this).attr('data-entityType')).change();
-        $(".divisionTitle").text("Update Division Group");
+        $(".districtName").val($(this).attr('data-districtName'));
+        $(".districtCode").val($(this).attr('data-districtCode'));
+        $(".state").val($(this).attr('data-state'));
+        $(".districtTitle").text("Update District");
+        $('.state').select2();
     });
-
-    $('.entityId').change(function(){
-        var type = $('option:selected', this).attr('data-type');
-        $(".entityType").val(type);
-    });
-
 
 
     $(document).on("click", ".deletebtn", function () {
         id = $(this).data('id');
-        $("#myModalLabel").text("Delete Division Group ?");
+        $("#myModalLabel").text("Delete District ?");
 
     });
 
     function deleteData() {
         $.ajax({
             type: 'POST',
-            url: '/division-group/delete/' + id,
+            url: '/district/delete/' + id,
             dataType: 'json',
             success: function () {
                 $('.deleteModal').modal('hide');
-                fridgeTable();
-                swal("Success!", "Division Group Deleted Successfully", "success");
+                districtTable();
+                swal("Success!", "District Deleted Successfully", "success");
             }, error: function () {
                 swal("Error!", "Something went wrong", "error");
             }
@@ -322,8 +287,7 @@
 </script>
 <g:include view="controls/footer-content.gsp"/>
 <script>
-    selectSideMenu("product-menu");
+    selectSideMenu("system-menu");
 </script>
-
 </body>
 </html>

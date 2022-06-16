@@ -12,14 +12,109 @@
                     <div class="modal-body">
                         <div class="row">
                             <div class="col-lg-6 form-group  form-float">
-                                <label for="name">
-                                    Name
+                                <label for="areaName">
+                                    Area Name
                                 </label>
-                                <input type="text" id="name" class="form-control name" name="name" placeholder="Name"
+                                <input type="text" id="areaName" class="form-control areaName" name="areaName" placeholder="Area Name"
                                        required/>
                             </div>
 
-%{--                            <div class="col-lg-6 form-group  form-float">--}%
+                            <div class="col-lg-6 form-group  form-float">
+                                <label for="areaCode">
+                                    Area Code
+                                </label>
+                                <input type="text" id="areaCode" class="form-control areaCode" name="areaCode"
+                                       placeholder="Area Code" required/>
+                            </div>
+
+                            <div class="col-lg-6 form-group  form-float">
+                                <label for="circleName">
+                                    Circle Name
+                                </label>
+                                <input type="text" id="circleName" class="form-control circleName" name="circleName"
+                                       placeholder="Circle Name"
+                                       required/>
+                            </div>
+
+                            <div class="col-lg-6 form-group  form-float">
+                                <label for="pincode">
+                                  Pincode
+                                </label>
+                                <input type="number" id="pincode" class="form-control pincode" name="pincode"
+                                       placeholder="Pincode"
+                                       required/>
+                            </div>
+
+                            <div class="col-lg-6 form-group  form-float">
+                                <label for="latitude">
+                                    Latitude
+                                </label>
+                                <input type="number" id="latitude" class="form-control latitude" name="latitude"
+                                       placeholder="Latitude"
+                                       required/>
+                            </div>
+
+                            <div class="col-lg-6 form-group  form-float">
+                                <label for="logitude">
+                                    Longitude
+                                </label>
+                                <input type="number" id="logitude" class="form-control logitude" name="logitude"
+                                       placeholder="Longitude"
+                                       required/>
+                            </div>
+
+                            <div class="col-lg-6 form-group  form-float">
+                                <label for="region">
+                                    Region
+                                </label>
+                                <select class="form-control show-tick region" name="region" id="region">
+                                    <option value="">--Please Select--</option>
+                                    <g:each var="r" in="${region}">
+                                        <option value="${r.id}">${r.regionName}</option>
+                                    </g:each>
+                                </select>
+                            </div>
+
+                            <div class="col-lg-6 form-group  form-float">
+                                <label for="division">
+                                    Division
+                                </label>
+                                <select class="form-control show-tick division" name="division" id="division">
+                                    <option value="">--Please Select--</option>
+                                    <g:each var="d" in="${division}">
+                                        <option value="${d.id}">${d.divisionName}</option>
+                                    </g:each>
+                                </select>
+                            </div>
+
+
+                            <div class="col-lg-6 form-group  form-float">
+                                <label for="district">
+                                    District
+                                </label>
+                                <select class="form-control show-tick district" name="district" id="district">
+                                    <option value="">--Please Select--</option>
+                                    <g:each var="d" in="${district}">
+                                        <option value="${d.id}">${d.district}</option>
+                                    </g:each>
+                                </select>
+                            </div>
+
+                            <div class="col-lg-6 form-group  form-float">
+                                <label for="state">
+                                    State
+                                </label>
+                                <select class="form-control show-tick state" name="state" id="state">
+                                    <option value="">--Please Select--</option>
+                                    <g:each var="s" in="${state}">
+                                        <option value="${s.id}">${s.name}</option>
+                                    </g:each>
+                                </select>
+                            </div>
+
+
+
+                            %{--                            <div class="col-lg-6 form-group  form-float">--}%
 
 %{--                                <label for="entity">--}%
 %{--                                    Entity--}%
@@ -33,17 +128,17 @@
 %{--                                </select>--}%
 %{--                            </div>--}%
 
-                            <div class="col-lg-6 form-group  form-float">
+%{--                            <div class="col-lg-6 form-group  form-float">--}%
 
-                                <label for="state">
-                                    State
-                                </label>
-                                <select class="form-control show-tick state" name="stateId" id="state">
-                                    <g:each var="state" in="${stateArrayList}">
-                                        <option value="${state.id}">${state.name}</option>
-                                    </g:each>
-                                </select>
-                            </div>
+%{--                                <label for="state">--}%
+%{--                                    State--}%
+%{--                                </label>--}%
+%{--                                <select class="form-control show-tick state" name="stateId" id="state">--}%
+%{--                                    <g:each var="state" in="${stateArrayList}">--}%
+%{--                                        <option value="${state.id}">${state.name}</option>--}%
+%{--                                    </g:each>--}%
+%{--                                </select>--}%
+%{--                            </div>--}%
                         </div>
                     </div>
 

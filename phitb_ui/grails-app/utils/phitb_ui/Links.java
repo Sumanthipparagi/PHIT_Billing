@@ -68,6 +68,30 @@ public class Links
     public static String PRIORITY_BY_ENTITY = "api/v1.0/system/prioritybyentity";
 
 
+    //    Region Master
+    public static String REGION_SAVE = "api/v1.0/system/region";
+    public static String REGION_SHOW = "api/v1.0/system/region";
+    public static String REGION_DATATABLE = "api/v1.0/system/region/datatable";
+    public static String REGION_UPDATE = "api/v1.0/system/region/{id}";
+    public static String REGION_DELETE = "api/v1.0/system/region/{id}";
+
+
+    //    Division Master
+    public static String DIVISION_MASTER_SAVE = "api/v1.0/system/division";
+    public static String DIVISION_MASTER_SHOW = "api/v1.0/system/division";
+    public static String DIVISION_MASTER_DATATABLE = "api/v1.0/system/division/datatable";
+    public static String DIVISION_MASTER_UPDATE = "api/v1.0/system/division/{id}";
+    public static String DIVISION_MASTER_DELETE = "api/v1.0/system/division/{id}";
+
+
+    //    District Master
+    public static String DISTRICT_MASTER_SAVE = "api/v1.0/system/district";
+    public static String DISTRICT_MASTER_SHOW = "api/v1.0/system/district";
+    public static String DISTRICT_MASTER_DATATABLE = "api/v1.0/system/district/datatable";
+    public static String DISTRICT_MASTER_UPDATE = "api/v1.0/system/district/{id}";
+    public static String DISTRICT_MASTER_DELETE = "api/v1.0/system/district/{id}";
+
+
     /*<-------------------------------------------Facility ------------------------------------------------->*/
 
 

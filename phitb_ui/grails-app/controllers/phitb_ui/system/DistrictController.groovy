@@ -1,23 +1,18 @@
 package phitb_ui.system
 
-import groovy.json.JsonSlurper
 import org.grails.web.json.JSONArray
 import org.grails.web.json.JSONObject
-import phitb_ui.Links
 import phitb_ui.SystemService
-import phitb_ui.entity.EntityRegisterController
 
-class CityController {
+class DistrictController {
+
 
     def index()
     {
         try
         {
-            ArrayList<String> region = new SystemService().getRegionList() as ArrayList<String>
-            ArrayList<String> division = new DivisionMasterController().show() as ArrayList<String>
-            ArrayList<String> district = new DistrictController().show() as ArrayList<String>
-            ArrayList<String> state = new StateController().show() as ArrayList<String>
-            render(view: '/system/city/city',model: [state:state,region:region,division:division,district:district])
+            ArrayList<String> state = new StateController().show() as ArrayList
+            render(view: '/system/district/district',model: [state:state])
         }
         catch (Exception ex)
         {
@@ -30,7 +25,7 @@ class CityController {
 
     def show()
     {
-        def apiResponse = new SystemService().getCityList()
+        def apiResponse = new SystemService().getDistrictList()
         if (apiResponse?.status == 200)
         {
             JSONArray jsonArray = new JSONArray(apiResponse.readEntity(String.class));
@@ -48,7 +43,7 @@ class CityController {
         try
         {
             JSONObject jsonObject = new JSONObject(params)
-            def apiResponse = new SystemService().showCity(jsonObject)
+            def apiResponse = new SystemService().showDistrict(jsonObject)
             if (apiResponse.status == 200)
             {
                 JSONObject responseObject = new JSONObject(apiResponse.readEntity(String.class))
@@ -80,7 +75,7 @@ class CityController {
             {
                 jsonObject.put("entityTypeId", session.getAttribute("entityTypeId"))
             }
-            def apiResponse = new SystemService().saveCity(jsonObject)
+            def apiResponse = new SystemService().saveDistrict(jsonObject)
             if (apiResponse?.status == 200)
             {
                 JSONObject obj = new JSONObject(apiResponse.readEntity(String.class))
@@ -113,7 +108,7 @@ class CityController {
             {
                 jsonObject.put("entityTypeId", session.getAttribute("entityTypeId"))
             }
-            def apiResponse = new SystemService().putCity(jsonObject)
+            def apiResponse = new SystemService().putDistrict(jsonObject)
             if (apiResponse.status == 200)
             {
                 JSONObject obj = new JSONObject(apiResponse.readEntity(String.class))
@@ -137,7 +132,7 @@ class CityController {
         try
         {
             JSONObject jsonObject = new JSONObject(params)
-            def apiResponse = new SystemService().deleteCity(jsonObject)
+            def apiResponse = new SystemService().deleteDistrict(jsonObject)
             if (apiResponse.status == 200)
             {
                 JSONObject data = new JSONObject()
@@ -157,9 +152,8 @@ class CityController {
         }
     }
 
-    def getCityById(String id)
+    def getDivisionById(String id)
     {
-        return new SystemService().getCityById(id)
+        return new SystemService().getDivisionById(id)
     }
-
 }
