@@ -96,7 +96,7 @@ class CityMasterService {
         if(divisionMaster)
         {
             cityMaster.divisionName = divisionMaster.divisionName
-            cityMaster.districtCode = divisionMaster.divisionCode
+            cityMaster.divisionCode = divisionMaster.divisionCode
             cityMaster.division = divisionMaster
         }
         DistrictMaster districtMaster = DistrictMaster.findById(Long.parseLong(jsonObject.get("district").toString()))
@@ -142,7 +142,7 @@ class CityMasterService {
                 if(divisionMaster)
                 {
                     cityMaster.divisionName = divisionMaster.divisionName
-                    cityMaster.districtCode = divisionMaster.divisionCode
+                    cityMaster.divisionCode = divisionMaster.divisionCode
                     cityMaster.division = divisionMaster
                 }
                 DistrictMaster districtMaster = DistrictMaster.findById(Long.parseLong(jsonObject.get("district").toString()))
