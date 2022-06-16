@@ -44,11 +44,12 @@ class SaleEntryController {
         def series = new SeriesController().getByEntity(entityId)
         def saleBillId = params.saleBillId
         JSONObject saleBillDetail = new SalesService().getSaleBillDetailsById(saleBillId)
+        JSONObject customer = new EntityService().getEntityById(saleBillDetail.customerId.toString())
         if (saleBillDetail != null && saleBillDetail.billStatus == 'DRAFT') {
             JSONArray saleProductDetails = new SalesService().getSaleProductDetailsByBill(saleBillId)
             render(view: '/sales/saleEntry/sale-entry', model: [customers         : customers, divisions: divisions, series: series,
                                                                 priorityList      : priorityList, saleBillDetail: saleBillDetail,
-                                                                saleProductDetails: saleProductDetails])
+                                                                saleProductDetails: saleProductDetails, customer:customer])
         } else {
             render('No Draft invoice found!!')
         }
