@@ -45,6 +45,7 @@ class UrlMappings {
         "/city/datatable"(controller: "city", action: "dataTable")
         "/city/update/$id"(controller: "city",action:"update")
         "/city/delete/$id"(controller: "city",action:"delete")
+        "/getcitybypincode"(controller: 'city', action: 'getCityByPincode')
 
 
 //        //      Priority

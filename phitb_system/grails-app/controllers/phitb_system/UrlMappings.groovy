@@ -74,6 +74,7 @@ class UrlMappings {
 
             //City Master
             "/city(.$format)?"(controller: 'cityMaster') { action = [GET: 'index', POST: 'save'] }
+            "/getcitybypincode"(controller: 'cityMaster', action: 'getCityDetailsByPinCode')
             "/city/datatable(.$format)?"(controller: 'cityMaster') { action = [GET: 'dataTable'] }
             "/city/$id(.$format)?"(controller: 'cityMaster') { action = [GET: 'show', PUT: 'update', DELETE: 'delete'] }
             "/countrybyentity/$id(.$format)?"(controller: 'cityMaster') { action = [GET: 'getAllByEntityId'] }

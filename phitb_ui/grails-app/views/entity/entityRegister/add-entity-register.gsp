@@ -22,7 +22,8 @@
             src="/themeassets/plugins/bootstrap-material-datetimepicker/css/bootstrap-material-datetimepicker.css"
             rel="stylesheet"/>
     <asset:stylesheet src="/themeassets/plugins/dropify/dist/css/dropify.min.css"/>
-    <asset:stylesheet src="/themeassets/plugins/select-2-editor/select2.min.css"/>
+%{--    <asset:stylesheet src="/themeassets/plugins/select-2-editor/select2.min.css"/>--}%
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
 
 
 </head>
@@ -150,7 +151,7 @@
                                             </label>
                                             <select class="form-control show-tick cityId" name="cityId" id="cityId">
                                                 <g:each var="city" in="${citylist}">
-                                                    <option value="${city.id}">${city.name}</option>
+                                                    <option value="${city.id}">${city.district.district}</option>
                                                 </g:each>
                                             </select>
                                         </div>
@@ -158,9 +159,9 @@
                                             <label for="pinCode">
                                                 Pin Code
                                             </label>
-                                            <input type="number" id="pinCode" class="form-control pinCode"
-                                                   name="pinCode" placeholder="Pin Code"
-                                                   required/>
+                                            <input type="hidden" id="pinCode" class="form-control pinCode"
+                                                    name="pinCode" placeholder="Pin Code"  required>
+
                                         </div>
                                         <div class="col-lg-6 form-group  form-float">
                                             <label for="phoneNumber">
@@ -584,7 +585,6 @@
                                 <input type="hidden" name="lastLoginDate" value="12/02/2020">
                                 <input type="hidden" name="createdUser" value="${session.getAttribute('userId')}">
                                 <input type="hidden" name="modifiedUser" value="${session.getAttribute('userId')}">
-
                                 <div class="col-lg-12">
                                     <div class="" style="float: right;">
                                         <input name="id" id="id" class="id" type="hidden">
@@ -619,16 +619,18 @@
 <asset:javascript src="/themeassets/plugins/jquery-datatable/buttons/buttons.colVis.min.js"/>
 <asset:javascript src="/themeassets/plugins/jquery-datatable/buttons/buttons.html5.min.js"/>
 <asset:javascript src="/themeassets/plugins/jquery-datatable/buttons/buttons.print.min.js"/>
+<asset:javascript src="/themeassets/plugins/select2/"/>
 <asset:javascript src="/themeassets/bundles/mainscripts.bundle.js"/>
 <asset:javascript src="/themeassets/js/pages/tables/jquery-datatable.js"/>
 <asset:javascript src="/themeassets/js/pages/ui/dialogs.js"/>
 <asset:javascript src="/themeassets/plugins/sweetalert/sweetalert.min.js"/>
-<asset:javascript src="/themeassets/plugins/select-2-editor/select2.js"/>
+%{--<asset:javascript src="/themeassets/plugins/select-2-editor/select2.js"/>--}%
 <asset:javascript src="/themeassets/plugins/jquery-inputmask/jquery.inputmask.bundle.js"/>
 <asset:javascript src="/themeassets/plugins/momentjs/moment.js"/>
 <asset:javascript src="/themeassets/plugins/bootstrap-material-datetimepicker/js/bootstrap-material-datetimepicker.js"/>
 <asset:javascript src="/themeassets/js/pages/forms/basic-form-elements.js"/>
 <asset:javascript src="/themeassets/plugins/dropify/dist/js/dropify.min.js"/>
+<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
 
 
 
@@ -700,8 +702,40 @@
     function setTwoNumberDecimal(event) {
         this.value = parseFloat(this.value.toFixed(2));
     }
-</script>
 
+
+        $('.pinCode').select2({
+            placeholder: "Pincode",
+            // multiple: false,
+            minimumInputLength: 3,
+            allowClear: true,
+            quietMillis: 100,
+            id: function(params){ return params._id; },
+            ajax: {
+                url: "/getcitybypincode",
+                dataType: 'json',
+                type: 'POST',
+                data: function(term, page) {
+                    return {
+                        pincode: term,
+                        // page: page || 1
+                    }
+                },
+                results: function(data, page) {
+                    console.log(data);
+                    return {
+                        results: [{"id":data.id, "text":data.areaName}],
+                    };
+                }
+            },
+            // formatResult:function(item){
+            //     return data.pincode;
+            // },
+            // formatSelection: formatSelection,
+            // initSelection: initSelection
+        })
+
+</script>
 <g:include view="controls/footer-content.gsp"/>
 <script>
     selectSideMenu("product-menu");

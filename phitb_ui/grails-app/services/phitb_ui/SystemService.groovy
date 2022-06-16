@@ -1456,5 +1456,25 @@ class SystemService
 
     }
 
+    def getCityByPin(String pincode)
+    {
+        Client client = ClientBuilder.newClient();
+        WebTarget target = client.target(new Links().API_GATEWAY);
+        try
+        {
+            Response apiResponse = target
+                    .path(new Links().GET_CITY_BY_PINCODE)
+                    .queryParam("pincode", URLEncoder.encode(pincode, "UTF-8"))
+                    .request(MediaType.APPLICATION_JSON_TYPE)
+                    .get()
+            return apiResponse
+        }
+        catch (Exception ex)
+        {
+            System.err.println('Service :systemService , action : getCityByPin   , Ex:' + ex)
+            log.error('Service :systemService , action :  getCityByPin  , Ex:' + ex)
+        }
+
+    }
 
 }

@@ -58,6 +58,8 @@ public class Links
     public static String CITY_MASTER_DATATABLE = "api/v1.0/system/city/datatable";
     public static String CITY_MASTER_UPDATE = "api/v1.0/system/city/{id}";
     public static String CITY_MASTER_DELETE = "api/v1.0/system/city/{id}";
+    public static String GET_CITY_BY_PINCODE = "api/v1.0/system/getcitybypincode";
+
 
     //    Priorty Master
     public static String PRIORITY_SAVE = "api/v1.0/system/priority";

@@ -1,5 +1,6 @@
 package phitb_ui.system
 
+import grails.artefact.Controller
 import groovy.json.JsonSlurper
 import org.grails.web.json.JSONArray
 import org.grails.web.json.JSONObject
@@ -41,6 +42,39 @@ class CityController {
         {
             return []
         }
+    }
+
+    def getCityByPincode()
+    {
+        try
+        {
+            println(params)
+            String pincode = params.pincode
+            if(pincode!="")
+            {
+                def apiResponse = new SystemService().getCityByPin(pincode)
+                if (apiResponse?.status == 200)
+                {
+//                    JSONArray jsonArray = new JSONArray(apiResponse.readEntity(String.class));
+//                    ArrayList<String> arrayList = new ArrayList<>(jsonArray)
+                    JSONObject jsonObject = new JSONObject(apiResponse.readEntity(String.class));
+                    respond jsonObject,formats:['json'], status: 200;
+                }
+                else
+                {
+                    return []
+                }
+            }
+            else {
+                return []
+            }
+
+        }
+       catch(Exception ex)
+       {
+           System.out.println(controllerName+": "+ex)
+           log.error(controllerName+": "+ex)
+       }
     }
 
     def dataTable()
