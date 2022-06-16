@@ -256,7 +256,7 @@
                             'grossAmt': grossAmt,
                             'date': moment(json.data[i].entryDate).format('DD-MM-YYYY  h:mm a'),
                             'netAmt': json.data[i].invoiceTotal.toFixed(2),
-                            'city': json?.city[i]?.cityId?.districtName,
+                            'city': json.city[i].cityId?.name,
                             'bill_status': json.data[i].billStatus,
                             'balance': json.data[i].balance.toFixed(2),
                             'finYear': json.data[i].financialYear
