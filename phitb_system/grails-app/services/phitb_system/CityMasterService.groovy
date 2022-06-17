@@ -197,10 +197,11 @@ class CityMasterService {
         try {
             if(pincode)
             {
-                ArrayList<CityMaster> cityMasters =  CityMaster.findAllByPincodeRlike(pincode) as ArrayList
+                ArrayList<CityMaster> cityMasters =  CityMaster.findAllByPincodeIlike(pincode) as ArrayList
                 if (cityMasters) {
-                    JSONArray cityDetails = new JSONArray((cityMasters as JSON).toString())
-                    return cityDetails
+//                    JSONArray cityDetails = new JSONArray((cityMasters as JSON).toString())
+//                    println(cityDetails)
+                    return cityMasters
                 }
             }
             else

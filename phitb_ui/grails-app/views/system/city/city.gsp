@@ -18,6 +18,7 @@
     <asset:stylesheet rel="stylesheet" href="/themeassets/plugins/sweetalert/sweetalert.css"/>
     <asset:stylesheet  src="/themeassets/plugins/bootstrap-select/css/bootstrap-select.css" rel="stylesheet" />
     <asset:stylesheet  src="/themeassets/plugins/select-2-editor/select2.min.css" rel="stylesheet" />
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.3/css/select2.min.css" rel="stylesheet" />
 
     <style>
 
@@ -148,8 +149,9 @@
 <asset:javascript src="/themeassets/js/pages/tables/jquery-datatable.js"/>
 <asset:javascript src="/themeassets/js/pages/ui/dialogs.js"/>
 <asset:javascript src="/themeassets/plugins/sweetalert/sweetalert.min.js"/>
-<asset:javascript  src="/themeassets/plugins/select-2-editor/select2.js" />
+%{--<asset:javascript  src="/themeassets/plugins/select-2-editor/select2.js" />--}%
 
+<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.3/js/select2.min.js"></script>
 
 
 <script>
@@ -260,6 +262,9 @@
         id = null;
         $('.state').val("").change();
         $('.state').select2();
+        $('.division').select2();
+        $('.region').select2();
+        $('.district').select2();
 
     });
 
@@ -276,6 +281,10 @@
         $(".district").val($(this).attr('data-district')).change();
         $(".state").val($(this).attr('data-state')).change();
         $('.state').select2();
+        $('.division').select2();
+        $('.region').select2();
+        $('.district').select2();
+
         $(".cityTitle").text("Update City");
     });
 

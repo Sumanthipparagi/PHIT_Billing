@@ -32,7 +32,7 @@
                                     Circle Name
                                 </label>
                                 <input type="text" id="circleName" class="form-control circleName" name="circleName"
-                                       placeholder="Circle Name"
+                                       plceholder="Circle Name"
                                        required/>
                             </div>
 
@@ -67,7 +67,8 @@
                                 <label for="region">
                                     Region
                                 </label>
-                                <select class="form-control show-tick region" name="region" id="region">
+                                <select class="form-control show-tick region" name="region" id="region"  style="width:
+                                350px">
                                     <option value="">--Please Select--</option>
                                     <g:each var="r" in="${region}">
                                         <option value="${r.id}">${r.regionName}</option>
@@ -79,7 +80,8 @@
                                 <label for="division">
                                     Division
                                 </label>
-                                <select class="form-control show-tick division" name="division" id="division">
+                                <select class="form-control show-tick division" name="division" id="division"  style="width:
+                                350px">
                                     <option value="">--Please Select--</option>
                                     <g:each var="d" in="${division}">
                                         <option value="${d.id}">${d.divisionName}</option>
@@ -92,7 +94,8 @@
                                 <label for="district">
                                     District
                                 </label>
-                                <select class="form-control show-tick district" name="district" id="district">
+                                <select class="form-control show-tick district" name="district" id="district"  style="width:
+                                350px" required>
                                     <option value="">--Please Select--</option>
                                     <g:each var="d" in="${district}">
                                         <option value="${d.id}">${d.district}</option>
@@ -103,8 +106,9 @@
                             <div class="col-lg-6 form-group  form-float">
                                 <label for="state">
                                     State
-                                </label>
-                                <select class="form-control show-tick state" name="state" id="state">
+                                </label><br>
+                                <select class="form-control show-tick state" name="state"  id="state" style="width:
+                                350px">
                                     <option value="">--Please Select--</option>
                                     <g:each var="s" in="${state}">
                                         <option value="${s.id}">${s.name}</option>

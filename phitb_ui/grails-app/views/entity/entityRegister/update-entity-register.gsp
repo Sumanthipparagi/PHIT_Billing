@@ -22,7 +22,8 @@
             src="/themeassets/plugins/bootstrap-material-datetimepicker/css/bootstrap-material-datetimepicker.css"
             rel="stylesheet"/>
     <asset:stylesheet src="/themeassets/plugins/dropify/dist/css/dropify.min.css"/>
-    <asset:stylesheet src="/themeassets/plugins/select-2-editor/select2.min.css"/>
+%{--    <asset:stylesheet src="/themeassets/plugins/select-2-editor/select2.min.css"/>--}%
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.3/css/select2.min.css" rel="stylesheet" />
 
 
 </head>
@@ -617,12 +618,13 @@
 <asset:javascript src="/themeassets/js/pages/tables/jquery-datatable.js"/>
 <asset:javascript src="/themeassets/js/pages/ui/dialogs.js"/>
 <asset:javascript src="/themeassets/plugins/sweetalert/sweetalert.min.js"/>
-<asset:javascript src="/themeassets/plugins/select-2-editor/select2.js"/>
+%{--<asset:javascript src="/themeassets/plugins/select-2-editor/select2.js"/>--}%
 <asset:javascript src="/themeassets/plugins/jquery-inputmask/jquery.inputmask.bundle.js"/>
 <asset:javascript src="/themeassets/plugins/momentjs/moment.js"/>
 <asset:javascript src="/themeassets/plugins/bootstrap-material-datetimepicker/js/bootstrap-material-datetimepicker.js"/>
 <asset:javascript src="/themeassets/js/pages/forms/basic-form-elements.js"/>
 <asset:javascript src="/themeassets/plugins/dropify/dist/js/dropify.min.js"/>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.3/js/select2.min.js"></script>
 
 <script>
 
@@ -730,7 +732,7 @@
             data: {'id' : id},
             success: function(response){
                 console.log(response);
-                alert(response.id)
+                // alert(response.id)
                 $('.stateId').val(response.state.id).change();
                 $('.cityId').val(response.id).change()
             },
