@@ -140,30 +140,41 @@
                                             <label for="stateId">
                                                 State
                                             </label>
-                                            <select class="form-control show-tick stateId" name="stateId" id="stateId">
+                                            <select class="form-control show-tick stateId" name="stateId"
+                                                    id="stateId" disabled>
                                                 <g:each var="state" in="${statelist}">
                                                     <option value="${state.id}" <g:if test="${state.id == entity.stateId}">selected</g:if>>${state.name}</option>
                                                 </g:each>
                                             </select>
+                                            <input type="hidden" name="stateId" value="${entity.stateId}"/>
+
                                         </div>
                                         <div class="col-lg-6 form-group  form-float">
                                             <label for="cityId">
                                                 City
                                             </label>
-                                            <select class="form-control show-tick cityId" name="cityId" id="cityId">
+                                            <select class="form-control show-tick cityId" name="cityId" id="cityId" disabled>
                                                 <g:each var="city" in="${citylist}">
                                                     <option value="${city.id}" <g:if
-                                                            test="${city.id == entity.cityId}">selected</g:if>>${city.name}</option>
+                                                            test="${city.id == entity.cityId}">selected</g:if>>${city.district.district}</option>
                                                 </g:each>
                                             </select>
+                                            <input type="hidden" name="cityId" value="${entity.cityId}"/>
+
                                         </div>
                                         <div class="col-lg-6 form-group  form-float">
                                             <label for="pinCode">
                                                 Pin Code
                                             </label>
-                                            <input type="number" id="pinCode" class="form-control pinCode"
-                                                   name="pinCode" placeholder="Pin Code" value="${entity.pinCode}"
-                                                   required/>
+%{--                                            <input type="number" id="pinCode" class="form-control pinCode"--}%
+%{--                                                   name="pinCode" placeholder="Pin Code" value="${entity.pinCode}"--}%
+%{--                                                   required/>--}%
+                                            <div>
+                                                <select class="pinCode form-control" id="pinCode"></select>
+                                                <input type="hidden" name="pinCode" value="${entity.pinCode}">
+                                            </div>
+                                            <sub>Previously selected pincode: ${entity.pinCode}</sub>
+
                                         </div>
                                         <div class="col-lg-6 form-group  form-float">
                                             <label for="phoneNumber">
@@ -699,6 +710,7 @@
     $('.pinCode').select2({
         placeholder: 'Select an item',
         minimumInputLength: 3,
+        required:true,
         ajax: {
             url: '/getcitybypincode',
             dataType: 'json',
@@ -722,6 +734,7 @@
     });
 
 
+
     $('.pinCode').on('select2:selecting', function(e) {
         var data =  e.params.args.data;
         var id = data.id;
@@ -732,9 +745,20 @@
             data: {'id' : id},
             success: function(response){
                 console.log(response);
-                // alert(response.id)
                 $('.stateId').val(response.state.id).change();
+                $("input[name='stateId']").val(response.state.id);
+                $("input[name='cityId']").val(response.id);
                 $('.cityId').val(response.id).change()
+                $('.pinCode').val(response.pincode)
+                $("input[name='pinCode']").val(response.pincode);
+                if(response.state.alphaCode === "FC")
+                {
+                    $('.countryId').find('option:contains("OTHER")').attr('selected', 'selected');
+
+                }
+                else {
+                    $('.countryId').find('option:contains("INDIA")').attr('selected', 'selected');
+                }
             },
             error: function(jqXHR, textStatus, errorThrown) { }
         });

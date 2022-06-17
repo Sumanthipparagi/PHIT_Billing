@@ -145,6 +145,7 @@
                                                 <g:each var="state" in="${statelist}">
                                                     <option value="${state.id}">${state.name}</option>
                                                 </g:each>
+                                                <input type="hidden" name="stateId"/>
                                             </select>
                                         </div>
                                         <div class="col-lg-6 form-group  form-float">
@@ -155,6 +156,7 @@
                                                 <g:each var="city" in="${citylist}">
                                                     <option value="${city.id}">${city.district.district}</option>
                                                 </g:each>
+                                                <input type="hidden" name="cityId">
                                             </select>
                                         </div>
                                         <div class="col-lg-6 form-group  form-float">
@@ -164,7 +166,7 @@
 %{--                                            <input type="text" id="pinCode" class="form-control pinCode"--}%
 %{--                                                    name="pinCode" placeholder="Pin Code"  required>--}%
                                             <div>
-                                                <select class="pinCode form-control" id="pinCode" ></select>
+                                                <select class="pinCode form-control" id="pinCode"></select>
                                             <input type="hidden" name="pinCode">
                                             </div>
 
@@ -745,6 +747,7 @@
         $('.pinCode').select2({
             placeholder: 'Select an item',
             minimumInputLength: 3,
+            required:true,
             ajax: {
                 url: '/getcitybypincode',
                 dataType: 'json',
@@ -779,9 +782,20 @@
                 data: {'id' : id},
                 success: function(response){
                     console.log(response);
-                    alert(response.id)
                     $('.stateId').val(response.state.id).change();
+                    $("input[name='stateId']").val(response.state.id);
+                    $("input[name='cityId']").val(response.id);
                     $('.cityId').val(response.id).change()
+                    $('.pinCode').val(response.pincode)
+                    $("input[name='pinCode']").val(response.pincode);
+                    if(response.state.alphaCode === "FC")
+                    {
+                        $('.countryId').find('option:contains("OTHER")').attr('selected', 'selected');
+
+                    }
+                    else {
+                        $('.countryId').find('option:contains("INDIA")').attr('selected', 'selected');
+                    }
                 },
                 error: function(jqXHR, textStatus, errorThrown) { }
             });
