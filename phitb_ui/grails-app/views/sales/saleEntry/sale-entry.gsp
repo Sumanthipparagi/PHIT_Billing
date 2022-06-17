@@ -320,6 +320,8 @@
         customers.push({"id": ${cs.id}, "noOfCrDays": ${cs.noOfCrDays}});
         </g:each>
         const container = document.getElementById('saleTable');
+
+        //main table
         hot = new Handsontable(container, {
             data: saleData,
             minRows: 1,
@@ -365,10 +367,20 @@
                 {type: 'text', readOnly: true}, //IGST Percentage
                 {type: 'text', readOnly: true},//originalSqty
                 {type: 'text', readOnly: true} //originalFqty
+                <g:if test="${customer != null}">
+                , {type: 'text', readOnly: true}, //draft sqty
+                {type: 'text', readOnly: true} //draft fqty
+                </g:if>
             ],
             hiddenColumns: true,
             hiddenColumns: {
-                columns: [15, 16, 17, 18, 19, 20, 21]
+                <g:if test="${customer != null}">
+                    columns: [15, 16, 17, 18, 19, 20, 21, 22, 23]
+                </g:if>
+                <g:else>
+                    columns: [15, 16, 17, 18, 19, 20, 21]
+
+                </g:else>
             },
             minSpareRows: 0,
             minSpareColumns: 0,
@@ -436,8 +448,11 @@
                             var dt = hot.getDataAtRow(row);
                             dt.push(batchId);
                             var json = JSON.stringify(dt);
-                            var url = '/tempstockbook';
                             var type = 'POST';
+                            var url = '/tempstockbook';
+                            <g:if test="${customer != null}">
+                                url = '/tempstockbook';
+                            </g:if>
                             var beforeSendSwal;
                             $.ajax({
                                 type: type,
@@ -640,6 +655,7 @@
             //Handsontable.TextCell.renderer.apply(this, arguments);
         }
 
+        //batch table
         batchHot = new Handsontable(batchContainer, {
             data: batchData,
             minRows: 1,
@@ -774,7 +790,6 @@
 
     function customerSelectChanged() {
         var noOfCrDays = 0;
-        var customerId = $("#customerSelect").val();
         if (customers.length > 0) {
             for (var i = 0; i < customers.length; i++) {
                 if (customerId == customers[i].id) {
@@ -782,8 +797,11 @@
                 }
             }
         } else {
+            <g:if test="${customer != null}">
             noOfCrDays = ${customer.noOfCrDays};
+            </g:if>
         }
+        var customerId = $("#customerSelect").val();
         $('#duedate').prop("readonly", false);
         $("#duedate").val(moment().add(noOfCrDays, 'days').format('YYYY-MM-DD'));
         $('#duedate').prop("readonly", true);
@@ -959,6 +977,10 @@
                     hot.setDataAtCell(i, 19, igst);
                     hot.setDataAtCell(i, 20, saleData[i]["originalSqty"]);
                     hot.setDataAtCell(i, 21, saleData[i]["originalFqty"]);
+                    <g:if test="${customer != null}">
+                        hot.setDataAtCell(i, 22, sQty); //draft sqty
+                        hot.setDataAtCell(i, 23, fQty); //draft fqty
+                    </g:if>
                 }
 
                 // setTimeout(function () {
@@ -1157,10 +1179,10 @@
                     products.push({id: data[i].id, text: data[i].productName});
                 }
                 <g:if test="${params.saleBillId}">
-                    loadDraftProducts();
+                loadDraftProducts();
                 </g:if>
                 <g:else>
-                    loadTempStockBookData();
+                loadTempStockBookData();
                 </g:else>
             },
             error: function () {

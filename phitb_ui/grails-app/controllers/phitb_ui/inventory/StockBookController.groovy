@@ -426,14 +426,13 @@ class StockBookController {
         try
         {
             JSONArray jsonArray = new JSONArray(params.rowData)
+            def tmp = jsonArray[22]
             Boolean isEdit = false
             int i = 0
             for (Object obj : jsonArray) {
                 //15 if edit, 16 if being added
                 if(i == 15 && obj != null)
                     isEdit = true
-/*                else if(i == 16 && obj != null)
-                    isEdit = false*/
                 i++
             }
             def stockBook = null
@@ -465,21 +464,7 @@ class StockBookController {
                 remainingQty = remainingQty - (saleFreeQty - remainingFreeQty)
                 remainingFreeQty = 0
             }
-           /* if(saleQty>remainingQty && remainingFreeQty>saleQty)
-            {
-                remainingQty = 0
-                remainingFreeQty = remainingFreeQty - saleQty
-            }
-            else {
-                remainingQty = remainingQty - saleQty
-                if(remainingFreeQty<saleFreeQty)
-                {
-                    remainingFreeQty = 0
-                }
-                else {
-                    remainingFreeQty = remainingFreeQty - saleFreeQty
-                }
-            }*/
+
             JSONObject jsonObject = new JSONObject()
             jsonObject.put("productId", jsonArray[1])
             jsonObject.put("batchNumber", jsonArray[2])
@@ -504,6 +489,13 @@ class StockBookController {
             jsonObject.put("uuid", params.uuid)
             jsonObject.put("originalSqty", jsonArray[20])
             jsonObject.put("originalFqty", jsonArray[21])
+
+            //editing draft
+            if(jsonArray.indexOf(22))
+                jsonObject.put("draftSqty", jsonArray[22])
+            if(jsonArray.indexOf(23))
+                jsonObject.put("draftFqty", jsonArray[23])
+
             def apiResponse = new InventoryService().tempStockBookSave(jsonObject)
             if (apiResponse?.status == 200)
             {
