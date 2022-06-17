@@ -45,11 +45,11 @@
         <div class="block-header">
             <div class="row">
                 <div class="col-lg-5 col-md-5 col-sm-12">
-                    <h2>Add  Entity Register</h2>
+                    <h2>Update  Entity Register</h2>
                     <ul class="breadcrumb padding-0">
                         <li class="breadcrumb-item"><a href="/"><i class="zmdi zmdi-home"></i></a></li>
                         <li class="breadcrumb-item"><a href="/entity-register"> Entity Register</a></li>
-                        <li class="breadcrumb-item active">Add  Entity Register</li>
+                        <li class="breadcrumb-item active">Update  Entity Register</li>
                     </ul>
                 </div>
 
