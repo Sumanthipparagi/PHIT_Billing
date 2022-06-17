@@ -71,7 +71,7 @@
             <div class="col-lg-12 col-md-12 col-sm-12">
                 <div class="card">
                     <div class="body">
-                        <form action="/entity-register" id="form_validation" method="POST" role="form"
+                        <form action="/entity-register" id="entityRegisterForm" method="POST" role="form"
                               class="entityRegisterForm" enctype="multipart/form-data">
                             <div class="row">
                                 <div class="col-md-6" style="max-width: 49%;border: 1px solid black;  border-radius: 10px;padding: 10px;
@@ -124,11 +124,13 @@
                                             <label for="countryId">
                                                 Country
                                             </label>
-                                            <select class="form-control show-tick countryId" name="countryId" id="countryId">
+                                            <select class="form-control show-tick countryId" name="countryId"
+                                                    id="countryId" disabled>
                                                 <g:each var="country" in="${countrylist}">
                                                     <option value="${country.id}">${country.name}</option>
                                                 </g:each>
                                             </select>
+                                            <input type="hidden" name="countryId"/>
                                         </div>
                                     </div>
                                 </div>
@@ -136,6 +138,18 @@
                                 <div class="col-md-6" style="max-width: 49%;border: 1px solid black;  border-radius: 10px;    padding: 10px;
                                 ">
                                     <div class="row">
+                                        <div class="col-lg-6 form-group  form-float">
+                                            <label for="pinCode">
+                                                Pin Code
+                                            </label>
+                                            %{--                                            <input type="text" id="pinCode" class="form-control pinCode"--}%
+                                            %{--                                                    name="pinCode" placeholder="Pin Code"  required>--}%
+                                            <div>
+                                                <select class="pinCode form-control" id="pinCode" ></select>
+                                                <input type="hidden" name="pinCode">
+                                            </div>
+
+                                        </div>
                                         <div class="col-md-6 form-group  form-float">
                                             <label for="stateId">
                                                 State
@@ -159,18 +173,7 @@
                                                 <input type="hidden" name="cityId">
                                             </select>
                                         </div>
-                                        <div class="col-lg-6 form-group  form-float">
-                                            <label for="pinCode">
-                                                Pin Code
-                                            </label>
-%{--                                            <input type="text" id="pinCode" class="form-control pinCode"--}%
-%{--                                                    name="pinCode" placeholder="Pin Code"  required>--}%
-                                            <div>
-                                                <select class="pinCode form-control" id="pinCode"></select>
-                                            <input type="hidden" name="pinCode">
-                                            </div>
 
-                                        </div>
                                         <div class="col-lg-6 form-group  form-float">
                                             <label for="phoneNumber">
                                                 Phone Number
@@ -666,6 +669,7 @@
     });
 
         $('.affiliateId').select2()
+
     });
 
     $(document).ready(function () {
@@ -745,7 +749,7 @@
         //     // initSelection: initSelection
         // })
         $('.pinCode').select2({
-            placeholder: 'Select an item',
+            placeholder: 'Enter Pincode',
             minimumInputLength: 3,
             required:true,
             ajax: {
@@ -785,22 +789,53 @@
                     $('.stateId').val(response.state.id).change();
                     $("input[name='stateId']").val(response.state.id);
                     $("input[name='cityId']").val(response.id);
-                    $('.cityId').val(response.id).change()
-                    $('.pinCode').val(response.pincode)
+                    $('.cityId').val(response.id).change();
+                    $('.pinCode').val(response.pincode);
                     $("input[name='pinCode']").val(response.pincode);
                     if(response.state.alphaCode === "FC")
                     {
                         $('.countryId').find('option:contains("OTHER")').attr('selected', 'selected');
-
+                        $("input[name='countryId']").val($('.countryId').val());
                     }
                     else {
                         $('.countryId').find('option:contains("INDIA")').attr('selected', 'selected');
+                        $("input[name='countryId']").val($('.countryId').val());
                     }
                 },
                 error: function(jqXHR, textStatus, errorThrown) { }
             });
 
         });
+
+          $("#entityRegisterForm").submit(function(event) {
+              var pincode =  $('.pinCode option').length;
+              if(pincode === 0 || pincode < 0)
+              {
+                  swal("Please enter  pincode and  select area");
+                  event.preventDefault();
+              }
+          });
+
+        // $('#updatePassword').submit(function(event) {
+        //     var formData = $(this);
+        //     $.ajax({
+        //         type        : 'POST', // define the type of HTTP verb we want to use (POST for our form)
+        //         url         : formData.attr('action'), // the url where we want to POST
+        //         data        : formData.serialize(), // our data object
+        //         success:function(data){
+        //             $("#validation-status").text(data);
+        //             swal('success','Password Changed Successfully',data);
+        //         },
+        //         error:function(data){
+        //             console.log("Failed");
+        //             $("#validation-status").text(data.responseText);
+        //             swal('error','Password Change Failed',data.responseText);
+        //         }
+        //     });
+        //     event.preventDefault();
+        // });
+
+
 
 </script>
 <g:include view="controls/footer-content.gsp"/>

@@ -124,18 +124,31 @@
                                             <label for="countryId">
                                                 Country
                                             </label>
-                                            <select class="form-control show-tick countryId" name="countryId" id="countryId">
+                                            <select class="form-control show-tick countryId"  id="countryId" disabled>
                                                 <g:each var="country" in="${countrylist}">
                                                     <option value="${country.id}" <g:if test="${country.id == entity.countryId}">selected</g:if>>${country.name}</option>
                                                 </g:each>
+                                                <input type="hidden" name="countryId" value="${entity.countryId}"/>
                                             </select>
                                         </div>
                                     </div>
                                 </div>
                                 <div class="ml-1"></div>
-                                <div class="col-md-6" style="max-width: 49%;border: 1px solid black;  border-radius: 10px;    padding: 10px;
-                                ">
+                                <div class="col-md-6" style="max-width: 49%;border: 1px solid black;  border-radius: 10px;  padding: 10px;">
                                     <div class="row">
+
+                                        <div class="col-lg-6 form-group  form-float">
+                                            <label for="pinCode">
+                                                Pin Code
+                                            </label>
+
+                                            <div>
+                                                <select class="pinCode form-control" id="pinCode"></select>
+                                                <input type="hidden" name="pinCode" value="${entity.pinCode}">
+                                            </div>
+                                            <sub id="prev">Previously selected pincode: ${entity.pinCode}</sub>
+
+                                        </div>
                                         <div class="col-md-6 form-group  form-float">
                                             <label for="stateId">
                                                 State
@@ -160,20 +173,6 @@
                                                 </g:each>
                                             </select>
                                             <input type="hidden" name="cityId" value="${entity.cityId}"/>
-
-                                        </div>
-                                        <div class="col-lg-6 form-group  form-float">
-                                            <label for="pinCode">
-                                                Pin Code
-                                            </label>
-%{--                                            <input type="number" id="pinCode" class="form-control pinCode"--}%
-%{--                                                   name="pinCode" placeholder="Pin Code" value="${entity.pinCode}"--}%
-%{--                                                   required/>--}%
-                                            <div>
-                                                <select class="pinCode form-control" id="pinCode"></select>
-                                                <input type="hidden" name="pinCode" value="${entity.pinCode}">
-                                            </div>
-                                            <sub>Previously selected pincode: ${entity.pinCode}</sub>
 
                                         </div>
                                         <div class="col-lg-6 form-group  form-float">
@@ -734,7 +733,6 @@
     });
 
 
-
     $('.pinCode').on('select2:selecting', function(e) {
         var data =  e.params.args.data;
         var id = data.id;
@@ -748,22 +746,34 @@
                 $('.stateId').val(response.state.id).change();
                 $("input[name='stateId']").val(response.state.id);
                 $("input[name='cityId']").val(response.id);
-                $('.cityId').val(response.id).change()
-                $('.pinCode').val(response.pincode)
+                $('.cityId').val(response.id).change();
+                $('.pinCode').val(response.pincode);
                 $("input[name='pinCode']").val(response.pincode);
                 if(response.state.alphaCode === "FC")
                 {
                     $('.countryId').find('option:contains("OTHER")').attr('selected', 'selected');
+                    $("input[name='countryId']").val($('.countryId').val());
 
                 }
                 else {
                     $('.countryId').find('option:contains("INDIA")').attr('selected', 'selected');
+                    $("input[name='countryId']").val($('.countryId').val());
+
                 }
             },
             error: function(jqXHR, textStatus, errorThrown) { }
         });
 
     });
+
+    // $("#entityRegisterForm").submit(function(event) {
+    //     var pincode =  $('.pinCode option').length;
+    //     if(pincode === 0 || pincode < 0)
+    //     {
+    //         swal("Please enter  pincode and  select area");
+    //         event.preventDefault();
+    //     }
+    // });
 </script>
 
 <g:include view="controls/footer-content.gsp"/>
