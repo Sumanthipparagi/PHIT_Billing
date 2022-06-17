@@ -55,10 +55,9 @@ class CityController {
                 def apiResponse = new SystemService().getCityByPin(pincode)
                 if (apiResponse?.status == 200)
                 {
-//                    JSONArray jsonArray = new JSONArray(apiResponse.readEntity(String.class));
+                    JSONArray jsonArray = new JSONArray(apiResponse.readEntity(String.class));
 //                    ArrayList<String> arrayList = new ArrayList<>(jsonArray)
-                    JSONObject jsonObject = new JSONObject(apiResponse.readEntity(String.class));
-                    respond jsonObject,formats:['json'], status: 200;
+                    respond jsonArray,formats:['json'], status: 200;
                 }
                 else
                 {
@@ -191,9 +190,10 @@ class CityController {
         }
     }
 
-    def getCityById(String id)
+    def getCityById()
     {
-        return new SystemService().getCityById(id)
+        def city = new SystemService().getCityById(params.id)
+        respond city, formats: ['json'],status: 200
     }
 
 }

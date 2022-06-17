@@ -23,7 +23,8 @@
             rel="stylesheet"/>
     <asset:stylesheet src="/themeassets/plugins/dropify/dist/css/dropify.min.css"/>
 %{--    <asset:stylesheet src="/themeassets/plugins/select-2-editor/select2.min.css"/>--}%
-    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+%{--    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />--}%
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.3/css/select2.min.css" rel="stylesheet" />
 
 
 </head>
@@ -139,7 +140,8 @@
                                             <label for="stateId">
                                                 State
                                             </label>
-                                            <select class="form-control show-tick stateId" name="stateId" id="stateId">
+                                            <select class="form-control show-tick stateId" name="stateId"
+                                                    id="stateId" disabled>
                                                 <g:each var="state" in="${statelist}">
                                                     <option value="${state.id}">${state.name}</option>
                                                 </g:each>
@@ -149,7 +151,7 @@
                                             <label for="cityId">
                                                 City
                                             </label>
-                                            <select class="form-control show-tick cityId" name="cityId" id="cityId">
+                                            <select class="form-control show-tick cityId" name="cityId" id="cityId" disabled>
                                                 <g:each var="city" in="${citylist}">
                                                     <option value="${city.id}">${city.district.district}</option>
                                                 </g:each>
@@ -159,8 +161,12 @@
                                             <label for="pinCode">
                                                 Pin Code
                                             </label>
-                                            <input type="hidden" id="pinCode" class="form-control pinCode"
-                                                    name="pinCode" placeholder="Pin Code"  required>
+%{--                                            <input type="text" id="pinCode" class="form-control pinCode"--}%
+%{--                                                    name="pinCode" placeholder="Pin Code"  required>--}%
+                                            <div>
+                                                <select class="pinCode form-control" id="pinCode" ></select>
+                                            <input type="hidden" name="pinCode">
+                                            </div>
 
                                         </div>
                                         <div class="col-lg-6 form-group  form-float">
@@ -630,7 +636,7 @@
 <asset:javascript src="/themeassets/plugins/bootstrap-material-datetimepicker/js/bootstrap-material-datetimepicker.js"/>
 <asset:javascript src="/themeassets/js/pages/forms/basic-form-elements.js"/>
 <asset:javascript src="/themeassets/plugins/dropify/dist/js/dropify.min.js"/>
-<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.3/js/select2.min.js"></script>
 
 
 
@@ -656,6 +662,8 @@
         time: false,
         weekStart: 1
     });
+
+        $('.affiliateId').select2()
     });
 
     $(document).ready(function () {
@@ -704,36 +712,81 @@
     }
 
 
+        // $('.pinCode').select2({
+        //     placeholder: "Pincode",
+        //     // multiple: false,
+        //     minimumInputLength: 3,
+        //     allowClear: true,
+        //     quietMillis: 100,
+        //     id: function(params){ return params._id; },
+        //     ajax: {
+        //         url: "/getcitybypincode",
+        //         dataType: 'json',
+        //         type: 'POST',
+        //         data: function(term, page) {
+        //             return {
+        //                 pincode: term,
+        //                 // page: page || 1
+        //             }
+        //         },
+        //         results: function(data, page) {
+        //             console.log(data);
+        //             return {
+        //                 results: [{"id":data.id, "text":data.areaName}],
+        //             };
+        //         }
+        //     },
+        //     // formatResult:function(item){
+        //     //     return data.pincode;
+        //     // },
+        //     // formatSelection: formatSelection,
+        //     // initSelection: initSelection
+        // })
         $('.pinCode').select2({
-            placeholder: "Pincode",
-            // multiple: false,
+            placeholder: 'Select an item',
             minimumInputLength: 3,
-            allowClear: true,
-            quietMillis: 100,
-            id: function(params){ return params._id; },
             ajax: {
-                url: "/getcitybypincode",
+                url: '/getcitybypincode',
                 dataType: 'json',
-                type: 'POST',
-                data: function(term, page) {
+                delay: 250,
+                data: function (data) {
                     return {
-                        pincode: term,
-                        // page: page || 1
-                    }
-                },
-                results: function(data, page) {
-                    console.log(data);
-                    return {
-                        results: [{"id":data.id, "text":data.areaName}],
+                        pincode: data.term // search term
                     };
-                }
-            },
-            // formatResult:function(item){
-            //     return data.pincode;
-            // },
-            // formatSelection: formatSelection,
-            // initSelection: initSelection
-        })
+                },
+                processResults: function (response) {
+                    var data = [];
+                    response.forEach(function(response, index) {
+                        data.push({"pincode": response.pincode, "text": response.areaName, "id":response.id});
+                    });
+                    return {
+                        results:data
+                    };
+                },
+                cache: true
+            }
+        });
+
+
+
+        $('.pinCode').on('select2:selecting', function(e) {
+            var data =  e.params.args.data;
+            var id = data.id;
+            // alert(id)
+            $.ajax({
+                method: 'GET',
+                url: '/getcitybyid',
+                data: {'id' : id},
+                success: function(response){
+                    console.log(response);
+                    alert(response.id)
+                    $('.stateId').val(response.state.id).change();
+                    $('.cityId').val(response.id).change()
+                },
+                error: function(jqXHR, textStatus, errorThrown) { }
+            });
+
+        });
 
 </script>
 <g:include view="controls/footer-content.gsp"/>

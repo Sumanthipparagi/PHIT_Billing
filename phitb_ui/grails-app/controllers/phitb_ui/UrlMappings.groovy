@@ -46,6 +46,7 @@ class UrlMappings {
         "/city/update/$id"(controller: "city",action:"update")
         "/city/delete/$id"(controller: "city",action:"delete")
         "/getcitybypincode"(controller: 'city', action: 'getCityByPincode')
+        "/getcitybyid"(controller: 'city', action: 'getCityById')
 
 
 //        //      Priority

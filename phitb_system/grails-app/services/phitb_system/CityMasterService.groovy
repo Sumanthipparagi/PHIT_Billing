@@ -192,7 +192,7 @@ class CityMasterService {
         }
     }
 
-    CityMaster getCityDetailsByPinCode(String pincode)
+    def getCityDetailsByPinCode(String pincode)
     {
         try {
             if(pincode)
@@ -200,7 +200,7 @@ class CityMasterService {
                 ArrayList<CityMaster> cityMasters =  CityMaster.findAllByPincodeRlike(pincode) as ArrayList
                 if (cityMasters) {
                     JSONArray cityDetails = new JSONArray((cityMasters as JSON).toString())
-                    return cityDetails as JSONArray
+                    return cityDetails
                 }
             }
             else

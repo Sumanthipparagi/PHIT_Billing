@@ -693,6 +693,51 @@
         console.log(this.value)
         this.value = parseFloat(this.value.toFixed(2));
     }
+
+    $('.pinCode').select2({
+        placeholder: 'Select an item',
+        minimumInputLength: 3,
+        ajax: {
+            url: '/getcitybypincode',
+            dataType: 'json',
+            delay: 250,
+            data: function (data) {
+                return {
+                    pincode: data.term // search term
+                };
+            },
+            processResults: function (response) {
+                var data = [];
+                response.forEach(function(response, index) {
+                    data.push({"pincode": response.pincode, "text": response.areaName, "id":response.id});
+                });
+                return {
+                    results:data
+                };
+            },
+            cache: true
+        }
+    });
+
+
+    $('.pinCode').on('select2:selecting', function(e) {
+        var data =  e.params.args.data;
+        var id = data.id;
+        // alert(id)
+        $.ajax({
+            method: 'GET',
+            url: '/getcitybyid',
+            data: {'id' : id},
+            success: function(response){
+                console.log(response);
+                alert(response.id)
+                $('.stateId').val(response.state.id).change();
+                $('.cityId').val(response.id).change()
+            },
+            error: function(jqXHR, textStatus, errorThrown) { }
+        });
+
+    });
 </script>
 
 <g:include view="controls/footer-content.gsp"/>
