@@ -146,7 +146,9 @@
                                                 <select class="pinCode form-control" id="pinCode"></select>
                                                 <input type="hidden" name="pinCode" value="${entity.pinCode}">
                                             </div>
-                                            <sub id="prev">Previously selected pincode: ${entity.pinCode}</sub>
+                                            <sub id="prevPin">Previously selected pincode: ${entity.pinCode}</sub>
+                                            <sub id="prevArea">Previously selected area: ${cityId.areaName}</sub>
+
 
 
                                         </div>
