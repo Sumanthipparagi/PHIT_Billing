@@ -148,6 +148,7 @@
                                             </div>
                                             <sub id="prev">Previously selected pincode: ${entity.pinCode}</sub>
 
+
                                         </div>
                                         <div class="col-md-6 form-group  form-float">
                                             <label for="stateId">
