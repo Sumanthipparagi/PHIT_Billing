@@ -369,13 +369,14 @@
                 {type: 'text', readOnly: true} //originalFqty
                 <g:if test="${customer != null}">
                 , {type: 'text', readOnly: true}, //draft sqty
-                {type: 'text', readOnly: true} //draft fqty
+                {type: 'text', readOnly: true}, //draft fqty
+                {type: 'text', readOnly: true} //saved draft product id
                 </g:if>
             ],
             hiddenColumns: true,
             hiddenColumns: {
                 <g:if test="${customer != null}">
-                    columns: [15, 16, 17, 18, 19, 20, 21, 22, 23]
+                    columns: [15, 16, 17, 18, 19, 20, 21, 22, 23, 24]
                 </g:if>
                 <g:else>
                     columns: [15, 16, 17, 18, 19, 20, 21]
@@ -788,73 +789,6 @@
         }
     }
 
-    function customerSelectChanged() {
-        var noOfCrDays = 0;
-        if (customers.length > 0) {
-            for (var i = 0; i < customers.length; i++) {
-                if (customerId == customers[i].id) {
-                    noOfCrDays = customers[i].noOfCrDays;
-                }
-            }
-        } else {
-            <g:if test="${customer != null}">
-            noOfCrDays = ${customer.noOfCrDays};
-            </g:if>
-        }
-        var customerId = $("#customerSelect").val();
-        $('#duedate').prop("readonly", false);
-        $("#duedate").val(moment().add(noOfCrDays, 'days').format('YYYY-MM-DD'));
-        $('#duedate').prop("readonly", true);
-    }
-
-    function calculateTotalAmt() {
-        totalAmt = 0;
-        totalGst = 0;
-        totalCgst = 0;
-        totalSgst = 0;
-        totalIgst = 0;
-        totalQty = 0;
-        totalFQty = 0;
-        var data = hot.getData();
-        for (var i = 0; i < data.length; i++) {
-            if (data[i][4])
-                totalQty += parseFloat(data[i][4]);
-            if (data[i][5])
-                totalFQty += parseFloat(data[i][5]);
-            if (data[i][11])
-                totalAmt += parseFloat(data[i][11]);
-            if (data[i][10])
-                totalGst += parseFloat(data[i][10]);
-            if (data[i][12])
-                totalSgst += parseFloat(data[i][12]);
-            if (data[i][13])
-                totalCgst += parseFloat(data[i][13]);
-            if (data[i][14])
-                totalIgst += parseFloat(data[i][14]);
-        }
-
-        $("#totalAmt").text(Number(totalAmt).toFixed(2));
-        $("#totalGST").text(Number(totalGst).toFixed(2));
-        $("#totalSGST").text(Number(totalSgst).toFixed(2));
-        $("#totalCGST").text(Number(totalCgst).toFixed(2));
-        $("#totalIGST").text(Number(totalIgst).toFixed(2));
-        $("#totalQty").text(Number(totalQty).toFixed(2));
-        $("#totalFQty").text(Number(totalFQty).toFixed(2));
-    }
-
-
-    function checkForDuplicateEntry(batchNumber) {
-        var productId = hot.getDataAtCell(mainTableRow, 1);
-        var saleTableData = hot.getData();
-        for (var i = 0; i < saleTableData.length; i++) {
-            if (productId == saleTableData[i][1]) {
-                if (saleTableData[i][2] !== null && saleTableData[i][2] == batchNumber)
-                    return true;
-            }
-        }
-        return false;
-    }
-
     function loadTempStockBookData() {
         var userId = "${session.getAttribute("userId")}";
         $.ajax({
@@ -970,7 +904,12 @@
                         hot.setDataAtCell(i, 14, Number(priceBeforeGst * (igst / 100)).toFixed(2)); //IGST
                     else
                         hot.setDataAtCell(i, 14, 0);
-                    hot.setDataAtCell(i, 15, saleData[i].id);
+                    <g:if test="${customer != null}">
+                        hot.setDataAtCell(i, 15, 0);
+                    </g:if>
+                    <g:else>
+                        hot.setDataAtCell(i, 15, saleData[i].id);
+                    </g:else>
                     hot.setDataAtCell(i, 16, gst);
                     hot.setDataAtCell(i, 17, sgst);
                     hot.setDataAtCell(i, 18, cgst);
@@ -980,6 +919,7 @@
                     <g:if test="${customer != null}">
                         hot.setDataAtCell(i, 22, sQty); //draft sqty
                         hot.setDataAtCell(i, 23, fQty); //draft fqty
+                        hot.setDataAtCell(i, 24, saleData[i]["id"]); //saved draft product id
                     </g:if>
                 }
 
@@ -1052,9 +992,16 @@
 
         var saleData = JSON.stringify(hot.getSourceData());
 
+        var url = "";
+        <g:if test="${customer != null}">
+            url = "edit-sale-entry?id="+'${saleBillDetail.id}';
+        </g:if>
+        <g:else>
+            url = "sale-entry";
+        </g:else>
         $.ajax({
             type: "POST",
-            url: "sale-entry",
+            url: url,
             dataType: 'json',
             data: {
                 saleData: saleData,
@@ -1126,6 +1073,74 @@
         });
 
     }
+
+    function customerSelectChanged() {
+        var noOfCrDays = 0;
+        if (customers.length > 0) {
+            for (var i = 0; i < customers.length; i++) {
+                if (customerId == customers[i].id) {
+                    noOfCrDays = customers[i].noOfCrDays;
+                }
+            }
+        } else {
+            <g:if test="${customer != null}">
+            noOfCrDays = ${customer.noOfCrDays};
+            </g:if>
+        }
+        var customerId = $("#customerSelect").val();
+        $('#duedate').prop("readonly", false);
+        $("#duedate").val(moment().add(noOfCrDays, 'days').format('YYYY-MM-DD'));
+        $('#duedate').prop("readonly", true);
+    }
+
+    function calculateTotalAmt() {
+        totalAmt = 0;
+        totalGst = 0;
+        totalCgst = 0;
+        totalSgst = 0;
+        totalIgst = 0;
+        totalQty = 0;
+        totalFQty = 0;
+        var data = hot.getData();
+        for (var i = 0; i < data.length; i++) {
+            if (data[i][4])
+                totalQty += parseFloat(data[i][4]);
+            if (data[i][5])
+                totalFQty += parseFloat(data[i][5]);
+            if (data[i][11])
+                totalAmt += parseFloat(data[i][11]);
+            if (data[i][10])
+                totalGst += parseFloat(data[i][10]);
+            if (data[i][12])
+                totalSgst += parseFloat(data[i][12]);
+            if (data[i][13])
+                totalCgst += parseFloat(data[i][13]);
+            if (data[i][14])
+                totalIgst += parseFloat(data[i][14]);
+        }
+
+        $("#totalAmt").text(Number(totalAmt).toFixed(2));
+        $("#totalGST").text(Number(totalGst).toFixed(2));
+        $("#totalSGST").text(Number(totalSgst).toFixed(2));
+        $("#totalCGST").text(Number(totalCgst).toFixed(2));
+        $("#totalIGST").text(Number(totalIgst).toFixed(2));
+        $("#totalQty").text(Number(totalQty).toFixed(2));
+        $("#totalFQty").text(Number(totalFQty).toFixed(2));
+    }
+
+
+    function checkForDuplicateEntry(batchNumber) {
+        var productId = hot.getDataAtCell(mainTableRow, 1);
+        var saleTableData = hot.getData();
+        for (var i = 0; i < saleTableData.length; i++) {
+            if (productId == saleTableData[i][1]) {
+                if (saleTableData[i][2] !== null && saleTableData[i][2] == batchNumber)
+                    return true;
+            }
+        }
+        return false;
+    }
+
 
     function printInvoice() {
         if (readOnly) {

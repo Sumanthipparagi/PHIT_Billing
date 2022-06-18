@@ -163,29 +163,6 @@ class SaleEntryController {
             saleProductDetail.put("cgstAmount", cgst)
             saleProductDetail.put("igstAmount", igst)
             saleProductDetail.put("igstAmount", igst)
-            //GST percentage Calculation
-/*            double priceBeforeTaxes = UtilsService.round((Double.parseDouble(saleQty) * Double.parseDouble(saleRate)), 2)
-            if(discount>0)
-                priceBeforeTaxes = priceBeforeTaxes - (priceBeforeTaxes * (discount/100))
-
-            double gstPercentage = 0.0
-            double sgstPercentage = 0.0
-            double cgstPercentage = 0.0
-            double igstPercentage = 0.0
-
-            if(gst >0)
-                gstPercentage = (gst / priceBeforeTaxes) * 100
-            if(sgst >0)
-                sgstPercentage = (sgst / priceBeforeTaxes) * 100
-            if(cgst >0)
-                cgstPercentage = (cgst / priceBeforeTaxes) * 100
-            if(igst >0)
-                igstPercentage = (igst / priceBeforeTaxes) * 100
-
-            saleProductDetail.put("gstPercentage", UtilsService.round(gstPercentage,2))
-            saleProductDetail.put("sgstPercentage", UtilsService.round(sgstPercentage,2))
-            saleProductDetail.put("cgstPercentage", UtilsService.round(cgstPercentage,2))
-            saleProductDetail.put("igstPercentage", UtilsService.round(igstPercentage,2))*/
 
             saleProductDetail.put("gstPercentage", sale.get("16").toString())
             saleProductDetail.put("sgstPercentage", sale.get("17").toString())
@@ -603,10 +580,10 @@ class SaleEntryController {
                 i++
             }
             String saleProductId
-            if (jsonArray.isNull(15)) {
+            if (jsonArray.isNull(24)) {
                 saleProductId = 0;
             } else {
-                saleProductId = jsonArray[15]
+                saleProductId = jsonArray[24]
             }
             String productId = jsonArray[1]
             String batchNumber = jsonArray[2]
@@ -796,7 +773,11 @@ class SaleEntryController {
             String freeQty = sale.get("5")
             String saleRate = sale.get("6")
             String mrp = sale.get("7")
-            String saleProductId = sale.get("15")
+            String saleProductId = ""
+            if(sale.has("24")) //get saved draft product id
+                saleProductId = sale.get("24")
+            else
+                saleProductId = sale.get("15")
             double discount = UtilsService.round(Double.parseDouble(sale.get("8").toString()), 2)
             String packDesc = sale.get("9")
             double gst = UtilsService.round(Double.parseDouble(sale.get("10").toString()), 2)
@@ -859,6 +840,8 @@ class SaleEntryController {
             saleProductDetail.put("entityId", entityId)
             saleProductDetail.put("entityTypeId", session.getAttribute("entityTypeId").toString())
             saleProductDetail.put("uuid", params.uuid)
+            saleProductDetail.put("originalSqty", sale.get("20").toString())
+            saleProductDetail.put("originalFqty", sale.get("21").toString())
             saleProductDetails.add(saleProductDetail)
         }
 

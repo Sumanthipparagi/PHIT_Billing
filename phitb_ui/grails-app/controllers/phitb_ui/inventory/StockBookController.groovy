@@ -6,6 +6,7 @@ import org.hibernate.engine.jdbc.batch.spi.Batch
 import phitb_ui.EntityService
 import phitb_ui.InventoryService
 import phitb_ui.ProductService
+import phitb_ui.SalesService
 import phitb_ui.entity.EntityRegisterController
 import phitb_ui.entity.TaxController
 
@@ -426,26 +427,69 @@ class StockBookController {
         try
         {
             JSONArray jsonArray = new JSONArray(params.rowData)
-            def tmp = jsonArray[22]
+            long saleQty  = jsonArray[4]
+            long saleFreeQty  = jsonArray[5]
             Boolean isEdit = false
             int i = 0
             for (Object obj : jsonArray) {
                 //15 if edit, 16 if being added
-                if(i == 15 && obj != null)
+                if(i == 15 && obj != null) {
                     isEdit = true
+                }
                 i++
             }
             def stockBook = null
             if(!isEdit)
                 stockBook = new InventoryService().getStockBookById(jsonArray[22])
             else {
-                def tmpStockBook = new InventoryService().getTempStocksById(jsonArray[15])
-                stockBook = new InventoryService().getStockBookById(Long.parseLong(tmpStockBook.originalId))
+                if(jsonArray[15] != 0)
+                {
+                    def tmpStockBook = new InventoryService().getTempStocksById(jsonArray[15])
+                    stockBook = new InventoryService().getStockBookById(Long.parseLong(tmpStockBook.originalId))
+                }
+                else
+                {
+                    //TODO: add edited qty to from stockbook to tmp stockbook
+                    JSONObject draftProduct = new SalesService().getSaleProductDetailsById(jsonArray[24].toString())
+                    if(draftProduct)
+                    {
+                        stockBook = new InventoryService().getStocksOfProductAndBatch(draftProduct.productId.toString(), draftProduct.batchNumber, draftProduct.entityId.toString())
+
+                        //if sale qty or free qty is edited only difference qty to be pulled in to tmp stockbook
+                        //ex: draftSqty = 5 and sqty = 6, then 1 qty to be added into tmp stock from stock
+                        //if draftSqty = 5 and sqty = 4, then sqty to be returned to tmpstock, will be set as negative
+                        // value, because while calculation below it will become (-) * (-) = (+)
+                        long draftSqty = draftProduct.sqty
+                        long draftFqty = draftProduct.freeQty
+                        if(saleQty > draftSqty)
+                        {
+                            saleQty = saleQty - draftSqty
+                        }
+                        else if(saleQty < draftSqty)
+                        {
+                            saleQty = -saleQty
+                        }
+
+                        if(saleFreeQty > draftFqty)
+                        {
+                            saleFreeQty = saleFreeQty - draftFqty
+                        }
+                        else if(saleFreeQty < draftFqty)
+                        {
+                            saleFreeQty = -saleFreeQty
+                        }
+                    }
+                    else
+                    {
+                        //throw error
+                        println("Selected product not in draft")
+                        response.status = 400
+                        return
+                    }
+                }
             }
             long remainingQty = stockBook.remainingQty
             long remainingFreeQty = stockBook.remainingFreeQty
-            long saleQty  = jsonArray[4]
-            long saleFreeQty  = jsonArray[5]
             if(saleQty<=remainingQty)
             {
                 remainingQty = remainingQty - saleQty
@@ -465,6 +509,10 @@ class StockBookController {
                 remainingFreeQty = 0
             }
 
+            //Remove Negative
+            long userOrderQty = (saleQty < 0 ? -saleQty : saleQty)
+            long userOrderFreeQty = (saleFreeQty < 0 ? -saleFreeQty : saleFreeQty)
+
             JSONObject jsonObject = new JSONObject()
             jsonObject.put("productId", jsonArray[1])
             jsonObject.put("batchNumber", jsonArray[2])
@@ -477,8 +525,8 @@ class StockBookController {
             jsonObject.put("mrp", jsonArray[7])
             jsonObject.put("discount", jsonArray[8])
             jsonObject.put("packingDesc", jsonArray[9])
-            jsonObject.put("userOrderQty", saleQty)
-            jsonObject.put("userOrderFreeQty", saleFreeQty)
+            jsonObject.put("userOrderQty", userOrderQty)
+            jsonObject.put("userOrderFreeQty", userOrderFreeQty)
             jsonObject.put("userOrderReplQty", 0)
             jsonObject.put("taxId", stockBook.taxId)
             jsonObject.put("userId", session.getAttribute("userId"))
