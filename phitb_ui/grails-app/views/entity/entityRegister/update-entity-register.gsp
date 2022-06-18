@@ -24,7 +24,12 @@
     <asset:stylesheet src="/themeassets/plugins/dropify/dist/css/dropify.min.css"/>
 %{--    <asset:stylesheet src="/themeassets/plugins/select-2-editor/select2.min.css"/>--}%
     <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.3/css/select2.min.css" rel="stylesheet" />
-
+    <style>
+    .error
+    {
+        color:red;
+    }
+    </style>
 
 </head>
 
@@ -70,7 +75,7 @@
             <div class="col-lg-12 col-md-12 col-sm-12">
                 <div class="card">
                     <div class="body">
-                        <form action="/entity-register/update/${entity.id}" id="form_validation" method="POST" role="form"
+                        <form action="/entity-register/update/${entity.id}" id="entityRegisterForm" method="POST" role="form"
                               class="entityRegisterForm" enctype="multipart/form-data">
                             <div class="row">
                                 <div class="col-md-6" style="max-width: 49%;border: 1px solid black;  border-radius: 10px;padding: 10px;
@@ -767,7 +772,9 @@
         });
 
     });
-
+    $(document).ready(function() {
+        $("#entityRegisterForm").validate();
+    });
     // $("#entityRegisterForm").submit(function(event) {
     //     var pincode =  $('.pinCode option').length;
     //     if(pincode === 0 || pincode < 0)
