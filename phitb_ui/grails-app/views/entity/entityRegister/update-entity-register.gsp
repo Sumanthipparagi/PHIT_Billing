@@ -190,7 +190,7 @@
                                                 Mobile Number
                                             </label>
                                             <input type="number" id="mobileNumber" class="form-control mobileNumber"
-                                                   name="mobileNumber" placeholder="Mobile Number" value="${entity.mobileNumber}"
+                                                   name="mobileNumber" placeholder="Mobile Number"  minlength="10" value="${entity.mobileNumber}"
                                                    required/>
                                         </div>
                                         %{--                                        <div class="col-lg-6 form-group  form-float">--}%
