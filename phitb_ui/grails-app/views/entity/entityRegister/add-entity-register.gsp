@@ -26,7 +26,12 @@
 %{--    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />--}%
     <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.3/css/select2.min.css" rel="stylesheet" />
 
-
+<style>
+    .error
+    {
+        color:red;
+    }
+</style>
 </head>
 
 <body class="theme-black">
@@ -642,6 +647,7 @@
 <asset:javascript src="/themeassets/js/pages/forms/basic-form-elements.js"/>
 <asset:javascript src="/themeassets/plugins/dropify/dist/js/dropify.min.js"/>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.3/js/select2.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/jquery-validation@1.19.3/dist/jquery.validate.js"></script>
 
 
 
@@ -807,6 +813,10 @@
 
         });
 
+        $(document).ready(function() {
+            $("#entityRegisterForm").validate();
+        });
+
           $("#entityRegisterForm").submit(function(event) {
               var pincode =  $('.pinCode option').length;
               if(pincode === 0 || pincode < 0)
@@ -834,6 +844,7 @@
         //     });
         //     event.preventDefault();
         // });
+
 
 
 

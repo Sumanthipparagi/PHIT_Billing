@@ -149,8 +149,6 @@
                                             <sub id="prevPin">Previously selected pincode: <b>${entity.pinCode}</b></sub>
                                             <sub id="prevArea">Previously selected area: <b>${cityId.areaName}</b></sub>
 
-
-
                                         </div>
                                         <div class="col-md-6 form-group  form-float">
                                             <label for="stateId">
@@ -638,6 +636,7 @@
 <asset:javascript src="/themeassets/js/pages/forms/basic-form-elements.js"/>
 <asset:javascript src="/themeassets/plugins/dropify/dist/js/dropify.min.js"/>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.3/js/select2.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/jquery-validation@1.19.3/dist/jquery.validate.js"></script>
 
 <script>
 
