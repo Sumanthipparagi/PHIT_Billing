@@ -494,7 +494,7 @@ class StockBookController {
             {
                 remainingQty = remainingQty - saleQty
             }
-            else if(saleQty>remainingQty && saleQty<(remainingQty+remainingFreeQty))
+            else if(saleQty>remainingQty && saleQty<=(remainingQty+remainingFreeQty))
             {
                 remainingFreeQty = remainingFreeQty - (saleQty - remainingQty)
                 remainingQty = 0

@@ -497,20 +497,37 @@ class SaleEntryController {
                     double remainingFreeQty = stockBook.get("remainingFreeQty")
 
                     //checking to where the stocks to be returned
-                    double originalSqty = productDetail.get("originalSqty") //0
-                    double originalFqty = productDetail.get("originalFqty") //100
-                    double sqty = productDetail.get("sqty") //50
-                    double freeQty = productDetail.get("freeQty") //50
-                    if (originalSqty >= sqty) {
+                    double originalSqty = productDetail.get("originalSqty")
+                    double originalFqty = productDetail.get("originalFqty")
+                    double sqty = productDetail.get("sqty")
+                    double freeQty = productDetail.get("freeQty")
+
+                    if((originalSqty + originalFqty) == (sqty + freeQty))
+                    {
                         remainingQty += sqty
-                    } else {
-                        remainingFreeQty += sqty
-                    }
-                    if (originalFqty >= freeQty) {
                         remainingFreeQty += freeQty
-                    } else {
-                        remainingQty += freeQty
                     }
+                    else
+                    {
+                        if(originalSqty >= sqty && originalFqty >= freeQty)
+                        {
+                            remainingQty += sqty
+                            remainingFreeQty += freeQty
+                        }
+                        else
+                        {
+                            if(sqty > originalSqty){
+                                remainingQty = sqty - (sqty - originalSqty)
+                                remainingFreeQty = remainingFreeQty + freeQty + (sqty - originalSqty)
+                            }
+                            else if(freeQty > originalFqty)
+                            {
+                                remainingQty = remainingQty + sqty + (freeQty - originalFqty)
+                                remainingFreeQty = freeQty - (freeQty - originalFqty)
+                            }
+                        }
+                    }
+
                     double remainingReplQty = stockBook.get("remainingReplQty") + productDetail.get("repQty")
                     stockBook.put("remainingQty", remainingQty.toLong())
                     stockBook.put("remainingFreeQty", remainingFreeQty.toLong())
