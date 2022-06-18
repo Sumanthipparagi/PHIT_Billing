@@ -459,24 +459,37 @@ class StockBookController {
                         //ex: draftSqty = 5 and sqty = 6, then 1 qty to be added into tmp stock from stock
                         //if draftSqty = 5 and sqty = 4, then sqty to be returned to tmpstock, will be set as negative
                         // value, because while calculation below it will become (-) * (-) = (+)
+                        //if draftSqty and draftFqty = to sqty and freeQty then no need to add into temp stock
                         long draftSqty = draftProduct.sqty
                         long draftFqty = draftProduct.freeQty
-                        if(saleQty > draftSqty)
+                        if(draftSqty == saleQty && draftFqty == saleFreeQty)
                         {
-                            saleQty = saleQty - draftSqty
+                            //no need to add to tempstocks
                         }
-                        else if(saleQty < draftSqty)
-                        {
-                            saleQty = -saleQty
-                        }
+                        else {
+                            if(draftSqty == saleQty && draftFqty != saleFreeQty)
+                            {
+                                saleQty = 0
+                            }
+                            else {
+                                if (saleQty > draftSqty) {
+                                    saleQty = saleQty - draftSqty
+                                } else if (saleQty < draftSqty) {
+                                    saleQty = -saleQty
+                                }
+                            }
 
-                        if(saleFreeQty > draftFqty)
-                        {
-                            saleFreeQty = saleFreeQty - draftFqty
-                        }
-                        else if(saleFreeQty < draftFqty)
-                        {
-                            saleFreeQty = -saleFreeQty
+                            if(draftSqty != saleQty && draftFqty == saleFreeQty)
+                            {
+                                saleFreeQty = 0
+                            }
+                            else {
+                                if (saleFreeQty > draftFqty) {
+                                    saleFreeQty = saleFreeQty - draftFqty
+                                } else if (saleFreeQty < draftFqty) {
+                                    saleFreeQty = -saleFreeQty
+                                }
+                            }
                         }
                     }
                     else

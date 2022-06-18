@@ -919,6 +919,7 @@ class SaleEntryController {
         jsonObject.put("saleProducts", saleProductDetails)
         Response response = new SalesService().updateSaleInvoice(jsonObject, saleBillDetails.get("id").toString())
         if (response.status == 200) {
+            //TODO: Tempstocks to be cleared if any
             def saleBillDetail = new JSONObject(response.readEntity(String.class))
             if (saleBillDetail) {
                 try {
