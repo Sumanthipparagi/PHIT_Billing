@@ -439,8 +439,9 @@ class StockBookController {
                 i++
             }
             def stockBook = null
-            if(!isEdit)
+            if(!isEdit) {
                 stockBook = new InventoryService().getStockBookById(jsonArray[22])
+            }
             else {
                 if(jsonArray[15] != 0)
                 {
@@ -449,7 +450,6 @@ class StockBookController {
                 }
                 else
                 {
-                    //TODO: add edited qty to from stockbook to tmp stockbook
                     JSONObject draftProduct = new SalesService().getSaleProductDetailsById(jsonArray[24].toString())
                     if(draftProduct)
                     {
@@ -465,6 +465,8 @@ class StockBookController {
                         if(draftSqty == saleQty && draftFqty == saleFreeQty)
                         {
                             //no need to add to tempstocks
+                            respond jsonArray, formats: ['json']
+                            return
                         }
                         else {
                             if(draftSqty == saleQty && draftFqty != saleFreeQty)

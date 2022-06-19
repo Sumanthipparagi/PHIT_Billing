@@ -49,7 +49,7 @@ class SaleEntryController {
             JSONArray saleProductDetails = new SalesService().getSaleProductDetailsByBill(saleBillId)
             render(view: '/sales/saleEntry/sale-entry', model: [customers         : customers, divisions: divisions, series: series,
                                                                 priorityList      : priorityList, saleBillDetail: saleBillDetail,
-                                                                saleProductDetails: saleProductDetails, customer:customer])
+                                                                saleProductDetails: saleProductDetails, customer: customer])
         } else {
             render('No Draft invoice found!!')
         }
@@ -502,26 +502,18 @@ class SaleEntryController {
                     double sqty = productDetail.get("sqty")
                     double freeQty = productDetail.get("freeQty")
 
-                    if((originalSqty + originalFqty) == (sqty + freeQty))
-                    {
+                    if ((originalSqty + originalFqty) == (sqty + freeQty)) {
                         remainingQty += sqty
                         remainingFreeQty += freeQty
-                    }
-                    else
-                    {
-                        if(originalSqty >= sqty && originalFqty >= freeQty)
-                        {
+                    } else {
+                        if (originalSqty >= sqty && originalFqty >= freeQty) {
                             remainingQty += sqty
                             remainingFreeQty += freeQty
-                        }
-                        else
-                        {
-                            if(sqty > originalSqty){
+                        } else {
+                            if (sqty > originalSqty) {
                                 remainingQty = sqty - (sqty - originalSqty)
                                 remainingFreeQty = remainingFreeQty + freeQty + (sqty - originalSqty)
-                            }
-                            else if(freeQty > originalFqty)
-                            {
+                            } else if (freeQty > originalFqty) {
                                 remainingQty = remainingQty + sqty + (freeQty - originalFqty)
                                 remainingFreeQty = freeQty - (freeQty - originalFqty)
                             }
@@ -791,7 +783,7 @@ class SaleEntryController {
             String saleRate = sale.get("6")
             String mrp = sale.get("7")
             String saleProductId = ""
-            if(sale.has("24")) //get saved draft product id
+            if (sale.has("24")) //get saved draft product id
                 saleProductId = sale.get("24")
             else
                 saleProductId = sale.get("15")
@@ -922,19 +914,72 @@ class SaleEntryController {
             //TODO: Tempstocks to be cleared if any
             def saleBillDetail = new JSONObject(response.readEntity(String.class))
             if (saleBillDetail) {
-                try {
-                    if (billStatus.equalsIgnoreCase("ACTIVE")) {
-                        //push the invoice to e-Invoice service and generate IRN, save IRN to Sale Bill Details
-                        new EInvoiceService().generateIRN(session, saleBillDetail, saleProductDetails)
+                //update stockbook
+                for (JSONObject sale : saleData) {
+                    String productId = sale.get("1")
+                    String batchNumber = sale.get("2")
+                    String tempStockRowId = sale.get("15")
+                    def tmpStockBook = new InventoryService().getTempStocksById(Long.parseLong(tempStockRowId))
+                    def stockBook
+                    long userOrderedSaleQty = Long.parseLong(sale.get("4").toString())
+                    long userOrderedFreeQty = Long.parseLong(sale.get("5").toString())
+                    long remainingQty = 0
+                    long remainingFreeQty = 0
+                    if (tmpStockBook) {
+                        stockBook = new InventoryService().getStockBookById(Long.parseLong(tmpStockBook.originalId))
+                        remainingQty = tmpStockBook.get("remainingQty")
+                        remainingFreeQty = tmpStockBook.get("remainingFreeQty")
+
+                    } else {
+                        stockBook = new InventoryService().getStocksOfProductAndBatch(productId, batchNumber, entityId)
+                        remainingQty = stockBook.get("remainingQty")
+                        remainingFreeQty = stockBook.get("remainingFreeQty")
                     }
+
+                    if(userOrderedSaleQty != sale.get("22")) {
+                        long finalSqty = remainingQty - (userOrderedSaleQty - sale.get("22"))
+                        stockBook.put("remainingQty", finalSqty)
+                    }
+                    if(userOrderedFreeQty != sale.get("23")) {
+                        long finalFqty = remainingFreeQty - (userOrderedFreeQty - sale.get("23"))
+                        stockBook.put("remainingFreeQty", finalFqty)
+                    }
+                    stockBook.put("remainingReplQty", 0)
+
+                    String expDate = stockBook.get("expDate").toString().split("T")[0]
+                    String purcDate = stockBook.get("purcDate").toString().split("T")[0]
+                    String manufacturingDate = stockBook.get("manufacturingDate").toString().split("T")[0]
+                    SimpleDateFormat sdf1 = new SimpleDateFormat("yyyy-MM-dd")
+                    expDate = sdf1.parse(expDate).format("dd-MM-yyyy")
+                    purcDate = sdf1.parse(purcDate).format("dd-MM-yyyy")
+                    manufacturingDate = sdf1.parse(manufacturingDate).format("dd-MM-yyyy")
+                    stockBook.put("expDate", expDate)
+                    stockBook.put("purcDate", purcDate)
+                    stockBook.put("manufacturingDate", manufacturingDate)
+                    stockBook.put("uuid", UUID.randomUUID())
+                    def apiRes = new InventoryService().updateStockBook(stockBook)
+                    if (apiRes.status == 200) {
+                        //clear tempstockbook
+                        if(tmpStockBook)
+                            new InventoryService().deleteTempStock(tempStockRowId)
+                        try {
+                            if (billStatus.equalsIgnoreCase("ACTIVE")) {
+                                //push the invoice to e-Invoice service and generate IRN, save IRN to Sale Bill Details
+                                new EInvoiceService().generateIRN(session, saleBillDetail, saleProductDetails)
+                            }
+                        }
+                        catch (Exception ex) {
+                            ex.printStackTrace()
+                        }
+                    }
+
                 }
-                catch (Exception ex) {
-                    ex.printStackTrace()
-                }
+
                 JSONObject responseJson = new JSONObject()
                 responseJson.put("series", series)
                 responseJson.put("saleBillDetail", saleBillDetail)
                 respond responseJson, formats: ['json']
+
             } else {
                 response.status == 400
             }
