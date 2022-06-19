@@ -721,12 +721,36 @@ class SaleEntryController {
             def productDetail = new SalesService().getSaleProductDetailsById(id)
             if (productDetail) {
                 def stockBook = new InventoryService().getStocksOfProductAndBatch(productDetail.productId.toString(), productDetail.batchNumber, session.getAttribute("entityId").toString())
-                double remainingQty = stockBook.get("remainingQty") + productDetail.get("sqty")
-                double remainingFreeQty = stockBook.get("remainingFreeQty") + productDetail.get("freeQty")
-                double remainingReplQty = stockBook.get("remainingReplQty") + productDetail.get("repQty")
+
+                double remainingQty = stockBook.get("remainingQty")
+                double remainingFreeQty = stockBook.get("remainingFreeQty")
+
+                //checking to where the stocks to be returned
+                double originalSqty = productDetail.get("originalSqty")
+                double originalFqty = productDetail.get("originalFqty")
+                double sqty = productDetail.get("sqty")
+                double freeQty = productDetail.get("freeQty")
+
+                if ((originalSqty + originalFqty) == (sqty + freeQty)) {
+                    remainingQty += sqty
+                    remainingFreeQty += freeQty
+                } else {
+                    if (originalSqty >= sqty && originalFqty >= freeQty) {
+                        remainingQty += sqty
+                        remainingFreeQty += freeQty
+                    } else {
+                        if (sqty > originalSqty) {
+                            remainingQty = sqty - (sqty - originalSqty)
+                            remainingFreeQty = remainingFreeQty + freeQty + (sqty - originalSqty)
+                        } else if (freeQty > originalFqty) {
+                            remainingQty = remainingQty + sqty + (freeQty - originalFqty)
+                            remainingFreeQty = freeQty - (freeQty - originalFqty)
+                        }
+                    }
+                }
                 stockBook.put("remainingQty", remainingQty.toLong())
                 stockBook.put("remainingFreeQty", remainingFreeQty.toLong())
-                stockBook.put("remainingReplQty", remainingReplQty.toLong())
+                stockBook.put("remainingReplQty", 0) //TODO: to be checked
                 new InventoryService().updateStockBook(stockBook)
             }
             def apiResponse = new SalesService().deleteSaleProduct(id);

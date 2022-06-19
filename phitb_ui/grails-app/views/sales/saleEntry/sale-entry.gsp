@@ -401,8 +401,15 @@
             },
             afterOnCellMouseDown: function (e, coords, TD) {
                 if (coords.col === 0) {
-                    var id = hot.getDataAtCell(coords.row, 15);
-                    deleteTempStockRow(id, coords.row);
+                    <g:if test="${customer == null}">
+                        var id = hot.getDataAtCell(coords.row, 15);
+                        deleteTempStockRow(id, coords.row);
+                    </g:if>
+                    <g:else>
+                        var id = hot.getDataAtCell(coords.row, 24);
+                        deleteSaleBillRow(id, coords.row);
+                    </g:else>
+
                     calculateTotalAmt();
                 }
             },
@@ -941,6 +948,24 @@
                 $.ajax({
                     type: "POST",
                     url: "tempstockbook/delete/" + id,
+                    dataType: 'json',
+                    success: function (data) {
+                        hot.alter("remove_row", row);
+                        swal("Success", "Row Deleted", "").fire();
+                    }
+                });
+            } else
+                hot.alter("remove_row", row);
+        } else
+            alert("Can't change this now, invoice has been saved already.")
+    }
+
+    function deleteSaleBillRow(id, row) {
+        if (!readOnly) {
+            if (id) {
+                $.ajax({
+                    type: "POST",
+                    url: "/sale-product-details/delete?id="+id,
                     dataType: 'json',
                     success: function (data) {
                         hot.alter("remove_row", row);
