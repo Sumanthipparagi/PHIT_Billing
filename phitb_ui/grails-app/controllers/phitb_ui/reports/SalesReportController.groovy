@@ -84,8 +84,9 @@ class SalesReportController {
         String financialYear = session.getAttribute("financialYear")
         String dateRange = params.dateRange
         //String sortBy = params.sortBy
+        boolean paidInvoice = true
         String sortBy = "id"
-        JSONObject areaWiseData = reportsService.getAreaWiseReport(entityId, dateRange, financialYear, sortBy)
+        JSONObject areaWiseData = reportsService.getAreaWiseReport(entityId, dateRange, financialYear, sortBy,paidInvoice)
         //get product details
         for (Object city : areaWiseData.keySet()) {
             def cityDetail = new SystemService().getCityById(city.toString())
@@ -112,7 +113,8 @@ class SalesReportController {
         String dateRange = params.dateRange
         //String sortBy = params.sortBy
         String sortBy = "id"
-        JSONObject areaWiseData = reportsService.getAreaWiseReport(entityId, dateRange, financialYear, sortBy)
+        boolean paidInvoice = true
+        JSONObject areaWiseData = reportsService.getAreaWiseReport(entityId, dateRange, financialYear, sortBy,paidInvoice)
         //get product details
         for (Object city : areaWiseData.keySet()) {
             JSONArray bills = areaWiseData.get(city) as JSONArray
@@ -206,7 +208,9 @@ class SalesReportController {
         String dateRange = params.dateRange
         //String sortBy = params.sortBy
         String sortBy = "id"
-        JSONObject areaWiseData = reportsService.getAreaWiseReport(entityId, dateRange, financialYear, sortBy)
+        boolean paidInvoice = true
+
+        JSONObject areaWiseData = reportsService.getAreaWiseReport(entityId, dateRange, financialYear, sortBy,paidInvoice)
         //get product details
         for (Object city : areaWiseData.keySet()) {
             JSONArray bills = areaWiseData.get(city) as JSONArray
@@ -300,8 +304,10 @@ class SalesReportController {
         String financialYear = session.getAttribute("financialYear")
         String dateRange = params.dateRange
         //String sortBy = params.sortBy
+        boolean paidInvoice = true
+
         String sortBy = "id"
-        JSONObject areaWiseData = reportsService.getAreaWiseReport(entityId, dateRange, financialYear, sortBy)
+        JSONObject areaWiseData = reportsService.getAreaWiseReport(entityId, dateRange, financialYear, sortBy,paidInvoice)
         //get product details
         for (Object city : areaWiseData.keySet()) {
             JSONArray bills = areaWiseData.get(city) as JSONArray
