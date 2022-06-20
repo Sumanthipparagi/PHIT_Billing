@@ -460,7 +460,6 @@
                             var url = '/tempstockbook';
                             var draftEdit = false;
                             <g:if test="${customer != null}">
-                                url = '/tempstockbook';
                                 draftEdit = true;
                             </g:if>
                             var beforeSendSwal;
@@ -488,9 +487,7 @@
                                 success: function (data) {
                                     beforeSendSwal.close();
                                     console.log("Data saved");
-                                    var rtmp = hot.getDataAtRow(row);
                                     hot.setDataAtCell(row, 15, data.id);
-                                    var rtmp2 = hot.getDataAtRow(row);
                                     mainTableRow = row + 1;
                                     hot.alter('insert_row');
                                     hot.selectCell(mainTableRow, 1);
@@ -527,8 +524,6 @@
                             this.getActiveEditor().enableFullEditMode();
                             this.getActiveEditor().beginEditing();
                             sQty = Number(this.getActiveEditor().TEXTAREA.value);
-                            // var sq = this.getDataAtCell(row,4);
-                            // alert(sq)
                             this.setDataAtCell(row, 4, sQty);
                             this.selectCell(row, selection + 1);
                         } else {
@@ -931,7 +926,6 @@
                         hot.setDataAtCell(i, 22, sQty); //draft sqty
                         hot.setDataAtCell(i, 23, fQty); //draft fqty
                         hot.setDataAtCell(i, 24, saleData[i]["id"]); //saved draft product id
-                    alert(saleData[i]["id"])
                     </g:if>
                 }
 

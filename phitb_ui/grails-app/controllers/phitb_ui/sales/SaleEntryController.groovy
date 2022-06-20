@@ -810,7 +810,11 @@ class SaleEntryController {
             if (sale.has("24")) //get saved draft product id
                 saleProductId = sale.get("24")
             else
-                saleProductId = sale.get("15")
+            {
+                //means present in tempstock but not in draft
+                saleProductId = "0"
+            }
+
             double discount = UtilsService.round(Double.parseDouble(sale.get("8").toString()), 2)
             String packDesc = sale.get("9")
             double gst = UtilsService.round(Double.parseDouble(sale.get("10").toString()), 2)
@@ -935,7 +939,6 @@ class SaleEntryController {
         jsonObject.put("saleProducts", saleProductDetails)
         Response response = new SalesService().updateSaleInvoice(jsonObject, saleBillDetails.get("id").toString())
         if (response.status == 200) {
-            //TODO: Tempstocks to be cleared if any
             def saleBillDetail = new JSONObject(response.readEntity(String.class))
             if (saleBillDetail) {
                 //update stockbook
@@ -949,7 +952,9 @@ class SaleEntryController {
                     long userOrderedFreeQty = Long.parseLong(sale.get("5").toString())
                     long remainingQty = 0
                     long remainingFreeQty = 0
-                    if (tmpStockBook) {
+
+
+/*                    if (tmpStockBook) {
                         stockBook = new InventoryService().getStockBookById(Long.parseLong(tmpStockBook.originalId))
                         remainingQty = tmpStockBook.get("remainingQty")
                         remainingFreeQty = tmpStockBook.get("remainingFreeQty")
@@ -958,13 +963,13 @@ class SaleEntryController {
                         stockBook = new InventoryService().getStocksOfProductAndBatch(productId, batchNumber, entityId)
                         remainingQty = stockBook.get("remainingQty")
                         remainingFreeQty = stockBook.get("remainingFreeQty")
-                    }
+                    }*/
 
-                    if(userOrderedSaleQty != sale.get("22")) {
+                    if (userOrderedSaleQty != sale.get("22")) {
                         long finalSqty = remainingQty - (userOrderedSaleQty - sale.get("22"))
                         stockBook.put("remainingQty", finalSqty)
                     }
-                    if(userOrderedFreeQty != sale.get("23")) {
+                    if (userOrderedFreeQty != sale.get("23")) {
                         long finalFqty = remainingFreeQty - (userOrderedFreeQty - sale.get("23"))
                         stockBook.put("remainingFreeQty", finalFqty)
                     }
@@ -984,7 +989,7 @@ class SaleEntryController {
                     def apiRes = new InventoryService().updateStockBook(stockBook)
                     if (apiRes.status == 200) {
                         //clear tempstockbook
-                        if(tmpStockBook)
+                        if (tmpStockBook)
                             new InventoryService().deleteTempStock(tempStockRowId)
                         try {
                             if (billStatus.equalsIgnoreCase("ACTIVE")) {
