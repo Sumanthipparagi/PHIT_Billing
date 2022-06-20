@@ -429,28 +429,47 @@ class StockBookController {
             JSONArray jsonArray = new JSONArray(params.rowData)
             long saleQty  = jsonArray[4]
             long saleFreeQty  = jsonArray[5]
+            def draftEdit = Boolean.parseBoolean(params.draftEdit)
             Boolean isEdit = false
             int i = 0
+            long stockBookId = 0
+            long draftProductId = 0
             for (Object obj : jsonArray) {
                 //15 if edit, 16 if being added
                 if(i == 15 && obj != null) {
                     isEdit = true
                 }
+                if(i == 24 && obj != null)
+                {
+                    stockBookId = obj
+                    draftProductId = obj
+                }
+                else if(i == 25 && obj != null)
+                {
+                    stockBookId = obj
+                    draftProductId = obj
+                }
                 i++
             }
             def stockBook = null
             if(!isEdit) {
-                stockBook = new InventoryService().getStockBookById(jsonArray[22])
+                //adding for first time
+                if(!draftEdit)
+                    stockBook = new InventoryService().getStockBookById(jsonArray[22])
+                else
+                    stockBook = new InventoryService().getStockBookById(stockBookId)
             }
             else {
-                if(jsonArray[15] != 0)
+                if(jsonArray[15] != 0 && !draftEdit)
                 {
+                    //editing while adding for first time
                     def tmpStockBook = new InventoryService().getTempStocksById(jsonArray[15])
                     stockBook = new InventoryService().getStockBookById(Long.parseLong(tmpStockBook.originalId))
                 }
                 else
                 {
-                    JSONObject draftProduct = new SalesService().getSaleProductDetailsById(jsonArray[24].toString())
+                    //editing draft
+                    JSONObject draftProduct = new SalesService().getSaleProductDetailsById(draftProductId.toString())
                     if(draftProduct)
                     {
                         stockBook = new InventoryService().getStocksOfProductAndBatch(draftProduct.productId.toString(), draftProduct.batchNumber, draftProduct.entityId.toString())
@@ -554,10 +573,11 @@ class StockBookController {
             jsonObject.put("originalFqty", jsonArray[21])
 
             //editing draft
-            if(jsonArray.indexOf(22))
+/*            def tmp = jsonArray.indexOf(22)
+            if(jsonArray.indexOf(22) > 0)
                 jsonObject.put("draftSqty", jsonArray[22])
-            if(jsonArray.indexOf(23))
-                jsonObject.put("draftFqty", jsonArray[23])
+            if(jsonArray.indexOf(23) > 0)
+                jsonObject.put("draftFqty", jsonArray[23])*/
 
             def apiResponse = new InventoryService().tempStockBookSave(jsonObject)
             if (apiResponse?.status == 200)

@@ -458,8 +458,10 @@
                             var json = JSON.stringify(dt);
                             var type = 'POST';
                             var url = '/tempstockbook';
+                            var draftEdit = false;
                             <g:if test="${customer != null}">
                                 url = '/tempstockbook';
+                                draftEdit = true;
                             </g:if>
                             var beforeSendSwal;
                             $.ajax({
@@ -480,12 +482,15 @@
                                 },
                                 data: {
                                     rowData: json,
-                                    uuid: self.crypto.randomUUID()
+                                    uuid: self.crypto.randomUUID(),
+                                    draftEdit: draftEdit
                                 },
                                 success: function (data) {
                                     beforeSendSwal.close();
                                     console.log("Data saved");
+                                    var rtmp = hot.getDataAtRow(row);
                                     hot.setDataAtCell(row, 15, data.id);
+                                    var rtmp2 = hot.getDataAtRow(row);
                                     mainTableRow = row + 1;
                                     hot.alter('insert_row');
                                     hot.selectCell(mainTableRow, 1);
@@ -865,7 +870,6 @@
     }
 
     function loadDraftProducts() {
-        var userId = "${session.getAttribute("userId")}";
         $.ajax({
             type: "GET",
             url: "/sale-product-details/sale-bill?id=${saleBillDetail?.id}",
@@ -927,6 +931,7 @@
                         hot.setDataAtCell(i, 22, sQty); //draft sqty
                         hot.setDataAtCell(i, 23, fQty); //draft fqty
                         hot.setDataAtCell(i, 24, saleData[i]["id"]); //saved draft product id
+                    alert(saleData[i]["id"])
                     </g:if>
                 }
 
