@@ -171,7 +171,7 @@
         var customerBalance = 0;
         var customerTotalDue = 0;
         // var sortBy = $('.sortBy').val();
-        var paidInvoice = $("#paidInvoice").is(":checked") ? "true" : "false";
+        var paidInvoice = $("#paidInvoice").is(":checked") ? "fasle" : "true";
         $.ajax({
             url: "/reports/accounts/getoutstanding?dateRange=" + dateRange + "&paidInvoice="+paidInvoice,
             type: "GET",
@@ -208,10 +208,11 @@
                             customerBalance += bill.balance;
                             customerTotalDue += totalDue;
                             var days;
-                            if(bill.balance === 0)
+                            if(Number(bill.balance.toFixed(2)) === 0)
                             {days = 0;}
                             else
                             { days = moment(new Date()).diff(moment(dateFormat(bill.dueDate), "DD/MM/YYYY"), 'days')}
+                            // alert($('#paidInvoice').val())
                             bills += "<tr><td></td>" +
                                 "<td>" + bill.financialYear + "</td>" +
                                 "<td>" + bill.transactionType + "</td>" +

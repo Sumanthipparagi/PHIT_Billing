@@ -30,8 +30,8 @@ class ReportsController {
                     dueDate = jsonObject.get("dueDate").toString()
                     entryDate = jsonObject.get("orderDate").toString()
                     ArrayList<BillDetailLog> billDetailLogs = BillDetailLog
-                            .findAllByEntityIdAndFinancialYearAndBillTypeAndBillId(entityId,
-                                    financialYear, billType, Long.parseLong(jsonObject.get("id").toString()))
+                            .findAllByEntityIdAndFinancialYearAndBillTypeAndBillIdAndReceiptStatus(entityId,
+                                    financialYear, billType, Long.parseLong(jsonObject.get("id").toString()),'ACTIVE')
                     for (BillDetailLog billDetailLog : billDetailLogs) {
                         due += billDetailLog.amountPaid
                     }
