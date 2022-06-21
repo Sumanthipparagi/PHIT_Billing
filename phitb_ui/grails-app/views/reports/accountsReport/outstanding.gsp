@@ -171,7 +171,7 @@
         var customerBalance = 0;
         var customerTotalDue = 0;
         // var sortBy = $('.sortBy').val();
-        var paidInvoice = $("#paidInvoice").is(":checked") ? "true" : "false";
+        var paidInvoice = $("#paidInvoice").is(":checked") ? "fasle" : "true";
         $.ajax({
             url: "/reports/accounts/getoutstanding?dateRange=" + dateRange + "&paidInvoice="+paidInvoice,
             type: "GET",
