@@ -146,6 +146,7 @@ class ReportsController {
             {
                 saleBillDetails = SaleBillDetails
                         .findAllByEntityIdAndFinancialYearAndOrderDateBetweenAndBillStatusNotEqualAndBalanceGreaterThan(Long.parseLong(entityId), financialYear, fromDate, toDate, "DRAFT", 0, [sort: sort, order: 'desc'])
+                println(saleBillDetails)
             }
             ArrayList<String> custIds = [];
             for (SaleBillDetails saleBillDetail : saleBillDetails) {

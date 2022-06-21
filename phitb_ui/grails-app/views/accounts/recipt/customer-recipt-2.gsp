@@ -527,7 +527,7 @@
                     var crntData = [];
                     var gtnData = [];
                     $.each(data[0], function (key, value) {
-                        var balance = value.balance.toFixed()
+                        var balance = value.balance.toFixed(2);
                         if (Number(balance)!== 0 && value.billStatus!== 'DRAFT' && value.billStatus!== 'CANCELLED') {
                             trHTML += ' <tr id="' + "IN" + value.id + '">\n' +
                                 '                                        <td>' + invoice + '</td>\n' +
