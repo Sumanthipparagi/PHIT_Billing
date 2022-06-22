@@ -206,13 +206,36 @@
                             var totalDue = bill.totalAmount.toFixed(2) - Math.abs(bill.due.toFixed(2));
                             customerDue += bill.due;
                             customerBalance += bill.balance;
-                            customerTotalDue += totalDue;
+                            if(bill.docType === "INVS")
+                            {
+                                customerTotalDue += totalDue;
+                            }
+                            else {
+                                customerTotalDue -= totalDue;
+                            }
+
+
                             var days;
                             if(Number(bill.balance.toFixed(2)) === 0)
                             {days = 0;}
                             else
                             { days = moment(new Date()).diff(moment(dateFormat(bill.dueDate), "DD/MM/YYYY"), 'days')}
                             // alert($('#paidInvoice').val())
+                            var td;
+                            if(bill.docType!=="INVS")
+                            {
+                                if(totalDue <= 0)
+                                {
+                                    td = totalDue
+                                }else
+                                {
+                                    td = - totalDue
+                                }
+                            }
+                            else {
+                                td = totalDue
+                            }
+
                             bills += "<tr><td></td>" +
                                 "<td>" + bill.financialYear + "</td>" +
                                 "<td>" + bill.transactionType + "</td>" +
@@ -221,7 +244,7 @@
                                 "<td>" + dateFormat(bill.dueDate) + "</td>" +
                                 "<td>" + formatNumber(bill.balance.toFixed(2)) + "</td>" +
                                 "<td>" + formatNumber(bill.due.toFixed(2)) + "</td>" +
-                                "<td>" + formatNumber(totalDue.toFixed(2)) + "</td>" +
+                                "<td>" + formatNumber(Number(td.toFixed(2))) + "</td>" +
                                 "<td>" + days + "</td></tr>";
                         });
                         var customerTotal =

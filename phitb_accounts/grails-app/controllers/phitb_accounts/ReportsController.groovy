@@ -24,11 +24,13 @@ class ReportsController {
                 String transId = jsonObject.get("invoiceNumber").toString()
                 String billType = jsonObject.get("docType").toString()
                 double due = 0.0
+                double balance = 0.0
                 String dueDate = ""
                 String entryDate = ""
                 if(docType.equalsIgnoreCase("INVS")) {
                     dueDate = jsonObject.get("dueDate").toString()
                     entryDate = jsonObject.get("orderDate").toString()
+                    balance =  Double.parseDouble(jsonObject.get("balance").toString())
                     ArrayList<BillDetailLog> billDetailLogs = BillDetailLog
                             .findAllByEntityIdAndFinancialYearAndBillTypeAndBillIdAndReceiptStatus(entityId,
                                     financialYear, billType, Long.parseLong(jsonObject.get("id").toString()),'ACTIVE')
@@ -40,21 +42,22 @@ class ReportsController {
                 {
                     dueDate = jsonObject.get("entryDate").toString()
                     entryDate = jsonObject.get("entryDate").toString()
-                    due = -Double.parseDouble(jsonObject.get("adjAmount").toString()) //this should be negative
+                    due = Double.parseDouble(jsonObject.get("adjAmount").toString()) //this should be negative
 ////                     number as this is sale return
-
+                    balance = - Double.parseDouble(jsonObject.get("balance").toString())
 
                 }
                 MyOutstandingReport outstandingReport = new MyOutstandingReport()
                 outstandingReport.transactionType = billType
                 outstandingReport.transactionNumber = transId
                 outstandingReport.transactionDate = entryDate
+                outstandingReport.docType = jsonObject.get("docType").toString()
                 outstandingReport.lrDate = null
                 outstandingReport.dueDate = null
                 outstandingReport.due = due
                 outstandingReport.dueDate = dueDate
                 outstandingReport.financialYear = jsonObject.get("financialYear").toString()
-                outstandingReport.balance = Double.parseDouble(jsonObject.get("balance").toString())
+                outstandingReport.balance = balance
                 outstandingReport.totalAmount = Double.parseDouble(jsonObject.get("totalAmount").toString())
                 outstandingReport.entityId = Long.parseLong(jsonObject.get("customerId").toString())
                 outstandingReports.add(outstandingReport)
@@ -82,6 +85,7 @@ class ReportsController {
         double totalAmount
         double totalDue
         double days
+        String docType
         String financialYear
     }
 }
