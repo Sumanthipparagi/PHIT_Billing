@@ -479,7 +479,7 @@ class SaleBillDetailsController {
                     if(!productId.equalsIgnoreCase("0"))
                         saleProductDetailsService.update(product, productId)
                     else
-                        saleBillDetailsService.save(product)
+                        saleProductDetailsService.save(product)
                     println("product saved")
                 }
             }

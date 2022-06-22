@@ -961,8 +961,14 @@ class SaleEntryController {
                 for (JSONObject sale : saleData) {
                     String productId = sale.get("1")
                     String batchNumber = sale.get("2")
-                    String tempStockRowId = sale.get("15")
-                    def tmpStockBook = new InventoryService().getTempStocksById(Long.parseLong(tempStockRowId))
+                    String tempStockRowId = null
+                    JSONObject tmpStockBook = null
+                    if(sale.has("15")) {
+                        tmpStockBook = new InventoryService().getTempStocksById(Long.parseLong(sale.get("15").toString()))
+                        tempStockRowId = tmpStockBook?.get("id")
+                    }
+                    else
+                        println("Not in tmp stock")
                     def stockBook
                     long userOrderedSaleQty = Long.parseLong(sale.get("4").toString())
                     long userOrderedFreeQty = Long.parseLong(sale.get("5").toString())
@@ -1005,7 +1011,7 @@ class SaleEntryController {
                     def apiRes = new InventoryService().updateStockBook(stockBook)
                     if (apiRes.status == 200) {
                         //clear tempstockbook
-                        if (tmpStockBook)
+                        if (tmpStockBook && tempStockRowId)
                             new InventoryService().deleteTempStock(tempStockRowId)
                         try {
                             if (billStatus.equalsIgnoreCase("ACTIVE")) {
