@@ -213,8 +213,6 @@
                             else {
                                 customerTotalDue -= totalDue;
                             }
-
-
                             var days;
                             if(Number(bill.balance.toFixed(2)) === 0)
                             {days = 0;}
