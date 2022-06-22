@@ -203,7 +203,7 @@
                         var customerBalance = 0;
                         var customerTotalDue = 0;
                         $.each(invs, function (key, bill) {
-                            var totalDue = bill.totalAmount - bill.due;
+                            var totalDue = bill.totalAmount.toFixed(2) - bill.due.toFixed(2);
                             customerDue += bill.due;
                             customerBalance += bill.balance;
                             customerTotalDue += totalDue;

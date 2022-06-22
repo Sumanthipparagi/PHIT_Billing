@@ -518,7 +518,7 @@
                         if (Number(balance)!== 0 && value.billStatus!== 'DRAFT' && value.billStatus!== 'CANCELLED') {
                             trHTML += ' <tr id="' + "IN" + value.id + '">\n' +
                                 '                                        <td>' + invoice + '</td>\n' +
-                                '                                        <td>' + value.invoiceNumber + '</td>\n' +
+                                '                                        <td>' + value?.invoiceNumber + '</td>\n' +
                                 '                                        <td>' + moment(value.dateCreated).format('DD-MM-YYYY') + '</td>\n' +
                                 '                                        <td id="' + "invAdjAmt" + value.id + '">' + value.adjustedAmount.toFixed(2) + '</td>\n' +
                                 '                                        <td id="' + "invBal" + value.id + '" >' + value.balAmount.toFixed(2) +

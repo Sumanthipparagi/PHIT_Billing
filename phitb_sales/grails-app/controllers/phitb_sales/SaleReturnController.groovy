@@ -212,13 +212,13 @@ class SaleReturnController {
                     if (balance > 0 && balance!="" && balance!=null)
                     {
                         double diffBalance = Double.parseDouble(saleReturn.getBalance().toString()) - balance
-                        saleReturn.balance = diffBalance
-                        saleReturn.adjAmount = saleReturn.getAdjAmount() + balance
+                        saleReturn.balance = String.format("%.2f", diffBalance) as double
+                        saleReturn.adjAmount = String.format("%.2f", saleReturn.getAdjAmount() + balance) as double
                     }
                     else
                     {
-                        saleReturn.balance = saleReturn.getBalance()
-                        saleReturn.adjAmount = saleReturn.getAdjAmount()
+                        saleReturn.balance = String.format("%.2f", saleReturn.getBalance()) as double
+                        saleReturn.adjAmount = String.format("%.2f", saleReturn.getAdjAmount()) as double
                     }
                     SaleReturn saleReturn1 = saleReturn.save(flush: true)
                     if (saleReturn1)
@@ -236,14 +236,13 @@ class SaleReturnController {
                     if (balance > 0 && balance!="" && balance!=null)
                     {
                         double updatebalance = Double.parseDouble(saleReturn.getBalance().toString()) + balance
-                        saleReturn.balance = updatebalance
-                        println(saleReturn.getAdjAmount())
-                        saleReturn.adjAmount = saleReturn.getAdjAmount() - balance
+                        saleReturn.balance = String.format("%.2f", updatebalance) as double
+                        saleReturn.adjAmount = String.format("%.2f",  saleReturn.getAdjAmount() - balance) as double
                     }
                     else
                     {
-                        saleReturn.balance = saleReturn.getBalance()
-                        saleReturn.adjAmount = saleReturn.getAdjAmount()
+                        saleReturn.balance = String.format("%.2f", saleReturn.getBalance()) as double
+                        saleReturn.adjAmount = String.format("%.2f", saleReturn.getAdjAmount()) as double
                     }
                     SaleReturn saleReturn1 = saleReturn.save(flush: true)
                     if (saleReturn1)

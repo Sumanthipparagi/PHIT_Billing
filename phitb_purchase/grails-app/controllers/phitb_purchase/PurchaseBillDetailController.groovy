@@ -208,19 +208,48 @@ class PurchaseBillDetailController {
     def updateBalance() {
         try {
             PurchaseBillDetail purchaseBillDetail = PurchaseBillDetail.findById(Long.parseLong(params.id))
-            if (purchaseBillDetail) {
+            if(params.status=="NA" || params.status==null)
+            {
+                if (purchaseBillDetail)
+                {
+                    purchaseBillDetail.isUpdatable = true
+                    Double balance = Double.parseDouble(params.balance)
+                    if (balance > 0 && balance != "" && balance != null)
+                    {
+                        double diffBalance = Double.parseDouble(purchaseBillDetail.getBalAmount().toString()) - balance
+                        purchaseBillDetail.balAmount = String.format("%.2f", diffBalance) as double
+                        purchaseBillDetail.adjustedAmount = String.format("%.2f", purchaseBillDetail.getAdjustedAmount() + balance) as double
+                    }
+                    else
+                    {
+                        purchaseBillDetail.balAmount = String.format("%.2f", purchaseBillDetail.getBalAmount()) as double
+                        purchaseBillDetail.adjustedAmount = String.format("%.2f", purchaseBillDetail.getAdjustedAmount()) as double
+                    }
+                    PurchaseBillDetail purchaseBillDetail1 = purchaseBillDetail.save(flush: true)
+                    if (purchaseBillDetail1)
+                    {
+                        respond purchaseBillDetail1
+                        return
+                    }
+                }
+            }else
+            {
                 purchaseBillDetail.isUpdatable = true
                 Double balance = Double.parseDouble(params.balance)
-                if (balance > 0 && balance != "" && balance != null) {
-                    double diffBalance = Double.parseDouble(purchaseBillDetail.getBalAmount().toString()) - balance
-                    purchaseBillDetail.balAmount = diffBalance
-                    purchaseBillDetail.adjustedAmount = purchaseBillDetail.getAdjustedAmount() + balance
-                } else {
-                    purchaseBillDetail.balAmount = purchaseBillDetail.getBalAmount()
-                    purchaseBillDetail.adjustedAmount = purchaseBillDetail.getAdjustedAmount()
+                if (balance > 0 && balance != "" && balance != null)
+                {
+                    double updateBalance = Double.parseDouble(purchaseBillDetail.getBalAmount().toString()) + balance
+                    purchaseBillDetail.balAmount = String.format("%.2f", updateBalance) as double
+                    purchaseBillDetail.adjustedAmount = String.format("%.2f", purchaseBillDetail.getAdjustedAmount() - balance) as double
+                }
+                else
+                {
+                    purchaseBillDetail.balAmount = String.format("%.2f", purchaseBillDetail.getBalAmount()) as double
+                    purchaseBillDetail.adjustedAmount = String.format("%.2f", purchaseBillDetail.getAdjustedAmount()) as double
                 }
                 PurchaseBillDetail purchaseBillDetail1 = purchaseBillDetail.save(flush: true)
-                if (purchaseBillDetail1) {
+                if (purchaseBillDetail1)
+                {
                     respond purchaseBillDetail1
                     return
                 }

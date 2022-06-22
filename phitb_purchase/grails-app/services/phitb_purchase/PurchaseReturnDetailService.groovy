@@ -206,8 +206,9 @@ class PurchaseReturnDetailService {
     {
         if(id)
         {
-            return PurchaseReturnDetail.findAllBySupplierIdAndFinancialYearAndEntityId(Long.parseLong(id),
-                    financialYear,Long.parseLong(entityId))
+
+            return PurchaseReturn.findAllBySupplierIdAndFinancialYearAndEntityId(Long.parseLong(id), financialYear,Long.parseLong(entityId))
+
         }
     }
 

@@ -255,6 +255,7 @@ class PaymentDetailController {
                         JSONObject invObject = new JSONObject()
                         invObject.put("id", billId)
                         invObject.put("paidNow", paidNow)
+                        invObject.put("status","NA")
                         def inv = new AccountsService().updatePurchaseBalance(invObject)
                         if (inv?.status == 200) {
                             invObject.remove("id");
@@ -265,6 +266,7 @@ class PaymentDetailController {
                         JSONObject crntObject = new JSONObject();
                         crntObject.put("id", billId)
                         crntObject.put("paidNow", paidNow)
+                        crntObject.put("status","NA")
                         def crnt = new AccountsService().updatePurchaseReturnBalance(crntObject)
                         if (crnt?.status == 200) {
                             crntObject.remove("id");
@@ -275,6 +277,7 @@ class PaymentDetailController {
                         JSONObject gtnObject = new JSONObject();
                         gtnObject.put("id", billId)
                         gtnObject.put("paidNow", paidNow)
+                        gtnObject.put("status","NA")
                         def gtn = new AccountsService().updateGTNBalance(gtnObject)
                         if (gtn?.status == 200) {
                             gtnObject.remove("id");
@@ -435,7 +438,7 @@ class PaymentDetailController {
             def purchaseBill = new AccountsService().getAllPurchaseBillById(params.id, session.getAttribute("entityId").toString(), session.getAttribute("financialYear").toString())
             def creditNote = new AccountsService().getAllPurchaseReturnById(params.id, session.getAttribute("entityId").toString(), session.getAttribute("financialYear").toString())
             def grn = new AccountsService().getAllGTNById(params.id, session.getAttribute("entityId").toString(), session.getAttribute("financialYear").toString())
-            if (purchaseBill.status == 200 && creditNote.status == 200) {
+            if (purchaseBill.status == 200 && creditNote.status == 200 && grn.status == 200) {
 //                def tmp = creditNote.readEntity(String.class)
                 JSONArray purchaseInvArray = new JSONArray(purchaseBill.readEntity(String.class))
                 JSONArray creditNoteArry = new JSONArray(creditNote.readEntity(String.class))

@@ -302,11 +302,11 @@ class SaleBillDetailsController {
                     Double balance = Double.parseDouble(params.balance)
                     if (balance > 0 && balance != "" && balance != null) {
                         double diffBalance = Double.parseDouble(saleBillDetails.getBalance().toString()) - balance
-                        saleBillDetails.balance = diffBalance
-                        saleBillDetails.adjAmount = saleBillDetails.getAdjAmount() + balance
+                        saleBillDetails.balance = String.format("%.2f", diffBalance) as double
+                        saleBillDetails.adjAmount = String.format("%.2f",  saleBillDetails.getAdjAmount() + balance) as double
                     } else {
-                        saleBillDetails.balance = saleBillDetails.getBalance()
-                        saleBillDetails.adjAmount = saleBillDetails.getAdjAmount()
+                        saleBillDetails.balance = String.format("%.2f", saleBillDetails.getBalance()) as double
+                        saleBillDetails.adjAmount = String.format("%.2f", saleBillDetails.getAdjAmount()) as double
                     }
                     SaleBillDetails saleBillDetails1 = saleBillDetails.save(flush: true)
                     if (saleBillDetails1) {
@@ -320,11 +320,11 @@ class SaleBillDetailsController {
                 Double balance = Double.parseDouble(params.balance)
                 if (balance > 0 && balance != "" && balance != null) {
                     double updateBalance = Double.parseDouble(saleBillDetails.getBalance().toString()) + balance
-                    saleBillDetails.balance = updateBalance
-                    saleBillDetails.adjAmount = saleBillDetails.getAdjAmount() - balance
+                    saleBillDetails.balance = String.format("%.2f", updateBalance) as double
+                    saleBillDetails.adjAmount = String.format("%.2f", saleBillDetails.getAdjAmount() - balance) as double
                 } else {
-                    saleBillDetails.balance = saleBillDetails.getBalance()
-                    saleBillDetails.adjAmount = saleBillDetails.getAdjAmount()
+                    saleBillDetails.balance = String.format("%.2f", saleBillDetails.getBalance()) as double
+                    saleBillDetails.adjAmount = String.format("%.2f", saleBillDetails.getAdjAmount()) as double
                 }
                 SaleBillDetails saleBillDetails1 = saleBillDetails.save(flush: true)
                 if (saleBillDetails1) {
