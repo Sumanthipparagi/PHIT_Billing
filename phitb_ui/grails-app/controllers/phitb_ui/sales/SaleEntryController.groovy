@@ -15,11 +15,14 @@ import phitb_ui.entity.EntityRegisterController
 import phitb_ui.entity.SeriesController
 import phitb_ui.ProductService
 import phitb_ui.entity.TaxController
+import phitb_ui.inventory.StockBookController
 
 import javax.ws.rs.core.Response
 import java.text.SimpleDateFormat
 
 class SaleEntryController {
+
+    SimpMessagingTemplate brokerMessagingTemplate
 
     def index() {
         String entityId = session.getAttribute("entityId")?.toString()
@@ -67,7 +70,7 @@ class SaleEntryController {
                                                                 priorityList      : priorityList, saleBillDetail: saleBillDetail,
                                                                 saleProductDetails: saleProductDetails, customer: customer])
         } else {
-            render('No Draft invoice found!!')
+           redirect(uri: "/sale-entry")
         }
 
     }

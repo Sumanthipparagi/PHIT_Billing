@@ -83,8 +83,7 @@ class InventoryService {
     def getStockActivityDateRangeAndEntity(String dateRange,long id)
     {
         Client client = ClientBuilder.newClient().register(JacksonFeature.class)
-       // WebTarget target = client.target(new Links().API_GATEWAY);
-        WebTarget target = client.target("http://localhost:8086");
+        WebTarget target = client.target(new Links().API_GATEWAY);
         try
         {
             Response apiResponse = target
@@ -116,7 +115,6 @@ class InventoryService {
         String productIds = StringUtils.join(pids, ',')
         Client client = ClientBuilder.newClient().register(JacksonFeature.class)
          WebTarget target = client.target(new Links().API_GATEWAY);
-        //WebTarget target = client.target("http://localhost:8086");
         try
         {
             Gson gson = new Gson()
@@ -261,8 +259,7 @@ class InventoryService {
     def updateStockBook(JSONObject jsonObject)
     {
         Client client = ClientBuilder.newClient().register(JacksonFeature.class)
-       // WebTarget target = client.target(new Links().API_GATEWAY);
-        WebTarget target = client.target("http://localhost:8086");
+        WebTarget target = client.target(new Links().API_GATEWAY);
         try
         {
             Response apiResponse = target
@@ -440,8 +437,7 @@ class InventoryService {
     def tempStockBookSave(JSONObject jsonObject)
     {
         Client client = ClientBuilder.newClient()
-       // WebTarget target = client.target(new Links().API_GATEWAY)
-        WebTarget target = client.target("http://localhost:8086")
+        WebTarget target = client.target(new Links().API_GATEWAY)
         try
         {
             println(jsonObject)

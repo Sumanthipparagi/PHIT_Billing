@@ -59,7 +59,7 @@
                     %{--<h2>Sale Entry</h2>--}%
                     <ul class="breadcrumb padding-0">
                         <li class="breadcrumb-item"><a href="#"><i class="zmdi zmdi-home"></i></a></li>
-                        <li class="breadcrumb-item active">Sale Entry</li>
+                    <li class="breadcrumb-item active"><g:if test="${saleBillDetail}">Edit</g:if> Sale Entry</li>
                     </ul>
                 </div>
             </div>
@@ -565,6 +565,13 @@
                                     url: "/stockbook/product/" + pid + "/batch/" + batch,
                                     dataType: 'json',
                                     success: function (data) {
+                                        var draftSqty = 0;
+                                        var draftFqty = 0;
+                                        <g:if test="${customer != null}">
+                                        draftSqty = hot.getDataAtCell(row, 22); //draft sqty
+                                        draftFqty = hot.getDataAtCell(row, 23); //draft fqty
+                                        </g:if>
+
                                         remQty = remQty + data.remainingQty;
                                         remFQty = remFQty + data.remainingFreeQty;
                                         if (remQty >= sQty) {
@@ -573,7 +580,12 @@
                                             allowEntry = true;
                                         } else if ((remQty + remFQty) >= sQty) {
                                             allowEntry = true;
+                                        } else if(draftSqty > 0 && sQty <= (draftSqty+draftFqty+remQty+remFQty)){
+                                            allowEntry = true; //if draft greater than zero, allow manipulation
+                                        } else if(draftFqty > 0 && fqty <= (draftSqty+draftFqty+remQty+remFQty)){
+                                            allowEntry = true;
                                         }
+
 
                                         if (selection === 5) {
                                             if (remFQty >= fQty) {
@@ -593,13 +605,20 @@
                                         }
                                         if (!allowEntry) {
                                             // this.getActiveEditor().TEXTAREA.value = "";
-                                            hot.setDataAtCell(row, 4, 0);
-                                            hot.setDataAtCell(row, 5, 0);
-                                            hot.setDataAtCell(row, 10, 0);
-                                            hot.setDataAtCell(row, 11, 0);
-                                            hot.setDataAtCell(row, 12, 0);
-                                            hot.setDataAtCell(row, 13, 0);
-                                            hot.setDataAtCell(row, 14, 0);
+                                            if(draftSqty > 0 || draftFqty > 0)
+                                            {
+                                                hot.setDataAtCell(row, 4, draftSqty);
+                                                hot.setDataAtCell(row, 5, draftFqty);
+                                            }
+                                            else {
+                                                hot.setDataAtCell(row, 4, 0);
+                                                hot.setDataAtCell(row, 5, 0);
+                                                hot.setDataAtCell(row, 10, 0);
+                                                hot.setDataAtCell(row, 11, 0);
+                                                hot.setDataAtCell(row, 12, 0);
+                                                hot.setDataAtCell(row, 13, 0);
+                                                hot.setDataAtCell(row, 14, 0);
+                                            }
                                             alert("Entered quantity exceeds available quantity");
                                             return;
                                         } else {
@@ -752,7 +771,10 @@
 
     function batchSelection(selectedId, mainRow, selectCell = true) {
         if (selectedId != null) {
-            var url = "/stockbook/product/" + selectedId;
+            var sid = selectedId.id;
+            if(sid === undefined)
+                sid = selectedId;
+            var url = "/stockbook/product/" + sid;
             $.ajax({
                 type: "GET",
                 url: url,
@@ -940,7 +962,18 @@
                     calculateTotalAmt();
                 }, 1000);
             }
-        })
+        });
+
+        //to load temp stock pool in sidebar
+        var userId = "${session.getAttribute("userId")}";
+        $.ajax({
+            type: "GET",
+            url: "tempstockbook/user/" + userId,
+            dataType: 'json',
+            success: function (data) {
+                //do nothing
+            }
+        });
     }
 
     function deleteTempStockRow(id, row) {
@@ -973,7 +1006,10 @@
                     dataType: 'json',
                     success: function (data) {
                         hot.alter("remove_row", row);
-                        swal("Success", "Row Deleted", "").fire();
+                        Swal.fire({
+                            title: "Success",
+                            text: "Product removed."
+                        });
                     }
                 });
             } else
@@ -1204,7 +1240,12 @@
             allowOutsideClick: false,
             closeOnClickOutside: false
         });
+        <g:if test="${customer}">
+        location.href = "sale-entry";
+        </g:if>
+        <g:else>
         location.reload();
+        </g:else>
     }
 
     function seriesChanged() {
@@ -1213,6 +1254,7 @@
     }
 
     function loadProducts(series) {
+        $('.loadTable').show();
         products.length = 0;//remove all elements
         $.ajax({
             type: "GET",
@@ -1233,6 +1275,7 @@
                 products.length = 0; //remove all elements
             }
         });
+        $('.loadTable').hide();
     }
 
     function checkSchemes(productId, batchNumber) {
@@ -1568,12 +1611,6 @@
 
 
     $(document).ready(function () {
-        // $('.htCore tbody').hide();
-        // $('.loadTable').show();
-        // setTimeout(function () {
-        //     $('.htCore tbody').show();
-        $('.loadTable').remove();
-        // }, 5000);
     });
 
 </script>

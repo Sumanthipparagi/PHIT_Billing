@@ -118,7 +118,6 @@ class SalesService
     {
         Client client = ClientBuilder.newClient();
         WebTarget target = client.target(new Links().API_GATEWAY)
-        //WebTarget target = client.target("http://localhost:8083")
         try
         {
             JSONObject jsonObject = new JSONObject()
@@ -147,7 +146,6 @@ class SalesService
     {
         Client client = ClientBuilder.newClient();
         WebTarget target = client.target(new Links().API_GATEWAY)
-        //WebTarget target = client.target("http://localhost:8083")
         try
         {
             JSONObject jsonObject = new JSONObject()
@@ -180,8 +178,7 @@ contains both sale bill and products
     def updateSaleInvoice(JSONObject jsonObject, String id)
     {
         Client client = ClientBuilder.newClient();
-        //WebTarget target = client.target(new Links().API_GATEWAY)
-        WebTarget target = client.target("http://localhost:8083")
+        WebTarget target = client.target(new Links().API_GATEWAY)
         try
         {
             println(jsonObject)
@@ -839,8 +836,7 @@ contains both sale bill and products
     def getSaleProductDetailsById(String id)
     {
         Client client = ClientBuilder.newClient();
-        //WebTarget target = client.target(new Links().API_GATEWAY)
-        WebTarget target = client.target("http://localhost:8083")
+        WebTarget target = client.target(new Links().API_GATEWAY)
         try
         {
             Response apiResponse = target
@@ -1355,8 +1351,7 @@ contains both sale bill and products
 
     def deleteSaleProduct(String id) {
         Client client = ClientBuilder.newClient();
-        //WebTarget target = client.target(new Links().API_GATEWAY);
-        WebTarget target = client.target("http://localhost:8083");
+        WebTarget target = client.target(new Links().API_GATEWAY);
 
         try {
             Response apiResponse = target

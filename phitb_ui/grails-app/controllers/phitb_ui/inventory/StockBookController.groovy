@@ -443,6 +443,7 @@ class StockBookController {
                 if(i == 15 && obj != null) {
                     isEdit = true
                 }
+
                 if(i == 24 && obj != null)
                 {
                     stockBookId = obj
@@ -450,6 +451,7 @@ class StockBookController {
                 }
                 else if(i == 25 && obj != null)
                 {
+                    isEdit = false
                     stockBookId = obj
                     draftProductId = obj
                 }
