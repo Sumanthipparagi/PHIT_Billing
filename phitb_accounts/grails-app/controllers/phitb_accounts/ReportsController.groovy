@@ -40,7 +40,10 @@ class ReportsController {
                 {
                     dueDate = jsonObject.get("entryDate").toString()
                     entryDate = jsonObject.get("entryDate").toString()
-                    due = -Double.parseDouble(jsonObject.get("totalAmount").toString()) //this should be negative number as this is sale return
+                    due = -Double.parseDouble(jsonObject.get("adjAmount").toString()) //this should be negative
+////                     number as this is sale return
+
+
                 }
                 MyOutstandingReport outstandingReport = new MyOutstandingReport()
                 outstandingReport.transactionType = billType
