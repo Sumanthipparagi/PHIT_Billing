@@ -3,6 +3,7 @@ package phitb_ui.sales
 import grails.converters.JSON
 import org.grails.web.json.JSONArray
 import org.grails.web.json.JSONObject
+import org.springframework.messaging.simp.SimpMessagingTemplate
 import phitb_ui.EInvoiceService
 import phitb_ui.EntityService
 import phitb_ui.InventoryService
@@ -22,6 +23,7 @@ class SaleEntryController {
 
     def index() {
         String entityId = session.getAttribute("entityId")?.toString()
+        String userId = session.getAttribute("userId")?.toString()
         JSONArray divisions = new ProductService().getDivisionsByEntityId(entityId)
         ArrayList<String> customers = new EntityRegisterController().show() as ArrayList<String>
         def priorityList = new SystemService().getPriorityByEntity(entityId)
@@ -35,6 +37,20 @@ class SaleEntryController {
         render(view: '/sales/saleEntry/sale-entry', model: [customers   : customers, divisions: divisions, series: series,
                                                             salesmanList: salesmanList, priorityList: priorityList])
     }
+
+/*    def getTempStocksOfUser()
+    {
+        def tempStocks
+        def apiResponse = new InventoryService().getTempStocksByUser(userId)
+        if(apiResponse.status == 200)
+        {
+            tempStocks = new JSONArray(apiResponse.readEntity(String.class))
+            for (JSONObject jsonObject : tempStocks) {
+                JSONObject product = new ProductService().getProductById(jsonObject.get("productId").toString())
+                jsonObject.put("productName", product.get("productName"))
+            }
+        }
+    }*/
 
     def editSaleBillDetails() {
         String entityId = session.getAttribute("entityId")?.toString()
@@ -954,24 +970,24 @@ class SaleEntryController {
                     long remainingFreeQty = 0
 
 
-/*                    if (tmpStockBook) {
+                    if (tmpStockBook) {
                         stockBook = new InventoryService().getStockBookById(Long.parseLong(tmpStockBook.originalId))
-                        remainingQty = tmpStockBook.get("remainingQty")
-                        remainingFreeQty = tmpStockBook.get("remainingFreeQty")
+                        stockBook.put("remainingQty",tmpStockBook.get("remainingQty"))
+                        stockBook.put("remainingFreeQty", tmpStockBook.get("remainingFreeQty"))
 
                     } else {
                         stockBook = new InventoryService().getStocksOfProductAndBatch(productId, batchNumber, entityId)
                         remainingQty = stockBook.get("remainingQty")
                         remainingFreeQty = stockBook.get("remainingFreeQty")
-                    }*/
 
-                    if (userOrderedSaleQty != sale.get("22")) {
-                        long finalSqty = remainingQty - (userOrderedSaleQty - sale.get("22"))
-                        stockBook.put("remainingQty", finalSqty)
-                    }
-                    if (userOrderedFreeQty != sale.get("23")) {
-                        long finalFqty = remainingFreeQty - (userOrderedFreeQty - sale.get("23"))
-                        stockBook.put("remainingFreeQty", finalFqty)
+                        if (userOrderedSaleQty != sale.get("22")) {
+                            long finalSqty = remainingQty - (userOrderedSaleQty - sale.get("22"))
+                            stockBook.put("remainingQty", finalSqty)
+                        }
+                        if (userOrderedFreeQty != sale.get("23")) {
+                            long finalFqty = remainingFreeQty - (userOrderedFreeQty - sale.get("23"))
+                            stockBook.put("remainingFreeQty", finalFqty)
+                        }
                     }
                     stockBook.put("remainingReplQty", 0)
 

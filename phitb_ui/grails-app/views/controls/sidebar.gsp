@@ -105,7 +105,7 @@
         <li><a href="javascript:void(0);" class="fullscreen" data-provide="fullscreen"><i
                 class="zmdi zmdi-fullscreen"></i></a></li>
         <li class="power">
-            <a href="javascript:void(0);" class="js-right-sidebar"><i class="zmdi zmdi-settings zmdi-hc-spin"></i></a>
+            <a href="javascript:void(0);" class="js-right-sidebar"><i class="zmdi zmdi-settings zmdi-info"></i></a>
             <a href="/logout" class="mega-menu"><i class="zmdi zmdi-power"></i></a>
         </li>
     </ul>
@@ -114,12 +114,29 @@
 <aside class="right_menu">
     <div id="rightsidebar" class="right-sidebar">
         <ul class="nav nav-tabs">
-            <li class="nav-item"><a class="nav-link active" data-toggle="tab" href="#setting">Setting</a></li>
-            %{-- <li class="nav-item"><a class="nav-link" data-toggle="tab" href="#activity">Activity</a></li>--}%
+            <li class="nav-item"><a class="nav-link active" data-toggle="tab" href="#tempStock">Temp Stock Pool</a></li>
+            <li class="nav-item"><a class="nav-link" data-toggle="tab" href="#setting"><i class="zmdi zmdi-settings zmdi-hc-spin"></i> Settings</a></li>
+
         </ul>
 
         <div class="tab-content slim_scroll">
-            <div class="tab-pane slideRight active" id="setting">
+            <div class="tab-pane slideLeft active" id="tempStock">
+                <div class="card">
+                    <div class="header">
+                        <h2><strong>Temporary</strong> Stockbook</h2>
+                    </div>
+
+                    <div class="body">
+                        <div id="tempStockSidebar">
+                            <div style="text-align: center">
+                                <i class="zmdi zmdi-storage" style="font-size: 48px;"></i><br>
+                                <small>temporary stocks empty</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="tab-pane slideRight" id="setting">
                 <div class="card">
                     <div class="header">
                         <h2><strong>Colors</strong> Skins</h2>
@@ -209,6 +226,7 @@
                     </div>
                 </div>
             </div>
+
 
             %{--<div class="tab-pane slideLeft" id="activity">
                 <div class="card activities">
@@ -452,7 +470,8 @@
                                 <li><a href="/reports/sales/datewise">Date-wise</a></li>
                                 <li><a href="/reports/sales/areawise">Area-wise (Consolidated)</a></li>
                                 <li><a href="/reports/sales/areawisewithproducts">Area-wise (Products)</a></li>
-                                <li><a href="/reports/sales/areawiseconsolidatedproducts">Area-wise (Products-Consolidated)</a></li>
+                                <li><a href="/reports/sales/areawiseconsolidatedproducts">Area-wise (Products-Consolidated)</a>
+                                </li>
                                 <li><a href="/reports/sales/consolidated">Consolidated</a></li>
                                 <li><a href="/reports/sales/productwise">Product-Wise</a></li>
                                 <li><a href="/reports/sales/gstreport">GST Report</a></li>
@@ -649,8 +668,8 @@
                         class="zmdi zmdi-settings"></i><span>Settings</span> <span
                         class="badge badge-success float-right"></span></a>
                     <ul class="ml-menu">
-                                <li><a href="/entity-settings">Entity Settings</a></li>
-                                <li><a href="/entity-irn">Entity IRN</a></li>
+                        <li><a href="/entity-settings">Entity Settings</a></li>
+                        <li><a href="/entity-irn">Entity IRN</a></li>
                     </ul>
                 </li>
 

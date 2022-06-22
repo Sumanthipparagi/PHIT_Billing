@@ -50,6 +50,7 @@
 </div>
 <g:include view="controls/sidebar.gsp"/>
 
+
 <section class="content">
     <div class="container-fluid">
         <div class="block-header" style="padding: 1px;">
@@ -803,6 +804,7 @@
             url: "tempstockbook/user/" + userId,
             dataType: 'json',
             success: function (data) {
+
                 saleData = data;
                 for (var i = 0; i < saleData.length; i++) {
                     hot.selectCell(i, 1);
@@ -950,7 +952,10 @@
                     dataType: 'json',
                     success: function (data) {
                         hot.alter("remove_row", row);
-                        swal("Success", "Row Deleted", "").fire();
+                        Swal.fire({
+                            title: "Success",
+                            text: "Product removed."
+                        });
                     }
                 });
             } else
@@ -1576,5 +1581,6 @@
 <script>
     selectSideMenu("sales-menu");
 </script>
+<g:include view="controls/socket.gsp"/>
 </body>
 </html>

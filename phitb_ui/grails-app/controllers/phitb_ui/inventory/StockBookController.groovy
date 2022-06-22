@@ -3,6 +3,7 @@ package phitb_ui.inventory
 import org.grails.web.json.JSONArray
 import org.grails.web.json.JSONObject
 import org.hibernate.engine.jdbc.batch.spi.Batch
+import org.springframework.messaging.simp.SimpMessagingTemplate
 import phitb_ui.EntityService
 import phitb_ui.InventoryService
 import phitb_ui.ProductService
@@ -11,6 +12,8 @@ import phitb_ui.entity.EntityRegisterController
 import phitb_ui.entity.TaxController
 
 class StockBookController {
+
+    SimpMessagingTemplate brokerMessagingTemplate
 
     def index() {
         def entityId = session.getAttribute("entityId").toString()
@@ -389,6 +392,7 @@ class StockBookController {
                 json.put("igst", tax.salesIgst)
                 responseArray.put(json)
             }
+            emitTempStockPool()
             respond responseArray, formats: ['json'], status: 200
         }
         else
@@ -484,6 +488,8 @@ class StockBookController {
                         if(draftSqty == saleQty && draftFqty == saleFreeQty)
                         {
                             //no need to add to tempstocks
+                            //remove existing tempstocks
+
                             respond jsonArray, formats: ['json']
                             return
                         }
@@ -496,7 +502,7 @@ class StockBookController {
                                 if (saleQty > draftSqty) {
                                     saleQty = saleQty - draftSqty
                                 } else if (saleQty < draftSqty) {
-                                    saleQty = -saleQty
+                                    saleQty = -(draftSqty - saleQty)
                                 }
                             }
 
@@ -508,7 +514,7 @@ class StockBookController {
                                 if (saleFreeQty > draftFqty) {
                                     saleFreeQty = saleFreeQty - draftFqty
                                 } else if (saleFreeQty < draftFqty) {
-                                    saleFreeQty = -saleFreeQty
+                                    saleFreeQty = -(draftFqty - saleFreeQty)
                                 }
                             }
                         }
@@ -582,6 +588,7 @@ class StockBookController {
             def apiResponse = new InventoryService().tempStockBookSave(jsonObject)
             if (apiResponse?.status == 200)
             {
+                emitTempStockPool()
                 JSONObject obj = new JSONObject(apiResponse.readEntity(String.class))
                 respond obj, formats: ['json'], status: 200
             }
@@ -711,6 +718,8 @@ class StockBookController {
     {
         def id = params.id
         def apiResponse = new InventoryService().deleteTempStock(id)
+        if(apiResponse.status == 200 )
+            emitTempStockPool()
         respond(text: id, status: apiResponse.status)
     }
 
@@ -724,7 +733,6 @@ class StockBookController {
             if (apiResponse?.status == 200)
             {
                 JSONObject obj = new JSONObject(apiResponse.readEntity(String.class))
-//                render(view: '/entity/entityRegister/add-entity-register')
                 respond obj, formats: ['json'], status: 200
             }
             else
@@ -816,6 +824,21 @@ class StockBookController {
             System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
             log.error('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
             response.status = 400
+        }
+    }
+
+    def emitTempStockPool()
+    {
+        def tempStockResp = new InventoryService().getTempStocksByUser( session.getAttribute("userId").toString())
+        if(tempStockResp.status == 200) {
+            JSONArray tempStocks = new JSONArray(tempStockResp.readEntity(String.class))
+            for (Object tmpStk : tempStocks) {
+                JSONObject product = new ProductService().getProductById(tmpStk["productId"].toString())
+                tmpStk.put("productName", product.productName)
+            }
+            String emitLink = "/topicTempStockPool/get/" + session.getAttribute("userId")
+            String message = tempStocks.toString()
+            brokerMessagingTemplate.convertAndSend emitLink, message
         }
     }
 }
