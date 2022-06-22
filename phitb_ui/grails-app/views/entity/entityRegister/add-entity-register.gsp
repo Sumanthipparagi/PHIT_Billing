@@ -22,9 +22,16 @@
             src="/themeassets/plugins/bootstrap-material-datetimepicker/css/bootstrap-material-datetimepicker.css"
             rel="stylesheet"/>
     <asset:stylesheet src="/themeassets/plugins/dropify/dist/css/dropify.min.css"/>
-    <asset:stylesheet src="/themeassets/plugins/select-2-editor/select2.min.css"/>
+%{--    <asset:stylesheet src="/themeassets/plugins/select-2-editor/select2.min.css"/>--}%
+%{--    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />--}%
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.3/css/select2.min.css" rel="stylesheet" />
 
-
+<style>
+    .error
+    {
+        color:red;
+    }
+</style>
 </head>
 
 <body class="theme-black">
@@ -69,7 +76,7 @@
             <div class="col-lg-12 col-md-12 col-sm-12">
                 <div class="card">
                     <div class="body">
-                        <form action="/entity-register" id="form_validation" method="POST" role="form"
+                        <form action="/entity-register" id="entityRegisterForm" method="POST" role="form"
                               class="entityRegisterForm" enctype="multipart/form-data">
                             <div class="row">
                                 <div class="col-md-6" style="max-width: 49%;border: 1px solid black;  border-radius: 10px;padding: 10px;
@@ -122,11 +129,13 @@
                                             <label for="countryId">
                                                 Country
                                             </label>
-                                            <select class="form-control show-tick countryId" name="countryId" id="countryId">
+                                            <select class="form-control show-tick countryId" name="countryId"
+                                                    id="countryId" disabled>
                                                 <g:each var="country" in="${countrylist}">
                                                     <option value="${country.id}">${country.name}</option>
                                                 </g:each>
                                             </select>
+                                            <input type="hidden" name="countryId"/>
                                         </div>
                                     </div>
                                 </div>
@@ -134,34 +143,42 @@
                                 <div class="col-md-6" style="max-width: 49%;border: 1px solid black;  border-radius: 10px;    padding: 10px;
                                 ">
                                     <div class="row">
+                                        <div class="col-lg-6 form-group  form-float">
+                                            <label for="pinCode">
+                                                Pin Code
+                                            </label>
+                                            %{--                                            <input type="text" id="pinCode" class="form-control pinCode"--}%
+                                            %{--                                                    name="pinCode" placeholder="Pin Code"  required>--}%
+                                            <div>
+                                                <select class="pinCode form-control" id="pinCode" ></select>
+                                                <input type="hidden" name="pinCode">
+                                            </div>
+
+                                        </div>
                                         <div class="col-md-6 form-group  form-float">
                                             <label for="stateId">
                                                 State
                                             </label>
-                                            <select class="form-control show-tick stateId" name="stateId" id="stateId">
+                                            <select class="form-control show-tick stateId" name="stateId"
+                                                    id="stateId" disabled>
                                                 <g:each var="state" in="${statelist}">
                                                     <option value="${state.id}">${state.name}</option>
                                                 </g:each>
+                                                <input type="hidden" name="stateId"/>
                                             </select>
                                         </div>
                                         <div class="col-lg-6 form-group  form-float">
                                             <label for="cityId">
                                                 City
                                             </label>
-                                            <select class="form-control show-tick cityId" name="cityId" id="cityId">
+                                            <select class="form-control show-tick cityId" name="cityId" id="cityId" disabled>
                                                 <g:each var="city" in="${citylist}">
-                                                    <option value="${city.id}">${city.name}</option>
+                                                    <option value="${city.id}">${city.district.district}</option>
                                                 </g:each>
+                                                <input type="hidden" name="cityId">
                                             </select>
                                         </div>
-                                        <div class="col-lg-6 form-group  form-float">
-                                            <label for="pinCode">
-                                                Pin Code
-                                            </label>
-                                            <input type="number" id="pinCode" class="form-control pinCode"
-                                                   name="pinCode" placeholder="Pin Code"
-                                                   required/>
-                                        </div>
+
                                         <div class="col-lg-6 form-group  form-float">
                                             <label for="phoneNumber">
                                                 Phone Number
@@ -176,7 +193,7 @@
                                                 Mobile Number
                                             </label>
                                             <input type="number" id="mobileNumber" class="form-control mobileNumber"
-                                                   name="mobileNumber" placeholder="Mobile Number"
+                                                   name="mobileNumber" placeholder="Mobile Number"  minlength="10"
                                                    required/>
                                         </div>
                                         %{--                                        <div class="col-lg-6 form-group  form-float">--}%
@@ -584,7 +601,6 @@
                                 <input type="hidden" name="lastLoginDate" value="12/02/2020">
                                 <input type="hidden" name="createdUser" value="${session.getAttribute('userId')}">
                                 <input type="hidden" name="modifiedUser" value="${session.getAttribute('userId')}">
-
                                 <div class="col-lg-12">
                                     <div class="" style="float: right;">
                                         <input name="id" id="id" class="id" type="hidden">
@@ -619,16 +635,19 @@
 <asset:javascript src="/themeassets/plugins/jquery-datatable/buttons/buttons.colVis.min.js"/>
 <asset:javascript src="/themeassets/plugins/jquery-datatable/buttons/buttons.html5.min.js"/>
 <asset:javascript src="/themeassets/plugins/jquery-datatable/buttons/buttons.print.min.js"/>
+<asset:javascript src="/themeassets/plugins/select2/"/>
 <asset:javascript src="/themeassets/bundles/mainscripts.bundle.js"/>
 <asset:javascript src="/themeassets/js/pages/tables/jquery-datatable.js"/>
 <asset:javascript src="/themeassets/js/pages/ui/dialogs.js"/>
 <asset:javascript src="/themeassets/plugins/sweetalert/sweetalert.min.js"/>
-<asset:javascript src="/themeassets/plugins/select-2-editor/select2.js"/>
+%{--<asset:javascript src="/themeassets/plugins/select-2-editor/select2.js"/>--}%
 <asset:javascript src="/themeassets/plugins/jquery-inputmask/jquery.inputmask.bundle.js"/>
 <asset:javascript src="/themeassets/plugins/momentjs/moment.js"/>
 <asset:javascript src="/themeassets/plugins/bootstrap-material-datetimepicker/js/bootstrap-material-datetimepicker.js"/>
 <asset:javascript src="/themeassets/js/pages/forms/basic-form-elements.js"/>
 <asset:javascript src="/themeassets/plugins/dropify/dist/js/dropify.min.js"/>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.3/js/select2.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/jquery-validation@1.19.3/dist/jquery.validate.js"></script>
 
 
 
@@ -654,6 +673,9 @@
         time: false,
         weekStart: 1
     });
+
+        $('.affiliateId').select2()
+
     });
 
     $(document).ready(function () {
@@ -700,8 +722,133 @@
     function setTwoNumberDecimal(event) {
         this.value = parseFloat(this.value.toFixed(2));
     }
-</script>
 
+
+        // $('.pinCode').select2({
+        //     placeholder: "Pincode",
+        //     // multiple: false,
+        //     minimumInputLength: 3,
+        //     allowClear: true,
+        //     quietMillis: 100,
+        //     id: function(params){ return params._id; },
+        //     ajax: {
+        //         url: "/getcitybypincode",
+        //         dataType: 'json',
+        //         type: 'POST',
+        //         data: function(term, page) {
+        //             return {
+        //                 pincode: term,
+        //                 // page: page || 1
+        //             }
+        //         },
+        //         results: function(data, page) {
+        //             console.log(data);
+        //             return {
+        //                 results: [{"id":data.id, "text":data.areaName}],
+        //             };
+        //         }
+        //     },
+        //     // formatResult:function(item){
+        //     //     return data.pincode;
+        //     // },
+        //     // formatSelection: formatSelection,
+        //     // initSelection: initSelection
+        // })
+        $('.pinCode').select2({
+            placeholder: 'Enter Pincode',
+            minimumInputLength: 3,
+            required:true,
+            ajax: {
+                url: '/getcitybypincode',
+                dataType: 'json',
+                delay: 250,
+                data: function (data) {
+                    return {
+                        pincode: data.term // search term
+                    };
+                },
+                processResults: function (response) {
+                    var data = [];
+                    response.forEach(function(response, index) {
+                        data.push({"pincode": response.pincode, "text": response.areaName, "id":response.id});
+                    });
+                    return {
+                        results:data
+                    };
+                },
+                cache: true
+            }
+        });
+
+
+
+        $('.pinCode').on('select2:selecting', function(e) {
+            var data =  e.params.args.data;
+            var id = data.id;
+            // alert(id)
+            $.ajax({
+                method: 'GET',
+                url: '/getcitybyid',
+                data: {'id' : id},
+                success: function(response){
+                    console.log(response);
+                    $('.stateId').val(response.state.id).change();
+                    $("input[name='stateId']").val(response.state.id);
+                    $("input[name='cityId']").val(response.id);
+                    $('.cityId').val(response.id).change();
+                    $('.pinCode').val(response.pincode);
+                    $("input[name='pinCode']").val(response.pincode);
+                    if(response.state.alphaCode === "FC")
+                    {
+                        $('.countryId').find('option:contains("OTHER")').attr('selected', 'selected');
+                        $("input[name='countryId']").val($('.countryId').val());
+                    }
+                    else {
+                        $('.countryId').find('option:contains("INDIA")').attr('selected', 'selected');
+                        $("input[name='countryId']").val($('.countryId').val());
+                    }
+                },
+                error: function(jqXHR, textStatus, errorThrown) { }
+            });
+
+        });
+
+        $(document).ready(function() {
+            $("#entityRegisterForm").validate();
+        });
+
+          $("#entityRegisterForm").submit(function(event) {
+              var pincode =  $('.pinCode option').length;
+              if(pincode === 0 || pincode < 0)
+              {
+                  swal("Please enter  pincode and  select area");
+                  event.preventDefault();
+              }
+          });
+
+        // $('#updatePassword').submit(function(event) {
+        //     var formData = $(this);
+        //     $.ajax({
+        //         type        : 'POST', // define the type of HTTP verb we want to use (POST for our form)
+        //         url         : formData.attr('action'), // the url where we want to POST
+        //         data        : formData.serialize(), // our data object
+        //         success:function(data){
+        //             $("#validation-status").text(data);
+        //             swal('success','Password Changed Successfully',data);
+        //         },
+        //         error:function(data){
+        //             console.log("Failed");
+        //             $("#validation-status").text(data.responseText);
+        //             swal('error','Password Change Failed',data.responseText);
+        //         }
+        //     });
+        //     event.preventDefault();
+        // });
+
+
+
+
+</script>
 <g:include view="controls/footer-content.gsp"/>
 <script>
     selectSideMenu("product-menu");

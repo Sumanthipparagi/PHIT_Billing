@@ -196,7 +196,7 @@
                     var return_data = [];
 
                     for (var i = 0; i < json.data.length; i++) {
-                        // var divarray =  "`"+json.division.join().replace(/\[/g, '{').replace(/]/g, '}').slice(1, -1)+"`"
+                        // var divarray =  "`"+json.divisionMaster.join().replace(/\[/g, '{').replace(/]/g, '}').slice(1, -1)+"`"
                         // var regEx = new RegExp("/^[ \\t]+([a-zA-Z0-9_]*):/mg", "g");
                         // var replaced = divarray.replace(regEx, '"$1":')
                         // console.log(replaced)
@@ -214,7 +214,7 @@
                             'id': json.data[i].id,
                             'divisionGroupName': json.data[i].divisionGroupName,
                             'divGroupShortName': json.data[i].divGroupShortName,
-                            // 'division': json.data[i].divisionIds,
+                            // 'divisionMaster': json.data[i].divisionIds,
                             // 'entity': json.entity[i].entityName,
                             // 'entitytype': json.entityType[i].name,
                             'action': editbtn + ' ' + deletebtn
@@ -227,7 +227,7 @@
                 // {'data': 'id', 'width': '20%'},
                 {'data': 'divisionGroupName', 'width': '20%'},
                 {'data': 'divGroupShortName', 'width': '20%'},
-                // {'data': 'division', 'width': '20%'},
+                // {'data': 'divisionMaster', 'width': '20%'},
                 // {'data': 'entity', 'width': '20%'},
                 // {'data': 'entitytype', 'width': '20%'},
                 {'data': 'action', 'width': '20%'}

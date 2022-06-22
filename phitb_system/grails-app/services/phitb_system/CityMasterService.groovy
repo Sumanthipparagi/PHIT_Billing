@@ -1,7 +1,8 @@
 package phitb_system
 
+import grails.converters.JSON
 import grails.gorm.transactions.Transactional
-import groovy.json.JsonSlurper
+import org.grails.web.json.JSONArray
 import org.grails.web.json.JSONObject
 import phbit_system.Exception.BadRequestException
 import phbit_system.Exception.ResourceNotFoundException
@@ -12,26 +13,26 @@ class CityMasterService {
     def getAll(String limit, String offset, String query) {
 
         Integer o = offset ? Integer.parseInt(offset.toString()) : 0
-        Integer l = limit ? Integer.parseInt(limit.toString()) : 10000
+        Integer l = limit ? Integer.parseInt(limit.toString()) : 100000
 
         if (!query)
-            return CityMaster.findAll([sort: 'name', max: l, offset: o, order: 'desc'])
+            return CityMaster.findAll([sort: 'circleName', max: l, offset: o, order: 'desc'])
         else
-            return CityMaster.findAllByNameIlike("%" + query + "%", [sort: 'id', max: l, offset: o, order: 'desc'])
+            return CityMaster.findAllByCircleName("%" + query + "%", [sort: 'id', max: l, offset: o, order: 'desc'])
     }
 
     CityMaster get(String id) {
         return CityMaster.findById(Long.parseLong(id))
     }
 
-    def getAllByEntityId(String limit, String offset, long entityId) {
+    def getAllByEntityId(String limit, String offset, long id) {
 
         Integer o = offset ? Integer.parseInt(offset.toString()) : 0
         Integer l = limit ? Integer.parseInt(limit.toString()) : 100
-        if (!entityId)
+        if (!id)
             return CityMaster.findAll([sort: 'id', max: l, offset: o, order: 'asc'])
         else
-            return CityMaster.findAllByEntityId(entityId,[sort: 'id', max: l, offset: o, order: 'desc'])
+            return CityMaster.findAllById(id,[sort: 'id', max: l, offset: o, order: 'desc'])
     }
 
     JSONObject dataTables(JSONObject paramsJsonObject, String start, String length)
@@ -85,8 +86,40 @@ class CityMasterService {
 
     CityMaster save(JSONObject jsonObject) {
         CityMaster cityMaster = new CityMaster()
-        cityMaster.name = jsonObject.get("name")
-        cityMaster.state = StateMaster.findById(Long.parseLong(jsonObject.get("stateId").toString()))
+        cityMaster.circleName = jsonObject.get("circleName").toString()
+        RegionMaster regionMaster = RegionMaster.findById(Long.parseLong(jsonObject.get("region").toString()))
+        if(regionMaster)
+        {
+            cityMaster.regionName = regionMaster.regionName
+            cityMaster.regionCode = regionMaster.regionCode
+            cityMaster.region = regionMaster
+        }
+        DivisionMaster divisionMaster = DivisionMaster.findById(Long.parseLong(jsonObject.get("division").toString()))
+        if(divisionMaster)
+        {
+            cityMaster.divisionName = divisionMaster.divisionName
+            cityMaster.divisionCode = divisionMaster.divisionCode
+            cityMaster.division = divisionMaster
+        }
+        DistrictMaster districtMaster = DistrictMaster.findById(Long.parseLong(jsonObject.get("district").toString()))
+        if(districtMaster)
+        {
+            cityMaster.districtName = districtMaster.district
+            cityMaster.districtCode = districtMaster.districtCode
+            cityMaster.district = districtMaster
+
+        }
+        StateMaster stateMaster = StateMaster.findById(Long.parseLong(jsonObject.get("state").toString()))
+        if(stateMaster)
+        {
+            cityMaster.state = stateMaster
+            cityMaster.stateName = stateMaster.name
+        }
+        cityMaster.areaName = jsonObject.get("areaName").toString()
+        cityMaster.areaCode = jsonObject.get("areaCode").toString()
+        cityMaster.pincode = jsonObject.get("pincode").toString()
+        cityMaster.latitude = jsonObject.get("latitude").toString()
+        cityMaster.logitude = jsonObject.get("logitude").toString()
         cityMaster.save(flush: true)
         if (!cityMaster.hasErrors())
             return cityMaster
@@ -99,8 +132,40 @@ class CityMasterService {
             CityMaster cityMaster = CityMaster.findById(Long.parseLong(id))
             if (cityMaster) {
                 cityMaster.isUpdatable = true
-                cityMaster.name = jsonObject.get("name")
-                cityMaster.state = StateMaster.findById(Long.parseLong(jsonObject.get("stateId").toString()))
+                cityMaster.circleName = jsonObject.get("circleName").toString()
+                RegionMaster regionMaster = RegionMaster.findById(Long.parseLong(jsonObject.get("region").toString()))
+                if(regionMaster)
+                {
+                    cityMaster.regionName = regionMaster.regionName
+                    cityMaster.regionCode = regionMaster.regionCode
+                    cityMaster.region = regionMaster
+                }
+                DivisionMaster divisionMaster = DivisionMaster.findById(Long.parseLong(jsonObject.get("division").toString()))
+                if(divisionMaster)
+                {
+                    cityMaster.divisionName = divisionMaster.divisionName
+                    cityMaster.divisionCode = divisionMaster.divisionCode
+                    cityMaster.division = divisionMaster
+                }
+                DistrictMaster districtMaster = DistrictMaster.findById(Long.parseLong(jsonObject.get("district").toString()))
+                if(districtMaster)
+                {
+                    cityMaster.districtName = districtMaster.district
+                    cityMaster.districtCode = districtMaster.districtCode
+                    cityMaster.district = districtMaster
+
+                }
+                StateMaster stateMaster = StateMaster.findById(Long.parseLong(jsonObject.get("state").toString()))
+                if(stateMaster)
+                {
+                    cityMaster.state = stateMaster
+                    cityMaster.stateName = stateMaster.name
+                }
+                cityMaster.areaName = jsonObject.get("areaName").toString()
+                cityMaster.areaCode = jsonObject.get("areaCode").toString()
+                cityMaster.pincode = jsonObject.get("pincode").toString()
+                cityMaster.latitude = jsonObject.get("latitude").toString()
+                cityMaster.logitude = jsonObject.get("logitude").toString()
                 cityMaster.save(flush: true)
                 if (!cityMaster.hasErrors())
                     return cityMaster
@@ -123,6 +188,30 @@ class CityMasterService {
                 throw new ResourceNotFoundException()
             }
         } else {
+            throw new BadRequestException()
+        }
+    }
+
+    def getCityDetailsByPinCode(String pincode)
+    {
+        try {
+            if(pincode)
+            {
+                ArrayList<CityMaster> cityMasters =  CityMaster.findAllByPincodeIlike(pincode) as ArrayList
+                if (cityMasters) {
+//                    JSONArray cityDetails = new JSONArray((cityMasters as JSON).toString())
+//                    println(cityDetails)
+                    return cityMasters
+                }
+            }
+            else
+            {
+                return null
+            }
+        }
+        catch(Exception ex)
+        {
+            println(ex)
             throw new BadRequestException()
         }
     }

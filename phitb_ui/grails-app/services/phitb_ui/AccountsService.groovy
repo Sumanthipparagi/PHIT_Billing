@@ -657,7 +657,7 @@ class AccountsService
         try
         {
             Response apiResponse = target
-                    .path(new Links().PURCHASE_RETURN_BALANCE_UPDATE+"/id/"+jsonObject.id+"/balance/"+jsonObject.paidNow)
+                    .path(new Links().PURCHASE_RETURN_BALANCE_UPDATE+"/id/"+jsonObject.id+"/balance/"+jsonObject.paidNow+"/status/"+jsonObject.status)
                     .request(MediaType.APPLICATION_JSON_TYPE)
                     .post(Entity.form(form))
             println(apiResponse)

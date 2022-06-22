@@ -22,8 +22,14 @@
             src="/themeassets/plugins/bootstrap-material-datetimepicker/css/bootstrap-material-datetimepicker.css"
             rel="stylesheet"/>
     <asset:stylesheet src="/themeassets/plugins/dropify/dist/css/dropify.min.css"/>
-    <asset:stylesheet src="/themeassets/plugins/select-2-editor/select2.min.css"/>
-
+%{--    <asset:stylesheet src="/themeassets/plugins/select-2-editor/select2.min.css"/>--}%
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.3/css/select2.min.css" rel="stylesheet" />
+    <style>
+    .error
+    {
+        color:red;
+    }
+    </style>
 
 </head>
 
@@ -44,11 +50,11 @@
         <div class="block-header">
             <div class="row">
                 <div class="col-lg-5 col-md-5 col-sm-12">
-                    <h2>Add  Entity Register</h2>
+                    <h2>Update  Entity Register</h2>
                     <ul class="breadcrumb padding-0">
                         <li class="breadcrumb-item"><a href="/"><i class="zmdi zmdi-home"></i></a></li>
                         <li class="breadcrumb-item"><a href="/entity-register"> Entity Register</a></li>
-                        <li class="breadcrumb-item active">Add  Entity Register</li>
+                        <li class="breadcrumb-item active">Update  Entity Register</li>
                     </ul>
                 </div>
 
@@ -69,7 +75,7 @@
             <div class="col-lg-12 col-md-12 col-sm-12">
                 <div class="card">
                     <div class="body">
-                        <form action="/entity-register/update/${entity.id}" id="form_validation" method="POST" role="form"
+                        <form action="/entity-register/update/${entity.id}" id="entityRegisterForm" method="POST" role="form"
                               class="entityRegisterForm" enctype="multipart/form-data">
                             <div class="row">
                                 <div class="col-md-6" style="max-width: 49%;border: 1px solid black;  border-radius: 10px;padding: 10px;
@@ -123,46 +129,57 @@
                                             <label for="countryId">
                                                 Country
                                             </label>
-                                            <select class="form-control show-tick countryId" name="countryId" id="countryId">
+                                            <select class="form-control show-tick countryId"  id="countryId" disabled>
                                                 <g:each var="country" in="${countrylist}">
                                                     <option value="${country.id}" <g:if test="${country.id == entity.countryId}">selected</g:if>>${country.name}</option>
                                                 </g:each>
+                                                <input type="hidden" name="countryId" value="${entity.countryId}"/>
                                             </select>
                                         </div>
                                     </div>
                                 </div>
                                 <div class="ml-1"></div>
-                                <div class="col-md-6" style="max-width: 49%;border: 1px solid black;  border-radius: 10px;    padding: 10px;
-                                ">
+                                <div class="col-md-6" style="max-width: 49%;border: 1px solid black;  border-radius: 10px;  padding: 10px;">
                                     <div class="row">
+
+                                        <div class="col-lg-6 form-group  form-float">
+                                            <label for="pinCode">
+                                                Pin Code
+                                            </label>
+
+                                            <div>
+                                                <select class="pinCode form-control" id="pinCode"></select>
+                                                <input type="hidden" name="pinCode" value="${entity.pinCode}">
+                                            </div>
+                                            <sub id="prevPin">Previously selected pincode: <b>${entity.pinCode}</b></sub>
+                                            <sub id="prevArea">Previously selected area: <b>${cityId.areaName}</b></sub>
+
+                                        </div>
                                         <div class="col-md-6 form-group  form-float">
                                             <label for="stateId">
                                                 State
                                             </label>
-                                            <select class="form-control show-tick stateId" name="stateId" id="stateId">
+                                            <select class="form-control show-tick stateId" name="stateId"
+                                                    id="stateId" disabled>
                                                 <g:each var="state" in="${statelist}">
                                                     <option value="${state.id}" <g:if test="${state.id == entity.stateId}">selected</g:if>>${state.name}</option>
                                                 </g:each>
                                             </select>
+                                            <input type="hidden" name="stateId" value="${entity.stateId}"/>
+
                                         </div>
                                         <div class="col-lg-6 form-group  form-float">
                                             <label for="cityId">
                                                 City
                                             </label>
-                                            <select class="form-control show-tick cityId" name="cityId" id="cityId">
+                                            <select class="form-control show-tick cityId" name="cityId" id="cityId" disabled>
                                                 <g:each var="city" in="${citylist}">
                                                     <option value="${city.id}" <g:if
-                                                            test="${city.id == entity.cityId}">selected</g:if>>${city.name}</option>
+                                                            test="${city.id == entity.cityId}">selected</g:if>>${city.district.district}</option>
                                                 </g:each>
                                             </select>
-                                        </div>
-                                        <div class="col-lg-6 form-group  form-float">
-                                            <label for="pinCode">
-                                                Pin Code
-                                            </label>
-                                            <input type="number" id="pinCode" class="form-control pinCode"
-                                                   name="pinCode" placeholder="Pin Code" value="${entity.pinCode}"
-                                                   required/>
+                                            <input type="hidden" name="cityId" value="${entity.cityId}"/>
+
                                         </div>
                                         <div class="col-lg-6 form-group  form-float">
                                             <label for="phoneNumber">
@@ -178,7 +195,7 @@
                                                 Mobile Number
                                             </label>
                                             <input type="number" id="mobileNumber" class="form-control mobileNumber"
-                                                   name="mobileNumber" placeholder="Mobile Number" value="${entity.mobileNumber}"
+                                                   name="mobileNumber" placeholder="Mobile Number"  minlength="10" value="${entity.mobileNumber}"
                                                    required/>
                                         </div>
                                         %{--                                        <div class="col-lg-6 form-group  form-float">--}%
@@ -483,7 +500,7 @@
 
                                         <div class="col-lg-6 form-group  form-float">
                                             <label for="accountId">
-                                                Account${entity.accountId}
+                                                Account
                                             </label>
                                             <select class="form-control show-tick accountId" name="accountId" id="accountId">
                                                 <option value="0">Please Select</option>
@@ -499,8 +516,7 @@
                                                 Aadhar Id
                                             </label>
                                             <input type="text" id="aadharId" class="form-control aadharId"
-                                                   name="aadharId" placeholder="Aadhar Id" value="${entity.aadharId}"
-                                            />
+                                                   name="aadharId" placeholder="Aadhar Id" value="${entity.aadharId}"/>
                                         </div>
 
 
@@ -618,12 +634,14 @@
 <asset:javascript src="/themeassets/js/pages/tables/jquery-datatable.js"/>
 <asset:javascript src="/themeassets/js/pages/ui/dialogs.js"/>
 <asset:javascript src="/themeassets/plugins/sweetalert/sweetalert.min.js"/>
-<asset:javascript src="/themeassets/plugins/select-2-editor/select2.js"/>
+%{--<asset:javascript src="/themeassets/plugins/select-2-editor/select2.js"/>--}%
 <asset:javascript src="/themeassets/plugins/jquery-inputmask/jquery.inputmask.bundle.js"/>
 <asset:javascript src="/themeassets/plugins/momentjs/moment.js"/>
 <asset:javascript src="/themeassets/plugins/bootstrap-material-datetimepicker/js/bootstrap-material-datetimepicker.js"/>
 <asset:javascript src="/themeassets/js/pages/forms/basic-form-elements.js"/>
 <asset:javascript src="/themeassets/plugins/dropify/dist/js/dropify.min.js"/>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.3/js/select2.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/jquery-validation@1.19.3/dist/jquery.validate.js"></script>
 
 <script>
 
@@ -694,6 +712,77 @@
         console.log(this.value)
         this.value = parseFloat(this.value.toFixed(2));
     }
+
+    $('.pinCode').select2({
+        placeholder: 'Select an item',
+        minimumInputLength: 3,
+        required:true,
+        ajax: {
+            url: '/getcitybypincode',
+            dataType: 'json',
+            delay: 250,
+            data: function (data) {
+                return {
+                    pincode: data.term // search term
+                };
+            },
+            processResults: function (response) {
+                var data = [];
+                response.forEach(function(response, index) {
+                    data.push({"pincode": response.pincode, "text": response.areaName, "id":response.id});
+                });
+                return {
+                    results:data
+                };
+            },
+            cache: true
+        }
+    });
+
+
+    $('.pinCode').on('select2:selecting', function(e) {
+        var data =  e.params.args.data;
+        var id = data.id;
+        // alert(id)
+        $.ajax({
+            method: 'GET',
+            url: '/getcitybyid',
+            data: {'id' : id},
+            success: function(response){
+                console.log(response);
+                $('.stateId').val(response.state.id).change();
+                $("input[name='stateId']").val(response.state.id);
+                $("input[name='cityId']").val(response.id);
+                $('.cityId').val(response.id).change();
+                $('.pinCode').val(response.pincode);
+                $("input[name='pinCode']").val(response.pincode);
+                if(response.state.alphaCode === "FC")
+                {
+                    $('.countryId').find('option:contains("OTHER")').attr('selected', 'selected');
+                    $("input[name='countryId']").val($('.countryId').val());
+
+                }
+                else {
+                    $('.countryId').find('option:contains("INDIA")').attr('selected', 'selected');
+                    $("input[name='countryId']").val($('.countryId').val());
+
+                }
+            },
+            error: function(jqXHR, textStatus, errorThrown) { }
+        });
+
+    });
+    $(document).ready(function() {
+        $("#entityRegisterForm").validate();
+    });
+    // $("#entityRegisterForm").submit(function(event) {
+    //     var pincode =  $('.pinCode option').length;
+    //     if(pincode === 0 || pincode < 0)
+    //     {
+    //         swal("Please enter  pincode and  select area");
+    //         event.preventDefault();
+    //     }
+    // });
 </script>
 
 <g:include view="controls/footer-content.gsp"/>

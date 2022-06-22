@@ -106,8 +106,8 @@
                                 <thead>
                                 <tr>
                                     <th>Name</th>
-                                    <th>Zone</th>
-                                    <th>Country</th>
+                                    <th>GST State Code</th>
+                                    <th>Alpha Code</th>
 %{--                                    <th>Entity</th>--}%
                                     <th>Action</th>
                                 </tr>
@@ -189,19 +189,16 @@
                     for (var i = 0; i < json.data.length; i++) {
                         var editbtn = '<button type="button" data-id="' + json.data[i].id +
                             '" data-name="' + json.data[i].name + '"' +
-                            '" data-entity="' + json.data[i].entityId + '"' +
-                            '" data-zoneId="' + json.data[i].zone.id + '"' +
-                            '" data-countryId="' + json.data[i].country.id + '"' +
-                            '"' +
+                            'data-gstStateCode="' + json.data[i].gstStateCode + '"' +
+                            'data-alphaCode="' + json.data[i].alphaCode + '"' +
                             ' class="editbtn btn btn-sm btn-warning  editbtn" data-toggle="modal" data-target="#addStateModal"><i class="material-icons"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">edit</font></font></i></button>'
                         var deletebtn = '<button type="button" data-id="' + json.data[i].id +
                             '" class="btn btn-sm btn-danger deletebtn" data-toggle="modal" data-target=".deleteModal"><i class="material-icons"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">delete</font></font></i></button>'
-                        console.log(json.data[i].zone.id)
                         return_data.push({
                             'id': json.data[i].id,
                             'name': json.data[i].name,
-                            'zone': json.data[i].zone.name,
-                            'country': json.data[i].country.name,
+                            'gstStateCode': json.data[i].gstStateCode,
+                            'alphaCode': json.data[i].alphaCode,
                             // 'entity': json.names[i].entityName,
                             'action': editbtn + ' ' + deletebtn
                         });
@@ -211,8 +208,8 @@
             },
             columns: [
                 {'data': 'name', 'width': '5%'},
-                {'data': 'zone', 'width': '5%'},
-                {'data': 'country', 'width': '5%'},
+                {'data': 'gstStateCode', 'width': '5%'},
+                {'data': 'alphaCode', 'width': '5%'},
                 // {'data': 'entity', 'width': '5%'},
                 {'data': 'action', 'width': '5%'}
             ]
@@ -271,9 +268,11 @@
     $(document).on("click", ".editbtn", function () {
         id = $(this).data('id');
         $(".name").val($(this).data('name'));
-        $(".entity").val($(this).data('entity')).change().select2();
-        $("#zone").val($(this).attr('data-zoneId')).change().select2();
-        $("#country").val($(this).attr('data-countryId')).change().select2();
+        $(".gstStateCode").val($(this).attr('data-gstStateCode'));
+        $(".alphaCode").val($(this).attr('data-alphaCode'));
+        // $(".entity").val($(this).data('entity')).change().select2();
+        // $("#zone").val($(this).attr('data-zoneId')).change().select2();
+        // $("#country").val($(this).attr('data-countryId')).change().select2();
         // $("#country").select2();
         // $("#zone").select2();
         // $(".entity").select2();

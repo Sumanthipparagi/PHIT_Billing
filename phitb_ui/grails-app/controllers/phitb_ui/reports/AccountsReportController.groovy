@@ -26,8 +26,8 @@ class AccountsReportController {
         String sortBy = "id"
         JSONObject resultJson = new JSONObject()
         //Sale Bill Details and Sale Return or similar, so adding to same JSONObject
-        JSONObject areaWiseData = reportsService.getAreaWiseReport(entityId, dateRange, financialYear, sortBy)
-        JSONObject saleReturnAreaWise = reportsService.getSaleReturnAreaWiseReport(entityId, dateRange, financialYear, sortBy)
+        JSONObject areaWiseData = reportsService.getAreaWiseReport(entityId, dateRange, financialYear, sortBy, paidInvoice)
+        JSONObject saleReturnAreaWise = reportsService.getSaleReturnAreaWiseReport(entityId, dateRange, financialYear, sortBy,paidInvoice)
         for (Object key : saleReturnAreaWise.keySet()) {
             if(areaWiseData.containsKey(key))
             {

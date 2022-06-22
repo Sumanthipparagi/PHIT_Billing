@@ -594,7 +594,7 @@ file. Now sites using several languages will load considerably faster because
 the library won't dynamically include additional files while loading.
 
 Also this version fixes a long-standing bug with Javascript highlighting that
-couldn't distinguish between regular expressions and division operations.
+couldn't distinguish between regular expressions and divisionMaster operations.
 
 And as usually there were a couple of minor correctness fixes.
 

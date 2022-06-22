@@ -323,6 +323,7 @@ class PurchaseEntryController {
             }
             //update stockbook
             for (JSONObject purchase : purchaseData) {
+                UUID uuid
                 //check if selected product and batch exists for the entity, if so update data, else add new
                 String productId = purchase.get("1")
                 String batchNumber = purchase.get("2")
@@ -347,7 +348,7 @@ class PurchaseEntryController {
                     stockBook.put("remainingFreeQty", fQty)
                     stockBook.put("remainingReplQty", 0)
                     stockBook.put("modifiedUser", session.getAttribute("userId"))
-                    stockBook.put("uuid", params.uuid)
+                    stockBook.put("uuid", UUID.randomUUID())
                     new InventoryService().updateStockBook(stockBook)
                 } else {
                     JSONObject jsonObject = new ProductService().getProductById(productId)
@@ -398,7 +399,7 @@ class PurchaseEntryController {
                     }
                     stockBook.put("manufacturingDate", manfDate)
                     stockBook.put("openingStockQty", saleQty) //opening stock is same as sale while adding
-                    stockBook.put("uuid", params.uuid)
+                    stockBook.put("uuid", UUID.randomUUID())
                     new InventoryService().stockBookSave(stockBook)
                 }
             }

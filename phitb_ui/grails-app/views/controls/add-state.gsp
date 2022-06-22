@@ -19,38 +19,55 @@
               </div>
 
               <div class="col-lg-6 form-group  form-float">
-                <label for="zone">
-                  Zone
+                <label for="name">
+                  GST State Code
                 </label>
-                <select class="form-control show-tick zone" name="zoneId" id="zone">
-                  <g:each var="zone" in="${zoneArrayList}">
-                    <option value="${zone.id}">${zone.name}</option>
-                  </g:each>
-                </select>
+                <input type="text" id="gstStateCode" class="form-control gstStateCode" name="gstStateCode" placeholder="GST State Code"
+                       required/>
               </div>
+
 
               <div class="col-lg-6 form-group  form-float">
-                <label for="country">
-                  Country
+                <label for="name">
+                  Alpha Code
                 </label>
-                <select class="form-control show-tick country" name="countryId" id="country">
-                  <g:each var="country" in="${countryArrayList}">
-                    <option value="${country.id}">${country.name}</option>
-                  </g:each>
-                </select>
+                <input type="text" id="alphaCode" class="form-control alphaCode" name="alphaCode"
+                       placeholder="Alpha Code"
+                       required/>
               </div>
+              %{--              <div class="col-lg-6 form-group  form-float">--}%
+%{--                <label for="zone">--}%
+%{--                  Zone--}%
+%{--                </label>--}%
+%{--                <select class="form-control show-tick zone" name="zoneId" id="zone">--}%
+%{--                  <g:each var="zone" in="${zoneArrayList}">--}%
+%{--                    <option value="${zone.id}">${zone.name}</option>--}%
+%{--                  </g:each>--}%
+%{--                </select>--}%
+%{--              </div>--}%
 
-              <div class="col-lg-6 form-group  form-float">
+%{--              <div class="col-lg-6 form-group  form-float">--}%
+%{--                <label for="country">--}%
+%{--                  Country--}%
+%{--                </label>--}%
+%{--                <select class="form-control show-tick country" name="countryId" id="country">--}%
+%{--                  <g:each var="country" in="${countryArrayList}">--}%
+%{--                    <option value="${country.id}">${country.name}</option>--}%
+%{--                  </g:each>--}%
+%{--                </select>--}%
+%{--              </div>--}%
 
-                <label for="entity">
-                  Entity
-                </label>
-                <select class="form-control show-tick entity" name="entityId" id="entity">
-                  <g:each var="e" in="${entity}">
-                    <option value="${e.id}" data-type="${e.entityType.id}">${e.entityName}</option>
-                  </g:each>
-                </select>
-              </div>
+%{--              <div class="col-lg-6 form-group  form-float">--}%
+
+%{--                <label for="entity">--}%
+%{--                  Entity--}%
+%{--                </label>--}%
+%{--                <select class="form-control show-tick entity" name="entityId" id="entity">--}%
+%{--                  <g:each var="e" in="${entity}">--}%
+%{--                    <option value="${e.id}" data-type="${e.entityType.id}">${e.entityName}</option>--}%
+%{--                  </g:each>--}%
+%{--                </select>--}%
+%{--              </div>--}%
             </div>
           </div>
 

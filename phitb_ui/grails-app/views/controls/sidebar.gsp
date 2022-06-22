@@ -504,9 +504,12 @@
                         <g:if test="${UtilsService.isPermitted("VIEW_CITY", session.getAttribute("permittedFeatures").toString())}">
                             <li><a href="/city">City</a></li>
                         </g:if>
-                        <g:if test="${UtilsService.isPermitted("VIEW_COUNTRY", session.getAttribute("permittedFeatures").toString())}">
-                            <li><a href="/country">Country</a></li>
-                        </g:if>
+                            <li><a href="/district">District</a></li>
+                            <li><a href="/division">Division</a></li>
+                            <li><a href="/region">Region</a></li>
+%{--                        <g:if test="${UtilsService.isPermitted("VIEW_COUNTRY", session.getAttribute("permittedFeatures").toString())}">--}%
+%{--                            <li><a href="/country">Country</a></li>--}%
+%{--                        </g:if>--}%
                         <g:if test="${UtilsService.isPermitted("VIEW_FORM", session.getAttribute("permittedFeatures").toString())}">
                             <li><a href="/form">Form</a></li>
                         </g:if>

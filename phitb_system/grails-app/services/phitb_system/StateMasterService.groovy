@@ -34,15 +34,15 @@ class StateMasterService
         return StateMaster.findById(Long.parseLong(id))
     }
 
-    def getAllByEntityId(String limit, String offset, long entityId) {
+    def getAllByEntityId(String limit, String offset, long id) {
 
         Integer o = offset ? Integer.parseInt(offset.toString()) : 0
         Integer l = limit ? Integer.parseInt(limit.toString()) : 100
 
-        if (!entityId)
+        if (!id)
             return StateMaster.findAll([sort: 'id', max: l, offset: o, order: 'desc'])
         else
-            return StateMaster.findAllByEntityId(entityId,[sort: 'id', max: l, offset: o, order: 'desc'])
+            return StateMaster.findAllById(id,[sort: 'id', max: l, offset: o, order: 'desc'])
     }
 
 
@@ -51,7 +51,6 @@ class StateMasterService
         String searchTerm = paramsJsonObject.get("search[value]")
         String orderColumnId = paramsJsonObject.get("order[0][column]")
         String orderDir = paramsJsonObject.get("order[0][dir]")
-
         String orderColumn = "id"
         switch (orderColumnId)
         {
@@ -64,20 +63,19 @@ class StateMasterService
         }
 
         Integer offset = start ? Integer.parseInt(start.toString()) : 0
-        Integer max = length ? Integer.parseInt(length.toString()) : 100
-
+        Integer max = length ? Integer.parseInt(length.toString()) : 10000
         def stateMasterCriteria = StateMaster.createCriteria()
         def stateMasterArrayList = stateMasterCriteria.list(max: max, offset: offset) {
             or {
                 if (searchTerm != "")
                 {
                     ilike('name', '%' + searchTerm + '%')
-                    zone {
-                        ilike('name', '%' + searchTerm + '%')
-                    }
-                    country {
-                        ilike('name', '%' + searchTerm + '%')
-                    }
+//                    zone {
+//                        ilike('name', '%' + searchTerm + '%')
+//                    }
+//                    country {
+//                        ilike('name', '%' + searchTerm + '%')
+//                    }
                 }
             }
             eq('deleted', false)
@@ -102,12 +100,9 @@ class StateMasterService
     StateMaster save(JSONObject jsonObject)
     {
         StateMaster stateMaster = new StateMaster()
-        stateMaster.name = jsonObject.get("name")
-        ZoneMaster zoneMaster = ZoneMaster.findById(Long.parseLong(jsonObject.get("zoneId").toString()))
-        CountryMaster countryMaster = CountryMaster.findById(Long.parseLong(jsonObject.get("countryId").toString()))
-        stateMaster.zone = zoneMaster
-        stateMaster.country = countryMaster
-        stateMaster.entityId = Long.parseLong(jsonObject.get("entityId").toString())
+        stateMaster.name = jsonObject.get("name").toString()
+        stateMaster.gstStateCode = jsonObject.get("gstStateCode").toString()
+        stateMaster.alphaCode = jsonObject.get("alphaCode").toString()
         stateMaster.save(flush: true)
         if (!stateMaster.hasErrors())
         {
@@ -127,12 +122,9 @@ class StateMasterService
             if (stateMaster)
             {
                 stateMaster.isUpdatable = true
-                stateMaster.name = jsonObject.get("name")
-                ZoneMaster zoneMaster = ZoneMaster.findById(Long.parseLong(jsonObject.get("zoneId").toString()))
-                CountryMaster countryMaster = CountryMaster.findById(Long.parseLong(jsonObject.get("countryId").toString()))
-                stateMaster.zone = zoneMaster
-                stateMaster.country = countryMaster
-                stateMaster.entityId = Long.parseLong(jsonObject.get("entityId").toString())
+                stateMaster.name = jsonObject.get("name").toString()
+                stateMaster.gstStateCode = jsonObject.get("gstStateCode").toString()
+                stateMaster.alphaCode = jsonObject.get("alphaCode").toString()
                 stateMaster.save(flush: true)
                 if (!stateMaster.hasErrors())
                 {

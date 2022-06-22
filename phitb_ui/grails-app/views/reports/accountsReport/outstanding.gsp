@@ -171,7 +171,7 @@
         var customerBalance = 0;
         var customerTotalDue = 0;
         // var sortBy = $('.sortBy').val();
-        var paidInvoice = $("#paidInvoice").is(":checked") ? "true" : "false";
+        var paidInvoice = $("#paidInvoice").is(":checked") ? "false" : "true";
         $.ajax({
             url: "/reports/accounts/getoutstanding?dateRange=" + dateRange + "&paidInvoice="+paidInvoice,
             type: "GET",
@@ -187,7 +187,7 @@
                     dateRange + "</th></tr>" +
                     //"<tr><th colspan='6'></th><th data-f-bold='true'><strong>Grand Total:</strong> <span id='grandTotal'></span></th></tr>" +
                     //"<tr><th data-f-bold='true'>Customer</th><th data-f-bold='true'>Net Amount</th>"+
-                    "<th data-f-bold='true'>Customer</th><th data-f-bold='true'>Fin. Year</th><th data-f-bold='true'>Tran. Type</th><th data-f-bold='true'>Tran. No.</th><th data-f-bold='true'>Date</th><th data-f-bold='true'>Due Date</th><th data-f-bold='true'>Due On "+dueOnDate+"</th><th data-f-bold='true'>Not Due</th><th data-f-bold='true'>Total Due</th><th data-f-bold='true'>Days</th></tr></thead><tbody>";
+                    "<th data-f-bold='true'>Customer</th><th data-f-bold='true'>Fin. Year</th><th data-f-bold='true'>Tran. Type</th><th data-f-bold='true'>Tran. No.</th><th data-f-bold='true'>Date</th><th data-f-bold='true'>Due Date</th><th data-f-bold='true'>Due On "+dueOnDate+"</th><th data-f-bold='true'>Paid</th><th data-f-bold='true'>Total Due</th><th data-f-bold='true'>Days</th></tr></thead><tbody>";
                 var billDetails = "";
                 $.each(data, function (key, city) {
                     billDetails = "";
@@ -203,23 +203,52 @@
                         var customerBalance = 0;
                         var customerTotalDue = 0;
                         $.each(invs, function (key, bill) {
-                            var totalDue = bill.balance - bill.due;
+                            var totalDue = bill.totalAmount.toFixed(2) - Math.abs(bill.due.toFixed(2));
                             customerDue += bill.due;
                             customerBalance += bill.balance;
-                            customerTotalDue += totalDue;
+                            if(bill.docType === "INVS")
+                            {
+                                customerTotalDue += totalDue;
+                            }
+                            else {
+                                customerTotalDue -= totalDue;
+                            }
+
+
+                            var days;
+                            if(Number(bill.balance.toFixed(2)) === 0)
+                            {days = 0;}
+                            else
+                            { days = moment(new Date()).diff(moment(dateFormat(bill.dueDate), "DD/MM/YYYY"), 'days')}
+                            // alert($('#paidInvoice').val())
+                            var td;
+                            if(bill.docType!=="INVS")
+                            {
+                                if(totalDue <= 0)
+                                {
+                                    td = totalDue
+                                }else
+                                {
+                                    td = - totalDue
+                                }
+                            }
+                            else {
+                                td = totalDue
+                            }
+
                             bills += "<tr><td></td>" +
                                 "<td>" + bill.financialYear + "</td>" +
                                 "<td>" + bill.transactionType + "</td>" +
                                 "<td>" + bill.transactionNumber + "</td>" +
                                 "<td>" + dateFormat(bill.transactionDate) + "</td>" +
                                 "<td>" + dateFormat(bill.dueDate) + "</td>" +
-                                "<td>" + formatNumber(bill.due.toFixed(2)) + "</td>" +
                                 "<td>" + formatNumber(bill.balance.toFixed(2)) + "</td>" +
-                                "<td>" + formatNumber(totalDue.toFixed(2)) + "</td>" +
-                                "<td>" + moment(new Date()).diff(moment(dateFormat(bill.dueDate), "DD/MM/YYYY"), 'days') + "</td></tr>";
+                                "<td>" + formatNumber(bill.due.toFixed(2)) + "</td>" +
+                                "<td>" + formatNumber(Number(td.toFixed(2))) + "</td>" +
+                                "<td>" + days + "</td></tr>";
                         });
                         var customerTotal =
-                            "<tr><td colspan='6'></td><td data-f-bold='true'><u><strong>"+formatNumber(customerDue.toFixed(2))+"</strong></u></td><td data-f-bold='true'><u><strong>"+formatNumber(customerBalance.toFixed(2))+"</strong></u></td>" +
+                            "<tr><td colspan='6'></td><td data-f-bold='true'><u><strong>"+formatNumber(customerBalance.toFixed(2))+"</strong></u></td><td data-f-bold='true'><u><strong>"+formatNumber(customerDue.toFixed(2))+"</strong></u></td>" +
                             "<td data-f-bold='true'><u><strong>"+formatNumber(customerTotalDue.toFixed(2))+"</strong></u></td><td data-f-bold='true'></td></tr>";
                         customerInfo += (bills + customerTotal);
                     });
@@ -239,7 +268,7 @@
     $("#btnExport").click(function () {
         let table = document.getElementById("result");
         TableToExcel.convert(table, {
-            name: 'areawise-sales-report.xlsx',
+            name: 'outstanding-report.xlsx',
             sheet: {
                 name: 'Sheet 1' // sheetName
             }

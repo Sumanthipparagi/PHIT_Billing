@@ -1,5 +1,6 @@
 package phitb_ui.system
 
+import grails.artefact.Controller
 import groovy.json.JsonSlurper
 import org.grails.web.json.JSONArray
 import org.grails.web.json.JSONObject
@@ -13,9 +14,11 @@ class CityController {
     {
         try
         {
-            ArrayList<String> entity = new EntityRegisterController().show() as ArrayList<String>
-            ArrayList<String> stateArrayList = new StateController().show() as ArrayList<String>
-            render(view: '/system/city/city',model: [entity:entity, stateArrayList:stateArrayList])
+            ArrayList<String> region = new SystemService().getRegionList() as ArrayList<String>
+            ArrayList<String> division = new DivisionMasterController().show() as ArrayList<String>
+            ArrayList<String> district = new DistrictController().show() as ArrayList<String>
+            ArrayList<String> state = new StateController().show() as ArrayList<String>
+            render(view: '/system/city/city',model: [state:state,region:region,division:division,district:district])
         }
         catch (Exception ex)
         {
@@ -39,6 +42,38 @@ class CityController {
         {
             return []
         }
+    }
+
+    def getCityByPincode()
+    {
+        try
+        {
+            println(params)
+            String pincode = params.pincode
+            if(pincode!="")
+            {
+                def apiResponse = new SystemService().getCityByPin(pincode)
+                if (apiResponse?.status == 200)
+                {
+                    JSONArray jsonArray = new JSONArray(apiResponse.readEntity(String.class));
+//                    ArrayList<String> arrayList = new ArrayList<>(jsonArray)
+                    respond jsonArray,formats:['json'], status: 200;
+                }
+                else
+                {
+                    return []
+                }
+            }
+            else {
+                return []
+            }
+
+        }
+       catch(Exception ex)
+       {
+           System.out.println(controllerName+": "+ex)
+           log.error(controllerName+": "+ex)
+       }
     }
 
     def dataTable()
@@ -155,9 +190,10 @@ class CityController {
         }
     }
 
-    def getCityById(String id)
+    def getCityById()
     {
-        return new SystemService().getCityById(id)
+        def city = new SystemService().getCityById(params.id)
+        respond city, formats: ['json'],status: 200
     }
 
 }

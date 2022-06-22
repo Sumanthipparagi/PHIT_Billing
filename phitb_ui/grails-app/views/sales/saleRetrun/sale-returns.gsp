@@ -470,6 +470,10 @@
             isCheckedYes = "YES"
         });
         $("#customer").select2();
+        var stateId = $('#customer option:selected').attr('data-stateId')
+        $('#customer').change(function () {
+            stateId = $('#customer option:selected').attr('data-stateId')
+        });
         $('#date').val(moment().format('YYYY-MM-DD'));
         $('#date').attr("readonly");
         <g:each in="${customers}" var="cs">
@@ -895,7 +899,7 @@
                         var priceBeforeGst = value - (value * discount / 100);
                         var finalPrice = priceBeforeGst + (priceBeforeGst * (gst / 100));
                         hot.setDataAtCell(row, 13, Number(finalPrice).toFixed(2));
-
+                        var customerState = $('#customer').find(':selected').data('stateId');
                         if (gst !== 0) {
                             var gstAmount = priceBeforeGst * (gst / 100);
                             var sgstAmount = priceBeforeGst * (sgst / 100);
@@ -943,10 +947,7 @@
             });
         });
 
-        var stateId = $('#customer option:selected').attr('data-stateId')
-        $('#customer').change(function () {
-            stateId = $('#customer option:selected').attr('data-stateId')
-        });
+
 
         function productsDropdownRenderer(instance, td, row, col, prop, value, cellProperties) {
             var selectedId;
@@ -2073,7 +2074,6 @@
             this.$textarea.hide();
             $('.handsontableInput').children().hide();
             Handsontable.editors.TextEditor.prototype.close.apply(this, arguments);
-            $('.handsontableInput').children().show();
         };
 
 

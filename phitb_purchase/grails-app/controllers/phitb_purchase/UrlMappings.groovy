@@ -26,7 +26,7 @@ class UrlMappings {
             "/purchasebillbysupplier(.$format)?"(controller: 'purchaseBillDetail') {
                 action = [GET: 'getAllBySupplierId']
             }
-            "/updatebillbalancebyid/id/$id/balance/$balance"(controller: 'purchaseBillDetail')
+            "/updatebillbalancebyid/id/$id/balance/$balance/status/$status"(controller: 'purchaseBillDetail')
                     {action=[POST: 'updateBalance']}
 
             "/billdetail/cancel(.$format)?"(controller: 'purchaseBillDetail') {action = [POST: 'cancelPurchaseBill']}
@@ -60,7 +60,7 @@ class UrlMappings {
                 action = [GET: 'getAllBySupplierId']
             }
             "/returndetailbydays/$days(.$format)?"(controller: 'purchaseReturnDetail') { action = [GET: 'getAllByDays'] }
-            "/updatereturnbalancebyid/id/$id/balance/$balance"(controller: 'purchaseReturnDetail')
+            "/updatereturnbalancebyid/id/$id/balance/$balance/status/$status"(controller: 'purchaseReturnDetail')
                     {action=[POST: 'updateBalance']}
 
             "/returndetailbydaterange"(controller: 'purchaseReturnDetail', action: 'getByDateRangeAndEntity')
