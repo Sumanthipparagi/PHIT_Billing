@@ -250,7 +250,7 @@
                 <li><b class="tab">PAN</b>: ${customer.pan}</li>
                 <li><b class="tab">DL No1</b>: ${customer.drugLicence1}</li>
                 <li><b class="tab">DL No2</b>: ${customer.drugLicence2}</li>
-                <li><b class="tab">STATE NAME</b>: ${custcity.stateName}</li>
+                <li><b class="tab">STATE NAME</b>: ${custcity?.stateName}</li>
                 <li><b class="tab">Area pincode</b>: ${customer.pinCode}</li>
                 <li><b class="tab">Goods Through</b>:</li>
                 <li><b class="tab">Place of Supply</b>:  &nbsp;${custcity?.districtName}</li>
