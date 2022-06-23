@@ -481,7 +481,7 @@ class PurchaseEntryController {
             }
             def apiResponse = new SalesService().getRequestWithId(it.productId.toString(), new Links().PRODUCT_REGISTER_SHOW)
             it.put("productId", JSON.parse(apiResponse.readEntity(String.class)) as JSONObject)
-            it.put("packingDesc",stockBook.packingDesc)
+            it.put("packingDesc",stockBook?.packingDesc)
         }
 
         def totalcgst = UtilsService.round(purchaseProductDetails.cgstAmount.sum(), 2)
