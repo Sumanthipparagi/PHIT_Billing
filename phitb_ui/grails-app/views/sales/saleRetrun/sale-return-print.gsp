@@ -217,7 +217,7 @@
     <tr>
         <td colspan="4" style="vertical-align:top;">
             <ul>
-                <li><b class="tab">Location</b>: ${city.name}</li>
+                <li><b class="tab">Location</b>: ${city.district.district}</li>
                 <li><b class="tab">Phone</b>: ${entity.phoneNumber}</li>
                 <li><b class="tab">GST No</b>: ${entity.gstn}</li>
                 <li><b class="tab">FAX No</b>: ${entity.faxNumber}</li>
@@ -228,7 +228,7 @@
         </td>
         <td colspan="5" style="vertical-align:top;">
             <ul>
-                <li><b class="tab">DELIVERY AT</b>:&nbsp;${custcity.name}</li>
+                <li><b class="tab">DELIVERY AT</b>:&nbsp;${custcity.district.district}</li>
                 <li><b class="tab">GST NO</b>: ${customer.gstn}</li>
                 <li><b class="tab">Phone</b>: ${customer.phoneNumber}</li>
                 <li><b class="tab">PAN</b>: ${customer.pan}</li>
@@ -244,7 +244,7 @@
         </td>
         <td colspan="5" style="vertical-align:top;">
             <ul>
-                <li><b class="tab">DELIVERY AT</b>:&nbsp;${custcity.name}</li>
+                <li><b class="tab">DELIVERY AT</b>:&nbsp;${custcity.district.district}</li>
                 <li><b class="tab">GST NO</b>: ${customer.gstn}</li>
                 <li><b class="tab">Phone</b>: ${customer.phoneNumber}</li>
                 <li><b class="tab">PAN</b>: ${customer.pan}</li>

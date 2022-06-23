@@ -224,6 +224,7 @@
                 dataType: 'json',
 
                 dataSrc: function (json) {
+                    console.log(json);
                     var return_data = [];
                     for (var i = 0; i < json.data.length; i++) {
                         var approveInvoice = "";
@@ -256,7 +257,7 @@
                             'grossAmt': grossAmt,
                             'date': moment(json.data[i].entryDate).format('DD-MM-YYYY  h:mm a'),
                             'netAmt': json.data[i].invoiceTotal.toFixed(2),
-                            'city': json.city[i].cityId?.name,
+                            'city': json.city[i].cityId.areaName,
                             'bill_status': json.data[i].billStatus,
                             'balance': json.data[i].balance.toFixed(2),
                             'finYear': json.data[i].financialYear

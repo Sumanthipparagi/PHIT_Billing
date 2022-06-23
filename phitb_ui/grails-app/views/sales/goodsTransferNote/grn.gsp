@@ -265,7 +265,7 @@
                             'invNo': invoiceNumber,
                             'gstAmt': json.data[i].totalGst.toFixed(2),
                             'netAmt': json.data[i].totalAmount.toFixed(2),
-                            'city': json.city[i].cityId.name,
+                            'city':  json.city[i].cityId.areaName,
                             'bill_status': json.data[i].billStatus,
                             'balance': json.data[i].balance.toFixed(2),
                             'finYear': json.data[i].financialYear
