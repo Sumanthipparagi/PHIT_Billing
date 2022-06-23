@@ -244,7 +244,7 @@
         </td>
         <td colspan="5" style="vertical-align:top;">
             <ul>
-                <li><b class="tab">DELIVERY AT</b>:&nbsp;${custcity.district.district}</li>
+                <li><b class="tab">DELIVERY AT</b>:&nbsp;${custcity?.district.district}</li>
                 <li><b class="tab">GST NO</b>: ${customer.gstn}</li>
                 <li><b class="tab">Phone</b>: ${customer.phoneNumber}</li>
                 <li><b class="tab">PAN</b>: ${customer.pan}</li>

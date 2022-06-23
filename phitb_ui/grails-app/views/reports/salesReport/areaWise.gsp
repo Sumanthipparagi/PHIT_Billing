@@ -240,7 +240,7 @@
                     var custNetAmtTotal = 0;
                     var cityName =
                         "<tr><td colspan='4' data-f-bold='true' colspan='3'><span class='customerData cust" +
-                        key + "'><strong>" + city[0].cityDetail.district.district + "</strong></span></td></tr>";
+                        key + "'><strong>" + city[0].cityDetail?.districtName + "</strong></span></td></tr>";
 
                     var cityTotalSqty = 0;
                     var cityTotalfQty = 0;
