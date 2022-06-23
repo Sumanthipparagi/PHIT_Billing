@@ -379,7 +379,7 @@ class SalesReportController {
             JSONObject city = new SystemService().getCityById(entity.get("cityId").toString())
             JSONObject series = new EntityService().getSeriesById(jsonObject.get("seriesId").toString())
             jsonObject.put("customerId", entity.entityName)
-            jsonObject.put("town", city.name)
+            jsonObject.put("town", city.district.district)
             jsonObject.put("gstin", entity.gstn)
             jsonObject.put("seriesId", series.seriesCode)
         }
