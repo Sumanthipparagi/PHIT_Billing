@@ -193,7 +193,7 @@ class SalesReportController {
                 }
             }
             def cityDetail = new SystemService().getCityById(key.toString())
-            resultJson.put(cityDetail.name.toString(), customerJson)
+            resultJson.put(cityDetail.district.district.toString(), customerJson)
         }
         respond resultJson, formats: ['json']
     }
@@ -260,7 +260,7 @@ class SalesReportController {
                 }
             }
             def cityDetail = new SystemService().getCityById(key.toString())
-            resultJson.put(cityDetail.name.toString(), products)
+            resultJson.put(cityDetail.district.district.toString(), products)
         }
         respond resultJson, formats: ['json']
     }

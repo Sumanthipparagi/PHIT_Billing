@@ -3,7 +3,7 @@ package phitb_ui.sales
 import grails.converters.JSON
 import org.grails.web.json.JSONArray
 import org.grails.web.json.JSONObject
-import org.springframework.messaging.simp.SimpMessagingTemplate
+//import org.springframework.messaging.simp.SimpMessagingTemplate
 import phitb_ui.EInvoiceService
 import phitb_ui.EntityService
 import phitb_ui.InventoryService
@@ -22,7 +22,7 @@ import java.text.SimpleDateFormat
 
 class SaleEntryController {
 
-    SimpMessagingTemplate brokerMessagingTemplate
+//    SimpMessagingTemplate brokerMessagingTemplate
 
     def index() {
         String entityId = session.getAttribute("entityId")?.toString()
