@@ -1,6 +1,6 @@
 package phitb_ui.sales
 
-import com.google.gson.JsonObject
+
 import grails.converters.JSON
 import org.grails.web.json.JSONArray
 import org.grails.web.json.JSONObject
@@ -470,9 +470,9 @@ class GoodsTransferNoteController
         if (saleBillDetail != null && saleBillDetail.billStatus == 'DRAFT')
         {
             JSONArray saleProductDetails = new SalesService().getSaleProductDetailsByBill(saleBillId)
-            render(view: '/sales/edit-sale-entry', model: [customers         : customers, divisions: divisions, series: series,
-                                                           priorityList      : priorityList, saleBillDetail: saleBillDetail,
-                                                           saleProductDetails: saleProductDetails])
+            render(view: '/sales/saleEntry/edit-sale-entry', model: [customers         : customers, divisions: divisions, series: series,
+                                                                     priorityList      : priorityList, saleBillDetail: saleBillDetail,
+                                                                     saleProductDetails: saleProductDetails])
         }
         else
         {

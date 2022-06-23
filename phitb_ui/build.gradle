@@ -64,6 +64,7 @@ dependencies {
     compile group: 'org.jboss.resteasy', name: 'resteasy-client', version: '6.0.0.Final'
     compile 'com.google.code.gson:gson:2.8.5'
     compile 'org.grails.plugins:rendering:2.0.3'
+    compile "org.grails.plugins:grails-spring-websocket:2.3.0"
 
     compile group: 'org.bouncycastle', name: 'bcpkix-jdk15on', version: '1.56'
     // https://mvnrepository.com/artifact/org.bouncycastle/bcprov-jdk15on

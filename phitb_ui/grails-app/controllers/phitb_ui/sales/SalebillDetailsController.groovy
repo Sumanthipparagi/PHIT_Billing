@@ -1,10 +1,7 @@
 package phitb_ui.sales
 
-import com.google.gson.JsonObject
-import grails.converters.JSON
+
 import phitb_ui.EntityService
-import phitb_ui.Links
-import phitb_ui.ProductService
 import phitb_ui.SystemService
 import phitb_ui.entity.EntityRegisterController
 import phitb_ui.entity.SeriesController
@@ -36,9 +33,9 @@ class SalebillDetailsController {
                 salesmanList.add(it)
             }
         }
-        render(view: '/sales/sale-entry', model: [series      : series, accountMode: accountMode, entity: entity,
-                                                           users       : users, customerList: customerList,
-                                                           salesmanList: salesmanList, salebilllist:salebilllist])
+        render(view: '/sales/saleEntry/sale-entry', model: [series      : series, accountMode: accountMode, entity: entity,
+                                                            users       : users, customerList: customerList,
+                                                            salesmanList: salesmanList, salebilllist:salebilllist])
     }
 
 

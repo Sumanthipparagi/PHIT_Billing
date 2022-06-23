@@ -101,6 +101,17 @@ class StockBookService {
 
     StockBook save(JSONObject jsonObject) {
 
+        long entityId = Long.parseLong(jsonObject.get("entityId").toString())
+        long productId = Long.parseLong(jsonObject.get("productId").toString())
+        String batchNumber = jsonObject.get("batchNumber")
+
+        //check if exists
+        StockBook stockBook = StockBook.findByEntityIdAndProductIdAndBatchNumber(entityId, productId, batchNumber)
+        if(stockBook == null)
+        {
+            stockBook = new StockBook()
+        }
+
         //Date sanitize
         String manufacturingDate = jsonObject.get("manufacturingDate")
         String expDate = jsonObject.get("expDate")
@@ -122,14 +133,9 @@ class StockBookService {
         jsonObject.put("expDate",expDate)
         jsonObject.put("purcDate",purcDate)
 
-
-        long productId = Long.parseLong(jsonObject.get("productId").toString())
-        String batchNumber = jsonObject.get("batchNumber")
         double saleRate = Double.parseDouble(jsonObject.get("saleRate").toString())
         long remainingQty = Long.parseLong(jsonObject.get("remainingQty").toString())
         long remainingFreeQty = Long.parseLong(jsonObject.get("remainingFreeQty").toString())
-
-        StockBook stockBook = new StockBook()
         stockBook.batchNumber = batchNumber
         stockBook.mergedWith = jsonObject.get("mergedWith")
         stockBook.packingDesc = jsonObject.get("packingDesc")
@@ -151,7 +157,7 @@ class StockBookService {
         stockBook.status = Long.parseLong(jsonObject.get("status").toString())
         stockBook.syncStatus = Long.parseLong(jsonObject.get("syncStatus").toString())
         stockBook.entityTypeId = Long.parseLong(jsonObject.get("entityTypeId").toString())
-        stockBook.entityId = Long.parseLong(jsonObject.get("entityId").toString())
+        stockBook.entityId = entityId
         stockBook.createdUser = Long.parseLong(jsonObject.get("createdUser").toString())
         stockBook.modifiedUser = Long.parseLong(jsonObject.get("modifiedUser").toString())
         stockBook.openingStockQty = Long.parseLong(jsonObject.get("openingStockQty").toString())

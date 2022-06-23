@@ -184,24 +184,24 @@ class UrlMappings {
                 action = [GET: 'getSaleOrderProductDetailsOfBill']
             }
 
-            "/saleproductdetailslist/bill/$salebillsIds(.$format)?"(controller: 'saleOrderProductDetails') {
+            "/saleorderproductdetailslist/bill/$salebillsIds(.$format)?"(controller: 'saleOrderProductDetails') {
                 action = [GET: 'getSaleProductDetailsOfSaleBillList']
             }
 
-            "/saleproductdetails/datatable(.$format)?"(controller: 'saleOrderProductDetails') {action = [GET: 'dataTable']}
-            "/saleproductdetails/$id(.$format)?"(controller: 'saleOrderProductDetails') {
+            "/saleorderproductdetails/datatable(.$format)?"(controller: 'saleOrderProductDetails') {action = [GET: 'dataTable']}
+            "/saleorderproductdetails/$id(.$format)?"(controller: 'saleOrderProductDetails') {
                 action = [GET: 'show', PUT: 'update', DELETE:
                         'delete']
             }
-            "/saleproductdetailsbydays/$days(.$format)?"(controller: 'saleOrderProductDetails') {
+            "/saleorderproductdetailsbydays/$days(.$format)?"(controller: 'saleOrderProductDetails') {
                 action = [GET: 'getAllByDays']
             }
 
-//            "/saleproductdetailsbyproductId(.$format)?"(controller: 'saleOrderProductDetails') {
+//            "/saleorderproductdetailsbyproductId(.$format)?"(controller: 'saleOrderProductDetails') {
 //                action = [GET: 'getSaleOrderProductDetailsbyProductId']
 //            }
 
-            "/saleproductdetailsbillandbatch(.$format)?"(controller: 'saleOrderProductDetails', action:
+            "/saleorderproductdetailsbillandbatch(.$format)?"(controller: 'saleOrderProductDetails', action:
                     'getSaleProductDetailsbybatchAndBill')
 
 

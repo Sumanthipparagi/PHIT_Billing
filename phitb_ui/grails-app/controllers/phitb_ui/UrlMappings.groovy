@@ -488,6 +488,9 @@ class UrlMappings {
         "/edit-sale-entry"(controller: "saleEntry") {
             action = [GET: "editSaleBillDetails", POST: 'updateSaleBillDetails']
         }
+/*        "/edit-sale-entry"(controller: "saleEntry") {
+            action = [GET: "editSaleBillDetails", POST: 'updateSaleBillDetails']
+        }*/
         "/edit-sale-products"(controller: 'saleEntry'){
             action=[POST:'updateSaleProductDetails']
         }

@@ -3,13 +3,17 @@ package phitb_ui.inventory
 import org.grails.web.json.JSONArray
 import org.grails.web.json.JSONObject
 import org.hibernate.engine.jdbc.batch.spi.Batch
+import org.springframework.messaging.simp.SimpMessagingTemplate
 import phitb_ui.EntityService
 import phitb_ui.InventoryService
 import phitb_ui.ProductService
+import phitb_ui.SalesService
 import phitb_ui.entity.EntityRegisterController
 import phitb_ui.entity.TaxController
 
 class StockBookController {
+
+    SimpMessagingTemplate brokerMessagingTemplate
 
     def index() {
         def entityId = session.getAttribute("entityId").toString()
@@ -388,6 +392,7 @@ class StockBookController {
                 json.put("igst", tax.salesIgst)
                 responseArray.put(json)
             }
+            emitTempStockPool()
             respond responseArray, formats: ['json'], status: 200
         }
         else
@@ -426,32 +431,112 @@ class StockBookController {
         try
         {
             JSONArray jsonArray = new JSONArray(params.rowData)
+            long saleQty  = jsonArray[4]
+            long saleFreeQty  = jsonArray[5]
+            def draftEdit = Boolean.parseBoolean(params.draftEdit)
             Boolean isEdit = false
             int i = 0
+            long stockBookId = 0
+            long draftProductId = 0
             for (Object obj : jsonArray) {
                 //15 if edit, 16 if being added
-                if(i == 15 && obj != null)
+                if(i == 15 && obj != null) {
                     isEdit = true
-/*                else if(i == 16 && obj != null)
-                    isEdit = false*/
+                }
+
+                if(i == 24 && obj != null)
+                {
+                    stockBookId = obj
+                    draftProductId = obj
+                }
+                else if(i == 25 && obj != null)
+                {
+                    isEdit = false
+                    stockBookId = obj
+                    draftProductId = obj
+                }
                 i++
             }
             def stockBook = null
-            if(!isEdit)
-                stockBook = new InventoryService().getStockBookById(jsonArray[22])
+            if(!isEdit) {
+                //adding for first time
+                if(!draftEdit)
+                    stockBook = new InventoryService().getStockBookById(jsonArray[22])
+                else
+                    stockBook = new InventoryService().getStockBookById(stockBookId)
+            }
             else {
-                def tmpStockBook = new InventoryService().getTempStocksById(jsonArray[15])
-                stockBook = new InventoryService().getStockBookById(Long.parseLong(tmpStockBook.originalId))
+                if(jsonArray[15] != 0 && !draftEdit)
+                {
+                    //editing while adding for first time
+                    def tmpStockBook = new InventoryService().getTempStocksById(jsonArray[15])
+                    stockBook = new InventoryService().getStockBookById(Long.parseLong(tmpStockBook.originalId))
+                }
+                else
+                {
+                    //editing draft
+                    JSONObject draftProduct = new SalesService().getSaleProductDetailsById(draftProductId.toString())
+                    if(draftProduct)
+                    {
+                        stockBook = new InventoryService().getStocksOfProductAndBatch(draftProduct.productId.toString(), draftProduct.batchNumber, draftProduct.entityId.toString())
+
+                        //if sale qty or free qty is edited only difference qty to be pulled in to tmp stockbook
+                        //ex: draftSqty = 5 and sqty = 6, then 1 qty to be added into tmp stock from stock
+                        //if draftSqty = 5 and sqty = 4, then sqty to be returned to tmpstock, will be set as negative
+                        // value, because while calculation below it will become (-) * (-) = (+)
+                        //if draftSqty and draftFqty = to sqty and freeQty then no need to add into temp stock
+                        long draftSqty = draftProduct.sqty
+                        long draftFqty = draftProduct.freeQty
+                        if(draftSqty == saleQty && draftFqty == saleFreeQty)
+                        {
+                            //no need to add to tempstocks
+                            //remove existing tempstocks
+
+                            respond jsonArray, formats: ['json']
+                            return
+                        }
+                        else {
+                            if(draftSqty == saleQty && draftFqty != saleFreeQty)
+                            {
+                                saleQty = 0
+                            }
+                            else {
+                                if (saleQty > draftSqty) {
+                                    saleQty = saleQty - draftSqty
+                                } else if (saleQty < draftSqty) {
+                                    saleQty = -(draftSqty - saleQty)
+                                }
+                            }
+
+                            if(draftSqty != saleQty && draftFqty == saleFreeQty)
+                            {
+                                saleFreeQty = 0
+                            }
+                            else {
+                                if (saleFreeQty > draftFqty) {
+                                    saleFreeQty = saleFreeQty - draftFqty
+                                } else if (saleFreeQty < draftFqty) {
+                                    saleFreeQty = -(draftFqty - saleFreeQty)
+                                }
+                            }
+                        }
+                    }
+                    else
+                    {
+                        //throw error
+                        println("Selected product not in draft")
+                        response.status = 400
+                        return
+                    }
+                }
             }
             long remainingQty = stockBook.remainingQty
             long remainingFreeQty = stockBook.remainingFreeQty
-            long saleQty  = jsonArray[4]
-            long saleFreeQty  = jsonArray[5]
             if(saleQty<=remainingQty)
             {
                 remainingQty = remainingQty - saleQty
             }
-            else if(saleQty>remainingQty && saleQty<(remainingQty+remainingFreeQty))
+            else if(saleQty>remainingQty && saleQty<=(remainingQty+remainingFreeQty))
             {
                 remainingFreeQty = remainingFreeQty - (saleQty - remainingQty)
                 remainingQty = 0
@@ -465,21 +550,11 @@ class StockBookController {
                 remainingQty = remainingQty - (saleFreeQty - remainingFreeQty)
                 remainingFreeQty = 0
             }
-           /* if(saleQty>remainingQty && remainingFreeQty>saleQty)
-            {
-                remainingQty = 0
-                remainingFreeQty = remainingFreeQty - saleQty
-            }
-            else {
-                remainingQty = remainingQty - saleQty
-                if(remainingFreeQty<saleFreeQty)
-                {
-                    remainingFreeQty = 0
-                }
-                else {
-                    remainingFreeQty = remainingFreeQty - saleFreeQty
-                }
-            }*/
+
+            //Remove Negative
+            long userOrderQty = (saleQty < 0 ? -saleQty : saleQty)
+            long userOrderFreeQty = (saleFreeQty < 0 ? -saleFreeQty : saleFreeQty)
+
             JSONObject jsonObject = new JSONObject()
             jsonObject.put("productId", jsonArray[1])
             jsonObject.put("batchNumber", jsonArray[2])
@@ -492,8 +567,8 @@ class StockBookController {
             jsonObject.put("mrp", jsonArray[7])
             jsonObject.put("discount", jsonArray[8])
             jsonObject.put("packingDesc", jsonArray[9])
-            jsonObject.put("userOrderQty", saleQty)
-            jsonObject.put("userOrderFreeQty", saleFreeQty)
+            jsonObject.put("userOrderQty", userOrderQty)
+            jsonObject.put("userOrderFreeQty", userOrderFreeQty)
             jsonObject.put("userOrderReplQty", 0)
             jsonObject.put("taxId", stockBook.taxId)
             jsonObject.put("userId", session.getAttribute("userId"))
@@ -504,9 +579,18 @@ class StockBookController {
             jsonObject.put("uuid", params.uuid)
             jsonObject.put("originalSqty", jsonArray[20])
             jsonObject.put("originalFqty", jsonArray[21])
+
+            //editing draft
+/*            def tmp = jsonArray.indexOf(22)
+            if(jsonArray.indexOf(22) > 0)
+                jsonObject.put("draftSqty", jsonArray[22])
+            if(jsonArray.indexOf(23) > 0)
+                jsonObject.put("draftFqty", jsonArray[23])*/
+
             def apiResponse = new InventoryService().tempStockBookSave(jsonObject)
             if (apiResponse?.status == 200)
             {
+                emitTempStockPool()
                 JSONObject obj = new JSONObject(apiResponse.readEntity(String.class))
                 respond obj, formats: ['json'], status: 200
             }
@@ -636,6 +720,8 @@ class StockBookController {
     {
         def id = params.id
         def apiResponse = new InventoryService().deleteTempStock(id)
+        if(apiResponse.status == 200 )
+            emitTempStockPool()
         respond(text: id, status: apiResponse.status)
     }
 
@@ -649,7 +735,6 @@ class StockBookController {
             if (apiResponse?.status == 200)
             {
                 JSONObject obj = new JSONObject(apiResponse.readEntity(String.class))
-//                render(view: '/entity/entityRegister/add-entity-register')
                 respond obj, formats: ['json'], status: 200
             }
             else
@@ -741,6 +826,21 @@ class StockBookController {
             System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
             log.error('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
             response.status = 400
+        }
+    }
+
+    def emitTempStockPool()
+    {
+        def tempStockResp = new InventoryService().getTempStocksByUser( session.getAttribute("userId").toString())
+        if(tempStockResp.status == 200) {
+            JSONArray tempStocks = new JSONArray(tempStockResp.readEntity(String.class))
+            for (Object tmpStk : tempStocks) {
+                JSONObject product = new ProductService().getProductById(tmpStk["productId"].toString())
+                tmpStk.put("productName", product.productName)
+            }
+            String emitLink = "/topicTempStockPool/get/" + session.getAttribute("userId")
+            String message = tempStocks.toString()
+            brokerMessagingTemplate.convertAndSend emitLink, message
         }
     }
 }

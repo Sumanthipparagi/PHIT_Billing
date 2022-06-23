@@ -475,7 +475,11 @@ class SaleBillDetailsController {
                     product.put("billId", saleBillDetails.id)
                     product.put("billType", 0) //0 Sale, 1 Purchase
                     product.put("serBillId", saleBillDetails.serBillId)
-                    saleProductDetailsService.update(product, product.get("id").toString())
+                    String productId = product.get("id").toString()
+                    if(!productId.equalsIgnoreCase("0"))
+                        saleProductDetailsService.update(product, productId)
+                    else
+                        saleProductDetailsService.save(product)
                     println("product saved")
                 }
             }
