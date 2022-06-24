@@ -173,24 +173,13 @@ class SalebillDetailsController {
                 if(responseObject)
                 {
                     JSONArray jsonArray = responseObject.data
-                    JSONArray jsonArray2 = new JSONArray()
-                    JSONArray jsonArray3 = new JSONArray()
-                    JSONArray entityArray = new JSONArray()
-                    JSONArray cityArray = new JSONArray()
                     for (JSONObject json : jsonArray) {
-                        json.put("customer", new EntityService().getEntityById(json.get("customerId").toString()))
-                        jsonArray2.put(json)
+                        JSONObject customer = new EntityService().getEntityById(json.get("customerId").toString())
+                        def city = new SystemService().getCityById(customer.cityId.toString())
+                        customer.put("city", city)
+                        json.put("customer", customer)
                     }
-                    for(JSONObject json1 : jsonArray2)
-                    {
-                        entityArray.put(json1.get("customer"))
-                    }
-                    entityArray.each {
-                        def cityResp = new SystemService().getCityById(it.cityId.toString())
-                        it.put("cityId", cityResp)
-                    }
-                    responseObject.put("data", jsonArray2)
-                    responseObject.put("city",entityArray)
+                    responseObject.put("data", jsonArray)
                 }
                 respond responseObject, formats: ['json'], status: 200
             } else {
