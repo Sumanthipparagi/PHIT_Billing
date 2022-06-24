@@ -210,38 +210,38 @@
     <tr>
         <td colspan="5" style="vertical-align:top;">
             <ul>
-                <li><b class="tab">DELIVERY AT</b>:&nbsp;${supcity.name}</li>
+                <li><b class="tab">DELIVERY AT</b>:&nbsp;${supcity?.districtName}</li>
                 <li><b class="tab">GST NO</b>: ${supplier.gstn}</li>
                 <li><b class="tab">Phone</b>: ${supplier.phoneNumber}</li>
                 <li><b class="tab">PAN</b>: ${supplier.pan}</li>
                 <li><b class="tab">DL No1</b>: ${supplier.drugLicence1}</li>
                 <li><b class="tab">DL No2</b>: ${supplier.drugLicence2}</li>
-                <li><b class="tab">STATE NAME</b>: ${supcity.state.name}</li>
+                <li><b class="tab">STATE NAME</b>: ${supcity?.stateName}</li>
                 <li><b class="tab">Area PIN</b>: ${supplier.pinCode}</li>
                 <li><b class="tab">Goods Through</b>:</li>
-                <li><b class="tab">Place of Supply</b>: &nbsp;${supcity.name}</li>
+                <li><b class="tab">Place of Supply</b>: &nbsp;${supcity?.districtName}</li>
                 %{--                <li><b class="tab">State Code</b>: </li>--}%
             </ul>
 
         </td>
         <td colspan="5" style="vertical-align:top;">
             <ul>
-                <li><b class="tab">DELIVERY AT</b>:&nbsp;${supcity.name}</li>
+                <li><b class="tab">DELIVERY AT</b>:&nbsp;${supcity?.districtName}</li>
                 <li><b class="tab">GST NO</b>: ${supplier.gstn}</li>
                 <li><b class="tab">Phone</b>: ${supplier.phoneNumber}</li>
                 <li><b class="tab">PAN</b>: ${supplier.pan}</li>
                 <li><b class="tab">DL No1</b>: ${supplier.drugLicence1}</li>
                 <li><b class="tab">DL No2</b>: ${supplier.drugLicence2}</li>
-                <li><b class="tab">STATE NAME</b>: ${supcity.state.name}</li>
+                <li><b class="tab">STATE NAME</b>: ${supcity?.stateName}</li>
                 <li><b class="tab">Area PIN</b>: ${supplier.pinCode}</li>
                 <li><b class="tab">Goods Through</b>:</li>
-                <li><b class="tab">Place of Supply</b>:  &nbsp;${supcity.name}</li>
+                <li><b class="tab">Place of Supply</b>:  &nbsp;${supcity?.districtName}</li>
                 %{--                <li><b class="tab">State Code</b>: </li>--}%
             </ul>
         </td>
         <td colspan="4" style="vertical-align:top;">
             <ul>
-                <li><b class="tab">Location</b>: ${city.name}</li>
+                <li><b class="tab">Location</b>: ${city?.districtName}</li>
                 <li><b class="tab">Phone</b>: ${entity.phoneNumber}</li>
                 <li><b class="tab">GST No</b>: ${entity.gstn}</li>
                 <li><b class="tab">FAX No</b>: ${entity.faxNumber}</li>
@@ -301,7 +301,7 @@
             <td>${i + 1}</td>
             <td>${sp.productId.hsnCode}</td>
             <td><b>${sp.productId.productName}</b></td>
-            <td><b>${sp.packingDesc}</b></td>
+            <td><b>${sp?.packingDesc}</b></td>
             <td><b>D</b></td>
             <td>${sp.batchNumber}</td>
             <td id="expDate${sp.id}">${sp.expiryDate}</td>

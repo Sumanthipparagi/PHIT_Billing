@@ -69,7 +69,7 @@ class AccountsReportController {
             }
             //get city name
             if(outstandingReport?.size() > 0)
-                resultJson.put(cityDetail.name.toString(), customers2)
+                resultJson.put(cityDetail?.districtName?.toString(), customers2)
         }
         respond resultJson, formats: ['json']
     }

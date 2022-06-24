@@ -193,7 +193,7 @@ class SalesReportController {
                 }
             }
             def cityDetail = new SystemService().getCityById(key.toString())
-            resultJson.put(cityDetail.name.toString(), customerJson)
+            resultJson.put(cityDetail?.districtName?.toString(), customerJson)
         }
         respond resultJson, formats: ['json']
     }
@@ -260,7 +260,7 @@ class SalesReportController {
                 }
             }
             def cityDetail = new SystemService().getCityById(key.toString())
-            resultJson.put(cityDetail.name.toString(), products)
+            resultJson.put(cityDetail?.districtName?.toString(), products)
         }
         respond resultJson, formats: ['json']
     }
@@ -379,7 +379,7 @@ class SalesReportController {
             JSONObject city = new SystemService().getCityById(entity.get("cityId").toString())
             JSONObject series = new EntityService().getSeriesById(jsonObject.get("seriesId").toString())
             jsonObject.put("customerId", entity.entityName)
-            jsonObject.put("town", city.name)
+            jsonObject.put("town", city?.districtName)
             jsonObject.put("gstin", entity.gstn)
             jsonObject.put("seriesId", series.seriesCode)
         }
