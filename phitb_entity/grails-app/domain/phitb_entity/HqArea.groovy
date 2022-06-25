@@ -6,6 +6,7 @@ class HqArea implements LogicalDelete<HqArea>
 {
     String hqName
     String cityId
+    String districtId
     EntityRegister entity
     EntityTypeMaster entityType
 
@@ -18,6 +19,7 @@ class HqArea implements LogicalDelete<HqArea>
 
     static constraints = {
         cityId nullable: true
+        districtId nullable: true
     }
     boolean isUpdatable
     static transients = ['isUpdatable']

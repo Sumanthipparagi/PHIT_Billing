@@ -103,6 +103,7 @@ class HqAreasService {
         HqArea hqArea = new HqArea()
         hqArea.hqName =  jsonObject.get("hqName").toString()
         hqArea.cityId =   StringUtils.join(jsonObject.get("cityIds"), ",")
+        hqArea.districtId =   StringUtils.join(jsonObject.get("districtIds"), ",")
         hqArea.entity = EntityRegister.findById(Long.parseLong(jsonObject.get("entity").toString()))
         hqArea.entityType = EntityTypeMaster.findById(Long.parseLong(jsonObject.get("entityType").toString()))
         hqArea.createdUser = UserRegister.findById(Long.parseLong(jsonObject.get("createdUser").toString()))
@@ -126,6 +127,7 @@ class HqAreasService {
             hqArea.isUpdatable = true
             hqArea.hqName =  jsonObject.get("hqName").toString()
             hqArea.cityId =   StringUtils.join(jsonObject.get("cityIds"), ",")
+            hqArea.districtId =   StringUtils.join(jsonObject.get("districtIds"), ",")
             hqArea.entity = EntityRegister.findById(Long.parseLong(jsonObject.get("entity").toString()))
             hqArea.entityType = EntityTypeMaster.findById(Long.parseLong(jsonObject.get("entityType").toString()))
             hqArea.createdUser = UserRegister.findById(Long.parseLong(jsonObject.get("createdUser").toString()))

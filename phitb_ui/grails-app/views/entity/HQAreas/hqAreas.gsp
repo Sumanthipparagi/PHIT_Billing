@@ -16,10 +16,9 @@
     <asset:stylesheet  rel="stylesheet" src="/themeassets/css/main.css"/>
     <asset:stylesheet rel="stylesheet" href="/themeassets/css/color_skins.css"/>
     <asset:stylesheet rel="stylesheet" href="/themeassets/plugins/sweetalert/sweetalert.css"/>
-    <asset:stylesheet  src="/themeassets/plugins/bootstrap-select/css/bootstrap-select.css" rel="stylesheet" />
-    <asset:stylesheet  src="/themeassets/js/pages/forms/basic-form-elements.js" rel="stylesheet" />
+%{--    <asset:stylesheet  src="/themeassets/plugins/bootstrap-select/css/bootstrap-select.css" rel="stylesheet" />--}%
     <asset:stylesheet  src="/themeassets/plugins/bootstrap-material-datetimepicker/css/bootstrap-material-datetimepicker.css" rel="stylesheet" />
-    <asset:stylesheet  src="/themeassets/plugins/select-2-editor/select2.min.css" rel="stylesheet" />
+    <asset:stylesheet src="/themeassets/plugins/select2/dist/css/select2.min.css"/>
 
     <style>
 
@@ -140,8 +139,8 @@
 <!-- Jquery Core Js -->
 <asset:javascript src="/themeassets/bundles/libscripts.bundle.js"/>
 <asset:javascript src="/themeassets/bundles/vendorscripts.bundle.js"/>
+<asset:javascript src="/themeassets/plugins/select2/dist/js/select2.full.min.js"/>
 <asset:javascript src="/themeassets/plugins/bootstrap-colorpicker/js/bootstrap-colorpicker.js"/>
-<asset:javascript src="/themeassets/plugins/multi-select/js/jquery.multi-select.js"/>
 <asset:javascript src="/themeassets/bundles/datatablescripts.bundle.js"/>
 <asset:javascript src="/themeassets/plugins/jquery-datatable/buttons/dataTables.buttons.min.js"/>
 <asset:javascript src="/themeassets/plugins/jquery-datatable/buttons/buttons.bootstrap4.min.js"/>
@@ -156,7 +155,7 @@
 <asset:javascript src="/themeassets/plugins/momentjs/moment.js"/>
 <asset:javascript src="/themeassets/plugins/bootstrap-material-datetimepicker/js/bootstrap-material-datetimepicker.js"/>
 <asset:javascript src="/themeassets/js/pages/forms/basic-form-elements.js"/>
-<asset:javascript  src="/themeassets/plugins/select-2-editor/select2.js" />
+
 
 <script>
 
@@ -164,6 +163,8 @@
     var id = null;
     $(function () {
         hqareaTable();
+
+        $("#districtIds").select2()
 
     });
 
@@ -252,7 +253,7 @@
     $(document).on("click", ".addbtn", function () {
         $(".hqAreaForm")[0].reset();
         id = null;
-        $(".hqAreaTitle").text("Add HQ area ?");
+        $(".hqAreaTitle").text("Add HQ Area?");
 
     });
 
@@ -261,7 +262,7 @@
         $(".hqname").val($(this).attr('data-date'));
         var cityIds =$(this).attr('data-cityIds');
         $(".cityIds").val(cityIds.split(",")).change();
-        $(".hqAreaTitle").text("Update HQ area ");
+        $(".hqAreaTitle").text("Update HQ Area");
     });
 
 

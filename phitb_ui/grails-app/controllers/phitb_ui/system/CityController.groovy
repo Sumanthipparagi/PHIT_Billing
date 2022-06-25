@@ -44,7 +44,7 @@ class CityController {
             JSONArray jsonArray = new JSONArray(apiResponse.readEntity(String.class));
             ArrayList<JSONObject> arrayList = new ArrayList<>(jsonArray)
             ArrayList<JSONObject> cities = new ArrayList<>(jsonArray)
-            if(type.equalsIgnoreCase("select2"))
+            if(type?.equalsIgnoreCase("select2"))
             {
                 for (JSONObject jsonObject : arrayList) {
                     JSONObject city = new JSONObject()
@@ -55,8 +55,10 @@ class CityController {
                 }
                 respond cities, formats: ['json']
             }
-            else
-                respond arrayList, formats: ['json']
+            else {
+                //not select2 so return arraylist
+                return arrayList
+            }
         }
         else
         {

@@ -38,6 +38,7 @@ class EntityRegisterController {
     def show() {
         try {
             String id = params.id
+            println("Requested Entity ID: "+ id)
             if (id) {
                 respond entityRegisterService.get(id)
             }

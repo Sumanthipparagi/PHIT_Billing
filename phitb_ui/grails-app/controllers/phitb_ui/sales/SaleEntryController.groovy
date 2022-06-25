@@ -318,7 +318,12 @@ class SaleEntryController {
             JSONArray saleProductDetails = new SalesService().getSaleProductDetailsByBill(saleBillId)
             JSONObject series = new EntityService().getSeriesById(saleBillDetail.get("seriesId").toString())
             JSONObject customer = new EntityService().getEntityById(saleBillDetail.get("customerId").toString())
+            println("Entity ID is: "+ session.getAttribute("entityId").toString())
             JSONObject entity = new EntityService().getEntityById(session.getAttribute("entityId").toString())
+            if(entity == null)
+            {
+                println("Entity is null")
+            }
             JSONObject city = new SystemService().getCityById(entity.get('cityId').toString())
             JSONObject custcity = new SystemService().getCityById(customer.get('cityId').toString())
             JSONArray termsConditions = new EntityService().getTermsContionsByEntity(session.getAttribute("entityId").toString())

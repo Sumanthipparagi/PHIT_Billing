@@ -813,7 +813,9 @@
                     $('.stateId').val(response.state.id).change();
                     $("input[name='stateId']").val(response.state.id);
                     $("input[name='cityId']").val(response.id);
-                    $('.cityId').val(response.id).change();
+                    $('.cityId').empty();
+                    $('.cityId').append("<option value='"+response.id+"'>"+response.areaName+"</option>");
+                   // $('.cityId').val(response.id).change();
                     $('.pinCode').val(response.pincode);
                     $("input[name='pinCode']").val(response.pincode);
                     if(response.state.alphaCode === "FC")

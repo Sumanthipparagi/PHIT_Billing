@@ -6,6 +6,7 @@ import phitb_ui.Constants
 import phitb_ui.EntityService
 import phitb_ui.system.CityController
 import phitb_ui.system.CountryController
+import phitb_ui.system.DistrictController
 import phitb_ui.system.StateController
 import phitb_ui.system.ZoneController
 
@@ -19,7 +20,7 @@ class HQAreasController {
             ArrayList<String> userregister = new UserRegisterController().show() as ArrayList<String>
             ArrayList<String> statelist = new StateController().show() as ArrayList<String>
             ArrayList<String> countrylist = new CountryController().show() as ArrayList<String>
-            ArrayList<String> citylist = new CityController().show() as ArrayList<String>
+            ArrayList<String> districts = new DistrictController().show() as ArrayList<String>
             ArrayList<String> zoneList = new ZoneController().show() as ArrayList<String>
             ArrayList<String> managerList = []
             userregister.each {
@@ -38,7 +39,7 @@ class HQAreasController {
 
             render(view: '/entity/HQAreas/hqAreas',model: [entity:entity,
                                                                statelist:statelist,countrylist:countrylist,
-                                                               citylist:citylist,salesmanList:salesmanList,
+                                                                districts:districts,salesmanList:salesmanList,
                                                                managerList:managerList,zoneList:zoneList])
         }
         catch (Exception ex)

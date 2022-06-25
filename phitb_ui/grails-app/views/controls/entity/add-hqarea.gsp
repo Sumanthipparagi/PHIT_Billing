@@ -21,14 +21,14 @@
                             </div>
 
 
-                            <div class="col-lg-6 form-group  form-float">
-                                <label for="cityIds">
-                                    City
+                            <div class="col-lg-6 form-group form-float">
+                                <label for="districtIds">
+                                    Districts
                                 </label>
-                                <select class="form-control show-tick cityIds" name="cityIds" id="cityIds"
-                                        multiple="multiple" required>
-                                    <g:each var="c" in="${citylist}">
-                                        <option value="${c.id}">${c.name}</option>
+                                <select style="width: 100%" class="form-control show-tick" name="districtIds" id="districtIds"
+                                        required multiple>
+                                    <g:each var="d" in="${districts}">
+                                        <option value="${d.id}">${d.district}</option>
                                     </g:each>
                                 </select>
                             </div>
