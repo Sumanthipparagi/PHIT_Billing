@@ -283,15 +283,19 @@ class SystemService
 
     }
 
-    def getCityList()
+    def getCityList(String limit = null, String offset = null, String query = null)
     {
+        String url = new Links().CITY_MASTER_SHOW
         Client client = ClientBuilder.newClient();
-        WebTarget target = client.target(new Links().API_GATEWAY);
+        //WebTarget target = client.target(new Links().API_GATEWAY);
+        WebTarget target = client.target("http://localhost:8081/");
 
         try
         {
             Response apiResponse = target
-                    .path(new Links().CITY_MASTER_SHOW)
+                    .path(url).queryParam("limit", limit)
+                    .queryParam("offset", offset)
+                    .queryParam("query", query)
                     .request(MediaType.APPLICATION_JSON_TYPE)
                     .get()
             return apiResponse

@@ -26,9 +26,6 @@
 
                                 </label>
                                 <select class="form-control show-tick cityId" name="cityId" id="cityId">
-                                    <g:each var="cl" in="${citylist}">
-                                        <option value="${cl.id}">${cl.name}</option>
-                                    </g:each>
                                 </select>
                             </div>
 

@@ -31,12 +31,32 @@ class CityController {
 
     def show()
     {
-        def apiResponse = new SystemService().getCityList()
+        String limit = params.limit
+        String offset = params.offset
+        String query = params.query
+        String page = params.page
+        String type = params.type
+        if(query == null)
+            query = params.search //by select2
+        def apiResponse = new SystemService().getCityList(limit, offset, query)
         if (apiResponse?.status == 200)
         {
             JSONArray jsonArray = new JSONArray(apiResponse.readEntity(String.class));
-            ArrayList<String> arrayList = new ArrayList<>(jsonArray)
-            return arrayList
+            ArrayList<JSONObject> arrayList = new ArrayList<>(jsonArray)
+            ArrayList<JSONObject> cities = new ArrayList<>(jsonArray)
+            if(type.equalsIgnoreCase("select2"))
+            {
+                for (JSONObject jsonObject : arrayList) {
+                    JSONObject city = new JSONObject()
+                    city.put("id", jsonObject.get("id"))
+                    city.put("text", jsonObject.get("areaName") + " ("+jsonObject.get("districtName")+ ")")
+                    city.put("pincode", jsonObject.get("pincode"))
+                    cities.add(city)
+                }
+                respond cities, formats: ['json']
+            }
+            else
+                respond arrayList, formats: ['json']
         }
         else
         {

@@ -22,7 +22,6 @@ class CustomerGroupController {
             ArrayList<String> userregister = new UserRegisterController().getByEntity() as ArrayList<String>
             ArrayList<String> statelist = new StateController().show() as ArrayList<String>
             ArrayList<String> countrylist = new CountryController().show() as ArrayList<String>
-            ArrayList<String> citylist = new CityController().show() as ArrayList<String>
             ArrayList<String> zoneList = new ZoneController().show() as ArrayList<String>
             ArrayList<String> managerList = []
             userregister.each {
@@ -41,7 +40,7 @@ class CustomerGroupController {
 
             render(view: '/entity/customerGroup/customerGroup',model: [entity:entity,
                                                                          statelist:statelist,countrylist:countrylist,
-                                                                         citylist:citylist,salesmanList:salesmanList,
+                                                                         salesmanList:salesmanList,
                                                                          managerList:managerList,zoneList:zoneList])
         }
         catch (Exception ex)

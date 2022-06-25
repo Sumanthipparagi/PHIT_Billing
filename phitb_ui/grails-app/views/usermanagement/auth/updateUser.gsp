@@ -23,7 +23,7 @@
     <asset:stylesheet src="/themeassets/plugins/dropify/dist/css/dropify.min.css"/>
     <asset:stylesheet rel="stylesheet" href="/themeassets/plugins/sweetalert/sweetalert.css"/>
     <asset:stylesheet  src="/themeassets/plugins/bootstrap-material-datetimepicker/css/bootstrap-material-datetimepicker.css" rel="stylesheet" />
-
+    <asset:stylesheet src="/themeassets/plugins/select2/dist/css/select2.min.css"/>
 
 </head>
 <body class="theme-black">
@@ -239,9 +239,6 @@
                                                         City
                                                     </label>
                                                     <select class="form-control show-tick cityId" name="cityId" id="cityId">
-                                                        <g:each var="city" in="${citylist}">
-                                                            <option value="${city.id}" <g:if test="${city.id == user.cityId}">selected</g:if> >${city.name}</option>
-                                                        </g:each>
                                                     </select>
                                                 </div>
 
@@ -718,6 +715,8 @@
 <asset:javascript src="/themeassets/bundles/fullcalendarscripts.bundle.js"/>
 <asset:javascript src="/themeassets/plugins/sweetalert/sweetalert.min.js"/>
 <asset:javascript src="/themeassets/plugins/bootstrap-material-datetimepicker/js/bootstrap-material-datetimepicker.js"/>
+<asset:javascript src="/themeassets/plugins/select2/dist/js/select2.full.min.js"/>
+
 <g:include view="controls/footer-content.gsp"/>
 
 <script>
@@ -772,6 +771,27 @@
             success: function (data) {
                 $('#entityTypeId').val(data.id)
             },
+        });
+
+        $('#cityId').select2({
+            ajax: {
+                url: '/city/get',
+                dataType: 'json',
+                //delay: 250,
+                data: function (params) {
+                    return {
+                        search: params.term,
+                        type: 'select2'
+                    };
+                },
+                processResults: function (data, params) {
+                    return {
+                        results: data
+                    };
+                },
+            },
+            placeholder: 'Search for cities',
+            minimumInputLength: 2
         });
     });
 

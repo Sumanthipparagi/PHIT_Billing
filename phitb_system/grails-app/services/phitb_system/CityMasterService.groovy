@@ -13,12 +13,12 @@ class CityMasterService {
     def getAll(String limit, String offset, String query) {
 
         Integer o = offset ? Integer.parseInt(offset.toString()) : 0
-        Integer l = limit ? Integer.parseInt(limit.toString()) : 100000
+        Integer l = limit ? Integer.parseInt(limit.toString()) : 100
 
         if (!query)
-            return CityMaster.findAll([sort: 'circleName', max: l, offset: o, order: 'desc'])
+            return CityMaster.findAll([sort: 'areaName', max: l, offset: o, order: 'desc'])
         else
-            return CityMaster.findAllByCircleName("%" + query + "%", [sort: 'id', max: l, offset: o, order: 'desc'])
+            return CityMaster.findAllByAreaNameIlike("%" + query + "%", [sort: 'id', max: l, offset: o, order: 'desc'])
     }
 
     CityMaster get(String id) {

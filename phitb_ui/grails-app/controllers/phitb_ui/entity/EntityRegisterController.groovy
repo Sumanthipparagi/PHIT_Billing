@@ -28,7 +28,6 @@ class EntityRegisterController
             ArrayList<String> userregister = new UserRegisterController().show() as ArrayList<String>
             ArrayList<String> statelist = new StateController().show() as ArrayList<String>
             ArrayList<String> countrylist = new CountryController().show() as ArrayList<String>
-            ArrayList<String> citylist = new CityController().show() as ArrayList<String>
             ArrayList<String> zoneList = new ZoneController().show() as ArrayList<String>
             ArrayList<String> account = new AccountRegisterController().show() as ArrayList<String>
             ArrayList<String> managerList = []
@@ -48,7 +47,7 @@ class EntityRegisterController
 
             render(view: '/entity/entityRegister/entityRegister',model: [entity:entity,
                                                                          statelist:statelist,countrylist:countrylist,
-                                                                         citylist:citylist,salesmanList:salesmanList,
+                                                                         salesmanList:salesmanList,
                                                                          managerList:managerList,zoneList:zoneList,
                                                                          entitytype:entitytype,account:account
             ])
@@ -74,7 +73,6 @@ class EntityRegisterController
             ArrayList<String> userregister = new UserRegisterController().getByEntity() as ArrayList<String>
             ArrayList<String> statelist = new StateController().show() as ArrayList<String>
             ArrayList<String> countrylist = new CountryController().show() as ArrayList<String>
-            ArrayList<String> citylist = new CityController().show() as ArrayList<String>
             ArrayList<String> zoneList = new ZoneController().show() as ArrayList<String>
             def priority = new SystemService().getAllPriority()
             ArrayList<String> managerList = []
@@ -93,7 +91,7 @@ class EntityRegisterController
             }
             render(view: '/entity/entityRegister/add-entity-register',model: [ entitytype:entitytype,
                                                                               statelist:statelist,countrylist:countrylist,
-                                                                              citylist:citylist,salesmanList:salesmanList,
+                                                                              salesmanList:salesmanList,
                                                                               managerList:managerList,
                                                                               zoneList:zoneList,
                                                                               routeregister:routeregister,
@@ -123,7 +121,6 @@ class EntityRegisterController
             ArrayList<String> userregister = new UserRegisterController().show() as ArrayList<String>
             ArrayList<String> statelist = new StateController().show() as ArrayList<String>
             ArrayList<String> countrylist = new CountryController().show() as ArrayList<String>
-            ArrayList<String> citylist = new CityController().show() as ArrayList<String>
             ArrayList<String> zoneList = new ZoneController().show() as ArrayList<String>
             def priority = new SystemService().getAllPriority()
             String city = entity.cityId.toString()
@@ -145,7 +142,7 @@ class EntityRegisterController
 
             render(view: '/entity/entityRegister/update-entity-register',model: [entity:entity, entitytype:entitytype,
                                                                                  statelist:statelist,countrylist:countrylist,
-                                                                                 citylist:citylist,salesmanList:salesmanList,
+                                                                                 salesmanList:salesmanList,
                                                                                  managerList:managerList,
                                                                                  zoneList:zoneList,
                                                                                  routeregister:routeregister,

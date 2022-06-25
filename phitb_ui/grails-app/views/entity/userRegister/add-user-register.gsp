@@ -13,20 +13,26 @@
     <!-- JQuery DataTable Css -->
     <asset:stylesheet rel="stylesheet" src="/themeassets/plugins/jquery-datatable/dataTables.bootstrap4.min.css"/>
     <!-- Custom Css -->
-    <asset:stylesheet  rel="stylesheet" src="/themeassets/css/main.css"/>
+    <asset:stylesheet rel="stylesheet" src="/themeassets/css/main.css"/>
     <asset:stylesheet rel="stylesheet" href="/themeassets/css/color_skins.css"/>
     <asset:stylesheet rel="stylesheet" href="/themeassets/plugins/sweetalert/sweetalert.css"/>
-    <asset:stylesheet  src="/themeassets/plugins/bootstrap-select/css/bootstrap-select.css" rel="stylesheet" />
-    <asset:stylesheet  src="/themeassets/js/pages/forms/basic-form-elements.js" rel="stylesheet" />
-    <asset:stylesheet  src="/themeassets/plugins/bootstrap-material-datetimepicker/css/bootstrap-material-datetimepicker.css" rel="stylesheet" />
+    <asset:stylesheet src="/themeassets/plugins/bootstrap-select/css/bootstrap-select.css" rel="stylesheet"/>
+    <asset:stylesheet src="/themeassets/js/pages/forms/basic-form-elements.js" rel="stylesheet"/>
+    <asset:stylesheet
+            src="/themeassets/plugins/bootstrap-material-datetimepicker/css/bootstrap-material-datetimepicker.css"
+            rel="stylesheet"/>
     <asset:stylesheet src="/themeassets/plugins/dropify/dist/css/dropify.min.css"/>
+    <asset:stylesheet src="/themeassets/plugins/select2/dist/css/select2.min.css"/>
 
 </head>
+
 <body class="theme-black">
 <!-- Page Loader -->
 <div class="page-loader-wrapper">
     <div class="loader">
-        <div class="m-t-30"><img src="${assetPath(src: '/themeassets/images/logo.svg')}" width="48" height="48" alt="Alpino"></div>
+        <div class="m-t-30"><img src="${assetPath(src: '/themeassets/images/logo.svg')}" width="48" height="48"
+                                 alt="Alpino"></div>
+
         <p>Please wait...</p>
     </div>
 </div>
@@ -44,6 +50,7 @@
                         <li class="breadcrumb-item active">Add User Register</li>
                     </ul>
                 </div>
+
                 <div class="col-lg-7 col-md-7 col-sm-12">
                     <div class="input-group m-b-0">
                         <input type="text" class="form-control" placeholder="Search...">
@@ -55,27 +62,14 @@
             </div>
         </div>
 
+        <form action="/user-register" id="form_validation" method="POST" role="form"
+              class="entityRegisterForm" enctype="multipart/form-data">
+            <!-- Inline Layout -->
+            <div class="row clearfix">
+                <div class="col-lg-12 col-md-12 col-sm-12">
+                    <div class="card">
+                        <div class="body">
 
-        <!-- Inline Layout -->
-        <div class="row clearfix">
-            <div class="col-lg-12 col-md-12 col-sm-12">
-                <div class="card">
-                    %{--                    <div class="header">--}%
-                    %{--                        <h2><strong>Inline</strong> Layout</h2>--}%
-                    %{--                        <ul class="header-dropdown">--}%
-                    %{--                            <li class="dropdown"> <a href="javascript:void(0);" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"> <i class="zmdi zmdi-more"></i> </a>--}%
-                    %{--                                <ul class="dropdown-menu dropdown-menu-right">--}%
-                    %{--                                    <li><a href="javascript:void(0);">Action</a></li>--}%
-                    %{--                                    <li><a href="javascript:void(0);">Another action</a></li>--}%
-                    %{--                                    <li><a href="javascript:void(0);">Something else</a></li>--}%
-                    %{--                                    <li><a href="javascript:void(0);" class="boxs-close">Delete</a></li>--}%
-                    %{--                                </ul>--}%
-                    %{--                            </li>--}%
-                    %{--                        </ul>--}%
-                    %{--                    </div>--}%
-                    <div class="body">
-                        <form action="/user-register" id="form_validation" method="POST" role="form"
-                              class="entityRegisterForm" enctype="multipart/form-data">
                             <div class="row clearfix">
                                 <div class="col-lg-6 form-group  form-float">
                                     <label for="userName">
@@ -99,7 +93,8 @@
                                     <label for="mobileNumber">
                                         Mobile Number
                                     </label>
-                                    <input type="text" id="mobileNumber" class="form-control mobileNumber" name="mobileNumber"
+                                    <input type="text" id="mobileNumber" class="form-control mobileNumber"
+                                           name="mobileNumber"
                                            placeholder="Mobile Number"
                                            required/>
                                 </div>
@@ -108,7 +103,8 @@
                                     <label for="contactNumber">
                                         Contact Number
                                     </label>
-                                    <input type="text" id="contactNumber" class="form-control contactNumber" name="contactNumber"
+                                    <input type="text" id="contactNumber" class="form-control contactNumber"
+                                           name="contactNumber"
                                            placeholder="Contact Number"
                                            required/>
                                 </div>
@@ -155,17 +151,17 @@
                                     </select>
                                 </div>
 
-%{--                                <div class="col-lg-6 form-group  form-float">--}%
-%{--                                    <label for="photo">--}%
-%{--                                        Photo--}%
-%{--                                    </label>--}%
-%{--                                    <input type="file" id="input-file-now photo" class="dropify"--}%
-%{--                                           data-default-file=""--}%
-%{--                                           name="photo"  accept="image/png, image/gif, image/jpeg"/>--}%
-%{--                                    <input type="file" id="input-file-now photo" class="dropify"--}%
-%{--                                           data-default-file=""--}%
-%{--                                           name="photo"  accept="image/png, image/gif, image/jpeg"/>--}%
-%{--                                </div>--}%
+                                %{--                                <div class="col-lg-6 form-group  form-float">--}%
+                                %{--                                    <label for="photo">--}%
+                                %{--                                        Photo--}%
+                                %{--                                    </label>--}%
+                                %{--                                    <input type="file" id="input-file-now photo" class="dropify"--}%
+                                %{--                                           data-default-file=""--}%
+                                %{--                                           name="photo"  accept="image/png, image/gif, image/jpeg"/>--}%
+                                %{--                                    <input type="file" id="input-file-now photo" class="dropify"--}%
+                                %{--                                           data-default-file=""--}%
+                                %{--                                           name="photo"  accept="image/png, image/gif, image/jpeg"/>--}%
+                                %{--                                </div>--}%
 
                                 <div class="col-lg-6 form-group  form-float">
                                     <label for="genderId">
@@ -248,7 +244,6 @@
                                 </div>
 
 
-
                                 <div class="col-lg-6 form-group  form-float">
                                     <label for="joiningDate">
                                         Joining Date
@@ -261,7 +256,7 @@
 
                                 <div class="col-lg-6 form-group  form-float">
                                     <label for="department">
-                                       Department
+                                        Department
                                     </label>
                                     <select class="form-control show-tick department" name="department" id="department">
                                         <g:each var="d" in="${department}">
@@ -269,8 +264,6 @@
                                         </g:each>
                                     </select>
                                 </div>
-
-
 
 
                                 <div class="col-lg-6 form-group  form-float">
@@ -437,7 +430,8 @@
                                     </label>
                                     <select class="form-control show-tick entity" name="entity" id="entity" required>
                                         <g:each var="e" in="${entity}">
-                                            <option value="${e.id}" data-type="${e.entityType.id}">${e.entityName}</option>
+                                            <option value="${e.id}"
+                                                    data-type="${e.entityType.id}">${e.entityName}</option>
                                         </g:each>
                                     </select>
                                 </div>
@@ -461,23 +455,172 @@
                                 <input type="hidden" name="lastLoginDate" value="12/02/2020">
                                 <input type="hidden" name="createdUser" value="${session.getAttribute('userId')}">
                                 <input type="hidden" name="modifiedUser" value="1">
-                                <div class="col-lg-12">
-                                    <div class="" style="float: right;">
-                                        <input name="id" id="id" class="id" type="hidden">
-                                        <input name="type" class="type" value="add" type="hidden">
-                                        <button type="submit" class="btn btn-default btn-round waves-effect" name="submituser"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">SUBMIT</font></font></button>
-                                        <button type="reset" class="btn btn-danger btn-simple btn-round waves-effect"
-                                                data-dismiss="modal"><font style="vertical-align: inherit;"><font
-                                                style="vertical-align: inherit;">RESET</font></font></button>
-                                    </div>
-                                </div>
+
                             </div>
-                        </form>
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
 
+%{--            <div class="row clearfix">
+                <div class="col-lg-6 col-md-6 col-sm-6">
+                    <div class="card">
+                        <div class="body">
+                            <div class="row clearfix">
+                                <div class="col-lg-12 form-group form-float">
+                                    <label for="userName">
+                                        User Name
+                                    </label>
+                                    <input type="text" id="userName" class="form-control userName" name="userName"
+                                           placeholder="User Name"
+                                           required/>
+                                    <label for="password">
+                                        Password
+                                    </label>
+                                    <input type="password" id="password" class="form-control password" name="password"
+                                           required/>
+                                    <label for="email">
+                                        Email
+                                    </label>
+                                    <input type="email" id="email" class="form-control email"
+                                           name="email" placeholder="Email"
+                                           required/>
+
+                                    <label for="entity">
+                                        Entity
+                                    </label>
+                                    <select class="form-control show-tick entity" name="entity" id="entity" required>
+                                        <g:each var="e" in="${entity}">
+                                            <option value="${e.id}"
+                                                    data-type="${e.entityType.id}">${e.entityName}</option>
+                                        </g:each>
+                                    </select>
+
+                                    <label for="reportTo">
+                                        Report To
+                                    </label>
+                                    <select class="form-control show-tick reportTo" name="reportTo" id="reportTo">
+                                        <g:each var="u" in="${userregister}">
+                                            <option value="${u.id}">${u.userName}</option>
+                                        </g:each>
+                                    </select>
+
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-lg-6 col-md-6 col-sm-6">
+                    <div class="card">
+                        <div class="body">
+                            <div class="row clearfix">
+                                <div class="col-lg-12 form-group form-float">
+                                    <label for="mobileNumber">
+                                        Mobile Number
+                                    </label>
+                                    <input type="text" id="mobileNumber" class="form-control mobileNumber"
+                                           name="mobileNumber"
+                                           placeholder="Mobile Number"
+                                           required/>
+
+                                    <label for="contactNumber">
+                                        Contact Number
+                                    </label>
+                                    <input type="text" id="contactNumber" class="form-control contactNumber"
+                                           name="contactNumber"
+                                           placeholder="Contact Number"
+                                           required/>
+
+                                    <label for="aadharId">
+                                        Aadhaar Number
+                                    </label>
+                                    <input type="text" id="aadharId" class="form-control aadharId" name="aadharId"
+                                           placeholder="Aadhar Id"
+                                           required/>
+
+                                    <label for="address">
+                                        Address
+                                    </label>
+                                    <textarea id="address" class="form-control address"
+                                              name="address" placeholder="Enter Address"
+                                              required rows="1" maxlength="100"></textarea>
+
+                                    <label for="genderId">
+                                        Gender
+                                    </label>
+                                    <select class="form-control show-tick genderId" name="genderId" id="genderId">
+                                        <g:each var="g" in="${gender}">
+                                            <option value="${g.id}">${g.name}</option>
+                                        </g:each>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row clearfix">
+                <div class="col-lg-6 col-md-6 col-sm-6">
+                    <div class="card">
+                        <div class="body">
+                            <div class="row clearfix">
+                                <div class="col-lg-12 form-group form-float">
+                                    <label for="countryId">
+                                        Country
+                                    </label>
+                                    <select class="form-control show-tick countryId" name="countryId" id="countryId">
+                                        <g:each var="country" in="${countrylist}">
+                                            <option value="${country.id}">${country.name}</option>
+                                        </g:each>
+                                    </select>
+                                    <label for="stateId">
+                                        State
+                                    </label>
+                                    <select class="form-control show-tick stateId" name="stateId" id="stateId">
+                                        <g:each var="state" in="${statelist}">
+                                            <option value="${state.id}">${state.name}</option>
+                                        </g:each>
+                                    </select>
+                                    <label for="cityId">
+                                        City
+                                    </label>
+                                    <select class="form-control show-tick cityId" name="cityId" id="cityId">
+                                        <g:each var="city" in="${citylist}">
+                                            <option value="${city.id}">${city.name}</option>
+                                        </g:each>
+                                    </select>
+
+                                    <label for="pincode">
+                                        Pincode
+                                    </label>
+                                    <input type="text" id="pincode" class="form-control pincode"
+                                           name="pincode" placeholder="pincode"
+                                           required/>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>--}%
+
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="" style="float: right;">
+                        <input name="id" id="id" class="id" type="hidden">
+                        <input name="type" class="type" value="add" type="hidden">
+                        <button type="submit" class="btn btn-default btn-round waves-effect"
+                                name="submituser"><font style="vertical-align: inherit;"><font
+                                style="vertical-align: inherit;">SUBMIT</font></font></button>
+                        <button type="reset" class="btn btn-danger btn-simple btn-round waves-effect"
+                                data-dismiss="modal"><font style="vertical-align: inherit;"><font
+                                style="vertical-align: inherit;">RESET</font></font></button>
+                    </div>
+                </div>
+            </div>
+        </form>
     </div>
 </section>
 <g:include view="controls/delete-modal.gsp"/>
@@ -502,6 +645,7 @@
 <asset:javascript src="/themeassets/plugins/bootstrap-material-datetimepicker/js/bootstrap-material-datetimepicker.js"/>
 <asset:javascript src="/themeassets/js/pages/forms/basic-form-elements.js"/>
 <asset:javascript src="/themeassets/plugins/dropify/dist/js/dropify.min.js"/>
+<asset:javascript src="/themeassets/plugins/select2/dist/js/select2.full.min.js"/>
 
 <script>
 
@@ -534,10 +678,31 @@
             time: false,
             weekStart: 1
         });
+
+        $('#cityId').select2({
+            ajax: {
+                url: '/city/get',
+                dataType: 'json',
+                //delay: 250,
+                data: function (params) {
+                    return {
+                        search: params.term,
+                        type: 'select2'
+                    };
+                },
+                processResults: function (data, params) {
+                    return {
+                        results: data
+                    };
+                },
+            },
+            placeholder: 'Search for cities',
+            minimumInputLength: 2
+        });
     });
 
 
-    $(document).ready(function() {
+  /*  $(document).ready(function () {
         // Basic
         $('.dropify').dropify();
 
@@ -554,21 +719,21 @@
         // Used events
         var drEvent = $('#input-file-events').dropify();
 
-        drEvent.on('dropify.beforeClear', function(event, element) {
+        drEvent.on('dropify.beforeClear', function (event, element) {
             return confirm("Do you really want to delete \"" + element.file.name + "\" ?");
         });
 
-        drEvent.on('dropify.afterClear', function(event, element) {
+        drEvent.on('dropify.afterClear', function (event, element) {
             alert('File deleted');
         });
 
-        drEvent.on('dropify.errors', function(event, element) {
+        drEvent.on('dropify.errors', function (event, element) {
             console.log('Has Errors');
         });
 
         var drDestroy = $('#input-file-to-destroy').dropify();
         drDestroy = drDestroy.data('dropify')
-        $('#toggleDropify').on('click', function(e) {
+        $('#toggleDropify').on('click', function (e) {
             e.preventDefault();
             if (drDestroy.isDropified()) {
                 drDestroy.destroy();
@@ -576,9 +741,9 @@
                 drDestroy.init();
             }
         })
-    });
+    });*/
 
-    $('.entity').change(function(){
+    $('.entity').change(function () {
         var type = $('option:selected', this).attr('data-type');
         $(".entityType").val(type);
     });

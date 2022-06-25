@@ -173,10 +173,6 @@
                                                 City
                                             </label>
                                             <select class="form-control show-tick cityId" name="cityId" id="cityId" disabled>
-                                                <g:each var="city" in="${citylist}">
-                                                    <option value="${city.id}" <g:if
-                                                            test="${city.id == entity.cityId}">selected</g:if>>${city.district.district}</option>
-                                                </g:each>
                                             </select>
                                             <input type="hidden" name="cityId" value="${entity.cityId}"/>
 
@@ -664,6 +660,26 @@
             clearButton: true,
             time: false,
             weekStart: 1
+        });
+        $('#cityId').select2({
+            ajax: {
+                url: '/city/get',
+                dataType: 'json',
+                //delay: 250,
+                data: function (params) {
+                    return {
+                        search: params.term,
+                        type: 'select2'
+                    };
+                },
+                processResults: function (data, params) {
+                    return {
+                        results: data
+                    };
+                },
+            },
+            placeholder: 'Search for cities',
+            minimumInputLength: 2
         });
     });
 

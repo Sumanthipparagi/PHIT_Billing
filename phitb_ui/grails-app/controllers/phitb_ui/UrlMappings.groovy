@@ -42,6 +42,7 @@ class UrlMappings {
         "/city"(controller: "city") {
             action = [GET: "index", POST: "save"]
         }
+        "/city/get"(controller: "city", action: "show")
         "/city/datatable"(controller: "city", action: "dataTable")
         "/city/update/$id"(controller: "city",action:"update")
         "/city/delete/$id"(controller: "city",action:"delete")
