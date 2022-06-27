@@ -269,6 +269,7 @@
                                         Department
                                     </label>
                                     <select class="form-control show-tick department" name="department" id="department">
+                                        <option value="0">--Please Select--</option>
                                         <g:each var="d" in="${department}">
                                             <option value="${d.id}" <g:if
                                                     test="${d.id == userregisterbyId.department}">selected</g:if>>${d.name}</option>
@@ -358,6 +359,7 @@
                                         Bank
                                     </label>
                                     <select class="form-control show-tick bankId" name="bankId" id="bankId">
+                                        <option value="0">--Please Select--</option>
                                         <g:each var="b" in="${bank}">
                                             <option value="${b.id}"
                                                     <g:if test="${b.id == userregisterbyId.bankId}">selected</g:if>

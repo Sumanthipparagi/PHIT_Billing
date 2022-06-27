@@ -21,11 +21,11 @@
                             </div>
 
 
-                            <div class="col-lg-6 form-group form-float">
+                            <div class="col-lg-6">
                                 <label for="districtIds">
                                     Districts
                                 </label>
-                                <select style="width: 100%" class="form-control show-tick" name="districtIds" id="districtIds"
+                                <select style="width: 100%"  name="districtIds" id="districtIds"
                                         required multiple>
                                     <g:each var="d" in="${districts}">
                                         <option value="${d.id}">${d.district}</option>

@@ -2539,7 +2539,7 @@ class EntityService {
         try
         {
             Response apiResponse = target
-                    .path(new Links().ROLE_MASTER_SHOW)
+                    .path(new Links().ROLE_SHOW)
                     .request(MediaType.APPLICATION_JSON_TYPE)
                     .get()
             if(apiResponse.status == 200)
