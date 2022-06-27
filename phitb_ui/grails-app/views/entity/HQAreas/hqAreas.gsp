@@ -147,7 +147,7 @@
 <asset:javascript src="/themeassets/plugins/jquery-datatable/buttons/buttons.colVis.min.js"/>
 <asset:javascript src="/themeassets/plugins/jquery-datatable/buttons/buttons.html5.min.js"/>
 <asset:javascript src="/themeassets/plugins/jquery-datatable/buttons/buttons.print.min.js"/>
-<asset:javascript src="/themeassets/bundles/mainscripts-2.bundle.js"/>
+<asset:javascript src="/themeassets/bundles/mainscripts.bundle.js"/>
 <asset:javascript src="/themeassets/js/pages/tables/jquery-datatable.js"/>
 <asset:javascript src="/themeassets/js/pages/ui/dialogs.js"/>
 <asset:javascript src="/themeassets/plugins/sweetalert/sweetalert.min.js"/>
@@ -163,9 +163,7 @@
     var id = null;
     $(function () {
         hqareaTable();
-
         $("#districtIds").select2()
-
     });
 
     function hqareaTable() {
@@ -183,7 +181,7 @@
             processing: true,
             serverSide: true,
             language: {
-                searchPlaceholder: "Search HQ area table"
+                searchPlaceholder: "Search HQ Area table"
             },
             ajax: {
                 type: 'GET',
@@ -195,7 +193,7 @@
                         console.log(json)
                         var editbtn = '<button type="button" data-id="' + json.data[i].id +
                             '" data-hqname="' + json.data[i].hqName + '"' +
-                            '" data-cityIds="' + json.data[i].cityIds + '"' +
+                            '" data-districtId="' + json.data[i].districtId + '"' +
                             '"' +
                             ' class="editbtn btn btn-sm btn-warning  editbtn" data-toggle="modal" data-target="#addHqareaModal"><i class="material-icons"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">edit</font></font></i></button>'
                         var deletebtn = '<button type="button" data-id="' + json.data[i].id +
@@ -252,6 +250,7 @@
 
     $(document).on("click", ".addbtn", function () {
         $(".hqAreaForm")[0].reset();
+        $("#districtIds").select2("");
         id = null;
         $(".hqAreaTitle").text("Add HQ Area?");
 
@@ -260,8 +259,8 @@
     $(document).on("click", ".editbtn", function () {
         id = $(this).data('id');
         $(".hqname").val($(this).attr('data-date'));
-        var cityIds =$(this).attr('data-cityIds');
-        $(".cityIds").val(cityIds.split(",")).change();
+        var districtId =$(this).attr('data-districtId');
+        $("#districtIds").val(districtId.split(",")).change();
         $(".hqAreaTitle").text("Update HQ Area");
     });
 

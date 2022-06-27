@@ -132,6 +132,7 @@ class AuthController {
                 ArrayList <String> genderList = new SystemService().getAllGender()
                 ArrayList <String> bank = new BankRegisterController().show() as ArrayList<String>
                 ArrayList <String> roles = new RoleController().show() as ArrayList<String>
+                ArrayList<String> userregister = new UserRegisterController().show() as ArrayList<String>
                 ArrayList <String> division  = new DivisionController().show() as ArrayList<String>
                 ArrayList <String> account = new AccountRegisterController().getAllAccounts() as ArrayList<String>
                 def  department = new EntityService().getAllDepartment() as ArrayList<String>
@@ -141,6 +142,7 @@ class AuthController {
                                                                         zoneList:zoneList,userList:userList,
                                                                         genderList:genderList,department:department,
                                                                         bank:bank,roles:roles,account:account,
+                                                                        userregister:userregister,
                                                                         division:division,entity:entity])
             }
             else

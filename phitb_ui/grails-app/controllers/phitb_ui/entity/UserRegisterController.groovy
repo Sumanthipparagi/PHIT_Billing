@@ -70,6 +70,7 @@ class UserRegisterController
             ArrayList <String> genderList = new SystemService().getAllGender()
             ArrayList <String> bank = new BankRegisterController().show() as ArrayList<String>
             ArrayList <String> roles = new RoleController().show() as ArrayList<String>
+            println()
             ArrayList <String> division  = new DivisionController().show() as ArrayList<String>
             ArrayList <String> account = new AccountRegisterController().getAllAccounts() as ArrayList<String>
             def  department = new EntityService().getAllDepartment() as ArrayList<String>
