@@ -168,7 +168,7 @@
                                     <div class="row">
                                         <div class="col-lg-6 form-group  form-float">
                                             <label for="pinCode">
-                                                Pin Code
+                                                PIN Code
                                             </label>
                                             <div>
                                                 <select class="pinCode form-control" id="pinCode" ></select>
@@ -212,7 +212,7 @@
 
                                         <div class="col-lg-6 form-group  form-float">
                                             <label for="cityId">
-                                                City
+                                                Area /City
                                             </label>
                                             <select class="form-control show-tick cityId" name="cityId" id="cityId" disabled>
                                                 <g:each var="city" in="${citylist}">
@@ -317,7 +317,8 @@
                                                 Approved Salary
                                             </label>
                                             <input type="number" id="approvedSalary" class="form-control approvedSalary"
-                                                   name="approvedSalary" placeholder="Approved Salary"
+                                                   name="approvedSalary" onblur="setTwoNumberDecimal()" step="0.25"
+                                                   value="0.00" placeholder="Approved Salary"
                                                    required/>
                                         </div>
 
@@ -327,7 +328,8 @@
                                                 Designation Salary
                                             </label>
                                             <input type="number" id="designationSalary" class="form-control designationSalary"
-                                                   name="designationSalary" placeholder="Designation Salary"
+                                                   name="designationSalary" onblur="setTwoNumberDecimal()" step="0.25"
+                                                   value="0.00" placeholder="Designation Salary"
                                                    required/>
                                         </div>
 
@@ -538,6 +540,7 @@
         //Datetimepicker plugin
 
 
+
         $('#cityId').select2({
             ajax: {
                 url: '/city/get',
@@ -670,7 +673,7 @@
     });
 
     $(document).ready(function() {
-        $("#entityRegisterForm").validate();
+        $("#userRegisterForm").validate();
     });
 
     $("#userRegisterForm").submit(function(event) {

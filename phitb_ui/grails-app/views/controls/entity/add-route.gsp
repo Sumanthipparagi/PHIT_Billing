@@ -1,3 +1,4 @@
+<%@ page import="phitb_ui.Constants" %>
 <div class="example-modal">
     <div class="modal fade" id="addrouteModal">
         <div class="modal-dialog modal-lg">
@@ -29,19 +30,20 @@
                                        required/>
                             </div>
 
-                            <div class="col-lg-6 form-group form-float ms-container">
+                            <div class="col-lg-6 ">
                                 <label for="daysOfWeek">
                                     Days Of Week
                                 </label>
-                                <select id="daysOfWeek" class="form-control daysOfWeek ms-selectable" name="daysOfWeek" multiple
+                                <select id="daysOfWeek" class="daysOfWeek" style="width: 100%;" name="daysOfWeek"
+                                        multiple
                                        required>
-                                    <option>Monday</option>
-                                    <option>Tuesday</option>
-                                    <option>Wednesday</option>
-                                    <option>Thursday</option>
-                                    <option>Friday</option>
-                                    <option>Saturday</option>
-                                    <option>Sunday</option>
+                                    <option value="${Constants.MONDAY}">Monday</option>
+                                    <option value="${Constants.TUESDAY}">Tuesday</option>
+                                    <option value="${Constants.WEDNESDAY}">Wednesday</option>
+                                    <option value="${Constants.THURSDAY}">Thursday</option>
+                                    <option value="${Constants.FRIDAY}">Friday</option>
+                                    <option value="${Constants.SATURDAY}">Saturday</option>
+                                    <option value="${Constants.SUNDAY}">Sunday</option>
                                 </select>
                             </div>
 
@@ -58,9 +60,9 @@
                                 <label for="cityId">
                                     City
                                 </label>
-                                <select class="form-control show-tick cityId" name="cityId" id="cityId">
+                                <select class="form-control show-tick cityId" style="width: 100%;" name="cityId" id="cityId">
                                     <g:each var="city" in="${citylist}">
-                                        <option value="${city.id}">${city.name}</option>
+                                        <option value="${city.id}">${city.districtName} / ${city.areaName}</option>
                                     </g:each>
                                 </select>
                             </div>
@@ -70,7 +72,7 @@
                                 <label for="countryId">
                                     Country
                                 </label>
-                                <select class="form-control show-tick countryId" name="countryId" id="countryId">
+                                <select class="form-control show-tick countryId" style="width: 100%;" name="countryId" id="countryId">
                                     <g:each var="c" in="${countrylist}">
                                         <option value="${c.id}">${c.name}</option>
                                     </g:each>
@@ -82,7 +84,7 @@
                                 <label for="stateId">
                                     State
                                 </label>
-                                <select class="form-control show-tick stateId" name="stateId" id="stateId">
+                                <select class="form-control show-tick stateId" style="width: 100%;" name="stateId" id="stateId">
                                     <g:each var="state" in="${statelist}">
                                         <option value="${state.id}">${state.name}</option>
                                     </g:each>

@@ -30,7 +30,7 @@ class EntityRegister implements LogicalDelete<EntityRegister>
     double salesBalanceLimit
     long noOfCrDays
     long noOfGraceDays
-    long calculateOn
+    String calculateOn
     long bankId
     String accountNo
     String upiId
@@ -70,6 +70,7 @@ class EntityRegister implements LogicalDelete<EntityRegister>
 
     static constraints = {
         fieldForceId nullable: true
+        calculateOn nullable: true
         accountId nullable: true
         aadharId nullable: true
         companyCode nullable: true

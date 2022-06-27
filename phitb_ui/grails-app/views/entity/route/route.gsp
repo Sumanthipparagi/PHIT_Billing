@@ -19,6 +19,7 @@
     <asset:stylesheet  src="/themeassets/plugins/bootstrap-select/css/bootstrap-select.css" rel="stylesheet" />
     <asset:stylesheet  src="/themeassets/js/pages/forms/basic-form-elements.js" rel="stylesheet" />
     <asset:stylesheet  src="/themeassets/plugins/bootstrap-material-datetimepicker/css/bootstrap-material-datetimepicker.css" rel="stylesheet" />
+    <asset:stylesheet src="/themeassets/plugins/select2/dist/css/select2.min.css"/>
 
     <style>
 
@@ -144,6 +145,7 @@
 <asset:javascript src="/themeassets/plugins/momentjs/moment.js"/>
 <asset:javascript src="/themeassets/plugins/bootstrap-material-datetimepicker/js/bootstrap-material-datetimepicker.js"/>
 <asset:javascript src="/themeassets/js/pages/forms/basic-form-elements.js"/>
+<asset:javascript src="/themeassets/plugins/select2/dist/js/select2.full.min.js"/>
 
 <script>
 
@@ -151,6 +153,10 @@
     var id = null;
     $(function () {
         routeTable();
+
+        $("#daysOfWeek").select2()
+        $("#cityId").select2()
+        $("#stateId").select2()
 
     });
 
@@ -266,6 +272,9 @@
     $(document).on("click", ".addbtn", function () {
         $(".routeTitle").text("Add Route")
         $(".routeForm")[0].reset();
+        $("#daysOfWeek").select2("")
+        $("#cityId").select2("")
+        $("#stateId").select2("")
         id = null
     });
 
@@ -278,7 +287,8 @@
         $(".stateId").val($(this).attr('data-stateId')).change();
         $(".countryId").val($(this).attr('data-countryId')).change();
         $(".ccmId").val($(this).attr('data-ccmId')).change();
-        $(".daysOfWeek").val($(this).attr('data-daysOfWeek')).change();
+        var daysOfWeek =$(this).attr('data-daysOfWeek');
+        $("#daysOfWeek").val(daysOfWeek.split(",")).change();
         $(".entity").val($(this).attr('data-entityRegister')).change();
         $("#entityTypeId").val($(this).attr('data-entitytype')).change();
         $(".routeTitle").text("Update Region");
