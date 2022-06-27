@@ -64,7 +64,6 @@ class EntityRegisterController
     {
         try
         {
-            ArrayList<String> entityList = new EntityRegisterController().show() as ArrayList<String>
             ArrayList<String> hqareas = new HQAreasController().getByEntity() as ArrayList<String>
             ArrayList<String> routeregister = new RouteController().show() as ArrayList<String>
             ArrayList<String> bank = new BankRegisterController().show() as ArrayList<String>
@@ -95,7 +94,7 @@ class EntityRegisterController
                                                                               managerList:managerList,
                                                                               zoneList:zoneList,
                                                                               routeregister:routeregister,
-                                                                              bank:bank,entityList:entityList,
+                                                                              bank:bank,
                                                                               priority:priority,hqareas:hqareas, account:account
             ])
         }
@@ -192,6 +191,7 @@ class EntityRegisterController
             JSONObject jsonObject = new JSONObject(params)
             jsonObject.put("parentEntity", session.getAttribute("entityId"))
             jsonObject.put("parentEntityType", session.getAttribute("entityTypeId"))
+            jsonObject.put("affiliateId", session.getAttribute("entityId"))
 
             def apiResponse = new EntityService().saveEntity(jsonObject)
             if (apiResponse?.status == 200)
@@ -220,6 +220,7 @@ class EntityRegisterController
             JSONObject jsonObject = new JSONObject(params)
             jsonObject.put("parentEntity", session.getAttribute("entityId"))
             jsonObject.put("parentEntityType", session.getAttribute("entityTypeId"))
+            jsonObject.put("affiliateId", session.getAttribute("entityId"))
             def apiResponse = new EntityService().putEntity(jsonObject)
             if (apiResponse.status == 200)
             {
