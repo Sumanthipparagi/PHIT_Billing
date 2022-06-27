@@ -108,7 +108,7 @@
                                     <g:each in="${customers}" var="cs">
 
                                         <g:if test="${cs.id != session.getAttribute("entityId")}">
-                                            <option value="${cs.id}"
+                                            <option data-state="${cs.stateId}" value="${cs.id}"
                                                     <g:if test="${saleBillDetail?.customerId == cs.id}">selected</g:if>>${cs.entityName} (${cs.entityType.name})</option>
                                         </g:if>
                                     </g:each>
@@ -642,23 +642,33 @@
                         var finalPrice = priceBeforeGst + (priceBeforeGst * (gst / 100));
                         hot.setDataAtCell(row, 11, Number(finalPrice).toFixed(2));
 
-                        if (gst !== 0) {
-                            var gstAmount = priceBeforeGst * (gst / 100);
-                            var sgstAmount = priceBeforeGst * (sgst / 100);
-                            var cgstAmount = priceBeforeGst * (cgst / 100);
-                            hot.setDataAtCell(row, 10, Number(gstAmount).toFixed(2)); //GST
-                            hot.setDataAtCell(row, 12, Number(sgstAmount).toFixed(2)); //SGST
-                            hot.setDataAtCell(row, 13, Number(cgstAmount).toFixed(2)); //CGST
-                        } else {
-                            hot.setDataAtCell(row, 10, 0); //GST
+                        //TODO: to be corrected
+                        if (stateId === '${session.getAttribute('stateId')}') {
+                            if (gst !== 0) {
+                                var gstAmount = priceBeforeGst * (gst / 100);
+                                var sgstAmount = priceBeforeGst * (sgst / 100);
+                                var cgstAmount = priceBeforeGst * (cgst / 100);
+                                hot.setDataAtCell(row, 10, Number(gstAmount).toFixed(2)); //GST
+                                hot.setDataAtCell(row, 12, Number(sgstAmount).toFixed(2)); //SGST
+                                hot.setDataAtCell(row, 13, Number(cgstAmount).toFixed(2)); //CGST
+                            } else {
+                                hot.setDataAtCell(row, 10, 0); //GST
+                                hot.setDataAtCell(row, 12, 0); //SGST
+                                hot.setDataAtCell(row, 13, 0); //CGST
+                            }
+                        }
+                        else {
                             hot.setDataAtCell(row, 12, 0); //SGST
                             hot.setDataAtCell(row, 13, 0); //CGST
-                        }
-                        if (igst !== "0") {
-                            var igstAmount = priceBeforeGst * (igst / 100);
+                            var igstAmount = priceBeforeGst * (gst / 100);
+                            hot.setDataAtCell(row, 10, Number(igstAmount).toFixed(2)); //GST
                             hot.setDataAtCell(row, 14, Number(igstAmount).toFixed(2)); //IGST
-                        } else
-                            hot.setDataAtCell(row, 14, 0);
+                           /* if (igst !== "0") {
+                                var igstAmount = priceBeforeGst * (igst / 100);
+                                hot.setDataAtCell(row, 14, Number(igstAmount).toFixed(2)); //IGST
+                            } else
+                                hot.setDataAtCell(row, 14, 0);*/
+                        }
                     }
                 }
             }
@@ -670,6 +680,10 @@
             }
         });
 
+        var stateId = $('#customerSelect option:selected').attr('data-state');
+        $('#customerSelect').change(function () {
+            stateId = $('#customerSelect option:selected').attr('data-state');
+        });
 
         function productsDropdownRenderer(instance, td, row, col, prop, value, cellProperties) {
             var selectedId;

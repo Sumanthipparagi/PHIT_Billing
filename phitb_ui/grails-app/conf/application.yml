@@ -25,7 +25,13 @@ endpoints:
     enabled: false
     jmx:
         enabled: true
-
+server:
+    port: 443
+    contextPath: "/"
+    ssl:
+        keyStore: ./localkeystore
+        keyStorePassword: usauth!23
+        keyAlias: tomcat
 ---
 grails:
     mime:

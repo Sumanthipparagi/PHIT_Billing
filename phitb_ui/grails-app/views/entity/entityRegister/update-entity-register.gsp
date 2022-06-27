@@ -99,7 +99,7 @@
                                                 </g:each>
                                             </select>
                                         </div>
-                                        <div class="col-md-6 form-group  form-float">
+                                        %{--<div class="col-md-6 form-group  form-float">
                                             <label for="affiliateId">
                                                 Affiliate Id
                                             </label>
@@ -108,7 +108,7 @@
                                                     <option value="${af.id}"  <g:if test="${af.id == entity.entityType.id}">selected</g:if>>${af.entityName}</option>
                                                 </g:each>
                                             </select>
-                                        </div>
+                                        </div>--}%
                                         <div class="col-md-6 form-group">
                                             <label for="addressLine1">
                                                 Address Line 1

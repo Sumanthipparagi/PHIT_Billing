@@ -29,13 +29,20 @@
                                        required/>
                             </div>
 
-                            <div class="col-lg-6 form-group  form-float">
+                            <div class="col-lg-6 form-group form-float ms-container">
                                 <label for="daysOfWeek">
                                     Days Of Week
                                 </label>
-                                <input type="text" id="daysOfWeek" class="form-control daysOfWeek" name="daysOfWeek"
-                                       placeholder="Days Of Week"
-                                       required/>
+                                <select id="daysOfWeek" class="form-control daysOfWeek ms-selectable" name="daysOfWeek" multiple
+                                       required>
+                                    <option>Monday</option>
+                                    <option>Tuesday</option>
+                                    <option>Wednesday</option>
+                                    <option>Thursday</option>
+                                    <option>Friday</option>
+                                    <option>Saturday</option>
+                                    <option>Sunday</option>
+                                </select>
                             </div>
 
                             <div class="col-lg-6 form-group  form-float">
