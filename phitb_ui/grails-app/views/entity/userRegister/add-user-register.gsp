@@ -212,7 +212,7 @@
 
                                         <div class="col-lg-6 form-group  form-float">
                                             <label for="cityId">
-                                                City
+                                                Area /City
                                             </label>
                                             <select class="form-control show-tick cityId" name="cityId" id="cityId" disabled>
                                                 <g:each var="city" in="${citylist}">
