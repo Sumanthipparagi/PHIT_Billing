@@ -951,12 +951,16 @@
                 data        : formData.serialize(), // our data object
                 success:function(data){
                     // $("#validation-status").text(data);
-                    alert('success','User updated Successfully',data);
+                    // swal('success','User updated Successfully',data);
+                    swal("Success!", "You clicked the button! ", "success");
+
                 },
                 error:function(data){
                     console.log("Failed");
                     // $("#validation-status").text(data.responseText);
-                    alert('error','User update Failed',data.responseText);
+                    // swal('error','User update Failed',data.responseText);
+                    swal("Error", "Request failed!"+data.responseText, "error");
+
                 }
             });
             event.preventDefault();
