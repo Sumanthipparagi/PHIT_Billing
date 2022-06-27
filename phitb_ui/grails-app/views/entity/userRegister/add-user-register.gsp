@@ -536,26 +536,7 @@
 
     $(function () {
         //Datetimepicker plugin
-        $('.contactDob').bootstrapMaterialDatePicker({
-            format: 'DD/MM/YYYY',
-            clearButton: true,
-            time: false,
-            weekStart: 1
-        });
-        $('.foodLicenceValidity').bootstrapMaterialDatePicker({
-            format: 'DD/MM/YYYY',
-            clearButton: true,
-            time: false,
-            weekStart: 1
-        });
-        $('.drugLicenceValidity').bootstrapMaterialDatePicker({
-            format: 'DD/MM/YYYY',
-            clearButton: true,
-            time: false,
-            weekStart: 1
-        });
 
-        $('.affiliateId').select2()
 
         $('#cityId').select2({
             ajax: {

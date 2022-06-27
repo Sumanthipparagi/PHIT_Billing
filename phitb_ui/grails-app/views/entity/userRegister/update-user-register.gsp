@@ -150,7 +150,7 @@
 
                                 <div class="col-lg-6 form-group  form-float">
                                     <label for="genderId">
-                                        Gender
+                                        Gender ${userregisterbyId.genderId}
                                     </label>
                                     <select class="form-control show-tick genderId" name="genderId" id="genderId">
                                         <g:each var="g" in="${gender}">
