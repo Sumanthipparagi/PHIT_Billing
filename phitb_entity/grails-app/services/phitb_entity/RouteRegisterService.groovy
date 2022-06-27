@@ -1,6 +1,7 @@
 package phitb_entity
 
 import grails.gorm.transactions.Transactional
+import org.apache.commons.lang.StringUtils
 import org.grails.web.json.JSONObject
 import phitb_entity.Exception.BadRequestException
 import phitb_entity.Exception.ResourceNotFoundException
@@ -121,7 +122,7 @@ class RouteRegisterService
         }
 
         routeRegister.ccmEnabled = Long.parseLong(jsonObject.get("ccmEnabled").toString())
-        routeRegister.daysOfWeek = jsonObject.get("daysOfWeek").toString()
+        routeRegister.daysOfWeek = StringUtils.join(jsonObject.get("daysOfWeek"), ",")
         if(jsonObject.get("salesman")!= "0")
         {
             routeRegister.salesman = UserRegister.findById(Long.parseLong(jsonObject.get("salesman").toString()))

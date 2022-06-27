@@ -979,17 +979,15 @@ class EntityService {
     //Route Master
     def saveRoute(JSONObject jsonObject)
     {
-        Client client = ClientBuilder.newClient()
+        Client client = ClientBuilder.newClient().register(JacksonFeature.class)
         WebTarget target = client.target(new Links().API_GATEWAY)
        
         try
         {
-            println(jsonObject)
             Response apiResponse = target
                     .path(new Links().ROUTE_REGISTER_SAVE)
                     .request(MediaType.APPLICATION_JSON_TYPE)
-                    .post(Entity.entity(jsonObject.toString(),MediaType.APPLICATION_JSON_TYPE))
-            println(apiResponse)
+                    .post(Entity.entity(jsonObject,MediaType.APPLICATION_JSON_TYPE))
             return apiResponse
         }
         catch (Exception ex)
@@ -1030,7 +1028,7 @@ class EntityService {
 
     def getRouteList()
     {
-        Client client = ClientBuilder.newClient();
+        Client client = ClientBuilder.newClient()
         WebTarget target = client.target(new Links().API_GATEWAY);
         try
         {
@@ -1051,7 +1049,7 @@ class EntityService {
 
     def putRoute(JSONObject jsonObject)
     {
-        Client client = ClientBuilder.newClient()
+        Client client = ClientBuilder.newClient().register(JacksonFeature.class)
         WebTarget target = client.target(new Links().API_GATEWAY)
        
         try
