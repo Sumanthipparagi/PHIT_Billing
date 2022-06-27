@@ -168,7 +168,7 @@
                                     <div class="row">
                                         <div class="col-lg-6 form-group  form-float">
                                             <label for="pinCode">
-                                                Pin Code
+                                                PIN Code
                                             </label>
                                             <div>
                                                 <select class="pinCode form-control" id="pinCode" ></select>
