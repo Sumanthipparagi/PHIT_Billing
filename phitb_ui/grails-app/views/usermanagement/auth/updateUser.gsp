@@ -189,7 +189,7 @@
                                                     <div class="row">
                                                         <div class="col-lg-6 form-group  form-float">
                                                             <label for="pinCode">
-                                                                Pin Code
+                                                                PIN Code
                                                             </label>
                                                             <div>
                                                                 <select class="pinCode form-control" id="pinCode" ></select>
@@ -239,7 +239,7 @@
 
                                                         <div class="col-lg-6 form-group  form-float">
                                                             <label for="cityId">
-                                                                City
+                                                              Area / City
                                                             </label>
                                                             <select class="form-control show-tick cityId"
                                                                     name="cityId" id="cityId" disabled>
