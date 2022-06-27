@@ -139,7 +139,7 @@ class EntityRegisterController
                 }
             }
 
-            render(view: '/entity/entityRegister/update-entity-register',model: [entity:entity, entitytype:entitytype,
+            render(view: '/entity/entityRegister/add-entity-register',model: [entity:entity, entitytype:entitytype,
                                                                                  statelist:statelist,countrylist:countrylist,
                                                                                  salesmanList:salesmanList,
                                                                                  managerList:managerList,

@@ -130,7 +130,7 @@ class EntityRegisterService {
         entityRegister.cityId = Long.parseLong(jsonObject.get("cityId").toString())
         entityRegister.pinCode = jsonObject.get("pinCode").toString()
         entityRegister.phoneNumber = jsonObject.get("phoneNumber").toString()
-        entityRegister.mobileNumber = Long.parseLong(jsonObject.get("mobileNumber").toString())
+        entityRegister.mobileNumber = jsonObject.get("mobileNumber").toString()
         entityRegister.email = jsonObject.get("email").toString()
         entityRegister.contactName = jsonObject.get("contactName").toString()
         entityRegister.priorityId = Long.parseLong(jsonObject.get("priorityId").toString())
@@ -146,7 +146,7 @@ class EntityRegisterService {
         entityRegister.salesBalanceLimit = Double.parseDouble(jsonObject.get("salesBalanceLimit").toString())
         entityRegister.noOfCrDays = Long.parseLong(jsonObject.get("noOfCrDays").toString())
         entityRegister.noOfGraceDays = Long.parseLong(jsonObject.get("noOfGraceDays").toString())
-        entityRegister.calculateOn = Long.parseLong(jsonObject.get("calculateOn").toString())
+        entityRegister.calculateOn = jsonObject.get("calculateOn").toString()
         if(jsonObject.get("bankId")!="0" || jsonObject.get("bankId")!="")
         {
             entityRegister.bankId = Long.parseLong(jsonObject.get("bankId").toString())
@@ -262,7 +262,7 @@ class EntityRegisterService {
             entityRegister.salesBalanceLimit = Double.parseDouble(jsonObject.get("salesBalanceLimit").toString())
             entityRegister.noOfCrDays = Long.parseLong(jsonObject.get("noOfCrDays").toString())
             entityRegister.noOfGraceDays = Long.parseLong(jsonObject.get("noOfGraceDays").toString())
-            entityRegister.calculateOn = Long.parseLong(jsonObject.get("calculateOn").toString())
+            entityRegister.calculateOn = jsonObject.get("calculateOn").toString()
             if(jsonObject.get("bankId")!="0" || jsonObject.get("bankId")!="")
             {
                 entityRegister.bankId = Long.parseLong(jsonObject.get("bankId").toString())
