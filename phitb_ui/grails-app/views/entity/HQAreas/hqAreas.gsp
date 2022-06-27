@@ -260,7 +260,6 @@
         id = $(this).data('id');
         $(".hqname").val($(this).attr('data-date'));
         var districtId =$(this).attr('data-districtId');
-        alert(districtId)
         $("#districtIds").val(districtId.split(",")).change();
         $(".hqAreaTitle").text("Update HQ Area");
     });
