@@ -43,4 +43,18 @@
      }
 
     tempStockPool();
+
+    /*======================================= Ajax Requests ========================================*/
+    setTimeout(getTempStock, 1000);
+    function getTempStock()
+    {
+        $.ajax({
+            type: "GET",
+            url: "tempstockbook/user/${session.getAttribute("userId")}",
+            dataType: 'json',
+            success: function (data) {
+
+            }
+        })
+    }
 </script>

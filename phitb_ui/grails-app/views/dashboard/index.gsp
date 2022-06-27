@@ -142,7 +142,7 @@
 <asset:javascript src="/themeassets/bundles/jvectormap.bundle.js"/>
 <asset:javascript src="/themeassets/bundles/morrisscripts.bundle.js"/>
 <asset:javascript src="/themeassets/bundles/sparkline.bundle.js"/>
-<asset:javascript src="/themeassets/bundles/doughnut.bundle.js"/>
+%{--<asset:javascript src="/themeassets/bundles/doughnut.bundle.js"/>--}%
 <asset:javascript src="/themeassets/bundles/mainscripts.bundle.js"/>
 <asset:javascript src="/themeassets/js/pages/index.js"/>
 

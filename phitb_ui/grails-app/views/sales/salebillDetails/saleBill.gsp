@@ -251,7 +251,7 @@
                         return_data.push({
                             'action': cancelInvoice + " " + approveInvoice + " " + printbtn+" "+editInvoice,
                             /*'action': '',*/
-                            'customer': json.data[i].customer.entityName,
+                            'customer': json.data[i].customer?.entityName,
                             'invNo': invoiceNumber,
                             'gstAmt': json.data[i].totalGst.toFixed(2),
                             'grossAmt': grossAmt,

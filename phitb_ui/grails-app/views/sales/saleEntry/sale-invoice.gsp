@@ -364,6 +364,9 @@
     <g:if test="${saleBillDetail.billStatus == 'CANCELLED'}">
         <div id="watermark" class="print-watermark">CANCELLED</div>
     </g:if>
+    <g:elseif test="${saleBillDetail.billStatus == 'DRAFT'}">
+        <div id="watermark" class="print-watermark">DRAFT</div>
+    </g:elseif>
         <p>No of cases <br>
             Weight in Kgs :<br>
             Party Ref No. : <br>

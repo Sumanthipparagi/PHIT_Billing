@@ -181,7 +181,6 @@ class SaleEntryController {
             saleProductDetail.put("sgstAmount", sgst)
             saleProductDetail.put("cgstAmount", cgst)
             saleProductDetail.put("igstAmount", igst)
-            saleProductDetail.put("igstAmount", igst)
 
             saleProductDetail.put("gstPercentage", sale.get("16").toString())
             saleProductDetail.put("sgstPercentage", sale.get("17").toString())

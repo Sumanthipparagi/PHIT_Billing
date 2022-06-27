@@ -59,7 +59,7 @@
                     %{--<h2>Sale Entry</h2>--}%
                     <ul class="breadcrumb padding-0">
                         <li class="breadcrumb-item"><a href="#"><i class="zmdi zmdi-home"></i></a></li>
-                    <li class="breadcrumb-item active"><g:if test="${saleBillDetail}">Edit</g:if> Sale Entry</li>
+                        <li class="breadcrumb-item active"><g:if test="${saleBillDetail}">Edit</g:if> Sale Entry</li>
                     </ul>
                 </div>
             </div>
@@ -74,9 +74,24 @@
 
                     <div class="body">
                         <div class="row">
+                            <div class="col-md-4">
+                                <label for="customerSelect">Customer:</label>
+                                <select class="form-control show-tick" id="customerSelect"
+                                        onchange="customerSelectChanged()">
+                                    <option selected disabled>--SELECT--</option>
+                                    <g:each in="${customers}" var="cs">
+
+                                        <g:if test="${cs.id != session.getAttribute("entityId")}">
+                                            <option data-state="${cs.stateId}" value="${cs.id}"
+                                                    <g:if test="${saleBillDetail?.customerId == cs.id}">selected</g:if>>${cs.entityName} (${cs.entityType.name})</option>
+                                        </g:if>
+                                    </g:each>
+                                </select>
+                            </div>
+
                             <div class="col-md-2">
                                 <label for="date">Date:</label>
-                                <input type="date" class="form-control date" name="date" id="date"/>
+                                <input type="date" class="form-control date" name="date" id="date" readonly/>
                             </div>
 
                             <div class="col-md-2">
@@ -96,21 +111,6 @@
                                     <g:each in="${priorityList}" var="pr">
                                         <option value="${pr.id}"
                                                 <g:if test="${saleBillDetail?.priorityId == pr.id}">selected</g:if>>${pr.priority}</option>
-                                    </g:each>
-                                </select>
-                            </div>
-
-                            <div class="col-md-4">
-                                <label for="customerSelect">Customer:</label>
-                                <select class="form-control show-tick" id="customerSelect"
-                                        onchange="customerSelectChanged()">
-                                    <option selected disabled>--SELECT--</option>
-                                    <g:each in="${customers}" var="cs">
-
-                                        <g:if test="${cs.id != session.getAttribute("entityId")}">
-                                            <option data-state="${cs.stateId}" value="${cs.id}"
-                                                    <g:if test="${saleBillDetail?.customerId == cs.id}">selected</g:if>>${cs.entityName} (${cs.entityType.name})</option>
-                                        </g:if>
                                     </g:each>
                                 </select>
                             </div>
@@ -257,9 +257,6 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/3.5.2/select2.js"></script>
 
 <script>
-    $(function () {
-        customerSelectChanged();
-    });
     var headerRow = [
         '<strong></strong>',
         '<strong>Product</strong>',
@@ -313,6 +310,7 @@
     var customers = [];
     var readOnly = false;
     var scheme = null;
+    var stateId = null;
     $(document).ready(function () {
         $("#customerSelect").select2();
         $('#date').val(moment().format('YYYY-MM-DD'));
@@ -377,10 +375,10 @@
             hiddenColumns: true,
             hiddenColumns: {
                 <g:if test="${customer != null}">
-                    columns: [15, 16, 17, 18, 19, 20, 21, 22, 23, 24]
+                columns: [15, 16, 17, 18, 19, 20, 21, 22, 23, 24]
                 </g:if>
                 <g:else>
-                    columns: [15, 16, 17, 18, 19, 20, 21]
+                columns: [15, 16, 17, 18, 19, 20, 21]
 
                 </g:else>
             },
@@ -403,12 +401,12 @@
             afterOnCellMouseDown: function (e, coords, TD) {
                 if (coords.col === 0) {
                     <g:if test="${customer == null}">
-                        var id = hot.getDataAtCell(coords.row, 15);
-                        deleteTempStockRow(id, coords.row);
+                    var id = hot.getDataAtCell(coords.row, 15);
+                    deleteTempStockRow(id, coords.row);
                     </g:if>
                     <g:else>
-                        var id = hot.getDataAtCell(coords.row, 24);
-                        deleteSaleBillRow(id, coords.row);
+                    var id = hot.getDataAtCell(coords.row, 24);
+                    deleteSaleBillRow(id, coords.row);
                     </g:else>
 
                     calculateTotalAmt();
@@ -461,7 +459,7 @@
                             var url = '/tempstockbook';
                             var draftEdit = false;
                             <g:if test="${customer != null}">
-                                draftEdit = true;
+                            draftEdit = true;
                             </g:if>
                             var beforeSendSwal;
                             $.ajax({
@@ -580,9 +578,9 @@
                                             allowEntry = true;
                                         } else if ((remQty + remFQty) >= sQty) {
                                             allowEntry = true;
-                                        } else if(draftSqty > 0 && sQty <= (draftSqty+draftFqty+remQty+remFQty)){
+                                        } else if (draftSqty > 0 && sQty <= (draftSqty + draftFqty + remQty + remFQty)) {
                                             allowEntry = true; //if draft greater than zero, allow manipulation
-                                        } else if(draftFqty > 0 && fqty <= (draftSqty+draftFqty+remQty+remFQty)){
+                                        } else if (draftFqty > 0 && fqty <= (draftSqty + draftFqty + remQty + remFQty)) {
                                             allowEntry = true;
                                         }
 
@@ -605,12 +603,10 @@
                                         }
                                         if (!allowEntry) {
                                             // this.getActiveEditor().TEXTAREA.value = "";
-                                            if(draftSqty > 0 || draftFqty > 0)
-                                            {
+                                            if (draftSqty > 0 || draftFqty > 0) {
                                                 hot.setDataAtCell(row, 4, draftSqty);
                                                 hot.setDataAtCell(row, 5, draftFqty);
-                                            }
-                                            else {
+                                            } else {
                                                 hot.setDataAtCell(row, 4, 0);
                                                 hot.setDataAtCell(row, 5, 0);
                                                 hot.setDataAtCell(row, 10, 0);
@@ -641,9 +637,7 @@
                         var priceBeforeGst = value - (value * discount / 100);
                         var finalPrice = priceBeforeGst + (priceBeforeGst * (gst / 100));
                         hot.setDataAtCell(row, 11, Number(finalPrice).toFixed(2));
-
-                        //TODO: to be corrected
-                        if (stateId === '${session.getAttribute('stateId')}') {
+                        if (stateId === undefined || stateId === '${session.getAttribute('stateId')}') {
                             if (gst !== 0) {
                                 var gstAmount = priceBeforeGst * (gst / 100);
                                 var sgstAmount = priceBeforeGst * (sgst / 100);
@@ -656,18 +650,17 @@
                                 hot.setDataAtCell(row, 12, 0); //SGST
                                 hot.setDataAtCell(row, 13, 0); //CGST
                             }
-                        }
-                        else {
-                            hot.setDataAtCell(row, 12, 0); //SGST
-                            hot.setDataAtCell(row, 13, 0); //CGST
-                            var igstAmount = priceBeforeGst * (gst / 100);
-                            hot.setDataAtCell(row, 10, Number(igstAmount).toFixed(2)); //GST
-                            hot.setDataAtCell(row, 14, Number(igstAmount).toFixed(2)); //IGST
-                           /* if (igst !== "0") {
+
+                            if (igst !== "0") {
                                 var igstAmount = priceBeforeGst * (igst / 100);
                                 hot.setDataAtCell(row, 14, Number(igstAmount).toFixed(2)); //IGST
                             } else
-                                hot.setDataAtCell(row, 14, 0);*/
+                                hot.setDataAtCell(row, 14, 0);
+                        } else {
+                            hot.setDataAtCell(row, 12, 0); //SGST
+                            hot.setDataAtCell(row, 13, 0); //CGST
+                            hot.setDataAtCell(row, 10, Number(priceBeforeGst * (gst / 100)).toFixed(2)); //GST
+                            hot.setDataAtCell(row, 14, Number(priceBeforeGst * (gst / 100)).toFixed(2)); //IGST
                         }
                     }
                 }
@@ -680,7 +673,7 @@
             }
         });
 
-        var stateId = $('#customerSelect option:selected').attr('data-state');
+        stateId = $('#customerSelect option:selected').attr('data-state');
         $('#customerSelect').change(function () {
             stateId = $('#customerSelect option:selected').attr('data-state');
         });
@@ -758,9 +751,15 @@
                         hot.setDataAtCell(mainTableRow, 8, 0);
                         hot.setDataAtCell(mainTableRow, 9, rowData[7]);
                         gst = rowData[8];
-                        sgst = rowData[9];
-                        cgst = rowData[10];
-                        igst = rowData[11];
+                        if (stateId === undefined || stateId === '${session.getAttribute('stateId')}') {
+                            sgst = rowData[9];
+                            cgst = rowData[10];
+                            igst = rowData[11];
+                        } else {
+                            igst = gst;
+                            sgst = 0;
+                            cgst = 0;
+                        }
                         hot.selectCell(mainTableRow, 4);
                         hot.setDataAtCell(mainTableRow, 16, gst);
                         hot.setDataAtCell(mainTableRow, 17, sgst);
@@ -779,14 +778,12 @@
         });
 
         $('#series').trigger('change');
-
-
     });
 
     function batchSelection(selectedId, mainRow, selectCell = true) {
         if (selectedId != null) {
             var sid = selectedId.id;
-            if(sid === undefined)
+            if (sid === undefined)
                 sid = selectedId;
             var url = "/stockbook/product/" + sid;
             $.ajax({
@@ -927,10 +924,17 @@
                     hot.setDataAtCell(i, 7, saleData[i].mrp);
                     hot.setDataAtCell(i, 8, 0);
                     hot.setDataAtCell(i, 9, saleData[i].productId.unitPacking);
+
                     gst = saleData[i].gst;
-                    sgst = saleData[i].sgst;
-                    cgst = saleData[i].cgst;
-                    igst = saleData[i].igst;
+                    if (stateId === undefined || stateId === '${session.getAttribute('stateId')}') {
+                        sgst = saleData[i].sgst;
+                        cgst = saleData[i].cgst;
+                        igst = saleData[i].igst;
+                    } else {
+                        igst = gst;
+                        sgst = 0;
+                        cgst = 0;
+                    }
                     var discount = 0; //TODO: discount to be set
                     var priceBeforeGst = (sRate * sQty) - ((sRate * sQty) * discount) / 100;
                     var finalPrice = priceBeforeGst + (priceBeforeGst * (gst / 100));
@@ -949,10 +953,10 @@
                     else
                         hot.setDataAtCell(i, 14, 0);
                     <g:if test="${customer != null}">
-                        hot.setDataAtCell(i, 15, 0);
+                    hot.setDataAtCell(i, 15, 0);
                     </g:if>
                     <g:else>
-                        hot.setDataAtCell(i, 15, saleData[i].id);
+                    hot.setDataAtCell(i, 15, saleData[i].id);
                     </g:else>
                     hot.setDataAtCell(i, 16, gst);
                     hot.setDataAtCell(i, 17, sgst);
@@ -961,9 +965,9 @@
                     hot.setDataAtCell(i, 20, saleData[i]["originalSqty"]);
                     hot.setDataAtCell(i, 21, saleData[i]["originalFqty"]);
                     <g:if test="${customer != null}">
-                        hot.setDataAtCell(i, 22, sQty); //draft sqty
-                        hot.setDataAtCell(i, 23, fQty); //draft fqty
-                        hot.setDataAtCell(i, 24, saleData[i]["id"]); //saved draft product id
+                    hot.setDataAtCell(i, 22, sQty); //draft sqty
+                    hot.setDataAtCell(i, 23, fQty); //draft fqty
+                    hot.setDataAtCell(i, 24, saleData[i]["id"]); //saved draft product id
                     </g:if>
                 }
 
@@ -1003,6 +1007,7 @@
                             title: "Success",
                             text: "Product removed."
                         });
+                        calculateTotalAmt();
                     }
                 });
             } else
@@ -1016,7 +1021,7 @@
             if (id) {
                 $.ajax({
                     type: "POST",
-                    url: "/sale-product-details/delete?id="+id,
+                    url: "/sale-product-details/delete?id=" + id,
                     dataType: 'json',
                     success: function (data) {
                         hot.alter("remove_row", row);
@@ -1073,10 +1078,10 @@
 
         var url = "";
         <g:if test="${customer != null}">
-            url = "edit-sale-entry?id="+'${saleBillDetail.id}';
+        url = "edit-sale-entry?id=" + '${saleBillDetail.id}';
         </g:if>
         <g:else>
-            url = "sale-entry";
+        url = "sale-entry";
         </g:else>
         $.ajax({
             type: "POST",
@@ -1170,6 +1175,8 @@
         $('#duedate').prop("readonly", false);
         $("#duedate").val(moment().add(noOfCrDays, 'days').format('YYYY-MM-DD'));
         $('#duedate').prop("readonly", true);
+        calculateTaxes(); //this is to change IGST if in case out of state
+        calculateTotalAmt();
     }
 
     function calculateTotalAmt() {
@@ -1207,6 +1214,40 @@
         $("#totalFQty").text(Number(totalFQty).toFixed(2));
     }
 
+    function calculateTaxes() {
+        var data = hot.getData();
+        for (var row = 0; row < data.length; row++) {
+            var sgstAmount = Number(hot.getDataAtCell(row, 12));
+            var cgstAmount = Number(hot.getDataAtCell(row, 13));
+            var igstAmount = Number(hot.getDataAtCell(row, 14));
+
+            var sgstPercentage = hot.getDataAtCell(row, 17);
+            var cgstPercentage = hot.getDataAtCell(row, 18);
+
+            if (stateId === '${session.getAttribute('stateId')}') {
+                if(igstAmount !== 0)
+                {
+                    hot.setDataAtCell(row, 12, Number(igstAmount/2).toFixed(2)); //SGST
+                    hot.setDataAtCell(row, 13, Number(igstAmount/2).toFixed(2)); //CGST
+                    hot.setDataAtCell(row, 14, 0); //IGST
+
+                    hot.setDataAtCell(row, 17, sgstPercentage);
+                    hot.setDataAtCell(row, 18, cgstPercentage);
+                    hot.setDataAtCell(row, 19, 0);
+                }
+            } else {
+                if(sgstAmount !== 0 && cgstAmount !== 0) {
+                    hot.setDataAtCell(row, 12, 0); //SGST
+                    hot.setDataAtCell(row, 13, 0); //CGST
+                    hot.setDataAtCell(row, 14, (sgstAmount + cgstAmount).toFixed(2)); //IGST
+
+                    hot.setDataAtCell(row, 17, 0);
+                    hot.setDataAtCell(row, 18, 0);
+                    hot.setDataAtCell(row, 19, sgstPercentage + cgstPercentage);
+                }
+            }
+        }
+    }
 
     function checkForDuplicateEntry(batchNumber) {
         var productId = hot.getDataAtCell(mainTableRow, 1);
@@ -1622,16 +1663,10 @@
         Handsontable.editors.registerEditor('select2', Select2Editor);
 
     })(Handsontable);
-
-
-    $(document).ready(function () {
-    });
-
 </script>
 <g:include view="controls/footer-content.gsp"/>
 <script>
     selectSideMenu("sales-menu");
 </script>
-<g:include view="controls/socket.gsp"/>
 </body>
 </html>

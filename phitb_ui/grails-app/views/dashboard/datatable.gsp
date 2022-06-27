@@ -1074,7 +1074,6 @@
 <asset:javascript src="/themeassets/plugins/jquery-datatable/buttons/buttons.html5.min.js"/>
 <asset:javascript src="/themeassets/plugins/jquery-datatable/buttons/buttons.print.min.js"/>
 <asset:javascript src="/themeassets/bundles/mainscripts.bundle.js"/>
-<asset:javascript src="/themeassets/js/pages/tables/jquery-datatable.js"/>
 
 
 </body>
