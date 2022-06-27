@@ -7,7 +7,7 @@
     <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
     <meta name="description" content="Responsive Bootstrap 4 and web Application ui kit.">
 
-    <title>:: PharmIt :: Update password</title>
+    <title>:: PharmIt :: Update User</title>
     <link rel="icon" type="image/x-icon" href="${assetPath(src: '/themeassets/images/favicon.ico')}"/>
     <!-- Favicon-->
     <asset:stylesheet rel="stylesheet" src="/themeassets/plugins/bootstrap/css/bootstrap.min.css"/>
@@ -106,7 +106,7 @@
                                     <div class="body m-b-10">
                                         <form action="/user-register/update/${user.id}" id="updateUser" method="POST"
                                               role="form"
-                                              class="entityRegisterForm"  enctype="multipart/form-data">
+                                              class="userRegisterForm"  enctype="multipart/form-data">
                                             <div class="row">
                                                 <div class="col-md-6" style="max-width: 49%;border: 1px solid black;  border-radius: 10px;padding: 10px;
                                                 ">
@@ -215,31 +215,40 @@
                                                             <select class="form-control show-tick countryId" name="countryId"
                                                                     id="countryId" disabled>
                                                                 <g:each var="country" in="${countrylist}">
-                                                                    <option value="${country.id}">${country.name}</option>
+                                                                    <option value="${country.id}" <g:if test="${country.id == user.countryId}">selected</g:if>
+                                                                    >${country.name}</option>
                                                                 </g:each>
                                                             </select>
+                                                            <input type="hidden" name="countryId" value="${user.countryId}"/>
+
                                                         </div>
 
                                                         <div class="col-lg-6 form-group  form-float">
                                                             <label for="stateId">
                                                                 State
                                                             </label>
-                                                            <select class="form-control show-tick stateId" name="stateId" id="stateId" disabled>
+                                                            <select class="form-control show-tick stateId"
+                                                                    name="stateId" id="stateId" disabled>
                                                                 <g:each var="state" in="${statelist}">
                                                                     <option value="${state.id}" <g:if test="${state.id == user.stateId}">selected</g:if>>${state.name}</option>
                                                                 </g:each>
                                                             </select>
+                                                            <input type="hidden" name="stateId" value="${user.stateId}"/>
+
                                                         </div>
 
                                                         <div class="col-lg-6 form-group  form-float">
                                                             <label for="cityId">
                                                                 City
                                                             </label>
-                                                            <select class="form-control show-tick cityId" name="cityId" id="cityId" disabled>
+                                                            <select class="form-control show-tick cityId"
+                                                                    name="cityId" id="cityId" disabled>
                                                                 <g:each var="city" in="${citylist}">
-                                                                    <option value="${city.id}">${city.name}</option>
+                                                                    <option value="${city.id}">${city.districtName}</option>
                                                                 </g:each>
                                                             </select>
+                                                            <input type="hidden" name="cityId" value="${user.cityId}"/>
+
                                                         </div>
 
                                                         <div class="col-lg-6 form-group  form-float">
@@ -340,7 +349,8 @@
                                                                 Approved Salary
                                                             </label>
                                                             <input type="number" id="approvedSalary" class="form-control approvedSalary"
-                                                                   name="approvedSalary" placeholder="Approved Salary" value="${user.approvedSalary}"
+                                                                   name="approvedSalary"
+                                                                   placeholder="Approved Salary"  onblur="setTwoNumberDecimal" step="0.25" value="${user.approvedSalary}"
                                                                    required/>
                                                         </div>
 
@@ -351,7 +361,7 @@
                                                             </label>
                                                             <input type="number" id="designationSalary" class="form-control designationSalary"
                                                                    name="designationSalary"
-                                                                   placeholder="Designation Salary" value="${user.designationSalary}"
+                                                                   placeholder="Designation Salary" onblur="setTwoNumberDecimal()" step="0.25"   value="${user.designationSalary}"
                                                                    required/>
                                                         </div>
 
@@ -503,6 +513,7 @@
 
 
                                                 <input type="hidden" name="status" value="1">
+                                                <input type="hidden" name="photo" value="1">
                                                 <input type="hidden" name="entity" value="${session.getAttribute('entityId')}">
                                                 <input type="hidden" name="syncStatus" value="1">
                                                 <input type="hidden" name="lastLoginDate" value="12/02/2020">
@@ -786,14 +797,23 @@
             success: function (data) {
                 $('#entityTypeId').val(data.id)
             },
+
+
         });
+
+
+
+        function setTwoNumberDecimal(event) {
+            this.value = parseFloat(this.value.toFixed(2));
+        }
+
+
 
 
         $('#cityId').select2({
             ajax: {
                 url: '/city/get',
                 dataType: 'json',
-                placeholder: 'Search for cities',
                 //delay: 250,
                 data: function (params) {
                     return {
@@ -807,8 +827,11 @@
                     };
                 },
             },
+            placeholder: 'Search for cities',
             minimumInputLength: 2
         });
+
+
 
         $('.pinCode').select2({
             placeholder: 'Enter Pincode',
@@ -870,6 +893,11 @@
             });
 
         });
+
+
+
+
+
     });
 
 
@@ -889,6 +917,7 @@
 
     $('#updatePassword').submit(function(event) {
         var formData = $(this);
+
         $.ajax({
             type        : 'POST', // define the type of HTTP verb we want to use (POST for our form)
             url         : formData.attr('action'), // the url where we want to POST
@@ -907,24 +936,38 @@
     });
 
     $('#updateUser').submit(function(event) {
-        var formData = $(this);
-        $.ajax({
-            type        : 'POST', // define the type of HTTP verb we want to use (POST for our form)
-            url         : formData.attr('action'), // the url where we want to POST
-            data        : formData.serialize(), // our data object
-            success:function(data){
-                // $("#validation-status").text(data);
-               alert('success','User updated Successfully',data);
-            },
-            error:function(data){
-                console.log("Failed");
-                // $("#validation-status").text(data.responseText);
-                alert('error','User update Failed',data.responseText);
-            }
-        });
-        event.preventDefault();
+        var pincode =  $('.pinCode option').length;
+        if(pincode === 0 || pincode < 0)
+        {
+            swal("Please enter  pincode and  select area");
+            event.preventDefault();
+        }
+        else
+        {
+            var formData = $(this);
+            $.ajax({
+                type        : 'POST', // define the type of HTTP verb we want to use (POST for our form)
+                url         : formData.attr('action'), // the url where we want to POST
+                data        : formData.serialize(), // our data object
+                success:function(data){
+                    // $("#validation-status").text(data);
+                    alert('success','User updated Successfully',data);
+                },
+                error:function(data){
+                    console.log("Failed");
+                    // $("#validation-status").text(data.responseText);
+                    alert('error','User update Failed',data.responseText);
+                }
+            });
+            event.preventDefault();
+        }
+
     });
 
+
+    function setTwoNumberDecimal(event) {
+        this.value = parseFloat(this.value.toFixed(2));
+    }
 </script>
 
 <script>
