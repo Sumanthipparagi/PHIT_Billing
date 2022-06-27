@@ -1503,6 +1503,8 @@
         $("#entityRegisterForm").validate();
     });
 
+<g:if test="${params.id == null || params.id == ""}">
+
     $("#entityRegisterForm").submit(function (event) {
         var pincode = $('.pinCode option').length;
         if (pincode === 0 || pincode < 0) {
@@ -1510,6 +1512,7 @@
             event.preventDefault();
         }
     });
+    </g:if>
 
     // $('#updatePassword').submit(function(event) {
     //     var formData = $(this);

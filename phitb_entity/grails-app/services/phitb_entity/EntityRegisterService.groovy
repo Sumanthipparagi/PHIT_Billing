@@ -246,7 +246,7 @@ class EntityRegisterService {
             entityRegister.cityId = Long.parseLong(jsonObject.get("cityId").toString())
             entityRegister.pinCode = jsonObject.get("pinCode").toString()
             entityRegister.phoneNumber = jsonObject.get("phoneNumber").toString()
-            entityRegister.mobileNumber = Long.parseLong(jsonObject.get("mobileNumber").toString())
+            entityRegister.mobileNumber = jsonObject.get("mobileNumber").toString()
             entityRegister.email = jsonObject.get("email").toString()
             entityRegister.contactName = jsonObject.get("contactName").toString()
             entityRegister.priorityId = Long.parseLong(jsonObject.get("priorityId").toString())
@@ -263,11 +263,12 @@ class EntityRegisterService {
             entityRegister.noOfCrDays = Long.parseLong(jsonObject.get("noOfCrDays").toString())
             entityRegister.noOfGraceDays = Long.parseLong(jsonObject.get("noOfGraceDays").toString())
             entityRegister.calculateOn = jsonObject.get("calculateOn").toString()
-            if(jsonObject.get("bankId")!="0" || jsonObject.get("bankId")!="")
+            if (jsonObject.get("bankId") != "0" || jsonObject.get("bankId") != "")
             {
                 entityRegister.bankId = Long.parseLong(jsonObject.get("bankId").toString())
             }
-            else {
+            else
+            {
                 entityRegister.bankId = 0
             }
             entityRegister.accountNo = jsonObject.get("accountNo").toString()
@@ -282,30 +283,33 @@ class EntityRegisterService {
             entityRegister.careTaker = Long.parseLong("0")
             entityRegister.contact = jsonObject.get("contact").toString()
             entityRegister.terms = jsonObject.get("terms").toString()
-            if(!jsonObject.isNull("salesman"))
+            if (!jsonObject.isNull("salesman"))
             {
                 entityRegister.salesman = Long.parseLong(jsonObject.get("salesman").toString())
             }
-            else {
+            else
+            {
                 entityRegister.salesman = 0
             }
-            if(!jsonObject.isNull("manager"))
+            if (!jsonObject.isNull("manager"))
             {
                 entityRegister.manager = Long.parseLong(jsonObject.get("manager").toString())
             }
-            else {
+            else
+            {
                 entityRegister.manager = 0
             }
 
-            if(!jsonObject.isNull("routeId"))
+            if (!jsonObject.isNull("routeId"))
             {
                 entityRegister.routeId = Long.parseLong(jsonObject.get("routeId").toString())
             }
-            else {
+            else
+            {
                 entityRegister.routeId = 0
             }
             entityRegister.status = Long.parseLong(jsonObject.get("status").toString())
-            if(!jsonObject.isNull("salesmanCommission"))
+            if (!jsonObject.isNull("salesmanCommission"))
             {
                 entityRegister.salesmanCommission = Double.parseDouble(jsonObject.get("salesmanCommission").toString())
             }
@@ -313,7 +317,7 @@ class EntityRegisterService {
             {
                 entityRegister.salesmanCommission = 0
             }
-            if(jsonObject.get("hqarea")!="0" || jsonObject.get("hqarea")!="")
+            if (jsonObject.get("hqarea") != "0" || jsonObject.get("hqarea") != "")
             {
                 entityRegister.hqAreaId = Long.parseLong(jsonObject.get("hqarea").toString())
             }
@@ -334,10 +338,7 @@ class EntityRegisterService {
             entityRegister.createdUser = Long.parseLong(jsonObject.get("createdUser").toString())
             entityRegister.modifiedUser = Long.parseLong(jsonObject.get("modifiedUser").toString())
             entityRegister.parentEntity = Long.parseLong(jsonObject.get("parentEntity").toString())
-            entityRegister.parentEntityType =Long.parseLong(jsonObject.get("parentEntityType").toString())
-                      //once created can't be changed to another parent entity
-            /*entityRegister.parentEntity = Long.parseLong(jsonObject.get("parentEntity").toString())
-            entityRegister.parentEntityType =Long.parseLong(jsonObject.get("parentEntityType").toString())*/
+            entityRegister.parentEntityType = Long.parseLong(jsonObject.get("parentEntityType").toString())
             entityRegister.save(flush: true)
             if (!entityRegister.hasErrors())
             {
@@ -348,29 +349,7 @@ class EntityRegisterService {
                 throw new BadRequestException()
             }
         }
-        else
-        {
-            throw new ResourceNotFoundException()
-        }
-    }
-
-    void delete(String id)
-    {
-        if (id)
-        {
-            EntityRegister entityRegister = EntityRegister.findById(Long.parseLong(id))
-            if (entityRegister)
-            {
-                entityRegister.isUpdatable = true
-                entityRegister.delete()
-            }
-            else
-            {
-                throw new ResourceNotFoundException()
-            }
-        }
-        else
-        {
+        else {
             throw new BadRequestException()
         }
     }
