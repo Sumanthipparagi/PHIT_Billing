@@ -460,8 +460,9 @@ class StockBookController {
             def stockBook = null
             if(!isEdit) {
                 //adding for first time
-                if(!draftEdit)
-                    stockBook = new InventoryService().getStockBookById(jsonArray[22])
+                if(!draftEdit) {
+                    stockBook = new InventoryService().getStocksOfProductAndBatch(jsonArray[1].toString(),jsonArray[2].toString(), session.getAttribute("entityId").toString())
+                }
                 else
                     stockBook = new InventoryService().getStockBookById(stockBookId)
             }

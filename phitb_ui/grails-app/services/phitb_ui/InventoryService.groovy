@@ -339,7 +339,9 @@ class InventoryService {
     }
 
     def getTempStocksOfProductAndBatch(String id, String batch) {
-        Client client = ClientBuilder.newClient();
+        def webUtils = WebUtils.retrieveGrailsWebRequest()
+        def session = webUtils.getSession()
+        Client client = ClientBuilder.newClient()
         WebTarget target = client.target(new Links().API_GATEWAY)
         String url = ""
         if(batch)
@@ -349,6 +351,7 @@ class InventoryService {
         try {
             Response apiResponse = target
                     .path(url)
+                    .queryParam("userId",session.getAttribute("userId"))
                     .request(MediaType.APPLICATION_JSON_TYPE)
                     .get()
 
@@ -437,7 +440,8 @@ class InventoryService {
     def tempStockBookSave(JSONObject jsonObject)
     {
         Client client = ClientBuilder.newClient()
-        WebTarget target = client.target(new Links().API_GATEWAY)
+        //WebTarget target = client.target(new Links().API_GATEWAY)
+        WebTarget target = client.target("http://localhost:8086")
         try
         {
             println(jsonObject)
