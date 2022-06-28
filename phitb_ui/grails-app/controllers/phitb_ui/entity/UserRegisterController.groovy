@@ -344,4 +344,27 @@ class UserRegisterController
     }
 
 
+    def userExists()
+    {
+        try
+        {
+            def apiResponse = new EntityService().userNameExists(params.username)
+            if (apiResponse.status == 200)
+            {
+                JSONObject obj = new JSONObject(apiResponse.readEntity(String.class))
+                respond obj, formats: ['json'], status: 200
+            }
+            else
+            {
+                response.status = 400
+            }
+        }
+        catch (Exception ex)
+        {
+            System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
+            log.error('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
+            response.status = 400
+        }
+    }
+
 }

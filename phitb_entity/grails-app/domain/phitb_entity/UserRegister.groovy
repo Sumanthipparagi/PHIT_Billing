@@ -4,6 +4,7 @@ import gorm.logical.delete.LogicalDelete
 
 class UserRegister implements LogicalDelete<UserRegister> {
     String userName
+    String name
     String mobileNumber
     String contactNumber
     String aadharId
@@ -13,6 +14,7 @@ class UserRegister implements LogicalDelete<UserRegister> {
     String photo
     String nationality
     String address
+    String userStatus
     long countryId
     long stateId
     long cityId
@@ -53,11 +55,36 @@ class UserRegister implements LogicalDelete<UserRegister> {
         address maxSize: 500
         pincode maxSize: 10
         photo nullable: true
+        bankId nullable:true
+        divisionId nullable:true
+        licenceNumber nullable:true
+        specialization nullable:true
+        assignedHolidays nullable:true
+        bankAccount nullable:true
+        paymentModeId nullable:true
+        lastPaidDate nullable: true
+        designationSalary nullable: true
+        approvedSalary nullable: true
+        approvedSalary nullable: true
+        department nullable: true
+        pincode nullable: true
+        userStatus nullable: true
+        referenceRelation nullable: true
+        permissions nullable:true
+        account nullable:true
+        anniversaryDate nullable:true
+        lastLoginDate nullable:true
+        joiningDate nullable:true
+        dob nullable:true
+
     }
 
     static mapping = {
         photo sqlType: 'longText'
         permissions sqlType: 'longText'
+        status nullable:true
+        entityType nullable:true
+        entity nullable:true
     }
     boolean isUpdatable
     static transients = ['isUpdatable']

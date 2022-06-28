@@ -38,23 +38,23 @@
                                        required/>
                             </div>
 
-                            <div class="col-lg-6 form-group  form-float">
+                            <div class="col-lg-6">
                                 <label for="cityId">
                                     City
                                 </label>
-                                <select class="form-control show-tick cityId" name="cityIds" id="cityId"  multiple="multiple" required>
-                                    <g:each var="city" in="${citylist}">
-                                        <option value="${city.id}">${city.name}</option>
+                                <select class="form-control show-tick cityId" style="width: 100%;" name="cityIds" id="cityId"
+                                        multiple>
+                                    <g:each var="district" in="${districts}">
+                                        <option value="${district.id}">${district.district}</option>
                                     </g:each>
                                 </select>
                             </div>
 
-
-                            <div class="col-lg-6 form-group  form-float">
+                            <div class="col-lg-6">
                                 <label for="countryId">
                                     Country
                                 </label>
-                                <select class="form-control show-tick countryId" name="countryId" id="countryId">
+                                <select class="form-control show-tick countryId" style="width: 100%;" name="countryId" id="countryId">
                                     <g:each var="c" in="${countrylist}">
                                         <option value="${c.id}">${c.name}</option>
                                     </g:each>
@@ -66,7 +66,7 @@
                                 <label for="stateId">
                                     State
                                 </label>
-                                <select class="form-control show-tick stateId" name="stateId" id="stateId">
+                                <select class="form-control show-tick stateId" style="width: 100%;" name="stateId" id="stateId">
                                     <g:each var="state" in="${statelist}">
                                         <option value="${state.id}">${state.name}</option>
                                     </g:each>
@@ -77,7 +77,8 @@
                                 <label for="entity">
                                     Entity
                                 </label>
-                                <select class="form-control show-tick entity" name="entity" id="entity">
+                                <select class="form-control show-tick entity" style="width: 100%;" name="entity"
+                                        id="entity">
                                     <option value="">-- Please select --</option>
                                     <g:each var="e" in="${entity}">
                                         <option value="${e.id}"  data-type="${e.entityType.id}">${e.entityName}</option>
