@@ -104,7 +104,8 @@
                                         </ul>
                                     </div>
                                     <div class="body m-b-10">
-                                        <form action="/user-register/update/${user.id}" id="entityRegisterForm" method="POST" role="form"
+                                        <form action="/user-register/update/${user.id}" id="updateUser"
+                                              method="POST" role="form"
                                               class="entityRegisterForm" enctype="multipart/form-data">
                                             <div class="row clearfix">
                                                 <div class="col-lg-12 col-md-12 col-sm-12">
