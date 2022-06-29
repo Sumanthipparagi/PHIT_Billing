@@ -269,7 +269,7 @@
                                                                             <div>
                                                                                 <select class="pinCode form-control" id="pinCode" ></select>
                                                                                 <input type="hidden" name="pinCode"
-                                                                                       value="${user.pinCode}">
+                                                                                       value="${user.pincode}">
                                                                             </div>
 
                                                                         </div>
@@ -540,6 +540,8 @@
                                                                                 Division
                                                                             </label>
                                                                             <select class="form-control show-tick divisionId" name="divisionId" id="divisionId">
+                                                                                <option value="0">---Please
+                                                                                Select---</option>
                                                                                 <g:each var="d" in="${division}">
                                                                                     <option value="${d.id}"  <g:if test="${d.id == user.division}">selected</g:if>>${d.divisionName}</option>
                                                                                 </g:each>
@@ -878,15 +880,15 @@
             weekStart: 1
         });
 
-        var entityTypeId = $('.entity').find(':selected').attr('data-type')
-        $.ajax({
-            type: "POST",
-            url: "/getentitytypebyId?id="+ entityTypeId,
-            dataType: 'json',
-            success: function (data) {
-                $('#entityTypeId').val(data.id)
-            },
-        });
+        // var entityTypeId = $('.entity').find(':selected').attr('data-type')
+        // $.ajax({
+        //     type: "POST",
+        //     url: "/getentitytypebyId?id="+ entityTypeId,
+        //     dataType: 'json',
+        //     success: function (data) {
+        //         $('#entityTypeId').val(data.id)
+        //     },
+        // });
 
 
 
@@ -894,7 +896,7 @@
             this.value = parseFloat(this.value.toFixed(2));
         }
 
-
+        $('#referredBy').select2()
 
 
         $('#cityId').select2({
