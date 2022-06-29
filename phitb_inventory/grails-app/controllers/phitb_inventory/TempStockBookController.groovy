@@ -121,9 +121,11 @@ class TempStockBookController {
         try {
             String id = params.id
             String userId = params.userId
-            if (id) {
+            if (id && userId) {
                 respond tempStockBookService.getAllByProductAndBatch(Long.parseLong(id),params.batch, userId)
             }
+            else
+                response.status = 400
         }
         catch (ResourceNotFoundException ex)
         {

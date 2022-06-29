@@ -789,6 +789,9 @@
             $.ajax({
                 type: "GET",
                 url: url,
+                data:{
+                    userId: "${session.getAttribute("userId")}"
+                },
                 dataType: 'json',
                 success: function (data) {
                     if (data) {
