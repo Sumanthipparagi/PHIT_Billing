@@ -125,6 +125,7 @@ class UserRegisterController
             ArrayList<String> routeRegister = new RouteController().show() as ArrayList<String>
             ArrayList<String> userList = new UserRegisterController().show() as ArrayList<String>
             ArrayList <String> genderList = new SystemService().getAllGender()
+            def city = new SystemService().getCityById(user.cityId.toString())
             ArrayList <String> bank = new BankRegisterController().show() as ArrayList<String>
             ArrayList <String> roles = new RoleController().show() as ArrayList<String>
             ArrayList <String> division  = new DivisionController().show() as ArrayList<String>
@@ -155,7 +156,7 @@ class UserRegisterController
                                                                            routeregister: routeRegister,
                                                                            userregister : userregister,
                                                                            department: department,role:roles,
-                                                                           bank:bank,account:account,
+                                                                           bank:bank,account:account,city:city,
                                                                            division:division,gender:genderList,
                                                                            userregisterbyId:user])
         }

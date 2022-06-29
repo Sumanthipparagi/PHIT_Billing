@@ -250,6 +250,7 @@
                                                                             </label>
                                                                             <input type="email" id="email" class="form-control email"
                                                                                    name="email" placeholder="Email"
+                                                                                   value="${user.email}"
                                                                             />
                                                                         </div>
                                                                         <div class="col-lg-6 form-group  form-float">
@@ -291,7 +292,8 @@
                                                                                     <option value="${country.id}" <g:if test="${country.id == user.countryId}">selected</g:if>>${country.name}</option>
                                                                                 </g:each>
                                                                             </select>
-                                                                            <input type="hidden" name="countryId" />
+                                                                            <input type="hidden" name="countryId"
+                                                                                   value="${user.countryId}"/>
 
                                                                         </div>
 
@@ -304,7 +306,7 @@
                                                                                     <option value="${state.id}" <g:if test="${state.id == user.stateId}">selected</g:if>>${state.name}</option>
                                                                                 </g:each>
                                                                             </select>
-                                                                            <input type="hidden" name="stateId"/>
+                                                                            <input type="hidden" name="stateId"  value="${user.stateId}"/>
 
                                                                         </div>
 
@@ -320,6 +322,10 @@
 
                                                                             <input type="hidden" name="cityId" value="${user.cityId}"/>
 
+                                                                            <sub id="prevPin">Previously selected
+                                                                            pincode: <b>${user.pincode}</b><br></sub>
+                                                                            <sub id="prevArea">Previously selected
+                                                                            area: <b>${city.areaName}</b></sub>
                                                                         </div>
 
 
@@ -799,8 +805,14 @@
 
 <script>
     $(function () {
-        var dob = new Date('${user.dob}');
-        $('.dob').val(moment(dob).format('DD/MM/YYYY'));
+        if('${user.dob}'!=="") {
+            var dob = new Date('${user.dob}');
+            $('.dob').val(moment(dob).format('DD/MM/YYYY'));
+        }
+        else
+        {
+            $('.dob').val("");
+        }
 
         //Datetimepicker plugin
         $('.dob').bootstrapMaterialDatePicker({
@@ -810,9 +822,14 @@
             weekStart: 1
         });
 
-        var joiningDate = new Date('${user.joiningDate}');
-        $('.joiningDate').val(moment(joiningDate).format('DD/MM/YYYY'));
-
+        if('${user.joiningDate}'!=="") {
+            var joiningDate = new Date('${user.joiningDate}');
+            $('.joiningDate').val(moment(joiningDate).format('DD/MM/YYYY'));
+        }
+        else
+        {
+            $('.joiningDate').val("");
+        }
 
         $('.joiningDate').bootstrapMaterialDatePicker({
             format: 'DD/MM/YYYY',
@@ -821,8 +838,13 @@
             weekStart: 1
         });
 
-        var lastPaidDate = new Date('${user.lastPaidDate}');
-        $('.lastPaidDate').val(moment(lastPaidDate).format('DD/MM/YYYY'));
+        if('${user.lastPaidDate}'!=="")
+        {
+            var lastPaidDate = new Date('${user.lastPaidDate}');
+            $('.lastPaidDate').val(moment(lastPaidDate).format('DD/MM/YYYY'));
+        }else{
+            $('.lastPaidDate').val("");
+        }
 
         $('.lastPaidDate').bootstrapMaterialDatePicker({
             format: 'DD/MM/YYYY',
@@ -831,8 +853,14 @@
             weekStart: 1
         });
 
-        var anniversaryDate = new Date('${user.anniversaryDate}');
-        $('.anniversaryDate').val(moment(anniversaryDate).format('DD/MM/YYYY'));
+
+        if('${user.anniversaryDate}'!=="") {
+            var anniversaryDate = new Date('${user.anniversaryDate}');
+            $('.anniversaryDate').val(moment(anniversaryDate).format('DD/MM/YYYY'));
+        }
+        else {
+            $('.anniversaryDate').val("")
+        }
 
         $('.anniversaryDate').bootstrapMaterialDatePicker({
             format: 'DD/MM/YYYY',
@@ -849,8 +877,6 @@
             success: function (data) {
                 $('#entityTypeId').val(data.id)
             },
-
-
         });
 
 
