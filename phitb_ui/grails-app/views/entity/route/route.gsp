@@ -153,10 +153,28 @@
     var id = null;
     $(function () {
         routeTable();
-
         $("#daysOfWeek").select2()
-        $("#cityId").select2()
         $("#stateId").select2()
+        $('#cityId').select2({
+            ajax: {
+                url: '/city/get',
+                dataType: 'json',
+                //delay: 250,
+                data: function (params) {
+                    return {
+                        search: params.term,
+                        type: 'select2'
+                    };
+                },
+                processResults: function (data, params) {
+                    return {
+                        results: data
+                    };
+                },
+            },
+            placeholder: 'Search for cities',
+            minimumInputLength: 2
+        });
 
     });
 
@@ -188,6 +206,7 @@
                         var editbtn = '<button type="button" data-id="' + json.data[i].id +
                             '" data-routeName="' + json.data[i].routeName + '"' +
                             '" data-cityId="' + json.data[i].cityId + '"' +
+                            '" data-cityName="' + json.data[i].city.areaName+ '"' +
                             '" data-countryId="' + json.data[i].countryId + '"' +
                             '" data-stateId="' + json.data[i].stateId + '"' +
                             '" data-salesman="' + json.data[i]?.salesman?.id + '"' +
@@ -272,9 +291,12 @@
     $(document).on("click", ".addbtn", function () {
         $(".routeTitle").text("Add Route")
         $(".routeForm")[0].reset();
-        $("#daysOfWeek").select2("")
-        $("#cityId").select2("")
-        $("#stateId").select2("")
+        $("#daysOfWeek").select2("");
+        $("#stateId").select2("");
+        // $(".cityId").prop("disabled",false);
+        // $(".addcity").show();
+        // $("#updatecity").prop("disabled",true);
+        // $(".updatecity").show();
         id = null
     });
 
@@ -283,7 +305,8 @@
         $(".routeName").val($(this).attr('data-routeName'));
         $(".apprExpense").val($(this).attr('data-apprExpense'));
         $(".ccmEnabled").val($(this).attr('data-ccmEnabled')).change();
-        $(".cityId").val($(this).attr('data-cityId')).change();
+        $('.cityId').append("<option value='" + $(this).attr('data-cityId') + "'>" + $(this).attr('data-cityName') + "</option>");
+        $("#cityId").val($(this).attr('data-cityId')).change();
         $(".stateId").val($(this).attr('data-stateId')).change();
         $(".countryId").val($(this).attr('data-countryId')).change();
         $(".ccmId").val($(this).attr('data-ccmId')).change();
@@ -321,6 +344,64 @@
         });
     }
 
+    $('.pinCode').select2({
+        placeholder: 'Enter Pincode',
+        minimumInputLength: 3,
+        required: true,
+        ajax: {
+            url: '/getcitybypincode',
+            dataType: 'json',
+            delay: 250,
+            data: function (data) {
+                return {
+                    pincode: data.term // search term
+                };
+            },
+            processResults: function (response) {
+                var data = [];
+                response.forEach(function (response, index) {
+                    data.push({"pincode": response.pincode, "text": response.areaName, "id": response.id});
+                });
+                return {
+                    results: data
+                };
+            },
+            cache: true
+        }
+    });
+
+
+    $('.pinCode').on('select2:selecting', function (e) {
+        var data = e.params.args.data;
+        var id = data.id;
+        // alert(id)
+        $.ajax({
+            method: 'GET',
+            url: '/getcitybyid',
+            data: {'id': id},
+            success: function (response) {
+                console.log(response);
+                $('.stateId').val(response.state.id).change();
+                $("input[name='stateId']").val(response.state.id);
+                $("input[name='cityId']").val(response.id);
+                $('.cityId').empty();
+                $('.cityId').append("<option value='" + response.id + "'>" + response.areaName + "</option>");
+                // $('.cityId').val(response.id).change();
+                $('.pinCode').val(response.pincode);
+                $("input[name='pinCode']").val(response.pincode);
+                if (response.state.alphaCode === "FC") {
+                    $('.countryId').find('option:contains("OTHER")').attr('selected', 'selected');
+                    $("input[name='countryId']").val($('.countryId').val());
+                } else {
+                    $('.countryId').find('option:contains("INDIA")').attr('selected', 'selected');
+                    $("input[name='countryId']").val($('.countryId').val());
+                }
+            },
+            error: function (jqXHR, textStatus, errorThrown) {
+            }
+        });
+
+    });
 
 </script>
 

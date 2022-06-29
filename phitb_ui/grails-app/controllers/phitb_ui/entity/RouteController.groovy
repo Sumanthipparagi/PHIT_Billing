@@ -60,11 +60,19 @@ class RouteController {
         {
             JSONObject jsonObject = new JSONObject(params)
             jsonObject.put("entityId", session.getAttribute("entityId"))
-
             def apiResponse = new EntityService().showRoute(jsonObject)
             if (apiResponse.status == 200)
             {
                 JSONObject responseObject = new JSONObject(apiResponse.readEntity(String.class))
+                if(responseObject)
+                {
+                    JSONArray jsonArray = responseObject.data
+                    for (JSONObject json : jsonArray) {
+                        def city = new SystemService().getCityById(json?.cityId?.toString())
+                        json?.put("city", city)
+                    }
+                    responseObject.put("data", jsonArray)
+                }
                 respond responseObject, formats: ['json'], status: 200
             }
             else

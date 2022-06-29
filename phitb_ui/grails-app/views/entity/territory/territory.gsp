@@ -19,6 +19,7 @@
     <asset:stylesheet  src="/themeassets/plugins/bootstrap-select/css/bootstrap-select.css" rel="stylesheet" />
     <asset:stylesheet  src="/themeassets/js/pages/forms/basic-form-elements.js" rel="stylesheet" />
     <asset:stylesheet  src="/themeassets/plugins/bootstrap-material-datetimepicker/css/bootstrap-material-datetimepicker.css" rel="stylesheet" />
+    <asset:stylesheet src="/themeassets/plugins/select2/dist/css/select2.min.css"/>
 
     <style>
 
@@ -149,7 +150,7 @@
 <asset:javascript src="/themeassets/plugins/jquery-datatable/buttons/buttons.colVis.min.js"/>
 <asset:javascript src="/themeassets/plugins/jquery-datatable/buttons/buttons.html5.min.js"/>
 <asset:javascript src="/themeassets/plugins/jquery-datatable/buttons/buttons.print.min.js"/>
-<asset:javascript src="/themeassets/bundles/mainscripts-2.bundle.js"/>
+<asset:javascript src="/themeassets/bundles/mainscripts.bundle.js"/>
 <asset:javascript src="/themeassets/js/pages/tables/jquery-datatable.js"/>
 <asset:javascript src="/themeassets/js/pages/ui/dialogs.js"/>
 <asset:javascript src="/themeassets/plugins/sweetalert/sweetalert.min.js"/>
@@ -157,6 +158,7 @@
 <asset:javascript src="/themeassets/plugins/momentjs/moment.js"/>
 <asset:javascript src="/themeassets/plugins/bootstrap-material-datetimepicker/js/bootstrap-material-datetimepicker.js"/>
 <asset:javascript src="/themeassets/js/pages/forms/basic-form-elements.js"/>
+<asset:javascript src="/themeassets/plugins/select2/dist/js/select2.full.min.js"/>
 
 <script>
 
@@ -164,6 +166,29 @@
     var id = null;
     $(function () {
         territoryTable();
+        $('#cityId').select2();
+        $('#stateId').select2();
+        $('#cityId').select2();
+        // $('#cityId').select2({
+        //     ajax: {
+        //         url: '/city/get',
+        //         dataType: 'json',
+        //         //delay: 250,
+        //         data: function (params) {
+        //             return {
+        //                 search: params.term,
+        //                 type: 'select2'
+        //             };
+        //         },
+        //         processResults: function (data, params) {
+        //             return {
+        //                 results: data
+        //             };
+        //         },
+        //     },
+        //     placeholder: 'Search for cities',
+        //     minimumInputLength: 2
+        // });
 
     });
 
@@ -321,6 +346,64 @@
         });
     }
 
+    // $('.pinCode').select2({
+    //     placeholder: 'Enter Pincode',
+    //     minimumInputLength: 3,
+    //     required: true,
+    //     ajax: {
+    //         url: '/getcitybypincode',
+    //         dataType: 'json',
+    //         delay: 250,
+    //         data: function (data) {
+    //             return {
+    //                 pincode: data.term // search term
+    //             };
+    //         },
+    //         processResults: function (response) {
+    //             var data = [];
+    //             response.forEach(function (response, index) {
+    //                 data.push({"pincode": response.pincode, "text": response.areaName, "id": response.id});
+    //             });
+    //             return {
+    //                 results: data
+    //             };
+    //         },
+    //         cache: true
+    //     }
+    // });
+    //
+    //
+    // $('.pinCode').on('select2:selecting', function (e) {
+    //     var data = e.params.args.data;
+    //     var id = data.id;
+    //     // alert(id)
+    //     $.ajax({
+    //         method: 'GET',
+    //         url: '/getcitybyid',
+    //         data: {'id': id},
+    //         success: function (response) {
+    //             console.log(response);
+    //             $('.stateId').val(response.state.id).change();
+    //             $("input[name='stateId']").val(response.state.id);
+    //             $("input[name='cityId']").val(response.id);
+    //             $('.cityId').empty();
+    //             $('.cityId').append("<option value='" + response.id + "'>" + response.areaName + "</option>");
+    //             // $('.cityId').val(response.id).change();
+    //             $('.pinCode').val(response.pincode);
+    //             $("input[name='pinCode']").val(response.pincode);
+    //             if (response.state.alphaCode === "FC") {
+    //                 $('.countryId').find('option:contains("OTHER")').attr('selected', 'selected');
+    //                 $("input[name='countryId']").val($('.countryId').val());
+    //             } else {
+    //                 $('.countryId').find('option:contains("INDIA")').attr('selected', 'selected');
+    //                 $("input[name='countryId']").val($('.countryId').val());
+    //             }
+    //         },
+    //         error: function (jqXHR, textStatus, errorThrown) {
+    //         }
+    //     });
+    //
+    // });
 
 </script>
 <g:include view="controls/footer-content.gsp"/>

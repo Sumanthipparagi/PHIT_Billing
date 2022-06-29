@@ -192,6 +192,8 @@ public class Links
     public static String USER_REGISTER_DATATABLE = "api/v1.0/entity/userregister/datatable";
     public static String USER_REGISTER_UPDATE = "api/v1.0/entity/userregister/{id}";
     public static String USER_REGISTER_DELETE = "api/v1.0/entity/userregister/{id}";
+    public static String USER_EXISTS = "api/v1.0/entity/userregister/usernameexists";
+
 
 
     //Customer Group Register

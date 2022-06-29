@@ -208,6 +208,7 @@ class UrlMappings {
         "/user-register/datatable"(controller: "userRegister", action: "dataTable")
         "/user-register/update/$id"(controller:"userRegister",action:"update")
         "/user-register/delete/$id"(controller: "userRegister",action:"delete")
+        "/user-register/userexists"(controller: "userRegister",action:"userExists")
 
 
         //      Customer Group register

@@ -324,6 +324,7 @@ class UrlMappings
                 action = [GET: 'index', POST:
                         'save']
             }
+            "/userregister/usernameexists"(controller: 'userRegister', action: 'userNameExists')
             "/userregister/datatable(.$format)?"(controller: 'userRegister') {action = [GET: 'dataTable']}
             "/userregister/$id(.$format)?"(controller: 'userRegister') {
                 action = [GET: 'show', PUT: 'update', DELETE:

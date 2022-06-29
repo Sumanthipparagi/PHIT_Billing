@@ -97,6 +97,7 @@ class UserRegisterService {
         if(!UserRegister.findByUserName(username)) {
             UserRegister userRegister = new UserRegister()
             userRegister.userName = username
+            userRegister.name = jsonObject.get("name").toString()
             userRegister.mobileNumber = jsonObject.get("mobileNumber").toString()
             userRegister.contactNumber = jsonObject.get("contactNumber").toString()
             userRegister.aadharId = jsonObject.get("aadharId").toString()
@@ -107,7 +108,7 @@ class UserRegisterService {
             userRegister.referenceRelation = jsonObject.get("referenceRelation").toString()
             userRegister.pincode = jsonObject.get("pinCode").toString()
             userRegister.bankAccount = jsonObject.get("bankAccount").toString()
-            userRegister.permissions = jsonObject.get("permissions").toString()
+//            userRegister.permissions = jsonObject.get("permissions").toString()
             userRegister.assignedHolidays = jsonObject.get("assignedHolidays").toString()
             userRegister.specialization = jsonObject.get("specialization").toString()
             userRegister.licenceNumber = jsonObject.get("licenceNumber").toString()
@@ -122,16 +123,46 @@ class UserRegisterService {
             userRegister.referredBy = Long.parseLong(jsonObject.get("referredBy").toString())
             userRegister.status = Long.parseLong(jsonObject.get("stateId").toString())
             userRegister.syncStatus = Long.parseLong(jsonObject.get("syncStatus").toString())
-            userRegister.paymentModeId = Long.parseLong(jsonObject.get("paymentModeId").toString())
+//            userRegister.paymentModeId = Long.parseLong(jsonObject.get("paymentModeId").toString())
             userRegister.approvedSalary = Double.parseDouble(jsonObject.get("approvedSalary").toString())
             userRegister.designationSalary = Double.parseDouble(jsonObject.get("designationSalary").toString())
-            userRegister.joiningDate = sdf.parse(jsonObject.get("joiningDate").toString())
-            userRegister.dob = sdf.parse(jsonObject.get("dob").toString())
-            userRegister.anniversaryDate = sdf.parse(jsonObject.get("anniversaryDate").toString())
-            userRegister.lastLoginDate = sdf.parse(jsonObject.get("lastLoginDate").toString())
-            userRegister.lastPaidDate = sdf.parse(jsonObject.get("lastPaidDate").toString())
+
+            if(jsonObject.get("joiningDate").toString()!="")
+            {
+                userRegister.joiningDate = sdf.parse(jsonObject.get("joiningDate").toString())
+            }else {
+                userRegister.joiningDate = null
+            }
+            if(jsonObject.get("dob").toString()!="")
+            {
+                userRegister.dob = sdf.parse(jsonObject.get("anniversaryDate").toString())
+            }else {
+                userRegister.dob = null
+            }
+
+            if(jsonObject.get("anniversaryDate").toString()!="")
+            {
+                userRegister.anniversaryDate = sdf.parse(jsonObject.get("anniversaryDate").toString())
+            }else {
+                userRegister.anniversaryDate = null
+            }
+
+            if(jsonObject.get("lastLoginDate").toString()!="")
+            {
+                userRegister.lastLoginDate = sdf.parse(jsonObject.get("lastLoginDate").toString())
+            }else {
+                userRegister.lastLoginDate = null
+            }
+
+            if(jsonObject.get("lastPaidDate").toString()!="")
+            {
+                userRegister.lastPaidDate = sdf.parse(jsonObject.get("lastPaidDate").toString())
+            }else {
+                userRegister.lastPaidDate = null
+            }
+
             userRegister.department = DepartmentMaster.findById(Long.parseLong(jsonObject.get("department").toString()))
-            userRegister.account = AccountRegister.findById(Long.parseLong(jsonObject.get("account").toString()))
+//            userRegister.account = AccountRegister.findById(Long.parseLong(jsonObject.get("account").toString()))
             userRegister.role = Role.findById(Long.parseLong(jsonObject.get("role").toString()))
             EntityRegister entityRegister = EntityRegister.findById(Long.parseLong(jsonObject.get("entity").toString()))
             userRegister.entityType = entityRegister.entityType
@@ -164,23 +195,24 @@ class UserRegisterService {
             userRegister.isUpdatable = true
             //userRegister.userName = jsonObject.get("userName").toString()
             userRegister.mobileNumber = jsonObject.get("mobileNumber").toString()
+            userRegister.name = jsonObject.get("name").toString()
             userRegister.contactNumber = jsonObject.get("contactNumber").toString()
             userRegister.aadharId = jsonObject.get("aadharId").toString()
             userRegister.email = jsonObject.get("email").toString()
             if(userRegister.getPhoto()!='')
             {
-                userRegister.photo = jsonObject.get("photo").toString()
+                userRegister.photo = "0"
             }
             else
             {
-                userRegister.photo = userRegister.getPhoto()
+                userRegister.photo = "0"
             }
             userRegister.nationality = jsonObject.get("nationality").toString()
             userRegister.address = jsonObject.get("address").toString()
             userRegister.referenceRelation = jsonObject.get("referenceRelation").toString()
             userRegister.pincode = jsonObject.get("pinCode").toString()
             userRegister.bankAccount = jsonObject.get("bankAccount").toString()
-            userRegister.permissions = jsonObject.get("permissions").toString()
+//            userRegister.permissions = jsonObject.get("permissions").toString()
             userRegister.assignedHolidays = jsonObject.get("assignedHolidays").toString()
             userRegister.specialization = jsonObject.get("specialization").toString()
             userRegister.licenceNumber = jsonObject.get("licenceNumber").toString()
@@ -195,16 +227,48 @@ class UserRegisterService {
             userRegister.referredBy = Long.parseLong(jsonObject.get("referredBy").toString())
             userRegister.status = Long.parseLong(jsonObject.get("stateId").toString())
             userRegister.syncStatus = Long.parseLong(jsonObject.get("syncStatus").toString())
-            userRegister.paymentModeId = Long.parseLong(jsonObject.get("paymentModeId").toString())
             userRegister.approvedSalary = Double.parseDouble(jsonObject.get("approvedSalary").toString())
             userRegister.designationSalary = Double.parseDouble(jsonObject.get("designationSalary").toString())
-            userRegister.joiningDate = sdf.parse(jsonObject.get("joiningDate").toString())
-            userRegister.dob = sdf.parse(jsonObject.get("dob").toString())
-            userRegister.anniversaryDate = sdf.parse(jsonObject.get("anniversaryDate").toString())
-            userRegister.lastLoginDate = sdf.parse(jsonObject.get("lastLoginDate").toString())
-            userRegister.lastPaidDate = sdf.parse(jsonObject.get("lastPaidDate").toString())
+//            userRegister.joiningDate = sdf.parse(jsonObject.get("joiningDate").toString())
+//            userRegister.dob = sdf.parse(jsonObject.get("dob").toString())
+//            userRegister.anniversaryDate = sdf.parse(jsonObject.get("anniversaryDate").toString())
+//            userRegister.lastLoginDate = sdf.parse(jsonObject.get("lastLoginDate").toString())
+//            userRegister.lastPaidDate = sdf.parse(jsonObject.get("lastPaidDate").toString())
+
+            if(jsonObject.get("joiningDate").toString()!="")
+            {
+                userRegister.joiningDate = sdf.parse(jsonObject.get("joiningDate").toString())
+            }else {
+                userRegister.joiningDate = null
+            }
+            if(jsonObject.get("dob").toString()!="")
+            {
+                userRegister.dob = sdf.parse(jsonObject.get("anniversaryDate").toString())
+            }else {
+                userRegister.dob = null
+            }
+
+            if(jsonObject.get("anniversaryDate").toString()!="")
+            {
+                userRegister.anniversaryDate = sdf.parse(jsonObject.get("anniversaryDate").toString())
+            }else {
+                userRegister.anniversaryDate = null
+            }
+
+            if(jsonObject.get("lastLoginDate").toString()!="")
+            {
+                userRegister.lastLoginDate = sdf.parse(jsonObject.get("lastLoginDate").toString())
+            }else {
+                userRegister.lastLoginDate = null
+            }
+
+            if(jsonObject.get("lastPaidDate").toString()!="")
+            {
+                userRegister.lastPaidDate = sdf.parse(jsonObject.get("lastPaidDate").toString())
+            }else {
+                userRegister.lastPaidDate = null
+            }
             userRegister.department = DepartmentMaster.findById(Long.parseLong(jsonObject.get("department").toString()))
-            userRegister.account = AccountRegister.findById(Long.parseLong(jsonObject.get("account").toString()))
             userRegister.role = Role.findById(Long.parseLong(jsonObject.get("role").toString()))
             userRegister.entity = EntityRegister.findById(Long.parseLong(jsonObject.get("entity").toString()))
             userRegister.entityType = EntityTypeMaster.findById(Long.parseLong(entityRegister.entityType.id.toString()))

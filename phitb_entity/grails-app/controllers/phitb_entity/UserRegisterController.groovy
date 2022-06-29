@@ -274,4 +274,34 @@ class UserRegisterController {
             System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
         }
     }
+
+    def userNameExists()
+    {
+        try
+        {
+            if (params.username != null)
+            {
+                def user = UserRegister.findByUserName(params.username)
+                if (user != null)
+                {
+                    response.status = 200
+                    respond user, formats: ['json']
+                }
+                else
+                {
+                    response.status = 404
+                }
+            }
+            else
+            {
+                response.status = 400
+            }
+        }
+        catch (Exception ex)
+        {
+            System.err.println("UserController: userNameExists: Exception: " + ex)
+            log.error("UserController: userNameExists: Exception: " + ex)
+            response.status = 400
+        }
+    }
 }

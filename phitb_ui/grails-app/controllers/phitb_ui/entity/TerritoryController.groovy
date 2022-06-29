@@ -8,6 +8,7 @@ import phitb_ui.Links
 import phitb_ui.facility.CcmController
 import phitb_ui.system.CityController
 import phitb_ui.system.CountryController
+import phitb_ui.system.DistrictController
 import phitb_ui.system.StateController
 import phitb_ui.system.ZoneController
 
@@ -23,6 +24,7 @@ class TerritoryController {
             ArrayList<String> statelist = new StateController().show() as ArrayList<String>
             ArrayList<String> countrylist = new CountryController().show() as ArrayList<String>
             ArrayList<String> citylist = new CityController().show() as ArrayList<String>
+            ArrayList<String> districts = new DistrictController().show() as ArrayList<String>
             ArrayList<String> zoneList = new ZoneController().show() as ArrayList<String>
             ArrayList<String> managerList = []
             userregister.each {
@@ -41,7 +43,7 @@ class TerritoryController {
             render(view: '/entity/territory/territory',model: [entity:entity,
                                                    statelist:statelist,countrylist:countrylist,
                                                    citylist:citylist,salesmanList:salesmanList,
-                                                   managerList:managerList,zoneList:zoneList,ccm:ccm])
+                                                   managerList:managerList,zoneList:zoneList,ccm:ccm,districts:districts])
         }
         catch (Exception ex)
         {

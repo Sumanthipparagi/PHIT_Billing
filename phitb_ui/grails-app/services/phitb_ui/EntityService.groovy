@@ -137,6 +137,36 @@ class EntityService {
         }
 
     }
+
+
+    /**
+     *
+     * @param jsonObject
+     * @return
+     */
+    def userNameExists(String username)
+    {
+        Client client = ClientBuilder.newClient()
+        WebTarget target = client.target(new Links().API_GATEWAY)
+        try
+        {
+            Response apiResponse = target
+                    .path(new Links().USER_EXISTS)
+                    .queryParam("username", URLEncoder.encode(username, "UTF-8"))
+                    .request(MediaType.APPLICATION_JSON_TYPE)
+                    .get()
+            return apiResponse
+        }
+        catch (Exception ex)
+        {
+            System.err.println('Service :EntityService , action :  showUser  , Ex:' + ex)
+            log.error('Service :EntityService , action :  showUser  , Ex:' + ex)
+        }
+
+    }
+
+
+
     /**
      *
      * @param jsonObject

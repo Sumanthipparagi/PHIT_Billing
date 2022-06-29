@@ -56,7 +56,17 @@
                                         <option value="0">NO</option>
                                 </select>
                             </div>
+
                             <div class="col-lg-6 form-group  form-float">
+                                <label for="pinCode">
+                                    PIN Code
+                                </label>
+                                <div>
+                                    <select class="pinCode form-control" style="width: 100%;" id="pinCode"></select>
+                                </div>
+                            </div>
+
+                            <div class="col-lg-6 form-group  form-float addcity">
                                 <label for="cityId">
                                     City
                                 </label>
@@ -66,6 +76,18 @@
                                     </g:each>
                                 </select>
                             </div>
+
+
+%{--                            <div class="col-lg-6 form-group  form-float updatecity">--}%
+%{--                                <label for="updatecity">--}%
+%{--                                    City--}%
+%{--                                </label>--}%
+%{--                                <select class="form-control show-tick updatecity" style="width: 100%;" name="cityId" id="updatecity">--}%
+%{--                                    <g:each var="city" in="${citylist}">--}%
+%{--                                        <option value="${city.id}">${city.districtName} / ${city.areaName}</option>--}%
+%{--                                    </g:each>--}%
+%{--                                </select>--}%
+%{--                            </div>--}%
 
 
                             <div class="col-lg-6 form-group  form-float">
