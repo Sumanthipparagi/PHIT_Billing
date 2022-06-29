@@ -168,27 +168,28 @@
         territoryTable();
         $('#cityId').select2();
         $('#stateId').select2();
-        $('#cityId').select2();
-        // $('#cityId').select2({
-        //     ajax: {
-        //         url: '/city/get',
-        //         dataType: 'json',
-        //         //delay: 250,
-        //         data: function (params) {
-        //             return {
-        //                 search: params.term,
-        //                 type: 'select2'
-        //             };
-        //         },
-        //         processResults: function (data, params) {
-        //             return {
-        //                 results: data
-        //             };
-        //         },
-        //     },
-        //     placeholder: 'Search for cities',
-        //     minimumInputLength: 2
-        // });
+        // $('#cityId').select2();
+        $('#territoryHq').select2();
+        $('#cityId').select2({
+            ajax: {
+                url: '/city/get',
+                dataType: 'json',
+                //delay: 250,
+                data: function (params) {
+                    return {
+                        search: params.term,
+                        type: 'select2'
+                    };
+                },
+                processResults: function (data, params) {
+                    return {
+                        results: data
+                    };
+                },
+            },
+            placeholder: 'Search for cities',
+            minimumInputLength: 2
+        });
 
     });
 
@@ -288,7 +289,7 @@
             contentType: false,
             processData: false,
             success: function () {
-                swal("Success!", "Rule Submitted Successfully", "success");
+                swal("Success!", "Territory Submitted Successfully", "success");
                 territoryTable();
                 $('#addterritoryModal').modal('hide');
             },
@@ -314,7 +315,7 @@
         id = $(this).data('id');
         $(".territoryName").val($(this).attr('data-territoryName'))
         $(".shortName").val($(this).attr('data-shortName'))
-        $(".territoryHq").val($(this).attr('data-territoryHq'));
+        $(".territoryHq").val($(this).attr('data-territoryHq')).change();
         var cityIds = $(this).attr('data-cityIds');
         $(".cityId").val(cityIds.split(",")).change();
         $(".stateId").val($(this).attr('data-stateId')).change();

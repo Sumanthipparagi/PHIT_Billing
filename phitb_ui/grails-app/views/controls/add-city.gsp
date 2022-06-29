@@ -32,7 +32,7 @@
                                     Circle Name
                                 </label>
                                 <input type="text" id="circleName" class="form-control circleName" name="circleName"
-                                       plceholder="Circle Name"
+                                       placeholder="Circle Name"
                                        required/>
                             </div>
 
