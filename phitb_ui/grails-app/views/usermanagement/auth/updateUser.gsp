@@ -106,7 +106,7 @@
                                     <div class="body m-b-10">
                                         <form action="/user-register/update/${user.id}" id="updateUser"
                                               method="POST" role="form"
-                                              class="entityRegisterForm" enctype="multipart/form-data">
+                                              class="userRegisterForm" enctype="multipart/form-data">
                                             <div class="row clearfix">
                                                 <div class="col-lg-12 col-md-12 col-sm-12">
                                                     <div class="card">
@@ -805,6 +805,15 @@
 
 <script>
     $(function () {
+
+        $(document).ready(function(){
+            %{--$('.cityId').append("<option value='${city.id}'>${city.areaName}</option>");--}%
+            $('.cityId').append("<option value='"+115676+"'>"+jjdnjnsd+"</option>");
+
+            alert(${city.id});
+            %{--alert("<option value='${user.cityId}'>${city.areaName}</option>")--}%
+            %{--$('#cityId').select2('${user.cityId}');--}%
+        });
         if('${user.dob}'!=="") {
             var dob = new Date('${user.dob}');
             $('.dob').val(moment(dob).format('DD/MM/YYYY'));
@@ -911,6 +920,7 @@
 
 
 
+
         $('.pinCode').select2({
             placeholder: 'Enter Pincode',
             minimumInputLength: 3,
@@ -1014,14 +1024,14 @@
     });
 
     $('#updateUser').submit(function(event) {
-        var pincode =  $('.pinCode option').length;
-        if(pincode === 0 || pincode < 0)
-        {
-            swal("Please enter  pincode and  select area");
-            event.preventDefault();
-        }
-        else
-        {
+        // var pincode =  $('.pinCode option').length;
+        // if(pincode === 0 || pincode < 0)
+        // {
+        //     swal("Please enter  pincode and  select area");
+        //     event.preventDefault();
+        // }
+        // else
+        // {
             var formData = $(this);
             $.ajax({
                 type        : 'POST', // define the type of HTTP verb we want to use (POST for our form)
@@ -1030,7 +1040,7 @@
                 success:function(data){
                     // $("#validation-status").text(data);
                     // swal('success','User updated Successfully',data);
-                    swal("Success!", "You clicked the button! ", "success");
+                    swal("Success!", "Updated Successfully! ", "success");
 
                 },
                 error:function(data){
@@ -1042,13 +1052,14 @@
                 }
             });
             event.preventDefault();
-        }
+        // }
 
     });
 
 
     function setTwoNumberDecimal(event) {
-        this.value = parseFloat(this.value.toFixed(2));
+        this.value = parseFloat(Number(this.value).toFixed(2));
+
     }
 </script>
 
