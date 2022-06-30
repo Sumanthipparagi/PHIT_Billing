@@ -22,4 +22,9 @@ class DashboardController {
     {
         render(view: 'timeline')
     }
+
+    def microServiceStatus()
+    {
+        render(view: 'microservice-status')
+    }
 }

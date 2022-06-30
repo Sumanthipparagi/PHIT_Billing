@@ -18,6 +18,7 @@ class UrlMappings {
         "/forms"(controller: 'dashboard', action: 'forms')
         "/table"(controller: 'dashboard', action: 'table')
         "/timeline"(controller: 'dashboard', action: 'timeline')
+        "/microservice-status"(controller: 'dashboard', action: 'microServiceStatus')
         "/api/media/$path**"(controller: "fileLocation", action: "index")
         "/user/update-details/$id"(controller: 'auth' , action: 'updateUser')
         "/user/update-password"(controller: 'userRegister' , action: 'updatePassword')
