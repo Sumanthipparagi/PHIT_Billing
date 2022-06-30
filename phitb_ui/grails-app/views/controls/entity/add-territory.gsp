@@ -73,7 +73,7 @@
                                 </label>
                                 <select class="form-control show-tick stateId" style="width: 100%;" name="stateId" id="stateId">
                                     <g:each var="state" in="${statelist}">
-                                        <option value="${state.id}">${state.name}</option>
+                                        <option value="${state.id}" data-alphaCode="${state.alphaCode}">${state.name}</option>
                                     </g:each>
                                 </select>
                             </div>

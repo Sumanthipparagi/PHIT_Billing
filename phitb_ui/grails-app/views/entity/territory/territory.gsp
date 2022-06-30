@@ -315,6 +315,15 @@
         $(".entityType").val(type);
     });
 
+    $('.stateId').change(function(){
+        var alphaCode = $('option:selected', this).attr('data-alphaCode');
+        if (alphaCode!=="FC") {
+            $('.countryId').find('option:contains("INDIA")').prop('selected', true);
+        } else {
+            $('.countryId').find('option:contains("OTHER")').prop('selected', true);
+        }
+    });
+
     $(document).on("click", ".editbtn", function () {
         id = $(this).data('id');
         $(".territoryName").val($(this).attr('data-territoryName'));
@@ -327,8 +336,6 @@
         var cityArray = $(this).attr('data-cityarray');
         var cities = JSON.parse(cityArray.replaceAll("'", '"'));
         console.log(cities);
-        // $(".cityId").select2('data', {id:103, label:'ENABLED_FROM_JS'});
-
         $('#cityId').select2({
             ajax: {
                 url: '/city/get',
