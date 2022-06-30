@@ -69,8 +69,9 @@ class TerritoryController {
                 if(responseObject)
                 {
                     JSONArray jsonArray = responseObject.data
-                    JSONArray cityArray = new JSONArray()
                     for (JSONObject json : jsonArray) {
+                        JSONArray cityArray = new JSONArray()
+
                         Object cityids = json.cityIds.split(",")
 //                        println(cityids)
                         for (String id : cityids)
@@ -81,17 +82,17 @@ class TerritoryController {
                             cityjson.put("text", city.get("areaName") + " ("+city.get("districtName")+ ")")
                             cityjson.put("pincode", city.get("pincode"))
                             cityArray.add(cityjson)
-                        }
-                        for(JSONObject jsonObject1: jsonArray)
-                        {
-                            if(json.id!= jsonObject1.id)
+                            for(JSONObject jsonObject1: jsonArray)
                             {
-                                jsonObject1.put("cityarray",cityArray)
+                                if(json.id == jsonObject1.id)
+                                {
+                                    jsonObject1.put("cityarray",cityArray)
+                                }
                             }
                         }
+
                     }
                     responseObject.put("data", jsonArray)
-                    responseObject.put("city", cityArray)
                 }
                 respond responseObject, formats: ['json'], status: 200
             }
