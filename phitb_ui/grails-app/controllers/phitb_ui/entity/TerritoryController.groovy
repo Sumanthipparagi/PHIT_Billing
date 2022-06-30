@@ -71,7 +71,6 @@ class TerritoryController {
                     JSONArray jsonArray = responseObject.data
                     for (JSONObject json : jsonArray) {
                         JSONArray cityArray = new JSONArray()
-
                         Object cityids = json.cityIds.split(",")
 //                        println(cityids)
                         for (String id : cityids)
@@ -90,7 +89,6 @@ class TerritoryController {
                                 }
                             }
                         }
-
                     }
                     responseObject.put("data", jsonArray)
                 }

@@ -49,9 +49,9 @@
                                 </label>
                                 <select class="form-control show-tick cityId" style="width: 100%;" name="cityIds" id="cityId"
                                         multiple>
-                                    <g:each var="c" in="${citylist}">
-                                        <option value="${c.id}">${c.areaName} (${c.areaName})</option>
-                                    </g:each>
+%{--                                    <g:each var="c" in="${citylist}">--}%
+%{--                                        <option value="${c.id}">${c.areaName} (${c.areaName})</option>--}%
+%{--                                    </g:each>--}%
                                 </select>
                             </div>
 
