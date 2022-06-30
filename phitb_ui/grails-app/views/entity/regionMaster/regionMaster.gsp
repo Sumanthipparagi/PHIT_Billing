@@ -273,6 +273,7 @@
     $(document).on("click", ".addbtn", function () {
         $(".regionTitle").text("Add Region")
         $(".regionForm")[0].reset();
+        $(".regionStateIds").select2("")
         id = null
     });
 
