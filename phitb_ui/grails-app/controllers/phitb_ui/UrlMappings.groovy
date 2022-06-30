@@ -22,6 +22,10 @@ class UrlMappings {
         "/api/media/$path**"(controller: "fileLocation", action: "index")
         "/user/update-details/$id"(controller: 'auth' , action: 'updateUser')
         "/user/update-password"(controller: 'userRegister' , action: 'updatePassword')
+
+  /*<-------------------------------------------Microservice Status ------------------------------------------------->*/
+        "/system-service-status"(controller: 'dashboard', action: 'systemServiceStatus')
+
 /*<-------------------------------------------System ------------------------------------------------->*/
         "/accountmodes"(controller: "accountMode") {
             action = [GET: "index", POST: "save"]
