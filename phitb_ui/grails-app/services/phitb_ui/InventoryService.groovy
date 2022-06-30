@@ -24,7 +24,8 @@ class InventoryService {
     def getStockBookById(long id)
     {
         Client client = ClientBuilder.newClient().register(JacksonFeature.class)
-        WebTarget target = client.target(new Links().API_GATEWAY);
+       // WebTarget target = client.target(new Links().API_GATEWAY);
+        WebTarget target = client.target("http://localhost:8086");
 
         try
         {
@@ -339,10 +340,9 @@ class InventoryService {
     }
 
     def getTempStocksOfProductAndBatch(String id, String batch) {
-        def webUtils = WebUtils.retrieveGrailsWebRequest()
-        def session = webUtils.getSession()
         Client client = ClientBuilder.newClient()
-        WebTarget target = client.target(new Links().API_GATEWAY)
+        //WebTarget target = client.target(new Links().API_GATEWAY)
+        WebTarget target = client.target("http://localhost:8086")
         String url = ""
         if(batch)
             url = new Links().GET_TEMP_STOCK_PRODUCT + "/product/" + id + "/batch/"+ batch
@@ -351,7 +351,7 @@ class InventoryService {
         try {
             Response apiResponse = target
                     .path(url)
-                    .queryParam("userId",session.getAttribute("userId"))
+                    //.queryParam("userId",session.getAttribute("userId"))
                     .request(MediaType.APPLICATION_JSON_TYPE)
                     .get()
 
@@ -368,7 +368,8 @@ class InventoryService {
 
     def getStocksOfProductAndBatch(String id, String batch, String entityId) {
         Client client = ClientBuilder.newClient();
-        WebTarget target = client.target(new Links().API_GATEWAY)
+        //WebTarget target = client.target(new Links().API_GATEWAY)
+        WebTarget target = client.target("http://localhost:8086")
         String url = new Links().STOCK_BOOK + "/product/" + id + "/batch/"+ batch
         try {
             Response apiResponse = target
@@ -440,8 +441,8 @@ class InventoryService {
     def tempStockBookSave(JSONObject jsonObject)
     {
         Client client = ClientBuilder.newClient()
-        WebTarget target = client.target(new Links().API_GATEWAY)
-      //  WebTarget target = client.target("http://localhost:8086")
+        //WebTarget target = client.target(new Links().API_GATEWAY)
+          WebTarget target = client.target("http://localhost:8086")
         try
         {
             println(jsonObject)
@@ -486,12 +487,14 @@ class InventoryService {
     }
 
 
-    def deleteTempStock(String id) {
+    def deleteTempStock(String id, boolean updateTempStock = true) {
         Client client = ClientBuilder.newClient();
-        WebTarget target = client.target(new Links().API_GATEWAY);
+       // WebTarget target = client.target(new Links().API_GATEWAY);
+        WebTarget target = client.target("http://localhost:8086");
         try {
             Response apiResponse = target
                     .path(new Links().GET_TEMP_STOCK_PRODUCT+"/"+id)
+                    .queryParam("updateTempStock", updateTempStock)
                     .request(MediaType.APPLICATION_JSON_TYPE)
                     .delete()
             return apiResponse
@@ -567,7 +570,8 @@ class InventoryService {
 
     def getTempStocksByUser(String id) {
         Client client = ClientBuilder.newClient();
-        WebTarget target = client.target(new Links().API_GATEWAY);
+        //WebTarget target = client.target(new Links().API_GATEWAY);
+        WebTarget target = client.target("http://localhost:8086");
         try {
 
             Response apiResponse = target
@@ -601,5 +605,33 @@ class InventoryService {
             log.error('Service :InventoryService , action :  getTempStocks  , Ex:' + ex)
         }
 
+    }
+
+    def calculateSaleQty(long saleQty, long saleFreeQty, long draftSqty, long draftFqty)
+    {
+        if (draftSqty == saleQty && draftFqty != saleFreeQty) {
+            saleQty = 0
+        } else {
+            if (saleQty > draftSqty) {
+                saleQty = saleQty - draftSqty
+            } else if (saleQty < draftSqty) {
+                saleQty = -(draftSqty - saleQty)
+            }
+        }
+        return saleQty
+    }
+
+    def calculateSaleFreeQty(long saleQty, long saleFreeQty, long draftSqty, long draftFqty)
+    {
+        if (draftSqty != saleQty && draftFqty == saleFreeQty) {
+            saleFreeQty = 0
+        } else {
+            if (saleFreeQty > draftFqty) {
+                saleFreeQty = saleFreeQty - draftFqty
+            } else if (saleFreeQty < draftFqty) {
+                saleFreeQty = -(draftFqty - saleFreeQty)
+            }
+        }
+        return saleFreeQty
     }
 }

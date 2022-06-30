@@ -25,7 +25,15 @@ class StockBookService {
     }
 
     StockBook get(String id) {
-        return StockBook.findById(Long.parseLong(id))
+        StockBook stockBook = StockBook.findById(Long.parseLong(id))
+        //check if exists in tempstock before responding
+        ArrayList<TempStockBook> tempStockBooks = TempStockBook.findAllByProductIdAndBatchNumber(stockBook.productId, stockBook.batchNumber)
+        if (tempStockBooks.size() > 0) {
+            stockBook.remainingQty = tempStockBooks.remainingQty.sort().get(0)
+            stockBook.remainingFreeQty = tempStockBooks.remainingFreeQty.sort().get(0)
+            stockBook.remainingReplQty = tempStockBooks.remainingReplQty.sort().get(0)
+        }
+        return stockBook
     }
 
     def getAllByEntity(String limit, String offset, long entityId) {
@@ -41,24 +49,20 @@ class StockBookService {
         Date currentDate = new Date()
         Integer o = offset ? Integer.parseInt(offset.toString()) : 0
         Integer l = limit ? Integer.parseInt(limit.toString()) : 100
-        if (!productId)
-            return StockBook.findAllByExpDateGreaterThanEquals(currentDate, [sort: 'id', max: l, offset: o, order: 'desc'])
-        else
+        ArrayList<TempStockBook> tempStockBooks = TempStockBook.findAllByProductId(productId)
+        if (tempStockBooks.size() > 0) {
+            return tempStockBooks
+        } else
             return StockBook.findAllByProductIdAndExpDateGreaterThanEquals(productId, currentDate, [sort: 'id', max: l, offset: o, order: 'desc'])
     }
 
     def getAllByProductSaleReturn(long limit, long offset, long productId) {
-        Date currentDate = new Date()
         Integer o = offset ? Integer.parseInt(offset.toString()) : 0
         Integer l = limit ? Integer.parseInt(limit.toString()) : 100
-        if (!productId)
-            return StockBook.findAll()
-        else
-            return StockBook.findAllByProductId(productId)
+        return StockBook.findAllByProductId(productId)
     }
 
-    JSONObject dataTables(JSONObject paramsJsonObject, String start, String length)
-    {
+    JSONObject dataTables(JSONObject paramsJsonObject, String start, String length) {
         String searchTerm = paramsJsonObject.get("search[value]")
         String orderColumnId = paramsJsonObject.get("order[0][column]")
         String orderDir = paramsJsonObject.get("order[0][dir]")
@@ -107,8 +111,7 @@ class StockBookService {
 
         //check if exists
         StockBook stockBook = StockBook.findByEntityIdAndProductIdAndBatchNumber(entityId, productId, batchNumber)
-        if(stockBook == null)
-        {
+        if (stockBook == null) {
             stockBook = new StockBook()
         }
 
@@ -117,21 +120,18 @@ class StockBookService {
         String expDate = jsonObject.get("expDate")
         String purcDate = jsonObject.get("purcDate")
         SimpleDateFormat sdf1 = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'")
-        if(manufacturingDate.contains("T"))
-        {
+        if (manufacturingDate.contains("T")) {
             manufacturingDate = sdf.format(sdf1.parse(manufacturingDate))
         }
-        if(expDate.contains("T"))
-        {
+        if (expDate.contains("T")) {
             expDate = sdf.format(sdf1.parse(expDate))
         }
-        if(purcDate.contains("T"))
-        {
+        if (purcDate.contains("T")) {
             purcDate = sdf.format(sdf1.parse(purcDate))
         }
-        jsonObject.put("manufacturingDate",manufacturingDate)
-        jsonObject.put("expDate",expDate)
-        jsonObject.put("purcDate",purcDate)
+        jsonObject.put("manufacturingDate", manufacturingDate)
+        jsonObject.put("expDate", expDate)
+        jsonObject.put("purcDate", purcDate)
 
         double saleRate = Double.parseDouble(jsonObject.get("saleRate").toString())
         long remainingQty = Long.parseLong(jsonObject.get("remainingQty").toString())
@@ -179,11 +179,10 @@ class StockBookService {
             stockActivity.entityId = Long.parseLong(jsonObject.get("entityId").toString())
             stockActivity.createdUser = Long.parseLong(jsonObject.get("createdUser").toString())
             stockActivity.modifiedUser = Long.parseLong(jsonObject.get("modifiedUser").toString())
-            stockActivity.save(flush:true)
+            stockActivity.save(flush: true)
 
             return stockBook
-        }
-        else
+        } else
             throw new BadRequestException()
 
 
@@ -197,21 +196,18 @@ class StockBookService {
             String expDate = jsonObject.get("expDate")
             String purcDate = jsonObject.get("purcDate")
             SimpleDateFormat sdf1 = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'")
-            if(manufacturingDate.contains("T"))
-            {
+            if (manufacturingDate.contains("T")) {
                 manufacturingDate = sdf.format(sdf1.parse(manufacturingDate))
             }
-            if(expDate.contains("T"))
-            {
+            if (expDate.contains("T")) {
                 expDate = sdf.format(sdf1.parse(expDate))
             }
-            if(purcDate.contains("T"))
-            {
+            if (purcDate.contains("T")) {
                 purcDate = sdf.format(sdf1.parse(purcDate))
             }
-            jsonObject.put("manufacturingDate",manufacturingDate)
-            jsonObject.put("expDate",expDate)
-            jsonObject.put("purcDate",purcDate)
+            jsonObject.put("manufacturingDate", manufacturingDate)
+            jsonObject.put("expDate", expDate)
+            jsonObject.put("purcDate", purcDate)
 
             long productId = Long.parseLong(jsonObject.get("productId").toString())
             String batchNumber = jsonObject.get("batchNumber")
@@ -268,10 +264,9 @@ class StockBookService {
                     stockActivity.entityId = Long.parseLong(jsonObject.get("entityId").toString())
                     stockActivity.createdUser = Long.parseLong(jsonObject.get("createdUser").toString())
                     stockActivity.modifiedUser = Long.parseLong(jsonObject.get("modifiedUser").toString())
-                    stockActivity.save(flush:true)
+                    stockActivity.save(flush: true)
                     return stockBook
-                }
-                else
+                } else
                     throw new BadRequestException()
             } else
                 throw new ResourceNotFoundException()
@@ -297,8 +292,17 @@ class StockBookService {
     /*
     get stock entry by products or (product and batch)
      */
+
     def getByProductAndBatch(long productId, String batch, long entityId) {
-        return StockBook.findByProductIdAndBatchNumberAndEntityId(productId, batch, entityId)
+        StockBook stockBook = StockBook.findByProductIdAndBatchNumberAndEntityId(productId, batch, entityId)
+        //check if exists in tempstock before responding
+        ArrayList<TempStockBook> tempStockBooks = TempStockBook.findAllByProductIdAndBatchNumber(productId, batch)
+        if (tempStockBooks.size() > 0) {
+            stockBook.remainingQty = tempStockBooks.remainingQty.sort().get(0)
+            stockBook.remainingFreeQty = tempStockBooks.remainingFreeQty.sort().get(0)
+            stockBook.remainingReplQty = tempStockBooks.remainingReplQty.sort().get(0)
+        }
+        return stockBook
     }
 
 }

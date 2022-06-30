@@ -288,7 +288,7 @@ class SaleEntryController {
                 def apiRes = new InventoryService().updateStockBook(stockBook)
                 if (apiRes.status == 200) {
                     //clear tempstockbook
-                    new InventoryService().deleteTempStock(tempStockRowId)
+                    new InventoryService().deleteTempStock(tempStockRowId, false)
                     try {
                         if (billStatus.equalsIgnoreCase("ACTIVE")) {
                             //push the invoice to e-Invoice service and generate IRN, save IRN to Sale Bill Details

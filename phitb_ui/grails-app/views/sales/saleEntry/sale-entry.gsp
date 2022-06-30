@@ -316,7 +316,7 @@
         $('#date').val(moment().format('YYYY-MM-DD'));
         $('#date').attr("readonly");
         <g:each in="${customers}" var="cs">
-        customers.push({"id": ${cs.id}, "noOfCrDays": ${cs.noOfCrDays}});
+            customers.push({"id": ${cs.id}, "noOfCrDays": ${cs.noOfCrDays}});
         </g:each>
         const container = document.getElementById('saleTable');
 
@@ -486,10 +486,18 @@
                                 success: function (data) {
                                     beforeSendSwal.close();
                                     console.log("Data saved");
+                                    batchHot.updateSettings({
+                                        data: []
+                                    });
                                     hot.setDataAtCell(row, 15, data.id);
+
+                                    for(var i = 0; i < 15; i++) {
+                                        hot.setCellMeta(row, i, 'readOnly', true);
+                                    }
                                     mainTableRow = row + 1;
                                     hot.alter('insert_row');
                                     hot.selectCell(mainTableRow, 1);
+                                    hot.render();
                                     calculateTotalAmt();
                                 },
                                 error: function (data) {
@@ -776,7 +784,7 @@
                 }
             }
         });
-
+        $("#customerSelect").trigger('change');
         $('#series').trigger('change');
     });
 
@@ -785,6 +793,12 @@
             var sid = selectedId.id;
             if (sid === undefined)
                 sid = selectedId;
+            if(sid == null) {
+                batchHot.updateSettings({
+                    data: []
+                });
+                return;
+            }
             var url = "/stockbook/product/" + sid;
             $.ajax({
                 type: "GET",
@@ -892,6 +906,10 @@
 
                     hot.setDataAtCell(i, 20, saleData[i]["originalSqty"]);
                     hot.setDataAtCell(i, 21, saleData[i]["originalFqty"]);
+
+                    for(var j = 0; j < 15; j++) {
+                        hot.setCellMeta(i, j, 'readOnly', true);
+                    }
                 }
 
                 setTimeout(function () {
@@ -972,11 +990,16 @@
                     hot.setDataAtCell(i, 23, fQty); //draft fqty
                     hot.setDataAtCell(i, 24, saleData[i]["id"]); //saved draft product id
                     </g:if>
+
+                    for(var j = 0; j < 15; j++) {
+                        hot.setCellMeta(i, j, 'readOnly', true);
+                    }
                 }
 
                 // setTimeout(function () {
                 //     $('#saleTable').show()
                 // }, 2000);
+
 
                 setTimeout(function () {
                     hot.selectCell(0, 1);
@@ -1010,6 +1033,9 @@
                             title: "Success",
                             text: "Product removed."
                         });
+                        batchHot.updateSettings({
+                            data: []
+                        });
                         calculateTotalAmt();
                     }
                 });
@@ -1031,6 +1057,9 @@
                         Swal.fire({
                             title: "Success",
                             text: "Product removed."
+                        });
+                        batchHot.updateSettings({
+                            data: []
                         });
                     }
                 });
@@ -1162,6 +1191,7 @@
     }
 
     function customerSelectChanged() {
+        var customerId = $("#customerSelect").val();
         var noOfCrDays = 0;
         if (customers.length > 0) {
             for (var i = 0; i < customers.length; i++) {
@@ -1174,7 +1204,7 @@
             noOfCrDays = ${customer.noOfCrDays};
             </g:if>
         }
-        var customerId = $("#customerSelect").val();
+
         $('#duedate').prop("readonly", false);
         $("#duedate").val(moment().add(noOfCrDays, 'days').format('YYYY-MM-DD'));
         $('#duedate').prop("readonly", true);
@@ -1523,12 +1553,12 @@
             var instance = this;
             var that = instance.getActiveEditor();
 
-            var keyCodes = Handsontable.helper.keyCode;
+            var keyCodes = Handsontable.helper.KEY_CODES;
             var ctrlDown = (event.ctrlKey || event.metaKey) && !event.altKey; //catch CTRL but not right ALT (which in some systems triggers ALT+CTRL)
 
 
             //Process only events that have been fired in the editor
-            if (!$(event.target).hasClass('select2-input') || event?.isImmediatePropagationStopped()) {
+            if (!$(event.target).hasClass('select2-input') /*|| event?.isImmediatePropagationStopped()*/) {
                 return;
             }
             if (event.keyCode === 17 || event.keyCode === 224 || event.keyCode === 91 || event.keyCode === 93) {

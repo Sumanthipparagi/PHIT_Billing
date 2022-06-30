@@ -120,9 +120,8 @@ class TempStockBookController {
     def getByProductIdAndBatch() {
         try {
             String id = params.id
-            String userId = params.userId
-            if (id && userId) {
-                respond tempStockBookService.getAllByProductAndBatch(Long.parseLong(id),params.batch, userId)
+            if (id) {
+                respond tempStockBookService.getAllByProductAndBatch(Long.parseLong(id),params.batch)
             }
             else
                 response.status = 400
@@ -202,7 +201,12 @@ class TempStockBookController {
     def delete() {
         try {
             String id = params.id
-            tempStockBookService.delete(id)
+            boolean updateTempStock = true
+            if(params.id != null)
+            {
+                 updateTempStock = params.updateTempStock
+            }
+            tempStockBookService.delete(id, updateTempStock)
             response.status = 200
         }
         catch (ResourceNotFoundException ex)
