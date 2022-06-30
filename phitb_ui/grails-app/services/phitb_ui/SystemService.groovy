@@ -16,6 +16,33 @@ import org.grails.web.util.WebUtils
 @Transactional
 class SystemService
 {
+
+    //Accounut Modes
+    /**
+     * This method is used for the communication between master service for adding new account modes
+     * @param jsonObject : which contains the parameter to add new case
+     * @return response from the server
+     */
+    def systemServiceStatus()
+    {
+        Client client = ClientBuilder.newClient();
+        WebTarget target = client.target(new Links().API_GATEWAY);
+        try
+        {
+            Response apiResponse = target
+                    .path(new Links().SYSTEM_SERVICE_STATUS)
+                    .request(MediaType.APPLICATION_JSON_TYPE)
+                    .get()
+            return apiResponse
+        }
+        catch (Exception ex)
+        {
+            System.err.println('Service :showAccountModes , action :  show  , Ex:' + ex)
+            log.error('Service :showAccountModes , action :  show  , Ex:' + ex)
+        }
+
+    }
+
     //Accounut Modes
     /**
      * This method is used for the communication between master service for adding new account modes
@@ -44,7 +71,6 @@ class SystemService
         }
 
     }
-
 
     /**
      *

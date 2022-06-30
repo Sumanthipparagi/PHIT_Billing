@@ -13,6 +13,9 @@ public class Links
     public static String ACCOUNT_MODES_UPDATE = "api/v1.0/system/accountmodes/{id}";
     public static String ACCOUNT_MODES_DELETE = "api/v1.0/system/accountmodes/{id}";
 
+//    Status
+    public static String SYSTEM_SERVICE_STATUS = "api/v1.0/system/status";
+
     //    Gender Master
     public static String GENDER_MASTER_SHOW = "api/v1.0/system/gender";
 

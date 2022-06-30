@@ -27,4 +27,10 @@ class DashboardController {
     {
         render(view: 'microservice-status')
     }
+
+    def systemServiceStatus()
+    {
+        def status = new SystemService().systemServiceStatus()
+        respond status
+    }
 }
