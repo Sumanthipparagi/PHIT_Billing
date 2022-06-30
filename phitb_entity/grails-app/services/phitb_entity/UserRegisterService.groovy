@@ -107,6 +107,7 @@ class UserRegisterService {
             userRegister.address = jsonObject.get("address").toString()
             userRegister.referenceRelation = jsonObject.get("referenceRelation").toString()
             userRegister.pincode = jsonObject.get("pinCode").toString()
+            userRegister.userStatus = jsonObject.get("userStatus").toString()
             userRegister.bankAccount = jsonObject.get("bankAccount").toString()
 //            userRegister.permissions = jsonObject.get("permissions").toString()
             userRegister.assignedHolidays = jsonObject.get("assignedHolidays").toString()
@@ -216,6 +217,7 @@ class UserRegisterService {
             userRegister.assignedHolidays = jsonObject.get("assignedHolidays").toString()
             userRegister.specialization = jsonObject.get("specialization").toString()
             userRegister.licenceNumber = jsonObject.get("licenceNumber").toString()
+            userRegister.userStatus = jsonObject.get("userStatus").toString()
             userRegister.reportTo = Long.parseLong(jsonObject.get("reportTo").toString())
             userRegister.genderId = Long.parseLong(jsonObject.get("genderId").toString())
             userRegister.countryId = Long.parseLong(jsonObject.get("countryId").toString())
@@ -270,7 +272,7 @@ class UserRegisterService {
             }
             userRegister.department = DepartmentMaster.findById(Long.parseLong(jsonObject.get("department").toString()))
             userRegister.role = Role.findById(Long.parseLong(jsonObject.get("role").toString()))
-            userRegister.entity = EntityRegister.findById(Long.parseLong(jsonObject.get("entity").toString()))
+            userRegister.entity = entityRegister
             userRegister.entityType = EntityTypeMaster.findById(Long.parseLong(entityRegister.entityType.id.toString()))
             userRegister.createdUser = Long.parseLong(jsonObject.get("createdUser").toString())
             userRegister.modifiedUser = Long.parseLong(jsonObject.get("modifiedUser").toString())

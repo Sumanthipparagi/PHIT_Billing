@@ -662,6 +662,11 @@
 
     function setTwoNumberDecimal(event) {
         this.value = parseFloat(this.value.toFixed(2));
+        // if(this.value!=="")
+        // {
+        //     alert(this.value)
+        //     this.value = 0.00
+        // }
     }
 
 

@@ -1,10 +1,12 @@
 package phitb_ui.entity
 
 import groovy.json.JsonSlurper
+import org.grails.web.json.JSONArray
 import org.grails.web.json.JSONObject
 import phitb_ui.Constants
 import phitb_ui.EntityService
 import phitb_ui.Links
+import phitb_ui.SystemService
 import phitb_ui.facility.CcmController
 import phitb_ui.system.CityController
 import phitb_ui.system.CountryController
@@ -64,6 +66,32 @@ class TerritoryController {
             if (apiResponse.status == 200)
             {
                 JSONObject responseObject = new JSONObject(apiResponse.readEntity(String.class))
+                if(responseObject)
+                {
+                    JSONArray jsonArray = responseObject.data
+                    for (JSONObject json : jsonArray) {
+                        JSONArray cityArray = new JSONArray()
+                        Object cityids = json.cityIds.split(",")
+//                        println(cityids)
+                        for (String id : cityids)
+                        {
+                             def city = new SystemService().getCityById(id.toString())
+                            JSONObject cityjson = new JSONObject()
+                            cityjson.put("id", city.get("id"))
+                            cityjson.put("text", city.get("areaName") + " ("+city.get("districtName")+ ")")
+                            cityjson.put("pincode", city.get("pincode"))
+                            cityArray.add(cityjson)
+                            for(JSONObject jsonObject1: jsonArray)
+                            {
+                                if(json.id == jsonObject1.id)
+                                {
+                                    jsonObject1.put("cityarray",cityArray)
+                                }
+                            }
+                        }
+                    }
+                    responseObject.put("data", jsonArray)
+                }
                 respond responseObject, formats: ['json'], status: 200
             }
             else

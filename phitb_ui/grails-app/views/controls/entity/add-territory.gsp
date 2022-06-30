@@ -33,9 +33,14 @@
                                 <label for="territoryHq">
                                     Territory Hq
                                 </label>
-                                <input type="number" id="territoryHq" class="form-control territoryHq" name="territoryHq"
-                                       placeholder="Territory Hq"
-                                       required/>
+%{--                                <input type="number" id="territoryHq" class="form-control territoryHq" name="territoryHq"--}%
+%{--                                       placeholder="Territory Hq"--}%
+%{--                                       required/>--}%
+                                <select class="form-control show-tick territoryHq" style="width: 100%;" name="territoryHq" id="territoryHq">
+                                    <g:each var="d" in="${districts}">
+                                        <option value="${d.id}">${d.district}</option>
+                                    </g:each>
+                                </select>
                             </div>
 
                             <div class="col-lg-6">
@@ -44,9 +49,9 @@
                                 </label>
                                 <select class="form-control show-tick cityId" style="width: 100%;" name="cityIds" id="cityId"
                                         multiple>
-                                    <g:each var="district" in="${districts}">
-                                        <option value="${district.id}">${district.district}</option>
-                                    </g:each>
+%{--                                    <g:each var="c" in="${citylist}">--}%
+%{--                                        <option value="${c.id}">${c.areaName} (${c.areaName})</option>--}%
+%{--                                    </g:each>--}%
                                 </select>
                             </div>
 
@@ -68,7 +73,7 @@
                                 </label>
                                 <select class="form-control show-tick stateId" style="width: 100%;" name="stateId" id="stateId">
                                     <g:each var="state" in="${statelist}">
-                                        <option value="${state.id}">${state.name}</option>
+                                        <option value="${state.id}" data-alphaCode="${state.alphaCode}">${state.name}</option>
                                     </g:each>
                                 </select>
                             </div>

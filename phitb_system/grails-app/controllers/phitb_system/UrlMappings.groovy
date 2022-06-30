@@ -123,6 +123,9 @@ class UrlMappings {
             "/paymentmode/$id(.$format)?"(controller: 'paymentModeMaster') { action = [GET: 'show', PUT: 'update', DELETE: 'delete'] }
             "/paymentmodebyentity/$id(.$format)?"(controller: 'paymentModeMaster') { action = [GET: 'getAllByEntityId'] }
 
+//            Status
+            "/status"(controller: 'status', action: 'index')
+
         }
     }
 }

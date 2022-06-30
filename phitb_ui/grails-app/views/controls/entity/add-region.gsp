@@ -41,11 +41,13 @@
                 </select>
               </div>
 
-              <div class="col-lg-6 form-group  form-float">
+              <div class="col-lg-6">
                 <label for="countryId">
                   Region States
                 </label>
-                <select class="form-control show-tick regionStateIds" name="regionStateIds" id="regionStateIds" multiple="multiple" required>
+                <select class="form-control show-tick regionStateIds" style="width: 100%;" name="regionStateIds"
+                        id="regionStateIds"
+                        multiple="multiple" required>
                   <g:each var="s" in="${statelist}">
                     <option value="${s.id}">${s.name}</option>
                   </g:each>

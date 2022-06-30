@@ -106,7 +106,7 @@
                                     <div class="body m-b-10">
                                         <form action="/user-register/update/${user.id}" id="updateUser"
                                               method="POST" role="form"
-                                              class="entityRegisterForm" enctype="multipart/form-data">
+                                              class="userRegisterForm" enctype="multipart/form-data">
                                             <div class="row clearfix">
                                                 <div class="col-lg-12 col-md-12 col-sm-12">
                                                     <div class="card">
@@ -250,6 +250,7 @@
                                                                             </label>
                                                                             <input type="email" id="email" class="form-control email"
                                                                                    name="email" placeholder="Email"
+                                                                                   value="${user.email}"
                                                                             />
                                                                         </div>
                                                                         <div class="col-lg-6 form-group  form-float">
@@ -268,7 +269,7 @@
                                                                             <div>
                                                                                 <select class="pinCode form-control" id="pinCode" ></select>
                                                                                 <input type="hidden" name="pinCode"
-                                                                                       value="${user.pinCode}">
+                                                                                       value="${user.pincode}">
                                                                             </div>
 
                                                                         </div>
@@ -291,7 +292,8 @@
                                                                                     <option value="${country.id}" <g:if test="${country.id == user.countryId}">selected</g:if>>${country.name}</option>
                                                                                 </g:each>
                                                                             </select>
-                                                                            <input type="hidden" name="countryId" />
+                                                                            <input type="hidden" name="countryId"
+                                                                                   value="${user.countryId}"/>
 
                                                                         </div>
 
@@ -304,7 +306,7 @@
                                                                                     <option value="${state.id}" <g:if test="${state.id == user.stateId}">selected</g:if>>${state.name}</option>
                                                                                 </g:each>
                                                                             </select>
-                                                                            <input type="hidden" name="stateId"/>
+                                                                            <input type="hidden" name="stateId"  value="${user.stateId}"/>
 
                                                                         </div>
 
@@ -320,6 +322,10 @@
 
                                                                             <input type="hidden" name="cityId" value="${user.cityId}"/>
 
+                                                                            <sub id="prevPin">Previously selected
+                                                                            pincode: <b>${user.pincode}</b><br></sub>
+                                                                            <sub id="prevArea">Previously selected
+                                                                            area: <b>${city.areaName}</b></sub>
                                                                         </div>
 
 
@@ -534,6 +540,8 @@
                                                                                 Division
                                                                             </label>
                                                                             <select class="form-control show-tick divisionId" name="divisionId" id="divisionId">
+                                                                                <option value="0">---Please
+                                                                                Select---</option>
                                                                                 <g:each var="d" in="${division}">
                                                                                     <option value="${d.id}"  <g:if test="${d.id == user.division}">selected</g:if>>${d.divisionName}</option>
                                                                                 </g:each>
@@ -799,8 +807,23 @@
 
 <script>
     $(function () {
-        var dob = new Date('${user.dob}');
-        $('.dob').val(moment(dob).format('DD/MM/YYYY'));
+
+        $(document).ready(function(){
+            %{--$('.cityId').append("<option value='${city.id}'>${city.areaName}</option>");--}%
+            $('.cityId').append("<option value='"+115676+"'>"+jjdnjnsd+"</option>");
+
+            alert(${city.id});
+            %{--alert("<option value='${user.cityId}'>${city.areaName}</option>")--}%
+            %{--$('#cityId').select2('${user.cityId}');--}%
+        });
+        if('${user.dob}'!=="") {
+            var dob = new Date('${user.dob}');
+            $('.dob').val(moment(dob).format('DD/MM/YYYY'));
+        }
+        else
+        {
+            $('.dob').val("");
+        }
 
         //Datetimepicker plugin
         $('.dob').bootstrapMaterialDatePicker({
@@ -810,9 +833,14 @@
             weekStart: 1
         });
 
-        var joiningDate = new Date('${user.joiningDate}');
-        $('.joiningDate').val(moment(joiningDate).format('DD/MM/YYYY'));
-
+        if('${user.joiningDate}'!=="") {
+            var joiningDate = new Date('${user.joiningDate}');
+            $('.joiningDate').val(moment(joiningDate).format('DD/MM/YYYY'));
+        }
+        else
+        {
+            $('.joiningDate').val("");
+        }
 
         $('.joiningDate').bootstrapMaterialDatePicker({
             format: 'DD/MM/YYYY',
@@ -821,8 +849,13 @@
             weekStart: 1
         });
 
-        var lastPaidDate = new Date('${user.lastPaidDate}');
-        $('.lastPaidDate').val(moment(lastPaidDate).format('DD/MM/YYYY'));
+        if('${user.lastPaidDate}'!=="")
+        {
+            var lastPaidDate = new Date('${user.lastPaidDate}');
+            $('.lastPaidDate').val(moment(lastPaidDate).format('DD/MM/YYYY'));
+        }else{
+            $('.lastPaidDate').val("");
+        }
 
         $('.lastPaidDate').bootstrapMaterialDatePicker({
             format: 'DD/MM/YYYY',
@@ -831,8 +864,14 @@
             weekStart: 1
         });
 
-        var anniversaryDate = new Date('${user.anniversaryDate}');
-        $('.anniversaryDate').val(moment(anniversaryDate).format('DD/MM/YYYY'));
+
+        if('${user.anniversaryDate}'!=="") {
+            var anniversaryDate = new Date('${user.anniversaryDate}');
+            $('.anniversaryDate').val(moment(anniversaryDate).format('DD/MM/YYYY'));
+        }
+        else {
+            $('.anniversaryDate').val("")
+        }
 
         $('.anniversaryDate').bootstrapMaterialDatePicker({
             format: 'DD/MM/YYYY',
@@ -841,17 +880,15 @@
             weekStart: 1
         });
 
-        var entityTypeId = $('.entity').find(':selected').attr('data-type')
-        $.ajax({
-            type: "POST",
-            url: "/getentitytypebyId?id="+ entityTypeId,
-            dataType: 'json',
-            success: function (data) {
-                $('#entityTypeId').val(data.id)
-            },
-
-
-        });
+        // var entityTypeId = $('.entity').find(':selected').attr('data-type')
+        // $.ajax({
+        //     type: "POST",
+        //     url: "/getentitytypebyId?id="+ entityTypeId,
+        //     dataType: 'json',
+        //     success: function (data) {
+        //         $('#entityTypeId').val(data.id)
+        //     },
+        // });
 
 
 
@@ -859,7 +896,7 @@
             this.value = parseFloat(this.value.toFixed(2));
         }
 
-
+        $('#referredBy').select2()
 
 
         $('#cityId').select2({
@@ -882,6 +919,7 @@
             placeholder: 'Search for cities',
             minimumInputLength: 2
         });
+
 
 
 
@@ -988,14 +1026,14 @@
     });
 
     $('#updateUser').submit(function(event) {
-        var pincode =  $('.pinCode option').length;
-        if(pincode === 0 || pincode < 0)
-        {
-            swal("Please enter  pincode and  select area");
-            event.preventDefault();
-        }
-        else
-        {
+        // var pincode =  $('.pinCode option').length;
+        // if(pincode === 0 || pincode < 0)
+        // {
+        //     swal("Please enter  pincode and  select area");
+        //     event.preventDefault();
+        // }
+        // else
+        // {
             var formData = $(this);
             $.ajax({
                 type        : 'POST', // define the type of HTTP verb we want to use (POST for our form)
@@ -1004,7 +1042,7 @@
                 success:function(data){
                     // $("#validation-status").text(data);
                     // swal('success','User updated Successfully',data);
-                    swal("Success!", "You clicked the button! ", "success");
+                    swal("Success!", "Updated Successfully! ", "success");
 
                 },
                 error:function(data){
@@ -1016,13 +1054,14 @@
                 }
             });
             event.preventDefault();
-        }
+        // }
 
     });
 
 
     function setTwoNumberDecimal(event) {
-        this.value = parseFloat(this.value.toFixed(2));
+        this.value = parseFloat(Number(this.value).toFixed(2));
+
     }
 </script>
 
