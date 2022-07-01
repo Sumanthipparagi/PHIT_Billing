@@ -89,6 +89,10 @@ class SaleBillDetailsService
         String orderColumnId = paramsJsonObject.get("order[0][column]")
         String orderDir = paramsJsonObject.get("order[0][dir]")
         String invoiceStatus = paramsJsonObject.get("invoiceStatus")
+        String userId = paramsJsonObject.get("userId")
+        long uid = 0
+        if(userId)
+            uid = Long.parseLong(userId)
 
         String orderColumn = "id"
         switch (orderColumnId)
@@ -114,6 +118,8 @@ class SaleBillDetailsService
             {
                 eq('billStatus', invoiceStatus)
             }
+            if(userId)
+                eq("userId", uid)
             eq('deleted', false)
             order(orderColumn, orderDir)
         }

@@ -1331,7 +1331,7 @@
             var instance = this;
             var that = instance.getActiveEditor();
 
-            var keyCodes = Handsontable.helper.keyCode;
+            var keyCodes = Handsontable.helper.KEY_CODES;
             var ctrlDown = (event.ctrlKey || event.metaKey) && !event.altKey; //catch CTRL but not right ALT (which in some systems triggers ALT+CTRL)
 
 

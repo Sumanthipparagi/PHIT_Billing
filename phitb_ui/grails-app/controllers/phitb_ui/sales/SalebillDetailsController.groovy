@@ -166,7 +166,9 @@ class SalebillDetailsController {
 
     def dataTable() {
         try {
+            String userId = session.getAttribute("userId")
             JSONObject jsonObject = new JSONObject(params)
+            jsonObject.put("userId", userId)
             def apiResponse = new SalesService().showSalesService(jsonObject)
             if (apiResponse.status == 200) {
                 JSONObject responseObject = new JSONObject(apiResponse.readEntity(String.class))

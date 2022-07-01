@@ -42,22 +42,16 @@ class TempStockBookService {
     def getAllByProductAndBatch(long productId, String batch) {
         Date currentDate = new Date()
         ArrayList<TempStockBook> tempStockBooks = new ArrayList<>()
-        if(batch == null)
-        {
-           tempStockBooks = TempStockBook.findAllByProductIdAndExpDateGreaterThanEquals(productId, currentDate)
-        }
-        else
-        {
-            tempStockBooks = TempStockBook.findAllByProductIdAndBatchNumberAndExpDateGreaterThanEquals(productId,batch, currentDate)
+        if (batch == null) {
+            tempStockBooks = TempStockBook.findAllByProductIdAndExpDateGreaterThanEquals(productId, currentDate)
+        } else {
+            tempStockBooks = TempStockBook.findAllByProductIdAndBatchNumberAndExpDateGreaterThanEquals(productId, batch, currentDate)
         }
 
-        if(tempStockBooks?.size() == 0)
-        {
+        if (tempStockBooks?.size() == 0) {
             ArrayList<StockBook> stockBooks = StockBook.findAllByProductIdAndExpDateGreaterThanEquals(productId, currentDate)
             return stockBooks
-        }
-        else
-        {
+        } else {
             return tempStockBooks
         }
     }
@@ -67,8 +61,7 @@ class TempStockBookService {
         return TempStockBook.findById(Long.parseLong(id))
     }
 
-    JSONObject dataTables(JSONObject paramsJsonObject, String start, String length)
-    {
+    JSONObject dataTables(JSONObject paramsJsonObject, String start, String length) {
         String searchTerm = paramsJsonObject.get("search[value]")
         String orderColumnId = paramsJsonObject.get("order[0][column]")
         String orderDir = paramsJsonObject.get("order[0][dir]")
@@ -106,51 +99,24 @@ class TempStockBookService {
         return jsonObject
     }
 
-//    TempStockBook save(JSONObject jsonObject) {
-//        TempStockBook tempStockBook = new TempStockBook()
-//        tempStockBook.batchNumber = jsonObject.get("batchNumber")
-//        tempStockBook.packingDesc = jsonObject.get("packingDesc")
-//        tempStockBook.productId = Long.parseLong(jsonObject.get("productId").toString())
-//        tempStockBook.userId = Long.parseLong(jsonObject.get("userId").toString())
-//        tempStockBook.userOrderQty = Long.parseLong(jsonObject.get("userOrderQty").toString())
-//        tempStockBook.userOrderFreeQty = Long.parseLong(jsonObject.get("userOrderFreeQty").toString())
-//        tempStockBook.userOrderReplQty = Long.parseLong(jsonObject.get("userOrderReplQty").toString())
-//        tempStockBook.redundantBatch = Long.parseLong(jsonObject.get("redundantBatch").toString())
-//        tempStockBook.remainingSchemeQty = Long.parseLong(jsonObject.get("remainingSchemeQty").toString())
-//        tempStockBook.expDate = sdf.parse(jsonObject.get("expDate").toString())
-//        tempStockBook.remainingQty = Long.parseLong(jsonObject.get("remainingQty").toString())
-//        tempStockBook.purchaseRate = Double.parseDouble(jsonObject.get("purchaseRate").toString())
-//        tempStockBook.mrp = Double.parseDouble(jsonObject.get("mrp").toString())
-//        tempStockBook.remainingReplQty = Long.parseLong(jsonObject.get("remainingReplQty").toString())
-//        tempStockBook.saleRate = Double.parseDouble(jsonObject.get("saleRate").toString())
-//        tempStockBook.taxId = Long.parseLong(jsonObject.get("taxId").toString())
-//        tempStockBook.entityTypeId = Long.parseLong(jsonObject.get("entityTypeId").toString())
-//        tempStockBook.entityId = Long.parseLong(jsonObject.get("entityId").toString())
-//        tempStockBook.originalId = Long.parseLong(jsonObject.get("originalId").toString())
-//        tempStockBook.save(flush: true)
-//        if (!tempStockBook.hasErrors())
-//            return tempStockBook
-//        else
-//            throw new BadRequestException()
-//    }
-
-
     TempStockBook save(JSONObject jsonObject) {
         //Date sanitize
         String expDate = jsonObject.get("expDate")
         SimpleDateFormat sdf1 = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'")
-        if(expDate.contains("T"))
-        {
+        if (expDate.contains("T")) {
             expDate = sdf.format(sdf1.parse(expDate))
         }
-        jsonObject.put("expDate",expDate)
+        jsonObject.put("expDate", expDate)
 
-        Long productId = Long.parseLong(jsonObject.get("productId").toString())
+        long remainingQty = Long.parseLong(jsonObject.get("remainingQty").toString())
+        long remainingFreeQty = Long.parseLong(jsonObject.get("remainingFreeQty").toString())
+        long remainingReplQty = Long.parseLong(jsonObject.get("remainingReplQty").toString())
+        long productId = Long.parseLong(jsonObject.get("productId").toString())
+        String batchNumber = jsonObject.get("batchNumber")
         Long userId = Long.parseLong(jsonObject.get("userId").toString())
-        String batchNumber = jsonObject.get("batchNumber").toString()
         TempStockBook tempStockBook = TempStockBook.findByProductIdAndUserIdAndBatchNumber(productId, userId, batchNumber)
 
-        if(tempStockBook == null)
+        if (tempStockBook == null)
             tempStockBook = new TempStockBook()
         else
             tempStockBook.isUpdatable = true
@@ -179,8 +145,20 @@ class TempStockBookService {
         tempStockBook.originalFqty = Long.parseLong(jsonObject.get("originalFqty").toString())
         tempStockBook.uuid = jsonObject.get("uuid")
         tempStockBook.save(flush: true)
-        if (!tempStockBook.hasErrors())
+        if (!tempStockBook.hasErrors()) {
+            //update qty for tempstocks added by other users
+            ArrayList<TempStockBook> tempStockBooks = TempStockBook.findAllByProductIdAndBatchNumberAndEntityId(productId, batchNumber, Long.parseLong(jsonObject.get("entityId").toString()))
+            for (TempStockBook ts : tempStockBooks) {
+                if(tempStockBook.id != ts.id) {
+                    ts.remainingQty = remainingQty
+                    ts.remainingFreeQty = remainingFreeQty
+                    ts.remainingReplQty = remainingReplQty
+                    ts.isUpdatable = true
+                    ts.save(flush: true)
+                }
+            }
             return tempStockBook
+        }
         else
             throw new BadRequestException()
     }
@@ -191,29 +169,33 @@ class TempStockBookService {
             //Date sanitize
             String expDate = jsonObject.get("expDate")
             SimpleDateFormat sdf1 = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'")
-            if(expDate.contains("T"))
-            {
+            if (expDate.contains("T")) {
                 expDate = sdf.format(sdf1.parse(expDate))
             }
-            jsonObject.put("expDate",expDate)
+            jsonObject.put("expDate", expDate)
 
+            long remainingQty = Long.parseLong(jsonObject.get("remainingQty").toString())
+            long remainingFreeQty = Long.parseLong(jsonObject.get("remainingFreeQty").toString())
+            long remainingReplQty = Long.parseLong(jsonObject.get("remainingReplQty").toString())
+            long productId = Long.parseLong(jsonObject.get("productId").toString())
+            String batchNumber = jsonObject.get("batchNumber")
             TempStockBook tempStockBook = TempStockBook.findById(Long.parseLong(id))
             if (tempStockBook) {
                 tempStockBook.isUpdatable = true
-                tempStockBook.batchNumber = jsonObject.get("batchNumber")
+                tempStockBook.batchNumber = batchNumber
                 tempStockBook.packingDesc = jsonObject.get("packingDesc")
-                tempStockBook.productId = Long.parseLong(jsonObject.get("productId").toString())
+                tempStockBook.productId = productId
                 tempStockBook.userId = Long.parseLong(jsonObject.get("userId").toString())
                 tempStockBook.userOrderQty = Long.parseLong(jsonObject.get("userOrderQty").toString())
                 tempStockBook.userOrderFreeQty = Long.parseLong(jsonObject.get("userOrderFreeQty").toString())
                 tempStockBook.userOrderReplQty = Long.parseLong(jsonObject.get("userOrderReplQty").toString())
                 tempStockBook.redundantBatch = Long.parseLong(jsonObject.get("redundantBatch").toString())
-                tempStockBook.remainingFreeQty = Long.parseLong(jsonObject.get("remainingFreeQty").toString())
+                tempStockBook.remainingFreeQty = remainingFreeQty
+                tempStockBook.remainingQty = remainingQty
+                tempStockBook.remainingReplQty = remainingReplQty
                 tempStockBook.expDate = sdf.parse(jsonObject.get("expDate").toString())
-                tempStockBook.remainingQty = Long.parseLong(jsonObject.get("remainingQty").toString())
                 tempStockBook.purchaseRate = Double.parseDouble(jsonObject.get("purchaseRate").toString())
                 tempStockBook.mrp = Double.parseDouble(jsonObject.get("mrp").toString())
-                tempStockBook.remainingReplQty = Long.parseLong(jsonObject.get("remainingReplQty").toString())
                 tempStockBook.saleRate = Double.parseDouble(jsonObject.get("saleRate").toString())
                 tempStockBook.taxId = Long.parseLong(jsonObject.get("taxId").toString())
                 tempStockBook.entityTypeId = Long.parseLong(jsonObject.get("entityTypeId").toString())
@@ -223,29 +205,72 @@ class TempStockBookService {
                 tempStockBook.originalSqty = Long.parseLong(jsonObject.get("originalSqty").toString())
                 tempStockBook.originalFqty = Long.parseLong(jsonObject.get("originalFqty").toString())
                 tempStockBook.save(flush: true)
-                if (!tempStockBook.hasErrors())
+                if (!tempStockBook.hasErrors()) {
+                    //update qty for tempstocks added by other users
+                    ArrayList<TempStockBook> tempStockBooks = TempStockBook.findAllByProductIdAndBatchNumberAndEntityId(productId, batchNumber, Long.parseLong(jsonObject.get("entityId").toString()))
+                    for (TempStockBook ts : tempStockBooks) {
+                        if(tempStockBook.id != ts.id) {
+                            ts.remainingQty = remainingQty
+                            ts.remainingFreeQty = remainingFreeQty
+                            ts.remainingReplQty = remainingReplQty
+                            ts.isUpdatable = true
+                            ts.save(flush: true)
+                        }
+                    }
                     return tempStockBook
-                else
+                } else
                     throw new BadRequestException()
             } else
                 throw new ResourceNotFoundException()
+
         } else {
             throw new BadRequestException()
         }
     }
 
-    void delete(String id) {
+    void delete(String id, boolean updateTempStock) {
         if (id) {
             TempStockBook tempStockBook = TempStockBook.findById(Long.parseLong(id))
             if (tempStockBook) {
                 tempStockBook.isUpdatable = true
+                if(!tempStockBook.hasErrors() && updateTempStock)
+                {
+                    //update qty for tempstocks added by other users
+                    ArrayList<TempStockBook> tempStockBooks = TempStockBook.findAllByProductIdAndBatchNumberAndEntityId(tempStockBook.productId, tempStockBook.batchNumber, tempStockBook.entityId)
+                    for (TempStockBook ts : tempStockBooks) {
+                        if(tempStockBook.id != ts.id) {
+                            ts.remainingQty += tempStockBook.userOrderQty
+                            ts.remainingFreeQty += tempStockBook.userOrderFreeQty
+                            ts.remainingReplQty += tempStockBook.userOrderReplQty
+                            ts.isUpdatable = true
+                            ts.save(flush: true)
+                        }
+                    }
+                }
                 tempStockBook.delete()
-            }
-            else {
+            } else {
                 throw new ResourceNotFoundException()
             }
         } else {
             throw new BadRequestException()
+        }
+    }
+
+    def updateTempStocksOfAllUsers(TempStockBook tempStockBook)
+    {
+        ArrayList<TempStockBook> tempStockBooks = TempStockBook.findAllByProductIdAndBatchNumberAndEntityId(tempStockBook.productId, tempStockBook.batchNumber, tempStockBook.entityId)
+        for (TempStockBook ts : tempStockBooks) {
+            if(tempStockBook.id != ts.id) {
+                if(ts.remainingQty <= tempStockBook.remainingQty)
+                {
+                    ts.remainingQty = ts.remainingQty - tempStockBook.userOrderQty
+                }
+                ts.remainingQty = remainingQty
+                ts.remainingFreeQty = remainingFreeQty
+                ts.remainingReplQty = remainingReplQty
+                ts.isUpdatable = true
+                ts.save(flush: true)
+            }
         }
     }
 }
