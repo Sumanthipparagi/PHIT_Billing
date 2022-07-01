@@ -47,6 +47,8 @@ class UrlMappings {
             "/godown/datatable(.$format)?"(controller: 'godownRegister') { action = [GET: 'dataTable'] }
             "/godown/$id(.$format)?"(controller: 'godownRegister') { action = [GET: 'show', PUT: 'update', DELETE: 'delete'] }
             "/godownbyentity/$id(.$format)?"(controller: 'rackMaster') { action = [GET: 'getByEntityId'] }
+
+            "/status"(controller: 'status', action: 'index')
         }
     }
 }

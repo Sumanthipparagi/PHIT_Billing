@@ -17,7 +17,7 @@ import org.grails.web.util.WebUtils
 class SystemService
 {
 
-    //Accounut Modes
+
     /**
      * This method is used for the communication between master service for adding new account modes
      * @param jsonObject : which contains the parameter to add new case
@@ -37,8 +37,8 @@ class SystemService
         }
         catch (Exception ex)
         {
-            System.err.println('Service :showAccountModes , action :  show  , Ex:' + ex)
-            log.error('Service :showAccountModes , action :  show  , Ex:' + ex)
+            System.err.println('Service :system , action :  systemServiceStatus  , Ex:' + ex)
+            log.error('Service :system , action :  systemServiceStatus  , Ex:' + ex)
         }
 
     }

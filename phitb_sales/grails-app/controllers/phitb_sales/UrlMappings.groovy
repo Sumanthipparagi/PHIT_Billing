@@ -458,6 +458,9 @@ class UrlMappings {
             "/gtnproductbillandbatch(.$format)?"(controller: 'goodsTransferNoteProduct', action:
                     'getGoodsTransferNoteProductbybatchAndBill')
 
+
+            "/status"(controller: 'status', action: 'index')
+
         }
     }
 }

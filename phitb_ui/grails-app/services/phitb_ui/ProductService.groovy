@@ -17,6 +17,25 @@ import javax.ws.rs.core.Response
 @Transactional
 class ProductService {
 
+    def productServiceStatus()
+    {
+        Client client = ClientBuilder.newClient();
+        WebTarget target = client.target(new Links().API_GATEWAY);
+        try
+        {
+            Response apiResponse = target
+                    .path(new Links().PRODUCT_SERVICE_STATUS)
+                    .request(MediaType.APPLICATION_JSON_TYPE)
+                    .get()
+            return apiResponse
+        }
+        catch (Exception ex)
+        {
+            System.err.println('Service :product , action :  salesServiceStatus  , Ex:' + ex)
+            log.error('Service :product , action :  salesServiceStatus  , Ex:' + ex)
+        }
+
+    }
     /**
      *
      * @param jsonObject

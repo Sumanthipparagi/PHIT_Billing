@@ -131,6 +131,7 @@ class UrlMappings {
             //Report
             "/reports/outstanding(.$format)?"(controller: 'reports') { action = [GET: 'outstanding'] }
 
+            "/status"(controller: 'status', action: 'index')
         }
     }
 }

@@ -363,7 +363,7 @@ class UrlMappings
 //            Update Password
             "/update-password/id/$id/password/$password(.$format)?"(controller: 'userRegister', action: 'updatePassword')
 
-
+            "/status"(controller: 'status', action: 'index')
         }
     }
 }

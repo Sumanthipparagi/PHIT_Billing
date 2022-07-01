@@ -25,6 +25,14 @@ class UrlMappings {
 
   /*<-------------------------------------------Microservice Status ------------------------------------------------->*/
         "/system-service-status"(controller: 'dashboard', action: 'systemServiceStatus')
+        "/shipments-service-status"(controller: 'dashboard', action: 'shipmentsServiceStatus')
+        "/sales-service-status"(controller: 'dashboard', action: 'salesServiceStatus')
+        "/purchase-service-status"(controller: 'dashboard', action: 'purchaseServiceStatus')
+        "/product-service-status"(controller: 'dashboard', action: 'productServiceStatus')
+        "/inventory-service-status"(controller: 'dashboard', action: 'inventoryServiceStatus')
+        "/facility-service-status"(controller: 'dashboard', action: 'facilityServiceStatus')
+        "/entity-service-status"(controller: 'dashboard', action: 'entityServiceStatus')
+        "/accounts-service-status"(controller: 'dashboard', action: 'accountsServiceStatus')
 
 /*<-------------------------------------------System ------------------------------------------------->*/
         "/accountmodes"(controller: "accountMode") {

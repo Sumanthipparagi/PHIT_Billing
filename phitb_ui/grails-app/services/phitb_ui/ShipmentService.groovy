@@ -13,6 +13,27 @@ import javax.ws.rs.core.Response
 @Transactional
 class ShipmentService {
 
+    def shipmentServiceStatus()
+    {
+        Client client = ClientBuilder.newClient();
+        WebTarget target = client.target(new Links().API_GATEWAY);
+        try
+        {
+            Response apiResponse = target
+                    .path(new Links().SHIPMENT_SERVICE_STATUS)
+                    .request(MediaType.APPLICATION_JSON_TYPE)
+                    .get()
+            return apiResponse
+        }
+        catch (Exception ex)
+        {
+            System.err.println('Service :ShipementService , action :  shipmentServiceStatus  , Ex:' + ex)
+            log.error('Service :ShipementService , action :  shipmentServiceStatus  , Ex:' + ex)
+        }
+
+    }
+
+
 //    Transport Type
     def saveTransportType(JSONObject jsonObject)
     {
