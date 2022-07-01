@@ -71,21 +71,21 @@
 %{--                        <button type="button" class="btn btn-round btn-simple btn-sm btn-danger btn-filter" data-target="blocked">Blocked</button>--}%
 %{--                    </div>--}%
                     <div class="header">
-                        <h2><strong>Microservices</strong></h2>
+%{--                        <h2><strong>Microservices</strong></h2>--}%
                     </div>
                     <div class="body">
                         <div class="table-responsive">
                             <table class="table table-hover table-bordered">
                                 <thead style="border-top: 1px solid #dee2e6;">
                                 <tr>
-                                    <th>Sl.No</th>
+%{--                                    <th>Sl.No</th>--}%
                                     <th>Microservice</th>
                                     <th>Status</th>
                                 </tr>
                                 </thead>
                                 <tbody>
                                 <tr>
-                                    <td>1</td>
+%{--                                    <td>1</td>--}%
                                     <td><b>SYSTEM</b></td>
                                     <td><button type="button"
                                                 class="btn btn-round btn-simple btn-sm btn-danger btn-filter"
@@ -93,7 +93,7 @@
                                     </button></td>
                                 </tr>
                                 <tr>
-                                    <td>2</td>
+%{--                                    <td>2</td>--}%
                                     <td><b>SHIPMENTS</b></td>
                                     <td><button type="button"
                                                 class="btn btn-round btn-simple btn-sm btn-danger btn-filter"
@@ -101,7 +101,7 @@
                                     </button></td>
                                 </tr>
                                 <tr>
-                                    <td>3</td>
+%{--                                    <td>3</td>--}%
                                     <td><b>SALES</b></td>
                                     <td><button type="button"
                                                 class="btn btn-round btn-simple btn-sm btn-danger btn-filter"
@@ -109,7 +109,7 @@
                                     </button></td>
                                 </tr>
                                 <tr>
-                                    <td>4</td>
+%{--                                    <td>4</td>--}%
                                     <td><b>PURCHASE</b></td>
                                     <td><button type="button"
                                                 class="btn btn-round btn-simple btn-sm btn-danger btn-filter"
@@ -117,7 +117,7 @@
                                     </button></td>
                                 </tr>
                                 <tr>
-                                    <td>5</td>
+%{--                                    <td>5</td>--}%
                                     <td><b>PRODUCT</b></td>
                                     <td><button type="button"
                                                 class="btn btn-round btn-simple btn-sm btn-danger btn-filter"
@@ -125,7 +125,7 @@
                                     </button></td>
                                 </tr>
                                 <tr>
-                                    <td>6</td>
+%{--                                    <td>6</td>--}%
                                     <td><b>INVENTORY</b></td>
                                     <td><button type="button"
                                                 class="btn btn-round btn-simple btn-sm btn-danger btn-filter"
@@ -133,7 +133,7 @@
                                     </button></td>
                                 </tr>
                                 <tr>
-                                    <td>7</td>
+%{--                                    <td>7</td>--}%
                                     <td><b>FACILITY</b></td>
                                     <td><button type="button"
                                                 class="btn btn-round btn-simple btn-sm btn-danger btn-filter"
@@ -141,7 +141,7 @@
                                     </button></td>
                                 </tr>
                                 <tr>
-                                    <td>8</td>
+%{--                                    <td>8</td>--}%
                                     <td><b>ENTITY</b></td>
                                     <td><button type="button"
                                                 class="btn btn-round btn-simple btn-sm btn-danger btn-filter"
@@ -149,7 +149,7 @@
                                     </button></td>
                                 </tr>
                                 <tr>
-                                    <td>9</td>
+%{--                                    <td>9</td>--}%
                                     <td><b>ACCOUNTS</b></td>
                                     <td><button type="button"
                                                 class="btn btn-round btn-simple btn-sm btn-danger btn-filter"
