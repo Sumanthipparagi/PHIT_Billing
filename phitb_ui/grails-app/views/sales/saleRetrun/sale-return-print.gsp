@@ -23,7 +23,6 @@
     }
 
 
-
     th, td {
         text-align: left;
         padding: 1.5px;
@@ -40,7 +39,6 @@
         /*color: #fff;*/
         /*background: #000;*/
     }
-
 
 
     body {
@@ -64,9 +62,17 @@
             top: 120px;
 
         }
+
         .print {
-            margin-left: 110px !important;
+            width: 270%!important;
+            margin-left: -90px !important;
+            float: left;
             /*white-space:nowrap;*/
+        }
+
+        .container-width
+        {
+            width: 86.8%!important;
         }
 
         .signatory {
@@ -86,13 +92,11 @@
             display: table-cell;
             padding-right: 1em;
         }
-        thead
-        {
+
+        thead {
             font-size: 6pt;
             padding: 0px;
         }
-
-
     }
 
     ul {
@@ -108,14 +112,17 @@
     li {
         display: table-row;
     }
+
     .print {
-        margin-left: 200px;
+        width: 170%;
+        float: left;
+        margin: 5% ;
     }
 
     /*thead{*/
     /*    display:table-header-group;!*repeat table headers on each page*!*/
     /*}*/
-    .page-number{
+    .page-number {
         content: counter(page)
     }
 
@@ -126,6 +133,32 @@
         color: lightgrey;
         opacity: 1;
         font-size:120px;
+    }
+
+
+    /* ----------- Non-Retina Screens ----------- */
+    @media screen
+    and (min-device-width: 1200px)
+    and (max-device-width: 1600px)
+    and (-webkit-min-device-pixel-ratio: 1) {
+        .print {
+            width: 170%;
+            float: left;
+            margin: 5% ;
+        }
+    }
+
+    /* ----------- Retina Screens ----------- */
+    @media screen
+    and (min-device-width: 1200px)
+    and (max-device-width: 1600px)
+    and (-webkit-min-device-pixel-ratio: 2)
+    and (min-resolution: 192dpi) {
+        .print {
+            width: 170%;
+            float: left;
+            margin: 5% ;
+        }
     }
     </style>
 </head>
@@ -365,28 +398,31 @@
 </g:if>
 <div class="container" style="display: flex; ">
     %{--    height:200px--}%
-    <div style="width: 50%;">
-
+    <div style="width: 66.5%;" class="container-width">
+        <g:if test="${saleBillDetail.billStatus == 'CANCELLED'}">
+            <div id="watermark" class="print-watermark">CANCELLED</div>
+        </g:if>
+        <g:elseif test="${saleBillDetail.billStatus == 'DRAFT'}">
+            <div id="watermark" class="print-watermark">DRAFT</div>
+        </g:elseif>
         <p>No of cases <br>
             Weight in Kgs :<br>
             Party Ref No. : <br>
             Rev-Charge :</p>
-%{--        <g:if test="${termsConditions[0].form.formName == "SALE_RETURN"}">--}%
-%{--        <p>${termsConditions[0].termCondition}</p>--}%
-%{--        </g:if>--}%
 
+    %{--        <p>${termsConditions[0].termCondition}</p>--}%
         <g:each var="t" in="${termsConditions}" status="i">
-            <g:if test="${t?.form?.formType == Constants.SALE_RETURN && t?.deleted == false}">
-                    <p>${t?.termCondition}</p>
+            <g:if test="${t?.form?.formType == Constants.SALE_INVOICE && t?.deleted == false}">
+                <p>${raw(t?.termCondition)}</p>
             </g:if>
         </g:each>
 
     </div>
 
-    <div style="float: right;">
-        <table class="print" style="margin-top: 10px;margin-left:78px;margin-right:10px;width: 78%;">
+    <div>
+        <table class="print" style="">
             <tr>
-                <th>Sub Total</th>
+                <th>Total</th>
                 <td>0.00</td>
                 <td>${String.format("%.2f", totalBeforeTaxes)}</td>
             </tr>
@@ -395,7 +431,7 @@
                 <tr>
                     <th>Add SGST ${sg.key}% on</th>
                     <td>${String.format("%.2f", sg.value)}</td>
-                    <td class="totalgst">${String.format("%.2f",sg.value * (Double.parseDouble(sg.key.toString())/100))}</td>
+                    <td class="totalgst">${String.format("%.2f", sg.value * (Double.parseDouble(sg.key.toString()) / 100))}</td>
                 </tr>
 
             </g:each>
@@ -404,7 +440,7 @@
                 <tr>
                     <th>Add CGST ${cg.key}% on</th>
                     <td>${String.format("%.2f", cg.value)}</td>
-                    <td class="totalgst">${String.format("%.2f",cg.value * (Double.parseDouble(cg.key.toString())/100))}</td>
+                    <td class="totalgst">${String.format("%.2f", cg.value * (Double.parseDouble(cg.key.toString()) / 100))}</td>
                 </tr>
 
             </g:each>
@@ -413,12 +449,12 @@
                 <tr>
                     <th>Add IGST ${ig.key}% on</th>
                     <td>${String.format("%.2f", ig.value)}</td>
-                    <td class="totalgst">${String.format("%.2f",ig.value * (Double.parseDouble(ig.key.toString())/100))}</td>
+                    <td class="totalgst">${String.format("%.2f", ig.value * (Double.parseDouble(ig.key.toString()) / 100))}</td>
                 </tr>
 
             </g:each>
             <tr>
-                <th>Taxable Amt.</th>
+                <th>Net Invoice Amt.</th>
                 <td>0.00</td>
                 <td id="netInvAmt"></td>
             </tr>
@@ -438,13 +474,14 @@
                 <td>0.00</td>
             </tr>
             <tr>
-                <th>Total</th>
+                <th>Net Payable Amt.</th>
                 <td>0.00</td>
                 <td id="netPayAmt"></td>
             </tr>
         </table>
     </div>
 </div>
+
 <br>
 <br>
 
