@@ -135,7 +135,12 @@
         font-size:120px;
     }
 
-    @media screen and (min-width: 768px) {
+
+    /* ----------- Non-Retina Screens ----------- */
+    @media screen
+    and (min-device-width: 1200px)
+    and (max-device-width: 1600px)
+    and (-webkit-min-device-pixel-ratio: 1) {
         .print {
             width: 170%;
             float: left;
@@ -143,7 +148,12 @@
         }
     }
 
-    @media screen and (min-width: 992px) {
+    /* ----------- Retina Screens ----------- */
+    @media screen
+    and (min-device-width: 1200px)
+    and (max-device-width: 1600px)
+    and (-webkit-min-device-pixel-ratio: 2)
+    and (min-resolution: 192dpi) {
         .print {
             width: 170%;
             float: left;
