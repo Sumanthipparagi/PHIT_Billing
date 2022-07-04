@@ -26,7 +26,11 @@ class UrlMappings {
             //Vehicle Detail
             "/vehicledetail(.$format)?"(controller: 'vehicleDetail') { action = [GET: 'index', POST: 'save'] }
             "/vehicledetail/datatable(.$format)?"(controller: 'vehicleDetail') { action = [GET: 'dataTable'] }
-            "/vehicledetail/$id(.$format)?"(controller: 'vehicleDetail') { action = [GET: 'show', PUT: 'update', DELETE: 'delete'] }
+            "/vehicledetail/$id(.$format)?"(controller: 'vehicleDetail') { action = [GET: 'show', PUT: 'update',
+                                                                                     DELETE: 'delete'] }
+
+//           Status
+            "/status"(controller: 'status', action: 'index')
 
         }
     }

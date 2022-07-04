@@ -54,6 +54,8 @@ class UrlMappings {
                 action = [GET:'getByProductIdAndBatch'] }
 
 
+            "/status"(controller: 'status', action: 'index')
+
         }
     }
 }

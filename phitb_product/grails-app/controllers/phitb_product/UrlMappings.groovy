@@ -205,6 +205,8 @@ class UrlMappings {
             "/unittypemasterbyentity/$id(.$format)?"(controller: 'unitTypeMaster') {
                 action = [GET: 'getAllByEntityId']
             }
+
+            "/status"(controller: 'status',action: 'index')
         }
     }
 }

@@ -15,6 +15,28 @@ import javax.ws.rs.core.Response
 @Transactional
 class FacilityService {
 
+
+    def facilityServiceStatus()
+    {
+        Client client = ClientBuilder.newClient();
+        WebTarget target = client.target(new Links().API_GATEWAY);
+        try
+        {
+            Response apiResponse = target
+                    .path(new Links().FACILITY_SERVICE_STATUS)
+                    .request(MediaType.APPLICATION_JSON_TYPE)
+                    .get()
+            return apiResponse
+        }
+        catch (Exception ex)
+        {
+            System.err.println('Service :facility , action :  facilityServiceStatus  , Ex:' + ex)
+            log.error('Service :facility , action :  facilityServiceStatus  , Ex:' + ex)
+        }
+
+    }
+
+
     def saveFridge(JSONObject jsonObject)
     {
         Client client = ClientBuilder.newClient()
@@ -24,7 +46,7 @@ class FacilityService {
         {
             println(jsonObject)
             Response apiResponse = target
-                    .path(new Links().FRIDGE_SAVE)
+                    .path(new Links().FACILITY_SERVICE_STATUS)
                     .request(MediaType.APPLICATION_JSON_TYPE)
                     .post(Entity.entity(jsonObject.toString(),MediaType.APPLICATION_JSON_TYPE))
             println(apiResponse)

@@ -64,8 +64,15 @@
         }
 
         .print {
-            margin-left: 110px !important;
+            width: 220%!important;
+            margin-left: -80px !important;
+            float: left;
             /*white-space:nowrap;*/
+        }
+
+        .container-width
+        {
+            width: 90%!important;
         }
 
         .signatory {
@@ -107,7 +114,9 @@
     }
 
     .print {
-        margin-left: 200px;
+        width: 170%;
+        float: left;
+        margin: 5% ;
     }
 
     /*thead{*/
@@ -124,6 +133,32 @@
         color: lightgrey;
         opacity: 1;
         font-size:120px;
+    }
+
+
+    /* ----------- Non-Retina Screens ----------- */
+    @media screen
+    and (min-device-width: 1200px)
+    and (max-device-width: 1600px)
+    and (-webkit-min-device-pixel-ratio: 1) {
+        .print {
+            width: 170%;
+            float: left;
+            margin: 5% ;
+        }
+    }
+
+    /* ----------- Retina Screens ----------- */
+    @media screen
+    and (min-device-width: 1200px)
+    and (max-device-width: 1600px)
+    and (-webkit-min-device-pixel-ratio: 2)
+    and (min-resolution: 192dpi) {
+        .print {
+            width: 170%;
+            float: left;
+            margin: 5% ;
+        }
     }
     </style>
 </head>
@@ -360,7 +395,7 @@
 
 <div class="container" style="display: flex; ">
     %{--    height:200px--}%
-    <div style="width: 50%;">
+    <div style="width: 80%;" class="container-width">
     <g:if test="${saleBillDetail.billStatus == 'CANCELLED'}">
         <div id="watermark" class="print-watermark">CANCELLED</div>
     </g:if>
@@ -381,8 +416,8 @@
 
 </div>
 
-    <div style="float: right;">
-        <table class="print" style="margin-top: 10px;margin-left:78px;margin-right:10px;width: 78%;">
+    <div>
+        <table class="print" style="">
             <tr>
                 <th>Total</th>
                 <td>0.00</td>

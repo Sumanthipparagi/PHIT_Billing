@@ -21,6 +21,26 @@ import java.text.SimpleDateFormat
 @Transactional
 class InventoryService {
 
+    def inventoryServiceStatus()
+    {
+        Client client = ClientBuilder.newClient();
+        WebTarget target = client.target(new Links().API_GATEWAY);
+        try
+        {
+            Response apiResponse = target
+                    .path(new Links().INVENTORY_SERVICE_STATUS)
+                    .request(MediaType.APPLICATION_JSON_TYPE)
+                    .get()
+            return apiResponse
+        }
+        catch (Exception ex)
+        {
+            System.err.println('Service :inventory , action :  salesServiceStatus  , Ex:' + ex)
+            log.error('Service :inventory , action :  salesServiceStatus  , Ex:' + ex)
+        }
+
+    }
+
     def getStockBookById(long id)
     {
         Client client = ClientBuilder.newClient().register(JacksonFeature.class)

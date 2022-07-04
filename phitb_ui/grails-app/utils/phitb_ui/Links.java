@@ -15,6 +15,14 @@ public class Links
 
 //    Status
     public static String SYSTEM_SERVICE_STATUS = "api/v1.0/system/status";
+    public static String SHIPMENT_SERVICE_STATUS = "api/v1.0/shipments/status";
+    public static String SALES_SERVICE_STATUS = "api/v1.0/sales/status";
+    public static String PURCHASE_SERVICE_STATUS = "api/v1.0/purchase/status";
+    public static String PRODUCT_SERVICE_STATUS = "api/v1.0/product/status";
+    public static String INVENTORY_SERVICE_STATUS = "api/v1.0/inventory/status";
+    public static String FACILITY_SERVICE_STATUS = "api/v1.0/facility/status";
+    public static String ENTITY_SERVICE_STATUS = "api/v1.0/entity/status";
+    public static String ACCOUNTS_SERVICE_STATUS = "api/v1.0/accounts/status";
 
     //    Gender Master
     public static String GENDER_MASTER_SHOW = "api/v1.0/system/gender";

@@ -17,6 +17,26 @@ import javax.ws.rs.core.Response
 class AccountsService
 {
 
+    def accountsServiceStatus()
+    {
+        Client client = ClientBuilder.newClient();
+        WebTarget target = client.target(new Links().API_GATEWAY);
+        try
+        {
+            Response apiResponse = target
+                    .path(new Links().ACCOUNTS_SERVICE_STATUS)
+                    .request(MediaType.APPLICATION_JSON_TYPE)
+                    .get()
+            return apiResponse
+        }
+        catch (Exception ex)
+        {
+            System.err.println('Service :accounts , action :  accountsServiceStatus  , Ex:' + ex)
+            log.error('Service :accounts , action :  accountsServiceStatus  , Ex:' + ex)
+        }
+
+    }
+
     //Bank Register
     def saveBankRegister(JSONObject jsonObject)
     {

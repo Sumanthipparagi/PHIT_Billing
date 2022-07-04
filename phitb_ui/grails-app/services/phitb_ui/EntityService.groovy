@@ -18,6 +18,26 @@ import javax.ws.rs.core.Response
 @Transactional
 class EntityService {
 
+    def entityServiceStatus()
+    {
+        Client client = ClientBuilder.newClient();
+        WebTarget target = client.target(new Links().API_GATEWAY);
+        try
+        {
+            Response apiResponse = target
+                    .path(new Links().ENTITY_SERVICE_STATUS)
+                    .request(MediaType.APPLICATION_JSON_TYPE)
+                    .get()
+            return apiResponse
+        }
+        catch (Exception ex)
+        {
+            System.err.println('Service :entity , action :  entityServiceStatus  , Ex:' + ex)
+            log.error('Service :sales , action :  entityServiceStatus  , Ex:' + ex)
+        }
+
+    }
+
     def saveEntity(JSONObject jsonObject)
     {
         Client client = ClientBuilder.newClient()
@@ -604,7 +624,7 @@ class EntityService {
 
     def putHqArea(JSONObject jsonObject)
     {
-        Client client = ClientBuilder.newClient()
+        Client client = ClientBuilder.newClient().register(JacksonFeature.class)
         WebTarget target = client.target(new Links().API_GATEWAY)
 
         try
@@ -613,7 +633,7 @@ class EntityService {
                     .path(new Links().HQ_AREA_UPDATE)
                     .resolveTemplate("id", jsonObject.id)
                     .request(MediaType.APPLICATION_JSON_TYPE)
-                    .put(Entity.entity(jsonObject.toString(),MediaType.APPLICATION_JSON_TYPE))
+                    .put(Entity.entity(jsonObject,MediaType.APPLICATION_JSON_TYPE))
             println(jsonObject)
             return apiResponse
         }
