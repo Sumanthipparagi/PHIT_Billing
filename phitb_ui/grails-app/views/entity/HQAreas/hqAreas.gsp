@@ -258,7 +258,7 @@
 
     $(document).on("click", ".editbtn", function () {
         id = $(this).data('id');
-        $(".hqname").val($(this).attr('data-date'));
+        $(".hqname").val($(this).attr('data-hqname'));
         var districtId =$(this).attr('data-districtId');
         $("#districtIds").val(districtId.split(",")).change();
         $(".hqAreaTitle").text("Update HQ Area");
