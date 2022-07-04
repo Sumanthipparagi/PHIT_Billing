@@ -47,8 +47,8 @@ class TempStockBookService {
         } else {
             tempStockBooks = TempStockBook.findAllByProductIdAndBatchNumberAndExpDateGreaterThanEquals(productId, batch, currentDate)
         }
-
         if (tempStockBooks?.size() == 0) {
+            //send batches which are not in temp stock
             ArrayList<StockBook> stockBooks = StockBook.findAllByProductIdAndExpDateGreaterThanEquals(productId, currentDate)
             return stockBooks
         } else {

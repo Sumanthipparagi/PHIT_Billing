@@ -613,7 +613,8 @@ class SaleReturnController
                     }
                     for(JSONObject json1 : jsonArray2)
                     {
-                        entityArray.put(json1.get("customer"))
+                        if(json1.has("customer"))
+                            entityArray.put(json1.get("customer"))
                     }
                     entityArray.each {
                         def cityResp = new SystemService().getCityById(it.cityId.toString())

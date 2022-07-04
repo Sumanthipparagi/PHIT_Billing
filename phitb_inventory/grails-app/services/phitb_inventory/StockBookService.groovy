@@ -49,11 +49,7 @@ class StockBookService {
         Date currentDate = new Date()
         Integer o = offset ? Integer.parseInt(offset.toString()) : 0
         Integer l = limit ? Integer.parseInt(limit.toString()) : 100
-        ArrayList<TempStockBook> tempStockBooks = TempStockBook.findAllByProductId(productId)
-        if (tempStockBooks.size() > 0) {
-            return tempStockBooks
-        } else
-            return StockBook.findAllByProductIdAndExpDateGreaterThanEquals(productId, currentDate, [sort: 'id', max: l, offset: o, order: 'desc'])
+        return StockBook.findAllByProductIdAndExpDateGreaterThanEquals(productId, currentDate, [sort: 'id', max: l, offset: o, order: 'desc'])
     }
 
     def getAllByProductSaleReturn(long limit, long offset, long productId) {

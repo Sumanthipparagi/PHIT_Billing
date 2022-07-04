@@ -525,7 +525,7 @@ class SaleEntryController {
                     double sqty = productDetail.get("sqty")
                     double freeQty = productDetail.get("freeQty")
 
-                    if ((originalSqty + originalFqty) == (sqty + freeQty)) {
+                    if ((originalSqty + originalFqty) == (sqty + freeQty) && originalSqty == sqty && originalFqty == freeQty) {
                         remainingQty += sqty
                         remainingFreeQty += freeQty
                     } else {
@@ -754,7 +754,7 @@ class SaleEntryController {
                 double sqty = productDetail.get("sqty")
                 double freeQty = productDetail.get("freeQty")
 
-                if ((originalSqty + originalFqty) == (sqty + freeQty)) {
+                if ((originalSqty + originalFqty) == (sqty + freeQty)  && originalSqty == sqty && originalFqty == freeQty) {
                     remainingQty += sqty
                     remainingFreeQty += freeQty
                 } else {
