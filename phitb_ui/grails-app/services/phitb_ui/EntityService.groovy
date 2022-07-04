@@ -633,7 +633,7 @@ class EntityService {
                     .path(new Links().HQ_AREA_UPDATE)
                     .resolveTemplate("id", jsonObject.id)
                     .request(MediaType.APPLICATION_JSON_TYPE)
-                    .put(Entity.entity(jsonObject.toString(),MediaType.APPLICATION_JSON_TYPE))
+                    .put(Entity.entity(jsonObject,MediaType.APPLICATION_JSON_TYPE))
             println(jsonObject)
             return apiResponse
         }
