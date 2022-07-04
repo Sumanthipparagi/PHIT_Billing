@@ -578,7 +578,7 @@ class PurchaseEntryController {
                         JSONObject customer = new EntityService().getEntityById(json.get("supplierId").toString())
                         def city = new SystemService().getCityById(customer?.cityId?.toString())
                         customer?.put("city", city)
-                        json.put("customer", customer)
+                        json.put("supplier", customer)
                     }
                     responseObject.put("data", jsonArray)
                 }

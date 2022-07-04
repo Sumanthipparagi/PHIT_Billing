@@ -224,6 +224,7 @@
                 dataType: 'json',
 
                 dataSrc: function (json) {
+                    console.log(json)
                     var return_data = [];
                     for (var i = 0; i < json.data.length; i++) {
                         var approveInvoice = "";
