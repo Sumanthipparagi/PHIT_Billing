@@ -259,7 +259,7 @@
                             'grossAmt': grossAmt,
                             'date': moment(json.data[i].dateCreated).format('DD-MM-YYYY  h:mm a'),
                             'netAmt': json.data[i].totalAmount.toFixed(2),
-                            'city': json.data[i]?.customer?.city?.areaName + "<br><small>(" + json.data[i]?.customer?.city?.districtName + ")</small>",
+                            'city': json.data[i]?.supplier?.city?.areaName + "<br><small>(" + json.data[i]?.supplier?.city?.districtName + ")</small>",
                             'bill_status': json.data[i].billStatus,
                             'balance': json.data[i].balAmount.toFixed(2),
                             'finYear': json.data[i].financialYear
