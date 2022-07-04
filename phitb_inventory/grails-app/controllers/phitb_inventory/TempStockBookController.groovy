@@ -204,7 +204,7 @@ class TempStockBookController {
             boolean updateTempStock = true
             if(params.id != null)
             {
-                 updateTempStock = params.updateTempStock
+                 updateTempStock = Boolean.parseBoolean(params.updateTempStock)
             }
             tempStockBookService.delete(id, updateTempStock)
             response.status = 200
