@@ -147,7 +147,7 @@
                                             </label>
                                             <select class="form-control show-tick division" name="division"
                                                     id="division" required>
-                                                <option value="">Please Select</option>
+                                                <option value="0">Please Select</option>
                                                 <g:each var="d" in="${divisions}">
                                                     <option value="${d.id}">${d.divisionName}</option>
                                                 </g:each>
@@ -409,6 +409,7 @@
                                                 Product Group
                                             </label>
                                             <select class="form-control show-tick group" name="group" id="group">
+                                                <option value="0">--Please Select--</option>
                                                 <g:each var="c" in="${productGroups}">
                                                     <option value="${c.id}">${c.groupName}</option>
                                                 </g:each>
@@ -419,6 +420,7 @@
                                                 Product Schedule
                                             </label>
                                             <select class="form-control show-tick schedule" name="schedule" id="schedule">
+                                                <option value="0">--Please Select--</option>
                                                 <g:each var="c" in="${productSchedules}">
                                                     <option value="${c.id}">${c.scheduleCode}</option>
                                                 </g:each>
@@ -429,6 +431,7 @@
                                                 Product Category
                                             </label>
                                             <select class="form-control show-tick category1" name="category" id="category1">
+                                                <option value="0">--Please Select--</option>
                                                 <g:each var="c" in="${productCategories}">
                                                     <option value="${c.id}">${c.categoryName}</option>
                                                 </g:each>
