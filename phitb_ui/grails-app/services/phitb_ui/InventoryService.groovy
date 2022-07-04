@@ -321,8 +321,8 @@ class InventoryService {
 
     def getStocksOfProduct(String id) {
         Client client = ClientBuilder.newClient();
-        //WebTarget target = client.target(new Links().API_GATEWAY);
-        WebTarget target = client.target("http://localhost:8086");
+        WebTarget target = client.target(new Links().API_GATEWAY);
+        //WebTarget target = client.target("http://localhost:8086");
         try {
 
             Response apiResponse = target
@@ -362,8 +362,8 @@ class InventoryService {
 
     def getTempStocksOfProductAndBatch(String id, String batch) {
         Client client = ClientBuilder.newClient()
-        //WebTarget target = client.target(new Links().API_GATEWAY)
-        WebTarget target = client.target("http://localhost:8086")
+        WebTarget target = client.target(new Links().API_GATEWAY)
+        //WebTarget target = client.target("http://localhost:8086")
         String url = ""
         if(batch)
             url = new Links().GET_TEMP_STOCK_PRODUCT + "/product/" + id + "/batch/"+ batch
