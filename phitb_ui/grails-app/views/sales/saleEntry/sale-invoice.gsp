@@ -64,15 +64,15 @@
         }
 
         .print {
-            width: 220%!important;
-            margin-left: -80px !important;
+            width: 156%!important;
+            margin-right: 5% !important;
             float: left;
             /*white-space:nowrap;*/
         }
 
         .container-width
         {
-            width: 90%!important;
+            width: 70%!important;
         }
 
         .signatory {
@@ -114,7 +114,7 @@
     }
 
     .print {
-        width: 170%;
+        width: 238%;
         float: left;
         margin: 5% ;
     }
@@ -136,30 +136,30 @@
     }
 
 
-    /* ----------- Non-Retina Screens ----------- */
-    @media screen
-    and (min-device-width: 1200px)
-    and (max-device-width: 1600px)
-    and (-webkit-min-device-pixel-ratio: 1) {
-        .print {
-            width: 170%;
-            float: left;
-            margin: 5% ;
-        }
-    }
+    /*!* ----------- Non-Retina Screens ----------- *!*/
+    /*@media screen*/
+    /*and (min-device-width: 1200px)*/
+    /*and (max-device-width: 1600px)*/
+    /*and (-webkit-min-device-pixel-ratio: 1) {*/
+    /*    .print {*/
+    /*        width: 170%;*/
+    /*        float: left;*/
+    /*        margin: 5% ;*/
+    /*    }*/
+    /*}*/
 
-    /* ----------- Retina Screens ----------- */
-    @media screen
-    and (min-device-width: 1200px)
-    and (max-device-width: 1600px)
-    and (-webkit-min-device-pixel-ratio: 2)
-    and (min-resolution: 192dpi) {
-        .print {
-            width: 170%;
-            float: left;
-            margin: 5% ;
-        }
-    }
+    /*!* ----------- Retina Screens ----------- *!*/
+    /*@media screen*/
+    /*and (min-device-width: 1200px)*/
+    /*and (max-device-width: 1600px)*/
+    /*and (-webkit-min-device-pixel-ratio: 2)*/
+    /*and (min-resolution: 192dpi) {*/
+    /*    .print {*/
+    /*        width: 170%;*/
+    /*        float: left;*/
+    /*        margin: 5% ;*/
+    /*    }*/
+    /*}*/
     </style>
 </head>
 
@@ -395,7 +395,7 @@
 
 <div class="container" style="display: flex; ">
     %{--    height:200px--}%
-    <div style="width: 80%;" class="container-width">
+    <div style="width: 70%;" class="container-width">
     <g:if test="${saleBillDetail.billStatus == 'CANCELLED'}">
         <div id="watermark" class="print-watermark">CANCELLED</div>
     </g:if>
