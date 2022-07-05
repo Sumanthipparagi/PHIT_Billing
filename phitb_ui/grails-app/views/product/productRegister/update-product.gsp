@@ -137,7 +137,8 @@
                                             <select class="form-control show-tick rackId" name="rackId" id="rackId">
                                                 <option value="0">Please Select</option>
                                                 <g:each var="r" in="${racks}">
-                                                    <option value="${r.id}" <g:if test="${r.id == product.rackId}">selected</g:if>>${r.rackName}</option>
+                                                    <option value="${r?.id}"
+                                                            <g:if test="${r?.id == product?.rackId}">selected</g:if>>${r.rackName}</option>
                                                 </g:each>
                                             </select>
                                         </div>
@@ -149,7 +150,8 @@
                                                     id="division" required>
                                                 <option value="">Please Select</option>
                                                 <g:each var="d" in="${divisions}">
-                                                    <option value="${d.id}"  <g:if test="${d.id == product.division.id}">selected</g:if>>${d.divisionName}</option>
+                                                    <option value="${d?.id}"  <g:if test="${d?.id ==
+                                                            product?.division?.id}">selected</g:if>>${d?.divisionName}</option>
                                                 </g:each>
                                             </select>
                                         </div>
@@ -168,7 +170,8 @@
                                                     id="composition">
                                                 <option value="0">Please Select</option>
                                                 <g:each var="c" in="${compositions}">
-                                                    <option value="${c.id}" <g:if test="${c.id == product.composition.id}">selected</g:if>>${c.compositionName}</option>
+                                                    <option value="${c?.id}" <g:if test="${c?.id ==
+                                                            product?.composition?.id}">selected</g:if>>${c?.compositionName}</option>
                                                 </g:each>
                                             </select>
                                         </div>
@@ -178,8 +181,8 @@
                                             </label>
                                             <select class="form-control show-tick costRange" name="costRange" id="costRange">
                                                 <g:each var="c" in="${productcost}">
-                                                    <option value="${c.id}" <g:if test="${c.id ==
-                                                            product.costRange.id}">selected</g:if>>${c.priceType}</option>
+                                                    <option value="${c?.id}" <g:if test="${c?.id ==
+                                                            product?.costRange?.id}">selected</g:if>>${c?.priceType}</option>
                                                 </g:each>
                                             </select>
                                         </div>
@@ -190,7 +193,8 @@
                                             <select class="form-control show-tick productType" name="productType"
                                                     id="productType">
                                                 <g:each var="c" in="${productTypes}">
-                                                    <option value="${c.id}" <g:if test="${c.id == product.productType.id}">selected</g:if>>${c.productType}</option>
+                                                    <option value="${c?.id}" <g:if test="${c?.id ==
+                                                            product?.productType?.id}">selected</g:if>>${c?.productType}</option>
                                                 </g:each>
                                             </select>
                                         </div>
@@ -210,7 +214,7 @@
                                                 Unit Packing
                                             </label>
                                             <input type="text" id="unitPacking" class="form-control unitPacking"
-                                                   name="unitPacking" value="${product.unitPacking}"
+                                                   name="unitPacking" value="${product?.unitPacking}"
                                                    placeholder="Unit Packing"/>
                                         </div>
                                         %{--                                        <div class="col-lg-6 form-group  form-float">--}%
@@ -409,7 +413,8 @@
                                             </label>
                                             <select class="form-control show-tick group" name="group" id="group">
                                                 <g:each var="c" in="${productGroups}">
-                                                    <option value="${c.id}" <g:if test="${c.id == product.schedule.id}">selected</g:if>>${c.groupName}</option>
+                                                    <option value="${c?.id}" <g:if test="${c?.id ==
+                                                            product?.schedule?.id}">selected</g:if>>${c?.groupName}</option>
                                                 </g:each>
                                             </select>
                                         </div>
@@ -419,7 +424,7 @@
                                             </label>
                                             <select class="form-control show-tick schedule" name="schedule" id="schedule">
                                                 <g:each var="c" in="${productSchedules}">
-                                                    <option value="${c.id}">${c.scheduleCode}</option>
+                                                    <option value="${c?.id}">${c?.scheduleCode}</option>
                                                 </g:each>
                                             </select>
                                         </div>
@@ -429,7 +434,8 @@
                                             </label>
                                             <select class="form-control show-tick category1" name="category" id="category1">
                                                 <g:each var="c" in="${productCategories}">
-                                                    <option value="${c.id}" <g:if test="${c.id == product.category.id}">selected</g:if> >${c.categoryName}</option>
+                                                    <option value="${c?.id}" <g:if test="${c?.id ==
+                                                            product?.category?.id}">selected</g:if>>${c?.categoryName}</option>
                                                 </g:each>
                                             </select>
                                         </div>
@@ -450,9 +456,11 @@
                                             <select class="form-control show-tick discountAllowed"
                                                     name="discountAllowed" id="discountAllowed">
                                                 <option value="1"
-                                                        <g:if test="${product.discountAllowed == "1"}">selected</g:if>>YES</option>
+                                                        <g:if
+                                                                test="${product?.discountAllowed == "1"}">selected</g:if>>YES</option>
                                                 <option value="0"
-                                                        <g:if test="${product.discountAllowed == "0"}">selected</g:if>>NO</option>
+                                                        <g:if
+                                                                test="${product?.discountAllowed == "0"}">selected</g:if>>NO</option>
                                             </select>
                                         </div>
                                         <div class="col-lg-6 form-group  form-float">

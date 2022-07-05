@@ -554,25 +554,33 @@ class PurchaseEntryController {
                 JSONObject responseObject = new JSONObject(apiResponse.readEntity(String.class))
                 if(responseObject)
                 {
+//                    JSONArray jsonArray = responseObject.data
+//                    JSONArray jsonArray2 = new JSONArray()
+//                    JSONArray jsonArray3 = new JSONArray()
+//                    JSONArray entityArray = new JSONArray()
+//                    JSONArray cityArray = new JSONArray()
+//                    for (JSONObject json : jsonArray) {
+//                        json.put("supplier", new EntityService().getEntityById(json.get("supplierId").toString()))
+//                        jsonArray2.put(json)
+//                    }
+//                    for(JSONObject json1 : jsonArray2)
+//                    {
+//                        entityArray.put(json1.get("supplier"))
+//                    }
+//                    entityArray.each {
+//                        def cityResp = new SystemService().getCityById(it.cityId.toString())
+//                        it.put("cityId", cityResp)
+//                    }
+//                    responseObject.put("data", jsonArray2)
+//                    responseObject.put("city",entityArray)
                     JSONArray jsonArray = responseObject.data
-                    JSONArray jsonArray2 = new JSONArray()
-                    JSONArray jsonArray3 = new JSONArray()
-                    JSONArray entityArray = new JSONArray()
-                    JSONArray cityArray = new JSONArray()
                     for (JSONObject json : jsonArray) {
-                        json.put("supplier", new EntityService().getEntityById(json.get("supplierId").toString()))
-                        jsonArray2.put(json)
+                        JSONObject customer = new EntityService().getEntityById(json.get("supplierId").toString())
+                        def city = new SystemService().getCityById(customer?.cityId?.toString())
+                        customer?.put("city", city)
+                        json.put("supplier", customer)
                     }
-                    for(JSONObject json1 : jsonArray2)
-                    {
-                        entityArray.put(json1.get("supplier"))
-                    }
-                    entityArray.each {
-                        def cityResp = new SystemService().getCityById(it.cityId.toString())
-                        it.put("cityId", cityResp)
-                    }
-                    responseObject.put("data", jsonArray2)
-                    responseObject.put("city",entityArray)
+                    responseObject.put("data", jsonArray)
                 }
                 respond responseObject, formats: ['json'], status: 200
             } else {

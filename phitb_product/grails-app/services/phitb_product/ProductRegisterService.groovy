@@ -93,10 +93,36 @@ class ProductRegisterService {
         productRegister.hsnCode = jsonObject.get("hsnCode").toString()
         productRegister.rackId = Long.parseLong(jsonObject.get("rackId").toString())
         productRegister.division = Division.findById(Long.parseLong(jsonObject.get("division").toString()))
-        productRegister.composition = CompositionMaster.findById(Long.parseLong(jsonObject.get("composition").toString()))
-        productRegister.costRange = ProductCostRange.findById(Long.parseLong(jsonObject.get("costRange").toString()))
-        productRegister.productType = ProductTypeMaster.findById(Long.parseLong(jsonObject.get("productType").toString()))
-        productRegister.unit = UnitTypeMaster.findById(Long.parseLong(jsonObject.get("unit").toString()))
+        if(jsonObject.get("composition").toString()!=0)
+        {
+            productRegister.composition = CompositionMaster.findById(Long.parseLong(jsonObject.get("composition").toString()))
+        }
+        else
+        {
+            productRegister.composition = null
+        }
+
+        if(jsonObject.get("costRange").toString()!=0)
+        {
+            productRegister.costRange = ProductCostRange.findById(Long.parseLong(jsonObject.get("costRange").toString()))
+
+        }else{
+            productRegister.costRange = null
+        }
+        if(jsonObject.get("productType").toString()!=0)
+        {
+            productRegister.productType = ProductTypeMaster.findById(Long.parseLong(jsonObject.get("productType").toString()))
+
+        }else{
+            productRegister.productType = null
+        }
+        if(jsonObject.get("productType").toString()!=0)
+        {
+            productRegister.unit = UnitTypeMaster.findById(Long.parseLong(jsonObject.get("unit").toString()))
+
+        }else{
+            productRegister.unit = null
+        }
         productRegister.unitPacking = jsonObject.get("unitPacking").toString()
         productRegister.productMoo = Long.parseLong("1")
         productRegister.perLotQuantity = jsonObject.get("perLotQuantity").toString()
@@ -118,9 +144,31 @@ class ProductRegisterService {
         productRegister.taxId = Long.parseLong(jsonObject.get("taxId").toString())
         productRegister.thresholdLevel = jsonObject.get("thresholdLevel").toString()
         productRegister.orderQuantity = Long.parseLong(jsonObject.get("orderQuantity").toString())
-        productRegister.group =  ProductGroupMaster.findById(Long.parseLong(jsonObject.get("group").toString()))
-        productRegister.schedule =  ProductScheduleMaster.findById(Long.parseLong(jsonObject.get("schedule").toString()))
-        productRegister.category =  ProductCategoryMaster.findById(Long.parseLong(jsonObject.get("category").toString()))
+        if(jsonObject.get("group").toString()!=0)
+        {
+            productRegister.group =  ProductGroupMaster.findById(Long.parseLong(jsonObject.get("group").toString()))
+        }
+        else
+        {
+            productRegister.group = null
+        }
+        if(jsonObject.get("schedule").toString()!=0)
+        {
+            productRegister.schedule =  ProductScheduleMaster.findById(Long.parseLong(jsonObject.get("schedule").toString()))
+        }
+        else
+        {
+            productRegister.schedule = null
+        }
+        if(jsonObject.get("category").toString()!=0)
+        {
+            productRegister.category =  ProductCategoryMaster.findById(Long.parseLong(jsonObject.get("category").toString()))
+        }
+        else
+        {
+            productRegister.category = null
+        }
+
         productRegister.sendMail = jsonObject.get("sendMail").toString()
         productRegister.discountAllowed = jsonObject.get("discountAllowed").toString()
         productRegister.ccmProduct = jsonObject.get("ccmProduct").toString()
@@ -151,10 +199,36 @@ class ProductRegisterService {
             productRegister.hsnCode = jsonObject.get("hsnCode").toString()
             productRegister.rackId = Long.parseLong(jsonObject.get("rackId").toString())
             productRegister.division = Division.findById(Long.parseLong(jsonObject.get("division").toString()))
-            productRegister.composition = CompositionMaster.findById(Long.parseLong(jsonObject.get("composition").toString()))
-            productRegister.costRange = ProductCostRange.findById(Long.parseLong(jsonObject.get("costRange").toString()))
-            productRegister.productType = ProductTypeMaster.findById(Long.parseLong(jsonObject.get("productType").toString()))
-            productRegister.unit = UnitTypeMaster.findById(Long.parseLong(jsonObject.get("unit").toString()))
+            if(jsonObject.get("composition").toString()!=0)
+            {
+                productRegister.composition = CompositionMaster.findById(Long.parseLong(jsonObject.get("composition").toString()))
+            }
+            else
+            {
+                productRegister.composition = null
+            }
+
+            if(jsonObject.get("costRange").toString()!=0)
+            {
+                productRegister.costRange = ProductCostRange.findById(Long.parseLong(jsonObject.get("costRange").toString()))
+
+            }else{
+                productRegister.costRange = null
+            }
+            if(jsonObject.get("productType").toString()!=0)
+            {
+                productRegister.productType = ProductTypeMaster.findById(Long.parseLong(jsonObject.get("productType").toString()))
+
+            }else{
+                productRegister.productType = null
+            }
+            if(jsonObject.get("productType").toString()!=0)
+            {
+                productRegister.unit = UnitTypeMaster.findById(Long.parseLong(jsonObject.get("unit").toString()))
+
+            }else{
+                productRegister.unit = null
+            }
             productRegister.unitPacking = jsonObject.get("unitPacking").toString()
             productRegister.productMoo = Long.parseLong("1")
             productRegister.perLotQuantity = jsonObject.get("perLotQuantity").toString()
@@ -176,9 +250,31 @@ class ProductRegisterService {
             productRegister.taxId = Long.parseLong(jsonObject.get("taxId").toString())
             productRegister.thresholdLevel = jsonObject.get("thresholdLevel").toString()
             productRegister.orderQuantity = Long.parseLong(jsonObject.get("orderQuantity").toString())
-            productRegister.group =  ProductGroupMaster.findById(Long.parseLong(jsonObject.get("group").toString()))
-            productRegister.schedule =  ProductScheduleMaster.findById(Long.parseLong(jsonObject.get("schedule").toString()))
-            productRegister.category =  ProductCategoryMaster.findById(Long.parseLong(jsonObject.get("category").toString()))
+            if(jsonObject.get("group").toString()!=0)
+            {
+                productRegister.group =  ProductGroupMaster.findById(Long.parseLong(jsonObject.get("group").toString()))
+            }
+            else
+            {
+                productRegister.group = null
+            }
+            if(jsonObject.get("schedule").toString()!=0)
+            {
+                productRegister.schedule =  ProductScheduleMaster.findById(Long.parseLong(jsonObject.get("schedule").toString()))
+            }
+            else
+            {
+                productRegister.schedule = null
+            }
+            if(jsonObject.get("category").toString()!=0)
+            {
+                productRegister.category =  ProductCategoryMaster.findById(Long.parseLong(jsonObject.get("category").toString()))
+            }
+            else
+            {
+                productRegister.category = null
+            }
+
             productRegister.sendMail = jsonObject.get("sendMail").toString()
             productRegister.discountAllowed = jsonObject.get("discountAllowed").toString()
             productRegister.ccmProduct = jsonObject.get("ccmProduct").toString()
