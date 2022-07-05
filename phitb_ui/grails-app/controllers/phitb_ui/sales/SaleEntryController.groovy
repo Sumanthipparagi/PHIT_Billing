@@ -269,8 +269,19 @@ class SaleEntryController {
             //update stockbook
             for (JSONObject sale : saleData) {
                 String tempStockRowId = sale.get("15")
-                def tmpStockBook = new InventoryService().getTempStocksById(Long.parseLong(tempStockRowId))
-                def stockBook = new InventoryService().getStockBookById(Long.parseLong(tmpStockBook.originalId))
+                //clear tempstockbook but do not update stockbook
+                new InventoryService().deleteTempStock(tempStockRowId, false)
+                try {
+                    if (billStatus.equalsIgnoreCase("ACTIVE")) {
+                        //push the invoice to e-Invoice service and generate IRN, save IRN to Sale Bill Details
+                        new EInvoiceService().generateIRN(session, saleBillDetail, saleProductDetails)
+                    }
+                }
+                catch (Exception ex) {
+                    ex.printStackTrace()
+                }
+
+               /* def stockBook = new InventoryService().getStockBookById(Long.parseLong(tmpStockBook.originalId))
                 stockBook.put("remainingQty", tmpStockBook.get("remainingQty"))
                 stockBook.put("remainingFreeQty", tmpStockBook.get("remainingFreeQty"))
                 stockBook.put("remainingReplQty", tmpStockBook.get("remainingReplQty"))
@@ -298,7 +309,7 @@ class SaleEntryController {
                     catch (Exception ex) {
                         ex.printStackTrace()
                     }
-                }
+                }*/
             }
 
             JSONObject responseJson = new JSONObject()

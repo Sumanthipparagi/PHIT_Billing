@@ -146,6 +146,15 @@ class TempStockBookService {
         tempStockBook.uuid = jsonObject.get("uuid")
         tempStockBook.save(flush: true)
         if (!tempStockBook.hasErrors()) {
+
+            //update stockbook
+            StockBook stockBook = StockBook.findByProductIdAndBatchNumber(tempStockBook.productId, tempStockBook.batchNumber)
+            stockBook.remainingQty = remainingQty
+            stockBook.remainingFreeQty = remainingFreeQty
+            stockBook.remainingReplQty = remainingReplQty
+            stockBook.isUpdatable = true
+            stockBook.save(flush:true)
+
             //update qty for tempstocks added by other users
             ArrayList<TempStockBook> tempStockBooks = TempStockBook.findAllByProductIdAndBatchNumberAndEntityId(productId, batchNumber, Long.parseLong(jsonObject.get("entityId").toString()))
             for (TempStockBook ts : tempStockBooks) {
@@ -235,6 +244,14 @@ class TempStockBookService {
                 tempStockBook.isUpdatable = true
                 if(!tempStockBook.hasErrors() && updateTempStock)
                 {
+                    //update stockbook
+                    StockBook stockBook = StockBook.findByProductIdAndBatchNumber(tempStockBook.productId, tempStockBook.batchNumber)
+                    stockBook.remainingQty += tempStockBook.userOrderQty
+                    stockBook.remainingFreeQty += tempStockBook.userOrderFreeQty
+                    stockBook.remainingReplQty += tempStockBook.userOrderReplQty
+                    stockBook.isUpdatable = true
+                    stockBook.save(flush:true)
+
                     //update qty for tempstocks added by other users
                     ArrayList<TempStockBook> tempStockBooks = TempStockBook.findAllByProductIdAndBatchNumberAndEntityId(tempStockBook.productId, tempStockBook.batchNumber, tempStockBook.entityId)
                     for (TempStockBook ts : tempStockBooks) {

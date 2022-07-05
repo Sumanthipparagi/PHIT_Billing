@@ -451,61 +451,71 @@
                         var sqty = hot.getDataAtCell(row, 4);
                         var fqty = hot.getDataAtCell(row, 5);
                         if (sqty && sqty > 0) {
-                            var batchId = hot.getCellMeta(row, 2)?.batchId; //batch
-                            var dt = hot.getDataAtRow(row);
-                            dt.push(batchId);
-                            var json = JSON.stringify(dt);
-                            var type = 'POST';
-                            var url = '/tempstockbook';
-                            var draftEdit = false;
-                            <g:if test="${customer != null}">
-                            draftEdit = true;
-                            </g:if>
-                            var beforeSendSwal;
-                            $.ajax({
-                                type: type,
-                                url: url,
-                                dataType: 'json',
-                                beforeSend: function () {
-                                    beforeSendSwal = Swal.fire({
-                                        // title: "Loading",
-                                        html:
-                                            '<img src="${assetPath(src: "/themeassets/images/1476.gif")}" width="100" height="100"/>',
-                                        showDenyButton: false,
-                                        showCancelButton: false,
-                                        showConfirmButton: false,
-                                        allowOutsideClick: false,
-                                        background: 'transparent'
-                                    });
-                                },
-                                data: {
-                                    rowData: json,
-                                    uuid: self.crypto.randomUUID(),
-                                    draftEdit: draftEdit
-                                },
-                                success: function (data) {
-                                    beforeSendSwal.close();
-                                    console.log("Data saved");
-                                    batchHot.updateSettings({
-                                        data: []
-                                    });
-                                    hot.setDataAtCell(row, 15, data.id);
+                            var tmpStockId = hot.getDataAtCell(row, 15);
+                            if(tmpStockId == null) {
+                                var batchId = hot.getCellMeta(row, 2)?.batchId; //batch
+                                var dt = hot.getDataAtRow(row);
+                                dt.push(batchId);
+                                var json = JSON.stringify(dt);
+                                var type = 'POST';
+                                var url = '/tempstockbook';
+                                var draftEdit = false;
+                                <g:if test="${customer != null}">
+                                draftEdit = true;
+                                </g:if>
+                                var beforeSendSwal;
+                                $.ajax({
+                                    type: type,
+                                    url: url,
+                                    dataType: 'json',
+                                    beforeSend: function () {
+                                        beforeSendSwal = Swal.fire({
+                                            // title: "Loading",
+                                            html:
+                                                '<img src="${assetPath(src: "/themeassets/images/1476.gif")}" width="100" height="100"/>',
+                                            showDenyButton: false,
+                                            showCancelButton: false,
+                                            showConfirmButton: false,
+                                            allowOutsideClick: false,
+                                            background: 'transparent'
+                                        });
+                                    },
+                                    data: {
+                                        rowData: json,
+                                        uuid: self.crypto.randomUUID(),
+                                        draftEdit: draftEdit
+                                    },
+                                    success: function (data) {
+                                        beforeSendSwal.close();
+                                        console.log("Data saved");
+                                        batchHot.updateSettings({
+                                            data: []
+                                        });
+                                        hot.setDataAtCell(row, 15, data.id);
 
-                                    for(var i = 0; i < 15; i++) {
-                                        hot.setCellMeta(row, i, 'readOnly', true);
+                                        for (var i = 0; i < 15; i++) {
+                                            hot.setCellMeta(row, i, 'readOnly', true);
+                                        }
+                                        mainTableRow = row + 1;
+                                        hot.alter('insert_row');
+                                        hot.selectCell(mainTableRow, 1);
+                                        hot.render();
+                                        calculateTotalAmt();
+                                    },
+                                    error: function (data) {
+                                        beforeSendSwal.close();
+                                        console.log("Failed");
+                                        alert("Unable to save the row, please delete it and add again.");
                                     }
-                                    mainTableRow = row + 1;
-                                    hot.alter('insert_row');
-                                    hot.selectCell(mainTableRow, 1);
-                                    hot.render();
-                                    calculateTotalAmt();
-                                },
-                                error: function (data) {
-                                    beforeSendSwal.close();
-                                    console.log("Failed");
-                                    alert("Unable to save the row, please delete it and add again.");
-                                }
-                            });
+                                });
+                            }
+                            else
+                            {
+                                mainTableRow = row + 1;
+                                hot.alter('insert_row');
+                                hot.selectCell(mainTableRow, 1);
+                                hot.render();
+                            }
                         } else {
                             alert("Invalid Quantity, please enter quantity greater than 0");
                         }

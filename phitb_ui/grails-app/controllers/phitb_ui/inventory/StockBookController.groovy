@@ -115,6 +115,9 @@ class StockBookController {
 
                     //get main stockbook data
                     for (JSONObject mainStock : mainStockBookData) {
+                        long remainingQty = mainStock.remainingQty
+                        long remainingFreeQty = mainStock.remainingFreeQty
+                        long remainingReplQty = mainStock.remainingReplQty
                         boolean toBeAddedToTmpStock = true
                         for (JSONObject tmpStock : tempStockBookData) {
                             long userId = 0
@@ -127,6 +130,17 @@ class StockBookController {
                                 break
                             }
                         }
+                        for (JSONObject tmpStock : tempStockBookData) {
+                            if(mainStock.productId == tmpStock.productId && mainStock.batchNumber == tmpStock.batchNumber) {
+                                if (tmpStock.remainingQty < remainingQty)
+                                    remainingQty = tmpStock.remainingQty
+                                if (tmpStock.remainingFreeQty < remainingFreeQty)
+                                    remainingFreeQty = tmpStock.remainingFreeQty
+                                if (tmpStock.remainingReplQty < remainingReplQty)
+                                    remainingReplQty = tmpStock.remainingReplQty
+                            }
+                        }
+
                         if (toBeAddedToTmpStock) {
                             String id = mainStock["taxId"]
                             def tax = new TaxController().show(id)
@@ -135,6 +149,9 @@ class StockBookController {
                             mainStock.put("sgst", tax.salesSgst)
                             mainStock.put("cgst", tax.salesCgst)
                             mainStock.put("igst", tax.salesIgst)
+                            mainStock.put("remainingQty", remainingQty)
+                            mainStock.put("remainingFreeQty", remainingFreeQty)
+                            mainStock.put("remainingReplQty", remainingReplQty)
                             responseArray.put(mainStock)
                         }
                     }
@@ -389,6 +406,8 @@ class StockBookController {
     def tempStockBookSave() {
         try {
             JSONArray jsonArray = new JSONArray(params.rowData)
+            String productId = jsonArray[1].toString()
+            String batchNumber = jsonArray[2].toString()
             long saleQty = jsonArray[4]
             long saleFreeQty = jsonArray[5]
             def draftEdit = Boolean.parseBoolean(params.draftEdit)
@@ -416,7 +435,37 @@ class StockBookController {
             if (!isEdit) {
                 //adding for first time
                 if (!draftEdit) {
-                    stockBook = new InventoryService().getStocksOfProductAndBatch(jsonArray[1].toString(), jsonArray[2].toString(), session.getAttribute("entityId").toString())
+                    stockBook = new InventoryService().getStocksOfProductAndBatch(productId, batchNumber, session.getAttribute("entityId").toString())
+
+                    //This is for multi user
+                    def tmpStockBookResponse = new InventoryService().getTempStocksOfProductAndBatch(productId, batchNumber)
+                    if(tmpStockBookResponse.status == 200)
+                    {
+                        long remainingQty = 0
+                        long remainingFreeQty = 0
+                        long remainingReplQty = 0
+                        JSONArray tmpStocks = new JSONArray(tmpStockBookResponse.readEntity(String.class))
+                        if(tmpStocks.size() > 0)
+                        {
+                            for (Object tmpStock : tmpStocks) {
+                                if(stockBook.productId == tmpStock.productId && stockBook.batchNumber == tmpStock.batchNumber) {
+                                    if (remainingQty < tmpStock.remainingQty)
+                                        remainingQty = tmpStock.remainingQty
+
+                                    if (remainingFreeQty < tmpStock.remainingFreeQty)
+                                        remainingFreeQty = tmpStock.remainingFreeQty
+
+                                    if (remainingReplQty < tmpStock.remainingReplQty)
+                                        remainingReplQty = tmpStock.remainingReplQty
+                                }
+                            }
+                            stockBook.remainingQty = remainingQty
+                            stockBook.remainingFreeQty = remainingFreeQty
+                            stockBook.remainingReplQty = remainingReplQty
+                        }
+
+                    }
+                    
                 } else
                     stockBook = new InventoryService().getStockBookById(stockBookId)
             } else {
