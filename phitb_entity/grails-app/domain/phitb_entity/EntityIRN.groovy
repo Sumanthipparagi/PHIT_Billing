@@ -1,8 +1,8 @@
 package phitb_entity
 
-import gorm.logical.delete.LogicalDelete
+//import gorm.logical.delete.LogicalDelete
 
-class EntityIRN implements LogicalDelete<EntityIRN> {
+class EntityIRN  {
 
     EntityRegister entity
     EntityTypeMaster entityType
