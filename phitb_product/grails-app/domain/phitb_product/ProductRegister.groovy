@@ -63,8 +63,15 @@ class ProductRegister implements Serializable, LogicalDelete<ProductRegister> {
     }
     static constraints = {
         fieldForceId nullable: true
+        composition nullable: true
+        costRange nullable: true
+        productType nullable: true
+        unit nullable: true
+        group nullable: true
+        schedule nullable: true
+        category nullable: true
+        division nullable: true
     }
-
     boolean isUpdatable
     static transients = ['isUpdatable']
     def beforeUpdate()
