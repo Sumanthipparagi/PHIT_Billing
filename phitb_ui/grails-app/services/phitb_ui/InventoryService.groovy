@@ -463,7 +463,7 @@ class InventoryService {
     {
         Client client = ClientBuilder.newClient()
         WebTarget target = client.target(new Links().API_GATEWAY)
-          //WebTarget target = client.target("http://localhost:8086")
+        //WebTarget target = client.target("http://localhost:8086")
         try
         {
             println(jsonObject)
