@@ -246,9 +246,38 @@ class TempStockBookService {
                 {
                     //update stockbook
                     StockBook stockBook = StockBook.findByProductIdAndBatchNumber(tempStockBook.productId, tempStockBook.batchNumber)
-                    stockBook.remainingQty += tempStockBook.userOrderQty
-                    stockBook.remainingFreeQty += tempStockBook.userOrderFreeQty
-                    stockBook.remainingReplQty += tempStockBook.userOrderReplQty
+
+                    long remainingQty = stockBook.remainingQty
+                    long remainingFreeQty = stockBook.remainingFreeQty
+
+                    //checking to where the stocks to be returned
+                    long originalSqty = tempStockBook.originalSqty
+                    long originalFqty = tempStockBook.originalFqty
+                    long sqty = tempStockBook.userOrderQty
+                    long freeQty = tempStockBook.userOrderFreeQty
+
+                    if ((originalSqty + originalFqty) == (sqty + freeQty)  && originalSqty == sqty && originalFqty == freeQty) {
+                        remainingQty += sqty
+                        remainingFreeQty += freeQty
+                    } else {
+                        if (originalSqty >= sqty && originalFqty >= freeQty) {
+                            remainingQty += sqty
+                            remainingFreeQty += freeQty
+                        } else {
+                            if (sqty > originalSqty) {
+                                remainingQty = sqty - (sqty - originalSqty)
+                                remainingFreeQty = remainingFreeQty + freeQty + (sqty - originalSqty)
+                            } else if (freeQty > originalFqty) {
+                                remainingQty = remainingQty + sqty + (freeQty - originalFqty)
+                                remainingFreeQty = freeQty - (freeQty - originalFqty)
+                            }
+                        }
+                    }
+
+
+                    stockBook.remainingQty = remainingQty
+                    stockBook.remainingFreeQty = remainingFreeQty
+                    stockBook.remainingReplQty = tempStockBook.userOrderReplQty
                     stockBook.isUpdatable = true
                     stockBook.save(flush:true)
 

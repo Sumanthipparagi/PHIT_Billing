@@ -604,7 +604,7 @@
 
 
                                         if (selection === 5) {
-                                            if (remFQty >= fQty) {
+                                            if (remFQty >= fQty && ((remQty + remFQty) >= (sQty + fQty))) {
                                                 freeQtyEntry = true;
                                             } else if ((remQty + remFQty) >= sQty + fQty) {
                                                 freeQtyEntry = true;

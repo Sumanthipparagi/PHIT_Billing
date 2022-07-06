@@ -510,8 +510,8 @@ class InventoryService {
 
     def deleteTempStock(String id, boolean updateTempStock = true) {
         Client client = ClientBuilder.newClient();
-        WebTarget target = client.target(new Links().API_GATEWAY);
-        //WebTarget target = client.target("http://localhost:8086");
+        //WebTarget target = client.target(new Links().API_GATEWAY);
+        WebTarget target = client.target("http://localhost:8086");
         try {
             Response apiResponse = target
                     .path(new Links().GET_TEMP_STOCK_PRODUCT+"/"+id)
