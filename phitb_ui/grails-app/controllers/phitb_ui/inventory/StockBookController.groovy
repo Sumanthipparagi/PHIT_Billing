@@ -579,7 +579,7 @@ class StockBookController {
                 JSONObject obj = new JSONObject(apiResponse.readEntity(String.class))
                 respond obj, formats: ['json'], status: 200
             } else {
-                response.status = apiResponse?.status ?: 400
+                response.status = apiResponse.status
             }
         }
         catch (Exception ex) {
