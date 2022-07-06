@@ -401,12 +401,18 @@
             afterOnCellMouseDown: function (e, coords, TD) {
                 if (coords.col === 0) {
                     <g:if test="${customer == null}">
-                    var id = hot.getDataAtCell(coords.row, 15);
-                    deleteTempStockRow(id, coords.row);
+                        var id = hot.getDataAtCell(coords.row, 15);
+                        deleteTempStockRow(id, coords.row);
                     </g:if>
                     <g:else>
-                    var id = hot.getDataAtCell(coords.row, 24);
-                    deleteSaleBillRow(id, coords.row);
+                        var id = hot.getDataAtCell(coords.row, 24);
+                        if(id == null) {
+                            id = hot.getDataAtCell(coords.row, 15);
+                            deleteTempStockRow(id, coords.row);
+                        }
+                        else {
+                            deleteSaleBillRow(id, coords.row);
+                        }
                     </g:else>
 
                     calculateTotalAmt();
@@ -652,7 +658,10 @@
                         }
                         applySchemes(row, sQty);
                         if (selection === 6) {
-                            sRate = Number(this.getActiveEditor().TEXTAREA.value);
+                            if(this.getActiveEditor())
+                                sRate = Number(this.getActiveEditor().TEXTAREA.value);
+                            else
+                                sRate = hot.getDataAtCell(row, 6);
                         } else
                             sRate = hot.getDataAtCell(row, 6);
 
@@ -710,7 +719,6 @@
                 }
             }
             Handsontable.renderers.TextRenderer.apply(this, arguments);
-            //Handsontable.TextCell.renderer.apply(this, arguments);
         }
 
         //batch table
@@ -1010,11 +1018,6 @@
                         hot.setCellMeta(i, j, 'readOnly', true);
                     }
                 }
-
-                // setTimeout(function () {
-                //     $('#saleTable').show()
-                // }, 2000);
-
 
                 setTimeout(function () {
                     hot.selectCell(0, 1);

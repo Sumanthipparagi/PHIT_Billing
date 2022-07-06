@@ -281,6 +281,7 @@ class InventoryService {
     {
         Client client = ClientBuilder.newClient().register(JacksonFeature.class)
         WebTarget target = client.target(new Links().API_GATEWAY);
+        //WebTarget target = client.target("http://localhost:8086");
         try
         {
             Response apiResponse = target
