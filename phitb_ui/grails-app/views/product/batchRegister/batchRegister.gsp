@@ -21,6 +21,7 @@
     <asset:stylesheet  src="/themeassets/js/pages/forms/basic-form-elements.js" rel="stylesheet" />
     <asset:stylesheet  src="/themeassets/plugins/bootstrap-material-datetimepicker/css/bootstrap-material-datetimepicker.css" rel="stylesheet" />
 
+    <asset:stylesheet src="/themeassets/plugins/select2/dist/css/select2.min.css"/>
 
     <style>
 
@@ -168,6 +169,7 @@
 <asset:javascript src="/themeassets/plugins/bootstrap-material-datetimepicker/js/bootstrap-material-datetimepicker.js"/>
 <asset:javascript src="/themeassets/js/pages/forms/basic-form-elements.js"/>
 <asset:javascript src="/themeassets/plugins/multi-select/js/jquery.multi-select.js" type="text/javascript"/>
+<asset:javascript src="/themeassets/plugins/select2/dist/js/select2.full.min.js"/>
 
 <script>
 
@@ -175,7 +177,6 @@
     var id = null;
     $(function () {
         fridgeTable();
-
     });
 
     function fridgeTable() {
@@ -334,7 +335,8 @@
     $(document).on("click", ".addbtn", function () {
         $(".batchTitle").text("Add Batch Register");
         $(".batchForm")[0].reset();
-        id = null
+        id = null;
+        $('.product').select2();
     });
 
     $(document).on("click", ".editbtn", function () {

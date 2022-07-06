@@ -15,7 +15,8 @@
                                 <label for="product">
                                     Product
                                 </label>
-                                <select class="form-control show-tick product" name="product" id="product">
+                                <select class="form-control show-tick product" style="width: 100%" name="product"
+                                        id="product">
                                     <g:each var="p" in="${productlist}">
                                         <option value="${p.id}">${p.productName}</option>
                                     </g:each>

@@ -4,6 +4,7 @@ import grails.converters.JSON
 import groovy.json.JsonSlurper
 import org.grails.web.json.JSONArray
 import org.grails.web.json.JSONObject
+import org.springframework.web.multipart.MultipartFile
 import phitb_ui.AccountsService
 import phitb_ui.Constants
 import phitb_ui.EntityService
@@ -343,4 +344,37 @@ class EntityRegisterController
         }
     }
 
+
+    def bulkImportCustomer()
+    {
+        try
+        {
+           render(view: '/entity/entityRegister/bulk-import-customer')
+        }
+        catch (Exception ex)
+        {
+            System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
+            log.error('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
+            response.status = 400
+        }
+    }
+
+
+    def customerImport()
+    {
+        try
+        {
+//            println(params)
+//            MultipartFile file = params.file
+////            FileInputStream fis=new FileInputStream(file.getInputStream());
+//            println(fis)
+
+        }
+        catch (Exception ex)
+        {
+            System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
+            log.error('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
+            response.status = 400
+        }
+    }
 }

@@ -179,6 +179,12 @@ class UrlMappings {
 
 
 
+//        Bulk import customer
+
+            "/bulk-import-customer"(controller: 'entityRegister', action: 'bulkImportCustomer')
+            "/customer-import/import"(controller: 'entityRegister',action: 'customerImport')
+
+
         //HQ- areas
         "/hq-area"(controller: "HQAreas") {
             action = [GET: "index", POST: "save"]
