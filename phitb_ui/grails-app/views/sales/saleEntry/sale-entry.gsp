@@ -502,10 +502,15 @@
                                         hot.render();
                                         calculateTotalAmt();
                                     },
-                                    error: function (data) {
+                                    error: function (jqXHR, textStatus, errorThrown) {
                                         beforeSendSwal.close();
                                         console.log("Failed");
-                                        alert("Unable to save the row, please delete it and add again.");
+                                        if(jqXHR.status === 400)
+                                            alert("Unable to save the row, please delete it and add again.");
+                                        else if(jqXHR.status === 404) {
+                                            batchSelection(batchId, mainTableRow, false);
+                                            alert("Requested quantity not available in stocks.");
+                                        }
                                     }
                                 });
                             }
@@ -604,7 +609,7 @@
 
 
                                         if (selection === 5) {
-                                            if (remFQty >= fQty) {
+                                            if (remFQty >= fQty && ((remQty + remFQty) >= (sQty + fQty))) {
                                                 freeQtyEntry = true;
                                             } else if ((remQty + remFQty) >= sQty + fQty) {
                                                 freeQtyEntry = true;
