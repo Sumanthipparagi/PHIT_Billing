@@ -269,7 +269,6 @@
                             'bill_status': json.data[i].billStatus,
                             'balance': json.data[i].balance.toFixed(2),
                             'finYear': json.data[i].financialYear
-
                         });
                     }
                     return return_data;

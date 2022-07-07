@@ -85,33 +85,33 @@ class GoodsTransferNoteController
         double totalDiscount = 0.00
         JSONArray saleData = new JSONArray(params.saleData)
         boolean tempStocksSavedCheck = true
-        for (JSONObject sale : saleData)
-        {
-            if (sale.has("15"))
-            {
-                String tempStockRowId = sale.get("15")
-                if (tempStockRowId && Long.parseLong(tempStockRowId) > 0)
-                {
-                    tempStocksSavedCheck = true
-                }
-                else
-                {
-                    tempStocksSavedCheck = false
-                }
-            }
-            else
-            {
-                tempStocksSavedCheck = false
-            }
-        }
-
-        //safety check
-        if (!tempStocksSavedCheck)
-        {
-            println("Safety Check Failed! attempted to generate sale invoice, but temp stock was not saved.")
-            response.status == 400
-            return
-        }
+//        for (JSONObject sale : saleData)
+//        {
+//            if (sale.has("15"))
+//            {
+//                String tempStockRowId = sale.get("15")
+//                if (tempStockRowId && Long.parseLong(tempStockRowId) > 0)
+//                {
+//                    tempStocksSavedCheck = true
+//                }
+//                else
+//                {
+//                    tempStocksSavedCheck = false
+//                }
+//            }
+//            else
+//            {
+//                tempStocksSavedCheck = false
+//            }
+//        }
+//
+//        //safety check
+//        if (!tempStocksSavedCheck)
+//        {
+//            println("Safety Check Failed! attempted to generate sale invoice, but temp stock was not saved.")
+//            response.status == 400
+//            return
+//        }
 
         for (JSONObject sale : saleData)
         {
@@ -266,17 +266,20 @@ class GoodsTransferNoteController
         if (response.status == 200)
         {
             UUID uuid
-            JSONObject saleBillDetail = new JSONObject(response.readEntity(String.class))
+            JSONObject gtnDetail = new JSONObject(response.readEntity(String.class))
             //update stockbook
             for (JSONObject sale : saleData)
             {
                 uuid = UUID.randomUUID()
-                String tempStockRowId = sale.get("15")
-                def tmpStockBook = new InventoryService().getTempStocksById(Long.parseLong(tempStockRowId))
-                def stockBook = new InventoryService().getStockBookById(Long.parseLong(tmpStockBook.originalId))
-                stockBook.put("remainingQty", tmpStockBook.get("remainingQty"))
-                stockBook.put("remainingFreeQty", tmpStockBook.get("remainingFreeQty"))
-                stockBook.put("remainingReplQty", tmpStockBook.get("remainingReplQty"))
+//                String tempStockRowId = sale.get("15")
+//                def tmpStockBook = new InventoryService().getTempStocksById(Long.parseLong(tempStockRowId))
+                def stockBook = new InventoryService().getStocksOfProductAndBatch(sale.get("1").toString(), sale.get("2").toString(),session.getAttribute('entityId').toString())
+
+                long remainingQty = Long.parseLong(stockBook.get("remainingQty").toString()) - Long.parseLong(sale.get("4").toString())
+                long  remainingFreeQty = Long.parseLong(stockBook.get("remainingFreeQty").toString()) - Long.parseLong(sale.get("5").toString())
+                stockBook.put("remainingQty", remainingQty)
+                stockBook.put("remainingFreeQty", remainingFreeQty)
+                stockBook.put("remainingReplQty", stockBook.get("remainingReplQty"))
                 String expDate = stockBook.get("expDate").toString().split("T")[0]
                 String purcDate = stockBook.get("purcDate").toString().split("T")[0]
                 String manufacturingDate = stockBook.get("manufacturingDate").toString().split("T")[0]
@@ -291,14 +294,15 @@ class GoodsTransferNoteController
                 def apiRes = new InventoryService().updateStockBook(stockBook)
                 if (apiRes.status == 200)
                 {
-//                    //clear tempstockbook
-                    def deleteTemp = new InventoryService().deleteTempStock(tempStockRowId)
-                    println(deleteTemp)
+////                    //clear tempstockbook
+//                    def deleteTemp = new InventoryService().deleteTempStock(tempStockRowId)
+//                    println(deleteTemp)
+                    println("stocks modified!!")
                 }
             }
             JSONObject responseJson = new JSONObject()
             responseJson.put("series", series)
-            responseJson.put("gtn", saleBillDetail)
+            responseJson.put("gtn", gtnDetail)
             respond responseJson, formats: ['json']
         }
         else
@@ -929,25 +933,32 @@ class GoodsTransferNoteController
                 if (responseObject)
                 {
                     JSONArray jsonArray = responseObject.data
-                    JSONArray jsonArray2 = new JSONArray()
-                    JSONArray jsonArray3 = new JSONArray()
-                    JSONArray entityArray = new JSONArray()
-                    JSONArray cityArray = new JSONArray()
-                    for (JSONObject json : jsonArray)
-                    {
-                        json.put("customer", new EntityService().getEntityById(json.get("customerId").toString()))
-                        jsonArray2.put(json)
+//                    JSONArray jsonArray2 = new JSONArray()
+//                    JSONArray jsonArray3 = new JSONArray()
+//                    JSONArray entityArray = new JSONArray()
+//                    JSONArray cityArray = new JSONArray()
+//                    for (JSONObject json : jsonArray)
+//                    {
+//                        json.put("customer", new EntityService().getEntityById(json.get("customerId").toString()))
+//                        jsonArray2.put(json)
+//                    }
+//                    for (JSONObject json1 : jsonArray2)
+//                    {
+//                        entityArray.put(json1.get("customer"))
+//                    }
+//                    entityArray.each {
+//                        def cityResp = new SystemService().getCityById(it.cityId.toString())
+//                        it.put("cityId", cityResp)
+//                    }
+//                    responseObject.put("data", jsonArray2)
+//                    responseObject.put("city", entityArray)
+                    for (JSONObject json : jsonArray) {
+                        JSONObject customer = new EntityService().getEntityById(json.get("customerId").toString())
+                        def city = new SystemService().getCityById(customer?.cityId?.toString())
+                        customer?.put("city", city)
+                        json.put("customer", customer)
                     }
-                    for (JSONObject json1 : jsonArray2)
-                    {
-                        entityArray.put(json1.get("customer"))
-                    }
-                    entityArray.each {
-                        def cityResp = new SystemService().getCityById(it.cityId.toString())
-                        it.put("cityId", cityResp)
-                    }
-                    responseObject.put("data", jsonArray2)
-                    responseObject.put("city", entityArray)
+                    responseObject.put("data", jsonArray)
                 }
                 respond responseObject, formats: ['json'], status: 200
             }

@@ -435,40 +435,44 @@
                             var url = '/tempstockbook';
                             var type = 'POST';
                             var beforeSendSwal;
-                            $.ajax({
-                                type: type,
-                                url: url,
-                                dataType: 'json',
-                                beforeSend: function () {
-                                    beforeSendSwal = Swal.fire({
-                                        // title: "Loading",
-                                        html:
-                                            '<img src="${assetPath(src: "/themeassets/images/1476.gif")}" width="100" height="100"/>',
-                                        showDenyButton: false,
-                                        showCancelButton: false,
-                                        showConfirmButton: false,
-                                        allowOutsideClick: false,
-                                        background: 'transparent'
-                                    });
-                                },
-                                data: {
-                                    rowData: json,
-                                    uuid: self.crypto.randomUUID()
-                                },
-                                success: function (data) {
-                                    beforeSendSwal.close()
-                                    console.log("Data saved");
-                                    hot.setDataAtCell(row, 15, data.id);
-                                    mainTableRow = row + 1;
-                                    hot.alter('insert_row');
-                                    hot.selectCell(mainTableRow, 1);
-                                    calculateTotalAmt();
-                                },
-                                error: function (data) {
-                                    console.log("Failed");
-                                    alert("Unable to save the row, please delete it and add again.");
-                                }
-                            });
+                            %{--$.ajax({--}%
+                            %{--    type: type,--}%
+                            %{--    url: url,--}%
+                            %{--    dataType: 'json',--}%
+                            %{--    beforeSend: function () {--}%
+                            %{--        beforeSendSwal = Swal.fire({--}%
+                            %{--            // title: "Loading",--}%
+                            %{--            html:--}%
+                            %{--                '<img src="${assetPath(src: "/themeassets/images/1476.gif")}" width="100" height="100"/>',--}%
+                            %{--            showDenyButton: false,--}%
+                            %{--            showCancelButton: false,--}%
+                            %{--            showConfirmButton: false,--}%
+                            %{--            allowOutsideClick: false,--}%
+                            %{--            background: 'transparent'--}%
+                            %{--        });--}%
+                            %{--    },--}%
+                            %{--    data: {--}%
+                            %{--        rowData: json,--}%
+                            %{--        uuid: self.crypto.randomUUID()--}%
+                            %{--    },--}%
+                            %{--    success: function (data) {--}%
+                            %{--        beforeSendSwal.close()--}%
+                            %{--        console.log("Data saved");--}%
+                            %{--        hot.setDataAtCell(row, 15, data.id);--}%
+                            %{--        mainTableRow = row + 1;--}%
+                            %{--        hot.alter('insert_row');--}%
+                            %{--        hot.selectCell(mainTableRow, 1);--}%
+                            %{--        calculateTotalAmt();--}%
+                            %{--    },--}%
+                            %{--    error: function (data) {--}%
+                            %{--        console.log("Failed");--}%
+                            %{--        alert("Unable to save the row, please delete it and add again.");--}%
+                            %{--    }--}%
+                            %{--});--}%
+                            mainTableRow = row + 1;
+                            hot.alter('insert_row');
+                            hot.selectCell(mainTableRow, 1);
+                            calculateTotalAmt();
                         } else {
                             alert("Invalid Quantity, please enter quantity greater than 0");
                         }
@@ -545,6 +549,7 @@
                                     success: function (data) {
                                         remQty = remQty + data.remainingQty;
                                         remFQty = remFQty + data.remainingFreeQty;
+
                                         if (remQty >= sQty) {
                                             allowEntry = true;
                                         }
@@ -556,29 +561,25 @@
                                             allowEntry = true;
                                         }
 
-                                        if(selection === 5)
-                                        {
-                                            if(remFQty >= fQty)
-                                            {
+                                        if (selection === 5) {
+                                            if (remFQty >= fQty && ((remQty + remFQty) >= (sQty + fQty))) {
                                                 freeQtyEntry = true;
-                                            }
-
-                                            else if ((remQty + remFQty) >= sQty+fQty) {
+                                            } else if ((remQty + remFQty) >= sQty + fQty) {
                                                 freeQtyEntry = true;
                                                 allowEntry = true;
-                                            }
-                                            else
-                                            {
+                                            } else {
                                                 freeQtyEntry = false;
                                                 allowEntry = false;
                                             }
 
-                                            if(freeQtyEntry!==true)
-                                            {
+                                            if (freeQtyEntry !== true) {
                                                 // hot.setDataAtCell(row, 5, 0);
                                                 alert("Entered Free quantity exceeds available quantity");
                                             }
                                         }
+
+
+
                                         if (!allowEntry) {
                                             // this.getActiveEditor().TEXTAREA.value = "";
                                             hot.setDataAtCell(row, 4, 0);
