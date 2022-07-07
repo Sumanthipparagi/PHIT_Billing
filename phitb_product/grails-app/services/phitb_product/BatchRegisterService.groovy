@@ -183,7 +183,6 @@ class BatchRegisterService {
         if(product)
         {
             def result = BatchRegister.findByProductAndBatchNumber(product,batch)
-            println(result)
             return result
         }
     }
