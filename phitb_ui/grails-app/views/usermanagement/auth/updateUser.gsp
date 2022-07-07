@@ -131,8 +131,8 @@
                                                                             </label>
                                                                             <input type="text" id="userName" class="form-control userName" name="userName"
                                                                                    placeholder="User Name" value="${user.userName}"
-                                                                                   onblur="onblurUsername(this)"
-                                                                                   required/>
+%{--                                                                                   onblur="onblurUsername(this)"--}%
+                                                                                   required readonly/>
                                                                         </div>
 
 %{--                                                                        <div class="col-lg-6 form-group  form-float">--}%

@@ -1799,8 +1799,8 @@
     function applySchemes(row, saleQty) {
         if (scheme && saleQty > 0) {
             if (saleQty >= scheme.slab1MinQty && saleQty < scheme.slab2MinQty) {
-                if (scheme.slab1Status == 1) {
-                    if (scheme.slab2BulkStatus == 1) {
+                if (scheme.slab1Status === 1) {
+                    if (scheme.slab2BulkStatus === 1) {
                         var slab1Multiplier = Math.floor(parseInt(saleQty) / scheme.slab1MinQty);
                         var slab1Qty = scheme.slab1SchemeQty * slab1Multiplier;
                         hot.setDataAtCell(row, 5, slab1Qty);
