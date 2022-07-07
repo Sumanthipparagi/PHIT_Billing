@@ -753,6 +753,7 @@
                     if (data) {
                         batchData = [];
                         for (var i = 0; i < data.length; i++) {
+                            console.log(data[i].entityId);
                             if(Number('${session.getAttribute('entityId')}')===data[i].entityId) {
                                 var batchdt = [];
                                 batchdt.push(data[i].batchNumber);
