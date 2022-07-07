@@ -123,15 +123,6 @@ class TempStockBookService {
             Boolean stocksAvailable = false
             if ((mainStockBook.remainingQty + mainStockBook.remainingFreeQty) >= (userOrderQty + userOrderFreeQty)) {
                 stocksAvailable = true
-                /*if (mainStockBook.remainingQty >= userOrderQty && mainStockBook.remainingFreeQty >= userOrderFreeQty) {
-                    stocksAvailable = true
-                } else if ((mainStockBook.remainingQty + mainStockBook.remainingFreeQty) >= userOrderQty
-                        && mainStockBook.remainingFreeQty >= userOrderFreeQty) {
-                    stocksAvailable = true
-                } else if ((mainStockBook.remainingQty + mainStockBook.remainingFreeQty) >= userOrderFreeQty
-                        && mainStockBook.remainingQty >= userOrderQty) {
-                    stocksAvailable = true
-                }*/
             }
             if (stocksAvailable) {
                 Long userId = Long.parseLong(jsonObject.get("userId").toString())

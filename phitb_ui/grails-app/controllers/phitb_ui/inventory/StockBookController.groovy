@@ -102,7 +102,6 @@ class StockBookController {
     }
 
     def getStocksOfProduct() {
-        //TODO: check this method
         //get temp stockbook data
         def apiResp = new InventoryService().getTempStocksOfProductAndBatch(params.id, null)
         if (apiResp.status == 200) {
