@@ -64,10 +64,11 @@
         }
 
         .print {
-            width: 156%!important;
-            margin-right: 5% !important;
-            float: left;
+            /*width: 156%!important;*/
+            /*margin-right: 5% !important;*/
+            /*float: left;*/
             /*white-space:nowrap;*/
+            margin-left: 1%;
         }
 
         .container-width
@@ -114,9 +115,9 @@
     }
 
     .print {
-        width: 238%;
-        float: left;
-        margin: 5% ;
+        /*width: 238%;*/
+        /*float: left;*/
+        /*margin: 1% ;*/
     }
 
     /*thead{*/
@@ -388,96 +389,115 @@
         <td>${String.format("%.2f", total)}</td>
     </tr>
     </tbody>
+    <tfoot style="border: 1px solid #ffffff">
+    <tr>
+        <td colspan="14" style="border: 0"><g:if test="${saleBillDetail.billStatus == 'CANCELLED'}">
+            <div id="watermark" class="print-watermark">CANCELLED</div>
+        </g:if>
+            <g:elseif test="${saleBillDetail.billStatus == 'DRAFT'}">
+                <div id="watermark" class="print-watermark">DRAFT</div>
+            </g:elseif>
+            <p>No of cases <br>
+                Weight in Kgs :<br>
+                Party Ref No. : <br>
+                Rev-Charge :</p>
+            <g:each var="t" in="${termsConditions}" status="i">
+                <g:if test="${t?.form?.formType == Constants.SALE_INVOICE && t?.deleted == false}">
+                    <p>${raw(t?.termCondition)}</p>
+                </g:if>
+            </g:each></td>
+       <td colspan="6" style="border: 0"><table class="print" style="margin-top: 2%;width: 100%">
+           <tr>
+               <th>Total</th>
+               <td>0.00</td>
+               <td>${String.format("%.2f", totalBeforeTaxes)}</td>
+           </tr>
+
+           <g:each in="${sgstGroup}" var="sg">
+               <tr>
+                   <th>Add SGST ${sg.key}% on</th>
+                   <td>${String.format("%.2f", sg.value)}</td>
+                   <td class="totalgst">${String.format("%.2f", sg.value * (Double.parseDouble(sg.key.toString()) / 100))}</td>
+               </tr>
+
+           </g:each>
+
+           <g:each in="${cgstGroup}" var="cg">
+               <tr>
+                   <th>Add CGST ${cg.key}% on</th>
+                   <td>${String.format("%.2f", cg.value)}</td>
+                   <td class="totalgst">${String.format("%.2f", cg.value * (Double.parseDouble(cg.key.toString()) / 100))}</td>
+               </tr>
+
+           </g:each>
+
+           <g:each in="${igstGroup}" var="ig">
+               <tr>
+                   <th>Add IGST ${ig.key}% on</th>
+                   <td>${String.format("%.2f", ig.value)}</td>
+                   <td class="totalgst">${String.format("%.2f", ig.value * (Double.parseDouble(ig.key.toString()) / 100))}</td>
+               </tr>
+
+           </g:each>
+           <tr>
+               <th>Net Invoice Amt.</th>
+               <td>0.00</td>
+               <td id="netInvAmt"></td>
+           </tr>
+           <tr>
+               <th>Less Cr. Nt*</th>
+               <td>0.00</td>
+               <td>0.00</td>
+           </tr>
+           <tr>
+               <th>Add Debit Nt*</th>
+               <td>0.00</td>
+               <td>0.00</td>
+           </tr>
+           <tr>
+               <th>Add Rounding off*</th>
+               <td>0.00</td>
+               <td>0.00</td>
+           </tr>
+           <tr>
+               <th>Net Payable Amt.</th>
+               <td>0.00</td>
+               <td id="netPayAmt"></td>
+           </tr>
+       </table></td>
+    </tr>
+
+    </tfoot>
 </table>
 
 %{--<div id="breakPage" style="page-break-after: avoid;"></div>--}%
 
 
-<div class="container" style="display: flex; ">
-    %{--    height:200px--}%
-    <div style="width: 70%;" class="container-width">
-    <g:if test="${saleBillDetail.billStatus == 'CANCELLED'}">
-        <div id="watermark" class="print-watermark">CANCELLED</div>
-    </g:if>
-    <g:elseif test="${saleBillDetail.billStatus == 'DRAFT'}">
-        <div id="watermark" class="print-watermark">DRAFT</div>
-    </g:elseif>
-        <p>No of cases <br>
-            Weight in Kgs :<br>
-            Party Ref No. : <br>
-            Rev-Charge :</p>
+%{--<div class="container" style="display: flex; ">--}%
+%{--    --}%%{--    height:200px--}%
+%{--    <div style="width: 70%;" class="container-width">--}%
+%{--    <g:if test="${saleBillDetail.billStatus == 'CANCELLED'}">--}%
+%{--        <div id="watermark" class="print-watermark">CANCELLED</div>--}%
+%{--    </g:if>--}%
+%{--    <g:elseif test="${saleBillDetail.billStatus == 'DRAFT'}">--}%
+%{--        <div id="watermark" class="print-watermark">DRAFT</div>--}%
+%{--    </g:elseif>--}%
+%{--        <p>No of cases <br>--}%
+%{--            Weight in Kgs :<br>--}%
+%{--            Party Ref No. : <br>--}%
+%{--            Rev-Charge :</p>--}%
 
 %{--        <p>${termsConditions[0].termCondition}</p>--}%
-    <g:each var="t" in="${termsConditions}" status="i">
-        <g:if test="${t?.form?.formType == Constants.SALE_INVOICE && t?.deleted == false}">
-            <p>${raw(t?.termCondition)}</p>
-        </g:if>
-    </g:each>
+%{--    <g:each var="t" in="${termsConditions}" status="i">--}%
+%{--        <g:if test="${t?.form?.formType == Constants.SALE_INVOICE && t?.deleted == false}">--}%
+%{--            <p>${raw(t?.termCondition)}</p>--}%
+%{--        </g:if>--}%
+%{--    </g:each>--}%
 
-</div>
+%{--</div>--}%
 
-    <div>
-        <table class="print" style="">
-            <tr>
-                <th>Total</th>
-                <td>0.00</td>
-                <td>${String.format("%.2f", totalBeforeTaxes)}</td>
-            </tr>
 
-            <g:each in="${sgstGroup}" var="sg">
-                <tr>
-                    <th>Add SGST ${sg.key}% on</th>
-                    <td>${String.format("%.2f", sg.value)}</td>
-                    <td class="totalgst">${String.format("%.2f", sg.value * (Double.parseDouble(sg.key.toString()) / 100))}</td>
-                </tr>
-
-            </g:each>
-
-            <g:each in="${cgstGroup}" var="cg">
-                <tr>
-                    <th>Add CGST ${cg.key}% on</th>
-                    <td>${String.format("%.2f", cg.value)}</td>
-                    <td class="totalgst">${String.format("%.2f", cg.value * (Double.parseDouble(cg.key.toString()) / 100))}</td>
-                </tr>
-
-            </g:each>
-
-            <g:each in="${igstGroup}" var="ig">
-                <tr>
-                    <th>Add IGST ${ig.key}% on</th>
-                    <td>${String.format("%.2f", ig.value)}</td>
-                    <td class="totalgst">${String.format("%.2f", ig.value * (Double.parseDouble(ig.key.toString()) / 100))}</td>
-                </tr>
-
-            </g:each>
-            <tr>
-                <th>Net Invoice Amt.</th>
-                <td>0.00</td>
-                <td id="netInvAmt"></td>
-            </tr>
-            <tr>
-                <th>Less Cr. Nt*</th>
-                <td>0.00</td>
-                <td>0.00</td>
-            </tr>
-            <tr>
-                <th>Add Debit Nt*</th>
-                <td>0.00</td>
-                <td>0.00</td>
-            </tr>
-            <tr>
-                <th>Add Rounding off*</th>
-                <td>0.00</td>
-                <td>0.00</td>
-            </tr>
-            <tr>
-                <th>Net Payable Amt.</th>
-                <td>0.00</td>
-                <td id="netPayAmt"></td>
-            </tr>
-        </table>
-    </div>
-</div>
+%{--</div>--}%
 <br>
 <br>
 
