@@ -265,6 +265,7 @@ class TempStockBookService {
 
                     long remainingQty = stockBook.remainingQty
                     long remainingFreeQty = stockBook.remainingFreeQty
+                    long remainingReplQty = stockBook.remainingReplQty
 
                     //checking to where the stocks to be returned
                     long originalSqty = tempStockBook.originalSqty
@@ -293,7 +294,7 @@ class TempStockBookService {
 
                     stockBook.remainingQty = remainingQty
                     stockBook.remainingFreeQty = remainingFreeQty
-                    stockBook.remainingReplQty = tempStockBook.userOrderReplQty
+                    stockBook.remainingReplQty = tempStockBook.userOrderReplQty //TODO: to be checked
                     stockBook.isUpdatable = true
                     stockBook.save(flush: true)
 
@@ -301,9 +302,9 @@ class TempStockBookService {
                     ArrayList<TempStockBook> tempStockBooks = TempStockBook.findAllByProductIdAndBatchNumberAndEntityId(tempStockBook.productId, tempStockBook.batchNumber, tempStockBook.entityId)
                     for (TempStockBook ts : tempStockBooks) {
                         if (tempStockBook.id != ts.id) {
-                            ts.remainingQty += tempStockBook.userOrderQty
-                            ts.remainingFreeQty += tempStockBook.userOrderFreeQty
-                            ts.remainingReplQty += tempStockBook.userOrderReplQty
+                            ts.remainingQty = remainingQty
+                            ts.remainingFreeQty = remainingFreeQty
+                            ts.remainingReplQty = tempStockBook.userOrderReplQty //TODO: to be checked
                             ts.isUpdatable = true
                             ts.save(flush: true)
                         }
