@@ -112,6 +112,7 @@ class SaleBillDetailsService
                 if (searchTerm != "")
                 {
                     ilike('financialYear', '%' + searchTerm + '%')
+                    ilike('invoiceNumber', '%' + searchTerm + '%')
                 }
             }
             if (!invoiceStatus.equalsIgnoreCase("ALL"))
