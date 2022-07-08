@@ -579,6 +579,7 @@ class SaleEntryController {
                 JSONArray saleProductDetails = new SalesService().getSaleProductDetailsByBill(params.id)
                 def saleBillResponse = new SalesService().getSaleBillDetailsById(params.id.toString())
                 saleProductDetails.each {
+                    println(it.batchNumber)
                     def stockResponse = new InventoryService().getStocksOfProductAndBatch(it.productId.toString(),
                             it.batchNumber.toString(), session.getAttribute('entityId').toString())
                     if (it.batchNumber == stockResponse.batchNumber) {
