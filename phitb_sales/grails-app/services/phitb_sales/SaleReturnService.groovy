@@ -168,6 +168,7 @@ class SaleReturnService {
                 if (searchTerm != "")
                 {
                     ilike('financialYear', '%' + searchTerm + '%')
+                    ilike('invoiceNumber', '%' + searchTerm + '%')
                 }
             }
             eq('deleted', false)
