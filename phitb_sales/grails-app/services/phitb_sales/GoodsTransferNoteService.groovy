@@ -182,6 +182,7 @@ class GoodsTransferNoteService {
             cal.setTime(goodsTransferNote.entryDate)
             String month = cal.get(Calendar.MONTH)+1;
             String year = cal.get(Calendar.YEAR)
+            year = year.substring(Math.max(year.length() - 2, 0)) //reduce to 2 digit year
             DecimalFormat mFormat = new DecimalFormat("00");
             month = mFormat.format(Double.valueOf(month));
             String invoiceNumber = null;
@@ -195,7 +196,7 @@ class GoodsTransferNoteService {
             }
             else
             {
-                invoiceNumber = goodsTransferNote.entityId + "/GTN/" + month + year + "/" + seriesCode + "/" + goodsTransferNote.serBillId
+                invoiceNumber = goodsTransferNote.entityId + "GTN" + month + year + seriesCode +  goodsTransferNote.serBillId
                 println("Invoice Number generated: " + invoiceNumber)
             }
             if (invoiceNumber)
@@ -274,6 +275,7 @@ class GoodsTransferNoteService {
             cal.setTime(goodsTransferNote.entryDate)
             String month = cal.get(Calendar.MONTH)+1
             String year = cal.get(Calendar.YEAR)
+            year = year.substring(Math.max(year.length() - 2, 0)) //reduce to 2 digit year
             DecimalFormat mFormat = new DecimalFormat("00");
             month = mFormat.format(Double.valueOf(month));
             String invoiceNumber = null;
@@ -282,12 +284,11 @@ class GoodsTransferNoteService {
             if (goodsTransferNote.billStatus == "DRAFT")
             {
                 println(goodsTransferNote.billStatus)
-//                invoiceNumber = goodsTransferNote.entityId+"/DR/S/" + month + year + "/" + seriesCode + "/__";'
                 goodsTransferNote.invoiceNumber = null
             }
             else
             {
-                invoiceNumber = goodsTransferNote.entityId + "/GTN/" + month + year + "/" + seriesCode + "/" + goodsTransferNote.serBillId
+                invoiceNumber = goodsTransferNote.entityId + "GTN" + month + year + seriesCode + goodsTransferNote.serBillId
                 println("Invoice Number generated: " + invoiceNumber)
             }
             if (invoiceNumber)

@@ -193,9 +193,10 @@ class SaleBillDetailsService
         {
             Calendar cal = new GregorianCalendar()
             cal.setTime(saleBillDetails.entryDate)
-            String month = cal.get(Calendar.MONTH)+1;
+            String month = cal.get(Calendar.MONTH) + 1
             String year = cal.get(Calendar.YEAR)
-            DecimalFormat mFormat = new DecimalFormat("00");
+            year = year.substring(Math.max(year.length() - 2, 0)) //reduce to 2 digit year
+            DecimalFormat mFormat = new DecimalFormat("00")
             month = mFormat.format(Double.valueOf(month));
             String invoiceNumber = null;
             String seriesCode = jsonObject.get("seriesCode")
@@ -208,7 +209,7 @@ class SaleBillDetailsService
             }
             else
             {
-                invoiceNumber = saleBillDetails.entityId + "/S/" + month + year + "/" + seriesCode + "/" + saleBillDetails.serBillId
+                invoiceNumber = saleBillDetails.entityId + "S" + month + year + seriesCode + saleBillDetails.serBillId
                 println("Invoice Number generated: " + invoiceNumber)
             }
             if (invoiceNumber)
@@ -285,8 +286,9 @@ class SaleBillDetailsService
         {
             Calendar cal = new GregorianCalendar()
             cal.setTime(saleBillDetails.entryDate)
-            String month = cal.get(Calendar.MONTH)+1
+            String month = cal.get(Calendar.MONTH) + 1
             String year = cal.get(Calendar.YEAR)
+            year = year.substring(Math.max(year.length() - 2, 0)) //reduce to 2 digit year
             DecimalFormat mFormat = new DecimalFormat("00");
             month = mFormat.format(Double.valueOf(month));
             String invoiceNumber = null;
@@ -295,12 +297,11 @@ class SaleBillDetailsService
             if (saleBillDetails.billStatus == "DRAFT")
             {
                 println(saleBillDetails.billStatus)
-//                invoiceNumber = saleBillDetails.entityId+"/DR/S/" + month + year + "/" + seriesCode + "/__";'
                 saleBillDetails.invoiceNumber = null
             }
             else
             {
-                invoiceNumber = saleBillDetails.entityId + "/S/" + month + year + "/" + seriesCode + "/" + saleBillDetails.serBillId
+                invoiceNumber = saleBillDetails.entityId + "S"+ month + year +  seriesCode + saleBillDetails.serBillId
                 println("Invoice Number generated: " + invoiceNumber)
             }
             if (invoiceNumber)

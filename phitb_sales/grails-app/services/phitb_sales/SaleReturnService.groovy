@@ -90,14 +90,15 @@ class SaleReturnService {
             cal.setTime(saleReturn.entryDate)
             println(cal)
             println(Calendar.MONTH)
-            String month = cal.get(Calendar.MONTH)+1;
+            String month = cal.get(Calendar.MONTH) + 1;
             String year = cal.get(Calendar.YEAR)
+            year = year.substring(Math.max(year.length() - 2, 0)) //reduce to 2 digit year
             DecimalFormat mFormat = new DecimalFormat("00");
             month = mFormat.format(Double.valueOf(month));
             String invoiceNumber = null;
             String seriesCode = jsonObject.get("seriesCode")
             SaleReturn saleReturn1
-            invoiceNumber = saleReturn.entityId + "/SR/" + month + year + "/" + seriesCode + "/" + saleReturn.serBillId
+            invoiceNumber = saleReturn.entityId + "SR" + month + year + seriesCode + saleReturn.serBillId
             println("Invoice Number generated: " + invoiceNumber)
             if (invoiceNumber)
             {

@@ -151,11 +151,12 @@ class PaymentDetailService {
             cal.setTime(paymentDetail.dateCreated)
             String month = cal.get(Calendar.MONTH)+1
             String year = cal.get(Calendar.YEAR)
+            year = year.substring(Math.max(year.length() - 2, 0)) //reduce to 2 digit year
             DecimalFormat mFormat = new DecimalFormat("00");
             month = mFormat.format(Double.valueOf(month));
             String paymentId = null;
             ReceiptDetail receiptDetail1
-            paymentId = paymentDetail.entityId + "/P/" + month + year + "/" + paymentDetail.id
+            paymentId = paymentDetail.entityId + "P" + month + year + paymentDetail.id
             println("Invoice Number generated: " + paymentId)
             if (paymentId)
             {

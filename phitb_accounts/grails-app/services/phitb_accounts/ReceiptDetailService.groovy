@@ -173,11 +173,12 @@ class ReceiptDetailService {
             cal.setTime(receiptDetail.paymentDate)
             String month = cal.get(Calendar.MONTH)+1
             String year = cal.get(Calendar.YEAR)
+            year = year.substring(Math.max(year.length() - 2, 0)) //reduce to 2 digit year
             DecimalFormat mFormat = new DecimalFormat("00");
             month = mFormat.format(Double.valueOf(month));
             String reciptId = null;
             ReceiptDetail receiptDetail1
-            reciptId = receiptDetail.entityId + "/R/" + month + year + "/" + receiptDetail.id
+            reciptId = receiptDetail.entityId + "R" + month + year + receiptDetail.id
             println("Invoice Number generated: " + reciptId)
             if (reciptId)
             {

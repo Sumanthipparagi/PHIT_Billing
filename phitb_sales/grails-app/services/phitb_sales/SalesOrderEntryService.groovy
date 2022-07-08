@@ -127,6 +127,7 @@ class SalesOrderEntryService {
             cal.setTime(salesOrderEntry.entryDate)
             String month = cal.get(Calendar.MONTH)+1
             String year = cal.get(Calendar.YEAR)
+            year = year.substring(Math.max(year.length() - 2, 0)) //reduce to 2 digit year
             DecimalFormat mFormat = new DecimalFormat("00");
             month = mFormat.format(Double.valueOf(month));
             String invoiceNumber = null;
@@ -135,13 +136,11 @@ class SalesOrderEntryService {
             if (salesOrderEntry.billStatus == "DRAFT")
             {
                 println(salesOrderEntry.billStatus)
-//                invoiceNumber = saleBillDetails.entityId+"/DR/S/" + month + year + "/" + seriesCode + "/__";'
                 salesOrderEntry.invoiceNumber = null
             }
             else
             {
-                invoiceNumber = salesOrderEntry.entityId + "/SO/" + month + year + "/" + seriesCode + "/" +
-                        salesOrderEntry.serBillId
+                invoiceNumber = salesOrderEntry.entityId + "SO" + month + year  + seriesCode  + salesOrderEntry.serBillId
                 println("Invoice Number generated: " + invoiceNumber)
             }
             if (invoiceNumber)

@@ -126,6 +126,7 @@ class PurchaseBillDetailService {
             cal.setTime(purchaseBillDetail.entryDate)
             String month = cal.get(Calendar.MONTH)+1;
             String year = cal.get(Calendar.YEAR)
+            year = year.substring(Math.max(year.length() - 2, 0)) //reduce to 2 digit year
             DecimalFormat mFormat = new DecimalFormat("00");
             month = mFormat.format(Double.valueOf(month));
             String invoiceNumber = null;
@@ -134,13 +135,11 @@ class PurchaseBillDetailService {
             if (purchaseBillDetail.billStatus == "DRAFT")
             {
                 println(purchaseBillDetail.billStatus)
-//                invoiceNumber = saleBillDetails.entityId+"/DR/S/" + month + year + "/" + seriesCode + "/__";'
                 purchaseBillDetail.invoiceNumber = "DRAFT"
             }
             else
             {
-                invoiceNumber = purchaseBillDetail.entityId + "/P/" + month + year + "/" + seriesCode + "/" +
-                        purchaseBillDetail.serBillId
+                invoiceNumber = purchaseBillDetail.entityId + "P" + month + year +  seriesCode + purchaseBillDetail.serBillId
                 println("Invoice Number generated: " + invoiceNumber)
             }
             if (invoiceNumber)
