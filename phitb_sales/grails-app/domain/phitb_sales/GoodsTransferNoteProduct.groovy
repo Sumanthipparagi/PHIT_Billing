@@ -3,7 +3,6 @@ package phitb_sales
 import gorm.logical.delete.LogicalDelete
 
 class GoodsTransferNoteProduct implements LogicalDelete<GoodsTransferNoteProduct>{
-
     long finId
     long billId
     long billType
@@ -33,6 +32,8 @@ class GoodsTransferNoteProduct implements LogicalDelete<GoodsTransferNoteProduct
     long status
     long syncStatus
     String financialYear
+    long originalSqty
+    long originalFqty
     long entityTypeId
     long entityId
 
@@ -51,6 +52,8 @@ class GoodsTransferNoteProduct implements LogicalDelete<GoodsTransferNoteProduct
         sqty min: 0D
         freeQty min: 0D
         repQty min: 0D
+        originalSqty nullable:true
+        originalFqty nullable:true
     }
 
     boolean isUpdatable
