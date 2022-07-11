@@ -1,3 +1,4 @@
+<%@ page import="phitb_ui.Constants" %>
 <!doctype html>
 <html class="no-js " lang="en">
 <head>
@@ -22,8 +23,9 @@
             src="/themeassets/plugins/bootstrap-material-datetimepicker/css/bootstrap-material-datetimepicker.css"
             rel="stylesheet"/>
     <asset:stylesheet src="/themeassets/plugins/dropify/dist/css/dropify.min.css"/>
-    <asset:stylesheet src="/themeassets/plugins/select-2-editor/select2.min.css"/>
+%{--    <asset:stylesheet src="/themeassets/plugins/select-2-editor/select2.min.css"/>--}%
 
+    <asset:stylesheet src="/themeassets/plugins/select2/dist/css/select2.min.css"/>
 
 </head>
 
@@ -63,23 +65,29 @@
                     <div class="body">
                         <form id="sampleConversionForm" action="" method="POST">
                             <h3>Saleable</h3>
+
                             <div class="row">
                                 <div class="col-md-6">
 
                                     <div class="form-group">
                                         <label for="salebleitem">Item</label>
-                                        <select id="salebleitem" name="salebleitem" class="form-control">
-                                        <option value="">P1</option>
-                                        <option value="">P2</option>
+                                        <select id="salebleitem" name="salebleitem" class="form-control"  onchange="getSaleableBatch()">
+                                            <option value="">--Please Select--</option>
+                                            <g:each in="${productList}" var="p">
+                                                <g:if test="${p.saleType == Constants.SALEABLE}">
+                                                <option value="${p.id}">${p.productName}</option>
+                                                </g:if>
+                                            </g:each>
                                         </select>
                                     </div>
                                 </div>
+
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <label for="saleblebatch">Batch</label>
-                                        <select id="saleblebatch" name="saleblebatch" class="form-control">
-                                            <option value="">B001</option>
-                                            <option value="">B002</option>
+                                        <select id="saleblebatch" name="saleblebatch" class="form-control" onchange="salebaleBatchChanged()">
+%{--                                            <option value="">B001</option>--}%
+%{--                                            <option value="">B002</option>--}%
                                         </select>
                                     </div>
                                 </div>
@@ -90,29 +98,37 @@
                                 <div class="col-md-12">
                                     <div class="form-group">
                                         <label>Quantity</label>
-                                        <input type="number" name="quantity" class="quantity form-control"/>
+                                        <input type="number" name="saleableQuantity"  id="saleableQuantity"
+                                               class="saleableQuantity form-control" data-qty=""/>
                                     </div>
                                 </div>
                             </div>
                             <br>
 
                             <h3>Sample</h3>
-                            <div class="row" >
+
+                            <div class="row">
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <label for="sampleitem">Item</label>
-                                        <select id="sampleitem" name="sampleitem" class="form-control">
-                                            <option value="">P1</option>
-                                            <option value="">P2</option>
+                                        <select id="sampleitem" name="sampleitem" class="form-control"  onchange="getSampleBatch()">
+                                            <option value="">--Please Select--</option>
+                                            <g:each in="${productList}" var="p">
+                                                <g:if test="${p.saleType == Constants.SAMPLE}">
+                                                    <option value="${p.id}">${p.productName}</option>
+                                                </g:if>
+                                            </g:each>
                                         </select>
                                     </div>
                                 </div>
+
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <label for="samplebatch">Batch</label>
-                                        <select id="samplebatch" name="samplebatch" class="form-control">
-                                            <option value="">B001</option>
-                                            <option value="">B002</option>
+                                        <select id="samplebatch" name="samplebatch" class="form-control"
+                                                onchange="sampleBatchChanged()">
+%{--                                            <option value="">B001</option>--}%
+%{--                                            <option value="">B002</option>--}%
                                         </select>
                                     </div>
                                 </div>
@@ -149,19 +165,113 @@
 <asset:javascript src="/themeassets/js/pages/tables/jquery-datatable.js"/>
 <asset:javascript src="/themeassets/js/pages/ui/dialogs.js"/>
 <asset:javascript src="/themeassets/plugins/sweetalert/sweetalert.min.js"/>
-<asset:javascript src="/themeassets/plugins/select-2-editor/select2.js"/>
+%{--<asset:javascript src="/themeassets/plugins/select-2-editor/select2.js"/>--}%
 <asset:javascript src="/themeassets/plugins/jquery-inputmask/jquery.inputmask.bundle.js"/>
 <asset:javascript src="/themeassets/plugins/momentjs/moment.js"/>
 <asset:javascript src="/themeassets/plugins/bootstrap-material-datetimepicker/js/bootstrap-material-datetimepicker.js"/>
 <asset:javascript src="/themeassets/js/pages/forms/basic-form-elements.js"/>
 <asset:javascript src="/themeassets/plugins/dropify/dist/js/dropify.min.js"/>
+<asset:javascript src="/themeassets/plugins/select2/dist/js/select2.full.min.js"/>
 
 <script>
-        $("#salebleitem").select2();
-        $("#sampleitem").select2();
+    $("#salebleitem").select2();
+    $("#sampleitem").select2();
 
-        $("#saleblebatch").select2();
-        $("#samplebatch").select2();
+    $("#saleblebatch").select2();
+    $("#samplebatch").select2();
+
+
+    var salableBatches = [];
+    function getSaleableBatch() {
+        var id = $("#salebleitem").val();
+        var $select = $('#saleblebatch');
+        $(".saleableQuantity").val("");
+        $.ajax({
+            type: 'POST',
+            url: '/stockbook/product/' + id,
+            dataType: 'json',
+            success: function (data) {
+                if(data != null && data.length>0)
+                {
+                    $select.find('option').remove();
+                    $select.append('<option selected disabled>SELECT BATCH</option>');
+                    $.each(data, function (i) {
+                        salableBatches.push(data[i]);
+                        key = data[i].batchNumber;
+                        value = data[i].batchNumber;
+                        $select.append('<option data-id='+data[i].id+' value="' + key + '">' + value + '</option>');
+                    });
+                }
+                else {
+                    salableBatches = [];
+                    $select.find('option').remove();
+                }
+            }, error: function () {
+                salableBatches = [];
+                $select.find('option').remove();
+            }
+        });
+
+    }
+    function salebaleBatchChanged()
+    {
+        var batchId = $('#saleblebatch').find(':selected').data('id');
+        if(batchId) {
+            for (var i = 0; i < salableBatches.length; i++) {
+                if (salableBatches[i].id === batchId) {
+                    $(".saleableQuantity").val(salableBatches[i].remainingQty);
+                    $('#saleableQuantity').attr("data-qty",salableBatches[i].remainingQty);
+
+                }
+            }
+        }
+    }
+
+
+    var sampleBatches = [];
+    function getSampleBatch() {
+        var id = $("#sampleitem").val();
+        var $select = $('#samplebatch');
+        // $(".saleableQuantity").val("");
+        $.ajax({
+            type: 'POST',
+            url: '/stockbook/product/' + id,
+            dataType: 'json',
+            success: function (data) {
+                if(data != null && data.length>0)
+                {
+                    $select.find('option').remove();
+                    $select.append('<option selected disabled>SELECT BATCH</option>');
+                    $.each(data, function (i) {
+                        salableBatches.push(data[i]);
+                        key = data[i].batchNumber;
+                        value = data[i].batchNumber;
+                        $select.append('<option data-id='+data[i].id+' value="' + key + '">' + value + '</option>');
+                    });
+                }
+                else {
+                    sampleBatches = [];
+                    $select.find('option').remove();
+                }
+            }, error: function () {
+                salableBatches = [];
+                $select.find('option').remove();
+            }
+        });
+
+    }
+    function sampleBatchChanged()
+    {
+        var batchId = $('#samplebatch').find(':selected').data('id');
+        if(batchId) {
+            for (var i = 0; i < salableBatches.length; i++) {
+                if (salableBatches[i].id === batchId) {
+                    $(".sampleQuantity").val(salableBatches[i].remainingQty);
+                }
+            }
+        }
+    }
+
 
 
 </script>

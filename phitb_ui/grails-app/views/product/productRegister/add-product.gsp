@@ -1,3 +1,4 @@
+<%@ page import="phitb_ui.Constants" %>
 <!doctype html>
 <html class="no-js " lang="en">
 <head>
@@ -384,6 +385,16 @@
                                                 <g:each var="t" in="${tax}">
                                                     <option value="${t.id}">${t.taxName}</option>
                                                 </g:each>
+                                            </select>
+                                        </div>
+                                        <div class="col-lg-6 form-group  form-float">
+                                            <label for="saleType">
+                                                Sale Type
+                                            </label>
+                                            <select class="form-control show-tick saleType" name="saleType" id="saleType">
+                                                    <option value="${Constants.SALEABLE}">SALEABLE</option>
+                                                    <option value="${Constants.SAMPLE}">SAMPLE</option>
+                                                    <option value="${Constants.PROMOTIONAL}">PROMOTIONAL</option>
                                             </select>
                                         </div>
                                         <div class="col-lg-6 form-group  form-float">

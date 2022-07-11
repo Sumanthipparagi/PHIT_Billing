@@ -301,4 +301,10 @@ class StockBookService {
         return stockBook
     }
 
+
+    def getByProduct(long productId, long entityId)
+    {
+        StockBook stockBook = StockBook.findByProductIdAndEntityId(productId, entityId)
+        return stockBook
+    }
 }

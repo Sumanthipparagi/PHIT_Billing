@@ -189,6 +189,8 @@ class GoodsTransferNoteController
             gtnProduct.put("sgstPercentage", sale.get("17").toString())
             gtnProduct.put("cgstPercentage", sale.get("18").toString())
             gtnProduct.put("igstPercentage", sale.get("19").toString())
+            gtnProduct.put("originalSqty", sale.get("20").toString())
+            gtnProduct.put("originalFqty", sale.get("21").toString())
 
             gtnProduct.put("gstId", 0) //TODO: to be changed
             gtnProduct.put("amount", value)
@@ -277,6 +279,8 @@ class GoodsTransferNoteController
 
                 long remainingQty = Long.parseLong(stockBook.get("remainingQty").toString()) - Long.parseLong(sale.get("4").toString())
                 long  remainingFreeQty = Long.parseLong(stockBook.get("remainingFreeQty").toString()) - Long.parseLong(sale.get("5").toString())
+
+
                 stockBook.put("remainingQty", remainingQty)
                 stockBook.put("remainingFreeQty", remainingFreeQty)
                 stockBook.put("remainingReplQty", stockBook.get("remainingReplQty"))

@@ -44,6 +44,7 @@ class ProductRegister implements Serializable, LogicalDelete<ProductRegister> {
     String ccmProduct
     String narration
     String restrictedAssignment
+    String saleType
     
     String soundexCode
     long status
@@ -71,6 +72,7 @@ class ProductRegister implements Serializable, LogicalDelete<ProductRegister> {
         schedule nullable: true
         category nullable: true
         division nullable: true
+        saleType nullable: true
     }
     boolean isUpdatable
     static transients = ['isUpdatable']

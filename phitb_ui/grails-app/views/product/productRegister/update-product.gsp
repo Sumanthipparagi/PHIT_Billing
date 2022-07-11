@@ -1,3 +1,4 @@
+<%@ page import="phitb_ui.Constants" %>
 <!doctype html>
 <html class="no-js " lang="en">
 <head>
@@ -272,10 +273,7 @@
                                             <label for="saleRate">
                                                 Sale Rate
                                             </label>
-                                            <input type="text" id="saleRate" onblur="setTwoNumberDecimal"
-                                                   class="form-control saleRate" name="saleRate"
-                                                   placeholder="Sale Rate" step="0.25" value="${product.saleRate}"
-                                                   required/>
+                                            <input type="text" id="saleRate" onblur="setTwoNumberDecimal" class="form-control saleRate" name="saleRate" placeholder="Sale Rate" step="0.25" value="${product.saleRate}" required/>
                                         </div>
                                         <div class="col-lg-6 form-group  form-float">
                                             <label for="saleTradeDiscount">
@@ -387,6 +385,16 @@
                                                 <g:each var="t" in="${tax}">
                                                     <option value="${t.id}" <g:if test="${t.id == product.taxId}">selected</g:if>>${t.taxName}</option>
                                                 </g:each>
+                                            </select>
+                                        </div>
+                                        <div class="col-lg-6 form-group  form-float">
+                                            <label for="saleType">
+                                                Sale Type
+                                            </label>
+                                            <select class="form-control show-tick saleType" name="saleType" id="saleType">
+                                                <option value="${Constants.SALEABLE}">SALEABLE</option>
+                                                <option value="${Constants.SAMPLE}">SAMPLE</option>
+                                                <option value="${Constants.PROMOTIONAL}">PROMOTIONAL</option>
                                             </select>
                                         </div>
                                         <div class="col-lg-6 form-group  form-float">

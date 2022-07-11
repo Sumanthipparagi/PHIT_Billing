@@ -22,6 +22,8 @@ public class Constants
     public static String ENTITY_DISTRIBUTOR = "DISTRIBUTOR";
     public static String ENTITY_C_F = "C_F";
 
+
+
     public static String DOCTYPE_SALE_INVOICE = "SLINV";
     public static String DOCTYPE_PURCHASE_INVOICE = "PRINV";
     public static String DOCTYPE_SALE_RETURN = "SR";
@@ -34,6 +36,10 @@ public class Constants
     public static String E_INVOICE_ASP_ID = "29AALCP6561H000978";
     public static String E_INVOICE_ASP_SECRET = "v490411B91226v0I1cIWUPLcW6718690";
 
+//    Sale Type
+    public static String SALEABLE = "SALEABLE";
+    public static String SAMPLE = "SAMPLE";
+    public static String PROMOTIONAL  = "PROMOTIONAL";
 
 
     public Constants()

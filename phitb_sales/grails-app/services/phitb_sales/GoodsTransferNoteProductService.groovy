@@ -131,6 +131,8 @@ class GoodsTransferNoteProductService {
         goodsTransferNoteProduct.sgstPercentage = Double.parseDouble(jsonObject.get("sgstPercentage").toString())
         goodsTransferNoteProduct.cgstPercentage = Double.parseDouble(jsonObject.get("cgstPercentage").toString())
         goodsTransferNoteProduct.igstPercentage = Double.parseDouble(jsonObject.get("igstPercentage").toString())
+        goodsTransferNoteProduct.originalSqty = Long.parseLong(jsonObject.get("originalSqty").toString())
+        goodsTransferNoteProduct.originalFqty = Long.parseLong(jsonObject.get("originalFqty").toString())
         goodsTransferNoteProduct.uuid = jsonObject.get("uuid").toString()
 
         goodsTransferNoteProduct.save(flush: true)
@@ -186,6 +188,8 @@ class GoodsTransferNoteProductService {
             goodsTransferNoteProduct.sgstPercentage = Double.parseDouble(jsonObject.get("sgstPercentage").toString())
             goodsTransferNoteProduct.cgstPercentage = Double.parseDouble(jsonObject.get("cgstPercentage").toString())
             goodsTransferNoteProduct.igstPercentage = Double.parseDouble(jsonObject.get("igstPercentage").toString())
+            goodsTransferNoteProduct.originalSqty = Long.parseLong(jsonObject.get("originalSqty").toString())
+            goodsTransferNoteProduct.originalFqty = Long.parseLong(jsonObject.get("originalFqty").toString())
             goodsTransferNoteProduct.uuid = jsonObject.get("uuid").toString()
             goodsTransferNoteProduct.save(flush: true)
             if (!goodsTransferNoteProduct.hasErrors())

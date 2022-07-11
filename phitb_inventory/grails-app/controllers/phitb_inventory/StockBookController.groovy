@@ -323,8 +323,8 @@ class StockBookController
 
                     stockActivity.setProductId(Long.parseLong(stockObject.productId))
                     stockActivity.setBatch(stockObject.batchNumber)
-                    stockActivity.setRemainingQty(Long.parseLong(stockBook.remainingQty.toString())+Long.parseLong(stockObject.saleQty.toString()))
-                    stockActivity.setRemainingSchemeQty(Long.parseLong(stockObject.freeQty.toString())+Long.parseLong(stockBook.remainingFreeQty.toString()))
+                    stockActivity.setRemainingQty(Long.parseLong(stockBook.remainingQty.toString()) + Long.parseLong(stockObject.saleQty.toString()))
+                    stockActivity.setRemainingSchemeQty(Long.parseLong(stockObject.freeQty.toString()) + Long.parseLong(stockBook.remainingFreeQty.toString()))
                     stockActivity.setPrevSaleRate(Double.parseDouble(stockBook.saleRate.toString()))
                     stockActivity.setSaleRate(Double.parseDouble(stockObject.saleRate.toString()))
                     stockActivity.setStatus(0)
@@ -333,9 +333,9 @@ class StockBookController
                     stockActivity.setEntityId(Long.parseLong(stockObject.entityId.toString()))
                     stockActivity.setCreatedUser(Long.parseLong(stockObject.userId.toString()))
                     stockActivity.setModifiedUser(Long.parseLong(stockObject.userId.toString()))
-                    stockActivity.save(flush:true)
-                    StockActivity stockActivity1 = stockActivity.save(flush:true)
-                    if(stockActivity1)
+                    stockActivity.save(flush: true)
+                    StockActivity stockActivity1 = stockActivity.save(flush: true)
+                    if (stockActivity1)
                     {
                         println("Stock Activity Updated")
                     }
@@ -370,8 +370,8 @@ class StockBookController
 
                     stockActivity.setProductId(Long.parseLong(stockObject.productId))
                     stockActivity.setBatch(stockObject.batchNumber)
-                    stockActivity.setRemainingQty(Long.parseLong(stockBook.remainingQty.toString())+Long.parseLong(stockObject.saleQty.toString()))
-                    stockActivity.setRemainingSchemeQty(Long.parseLong(stockObject.freeQty.toString())+Long.parseLong(stockBook.remainingFreeQty.toString()))
+                    stockActivity.setRemainingQty(Long.parseLong(stockBook.remainingQty.toString()) + Long.parseLong(stockObject.saleQty.toString()))
+                    stockActivity.setRemainingSchemeQty(Long.parseLong(stockObject.freeQty.toString()) + Long.parseLong(stockBook.remainingFreeQty.toString()))
                     stockActivity.setPrevSaleRate(Double.parseDouble(stockBook.saleRate.toString()))
                     stockActivity.setSaleRate(Double.parseDouble(stockObject.saleRate.toString()))
                     stockActivity.setStatus(0)
@@ -380,9 +380,9 @@ class StockBookController
                     stockActivity.setEntityId(Long.parseLong(stockObject.entityId.toString()))
                     stockActivity.setCreatedUser(Long.parseLong(stockObject.userId.toString()))
                     stockActivity.setModifiedUser(Long.parseLong(stockObject.userId.toString()))
-                    stockActivity.save(flush:true)
-                    StockActivity stockActivity1 = stockActivity.save(flush:true)
-                    if(stockActivity1)
+                    stockActivity.save(flush: true)
+                    StockActivity stockActivity1 = stockActivity.save(flush: true)
+                    if (stockActivity1)
                     {
                         println("Stock Activity Updated")
                     }
@@ -449,9 +449,9 @@ class StockBookController
                     stockActivity.setEntityId(Long.parseLong(stockObject.entityId.toString()))
                     stockActivity.setCreatedUser(Long.parseLong(stockObject.userId.toString()))
                     stockActivity.setModifiedUser(Long.parseLong(stockObject.userId.toString()))
-                    stockActivity.save(flush:true)
-                    StockActivity stockActivity1 = stockActivity.save(flush:true)
-                    if(stockActivity1)
+                    stockActivity.save(flush: true)
+                    StockActivity stockActivity1 = stockActivity.save(flush: true)
+                    if (stockActivity1)
                     {
                         println("Stock Activity Updated")
                     }
@@ -510,9 +510,9 @@ class StockBookController
                     stockActivity.setEntityId(Long.parseLong(stockObject.entityId.toString()))
                     stockActivity.setCreatedUser(Long.parseLong(stockObject.userId.toString()))
                     stockActivity.setModifiedUser(Long.parseLong(stockObject.userId.toString()))
-                    stockActivity.save(flush:true)
-                    StockActivity stockActivity1 = stockActivity.save(flush:true)
-                    if(stockActivity1)
+                    stockActivity.save(flush: true)
+                    StockActivity stockActivity1 = stockActivity.save(flush: true)
+                    if (stockActivity1)
                     {
                         println("Stock Activity Updated")
                     }
@@ -540,70 +540,72 @@ class StockBookController
             }
         }
 
-    catch (Exception ex)
-    {
-        System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
-        log.error('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
+        catch (Exception ex)
+        {
+            System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
+            log.error('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
+        }
+        response.status = 400
     }
-    response.status = 400
-}
 
 /**
  * Get requested Stock Book
  * @param id
  * @return get requested Stock Book
  */
-def getByUserId()
-{
-    try
+    def getByUserId()
     {
-
-        if (params.id)
+        try
         {
-            respond stockBookService.getAllByUserId(Long.parseLong(params.id))
+
+            if (params.id)
+            {
+                respond stockBookService.getAllByUserId(Long.parseLong(params.id))
+            }
+        }
+        catch (ResourceNotFoundException ex)
+        {
+            System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
+            response.status = 404
+        }
+        catch (BadRequestException ex)
+        {
+            System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
+            response.status = 400
+        }
+        catch (Exception ex)
+        {
+            System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
         }
     }
-    catch (ResourceNotFoundException ex)
-    {
-        System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
-        response.status = 404
-    }
-    catch (BadRequestException ex)
-    {
-        System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
-        response.status = 400
-    }
-    catch (Exception ex)
-    {
-        System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
-    }
-}
 
-def getByProductIdAndBatch()
-{
-    try
+    def getByProductIdAndBatch()
     {
-        String id = params.id
-        long entityId = Long.parseLong(params.entityId)
-        if (id)
+        try
         {
-            respond stockBookService.getByProductAndBatch(Long.parseLong(id), params.batch, entityId)
+            String id = params.id
+            long entityId = Long.parseLong(params.entityId)
+            if (id)
+            {
+                respond stockBookService.getByProductAndBatch(Long.parseLong(id), params.batch, entityId)
+            }
+        }
+        catch (ResourceNotFoundException ex)
+        {
+            System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
+            response.status = 404
+        }
+        catch (BadRequestException ex)
+        {
+            System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
+            response.status = 400
+        }
+        catch (Exception ex)
+        {
+            System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
         }
     }
-    catch (ResourceNotFoundException ex)
-    {
-        System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
-        response.status = 404
-    }
-    catch (BadRequestException ex)
-    {
-        System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
-        response.status = 400
-    }
-    catch (Exception ex)
-    {
-        System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
-    }
-}
+
+
 
 }

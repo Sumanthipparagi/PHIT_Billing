@@ -1,5 +1,6 @@
 package phitb_ui.sales
 
+import grails.artefact.Controller
 import org.grails.web.json.JSONArray
 import phitb_ui.Constants
 import phitb_ui.ProductService
@@ -9,6 +10,7 @@ import phitb_ui.entity.EntityRegisterController
 import phitb_ui.entity.SeriesController
 import phitb_ui.entity.TaxController
 import phitb_ui.entity.UserRegisterController
+import phitb_ui.product.ProductController
 
 class SampleConversionController {
 
@@ -35,6 +37,15 @@ class SampleConversionController {
 
     def sampleConversion()
     {
-        render(view: '/sales/sampleConversion/sample-conversion')
+        try{
+            String entityId = session.getAttribute("entityId")?.toString()
+            JSONArray productList = new ProductService().getProductsByEntityId(entityId)
+            render(view: '/sales/sampleConversion/sample-conversion',model: [productList:productList])
+        }
+       catch (Exception ex)
+       {
+           println(controllerName+" "+ ex)
+           log.error(controllerName+" "+ ex)
+       }
     }
 }
