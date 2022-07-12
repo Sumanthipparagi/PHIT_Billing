@@ -63,7 +63,7 @@
         <div class="row clearfix">
             <div class="col-lg-12 col-md-12 col-sm-12">
                 <div class="card">
-                    <div class="body">
+                    <div class="body" style="width: 100%;">
 %{--                        <form id="sampleConversionForm" action="" method="POST">--}%
                             <h3>Saleable</h3>
 

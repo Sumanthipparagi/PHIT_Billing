@@ -6,7 +6,7 @@
     <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
     <meta name="description" content="Responsive Bootstrap 4 and web Application ui kit.">
 
-    <title>:: PharmIt ::  Sample Promotional GDV</title>
+    <title>:: PharmIt ::  Sample Conversion</title>
     <link rel="icon" type="image/x-icon" href="${assetPath(src: '/themeassets/images/favicon.ico')}"/>
     <!-- Favicon-->
     <asset:stylesheet rel="stylesheet" src="/themeassets/plugins/bootstrap/css/bootstrap.min.css"/>
@@ -50,6 +50,7 @@
 </div>
 <g:include view="controls/sidebar.gsp"/>
 
+
 <section class="content">
     <div class="container-fluid">
         <div class="block-header" style="padding: 1px;">
@@ -58,7 +59,7 @@
                     %{--<h2>Sale Entry</h2>--}%
                     <ul class="breadcrumb padding-0">
                         <li class="breadcrumb-item"><a href="#"><i class="zmdi zmdi-home"></i></a></li>
-                        <li class="breadcrumb-item active">Sample Promotional GDV</li>
+%{--                        <li class="breadcrumb-item active"><g:if test="${saleBillDetail}">Edit</g:if> Sale Entry</li>--}%
                     </ul>
                 </div>
             </div>
@@ -73,30 +74,6 @@
 
                     <div class="body">
                         <div class="row">
-                            <div class="col-md-2">
-                                <label for="date">Date:</label>
-                                <input type="date" class="form-control date" name="date" id="date"/>
-                            </div>
-
-                            <div class="col-md-2">
-                                <label for="series">Series:</label>
-                                <select onchange="seriesChanged()" class="form-control" id="series" name="series">
-                                    <g:each in="${series}" var="sr">
-                                        <option data-seriescode="${sr.seriesCode}"
-                                                value="${sr.id}">${sr.seriesName} (${sr.seriesCode})</option>
-                                    </g:each>
-                                </select>
-                            </div>
-
-                            <div class="col-md-2">
-                                <label for="priority">Priority:</label>
-                                <select class="form-control" id="priority" name="priority">
-                                    <g:each in="${priorityList}" var="pr">
-                                        <option value="${pr.id}">${pr.priority}</option>
-                                    </g:each>
-                                </select>
-                            </div>
-
                             <div class="col-md-4">
                                 <label for="customerSelect">Customer:</label>
                                 <select class="form-control show-tick" id="customerSelect"
@@ -105,8 +82,35 @@
                                     <g:each in="${customers}" var="cs">
 
                                         <g:if test="${cs.id != session.getAttribute("entityId")}">
-                                            <option value="${cs.id}">${cs.entityName} (${cs.entityType.name})</option>
+                                            <option data-state="${cs.stateId}" value="${cs.id}"
+                                                    <g:if test="${saleBillDetail?.customerId == cs.id}">selected</g:if>>${cs.entityName} (${cs.entityType.name})</option>
                                         </g:if>
+                                    </g:each>
+                                </select>
+                            </div>
+
+                            <div class="col-md-2">
+                                <label for="date">Date:</label>
+                                <input type="date" class="form-control date" name="date" id="date" readonly/>
+                            </div>
+
+                            <div class="col-md-2">
+                                <label for="series">Series:</label>
+                                <select onchange="seriesChanged()" class="form-control" id="series" name="series">
+                                    <g:each in="${series}" var="sr">
+                                        <option data-seriescode="${sr.seriesCode}"
+                                                value="${sr.id}"
+                                                <g:if test="${saleBillDetail?.seriesId == sr.id}">selected</g:if>>${sr.seriesName} (${sr.seriesCode})</option>
+                                    </g:each>
+                                </select>
+                            </div>
+
+                            <div class="col-md-2">
+                                <label for="priority">Priority:</label>
+                                <select class="form-control" id="priority" name="priority">
+                                    <g:each in="${priorityList}" var="pr">
+                                        <option value="${pr.id}"
+                                                <g:if test="${saleBillDetail?.priorityId == pr.id}">selected</g:if>>${pr.priority}</option>
                                     </g:each>
                                 </select>
                             </div>
@@ -155,6 +159,7 @@
                             <p class="loadTable">Loading...<img src="${assetPath(src: '/themeassets/images/3.gif')}"
                                                                 width="25" height="25"/>
                             </p>
+
                             <div id="saleTable" style="width:100%;"></div>
                         </div>
                     </div>
@@ -252,7 +257,6 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/3.5.2/select2.js"></script>
 
 <script>
-
     var headerRow = [
         '<strong></strong>',
         '<strong>Product</strong>',
@@ -306,6 +310,7 @@
     var customers = [];
     var readOnly = false;
     var scheme = null;
+    var stateId = null;
     $(document).ready(function () {
         $("#customerSelect").select2();
         $('#date').val(moment().format('YYYY-MM-DD'));
@@ -314,6 +319,8 @@
         customers.push({"id": ${cs.id}, "noOfCrDays": ${cs.noOfCrDays}});
         </g:each>
         const container = document.getElementById('saleTable');
+
+        //main table
         hot = new Handsontable(container, {
             data: saleData,
             minRows: 1,
@@ -356,11 +363,24 @@
                 {type: 'text', readOnly: true}, //GST Percentage
                 {type: 'text', readOnly: true}, //SGST Percentage
                 {type: 'text', readOnly: true}, //CGST Percentage
-                {type: 'text', readOnly: true} //IGST Percentage
+                {type: 'text', readOnly: true}, //IGST Percentage
+                {type: 'text', readOnly: true},//originalSqty
+                {type: 'text', readOnly: true} //originalFqty
+                <g:if test="${customer != null}">
+                , {type: 'text', readOnly: true}, //draft sqty
+                {type: 'text', readOnly: true}, //draft fqty
+                {type: 'text', readOnly: true} //saved draft product id
+                </g:if>
             ],
             hiddenColumns: true,
             hiddenColumns: {
-                columns: [15, 16, 17, 18, 19]
+                <g:if test="${customer != null}">
+                columns: [15, 16, 17, 18, 19, 20, 21, 22, 23, 24]
+                </g:if>
+                <g:else>
+                columns: [15, 16, 17, 18, 19, 20, 21]
+
+                </g:else>
             },
             minSpareRows: 0,
             minSpareColumns: 0,
@@ -380,8 +400,21 @@
             },
             afterOnCellMouseDown: function (e, coords, TD) {
                 if (coords.col === 0) {
+                    <g:if test="${customer == null}">
                     var id = hot.getDataAtCell(coords.row, 15);
                     deleteTempStockRow(id, coords.row);
+                    </g:if>
+                    <g:else>
+                    var id = hot.getDataAtCell(coords.row, 24);
+                    if(id == null) {
+                        id = hot.getDataAtCell(coords.row, 15);
+                        deleteTempStockRow(id, coords.row);
+                    }
+                    else {
+                        deleteSaleBillRow(id, coords.row);
+                    }
+                    </g:else>
+
                     calculateTotalAmt();
                 }
             },
@@ -407,11 +440,6 @@
         });
         hot.selectCell(0, 1);
         hot.updateSettings({
-            /*afterSelectionEnd: function(r, c, r2, c2) {
-                if(hot.getCellMeta(r,c).readOnly){
-                    hot.selectCell(r, c + 1);
-                }
-            },*/
             beforeKeyDown(e) {
                 var sRate = 0;
                 var sQty = 0;
@@ -429,68 +457,94 @@
                         var sqty = hot.getDataAtCell(row, 4);
                         var fqty = hot.getDataAtCell(row, 5);
                         if (sqty && sqty > 0) {
-                            var batchId = hot.getCellMeta(row, 2)?.batchId; //batch
-                            var dt = hot.getDataAtRow(row);
-                            dt.push(batchId);
-                            var json = JSON.stringify(dt);
-                            var url = '/tempstockbook';
-                            var type = 'POST';
-                            var beforeSendSwal;
-                            $.ajax({
-                                type: type,
-                                url: url,
-                                dataType: 'json',
-                                beforeSend: function () {
-                                    beforeSendSwal = Swal.fire({
-                                        // title: "Loading",
-                                        html:
-                                            '<img src="${assetPath(src: "/themeassets/images/1476.gif")}" width="100" height="100"/>',
-                                        showDenyButton: false,
-                                        showCancelButton: false,
-                                        showConfirmButton: false,
-                                        allowOutsideClick: false,
-                                        background: 'transparent'
-                                    });
-                                },
-                                data: {
-                                    rowData: json,
-                                    uuid: self.crypto.randomUUID()
-                                },
-                                success: function (data) {
-                                    beforeSendSwal.close()
-                                    console.log("Data saved");
-                                    hot.setDataAtCell(row, 15, data.id);
-                                    mainTableRow = row + 1;
-                                    hot.alter('insert_row');
-                                    hot.selectCell(mainTableRow, 1);
-                                    calculateTotalAmt();
-                                },
-                                error: function (data) {
-                                    console.log("Failed");
-                                    alert("Unable to save the row, please delete it and add again.");
-                                }
-                            });
+                            var tmpStockId = hot.getDataAtCell(row, 15);
+                            if(tmpStockId == null) {
+                                var batchId = hot.getCellMeta(row, 2)?.batchId; //batch
+                                var dt = hot.getDataAtRow(row);
+                                dt.push(batchId);
+                                var json = JSON.stringify(dt);
+                                var type = 'POST';
+                                var url = '/tempstockbook';
+                                var draftEdit = false;
+                                <g:if test="${customer != null}">
+                                draftEdit = true;
+                                </g:if>
+                                var beforeSendSwal;
+                                $.ajax({
+                                    type: type,
+                                    url: url,
+                                    dataType: 'json',
+                                    beforeSend: function () {
+                                        beforeSendSwal = Swal.fire({
+                                            // title: "Loading",
+                                            html:
+                                                '<img src="${assetPath(src: "/themeassets/images/1476.gif")}" width="100" height="100"/>',
+                                            showDenyButton: false,
+                                            showCancelButton: false,
+                                            showConfirmButton: false,
+                                            allowOutsideClick: false,
+                                            background: 'transparent'
+                                        });
+                                    },
+                                    data: {
+                                        rowData: json,
+                                        uuid: self.crypto.randomUUID(),
+                                        draftEdit: draftEdit
+                                    },
+                                    success: function (data) {
+                                        beforeSendSwal.close();
+                                        console.log("Data saved");
+                                        batchHot.updateSettings({
+                                            data: []
+                                        });
+                                        hot.setDataAtCell(row, 15, data.id);
+
+                                        for (var i = 0; i < 15; i++) {
+                                            hot.setCellMeta(row, i, 'readOnly', true);
+                                        }
+                                        mainTableRow = row + 1;
+                                        hot.alter('insert_row');
+                                        hot.selectCell(mainTableRow, 1);
+                                        hot.render();
+                                        calculateTotalAmt();
+                                    },
+                                    error: function (jqXHR, textStatus, errorThrown) {
+                                        beforeSendSwal.close();
+                                        console.log("Failed");
+                                        if(jqXHR.status === 400)
+                                            alert("Unable to save the row, please delete it and add again.");
+                                        else if(jqXHR.status === 404) {
+                                            batchSelection(batchId, mainTableRow, false);
+                                            alert("Requested quantity not available in stocks.");
+                                        }
+                                    }
+                                });
+                            }
+                            else
+                            {
+                                mainTableRow = row + 1;
+                                hot.alter('insert_row');
+                                hot.selectCell(mainTableRow, 1);
+                                hot.render();
+                            }
                         } else {
                             alert("Invalid Quantity, please enter quantity greater than 0");
                         }
 
                     }
-                } else if (selection === 4 || selection === 5 || selection === 8 || selection === 6 ) {
+                } else if (selection === 4 || selection === 5 || selection === 8 || selection === 6) {
                     if (e.keyCode === 13 || e.keyCode === 9) {
                         var discount = 0;
-                        if(selection === 6)
-                        {
+                        if (selection === 6) {
                             var mrp = hot.getDataAtCell(row, 7);
                             var oldSaleRate = hot.getDataAtCell(row, 6);
                             var saleRate = Number(this.getActiveEditor().TEXTAREA.value);
-                            if(saleRate > mrp)
-                            {
-                                hot.setDataAtCell(row, 6,  oldSaleRate);
+                            if (saleRate > mrp) {
+                                hot.setDataAtCell(row, 6, oldSaleRate);
                                 this.getActiveEditor().TEXTAREA.value = oldSaleRate;
                                 alert("Sale Rate exceeds MRP!");
-                            }
-                            else {
-                                hot.setDataAtCell(row, 6,  Number(this.getActiveEditor().TEXTAREA.value));
+                            } else {
+                                hot.setDataAtCell(row, 6, Number(this.getActiveEditor().TEXTAREA.value));
                                 this.selectCell(row, selection + 1);
                             }
                         }
@@ -498,12 +552,9 @@
                             this.getActiveEditor().enableFullEditMode();
                             this.getActiveEditor().beginEditing();
                             sQty = Number(this.getActiveEditor().TEXTAREA.value);
-                            // var sq = this.getDataAtCell(row,4);
-                            // alert(sq)
                             this.setDataAtCell(row, 4, sQty);
                             this.selectCell(row, selection + 1);
-                        } else
-                        {
+                        } else {
                             sQty = Number(this.getDataAtCell(row, 4));
                         }
 
@@ -511,8 +562,7 @@
                             fQty = Number(this.getActiveEditor().TEXTAREA.value);
                             hot.setDataAtCell(row, 5, fQty);
                             this.selectCell(row, selection + 1);
-                        } else
-                        {
+                        } else {
                             fQty = Number(this.getDataAtCell(row, 5));
                         }
                         if (selection === 8) {
@@ -523,9 +573,7 @@
                                 this.getActiveEditor().TEXTAREA.value = 0;
                                 hot.selectCell(row, 8);
                                 return;
-                            }
-                            else
-                            {
+                            } else {
                                 hot.setDataAtCell(row, 8, discount);
                                 this.selectCell(row, selection + 1);
                             }
@@ -544,57 +592,62 @@
                                     url: "/stockbook/product/" + pid + "/batch/" + batch,
                                     dataType: 'json',
                                     success: function (data) {
+                                        var draftSqty = 0;
+                                        var draftFqty = 0;
+                                        <g:if test="${customer != null}">
+                                        draftSqty = hot.getDataAtCell(row, 22); //draft sqty
+                                        draftFqty = hot.getDataAtCell(row, 23); //draft fqty
+                                        </g:if>
+
                                         remQty = remQty + data.remainingQty;
                                         remFQty = remFQty + data.remainingFreeQty;
                                         if (remQty >= sQty) {
                                             allowEntry = true;
-                                        }
-                                        else if (sQty >= remQty && remFQty >= sQty) {
+                                        } else if (sQty >= remQty && remFQty >= sQty) {
+                                            allowEntry = true;
+                                        } else if ((remQty + remFQty) >= sQty) {
+                                            allowEntry = true;
+                                        } else if (draftSqty > 0 && sQty <= (draftSqty + draftFqty + remQty + remFQty)) {
+                                            allowEntry = true; //if draft greater than zero, allow manipulation
+                                        } else if (draftFqty > 0 && fqty <= (draftSqty + draftFqty + remQty + remFQty)) {
                                             allowEntry = true;
                                         }
 
-                                        else if ((remQty + remFQty) >= sQty) {
-                                            allowEntry = true;
-                                        }
 
-                                        if(selection === 5)
-                                        {
-                                            if(remFQty >= fQty)
-                                            {
+                                        if (selection === 5) {
+                                            if (remFQty >= fQty && ((remQty + remFQty) >= (sQty + fQty))) {
                                                 freeQtyEntry = true;
-                                            }
-
-                                            else if ((remQty + remFQty) >= sQty+fQty) {
+                                            } else if ((remQty + remFQty) >= sQty + fQty) {
                                                 freeQtyEntry = true;
                                                 allowEntry = true;
-                                            }
-                                            else
-                                            {
+                                            } else {
                                                 freeQtyEntry = false;
                                                 allowEntry = false;
                                             }
 
-                                            if(freeQtyEntry!==true)
-                                            {
+                                            if (freeQtyEntry !== true) {
                                                 // hot.setDataAtCell(row, 5, 0);
                                                 alert("Entered Free quantity exceeds available quantity");
                                             }
                                         }
                                         if (!allowEntry) {
                                             // this.getActiveEditor().TEXTAREA.value = "";
-                                            hot.setDataAtCell(row, 4, 0);
-                                            hot.setDataAtCell(row, 5, 0);
-                                            hot.setDataAtCell(row, 10, 0);
-                                            hot.setDataAtCell(row, 11, 0);
-                                            hot.setDataAtCell(row, 12, 0);
-                                            hot.setDataAtCell(row, 13, 0);
-                                            hot.setDataAtCell(row, 14, 0);
+                                            if (draftSqty > 0 || draftFqty > 0) {
+                                                hot.setDataAtCell(row, 4, draftSqty);
+                                                hot.setDataAtCell(row, 5, draftFqty);
+                                            } else {
+                                                hot.setDataAtCell(row, 4, 0);
+                                                hot.setDataAtCell(row, 5, 0);
+                                                hot.setDataAtCell(row, 10, 0);
+                                                hot.setDataAtCell(row, 11, 0);
+                                                hot.setDataAtCell(row, 12, 0);
+                                                hot.setDataAtCell(row, 13, 0);
+                                                hot.setDataAtCell(row, 14, 0);
+                                            }
                                             alert("Entered quantity exceeds available quantity");
                                             return;
-                                        }
-                                        else
-                                        {
-                                            hot.setDataAtCell(row,5,fQty)
+                                        } else {
+                                            hot.setDataAtCell(row, 5, fQty)
                                         }
                                     },
                                     error: function (data) {
@@ -604,35 +657,43 @@
                             );
                         }
                         applySchemes(row, sQty);
-                        if(selection === 6)
-                        {
-                            sRate = Number(this.getActiveEditor().TEXTAREA.value);
-                        }
-                        else
+                        if (selection === 6) {
+                            if(this.getActiveEditor())
+                                sRate = Number(this.getActiveEditor().TEXTAREA.value);
+                            else
+                                sRate = hot.getDataAtCell(row, 6);
+                        } else
                             sRate = hot.getDataAtCell(row, 6);
 
                         var value = sRate * sQty;
                         var priceBeforeGst = value - (value * discount / 100);
                         var finalPrice = priceBeforeGst + (priceBeforeGst * (gst / 100));
                         hot.setDataAtCell(row, 11, Number(finalPrice).toFixed(2));
+                        if (stateId === undefined || stateId === '${session.getAttribute('stateId')}') {
+                            if (gst !== 0) {
+                                var gstAmount = priceBeforeGst * (gst / 100);
+                                var sgstAmount = priceBeforeGst * (sgst / 100);
+                                var cgstAmount = priceBeforeGst * (cgst / 100);
+                                hot.setDataAtCell(row, 10, Number(gstAmount).toFixed(2)); //GST
+                                hot.setDataAtCell(row, 12, Number(sgstAmount).toFixed(2)); //SGST
+                                hot.setDataAtCell(row, 13, Number(cgstAmount).toFixed(2)); //CGST
+                            } else {
+                                hot.setDataAtCell(row, 10, 0); //GST
+                                hot.setDataAtCell(row, 12, 0); //SGST
+                                hot.setDataAtCell(row, 13, 0); //CGST
+                            }
 
-                        if (gst !== 0) {
-                            var gstAmount = priceBeforeGst * (gst / 100);
-                            var sgstAmount = priceBeforeGst * (sgst / 100);
-                            var cgstAmount = priceBeforeGst * (cgst / 100);
-                            hot.setDataAtCell(row, 10, Number(gstAmount).toFixed(2)); //GST
-                            hot.setDataAtCell(row, 12, Number(sgstAmount).toFixed(2)); //SGST
-                            hot.setDataAtCell(row, 13, Number(cgstAmount).toFixed(2)); //CGST
+                            if (igst !== "0") {
+                                var igstAmount = priceBeforeGst * (igst / 100);
+                                hot.setDataAtCell(row, 14, Number(igstAmount).toFixed(2)); //IGST
+                            } else
+                                hot.setDataAtCell(row, 14, 0);
                         } else {
-                            hot.setDataAtCell(row, 10, 0); //GST
                             hot.setDataAtCell(row, 12, 0); //SGST
                             hot.setDataAtCell(row, 13, 0); //CGST
+                            hot.setDataAtCell(row, 10, Number(priceBeforeGst * (gst / 100)).toFixed(2)); //GST
+                            hot.setDataAtCell(row, 14, Number(priceBeforeGst * (gst / 100)).toFixed(2)); //IGST
                         }
-                        if (igst !== "0") {
-                            var igstAmount = priceBeforeGst * (igst / 100);
-                            hot.setDataAtCell(row, 14, Number(igstAmount).toFixed(2)); //IGST
-                        } else
-                            hot.setDataAtCell(row, 14, 0);
                     }
                 }
             }
@@ -644,9 +705,10 @@
             }
         });
 
-
-
-
+        stateId = $('#customerSelect option:selected').attr('data-state');
+        $('#customerSelect').change(function () {
+            stateId = $('#customerSelect option:selected').attr('data-state');
+        });
 
         function productsDropdownRenderer(instance, td, row, col, prop, value, cellProperties) {
             var selectedId;
@@ -657,9 +719,9 @@
                 }
             }
             Handsontable.renderers.TextRenderer.apply(this, arguments);
-            //Handsontable.TextCell.renderer.apply(this, arguments);
         }
 
+        //batch table
         batchHot = new Handsontable(batchContainer, {
             data: batchData,
             minRows: 1,
@@ -720,14 +782,22 @@
                         hot.setDataAtCell(mainTableRow, 8, 0);
                         hot.setDataAtCell(mainTableRow, 9, rowData[7]);
                         gst = rowData[8];
-                        sgst = rowData[9];
-                        cgst = rowData[10];
-                        igst = rowData[11];
+                        if (stateId === undefined || stateId === '${session.getAttribute('stateId')}') {
+                            sgst = rowData[9];
+                            cgst = rowData[10];
+                            igst = rowData[11];
+                        } else {
+                            igst = gst;
+                            sgst = 0;
+                            cgst = 0;
+                        }
                         hot.selectCell(mainTableRow, 4);
                         hot.setDataAtCell(mainTableRow, 16, gst);
                         hot.setDataAtCell(mainTableRow, 17, sgst);
                         hot.setDataAtCell(mainTableRow, 18, cgst);
                         hot.setDataAtCell(mainTableRow, 19, igst);
+                        hot.setDataAtCell(mainTableRow, 20, rowData[2]);
+                        hot.setDataAtCell(mainTableRow, 21, rowData[3]);
                         remainingQty = rowData[2];
                         remainingFQty = rowData[3];
                         $("#saleTable").focus();
@@ -737,24 +807,34 @@
                 }
             }
         });
-
+        $("#customerSelect").trigger('change');
         $('#series').trigger('change');
-
-
     });
 
     function batchSelection(selectedId, mainRow, selectCell = true) {
         if (selectedId != null) {
-            var url = "/stockbook/product/" + selectedId;
+            var sid = selectedId.id;
+            if (sid === undefined)
+                sid = selectedId;
+            if(sid == null) {
+                batchHot.updateSettings({
+                    data: []
+                });
+                return;
+            }
+            var url = "/stockbook/product/" + sid;
             $.ajax({
                 type: "GET",
                 url: url,
+                data:{
+                    userId: "${session.getAttribute("userId")}"
+                },
                 dataType: 'json',
                 success: function (data) {
                     if (data) {
                         batchData = [];
                         for (var i = 0; i < data.length; i++) {
-                            if(Number('${session.getAttribute('entityId')}')=== data[i].entityId) {
+                            if (Number('${session.getAttribute('entityId')}') === data[i].entityId) {
                                 var batchdt = [];
                                 batchdt.push(data[i].batchNumber);
                                 batchdt.push(data[i].expDate.split("T")[0]);
@@ -790,67 +870,6 @@
         }
     }
 
-    function customerSelectChanged() {
-        var noOfCrDays = 0;
-        var customerId = $("#customerSelect").val();
-        for (var i = 0; i < customers.length; i++) {
-            if (customerId === customers[i].id) {
-                noOfCrDays = customers[i].noOfCrDays;
-            }
-        }
-        $('#duedate').prop("readonly", false);
-        $("#duedate").val(moment().add(noOfCrDays, 'days').format('YYYY-MM-DD'));
-        $('#duedate').prop("readonly", true);
-    }
-
-    function calculateTotalAmt() {
-        totalAmt = 0;
-        totalGst = 0;
-        totalCgst = 0;
-        totalSgst = 0;
-        totalIgst = 0;
-        totalQty = 0;
-        totalFQty = 0;
-        var data = hot.getData();
-        for (var i = 0; i < data.length; i++) {
-            if (data[i][4])
-                totalQty += parseFloat(data[i][4]);
-            if (data[i][5])
-                totalFQty += parseFloat(data[i][5]);
-            if (data[i][11])
-                totalAmt += parseFloat(data[i][11]);
-            if (data[i][10])
-                totalGst += parseFloat(data[i][10]);
-            if (data[i][12])
-                totalSgst += parseFloat(data[i][12]);
-            if (data[i][13])
-                totalCgst += parseFloat(data[i][13]);
-            if (data[i][14])
-                totalIgst += parseFloat(data[i][14]);
-        }
-
-        $("#totalAmt").text(Number(totalAmt).toFixed(2));
-        $("#totalGST").text(Number(totalGst).toFixed(2));
-        $("#totalSGST").text(Number(totalSgst).toFixed(2));
-        $("#totalCGST").text(Number(totalCgst).toFixed(2));
-        $("#totalIGST").text(Number(totalIgst).toFixed(2));
-        $("#totalQty").text(Number(totalQty).toFixed(2));
-        $("#totalFQty").text(Number(totalFQty).toFixed(2));
-    }
-
-
-    function checkForDuplicateEntry(batchNumber) {
-        var productId = hot.getDataAtCell(mainTableRow, 1);
-        var saleTableData = hot.getData();
-        for (var i = 0; i < saleTableData.length; i++) {
-            if (productId == saleTableData[i][1]) {
-                if (saleTableData[i][2] !== null && saleTableData[i][2] == batchNumber)
-                    return true;
-            }
-        }
-        return false;
-    }
-
     function loadTempStockBookData() {
         var userId = "${session.getAttribute("userId")}";
         $.ajax({
@@ -858,7 +877,7 @@
             url: "tempstockbook/user/" + userId,
             dataType: 'json',
             success: function (data) {
-                console.log(data)
+
                 saleData = data;
                 for (var i = 0; i < saleData.length; i++) {
                     hot.selectCell(i, 1);
@@ -907,11 +926,14 @@
                     hot.setDataAtCell(i, 17, sgst);
                     hot.setDataAtCell(i, 18, cgst);
                     hot.setDataAtCell(i, 19, igst);
-                }
 
-                // setTimeout(function () {
-                //     $('#saleTable').show()
-                // }, 2000);
+                    hot.setDataAtCell(i, 20, saleData[i]["originalSqty"]);
+                    hot.setDataAtCell(i, 21, saleData[i]["originalFqty"]);
+
+                    for(var j = 0; j < 15; j++) {
+                        hot.setCellMeta(i, j, 'readOnly', true);
+                    }
+                }
 
                 setTimeout(function () {
                     hot.selectCell(0, 1);
@@ -919,6 +941,101 @@
                 }, 1000);
             }
         })
+    }
+
+    function loadDraftProducts() {
+        $.ajax({
+            type: "GET",
+            url: "/sale-product-details/sale-bill?id=${saleBillDetail?.id}",
+            dataType: 'json',
+            success: function (data) {
+                saleData = data;
+                console.log(data);
+                for (var i = 0; i < saleData.length; i++) {
+                    hot.selectCell(i, 1);
+                    var sRate = saleData[i].sRate;
+                    var sQty = saleData[i].sqty;
+                    var fQty = saleData[i].freeQty;
+                    batchSelection(saleData[i].productId, null, false);
+                    var batchId = saleData[i][12];
+                    hot.setDataAtCell(i, 1, saleData[i].productId.id);
+                    hot.setDataAtCell(i, 2, saleData[i].batchNumber);
+                    hot.setCellMeta(i, 2, "batchId", batchId);
+                    hot.setDataAtCell(i, 3, saleData[i].expiryDate.split("T")[0]);
+                    hot.setDataAtCell(i, 6, sRate);
+                    hot.setDataAtCell(i, 4, sQty);
+                    hot.setDataAtCell(i, 5, fQty);
+                    hot.setDataAtCell(i, 7, saleData[i].mrp);
+                    hot.setDataAtCell(i, 8, 0);
+                    hot.setDataAtCell(i, 9, saleData[i].productId.unitPacking);
+
+                    gst = saleData[i].gst;
+                    if (stateId === undefined || stateId === '${session.getAttribute('stateId')}') {
+                        sgst = saleData[i].sgst;
+                        cgst = saleData[i].cgst;
+                        igst = saleData[i].igst;
+                    } else {
+                        igst = gst;
+                        sgst = 0;
+                        cgst = 0;
+                    }
+                    var discount = 0; //TODO: discount to be set
+                    var priceBeforeGst = (sRate * sQty) - ((sRate * sQty) * discount) / 100;
+                    var finalPrice = priceBeforeGst + (priceBeforeGst * (gst / 100));
+                    hot.setDataAtCell(i, 11, Number(finalPrice).toFixed(2));
+                    if (gst !== 0) {
+                        hot.setDataAtCell(i, 10, Number(priceBeforeGst * (gst / 100)).toFixed(2)); //GST
+                        hot.setDataAtCell(i, 12, Number(priceBeforeGst * (sgst / 100)).toFixed(2)); //SGST
+                        hot.setDataAtCell(i, 13, Number(priceBeforeGst * (cgst / 100)).toFixed(2)); //CGST
+                    } else {
+                        hot.setDataAtCell(i, 10, 0); //GST
+                        hot.setDataAtCell(i, 12, 0); //SGST
+                        hot.setDataAtCell(i, 13, 0); //CGST
+                    }
+                    if (igst !== "0")
+                        hot.setDataAtCell(i, 14, Number(priceBeforeGst * (igst / 100)).toFixed(2)); //IGST
+                    else
+                        hot.setDataAtCell(i, 14, 0);
+                    <g:if test="${customer != null}">
+                    hot.setDataAtCell(i, 15, 0);
+                    </g:if>
+                    <g:else>
+                    hot.setDataAtCell(i, 15, saleData[i].id);
+                    </g:else>
+                    hot.setDataAtCell(i, 16, gst);
+                    hot.setDataAtCell(i, 17, sgst);
+                    hot.setDataAtCell(i, 18, cgst);
+                    hot.setDataAtCell(i, 19, igst);
+                    hot.setDataAtCell(i, 20, saleData[i]["originalSqty"]);
+                    hot.setDataAtCell(i, 21, saleData[i]["originalFqty"]);
+                    <g:if test="${customer != null}">
+                    hot.setDataAtCell(i, 22, sQty); //draft sqty
+                    hot.setDataAtCell(i, 23, fQty); //draft fqty
+                    hot.setDataAtCell(i, 24, saleData[i]["id"]); //saved draft product id
+                    </g:if>
+
+                    for(var j = 0; j < 15; j++) {
+                        hot.setCellMeta(i, j, 'readOnly', true);
+                    }
+                }
+
+                setTimeout(function () {
+                    hot.selectCell(0, 1);
+                    calculateTotalAmt();
+                }, 1000);
+            }
+        });
+
+        //to load temp stock pool in sidebar
+        var userId = "${session.getAttribute("userId")}";
+        $.ajax({
+            type: "GET",
+            url: "tempstockbook/user/" + userId,
+            dataType: 'json',
+            success: function (data) {
+                //do nothing
+            }
+        });
     }
 
     function deleteTempStockRow(id, row) {
@@ -930,7 +1047,38 @@
                     dataType: 'json',
                     success: function (data) {
                         hot.alter("remove_row", row);
-                        swal("Success", "Row Deleted", "").fire();
+                        Swal.fire({
+                            title: "Success",
+                            text: "Product removed."
+                        });
+                        batchHot.updateSettings({
+                            data: []
+                        });
+                        calculateTotalAmt();
+                    }
+                });
+            } else
+                hot.alter("remove_row", row);
+        } else
+            alert("Can't change this now, invoice has been saved already.")
+    }
+
+    function deleteSaleBillRow(id, row) {
+        if (!readOnly) {
+            if (id) {
+                $.ajax({
+                    type: "POST",
+                    url: "/sale-product-details/delete?id=" + id,
+                    dataType: 'json',
+                    success: function (data) {
+                        hot.alter("remove_row", row);
+                        Swal.fire({
+                            title: "Success",
+                            text: "Product removed."
+                        });
+                        batchHot.updateSettings({
+                            data: []
+                        });
                     }
                 });
             } else
@@ -978,9 +1126,16 @@
 
         var saleData = JSON.stringify(hot.getSourceData());
 
+        var url = "";
+        <g:if test="${customer != null}">
+        url = "edit-sale-entry?id=" + '${saleBillDetail.id}';
+        </g:if>
+        <g:else>
+        url = "sale-entry";
+        </g:else>
         $.ajax({
             type: "POST",
-            url: "sale-entry",
+            url: url,
             dataType: 'json',
             data: {
                 saleData: saleData,
@@ -1008,10 +1163,10 @@
                 var invoiceNumber = data.saleBillDetail.invoiceNumber;
                 $("#invNo").html("<p><strong>" + invoiceNumber + "</strong></p>");
                 var message = "";
-                var draftInvNo ="";
-                if(billStatus === "DRAFT"){
+                var draftInvNo = "";
+                if (billStatus === "DRAFT") {
                     draftInvNo = '<p><strong>' + data.saleBillDetail.entityId + "/DR/S/" + month + year + "/"
-                        + seriesCode + "/__"+'<p><strong>';
+                        + seriesCode + "/__" + '<p><strong>';
                     $("#invNo").html(draftInvNo);
                 }
                 if (billStatus !== "DRAFT") {
@@ -1053,6 +1208,111 @@
 
     }
 
+    function customerSelectChanged() {
+        var customerId = $("#customerSelect").val();
+        var noOfCrDays = 0;
+        if (customers.length > 0) {
+            for (var i = 0; i < customers.length; i++) {
+                if (customerId == customers[i].id) {
+                    noOfCrDays = customers[i].noOfCrDays;
+                }
+            }
+        } else {
+            <g:if test="${customer != null}">
+            noOfCrDays = ${customer.noOfCrDays};
+            </g:if>
+        }
+
+        $('#duedate').prop("readonly", false);
+        $("#duedate").val(moment().add(noOfCrDays, 'days').format('YYYY-MM-DD'));
+        $('#duedate').prop("readonly", true);
+        calculateTaxes(); //this is to change IGST if in case out of state
+        calculateTotalAmt();
+    }
+
+    function calculateTotalAmt() {
+        totalAmt = 0;
+        totalGst = 0;
+        totalCgst = 0;
+        totalSgst = 0;
+        totalIgst = 0;
+        totalQty = 0;
+        totalFQty = 0;
+        var data = hot.getData();
+        for (var i = 0; i < data.length; i++) {
+            if (data[i][4])
+                totalQty += parseFloat(data[i][4]);
+            if (data[i][5])
+                totalFQty += parseFloat(data[i][5]);
+            if (data[i][11])
+                totalAmt += parseFloat(data[i][11]);
+            if (data[i][10])
+                totalGst += parseFloat(data[i][10]);
+            if (data[i][12])
+                totalSgst += parseFloat(data[i][12]);
+            if (data[i][13])
+                totalCgst += parseFloat(data[i][13]);
+            if (data[i][14])
+                totalIgst += parseFloat(data[i][14]);
+        }
+
+        $("#totalAmt").text(Number(totalAmt).toFixed(2));
+        $("#totalGST").text(Number(totalGst).toFixed(2));
+        $("#totalSGST").text(Number(totalSgst).toFixed(2));
+        $("#totalCGST").text(Number(totalCgst).toFixed(2));
+        $("#totalIGST").text(Number(totalIgst).toFixed(2));
+        $("#totalQty").text(Number(totalQty).toFixed(2));
+        $("#totalFQty").text(Number(totalFQty).toFixed(2));
+    }
+
+    function calculateTaxes() {
+        var data = hot.getData();
+        for (var row = 0; row < data.length; row++) {
+            var sgstAmount = Number(hot.getDataAtCell(row, 12));
+            var cgstAmount = Number(hot.getDataAtCell(row, 13));
+            var igstAmount = Number(hot.getDataAtCell(row, 14));
+
+            var sgstPercentage = hot.getDataAtCell(row, 17);
+            var cgstPercentage = hot.getDataAtCell(row, 18);
+
+            if (stateId === '${session.getAttribute('stateId')}') {
+                if(igstAmount !== 0)
+                {
+                    hot.setDataAtCell(row, 12, Number(igstAmount/2).toFixed(2)); //SGST
+                    hot.setDataAtCell(row, 13, Number(igstAmount/2).toFixed(2)); //CGST
+                    hot.setDataAtCell(row, 14, 0); //IGST
+
+                    hot.setDataAtCell(row, 17, sgstPercentage);
+                    hot.setDataAtCell(row, 18, cgstPercentage);
+                    hot.setDataAtCell(row, 19, 0);
+                }
+            } else {
+                if(sgstAmount !== 0 && cgstAmount !== 0) {
+                    hot.setDataAtCell(row, 12, 0); //SGST
+                    hot.setDataAtCell(row, 13, 0); //CGST
+                    hot.setDataAtCell(row, 14, (sgstAmount + cgstAmount).toFixed(2)); //IGST
+
+                    hot.setDataAtCell(row, 17, 0);
+                    hot.setDataAtCell(row, 18, 0);
+                    hot.setDataAtCell(row, 19, sgstPercentage + cgstPercentage);
+                }
+            }
+        }
+    }
+
+    function checkForDuplicateEntry(batchNumber) {
+        var productId = hot.getDataAtCell(mainTableRow, 1);
+        var saleTableData = hot.getData();
+        for (var i = 0; i < saleTableData.length; i++) {
+            if (productId == saleTableData[i][1]) {
+                if (saleTableData[i][2] !== null && saleTableData[i][2] == batchNumber)
+                    return true;
+            }
+        }
+        return false;
+    }
+
+
     function printInvoice() {
         if (readOnly) {
             window.open(
@@ -1086,39 +1346,12 @@
             allowOutsideClick: false,
             closeOnClickOutside: false
         });
+        <g:if test="${customer}">
+        location.href = "sale-entry";
+        </g:if>
+        <g:else>
         location.reload();
-        /*var saleTableData = hot.getData();
-        if(saleTableData && !readOnly) {
-            for(var row=0;row<saleTableData.length;row++) {
-                var id = hot.getDataAtCell(row, 15);
-                deleteTempStockRow(id, row);
-            }
-        }
-
-        $("#invNo").html("");
-
-        saleData.length = 0;
-        batchData.length = 0;
-        mainTableRow = 0;
-        gst = 0;
-        cgst = 0;
-        sgst = 0;
-        igst = 0;
-        totalQty = 0;
-        totalFQty = 0;
-        remainingQty = 0;
-        remainingFQty = 0;
-        totalAmt = 0;
-        readOnly = false;
-        scheme = null;
-
-        batchHot.updateSettings({
-            data: []
-        });
-        hot.updateSettings({
-            data: []
-        });
-        calculateTotalAmt();*/
+        </g:else>
     }
 
     function seriesChanged() {
@@ -1127,6 +1360,7 @@
     }
 
     function loadProducts(series) {
+        $('.loadTable').show();
         products.length = 0;//remove all elements
         $.ajax({
             type: "GET",
@@ -1136,12 +1370,18 @@
                 for (var i = 0; i < data.length; i++) {
                     products.push({id: data[i].id, text: data[i].productName});
                 }
+                <g:if test="${params.saleBillId}">
+                loadDraftProducts();
+                </g:if>
+                <g:else>
                 loadTempStockBookData();
+                </g:else>
             },
             error: function () {
                 products.length = 0; //remove all elements
             }
         });
+        $('.loadTable').hide();
     }
 
     function checkSchemes(productId, batchNumber) {
@@ -1336,7 +1576,7 @@
 
 
             //Process only events that have been fired in the editor
-            if (!$(event.target).hasClass('select2-input') || event?.isImmediatePropagationStopped()) {
+            if (!$(event.target).hasClass('select2-input') /*|| event?.isImmediatePropagationStopped()*/) {
                 return;
             }
             if (event.keyCode === 17 || event.keyCode === 224 || event.keyCode === 91 || event.keyCode === 93) {
@@ -1474,17 +1714,6 @@
         Handsontable.editors.registerEditor('select2', Select2Editor);
 
     })(Handsontable);
-
-
-    $(document).ready(function () {
-        // $('.htCore tbody').hide();
-        // $('.loadTable').show();
-        // setTimeout(function () {
-        //     $('.htCore tbody').show();
-        $('.loadTable').remove();
-        // }, 5000);
-    });
-
 </script>
 <g:include view="controls/footer-content.gsp"/>
 <script>
