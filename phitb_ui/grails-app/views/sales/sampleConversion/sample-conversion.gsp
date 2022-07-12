@@ -140,7 +140,7 @@
                                 <div class="col-md-12">
                                     <div class="form-group">
                                         <label>Quantity</label>
-                                        <input type="number" name="sampleQuantity"  id="sampleQuantity"
+                                        <input type="number" name="sampleQuantity"  id="sampleQuantity" onblur="validateSampleQty()"
                                                class="sampleQuantity form-control"/>
                                     </div>
                                 </div>
@@ -286,98 +286,149 @@
         //     }
         // }
     }
-
-
-
-
-    function saveSampleConversion() {
-        var waitingSwal = Swal.fire({
-            title: "Please wait!",
-            showDenyButton: false,
-            showCancelButton: false,
-            showConfirmButton: false,
-            allowOutsideClick: false
-        });
-
-        var saleableProduct = $("#salebleitem").val();
-        var saleableBatch = $("#saleblebatch").val();
-        var saleableQty = $("#saleableQuantity").val();
-        var sampleProduct = $("#sampleitem").val();
-        var sampleBatch = $("#samplebatch").val();
+    function validateSampleQty()
+    {
         var sampleQty = $("#sampleQuantity").val();
-
-        if (!saleableProduct) {
-            alert("Please select saleable product.");
-            waitingSwal.close();
-            return;
-        }
-
-        if (!saleableBatch) {
-            alert("Please select saleable batch.");
-            waitingSwal.close();
-            return;
-        }
-
-        if (!saleableQty) {
-            alert("Please enter saleable quantity.");
-            waitingSwal.close();
-            return;
-        }
-
-        if (!sampleProduct) {
-            alert("Please select sample product.");
-            waitingSwal.close();
-            return;
-        }
-
-        if (!sampleBatch) {
-            alert("Please select sample batch.");
-            waitingSwal.close();
-            return;
-        }
-
-        if (!sampleQty) {
-            alert("Please select sample quantity.");
-            waitingSwal.close();
-            return;
-        }
-
+        var saleableQty = $("#saleableQuantity").val();
         if(Number(sampleQty) > Number(saleableQty))
         {
-            alert("Sample quantity should not be greater");
-            waitingSwal.close();
-            return;
+            $("#sampleQuantity").val(0);
         }
+    }
 
-        $.ajax({
-            type: "POST",
-            url: "/sample-conversion/save",
-            dataType: 'json',
-            data: {
-                saleableProduct: saleableProduct,
-                saleableBatch: saleableBatch,
-                saleableQty: saleableQty,
-                sampleProduct: sampleProduct,
-                sampleBatch: sampleBatch,
-                sampleQty: sampleQty,
+    function saveSampleConversion() {
+        const swalWithBootstrapButtons = Swal.mixin({
+            customClass: {
+                confirmButton: 'btn btn-success',
+                cancelButton: 'btn btn-danger'
             },
-            success: function (data) {
-                waitingSwal.close();
-                alert("success!!")
-            },
-            error: function () {
-                waitingSwal.close();
-                Swal.fire({
-                    title: "Something went wrong",
-                    confirmButtonText: 'OK',
-                    allowOutsideClick: false
-                }).then((result) => {
-                    // resetData();
-                });
-            }
+            buttonsStyling: false
         });
 
+        swalWithBootstrapButtons.fire({
+            title: 'Are you sure?',
+            text: "You won't be able to revert this!",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonText: 'Yes, Please!',
+            cancelButtonText: 'No, cancel!',
+            reverseButtons: true
+        }).then((result) => {
+            if (result.isConfirmed) {
+
+                Swal.fire({
+                    title: 'Are you sure?',
+                    text: "You won't be able to revert this!",
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: 'Yes!'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        var waitingSwal = Swal.fire({
+                            title: "Please wait!",
+                            showDenyButton: false,
+                            showCancelButton: false,
+                            showConfirmButton: false,
+                            allowOutsideClick: false
+                        });
+
+                        var saleableProduct = $("#salebleitem").val();
+                        var saleableBatch = $("#saleblebatch").val();
+                        var saleableQty = $("#saleableQuantity").val();
+                        var sampleProduct = $("#sampleitem").val();
+                        var sampleBatch = $("#samplebatch").val();
+                        var sampleQty = $("#sampleQuantity").val();
+
+                        if (!saleableProduct) {
+                            alert("Please select saleable product.");
+                            waitingSwal.close();
+                            return;
+                        }
+
+                        if (!saleableBatch) {
+                            alert("Please select saleable batch.");
+                            waitingSwal.close();
+                            return;
+                        }
+
+                        if (!saleableQty) {
+                            alert("Please enter saleable quantity.");
+                            waitingSwal.close();
+                            return;
+                        }
+
+                        if (!sampleProduct) {
+                            alert("Please select sample product.");
+                            waitingSwal.close();
+                            return;
+                        }
+
+                        if (!sampleBatch) {
+                            alert("Please select sample batch.");
+                            waitingSwal.close();
+                            return;
+                        }
+
+                        if (!sampleQty) {
+                            alert("Please select sample quantity.");
+                            waitingSwal.close();
+                            return;
+                        }
+
+                        if(Number(sampleQty) > Number(saleableQty))
+                        {
+                            alert("Sample quantity should not be greater");
+                            waitingSwal.close();
+                            return;
+                        }
+
+                        $.ajax({
+                            type: "POST",
+                            url: "/sample-conversion/save",
+                            dataType: 'json',
+                            data: {
+                                saleableProduct: saleableProduct,
+                                saleableBatch: saleableBatch,
+                                saleableQty: saleableQty,
+                                sampleProduct: sampleProduct,
+                                sampleBatch: sampleBatch,
+                                sampleQty: sampleQty,
+                            },
+                            success: function (data) {
+                                waitingSwal.close();
+                                alert("success!!")
+                            },
+                            error: function () {
+                                waitingSwal.close();
+                                Swal.fire({
+                                    title: "Something went wrong",
+                                    confirmButtonText: 'OK',
+                                    allowOutsideClick: false
+                                }).then((result) => {
+                                    // resetData();
+                                });
+                            }
+                        });
+                    }
+                })
+
+            } else if (
+                /* Read more about handling dismissals below */
+                result.dismiss === Swal.DismissReason.cancel
+            ) {
+                swalWithBootstrapButtons.fire(
+                    'Cancelled',
+                    'Convertion aborted!',
+                    'error'
+                )
+            }
+        })
     }
+
+
+
 </script>
 <g:include view="controls/footer-content.gsp"/>
 <script>
