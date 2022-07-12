@@ -704,7 +704,6 @@ public class Links
     public  static  String SAMPLE_CONVERSION_LOGS = "api/v1.0/sales/sampleconversionlogs";
 
 
-
-
-
+//    Sample invoicing
+    public static String SAMPLE_INVOICE_SAVE = "api/v1.0/sales/sampleconversion";
 }

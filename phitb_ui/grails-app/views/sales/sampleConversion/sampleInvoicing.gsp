@@ -1,3 +1,4 @@
+<%@ page import="phitb_ui.Constants" %>
 <!doctype html>
 <html class="no-js " lang="en">
 <head>
@@ -1369,7 +1370,10 @@
             dataType: 'json',
             success: function (data) {
                 for (var i = 0; i < data.length; i++) {
-                    products.push({id: data[i].id, text: data[i].productName});
+                    if(data[i].saleType === '${Constants.SAMPLE}' || data[i].saleType === '${Constants.PROMOTIONAL}')
+                    {
+                        products.push({id: data[i].id, text: data[i].productName +" ("+data[i].saleType+")"});
+                    }
                 }
                 <g:if test="${params.saleBillId}">
                 loadDraftProducts();
