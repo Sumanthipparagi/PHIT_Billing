@@ -398,7 +398,18 @@
                             },
                             success: function (data) {
                                 waitingSwal.close();
-                                alert("success!!")
+                                Swal.fire({
+                                    title: 'Success!',
+                                    confirmButtonText: 'OK',
+                                }).then((result) => {
+                                    if (result.isConfirmed) {
+                                        $("html").css("background-color","white");
+                                        location.reload();
+                                    }
+                                    else if (result.isDenied) {
+                                        Swal.fire('Changes are not saved', '', 'info')
+                                    }
+                                })
                             },
                             error: function () {
                                 waitingSwal.close();
@@ -407,7 +418,6 @@
                                     confirmButtonText: 'OK',
                                     allowOutsideClick: false
                                 }).then((result) => {
-                                    // resetData();
                                 });
                             }
                         });

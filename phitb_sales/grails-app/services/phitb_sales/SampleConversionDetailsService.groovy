@@ -21,8 +21,7 @@ class SampleConversionDetailsService {
         }
         else
         {
-            return SampleConversionDetails.findAllByBillStatusIlike("%" + query + "%", [sort: 'id', max: l, offset: o,
-                                                                                    order:
+            return SampleConversionDetails.findAllByBatchNumberIlike("%" + query + "%", [sort: 'id', max: l, offset: o, order:
                     'desc'])
         }
     }
@@ -33,17 +32,17 @@ class SampleConversionDetailsService {
         Integer l = limit ? Integer.parseInt(limit.toString()) : 100
         if (!days)
         {
-            return SampleConversionDetails.findAll([sort: 'id', max: l, offset: o, order: 'desc'])
+            return SaleBillDetails.findAll([sort: 'id', max: l, offset: o, order: 'desc'])
         }
         else
         {
             Date today = new Date()
             Calendar cal = new GregorianCalendar()
             cal.setTime(today)
-            cal.add(Calendar.DAY_OF_MONTH, - Integer.parseInt(days))
+            cal.add(Calendar.DAY_OF_MONTH, -Integer.parseInt(days))
             Date dateCreated = cal.getTime()
-            return SampleConversionDetails.createCriteria().list {
-                gt("dateCreated",dateCreated)
+            return SaleBillDetails.createCriteria().list {
+                gt("dateCreated", dateCreated)
             }
         }
     }
@@ -66,28 +65,28 @@ class SampleConversionDetailsService {
                 orderColumn = "id"
                 break;
             case '1':
-                orderColumn = "billStatus"
+                orderColumn = "entityName"
                 break;
         }
         Integer offset = start ? Integer.parseInt(start.toString()) : 0
         Integer max = length ? Integer.parseInt(length.toString()) : 100
-        def sampleConversionDetailsCriteria = SampleConversionDetails.createCriteria()
-        def sampleConversionDetailsArrayList = sampleConversionDetailsCriteria.list(max: max, offset: offset) {
+        def salesProductDetailsCriteria = SampleConversionDetails.createCriteria()
+        def salesProductDetailsArrayList = salesProductDetailsCriteria.list(max: max, offset: offset) {
             or {
                 if (searchTerm != "")
                 {
-                    ilike('billStatus', '%' + searchTerm + '%')
+                    ilike('batchNumber', '%' + searchTerm + '%')
                 }
             }
             eq('deleted', false)
             order(orderColumn, orderDir)
         }
-        def recordsTotal = sampleConversionDetailsArrayList.totalCount
+        def recordsTotal = salesProductDetailsArrayList.totalCount
         JSONObject jsonObject = new JSONObject()
         jsonObject.put("draw", paramsJsonObject.draw)
         jsonObject.put("recordsTotal", recordsTotal)
         jsonObject.put("recordsFiltered", recordsTotal)
-        jsonObject.put("data", sampleConversionDetailsArrayList)
+        jsonObject.put("data", salesProductDetailsArrayList)
         return jsonObject
     }
 
@@ -95,18 +94,46 @@ class SampleConversionDetailsService {
     {
         SampleConversionDetails sampleConversionDetails = new SampleConversionDetails()
         sampleConversionDetails.finId = Long.parseLong(jsonObject.get("finId").toString())
-        sampleConversionDetails.seriesId = Long.parseLong(jsonObject.get("seriesId").toString())
+        sampleConversionDetails.billId = Long.parseLong(jsonObject.get("billId").toString())
+        sampleConversionDetails.reason = jsonObject.get("reason").toString()
+        sampleConversionDetails.billType = Long.parseLong(jsonObject.get("billType").toString())
         sampleConversionDetails.serBillId = Long.parseLong(jsonObject.get("serBillId").toString())
-        sampleConversionDetails.agentId = Long.parseLong(jsonObject.get("agentId").toString())
-        sampleConversionDetails.totalQty = Double.parseDouble(jsonObject.get("totalQty").toString())
-        sampleConversionDetails.totalItems = Long.parseLong(jsonObject.get("totalItems").toString())
-        sampleConversionDetails.transactionDate = sdf.parse(jsonObject.get("transactionDate").toString())
-        sampleConversionDetails.totalAmount = Double.parseDouble(jsonObject.get("totalAmount").toString())
-        sampleConversionDetails.totalPayable = Double.parseDouble(jsonObject.get("cartonsCount").toString())
-        sampleConversionDetails.billStatus = jsonObject.get("billStatus").toString()
+        sampleConversionDetails.seriesId = Long.parseLong(jsonObject.get("seriesId").toString())
+        sampleConversionDetails.productId = Long.parseLong(jsonObject.get("productId").toString())
+        sampleConversionDetails.batchNumber = jsonObject.get("batchNumber").toString()
+        sampleConversionDetails.expiryDate = jsonObject.get("expiryDate").toString()
+        sampleConversionDetails.sqty = Double.parseDouble(jsonObject.get("sqty").toString())
+        sampleConversionDetails.originalSqty = Double.parseDouble(jsonObject.get("originalSqty").toString())
+        sampleConversionDetails.originalFqty = Double.parseDouble(jsonObject.get("originalFqty").toString())
+        sampleConversionDetails.freeQty = Double.parseDouble(jsonObject.get("freeQty").toString())
+        sampleConversionDetails.repQty = Double.parseDouble(jsonObject.get("repQty").toString())
+        sampleConversionDetails.pRate = Double.parseDouble(jsonObject.get("pRate").toString())
+        sampleConversionDetails.sRate = Double.parseDouble(jsonObject.get("sRate").toString())
+        sampleConversionDetails.mrp = Double.parseDouble(jsonObject.get("mrp").toString())
+        sampleConversionDetails.discount = Double.parseDouble(jsonObject.get("discount").toString())
+        sampleConversionDetails.gstId = Double.parseDouble(jsonObject.get("gstId").toString())
+        sampleConversionDetails.gstAmount = Double.parseDouble(jsonObject.get("gstAmount").toString())
+        sampleConversionDetails.sgstAmount = Double.parseDouble(jsonObject.get("sgstAmount").toString())
+        sampleConversionDetails.cgstAmount = Double.parseDouble(jsonObject.get("cgstAmount").toString())
+        sampleConversionDetails.igstAmount = Double.parseDouble(jsonObject.get("igstAmount").toString())
+        sampleConversionDetails.amount = Double.parseDouble(jsonObject.get("amount").toString())
+        sampleConversionDetails.reason = jsonObject.get("reason").toString()
+        sampleConversionDetails.fridgeId = Long.parseLong(jsonObject.get("fridgeId").toString())
+        sampleConversionDetails.kitName = Long.parseLong(jsonObject.get("kitName").toString())
+        sampleConversionDetails.saleFinId = jsonObject.get("saleFinId").toString()
+        sampleConversionDetails.redundantBatch = Long.parseLong(jsonObject.get("redundantBatch").toString())
+        sampleConversionDetails.status = Long.parseLong(jsonObject.get("status").toString())
         sampleConversionDetails.syncStatus = Long.parseLong(jsonObject.get("syncStatus").toString())
+        sampleConversionDetails.financialYear = jsonObject.get("financialYear").toString()
         sampleConversionDetails.entityTypeId = Long.parseLong(jsonObject.get("entityTypeId").toString())
         sampleConversionDetails.entityId = Long.parseLong(jsonObject.get("entityId").toString())
+
+        sampleConversionDetails.gstPercentage = Double.parseDouble(jsonObject.get("gstPercentage").toString())
+        sampleConversionDetails.sgstPercentage = Double.parseDouble(jsonObject.get("sgstPercentage").toString())
+        sampleConversionDetails.cgstPercentage = Double.parseDouble(jsonObject.get("cgstPercentage").toString())
+        sampleConversionDetails.igstPercentage = Double.parseDouble(jsonObject.get("igstPercentage").toString())
+        sampleConversionDetails.uuid = jsonObject.get("uuid").toString()
+
         sampleConversionDetails.save(flush: true)
         if (!sampleConversionDetails.hasErrors())
         {
@@ -120,27 +147,53 @@ class SampleConversionDetailsService {
 
     SampleConversionDetails update(JSONObject jsonObject, String id)
     {
-        SampleConversionDetails sampleConversionDetails = SampleConversionDetails.findById(Long.parseLong(id))
-        if (sampleConversionDetails)
+        SampleConversionDetails sampleConversion = SampleConversionDetails.findById(Long.parseLong(id))
+        if (SampleConversionDetails)
         {
-            sampleConversionDetails.isUpdatable = true
-            sampleConversionDetails.finId = Long.parseLong(jsonObject.get("finId").toString())
-            sampleConversionDetails.seriesId = Long.parseLong(jsonObject.get("seriesId").toString())
-            sampleConversionDetails.serBillId = Long.parseLong(jsonObject.get("serBillId").toString())
-            sampleConversionDetails.agentId = Long.parseLong(jsonObject.get("agentId").toString())
-            sampleConversionDetails.totalQty = Double.parseDouble(jsonObject.get("totalQty").toString())
-            sampleConversionDetails.totalItems = Long.parseLong(jsonObject.get("totalItems").toString())
-            sampleConversionDetails.transactionDate = sdf.parse(jsonObject.get("transactionDate").toString())
-            sampleConversionDetails.totalAmount = Double.parseDouble(jsonObject.get("totalAmount").toString())
-            sampleConversionDetails.totalPayable = Double.parseDouble(jsonObject.get("cartonsCount").toString())
-            sampleConversionDetails.billStatus = jsonObject.get("billStatus").toString()
-            sampleConversionDetails.syncStatus = Long.parseLong(jsonObject.get("syncStatus").toString())
-            sampleConversionDetails.entityTypeId = Long.parseLong(jsonObject.get("entityTypeId").toString())
-            sampleConversionDetails.entityId = Long.parseLong(jsonObject.get("entityId").toString())
-            sampleConversionDetails.save(flush: true)
-            if (!sampleConversionDetails.hasErrors())
+            sampleConversion.isUpdatable = true
+            sampleConversion.finId = Long.parseLong(jsonObject.get("finId").toString())
+            sampleConversion.billId = Long.parseLong(jsonObject.get("billId").toString())
+            sampleConversion.billType = Long.parseLong(jsonObject.get("billType").toString())
+            sampleConversion.serBillId = Long.parseLong(jsonObject.get("serBillId").toString())
+            sampleConversion.seriesId = Long.parseLong(jsonObject.get("seriesId").toString())
+            sampleConversion.productId = Long.parseLong(jsonObject.get("productId").toString())
+            sampleConversion.batchNumber = jsonObject.get("batchNumber").toString()
+            sampleConversion.expiryDate = jsonObject.get("expiryDate").toString()
+            sampleConversion.originalSqty = Double.parseDouble(jsonObject.get("originalSqty").toString())
+            sampleConversion.originalFqty = Double.parseDouble(jsonObject.get("originalFqty").toString())
+            sampleConversion.sqty = Double.parseDouble(jsonObject.get("sqty").toString())
+            sampleConversion.freeQty = Double.parseDouble(jsonObject.get("freeQty").toString())
+            sampleConversion.repQty = Double.parseDouble(jsonObject.get("repQty").toString())
+            sampleConversion.pRate = Double.parseDouble(jsonObject.get("pRate").toString())
+            sampleConversion.sRate = Double.parseDouble(jsonObject.get("sRate").toString())
+            sampleConversion.mrp = Double.parseDouble(jsonObject.get("mrp").toString())
+            sampleConversion.discount = Double.parseDouble(jsonObject.get("discount").toString())
+            sampleConversion.gstId = Double.parseDouble(jsonObject.get("gstId").toString())
+            sampleConversion.gstAmount = Double.parseDouble(jsonObject.get("gstAmount").toString())
+            sampleConversion.sgstAmount = Double.parseDouble(jsonObject.get("sgstAmount").toString())
+            sampleConversion.cgstAmount = Double.parseDouble(jsonObject.get("cgstAmount").toString())
+            sampleConversion.igstAmount = Double.parseDouble(jsonObject.get("igstAmount").toString())
+            sampleConversion.amount = Double.parseDouble(jsonObject.get("amount").toString())
+            sampleConversion.reason = jsonObject.get("reason").toString()
+            sampleConversion.fridgeId = Long.parseLong(jsonObject.get("fridgeId").toString())
+            sampleConversion.kitName = Long.parseLong(jsonObject.get("kitName").toString())
+            sampleConversion.saleFinId = jsonObject.get("saleFinId").toString()
+            sampleConversion.redundantBatch = Long.parseLong(jsonObject.get("redundantBatch").toString())
+            sampleConversion.status = Long.parseLong(jsonObject.get("status").toString())
+            sampleConversion.syncStatus = Long.parseLong(jsonObject.get("syncStatus").toString())
+            sampleConversion.financialYear = jsonObject.get("financialYear").toString()
+            sampleConversion.entityTypeId = Long.parseLong(jsonObject.get("entityTypeId").toString())
+            sampleConversion.entityId = Long.parseLong(jsonObject.get("entityId").toString())
+
+            sampleConversion.gstPercentage = Double.parseDouble(jsonObject.get("gstPercentage").toString())
+            sampleConversion.sgstPercentage = Double.parseDouble(jsonObject.get("sgstPercentage").toString())
+            sampleConversion.cgstPercentage = Double.parseDouble(jsonObject.get("cgstPercentage").toString())
+            sampleConversion.igstPercentage = Double.parseDouble(jsonObject.get("igstPercentage").toString())
+            sampleConversion.uuid = jsonObject.get("uuid").toString()
+            sampleConversion.save(flush: true)
+            if (!sampleConversion.hasErrors())
             {
-                return sampleConversionDetails
+                return sampleConversion
             }
             else
             {
@@ -173,4 +226,66 @@ class SampleConversionDetailsService {
             throw new BadRequestException()
         }
     }
+
+    def getBySaleBill(String id)
+    {
+        if (id)
+        {
+            ArrayList<SampleConversionDetails> sampleConversion = SampleConversionDetails.findAllByBillId(Long.parseLong(id))
+            if (sampleConversion)
+            {
+                return sampleConversion
+            }
+            else
+            {
+                throw new ResourceNotFoundException()
+            }
+        }
+        else
+        {
+            throw new BadRequestException()
+        }
+    }
+
+    def getBySaleBillByList(ArrayList<Long> arrayListIds)
+    {
+        ArrayList<SampleConversionDetails> sampleConversionDetails = SampleConversionDetails.findAllByBillIdInList(arrayListIds)
+        if (sampleConversionDetails)
+        {
+            return sampleConversionDetails
+        }
+        else
+        {
+            throw new ResourceNotFoundException()
+        }
+
+    }
+
+    Object getSampleConversionDetailsByProductId(String productId)
+    {
+        try
+        {
+            return SampleConversionDetails.findAllByProductId(Long.parseLong(productId))
+        }
+        catch (Exception ex)
+        {
+            log.error("SaleProductDeatilsService" + ex)
+            println("SaleProductDeatilsService" + ex)
+        }
+    }
+
+
+    Object getSampleConversionDetailsByBillIdAndBatch(String billId, String batchNumber,String productId)
+    {
+        try
+        {
+            return SampleConversionDetails.findByBillIdAndBatchNumberAndProductId(Long.parseLong(billId),batchNumber,Long.parseLong(productId))
+        }
+        catch (Exception ex)
+        {
+            log.error("SaleProductDeatilsService" + ex)
+            println("SaleProductDeatilsService" + ex)
+        }
+    }
+
 }

@@ -700,6 +700,10 @@ public class Links
 
 
 
+//    Sample Conversion logs
+    public  static  String SAMPLE_CONVERSION_LOGS = "api/v1.0/sales/sampleconversionlogs";
+
+
 
 
 

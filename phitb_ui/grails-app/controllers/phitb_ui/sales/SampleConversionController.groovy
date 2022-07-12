@@ -98,10 +98,15 @@ class SampleConversionController
             sampleConverisonLogs.put("saleableBatch",params.saleableBatch)
             sampleConverisonLogs.put("saleableQty",params.saleableQty)
             sampleConverisonLogs.put("sampleProductId",params.sampleProduct)
-            sampleConverisonLogs.put("saleablebatch",params.sampleBatch)
+            sampleConverisonLogs.put("sampleBatch",params.sampleBatch)
             sampleConverisonLogs.put("sampleQty",params.sampleQty)
+            def samplelogs = new SalesService().saveSampleConversionLogs(sampleConverisonLogs)
+            if(samplelogs?.status == 200)
+            {
+                JSONObject jsonObject = new JSONObject(samplelogs.readEntity(String.class))
+                println(jsonObject)
+            }
             respond sampleConverisonLogs, formats: ['json'],status: 200
-
         }
         catch (Exception ex)
         {

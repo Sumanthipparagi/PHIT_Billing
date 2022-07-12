@@ -8,7 +8,7 @@ import phitb_sales.Exception.ResourceNotFoundException
 import java.text.SimpleDateFormat
 
 @Transactional
-class ReasonMasterService {
+class SampleConversionLogService {
 
     SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss")
 
@@ -18,11 +18,11 @@ class ReasonMasterService {
         Integer l = limit ? Integer.parseInt(limit.toString()) : 100
         if (!query)
         {
-            return ReasonMaster.findAll([sort: 'id', max: l, offset: o, order: 'desc'])
+            return SampleConversionlog.findAll([sort: 'id', max: l, offset: o, order: 'desc'])
         }
         else
         {
-            return ReasonMaster.findAllByReasonNameIlike("%" + query + "%", [sort: 'id', max: l, offset: o, order:
+            return SampleConversionlog.findAllBySampleBatch("%" + query + "%", [sort: 'id', max: l, offset: o, order:
                     'desc'])
         }
     }
@@ -34,7 +34,7 @@ class ReasonMasterService {
         Integer l = limit ? Integer.parseInt(limit.toString()) : 100
         if (!days)
         {
-            return ReasonMaster.findAll([sort: 'id', max: l, offset: o, order: 'desc'])
+            return SampleConversionlog.findAll([sort: 'id', max: l, offset: o, order: 'desc'])
         }
         else
         {
@@ -43,15 +43,15 @@ class ReasonMasterService {
             cal.setTime(today)
             cal.add(Calendar.DAY_OF_MONTH, - Integer.parseInt(days))
             Date dateCreated = cal.getTime()
-            return ReasonMaster.createCriteria().list {
+            return SampleConversionlog.createCriteria().list {
                 gt("dateCreated",dateCreated)
             }
         }
     }
 
-    ReasonMaster get(String id)
+    SampleConversionlog get(String id)
     {
-        return ReasonMaster.findById(Long.parseLong(id))
+        return SampleConversionlog.findById(Long.parseLong(id))
     }
 
     JSONObject dataTables(JSONObject paramsJsonObject, String start, String length)
@@ -72,7 +72,7 @@ class ReasonMasterService {
         }
         Integer offset = start ? Integer.parseInt(start.toString()) : 0
         Integer max = length ? Integer.parseInt(length.toString()) : 100
-        def reasonMasterDetailsCriteria = ReasonMaster.createCriteria()
+        def reasonMasterDetailsCriteria = SampleConversionlog.createCriteria()
         def reasonMasterArrayList = reasonMasterDetailsCriteria.list(max: max, offset: offset) {
             or {
                 if (searchTerm != "")
@@ -92,15 +92,19 @@ class ReasonMasterService {
         return jsonObject
     }
 
-    ReasonMaster save(JSONObject jsonObject)
+    SampleConversionlog save(JSONObject jsonObject)
     {
-        ReasonMaster reasonMaster = new ReasonMaster()
-        reasonMaster.reasonName =  jsonObject.get("reasonName").toString()
-        reasonMaster.reasonCode = jsonObject.get("reasonCode").toString()
-        reasonMaster.save(flush: true)
-        if (!reasonMaster.hasErrors())
+        SampleConversionlog sampleConversionlog = new SampleConversionlog()
+        sampleConversionlog.saleableProductId = Long.parseLong(jsonObject.get("saleableProductId").toString())
+        sampleConversionlog.saleableBatch = jsonObject.get("saleableBatch").toString()
+        sampleConversionlog.saleableQty = Long.parseLong(jsonObject.get("saleableQty").toString())
+        sampleConversionlog.sampleProductId = Long.parseLong(jsonObject.get("sampleProductId").toString())
+        sampleConversionlog.sampleBatch = jsonObject.get("sampleBatch").toString()
+        sampleConversionlog.sampleQty = Long.parseLong(jsonObject.get("sampleQty").toString())
+        sampleConversionlog.save(flush: true)
+        if (!sampleConversionlog.hasErrors())
         {
-            return reasonMaster
+            return sampleConversionlog
         }
         else
         {
@@ -108,18 +112,22 @@ class ReasonMasterService {
         }
     }
 
-    ReasonMaster update(JSONObject jsonObject, String id)
+    SampleConversionlog update(JSONObject jsonObject, String id)
     {
-        ReasonMaster reasonMaster = ReasonMaster.findById(Long.parseLong(id))
-        if (reasonMaster)
+        SampleConversionlog sampleConversionlog = SampleConversionlog.findById(Long.parseLong(id))
+        if (sampleConversionlog)
         {
-            reasonMaster.isUpdatable = true
-            reasonMaster.reasonName =  jsonObject.get("reasonName").toString()
-            reasonMaster.reasonCode = jsonObject.get("reasonCode").toString()
-            reasonMaster.save(flush: true)
-            if (!reasonMaster.hasErrors())
+            sampleConversionlog.isUpdatable = true
+            sampleConversionlog.saleableProductId = Long.parseLong(jsonObject.get("saleableProductId").toString())
+            sampleConversionlog.saleableBatch = jsonObject.get("saleableBatch").toString()
+            sampleConversionlog.saleableQty = Long.parseLong(jsonObject.get("saleableQty").toString())
+            sampleConversionlog.sampleProductId = Long.parseLong(jsonObject.get("sampleProductId").toString())
+            sampleConversionlog.sampleBatch = jsonObject.get("sampleBatch").toString()
+            sampleConversionlog.sampleQty = Long.parseLong(jsonObject.get("sampleQty").toString())
+            sampleConversionlog.save(flush: true)
+            if (!sampleConversionlog.hasErrors())
             {
-                return reasonMaster
+                return sampleConversionlog
             }
             else
             {
@@ -132,15 +140,18 @@ class ReasonMasterService {
         }
     }
 
+
+
+
     void delete(String id)
     {
         if (id)
         {
-            ReasonMaster reasonMaster = ReasonMaster.findById(Long.parseLong(id))
-            if (reasonMaster)
+            SampleConversionlog sampleConversionlog = SampleConversionlog.findById(Long.parseLong(id))
+            if (sampleConversionlog)
             {
-                reasonMaster.isUpdatable = true
-                reasonMaster.delete()
+                sampleConversionlog.isUpdatable = true
+                sampleConversionlog.delete()
             }
             else
             {

@@ -122,19 +122,8 @@ class UrlMappings {
             "/salebillbydaterange(.$format)?"(controller: 'saleBillDetails', action: 'getByDateRangeAndEntity')
 
 
-//            //Sale Order entry Controller
-//            "/salebilldetails(.$format)?"(controller: 'saleBillDetails') {
-//                action = [GET: 'index', POST:
-//                        'save']
-//            }
-//            "/salebilldetails/datatable(.$format)?"(controller: 'saleBillDetails') {action = [GET: 'dataTable']}
-//            "/salebilldetails/$id(.$format)?"(controller: 'saleBillDetails') {
-//                action = [GET: 'show', PUT: 'update', DELETE:
-//                        'delete']
-//            }
-//            "/salebilldetailsbydays/$days(.$format)?"(controller: 'saleBillDetails') {
-//                action = [GET: 'getAllByDays']
-//            }
+
+
             "/salebilldetails/getrecent(.$format)?"(controller: 'saleBillDetails', action: 'getRecentByFinancialYearAndEntity')
 
             "/setpaymentstatus/$id/type/$paid(.$format)?"(controller: 'saleBillDetails') {
@@ -144,7 +133,74 @@ class UrlMappings {
             "/updatebalancebyid/id/$id/balance/$balance/status/$status"(controller: 'saleBillDetails')
                     {action=[POST: 'updateBalance']}
 
-            //Sale Product Details
+
+
+            //      Sample Conversion
+            "/sampleconversion(.$format)?"(controller: 'sampleConversion') {
+                action = [GET: 'index', POST:
+                        'save']
+            }
+
+            "/sampleconversion/datatable(.$format)?"(controller: 'sampleConversion') {action = [GET: 'dataTable']}
+            "/sampleconversion/cancel(.$format)?"(controller: 'sampleConversion') {action = [POST: 'cancelSaleBill']}
+            "/sampleconversion/$id(.$format)?"(controller: 'sampleConversion') {
+                action = [GET: 'show', PUT: 'update', DELETE:
+                        'delete']
+            }
+            "/sampleconversionbydays/$days(.$format)?"(controller: 'sampleConversion') {
+                action = [GET: 'getAllByDays']
+            }
+
+            "/sampleconversionbycustomer/$id(.$format)?"(controller: 'sampleConversion') {
+                action = [GET: 'getAllByCustomerId']
+            }
+
+            "/sampleconversionbydaterange(.$format)?"(controller: 'sampleConversion', action: 'getByDateRangeAndEntity')
+
+
+
+
+            //      Sample Conversion  details
+            "/sampleconversiondetails(.$format)?"(controller: 'sampleConversionDetails') {
+                action = [GET: 'index', POST:
+                        'save']
+            }
+            "/sampleconversiondetails/savelist(.$format)?"(controller: 'sampleConversionDetails', action: 'saveList')
+            "/sampleconversiondetails/bill/$id(.$format)?"(controller: 'sampleConversionDetails') {
+                action = [GET: 'getSaleProductDetailsOfSaleBill']
+            }
+
+            "/sampleconversiondetailslist/bill/$salebillsIds(.$format)?"(controller: 'sampleConversionDetails') {
+                action = [GET: 'getSaleProductDetailsOfSaleBillList']
+            }
+
+            "/sampleconversiondetails/datatable(.$format)?"(controller: 'sampleConversionDetails') {action = [GET: 'dataTable']}
+            "/sampleconversiondetails/$id(.$format)?"(controller: 'sampleConversionDetails') {
+                action = [GET: 'show', PUT: 'update', DELETE:
+                        'delete']
+            }
+            "sampleconversiondetailsbydays/$days(.$format)?"(controller: 'sampleConversionDetails') {
+                action = [GET: 'getAllByDays']
+            }
+
+            "/sampleconversiondetailsbyproductId(.$format)?"(controller: 'sampleConversionDetails') {
+                action = [GET: 'getSaleProductDetailsbyProductId']
+            }
+
+            "/sampleconversiondetailsbillandbatch(.$format)?"(controller: 'saleProductDetails', action:
+                    'getSampleConversionDetailsbyProductId')
+
+
+//            Sample Conversion Logs
+            "/sampleconversionlogs(.$format)?"(controller: 'sampleConversionLogs') {
+                action = [GET: 'index', POST: 'save']}
+
+
+
+
+
+
+                //Sale Product Details
             "/saleproductdetails(.$format)?"(controller: 'saleProductDetails') {
                 action = [GET: 'index', POST:
                         'save']
