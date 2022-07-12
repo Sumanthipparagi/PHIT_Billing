@@ -564,7 +564,7 @@ class UrlMappings {
 
 
 //        Sample conversion
-        "/sample-conversion/promotional-gdv"(controller: 'sampleConversion', action: 'index')
+        "/sample-conversion/save"(controller: 'sampleConversion', action: 'saveSampleConversion')
         "/sample-conversion"(controller: 'sampleConversion', action: 'sampleConversion')
 
         /*<-------------------------------------------Purchase Entry------------------------------------------------->*/

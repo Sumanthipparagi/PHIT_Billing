@@ -15,8 +15,9 @@
     <asset:stylesheet rel="stylesheet" src="/themeassets/plugins/jquery-datatable/dataTables.bootstrap4.min.css"/>
     <!-- Custom Css -->
     <asset:stylesheet rel="stylesheet" src="/themeassets/css/main.css"/>
+
     <asset:stylesheet rel="stylesheet" href="/themeassets/css/color_skins.css"/>
-    <asset:stylesheet rel="stylesheet" href="/themeassets/plugins/sweetalert/sweetalert.css"/>
+    <asset:stylesheet rel="stylesheet" href="/themeassets/plugins/sweetalert2/dist/sweetalert2.css"/>
     <asset:stylesheet src="/themeassets/plugins/bootstrap-select/css/bootstrap-select.css" rel="stylesheet"/>
     <asset:stylesheet src="/themeassets/js/pages/forms/basic-form-elements.js" rel="stylesheet"/>
     <asset:stylesheet
@@ -49,7 +50,7 @@
                     <h2>Sample Conversion</h2>
                     <ul class="breadcrumb padding-0">
                         <li class="breadcrumb-item"><a href="/"><i class="zmdi zmdi-home"></i></a></li>
-                        <li class="breadcrumb-item"><a href="/sample-">Sample Conversion</a></li>
+                        <li class="breadcrumb-item"><a href="/sample-conversion">Sample Conversion</a></li>
                         <li class="breadcrumb-item active">Sample Conversion</li>
                     </ul>
                 </div>
@@ -63,7 +64,7 @@
             <div class="col-lg-12 col-md-12 col-sm-12">
                 <div class="card">
                     <div class="body">
-                        <form id="sampleConversionForm" action="" method="POST">
+%{--                        <form id="sampleConversionForm" action="" method="POST">--}%
                             <h3>Saleable</h3>
 
                             <div class="row">
@@ -99,7 +100,7 @@
                                     <div class="form-group">
                                         <label>Quantity</label>
                                         <input type="number" name="saleableQuantity"  id="saleableQuantity"
-                                               class="saleableQuantity form-control" data-qty=""/>
+                                               class="saleableQuantity form-control" data-qty="" readonly/>
                                     </div>
                                 </div>
                             </div>
@@ -135,11 +136,23 @@
                             </div>
 
                             <div class="row">
-                                <div class="col-md-6">
-                                    <button class="btn btn-primary" type="submit">Save</button>
+
+                                <div class="col-md-12">
+                                    <div class="form-group">
+                                        <label>Quantity</label>
+                                        <input type="number" name="sampleQuantity"  id="sampleQuantity"
+                                               class="sampleQuantity form-control"/>
+                                    </div>
                                 </div>
                             </div>
-                        </form>
+                            <br>
+
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <button class="btn btn-primary" type="submit" onclick="saveSampleConversion()">Save</button>
+                                </div>
+                            </div>
+%{--                        </form>--}%
 
                     </div>
                 </div>
@@ -170,6 +183,7 @@
 <asset:javascript src="/themeassets/plugins/momentjs/moment.js"/>
 <asset:javascript src="/themeassets/plugins/bootstrap-material-datetimepicker/js/bootstrap-material-datetimepicker.js"/>
 <asset:javascript src="/themeassets/js/pages/forms/basic-form-elements.js"/>
+<asset:javascript src="/themeassets/plugins/sweetalert2/dist/sweetalert2.all.js"/>
 <asset:javascript src="/themeassets/plugins/dropify/dist/js/dropify.min.js"/>
 <asset:javascript src="/themeassets/plugins/select2/dist/js/select2.full.min.js"/>
 
@@ -263,17 +277,107 @@
     function sampleBatchChanged()
     {
         var batchId = $('#samplebatch').find(':selected').data('id');
-        if(batchId) {
-            for (var i = 0; i < salableBatches.length; i++) {
-                if (salableBatches[i].id === batchId) {
-                    $(".sampleQuantity").val(salableBatches[i].remainingQty);
-                }
-            }
-        }
+        console.log(batchId)
+        // if(batchId) {
+        //     for (var i = 0; i < salableBatches.length; i++) {
+        //         if (salableBatches[i].id === batchId) {
+        //             // $(".sampleQuantity").val(salableBatches[i].remainingQty);
+        //         }
+        //     }
+        // }
     }
 
 
 
+
+    function saveSampleConversion() {
+        var waitingSwal = Swal.fire({
+            title: "Please wait!",
+            showDenyButton: false,
+            showCancelButton: false,
+            showConfirmButton: false,
+            allowOutsideClick: false
+        });
+
+        var saleableProduct = $("#salebleitem").val();
+        var saleableBatch = $("#saleblebatch").val();
+        var saleableQty = $("#saleableQuantity").val();
+        var sampleProduct = $("#sampleitem").val();
+        var sampleBatch = $("#samplebatch").val();
+        var sampleQty = $("#sampleQuantity").val();
+
+        if (!saleableProduct) {
+            alert("Please select saleable product.");
+            waitingSwal.close();
+            return;
+        }
+
+        if (!saleableBatch) {
+            alert("Please select saleable batch.");
+            waitingSwal.close();
+            return;
+        }
+
+        if (!saleableQty) {
+            alert("Please enter saleable quantity.");
+            waitingSwal.close();
+            return;
+        }
+
+        if (!sampleProduct) {
+            alert("Please select sample product.");
+            waitingSwal.close();
+            return;
+        }
+
+        if (!sampleBatch) {
+            alert("Please select sample batch.");
+            waitingSwal.close();
+            return;
+        }
+
+        if (!sampleQty) {
+            alert("Please select sample quantity.");
+            waitingSwal.close();
+            return;
+        }
+
+        if(Number(sampleQty) > Number(saleableQty))
+        {
+            alert("Sample quantity should not be greater");
+            waitingSwal.close();
+            return;
+        }
+
+        $.ajax({
+            type: "POST",
+            url: "/sample-conversion/save",
+            dataType: 'json',
+            data: {
+                saleableProduct: saleableProduct,
+                saleableBatch: saleableBatch,
+                saleableQty: saleableQty,
+                sampleProduct: sampleProduct,
+                sampleBatch: sampleBatch,
+                sampleQty: sampleQty,
+            },
+            success: function (data) {
+                waitingSwal.close();
+                alert("success!!")
+            },
+            error: function () {
+                waitingSwal.close();
+                Swal.fire({
+                    title: "Something went wrong",
+                    confirmButtonText: 'OK',
+                    allowOutsideClick: false
+                }).then((result) => {
+                    // resetData();
+                });
+            }
+        });
+
+    }
 </script>
 <g:include view="controls/footer-content.gsp"/>
 <script>
