@@ -77,7 +77,8 @@ class SampleConversionLogService {
             or {
                 if (searchTerm != "")
                 {
-                    ilike('reasonName', '%' + searchTerm + '%')
+                    ilike('saleableBatch', '%' + searchTerm + '%')
+                    ilike('sampleBatch', '%' + searchTerm + '%')
                 }
             }
             eq('deleted', false)
@@ -101,6 +102,9 @@ class SampleConversionLogService {
         sampleConversionlog.sampleProductId = Long.parseLong(jsonObject.get("sampleProductId").toString())
         sampleConversionlog.sampleBatch = jsonObject.get("sampleBatch").toString()
         sampleConversionlog.sampleQty = Long.parseLong(jsonObject.get("sampleQty").toString())
+        sampleConversionlog.entityId = Long.parseLong(jsonObject.get("entityId").toString())
+        sampleConversionlog.entityTypeId = Long.parseLong(jsonObject.get("entityTypeId").toString())
+        sampleConversionlog.userId = Long.parseLong(jsonObject.get("userId").toString())
         sampleConversionlog.save(flush: true)
         if (!sampleConversionlog.hasErrors())
         {

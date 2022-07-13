@@ -103,6 +103,9 @@ class SampleConversionController
             sampleConverisonLogs.put("sampleProductId",params.sampleProduct)
             sampleConverisonLogs.put("sampleBatch",params.sampleBatch)
             sampleConverisonLogs.put("sampleQty",params.sampleQty)
+            sampleConverisonLogs.put("entityId",session.getAttribute('entityId').toString())
+            sampleConverisonLogs.put("entityTypeId",session.getAttribute('entityTypeId').toString())
+            sampleConverisonLogs.put("userId",session.getAttribute('userId').toString())
             def samplelogs = new SalesService().saveSampleConversionLogs(sampleConverisonLogs)
             if(samplelogs?.status == 200)
             {

@@ -212,11 +212,11 @@
                 }
             ],
             language: {
-                searchPlaceholder: "Search Sale Return"
+                searchPlaceholder: "Search Sample Conversion"
             },
             ajax: {
                 type: 'GET',
-                url: '/sale-return/datatables',
+                url: '/sample-conversion/sample-invoice-list',
                 data: {
                     invoiceStatus: invoiceStatus
                 },

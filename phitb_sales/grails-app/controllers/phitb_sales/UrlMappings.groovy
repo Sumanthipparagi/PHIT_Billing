@@ -196,13 +196,15 @@ class UrlMappings {
 //            Sample Conversion Logs
             "/sampleconversionlogs(.$format)?"(controller: 'sampleConversionLogs') {
                 action = [GET: 'index', POST: 'save']}
+            "/sampleconversionlogs/datatable(.$format)?"(controller: 'sampleConversion') {action = [GET: 'dataTable']}
 
 
 
 
 
 
-                //Sale Product Details
+
+            //Sale Product Details
             "/saleproductdetails(.$format)?"(controller: 'saleProductDetails') {
                 action = [GET: 'index', POST:
                         'save']

@@ -1564,7 +1564,7 @@ contains both sale bill and products
     }
 
 
-    //    Save Sample Conversion
+    //    Save Sample Conversion logs
     def saveSampleConversionLogs(JSONObject jsonObject)
     {
         Client client = ClientBuilder.newClient()

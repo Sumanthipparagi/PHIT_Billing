@@ -702,6 +702,7 @@ public class Links
 
 //    Sample Conversion logs
     public  static  String SAMPLE_CONVERSION_LOGS = "api/v1.0/sales/sampleconversionlogs";
+    public  static  String SAMPLE_CONVERSION_LOGS_DATATABLE = "api/v1.0/sales/sampleconversionlogs/datatable";
 
 
 //    Sample invoicing
@@ -710,6 +711,7 @@ public class Links
     public static String SAMPLE_INVOICE_SHOW = "api/v1.0/sales/sampleconversion";
     public static String SAMPLE_INVOICE_OF_BILL = "api/v1.0/sales/sampleconversiondetails/bill";
     public static String SAMPLE_INVOICE_DATATABLE = "api/v1.0/sales/sampleconversion/datatable";
+
 
 
 
