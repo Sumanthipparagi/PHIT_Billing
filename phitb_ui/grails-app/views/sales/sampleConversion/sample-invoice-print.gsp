@@ -233,7 +233,7 @@
             </sub>
         </td>
         <td colspan="4" style="vertical-align:top;font-size:8pt;">
-            <strong>TAX INVOICE</strong>
+            <strong>SAMPLE INVOICE</strong>
             <ul style="margin: 0;">
 
                 <li><b class="tab">Invoice No</b>:  <strong><g:if test="${sampleBillDetail.billStatus == 'CANCELLED'}"><del>${sampleBillDetail.invoiceNumber}</del></g:if><g:else>${sampleBillDetail.invoiceNumber}</g:else></strong></li>
