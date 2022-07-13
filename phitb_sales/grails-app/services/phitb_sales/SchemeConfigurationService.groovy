@@ -175,9 +175,29 @@ class SchemeConfigurationService {
         if (schemeConfiguration)
         {
             schemeConfiguration.isUpdatable = true
-            schemeConfiguration.zoneIds = jsonObject.get("zoneIds").toString()
-            schemeConfiguration.stateIds = jsonObject.get("stateIds").toString()
-            schemeConfiguration.cityIds = jsonObject.get("cityIds").toString()
+            if(jsonObject.has("zoneIds"))
+            {
+                schemeConfiguration.zoneIds = jsonObject.get("zoneIds").toString()
+            }
+            else
+            {
+                schemeConfiguration.zoneIds = null
+            }
+            if(jsonObject.has("stateIds"))
+            {
+                schemeConfiguration.stateIds = jsonObject.get("stateIds").toString()
+            }else
+            {
+                schemeConfiguration.stateIds = null
+            }
+            if(jsonObject.has("cityIds"))
+            {
+                schemeConfiguration.cityIds = jsonObject.get("cityIds").toString()
+            }
+            else
+            {
+                schemeConfiguration.cityIds = null
+            }
             schemeConfiguration.customerIds = jsonObject.get("customerIds").toString()
             schemeConfiguration.distributorId = jsonObject.get("distributorId").toString()
             schemeConfiguration.productId = Long.parseLong(jsonObject.get("productId").toString())

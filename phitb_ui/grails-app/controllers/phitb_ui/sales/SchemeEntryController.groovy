@@ -7,6 +7,7 @@ import phitb_ui.EntityService
 import phitb_ui.ProductService
 import phitb_ui.SalesService
 import phitb_ui.entity.EntityRegisterController
+import phitb_ui.entity.HQAreasController
 import phitb_ui.product.BatchRegisterController
 import phitb_ui.product.ProductController
 import phitb_ui.system.CityController
@@ -26,6 +27,7 @@ class SchemeEntryController {
         ArrayList<String> zoneList = new ZoneController().show()
         ArrayList<String> stateList = new StateController().show() as ArrayList<String>
         ArrayList<String> cityList = new CityController().show() as ArrayList<String>
+        ArrayList<String> hqAreaList = new HQAreasController().getByEntity() as ArrayList<String>
         ArrayList<String> entityList = new EntityRegisterController().show() as ArrayList<String>
         ArrayList<String> productList = new ProductController().show() as ArrayList<String>
         ArrayList<String> batchList = new BatchRegisterController().show() as ArrayList<String>
@@ -40,14 +42,16 @@ class SchemeEntryController {
                                                              cityList       :cityList,
                                                              distributorList:distributorList,
                                                              productList    :productList, batchList:batchList,
-                                                             entityList     :entityList])
+                                                             entityList     :entityList,hqAreaList:hqAreaList])
     }
 
     def updateScheme()
     {
+        String entityId = session.getAttribute("entityId").toString()
         JSONObject scheme = new SalesService().getSchemeById(params.id)
         ArrayList<String> zoneList = new ZoneController().show()
         ArrayList<String> stateList = new StateController().show() as ArrayList<String>
+        ArrayList<String> hqAreaList = new HQAreasController().getByEntity() as ArrayList<String>
         ArrayList<String> cityList = new CityController().show() as ArrayList<String>
         ArrayList<String> entityList = new EntityRegisterController().show() as ArrayList<String>
         ArrayList<String> productList = new ProductController().show() as ArrayList<String>
@@ -63,7 +67,7 @@ class SchemeEntryController {
                                                              cityList       :cityList,
                                                              distributorList:distributorList,
                                                              productList    :productList, batchList:batchList,
-                                                             entityList     :entityList,scheme:scheme])
+                                                             entityList     :entityList,scheme:scheme, hqAreaList:hqAreaList])
     }
 
 

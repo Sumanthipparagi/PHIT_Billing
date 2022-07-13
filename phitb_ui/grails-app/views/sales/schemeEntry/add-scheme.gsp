@@ -578,10 +578,10 @@
                 selectors = "<label for=\"city\">\n" +
                     "                                                    HQ areas\n" +
                     "                                                </label>\n" +
-                    "                                                <select class=\"form-control show-tick city\" name=\"cityIds\" id=\"city\">\n" +
+                    "                                                <select class=\"form-control show-tick hqarea\" name=\"hqarea\" id=\"city\">\n" +
                     "                                                    <option value=\"\">--Please Select--</option>\n" +
-                    "                                                    <g:each var="c" in="${cityList}">\n" +
-                    "                                                        <option value=\"${c.id}\">${c.name}</option>\n" +
+                    "                                                    <g:each var="h" in="${hqAreaList}">\n" +
+                    "                                                        <option value=\"${h.id}\">${h.id}</option>\n" +
                     "                                                    </g:each>\n" +
                     "                                                </select>"
             } else if (this.value === "") {
