@@ -305,7 +305,7 @@
             denyButtonText: 'No',
         }).then((result) => {
             if (result.isConfirmed) {
-                var url = '/sample-conversion/cancel-invoice?id=' + id;
+                var url = '/sample-conversion/cancel?id=' + id;
                 $.ajax({
                     type: "GET",
                     url: url,
