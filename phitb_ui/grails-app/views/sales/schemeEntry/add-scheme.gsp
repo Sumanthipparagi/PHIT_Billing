@@ -13,26 +13,30 @@
     <!-- JQuery DataTable Css -->
     <asset:stylesheet rel="stylesheet" src="/themeassets/plugins/jquery-datatable/dataTables.bootstrap4.min.css"/>
     <!-- Custom Css -->
-    <asset:stylesheet  rel="stylesheet" src="/themeassets/css/main.css"/>
+    <asset:stylesheet rel="stylesheet" src="/themeassets/css/main.css"/>
     <asset:stylesheet rel="stylesheet" href="/themeassets/css/color_skins.css"/>
     <asset:stylesheet rel="stylesheet" href="/themeassets/plugins/sweetalert/sweetalert.css"/>
-    <asset:stylesheet  src="/themeassets/plugins/bootstrap-select/css/bootstrap-select.css" rel="stylesheet" />
-    <asset:stylesheet  src="/themeassets/js/pages/forms/basic-form-elements.js" rel="stylesheet" />
-    <asset:stylesheet  src="/themeassets/plugins/bootstrap-material-datetimepicker/css/bootstrap-material-datetimepicker.css" rel="stylesheet" />
+    <asset:stylesheet src="/themeassets/plugins/bootstrap-select/css/bootstrap-select.css" rel="stylesheet"/>
+    <asset:stylesheet src="/themeassets/js/pages/forms/basic-form-elements.js" rel="stylesheet"/>
+    <asset:stylesheet
+            src="/themeassets/plugins/bootstrap-material-datetimepicker/css/bootstrap-material-datetimepicker.css"
+            rel="stylesheet"/>
     <link rel="stylesheet" media="screen" href="https://cdnjs.cloudflare.com/ajax/libs/select2/3.5.2/select2.min.css">
 
-<style>
-    .form-control
-    {
+    <style>
+    .form-control {
         border-radius: 0;
     }
-</style>
+    </style>
 </head>
+
 <body class="theme-black">
 <!-- Page Loader -->
 <div class="page-loader-wrapper">
     <div class="loader">
-        <div class="m-t-30"><img src="${assetPath(src: '/themeassets/images/logo.svg')}" width="48" height="48" alt="Alpino"></div>
+        <div class="m-t-30"><img src="${assetPath(src: '/themeassets/images/logo.svg')}" width="48" height="48"
+                                 alt="Alpino"></div>
+
         <p>Please wait...</p>
     </div>
 </div>
@@ -46,10 +50,11 @@
                     <h2>Add General Scheme</h2>
                     <ul class="breadcrumb padding-0">
                         <li class="breadcrumb-item"><a href="#"><i class="zmdi zmdi-home"></i></a></li>
-%{--                        <li class="breadcrumb-item"><a href="/entity-register">Entity Register</a></li>--}%
+                        %{--                        <li class="breadcrumb-item"><a href="/entity-register">Entity Register</a></li>--}%
                         <li class="breadcrumb-item active">Add  Scheme</li>
                     </ul>
                 </div>
+
                 <div class="col-lg-7 col-md-7 col-sm-12">
                     <div class="input-group m-b-0">
                         <input type="text" class="form-control" placeholder="Search...">
@@ -71,10 +76,59 @@
                             <div class="header">
                                 <h6>Scheme Information</h6>
                             </div>
+
                             <div class="body">
                                 <div class="row">
                                     <div class="col-md-12 mt-2">
                                         <div class="row">
+                                            <div class="col-lg-12">
+                                                <div class="row">
+                                                    <div class="col-lg-2">
+                                                        <div class="form-check">
+                                                            <input class="form-check-input" type="radio"
+                                                                name="selections"
+                                                                  id="zoneButton">
+                                                            <label class="form-check-label" for="zoneButton">
+                                                               Zone
+                                                            </label>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="col-lg-2">
+                                                        <div class="form-check">
+                                                            <input class="form-check-input" type="radio" name="selections"
+                                                                   id="stateButton"
+                                                                   checked>
+                                                            <label class="form-check-label" for="stateButton">
+                                                               State
+                                                            </label>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-lg-2">
+                                                        <div class="form-check">
+                                                            <input class="form-check-input" type="radio" name="selections"
+                                                                   id="cityButton"
+                                                                   checked>
+                                                            <label class="form-check-label" for="cityButton">
+                                                                City / Area
+                                                            </label>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-lg-2">
+                                                        <div class="form-check">
+                                                            <input class="form-check-input" type="radio" name="selections"
+                                                                   id="hqButton"
+                                                                   checked>
+                                                            <label class="form-check-label" for="hqButton">
+                                                                HQ Areas
+                                                            </label>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <br><br>
+
                                             <div class="col-lg-6 form-group  form-float">
                                                 <label for="zone">
                                                     Zone
@@ -115,7 +169,8 @@
                                                 <label for="customer">
                                                     Customer
                                                 </label>
-                                                <select class="form-control show-tick customer" name="customerIds" id="customer">
+                                                <select class="form-control show-tick customer" name="customerIds"
+                                                        id="customer">
                                                     <option value="">--Please Select--</option>
                                                     <g:each var="e" in="${entityList}">
                                                         <option value="${e.id}">${e.entityName}</option>
@@ -141,7 +196,8 @@
                                                 <label for="productId">
                                                     Product
                                                 </label>
-                                                <select class="form-control show-tick productId" name="productId" id="productId" onchange="getBatches(this.value)">
+                                                <select class="form-control show-tick productId" name="productId"
+                                                        id="productId" onchange="getBatches(this.value)">
                                                     <option value="">--Please Select--</option>
                                                     <g:each var="p" in="${productList}">
                                                         <option value="${p.id}">${p.productName}</option>
@@ -164,7 +220,6 @@
                                     </div>
                                 </div>
 
-
                             </div>
                         </div>
                     </div>
@@ -176,6 +231,7 @@
                             <div class="header">
                                 <h6>SLAB 1</h6>
                             </div>
+
                             <div class="body">
                                 <div class="row">
                                     <div class="col-md-12 mt-2">
@@ -184,7 +240,7 @@
                                                 <label for="slab1MinQty">
                                                     Slab 1 Min Quantity
                                                 </label>
-                                                <input type="text" id="slab1MinQty" class="form-control slab1MinQty"
+                                                <input type="number" id="slab1MinQty" class="form-control slab1MinQty"
                                                        name="slab1MinQty" placeholder="Slab 1 Min Quantity"
                                                        required/>
                                             </div>
@@ -193,7 +249,8 @@
                                                 <label for="slab1SchemeQty">
                                                     Slab 1 Scheme Quantity
                                                 </label>
-                                                <input type="text" id="slab1SchemeQty" class="form-control slab1SchemeQty"
+                                                <input type="number" id="slab1SchemeQty"
+                                                       class="form-control slab1SchemeQty"
                                                        name="slab1SchemeQty" placeholder="Slab 1 Scheme Quantity"
                                                        required/>
                                             </div>
@@ -202,7 +259,8 @@
                                                 <label for="slab1BulkStatus">
                                                     Slab 1 Bulk Status
                                                 </label>
-                                                <input type="text" id="slab1BulkStatus" class="form-control slab1BulkStatus"
+                                                <input type="text" id="slab1BulkStatus"
+                                                       class="form-control slab1BulkStatus"
                                                        name="slab1BulkStatus" placeholder=" Slab 1 bulk Status"
                                                        required/>
                                             </div>
@@ -219,7 +277,6 @@
                                     </div>
                                 </div>
 
-
                             </div>
                         </div>
                     </div>
@@ -231,6 +288,7 @@
                             <div class="header">
                                 <h6>SLAB 2</h6>
                             </div>
+
                             <div class="body">
                                 <div class="row">
                                     <div class="col-md-12 mt-2">
@@ -239,27 +297,29 @@
                                                 <label for="slab2MinQty">
                                                     Slab 2 Min Quantity
                                                 </label>
-                                                <input type="text" id="slab2MinQty" class="form-control slab2MinQty"
+                                                <input type="number" id="slab2MinQty" class="form-control slab2MinQty"
                                                        name="slab2MinQty" placeholder="Slab 2 Min Quantity"
-                                                       required/>
+                                                       />
                                             </div>
 
                                             <div class="col-lg-6 form-group  form-float">
                                                 <label for="slab2SchemeQty">
                                                     Slab 2 Scheme Quantity
                                                 </label>
-                                                <input type="text" id="slab2SchemeQty" class="form-control slab2SchemeQty"
+                                                <input type="number" id="slab2SchemeQty"
+                                                       class="form-control slab2SchemeQty"
                                                        name="slab2SchemeQty" placeholder="Slab 2 Scheme Quantity"
-                                                       required/>
+                                                       />
                                             </div>
 
                                             <div class="col-lg-6 form-group  form-float">
                                                 <label for="slab2BulkStatus">
                                                     Slab 2 Bulk Status
                                                 </label>
-                                                <input type="text" id="slab2BulkStatus" class="form-control slab2BulkStatus"
+                                                <input type="text" id="slab2BulkStatus"
+                                                       class="form-control slab2BulkStatus"
                                                        name="slab2BulkStatus" placeholder="Slab 2 Bulk Status"
-                                                       required/>
+                                                       />
                                             </div>
 
                                             <div class="col-lg-6 form-group  form-float">
@@ -268,12 +328,11 @@
                                                 </label>
                                                 <input type="text" id="slab2Status" class="form-control slab2Status"
                                                        name="slab2Status" placeholder="Slab 2 Status"
-                                                       required/>
+                                                       />
                                             </div>
                                         </div>
                                     </div>
                                 </div>
-
 
                             </div>
                         </div>
@@ -286,6 +345,7 @@
                             <div class="header">
                                 <h6>SLAB 3</h6>
                             </div>
+
                             <div class="body">
                                 <div class="row">
                                     <div class="col-md-12 mt-2">
@@ -294,27 +354,29 @@
                                                 <label for="slab3MinQty">
                                                     Slab 3 Min Quantity
                                                 </label>
-                                                <input type="text" id="slab3MinQty" class="form-control slab3MinQty"
+                                                <input type="number" id="slab3MinQty" class="form-control slab3MinQty"
                                                        name="slab3MinQty" placeholder="Slab 3 Min Quantity"
-                                                       required/>
+                                                       />
                                             </div>
 
                                             <div class="col-lg-6 form-group  form-float">
                                                 <label for="slab3SchemeQty">
                                                     Slab 3 Scheme Quantity
                                                 </label>
-                                                <input type="text" id="slab3SchemeQty" class="form-control slab3SchemeQty"
+                                                <input type="number" id="slab3SchemeQty"
+                                                       class="form-control slab3SchemeQty"
                                                        name="slab3SchemeQty" placeholder="Slab 3 Scheme Quantity"
-                                                       required/>
+                                                       />
                                             </div>
 
                                             <div class="col-lg-6 form-group  form-float">
                                                 <label for="slab3BulkStatus">
                                                     Slab 3 Bulk Status
                                                 </label>
-                                                <input type="text" id="slab3BulkStatus" class="form-control slab3BulkStatus"
+                                                <input type="text" id="slab3BulkStatus"
+                                                       class="form-control slab3BulkStatus"
                                                        name="slab3BulkStatus" placeholder="Slab 3 Bulk Status"
-                                                       required/>
+                                                       />
                                             </div>
 
                                             <div class="col-lg-6 form-group  form-float">
@@ -323,7 +385,7 @@
                                                 </label>
                                                 <input type="text" id="slab3Status" class="form-control slab3Status"
                                                        name="slab3Status" placeholder="Slab 3 Status"
-                                                       required/>
+                                                       />
                                             </div>
                                         </div>
                                     </div>
@@ -340,6 +402,7 @@
                             <div class="header">
                                 <h6>OTHER INFORMATION</h6>
                             </div>
+
                             <div class="body">
                                 <div class="row">
                                     <div class="col-md-12 mt-2">
@@ -348,27 +411,30 @@
                                                 <label for="slabValidityFrom">
                                                     Slab Validity From
                                                 </label>
-                                                <input type="text" id="slabValidityFrom" class="form-control slabValidityFrom date"
+                                                <input type="text" id="slabValidityFrom"
+                                                       class="form-control slabValidityFrom date"
                                                        name="slabValidityFrom" placeholder="Slab Validity From"
-                                                       required/>
+                                                       />
                                             </div>
 
                                             <div class="col-lg-6 form-group  form-float">
                                                 <label for="slabValidityTo">
                                                     Slab Validity to
                                                 </label>
-                                                <input type="text" id="slabValidityTo" class="form-control slabValidityTo date"
+                                                <input type="text" id="slabValidityTo"
+                                                       class="form-control slabValidityTo date"
                                                        name="slabValidityTo" placeholder=" Slab Validity to"
-                                                       required/>
+                                                       />
                                             </div>
 
                                             <div class="col-lg-6 form-group  form-float">
                                                 <label for="specialDiscount">
                                                     Special Discount
                                                 </label>
-                                                <input type="text" id="specialDiscount" class="form-control specialDiscount"
+                                                <input type="text" id="specialDiscount"
+                                                       class="form-control specialDiscount"
                                                        name="specialDiscount" placeholder="Special Discount"
-                                                       required/>
+                                                       />
                                             </div>
 
                                             <div class="col-lg-6 form-group  form-float">
@@ -377,8 +443,9 @@
                                                 </label>
                                                 <input type="text" id="specialDiscountValidFrom"
                                                        class="form-control specialDiscountValidFrom date"
-                                                       name="specialDiscountValidFrom" placeholder="Special Discount Valid From"
-                                                       required/>
+                                                       name="specialDiscountValidFrom"
+                                                       placeholder="Special Discount Valid From"
+                                                       />
                                             </div>
 
                                             <div class="col-lg-6 form-group  form-float">
@@ -387,18 +454,19 @@
                                                 </label>
                                                 <input type="text" id="specialDiscountValidTo"
                                                        class="form-control specialDiscountValidTo date"
-                                                       name="specialDiscountValidTo" placeholder="Special Discount Valid to"
-                                                       required/>
+                                                       name="specialDiscountValidTo"
+                                                       placeholder="Special Discount Valid to"
+                                                       />
                                             </div>
 
                                             <div class="col-lg-6 form-group  form-float">
                                                 <label for="specialRate">
                                                     Special Rate
                                                 </label>
-                                                <input type="text" id="specialRate"
+                                                <input type="number" id="specialRate"
                                                        class="form-control specialRate"
                                                        name="specialRate" placeholder="Special Rate"
-                                                       required/>
+                                                       />
                                             </div>
 
                                             <div class="col-lg-6 form-group  form-float">
@@ -408,7 +476,7 @@
                                                 <input type="text" id="specialRateValidFrom"
                                                        class="form-control specialRateValidFrom date"
                                                        name="specialRateValidFrom" placeholder="Special Rate Valid From"
-                                                       required/>
+                                                       />
                                             </div>
 
                                             <div class="col-lg-6 form-group  form-float">
@@ -418,7 +486,7 @@
                                                 <input type="text" id="specialRateValidTo"
                                                        class="form-control specialRateValidTo date"
                                                        name="specialRateValidTo" placeholder="Special Rate Valid to"
-                                                       required/>
+                                                       />
                                             </div>
                                         </div>
                                     </div>
@@ -428,7 +496,6 @@
                         </div>
                     </div>
                 </div>
-
 
             </div>
         </div>
@@ -479,29 +546,26 @@
         // $('#batch').select2()
     });
 
-    function getBatches(id)
-    {
+    function getBatches(id) {
         var option = '';
         $.ajax({
-            url: '/batch-register/product/'+id,
+            url: '/batch-register/product/' + id,
             dataType: 'json',
             type: 'GET',
-            success: function(data) {
-                for (var i=0; i<data.length; i++) {
-                    option += '<option value="'+ data[i].batchNumber + '">' + data[i].batchNumber + '</option>';
+            success: function (data) {
+                for (var i = 0; i < data.length; i++) {
+                    option += '<option value="' + data[i].batchNumber + '">' + data[i].batchNumber + '</option>';
                 }
                 $('#batch').empty()
                 $('#batch').html(option);
-                if(data.length===0)
-                {
+                if (data.length === 0) {
                     $('#batch').prop('disabled', true);
-                }
-                else {
+                } else {
                     $('#batch').prop('disabled', false);
 
                 }
             },
-            error: function(x, e) {
+            error: function (x, e) {
                 console.log("Something went wrong!")
             }
 
