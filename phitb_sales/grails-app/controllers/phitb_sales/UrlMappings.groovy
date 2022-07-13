@@ -143,7 +143,7 @@ class UrlMappings {
             "/sampleconversion/getrecent"(controller: 'sampleConversion', action: 'getRecentByFinancialYearAndEntity')
 
             "/sampleconversion/datatable(.$format)?"(controller: 'sampleConversion') {action = [GET: 'dataTable']}
-            "/sampleconversion/cancel(.$format)?"(controller: 'sampleConversion') {action = [POST: 'cancelSaleBill']}
+            "/sampleconversion/cancel(.$format)?"(controller: 'sampleConversion') {action = [POST: 'cancelSampleBill']}
             "/sampleconversion/$id(.$format)?"(controller: 'sampleConversion') {
                 action = [GET: 'show', PUT: 'update', DELETE:
                         'delete']

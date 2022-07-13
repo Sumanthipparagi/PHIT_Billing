@@ -6,7 +6,7 @@
     <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
     <meta name="description" content="Responsive Bootstrap 4 and web Application ui kit.">
 
-    <title>:: PharmIt :: Sale Return List</title>
+    <title>:: PharmIt :: Sale Invoices</title>
     <link rel="icon" type="image/x-icon" href="${assetPath(src: '/themeassets/images/favicon.ico')}"/>
     <!-- Favicon-->
     <asset:stylesheet rel="stylesheet" src="/themeassets/plugins/bootstrap/css/bootstrap.min.css"/>
@@ -59,10 +59,10 @@
         <div class="block-header">
             <div class="row clearfix">
                 <div class="col-lg-5 col-md-5 col-sm-12">
-                    <h2>Sale Returns</h2>
+                    <h2>Sale Invoices</h2>
                     <ul class="breadcrumb padding-0">
                         <li class="breadcrumb-item"><a href="index.html"><i class="zmdi zmdi-home"></i></a></li>
-                        <li class="breadcrumb-item active">My Sales Return</li>
+                        <li class="breadcrumb-item active">My Invoices</li>
                     </ul>
                 </div>
 
@@ -88,17 +88,17 @@
                             <div class="col-md-4">
                             </div>
 
-                            %{-- <div class="col-md-4">
-                                 <div class="form-group">
-                                     <label for="invoiceStatus">Sales Return Status</label>
-                                     <select onchange="invoiceStatusChanged()" id="invoiceStatus" class="form-control">
-                                         <option>All</option>
-                                         <option>DRAFT</option>
-                                         <option>ACTIVE</option>
-                                         <option>CANCELLED</option>
-                                     </select>
-                                 </div>
-                             </div>--}%
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label for="invoiceStatus">Invoice Status</label>
+                                    <select onchange="invoiceStatusChanged()" id="invoiceStatus" class="form-control">
+                                        <option>All</option>
+                                        <option>DRAFT</option>
+                                        <option>ACTIVE</option>
+                                        <option>CANCELLED</option>
+                                    </select>
+                                </div>
+                            </div>
                         </div>
                     </div>
 
@@ -112,6 +112,7 @@
                                     <th>Invoice No.</th>
                                     <th>Date & Time</th>
                                     <th>GST Amt</th>
+                                    <th>Gross Amt</th>
                                     <th>Net Amt</th>
                                     <th>City</th>
                                     <th>Bill Status</th>
@@ -169,14 +170,14 @@
     var entityregister;
     var id = null;
     $(function () {
-        saleInvoiceTable();
+        sampleInvoiceTable();
         // var $demoMaskedInput = $('.demo-masked-input');
         // $demoMaskedInput.find('.datetime').inputmask('d/m/y h:m:s', { placeholder: '__/__/____ __:__:__:__', alias:
         //         "datetime", hourFormat: '12' });
 
     });
 
-    function saleInvoiceTable() {
+    function sampleInvoiceTable() {
         var invoiceStatus = $("#invoiceStatus").val();
         entityregister = $(".saleInvoiceTable").DataTable({
             "order": [[0, "desc"]],
@@ -212,52 +213,54 @@
                 }
             ],
             language: {
-                searchPlaceholder: "Search Sample Conversion"
+                searchPlaceholder: "Search Sample invoice"
             },
             ajax: {
                 type: 'GET',
-                url: '/sample-conversion/sample-invoice-list',
+                url: '/sample-conversion/datatable',
                 data: {
                     invoiceStatus: invoiceStatus
                 },
                 dataType: 'json',
 
                 dataSrc: function (json) {
+                    console.log(json);
                     var return_data = [];
                     for (var i = 0; i < json.data.length; i++) {
                         var approveInvoice = "";
                         var cancelInvoice = "";
                         var editInvoice = "";
-                        if (json.data[i].returnStatus !== "CANCELLED") {
+                        if (json.data[i].billStatus !== "CANCELLED") {
                             cancelInvoice = '<a class="btn btn-sm btn-info" title="Cancel" onclick="cancelBill(' + json.data[i].id +')" href="#"><i class="fa fa-times"></i></a>';
                         }
-                        else if(json.data[i].returnStatus!== "DRAFT")
+                        else if(json.data[i].billStatus!== "DRAFT")
                         {
                             approveInvoice =  '';
 
                         }
                         var printbtn = '<a target="_blank" class="btn btn-sm btn-danger" data-id="' + json.data[i].id
-                            + '" href="/sale-return/print-invoice?id=' + json.data[i].id +
+                            + '" href="/sample-conversion/print-invoice?id=' + json.data[i].id +
                             '"><i class="fa fa-print"></i></a>';
                         var invoiceNumber = json.data[i].invoiceNumber;
                         if (invoiceNumber === undefined)
                             invoiceNumber = "";
-                        if(json.data[i].returnStatus=== "DRAFT")
+                        if(json.data[i].billStatus=== "DRAFT")
                         {
                             editInvoice = '<a class="btn btn-sm btn-warning"  href="/edit-sale-entry?saleBillId=' +
                                 json.data[i].id + '"><i class="fa fa-edit"></i></a>';
                         }
-                        var grossAmt = (json.data[i].totalAmount - json.data[i].totalGst).toFixed(2);
+                        var grossAmt = (json.data[i].invoiceTotal - json.data[i].totalGst).toFixed(2);
                         return_data.push({
                             'action': cancelInvoice + " " + approveInvoice + " " + printbtn+" "+editInvoice,
                             /*'action': '',*/
                             'customer': json.data[i].customer?.entityName,
                             'invNo': invoiceNumber,
                             'gstAmt': json.data[i].totalGst.toFixed(2),
-                            'date': moment(json.data[i].dateCreated).format('DD-MM-YYYY  h:mm a'),
-                            'netAmt': json.data[i].totalAmount.toFixed(2),
+                            'grossAmt': grossAmt,
+                            'date': moment(json.data[i].entryDate).format('DD-MM-YYYY  h:mm a'),
+                            'netAmt': json.data[i].invoiceTotal.toFixed(2),
                             'city': json.data[i]?.customer?.city?.areaName + "<br><small>(" + json.data[i]?.customer?.city?.districtName + ")</small>",
-                            'bill_status': json.data[i].returnStatus,
+                            'bill_status': json.data[i].billStatus,
                             'balance': json.data[i].balance.toFixed(2),
                             'finYear': json.data[i].financialYear
 
@@ -272,55 +275,53 @@
                 {'data': 'invNo'},
                 {'data': 'date'},
                 {'data': 'gstAmt'},
+                {'data': 'grossAmt'},
                 {'data': 'netAmt'},
                 {'data': 'city'},
                 {'data': 'bill_status'},
                 {'data': 'balance'},
                 {'data': 'finYear'}
+
+                /* {'data': 'action', 'width': '4%'},
+                 {'data': 'customer', 'width': '5%'},
+                 {'data': 'invNo', 'width': '10%'},
+                 {'data': 'gstAmt', 'width': '10%'},
+                 {'data': 'netAmt', 'width': '10%'},
+                 {'data': 'grossAmt', 'width': '10%'},
+                 {'data': 'city', 'width': '10%'},
+                 {'data': 'bill_status', 'width': '5%'},
+                 {'data': 'balance', 'width': '5%'},
+                 {'data': 'finYear', 'width': '30%'}*/
             ]
         });
     }
 
     function cancelBill(id) {
         Swal.fire({
-            title: "Cancel this Sale Return? this can't be undone.",
+            title: "Cancel this Sample Invoice? this can't be undone.",
             showDenyButton: true,
             showCancelButton: false,
             confirmButtonText: 'Yes',
             denyButtonText: 'No',
         }).then((result) => {
             if (result.isConfirmed) {
-                var url = '/sale-return/cancel-invoice?id=' + id;
-                var beforeSendSwal
+                var url = '/sample-conversion/cancel-invoice?id=' + id;
                 $.ajax({
                     type: "GET",
                     url: url,
                     dataType: 'json',
-                    beforeSend: function() {
-                        beforeSendSwal = Swal.fire({
-                            // title: "Loading",
-                            html:
-                                '<img src="${assetPath(src: "/themeassets/images/1476.gif")}" width="100" height="100"/>',
-                            showDenyButton: false,
-                            showCancelButton: false,
-                            showConfirmButton: false,
-                            allowOutsideClick: false,
-                            background:'transparent'
-                        });
-                    },
                     success: function (data) {
-                        beforeSendSwal.close();
                         Swal.fire(
                             'Success!',
-                            'Return Cancelled',
+                            'Invoice Cancelled',
                             'success'
                         );
-                        saleInvoiceTable();
+                        sampleInvoiceTable();
                     },
                     error: function () {
                         Swal.fire(
                             'Error!',
-                            'Unable to cancel return at the moment, try later.',
+                            'Unable to cancel invoice at the moment, try later.',
                             'danger'
                         );
                     }
@@ -334,8 +335,9 @@
     }
 
     function invoiceStatusChanged() {
-        saleInvoiceTable();
+        sampleInvoiceTable();
     }
+
 
 </script>
 <g:include view="controls/footer-content.gsp"/>

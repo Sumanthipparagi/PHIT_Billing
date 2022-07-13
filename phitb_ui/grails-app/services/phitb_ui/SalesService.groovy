@@ -1721,7 +1721,33 @@ contains both sale bill and products
             System.err.println('Service :showSalesService , action :  show  , Ex:' + ex)
             log.error('Service :showSalesService , action :  show  , Ex:' + ex)
         }
+    }
 
+    def cancelSampleInvoice(String id, String entityId, String financialYear)
+    {
+        JSONObject jsonObject = new JSONObject()
+        jsonObject.put("id", id)
+        jsonObject.put("entityId", entityId)
+        jsonObject.put("financialYear", financialYear)
+        Client client = ClientBuilder.newClient();
+        WebTarget target = client.target(new Links().API_GATEWAY)
+        try {
+            Response apiResponse = target
+                    .path(new Links().SAMPLE_INVOICE_CANCEL)
+                    .request(MediaType.APPLICATION_JSON_TYPE)
+                    .post(Entity.json(jsonObject))
+            if(apiResponse.status == 200)
+            {
+                JSONObject jsonObject1 = new JSONObject(apiResponse.readEntity(String.class))
+                return jsonObject1
+            }
+            else
+                return null
+        }
+        catch (Exception ex) {
+            System.err.println('Service :SalesService , action :  cancelInvoice  , Ex:' + ex)
+            log.error('Service :SalesService , action :  cancelInvoice  , Ex:' + ex)
+        }
     }
 
 }

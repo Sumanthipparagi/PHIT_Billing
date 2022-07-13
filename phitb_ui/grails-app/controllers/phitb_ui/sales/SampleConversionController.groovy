@@ -3,6 +3,7 @@ package phitb_ui.sales
 import grails.converters.JSON
 import org.grails.web.json.JSONArray
 import org.grails.web.json.JSONObject
+import phitb_ui.EInvoiceService
 import phitb_ui.EntityService
 import phitb_ui.InventoryService
 import phitb_ui.Links
@@ -522,7 +523,9 @@ class SampleConversionController
     {
         try
         {
+            String userId = session.getAttribute("userId")
             JSONObject jsonObject = new JSONObject(params)
+            jsonObject.put("userId", userId)
             def apiResponse = new SalesService().showSampleInvoice(jsonObject)
             if (apiResponse.status == 200)
             {
@@ -549,6 +552,68 @@ class SampleConversionController
         {
             System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
             log.error('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
+            response.status = 400
+        }
+    }
+
+
+    def sampleConversionList()
+    {
+        render(view:'/sales/sampleConversion/sample-invoice-list')
+    }
+
+    def cancelSampleInvoice() {
+        String id = params.id
+        String entityId = session.getAttribute("entityId")
+        String financialYear = session.getAttribute("financialYear")
+        JSONObject jsonObject = new SalesService().cancelSampleInvoice(id, entityId, financialYear)
+        if (jsonObject) {
+            //adjust stocks
+            JSONArray productDetails = jsonObject.get("products")
+            if (productDetails) {
+                for (JSONObject productDetail : productDetails) {
+                    def stockBook = new InventoryService().getStocksOfProductAndBatch(productDetail.productId.toString(), productDetail.batchNumber, session.getAttribute("entityId").toString())
+                    double remainingQty = stockBook.get("remainingQty")
+                    double remainingFreeQty = stockBook.get("remainingFreeQty")
+
+                    //checking to where the stocks to be returned
+                    double originalSqty = productDetail.get("originalSqty")
+                    double originalFqty = productDetail.get("originalFqty")
+                    double sqty = productDetail.get("sqty")
+                    double freeQty = productDetail.get("freeQty")
+
+                    if ((originalSqty + originalFqty) == (sqty + freeQty) && originalSqty == sqty && originalFqty == freeQty) {
+                        remainingQty += sqty
+                        remainingFreeQty += freeQty
+                    } else {
+                        if (originalSqty >= sqty && originalFqty >= freeQty) {
+                            remainingQty += sqty
+                            remainingFreeQty += freeQty
+                        } else {
+                            if (sqty > originalSqty) {
+                                remainingQty = sqty - (sqty - originalSqty)
+                                remainingFreeQty = remainingFreeQty + freeQty + (sqty - originalSqty)
+                            } else if (freeQty > originalFqty) {
+                                remainingQty = remainingQty + sqty + (freeQty - originalFqty)
+                                remainingFreeQty = freeQty - (freeQty - originalFqty)
+                            }
+                        }
+                    }
+
+                    double remainingReplQty = stockBook.get("remainingReplQty") + productDetail.get("repQty")
+                    stockBook.put("remainingQty", remainingQty.toLong())
+                    stockBook.put("remainingFreeQty", remainingFreeQty.toLong())
+                    stockBook.put("remainingReplQty", remainingReplQty.toLong())
+                    new InventoryService().updateStockBook(stockBook)
+                }
+            }
+            JSONObject invoice = jsonObject.get("invoice") as JSONObject
+//            if (invoice.has("irnDetails")) {
+//                JSONObject irnDetails = new JSONObject(invoice.get("irnDetails").toString())
+//                new EInvoiceService().cancelIRN(session, irnDetails.get("Irn").toString(), invoice.get("id").toString())
+//            }
+            respond jsonObject, formats: ['json']
+        } else {
             response.status = 400
         }
     }

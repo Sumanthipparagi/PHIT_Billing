@@ -711,6 +711,9 @@ public class Links
     public static String SAMPLE_INVOICE_SHOW = "api/v1.0/sales/sampleconversion";
     public static String SAMPLE_INVOICE_OF_BILL = "api/v1.0/sales/sampleconversiondetails/bill";
     public static String SAMPLE_INVOICE_DATATABLE = "api/v1.0/sales/sampleconversion/datatable";
+    public static String SAMPLE_INVOICE_CANCEL = "api/v1.0/sales/sampleconversion/cancel";
+
+
 
 
 

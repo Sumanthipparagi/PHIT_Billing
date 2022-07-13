@@ -382,7 +382,7 @@ class SampleConversionService {
         }
     }
 
-    def cancelSaleBill(JSONObject jsonObject)
+    def cancelSampleBill(JSONObject jsonObject)
     {
         String id = jsonObject.get("id")
         String entityId = jsonObject.get("entityId")

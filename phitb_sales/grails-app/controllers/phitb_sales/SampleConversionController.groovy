@@ -377,10 +377,10 @@ class SampleConversionController {
     }
 
 
-    def cancelSampleConversion() {
+    def cancelSampleBill() {
         try {
             JSONObject jsonObject = new JSONObject(request.reader.text)
-            JSONObject saleBillDetails = sampleConversionService.cancelSaleBill(jsonObject)
+            JSONObject saleBillDetails = sampleConversionService.cancelSampleBill(jsonObject)
             respond saleBillDetails
         }
         catch (ResourceNotFoundException ex) {
