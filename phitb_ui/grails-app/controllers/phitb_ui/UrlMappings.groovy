@@ -569,6 +569,7 @@ class UrlMappings {
         "/sample-conversion/sample-invoicing"(controller: 'sampleConversion', action: 'sampleInvoicing')
         "/sample-conversion/save-sample-invoicing"(controller: 'sampleConversion', action: 'saveSampleInvoicing')
         "/sample-conversion/print-invoice"(controller: 'sampleConversion', action: 'printSampleInvoice')
+        "/sample-conversion/sample-invoice-list"(controller: 'sampleConversion')
 
 
         /*<-------------------------------------------Purchase Entry------------------------------------------------->*/

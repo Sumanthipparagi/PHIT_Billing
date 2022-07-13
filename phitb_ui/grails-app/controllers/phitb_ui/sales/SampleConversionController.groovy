@@ -3,7 +3,6 @@ package phitb_ui.sales
 import grails.converters.JSON
 import org.grails.web.json.JSONArray
 import org.grails.web.json.JSONObject
-import phitb_ui.Constants
 import phitb_ui.EntityService
 import phitb_ui.InventoryService
 import phitb_ui.Links
@@ -13,8 +12,6 @@ import phitb_ui.SystemService
 import phitb_ui.UtilsService
 import phitb_ui.entity.EntityRegisterController
 import phitb_ui.entity.SeriesController
-import phitb_ui.entity.TaxController
-import phitb_ui.entity.UserRegisterController
 
 import javax.ws.rs.core.Response
 import java.text.SimpleDateFormat
@@ -515,6 +512,41 @@ class SampleConversionController
         } else {
 
             render("No Bill Found")
+        }
+    }
+
+    def dataTable()
+    {
+        try
+        {
+            JSONObject jsonObject = new JSONObject(params)
+            def apiResponse = new SalesService().showSampleInvoice(jsonObject)
+            if (apiResponse.status == 200)
+            {
+                JSONObject responseObject = new JSONObject(apiResponse.readEntity(String.class))
+                if (responseObject)
+                {
+                    JSONArray jsonArray = responseObject.data
+                     for (JSONObject json : jsonArray) {
+                        JSONObject customer = new EntityService().getEntityById(json.get("customerId").toString())
+                        def city = new SystemService().getCityById(customer?.cityId?.toString())
+                        customer?.put("city", city)
+                        json.put("customer", customer)
+                    }
+                    responseObject.put("data", jsonArray)
+                }
+                respond responseObject, formats: ['json'], status: 200
+            }
+            else
+            {
+                response.status = 400
+            }
+        }
+        catch (Exception ex)
+        {
+            System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
+            log.error('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
+            response.status = 400
         }
     }
 }
