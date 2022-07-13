@@ -70,7 +70,7 @@
         <!-- Inline Layout -->
         <div class="row clearfix">
             <div class="col-lg-12 col-md-12 col-sm-12">
-                <form action="/add-scheme-entry" id="form_validation" method="POST"
+                <form action="/update-scheme-entry/${scheme.id}" id="form_validation" method="POST"
                       role="form" class="schemeRegisterForm" enctype="multipart/form-data">
                     <div class="row clearfix">
                         <div class="col-lg-12 col-md-12 col-sm-12">
@@ -226,6 +226,7 @@
                                                     </label>
                                                     <input type="number" id="slab1MinQty"
                                                            class="form-control slab1MinQty"
+                                                           onblur="setTwoNumberDecimal"
                                                            name="slab1MinQty" placeholder="Slab 1 Min Quantity" value="${scheme.slab1MinQty}" required/>
                                                 </div>
 
@@ -234,6 +235,7 @@
                                                         Slab 1 Scheme Quantity
                                                     </label>
                                                     <input type="number" id="slab1SchemeQty"
+                                                           onblur="setTwoNumberDecimal"
                                                            class="form-control slab1SchemeQty" value="${scheme.slab1SchemeQty}"
                                                            name="slab1SchemeQty" placeholder="Slab 1 Scheme Quantity"
                                                            required/>
@@ -283,6 +285,7 @@
                                                     </label>
                                                     <input type="number" id="slab2MinQty"
                                                            class="form-control slab2MinQty" value="${scheme.slab2MinQty}"
+                                                           onblur="setTwoNumberDecimal"
                                                            name="slab2MinQty" placeholder="Slab 2 Min Quantity"/>
                                                 </div>
 
@@ -292,6 +295,7 @@
                                                     </label>
                                                     <input type="number" id="slab2SchemeQty"
                                                            class="form-control slab2SchemeQty" value="${scheme.slab2SchemeQty}"
+                                                           onblur="setTwoNumberDecimal"
                                                            name="slab2SchemeQty" placeholder="Slab 2 Scheme Quantity"/>
                                                 </div>
 
@@ -301,6 +305,7 @@
                                                     </label>
                                                     <input type="text" id="slab2BulkStatus"
                                                            class="form-control slab2BulkStatus" value="${scheme.slab2BulkStatus}"
+
                                                            name="slab2BulkStatus" placeholder="Slab 2 Bulk Status"/>
                                                 </div>
 
@@ -338,6 +343,7 @@
                                                     </label>
                                                     <input type="number" id="slab3MinQty"
                                                            class="form-control slab3MinQty" value="${scheme.slab3MinQty}"
+                                                           onblur="setTwoNumberDecimal"
                                                            name="slab3MinQty" placeholder="Slab 3 Min Quantity"/>
                                                 </div>
 
@@ -346,7 +352,7 @@
                                                         Slab 3 Scheme Quantity
                                                     </label>
                                                     <input type="number" id="slab3SchemeQty"
-                                                           class="form-control slab3SchemeQty" value="${scheme.slab3SchemeQty}"
+                                                           class="form-control slab3SchemeQty" value="${scheme.slab3SchemeQty}" onblur="setTwoNumberDecimal"
                                                            name="slab3SchemeQty" placeholder="Slab 3 Scheme Quantity"/>
                                                 </div>
 
@@ -678,6 +684,11 @@ test="${s.id == scheme.stateIds}">selected</g:if>\n>${s.name}</option>\n" +
 
         });
     }
+
+    function setTwoNumberDecimal(event) {
+        this.value = parseFloat(this.value.toFixed(2));
+    }
+
 </script>
 <g:include view="controls/footer-content.gsp"/>
 <script>

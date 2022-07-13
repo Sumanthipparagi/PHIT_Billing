@@ -7,7 +7,7 @@ class SchemeConfiguration implements Serializable, LogicalDelete<SchemeConfigura
     String zoneIds
     String stateIds
     String cityIds
-    long hqAreaId
+    Long hqAreaId
     String customerIds
     String distributorId
     long productId

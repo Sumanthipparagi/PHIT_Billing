@@ -226,6 +226,7 @@
                                                     </label>
                                                     <input type="number" id="slab1MinQty"
                                                            class="form-control slab1MinQty"
+                                                           onblur="setTwoNumberDecimal" value="0.00"
                                                            name="slab1MinQty" placeholder="Slab 1 Min Quantity"
                                                            required/>
                                                 </div>
@@ -236,6 +237,7 @@
                                                     </label>
                                                     <input type="number" id="slab1SchemeQty"
                                                            class="form-control slab1SchemeQty"
+                                                           onblur="setTwoNumberDecimal" value="0.00"
                                                            name="slab1SchemeQty" placeholder="Slab 1 Scheme Quantity"
                                                            required/>
                                                 </div>
@@ -284,6 +286,7 @@
                                                     </label>
                                                     <input type="number" id="slab2MinQty"
                                                            class="form-control slab2MinQty"
+                                                           onblur="setTwoNumberDecimal" value="0.00"
                                                            name="slab2MinQty" placeholder="Slab 2 Min Quantity"/>
                                                 </div>
 
@@ -293,6 +296,7 @@
                                                     </label>
                                                     <input type="number" id="slab2SchemeQty"
                                                            class="form-control slab2SchemeQty"
+                                                           onblur="setTwoNumberDecimal" value="0.00"
                                                            name="slab2SchemeQty" placeholder="Slab 2 Scheme Quantity"/>
                                                 </div>
 
@@ -338,6 +342,7 @@
                                                     </label>
                                                     <input type="number" id="slab3MinQty"
                                                            class="form-control slab3MinQty"
+                                                           onblur="setTwoNumberDecimal" value="0.00"
                                                            name="slab3MinQty" placeholder="Slab 3 Min Quantity"/>
                                                 </div>
 
@@ -347,6 +352,7 @@
                                                     </label>
                                                     <input type="number" id="slab3SchemeQty"
                                                            class="form-control slab3SchemeQty"
+                                                           onblur="setTwoNumberDecimal" value="0.00"
                                                            name="slab3SchemeQty" placeholder="Slab 3 Scheme Quantity"/>
                                                 </div>
 
@@ -667,6 +673,10 @@
             }
 
         });
+    }
+
+    function setTwoNumberDecimal(event) {
+        this.value = parseFloat(this.value.toFixed(2));
     }
 </script>
 <g:include view="controls/footer-content.gsp"/>
