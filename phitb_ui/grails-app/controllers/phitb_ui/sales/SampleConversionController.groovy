@@ -439,7 +439,6 @@ class SampleConversionController
                     }
                 }
             }
-            println(termsConditions)
             sampleProductDetails.each {
                 def batchResponse = new ProductService().getBatchesOfProduct(it.productId.toString())
                 JSONArray batchArray = JSON.parse(batchResponse.readEntity(String.class)) as JSONArray
@@ -499,19 +498,19 @@ class SampleConversionController
             if (sampleInvDetail.has("irnDetails") && sampleInvDetail.get("irnDetails") != null)
                 irnDetails = new JSONObject(sampleInvDetail.get("irnDetails").toString())
 
-            render(view: "/sales/saleEntry/sale-invoice", model: [saleBillDetail    : sampleInvDetail,
-                                                                  saleProductDetails: sampleProductDetails,
-                                                                  series            : series, entity: entity, customer: customer, city: city,
-                                                                  total             : total, custcity: custcity,
-                                                                  termsConditions   : termsConditions,
-                                                                  totalcgst         : totalcgst, totalsgst: totalsgst, totaligst: totaligst,
-                                                                  totaldiscount     : totaldiscount,
-                                                                  gstGroup          : gstGroup,
-                                                                  sgstGroup         : sgstGroup,
-                                                                  cgstGroup         : cgstGroup,
-                                                                  igstGroup         : igstGroup,
-                                                                  totalBeforeTaxes  : totalBeforeTaxes,
-                                                                  irnDetails        : irnDetails
+            render(view: "/sales/sampleConversion/sample-invoice-print", model: [sampleBillDetail    : sampleInvDetail,
+                                                                                 sampleProductDetails: sampleProductDetails,
+                                                                                 series              : series, entity: entity, customer: customer, city: city,
+                                                                                 total               : total, custcity: custcity,
+                                                                                 termsConditions     : termsConditions,
+                                                                                 totalcgst           : totalcgst, totalsgst: totalsgst, totaligst: totaligst,
+                                                                                 totaldiscount       : totaldiscount,
+                                                                                 gstGroup            : gstGroup,
+                                                                                 sgstGroup           : sgstGroup,
+                                                                                 cgstGroup           : cgstGroup,
+                                                                                 igstGroup           : igstGroup,
+                                                                                 totalBeforeTaxes    : totalBeforeTaxes,
+                                                                                 irnDetails        : irnDetails
             ])
         } else {
 

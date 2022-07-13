@@ -276,11 +276,24 @@ class GoodsTransferNoteController
 //                String tempStockRowId = sale.get("15")
 //                def tmpStockBook = new InventoryService().getTempStocksById(Long.parseLong(tempStockRowId))
                 def stockBook = new InventoryService().getStocksOfProductAndBatch(sale.get("1").toString(), sale.get("2").toString(),session.getAttribute('entityId').toString())
+                long saleQty =  Long.parseLong(sale.get("4").toString())
+                long saleFreeQty =  Long.parseLong(sale.get("5").toString())
+                long remainingQty = Long.parseLong(stockBook.get("remainingQty").toString())
+                long  remainingFreeQty = Long.parseLong(stockBook.get("remainingFreeQty").toString())
 
-                long remainingQty = Long.parseLong(stockBook.get("remainingQty").toString()) - Long.parseLong(sale.get("4").toString())
-                long  remainingFreeQty = Long.parseLong(stockBook.get("remainingFreeQty").toString()) - Long.parseLong(sale.get("5").toString())
+                if (saleQty <= remainingQty) {
+                    remainingQty = remainingQty - saleQty
 
-
+                } else if (saleQty > remainingQty && saleQty <= (remainingQty + remainingFreeQty)) {
+                    remainingFreeQty = remainingFreeQty - (saleQty - remainingQty)
+                    remainingQty = 0
+                }
+                if (saleFreeQty <= remainingFreeQty) {
+                    remainingFreeQty = remainingFreeQty - saleFreeQty
+                } else if (saleFreeQty > remainingFreeQty && saleFreeQty <= (remainingQty + remainingFreeQty)) {
+                    remainingQty = remainingQty - (saleFreeQty - remainingFreeQty)
+                    remainingFreeQty = 0
+                }
                 stockBook.put("remainingQty", remainingQty)
                 stockBook.put("remainingFreeQty", remainingFreeQty)
                 stockBook.put("remainingReplQty", stockBook.get("remainingReplQty"))
