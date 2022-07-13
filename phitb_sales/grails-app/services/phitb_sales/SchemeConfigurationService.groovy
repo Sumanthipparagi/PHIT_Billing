@@ -239,7 +239,6 @@ class SchemeConfigurationService {
             schemeConfiguration.specialRateValidFrom = sdf.parse(jsonObject.get("specialRateValidFrom").toString())
             schemeConfiguration.specialRateValidTo = sdf.parse(jsonObject.get("specialRateValidTo").toString())
             schemeConfiguration.schemeStatus = jsonObject.get("schemeStatus").toString()
-            schemeConfiguration.hqAreaId = Long.parseLong(jsonObject.get("hqarea").toString())
             schemeConfiguration.syncStatus = Long.parseLong(jsonObject.get("syncStatus").toString())
             schemeConfiguration.entityTypeId = Long.parseLong(jsonObject.get("entityTypeId").toString())
             schemeConfiguration.entityId = Long.parseLong(jsonObject.get("entityId").toString())
