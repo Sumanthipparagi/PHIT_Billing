@@ -568,6 +568,8 @@ class UrlMappings {
         "/sample-conversion"(controller: 'sampleConversion', action: 'sampleConversion')
         "/sample-conversion/sample-invoicing"(controller: 'sampleConversion', action: 'sampleInvoicing')
 
+        "/sample-conversion/save-sample-invoicing"(controller: 'sampleConversion', action: 'saveSampleInvoicing')
+
         /*<-------------------------------------------Purchase Entry------------------------------------------------->*/
 
 

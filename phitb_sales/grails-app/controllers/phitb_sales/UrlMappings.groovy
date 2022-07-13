@@ -137,9 +137,10 @@ class UrlMappings {
 
             //      Sample Conversion
             "/sampleconversion(.$format)?"(controller: 'sampleConversion') {
-                action = [GET: 'index', POST:
-                        'save']
+                action = [GET: 'index', POST: 'save']
             }
+
+            "/sampleconversion/getrecent"(controller: 'sampleConversion', action: 'getRecentByFinancialYearAndEntity')
 
             "/sampleconversion/datatable(.$format)?"(controller: 'sampleConversion') {action = [GET: 'dataTable']}
             "/sampleconversion/cancel(.$format)?"(controller: 'sampleConversion') {action = [POST: 'cancelSaleBill']}
@@ -147,6 +148,7 @@ class UrlMappings {
                 action = [GET: 'show', PUT: 'update', DELETE:
                         'delete']
             }
+            "/sampleconversion/save-invoice"(controller: 'sampleConversion', action: 'saveInvoice')
             "/sampleconversionbydays/$days(.$format)?"(controller: 'sampleConversion') {
                 action = [GET: 'getAllByDays']
             }

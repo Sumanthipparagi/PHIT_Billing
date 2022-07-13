@@ -1,7 +1,6 @@
 package phitb_sales
 
 
-import grails.rest.*
 import grails.converters.*
 import grails.web.servlet.mvc.GrailsParameterMap
 import org.grails.web.json.JSONArray
@@ -14,8 +13,8 @@ class SampleConversionController {
 
     static allowedMethods = [index: "GET", show: "GET", save: "POST", update: "PUT", delete: "DELETE",
                              dataTable: "GET", updateIRNDetails: "PUT", saveInvoice: "POST", updateInvoice: "PUT", getByDateRangeAndEntity: "POST"]
-    SaleBillDetailsService saleBillDetailsService
-    SaleProductDetailsService saleProductDetailsService
+    SampleConversionService sampleConversionService
+    SampleConversionDetailsService sampleConversionDetailsService
     /**
      * Gets all Sale Bill Details
      * @param query
@@ -26,7 +25,7 @@ class SampleConversionController {
     def index() {
 
         try {
-            respond saleBillDetailsService.getAll()
+            respond sampleConversionService.getAll()
         }
         catch (Exception ex) {
             System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
@@ -42,7 +41,7 @@ class SampleConversionController {
         try {
             String id = params.id
             if (id) {
-                respond saleBillDetailsService.get(id)
+                respond sampleConversionService.get(id)
             }
         }
         catch (ResourceNotFoundException ex) {
@@ -63,7 +62,7 @@ class SampleConversionController {
         try {
             String id = params.id
             if (id) {
-                respond saleBillDetailsService.getDraftBillById(id)
+                respond sampleConversionService.getDraftBillById(id)
             }
         }
         catch (ResourceNotFoundException ex) {
@@ -88,7 +87,7 @@ class SampleConversionController {
         try {
             String days = params.days
             if (days) {
-                respond saleBillDetailsService.getAllByNoOfDays(params.limit, params.offset, days)
+                respond sampleConversionService.getAllByNoOfDays(params.limit, params.offset, days)
             }
         }
         catch (ResourceNotFoundException ex) {
@@ -115,7 +114,7 @@ class SampleConversionController {
             String customerId = params.id
             String entityId = params.entityId
             String financialYear = params.financialYear
-            respond saleBillDetailsService.getAllUnsettledByCustId(customerId, entityId, financialYear)
+            respond sampleConversionService.getAllUnsettledByCustId(customerId, entityId, financialYear)
         }
         catch (ResourceNotFoundException ex) {
             System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
@@ -141,7 +140,7 @@ class SampleConversionController {
             String customerId = params.id
             String entityId = params.entityId
             String financialYear = params.financialYear
-            respond saleBillDetailsService.getAllsettledByCustId(customerId, entityId, financialYear)
+            respond sampleConversionService.getAllsettledByCustId(customerId, entityId, financialYear)
         }
         catch (ResourceNotFoundException ex) {
             System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
@@ -165,7 +164,7 @@ class SampleConversionController {
     def save() {
         try {
             JSONObject jsonObject = JSON.parse(request.reader.text) as JSONObject
-            respond saleBillDetailsService.save(jsonObject)
+            respond sampleConversionService.save(jsonObject)
         }
         catch (ResourceNotFoundException ex) {
             System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
@@ -190,7 +189,7 @@ class SampleConversionController {
         try {
             String id = params.id
             JSONObject jsonObject = JSON.parse(request.reader.text) as JSONObject
-            respond saleBillDetailsService.update(jsonObject, id)
+            respond sampleConversionService.update(jsonObject, id)
         }
         catch (ResourceNotFoundException ex) {
             System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
@@ -213,7 +212,7 @@ class SampleConversionController {
     def delete() {
         try {
             String id = params.id
-            saleBillDetailsService.delete(id)
+            sampleConversionService.delete(id)
             response.status = 200
         }
         catch (ResourceNotFoundException ex) {
@@ -239,7 +238,7 @@ class SampleConversionController {
             JSONObject paramsJsonObject = new JSONObject(parameterMap.params)
             String start = paramsJsonObject.get("start")
             String length = paramsJsonObject.get("length")
-            def saleBillDetails = saleBillDetailsService.dataTables(paramsJsonObject, start, length)
+            def saleBillDetails = sampleConversionService.dataTables(paramsJsonObject, start, length)
             respond saleBillDetails
         }
         catch (ResourceNotFoundException ex) {
@@ -345,7 +344,7 @@ class SampleConversionController {
             String financialYear = params.financialYear
             String entityId = params.entityId
             String billStatus = params.billStatus
-            respond saleBillDetailsService.getRecentByFinancialYearAndEntity(financialYear, entityId, billStatus)
+            respond sampleConversionService.getRecentByFinancialYearAndEntity(financialYear, entityId, billStatus)
         }
         catch (ResourceNotFoundException ex) {
             System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
@@ -370,7 +369,7 @@ class SampleConversionController {
      */
     def getAllByCustomerId() {
         try {
-            respond saleBillDetailsService.getAllByCustomerId(params.id, params.financialYear, params.entityId)
+            respond sampleConversionService.getAllByCustomerId(params.id, params.financialYear, params.entityId)
         }
         catch (Exception ex) {
             System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
@@ -381,7 +380,7 @@ class SampleConversionController {
     def cancelSampleConversion() {
         try {
             JSONObject jsonObject = new JSONObject(request.reader.text)
-            JSONObject saleBillDetails = saleBillDetailsService.cancelSaleBill(jsonObject)
+            JSONObject saleBillDetails = sampleConversionService.cancelSaleBill(jsonObject)
             respond saleBillDetails
         }
         catch (ResourceNotFoundException ex) {
@@ -401,7 +400,7 @@ class SampleConversionController {
     def updateIRNDetails() {
         try {
             JSONObject jsonObject = new JSONObject(request.reader.text)
-            SaleBillDetails saleBillDetails = saleBillDetailsService.updateIRNDetails(jsonObject)
+            SaleBillDetails saleBillDetails = sampleConversionService.updateIRNDetails(jsonObject)
             respond saleBillDetails
         }
         catch (ResourceNotFoundException ex) {
@@ -426,21 +425,21 @@ class SampleConversionController {
     def saveInvoice() {
         try {
             JSONObject jsonObject = JSON.parse(request.reader.text) as JSONObject
-            SaleBillDetails saleBillDetails = saleBillDetailsService.save(jsonObject.get("saleInvoice"))
-            if(saleBillDetails) {
+            SampleConversion sampleConversion = sampleConversionService.save(jsonObject.get("sampleInvoice"))
+            if(sampleConversion) {
                 UUID uuid
-                JSONArray saleProducts = jsonObject.get("saleProducts")
-                for (JSONObject product : saleProducts) {
+                JSONArray sampleInvoicingProducts = jsonObject.get("sampleInvoicingProducts")
+                for (JSONObject product : sampleInvoicingProducts) {
                     uuid = UUID.randomUUID()
                     product.put("uuid", uuid)
-                    product.put("billId", saleBillDetails.id)
+                    product.put("billId", sampleConversion.id)
                     product.put("billType", 0) //0 Sale, 1 Purchase
-                    product.put("serBillId", saleBillDetails.serBillId)
-                    saleProductDetailsService.save(product)
+                    product.put("serBillId", sampleConversion.serBillId)
+                    sampleConversionDetailsService.save(product)
                     println("product saved")
                 }
             }
-            respond saleBillDetails
+            respond sampleConversion
         }
         catch (ResourceNotFoundException ex) {
             System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
@@ -465,25 +464,25 @@ class SampleConversionController {
         try {
             String id = params.id
             JSONObject jsonObject = JSON.parse(request.reader.text) as JSONObject
-            SaleBillDetails saleBillDetails = saleBillDetailsService.update(jsonObject.get("saleInvoice"), id)
-            if(saleBillDetails) {
+            SampleConversion sampleConversion = sampleConversionService.update(jsonObject.get("sampleInvoice"), id)
+            if(sampleConversion) {
                 UUID uuid
-                JSONArray saleProducts = jsonObject.get("saleProducts")
+                JSONArray saleProducts = jsonObject.get("sampleInvoicingProducts")
                 for (JSONObject product : saleProducts) {
                     uuid = UUID.randomUUID()
                     product.put("uuid", uuid)
-                    product.put("billId", saleBillDetails.id)
+                    product.put("billId", sampleConversion.id)
                     product.put("billType", 0) //0 Sale, 1 Purchase
-                    product.put("serBillId", saleBillDetails.serBillId)
+                    product.put("serBillId", sampleConversion.serBillId)
                     String productId = product.get("id").toString()
                     if(!productId.equalsIgnoreCase("0"))
-                        saleProductDetailsService.update(product, productId)
+                        sampleConversionDetailsService.update(product, productId)
                     else
-                        saleProductDetailsService.save(product)
+                        sampleConversionDetailsService.save(product)
                     println("product saved")
                 }
             }
-            respond saleBillDetails
+            respond sampleConversion
         }
         catch (ResourceNotFoundException ex) {
             System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
@@ -505,7 +504,7 @@ class SampleConversionController {
             String dateRange = jsonObject.get("dateRange")
             String entityId = jsonObject.get("entityId")
             if (dateRange && entityId) {
-                JSONArray saleBillDetails = saleBillDetailsService.getByDateRangeAndEntity(dateRange, entityId)
+                JSONArray saleBillDetails = sampleConversionService.getByDateRangeAndEntity(dateRange, entityId)
                 respond saleBillDetails, formats: ['json']
             }
             else
