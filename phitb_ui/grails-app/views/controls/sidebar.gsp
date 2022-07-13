@@ -423,7 +423,7 @@
                         </g:if>
 %{--                        <li><a href="/sample-conversion">Sample Conversion</a></li>--}%
 
-                        <li><a href="javascript:void(0);" class="menu-toggle">Sales Conversion</span> <span
+                        <li><a href="javascript:void(0);" class="menu-toggle">Sample Conversion</span> <span
                                 class="badge badge-success float-right"></span></a>
                             <ul class="ml-menu">
                                 <li><a href="/sample-conversion">Sample Conversion</a></li>
@@ -431,8 +431,6 @@
                                 <li><a href="/sample-conversion/sample-invoice-list">Sample Invoice List</a></li>
                             </ul>
                         </li>
-
-
                     </ul>
                 </li>
 
