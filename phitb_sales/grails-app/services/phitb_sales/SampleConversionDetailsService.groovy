@@ -227,7 +227,7 @@ class SampleConversionDetailsService {
         }
     }
 
-    def getBySaleBill(String id)
+    def getByBillId(String id)
     {
         if (id)
         {

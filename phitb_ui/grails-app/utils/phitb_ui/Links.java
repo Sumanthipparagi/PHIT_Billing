@@ -707,5 +707,9 @@ public class Links
 //    Sample invoicing
     public static String SAMPLE_INVOICE_SAVE = "api/v1.0/sales//sampleconversion/save-invoice";
     public static String SAMPLE_INVOICE_RECENT = "api/v1.0/sales/sampleconversion/getrecent";
+    public static String SAMPLE_INVOICE_SHOW = "api/v1.0/sales/sampleconversion";
+    public static String SAMPLE_INVOICE_OF_BILL = "api/v1.0/sales/sampleconversiondetails/bill";
+
+
 
 }

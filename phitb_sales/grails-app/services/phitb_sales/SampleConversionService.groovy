@@ -203,7 +203,7 @@ class SampleConversionService {
             }
             else
             {
-                invoiceNumber = sampleConversion.entityId + "S" + month + year + seriesCode + sampleConversion.serBillId
+                invoiceNumber = sampleConversion.entityId + "SI" + month + year + seriesCode + sampleConversion.serBillId
                 println("Invoice Number generated: " + invoiceNumber)
             }
             if (invoiceNumber)

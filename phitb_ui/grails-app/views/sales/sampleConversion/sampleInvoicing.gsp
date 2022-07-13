@@ -945,7 +945,7 @@
             alert("Can't change this now, invoice has been saved already.")
     }
 
-    var gtnId = 0;
+    var sampleInvoiceDetail = 0;
 
     function saveGTN(billStatus) {
         $("#saveBtn").prop("disabled", true);
@@ -1006,24 +1006,25 @@
                         hot.setCellMeta(j, i, 'readOnly', true);
                     }
                 }
-                gtnId = data.gtn.id;
-                var datepart = data.gtn.entryDate.split("T")[0];
+                sampleInvoiceDetail = data.sampleInvoiceDetail.id;
+                var datepart = data.sampleInvoiceDetail.entryDate.split("T")[0];
                 var month = datepart.split("-")[1];
                 var year = datepart.split("-")[0];
                 var seriesCode = data.series.seriesCode;
-                var invoiceNumber = data.gtn.invoiceNumber;
+                var invoiceNumber = data.sampleInvoiceDetail.invoiceNumber;
                 $("#invNo").html("<p><strong>" + invoiceNumber + "</strong></p>");
                 var message = "";
                 var draftInvNo ="";
                 if(billStatus === "DRAFT"){
-                    draftInvNo = '<p><strong>' + data.gtn.entityId + "/DR/GTN/" + month + year + "/"
+                    draftInvNo = '<p><strong>' + data.sampleInvoiceDetail.entityId + "/DR/SI/" + month + year + "/"
                         + seriesCode + "/__"+'<p><strong>';
                     $("#invNo").html(draftInvNo);
                 }
                 if (billStatus !== "DRAFT") {
                     message = 'Sample invoice Generated: ' + invoiceNumber;
                 } else {
-                    message = 'Sample invoice GTN Generated: ' + data.gtn.entityId + "/DR/GTN/" + month + year + "/"
+                    message = 'Sample invoice  Generated: ' + data.sampleInvoiceDetail.entityId + "/DR/SI/" + month
+                        + year + "/"
                         + seriesCode + "/__";
                 }
                 waitingSwal.close();
@@ -1062,7 +1063,7 @@
     function printInvoice() {
         if (readOnly) {
             window.open(
-                '/grn/print-grn?id=' + gtnId,
+                '/sample-conversion/print-invoice?id=' + sampleInvoiceDetail,
                 '_blank'
             );
             resetData();

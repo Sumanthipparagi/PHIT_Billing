@@ -1646,4 +1646,61 @@ contains both sale bill and products
 
     }
 
+
+    def getSampleBillDetailsById(String id)
+    {
+        Client client = ClientBuilder.newClient();
+        WebTarget target = client.target(new Links().API_GATEWAY);
+        try
+        {
+            Response apiResponse = target
+                    .path(new Links().SAMPLE_INVOICE_SHOW + "/" + id)
+                    .request(MediaType.APPLICATION_JSON_TYPE)
+                    .get()
+            if (apiResponse.status == 200)
+            {
+                JSONObject sampleInvoiceDetail = new JSONObject(apiResponse.readEntity(String.class))
+                return sampleInvoiceDetail
+            }
+            else
+            {
+                return null
+            }
+        }
+        catch (Exception ex)
+        {
+            System.err.println('Service :SalesService , action :  getProducts  , Ex:' + ex)
+            log.error('Service :SalesService , action :  getProducts  , Ex:' + ex)
+        }
+    }
+
+
+    def getSampleProductDetailsByBill(String id)
+    {
+        Client client = ClientBuilder.newClient();
+        WebTarget target = client.target(new Links().API_GATEWAY);
+        try
+        {
+            Response apiResponse = target
+                    .path(new Links().SAMPLE_INVOICE_OF_BILL+"/"+id)
+                    .request(MediaType.APPLICATION_JSON_TYPE)
+                    .get()
+            if (apiResponse.status == 200)
+            {
+                JSONArray sampleProductDetail = new JSONArray(apiResponse.readEntity(String.class))
+                return sampleProductDetail
+            }
+            else
+            {
+                return null
+            }
+        }
+        catch (Exception ex)
+        {
+            System.err.println('Service :SalesService , action :  getProducts  , Ex:' + ex)
+            log.error('Service :SalesService , action :  getProducts  , Ex:' + ex)
+        }
+
+    }
+
 }

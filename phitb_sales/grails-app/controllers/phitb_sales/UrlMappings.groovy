@@ -313,6 +313,9 @@ class UrlMappings {
             "/saletransportationdetailsbydays/$days(.$format)?"(controller: 'saleTransportationDetails') {
                 action = [GET: 'getAllByDays']
             }
+
+
+
             //Sample Conversion Details
             "/sampleconversiondetails(.$format)?"(controller:'sampleConversionDetails') {
                 action = [GET: 'index', POST: 'save']
@@ -324,6 +327,9 @@ class UrlMappings {
             }
             "/sampleconversiondetailsbydays/$days(.$format)?"(controller: 'sampleConversionDetails') {
                 action = [GET: 'getAllByDays']
+            }
+            "/sampleconversiondetails/bill/$id(.$format)?"(controller: 'sampleConversionDetails') {
+                action = [GET: 'getSampleConversionDetailsByBillId']
             }
 
             //Scheme Configuration

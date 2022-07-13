@@ -1,7 +1,6 @@
 package phitb_sales
 
 
-import grails.rest.*
 import grails.converters.*
 import grails.web.servlet.mvc.GrailsParameterMap
 import org.grails.web.json.JSONArray
@@ -247,12 +246,12 @@ class SampleConversionDetailsController {
         }
     }
 
-    def getSampleConversionDetailsOfSaleBill()
+    def getSampleConversionDetailsByBillId()
     {
         try
         {
             String id = params.id
-            respond sampleConversionDetailsService.getBySaleBill(id)
+            respond sampleConversionDetailsService.getByBillId(id)
         }
         catch (ResourceNotFoundException ex)
         {
