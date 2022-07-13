@@ -384,6 +384,13 @@
                             return;
                         }
 
+                        if(Number(sampleQty) === 0)
+                        {
+                            alert("Sample quantity should not be greater");
+                            waitingSwal.close();
+                            return;
+                        }
+
                         $.ajax({
                             type: "POST",
                             url: "/sample-conversion/save",
