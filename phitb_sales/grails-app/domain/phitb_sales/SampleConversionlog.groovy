@@ -8,6 +8,9 @@ class SampleConversionlog {
     long sampleProductId
     String sampleBatch
     long sampleQty
+    long entityId
+    long entityTypeId
+    long userId
 
     Date dateCreated
     Date lastUpdated
