@@ -752,7 +752,7 @@
 
 
     function setTwoNumberDecimal(event) {
-        this.value = parseFloat(this.value.toFixed(2));
+        this.value = parseFloat(this.value);
     }
 </script>
 <g:include view="controls/footer-content.gsp"/>

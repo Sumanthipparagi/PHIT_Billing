@@ -472,6 +472,7 @@
                                                            placeholder="Special Rate Valid to"/>
                                                 </div>
                                                 <input type="hidden" name="status" value="1">
+                                                <input type="hidden" name="distributorId" value="0">
                                                 <input type="hidden" name="entityId" value="${session.getAttribute('entityId')}">
                                                 <input type="hidden" name="entityTypeId" value="${session.getAttribute('entityTypeId')}">
                                                 <input type="hidden" name="schemeStatus" value="1">
@@ -546,6 +547,10 @@
             weekStart: 1
         });
 
+        if(${scheme.productId!=null})
+        {
+            getBatches(${scheme.productId});
+        }
 
         $('.selectors').removeClass('col-lg-6')
         var selectors = "";
@@ -644,6 +649,7 @@
         $('#state').val('${scheme.stateIds}').select2();
         $('.hqarea').val('${scheme.hqAreaId}').select2();
 
+
         $('#cityId').select2({
             ajax: {
                 url: '/city/get',
@@ -666,6 +672,8 @@
         });
         $('#productId').val('${scheme.productId}').select2();
         $('#customer').val('${scheme.customerIds}').select2();
+        $('.batch').val('${scheme.batch}').change();
+
         // $('#distributor').select2()
 
         // $('#batch').select2()
@@ -727,7 +735,7 @@
                 // swal('success','User updated Successfully',data);
                 swal({
                         title: "Success!",
-                        text: "Created Successfully! ",
+                        text: "Updated Successfully! ",
                         type: "success"
                     },
                     function(){
@@ -799,7 +807,7 @@
     }
 
     function setTwoNumberDecimal(event) {
-        this.value = parseFloat(this.value.toFixed(2));
+        this.value = parseFloat(this.value);
     }
 </script>
 <g:include view="controls/footer-content.gsp"/>
