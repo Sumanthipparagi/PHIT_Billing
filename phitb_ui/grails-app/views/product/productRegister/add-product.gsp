@@ -397,15 +397,15 @@
                                                     <option value="${Constants.PROMOTIONAL}">PROMOTIONAL</option>
                                             </select>
                                         </div>
-                                        <div class="col-lg-6 form-group  form-float">
-                                            <label for="thresholdLevel">
-                                                Threshold Level
-                                            </label>
-                                            <input type="text" id="thresholdLevel"
-                                                   class="form-control thresholdLevel" name="thresholdLevel"
-                                                   placeholder="Threshold Level"
-                                                   />
-                                        </div>
+%{--                                        <div class="col-lg-6 form-group  form-float">--}%
+%{--                                            <label for="thresholdLevel">--}%
+%{--                                                Threshold Level--}%
+%{--                                            </label>--}%
+%{--                                            <input type="text" id="thresholdLevel"--}%
+%{--                                                   class="form-control thresholdLevel" name="thresholdLevel"--}%
+%{--                                                   placeholder="Threshold Level"--}%
+%{--                                                   />--}%
+%{--                                        </div>--}%
                                         <div class="col-lg-6 form-group  form-float">
                                             <label for="orderQuantity">
                                                 Order Quantity
@@ -448,15 +448,15 @@
                                                 </g:each>
                                             </select>
                                         </div>
-                                        <div class="col-lg-6 form-group  form-float">
-                                            <label for="sendMail">
-                                                Send Mail
-                                            </label>
-                                            <select class="form-control show-tick sendMail" name="sendMail" id="sendMail">
-                                                    <option value="0">YES</option>
-                                                    <option value="1">NO</option>
-                                            </select>
-                                        </div>
+%{--                                        <div class="col-lg-6 form-group  form-float">--}%
+%{--                                            <label for="sendMail">--}%
+%{--                                                Send Mail--}%
+%{--                                            </label>--}%
+%{--                                            <select class="form-control show-tick sendMail" name="sendMail" id="sendMail">--}%
+%{--                                                    <option value="0">YES</option>--}%
+%{--                                                    <option value="1">NO</option>--}%
+%{--                                            </select>--}%
+%{--                                        </div>--}%
                                         <div class="col-lg-6 form-group  form-float">
                                             <label for="discountAllowed">
                                                 Discount Allowed
@@ -518,15 +518,15 @@
                                                    placeholder="Narration"
                                                    required></textarea>
                                         </div>
-                                        <div class="col-lg-6 form-group  form-float">
-                                            <label for="restrictedAssignment">
-                                                Restricted Assignment
-                                            </label>
-                                            <input type="text" id="restrictedAssignment"
-                                                   class="form-control restrictedAssignment" name="restrictedAssignment"
-                                                   placeholder="Restricted Assignment"
-                                                   required/>
-                                        </div>
+%{--                                        <div class="col-lg-6 form-group  form-float">--}%
+%{--                                            <label for="restrictedAssignment">--}%
+%{--                                                Restricted Assignment--}%
+%{--                                            </label>--}%
+%{--                                            <input type="text" id="restrictedAssignment"--}%
+%{--                                                   class="form-control restrictedAssignment" name="restrictedAssignment"--}%
+%{--                                                   placeholder="Restricted Assignment"--}%
+%{--                                                   required/>--}%
+%{--                                        </div>--}%
                                        %{-- <div class="col-lg-6 form-group  form-float">
                                             <label for="entityType">
                                                 Entity Type
