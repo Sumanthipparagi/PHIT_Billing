@@ -495,10 +495,10 @@
                                             <label for="saleMarginPercent">
                                                 Sale Margin Percent
                                             </label>
-                                            <input type="number" id="saleMarginPercent"
+                                            <input type="number" id="saleMarginPercent" onblur="setTwoNumberDecimal()"
                                                    class="form-control saleMarginPercent" name="saleMarginPercent"
-                                                   placeholder="Sale Margin Percent"
-                                                   required/>
+                                                   placeholder="Sale Margin Percent" value="0.00" step="0.25"
+                                                   />
                                         </div>
                                        %{-- <div class="col-lg-6 form-group  form-float">
                                             <label for="soundexCode">
@@ -516,7 +516,7 @@
                                             <textarea type="text" id="narration"
                                                    class="form-control narration" name="narration"
                                                    placeholder="Narration"
-                                                   required></textarea>
+                                                   ></textarea>
                                         </div>
 %{--                                        <div class="col-lg-6 form-group  form-float">--}%
 %{--                                            <label for="restrictedAssignment">--}%
