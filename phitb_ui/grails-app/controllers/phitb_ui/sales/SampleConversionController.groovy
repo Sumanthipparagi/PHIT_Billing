@@ -59,7 +59,15 @@ class SampleConversionController
             def saleableStock = new InventoryService().getStocksOfProductAndBatch(params.saleableProduct, params.saleableBatch, entityId)
             if(saleableStock)
             {
-                long saleableQty = Long.parseLong(saleableStock.remainingQty.toString()) - Long.parseLong(params.sampleQty.toString())
+                long saleableQty
+                if(saleableStock?.remainingQty > 0)
+                {
+                    saleableQty = Long.parseLong(saleableStock.remainingQty.toString()) - Long.parseLong(params.sampleQty.toString())
+                }
+                else
+                {
+                    saleableQty =  Long.parseLong(saleableStock?.remainingFreeQty?.toString()) - Long.parseLong(params.sampleQty.toString())
+                }
                 saleableStock.put("remainingQty", saleableQty)
                 saleableStock.put("remainingFreeQty", saleableStock.get("remainingFreeQty"))
                 saleableStock.put("remainingReplQty", saleableStock.get("remainingReplQty"))

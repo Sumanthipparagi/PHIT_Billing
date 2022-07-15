@@ -233,8 +233,8 @@
         if(batchId) {
             for (var i = 0; i < salableBatches.length; i++) {
                 if (salableBatches[i].id === batchId) {
-                    $(".saleableQuantity").val(salableBatches[i].remainingQty);
-                    $('#saleableQuantity').attr("data-qty",salableBatches[i].remainingQty);
+                    $(".saleableQuantity").val(salableBatches[i]?.remainingQty + salableBatches[i]?.remainingFreeQty);
+                    $('#saleableQuantity').attr("data-qty",salableBatches[i]?.remainingQty);
 
                 }
             }
