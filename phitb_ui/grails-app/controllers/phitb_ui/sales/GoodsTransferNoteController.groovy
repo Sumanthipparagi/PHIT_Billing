@@ -445,24 +445,46 @@ class GoodsTransferNoteController
         }
     }
 
-    def cancelGTN()
-    {
-        def gtn = new SalesService().getGTNById(params.id)
-        String id = gtn.id.toString()
-        String entityId = gtn.entityId.toString()
-        String financialYear = gtn.financialYear.toString()
-        JSONObject jsonObject = new SalesService().cancelGTN(id, entityId, financialYear)
-        if (jsonObject)
-        {
+
+
+    def cancelGTN() {
+        String id = params.id
+        String entityId = session.getAttribute("entityId")
+        String financialYear = session.getAttribute("financialYear")
+        JSONObject jsonObject = new SalesService().cancelSampleInvoice(id, entityId, financialYear)
+        if (jsonObject) {
             //adjust stocks
             JSONArray productDetails = jsonObject.get("products")
-            if (productDetails)
-            {
-                for (JSONObject productDetail : productDetails)
-                {
-                    def stockBook = new InventoryService().getStocksOfProductAndBatch(productDetail.productId.toString(), productDetail.batchNumber, gtn.entityId.toString())
-                    double remainingQty = stockBook.get("remainingQty") + productDetail.get("sqty")
-                    double remainingFreeQty = stockBook.get("remainingFreeQty") + productDetail.get("freeQty")
+            if (productDetails) {
+                for (JSONObject productDetail : productDetails) {
+                    def stockBook = new InventoryService().getStocksOfProductAndBatch(productDetail.productId.toString(), productDetail.batchNumber, session.getAttribute("entityId").toString())
+                    double remainingQty = stockBook.get("remainingQty")
+                    double remainingFreeQty = stockBook.get("remainingFreeQty")
+
+                    //checking to where the stocks to be returned
+                    double originalSqty = productDetail.get("originalSqty")
+                    double originalFqty = productDetail.get("originalFqty")
+                    double sqty = productDetail.get("sqty")
+                    double freeQty = productDetail.get("freeQty")
+
+                    if ((originalSqty + originalFqty) == (sqty + freeQty) && originalSqty == sqty && originalFqty == freeQty) {
+                        remainingQty += sqty
+                        remainingFreeQty += freeQty
+                    } else {
+                        if (originalSqty >= sqty && originalFqty >= freeQty) {
+                            remainingQty += sqty
+                            remainingFreeQty += freeQty
+                        } else {
+                            if (sqty > originalSqty) {
+                                remainingQty = sqty - (sqty - originalSqty)
+                                remainingFreeQty = remainingFreeQty + freeQty + (sqty - originalSqty)
+                            } else if (freeQty > originalFqty) {
+                                remainingQty = remainingQty + sqty + (freeQty - originalFqty)
+                                remainingFreeQty = freeQty - (freeQty - originalFqty)
+                            }
+                        }
+                    }
+
                     double remainingReplQty = stockBook.get("remainingReplQty") + productDetail.get("repQty")
                     stockBook.put("remainingQty", remainingQty.toLong())
                     stockBook.put("remainingFreeQty", remainingFreeQty.toLong())
@@ -470,14 +492,17 @@ class GoodsTransferNoteController
                     new InventoryService().updateStockBook(stockBook)
                 }
             }
-            JSONObject invoice = jsonObject.get("gtn") as JSONObject
+            JSONObject invoice = jsonObject.get("invoice") as JSONObject
+//            if (invoice.has("irnDetails")) {
+//                JSONObject irnDetails = new JSONObject(invoice.get("irnDetails").toString())
+//                new EInvoiceService().cancelIRN(session, irnDetails.get("Irn").toString(), invoice.get("id").toString())
+//            }
             respond jsonObject, formats: ['json']
-        }
-        else
-        {
+        } else {
             response.status = 400
         }
     }
+
 
     def editSaleBillDetails()
     {

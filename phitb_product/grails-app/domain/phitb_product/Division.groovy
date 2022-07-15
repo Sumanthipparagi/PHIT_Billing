@@ -23,6 +23,11 @@ class Division implements Serializable, LogicalDelete<Division> {
     Date lastUpdated
 
     static constraints = {
+        zoneIds nullable: true
+        stateIds nullable: true
+        cityIds nullable: true
+        seriesId nullable:true
+        customerIds nullable: true
     }
 
     static mapping = {
