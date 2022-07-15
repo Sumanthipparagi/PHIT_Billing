@@ -136,7 +136,14 @@ class SchemeConfigurationService {
         {
             schemeConfiguration.hqAreaId = 0
         }
-        schemeConfiguration.customerIds = jsonObject.get("customerIds").toString()
+        if(jsonObject.has("customerIds"))
+        {
+            schemeConfiguration.customerIds = jsonObject.get("customerIds").toString()
+        }
+        else
+        {
+            schemeConfiguration.customerIds = 0
+        }
         schemeConfiguration.distributorId = jsonObject.get("distributorId").toString()
         schemeConfiguration.productId = Long.parseLong(jsonObject.get("productId").toString())
         schemeConfiguration.batch = jsonObject.get("batch").toString()
@@ -152,14 +159,62 @@ class SchemeConfigurationService {
         schemeConfiguration.slab3SchemeQty = Long.parseLong(jsonObject.get("slab3SchemeQty").toString())
         schemeConfiguration.slab3BulkStatus = Long.parseLong(jsonObject.get("slab3BulkStatus").toString())
         schemeConfiguration.slab3Status = Long.parseLong(jsonObject.get("slab3Status").toString())
-        schemeConfiguration.slabValidityFrom = sdf.parse(jsonObject.get("slabValidityFrom").toString())
-        schemeConfiguration.slabValidityTo = sdf.parse(jsonObject.get("slabValidityTo").toString())
+        if(jsonObject.get("slabValidityFrom").toString()!="")
+        {
+            schemeConfiguration.slabValidityFrom = sdf.parse(jsonObject.get("slabValidityFrom").toString())
+        }
+        else
+        {
+            schemeConfiguration.slabValidityFrom = null
+        }
+
+        if(jsonObject.get("slabValidityTo").toString()!="" )
+        {
+            schemeConfiguration.slabValidityTo = sdf.parse(jsonObject.get("slabValidityTo").toString())
+        }
+        else
+        {
+            schemeConfiguration.slabValidityTo = null
+        }
         schemeConfiguration.specialDiscount = Double.parseDouble(jsonObject.get("specialDiscount").toString())
-        schemeConfiguration.specialDiscountValidTo =  sdf.parse(jsonObject.get("specialDiscountValidTo").toString())
-        schemeConfiguration.specialDiscountValidFrom =  sdf.parse(jsonObject.get("specialDiscountValidFrom").toString())
+
+        if(jsonObject.get("specialDiscountValidTo").toString()!="" )
+        {
+            schemeConfiguration.specialDiscountValidTo = sdf.parse(jsonObject.get("specialDiscountValidTo").toString())
+        }
+        else
+        {
+            schemeConfiguration.specialDiscountValidTo = null
+        }
+
+        if(jsonObject.get("specialDiscountValidFrom").toString()!="" )
+        {
+            schemeConfiguration.specialDiscountValidFrom = sdf.parse(jsonObject.get("specialDiscountValidFrom").toString())
+        }
+        else
+        {
+            schemeConfiguration.specialDiscountValidFrom = null
+        }
         schemeConfiguration.specialRate = Long.parseLong(jsonObject.get("specialRate").toString())
-        schemeConfiguration.specialRateValidFrom = sdf.parse(jsonObject.get("specialRateValidFrom").toString())
-        schemeConfiguration.specialRateValidTo = sdf.parse(jsonObject.get("specialRateValidTo").toString())
+
+        if(jsonObject.get("specialRateValidFrom").toString()!="")
+        {
+            schemeConfiguration.specialRateValidFrom = sdf.parse(jsonObject.get("specialRateValidFrom").toString())
+        }
+        else
+        {
+            schemeConfiguration.specialRateValidFrom = null
+        }
+
+        if(jsonObject.get("specialRateValidTo").toString()!="" )
+        {
+            schemeConfiguration.specialRateValidTo = sdf.parse(jsonObject.get("specialRateValidTo").toString())
+        }
+        else
+        {
+            schemeConfiguration.specialRateValidTo = null
+        }
+
         schemeConfiguration.schemeStatus = jsonObject.get("schemeStatus").toString()
         schemeConfiguration.syncStatus = Long.parseLong(jsonObject.get("syncStatus").toString())
         schemeConfiguration.entityTypeId = Long.parseLong(jsonObject.get("entityTypeId").toString())
@@ -174,6 +229,7 @@ class SchemeConfigurationService {
         else
         {
             throw new BadRequestException()
+
         }
     }
 
