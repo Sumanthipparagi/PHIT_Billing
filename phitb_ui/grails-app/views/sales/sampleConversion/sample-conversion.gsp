@@ -292,6 +292,13 @@
         var saleableQty = $("#saleableQuantity").val();
         if(Number(sampleQty) > Number(saleableQty))
         {
+            Swal.fire({
+                position: 'top-end',
+                icon: 'error',
+                title: 'Quantity should not be greater!',
+                showConfirmButton: false,
+                timer: 1000
+            });
             $("#sampleQuantity").val(0);
         }
     }
