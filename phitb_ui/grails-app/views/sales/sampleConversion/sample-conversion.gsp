@@ -249,7 +249,7 @@
         // $(".saleableQuantity").val("");
         $.ajax({
             type: 'POST',
-            url: '/stockbook/product/' + id,
+            url: '/batch-register/product/' + id,
             dataType: 'json',
             success: function (data) {
                 if(data != null && data.length>0)
