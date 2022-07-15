@@ -2,6 +2,7 @@ package phitb_ui
 
 import grails.gorm.transactions.Transactional
 import grails.web.servlet.mvc.GrailsHttpSession
+import org.grails.web.json.JSONArray
 import org.grails.web.json.JSONObject
 import org.grails.web.util.WebUtils
 import org.springframework.web.multipart.MultipartFile
@@ -173,11 +174,28 @@ class UtilsService {
     {
         if (permittedFeaturesString != null)
         {
-            ArrayList<String> permittedFeatures = new EntityService().getFeatureList(permittedFeaturesString).name;
-            if (permittedFeatures.contains(featureName))
+            def session = WebUtils.retrieveGrailsWebRequest ().session
+            JSONArray permittedFeatures = session.getAttribute("features") as JSONArray
+            if(permittedFeatures?.size()>0)
             {
-                return true;
+                //check using already saved permissions from session
+                for (JSONObject feature : permittedFeatures) {
+                    if(featureName.equalsIgnoreCase(feature.get("name").toString()))
+                    {
+                        return true
+                    }
+                }
             }
+            else
+            {
+                //make API calls for each permission
+                ArrayList<String> permittedFeatures1 = new EntityService().getFeatureList(permittedFeaturesString).name;
+                if (permittedFeatures1.contains(featureName))
+                {
+                    return true;
+                }
+            }
+
         }
         return false
     }

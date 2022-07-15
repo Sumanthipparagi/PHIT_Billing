@@ -339,7 +339,7 @@
         <div class="menu">
             <ul class="list">
                 <li>
-                    <div class="user-info m-b-20">
+                    %{--<div class="user-info m-b-20">
                         <div class="image">
                             <a href="/user/update-details/${session.getAttribute("userId")}"><img
                                     src="${assetPath(src: '/themeassets/images/profile_av.jpg')}" alt="User">
@@ -352,9 +352,9 @@
                             <p class="m-b-0">${session.getAttribute("entityName")}</p>
                             <small>Financial Year: ${session.getAttribute("financialYear")}</small>
                         </div>
-                    </div>
+                    </div>--}%
                 </li>
-                <li class="header">MAIN</li>
+                %{--<li class="header">MAIN</li>--}%
                 <li id="dashboard-menu" class="sidemenuitem active open"><a href="dashboard"><i
                         class="zmdi zmdi-home"></i><span>Dashboard</span></a>
                 </li>
