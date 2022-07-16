@@ -126,7 +126,7 @@ class SampleConversionController
                         stockObject.put("purcDate", sdf1.format(new Date()));
                         stockObject.put("purcProductValue", 0);
                         stockObject.put("purcTradeDiscount", 0);
-                        stockObject.put("taxId", 0);
+                        stockObject.put("taxId", batch?.product?.unitPacking);
                         stockObject.put("supplierId", session.getAttribute("entityId"));
                         stockObject.put("entityId", session.getAttribute("entityId"));
                         stockObject.put("status", "1");
