@@ -142,7 +142,7 @@ class ProductRegisterService {
         productRegister.salesmanCommission = Double.parseDouble(jsonObject.get("salesmanCommission").toString())
         productRegister.grossProfitPercentage = Double.parseDouble(jsonObject.get("grossProfitPercentage").toString())
         productRegister.taxId = Long.parseLong(jsonObject.get("taxId").toString())
-        productRegister.thresholdLevel = jsonObject.get("thresholdLevel").toString()
+        productRegister.thresholdLevel = "0"
         productRegister.orderQuantity = Long.parseLong(jsonObject.get("orderQuantity").toString())
         if(jsonObject.get("group").toString()!=0)
         {
@@ -169,11 +169,11 @@ class ProductRegisterService {
             productRegister.category = null
         }
 
-        productRegister.sendMail = jsonObject.get("sendMail").toString()
+        productRegister.sendMail = "0"
         productRegister.discountAllowed = jsonObject.get("discountAllowed").toString()
         productRegister.ccmProduct = jsonObject.get("ccmProduct").toString()
         productRegister.narration = jsonObject.get("narration").toString()
-        productRegister.restrictedAssignment = jsonObject.get("restrictedAssignment").toString()
+        productRegister.restrictedAssignment = "0"
         productRegister.soundexCode = jsonObject.get("soundexCode").toString()
         productRegister.status =  Long.parseLong(jsonObject.get("status").toString())
         productRegister.syncStatus =  Long.parseLong(jsonObject.get("syncStatus").toString())
@@ -248,7 +248,7 @@ class ProductRegisterService {
             productRegister.salesmanCommission = Double.parseDouble(jsonObject.get("salesmanCommission").toString())
             productRegister.grossProfitPercentage = Double.parseDouble(jsonObject.get("grossProfitPercentage").toString())
             productRegister.taxId = Long.parseLong(jsonObject.get("taxId").toString())
-            productRegister.thresholdLevel = jsonObject.get("thresholdLevel").toString()
+            productRegister.thresholdLevel = "0"
             productRegister.orderQuantity = Long.parseLong(jsonObject.get("orderQuantity").toString())
             if(jsonObject.get("group").toString()!=0)
             {
@@ -275,11 +275,11 @@ class ProductRegisterService {
                 productRegister.category = null
             }
 
-            productRegister.sendMail = jsonObject.get("sendMail").toString()
+            productRegister.sendMail = "0"
             productRegister.discountAllowed = jsonObject.get("discountAllowed").toString()
             productRegister.ccmProduct = jsonObject.get("ccmProduct").toString()
             productRegister.narration = jsonObject.get("narration").toString()
-            productRegister.restrictedAssignment = jsonObject.get("restrictedAssignment").toString()
+            productRegister.restrictedAssignment = "0"
             productRegister.soundexCode = jsonObject.get("soundexCode").toString()
             productRegister.status =  Long.parseLong(jsonObject.get("status").toString())
             productRegister.syncStatus =  Long.parseLong(jsonObject.get("syncStatus").toString())

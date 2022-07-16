@@ -233,8 +233,8 @@
         if(batchId) {
             for (var i = 0; i < salableBatches.length; i++) {
                 if (salableBatches[i].id === batchId) {
-                    $(".saleableQuantity").val(salableBatches[i].remainingQty);
-                    $('#saleableQuantity').attr("data-qty",salableBatches[i].remainingQty);
+                    $(".saleableQuantity").val(salableBatches[i]?.remainingQty + salableBatches[i]?.remainingFreeQty);
+                    $('#saleableQuantity').attr("data-qty",salableBatches[i]?.remainingQty);
 
                 }
             }
@@ -249,7 +249,7 @@
         // $(".saleableQuantity").val("");
         $.ajax({
             type: 'POST',
-            url: '/stockbook/product/' + id,
+            url: '/batch-register/product/' + id,
             dataType: 'json',
             success: function (data) {
                 if(data != null && data.length>0)
@@ -292,6 +292,13 @@
         var saleableQty = $("#saleableQuantity").val();
         if(Number(sampleQty) > Number(saleableQty))
         {
+            Swal.fire({
+                position: 'top-end',
+                icon: 'error',
+                title: 'Quantity should not be greater!',
+                showConfirmButton: false,
+                timer: 1000
+            });
             $("#sampleQuantity").val(0);
         }
     }
@@ -386,7 +393,7 @@
 
                         if(Number(sampleQty) === 0)
                         {
-                            alert("Sample quantity should not be greater");
+                            alert("Please Enter a valid quantity");
                             waitingSwal.close();
                             return;
                         }
@@ -449,7 +456,7 @@
 </script>
 <g:include view="controls/footer-content.gsp"/>
 <script>
-    selectSideMenu("product-menu");
+    selectSideMenu("sales-menu");
 </script>
 </body>
 </html>

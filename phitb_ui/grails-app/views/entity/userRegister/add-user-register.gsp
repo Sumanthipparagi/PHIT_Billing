@@ -1,3 +1,4 @@
+<%@ page import="phitb_ui.Constants; phitb_ui.UtilsService" %>
 <!doctype html>
 <html class="no-js " lang="en">
 <head>
@@ -79,6 +80,7 @@
                             <div class="header">
                                 <h6>User Information</h6>
                             </div>
+
                             <div class="body">
                                 <div class="row">
                                     <div class="col-md-12 mt-2">
@@ -91,11 +93,13 @@
                                                        placeholder="Name"
                                                        required/>
                                             </div>
+
                                             <div class="col-lg-6 form-group  form-float">
                                                 <label for="userName">
                                                     User Name
                                                 </label>
-                                                <input type="text" id="userName" class="form-control userName" name="userName"
+                                                <input type="text" id="userName" class="form-control userName"
+                                                       name="userName"
                                                        placeholder="User Name" onblur="onblurUsername(this)"
                                                        required/>
                                             </div>
@@ -104,7 +108,8 @@
                                                 <label for="password">
                                                     Password
                                                 </label>
-                                                <input type="password" id="password" class="form-control password" name="password"
+                                                <input type="password" id="password" class="form-control password"
+                                                       name="password"
 
                                                        required/>
                                             </div>
@@ -114,9 +119,9 @@
                                                 <label for="aadharId">
                                                     Aadhar  Number
                                                 </label>
-                                                <input type="text" id="aadharId" class="form-control aadharId" name="aadharId"
-                                                       placeholder="Aadhar Number"
-                                                       />
+                                                <input type="text" id="aadharId" class="form-control aadharId"
+                                                       name="aadharId"
+                                                       placeholder="Aadhar Number"/>
                                             </div>
 
 
@@ -124,7 +129,8 @@
                                                 <label for="genderId">
                                                     Gender
                                                 </label>
-                                                <select class="form-control show-tick genderId" name="genderId" id="genderId">
+                                                <select class="form-control show-tick genderId" name="genderId"
+                                                        id="genderId">
                                                     <g:each var="g" in="${gender}">
                                                         <option value="${g.id}">${g.name}</option>
                                                     </g:each>
@@ -135,7 +141,8 @@
                                                 <label for="reportTo">
                                                     Report To
                                                 </label>
-                                                <select class="form-control show-tick reportTo" name="reportTo" id="reportTo">
+                                                <select class="form-control show-tick reportTo" name="reportTo"
+                                                        id="reportTo">
                                                     <option value="0">--Please Select--</option>
                                                     <g:each var="u" in="${userregister}">
                                                         <option value="${u.id}">${u.userName}</option>
@@ -147,28 +154,27 @@
                                                 <label for="referredBy">
                                                     Referred By
                                                 </label>
-                                                <select class="form-control show-tick referredBy" name="referredBy" id="referredBy">
+                                                <select class="form-control show-tick referredBy" name="referredBy"
+                                                        id="referredBy">
                                                     <option value="0">--Please select--</option>
                                                     <g:each var="u" in="${userregister}">
                                                         <option value="${u.id}">${u.userName}</option>
                                                     </g:each>
                                                 </select>
                                             </div>
+
                                             <div class="col-lg-6 form-group  form-float">
                                                 <label for="referenceRelation">
                                                     Reference Relation
                                                 </label>
-                                                <input type="text" id="referenceRelation" class="form-control referenceRelation"
-                                                       name="referenceRelation" placeholder="Reference Relation"
-                                                       />
+                                                <input type="text" id="referenceRelation"
+                                                       class="form-control referenceRelation"
+                                                       name="referenceRelation" placeholder="Reference Relation"/>
                                             </div>
-
-
 
                                         </div>
                                     </div>
                                 </div>
-
 
                             </div>
                         </div>
@@ -181,10 +187,9 @@
                             <div class="header">
                                 <h6>Contact Information</h6>
                             </div>
+
                             <div class="body">
                                 <div class="row">
-
-
 
                                     <div class="col-md-12 mt-2">
                                         <div class="row">
@@ -193,9 +198,9 @@
                                                     Address
                                                 </label>
                                                 <input type="text" id="address" class="form-control address"
-                                                       name="address" placeholder="Address"
-                                                       />
+                                                       name="address" placeholder="Address"/>
                                             </div>
+
                                             <div class="col-lg-6 form-group  form-float">
                                                 <label for="mobileNumber">
                                                     Mobile Number
@@ -205,41 +210,44 @@
                                                        placeholder="Mobile Number"
                                                        required/>
                                             </div>
+
                                             <div class="col-lg-6 form-group  form-float">
                                                 <label for="email">
                                                     Email
                                                 </label>
                                                 <input type="email" id="email" class="form-control email"
-                                                       name="email" placeholder="Email"
-                                                       />
+                                                       name="email" placeholder="Email"/>
                                             </div>
+
                                             <div class="col-lg-6 form-group  form-float">
                                                 <label for="contactNumber">
                                                     Contact Number
                                                 </label>
                                                 <input type="text" id="contactNumber" class="form-control contactNumber"
                                                        name="contactNumber"
-                                                       placeholder="Contact Number"
-                                                       />
+                                                       placeholder="Contact Number"/>
                                             </div>
+
                                             <div class="col-lg-6 form-group  form-float">
                                                 <label for="pinCode">
                                                     PIN Code
                                                 </label>
+
                                                 <div>
-                                                    <select class="pinCode form-control" id="pinCode" ></select>
+                                                    <select class="pinCode form-control" id="pinCode"></select>
                                                     <input type="hidden" name="pinCode">
                                                 </div>
 
                                             </div>
+
                                             <div class="col-lg-6 form-group  form-float">
                                                 <label for="nationality">
                                                     Nationality
                                                 </label>
                                                 <input type="text" id="nationality" class="form-control nationality"
-                                                       name="nationality" placeholder="Nationality"
-                                                       />
+                                                       name="nationality" placeholder="Nationality"/>
                                             </div>
+
                                             <div class="col-lg-6 form-group  form-float">
                                                 <label for="countryId">
                                                     Country
@@ -250,7 +258,7 @@
                                                         <option value="${country.id}">${country.name}</option>
                                                     </g:each>
                                                 </select>
-                                                <input type="hidden" name="countryId" />
+                                                <input type="hidden" name="countryId"/>
 
                                             </div>
 
@@ -258,7 +266,8 @@
                                                 <label for="stateId">
                                                     State
                                                 </label>
-                                                <select class="form-control show-tick stateId" name="stateId" id="stateId" disabled>
+                                                <select class="form-control show-tick stateId" name="stateId"
+                                                        id="stateId" disabled>
                                                     <g:each var="state" in="${statelist}">
                                                         <option value="${state.id}">${state.name}</option>
                                                     </g:each>
@@ -271,23 +280,20 @@
                                                 <label for="cityId">
                                                     Area /City
                                                 </label>
-                                                <select class="form-control show-tick cityId" name="cityId" id="cityId" disabled>
+                                                <select class="form-control show-tick cityId" name="cityId" id="cityId"
+                                                        disabled>
                                                     <g:each var="city" in="${citylist}">
                                                         <option value="${city.id}">${city.name}</option>
                                                     </g:each>
                                                 </select>
 
-                                                <input type="hidden" name="cityId" />
+                                                <input type="hidden" name="cityId"/>
 
                                             </div>
-
-
-
 
                                         </div>
                                     </div>
                                 </div>
-
 
                             </div>
                         </div>
@@ -300,206 +306,207 @@
                             <div class="header">
                                 <h6>Other information</h6>
                             </div>
+
                             <div class="body">
                                 <div class="row">
                                     <div class="col-md-12 mt-2">
-                                       <div class="row">
+                                        <div class="row">
 
-                                           <div class="col-lg-6 form-group  form-float">
-                                               <label for="joiningDate">
-                                                   Joining Date
-                                               </label>
-                                               <input type="text" id="joiningDate" class="form-control joiningDate"
-                                                      name="joiningDate" placeholder="Joining Date"
-                                                      />
-                                           </div>
-
-
-                                           <div class="col-lg-6 form-group  form-float">
-                                               <label for="department">
-                                                   Department
-                                               </label>
-                                               <select class="form-control show-tick department" name="department" id="department">
-                                                   <g:each var="d" in="${department}">
-                                                       <option value="${d.id}">${d.name}</option>
-                                                   </g:each>
-                                               </select>
-                                           </div>
+                                            <div class="col-lg-6 form-group  form-float">
+                                                <label for="joiningDate">
+                                                    Joining Date
+                                                </label>
+                                                <input type="text" id="joiningDate" class="form-control joiningDate"
+                                                       name="joiningDate" placeholder="Joining Date"/>
+                                            </div>
 
 
-%{--                                           <div class="col-lg-6 form-group  form-float">--}%
-%{--                                               <label for="permissions">--}%
-%{--                                                   Permissions--}%
-%{--                                               </label>--}%
-%{--                                               <input type="text" id="permissions" class="form-control permissions"--}%
-%{--                                                      name="permissions" placeholder="Permissions"--}%
-%{--                                                      required/>--}%
-%{--                                           </div>--}%
-
-                                           <div class="col-lg-6 form-group  form-float">
-                                               <label for="dob">
-                                                   Date of Birth
-                                               </label>
-                                               <input type="text" id="dob" class="form-control dob"
-                                                      name="dob" placeholder="Date of Birth"
-                                                      />
-                                           </div>
-
-                                           <div class="col-lg-6 form-group  form-float">
-                                               <label for="anniversaryDate">
-                                                   Anniversary Date
-                                               </label>
-                                               <input type="text" id="anniversaryDate" class="form-control anniversaryDate"
-                                                      name="anniversaryDate" placeholder="Anniversary Date"
-                                                      />
-                                           </div>
-
-                                           <div class="col-lg-6 form-group  form-float">
-                                               <label for="approvedSalary">
-                                                   Approved Salary
-                                               </label>
-                                               <input type="number" id="approvedSalary" class="form-control approvedSalary"
-                                                      name="approvedSalary" onblur="setTwoNumberDecimal()" step="0.25"
-                                                      value="0.00" placeholder="Approved Salary"
-                                                      />
-                                           </div>
+                                            <div class="col-lg-6 form-group  form-float">
+                                                <label for="department">
+                                                    Department
+                                                </label>
+                                                <select class="form-control show-tick department" name="department"
+                                                        id="department">
+                                                    <g:each var="d" in="${department}">
+                                                        <option value="${d.id}">${d.name}</option>
+                                                    </g:each>
+                                                </select>
+                                            </div>
 
 
-                                           <div class="col-lg-6 form-group  form-float">
-                                               <label for="designationSalary">
-                                                   Designation Salary
-                                               </label>
-                                               <input type="number" id="designationSalary" class="form-control designationSalary"
-                                                      name="designationSalary" onblur="setTwoNumberDecimal()" step="0.25"
-                                                      value="0.00" placeholder="Designation Salary"
-                                                      />
-                                           </div>
+                                            %{--                                           <div class="col-lg-6 form-group  form-float">--}%
+                                            %{--                                               <label for="permissions">--}%
+                                            %{--                                                   Permissions--}%
+                                            %{--                                               </label>--}%
+                                            %{--                                               <input type="text" id="permissions" class="form-control permissions"--}%
+                                            %{--                                                      name="permissions" placeholder="Permissions"--}%
+                                            %{--                                                      required/>--}%
+                                            %{--                                           </div>--}%
+
+                                            <div class="col-lg-6 form-group  form-float">
+                                                <label for="dob">
+                                                    Date of Birth
+                                                </label>
+                                                <input type="text" id="dob" class="form-control dob"
+                                                       name="dob" placeholder="Date of Birth"/>
+                                            </div>
+
+                                            <div class="col-lg-6 form-group  form-float">
+                                                <label for="anniversaryDate">
+                                                    Anniversary Date
+                                                </label>
+                                                <input type="text" id="anniversaryDate"
+                                                       class="form-control anniversaryDate"
+                                                       name="anniversaryDate" placeholder="Anniversary Date"/>
+                                            </div>
+
+                                            <div class="col-lg-6 form-group  form-float">
+                                                <label for="approvedSalary">
+                                                    Approved Salary
+                                                </label>
+                                                <input type="number" id="approvedSalary"
+                                                       class="form-control approvedSalary"
+                                                       name="approvedSalary" onblur="setTwoNumberDecimal()" step="0.25"
+                                                       value="0.00" placeholder="Approved Salary"/>
+                                            </div>
 
 
-                                           <div class="col-lg-6 form-group  form-float">
-                                               <label for="lastPaidDate">
-                                                   Last Paid Date
-                                               </label>
-                                               <input type="text" id="lastPaidDate" class="form-control lastPaidDate"
-                                                      name="lastPaidDate" placeholder="Last Paid Date"
-                                                      />
-                                           </div>
-
-%{--                                           <div class="col-lg-6 form-group  form-float">--}%
-%{--                                               <label for="paymentModeId">--}%
-%{--                                                   Payment Id--}%
-%{--                                               </label>--}%
-%{--                                               <input type="text" id="paymentModeId" class="form-control paymentModeId"--}%
-%{--                                                      name="paymentModeId" placeholder="Payment Id"--}%
-%{--                                                      required/>--}%
-%{--                                           </div>--}%
-
-                                           <div class="col-lg-6 form-group  form-float">
-                                               <label for="bankAccount">
-                                                   IFSC Code
-                                               </label>
-                                               <input type="text" id="bankAccount" class="form-control bankAccount"
-                                                      name="bankAccount" placeholder="IFSC Code"
-                                                      />
-                                           </div>
-
-                                           <div class="col-lg-6 form-group  form-float">
-                                               <label for="bankId">
-                                                   Bank
-                                               </label>
-                                               <select class="form-control show-tick bankId" name="bankId" id="bankId">
-                                                   <option value="0">--Please Select--</option>
-                                                   <g:each var="b" in="${bank}">
-                                                       <option value="${b.id}">${b.bankName}</option>
-                                                   </g:each>
-                                               </select>
-                                           </div>
-
-                                           <div class="col-lg-6 form-group  form-float">
-                                               <label for="assignedHolidays">
-                                                   Assigned Holidays
-                                               </label>
-                                               <input type="text" id="assignedHolidays" class="form-control assignedHolidays"
-                                                      name="assignedHolidays" placeholder="Assigned Holidays"
-                                                      />
-                                           </div>
-
-                                           <div class="col-lg-6 form-group  form-float">
-                                               <label for="specialization">
-                                                   Specialization
-                                               </label>
-                                               <input type="text" id="specialization" class="form-control specialization"
-                                                      name="specialization" placeholder="Specialization"
-                                                      />
-                                           </div>
-
-                                           <div class="col-lg-6 form-group  form-float">
-                                               <label for="userStatus">
-                                                  Status
-                                               </label>
-                                               <select id="userStatus" class="form-control userStatus"
-                                                       name="userStatus">
-                                                   <option value="ACTIVE">ACTIVE</option>
-                                                   <option value="INACTIVE">INACTIVE</option>
-                                                   <option value="RESIGNED">RESIGNED</option>
-                                               </select>
-                                           </div>
+                                            <div class="col-lg-6 form-group  form-float">
+                                                <label for="designationSalary">
+                                                    Designation Salary
+                                                </label>
+                                                <input type="number" id="designationSalary"
+                                                       class="form-control designationSalary"
+                                                       name="designationSalary" onblur="setTwoNumberDecimal()"
+                                                       step="0.25"
+                                                       value="0.00" placeholder="Designation Salary"/>
+                                            </div>
 
 
-                                           <div class="col-lg-6 form-group  form-float">
-                                               <label for="licenceNumber">
-                                                  RTO Licence Number
-                                               </label>
-                                               <input type="text" id="licenceNumber" class="form-control licenceNumber"
-                                                      name="licenceNumber" placeholder="Licence Number"
-                                                      />
-                                           </div>
+                                            <div class="col-lg-6 form-group  form-float">
+                                                <label for="lastPaidDate">
+                                                    Last Paid Date
+                                                </label>
+                                                <input type="text" id="lastPaidDate" class="form-control lastPaidDate"
+                                                       name="lastPaidDate" placeholder="Last Paid Date"/>
+                                            </div>
 
-%{--                                           <div class="col-lg-6 form-group  form-float">--}%
-%{--                                               <label for="account">--}%
-%{--                                                   Account--}%
-%{--                                               </label>--}%
-%{--                                               <select class="form-control show-tick account" name="account" id="account">--}%
-%{--                                                   <g:each var="a" in="${account}">--}%
-%{--                                                       <option value="${a.id}">${a.accountName}</option>--}%
-%{--                                                   </g:each>--}%
-%{--                                               </select>--}%
-%{--                                           </div>--}%
+                                            %{--                                           <div class="col-lg-6 form-group  form-float">--}%
+                                            %{--                                               <label for="paymentModeId">--}%
+                                            %{--                                                   Payment Id--}%
+                                            %{--                                               </label>--}%
+                                            %{--                                               <input type="text" id="paymentModeId" class="form-control paymentModeId"--}%
+                                            %{--                                                      name="paymentModeId" placeholder="Payment Id"--}%
+                                            %{--                                                      required/>--}%
+                                            %{--                                           </div>--}%
 
-                                           <div class="col-lg-6 form-group  form-float">
-                                               <label for="role">
-                                                   Role
-                                               </label>
-                                               <select class="form-control show-tick role" name="role" id="role">
-                                                   <g:each var="r" in="${role}">
-                                                       <option value="${r.id}">${r.name}</option>
-                                                   </g:each>
-                                               </select>
-                                           </div>
+                                            <div class="col-lg-6 form-group  form-float">
+                                                <label for="bankAccount">
+                                                    IFSC Code
+                                                </label>
+                                                <input type="text" id="bankAccount" class="form-control bankAccount"
+                                                       name="bankAccount" placeholder="IFSC Code"/>
+                                            </div>
+
+                                            <div class="col-lg-6 form-group  form-float">
+                                                <label for="bankId">
+                                                    Bank
+                                                </label>
+                                                <select class="form-control show-tick bankId" name="bankId" id="bankId">
+                                                    <option value="0">--Please Select--</option>
+                                                    <g:each var="b" in="${bank}">
+                                                        <option value="${b.id}">${b.bankName}</option>
+                                                    </g:each>
+                                                </select>
+                                            </div>
+
+                                            <div class="col-lg-6 form-group  form-float">
+                                                <label for="assignedHolidays">
+                                                    Assigned Holidays
+                                                </label>
+                                                <input type="text" id="assignedHolidays"
+                                                       class="form-control assignedHolidays"
+                                                       name="assignedHolidays" placeholder="Assigned Holidays"/>
+                                            </div>
+
+                                            <div class="col-lg-6 form-group  form-float">
+                                                <label for="specialization">
+                                                    Specialization
+                                                </label>
+                                                <input type="text" id="specialization"
+                                                       class="form-control specialization"
+                                                       name="specialization" placeholder="Specialization"/>
+                                            </div>
+
+                                            <div class="col-lg-6 form-group  form-float">
+                                                <label for="userStatus">
+                                                    Status
+                                                </label>
+                                                <select id="userStatus" class="form-control userStatus"
+                                                        name="userStatus">
+                                                    <option value="ACTIVE">ACTIVE</option>
+                                                    <option value="INACTIVE">INACTIVE</option>
+                                                    <option value="RESIGNED">RESIGNED</option>
+                                                </select>
+                                            </div>
 
 
-                                           <div class="col-lg-6 form-group  form-float">
-                                               <label for="divisionId">
-                                                   Division
-                                               </label>
-                                               <select class="form-control show-tick divisionId" name="divisionId" id="divisionId">
-                                                   <g:each var="d" in="${division}">
-                                                       <option value="${d.id}">${d.divisionName}</option>
-                                                   </g:each>
-                                               </select>
-                                           </div>
+                                            <div class="col-lg-6 form-group  form-float">
+                                                <label for="licenceNumber">
+                                                    RTO Licence Number
+                                                </label>
+                                                <input type="text" id="licenceNumber" class="form-control licenceNumber"
+                                                       name="licenceNumber" placeholder="Licence Number"/>
+                                            </div>
 
-%{--                                           <div class="col-lg-6 form-group  form-float">--}%
-%{--                                               <label for="zoneId">--}%
-%{--                                                   Zone--}%
-%{--                                               </label>--}%
-%{--                                               <select class="form-control show-tick zoneId" name="zoneId" id="zoneId">--}%
-%{--                                                   <g:each var="zone" in="${zoneList}">--}%
-%{--                                                       <option value="${zone.id}">${zone.name}</option>--}%
-%{--                                                   </g:each>--}%
-%{--                                               </select>--}%
-%{--                                           </div>--}%
-                                       </div>
+                                        %{--                                           <div class="col-lg-6 form-group  form-float">--}%
+                                        %{--                                               <label for="account">--}%
+                                        %{--                                                   Account--}%
+                                        %{--                                               </label>--}%
+                                        %{--                                               <select class="form-control show-tick account" name="account" id="account">--}%
+                                        %{--                                                   <g:each var="a" in="${account}">--}%
+                                        %{--                                                       <option value="${a.id}">${a.accountName}</option>--}%
+                                        %{--                                                   </g:each>--}%
+                                        %{--                                               </select>--}%
+                                        %{--                                           </div>--}%
+                                            <g:if test="${session.getAttribute('role') == Constants.SUPER_USER}">
+
+                                                <div class="col-lg-6 form-group  form-float">
+                                                    <label for="role">
+                                                        Role
+                                                    </label>
+                                                    <select class="form-control show-tick role" name="role" id="role">
+                                                        <g:each var="r" in="${role}">
+                                                            <option value="${r.id}">${r.name}</option>
+                                                        </g:each>
+                                                    </select>
+                                                </div>
+                                            </g:if>
+
+
+                                            <div class="col-lg-6 form-group  form-float">
+                                                <label for="divisionId">
+                                                    Division
+                                                </label>
+                                                <select class="form-control show-tick divisionId" name="divisionId"
+                                                        id="divisionId">
+                                                    <g:each var="d" in="${division}">
+                                                        <option value="${d.id}">${d.divisionName}</option>
+                                                    </g:each>
+                                                </select>
+                                            </div>
+
+                                            %{--                                           <div class="col-lg-6 form-group  form-float">--}%
+                                            %{--                                               <label for="zoneId">--}%
+                                            %{--                                                   Zone--}%
+                                            %{--                                               </label>--}%
+                                            %{--                                               <select class="form-control show-tick zoneId" name="zoneId" id="zoneId">--}%
+                                            %{--                                                   <g:each var="zone" in="${zoneList}">--}%
+                                            %{--                                                       <option value="${zone.id}">${zone.name}</option>--}%
+                                            %{--                                                   </g:each>--}%
+                                            %{--                                               </select>--}%
+                                            %{--                                           </div>--}%
+                                        </div>
                                     </div>
                                     <input type="hidden" name="status" value="0">
                                     <input type="hidden" name="zoneId" value="0">
@@ -508,6 +515,7 @@
                                     <input type="hidden" name="lastLoginDate" value="12/02/2020">
                                     <input type="hidden" name="createdUser" value="${session.getAttribute('userId')}">
                                     <input type="hidden" name="modifiedUser" value="${session.getAttribute('userId')}">
+
                                     <div class="col-lg-12">
                                         <div class="" style="float: right;">
                                             <input name="id" id="id" class="id" type="hidden">
@@ -515,13 +523,13 @@
                                             <button type="submit" class="btn btn-default btn-round waves-effect"
                                                     name="submituser"><font style="vertical-align: inherit;"><font
                                                     style="vertical-align: inherit;">SUBMIT</font></font></button>
-                                            <button type="reset" class="btn btn-danger btn-simple btn-round waves-effect"
+                                            <button type="reset"
+                                                    class="btn btn-danger btn-simple btn-round waves-effect"
                                                     data-dismiss="modal"><font style="vertical-align: inherit;"><font
                                                     style="vertical-align: inherit;">RESET</font></font></button>
                                         </div>
                                     </div>
                                 </div>
-
 
                             </div>
 
@@ -529,8 +537,6 @@
 
                     </div>
                 </div>
-
-
 
             </form>
         </g:if>
@@ -796,8 +802,7 @@
     function onblurUsername(event) {
         // alert(event.value)
 
-        if(event.value!="")
-        {
+        if (event.value != "") {
             $.ajax({
                 type: 'GET',
                 url: '/user-register/userexists?username=' + event.value,
@@ -813,7 +818,7 @@
                 }
 
             });
-        }else {
+        } else {
             swal("Please Enter username!", "Please Enter username!", "error");
 
         }

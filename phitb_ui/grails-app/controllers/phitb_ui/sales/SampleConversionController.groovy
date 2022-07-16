@@ -1,5 +1,6 @@
 package phitb_ui.sales
 
+import com.google.gson.JsonObject
 import grails.converters.JSON
 import org.grails.web.json.JSONArray
 import org.grails.web.json.JSONObject
@@ -13,6 +14,7 @@ import phitb_ui.SystemService
 import phitb_ui.UtilsService
 import phitb_ui.entity.EntityRegisterController
 import phitb_ui.entity.SeriesController
+import phitb_ui.entity.TaxController
 
 import javax.ws.rs.core.Response
 import java.text.SimpleDateFormat
@@ -59,7 +61,15 @@ class SampleConversionController
             def saleableStock = new InventoryService().getStocksOfProductAndBatch(params.saleableProduct, params.saleableBatch, entityId)
             if(saleableStock)
             {
-                long saleableQty = Long.parseLong(saleableStock.remainingQty.toString()) - Long.parseLong(params.sampleQty.toString())
+                long saleableQty
+                if(saleableStock?.remainingQty > 0)
+                {
+                    saleableQty = Long.parseLong(saleableStock.remainingQty.toString()) - Long.parseLong(params.sampleQty.toString())
+                }
+                else
+                {
+                    saleableQty =  Long.parseLong(saleableStock?.remainingFreeQty?.toString()) - Long.parseLong(params.sampleQty.toString())
+                }
                 saleableStock.put("remainingQty", saleableQty)
                 saleableStock.put("remainingFreeQty", saleableStock.get("remainingFreeQty"))
                 saleableStock.put("remainingReplQty", saleableStock.get("remainingReplQty"))
@@ -68,13 +78,13 @@ class SampleConversionController
                 if(saleableStockUpdate?.status!= 200)
                 {
                     response.status = 400
-                    return
+                    return false
                 }
             }
             else {
 
                 response.status = 400
-                return
+                return false
             }
 
 //            Sample Stock
@@ -89,13 +99,51 @@ class SampleConversionController
                 if(sampleStockUpdate?.status!= 200)
                 {
                     response.status = 400
-                    return
+                    return false
                 }
             }
             else {
+                UUID uuid
+                def batchResponse = new ProductService().getBatchesOfProduct(params.sampleProduct)
+                JSONArray batchArray = JSON.parse(batchResponse.readEntity(String.class)) as JSONArray
+                JSONObject stockObject = new JSONObject()
+                for (JSONObject batch : batchArray) {
+                    if (batch.batchNumber == params.sampleBatch) {
+                        stockObject.put("expDate", batch.get("expiryDate"));
+                        stockObject.put("batchNumber",params.sampleBatch);
+                        stockObject.put("mergedWith","0");
+                        stockObject.put("productId",params.sampleProduct);
+                        stockObject.put("manufacturingDate", batch.get("manfDate"));
+                        stockObject.put("remainingQty", params.sampleQty);
+                        stockObject.put("remainingFreeQty", 0);
+                        stockObject.put("purchaseRate", batch.get("purchaseRate"));
+                        stockObject.put("saleRate", batch.get("saleRate"));
+                        stockObject.put("mrp", batch.get("mrp"));
+                        stockObject.put("packingDesc", batch.product.unitPacking);
+                        stockObject.put("openingStockQty", params.sampleQty);
+                        stockObject.put("remainingReplQty", 0);
+                        stockObject.put("purcSeriesId", 0);
+                        SimpleDateFormat sdf1 = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'")
+                        stockObject.put("purcDate", sdf1.format(new Date()));
+                        stockObject.put("purcProductValue", 0);
+                        stockObject.put("purcTradeDiscount", 0);
+                        stockObject.put("taxId", batch?.product?.unitPacking);
+                        stockObject.put("supplierId", session.getAttribute("entityId"));
+                        stockObject.put("entityId", session.getAttribute("entityId"));
+                        stockObject.put("status", "1");
+                        stockObject.put("syncStatus", "1");
+                        stockObject.put("entityTypeId", session.getAttribute('entityTypeId'));
+                        stockObject.put("createdUser", session.getAttribute('userId'));
+                        stockObject.put("modifiedUser", session.getAttribute('userId'));
+                        stockObject.put("uuid", UUID.randomUUID());
+                    }
+                }
+                def saveStock = new InventoryService().stockBookSave(stockObject)
+                if(saveStock)
+                {
+                    println("Saved")
+                }
 
-                response.status = 400
-                return
             }
             JSONObject sampleConverisonLogs = new JSONObject()
             sampleConverisonLogs.put("saleableProductId",params.saleableProduct)

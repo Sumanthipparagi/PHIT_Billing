@@ -158,6 +158,10 @@ public class Constants
     public static String SUNDAY = "SUNDAY";
 
 
+    public static String SUPER_USER = "SUPER_USER";
+    public static String ENTITY_ADMIN = "ENTITY_ADMIN";
+    public static String MANAGER = "MANAGER";
+    public static String SALESMAN = "SALESMAN";
 
 
 }

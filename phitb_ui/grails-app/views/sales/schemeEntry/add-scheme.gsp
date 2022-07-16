@@ -70,8 +70,8 @@
         <!-- Inline Layout -->
         <div class="row clearfix">
             <div class="col-lg-12 col-md-12 col-sm-12">
-                <form action="/add-scheme-entry" id="form_validation" method="POST"
-                      role="form" class="schemeRegisterForm" enctype="multipart/form-data">
+                <form action="/add-scheme-entry" id="addSchemeEntry" method="POST"
+                      role="form" class="schemeRegisterForm"  enctype="multipart/form-data">
                     <div class="row clearfix">
                         <div class="col-lg-12 col-md-12 col-sm-12">
                             <div class="card">
@@ -128,6 +128,17 @@
                                                                 </label>
                                                             </div>
                                                         </div>
+
+                                                        <div class="col-lg-2">
+                                                            <div class="form-check">
+                                                                <input class="form-check-input" type="radio"
+                                                                       name="selections"
+                                                                       id="clientButton" value="CLIENT">
+                                                                <label class="form-check-label" for="clientButton">
+                                                                    Client
+                                                                </label>
+                                                            </div>
+                                                        </div>
                                                     </div>
                                                 </div>
 
@@ -146,32 +157,23 @@
                                                 %{--                                                --}%
                                                 %{--                                            </div>--}%
 
-                                                <div class="col-lg-6 form-group  form-float">
-                                                    <label for="customer">
-                                                        Client
-                                                    </label>
-                                                    <select class="form-control show-tick customer" name="customerIds"
-                                                            id="customer">
-                                                        <option value="">--Please Select--</option>
-                                                        <g:each var="e" in="${entityList}">
-                                                            <option value="${e.id}">${e.entityName}</option>
-                                                        </g:each>
-                                                    </select>
-                                                </div>
+%{--                                                <div class="col-lg-6 form-group  form-float">--}%
+%{--                                                  --}%
+%{--                                                </div>--}%
 
-                                                <div class="col-lg-6 form-group  form-float">
-                                                    <label for="distributor">
-                                                        Distributor
-                                                    </label>
-                                                    <select class="form-control show-tick distributor"
-                                                            name="distributorId"
-                                                            id="distributor">
-                                                        <option value="">--Please Select--</option>
-                                                        <g:each var="d" in="${distributorList}">
-                                                            <option value="${d.id}">${d.entityName}</option>
-                                                        </g:each>
-                                                    </select>
-                                                </div>
+%{--                                                <div class="col-lg-6 form-group  form-float">--}%
+%{--                                                    <label for="distributor">--}%
+%{--                                                        Distributor--}%
+%{--                                                    </label>--}%
+%{--                                                    <select class="form-control show-tick distributor"--}%
+%{--                                                            name="distributorId"--}%
+%{--                                                            id="distributor">--}%
+%{--                                                        <option value="">--Please Select--</option>--}%
+%{--                                                        <g:each var="d" in="${distributorList}">--}%
+%{--                                                            <option value="${d.id}">${d.entityName}</option>--}%
+%{--                                                        </g:each>--}%
+%{--                                                    </select>--}%
+%{--                                                </div>--}%
 
 
                                                 <div class="col-lg-6 form-group  form-float">
@@ -192,7 +194,8 @@
                                                         Batch
                                                     </label>
                                                     <select class="form-control show-tick batch" name="batch"
-                                                            id="batch">
+                                                            id="batch" >
+                                                        <option value="">-- Please Select --</option>
 
                                                         %{--                                        <g:each var="p" in="${batchList}">--}%
                                                         %{--                                            <option value="${p.batchNumber}">${p.batchNumber}</option>--}%
@@ -226,7 +229,7 @@
                                                     </label>
                                                     <input type="number" id="slab1MinQty"
                                                            class="form-control slab1MinQty"
-                                                           onblur="setTwoNumberDecimal" value="0.00"
+                                                           onblur="setTwoNumberDecimal" value ="0"
                                                            name="slab1MinQty" placeholder="Slab 1 Min Quantity"
                                                            required/>
                                                 </div>
@@ -237,7 +240,7 @@
                                                     </label>
                                                     <input type="number" id="slab1SchemeQty"
                                                            class="form-control slab1SchemeQty"
-                                                           onblur="setTwoNumberDecimal" value="0.00"
+                                                           onblur="setTwoNumberDecimal" value ="0"
                                                            name="slab1SchemeQty" placeholder="Slab 1 Scheme Quantity"
                                                            required/>
                                                 </div>
@@ -246,8 +249,8 @@
                                                     <label for="slab1BulkStatus">
                                                         Slab 1 Bulk Status
                                                     </label>
-                                                    <input type="text" id="slab1BulkStatus"
-                                                           class="form-control slab1BulkStatus"
+                                                    <input type="number" id="slab1BulkStatus"
+                                                           class="form-control slab1BulkStatus" value ="0"
                                                            name="slab1BulkStatus" placeholder=" Slab 1 bulk Status"
                                                            required/>
                                                 </div>
@@ -256,8 +259,8 @@
                                                     <label for="slab1Status">
                                                         Slab 1 Status
                                                     </label>
-                                                    <input type="text" id="slab1Status" class="form-control slab1Status"
-                                                           name="slab1Status" placeholder="Slab 1 Status"
+                                                    <input type="number" id="slab1Status" class="form-control slab1Status"
+                                                           name="slab1Status" placeholder="Slab 1 Status" value ="0"
                                                            required/>
                                                 </div>
                                             </div>
@@ -286,7 +289,7 @@
                                                     </label>
                                                     <input type="number" id="slab2MinQty"
                                                            class="form-control slab2MinQty"
-                                                           onblur="setTwoNumberDecimal" value="0.00"
+                                                           onblur="setTwoNumberDecimal" value ="0"
                                                            name="slab2MinQty" placeholder="Slab 2 Min Quantity"/>
                                                 </div>
 
@@ -296,7 +299,7 @@
                                                     </label>
                                                     <input type="number" id="slab2SchemeQty"
                                                            class="form-control slab2SchemeQty"
-                                                           onblur="setTwoNumberDecimal" value="0.00"
+                                                           onblur="setTwoNumberDecimal" value ="0"
                                                            name="slab2SchemeQty" placeholder="Slab 2 Scheme Quantity"/>
                                                 </div>
 
@@ -304,8 +307,8 @@
                                                     <label for="slab2BulkStatus">
                                                         Slab 2 Bulk Status
                                                     </label>
-                                                    <input type="text" id="slab2BulkStatus"
-                                                           class="form-control slab2BulkStatus"
+                                                    <input type="number" id="slab2BulkStatus"
+                                                           class="form-control slab2BulkStatus" value ="0"
                                                            name="slab2BulkStatus" placeholder="Slab 2 Bulk Status"/>
                                                 </div>
 
@@ -313,7 +316,8 @@
                                                     <label for="slab2Status">
                                                         Slab 2 Status
                                                     </label>
-                                                    <input type="text" id="slab2Status" class="form-control slab2Status"
+                                                    <input type="number" id="slab2Status"
+                                                           class="form-control slab2Status" value ="0"
                                                            name="slab2Status" placeholder="Slab 2 Status"/>
                                                 </div>
                                             </div>
@@ -342,7 +346,7 @@
                                                     </label>
                                                     <input type="number" id="slab3MinQty"
                                                            class="form-control slab3MinQty"
-                                                           onblur="setTwoNumberDecimal" value="0.00"
+                                                           onblur="setTwoNumberDecimal" value ="0"
                                                            name="slab3MinQty" placeholder="Slab 3 Min Quantity"/>
                                                 </div>
 
@@ -352,7 +356,7 @@
                                                     </label>
                                                     <input type="number" id="slab3SchemeQty"
                                                            class="form-control slab3SchemeQty"
-                                                           onblur="setTwoNumberDecimal" value="0.00"
+                                                           onblur="setTwoNumberDecimal" value ="0"
                                                            name="slab3SchemeQty" placeholder="Slab 3 Scheme Quantity"/>
                                                 </div>
 
@@ -360,8 +364,8 @@
                                                     <label for="slab3BulkStatus">
                                                         Slab 3 Bulk Status
                                                     </label>
-                                                    <input type="text" id="slab3BulkStatus"
-                                                           class="form-control slab3BulkStatus"
+                                                    <input type="number" id="slab3BulkStatus"
+                                                           class="form-control slab3BulkStatus" value ="0"
                                                            name="slab3BulkStatus" placeholder="Slab 3 Bulk Status"/>
                                                 </div>
 
@@ -369,7 +373,8 @@
                                                     <label for="slab3Status">
                                                         Slab 3 Status
                                                     </label>
-                                                    <input type="text" id="slab3Status" class="form-control slab3Status"
+                                                    <input type="number" id="slab3Status"
+                                                           class="form-control slab3Status" value ="0"
                                                            name="slab3Status" placeholder="Slab 3 Status"/>
                                                 </div>
                                             </div>
@@ -415,7 +420,7 @@
                                                         Special Discount
                                                     </label>
                                                     <input type="text" id="specialDiscount"
-                                                           class="form-control specialDiscount"
+                                                           class="form-control specialDiscount" value ="0" onblur="setTwoNumberDecimal()"
                                                            name="specialDiscount" placeholder="Special Discount"/>
                                                 </div>
 
@@ -444,7 +449,7 @@
                                                         Special Rate
                                                     </label>
                                                     <input type="number" id="specialRate"
-                                                           class="form-control specialRate"
+                                                           class="form-control specialRate" onblur="setTwoNumberDecimal()" value ="0"
                                                            name="specialRate" placeholder="Special Rate"/>
                                                 </div>
 
@@ -467,13 +472,14 @@
                                                            name="specialRateValidTo"
                                                            placeholder="Special Rate Valid to"/>
                                                 </div>
+                                                <input type="hidden" name="schemeStatus" value="1">
                                                 <input type="hidden" name="status" value="1">
                                                 <input type="hidden" name="entityId" value="${session.getAttribute('entityId')}">
                                                 <input type="hidden" name="entityTypeId" value="${session.getAttribute('entityTypeId')}">
-                                                <input type="hidden" name="schemeStatus" value="1">
+                                                <input type="hidden" name="distributorId" value="0">
                                                 <input type="hidden" name="syncStatus" value="1">
-                                                <input type="hidden" name="createdUser" value="1">
-                                                <input type="hidden" name="modifiedUser" value="1">
+                                                <input type="hidden" name="createdUser" value="${session.getAttribute('userId')}">
+                                                <input type="hidden" name="modifiedUser" value="${session.getAttribute('userId')}">
 
                                                 <div class="col-lg-12">
                                                     <div class="" style="float: right;">
@@ -581,22 +587,38 @@
                     "                                                    </g:each>\n" +
                     "                                                </select>"
             } else if (this.value === "HQAREA" && this.checked) {
-                selectors = "<label for=\"city\">\n" +
+                selectors = "<label for=\"hqarea\">\n" +
                     "                                                    HQ areas\n" +
                     "                                                </label>\n" +
-                    "                                                <select class=\"form-control show-tick hqarea\" name=\"hqarea\" id=\"city\">\n" +
+                    "                                                <select class=\"form-control show-tick hqarea\" name=\"hqarea\" id=\"hqarea\">\n" +
                     "                                                    <option value=\"\">--Please Select--</option>\n" +
                     "                                                    <g:each var="h" in="${hqAreaList}">\n" +
-                    "                                                        <option value=\"${h.id}\">${h.id}</option>\n" +
+                    "                                                        <option value=\"${h.id}\">${h.hqName}</option>\n" +
                     "                                                    </g:each>\n" +
                     "                                                </select>"
-            } else if (this.value === "") {
+            } else if (this.value === "CLIENT" && this.checked) {
+                selectors = "  <label for=\"customer\">\n" +
+                    "                                                        Client\n" +
+                    "                                                    </label>\n" +
+                    "                                                    <select class=\"form-control show-tick customer\" name=\"customerIds\"\n" +
+                    "                                                            id=\"customer\">\n" +
+                    "                                                        <option value=\"\">--Please Select--</option>\n" +
+                    "                                                        <g:each var="e" in="${entityList}">\n" +
+                    "                                                            <option value=\"${e.id}\">${e.entityName}</option>\n" +
+                    "                                                        </g:each>\n" +
+                    "                                                    </select>"
+            }
+
+
+            else if (this.value === "") {
                 selectors = "";
                 $('.selectors').removeClass('col-lg-6')
             }
             $('.selectors').html(selectors);
             $('#zone').select2();
             $('#state').select2();
+            $('.hqarea').select2();
+            $('#customer').select2();
             $('#city').select2({
                 ajax: {
                     url: '/city/get',
@@ -662,9 +684,9 @@
                 $('#batch').empty()
                 $('#batch').html(option);
                 if (data.length === 0) {
-                    $('#batch').prop('disabled', true);
+                    // $('#batch').prop('disabled', true);
                 } else {
-                    $('#batch').prop('disabled', false);
+                    // $('#batch').prop('disabled', false);
 
                 }
             },
@@ -675,8 +697,62 @@
         });
     }
 
+
+    $('#addSchemeEntry').submit(function(event) {
+
+        var zone = $('.zone').val();
+        var state = $('.state').val();
+        var city = $('.city').val();
+        var hqarea = $('.hqarea').val();
+        var client = $('.customer').val();
+        var batch = $('.batch').val();
+        if((zone ==="" || zone === undefined) && (state ==="" || state === undefined ) && (city ==="" || city === undefined ) && (hqarea ==="" || hqarea === undefined) && (client ==="" || client === undefined ))
+        {
+            alert("Please enter basic details!");
+            return false;
+        }
+
+        if(batch ==="" || batch === null)
+        {
+            alert("Please select the product with batches!");
+            return false;
+        }
+        var formData = $(this);
+        $.ajax({
+            type        : 'POST', // define the type of HTTP verb we want to use (POST for our form)
+            url         : formData.attr('action'), // the url where we want to POST
+            data        : formData.serialize(), // our data object
+            success:function(data){
+                // $("#validation-status").text(data);
+                // swal('success','User updated Successfully',data);
+                swal({
+                        title: "Success!",
+                        text: "Created Successfully! ",
+                        type: "success"
+                    },
+                    function(){
+                        window.location.href = "/scheme-entry";
+
+                    }
+                );
+            },
+            error:function(data){
+                console.log("Failed");
+                // $("#validation-status").text(data.responseText);
+                // swal('error','User update Failed',data.responseText);
+                swal("Error", "Request failed!"+data.responseText, "error");
+
+            }
+        });
+        event.preventDefault();
+        // }
+
+    });
+
+
+
     function setTwoNumberDecimal(event) {
-        this.value = parseFloat(this.value.toFixed(2));
+        this.value = parseFloat(this.value);
     }
 </script>
 <g:include view="controls/footer-content.gsp"/>

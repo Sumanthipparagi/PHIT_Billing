@@ -70,7 +70,7 @@
         <!-- Inline Layout -->
         <div class="row clearfix">
             <div class="col-lg-12 col-md-12 col-sm-12">
-                <form action="/update-scheme-entry/${scheme.id}" id="form_validation" method="POST"
+                <form action="/update-scheme-entry/${scheme.id}" id="updateSchemeEntry" method="POST"
                       role="form" class="schemeRegisterForm" enctype="multipart/form-data">
                     <div class="row clearfix">
                         <div class="col-lg-12 col-md-12 col-sm-12">
@@ -128,6 +128,17 @@
                                                                 </label>
                                                             </div>
                                                         </div>
+
+                                                        <div class="col-lg-2">
+                                                            <div class="form-check">
+                                                                <input class="form-check-input" type="radio"
+                                                                       name="selections"
+                                                                       id="clientButton" value="CLIENT">
+                                                                <label class="form-check-label" for="clientButton">
+                                                                    Client
+                                                                </label>
+                                                            </div>
+                                                        </div>
                                                     </div>
                                                 </div>
 
@@ -146,32 +157,23 @@
                                                 %{--                                                --}%
                                                 %{--                                            </div>--}%
 
-                                                <div class="col-lg-6 form-group  form-float">
-                                                    <label for="customer">
-                                                        Client
-                                                    </label>
-                                                    <select class="form-control show-tick customer" name="customerIds"
-                                                            id="customer">
-                                                        <option value="">--Please Select--</option>
-                                                        <g:each var="e" in="${entityList}">
-                                                            <option value="${e.id}">${e.entityName}</option>
-                                                        </g:each>
-                                                    </select>
-                                                </div>
+                                                %{--                                                <div class="col-lg-6 form-group  form-float">--}%
+                                                %{--                                                  --}%
+                                                %{--                                                </div>--}%
 
-                                                <div class="col-lg-6 form-group  form-float">
-                                                    <label for="distributor">
-                                                        Distributor
-                                                    </label>
-                                                    <select class="form-control show-tick distributor"
-                                                            name="distributorId"
-                                                            id="distributor">
-                                                        <option value="">--Please Select--</option>
-                                                        <g:each var="d" in="${distributorList}">
-                                                            <option value="${d.id}">${d.entityName}</option>
-                                                        </g:each>
-                                                    </select>
-                                                </div>
+                                                %{--                                                <div class="col-lg-6 form-group  form-float">--}%
+                                                %{--                                                    <label for="distributor">--}%
+                                                %{--                                                        Distributor--}%
+                                                %{--                                                    </label>--}%
+                                                %{--                                                    <select class="form-control show-tick distributor"--}%
+                                                %{--                                                            name="distributorId"--}%
+                                                %{--                                                            id="distributor">--}%
+                                                %{--                                                        <option value="">--Please Select--</option>--}%
+                                                %{--                                                        <g:each var="d" in="${distributorList}">--}%
+                                                %{--                                                            <option value="${d.id}">${d.entityName}</option>--}%
+                                                %{--                                                        </g:each>--}%
+                                                %{--                                                    </select>--}%
+                                                %{--                                                </div>--}%
 
 
                                                 <div class="col-lg-6 form-group  form-float">
@@ -192,7 +194,8 @@
                                                         Batch
                                                     </label>
                                                     <select class="form-control show-tick batch" name="batch"
-                                                            id="batch">
+                                                            id="batch" >
+                                                        <option value="">-- Please Select --</option>
 
                                                         %{--                                        <g:each var="p" in="${batchList}">--}%
                                                         %{--                                            <option value="${p.batchNumber}">${p.batchNumber}</option>--}%
@@ -426,7 +429,7 @@
                                                     </label>
                                                     <input type="text" id="specialDiscountValidFrom"
                                                            class="form-control specialDiscountValidFrom date"
-                                                           name="specialDiscountValidFrom" value="${scheme.specialDiscountValidFrom}"
+                                                           name="specialDiscountValidFrom"
                                                            placeholder="Special Discount Valid From"/>
                                                 </div>
 
@@ -436,7 +439,7 @@
                                                     </label>
                                                     <input type="text" id="specialDiscountValidTo"
                                                            class="form-control specialDiscountValidTo date"
-                                                           name="specialDiscountValidTo"  value="${scheme.specialDiscountValidTo}"
+                                                           name="specialDiscountValidTo"
                                                            placeholder="Special Discount Valid to"/>
                                                 </div>
 
@@ -455,7 +458,7 @@
                                                     </label>
                                                     <input type="text" id="specialRateValidFrom"
                                                            class="form-control specialRateValidFrom date"
-                                                           name="specialRateValidFrom" value="${scheme.specialRateValidFrom.split("T")[0]}"
+                                                           name="specialRateValidFrom"
                                                            placeholder="Special Rate Valid From"/>
                                                 </div>
 
@@ -465,10 +468,11 @@
                                                     </label>
                                                     <input type="text" id="specialRateValidTo"
                                                            class="form-control specialRateValidTo date"
-                                                           name="specialRateValidTo" value="${scheme.specialRateValidTo}"
+                                                           name="specialRateValidTo"
                                                            placeholder="Special Rate Valid to"/>
                                                 </div>
                                                 <input type="hidden" name="status" value="1">
+                                                <input type="hidden" name="distributorId" value="0">
                                                 <input type="hidden" name="entityId" value="${session.getAttribute('entityId')}">
                                                 <input type="hidden" name="entityTypeId" value="${session.getAttribute('entityTypeId')}">
                                                 <input type="hidden" name="schemeStatus" value="1">
@@ -542,13 +546,11 @@
             time: false,
             weekStart: 1
         });
-        $('#specialRateValidFrom').val(moment().format('DD/MM/YYYY'));
-        $('#specialRateValidTo').val(moment().format('DD/MM/YYYY'));
-        $('#specialDiscountValidFrom').val(moment().format('DD/MM/YYYY'));
-        $('#specialDiscountValidTo').val(moment().format('DD/MM/YYYY'));
-        $('#slabValidityTo').val(moment().format('DD/MM/YYYY'));
-        $('#slabValidityFrom').val(moment().format('DD/MM/YYYY'));
 
+        if(${scheme.productId!=null})
+        {
+            getBatches(${scheme.productId});
+        }
 
         $('.selectors').removeClass('col-lg-6')
         var selectors = "";
@@ -561,8 +563,8 @@
                     "                                                </label>\n" +
                     "                                                <select class=\"form-control show-tick zone\" name=\"zoneIds\" id=\"zone\">\n" +
                     "                                                    <option value=\"\">--Please Select--</option>\n" +
-                    "                                                    <g:each var="z" in="${zoneList}" >\n" +
-                    "                                                        <option value=\"${z.id}\" <g:if test="${z.id == scheme.zoneIds}">selected</g:if>\n>${z.name}</option>\n" +
+                    "                                                    <g:each var="z" in="${zoneList}">\n" +
+                    "                                                        <option value=\"${z.id}\">${z.name}</option>\n" +
                     "                                                    </g:each>\n" +
                     "                                                </select>";
 
@@ -574,8 +576,7 @@
                     "                                                <select class=\"form-control show-tick state\" name=\"stateIds\" id=\"state\">\n" +
                     "                                                    <option value=\"\">--Please Select--</option>\n" +
                     "                                                    <g:each var="s" in="${stateList}">\n" +
-                    "                                                        <option value=\"${s.id}\"  <g:if
-test="${s.id == scheme.stateIds}">selected</g:if>\n>${s.name}</option>\n" +
+                    "                                                        <option value=\"${s.id}\">${s.name}</option>\n" +
                     "                                                    </g:each>\n" +
                     "                                                </select>"
             } else if (this.value === "CITY" && this.checked) {
@@ -598,14 +599,29 @@ test="${s.id == scheme.stateIds}">selected</g:if>\n>${s.name}</option>\n" +
                     "                                                        <option value=\"${h.id}\">${h.hqName}</option>\n" +
                     "                                                    </g:each>\n" +
                     "                                                </select>"
-            } else if (this.value === "") {
+            } else if (this.value === "CLIENT" && this.checked) {
+                selectors = "  <label for=\"customer\">\n" +
+                    "                                                        Client\n" +
+                    "                                                    </label>\n" +
+                    "                                                    <select class=\"form-control show-tick customer\" name=\"customerIds\"\n" +
+                    "                                                            id=\"customer\">\n" +
+                    "                                                        <option value=\"\">--Please Select--</option>\n" +
+                    "                                                        <g:each var="e" in="${entityList}">\n" +
+                    "                                                            <option value=\"${e.id}\">${e.entityName}</option>\n" +
+                    "                                                        </g:each>\n" +
+                    "                                                    </select>"
+            }
+
+
+            else if (this.value === "") {
                 selectors = "";
                 $('.selectors').removeClass('col-lg-6')
             }
             $('.selectors').html(selectors);
-            $('#zone').select2();
-            $('#state').select2();
-            $('#hqarea').select2();
+            $('#zone').val('${scheme.zoneIds}').select2();
+            $('#state').val('${scheme.stateIds}').select2();
+            $('.hqarea').val('${scheme.hqAreaId}').select2();
+            $('#customer').val('${scheme.customerIds}').select2();
             $('#city').select2({
                 ajax: {
                     url: '/city/get',
@@ -626,11 +642,14 @@ test="${s.id == scheme.stateIds}">selected</g:if>\n>${s.name}</option>\n" +
                 placeholder: 'Search for cities',
                 minimumInputLength: 2
             });
+
         }).change();
         $('.selectors').html(selectors);
-        $('#zone').select2();
-        $('#state').select2();
-        $('#hqarea').select2();
+        $('#zone').val('${scheme.zoneIds}').select2();
+        $('#state').val('${scheme.stateIds}').select2();
+        $('.hqarea').val('${scheme.hqAreaId}').select2();
+
+
         $('#cityId').select2({
             ajax: {
                 url: '/city/get',
@@ -651,10 +670,10 @@ test="${s.id == scheme.stateIds}">selected</g:if>\n>${s.name}</option>\n" +
             placeholder: 'Search for cities',
             minimumInputLength: 2
         });
-        $('#productId').val(${scheme.productId}).select2();
-        $('#customer').val(${scheme.customerIds}).select2();
-        $('#distributor').val(${scheme.distributorId}).select2();
+        $('#productId').val('${scheme.productId}').select2();
+        $('#customer').val('${scheme.customerIds}').select2();
 
+        // $('#distributor').select2()
 
         // $('#batch').select2()
     });
@@ -669,12 +688,13 @@ test="${s.id == scheme.stateIds}">selected</g:if>\n>${s.name}</option>\n" +
                 for (var i = 0; i < data.length; i++) {
                     option += '<option value="' + data[i].batchNumber + '">' + data[i].batchNumber + '</option>';
                 }
-                $('#batch').empty()
+                $('#batch').empty();
                 $('#batch').html(option);
+                $('.batch').val('${scheme.batch}').change();
                 if (data.length === 0) {
-                    $('#batch').prop('disabled', true);
+                    // $('#batch').prop('disabled', true);
                 } else {
-                    $('#batch').prop('disabled', false);
+                    // $('#batch').prop('disabled', false);
 
                 }
             },
@@ -685,10 +705,110 @@ test="${s.id == scheme.stateIds}">selected</g:if>\n>${s.name}</option>\n" +
         });
     }
 
-    function setTwoNumberDecimal(event) {
-        this.value = parseFloat(this.value.toFixed(2));
+
+    $('#updateSchemeEntry').submit(function(event) {
+
+        var zone = $('.zone').val();
+        var state = $('.state').val();
+        var city = $('.city').val();
+        var hqarea = $('.hqarea').val();
+        var client = $('.customer').val();
+        var batch = $('.batch').val();
+        if((zone ==="" || zone === undefined) && (state ==="" || state === undefined ) && (city ==="" || city === undefined ) && (hqarea ==="" || hqarea === undefined) && (client ==="" || client === undefined ))
+        {
+            alert("Please enter basic details!");
+            return false;
+        }
+
+        if(batch ==="" || batch === null)
+        {
+            alert("Please select the product with batches!");
+            return false;
+        }
+        var formData = $(this);
+        $.ajax({
+            type        : 'POST', // define the type of HTTP verb we want to use (POST for our form)
+            url         : formData.attr('action'), // the url where we want to POST
+            data        : formData.serialize(), // our data object
+            success:function(data){
+                // $("#validation-status").text(data);
+                // swal('success','User updated Successfully',data);
+                swal({
+                        title: "Success!",
+                        text: "Updated Successfully! ",
+                        type: "success"
+                    },
+                    function(){
+                        window.location.href = "/scheme-entry";
+
+                    }
+                );
+            },
+            error:function(data){
+                console.log("Failed");
+                // $("#validation-status").text(data.responseText);
+                // swal('error','User update Failed',data.responseText);
+                swal("Error", "Request failed!"+data.responseText, "error");
+
+            }
+        });
+        event.preventDefault();
+        // }
+
+    });
+
+
+    if('${scheme.specialRateValidFrom}'!==null && '${scheme.specialRateValidFrom}'!=='')
+    {
+        $('#specialRateValidFrom').val(moment('${scheme.specialRateValidFrom}').format('DD/MM/YYYY'));
+    }
+    else {
+        $('#specialRateValidFrom').val('')
     }
 
+    if('${scheme.specialRateValidTo}'!==null && '${scheme.specialRateValidTo}'!=='')
+    {
+        $('#specialRateValidTo').val(moment('${scheme.specialRateValidTo}').format('DD/MM/YYYY'));
+    }
+    else {
+        $('#specialRateValidTo').val('')
+    }
+
+    if('${scheme.specialDiscountValidFrom}'!==null && '${scheme.specialDiscountValidFrom}'!=='')
+    {
+        $('#specialDiscountValidFrom').val(moment('${scheme.specialDiscountValidFrom}').format('DD/MM/YYYY'));
+    }
+    else {
+        $('#specialDiscountValidFrom').val('')
+    }
+
+    if('${scheme.specialDiscountValidTo}'!=='' && '${scheme.specialDiscountValidTo}'!== null)
+    {
+        $('#specialDiscountValidTo').val(moment('${scheme.specialDiscountValidTo}').format('DD/MM/YYYY'));
+    }
+    else {
+        $('#specialDiscountValidTo').val('')
+    }
+
+    if('${scheme.slabValidityTo}'!==null && '${scheme.slabValidityTo}'!=='')
+    {
+        $('#slabValidityTo').val(moment('${scheme.slabValidityTo}').format('DD/MM/YYYY'));
+    }
+    else {
+        $('#slabValidityTo').val('')
+    }
+
+    if('${scheme.slabValidityFrom}'!==null && '${scheme.slabValidityFrom}'!=='')
+    {
+        $('#slabValidityFrom').val(moment('${scheme.slabValidityFrom}').format('DD/MM/YYYY'));
+    }
+    else {
+        $('#slabValidityFrom').val('')
+    }
+
+    function setTwoNumberDecimal(event) {
+        this.value = parseFloat(this.value);
+    }
 </script>
 <g:include view="controls/footer-content.gsp"/>
 <script>

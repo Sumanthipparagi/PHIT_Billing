@@ -92,6 +92,7 @@
                                         <div class="col-md-6 form-group  form-float">
                                             <label for="productCode">
                                                 Product Code
+                                                <span class="required-indicator" style="color: red;">*</span>
                                             </label>
                                             <input type="text" id="productCode" class="form-control productCode"
                                                    name="productCode"
@@ -101,6 +102,7 @@
                                         <div class="col-md-6 form-group  form-float">
                                             <label for="productName">
                                                 Product Name
+                                                <span class="required-indicator" style="color: red;">*</span>
                                             </label>
                                             <input type="text" id="productName" class="form-control productName"
                                                    name="productName"
@@ -110,6 +112,7 @@
                                         <div class="col-md-6 form-group  form-float">
                                             <label for="manufacturerId">
                                                 Manufacturer
+                                                <span class="required-indicator" style="color: red;">*</span>
                                             </label>
                                             <select class="form-control show-tick manufacturerId"
                                                     name="manufacturerId" id="manufacturerId" style="border: 0">
@@ -145,6 +148,7 @@
                                         <div class="col-md-6 form-group  form-float">
                                             <label for="division">
                                                 Division
+                                                <span class="required-indicator" style="color: red;">*</span>
                                             </label>
                                             <select class="form-control show-tick division" name="division"
                                                     id="division" required>
@@ -163,6 +167,7 @@
                                         <div class="col-md-6 form-group  form-float">
                                             <label for="composition">
                                                 Composition
+                                                <span class="required-indicator" style="color: red;">*</span>
                                             </label>
 
                                             <select class="form-control show-tick composition" name="composition"
@@ -233,6 +238,7 @@
                                         <div class="col-lg-6 form-group  form-float">
                                             <label for="perLotQuantity">
                                                 Per Lot quantity
+                                                <span class="required-indicator" style="color: red;">*</span>
                                             </label>
                                             <input type="number" id="perLotQuantity" class="form-control perLotQuantity"
                                                    name="perLotQuantity"
@@ -242,6 +248,7 @@
                                         <div class="col-lg-6 form-group  form-float">
                                             <label for="purchaseRate">
                                                 Purchase Rate
+                                                <span class="required-indicator" style="color: red;">*</span>
                                             </label>
                                             <input type="text" id="purchaseRate" class="form-control purchaseRate"
                                                    name="purchaseRate" onblur="setTwoNumberDecimal" step="0.25" value="0.00"
@@ -251,6 +258,7 @@
                                         <div class="col-lg-6 form-group  form-float">
                                             <label for="purchaseTradeDiscount">
                                                 Purchase Trade Discount
+                                                <span class="required-indicator" style="color: red;">*</span>
                                             </label>
                                             <input type="text" id="purchaseTradeDiscount" onblur="setTwoNumberDecimal"
                                                    class="form-control purchaseTradeDiscount" name="purchaseTradeDiscount"
@@ -260,6 +268,7 @@
                                         <div class="col-lg-6 form-group  form-float">
                                             <label for="purchaseMarginPercent">
                                                 Purchase Margin percent
+                                                <span class="required-indicator" style="color: red;">*</span>
                                             </label>
                                             <input type="text" id="purchaseMarginPercent" onblur="setTwoNumberDecimal"
                                                    class="form-control purchaseMarginPercent" name="purchaseMarginPercent"
@@ -269,6 +278,7 @@
                                         <div class="col-lg-6 form-group  form-float">
                                             <label for="saleRate">
                                                 Sale Rate
+                                                <span class="required-indicator" style="color: red;">*</span>
                                             </label>
                                             <input type="text" id="saleRate" onblur="setTwoNumberDecimal"
                                                    class="form-control saleRate" name="saleRate"
@@ -278,6 +288,7 @@
                                         <div class="col-lg-6 form-group  form-float">
                                             <label for="saleTradeDiscount">
                                                 Sale Trade Discount
+                                                <span class="required-indicator" style="color: red;">*</span>
                                             </label>
                                             <input type="text" id="saleTradeDiscount" onblur="setTwoNumberDecimal"
                                                    class="form-control saleTradeDiscount" name="saleTradeDiscount"
@@ -287,6 +298,7 @@
                                         <div class="col-lg-6 form-group  form-float">
                                             <label for="salesmenPercent">
                                                 Sale Margin Percent
+                                                <span class="required-indicator" style="color: red;">*</span>
                                             </label>
                                             <input type="text" id="salesmenPercent" onblur="setTwoNumberDecimal"
                                                    class="form-control saleTradeDiscount" name="salesmenPercent"
@@ -296,6 +308,7 @@
                                         <div class="col-lg-6 form-group  form-float">
                                             <label for="vipPRate">
                                                 VIP Purchase Rate
+                                                <span class="required-indicator" style="color: red;">*</span>
                                             </label>
                                             <input type="text" id="vipPRate" onblur="setTwoNumberDecimal"
                                                    class="form-control vipPRate" name="vipPRate"
@@ -305,6 +318,7 @@
                                         <div class="col-lg-6 form-group  form-float">
                                             <label for="vipSRate">
                                                 VIP Sale Rate
+                                                <span class="required-indicator" style="color: red;">*</span>
                                             </label>
                                             <input type="text" id="vipSRate" onblur="setTwoNumberDecimal"
                                                    class="form-control vipPRate" name="vipSRate"
@@ -314,6 +328,7 @@
                                         <div class="col-lg-6 form-group  form-float">
                                             <label for="mrp">
                                                 MRP
+                                                <span class="required-indicator" style="color: red;">*</span>
                                             </label>
                                             <input type="text" id="mrp" onblur="setTwoNumberDecimal"
                                                    class="form-control mrp" name="mrp"
@@ -323,6 +338,7 @@
                                         <div class="col-lg-6 form-group  form-float">
                                             <label for="ptr">
                                                 PTR
+                                                <span class="required-indicator" style="color: red;">*</span>
                                             </label>
                                             <input type="text" id="ptr" onblur="setTwoNumberDecimal"
                                                    class="form-control ptr" name="ptr"
@@ -332,6 +348,7 @@
                                         <div class="col-lg-6 form-group  form-float">
                                             <label for="restrictedRate">
                                                 Restricted Rate
+                                                <span class="required-indicator" style="color: red;">*</span>
                                             </label>
                                             <input type="text" id="restrictedRate" onblur="setTwoNumberDecimal"
                                                    class="form-control ptr" name="restrictedRate"
@@ -353,6 +370,7 @@
                                         <div class="col-lg-6 form-group  form-float">
                                             <label for="nriRate">
                                                 NRI Rate
+                                                <span class="required-indicator" style="color: red;">*</span>
                                             </label>
                                             <input type="number" id="nriRate" onblur="setTwoNumberDecimal"
                                                    class="form-control ptr" name="nriRate"
@@ -362,6 +380,7 @@
                                         <div class="col-lg-6 form-group  form-float">
                                             <label for="salesmanCommission">
                                                 Salesman Commission
+                                                <span class="required-indicator" style="color: red;">*</span>
                                             </label>
                                             <input type="number" id="salesmanCommission" onblur="setTwoNumberDecimal"
                                                    class="form-control salesmanCommission" name="salesmanCommission"
@@ -371,6 +390,7 @@
                                         <div class="col-lg-6 form-group  form-float">
                                             <label for="grossProfitPercentage">
                                                 Gross Profit Percentage
+                                                <span class="required-indicator" style="color: red;">*</span>
                                             </label>
                                             <input type="number" id="grossProfitPercentage" onblur="setTwoNumberDecimal"
                                                    class="form-control grossProfitPercentage" name="grossProfitPercentage"
@@ -380,6 +400,7 @@
                                         <div class="col-lg-6 form-group  form-float">
                                             <label for="taxId">
                                                 Tax
+                                                <span class="required-indicator" style="color: red;">*</span>
                                             </label>
                                             <select class="form-control show-tick taxId" name="taxId" id="taxId">
                                                 <g:each var="t" in="${tax}">
@@ -390,6 +411,7 @@
                                         <div class="col-lg-6 form-group  form-float">
                                             <label for="saleType">
                                                 Sale Type
+                                                <span class="required-indicator" style="color: red;">*</span>
                                             </label>
                                             <select class="form-control show-tick saleType" name="saleType" id="saleType">
                                                     <option value="${Constants.SALEABLE}">SALEABLE</option>
@@ -397,15 +419,15 @@
                                                     <option value="${Constants.PROMOTIONAL}">PROMOTIONAL</option>
                                             </select>
                                         </div>
-                                        <div class="col-lg-6 form-group  form-float">
-                                            <label for="thresholdLevel">
-                                                Threshold Level
-                                            </label>
-                                            <input type="text" id="thresholdLevel"
-                                                   class="form-control thresholdLevel" name="thresholdLevel"
-                                                   placeholder="Threshold Level"
-                                                   />
-                                        </div>
+%{--                                        <div class="col-lg-6 form-group  form-float">--}%
+%{--                                            <label for="thresholdLevel">--}%
+%{--                                                Threshold Level--}%
+%{--                                            </label>--}%
+%{--                                            <input type="text" id="thresholdLevel"--}%
+%{--                                                   class="form-control thresholdLevel" name="thresholdLevel"--}%
+%{--                                                   placeholder="Threshold Level"--}%
+%{--                                                   />--}%
+%{--                                        </div>--}%
                                         <div class="col-lg-6 form-group  form-float">
                                             <label for="orderQuantity">
                                                 Order Quantity
@@ -448,15 +470,15 @@
                                                 </g:each>
                                             </select>
                                         </div>
-                                        <div class="col-lg-6 form-group  form-float">
-                                            <label for="sendMail">
-                                                Send Mail
-                                            </label>
-                                            <select class="form-control show-tick sendMail" name="sendMail" id="sendMail">
-                                                    <option value="0">YES</option>
-                                                    <option value="1">NO</option>
-                                            </select>
-                                        </div>
+%{--                                        <div class="col-lg-6 form-group  form-float">--}%
+%{--                                            <label for="sendMail">--}%
+%{--                                                Send Mail--}%
+%{--                                            </label>--}%
+%{--                                            <select class="form-control show-tick sendMail" name="sendMail" id="sendMail">--}%
+%{--                                                    <option value="0">YES</option>--}%
+%{--                                                    <option value="1">NO</option>--}%
+%{--                                            </select>--}%
+%{--                                        </div>--}%
                                         <div class="col-lg-6 form-group  form-float">
                                             <label for="discountAllowed">
                                                 Discount Allowed
@@ -494,11 +516,13 @@
                                         <div class="col-lg-6 form-group  form-float">
                                             <label for="saleMarginPercent">
                                                 Sale Margin Percent
+                                                <span class="required-indicator" style="color: red;">*</span>
+
                                             </label>
-                                            <input type="number" id="saleMarginPercent"
+                                            <input type="number" id="saleMarginPercent" onblur="setTwoNumberDecimal"
                                                    class="form-control saleMarginPercent" name="saleMarginPercent"
-                                                   placeholder="Sale Margin Percent"
-                                                   required/>
+                                                   placeholder="Sale Margin Percent" value="0.00" step="0.25" required
+                                                   />
                                         </div>
                                        %{-- <div class="col-lg-6 form-group  form-float">
                                             <label for="soundexCode">
@@ -516,17 +540,17 @@
                                             <textarea type="text" id="narration"
                                                    class="form-control narration" name="narration"
                                                    placeholder="Narration"
-                                                   required></textarea>
+                                                   ></textarea>
                                         </div>
-                                        <div class="col-lg-6 form-group  form-float">
-                                            <label for="restrictedAssignment">
-                                                Restricted Assignment
-                                            </label>
-                                            <input type="text" id="restrictedAssignment"
-                                                   class="form-control restrictedAssignment" name="restrictedAssignment"
-                                                   placeholder="Restricted Assignment"
-                                                   required/>
-                                        </div>
+%{--                                        <div class="col-lg-6 form-group  form-float">--}%
+%{--                                            <label for="restrictedAssignment">--}%
+%{--                                                Restricted Assignment--}%
+%{--                                            </label>--}%
+%{--                                            <input type="text" id="restrictedAssignment"--}%
+%{--                                                   class="form-control restrictedAssignment" name="restrictedAssignment"--}%
+%{--                                                   placeholder="Restricted Assignment"--}%
+%{--                                                   required/>--}%
+%{--                                        </div>--}%
                                        %{-- <div class="col-lg-6 form-group  form-float">
                                             <label for="entityType">
                                                 Entity Type

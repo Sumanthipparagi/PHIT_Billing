@@ -1,4 +1,4 @@
-<%@ page import="phitb_ui.UtilsService" %>
+<%@ page import="phitb_ui.Constants; phitb_ui.UtilsService" %>
 <div class="overlay_menu">
     <button class="btn btn-primary btn-icon btn-icon-mini btn-round"><i class="zmdi zmdi-close"></i></button>
 
@@ -554,10 +554,15 @@
                         <li><a href="/accounts-list">Accounts List</a></li>
 
                         <g:if test="${UtilsService.isPermitted("VIEW_ENTITY_REGISTER", session.getAttribute("permittedFeatures").toString())}">
-                            <li><a href="/entity-register">Entity Register</a></li>
+                            <g:if test="${session.getAttribute('role') == Constants.ENTITY_ADMIN ||
+                                    session.getAttribute('role') == Constants.SUPER_USER}" >
+                                <li><a href="/entity-register">Entity Register</a></li>
+                            </g:if>
                         </g:if>
                         <g:if test="${UtilsService.isPermitted("VIEW_USER_REGISTER", session.getAttribute("permittedFeatures").toString())}">
-                            <li><a href="/user-register">User Register</a></li>
+                            <g:if test="${session.getAttribute('role') == Constants.SUPER_USER}">
+                                <li><a href="/user-register">User Register</a></li>
+                            </g:if>
                         </g:if>
                         <g:if test="${UtilsService.isPermitted("VIEW_CUSTOMER_GROUP_REGISTER", session.getAttribute("permittedFeatures").toString())}">
                             <li><a href="/customer-group-register">Customer Group Register</a></li>

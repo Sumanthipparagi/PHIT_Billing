@@ -48,6 +48,12 @@ class SchemeConfiguration implements Serializable, LogicalDelete<SchemeConfigura
         customerIds nullable: true
         distributorId nullable: true
         hqAreaId nullable: true
+        specialRateValidFrom nullable: true
+        specialRateValidTo nullable: true
+        specialDiscountValidFrom nullable: true
+        specialDiscountValidTo nullable: true
+        slabValidityTo nullable: true
+        slabValidityFrom nullable: true
     }
 
     boolean isUpdatable
