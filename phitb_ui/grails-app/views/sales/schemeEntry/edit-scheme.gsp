@@ -672,7 +672,6 @@
         });
         $('#productId').val('${scheme.productId}').select2();
         $('#customer').val('${scheme.customerIds}').select2();
-        $('.batch').val('${scheme.batch}').change();
 
         // $('#distributor').select2()
 
@@ -691,6 +690,7 @@
                 }
                 $('#batch').empty();
                 $('#batch').html(option);
+                $('.batch').val('${scheme.batch}').change();
                 if (data.length === 0) {
                     // $('#batch').prop('disabled', true);
                 } else {
