@@ -335,7 +335,7 @@
                         data: products,
                         dropdownAutoWidth: true,
                         allowClear: true,
-                        width: 'auto'
+                        width: '0'
                     }
                 },
                 {type: 'text', readOnly: true},
@@ -1411,7 +1411,9 @@
 
             this.$textarea.css({
                 height: $(this.TD).height() + 4,
-                'min-width': $(this.TD).outerWidth() - 4
+                'min-width': 0, //this is workaround to enable mouse selection
+                'opacity': 0
+                //'min-width': $(this.TD).outerWidth() - 4
             });
 
             //display the list

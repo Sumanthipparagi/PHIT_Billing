@@ -284,7 +284,7 @@
         '<strong>Sale Rate</strong>',
         '<strong>MRP</strong>',
         '<strong>Pack</strong>',
-        '<strong>GST</strong>',
+        '<strong>GST%</strong>',
         'SGST',
         'CGST',
         'IGST',
@@ -343,7 +343,7 @@
                         data: products,
                         dropdownAutoWidth: true,
                         allowClear: true,
-                        width: 'auto'
+                        width: '0'
                     }
                 },
                 {type: 'text', readOnly: true},
@@ -451,7 +451,14 @@
                         batchHot.selectCell(0, 0);
                         $("#batchTable").focus();
                     }
-                } else if (selection === 14 || selection === 7) {
+                }
+                else if(selection === 0)
+                {
+                    var id = hot.getDataAtCell(row, 15);
+                    if (e.keyCode === 13)
+                        deleteTempStockRow(id, row);
+                }
+                else if (selection === 14 || selection === 7) {
                     if ((e.keyCode === 13 || e.keyCode === 9) && !readOnly) {
                         //check if sqty is empty
                         var sqty = hot.getDataAtCell(row, 4);
@@ -754,7 +761,7 @@
             hiddenColumns: true,
             hiddenColumns: {
                 // specify columns hidden by default
-                columns: [12]
+                columns: [9,10,11,12]
             },
             minSpareRows: 0,
             minSpareCols: 0,
@@ -857,9 +864,10 @@
                         });
                         if (batchdt?.length > 0) {
                             batchHot.loadData(batchData);
-                            $("#batchTable").focus();
-                            if (selectCell)
+                            if (selectCell) {
+                                $("#batchTable").focus();
                                 batchHot.selectCell(0, 0);
+                            }
                         }
                     }
                 },
@@ -1489,7 +1497,7 @@
         if (ctrl) {
             if (alt) {
                 var result = false;
-                if (key === 'd' || key === 'ḍ') {
+                if (key === 'c') {
                     result = confirm("Delete this row?");
                     if (result) {
                         const selection = hot.getSelected()[0];
@@ -1646,7 +1654,9 @@
 
             this.$textarea.css({
                 height: $(this.TD).height() + 4,
-                'min-width': $(this.TD).outerWidth() - 4
+                'min-width': 0, //this is workaround to enable mouse selection
+                'opacity': 0
+                //'min-width': $(this.TD).outerWidth() - 4
             });
 
             //display the list

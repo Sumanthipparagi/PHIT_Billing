@@ -148,7 +148,7 @@
 
         <div class="row clearfix">
             <div class="col-lg-4" style="margin-bottom: 10px;">
-                <p style="margin: 0; font-size: 10px;">Keyboard Shortcuts - Delete Row: <strong>Ctrl+Alt+D</strong>, Reset Table: <strong>Ctrl+Alt+R</strong>
+                <p style="margin: 0; font-size: 10px;">Keyboard Shortcuts - Delete Row: <strong>Ctrl+Alt+C</strong>, Reset Table: <strong>Ctrl+Alt+R</strong>
                 </p>
             </div>
             <div class="col-lg-4" style="margin-bottom: 10px;">
@@ -265,7 +265,7 @@
         '<strong>Sale Rate</strong>',
         '<strong>MRP</strong>',
         '<strong>Pack</strong>',
-        '<strong>GST</strong>',
+        '<strong>GST%</strong>',
         'SGST',
         'CGST',
         'IGST',
@@ -293,6 +293,7 @@
     var customers = [];
     var readOnly = false;
     var scheme = null;
+    var stateId = null;
     $(document).ready(function () {
         $("#supplier").select2();
         $('#date').val(moment().format('YYYY-MM-DD'));
@@ -326,7 +327,7 @@
                         data: products,
                         dropdownAutoWidth: true,
                         allowClear: true,
-                        width: 'auto'
+                        width: '0'
                     }
                 },
                 {type: 'text', readOnly: true},
@@ -345,7 +346,7 @@
                         data: taxRegister,
                         dropdownAutoWidth: true,
                         allowClear: true,
-                        width: 'auto'
+                        width: '0'
                     }
                 },
                 {type: 'text',readOnly:true},
@@ -417,7 +418,13 @@
                         batchHot.selectCell(0, 0);
                         $("#batchTable").focus();
                     }
-                } else if (selection === 16) {
+                }
+                else if(selection === 0)
+                {
+                    if (e.keyCode === 13)
+                        deleteTempStockRow("", row);
+                }
+                else if (selection === 16) {
                     if ((e.keyCode === 13 || e.keyCode === 9) && !readOnly) {
                         //check if sqty is empty
                         var sqty = hot.getDataAtCell(row, 4);
@@ -427,10 +434,13 @@
                             var dt = hot.getDataAtRow(row);
                             dt.push(batchId);
                             console.log("Data saved");
+                            for(var j = 0; j < 15; j++) {
+                                hot.setCellMeta(row, j, 'readOnly', true);
+                            }
                             mainTableRow = row + 1;
                             calculateTotalAmt();
                             hot.alter('insert_row');
-                            hot.selectCell(mainTableRow, 1);
+                            hot.selectCell(mainTableRow, 0);
 
                         } else {
                             alert("Invalid Quantity, please enter quantity greater than 0");
@@ -633,9 +643,9 @@
             }
         });
 
-        var stateId = $('#supplier option:selected').attr('data-state')
+        stateId = $('#supplier option:selected').attr('data-state');
         $('#supplier').change(function () {
-            stateId = $('#supplier option:selected').attr('data-state')
+            stateId = $('#supplier option:selected').attr('data-state');
         });
 
         function productsDropdownRenderer(instance, td, row, col, prop, value, cellProperties) {
@@ -752,7 +762,7 @@
             hiddenColumns: true,
             hiddenColumns: {
                 // specify columns hidden by default
-                columns: [13]
+                columns: [10,11,12,13]
             },
             minSpareRows: 0,
             minSpareCols: 0,
@@ -841,9 +851,11 @@
                         });
                         if (batchdt?.length > 0) {
                             batchHot.loadData(batchData);
-                            $("#batchTable").focus();
-                            if (selectCell)
+
+                            if (selectCell) {
+                                $("#batchTable").focus();
                                 batchHot.selectCell(0, 0);
+                            }
                         }
                     }
                 },
@@ -865,6 +877,8 @@
         $('#duedate').prop("readonly", false);
         $("#duedate").val(moment().add(noOfCrDays, 'days').format('YYYY-MM-DD'));
         $('#duedate').prop("readonly", true);
+
+        calculateTaxes();
     }
 
     function calculateTotalAmt() {
@@ -1329,7 +1343,7 @@
         if (ctrl) {
             if (alt) {
                 var result = false;
-                if (key === 'd' || key === 'ḍ') {
+                if (key === 'c') {
                     result = confirm("Delete this row?");
                     if (result) {
                         const selection = hot.getSelected()[0];
@@ -1355,6 +1369,44 @@
         }
     });
 
+
+    function calculateTaxes() {
+        if(hot == null)
+            return;
+        var data = hot.getData();
+        for (var row = 0; row < data.length; row++) {
+            var sgstAmount = Number(hot.getDataAtCell(row, 14));
+            var cgstAmount = Number(hot.getDataAtCell(row, 15));
+            var igstAmount = Number(hot.getDataAtCell(row, 16));
+
+            var sgstPercentage = hot.getDataAtCell(row, 19);
+            var cgstPercentage = hot.getDataAtCell(row, 20);
+
+            if (stateId === '${session.getAttribute('stateId')}') {
+                if(igstAmount !== 0)
+                {
+                    hot.setDataAtCell(row, 14, Number(igstAmount/2).toFixed(2)); //SGST
+                    hot.setDataAtCell(row, 15, Number(igstAmount/2).toFixed(2)); //CGST
+                    hot.setDataAtCell(row, 16, 0); //IGST
+
+                    hot.setDataAtCell(row, 19, sgstPercentage);
+                    hot.setDataAtCell(row, 20, cgstPercentage);
+                    hot.setDataAtCell(row, 21, 0);
+                }
+            } else {
+                if(sgstAmount !== 0 && cgstAmount !== 0) {
+                    hot.setDataAtCell(row, 14, 0); //SGST
+                    hot.setDataAtCell(row, 15, 0); //CGST
+                    hot.setDataAtCell(row, 16, (sgstAmount + cgstAmount).toFixed(2)); //IGST
+
+                    hot.setDataAtCell(row, 19, 0);
+                    hot.setDataAtCell(row, 20, 0);
+                    hot.setDataAtCell(row, 21, sgstPercentage + cgstPercentage);
+                }
+            }
+        }
+    }
+
     /// select2 plugin
     (function (Handsontable) {
         "use strict";
@@ -1373,12 +1425,16 @@
             this.TEXTAREA = document.createElement('input');
             this.TEXTAREA.setAttribute('type', 'text');
             this.$textarea = $(this.TEXTAREA);
+
             Handsontable.dom.addClass(this.TEXTAREA, 'handsontableInput');
+
             this.textareaStyle = this.TEXTAREA.style;
             this.textareaStyle.width = 0;
             this.textareaStyle.height = 0;
+
             this.TEXTAREA_PARENT = document.createElement('DIV');
             Handsontable.dom.addClass(this.TEXTAREA_PARENT, 'handsontableInputHolder');
+
             this.textareaParentStyle = this.TEXTAREA_PARENT.style;
             this.textareaParentStyle.top = 0;
             this.textareaParentStyle.left = 0;
@@ -1411,7 +1467,7 @@
 
 
             //Process only events that have been fired in the editor
-            if (!$(event.target).hasClass('select2-input') || event?.isImmediatePropagationStopped()) {
+            if (!$(event.target).hasClass('select2-input') /*|| event?.isImmediatePropagationStopped()*/) {
                 return;
             }
             if (event.keyCode === 17 || event.keyCode === 224 || event.keyCode === 91 || event.keyCode === 93) {
@@ -1473,25 +1529,17 @@
 
         };
 
-
-        var onBeforeMouseDown = function (event) {
-            var instance = this;
-            var that = instance.instance.getSelected()
-            this.$dropdownContainer.on('mousedown', function (evt) {
-                evt.stopPropagation();
-            });
-        };
-
-
         Select2Editor.prototype.open = function (keyboardEvent) {
             this.refreshDimensions();
+            this.textareaParentStyle.display = 'block';
             this.textareaParentStyle.zIndex = 20000;
             this.instance.addHook('beforeKeyDown', onBeforeKeyDown);
-            this.instance.addHook('afterOnCellMouseDown', onBeforeMouseDown);
-            this.textareaParentStyle.display = 'block';
+
             this.$textarea.css({
                 height: $(this.TD).height() + 4,
-                'min-width': $(this.TD).outerWidth() - 4
+                'min-width': 0, //this is workaround to enable mouse selection
+                'opacity': 0
+                //'min-width': $(this.TD).outerWidth() - 4,
             });
 
             //display the list
@@ -1509,13 +1557,9 @@
                 var keyText = (String.fromCharCode((96 <= key && key <= 105) ? key - 48 : key)).toLowerCase();
                 console.log("KeyText: " + keyText);
                 self.$textarea.select2('search', keyText.slice(0, -1));
-                $('.handsontableInput').children().show()
-            } else {
-                $('.handsontableInput').children().hide()
             }
-            Handsontable.renderers.cellDecorator.apply(this, arguments);
-        };
 
+        };
 
         Select2Editor.prototype.init = function () {
             Handsontable.editors.TextEditor.prototype.init.apply(this, arguments);
@@ -1524,14 +1568,10 @@
         Select2Editor.prototype.close = function () {
             this.instance.listen();
             this.instance.removeHook('beforeKeyDown', onBeforeKeyDown);
-            this.instance.removeHook('afterOnCellMouseDown', onBeforeMouseDown);
             this.$textarea.off();
             this.$textarea.hide();
-            $('.handsontableInput').children().hide();
             Handsontable.editors.TextEditor.prototype.close.apply(this, arguments);
-            $('.handsontableInput').children().show();
         };
-
 
         Select2Editor.prototype.val = function (value) {
             if (typeof value == 'undefined') {
@@ -1568,11 +1608,6 @@
 
     })(Handsontable);
 
-
-
-    // window.onbeforeunload = function() {
-    //     return "Data will be lost if you leave the page, are you sure?";
-    // };
 
 </script>
 
