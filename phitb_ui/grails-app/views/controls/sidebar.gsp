@@ -560,7 +560,7 @@
                             </g:if>
                         </g:if>
                         <g:if test="${UtilsService.isPermitted("VIEW_USER_REGISTER", session.getAttribute("permittedFeatures").toString())}">
-                            <g:if test="${session.getAttribute('role') == Constants.SUPER_USER}">
+                            <g:if test="${session.getAttribute('role') == Constants.ENTITY_ADMIN || session.getAttribute('role') == Constants.SUPER_USER}">
                                 <li><a href="/user-register">User Register</a></li>
                             </g:if>
                         </g:if>

@@ -31,6 +31,7 @@ class FinancialYearMasterService {
                 entity{
                     eq('id',entityId)
                 }
+                eq('deleted', false)
             }
         }
     }

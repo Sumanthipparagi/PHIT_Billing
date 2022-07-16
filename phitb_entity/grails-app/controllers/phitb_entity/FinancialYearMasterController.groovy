@@ -65,7 +65,9 @@ class FinancialYearMasterController {
     def getAllByEntityId() {
         try {
             if (params.id) {
-                respond financialYearMasterService.getAllByEntity(params.limit, params.offset,Long.parseLong(params.id))
+                def financialYearMaster =  financialYearMasterService.getAllByEntity(params.limit, params.offset,Long.parseLong(params.id))
+                println(params.id + "---" + financialYearMaster.toString())
+                respond financialYearMaster
             }
         }
         catch (ResourceNotFoundException ex)
