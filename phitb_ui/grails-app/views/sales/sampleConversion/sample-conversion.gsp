@@ -393,7 +393,7 @@
 
                         if(Number(sampleQty) === 0)
                         {
-                            alert("Sample quantity should not be greater");
+                            alert("Please Enter a valid quantity");
                             waitingSwal.close();
                             return;
                         }

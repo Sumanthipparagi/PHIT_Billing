@@ -103,6 +103,7 @@ class SampleConversionController
                 }
             }
             else {
+                UUID uuid
                 def batchResponse = new ProductService().getBatchesOfProduct(params.sampleProduct)
                 JSONArray batchArray = JSON.parse(batchResponse.readEntity(String.class)) as JSONArray
                 JSONObject stockObject = new JSONObject()
@@ -134,7 +135,7 @@ class SampleConversionController
                         stockObject.put("entityTypeId", session.getAttribute('entityTypeId'));
                         stockObject.put("createdUser", session.getAttribute('userId'));
                         stockObject.put("modifiedUser", session.getAttribute('userId'));
-                        stockObject.put("uuid", "");
+                        stockObject.put("uuid", UUID.randomUUID());
                     }
                 }
                 def saveStock = new InventoryService().stockBookSave(stockObject)
