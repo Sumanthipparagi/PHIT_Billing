@@ -45,11 +45,11 @@
         <div class="block-header">
             <div class="row">
                 <div class="col-lg-5 col-md-5 col-sm-12">
-                    <h2>Add Products</h2>
+                    <h2>Update Products</h2>
                     <ul class="breadcrumb padding-0">
                         <li class="breadcrumb-item"><a href="/"><i class="zmdi zmdi-home"></i></a></li>
                         <li class="breadcrumb-item"><a href="/product">Product</a></li>
-                        <li class="breadcrumb-item active">Add Products</li>
+                        <li class="breadcrumb-item active">Update Products</li>
                     </ul>
                 </div>
 
@@ -92,6 +92,7 @@
                                         <div class="col-md-6 form-group  form-float">
                                             <label for="productCode">
                                                 Product Code
+                                                <span class="required-indicator" style="color: red;">*</span>
                                             </label>
                                             <input type="text" id="productCode" class="form-control productCode"
                                                    name="productCode"
@@ -101,6 +102,7 @@
                                         <div class="col-md-6 form-group  form-float">
                                             <label for="productName">
                                                 Product Name
+                                                <span class="required-indicator" style="color: red;">*</span>
                                             </label>
                                             <input type="text" id="productName" class="form-control productName"
                                                    name="productName"
@@ -146,6 +148,7 @@
                                         <div class="col-md-6 form-group  form-float">
                                             <label for="division">
                                                 Division
+                                                <span class="required-indicator" style="color: red;">*</span>
                                             </label>
                                             <select class="form-control show-tick division" name="division"
                                                     id="division" required>
@@ -238,6 +241,7 @@
                                         <div class="col-lg-6 form-group  form-float">
                                             <label for="perLotQuantity">
                                                 Per Lot quantity
+                                                <span class="required-indicator" style="color: red;">*</span>
                                             </label>
                                             <input type="number" id="perLotQuantity" class="form-control perLotQuantity"
                                                    name="perLotQuantity" value="${product.perLotQuantity}"
@@ -247,6 +251,7 @@
                                         <div class="col-lg-6 form-group  form-float">
                                             <label for="purchaseRate">
                                                 Purchase Rate
+                                                <span class="required-indicator" style="color: red;">*</span>
                                             </label>
                                             <input type="text" id="purchaseRate" class="form-control purchaseRate"
                                                    name="purchaseRate" onblur="setTwoNumberDecimal" step="0.25" value="${product.purchaseRate}" placeholder="Purchase Rate" required/>
@@ -254,6 +259,7 @@
                                         <div class="col-lg-6 form-group  form-float">
                                             <label for="purchaseTradeDiscount">
                                                 Purchase Trade Discount
+                                                <span class="required-indicator" style="color: red;">*</span>
                                             </label>
                                             <input type="text" id="purchaseTradeDiscount" onblur="setTwoNumberDecimal"
                                                    class="form-control purchaseTradeDiscount" name="purchaseTradeDiscount"
@@ -263,6 +269,7 @@
                                         <div class="col-lg-6 form-group  form-float">
                                             <label for="purchaseMarginPercent">
                                                 Purchase Margin percent
+                                                <span class="required-indicator" style="color: red;">*</span>
                                             </label>
                                             <input type="text" id="purchaseMarginPercent" onblur="setTwoNumberDecimal"
                                                    class="form-control purchaseMarginPercent" name="purchaseMarginPercent"
@@ -272,12 +279,14 @@
                                         <div class="col-lg-6 form-group  form-float">
                                             <label for="saleRate">
                                                 Sale Rate
+                                                <span class="required-indicator" style="color: red;">*</span>
                                             </label>
                                             <input type="text" id="saleRate" onblur="setTwoNumberDecimal" class="form-control saleRate" name="saleRate" placeholder="Sale Rate" step="0.25" value="${product.saleRate}" required/>
                                         </div>
                                         <div class="col-lg-6 form-group  form-float">
                                             <label for="saleTradeDiscount">
                                                 Sale Trade Discount
+                                                <span class="required-indicator" style="color: red;">*</span>
                                             </label>
                                             <input type="text" id="saleTradeDiscount" onblur="setTwoNumberDecimal"
                                                    class="form-control saleTradeDiscount" name="saleTradeDiscount"
@@ -285,17 +294,19 @@
                                                    required/>
                                         </div>
                                         <div class="col-lg-6 form-group  form-float">
-                                            <label for="salesmenPercent">
+                                            <label for="saleMarginPercent">
                                                 Sale Margin Percent
+                                                <span class="required-indicator" style="color: red;">*</span>
                                             </label>
-                                            <input type="text" id="salesmenPercent" onblur="setTwoNumberDecimal"
-                                                   class="form-control saleTradeDiscount" name="salesmenPercent"
+                                            <input type="text" id="saleMarginPercent" onblur="setTwoNumberDecimal"
+                                                   class="form-control saleTradeDiscount" name="saleMarginPercent"
                                                    placeholder="Sale Margin Percent" step="0.25" value="${product.saleMarginPercent}"
                                                    required/>
                                         </div>
                                         <div class="col-lg-6 form-group  form-float">
                                             <label for="vipPRate">
                                                 VIP Purchase Rate
+                                                <span class="required-indicator" style="color: red;">*</span>
                                             </label>
                                             <input type="text" id="vipPRate" onblur="setTwoNumberDecimal"
                                                    class="form-control vipPRate" name="vipPRate"
@@ -305,6 +316,7 @@
                                         <div class="col-lg-6 form-group  form-float">
                                             <label for="vipSRate">
                                                 VIP Sale Rate
+                                                <span class="required-indicator" style="color: red;">*</span>
                                             </label>
                                             <input type="text" id="vipSRate" onblur="setTwoNumberDecimal"
                                                    class="form-control vipPRate" name="vipSRate"
@@ -314,6 +326,7 @@
                                         <div class="col-lg-6 form-group  form-float">
                                             <label for="mrp">
                                                 MRP
+                                                <span class="required-indicator" style="color: red;">*</span>
                                             </label>
                                             <input type="text" id="mrp" onblur="setTwoNumberDecimal"
                                                    class="form-control mrp" name="mrp"
@@ -323,6 +336,7 @@
                                         <div class="col-lg-6 form-group  form-float">
                                             <label for="ptr">
                                                 PTR
+                                                <span class="required-indicator" style="color: red;">*</span>
                                             </label>
                                             <input type="text" id="ptr" onblur="setTwoNumberDecimal"
                                                    class="form-control ptr" name="ptr"
@@ -332,6 +346,7 @@
                                         <div class="col-lg-6 form-group  form-float">
                                             <label for="restrictedRate">
                                                 Restricted Rate
+                                                <span class="required-indicator" style="color: red;">*</span>
                                             </label>
                                             <input type="text" id="restrictedRate" onblur="setTwoNumberDecimal"
                                                    class="form-control ptr" name="restrictedRate"
@@ -353,6 +368,7 @@
                                         <div class="col-lg-6 form-group  form-float">
                                             <label for="nriRate">
                                                 NRI Rate
+                                                <span class="required-indicator" style="color: red;">*</span>
                                             </label>
                                             <input type="number" id="nriRate" onblur="setTwoNumberDecimal"
                                                    class="form-control ptr" name="nriRate"
@@ -362,6 +378,7 @@
                                         <div class="col-lg-6 form-group  form-float">
                                             <label for="salesmanCommission">
                                                 Salesman Commission
+                                                <span class="required-indicator" style="color: red;">*</span>
                                             </label>
                                             <input type="number" id="salesmanCommission" onblur="setTwoNumberDecimal"
                                                    class="form-control salesmanCommission" name="salesmanCommission"
@@ -371,6 +388,7 @@
                                         <div class="col-lg-6 form-group  form-float">
                                             <label for="grossProfitPercentage">
                                                 Gross Profit Percentage
+                                                <span class="required-indicator" style="color: red;">*</span>
                                             </label>
                                             <input type="number" id="grossProfitPercentage" onblur="setTwoNumberDecimal"
                                                    class="form-control grossProfitPercentage" name="grossProfitPercentage"
@@ -380,6 +398,7 @@
                                         <div class="col-lg-6 form-group  form-float">
                                             <label for="taxId">
                                                 Tax
+                                                <span class="required-indicator" style="color: red;">*</span>
                                             </label>
                                             <select class="form-control show-tick taxId" name="taxId" id="taxId">
                                                 <g:each var="t" in="${tax}">
@@ -390,6 +409,7 @@
                                         <div class="col-lg-6 form-group  form-float">
                                             <label for="saleType">
                                                 Sale Type
+                                                <span class="required-indicator" style="color: red;">*</span>
                                             </label>
                                             <select class="form-control show-tick saleType" name="saleType" id="saleType">
                                                 <option value="${Constants.SALEABLE}">SALEABLE</option>
@@ -497,13 +517,15 @@
                                         </div>
 
                                         <div class="col-lg-6 form-group  form-float">
-                                            <label for="saleMarginPercent">
-                                                Sale Margin Percent
+                                            <label for="salesmenPercent">
+                                              Salesman Percent
+                                                <span class="required-indicator" style="color: red;">*</span>
+
                                             </label>
-                                            <input type="number" id="saleMarginPercent"
-                                                   class="form-control saleMarginPercent" name="saleMarginPercent"
+                                            <input type="number"
+                                                   class="form-control salesmenPercent" id="salesmenPercent" name="salesmenPercent"
                                                    onblur="setTwoNumberDecimal()" step="0.25"
-                                                   placeholder="Sale Margin Percent" value="${product.saleMarginPercent}"
+                                                   placeholder="Salesman Percent" value="${product?.salesmenPercent}"
                                                    />
                                         </div>
                                         %{-- <div class="col-lg-6 form-group  form-float">
@@ -515,7 +537,7 @@
                                                     placeholder="Soundex Code"
                                                     required/>
                                          </div>--}%
-                                        <div class="col-lg-12 form-group  form-float">
+                                        <div class="col-lg-6 form-group  form-float">
                                             <label for="narration">
                                                 Narration
                                             </label>
