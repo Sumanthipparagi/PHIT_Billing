@@ -77,7 +77,8 @@ class AuthController {
                     session.setAttribute("entityMobileNumber", entity?.get("mobileNumber"))
                     session.setAttribute("entityTypeId", entity?.get("entityType")?.id)
                     session.setAttribute("entityTypeName", entity?.get("entityType")?.name)
-                    String permittedFeatures = auth?.get("user").role?.permittedFeatures
+                    session.setAttribute("role", auth?.get("user")?.role?.name?.toString())
+                    String permittedFeatures = auth?.get("user")?.role?.permittedFeatures
                     session.setAttribute("permittedFeatures", permittedFeatures)
                     session.setAttribute("features", new EntityService().getFeatureList(permittedFeatures))
                     JSONArray jsonArray = new EntityService().getFinancialYearByEntity(entity?.get("entityType")?.id?.toString())

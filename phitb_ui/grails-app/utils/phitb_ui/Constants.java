@@ -164,5 +164,4 @@ public class Constants
     public static String SALESMAN = "SALESMAN";
 
 
-
 }
