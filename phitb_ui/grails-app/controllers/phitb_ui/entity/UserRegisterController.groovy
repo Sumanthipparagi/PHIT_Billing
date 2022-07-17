@@ -278,7 +278,7 @@ class UserRegisterController
             def apiResponse = new EntityService().getUserRegister()
             if (apiResponse?.status == 200)
             {
-                JSONArray jsonArray = new JSONArray(apiResponse.readEntity(String.class));
+                JSONArray jsonArray = new JSONArray(apiResponse.readEntity(String.class))
                 ArrayList<String> arrayList = new ArrayList<>(jsonArray)
                 return arrayList
             }

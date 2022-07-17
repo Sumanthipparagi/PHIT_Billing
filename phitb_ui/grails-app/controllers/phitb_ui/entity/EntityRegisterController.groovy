@@ -171,7 +171,8 @@ class EntityRegisterController {
             JSONObject jsonObject = new JSONObject(params)
             if(session.getAttribute("role").toString().equalsIgnoreCase(Constants.SUPER_USER))
             {
-                if(jsonObject.get("isParent").toString().equalsIgnoreCase("on")) {
+                boolean isParent = Boolean.parseBoolean(jsonObject.get("isParent"))
+                if(isParent) {
                     jsonObject.put("affiliateId", 0)
                     jsonObject.put("isParent", true)
                 }

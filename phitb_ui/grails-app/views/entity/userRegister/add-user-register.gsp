@@ -83,6 +83,19 @@
 
                             <div class="body">
                                 <div class="row">
+                                    <g:if test="${session.getAttribute("role").toString().equalsIgnoreCase(Constants.SUPER_USER)}">
+                                        <div class="col-lg-6 form-group  form-float">
+                                            <label for="entitySelect">
+                                                Entity<span class="required-indicator" style="color: red;">*</span>
+                                            </label>
+                                            <select class="form-control show-tick entity" name="entity"
+                                                    id="entitySelect" required>
+                                            </select>
+                                        </div>
+                                    </g:if>
+                                </div>
+
+                                <div class="row">
                                     <div class="col-md-12 mt-2">
                                         <div class="row">
                                             <div class="col-lg-6 form-group  form-float">
@@ -137,32 +150,33 @@
                                                 </select>
                                             </div>
 
-                                            <div class="col-lg-6 form-group  form-float">
-                                                <label for="reportTo">
-                                                    Report To
-                                                </label>
-                                                <select class="form-control show-tick reportTo" name="reportTo"
-                                                        id="reportTo">
-                                                    <option value="0">--Please Select--</option>
-                                                    <g:each var="u" in="${userregister}">
-                                                        <option value="${u.id}">${u.userName}</option>
-                                                    </g:each>
-                                                </select>
-                                            </div>
+                                            <g:if test="${!session.getAttribute("role").toString().equalsIgnoreCase(Constants.SUPER_USER)}">
+                                                <div class="col-lg-6 form-group  form-float">
+                                                    <label for="reportTo">
+                                                        Report To
+                                                    </label>
+                                                    <select class="form-control show-tick reportTo" name="reportTo"
+                                                            id="reportTo">
+                                                        <option value="0">--Please Select--</option>
+                                                        <g:each var="u" in="${userregister}">
+                                                            <option value="${u.id}">${u.userName}</option>
+                                                        </g:each>
+                                                    </select>
+                                                </div>
 
-                                            <div class="col-lg-6 form-group  form-float">
-                                                <label for="referredBy">
-                                                    Referred By
-                                                </label>
-                                                <select class="form-control show-tick referredBy" name="referredBy"
-                                                        id="referredBy">
-                                                    <option value="0">--Please select--</option>
-                                                    <g:each var="u" in="${userregister}">
-                                                        <option value="${u.id}">${u.userName}</option>
-                                                    </g:each>
-                                                </select>
-                                            </div>
-
+                                                <div class="col-lg-6 form-group  form-float">
+                                                    <label for="referredBy">
+                                                        Referred By
+                                                    </label>
+                                                    <select class="form-control show-tick referredBy" name="referredBy"
+                                                            id="referredBy">
+                                                        <option value="0">--Please select--</option>
+                                                        <g:each var="u" in="${userregister}">
+                                                            <option value="${u.id}">${u.userName}</option>
+                                                        </g:each>
+                                                    </select>
+                                                </div>
+                                            </g:if>
                                             <div class="col-lg-6 form-group  form-float">
                                                 <label for="referenceRelation">
                                                     Reference Relation
@@ -327,6 +341,7 @@
                                                 </label>
                                                 <select class="form-control show-tick department" name="department"
                                                         id="department">
+                                                    <option>--SELECT--</option>
                                                     <g:each var="d" in="${department}">
                                                         <option value="${d.id}">${d.name}</option>
                                                     </g:each>
@@ -459,29 +474,33 @@
                                                        name="licenceNumber" placeholder="Licence Number"/>
                                             </div>
 
-                                        %{--                                           <div class="col-lg-6 form-group  form-float">--}%
-                                        %{--                                               <label for="account">--}%
-                                        %{--                                                   Account--}%
-                                        %{--                                               </label>--}%
-                                        %{--                                               <select class="form-control show-tick account" name="account" id="account">--}%
-                                        %{--                                                   <g:each var="a" in="${account}">--}%
-                                        %{--                                                       <option value="${a.id}">${a.accountName}</option>--}%
-                                        %{--                                                   </g:each>--}%
-                                        %{--                                               </select>--}%
-                                        %{--                                           </div>--}%
-                                            <g:if test="${session.getAttribute('role') == Constants.SUPER_USER}">
+                                            %{--                                           <div class="col-lg-6 form-group  form-float">--}%
+                                            %{--                                               <label for="account">--}%
+                                            %{--                                                   Account--}%
+                                            %{--                                               </label>--}%
+                                            %{--                                               <select class="form-control show-tick account" name="account" id="account">--}%
+                                            %{--                                                   <g:each var="a" in="${account}">--}%
+                                            %{--                                                       <option value="${a.id}">${a.accountName}</option>--}%
+                                            %{--                                                   </g:each>--}%
+                                            %{--                                               </select>--}%
+                                            %{--                                           </div>--}%
 
-                                                <div class="col-lg-6 form-group  form-float">
-                                                    <label for="role">
-                                                        Role
-                                                    </label>
-                                                    <select class="form-control show-tick role" name="role" id="role">
-                                                        <g:each var="r" in="${role}">
+                                            <div class="col-lg-6 form-group  form-float">
+                                                <label for="role">
+                                                    Role
+                                                </label>
+                                                <select class="form-control show-tick role" name="role" id="role">
+                                                    <g:each var="r" in="${role}">
+                                                        <g:if test="${session.getAttribute('role') != Constants.SUPER_USER && r.name != Constants.SUPER_USER}">
                                                             <option value="${r.id}">${r.name}</option>
-                                                        </g:each>
-                                                    </select>
-                                                </div>
-                                            </g:if>
+                                                        </g:if>
+                                                        <g:elseif
+                                                                test="${session.getAttribute('role') == Constants.SUPER_USER}">
+                                                            <option value="${r.id}">${r.name}</option>
+                                                        </g:elseif>
+                                                    </g:each>
+                                                </select>
+                                            </div>
 
 
                                             <div class="col-lg-6 form-group  form-float">
@@ -600,7 +619,8 @@
             weekStart: 1
         });
 
-        $('.affiliateId').select2()
+        $('.affiliateId').select2();
+        $('#entitySelect').select2();
 
         $('#cityId').select2({
             ajax: {
@@ -824,12 +844,31 @@
         }
     }
 
+<g:if test="${session.getAttribute("role").toString().equalsIgnoreCase(Constants.SUPER_USER)}">
+    loadParentEntity();
+    function loadParentEntity()
+    {
+        $.ajax({
+            method: "GET",
+            url: "/entity-register/getparententities",
+            success: function (data) {
+                $("#entitySelect").empty();
+                $("#entitySelect").append("<option selected disabled>--SELECT--</option>");
+                $.each(data, function (index, value) {
+                    var entityTypeName = value.entityType.name;
+                    $("#entitySelect").append("<option value=\"" + value.id +"\">" + value.entityName + " ("+entityTypeName+")</option>");
+                });
+                $(".entitySelect").prop("required", true);
+            }
+        })
+    }
 
+</g:if>
 
 </script>
 <g:include view="controls/footer-content.gsp"/>
 <script>
-    selectSideMenu("product-menu");
+    selectSideMenu("entity-menu");
 </script>
 </body>
 </html>

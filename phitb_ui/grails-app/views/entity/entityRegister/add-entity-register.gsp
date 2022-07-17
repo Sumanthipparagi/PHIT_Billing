@@ -220,7 +220,7 @@
                                             <div class="form-group">
 
                                                 <label for="isParent" class="checkbox-inline">
-                                                    <input onchange="isParentChanged()" type="checkbox" name="isParent" class="checkbox"
+                                                    <input onchange="isParentChanged()" type="checkbox" class="checkbox"
                                                            id="isParent"/> Not Parent Entity?
                                                 </label>
                                             </div>
@@ -233,6 +233,7 @@
                                                     <option selected disabled>-SELECT-</option>
                                                 </select>
                                             </div>
+                                            <input type="hidden" id="notParentValue" name="isParent" value="true" />
                                         </div>
 
                                     </div>
@@ -1635,6 +1636,7 @@
 
     function isParentChanged() {
         var notParent = $("#isParent").is(":checked");
+        $("#notParentValue").val(notParent);
         if (notParent) {
             $.ajax({
                 method: "GET",
@@ -1644,7 +1646,7 @@
                     $("#affiliatedToEntity").append("<option selected disabled>--SELECT--</option>");
                     $.each(data, function (index, value) {
                         var entityTypeName = value.entityType.name;
-                        $("#affiliatedToEntity").append("<option value=\"" + value.id +"\">" + value.entityName + "("+entityTypeName+")</option>");
+                        $("#affiliatedToEntity").append("<option value=\"" + value.id +"\">" + value.entityName + " ("+entityTypeName+")</option>");
                     });
 
                     $(".affiliatedEntityContainer").removeClass("hidden");
