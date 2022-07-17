@@ -171,17 +171,22 @@ class EntityRegisterController {
             JSONObject jsonObject = new JSONObject(params)
             if(session.getAttribute("role").toString().equalsIgnoreCase(Constants.SUPER_USER))
             {
-                boolean isParent = Boolean.parseBoolean(jsonObject.get("isParent"))
-                if(isParent) {
-                    jsonObject.put("affiliateId", 0)
-                    jsonObject.put("isParent", true)
-                }
-                else {
+                boolean notParent = Boolean.parseBoolean(jsonObject.get("notParent"))
+                if(notParent)
+                {
                     jsonObject.put("affiliateId", jsonObject.get("affiliatedToEntity"))
+                    jsonObject.put("parentEntity", jsonObject.get("affiliatedToEntity"))
+                    jsonObject.put("parentEntityType", 0)
                     jsonObject.put("isParent", false)
                 }
-                jsonObject.put("parentEntity", 0)
-                jsonObject.put("parentEntityType", 0)
+                else
+                {
+                    jsonObject.put("affiliateId", 0)
+                    jsonObject.put("isParent", true)
+                    jsonObject.put("parentEntity", 0)
+                    jsonObject.put("parentEntityType", 0)
+                }
+
             }
             else {
                 jsonObject.put("affiliateId", session.getAttribute("entityId"))

@@ -219,9 +219,9 @@
                                         <div class="col-md-6 mt-2">
                                             <div class="form-group">
 
-                                                <label for="isParent" class="checkbox-inline">
+                                                <label for="notParent" class="checkbox-inline">
                                                     <input onchange="isParentChanged()" type="checkbox" class="checkbox"
-                                                           id="isParent"/> Not Parent Entity?
+                                                           id="notParent"/> Not Parent Entity?
                                                 </label>
                                             </div>
 
@@ -233,7 +233,7 @@
                                                     <option selected disabled>-SELECT-</option>
                                                 </select>
                                             </div>
-                                            <input type="hidden" id="notParentValue" name="isParent" value="true" />
+                                            <input type="hidden" id="notParentValue" name="notParent" value="false" />
                                         </div>
 
                                     </div>
@@ -1635,7 +1635,7 @@
     <g:if test="${session.getAttribute('role') == Constants.SUPER_USER}">
 
     function isParentChanged() {
-        var notParent = $("#isParent").is(":checked");
+        var notParent = $("#notParent").is(":checked");
         $("#notParentValue").val(notParent);
         if (notParent) {
             $.ajax({
