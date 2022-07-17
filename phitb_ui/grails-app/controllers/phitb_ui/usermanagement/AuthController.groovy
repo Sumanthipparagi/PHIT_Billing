@@ -65,6 +65,7 @@ class AuthController {
                 if (auth.get("username").toString().equals(username) && auth.get("password").toString().equals(password)) {
                     JSONObject entity = auth.get("user").entity
                     session.setMaxInactiveInterval(3600000)
+                    //String roleName = auth?.get("user")?.role?.name?.toString()
                     session.setAttribute("login", true)
                     session.setAttribute("userId", auth.get("user")?.id)
                     session.setAttribute("entityId", entity?.get("id"))

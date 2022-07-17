@@ -56,6 +56,9 @@ class EntityRegisterService {
     JSONObject dataTables(JSONObject paramsJsonObject, String start, String length)
     {
         long entityId = paramsJsonObject.get("entityId")
+        boolean isSuperUser = false
+        if(paramsJsonObject.has("superuser"))
+            isSuperUser = paramsJsonObject.get("superuser")
         String searchTerm = paramsJsonObject.get("search[value]")
         String orderColumnId = paramsJsonObject.get("order[0][column]")
         String orderDir = paramsJsonObject.get("order[0][dir]")
@@ -84,7 +87,11 @@ class EntityRegisterService {
                 }
             }
 
-            eq('parentEntity', entityId)
+            if(!isSuperUser)
+                eq('parentEntity', entityId)
+            else
+                eqProperty("id", "parentEntity")
+
             eq('deleted', false)
             order(orderColumn, orderDir)
         }
@@ -120,8 +127,23 @@ class EntityRegisterService {
     EntityRegister save(JSONObject jsonObject)
     {
         EntityRegister entityRegister = new EntityRegister()
+        boolean isParent = false
+        if(jsonObject.has("isParent"))
+            isParent = jsonObject.get("isParent")
+
         entityRegister.entityName = jsonObject.get("entityName").toString()
         entityRegister.entityType = EntityTypeMaster.findById(Long.parseLong(jsonObject.get("entityType").toString()))
+        if(isParent)
+        {
+            entityRegister.parentEntity = 0
+            entityRegister.parentEntityType = entityRegister.entityType.id
+        }
+        else
+        {
+            entityRegister.parentEntity = Long.parseLong(jsonObject.get("parentEntity").toString())
+            entityRegister.parentEntityType = Long.parseLong(jsonObject.get("parentEntityType").toString())
+        }
+
         entityRegister.affiliateId = Long.parseLong(jsonObject.get("affiliateId").toString())
         entityRegister.addressLine1 = jsonObject.get("addressLine1").toString()
         entityRegister.addressLine2 = jsonObject.get("addressLine2").toString()
@@ -217,11 +239,16 @@ class EntityRegisterService {
         entityRegister.contactDob = jsonObject.get("contactDob").toString()
         entityRegister.createdUser = Long.parseLong(jsonObject.get("createdUser").toString())
         entityRegister.modifiedUser = Long.parseLong(jsonObject.get("modifiedUser").toString())
-        entityRegister.parentEntity = Long.parseLong(jsonObject.get("parentEntity").toString())
-        entityRegister.parentEntityType =Long.parseLong(jsonObject.get("parentEntityType").toString())
+
         entityRegister.save(flush: true)
         if (!entityRegister.hasErrors())
         {
+            if(isParent) {
+                entityRegister.affiliateId = entityRegister.id
+                entityRegister.parentEntity = entityRegister.id
+                entityRegister.isUpdatable = true
+                entityRegister.save(flush: true)
+            }
             return entityRegister
         }
         else
@@ -404,6 +431,20 @@ class EntityRegisterService {
             println(ex.stackTrace)
             throw new BadRequestException()
         }
+    }
+
+    /**
+     * This returns only parent entities which are affiliated to itself.
+     * @return
+     */
+    def getParentEntities()
+    {
+        def entityRegisterCriteria = EntityRegister.createCriteria()
+        def entityRegisterArrayList = entityRegisterCriteria.list() {
+            eqProperty("id", "parentEntity")
+            eq('deleted', false)
+        }
+        return entityRegisterArrayList
     }
 }
 

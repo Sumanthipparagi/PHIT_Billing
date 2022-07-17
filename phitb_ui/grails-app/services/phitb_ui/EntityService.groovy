@@ -68,7 +68,8 @@ class EntityService {
     def showEntity(JSONObject jsonObject)
     {
         Client client = ClientBuilder.newClient()
-        WebTarget target = client.target(new Links().API_GATEWAY)
+        //WebTarget target = client.target(new Links().API_GATEWAY)
+        WebTarget target = client.target("http://localhost:8088")
         try
         {
             Response apiResponse = target
@@ -2027,6 +2028,25 @@ class EntityService {
         catch (Exception ex) {
             System.err.println('Service :EntityService , action :  getEntityType  , Ex:' + ex)
             log.error('Service :EntityService , action :  getEntityType  , Ex:' + ex)
+        }
+
+    }
+
+    def getParentEntities() {
+        Client client = ClientBuilder.newClient()
+        //WebTarget target = client.target(new Links().API_GATEWAY)
+        WebTarget target = client.target("http://localhost:8088")
+        try {
+
+            Response apiResponse = target
+                    .path(new Links().ENTITY_REGISTER_PARENT)
+                    .request(MediaType.APPLICATION_JSON_TYPE)
+                    .get()
+            return apiResponse
+        }
+        catch (Exception ex) {
+            System.err.println('Service :EntityService , action :  getParentEntities  , Ex:' + ex)
+            log.error('Service :EntityService , action :  getParentEntities  , Ex:' + ex)
         }
 
     }
