@@ -1,3 +1,4 @@
+<%@ page import="phitb_ui.Constants" %>
 <!doctype html>
 <html class="no-js " lang="en">
 <head>
@@ -103,10 +104,19 @@
                                         onchange="customerSelectChanged()">
                                     <option selected disabled>--SELECT--</option>
                                     <g:each in="${customers}" var="cs">
-
-                                        <g:if test="${cs.id != session.getAttribute("entityId")}">
-                                            <option value="${cs.id}">${cs.entityName} (${cs.entityType.name})</option>
+                                        <g:if test="${session.getAttribute("entityTypeName").toString() == Constants.ENTITY_MANUFACTURER}">
+                                            <g:if test="${cs.entityType.name == Constants.ENTITY_C_F ||
+                                                    cs.entityType.name == Constants.ENTITY_SUPER_STOCKIST}">
+                                                <g:if test="${cs.id != session.getAttribute("entityId")}">
+                                                    <option value="${cs.id}">${cs.entityName} (${cs.entityType.name})</option>
+                                                </g:if>
+                                            </g:if>
                                         </g:if>
+                                    %{--                                        <g:else>--}%
+                                    %{--                                            <g:if test="${cs.id != session.getAttribute("entityId")}">--}%
+                                    %{--                                                <option value="${cs.id}">${cs.entityName} (${cs.entityType.name})</option>--}%
+                                    %{--                                            </g:if>--}%
+                                    %{--                                        </g:else>--}%
                                     </g:each>
                                 </select>
                             </div>
@@ -155,6 +165,7 @@
                             <p class="loadTable">Loading...<img src="${assetPath(src: '/themeassets/images/3.gif')}"
                                                                 width="25" height="25"/>
                             </p>
+
                             <div id="saleTable" style="width:100%;"></div>
                         </div>
                     </div>
@@ -361,7 +372,7 @@
             ],
             hiddenColumns: true,
             hiddenColumns: {
-                columns: [15, 16, 17, 18, 19,20,21]
+                columns: [15, 16, 17, 18, 19, 20, 21]
             },
             minSpareRows: 0,
             minSpareColumns: 0,
@@ -480,22 +491,19 @@
                         }
 
                     }
-                } else if (selection === 4 || selection === 5 || selection === 8 || selection === 6 ) {
+                } else if (selection === 4 || selection === 5 || selection === 8 || selection === 6) {
                     if (e.keyCode === 13 || e.keyCode === 9) {
                         var discount = 0;
-                        if(selection === 6)
-                        {
+                        if (selection === 6) {
                             var mrp = hot.getDataAtCell(row, 7);
                             var oldSaleRate = hot.getDataAtCell(row, 6);
                             var saleRate = Number(this.getActiveEditor().TEXTAREA.value);
-                            if(saleRate > mrp)
-                            {
-                                hot.setDataAtCell(row, 6,  oldSaleRate);
+                            if (saleRate > mrp) {
+                                hot.setDataAtCell(row, 6, oldSaleRate);
                                 this.getActiveEditor().TEXTAREA.value = oldSaleRate;
                                 alert("Sale Rate exceeds MRP!");
-                            }
-                            else {
-                                hot.setDataAtCell(row, 6,  Number(this.getActiveEditor().TEXTAREA.value));
+                            } else {
+                                hot.setDataAtCell(row, 6, Number(this.getActiveEditor().TEXTAREA.value));
                                 this.selectCell(row, selection + 1);
                             }
                         }
@@ -507,8 +515,7 @@
                             // alert(sq)
                             this.setDataAtCell(row, 4, sQty);
                             this.selectCell(row, selection + 1);
-                        } else
-                        {
+                        } else {
                             sQty = Number(this.getDataAtCell(row, 4));
                         }
 
@@ -516,8 +523,7 @@
                             fQty = Number(this.getActiveEditor().TEXTAREA.value);
                             hot.setDataAtCell(row, 5, fQty);
                             this.selectCell(row, selection + 1);
-                        } else
-                        {
+                        } else {
                             fQty = Number(this.getDataAtCell(row, 5));
                         }
                         if (selection === 8) {
@@ -528,9 +534,7 @@
                                 this.getActiveEditor().TEXTAREA.value = 0;
                                 hot.selectCell(row, 8);
                                 return;
-                            }
-                            else
-                            {
+                            } else {
                                 hot.setDataAtCell(row, 8, discount);
                                 this.selectCell(row, selection + 1);
                             }
@@ -554,12 +558,9 @@
 
                                         if (remQty >= sQty) {
                                             allowEntry = true;
-                                        }
-                                        else if (sQty >= remQty && remFQty >= sQty) {
+                                        } else if (sQty >= remQty && remFQty >= sQty) {
                                             allowEntry = true;
-                                        }
-
-                                        else if ((remQty + remFQty) >= sQty) {
+                                        } else if ((remQty + remFQty) >= sQty) {
                                             allowEntry = true;
                                         }
 
@@ -581,7 +582,6 @@
                                         }
 
 
-
                                         if (!allowEntry) {
                                             // this.getActiveEditor().TEXTAREA.value = "";
                                             hot.setDataAtCell(row, 4, 0);
@@ -593,10 +593,8 @@
                                             hot.setDataAtCell(row, 14, 0);
                                             alert("Entered quantity exceeds available quantity");
                                             return;
-                                        }
-                                        else
-                                        {
-                                            hot.setDataAtCell(row,5,fQty)
+                                        } else {
+                                            hot.setDataAtCell(row, 5, fQty)
                                         }
                                     },
                                     error: function (data) {
@@ -606,12 +604,10 @@
                             );
                         }
                         applySchemes(row, sQty);
-                        if(selection === 6)
-                        {
+                        if (selection === 6) {
                             // sRate = Number(this.getActiveEditor().TEXTAREA.value);
                             sRate = hot.getDataAtCell(row, 6);
-                        }
-                        else
+                        } else
                             sRate = hot.getDataAtCell(row, 6);
 
                         var value = sRate * sQty;
@@ -646,9 +642,6 @@
                 batchSelection(hot.getDataAtCell(row, 1), row, false);
             }
         });
-
-
-
 
 
         function productsDropdownRenderer(instance, td, row, col, prop, value, cellProperties) {
@@ -759,7 +752,7 @@
                         batchData = [];
                         for (var i = 0; i < data.length; i++) {
                             console.log(data[i].entityId);
-                            if(Number('${session.getAttribute('entityId')}')===data[i].entityId) {
+                            if (Number('${session.getAttribute('entityId')}') === data[i].entityId) {
                                 var batchdt = [];
                                 batchdt.push(data[i].batchNumber);
                                 batchdt.push(data[i].expDate.split("T")[0]);
@@ -1013,10 +1006,10 @@
                 var invoiceNumber = data.gtn.invoiceNumber;
                 $("#invNo").html("<p><strong>" + invoiceNumber + "</strong></p>");
                 var message = "";
-                var draftInvNo ="";
-                if(billStatus === "DRAFT"){
+                var draftInvNo = "";
+                if (billStatus === "DRAFT") {
                     draftInvNo = '<p><strong>' + data.gtn.entityId + "/DR/GTN/" + month + year + "/"
-                        + seriesCode + "/__"+'<p><strong>';
+                        + seriesCode + "/__" + '<p><strong>';
                     $("#invNo").html(draftInvNo);
                 }
                 if (billStatus !== "DRAFT") {

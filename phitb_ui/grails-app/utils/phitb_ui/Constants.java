@@ -13,15 +13,18 @@ public class Constants
 //    public String API_GATEWAY = "http://172.16.17.143:81/";
     public String API_GATEWAY = "http://localhost/";
 
+
     public static String ROLE_SALESMAN = "SALESMAN";
     public static String ROLE_MANAGER = "MANAGER";
+
+//    Entity type master
     public static String ENTITY_CUSTOMER = "CUSTOMER";
     public static String ENTITY_MANUFACTURER = "MANUFACTURER";
     public static String ENTITY_MANUFACTURER_AND_MARKETING = "MANUFACTURER_AND_MARKETING";
     public static String ENTITY_COMPANY = "COMPANY";
     public static String ENTITY_DISTRIBUTOR = "DISTRIBUTOR";
     public static String ENTITY_C_F = "C_F";
-
+    public static String ENTITY_SUPER_STOCKIST = "SUPER_STOCKIST";
 
 
     public static String DOCTYPE_SALE_INVOICE = "SLINV";
@@ -157,11 +160,14 @@ public class Constants
     public static String SATURDAY = "SATURDAY";
     public static String SUNDAY = "SUNDAY";
 
-
+//User roles
     public static String SUPER_USER = "SUPER_USER";
     public static String ENTITY_ADMIN = "ENTITY_ADMIN";
     public static String MANAGER = "MANAGER";
     public static String SALESMAN = "SALESMAN";
+
+
+
 
 
 }

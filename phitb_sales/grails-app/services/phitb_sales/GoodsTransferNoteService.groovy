@@ -386,7 +386,7 @@ class GoodsTransferNoteService {
         GoodsTransferNote goodsTransferNote = GoodsTransferNote.findById(Long.parseLong(id))
         if (goodsTransferNote)
         {
-            if (goodsTransferNote.financialYear.equalsIgnoreCase(financialYear) && goodsTransferNote.entityId == Long.parseLong(entityId))
+            if (goodsTransferNote.financialYear.equalsIgnoreCase(financialYear) && goodsTransferNote.customerId == Long.parseLong(entityId))
             {
                 ArrayList<GoodsTransferNoteProduct> goodsTransferNoteProducts = GoodsTransferNoteProduct.findAllByBillId(goodsTransferNote.id)
                 for (GoodsTransferNoteProduct goodsTransferNoteProduct : goodsTransferNoteProducts)

@@ -288,7 +288,7 @@
         });
     }
 
-    function cancelBill(id) {
+    function cancelBill(id, customerId) {
         Swal.fire({
             title: "Cancel this GRN? this can't be undone.",
             showDenyButton: true,
@@ -297,7 +297,7 @@
             denyButtonText: 'No',
         }).then((result) => {
             if (result.isConfirmed) {
-                var url = '/gtn/cancel?id=' + id;
+                var url = '/gtn/cancel?id=' + id +'&customerId='+customerId;
                 var beforeSendSwal;
                 $.ajax({
                     type: "GET",
