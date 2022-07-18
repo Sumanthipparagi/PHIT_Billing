@@ -27,7 +27,7 @@ class SaleReturnController
         String entityId = session.getAttribute("entityId")?.toString()
         JSONArray divisions = new ProductService().getDivisionsByEntityId(entityId)
         ArrayList<String> users = new UserRegisterController().show() as ArrayList<String>
-        ArrayList<String> customers = new EntityRegisterController().show() as ArrayList<String>
+        ArrayList<String> customers = new EntityRegisterController().getByAffiliateById(entityId) as ArrayList<String>
         def priorityList = new SystemService().getPriorityByEntity(entityId)
         def series = new SeriesController().getByEntity(entityId)
         def reason = new SalesService().getReason()
