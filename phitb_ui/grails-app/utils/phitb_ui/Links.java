@@ -442,6 +442,7 @@ public class Links
     public static String SALE_RETURN_AREAWISE = "api/v1.0/sales/reports/salesreturn-areawise";
     public static String SALE_BILL_UPDATE_IRN = "api/v1.0/sales/salebilldetails/updateirn";
     public static String SALE_RETURN_BY_DATERANGE = "api/v1.0/sales/salereturnbydaterange";
+    public static String SALE_ENTRY_STATS = "api/v1.0/sales/reports/statistics";
 
     public static String GET_OUTSTANDING_REPORT = "api/v1.0/accounts/reports/outstanding";
 

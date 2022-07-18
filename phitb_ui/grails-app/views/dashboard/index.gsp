@@ -57,12 +57,11 @@
             <div class="col-lg-3 col-md-6">
                 <div class="card text-center">
                     <div class="body">
-                        <p class="m-b-20"><i class="zmdi zmdi-balance zmdi-hc-3x col-amber"></i></p>
-                        <span>Total Revenue</span>
+                        <p class="m-b-20"><i class="zmdi zmdi-shopping-basket zmdi-hc-3x col-amber"></i></p>
+                        <span>My Sales</span>
 
-                        <h3 class="m-b-10">₹<span class="number count-to" data-from="0" data-to="2078" data-speed="2000"
-                                                  data-fresh-interval="700">2078</span></h3>
-                        <small class="text-muted">27% lower growth</small>
+                        <h3 class="m-b-10">₹<span class="number" id="salesCurrentMonth"></span></h3>
+                        <small class="text-muted"><span id="salesPreviousMonth"></span></small>
                     </div>
                 </div>
             </div>
@@ -71,7 +70,7 @@
                 <div class="card text-center">
                     <div class="body">
                         <p class="m-b-20"><i class="zmdi zmdi-assignment zmdi-hc-3x col-blue"></i></p>
-                        <span>Total Orders</span>
+                        <span>Total Outstanding</span>
 
                         <h3 class="m-b-10 number count-to" data-from="0" data-to="865" data-speed="2000"
                             data-fresh-interval="700">865</h3>
@@ -84,7 +83,7 @@
                 <div class="card text-center">
                     <div class="body">
                         <p class="m-b-20"><i class="zmdi zmdi-shopping-basket zmdi-hc-3x"></i></p>
-                        <span>Total Sales</span>
+                        <span>Total Sale Return</span>
 
                         <h3 class="m-b-10 number count-to" data-from="0" data-to="3502" data-speed="2000"
                             data-fresh-interval="700">3502</h3>
@@ -96,8 +95,8 @@
             <div class="col-lg-3 col-md-6">
                 <div class="card text-center">
                     <div class="body">
-                        <p class="m-b-20"><i class="zmdi zmdi-account-box zmdi-hc-3x col-green"></i></p>
-                        <span>New Employees</span>
+                        <p class="m-b-20"><i class="zmdi zmdi-book zmdi-hc-3x col-green"></i></p>
+                        <span>Draft Invoices</span>
 
                         <h3 class="m-b-10 number count-to" data-from="0" data-to="78" data-speed="2000"
                             data-fresh-interval="700">78</h3>
@@ -145,6 +144,35 @@
 %{--<asset:javascript src="/themeassets/bundles/doughnut.bundle.js"/>--}%
 <asset:javascript src="/themeassets/bundles/mainscripts.bundle.js"/>
 <asset:javascript src="/themeassets/js/pages/index.js"/>
+
+<script>
+    getStats();
+    function getStats()
+    {
+        $.ajax({
+           url: "dashboard/stats",
+           method: "GET",
+           success: function (data) {
+               var salesCurrentMonth = data["salesCurrentMonth"];
+               var salesPreviousMonth = data["salesPreviousMonth"];
+               $("#salesCurrentMonth").text(salesCurrentMonth);
+
+               var diff = salesCurrentMonth - salesPreviousMonth;
+               var percentageDiff = (diff/salesPreviousMonth) * 100;
+
+               if(percentageDiff > 0)
+               {
+                   $("#salesPreviousMonth").html(percentageDiff.toFixed(2) + "% Growth <i class='zmdi zmdi-caret-up' style='color: lightgreen;'></i>");
+               }
+               else
+               {
+                   $("#salesPreviousMonth").html(percentageDiff.toFixed(2) + "% Growth <i class='zmdi zmdi-caret-down' style='color: red;'></i>");
+               }
+
+           }
+        });
+    }
+</script>
 
 <g:include view="controls/footer-content.gsp"/>
 <script>

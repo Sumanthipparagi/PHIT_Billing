@@ -2,6 +2,9 @@ package phitb_ui
 
 import org.grails.web.json.JSONObject
 
+import java.text.SimpleDateFormat
+import java.time.LocalDate
+
 class DashboardController {
 
     def index() {
@@ -224,5 +227,58 @@ class DashboardController {
             System.out.println(controllerName+" "+ex)
             log.error(controllerName+" "+ex)
         }
+    }
+
+    def dashboardStats()
+    {
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss")
+        //current month stats
+        JSONObject jsonObject = new JSONObject()
+        Calendar cal = Calendar.getInstance()
+        cal.setTime(new Date())
+        cal.set(Calendar.HOUR_OF_DAY, 11)
+        cal.set(Calendar.MINUTE, 59)
+        cal.set(Calendar.SECOND, 59)
+        String toDate = sdf.format(cal.getTime())
+
+        cal.set(Calendar.HOUR_OF_DAY, 0)
+        cal.set(Calendar.MINUTE, 0)
+        cal.set(Calendar.SECOND, 0)
+        cal.set(Calendar.DAY_OF_MONTH, 1)
+        String fromDate = sdf.format(cal.getTime())
+
+        String entityId = session.getAttribute("entityId")
+        String userId = session.getAttribute("userId")
+        String financialYear = session.getAttribute("financialYear")
+        jsonObject.put("fromDate", fromDate)
+        jsonObject.put("toDate", toDate)
+        jsonObject.put("entityId", entityId)
+        jsonObject.put("userId", userId)
+        jsonObject.put("financialYear", financialYear)
+        JSONObject currentMonthSales = new ReportsService().getSalesStats(jsonObject)
+
+        //sales of previous month
+        cal.setTime(new Date())
+        cal.set(Calendar.HOUR_OF_DAY, 11)
+        cal.set(Calendar.MINUTE, 59)
+        cal.set(Calendar.SECOND, 59)
+        cal.add(Calendar.MONTH, -1)
+        cal.set(Calendar.DAY_OF_MONTH, cal.getActualMaximum(Calendar.DAY_OF_MONTH))
+        toDate = sdf.format(cal.getTime())
+
+        cal.set(Calendar.HOUR_OF_DAY, 0)
+        cal.set(Calendar.MINUTE, 0)
+        cal.set(Calendar.SECOND, 0)
+        cal.set(Calendar.DAY_OF_MONTH, 1)
+        fromDate = sdf.format(cal.getTime())
+        jsonObject.put("fromDate", fromDate)
+        jsonObject.put("toDate", toDate)
+        JSONObject previousMonthSales = new ReportsService().getSalesStats(jsonObject)
+
+        JSONObject dashboardStats = new JSONObject()
+        dashboardStats.put("salesCurrentMonth", currentMonthSales.get("totalSales"))
+        dashboardStats.put("salesPreviousMonth", previousMonthSales.get("totalSales"))
+
+        respond dashboardStats, formats: ['json']
     }
 }

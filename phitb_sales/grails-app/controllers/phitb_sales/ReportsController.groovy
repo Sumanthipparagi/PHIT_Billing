@@ -11,6 +11,7 @@ import javax.ws.rs.client.ClientBuilder
 import javax.ws.rs.client.WebTarget
 import javax.ws.rs.core.MediaType
 import javax.ws.rs.core.Response
+import java.text.DecimalFormat
 import java.text.SimpleDateFormat
 
 class ReportsController {
@@ -348,7 +349,6 @@ class ReportsController {
         respond gstReport
     }
 
-
     def getSaleReturnAreaWiseBillDetails() {
         try {
             JSONObject jsonObject = new JSONObject(request.reader.text)
@@ -413,5 +413,33 @@ class ReportsController {
         catch (Exception ex) {
             println(ex.stackTrace)
         }
+    }
+
+    def getSalesStats()
+    {
+        DecimalFormat df = new DecimalFormat("0.00");
+        JSONObject jsonObject = new JSONObject(request.reader.text)
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss")
+        long entityId = Long.parseLong(jsonObject.get("entityId").toString())
+        long userId = Long.parseLong(jsonObject.get("userId").toString())
+        Date fromDate = sdf.parse(jsonObject.get("fromDate").toString())
+        Date toDate =  sdf.parse(jsonObject.get("toDate").toString())
+        String financialYear = jsonObject.get("financialYear").toString()
+        double totalSales = 0
+        if(entityId && userId)
+        {
+            ArrayList<SaleBillDetails> saleBillDetails = SaleBillDetails.findAllByEntityIdAndUserIdAndBillStatusAndFinancialYearAndOrderDateBetween(entityId, userId, "ACTIVE",financialYear, fromDate, toDate)
+            if(saleBillDetails?.size()>0)
+            {
+                for (SaleBillDetails saleBillDetail : saleBillDetails) {
+                    totalSales += SaleProductDetails.findAllByBillId(saleBillDetail.id).amount.sum()
+                }
+
+            }
+        }
+
+        JSONObject stats = new JSONObject()
+        stats.put("totalSales", Double.parseDouble(df.format(totalSales)))
+        respond stats, formats: ['json']
     }
 }
