@@ -273,11 +273,12 @@ class GoodsTransferNoteController
             for (JSONObject sale : saleData)
             {
                 uuid = UUID.randomUUID()
-//                String tempStockRowId = sale.get("15")
-//                def tmpStockBook = new InventoryService().getTempStocksById(Long.parseLong(tempStockRowId))
-                def stockBook = new InventoryService().getStocksOfProductAndBatch(sale.get("1").toString(), sale.get("2").toString(),session.getAttribute('entityId').toString())
                 long saleQty =  Long.parseLong(sale.get("4").toString())
                 long saleFreeQty =  Long.parseLong(sale.get("5").toString())
+//                String tempStockRowId = sale.get("15")
+//                def tmpStockBook = new InventoryService().getTempStocksById(Long.parseLong(tempStockRowId))
+                def stockBook = new InventoryService().getStocksOfProductAndBatch(sale.get("1").toString(),sale.get("2").toString(),
+                        entityId)
                 long remainingQty = Long.parseLong(stockBook.get("remainingQty").toString())
                 long  remainingFreeQty = Long.parseLong(stockBook.get("remainingFreeQty").toString())
 
@@ -457,7 +458,7 @@ class GoodsTransferNoteController
             JSONArray productDetails = jsonObject.get("products")
             if (productDetails) {
                 for (JSONObject productDetail : productDetails) {
-                    def stockBook = new InventoryService().getStocksOfProductAndBatch(productDetail.productId.toString(), productDetail.batchNumber, session.getAttribute("entityId").toString())
+                    def stockBook = new InventoryService().getStocksOfProductAndBatch(productDetail.productId.toString(), productDetail.batchNumber, productDetail?.entityId?.toString())
                     double remainingQty = stockBook.get("remainingQty")
                     double remainingFreeQty = stockBook.get("remainingFreeQty")
 
@@ -963,6 +964,7 @@ class GoodsTransferNoteController
         try
         {
             JSONObject jsonObject = new JSONObject(params)
+            jsonObject.put("entityId",session.getAttribute('entityId'))
             def apiResponse = new SalesService().showGTN(jsonObject)
             if (apiResponse.status == 200)
             {

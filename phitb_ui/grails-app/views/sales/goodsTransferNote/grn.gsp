@@ -1,3 +1,4 @@
+<%@ page import="phitb_ui.Constants" %>
 <!doctype html>
 <html class="no-js " lang="en">
 <head>
@@ -239,7 +240,7 @@
                         if (json.data[i].billStatus !== "CANCELLED" && json.data[i].billStatus !== "APPROVED") {
                             cancelInvoice = '<a class="btn btn-sm btn-info" title="Cancel" onclick="cancelBill(' + json.data[i].id +')" href="#"><i class="fa fa-times"></i></a>';
                         }
-                         if("${session.getAttribute('entityTypeName')}" === "C_F" && json.data[i].billStatus !== "APPROVED" && json.data[i].billStatus !== "CANCELLED")
+                         if(("${(session.getAttribute('entityTypeName'))}" === "${Constants.ENTITY_C_F}" || "${session.getAttribute('entityTypeName')}" === "${Constants.ENTITY_SUPER_STOCKIST}") && json.data[i].billStatus !== "APPROVED" && json.data[i].billStatus !== "CANCELLED" )
                         {
 
                             approveInvoice = '<a class="btn btn-sm btn-success" title="Approved" onclick="approveGrn(' + json.data[i].id
