@@ -529,7 +529,9 @@
                                     </div>
                                     <input type="hidden" name="status" value="0">
                                     <input type="hidden" name="zoneId" value="0">
-                                    <input type="hidden" name="entity" value="${session.getAttribute('entityId')}">
+                                    <g:if test="${!session.getAttribute("role").toString().equalsIgnoreCase(Constants.SUPER_USER)}">
+                                        <input type="hidden" name="entity" value="${session.getAttribute('entityId')}">
+                                    </g:if>
                                     <input type="hidden" name="syncStatus" value="1">
                                     <input type="hidden" name="lastLoginDate" value="12/02/2020">
                                     <input type="hidden" name="createdUser" value="${session.getAttribute('userId')}">
@@ -844,10 +846,10 @@
         }
     }
 
-<g:if test="${session.getAttribute("role").toString().equalsIgnoreCase(Constants.SUPER_USER)}">
+    <g:if test="${session.getAttribute("role").toString().equalsIgnoreCase(Constants.SUPER_USER)}">
     loadParentEntity();
-    function loadParentEntity()
-    {
+
+    function loadParentEntity() {
         $.ajax({
             method: "GET",
             url: "/entity-register/getparententities",
@@ -856,14 +858,14 @@
                 $("#entitySelect").append("<option selected disabled>--SELECT--</option>");
                 $.each(data, function (index, value) {
                     var entityTypeName = value.entityType.name;
-                    $("#entitySelect").append("<option value=\"" + value.id +"\">" + value.entityName + " ("+entityTypeName+")</option>");
+                    $("#entitySelect").append("<option value=\"" + value.id + "\">" + value.entityName + " (" + entityTypeName + ")</option>");
                 });
                 $(".entitySelect").prop("required", true);
             }
         })
     }
 
-</g:if>
+    </g:if>
 
 </script>
 <g:include view="controls/footer-content.gsp"/>

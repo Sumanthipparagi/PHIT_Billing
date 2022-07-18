@@ -219,21 +219,21 @@
                                         <div class="col-md-6 mt-2">
                                             <div class="form-group">
 
-                                                <label for="notParent" class="checkbox-inline">
+                                                <label for="isParent" class="checkbox-inline">
                                                     <input onchange="isParentChanged()" type="checkbox" class="checkbox"
-                                                           id="notParent"/> Not Parent Entity?
+                                                           id="isParent"/> Is Parent Entity?
                                                 </label>
                                             </div>
 
-                                            <div class="form-group affiliatedEntityContainer hidden">
+                                            <div class="form-group affiliatedEntityContainer">
                                                 <label for="affiliatedToEntity">Affiliated to Entity: <span
                                                         class="required-indicator"
                                                         style="color: red;">*</span></label>
-                                                <select name="affiliatedToEntity" style="width: 100%;" id="affiliatedToEntity" class="form-control">
+                                                <select name="affiliatedToEntity" style="width: 100%;" id="affiliatedToEntity" class="form-control" required>
                                                     <option selected disabled>-SELECT-</option>
                                                 </select>
                                             </div>
-                                            <input type="hidden" id="notParentValue" name="notParent" value="false" />
+                                            <input type="hidden" id="isParentValue" name="isParent" value="false" />
                                         </div>
 
                                     </div>
@@ -1633,29 +1633,32 @@
 
 
     <g:if test="${session.getAttribute('role') == Constants.SUPER_USER}">
-
+    loadAffiliated();
+    function loadAffiliated()
+    {
+        $.ajax({
+            method: "GET",
+            url: "getparententities",
+            success: function (data) {
+                $("#affiliatedToEntity").empty();
+                $("#affiliatedToEntity").append("<option selected disabled>--SELECT--</option>");
+                $.each(data, function (index, value) {
+                    var entityTypeName = value.entityType.name;
+                    var entityTypeId = value.entityType.id;
+                    $("#affiliatedToEntity").append("<option value=\"" + value.id +"_"+entityTypeId+"\">" + value.entityName + " ("+entityTypeName+")</option>");
+                });
+            }
+        })
+    }
     function isParentChanged() {
-        var notParent = $("#notParent").is(":checked");
-        $("#notParentValue").val(notParent);
-        if (notParent) {
-            $.ajax({
-                method: "GET",
-                url: "getparententities",
-                success: function (data) {
-                    $("#affiliatedToEntity").empty();
-                    $("#affiliatedToEntity").append("<option selected disabled>--SELECT--</option>");
-                    $.each(data, function (index, value) {
-                        var entityTypeName = value.entityType.name;
-                        $("#affiliatedToEntity").append("<option value=\"" + value.id +"\">" + value.entityName + " ("+entityTypeName+")</option>");
-                    });
-
-                    $(".affiliatedEntityContainer").removeClass("hidden");
-                    $(".affiliatedToEntity").prop("required", true);
-                }
-            })
-        } else {
+        var isParent = $("#isParent").is(":checked");
+        $("#isParentValue").val(isParent);
+        if (isParent) {
             $(".affiliatedEntityContainer").addClass("hidden");
             $(".affiliatedToEntity").prop("required", false);
+        } else {
+            $(".affiliatedEntityContainer").removeClass("hidden");
+            $(".affiliatedToEntity").prop("required", true);
         }
     }
 

@@ -24,10 +24,10 @@
 
     <style>
 
-        div.dataTables_scrollBody table tbody  td {
-            word-wrap:break-word;
-            overflow: hidden;
-        }
+    div.dataTables_scrollBody table tbody td {
+        word-wrap: break-word;
+        overflow: hidden;
+    }
 
 
     /*table !* give class of table*!*/
@@ -119,6 +119,7 @@
                                 <tr>
                                     <th>Entity Name</th>
                                     <th>Entity Type</th>
+                                    <th>Affiliations</th>
                                     <th>GSTIN</th>
                                     <th>Address</th>
                                     <th>Action</th>
@@ -137,6 +138,37 @@
     </div>
 </section>
 
+
+<div class="modal fade affiliateModal" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">
+                    <span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="myModalLabel">Affiliated Entities</h4>
+            </div>
+
+            <div class="modal-body">
+                <table class="table table-condensed table-striped">
+                    <thead>
+                        <tr>
+                            <th>Entity Name</th>
+                            <th>Entity Type</th>
+                        </tr>
+                    </thead>
+                    <tbody id="affiliateContent">
+
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="modal-footer">
+            </div>
+
+        </div>
+    </div>
+</div>
 
 %{--<g:include view="controls/entity/add-entity-register.gsp"/>--}%
 <g:include view="controls/delete-modal.gsp"/>
@@ -197,6 +229,8 @@
                 dataSrc: function (json) {
                     var return_data = [];
                     for (var i = 0; i < json.data.length; i++) {
+                        var affiliations = "<button type='button' data-toggle='modal' data-target='.affiliateModal' data-id='" + json.data[i].affiliateId + "' data-parentId='" + json.data[i].id + "' class='btn btn-sm btn-info affiliateBtn'><i class='fa fa-eye'></i> View</button>";
+
                         var editbtn =
                             '<a href="/entity-register/update-entity-register/' + json.data[i].id + '"><button type="button" data-id="' + json.data[i].id + '"class="editbtn btn btn-sm btn-warning  editbtn"><i class="material-icons"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">edit</font></font></i></button></a>'
                         var deletebtn = '<button type="button" data-id="' + json.data[i].id +
@@ -205,9 +239,10 @@
                             'id': json.data[i].id,
                             'entityName': json.data[i].entityName,
                             'entityType': json.data[i].entityType.name,
+                            'affiliations': affiliations,
                             'gstin': json.data[i].gstn,
-                            'address': "<div style='white-space:normal;'>"+json.data[i].addressLine1 + "<br>" +
-                                json.data[i].addressLine2+"</div>",
+                            'address': "<div style='white-space:normal;'>" + json.data[i].addressLine1 + "<br>" +
+                                json.data[i].addressLine2 + "</div>",
                             'action': editbtn + ' ' + deletebtn
                         });
                     }
@@ -216,14 +251,41 @@
             },
             columns: [
                 // {'data': 'id', 'width': '20%'},
-                {'data': 'entityName', 'width': '75%'},
+                {'data': 'entityName', 'width': '55%'},
                 {'data': 'entityType', 'width': '10%'},
+                {'data': 'affiliations', 'width': '10%'},
                 {'data': 'gstin', 'width': '10%'},
-                {'data': 'address', 'width': '5%'},
+                {'data': 'address', 'width': '15%'},
                 {'data': 'action', 'width': '10%'}
             ]
         });
     }
+
+
+    $(document).on("click", ".affiliateBtn", function () {
+        var id = $(this).data('id');
+        var parentId = $(this).data('parentId');
+        var url = "entity-register/getbyaffiliates/" + id;
+        $.ajax({
+            url: url,
+            type: "GET",
+            success: function (data) {
+                $("#affiliateContent").empty();
+                var affCnt = "";
+                $.each(data, function (index, value) {
+                    if(value.id != parentId) {
+                        affCnt += "<tr><td>" + value.entityName + "</td><td>" + value.entityType.name + "</td></tr>";
+                    }
+                });
+                $("#affiliateContent").html(affCnt);
+            },
+            error: function () {
+                alert("No Affiliates");
+            }
+        });
+
+    });
+
 
     $(".entityRegister").submit(function (event) {
 
