@@ -175,7 +175,13 @@ class UserRegisterController
         try
         {
             JSONObject jsonObject = new JSONObject(params)
-            jsonObject.put("entityId", session.getAttribute("entityId"))
+            if(!session.getAttribute("role").toString().equalsIgnoreCase(Constants.SUPER_USER)) {
+                jsonObject.put("entityId", session.getAttribute("entityId"))
+            }
+            else
+            {
+                jsonObject.put("entityId", 0)
+            }
             def apiResponse = new EntityService().showUser(jsonObject)
             if (apiResponse.status == 200)
             {

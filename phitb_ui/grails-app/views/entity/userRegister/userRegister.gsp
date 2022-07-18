@@ -195,15 +195,15 @@
                 dataSrc: function (json) {
                     var return_data = [];
                     for (var i = 0; i < json.data.length; i++) {
-                        console.log(json);
                         var editbtn =
                             '<a href="/user/update-details/' + json.data[i].id
                             +'"><button type="button" data-id="' + json.data[i].id +'"class="editbtn btn btn-sm btn-warning  editbtn"><i class="material-icons"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">edit</font></font></i></button></a>'
                         var deletebtn = '<button type="button" data-id="' + json.data[i].id +
                             '" class="btn btn-sm btn-danger deletebtn" data-toggle="modal" data-target=".deleteModal"><i class="material-icons"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">delete</font></font></i></button>'
+                        var entityName = "<br><small>("+json.data[i].entity.entityName + ")</small>";
                         return_data.push({
                             'id': json.data[i].id,
-                            'userName': json.data[i].userName,
+                            'userName': json.data[i].userName + entityName,
                             'address': "<div style='white-space:normal;'>"+json.data[i].address+"</div>",
                             'role': json.data[i].role.name,
                             // 'entity': json.data[i].entity.entityName,

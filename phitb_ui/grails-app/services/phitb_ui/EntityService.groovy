@@ -41,8 +41,8 @@ class EntityService {
     def saveEntity(JSONObject jsonObject)
     {
         Client client = ClientBuilder.newClient()
-        //WebTarget target = client.target(new Links().API_GATEWAY)
-        WebTarget target = client.target("http://localhost:8088")
+        WebTarget target = client.target(new Links().API_GATEWAY)
+        //WebTarget target = client.target("http://localhost:8088")
         try
         {
             println(jsonObject)
@@ -217,11 +217,30 @@ class EntityService {
     }
 
 
-//User Register
+    //User Register
     def saveUser(JSONObject jsonObject)
     {
+        if(!jsonObject.has("reportTo"))
+            jsonObject.put("reportTo", 0)
+
+        if(!jsonObject.has("referredBy"))
+            jsonObject.put("referredBy", 0)
+
+        if(!jsonObject.has("referenceRelation"))
+            jsonObject.put("referenceRelation", "")
+
+        if(jsonObject.has("department"))
+        {
+            String department = jsonObject.get("department")
+            if(department.equalsIgnoreCase("--SELECT--"))
+            {
+                jsonObject.put("department", 0)
+            }
+        }
+
         Client client = ClientBuilder.newClient()
         WebTarget target = client.target(new Links().API_GATEWAY)
+        //WebTarget target = client.target("http://localhost:8088")
         try
         {
             Response apiResponse = target

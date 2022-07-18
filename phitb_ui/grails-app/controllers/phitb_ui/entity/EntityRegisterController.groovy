@@ -17,6 +17,8 @@ import phitb_ui.system.PriorityController
 import phitb_ui.system.StateController
 import phitb_ui.system.ZoneController
 
+import java.text.SimpleDateFormat
+
 class EntityRegisterController {
 
     def index() {
@@ -171,12 +173,14 @@ class EntityRegisterController {
             JSONObject jsonObject = new JSONObject(params)
             if(session.getAttribute("role").toString().equalsIgnoreCase(Constants.SUPER_USER))
             {
-                boolean notParent = Boolean.parseBoolean(jsonObject.get("notParent"))
-                if(notParent)
+                boolean isParent = Boolean.parseBoolean(jsonObject.get("isParent"))
+                if(!isParent)
                 {
-                    jsonObject.put("affiliateId", jsonObject.get("affiliatedToEntity"))
-                    jsonObject.put("parentEntity", jsonObject.get("affiliatedToEntity"))
-                    jsonObject.put("parentEntityType", 0)
+                    String entityId = jsonObject.get("affiliatedToEntity").toString().split("_")[0]
+                    String entityTypeId = jsonObject.get("affiliatedToEntity").toString().split("_")[1]
+                    jsonObject.put("affiliateId", entityId)
+                    jsonObject.put("parentEntity", entityId)
+                    jsonObject.put("parentEntityType", entityTypeId)
                     jsonObject.put("isParent", false)
                 }
                 else
@@ -196,10 +200,46 @@ class EntityRegisterController {
 
             def apiResponse = new EntityService().saveEntity(jsonObject)
             if (apiResponse?.status == 200) {
-                JSONObject obj = new JSONObject(apiResponse.readEntity(String.class))
+                JSONObject createdEntity = new JSONObject(apiResponse.readEntity(String.class))
+                if(createdEntity)
+                {
+                    //create financial year
+                    SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy")
+                    String fromDate
+                    String toDate
+                    Calendar cal = Calendar.getInstance()
+                    cal.setTime(new Date())
+
+                    if(cal.get(Calendar.MONTH) >= 0 && cal.get(Calendar.MONTH) < 3)
+                    {
+                        cal.add(Calendar.YEAR, -1)
+                        fromDate = sdf.format(cal.getTime())
+                        cal.add(Calendar.YEAR, 1)
+                        toDate = sdf.format(cal.getTime())
+                    }
+                    else
+                    {
+                        fromDate = sdf.format(cal.getTime())
+                        cal.add(Calendar.YEAR, 1)
+                        toDate = sdf.format(cal.getTime())
+                    }
+
+                    JSONObject financialYear = new JSONObject()
+                    financialYear.put("startDate", fromDate)
+                    financialYear.put("endDate", toDate)
+                    financialYear.put("status", 1)
+                    financialYear.put("syncStatus", 1)
+                    financialYear.put("entityType", createdEntity.get("entityType")["id"])
+                    financialYear.put("entity", createdEntity.get("id"))
+                    financialYear.put("modifiedUser", session.getAttribute("userId"))
+                    financialYear.put("createdUser", session.getAttribute("userId"))
+
+                    new EntityService().saveFinancialYear(financialYear)
+                }
                 render(view: '/entity/entityRegister/entityRegister')
-//                respond obj, formats: ['json'], status: 200
-            } else {
+            }
+            else
+            {
                 response.status = apiResponse?.status ?: 400
             }
         }
@@ -269,15 +309,16 @@ class EntityRegisterController {
         }
     }
 
-    def getByAffiliates(String id) {
+    def getByAffiliates() {
         try {
+            String id = params.id
             def apiResponse = new EntityService().getEntityByAffiliates(id)
             if (apiResponse?.status == 200) {
                 JSONArray jsonArray = new JSONArray(apiResponse.readEntity(String.class));
                 ArrayList<String> arrayList = new ArrayList<>(jsonArray)
-                return arrayList
+                respond arrayList, formats: ['json']
             } else {
-                return []
+                response.status = 400
             }
         }
         catch (Exception ex) {
