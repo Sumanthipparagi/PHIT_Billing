@@ -273,11 +273,12 @@ class GoodsTransferNoteController
             for (JSONObject sale : saleData)
             {
                 uuid = UUID.randomUUID()
-//                String tempStockRowId = sale.get("15")
-//                def tmpStockBook = new InventoryService().getTempStocksById(Long.parseLong(tempStockRowId))
-                def stockBook = new InventoryService().getStocksOfProductAndBatch(sale.get("1").toString(), sale.get("2").toString(),session.getAttribute('entityId').toString())
                 long saleQty =  Long.parseLong(sale.get("4").toString())
                 long saleFreeQty =  Long.parseLong(sale.get("5").toString())
+//                String tempStockRowId = sale.get("15")
+//                def tmpStockBook = new InventoryService().getTempStocksById(Long.parseLong(tempStockRowId))
+                def stockBook = new InventoryService().getStocksOfProductAndBatch(sale.get("1").toString(),sale.get("2").toString(),
+                        entityId)
                 long remainingQty = Long.parseLong(stockBook.get("remainingQty").toString())
                 long  remainingFreeQty = Long.parseLong(stockBook.get("remainingFreeQty").toString())
 
@@ -451,13 +452,13 @@ class GoodsTransferNoteController
         String id = params.id
         String entityId = session.getAttribute("entityId")
         String financialYear = session.getAttribute("financialYear")
-        JSONObject jsonObject = new SalesService().cancelSampleInvoice(id, entityId, financialYear)
+        JSONObject jsonObject = new SalesService().cancelGTN(id, entityId, financialYear)
         if (jsonObject) {
             //adjust stocks
             JSONArray productDetails = jsonObject.get("products")
             if (productDetails) {
                 for (JSONObject productDetail : productDetails) {
-                    def stockBook = new InventoryService().getStocksOfProductAndBatch(productDetail.productId.toString(), productDetail.batchNumber, session.getAttribute("entityId").toString())
+                    def stockBook = new InventoryService().getStocksOfProductAndBatch(productDetail.productId.toString(), productDetail.batchNumber, productDetail?.entityId?.toString())
                     double remainingQty = stockBook.get("remainingQty")
                     double remainingFreeQty = stockBook.get("remainingFreeQty")
 
@@ -492,11 +493,6 @@ class GoodsTransferNoteController
                     new InventoryService().updateStockBook(stockBook)
                 }
             }
-            JSONObject invoice = jsonObject.get("invoice") as JSONObject
-//            if (invoice.has("irnDetails")) {
-//                JSONObject irnDetails = new JSONObject(invoice.get("irnDetails").toString())
-//                new EInvoiceService().cancelIRN(session, irnDetails.get("Irn").toString(), invoice.get("id").toString())
-//            }
             respond jsonObject, formats: ['json']
         } else {
             response.status = 400
@@ -968,6 +964,7 @@ class GoodsTransferNoteController
         try
         {
             JSONObject jsonObject = new JSONObject(params)
+            jsonObject.put("entityId",session.getAttribute('entityId'))
             def apiResponse = new SalesService().showGTN(jsonObject)
             if (apiResponse.status == 200)
             {
@@ -1084,6 +1081,10 @@ class GoodsTransferNoteController
             JSONObject series = new EntityService().getSeriesById(gtnDetail.get("seriesId").toString())
             JSONObject customer = new EntityService().getEntityById(gtnDetail.get("customerId").toString())
             JSONObject entity = new EntityService().getEntityById(gtnDetail.get("entityId").toString())
+            JSONObject parentEntity = new EntityService().getEntityById(customer.get("parentEntity").toString())
+            JSONObject parentCity = new SystemService().getCityById(parentEntity.get('cityId').toString())
+            parentEntity.put("city", parentCity)
+            customer.put("parentEntity",parentEntity)
             JSONObject city = new SystemService().getCityById(entity.get('cityId').toString())
             JSONObject custcity = new SystemService().getCityById(customer.get('cityId').toString())
             JSONArray termsConditions = new EntityService().getTermsContionsByEntity(gtnDetail.get("entityId").toString())
@@ -1164,18 +1165,18 @@ class GoodsTransferNoteController
 //            if(gtnDetail.has("irnDetails") && gtnDetail.get("irnDetails") != null)
 //                irnDetails = new JSONObject(gtnDetail.get("irnDetails").toString())
 
-            render(view: "/sales/goodsTransferNote/grn-print", model: [saleBillDetail    : gtnDetail,
-                                                                       saleProductDetails: gtnProductDetails,
-                                                                       series            : series, entity: entity, customer: customer, city: city,
-                                                                       total             : total, custcity: custcity,
-                                                                       termsConditions   : termsConditions,
-                                                                       totalcgst         : totalcgst, totalsgst: totalsgst, totaligst: totaligst,
-                                                                       totaldiscount     : totaldiscount,
-                                                                       gstGroup          : gstGroup,
-                                                                       sgstGroup         : sgstGroup,
-                                                                       cgstGroup         : cgstGroup,
-                                                                       igstGroup         : igstGroup,
-                                                                       totalBeforeTaxes  : totalBeforeTaxes,
+            render(view: "/sales/goodsTransferNote/grn-print", model: [grnBillDetail    : gtnDetail,
+                                                                       grnProductDetails: gtnProductDetails,
+                                                                       series           : series, entity: entity, customer: customer, city: city,
+                                                                       total            : total, custcity: custcity,
+                                                                       termsConditions  : termsConditions,
+                                                                       totalcgst        : totalcgst, totalsgst: totalsgst, totaligst: totaligst,
+                                                                       totaldiscount    : totaldiscount,
+                                                                       gstGroup         : gstGroup,
+                                                                       sgstGroup        : sgstGroup,
+                                                                       cgstGroup        : cgstGroup,
+                                                                       igstGroup        : igstGroup,
+                                                                       totalBeforeTaxes : totalBeforeTaxes,
 
             ])
         }

@@ -690,7 +690,7 @@
                 }
                 $('#batch').empty();
                 $('#batch').html(option);
-                $('.batch').val('${scheme.batch}').change();
+                $('.batch').val('${scheme?.batch}').change();
                 if (data.length === 0) {
                     // $('#batch').prop('disabled', true);
                 } else {

@@ -328,6 +328,24 @@ class EntityRegisterController {
         }
     }
 
+    def getByAffiliateById(String id) {
+        try {
+            def apiResponse = new EntityService().getEntityByAffiliates(id)
+            if (apiResponse?.status == 200) {
+                JSONArray jsonArray = new JSONArray(apiResponse.readEntity(String.class));
+                ArrayList<String> arrayList = new ArrayList<>(jsonArray)
+                return arrayList
+            } else {
+                response.status = 400
+            }
+        }
+        catch (Exception ex) {
+            System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
+            log.error('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
+            response.status = 400
+        }
+    }
+
 
     def getEnitityById(String id) {
         return new EntityService().getEntityById(id)

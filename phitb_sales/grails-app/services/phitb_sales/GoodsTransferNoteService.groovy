@@ -82,6 +82,7 @@ class GoodsTransferNoteService {
         String orderColumnId = paramsJsonObject.get("order[0][column]")
         String orderDir = paramsJsonObject.get("order[0][dir]")
         String invoiceStatus = paramsJsonObject.get("invoiceStatus")
+        long entityId = paramsJsonObject.get("entityId")
 
         String orderColumn = "id"
         switch (orderColumnId)
@@ -107,6 +108,7 @@ class GoodsTransferNoteService {
             {
                 eq('billStatus', invoiceStatus)
             }
+            eq('customerId', entityId)
             eq('deleted', false)
             order(orderColumn, orderDir)
         }
@@ -386,7 +388,7 @@ class GoodsTransferNoteService {
         GoodsTransferNote goodsTransferNote = GoodsTransferNote.findById(Long.parseLong(id))
         if (goodsTransferNote)
         {
-            if (goodsTransferNote.financialYear.equalsIgnoreCase(financialYear) && goodsTransferNote.entityId == Long.parseLong(entityId))
+            if (goodsTransferNote.financialYear.equalsIgnoreCase(financialYear) && goodsTransferNote.customerId == Long.parseLong(entityId))
             {
                 ArrayList<GoodsTransferNoteProduct> goodsTransferNoteProducts = GoodsTransferNoteProduct.findAllByBillId(goodsTransferNote.id)
                 for (GoodsTransferNoteProduct goodsTransferNoteProduct : goodsTransferNoteProducts)
