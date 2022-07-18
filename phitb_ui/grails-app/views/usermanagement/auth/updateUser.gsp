@@ -810,9 +810,9 @@
 
         $(document).ready(function(){
             %{--$('.cityId').append("<option value='${city.id}'>${city.areaName}</option>");--}%
-            $('.cityId').append("<option value='"+115676+"'>"+jjdnjnsd+"</option>");
+            // $('.cityId').append("<option value='"+115676+"'>"+jjdnjnsd+"</option>");
 
-            alert(${city.id});
+            %{--alert(${city.id});--}%
             %{--alert("<option value='${user.cityId}'>${city.areaName}</option>")--}%
             %{--$('#cityId').select2('${user.cityId}');--}%
         });
@@ -1014,12 +1014,15 @@
             data        : formData.serialize(), // our data object
             success:function(data){
                 $("#validation-status").text(data);
-                swal('success','Password Changed Successfully',data);
+                // swal('success','Password Changed Successfully',data);
+                alert("success")
             },
             error:function(data){
                 console.log("Failed");
                 $("#validation-status").text(data.responseText);
-                swal('error','Password Change Failed',data.responseText);
+                // swal('error','Password Change Failed',data.responseText);
+                alert("Failed")
+
             }
         });
         event.preventDefault();
@@ -1041,15 +1044,18 @@
                 data        : formData.serialize(), // our data object
                 success:function(data){
                     // $("#validation-status").text(data);
-                    // swal('success','User updated Successfully',data);
-                    swal("Success!", "Updated Successfully! ", "success");
+                    swal('success','User updated Successfully',data);
+                    // swal("Success!", "Updated Successfully! ", "success");
+                    // alert("Password Updated!!")
 
                 },
                 error:function(data){
                     console.log("Failed");
                     // $("#validation-status").text(data.responseText);
-                    // swal('error','User update Failed',data.responseText);
-                    swal("Error", "Request failed!"+data.responseText, "error");
+                    swal('error','User update Failed',data.responseText);
+                    // swal("Error", "Request failed!"+data.responseText, "error");
+                    alert("error")
+
 
                 }
             });
