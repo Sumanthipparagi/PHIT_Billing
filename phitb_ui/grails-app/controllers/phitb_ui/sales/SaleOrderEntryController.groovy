@@ -24,7 +24,7 @@ class SaleOrderEntryController {
     def index() {
         String entityId = session.getAttribute("entityId")?.toString()
         JSONArray divisions = new ProductService().getDivisionsByEntityId(entityId)
-        ArrayList<String> customers = new EntityRegisterController().show() as ArrayList<String>
+        ArrayList<String> customers = new EntityRegisterController().getByAffiliateById(entityId) as ArrayList<String>
         def priorityList = new SystemService().getPriorityByEntity(entityId)
         def series = new SeriesController().getByEntity(entityId)
         render(view: '/sales/saleOrderEntry/sale-order',model: [divisions:divisions,customers:customers, priorityList:priorityList,series:series])
@@ -55,7 +55,7 @@ class SaleOrderEntryController {
         if (!billStatus.equalsIgnoreCase("DRAFT"))
         {
             def recentSaleOrder = new SalesService().getRecentSaleOrder(financialYear, entityId, billStatus)
-            if (recentSaleOrder != null && recentSaleOrder.size()!=0)
+            if (recentSaleOrder != null && recentSaleOrder.size() != 0)
             {
                 finId = Long.parseLong(recentSaleOrder.get("finId").toString()) + 1
                 serBillId = Long.parseLong(recentSaleOrder.get("serBillId").toString()) + 1
@@ -75,37 +75,9 @@ class SaleOrderEntryController {
         double totalSgst = 0.00
         double totalIgst = 0.00
         double totalDiscount = 0.00
-        JSONArray saleOrderData = new JSONArray(params.saleData)
-        boolean tempStocksSavedCheck = true
-        for (JSONObject sale : saleOrderData)
-        {
-            if (sale.has("15"))
-            {
-                String tempStockRowId = sale.get("15")
-                if (tempStockRowId && Long.parseLong(tempStockRowId) > 0)
-                {
-                    tempStocksSavedCheck = true
-                }
-                else
-                {
-                    tempStocksSavedCheck = false
-                }
-            }
-            else
-            {
-                tempStocksSavedCheck = false
-            }
-        }
+        JSONArray saleData = new JSONArray(params.saleData)
 
-        //safety check
-        if (!tempStocksSavedCheck)
-        {
-            println("Safety Check Failed! attempted to generate sale invoice, but temp stock was not saved.")
-            response.status == 400
-            return
-        }
-
-        for (JSONObject sale : saleOrderData)
+        for (JSONObject sale : saleData)
         {
             String productId = sale.get("1")
             String batchNumber = sale.get("2")
@@ -134,6 +106,7 @@ class SaleOrderEntryController {
             saleOrderProductDetail.put("finId", finId)
             saleOrderProductDetail.put("billId", 0)
             saleOrderProductDetail.put("billType", 0)
+
             saleOrderProductDetail.put("serBillId", 0)
             saleOrderProductDetail.put("seriesId", seriesId)
             saleOrderProductDetail.put("productId", productId)
@@ -153,12 +126,12 @@ class SaleOrderEntryController {
             saleOrderProductDetail.put("cgstAmount", cgst)
             saleOrderProductDetail.put("igstAmount", igst)
 
-
-
             saleOrderProductDetail.put("gstPercentage", sale.get("16").toString())
             saleOrderProductDetail.put("sgstPercentage", sale.get("17").toString())
             saleOrderProductDetail.put("cgstPercentage", sale.get("18").toString())
             saleOrderProductDetail.put("igstPercentage", sale.get("19").toString())
+            saleOrderProductDetail.put("originalSqty", sale.get("20").toString())
+            saleOrderProductDetail.put("originalFqty", sale.get("21").toString())
 
             saleOrderProductDetail.put("gstId", 0) //TODO: to be changed
             saleOrderProductDetail.put("amount", value)
@@ -246,15 +219,37 @@ class SaleOrderEntryController {
         Response response = new SalesService().saveSaleOrder(jsonObject)
         if (response.status == 200)
         {
-            JSONObject saleBillDetail = new JSONObject(response.readEntity(String.class))
+            UUID uuid
+            JSONObject saleOrderDetail = new JSONObject(response.readEntity(String.class))
             //update stockbook
-            for (JSONObject sale : saleOrderData) {
-                String tempStockRowId = sale.get("15")
-                def tmpStockBook = new InventoryService().getTempStocksById(Long.parseLong(tempStockRowId))
-                def stockBook = new InventoryService().getStockBookById(Long.parseLong(tmpStockBook.originalId))
-                stockBook.put("remainingQty", tmpStockBook.get("remainingQty"))
-                stockBook.put("remainingFreeQty", tmpStockBook.get("remainingFreeQty"))
-                stockBook.put("remainingReplQty", tmpStockBook.get("remainingReplQty"))
+            for (JSONObject sale : saleData)
+            {
+                uuid = UUID.randomUUID()
+                long saleQty =  Long.parseLong(sale.get("4").toString())
+                long saleFreeQty =  Long.parseLong(sale.get("5").toString())
+//                String tempStockRowId = sale.get("15")
+//                def tmpStockBook = new InventoryService().getTempStocksById(Long.parseLong(tempStockRowId))
+                def stockBook = new InventoryService().getStocksOfProductAndBatch(sale.get("1").toString(),sale.get("2").toString(),
+                        entityId)
+                long remainingQty = Long.parseLong(stockBook.get("remainingQty").toString())
+                long  remainingFreeQty = Long.parseLong(stockBook.get("remainingFreeQty").toString())
+
+                if (saleQty <= remainingQty) {
+                    remainingQty = remainingQty - saleQty
+
+                } else if (saleQty > remainingQty && saleQty <= (remainingQty + remainingFreeQty)) {
+                    remainingFreeQty = remainingFreeQty - (saleQty - remainingQty)
+                    remainingQty = 0
+                }
+                if (saleFreeQty <= remainingFreeQty) {
+                    remainingFreeQty = remainingFreeQty - saleFreeQty
+                } else if (saleFreeQty > remainingFreeQty && saleFreeQty <= (remainingQty + remainingFreeQty)) {
+                    remainingQty = remainingQty - (saleFreeQty - remainingFreeQty)
+                    remainingFreeQty = 0
+                }
+                stockBook.put("remainingQty", remainingQty)
+                stockBook.put("remainingFreeQty", remainingFreeQty)
+                stockBook.put("remainingReplQty", stockBook.get("remainingReplQty"))
                 String expDate = stockBook.get("expDate").toString().split("T")[0]
                 String purcDate = stockBook.get("purcDate").toString().split("T")[0]
                 String manufacturingDate = stockBook.get("manufacturingDate").toString().split("T")[0]
@@ -265,20 +260,25 @@ class SaleOrderEntryController {
                 stockBook.put("expDate", expDate)
                 stockBook.put("purcDate", purcDate)
                 stockBook.put("manufacturingDate", manufacturingDate)
-                stockBook.put("uuid", params.uuid)
+                stockBook.put("uuid", uuid)
                 def apiRes = new InventoryService().updateStockBook(stockBook)
-                if (apiRes.status == 200) {
-                    //clear tempstockbook
-                    new InventoryService().deleteTempStock(tempStockRowId)
+                if (apiRes.status == 200)
+                {
+////                    //clear tempstockbook
+//                    def deleteTemp = new InventoryService().deleteTempStock(tempStockRowId)
+//                    println(deleteTemp)
+                    println("stocks modified!!")
                 }
             }
             JSONObject responseJson = new JSONObject()
             responseJson.put("series", series)
-            responseJson.put("saleBillDetail", saleBillDetail)
+            responseJson.put("saleOrderDetail", saleOrderDetail)
             respond responseJson, formats: ['json']
         }
         else
+        {
             response.status = 400
+        }
     }
 
 
@@ -450,18 +450,40 @@ class SaleOrderEntryController {
         String entityId = session.getAttribute("entityId")
         String financialYear = session.getAttribute("financialYear")
         JSONObject jsonObject = new SalesService().cancelOrder(id, entityId, financialYear)
-        if (jsonObject)
-        {
+        if (jsonObject) {
             //adjust stocks
-            JSONArray productOrderDetails = jsonObject.get("products")
-            if (productOrderDetails)
-            {
-                for (JSONObject productOrderDetail : productOrderDetails)
-                {
-                    def stockBook = new InventoryService().getStocksOfProductAndBatch(productOrderDetail.productId.toString(), productOrderDetail.batchNumber, session.getAttribute("entityId").toString())
-                    double remainingQty = stockBook.get("remainingQty") + productOrderDetail.get("sqty")
-                    double remainingFreeQty = stockBook.get("remainingFreeQty") + productOrderDetail.get("freeQty")
-                    double remainingReplQty = stockBook.get("remainingReplQty") + productOrderDetail.get("repQty")
+            JSONArray productDetails = jsonObject.get("products")
+            if (productDetails) {
+                for (JSONObject productDetail : productDetails) {
+                    def stockBook = new InventoryService().getStocksOfProductAndBatch(productDetail.productId.toString(), productDetail.batchNumber, productDetail?.entityId?.toString())
+                    double remainingQty = stockBook.get("remainingQty")
+                    double remainingFreeQty = stockBook.get("remainingFreeQty")
+
+                    //checking to where the stocks to be returned
+                    double originalSqty = productDetail.get("originalSqty")
+                    double originalFqty = productDetail.get("originalFqty")
+                    double sqty = productDetail.get("sqty")
+                    double freeQty = productDetail.get("freeQty")
+
+                    if ((originalSqty + originalFqty) == (sqty + freeQty) && originalSqty == sqty && originalFqty == freeQty) {
+                        remainingQty += sqty
+                        remainingFreeQty += freeQty
+                    } else {
+                        if (originalSqty >= sqty && originalFqty >= freeQty) {
+                            remainingQty += sqty
+                            remainingFreeQty += freeQty
+                        } else {
+                            if (sqty > originalSqty) {
+                                remainingQty = sqty - (sqty - originalSqty)
+                                remainingFreeQty = remainingFreeQty + freeQty + (sqty - originalSqty)
+                            } else if (freeQty > originalFqty) {
+                                remainingQty = remainingQty + sqty + (freeQty - originalFqty)
+                                remainingFreeQty = freeQty - (freeQty - originalFqty)
+                            }
+                        }
+                    }
+
+                    double remainingReplQty = stockBook.get("remainingReplQty") + productDetail.get("repQty")
                     stockBook.put("remainingQty", remainingQty.toLong())
                     stockBook.put("remainingFreeQty", remainingFreeQty.toLong())
                     stockBook.put("remainingReplQty", remainingReplQty.toLong())
@@ -469,9 +491,7 @@ class SaleOrderEntryController {
                 }
             }
             respond jsonObject, formats: ['json']
-        }
-        else
-        {
+        } else {
             response.status = 400
         }
     }
