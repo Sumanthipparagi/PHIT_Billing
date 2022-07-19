@@ -146,7 +146,7 @@ class EntityService {
             Response apiResponse = target
                     .path(new Links().UPDATE_PASSWORD)
                     .resolveTemplate("id",jsonObject.id.toString())
-                    .resolveTemplate("password", jsonObject.password.toString())
+                    .resolveTemplate("password", jsonObject.new_password.toString())
                     .request(MediaType.APPLICATION_JSON_TYPE)
                     .put(Entity.entity(jsonObject.toString(),MediaType.APPLICATION_JSON_TYPE))
             println(jsonObject)
