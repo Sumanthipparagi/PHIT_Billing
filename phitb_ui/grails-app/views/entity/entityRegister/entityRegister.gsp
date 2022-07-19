@@ -229,7 +229,7 @@
                 dataSrc: function (json) {
                     var return_data = [];
                     for (var i = 0; i < json.data.length; i++) {
-                        var affiliations = "<button type='button' data-toggle='modal' data-target='.affiliateModal' data-id='" + json.data[i].affiliateId + "' data-parentId='" + json.data[i].id + "' class='btn btn-sm btn-info affiliateBtn'><i class='fa fa-eye'></i> View</button>";
+                        var affiliations = "<button type='button' data-toggle='modal' data-target='.affiliateModal' data-id='" + json.data[i].id + "' data-parentId='" + json.data[i].id + "' class='btn btn-sm btn-info affiliateBtn'><i class='fa fa-eye'></i> View</button>";
 
                         var editbtn =
                             '<a href="/entity-register/update-entity-register/' + json.data[i].id + '"><button type="button" data-id="' + json.data[i].id + '"class="editbtn btn btn-sm btn-warning  editbtn"><i class="material-icons"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">edit</font></font></i></button></a>'
