@@ -1015,7 +1015,11 @@
             success:function(data){
                 $("#validation-status").text(data);
                 // swal('success','Password Changed Successfully',data);
-                alert("success")
+                Swal.fire(
+                    'success',
+                    'Updated Successfully',
+                    'success'
+                );
             },
             error:function(data){
                 console.log("Failed");
