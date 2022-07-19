@@ -155,10 +155,11 @@
                $("#salesCurrentMonth").text(salesCurrentMonth);
 
                var percentageDiff = 0;
-               var diff = salesCurrentMonth - salesPreviousMonth;
-               if(diff !== 0)
-                   percentageDiff = (diff/salesPreviousMonth) * 100;
-
+               if(salesPreviousMonth > 0) {
+                   var diff = salesCurrentMonth - salesPreviousMonth;
+                   if (diff !== 0)
+                       percentageDiff = (diff / salesPreviousMonth) * 100;
+               }
                if(percentageDiff > 0)
                {
                    $("#salesPreviousMonth").html(percentageDiff.toFixed(2) + "% Growth <i class='zmdi zmdi-caret-up' style='color: lightgreen;'></i>");
