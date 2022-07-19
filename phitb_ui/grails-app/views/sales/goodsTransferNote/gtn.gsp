@@ -100,23 +100,34 @@
 
                             <div class="col-md-4">
                                 <label for="customerSelect">Customer:</label>
+%{--                                <select class="form-control show-tick" id="customerSelect"--}%
+%{--                                        onchange="customerSelectChanged()">--}%
+%{--                                    <option selected disabled>--SELECT--</option>--}%
+%{--                                    <g:each in="${customers}" var="cs">--}%
+%{--                                        <g:if test="${session.getAttribute("entityTypeName").toString() == Constants.ENTITY_MANUFACTURER}">--}%
+%{--                                            <g:if test="${cs.entityType.name == Constants.ENTITY_C_F ||--}%
+%{--                                                    cs.entityType.name == Constants.ENTITY_SUPER_STOCKIST}">--}%
+%{--                                                <g:if test="${cs.id != session.getAttribute("entityId")}">--}%
+%{--                                                    <option value="${cs.id}">${cs.entityName} (${cs.entityType.name})</option>--}%
+%{--                                                </g:if>--}%
+%{--                                            </g:if>--}%
+%{--                                        </g:if>--}%
+%{--                                    --}%%{--                                        <g:else>--}%
+%{--                                    --}%%{--                                            <g:if test="${cs.id != session.getAttribute("entityId")}">--}%
+%{--                                    --}%%{--                                                <option value="${cs.id}">${cs.entityName} (${cs.entityType.name})</option>--}%
+%{--                                    --}%%{--                                            </g:if>--}%
+%{--                                    --}%%{--                                        </g:else>--}%
+%{--                                    </g:each>--}%
+%{--                                </select>--}%
+
                                 <select class="form-control show-tick" id="customerSelect"
                                         onchange="customerSelectChanged()">
                                     <option selected disabled>--SELECT--</option>
                                     <g:each in="${customers}" var="cs">
-                                        <g:if test="${session.getAttribute("entityTypeName").toString() == Constants.ENTITY_MANUFACTURER}">
-                                            <g:if test="${cs.entityType.name == Constants.ENTITY_C_F ||
-                                                    cs.entityType.name == Constants.ENTITY_SUPER_STOCKIST}">
-                                                <g:if test="${cs.id != session.getAttribute("entityId")}">
-                                                    <option value="${cs.id}">${cs.entityName} (${cs.entityType.name})</option>
-                                                </g:if>
-                                            </g:if>
+
+                                        <g:if test="${cs.id != session.getAttribute("entityId")}">
+                                            <option data-state="${cs.stateId}" value="${cs.id}">${cs.entityName} (${cs.entityType.name})</option>
                                         </g:if>
-                                    %{--                                        <g:else>--}%
-                                    %{--                                            <g:if test="${cs.id != session.getAttribute("entityId")}">--}%
-                                    %{--                                                <option value="${cs.id}">${cs.entityName} (${cs.entityType.name})</option>--}%
-                                    %{--                                            </g:if>--}%
-                                    %{--                                        </g:else>--}%
                                     </g:each>
                                 </select>
                             </div>
