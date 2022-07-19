@@ -252,7 +252,7 @@
                 </strong></li>
                 <li><b class="tab">Inv Date</b>:&nbsp;<span id="invDate"></span></li>
                 <li><b class="tab">Due Date</b>:&nbsp;<span id="dueDate"></span></li>
-                <li><b class="tab">${entity.entityType.name}</b>:</li>
+%{--                <li><b class="tab">${entity.entityType.name}</b>:</li>--}%
                 %{--                <li><b class="tab">Weight in Kgs</b>:</li>--}%
                 %{--                <li><b class="tab">Party Ref No.</b>: 429803</li>--}%
                 %{--                <li><b class="tab">Rev-Charge</b>: No Dist.Chnl.01</li>--}%
