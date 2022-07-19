@@ -18,43 +18,37 @@ import javax.ws.rs.core.Response
 @Transactional
 class EntityService {
 
-    def entityServiceStatus()
-    {
+    def entityServiceStatus() {
         Client client = ClientBuilder.newClient();
         WebTarget target = client.target(new Links().API_GATEWAY);
-        try
-        {
+        try {
             Response apiResponse = target
                     .path(new Links().ENTITY_SERVICE_STATUS)
                     .request(MediaType.APPLICATION_JSON_TYPE)
                     .get()
             return apiResponse
         }
-        catch (Exception ex)
-        {
+        catch (Exception ex) {
             System.err.println('Service :entity , action :  entityServiceStatus  , Ex:' + ex)
             log.error('Service :sales , action :  entityServiceStatus  , Ex:' + ex)
         }
 
     }
 
-    def saveEntity(JSONObject jsonObject)
-    {
+    def saveEntity(JSONObject jsonObject) {
         Client client = ClientBuilder.newClient()
         WebTarget target = client.target(new Links().API_GATEWAY)
         //WebTarget target = client.target("http://localhost:8088")
-        try
-        {
+        try {
             println(jsonObject)
             Response apiResponse = target
                     .path(new Links().ENTITY_REGISTER_SAVE)
                     .request(MediaType.APPLICATION_JSON_TYPE)
-                    .post(Entity.entity(jsonObject.toString(),MediaType.APPLICATION_JSON_TYPE))
+                    .post(Entity.entity(jsonObject.toString(), MediaType.APPLICATION_JSON_TYPE))
             println(apiResponse)
             return apiResponse
         }
-        catch (Exception ex)
-        {
+        catch (Exception ex) {
             System.err.println('Service :EntityService , action :  saveEntity  , Ex:' + ex)
             log.error('Service :EntityService , action :  saveEntity  , Ex:' + ex)
         }
@@ -66,13 +60,11 @@ class EntityService {
      * @param jsonObject
      * @return
      */
-    def showEntity(JSONObject jsonObject)
-    {
+    def showEntity(JSONObject jsonObject) {
         Client client = ClientBuilder.newClient()
         WebTarget target = client.target(new Links().API_GATEWAY)
         //WebTarget target = client.target("http://localhost:8088")
-        try
-        {
+        try {
             Response apiResponse = target
                     .path(new Links().ENTITY_REGISTER_DATATABLE)
                     .queryParam("params", URLEncoder.encode(jsonObject.toString(), "UTF-8"))
@@ -80,8 +72,7 @@ class EntityService {
                     .get()
             return apiResponse
         }
-        catch (Exception ex)
-        {
+        catch (Exception ex) {
             System.err.println('Service :EntityService , action :  showEntity  , Ex:' + ex)
             log.error('Service :EntityService , action :  showEntity  , Ex:' + ex)
         }
@@ -93,15 +84,13 @@ class EntityService {
         WebTarget target = client.target(new Links().API_GATEWAY)
         try {
             Response apiResponse = target
-                    .path(new Links().TERMS_CONDITIONS + "/"+id)
+                    .path(new Links().TERMS_CONDITIONS + "/" + id)
                     .request(MediaType.APPLICATION_JSON_TYPE)
                     .get()
-            if(apiResponse.status == 200)
-            {
+            if (apiResponse.status == 200) {
                 JSONArray jsonArray = new JSONArray(apiResponse.readEntity(String.class))
                 return jsonArray
-            }
-            else
+            } else
                 return null
         }
         catch (Exception ex) {
@@ -112,23 +101,20 @@ class EntityService {
     }
 
 
-    def putEntity(JSONObject jsonObject)
-    {
+    def putEntity(JSONObject jsonObject) {
         Client client = ClientBuilder.newClient()
         WebTarget target = client.target(new Links().API_GATEWAY)
-       
-        try
-        {
+
+        try {
             Response apiResponse = target
                     .path(new Links().ENTITY_REGISTER_UPDATE)
                     .resolveTemplate("id", jsonObject.id)
                     .request(MediaType.APPLICATION_JSON_TYPE)
-                    .put(Entity.entity(jsonObject.toString(),MediaType.APPLICATION_JSON_TYPE))
+                    .put(Entity.entity(jsonObject.toString(), MediaType.APPLICATION_JSON_TYPE))
             println(jsonObject)
             return apiResponse
         }
-        catch (Exception ex)
-        {
+        catch (Exception ex) {
             System.err.println('Service : , action :  putEntity  , Ex:' + ex)
             log.error('Service :EntityService , action :  putEntity  , Ex:' + ex)
         }
@@ -136,24 +122,21 @@ class EntityService {
     }
 
 
-    def updatePassword(JSONObject jsonObject)
-    {
+    def updatePassword(JSONObject jsonObject) {
         Client client = ClientBuilder.newClient()
         WebTarget target = client.target(new Links().API_GATEWAY)
 
-        try
-        {
+        try {
             Response apiResponse = target
                     .path(new Links().UPDATE_PASSWORD)
-                    .resolveTemplate("id",jsonObject.id.toString())
+                    .resolveTemplate("id", jsonObject.id.toString())
                     .resolveTemplate("password", jsonObject.new_password.toString())
                     .request(MediaType.APPLICATION_JSON_TYPE)
-                    .put(Entity.entity(jsonObject.toString(),MediaType.APPLICATION_JSON_TYPE))
+                    .put(Entity.entity(jsonObject.toString(), MediaType.APPLICATION_JSON_TYPE))
             println(jsonObject)
             return apiResponse
         }
-        catch (Exception ex)
-        {
+        catch (Exception ex) {
             System.err.println('Service : , action :  putEntity  , Ex:' + ex)
             log.error('Service :EntityService , action :  putEntity  , Ex:' + ex)
         }
@@ -166,12 +149,10 @@ class EntityService {
      * @param jsonObject
      * @return
      */
-    def userNameExists(String username)
-    {
+    def userNameExists(String username) {
         Client client = ClientBuilder.newClient()
         WebTarget target = client.target(new Links().API_GATEWAY)
-        try
-        {
+        try {
             Response apiResponse = target
                     .path(new Links().USER_EXISTS)
                     .queryParam("username", URLEncoder.encode(username, "UTF-8"))
@@ -179,8 +160,7 @@ class EntityService {
                     .get()
             return apiResponse
         }
-        catch (Exception ex)
-        {
+        catch (Exception ex) {
             System.err.println('Service :EntityService , action :  showUser  , Ex:' + ex)
             log.error('Service :EntityService , action :  showUser  , Ex:' + ex)
         }
@@ -188,19 +168,16 @@ class EntityService {
     }
 
 
-
     /**
      *
      * @param jsonObject
      * @return
      */
-    def deleteEntity(JSONObject jsonObject)
-    {
+    def deleteEntity(JSONObject jsonObject) {
         Client client = ClientBuilder.newClient()
         WebTarget target = client.target(new Links().API_GATEWAY)
-       
-        try
-        {
+
+        try {
             Response apiResponse = target
                     .path(new Links().ENTITY_REGISTER_DELETE)
                     .resolveTemplate("id", jsonObject.id)
@@ -208,8 +185,7 @@ class EntityService {
                     .delete()
             return apiResponse
         }
-        catch (Exception ex)
-        {
+        catch (Exception ex) {
             System.err.println('Service :EntityService , action :  deleteEntity  , Ex:' + ex)
             log.error('Service :EntityService , action :  deleteEntity  , Ex:' + ex)
         }
@@ -218,22 +194,19 @@ class EntityService {
 
 
     //User Register
-    def saveUser(JSONObject jsonObject)
-    {
-        if(!jsonObject.has("reportTo"))
+    def saveUser(JSONObject jsonObject) {
+        if (!jsonObject.has("reportTo"))
             jsonObject.put("reportTo", 0)
 
-        if(!jsonObject.has("referredBy"))
+        if (!jsonObject.has("referredBy"))
             jsonObject.put("referredBy", 0)
 
-        if(!jsonObject.has("referenceRelation"))
+        if (!jsonObject.has("referenceRelation"))
             jsonObject.put("referenceRelation", "")
 
-        if(jsonObject.has("department"))
-        {
+        if (jsonObject.has("department")) {
             String department = jsonObject.get("department")
-            if(department.equalsIgnoreCase("--SELECT--"))
-            {
+            if (department.equalsIgnoreCase("--SELECT--")) {
                 jsonObject.put("department", 0)
             }
         }
@@ -241,74 +214,60 @@ class EntityService {
         Client client = ClientBuilder.newClient()
         WebTarget target = client.target(new Links().API_GATEWAY)
         //WebTarget target = client.target("http://localhost:8088")
-        try
-        {
+        try {
             Response apiResponse = target
                     .path(new Links().USER_REGISTER_SAVE)
                     .request(MediaType.APPLICATION_JSON_TYPE)
-                    .post(Entity.entity(jsonObject.toString(),MediaType.APPLICATION_JSON_TYPE))
+                    .post(Entity.entity(jsonObject.toString(), MediaType.APPLICATION_JSON_TYPE))
             println(apiResponse)
             return apiResponse
         }
-        catch (Exception ex)
-        {
+        catch (Exception ex) {
             System.err.println('Service :EntityService , action :  save  , Ex:' + ex)
             log.error('Service :EntityService , action :  save  , Ex:' + ex)
         }
 
     }
 
-    def getAuth(String username)
-    {
+    def getAuth(String username) {
         Client client = ClientBuilder.newClient()
         WebTarget target = client.target(new Links().API_GATEWAY)
-       
-        try
-        {
+
+        try {
             Response apiResponse = target
-                    .path(new Links().ENTITY_AUTH + "/"+username)
+                    .path(new Links().ENTITY_AUTH + "/" + username)
                     .request(MediaType.APPLICATION_JSON_TYPE)
                     .get()
-            if (apiResponse?.status == 200)
-            {
+            if (apiResponse?.status == 200) {
                 JSONObject obj = new JSONObject(apiResponse.readEntity(String.class))
                 return obj
-            }
-            else
-            {
+            } else {
                 return null
             }
         }
-        catch (Exception ex)
-        {
+        catch (Exception ex) {
             System.err.println('Service :EntityService , action :  getAuth  , Ex:' + ex)
             log.error('Service :EntityService , action :  getAuth  , Ex:' + ex)
         }
 
     }
 
-    def getUser(String id)
-    {
+    def getUser(String id) {
         Client client = ClientBuilder.newClient()
         WebTarget target = client.target(new Links().API_GATEWAY)
-        try
-        {
+        try {
             Response apiResponse = target
-                    .path(new Links().USER_REGISTER_SHOW+"/"+id)
+                    .path(new Links().USER_REGISTER_SHOW + "/" + id)
                     .request(MediaType.APPLICATION_JSON_TYPE)
                     .get()
-            if (apiResponse?.status == 200)
-            {
+            if (apiResponse?.status == 200) {
                 JSONObject obj = new JSONObject(apiResponse.readEntity(String.class))
                 return obj
-            }
-            else
-            {
+            } else {
                 return null
             }
         }
-        catch (Exception ex)
-        {
+        catch (Exception ex) {
             System.err.println('Service :EntityService , action :  getUser  , Ex:' + ex)
             log.error('Service :EntityService , action :  getUser  , Ex:' + ex)
         }
@@ -319,13 +278,11 @@ class EntityService {
      * @param jsonObject
      * @return
      */
-    def showUser(JSONObject jsonObject)
-    {
+    def showUser(JSONObject jsonObject) {
         Client client = ClientBuilder.newClient()
         WebTarget target = client.target(new Links().API_GATEWAY)
-       
-        try
-        {
+
+        try {
             Response apiResponse = target
                     .path(new Links().USER_REGISTER_DATATABLE)
                     .queryParam("params", URLEncoder.encode(jsonObject.toString(), "UTF-8"))
@@ -333,30 +290,26 @@ class EntityService {
                     .get()
             return apiResponse
         }
-        catch (Exception ex)
-        {
+        catch (Exception ex) {
             System.err.println('Service :EntityService , action :  showUser  , Ex:' + ex)
             log.error('Service :EntityService , action :  showUser  , Ex:' + ex)
         }
 
     }
 
-    def putUser(JSONObject jsonObject)
-    {
+    def putUser(JSONObject jsonObject) {
         Client client = ClientBuilder.newClient()
         WebTarget target = client.target(new Links().API_GATEWAY)
-        try
-        {
+        try {
             Response apiResponse = target
                     .path(new Links().USER_REGISTER_UPDATE)
                     .resolveTemplate("id", jsonObject.id)
                     .request(MediaType.APPLICATION_JSON_TYPE)
-                    .put(Entity.entity(jsonObject.toString(),MediaType.APPLICATION_JSON_TYPE))
+                    .put(Entity.entity(jsonObject.toString(), MediaType.APPLICATION_JSON_TYPE))
             println(jsonObject)
             return apiResponse
         }
-        catch (Exception ex)
-        {
+        catch (Exception ex) {
             System.err.println('Service :EntityService , action :  putUser  , Ex:' + ex)
             log.error('Service :EntityService , action :  putUser  , Ex:' + ex)
         }
@@ -368,12 +321,10 @@ class EntityService {
      * @param jsonObject
      * @return
      */
-    def deleteUser(JSONObject jsonObject)
-    {
+    def deleteUser(JSONObject jsonObject) {
         Client client = ClientBuilder.newClient()
         WebTarget target = client.target(new Links().API_GATEWAY)
-        try
-        {
+        try {
             Response apiResponse = target
                     .path(new Links().USER_REGISTER_DELETE)
                     .resolveTemplate("id", jsonObject.id)
@@ -381,8 +332,7 @@ class EntityService {
                     .delete()
             return apiResponse
         }
-        catch (Exception ex)
-        {
+        catch (Exception ex) {
             System.err.println('Service :EntityService , action :  deleteUser  , Ex:' + ex)
             log.error('Service :EntityService , action :  deleteUser  , Ex:' + ex)
         }
@@ -390,25 +340,21 @@ class EntityService {
     }
 
 
-
     //Customer Group Register
-    def saveCustomerGroup(JSONObject jsonObject)
-    {
+    def saveCustomerGroup(JSONObject jsonObject) {
         Client client = ClientBuilder.newClient()
         WebTarget target = client.target(new Links().API_GATEWAY)
-       
-        try
-        {
+
+        try {
             println(jsonObject)
             Response apiResponse = target
                     .path(new Links().CUSTOMER_GROUP_REGISTER_SAVE)
                     .request(MediaType.APPLICATION_JSON_TYPE)
-                    .post(Entity.entity(jsonObject.toString(),MediaType.APPLICATION_JSON_TYPE))
+                    .post(Entity.entity(jsonObject.toString(), MediaType.APPLICATION_JSON_TYPE))
             println(apiResponse)
             return apiResponse
         }
-        catch (Exception ex)
-        {
+        catch (Exception ex) {
             System.err.println('Service :EntityService , action :  saveCustomerGroup  , Ex:' + ex)
             log.error('Service :EntityService , action :  saveCustomerGroup  , Ex:' + ex)
         }
@@ -420,13 +366,11 @@ class EntityService {
      * @param jsonObject
      * @return
      */
-    def showCustomerGroup(JSONObject jsonObject)
-    {
+    def showCustomerGroup(JSONObject jsonObject) {
         Client client = ClientBuilder.newClient()
         WebTarget target = client.target(new Links().API_GATEWAY)
-       
-        try
-        {
+
+        try {
             Response apiResponse = target
                     .path(new Links().CUSTOMER_GROUP_REGISTER_DATATABLE)
                     .queryParam("params", URLEncoder.encode(jsonObject.toString(), "UTF-8"))
@@ -434,31 +378,27 @@ class EntityService {
                     .get()
             return apiResponse
         }
-        catch (Exception ex)
-        {
+        catch (Exception ex) {
             System.err.println('Service :EntityService , action : showCustomerGroup  , Ex:' + ex)
             log.error('Service :EntityService , action : showCustomerGroup  , Ex:' + ex)
         }
 
     }
 
-    def putCustomerGroup(JSONObject jsonObject)
-    {
+    def putCustomerGroup(JSONObject jsonObject) {
         Client client = ClientBuilder.newClient()
         WebTarget target = client.target(new Links().API_GATEWAY)
-       
-        try
-        {
+
+        try {
             Response apiResponse = target
                     .path(new Links().CUSTOMER_GROUP_REGISTER_UPDATE)
                     .resolveTemplate("id", jsonObject.id)
                     .request(MediaType.APPLICATION_JSON_TYPE)
-                    .put(Entity.entity(jsonObject.toString(),MediaType.APPLICATION_JSON_TYPE))
+                    .put(Entity.entity(jsonObject.toString(), MediaType.APPLICATION_JSON_TYPE))
             println(jsonObject)
             return apiResponse
         }
-        catch (Exception ex)
-        {
+        catch (Exception ex) {
             System.err.println('Service : EntityService, action :  putCustomerGroup  , Ex:' + ex)
             log.error('Service :EntityService , action :  putCustomerGroup  , Ex:' + ex)
         }
@@ -470,13 +410,11 @@ class EntityService {
      * @param jsonObject
      * @return
      */
-    def deleteCustomerGroup(JSONObject jsonObject)
-    {
+    def deleteCustomerGroup(JSONObject jsonObject) {
         Client client = ClientBuilder.newClient()
         WebTarget target = client.target(new Links().API_GATEWAY)
-       
-        try
-        {
+
+        try {
             Response apiResponse = target
                     .path(new Links().CUSTOMER_GROUP_REGISTER_DELETE)
                     .resolveTemplate("id", jsonObject.id)
@@ -484,8 +422,7 @@ class EntityService {
                     .delete()
             return apiResponse
         }
-        catch (Exception ex)
-        {
+        catch (Exception ex) {
             System.err.println('Service :EntityService , action :  deleteCustomerGroup  , Ex:' + ex)
             log.error('Service :EntityService , action :  deleteCustomerGroup  , Ex:' + ex)
         }
@@ -494,22 +431,19 @@ class EntityService {
 
 
     //Day End Master
-    def saveDayEnd(JSONObject jsonObject)
-    {
+    def saveDayEnd(JSONObject jsonObject) {
         Client client = ClientBuilder.newClient()
         WebTarget target = client.target(new Links().API_GATEWAY)
-        try
-        {
+        try {
             println(jsonObject)
             Response apiResponse = target
                     .path(new Links().DAY_END_MASTER_SAVE)
                     .request(MediaType.APPLICATION_JSON_TYPE)
-                    .post(Entity.entity(jsonObject.toString(),MediaType.APPLICATION_JSON_TYPE))
+                    .post(Entity.entity(jsonObject.toString(), MediaType.APPLICATION_JSON_TYPE))
             println(apiResponse)
             return apiResponse
         }
-        catch (Exception ex)
-        {
+        catch (Exception ex) {
             System.err.println('Service :EntityService , action :  saveDayEnd  , Ex:' + ex)
             log.error('Service :EntityService , action :  saveDayEnd  , Ex:' + ex)
         }
@@ -521,13 +455,11 @@ class EntityService {
      * @param jsonObject
      * @return
      */
-    def showDayEnd(JSONObject jsonObject)
-    {
+    def showDayEnd(JSONObject jsonObject) {
         Client client = ClientBuilder.newClient()
         WebTarget target = client.target(new Links().API_GATEWAY)
-       
-        try
-        {
+
+        try {
             Response apiResponse = target
                     .path(new Links().DAY_END_MASTER_DATATABLE)
                     .queryParam("params", URLEncoder.encode(jsonObject.toString(), "UTF-8"))
@@ -535,31 +467,27 @@ class EntityService {
                     .get()
             return apiResponse
         }
-        catch (Exception ex)
-        {
+        catch (Exception ex) {
             System.err.println('Service :EntityService , action :  showDayEnd  , Ex:' + ex)
             log.error('Service :EntityService , action :  showDayEnd  , Ex:' + ex)
         }
 
     }
 
-    def putDayEnd(JSONObject jsonObject)
-    {
+    def putDayEnd(JSONObject jsonObject) {
         Client client = ClientBuilder.newClient()
         WebTarget target = client.target(new Links().API_GATEWAY)
-       
-        try
-        {
+
+        try {
             Response apiResponse = target
                     .path(new Links().DAY_END_MASTER_UPDATE)
                     .resolveTemplate("id", jsonObject.id)
                     .request(MediaType.APPLICATION_JSON_TYPE)
-                    .put(Entity.entity(jsonObject.toString(),MediaType.APPLICATION_JSON_TYPE))
+                    .put(Entity.entity(jsonObject.toString(), MediaType.APPLICATION_JSON_TYPE))
             println(jsonObject)
             return apiResponse
         }
-        catch (Exception ex)
-        {
+        catch (Exception ex) {
             System.err.println('Service : , action :  putDayEnd  , Ex:' + ex)
             log.error('Service :EntityService , action :  putDayEnd  , Ex:' + ex)
         }
@@ -571,13 +499,11 @@ class EntityService {
      * @param jsonObject
      * @return
      */
-    def deleteDayEnd(JSONObject jsonObject)
-    {
+    def deleteDayEnd(JSONObject jsonObject) {
         Client client = ClientBuilder.newClient()
         WebTarget target = client.target(new Links().API_GATEWAY)
-       
-        try
-        {
+
+        try {
             Response apiResponse = target
                     .path(new Links().DAY_END_MASTER_DELETE)
                     .resolveTemplate("id", jsonObject.id)
@@ -585,8 +511,7 @@ class EntityService {
                     .delete()
             return apiResponse
         }
-        catch (Exception ex)
-        {
+        catch (Exception ex) {
             System.err.println('Service :EntityService , action :  deleteDayEnd  , Ex:' + ex)
             log.error('Service :EntityService , action :  deleteDayEnd  , Ex:' + ex)
         }
@@ -595,21 +520,18 @@ class EntityService {
 
 
     //HQ areas
-    def saveHqArea(JSONObject jsonObject)
-    {
+    def saveHqArea(JSONObject jsonObject) {
         Client client = ClientBuilder.newClient().register(JacksonFeature.class)
         WebTarget target = client.target(new Links().API_GATEWAY)
-        try
-        {
+        try {
             println(jsonObject)
             Response apiResponse = target
                     .path(new Links().HQ_AREA_SAVE)
                     .request(MediaType.APPLICATION_JSON_TYPE)
-                    .post(Entity.entity(jsonObject,MediaType.APPLICATION_JSON_TYPE))
+                    .post(Entity.entity(jsonObject, MediaType.APPLICATION_JSON_TYPE))
             return apiResponse
         }
-        catch (Exception ex)
-        {
+        catch (Exception ex) {
             System.err.println('Service :EntityService , action :  saveDayEnd  , Ex:' + ex)
             log.error('Service :EntityService , action :  saveDayEnd  , Ex:' + ex)
         }
@@ -621,13 +543,11 @@ class EntityService {
      * @param jsonObject
      * @return
      */
-    def showHqArea(JSONObject jsonObject)
-    {
+    def showHqArea(JSONObject jsonObject) {
         Client client = ClientBuilder.newClient()
         WebTarget target = client.target(new Links().API_GATEWAY)
 
-        try
-        {
+        try {
             Response apiResponse = target
                     .path(new Links().HQ_AREA_DATATABLE)
                     .queryParam("params", URLEncoder.encode(jsonObject.toString(), "UTF-8"))
@@ -635,31 +555,27 @@ class EntityService {
                     .get()
             return apiResponse
         }
-        catch (Exception ex)
-        {
+        catch (Exception ex) {
             System.err.println('Service :EntityService , action :  showDayEnd  , Ex:' + ex)
             log.error('Service :EntityService , action :  showDayEnd  , Ex:' + ex)
         }
 
     }
 
-    def putHqArea(JSONObject jsonObject)
-    {
+    def putHqArea(JSONObject jsonObject) {
         Client client = ClientBuilder.newClient().register(JacksonFeature.class)
         WebTarget target = client.target(new Links().API_GATEWAY)
 
-        try
-        {
+        try {
             Response apiResponse = target
                     .path(new Links().HQ_AREA_UPDATE)
                     .resolveTemplate("id", jsonObject.id)
                     .request(MediaType.APPLICATION_JSON_TYPE)
-                    .put(Entity.entity(jsonObject,MediaType.APPLICATION_JSON_TYPE))
+                    .put(Entity.entity(jsonObject, MediaType.APPLICATION_JSON_TYPE))
             println(jsonObject)
             return apiResponse
         }
-        catch (Exception ex)
-        {
+        catch (Exception ex) {
             System.err.println('Service : , action :  putDayEnd  , Ex:' + ex)
             log.error('Service :EntityService , action :  putDayEnd  , Ex:' + ex)
         }
@@ -671,13 +587,11 @@ class EntityService {
      * @param jsonObject
      * @return
      */
-    def deleteHqArea(JSONObject jsonObject)
-    {
+    def deleteHqArea(JSONObject jsonObject) {
         Client client = ClientBuilder.newClient()
         WebTarget target = client.target(new Links().API_GATEWAY)
 
-        try
-        {
+        try {
             Response apiResponse = target
                     .path(new Links().HQ_AREA_DELETE)
                     .resolveTemplate("id", jsonObject.id)
@@ -685,8 +599,7 @@ class EntityService {
                     .delete()
             return apiResponse
         }
-        catch (Exception ex)
-        {
+        catch (Exception ex) {
             System.err.println('Service :EntityService , action :  deleteDayEnd  , Ex:' + ex)
             log.error('Service :EntityService , action :  deleteDayEnd  , Ex:' + ex)
         }
@@ -712,21 +625,18 @@ class EntityService {
 
 
     //Entity IRN
-    def saveEntityIRN(JSONObject jsonObject)
-    {
+    def saveEntityIRN(JSONObject jsonObject) {
         Client client = ClientBuilder.newClient().register(JacksonFeature.class)
         WebTarget target = client.target(new Links().API_GATEWAY)
-        try
-        {
+        try {
             println(jsonObject)
             Response apiResponse = target
                     .path(new Links().ENTITY_IRN_SAVE)
                     .request(MediaType.APPLICATION_JSON_TYPE)
-                    .post(Entity.entity(jsonObject,MediaType.APPLICATION_JSON_TYPE))
+                    .post(Entity.entity(jsonObject, MediaType.APPLICATION_JSON_TYPE))
             return apiResponse
         }
-        catch (Exception ex)
-        {
+        catch (Exception ex) {
             System.err.println('Service :EntityService , action :  saveDayEnd  , Ex:' + ex)
             log.error('Service :EntityService , action :  saveDayEnd  , Ex:' + ex)
         }
@@ -738,13 +648,11 @@ class EntityService {
      * @param jsonObject
      * @return
      */
-    def showEntityIRN(JSONObject jsonObject)
-    {
+    def showEntityIRN(JSONObject jsonObject) {
         Client client = ClientBuilder.newClient()
         WebTarget target = client.target(new Links().API_GATEWAY)
 
-        try
-        {
+        try {
             Response apiResponse = target
                     .path(new Links().ENTITY_IRN_DATATABLE)
                     .queryParam("params", URLEncoder.encode(jsonObject.toString(), "UTF-8"))
@@ -752,31 +660,27 @@ class EntityService {
                     .get()
             return apiResponse
         }
-        catch (Exception ex)
-        {
+        catch (Exception ex) {
             System.err.println('Service :EntityService , action :  showDayEnd  , Ex:' + ex)
             log.error('Service :EntityService , action :  showDayEnd  , Ex:' + ex)
         }
 
     }
 
-    def putEntityIRN(JSONObject jsonObject)
-    {
+    def putEntityIRN(JSONObject jsonObject) {
         Client client = ClientBuilder.newClient()
         WebTarget target = client.target(new Links().API_GATEWAY)
 
-        try
-        {
+        try {
             Response apiResponse = target
                     .path(new Links().ENTITY_IRN_UPDATE)
                     .resolveTemplate("id", jsonObject.id)
                     .request(MediaType.APPLICATION_JSON_TYPE)
-                    .put(Entity.entity(jsonObject.toString(),MediaType.APPLICATION_JSON_TYPE))
+                    .put(Entity.entity(jsonObject.toString(), MediaType.APPLICATION_JSON_TYPE))
             println(jsonObject)
             return apiResponse
         }
-        catch (Exception ex)
-        {
+        catch (Exception ex) {
             System.err.println('Service : , action :  putDayEnd  , Ex:' + ex)
             log.error('Service :EntityService , action :  putDayEnd  , Ex:' + ex)
         }
@@ -788,13 +692,11 @@ class EntityService {
      * @param jsonObject
      * @return
      */
-    def deleteEntityIRN(JSONObject jsonObject)
-    {
+    def deleteEntityIRN(JSONObject jsonObject) {
         Client client = ClientBuilder.newClient()
         WebTarget target = client.target(new Links().API_GATEWAY)
 
-        try
-        {
+        try {
             Response apiResponse = target
                     .path(new Links().ENTITY_IRN_DELETE)
                     .resolveTemplate("id", jsonObject.id)
@@ -802,8 +704,7 @@ class EntityService {
                     .delete()
             return apiResponse
         }
-        catch (Exception ex)
-        {
+        catch (Exception ex) {
             System.err.println('Service :EntityService , action :  deleteDayEnd  , Ex:' + ex)
             log.error('Service :EntityService , action :  deleteDayEnd  , Ex:' + ex)
         }
@@ -812,23 +713,20 @@ class EntityService {
 
 
     //Financial year
-    def saveFinancialYear(JSONObject jsonObject)
-    {
+    def saveFinancialYear(JSONObject jsonObject) {
         Client client = ClientBuilder.newClient()
         WebTarget target = client.target(new Links().API_GATEWAY)
-       
-        try
-        {
+
+        try {
             println(jsonObject)
             Response apiResponse = target
                     .path(new Links().FINANCIAL_YEAR_SAVE)
                     .request(MediaType.APPLICATION_JSON_TYPE)
-                    .post(Entity.entity(jsonObject.toString(),MediaType.APPLICATION_JSON_TYPE))
+                    .post(Entity.entity(jsonObject.toString(), MediaType.APPLICATION_JSON_TYPE))
             println(apiResponse)
             return apiResponse
         }
-        catch (Exception ex)
-        {
+        catch (Exception ex) {
             System.err.println('Service :EntityService , action :  saveFinancialYear  , Ex:' + ex)
             log.error('Service :EntityService , action :  saveFinancialYear  , Ex:' + ex)
         }
@@ -840,27 +738,22 @@ class EntityService {
      * @param jsonObject
      * @return
      */
-    def getFinancialYearByEntity(String entityId)
-    {
+    def getFinancialYearByEntity(String entityId) {
         Client client = ClientBuilder.newClient()
         WebTarget target = client.target(new Links().API_GATEWAY)
 
-        try
-        {
+        try {
             Response apiResponse = target
                     .path(new Links().FINANCIAL_YEAR_ENTITY + "/" + entityId)
                     .request(MediaType.APPLICATION_JSON_TYPE)
                     .get()
-            if(apiResponse.status == 200)
-            {
+            if (apiResponse.status == 200) {
                 JSONArray jsonArray = new JSONArray(apiResponse.readEntity(String.class))
                 return jsonArray
-            }
-            else
+            } else
                 return null
         }
-        catch (Exception ex)
-        {
+        catch (Exception ex) {
             System.err.println('Service :EntityService , action :  showFinancialYear  , Ex:' + ex)
             log.error('Service :EntityService , action :  showFinancialYear  , Ex:' + ex)
         }
@@ -872,13 +765,11 @@ class EntityService {
      * @param jsonObject
      * @return
      */
-    def showFinancialYear(JSONObject jsonObject)
-    {
+    def showFinancialYear(JSONObject jsonObject) {
         Client client = ClientBuilder.newClient()
         WebTarget target = client.target(new Links().API_GATEWAY)
-       
-        try
-        {
+
+        try {
             Response apiResponse = target
                     .path(new Links().FINANCIAL_YEAR_DATATABLE)
                     .queryParam("params", URLEncoder.encode(jsonObject.toString(), "UTF-8"))
@@ -886,31 +777,27 @@ class EntityService {
                     .get()
             return apiResponse
         }
-        catch (Exception ex)
-        {
+        catch (Exception ex) {
             System.err.println('Service :EntityService , action :  showFinancialYear  , Ex:' + ex)
             log.error('Service :EntityService , action :  showFinancialYear  , Ex:' + ex)
         }
 
     }
 
-    def putFinancialYear(JSONObject jsonObject)
-    {
+    def putFinancialYear(JSONObject jsonObject) {
         Client client = ClientBuilder.newClient()
         WebTarget target = client.target(new Links().API_GATEWAY)
-       
-        try
-        {
+
+        try {
             Response apiResponse = target
                     .path(new Links().FINANCIAL_YEAR_UPDATE)
                     .resolveTemplate("id", jsonObject.id)
                     .request(MediaType.APPLICATION_JSON_TYPE)
-                    .put(Entity.entity(jsonObject.toString(),MediaType.APPLICATION_JSON_TYPE))
+                    .put(Entity.entity(jsonObject.toString(), MediaType.APPLICATION_JSON_TYPE))
             println(jsonObject)
             return apiResponse
         }
-        catch (Exception ex)
-        {
+        catch (Exception ex) {
             System.err.println('Service : EntityService, action :  putFinancialYear  , Ex:' + ex)
             log.error('Service :EntityService , action :  putFinancialYear  , Ex:' + ex)
         }
@@ -922,13 +809,11 @@ class EntityService {
      * @param jsonObject
      * @return
      */
-    def deleteFinancialYear(JSONObject jsonObject)
-    {
+    def deleteFinancialYear(JSONObject jsonObject) {
         Client client = ClientBuilder.newClient()
         WebTarget target = client.target(new Links().API_GATEWAY)
-       
-        try
-        {
+
+        try {
             Response apiResponse = target
                     .path(new Links().FINANCIAL_YEAR_DELETE)
                     .resolveTemplate("id", jsonObject.id)
@@ -936,8 +821,7 @@ class EntityService {
                     .delete()
             return apiResponse
         }
-        catch (Exception ex)
-        {
+        catch (Exception ex) {
             System.err.println('Service :EntityService , action :  deleteFinancialYear  , Ex:' + ex)
             log.error('Service :EntityService , action :  deleteFinancialYear  , Ex:' + ex)
         }
@@ -946,23 +830,20 @@ class EntityService {
 
 
     //Region Master
-    def saveRegionMaster(JSONObject jsonObject)
-    {
+    def saveRegionMaster(JSONObject jsonObject) {
         Client client = ClientBuilder.newClient().register(JacksonFeature.class)
         WebTarget target = client.target(new Links().API_GATEWAY)
-       
-        try
-        {
+
+        try {
             println(jsonObject)
             Response apiResponse = target
                     .path(new Links().REGION_REGISTER_SAVE)
                     .request(MediaType.APPLICATION_JSON_TYPE)
-                    .post(Entity.entity(jsonObject,MediaType.APPLICATION_JSON_TYPE))
+                    .post(Entity.entity(jsonObject, MediaType.APPLICATION_JSON_TYPE))
             println(apiResponse)
             return apiResponse
         }
-        catch (Exception ex)
-        {
+        catch (Exception ex) {
             System.err.println('Service :EntityService , action :  saveRegionMaster  , Ex:' + ex)
             log.error('Service :EntityService , action :  saveRegionMaster  , Ex:' + ex)
         }
@@ -974,13 +855,11 @@ class EntityService {
      * @param jsonObject
      * @return
      */
-    def showRegionMaster(JSONObject jsonObject)
-    {
+    def showRegionMaster(JSONObject jsonObject) {
         Client client = ClientBuilder.newClient()
         WebTarget target = client.target(new Links().API_GATEWAY)
-       
-        try
-        {
+
+        try {
             Response apiResponse = target
                     .path(new Links().REGION_REGISTER_DATATABLE)
                     .queryParam("params", URLEncoder.encode(jsonObject.toString(), "UTF-8"))
@@ -988,31 +867,27 @@ class EntityService {
                     .get()
             return apiResponse
         }
-        catch (Exception ex)
-        {
+        catch (Exception ex) {
             System.err.println('Service :EntityService , action :  showRegionMaster  , Ex:' + ex)
             log.error('Service :EntityService , action :  showRegionMaster  , Ex:' + ex)
         }
 
     }
 
-    def putRegionMaster(JSONObject jsonObject)
-    {
+    def putRegionMaster(JSONObject jsonObject) {
         Client client = ClientBuilder.newClient().register(JacksonFeature.class)
         WebTarget target = client.target(new Links().API_GATEWAY)
-       
-        try
-        {
+
+        try {
             Response apiResponse = target
                     .path(new Links().REGION_REGISTER_UPDATE)
                     .resolveTemplate("id", jsonObject.id)
                     .request(MediaType.APPLICATION_JSON_TYPE)
-                    .put(Entity.entity(jsonObject,MediaType.APPLICATION_JSON_TYPE))
+                    .put(Entity.entity(jsonObject, MediaType.APPLICATION_JSON_TYPE))
             println(jsonObject)
             return apiResponse
         }
-        catch (Exception ex)
-        {
+        catch (Exception ex) {
             System.err.println('Service :EntityService , action :  putRegionMaster  , Ex:' + ex)
             log.error('Service :EntityService , action :  putRegionMaster  , Ex:' + ex)
         }
@@ -1024,13 +899,11 @@ class EntityService {
      * @param jsonObject
      * @return
      */
-    def deleteRegionMaster(JSONObject jsonObject)
-    {
+    def deleteRegionMaster(JSONObject jsonObject) {
         Client client = ClientBuilder.newClient()
         WebTarget target = client.target(new Links().API_GATEWAY)
-       
-        try
-        {
+
+        try {
             Response apiResponse = target
                     .path(new Links().REGION_REGISTER_DELETE)
                     .resolveTemplate("id", jsonObject.id)
@@ -1038,8 +911,7 @@ class EntityService {
                     .delete()
             return apiResponse
         }
-        catch (Exception ex)
-        {
+        catch (Exception ex) {
             System.err.println('Service :EntityService , action :  deleteRegionMaster  , Ex:' + ex)
             log.error('Service :EntityService , action :  deleteRegionMaster  , Ex:' + ex)
         }
@@ -1048,21 +920,18 @@ class EntityService {
 
 
     //Route Master
-    def saveRoute(JSONObject jsonObject)
-    {
+    def saveRoute(JSONObject jsonObject) {
         Client client = ClientBuilder.newClient().register(JacksonFeature.class)
         WebTarget target = client.target(new Links().API_GATEWAY)
-       
-        try
-        {
+
+        try {
             Response apiResponse = target
                     .path(new Links().ROUTE_REGISTER_SAVE)
                     .request(MediaType.APPLICATION_JSON_TYPE)
-                    .post(Entity.entity(jsonObject,MediaType.APPLICATION_JSON_TYPE))
+                    .post(Entity.entity(jsonObject, MediaType.APPLICATION_JSON_TYPE))
             return apiResponse
         }
-        catch (Exception ex)
-        {
+        catch (Exception ex) {
             System.err.println('Service :EntityService , action :  saveRoute  , Ex:' + ex)
             log.error('Service :EntityService , action :  saveRoute  , Ex:' + ex)
         }
@@ -1074,13 +943,11 @@ class EntityService {
      * @param jsonObject
      * @return
      */
-    def showRoute(JSONObject jsonObject)
-    {
+    def showRoute(JSONObject jsonObject) {
         Client client = ClientBuilder.newClient()
         WebTarget target = client.target(new Links().API_GATEWAY)
-       
-        try
-        {
+
+        try {
             Response apiResponse = target
                     .path(new Links().ROUTE_REGISTER_DATATABLE)
                     .queryParam("params", URLEncoder.encode(jsonObject.toString(), "UTF-8"))
@@ -1088,8 +955,7 @@ class EntityService {
                     .get()
             return apiResponse
         }
-        catch (Exception ex)
-        {
+        catch (Exception ex) {
             System.err.println('Service :EntityService , action :  showRoute  , Ex:' + ex)
             log.error('Service :EntityService , action :  showRoute  , Ex:' + ex)
         }
@@ -1097,12 +963,10 @@ class EntityService {
     }
 
 
-    def getRouteList()
-    {
+    def getRouteList() {
         Client client = ClientBuilder.newClient()
         WebTarget target = client.target(new Links().API_GATEWAY);
-        try
-        {
+        try {
             Response apiResponse = target
                     .path(new Links().ROUTE_REGISTER_SHOW)
                     .request(MediaType.APPLICATION_JSON_TYPE)
@@ -1110,31 +974,27 @@ class EntityService {
 
             return apiResponse
         }
-        catch (Exception ex)
-        {
+        catch (Exception ex) {
             System.err.println('Service :systemService , action :  getZoneList  , Ex:' + ex)
             log.error('Service :systemService , action :  getZoneList  , Ex:' + ex)
         }
 
     }
 
-    def putRoute(JSONObject jsonObject)
-    {
+    def putRoute(JSONObject jsonObject) {
         Client client = ClientBuilder.newClient().register(JacksonFeature.class)
         WebTarget target = client.target(new Links().API_GATEWAY)
-       
-        try
-        {
+
+        try {
             Response apiResponse = target
                     .path(new Links().ROUTE_REGISTER_UPDATE)
                     .resolveTemplate("id", jsonObject.id)
                     .request(MediaType.APPLICATION_JSON_TYPE)
-                    .put(Entity.entity(jsonObject.toString(),MediaType.APPLICATION_JSON_TYPE))
+                    .put(Entity.entity(jsonObject.toString(), MediaType.APPLICATION_JSON_TYPE))
             println(jsonObject)
             return apiResponse
         }
-        catch (Exception ex)
-        {
+        catch (Exception ex) {
             System.err.println('Service :EntityService , action :  putRoute  , Ex:' + ex)
             log.error('Service :EntityService , action :  putRoute  , Ex:' + ex)
         }
@@ -1146,13 +1006,11 @@ class EntityService {
      * @param jsonObject
      * @return
      */
-    def deleteRoute(JSONObject jsonObject)
-    {
+    def deleteRoute(JSONObject jsonObject) {
         Client client = ClientBuilder.newClient()
         WebTarget target = client.target(new Links().API_GATEWAY)
-       
-        try
-        {
+
+        try {
             Response apiResponse = target
                     .path(new Links().ROUTE_REGISTER_DELETE)
                     .resolveTemplate("id", jsonObject.id)
@@ -1160,8 +1018,7 @@ class EntityService {
                     .delete()
             return apiResponse
         }
-        catch (Exception ex)
-        {
+        catch (Exception ex) {
             System.err.println('Service :EntityService , action :  deleteRoute  , Ex:' + ex)
             log.error('Service :EntityService , action :  deleteRoute  , Ex:' + ex)
         }
@@ -1170,23 +1027,20 @@ class EntityService {
 
 
     //Role Master
-    def saveRole(JSONObject jsonObject)
-    {
+    def saveRole(JSONObject jsonObject) {
         Client client = ClientBuilder.newClient()
         WebTarget target = client.target(new Links().API_GATEWAY)
-       
-        try
-        {
+
+        try {
             println(jsonObject)
             Response apiResponse = target
                     .path(new Links().ROLE_SAVE)
                     .request(MediaType.APPLICATION_JSON_TYPE)
-                    .post(Entity.entity(jsonObject.toString(),MediaType.APPLICATION_JSON_TYPE))
+                    .post(Entity.entity(jsonObject.toString(), MediaType.APPLICATION_JSON_TYPE))
             println(apiResponse)
             return apiResponse
         }
-        catch (Exception ex)
-        {
+        catch (Exception ex) {
             System.err.println('Service :EntityService , action :  saveRole  , Ex:' + ex)
             log.error('Service :EntityService , action :  saveRole  , Ex:' + ex)
         }
@@ -1198,13 +1052,11 @@ class EntityService {
      * @param jsonObject
      * @return
      */
-    def showRole(JSONObject jsonObject)
-    {
+    def showRole(JSONObject jsonObject) {
         Client client = ClientBuilder.newClient()
         WebTarget target = client.target(new Links().API_GATEWAY)
-       
-        try
-        {
+
+        try {
             Response apiResponse = target
                     .path(new Links().ROLE_DATATABLE)
                     .queryParam("params", URLEncoder.encode(jsonObject.toString(), "UTF-8"))
@@ -1212,31 +1064,27 @@ class EntityService {
                     .get()
             return apiResponse
         }
-        catch (Exception ex)
-        {
+        catch (Exception ex) {
             System.err.println('Service :EntityService , action :  showRole  , Ex:' + ex)
             log.error('Service :EntityService , action :  showRole  , Ex:' + ex)
         }
 
     }
 
-    def putRole(JSONObject jsonObject)
-    {
+    def putRole(JSONObject jsonObject) {
         Client client = ClientBuilder.newClient()
         WebTarget target = client.target(new Links().API_GATEWAY)
-       
-        try
-        {
+
+        try {
             Response apiResponse = target
                     .path(new Links().ROLE_UPDATE)
                     .resolveTemplate("id", jsonObject.id)
                     .request(MediaType.APPLICATION_JSON_TYPE)
-                    .put(Entity.entity(jsonObject.toString(),MediaType.APPLICATION_JSON_TYPE))
+                    .put(Entity.entity(jsonObject.toString(), MediaType.APPLICATION_JSON_TYPE))
             println(jsonObject)
             return apiResponse
         }
-        catch (Exception ex)
-        {
+        catch (Exception ex) {
             System.err.println('Service :EntityService , action :  putRole  , Ex:' + ex)
             log.error('Service :EntityService , action :  putRole  , Ex:' + ex)
         }
@@ -1248,13 +1096,11 @@ class EntityService {
      * @param jsonObject
      * @return
      */
-    def deleteRole(JSONObject jsonObject)
-    {
+    def deleteRole(JSONObject jsonObject) {
         Client client = ClientBuilder.newClient()
         WebTarget target = client.target(new Links().API_GATEWAY)
-       
-        try
-        {
+
+        try {
             Response apiResponse = target
                     .path(new Links().ROLE_DELETE)
                     .resolveTemplate("id", jsonObject.id)
@@ -1262,8 +1108,7 @@ class EntityService {
                     .delete()
             return apiResponse
         }
-        catch (Exception ex)
-        {
+        catch (Exception ex) {
             System.err.println('Service :EntityService , action :  deleteRole  , Ex:' + ex)
             log.error('Service :EntityService , action :  deleteRole  , Ex:' + ex)
         }
@@ -1271,23 +1116,20 @@ class EntityService {
     }
 
     //Tax
-    def saveRule(JSONObject jsonObject)
-    {
+    def saveRule(JSONObject jsonObject) {
         Client client = ClientBuilder.newClient()
         WebTarget target = client.target(new Links().API_GATEWAY)
-       
-        try
-        {
+
+        try {
             println(jsonObject)
             Response apiResponse = target
                     .path(new Links().RULE_MASTER_SAVE)
                     .request(MediaType.APPLICATION_JSON_TYPE)
-                    .post(Entity.entity(jsonObject.toString(),MediaType.APPLICATION_JSON_TYPE))
+                    .post(Entity.entity(jsonObject.toString(), MediaType.APPLICATION_JSON_TYPE))
             println(apiResponse)
             return apiResponse
         }
-        catch (Exception ex)
-        {
+        catch (Exception ex) {
             System.err.println('Service :EntityService , action :  saveRule  , Ex:' + ex)
             log.error('Service :EntityService , action :  saveRule  , Ex:' + ex)
         }
@@ -1299,13 +1141,11 @@ class EntityService {
      * @param jsonObject
      * @return
      */
-    def showRule(JSONObject jsonObject)
-    {
+    def showRule(JSONObject jsonObject) {
         Client client = ClientBuilder.newClient()
         WebTarget target = client.target(new Links().API_GATEWAY)
-       
-        try
-        {
+
+        try {
             Response apiResponse = target
                     .path(new Links().RULE_MASTER_DATATABLE)
                     .queryParam("params", URLEncoder.encode(jsonObject.toString(), "UTF-8"))
@@ -1313,31 +1153,27 @@ class EntityService {
                     .get()
             return apiResponse
         }
-        catch (Exception ex)
-        {
+        catch (Exception ex) {
             System.err.println('Service :EntityService , action :  showRule  , Ex:' + ex)
             log.error('Service :EntityService , action :  showRule  , Ex:' + ex)
         }
 
     }
 
-    def putRule(JSONObject jsonObject)
-    {
+    def putRule(JSONObject jsonObject) {
         Client client = ClientBuilder.newClient()
         WebTarget target = client.target(new Links().API_GATEWAY)
-       
-        try
-        {
+
+        try {
             Response apiResponse = target
                     .path(new Links().RULE_MASTER_UPDATE)
                     .resolveTemplate("id", jsonObject.id)
                     .request(MediaType.APPLICATION_JSON_TYPE)
-                    .put(Entity.entity(jsonObject.toString(),MediaType.APPLICATION_JSON_TYPE))
+                    .put(Entity.entity(jsonObject.toString(), MediaType.APPLICATION_JSON_TYPE))
             println(jsonObject)
             return apiResponse
         }
-        catch (Exception ex)
-        {
+        catch (Exception ex) {
             System.err.println('Service : , action :  putRule  , Ex:' + ex)
             log.error('Service :EntityService , action :  putRule  , Ex:' + ex)
         }
@@ -1349,13 +1185,11 @@ class EntityService {
      * @param jsonObject
      * @return
      */
-    def deleteRule(JSONObject jsonObject)
-    {
+    def deleteRule(JSONObject jsonObject) {
         Client client = ClientBuilder.newClient()
         WebTarget target = client.target(new Links().API_GATEWAY)
-       
-        try
-        {
+
+        try {
             Response apiResponse = target
                     .path(new Links().RULE_MASTER_DELETE)
                     .resolveTemplate("id", jsonObject.id)
@@ -1363,8 +1197,7 @@ class EntityService {
                     .delete()
             return apiResponse
         }
-        catch (Exception ex)
-        {
+        catch (Exception ex) {
             System.err.println('Service :EntityService , action :  deleteRule  , Ex:' + ex)
             log.error('Service :EntityService , action :  deleteRule  , Ex:' + ex)
         }
@@ -1373,23 +1206,20 @@ class EntityService {
 
 
     //Tax
-    def saveTax(JSONObject jsonObject)
-    {
+    def saveTax(JSONObject jsonObject) {
         Client client = ClientBuilder.newClient()
         WebTarget target = client.target(new Links().API_GATEWAY)
-       
-        try
-        {
+
+        try {
             println(jsonObject)
             Response apiResponse = target
                     .path(new Links().TAX_MASTER_SAVE)
                     .request(MediaType.APPLICATION_JSON_TYPE)
-                    .post(Entity.entity(jsonObject.toString(),MediaType.APPLICATION_JSON_TYPE))
+                    .post(Entity.entity(jsonObject.toString(), MediaType.APPLICATION_JSON_TYPE))
             println(apiResponse)
             return apiResponse
         }
-        catch (Exception ex)
-        {
+        catch (Exception ex) {
             System.err.println('Service :EntityService , action :  saveTax  , Ex:' + ex)
             log.error('Service :EntityService , action :  saveTax  , Ex:' + ex)
         }
@@ -1401,13 +1231,11 @@ class EntityService {
      * @param jsonObject
      * @return
      */
-    def showTax(JSONObject jsonObject)
-    {
+    def showTax(JSONObject jsonObject) {
         Client client = ClientBuilder.newClient()
         WebTarget target = client.target(new Links().API_GATEWAY)
-       
-        try
-        {
+
+        try {
             Response apiResponse = target
                     .path(new Links().TAX_MASTER_DATATABLE)
                     .queryParam("params", URLEncoder.encode(jsonObject.toString(), "UTF-8"))
@@ -1415,31 +1243,27 @@ class EntityService {
                     .get()
             return apiResponse
         }
-        catch (Exception ex)
-        {
+        catch (Exception ex) {
             System.err.println('Service :EntityService , action :  showTax  , Ex:' + ex)
             log.error('Service :EntityService , action :  showTax  , Ex:' + ex)
         }
 
     }
 
-    def putTax(JSONObject jsonObject)
-    {
+    def putTax(JSONObject jsonObject) {
         Client client = ClientBuilder.newClient()
         WebTarget target = client.target(new Links().API_GATEWAY)
-       
-        try
-        {
+
+        try {
             Response apiResponse = target
                     .path(new Links().TAX_MASTER_UPDATE)
                     .resolveTemplate("id", jsonObject.id)
                     .request(MediaType.APPLICATION_JSON_TYPE)
-                    .put(Entity.entity(jsonObject.toString(),MediaType.APPLICATION_JSON_TYPE))
+                    .put(Entity.entity(jsonObject.toString(), MediaType.APPLICATION_JSON_TYPE))
             println(jsonObject)
             return apiResponse
         }
-        catch (Exception ex)
-        {
+        catch (Exception ex) {
             System.err.println('Service :EntityService , action :  putTax  , Ex:' + ex)
             log.error('Service :EntityService , action :  putTax  , Ex:' + ex)
         }
@@ -1451,13 +1275,11 @@ class EntityService {
      * @param jsonObject
      * @return
      */
-    def deleteTax(JSONObject jsonObject)
-    {
+    def deleteTax(JSONObject jsonObject) {
         Client client = ClientBuilder.newClient()
         WebTarget target = client.target(new Links().API_GATEWAY)
-       
-        try
-        {
+
+        try {
             Response apiResponse = target
                     .path(new Links().TAX_MASTER_DELETE)
                     .resolveTemplate("id", jsonObject.id)
@@ -1465,8 +1287,7 @@ class EntityService {
                     .delete()
             return apiResponse
         }
-        catch (Exception ex)
-        {
+        catch (Exception ex) {
             System.err.println('Service :EntityService , action :  deleteTax  , Ex:' + ex)
             log.error('Service :EntityService , action :  deleteTax  , Ex:' + ex)
         }
@@ -1475,23 +1296,20 @@ class EntityService {
 
 
     //Territory
-    def saveTerritory(JSONObject jsonObject)
-    {
+    def saveTerritory(JSONObject jsonObject) {
         Client client = ClientBuilder.newClient().register(JacksonFeature.class)
         WebTarget target = client.target(new Links().API_GATEWAY)
-       
-        try
-        {
+
+        try {
             println(jsonObject)
             Response apiResponse = target
                     .path(new Links().TERRITORY_MASTER_SAVE)
                     .request(MediaType.APPLICATION_JSON_TYPE)
-                    .post(Entity.entity(jsonObject,MediaType.APPLICATION_JSON_TYPE))
+                    .post(Entity.entity(jsonObject, MediaType.APPLICATION_JSON_TYPE))
             println(apiResponse)
             return apiResponse
         }
-        catch (Exception ex)
-        {
+        catch (Exception ex) {
             System.err.println('Service :EntityService , action :  saveTerritory  , Ex:' + ex)
             log.error('Service :EntityService , action :  saveTerritory  , Ex:' + ex)
         }
@@ -1503,13 +1321,11 @@ class EntityService {
      * @param jsonObject
      * @return
      */
-    def showTerritory(JSONObject jsonObject)
-    {
+    def showTerritory(JSONObject jsonObject) {
         Client client = ClientBuilder.newClient()
         WebTarget target = client.target(new Links().API_GATEWAY)
-       
-        try
-        {
+
+        try {
             Response apiResponse = target
                     .path(new Links().TERRITORY_MASTER_DATATABLE)
                     .queryParam("params", URLEncoder.encode(jsonObject.toString(), "UTF-8"))
@@ -1517,31 +1333,27 @@ class EntityService {
                     .get()
             return apiResponse
         }
-        catch (Exception ex)
-        {
+        catch (Exception ex) {
             System.err.println('Service :EntityService , action :  showTerritory  , Ex:' + ex)
             log.error('Service :EntityService , action :  showTerritory  , Ex:' + ex)
         }
 
     }
 
-    def putTerritory(JSONObject jsonObject)
-    {
+    def putTerritory(JSONObject jsonObject) {
         Client client = ClientBuilder.newClient().register(JacksonFeature.class)
         WebTarget target = client.target(new Links().API_GATEWAY)
-       
-        try
-        {
+
+        try {
             Response apiResponse = target
                     .path(new Links().TERRITORY_MASTER_UPDATE)
                     .resolveTemplate("id", jsonObject.id)
                     .request(MediaType.APPLICATION_JSON_TYPE)
-                    .put(Entity.entity(jsonObject,MediaType.APPLICATION_JSON_TYPE))
+                    .put(Entity.entity(jsonObject, MediaType.APPLICATION_JSON_TYPE))
             println(jsonObject)
             return apiResponse
         }
-        catch (Exception ex)
-        {
+        catch (Exception ex) {
             System.err.println('Service : EntityService, action :  putTerritory  , Ex:' + ex)
             log.error('Service :EntityService , action :  putTerritory  , Ex:' + ex)
         }
@@ -1553,13 +1365,11 @@ class EntityService {
      * @param jsonObject
      * @return
      */
-    def deleteTerritory(JSONObject jsonObject)
-    {
+    def deleteTerritory(JSONObject jsonObject) {
         Client client = ClientBuilder.newClient()
         WebTarget target = client.target(new Links().API_GATEWAY)
-       
-        try
-        {
+
+        try {
             Response apiResponse = target
                     .path(new Links().TERRITORY_MASTER_DELETE)
                     .resolveTemplate("id", jsonObject.id)
@@ -1567,8 +1377,7 @@ class EntityService {
                     .delete()
             return apiResponse
         }
-        catch (Exception ex)
-        {
+        catch (Exception ex) {
             System.err.println('Service :EntityService , action :  deleteTerritory  , Ex:' + ex)
             log.error('Service :EntityService , action :  deleteTerritory  , Ex:' + ex)
         }
@@ -1577,23 +1386,20 @@ class EntityService {
 
 
     //Terms Condition
-    def saveTermsCondition(JSONObject jsonObject)
-    {
+    def saveTermsCondition(JSONObject jsonObject) {
         Client client = ClientBuilder.newClient()
         WebTarget target = client.target(new Links().API_GATEWAY)
-       
-        try
-        {
+
+        try {
             println(jsonObject)
             Response apiResponse = target
                     .path(new Links().TC_MASTER_SAVE)
                     .request(MediaType.APPLICATION_JSON_TYPE)
-                    .post(Entity.entity(jsonObject.toString(),MediaType.APPLICATION_JSON_TYPE))
+                    .post(Entity.entity(jsonObject.toString(), MediaType.APPLICATION_JSON_TYPE))
             println(apiResponse)
             return apiResponse
         }
-        catch (Exception ex)
-        {
+        catch (Exception ex) {
             System.err.println('Service :EntityService , action :  saveTermsCondition  , Ex:' + ex)
             log.error('Service :EntityService , action :  saveTermsCondition  , Ex:' + ex)
         }
@@ -1605,13 +1411,11 @@ class EntityService {
      * @param jsonObject
      * @return
      */
-    def showTermsCondition(JSONObject jsonObject)
-    {
+    def showTermsCondition(JSONObject jsonObject) {
         Client client = ClientBuilder.newClient()
         WebTarget target = client.target(new Links().API_GATEWAY)
-       
-        try
-        {
+
+        try {
             Response apiResponse = target
                     .path(new Links().TC_MASTER_DATATABLE)
                     .queryParam("params", URLEncoder.encode(jsonObject.toString(), "UTF-8"))
@@ -1619,31 +1423,27 @@ class EntityService {
                     .get()
             return apiResponse
         }
-        catch (Exception ex)
-        {
+        catch (Exception ex) {
             System.err.println('Service :EntityService , action :  showTermsCondition  , Ex:' + ex)
             log.error('Service :EntityService , action :  showTermsCondition  , Ex:' + ex)
         }
 
     }
 
-    def putTermsCondition(JSONObject jsonObject)
-    {
+    def putTermsCondition(JSONObject jsonObject) {
         Client client = ClientBuilder.newClient()
         WebTarget target = client.target(new Links().API_GATEWAY)
-       
-        try
-        {
+
+        try {
             Response apiResponse = target
                     .path(new Links().TC_MASTER_UPDATE)
                     .resolveTemplate("id", jsonObject.id)
                     .request(MediaType.APPLICATION_JSON_TYPE)
-                    .put(Entity.entity(jsonObject.toString(),MediaType.APPLICATION_JSON_TYPE))
+                    .put(Entity.entity(jsonObject.toString(), MediaType.APPLICATION_JSON_TYPE))
             println(jsonObject)
             return apiResponse
         }
-        catch (Exception ex)
-        {
+        catch (Exception ex) {
             System.err.println('Service : EntityService, action :  putTermsCondition  , Ex:' + ex)
             log.error('Service :EntityService , action :  putTermsCondition  , Ex:' + ex)
         }
@@ -1655,13 +1455,11 @@ class EntityService {
      * @param jsonObject
      * @return
      */
-    def deleteTermsCondition(JSONObject jsonObject)
-    {
+    def deleteTermsCondition(JSONObject jsonObject) {
         Client client = ClientBuilder.newClient()
         WebTarget target = client.target(new Links().API_GATEWAY)
-       
-        try
-        {
+
+        try {
             Response apiResponse = target
                     .path(new Links().TC_MASTER_DELETE)
                     .resolveTemplate("id", jsonObject.id)
@@ -1669,8 +1467,7 @@ class EntityService {
                     .delete()
             return apiResponse
         }
-        catch (Exception ex)
-        {
+        catch (Exception ex) {
             System.err.println('Service :EntityService , action :  deleteTermsCondtion  , Ex:' + ex)
             log.error('Service :EntityService , action :  deleteTermsCondtion  , Ex:' + ex)
         }
@@ -1679,23 +1476,20 @@ class EntityService {
 
 
     //Series Master
-    def saveSeries(JSONObject jsonObject)
-    {
+    def saveSeries(JSONObject jsonObject) {
         Client client = ClientBuilder.newClient()
         WebTarget target = client.target(new Links().API_GATEWAY)
-       
-        try
-        {
+
+        try {
             println(jsonObject)
             Response apiResponse = target
                     .path(new Links().SERIES_MASTER_SAVE)
                     .request(MediaType.APPLICATION_JSON_TYPE)
-                    .post(Entity.entity(jsonObject.toString(),MediaType.APPLICATION_JSON_TYPE))
+                    .post(Entity.entity(jsonObject.toString(), MediaType.APPLICATION_JSON_TYPE))
             println(apiResponse)
             return apiResponse
         }
-        catch (Exception ex)
-        {
+        catch (Exception ex) {
             System.err.println('Service :EntityService , action :  saveSeries  , Ex:' + ex)
             log.error('Service :EntityService , action :  saveSeries  , Ex:' + ex)
         }
@@ -1707,13 +1501,11 @@ class EntityService {
      * @param jsonObject
      * @return
      */
-    def showSeries(JSONObject jsonObject)
-    {
+    def showSeries(JSONObject jsonObject) {
         Client client = ClientBuilder.newClient()
         WebTarget target = client.target(new Links().API_GATEWAY)
-       
-        try
-        {
+
+        try {
             Response apiResponse = target
                     .path(new Links().SERIES_MASTER_DATATABLE)
                     .queryParam("params", URLEncoder.encode(jsonObject.toString(), "UTF-8"))
@@ -1721,31 +1513,27 @@ class EntityService {
                     .get()
             return apiResponse
         }
-        catch (Exception ex)
-        {
+        catch (Exception ex) {
             System.err.println('Service :EntityService , action :  showSeries  , Ex:' + ex)
             log.error('Service :EntityService , action :  showSeries  , Ex:' + ex)
         }
 
     }
 
-    def putSeries(JSONObject jsonObject)
-    {
+    def putSeries(JSONObject jsonObject) {
         Client client = ClientBuilder.newClient()
         WebTarget target = client.target(new Links().API_GATEWAY)
-       
-        try
-        {
+
+        try {
             Response apiResponse = target
                     .path(new Links().SERIES_MASTER_UPDATE)
                     .resolveTemplate("id", jsonObject.id)
                     .request(MediaType.APPLICATION_JSON_TYPE)
-                    .put(Entity.entity(jsonObject.toString(),MediaType.APPLICATION_JSON_TYPE))
+                    .put(Entity.entity(jsonObject.toString(), MediaType.APPLICATION_JSON_TYPE))
             println(jsonObject)
             return apiResponse
         }
-        catch (Exception ex)
-        {
+        catch (Exception ex) {
             System.err.println('Service : EntityService, action :  putSeries  , Ex:' + ex)
             log.error('Service :EntityService , action :  putSeries  , Ex:' + ex)
         }
@@ -1757,13 +1545,11 @@ class EntityService {
      * @param jsonObject
      * @return
      */
-    def deleteSeries(JSONObject jsonObject)
-    {
+    def deleteSeries(JSONObject jsonObject) {
         Client client = ClientBuilder.newClient()
         WebTarget target = client.target(new Links().API_GATEWAY)
-       
-        try
-        {
+
+        try {
             Response apiResponse = target
                     .path(new Links().SERIES_MASTER_DELETE)
                     .resolveTemplate("id", jsonObject.id)
@@ -1771,8 +1557,7 @@ class EntityService {
                     .delete()
             return apiResponse
         }
-        catch (Exception ex)
-        {
+        catch (Exception ex) {
             System.err.println('Service :EntityService , action :  deleteSeries  , Ex:' + ex)
             log.error('Service :EntityService , action :  deleteSeries  , Ex:' + ex)
         }
@@ -1781,23 +1566,20 @@ class EntityService {
 
 
     //Series Master
-    def saveServiceType(JSONObject jsonObject)
-    {
+    def saveServiceType(JSONObject jsonObject) {
         Client client = ClientBuilder.newClient()
         WebTarget target = client.target(new Links().API_GATEWAY)
-       
-        try
-        {
+
+        try {
             println(jsonObject)
             Response apiResponse = target
                     .path(new Links().SERVICE_TYPE_SAVE)
                     .request(MediaType.APPLICATION_JSON_TYPE)
-                    .post(Entity.entity(jsonObject.toString(),MediaType.APPLICATION_JSON_TYPE))
+                    .post(Entity.entity(jsonObject.toString(), MediaType.APPLICATION_JSON_TYPE))
             println(apiResponse)
             return apiResponse
         }
-        catch (Exception ex)
-        {
+        catch (Exception ex) {
             System.err.println('Service :EntityService , action :  saveServiceType  , Ex:' + ex)
             log.error('Service :EntityService , action :  saveServiceType  , Ex:' + ex)
         }
@@ -1809,13 +1591,11 @@ class EntityService {
      * @param jsonObject
      * @return
      */
-    def showServiceType(JSONObject jsonObject)
-    {
+    def showServiceType(JSONObject jsonObject) {
         Client client = ClientBuilder.newClient()
         WebTarget target = client.target(new Links().API_GATEWAY)
-       
-        try
-        {
+
+        try {
             Response apiResponse = target
                     .path(new Links().SERVICE_TYPE_DATATABLE)
                     .queryParam("params", URLEncoder.encode(jsonObject.toString(), "UTF-8"))
@@ -1823,31 +1603,27 @@ class EntityService {
                     .get()
             return apiResponse
         }
-        catch (Exception ex)
-        {
+        catch (Exception ex) {
             System.err.println('Service :EntityService , action :  showServiceType  , Ex:' + ex)
             log.error('Service :EntityService , action :  showServiceType  , Ex:' + ex)
         }
 
     }
 
-    def putServiceType(JSONObject jsonObject)
-    {
+    def putServiceType(JSONObject jsonObject) {
         Client client = ClientBuilder.newClient()
         WebTarget target = client.target(new Links().API_GATEWAY)
-       
-        try
-        {
+
+        try {
             Response apiResponse = target
                     .path(new Links().SERVICE_TYPE_UPDATE)
                     .resolveTemplate("id", jsonObject.id)
                     .request(MediaType.APPLICATION_JSON_TYPE)
-                    .put(Entity.entity(jsonObject.toString(),MediaType.APPLICATION_JSON_TYPE))
+                    .put(Entity.entity(jsonObject.toString(), MediaType.APPLICATION_JSON_TYPE))
             println(jsonObject)
             return apiResponse
         }
-        catch (Exception ex)
-        {
+        catch (Exception ex) {
             System.err.println('Service : , action :  putServiceType  , Ex:' + ex)
             log.error('Service :EntityService , action :  putServiceType  , Ex:' + ex)
         }
@@ -1859,13 +1635,11 @@ class EntityService {
      * @param jsonObject
      * @return
      */
-    def deleteServiceType(JSONObject jsonObject)
-    {
+    def deleteServiceType(JSONObject jsonObject) {
         Client client = ClientBuilder.newClient()
         WebTarget target = client.target(new Links().API_GATEWAY)
-       
-        try
-        {
+
+        try {
             Response apiResponse = target
                     .path(new Links().SERVICE_TYPE_UPDATE)
                     .resolveTemplate("id", jsonObject.id)
@@ -1873,8 +1647,7 @@ class EntityService {
                     .delete()
             return apiResponse
         }
-        catch (Exception ex)
-        {
+        catch (Exception ex) {
             System.err.println('Service :EntityService , action :  deleteServiceType  , Ex:' + ex)
             log.error('Service :EntityService , action :  deleteServiceType  , Ex:' + ex)
         }
@@ -1907,15 +1680,13 @@ class EntityService {
         WebTarget target = client.target(new Links().API_GATEWAY)
         try {
             Response apiResponse = target
-                    .path(new Links().ENTITY_REGISTER_SHOW + "/"+id)
+                    .path(new Links().ENTITY_REGISTER_SHOW + "/" + id)
                     .request(MediaType.APPLICATION_JSON_TYPE)
                     .get()
-            if(apiResponse.status == 200)
-            {
+            if (apiResponse.status == 200) {
                 JSONObject jsonObject = new JSONObject(apiResponse.readEntity(String.class))
                 return jsonObject
-            }
-            else
+            } else
                 return null
         }
         catch (Exception ex) {
@@ -1963,8 +1734,8 @@ class EntityService {
         Client client = ClientBuilder.newClient()
         WebTarget target = client.target(new Links().API_GATEWAY)
         String link = new Links().TAX_MASTER_SHOW
-        if(id)
-            link += "/"+id
+        if (id)
+            link += "/" + id
 
         try {
 
@@ -1993,12 +1764,10 @@ class EntityService {
                     .request(MediaType.APPLICATION_JSON_TYPE)
                     .get()
 
-            if (apiResponse?.status == 200)
-            {
+            if (apiResponse?.status == 200) {
                 JSONArray jsonArray = new JSONArray(apiResponse.readEntity(String.class))
                 return jsonArray
-            }
-            else
+            } else
                 return null
         }
         catch (Exception ex) {
@@ -2017,12 +1786,10 @@ class EntityService {
                     .path(new Links().ENTITY_TYPE_MASTER_SHOW)
                     .request(MediaType.APPLICATION_JSON_TYPE)
                     .get()
-            if(apiResponse.status == 200)
-            {
+            if (apiResponse.status == 200) {
                 JSONArray jsonArray = new JSONArray(apiResponse.readEntity(String.class))
                 return jsonArray
-            }
-            else {
+            } else {
                 return []
             }
         }
@@ -2040,7 +1807,7 @@ class EntityService {
         try {
 
             Response apiResponse = target
-                    .path(new Links().ENTITY_TYPE_MASTER_SHOW+"/"+id)
+                    .path(new Links().ENTITY_TYPE_MASTER_SHOW + "/" + id)
                     .request(MediaType.APPLICATION_JSON_TYPE)
                     .get()
             return apiResponse
@@ -2052,14 +1819,18 @@ class EntityService {
 
     }
 
-    def getParentEntities() {
+    def getParentEntities(String affiliateId = null) {
         Client client = ClientBuilder.newClient()
         WebTarget target = client.target(new Links().API_GATEWAY)
         //WebTarget target = client.target("http://localhost:8088")
+
+        String url = new Links().ENTITY_REGISTER_PARENT
+        if (affiliateId)
+            url += "?affiliateId=" + affiliateId
         try {
 
             Response apiResponse = target
-                    .path(new Links().ENTITY_REGISTER_PARENT)
+                    .path(url)
                     .request(MediaType.APPLICATION_JSON_TYPE)
                     .get()
             return apiResponse
@@ -2114,8 +1885,8 @@ class EntityService {
         Client client = ClientBuilder.newClient()
         WebTarget target = client.target(new Links().API_GATEWAY)
         String uri = new Links().SERIES_MASTER_SHOW
-        if(id)
-            uri += "/"+id
+        if (id)
+            uri += "/" + id
         try {
 
             Response apiResponse = target
@@ -2137,16 +1908,14 @@ class EntityService {
         WebTarget target = client.target(new Links().API_GATEWAY)
         try {
             Response apiResponse = target
-                    .path(new Links().SERIES_MASTER_SHOW + "/"+id)
+                    .path(new Links().SERIES_MASTER_SHOW + "/" + id)
                     .request(MediaType.APPLICATION_JSON_TYPE)
                     .get()
 
-            if(apiResponse.status == 200)
-            {
+            if (apiResponse.status == 200) {
                 JSONObject jsonObject = new JSONObject(apiResponse.readEntity(String.class))
                 return jsonObject
-            }
-            else
+            } else
                 return null
         }
         catch (Exception ex) {
@@ -2162,7 +1931,7 @@ class EntityService {
         try {
 
             Response apiResponse = target
-                    .path(new Links().SERIES_MASTER_BY_ENTITY + "/"+id)
+                    .path(new Links().SERIES_MASTER_BY_ENTITY + "/" + id)
                     .request(MediaType.APPLICATION_JSON_TYPE)
                     .get()
 
@@ -2176,8 +1945,7 @@ class EntityService {
     }
 
 
-    def convert(MultipartFile multipartFile)
-    {
+    def convert(MultipartFile multipartFile) {
         String fileName = UtilsService.uploadFile('user/', multipartFile, null)
         File file = new File(new FileManagementService().getApplicationPath() + 'user' + File.separator + fileName)
         return file
@@ -2194,12 +1962,10 @@ class EntityService {
                     .request(MediaType.APPLICATION_JSON_TYPE)
                     .get()
 
-            if(apiResponse.status == 200)
-            {
+            if (apiResponse.status == 200) {
                 JSONArray jsonArray = new JSONArray(apiResponse.readEntity(String.class))
                 return jsonArray
-            }
-            else {
+            } else {
                 return null
             }
         }
@@ -2220,12 +1986,10 @@ class EntityService {
                     .path(url).queryParam("query", query)
                     .request(MediaType.APPLICATION_JSON_TYPE)
                     .get()
-            if(apiResponse.status == 200)
-            {
+            if (apiResponse.status == 200) {
                 JSONArray jsonArray = new JSONArray(apiResponse.readEntity(String.class))
                 return jsonArray
-            }
-            else {
+            } else {
                 return null
             }
         }
@@ -2245,12 +2009,10 @@ class EntityService {
                     .path(url)
                     .request(MediaType.APPLICATION_JSON_TYPE)
                     .get()
-            if(apiResponse.status == 200)
-            {
+            if (apiResponse.status == 200) {
                 JSONArray jsonArray = new JSONArray(apiResponse.readEntity(String.class))
                 return jsonArray
-            }
-            else {
+            } else {
                 return null
             }
         }
@@ -2270,12 +2032,10 @@ class EntityService {
                     .path(url)
                     .request(MediaType.APPLICATION_JSON_TYPE)
                     .get()
-            if(apiResponse.status == 200)
-            {
+            if (apiResponse.status == 200) {
                 JSONArray jsonArray = new JSONArray(apiResponse.readEntity(String.class))
                 return jsonArray
-            }
-            else {
+            } else {
                 return null
             }
         }
@@ -2303,35 +2063,30 @@ class EntityService {
 
     }
 
-    def saveAccountRegister(JSONObject jsonObject)
-    {
+    def saveAccountRegister(JSONObject jsonObject) {
         Client client = ClientBuilder.newClient()
         WebTarget target = client.target(new Links().API_GATEWAY)
-        try
-        {
+        try {
             println(jsonObject)
             Response apiResponse = target
                     .path(new Links().ACCOUNT_REGISTER_SAVE)
                     .request(MediaType.APPLICATION_JSON_TYPE)
-                    .post(Entity.entity(jsonObject.toString(),MediaType.APPLICATION_JSON_TYPE))
+                    .post(Entity.entity(jsonObject.toString(), MediaType.APPLICATION_JSON_TYPE))
             println(apiResponse)
             return apiResponse
         }
-        catch (Exception ex)
-        {
+        catch (Exception ex) {
             System.err.println('Service :saveStateMaster , action :  save  , Ex:' + ex)
             log.error('Service :saveStateMaster , action :  save  , Ex:' + ex)
         }
 
     }
 
-    def showAccountRegister(JSONObject jsonObject)
-    {
+    def showAccountRegister(JSONObject jsonObject) {
         Client client = ClientBuilder.newClient()
         WebTarget target = client.target(new Links().API_GATEWAY)
 
-        try
-        {
+        try {
             Response apiResponse = target
                     .path(new Links().ACCOUNT_REGISTER_DATATABLE)
                     .queryParam("params", URLEncoder.encode(jsonObject.toString(), "UTF-8"))
@@ -2339,31 +2094,27 @@ class EntityService {
                     .get()
             return apiResponse
         }
-        catch (Exception ex)
-        {
+        catch (Exception ex) {
             System.err.println('Service :EntityService , action :  showUser  , Ex:' + ex)
             log.error('Service :EntityService , action :  showUser  , Ex:' + ex)
         }
 
     }
 
-    def putAccountRegister(JSONObject jsonObject)
-    {
+    def putAccountRegister(JSONObject jsonObject) {
         Client client = ClientBuilder.newClient()
         WebTarget target = client.target(new Links().API_GATEWAY)
 
-        try
-        {
+        try {
             Response apiResponse = target
                     .path(new Links().ACCOUNT_REGISTER_UPDATE)
                     .resolveTemplate("id", jsonObject.id)
                     .request(MediaType.APPLICATION_JSON_TYPE)
-                    .put(Entity.entity(jsonObject.toString(),MediaType.APPLICATION_JSON_TYPE))
+                    .put(Entity.entity(jsonObject.toString(), MediaType.APPLICATION_JSON_TYPE))
             println(jsonObject)
             return apiResponse
         }
-        catch (Exception ex)
-        {
+        catch (Exception ex) {
             System.err.println('Service : EntityService, action :  putCustomerGroup  , Ex:' + ex)
             log.error('Service :EntityService , action :  putCustomerGroup  , Ex:' + ex)
         }
@@ -2376,12 +2127,10 @@ class EntityService {
      * @param jsonObject
      * @return
      */
-    def deleteAccountRegister(JSONObject jsonObject)
-    {
+    def deleteAccountRegister(JSONObject jsonObject) {
         Client client = ClientBuilder.newClient()
         WebTarget target = client.target(new Links().API_GATEWAY)
-        try
-        {
+        try {
             Response apiResponse = target
                     .path(new Links().ACCOUNT_REGISTER_DELETE)
                     .resolveTemplate("id", jsonObject.id)
@@ -2389,8 +2138,7 @@ class EntityService {
                     .delete()
             return apiResponse
         }
-        catch (Exception ex)
-        {
+        catch (Exception ex) {
             System.err.println('Service :EntityService , action :  deleteUser  , Ex:' + ex)
             log.error('Service :EntityService , action :  deleteUser  , Ex:' + ex)
         }
@@ -2402,7 +2150,7 @@ class EntityService {
         WebTarget target = client.target(new Links().API_GATEWAY)
         try {
             Response apiResponse = target
-                    .path(new Links().ACCOUNT_REGISTER_SHOW + "/"+id)
+                    .path(new Links().ACCOUNT_REGISTER_SHOW + "/" + id)
                     .request(MediaType.APPLICATION_JSON_TYPE)
                     .get()
             return apiResponse
@@ -2419,15 +2167,13 @@ class EntityService {
         WebTarget target = client.target(new Links().API_GATEWAY)
         try {
             Response apiResponse = target
-                    .path(new Links().ACCOUNT_REGISTER_SHOW + "/"+id)
+                    .path(new Links().ACCOUNT_REGISTER_SHOW + "/" + id)
                     .request(MediaType.APPLICATION_JSON_TYPE)
                     .get()
-            if(apiResponse?.status == 200)
-            {
+            if (apiResponse?.status == 200) {
                 JSONObject jsonObject = new JSONObject(apiResponse.readEntity(String.class))
                 return jsonObject
-            }
-            else
+            } else
                 return null
         }
         catch (Exception ex) {
@@ -2438,22 +2184,18 @@ class EntityService {
     }
 
 
-    def getAllAccountByEntity(String id)
-    {
+    def getAllAccountByEntity(String id) {
         Client client = ClientBuilder.newClient()
         WebTarget target = client.target(new Links().API_GATEWAY)
         try {
             Response apiResponse = target
-                    .path(new Links().ACCOUNT_REGISTER_BY_ENTITY + "/"+id)
+                    .path(new Links().ACCOUNT_REGISTER_BY_ENTITY + "/" + id)
                     .request(MediaType.APPLICATION_JSON_TYPE)
                     .get()
-            if(apiResponse.status == 200)
-            {
+            if (apiResponse.status == 200) {
                 JSONArray jsonArray = new JSONArray(apiResponse.readEntity(String.class))
                 return jsonArray
-            }
-            else
-            {
+            } else {
                 return null
             }
         }
@@ -2465,12 +2207,10 @@ class EntityService {
     }
 
 
-    def updateAccountBalance(String amount, String entityId, String id, boolean add)
-    {
+    def updateAccountBalance(String amount, String entityId, String id, boolean add) {
         Client client = ClientBuilder.newClient()
         WebTarget target = client.target(new Links().API_GATEWAY)
-        try
-        {
+        try {
             JSONObject jsonObject = new JSONObject()
             jsonObject.put("amount", amount)
             jsonObject.put("entityId", entityId)
@@ -2479,12 +2219,11 @@ class EntityService {
             Response apiResponse = target
                     .path(new Links().ACCOUNT_REGISTER_UPDATE_BALANCE)
                     .request(MediaType.APPLICATION_JSON_TYPE)
-                    .post(Entity.entity(jsonObject.toString(),MediaType.APPLICATION_JSON_TYPE))
+                    .post(Entity.entity(jsonObject.toString(), MediaType.APPLICATION_JSON_TYPE))
             println(apiResponse)
             return apiResponse
         }
-        catch (Exception ex)
-        {
+        catch (Exception ex) {
             System.err.println('Service :entityService , action :  updateAccountBalance  , Ex:' + ex)
             log.error('Service :entityService , action :  updateAccountBalance  , Ex:' + ex)
         }
@@ -2492,21 +2231,18 @@ class EntityService {
     }
 
 
-    def addEntityIRN(JSONObject jsonObject)
-    {
+    def addEntityIRN(JSONObject jsonObject) {
         Client client = ClientBuilder.newClient()
         WebTarget target = client.target(new Links().API_GATEWAY)
-        try
-        {
+        try {
             Response apiResponse = target
                     .path(new Links().ENTITY_IRN_SAVE)
                     .request(MediaType.APPLICATION_JSON_TYPE)
-                    .post(Entity.entity(jsonObject.toString(),MediaType.APPLICATION_JSON_TYPE))
+                    .post(Entity.entity(jsonObject.toString(), MediaType.APPLICATION_JSON_TYPE))
             println(apiResponse)
             return apiResponse
         }
-        catch (Exception ex)
-        {
+        catch (Exception ex) {
             System.err.println('Service :entityService , action :  addEntityIRN  , Ex:' + ex)
             log.error('Service :entityService , action :  addEntityIRN  , Ex:' + ex)
         }
@@ -2518,15 +2254,13 @@ class EntityService {
         WebTarget target = client.target(new Links().API_GATEWAY)
         try {
             Response apiResponse = target
-                    .path(new Links().ENTITY_IRN_SHOW + "/"+id)
+                    .path(new Links().ENTITY_IRN_SHOW + "/" + id)
                     .request(MediaType.APPLICATION_JSON_TYPE)
                     .get()
-            if(apiResponse?.status == 200)
-            {
+            if (apiResponse?.status == 200) {
                 JSONObject jsonObject = new JSONObject(apiResponse.readEntity(String.class))
                 return jsonObject
-            }
-            else
+            } else
                 return null
         }
         catch (Exception ex) {
@@ -2541,15 +2275,13 @@ class EntityService {
         WebTarget target = client.target(new Links().API_GATEWAY)
         try {
             Response apiResponse = target
-                    .path(new Links().ENTITY_IRN_SHOW_BY_ENTITY + "/"+id)
+                    .path(new Links().ENTITY_IRN_SHOW_BY_ENTITY + "/" + id)
                     .request(MediaType.APPLICATION_JSON_TYPE)
                     .get()
-            if(apiResponse?.status == 200)
-            {
+            if (apiResponse?.status == 200) {
                 JSONObject jsonObject = new JSONObject(apiResponse.readEntity(String.class))
                 return jsonObject
-            }
-            else
+            } else
                 return null
         }
         catch (Exception ex) {
@@ -2559,21 +2291,18 @@ class EntityService {
 
     }
 
-    def updateEntityIRN(JSONObject jsonObject)
-    {
+    def updateEntityIRN(JSONObject jsonObject) {
         Client client = ClientBuilder.newClient()
         WebTarget target = client.target(new Links().API_GATEWAY)
-        try
-        {
+        try {
             Response apiResponse = target
-                    .path(new Links().ENTITY_IRN_UPDATE +  jsonObject.get("id"))
+                    .path(new Links().ENTITY_IRN_UPDATE + jsonObject.get("id"))
                     .request(MediaType.APPLICATION_JSON_TYPE)
-                    .put(Entity.entity(jsonObject.toString(),MediaType.APPLICATION_JSON_TYPE))
+                    .put(Entity.entity(jsonObject.toString(), MediaType.APPLICATION_JSON_TYPE))
             println(apiResponse)
             return apiResponse
         }
-        catch (Exception ex)
-        {
+        catch (Exception ex) {
             System.err.println('Service :entityService , action :  updateEntityIRN  , Ex:' + ex)
             log.error('Service :entityService , action :  updateEntityIRN  , Ex:' + ex)
         }
@@ -2586,28 +2315,23 @@ class EntityService {
      * @param jsonObject
      * @return
      */
-    def getAllDepartment()
-    {
+    def getAllDepartment() {
         Client client = ClientBuilder.newClient();
         WebTarget target = client.target(new Links().API_GATEWAY);
-        try
-        {
+        try {
             Response apiResponse = target
                     .path(new Links().DEPARTMENT_MASTER_SHOW)
                     .request(MediaType.APPLICATION_JSON_TYPE)
                     .get()
-            if(apiResponse.status == 200)
-            {
+            if (apiResponse.status == 200) {
                 JSONArray jsonArray = new JSONArray(JSON.parse(apiResponse.readEntity(String.class)) as Collection)
                 return jsonArray
-            }
-            else {
+            } else {
                 return null
             }
 
         }
-        catch (Exception ex)
-        {
+        catch (Exception ex) {
             System.err.println('Service :showAccountModes , action :  show  , Ex:' + ex)
             log.error('Service :showAccountModes , action :  show  , Ex:' + ex)
         }
@@ -2620,27 +2344,22 @@ class EntityService {
      * @param jsonObject
      * @return
      */
-    def getAllRoles()
-    {
+    def getAllRoles() {
         Client client = ClientBuilder.newClient();
         WebTarget target = client.target(new Links().API_GATEWAY);
-        try
-        {
+        try {
             Response apiResponse = target
                     .path(new Links().ROLE_SHOW)
                     .request(MediaType.APPLICATION_JSON_TYPE)
                     .get()
-            if(apiResponse.status == 200)
-            {
+            if (apiResponse.status == 200) {
                 return apiResponse
-            }
-            else {
+            } else {
                 return null
             }
 
         }
-        catch (Exception ex)
-        {
+        catch (Exception ex) {
             System.err.println('Service :showAccountModes , action :  show  , Ex:' + ex)
             log.error('Service :showAccountModes , action :  show  , Ex:' + ex)
         }
@@ -2649,35 +2368,30 @@ class EntityService {
 
 
 //    Entity Settings
-    def saveSettings(JSONObject jsonObject)
-    {
+    def saveSettings(JSONObject jsonObject) {
         Client client = ClientBuilder.newClient()
         WebTarget target = client.target(new Links().API_GATEWAY)
-        try
-        {
+        try {
             println(jsonObject)
             Response apiResponse = target
                     .path(new Links().ENTITY_SETTINGS_SAVE)
                     .request(MediaType.APPLICATION_JSON_TYPE)
-                    .post(Entity.entity(jsonObject.toString(),MediaType.APPLICATION_JSON_TYPE))
+                    .post(Entity.entity(jsonObject.toString(), MediaType.APPLICATION_JSON_TYPE))
             println(apiResponse)
             return apiResponse
         }
-        catch (Exception ex)
-        {
+        catch (Exception ex) {
             System.err.println('Service :EntityService , action :  saveCustomerGroup  , Ex:' + ex)
             log.error('Service :EntityService , action :  saveCustomerGroup  , Ex:' + ex)
         }
 
     }
 
-    def showSettings(JSONObject jsonObject)
-    {
+    def showSettings(JSONObject jsonObject) {
         Client client = ClientBuilder.newClient()
         WebTarget target = client.target(new Links().API_GATEWAY)
 
-        try
-        {
+        try {
             Response apiResponse = target
                     .path(new Links().ENTITY_SETTINGS_DATATABLE)
                     .queryParam("params", URLEncoder.encode(jsonObject.toString(), "UTF-8"))
@@ -2685,30 +2399,26 @@ class EntityService {
                     .get()
             return apiResponse
         }
-        catch (Exception ex)
-        {
+        catch (Exception ex) {
             System.err.println('Service :EntityService , action :  showUser  , Ex:' + ex)
             log.error('Service :EntityService , action :  showUser  , Ex:' + ex)
         }
 
     }
 
-    def putSettings(JSONObject jsonObject)
-    {
+    def putSettings(JSONObject jsonObject) {
         Client client = ClientBuilder.newClient()
         WebTarget target = client.target(new Links().API_GATEWAY)
-        try
-        {
+        try {
             Response apiResponse = target
                     .path(new Links().ENTITY_SETTINGS_UPDATE)
                     .resolveTemplate("id", jsonObject.id)
                     .request(MediaType.APPLICATION_JSON_TYPE)
-                    .put(Entity.entity(jsonObject.toString(),MediaType.APPLICATION_JSON_TYPE))
+                    .put(Entity.entity(jsonObject.toString(), MediaType.APPLICATION_JSON_TYPE))
             println(jsonObject)
             return apiResponse
         }
-        catch (Exception ex)
-        {
+        catch (Exception ex) {
             System.err.println('Service :EntityService , action :  putUser  , Ex:' + ex)
             log.error('Service :EntityService , action :  putUser  , Ex:' + ex)
         }
@@ -2720,12 +2430,10 @@ class EntityService {
      * @param jsonObject
      * @return
      */
-    def deleteSettings(JSONObject jsonObject)
-    {
+    def deleteSettings(JSONObject jsonObject) {
         Client client = ClientBuilder.newClient()
         WebTarget target = client.target(new Links().API_GATEWAY)
-        try
-        {
+        try {
             Response apiResponse = target
                     .path(new Links().ENTITY_SETTINGS_DELETE)
                     .resolveTemplate("id", jsonObject.id)
@@ -2733,8 +2441,7 @@ class EntityService {
                     .delete()
             return apiResponse
         }
-        catch (Exception ex)
-        {
+        catch (Exception ex) {
             System.err.println('Service :EntityService , action :  deleteUser  , Ex:' + ex)
             log.error('Service :EntityService , action :  deleteUser  , Ex:' + ex)
         }
@@ -2750,12 +2457,10 @@ class EntityService {
                     .queryParam("id", URLEncoder.encode(id.toString(), "UTF-8"))
                     .request(MediaType.APPLICATION_JSON_TYPE)
                     .get()
-            if(apiResponse.status == 200)
-            {
+            if (apiResponse.status == 200) {
                 JSONObject jsonObject = new JSONObject(apiResponse.readEntity(String.class))
                 return jsonObject
-            }
-            else
+            } else
                 return null
         }
         catch (Exception ex) {
@@ -2773,12 +2478,10 @@ class EntityService {
                     .queryParam("id", URLEncoder.encode(id.toString(), "UTF-8"))
                     .request(MediaType.APPLICATION_JSON_TYPE)
                     .get()
-            if(apiResponse.status == 200)
-            {
+            if (apiResponse.status == 200) {
                 JSONObject jsonObject = new JSONObject(apiResponse.readEntity(String.class))
                 return jsonObject
-            }
-            else
+            } else
                 return null
         }
         catch (Exception ex) {
@@ -2787,20 +2490,17 @@ class EntityService {
         }
     }
 
-    def saveEntityConfig(JSONObject jsonObject)
-    {
+    def saveEntityConfig(JSONObject jsonObject) {
         Client client = ClientBuilder.newClient()
         WebTarget target = client.target(new Links().API_GATEWAY)
-        try
-        {
+        try {
             Response apiResponse = target
                     .path(new Links().ENTITY_CONFIG_SAVE)
                     .request(MediaType.APPLICATION_JSON_TYPE)
-                    .post(Entity.entity(jsonObject.toString(),MediaType.APPLICATION_JSON_TYPE))
+                    .post(Entity.entity(jsonObject.toString(), MediaType.APPLICATION_JSON_TYPE))
             return apiResponse
         }
-        catch (Exception ex)
-        {
+        catch (Exception ex) {
             System.err.println('Service :InventoryService , action :  save  , Ex:' + ex)
             log.error('Service :InventoryService , action :  save  , Ex:' + ex)
         }
@@ -2816,12 +2516,10 @@ class EntityService {
                     .path(new Links().ENTITY_REGISTER_SHOW_BY_ENTITY + "/" + id)
                     .request(MediaType.APPLICATION_JSON_TYPE)
                     .get()
-            if(apiResponse.status == 200)
-            {
+            if (apiResponse.status == 200) {
                 JSONArray jsonArray = new JSONArray(apiResponse.readEntity(String.class))
                 return jsonArray
-            }
-            else
+            } else
                 return null
         }
         catch (Exception ex) {

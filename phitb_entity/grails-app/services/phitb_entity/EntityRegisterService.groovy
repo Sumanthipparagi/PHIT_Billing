@@ -435,14 +435,17 @@ class EntityRegisterService {
 
     /**
      * This returns only parent entities which are affiliated to itself.
+     * In case of entity admin, returns parent entities affiliated to it
      * @return
      */
-    def getParentEntities()
+    def getParentEntities(String affiliateId = null)
     {
         def entityRegisterCriteria = EntityRegister.createCriteria()
         def entityRegisterArrayList = entityRegisterCriteria.list() {
             eqProperty("id", "parentEntity")
-            eq('deleted', false)
+            eq("deleted", false)
+            if(affiliateId)
+                eq("affiliateId", affiliateId)
         }
         return entityRegisterArrayList
     }

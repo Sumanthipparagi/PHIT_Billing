@@ -72,9 +72,8 @@
                         <p class="m-b-20"><i class="zmdi zmdi-assignment zmdi-hc-3x col-blue"></i></p>
                         <span>Total Outstanding</span>
 
-                        <h3 class="m-b-10 number count-to" data-from="0" data-to="865" data-speed="2000"
-                            data-fresh-interval="700">865</h3>
-                        <small class="text-muted">88% lower growth</small>
+                        <h3 class="m-b-10 number">-</h3>
+                        <small class="text-muted">-</small>
                     </div>
                 </div>
             </div>
@@ -85,9 +84,8 @@
                         <p class="m-b-20"><i class="zmdi zmdi-shopping-basket zmdi-hc-3x"></i></p>
                         <span>Total Sale Return</span>
 
-                        <h3 class="m-b-10 number count-to" data-from="0" data-to="3502" data-speed="2000"
-                            data-fresh-interval="700">3502</h3>
-                        <small class="text-muted">38% lower growth</small>
+                        <h3 class="m-b-10 number">-</h3>
+                        <small class="text-muted">-</small>
                     </div>
                 </div>
             </div>
@@ -98,9 +96,8 @@
                         <p class="m-b-20"><i class="zmdi zmdi-book zmdi-hc-3x col-green"></i></p>
                         <span>Draft Invoices</span>
 
-                        <h3 class="m-b-10 number count-to" data-from="0" data-to="78" data-speed="2000"
-                            data-fresh-interval="700">78</h3>
-                        <small class="text-muted">78% lower growth</small>
+                        <h3 class="m-b-10 number">-</h3>
+                        <small class="text-muted">-</small>
                     </div>
                 </div>
             </div>
@@ -110,17 +107,17 @@
             <div class="col-lg-12 col-md-12">
                 <div class="card visitors-map">
                     <div class="header">
-                        <h2><strong>Visit</strong> & Sales Statistics</h2>
+                        <h2><strong>Sales</strong> Statistics</h2>
                         <ul class="header-dropdown">
                             <li class="dropdown"><a href="javascript:void(0);" class="dropdown-toggle"
                                                     data-toggle="dropdown" role="button" aria-haspopup="true"
                                                     aria-expanded="false"><i class="zmdi zmdi-more"></i></a>
-                                <ul class="dropdown-menu slideUp">
+                                %{--<ul class="dropdown-menu slideUp">
                                     <li><a href="javascript:void(0);">Action</a></li>
                                     <li><a href="javascript:void(0);">Another action</a></li>
                                     <li><a href="javascript:void(0);">Something else</a></li>
                                     <li><a href="javascript:void(0);" class="boxs-close">Delete</a></li>
-                                </ul>
+                                </ul>--}%
                             </li>
                         </ul>
                     </div>
@@ -157,12 +154,18 @@
                var salesPreviousMonth = data["salesPreviousMonth"];
                $("#salesCurrentMonth").text(salesCurrentMonth);
 
+               var percentageDiff = 0;
                var diff = salesCurrentMonth - salesPreviousMonth;
-               var percentageDiff = (diff/salesPreviousMonth) * 100;
+               if(diff !== 0)
+                   percentageDiff = (diff/salesPreviousMonth) * 100;
 
                if(percentageDiff > 0)
                {
                    $("#salesPreviousMonth").html(percentageDiff.toFixed(2) + "% Growth <i class='zmdi zmdi-caret-up' style='color: lightgreen;'></i>");
+               }
+               else if(percentageDiff === 0)
+               {
+                   $("#salesPreviousMonth").html("-");
                }
                else
                {

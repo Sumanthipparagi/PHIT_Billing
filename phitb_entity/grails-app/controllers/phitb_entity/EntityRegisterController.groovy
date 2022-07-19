@@ -256,7 +256,8 @@ class EntityRegisterController {
     def getParentEntities()
     {
         try {
-            respond entityRegisterService.getParentEntities()
+            String affiliateId = params.affiliateId
+            respond entityRegisterService.getParentEntities(affiliateId)
         }
         catch (ResourceNotFoundException ex)
         {
