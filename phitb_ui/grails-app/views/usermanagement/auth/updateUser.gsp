@@ -16,7 +16,7 @@
     <!-- Custom Css -->
     <asset:stylesheet  rel="stylesheet" src="/themeassets/css/main.css"/>
     <asset:stylesheet rel="stylesheet" href="/themeassets/css/color_skins.css"/>
-    <asset:stylesheet rel="stylesheet" href="/themeassets/plugins/sweetalert/sweetalert.css"/>
+    <asset:stylesheet rel="stylesheet" href="/themeassets/plugins/sweetalert2/dist/sweetalert2.css"/>
     <asset:stylesheet  src="/themeassets/plugins/bootstrap-select/css/bootstrap-select.css" rel="stylesheet" />
     <asset:stylesheet  src="/themeassets/js/pages/forms/basic-form-elements.js" rel="stylesheet" />
     <asset:stylesheet  src="/themeassets/plugins/bootstrap-material-datetimepicker/css/bootstrap-material-datetimepicker.css" rel="stylesheet" />
@@ -787,7 +787,7 @@
 <asset:javascript src="/themeassets/bundles/mainscripts.bundle.js"/>
 <asset:javascript src="/themeassets/js/pages/tables/jquery-datatable.js"/>
 <asset:javascript src="/themeassets/js/pages/ui/dialogs.js"/>
-<asset:javascript src="/themeassets/plugins/sweetalert/sweetalert.min.js"/>
+<asset:javascript src="/themeassets/plugins/sweetalert2/dist/sweetalert2.js"/>
 <asset:javascript src="/themeassets/plugins/jquery-inputmask/jquery.inputmask.bundle.js"/>
 <asset:javascript src="/themeassets/plugins/momentjs/moment.js"/>
 <asset:javascript src="/themeassets/js/pages/forms/form-wizard.js"/>
@@ -896,7 +896,7 @@
             this.value = parseFloat(this.value.toFixed(2));
         }
 
-        $('#referredBy').select2()
+        $('#referredBy').select2();
 
 
         $('#cityId').select2({
@@ -1044,9 +1044,13 @@
                 data        : formData.serialize(), // our data object
                 success:function(data){
                     // $("#validation-status").text(data);
-                    swal('success','User updated Successfully',data);
                     // swal("Success!", "Updated Successfully! ", "success");
                     // alert("Password Updated!!")
+                    Swal.fire(
+                        'success',
+                        'Updated Successfully',
+                        'success'
+                    );
 
                 },
                 error:function(data){
