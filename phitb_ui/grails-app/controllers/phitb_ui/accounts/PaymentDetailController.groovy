@@ -14,14 +14,15 @@ import phitb_ui.system.PaymentModeController
 class PaymentDetailController {
 
     def index() {
-        ArrayList<String> entity = new EntityRegisterController().show() as ArrayList
+        String entityId = session.getAttribute('entityId')
+        ArrayList<String> entity = new EntityRegisterController().getByAffiliateById(entityId) as ArrayList<String>
         ArrayList<String> bank = new BankRegisterController().show() as ArrayList
         ArrayList<String> accountMode = new AccountModeController().show() as ArrayList
         ArrayList<String> accountRegister = new AccountRegisterController().getAllAccounts() as ArrayList
         ArrayList<String> wallet = new WalletController().show() as ArrayList
         ArrayList<String> saleinvoice = new SalebillDetailsController().show() as ArrayList
         ArrayList<String> paymodes = new PaymentModeController().show() as ArrayList<String>
-        render(view: "/accounts/payments/payments", model: [entity                           : entity, bank: bank,
+        render(view: "/accounts/payments/payments", model: [entity    : entity, bank: bank,
                                                      accountMode:
                 accountMode,
                                                                    wallet                           : wallet, saleinvoice: saleinvoice, paymodes:

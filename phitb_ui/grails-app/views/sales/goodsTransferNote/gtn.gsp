@@ -943,7 +943,7 @@
         $("#saveBtn").prop("disabled", true);
         $("#saveDraftBtn").prop("disabled", true);
         var waitingSwal = Swal.fire({
-            title: "Generating GRN, Please wait!",
+            title: "Generating Sale Order, Please wait!",
             showDenyButton: false,
             showCancelButton: false,
             showConfirmButton: false,
@@ -1008,7 +1008,7 @@
                 var message = "";
                 var draftInvNo = "";
                 if (billStatus === "DRAFT") {
-                    draftInvNo = '<p><strong>' + data.gtn.entityId + "/DR/GTN/" + month + year + "/"
+                    draftInvNo = '<p><strong>' + data.sale.entityId + "/DR/GTN/" + month + year + "/"
                         + seriesCode + "/__" + '<p><strong>';
                     $("#invNo").html(draftInvNo);
                 }

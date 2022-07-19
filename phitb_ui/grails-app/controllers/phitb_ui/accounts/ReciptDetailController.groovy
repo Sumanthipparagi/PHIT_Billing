@@ -43,7 +43,8 @@ class ReciptDetailController {
 //    }
 
     def index() {
-        ArrayList<String> entity = new EntityRegisterController().show() as ArrayList
+        String entityId = session.getAttribute('entityId')
+        ArrayList<String> entity = new EntityRegisterController().getByAffiliateById(entityId) as ArrayList<String>
         ArrayList<String> bank = new BankRegisterController().show() as ArrayList
         ArrayList<String> accountMode = new AccountModeController().show() as ArrayList
         ArrayList<String> accountRegister = new AccountRegisterController().getAllAccounts() as ArrayList
