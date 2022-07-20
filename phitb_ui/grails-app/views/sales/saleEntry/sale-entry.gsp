@@ -1377,7 +1377,7 @@
             dataType: 'json',
             success: function (data) {
                 for (var i = 0; i < data.length; i++) {
-                    if(data.saleType === '${Constants.SALEABLE}')
+                    if(data[i].saleType === '${Constants.SALEABLE}')
                     {
                         products.push({id: data[i].id, text: data[i].productName});
                     }
