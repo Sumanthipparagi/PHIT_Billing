@@ -265,7 +265,7 @@
     $(document).on("click", ".affiliateBtn", function () {
         var id = $(this).data('id');
         var parentId = $(this).data('parentId');
-        var url = "entity-register/getbyaffiliates/" + id;
+        var url = "/entity-register/getbyaffiliates/" + id;
         $.ajax({
             url: url,
             type: "GET",
