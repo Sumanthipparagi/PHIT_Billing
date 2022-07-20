@@ -9,7 +9,7 @@ class SecurityInterceptor {
     }
 
     boolean before() {
-        println("Controller: "+ controllerName + ", Action: "+actionName)
+        println("Controller: "+ controllerName + ", Action: "+actionName+" "+new Date())
         boolean login = session.getAttribute('login')
 
         if (controllerName == null)
