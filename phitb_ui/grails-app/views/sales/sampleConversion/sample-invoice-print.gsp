@@ -341,7 +341,7 @@
             <td>${sp.productId.hsnCode}</td>
             <td><b>${sp.productId.productName}</b></td>
             <td><b>${sp.productId.unitPacking}</b></td>
-            <td><b>D</b></td>
+            <td><b>${sp?.productId?.schedule?.scheduleCode}</b></td>
             <td>${sp.batchNumber}</td>
             <td id="expDate${sp.id}">${sp.expiryDate}</td>
             %{--            <td></td>--}%

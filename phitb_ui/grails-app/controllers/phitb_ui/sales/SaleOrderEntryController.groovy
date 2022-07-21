@@ -483,6 +483,7 @@ class SaleOrderEntryController {
                         }
                     }
 
+
                     double remainingReplQty = stockBook.get("remainingReplQty") + productDetail.get("repQty")
                     stockBook.put("remainingQty", remainingQty.toLong())
                     stockBook.put("remainingFreeQty", remainingFreeQty.toLong())

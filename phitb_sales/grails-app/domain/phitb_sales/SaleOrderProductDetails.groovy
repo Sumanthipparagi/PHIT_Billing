@@ -41,6 +41,11 @@ class SaleOrderProductDetails {
     double igstPercentage
     String uuid
 
+    //this is added to keep track from where the qty came from, helpful in case of cancellation to put into right coloumn
+    double originalSqty
+    double originalFqty
+
+
     static constraints = {
         uuid unique: true
         sqty min: 0D

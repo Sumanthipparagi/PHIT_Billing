@@ -249,19 +249,19 @@ class SalesOrderEntryService {
         {
             if (saleOrderentry.financialYear.equalsIgnoreCase(financialYear) && saleOrderentry.entityId == Long.parseLong(entityId))
             {
-                ArrayList<SaleProductDetails> saleProductDetails = SaleProductDetails.findAllByBillId(saleOrderentry.id)
-                for (SaleProductDetails saleProductDetail : saleProductDetails)
+                ArrayList<SaleOrderProductDetails> saleOrderProductDetails = SaleOrderProductDetails.findAllByBillId(saleOrderentry.id)
+                for (SaleOrderProductDetails saleOrderProductDetail : saleOrderProductDetails)
                 {
-                    saleProductDetail.status = 0
-                    saleProductDetail.isUpdatable = true
-                    saleProductDetail.save(flush: true)
+                    saleOrderProductDetail.status = 0
+                    saleOrderProductDetail.isUpdatable = true
+                    saleOrderProductDetail.save(flush: true)
                 }
                 saleOrderentry.billStatus = "CANCELLED"
                 saleOrderentry.cancelledDate = new Date()
                 saleOrderentry.isUpdatable = true
                 saleOrderentry.save(flush: true)
 
-                saleInvoice.put("products", saleProductDetails)
+                saleInvoice.put("products", saleOrderProductDetails)
                 saleInvoice.put("invoice", saleOrderentry)
                 return saleInvoice
             }
