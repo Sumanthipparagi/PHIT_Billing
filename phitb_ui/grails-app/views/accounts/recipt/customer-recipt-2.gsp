@@ -473,6 +473,8 @@
     }
 
     let invIdArray = [];
+    let gtnIdArray = [];
+    let crntIdArray = [];
 
     function getAddress(id) {
         if (id) {
@@ -482,6 +484,8 @@
                 dataType: 'json',
                 success: function (data) {
                     invIdArray=[];
+                    gtnIdArray = [];
+                    crntIdArray = [];
                     getAllSaleBillDetails(id)
                     var trHTML = '';
                     trHTML += '<p><b>' + data.entityName + '</b><br>' + data.addressLine1 + '' + data.addressLine2 + '</p>';
@@ -569,6 +573,8 @@
                                 '                                        <td style="display: none;">' + value.id + '</td>\n' +
                                 '                                        </tr>';
                             crntData.push(value.id)
+                            crntIdArray.push(value.id);
+                            console.log(crntIdArray)
 
                         }
                     });
@@ -582,7 +588,7 @@
                                 '                                        <td>' + moment(value.dateCreated).format('DD-MM-YYYY') + '</td>\n' +
                                 '                                        <td id="' + "crntAdjAmt" + value.id + '">' +
                                 value.adjAmount.toFixed(2) + '</td>\n' +
-                                '                                        <td id="' + "crntBal" + value.id + '" >' +
+                                '                                        <td id="' + "gtnBal" + value.id + '" >' +
                                 +value.balance.toFixed(2) +
                                 '</td>\n' +
                                 '                                        <td><input type="number" class="paidNowGtn txt txtgtn" id="paidNowGtn' + value.id + '" name="paidNowGtn" data-gtnid="' + value.id + '" data-gtnbal="' + value.balance + '" style="width: 100px;" pattern="\\d{1,10}(?:\\.\\d{1,3})?$" value="0"></td>\n' +
@@ -592,6 +598,8 @@
                                 '                                        <td style="display: none;">' + value.id + '</td>\n' +
                                 '                                        </tr>';
                                 gtnData.push(value.id)
+                                gtnIdArray.push(value.id);
+                                console.log(gtnIdArray)
                         }
                     });
                     $('#billDetails').html(trHTML + trHTML1);
@@ -696,6 +704,26 @@
                 } else {
                     amountPaid = amountPaid - invBal;
                     $('#paidNowInv' + value).val(invBal.toFixed(2));
+                }
+            });
+            $.each(crntIdArray, function (key, value) {
+                var crntBal = Number($('#crntBal' + value).text());
+                if (Math.abs(crntBal) > amountPaid) {
+                    $('#paidNowCrnt' + value).val(amountPaid.toFixed(2));
+                    amountPaid = 0;
+                } else {
+                    amountPaid = amountPaid - crntBal;
+                    $('#paidNowCrnt' + value).val(crntBal.toFixed(2));
+                }
+            });
+            $.each(gtnIdArray, function (key, value) {
+                var gtnBal = Number($('#gtnBal' + value).text());
+                if (Math.abs(gtnBal) > amountPaid) {
+                    $('#paidNowGtn' + value).val(amountPaid.toFixed(2));
+                    amountPaid = 0;
+                } else {
+                    amountPaid = amountPaid - gtnBal;
+                    $('#paidNowGtn' + value).val(gtnBal.toFixed(2));
                 }
             });
         }
