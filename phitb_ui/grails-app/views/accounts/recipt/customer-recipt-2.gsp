@@ -174,8 +174,10 @@
                                         style="width: 460px;">
                                     <option value="">-- Please select --</option>
                                     <g:each var="e" in="${entity}">
-                                        <option value="${e.id}"
+                                        <g:if test="${e.id != session.getAttribute("entityId")}">
+                                            <option value="${e.id}"
                                                 data-type="${e.entityType.id}">${e.entityName}  (${e.entityType.name})</option>
+                                        </g:if>
                                     </g:each>
                                 </select>
 
