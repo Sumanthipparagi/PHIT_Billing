@@ -638,7 +638,7 @@ class UrlMappings {
         "/sale-order-entry/datatable"(controller: 'saleOrderEntry', action: 'dataTable')
         "/sale-order-entry/my-orders"(controller: 'saleOrderEntry', action: 'saleOrderList')
         "/sale-order-entry/cancel"(controller: 'saleOrderEntry', action: 'cancelOrder')
-
+        "/convert-to-sale-entry"(controller: 'saleOrderEntry', action: 'convertToSaleEntry')
 
 
 
