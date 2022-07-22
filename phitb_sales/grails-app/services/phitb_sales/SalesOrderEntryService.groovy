@@ -322,9 +322,9 @@ class SalesOrderEntryService
                 saleBillDetails.grossAmount = salesOrderEntry.totalAmount + salesOrderEntry.totalDiscount
                 saleBillDetails.cashDiscount = Double.parseDouble("0")
                 saleBillDetails.exempted = Double.parseDouble("0")
-                saleBillDetails.totalCgst = salesOrderEntry.totalGst
-                saleBillDetails.totalSgst = salesOrderEntry.totalGst
-                saleBillDetails.totalIgst = salesOrderEntry.totalGst
+                saleBillDetails.totalCgst = salesOrderEntry.totalCgst
+                saleBillDetails.totalSgst = salesOrderEntry.totalSgst
+                saleBillDetails.totalIgst = salesOrderEntry.totalIgst
                 saleBillDetails.gstStatus = "0"
                 saleBillDetails.billStatus = salesOrderEntry.billStatus
                 saleBillDetails.lockStatus = salesOrderEntry.lockStatus
@@ -426,7 +426,7 @@ class SalesOrderEntryService
                                 }
                             }
                         }
-                        return saleBillDetails as JSONObject
+                        return saleBillDetails
                     }
                     else
                     {

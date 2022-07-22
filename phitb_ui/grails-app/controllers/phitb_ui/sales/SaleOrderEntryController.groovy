@@ -519,6 +519,7 @@ class SaleOrderEntryController {
             jsonObject.put("entityId",entityId)
             jsonObject.put("entityTypeId",session.getAttribute('entityTypeId'))
             jsonObject.put("billStatus",billStatus)
+            jsonObject.put("seriesCode",series.get('seriesCode').toString())
             jsonObject.put("uuid",uuid)
             jsonObject.put("userId",session.getAttribute('userId'))
             jsonObject.put("createdUser",session.getAttribute('userId'))
