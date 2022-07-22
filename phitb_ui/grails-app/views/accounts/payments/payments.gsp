@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=Edge">
     <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
-    <meta name="description" content="Responsive Bootstrap 4 and web Application ui kit.">
+    <meta name="description" content="">
 
     <title>:: PharmIt :: Payments</title>
     <link rel="icon" type="image/x-icon" href="${assetPath(src: '/themeassets/images/favicon.ico')}"/>
@@ -461,6 +461,9 @@
     }
 
     let invIdArray = [];
+    let grnIdArray = [];
+    let crntIdArray = [];
+
 
     function getAddress(id) {
         if (id) {
@@ -470,6 +473,8 @@
                 dataType: 'json',
                 success: function (data) {
                     invIdArray=[];
+                    grnIdArray = [];
+                    crntIdArray = [];
                     getAllPurchaseDetails(id)
                     var trHTML = '';
                     trHTML += '<p><b>' + data.entityName + '</b><br>' + data.addressLine1 + '' + data.addressLine2 + '</p>';
@@ -512,7 +517,7 @@
                     $('.amountPaid').val(total_bal_s.toFixed(2));
                     var invoiceData = [];
                     var crntData = [];
-                    var gtnData = [];
+                    var grnData = [];
                     $.each(data[0], function (key, value) {
                         var balance = value.balAmount.toFixed()
                         if (Number(balance)!== 0 && value.billStatus!== 'DRAFT' && value.billStatus!== 'CANCELLED') {
@@ -554,6 +559,8 @@
                                 '                                        <td style="display: none;">' + value.id + '</td>\n' +
                                 '                                        </tr>';
                             crntData.push(value.id)
+                            crntIdArray.push(value.id);
+                            console.log(crntIdArray)
 
                         }
                     });
@@ -567,20 +574,22 @@
                                 '                                        <td>' + moment(value.dateCreated).format('DD-MM-YYYY') + '</td>\n' +
                                 '                                        <td id="' + "crntAdjAmt" + value.id + '">' +
                                 value.adjAmount.toFixed(2) + '</td>\n' +
-                                '                                        <td id="' + "crntBal" + value.id + '" >' +
+                                '                                        <td id="' + "grnBal" + value.id + '" >' +
                                 +value.balance.toFixed(2) +
                                 '</td>\n' +
-                                '                                        <td><input type="number" class="paidNowGtn txt txtgtn" id="paidNowGtn' + value.id + '" name="paidNowGtn" data-gtnid="' + value.id + '" data-gtnbal="' + value.balance + '" style="width: 100px;" pattern="\\d{1,10}(?:\\.\\d{1,3})?$" value="0"></td>\n' +
+                                '                                        <td><input type="number" class="paidNowGtn txt txtgtn" id="paidNowGrn' + value.id + '" name="paidNowGtn" data-gtnid="' + value.id + '" data-gtnbal="' + value.balance + '" style="width: 100px;" pattern="\\d{1,10}(?:\\.\\d{1,3})?$" value="0"></td>\n' +
                                 '                                        <td>' + value.totalAmount.toFixed(2) + '</td>\n' +
                                 '                                        <td>' + calculateNoOfDays(value.dateCreated) + '</td>\n' +
                                 '                                        <td>' + value.financialYear + '</td>\n' +
                                 '                                        <td style="display: none;">' + value.id + '</td>\n' +
                                 '                                        </tr>';
-                            gtnData.push(value.id)
+                            grnData.push(value.id)
+                            grnIdArray.push(value.id);
+                            console.log(grnIdArray)
                         }
                     });
                     $('#billDetails').html(trHTML + trHTML1);
-                    if (invoiceData.length === 0 && crntData.length === 0 && gtnData.length === 0) {
+                    if (invoiceData.length === 0 && crntData.length === 0 && grnData.length === 0) {
                         $('#billDetails').html("<tr><td colspan='9'><div style='text-align: center;'><h2>No Data Found</h2></div></td></tr>");
                     }
                 },
@@ -679,6 +688,26 @@
                 } else {
                     amountPaid = amountPaid - invBal;
                     $('#paidNowInv' + value).val(invBal.toFixed(2));
+                }
+            });
+            $.each(crntIdArray, function (key, value) {
+                var crntBal = Number($('#crntBal' + value).text());
+                if (Math.abs(crntBal) > amountPaid) {
+                    $('#paidNowCrnt' + value).val(amountPaid.toFixed(2));
+                    amountPaid = 0;
+                } else {
+                    amountPaid = amountPaid - crntBal;
+                    $('#paidNowCrnt' + value).val(crntBal.toFixed(2));
+                }
+            });
+            $.each(grnIdArray, function (key, value) {
+                var grnBal = Number($('#grnBal' + value).text());
+                if (Math.abs(grnBal) > amountPaid) {
+                    $('#paidNowGrn' + value).val(amountPaid.toFixed(2));
+                    amountPaid = 0;
+                } else {
+                    amountPaid = amountPaid - grnBal;
+                    $('#paidNowGrn' + value).val(grnBal.toFixed(2));
                 }
             });
         }
