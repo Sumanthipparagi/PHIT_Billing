@@ -1,0 +1,335 @@
+package phitb_ui.purchase
+
+import org.grails.web.json.JSONArray
+import org.grails.web.json.JSONObject
+import phitb_ui.EntityService
+import phitb_ui.InventoryService
+import phitb_ui.ProductService
+import phitb_ui.PurchaseService
+import phitb_ui.SystemService
+import phitb_ui.UtilsService
+import phitb_ui.entity.EntityRegisterController
+import phitb_ui.entity.SeriesController
+import phitb_ui.entity.TaxController
+
+import javax.ws.rs.core.Response
+import java.text.SimpleDateFormat
+
+class PurchaseOrderController {
+
+    def index() {
+        String entityId = session.getAttribute("entityId")?.toString()
+        JSONArray divisions = new ProductService().getDivisionsByEntityId(entityId)
+        ArrayList<String> customers = new EntityRegisterController().getByAffiliateById(entityId) as ArrayList<String>
+        def priorityList = new SystemService().getPriorityByEntity(entityId)
+        def series = new SeriesController().getByEntity(entityId)
+        def taxRegister = new TaxController().show() as ArrayList<String>
+        render(view: '/purchase/purchaseOrder/purchaseOrder', model: [divisions   : divisions, customers: customers,
+                                                                      priorityList: priorityList, series: series,
+                                                                      taxRegister:taxRegister])
+    }
+
+
+
+    def savePurchaseOrder() {
+        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy")
+        JSONObject purchaseBillDetails = new JSONObject()
+        JSONArray purchaseProductDetails = new JSONArray()
+        String entityId = session.getAttribute("entityId").toString()
+        String supplierId = params.supplier
+        String priorityId = params.priority
+        String seriesId = params.series
+        String duedate = params.duedate
+        String billStatus = params.billStatus
+        String seriesCode = params.seriesCode
+        String supplierBillId = params.supplierBillId
+        String supplierBillDate = params.supplierBillDate
+        String message = params.message
+        if (!message) {
+            message = "NA"
+        }
+        long finId = 0
+        long serBillId = 0
+        String financialYear = session.getAttribute("financialYear")
+        def series = new EntityService().getSeriesById(seriesId)
+        if (!billStatus.equalsIgnoreCase("DRAFT")) {
+            def recentPurchaseOrder = new PurchaseService().getRecentPurchaseOrder(financialYear, entityId, billStatus)
+            if (recentPurchaseOrder != null && recentPurchaseOrder.size() != 0) {
+                finId = Long.parseLong(recentPurchaseOrder.get("finId").toString()) + 1
+                serBillId = Long.parseLong(recentPurchaseOrder.get("serBillId").toString()) + 1
+            } else {
+                finId = 1
+                serBillId = Long.parseLong(series.get("purId").toString())
+            }
+        }
+        long totalSqty = 0
+        long totalFqty = 0
+        double totalAmount = 0.00
+        double totalGst = 0.00
+        double totalCgst = 0.00
+        double totalSgst = 0.00
+        double totalIgst = 0.00
+        double totalDiscount = 0.00
+        JSONArray purchaseData = new JSONArray(params.purchaseData)
+        for (JSONObject purchase : purchaseData) {
+            String productId = purchase.get("1")
+            String batchNumber = purchase.get("2")
+            String expDate = purchase.get("3")
+            String saleQty = purchase.get("4")
+            String freeQty = purchase.get("5")
+            String purchaseRate = purchase.get("6")
+            String saleRate = purchase.get("7")
+            String mrp = purchase.get("8")
+            double discount = UtilsService.round(Double.parseDouble(purchase.get("9").toString()), 2)
+            String packDesc = purchase?.get("10")
+            double gst = UtilsService.round(Double.parseDouble(purchase.get("12").toString()), 2)
+            double value = UtilsService.round(Double.parseDouble(purchase.get("13").toString()), 2)
+            double sgst = UtilsService.round(Double.parseDouble(purchase.get("14").toString()), 2)
+            double cgst = UtilsService.round(Double.parseDouble(purchase.get("15").toString()), 2)
+            double igst = UtilsService.round(Double.parseDouble(purchase.get("16").toString()), 2)
+            totalSqty += Long.parseLong(saleQty)
+            totalFqty += Long.parseLong(freeQty)
+            totalAmount += value
+            totalGst += gst
+            totalSgst += sgst
+            totalCgst += cgst
+            totalIgst += igst
+            totalDiscount += discount
+            JSONObject purchaseProductDetail = new JSONObject()
+            purchaseProductDetail.put("finId", finId)
+            purchaseProductDetail.put("billId", 0)
+            purchaseProductDetail.put("billType", 0)
+            purchaseProductDetail.put("serBillId", 0)
+            purchaseProductDetail.put("seriesId", seriesId)
+            purchaseProductDetail.put("productId", productId)
+            purchaseProductDetail.put("batchNumber", batchNumber)
+            purchaseProductDetail.put("expiryDate", expDate)
+            purchaseProductDetail.put("sqty", saleQty)
+            purchaseProductDetail.put("freeQty", freeQty)
+            purchaseProductDetail.put("repQty", 0)
+            purchaseProductDetail.put("pRate", purchaseRate)
+            purchaseProductDetail.put("sRate", saleRate)
+            purchaseProductDetail.put("mrp", mrp)
+            purchaseProductDetail.put("discount", discount)
+            purchaseProductDetail.put("gstAmount", gst)
+            purchaseProductDetail.put("sgstAmount", sgst)
+            purchaseProductDetail.put("cgstAmount", cgst)
+            purchaseProductDetail.put("igstAmount", igst)
+            purchaseProductDetail.put("gstId", 1) //TODO: to be changed
+            purchaseProductDetail.put("amount", value)
+            purchaseProductDetail.put("reason", "") //TODO: to be changed
+            purchaseProductDetail.put("fridgeId", 0) //TODO: to be changed
+            purchaseProductDetail.put("kitName", 0) //TODO: to be changed
+            purchaseProductDetail.put("saleFinId", "") //TODO: to be changed
+            purchaseProductDetail.put("redundantBatch", 0) //TODO: to be changed
+            purchaseProductDetail.put("status", 0)
+            purchaseProductDetail.put("syncStatus", 0)
+            purchaseProductDetail.put("financialYear", financialYear)
+            purchaseProductDetail.put("entityId", entityId)
+            purchaseProductDetail.put("entityTypeId", session.getAttribute("entityTypeId").toString())
+            //GST percentage Calculation
+            double priceBeforeTaxes = UtilsService.round((Double.parseDouble(saleQty) * Double.parseDouble(saleRate)), 2)
+            if (discount > 0) {
+                priceBeforeTaxes = priceBeforeTaxes - (priceBeforeTaxes * (discount / 100))
+            }
+            double gstPercentage = 0.0
+            double sgstPercentage = 0.0
+            double cgstPercentage = 0.0
+            double igstPercentage = 0.0
+
+            if (gst > 0)
+                gstPercentage = (gst / priceBeforeTaxes) * 100
+            if (sgst > 0)
+                sgstPercentage = (sgst / priceBeforeTaxes) * 100
+            if (cgst > 0)
+                cgstPercentage = (cgst / priceBeforeTaxes) * 100
+            if (igst > 0)
+                igstPercentage = (igst / priceBeforeTaxes) * 100
+            purchaseProductDetail.put("gstPercentage", UtilsService.round(gstPercentage, 2))
+            purchaseProductDetail.put("sgstPercentage", UtilsService.round(sgstPercentage, 2))
+            purchaseProductDetail.put("cgstPercentage", UtilsService.round(cgstPercentage, 2))
+            purchaseProductDetail.put("igstPercentage", UtilsService.round(igstPercentage, 2))
+            purchaseProductDetail.put("uuid", params.uuid)
+            purchaseProductDetails.add(purchaseProductDetail)
+
+            //save to sale transaction log
+            //save to sale transportation details
+        }
+        String entryDate = sdf.format(new Date())
+        String orderDate = sdf.format(new Date())
+        //save to sale bill details
+        purchaseBillDetails.put("serBillId", serBillId)
+        purchaseBillDetails.put("supplierId", supplierId)
+        purchaseBillDetails.put("customerNumber", 0) //TODO: to be changed
+        purchaseBillDetails.put("finId", finId)
+        purchaseBillDetails.put("seriesId", seriesId)
+        purchaseBillDetails.put("priorityId", priorityId)
+        purchaseBillDetails.put("financialYear", financialYear)
+        purchaseBillDetails.put("dueDate", duedate)
+        purchaseBillDetails.put("paymentStatus", 0)
+        purchaseBillDetails.put("dispatchStatus", 0)
+        purchaseBillDetails.put("userId", session.getAttribute("userId"))
+        purchaseBillDetails.put("entryDate", entryDate)
+        purchaseBillDetails.put("orderDate", orderDate)
+        purchaseBillDetails.put("dispatchDate", sdf.format(new Date())) //TODO: to be changed
+        purchaseBillDetails.put("salesmanId", "0") //TODO: to be changed
+        purchaseBillDetails.put("salesmanComm", "0") //TODO: to be changed
+        purchaseBillDetails.put("refOrderId", "") //TODO: to be changed this is for sale order conversion
+        purchaseBillDetails.put("deliveryManId", "0") //TODO: to be changed
+        purchaseBillDetails.put("accountModeId", "0") //TODO: to be changed
+        purchaseBillDetails.put("totalSqty", totalSqty)
+        purchaseBillDetails.put("totalFqty", totalFqty)
+        purchaseBillDetails.put("totalGst", totalGst)
+        purchaseBillDetails.put("totalSgst", totalSgst)
+        purchaseBillDetails.put("totalCgst", totalCgst)
+        purchaseBillDetails.put("totalIgst", totalIgst)
+        purchaseBillDetails.put("totalQuantity", totalSqty + totalFqty)
+        purchaseBillDetails.put("totalItems", totalSqty + totalFqty)
+        purchaseBillDetails.put("totalDiscount", totalDiscount)
+        purchaseBillDetails.put("grossAmount", totalAmount + totalDiscount) //TODO: to be checked once
+        purchaseBillDetails.put("invoiceTotal", totalAmount) //TODO: adjusted amount
+        purchaseBillDetails.put("totalAmount", totalAmount)
+        purchaseBillDetails.put("godownId", 0)
+        purchaseBillDetails.put("purcId", 0)
+        purchaseBillDetails.put("supplierBillId", supplierBillId)
+        purchaseBillDetails.put("supplierBillDate", supplierBillDate)
+        purchaseBillDetails.put("billingDate", entryDate)
+        purchaseBillDetails.put("balAmount", totalAmount)
+        purchaseBillDetails.put("totalAmount", totalAmount)
+        purchaseBillDetails.put("submitStatus", 0)//TODO: to be changed
+        purchaseBillDetails.put("addAmount", 0)//TODO: to be changed
+        purchaseBillDetails.put("lessAmount", 0)//TODO: to be changed
+        purchaseBillDetails.put("adjustedAmount", 0)//TODO: to be changed
+        purchaseBillDetails.put("entityId", entityId)
+        purchaseBillDetails.put("entityTypeId", session.getAttribute("entityTypeId"))
+        purchaseBillDetails.put("createdUser", session.getAttribute("userId"))
+        purchaseBillDetails.put("modifiedUser", session.getAttribute("userId"))
+        purchaseBillDetails.put("message", message) //TODO: to be changed
+        purchaseBillDetails.put("gstStatus", "0") //TODO: to be changed
+        purchaseBillDetails.put("expectedDeliveryDate", entryDate) //TODO: to be changed
+        purchaseBillDetails.put("billStatus", billStatus)
+        purchaseBillDetails.put("lockStatus", 0) //TODO: to be changed
+        purchaseBillDetails.put("syncStatus", "0") //TODO: to be changed
+        purchaseBillDetails.put("productDiscount", 0) //TODO: to be changed
+        purchaseBillDetails.put("receivedDate", entryDate) //TODO: to be changed
+        purchaseBillDetails.put("receivedBy", entityId) //TODO: to be changed
+        purchaseBillDetails.put("creditId", 0) //TODO: to be changed
+        purchaseBillDetails.put("debitId", 0) //TODO: to be changed
+        purchaseBillDetails.put("crDbAmount", 0) //TODO: to be changed
+        purchaseBillDetails.put("payableAmount", 0) //TODO: to be changed
+        purchaseBillDetails.put("gross", 0) //TODO: to be changed
+        purchaseBillDetails.put("netAmount", 0) //TODO: to be changed
+        purchaseBillDetails.put("cashDiscount", "0") //TODO: to be changed
+        purchaseBillDetails.put("taxable", "1") //TODO: to be changed
+        purchaseBillDetails.put("cashDiscount", 0) //TODO: to be changed
+        purchaseBillDetails.put("exempted", 0) //TODO: to be changed
+        purchaseBillDetails.put("seriesCode", seriesCode)
+        purchaseBillDetails.put("uuid", params.uuid)
+        Response resp = new PurchaseService().savePurchaseOrderDetails(purchaseBillDetails)
+        if (resp.status == 200) {
+            def purchaseBillDetail = new JSONObject(resp.readEntity(String.class))
+            //save to purchase product details
+            for (JSONObject purchaseProductDetail : purchaseProductDetails) {
+                purchaseProductDetail.put("billId", purchaseBillDetail.get("id"))
+                purchaseProductDetail.put("taxId", purchaseBillDetail.get("taxable"))
+                purchaseProductDetail.put("billType", 0) //0 Sale, 1 Purchase
+                purchaseProductDetail.put("serBillId", purchaseBillDetail.get("serBillId"))
+                purchaseProductDetail.put("uuid", UUID.randomUUID())
+                def resp1 = new PurchaseService().savePurchaseProductDetails(purchaseProductDetail)
+                if (resp1.status == 200) {
+                    println("Product Detail Saved")
+                } else {
+                    println("Product Detail Failed")
+                }
+            }
+            //update stockbook
+            for (JSONObject purchase : purchaseData) {
+                UUID uuid
+                //check if selected product and batch exists for the entity, if so update data, else add new
+                String productId = purchase.get("1")
+                String batchNumber = purchase.get("2")
+                JSONObject stockBook = new InventoryService().getStocksOfProductAndBatch(productId, batchNumber, session.getAttribute("entityId").toString())
+                if (stockBook) {
+                    String saleQty = purchase.get("4")
+                    String freeQty = purchase.get("5")
+                    long sQty = Long.parseLong(stockBook.get("remainingQty").toString()) + Long.parseLong(saleQty)
+                    long fQty = Long.parseLong(stockBook.get("remainingFreeQty").toString()) + Long.parseLong(freeQty)
+                    String expDate = stockBook.get("expDate").toString().split("T")[0]
+                    String purcDate = stockBook.get("purcDate").toString().split("T")[0]
+                    String manufacturingDate = stockBook.get("manufacturingDate").toString().split("T")[0]
+                    SimpleDateFormat sdf1 = new SimpleDateFormat("yyyy-MM-dd")
+                    expDate = sdf1.parse(expDate).format("dd-MM-yyyy")
+                    purcDate = sdf1.parse(purcDate).format("dd-MM-yyyy")
+                    manufacturingDate = sdf1.parse(manufacturingDate).format("dd-MM-yyyy")
+                    stockBook.put("packingDesc", purchase.get("10"))
+                    stockBook.put("expDate", expDate)
+                    stockBook.put("purcDate", purcDate)
+                    stockBook.put("manufacturingDate", manufacturingDate)
+                    stockBook.put("remainingQty", sQty)
+                    stockBook.put("remainingFreeQty", fQty)
+                    stockBook.put("remainingReplQty", 0)
+                    stockBook.put("modifiedUser", session.getAttribute("userId"))
+                    stockBook.put("uuid", UUID.randomUUID())
+                    new InventoryService().updateStockBook(stockBook)
+                } else {
+                    JSONObject jsonObject = new ProductService().getProductById(productId)
+                    String value = purchase.get("12")
+                    String purchaseRate = purchase.get("6")
+                    String saleRate = purchase.get("7")
+                    String mrp = purchase.get("8")
+                    String discount = purchase.get("9")
+                    String packDesc = purchase.get("10")
+                    String expDate = purchase.get("3")
+                    String saleQty = purchase.get("4")
+                    String freeQty = purchase.get("5")
+                    String manfDate = purchase.get("17")
+                    String taxId = purchase.get("18")
+                    String purchaseDate = new SimpleDateFormat("dd-MM-yyyy").format(new Date())
+                    expDate = new SimpleDateFormat("yyyy-MM-dd").parse(expDate).format("dd-MM-yyyy")
+                    manfDate = new SimpleDateFormat("yyyy-MM-dd").parse(manfDate).format("dd-MM-yyyy")
+                    stockBook = new JSONObject()
+                    stockBook.put("productId", productId)
+                    stockBook.put("batchNumber", batchNumber)
+                    stockBook.put("expDate", expDate)
+                    stockBook.put("purcDate", purchaseDate)
+                    stockBook.put("supplierId", supplierId)
+                    stockBook.put("entityTypeId", session.getAttribute("entityTypeId"))
+                    stockBook.put("entityId", session.getAttribute("entityId"))
+                    stockBook.put("createdUser", session.getAttribute("userId"))
+                    stockBook.put("modifiedUser", session.getAttribute("userId"))
+                    stockBook.put("status", "1")
+                    stockBook.put("syncStatus", "1")
+                    stockBook.put("mergedWith", "1")
+                    stockBook.put("purcSeriesId", seriesId)
+                    stockBook.put("saleRate", saleRate)
+                    stockBook.put("purchaseRate", purchaseRate)
+                    stockBook.put("mrp", mrp)
+                    stockBook.put("purcTradeDiscount", discount)
+                    stockBook.put("packingDesc", packDesc)
+                    stockBook.put("purcProductValue", value)
+                    stockBook.put("remainingQty", saleQty)
+                    stockBook.put("remainingFreeQty", freeQty)
+                    stockBook.put("remainingReplQty", 0)
+                    if(taxId!="" || taxId!=0)
+                    {
+                        stockBook.put("taxId", taxId) //TODO: to be set from front end
+                    }
+                    else
+                    {
+                        stockBook.put("taxId", 0)
+                    }
+                    stockBook.put("manufacturingDate", manfDate)
+                    stockBook.put("openingStockQty", saleQty) //opening stock is same as sale while adding
+                    stockBook.put("uuid", UUID.randomUUID())
+                    new InventoryService().stockBookSave(stockBook)
+                }
+            }
+            JSONObject responseJson = new JSONObject()
+            responseJson.put("series", series)
+            responseJson.put("purchaseBillDetail", purchaseBillDetail)
+            respond responseJson, formats: ['json']
+        } else {
+            response.status == 400
+        }
+    }
+}

@@ -720,7 +720,17 @@ public class Links
 
 
 
+    //Purchase Order Details
+    public static String PURCHASE_ORDER_SAVE = "api/v1.0/purchase/purchaseorder";
+    public static String PURCHASE_ORDER_SHOW = "api/v1.0/purchase/purchaseorder";
+    public static String PURCHASE_ORDER_DATATABLE = "api/v1.0/purchase/purchaseorder/datatable";
+    public static String PURCHASE_ORDER_RECENT = "api/v1.0/purchase/purchaseorder/getrecent";
+    public static String PURCHASE_ORDER_CANCEL = "api/v1.0/purchase/purchaseorder/cancel";
 
 
+//    Purchase Order Product Details
+    public static String PURCHASE_ORDER_PRODUCT_SHOW = "api/v1.0/purchase/orderproductdetail";
+    public static String PURCHASE_ORDER_PRODUCT_SAVE = "api/v1.0/purchase/orderproductdetail";
+    public static String PURCHASE_ORDER_PRODUCT_DELETE = "api/v1.0/purchase/orderproductdetail/{id}";
 
 }

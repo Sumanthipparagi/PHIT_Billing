@@ -89,27 +89,27 @@ class PurchaseOrderService {
     PurchaseOrder save(JSONObject jsonObject) {
         PurchaseOrder purchaseOrder = new PurchaseOrder()
         purchaseOrder.finId = Long.parseLong(jsonObject.get("finId").toString())
-        purchaseOrder.serBillId = Long.parseLong(jsonObject.get("serBillId").toString())
-        purchaseOrder.seriesId = Long.parseLong(jsonObject.get("seriesId").toString())
         purchaseOrder.supplierId = Long.parseLong(jsonObject.get("supplierId").toString())
-        purchaseOrder.maxLimit = Double.parseDouble(jsonObject.get("maxLimit").toString())
+        purchaseOrder.seriesId = Long.parseLong(jsonObject.get("seriesId").toString())
+        purchaseOrder.serBillId = Long.parseLong(jsonObject.get("serBillId").toString())
+        purchaseOrder.purcId = jsonObject.get("purcId").toString()
+        purchaseOrder.supplierBillId = jsonObject.get("supplierBillId").toString()
+        purchaseOrder.supplierBillDate = sdf.parse(jsonObject.get("supplierBillDate").toString())
+        purchaseOrder.billingDate = sdf.parse(jsonObject.get("billingDate").toString())
         purchaseOrder.entryDate = sdf.parse(jsonObject.get("entryDate").toString())
-        purchaseOrder.remarks = jsonObject.get("remarks").toString()
-        purchaseOrder.totalSqty = Long.parseLong(jsonObject.get("totalSqty").toString())
-        purchaseOrder.totalFqty = Long.parseLong(jsonObject.get("totalFqty").toString())
-        purchaseOrder.grossAmount = Double.parseDouble(jsonObject.get("grossAmount").toString())
-        purchaseOrder.taxableAmount = Double.parseDouble(jsonObject.get("taxableAmount").toString())
-        purchaseOrder.totalGst = Double.parseDouble(jsonObject.get("totalGst").toString())
-        purchaseOrder.discount = Double.parseDouble(jsonObject.get("discount").toString())
-        purchaseOrder.estimatedTotalValue = Double.parseDouble(jsonObject.get("estimatedTotalValue").toString())
-        purchaseOrder.transportTypeId = Long.parseLong(jsonObject.get("transportTypeId").toString())
-        purchaseOrder.orderStatus = jsonObject.get("orderStatus").toString()
-        purchaseOrder.supplierSaleOrderId = jsonObject.get("supplierSaleOrderId").toString()
-        purchaseOrder.financialYear = jsonObject.get("financialYear").toString()
-        purchaseOrder.entityTypeId = Long.parseLong(jsonObject.get("entityTypeId").toString())
-        purchaseOrder.entityId = Long.parseLong(jsonObject.get("entityId").toString())
-        purchaseOrder.createdUser = Long.parseLong(jsonObject.get("createdUser").toString())
-        purchaseOrder.modifiedUser = Long.parseLong(jsonObject.get("modifiedUser").toString())
+        purchaseOrder.dispatchStatus = jsonObject.get("dispatchStatus").toString()
+        purchaseOrder.accountModeId = Long.parseLong(jsonObject.get("accountModeId").toString())
+        purchaseOrder.cashDiscount = Double.parseDouble(jsonObject.get("cashDiscount").toString())
+        purchaseOrder.productDiscount = Double.parseDouble(jsonObject.get("productDiscount").toString())
+        purchaseOrder.receivedDate = sdf.parse(jsonObject.get("receivedDate").toString())
+        purchaseOrder.receivedBy = jsonObject.get("receivedBy").toString()
+        purchaseOrder.dueDate = sdf.parse(jsonObject.get("dueDate").toString())
+        purchaseOrder.expectedDeliveryDate = sdf.parse(jsonObject.get("expectedDeliveryDate").toString())
+        purchaseOrder.adjustedAmount = Double.parseDouble(jsonObject.get("adjustedAmount").toString())
+        purchaseOrder.creditId = jsonObject.get("creditId").toString()
+        purchaseOrder.debitId = jsonObject.get("debitId").toString()
+        purchaseOrder.crDbAmount = Double.parseDouble(jsonObject.get("crDbAmount").toString())
+        purchaseOrder.payableAmount = Double.parseDouble(jsonObject.get("payableAmount").toString())
         purchaseOrder.save(flush: true)
         if (!purchaseOrder.hasErrors())
             return purchaseOrder
@@ -124,27 +124,27 @@ class PurchaseOrderService {
         if (purchaseOrder) {
             purchaseOrder.isUpdatable = true
             purchaseOrder.finId = Long.parseLong(jsonObject.get("finId").toString())
-            purchaseOrder.serBillId = Long.parseLong(jsonObject.get("serBillId").toString())
-            purchaseOrder.seriesId = Long.parseLong(jsonObject.get("seriesId").toString())
             purchaseOrder.supplierId = Long.parseLong(jsonObject.get("supplierId").toString())
-            purchaseOrder.maxLimit = Double.parseDouble(jsonObject.get("maxLimit").toString())
+            purchaseOrder.seriesId = Long.parseLong(jsonObject.get("seriesId").toString())
+            purchaseOrder.serBillId = Long.parseLong(jsonObject.get("serBillId").toString())
+            purchaseOrder.purcId = jsonObject.get("purcId").toString()
+            purchaseOrder.supplierBillId = jsonObject.get("supplierBillId").toString()
+            purchaseOrder.supplierBillDate = sdf.parse(jsonObject.get("supplierBillDate").toString())
+            purchaseOrder.billingDate = sdf.parse(jsonObject.get("billingDate").toString())
             purchaseOrder.entryDate = sdf.parse(jsonObject.get("entryDate").toString())
-            purchaseOrder.remarks = jsonObject.get("remarks").toString()
-            purchaseOrder.totalSqty = Long.parseLong(jsonObject.get("totalSqty").toString())
-            purchaseOrder.totalFqty = Long.parseLong(jsonObject.get("totalFqty").toString())
-            purchaseOrder.grossAmount = Double.parseDouble(jsonObject.get("grossAmount").toString())
-            purchaseOrder.taxableAmount = Double.parseDouble(jsonObject.get("taxableAmount").toString())
-            purchaseOrder.totalGst = Double.parseDouble(jsonObject.get("totalGst").toString())
-            purchaseOrder.discount = Double.parseDouble(jsonObject.get("discount").toString())
-            purchaseOrder.estimatedTotalValue = Double.parseDouble(jsonObject.get("estimatedTotalValue").toString())
-            purchaseOrder.transportTypeId = Long.parseLong(jsonObject.get("transportTypeId").toString())
-            purchaseOrder.orderStatus = jsonObject.get("orderStatus").toString()
-            purchaseOrder.supplierSaleOrderId = jsonObject.get("supplierSaleOrderId").toString()
-            purchaseOrder.financialYear = jsonObject.get("financialYear").toString()
-            purchaseOrder.entityTypeId = Long.parseLong(jsonObject.get("entityTypeId").toString())
-            purchaseOrder.entityId = Long.parseLong(jsonObject.get("entityId").toString())
-            purchaseOrder.createdUser = Long.parseLong(jsonObject.get("createdUser").toString())
-            purchaseOrder.modifiedUser = Long.parseLong(jsonObject.get("modifiedUser").toString())
+            purchaseOrder.dispatchStatus = jsonObject.get("dispatchStatus").toString()
+            purchaseOrder.accountModeId = Long.parseLong(jsonObject.get("accountModeId").toString())
+            purchaseOrder.cashDiscount = Double.parseDouble(jsonObject.get("cashDiscount").toString())
+            purchaseOrder.productDiscount = Double.parseDouble(jsonObject.get("productDiscount").toString())
+            purchaseOrder.receivedDate = sdf.parse(jsonObject.get("receivedDate").toString())
+            purchaseOrder.receivedBy = jsonObject.get("receivedBy").toString()
+            purchaseOrder.dueDate = sdf.parse(jsonObject.get("dueDate").toString())
+            purchaseOrder.expectedDeliveryDate = sdf.parse(jsonObject.get("expectedDeliveryDate").toString())
+            purchaseOrder.adjustedAmount = Double.parseDouble(jsonObject.get("adjustedAmount").toString())
+            purchaseOrder.creditId = jsonObject.get("creditId").toString()
+            purchaseOrder.debitId = jsonObject.get("debitId").toString()
+            purchaseOrder.crDbAmount = Double.parseDouble(jsonObject.get("crDbAmount").toString())
+            purchaseOrder.payableAmount = Double.parseDouble(jsonObject.get("payableAmount").toString())
             purchaseOrder.save(flush: true)
             if (!purchaseOrder.hasErrors())
                 return purchaseOrder
@@ -167,4 +167,53 @@ class PurchaseOrderService {
             throw new BadRequestException()
         }
     }
+
+    def cancelPurchaseOrder(JSONObject jsonObject)
+    {
+        String id = jsonObject.get("id")
+        String entityId = jsonObject.get("entityId")
+        String financialYear = jsonObject.get("financialYear")
+        JSONObject saleInvoice = new JSONObject()
+        PurchaseBillDetail purchaseBillDetails = PurchaseBillDetail.findById(Long.parseLong(id))
+        if (purchaseBillDetails)
+        {
+            if (purchaseBillDetails.financialYear.equalsIgnoreCase(financialYear) && purchaseBillDetails.entityId == Long.parseLong(entityId))
+            {
+                ArrayList<PurchaseProductDetail> purchaseProductDetails = PurchaseProductDetail.findAllByBillId(purchaseBillDetails.id)
+                for (PurchaseProductDetail purchaseProductDetail : purchaseProductDetails)
+                {
+                    purchaseProductDetail.status = 0
+                    purchaseProductDetail.isUpdatable = true
+                    purchaseProductDetail.save(flush: true)
+                }
+                purchaseBillDetails.billStatus = "CANCELLED"
+                purchaseBillDetails.cancelledDate = new Date()
+                purchaseBillDetails.isUpdatable = true
+                purchaseBillDetails.save(flush: true)
+                saleInvoice.put("products", purchaseProductDetails)
+                saleInvoice.put("invoice", purchaseBillDetails)
+                return saleInvoice
+            }
+            else
+            {
+                throw new ResourceNotFoundException()
+            }
+        }
+        else
+        {
+            throw new ResourceNotFoundException()
+        }
+    }
+
+    JSONObject getRecentByFinancialYearAndEntity(String financialYear, String entityId, billStatus)
+    {
+        JSONObject jsonObject = new JSONObject()
+        ArrayList<PurchaseBillDetail> purchaseBillDetails =
+                PurchaseBillDetail.findAllByFinancialYearAndEntityIdAndBillStatusNotEqual(financialYear, Long.parseLong(entityId), 'DRAFT', [sort: 'id', order: 'desc'])
+        println(purchaseBillDetails.serBillId)
+        jsonObject.put("serBillId", purchaseBillDetails.serBillId.max())
+        jsonObject.put("finId", purchaseBillDetails.finId.max())
+        return jsonObject
+    }
+
 }

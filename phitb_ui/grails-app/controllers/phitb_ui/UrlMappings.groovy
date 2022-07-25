@@ -592,6 +592,11 @@ class UrlMappings {
         "/purchase-bill/datatable"(controller: "purchaseEntry", action: 'dataTable')
 
 
+//        purchase-order
+        "/purchase-order"(controller: "purchaseOrder") {
+            action = [GET: "index", POST: "savePurchaseOrder"]
+        }
+
         //Inventory
         "/stockbook"(controller: "stockBook"){
             action = [GET: "index", POST: "save"]
