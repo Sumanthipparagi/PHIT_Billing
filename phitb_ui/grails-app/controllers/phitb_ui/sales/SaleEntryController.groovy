@@ -242,6 +242,7 @@ class SaleEntryController {
         saleBillDetails.put("invoiceTotal", totalAmount) //TODO: adjusted amount
         saleBillDetails.put("totalAmount", totalAmount)
         saleBillDetails.put("balance", totalAmount)
+        saleBillDetails.put("invtype", params.invtype)
         saleBillDetails.put("entityId", entityId)
         saleBillDetails.put("entityTypeId", session.getAttribute("entityTypeId"))
         saleBillDetails.put("createdUser", session.getAttribute("userId"))
@@ -940,6 +941,7 @@ class SaleEntryController {
         saleBillDetails.put("deliveryManId", "0") //TODO: to be changed
         saleBillDetails.put("accountModeId", "0") //TODO: to be changed
         saleBillDetails.put("totalSqty", totalSqty)
+        saleBillDetails.put("invtype", params.invtype)
         saleBillDetails.put("totalFqty", totalFqty)
         saleBillDetails.put("totalGst", totalGst)
         saleBillDetails.put("totalSgst", totalSgst)

@@ -48,6 +48,7 @@ class SaleBillDetails implements Serializable, LogicalDelete<SaleBillDetails>
     String referralDoctor
     String message
     String financialYear
+    String invtype
     long entityTypeId
     long entityId
     long createdUser
@@ -68,6 +69,7 @@ class SaleBillDetails implements Serializable, LogicalDelete<SaleBillDetails>
         cancelledDate nullable: true
         orderDate nullable: true
         uuid unique: true
+        invtype nullable: true
         totalSqty min: 0D
         totalFqty min: 0D
         totalQty min: 0D
