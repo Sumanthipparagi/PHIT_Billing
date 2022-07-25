@@ -42,7 +42,7 @@
 
 </head>
 
-<body class="theme-black">
+<body class="theme-black" >
 <!-- Page Loader -->
 <div class="page-loader-wrapper">
     <div class="loader">
@@ -228,10 +228,10 @@
                         var cancelInvoice = "";
                         var clonetoSaleEntry = "";
                         var editInvoice = "";
-                        if (json.data[i].billStatus !== "CANCELLED") {
+                        if (json.data[i].billStatus !== "CANCELLED" && json.data[i].billStatus !== "CONVERTED") {
                             cancelInvoice = '<a class="btn btn-sm btn-info" title="Cancel" onclick="cancelBill(' + json.data[i].id +')" href="#"><i class="fa fa-times"></i></a>';
                             clonetoSaleEntry =
-                                '<a class="btn btn-sm btn-success" title="Clone" onclick="cloneToSaleEntry(' +
+                                '<a class="btn btn-sm btn-success" title="clone" onclick="cloneToSaleEntry(' +
                                 json.data[i].id +', ' + json.data[i].seriesId +')" href="#"><i class="fa fa-clone" aria-hidden="true"></i>\n</a>';
                         }
                         else if(json.data[i].returnStatus!== "DRAFT")

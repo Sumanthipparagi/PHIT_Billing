@@ -273,8 +273,8 @@ class SaleOrderEntryController {
     def convertToSaleEntry() {
         try {
             JSONObject jsonObject = new JSONObject(request.reader.text)
-            def saleOrderdetails = salesOrderEntryService.convertToSaleEntry(jsonObject)
-            respond saleOrderdetails
+            def saleBilldetails = salesOrderEntryService.convertToSaleEntry(jsonObject)
+            respond saleBilldetails
         }
         catch (ResourceNotFoundException ex) {
             System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)

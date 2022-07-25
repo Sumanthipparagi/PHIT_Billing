@@ -111,6 +111,8 @@ class SalesOrderEntryService
         salesOrderEntry.transportTypeId = Long.parseLong(jsonObject.get("transportTypeId").toString())
         salesOrderEntry.salesmanId = Long.parseLong(jsonObject.get("salesmanId").toString())
         salesOrderEntry.orderValidity = sdf.parse(jsonObject.get("orderValidity").toString())
+        salesOrderEntry.totalSqty = Double.parseDouble(jsonObject.get("totalSqty").toString())
+        salesOrderEntry.totalFqty = Double.parseDouble(jsonObject.get("totalFqty").toString())
         salesOrderEntry.orderId = jsonObject.get("orderId").toString()
         salesOrderEntry.totalEstimate = Long.parseLong(jsonObject.get("totalEstimate").toString())
         salesOrderEntry.totalGst = Double.parseDouble(jsonObject.get("totalGst").toString())
@@ -183,6 +185,8 @@ class SalesOrderEntryService
             salesOrderEntry.customerId = Long.parseLong(jsonObject.get("customerId").toString())
             salesOrderEntry.transportTypeId = Long.parseLong(jsonObject.get("transportTypeId").toString())
             salesOrderEntry.salesmanId = Long.parseLong(jsonObject.get("salesmanId").toString())
+            salesOrderEntry.totalSqty = Double.parseDouble(jsonObject.get("totalSqty").toString())
+            salesOrderEntry.totalFqty = Double.parseDouble(jsonObject.get("totalFqty").toString())
             salesOrderEntry.orderValidity = sdf.parse(jsonObject.get("orderValidity").toString())
             salesOrderEntry.orderId = jsonObject.get("orderId").toString()
             salesOrderEntry.totalEstimate = Long.parseLong(jsonObject.get("totalEstimate").toString())
@@ -423,6 +427,9 @@ class SalesOrderEntryService
                                 if (saleProductDetails1)
                                 {
                                     println("Product Saved!")
+                                    salesOrderEntry.isUpdatable = true;
+                                    salesOrderEntry.billStatus = "CONVERTED";
+                                    salesOrderEntry.save(flush:true)
                                 }
                             }
                         }

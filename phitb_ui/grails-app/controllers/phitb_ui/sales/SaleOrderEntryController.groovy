@@ -527,7 +527,8 @@ class SaleOrderEntryController {
             def apiResponse = new SalesService().convertToSaleEntry(jsonObject)
             if(apiResponse?.status == 200)
             {
-                response.status = 200
+                JSONObject jsonObject1 = new JSONObject(apiResponse.readEntity(String.class))
+                respond jsonObject1, formats: ['json'], status: 200
             }
             else {
                 response.status = 400
