@@ -42,7 +42,7 @@
 
 </head>
 
-<body class="theme-black">
+<body class="theme-black" >
 <!-- Page Loader -->
 <div class="page-loader-wrapper">
     <div class="loader">
@@ -221,13 +221,18 @@
                 dataType: 'json',
 
                 dataSrc: function (json) {
+                    console.log(json)
                     var return_data = [];
                     for (var i = 0; i < json.data.length; i++) {
                         var approveInvoice = "";
                         var cancelInvoice = "";
+                        var clonetoSaleEntry = "";
                         var editInvoice = "";
-                        if (json.data[i].billStatus !== "CANCELLED") {
+                        if (json.data[i].billStatus !== "CANCELLED" && json.data[i].billStatus !== "CONVERTED") {
                             cancelInvoice = '<a class="btn btn-sm btn-info" title="Cancel" onclick="cancelBill(' + json.data[i].id +')" href="#"><i class="fa fa-times"></i></a>';
+                            clonetoSaleEntry =
+                                '<a class="btn btn-sm btn-success" title="clone" onclick="cloneToSaleEntry(' +
+                                json.data[i].id +', ' + json.data[i].seriesId +')" href="#"><i class="fa fa-clone" aria-hidden="true"></i>\n</a>';
                         }
                         else if(json.data[i].returnStatus!== "DRAFT")
                         {
@@ -247,9 +252,9 @@
                         }
                         var grossAmt = (json.data[i].totalAmount - json.data[i].totalGst).toFixed(2);
                         return_data.push({
-                            'action': cancelInvoice + " " + approveInvoice + " " + printbtn+" "+editInvoice,
+                            'action': cancelInvoice + " " + approveInvoice + " " + printbtn+" "+editInvoice+" "+clonetoSaleEntry,
                             /*'action': '',*/
-                            'customer': json.data[i].customer.entityName,
+                            'customer': json?.data[i]?.customer?.entityName,
                             'invNo': invoiceNumber,
                             'date': moment(json.data[i].entryDate).format('DD-MM-YYYY  h:mm a'),
                             'gstAmt': json.data[i].totalGst.toFixed(2),
@@ -328,6 +333,64 @@
 
 
     }
+
+    function cloneToSaleEntry(id, seriesId) {
+        Swal.fire({
+            title: "Make this as Sale Entry? this can't be undone.",
+            showDenyButton: true,
+            showCancelButton: false,
+            confirmButtonText: 'Yes',
+            denyButtonText: 'No',
+        }).then((result) => {
+            if (result.isConfirmed) {
+                var url = '/convert-to-sale-entry';
+                var beforeSendSwal;
+                $.ajax({
+                    type: "GET",
+                    url: url,
+                    data:{
+                        id:id,
+                        billStatus:"ACTIVE",
+                        seriesId:seriesId
+                    },
+                    dataType: 'json',
+                    beforeSend: function() {
+                        beforeSendSwal = Swal.fire({
+                            // title: "Loading",
+                            html:
+                                '<img src="${assetPath(src: "/themeassets/images/1476.gif")}" width="100" height="100"/>',
+                            showDenyButton: false,
+                            showCancelButton: false,
+                            showConfirmButton: false,
+                            allowOutsideClick: false,
+                            background:'transparent'
+                        });
+                    },
+                    success: function (data) {
+                        beforeSendSwal.close();
+                        Swal.fire(
+                            'Success!',
+                            'Sale Order converted to Sale Entry',
+                            'success'
+                        );
+                        saleInvoiceTable();
+                    },
+                    error: function () {
+                        Swal.fire(
+                            'Error!',
+                            'Unable to convert at the moment, try later.',
+                            'danger'
+                        );
+                    }
+                });
+            } else if (result.isDenied) {
+
+            }
+        });
+
+
+    }
+
 
     function invoiceStatusChanged() {
         saleInvoiceTable();

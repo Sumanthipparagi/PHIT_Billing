@@ -265,6 +265,12 @@ class UrlMappings {
                     'getSaleProductDetailsbybatchAndBill')
 
 
+
+
+//            Convert to Sale Entry
+            "/convert-to-sale-entry(.$format)?"(controller: 'saleOrderEntry', action: 'convertToSaleEntry')
+            
+
 ////            Goods transfer  note
 //            "/gtn(.$format)?"(controller: 'goodsTransferNote') {
 //                action = [GET: 'index', POST:

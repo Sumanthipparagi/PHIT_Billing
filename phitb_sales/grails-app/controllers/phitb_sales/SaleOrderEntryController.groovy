@@ -270,4 +270,24 @@ class SaleOrderEntryController {
         }
     }
 
+    def convertToSaleEntry() {
+        try {
+            JSONObject jsonObject = new JSONObject(request.reader.text)
+            def saleBilldetails = salesOrderEntryService.convertToSaleEntry(jsonObject)
+            respond saleBilldetails
+        }
+        catch (ResourceNotFoundException ex) {
+            System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
+            response.status = 404
+        }
+        catch (BadRequestException ex) {
+            System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
+            response.status = 400
+
+        }
+        catch (Exception ex) {
+            System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
+        }
+    }
+
 }

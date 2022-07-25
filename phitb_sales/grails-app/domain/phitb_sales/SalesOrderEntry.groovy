@@ -18,9 +18,16 @@ class SalesOrderEntry implements Serializable, LogicalDelete<SalesOrderEntry>
     long salesmanId
     Date orderValidity
     String orderId
+    Date dueDate
     long totalEstimate
+    double totalSqty
+    double totalFqty
     double totalGst
+    double totalCgst
+    double totalSgst
+    double totalIgst
     double totalAmount
+    double totalDiscount
     Date cancelledDate
     String billStatus
     long lockStatus
@@ -42,6 +49,7 @@ class SalesOrderEntry implements Serializable, LogicalDelete<SalesOrderEntry>
         invoiceNumber nullable: true, unique: true
         cancelledDate nullable:true
         uuid unique: true
+        dueDate nullable: true
     }
     boolean isUpdatable
     static transients = ['isUpdatable']

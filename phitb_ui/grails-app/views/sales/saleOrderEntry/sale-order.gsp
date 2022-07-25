@@ -375,9 +375,9 @@
                 {type: 'text', readOnly: true} //originalFqty
             ],
             hiddenColumns: true,
-            // hiddenColumns: {
-            //     columns: [15, 16, 17, 18, 19, 20, 21]
-            // },
+            hiddenColumns: {
+                columns: [15, 16, 17, 18, 19, 20, 21]
+            },
             minSpareRows: 0,
             minSpareColumns: 0,
             enterMoves: {row: 0, col: 1},
@@ -449,9 +449,9 @@
                             var dt = hot.getDataAtRow(row);
                             dt.push(batchId);
                             var json = JSON.stringify(dt);
-                            var url = '/tempstockbook';
-                            var type = 'POST';
-                            var beforeSendSwal;
+                            // var url = '/tempstockbook';
+                            // var type = 'POST';
+                            // var beforeSendSwal;
                             %{--$.ajax({--}%
                             %{--    type: type,--}%
                             %{--    url: url,--}%
@@ -486,6 +486,10 @@
                             %{--        alert("Unable to save the row, please delete it and add again.");--}%
                             %{--    }--}%
                             %{--});--}%
+                            console.log("Data added");
+                            for (var i = 0; i < 15; i++) {
+                                hot.setCellMeta(row, i, 'readOnly', true);
+                            }
                             mainTableRow = row + 1;
                             hot.alter('insert_row');
                             hot.selectCell(mainTableRow, 1);

@@ -121,6 +121,17 @@
                                 <input type="date" class="form-control date" name="duedate" id="duedate"/>
                             </div>
 
+
+                            <div class="col-md-4 mt-2">
+                                <label for="priority">Invoice Type:</label>
+                                <select class="form-control" id="invType" name="invType">
+                                        <option value="${Constants.REGULAR}"
+                                                <g:if test="${saleBillDetail?.priorityId == Constants.REGULAR}">selected</g:if>>REGULAR</option>
+                                    <option value="${Constants.REPLACEMENT}"
+                                            <g:if test="${saleBillDetail?.priorityId == Constants.REPLACEMENT}">selected</g:if>>REPLACEMENT</option>
+                                </select>
+                            </div>
+
                         </div>
                     </div>
                 </div>
@@ -1110,6 +1121,7 @@
         });
 
         var customer = $("#customerSelect").val();
+        var invtype = $("#invType").val();
         var series = $("#series").val();
         var seriesCode = $("#series").find(':selected').data('seriescode');
         var duedate = $("#duedate").val();
@@ -1127,6 +1139,14 @@
 
         if (!customer) {
             alert("Please select customer.");
+            waitingSwal.close();
+            $("#saveBtn").prop("disabled", false);
+            $("#saveDraftBtn").prop("disabled", false);
+            return;
+        }
+
+        if (!invtype) {
+            alert("Please select Invoice Type.");
             waitingSwal.close();
             $("#saveBtn").prop("disabled", false);
             $("#saveDraftBtn").prop("disabled", false);
@@ -1154,6 +1174,7 @@
                 priority: priority,
                 billStatus: billStatus,
                 seriesCode: seriesCode,
+                invtype: invtype,
                 uuid: self.crypto.randomUUID()
             },
             success: function (data) {

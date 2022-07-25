@@ -167,6 +167,10 @@ public class Constants
     public static String SALESMAN = "SALESMAN";
 
 
+//    Inv Type
+
+    public static String REGULAR = "REGULAR";
+    public static  String REPLACEMENT = "REPLACEMENT";
 
 
 

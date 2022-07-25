@@ -41,21 +41,21 @@ grails:
                         - Trident
         types:
             json:
-              - application/json
-              - text/json   
+                - application/json
+                - text/json
             hal:
-              - application/hal+json
-              - application/hal+xml  
+                - application/hal+json
+                - application/hal+xml
             xml:
-              - text/xml
-              - application/xml                                 
+                - text/xml
+                - application/xml
             atom: application/atom+xml
             css: text/css
             csv: text/csv
             js: text/javascript
             rss: application/rss+xml
             text: text/plain
-            all: '*/*'            
+            all: '*/*'
     urlmapping:
         cache:
             maxsize: 1000
@@ -82,12 +82,13 @@ dataSource:
     driverClassName: com.mysql.cj.jdbc.Driver
     username: phitb_user
     password: 'zsTEM2%9%3'
+
 environments:
     development:
         dataSource:
             dbCreate: update
             url: jdbc:mysql://localhost/phitb_inventory?useSSL=false&autoReconnect=true&useUnicode=true&characterEncoding=UTF-8
-#            url: jdbc:mysql://172.16.17.143:3306/phitb_inventory?useSSL=false&autoReconnect=true&useUnicode=true&characterEncoding=UTF-8
+    #            url: jdbc:mysql://localhost/phitb_inventory?useSSL=false&autoReconnect=true&useUnicode=true&characterEncoding=UTF-8
     test:
         dataSource:
             dbCreate: update
@@ -95,7 +96,7 @@ environments:
     production:
         dataSource:
             dbCreate: update
-            url:  jdbc:mysql://localhost/phitb_inventory?useSSL=false&autoReconnect=true&useUnicode=true&characterEncoding=UTF-8
+            url: jdbc:mysql://localhost/phitb_inventory?useSSL=false&autoReconnect=true&useUnicode=true&characterEncoding=UTF-8
             properties:
                 jmxEnabled: true
                 initialSize: 5

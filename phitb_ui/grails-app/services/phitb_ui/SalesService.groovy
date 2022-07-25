@@ -1750,4 +1750,25 @@ contains both sale bill and products
         }
     }
 
+
+    def convertToSaleEntry(JSONObject jsonObject)
+    {
+        Client client = ClientBuilder.newClient();
+        WebTarget target = client.target(new Links().API_GATEWAY)
+        try
+        {
+            Response apiResponse = target
+                    .path(new Links().SALE_ORDER_TO_SALE_ENTRY)
+                    .request(MediaType.APPLICATION_JSON_TYPE)
+                    .post(Entity.entity(jsonObject.toString(), MediaType.APPLICATION_JSON_TYPE))
+            println(apiResponse)
+            return apiResponse
+        }
+        catch (Exception ex)
+        {
+            System.err.println('Service :salesService , action :  saveSaleInvoice  , Ex:' + ex)
+            log.error('Service :salesService , action :  saveSaleInvoice  , Ex:' + ex)
+        }
+    }
+
 }

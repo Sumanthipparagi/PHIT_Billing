@@ -400,31 +400,22 @@ class SaleOrderEntryController {
 
     def dataTable() {
         try {
+            String userId = session.getAttribute("userId")
             JSONObject jsonObject = new JSONObject(params)
+            jsonObject.put("userId", userId)
             def apiResponse = new SalesService().showSaleOrder(jsonObject)
             if (apiResponse.status == 200) {
                 JSONObject responseObject = new JSONObject(apiResponse.readEntity(String.class))
                 if(responseObject)
                 {
                     JSONArray jsonArray = responseObject.data
-                    JSONArray jsonArray2 = new JSONArray()
-                    JSONArray jsonArray3 = new JSONArray()
-                    JSONArray entityArray = new JSONArray()
-                    JSONArray cityArray = new JSONArray()
                     for (JSONObject json : jsonArray) {
-                        json.put("customer", new EntityService().getEntityById(json.get("customerId").toString()))
-                        jsonArray2.put(json)
+                        JSONObject customer = new EntityService().getEntityById(json.get("customerId").toString())
+                        def city = new SystemService().getCityById(customer?.cityId?.toString())
+                        customer?.put("city", city)
+                        json.put("customer", customer)
                     }
-                    for(JSONObject json1 : jsonArray2)
-                    {
-                        entityArray.put(json1.get("customer"))
-                    }
-                    entityArray.each {
-                        def cityResp = new SystemService().getCityById(it.cityId.toString())
-                        it.put("cityId", cityResp)
-                    }
-                    responseObject.put("data", jsonArray2)
-                    responseObject.put("city",entityArray)
+                    responseObject.put("data", jsonArray)
                 }
                 respond responseObject, formats: ['json'], status: 200
             } else {
@@ -497,4 +488,56 @@ class SaleOrderEntryController {
         }
     }
 
+    def convertToSaleEntry()
+    {
+        try{
+            JSONObject jsonObject = new JSONObject()
+            String financialYear = session.getAttribute('financialYear')
+            String entityId = session.getAttribute('entityId')
+            String billStatus = params.billStatus
+            String seriesId = params.seriesId
+            UUID uuid
+            long finId = 0
+            long serBillId = 0
+            def series = new EntityService().getSeriesById(seriesId)
+            def recentSaleBill = new SalesService().getRecentSaleBill(financialYear, entityId, billStatus)
+            if (recentSaleBill != null && recentSaleBill.size() != 0)
+            {
+                finId = Long.parseLong(recentSaleBill.get("finId").toString()) + 1
+                serBillId = Long.parseLong(recentSaleBill.get("serBillId").toString()) + 1
+            }
+            else
+            {
+                finId = 1
+                serBillId = Long.parseLong(series.get("saleId").toString())
+            }
+            uuid = UUID.randomUUID()
+            jsonObject.put("id",params.id)
+            jsonObject.put("finId",finId)
+            jsonObject.put("serBillId",serBillId)
+            jsonObject.put("financialYear",financialYear)
+            jsonObject.put("entityId",entityId)
+            jsonObject.put("entityTypeId",session.getAttribute('entityTypeId'))
+            jsonObject.put("billStatus",billStatus)
+            jsonObject.put("seriesCode",series.get('seriesCode').toString())
+            jsonObject.put("uuid",uuid)
+            jsonObject.put("userId",session.getAttribute('userId'))
+            jsonObject.put("createdUser",session.getAttribute('userId'))
+            jsonObject.put("modifiedUser",session.getAttribute('userId'))
+            def apiResponse = new SalesService().convertToSaleEntry(jsonObject)
+            if(apiResponse?.status == 200)
+            {
+                JSONObject jsonObject1 = new JSONObject(apiResponse.readEntity(String.class))
+                respond jsonObject1, formats: ['json'], status: 200
+            }
+            else {
+                response.status = 400
+            }
+        }
+        catch (Exception ex){
+            System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
+            log.error('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
+            response.status = 400
+        }
+    }
 }
