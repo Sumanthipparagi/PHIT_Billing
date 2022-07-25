@@ -42,6 +42,10 @@
         border-width: 0 !important;
         border-radius: 0 !important;
     }
+
+    .table > tbody > tr > td {
+        vertical-align: middle;
+    }
     </style>
 
 </head>
@@ -235,7 +239,7 @@
                         }
                     ],
                     dropup: true,
-                    className: 'exportButtons'
+                    className: 'dropdown-toggle'
                 }
             ],
             language: {
@@ -256,7 +260,7 @@
                         var cancelInvoice = "";
                         var editInvoice = "";
                         if (json.data[i].billStatus !== "CANCELLED") {
-                            cancelInvoice = '<a class="dropdown-item" title="Cancel" onclick="cancelBill(' + json.data[i].id + ')" href="#"><i class="fa fa-times"></i> Cancel</a>';
+                            cancelInvoice = '<a class="dropdown-item" title="Cancel" onclick="cancelBill(' + json.data[i].id + ')" href="#" style="color: red;"><i class="fa fa-times"></i> Cancel</a>';
                         } else if (json.data[i].billStatus !== "DRAFT") {
                             approveInvoice = '';
 
@@ -270,17 +274,17 @@
                                 json.data[i].id + '"><i class="fa fa-edit"></i> Edit</a>';
                         }
                         var actionBtn = "<div class=\"dropdown\">\n" +
-                            "  <button class=\"btn btn-primary btn-simple btn-sm btn-round dropdown-toggle\" type=\"button\" id=\"dropdownMenuButton\" data-toggle=\"dropdown\" aria-haspopup=\"true\" aria-expanded=\"false\">\n" +
+                            "  <button class=\"btn btn-primary btn-simple btn-sm dropdown-toggle\" type=\"button\" id=\"dropdownMenuButton\" data-toggle=\"dropdown\" aria-haspopup=\"true\" aria-expanded=\"false\">\n" +
                             " <i class='fa fa-bars'></i>" +
                             "  </button>\n" +
                             "  <div class=\"dropdown-menu\" aria-labelledby=\"dropdownMenuButton\">\n" +
-                            cancelInvoice +
                             approveInvoice +
                             printbtn +
                             editInvoice +
+                            cancelInvoice +
                             "  </div>\n" +
                             "</div>"
-                        invoiceNumber = "<a onclick='listItemClicked(" + json.data[i].id + ")'>" + invoiceNumber + "</a>";
+                        invoiceNumber = "<a href='#' onclick='listItemClicked(" + json.data[i].id + ")'>" + invoiceNumber + "</a>";
                         var grossAmt = (json.data[i].invoiceTotal - json.data[i].totalGst).toFixed(2);
                         return_data.push({
                             'action': actionBtn,
