@@ -1,3 +1,4 @@
+<%@ page import="phitb_ui.Constants" %>
 <!doctype html>
 <html class="no-js " lang="en">
 <head>
@@ -1312,8 +1313,8 @@
         var productId = hot.getDataAtCell(mainTableRow, 1);
         var saleTableData = hot.getData();
         for (var i = 0; i < saleTableData.length; i++) {
-            if (productId == saleTableData[i][1]) {
-                if (saleTableData[i][2] !== null && saleTableData[i][2] == batchNumber)
+            if (productId === saleTableData[i][1]) {
+                if (saleTableData[i][2] !== null && saleTableData[i][2] === batchNumber)
                     return true;
             }
         }
@@ -1376,7 +1377,10 @@
             dataType: 'json',
             success: function (data) {
                 for (var i = 0; i < data.length; i++) {
-                    products.push({id: data[i].id, text: data[i].productName});
+                    if(data[i].saleType === '${Constants.SALEABLE}')
+                    {
+                        products.push({id: data[i].id, text: data[i].productName});
+                    }
                 }
                 <g:if test="${params.saleBillId}">
                 loadDraftProducts();

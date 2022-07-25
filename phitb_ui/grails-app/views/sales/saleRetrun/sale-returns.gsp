@@ -45,7 +45,9 @@
     /*    width:100%;*/
     /*}*/
 
-    .hidden{display: none}
+    .hidden {
+        display: none
+    }
 
 
     </style>
@@ -152,6 +154,7 @@
                             %{--                            </div>--}%
 
                         </div>
+
                         <div class="row mt-2">
                             <div class="col-md-4">
                                 <label for="lrno">Ref.No:</label>
@@ -223,7 +226,8 @@
                 <div class="card" style="margin-bottom: 10px;">
                     <div class="body" style="background-color: #313740;padding: 2px; color: #fff;">
                         <div class="row" style="margin: 0; font-size: 14px;">
-                            <div class="col-md-2"><strong>Total GST:&nbsp;</strong>&#x20b9;<span id="totalGST">0</span></div>
+                            <div class="col-md-2"><strong>Total GST:&nbsp;</strong>&#x20b9;<span id="totalGST">0</span>
+                            </div>
 
                             <div class="col-md-2"><strong>Total SGST:&nbsp;</strong>&#x20b9;<span
                                     id="totalSGST">0</span>
@@ -491,9 +495,8 @@
             data: saleReturnData,
             minRows: 1,
             height: '250',
-            // width: 'auto',
+            width: 'auto',
             rowHeights: 25,
-            stretchH: 'all',
             manualRowResize: true,
             manualColumnResize: true,
             persistentState: true,
@@ -716,24 +719,37 @@
                         //check if sqty is empty
                         var fqty = hot.getDataAtCell(row, 6);
                         var sqty = hot.getDataAtCell(row, 5);
+                        var taxslab = hot.getDataAtCell(row, 11);
                         // if (sqty) {
                         var batchId = hot.getCellMeta(row, 3)?.batchId; //batch
                         var dt = hot.getDataAtRow(row);
                         dt.push(batchId);
-                        console.log("Data saved");
+                        console.log("Data added");
                         // mainTableRow = row + 1;
                         // calculateTotalAmt();
                         // hot.alter('insert_row');
                         // hot.selectCell(mainTableRow, 1);
-                        if (selection === 13 || selection === 17) {
-                            if (sqty > 0 || fqty > 0) {
-                                mainTableRow = row + 1;
-                                hot.alter('insert_row');
-                                hot.selectCell(mainTableRow, 1);
-                                calculateTotalAmt();
+                        if (selection === 13 || selection === 17 ) {
+                            if ((sqty > 0 || fqty > 0) && (taxslab!==null && taxslab!=="")) {
+                                console.log("Data added");
+                                for (var j = 0; j < 16; j++) {
+                                    hot.setCellMeta(row, j, 'readOnly', true);
+                                }
+                                    mainTableRow = row + 1;
+                                    hot.alter('insert_row');
+                                    hot.selectCell(mainTableRow, 1);
+                                    calculateTotalAmt();
                             }
                         } else {
-                            alert("Invalid Quantity, please enter quantity greater than 0");
+                            if(sqty===0 || fqty===0)
+                            {
+                                alert("Invalid Quantity, please enter quantity greater than 0");
+                            }
+
+                            if(taxslab===null || taxslab==="")
+                            {
+                                alert("Please select any tax slab");
+                            }
                         }
                         // } else {
                         //
@@ -946,7 +962,6 @@
                 }
             });
         });
-
 
 
         function productsDropdownRenderer(instance, td, row, col, prop, value, cellProperties) {
@@ -1230,7 +1245,7 @@
                     if (data) {
                         batchData = [];
                         for (var i = 0; i < data.length; i++) {
-                            if(Number('${session.getAttribute('entityId')}')=== data[i].entityId) {
+                            if (Number('${session.getAttribute('entityId')}') === data[i].entityId) {
                                 var batchdt = [];
                                 batchdt.push(data[i].batchNumber);
                                 batchdt.push(data[i].expDate.split("T")[0]);
@@ -1457,6 +1472,7 @@
         /*  var userId = "
 
 
+
         ${session.getAttribute("userId")}";
         $.ajax({
             type: "GET",
@@ -1562,9 +1578,9 @@
         var lrno = $("#lrno").val();
         var lrDate = $("#lrDate").val();
         const lrDateInput = document.getElementById('lrDate');
-        if(lrDateInput.value) {
+        if (lrDateInput.value) {
             var d = new Date(lrDate);
-         lrDate = moment(d.toUTCString()).format('DD/MM/YYYY hh:mm:ss');
+            lrDate = moment(d.toUTCString()).format('DD/MM/YYYY hh:mm:ss');
         }
         if (!series) {
             alert("Please select series.");
@@ -1577,8 +1593,7 @@
             return;
         }
 
-        if(!lrDateInput.value)
-        {
+        if (!lrDateInput.value) {
             alert("Please enter Ref date.");
             waitingSwal.close();
             return;

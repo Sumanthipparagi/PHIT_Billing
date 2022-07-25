@@ -154,7 +154,6 @@
                                 </label>
                                 <select style="width:100%;" class="form-control show-tick taxId" name="taxId" id="taxId" required>
                                     <option value="">-- Please select --</option>
-
                                     <g:each var="e" in="${taxList}">
                                         <option value="${e.id}">${e.taxName}</option>
                                     </g:each>

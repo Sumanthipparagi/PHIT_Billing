@@ -413,6 +413,12 @@
                 var fQty = 0;
                 const row = hot.getSelected()[0][0];
                 const selection = hot.getSelected()[0][1];
+                if(selection === 11)
+                {
+                    if(e.key === 'Delete' || e.key === 'Backspace' || e.keyCode === 27){
+                        e.stopImmediatePropagation();
+                    }
+                }
                 if (selection === 1) {
                     if (e.keyCode === 13) {
                         batchHot.selectCell(0, 0);
@@ -429,21 +435,30 @@
                         //check if sqty is empty
                         var sqty = hot.getDataAtCell(row, 4);
                         var fqty = hot.getDataAtCell(row, 5);
-                        if (sqty && sqty > 0) {
+                        var taxslab = hot.getDataAtCell(row, 11);
+                        if (sqty && sqty > 0 && taxslab!=="") {
                             var batchId = hot.getCellMeta(row, 2)?.batchId; //batch
                             var dt = hot.getDataAtRow(row);
                             dt.push(batchId);
-                            console.log("Data saved");
-                            for(var j = 0; j < 15; j++) {
+                            console.log("Data added");
+                            for(var j = 0; j < 16; j++) {
                                 hot.setCellMeta(row, j, 'readOnly', true);
                             }
-                            mainTableRow = row + 1;
-                            calculateTotalAmt();
-                            hot.alter('insert_row');
-                            hot.selectCell(mainTableRow, 0);
+                                mainTableRow = row + 1;
+                                calculateTotalAmt();
+                                hot.alter('insert_row');
+                                hot.selectCell(mainTableRow, 0);
 
                         } else {
-                            alert("Invalid Quantity, please enter quantity greater than 0");
+                            if(sqty<=0)
+                            {
+                                alert("Invalid Quantity, please enter quantity greater than 0");
+                            }
+
+                            if(taxslab==="")
+                            {
+                                alert("Please select any tax slab");
+                            }
                         }
 
                     }
@@ -460,7 +475,7 @@
                             {
                                 hot.setDataAtCell(row, 6,  oldSaleRate);
                                 this.getActiveEditor().TEXTAREA.value = oldSaleRate;
-                                alert("Sale Rate exceeds MRP!");
+                                alert("Purchase Rate exceeds MRP!");
                             }
                             else {
                                 hot.setDataAtCell(row, 6,  Number(this.getActiveEditor().TEXTAREA.value));
@@ -727,7 +742,6 @@
                     }
                 });
             }
-
         }
 
         batchHot = new Handsontable(batchContainer, {

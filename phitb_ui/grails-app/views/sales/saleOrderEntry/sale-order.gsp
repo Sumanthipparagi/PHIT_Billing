@@ -375,9 +375,9 @@
                 {type: 'text', readOnly: true} //originalFqty
             ],
             hiddenColumns: true,
-            hiddenColumns: {
-                columns: [15, 16, 17, 18, 19, 20, 21]
-            },
+            // hiddenColumns: {
+            //     columns: [15, 16, 17, 18, 19, 20, 21]
+            // },
             minSpareRows: 0,
             minSpareColumns: 0,
             enterMoves: {row: 0, col: 1},
@@ -944,8 +944,8 @@
     var saleOrderDetail = 0;
 
     function saveGTN(billStatus) {
-        $("#saveBtn").prop("disabled", true);
-        $("#saveDraftBtn").prop("disabled", true);
+        // $("#saveBtn").prop("disabled", true);
+        // $("#saveDraftBtn").prop("disabled", true);
         var waitingSwal = Swal.fire({
             title: "Generating Sale Order, Please wait!",
             showDenyButton: false,
