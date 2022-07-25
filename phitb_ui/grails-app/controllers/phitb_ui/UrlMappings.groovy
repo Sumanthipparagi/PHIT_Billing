@@ -481,6 +481,7 @@ class UrlMappings {
         /*<-------------------------------------------Sales------------------------------------------------->*/
 
 //        My Invoices
+        "/sale-bill/$id"(controller: "salebillDetails", action: 'getSaleBillById')
         "/sale-bill-list"(controller: "salebillDetails", action: 'saleBillList')
         "/sale-bill/datatable"(controller: "salebillDetails", action: 'dataTable')
 

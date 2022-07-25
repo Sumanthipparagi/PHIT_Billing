@@ -2,6 +2,7 @@ package phitb_ui.sales
 
 
 import phitb_ui.EntityService
+import phitb_ui.ProductService
 import phitb_ui.SystemService
 import phitb_ui.entity.EntityRegisterController
 import phitb_ui.entity.SeriesController
@@ -202,4 +203,30 @@ class SalebillDetailsController {
     }
 
 
+    def getSaleBillById()
+    {
+        String id = params.id
+        JSONObject saleBill = new SalesService().getSaleBillDetailsById(id)
+        JSONArray saleProducts = new SalesService().getSaleProductDetailsByBill(saleBill.id.toString())
+        JSONArray finalSaleProducts = new JSONArray()
+        for (Object saleProduct : saleProducts) {
+            JSONObject product = new ProductService().getProductById(saleProduct.productId.toString())
+            saleProduct.put("product", product)
+            finalSaleProducts.add(saleProduct)
+        }
+        JSONObject billEntity = new EntityService().getEntityById(saleBill.entityId.toString())
+        JSONObject customer = new EntityService().getEntityById(saleBill.customerId.toString())
+        JSONObject entityCity = new SystemService().getCityById(billEntity.cityId.toString())
+        JSONObject customerCity = new SystemService().getCityById(customer.cityId.toString())
+
+        JSONObject result = new JSONObject()
+        result.put("invoice", saleBill)
+        result.put("entity", billEntity)
+        result.put("customer", customer)
+        result.put("customerCity", customerCity)
+        result.put("entityCity", entityCity)
+        result.put("saleProducts", finalSaleProducts)
+
+        respond result, formats: ['json']
+    }
 }

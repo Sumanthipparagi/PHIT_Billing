@@ -38,6 +38,10 @@
         }
     */
 
+    .buttons-collection{
+        border-width: 0 !important;
+        border-radius: 0 !important;
+    }
     </style>
 
 </head>
@@ -61,36 +65,30 @@
                 <div class="col-lg-5 col-md-5 col-sm-12">
                     <h2>Sale Invoices</h2>
                     <ul class="breadcrumb padding-0">
-                        <li class="breadcrumb-item"><a href="index.html"><i class="zmdi zmdi-home"></i></a></li>
+                        <li class="breadcrumb-item"><a href="#"><i class="zmdi zmdi-home"></i></a></li>
                         <li class="breadcrumb-item active">My Invoices</li>
                     </ul>
                 </div>
 
-               %{-- <div class="col-lg-7 col-md-7 col-sm-12">
-                    <div class="input-group m-b-0">
-                        <input type="text" class="form-control" placeholder="Search...">
-                        <span class="input-group-addon">
-                            <i class="zmdi zmdi-search"></i>
-                        </span>
-                    </div>
-                </div>--}%
+                %{-- <div class="col-lg-7 col-md-7 col-sm-12">
+                     <div class="input-group m-b-0">
+                         <input type="text" class="form-control" placeholder="Search...">
+                         <span class="input-group-addon">
+                             <i class="zmdi zmdi-search"></i>
+                         </span>
+                     </div>
+                 </div>--}%
             </div>
         </div>
         <!-- Basic Examples -->
         <div class="row clearfix">
-            <div class="col-lg-12">
+            <div class="col-md-12">
                 <div class="card">
-                    <div class="header">
-                        <div class="row">
-                            <div class="col-md-4">
-                            </div>
-
-                            <div class="col-md-4">
-                            </div>
-
+                    <div class="body">
+                        <div class="row justify-content-end">
                             <div class="col-md-4">
                                 <div class="form-group">
-                                    <label for="invoiceStatus">Invoice Status</label>
+                                    %{--<label for="invoiceStatus">Invoice Status</label>--}%
                                     <select onchange="invoiceStatusChanged()" id="invoiceStatus" class="form-control">
                                         <option>All</option>
                                         <option>DRAFT</option>
@@ -99,17 +97,33 @@
                                     </select>
                                 </div>
                             </div>
+
+                            <div class="col-md-4">
+                            </div>
+
+                            <div class="col-md-4 clearfix">
+                                <div class="pull-left"></div>
+                                <button class="btn btn-primary btn-sm pull-right" onclick="toggleDetails()"><i
+                                        class="fa fa-angle-double-right" id="collapseIcon"></i></button>
+                            </div>
                         </div>
                     </div>
+                </div>
+            </div>
+        </div>
 
+        <div class="row clearfix">
+            <div class="col-lg-12 col-md-12 col-sm-12" id="listContainer">
+                <div class="card">
                     <div class="body">
                         <div class="table-responsive">
-                            <table class="table table-bordered table-striped table-hover saleInvoiceTable dataTable js-exportable">
+                            <table id="saleInvoiceTable"
+                                   class="table table-bordered table-striped table-hover saleInvoiceTable dataTable js-exportable">
                                 <thead>
                                 <tr>
                                     <th>-</th>
-                                    <th>Customer</th>
                                     <th>Invoice No.</th>
+                                    <th>Customer</th>
                                     <th>Date & Time</th>
                                     <th>GST Amt</th>
                                     <th>Gross Amt</th>
@@ -125,6 +139,14 @@
                                 </tbody>
                             </table>
                         </div>
+                    </div>
+                </div>
+            </div>
+
+            <div id="detailsContainer" class="hidden">
+                <div class="card">
+                    <div class="body">
+                        <g:include view="sales/salebillDetails/sale-invoice-details.gsp"/>
                     </div>
                 </div>
             </div>
@@ -163,11 +185,12 @@
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.32/vfs_fonts.js"></script>
 <script type="text/javascript" src="https://cdn.datatables.net/buttons/1.4.1/js/buttons.html5.min.js"></script>
 <script type="text/javascript" src="https://cdn.datatables.net/buttons/1.4.1/js/buttons.print.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.2/js/all.js" integrity="sha256-2JRzNxMJiS0aHOJjG+liqsEOuBb6++9cY4dSOyiijX4=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.2/js/all.js"
+        integrity="sha256-2JRzNxMJiS0aHOJjG+liqsEOuBb6++9cY4dSOyiijX4=" crossorigin="anonymous"></script>
 
 <script>
 
-    var entityregister;
+    var saleInvoiceTable;
     var id = null;
     $(function () {
         saleInvoiceTable();
@@ -179,7 +202,7 @@
 
     function saleInvoiceTable() {
         var invoiceStatus = $("#invoiceStatus").val();
-        entityregister = $(".saleInvoiceTable").DataTable({
+        saleInvoiceTable = $(".saleInvoiceTable").DataTable({
             "order": [[0, "desc"]],
             sPaginationType: "simple_numbers",
             responsive: {
@@ -193,23 +216,26 @@
             processing: true,
             serverSide: true,
             dom: 'lBfrtip',
-            // buttons: [
-            //     {
-            //         'copy', 'csv', 'excel', 'pdf', 'print'
-            //     },
-            // ],
             buttons: [
                 {
-                    'extend': 'excel',
-                    exportOptions: { columns: ':visible:not(:first-child)' }
-                },
-                {
-                    'extend': 'pdf',
-                    exportOptions: { columns: ':visible:not(:first-child)' }
-                },
-                {
-                    'extend': 'print',
-                    exportOptions: { columns: ':visible:not(:first-child)' }
+                    extend: 'collection',
+                    text: 'Export',
+                    buttons: [
+                        {
+                            'extend': 'excel',
+                            exportOptions: {columns: ':visible:not(:first-child)'}
+                        },
+                        {
+                            'extend': 'pdf',
+                            exportOptions: {columns: ':visible:not(:first-child)'}
+                        },
+                        {
+                            'extend': 'print',
+                            exportOptions: {columns: ':visible:not(:first-child)'}
+                        }
+                    ],
+                    dropup: true,
+                    className: 'exportButtons'
                 }
             ],
             language: {
@@ -224,35 +250,42 @@
                 dataType: 'json',
 
                 dataSrc: function (json) {
-                    console.log(json);
                     var return_data = [];
                     for (var i = 0; i < json.data.length; i++) {
                         var approveInvoice = "";
                         var cancelInvoice = "";
                         var editInvoice = "";
                         if (json.data[i].billStatus !== "CANCELLED") {
-                            cancelInvoice = '<a class="btn btn-sm btn-info" title="Cancel" onclick="cancelBill(' + json.data[i].id +')" href="#"><i class="fa fa-times"></i></a>';
-                        }
-                        else if(json.data[i].billStatus!== "DRAFT")
-                        {
-                            approveInvoice =  '';
+                            cancelInvoice = '<a class="dropdown-item" title="Cancel" onclick="cancelBill(' + json.data[i].id + ')" href="#"><i class="fa fa-times"></i> Cancel</a>';
+                        } else if (json.data[i].billStatus !== "DRAFT") {
+                            approveInvoice = '';
 
                         }
-                        var printbtn = '<a target="_blank" class="btn btn-sm btn-danger" data-id="' + json.data[i].id + '" href="/sale-entry/print-invoice?id=' + json.data[i].id + '"><i class="fa fa-print"></i></a>';
+                        var printbtn = '<a target="_blank" class="dropdown-item" data-id="' + json.data[i].id + '" href="/sale-entry/print-invoice?id=' + json.data[i].id + '"><i class="fa fa-print"></i> Print</a>';
                         var invoiceNumber = json.data[i].invoiceNumber;
                         if (invoiceNumber === undefined)
-                            invoiceNumber = "";
-                        if(json.data[i].billStatus=== "DRAFT")
-                        {
-                            editInvoice = '<a class="btn btn-sm btn-warning"  href="/edit-sale-entry?saleBillId=' +
-                                json.data[i].id + '"><i class="fa fa-edit"></i></a>';
+                            invoiceNumber = "DRAFT";
+                        if (json.data[i].billStatus === "DRAFT") {
+                            editInvoice = '<a class="dropdown-item"  href="/edit-sale-entry?saleBillId=' +
+                                json.data[i].id + '"><i class="fa fa-edit"></i> Edit</a>';
                         }
+                        var actionBtn = "<div class=\"dropdown\">\n" +
+                            "  <button class=\"btn btn-primary btn-simple btn-sm btn-round dropdown-toggle\" type=\"button\" id=\"dropdownMenuButton\" data-toggle=\"dropdown\" aria-haspopup=\"true\" aria-expanded=\"false\">\n" +
+                            " <i class='fa fa-bars'></i>" +
+                            "  </button>\n" +
+                            "  <div class=\"dropdown-menu\" aria-labelledby=\"dropdownMenuButton\">\n" +
+                            cancelInvoice +
+                            approveInvoice +
+                            printbtn +
+                            editInvoice +
+                            "  </div>\n" +
+                            "</div>"
+                        invoiceNumber = "<a onclick='listItemClicked(" + json.data[i].id + ")'>" + invoiceNumber + "</a>";
                         var grossAmt = (json.data[i].invoiceTotal - json.data[i].totalGst).toFixed(2);
                         return_data.push({
-                            'action': cancelInvoice + " " + approveInvoice + " " + printbtn+" "+editInvoice,
-                            /*'action': '',*/
-                            'customer': json.data[i].customer?.entityName,
+                            'action': actionBtn,
                             'invNo': invoiceNumber,
+                            'customer': json.data[i]?.customer?.entityName,
                             'gstAmt': json.data[i].totalGst.toFixed(2),
                             'grossAmt': grossAmt,
                             'date': moment(json.data[i].entryDate).format('DD-MM-YYYY  h:mm a'),
@@ -269,8 +302,8 @@
             },
             columns: [
                 {'data': 'action'},
-                {'data': 'customer', 'width': '10%'},
                 {'data': 'invNo'},
+                {'data': 'customer', 'width': '10%'},
                 {'data': 'date'},
                 {'data': 'gstAmt'},
                 {'data': 'grossAmt'},
@@ -280,18 +313,20 @@
                 {'data': 'balance'},
                 {'data': 'finYear'}
 
-               /* {'data': 'action', 'width': '4%'},
-                {'data': 'customer', 'width': '5%'},
-                {'data': 'invNo', 'width': '10%'},
-                {'data': 'gstAmt', 'width': '10%'},
-                {'data': 'netAmt', 'width': '10%'},
-                {'data': 'grossAmt', 'width': '10%'},
-                {'data': 'city', 'width': '10%'},
-                {'data': 'bill_status', 'width': '5%'},
-                {'data': 'balance', 'width': '5%'},
-                {'data': 'finYear', 'width': '30%'}*/
+                /* {'data': 'action', 'width': '4%'},
+                 {'data': 'customer', 'width': '5%'},
+                 {'data': 'invNo', 'width': '10%'},
+                 {'data': 'gstAmt', 'width': '10%'},
+                 {'data': 'netAmt', 'width': '10%'},
+                 {'data': 'grossAmt', 'width': '10%'},
+                 {'data': 'city', 'width': '10%'},
+                 {'data': 'bill_status', 'width': '5%'},
+                 {'data': 'balance', 'width': '5%'},
+                 {'data': 'finYear', 'width': '30%'}*/
             ]
         });
+
+        saleInvoiceTable.buttons().container().appendTo('#saleInvoiceTable_wrapper .col-md-6:eq(0)');
     }
 
     function cancelBill(id) {
@@ -300,7 +335,7 @@
             showDenyButton: true,
             showCancelButton: false,
             confirmButtonText: 'Yes',
-            denyButtonText: 'No',
+            denyButtonText: 'No'
         }).then((result) => {
             if (result.isConfirmed) {
                 var url = '/sale-entry/cancel-invoice?id=' + id;
@@ -336,7 +371,99 @@
         saleInvoiceTable();
     }
 
+    function listItemClicked(id) {
+        toggleDetails();
 
+        //Get invoice Details
+        $.ajax({
+            method: "GET",
+            url: "../sale-bill/"+id,
+            success: function (data) {
+                var saleProducts = data.saleProducts;
+                var invoice = data.invoice;
+                var entity = data.entity;
+                var customer = data.customer;
+                var entityCity = data.entityCity;
+                var customerCity = data.customerCity;
+                var orderDate = "-";
+                var dueDate = "-";
+                var badgeContainer = "";
+                if(invoice.billStatus !== "DRAFT")
+                {
+                    orderDate = moment(invoice.orderDate.split("T")[0],"YYYY-MM-DD").format("DD/MM/YYYY");
+                    dueDate = moment(invoice.dueDate.split("T")[0],"YYYY-MM-DD").format("DD/MM/YYYY");
+
+                    if(invoice.billStatus === "ACTIVE")
+                    {
+                        badgeContainer += "<div class=\"badge badge-success\">ACTIVE</div>"
+                    }
+                    else if(invoice.billStatus === "CANCELLED")
+                    {
+                        badgeContainer += "<div class=\"badge badge-danger\">CANCELLED</div>"
+                    }
+                }
+                else
+                {
+                    badgeContainer += "<div class=\"badge badge-warning\">DRAFT</div>"
+                }
+
+                $("#invoiceNumber").text(invoice.invoiceNumber);
+                $("#invoiceDate").text(orderDate);
+                $("#dueDate").text(dueDate);
+                var entityDetails = "<span style='font-weight: normal'>"+entity.entityName + "</span><br><small>"+entity.addressLine1 + ", " +entity.addressLine2 + "<br>"+entityCity.districtName+"<br>"+entity.pinCode+"</small>";
+                var customerDetails = "<span style='font-weight: normal'>"+customer.entityName + "</span><br><small>"+customer.addressLine1 + ", " +customer.addressLine2 + "<br>"+customerCity.districtName+"<br>"+customer.pinCode+"</small>";
+                $("#entityDetails").html(entityDetails);
+                $("#customerDetails").html(customerDetails);
+
+                var totalAmt = 0.0;
+                var totaltax = 0.0;
+                var tableContent = $("#saleProductsTableBody");
+                tableContent.empty();
+                $.each(saleProducts, function (index, saleProduct) {
+                    totalAmt += (saleProduct.amount-saleProduct.gstAmount);
+                    totaltax += saleProduct.gstAmount;
+                    tableContent.append("<tr><td>"+(++index)+"</td><td style=\"white-space: normal !important; word-wrap: break-word;\">"+saleProduct.product.productName+"<br><small>Batch: "+saleProduct.batchNumber+"</small></td><td>"+saleProduct.sqty+"</td><td>"+saleProduct.freeQty+"</td><td>"+saleProduct.amount.toFixed(2)+"</td><td>"+saleProduct.gstAmount.toFixed(2)+"</td><td>"+(saleProduct.amount-saleProduct.gstAmount).toFixed(2)+"</td></tr>")
+                });
+                $("#totaltax").html(totaltax.toFixed(2));
+                $("#totalAmt").html(totalAmt.toFixed(2));
+                $("#badgeContainer").html(badgeContainer);
+            },
+            error: function () {
+                alert("Unable to get invoice.")
+            }
+        })
+
+    }
+
+    function toggleDetails() {
+        if ($("#collapseIcon").hasClass("fa-angle-double-right")) {
+            $("#collapseIcon").removeClass("fa-angle-double-right");
+            $("#collapseIcon").addClass("fa-angle-double-left");
+
+            $("#listContainer").removeClass("col-lg-12");
+            $("#listContainer").removeClass("col-md-12");
+
+            $("#listContainer").addClass("col-lg-5");
+            $("#listContainer").addClass("col-md-5");
+
+            $("#detailsContainer").removeClass("hidden");
+            $("#detailsContainer").addClass("col-lg-7");
+            $("#detailsContainer").addClass("col-md-7");
+        } else {
+            $("#collapseIcon").removeClass("fa-angle-double-left");
+            $("#collapseIcon").addClass("fa-angle-double-right");
+
+            $("#listContainer").addClass("col-lg-12");
+            $("#listContainer").addClass("col-md-12");
+
+            $("#listContainer").removeClass("col-lg-5");
+            $("#listContainer").removeClass("col-md-5");
+
+            $("#detailsContainer").addClass("hidden");
+            $("#detailsContainer").removeClass("col-lg-7");
+            $("#detailsContainer").removeClass("col-md-7");
+        }
+    }
 </script>
 <g:include view="controls/footer-content.gsp"/>
 <script>
