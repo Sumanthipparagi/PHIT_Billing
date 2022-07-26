@@ -48,7 +48,7 @@
     }
 
     .scroll {
-        height:50rem;
+        height:35rem;
         overflow-y: scroll;
         -ms-overflow-style: none;  /* IE and Edge */
         scrollbar-width: none;  /* Firefox */
@@ -178,7 +178,7 @@
 
             <div id="detailsContainer" class="hidden" >
                 <div class="card">
-                    <div class="body scroll" style="min-height: 60rem;">
+                    <div class="body scroll" style="min-height: 57rem;">
                         <g:include view="sales/salebillDetails/sale-invoice-details.gsp"/>
                     </div>
                 </div>
@@ -227,10 +227,6 @@
     var id = null;
     $(function () {
         saleInvoiceTable();
-        // var $demoMaskedInput = $('.demo-masked-input');
-        // $demoMaskedInput.find('.datetime').inputmask('d/m/y h:m:s', { placeholder: '__/__/____ __:__:__:__', alias:
-        //         "datetime", hourFormat: '12' });
-
     });
 
     function saleInvoiceTable() {
@@ -428,6 +424,8 @@
                 var customer = data.customer;
                 var entityCity = data.entityCity;
                 var customerCity = data.customerCity;
+                var receiptLog = data.receiptLog;
+                var receipt = data.receipt;
                 var orderDate = "-";
                 var dueDate = "-";
                 var badgeContainer = "";
@@ -466,16 +464,31 @@
 
                 var totalAmt = 0.0;
                 var totaltax = 0.0;
+                var subtotal = 0.0;
+
                 var tableContent = $("#saleProductsTableBody");
                 tableContent.empty();
                 $.each(saleProducts, function (index, saleProduct) {
-                    totalAmt += (saleProduct.amount-saleProduct.gstAmount);
+                    subtotal += (saleProduct.amount-saleProduct.gstAmount);
+                    totalAmt += saleProduct.amount;
                     totaltax += saleProduct.gstAmount;
-                    tableContent.append("<tr><td>"+(++index)+"</td><td style=\"white-space: normal !important; word-wrap: break-word;\">"+saleProduct.product.productName+"<br><small>Batch: "+saleProduct.batchNumber+"</small></td><td>"+saleProduct.sqty+"</td><td>"+saleProduct.freeQty+"</td><td>"+saleProduct.amount.toFixed(2)+"</td><td>"+saleProduct.gstAmount.toFixed(2)+"</td><td>"+(saleProduct.amount-saleProduct.gstAmount).toFixed(2)+"</td></tr>")
+                    tableContent.append("<tr><td>"+(++index)+"</td><td style=\"white-space: normal !important; word-wrap: break-word;\">"+saleProduct.product.productName+"<br><small>Batch: "+saleProduct.batchNumber+"</small></td><td>"+saleProduct.sqty+"</td><td>"+saleProduct.freeQty+"</td>" +
+                        "<td>"+(saleProduct.amount-saleProduct.gstAmount).toFixed(2)+"</td><td>"+saleProduct.gstAmount.toFixed(2)+"</td><td>"+saleProduct.amount.toFixed(2)+"</td></tr>")
                 });
+
+                var totalPaid = totalAmt - invoice.balance;
+                $("#subtotal").html(subtotal.toFixed(2));
                 $("#totaltax").html(totaltax.toFixed(2));
                 $("#totalAmt").html(totalAmt.toFixed(2));
+                $("#totalPaid").html(totalPaid.toFixed(2));
+                $("#totalDue").html(invoice.balance.toFixed(2));
                 $("#badgeContainer").html(badgeContainer);
+
+                var previousPaymentsTable = $("#previousPaymentsTable");
+                $.each(receiptLog, function (index, value) {
+                    var date = moment(receipt.paymentDate.split("T")[0],"YYYY-MM-DD").format("DD/MM/YYYY");
+                    previousPaymentsTable.html("<tr><td>"+(++index)+"</td><td>"+receipt.receiptId+"</td><td>"+date+"</td><td>"+value.amountPaid.toFixed(2)+"</td><td><a href='#' class='btn btn-sm btn-danger'><i class='fa fa-times'></i></a></td></tr>")
+                });
             },
             error: function () {
                 $("#detailsSpinner").addClass("hidden");

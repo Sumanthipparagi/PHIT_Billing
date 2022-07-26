@@ -586,6 +586,7 @@ public class Links
 
     //    Reciept detail log
     public static String RECIPT_DETAIL_LOG = "api/v1.0/accounts/reciptdetaillog";
+    public static String RECEIPT_DETAIL_LOG = "api/v1.0/accounts/receiptdetaillog";
     public static String RECIPT_DETAIL_LOG_INVS_ID = "api/v1.0/accounts/reciptdetailloginvbyreciptId";
     public static String RECIPT_DETAIL_LOG_CRNT_ID = "api/v1.0/accounts/reciptdetaillogcrntbyreciptId";
     public static String RECIPT_DETAIL_LOG_GTN_ID = "api/v1.0/accounts/reciptdetailloggtnbyreciptId";

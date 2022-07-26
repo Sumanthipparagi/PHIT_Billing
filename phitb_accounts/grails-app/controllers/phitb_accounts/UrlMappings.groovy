@@ -38,6 +38,7 @@ class UrlMappings {
             "/reciptdetailloginvbyreciptId/$id(.$format)?"(controller: 'billDetailLog'){action = [GET: 'recieptDetailsByInvId']}
             "/reciptdetaillogcrntbyreciptId/$id(.$format)?"(controller: 'billDetailLog'){action = [GET: 'recieptDetailsByCrntId']}
             "/reciptdetailloggtnbyreciptId/$id(.$format)?"(controller: 'billDetailLog'){action = [GET: 'recieptDetailsByGTNId']}
+            "/receiptdetaillog/$billType/$id(.$format)?"(controller: 'billDetailLog'){action = [GET: 'getReceiptLogsByBillTypeAndId']}
 
 
 

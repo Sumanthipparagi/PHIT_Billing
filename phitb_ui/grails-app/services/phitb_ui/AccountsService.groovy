@@ -750,8 +750,33 @@ class AccountsService
         }
         catch (Exception ex)
         {
-            System.err.println('Service :AccountsService , action :  getProducts  , Ex:' + ex)
-            log.error('Service :AccountsService , action :  getProducts  , Ex:' + ex)
+            System.err.println('Service :AccountsService , action :  getReceiptLogInvById  , Ex:' + ex)
+            log.error('Service :AccountsService , action :  getReceiptLogInvById  , Ex:' + ex)
+        }
+
+    }
+
+
+    def getReceiptLogByBillTypeAndId(String id, String billType)
+    {
+        Client client = ClientBuilder.newClient()
+        //WebTarget target = client.target(new Links().API_GATEWAY)
+        WebTarget target = client.target("http://localhost:8089")
+        try
+        {
+            Response apiResponse = target
+                    .path(new Links().RECEIPT_DETAIL_LOG + "/" + billType + "/" + id)
+                    .request(MediaType.APPLICATION_JSON_TYPE)
+                    .get()
+            if(apiResponse.status == 200)
+            {
+                return apiResponse
+            }
+        }
+        catch (Exception ex)
+        {
+            System.err.println('Service :AccountsService , action :  getReceiptLogByBillTypeAndId  , Ex:' + ex)
+            log.error('Service :AccountsService , action :  getReceiptLogByBillTypeAndId  , Ex:' + ex)
         }
 
     }

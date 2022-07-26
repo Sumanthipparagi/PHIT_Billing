@@ -1,6 +1,6 @@
 package phitb_ui.sales
 
-
+import phitb_ui.AccountsService
 import phitb_ui.EntityService
 import phitb_ui.ProductService
 import phitb_ui.SystemService
@@ -218,6 +218,26 @@ class SalebillDetailsController {
         JSONObject customer = new EntityService().getEntityById(saleBill.customerId.toString())
         JSONObject entityCity = new SystemService().getCityById(billEntity.cityId.toString())
         JSONObject customerCity = new SystemService().getCityById(customer.cityId.toString())
+        def apiResponse = new AccountsService().getReceiptLogByBillTypeAndId(saleBill.id.toString(), "INVS")
+        String receiptId = null
+        JSONArray receiptLog = new JSONArray()
+        if(apiResponse.status == 200)
+        {
+            receiptLog = new JSONArray(apiResponse.readEntity(String.class))
+        }
+        for (Object r : receiptLog) {
+            receiptId = r.receiptId.toString()
+            break
+        }
+
+        JSONObject receipt = new JSONObject()
+        apiResponse = new AccountsService().getReciptById(receiptId)
+        if(apiResponse.status == 200)
+        {
+            receipt = new JSONObject(apiResponse.readEntity(String.class))
+        }
+
+        //TODO: get Credit Note / Sale return
 
         JSONObject result = new JSONObject()
         result.put("invoice", saleBill)
@@ -226,6 +246,8 @@ class SalebillDetailsController {
         result.put("customerCity", customerCity)
         result.put("entityCity", entityCity)
         result.put("saleProducts", finalSaleProducts)
+        result.put("receiptLog", receiptLog)
+        result.put("receipt", receipt)
 
         respond result, formats: ['json']
     }
