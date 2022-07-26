@@ -21,7 +21,9 @@
                     </div>
                 </div>
             </div>
-
+            <div id="detailsContentError" class="hidden">
+                <p>Unable to get the invoice, try again later.</p>
+            </div>
             <div id="detailsContent" class="hidden">
                 <div class="row">
                     <div class="col-md-6">

@@ -409,6 +409,7 @@
     }
 
     function listItemClicked(id) {
+        $("#detailsContentError").addClass("hidden");
         $("#detailsSpinner").removeClass("hidden");
         $("#detailsContent").addClass("hidden");
         if(!$("#detailsContainer").hasClass("opened")) {
@@ -478,8 +479,7 @@
             },
             error: function () {
                 $("#detailsSpinner").addClass("hidden");
-                $("#detailsContent").removeClass("hidden");
-                $("#detailsContent").html("<p>Unable to get the invoice, try again later.</p>")
+                $("#detailsContentError").removeClass("hidden");
             }
         })
 
