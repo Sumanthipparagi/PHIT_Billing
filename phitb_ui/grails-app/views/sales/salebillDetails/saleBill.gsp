@@ -46,6 +46,35 @@
     .table > tbody > tr > td {
         vertical-align: middle;
     }
+
+    .scroll {
+        height:60rem;
+        overflow-y: scroll;
+        -ms-overflow-style: none;  /* IE and Edge */
+        scrollbar-width: none;  /* Firefox */
+    }
+    .scroll::-webkit-scrollbar {
+        display: none;
+    }
+
+    .dt-left-col {
+        float: left;
+        margin-top: 5px;
+        width: 20%;
+    }
+
+    .dt-center-col {
+        float: left;
+        width: 25%;
+    }
+
+    .dt-right-col {
+        float: left;
+        margin-top: 5px;
+        align-content: end;
+        width: 50%;
+    }
+
     </style>
 
 </head>
@@ -147,9 +176,9 @@
                 </div>
             </div>
 
-            <div id="detailsContainer" class="hidden">
+            <div id="detailsContainer" class="hidden" >
                 <div class="card">
-                    <div class="body">
+                    <div class="body scroll" style="min-height: 60rem;">
                         <g:include view="sales/salebillDetails/sale-invoice-details.gsp"/>
                     </div>
                 </div>
@@ -219,7 +248,11 @@
             info: true,
             processing: true,
             serverSide: true,
-            dom: 'lBfrtip',
+            //dom: 'lBfrtip',
+            dom: '<"top"<"dt-left-col"l><"dt-center-col"B><"dt-right-col"f>>rt<"bottom"ip><"clear">',
+            oLanguage: {
+                sLengthMenu: "_MENU_",
+            },
             buttons: [
                 {
                     extend: 'collection',
@@ -239,7 +272,7 @@
                         }
                     ],
                     dropup: true,
-                    className: 'dropdown-toggle'
+                    className: 'dropdown-toggle btn-sm'
                 }
             ],
             language: {
@@ -376,13 +409,18 @@
     }
 
     function listItemClicked(id) {
-        toggleDetails();
-
+        $("#detailsSpinner").removeClass("hidden");
+        $("#detailsContent").addClass("hidden");
+        if(!$("#detailsContainer").hasClass("opened")) {
+            toggleDetails();
+        }
         //Get invoice Details
         $.ajax({
             method: "GET",
             url: "../sale-bill/"+id,
             success: function (data) {
+                $("#detailsSpinner").addClass("hidden");
+                $("#detailsContent").removeClass("hidden");
                 var saleProducts = data.saleProducts;
                 var invoice = data.invoice;
                 var entity = data.entity;
@@ -411,11 +449,17 @@
                     badgeContainer += "<div class=\"badge badge-warning\">DRAFT</div>"
                 }
 
-                $("#invoiceNumber").text(invoice.invoiceNumber);
+                if(invoice.billStatus === "DRAFT")
+                {
+                    $("#invoiceNumber").text("DRAFT INVOICE");
+                }
+                else {
+                    $("#invoiceNumber").text(invoice.invoiceNumber);
+                }
                 $("#invoiceDate").text(orderDate);
                 $("#dueDate").text(dueDate);
-                var entityDetails = "<span style='font-weight: normal'>"+entity.entityName + "</span><br><small>"+entity.addressLine1 + ", " +entity.addressLine2 + "<br>"+entityCity.districtName+"<br>"+entity.pinCode+"</small>";
-                var customerDetails = "<span style='font-weight: normal'>"+customer.entityName + "</span><br><small>"+customer.addressLine1 + ", " +customer.addressLine2 + "<br>"+customerCity.districtName+"<br>"+customer.pinCode+"</small>";
+                var entityDetails = "<span style='font-weight: bold'>"+entity.entityName + "</span><br><small>"+entity.addressLine1 + ", " +entity.addressLine2 + "<br>"+entityCity.districtName+"<br>"+entity.pinCode+"</small>";
+                var customerDetails = "<span style='font-weight: bold'>"+customer.entityName + "</span><br><small>"+customer.addressLine1 + ", " +customer.addressLine2 + "<br>"+customerCity.districtName+"<br>"+customer.pinCode+"</small>";
                 $("#entityDetails").html(entityDetails);
                 $("#customerDetails").html(customerDetails);
 
@@ -433,7 +477,9 @@
                 $("#badgeContainer").html(badgeContainer);
             },
             error: function () {
-                alert("Unable to get invoice.")
+                $("#detailsSpinner").addClass("hidden");
+                $("#detailsContent").removeClass("hidden");
+                $("#detailsContent").html("<p>Unable to get the invoice, try again later.</p>")
             }
         })
 
@@ -450,9 +496,11 @@
             $("#listContainer").addClass("col-lg-5");
             $("#listContainer").addClass("col-md-5");
 
+
             $("#detailsContainer").removeClass("hidden");
             $("#detailsContainer").addClass("col-lg-7");
             $("#detailsContainer").addClass("col-md-7");
+            $("#detailsContainer").addClass("opened");
         } else {
             $("#collapseIcon").removeClass("fa-angle-double-left");
             $("#collapseIcon").addClass("fa-angle-double-right");
@@ -466,6 +514,7 @@
             $("#detailsContainer").addClass("hidden");
             $("#detailsContainer").removeClass("col-lg-7");
             $("#detailsContainer").removeClass("col-md-7");
+            $("#detailsContainer").removeClass("opened");
         }
     }
 </script>
