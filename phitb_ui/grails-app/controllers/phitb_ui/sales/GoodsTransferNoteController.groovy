@@ -1040,11 +1040,11 @@ class GoodsTransferNoteController
                     double remainingFreeQty = stockBook.get("remainingFreeQty") + Double.parseDouble(gtnObject.freeQty.toString())
                     double remainingReplQty = stockBook.get("remainingReplQty") + Double.parseDouble(gtnObject.repQty.toString())
                     stockBook.put("remainingQty", remainingQty.toLong())
+                    stockBook.put("purchaseRate", gtnObject?.sRate)
                     stockBook.put("remainingFreeQty", remainingFreeQty.toLong())
                     stockBook.put("remainingReplQty", remainingReplQty.toLong())
                     new InventoryService().updateStockBook(stockBook)
-                    new SalesService().approveGTN(gtn.id.toString(), gtn.entityId.toString(), gtn.financialYear
-                            .toString())
+                    new SalesService().approveGTN(gtn.id.toString(), gtn.entityId.toString(), gtn.financialYear.toString())
                 }
                 else
                 {
@@ -1055,12 +1055,12 @@ class GoodsTransferNoteController
                     stockBook1.put("remainingQty", Double.valueOf(Double.parseDouble(gtnObject.sqty.toString())).longValue())
                     stockBook1.put("remainingFreeQty", Double.valueOf(Double.parseDouble(gtnObject.freeQty.toString())).longValue())
                     stockBook1.put("remainingReplQty", Double.valueOf(Double.parseDouble(gtnObject.repQty.toString())).longValue())
+                    stockBook1.put("purchaseRate", gtnObject?.sRate)
                     stockBook1.put("entityId", session.getAttribute('entityId').toString())
                     stockBook1.put("uuid", UUID.randomUUID())
                     stockBook1.put("entityTypeId", session.getAttribute('entityTypeId').toString())
                     def apires = new InventoryService().stockBookSave(stockBook1)
-                    new SalesService().approveGTN(gtn.id.toString(), gtn.entityId.toString(), gtn.financialYear
-                            .toString())
+                    new SalesService().approveGTN(gtn.id.toString(), gtn.entityId.toString(), gtn.financialYear.toString())
                 }
             }
             respond gtn, formats: ['json'], status: 200
