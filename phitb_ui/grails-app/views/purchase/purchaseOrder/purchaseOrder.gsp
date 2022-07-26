@@ -1035,7 +1035,7 @@
     function savePurchaseOrder(billStatus)
     {
         var waitingSwal = Swal.fire({
-            title: "Generating Purchase Invoice, Please wait!",
+            title: "Generating Purchase Order, Please wait!",
             showDenyButton: false,
             showCancelButton: false,
             showConfirmButton: false,
@@ -1106,24 +1106,24 @@
                         hot.setCellMeta(j, i,'readOnly', true);
                     }
                 }
-                purchasebillid = data.purchaseBillDetail.id;
-                var datepart = data.purchaseBillDetail.entryDate.split("T")[0];
+                purchasebillid = data.purchaseOrderDetail.id;
+                var datepart = data.purchaseOrderDetail.entryDate.split("T")[0];
                 var month = datepart.split("-")[1];
                 var year = datepart.split("-")[0];
                 var seriesCode = data.series.seriesCode;
-                var invoiceNumber = data.purchaseBillDetail.invoiceNumber;
+                var invoiceNumber = data.purchaseOrderDetail.invoiceNumber;
                 $("#invNo").html("<p><strong>" + invoiceNumber + "</strong></p>");
                 var message = "";
                 var draftInvNo ="";
                 if(billStatus === "DRAFT"){
-                    draftInvNo = '<p><strong>' + data.purchaseBillDetail.entityId + "/DR/S/" + month + year + "/"
+                    draftInvNo = '<p><strong>' + data.purchaseOrderDetail.entityId + "/DR/PO/" + month + year + "/"
                         + seriesCode + "/__"+'<p><strong>';
                     $("#invNo").html(draftInvNo);
                 }
                 if (billStatus !== "DRAFT") {
-                    message = 'Purchase Invoice Generated: ' + invoiceNumber;
+                    message = 'Purchase Order Generated: ' + invoiceNumber;
                 } else {
-                    message = 'Draft Invoice Generated: ' + data.purchaseBillDetail.entityId + "/DR/S/" + month + year + "/"
+                    message = 'Draft Order Generated: ' + data.purchaseOrderDetail.entityId + "/DR/S/" + month + year + "/"
                         + seriesCode + "/__";
                 }
                 waitingSwal.close();
@@ -1140,8 +1140,6 @@
                         resetData();
                     }
                 });
-
-
             },
             error: function(){
                 waitingSwal.close();
@@ -1151,14 +1149,12 @@
                 });
             }
         });
-
     }
-
     function printInvoice()
     {
         if(readOnly) {
             window.open(
-                'purchase-entry/print-invoice?id=' + purchasebillid,
+                '/purchase-order/print-invoice?id=' + purchasebillid,
                 '_blank'
             );
             resetData();

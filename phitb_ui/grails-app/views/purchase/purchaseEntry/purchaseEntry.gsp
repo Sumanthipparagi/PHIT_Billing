@@ -1158,7 +1158,7 @@
     {
         if(readOnly) {
             window.open(
-                'purchase-entry/print-invoice?id=' + purchasebillid,
+                '/purchase-entry/print-order?id=' + purchasebillid,
                 '_blank'
             );
             resetData();

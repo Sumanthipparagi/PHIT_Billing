@@ -732,5 +732,6 @@ public class Links
     public static String PURCHASE_ORDER_PRODUCT_SHOW = "api/v1.0/purchase/orderproductdetail";
     public static String PURCHASE_ORDER_PRODUCT_SAVE = "api/v1.0/purchase/orderproductdetail";
     public static String PURCHASE_ORDER_PRODUCT_DELETE = "api/v1.0/purchase/orderproductdetail/{id}";
+    public static String PURCHASE_ORDER_PRODUCT_OF_BILL = "api/v1.0/purchase/orderproductdetail/bill";
 
 }

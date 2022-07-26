@@ -2,15 +2,17 @@ package phitb_purchase
 
 import grails.converters.JSON
 import grails.web.servlet.mvc.GrailsParameterMap
+import org.grails.web.json.JSONArray
 import org.grails.web.json.JSONObject
 import phitb_purchase.Exception.BadRequestException
 import phitb_purchase.Exception.ResourceNotFoundException
 
 class PurchaseOrderController {
 	static responseFormats = ['json', 'xml']
-    static allowedMethods = [index: "GET", show: "GET", save: "POST", update: "PUT", delete: "DELETE", dataTable: "GET"]
+    static allowedMethods = [index: "GET", show: "GET", purchaseOrder: "POST", update: "PUT", delete: "DELETE", dataTable: "GET"]
 
     PurchaseOrderService purchaseOrderService
+    PurchaseOrderProductDetailService purchaseOrderProductDetailService
     /**
      * Gets all purchase order
      * @param query
@@ -232,4 +234,43 @@ class PurchaseOrderController {
             System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
         }
     }
+
+
+    /**
+     * Save new Sale Bill Details along with products
+     * @param Sale Bill Details
+     * @return saved Sale Bill Details
+     */
+    def purchaseOrder() {
+        try {
+            JSONObject jsonObject = JSON.parse(request.reader.text) as JSONObject
+            PurchaseOrder purchaseOrder = purchaseOrderService.save(jsonObject.get("purchaseOrder"))
+            if(purchaseOrder) {
+                UUID uuid
+                JSONArray purchaseProducts = jsonObject.get("purchaseProducts")
+                for (JSONObject product : purchaseProducts) {
+                    uuid = UUID.randomUUID()
+                    product.put("uuid", uuid)
+                    product.put("billId", purchaseOrder.id)
+                    product.put("billType", 0) //0 Sale, 1 Purchase
+                    product.put("serBillId", purchaseOrder.serBillId)
+                    purchaseOrderProductDetailService.save(product)
+                    println("product saved")
+                }
+            }
+            respond purchaseOrder
+        }
+        catch (org.springframework.boot.context.config.ResourceNotFoundException ex) {
+            System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
+            response.status = 404
+        }
+        catch (BadRequestException ex) {
+            System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
+            response.status = 400
+        }
+        catch (Exception ex) {
+            System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
+        }
+    }
+
 }

@@ -33,12 +33,12 @@ class UrlMappings {
 
 
             //Purchase Order
-            "/purchaseorder(.$format)?"(controller: 'purchaseOrder') { action = [GET: 'index', POST: 'save'] }
+            "/purchaseorder(.$format)?"(controller: 'purchaseOrder') { action = [GET: 'index', POST: 'purchaseOrder'] }
             "/purchaseorder/datatable(.$format)?"(controller: 'purchaseOrder') { action = [GET: 'dataTable'] }
             "/purchaseorder/$id(.$format)?"(controller: 'purchaseOrder') { action = [GET: 'show', PUT: 'update', DELETE: 'delete'] }
             "/purchaseorderbydays/$days(.$format)?"(controller: 'purchaseOrder') { action = [GET: 'getAllByDays'] }
             "/purchaseorder/cancel(.$format)?"(controller: 'purchaseOrder') {action = [POST: 'cancelPurchaseOrder']}
-            "/purchaseorder/getrecent(.$format)?"(controller: 'purchaseBillDetail') { action = [GET: 'getRecentByFinancialYearAndEntity'] }
+            "/purchaseorder/getrecent(.$format)?"(controller: 'purchaseOrder') { action = [GET: 'getRecentByFinancialYearAndEntity'] }
 
 
 //            Purchase Order Product Details
