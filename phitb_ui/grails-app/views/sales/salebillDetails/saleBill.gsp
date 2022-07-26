@@ -48,7 +48,7 @@
     }
 
     .scroll {
-        height:60rem;
+        height:50rem;
         overflow-y: scroll;
         -ms-overflow-style: none;  /* IE and Edge */
         scrollbar-width: none;  /* Firefox */
