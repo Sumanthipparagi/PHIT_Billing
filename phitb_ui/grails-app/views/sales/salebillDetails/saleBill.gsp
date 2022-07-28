@@ -345,17 +345,6 @@
                 {'data': 'bill_status'},
                 {'data': 'balance'},
                 {'data': 'finYear'}
-
-                /* {'data': 'action', 'width': '4%'},
-                 {'data': 'customer', 'width': '5%'},
-                 {'data': 'invNo', 'width': '10%'},
-                 {'data': 'gstAmt', 'width': '10%'},
-                 {'data': 'netAmt', 'width': '10%'},
-                 {'data': 'grossAmt', 'width': '10%'},
-                 {'data': 'city', 'width': '10%'},
-                 {'data': 'bill_status', 'width': '5%'},
-                 {'data': 'balance', 'width': '5%'},
-                 {'data': 'finYear', 'width': '30%'}*/
             ]
         });
 
@@ -406,7 +395,7 @@
 
     function listItemClicked(id) {
         $("#detailsContentError").addClass("hidden");
-        $("#detailsSpinner").removeClass("hidden");
+        $(".detailsSpinner").removeClass("hidden");
         $("#detailsContent").addClass("hidden");
         if(!$("#detailsContainer").hasClass("opened")) {
             toggleDetails();
@@ -416,7 +405,7 @@
             method: "GET",
             url: "../sale-bill/"+id,
             success: function (data) {
-                $("#detailsSpinner").addClass("hidden");
+                $(".detailsSpinner").addClass("hidden");
                 $("#detailsContent").removeClass("hidden");
                 var saleProducts = data.saleProducts;
                 var invoice = data.invoice;
@@ -425,6 +414,7 @@
                 var entityCity = data.entityCity;
                 var customerCity = data.customerCity;
                 var receiptLog = data.receiptLog;
+                var saleReturns = data.saleReturns;
                 var receipt = data.receipt;
                 var orderDate = "-";
                 var dueDate = "-";
@@ -476,6 +466,29 @@
                         "<td>"+(saleProduct.amount-saleProduct.gstAmount).toFixed(2)+"</td><td>"+saleProduct.gstAmount.toFixed(2)+"</td><td>"+saleProduct.amount.toFixed(2)+"</td></tr>")
                 });
 
+                var availableCredits = 0.0;
+                $.each(saleReturns, function (index, saleReturn) {
+                    availableCredits += saleReturn.balance
+                });
+
+                if(availableCredits > 0)
+                {
+                    $("#paymentsAlert").html("<div class=\"alert alert-success\" role=\"alert\">\n" +
+                        "<div class=\"container\">\n" +
+                        "    <strong>Credits Available!</strong> Add <strong>₹" + availableCredits.toFixed(2) + "</strong> to current invoice?"+
+                        "    <button type=\"button\" class=\"close\" data-dismiss=\"alert\" aria-label=\"Close\">\n" +
+                        "            <span aria-hidden=\"true\">\n" +
+                        "            <i class=\"zmdi zmdi-plus\"></i>\n" +
+                        "        </span>\n" +
+                        "    </button>\n" +
+                        "</div>\n" +
+                        "</div>")
+                }
+                else
+                {
+                    $("#paymentsAlert").html("");
+                }
+
                 var totalPaid = totalAmt - invoice.balance;
                 $("#subtotal").html(subtotal.toFixed(2));
                 $("#totaltax").html(totaltax.toFixed(2));
@@ -485,13 +498,14 @@
                 $("#badgeContainer").html(badgeContainer);
 
                 var previousPaymentsTable = $("#previousPaymentsTable");
+                previousPaymentsTable.html("");
                 $.each(receiptLog, function (index, value) {
                     var date = moment(receipt.paymentDate.split("T")[0],"YYYY-MM-DD").format("DD/MM/YYYY");
                     previousPaymentsTable.html("<tr><td>"+(++index)+"</td><td>"+receipt.receiptId+"</td><td>"+date+"</td><td>"+value.amountPaid.toFixed(2)+"</td><td><a href='#' class='btn btn-sm btn-danger'><i class='fa fa-times'></i></a></td></tr>")
                 });
             },
             error: function () {
-                $("#detailsSpinner").addClass("hidden");
+                $(".detailsSpinner").addClass("hidden");
                 $("#detailsContentError").removeClass("hidden");
             }
         })

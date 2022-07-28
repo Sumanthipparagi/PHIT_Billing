@@ -238,6 +238,12 @@ class SalebillDetailsController {
         }
 
         //TODO: get Credit Note / Sale return
+        def saleReturnApiResponse = new AccountsService().getAllSaleReturnByCustomer(customer.id, session.getAttribute("entityId"), session.getAttribute("financialYear"), "ACTIVE")
+        JSONArray saleReturns = new JSONArray()
+        if(saleReturnApiResponse.status == 200)
+        {
+            saleReturns = new JSONArray(saleReturnApiResponse.readEntity(String.class))
+        }
 
         JSONObject result = new JSONObject()
         result.put("invoice", saleBill)
@@ -248,6 +254,7 @@ class SalebillDetailsController {
         result.put("saleProducts", finalSaleProducts)
         result.put("receiptLog", receiptLog)
         result.put("receipt", receipt)
+        result.put("saleReturns", saleReturns)
 
         respond result, formats: ['json']
     }

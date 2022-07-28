@@ -126,10 +126,14 @@ class SaleReturnService {
                 String, Long.parseLong(entityId),financialYear,"0")
     }
 
-    def getAllByCustomerId(String customerId, String entityId, String financialYear)
+    def getAllByCustomerId(String customerId, String entityId, String financialYear, String returnStatus = null)
     {
-        return SaleReturn.findAllByCustomerIdAndEntityIdAndFinancialYear(customerId,Long.parseLong(entityId),
-                financialYear)
+        if(returnStatus)
+            return SaleReturn.findAllByCustomerIdAndEntityIdAndFinancialYearAndReturnStatus(customerId,Long.parseLong(entityId),
+                financialYear, returnStatus)
+        else
+            return SaleReturn.findAllByCustomerIdAndEntityIdAndFinancialYear(customerId,Long.parseLong(entityId),
+                    financialYear)
     }
 
     JSONObject getRecentByFinancialYearAndEntity(String financialYear, String entityId)
@@ -298,6 +302,54 @@ class SaleReturnService {
                 finalBills.add(salesReturn1)
             }
             return finalBills
+        }
+        catch (Exception ex)
+        {
+            ex.printStackTrace()
+            throw new BadRequestException()
+        }
+    }
+
+    def saleReturnAdjustment(JSONObject jsonObject)
+    {
+        try {
+            SaleReturn saleReturn = SaleReturn.findByIdAndReturnStatus(jsonObject.get("saleReturnId"), "ACTIVE")
+            if(saleReturn) {
+                double currentBalance = (saleReturn.balance - jsonObject.get("adjAmount"))
+                SaleReturnAdjustment adjustment = new SaleReturnAdjustment()
+                adjustment.saleReturn = saleReturn
+                adjustment.totalAmount = saleReturn.totalAmount
+                adjustment.balanceBefore = saleReturn.balance
+                adjustment.adjAmount = jsonObject.get("adjAmount")
+                adjustment.currentBalance = currentBalance
+                adjustment.docId = jsonObject.get("docId")
+                adjustment.docType = jsonObject.get("docType")
+                adjustment.entityId = jsonObject.get("entityId")
+                adjustment.entityTypeId = jsonObject.get("entityTypeId")
+                adjustment.createdUser = jsonObject.get("createdUser")
+                adjustment.modifiedUser = jsonObject.get("modifiedUser")
+                adjustment.save(flush: true)
+
+                if (!adjustment.hasErrors()) {
+                    saleReturn.isUpdatable = true
+                    saleReturn.balance = currentBalance
+                    saleReturn.adjAmount += jsonObject.get("adjAmount")
+                    if (saleReturn.balance == 0) {
+                        saleReturn.adjustmentStatus = "SETTLED"
+                    } else if (saleReturn.balance == saleReturn.totalAmount) {
+                        saleReturn.adjustmentStatus = "UNSETTLED"
+                    } else {
+                        saleReturn.adjustmentStatus = "PARTIALLY_SETTLED"
+                    }
+                    saleReturn.save(flush: true)
+                }
+
+                return adjustment
+            }
+            else
+            {
+                throw new ResourceNotFoundException()
+            }
         }
         catch (Exception ex)
         {

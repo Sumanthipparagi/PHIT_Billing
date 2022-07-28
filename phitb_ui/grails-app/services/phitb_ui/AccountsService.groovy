@@ -454,7 +454,7 @@ class AccountsService
 
     }
 
-    def getAllSaleReturnById(String id,String entityId,String financialYear)
+    def getAllSaleReturnByCustomer(long id, long entityId, String financialYear, String returnStatus = null)
     {
         Client client = ClientBuilder.newClient()
         WebTarget target = client.target(new Links().API_GATEWAY)
@@ -462,17 +462,18 @@ class AccountsService
         {
             Response apiResponse = target
                     .path(new Links().SALE_RETURN_CUSTOMER)
-                    .queryParam("id", URLEncoder.encode(id, "UTF-8"))
-                    .queryParam("financialYear", URLEncoder.encode(financialYear, "UTF-8"))
-                    .queryParam("entityId", URLEncoder.encode(entityId, "UTF-8"))
+                    .queryParam("id", id)
+                    .queryParam("financialYear", financialYear)
+                    .queryParam("entityId", entityId)
+                    .queryParam("returnStatus", returnStatus)
                     .request(MediaType.APPLICATION_JSON_TYPE)
                     .get()
             return apiResponse
         }
         catch (Exception ex)
         {
-            System.err.println('Service :AccountsService , action :  getProducts  , Ex:' + ex)
-            log.error('Service :AccountsService , action :  getProducts  , Ex:' + ex)
+            System.err.println('Service :AccountsService , action :  getAllSaleReturnByCustomer  , Ex:' + ex)
+            log.error('Service :AccountsService , action :  getAllSaleReturnByCustomer  , Ex:' + ex)
         }
 
     }
@@ -760,8 +761,7 @@ class AccountsService
     def getReceiptLogByBillTypeAndId(String id, String billType)
     {
         Client client = ClientBuilder.newClient()
-        //WebTarget target = client.target(new Links().API_GATEWAY)
-        WebTarget target = client.target("http://localhost:8089")
+        WebTarget target = client.target(new Links().API_GATEWAY)
         try
         {
             Response apiResponse = target

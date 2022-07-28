@@ -4,11 +4,8 @@ package phitb_ui.accounts
 import org.grails.web.json.JSONArray
 import org.grails.web.json.JSONObject
 import phitb_ui.AccountsService
-import phitb_ui.EInvoiceService
 import phitb_ui.EntityService
-import phitb_ui.InventoryService
 import phitb_ui.ProductService
-import phitb_ui.SalesService
 import phitb_ui.entity.AccountRegisterController
 import phitb_ui.entity.EntityRegisterController
 import phitb_ui.sales.SalebillDetailsController
@@ -222,7 +219,7 @@ class ReciptDetailController {
         try {
             JSONArray jsonArray = new JSONArray();
             def salebill = new AccountsService().getAllSaleBillById(params.id, session.getAttribute("entityId").toString(), session.getAttribute("financialYear").toString())
-            def creditNote = new AccountsService().getAllSaleReturnById(params.id, session.getAttribute("entityId").toString(), session.getAttribute("financialYear").toString())
+            def creditNote = new AccountsService().getAllSaleReturnByCustomer(params.id, session.getAttribute("entityId").toString(), session.getAttribute("financialYear").toString())
             def gtn = new AccountsService().getAllGTNById(params.id, session.getAttribute("entityId").toString()
                     , session.getAttribute("financialYear").toString())
             if (salebill.status == 200 && creditNote.status == 200) {

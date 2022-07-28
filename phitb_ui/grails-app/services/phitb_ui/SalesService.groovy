@@ -719,6 +719,36 @@ contains both sale bill and products
 
     }
 
+    def saleReturnAdjustment(JSONObject jsonObject)
+    {
+        Client client = ClientBuilder.newClient();
+        WebTarget target = client.target(new Links().API_GATEWAY);
+        try
+        {
+            Response apiResponse = target
+                    .path(new Links().SALE_RETURN_ADJUSTMENT)
+                    .request(MediaType.APPLICATION_JSON_TYPE)
+                    .post(Entity.json(jsonObject))
+            if (apiResponse.status == 200)
+            {
+                JSONObject saleBillDetail = new JSONObject(apiResponse.readEntity(String.class))
+                return saleBillDetail
+            }
+            else
+            {
+                return null
+            }
+        }
+        catch (Exception ex)
+        {
+            System.err.println('Service :SalesService , action :  saleReturnAdjustment  , Ex:' + ex)
+            log.error('Service :SalesService , action :  saleReturnAdjustment  , Ex:' + ex)
+        }
+
+    }
+
+
+
     def getDraftSaleBillDetailsById(String id)
     {
         Client client = ClientBuilder.newClient();

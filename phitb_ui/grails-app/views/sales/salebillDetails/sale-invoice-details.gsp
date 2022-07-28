@@ -12,7 +12,7 @@
 <div class="tab-content">
     <div role="tabpanel" class="tab-pane in active" id="details" aria-expanded="true">
         <div style="padding: 20px 0 0 10px;">
-            <div class="row" id="detailsSpinner">
+            <div class="row detailsSpinner">
                 <div class="col-md-12">
                     <div class="text-center">
                         <div class="spinner-border" role="status">
@@ -118,6 +118,20 @@
 
     <div role="tabpanel" class="tab-pane" id="payments" aria-expanded="false">
         <div style="padding: 20px 0 0 10px;">
+            <div class="row detailsSpinner">
+                <div class="col-md-12">
+                    <div class="text-center">
+                        <div class="spinner-border" role="status">
+                            <span class="sr-only">Loading...</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12" id="paymentsAlert">
+
+                </div>
+            </div>
             <div class="row">
                 <div class="col-md-12">
                     <h6><u>Payment History</u></h6>
@@ -149,11 +163,29 @@
     </div>
 
     <div role="tabpanel" class="tab-pane" id="salesreturn" aria-expanded="false">
+        <div class="row detailsSpinner">
+            <div class="col-md-12">
+                <div class="text-center">
+                    <div class="spinner-border" role="status">
+                        <span class="sr-only">Loading...</span>
+                    </div>
+                </div>
+            </div>
+        </div>
         <div style="padding: 20px 0 0 10px;;">
         </div>
     </div>
 
     <div role="tabpanel" class="tab-pane" id="activity" aria-expanded="false">
+        <div class="row detailsSpinner">
+            <div class="col-md-12">
+                <div class="text-center">
+                    <div class="spinner-border" role="status">
+                        <span class="sr-only">Loading...</span>
+                    </div>
+                </div>
+            </div>
+        </div>
         <div style="padding: 20px 0 0 10px;">
         </div>
     </div>

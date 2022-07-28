@@ -385,6 +385,7 @@ class UrlMappings {
             "/saleretrunsettledbycustomer/$id(.$format)?"(controller: 'saleReturn') {
                 action = [GET: 'getAllsettledByCustId']
             }
+            "/salereturn/adjustment(.$format)?"(controller: 'saleReturn'){action = [POST: 'adjustSaleReturn']}
 
 
 
