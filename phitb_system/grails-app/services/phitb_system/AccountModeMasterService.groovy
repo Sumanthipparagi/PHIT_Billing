@@ -37,17 +37,22 @@ class AccountModeMasterService
 
     def getAllByEntityId(String limit, String offset, long entityId)
     {
-
-        Integer o = offset ? Integer.parseInt(offset.toString()) : 0
-        Integer l = limit ? Integer.parseInt(limit.toString()) : 100
-
-        if (!entityId)
-        {
-            return AccountModeMaster.findAll([sort: 'id', max: l, offset: o, order: 'desc'])
-        }
-        else
-        {
-            return AccountModeMaster.findAllByEntityId(entityId, [sort: 'id', max: l, offset: o, order: 'desc'])
+//        Integer o = offset ? Integer.parseInt(offset.toString()) : 0
+//        Integer l = limit ? Integer.parseInt(limit.toString()) : 100
+//
+//        if (!entityId)
+//        {
+//            return AccountModeMaster.findAll([sort: 'id', max: l, offset: o, order: 'desc'])
+//        }
+//        else
+//        {
+//            return AccountModeMaster.findAllByEntityId(entityId, [sort: 'id', max: l, offset: o, order: 'desc'])
+//        }
+        return AccountModeMaster.createCriteria().list(){
+            or{
+                eq("entityId", entityId)
+            }
+            order("mode", "asc")
         }
     }
 

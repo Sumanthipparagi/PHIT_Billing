@@ -22,8 +22,7 @@ class UrlMappings {
             "/accountmodes(.$format)?"(controller: 'accountModeMaster') { action = [GET: 'index', POST: 'save'] }
             "/accountmodes/datatable(.$format)?"(controller: 'accountModeMaster') { action = [GET: 'dataTable'] }
             "/accountmodes/$id(.$format)?"(controller: 'accountModeMaster') { action = [GET: 'show', PUT: 'update', DELETE: 'delete'] }
-            "/accountmodesbyenity/$id(.$format)?"(controller: 'accountModeMaster') { action = [GET:
-                                                                                                        'getAllByEntityId'] }
+            "/accountmodesbyenity/$id(.$format)?"(controller: 'accountModeMaster') { action = [GET: 'getAllByEntityId'] }
 
             //Account Type
             "/accounttype(.$format)?"(controller: 'accountTypeMaster') { action = [GET: 'index', POST: 'save'] }

@@ -12,6 +12,7 @@ public class Links
     public static String ACCOUNT_MODES_DATATABLE = "api/v1.0/system/accountmodes/datatable";
     public static String ACCOUNT_MODES_UPDATE = "api/v1.0/system/accountmodes/{id}";
     public static String ACCOUNT_MODES_DELETE = "api/v1.0/system/accountmodes/{id}";
+    public static String ACCOUNT_MODES_BY_ENTITY = "api/v1.0/system/accountmodesbyenity";
 
 //    Status
     public static String SYSTEM_SERVICE_STATUS = "api/v1.0/system/status";

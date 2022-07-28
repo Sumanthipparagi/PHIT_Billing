@@ -21,7 +21,7 @@
     <asset:stylesheet src="/themeassets/plugins/bootstrap-select/css/bootstrap-select.css" rel="stylesheet"/>
     <asset:stylesheet src="/themeassets/plugins/handsontable/handsontable.full.css" rel="stylesheet"/>
     <link rel="stylesheet" media="screen" href="https://cdnjs.cloudflare.com/ajax/libs/select2/3.5.2/select2.min.css">
-%{--    <link rel="stylesheet" media="screen" href="https://cdnjs.cloudflare.com/ajax/libs/handsontable/0.16.0/handsontable.full.css">--}%
+    %{--    <link rel="stylesheet" media="screen" href="https://cdnjs.cloudflare.com/ajax/libs/handsontable/0.16.0/handsontable.full.css">--}%
 
     <style>
     .form-control {
@@ -62,6 +62,7 @@
                     <div class="header" style="padding: 1px;">
 
                     </div>
+
                     <div class="body">
                         <div class="row">
                             <div class="col-md-4">
@@ -73,7 +74,8 @@
                                 <label for="series">Series:</label>
                                 <select onchange="seriesChanged()" class="form-control" id="series" name="series">
                                     <g:each in="${series}" var="sr">
-                                        <option data-seriescode="${sr.seriesCode}" value="${sr.id}">${sr.seriesName} (${sr.seriesCode})</option>
+                                        <option data-seriescode="${sr.seriesCode}"
+                                                value="${sr.id}">${sr.seriesName} (${sr.seriesCode})</option>
                                     </g:each>
                                 </select>
                             </div>
@@ -83,13 +85,16 @@
                                 <select class="form-control show-tick" id="supplier"
                                         onchange="supplierChanged()">
                                     <g:each in="${customers}" var="cs">
-                                        <g:if test="${cs.id != session.getAttribute("entityId")}"><option value="${cs.id}"  data-state="${cs.stateId}"  >${cs.entityName} (${cs.entityType
+                                        <g:if test="${cs.id != session.getAttribute("entityId")}"><option
+                                                value="${cs.id}"
+                                                data-state="${cs.stateId}">${cs.entityName} (${cs.entityType
                                                     .name})</option>
                                         </g:if>
                                     </g:each>
                                 </select>
                             </div>
                         </div>
+
                         <div class="row">
                             <div class="col-md-3">
                                 <label for="priority">Priority:</label>
@@ -99,14 +104,19 @@
                                     </g:each>
                                 </select>
                             </div>
+
                             <div class="col-md-3">
                                 <label for="supplierBillId">Supplier Invoice Number:</label>
-                                <input type="text" maxlength="100" class="form-control" name="supplierBillId" id="supplierBillId"/>
+                                <input type="text" maxlength="100" class="form-control" name="supplierBillId"
+                                       id="supplierBillId"/>
                             </div>
+
                             <div class="col-md-3">
                                 <label for="supplierBillDate">Supplier Invoice Date:</label>
-                                <input type="date" class="form-control date" name="supplierBillDate" id="supplierBillDate"/>
+                                <input type="date" class="form-control date" name="supplierBillDate"
+                                       id="supplierBillDate"/>
                             </div>
+
                             <div class="col-md-3">
                                 <label for="duedate">Due Date:</label>
                                 <input type="date" class="form-control date" name="duedate" id="duedate"/>
@@ -123,10 +133,18 @@
                     <div class="body" style="background-color: #313740;padding: 2px; color: #fff;">
                         <div class="row" style="margin: 0; font-size: 14px;">
                             <div class="col-md-2"><strong>Total GST:</strong> &#x20b9;<span id="totalGST">0</span></div>
-                            <div class="col-md-2"><strong>Total SGST:</strong> &#x20b9;<span id="totalSGST">0</span></div>
-                            <div class="col-md-2"><strong>Total CGST:</strong> &#x20b9;<span id="totalCGST">0</span></div>
-                            <div class="col-md-2"><strong>Total IGST:</strong>&nbsp;&#x20b9;<span id="totalIGST">0</span></div>
+
+                            <div class="col-md-2"><strong>Total SGST:</strong> &#x20b9;<span id="totalSGST">0</span>
+                            </div>
+
+                            <div class="col-md-2"><strong>Total CGST:</strong> &#x20b9;<span id="totalCGST">0</span>
+                            </div>
+
+                            <div class="col-md-2"><strong>Total IGST:</strong>&nbsp;&#x20b9;<span
+                                    id="totalIGST">0</span></div>
+
                             <div class="col-md-2"><strong>Total Qty:</strong> <span id="totalQty">0</span></div>
+
                             <div class="col-md-2"><strong>Total Free Qty:</strong> <span id="totalFQty">0</span></div>
                         </div>
                     </div>
@@ -151,9 +169,11 @@
                 <p style="margin: 0; font-size: 10px;">Keyboard Shortcuts - Delete Row: <strong>Ctrl+Alt+C</strong>, Reset Table: <strong>Ctrl+Alt+R</strong>
                 </p>
             </div>
+
             <div class="col-lg-4" style="margin-bottom: 10px;">
 
             </div>
+
             <div class="col-lg-4" style="margin-bottom: 10px;">
                 <p style="margin: 0; font-size: 10px;color: red;">Offers: <span id="offers"></span>
                 </p>
@@ -208,6 +228,310 @@
     </div>
 </section>
 
+<div class="example-modal">
+    <div class="modal fade" id="addSchemeModal">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span></button>
+                    <h4 class="schemeModalTitle">Scheme Entry</h4>
+                </div>
+                <form action="" id="schemeForm" method="post" role="form"  class="schemeForm"
+                      enctype="multipart/form-data">
+                    <div class="modal-body">
+                        <div class="row clearfix">
+                            <div class="col-lg-12 col-md-12 col-sm-12">
+                                <div class="card">
+                                    <div class="header">
+                                        <h6>SLAB 1</h6>
+                                    </div>
+
+                                    <div class="body">
+                                        <div class="row">
+                                            <div class="col-md-12 mt-2">
+                                                <div class="row">
+                                                    <div class="col-lg-6 form-group  form-float">
+                                                        <label for="slab1MinQty">
+                                                            Slab 1 Min Quantity
+                                                        </label>
+                                                        <input type="number" id="slab1MinQty"
+                                                               class="form-control slab1MinQty"
+                                                               onblur="setTwoNumberDecimal" value ="0"
+                                                               name="slab1MinQty" placeholder="Slab 1 Min Quantity"
+                                                               required/>
+                                                    </div>
+
+                                                    <div class="col-lg-6 form-group  form-float">
+                                                        <label for="slab1SchemeQty">
+                                                            Slab 1 Scheme Quantity
+                                                        </label>
+                                                        <input type="number" id="slab1SchemeQty"
+                                                               class="form-control slab1SchemeQty"
+                                                               onblur="setTwoNumberDecimal" value ="0"
+                                                               name="slab1SchemeQty" placeholder="Slab 1 Scheme Quantity"
+                                                               required/>
+                                                    </div>
+
+                                                    <div class="col-lg-6 form-group  form-float">
+                                                        <label for="slab1BulkStatus">
+                                                            Slab 1 Bulk Status
+                                                        </label>
+                                                        <input type="number" id="slab1BulkStatus"
+                                                               class="form-control slab1BulkStatus" value ="0"
+                                                               name="slab1BulkStatus" placeholder=" Slab 1 bulk Status"
+                                                               required/>
+                                                    </div>
+
+                                                    <div class="col-lg-6 form-group  form-float">
+                                                        <label for="slab1Status">
+                                                            Slab 1 Status
+                                                        </label>
+                                                        <input type="number" id="slab1Status" class="form-control slab1Status"
+                                                               name="slab1Status" placeholder="Slab 1 Status" value ="0"
+                                                               required/>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row clearfix">
+                            <div class="col-lg-12 col-md-12 col-sm-12">
+                                <div class="card">
+                                    <div class="header">
+                                        <h6>SLAB 2</h6>
+                                    </div>
+
+                                    <div class="body">
+                                        <div class="row">
+                                            <div class="col-md-12 mt-2">
+                                                <div class="row">
+                                                    <div class="col-lg-6 form-group  form-float">
+                                                        <label for="slab2MinQty">
+                                                            Slab 2 Min Quantity
+                                                        </label>
+                                                        <input type="number" id="slab2MinQty"
+                                                               class="form-control slab2MinQty"
+                                                               onblur="setTwoNumberDecimal" value ="0"
+                                                               name="slab2MinQty" placeholder="Slab 2 Min Quantity"/>
+                                                    </div>
+
+                                                    <div class="col-lg-6 form-group  form-float">
+                                                        <label for="slab2SchemeQty">
+                                                            Slab 2 Scheme Quantity
+                                                        </label>
+                                                        <input type="number" id="slab2SchemeQty"
+                                                               class="form-control slab2SchemeQty"
+                                                               onblur="setTwoNumberDecimal" value ="0"
+                                                               name="slab2SchemeQty" placeholder="Slab 2 Scheme Quantity"/>
+                                                    </div>
+
+                                                    <div class="col-lg-6 form-group  form-float">
+                                                        <label for="slab2BulkStatus">
+                                                            Slab 2 Bulk Status
+                                                        </label>
+                                                        <input type="number" id="slab2BulkStatus"
+                                                               class="form-control slab2BulkStatus" value ="0"
+                                                               name="slab2BulkStatus" placeholder="Slab 2 Bulk Status"/>
+                                                    </div>
+
+                                                    <div class="col-lg-6 form-group  form-float">
+                                                        <label for="slab2Status">
+                                                            Slab 2 Status
+                                                        </label>
+                                                        <input type="number" id="slab2Status"
+                                                               class="form-control slab2Status" value ="0"
+                                                               name="slab2Status" placeholder="Slab 2 Status"/>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row clearfix">
+                            <div class="col-lg-12 col-md-12 col-sm-12">
+                                <div class="card">
+                                    <div class="header">
+                                        <h6>SLAB 3</h6>
+                                    </div>
+
+                                    <div class="body">
+                                        <div class="row">
+                                            <div class="col-md-12 mt-2">
+                                                <div class="row">
+                                                    <div class="col-lg-6 form-group  form-float">
+                                                        <label for="slab3MinQty">
+                                                            Slab 3 Min Quantity
+                                                        </label>
+                                                        <input type="number" id="slab3MinQty"
+                                                               class="form-control slab3MinQty"
+                                                               onblur="setTwoNumberDecimal" value ="0"
+                                                               name="slab3MinQty" placeholder="Slab 3 Min Quantity"/>
+                                                    </div>
+
+                                                    <div class="col-lg-6 form-group  form-float">
+                                                        <label for="slab3SchemeQty">
+                                                            Slab 3 Scheme Quantity
+                                                        </label>
+                                                        <input type="number" id="slab3SchemeQty"
+                                                               class="form-control slab3SchemeQty"
+                                                               onblur="setTwoNumberDecimal" value ="0"
+                                                               name="slab3SchemeQty" placeholder="Slab 3 Scheme Quantity"/>
+                                                    </div>
+
+                                                    <div class="col-lg-6 form-group  form-float">
+                                                        <label for="slab3BulkStatus">
+                                                            Slab 3 Bulk Status
+                                                        </label>
+                                                        <input type="number" id="slab3BulkStatus"
+                                                               class="form-control slab3BulkStatus" value ="0"
+                                                               name="slab3BulkStatus" placeholder="Slab 3 Bulk Status"/>
+                                                    </div>
+
+                                                    <div class="col-lg-6 form-group  form-float">
+                                                        <label for="slab3Status">
+                                                            Slab 3 Status
+                                                        </label>
+                                                        <input type="number" id="slab3Status"
+                                                               class="form-control slab3Status" value ="0"
+                                                               name="slab3Status" placeholder="Slab 3 Status"/>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row clearfix">
+                            <div class="col-lg-12 col-md-12 col-sm-12">
+                                <div class="card">
+                                    <div class="header">
+                                        <h6>OTHER INFORMATION</h6>
+                                    </div>
+
+                                    <div class="body">
+                                        <div class="row">
+                                            <div class="col-md-12 mt-2">
+                                                <div class="row">
+                                                    <div class="col-lg-6 form-group  form-float">
+                                                        <label for="slabValidityFrom">
+                                                            Slab Validity From
+                                                        </label>
+                                                        <input type="text" id="slabValidityFrom"
+                                                               class="form-control slabValidityFrom date"
+                                                               name="slabValidityFrom" placeholder="Slab Validity From"/>
+                                                    </div>
+
+                                                    <div class="col-lg-6 form-group  form-float">
+                                                        <label for="slabValidityTo">
+                                                            Slab Validity to
+                                                        </label>
+                                                        <input type="text" id="slabValidityTo"
+                                                               class="form-control slabValidityTo date"
+                                                               name="slabValidityTo" placeholder=" Slab Validity to"/>
+                                                    </div>
+
+                                                    <div class="col-lg-6 form-group  form-float">
+                                                        <label for="specialDiscount">
+                                                            Special Discount
+                                                        </label>
+                                                        <input type="text" id="specialDiscount"
+                                                               class="form-control specialDiscount" value ="0" onblur="setTwoNumberDecimal()"
+                                                               name="specialDiscount" placeholder="Special Discount"/>
+                                                    </div>
+
+                                                    <div class="col-lg-6 form-group  form-float">
+                                                        <label for="specialDiscountValidFrom">
+                                                            Special Discount Valid From
+                                                        </label>
+                                                        <input type="text" id="specialDiscountValidFrom"
+                                                               class="form-control specialDiscountValidFrom date"
+                                                               name="specialDiscountValidFrom"
+                                                               placeholder="Special Discount Valid From"/>
+                                                    </div>
+
+                                                    <div class="col-lg-6 form-group  form-float">
+                                                        <label for="specialDiscountValidTo">
+                                                            Special Discount Valid to
+                                                        </label>
+                                                        <input type="text" id="specialDiscountValidTo"
+                                                               class="form-control specialDiscountValidTo date"
+                                                               name="specialDiscountValidTo"
+                                                               placeholder="Special Discount Valid to"/>
+                                                    </div>
+
+                                                    <div class="col-lg-6 form-group  form-float">
+                                                        <label for="specialRate">
+                                                            Special Rate
+                                                        </label>
+                                                        <input type="number" id="specialRate"
+                                                               class="form-control specialRate" onblur="setTwoNumberDecimal()" value ="0"
+                                                               name="specialRate" placeholder="Special Rate"/>
+                                                    </div>
+
+                                                    <div class="col-lg-6 form-group  form-float">
+                                                        <label for="specialRateValidFrom">
+                                                            Special Rate Valid From
+                                                        </label>
+                                                        <input type="text" id="specialRateValidFrom"
+                                                               class="form-control specialRateValidFrom date"
+                                                               name="specialRateValidFrom"
+                                                               placeholder="Special Rate Valid From"/>
+                                                    </div>
+
+                                                    <div class="col-lg-6 form-group  form-float">
+                                                        <label for="specialRateValidTo">
+                                                            Special Rate Valid to
+                                                        </label>
+                                                        <input type="text" id="specialRateValidTo"
+                                                               class="form-control specialRateValidTo date"
+                                                               name="specialRateValidTo"
+                                                               placeholder="Special Rate Valid to"/>
+                                                    </div>
+                                                    <input type="hidden" name="schemeStatus" value="1">
+                                                    <input type="hidden" name="status" value="1">
+                                                    <input type="hidden" name="entityId" value="${session.getAttribute('entityId')}">
+                                                    <input type="hidden" name="entityTypeId" value="${session.getAttribute('entityTypeId')}">
+                                                    <input type="hidden" name="distributorId" value="0">
+                                                    <input type="hidden" name="syncStatus" value="1">
+                                                    <input type="hidden" name="createdUser" value="${session.getAttribute('userId')}">
+                                                    <input type="hidden" name="modifiedUser" value="${session.getAttribute('userId')}">
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="modal-footer">
+                        <input name="id" id="id" class="id" type="hidden"/>
+                        <input name="type" class="type" value="add" type="hidden"/>
+                        <button type="submit" class="btn btn-default btn-round waves-effect" name="submituser"><font
+                                style="vertical-align: inherit;"><font style="vertical-align: inherit;">SUBMIT</font></font></button>
+                        <button type="button" class="btn btn-danger btn-simple btn-round waves-effect" data-dismiss="modal"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">CLOSE</font></font></button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+
 <g:include view="controls/sales/batch-detail.gsp"/>
 <g:include view="controls/delete-modal.gsp"/>
 
@@ -252,6 +576,7 @@
         'CGST',
         'IGST',
         'Manf. Date',
+        'scheme',
         'tax_id'
     ];
 
@@ -349,7 +674,8 @@
                         width: '0'
                     }
                 },
-                {type: 'text',readOnly:true},
+                {type: 'text', readOnly: true},
+                {type: 'text', readOnly: true},
                 {type: 'text', readOnly: true},
                 {type: 'text', readOnly: true},
                 {type: 'text', readOnly: true},
@@ -360,7 +686,7 @@
             hiddenColumns: true,
             hiddenColumns: {
                 // specify columns hidden by default
-                columns: [18]
+                columns: [19]
             },
             minSpareRows: 0,
             minSpareColumns: 0,
@@ -384,6 +710,10 @@
                     deleteTempStockRow(id, coords.row);
                     calculateTotalAmt();
                 }
+
+                // if (coords.col === 18) {
+                //     addScheme(coords.row);
+                // }
             },
             cells: function (row, col) {
                 const cellPrp = {};
@@ -402,6 +732,23 @@
                         td.innerHTML = '<button class="btn-danger" style="margin: 2px;">Delete</button>';
                     };
                 }
+
+                if(col === 18)
+                {
+                    cellPrp.readOnly = true;
+                    cellPrp.renderer = function (
+                        instance,
+                        td,
+                        row,
+                        col,
+                        prop,
+                        value,
+                        cellProperties
+                    ) {
+                        Handsontable.renderers.TextRenderer.apply(this, arguments);
+                        td.innerHTML = '<button class="btn-success" style="margin: 2px;">Scheme</button>';
+                    };
+                }
                 return cellPrp;
             }
         });
@@ -413,9 +760,8 @@
                 var fQty = 0;
                 const row = hot.getSelected()[0][0];
                 const selection = hot.getSelected()[0][1];
-                if(selection === 11)
-                {
-                    if(e.key === 'Delete' || e.key === 'Backspace' || e.keyCode === 27){
+                if (selection === 11) {
+                    if (e.key === 'Delete' || e.key === 'Backspace' || e.keyCode === 27) {
                         e.stopImmediatePropagation();
                     }
                 }
@@ -424,61 +770,95 @@
                         batchHot.selectCell(0, 0);
                         $("#batchTable").focus();
                     }
-                }
-                else if(selection === 0)
-                {
+                } else if (selection === 0) {
                     if (e.keyCode === 13)
                         deleteTempStockRow("", row);
-                }
-                else if (selection === 16) {
+                } else if (selection === 18) {
                     if ((e.keyCode === 13 || e.keyCode === 9) && !readOnly) {
                         //check if sqty is empty
                         var sqty = hot.getDataAtCell(row, 4);
                         var fqty = hot.getDataAtCell(row, 5);
                         var taxslab = hot.getDataAtCell(row, 11);
-                        if (sqty && sqty > 0 && taxslab!=="") {
+                        if (sqty && sqty > 0 && taxslab !== "") {
                             var batchId = hot.getCellMeta(row, 2)?.batchId; //batch
                             var dt = hot.getDataAtRow(row);
                             dt.push(batchId);
                             console.log("Data added");
-                            for(var j = 0; j < 16; j++) {
+                            for (var j = 0; j < 17; j++) {
                                 hot.setCellMeta(row, j, 'readOnly', true);
+                                // hot.setCellMeta(row,j,'disableVisualSelection', true)
                             }
-                                mainTableRow = row + 1;
-                                calculateTotalAmt();
-                                hot.alter('insert_row');
-                                hot.selectCell(mainTableRow, 0);
+
+                            if(selection === 18)
+                            {
+                                addScheme(row)
+                            }
+                                // Swal.fire({
+                                //     title: 'Are you sure?',
+                                //     text: "Do you want to enter a scheme for this product?",
+                                //     showCancelButton: true,
+                                //     confirmButtonColor: '#3085d6',
+                                //     cancelButtonColor: '#d33',
+                                //     confirmButtonText: 'Yes'
+                                // }).then((result) => {
+                                //     if (result.isConfirmed) {
+                                //         $("#addSchemeModal").modal("show");
+                                //         $('#addSchemeModal').modal({
+                                //             backdrop: 'static',
+                                //             keyboard: false
+                                //         });
+                                //         $("#schemeForm").submit(function(e){
+                                //             e.preventDefault();
+                                //             const data = new FormData(e.target);
+                                //             const formJSON = Object.fromEntries(data.entries());
+                                //             formJSON.productId = hot.getDataAtCell(row, 1);
+                                //             formJSON.batch = hot.getDataAtCell(row, 2);
+                                //             $("#addSchemeModal").modal("hide");
+                                //         });
+                                //         mainTableRow = row + 1;
+                                //         calculateTotalAmt();
+                                //         hot.alter('insert_row');
+                                //         hot.selectCell(mainTableRow, 0);
+                                //     }
+                                //     else
+                                //     {
+                                //         mainTableRow = row + 1;
+                                //         calculateTotalAmt();
+                                //         hot.alter('insert_row');
+                                //         hot.selectCell(mainTableRow, 0);
+                                //     }
+                                // });
+
+                            mainTableRow = row + 1;
+                            calculateTotalAmt();
+                            hot.alter('insert_row');
+                            hot.selectCell(mainTableRow, 0);
 
                         } else {
-                            if(sqty<=0)
-                            {
+                            if (sqty <= 0) {
                                 alert("Invalid Quantity, please enter quantity greater than 0");
                             }
 
-                            if(taxslab==="")
-                            {
+                            if (taxslab === "") {
                                 alert("Please select any tax slab");
                             }
                         }
 
                     }
-                } else if (selection === 4 || selection === 5 || selection === 8 || selection === 6  || selection ===
+                } else if (selection === 4 || selection === 5 || selection === 8 || selection === 6 || selection ===
                     9 || selection === 11) {
                     if (e.keyCode === 13 || e.keyCode === 9) {
                         var discount = 0;
-                        if(selection === 6)
-                        {
+                        if (selection === 6) {
                             var mrp = hot.getDataAtCell(row, 8);
                             var oldSaleRate = hot.getDataAtCell(row, 6);
                             var saleRate = Number(this.getActiveEditor().TEXTAREA.value);
-                            if(saleRate > mrp)
-                            {
-                                hot.setDataAtCell(row, 6,  oldSaleRate);
+                            if (saleRate > mrp) {
+                                hot.setDataAtCell(row, 6, oldSaleRate);
                                 this.getActiveEditor().TEXTAREA.value = oldSaleRate;
                                 alert("Purchase Rate exceeds MRP!");
-                            }
-                            else {
-                                hot.setDataAtCell(row, 6,  Number(this.getActiveEditor().TEXTAREA.value));
+                            } else {
+                                hot.setDataAtCell(row, 6, Number(this.getActiveEditor().TEXTAREA.value));
                                 this.selectCell(row, selection + 1);
                             }
                         }
@@ -490,8 +870,7 @@
                             // alert(sq)
                             this.setDataAtCell(row, 4, sQty);
                             this.selectCell(row, selection + 1);
-                        } else
-                        {
+                        } else {
                             sQty = Number(this.getDataAtCell(row, 4));
                         }
 
@@ -499,8 +878,7 @@
                             fQty = Number(this.getActiveEditor().TEXTAREA.value);
                             hot.setDataAtCell(row, 5, fQty);
                             this.selectCell(row, selection + 1);
-                        } else
-                        {
+                        } else {
                             fQty = Number(this.getDataAtCell(row, 5));
                         }
 
@@ -512,9 +890,7 @@
                                 this.getActiveEditor().TEXTAREA.value = 0;
                                 hot.selectCell(row, 9);
                                 return;
-                            }
-                            else
-                            {
+                            } else {
                                 hot.setDataAtCell(row, 9, discount);
                                 this.selectCell(row, selection + 1);
                             }
@@ -535,57 +911,57 @@
                                     url: "/stockbook/product/" + pid + "/batch/" + batch,
                                     dataType: 'json',
                                     success: function (data) {
-                                       /* remQty = remQty + data.remainingQty;
-                                        remFQty = remFQty + data.remainingFreeQty;
-                                        if (remQty >= sQty) {
-                                            allowEntry = true;
-                                        }
-                                        else if (sQty >= remQty && remFQty >= sQty) {
-                                            allowEntry = true;
-                                        }
+                                        /* remQty = remQty + data.remainingQty;
+                                         remFQty = remFQty + data.remainingFreeQty;
+                                         if (remQty >= sQty) {
+                                             allowEntry = true;
+                                         }
+                                         else if (sQty >= remQty && remFQty >= sQty) {
+                                             allowEntry = true;
+                                         }
 
-                                        else if ((remQty + remFQty) >= sQty) {
-                                            allowEntry = true;
-                                        }
+                                         else if ((remQty + remFQty) >= sQty) {
+                                             allowEntry = true;
+                                         }
 
-                                        if(selection === 5)
-                                        {
-                                            if(remFQty >= fQty)
-                                            {
-                                                freeQtyEntry = true;
-                                            }
+                                         if(selection === 5)
+                                         {
+                                             if(remFQty >= fQty)
+                                             {
+                                                 freeQtyEntry = true;
+                                             }
 
-                                            else if ((remQty + remFQty) >= sQty+fQty) {
-                                                freeQtyEntry = true;
-                                                allowEntry = true;
-                                            }
-                                            else
-                                            {
-                                                freeQtyEntry = false;
-                                                allowEntry = false;
-                                            }
+                                             else if ((remQty + remFQty) >= sQty+fQty) {
+                                                 freeQtyEntry = true;
+                                                 allowEntry = true;
+                                             }
+                                             else
+                                             {
+                                                 freeQtyEntry = false;
+                                                 allowEntry = false;
+                                             }
 
-                                            if(freeQtyEntry!==true)
-                                            {
-                                                // hot.setDataAtCell(row, 5, 0);
-                                                alert("Entered Free quantity exceeds available quantity");
-                                            }
-                                        }
-                                        if (!allowEntry) {
-                                            // this.getActiveEditor().TEXTAREA.value = "";
-                                            hot.setDataAtCell(row, 4, 0);
-                                            hot.setDataAtCell(row, 5, 0);
-                                            hot.setDataAtCell(row, 11, 0);
-                                            hot.setDataAtCell(row, 12, 0);
-                                            hot.setDataAtCell(row, 13, 0);
-                                            hot.setDataAtCell(row, 14, 0);
-                                            alert("Entered quantity exceeds available quantity");
-                                            return;
-                                        }
-                                        else
-                                        {
-                                            hot.setDataAtCell(row,5,fQty)
-                                        }*/
+                                             if(freeQtyEntry!==true)
+                                             {
+                                                 // hot.setDataAtCell(row, 5, 0);
+                                                 alert("Entered Free quantity exceeds available quantity");
+                                             }
+                                         }
+                                         if (!allowEntry) {
+                                             // this.getActiveEditor().TEXTAREA.value = "";
+                                             hot.setDataAtCell(row, 4, 0);
+                                             hot.setDataAtCell(row, 5, 0);
+                                             hot.setDataAtCell(row, 11, 0);
+                                             hot.setDataAtCell(row, 12, 0);
+                                             hot.setDataAtCell(row, 13, 0);
+                                             hot.setDataAtCell(row, 14, 0);
+                                             alert("Entered quantity exceeds available quantity");
+                                             return;
+                                         }
+                                         else
+                                         {
+                                             hot.setDataAtCell(row,5,fQty)
+                                         }*/
                                     },
                                     error: function (data) {
                                         alert("Something went Wrong!")
@@ -594,16 +970,12 @@
                             );
                         }
                         applySchemes(row, sQty);
-                        if(selection === 6)
-                        {
+                        if (selection === 6) {
                             pRate = Number(this.getActiveEditor().TEXTAREA.value);
-                            if(pRate === 0)
-                            {
+                            if (pRate === 0) {
                                 pRate = hot.getDataAtCell(row, 6);
                             }
-                        }
-                        else
-                        {
+                        } else {
                             pRate = hot.getDataAtCell(row, 6);
                         }
 
@@ -613,8 +985,7 @@
                         hot.setDataAtCell(row, 13, Number(finalPrice).toFixed(2));
                         var gstAmount;
                         var supplierState = $('#supplier').find(':selected').data('state');
-                        if(supplierState === ${session.getAttribute('stateId')})
-                        {
+                        if (supplierState === ${session.getAttribute('stateId')}) {
                             if (gst !== 0) {
                                 gstAmount = priceBeforeGst * (gst / 100);
                                 var sgstAmount = priceBeforeGst * (sgst / 100);
@@ -632,9 +1003,7 @@
                             //     var igstAmount = priceBeforeGst * (igst / 100);
                             //     hot.setDataAtCell(row, 16, Number(igstAmount).toFixed(2)); //IGST
                             // } else{hot.setDataAtCell(row, 16, 0);}
-                        }
-                        else
-                        {
+                        } else {
                             //setting up igst
                             gstAmount = priceBeforeGst * (gst / 100);
                             hot.setDataAtCell(row, 12, gstAmount.toFixed(2)); //GST
@@ -642,8 +1011,7 @@
                             hot.setDataAtCell(row, 15, 0); //CGST
                             hot.setDataAtCell(row, 16, gstAmount.toFixed(2))
                         }
-                        if(selection === 11)
-                        {
+                        if (selection === 11) {
                             this.selectCell(row, selection + 1);
                         }
                     }
@@ -653,8 +1021,8 @@
         });
 
         hot.addHook('afterSelection', (row, col) => {
-            if(col === 2) {
-                batchSelection(hot.getDataAtCell(row,1),row,false);
+            if (col === 2) {
+                batchSelection(hot.getDataAtCell(row, 1), row, false);
             }
         });
 
@@ -693,7 +1061,7 @@
                     success: function (data) {
                         const row = hot.getSelected()[0][0];
                         hot.setDataAtCell(row, 11, Number(taxId[1]).toFixed(2));
-                        hot.setDataAtCell(row, 18, taxId[0].trim());
+                        hot.setDataAtCell(row, 19, taxId[0].trim());
                         var pR = hot.getDataAtCell(row, 6);
                         var sq = hot.getDataAtCell(row, 4);
                         var disc = hot.getDataAtCell(row, 9);
@@ -776,7 +1144,7 @@
             hiddenColumns: true,
             hiddenColumns: {
                 // specify columns hidden by default
-                columns: [10,11,12,13]
+                columns: [10, 11, 12, 13]
             },
             minSpareRows: 0,
             minSpareCols: 0,
@@ -853,7 +1221,7 @@
                             batchdt.push(data[i].sgst);
                             batchdt.push(data[i].cgst);
                             batchdt.push(data[i].igst);
-                            if(data[i].id == null)
+                            if (data[i].id == null)
                                 batchdt.push("new");
                             else
                                 batchdt.push(data[i].id);
@@ -865,7 +1233,6 @@
                         });
                         if (batchdt?.length > 0) {
                             batchHot.loadData(batchData);
-
                             if (selectCell) {
                                 $("#batchTable").focus();
                                 batchHot.selectCell(0, 0);
@@ -884,7 +1251,7 @@
         var noOfCrDays = 0;
         var customerId = $("#supplier").val();
         for (var i = 0; i < customers.length; i++) {
-            if (customerId == customers[i].id) {
+            if (customerId === customers[i].id) {
                 noOfCrDays = customers[i].noOfCrDays;
             }
         }
@@ -908,7 +1275,7 @@
             if (data[i][4])
                 totalQty += Number(data[i][4]);
             if (data[i][5])
-                totalFQty +=  Number(data[i][5]);
+                totalFQty += Number(data[i][5]);
             if (data[i][13])
                 totalAmt += Number(data[i][13]);
             if (data[i][12])
@@ -942,9 +1309,9 @@
         return false;
     }
 
-    function loadTempStockBookData()
-    {
-        /*  var userId = "${session.getAttribute("userId")}";
+    function loadTempStockBookData() {
+        /*  var userId = "
+        ${session.getAttribute("userId")}";
         $.ajax({
             type: "GET",
             url: "tempstockbook/user/"+userId,
@@ -1010,9 +1377,8 @@
         })*/
     }
 
-    function deleteTempStockRow(id, row)
-    {
-        if(!readOnly) {
+    function deleteTempStockRow(id, row) {
+        if (!readOnly) {
             /*  if(id) {
                   $.ajax({
                       type: "POST",
@@ -1026,14 +1392,52 @@
               }
               else*/
             hot.alter("remove_row", row);
-        }
-        else
+            hot.selectCell(row, 0);
+        } else
             alert("Can't change this now, invoice has been saved already.")
     }
 
+
+    function addScheme(row){
+        Swal.fire({
+            title: 'Are you sure?',
+            text: "Do you want to enter a scheme for this product?",
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Yes'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                $("#addSchemeModal").modal("show");
+                jQuery("#schemeForm").submit(function(e){
+                    e.preventDefault();
+                    const data = new FormData(e.target);
+                    const formJSON = Object.fromEntries(data.entries());
+                    formJSON.productId = hot.getDataAtCell(row, 1);
+                    formJSON.batch = hot.getDataAtCell(row, 2);
+                    if(formJSON?.batch!==null && formJSON?.productId!==null)
+                    {
+                        localStorage.setItem(formJSON.productId+"-"+formJSON.batch, JSON.stringify(formJSON));
+                    }
+                    console.log(formJSON);
+                    $("#addSchemeModal").modal("hide");
+                });
+                // mainTableRow = row + 1;
+                // calculateTotalAmt();
+                // hot.alter('insert_row');
+                // hot.selectCell(mainTableRow, 0);
+                // console.log("nothing!")
+            }
+            else
+            {
+               console.log("nothing!")
+            }
+        });
+    }
+
     var purchasebillid = 0;
-    function savePurchaseInvoice(billStatus)
-    {
+
+    function savePurchaseInvoice(billStatus) {
         var waitingSwal = Swal.fire({
             title: "Generating Purchase Invoice, Please wait!",
             showDenyButton: false,
@@ -1044,8 +1448,7 @@
 
         var supplierBillId = $("#supplierBillId").val();
         var supplierBillDate = $("#supplierBillDate").val();
-        if(supplierBillId?.length === 0 || supplierBillDate?.length === 0)
-        {
+        if (supplierBillId?.length === 0 || supplierBillDate?.length === 0) {
             Swal.fire({
                 title: "Please enter supplier invoice number and date",
                 showDenyButton: false,
@@ -1067,13 +1470,13 @@
 
         var priority = $("#priority").val();
 
-        if(!series) {
+        if (!series) {
             alert("Please select series.");
             waitingSwal.close();
             return;
         }
 
-        if(!supplier) {
+        if (!supplier) {
             alert("Please select supplier.");
             waitingSwal.close();
             return;
@@ -1085,15 +1488,15 @@
             type: "POST",
             url: "/purchase-entry",
             dataType: 'json',
-            data:{
+            data: {
                 purchaseData: purchaseData,
-                supplier:supplier,
-                series:series,
-                duedate:duedate,
-                priority:priority,
+                supplier: supplier,
+                series: series,
+                duedate: duedate,
+                priority: priority,
                 billStatus: billStatus,
-                seriesCode:seriesCode,
-                supplierBillDate:supplierBillDate,
+                seriesCode: seriesCode,
+                supplierBillDate: supplierBillDate,
                 supplierBillId: supplierBillId,
                 uuid: self.crypto.randomUUID()
             },
@@ -1101,9 +1504,9 @@
                 console.log(data);
                 readOnly = true;
                 var rowData = hot.getData();
-                for(var j = 0; j < rowData.length;j++) {
+                for (var j = 0; j < rowData.length; j++) {
                     for (var i = 0; i < 16; i++) {
-                        hot.setCellMeta(j, i,'readOnly', true);
+                        hot.setCellMeta(j, i, 'readOnly', true);
                     }
                 }
                 purchasebillid = data.purchaseBillDetail.id;
@@ -1114,10 +1517,10 @@
                 var invoiceNumber = data.purchaseBillDetail.invoiceNumber;
                 $("#invNo").html("<p><strong>" + invoiceNumber + "</strong></p>");
                 var message = "";
-                var draftInvNo ="";
-                if(billStatus === "DRAFT"){
+                var draftInvNo = "";
+                if (billStatus === "DRAFT") {
                     draftInvNo = '<p><strong>' + data.purchaseBillDetail.entityId + "/DR/S/" + month + year + "/"
-                        + seriesCode + "/__"+'<p><strong>';
+                        + seriesCode + "/__" + '<p><strong>';
                     $("#invNo").html(draftInvNo);
                 }
                 if (billStatus !== "DRAFT") {
@@ -1143,7 +1546,7 @@
 
 
             },
-            error: function(){
+            error: function () {
                 waitingSwal.close();
                 Swal.fire({
                     title: "Unable to generate Invoice at the moment.",
@@ -1154,9 +1557,8 @@
 
     }
 
-    function printInvoice()
-    {
-        if(readOnly) {
+    function printInvoice() {
+        if (readOnly) {
             window.open(
                 '/purchase-entry/print-order?id=' + purchasebillid,
                 '_blank'
@@ -1165,8 +1567,7 @@
         }
     }
 
-    function resetPage()
-    {
+    function resetPage() {
         Swal.fire({
             title: "Reset Contents?",
             showDenyButton: true,
@@ -1179,8 +1580,7 @@
         });
     }
 
-    function resetData()
-    {
+    function resetData() {
         $("#invNo").html("");
         purchaseData.length = 0;
         batchData.length = 0;
@@ -1207,23 +1607,21 @@
         calculateTotalAmt();
     }
 
-    function seriesChanged()
-    {
+    function seriesChanged() {
         var series = $("#series").val();
         loadProducts(series);
 
     }
 
-    function loadProducts(series)
-    {
+    function loadProducts(series) {
         products.length = 0;//remove all elements
         $.ajax({
             type: "GET",
-            url: "/product/series/"+series,
+            url: "/product/series/" + series,
             dataType: 'json',
             success: function (data) {
-                for(var i=0; i<data.length;i++) {
-                    products.push({id:data[i].id, text: data[i].productName});
+                for (var i = 0; i < data.length; i++) {
+                    products.push({id: data[i].id, text: data[i].productName});
                 }
                 loadTempStockBookData();
             },
@@ -1238,7 +1636,7 @@
         $.ajax({
             type: "GET",
             url: "/sales/check-scheme",
-            data:{
+            data: {
                 productId: productId,
                 batchNumber: batchNumber
             },
@@ -1247,19 +1645,16 @@
                 scheme = data;
                 var offers = "";
 
-                if(data.slab1Status === 1)
-                {
-                    offers = "S1: "+data.slab1MinQty + "+" + data.slab1SchemeQty;
+                if (data.slab1Status === 1) {
+                    offers = "S1: " + data.slab1MinQty + "+" + data.slab1SchemeQty;
                 }
 
-                if(data.slab2Status === 1)
-                {
-                    offers += " | S2: "+data.slab2MinQty + "+" + data.slab2SchemeQty;
+                if (data.slab2Status === 1) {
+                    offers += " | S2: " + data.slab2MinQty + "+" + data.slab2SchemeQty;
                 }
 
-                if(data.slab3Status === 1)
-                {
-                    offers += " | S3: "+data.slab3MinQty + "+" + data.slab3SchemeQty;
+                if (data.slab3Status === 1) {
+                    offers += " | S3: " + data.slab3MinQty + "+" + data.slab3SchemeQty;
                 }
 
                 $("#offers").html(offers)
@@ -1272,79 +1667,63 @@
 
     function applySchemes(row, saleQty) {
         if (scheme && saleQty > 0) {
-            if(saleQty>=scheme.slab1MinQty && saleQty<scheme.slab2MinQty)
-            {
-                if(scheme.slab1Status == 1) {
-                    if(scheme.slab2BulkStatus == 1) {
-                        var slab1Multiplier = Math.floor(parseInt(saleQty)/scheme.slab1MinQty);
+            if (saleQty >= scheme.slab1MinQty && saleQty < scheme.slab2MinQty) {
+                if (scheme.slab1Status == 1) {
+                    if (scheme.slab2BulkStatus == 1) {
+                        var slab1Multiplier = Math.floor(parseInt(saleQty) / scheme.slab1MinQty);
                         var slab1Qty = scheme.slab1SchemeQty * slab1Multiplier;
                         hot.setDataAtCell(row, 5, slab1Qty);
-                    }
-                    else
-                    {
+                    } else {
                         hot.setDataAtCell(row, 5, scheme.slab1SchemeQty);
                     }
-                }
-                else
+                } else
                     hot.setDataAtCell(row, 5, 0);
-            }
-            else if(saleQty>=scheme.slab2MinQty && saleQty<scheme.slab3MinQty)
-            {
-                if(scheme.slab2Status == 1) {
-                    if(scheme.slab2BulkStatus == 1)
-                    {
+            } else if (saleQty >= scheme.slab2MinQty && saleQty < scheme.slab3MinQty) {
+                if (scheme.slab2Status == 1) {
+                    if (scheme.slab2BulkStatus == 1) {
 
-                        var slab2Multiplier = Math.floor(parseInt(saleQty)/scheme.slab2MinQty);
+                        var slab2Multiplier = Math.floor(parseInt(saleQty) / scheme.slab2MinQty);
                         var slab2Qty = slab2Multiplier * scheme.slab2MinQty;
                         var slb2RemQty = saleQty - slab2Qty;
 
-                        var slab1Multiplier = Math.floor(parseInt(slb2RemQty)/scheme.slab1MinQty);
+                        var slab1Multiplier = Math.floor(parseInt(slb2RemQty) / scheme.slab1MinQty);
                         var slab2Qty = scheme.slab2SchemeQty * slab2Multiplier;
                         var slab1Qty = scheme.slab1SchemeQty * slab1Multiplier;
 
-                        hot.setDataAtCell(row, 5,slab2Qty+slab1Qty);
+                        hot.setDataAtCell(row, 5, slab2Qty + slab1Qty);
+                    } else {
+                        hot.setDataAtCell(row, 5, scheme.slab2SchemeQty);
                     }
-                    else {
-                        hot.setDataAtCell(row, 5,  scheme.slab2SchemeQty);
-                    }
-                }
-                else
+                } else
                     hot.setDataAtCell(row, 5, 0);
-            }
-            else if(saleQty>=scheme.slab3MinQty)
-            {
-                if(scheme.slab3Status == 1) {
-                    if(scheme.slab3BulkStatus == 1)
-                    {
-                        var slab3Multiplier = Math.floor(parseInt(saleQty)/scheme.slab3MinQty);
-                        var slab3Qty = slab3Multiplier*scheme.slab3MinQty;
+            } else if (saleQty >= scheme.slab3MinQty) {
+                if (scheme.slab3Status == 1) {
+                    if (scheme.slab3BulkStatus == 1) {
+                        var slab3Multiplier = Math.floor(parseInt(saleQty) / scheme.slab3MinQty);
+                        var slab3Qty = slab3Multiplier * scheme.slab3MinQty;
                         var slb3RemQty = saleQty - slab3Qty;
 
                         var slab2Qty = 0;
                         var slb2RemQty = 0;
-                        var slab2Multiplier = Math.floor(parseInt(slb3RemQty)/scheme.slab2MinQty);
-                        if(slab2Multiplier > 0) {
+                        var slab2Multiplier = Math.floor(parseInt(slb3RemQty) / scheme.slab2MinQty);
+                        if (slab2Multiplier > 0) {
                             slab2Qty = slab2Multiplier * scheme.slab2MinQty;
                             slb2RemQty = slb3RemQty - slab2Qty;
-                        }
-                        else
-                        {
+                        } else {
                             slb2RemQty = slb3RemQty;
                         }
 
-                        var slab1Multiplier = Math.floor(parseInt(slb2RemQty)/scheme.slab1MinQty);
+                        var slab1Multiplier = Math.floor(parseInt(slb2RemQty) / scheme.slab1MinQty);
 
                         slab3Qty = scheme.slab3SchemeQty * slab3Multiplier;
                         slab2Qty = scheme.slab2SchemeQty * slab2Multiplier;
                         var slab1Qty = scheme.slab1SchemeQty * slab1Multiplier;
 
-                        hot.setDataAtCell(row, 5, slab3Qty+slab2Qty+slab1Qty);
-                    }
-                    else {
+                        hot.setDataAtCell(row, 5, slab3Qty + slab2Qty + slab1Qty);
+                    } else {
                         hot.setDataAtCell(row, 5, scheme.slab3SchemeQty);
                     }
-                }
-                else
+                } else
                     hot.setDataAtCell(row, 5, 0);
             }
         }
@@ -1385,7 +1764,7 @@
 
 
     function calculateTaxes() {
-        if(hot == null)
+        if (hot == null)
             return;
         var data = hot.getData();
         for (var row = 0; row < data.length; row++) {
@@ -1397,10 +1776,9 @@
             var cgstPercentage = hot.getDataAtCell(row, 20);
 
             if (stateId === '${session.getAttribute('stateId')}') {
-                if(igstAmount !== 0)
-                {
-                    hot.setDataAtCell(row, 14, Number(igstAmount/2).toFixed(2)); //SGST
-                    hot.setDataAtCell(row, 15, Number(igstAmount/2).toFixed(2)); //CGST
+                if (igstAmount !== 0) {
+                    hot.setDataAtCell(row, 14, Number(igstAmount / 2).toFixed(2)); //SGST
+                    hot.setDataAtCell(row, 15, Number(igstAmount / 2).toFixed(2)); //CGST
                     hot.setDataAtCell(row, 16, 0); //IGST
 
                     hot.setDataAtCell(row, 19, sgstPercentage);
@@ -1408,7 +1786,7 @@
                     hot.setDataAtCell(row, 21, 0);
                 }
             } else {
-                if(sgstAmount !== 0 && cgstAmount !== 0) {
+                if (sgstAmount !== 0 && cgstAmount !== 0) {
                     hot.setDataAtCell(row, 14, 0); //SGST
                     hot.setDataAtCell(row, 15, 0); //CGST
                     hot.setDataAtCell(row, 16, (sgstAmount + cgstAmount).toFixed(2)); //IGST
@@ -1622,7 +2000,9 @@
 
     })(Handsontable);
 
-
+    function setTwoNumberDecimal(event) {
+        this.value = parseFloat(this.value);
+    }
 </script>
 
 <g:include view="controls/footer-content.gsp"/>
