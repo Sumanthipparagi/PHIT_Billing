@@ -227,6 +227,7 @@
     var id = null;
     $(function () {
         saleInvoiceTable();
+        $("#creditsApplied").text("0.00");
     });
 
     function saleInvoiceTable() {
@@ -473,10 +474,10 @@
 
                 if(availableCredits > 0)
                 {
-                    $("#paymentsAlert").html("<div class=\"alert alert-success\" role=\"alert\">\n" +
+                    $("#paymentsAlert").html("<div class=\"alert alert-primary\" role=\"alert\">\n" +
                         "<div class=\"container\">\n" +
-                        "    <strong>Credits Available!</strong> Add <strong>₹" + availableCredits.toFixed(2) + "</strong> to current invoice?"+
-                        "    <button type=\"button\" class=\"close\" data-dismiss=\"alert\" aria-label=\"Close\">\n" +
+                        "    <strong>₹"+availableCredits.toFixed(2)+" Credits Available!</strong> Adjust it to current invoice?"+
+                        "    <button onclick='applyCredits("+availableCredits+")' type=\"button\" class=\"close\" data-dismiss=\"alert\" aria-label=\"Close\">\n" +
                         "            <span aria-hidden=\"true\">\n" +
                         "            <i class=\"zmdi zmdi-plus\"></i>\n" +
                         "        </span>\n" +
@@ -494,7 +495,7 @@
                 $("#totaltax").html(totaltax.toFixed(2));
                 $("#totalAmt").html(totalAmt.toFixed(2));
                 $("#totalPaid").html(totalPaid.toFixed(2));
-                $("#totalDue").html(invoice.balance.toFixed(2));
+                $(".totalDue").html(invoice.balance.toFixed(2));
                 $("#badgeContainer").html(badgeContainer);
 
                 var previousPaymentsTable = $("#previousPaymentsTable");
@@ -543,6 +544,14 @@
             $("#detailsContainer").removeClass("col-md-7");
             $("#detailsContainer").removeClass("opened");
         }
+    }
+
+    function applyCredits(creditAvailable) {
+        $("#creditsApplied").text(creditAvailable.toFixed(2))
+    }
+    function removeCredits()
+    {
+        $("#creditsApplied").text("0.00")
     }
 </script>
 <g:include view="controls/footer-content.gsp"/>

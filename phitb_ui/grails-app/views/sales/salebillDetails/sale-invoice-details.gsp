@@ -3,8 +3,8 @@
                                         aria-expanded="true">Details</a></li>
     <li class="nav-item inlineblock"><a class="nav-link" data-toggle="tab" href="#payments"
                                         aria-expanded="false">Record Payments</a></li>
-    <li class="nav-item inlineblock"><a class="nav-link" data-toggle="tab" href="#salesreturn"
-                                        aria-expanded="false">Sales Return</a></li>
+    <li class="nav-item inlineblock"><a class="nav-link" data-toggle="tab" href="#paymentsHistory"
+                                        aria-expanded="false">Payments History</a></li>
     <li class="nav-item inlineblock"><a class="nav-link" data-toggle="tab" href="#activity"
                                         aria-expanded="false">Activity</a></li>
 </ul>
@@ -104,7 +104,7 @@
                                 <tr><td><strong>Total Paid</strong></td><td id="totalPaid"
                                                                             style="text-align: left;"></td>
                                 </tr>
-                                <tr><td style="color: red;"><strong>Total Due</strong></td><td id="totalDue"
+                                <tr><td style="color: red;"><strong>Total Due</strong></td><td id="totalDue" class="totalDue"
                                                                                                style="text-align: left; color: red"></td>
                                 </tr>
                                 </tbody>
@@ -127,14 +127,143 @@
                     </div>
                 </div>
             </div>
+
             <div class="row">
                 <div class="col-md-12" id="paymentsAlert">
 
                 </div>
             </div>
+
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="amount">Amount: <span style="color: red" class="required-indicator">*</span></label>
+                        <input class="form-control" type="text" value="0.00" id="amount" name="amount" required/>
+                    </div>
+                </div>
+
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="paymentMode">Payment Mode: <span style="color: red"
+                                                                     class="required-indicator">*</span></label>
+                        <select class="form-control" id="paymentMode" name="paymentMode" required>
+                            <option>Bank</option>
+                            <option>Cash</option>
+                            <option>Card</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="paymentMethod">Payment Method: <span style="color: red"
+                                                                         class="required-indicator">*</span></label>
+                        <select class="form-control" id="paymentMethod" name="paymentMethod" required>
+                            <option>CASH DEPOSIT AT ACCOUNT</option>
+                            <option>DEMAND DRAFT</option>
+                            <option>CHEQUE</option>
+                            <option>NEFT/RTGS</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="depositTo">Deposit To: <span style="color: red" class="required-indicator">*</span>
+                        </label>
+                        <select class="form-control" id="depositTo" name="depositTo" required>
+                        </select>
+                    </div>
+                </div>
+            </div>
+
             <div class="row">
                 <div class="col-md-12">
-                    <h6><u>Payment History</u></h6>
+                    <div class="form-group">
+                        <label for="payeeBanker">Payee Banker: <span style="color: red"
+                                                                     class="required-indicator">*</span></label>
+                        <select class="form-control" id="payeeBanker" name="payeeBanker" required>
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="form-group">
+                        <label for="cardNumber">Card Number:</label>
+                        <input class="form-control" type="text" id="cardNumber" name="cardNumber"/>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="paymentDate">Payment Date: <span style="color: red"
+                                                                     class="required-indicator">*</span></label>
+                        <input class="form-control" type="text" id="paymentDate" name="paymentDate" required/>
+                    </div>
+                </div>
+
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="instrumentId">Instrument ID:</label>
+                        <input class="form-control" type="text" id="instrumentId" name="instrumentId"/>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="form-group">
+                        <label for="remarks">Remarks:</label>
+                        <textarea rows="2" class="form-control" id="remarks" name="remarks"></textarea>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-12 clearfix">
+                    <div class="pull-right">
+                        <table class="table">
+                            <thead></thead>
+                            <tbody>
+                            <tr><td>Total Due</td><td class="totalDue" style="text-align: left; color: red"></tr>
+                            <tr><td>Credits Applied</td><td id="creditsApplied" style="text-align: left;">0.00</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-12 clearfix">
+                    <div class="pull-right">
+                        <button class="btn btn-success btn-sm">Record Payment</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div role="tabpanel" class="tab-pane" id="paymentsHistory" aria-expanded="false">
+        <div style="padding: 20px 0 0 10px;">
+            <div class="row detailsSpinner">
+                <div class="col-md-12">
+                    <div class="text-center">
+                        <div class="spinner-border" role="status">
+                            <span class="sr-only">Loading...</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-12">
+                    <p><u><i>Payment History</i></u></p>
                 </div>
             </div>
 
@@ -162,20 +291,6 @@
         </div>
     </div>
 
-    <div role="tabpanel" class="tab-pane" id="salesreturn" aria-expanded="false">
-        <div class="row detailsSpinner">
-            <div class="col-md-12">
-                <div class="text-center">
-                    <div class="spinner-border" role="status">
-                        <span class="sr-only">Loading...</span>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div style="padding: 20px 0 0 10px;;">
-        </div>
-    </div>
-
     <div role="tabpanel" class="tab-pane" id="activity" aria-expanded="false">
         <div class="row detailsSpinner">
             <div class="col-md-12">
@@ -186,6 +301,7 @@
                 </div>
             </div>
         </div>
+
         <div style="padding: 20px 0 0 10px;">
         </div>
     </div>
