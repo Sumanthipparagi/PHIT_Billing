@@ -134,6 +134,34 @@ class AccountsService
 
     }
 
+    def getBankRegisterByEntity(String id)
+    {
+        Client client = ClientBuilder.newClient();
+        WebTarget target = client.target(new Links().API_GATEWAY);
+
+        try
+        {
+            Response apiResponse = target
+                    .path(new Links().BANK_REGISTER_BY_ENTITY + "/"+ id)
+                    .request(MediaType.APPLICATION_JSON_TYPE)
+                    .get()
+            if(apiResponse.status == 200)
+            {
+                JSONArray jsonArray = new JSONArray(apiResponse.readEntity(String.class).toString())
+                return jsonArray
+            }
+            else {
+                return null
+            }
+
+        }
+        catch (Exception ex)
+        {
+            System.err.println('Service :showAccountModes , action :  show  , Ex:' + ex)
+            log.error('Service :showAccountModes , action :  show  , Ex:' + ex)
+        }
+
+    }
 
     //Recipt Detail
     def saveRecipt(JSONObject jsonObject, String financialYear)

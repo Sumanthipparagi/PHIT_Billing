@@ -46,7 +46,7 @@ class ReciptDetailController {
     def index() {
         String entityId = session.getAttribute('entityId')
         ArrayList<String> entity = new EntityRegisterController().getByAffiliateById(entityId) as ArrayList<String>
-        ArrayList<String> bank = new BankRegisterController().show() as ArrayList
+        ArrayList<String> bank = new AccountsService().getBankRegisterByEntity(entityId) as ArrayList
         ArrayList<String> accountMode = new SystemService().getAccountModesByEntity(entityId) as ArrayList
         ArrayList<String> accountRegister = new EntityService().getAllAccountByEntity(entityId) as ArrayList
         ArrayList<String> wallet = new WalletController().show() as ArrayList
