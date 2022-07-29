@@ -152,7 +152,7 @@
                                             </label>
                                             <select class="form-control show-tick division" name="division"
                                                     id="division" required>
-                                                <option value="0">Please Select</option>
+                                                <option value="">Please Select</option>
                                                 <g:each var="d" in="${divisions}">
                                                     <option value="${d.id}">${d.divisionName}</option>
                                                 </g:each>
