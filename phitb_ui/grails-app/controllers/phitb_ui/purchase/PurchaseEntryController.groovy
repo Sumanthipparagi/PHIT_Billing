@@ -403,6 +403,15 @@ class PurchaseEntryController {
                     new InventoryService().stockBookSave(stockBook)
                 }
             }
+            JSONArray schemeData = new JSONArray(params.schemeData)
+            for (JSONObject scheme : schemeData) {
+                def resp1 = new SalesService().saveScheme(scheme)
+                if (resp1.status == 200) {
+                    println("Scheme Saved")
+                } else {
+                    println("Scheme Failed")
+                }
+            }
             JSONObject responseJson = new JSONObject()
             responseJson.put("series", series)
             responseJson.put("purchaseBillDetail", purchaseBillDetail)

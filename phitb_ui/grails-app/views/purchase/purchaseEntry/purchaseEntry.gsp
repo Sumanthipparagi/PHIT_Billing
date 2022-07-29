@@ -175,8 +175,8 @@
             </div>
 
             <div class="col-lg-4" style="margin-bottom: 10px;">
-                <p style="margin: 0; font-size: 10px;color: red;">Offers: <span id="offers"></span>
-                </p>
+%{--                <p style="margin: 0; font-size: 10px;color: red;">Offers: <span id="offers"></span>--}%
+%{--                </p>--}%
             </div>
         </div>
 
@@ -501,6 +501,7 @@
                                                                placeholder="Special Rate Valid to"/>
                                                     </div>
                                                     <input type="hidden" name="schemeStatus" value="1">
+                                                    <input type="hidden" class="hotRow" name="row" >
                                                     <input type="hidden" name="status" value="1">
                                                     <input type="hidden" name="entityId" value="${session.getAttribute('entityId')}">
                                                     <input type="hidden" name="entityTypeId" value="${session.getAttribute('entityTypeId')}">
@@ -620,6 +621,8 @@
     var scheme = null;
     var stateId = null;
     $(document).ready(function () {
+        window.localStorage.clear();
+        console.log(localStorage)
         $("#supplier").select2();
         $('#date').val(moment().format('YYYY-MM-DD'));
         $('#date').attr("readonly");
@@ -711,10 +714,11 @@
                     calculateTotalAmt();
                 }
 
-                // if (coords.col === 18) {
-                //     addScheme(coords.row);
-                // }
+                if (coords.col === 18) {
+                    addScheme(id,coords.row);
+                }
             },
+
             cells: function (row, col) {
                 const cellPrp = {};
                 if (col === 0) {
@@ -788,7 +792,7 @@
                                 hot.setCellMeta(row, j, 'readOnly', true);
                                 // hot.setCellMeta(row,j,'disableVisualSelection', true)
                             }
-
+                            //
                             if(selection === 18)
                             {
                                 addScheme(row)
@@ -969,7 +973,7 @@
                                 }
                             );
                         }
-                        applySchemes(row, sQty);
+                        // applySchemes(row, sQty);
                         if (selection === 6) {
                             pRate = Number(this.getActiveEditor().TEXTAREA.value);
                             if (pRate === 0) {
@@ -1161,7 +1165,7 @@
 
                     if (!checkForDuplicateEntry(rowData[0])) {
                         //check for schemes
-                        checkSchemes(hot.getDataAtCell(mainTableRow, 1), rowData[0]); //product, batch
+                        // checkSchemes(hot.getDataAtCell(mainTableRow, 1), rowData[0]); //product, batch
                         var batchId = rowData[13];
                         hot.setDataAtCell(mainTableRow, 2, rowData[0]);
                         hot.setCellMeta(mainTableRow, 2, "batchId", batchId);
@@ -1172,7 +1176,7 @@
                         hot.setDataAtCell(mainTableRow, 8, rowData[7]);
                         hot.setDataAtCell(mainTableRow, 9, 0);
                         hot.setDataAtCell(mainTableRow, 10, rowData[8]);
-                        hot.setDataAtCell(mainTableRow, 11, rowData[9].toFixed(2));
+                        hot.setDataAtCell(mainTableRow, 11, rowData[9]?.toFixed(2));
                         hot.setDataAtCell(mainTableRow, 17, rowData[2]);
                         gst = rowData[9];
                         sgst = rowData[10];
@@ -1391,6 +1395,11 @@
                   });
               }
               else*/
+            var productId = hot.getDataAtCell(row,1);
+            var batch = hot.getDataAtCell(row,2);
+            if(localStorage.getItem(productId+"-"+batch)!=null){
+                localStorage.removeItem(productId+"-"+batch)
+            }
             hot.alter("remove_row", row);
             hot.selectCell(row, 0);
         } else
@@ -1409,18 +1418,23 @@
         }).then((result) => {
             if (result.isConfirmed) {
                 $("#addSchemeModal").modal("show");
+                $('.hotRow').val(row);
                 jQuery("#schemeForm").submit(function(e){
                     e.preventDefault();
+                    $("#addSchemeModal").modal("hide");
                     const data = new FormData(e.target);
                     const formJSON = Object.fromEntries(data.entries());
-                    formJSON.productId = hot.getDataAtCell(row, 1);
-                    formJSON.batch = hot.getDataAtCell(row, 2);
+                    var productId = hot.getDataAtCell(formJSON?.row, 1);
+                    var batch = hot.getDataAtCell(formJSON?.row, 2);
+                    formJSON.productId = productId;
+                    formJSON.batch = batch;
+                    formJSON.customerIds = $("#supplier").val();
                     if(formJSON?.batch!==null && formJSON?.productId!==null)
                     {
-                        localStorage.setItem(formJSON.productId+"-"+formJSON.batch, JSON.stringify(formJSON));
+                        localStorage.setItem(formJSON.productId+"-"+formJSON.batch,JSON.stringify(formJSON));
                     }
                     console.log(formJSON);
-                    $("#addSchemeModal").modal("hide");
+                    return true;
                 });
                 // mainTableRow = row + 1;
                 // calculateTotalAmt();
@@ -1467,7 +1481,12 @@
 
         supplierBillDate = moment(supplierBillDate, 'YYYY-MM-DD').toDate();
         supplierBillDate = moment(supplierBillDate).format('DD/MM/YYYY');
-
+        var schemeData =[];
+        var keys = Object.keys(localStorage);
+        keys.forEach((e) =>{
+            console.log(JSON.parse(localStorage.getItem(e.toString())));
+            schemeData.push(JSON.parse(localStorage.getItem(e.toString())));
+        });
         var priority = $("#priority").val();
 
         if (!series) {
@@ -1496,6 +1515,7 @@
                 priority: priority,
                 billStatus: billStatus,
                 seriesCode: seriesCode,
+                schemeData: JSON.stringify(schemeData),
                 supplierBillDate: supplierBillDate,
                 supplierBillId: supplierBillId,
                 uuid: self.crypto.randomUUID()
