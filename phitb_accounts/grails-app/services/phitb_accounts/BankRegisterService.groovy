@@ -25,12 +25,12 @@ class BankRegisterService {
     }
 
     def getAllByEntity(String limit, String offset, long entityId) {
-        Integer o = offset ? Integer.parseInt(offset.toString()) : 0
-        Integer l = limit ? Integer.parseInt(limit.toString()) : 100
-        if (!entityId)
-            return BankRegister.findAll([sort: 'id', max: l, offset: o, order: 'desc'])
-        else
-            return BankRegister.findAllByEntityId(entityId, [sort: 'id', max: l, offset: o, order: 'desc'])
+        return BankRegister.createCriteria().list(){
+            or{
+                eq("entityId", entityId)
+            }
+            order("mode", "asc")
+        }
     }
 
 

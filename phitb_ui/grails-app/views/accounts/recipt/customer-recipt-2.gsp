@@ -176,7 +176,7 @@
                                     <g:each var="e" in="${entity}">
                                         <g:if test="${e.id != session.getAttribute("entityId")}">
                                             <option value="${e.id}"
-                                                data-type="${e.entityType.id}">${e.entityName}  (${e.entityType.name})</option>
+                                                    data-type="${e.entityType.id}">${e.entityName}  (${e.entityType.name})</option>
                                         </g:if>
                                     </g:each>
                                 </select>
@@ -203,18 +203,18 @@
 
                             </div>
 
-                                <div class="col-lg-3 form-group form-float accountMode">
-                                    <label for="accountMode">
-                                        Payment method
-                                    </label>
-                                    <select class="form-control show-tick accountMode" name="accountModeId"
-                                            id="accountMode" required>
-                                        <option value="">-- Please select --</option>
-                                        <g:each var="am" in="${accountMode}">
-                                            <option value="${am.id}">${am.mode}</option>
-                                        </g:each>
-                                    </select>
-                                </div>
+                            <div class="col-lg-3 form-group form-float accountMode">
+                                <label for="accountMode">
+                                    Payment method
+                                </label>
+                                <select class="form-control show-tick accountMode" name="accountModeId"
+                                        id="accountMode" required>
+                                    <option value="">-- Please select --</option>
+                                    <g:each var="am" in="${accountMode}">
+                                        <option value="${am.id}">${am.mode}</option>
+                                    </g:each>
+                                </select>
+                            </div>
 
                             <div class="col-lg-3 form-group  form-float" id="deposit">
                                 <label for="depositTo">
@@ -232,7 +232,7 @@
 
                             <div class="col-lg-3 form-group  form-float cheque">
                                 <label for="chequeNumber">
-                                   Instrument ID
+                                    Instrument ID
                                 </label>
                                 <input type="number" id="chequeNumber" class="chequeNumber form-control"
                                        name="chequeNumber"
@@ -283,27 +283,42 @@
                                        required/>
                             </div>
 
-                            <div class="col-lg-8">
-                                <div class="row">
-                                <div class="col-lg-4 form-group  form-float">
-                                <label for="amountPaid">
-                                    Amount
-                                </label>
-                                <input type="text" id="amountPaid" class="note form-control "
-                                       name="amountPaid"
-                                       placeholder="Amount" value="0" style="border-radius: 0;"  autocomplete="off"
-                                       required/>
-                                </div>
-                                <div class="col-lg-4 form-group  form-float">
-                                <button type="button" class="btn btn-secondary" id="autoAdj"
-                                        style="margin-top: 29px;margin-left: -31px;
-                                ">Auto Adjust</button>
-                                </div>
-                                </div>
-                            </div>
+                            %{--                            <div class="col-lg-6">--}%
+                            %{--                                <div class="row">--}%
+                            <div class="col-lg-2 form-group  form-float">
+%{--                                <label for="amountPaid">--}%
+%{--                                    Amount--}%
+%{--                                </label>--}%
+%{--                                <input type="text" id="amountPaid" class="note form-control "--}%
+%{--                                       name="amountPaid"--}%
+%{--                                       placeholder="Amount" value="0" style="border-radius: 0;" autocomplete="off"--}%
+%{--                                       required/>--}%
+%{--                                <button type="button" class="btn btn-secondary" id="autoAdj">Auto Adjust</button>--}%
 
-%{--                            <div class="col-lg-3 form-group  form-float mt-4">--}%
-%{--                            </div>--}%
+
+                                                        <label for="amountPaid">
+                                                            Amount
+                                                        </label>
+                                                        <input type="text" id="amountPaid" class="note form-control "
+                                                               name="amountPaid"
+                                                               placeholder="Amount" value="0" style="border-radius: 0;" autocomplete="off"
+                                                               required/>
+
+                                                        <button type="button" class="btn btn-secondary" id="autoAdj"
+                                                                style="    margin-left: 100%;margin-top: -40%;width:
+                                                                58%;padding-left: 3px;padding-right: 3px;">Auto Adjust</button>
+
+                    </div>
+                            %{--                                <div class="col-lg-3 form-group  form-float">--}%
+                            %{--                                <button type="button" class="btn btn-secondary" id="autoAdj"--}%
+                            %{--                                        style="margin-top: 29px;margin-left: -31px;--}%
+                            %{--                                ">Auto Adjust</button>--}%
+                            %{--                                </div>--}%
+                            %{--                                </div>--}%
+                            %{--                            </div>--}%
+
+                            %{--                            <div class="col-lg-3 form-group  form-float mt-4">--}%
+                            %{--                            </div>--}%
 
                             <input type="hidden" id="date" class="date" name="date"
                                    placeholder="Receipt Date" readonly
@@ -485,7 +500,7 @@
                 url: '/getbyentity/' + id,
                 dataType: 'json',
                 success: function (data) {
-                    invIdArray=[];
+                    invIdArray = [];
                     gtnIdArray = [];
                     crntIdArray = [];
                     getAllSaleBillDetails(id)
@@ -502,8 +517,6 @@
             $('#caddress').html("");
         }
     }
-
-
 
 
     function getAllSaleBillDetails(id) {
@@ -534,7 +547,7 @@
                     var gtnData = [];
                     $.each(data[0], function (key, value) {
                         var balance = value.balance.toFixed(2);
-                        if (Number(balance)!== 0 && value.billStatus!== 'DRAFT' && value.billStatus!== 'CANCELLED') {
+                        if (Number(balance) !== 0 && value.billStatus !== 'DRAFT' && value.billStatus !== 'CANCELLED') {
                             trHTML += ' <tr id="' + "IN" + value.id + '">\n' +
                                 '                                        <td>' + invoice + '</td>\n' +
                                 '                                        <td>' + value.invoiceNumber + '</td>\n' +
@@ -566,7 +579,7 @@
                                 '                                        <td id="' + "crntAdjAmt" + value.id + '">' +
                                 value.adjAmount.toFixed(2) + '</td>\n' +
                                 '                                        <td id="' + "crntBal" + value.id + '" >' +
-                                "-"+value.balance.toFixed(2) +
+                                "-" + value.balance.toFixed(2) +
                                 '</td>\n' +
                                 '                                        <td><input type="number" class="paidNowCrnt txt txtcrnt" id="paidNowCrnt' + value.id + '" name="paidNowCrnt" data-cnid="' + value.id + '" data-crbal="' + value.balance + '" style="width: 100px;" pattern="\\d{1,10}(?:\\.\\d{1,3})?$" value="0"></td>\n' +
                                 '                                        <td>' + value.totalAmount.toFixed(2) + '</td>\n' +
@@ -599,9 +612,9 @@
                                 '                                        <td>' + value.financialYear + '</td>\n' +
                                 '                                        <td style="display: none;">' + value.id + '</td>\n' +
                                 '                                        </tr>';
-                                gtnData.push(value.id)
-                                gtnIdArray.push(value.id);
-                                console.log(gtnIdArray)
+                            gtnData.push(value.id)
+                            gtnIdArray.push(value.id);
+                            console.log(gtnIdArray)
                         }
                     });
                     $('#billDetails').html(trHTML + trHTML1);
@@ -696,8 +709,7 @@
 
     $(document).on('click', '#autoAdj', function (e) {
         var amountPaid = Number($('#amountPaid').val());
-        if(amountPaid!==0 && amountPaid!=="" && !isNaN(amountPaid))
-        {
+        if (amountPaid !== 0 && amountPaid !== "" && !isNaN(amountPaid)) {
             $.each(invIdArray, function (key, value) {
                 var invBal = Number($('#invBal' + value).text());
                 if (invBal > amountPaid) {
@@ -728,9 +740,7 @@
                     $('#paidNowGtn' + value).val(gtnBal.toFixed(2));
                 }
             });
-        }
-        else
-        {
+        } else {
             Swal.fire({
                 icon: 'error',
                 title: 'Enter vaild amount!',
@@ -791,14 +801,13 @@
                 return;
             }
 
-            if (!paymentMode && paymentMode!=='') {
+            if (!paymentMode && paymentMode !== '') {
                 alert("Please select customer.");
                 waitingSwal.close();
                 return;
             }
 
-            if($('#paymentMode option:selected').attr('data-mode') !== "CASH")
-            {
+            if ($('#paymentMode option:selected').attr('data-mode') !== "CASH") {
                 if (!depositTo) {
                     alert("Please select deposit account.");
                     return;
@@ -889,9 +898,9 @@
                     }).then((result) => {
                         if (result.isConfirmed) {
                             location.reload();
-                        }else if (result.isDenied) {
+                        } else if (result.isDenied) {
                             location.reload();
-                            window.open("/print-recipt/"+data.receivedFrom+"/recipt/"+data.id, '_blank');
+                            window.open("/print-recipt/" + data.receivedFrom + "/recipt/" + data.id, '_blank');
                         }
                     });
                 },

@@ -12,6 +12,7 @@ public class Links
     public static String ACCOUNT_MODES_DATATABLE = "api/v1.0/system/accountmodes/datatable";
     public static String ACCOUNT_MODES_UPDATE = "api/v1.0/system/accountmodes/{id}";
     public static String ACCOUNT_MODES_DELETE = "api/v1.0/system/accountmodes/{id}";
+    public static String ACCOUNT_MODES_BY_ENTITY = "api/v1.0/system/accountmodesbyenity";
 
 //    Status
     public static String SYSTEM_SERVICE_STATUS = "api/v1.0/system/status";
@@ -567,6 +568,8 @@ public class Links
     public static String BANK_REGISTER_DATATABLE = "api/v1.0/accounts/bankregister/datatable";
     public static String BANK_REGISTER_UPDATE = "api/v1.0/accounts/bankregister/{id}";
     public static String BANK_REGISTER_DELETE = "api/v1.0/accounts/bankregister/{id}";
+    public static String BANK_REGISTER_BY_ENTITY = "api/v1.0/system/bankregisterbyenity";
+
 
 
 
@@ -723,7 +726,18 @@ public class Links
 
 
 
+    //Purchase Order Details
+    public static String PURCHASE_ORDER_SAVE = "api/v1.0/purchase/purchaseorder";
+    public static String PURCHASE_ORDER_SHOW = "api/v1.0/purchase/purchaseorder";
+    public static String PURCHASE_ORDER_DATATABLE = "api/v1.0/purchase/purchaseorder/datatable";
+    public static String PURCHASE_ORDER_RECENT = "api/v1.0/purchase/purchaseorder/getrecent";
+    public static String PURCHASE_ORDER_CANCEL = "api/v1.0/purchase/purchaseorder/cancel";
 
 
+//    Purchase Order Product Details
+    public static String PURCHASE_ORDER_PRODUCT_SHOW = "api/v1.0/purchase/orderproductdetail";
+    public static String PURCHASE_ORDER_PRODUCT_SAVE = "api/v1.0/purchase/orderproductdetail";
+    public static String PURCHASE_ORDER_PRODUCT_DELETE = "api/v1.0/purchase/orderproductdetail/{id}";
+    public static String PURCHASE_ORDER_PRODUCT_OF_BILL = "api/v1.0/purchase/orderproductdetail/bill";
 
 }

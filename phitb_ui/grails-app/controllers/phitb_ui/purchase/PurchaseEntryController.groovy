@@ -362,7 +362,7 @@ class PurchaseEntryController {
                     String saleQty = purchase.get("4")
                     String freeQty = purchase.get("5")
                     String manfDate = purchase.get("17")
-                    String taxId = purchase.get("18")
+                    String taxId = purchase.get("19")
                     String purchaseDate = new SimpleDateFormat("dd-MM-yyyy").format(new Date())
                     expDate = new SimpleDateFormat("yyyy-MM-dd").parse(expDate).format("dd-MM-yyyy")
                     manfDate = new SimpleDateFormat("yyyy-MM-dd").parse(manfDate).format("dd-MM-yyyy")
@@ -401,6 +401,15 @@ class PurchaseEntryController {
                     stockBook.put("openingStockQty", saleQty) //opening stock is same as sale while adding
                     stockBook.put("uuid", UUID.randomUUID())
                     new InventoryService().stockBookSave(stockBook)
+                }
+            }
+            JSONArray schemeData = new JSONArray(params.schemeData)
+            for (JSONObject scheme : schemeData) {
+                def resp1 = new SalesService().saveScheme(scheme)
+                if (resp1.status == 200) {
+                    println("Scheme Saved")
+                } else {
+                    println("Scheme Failed")
                 }
             }
             JSONObject responseJson = new JSONObject()

@@ -594,6 +594,21 @@ class UrlMappings {
         "/purchase-bill/datatable"(controller: "purchaseEntry", action: 'dataTable')
 
 
+
+
+
+//        purchase-order
+        "/purchase-order"(controller: "purchaseOrder") {
+            action = [GET: "index", POST: "savePurchaseOrder"]
+        }
+        "/purchase-order/print-order"(controller: "purchaseOrder", action: "printPurchaseOrder")
+
+        "/purchase-order/cancel-order"(controller: 'purchaseOrder', action: 'cancelPurchaseOrder')
+
+        //        My Orders
+        "/purchase-order-list"(controller: "purchaseOrder", action: 'purchaseOrderList')
+        "/purchase-order/datatable"(controller: "purchaseOrder", action: 'dataTable')
+
         //Inventory
         "/stockbook"(controller: "stockBook"){
             action = [GET: "index", POST: "save"]

@@ -5,20 +5,23 @@ import org.grails.web.json.JSONObject
 import phitb_ui.AccountsService
 import phitb_ui.EntityService
 import phitb_ui.ProductService
+import phitb_ui.SystemService
 import phitb_ui.entity.AccountRegisterController
 import phitb_ui.entity.EntityRegisterController
 import phitb_ui.sales.SalebillDetailsController
 import phitb_ui.system.AccountModeController
 import phitb_ui.system.PaymentModeController
 
+import java.util.stream.Collectors
+
 class PaymentDetailController {
 
     def index() {
         String entityId = session.getAttribute('entityId')
         ArrayList<String> entity = new EntityRegisterController().getByAffiliateById(entityId) as ArrayList<String>
-        ArrayList<String> bank = new BankRegisterController().show() as ArrayList
-        ArrayList<String> accountMode = new AccountModeController().show() as ArrayList
-        ArrayList<String> accountRegister = new AccountRegisterController().getAllAccounts() as ArrayList
+        ArrayList<String> bank = new AccountsService().getBankRegisterByEntity(entityId) as ArrayList
+        ArrayList<String> accountMode = new SystemService().getAccountModesByEntity(entityId) as ArrayList
+        ArrayList<String> accountRegister = new EntityService().getEntityById(entityId) as ArrayList
         ArrayList<String> wallet = new WalletController().show() as ArrayList
         ArrayList<String> saleinvoice = new SalebillDetailsController().show() as ArrayList
         ArrayList<String> paymodes = new PaymentModeController().show() as ArrayList<String>
