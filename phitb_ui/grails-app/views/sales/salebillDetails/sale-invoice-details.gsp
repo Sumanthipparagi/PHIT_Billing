@@ -138,7 +138,7 @@
                 <div class="col-md-6">
                     <div class="form-group">
                         <label for="amount">Amount: <span style="color: red" class="required-indicator">*</span></label>
-                        <input class="form-control" type="text" value="0.00" id="amount" name="amount" required/>
+                        <input class="form-control" pattern="^\d*(\.\d{0,2})?$" type="number" step="0.01" min="0" value="0.00" id="amount" name="amount" required/>
                     </div>
                 </div>
 
@@ -161,10 +161,9 @@
                         <label for="paymentMethod">Payment Method: <span style="color: red"
                                                                          class="required-indicator">*</span></label>
                         <select class="form-control" id="paymentMethod" name="paymentMethod" required>
-                            <option>CASH DEPOSIT AT ACCOUNT</option>
-                            <option>DEMAND DRAFT</option>
-                            <option>CHEQUE</option>
-                            <option>NEFT/RTGS</option>
+                            <g:each in="${accountMode}" var="am">
+                                <option value="${am.id}">${am.mode}</option>
+                            </g:each>
                         </select>
                     </div>
                 </div>
@@ -174,6 +173,9 @@
                         <label for="depositTo">Deposit To: <span style="color: red" class="required-indicator">*</span>
                         </label>
                         <select class="form-control" id="depositTo" name="depositTo" required>
+                            <g:each in="${accountRegister}" var="ar">
+                                <option value="${ar.id}">${ar.accountName}</option>
+                            </g:each>
                         </select>
                     </div>
                 </div>
@@ -185,6 +187,9 @@
                         <label for="payeeBanker">Payee Banker: <span style="color: red"
                                                                      class="required-indicator">*</span></label>
                         <select class="form-control" id="payeeBanker" name="payeeBanker" required>
+                            <g:each in="${bank}" var="bk">
+                                <option value="${bk.id}">${bk.bankName}</option>
+                            </g:each>
                         </select>
                     </div>
                 </div>
@@ -204,7 +209,7 @@
                     <div class="form-group">
                         <label for="paymentDate">Payment Date: <span style="color: red"
                                                                      class="required-indicator">*</span></label>
-                        <input class="form-control" type="text" id="paymentDate" name="paymentDate" required/>
+                        <input class="form-control date" type="date" id="paymentDate" name="paymentDate" required/>
                     </div>
                 </div>
 
@@ -219,8 +224,8 @@
             <div class="row">
                 <div class="col-md-12">
                     <div class="form-group">
-                        <label for="remarks">Remarks:</label>
-                        <textarea rows="2" class="form-control" id="remarks" name="remarks"></textarea>
+                        <label for="remarks">Remarks: <small style="font-size: 10px;"><span id="remarksCharacters">0</span>/100</small></label>
+                        <textarea rows="2" class="form-control" id="remarks" name="remarks" maxlength="100"></textarea>
                     </div>
                 </div>
             </div>
@@ -231,7 +236,7 @@
                         <table class="table">
                             <thead></thead>
                             <tbody>
-                            <tr><td>Total Due</td><td class="totalDue" style="text-align: left; color: red"></tr>
+                            <tr><td>Total Due</td><td class="totalDue" id="totalDueOfSelected" style="text-align: left; color: red"></tr>
                             <tr><td>Credits Applied</td><td id="creditsApplied" style="text-align: left;">0.00</td></tr>
                             </tbody>
                         </table>
@@ -242,7 +247,9 @@
             <div class="row">
                 <div class="col-md-12 clearfix">
                     <div class="pull-right">
-                        <button class="btn btn-success btn-sm">Record Payment</button>
+                        <input type="hidden" id="saleBillId" />
+                        <input type="hidden" id="saleReturnIds" />
+                        <button class="btn btn-success btn-sm" onclick="recordPayment()">Record Payment</button>
                     </div>
                 </div>
             </div>

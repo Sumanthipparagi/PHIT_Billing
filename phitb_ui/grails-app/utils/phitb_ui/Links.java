@@ -568,7 +568,7 @@ public class Links
     public static String BANK_REGISTER_DATATABLE = "api/v1.0/accounts/bankregister/datatable";
     public static String BANK_REGISTER_UPDATE = "api/v1.0/accounts/bankregister/{id}";
     public static String BANK_REGISTER_DELETE = "api/v1.0/accounts/bankregister/{id}";
-    public static String BANK_REGISTER_BY_ENTITY = "api/v1.0/system/bankregisterbyenity";
+    public static String BANK_REGISTER_BY_ENTITY = "api/v1.0/accounts/bankregisterbyentity";
 
 
 

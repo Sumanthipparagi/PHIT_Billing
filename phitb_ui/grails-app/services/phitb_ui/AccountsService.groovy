@@ -138,7 +138,6 @@ class AccountsService
     {
         Client client = ClientBuilder.newClient();
         WebTarget target = client.target(new Links().API_GATEWAY);
-
         try
         {
             Response apiResponse = target
@@ -163,8 +162,8 @@ class AccountsService
 
     }
 
-    //Recipt Detail
-    def saveRecipt(JSONObject jsonObject, String financialYear)
+    //Receipt Detail
+    def saveReceipt(JSONObject jsonObject, String financialYear)
     {
         Client client = ClientBuilder.newClient();
         WebTarget target = client.target(new Links().API_GATEWAY);

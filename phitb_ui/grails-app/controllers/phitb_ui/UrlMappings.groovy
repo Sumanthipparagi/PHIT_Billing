@@ -484,6 +484,7 @@ class UrlMappings {
         "/sale-bill/$id"(controller: "salebillDetails", action: 'getSaleBillById')
         "/sale-bill-list"(controller: "salebillDetails", action: 'saleBillList')
         "/sale-bill/datatable"(controller: "salebillDetails", action: 'dataTable')
+        "/sale-bill/record-payment"(controller: "salebillDetails", action: 'recordPayment')
 
 
 //        Sale Retrun

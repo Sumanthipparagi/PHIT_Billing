@@ -13,6 +13,8 @@ import phitb_ui.Constants
 import phitb_ui.SalesService
 import phitb_ui.system.AccountModeController
 
+import java.text.SimpleDateFormat
+
 class SalebillDetailsController {
 
     def index() {
@@ -36,55 +38,42 @@ class SalebillDetailsController {
         }
         render(view: '/sales/saleEntry/sale-entry', model: [series      : series, accountMode: accountMode, entity: entity,
                                                             users       : users, customerList: customerList,
-                                                            salesmanList: salesmanList, salebilllist:salebilllist])
+                                                            salesmanList: salesmanList, salebilllist: salebilllist])
     }
 
 
-
-    def save()
-    {
-        try
-        {
+    def save() {
+        try {
             JSONObject jsonObject = new JSONObject(params)
             def apiResponse = new SalesService().saveSaleBill(jsonObject)
-            if (apiResponse?.status == 200)
-            {
+            if (apiResponse?.status == 200) {
                 JSONObject obj = new JSONObject(apiResponse.readEntity(String.class))
                 redirect(uri: '/user-register')
 //                respond obj, formats: ['json'], status: 200
-            }
-            else
-            {
+            } else {
                 response.status = apiResponse?.status ?: 400
             }
         }
-        catch (Exception ex)
-        {
+        catch (Exception ex) {
             System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
             log.error('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
             response.status = 400
         }
     }
 
-    def update()
-    {
-        try
-        {
+    def update() {
+        try {
             println(params)
             JSONObject jsonObject = new JSONObject(params)
             def apiResponse = new SalesService().p(jsonObject)
-            if (apiResponse.status == 200)
-            {
+            if (apiResponse.status == 200) {
                 JSONObject obj = new JSONObject(apiResponse.readEntity(String.class))
                 respond obj, formats: ['json'], status: 200
-            }
-            else
-            {
+            } else {
                 response.status = 400
             }
         }
-        catch (Exception ex)
-        {
+        catch (Exception ex) {
             System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
             log.error('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
             response.status = 400
@@ -92,24 +81,18 @@ class SalebillDetailsController {
     }
 
 
-    def show()
-    {
-        try
-        {
+    def show() {
+        try {
             def apiResponse = new SalesService().getSaleBillDetails()
-            if (apiResponse?.status == 200)
-            {
+            if (apiResponse?.status == 200) {
                 JSONArray jsonArray = new JSONArray(apiResponse.readEntity(String.class));
                 ArrayList<String> arrayList = new ArrayList<>(jsonArray)
                 return arrayList
-            }
-            else
-            {
+            } else {
                 return []
             }
         }
-        catch (Exception ex)
-        {
+        catch (Exception ex) {
             System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
             log.error('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
             response.status = 400
@@ -117,48 +100,36 @@ class SalebillDetailsController {
     }
 
 
-    def getAllSettledById(String id,String entityId, String financialYear)
-    {
-        try
-        {
-            def apiResponse = new SalesService().getAllSettledBillsByCustomer(id,entityId,financialYear)
-            if (apiResponse?.status == 200)
-            {
+    def getAllSettledById(String id, String entityId, String financialYear) {
+        try {
+            def apiResponse = new SalesService().getAllSettledBillsByCustomer(id, entityId, financialYear)
+            if (apiResponse?.status == 200) {
                 JSONArray jsonArray = new JSONArray(apiResponse.readEntity(String.class));
                 ArrayList<String> arrayList = new ArrayList<>(jsonArray)
                 return arrayList
-            }
-            else
-            {
+            } else {
                 return []
             }
         }
-        catch (Exception ex)
-        {
+        catch (Exception ex) {
             System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
             log.error('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
             response.status = 400
         }
     }
 
-    def getAllUNSettledById(String id,String entityId, String financialYear)
-    {
-        try
-        {
-            def apiResponse = new SalesService().getAllUNSettledBillsByCustomer(id,entityId,financialYear)
-            if (apiResponse?.status == 200)
-            {
+    def getAllUNSettledById(String id, String entityId, String financialYear) {
+        try {
+            def apiResponse = new SalesService().getAllUNSettledBillsByCustomer(id, entityId, financialYear)
+            if (apiResponse?.status == 200) {
                 JSONArray jsonArray = new JSONArray(apiResponse.readEntity(String.class));
                 ArrayList<String> arrayList = new ArrayList<>(jsonArray)
                 return arrayList
-            }
-            else
-            {
+            } else {
                 return []
             }
         }
-        catch (Exception ex)
-        {
+        catch (Exception ex) {
             System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
             log.error('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
             response.status = 400
@@ -173,8 +144,7 @@ class SalebillDetailsController {
             def apiResponse = new SalesService().showSalesService(jsonObject)
             if (apiResponse.status == 200) {
                 JSONObject responseObject = new JSONObject(apiResponse.readEntity(String.class))
-                if(responseObject)
-                {
+                if (responseObject) {
                     JSONArray jsonArray = responseObject.data
                     for (JSONObject json : jsonArray) {
                         JSONObject customer = new EntityService().getEntityById(json.get("customerId").toString())
@@ -197,14 +167,72 @@ class SalebillDetailsController {
     }
 
 
-    def saleBillList()
-    {
-        render(view:'/sales/salebillDetails/saleBill')
+    def saleBillList() {
+        String entityId = session.getAttribute("entityId").toString()
+        ArrayList<JSONObject> bank = new AccountsService().getBankRegisterByEntity(entityId) as ArrayList
+        ArrayList<JSONObject> accountMode = new SystemService().getAccountModesByEntity(entityId) as ArrayList
+        ArrayList<JSONObject> accountRegister = new EntityService().getAllAccountByEntity(entityId) as ArrayList
+        render(view: '/sales/salebillDetails/saleBill', model: [bank           : bank,
+                                                                accountMode    : accountMode,
+                                                                accountRegister: accountRegister])
     }
 
 
-    def getSaleBillById()
+    def recordPayment()
     {
+        SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy")
+        SimpleDateFormat sdf2 = new SimpleDateFormat("dd/MM/yyyy")
+        String financialYear = session.getAttribute("financialYear")
+        String saleBillId = params.saleBillId
+        String saleReturnIds = params.saleReturnIds
+        String creditsApplied = params.creditsApplied
+        String amount = params.amount
+        String paymentMode = params.paymentMode
+        String paymentMethod = params.paymentMethod //accountMode
+        String depositTo = params.depositTo
+        String payeeBanker = params.payeeBanker
+        String cardNumber = params.cardNumber
+        String paymentDate = params.paymentDate
+        String instrumentId = params.instrumentId
+        String remarks = params.remarks
+
+        JSONObject saleBill = new SalesService().getSaleBillDetailsById(saleBillId)
+        String balance = saleBill.get("balance")
+        String creditadjAmount = saleBill.get("creditadjAmount")
+        String adjAmount = saleBill.get("adjAmount")
+        String totalAmount = saleBill.get("totalAmount")
+
+        //TODO: 1. Add Sale Return Adjustment Log
+        //TODO: 2. Update Sale Return
+        //TODO: 3. Create Receipt
+        JSONObject receipt = new JSONObject()
+        receipt.put("date", sdf2.format(new Date()))
+        receipt.put("paymentModeId", paymentMode)
+        receipt.put("accountModeId", paymentMethod)
+        receipt.put("receivedFrom", saleBill.get("customerId"))
+        receipt.put("depositTo", depositTo)
+        receipt.put("amountPaid", amount)
+        receipt.put("narration", remarks)
+        receipt.put("paymentDate", sdf.parse(paymentDate).format("dd/MM/yyyy"))
+        receipt.put("chequeNumber", "")
+        receipt.put("bank", payeeBanker)
+        receipt.put("wallet",0)
+        receipt.put("financialYear", financialYear)
+        receipt.put("status", 1)
+        receipt.put("syncStatus", 1)
+        receipt.put("entityTypeId", session.getAttribute("entityTypeId"))
+        receipt.put("entityId", session.getAttribute("entityId"))
+        receipt.put("modifiedUser", session.getAttribute("userId"))
+        receipt.put("createdUser", session.getAttribute("userId"))
+        receipt.put("cardNumber", cardNumber)
+        new AccountsService().saveReceipt(receipt, financialYear)
+        //TODO: 4. Update Sale Bill
+        //TODO: 5. Respond updated sale bill and sale return to update UI
+
+        response.status = 200
+    }
+
+    def getSaleBillById() {
         String id = params.id
         JSONObject saleBill = new SalesService().getSaleBillDetailsById(id)
         JSONArray saleProducts = new SalesService().getSaleProductDetailsByBill(saleBill.id.toString())
@@ -221,8 +249,7 @@ class SalebillDetailsController {
         def apiResponse = new AccountsService().getReceiptLogByBillTypeAndId(saleBill.id.toString(), "INVS")
         String receiptId = null
         JSONArray receiptLog = new JSONArray()
-        if(apiResponse.status == 200)
-        {
+        if (apiResponse.status == 200) {
             receiptLog = new JSONArray(apiResponse.readEntity(String.class))
         }
         for (Object r : receiptLog) {
@@ -232,16 +259,14 @@ class SalebillDetailsController {
 
         JSONObject receipt = new JSONObject()
         apiResponse = new AccountsService().getReciptById(receiptId)
-        if(apiResponse.status == 200)
-        {
+        if (apiResponse.status == 200) {
             receipt = new JSONObject(apiResponse.readEntity(String.class))
         }
 
-        //TODO: get Credit Note / Sale return
+        //Credit Note / Sale return
         def saleReturnApiResponse = new AccountsService().getAllSaleReturnByCustomer(customer.id, session.getAttribute("entityId"), session.getAttribute("financialYear"), "ACTIVE")
         JSONArray saleReturns = new JSONArray()
-        if(saleReturnApiResponse.status == 200)
-        {
+        if (saleReturnApiResponse.status == 200) {
             saleReturns = new JSONArray(saleReturnApiResponse.readEntity(String.class))
         }
 

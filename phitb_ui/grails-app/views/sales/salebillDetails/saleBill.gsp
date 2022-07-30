@@ -228,6 +228,21 @@
     $(function () {
         saleInvoiceTable();
         $("#creditsApplied").text("0.00");
+
+        $('#remarks').on("input", function(){
+            var maxlength = $(this).attr("maxlength");
+            var currentLength = $(this).val().length;
+
+            if( currentLength >= maxlength ){
+                $("#remarksCharacters").addClass("danger");
+                console.log("You have reached the maximum number of characters.");
+            }else{
+                console.log(maxlength - currentLength + " chars left");
+                $("#remarksCharacters").removeClass("danger");
+            }
+            $("#remarksCharacters").text(currentLength);
+            $('#paymentDate').val(new Date().toDateInputValue());
+        });
     });
 
     function saleInvoiceTable() {
@@ -420,6 +435,8 @@
                 var orderDate = "-";
                 var dueDate = "-";
                 var badgeContainer = "";
+                var saleReturnIds = "";
+                var saleBillId = $("#saleBillId").val(invoice.id);
                 if(invoice.billStatus !== "DRAFT")
                 {
                     orderDate = moment(invoice.orderDate.split("T")[0],"YYYY-MM-DD").format("DD/MM/YYYY");
@@ -469,8 +486,11 @@
 
                 var availableCredits = 0.0;
                 $.each(saleReturns, function (index, saleReturn) {
+                    saleReturnIds += saleReturn.id + ",";
                     availableCredits += saleReturn.balance
                 });
+
+                $("#saleReturnIds").val(saleReturnIds);
 
                 if(availableCredits > 0)
                 {
@@ -591,6 +611,99 @@
            $("#paymentDateContainer").addClass("col-md-12");
 
        }
+    }
+
+    function recordPayment() {
+
+        var spinner = "<div class=\"col-md-12\">\n" +
+            "                    <div class=\"text-center\">\n" +
+            "                        <div class=\"spinner-border\" role=\"status\">\n" +
+            "                            <span class=\"sr-only\">We are recording payment information please wait!</span>\n" +
+            "                        </div>\n" +
+            "<p>We are recording payment information please wait!</p>\n" +
+            "                    </div>\n" +
+            "                </div>";
+
+        var processingSwal = Swal.fire({
+            title: "Recording Payment..",
+            html: spinner,
+            showDenyButton: false,
+            showCancelButton: false,
+            showCloseButton: false,
+            showConfirmButton: false
+        });
+        var amount = $("#amount").val();
+        var paymentMode = $("#paymentMode").val();
+        var paymentMethod = $("#paymentMethod").val();
+        var depositTo = $("#depositTo").val();
+        var payeeBanker = $("#payeeBanker").val();
+        var cardNumber = $("#cardNumber").val();
+        var paymentDate = $("#paymentDate").val();
+        var instrumentId = $("#instrumentId").val();
+        var remarks = $("#remarks").val();
+        var saleBillId = $("#saleBillId").val();
+        var saleReturnIds = $("#saleReturnIds").val();
+        var creditsApplied = parseFloat($("#creditsApplied").text());
+        var totalDueOfSelected = parseFloat($("#totalDueOfSelected").text());
+        if(paymentDate == null || paymentDate === "")
+        {
+            processingSwal.close();
+
+            Swal.fire({
+                title: "Error",
+                html: "Please select payment date",
+                icon: 'error'
+            });
+            return;
+        }
+
+        if((amount + creditsApplied) >totalDueOfSelected)
+        {
+            processingSwal.close();
+            Swal.fire({
+                title: "Error",
+                html: "Payment amount should be less than Due Amount",
+                icon: 'error'
+            });
+            return;
+        }
+
+
+        $.ajax({
+            url: "sale-bill/record-payment",
+            method: "POST",
+            data:{
+                amount: amount,
+                paymentMode: paymentMode,
+                paymentMethod: paymentMethod,
+                depositTo: depositTo,
+                payeeBanker: payeeBanker,
+                cardNumber: cardNumber,
+                paymentDate: paymentDate,
+                instrumentId: instrumentId,
+                remarks: remarks,
+                saleBillId: saleBillId,
+                saleReturnIds: saleReturnIds,
+                creditsApplied: creditsApplied
+            },
+            success: function()
+            {
+                processingSwal.close();
+                Swal.fire({
+                    title: "Success!",
+                    html: "Payment recorded for this invoice",
+                    icon: 'success'
+                });
+            },
+            error: function () {
+                processingSwal.close();
+                Swal.fire({
+                    title: "Error!",
+                    html: "Please try later!",
+                    icon: 'error'
+                });
+            }
+        })
     }
 </script>
 <g:include view="controls/footer-content.gsp"/>
