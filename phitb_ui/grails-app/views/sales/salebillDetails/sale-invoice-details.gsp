@@ -146,17 +146,17 @@
                     <div class="form-group">
                         <label for="paymentMode">Payment Mode: <span style="color: red"
                                                                      class="required-indicator">*</span></label>
-                        <select class="form-control" id="paymentMode" name="paymentMode" required>
-                            <option>Bank</option>
-                            <option>Cash</option>
-                            <option>Card</option>
+                        <select onchange="paymentModeChange()" class="form-control" id="paymentMode" name="paymentMode" required>
+                            <option>BANK</option>
+                            <option>CASH</option>
+                            <option>CARD</option>
                         </select>
                     </div>
                 </div>
             </div>
 
             <div class="row">
-                <div class="col-md-6">
+                <div class="col-md-6" id="paymentMethodContainer">
                     <div class="form-group">
                         <label for="paymentMethod">Payment Method: <span style="color: red"
                                                                          class="required-indicator">*</span></label>
@@ -169,7 +169,7 @@
                     </div>
                 </div>
 
-                <div class="col-md-6">
+                <div class="col-md-6" id="depositToContainer">
                     <div class="form-group">
                         <label for="depositTo">Deposit To: <span style="color: red" class="required-indicator">*</span>
                         </label>
@@ -179,7 +179,7 @@
                 </div>
             </div>
 
-            <div class="row">
+            <div class="row" id="payeeBankerContainer">
                 <div class="col-md-12">
                     <div class="form-group">
                         <label for="payeeBanker">Payee Banker: <span style="color: red"
@@ -190,7 +190,7 @@
                 </div>
             </div>
 
-            <div class="row">
+            <div class="row hidden" id="cardNumberContainer">
                 <div class="col-md-12">
                     <div class="form-group">
                         <label for="cardNumber">Card Number:</label>
@@ -200,7 +200,7 @@
             </div>
 
             <div class="row">
-                <div class="col-md-6">
+                <div class="col-md-6" id="paymentDateContainer">
                     <div class="form-group">
                         <label for="paymentDate">Payment Date: <span style="color: red"
                                                                      class="required-indicator">*</span></label>
@@ -209,7 +209,7 @@
                 </div>
 
                 <div class="col-md-6">
-                    <div class="form-group">
+                    <div class="form-group" id="instrumentIdContainer">
                         <label for="instrumentId">Instrument ID:</label>
                         <input class="form-control" type="text" id="instrumentId" name="instrumentId"/>
                     </div>

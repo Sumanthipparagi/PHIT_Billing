@@ -553,6 +553,45 @@
     {
         $("#creditsApplied").text("0.00")
     }
+
+    function paymentModeChange() {
+       var paymentMode = $("#paymentMode").val();
+       if(paymentMode === "CARD")
+       {
+           $("#cardNumberContainer").removeClass("hidden");
+           $("#instrumentIdContainer").addClass("hidden");
+           $("#payeeBankerContainer").addClass("hidden");
+           $("#depositToContainer").removeClass("hidden");
+           $("#paymentMethodContainer").removeClass("hidden");
+
+           $("#paymentDateContainer").removeClass("col-md-6");
+           $("#paymentDateContainer").addClass("col-md-12");
+       }
+       else if(paymentMode === "BANK")
+       {
+           $("#cardNumberContainer").addClass("hidden");
+           $("#instrumentIdContainer").removeClass("hidden");
+           $("#payeeBankerContainer").removeClass("hidden");
+           $("#depositToContainer").removeClass("hidden");
+           $("#paymentMethodContainer").removeClass("hidden");
+
+           $("#paymentDateContainer").removeClass("col-md-12");
+           $("#paymentDateContainer").addClass("col-md-6");
+       }
+       else
+       {
+           //cash
+           $("#cardNumberContainer").addClass("hidden");
+           $("#instrumentIdContainer").addClass("hidden");
+           $("#payeeBankerContainer").addClass("hidden");
+           $("#depositToContainer").addClass("hidden");
+           $("#paymentMethodContainer").addClass("hidden");
+
+           $("#paymentDateContainer").removeClass("col-md-6");
+           $("#paymentDateContainer").addClass("col-md-12");
+
+       }
+    }
 </script>
 <g:include view="controls/footer-content.gsp"/>
 <script>
