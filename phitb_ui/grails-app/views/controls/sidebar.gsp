@@ -452,8 +452,8 @@
                                 <li><a href="javascript:void(0);" class="menu-toggle">Receipt</span> <span
                                         class="badge badge-success float-right"></span></a>
                                     <ul class="ml-menu">
-                                        <li><a href="/recipt">Create Receipt</a></li>
-                                        <li><a href="/recipt-list">Receipt List</a></li>
+                                        <li><a href="/receipt">Create Receipt</a></li>
+                                        <li><a href="/receipt-list">Receipt List</a></li>
 
                                     </ul>
                                 </li>
