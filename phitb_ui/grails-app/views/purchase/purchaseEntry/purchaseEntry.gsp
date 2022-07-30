@@ -116,7 +116,7 @@
 
                             <div class="col-md-3">
                                 <label for="supplierBillDate">Supplier Invoice Date:</label>
-                                <input type="date" class="form-control date" name="supplierBillDate"
+                                <input type="date" class="form-control supplierBillDate" name="supplierBillDate"
                                        id="supplierBillDate"/>
                             </div>
 
@@ -1572,6 +1572,7 @@
                         printInvoice();
                     } else if (result.isDenied) {
                         resetData();
+                        location.reload();
                     }
                 });
 
