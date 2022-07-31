@@ -283,6 +283,7 @@
                             <th style="width: 25%;">Receipt No.</th>
                             <th>Date</th>
                             <th>Amt. Paid</th>
+                            <th>Cr. Applied</th>
                             <th>-</th>
                         </tr>
                         </thead>

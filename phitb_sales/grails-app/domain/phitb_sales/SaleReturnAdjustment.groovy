@@ -1,6 +1,8 @@
 package phitb_sales
 
-class SaleReturnAdjustment {
+import gorm.logical.delete.LogicalDelete
+
+class SaleReturnAdjustment implements Serializable, LogicalDelete<SaleReturnAdjustment> {
 
     SaleReturn saleReturn
     double totalAmount
@@ -8,7 +10,7 @@ class SaleReturnAdjustment {
     double balanceBefore
     double currentBalance
     long docId
-    String docType //INVS
+    String docType //CRNT
 
     long entityId
     long entityTypeId

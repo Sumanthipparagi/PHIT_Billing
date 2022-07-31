@@ -719,16 +719,17 @@ contains both sale bill and products
 
     }
 
-    def saleReturnAdjustment(JSONObject jsonObject)
+    def getSaleReturnAdjustment(String docId, String docType)
     {
         Client client = ClientBuilder.newClient();
-        WebTarget target = client.target(new Links().API_GATEWAY);
+        //WebTarget target = client.target(new Links().API_GATEWAY)
+        WebTarget target = client.target("http://localhost:8083")
         try
         {
             Response apiResponse = target
-                    .path(new Links().SALE_RETURN_ADJUSTMENT)
+                    .path(new Links().SALE_RETURN_ADJUSTMENT +"/"+docId+"/"+docType)
                     .request(MediaType.APPLICATION_JSON_TYPE)
-                    .post(Entity.json(jsonObject))
+                    .get()
             if (apiResponse.status == 200)
             {
                 JSONObject saleBillDetail = new JSONObject(apiResponse.readEntity(String.class))
@@ -741,8 +742,8 @@ contains both sale bill and products
         }
         catch (Exception ex)
         {
-            System.err.println('Service :SalesService , action :  saleReturnAdjustment  , Ex:' + ex)
-            log.error('Service :SalesService , action :  saleReturnAdjustment  , Ex:' + ex)
+            System.err.println('Service :SalesService , action :  getSaleReturnAdjustment  , Ex:' + ex)
+            log.error('Service :SalesService , action :  getSaleReturnAdjustment  , Ex:' + ex)
         }
 
     }

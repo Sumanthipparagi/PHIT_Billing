@@ -226,7 +226,7 @@
     var saleInvoiceTable;
     var id = null;
     $(function () {
-        saleInvoiceTable();
+        loadSaleInvoiceTable();
         $("#creditsApplied").text("0.00");
 
         $('#remarks').on("input", function(){
@@ -245,7 +245,7 @@
         });
     });
 
-    function saleInvoiceTable() {
+    function loadSaleInvoiceTable() {
         var invoiceStatus = $("#invoiceStatus").val();
         saleInvoiceTable = $(".saleInvoiceTable").DataTable({
             "order": [[0, "desc"]],
@@ -387,7 +387,7 @@
                             'Invoice Cancelled',
                             'success'
                         );
-                        saleInvoiceTable();
+                        loadSaleInvoiceTable();
                     },
                     error: function () {
                         Swal.fire(
@@ -406,7 +406,7 @@
     }
 
     function invoiceStatusChanged() {
-        saleInvoiceTable();
+        loadSaleInvoiceTable();
     }
 
     function listItemClicked(id) {
@@ -449,6 +449,19 @@
                     else if(invoice.billStatus === "CANCELLED")
                     {
                         badgeContainer += "<div class=\"badge badge-danger\">CANCELLED</div>"
+                    }
+
+                    if(invoice.balance === 0)
+                    {
+                        badgeContainer += "<div class=\"badge badge-success ml-2\">SETTLED</div>"
+                    }
+                    else if(invoice.balance === invoice.invoiceTotal)
+                    {
+                        badgeContainer += "<div class=\"badge badge-danger ml-2\">UNSETTLED</div>"
+                    }
+                    else
+                    {
+                        badgeContainer += "<div class=\"badge badge-warning ml-2\">PARTIALLY SETTLED</div>"
                     }
                 }
                 else
@@ -523,7 +536,7 @@
                 previousPaymentsTable.html("");
                 $.each(receiptLog, function (index, value) {
                     var date = moment(receipt.paymentDate.split("T")[0],"YYYY-MM-DD").format("DD/MM/YYYY");
-                    tableContent += "<tr><td>"+(++index)+"</td><td>"+receipt.receiptId+"</td><td>"+date+"</td><td>"+value.amountPaid.toFixed(2)+"</td><td><a href='#' class='btn btn-sm btn-danger'><i class='fa fa-times'></i></a></td></tr>";
+                    tableContent += "<tr><td>"+(++index)+"</td><td>"+receipt.receiptId+"</td><td>"+date+"</td><td>"+value.amountPaid.toFixed(2)+"</td><td>"+value.saleReturnAdjustment.adjAmount.toFixed(2)+"</td><td><a href='#' class='btn btn-sm btn-danger'><i class='fa fa-times'></i></a> <a href='#' class='btn btn-sm btn-info print' data-custid="+invoice.customerId+" data-id="+receipt.id+"><i class='fa fa-print'></i></a></td></tr>";
                 });
                 previousPaymentsTable.append(tableContent);
             },
@@ -569,7 +582,11 @@
     }
 
     function applyCredits(creditAvailable) {
-        $("#creditsApplied").text(creditAvailable.toFixed(2))
+        var totalDueOfSelected = parseFloat($("#totalDueOfSelected").text());
+        if(creditAvailable > totalDueOfSelected)
+            $("#creditsApplied").text(totalDueOfSelected.toFixed(2));
+        else
+            $("#creditsApplied").text(creditAvailable.toFixed(2));
     }
     function removeCredits()
     {
@@ -708,6 +725,31 @@
                 });
             }
         })
+    }
+
+    function printReceipt() {
+        /* window.addEventListener('load', function () {*/
+        $('#reciptPrint').printThis({
+            importCSS: true,
+            printDelay: 2000,
+            importStyle: true,
+            base: "",
+            pageTitle: ""
+        });
+    }
+
+    $(document).on("click", ".print", function () {
+        var custId =  $(this).data('custid');
+        var id =  $(this).data('id');
+        $("#printabel").remove();
+        receiptPrint(custId,id)
+    });
+
+    function receiptPrint(custId,id) {
+        $("<iframe id='printabel'>")
+            .hide()
+            .attr("src", "/print-recipt/"+custId+"/recipt/"+id)
+            .appendTo("body");
     }
 </script>
 <g:include view="controls/footer-content.gsp"/>

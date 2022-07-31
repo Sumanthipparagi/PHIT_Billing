@@ -357,4 +357,15 @@ class SaleReturnService {
             throw new BadRequestException()
         }
     }
+
+    SaleReturnAdjustment getSaleReturnAdjustmentByDocId(String docId, String docType) {
+        try {
+            return SaleReturnAdjustment.findByDocIdAndDocType(Long.parseLong(docId), docType)
+        }
+        catch (Exception ex)
+        {
+            ex.printStackTrace()
+            throw new BadRequestException()
+        }
+    }
 }

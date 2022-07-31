@@ -4,6 +4,8 @@ import phitb_ui.AccountsService
 import phitb_ui.EntityService
 import phitb_ui.ProductService
 import phitb_ui.SystemService
+import phitb_ui.Tools
+import phitb_ui.UtilsService
 import phitb_ui.entity.EntityRegisterController
 import phitb_ui.entity.SeriesController
 import phitb_ui.entity.UserRegisterController
@@ -195,8 +197,13 @@ class SalebillDetailsController {
         String saleBillId = params.saleBillId
         JSONObject saleBill = new SalesService().getSaleBillDetailsById(saleBillId)
         double totalBalance = saleBill.balance
-
+        String creditadjAmount = saleBill.get("creditadjAmount")
         String saleReturnIds = params.saleReturnIds
+
+        if (saleReturnIds && saleReturnIds.endsWith(",")) {
+            saleReturnIds = saleReturnIds.substring(0, saleReturnIds.length()-1);
+        }
+
         double creditsApplied = Double.parseDouble(params.creditsApplied)
         double amount = Double.parseDouble(params.amount)
         String paymentMode = params.paymentMode
@@ -215,41 +222,6 @@ class SalebillDetailsController {
             return
         }
 
-
-        if(saleReturnIds)
-        {
-            double usedCredits = 0
-            //TODO: 1. Add Sale Return Adjustment Log
-            //TODO: 2. Update Sale Return
-            //Credit Note / Sale return
-            def saleReturnApiResponse = new AccountsService().getAllSaleReturnByCustomer(saleBill.customerId, session.getAttribute("entityId"), session.getAttribute("financialYear"), "ACTIVE")
-            JSONArray saleReturns = new JSONArray()
-            if (saleReturnApiResponse.status == 200) {
-                saleReturns = new JSONArray(saleReturnApiResponse.readEntity(String.class))
-            }
-            for (JSONObject saleReturn : saleReturns) {
-                if(usedCredits <= creditsApplied) {
-                    double bal = saleReturn.balance - creditsApplied
-                    JSONObject jsonObject = new JSONObject(params)
-                    jsonObject.put('balance', bal)
-                    jsonObject.put('id', saleReturn.id)
-                    jsonObject.put("paidNow", amount)
-                    jsonObject.put("status", "NA")
-                    def saleReturnUpdate = new AccountsService().updateSaleReturnBalance(saleReturn)
-                    if (saleReturnUpdate.status == 200) {
-                        usedCredits += creditsApplied
-                        //amount += usedCredits //adding credits to paid amount TODO: this should be changed
-                        println("Sales Return updated")
-                    }
-                }
-                else
-                {
-                    println("Available credits utilized")
-                }
-            }
-        }
-
-       // String creditadjAmount = saleBill.get("creditadjAmount")
         JSONObject receipt = new JSONObject()
         receipt.put("date", sdf2.format(new Date()))
         receipt.put("paymentMode", paymentMode)
@@ -274,13 +246,17 @@ class SalebillDetailsController {
         if(receiptResponse.status == 200)
         {
             JSONObject savedReceipt = new JSONObject(receiptResponse.readEntity(String.class))
-            String recieptId = savedReceipt.id.toString()
-            if (amount.toDouble()!=0) {
+            String receiptId = savedReceipt.id.toString()
+            if (amount !=0 || creditsApplied !=0) {
                 JSONObject invObject = new JSONObject()
                 invObject.put("id", saleBill.id)
                 invObject.put("paidNow", amount)
                 invObject.put("status","NA")
-                def invs = new AccountsService().updateSaleBalance(invObject)
+                invObject.put("creditsApplied",creditsApplied)
+                invObject.put("saleReturnIds",saleReturnIds)
+                invObject.put("docId", receiptId) //link receipt with Sale Return Adjustment log
+                invObject.put("docType","CRNT")
+                def invs = new AccountsService().updateSaleBalanceAndCredit(invObject)
                 if (invs?.status == 200) {
                     println("Invoice Updated")
 
@@ -290,7 +266,7 @@ class SalebillDetailsController {
                     billLog.put("amountPaid", amount)
                     billLog.put("currentFinancialYear", session.getAttribute('financialYear').toString())
                     billLog.put("financialYear", session.getAttribute('financialYear').toString())
-                    billLog.put("recieptId", recieptId)
+                    billLog.put("recieptId", receiptId)
                     billLog.put("transId", saleBill.invoiceNumber)
                     def billLogResponse = new AccountsService().updateReceiptDetailLog(billLog)
                     if (billLogResponse?.status == 200) {
@@ -322,15 +298,26 @@ class SalebillDetailsController {
         if (apiResponse.status == 200) {
             receiptLog = new JSONArray(apiResponse.readEntity(String.class))
         }
-        for (Object r : receiptLog) {
+
+        for (JSONObject r : receiptLog) {
             receiptId = r.receiptId.toString()
             break
         }
 
+        if(receiptLog.size() > 0)
+        {
+            JSONObject saleReturnAdjustment = new SalesService().getSaleReturnAdjustment(receiptId, "CRNT")
+            for (JSONObject r : receiptLog) {
+                r.put("saleReturnAdjustment", saleReturnAdjustment)
+            }
+        }
+
         JSONObject receipt = new JSONObject()
-        apiResponse = new AccountsService().getReciptById(receiptId)
-        if (apiResponse.status == 200) {
-            receipt = new JSONObject(apiResponse.readEntity(String.class))
+        if(receiptId) {
+            apiResponse = new AccountsService().getReciptById(receiptId)
+            if (apiResponse.status == 200) {
+                receipt = new JSONObject(apiResponse.readEntity(String.class))
+            }
         }
 
         //Credit Note / Sale return
@@ -347,7 +334,7 @@ class SalebillDetailsController {
         result.put("customerCity", customerCity)
         result.put("entityCity", entityCity)
         result.put("saleProducts", finalSaleProducts)
-        result.put("receiptLog", receiptLog)
+        result.put("receiptLog", receiptLog?.reverse())
         result.put("receipt", receipt)
         result.put("saleReturns", saleReturns)
 
