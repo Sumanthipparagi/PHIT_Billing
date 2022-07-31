@@ -519,11 +519,13 @@
                 $("#badgeContainer").html(badgeContainer);
 
                 var previousPaymentsTable = $("#previousPaymentsTable");
+                var tableContent = "";
                 previousPaymentsTable.html("");
                 $.each(receiptLog, function (index, value) {
                     var date = moment(receipt.paymentDate.split("T")[0],"YYYY-MM-DD").format("DD/MM/YYYY");
-                    previousPaymentsTable.html("<tr><td>"+(++index)+"</td><td>"+receipt.receiptId+"</td><td>"+date+"</td><td>"+value.amountPaid.toFixed(2)+"</td><td><a href='#' class='btn btn-sm btn-danger'><i class='fa fa-times'></i></a></td></tr>")
+                    tableContent += "<tr><td>"+(++index)+"</td><td>"+receipt.receiptId+"</td><td>"+date+"</td><td>"+value.amountPaid.toFixed(2)+"</td><td><a href='#' class='btn btn-sm btn-danger'><i class='fa fa-times'></i></a></td></tr>";
                 });
+                previousPaymentsTable.append(tableContent);
             },
             error: function () {
                 $(".detailsSpinner").addClass("hidden");
@@ -575,7 +577,7 @@
     }
 
     function paymentModeChange() {
-       var paymentMode = $("#paymentMode").val();
+       var paymentMode = $("#paymentMode :selected").text();
        if(paymentMode === "CARD")
        {
            $("#cardNumberContainer").removeClass("hidden");
@@ -632,7 +634,7 @@
             showCloseButton: false,
             showConfirmButton: false
         });
-        var amount = $("#amount").val();
+        var amount = parseFloat($("#amount").val());
         var paymentMode = $("#paymentMode").val();
         var paymentMethod = $("#paymentMethod").val();
         var depositTo = $("#depositTo").val();
@@ -686,7 +688,7 @@
                 saleReturnIds: saleReturnIds,
                 creditsApplied: creditsApplied
             },
-            success: function()
+            success: function(saleBill)
             {
                 processingSwal.close();
                 Swal.fire({
@@ -694,6 +696,8 @@
                     html: "Payment recorded for this invoice",
                     icon: 'success'
                 });
+
+                listItemClicked(saleBill.id);
             },
             error: function () {
                 processingSwal.close();

@@ -147,9 +147,9 @@
                         <label for="paymentMode">Payment Mode: <span style="color: red"
                                                                      class="required-indicator">*</span></label>
                         <select onchange="paymentModeChange()" class="form-control" id="paymentMode" name="paymentMode" required>
-                            <option>BANK</option>
-                            <option>CASH</option>
-                            <option>CARD</option>
+                           <g:each in="${paymentModes}" var="pm">
+                               <option value="${pm.id}">${pm.name}</option>
+                           </g:each>
                         </select>
                     </div>
                 </div>
