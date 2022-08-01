@@ -21,7 +21,7 @@ class PaymentDetailController {
         ArrayList<String> entity = new EntityRegisterController().getByAffiliateById(entityId) as ArrayList<String>
         ArrayList<String> bank = new AccountsService().getBankRegisterByEntity(entityId) as ArrayList
         ArrayList<String> accountMode = new SystemService().getAccountModesByEntity(entityId) as ArrayList
-        ArrayList<String> accountRegister = new EntityService().getEntityById(entityId) as ArrayList
+        ArrayList<String> accountRegister = new EntityService().getAllAccountByEntity(entityId) as ArrayList
         ArrayList<String> wallet = new WalletController().show() as ArrayList
         ArrayList<String> saleinvoice = new SalebillDetailsController().show() as ArrayList
         ArrayList<String> paymodes = new PaymentModeController().show() as ArrayList<String>
