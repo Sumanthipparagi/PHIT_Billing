@@ -259,7 +259,8 @@
                             'date': moment(json.data[i].entryDate).format('DD-MM-YYYY  h:mm a'),
                             'gstAmt': json.data[i].totalGst.toFixed(2),
                             'netAmt': json.data[i].totalAmount.toFixed(2),
-                            'city': json.data[i]?.customer?.city?.areaName + "<br><small>(" + json.data[i]?.customer?.city?.districtName + ")</small>",
+                            'city': json?.data[i]?.customer?.city?.areaName + "<br><small>(" +
+                                json.data[i]?.customer?.city?.districtName + ")</small>",
                             'bill_status': json.data[i].billStatus,
                             'finYear': json.data[i].financialYear
 

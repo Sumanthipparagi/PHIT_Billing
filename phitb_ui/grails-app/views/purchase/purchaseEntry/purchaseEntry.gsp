@@ -691,10 +691,10 @@
                 {type: 'text', readOnly: true}
             ],
             hiddenColumns: true,
-            // hiddenColumns: {
-            //     // specify columns hidden by default
-            //     columns: [19]
-            // },
+            hiddenColumns: {
+                // specify columns hidden by default
+                columns: [19]
+            },
             minSpareRows: 0,
             minSpareColumns: 0,
             enterMoves: {row: 0, col: 1},
@@ -719,8 +719,8 @@
                 }
 
                 if (coords.col === 18) {
-                    var id = hot.getDataAtCell(coords.row, 15);
-                    addScheme(id,coords.row);
+                    var tId = hot.getDataAtCell(coords.row, 19);
+                    addScheme(tId,coords.row);
                 }
             },
 
@@ -755,11 +755,35 @@
                         cellProperties
                     ) {
                         Handsontable.renderers.TextRenderer.apply(this, arguments);
-                        td.innerHTML = '<button class="btn-success" style="margin: 2px;">+</button>';
+                        var pid;
+                        var batch;
+                        if(row!=='' || row!== null)
+                        {
+                            if(hot!==undefined)
+                            {
+                                // console.log(hot.getDataAtCell(row,1))
+                                pid = hot.getDataAtCell(row,1);
+                                batch = hot.getDataAtCell(row,2);
+                                if(pid==null)
+                                {
+                                    pid=""
+                                }
+                                if(batch==null)
+                                {
+                                    batch=''
+                                }
+                            }
+                            // var batch = hot.getDataAtCell(row,2);
+                            td.innerHTML =
+                                '<button class="btn-success schBtn"  id="'+"sch"+pid+batch+'" style="margin: 2px;">+</button>';
+                        }
+
                     };
                 }
                 return cellPrp;
-            }
+            },
+
+
         });
         hot.selectCell(0, 1);
         hot.updateSettings({
@@ -1027,6 +1051,7 @@
 
                 }
             }
+
         });
 
         hot.addHook('afterSelection', (row, col) => {
@@ -1200,6 +1225,8 @@
                     }
                 }
             }
+
+
         });
 
         $('#series').trigger('change');
@@ -1413,53 +1440,62 @@
 
 
     function addScheme(id,row){
-        console.log(id);
-        Swal.fire({
-            title: 'Are you sure?',
-            text: "Do you want to enter a scheme for this product?",
-            showCancelButton: true,
-            confirmButtonColor: '#3085d6',
-            cancelButtonColor: '#d33',
-            confirmButtonText: 'Yes'
-        }).then((result) => {
-            if (result.isConfirmed) {
-                $("#addSchemeModal").modal("show");
-                $('.hotRow').val(row);
-                $('.date').bootstrapMaterialDatePicker({
-                    format: 'DD/MM/YYYY',
-                    clearButton: true,
-                    time: false,
-                    weekStart: 1
-                });
-                jQuery("#schemeForm").submit(function(e){
-                    e.preventDefault();
-                    $("#addSchemeModal").modal("hide");
+        alert(id);
+       if(id==='' || id=== null)
+       {
+           Swal.fire({
+               title: 'Are you sure?',
+               text: "Do you want to enter a scheme for this product?",
+               showCancelButton: true,
+               confirmButtonColor: '#3085d6',
+               cancelButtonColor: '#d33',
+               confirmButtonText: 'Yes'
+           }).then((result) => {
+               if (result.isConfirmed) {
+                   $("#addSchemeModal").modal("show");
+                   $('.hotRow').val(row);
+                   $('.date').bootstrapMaterialDatePicker({
+                       format: 'DD/MM/YYYY',
+                       clearButton: true,
+                       time: false,
+                       weekStart: 1
+                   });
+                   jQuery("#schemeForm").submit(function(e){
+                       e.preventDefault();
+                       $("#addSchemeModal").modal("hide");
+                       const data = new FormData(e.target);
+                       const formJSON = Object.fromEntries(data.entries());
+                       var productId = hot.getDataAtCell(formJSON?.row, 1);
+                       var batch = hot.getDataAtCell(formJSON?.row, 2);
+                       formJSON.productId = productId;
+                       formJSON.batch = batch;
+                       formJSON.customerIds = $("#supplier").val();
+                       if(formJSON?.batch!==null && formJSON?.productId!==null)
+                       {
+                           localStorage.setItem(formJSON.productId+"-"+formJSON.batch,JSON.stringify(formJSON));
+                           // console.log("sch"+productId+batch === "sch115CB21003");
+                           // console.log( $("#sch"+productId+batch));
 
-                    const data = new FormData(e.target);
-                    const formJSON = Object.fromEntries(data.entries());
-                    var productId = hot.getDataAtCell(formJSON?.row, 1);
-                    var batch = hot.getDataAtCell(formJSON?.row, 2);
-                    formJSON.productId = productId;
-                    formJSON.batch = batch;
-                    formJSON.customerIds = $("#supplier").val();
-                    if(formJSON?.batch!==null && formJSON?.productId!==null)
-                    {
-                        localStorage.setItem(formJSON.productId+"-"+formJSON.batch,JSON.stringify(formJSON));
-                    }
-                    console.log(formJSON);
-                    return true;
-                });
-                // mainTableRow = row + 1;
-                // calculateTotalAmt();
-                // hot.alter('insert_row');
-                // hot.selectCell(mainTableRow, 0);
-                // console.log("nothing!")
-            }
-            else
-            {
-               console.log("nothing!")
-            }
-        });
+                           $('#sch'+productId+batch).text("added");
+                       }
+                       return true;
+                   });
+                   // mainTableRow = row + 1;
+                   // calculateTotalAmt();
+                   // hot.alter('insert_row');
+                   // hot.selectCell(mainTableRow, 0);
+                   // console.log("nothing!")
+               }
+               else
+               {
+                   console.log("nothing!")
+               }
+           });
+       }
+       else
+       {
+           $("#addSchemeModal").modal("show");
+       }
     }
 
     var purchasebillid = 0;

@@ -411,9 +411,16 @@ class SaleOrderEntryController {
                     JSONArray jsonArray = responseObject.data
                     for (JSONObject json : jsonArray) {
                         JSONObject customer = new EntityService().getEntityById(json.get("customerId").toString())
-                        def city = new SystemService().getCityById(customer?.cityId?.toString())
-                        customer?.put("city", city)
-                        json.put("customer", customer)
+                        if(customer!=null)
+                        {
+                            def city = new SystemService().getCityById(customer?.cityId?.toString())
+                            customer?.put("city", city)
+                            json.put("customer", customer)
+                        }
+                        else {
+                            customer?.put("city", "")
+                            json.put("customer", "")
+                        }
                     }
                     responseObject.put("data", jsonArray)
                 }
