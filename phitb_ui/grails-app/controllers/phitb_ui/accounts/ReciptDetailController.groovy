@@ -218,9 +218,8 @@ class ReciptDetailController {
         try {
             JSONArray jsonArray = new JSONArray();
             def salebill = new AccountsService().getAllSaleBillById(params.id, session.getAttribute("entityId").toString(), session.getAttribute("financialYear").toString())
-            def creditNote = new AccountsService().getAllSaleReturnByCustomer(params.id, session.getAttribute("entityId").toString(), session.getAttribute("financialYear").toString())
-            def gtn = new AccountsService().getAllGTNById(params.id, session.getAttribute("entityId").toString()
-                    , session.getAttribute("financialYear").toString())
+            def creditNote = new AccountsService().getAllSaleReturnByCustomer(Long.parseLong(params.id), session.getAttribute("entityId"), session.getAttribute("financialYear").toString())
+            def gtn = new AccountsService().getAllGTNById(params.id, session.getAttribute("entityId").toString(), session.getAttribute("financialYear").toString())
             if (salebill.status == 200 && creditNote.status == 200) {
 //                def tmp = creditNote.readEntity(String.class)
                 JSONArray salearray = new JSONArray(salebill.readEntity(String.class))

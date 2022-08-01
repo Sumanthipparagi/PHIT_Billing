@@ -358,33 +358,35 @@ class SaleBillDetailsController {
                         ArrayList<String> saleRtrnIds = saleReturnIds.split(",")
                         for (String id : saleRtrnIds) {
                             SaleReturn saleReturn = SaleReturn.findByIdAndBalanceGreaterThan(Long.parseLong(id), 0)
-                            double saleReturnBalanceBefore = saleReturn.balance
-                            double saleReturnBalance = saleReturn.balance
-                            totalDue = totalDue - saleReturnBalance
-                            if (totalDue >= 0) {
-                                saleReturn.balance = 0
-                            } else {
-                                saleReturn.balance = Math.abs(totalDue)
-                                totalDue = 0
-                            }
-                            println("Total Due: " + totalDue)
-                            saleReturn.isUpdatable = true
-                            def savedSaleReturn = saleReturn.save()
-                            //saving log
-                            if (savedSaleReturn) {
-                                SaleReturnAdjustment saleReturnAdjustment = new SaleReturnAdjustment()
-                                saleReturnAdjustment.saleReturn = savedSaleReturn
-                                saleReturnAdjustment.totalAmount = saleBillDetails.invoiceTotal
-                                saleReturnAdjustment.adjAmount = saleReturnBalanceBefore
-                                saleReturnAdjustment.balanceBefore = saleReturnBalanceBefore
-                                saleReturnAdjustment.currentBalance = savedSaleReturn.balance
-                                saleReturnAdjustment.docId = Long.parseLong(jsonObject.get("docId").toString())
-                                saleReturnAdjustment.docType = jsonObject.get("docType")
-                                saleReturnAdjustment.entityId = savedSaleReturn.entityId
-                                saleReturnAdjustment.entityTypeId = savedSaleReturn.entityTypeId
-                                saleReturnAdjustment.createdUser = savedSaleReturn.createdUser
-                                saleReturnAdjustment.modifiedUser = savedSaleReturn.modifiedUser
-                                saleReturnAdjustment.save()
+                            if (saleReturn) {
+                                double saleReturnBalanceBefore = saleReturn.balance
+                                double saleReturnBalance = saleReturn.balance
+                                totalDue = totalDue - saleReturnBalance
+                                if (totalDue >= 0) {
+                                    saleReturn.balance = 0
+                                } else {
+                                    saleReturn.balance = Math.abs(totalDue)
+                                    totalDue = 0
+                                }
+                                println("Total Due: " + totalDue)
+                                saleReturn.isUpdatable = true
+                                def savedSaleReturn = saleReturn.save()
+                                //saving log
+                                if (savedSaleReturn) {
+                                    SaleReturnAdjustment saleReturnAdjustment = new SaleReturnAdjustment()
+                                    saleReturnAdjustment.saleReturn = savedSaleReturn
+                                    saleReturnAdjustment.totalAmount = saleBillDetails.invoiceTotal
+                                    saleReturnAdjustment.adjAmount = saleReturnBalanceBefore
+                                    saleReturnAdjustment.balanceBefore = saleReturnBalanceBefore
+                                    saleReturnAdjustment.currentBalance = savedSaleReturn.balance
+                                    saleReturnAdjustment.docId = Long.parseLong(jsonObject.get("docId").toString())
+                                    saleReturnAdjustment.docType = jsonObject.get("docType")
+                                    saleReturnAdjustment.entityId = savedSaleReturn.entityId
+                                    saleReturnAdjustment.entityTypeId = savedSaleReturn.entityTypeId
+                                    saleReturnAdjustment.createdUser = savedSaleReturn.createdUser
+                                    saleReturnAdjustment.modifiedUser = savedSaleReturn.modifiedUser
+                                    saleReturnAdjustment.save()
+                                }
                             }
                         }
                         paidNow += creditsApplied
