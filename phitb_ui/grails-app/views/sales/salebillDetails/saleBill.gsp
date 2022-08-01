@@ -689,7 +689,7 @@
 
 
         $.ajax({
-            url: "sale-bill/record-payment",
+            url: "/sale-bill/record-payment",
             method: "POST",
             data:{
                 amount: amount,

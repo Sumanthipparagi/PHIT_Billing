@@ -199,7 +199,7 @@
                 <div class="col-md-12">
                     <div class="form-group">
                         <label for="cardNumber">Card Number:</label>
-                        <input class="form-control" type="text" id="cardNumber" name="cardNumber"/>
+                        <input class="form-control" type="number" id="cardNumber" name="cardNumber"/>
                     </div>
                 </div>
             </div>

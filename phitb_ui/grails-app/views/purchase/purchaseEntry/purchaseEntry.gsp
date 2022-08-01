@@ -691,10 +691,10 @@
                 {type: 'text', readOnly: true}
             ],
             hiddenColumns: true,
-            hiddenColumns: {
-                // specify columns hidden by default
-                columns: [19]
-            },
+            // hiddenColumns: {
+            //     // specify columns hidden by default
+            //     columns: [19]
+            // },
             minSpareRows: 0,
             minSpareColumns: 0,
             enterMoves: {row: 0, col: 1},
@@ -719,6 +719,7 @@
                 }
 
                 if (coords.col === 18) {
+                    var id = hot.getDataAtCell(coords.row, 15);
                     addScheme(id,coords.row);
                 }
             },
@@ -754,7 +755,7 @@
                         cellProperties
                     ) {
                         Handsontable.renderers.TextRenderer.apply(this, arguments);
-                        td.innerHTML = '<button class="btn-success" style="margin: 2px;">Scheme</button>';
+                        td.innerHTML = '<button class="btn-success" style="margin: 2px;">+</button>';
                     };
                 }
                 return cellPrp;
@@ -799,7 +800,7 @@
                             //
                             if(selection === 18)
                             {
-                                addScheme(row)
+                                addScheme("",row)
                             }
                                 // Swal.fire({
                                 //     title: 'Are you sure?',
@@ -1411,7 +1412,8 @@
     }
 
 
-    function addScheme(row){
+    function addScheme(id,row){
+        console.log(id);
         Swal.fire({
             title: 'Are you sure?',
             text: "Do you want to enter a scheme for this product?",
