@@ -41,6 +41,7 @@ class InventoryReportController {
                     for (Object js : jsonArray) {
                         batchNumbers.add(js.batchNumber)
                     }
+//                    batchNumbers.stream().forEach({b -> batchNumbers.add(b.batchNumber)})
                     productBatches.put(product.id, batchNumbers)
                 }
             }

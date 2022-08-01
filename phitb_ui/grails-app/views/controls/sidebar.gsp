@@ -368,7 +368,7 @@
                             class="badge badge-success float-right"></span></a>
                         <ul class="ml-menu">
                             <g:if test="${UtilsService.isPermitted("VIEW_PURCHASE_ORDER", session.getAttribute("permittedFeatures").toString())}">
-                                <li><a href="#">Purchase Order</a></li>
+                                <li><a href="/purchase-order">Purchase Order</a></li>
                             </g:if>
                             <g:if test="${UtilsService.isPermitted("VIEW_PURCHASE_ENTRY", session.getAttribute("permittedFeatures").toString())}">
                                 <li><a href="/purchase-entry">Purchase Entry</a></li>

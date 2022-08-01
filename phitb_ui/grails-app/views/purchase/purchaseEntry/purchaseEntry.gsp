@@ -21,6 +21,9 @@
     <asset:stylesheet src="/themeassets/plugins/bootstrap-select/css/bootstrap-select.css" rel="stylesheet"/>
     <asset:stylesheet src="/themeassets/plugins/handsontable/handsontable.full.css" rel="stylesheet"/>
     <link rel="stylesheet" media="screen" href="https://cdnjs.cloudflare.com/ajax/libs/select2/3.5.2/select2.min.css">
+    <asset:stylesheet src="/themeassets/plugins/bootstrap-select/css/bootstrap-select.css" rel="stylesheet"/>
+    <asset:stylesheet src="/themeassets/plugins/bootstrap-material-datetimepicker/css/bootstrap-material-datetimepicker.css"
+            rel="stylesheet"/>
     %{--    <link rel="stylesheet" media="screen" href="https://cdnjs.cloudflare.com/ajax/libs/handsontable/0.16.0/handsontable.full.css">--}%
 
     <style>
@@ -113,7 +116,7 @@
 
                             <div class="col-md-3">
                                 <label for="supplierBillDate">Supplier Invoice Date:</label>
-                                <input type="date" class="form-control date" name="supplierBillDate"
+                                <input type="date" class="form-control supplierBillDate" name="supplierBillDate"
                                        id="supplierBillDate"/>
                             </div>
 
@@ -551,6 +554,7 @@
 <asset:javascript src="/themeassets/js/pages/ui/dialogs.js"/>
 <asset:javascript src="/themeassets/plugins/sweetalert2/dist/sweetalert2.all.js"/>
 <asset:javascript src="/themeassets/plugins/momentjs/moment.js"/>
+<asset:javascript src="/themeassets/plugins/bootstrap-material-datetimepicker/js/bootstrap-material-datetimepicker.js"/>
 <asset:javascript src="/themeassets/plugins/handsontable/handsontable.full.js"/>
 %{--<asset:javascript src="/themeassets/plugins/select2/dist/js/select2.full.js"/>--}%
 %{--<script src="https://cdnjs.cloudflare.com/ajax/libs/handsontable/0.16.0/handsontable.full.js"></script>--}%
@@ -1419,9 +1423,16 @@
             if (result.isConfirmed) {
                 $("#addSchemeModal").modal("show");
                 $('.hotRow').val(row);
+                $('.date').bootstrapMaterialDatePicker({
+                    format: 'DD/MM/YYYY',
+                    clearButton: true,
+                    time: false,
+                    weekStart: 1
+                });
                 jQuery("#schemeForm").submit(function(e){
                     e.preventDefault();
                     $("#addSchemeModal").modal("hide");
+
                     const data = new FormData(e.target);
                     const formJSON = Object.fromEntries(data.entries());
                     var productId = hot.getDataAtCell(formJSON?.row, 1);
@@ -1561,6 +1572,7 @@
                         printInvoice();
                     } else if (result.isDenied) {
                         resetData();
+                        location.reload();
                     }
                 });
 
@@ -2023,6 +2035,8 @@
     function setTwoNumberDecimal(event) {
         this.value = parseFloat(this.value);
     }
+
+
 </script>
 
 <g:include view="controls/footer-content.gsp"/>
