@@ -15,7 +15,7 @@
     <!-- Custom Css -->
     <asset:stylesheet rel="stylesheet" src="/themeassets/css/main.css"/>
     <asset:stylesheet rel="stylesheet" href="/themeassets/css/color_skins.css"/>
-    <asset:stylesheet rel="stylesheet" href="/themeassets/plugins/sweetalert/sweetalert.css"/>
+%{--    <asset:stylesheet rel="stylesheet" href="/themeassets/plugins/sweetalert/sweetalert.css"/>--}%
     <asset:stylesheet src="/themeassets/plugins/bootstrap-select/css/bootstrap-select.css" rel="stylesheet"/>
     <asset:stylesheet src="/themeassets/js/pages/forms/basic-form-elements.js" rel="stylesheet"/>
     <asset:stylesheet
@@ -368,7 +368,7 @@
 <asset:javascript src="/themeassets/bundles/mainscripts.bundle.js"/>
 <asset:javascript src="/themeassets/js/pages/tables/jquery-datatable.js"/>
 <asset:javascript src="/themeassets/js/pages/ui/dialogs.js"/>
-<asset:javascript src="/themeassets/plugins/sweetalert/sweetalert.min.js"/>
+%{--<asset:javascript src="/themeassets/plugins/sweetalert/sweetalert.min.js"/>--}%
 <asset:javascript src="/themeassets/plugins/jquery-inputmask/jquery.inputmask.bundle.js"/>
 <asset:javascript src="/themeassets/plugins/momentjs/moment.js"/>
 <asset:javascript src="/themeassets/plugins/bootstrap-material-datetimepicker/js/bootstrap-material-datetimepicker.js"/>
@@ -477,17 +477,17 @@
                     invIdArray=[];
                     grnIdArray = [];
                     crntIdArray = [];
-                    getAllPurchaseDetails(id)
+                    getAllPurchaseDetails(id);
                     var trHTML = '';
                     trHTML += '<p><b>' + data.entityName + '</b><br>' + data.addressLine1 + '' + data.addressLine2 + '</p>';
                     $('#caddress').html(trHTML);
                 },
                 error: function () {
-                    swal("Error!", "Something went wrong", "error");
+                    Swal.fire("Error!", "Something went wrong", "error");
                 }
             });
         } else {
-            getAllPurchaseDetails(id)
+            getAllPurchaseDetails(id);
             $('#caddress').html("");
         }
     }
@@ -596,7 +596,7 @@
                     }
                 },
                 error: function () {
-                    swal("Error!", "Something went wrong", "error");
+                    Swal.fire("Error!", "Something went wrong", "error");
                 }
             });
         } else {
