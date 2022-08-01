@@ -57,6 +57,32 @@ class BillDetailLogController
         }
     }
 
+    def getReceiptLogsByBillTypeAndId()
+    {
+        try {
+            String invoiceId = params.id
+            String billType = params.billType
+            if (invoiceId) {
+                respond billDetailLogService.getRecieptDetailsByBillIdAndBillType(Long.parseLong(invoiceId), billType)
+            } else {
+                response.status = 404
+            }
+        }
+        catch (ResourceNotFoundException ex)
+        {
+            System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
+            response.status = 404
+        }
+        catch (BadRequestException ex)
+        {
+            System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
+            response.status = 400
+        }
+        catch (Exception ex) {
+            System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
+        }
+    }
+
     /**
      * Get requested bill payment log
      * @param id

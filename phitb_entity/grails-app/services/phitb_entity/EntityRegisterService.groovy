@@ -397,26 +397,20 @@ class EntityRegisterService {
         }
     }
 
-    def getAllByAffiliateId(String limit, String offset, long affiliateId) {
+    def getAllByAffiliateId(long affiliateId) {
         try {
-/*            Integer o = offset ? Integer.parseInt(offset.toString()) : 0
-            Integer l = limit ? Integer.parseInt(limit.toString()) : 100*/
-            //return EntityRegister.findAllByAffiliateId(affiliateId, [sort: 'id', max: l, offset: o, order: 'desc'])
-
             return EntityRegister.createCriteria().list(){
-               or{
+               /*or{
                    eq("affiliateId", affiliateId)
                    eq("parentEntity", affiliateId)
-               }
+               }*/
+                eq("affiliateId", affiliateId)
                 order("entityName", "asc")
             }
-
-            //ArrayList<EntityRegister> entityRegisters = EntityRegister.findAllByAffiliateId(affiliateId, [sort: 'entityName', order: 'asc'])
-
         }
         catch (Exception ex)
         {
-            println(ex.stackTrace)
+            println(ex.message)
             throw new BadRequestException()
         }
     }
@@ -435,14 +429,17 @@ class EntityRegisterService {
 
     /**
      * This returns only parent entities which are affiliated to itself.
+     * In case of entity admin, returns parent entities affiliated to it
      * @return
      */
-    def getParentEntities()
+    def getParentEntities(String affiliateId = null)
     {
         def entityRegisterCriteria = EntityRegister.createCriteria()
         def entityRegisterArrayList = entityRegisterCriteria.list() {
             eqProperty("id", "parentEntity")
-            eq('deleted', false)
+            eq("deleted", false)
+            if(affiliateId)
+                eq("affiliateId", affiliateId)
         }
         return entityRegisterArrayList
     }

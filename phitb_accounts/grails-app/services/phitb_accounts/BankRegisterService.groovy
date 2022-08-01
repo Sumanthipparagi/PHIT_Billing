@@ -29,7 +29,7 @@ class BankRegisterService {
             or{
                 eq("entityId", entityId)
             }
-            order("mode", "asc")
+            eq("deleted", false)
         }
     }
 
@@ -158,8 +158,8 @@ class BankRegisterService {
         }
         catch (Exception ex)
         {
-            System.err.println('Service :CountryMaster , action :  show  , Ex:' + ex)
-            log.error('Service :CountryMaster , action :  show  , Ex:' + ex)
+            System.err.println('Service :BankRegister , action :  show  , Ex:' + ex)
+            log.error('Service :BankRegister , action :  show  , Ex:' + ex)
         }
     }
 
@@ -174,8 +174,8 @@ class BankRegisterService {
         }
         catch (Exception ex)
         {
-            System.err.println('Service :CountryMaster , action :  show  , Ex:' + ex)
-            log.error('Service :CountryMaster , action :  show  , Ex:' + ex)
+            System.err.println('Service: BankRegister , action :  show  , Ex:' + ex)
+            log.error('Service: BankRegister , action :  show  , Ex:' + ex)
         }
     }
 

@@ -199,24 +199,24 @@ class EntityRegisterController {
     def getByAffiliateId() {
         try {
             String id = params.id
-            String start = params.start
-            String length = params.length
             if (id) {
-                respond entityRegisterService.getAllByAffiliateId(start, length,Long.parseLong(id))
+                println("Getting Affiliates: "+id)
+                long affiliateId = Long.parseLong(id)
+                respond entityRegisterService.getAllByAffiliateId(affiliateId)
             }
         }
         catch (ResourceNotFoundException ex)
         {
-            System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
+            System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex.stackTrace)
             response.status = 404
         }
         catch (BadRequestException ex)
         {
-            System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
+            System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex.stackTrace)
             response.status = 400
         }
         catch (Exception ex) {
-            System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
+            System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex.stackTrace)
         }
     }
 
@@ -256,7 +256,8 @@ class EntityRegisterController {
     def getParentEntities()
     {
         try {
-            respond entityRegisterService.getParentEntities()
+            String affiliateId = params.affiliateId
+            respond entityRegisterService.getParentEntities(affiliateId)
         }
         catch (ResourceNotFoundException ex)
         {

@@ -38,6 +38,43 @@
         }
     */
 
+    .buttons-collection{
+        border-width: 0 !important;
+        border-radius: 0 !important;
+    }
+
+    .table > tbody > tr > td {
+        vertical-align: middle;
+    }
+
+    .scroll {
+        height:35rem;
+        overflow-y: scroll;
+        -ms-overflow-style: none;  /* IE and Edge */
+        scrollbar-width: none;  /* Firefox */
+    }
+    .scroll::-webkit-scrollbar {
+        display: none;
+    }
+
+    .dt-left-col {
+        float: left;
+        margin-top: 5px;
+        width: 20%;
+    }
+
+    .dt-center-col {
+        float: left;
+        width: 25%;
+    }
+
+    .dt-right-col {
+        float: left;
+        margin-top: 5px;
+        align-content: end;
+        width: 50%;
+    }
+
     </style>
 
 </head>
@@ -61,36 +98,30 @@
                 <div class="col-lg-5 col-md-5 col-sm-12">
                     <h2>Sale Invoices</h2>
                     <ul class="breadcrumb padding-0">
-                        <li class="breadcrumb-item"><a href="index.html"><i class="zmdi zmdi-home"></i></a></li>
+                        <li class="breadcrumb-item"><a href="#"><i class="zmdi zmdi-home"></i></a></li>
                         <li class="breadcrumb-item active">My Invoices</li>
                     </ul>
                 </div>
 
-               %{-- <div class="col-lg-7 col-md-7 col-sm-12">
-                    <div class="input-group m-b-0">
-                        <input type="text" class="form-control" placeholder="Search...">
-                        <span class="input-group-addon">
-                            <i class="zmdi zmdi-search"></i>
-                        </span>
-                    </div>
-                </div>--}%
+                %{-- <div class="col-lg-7 col-md-7 col-sm-12">
+                     <div class="input-group m-b-0">
+                         <input type="text" class="form-control" placeholder="Search...">
+                         <span class="input-group-addon">
+                             <i class="zmdi zmdi-search"></i>
+                         </span>
+                     </div>
+                 </div>--}%
             </div>
         </div>
         <!-- Basic Examples -->
         <div class="row clearfix">
-            <div class="col-lg-12">
+            <div class="col-md-12">
                 <div class="card">
-                    <div class="header">
-                        <div class="row">
-                            <div class="col-md-4">
-                            </div>
-
-                            <div class="col-md-4">
-                            </div>
-
+                    <div class="body">
+                        <div class="row justify-content-end">
                             <div class="col-md-4">
                                 <div class="form-group">
-                                    <label for="invoiceStatus">Invoice Status</label>
+                                    %{--<label for="invoiceStatus">Invoice Status</label>--}%
                                     <select onchange="invoiceStatusChanged()" id="invoiceStatus" class="form-control">
                                         <option>All</option>
                                         <option>DRAFT</option>
@@ -99,17 +130,33 @@
                                     </select>
                                 </div>
                             </div>
+
+                            <div class="col-md-4">
+                            </div>
+
+                            <div class="col-md-4 clearfix">
+                                <div class="pull-left"></div>
+                                <button class="btn btn-primary btn-sm pull-right" onclick="toggleDetails()"><i
+                                        class="fa fa-angle-double-right" id="collapseIcon"></i></button>
+                            </div>
                         </div>
                     </div>
+                </div>
+            </div>
+        </div>
 
+        <div class="row clearfix">
+            <div class="col-lg-12 col-md-12 col-sm-12" id="listContainer">
+                <div class="card">
                     <div class="body">
                         <div class="table-responsive">
-                            <table class="table table-bordered table-striped table-hover saleInvoiceTable dataTable js-exportable">
+                            <table id="saleInvoiceTable"
+                                   class="table table-bordered table-striped table-hover saleInvoiceTable dataTable js-exportable">
                                 <thead>
                                 <tr>
                                     <th>-</th>
-                                    <th>Customer</th>
                                     <th>Invoice No.</th>
+                                    <th>Customer</th>
                                     <th>Date & Time</th>
                                     <th>GST Amt</th>
                                     <th>Gross Amt</th>
@@ -125,6 +172,14 @@
                                 </tbody>
                             </table>
                         </div>
+                    </div>
+                </div>
+            </div>
+
+            <div id="detailsContainer" class="hidden" >
+                <div class="card">
+                    <div class="body scroll" style="min-height: 57rem;">
+                        <g:include view="sales/salebillDetails/sale-invoice-details.gsp"/>
                     </div>
                 </div>
             </div>
@@ -163,23 +218,36 @@
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.32/vfs_fonts.js"></script>
 <script type="text/javascript" src="https://cdn.datatables.net/buttons/1.4.1/js/buttons.html5.min.js"></script>
 <script type="text/javascript" src="https://cdn.datatables.net/buttons/1.4.1/js/buttons.print.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.2/js/all.js" integrity="sha256-2JRzNxMJiS0aHOJjG+liqsEOuBb6++9cY4dSOyiijX4=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.2/js/all.js"
+        integrity="sha256-2JRzNxMJiS0aHOJjG+liqsEOuBb6++9cY4dSOyiijX4=" crossorigin="anonymous"></script>
 
 <script>
 
-    var entityregister;
+    var saleInvoiceTable;
     var id = null;
     $(function () {
-        saleInvoiceTable();
-        // var $demoMaskedInput = $('.demo-masked-input');
-        // $demoMaskedInput.find('.datetime').inputmask('d/m/y h:m:s', { placeholder: '__/__/____ __:__:__:__', alias:
-        //         "datetime", hourFormat: '12' });
+        loadSaleInvoiceTable();
+        $("#creditsApplied").text("0.00");
 
+        $('#remarks').on("input", function(){
+            var maxlength = $(this).attr("maxlength");
+            var currentLength = $(this).val().length;
+
+            if( currentLength >= maxlength ){
+                $("#remarksCharacters").addClass("danger");
+                console.log("You have reached the maximum number of characters.");
+            }else{
+                console.log(maxlength - currentLength + " chars left");
+                $("#remarksCharacters").removeClass("danger");
+            }
+            $("#remarksCharacters").text(currentLength);
+            $('#paymentDate').val(new Date().toDateInputValue());
+        });
     });
 
-    function saleInvoiceTable() {
+    function loadSaleInvoiceTable() {
         var invoiceStatus = $("#invoiceStatus").val();
-        entityregister = $(".saleInvoiceTable").DataTable({
+        saleInvoiceTable = $(".saleInvoiceTable").DataTable({
             "order": [[0, "desc"]],
             sPaginationType: "simple_numbers",
             responsive: {
@@ -192,24 +260,31 @@
             info: true,
             processing: true,
             serverSide: true,
-            dom: 'lBfrtip',
-            // buttons: [
-            //     {
-            //         'copy', 'csv', 'excel', 'pdf', 'print'
-            //     },
-            // ],
+            //dom: 'lBfrtip',
+            dom: '<"top"<"dt-left-col"l><"dt-center-col"B><"dt-right-col"f>>rt<"bottom"ip><"clear">',
+            oLanguage: {
+                sLengthMenu: "_MENU_",
+            },
             buttons: [
                 {
-                    'extend': 'excel',
-                    exportOptions: { columns: ':visible:not(:first-child)' }
-                },
-                {
-                    'extend': 'pdf',
-                    exportOptions: { columns: ':visible:not(:first-child)' }
-                },
-                {
-                    'extend': 'print',
-                    exportOptions: { columns: ':visible:not(:first-child)' }
+                    extend: 'collection',
+                    text: 'Export',
+                    buttons: [
+                        {
+                            'extend': 'excel',
+                            exportOptions: {columns: ':visible:not(:first-child)'}
+                        },
+                        {
+                            'extend': 'pdf',
+                            exportOptions: {columns: ':visible:not(:first-child)'}
+                        },
+                        {
+                            'extend': 'print',
+                            exportOptions: {columns: ':visible:not(:first-child)'}
+                        }
+                    ],
+                    dropup: true,
+                    className: 'dropdown-toggle btn-sm'
                 }
             ],
             language: {
@@ -224,35 +299,42 @@
                 dataType: 'json',
 
                 dataSrc: function (json) {
-                    console.log(json);
                     var return_data = [];
                     for (var i = 0; i < json.data.length; i++) {
                         var approveInvoice = "";
                         var cancelInvoice = "";
                         var editInvoice = "";
                         if (json.data[i].billStatus !== "CANCELLED") {
-                            cancelInvoice = '<a class="btn btn-sm btn-info" title="Cancel" onclick="cancelBill(' + json.data[i].id +')" href="#"><i class="fa fa-times"></i></a>';
-                        }
-                        else if(json.data[i].billStatus!== "DRAFT")
-                        {
-                            approveInvoice =  '';
+                            cancelInvoice = '<a class="dropdown-item" title="Cancel" onclick="cancelBill(' + json.data[i].id + ')" href="#" style="color: red;"><i class="fa fa-times"></i> Cancel</a>';
+                        } else if (json.data[i].billStatus !== "DRAFT") {
+                            approveInvoice = '';
 
                         }
-                        var printbtn = '<a target="_blank" class="btn btn-sm btn-danger" data-id="' + json.data[i].id + '" href="/sale-entry/print-invoice?id=' + json.data[i].id + '"><i class="fa fa-print"></i></a>';
+                        var printbtn = '<a target="_blank" class="dropdown-item" data-id="' + json.data[i].id + '" href="/sale-entry/print-invoice?id=' + json.data[i].id + '"><i class="fa fa-print"></i> Print</a>';
                         var invoiceNumber = json.data[i].invoiceNumber;
                         if (invoiceNumber === undefined)
-                            invoiceNumber = "";
-                        if(json.data[i].billStatus=== "DRAFT")
-                        {
-                            editInvoice = '<a class="btn btn-sm btn-warning"  href="/edit-sale-entry?saleBillId=' +
-                                json.data[i].id + '"><i class="fa fa-edit"></i></a>';
+                            invoiceNumber = "DRAFT";
+                        if (json.data[i].billStatus === "DRAFT") {
+                            editInvoice = '<a class="dropdown-item"  href="/edit-sale-entry?saleBillId=' +
+                                json.data[i].id + '"><i class="fa fa-edit"></i> Edit</a>';
                         }
+                        var actionBtn = "<div class=\"dropdown\">\n" +
+                            "  <button class=\"btn btn-primary btn-simple btn-sm dropdown-toggle\" type=\"button\" id=\"dropdownMenuButton\" data-toggle=\"dropdown\" aria-haspopup=\"true\" aria-expanded=\"false\">\n" +
+                            " <i class='fa fa-bars'></i>" +
+                            "  </button>\n" +
+                            "  <div class=\"dropdown-menu\" aria-labelledby=\"dropdownMenuButton\">\n" +
+                            approveInvoice +
+                            printbtn +
+                            editInvoice +
+                            cancelInvoice +
+                            "  </div>\n" +
+                            "</div>"
+                        invoiceNumber = "<a href='#' onclick='listItemClicked(" + json.data[i].id + ")'>" + invoiceNumber + "</a>";
                         var grossAmt = (json.data[i].invoiceTotal - json.data[i].totalGst).toFixed(2);
                         return_data.push({
-                            'action': cancelInvoice + " " + approveInvoice + " " + printbtn+" "+editInvoice,
-                            /*'action': '',*/
-                            'customer': json.data[i].customer?.entityName,
+                            'action': actionBtn,
                             'invNo': invoiceNumber,
+                            'customer': json.data[i]?.customer?.entityName,
                             'gstAmt': json.data[i].totalGst.toFixed(2),
                             'grossAmt': grossAmt,
                             'date': moment(json.data[i].entryDate).format('DD-MM-YYYY  h:mm a'),
@@ -269,8 +351,8 @@
             },
             columns: [
                 {'data': 'action'},
-                {'data': 'customer', 'width': '10%'},
                 {'data': 'invNo'},
+                {'data': 'customer', 'width': '10%'},
                 {'data': 'date'},
                 {'data': 'gstAmt'},
                 {'data': 'grossAmt'},
@@ -279,19 +361,10 @@
                 {'data': 'bill_status'},
                 {'data': 'balance'},
                 {'data': 'finYear'}
-
-               /* {'data': 'action', 'width': '4%'},
-                {'data': 'customer', 'width': '5%'},
-                {'data': 'invNo', 'width': '10%'},
-                {'data': 'gstAmt', 'width': '10%'},
-                {'data': 'netAmt', 'width': '10%'},
-                {'data': 'grossAmt', 'width': '10%'},
-                {'data': 'city', 'width': '10%'},
-                {'data': 'bill_status', 'width': '5%'},
-                {'data': 'balance', 'width': '5%'},
-                {'data': 'finYear', 'width': '30%'}*/
             ]
         });
+
+        saleInvoiceTable.buttons().container().appendTo('#saleInvoiceTable_wrapper .col-md-6:eq(0)');
     }
 
     function cancelBill(id) {
@@ -300,7 +373,7 @@
             showDenyButton: true,
             showCancelButton: false,
             confirmButtonText: 'Yes',
-            denyButtonText: 'No',
+            denyButtonText: 'No'
         }).then((result) => {
             if (result.isConfirmed) {
                 var url = '/sale-entry/cancel-invoice?id=' + id;
@@ -314,7 +387,7 @@
                             'Invoice Cancelled',
                             'success'
                         );
-                        saleInvoiceTable();
+                        loadSaleInvoiceTable();
                     },
                     error: function () {
                         Swal.fire(
@@ -333,10 +406,351 @@
     }
 
     function invoiceStatusChanged() {
-        saleInvoiceTable();
+        loadSaleInvoiceTable();
     }
 
+    function listItemClicked(id) {
+        $("#detailsContentError").addClass("hidden");
+        $(".detailsSpinner").removeClass("hidden");
+        $("#detailsContent").addClass("hidden");
+        if(!$("#detailsContainer").hasClass("opened")) {
+            toggleDetails();
+        }
+        //Get invoice Details
+        $.ajax({
+            method: "GET",
+            url: "../sale-bill/"+id,
+            success: function (data) {
+                $(".detailsSpinner").addClass("hidden");
+                $("#detailsContent").removeClass("hidden");
+                var saleProducts = data.saleProducts;
+                var invoice = data.invoice;
+                var entity = data.entity;
+                var customer = data.customer;
+                var entityCity = data.entityCity;
+                var customerCity = data.customerCity;
+                var receiptLog = data.receiptLog;
+                var saleReturns = data.saleReturns;
+                var receipt = data.receipt;
+                var orderDate = "-";
+                var dueDate = "-";
+                var badgeContainer = "";
+                var saleReturnIds = "";
+                var saleBillId = $("#saleBillId").val(invoice.id);
+                if(invoice.billStatus !== "DRAFT")
+                {
+                    orderDate = moment(invoice.orderDate.split("T")[0],"YYYY-MM-DD").format("DD/MM/YYYY");
+                    dueDate = moment(invoice.dueDate.split("T")[0],"YYYY-MM-DD").format("DD/MM/YYYY");
 
+                    if(invoice.billStatus === "ACTIVE")
+                    {
+                        badgeContainer += "<div class=\"badge badge-success\">ACTIVE</div>"
+                    }
+                    else if(invoice.billStatus === "CANCELLED")
+                    {
+                        badgeContainer += "<div class=\"badge badge-danger\">CANCELLED</div>"
+                    }
+
+                    if(invoice.balance === 0)
+                    {
+                        badgeContainer += "<div class=\"badge badge-success ml-2\">SETTLED</div>"
+                    }
+                    else if(invoice.balance === invoice.invoiceTotal)
+                    {
+                        badgeContainer += "<div class=\"badge badge-danger ml-2\">UNSETTLED</div>"
+                    }
+                    else
+                    {
+                        badgeContainer += "<div class=\"badge badge-warning ml-2\">PARTIALLY SETTLED</div>"
+                    }
+                }
+                else
+                {
+                    badgeContainer += "<div class=\"badge badge-warning\">DRAFT</div>"
+                }
+
+                if(invoice.billStatus === "DRAFT")
+                {
+                    $("#invoiceNumber").text("DRAFT INVOICE");
+                }
+                else {
+                    $("#invoiceNumber").text(invoice.invoiceNumber);
+                }
+                $("#invoiceDate").text(orderDate);
+                $("#dueDate").text(dueDate);
+                var entityDetails = "<span style='font-weight: bold'>"+entity.entityName + "</span><br><small>"+entity.addressLine1 + ", " +entity.addressLine2 + "<br>"+entityCity.districtName+"<br>"+entity.pinCode+"</small>";
+                var customerDetails = "<span style='font-weight: bold'>"+customer.entityName + "</span><br><small>"+customer.addressLine1 + ", " +customer.addressLine2 + "<br>"+customerCity.districtName+"<br>"+customer.pinCode+"</small>";
+                $("#entityDetails").html(entityDetails);
+                $("#customerDetails").html(customerDetails);
+
+                var totalAmt = 0.0;
+                var totaltax = 0.0;
+                var subtotal = 0.0;
+
+                var tableContent = $("#saleProductsTableBody");
+                tableContent.empty();
+                $.each(saleProducts, function (index, saleProduct) {
+                    subtotal += (saleProduct.amount-saleProduct.gstAmount);
+                    totalAmt += saleProduct.amount;
+                    totaltax += saleProduct.gstAmount;
+                    tableContent.append("<tr><td>"+(++index)+"</td><td style=\"white-space: normal !important; word-wrap: break-word;\">"+saleProduct.product.productName+"<br><small>Batch: "+saleProduct.batchNumber+"</small></td><td>"+saleProduct.sqty+"</td><td>"+saleProduct.freeQty+"</td>" +
+                        "<td>"+(saleProduct.amount-saleProduct.gstAmount).toFixed(2)+"</td><td>"+saleProduct.gstAmount.toFixed(2)+"</td><td>"+saleProduct.amount.toFixed(2)+"</td></tr>")
+                });
+
+                var availableCredits = 0.0;
+                $.each(saleReturns, function (index, saleReturn) {
+                    saleReturnIds += saleReturn.id + ",";
+                    availableCredits += saleReturn.balance
+                });
+
+                $("#saleReturnIds").val(saleReturnIds);
+
+                if(availableCredits > 0)
+                {
+                    $("#paymentsAlert").html("<div class=\"alert alert-primary\" role=\"alert\">\n" +
+                        "<div class=\"container\">\n" +
+                        "    <strong>₹"+availableCredits.toFixed(2)+" Credits Available!</strong> Adjust it to current invoice?"+
+                        "    <button onclick='applyCredits("+availableCredits+")' type=\"button\" class=\"close\" data-dismiss=\"alert\" aria-label=\"Close\">\n" +
+                        "            <span aria-hidden=\"true\">\n" +
+                        "            <i class=\"zmdi zmdi-plus\"></i>\n" +
+                        "        </span>\n" +
+                        "    </button>\n" +
+                        "</div>\n" +
+                        "</div>")
+                }
+                else
+                {
+                    $("#paymentsAlert").html("");
+                }
+
+                var totalPaid = totalAmt - invoice.balance;
+                $("#subtotal").html(subtotal.toFixed(2));
+                $("#totaltax").html(totaltax.toFixed(2));
+                $("#totalAmt").html(totalAmt.toFixed(2));
+                $("#totalPaid").html(totalPaid.toFixed(2));
+                $(".totalDue").html(invoice.balance.toFixed(2));
+                $("#badgeContainer").html(badgeContainer);
+
+                var previousPaymentsTable = $("#previousPaymentsTable");
+                var tableContent = "";
+                previousPaymentsTable.html("");
+                $.each(receiptLog, function (index, value) {
+                    var date = moment(receipt.paymentDate.split("T")[0],"YYYY-MM-DD").format("DD/MM/YYYY");
+                    tableContent += "<tr><td>"+(++index)+"</td><td>"+receipt.receiptId+"</td><td>"+date+"</td><td>"+value.amountPaid.toFixed(2)+"</td><td>"+value.saleReturnAdjustment.adjAmount.toFixed(2)+"</td><td><a href='#' class='btn btn-sm btn-danger'><i class='fa fa-times'></i></a> <a href='#' class='btn btn-sm btn-info print' data-custid="+invoice.customerId+" data-id="+receipt.id+"><i class='fa fa-print'></i></a></td></tr>";
+                });
+                previousPaymentsTable.append(tableContent);
+            },
+            error: function () {
+                $(".detailsSpinner").addClass("hidden");
+                $("#detailsContentError").removeClass("hidden");
+            }
+        })
+
+    }
+
+    function toggleDetails() {
+        if ($("#collapseIcon").hasClass("fa-angle-double-right")) {
+            $("#collapseIcon").removeClass("fa-angle-double-right");
+            $("#collapseIcon").addClass("fa-angle-double-left");
+
+            $("#listContainer").removeClass("col-lg-12");
+            $("#listContainer").removeClass("col-md-12");
+
+            $("#listContainer").addClass("col-lg-5");
+            $("#listContainer").addClass("col-md-5");
+
+
+            $("#detailsContainer").removeClass("hidden");
+            $("#detailsContainer").addClass("col-lg-7");
+            $("#detailsContainer").addClass("col-md-7");
+            $("#detailsContainer").addClass("opened");
+        } else {
+            $("#collapseIcon").removeClass("fa-angle-double-left");
+            $("#collapseIcon").addClass("fa-angle-double-right");
+
+            $("#listContainer").addClass("col-lg-12");
+            $("#listContainer").addClass("col-md-12");
+
+            $("#listContainer").removeClass("col-lg-5");
+            $("#listContainer").removeClass("col-md-5");
+
+            $("#detailsContainer").addClass("hidden");
+            $("#detailsContainer").removeClass("col-lg-7");
+            $("#detailsContainer").removeClass("col-md-7");
+            $("#detailsContainer").removeClass("opened");
+        }
+    }
+
+    function applyCredits(creditAvailable) {
+        var totalDueOfSelected = parseFloat($("#totalDueOfSelected").text());
+        if(creditAvailable > totalDueOfSelected)
+            $("#creditsApplied").text(totalDueOfSelected.toFixed(2));
+        else
+            $("#creditsApplied").text(creditAvailable.toFixed(2));
+    }
+    function removeCredits()
+    {
+        $("#creditsApplied").text("0.00")
+    }
+
+    function paymentModeChange() {
+       var paymentMode = $("#paymentMode :selected").text();
+       if(paymentMode === "CARD")
+       {
+           $("#cardNumberContainer").removeClass("hidden");
+           $("#instrumentIdContainer").addClass("hidden");
+           $("#payeeBankerContainer").addClass("hidden");
+           $("#depositToContainer").removeClass("hidden");
+           $("#paymentMethodContainer").removeClass("hidden");
+
+           $("#paymentDateContainer").removeClass("col-md-6");
+           $("#paymentDateContainer").addClass("col-md-12");
+       }
+       else if(paymentMode === "BANK")
+       {
+           $("#cardNumberContainer").addClass("hidden");
+           $("#instrumentIdContainer").removeClass("hidden");
+           $("#payeeBankerContainer").removeClass("hidden");
+           $("#depositToContainer").removeClass("hidden");
+           $("#paymentMethodContainer").removeClass("hidden");
+
+           $("#paymentDateContainer").removeClass("col-md-12");
+           $("#paymentDateContainer").addClass("col-md-6");
+       }
+       else
+       {
+           //cash
+           $("#cardNumberContainer").addClass("hidden");
+           $("#instrumentIdContainer").addClass("hidden");
+           $("#payeeBankerContainer").addClass("hidden");
+           $("#depositToContainer").addClass("hidden");
+           $("#paymentMethodContainer").addClass("hidden");
+
+           $("#paymentDateContainer").removeClass("col-md-6");
+           $("#paymentDateContainer").addClass("col-md-12");
+
+       }
+    }
+
+    function recordPayment() {
+
+        var spinner = "<div class=\"col-md-12\">\n" +
+            "                    <div class=\"text-center\">\n" +
+            "                        <div class=\"spinner-border\" role=\"status\">\n" +
+            "                            <span class=\"sr-only\">We are recording payment information please wait!</span>\n" +
+            "                        </div>\n" +
+            "<p>We are recording payment information please wait!</p>\n" +
+            "                    </div>\n" +
+            "                </div>";
+
+        var processingSwal = Swal.fire({
+            title: "Recording Payment..",
+            html: spinner,
+            showDenyButton: false,
+            showCancelButton: false,
+            showCloseButton: false,
+            showConfirmButton: false
+        });
+        var amount = parseFloat($("#amount").val());
+        var paymentMode = $("#paymentMode").val();
+        var paymentMethod = $("#paymentMethod").val();
+        var depositTo = $("#depositTo").val();
+        var payeeBanker = $("#payeeBanker").val();
+        var cardNumber = $("#cardNumber").val();
+        var paymentDate = $("#paymentDate").val();
+        var instrumentId = $("#instrumentId").val();
+        var remarks = $("#remarks").val();
+        var saleBillId = $("#saleBillId").val();
+        var saleReturnIds = $("#saleReturnIds").val();
+        var creditsApplied = parseFloat($("#creditsApplied").text());
+        var totalDueOfSelected = parseFloat($("#totalDueOfSelected").text());
+        if(paymentDate == null || paymentDate === "")
+        {
+            processingSwal.close();
+
+            Swal.fire({
+                title: "Error",
+                html: "Please select payment date",
+                icon: 'error'
+            });
+            return;
+        }
+
+        if((amount + creditsApplied) >totalDueOfSelected)
+        {
+            processingSwal.close();
+            Swal.fire({
+                title: "Error",
+                html: "Payment amount should be less than Due Amount",
+                icon: 'error'
+            });
+            return;
+        }
+
+
+        $.ajax({
+            url: "sale-bill/record-payment",
+            method: "POST",
+            data:{
+                amount: amount,
+                paymentMode: paymentMode,
+                paymentMethod: paymentMethod,
+                depositTo: depositTo,
+                payeeBanker: payeeBanker,
+                cardNumber: cardNumber,
+                paymentDate: paymentDate,
+                instrumentId: instrumentId,
+                remarks: remarks,
+                saleBillId: saleBillId,
+                saleReturnIds: saleReturnIds,
+                creditsApplied: creditsApplied
+            },
+            success: function(saleBill)
+            {
+                processingSwal.close();
+                Swal.fire({
+                    title: "Success!",
+                    html: "Payment recorded for this invoice",
+                    icon: 'success'
+                });
+
+                listItemClicked(saleBill.id);
+            },
+            error: function () {
+                processingSwal.close();
+                Swal.fire({
+                    title: "Error!",
+                    html: "Please try later!",
+                    icon: 'error'
+                });
+            }
+        })
+    }
+
+    function printReceipt() {
+        /* window.addEventListener('load', function () {*/
+        $('#reciptPrint').printThis({
+            importCSS: true,
+            printDelay: 2000,
+            importStyle: true,
+            base: "",
+            pageTitle: ""
+        });
+    }
+
+    $(document).on("click", ".print", function () {
+        var custId =  $(this).data('custid');
+        var id =  $(this).data('id');
+        $("#printabel").remove();
+        receiptPrint(custId,id)
+    });
+
+    function receiptPrint(custId,id) {
+        $("<iframe id='printabel'>")
+            .hide()
+            .attr("src", "/print-recipt/"+custId+"/recipt/"+id)
+            .appendTo("body");
+    }
 </script>
 <g:include view="controls/footer-content.gsp"/>
 <script>

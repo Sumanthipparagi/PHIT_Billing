@@ -82,10 +82,10 @@
                             <div class="row clearfix">
                                 <div class="col-lg-12 form-group  form-float">
                                     <label for="date">
-                                        Recipt Date:
+                                        Receipt Date:
                                     </label>
                                     <input type="date" id="date" class="date" name="Recipt Date"
-                                           placeholder="Recipt Date" readonly
+                                           placeholder="Receipt Date" readonly
                                            required/>
                                 </div>
 

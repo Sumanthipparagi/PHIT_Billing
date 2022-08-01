@@ -132,6 +132,8 @@ class UrlMappings {
 
             "/updatebalancebyid/id/$id/balance/$balance/status/$status"(controller: 'saleBillDetails')
                     {action=[POST: 'updateBalance']}
+            "/updatebalanceandsettlecredits(.$format)?"(controller: 'saleBillDetails')
+                    {action=[POST: 'updateBalanceAndSettleCredits']}
 
 
 
@@ -385,6 +387,8 @@ class UrlMappings {
             "/saleretrunsettledbycustomer/$id(.$format)?"(controller: 'saleReturn') {
                 action = [GET: 'getAllsettledByCustId']
             }
+            "/salereturn/adjustment(.$format)?"(controller: 'saleReturn'){action = [POST: 'adjustSaleReturn']}
+            "/salereturn/adjustment/$docId/$docType(.$format)?"(controller: 'saleReturn'){action = [GET: 'getSaleReturnAdjustmentByDocId']}
 
 
 
@@ -456,6 +460,7 @@ class UrlMappings {
             "/reports/consolidated(.$format)?"(controller: 'reports', action: 'getConsolidatedBillDetails')
             "/reports/salesgst(.$format)?"(controller: 'reports', action: 'getSalesGSTReport')
             "/reports/salesreturn-areawise(.$format)?"(controller: 'reports', action: 'getSaleReturnAreaWiseBillDetails')
+            "/reports/statistics(.$format)?"(controller: 'reports', action: 'getSalesStats')
 
             "/salebilldetails/updateirn(.$format)?"(controller: 'saleBillDetails', action: 'updateIRNDetails')
             "/salebilldetails/save-invoice(.$format)?"(controller: 'saleBillDetails', action: 'saveInvoice')

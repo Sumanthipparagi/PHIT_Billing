@@ -35,6 +35,10 @@ class BillDetailLogService
         return jsonArray.toString()
     }
 
+    def getRecieptDetailsByBillIdAndBillType(long id, String billType) {
+        return BillDetailLog.findAllByBillIdAndBillType(id, billType)
+    }
+
 
     JSONObject dataTables(JSONObject paramsJsonObject, String start, String length) {
         String searchTerm = paramsJsonObject.get("search[value]")

@@ -15,6 +15,7 @@ class UrlMappings {
         "/login"(controller: "auth", action: 'login')
         "/logout"(controller: "auth", action: 'logout')
         "/dashboard"(controller: 'dashboard', action: "index")
+        "/dashboard/stats"(controller: 'dashboard', action: "dashboardStats")
         "/forms"(controller: 'dashboard', action: 'forms')
         "/table"(controller: 'dashboard', action: 'table')
         "/timeline"(controller: 'dashboard', action: 'timeline')
@@ -480,8 +481,10 @@ class UrlMappings {
         /*<-------------------------------------------Sales------------------------------------------------->*/
 
 //        My Invoices
+        "/sale-bill/$id"(controller: "salebillDetails", action: 'getSaleBillById')
         "/sale-bill-list"(controller: "salebillDetails", action: 'saleBillList')
         "/sale-bill/datatable"(controller: "salebillDetails", action: 'dataTable')
+        "/sale-bill/record-payment"(controller: "salebillDetails", action: 'recordPayment')
 
 
 //        Sale Retrun

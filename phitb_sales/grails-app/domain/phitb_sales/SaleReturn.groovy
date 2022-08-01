@@ -27,13 +27,10 @@ class SaleReturn implements Serializable, LogicalDelete<SaleReturn>
     int items
     int quantity
     double totalAmount
-    double balance
-    double dbAdjAmount
     double totalDiscount
     String debitIds
     long syncStatus
     long lockStatus
-    String adjustmentStatus
     String message
     int ignoreSold
     String financialYear
@@ -43,10 +40,15 @@ class SaleReturn implements Serializable, LogicalDelete<SaleReturn>
     long entityTypeId
     long createdUser
     long modifiedUser
-    Double adjAmount
     Date cancelledDate
     String refNo
     Date refDate
+
+    double balance
+    String adjustmentStatus //UNSETTLED, SETTLED, PARTIALLY_SETTLED
+    double dbAdjAmount
+    double adjAmount //total adjusted amount till now, if this is equal to totalAmount then this sale return is settled.
+
     Date dateCreated
     Date lastUpdated
 

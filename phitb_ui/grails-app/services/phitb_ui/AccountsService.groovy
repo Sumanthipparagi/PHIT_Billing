@@ -138,7 +138,6 @@ class AccountsService
     {
         Client client = ClientBuilder.newClient();
         WebTarget target = client.target(new Links().API_GATEWAY);
-
         try
         {
             Response apiResponse = target
@@ -163,8 +162,8 @@ class AccountsService
 
     }
 
-    //Recipt Detail
-    def saveRecipt(JSONObject jsonObject, String financialYear)
+    //Receipt Detail
+    def saveReceipt(JSONObject jsonObject, String financialYear)
     {
         Client client = ClientBuilder.newClient();
         WebTarget target = client.target(new Links().API_GATEWAY);
@@ -482,7 +481,7 @@ class AccountsService
 
     }
 
-    def getAllSaleReturnById(String id,String entityId,String financialYear)
+    def getAllSaleReturnByCustomer(long id, long entityId, String financialYear, String returnStatus = null)
     {
         Client client = ClientBuilder.newClient()
         WebTarget target = client.target(new Links().API_GATEWAY)
@@ -490,17 +489,18 @@ class AccountsService
         {
             Response apiResponse = target
                     .path(new Links().SALE_RETURN_CUSTOMER)
-                    .queryParam("id", URLEncoder.encode(id, "UTF-8"))
-                    .queryParam("financialYear", URLEncoder.encode(financialYear, "UTF-8"))
-                    .queryParam("entityId", URLEncoder.encode(entityId, "UTF-8"))
+                    .queryParam("id", id)
+                    .queryParam("financialYear", financialYear)
+                    .queryParam("entityId", entityId)
+                    .queryParam("returnStatus", returnStatus)
                     .request(MediaType.APPLICATION_JSON_TYPE)
                     .get()
             return apiResponse
         }
         catch (Exception ex)
         {
-            System.err.println('Service :AccountsService , action :  getProducts  , Ex:' + ex)
-            log.error('Service :AccountsService , action :  getProducts  , Ex:' + ex)
+            System.err.println('Service :AccountsService , action :  getAllSaleReturnByCustomer  , Ex:' + ex)
+            log.error('Service :AccountsService , action :  getAllSaleReturnByCustomer  , Ex:' + ex)
         }
 
     }
@@ -621,6 +621,27 @@ class AccountsService
         {
             System.err.println('Service :AccountsService , action :  updatePurchaseBalance  , Ex:' + ex)
             log.error('Service :AccountsService , action :  updatePurchaseBalance  , Ex:' + ex)
+        }
+
+    }
+
+    def updateSaleBalanceAndCredit(JSONObject jsonObject)
+    {
+        Client client = ClientBuilder.newClient();
+        //WebTarget target = client.target(new Links().API_GATEWAY);
+        WebTarget target = client.target("http://localhost:8083");
+        try
+        {
+            Response apiResponse = target
+                    .path(new Links().SALE_BILL_BALANCE_CREDITS_UPDATE)
+                    .request(MediaType.APPLICATION_JSON_TYPE)
+                    .post(Entity.json(jsonObject))
+            return apiResponse
+        }
+        catch (Exception ex)
+        {
+            System.err.println('Service :AccountsService , action :  updateSaleBalanceAndCredit  , Ex:' + ex)
+            log.error('Service :AccountsService , action :  updateSaleBalanceAndCredit  , Ex:' + ex)
         }
 
     }
@@ -778,8 +799,32 @@ class AccountsService
         }
         catch (Exception ex)
         {
-            System.err.println('Service :AccountsService , action :  getProducts  , Ex:' + ex)
-            log.error('Service :AccountsService , action :  getProducts  , Ex:' + ex)
+            System.err.println('Service :AccountsService , action :  getReceiptLogInvById  , Ex:' + ex)
+            log.error('Service :AccountsService , action :  getReceiptLogInvById  , Ex:' + ex)
+        }
+
+    }
+
+
+    def getReceiptLogByBillTypeAndId(String id, String billType)
+    {
+        Client client = ClientBuilder.newClient()
+        WebTarget target = client.target(new Links().API_GATEWAY)
+        try
+        {
+            Response apiResponse = target
+                    .path(new Links().RECEIPT_DETAIL_LOG + "/" + billType + "/" + id)
+                    .request(MediaType.APPLICATION_JSON_TYPE)
+                    .get()
+            if(apiResponse.status == 200)
+            {
+                return apiResponse
+            }
+        }
+        catch (Exception ex)
+        {
+            System.err.println('Service :AccountsService , action :  getReceiptLogByBillTypeAndId  , Ex:' + ex)
+            log.error('Service :AccountsService , action :  getReceiptLogByBillTypeAndId  , Ex:' + ex)
         }
 
     }

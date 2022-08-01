@@ -398,7 +398,10 @@ class EntityRegisterController {
 
     def getParentEntities() {
         try {
-            def apiResponse = new EntityService().getParentEntities()
+            String affiliateId = null
+            if(session.getAttribute("role").toString().equalsIgnoreCase(Constants.ENTITY_ADMIN))
+                affiliateId = session.getAttribute("entityId")
+            def apiResponse = new EntityService().getParentEntities(affiliateId)
             if (apiResponse?.status == 200) {
                 JSONArray jsonArray = new JSONArray(apiResponse.readEntity(String.class))
                 respond jsonArray, formats: ['json'], status: 200

@@ -103,7 +103,15 @@
                                                 <select class="form-control show-tick entityType" name="entityType"
                                                         id="entityType" required>
                                                     <g:each var="et" in="${entitytype}">
-                                                        <option value="${et.id}">${et.name}</option>
+                                                        <g:if test="${session.getAttribute('role') == Constants.ENTITY_ADMIN}">
+                                                            <g:if test="${et.name != "MANUFACTURER"}">
+                                                                <option value="${et.id}">${et.name}</option>
+                                                            </g:if>
+                                                        </g:if>
+                                                        <g:else>
+                                                            <option value="${et.id}">${et.name}</option>
+                                                        </g:else>
+
                                                     </g:each>
                                                 </select>
                                             </div>
@@ -206,7 +214,7 @@
                     </div>
                 </div>
 
-                <g:if test="${session.getAttribute('role') == Constants.SUPER_USER}">
+                <g:if test="${session.getAttribute('role') == Constants.SUPER_USER || session.getAttribute('role') == Constants.ENTITY_ADMIN}">
                     <div class="row clearfix">
                         <div class="col-lg-12 col-md-12 col-sm-12">
                             <div class="card">
@@ -217,23 +225,25 @@
                                 <div class="body">
                                     <div class="row">
                                         <div class="col-md-6 mt-2">
-                                            <div class="form-group">
-
-                                                <label for="isParent" class="checkbox-inline">
-                                                    <input onchange="isParentChanged()" type="checkbox" class="checkbox"
-                                                           id="isParent"/> Is Parent Entity?
-                                                </label>
-                                            </div>
-
+                                            <g:if test="${session.getAttribute('role') == Constants.SUPER_USER}">
+                                                <div class="form-group">
+                                                    <label for="isParent" class="checkbox-inline">
+                                                        <input onchange="isParentChanged()" type="checkbox"
+                                                               class="checkbox"
+                                                               id="isParent"/> Is Parent Entity?
+                                                    </label>
+                                                </div>
+                                            </g:if>
                                             <div class="form-group affiliatedEntityContainer">
                                                 <label for="affiliatedToEntity">Affiliated to Entity: <span
                                                         class="required-indicator"
                                                         style="color: red;">*</span></label>
-                                                <select name="affiliatedToEntity" style="width: 100%;" id="affiliatedToEntity" class="form-control" required>
+                                                <select name="affiliatedToEntity" style="width: 100%;"
+                                                        id="affiliatedToEntity" class="form-control" required>
                                                     <option selected disabled>-SELECT-</option>
                                                 </select>
                                             </div>
-                                            <input type="hidden" id="isParentValue" name="isParent" value="false" />
+                                            <input type="hidden" id="isParentValue" name="isParent" value="false"/>
                                         </div>
 
                                     </div>
@@ -759,8 +769,19 @@
                                                 <select class="form-control show-tick entityType" name="entityType"
                                                         id="entityType" required>
                                                     <g:each var="et" in="${entitytype}">
-                                                        <option value="${et.id}"
-                                                                <g:if test="${et.id == entity.entityType.id}">selected</g:if>>${et.name}</option>
+
+                                                        <g:if test="${session.getAttribute('role') == Constants.ENTITY_ADMIN}">
+                                                            <g:if test="${et.name != "MANUFACTURER"}">
+                                                                <option value="${et.id}"
+                                                                        <g:if test="${et.id == entity.entityType.id}">selected</g:if>>${et.name}</option>
+                                                            </g:if>
+                                                        </g:if>
+                                                        <g:else>
+                                                            <option value="${et.id}"
+                                                                    <g:if test="${et.id == entity.entityType.id}">selected</g:if>>${et.name}</option>
+                                                        </g:else>
+
+
                                                     </g:each>
                                                 </select>
                                             </div>
@@ -1456,7 +1477,7 @@
             placeholder: 'Search for cities',
             minimumInputLength: 2
         });
-        <g:if test="${session.getAttribute('role') == Constants.SUPER_USER}">
+        <g:if test="${session.getAttribute('role') == Constants.SUPER_USER || session.getAttribute('role') == Constants.ENTITY_ADMIN}">
         $("#affiliatedToEntity").select2();
         </g:if>
 
@@ -1632,10 +1653,10 @@
     // });
 
 
-    <g:if test="${session.getAttribute('role') == Constants.SUPER_USER}">
+    <g:if test="${session.getAttribute('role') == Constants.SUPER_USER || session.getAttribute('role') == Constants.ENTITY_ADMIN}">
     loadAffiliated();
-    function loadAffiliated()
-    {
+
+    function loadAffiliated() {
         $.ajax({
             method: "GET",
             url: "getparententities",
@@ -1645,11 +1666,12 @@
                 $.each(data, function (index, value) {
                     var entityTypeName = value.entityType.name;
                     var entityTypeId = value.entityType.id;
-                    $("#affiliatedToEntity").append("<option value=\"" + value.id +"_"+entityTypeId+"\">" + value.entityName + " ("+entityTypeName+")</option>");
+                    $("#affiliatedToEntity").append("<option value=\"" + value.id + "_" + entityTypeId + "\">" + value.entityName + " (" + entityTypeName + ")</option>");
                 });
             }
         })
     }
+
     function isParentChanged() {
         var isParent = $("#isParent").is(":checked");
         $("#isParentValue").val(isParent);
