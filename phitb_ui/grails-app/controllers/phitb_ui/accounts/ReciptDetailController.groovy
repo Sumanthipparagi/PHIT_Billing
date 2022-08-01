@@ -154,7 +154,6 @@ class ReciptDetailController {
 
     def getAllEntityById() {
         try {
-            JSONObject jsonObject = new JSONObject()
             def apiResponse = new AccountsService().getEntityById(params.id)
             if (apiResponse.status == 200) {
                 JSONObject responseObject = new JSONObject(apiResponse.readEntity(String.class))
