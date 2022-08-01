@@ -134,6 +134,7 @@ class UrlMappings {
                     {action=[POST: 'updateBalance']}
             "/updatebalanceandsettlecredits(.$format)?"(controller: 'saleBillDetails')
                     {action=[POST: 'updateBalanceAndSettleCredits']}
+            "/updatebalanceandadjustcredits(.$format)?"(controller: 'saleBillDetails'){ action = [POST: 'adjustCredits']}
 
 
 

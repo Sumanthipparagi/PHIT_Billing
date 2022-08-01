@@ -436,7 +436,7 @@
                 var dueDate = "-";
                 var badgeContainer = "";
                 var saleReturnIds = "";
-                var saleBillId = $("#saleBillId").val(invoice.id);
+                var saleBillId = $(".saleBillId").val(invoice.id);
                 if(invoice.billStatus !== "DRAFT")
                 {
                     orderDate = moment(invoice.orderDate.split("T")[0],"YYYY-MM-DD").format("DD/MM/YYYY");
@@ -498,23 +498,28 @@
                 });
 
                 var availableCredits = 0.0;
+                var availableCreditsTable = "";
+                $("#creditsTable").empty();
+                var i = 0;
                 $.each(saleReturns, function (index, saleReturn) {
-                    saleReturnIds += saleReturn.id + ",";
-                    availableCredits += saleReturn.balance
+                    availableCredits += saleReturn.balance;
+                    if (saleReturn.balance > 0) {
+                        var checkbox = "<input type='checkbox' class='creditSelection'  data-id='"+saleReturn.id+"' data-balance='"+saleReturn.balance+"'/>";
+                        availableCreditsTable += "<tr><td>" + (++i) + "</td><td>" + saleReturn.invoiceNumber + "</td><td>" + saleReturn.balance.toFixed(2) + "</td><td>"+checkbox+"</td></tr>";
+                    }
                 });
-
-                $("#saleReturnIds").val(saleReturnIds);
+                $("#creditsTable").html(availableCreditsTable);
 
                 if(availableCredits > 0)
                 {
                     $("#paymentsAlert").html("<div class=\"alert alert-primary\" role=\"alert\">\n" +
                         "<div class=\"container\">\n" +
-                        "    <strong>₹"+availableCredits.toFixed(2)+" Credits Available!</strong> Adjust it to current invoice?"+
-                        "    <button onclick='applyCredits("+availableCredits+")' type=\"button\" class=\"close\" data-dismiss=\"alert\" aria-label=\"Close\">\n" +
+                        "    <strong><u>₹"+availableCredits.toFixed(2)+"</u> Total Credits Available!</strong>"+
+                        /*"    <button onclick='applyCredits("+availableCredits+")' type=\"button\" class=\"close\" data-dismiss=\"alert\" aria-label=\"Close\">\n" +
                         "            <span aria-hidden=\"true\">\n" +
                         "            <i class=\"zmdi zmdi-plus\"></i>\n" +
                         "        </span>\n" +
-                        "    </button>\n" +
+                        "    </button>\n" +*/
                         "</div>\n" +
                         "</div>")
                 }
@@ -582,15 +587,25 @@
     }
 
     function applyCredits(creditAvailable) {
-        var totalDueOfSelected = parseFloat($("#totalDueOfSelected").text());
+        var totalDueOfSelected = parseFloat($(".totalDueOfSelected").text());
         if(creditAvailable > totalDueOfSelected)
             $("#creditsApplied").text(totalDueOfSelected.toFixed(2));
-        else
-            $("#creditsApplied").text(creditAvailable.toFixed(2));
+        else {
+            creditAvailable = parseFloat($("#creditsApplied").text()) + creditAvailable;
+            if(creditAvailable > totalDueOfSelected)
+                $("#creditsApplied").text(totalDueOfSelected.toFixed(2));
+            else
+                $("#creditsApplied").text(creditAvailable.toFixed(2));
+        }
     }
-    function removeCredits()
+    function removeCredits(creditAmount)
     {
-        $("#creditsApplied").text("0.00")
+        var appliedCredit = parseFloat($("#creditsApplied").text());
+        appliedCredit = appliedCredit-creditAmount;
+        if(appliedCredit <= 0)
+            $("#creditsApplied").text("0.00");
+        else
+            $("#creditsApplied").text(appliedCredit.toFixed(2));
     }
 
     function paymentModeChange() {
@@ -660,10 +675,10 @@
         var paymentDate = $("#paymentDate").val();
         var instrumentId = $("#instrumentId").val();
         var remarks = $("#remarks").val();
-        var saleBillId = $("#saleBillId").val();
+        var saleBillId = $(".saleBillId").val();
         var saleReturnIds = $("#saleReturnIds").val();
         var creditsApplied = parseFloat($("#creditsApplied").text());
-        var totalDueOfSelected = parseFloat($("#totalDueOfSelected").text());
+        var totalDueOfSelected = parseFloat($(".totalDueOfSelected").text());
         if(paymentDate == null || paymentDate === "")
         {
             processingSwal.close();
@@ -742,7 +757,7 @@
         var custId =  $(this).data('custid');
         var id =  $(this).data('id');
         $("#printabel").remove();
-        receiptPrint(custId,id)
+        receiptPrint(custId, id)
     });
 
     function receiptPrint(custId,id) {
@@ -750,6 +765,63 @@
             .hide()
             .attr("src", "/print-recipt/"+custId+"/recipt/"+id)
             .appendTo("body");
+    }
+
+    $(document).on("click", ".creditSelection", function () {
+        var id =  $(this).data('id');
+        var balance =  $(this).data('balance');
+        var saleReturnIds = $("#saleReturnIds").val();
+        if($(this).is(':checked')) {
+            if (saleReturnIds != null) {
+                saleReturnIds = saleReturnIds + id + ",";
+            } else
+                saleReturnIds = id + ",";
+            applyCredits(balance);
+        }
+        else
+        {
+            saleReturnIds = saleReturnIds.replace(id+",","");
+            removeCredits(balance);
+
+        }
+
+        $("#saleReturnIds").val(saleReturnIds);
+
+    });
+
+    function adjustCredits()
+    {
+        var saleBillId = $(".saleBillId").val();
+        var saleReturnIds = $("#saleReturnIds").val();
+        var creditsApplied = parseFloat($("#creditsApplied").text());
+        $.ajax({
+            url: "sale-bill/adjust-credits",
+            method: "POST",
+            data:{
+                saleBillId: saleBillId,
+                saleReturnIds: saleReturnIds,
+                creditsApplied: creditsApplied
+            },
+            success: function(saleBill)
+            {
+                processingSwal.close();
+                Swal.fire({
+                    title: "Success!",
+                    html: "Credits Adjusted for this invoice",
+                    icon: 'success'
+                });
+
+                listItemClicked(saleBill.id);
+            },
+            error: function () {
+                processingSwal.close();
+                Swal.fire({
+                    title: "Error!",
+                    html: "Please try later!",
+                    icon: 'error'
+                });
+            }
+        })
     }
 </script>
 <g:include view="controls/footer-content.gsp"/>

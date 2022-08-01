@@ -426,6 +426,7 @@ public class Links
     public static String DRAFT_SALE_BILL_SHOW = "api/v1.0/sales/draftsalebilldetails";
     public static String SALE_BILL_BALANCE_UPDATE = "api/v1.0/sales/updatebalancebyid";
     public static String SALE_BILL_BALANCE_CREDITS_UPDATE = "api/v1.0/sales/updatebalanceandsettlecredits";
+    public static String SALE_BILL_BALANCE_CREDITS_UPDATE2 = "api/v1.0/sales/updatebalanceandadjustcredits"; //TODO: to be corrected
     public static String SALE_BILL_SAVE = "api/v1.0/sales/salebilldetails";
     public static String SALE_BILL_CANCEL = "api/v1.0/sales/salebilldetails/cancel";
     public static String SALE_BILL_DATATABLE = "api/v1.0/sales/salebilldetails/datatable";

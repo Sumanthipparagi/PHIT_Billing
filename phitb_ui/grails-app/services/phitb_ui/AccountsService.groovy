@@ -646,6 +646,27 @@ class AccountsService
 
     }
 
+    def updateSaleBalanceAndCredit2(JSONObject jsonObject)
+    {
+        Client client = ClientBuilder.newClient();
+        //WebTarget target = client.target(new Links().API_GATEWAY);
+        WebTarget target = client.target("http://localhost:8083");
+        try
+        {
+            Response apiResponse = target
+                    .path(new Links().SALE_BILL_BALANCE_CREDITS_UPDATE2)
+                    .request(MediaType.APPLICATION_JSON_TYPE)
+                    .post(Entity.json(jsonObject))
+            return apiResponse
+        }
+        catch (Exception ex)
+        {
+            System.err.println('Service :AccountsService , action :  updateSaleBalanceAndCredit  , Ex:' + ex)
+            log.error('Service :AccountsService , action :  updateSaleBalanceAndCredit  , Ex:' + ex)
+        }
+
+    }
+
     //   update Sale return balance
     def updateSaleReturnBalance(JSONObject jsonObject)
     {

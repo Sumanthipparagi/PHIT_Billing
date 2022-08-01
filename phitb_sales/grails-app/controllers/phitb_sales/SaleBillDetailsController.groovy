@@ -1,7 +1,5 @@
 package phitb_sales
 
-
-import grails.rest.*
 import grails.converters.*
 import grails.web.servlet.mvc.GrailsParameterMap
 import org.grails.web.json.JSONArray
@@ -342,59 +340,11 @@ class SaleBillDetailsController {
     def updateBalanceAndSettleCredits() {
         try {
             JSONObject jsonObject = new JSONObject(request.reader.text)
-            String saleReturnIds = jsonObject.saleReturnIds
-            double creditsApplied = 0
-            if (jsonObject.creditsApplied) {
-                creditsApplied = jsonObject.creditsApplied
-            }
             SaleBillDetails saleBillDetails = SaleBillDetails.findById(jsonObject.id)
             if (jsonObject.status == "NA" || jsonObject.status == null) {
                 if (saleBillDetails) {
                     saleBillDetails.isUpdatable = true
-                    double totalDue = saleBillDetails.balance
                     Double paidNow = jsonObject.paidNow
-                    if (creditsApplied > 0) {
-                        //updating sale return / credit note
-                        ArrayList<String> saleRtrnIds = saleReturnIds.split(",")
-                        for (String id : saleRtrnIds) {
-                            SaleReturn saleReturn = SaleReturn.findByIdAndBalanceGreaterThan(Long.parseLong(id), 0)
-                            if (saleReturn) {
-                                double saleReturnBalanceBefore = saleReturn.balance
-                                double saleReturnBalance = saleReturn.balance
-                                totalDue = totalDue - saleReturnBalance
-                                if (totalDue >= 0) {
-                                    saleReturn.balance = 0
-                                } else {
-                                    saleReturn.balance = Math.abs(totalDue)
-                                    totalDue = 0
-                                }
-                                println("Total Due: " + totalDue)
-                                saleReturn.isUpdatable = true
-                                def savedSaleReturn = saleReturn.save()
-                                //saving log
-                                if (savedSaleReturn) {
-                                    SaleReturnAdjustment saleReturnAdjustment = new SaleReturnAdjustment()
-                                    saleReturnAdjustment.saleReturn = savedSaleReturn
-                                    saleReturnAdjustment.totalAmount = saleBillDetails.invoiceTotal
-                                    saleReturnAdjustment.adjAmount = saleReturnBalanceBefore
-                                    saleReturnAdjustment.balanceBefore = saleReturnBalanceBefore
-                                    saleReturnAdjustment.currentBalance = savedSaleReturn.balance
-                                    saleReturnAdjustment.docId = Long.parseLong(jsonObject.get("docId").toString())
-                                    saleReturnAdjustment.docType = jsonObject.get("docType")
-                                    saleReturnAdjustment.entityId = savedSaleReturn.entityId
-                                    saleReturnAdjustment.entityTypeId = savedSaleReturn.entityTypeId
-                                    saleReturnAdjustment.createdUser = savedSaleReturn.createdUser
-                                    saleReturnAdjustment.modifiedUser = savedSaleReturn.modifiedUser
-                                    saleReturnAdjustment.save()
-                                }
-                            }
-                        }
-                        paidNow += creditsApplied
-                        saleBillDetails.creditadjAmount = creditsApplied
-                        saleBillDetails.creditIds = saleReturnIds
-
-                    }
-
                     //updating sale invoice
                     if (paidNow > 0 && paidNow != "" && paidNow != null) {
                         double diffBalance = Double.parseDouble(saleBillDetails.getBalance().toString()) - paidNow
@@ -433,6 +383,105 @@ class SaleBillDetailsController {
             log.error('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
         }
         response.status = 400
+    }
+
+    def adjustCredits()
+    {
+        JSONObject jsonObject = new JSONObject(request.reader.text)
+        String saleReturnIds = jsonObject.saleReturnIds
+        long userId = jsonObject.userId
+        double creditsApplied = 0
+        if (jsonObject.creditsApplied) {
+            creditsApplied = jsonObject.creditsApplied
+        }
+
+        SaleBillDetails saleBillDetails = SaleBillDetails.findById(jsonObject.id)
+        if (jsonObject.status == "NA" || jsonObject.status == null) {
+            if (saleBillDetails) {
+                saleBillDetails.isUpdatable = true
+                Double paidNow = creditsApplied
+                if (creditsApplied > 0) {
+                    //create sale return adjustment
+                    SaleReturnAdjustment saleReturnAdjustment = new SaleReturnAdjustment()
+                    saleReturnAdjustment.userId = userId
+                    saleReturnAdjustment.customerId = saleBillDetails.customerId
+                    saleReturnAdjustment.financialYear = saleBillDetails.financialYear
+                    saleReturnAdjustment.entityId = saleBillDetails.entityId
+                    saleReturnAdjustment.entityTypeId = saleBillDetails.entityTypeId
+                    saleReturnAdjustment.createdUser = userId
+                    saleReturnAdjustment.modifiedUser = userId
+                    saleReturnAdjustment.docNo = "TEST" //TODO: generate docno
+                    saleReturnAdjustment.save()
+
+                    if(!saleReturnAdjustment.hasErrors()) {
+                        //updating sale return / credit note
+                        double totalDue = saleBillDetails.balance
+                        ArrayList<String> saleRtrnIds = saleReturnIds.split(",")
+                        for (String id : saleRtrnIds) {
+                            SaleReturn saleReturn = SaleReturn.findByIdAndBalanceGreaterThan(Long.parseLong(id), 0)
+                            if (saleReturn) {
+                                double saleReturnBalanceBefore = saleReturn.balance
+                                double saleReturnBalance = saleReturn.balance
+                                totalDue = totalDue - saleReturnBalance
+                                if (totalDue >= 0) {
+                                    saleReturn.balance = 0
+                                } else {
+                                    saleReturn.balance = Math.abs(totalDue)
+                                    totalDue = 0
+                                }
+                                println("Total Due: " + totalDue)
+                                saleReturn.isUpdatable = true
+                                def savedSaleReturn = saleReturn.save()
+                                //saving log
+                                if (savedSaleReturn) {
+                                    SaleReturnAdjustmentDetails saleReturnAdjustmentDetails = new SaleReturnAdjustmentDetails()
+                                    saleReturnAdjustmentDetails.saleReturnAdjustment = saleReturnAdjustment
+                                    saleReturnAdjustmentDetails.saleReturn = savedSaleReturn
+                                    saleReturnAdjustmentDetails.totalAmount = saleBillDetails.invoiceTotal
+                                    saleReturnAdjustmentDetails.adjAmount = saleReturnBalanceBefore
+                                    saleReturnAdjustmentDetails.balanceBefore = saleReturnBalanceBefore
+                                    saleReturnAdjustmentDetails.currentBalance = savedSaleReturn.balance
+                                    saleReturnAdjustmentDetails.docId = Long.parseLong(jsonObject.get("docId").toString())
+                                    saleReturnAdjustmentDetails.docType = jsonObject.get("docType")
+                                    saleReturnAdjustmentDetails.entityId = savedSaleReturn.entityId
+                                    saleReturnAdjustmentDetails.entityTypeId = savedSaleReturn.entityTypeId
+                                    saleReturnAdjustmentDetails.createdUser = savedSaleReturn.createdUser
+                                    saleReturnAdjustmentDetails.modifiedUser = savedSaleReturn.modifiedUser
+                                    saleReturnAdjustmentDetails.save()
+                                }
+                            }
+                        }
+                        paidNow += creditsApplied
+                        saleBillDetails.creditadjAmount = creditsApplied
+                        saleBillDetails.creditIds = saleReturnIds
+
+                        //updating sale invoice
+                        if (paidNow > 0 && paidNow != "" && paidNow != null) {
+                            double diffBalance = Double.parseDouble(saleBillDetails.getBalance().toString()) - paidNow
+                            saleBillDetails.balance = String.format("%.2f", diffBalance) as double
+                            saleBillDetails.adjAmount = String.format("%.2f", saleBillDetails.getAdjAmount() + paidNow) as double
+                        } else {
+                            saleBillDetails.balance = String.format("%.2f", saleBillDetails.getBalance()) as double
+                            saleBillDetails.adjAmount = String.format("%.2f", saleBillDetails.getAdjAmount()) as double
+                        }
+                        SaleBillDetails saleBillDetails1 = saleBillDetails.save(flush: true)
+                        if (saleBillDetails1) {
+                            respond saleBillDetails1
+                        }
+                    }
+                    else
+                    {
+                        response.status = 400
+                    }
+
+                }
+            }
+        }
+        else
+        {
+            //cancel credits
+        }
+
     }
 
     def getRecentByFinancialYearAndEntity() {
