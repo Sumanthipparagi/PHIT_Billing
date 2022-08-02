@@ -25,6 +25,7 @@
     <asset:stylesheet src="/themeassets/plugins/bootstrap-material-datetimepicker/css/bootstrap-material-datetimepicker.css"
             rel="stylesheet"/>
     %{--    <link rel="stylesheet" media="screen" href="https://cdnjs.cloudflare.com/ajax/libs/handsontable/0.16.0/handsontable.full.css">--}%
+    <asset:stylesheet src="/themeassets/fonts/font-awesome/css/font-awesome.css" rel="stylesheet"/>
 
     <style>
     .form-control {
@@ -559,6 +560,8 @@
 %{--<asset:javascript src="/themeassets/plugins/select2/dist/js/select2.full.js"/>--}%
 %{--<script src="https://cdnjs.cloudflare.com/ajax/libs/handsontable/0.16.0/handsontable.full.js"></script>--}%
 <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/3.5.2/select2.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.2/js/all.js"
+        integrity="sha256-2JRzNxMJiS0aHOJjG+liqsEOuBb6++9cY4dSOyiijX4=" crossorigin="anonymous"></script>
 
 <script>
 
@@ -774,8 +777,15 @@
                                 }
                             }
                             // var batch = hot.getDataAtCell(row,2);
-                            td.innerHTML =
-                                '<button class="btn-success schBtn"  id="'+"sch"+pid+batch+'" style="margin: 2px;">+</button>';
+                           if(localStorage.getItem(pid+"-"+batch)===null)
+                           {
+                               td.innerHTML =
+                                   '<button class="btn-success schBtn"  id="'+"sch"+pid+batch+'" style="margin: 2px;width: 33px;"><i class="fa fa-plus" aria-hidden="true"></i></button>';
+                           }else
+                           {
+                               td.innerHTML =
+                                   '<button class="btn-danger"  id="'+"sch"+pid+batch+'" style="margin: 3px;"><i class="fa fa-edit" aria-hidden="true"></i></button>';
+                           }
                         }
 
                     };
@@ -1440,7 +1450,6 @@
 
 
     function addScheme(id,row){
-        alert(id);
        if(id==='' || id=== null)
        {
            Swal.fire({
@@ -1460,6 +1469,7 @@
                        time: false,
                        weekStart: 1
                    });
+                   $('#schemeForm').trigger("reset");
                    jQuery("#schemeForm").submit(function(e){
                        e.preventDefault();
                        $("#addSchemeModal").modal("hide");
@@ -1475,8 +1485,6 @@
                            localStorage.setItem(formJSON.productId+"-"+formJSON.batch,JSON.stringify(formJSON));
                            // console.log("sch"+productId+batch === "sch115CB21003");
                            // console.log( $("#sch"+productId+batch));
-
-                           $('#sch'+productId+batch).text("added");
                        }
                        return true;
                    });
@@ -1495,6 +1503,73 @@
        else
        {
            $("#addSchemeModal").modal("show");
+           $('.hotRow').val(row);
+           $('.date').bootstrapMaterialDatePicker({
+               format: 'DD/MM/YYYY',
+               clearButton: true,
+               time: false,
+               weekStart: 1
+           });
+           if(localStorage.getItem(hot.getDataAtCell(row, 1)+"-"+hot.getDataAtCell(row, 2))!==null)
+           {
+               // var values = Object.values();
+               var data = JSON.parse(localStorage.getItem(hot.getDataAtCell(row, 1)+"-"+hot.getDataAtCell(row,2)));
+               console.log(data);
+               $('#schemeForm').trigger("reset");
+
+               // //Slab 1
+               $('#slab1MinQty').val(data.slab1MinQty);
+               $('#slab1SchemeQty').val(data.slab1SchemeQty);
+               $('#slab1BulkStatus').val(data.slab1BulkStatus);
+               $('#slab1Status').val(data.slab1Status);
+
+               //Slab2
+               $('#slab2MinQty').val(data.slab2MinQty);
+               $('#slab2SchemeQty').val(data.slab2SchemeQty);
+               $('#slab2BulkStatus').val(data.slab2BulkStatus);
+               $('#slab2Status').val(data.slab2Status);
+
+               //Slab3
+               $('#slab3MinQty').val(data.slab3MinQty);
+               $('#slab3SchemeQty').val(data.slab3SchemeQty);
+               $('#slab3BulkStatus').val(data.slab3BulkStatus);
+               $('#slab3Status').val(data.slab3Status);
+
+               //Other information
+               $('#slabValidityFrom').val(data.slabValidityFrom);
+               $('#slabValidityTo').val(data.slabValidityTo);
+               $('#specialDiscount').val(data.specialDiscount);
+               $('#specialDiscountValidFrom').val(data.specialDiscountValidFrom);
+               $('#specialDiscountValidTo').val(data.specialDiscountValidTo);
+               $('#specialRate').val(data.specialRate);
+               $('#specialRateValidFrom').val(data.specialRateValidFrom);
+               $('#specialRateValidTo').val(data.specialRateValidTo);
+           }
+           else
+           {
+               $('#schemeForm').trigger("reset");
+
+           }
+           jQuery("#schemeForm").submit(function(e){
+               e.preventDefault();
+               $("#addSchemeModal").modal("hide");
+               const data = new FormData(e.target);
+               const formJSON = Object.fromEntries(data.entries());
+               var productId = hot.getDataAtCell(formJSON?.row, 1);
+               var batch = hot.getDataAtCell(formJSON?.row, 2);
+
+               formJSON.productId = productId;
+               formJSON.batch = batch;
+               formJSON.customerIds = $("#supplier").val();
+               if(formJSON?.batch!==null && formJSON?.productId!==null)
+               {
+                   localStorage.setItem(formJSON.productId+"-"+formJSON.batch,JSON.stringify(formJSON));
+                   // console.log("sch"+productId+batch === "sch115CB21003");
+                   // console.log( $("#sch"+productId+batch));
+               }
+               hot.render();
+               return true;
+           });
        }
     }
 
