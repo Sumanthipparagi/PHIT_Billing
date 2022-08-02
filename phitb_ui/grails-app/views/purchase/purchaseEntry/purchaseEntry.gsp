@@ -792,7 +792,7 @@
                            }else
                            {
                                td.innerHTML =
-                                   '<button class="btn-danger"  id="'+"sch"+pid+batch+'" style="margin: 3px;"><i class="fa fa-edit" aria-hidden="true"></i></button>';
+                                   '<button class="btn-danger"  id="'+"sch"+pid+batch+'" style="margin: 3px;width: 33px;"><i class="fa fa-edit" aria-hidden="true"></i></button>';
                            }
                         }
 
