@@ -203,6 +203,10 @@ class PurchaseEntryController {
             purchaseProductDetail.put("redundantBatch", 0) //TODO: to be changed
             purchaseProductDetail.put("status", 0)
             purchaseProductDetail.put("syncStatus", 0)
+            purchaseProductDetail.put("gstPercentage", purchase.get("20").toString())
+            purchaseProductDetail.put("sgstPercentage", purchase.get("21").toString())
+            purchaseProductDetail.put("cgstPercentage", purchase.get("22").toString())
+            purchaseProductDetail.put("igstPercentage", purchase.get("23").toString())
             purchaseProductDetail.put("financialYear", financialYear)
             purchaseProductDetail.put("entityId", entityId)
             purchaseProductDetail.put("entityTypeId", session.getAttribute("entityTypeId").toString())
@@ -216,19 +220,19 @@ class PurchaseEntryController {
             double cgstPercentage = 0.0
             double igstPercentage = 0.0
 
-            if (gst > 0)
-                gstPercentage = (gst / priceBeforeTaxes) * 100
-            if (sgst > 0)
-                sgstPercentage = (sgst / priceBeforeTaxes) * 100
-            if (cgst > 0)
-                cgstPercentage = (cgst / priceBeforeTaxes) * 100
-            if (igst > 0)
-                igstPercentage = (igst / priceBeforeTaxes) * 100
-            purchaseProductDetail.put("gstPercentage", UtilsService.round(gstPercentage, 2))
-            purchaseProductDetail.put("sgstPercentage", UtilsService.round(sgstPercentage, 2))
-            purchaseProductDetail.put("cgstPercentage", UtilsService.round(cgstPercentage, 2))
-            purchaseProductDetail.put("igstPercentage", UtilsService.round(igstPercentage, 2))
-            purchaseProductDetail.put("uuid", params.uuid)
+//            if (gst > 0)
+//                gstPercentage = (gst / priceBeforeTaxes) * 100
+//            if (sgst > 0)
+//                sgstPercentage = (sgst / priceBeforeTaxes) * 100
+//            if (cgst > 0)
+//                cgstPercentage = (cgst / priceBeforeTaxes) * 100
+//            if (igst > 0)
+//                igstPercentage = (igst / priceBeforeTaxes) * 100
+//            purchaseProductDetail.put("gstPercentage", UtilsService.round(gstPercentage, 2))
+//            purchaseProductDetail.put("sgstPercentage", UtilsService.round(sgstPercentage, 2))
+//            purchaseProductDetail.put("cgstPercentage", UtilsService.round(cgstPercentage, 2))
+//            purchaseProductDetail.put("igstPercentage", UtilsService.round(igstPercentage, 2))
+//            purchaseProductDetail.put("uuid", params.uuid)
             purchaseProductDetails.add(purchaseProductDetail)
 
             //save to sale transaction log

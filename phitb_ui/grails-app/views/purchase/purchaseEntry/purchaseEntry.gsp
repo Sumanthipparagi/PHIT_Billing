@@ -585,7 +585,11 @@
         'IGST',
         'Manf. Date',
         'scheme',
-        'tax_id'
+        'tax_id',
+        '',
+        '',
+        '',
+        ''
     ];
 
     var batchHeaderRow = [
@@ -691,12 +695,16 @@
                 {type: 'text', readOnly: true},
                 {type: 'text', readOnly: true},
                 {type: 'text', readOnly: true},
+                {type: 'text', readOnly: true},
+                {type: 'text', readOnly: true},
+                {type: 'text', readOnly: true},
+                {type: 'text', readOnly: true},
                 {type: 'text', readOnly: true}
             ],
             hiddenColumns: true,
             hiddenColumns: {
                 // specify columns hidden by default
-                columns: [19]
+                columns: [19,20,21,22,23]
             },
             minSpareRows: 0,
             minSpareColumns: 0,
@@ -1127,11 +1135,17 @@
                                 hot.setDataAtCell(row, 12, Number(gstAmount).toFixed(2)); //GST
                                 hot.setDataAtCell(row, 14, Number(sgstAmount).toFixed(2)); //SGST
                                 hot.setDataAtCell(row, 15, Number(cgstAmount).toFixed(2)); //CGST
+                                hot.setDataAtCell(row, 20,gst); //GST
+                                hot.setDataAtCell(row, 21,sgst); //SGST
+                                hot.setDataAtCell(row, 22,cgst); //CGST
+                                hot.setDataAtCell(row, 23,igst); //IGST
                                 calculateTotalAmt();
                             } else {
                                 hot.setDataAtCell(row, 12, 0); //GST
                                 hot.setDataAtCell(row, 14, 0); //SGST
                                 hot.setDataAtCell(row, 15, 0); //CGST
+                                hot.setDataAtCell(row, 23,gst); //IGST
+
                             }
                         } else {
                             // hot.setDataAtCell(row, 12, 0); //GST
@@ -1224,9 +1238,11 @@
                         igst = rowData[12];
                         hot.selectCell(mainTableRow, 4);
                         hot.setDataAtCell(mainTableRow, 18, 0);
-                        hot.setDataAtCell(mainTableRow, 19, sgst);
-                        hot.setDataAtCell(mainTableRow, 20, cgst);
-                        hot.setDataAtCell(mainTableRow, 21, igst);
+                        hot.setDataAtCell(mainTableRow, 19, 0);
+                        hot.setDataAtCell(mainTableRow, 20, gst);
+                        hot.setDataAtCell(mainTableRow, 21, sgst);
+                        hot.setDataAtCell(mainTableRow, 22, cgst);
+                        hot.setDataAtCell(mainTableRow, 23, igst);
                         remainingQty = rowData[3];
                         remainingFQty = rowData[4];
                         $("#purchaseTable").focus();
