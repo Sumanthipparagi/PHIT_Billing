@@ -524,11 +524,11 @@
                 }
 
                 var totalPaid = totalAmt - invoice.balance;
-                $("#subtotal").html(subtotal.toFixed(2));
-                $("#totaltax").html(totaltax.toFixed(2));
-                $("#totalAmt").html(totalAmt.toFixed(2));
-                $("#totalPaid").html(totalPaid.toFixed(2));
-                $(".totalDue").html(invoice.balance.toFixed(2));
+                $("#subtotal").html(parseFloat2Decimal(subtotal));
+                $("#totaltax").html(parseFloat2Decimal(totaltax));
+                $("#totalAmt").html(parseFloat2Decimal(totalAmt));
+                $("#totalPaid").html(parseFloat2Decimal(totalPaid));
+                $(".totalDue").html(parseFloat2Decimal(invoice.balance));
                 $("#badgeContainer").html(badgeContainer);
 
                 var previousPaymentsTable = $("#previousPaymentsTable");
@@ -606,14 +606,14 @@
     function applyCredits(creditAvailable) {
         var totalDueOfSelected = parseFloat2Decimal($("#creditsTotalDue").text());
         if(creditAvailable > totalDueOfSelected) {
-            $("#creditsApplied").text(totalDueOfSelected.toFixed(2));
+            $("#creditsApplied").text(parseFloat2Decimal(totalDueOfSelected));
         }
         else {
             creditAvailable = parseFloat2Decimal($("#creditsApplied").text()) + creditAvailable;
             if(creditAvailable > totalDueOfSelected)
-                $("#creditsApplied").text(totalDueOfSelected.toFixed(2));
+                $("#creditsApplied").text(parseFloat2Decimal(totalDueOfSelected));
             else
-                $("#creditsApplied").text(creditAvailable.toFixed(2));
+                $("#creditsApplied").text(parseFloat2Decimal(creditAvailable));
         }
     }
     function removeCredits(creditAmount)
@@ -623,7 +623,7 @@
         if(appliedCredit <= 0)
             $("#creditsApplied").text("0.00");
         else
-            $("#creditsApplied").text(appliedCredit.toFixed(2));
+            $("#creditsApplied").text(parseFloat2Decimal(appliedCredit));
     }
 
     function paymentModeChange() {
@@ -813,7 +813,7 @@
 
     $(document).on("click", ".creditSelection", function () {
         var id =  $(this).data('id');
-        var balance =  $(this).data('balance').toFixed(2);
+        var balance =  parseFloat2Decimal($(this).data('balance'));
         var saleReturnIds = $("#saleReturnIds").val();
         if($(this).is(':checked')) {
             if (saleReturnIds != null) {
