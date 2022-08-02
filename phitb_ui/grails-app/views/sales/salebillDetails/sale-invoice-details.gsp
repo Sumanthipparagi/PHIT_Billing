@@ -235,7 +235,7 @@
                         <table class="table">
                             <thead></thead>
                             <tbody>
-                            <tr><td>Total Due</td><td class="totalDue totalDueOfSelected"
+                            <tr><td>Total Due</td><td class="totalDue" id="totalDueOfSelected"
                                                       style="text-align: left; color: red"></tr>
                             </tbody>
                         </table>
@@ -291,7 +291,7 @@
                         <table class="table">
                             <thead></thead>
                             <tbody>
-                            <tr><td>Total Due</td><td class="totalDue totalDueOfSelected"
+                            <tr><td>Total Due</td><td class="totalDue" id="creditsTotalDue"
                                                       style="text-align: left; color: red"></tr>
                             <tr><td>Credits Applied</td><td id="creditsApplied" style="text-align: left;">0.00</td></tr>
                             </tbody>

@@ -604,11 +604,12 @@
     }
 
     function applyCredits(creditAvailable) {
-        var totalDueOfSelected = parseFloat($(".totalDueOfSelected").text());
-        if(creditAvailable > totalDueOfSelected)
+        var totalDueOfSelected = parseFloat2Decimal($("#creditsTotalDue").text());
+        if(creditAvailable > totalDueOfSelected) {
             $("#creditsApplied").text(totalDueOfSelected.toFixed(2));
+        }
         else {
-            creditAvailable = parseFloat($("#creditsApplied").text()) + creditAvailable;
+            creditAvailable = parseFloat2Decimal($("#creditsApplied").text()) + creditAvailable;
             if(creditAvailable > totalDueOfSelected)
                 $("#creditsApplied").text(totalDueOfSelected.toFixed(2));
             else
@@ -617,7 +618,7 @@
     }
     function removeCredits(creditAmount)
     {
-        var appliedCredit = parseFloat($("#creditsApplied").text());
+        var appliedCredit = parseFloat2Decimal($("#creditsApplied").text());
         appliedCredit = appliedCredit-creditAmount;
         if(appliedCredit <= 0)
             $("#creditsApplied").text("0.00");
@@ -665,7 +666,7 @@
     }
 
     function recordPayment() {
-        var totalDueOfSelected = parseFloat($(".totalDueOfSelected").text());
+        var totalDueOfSelected = parseFloat2Decimal($("#totalDueOfSelected").text());
         if(totalDueOfSelected === 0)
         {
             Swal.fire({
@@ -695,7 +696,7 @@
             showCloseButton: false,
             showConfirmButton: false
         });
-        var amount = parseFloat($("#amount").val());
+        var amount = parseFloat2Decimal($("#amount").val());
         var paymentMode = $("#paymentMode").val();
         var paymentMethod = $("#paymentMethod").val();
         var depositTo = $("#depositTo").val();
@@ -706,7 +707,7 @@
         var remarks = $("#remarks").val();
         var saleBillId = $(".saleBillId").val();
         var saleReturnIds = $("#saleReturnIds").val();
-        var creditsApplied = parseFloat($("#creditsApplied").text());
+        var creditsApplied = parseFloat2Decimal($("#creditsApplied").text());
 
         if(paymentDate == null || paymentDate === "")
         {
@@ -812,7 +813,7 @@
 
     $(document).on("click", ".creditSelection", function () {
         var id =  $(this).data('id');
-        var balance =  $(this).data('balance');
+        var balance =  $(this).data('balance').toFixed(2);
         var saleReturnIds = $("#saleReturnIds").val();
         if($(this).is(':checked')) {
             if (saleReturnIds != null) {
@@ -903,8 +904,8 @@
     {
         var saleBillId = $(".saleBillId").val();
         var saleReturnIds = $("#saleReturnIds").val();
-        var creditsApplied = parseFloat($("#creditsApplied").text());
-        var totalDueOfSelected = parseFloat($(".totalDueOfSelected").text());
+        var creditsApplied = parseFloat2Decimal($("#creditsApplied").text());
+        var totalDueOfSelected = parseFloat2Decimal($("#creditsTotalDue").text());
         if(totalDueOfSelected === 0)
         {
             Swal.fire({
@@ -976,6 +977,15 @@
                 });
             }
         })
+    }
+    
+    function parseFloat2Decimal(num)
+    {
+        if(!isNaN(num)) {
+            num = Number(num);
+            num = Math.round(num * 1e2) / 1e2;
+            return num;
+        }
     }
 </script>
 <g:include view="controls/footer-content.gsp"/>
