@@ -7,6 +7,8 @@ import org.grails.web.json.JSONObject
 import org.springframework.boot.context.config.ResourceNotFoundException
 import phitb_sales.Exception.BadRequestException
 
+import java.text.DecimalFormat
+
 class SaleBillDetailsController {
     static responseFormats = ['json', 'xml']
 
@@ -336,55 +338,6 @@ class SaleBillDetailsController {
         response.status = 400
     }
 
-
-    def updateBalanceAndSettleCredits() {
-        try {
-            JSONObject jsonObject = new JSONObject(request.reader.text)
-            SaleBillDetails saleBillDetails = SaleBillDetails.findById(jsonObject.id)
-            if (jsonObject.status == "NA" || jsonObject.status == null) {
-                if (saleBillDetails) {
-                    saleBillDetails.isUpdatable = true
-                    Double paidNow = jsonObject.paidNow
-                    //updating sale invoice
-                    if (paidNow > 0 && paidNow != "" && paidNow != null) {
-                        double diffBalance = Double.parseDouble(saleBillDetails.getBalance().toString()) - paidNow
-                        saleBillDetails.balance = String.format("%.2f", diffBalance) as double
-                        saleBillDetails.adjAmount = String.format("%.2f", saleBillDetails.getAdjAmount() + paidNow) as double
-                    } else {
-                        saleBillDetails.balance = String.format("%.2f", saleBillDetails.getBalance()) as double
-                        saleBillDetails.adjAmount = String.format("%.2f", saleBillDetails.getAdjAmount()) as double
-                    }
-                    SaleBillDetails saleBillDetails1 = saleBillDetails.save(flush: true)
-                    if (saleBillDetails1) {
-                        respond saleBillDetails1
-                        return
-                    }
-                }
-            } else {
-/*                saleBillDetails.isUpdatable = true
-                Double balance = Double.parseDouble(jsonObject.balance)
-                if (balance > 0 && balance != "" && balance != null) {
-                    double updateBalance = Double.parseDouble(saleBillDetails.getBalance().toString()) + balance
-                    saleBillDetails.balance = String.format("%.2f", updateBalance) as double
-                    saleBillDetails.adjAmount = String.format("%.2f", saleBillDetails.getAdjAmount() - balance) as double
-                } else {
-                    saleBillDetails.balance = String.format("%.2f", saleBillDetails.getBalance()) as double
-                    saleBillDetails.adjAmount = String.format("%.2f", saleBillDetails.getAdjAmount()) as double
-                }
-                SaleBillDetails saleBillDetails1 = saleBillDetails.save(flush: true)
-                if (saleBillDetails1) {
-                    respond saleBillDetails1
-                    return
-                }*/
-            }
-        }
-        catch (Exception ex) {
-            System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
-            log.error('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
-        }
-        response.status = 400
-    }
-
     def adjustCredits()
     {
         JSONObject jsonObject = new JSONObject(request.reader.text)
@@ -395,30 +348,65 @@ class SaleBillDetailsController {
             creditsApplied = jsonObject.creditsApplied
         }
 
+        if(creditsApplied == 0)
+        {
+            response.status = 400
+            return
+        }
+
         SaleBillDetails saleBillDetails = SaleBillDetails.findById(jsonObject.id)
         if (jsonObject.status == "NA" || jsonObject.status == null) {
             if (saleBillDetails) {
+                ArrayList<SaleReturn> salesReturn = new ArrayList<>()
+                ArrayList<String> saleRtrnIds = saleReturnIds.split(",")
+                for (String id : saleRtrnIds) {
+                    SaleReturn saleReturn = SaleReturn.findByIdAndBalanceGreaterThan(Long.parseLong(id), 0)
+                    if(saleReturn)
+                    {
+                        salesReturn.add(saleReturn)
+                    }
+                }
+                if(salesReturn == null || salesReturn?.size() == 0)
+                {
+                    response.status = 400
+                    return
+                }
+
                 saleBillDetails.isUpdatable = true
                 Double paidNow = creditsApplied
                 if (creditsApplied > 0) {
                     //create sale return adjustment
+                    //check if sale return adjustment already exists for current entity
+                    long docCounter = 1
+                    SaleReturnAdjustment existingSaleReturnAdjustment = SaleReturnAdjustment.findByEntityIdAndFinancialYear(saleBillDetails.entityId, saleBillDetails.financialYear, [order: 'desc', sort:'id', max:1])
+                    if(existingSaleReturnAdjustment && existingSaleReturnAdjustment.docCounter != 0)
+                    {
+                        docCounter += existingSaleReturnAdjustment.docCounter
+                    }
                     SaleReturnAdjustment saleReturnAdjustment = new SaleReturnAdjustment()
                     saleReturnAdjustment.userId = userId
+                    saleReturnAdjustment.docCounter = docCounter
                     saleReturnAdjustment.customerId = saleBillDetails.customerId
                     saleReturnAdjustment.financialYear = saleBillDetails.financialYear
                     saleReturnAdjustment.entityId = saleBillDetails.entityId
                     saleReturnAdjustment.entityTypeId = saleBillDetails.entityTypeId
                     saleReturnAdjustment.createdUser = userId
                     saleReturnAdjustment.modifiedUser = userId
-                    saleReturnAdjustment.docNo = "TEST" //TODO: generate docno
+
+                    Calendar cal = new GregorianCalendar()
+                    cal.setTime(saleBillDetails.entryDate)
+                    String month = cal.get(Calendar.MONTH) + 1
+                    String year = cal.get(Calendar.YEAR)
+                    year = year.substring(Math.max(year.length() - 2, 0)) //reduce to 2 digit year
+                    DecimalFormat mFormat = new DecimalFormat("00")
+                    month = mFormat.format(Double.valueOf(month));
+                    saleReturnAdjustment.docNo = saleBillDetails.entityId + "ST" + year + month + saleReturnAdjustment.docCounter
                     saleReturnAdjustment.save()
 
                     if(!saleReturnAdjustment.hasErrors()) {
                         //updating sale return / credit note
                         double totalDue = saleBillDetails.balance
-                        ArrayList<String> saleRtrnIds = saleReturnIds.split(",")
-                        for (String id : saleRtrnIds) {
-                            SaleReturn saleReturn = SaleReturn.findByIdAndBalanceGreaterThan(Long.parseLong(id), 0)
+                        for (SaleReturn saleReturn : salesReturn) {
                             if (saleReturn) {
                                 double saleReturnBalanceBefore = saleReturn.balance
                                 double saleReturnBalance = saleReturn.balance
@@ -451,7 +439,7 @@ class SaleBillDetailsController {
                                 }
                             }
                         }
-                        paidNow += creditsApplied
+                       // paidNow = creditsApplied
                         saleBillDetails.creditadjAmount = creditsApplied
                         saleBillDetails.creditIds = saleReturnIds
 

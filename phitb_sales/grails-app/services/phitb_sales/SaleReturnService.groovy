@@ -358,9 +358,9 @@ class SaleReturnService {
         }
     }
 
-    SaleReturnAdjustment getSaleReturnAdjustmentByDocId(String docId, String docType) {
+    ArrayList<SaleReturnAdjustmentDetails> getSaleReturnAdjustmentDetailsByDocId(String docId, String docType) {
         try {
-            return SaleReturnAdjustment.findByDocIdAndDocType(Long.parseLong(docId), docType)
+            return SaleReturnAdjustmentDetails.findAllByDocIdAndDocType(Long.parseLong(docId), docType)
         }
         catch (Exception ex)
         {

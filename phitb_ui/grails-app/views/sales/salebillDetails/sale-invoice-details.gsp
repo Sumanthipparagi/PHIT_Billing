@@ -327,7 +327,7 @@
 
             <div class="row">
                 <div class="col-md-12">
-                    <p><u><i>Payment History</i></u></p>
+                    <p><u><i>Receipts:</i></u></p>
                 </div>
             </div>
 
@@ -340,19 +340,49 @@
                             <th style="width: 25%;">Receipt No.</th>
                             <th>Date</th>
                             <th>Amt. Paid</th>
-                            <th>Cr. Applied</th>
                             <th>-</th>
                         </tr>
                         </thead>
                         <tbody id="previousPaymentsTable"
                                style="white-space: normal !important; word-wrap: break-word;">
-
+                        <tr style="text-align: center">
+                            <td colspan="5">No Receipts for this Invoice</td>
+                        </tr>
                         </tbody>
 
                     </table>
                 </div>
-
             </div>
+
+            <div class="row">
+                <div class="col-md-12">
+                    <p><u><i>Adjusted Credits:</i></u></p>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-12">
+                    <table class="table table-striped table-bordered" style="width: 100%;table-layout: fixed;">
+                        <thead>
+                        <tr>
+                            <th style="width: 5%;">#</th>
+                            <th style="width: 25%;">Cr. Settlement No.</th>
+                            <th>Date</th>
+                            <th>Amt.</th>
+                            <th>-</th>
+                        </tr>
+                        </thead>
+                        <tbody id="creditsAdjustmentTable"
+                               style="white-space: normal !important; word-wrap: break-word;">
+                        <tr style="text-align: center">
+                            <td colspan="5">No Credit Adjustments for this Invoice</td>
+                        </tr>
+                        </tbody>
+
+                    </table>
+                </div>
+            </div>
+
         </div>
     </div>
 

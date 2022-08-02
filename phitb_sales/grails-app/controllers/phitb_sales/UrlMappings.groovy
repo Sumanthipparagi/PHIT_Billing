@@ -132,8 +132,6 @@ class UrlMappings {
 
             "/updatebalancebyid/id/$id/balance/$balance/status/$status"(controller: 'saleBillDetails')
                     {action=[POST: 'updateBalance']}
-            "/updatebalanceandsettlecredits(.$format)?"(controller: 'saleBillDetails')
-                    {action=[POST: 'updateBalanceAndSettleCredits']}
             "/updatebalanceandadjustcredits(.$format)?"(controller: 'saleBillDetails'){ action = [POST: 'adjustCredits']}
 
 
@@ -389,7 +387,7 @@ class UrlMappings {
                 action = [GET: 'getAllsettledByCustId']
             }
             "/salereturn/adjustment(.$format)?"(controller: 'saleReturn'){action = [POST: 'adjustSaleReturn']}
-            "/salereturn/adjustment/$docId/$docType(.$format)?"(controller: 'saleReturn'){action = [GET: 'getSaleReturnAdjustmentByDocId']}
+            "/salereturn/adjustment-details/$docId/$docType(.$format)?"(controller: 'saleReturn'){action = [GET: 'getSaleReturnAdjustmentDetailsByDocId']}
 
 
 

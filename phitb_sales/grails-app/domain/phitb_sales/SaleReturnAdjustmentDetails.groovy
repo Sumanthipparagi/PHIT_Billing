@@ -17,10 +17,13 @@ class SaleReturnAdjustmentDetails implements Serializable, LogicalDelete<SaleRet
     long entityTypeId
     long createdUser
     long modifiedUser
-
+    Date cancelledDate
     Date dateCreated
     Date lastUpdated
 
+    static constraints = {
+        cancelledDate nullable: true
+    }
     boolean isUpdatable
     static transients = ['isUpdatable']
     def beforeUpdate()

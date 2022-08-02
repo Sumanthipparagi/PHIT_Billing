@@ -6,6 +6,7 @@ class SaleReturnAdjustment implements Serializable, LogicalDelete<SaleReturnAdju
 
     String docNo //unique doc number
     long userId
+    long docCounter
     long customerId
     String financialYear
     long entityId
@@ -15,9 +16,11 @@ class SaleReturnAdjustment implements Serializable, LogicalDelete<SaleReturnAdju
 
     Date dateCreated
     Date lastUpdated
+    Date cancelledDate
 
     static constraints = {
         docNo nullable: true
+        cancelledDate nullable: true
     }
 
     boolean isUpdatable

@@ -719,7 +719,7 @@ contains both sale bill and products
 
     }
 
-    def getSaleReturnAdjustment(String docId, String docType)
+    def getSaleReturnAdjustmentDetails(String docId, String docType)
     {
         Client client = ClientBuilder.newClient();
         WebTarget target = client.target(new Links().API_GATEWAY)
@@ -727,13 +727,12 @@ contains both sale bill and products
         try
         {
             Response apiResponse = target
-                    .path(new Links().SALE_RETURN_ADJUSTMENT +"/"+docId+"/"+docType)
+                    .path(new Links().SALE_RETURN_ADJUSTMENT_DETAILS +"/"+docId+"/"+docType)
                     .request(MediaType.APPLICATION_JSON_TYPE)
                     .get()
             if (apiResponse.status == 200)
             {
-                JSONObject saleBillDetail = new JSONObject(apiResponse.readEntity(String.class))
-                return saleBillDetail
+                return new JSONArray(apiResponse.readEntity(String.class))
             }
             else
             {
