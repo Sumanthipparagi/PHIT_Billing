@@ -674,11 +674,11 @@ class UrlMappings {
         "/bank-register/product/$id"(controller: "bankRegister",action:"getByProduct")
 
 //        ReciptDetail
-        "/recipt-list"(controller: 'reciptDetail', action: 'reciptList')
-        "/recipt"(controller: "reciptDetail") {
+        "/receipt-list"(controller: 'reciptDetail', action: 'reciptList')
+        "/receipt"(controller: "reciptDetail") {
             action = [GET: "index", POST: "save"]
         }
-        "/recipt-list/datatable"(controller: "reciptDetail", action: "dataTable")
+        "/receipt-list/datatable"(controller: "reciptDetail", action: "dataTable")
         "/add-recipt"(controller: "reciptDetail", action: 'addRecipt')
         "/print-recipt/$custid/recipt/$id"(controller: "reciptDetail", action: 'printRecipt')
         "/receipt-approval"(controller: 'reciptDetail', action: 'recieptApproval')

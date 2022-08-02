@@ -25,6 +25,7 @@
     <asset:stylesheet src="/themeassets/plugins/bootstrap-material-datetimepicker/css/bootstrap-material-datetimepicker.css"
             rel="stylesheet"/>
     %{--    <link rel="stylesheet" media="screen" href="https://cdnjs.cloudflare.com/ajax/libs/handsontable/0.16.0/handsontable.full.css">--}%
+    <asset:stylesheet src="/themeassets/fonts/font-awesome/css/font-awesome.css" rel="stylesheet"/>
 
     <style>
     .form-control {
@@ -559,6 +560,8 @@
 %{--<asset:javascript src="/themeassets/plugins/select2/dist/js/select2.full.js"/>--}%
 %{--<script src="https://cdnjs.cloudflare.com/ajax/libs/handsontable/0.16.0/handsontable.full.js"></script>--}%
 <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/3.5.2/select2.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.2/js/all.js"
+        integrity="sha256-2JRzNxMJiS0aHOJjG+liqsEOuBb6++9cY4dSOyiijX4=" crossorigin="anonymous"></script>
 
 <script>
 
@@ -582,7 +585,11 @@
         'IGST',
         'Manf. Date',
         'scheme',
-        'tax_id'
+        'tax_id',
+        '',
+        '',
+        '',
+        ''
     ];
 
     var batchHeaderRow = [
@@ -688,12 +695,16 @@
                 {type: 'text', readOnly: true},
                 {type: 'text', readOnly: true},
                 {type: 'text', readOnly: true},
+                {type: 'text', readOnly: true},
+                {type: 'text', readOnly: true},
+                {type: 'text', readOnly: true},
+                {type: 'text', readOnly: true},
                 {type: 'text', readOnly: true}
             ],
             hiddenColumns: true,
             hiddenColumns: {
                 // specify columns hidden by default
-                columns: [19]
+                columns: [19,20,21,22,23]
             },
             minSpareRows: 0,
             minSpareColumns: 0,
@@ -719,7 +730,8 @@
                 }
 
                 if (coords.col === 18) {
-                    addScheme(id,coords.row);
+                    var tId = hot.getDataAtCell(coords.row, 19);
+                    addScheme(tId,coords.row);
                 }
             },
 
@@ -754,11 +766,42 @@
                         cellProperties
                     ) {
                         Handsontable.renderers.TextRenderer.apply(this, arguments);
-                        td.innerHTML = '<button class="btn-success" style="margin: 2px;">Scheme</button>';
+                        var pid;
+                        var batch;
+                        if(row!=='' || row!== null)
+                        {
+                            if(hot!==undefined)
+                            {
+                                // console.log(hot.getDataAtCell(row,1))
+                                pid = hot.getDataAtCell(row,1);
+                                batch = hot.getDataAtCell(row,2);
+                                if(pid==null)
+                                {
+                                    pid=""
+                                }
+                                if(batch==null)
+                                {
+                                    batch=''
+                                }
+                            }
+                            // var batch = hot.getDataAtCell(row,2);
+                           if(localStorage.getItem(pid+"-"+batch)===null)
+                           {
+                               td.innerHTML =
+                                   '<button class="btn-success schBtn"  id="'+"sch"+pid+batch+'" style="margin: 2px;width: 33px;"><i class="fa fa-plus" aria-hidden="true"></i></button>';
+                           }else
+                           {
+                               td.innerHTML =
+                                   '<button class="btn-danger"  id="'+"sch"+pid+batch+'" style="margin: 3px;"><i class="fa fa-edit" aria-hidden="true"></i></button>';
+                           }
+                        }
+
                     };
                 }
                 return cellPrp;
-            }
+            },
+
+
         });
         hot.selectCell(0, 1);
         hot.updateSettings({
@@ -799,7 +842,7 @@
                             //
                             if(selection === 18)
                             {
-                                addScheme(row)
+                                addScheme("",row)
                             }
                                 // Swal.fire({
                                 //     title: 'Are you sure?',
@@ -1026,6 +1069,7 @@
 
                 }
             }
+
         });
 
         hot.addHook('afterSelection', (row, col) => {
@@ -1091,11 +1135,17 @@
                                 hot.setDataAtCell(row, 12, Number(gstAmount).toFixed(2)); //GST
                                 hot.setDataAtCell(row, 14, Number(sgstAmount).toFixed(2)); //SGST
                                 hot.setDataAtCell(row, 15, Number(cgstAmount).toFixed(2)); //CGST
+                                hot.setDataAtCell(row, 20,gst); //GST
+                                hot.setDataAtCell(row, 21,sgst); //SGST
+                                hot.setDataAtCell(row, 22,cgst); //CGST
+                                hot.setDataAtCell(row, 23,igst); //IGST
                                 calculateTotalAmt();
                             } else {
                                 hot.setDataAtCell(row, 12, 0); //GST
                                 hot.setDataAtCell(row, 14, 0); //SGST
                                 hot.setDataAtCell(row, 15, 0); //CGST
+                                hot.setDataAtCell(row, 23,gst); //IGST
+
                             }
                         } else {
                             // hot.setDataAtCell(row, 12, 0); //GST
@@ -1188,9 +1238,11 @@
                         igst = rowData[12];
                         hot.selectCell(mainTableRow, 4);
                         hot.setDataAtCell(mainTableRow, 18, 0);
-                        hot.setDataAtCell(mainTableRow, 19, sgst);
-                        hot.setDataAtCell(mainTableRow, 20, cgst);
-                        hot.setDataAtCell(mainTableRow, 21, igst);
+                        hot.setDataAtCell(mainTableRow, 19, 0);
+                        hot.setDataAtCell(mainTableRow, 20, gst);
+                        hot.setDataAtCell(mainTableRow, 21, sgst);
+                        hot.setDataAtCell(mainTableRow, 22, cgst);
+                        hot.setDataAtCell(mainTableRow, 23, igst);
                         remainingQty = rowData[3];
                         remainingFQty = rowData[4];
                         $("#purchaseTable").focus();
@@ -1199,6 +1251,8 @@
                     }
                 }
             }
+
+
         });
 
         $('#series').trigger('change');
@@ -1411,53 +1465,128 @@
     }
 
 
-    function addScheme(row){
-        Swal.fire({
-            title: 'Are you sure?',
-            text: "Do you want to enter a scheme for this product?",
-            showCancelButton: true,
-            confirmButtonColor: '#3085d6',
-            cancelButtonColor: '#d33',
-            confirmButtonText: 'Yes'
-        }).then((result) => {
-            if (result.isConfirmed) {
-                $("#addSchemeModal").modal("show");
-                $('.hotRow').val(row);
-                $('.date').bootstrapMaterialDatePicker({
-                    format: 'DD/MM/YYYY',
-                    clearButton: true,
-                    time: false,
-                    weekStart: 1
-                });
-                jQuery("#schemeForm").submit(function(e){
-                    e.preventDefault();
-                    $("#addSchemeModal").modal("hide");
+    function addScheme(id,row){
+       if(id==='' || id=== null)
+       {
+           Swal.fire({
+               title: 'Are you sure?',
+               text: "Do you want to enter a scheme for this product?",
+               showCancelButton: true,
+               confirmButtonColor: '#3085d6',
+               cancelButtonColor: '#d33',
+               confirmButtonText: 'Yes'
+           }).then((result) => {
+               if (result.isConfirmed) {
+                   $("#addSchemeModal").modal("show");
+                   $('.hotRow').val(row);
+                   $('.date').bootstrapMaterialDatePicker({
+                       format: 'DD/MM/YYYY',
+                       clearButton: true,
+                       time: false,
+                       weekStart: 1
+                   });
+                   $('#schemeForm').trigger("reset");
+                   jQuery("#schemeForm").submit(function(e){
+                       e.preventDefault();
+                       $("#addSchemeModal").modal("hide");
+                       const data = new FormData(e.target);
+                       const formJSON = Object.fromEntries(data.entries());
+                       var productId = hot.getDataAtCell(formJSON?.row, 1);
+                       var batch = hot.getDataAtCell(formJSON?.row, 2);
+                       formJSON.productId = productId;
+                       formJSON.batch = batch;
+                       formJSON.customerIds = $("#supplier").val();
+                       if(formJSON?.batch!==null && formJSON?.productId!==null)
+                       {
+                           localStorage.setItem(formJSON.productId+"-"+formJSON.batch,JSON.stringify(formJSON));
+                           // console.log("sch"+productId+batch === "sch115CB21003");
+                           // console.log( $("#sch"+productId+batch));
+                       }
+                       return true;
+                   });
+                   // mainTableRow = row + 1;
+                   // calculateTotalAmt();
+                   // hot.alter('insert_row');
+                   // hot.selectCell(mainTableRow, 0);
+                   // console.log("nothing!")
+               }
+               else
+               {
+                   console.log("nothing!")
+               }
+           });
+       }
+       else
+       {
+           $("#addSchemeModal").modal("show");
+           $('.hotRow').val(row);
+           $('.date').bootstrapMaterialDatePicker({
+               format: 'DD/MM/YYYY',
+               clearButton: true,
+               time: false,
+               weekStart: 1
+           });
+           if(localStorage.getItem(hot.getDataAtCell(row, 1)+"-"+hot.getDataAtCell(row, 2))!==null)
+           {
+               // var values = Object.values();
+               var data = JSON.parse(localStorage.getItem(hot.getDataAtCell(row, 1)+"-"+hot.getDataAtCell(row,2)));
+               console.log(data);
+               $('#schemeForm').trigger("reset");
 
-                    const data = new FormData(e.target);
-                    const formJSON = Object.fromEntries(data.entries());
-                    var productId = hot.getDataAtCell(formJSON?.row, 1);
-                    var batch = hot.getDataAtCell(formJSON?.row, 2);
-                    formJSON.productId = productId;
-                    formJSON.batch = batch;
-                    formJSON.customerIds = $("#supplier").val();
-                    if(formJSON?.batch!==null && formJSON?.productId!==null)
-                    {
-                        localStorage.setItem(formJSON.productId+"-"+formJSON.batch,JSON.stringify(formJSON));
-                    }
-                    console.log(formJSON);
-                    return true;
-                });
-                // mainTableRow = row + 1;
-                // calculateTotalAmt();
-                // hot.alter('insert_row');
-                // hot.selectCell(mainTableRow, 0);
-                // console.log("nothing!")
-            }
-            else
-            {
-               console.log("nothing!")
-            }
-        });
+               // //Slab 1
+               $('#slab1MinQty').val(data.slab1MinQty);
+               $('#slab1SchemeQty').val(data.slab1SchemeQty);
+               $('#slab1BulkStatus').val(data.slab1BulkStatus);
+               $('#slab1Status').val(data.slab1Status);
+
+               //Slab2
+               $('#slab2MinQty').val(data.slab2MinQty);
+               $('#slab2SchemeQty').val(data.slab2SchemeQty);
+               $('#slab2BulkStatus').val(data.slab2BulkStatus);
+               $('#slab2Status').val(data.slab2Status);
+
+               //Slab3
+               $('#slab3MinQty').val(data.slab3MinQty);
+               $('#slab3SchemeQty').val(data.slab3SchemeQty);
+               $('#slab3BulkStatus').val(data.slab3BulkStatus);
+               $('#slab3Status').val(data.slab3Status);
+
+               //Other information
+               $('#slabValidityFrom').val(data.slabValidityFrom);
+               $('#slabValidityTo').val(data.slabValidityTo);
+               $('#specialDiscount').val(data.specialDiscount);
+               $('#specialDiscountValidFrom').val(data.specialDiscountValidFrom);
+               $('#specialDiscountValidTo').val(data.specialDiscountValidTo);
+               $('#specialRate').val(data.specialRate);
+               $('#specialRateValidFrom').val(data.specialRateValidFrom);
+               $('#specialRateValidTo').val(data.specialRateValidTo);
+           }
+           else
+           {
+               $('#schemeForm').trigger("reset");
+
+           }
+           jQuery("#schemeForm").submit(function(e){
+               e.preventDefault();
+               $("#addSchemeModal").modal("hide");
+               const data = new FormData(e.target);
+               const formJSON = Object.fromEntries(data.entries());
+               var productId = hot.getDataAtCell(formJSON?.row, 1);
+               var batch = hot.getDataAtCell(formJSON?.row, 2);
+
+               formJSON.productId = productId;
+               formJSON.batch = batch;
+               formJSON.customerIds = $("#supplier").val();
+               if(formJSON?.batch!==null && formJSON?.productId!==null)
+               {
+                   localStorage.setItem(formJSON.productId+"-"+formJSON.batch,JSON.stringify(formJSON));
+                   // console.log("sch"+productId+batch === "sch115CB21003");
+                   // console.log( $("#sch"+productId+batch));
+               }
+               hot.render();
+               return true;
+           });
+       }
     }
 
     var purchasebillid = 0;
@@ -1592,7 +1721,7 @@
     function printInvoice() {
         if (readOnly) {
             window.open(
-                '/purchase-entry/print-order?id=' + purchasebillid,
+                '/purchase-entry/print-invoice?id=' + purchasebillid,
                 '_blank'
             );
             resetData();

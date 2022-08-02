@@ -866,7 +866,7 @@
             });
             $.ajax({
                 type: "POST",
-                url: "/recipt",
+                url: "/receipt",
                 dataType: 'json',
                 data: {
                     reciptData: reciptData,
