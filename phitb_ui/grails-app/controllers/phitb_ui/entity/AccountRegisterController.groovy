@@ -245,8 +245,8 @@ class AccountRegisterController {
 
         StringWriter result = new StringWriter();
         mapper.writeValue(result, map);
-        Gson gson = new Gson();
-        respond gson.toJson(result), formats: ['json'],status: 200
+        JSONObject jsonObject1 = new JSONObject(result.toString());
+        respond jsonObject1, formats: ['json'],status: 200
 
     }
 }
