@@ -507,27 +507,31 @@ class PurchaseEntryController {
             totalBeforeTaxes += amountBeforeTaxes
             if (it.igstPercentage > 0) {
                 def igstPercentage = igstGroup.get(it.igstPercentage.toString())
-                if (igstPercentage == null)
+                if (igstPercentage == null) {
                     igstGroup.put(it.igstPercentage.toString(), amountBeforeTaxes)
-                else
+                } else {
                     igstGroup.put(it.igstPercentage.toString(), igstPercentage.doubleValue() + amountBeforeTaxes)
+                }
             } else {
                 def gstPercentage = gstGroup.get(it.gstPercentage.toString())
-                if (gstPercentage == null)
+                if (gstPercentage == null) {
                     gstGroup.put(it.gstPercentage.toString(), amountBeforeTaxes)
-                else
+                } else {
                     gstGroup.put(it.gstPercentage.toString(), gstPercentage.doubleValue() + amountBeforeTaxes)
+                }
 
                 def sgstPercentage = sgstGroup.get(it.sgstPercentage.toString())
-                if (sgstPercentage == null)
+                if (sgstPercentage == null) {
                     sgstGroup.put(it.sgstPercentage.toString(), amountBeforeTaxes)
-                else
+                } else {
                     sgstGroup.put(it.sgstPercentage.toString(), sgstPercentage.doubleValue() + amountBeforeTaxes)
+                }
                 def cgstPercentage = cgstGroup.get(it.cgstPercentage.toString())
-                if (cgstPercentage == null)
+                if (cgstPercentage == null) {
                     cgstGroup.put(it.cgstPercentage.toString(), amountBeforeTaxes)
-                else
+                } else {
                     cgstGroup.put(it.cgstPercentage.toString(), cgstPercentage.doubleValue() + amountBeforeTaxes)
+                }
             }
         }
 
@@ -584,10 +588,10 @@ class PurchaseEntryController {
 //                    responseObject.put("city",entityArray)
                     JSONArray jsonArray = responseObject.data
                     for (JSONObject json : jsonArray) {
-                        JSONObject customer = new EntityService().getEntityById(json.get("supplierId").toString())
-                        def city = new SystemService().getCityById(customer?.cityId?.toString())
-                        customer?.put("city", city)
-                        json.put("supplier", customer)
+                        JSONObject supplier = new EntityService().getEntityById(json.get("supplierId").toString())
+                        def city = new SystemService().getCityById(supplier?.cityId?.toString())
+                        supplier?.put("city", city)
+                        json.put("supplier", supplier)
                     }
                     responseObject.put("data", jsonArray)
                 }

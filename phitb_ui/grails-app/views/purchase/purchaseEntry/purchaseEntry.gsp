@@ -1705,7 +1705,7 @@
     function printInvoice() {
         if (readOnly) {
             window.open(
-                '/purchase-entry/print-order?id=' + purchasebillid,
+                '/purchase-entry/print-invoice?id=' + purchasebillid,
                 '_blank'
             );
             resetData();
