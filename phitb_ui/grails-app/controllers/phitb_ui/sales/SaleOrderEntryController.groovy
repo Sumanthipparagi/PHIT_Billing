@@ -63,7 +63,7 @@ class SaleOrderEntryController {
             else
             {
                 finId = 1
-                serBillId = Long.parseLong(series.get("saleId").toString())
+                serBillId = Long.parseLong(series.get("saleOrderId").toString())
             }
         }
 

@@ -69,7 +69,7 @@ class PurchaseOrderController
             else
             {
                 finId = 1
-                serBillId = Long.parseLong(series.get("purId").toString())
+                serBillId = Long.parseLong(series.get("purchaseOrderId").toString())
             }
         }
         long totalSqty = 0

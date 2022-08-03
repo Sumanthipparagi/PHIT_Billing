@@ -140,13 +140,12 @@ class SaleReturnService {
     {
 
         JSONObject jsonObject = new JSONObject()
-        ArrayList<SaleReturnDetails> saleReturnDetails =
-                SaleReturnDetails.findAllByFinancialYearAndEntityId(financialYear, Long.parseLong(entityId), [sort: 'id', order:
+        ArrayList<SaleReturn> saleReturn =
+                SaleReturn.findAllByFinancialYearAndEntityId(financialYear, Long.parseLong(entityId), [sort: 'id', order:
                         'desc'])
-        jsonObject.put("serBillId", saleReturnDetails.serBillId.max())
-        jsonObject.put("finId", saleReturnDetails.finId.max())
+        jsonObject.put("serBillId", saleReturn.serBillId.max())
+        jsonObject.put("finId", saleReturn.finId.max())
         return jsonObject
-
     }
 
     JSONObject dataTables(JSONObject paramsJsonObject, String start, String length)
