@@ -252,7 +252,11 @@
         'CGST',
         'IGST',
         'Manf. Date',
-        'tax_id'
+        'tax_id',
+        'gst',
+        'sgst',
+        'cgst',
+        'igst'
     ];
 
     var batchHeaderRow = [
@@ -355,12 +359,16 @@
                 {type: 'text', readOnly: true},
                 {type: 'text', readOnly: true},
                 {type: 'text', readOnly: true},
+                {type: 'text', readOnly: true},
+                {type: 'text', readOnly: true},
+                {type: 'text', readOnly: true},
+                {type: 'text', readOnly: true},
                 {type: 'text', readOnly: true}
             ],
             hiddenColumns: true,
             hiddenColumns: {
                 // specify columns hidden by default
-                columns: [18]
+                columns: [18,19,20,21,22]
             },
             minSpareRows: 0,
             minSpareColumns: 0,
@@ -715,11 +723,18 @@
                                 hot.setDataAtCell(row, 12, Number(gstAmount).toFixed(2)); //GST
                                 hot.setDataAtCell(row, 14, Number(sgstAmount).toFixed(2)); //SGST
                                 hot.setDataAtCell(row, 15, Number(cgstAmount).toFixed(2)); //CGST
+
+                                hot.setDataAtCell(row, 19,gst); //GST
+                                hot.setDataAtCell(row, 20,sgst); //SGST
+                                hot.setDataAtCell(row, 21,cgst); //CGST
+                                hot.setDataAtCell(row, 22,igst); //IGST
                                 calculateTotalAmt();
                             } else {
                                 hot.setDataAtCell(row, 12, 0); //GST
                                 hot.setDataAtCell(row, 14, 0); //SGST
                                 hot.setDataAtCell(row, 15, 0); //CGST
+                                hot.setDataAtCell(row, 22,sgst+igst); //IGST
+
                             }
                         } else {
                             // hot.setDataAtCell(row, 12, 0); //GST
@@ -812,9 +827,10 @@
                         igst = rowData[12];
                         hot.selectCell(mainTableRow, 4);
                         hot.setDataAtCell(mainTableRow, 18, 0);
-                        hot.setDataAtCell(mainTableRow, 19, sgst);
-                        hot.setDataAtCell(mainTableRow, 20, cgst);
-                        hot.setDataAtCell(mainTableRow, 21, igst);
+                        hot.setDataAtCell(mainTableRow, 19, gst);
+                        hot.setDataAtCell(mainTableRow, 20, sgst);
+                        hot.setDataAtCell(mainTableRow, 21, cgst);
+                        hot.setDataAtCell(mainTableRow, 22, igst);
                         remainingQty = rowData[3];
                         remainingFQty = rowData[4];
                         $("#purchaseTable").focus();
@@ -884,7 +900,7 @@
         var noOfCrDays = 0;
         var customerId = $("#supplier").val();
         for (var i = 0; i < customers.length; i++) {
-            if (customerId == customers[i].id) {
+            if (customerId === customers[i].id) {
                 noOfCrDays = customers[i].noOfCrDays;
             }
         }
@@ -1389,8 +1405,8 @@
             var cgstAmount = Number(hot.getDataAtCell(row, 15));
             var igstAmount = Number(hot.getDataAtCell(row, 16));
 
-            var sgstPercentage = hot.getDataAtCell(row, 19);
-            var cgstPercentage = hot.getDataAtCell(row, 20);
+            var sgstPercentage = hot.getDataAtCell(row, 20);
+            var cgstPercentage = hot.getDataAtCell(row, 21);
 
             if (stateId === '${session.getAttribute('stateId')}') {
                 if(igstAmount !== 0)
@@ -1399,9 +1415,9 @@
                     hot.setDataAtCell(row, 15, Number(igstAmount/2).toFixed(2)); //CGST
                     hot.setDataAtCell(row, 16, 0); //IGST
 
-                    hot.setDataAtCell(row, 19, sgstPercentage);
-                    hot.setDataAtCell(row, 20, cgstPercentage);
-                    hot.setDataAtCell(row, 21, 0);
+                    hot.setDataAtCell(row, 20, sgstPercentage);
+                    hot.setDataAtCell(row, 21, cgstPercentage);
+                    hot.setDataAtCell(row, 22, 0);
                 }
             } else {
                 if(sgstAmount !== 0 && cgstAmount !== 0) {
@@ -1411,7 +1427,7 @@
 
                     hot.setDataAtCell(row, 19, 0);
                     hot.setDataAtCell(row, 20, 0);
-                    hot.setDataAtCell(row, 21, sgstPercentage + cgstPercentage);
+                    hot.setDataAtCell(row, 22, sgstPercentage + cgstPercentage);
                 }
             }
         }
