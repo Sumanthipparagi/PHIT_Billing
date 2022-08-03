@@ -1144,7 +1144,7 @@
                                 hot.setDataAtCell(row, 12, 0); //GST
                                 hot.setDataAtCell(row, 14, 0); //SGST
                                 hot.setDataAtCell(row, 15, 0); //CGST
-                                hot.setDataAtCell(row, 23,gst); //IGST
+                                hot.setDataAtCell(row, 23,sgst+igst); //IGST
 
                             }
                         } else {
@@ -1942,9 +1942,9 @@
                     hot.setDataAtCell(row, 15, Number(igstAmount / 2).toFixed(2)); //CGST
                     hot.setDataAtCell(row, 16, 0); //IGST
 
-                    hot.setDataAtCell(row, 19, sgstPercentage);
-                    hot.setDataAtCell(row, 20, cgstPercentage);
-                    hot.setDataAtCell(row, 21, 0);
+                    hot.setDataAtCell(row, 21, sgstPercentage);
+                    hot.setDataAtCell(row, 22, cgstPercentage);
+                    hot.setDataAtCell(row, 23, 0);
                 }
             } else {
                 if (sgstAmount !== 0 && cgstAmount !== 0) {
@@ -1952,9 +1952,9 @@
                     hot.setDataAtCell(row, 15, 0); //CGST
                     hot.setDataAtCell(row, 16, (sgstAmount + cgstAmount).toFixed(2)); //IGST
 
-                    hot.setDataAtCell(row, 19, 0);
-                    hot.setDataAtCell(row, 20, 0);
-                    hot.setDataAtCell(row, 21, sgstPercentage + cgstPercentage);
+                    hot.setDataAtCell(row, 21, 0);
+                    hot.setDataAtCell(row, 22, 0);
+                    hot.setDataAtCell(row, 23, sgstPercentage + cgstPercentage);
                 }
             }
         }
