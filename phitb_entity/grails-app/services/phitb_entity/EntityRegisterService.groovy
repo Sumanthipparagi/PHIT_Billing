@@ -405,6 +405,7 @@ class EntityRegisterService {
                    eq("parentEntity", affiliateId)
                }*/
                 eq("affiliateId", affiliateId)
+                eq('deleted', false)
                 order("entityName", "asc")
             }
         }

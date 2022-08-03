@@ -72,7 +72,7 @@ class GoodsTransferNoteController
             else
             {
                 finId = 1
-                serBillId = Long.parseLong(series.get("saleId").toString())
+                serBillId = Long.parseLong(series.get("goodsTransferId").toString())
             }
         }
 
