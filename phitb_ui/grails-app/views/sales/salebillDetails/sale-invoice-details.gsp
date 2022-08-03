@@ -3,10 +3,10 @@
                                         aria-expanded="true">Details</a></li>
     <li class="nav-item inlineblock"><a class="nav-link" data-toggle="tab" href="#payments"
                                         aria-expanded="false">Record Payments</a></li>
+    <li class="nav-item inlineblock"><a class="nav-link" data-toggle="tab" href="#creditAdjustment"
+                                        aria-expanded="false">Credit Adjustment</a></li>
     <li class="nav-item inlineblock"><a class="nav-link" data-toggle="tab" href="#paymentsHistory"
                                         aria-expanded="false">Payments History</a></li>
-    <li class="nav-item inlineblock"><a class="nav-link" data-toggle="tab" href="#activity"
-                                        aria-expanded="false">Activity</a></li>
 </ul>
 
 <div class="tab-content">
@@ -104,7 +104,8 @@
                                 <tr><td><strong>Total Paid</strong></td><td id="totalPaid"
                                                                             style="text-align: left;"></td>
                                 </tr>
-                                <tr><td style="color: red;"><strong>Total Due</strong></td><td id="totalDue" class="totalDue"
+                                <tr><td style="color: red;"><strong>Total Due</strong></td><td id="totalDue"
+                                                                                               class="totalDue"
                                                                                                style="text-align: left; color: red"></td>
                                 </tr>
                                 </tbody>
@@ -128,17 +129,13 @@
                 </div>
             </div>
 
-            <div class="row">
-                <div class="col-md-12" id="paymentsAlert">
-
-                </div>
-            </div>
 
             <div class="row">
                 <div class="col-md-6">
                     <div class="form-group">
                         <label for="amount">Amount: <span style="color: red" class="required-indicator">*</span></label>
-                        <input class="form-control" pattern="^\d*(\.\d{0,2})?$" type="number" step="0.01" min="0" value="0.00" id="amount" name="amount" required/>
+                        <input class="form-control" %{--onblur="amoutFormat(this)" onkeyup="setTwoNumberDecimal(this)"--}% pattern="^\d*(\.\d{0,2})?$" type="number" step="0.01" min="0"
+                               value="0.00" id="amount" name="amount" required/>
                     </div>
                 </div>
 
@@ -146,10 +143,11 @@
                     <div class="form-group">
                         <label for="paymentMode">Payment Mode: <span style="color: red"
                                                                      class="required-indicator">*</span></label>
-                        <select onchange="paymentModeChange()" class="form-control" id="paymentMode" name="paymentMode" required>
-                           <g:each in="${paymentModes}" var="pm">
-                               <option value="${pm.id}">${pm.name}</option>
-                           </g:each>
+                        <select onchange="paymentModeChange()" class="form-control" id="paymentMode" name="paymentMode"
+                                required>
+                            <g:each in="${paymentModes}" var="pm">
+                                <option value="${pm.id}">${pm.name}</option>
+                            </g:each>
                         </select>
                     </div>
                 </div>
@@ -224,7 +222,8 @@
             <div class="row">
                 <div class="col-md-12">
                     <div class="form-group">
-                        <label for="remarks">Remarks: <small style="font-size: 10px;"><span id="remarksCharacters">0</span>/100</small></label>
+                        <label for="remarks">Remarks: <small style="font-size: 10px;"><span
+                                id="remarksCharacters">0</span>/100</small></label>
                         <textarea rows="2" class="form-control" id="remarks" name="remarks" maxlength="100"></textarea>
                     </div>
                 </div>
@@ -236,7 +235,64 @@
                         <table class="table">
                             <thead></thead>
                             <tbody>
-                            <tr><td>Total Due</td><td class="totalDue" id="totalDueOfSelected" style="text-align: left; color: red"></tr>
+                            <tr><td>Total Due</td><td class="totalDue" id="totalDueOfSelected"
+                                                      style="text-align: left; color: red"></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-12 clearfix">
+                    <div class="pull-right">
+                        <input type="hidden" class="saleBillId"/>
+                        <button class="btn btn-success btn-sm" onclick="recordPayment()">Record Payment</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div role="tabpanel" class="tab-pane" id="creditAdjustment" aria-expanded="false">
+        <div class="row detailsSpinner">
+            <div class="col-md-12">
+                <div class="text-center">
+                    <div class="spinner-border" role="status">
+                        <span class="sr-only">Loading...</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div style="padding: 20px 0 0 10px;">
+            <div class="row">
+                <div class="col-md-12" id="paymentsAlert">
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-12">
+                    <p><i>Available Credits</i></p>
+                    <table class="table table-striped">
+                        <thead>
+                        <tr><th>Sl No.</th><th>Doc No.</th><th>Balance</th><th>-</th></tr>
+                        </thead>
+                        <tbody id="creditsTable">
+
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-12 clearfix">
+                    <div class="pull-right">
+                        <table class="table">
+                            <thead></thead>
+                            <tbody>
+                            <tr><td>Total Due</td><td class="totalDue" id="creditsTotalDue"
+                                                      style="text-align: left; color: red"></tr>
                             <tr><td>Credits Applied</td><td id="creditsApplied" style="text-align: left;">0.00</td></tr>
                             </tbody>
                         </table>
@@ -247,12 +303,13 @@
             <div class="row">
                 <div class="col-md-12 clearfix">
                     <div class="pull-right">
-                        <input type="hidden" id="saleBillId" />
-                        <input type="hidden" id="saleReturnIds" />
-                        <button class="btn btn-success btn-sm" onclick="recordPayment()">Record Payment</button>
+                        <input type="hidden" class="saleBillId"/>
+                        <input type="hidden" id="saleReturnIds"/>
+                        <button class="btn btn-success btn-sm" onclick="adjustCredits()">Adjust Credits</button>
                     </div>
                 </div>
             </div>
+
         </div>
     </div>
 
@@ -270,7 +327,7 @@
 
             <div class="row">
                 <div class="col-md-12">
-                    <p><u><i>Payment History</i></u></p>
+                    <p><u><i>Receipts:</i></u></p>
                 </div>
             </div>
 
@@ -283,19 +340,49 @@
                             <th style="width: 25%;">Receipt No.</th>
                             <th>Date</th>
                             <th>Amt. Paid</th>
-                            <th>Cr. Applied</th>
                             <th>-</th>
                         </tr>
                         </thead>
                         <tbody id="previousPaymentsTable"
                                style="white-space: normal !important; word-wrap: break-word;">
-
+                        <tr style="text-align: center">
+                            <td colspan="5">No Receipts for this Invoice</td>
+                        </tr>
                         </tbody>
 
                     </table>
                 </div>
-
             </div>
+
+            <div class="row">
+                <div class="col-md-12">
+                    <p><u><i>Adjusted Credits:</i></u></p>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-12">
+                    <table class="table table-striped table-bordered" style="width: 100%;table-layout: fixed;">
+                        <thead>
+                        <tr>
+                            <th style="width: 5%;">#</th>
+                            <th style="width: 25%;">Cr. Settlement No.</th>
+                            <th>Date</th>
+                            <th>Amt.</th>
+                            <th>-</th>
+                        </tr>
+                        </thead>
+                        <tbody id="creditsAdjustmentTable"
+                               style="white-space: normal !important; word-wrap: break-word;">
+                        <tr style="text-align: center">
+                            <td colspan="5">No Credit Adjustments for this Invoice</td>
+                        </tr>
+                        </tbody>
+
+                    </table>
+                </div>
+            </div>
+
         </div>
     </div>
 

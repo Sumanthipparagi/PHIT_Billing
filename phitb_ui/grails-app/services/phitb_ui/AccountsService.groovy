@@ -167,6 +167,7 @@ class AccountsService
     {
         Client client = ClientBuilder.newClient();
         WebTarget target = client.target(new Links().API_GATEWAY);
+        //WebTarget target = client.target("http://localhost:8089");
         try
         {
             jsonObject.put("financialYear", financialYear)
@@ -636,6 +637,7 @@ class AccountsService
                     .path(new Links().SALE_BILL_BALANCE_CREDITS_UPDATE)
                     .request(MediaType.APPLICATION_JSON_TYPE)
                     .post(Entity.json(jsonObject))
+            println(apiResponse)
             return apiResponse
         }
         catch (Exception ex)

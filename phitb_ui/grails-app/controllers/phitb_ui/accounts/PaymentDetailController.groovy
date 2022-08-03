@@ -25,62 +25,50 @@ class PaymentDetailController {
         ArrayList<String> wallet = new WalletController().show() as ArrayList
         ArrayList<String> saleinvoice = new SalebillDetailsController().show() as ArrayList
         ArrayList<String> paymodes = new PaymentModeController().show() as ArrayList<String>
-        render(view: "/accounts/payments/payments", model: [entity    : entity, bank: bank,
-                                                     accountMode:
-                accountMode,
-                                                                   wallet                           : wallet, saleinvoice: saleinvoice, paymodes:
-                                                                           paymodes, accountRegister: accountRegister])
+        render(view: "/accounts/payments/payments", model: [entity         : entity,
+                                                            bank           : bank,
+                                                            accountMode    : accountMode,
+                                                            wallet         : wallet,
+                                                            saleinvoice    : saleinvoice,
+                                                            paymodes       : paymodes,
+                                                            accountRegister: accountRegister])
     }
 
 
-
-    def paymentList()
-    {
+    def paymentList() {
         render(view: '/accounts/payments/payment-list')
     }
 
-    def settledVocher()
-    {
-        try
-        {
+    def settledVocher() {
+        try {
             JSONObject jsonObject = new JSONObject(params)
             def apiResponse = new AccountsService().updateSettledVocher(jsonObject)
-            if (apiResponse?.status == 200)
-            {
+            if (apiResponse?.status == 200) {
                 JSONObject obj = new JSONObject(apiResponse.readEntity(String.class))
                 respond obj, formats: ['json'], status: 200
-            }
-            else
-            {
+            } else {
                 response.status = apiResponse?.status ?: 400
             }
         }
-        catch (Exception ex)
-        {
+        catch (Exception ex) {
             System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
             log.error('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
             response.status = 400
         }
     }
 
-    def unsettledVocher()
-    {
-        try
-        {
+    def unsettledVocher() {
+        try {
             JSONObject jsonObject = new JSONObject(params)
             def apiResponse = new AccountsService().updateunSettledVocher(jsonObject)
-            if (apiResponse?.status == 200)
-            {
+            if (apiResponse?.status == 200) {
                 JSONObject obj = new JSONObject(apiResponse.readEntity(String.class))
                 respond obj, formats: ['json'], status: 200
-            }
-            else
-            {
+            } else {
                 response.status = apiResponse?.status ?: 400
             }
         }
-        catch (Exception ex)
-        {
+        catch (Exception ex) {
             System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
             log.error('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
             response.status = 400
@@ -103,12 +91,10 @@ class PaymentDetailController {
                         jsonArray2.put(json)
                     }
                     jsonArray.each {
-                        if (it.paymentTo!="" && it.paymentTo!=null) {
+                        if (it.paymentTo != "" && it.paymentTo != null) {
                             def accountResp = new EntityService().getAccountById(it.get("paymentTo")?.toString())
                             it.put("paymentTo", accountResp)
-                        }
-                        else
-                        {
+                        } else {
                             it.put("paymentTo", "NA")
                         }
                     }
@@ -127,24 +113,18 @@ class PaymentDetailController {
     }
 
 
-    def getAllEntityById()
-    {
-        try
-        {
+    def getAllEntityById() {
+        try {
             JSONObject jsonObject = new JSONObject()
             def apiResponse = new AccountsService().getEntityById(params.id)
-            if (apiResponse.status == 200)
-            {
+            if (apiResponse.status == 200) {
                 JSONObject responseObject = new JSONObject(apiResponse.readEntity(String.class))
                 respond responseObject, formats: ['json'], status: 200
-            }
-            else
-            {
+            } else {
                 response.status = 400
             }
         }
-        catch (Exception ex)
-        {
+        catch (Exception ex) {
             System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
             log.error('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
             response.status = 400
@@ -152,24 +132,18 @@ class PaymentDetailController {
     }
 
 
-    def getAllSaleBillEntityById()
-    {
-        try
-        {
+    def getAllSaleBillEntityById() {
+        try {
             JSONObject jsonObject = new JSONObject()
             def apiResponse = new AccountsService().getEntityById(params.id)
-            if (apiResponse.status == 200)
-            {
+            if (apiResponse.status == 200) {
                 JSONObject responseObject = new JSONObject(apiResponse.readEntity(String.class))
                 respond responseObject, formats: ['json'], status: 200
-            }
-            else
-            {
+            } else {
                 response.status = 400
             }
         }
-        catch (Exception ex)
-        {
+        catch (Exception ex) {
             System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
             log.error('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
             response.status = 400
@@ -177,48 +151,36 @@ class PaymentDetailController {
     }
 
 
-    def getAllSaleBillCustomerId()
-    {
-        try
-        {
+    def getAllSaleBillCustomerId() {
+        try {
             JSONArray jsonArray = new JSONArray();
             def apiResponse = new AccountsService().getSaleBillCustomerId(params.id)
-            if (apiResponse.status == 200)
-            {
+            if (apiResponse.status == 200) {
                 JSONArray responseArry = new JSONArray(apiResponse.readEntity(String.class))
                 respond responseArry, formats: ['json'], status: 200
-            }
-            else
-            {
+            } else {
                 response.status = 400
             }
         }
-        catch (Exception ex)
-        {
+        catch (Exception ex) {
             System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
             log.error('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
             response.status = 400
         }
     }
 
-    def getAllSaleBillsettled()
-    {
-        try
-        {
+    def getAllSaleBillsettled() {
+        try {
             JSONArray jsonArray = new JSONArray();
             def apiResponse = new AccountsService().getSaleBillSettledCustomerId(params.id)
-            if (apiResponse.status == 200)
-            {
+            if (apiResponse.status == 200) {
                 JSONArray responseArry = new JSONArray(apiResponse.readEntity(String.class))
                 respond responseArry, formats: ['json'], status: 200
-            }
-            else
-            {
+            } else {
                 response.status = 400
             }
         }
-        catch (Exception ex)
-        {
+        catch (Exception ex) {
             System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
             log.error('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
             response.status = 400
@@ -234,16 +196,16 @@ class PaymentDetailController {
             double credit = 0;
             double goodsTransferNote = 0;
             for (JSONObject bills : billArray) {
-                if (bills.get("Doc.Type") == "INVS" && bills.get("PaidNow").toString().toDouble()!=0) {
+                if (bills.get("Doc.Type") == "INVS" && bills.get("PaidNow").toString().toDouble() != 0) {
                     invoice += Double.parseDouble(bills.PaidNow)
                 }
-                if (bills.get("Doc.Type") == "CRNT" && bills.get("PaidNow").toString().toDouble()!= 0) {
+                if (bills.get("Doc.Type") == "CRNT" && bills.get("PaidNow").toString().toDouble() != 0) {
                     credit += Double.parseDouble(bills.PaidNow)
                 }
-                if (bills.get("Doc.Type") == "GRN" && bills.get("PaidNow").toString().toDouble()!= 0) {
+                if (bills.get("Doc.Type") == "GRN" && bills.get("PaidNow").toString().toDouble() != 0) {
                     goodsTransferNote += Double.parseDouble(bills.PaidNow)
                 }
-                jsonObject.put("amountPaid",invoice+goodsTransferNote)
+                jsonObject.put("amountPaid", invoice + goodsTransferNote)
             }
             def apiResponse = new AccountsService().savePaymentDetail(jsonObject, session.getAttribute('financialYear') as String)
             if (apiResponse?.status == 200) {
@@ -255,33 +217,33 @@ class PaymentDetailController {
                     String docType = bills.get("Doc.Type")
                     String billId = bills.get("BillId")
                     String paymentId = jsonObject1.id.toString()
-                    if (docType == "INVS" && paidNow.toDouble()!=0) {
+                    if (docType == "INVS" && paidNow.toDouble() != 0) {
                         JSONObject invObject = new JSONObject()
                         invObject.put("id", billId)
                         invObject.put("paidNow", paidNow)
-                        invObject.put("status","NA")
+                        invObject.put("status", "NA")
                         def inv = new AccountsService().updatePurchaseBalance(invObject)
                         if (inv?.status == 200) {
                             invObject.remove("id");
                             invObject.remove("paidNow");
                         }
                     }
-                    if (docType == "CRNT" && paidNow.toDouble()!= 0) {
+                    if (docType == "CRNT" && paidNow.toDouble() != 0) {
                         JSONObject crntObject = new JSONObject();
                         crntObject.put("id", billId)
                         crntObject.put("paidNow", paidNow)
-                        crntObject.put("status","NA")
+                        crntObject.put("status", "NA")
                         def crnt = new AccountsService().updatePurchaseReturnBalance(crntObject)
                         if (crnt?.status == 200) {
                             crntObject.remove("id");
                             crntObject.remove("paidNow");
                         }
                     }
-                    if (docType == "GRN" && paidNow.toDouble()!= 0) {
+                    if (docType == "GRN" && paidNow.toDouble() != 0) {
                         JSONObject gtnObject = new JSONObject();
                         gtnObject.put("id", billId)
                         gtnObject.put("paidNow", paidNow)
-                        gtnObject.put("status","NA")
+                        gtnObject.put("status", "NA")
                         def gtn = new AccountsService().updateGTNBalance(gtnObject)
                         if (gtn?.status == 200) {
                             gtnObject.remove("id");
@@ -289,7 +251,7 @@ class PaymentDetailController {
                         }
                     }
                     JSONObject billLog = new JSONObject()
-                    if (paidNow.toDouble()!= 0) {
+                    if (paidNow.toDouble() != 0) {
                         billLog.put("billId", billId)
                         billLog.put("billType", docType)
                         billLog.put("amountPaid", paidNow)
@@ -315,74 +277,56 @@ class PaymentDetailController {
         }
     }
 
-    def update()
-    {
-        try
-        {
+    def update() {
+        try {
             println(params)
             JSONObject jsonObject = new JSONObject(params)
             def apiResponse = new AccountsService().putBankRegister(jsonObject)
-            if (apiResponse.status == 200)
-            {
+            if (apiResponse.status == 200) {
                 JSONObject obj = new JSONObject(apiResponse.readEntity(String.class))
                 respond obj, formats: ['json'], status: 200
-            }
-            else
-            {
+            } else {
                 response.status = 400
             }
         }
-        catch (Exception ex)
-        {
+        catch (Exception ex) {
             System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
             log.error('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
             response.status = 400
         }
     }
 
-    def delete()
-    {
-        try
-        {
+    def delete() {
+        try {
             JSONObject jsonObject = new JSONObject(params)
             def apiResponse = new AccountsService().deleteBankRegister(jsonObject)
-            if (apiResponse.status == 200)
-            {
+            if (apiResponse.status == 200) {
                 JSONObject data = new JSONObject()
                 data.put("success", "success")
                 respond data, formats: ['json'], status: 200
-            }
-            else
-            {
+            } else {
                 response.status = 400
             }
         }
-        catch (Exception ex)
-        {
+        catch (Exception ex) {
             System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
             log.error('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
             response.status = 400
         }
     }
 
-    def show()
-    {
-        try
-        {
+    def show() {
+        try {
             def apiResponse = new ProductService().getDivisions()
-            if (apiResponse?.status == 200)
-            {
+            if (apiResponse?.status == 200) {
                 JSONArray jsonArray = new JSONArray(apiResponse.readEntity(String.class));
                 ArrayList<String> arrayList = new ArrayList<>(jsonArray)
                 return arrayList
-            }
-            else
-            {
+            } else {
                 return []
             }
         }
-        catch (Exception ex)
-        {
+        catch (Exception ex) {
             System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
             log.error('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
             response.status = 400
@@ -390,20 +334,16 @@ class PaymentDetailController {
     }
 
 
-    def getCustomerById(String id)
-    {
+    def getCustomerById(String id) {
         def cust = new AccountsService().getEntityById(id)
-        if(cust.status==200)
-        {
+        if (cust.status == 200) {
             JSONObject customer = new JSONObject(cust.readEntity(String.class))
             return customer
-        }
-        else {
+        } else {
 
             return []
         }
     }
-
 
 
     def getPaymentById(String id) {
@@ -432,7 +372,7 @@ class PaymentDetailController {
         render(view: '/accounts/payments/payment-vocher', model: [customer            : customer, payments: payments,
                                                                   entity              : entity, paymentsloginvArray: paymentsloginvArray,
                                                                   paymentslogcrntArray: paymentslogcrntArray,
-                                                                  paymentsloggtnArray :paymentsloggtnArray])
+                                                                  paymentsloggtnArray : paymentsloggtnArray])
     }
 
 

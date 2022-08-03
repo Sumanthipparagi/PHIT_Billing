@@ -485,6 +485,7 @@ class UrlMappings {
         "/sale-bill-list"(controller: "salebillDetails", action: 'saleBillList')
         "/sale-bill/datatable"(controller: "salebillDetails", action: 'dataTable')
         "/sale-bill/record-payment"(controller: "salebillDetails", action: 'recordPayment')
+        "/sale-bill/adjust-credits"(controller: "salebillDetails", action: 'adjustCredits')
 
 
 //        Sale Retrun
@@ -499,6 +500,7 @@ class UrlMappings {
         "/sale-return/my-returns"(controller: "saleReturn", action: "salesReturnList")
         "/sale-return/datatables"(controller: "saleReturn", action: "salesReturnDatatables")
         "/sale-return/cancel-invoice"(controller: "saleReturn", action: "cancelReturns")
+        "/sale-return/sale-return-adjustment/print/$saleBillId"(controller: "saleReturn", action: 'printSaleReturnAdjustment')
 
 //        Purchase Return
         "/purchase-return"(controller: "purchaseReturn") {

@@ -4,14 +4,11 @@ import gorm.logical.delete.LogicalDelete
 
 class SaleReturnAdjustment implements Serializable, LogicalDelete<SaleReturnAdjustment> {
 
-    SaleReturn saleReturn
-    double totalAmount
-    double adjAmount
-    double balanceBefore
-    double currentBalance
-    long docId
-    String docType //CRNT
-
+    String docNo //unique doc number
+    long userId
+    long docCounter
+    long customerId
+    String financialYear
     long entityId
     long entityTypeId
     long createdUser
@@ -19,6 +16,12 @@ class SaleReturnAdjustment implements Serializable, LogicalDelete<SaleReturnAdju
 
     Date dateCreated
     Date lastUpdated
+    Date cancelledDate
+
+    static constraints = {
+        docNo nullable: true
+        cancelledDate nullable: true
+    }
 
     boolean isUpdatable
     static transients = ['isUpdatable']

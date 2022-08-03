@@ -425,7 +425,8 @@ public class Links
     public static String SALE_BILL_BY_DATERANGE = "api/v1.0/sales/salebillbydaterange";
     public static String DRAFT_SALE_BILL_SHOW = "api/v1.0/sales/draftsalebilldetails";
     public static String SALE_BILL_BALANCE_UPDATE = "api/v1.0/sales/updatebalancebyid";
-    public static String SALE_BILL_BALANCE_CREDITS_UPDATE = "api/v1.0/sales/updatebalanceandsettlecredits";
+/*    public static String SALE_BILL_BALANCE_CREDITS_UPDATE = "api/v1.0/sales/updatebalanceandsettlecredits";*/
+    public static String SALE_BILL_BALANCE_CREDITS_UPDATE = "api/v1.0/sales/updatebalanceandadjustcredits";
     public static String SALE_BILL_SAVE = "api/v1.0/sales/salebilldetails";
     public static String SALE_BILL_CANCEL = "api/v1.0/sales/salebilldetails/cancel";
     public static String SALE_BILL_DATATABLE = "api/v1.0/sales/salebilldetails/datatable";
@@ -486,6 +487,7 @@ public class Links
     //Sale Return
     public static String SALE_RETURN_SHOW = "api/v1.0/sales/salereturn";
     public static String SALE_RETURN_ADJUSTMENT = "api/v1.0/sales/salereturn/adjustment";
+    public static String SALE_RETURN_ADJUSTMENT_DETAILS = "api/v1.0/sales/salereturn/adjustment-details";
     public static String SALE_RETURN_SAVE = "api/v1.0/sales/salereturn";
     public static String SALE_RETURN_DATATABLE = "api/v1.0/sales/salereturn/datatable";
     public static String SALE_RETURN_UNSETTLED = "api/v1.0/sales/saleretrununsettledbycustomer";

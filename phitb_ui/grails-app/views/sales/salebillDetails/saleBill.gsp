@@ -430,13 +430,13 @@
                 var entityCity = data.entityCity;
                 var customerCity = data.customerCity;
                 var receiptLog = data.receiptLog;
+                var saleReturnAdjustmentDetails = data.saleReturnAdjustmentDetails;
                 var saleReturns = data.saleReturns;
-                var receipt = data.receipt;
                 var orderDate = "-";
                 var dueDate = "-";
                 var badgeContainer = "";
                 var saleReturnIds = "";
-                var saleBillId = $("#saleBillId").val(invoice.id);
+                var saleBillId = $(".saleBillId").val(invoice.id);
                 if(invoice.billStatus !== "DRAFT")
                 {
                     orderDate = moment(invoice.orderDate.split("T")[0],"YYYY-MM-DD").format("DD/MM/YYYY");
@@ -498,23 +498,23 @@
                 });
 
                 var availableCredits = 0.0;
+                var availableCreditsTable = "";
+                $("#creditsTable").empty();
+                var i = 0;
                 $.each(saleReturns, function (index, saleReturn) {
-                    saleReturnIds += saleReturn.id + ",";
-                    availableCredits += saleReturn.balance
+                    availableCredits += saleReturn.balance;
+                    if (saleReturn.balance > 0) {
+                        var checkbox = "<input type='checkbox' class='creditSelection'  data-id='"+saleReturn.id+"' data-balance='"+saleReturn.balance+"'/>";
+                        availableCreditsTable += "<tr><td>" + (++i) + "</td><td>" + saleReturn.invoiceNumber + "</td><td>" + saleReturn.balance.toFixed(2) + "</td><td>"+checkbox+"</td></tr>";
+                    }
                 });
-
-                $("#saleReturnIds").val(saleReturnIds);
+                $("#creditsTable").html(availableCreditsTable);
 
                 if(availableCredits > 0)
                 {
                     $("#paymentsAlert").html("<div class=\"alert alert-primary\" role=\"alert\">\n" +
                         "<div class=\"container\">\n" +
-                        "    <strong>₹"+availableCredits.toFixed(2)+" Credits Available!</strong> Adjust it to current invoice?"+
-                        "    <button onclick='applyCredits("+availableCredits+")' type=\"button\" class=\"close\" data-dismiss=\"alert\" aria-label=\"Close\">\n" +
-                        "            <span aria-hidden=\"true\">\n" +
-                        "            <i class=\"zmdi zmdi-plus\"></i>\n" +
-                        "        </span>\n" +
-                        "    </button>\n" +
+                        "    <strong><u>₹"+availableCredits.toFixed(2)+"</u> Total Credits Available!</strong>"+
                         "</div>\n" +
                         "</div>")
                 }
@@ -532,13 +532,44 @@
                 $("#badgeContainer").html(badgeContainer);
 
                 var previousPaymentsTable = $("#previousPaymentsTable");
-                var tableContent = "";
-                previousPaymentsTable.html("");
+                var tableContent1 = "";
+                var rowStyle = "";
+                previousPaymentsTable.html("<td colspan=\"5\">No Receipts for this Invoice</td>");
                 $.each(receiptLog, function (index, value) {
-                    var date = moment(receipt.paymentDate.split("T")[0],"YYYY-MM-DD").format("DD/MM/YYYY");
-                    tableContent += "<tr><td>"+(++index)+"</td><td>"+receipt.receiptId+"</td><td>"+date+"</td><td>"+value.amountPaid.toFixed(2)+"</td><td>"+value.saleReturnAdjustment.adjAmount.toFixed(2)+"</td><td><a href='#' class='btn btn-sm btn-danger'><i class='fa fa-times'></i></a> <a href='#' class='btn btn-sm btn-info print' data-custid="+invoice.customerId+" data-id="+receipt.id+"><i class='fa fa-print'></i></a></td></tr>";
+                    previousPaymentsTable.html("");
+                    var cancelCreditsButton = "<a data-id="+value.receipt.id+" data-billid="+value.billId+" href='#' class='btn btn-sm btn-danger cancelReceipt'><i class='fa fa-times'></i></a>"
+                    if(value.receiptStatus == "CANCELLED")
+                    {
+                        rowStyle = "style='text-decoration-line: line-through;'";
+                        cancelCreditsButton = "";
+                    }
+                    else
+                    {
+                        rowStyle = "";
+                    }
+                    var date = moment(value.receipt.paymentDate.split("T")[0],"YYYY-MM-DD").format("DD/MM/YYYY");
+                    tableContent1 += "<tr "+rowStyle+" ><td>"+(++index)+"</td><td>"+value.receipt.receiptId+"</td><td>"+date+"</td><td>"+value.amountPaid.toFixed(2)+"</td><td>"+cancelCreditsButton+" <a href='#' class='btn btn-sm btn-info print' data-custid="+invoice.customerId+" data-id="+value.receipt.id+"><i class='fa fa-print'></i></a></td></tr>";
                 });
-                previousPaymentsTable.append(tableContent);
+                previousPaymentsTable.append(tableContent1);
+
+                var creditsAdjustmentTable = $("#creditsAdjustmentTable");
+                var tableContent2 = "";
+                creditsAdjustmentTable.html("<td colspan=\"5\">No Credit Adjustments for this Invoice</td>");
+                $.each(saleReturnAdjustmentDetails, function (index, value) {
+                    creditsAdjustmentTable.html("");
+                    var date = moment(value.dateCreated.split("T")[0],"YYYY-MM-DD").format("DD/MM/YYYY");
+                    tableContent2 += "<tr><td>"+(++index)+"</td><td>"+value.saleReturnAdjustment.docNo+"</td><td>"+date+"</td><td>"+value.adjAmount.toFixed(2)+"</td><td><a href='#' class='btn btn-sm btn-danger cancelCredit'><i class='fa fa-times'></i></a> <a href='#' class='btn btn-sm btn-info printCredits' data-custid="+invoice.customerId+" data-id="+invoice.id+"><i class='fa fa-print'></i></a></td></tr>";
+                });
+                creditsAdjustmentTable.append(tableContent2);
+
+                //reset fields
+                $("#amount").val("");
+                $("#cardNumber").val("");
+                $("#paymentDate").val("");
+                $("#instrumentId").val("");
+                $("#remarks").text("");
+                $("#saleReturnIds").val("");
+                $("#creditsApplied").text("");
             },
             error: function () {
                 $(".detailsSpinner").addClass("hidden");
@@ -582,15 +613,26 @@
     }
 
     function applyCredits(creditAvailable) {
-        var totalDueOfSelected = parseFloat($("#totalDueOfSelected").text());
-        if(creditAvailable > totalDueOfSelected)
+        var totalDueOfSelected = parseFloat2Decimal($("#creditsTotalDue").text());
+        if(creditAvailable > totalDueOfSelected) {
             $("#creditsApplied").text(totalDueOfSelected.toFixed(2));
-        else
-            $("#creditsApplied").text(creditAvailable.toFixed(2));
+        }
+        else {
+            creditAvailable = parseFloat2Decimal($("#creditsApplied").text()) + creditAvailable;
+            if(creditAvailable > totalDueOfSelected)
+                $("#creditsApplied").text(totalDueOfSelected.toFixed(2));
+            else
+                $("#creditsApplied").text(creditAvailable.toFixed(2));
+        }
     }
-    function removeCredits()
+    function removeCredits(creditAmount)
     {
-        $("#creditsApplied").text("0.00")
+        var appliedCredit = parseFloat2Decimal($("#creditsApplied").text());
+        appliedCredit = appliedCredit-creditAmount;
+        if(appliedCredit <= 0)
+            $("#creditsApplied").text("0.00");
+        else
+            $("#creditsApplied").text(parseFloat2Decimal(appliedCredit));
     }
 
     function paymentModeChange() {
@@ -633,7 +675,19 @@
     }
 
     function recordPayment() {
-
+        var totalDueOfSelected = parseFloat2Decimal($("#totalDueOfSelected").text());
+        if(totalDueOfSelected === 0)
+        {
+            Swal.fire({
+                title: "Invoice settled already!",
+                text: "There is no due for this invoice",
+                showDenyButton: false,
+                showCancelButton: false,
+                showCloseButton: true,
+                showConfirmButton: true
+            });
+            return
+        }
         var spinner = "<div class=\"col-md-12\">\n" +
             "                    <div class=\"text-center\">\n" +
             "                        <div class=\"spinner-border\" role=\"status\">\n" +
@@ -651,7 +705,7 @@
             showCloseButton: false,
             showConfirmButton: false
         });
-        var amount = parseFloat($("#amount").val());
+        var amount = parseFloat2Decimal($("#amount").val());
         var paymentMode = $("#paymentMode").val();
         var paymentMethod = $("#paymentMethod").val();
         var depositTo = $("#depositTo").val();
@@ -660,10 +714,10 @@
         var paymentDate = $("#paymentDate").val();
         var instrumentId = $("#instrumentId").val();
         var remarks = $("#remarks").val();
-        var saleBillId = $("#saleBillId").val();
+        var saleBillId = $(".saleBillId").val();
         var saleReturnIds = $("#saleReturnIds").val();
-        var creditsApplied = parseFloat($("#creditsApplied").text());
-        var totalDueOfSelected = parseFloat($("#totalDueOfSelected").text());
+        var creditsApplied = parseFloat2Decimal($("#creditsApplied").text());
+
         if(paymentDate == null || paymentDate === "")
         {
             processingSwal.close();
@@ -742,7 +796,7 @@
         var custId =  $(this).data('custid');
         var id =  $(this).data('id');
         $("#printabel").remove();
-        receiptPrint(custId,id)
+        receiptPrint(custId, id)
     });
 
     function receiptPrint(custId,id) {
@@ -751,6 +805,211 @@
             .attr("src", "/print-recipt/"+custId+"/recipt/"+id)
             .appendTo("body");
     }
+
+    $(document).on("click", ".printCredits", function () {
+        var custId =  $(this).data('custid');
+        var id =  $(this).data('id');
+        $("#printabel").remove();
+        creditsPrint(custId, id)
+    });
+    function creditsPrint(custId,id) {
+        $("<iframe id='printabel'>")
+            .hide()
+            .attr("src", "/sale-return/sale-return-adjustment/print/"+id)
+            .appendTo("body");
+    }
+
+
+    $(document).on("click", ".creditSelection", function () {
+        var id =  $(this).data('id');
+        var balance =  parseFloat2Decimal($(this).data('balance'));
+        var saleReturnIds = $("#saleReturnIds").val();
+        if($(this).is(':checked')) {
+            if (saleReturnIds != null) {
+                saleReturnIds = saleReturnIds + id + ",";
+            } else
+                saleReturnIds = id + ",";
+            applyCredits(balance);
+        }
+        else
+        {
+            saleReturnIds = saleReturnIds.replace(id+",","");
+            removeCredits(balance);
+
+        }
+
+        $("#saleReturnIds").val(saleReturnIds);
+
+    });
+
+    $(document).on("click", ".cancelReceipt", function () {
+        var id =  $(this).data('id');
+        var billId =  $(this).data('billid');
+        Swal.fire({
+            title: 'Cancel Receipt?',
+            text: "Do you want to cancel this receipt?",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Yes'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                $.ajax({
+                    url: "receipt/cancel?id="+id,
+                    method: "GET",
+                    success: function (data) {
+                        Swal.fire({
+                            title: "Receipt Cancelled!",
+                            icon: "success",
+                            showDenyButton: false,
+                            showCancelButton: false,
+                            showCloseButton: true,
+                            showConfirmButton: true
+                        });
+
+                        listItemClicked(billId);
+                    },
+                    error: function () {
+                        Swal.fire({
+                            title: "Error!",
+                            text: "Please try again later",
+                            icon: "danger",
+                            showDenyButton: false,
+                            showCancelButton: false,
+                            showCloseButton: true,
+                            showConfirmButton: true
+                        });
+                    }
+                })
+            }
+        })
+    });
+
+    $(document).on("click", ".cancelCredit", function () {
+        Swal.fire({
+            title: 'Revert applied credit?',
+            text: "Do you want to revert credits?",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Yes'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                Swal.fire({
+                    title: "Not Enabled!",
+                    text: "Canceling credits will be enabled soon.",
+                    icon: "warning",
+                    showDenyButton: false,
+                    showCancelButton: false,
+                    showCloseButton: true,
+                    showConfirmButton: true
+                });
+            }
+        });
+    });
+
+    function adjustCredits()
+    {
+        var saleBillId = $(".saleBillId").val();
+        var saleReturnIds = $("#saleReturnIds").val();
+        var creditsApplied = parseFloat2Decimal($("#creditsApplied").text());
+        var totalDueOfSelected = parseFloat2Decimal($("#creditsTotalDue").text());
+        if(totalDueOfSelected === 0)
+        {
+            Swal.fire({
+                title: "Invoice settled already!",
+                text: "There is no due for this invoice",
+                showDenyButton: false,
+                showCancelButton: false,
+                showCloseButton: true,
+                showConfirmButton: true
+            });
+            return
+        }
+
+        if(creditsApplied === 0)
+        {
+            Swal.fire({
+                title: "Credits not selected",
+                text: "No credits selected to adjust.",
+                showDenyButton: false,
+                showCancelButton: false,
+                showCloseButton: true,
+                showConfirmButton: true
+            });
+            return
+        }
+
+        var spinner = "<div class=\"col-md-12\">\n" +
+            "                    <div class=\"text-center\">\n" +
+            "                        <div class=\"spinner-border\" role=\"status\">\n" +
+            "                            <span class=\"sr-only\">We are adjusting available credits, please wait!</span>\n" +
+            "                        </div>\n" +
+            "<p>We are adjusting available credits, please wait!</p>\n" +
+            "                    </div>\n" +
+            "                </div>";
+
+        var processingSwal = Swal.fire({
+            title: "Adjusting Credits..",
+            html: spinner,
+            showDenyButton: false,
+            showCancelButton: false,
+            showCloseButton: false,
+            showConfirmButton: false
+        });
+        $.ajax({
+            url: "sale-bill/adjust-credits",
+            method: "POST",
+            data:{
+                saleBillId: saleBillId,
+                saleReturnIds: saleReturnIds,
+                creditsApplied: creditsApplied
+            },
+            success: function(saleBill)
+            {
+                processingSwal.close();
+                Swal.fire({
+                    title: "Success!",
+                    html: "Credits Adjusted for this invoice",
+                    icon: 'success'
+                });
+                $("#creditsApplied").text("0.00");
+                listItemClicked(saleBill.id);
+            },
+            error: function () {
+                processingSwal.close();
+                Swal.fire({
+                    title: "Error!",
+                    html: "Please try later!",
+                    icon: 'error'
+                });
+            }
+        })
+    }
+    
+    function parseFloat2Decimal(num)
+    {
+        if(!isNaN(num)) {
+            num = Number(num);
+            num = Math.round(num * 1e2) / 1e2;
+            return num;
+        }
+    }
+
+    /*function setTwoNumberDecimal(e) {
+        if(e.value.includes('.') && e.value.split(".")[2].length > 2) {
+            e.value = parseFloat(e.value).toFixed(2);
+        }
+    }
+    function amountFormat(e) {
+        if(!e.value.includes("."))
+        {
+            alert(e.value);
+            e.value = e.value + ".00";
+        }
+    }*/
 </script>
 <g:include view="controls/footer-content.gsp"/>
 <script>

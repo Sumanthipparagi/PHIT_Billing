@@ -366,11 +366,11 @@ class SaleReturnController {
         }
     }
 
-    def getSaleReturnAdjustmentByDocId() {
+    def getSaleReturnAdjustmentDetailsByDocId() {
         try {
             String docId = params.docId
             String docType = params.docType
-            respond saleReturnService.getSaleReturnAdjustmentByDocId(docId, docType)
+            respond saleReturnService.getSaleReturnAdjustmentDetailsByDocId(docId, docType)
         }
         catch (ResourceNotFoundException ex) {
             System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
