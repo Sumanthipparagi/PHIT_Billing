@@ -637,6 +637,7 @@ class AccountsService
                     .path(new Links().SALE_BILL_BALANCE_CREDITS_UPDATE)
                     .request(MediaType.APPLICATION_JSON_TYPE)
                     .post(Entity.json(jsonObject))
+            println(apiResponse)
             return apiResponse
         }
         catch (Exception ex)

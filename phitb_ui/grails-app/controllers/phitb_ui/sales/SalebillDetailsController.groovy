@@ -261,7 +261,6 @@ class SalebillDetailsController {
     }
 
     def adjustCredits() {
-        String financialYear = session.getAttribute("financialYear")
         String saleBillId = params.saleBillId
         double creditsApplied = Double.parseDouble(params.creditsApplied)
         JSONObject saleBill = new SalesService().getSaleBillDetailsById(saleBillId)
@@ -274,6 +273,7 @@ class SalebillDetailsController {
         double totalBalance = saleBill.balance
         if(creditsApplied > totalBalance)
         {
+            print("Applied credits is greater than balance: "+creditsApplied+" > "+totalBalance)
             //reject this
             response.status = 400
             return
@@ -291,6 +291,10 @@ class SalebillDetailsController {
             def invs = new AccountsService().updateSaleBalanceAndCredit(invObject)
             if (invs?.status == 200) {
                 println("Invoice Updated")
+            }
+            else
+            {
+                println("Error Updating Invoice")
             }
         }
         respond saleBill, formats: ['json']

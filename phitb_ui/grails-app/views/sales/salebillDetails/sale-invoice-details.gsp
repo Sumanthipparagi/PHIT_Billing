@@ -134,7 +134,7 @@
                 <div class="col-md-6">
                     <div class="form-group">
                         <label for="amount">Amount: <span style="color: red" class="required-indicator">*</span></label>
-                        <input class="form-control" pattern="^\d*(\.\d{0,2})?$" type="number" step="0.01" min="0"
+                        <input class="form-control" %{--onblur="amoutFormat(this)" onkeyup="setTwoNumberDecimal(this)"--}% pattern="^\d*(\.\d{0,2})?$" type="number" step="0.01" min="0"
                                value="0.00" id="amount" name="amount" required/>
                     </div>
                 </div>

@@ -524,11 +524,11 @@
                 }
 
                 var totalPaid = totalAmt - invoice.balance;
-                $("#subtotal").html(parseFloat2Decimal(subtotal));
-                $("#totaltax").html(parseFloat2Decimal(totaltax));
-                $("#totalAmt").html(parseFloat2Decimal(totalAmt));
-                $("#totalPaid").html(parseFloat2Decimal(totalPaid));
-                $(".totalDue").html(parseFloat2Decimal(invoice.balance));
+                $("#subtotal").html(subtotal.toFixed(2));
+                $("#totaltax").html(totaltax.toFixed(2));
+                $("#totalAmt").html(totalAmt.toFixed(2));
+                $("#totalPaid").html(totalPaid.toFixed(2));
+                $(".totalDue").html(invoice.balance.toFixed(2));
                 $("#badgeContainer").html(badgeContainer);
 
                 var previousPaymentsTable = $("#previousPaymentsTable");
@@ -537,7 +537,7 @@
                 previousPaymentsTable.html("<td colspan=\"5\">No Receipts for this Invoice</td>");
                 $.each(receiptLog, function (index, value) {
                     previousPaymentsTable.html("");
-                    var cancelCreditsButton = "<a data-id="+value.receipt.id+" href='#' class='btn btn-sm btn-danger cancelReceipt'><i class='fa fa-times'></i></a>"
+                    var cancelCreditsButton = "<a data-id="+value.receipt.id+" data-billid="+value.billId+" href='#' class='btn btn-sm btn-danger cancelReceipt'><i class='fa fa-times'></i></a>"
                     if(value.receiptStatus == "CANCELLED")
                     {
                         rowStyle = "style='text-decoration-line: line-through;'";
@@ -561,6 +561,15 @@
                     tableContent2 += "<tr><td>"+(++index)+"</td><td>"+value.saleReturnAdjustment.docNo+"</td><td>"+date+"</td><td>"+value.adjAmount.toFixed(2)+"</td><td><a href='#' class='btn btn-sm btn-danger cancelCredit'><i class='fa fa-times'></i></a> <a href='#' class='btn btn-sm btn-info printCredits' data-custid="+invoice.customerId+" data-id="+invoice.id+"><i class='fa fa-print'></i></a></td></tr>";
                 });
                 creditsAdjustmentTable.append(tableContent2);
+
+                //reset fields
+                $("#amount").val("");
+                $("#cardNumber").val("");
+                $("#paymentDate").val("");
+                $("#instrumentId").val("");
+                $("#remarks").text("");
+                $("#saleReturnIds").val("");
+                $("#creditsApplied").text("");
             },
             error: function () {
                 $(".detailsSpinner").addClass("hidden");
@@ -606,14 +615,14 @@
     function applyCredits(creditAvailable) {
         var totalDueOfSelected = parseFloat2Decimal($("#creditsTotalDue").text());
         if(creditAvailable > totalDueOfSelected) {
-            $("#creditsApplied").text(parseFloat2Decimal(totalDueOfSelected));
+            $("#creditsApplied").text(totalDueOfSelected.toFixed(2));
         }
         else {
             creditAvailable = parseFloat2Decimal($("#creditsApplied").text()) + creditAvailable;
             if(creditAvailable > totalDueOfSelected)
-                $("#creditsApplied").text(parseFloat2Decimal(totalDueOfSelected));
+                $("#creditsApplied").text(totalDueOfSelected.toFixed(2));
             else
-                $("#creditsApplied").text(parseFloat2Decimal(creditAvailable));
+                $("#creditsApplied").text(creditAvailable.toFixed(2));
         }
     }
     function removeCredits(creditAmount)
@@ -835,6 +844,7 @@
 
     $(document).on("click", ".cancelReceipt", function () {
         var id =  $(this).data('id');
+        var billId =  $(this).data('billid');
         Swal.fire({
             title: 'Cancel Receipt?',
             text: "Do you want to cancel this receipt?",
@@ -858,7 +868,7 @@
                             showConfirmButton: true
                         });
 
-                        listItemClicked(data.billId);
+                        listItemClicked(billId);
                     },
                     error: function () {
                         Swal.fire({
@@ -987,6 +997,19 @@
             return num;
         }
     }
+
+    /*function setTwoNumberDecimal(e) {
+        if(e.value.includes('.') && e.value.split(".")[2].length > 2) {
+            e.value = parseFloat(e.value).toFixed(2);
+        }
+    }
+    function amountFormat(e) {
+        if(!e.value.includes("."))
+        {
+            alert(e.value);
+            e.value = e.value + ".00";
+        }
+    }*/
 </script>
 <g:include view="controls/footer-content.gsp"/>
 <script>
