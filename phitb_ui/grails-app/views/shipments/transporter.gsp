@@ -147,7 +147,7 @@
             },
             ajax: {
                 type: 'GET',
-                url: '/transport-type/datatable',
+                url: '/transporter/datatable',
                 dataType: 'json',
                 dataSrc: function (json) {
                     var return_data = [];

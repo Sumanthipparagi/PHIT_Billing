@@ -1,6 +1,8 @@
 package phitb_shipments
 
-class Transporter {
+import gorm.logical.delete.LogicalDelete
+
+class Transporter implements LogicalDelete<TransportType> {
 
     String name //ex: VRL, DTDC, Professional etc.,
     String address
