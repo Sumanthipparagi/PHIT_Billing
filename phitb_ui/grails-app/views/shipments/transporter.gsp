@@ -6,7 +6,7 @@
     <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
     <meta name="description" content="Responsive Bootstrap 4 and web Application ui kit.">
 
-    <title>:: PharmIt ::  Transport Type</title>
+    <title>:: PharmIt ::  Transporter</title>
     <link rel="icon" type="image/x-icon" href="${assetPath(src: '/themeassets/images/favicon.ico')}"/>
     <!-- Favicon-->
     <asset:stylesheet rel="stylesheet" src="/themeassets/plugins/bootstrap/css/bootstrap.min.css"/>
@@ -60,10 +60,10 @@
         <div class="block-header">
             <div class="row clearfix">
                 <div class="col-lg-5 col-md-5 col-sm-12">
-                    <h2>Transport Type</h2>
+                    <h2>Transporter</h2>
                     <ul class="breadcrumb padding-0">
                         <li class="breadcrumb-item"><a href="#"><i class="zmdi zmdi-home"></i></a></li>
-                        <li class="breadcrumb-item active">Transport Type</li>
+                        <li class="breadcrumb-item active">Transporter</li>
                     </ul>
                 </div>
             </div>
@@ -75,7 +75,7 @@
                     <div class="header">
                         <button type="button" class="btn btn-round btn-primary m-t-15 addbtn" data-toggle="modal"
                                 data-target="#addTransportModal"><font style="vertical-align: inherit;"><font
-                                style="vertical-align: inherit;">Add Transport Type</font></font></button>
+                                style="vertical-align: inherit;">Add Transporter</font></font></button>
                     </div>
                     <div class="body">
                         <div class="table-responsive">
@@ -83,7 +83,7 @@
                                 <thead>
                                 <tr>
                                     <th style="width: 20%">Name</th>
-                                    <th style="width: 20%">Vehicle ID</th>
+                                    <th style="width: 20%">Transport Type</th>
                                     <th style="width: 20%">Action</th>
                                 </tr>
                                 </thead>
@@ -100,7 +100,7 @@
     </div>
 </section>
 
-<g:include view="controls/shipments/add-transport.gsp"/>
+<g:include view="controls/shipments/add-transporter.gsp"/>
 <g:include view="controls/delete-modal.gsp"/>
 
 <!-- Jquery Core Js -->
@@ -143,7 +143,7 @@
             processing: true,
             serverSide: true,
             language: {
-                searchPlaceholder: "Search Transport Type"
+                searchPlaceholder: "Search Transporter"
             },
             ajax: {
                 type: 'GET',
@@ -154,14 +154,13 @@
                     for (var i = 0; i < json.data.length; i++) {
                         var editbtn = '<button type="button" data-id="' + json.data[i].id +
                             '" data-transportType="' + json.data[i].transportType + '"' +
-                            '" data-vehicleId="' + json.data[i].vehicleId + '"' +
                             '"' +
-                            ' class="editbtn btn btn-sm btn-warning  editbtn" data-toggle="modal" data-target="#addTransportModal"><i class="material-icons"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">edit</font></font></i></button>'
+                            ' class="editbtn btn btn-sm btn-warning  editbtn" data-toggle="modal" data-target="#addTransporterModal"><i class="material-icons"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">edit</font></font></i></button>'
                         var deletebtn = '<button type="button" data-id="' + json.data[i].id +
                             '" class="btn btn-danger deletebtn" data-toggle="modal" data-target=".deleteModal"><i class="material-icons"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">delete</font></font></i></button>'
                         return_data.push({
+                            'name': json.data[i].name,
                             'transportType': json.data[i].transportType,
-                            'vehicleId': json.data[i].vehicleId,
                             'action': editbtn + ' ' + deletebtn
                         });
                     }
@@ -170,8 +169,8 @@
             },
             columns: [
                 // {'data': 'id', 'width': '20%'},
+                {'data': 'name', 'width': '20%'},
                 {'data': 'transportType', 'width': '20%'},
-                {'data': 'vehicleId', 'width': '20%'},
                 {'data': 'action', 'width': '20%'}
             ]
         });
@@ -188,10 +187,10 @@
         var url = '';
         var type = '';
         if (id) {
-            url = '/transport-type/update/' + id;
+            url = '/transporter/update/' + id;
             type = 'POST'
         } else {
-            url = '/transport-type';
+            url = '/transporter';
             type = 'POST'
         }
 
@@ -202,9 +201,9 @@
             contentType: false,
             processData: false,
             success: function () {
-                swal("Success!", "Transport Type Submitted Successfully", "success");
+                swal("Success!", "Transporter Submitted Successfully", "success");
                 transportTable();
-                $('#addTransportModal').modal('hide');
+                $('#addTransporterModal').modal('hide');
             },
             error: function () {
                 swal("Error!", "Something went wrong", "error");
@@ -215,33 +214,32 @@
 
     $(document).on("click", ".addbtn", function () {
         $(".transportForm")[0].reset();
-        $(".transportTitle").text("Add Transport Type")
+        $(".transportTitle").text("Add Transporter");
         id = null
     });
 
     $(document).on("click", ".editbtn", function () {
         id = $(this).data('id');
         $(".transportType").val($(this).attr('data-transportType'));
-        $(".vehicleId").val($(this).attr('data-vehicleId'));
-        $(".transportTitle").text("Update Transport Type");
+        $(".transporterTitle").text("Update Transporter");
     });
 
 
     $(document).on("click", ".deletebtn", function () {
         id = $(this).data('id');
-        $("#myModalLabel").text("Delete Transport Type ?");
+        $("#myModalLabel").text("Delete Transporter?");
 
     });
 
     function deleteData() {
         $.ajax({
             type: 'POST',
-            url: '/transport-type/delete/' + id,
+            url: '/transporter/delete/' + id,
             dataType: 'json',
             success: function () {
                 $('.deleteModal').modal('hide');
                 transportTable();
-                swal("Success!", "Transport Type Deleted Successfully", "success");
+                swal("Success!", "Transporter Deleted Successfully", "success");
             }, error: function () {
                 swal("Error!", "Something went wrong", "error");
             }

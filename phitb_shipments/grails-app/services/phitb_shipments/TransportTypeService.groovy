@@ -49,7 +49,7 @@ class TransportTypeService {
             Integer max = length ? Integer.parseInt(length.toString()) : 100
 
             def transportTypeCriteria = TransportType.createCriteria()
-            def dayMasterArrayList = transportTypeCriteria.list(max: max, offset: offset) {
+            def transportTypeArrayList = transportTypeCriteria.list(max: max, offset: offset) {
                 or {
                     if (searchTerm != "")
                     {
@@ -61,12 +61,12 @@ class TransportTypeService {
                 order(orderColumn, orderDir)
             }
 
-            def recordsTotal = dayMasterArrayList.totalCount
+            def recordsTotal = transportTypeArrayList.totalCount
             JSONObject jsonObject = new JSONObject()
             jsonObject.put("draw", paramsJsonObject.draw)
             jsonObject.put("recordsTotal", recordsTotal)
             jsonObject.put("recordsFiltered", recordsTotal)
-            jsonObject.put("data", dayMasterArrayList)
+            jsonObject.put("data", transportTypeArrayList)
             return jsonObject
         }
         catch(Exception ex)

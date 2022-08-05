@@ -29,6 +29,12 @@ class UrlMappings {
             "/vehicledetail/$id(.$format)?"(controller: 'vehicleDetail') { action = [GET: 'show', PUT: 'update',
                                                                                      DELETE: 'delete'] }
 
+            //Transporter
+            "/transporter(.$format)?"(controller: 'transporter') { action = [GET: 'index', POST: 'save'] }
+            "/transporter/datatable(.$format)?"(controller: 'transporter') { action = [GET: 'dataTable'] }
+            "/transporter/$id(.$format)?"(controller: 'transporter') { action = [GET: 'show', PUT: 'update', DELETE: 'delete'] }
+            "/transporter/getbytransporttype/$id?(.$format)?"(controller: 'transporter') { action = [GET: 'getByTransportType'] }
+
 //           Status
             "/status"(controller: 'status', action: 'index')
 

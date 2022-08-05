@@ -750,6 +750,14 @@ class UrlMappings {
         "/transport-type/update/$id"(controller:"transportType",action:"update")
         "/transport-type/delete/$id"(controller: "transportType",action:"delete")
 
+        //Transporter
+        "/transporter"(controller: "transporter") {
+            action = [GET: "index", POST: "save"]
+        }
+        "/transporter/datatable"(controller: "transporter", action: "dataTable")
+        "/transporter/update/$id"(controller:"transporter",action:"update")
+        "/transporter/delete/$id"(controller: "transporter",action:"delete")
+
         //Vehicle Details
         "/vehicle-detail"(controller: "vehicleDetail") {
             action = [GET: "index", POST: "save"]

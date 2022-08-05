@@ -712,6 +712,12 @@ public class Links
     public static String VECHILE_DETAIL_UPDATE = "api/v1.0/shipments/vehicledetail/{id}";
     public static String VECHILE_DETAIL_DELETE = "api/v1.0/shipments/vehicledetail/{id}";
 
+    //Transport Type
+    public static String TRANSPORTER_TYPE_SHOW = "api/v1.0/shipments/transporter";
+    public static String TRANSPORTER_TYPE_SAVE = "api/v1.0/shipments/transporter";
+    public static String TRANSPORTER_TYPE_DATATABLE = "api/v1.0/shipments/transporter/datatable";
+    public static String TRANSPORTER_TYPE_UPDATE = "api/v1.0/shipments/transporter/{id}";
+    public static String TRANSPORTER_TYPE_DELETE = "api/v1.0/shipments/transporter/{id}";
 
 
 //    Sample Conversion logs

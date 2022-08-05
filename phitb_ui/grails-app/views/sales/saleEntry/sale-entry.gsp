@@ -44,7 +44,7 @@
 <div class="page-loader-wrapper">
     <div class="loader">
         <div class="m-t-30"><img src="${assetPath(src: '/themeassets/images/logo.svg')}" width="48" height="48"
-                                 alt="PharmIt"></div>
+                                 alt="PharmIT"></div>
 
         <p>Please wait...</p>
     </div>
@@ -125,13 +125,56 @@
                             <div class="col-md-4 mt-2">
                                 <label for="priority">Invoice Type:</label>
                                 <select class="form-control" id="invType" name="invType">
-                                        <option value="${Constants.REGULAR}"
-                                                <g:if test="${saleBillDetail?.priorityId == Constants.REGULAR}">selected</g:if>>REGULAR</option>
+                                    <option value="${Constants.REGULAR}"
+                                            <g:if test="${saleBillDetail?.priorityId == Constants.REGULAR}">selected</g:if>>REGULAR</option>
                                     <option value="${Constants.REPLACEMENT}"
                                             <g:if test="${saleBillDetail?.priorityId == Constants.REPLACEMENT}">selected</g:if>>REPLACEMENT</option>
                                 </select>
                             </div>
 
+                            <div class="col-md-4 mt-2">
+                                <br>
+                                <a class="btn btn-primary waves-effect" role="button" data-toggle="collapse"
+                                   href="#shipmentDetails" aria-expanded="false"
+                                   aria-controls="shipmentDetails"><i class="zmdi zmdi-truck"></i> Shipment Information
+                                </a>
+                            </div>
+
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-12 col-lg-12 col-sm-12">
+                                <div class="collapse" id="shipmentDetails">
+                                    <div class="row">
+                                        <div class="col-md-3">
+                                            <div class="form-group">
+                                                <label for="lrNumber">LR No.</label>
+                                                <input type="text" maxlength="150" id="lrNumber" name="lrNumber"
+                                                       class="form-control"/>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-md-3">
+                                            <div class="form-group">
+                                                <label for="lrDate">LR Date</label>
+                                                <input type="date" maxlength="150" id="lrDate" name="lrDate"
+                                                       class="form-control"/>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-md-3">
+                                            <div class="form-group">
+                                                <label for="transportType">Transport Type</label>
+                                                <select id="transportType" name="transportType"
+                                                       class="form-control">
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    %{--<div class="well">Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. Nihil anim keffiyeh helvetica,
+                                    craft beer labore wes anderson cred nesciunt sapiente ea proident.</div>--}%
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -328,7 +371,7 @@
         $('#date').val(moment().format('YYYY-MM-DD'));
         $('#date').attr("readonly");
         <g:each in="${customers}" var="cs">
-            customers.push({"id": ${cs.id}, "noOfCrDays": ${cs.noOfCrDays}});
+        customers.push({"id": ${cs.id}, "noOfCrDays": ${cs.noOfCrDays}});
         </g:each>
         const container = document.getElementById('saleTable');
 
@@ -413,18 +456,17 @@
             afterOnCellMouseDown: function (e, coords, TD) {
                 if (coords.col === 0) {
                     <g:if test="${customer == null}">
-                        var id = hot.getDataAtCell(coords.row, 15);
-                        deleteTempStockRow(id, coords.row);
+                    var id = hot.getDataAtCell(coords.row, 15);
+                    deleteTempStockRow(id, coords.row);
                     </g:if>
                     <g:else>
-                        var id = hot.getDataAtCell(coords.row, 24);
-                        if(id == null) {
-                            id = hot.getDataAtCell(coords.row, 15);
-                            deleteTempStockRow(id, coords.row);
-                        }
-                        else {
-                            deleteSaleBillRow(id, coords.row);
-                        }
+                    var id = hot.getDataAtCell(coords.row, 24);
+                    if (id == null) {
+                        id = hot.getDataAtCell(coords.row, 15);
+                        deleteTempStockRow(id, coords.row);
+                    } else {
+                        deleteSaleBillRow(id, coords.row);
+                    }
                     </g:else>
 
                     calculateTotalAmt();
@@ -463,21 +505,18 @@
                         batchHot.selectCell(0, 0);
                         $("#batchTable").focus();
                     }
-                }
-                else if(selection === 0)
-                {
+                } else if (selection === 0) {
                     var id = hot.getDataAtCell(row, 15);
                     if (e.keyCode === 13)
                         deleteTempStockRow(id, row);
-                }
-                else if (selection === 14 || selection === 7) {
+                } else if (selection === 14 || selection === 7) {
                     if ((e.keyCode === 13 || e.keyCode === 9) && !readOnly) {
                         //check if sqty is empty
                         var sqty = hot.getDataAtCell(row, 4);
                         var fqty = hot.getDataAtCell(row, 5);
                         if (sqty && sqty > 0) {
                             var tmpStockId = hot.getDataAtCell(row, 15);
-                            if(tmpStockId == null) {
+                            if (tmpStockId == null) {
                                 var batchId = hot.getCellMeta(row, 2)?.batchId; //batch
                                 var dt = hot.getDataAtRow(row);
                                 dt.push(batchId);
@@ -530,17 +569,15 @@
                                     error: function (jqXHR, textStatus, errorThrown) {
                                         beforeSendSwal.close();
                                         console.log("Failed");
-                                        if(jqXHR.status === 400)
+                                        if (jqXHR.status === 400)
                                             alert("Unable to save the row, please delete it and add again.");
-                                        else if(jqXHR.status === 404) {
+                                        else if (jqXHR.status === 404) {
                                             batchSelection(batchId, mainTableRow, false);
                                             alert("Requested quantity not available in stocks.");
                                         }
                                     }
                                 });
-                            }
-                            else
-                            {
+                            } else {
                                 mainTableRow = row + 1;
                                 hot.alter('insert_row');
                                 hot.selectCell(mainTableRow, 1);
@@ -677,7 +714,7 @@
                         }
                         applySchemes(row, sQty);
                         if (selection === 6) {
-                            if(this.getActiveEditor())
+                            if (this.getActiveEditor())
                                 sRate = Number(this.getActiveEditor().TEXTAREA.value);
                             else
                                 sRate = hot.getDataAtCell(row, 6);
@@ -773,7 +810,7 @@
             hiddenColumns: true,
             hiddenColumns: {
                 // specify columns hidden by default
-                columns: [9,10,11,12]
+                columns: [9, 10, 11, 12]
             },
             minSpareRows: 0,
             minSpareCols: 0,
@@ -835,7 +872,7 @@
             var sid = selectedId.id;
             if (sid === undefined)
                 sid = selectedId;
-            if(sid == null) {
+            if (sid == null) {
                 batchHot.updateSettings({
                     data: []
                 });
@@ -845,7 +882,7 @@
             $.ajax({
                 type: "GET",
                 url: url,
-                data:{
+                data: {
                     userId: "${session.getAttribute("userId")}"
                 },
                 dataType: 'json',
@@ -950,7 +987,7 @@
                     hot.setDataAtCell(i, 20, saleData[i]["originalSqty"]);
                     hot.setDataAtCell(i, 21, saleData[i]["originalFqty"]);
 
-                    for(var j = 0; j < 15; j++) {
+                    for (var j = 0; j < 15; j++) {
                         hot.setCellMeta(i, j, 'readOnly', true);
                     }
                 }
@@ -1034,7 +1071,7 @@
                     hot.setDataAtCell(i, 24, saleData[i]["id"]); //saved draft product id
                     </g:if>
 
-                    for(var j = 0; j < 15; j++) {
+                    for (var j = 0; j < 15; j++) {
                         hot.setCellMeta(i, j, 'readOnly', true);
                     }
                 }
@@ -1306,10 +1343,9 @@
             var cgstPercentage = hot.getDataAtCell(row, 18);
 
             if (stateId === '${session.getAttribute('stateId')}') {
-                if(igstAmount !== 0)
-                {
-                    hot.setDataAtCell(row, 12, Number(igstAmount/2).toFixed(2)); //SGST
-                    hot.setDataAtCell(row, 13, Number(igstAmount/2).toFixed(2)); //CGST
+                if (igstAmount !== 0) {
+                    hot.setDataAtCell(row, 12, Number(igstAmount / 2).toFixed(2)); //SGST
+                    hot.setDataAtCell(row, 13, Number(igstAmount / 2).toFixed(2)); //CGST
                     hot.setDataAtCell(row, 14, 0); //IGST
 
                     hot.setDataAtCell(row, 17, sgstPercentage);
@@ -1317,7 +1353,7 @@
                     hot.setDataAtCell(row, 19, 0);
                 }
             } else {
-                if(sgstAmount !== 0 && cgstAmount !== 0) {
+                if (sgstAmount !== 0 && cgstAmount !== 0) {
                     hot.setDataAtCell(row, 12, 0); //SGST
                     hot.setDataAtCell(row, 13, 0); //CGST
                     hot.setDataAtCell(row, 14, (sgstAmount + cgstAmount).toFixed(2)); //IGST
@@ -1398,8 +1434,7 @@
             dataType: 'json',
             success: function (data) {
                 for (var i = 0; i < data.length; i++) {
-                    if(data[i].saleType === '${Constants.SALEABLE}')
-                    {
+                    if (data[i].saleType === '${Constants.SALEABLE}') {
                         products.push({id: data[i].id, text: data[i].productName});
                     }
                 }

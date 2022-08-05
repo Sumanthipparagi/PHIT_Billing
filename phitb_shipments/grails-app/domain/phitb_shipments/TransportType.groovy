@@ -4,7 +4,7 @@ import gorm.logical.delete.LogicalDelete
 
 class TransportType  implements LogicalDelete<TransportType> {
 
-    String transportType
+    String transportType //Airways, Road Transport, Railways etc
     String vehicleId
     long entityTypeId
     long entityId
