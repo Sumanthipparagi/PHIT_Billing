@@ -56,6 +56,33 @@ class TransportTypeController {
     }
 
     /**
+     * Get requested Transport Type by entityId
+     * @param id
+     * @return get requested Transport Type
+     */
+    def getByEntityId() {
+        try {
+            String id = params.id
+            if (id) {
+                respond transportTypeService.getByEntityId(id)
+            }
+        }
+        catch (ResourceNotFoundException ex)
+        {
+            System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
+            response.status = 404
+        }
+        catch (BadRequestException ex)
+        {
+            System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
+            response.status = 400
+        }
+        catch (Exception ex) {
+            System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
+        }
+    }
+
+    /**
      * Save new Transport Type
      * @param Transport Type
      * @return saved Transport Type

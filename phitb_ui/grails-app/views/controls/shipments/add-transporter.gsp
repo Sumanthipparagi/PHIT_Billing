@@ -21,7 +21,11 @@
                                 <label for="transportType">
                                     Transport Type
                                 </label>
-                                <input type="text" id="transportType" class="form-control transportType" name="transportType" placeholder="Transport Type" required/>
+                                <select id="transportType" name="transportType" class="form-control" required>
+                                    <g:each in="${transporter}" var="tr">
+                                        <option value="${tr.id}">${tr.name}</option>
+                                    </g:each>
+                                </select>
                             </div>
                         </div>
                     </div>

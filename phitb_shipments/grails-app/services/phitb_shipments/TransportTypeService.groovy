@@ -25,6 +25,11 @@ class TransportTypeService {
         return TransportType.findById(Long.parseLong(id))
     }
 
+    ArrayList<TransportType> getByEntityId(String id) {
+        return TransportType.findAllByEntityId(Long.parseLong(id))
+    }
+
+
     JSONObject dataTables(JSONObject paramsJsonObject, String start, String length)
     {
         try

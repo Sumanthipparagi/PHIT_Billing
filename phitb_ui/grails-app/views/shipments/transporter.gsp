@@ -74,7 +74,7 @@
                 <div class="card">
                     <div class="header">
                         <button type="button" class="btn btn-round btn-primary m-t-15 addbtn" data-toggle="modal"
-                                data-target="#addTransportModal"><font style="vertical-align: inherit;"><font
+                                data-target="#addTransporterModal"><font style="vertical-align: inherit;"><font
                                 style="vertical-align: inherit;">Add Transporter</font></font></button>
                     </div>
                     <div class="body">

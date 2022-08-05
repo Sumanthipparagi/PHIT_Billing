@@ -1,6 +1,7 @@
 package phitb_ui
 
 import grails.gorm.transactions.Transactional
+import org.grails.web.json.JSONArray
 import org.grails.web.json.JSONObject
 
 import javax.ws.rs.client.Client
@@ -292,6 +293,30 @@ class ShipmentService {
         catch (Exception ex) {
             System.err.println('Service :getAccountModes , action :  showTransporter  , Ex:' + ex)
             log.error('Service :getAccountModes , action :  showTransporter  , Ex:' + ex)
+        }
+
+    }
+
+    def getAllTransporterByEntity(String entityId) {
+        Client client = ClientBuilder.newClient()
+        WebTarget target = client.target(new Links().API_GATEWAY)
+        //WebTarget target = client.target("http://localhost:8082")
+        try {
+            Response apiResponse = target
+                    .path(new Links().TRANSPORTER_TYPE_SHOW_BY_ENTITY + "/"+entityId)
+                    .request().get()
+
+            if(apiResponse.status == 200)
+            {
+                JSONArray jsonArray = new JSONArray(apiResponse.readEntity(String.class))
+                return jsonArray
+            }
+            else
+                return null
+        }
+        catch (Exception ex) {
+            System.err.println('Service :shipmentService , action :  getAllTransporterByEntity  , Ex:' + ex)
+            log.error('Service :shipmentService , action :  getAllTransporterByEntity  , Ex:' + ex)
         }
 
     }

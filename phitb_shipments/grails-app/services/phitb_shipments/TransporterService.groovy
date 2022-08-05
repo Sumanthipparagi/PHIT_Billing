@@ -23,6 +23,10 @@ class TransporterService {
         return Transporter.findById(Long.parseLong(id))
     }
 
+    ArrayList<Transporter> getByEntityId(String id) {
+        return Transporter.findAllByEntityId(Long.parseLong(id))
+    }
+
     ArrayList<Transporter> getByTransportType(String id) {
         TransportType transportType = TransportType.findById(Long.parseLong(id))
         if(transportType)

@@ -700,6 +700,7 @@ public class Links
 
     //Transport Type
     public static String TRANSPORT_TYPE_SHOW = "api/v1.0/shipments/transporttype";
+    public static String TRANSPORT_TYPE_SHOW_BY_ENTITY = "api/v1.0/shipments/transporttype/entity";
     public static String TRANSPORT_TYPE_SAVE = "api/v1.0/shipments/transporttype";
     public static String TRANSPORT_TYPE_DATATABLE = "api/v1.0/shipments/transporttype/datatable";
     public static String TRANSPORT_TYPE_UPDATE = "api/v1.0/shipments/transporttype/{id}";
@@ -712,8 +713,9 @@ public class Links
     public static String VECHILE_DETAIL_UPDATE = "api/v1.0/shipments/vehicledetail/{id}";
     public static String VECHILE_DETAIL_DELETE = "api/v1.0/shipments/vehicledetail/{id}";
 
-    //Transport Type
+    //Transporter
     public static String TRANSPORTER_TYPE_SHOW = "api/v1.0/shipments/transporter";
+    public static String TRANSPORTER_TYPE_SHOW_BY_ENTITY = "api/v1.0/shipments/transporter/entity";
     public static String TRANSPORTER_TYPE_SAVE = "api/v1.0/shipments/transporter";
     public static String TRANSPORTER_TYPE_DATATABLE = "api/v1.0/shipments/transporter/datatable";
     public static String TRANSPORTER_TYPE_UPDATE = "api/v1.0/shipments/transporter/{id}";
