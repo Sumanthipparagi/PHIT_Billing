@@ -656,6 +656,7 @@
             persistentState: true,
             contextMenu: false,
             rowHeaders: true,
+            stretchH: 'all',
             colHeaders: headerRow,
             columns: [
                 {type: 'text'},
