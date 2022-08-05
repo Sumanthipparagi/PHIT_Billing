@@ -196,6 +196,11 @@ class SalebillDetailsController {
         String financialYear = session.getAttribute("financialYear")
         String saleBillId = params.saleBillId
         JSONObject saleBill = new SalesService().getSaleBillDetailsById(saleBillId)
+        if(saleBill.billStatus != "ACTIVE")
+        {
+            render(text: "This invoice is cancelled already", status: 403)
+            return
+        }
         double amount = Double.parseDouble(params.amount)
         String paymentMode = params.paymentMode
         String paymentMethod = params.paymentMethod //accountMode
@@ -264,6 +269,13 @@ class SalebillDetailsController {
         String saleBillId = params.saleBillId
         double creditsApplied = Double.parseDouble(params.creditsApplied)
         JSONObject saleBill = new SalesService().getSaleBillDetailsById(saleBillId)
+
+        if(saleBill.billStatus != "ACTIVE")
+        {
+            render(text: "This invoice is cancelled already", status: 403)
+            return
+        }
+
         String saleReturnIds = params.saleReturnIds
 
         if (saleReturnIds && saleReturnIds.endsWith(",")) {
