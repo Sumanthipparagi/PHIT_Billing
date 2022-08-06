@@ -485,6 +485,7 @@ public class Links
 
 //    Save sale transportation details
     public static String SALE_TRANSPORTATION_SAVE = "api/v1.0/sales/saletransportationdetails";
+    public static String SALE_TRANSPORTATION_BY_BILL = "api/v1.0/sales/saletransportationdetails/billid";
 
     //Sale Return
     public static String SALE_RETURN_SHOW = "api/v1.0/sales/salereturn";

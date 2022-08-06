@@ -150,28 +150,26 @@
                                             <div class="form-group">
                                                 <label for="lrNumber">LR No.</label>
                                                 <input type="text" maxlength="150" id="lrNumber" name="lrNumber"
-                                                       class="form-control"/>
+                                                       class="form-control" value="${saleTransportDetail?.lrNumber}"/>
                                             </div>
                                         </div>
 
                                         <div class="col-md-3">
                                             <div class="form-group">
                                                 <label for="lrDate">LR Date</label>
-                                                <input type="date" maxlength="150" id="lrDate" name="lrDate"
-                                                       class="form-control"/>
+                                                <input type="date" maxlength="150" id="lrDate" name="lrDate"  class="form-control"/>
                                             </div>
                                         </div>
 
                                         <div class="col-md-3">
                                             <div class="form-group">
-                                                <label for="transportType">Transporter</label>
+                                                <label for="transportType">Transporter${saleTransportDetail?.transporterId}</label>
                                                 <select id="transportType" name="transportType"
                                                        class="form-control">
                                                     <option value="">--Please Select--</option>
-                                                    <g:each in="${transporter}" var="tt">
-                                                        <option value="${tt.id}">${tt.transportType.transportType}</option>
+                                                    <g:each in="${transporter}" var="t">
+                                                        <option value="${t.id}"  <g:if test="${saleTransportDetail?.transporterId == t.id}">selected</g:if>>${t.name}</option>
                                                     </g:each>
-%{--                                                    <g:if test="${saleBillDetail?.priorityId == tt.id}">selected</g:if>--}%
                                                 </select>
                                             </div>
                                         </div>
@@ -374,6 +372,7 @@
     $(document).ready(function () {
         $("#customerSelect").select2();
         $('#date').val(moment().format('YYYY-MM-DD'));
+        $('#lrDate').val(moment('${saleTransportDetail?.lrDate}').format('YYYY-MM-DD'));
         $('#date').attr("readonly");
         <g:each in="${customers}" var="cs">
         customers.push({"id": ${cs.id}, "noOfCrDays": ${cs.noOfCrDays}});

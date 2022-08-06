@@ -319,6 +319,7 @@ class UrlMappings {
                 action = [GET: 'show', PUT: 'update', DELETE:
                         'delete']
             }
+            "/saletransportationdetails/billid"(controller: 'saleTransportationDetails',action: 'getByBillId')
             "/saletransportationdetailsbydays/$days(.$format)?"(controller: 'saleTransportationDetails') {
                 action = [GET: 'getAllByDays']
             }

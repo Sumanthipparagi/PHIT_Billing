@@ -66,12 +66,17 @@ class SaleEntryController {
         def series = new SeriesController().getByEntity(entityId)
         def saleBillId = params.saleBillId
         JSONObject saleBillDetail = new SalesService().getSaleBillDetailsById(saleBillId)
+        JSONObject saleTransportDetail = new SalesService().getSaleTransportationByBill(saleBillId)
+        Object transporter = new ShipmentService().getAllTransporterByEntity(entityId)
+
         JSONObject customer = new EntityService().getEntityById(saleBillDetail.customerId.toString())
         if (saleBillDetail != null && saleBillDetail.billStatus == 'DRAFT') {
             JSONArray saleProductDetails = new SalesService().getSaleProductDetailsByBill(saleBillId)
             render(view: '/sales/saleEntry/sale-entry', model: [customers         : customers, divisions: divisions, series: series,
                                                                 priorityList      : priorityList, saleBillDetail: saleBillDetail,
-                                                                saleProductDetails: saleProductDetails, customer: customer])
+                                                                saleProductDetails: saleProductDetails,
+                                                                transporter:transporter,
+                                                                customer: customer,saleTransportDetail:saleTransportDetail])
         } else {
            redirect(uri: "/sale-entry")
         }

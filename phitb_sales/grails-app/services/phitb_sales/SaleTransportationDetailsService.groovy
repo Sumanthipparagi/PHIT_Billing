@@ -52,6 +52,12 @@ class SaleTransportationDetailsService
         return SaleTransportationDetails.findById(Long.parseLong(id))
     }
 
+
+    SaleTransportationDetails getbyBillId(String billId)
+    {
+        return SaleTransportationDetails.findByBillId(Long.parseLong(billId))
+    }
+
     JSONObject dataTables(JSONObject paramsJsonObject, String start, String length)
     {
         String searchTerm = paramsJsonObject.get("search[value]")
