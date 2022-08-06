@@ -1,27 +1,27 @@
 package phitb_shipments
 
-import grails.converters.JSON
+
+import grails.converters.*
 import grails.web.servlet.mvc.GrailsParameterMap
 import org.grails.web.json.JSONObject
 import phitb_shipments.Exception.BadRequestException
 import phitb_shipments.Exception.ResourceNotFoundException
 
-class TransportTypeController {
+class TransporterController {
 	static responseFormats = ['json', 'xml']
-    static allowedMethods = [index: "GET", show: "GET", save: "POST", update: "PUT", delete: "DELETE", dataTable: "GET"]
 
-    TransportTypeService transportTypeService
+    TransporterService transporterService
     /**
-     * Gets all Transport Types
+     * Gets all Transporters
      * @param query
      * @param offset
      * @param limit
-     * @return list of Transport Types
+     * @return list of Transporters
      */
     def index() {
 
         try {
-            respond transportTypeService.getAll(params.limit, params.offset, params.query)
+            respond transporterService.getAll(params.limit, params.offset, params.query)
         }
         catch (Exception ex) {
             System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
@@ -29,15 +29,15 @@ class TransportTypeController {
     }
 
     /**
-     * Get requested Transport Type
+     * Get requested Transporter
      * @param id
-     * @return get requested Transport Type
+     * @return get requested Transporter
      */
     def show() {
         try {
             String id = params.id
             if (id) {
-                respond transportTypeService.get(id)
+                respond transporterService.get(id)
             }
         }
         catch (ResourceNotFoundException ex)
@@ -56,15 +56,42 @@ class TransportTypeController {
     }
 
     /**
-     * Get requested Transport Type by entityId
+     * Get requested Transporter by TransportType
      * @param id
-     * @return get requested Transport Type
+     * @return get requested Transporter
+     */
+    def getByTransportType() {
+        try {
+            String id = params.id
+            if (id) {
+                respond transporterService.getByTransportType(id)
+            }
+        }
+        catch (ResourceNotFoundException ex)
+        {
+            System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
+            response.status = 404
+        }
+        catch (BadRequestException ex)
+        {
+            System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
+            response.status = 400
+        }
+        catch (Exception ex) {
+            System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
+        }
+    }
+
+    /**
+     * Get requested Transporter by entityId
+     * @param id
+     * @return get requested Transporter
      */
     def getByEntityId() {
         try {
             String id = params.id
             if (id) {
-                respond transportTypeService.getByEntityId(id)
+                respond transporterService.getByEntityId(id)
             }
         }
         catch (ResourceNotFoundException ex)
@@ -82,15 +109,16 @@ class TransportTypeController {
         }
     }
 
+
     /**
-     * Save new Transport Type
-     * @param Transport Type
-     * @return saved Transport Type
+     * Save new Transporter
+     * @param Transporter
+     * @return saved Transporter
      */
     def save() {
         try {
             JSONObject jsonObject = JSON.parse(request.reader.text) as JSONObject
-            respond transportTypeService.save(jsonObject)
+            respond transporterService.save(jsonObject)
         }
         catch (ResourceNotFoundException ex)
         {
@@ -108,16 +136,16 @@ class TransportTypeController {
     }
 
     /**
-     * Update existing Transport Type
+     * Update existing Transporter
      * @param id
-     * @param Transport Type
-     * @return updated Transport Types
+     * @param Transporter
+     * @return updated Transporters
      */
     def update() {
         try {
             String id = params.id
             JSONObject jsonObject = JSON.parse(request.reader.text) as JSONObject
-            respond transportTypeService.update(jsonObject,id)
+            respond transporterService.update(jsonObject,id)
         }
         catch (ResourceNotFoundException ex)
         {
@@ -135,14 +163,14 @@ class TransportTypeController {
     }
 
     /**
-     * Delete selected Transport Type
+     * Delete selected Transporter
      * @param id
      * @return returns status code 200
      */
     def delete() {
         try {
             String id = params.id
-            transportTypeService.delete(id)
+            transporterService.delete(id)
             response.status = 200
         }
         catch (ResourceNotFoundException ex)
@@ -161,8 +189,8 @@ class TransportTypeController {
     }
 
     /**
-     * Gets all Transport Types in datatables format
-     * @return list of Transport Types
+     * Gets all Transporters in datatables format
+     * @return list of Transporters
      */
     def dataTable() {
         try {
@@ -170,7 +198,7 @@ class TransportTypeController {
             String length = params.length
             GrailsParameterMap parameterMap = getParams()
             JSONObject paramsJsonObject = new JSONObject(parameterMap.params)
-            respond transportTypeService.dataTables(paramsJsonObject, start, length)
+            respond transporterService.dataTables(paramsJsonObject, start, length)
         }
         catch (ResourceNotFoundException ex)
         {

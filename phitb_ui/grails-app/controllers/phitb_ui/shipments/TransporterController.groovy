@@ -5,13 +5,14 @@ import org.grails.web.json.JSONObject
 import phitb_ui.EntityService
 import phitb_ui.ShipmentService
 
-class TransportTypeController {
+class TransporterController {
 
     def index()
     {
 
         ArrayList<String> entity = new EntityService().getByEntity(session.getAttribute("entityId").toString()) as ArrayList<String>
-        render(view: '/shipments/transport',model: [entity:entity])
+        JSONArray transporter = new ShipmentService().getAllTransporterByEntity(session.getAttribute("entityId").toString())
+        render(view: '/shipments/transporter',model: [entity:entity, transporter:transporter])
     }
 
     def save()
@@ -27,7 +28,7 @@ class TransportTypeController {
             {
                 jsonObject.put("entityTypeId", session.getAttribute("entityTypeId"))
             }
-            def apiResponse = new ShipmentService().saveTransportType(jsonObject)
+            def apiResponse = new ShipmentService().saveTransporter(jsonObject)
             if (apiResponse?.status == 200)
             {
                 JSONObject obj = new JSONObject(apiResponse.readEntity(String.class))
@@ -52,7 +53,7 @@ class TransportTypeController {
         {
             JSONObject jsonObject = new JSONObject(params)
             jsonObject.put("entityId", session.getAttribute("entityId"))
-            def apiResponse = new ShipmentService().showTransportType(jsonObject)
+            def apiResponse = new ShipmentService().showTransporter(jsonObject)
             if (apiResponse.status == 200)
             {
                 JSONObject responseObject = new JSONObject(apiResponse.readEntity(String.class))
@@ -86,7 +87,7 @@ class TransportTypeController {
             {
                 jsonObject.put("entityTypeId", session.getAttribute("entityTypeId"))
             }
-            def apiResponse =new ShipmentService().putTransportType(jsonObject)
+            def apiResponse =new ShipmentService().updateTransporter(jsonObject)
             if (apiResponse.status == 200)
             {
                 JSONObject obj = new JSONObject(apiResponse.readEntity(String.class))
@@ -110,7 +111,7 @@ class TransportTypeController {
         try
         {
             JSONObject jsonObject = new JSONObject(params)
-            def apiResponse = new ShipmentService().deleteTransportType(jsonObject)
+            def apiResponse = new ShipmentService().deleteTransporter(jsonObject)
             if (apiResponse.status == 200)
             {
                 JSONObject data = new JSONObject()
@@ -134,7 +135,7 @@ class TransportTypeController {
     {
         try
         {
-            def apiResponse = new ShipmentService().getTransportTypeList()
+            def apiResponse = new ShipmentService().getTransporterList()
             if (apiResponse?.status == 200)
             {
                 JSONArray jsonArray = new JSONArray(apiResponse.readEntity(String.class));

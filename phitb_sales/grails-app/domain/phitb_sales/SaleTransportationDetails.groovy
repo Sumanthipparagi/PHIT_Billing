@@ -17,12 +17,12 @@ class SaleTransportationDetails implements Serializable, LogicalDelete<SaleTrans
     String cartonsCount
     String paid
     String toPay
-    String genralInfo
+    String generalInfo
     String selfNo
     String ccm
-    String recievedTemprature
+    String receivedTemperature
     String freightCharge
-    long vechileId
+    long vehicleId
     String weight
     String deliveryStatus
     String dispatchDateTime

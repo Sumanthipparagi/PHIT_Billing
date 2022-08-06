@@ -312,8 +312,12 @@
                         }
                         var printbtn = '<a target="_blank" class="dropdown-item" data-id="' + json.data[i].id + '" href="/sale-entry/print-invoice?id=' + json.data[i].id + '"><i class="fa fa-print"></i> Print</a>';
                         var invoiceNumber = json.data[i].invoiceNumber;
-                        if (invoiceNumber === undefined)
-                            invoiceNumber = "DRAFT";
+                        if (invoiceNumber === undefined) {
+                            if (json.data[i].billStatus === "CANCELLED")
+                                invoiceNumber = "CANCELLED DRAFT";
+                            else
+                                invoiceNumber = "DRAFT";
+                        }
                         if (json.data[i].billStatus === "DRAFT") {
                             editInvoice = '<a class="dropdown-item"  href="/edit-sale-entry?saleBillId=' +
                                 json.data[i].id + '"><i class="fa fa-edit"></i> Edit</a>';
@@ -439,9 +443,10 @@
                 var saleBillId = $(".saleBillId").val(invoice.id);
                 if(invoice.billStatus !== "DRAFT")
                 {
-                    orderDate = moment(invoice.orderDate.split("T")[0],"YYYY-MM-DD").format("DD/MM/YYYY");
-                    dueDate = moment(invoice.dueDate.split("T")[0],"YYYY-MM-DD").format("DD/MM/YYYY");
-
+                    if(invoice.invoiceNumber !== undefined) {
+                        orderDate = moment(invoice.orderDate.split("T")[0], "YYYY-MM-DD").format("DD/MM/YYYY");
+                        dueDate = moment(invoice.dueDate.split("T")[0], "YYYY-MM-DD").format("DD/MM/YYYY");
+                    }
                     if(invoice.billStatus === "ACTIVE")
                     {
                         badgeContainer += "<div class=\"badge badge-success\">ACTIVE</div>"
@@ -770,11 +775,14 @@
 
                 listItemClicked(saleBill.id);
             },
-            error: function () {
+            error: function (data) {
                 processingSwal.close();
+                var text = "Please try later!";
+                if(data !== undefined)
+                    text = data.responseText;
                 Swal.fire({
                     title: "Error!",
-                    html: "Please try later!",
+                    html: text,
                     icon: 'error'
                 });
             }

@@ -669,6 +669,7 @@
                             class="zmdi zmdi-truck"></i><span>Shipments</span> <span
                             class="badge badge-success float-right"></span></a>
                         <ul class="ml-menu">
+                            <li><a href="/transporter">Transporter</a></li>
                             <li><a href="/transport-type">Transport Type</a></li>
                             <li><a href="/vehicle-detail">Vehicle Details</a></li>
                         </ul>
