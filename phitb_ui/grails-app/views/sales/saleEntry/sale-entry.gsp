@@ -164,9 +164,14 @@
 
                                         <div class="col-md-3">
                                             <div class="form-group">
-                                                <label for="transportType">Transport Type</label>
+                                                <label for="transportType">Transporter</label>
                                                 <select id="transportType" name="transportType"
                                                        class="form-control">
+                                                    <option value="">--Please Select--</option>
+                                                    <g:each in="${transporter}" var="tt">
+                                                        <option value="${tt.id}">${tt.transportType.transportType}</option>
+                                                    </g:each>
+%{--                                                    <g:if test="${saleBillDetail?.priorityId == tt.id}">selected</g:if>--}%
                                                 </select>
                                             </div>
                                         </div>
@@ -1162,6 +1167,9 @@
         var series = $("#series").val();
         var seriesCode = $("#series").find(':selected').data('seriescode');
         var duedate = $("#duedate").val();
+        var lrNumber =  $("#lrNumber").val();
+        var lrDate =  $("#lrDate").val();
+        var transporter=  $("#transportType").val();
         duedate = moment(duedate, 'YYYY-MM-DD').toDate();
         duedate = moment(duedate).format('DD/MM/YYYY');
         var priority = $("#priority").val();
@@ -1212,6 +1220,9 @@
                 billStatus: billStatus,
                 seriesCode: seriesCode,
                 invtype: invtype,
+                lrNumber:lrNumber,
+                lrDate:lrDate,
+                transporter:transporter,
                 uuid: self.crypto.randomUUID()
             },
             success: function (data) {

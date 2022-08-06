@@ -4,14 +4,13 @@ import gorm.logical.delete.LogicalDelete
 
 class SaleTransportationDetails implements Serializable, LogicalDelete<SaleTransportationDetails>
 {
-
     long finId
     long billId
     String billType
     long serBillId
     long series
     long customerId
-    long transportTypeId
+    long transporterId
     Date lrDate
     String lrNumber
     String cartonsCount
@@ -44,6 +43,36 @@ class SaleTransportationDetails implements Serializable, LogicalDelete<SaleTrans
     Date lastUpdated
 
     static constraints = {
+        finId nullable:true
+        billId nullable:true
+        billType nullable: true
+        serBillId nullable:true
+        series nullable:true
+        customerId nullable:true
+        transporterId nullable:true
+        lrDate nullable: true
+        lrNumber nullable: true
+        cartonsCount nullable: true
+        paid nullable: true
+        toPay nullable: true
+        generalInfo nullable: true
+        selfNo nullable: true
+        ccm nullable: true
+        receivedTemperature nullable: true
+        freightCharge nullable: true
+        vehicleId nullable:true
+        weight nullable: true
+        deliveryStatus nullable: true
+        dispatchDateTime nullable: true
+        deliveryDateTime nullable: true
+        trackingDetails nullable: true
+        ewaybillId nullable: true
+        ewaysupplytype nullable: true
+        ewaysupplysubtype nullable: true
+        ewaydoctype nullable: true
+        consignmentNo nullable: true
+        financialYear nullable: true
+
     }
 
     boolean isUpdatable

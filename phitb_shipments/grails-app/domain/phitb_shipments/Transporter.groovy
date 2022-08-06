@@ -2,7 +2,7 @@ package phitb_shipments
 
 import gorm.logical.delete.LogicalDelete
 
-class Transporter implements LogicalDelete<TransportType> {
+class Transporter implements LogicalDelete<Transporter> {
 
     String name //ex: VRL, DTDC, Professional etc.,
     String address

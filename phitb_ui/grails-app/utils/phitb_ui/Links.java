@@ -483,6 +483,8 @@ public class Links
     public static String SALE_PRODUCT_BY_PRODUCT = "api/v1.0/sales/saleproductdetailsbyproductId";
     public static String SALE_PRODUCT_BILL_BATCH = "api/v1.0/sales/saleproductdetailsbillandbatch";
 
+//    Save sale transportation details
+    public static String SALE_TRANSPORTATION_SAVE = "api/v1.0/sales/saletransportationdetails";
 
     //Sale Return
     public static String SALE_RETURN_SHOW = "api/v1.0/sales/salereturn";

@@ -11,8 +11,8 @@ class TransporterController {
     {
 
         ArrayList<String> entity = new EntityService().getByEntity(session.getAttribute("entityId").toString()) as ArrayList<String>
-        JSONArray transporter = new ShipmentService().getAllTransporterByEntity(session.getAttribute("entityId").toString())
-        render(view: '/shipments/transporter',model: [entity:entity, transporter:transporter])
+        JSONArray transportType = new ShipmentService().getTransportTypeByEntity(session.getAttribute("entityId").toString())
+        render(view: '/shipments/transporter',model: [entity:entity, transportType:transportType])
     }
 
     def save()

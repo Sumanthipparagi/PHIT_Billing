@@ -9,6 +9,7 @@ import phitb_ui.EntityService
 import phitb_ui.InventoryService
 import phitb_ui.Links
 import phitb_ui.SalesService
+import phitb_ui.ShipmentService
 import phitb_ui.SystemService
 import phitb_ui.UtilsService
 import phitb_ui.entity.EntityRegisterController
@@ -30,6 +31,7 @@ class SaleEntryController {
         JSONArray divisions = new ProductService().getDivisionsByEntityId(entityId)
         ArrayList<String> customers = new EntityRegisterController().getByAffiliateById(entityId) as ArrayList<String>
         def priorityList = new SystemService().getPriorityByEntity(entityId)
+        Object transporter = new ShipmentService().getAllTransporterByEntity(entityId)
         def series = new SeriesController().getByEntity(entityId)
         ArrayList<String> salesmanList = []
         /*users.each {
@@ -38,7 +40,8 @@ class SaleEntryController {
             }
         }*/
         render(view: '/sales/saleEntry/sale-entry', model: [customers   : customers, divisions: divisions, series: series,
-                                                            salesmanList: salesmanList, priorityList: priorityList])
+                                                            salesmanList: salesmanList, priorityList: priorityList,
+                                                            transporter:transporter])
     }
 
 /*    def getTempStocksOfUser()
@@ -281,38 +284,82 @@ class SaleEntryController {
                 catch (Exception ex) {
                     ex.printStackTrace()
                 }
-
-               /* def stockBook = new InventoryService().getStockBookById(Long.parseLong(tmpStockBook.originalId))
-                stockBook.put("remainingQty", tmpStockBook.get("remainingQty"))
-                stockBook.put("remainingFreeQty", tmpStockBook.get("remainingFreeQty"))
-                stockBook.put("remainingReplQty", tmpStockBook.get("remainingReplQty"))
-                String expDate = stockBook.get("expDate").toString().split("T")[0]
-                String purcDate = stockBook.get("purcDate").toString().split("T")[0]
-                String manufacturingDate = stockBook.get("manufacturingDate").toString().split("T")[0]
-                SimpleDateFormat sdf1 = new SimpleDateFormat("yyyy-MM-dd")
-                expDate = sdf1.parse(expDate).format("dd-MM-yyyy")
-                purcDate = sdf1.parse(purcDate).format("dd-MM-yyyy")
-                manufacturingDate = sdf1.parse(manufacturingDate).format("dd-MM-yyyy")
-                stockBook.put("expDate", expDate)
-                stockBook.put("purcDate", purcDate)
-                stockBook.put("manufacturingDate", manufacturingDate)
-                stockBook.put("uuid", UUID.randomUUID())
-                def apiRes = new InventoryService().updateStockBook(stockBook)
-                if (apiRes.status == 200) {
-                    //clear tempstockbook
-                    new InventoryService().deleteTempStock(tempStockRowId, false)
-                    try {
-                        if (billStatus.equalsIgnoreCase("ACTIVE")) {
-                            //push the invoice to e-Invoice service and generate IRN, save IRN to Sale Bill Details
-                            new EInvoiceService().generateIRN(session, saleBillDetail, saleProductDetails)
-                        }
+                if(params.lrNumber!='' || params.lrDate!='' || params.transporter!='')
+                {
+                    JSONObject transportObject = new JSONObject();
+                    transportObject.put("finId", finId)
+                    transportObject.put("billId", saleBillDetail.id)
+                    transportObject.put("billType", "SALE_INVOICE")
+                    transportObject.put("serBillId", saleBillDetail.serBillId)
+                    transportObject.put("series", saleBillDetail.seriesId)
+                    transportObject.put("customerId", saleBillDetail.customerId)
+                    transportObject.put("transporterId", params.transporter)
+                    transportObject.put("lrDate", params.lrDate)
+                    transportObject.put("lrNumber", params.lrNumber)
+                    transportObject.put("cartonsCount", "")
+                    transportObject.put("paid", 0)
+                    transportObject.put("toPay", 0)
+                    transportObject.put("generalInfo", 0)
+                    transportObject.put("selfNo", 0)
+                    transportObject.put("ccm", 0)
+                    transportObject.put("recievedTemprature", 0)
+                    transportObject.put("freightCharge", 0)
+                    transportObject.put("vechileId", 0)
+                    transportObject.put("deliveryStatus", 0)
+                    transportObject.put("dispatchDateTime", 0)
+                    transportObject.put("deliveryDateTime", 0)
+                    transportObject.put("trackingDetails", 0)
+                    transportObject.put("ewaybillId", 0)
+                    transportObject.put("genralInfo", 0)
+                    transportObject.put("weight", 0)
+                    transportObject.put("ewaysupplytype", 0)
+                    transportObject.put("ewaysupplysubtype", 0)
+                    transportObject.put("ewaydoctype", 0)
+                    transportObject.put("consignmentNo", 0)
+                    transportObject.put("syncStatus", 0)
+                    transportObject.put("financialYear", 0)
+                    transportObject.put("entityTypeId", session.getAttribute('entityTypeId'))
+                    transportObject.put("entityId", session.getAttribute('entityId'))
+                    Response transportation = new SalesService().saveSaleTransportation(transportObject)
+                    if (transportation?.status == 200)
+                    {
+                        println("Transportation details added")
                     }
-                    catch (Exception ex) {
-                        ex.printStackTrace()
+                    else
+                    {
+                        println("something went wrong!!")
                     }
-                }*/
+                }
+                /* def stockBook = new InventoryService().getStockBookById(Long.parseLong(tmpStockBook.originalId))
+                 stockBook.put("remainingQty", tmpStockBook.get("remainingQty"))
+                 stockBook.put("remainingFreeQty", tmpStockBook.get("remainingFreeQty"))
+                 stockBook.put("remainingReplQty", tmpStockBook.get("remainingReplQty"))
+                 String expDate = stockBook.get("expDate").toString().split("T")[0]
+                 String purcDate = stockBook.get("purcDate").toString().split("T")[0]
+                 String manufacturingDate = stockBook.get("manufacturingDate").toString().split("T")[0]
+                 SimpleDateFormat sdf1 = new SimpleDateFormat("yyyy-MM-dd")
+                 expDate = sdf1.parse(expDate).format("dd-MM-yyyy")
+                 purcDate = sdf1.parse(purcDate).format("dd-MM-yyyy")
+                 manufacturingDate = sdf1.parse(manufacturingDate).format("dd-MM-yyyy")
+                 stockBook.put("expDate", expDate)
+                 stockBook.put("purcDate", purcDate)
+                 stockBook.put("manufacturingDate", manufacturingDate)
+                 stockBook.put("uuid", UUID.randomUUID())
+                 def apiRes = new InventoryService().updateStockBook(stockBook)
+                 if (apiRes.status == 200) {
+                     //clear tempstockbook
+                     new InventoryService().deleteTempStock(tempStockRowId, false)
+                     try {
+                         if (billStatus.equalsIgnoreCase("ACTIVE")) {
+                             //push the invoice to e-Invoice service and generate IRN, save IRN to Sale Bill Details
+                             new EInvoiceService().generateIRN(session, saleBillDetail, saleProductDetails)
+                         }
+                     }
+                     catch (Exception ex) {
+                         ex.printStackTrace()
+                     }
+                 }*/
             }
-
             JSONObject responseJson = new JSONObject()
             responseJson.put("series", series)
             responseJson.put("saleBillDetail", saleBillDetail)

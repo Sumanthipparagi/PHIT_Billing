@@ -22,8 +22,8 @@
                                     Transport Type
                                 </label>
                                 <select id="transportType" name="transportType" class="form-control" required>
-                                    <g:each in="${transporter}" var="tr">
-                                        <option value="${tr.id}">${tr.name}</option>
+                                    <g:each in="${transportType}" var="tr">
+                                        <option value="${tr.id}">${tr.transportType}</option>
                                     </g:each>
                                 </select>
                             </div>
@@ -33,6 +33,9 @@
                     <input type="hidden" name="entityTypeId"  value="${session.getAttribute('entityTypeId')}">
                     <input type="hidden" name="createdUser"  value="${session.getAttribute('userId')}">
                     <input type="hidden" name="modifiedUser"  value="${session.getAttribute('userId')}">
+                    <input type="hidden" name="address"  value="">
+                    <input type="hidden" name="gstNo"  value="">
+                    <input type="hidden" name="phone"  value="">
                     <div class="modal-footer">
                         <input name="id" id="id" class="id" type="hidden"/>
                         <input name="type" class="type" value="add" type="hidden"/>

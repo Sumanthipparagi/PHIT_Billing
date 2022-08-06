@@ -150,6 +150,7 @@
                 url: '/transporter/datatable',
                 dataType: 'json',
                 dataSrc: function (json) {
+                    console.log(json)
                     var return_data = [];
                     for (var i = 0; i < json.data.length; i++) {
                         var editbtn = '<button type="button" data-id="' + json.data[i].id +
@@ -160,7 +161,7 @@
                             '" class="btn btn-danger deletebtn" data-toggle="modal" data-target=".deleteModal"><i class="material-icons"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">delete</font></font></i></button>'
                         return_data.push({
                             'name': json.data[i].name,
-                            'transportType': json.data[i].transportType,
+                            'transportType': json.data[i].transportType.transportType,
                             'action': editbtn + ' ' + deletebtn
                         });
                     }

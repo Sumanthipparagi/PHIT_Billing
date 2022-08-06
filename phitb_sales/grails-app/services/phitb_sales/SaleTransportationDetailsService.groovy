@@ -10,7 +10,7 @@ import java.text.SimpleDateFormat
 @Transactional
 class SaleTransportationDetailsService
 {
-    SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss")
+    SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd")
 
     def getAll(String limit, String offset, String query)
     {
@@ -95,13 +95,13 @@ class SaleTransportationDetailsService
         SaleTransportationDetails saleTransportationDetails = new SaleTransportationDetails()
         saleTransportationDetails.finId = Long.parseLong(jsonObject.get("finId").toString())
         saleTransportationDetails.billId = Long.parseLong(jsonObject.get("billId").toString())
-        saleTransportationDetails.billType = Long.parseLong(jsonObject.get("billType").toString())
+        saleTransportationDetails.billType = jsonObject.get("billType").toString()
         saleTransportationDetails.serBillId = Long.parseLong(jsonObject.get("serBillId").toString())
         saleTransportationDetails.series = Long.parseLong(jsonObject.get("series").toString())
         saleTransportationDetails.customerId = Long.parseLong(jsonObject.get("customerId").toString())
-        saleTransportationDetails.transportTypeId = Long.parseLong(jsonObject.get("transportTypeId").toString())
+        saleTransportationDetails.transporterId = Long.parseLong(jsonObject.get("transporterId").toString())
         saleTransportationDetails.lrDate = sdf.parse(jsonObject.get("lrDate").toString())
-        saleTransportationDetails.lrNumber = jsonObject.get("sqty").toString()
+        saleTransportationDetails.lrNumber = jsonObject.get("lrNumber").toString()
         saleTransportationDetails.cartonsCount = jsonObject.get("cartonsCount").toString()
         saleTransportationDetails.paid = jsonObject.get("paid").toString()
         saleTransportationDetails.toPay = jsonObject.get("toPay").toString()
@@ -148,7 +148,7 @@ class SaleTransportationDetailsService
             saleTransportationDetails.serBillId = Long.parseLong(jsonObject.get("serBillId").toString())
             saleTransportationDetails.series = Long.parseLong(jsonObject.get("series").toString())
             saleTransportationDetails.customerId = Long.parseLong(jsonObject.get("customerId").toString())
-            saleTransportationDetails.transportTypeId = Long.parseLong(jsonObject.get("transportTypeId").toString())
+            saleTransportationDetails.transporterId = Long.parseLong(jsonObject.get("transporterId").toString())
             saleTransportationDetails.lrDate = sdf.parse(jsonObject.get("lrDate").toString())
             saleTransportationDetails.lrNumber = jsonObject.get("sqty").toString()
             saleTransportationDetails.cartonsCount = jsonObject.get("cartonsCount").toString()

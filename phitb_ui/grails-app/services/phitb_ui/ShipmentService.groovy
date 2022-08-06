@@ -75,8 +75,33 @@ class ShipmentService {
             System.err.println('Service :getAccountModes , action :  show  , Ex:' + ex)
             log.error('Service :getAccountModes , action :  show  , Ex:' + ex)
         }
+    }
+
+
+    def getTransportTypeByEntity(String entityId)
+    {
+        Client client = ClientBuilder.newClient()
+        WebTarget target = client.target(new Links().API_GATEWAY)
+        try {
+            Response apiResponse = target
+                    .path(new Links().TRANSPORT_TYPE_SHOW_BY_ENTITY + "/"+entityId)
+                    .request(MediaType.APPLICATION_JSON_TYPE)
+                    .get()
+            if(apiResponse.status == 200)
+            {
+                JSONArray jsonArray = new JSONArray(apiResponse.readEntity(String.class))
+                return jsonArray
+            }
+            else
+                return null
+        }
+        catch (Exception ex) {
+            System.err.println('Service :ShipmentService , action :  getTransportTypeByEntity  , Ex:' + ex)
+            log.error('Service :ShipmentService , action :  getTransportTypeByEntity  , Ex:' + ex)
+        }
 
     }
+
 
 
     def putTransportType(JSONObject jsonObject) {

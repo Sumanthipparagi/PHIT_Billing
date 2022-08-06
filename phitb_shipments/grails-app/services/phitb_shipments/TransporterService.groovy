@@ -92,7 +92,7 @@ class TransporterService {
         Transporter.address = jsonObject.get("address")
         Transporter.phone = jsonObject.get("phone")
         Transporter.gstNo = jsonObject.get("gstNo")
-        Transporter.transportType = TransportType.findById(jsonObject.get("transportType"))
+        Transporter.transportType = TransportType.findById(Long.parseLong(jsonObject.get("transportType").toString())) as TransportType
         Transporter.entityTypeId = Long.parseLong(jsonObject.get("entityTypeId").toString())
         Transporter.entityId = Long.parseLong(jsonObject.get("entityId").toString())
         Transporter.createdUser = Long.parseLong(jsonObject.get("createdUser").toString())
@@ -114,7 +114,7 @@ class TransporterService {
                 Transporter.address = jsonObject.get("address")
                 Transporter.phone = jsonObject.get("phone")
                 Transporter.gstNo = jsonObject.get("gstNo")
-                Transporter.transportType = TransportType.findById(jsonObject.get("transportType"))
+                Transporter.transportType = TransportType.findById(Long.parseLong(jsonObject.get("transportType").toString()))
                 Transporter.entityTypeId = Long.parseLong(jsonObject.get("entityTypeId").toString())
                 Transporter.entityId = Long.parseLong(jsonObject.get("entityId").toString())
                 Transporter.createdUser = Long.parseLong(jsonObject.get("createdUser").toString())
