@@ -409,8 +409,7 @@ class SaleBillDetailsController {
                         for (SaleReturn saleReturn : salesReturn) {
                             if (saleReturn) {
                                 double saleReturnBalanceBefore = saleReturn.balance
-                                double saleReturnBalance = saleReturn.balance
-                                totalDue = totalDue - saleReturnBalance
+                                totalDue = totalDue - saleReturn.balance
                                 if (totalDue >= 0) {
                                     saleReturn.balance = 0
                                 } else {
@@ -426,7 +425,7 @@ class SaleBillDetailsController {
                                     saleReturnAdjustmentDetails.saleReturnAdjustment = saleReturnAdjustment
                                     saleReturnAdjustmentDetails.saleReturn = savedSaleReturn
                                     saleReturnAdjustmentDetails.totalAmount = saleBillDetails.invoiceTotal
-                                    saleReturnAdjustmentDetails.adjAmount = saleReturnBalanceBefore
+                                    saleReturnAdjustmentDetails.adjAmount = (saleReturnBalanceBefore - savedSaleReturn.balance)
                                     saleReturnAdjustmentDetails.balanceBefore = saleReturnBalanceBefore
                                     saleReturnAdjustmentDetails.currentBalance = savedSaleReturn.balance
                                     saleReturnAdjustmentDetails.docId = Long.parseLong(jsonObject.get("docId").toString())

@@ -89,10 +89,13 @@ class SaleBillDetailsService
         String orderColumnId = paramsJsonObject.get("order[0][column]")
         String orderDir = paramsJsonObject.get("order[0][dir]")
         String invoiceStatus = paramsJsonObject.get("invoiceStatus")
-        String userId = paramsJsonObject.get("userId")
-        long uid = 0
-        if(userId)
-            uid = Long.parseLong(userId)
+
+        long userId = 0
+        if(paramsJsonObject.has("userId"))
+            userId = paramsJsonObject.get("userId")
+
+        long entityId = paramsJsonObject.get("entityId")
+
 
         String orderColumn = "id"
         switch (orderColumnId)
@@ -119,8 +122,11 @@ class SaleBillDetailsService
             {
                 eq('billStatus', invoiceStatus)
             }
-            if(userId)
-                eq("userId", uid)
+
+            if(userId > 0)
+                eq("userId", userId)
+
+            eq("entityId", entityId)
             eq('deleted', false)
             order(orderColumn, orderDir)
         }
@@ -128,7 +134,6 @@ class SaleBillDetailsService
         JSONObject jsonObject = new JSONObject()
         jsonObject.put("draw", paramsJsonObject.draw)
         jsonObject.put("recordsTotal", recordsTotal)
-//        jsonObject.put("entity", names)
         jsonObject.put("recordsFiltered", recordsTotal)
         jsonObject.put("data", saleBillDetailsArrayList)
         return jsonObject
