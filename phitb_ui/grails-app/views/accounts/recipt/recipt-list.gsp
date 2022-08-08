@@ -192,7 +192,7 @@
             },
             ajax: {
                 type: 'GET',
-                url: '/recipt-list/datatable',
+                url: '/receipt-list/datatable',
                 dataType: 'json',
                 data: {
                     customer: "ALL",
@@ -200,7 +200,6 @@
                     toDate:"",
                 },
                 dataSrc: function (json) {
-                    console.log(json)
                     var return_data = [];
                     for (var i = 0; i < json.data.length; i++) {
                         var cancelInvoice = "";
