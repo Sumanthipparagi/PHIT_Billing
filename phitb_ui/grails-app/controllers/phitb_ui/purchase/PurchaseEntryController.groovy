@@ -418,6 +418,55 @@ class PurchaseEntryController {
                     println("Scheme Failed")
                 }
             }
+            //   Update shipment Details
+            if(params.lrNumber!='' || params.lrDate!='' || params.transporter!='')
+            {
+                JSONObject transportObject = new JSONObject();
+                transportObject.put("finId", finId)
+                transportObject.put("billId", purchaseBillDetail.id)
+                transportObject.put("billType", Constants.PURCHASE_INVOICE)
+                transportObject.put("serBillId", purchaseBillDetail.serBillId)
+                transportObject.put("series", purchaseBillDetail.seriesId)
+                transportObject.put("supplierId", purchaseBillDetail.supplierId)
+                transportObject.put("transporterId", params.transporter)
+                transportObject.put("lrDate", params.lrDate)
+                transportObject.put("lrNumber", params.lrNumber)
+                transportObject.put("cartonsCount", "")
+                transportObject.put("paid", 0)
+                transportObject.put("toPay", 0)
+                transportObject.put("generalInfo", 0)
+                transportObject.put("selfNo", 0)
+                transportObject.put("ccm", 0)
+                transportObject.put("receivedTemperature", 0)
+                transportObject.put("freightCharge", 0)
+                transportObject.put("vehicleId", 0)
+                transportObject.put("deliveryStatus", 0)
+                transportObject.put("dispatchDateTime", 0)
+                transportObject.put("deliveryDateTime", 0)
+                transportObject.put("trackingDetails", 0)
+                transportObject.put("ewaybillId", 0)
+                transportObject.put("genralInfo", 0)
+                transportObject.put("weight", 0)
+                transportObject.put("ewaysupplytype", 0)
+                transportObject.put("ewaysupplysubtype", 0)
+                transportObject.put("ewaydoctype", 0)
+                transportObject.put("consignmentNo", 0)
+                transportObject.put("syncStatus", 0)
+                transportObject.put("financialYear", 0)
+                transportObject.put("entityTypeId", session.getAttribute('entityTypeId'))
+                transportObject.put("entityId", session.getAttribute('entityId'))
+                transportObject.put("createdUser", session.getAttribute('userId'))
+                transportObject.put("modifiedUser", session.getAttribute('userId'))
+                Response transportation = new PurchaseService().savePurchaseTransportation(transportObject)
+                if (transportation?.status == 200)
+                {
+                    println("Transportation details added")
+                }
+                else
+                {
+                    println("Failed to add transportation details")
+                }
+            }
             JSONObject responseJson = new JSONObject()
             responseJson.put("series", series)
             responseJson.put("purchaseBillDetail", purchaseBillDetail)

@@ -1662,9 +1662,11 @@
         var series = $("#series").val();
         var seriesCode = $("#series").find(':selected').data('seriescode');
         var duedate = $("#duedate").val();
+        var lrNumber =  $("#lrNumber").val();
+        var lrDate =  $("#lrDate").val();
+        var transporter=  $("#transportType").val();
         duedate = moment(duedate, 'YYYY-MM-DD').toDate();
         duedate = moment(duedate).format('DD/MM/YYYY');
-
         supplierBillDate = moment(supplierBillDate, 'YYYY-MM-DD').toDate();
         supplierBillDate = moment(supplierBillDate).format('DD/MM/YYYY');
         var schemeData =[];
@@ -1704,6 +1706,9 @@
                 schemeData: JSON.stringify(schemeData),
                 supplierBillDate: supplierBillDate,
                 supplierBillId: supplierBillId,
+                lrNumber:lrNumber,
+                lrDate:lrDate,
+                transporter:transporter,
                 uuid: self.crypto.randomUUID()
             },
             success: function (data) {

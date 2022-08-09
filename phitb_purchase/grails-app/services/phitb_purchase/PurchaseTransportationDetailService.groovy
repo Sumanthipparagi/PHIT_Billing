@@ -10,7 +10,7 @@ import java.text.SimpleDateFormat
 @Transactional
 class PurchaseTransportationDetailService {
 
-    SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss")
+    SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd")
 
     def getAll(String limit, String offset, String query) {
 
@@ -67,14 +67,13 @@ class PurchaseTransportationDetailService {
 
     PurchaseTransportationDetail save(JSONObject jsonObject) {
         PurchaseTransportationDetail purchaseTransportationDetail = new PurchaseTransportationDetail()
-
         purchaseTransportationDetail.finId = Long.parseLong(jsonObject.get("finId").toString())
         purchaseTransportationDetail.billId = Long.parseLong(jsonObject.get("billId").toString())
         purchaseTransportationDetail.billType = jsonObject.get("billType").toString()
         purchaseTransportationDetail.serBillId = Long.parseLong(jsonObject.get("serBillId").toString())
         purchaseTransportationDetail.series = Long.parseLong(jsonObject.get("series").toString())
         purchaseTransportationDetail.supplierId = Long.parseLong(jsonObject.get("supplierId").toString())
-        purchaseTransportationDetail.transportTypeId = Long.parseLong(jsonObject.get("transportTypeId").toString())
+        purchaseTransportationDetail.transporterId = Long.parseLong(jsonObject.get("transporterId").toString())
         purchaseTransportationDetail.lrDate = sdf.parse(jsonObject.get("lrDate").toString())
         purchaseTransportationDetail.lrNumber = jsonObject.get("lrNumber").toString()
         purchaseTransportationDetail.cartonsCount = jsonObject.get("cartonsCount").toString()
@@ -102,8 +101,6 @@ class PurchaseTransportationDetailService {
         purchaseTransportationDetail.entityId = Long.parseLong(jsonObject.get("entityId").toString())
         purchaseTransportationDetail.createdUser = Long.parseLong(jsonObject.get("createdUser").toString())
         purchaseTransportationDetail.modifiedUser = Long.parseLong(jsonObject.get("modifiedUser").toString())
-
-
         purchaseTransportationDetail.save(flush: true)
         if (!purchaseTransportationDetail.hasErrors())
             return purchaseTransportationDetail
@@ -123,7 +120,7 @@ class PurchaseTransportationDetailService {
             purchaseTransportationDetail.serBillId = Long.parseLong(jsonObject.get("serBillId").toString())
             purchaseTransportationDetail.series = Long.parseLong(jsonObject.get("series").toString())
             purchaseTransportationDetail.supplierId = Long.parseLong(jsonObject.get("supplierId").toString())
-            purchaseTransportationDetail.transportTypeId = Long.parseLong(jsonObject.get("transportTypeId").toString())
+            purchaseTransportationDetail.transporterId = Long.parseLong(jsonObject.get("transportTypeId").toString())
             purchaseTransportationDetail.lrDate = sdf.parse(jsonObject.get("lrDate").toString())
             purchaseTransportationDetail.lrNumber = jsonObject.get("lrNumber").toString()
             purchaseTransportationDetail.cartonsCount = jsonObject.get("cartonsCount").toString()

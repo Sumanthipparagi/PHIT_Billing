@@ -522,4 +522,26 @@ class PurchaseService {
             log.error('Service :SalesService , action :  cancelInvoice  , Ex:' + ex)
         }
     }
+
+    def savePurchaseTransportation(JSONObject jsonObject)
+    {
+        Client client = ClientBuilder.newClient();
+        WebTarget target = client.target(new Links().API_GATEWAY)
+        try
+        {
+            println(jsonObject)
+            Response apiResponse = target
+                    .path(new Links().PURCHASE_TRANSPORTATION_SAVE)
+                    .request(MediaType.APPLICATION_JSON_TYPE)
+                    .post(Entity.entity(jsonObject.toString(), MediaType.APPLICATION_JSON_TYPE))
+            println(apiResponse)
+            return apiResponse
+        }
+        catch (Exception ex)
+        {
+            System.err.println('Service :purchaseService , action :  savePurchaseTransportation  , Ex:' + ex)
+            log.error('Service :purchaseService , action :  savePurchaseTransportation  , Ex:' + ex)
+        }
+
+    }
 }

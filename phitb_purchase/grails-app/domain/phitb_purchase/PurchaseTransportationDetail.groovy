@@ -10,7 +10,7 @@ class PurchaseTransportationDetail implements LogicalDelete<PurchaseTransportati
     long serBillId
     long series
     long supplierId
-    long transportTypeId
+    long transporterId
     Date lrDate
     String lrNumber
     String cartonsCount

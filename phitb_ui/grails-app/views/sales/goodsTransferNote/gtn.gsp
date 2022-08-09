@@ -955,7 +955,7 @@
         $("#saveBtn").prop("disabled", true);
         $("#saveDraftBtn").prop("disabled", true);
         var waitingSwal = Swal.fire({
-            title: "Generating Sale Order, Please wait!",
+            title: "Generating GTN, Please wait!",
             showDenyButton: false,
             showCancelButton: false,
             showConfirmButton: false,
