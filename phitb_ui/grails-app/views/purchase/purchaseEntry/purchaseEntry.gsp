@@ -1493,10 +1493,10 @@
             dataType: 'json',
             success: function (data) {
                 purchaseData = data;
-                console.log(data+"");
+               console.log(purchaseData);
                 for (var i = 0; i < purchaseData.length; i++) {
                     hot.selectCell(i, 1);
-                    var sRate = purchaseData[i].sRate;
+                    var pRate = purchaseData[i].sRate;
                     var pQty = purchaseData[i].sqty;
                     var fQty = purchaseData[i].freeQty;
                     batchSelection(purchaseData[i].productId, null, false);
@@ -1505,7 +1505,7 @@
                     hot.setDataAtCell(i, 2, purchaseData[i].batchNumber);
                     hot.setCellMeta(i, 2, "batchId", batchId);
                     hot.setDataAtCell(i, 3, purchaseData[i].expiryDate.split("T")[0]);
-                    hot.setDataAtCell(i, 6, sRate);
+                    hot.setDataAtCell(i, 6, pRate);
                     hot.setDataAtCell(i, 4, pQty);
                     hot.setDataAtCell(i, 5, fQty);
                     hot.setDataAtCell(i, 7, purchaseData[i].mrp);
@@ -1523,7 +1523,7 @@
                         cgst = 0;
                     }
                     var discount = 0; //TODO: discount to be set
-                    var priceBeforeGst = (sRate * pQty) - ((sRate * pQty) * discount) / 100;
+                    var priceBeforeGst = (pRate * pQty) - ((pRate * pQty) * discount) / 100;
                     var finalPrice = priceBeforeGst + (priceBeforeGst * (gst / 100));
                     hot.setDataAtCell(i, 11, Number(finalPrice).toFixed(2));
                     if (gst !== 0) {
