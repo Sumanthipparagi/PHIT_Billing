@@ -359,6 +359,8 @@ class PurchaseOrderController
     def dataTable() {
         try {
             JSONObject jsonObject = new JSONObject(params)
+            jsonObject.put("userId", session.getAttribute("userId"))
+            jsonObject.put("entityId", session.getAttribute("entityId"))
             def apiResponse = new PurchaseService().showPurchaseOrderDetails(jsonObject)
             if (apiResponse.status == 200) {
                 JSONObject responseObject = new JSONObject(apiResponse.readEntity(String.class))
