@@ -125,7 +125,54 @@
                                 <label for="duedate">Due Date:</label>
                                 <input type="date" class="form-control date" name="duedate" id="duedate"/>
                             </div>
+                            <div class="col-md-4 mt-2">
+                                <br>
+                                <a class="btn btn-primary waves-effect" role="button" data-toggle="collapse"
+                                   href="#shipmentDetails" aria-expanded="false"
+                                   aria-controls="shipmentDetails"><i class="zmdi zmdi-truck"></i> Shipment Information
+                                </a>
+                            </div>
+
                         </div>
+
+                        <div class="row">
+                            <div class="col-md-12 col-lg-12 col-sm-12">
+                                <div class="collapse" id="shipmentDetails">
+                                    <div class="row">
+                                        <div class="col-md-3">
+                                            <div class="form-group">
+                                                <label for="lrNumber">LR No.</label>
+                                                <input type="text" maxlength="150" id="lrNumber" name="lrNumber"
+                                                       class="form-control" value="${saleTransportDetail?.lrNumber}"/>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-md-3">
+                                            <div class="form-group">
+                                                <label for="lrDate">LR Date</label>
+                                                <input type="date" maxlength="150" id="lrDate" name="lrDate"  class="form-control"/>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-md-3">
+                                            <div class="form-group">
+                                                <label for="transportType">Transporter</label>
+                                                <select id="transportType" name="transportType"
+                                                        class="form-control">
+                                                    <option value="">--Please Select--</option>
+                                                    <g:each in="${transporter}" var="t">
+                                                        <option value="${t.id}">${t.name}</option>
+                                                    </g:each>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    %{--<div class="well">Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. Nihil anim keffiyeh helvetica,
+                                    craft beer labore wes anderson cred nesciunt sapiente ea proident.</div>--}%
+                                </div>
+                            </div>
+                        </div>
+
                     </div>
                 </div>
             </div>

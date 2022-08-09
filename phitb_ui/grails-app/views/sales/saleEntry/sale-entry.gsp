@@ -163,7 +163,7 @@
 
                                         <div class="col-md-3">
                                             <div class="form-group">
-                                                <label for="transportType">Transporter${saleTransportDetail?.transporterId}</label>
+                                                <label for="transportType">Transporter</label>
                                                 <select id="transportType" name="transportType"
                                                        class="form-control">
                                                     <option value="">--Please Select--</option>

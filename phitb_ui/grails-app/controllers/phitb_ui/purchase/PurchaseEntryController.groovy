@@ -10,6 +10,7 @@ import phitb_ui.Links
 import phitb_ui.ProductService
 import phitb_ui.PurchaseService
 import phitb_ui.SalesService
+import phitb_ui.ShipmentService
 import phitb_ui.SystemService
 import phitb_ui.UtilsService
 import phitb_ui.entity.EntityRegisterController
@@ -66,9 +67,10 @@ class PurchaseEntryController {
         def priorityList = new SystemService().getPriorityByEntity(entityId)
         def series = new SeriesController().getByEntity(entityId)
         def taxRegister = new TaxController().show() as ArrayList<String>
+        Object transporter = new ShipmentService().getAllTransporterByEntity(entityId)
         render(view: '/purchase/purchaseEntry/purchaseEntry', model: [divisions   : divisions, customers: customers,
                                                                       priorityList: priorityList, series: series,
-                                                                      taxRegister:taxRegister])
+                                                                      taxRegister:taxRegister,transporter:transporter])
     }
 
 
