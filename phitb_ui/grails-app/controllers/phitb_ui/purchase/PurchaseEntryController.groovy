@@ -667,4 +667,63 @@ class PurchaseEntryController {
     {
         render(view:'/purchase/purchaseEntry/purchase-invoice-list')
     }
+
+
+    def editPurchaseBillDetails() {
+        String entityId = session.getAttribute("entityId")?.toString()
+        JSONArray divisions = new ProductService().getDivisionsByEntityId(entityId)
+        ArrayList<String> customers = new EntityRegisterController().getByAffiliateById(entityId) as ArrayList<String>
+        def priorityList = new SystemService().getPriorityByEntity(entityId)
+        def series = new SeriesController().getByEntity(entityId)
+        def purchaseBillId = params.purchaseBillId
+        JSONObject purchaseBillDetail = new PurchaseService().getPurchaseBillDetailsById(purchaseBillId)
+        JSONObject purchaseTransportDetail = new SalesService().getSaleTransportationByBill(purchaseBillId)
+        Object transporter = new ShipmentService().getAllTransporterByEntity(entityId)
+        JSONObject supplier = new EntityService().getEntityById(purchaseBillDetail.supplierId.toString())
+        if (purchaseBillDetail != null && purchaseBillDetail.billStatus == 'DRAFT') {
+            JSONArray purchaseProductDetails = new PurchaseService().getPurchaseProductDetailsByBill(purchaseBillId)
+            render(view: '/purchase/purchaseEntry/purchaseEntry', model: [customers         : customers, divisions: divisions,
+                                                                          series            : series,
+                                                                          priorityList      : priorityList, purchaseBillDetail: purchaseBillDetail,
+                                                                          purchaseProductDetails: purchaseProductDetails,
+                                                                          transporter       :transporter,
+                                                                          customer          : supplier, purchaseTransportDetail:purchaseTransportDetail])
+        } else {
+            redirect(uri: "/purchase-entry")
+        }
+
+    }
+
+
+    def getPurchaseProductDetailsByBill() {
+        try {
+            if (params.id) {
+                JSONArray purchaseProductDetails = new PurchaseService().getPurchaseProductDetailsByBill(params.id)
+                def saleBillResponse = new PurchaseService().getPurchaseBillDetailsById(params.id.toString())
+                purchaseProductDetails.each {
+                    println(it.batchNumber)
+                    def stockResponse = new InventoryService().getStocksOfProductAndBatch(it.productId.toString(),
+                            it.batchNumber.toString(), session.getAttribute('entityId').toString())
+                    if (it.batchNumber == stockResponse.batchNumber) {
+                        def tax = new TaxController().show(stockResponse.taxId.toString())
+                        it.put("gst", tax.taxValue)
+                        it.put("sgst", tax.salesSgst)
+                        it.put("cgst", tax.salesCgst)
+                        it.put("igst", tax.salesIgst)
+                    }
+                    it.put("billId", saleBillResponse as JSONObject)
+                    def apiResponse = new SalesService().getRequestWithId(it.productId.toString(), new Links().PRODUCT_REGISTER_SHOW)
+                    it.put("productId", JSON.parse(apiResponse.readEntity(String.class)) as JSONObject)
+                }
+                respond purchaseProductDetails, formats: ['json'], status: 200;
+            } else {
+                return [];
+            }
+        }
+
+        catch (Exception ex) {
+            System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
+            response.status = 404
+        }
+    }
 }

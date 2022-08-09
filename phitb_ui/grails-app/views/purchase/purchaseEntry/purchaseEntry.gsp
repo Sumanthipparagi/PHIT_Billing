@@ -264,7 +264,7 @@
 
                         <div class="row">
                             <button onclick="resetPage()" class="btn btn-danger">Reset</button>
-                            %{--<button onclick="savePurchaseInvoice('DRAFT')" class="btn btn-primary">Save Draft</button>--}%
+                            <button onclick="savePurchaseInvoice('DRAFT')" class="btn btn-primary">Save Draft</button>
                             <button onclick="savePurchaseInvoice('ACTIVE')" class="btn btn-primary">Save</button>
                             %{-- <button onclick="printInvoice()" class="btn btn-secondary">Print</button>--}%
                         </div>
@@ -748,10 +748,10 @@
                 {type: 'text', readOnly: true}
             ],
             hiddenColumns: true,
-            hiddenColumns: {
-                // specify columns hidden by default
-                columns: [19,20,21,22,23]
-            },
+            // hiddenColumns: {
+            //     // specify columns hidden by default
+            //     columns: [19,20,21,22,23]
+            // },
             minSpareRows: 0,
             minSpareColumns: 0,
             enterMoves: {row: 0, col: 1},
@@ -1485,6 +1485,105 @@
         })*/
     }
 
+
+    function loadDraftProducts() {
+        $.ajax({
+            type: "GET",
+            url: "/purchase-product-details/purchase-bill?id=${purchaseBillDetail?.id}",
+            dataType: 'json',
+            success: function (data) {
+                purchaseData = data;
+                console.log(data+"");
+                for (var i = 0; i < purchaseData.length; i++) {
+                    hot.selectCell(i, 1);
+                    var sRate = purchaseData[i].sRate;
+                    var pQty = purchaseData[i].sqty;
+                    var fQty = purchaseData[i].freeQty;
+                    batchSelection(purchaseData[i].productId, null, false);
+                    var batchId = purchaseData[i][12];
+                    hot.setDataAtCell(i, 1, purchaseData[i].productId.id);
+                    hot.setDataAtCell(i, 2, purchaseData[i].batchNumber);
+                    hot.setCellMeta(i, 2, "batchId", batchId);
+                    hot.setDataAtCell(i, 3, purchaseData[i].expiryDate.split("T")[0]);
+                    hot.setDataAtCell(i, 6, sRate);
+                    hot.setDataAtCell(i, 4, pQty);
+                    hot.setDataAtCell(i, 5, fQty);
+                    hot.setDataAtCell(i, 7, purchaseData[i].mrp);
+                    hot.setDataAtCell(i, 8, 0);
+                    hot.setDataAtCell(i, 9, purchaseData[i].productId.unitPacking);
+
+                    gst = purchaseData[i].gst;
+                    if (stateId === undefined || stateId === '${session.getAttribute('stateId')}') {
+                        sgst = purchaseData[i].sgst;
+                        cgst = purchaseData[i].cgst;
+                        igst = purchaseData[i].igst;
+                    } else {
+                        igst = gst;
+                        sgst = 0;
+                        cgst = 0;
+                    }
+                    var discount = 0; //TODO: discount to be set
+                    var priceBeforeGst = (sRate * pQty) - ((sRate * pQty) * discount) / 100;
+                    var finalPrice = priceBeforeGst + (priceBeforeGst * (gst / 100));
+                    hot.setDataAtCell(i, 11, Number(finalPrice).toFixed(2));
+                    if (gst !== 0) {
+                        hot.setDataAtCell(i, 10, Number(priceBeforeGst * (gst / 100)).toFixed(2)); //GST
+                        hot.setDataAtCell(i, 12, Number(priceBeforeGst * (sgst / 100)).toFixed(2)); //SGST
+                        hot.setDataAtCell(i, 13, Number(priceBeforeGst * (cgst / 100)).toFixed(2)); //CGST
+                    } else {
+                        hot.setDataAtCell(i, 10, 0); //GST
+                        hot.setDataAtCell(i, 12, 0); //SGST
+                        hot.setDataAtCell(i, 13, 0); //CGST
+                    }
+                    if (igst !== "0")
+                        hot.setDataAtCell(i, 14, Number(priceBeforeGst * (igst / 100)).toFixed(2)); //IGST
+                    else
+                        hot.setDataAtCell(i, 14, 0);
+                    <g:if test="${customer != null}">
+                    hot.setDataAtCell(i, 15, 0);
+                    </g:if>
+                    <g:else>
+                    hot.setDataAtCell(i, 15, purchaseData[i].id);
+                    </g:else>
+                    hot.setDataAtCell(i, 16, gst);
+                    hot.setDataAtCell(i, 17, sgst);
+                    hot.setDataAtCell(i, 18, cgst);
+                    hot.setDataAtCell(i, 19, igst);
+                    hot.setDataAtCell(i, 20, purchaseData[i]["originalSqty"]);
+                    hot.setDataAtCell(i, 21, purchaseData[i]["originalFqty"]);
+                    <g:if test="${customer != null}">
+                    hot.setDataAtCell(i, 22, pQty); //draft sqty
+                    hot.setDataAtCell(i, 23, fQty); //draft fqty
+                    hot.setDataAtCell(i, 24, purchaseData[i]["id"]); //saved draft product id
+                    </g:if>
+
+                    for (var j = 0; j < 15; j++) {
+                        hot.setCellMeta(i, j, 'readOnly', true);
+                    }
+                }
+
+                setTimeout(function () {
+                    hot.selectCell(0, 1);
+                    calculateTotalAmt();
+                }, 1000);
+            }
+        });
+
+        //to load temp stock pool in sidebar
+        var userId = "${session.getAttribute("userId")}";
+        $.ajax({
+            type: "GET",
+            url: "tempstockbook/user/" + userId,
+            dataType: 'json',
+            success: function (data) {
+                //do nothing
+            }
+        });
+    }
+
+
+
+
     function deleteTempStockRow(id, row) {
         if (!readOnly) {
             /*  if(id) {
@@ -1835,7 +1934,9 @@
                 for (var i = 0; i < data.length; i++) {
                     products.push({id: data[i].id, text: data[i].productName});
                 }
-                loadTempStockBookData();
+                <g:if test="${params.purchaseBillId}">
+                loadDraftProducts();
+                </g:if>
             },
             error: function () {
                 products.length = 0; //remove all elements

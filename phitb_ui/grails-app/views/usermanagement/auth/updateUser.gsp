@@ -103,6 +103,8 @@
                                             </li>
                                         </ul>
                                     </div>
+
+                                    <g:if test="${session.getAttribute('userId').toString() == params.id.toString()}">
                                     <div class="body m-b-10">
                                         <form action="/user-register/update/${user.id}" id="updateUser"
                                               method="POST" role="form"
@@ -592,8 +594,8 @@
 
 
                                         </form>
-
                                     </div>
+                                    </g:if>
                                 </div>
                             </div>
                         </div>
@@ -681,7 +683,11 @@
                             <div class="header">
                                 <h2><strong>Security</strong> Settings</h2>
                             </div>
-                            <form action="/user/update-password" method="post" id="updatePassword">
+
+
+<g:if test="${session.getAttribute('userId').toString() == params.id.toString()}">
+
+    <form action="/user/update-password" method="post" id="updatePassword">
                             <div class="body">
 %{--                                <div class="form-group">--}%
 %{--                                    <input type="text" class="form-control" placeholder="Username">--}%
@@ -713,6 +719,7 @@
                                 <button class="btn btn-info btn-round passwordChangebtn">Save Changes</button>
                             </div>
                             </form>
+</g:if>
                         </div>
 %{--                        <div class="card">--}%
 %{--                            <div class="header">--}%

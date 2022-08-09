@@ -349,7 +349,7 @@
                          </div>--}%
 
                         <div class="detail">
-                            <h6>${session.getAttribute("userName")}</h6>
+                        <h6><a href="/user/update-details/${session.getAttribute('userId')}">${session.getAttribute("userName")}</a></h6>
 
                             <g:if test="${session.getAttribute('role') != Constants.SUPER_USER}">
                                 <p class="m-b-0">${session.getAttribute("entityName")}</p>
