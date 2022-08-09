@@ -123,7 +123,6 @@ class SampleConversionService {
         JSONObject jsonObject = new JSONObject()
         jsonObject.put("draw", paramsJsonObject.draw)
         jsonObject.put("recordsTotal", recordsTotal)
-//        jsonObject.put("entity", names)
         jsonObject.put("recordsFiltered", recordsTotal)
         jsonObject.put("data", SampleConversionArrayList)
         return jsonObject
