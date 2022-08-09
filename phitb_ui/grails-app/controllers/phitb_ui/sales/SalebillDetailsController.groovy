@@ -140,9 +140,10 @@ class SalebillDetailsController {
 
     def dataTable() {
         try {
-            String userId = session.getAttribute("userId")
             JSONObject jsonObject = new JSONObject(params)
-            jsonObject.put("userId", userId)
+            if(session.getAttribute("role").toString().equalsIgnoreCase(Constants.ENTITY_ADMIN))
+                jsonObject.put("userId", session.getAttribute("userId"))
+            jsonObject.put("entityId", session.getAttribute("entityId"))
             def apiResponse = new SalesService().showSalesService(jsonObject)
             if (apiResponse.status == 200) {
                 JSONObject responseObject = new JSONObject(apiResponse.readEntity(String.class))
