@@ -466,6 +466,8 @@ class PurchaseEntryController {
                 {
                     println("Failed to add transportation details")
                 }
+            }else {
+                println("Transportation Details not found!")
             }
             JSONObject responseJson = new JSONObject()
             responseJson.put("series", series)

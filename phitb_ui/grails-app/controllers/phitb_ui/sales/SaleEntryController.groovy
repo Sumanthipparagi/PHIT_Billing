@@ -289,7 +289,7 @@ class SaleEntryController {
                 catch (Exception ex) {
                     ex.printStackTrace()
                 }
-                if(params.lrNumber!='' || params.lrDate!='' || params.transporter!='')
+                if(params.lrNumber!='' && params.lrDate!='' && params.transporter!='')
                 {
                     JSONObject transportObject = new JSONObject();
                     transportObject.put("finId", finId)
@@ -334,6 +334,8 @@ class SaleEntryController {
                     {
                         println("something went wrong!!")
                     }
+                }else {
+                    println("Transportation Details not found!")
                 }
                 /* def stockBook = new InventoryService().getStockBookById(Long.parseLong(tmpStockBook.originalId))
                  stockBook.put("remainingQty", tmpStockBook.get("remainingQty"))
