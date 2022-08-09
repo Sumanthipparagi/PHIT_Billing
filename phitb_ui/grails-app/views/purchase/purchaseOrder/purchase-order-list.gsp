@@ -342,7 +342,7 @@
 </script>
 <g:include view="controls/footer-content.gsp"/>
 <script>
-    selectSideMenu("sales-menu");
+    selectSideMenu("purchase-menu");
 </script>
 </body>
 </html>
