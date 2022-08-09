@@ -325,9 +325,9 @@
                                                                             <input type="hidden" name="cityId" value="${user.cityId}"/>
 
                                                                             <sub id="prevPin">Previously selected
-                                                                            pincode: <b>${user.pincode}</b><br></sub>
+                                                                            pincode: <b>${user?.pincode}</b><br></sub>
                                                                             <sub id="prevArea">Previously selected
-                                                                            area: <b>${city.areaName}</b></sub>
+                                                                            area: <b>${city?.areaName}</b></sub>
                                                                         </div>
 
 
