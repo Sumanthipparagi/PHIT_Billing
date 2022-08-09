@@ -79,7 +79,6 @@ class PurchaseOrderService {
             eq('deleted', false)
             order(orderColumn, orderDir)
         }
-
         def recordsTotal = purchaseOrderArrayList.totalCount
         JSONObject jsonObject = new JSONObject()
         jsonObject.put("draw", paramsJsonObject.draw)
