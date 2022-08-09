@@ -419,7 +419,7 @@ class PurchaseEntryController {
                 }
             }
             //   Update shipment Details
-            if(params.lrNumber!='' || params.lrDate!='' || params.transporter!='')
+            if(params.lrNumber!='' && params.lrDate!='' && params.transporter!='')
             {
                 JSONObject transportObject = new JSONObject();
                 transportObject.put("finId", finId)
