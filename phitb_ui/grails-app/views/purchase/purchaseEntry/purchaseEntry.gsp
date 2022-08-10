@@ -1896,7 +1896,7 @@
             var message = "";
             var draftInvNo = "";
             if (billStatus === "DRAFT") {
-                draftInvNo = '<p><strong>' + data.purchaseBillDetail.entityId + "/DR/S/" + month + year + "/"
+                draftInvNo = '<p><strong>' + data.purchaseBillDetail.entityId + "/DR/P/" + month + year + "/"
                     + seriesCode + "/__" + '<p><strong>';
                 $("#invNo").html(draftInvNo);
             }
