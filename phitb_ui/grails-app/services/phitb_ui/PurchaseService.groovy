@@ -611,4 +611,28 @@ class PurchaseService {
 
     }
 
+    def getPurchaseTransportationByBill(String billId)
+    {
+        Client client = ClientBuilder.newClient();
+        WebTarget target = client.target(new Links().API_GATEWAY);
+        try
+        {
+            Response apiResponse = target
+                    .path(new Links().PURCHASE_TRANSPORTATION_BY_BILL)
+                    .queryParam("billid",billId)
+                    .request(MediaType.APPLICATION_JSON_TYPE)
+                    .get()
+            if(apiResponse?.status == 200)
+            {
+                JSONObject jsonObject = new JSONObject(apiResponse.readEntity(String.class))
+                return jsonObject
+            }
+        }
+        catch (Exception ex)
+        {
+            System.err.println('Service :getSaleTransportationByBill , action :  show  , Ex:' + ex)
+            log.error('Service :getSaleTransportationByBill , action :  show  , Ex:' + ex)
+        }
+
+    }
 }

@@ -660,6 +660,7 @@ public class Links
 
 
 
+
     //purchase product bill details
     public static String PURCHASE_BILL_SHOW = "api/v1.0/purchase/billdetail";
     public static String PURCHASE_BILL_SAVE = "api/v1.0/purchase/billdetail";

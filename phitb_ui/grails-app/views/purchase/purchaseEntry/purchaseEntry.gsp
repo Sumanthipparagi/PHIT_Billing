@@ -80,7 +80,7 @@
                                     <g:each in="${series}" var="sr">
                                         <option data-seriescode="${sr.seriesCode}"
                                                 value="${sr.id}" <g:if test="${purchaseBillDetail?.seriesId ==
-                                                sr.seriesId}">selected</g:if>>${sr.seriesName} (${sr.seriesCode})</option>
+                                                sr.id}">selected</g:if>>${sr.seriesName} (${sr.seriesCode})</option>
                                     </g:each>
                                 </select>
                             </div>
@@ -90,9 +90,10 @@
                                 <select class="form-control show-tick" id="supplier"
                                         onchange="supplierChanged()">
                                     <g:each in="${customers}" var="cs">
-                                        <g:if test="${cs.id != session.getAttribute("entityId")}"><option
+                                        <g:if test="${cs.id != session.getAttribute("entityId")}">
+                                            <option
                                                 value="${cs.id}"
-                                                data-state="${cs.stateId}">${cs.entityName} (${cs.entityType
+                                                data-state="${cs.stateId}" <g:if test="${purchaseBillDetail?.supplierId == cs.id}">selected</g:if>>${cs.entityName} (${cs.entityType
                                                     .name})</option>
                                         </g:if>
                                     </g:each>
@@ -113,7 +114,7 @@
                             <div class="col-md-3">
                                 <label for="supplierBillId">Supplier Invoice Number:</label>
                                 <input type="text" maxlength="100" class="form-control" name="supplierBillId"
-                                       id="supplierBillId"/>
+                                       id="supplierBillId" value="${purchaseBillDetail?.supplierBillId}"/>
                             </div>
 
                             <div class="col-md-3">
@@ -680,8 +681,9 @@
     var stateId = null;
     $(document).ready(function () {
         window.localStorage.clear();
-        console.log(localStorage)
+        console.log(localStorage);
         $("#supplier").select2();
+        $('#supplierBillDate').val(moment('${purchaseBillDetail?.supplierBillDate}').format('YYYY-MM-DD'));
         $('#date').val(moment().format('YYYY-MM-DD'));
         $('#date').attr("readonly");
         <g:each in="${customers}" var="cs">

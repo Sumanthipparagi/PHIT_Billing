@@ -27,6 +27,11 @@ class PurchaseTransportationDetailService {
         return PurchaseTransportationDetail.findById(Long.parseLong(id))
     }
 
+    PurchaseTransportationDetail getbyBillId(String billId)
+    {
+        return PurchaseTransportationDetail.findByBillId(Long.parseLong(billId))
+    }
+
     JSONObject dataTables(JSONObject paramsJsonObject, String start, String length) {
         String searchTerm = paramsJsonObject.get("search[value]")
         String orderColumnId = paramsJsonObject.get("order[0][column]")
