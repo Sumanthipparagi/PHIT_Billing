@@ -93,8 +93,7 @@
                                         <g:if test="${cs.id != session.getAttribute("entityId")}">
                                             <option
                                                 value="${cs.id}"
-                                                data-state="${cs.stateId}" <g:if test="${purchaseBillDetail?.supplierId == cs.id}">selected</g:if>>${cs.entityName} (${cs.entityType
-                                                    .name})</option>
+                                                data-state="${cs.stateId}" <g:if test="${purchaseBillDetail?.supplierId == cs.id}">selected</g:if>>${cs.entityName} (${cs.entityType.name})</option>
                                         </g:if>
                                     </g:each>
                                 </select>
@@ -127,6 +126,9 @@
                                 <label for="duedate">Due Date:</label>
                                 <input type="date" class="form-control date" name="duedate" id="duedate"/>
                             </div>
+
+                            <input type="hidden" name="purTransportlogId" id="purTransportlogId">
+
                             <div class="col-md-4 mt-2">
                                 <br>
                                 <a class="btn btn-primary waves-effect" role="button" data-toggle="collapse"
@@ -145,7 +147,7 @@
                                             <div class="form-group">
                                                 <label for="lrNumber">LR No.</label>
                                                 <input type="text" maxlength="150" id="lrNumber" name="lrNumber"
-                                                       class="form-control" value="${saleTransportDetail?.lrNumber}"/>
+                                                       class="form-control" value="${purchaseTransportDetail?.lrNumber}"/>
                                             </div>
                                         </div>
 
@@ -163,7 +165,7 @@
                                                         class="form-control">
                                                     <option value="">--Please Select--</option>
                                                     <g:each in="${transporter}" var="t">
-                                                        <option value="${t.id}">${t.name}</option>
+                                                        <option value="${t.id}"  <g:if test="${purchaseTransportDetail?.transporterId == t.id}">selected</g:if>>${t.name}</option>
                                                     </g:each>
                                                 </select>
                                             </div>
@@ -683,7 +685,9 @@
         window.localStorage.clear();
         console.log(localStorage);
         $("#supplier").select2();
+        $("#purTransportlogId").val(${purchaseTransportDetail?.id});
         $('#supplierBillDate').val(moment('${purchaseBillDetail?.supplierBillDate}').format('YYYY-MM-DD'));
+        $('#lrDate').val(moment('${purchaseTransportDetail?.lrDate}').format('YYYY-MM-DD'));
         $('#date').val(moment().format('YYYY-MM-DD'));
         $('#date').attr("readonly");
         <g:each in="${customers}" var="cs">

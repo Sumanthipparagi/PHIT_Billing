@@ -299,6 +299,7 @@
                 dataType: 'json',
 
                 dataSrc: function (json) {
+                    console.log(json)
                     var return_data = [];
                     for (var i = 0; i < json.data.length; i++) {
                         var approveInvoice = "";
@@ -310,6 +311,7 @@
                             approveInvoice = '';
 
                         }
+
                         var printbtn = '<a target="_blank" class="dropdown-item" data-id="' + json.data[i].id + '" href="/sale-entry/print-invoice?id=' + json.data[i].id + '"><i class="fa fa-print"></i> Print</a>';
                         var invoiceNumber = json.data[i].invoiceNumber;
                         if (invoiceNumber === undefined) {
@@ -322,6 +324,11 @@
                             editInvoice = '<a class="dropdown-item"  href="/edit-sale-entry?saleBillId=' +
                                 json.data[i].id + '"><i class="fa fa-edit"></i> Edit</a>';
                         }
+                        if(json.data[i].balance === 0)
+                        {
+                            cancelInvoice ="";
+                        }
+
                         var actionBtn = "<div class=\"dropdown\">\n" +
                             "  <button class=\"btn btn-primary btn-simple btn-sm dropdown-toggle\" type=\"button\" id=\"dropdownMenuButton\" data-toggle=\"dropdown\" aria-haspopup=\"true\" aria-expanded=\"false\">\n" +
                             " <i class='fa fa-bars'></i>" +
@@ -772,7 +779,7 @@
                     html: "Payment recorded for this invoice",
                     icon: 'success'
                 });
-
+                loadSaleInvoiceTable()
                 listItemClicked(saleBill.id);
             },
             error: function (data) {
@@ -875,7 +882,7 @@
                             showCloseButton: true,
                             showConfirmButton: true
                         });
-
+                        loadSaleInvoiceTable();
                         listItemClicked(billId);
                     },
                     error: function () {

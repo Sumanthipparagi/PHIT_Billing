@@ -168,7 +168,7 @@
                                                        class="form-control">
                                                     <option value="">--Please Select--</option>
                                                     <g:each in="${transporter}" var="t">
-                                                        <option value="${t.id}"  <g:if test="${saleTransportDetail?.transporterId == t.id}">selected</g:if>>${t.name}</option>
+                                                        <option value="${t.id}" <g:if test="${saleTransportDetail?.transporterId == t.id}">selected</g:if>>${t.name}</option>
                                                     </g:each>
                                                 </select>
                                             </div>
@@ -378,7 +378,6 @@
         customers.push({"id": ${cs.id}, "noOfCrDays": ${cs.noOfCrDays}});
         </g:each>
         const container = document.getElementById('saleTable');
-
         //main table
         hot = new Handsontable(container, {
             data: saleData,
