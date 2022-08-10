@@ -593,10 +593,12 @@ class UrlMappings {
 
 
         "/edit-purchase-entry"(controller: "purchaseEntry") {
-            action = [GET: "editPurchaseBillDetails", POST: 'updateSaleBillDetails']
+            action = [GET: "editPurchaseBillDetails", POST: 'updatePurchaseBillDetails']
         }
 
         "/purchase-product-details/purchase-bill"(controller: 'purchaseEntry', action: 'getPurchaseProductDetailsByBill')
+
+        "/purchase-product-details/delete"(controller: 'purchaseEntry', action: 'deletePurchaseProduct')
 
 
 

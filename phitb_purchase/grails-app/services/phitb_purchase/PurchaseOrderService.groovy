@@ -179,7 +179,6 @@ class PurchaseOrderService {
     }
 
     PurchaseOrder update(JSONObject jsonObject, String id) {
-
         PurchaseOrder purchaseOrder = PurchaseOrder.findById(Long.parseLong(id))
         if (purchaseOrder) {
             purchaseOrder.isUpdatable = true
@@ -205,14 +204,75 @@ class PurchaseOrderService {
             purchaseOrder.debitId = jsonObject.get("debitId").toString()
             purchaseOrder.crDbAmount = Double.parseDouble(jsonObject.get("crDbAmount").toString())
             purchaseOrder.payableAmount = Double.parseDouble(jsonObject.get("payableAmount").toString())
+            purchaseOrder.gross = Double.parseDouble(jsonObject.get("gross").toString())
+            purchaseOrder.taxable = Double.parseDouble(jsonObject.get("taxable").toString())
+            purchaseOrder.totalGst = Double.parseDouble(jsonObject.get("totalGst").toString())
+            purchaseOrder.totalCgst = Double.parseDouble(jsonObject.get("totalCgst").toString())
+            purchaseOrder.totalSgst = Double.parseDouble(jsonObject.get("totalSgst").toString())
+            purchaseOrder.totalIgst = Double.parseDouble(jsonObject.get("totalIgst").toString())
+            purchaseOrder.netAmount = Double.parseDouble(jsonObject.get("netAmount").toString())
+            purchaseOrder.godownId = jsonObject.get("godownId").toString()
+            purchaseOrder.totalItems = Long.parseLong(jsonObject.get("totalItems").toString())
+            purchaseOrder.totalQuantity = Long.parseLong(jsonObject.get("totalQuantity").toString())
+            purchaseOrder.exempted = Double.parseDouble(jsonObject.get("exempted").toString())
+            purchaseOrder.totalDiscount = Double.parseDouble(jsonObject.get("totalDiscount").toString())
+            purchaseOrder.balAmount = Double.parseDouble(jsonObject.get("balAmount").toString())
+            purchaseOrder.totalAmount = Double.parseDouble(jsonObject.get("totalAmount").toString())
+            purchaseOrder.submitStatus = jsonObject.get("submitStatus").toString()
+            purchaseOrder.billStatus = jsonObject.get("billStatus").toString()
+            purchaseOrder.remarks = "0"
+            purchaseOrder.gstStatus = jsonObject.get("gstStatus").toString()
+            purchaseOrder.syncStatus = Long.parseLong(jsonObject.get("syncStatus").toString())
+            purchaseOrder.lockStatus = Long.parseLong(jsonObject.get("lockStatus").toString())
+            purchaseOrder.addAmount = Double.parseDouble(jsonObject.get("addAmount").toString())
+            purchaseOrder.lessAmount = Double.parseDouble(jsonObject.get("lessAmount").toString())
+            purchaseOrder.financialYear = jsonObject.get("financialYear").toString()
+            purchaseOrder.entityTypeId = Long.parseLong(jsonObject.get("entityTypeId").toString())
+            purchaseOrder.entityId = Long.parseLong(jsonObject.get("entityId").toString())
+            purchaseOrder.createdUser = Long.parseLong(jsonObject.get("createdUser").toString())
+            purchaseOrder.modifiedUser = Long.parseLong(jsonObject.get("modifiedUser").toString())
+            purchaseOrder.uuid = jsonObject.get("uuid").toString()
             purchaseOrder.save(flush: true)
             if (!purchaseOrder.hasErrors())
+            {
+                Calendar cal = new GregorianCalendar()
+                cal.setTime(purchaseOrder.entryDate)
+                String month = cal.get(Calendar.MONTH)+1;
+                String year = cal.get(Calendar.YEAR)
+                year = year.substring(Math.max(year.length() - 2, 0)) //reduce to 2 digit year
+                DecimalFormat mFormat = new DecimalFormat("00");
+                month = mFormat.format(Double.valueOf(month));
+                String invoiceNumber = null;
+                String seriesCode = jsonObject.get("seriesCode")
+                PurchaseBillDetail purchaseBillDetail1
+                if (purchaseOrder.billStatus == "DRAFT")
+                {
+                    println(purchaseOrder.billStatus)
+                    purchaseOrder.invoiceNumber = "DRAFT"
+                }
+                else
+                {
+                    invoiceNumber = purchaseOrder.entityId + "PO" + month + year +  seriesCode + purchaseOrder.serBillId
+                    println("Invoice Number generated: " + invoiceNumber)
+                }
+                if (invoiceNumber)
+                {
+                    purchaseOrder.invoiceNumber = invoiceNumber
+                    purchaseOrder.isUpdatable = true
+                    purchaseOrder.save(flush: true)
+                }
                 return purchaseOrder
+            }
             else
+            {
                 throw new BadRequestException()
+            }
+
         } else
             throw new ResourceNotFoundException()
     }
+
+
 
     void delete(String id) {
         if (id) {

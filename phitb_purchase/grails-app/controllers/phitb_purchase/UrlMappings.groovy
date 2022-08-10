@@ -31,6 +31,8 @@ class UrlMappings {
 
             "/billdetail/cancel(.$format)?"(controller: 'purchaseBillDetail') {action = [POST: 'cancelPurchaseBill']}
 
+            "/update-purchase-invoice/$id"(controller: 'purchaseBillDetail', action: 'updatePurchaseInvoice')
+
 
             //Purchase Order
             "/purchaseorder(.$format)?"(controller: 'purchaseOrder') { action = [GET: 'index', POST: 'purchaseOrder'] }

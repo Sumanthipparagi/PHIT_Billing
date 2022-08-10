@@ -79,7 +79,8 @@
                                 <select onchange="seriesChanged()" class="form-control" id="series" name="series">
                                     <g:each in="${series}" var="sr">
                                         <option data-seriescode="${sr.seriesCode}"
-                                                value="${sr.id}">${sr.seriesName} (${sr.seriesCode})</option>
+                                                value="${sr.id}" <g:if test="${purchaseBillDetail?.seriesId ==
+                                                sr.seriesId}">selected</g:if>>${sr.seriesName} (${sr.seriesCode})</option>
                                     </g:each>
                                 </select>
                             </div>
@@ -104,7 +105,7 @@
                                 <label for="priority">Priority:</label>
                                 <select class="form-control" id="priority" name="priority">
                                     <g:each in="${priorityList}" var="pr">
-                                        <option value="${pr.id}">${pr.priority}</option>
+                                        <option value="${pr.id}" <g:if test="${purchaseBillDetail?.priorityId == pr.id}">selected</g:if>>${pr.priority}</option>
                                     </g:each>
                                 </select>
                             </div>
@@ -634,7 +635,8 @@
         '',
         '',
         '',
-        ''
+        '',
+        'id'
     ];
 
     var batchHeaderRow = [
@@ -745,13 +747,14 @@
                 {type: 'text', readOnly: true},
                 {type: 'text', readOnly: true},
                 {type: 'text', readOnly: true},
+                {type: 'text', readOnly: true},
                 {type: 'text', readOnly: true}
             ],
             hiddenColumns: true,
-            // hiddenColumns: {
-            //     // specify columns hidden by default
-            //     columns: [19,20,21,22,23]
-            // },
+            hiddenColumns: {
+                // specify columns hidden by default
+                columns: [19,20,21,22,23,24]
+            },
             minSpareRows: 0,
             minSpareColumns: 0,
             enterMoves: {row: 0, col: 1},
@@ -770,9 +773,22 @@
             },
             afterOnCellMouseDown: function (e, coords, TD) {
                 if (coords.col === 0) {
+                    // var id = hot.getDataAtCell(coords.row, 15);
+                    // deleteTempStockRow(id, coords.row);
+                    // calculateTotalAmt();
+                    <g:if test="${supplier == null}">
                     var id = hot.getDataAtCell(coords.row, 15);
                     deleteTempStockRow(id, coords.row);
-                    calculateTotalAmt();
+                    </g:if>
+                    <g:else>
+                    var id = hot.getDataAtCell(coords.row, 24);
+                    if (id == null || id == 0 || id == '') {
+                        id = hot.getDataAtCell(coords.row, 15);
+                        deleteTempStockRow(id, coords.row);
+                    } else {
+                        deleteSaleBillRow(id, coords.row);
+                    }
+                    </g:else>
                 }
 
                 if (coords.col === 18) {
@@ -1496,7 +1512,8 @@
                console.log(purchaseData);
                 for (var i = 0; i < purchaseData.length; i++) {
                     hot.selectCell(i, 1);
-                    var pRate = purchaseData[i].sRate;
+                    var pRate = purchaseData[i].pRate;
+                    var sRate = purchaseData[i].sRate;
                     var pQty = purchaseData[i].sqty;
                     var fQty = purchaseData[i].freeQty;
                     batchSelection(purchaseData[i].productId, null, false);
@@ -1504,13 +1521,30 @@
                     hot.setDataAtCell(i, 1, purchaseData[i].productId.id);
                     hot.setDataAtCell(i, 2, purchaseData[i].batchNumber);
                     hot.setCellMeta(i, 2, "batchId", batchId);
+                    console.log(purchaseData[i].expiryDate)
                     hot.setDataAtCell(i, 3, purchaseData[i].expiryDate.split("T")[0]);
-                    hot.setDataAtCell(i, 6, pRate);
                     hot.setDataAtCell(i, 4, pQty);
                     hot.setDataAtCell(i, 5, fQty);
-                    hot.setDataAtCell(i, 7, purchaseData[i].mrp);
-                    hot.setDataAtCell(i, 8, 0);
-                    hot.setDataAtCell(i, 9, purchaseData[i].productId.unitPacking);
+                    hot.setDataAtCell(i, 6, pRate);
+                    hot.setDataAtCell(i, 7, sRate);
+                    hot.setDataAtCell(i, 8, purchaseData[i].mrp);
+                    hot.setDataAtCell(i, 9, purchaseData[i].discount);
+                    hot.setDataAtCell(i, 10, purchaseData[i].productId.unitPacking);
+                    hot.setDataAtCell(i, 17, purchaseData[i].manufacturingDate.split("T")[0]);
+                    hot.setDataAtCell(i, 19, purchaseData[i].taxId);
+
+                    // hot.setDataAtCell(i, 11, purchaseData[i].gstPercentage);
+                    // hot.setDataAtCell(i, 12, purchaseData[i].gstAmount);
+                    // hot.setDataAtCell(i, 13, purchaseData[i].sgstAmount);
+                    // hot.setDataAtCell(i, 14, purchaseData[i].cgstAmount);
+                    // hot.setDataAtCell(i, 15, purchaseData[i].igstAmount);
+
+                    // hot.setDataAtCell(i, 6, pRate);
+                    // hot.setDataAtCell(i, 4, pQty);
+                    // hot.setDataAtCell(i, 5, fQty);
+                    // hot.setDataAtCell(i, 7, purchaseData[i].mrp);
+                    // hot.setDataAtCell(i, 8, 0);
+                    // hot.setDataAtCell(i, 9, purchaseData[i].productId.unitPacking);
 
                     gst = purchaseData[i].gst;
                     if (stateId === undefined || stateId === '${session.getAttribute('stateId')}') {
@@ -1525,43 +1559,42 @@
                     var discount = 0; //TODO: discount to be set
                     var priceBeforeGst = (pRate * pQty) - ((pRate * pQty) * discount) / 100;
                     var finalPrice = priceBeforeGst + (priceBeforeGst * (gst / 100));
-                    hot.setDataAtCell(i, 11, Number(finalPrice).toFixed(2));
+                    hot.setDataAtCell(i, 13, Number(finalPrice).toFixed(2));
                     if (gst !== 0) {
-                        hot.setDataAtCell(i, 10, Number(priceBeforeGst * (gst / 100)).toFixed(2)); //GST
-                        hot.setDataAtCell(i, 12, Number(priceBeforeGst * (sgst / 100)).toFixed(2)); //SGST
-                        hot.setDataAtCell(i, 13, Number(priceBeforeGst * (cgst / 100)).toFixed(2)); //CGST
+                        hot.setDataAtCell(i, 12, Number(priceBeforeGst * (gst / 100)).toFixed(2)); //GST
+                        hot.setDataAtCell(i, 14, Number(priceBeforeGst * (sgst / 100)).toFixed(2)); //SGST
+                        hot.setDataAtCell(i, 15, Number(priceBeforeGst * (cgst / 100)).toFixed(2)); //CGST
                     } else {
-                        hot.setDataAtCell(i, 10, 0); //GST
-                        hot.setDataAtCell(i, 12, 0); //SGST
-                        hot.setDataAtCell(i, 13, 0); //CGST
+                        hot.setDataAtCell(i, 12, 0); //GST
+                        hot.setDataAtCell(i, 14, 0); //SGST
+                        hot.setDataAtCell(i, 15, 0); //CGST
                     }
                     if (igst !== "0")
-                        hot.setDataAtCell(i, 14, Number(priceBeforeGst * (igst / 100)).toFixed(2)); //IGST
+                        hot.setDataAtCell(i, 16, Number(priceBeforeGst * (igst / 100)).toFixed(2)); //IGST
                     else
-                        hot.setDataAtCell(i, 14, 0);
-                    <g:if test="${customer != null}">
-                    hot.setDataAtCell(i, 15, 0);
+                        hot.setDataAtCell(i, 16, 0);
+                    <g:if test="${supplier != null}">
+                    hot.setDataAtCell(i, 24, purchaseData[i].id);
                     </g:if>
                     <g:else>
-                    hot.setDataAtCell(i, 15, purchaseData[i].id);
+                    hot.setDataAtCell(i, 24, 0);
                     </g:else>
-                    hot.setDataAtCell(i, 16, gst);
-                    hot.setDataAtCell(i, 17, sgst);
-                    hot.setDataAtCell(i, 18, cgst);
-                    hot.setDataAtCell(i, 19, igst);
-                    hot.setDataAtCell(i, 20, purchaseData[i]["originalSqty"]);
-                    hot.setDataAtCell(i, 21, purchaseData[i]["originalFqty"]);
-                    <g:if test="${customer != null}">
-                    hot.setDataAtCell(i, 22, pQty); //draft sqty
-                    hot.setDataAtCell(i, 23, fQty); //draft fqty
-                    hot.setDataAtCell(i, 24, purchaseData[i]["id"]); //saved draft product id
-                    </g:if>
-
+                    hot.setDataAtCell(i, 11, gst);
+                    hot.setDataAtCell(i, 20, gst);
+                    hot.setDataAtCell(i, 21, sgst);
+                    hot.setDataAtCell(i, 22, cgst);
+                    hot.setDataAtCell(i, 23, igst);
+                    // hot.setDataAtCell(i, 20, purchaseData[i]["originalSqty"]);
+                    // hot.setDataAtCell(i, 21, purchaseData[i]["originalFqty"]);
+%{--                    <g:if test="${supplier != null}">--}%
+%{--                    hot.setDataAtCell(i, 22, pQty); //draft sqty--}%
+%{--                    hot.setDataAtCell(i, 23, fQty); //draft fqty--}%
+%{--                    hot.setDataAtCell(i, 24, purchaseData[i]["id"]); //saved draft product id--}%
+%{--                    </g:if>--}%
                     for (var j = 0; j < 15; j++) {
                         hot.setCellMeta(i, j, 'readOnly', true);
                     }
                 }
-
                 setTimeout(function () {
                     hot.selectCell(0, 1);
                     calculateTotalAmt();
@@ -1605,6 +1638,31 @@
             }
             hot.alter("remove_row", row);
             hot.selectCell(row, 0);
+        } else
+            alert("Can't change this now, invoice has been saved already.")
+    }
+
+
+    function deleteSaleBillRow(id, row) {
+        if (!readOnly) {
+            if (id) {
+                $.ajax({
+                    type: "POST",
+                    url: "/purchase-product-details/delete?id=" + id,
+                    dataType: 'json',
+                    success: function (data) {
+                        hot.alter("remove_row", row);
+                        Swal.fire({
+                            title: "Success",
+                            text: "Product removed."
+                        });
+                        batchHot.updateSettings({
+                            data: []
+                        });
+                    }
+                });
+            } else
+                hot.alter("remove_row", row);
         } else
             alert("Can't change this now, invoice has been saved already.")
     }
@@ -1789,151 +1847,158 @@
         }
 
         var purchaseData = JSON.stringify(hot.getSourceData());
+              var url = "";
+            <g:if test="${supplier != null}">
+                url = "/edit-purchase-entry?id=" + '${purchaseBillDetail.id}';
+            </g:if>
+            <g:else>
+            url = "/purchase-entry";
+           </g:else>
 
-        $.ajax({
-            type: "POST",
-            url: "/purchase-entry",
-            dataType: 'json',
-            data: {
-                purchaseData: purchaseData,
-                supplier: supplier,
-                series: series,
-                duedate: duedate,
-                priority: priority,
-                billStatus: billStatus,
-                seriesCode: seriesCode,
-                schemeData: JSON.stringify(schemeData),
-                supplierBillDate: supplierBillDate,
-                supplierBillId: supplierBillId,
-                lrNumber:lrNumber,
-                lrDate:lrDate,
-                transporter:transporter,
-                uuid: self.crypto.randomUUID()
-            },
-            success: function (data) {
-                console.log(data);
-                readOnly = true;
-                var rowData = hot.getData();
-                for (var j = 0; j < rowData.length; j++) {
-                    for (var i = 0; i < 16; i++) {
-                        hot.setCellMeta(j, i, 'readOnly', true);
-                    }
+    $.ajax({
+        type: "POST",
+        url: url,
+        dataType: 'json',
+        data: {
+            purchaseData: purchaseData,
+            supplier: supplier,
+            series: series,
+            duedate: duedate,
+            priority: priority,
+            billStatus: billStatus,
+            seriesCode: seriesCode,
+            schemeData: JSON.stringify(schemeData),
+            supplierBillDate: supplierBillDate,
+            supplierBillId: supplierBillId,
+            lrNumber:lrNumber,
+            lrDate:lrDate,
+            transporter:transporter,
+            uuid: self.crypto.randomUUID()
+        },
+        success: function (data) {
+            console.log(data);
+            readOnly = true;
+            var rowData = hot.getData();
+            for (var j = 0; j < rowData.length; j++) {
+                for (var i = 0; i < 16; i++) {
+                    hot.setCellMeta(j, i, 'readOnly', true);
                 }
-                purchasebillid = data.purchaseBillDetail.id;
-                var datepart = data.purchaseBillDetail.entryDate.split("T")[0];
-                var month = datepart.split("-")[1];
-                var year = datepart.split("-")[0];
-                var seriesCode = data.series.seriesCode;
-                var invoiceNumber = data.purchaseBillDetail.invoiceNumber;
-                $("#invNo").html("<p><strong>" + invoiceNumber + "</strong></p>");
-                var message = "";
-                var draftInvNo = "";
-                if (billStatus === "DRAFT") {
-                    draftInvNo = '<p><strong>' + data.purchaseBillDetail.entityId + "/DR/S/" + month + year + "/"
-                        + seriesCode + "/__" + '<p><strong>';
-                    $("#invNo").html(draftInvNo);
-                }
-                if (billStatus !== "DRAFT") {
-                    message = 'Purchase Invoice Generated: ' + invoiceNumber;
-                } else {
-                    message = 'Draft Invoice Generated: ' + data.purchaseBillDetail.entityId + "/DR/S/" + month + year + "/"
-                        + seriesCode + "/__";
-                }
-                waitingSwal.close();
-                Swal.fire({
-                    title: message,
-                    showDenyButton: true,
-                    showCancelButton: false,
-                    confirmButtonText: 'Print',
-                    denyButtonText: 'New Entry',
-                }).then((result) => {
-                    if (result.isConfirmed) {
-                        printInvoice();
-                    } else if (result.isDenied) {
-                        resetData();
-                        location.reload();
-                    }
-                });
-
-
-            },
-            error: function () {
-                waitingSwal.close();
-                Swal.fire({
-                    title: "Unable to generate Invoice at the moment.",
-                    confirmButtonText: 'OK'
-                });
             }
-        });
+            purchasebillid = data.purchaseBillDetail.id;
+            var datepart = data.purchaseBillDetail.entryDate.split("T")[0];
+            var month = datepart.split("-")[1];
+            var year = datepart.split("-")[0];
+            var seriesCode = data.series.seriesCode;
+            var invoiceNumber = data.purchaseBillDetail.invoiceNumber;
+            $("#invNo").html("<p><strong>" + invoiceNumber + "</strong></p>");
+            var message = "";
+            var draftInvNo = "";
+            if (billStatus === "DRAFT") {
+                draftInvNo = '<p><strong>' + data.purchaseBillDetail.entityId + "/DR/S/" + month + year + "/"
+                    + seriesCode + "/__" + '<p><strong>';
+                $("#invNo").html(draftInvNo);
+            }
+            if (billStatus !== "DRAFT") {
+                message = 'Purchase Invoice Generated: ' + invoiceNumber;
+            } else {
+                message = 'Draft Invoice Generated: ' + data.purchaseBillDetail.entityId + "/DR/S/" + month + year + "/"
+                    + seriesCode + "/__";
+            }
+            waitingSwal.close();
+            Swal.fire({
+                title: message,
+                showDenyButton: true,
+                showCancelButton: false,
+                confirmButtonText: 'Print',
+                denyButtonText: 'New Entry',
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    printInvoice();
+                } else if (result.isDenied) {
+                    resetData();
+                    location.reload();
+                }
+            });
 
+
+        },
+        error: function () {
+            waitingSwal.close();
+            Swal.fire({
+                title: "Unable to generate Invoice at the moment.",
+                confirmButtonText: 'OK'
+            });
+        }
+    });
+
+}
+
+function printInvoice() {
+    if (readOnly) {
+        window.open(
+            '/purchase-entry/print-invoice?id=' + purchasebillid,
+            '_blank'
+        );
+        resetData();
     }
+}
 
-    function printInvoice() {
-        if (readOnly) {
-            window.open(
-                '/purchase-entry/print-invoice?id=' + purchasebillid,
-                '_blank'
-            );
+function resetPage() {
+    Swal.fire({
+        title: "Reset Contents?",
+        showDenyButton: true,
+        showCancelButton: true,
+        confirmButtonText: 'OK',
+    }).then((result) => {
+        if (result) {
             resetData();
         }
-    }
+    });
+}
 
-    function resetPage() {
-        Swal.fire({
-            title: "Reset Contents?",
-            showDenyButton: true,
-            showCancelButton: true,
-            confirmButtonText: 'OK',
-        }).then((result) => {
-            if (result) {
-                resetData();
+function resetData() {
+    $("#invNo").html("");
+    purchaseData.length = 0;
+    batchData.length = 0;
+    mainTableRow = 0;
+    gst = 0;
+    cgst = 0;
+    sgst = 0;
+    igst = 0;
+    totalQty = 0;
+    totalFQty = 0;
+    remainingQty = 0;
+    remainingFQty = 0;
+    totalAmt = 0;
+    readOnly = false;
+    scheme = null;
+
+    batchHot.updateSettings({
+        data: []
+    });
+    hot.updateSettings({
+        data: []
+    });
+
+    calculateTotalAmt();
+}
+
+function seriesChanged() {
+    var series = $("#series").val();
+    loadProducts(series);
+
+}
+
+function loadProducts(series) {
+    products.length = 0;//remove all elements
+    $.ajax({
+        type: "GET",
+        url: "/product/series/" + series,
+        dataType: 'json',
+        success: function (data) {
+            for (var i = 0; i < data.length; i++) {
+                products.push({id: data[i].id, text: data[i].productName});
             }
-        });
-    }
-
-    function resetData() {
-        $("#invNo").html("");
-        purchaseData.length = 0;
-        batchData.length = 0;
-        mainTableRow = 0;
-        gst = 0;
-        cgst = 0;
-        sgst = 0;
-        igst = 0;
-        totalQty = 0;
-        totalFQty = 0;
-        remainingQty = 0;
-        remainingFQty = 0;
-        totalAmt = 0;
-        readOnly = false;
-        scheme = null;
-
-        batchHot.updateSettings({
-            data: []
-        });
-        hot.updateSettings({
-            data: []
-        });
-
-        calculateTotalAmt();
-    }
-
-    function seriesChanged() {
-        var series = $("#series").val();
-        loadProducts(series);
-
-    }
-
-    function loadProducts(series) {
-        products.length = 0;//remove all elements
-        $.ajax({
-            type: "GET",
-            url: "/product/series/" + series,
-            dataType: 'json',
-            success: function (data) {
-                for (var i = 0; i < data.length; i++) {
-                    products.push({id: data[i].id, text: data[i].productName});
-                }
                 <g:if test="${params.purchaseBillId}">
                 loadDraftProducts();
                 </g:if>

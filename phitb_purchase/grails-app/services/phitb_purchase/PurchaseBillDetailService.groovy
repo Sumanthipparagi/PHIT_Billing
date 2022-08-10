@@ -208,6 +208,7 @@ class PurchaseBillDetailService {
             purchaseBillDetail.exempted = Double.parseDouble(jsonObject.get("exempted").toString())
             purchaseBillDetail.totalDiscount = Double.parseDouble(jsonObject.get("totalDiscount").toString())
             purchaseBillDetail.balAmount = Double.parseDouble(jsonObject.get("balAmount").toString())
+            purchaseBillDetail.totalAmount = Double.parseDouble(jsonObject.get("totalAmount").toString())
             purchaseBillDetail.submitStatus = jsonObject.get("submitStatus").toString()
             purchaseBillDetail.billStatus = jsonObject.get("billStatus").toString()
             purchaseBillDetail.gstStatus = jsonObject.get("gstStatus").toString()
@@ -223,9 +224,40 @@ class PurchaseBillDetailService {
             purchaseBillDetail.uuid = jsonObject.get("uuid").toString()
             purchaseBillDetail.save(flush: true)
             if (!purchaseBillDetail.hasErrors())
+            {
+                Calendar cal = new GregorianCalendar()
+                cal.setTime(purchaseBillDetail.entryDate)
+                String month = cal.get(Calendar.MONTH)+1;
+                String year = cal.get(Calendar.YEAR)
+                year = year.substring(Math.max(year.length() - 2, 0)) //reduce to 2 digit year
+                DecimalFormat mFormat = new DecimalFormat("00");
+                month = mFormat.format(Double.valueOf(month));
+                String invoiceNumber = null;
+                String seriesCode = jsonObject.get("seriesCode")
+                PurchaseBillDetail purchaseBillDetail1
+                if (purchaseBillDetail.billStatus == "DRAFT")
+                {
+                    println(purchaseBillDetail.billStatus)
+                    purchaseBillDetail.invoiceNumber = "DRAFT"
+                }
+                else
+                {
+                    invoiceNumber = purchaseBillDetail.entityId + "P" + month + year +  seriesCode + purchaseBillDetail.serBillId
+                    println("Invoice Number generated: " + invoiceNumber)
+                }
+                if (invoiceNumber)
+                {
+                    purchaseBillDetail.invoiceNumber = invoiceNumber
+                    purchaseBillDetail.isUpdatable = true
+                    purchaseBillDetail.save(flush: true)
+                }
                 return purchaseBillDetail
+            }
             else
+            {
                 throw new BadRequestException()
+            }
+
         } else
             throw new ResourceNotFoundException()
     }
