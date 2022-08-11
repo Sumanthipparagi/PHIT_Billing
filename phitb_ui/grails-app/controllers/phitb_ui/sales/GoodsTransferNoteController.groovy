@@ -27,7 +27,8 @@ class GoodsTransferNoteController
         String entityId = session.getAttribute("entityId")?.toString()
         JSONArray divisions = new ProductService().getDivisionsByEntityId(entityId)
 //        JSONArray customers = new EntityService().getByEntity(entityId)
-        def parentEntityResponse = new EntityService().getParentEntities(entityId)
+        def getEntity = new EntityRegisterController().getEnitityById(entityId)
+        def parentEntityResponse = new EntityService().getParentEntities(getEntity?.affiliateId?.toString())
         JSONArray customers
         if (parentEntityResponse?.status == 200) {
             customers = new JSONArray(parentEntityResponse.readEntity(String.class))

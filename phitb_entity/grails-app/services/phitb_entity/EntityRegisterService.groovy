@@ -444,5 +444,8 @@ class EntityRegisterService {
         }
         return entityRegisterArrayList
     }
+
+
+
 }
 
