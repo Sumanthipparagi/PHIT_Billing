@@ -27,7 +27,13 @@ class GoodsTransferNoteController
         String entityId = session.getAttribute("entityId")?.toString()
         JSONArray divisions = new ProductService().getDivisionsByEntityId(entityId)
 //        JSONArray customers = new EntityService().getByEntity(entityId)
-        ArrayList<String> customers = new EntityRegisterController().getByAffiliateById(entityId) as ArrayList<String>
+        def parentEntityResponse = new EntityService().getParentEntities(entityId)
+        JSONArray customers
+        if (parentEntityResponse?.status == 200) {
+            customers = new JSONArray(parentEntityResponse.readEntity(String.class))
+        } else {
+            customers = new JSONArray()
+        }
         def priorityList = new SystemService().getPriorityByEntity(entityId)
         def series = new SeriesController().getByEntity(entityId)
         ArrayList<String> salesmanList = []
