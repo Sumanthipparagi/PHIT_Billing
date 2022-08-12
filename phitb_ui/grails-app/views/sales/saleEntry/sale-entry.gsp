@@ -813,7 +813,7 @@
             hiddenColumns: true,
             hiddenColumns: {
                 // specify columns hidden by default
-                columns: [9, 10, 11, 12]
+                columns: [4, 9, 10, 11, 12]
             },
             minSpareRows: 0,
             minSpareCols: 0,
