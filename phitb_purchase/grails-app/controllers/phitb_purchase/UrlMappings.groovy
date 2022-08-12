@@ -31,6 +31,8 @@ class UrlMappings {
 
             "/billdetail/cancel(.$format)?"(controller: 'purchaseBillDetail') {action = [POST: 'cancelPurchaseBill']}
 
+            "/update-purchase-invoice/$id"(controller: 'purchaseBillDetail', action: 'updatePurchaseInvoice')
+
 
             //Purchase Order
             "/purchaseorder(.$format)?"(controller: 'purchaseOrder') { action = [GET: 'index', POST: 'purchaseOrder'] }
@@ -84,6 +86,8 @@ class UrlMappings {
             "/transportationdetail(.$format)?"(controller: 'purchaseTransportationDetail') { action = [GET: 'index', POST: 'save'] }
             "/transportationdetail/datatable(.$format)?"(controller: 'purchaseTransportationDetail') { action = [GET: 'dataTable'] }
             "/transportationdetail/$id(.$format)?"(controller: 'purchaseTransportationDetail') { action = [GET: 'show', PUT: 'update', DELETE: 'delete'] }
+            "/transportationdetail/billid"(controller: 'purchaseTransportationDetail',action: 'getByBillId')
+
 
             //Temp User Log
             "/tempuserlog(.$format)?"(controller: 'tempUserLog') { action = [GET: 'index', POST: 'save'] }

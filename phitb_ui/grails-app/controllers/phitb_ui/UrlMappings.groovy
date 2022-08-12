@@ -592,6 +592,16 @@ class UrlMappings {
         "/purchase-entry/cancel-invoice"(controller: "purchaseEntry", action: "cancelPurchaseInvoice")
 
 
+        "/edit-purchase-entry"(controller: "purchaseEntry") {
+            action = [GET: "editPurchaseBillDetails", POST: 'updatePurchaseBillDetails']
+        }
+
+        "/purchase-product-details/purchase-bill"(controller: 'purchaseEntry', action: 'getPurchaseProductDetailsByBill')
+
+        "/purchase-product-details/delete"(controller: 'purchaseEntry', action: 'deletePurchaseProduct')
+
+
+
         //        My Purchase
         "/purchase-bill-list"(controller: "purchaseEntry", action: 'purchasebillList')
         "/purchase-bill/datatable"(controller: "purchaseEntry", action: 'dataTable')

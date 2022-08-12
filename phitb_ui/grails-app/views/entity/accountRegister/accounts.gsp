@@ -117,7 +117,7 @@
     $(function () {
         var defaultData = [
             <g:each var="i" in="${account}">
-                <g:if test="${i.subAccountType == 0}">
+%{--                <g:if test="${i.subAccountType == 0}">--}%
                 {
                     text: '${i.accountName}',
                     href: '${i.accountName}',
@@ -136,7 +136,7 @@
                         </g:each>
                     ]
                 },
-                </g:if>
+%{--                </g:if>--}%
             </g:each>
         ];
 

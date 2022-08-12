@@ -28,6 +28,28 @@ class PurchaseTransportationDetailController {
         }
     }
 
+    def getByBillId() {
+        try {
+            String id = params.billid
+            if (id) {
+                respond purchaseTransportationDetailService.getbyBillId(id)
+            }
+        }
+        catch (ResourceNotFoundException ex)
+        {
+            System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
+            response.status = 404
+        }
+        catch (BadRequestException ex)
+        {
+            System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
+            response.status = 400
+        }
+        catch (Exception ex) {
+            System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
+        }
+    }
+
     /**
      * Get requested purchase transportation detail
      * @param id

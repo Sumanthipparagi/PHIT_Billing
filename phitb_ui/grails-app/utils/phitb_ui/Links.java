@@ -483,7 +483,7 @@ public class Links
     public static String SALE_PRODUCT_BY_PRODUCT = "api/v1.0/sales/saleproductdetailsbyproductId";
     public static String SALE_PRODUCT_BILL_BATCH = "api/v1.0/sales/saleproductdetailsbillandbatch";
 
-//    Save sale transportation details
+//     sale transportation details
     public static String SALE_TRANSPORTATION_SAVE = "api/v1.0/sales/saletransportationdetails";
     public static String SALE_TRANSPORTATION_BY_BILL = "api/v1.0/sales/saletransportationdetails/billid";
 
@@ -660,11 +660,12 @@ public class Links
 
 
 
+
     //purchase product bill details
     public static String PURCHASE_BILL_SHOW = "api/v1.0/purchase/billdetail";
     public static String PURCHASE_BILL_SAVE = "api/v1.0/purchase/billdetail";
     public static String PURCHASE_BILL_DATATABLE = "api/v1.0/purchase/billdetail/datatable";
-    public static String PURCHASE_BILL_UPDATE = "api/v1.0/purchase/billdetail/{id}";
+    public static String PURCHASE_BILL_UPDATE = "api/v1.0/purchase/update-purchase-invoice/{id}";
     public static String PURCHASE_BILL_DELETE = "api/v1.0/purchase/billdetail/{id}";
 
     public static String PURCHASE_BILL_RECENT = "api/v1.0/purchase/billdetail/getrecent";
@@ -738,6 +739,10 @@ public class Links
     public static String SAMPLE_INVOICE_DATATABLE = "api/v1.0/sales/sampleconversion/datatable";
     public static String SAMPLE_INVOICE_CANCEL = "api/v1.0/sales/sampleconversion/cancel";
 
+
+    //   purchase transportation details
+    public static String PURCHASE_TRANSPORTATION_SAVE = "api/v1.0/purchase/transportationdetail";
+    public static String PURCHASE_TRANSPORTATION_BY_BILL = "api/v1.0/purchase/transportationdetail/billid";
 
 
     //Purchase Order Details

@@ -440,9 +440,12 @@ class EntityRegisterService {
             eqProperty("id", "parentEntity")
             eq("deleted", false)
             if(affiliateId)
-                eq("affiliateId", affiliateId)
+                eq("affiliateId", Long.parseLong(affiliateId))
         }
         return entityRegisterArrayList
     }
+
+
+
 }
 

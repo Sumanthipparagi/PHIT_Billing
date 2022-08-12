@@ -569,30 +569,30 @@
                         }
                     });
 
-                    $.each(data[1], function (key, value) {
-                        var date = new Date(value.entryDate);
-                        if (value.balance !== 0 && value.returnStatus !== 'CANCELLED') {
-                            trHTML += ' <tr id="' + "CN" + value.id + '">\n' +
-                                '                                        <td>' + creditNote + '</td>\n' +
-                                '                                        <td>' + value.invoiceNumber + '</td>\n' +
-                                '                                        <td>' + moment(value.dateCreated).format('DD-MM-YYYY') + '</td>\n' +
-                                '                                        <td id="' + "crntAdjAmt" + value.id + '">' +
-                                value.adjAmount.toFixed(2) + '</td>\n' +
-                                '                                        <td id="' + "crntBal" + value.id + '" >' +
-                                "-" + value.balance.toFixed(2) +
-                                '</td>\n' +
-                                '                                        <td><input type="number" class="paidNowCrnt txt txtcrnt" id="paidNowCrnt' + value.id + '" name="paidNowCrnt" data-cnid="' + value.id + '" data-crbal="' + value.balance + '" style="width: 100px;" pattern="\\d{1,10}(?:\\.\\d{1,3})?$" value="0"></td>\n' +
-                                '                                        <td>' + value.totalAmount.toFixed(2) + '</td>\n' +
-                                '                                        <td>' + calculateNoOfDays(value.dateCreated) + '</td>\n' +
-                                '                                        <td>' + value.financialYear + '</td>\n' +
-                                '                                        <td style="display: none;">' + value.id + '</td>\n' +
-                                '                                        </tr>';
-                            crntData.push(value.id)
-                            crntIdArray.push(value.id);
-                            console.log(crntIdArray)
-
-                        }
-                    });
+                    // $.each(data[1], function (key, value) {
+                    //     var date = new Date(value.entryDate);
+                    //     if (value.balance !== 0 && value.returnStatus !== 'CANCELLED') {
+                    //         trHTML += ' <tr id="' + "CN" + value.id + '">\n' +
+                    //             '                                        <td>' + creditNote + '</td>\n' +
+                    //             '                                        <td>' + value.invoiceNumber + '</td>\n' +
+                    //             '                                        <td>' + moment(value.dateCreated).format('DD-MM-YYYY') + '</td>\n' +
+                    //             '                                        <td id="' + "crntAdjAmt" + value.id + '">' +
+                    //             value.adjAmount.toFixed(2) + '</td>\n' +
+                    //             '                                        <td id="' + "crntBal" + value.id + '" >' +
+                    //             "-" + value.balance.toFixed(2) +
+                    //             '</td>\n' +
+                    //             '                                        <td><input type="number" class="paidNowCrnt txt txtcrnt" id="paidNowCrnt' + value.id + '" name="paidNowCrnt" data-cnid="' + value.id + '" data-crbal="' + value.balance + '" style="width: 100px;" pattern="\\d{1,10}(?:\\.\\d{1,3})?$" value="0"></td>\n' +
+                    //             '                                        <td>' + value.totalAmount.toFixed(2) + '</td>\n' +
+                    //             '                                        <td>' + calculateNoOfDays(value.dateCreated) + '</td>\n' +
+                    //             '                                        <td>' + value.financialYear + '</td>\n' +
+                    //             '                                        <td style="display: none;">' + value.id + '</td>\n' +
+                    //             '                                        </tr>';
+                    //         crntData.push(value.id)
+                    //         crntIdArray.push(value.id);
+                    //         console.log(crntIdArray)
+                    //
+                    //     }
+                    // });
 
                     $.each(data[2], function (key, value) {
                         var date = new Date(value.entryDate);

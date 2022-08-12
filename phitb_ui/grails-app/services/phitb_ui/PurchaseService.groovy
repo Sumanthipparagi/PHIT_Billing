@@ -118,6 +118,31 @@ class PurchaseService {
     }
 
 
+    def getPurchaseProductDetailsById(String id) {
+        Client client = ClientBuilder.newClient();
+        WebTarget target = client.target(new Links().API_GATEWAY)
+        try {
+
+            Response apiResponse = target
+                    .path(new Links().PURCHASE_PRODUCT_SHOW+"/"+id)
+                    .request(MediaType.APPLICATION_JSON_TYPE)
+                    .get()
+            if(apiResponse.status == 200)
+            {
+                JSONObject purchaseProductDetail = new JSONObject(apiResponse.readEntity(String.class))
+                return purchaseProductDetail
+            }
+            else
+                return null
+        }
+        catch (Exception ex) {
+            System.err.println('Service :ProductService , action :  getBatchesOfProduct  , Ex:' + ex)
+            log.error('Service :ProductService , action :  getBatchesOfProduct  , Ex:' + ex)
+        }
+
+    }
+
+
     def cancelPurchaseInvoice(String id, String entityId, String financialYear)
     {
         JSONObject jsonObject = new JSONObject()
@@ -521,5 +546,93 @@ class PurchaseService {
             System.err.println('Service :SalesService , action :  cancelInvoice  , Ex:' + ex)
             log.error('Service :SalesService , action :  cancelInvoice  , Ex:' + ex)
         }
+    }
+
+    def savePurchaseTransportation(JSONObject jsonObject)
+    {
+        Client client = ClientBuilder.newClient();
+        WebTarget target = client.target(new Links().API_GATEWAY)
+        try
+        {
+            println(jsonObject)
+            Response apiResponse = target
+                    .path(new Links().PURCHASE_TRANSPORTATION_SAVE)
+                    .request(MediaType.APPLICATION_JSON_TYPE)
+                    .post(Entity.entity(jsonObject.toString(), MediaType.APPLICATION_JSON_TYPE))
+            println(apiResponse)
+            return apiResponse
+        }
+        catch (Exception ex)
+        {
+            System.err.println('Service :purchaseService , action :  savePurchaseTransportation  , Ex:' + ex)
+            log.error('Service :purchaseService , action :  savePurchaseTransportation  , Ex:' + ex)
+        }
+    }
+
+
+    def deletePurchaseProduct(String id) {
+        Client client = ClientBuilder.newClient();
+        WebTarget target = client.target(new Links().API_GATEWAY);
+
+        try {
+            Response apiResponse = target
+                    .path(new Links().PURCHASE_PRODUCT_DELETE)
+                    .resolveTemplate("id",id)
+                    .request(MediaType.APPLICATION_JSON_TYPE)
+                    .delete()
+            return apiResponse
+        }
+        catch (Exception ex) {
+            System.err.println('Service :InventoryService , action :  getTempStocks  , Ex:' + ex)
+            log.error('Service :InventoryService , action :  getTempStocks  , Ex:' + ex)
+        }
+
+    }
+
+
+    def updatePurchaseInvoice(JSONObject jsonObject, String id)
+    {
+        Client client = ClientBuilder.newClient();
+        WebTarget target = client.target(new Links().API_GATEWAY)
+        try
+        {
+            Response apiResponse = target
+                    .path(new Links().PURCHASE_BILL_UPDATE)
+                    .resolveTemplate("id", id)
+                    .request(MediaType.APPLICATION_JSON_TYPE)
+                    .put(Entity.entity(jsonObject.toString(), MediaType.APPLICATION_JSON_TYPE))
+            return apiResponse
+        }
+        catch (Exception ex)
+        {
+            System.err.println('Service :salesService , action :  updateSaleInvoice  , Ex:' + ex)
+            log.error('Service :salesService , action :  updateSaleInvoice  , Ex:' + ex)
+        }
+
+    }
+
+    def getPurchaseTransportationByBill(String billId)
+    {
+        Client client = ClientBuilder.newClient();
+        WebTarget target = client.target(new Links().API_GATEWAY);
+        try
+        {
+            Response apiResponse = target
+                    .path(new Links().PURCHASE_TRANSPORTATION_BY_BILL)
+                    .queryParam("billid",billId)
+                    .request(MediaType.APPLICATION_JSON_TYPE)
+                    .get()
+            if(apiResponse?.status == 200)
+            {
+                JSONObject jsonObject = new JSONObject(apiResponse.readEntity(String.class))
+                return jsonObject
+            }
+        }
+        catch (Exception ex)
+        {
+            System.err.println('Service :getSaleTransportationByBill , action :  show  , Ex:' + ex)
+            log.error('Service :getSaleTransportationByBill , action :  show  , Ex:' + ex)
+        }
+
     }
 }

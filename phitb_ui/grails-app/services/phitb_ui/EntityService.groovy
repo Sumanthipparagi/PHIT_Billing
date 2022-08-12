@@ -1826,15 +1826,26 @@ class EntityService {
         //WebTarget target = client.target("http://localhost:8088")
 
         String url = new Links().ENTITY_REGISTER_PARENT
-        if (affiliateId)
-            url += "?affiliateId=" + affiliateId
+//        if (affiliateId)
+//            url += "?affiliateId=" + affiliateId
         try {
 
-            Response apiResponse = target
-                    .path(url)
-                    .request(MediaType.APPLICATION_JSON_TYPE)
-                    .get()
-            return apiResponse
+            if(affiliateId)
+            {
+                Response apiResponse = target
+                        .path(url)
+                        .queryParam('affiliateId',affiliateId)
+                        .request(MediaType.APPLICATION_JSON_TYPE)
+                        .get()
+                return apiResponse
+            }else{
+                Response apiResponse = target
+                        .path(url)
+                        .request(MediaType.APPLICATION_JSON_TYPE)
+                        .get()
+                return apiResponse
+            }
+
         }
         catch (Exception ex) {
             System.err.println('Service :EntityService , action :  getParentEntities  , Ex:' + ex)

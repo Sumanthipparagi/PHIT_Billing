@@ -349,7 +349,7 @@
                          </div>--}%
 
                         <div class="detail">
-                            <h6>${session.getAttribute("userName")}</h6>
+                        <h6><a href="/user/update-details/${session.getAttribute('userId')}">${session.getAttribute("userName")}</a></h6>
 
                             <g:if test="${session.getAttribute('role') != Constants.SUPER_USER}">
                                 <p class="m-b-0">${session.getAttribute("entityName")}</p>
@@ -369,6 +369,7 @@
                         <ul class="ml-menu">
                             <g:if test="${UtilsService.isPermitted("VIEW_PURCHASE_ORDER", session.getAttribute("permittedFeatures").toString())}">
                                 <li><a href="/purchase-order">Purchase Order</a></li>
+                                <li><a href="/purchase-order-list">My Purchase Order</a></li>
                             </g:if>
                             <g:if test="${UtilsService.isPermitted("VIEW_PURCHASE_ENTRY", session.getAttribute("permittedFeatures").toString())}">
                                 <li><a href="/purchase-entry">Purchase Entry</a></li>
@@ -562,8 +563,7 @@
                         </g:if>
 
                         <g:if test="${UtilsService.isPermitted("VIEW_ENTITY_REGISTER", session.getAttribute("permittedFeatures").toString())}">
-                            <g:if test="${session.getAttribute('role') == Constants.ENTITY_ADMIN ||
-                                    session.getAttribute('role') == Constants.SUPER_USER}">
+                            <g:if test="${session.getAttribute('role') == Constants.ENTITY_ADMIN || session.getAttribute('role') == Constants.SUPER_USER}">
                                 <li><a href="/entity-register">Entity Register</a></li>
                             </g:if>
                         </g:if>

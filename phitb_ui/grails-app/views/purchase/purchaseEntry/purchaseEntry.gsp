@@ -79,7 +79,8 @@
                                 <select onchange="seriesChanged()" class="form-control" id="series" name="series">
                                     <g:each in="${series}" var="sr">
                                         <option data-seriescode="${sr.seriesCode}"
-                                                value="${sr.id}">${sr.seriesName} (${sr.seriesCode})</option>
+                                                value="${sr.id}" <g:if test="${purchaseBillDetail?.seriesId ==
+                                                sr.id}">selected</g:if>>${sr.seriesName} (${sr.seriesCode})</option>
                                     </g:each>
                                 </select>
                             </div>
@@ -89,10 +90,10 @@
                                 <select class="form-control show-tick" id="supplier"
                                         onchange="supplierChanged()">
                                     <g:each in="${customers}" var="cs">
-                                        <g:if test="${cs.id != session.getAttribute("entityId")}"><option
+                                        <g:if test="${cs.id != session.getAttribute("entityId")}">
+                                            <option
                                                 value="${cs.id}"
-                                                data-state="${cs.stateId}">${cs.entityName} (${cs.entityType
-                                                    .name})</option>
+                                                data-state="${cs.stateId}" <g:if test="${purchaseBillDetail?.supplierId == cs.id}">selected</g:if>>${cs.entityName} (${cs.entityType.name})</option>
                                         </g:if>
                                     </g:each>
                                 </select>
@@ -104,7 +105,7 @@
                                 <label for="priority">Priority:</label>
                                 <select class="form-control" id="priority" name="priority">
                                     <g:each in="${priorityList}" var="pr">
-                                        <option value="${pr.id}">${pr.priority}</option>
+                                        <option value="${pr.id}" <g:if test="${purchaseBillDetail?.priorityId == pr.id}">selected</g:if>>${pr.priority}</option>
                                     </g:each>
                                 </select>
                             </div>
@@ -112,7 +113,7 @@
                             <div class="col-md-3">
                                 <label for="supplierBillId">Supplier Invoice Number:</label>
                                 <input type="text" maxlength="100" class="form-control" name="supplierBillId"
-                                       id="supplierBillId"/>
+                                       id="supplierBillId" value="${purchaseBillDetail?.supplierBillId}"/>
                             </div>
 
                             <div class="col-md-3">
@@ -125,7 +126,55 @@
                                 <label for="duedate">Due Date:</label>
                                 <input type="date" class="form-control date" name="duedate" id="duedate"/>
                             </div>
+
+                            <input type="hidden" name="purTransportlogId" id="purTransportlogId">
+
+                            <div class="col-md-4 mt-2">
+                                <br>
+                                <a class="btn btn-primary waves-effect" role="button" data-toggle="collapse"
+                                   href="#shipmentDetails" aria-expanded="false"
+                                   aria-controls="shipmentDetails"><i class="zmdi zmdi-truck"></i> Shipment Information
+                                </a>
+                            </div>
+
                         </div>
+
+                        <div class="row">
+                            <div class="col-md-12 col-lg-12 col-sm-12">
+                                <div class="collapse" id="shipmentDetails">
+                                    <div class="row">
+                                        <div class="col-md-3">
+                                            <div class="form-group">
+                                                <label for="lrNumber">LR No.</label>
+                                                <input type="text" maxlength="150" id="lrNumber" name="lrNumber"
+                                                       class="form-control" value="${purchaseTransportDetail?.lrNumber}"/>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-md-3">
+                                            <div class="form-group">
+                                                <label for="lrDate">LR Date</label>
+                                                <input type="date" maxlength="150" id="lrDate" name="lrDate"  class="form-control"/>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-md-3">
+                                            <div class="form-group">
+                                                <label for="transportType">Transporter</label>
+                                                <select id="transportType" name="transportType"
+                                                        class="form-control">
+                                                    <option value="">--Please Select--</option>
+                                                    <g:each in="${transporter}" var="t">
+                                                        <option value="${t.id}"  <g:if test="${purchaseTransportDetail?.transporterId == t.id}">selected</g:if>>${t.name}</option>
+                                                    </g:each>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
                     </div>
                 </div>
             </div>
@@ -219,7 +268,7 @@
 
                         <div class="row">
                             <button onclick="resetPage()" class="btn btn-danger">Reset</button>
-                            %{--<button onclick="savePurchaseInvoice('DRAFT')" class="btn btn-primary">Save Draft</button>--}%
+                            <button onclick="savePurchaseInvoice('DRAFT')" class="btn btn-primary">Save Draft</button>
                             <button onclick="savePurchaseInvoice('ACTIVE')" class="btn btn-primary">Save</button>
                             %{-- <button onclick="printInvoice()" class="btn btn-secondary">Print</button>--}%
                         </div>
@@ -589,7 +638,8 @@
         '',
         '',
         '',
-        ''
+        '',
+        'id'
     ];
 
     var batchHeaderRow = [
@@ -633,8 +683,11 @@
     var stateId = null;
     $(document).ready(function () {
         window.localStorage.clear();
-        console.log(localStorage)
+        console.log(localStorage);
         $("#supplier").select2();
+        $("#purTransportlogId").val(${purchaseTransportDetail?.id});
+        $('#supplierBillDate').val(moment('${purchaseBillDetail?.supplierBillDate}').format('YYYY-MM-DD'));
+        $('#lrDate').val(moment('${purchaseTransportDetail?.lrDate}').format('YYYY-MM-DD'));
         $('#date').val(moment().format('YYYY-MM-DD'));
         $('#date').attr("readonly");
         <g:each in="${customers}" var="cs">
@@ -700,12 +753,13 @@
                 {type: 'text', readOnly: true},
                 {type: 'text', readOnly: true},
                 {type: 'text', readOnly: true},
+                {type: 'text', readOnly: true},
                 {type: 'text', readOnly: true}
             ],
             hiddenColumns: true,
             hiddenColumns: {
                 // specify columns hidden by default
-                columns: [19,20,21,22,23]
+                columns: [19,20,21,22,23,24]
             },
             minSpareRows: 0,
             minSpareColumns: 0,
@@ -725,9 +779,22 @@
             },
             afterOnCellMouseDown: function (e, coords, TD) {
                 if (coords.col === 0) {
+                    // var id = hot.getDataAtCell(coords.row, 15);
+                    // deleteTempStockRow(id, coords.row);
+                    // calculateTotalAmt();
+                    <g:if test="${supplier == null}">
                     var id = hot.getDataAtCell(coords.row, 15);
                     deleteTempStockRow(id, coords.row);
-                    calculateTotalAmt();
+                    </g:if>
+                    <g:else>
+                    var id = hot.getDataAtCell(coords.row, 24);
+                    if (id == null || id == 0 || id == '') {
+                        id = hot.getDataAtCell(coords.row, 15);
+                        deleteTempStockRow(id, coords.row);
+                    } else {
+                        deleteSaleBillRow(id, coords.row);
+                    }
+                    </g:else>
                 }
 
                 if (coords.col === 18) {
@@ -1440,6 +1507,122 @@
         })*/
     }
 
+
+    function loadDraftProducts() {
+        $.ajax({
+            type: "GET",
+            url: "/purchase-product-details/purchase-bill?id=${purchaseBillDetail?.id}",
+            dataType: 'json',
+            success: function (data) {
+                purchaseData = data;
+               console.log(purchaseData);
+                for (var i = 0; i < purchaseData.length; i++) {
+                    hot.selectCell(i, 1);
+                    var pRate = purchaseData[i].pRate;
+                    var sRate = purchaseData[i].sRate;
+                    var pQty = purchaseData[i].sqty;
+                    var fQty = purchaseData[i].freeQty;
+                    batchSelection(purchaseData[i].productId, null, false);
+                    var batchId = purchaseData[i][12];
+                    hot.setDataAtCell(i, 1, purchaseData[i].productId.id);
+                    hot.setDataAtCell(i, 2, purchaseData[i].batchNumber);
+                    hot.setCellMeta(i, 2, "batchId", batchId);
+                    console.log(purchaseData[i].expiryDate)
+                    hot.setDataAtCell(i, 3, purchaseData[i].expiryDate.split("T")[0]);
+                    hot.setDataAtCell(i, 4, pQty);
+                    hot.setDataAtCell(i, 5, fQty);
+                    hot.setDataAtCell(i, 6, pRate);
+                    hot.setDataAtCell(i, 7, sRate);
+                    hot.setDataAtCell(i, 8, purchaseData[i].mrp);
+                    hot.setDataAtCell(i, 9, purchaseData[i].discount);
+                    hot.setDataAtCell(i, 10, purchaseData[i].productId.unitPacking);
+                    hot.setDataAtCell(i, 17, purchaseData[i].manufacturingDate.split("T")[0]);
+                    hot.setDataAtCell(i, 19, purchaseData[i].taxId);
+
+                    // hot.setDataAtCell(i, 11, purchaseData[i].gstPercentage);
+                    // hot.setDataAtCell(i, 12, purchaseData[i].gstAmount);
+                    // hot.setDataAtCell(i, 13, purchaseData[i].sgstAmount);
+                    // hot.setDataAtCell(i, 14, purchaseData[i].cgstAmount);
+                    // hot.setDataAtCell(i, 15, purchaseData[i].igstAmount);
+
+                    // hot.setDataAtCell(i, 6, pRate);
+                    // hot.setDataAtCell(i, 4, pQty);
+                    // hot.setDataAtCell(i, 5, fQty);
+                    // hot.setDataAtCell(i, 7, purchaseData[i].mrp);
+                    // hot.setDataAtCell(i, 8, 0);
+                    // hot.setDataAtCell(i, 9, purchaseData[i].productId.unitPacking);
+
+                    gst = purchaseData[i].gst;
+                    if (stateId === undefined || stateId === '${session.getAttribute('stateId')}') {
+                        sgst = purchaseData[i].sgst;
+                        cgst = purchaseData[i].cgst;
+                        igst = purchaseData[i].igst;
+                    } else {
+                        igst = gst;
+                        sgst = 0;
+                        cgst = 0;
+                    }
+                    var discount = 0; //TODO: discount to be set
+                    var priceBeforeGst = (pRate * pQty) - ((pRate * pQty) * discount) / 100;
+                    var finalPrice = priceBeforeGst + (priceBeforeGst * (gst / 100));
+                    hot.setDataAtCell(i, 13, Number(finalPrice).toFixed(2));
+                    if (gst !== 0) {
+                        hot.setDataAtCell(i, 12, Number(priceBeforeGst * (gst / 100)).toFixed(2)); //GST
+                        hot.setDataAtCell(i, 14, Number(priceBeforeGst * (sgst / 100)).toFixed(2)); //SGST
+                        hot.setDataAtCell(i, 15, Number(priceBeforeGst * (cgst / 100)).toFixed(2)); //CGST
+                    } else {
+                        hot.setDataAtCell(i, 12, 0); //GST
+                        hot.setDataAtCell(i, 14, 0); //SGST
+                        hot.setDataAtCell(i, 15, 0); //CGST
+                    }
+                    if (igst !== "0")
+                        hot.setDataAtCell(i, 16, Number(priceBeforeGst * (igst / 100)).toFixed(2)); //IGST
+                    else
+                        hot.setDataAtCell(i, 16, 0);
+                    <g:if test="${supplier != null}">
+                    hot.setDataAtCell(i, 24, purchaseData[i].id);
+                    </g:if>
+                    <g:else>
+                    hot.setDataAtCell(i, 24, 0);
+                    </g:else>
+                    hot.setDataAtCell(i, 11, gst);
+                    hot.setDataAtCell(i, 20, gst);
+                    hot.setDataAtCell(i, 21, sgst);
+                    hot.setDataAtCell(i, 22, cgst);
+                    hot.setDataAtCell(i, 23, igst);
+                    // hot.setDataAtCell(i, 20, purchaseData[i]["originalSqty"]);
+                    // hot.setDataAtCell(i, 21, purchaseData[i]["originalFqty"]);
+%{--                    <g:if test="${supplier != null}">--}%
+%{--                    hot.setDataAtCell(i, 22, pQty); //draft sqty--}%
+%{--                    hot.setDataAtCell(i, 23, fQty); //draft fqty--}%
+%{--                    hot.setDataAtCell(i, 24, purchaseData[i]["id"]); //saved draft product id--}%
+%{--                    </g:if>--}%
+                    for (var j = 0; j < 15; j++) {
+                        hot.setCellMeta(i, j, 'readOnly', true);
+                    }
+                }
+                setTimeout(function () {
+                    hot.selectCell(0, 1);
+                    calculateTotalAmt();
+                }, 1000);
+            }
+        });
+
+        //to load temp stock pool in sidebar
+        var userId = "${session.getAttribute("userId")}";
+        $.ajax({
+            type: "GET",
+            url: "tempstockbook/user/" + userId,
+            dataType: 'json',
+            success: function (data) {
+                //do nothing
+            }
+        });
+    }
+
+
+
+
     function deleteTempStockRow(id, row) {
         if (!readOnly) {
             /*  if(id) {
@@ -1461,6 +1644,31 @@
             }
             hot.alter("remove_row", row);
             hot.selectCell(row, 0);
+        } else
+            alert("Can't change this now, invoice has been saved already.")
+    }
+
+
+    function deleteSaleBillRow(id, row) {
+        if (!readOnly) {
+            if (id) {
+                $.ajax({
+                    type: "POST",
+                    url: "/purchase-product-details/delete?id=" + id,
+                    dataType: 'json',
+                    success: function (data) {
+                        hot.alter("remove_row", row);
+                        Swal.fire({
+                            title: "Success",
+                            text: "Product removed."
+                        });
+                        batchHot.updateSettings({
+                            data: []
+                        });
+                    }
+                });
+            } else
+                hot.alter("remove_row", row);
         } else
             alert("Can't change this now, invoice has been saved already.")
     }
@@ -1617,9 +1825,11 @@
         var series = $("#series").val();
         var seriesCode = $("#series").find(':selected').data('seriescode');
         var duedate = $("#duedate").val();
+        var lrNumber =  $("#lrNumber").val();
+        var lrDate =  $("#lrDate").val();
+        var transporter=  $("#transportType").val();
         duedate = moment(duedate, 'YYYY-MM-DD').toDate();
         duedate = moment(duedate).format('DD/MM/YYYY');
-
         supplierBillDate = moment(supplierBillDate, 'YYYY-MM-DD').toDate();
         supplierBillDate = moment(supplierBillDate).format('DD/MM/YYYY');
         var schemeData =[];
@@ -1643,149 +1853,161 @@
         }
 
         var purchaseData = JSON.stringify(hot.getSourceData());
+              var url = "";
+            <g:if test="${supplier != null}">
+                url = "/edit-purchase-entry?id=" + '${purchaseBillDetail.id}';
+            </g:if>
+            <g:else>
+            url = "/purchase-entry";
+           </g:else>
 
-        $.ajax({
-            type: "POST",
-            url: "/purchase-entry",
-            dataType: 'json',
-            data: {
-                purchaseData: purchaseData,
-                supplier: supplier,
-                series: series,
-                duedate: duedate,
-                priority: priority,
-                billStatus: billStatus,
-                seriesCode: seriesCode,
-                schemeData: JSON.stringify(schemeData),
-                supplierBillDate: supplierBillDate,
-                supplierBillId: supplierBillId,
-                uuid: self.crypto.randomUUID()
-            },
-            success: function (data) {
-                console.log(data);
-                readOnly = true;
-                var rowData = hot.getData();
-                for (var j = 0; j < rowData.length; j++) {
-                    for (var i = 0; i < 16; i++) {
-                        hot.setCellMeta(j, i, 'readOnly', true);
-                    }
+    $.ajax({
+        type: "POST",
+        url: url,
+        dataType: 'json',
+        data: {
+            purchaseData: purchaseData,
+            supplier: supplier,
+            series: series,
+            duedate: duedate,
+            priority: priority,
+            billStatus: billStatus,
+            seriesCode: seriesCode,
+            schemeData: JSON.stringify(schemeData),
+            supplierBillDate: supplierBillDate,
+            supplierBillId: supplierBillId,
+            lrNumber:lrNumber,
+            lrDate:lrDate,
+            transporter:transporter,
+            uuid: self.crypto.randomUUID()
+        },
+        success: function (data) {
+            console.log(data);
+            readOnly = true;
+            var rowData = hot.getData();
+            for (var j = 0; j < rowData.length; j++) {
+                for (var i = 0; i < 16; i++) {
+                    hot.setCellMeta(j, i, 'readOnly', true);
                 }
-                purchasebillid = data.purchaseBillDetail.id;
-                var datepart = data.purchaseBillDetail.entryDate.split("T")[0];
-                var month = datepart.split("-")[1];
-                var year = datepart.split("-")[0];
-                var seriesCode = data.series.seriesCode;
-                var invoiceNumber = data.purchaseBillDetail.invoiceNumber;
-                $("#invNo").html("<p><strong>" + invoiceNumber + "</strong></p>");
-                var message = "";
-                var draftInvNo = "";
-                if (billStatus === "DRAFT") {
-                    draftInvNo = '<p><strong>' + data.purchaseBillDetail.entityId + "/DR/S/" + month + year + "/"
-                        + seriesCode + "/__" + '<p><strong>';
-                    $("#invNo").html(draftInvNo);
-                }
-                if (billStatus !== "DRAFT") {
-                    message = 'Purchase Invoice Generated: ' + invoiceNumber;
-                } else {
-                    message = 'Draft Invoice Generated: ' + data.purchaseBillDetail.entityId + "/DR/S/" + month + year + "/"
-                        + seriesCode + "/__";
-                }
-                waitingSwal.close();
-                Swal.fire({
-                    title: message,
-                    showDenyButton: true,
-                    showCancelButton: false,
-                    confirmButtonText: 'Print',
-                    denyButtonText: 'New Entry',
-                }).then((result) => {
-                    if (result.isConfirmed) {
-                        printInvoice();
-                    } else if (result.isDenied) {
-                        resetData();
-                        location.reload();
-                    }
-                });
-
-
-            },
-            error: function () {
-                waitingSwal.close();
-                Swal.fire({
-                    title: "Unable to generate Invoice at the moment.",
-                    confirmButtonText: 'OK'
-                });
             }
-        });
+            purchasebillid = data.purchaseBillDetail.id;
+            var datepart = data.purchaseBillDetail.entryDate.split("T")[0];
+            var month = datepart.split("-")[1];
+            var year = datepart.split("-")[0];
+            var seriesCode = data.series.seriesCode;
+            var invoiceNumber = data.purchaseBillDetail.invoiceNumber;
+            $("#invNo").html("<p><strong>" + invoiceNumber + "</strong></p>");
+            var message = "";
+            var draftInvNo = "";
+            if (billStatus === "DRAFT") {
+                draftInvNo = '<p><strong>' + data.purchaseBillDetail.entityId + "/DR/P/" + month + year + "/"
+                    + seriesCode + "/__" + '<p><strong>';
+                $("#invNo").html(draftInvNo);
+            }
+            if (billStatus !== "DRAFT") {
+                message = 'Purchase Invoice Generated: ' + invoiceNumber;
+            } else {
+                message = 'Draft Invoice Generated: ' + data.purchaseBillDetail.entityId + "/DR/S/" + month + year + "/"
+                    + seriesCode + "/__";
+            }
+            waitingSwal.close();
+            Swal.fire({
+                title: message,
+                showDenyButton: true,
+                showCancelButton: false,
+                confirmButtonText: 'Print',
+                denyButtonText: 'New Entry',
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    printInvoice();
+                } else if (result.isDenied) {
+                    resetData();
+                    location.reload();
+                }
+            });
 
+
+        },
+        error: function () {
+            waitingSwal.close();
+            Swal.fire({
+                title: "Unable to generate Invoice at the moment.",
+                confirmButtonText: 'OK'
+            });
+        }
+    });
+
+}
+
+function printInvoice() {
+    if (readOnly) {
+        window.open(
+            '/purchase-entry/print-invoice?id=' + purchasebillid,
+            '_blank'
+        );
+        resetData();
     }
+}
 
-    function printInvoice() {
-        if (readOnly) {
-            window.open(
-                '/purchase-entry/print-invoice?id=' + purchasebillid,
-                '_blank'
-            );
+function resetPage() {
+    Swal.fire({
+        title: "Reset Contents?",
+        showDenyButton: true,
+        showCancelButton: true,
+        confirmButtonText: 'OK',
+    }).then((result) => {
+        if (result) {
             resetData();
         }
-    }
+    });
+}
 
-    function resetPage() {
-        Swal.fire({
-            title: "Reset Contents?",
-            showDenyButton: true,
-            showCancelButton: true,
-            confirmButtonText: 'OK',
-        }).then((result) => {
-            if (result) {
-                resetData();
+function resetData() {
+    $("#invNo").html("");
+    purchaseData.length = 0;
+    batchData.length = 0;
+    mainTableRow = 0;
+    gst = 0;
+    cgst = 0;
+    sgst = 0;
+    igst = 0;
+    totalQty = 0;
+    totalFQty = 0;
+    remainingQty = 0;
+    remainingFQty = 0;
+    totalAmt = 0;
+    readOnly = false;
+    scheme = null;
+
+    batchHot.updateSettings({
+        data: []
+    });
+    hot.updateSettings({
+        data: []
+    });
+
+    calculateTotalAmt();
+}
+
+function seriesChanged() {
+    var series = $("#series").val();
+    loadProducts(series);
+
+}
+
+function loadProducts(series) {
+    products.length = 0;//remove all elements
+    $.ajax({
+        type: "GET",
+        url: "/product/series/" + series,
+        dataType: 'json',
+        success: function (data) {
+            for (var i = 0; i < data.length; i++) {
+                products.push({id: data[i].id, text: data[i].productName});
             }
-        });
-    }
-
-    function resetData() {
-        $("#invNo").html("");
-        purchaseData.length = 0;
-        batchData.length = 0;
-        mainTableRow = 0;
-        gst = 0;
-        cgst = 0;
-        sgst = 0;
-        igst = 0;
-        totalQty = 0;
-        totalFQty = 0;
-        remainingQty = 0;
-        remainingFQty = 0;
-        totalAmt = 0;
-        readOnly = false;
-        scheme = null;
-
-        batchHot.updateSettings({
-            data: []
-        });
-        hot.updateSettings({
-            data: []
-        });
-
-        calculateTotalAmt();
-    }
-
-    function seriesChanged() {
-        var series = $("#series").val();
-        loadProducts(series);
-
-    }
-
-    function loadProducts(series) {
-        products.length = 0;//remove all elements
-        $.ajax({
-            type: "GET",
-            url: "/product/series/" + series,
-            dataType: 'json',
-            success: function (data) {
-                for (var i = 0; i < data.length; i++) {
-                    products.push({id: data[i].id, text: data[i].productName});
-                }
-                loadTempStockBookData();
+                <g:if test="${params.purchaseBillId}">
+                loadDraftProducts();
+                </g:if>
             },
             error: function () {
                 products.length = 0; //remove all elements

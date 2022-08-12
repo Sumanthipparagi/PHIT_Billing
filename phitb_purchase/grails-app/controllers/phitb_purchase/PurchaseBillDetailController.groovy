@@ -14,6 +14,7 @@ class PurchaseBillDetailController {
     static allowedMethods = [index: "GET", show: "GET", save: "POST", update: "PUT", delete: "DELETE", dataTable: "GET"]
 
     PurchaseBillDetailService purchaseBillDetailService
+    PurchaseProductDetailService purchaseProductDetailService
     /**
      * Gets all purchase bill details
      * @param query
@@ -304,6 +305,48 @@ class PurchaseBillDetailController {
             System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
             response.status = 400
 
+        }
+        catch (Exception ex) {
+            System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
+        }
+    }
+
+    /**
+     * Update Sale Bill Details along with products
+     * @param Sale Bill Details
+     * @return saved Sale Bill Details
+     */
+    def updatePurchaseInvoice() {
+        try {
+            String id = params.id
+            JSONObject jsonObject = JSON.parse(request.reader.text) as JSONObject
+            PurchaseBillDetail purchaseBillDetail = purchaseBillDetailService.update(jsonObject.get("purchaseInvoice"), id)
+            if (purchaseBillDetail) {
+                UUID uuid
+                JSONArray purchaseProducts = jsonObject.get("purchaseProducts")
+                for (JSONObject product : purchaseProducts) {
+                    uuid = UUID.randomUUID()
+                    product.put("uuid", uuid)
+                    product.put("billId", purchaseBillDetail.id)
+                    product.put("billType", 0) //0 Sale, 1 Purchase
+                    product.put("serBillId", purchaseBillDetail.serBillId)
+                    String productId = product.get("id").toString()
+                    if (!productId.equalsIgnoreCase("0"))
+                        purchaseProductDetailService.update(product, productId)
+                    else
+                        purchaseProductDetailService.save(product)
+                    println("product saved")
+                }
+            }
+            respond purchaseBillDetail
+        }
+        catch (org.springframework.boot.context.config.ResourceNotFoundException ex) {
+            System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
+            response.status = 404
+        }
+        catch (BadRequestException ex) {
+            System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
+            response.status = 400
         }
         catch (Exception ex) {
             System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)

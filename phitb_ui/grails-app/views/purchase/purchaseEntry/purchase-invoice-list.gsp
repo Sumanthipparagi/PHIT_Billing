@@ -213,7 +213,7 @@
                 }
             ],
             language: {
-                searchPlaceholder: "Search Sale Bill"
+                searchPlaceholder: ""
             },
             ajax: {
                 type: 'GET',
@@ -246,7 +246,7 @@
                             invoiceNumber = "";
                         if(json.data[i].billStatus=== "DRAFT")
                         {
-                            editInvoice = '<a class="btn btn-sm btn-warning"  href="/edit-sale-entry?saleBillId=' +
+                            editInvoice = '<a class="btn btn-sm btn-warning"  href="/edit-purchase-entry?purchaseBillId=' +
                                 json.data[i].id + '"><i class="fa fa-edit"></i></a>';
                         }
                         var grossAmt = (json.data[i].totalAmount - json.data[i].totalGst).toFixed(2);
@@ -342,7 +342,7 @@
 </script>
 <g:include view="controls/footer-content.gsp"/>
 <script>
-    selectSideMenu("sales-menu");
+    selectSideMenu("purchase-menu");
 </script>
 </body>
 </html>
