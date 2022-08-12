@@ -412,9 +412,9 @@
                                                 <span class="required-indicator" style="color: red;">*</span>
                                             </label>
                                             <select class="form-control show-tick saleType" name="saleType" id="saleType">
-                                                <option value="${Constants.SALEABLE}">SALEABLE</option>
-                                                <option value="${Constants.SAMPLE}">SAMPLE</option>
-                                                <option value="${Constants.PROMOTIONAL}">PROMOTIONAL</option>
+                                                <option value="${Constants.SALEABLE}" <g:if test="${product.saleType == Constants.SALEABLE}">selected</g:if>>SALEABLE</option>
+                                                <option value="${Constants.SAMPLE}" <g:if test="${product.saleType == Constants.SAMPLE}">selected</g:if>>SAMPLE</option>
+                                                <option value="${Constants.PROMOTIONAL}" <g:if test="${product.saleType == Constants.PROMOTIONAL}">selected</g:if>>PROMOTIONAL</option>
                                             </select>
                                         </div>
 %{--                                        <div class="col-lg-6 form-group  form-float">--}%

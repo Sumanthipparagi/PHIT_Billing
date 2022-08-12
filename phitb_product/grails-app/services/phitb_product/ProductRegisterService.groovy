@@ -181,6 +181,7 @@ class ProductRegisterService {
         productRegister.entityId =  Long.parseLong(jsonObject.get("entityId").toString())
         productRegister.createdUser =  Long.parseLong(jsonObject.get("createdUser").toString())
         productRegister.modifiedUser =  Long.parseLong(jsonObject.get("modifiedUser").toString())
+        productRegister.saleType =  jsonObject.get("saleType").toString()
         productRegister.save(flush: true)
         if (!productRegister.hasErrors())
             return productRegister
@@ -287,6 +288,7 @@ class ProductRegisterService {
             productRegister.entityId =  Long.parseLong(jsonObject.get("entityId").toString())
             productRegister.createdUser =  Long.parseLong(jsonObject.get("createdUser").toString())
             productRegister.modifiedUser =  Long.parseLong(jsonObject.get("modifiedUser").toString())
+            productRegister.saleType =  jsonObject.get("saleType").toString()
             productRegister.save(flush: true)
             if (!productRegister.hasErrors())
                 return productRegister
