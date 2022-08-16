@@ -140,12 +140,19 @@ class EntityRegisterController {
                 }
             }
 
+            JSONArray parentEntities = new JSONArray()
+            def parentEntitiesResponse = new EntityService().getParentEntities(session.getAttribute("entityId").toString())
+            if(parentEntitiesResponse.status == 200)
+            {
+                parentEntities = new JSONArray(parentEntitiesResponse.readEntity(String.class))
+            }
+
             render(view: '/entity/entityRegister/add-entity-register', model: [entity       : entity, entitytype: entitytype,
                                                                                statelist    : statelist, countrylist: countrylist,
                                                                                salesmanList : salesmanList,
                                                                                managerList  : managerList,
                                                                                zoneList     : zoneList,
-                                                                               routeregister: routeregister,
+                                                                               routeregister: routeregister, parentEntities:parentEntities,
                                                                                bank         : bank, entityList: entityList,
                                                                                priority     : priority, hqareas: hqareas,
                                                                                account      : account, cityId: cityId
@@ -280,11 +287,10 @@ class EntityRegisterController {
             jsonObject.put("affiliateId", session.getAttribute("entityId"))
             def apiResponse = new EntityService().putEntity(jsonObject)
             if (apiResponse.status == 200) {
-                JSONObject obj = new JSONObject(apiResponse.readEntity(String.class))
-                redirect(uri: "/entity-register")
-//                respond obj, formats: ['json'], status: 200
+                JSONObject entity = new JSONObject(apiResponse.readEntity(String.class))
+                redirect(uri: "/entity-register/update-entity-register/"+entity.id+"?code=1")
             } else {
-                response.status = 400
+                redirect(uri: "/entity-register/update-entity-register/"+jsonObject.id+"?code=2")
             }
         }
         catch (Exception ex) {

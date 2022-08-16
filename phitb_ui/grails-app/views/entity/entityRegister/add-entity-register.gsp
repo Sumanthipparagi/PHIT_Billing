@@ -23,9 +23,10 @@
             src="/themeassets/plugins/bootstrap-material-datetimepicker/css/bootstrap-material-datetimepicker.css"
             rel="stylesheet"/>
     <asset:stylesheet src="/themeassets/plugins/dropify/dist/css/dropify.min.css"/>
-    %{--    <asset:stylesheet src="/themeassets/plugins/select-2-editor/select2.min.css"/>--}%
+    <asset:stylesheet src="/themeassets/plugins/select2/dist/css/select2.min.css"/>
+    <asset:stylesheet src="/themeassets/plugins/sweetalert2/dist/sweetalert2.min.css"/>
     %{--    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />--}%
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.3/css/select2.min.css" rel="stylesheet"/>
+    %{--    <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.3/css/select2.min.css" rel="stylesheet"/>--}%
 
     <style>
     .error {
@@ -51,11 +52,21 @@
         <div class="block-header">
             <div class="row">
                 <div class="col-lg-5 col-md-5 col-sm-12">
-                    <h2>Add  Entity Register</h2>
+                    <g:if test="${params.id == null || params.id == ""}">
+                        <h2>Add  Entity Register</h2>
+                    </g:if>
+                    <g:else>
+                        <h2>Update  Entity Register</h2>
+                    </g:else>
                     <ul class="breadcrumb padding-0">
                         <li class="breadcrumb-item"><a href="/"><i class="zmdi zmdi-home"></i></a></li>
                         <li class="breadcrumb-item"><a href="/entity-register">Entity Register</a></li>
-                        <li class="breadcrumb-item active">Add  Entity Register</li>
+                        <g:if test="${params.id == null || params.id == ""}">
+                            <li class="breadcrumb-item active">Add  Entity Register</li>
+                        </g:if>
+                        <g:else>
+                            <li class="breadcrumb-item active">Update  Entity Register</li>
+                        </g:else>
                     </ul>
                 </div>
 
@@ -214,7 +225,7 @@
                     </div>
                 </div>
 
-                <g:if test="${(session.getAttribute('role') == Constants.SUPER_USER || session.getAttribute('role') == Constants.ENTITY_ADMIN) && parentEntities?.size()>0}">
+                <g:if test="${(session.getAttribute('role') == Constants.SUPER_USER || session.getAttribute('role') == Constants.ENTITY_ADMIN) && parentEntities?.size() > 0}">
                     <div class="row clearfix">
                         <div class="col-lg-12 col-md-12 col-sm-12">
                             <div class="card">
@@ -239,7 +250,8 @@
                                                         class="required-indicator"
                                                         style="color: red;">*</span></label>
                                                 <select name="affiliatedToEntity" style="width: 100%;"
-                                                        id="affiliatedToEntity" class="form-control" required>
+                                                        id="affiliatedToEntity" class="form-control affiliatedToEntity"
+                                                        required>
                                                     <option selected disabled>-SELECT-</option>
                                                 </select>
                                             </div>
@@ -781,7 +793,6 @@
                                                                     <g:if test="${et.id == entity.entityType.id}">selected</g:if>>${et.name}</option>
                                                         </g:else>
 
-
                                                     </g:each>
                                                 </select>
                                             </div>
@@ -890,6 +901,46 @@
                     </div>
                 </div>
 
+                <g:if test="${(session.getAttribute('role') == Constants.SUPER_USER || session.getAttribute('role') == Constants.ENTITY_ADMIN) && parentEntities?.size() > 0}">
+                    <div class="row clearfix">
+                        <div class="col-lg-12 col-md-12 col-sm-12">
+                            <div class="card">
+                                <div class="header">
+                                    <h6>Affiliation Information</h6>
+                                </div>
+
+                                <div class="body">
+                                    <div class="row">
+                                        <div class="col-md-6 mt-2">
+                                            <g:if test="${session.getAttribute('role') == Constants.SUPER_USER}">
+                                                <div class="form-group">
+                                                    <label for="isParent" class="checkbox-inline">
+                                                        <input onchange="isParentChanged()" type="checkbox"
+                                                               class="checkbox"
+                                                               id="isParent"/> Is Parent Entity?
+                                                    </label>
+                                                </div>
+                                            </g:if>
+                                            <div class="form-group affiliatedEntityContainer">
+                                                <label for="affiliatedToEntity">Affiliated to Entity: <span
+                                                        class="required-indicator"
+                                                        style="color: red;">*</span></label>
+                                                <select name="affiliatedToEntity" style="width: 100%;"
+                                                        id="affiliatedToEntity" class="form-control affiliatedToEntity"
+                                                        required>
+                                                    <option selected disabled>-SELECT-</option>
+                                                </select>
+                                            </div>
+                                            <input type="hidden" id="isParentValue" name="isParent" value="false"/>
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </g:if>
+
                 <div class="row clearfix">
                     <div class="col-lg-12 col-md-12 col-sm-12">
                         <div class="card">
@@ -917,7 +968,7 @@
                                                 </label>
                                                 <input type="number" id="phoneNumber" class="form-control phoneNumber"
                                                        name="phoneNumber" placeholder="Phone Number"
-                                                       value="${entity.repPhoneNumber}"/>
+                                                       value="${entity.phoneNumber}"/>
 
                                             </div>
 
@@ -1421,13 +1472,14 @@
 <asset:javascript src="/themeassets/js/pages/tables/jquery-datatable.js"/>
 <asset:javascript src="/themeassets/js/pages/ui/dialogs.js"/>
 <asset:javascript src="/themeassets/plugins/sweetalert/sweetalert.min.js"/>
-%{--<asset:javascript src="/themeassets/plugins/select-2-editor/select2.js"/>--}%
+<asset:javascript src="/themeassets/plugins/select2/dist/js/select2.min.js"/>
 <asset:javascript src="/themeassets/plugins/jquery-inputmask/jquery.inputmask.bundle.js"/>
 <asset:javascript src="/themeassets/plugins/momentjs/moment.js"/>
 <asset:javascript src="/themeassets/plugins/bootstrap-material-datetimepicker/js/bootstrap-material-datetimepicker.js"/>
 <asset:javascript src="/themeassets/js/pages/forms/basic-form-elements.js"/>
 <asset:javascript src="/themeassets/plugins/dropify/dist/js/dropify.min.js"/>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.3/js/select2.min.js"></script>
+<asset:javascript src="/themeassets/plugins/sweetalert2/dist/sweetalert2.all.js"/>
+%{--<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.3/js/select2.min.js"></script>--}%
 <script src="https://cdn.jsdelivr.net/npm/jquery-validation@1.19.3/dist/jquery.validate.js"></script>
 
 
@@ -1481,9 +1533,82 @@
         $("#affiliatedToEntity").select2();
         </g:if>
 
+        $('.pinCode').select2({
+            placeholder: 'Enter Pincode',
+            minimumInputLength: 3,
+            required: true,
+            ajax: {
+                url: '/getcitybypincode',
+                dataType: 'json',
+                delay: 250,
+                data: function (data) {
+                    return {
+                        pincode: data.term // search term
+                    };
+                },
+                processResults: function (response) {
+                    var data = [];
+                    response.forEach(function (response, index) {
+                        data.push({"pincode": response.pincode, "text": response.areaName, "id": response.id});
+                    });
+                    return {
+                        results: data
+                    };
+                },
+                cache: true
+            }
+        });
+
+
+        $('.pinCode').on('select2:selecting', function (e) {
+            var data = e.params.args.data;
+            var id = data.id;
+            // alert(id)
+            $.ajax({
+                method: 'GET',
+                url: '/getcitybyid',
+                data: {'id': id},
+                success: function (response) {
+                    console.log(response);
+                    $('.stateId').val(response.state.id).change();
+                    $("input[name='stateId']").val(response.state.id);
+                    $("input[name='cityId']").val(response.id);
+                    $('.cityId').empty();
+                    $('.cityId').append("<option value='" + response.id + "'>" + response.areaName + "</option>");
+                    // $('.cityId').val(response.id).change();
+                    $('.pinCode').val(response.pincode);
+                    $("input[name='pinCode']").val(response.pincode);
+                    if (response.state.alphaCode === "FC") {
+                        $('.countryId').find('option:contains("OTHER")').attr('selected', 'selected');
+                        $("input[name='countryId']").val($('.countryId').val());
+                    } else {
+                        $('.countryId').find('option:contains("INDIA")').attr('selected', 'selected');
+                        $("input[name='countryId']").val($('.countryId').val());
+                    }
+                },
+                error: function (jqXHR, textStatus, errorThrown) {
+                }
+            });
+
+        });
+
+        $("#entityRegisterForm").validate();
+
+        <g:if test="${params.code == "1"}">
+        Swal.fire({
+            text: "Entity Update Successful",
+            title: "Success!"
+        });
+        </g:if>
+        <g:elseif test="${params.code == "2"}">
+        Swal.fire({
+            text: "Entity Update Failed",
+            title: "Failed!"
+        });
+        </g:elseif>
     });
 
-    $(document).ready(function () {
+    /*$(document).ready(function () {
         // Basic
         $('.dropify').dropify();
 
@@ -1522,105 +1647,11 @@
                 drDestroy.init();
             }
         })
-    });
+    });*/
 
     function setTwoNumberDecimal(event) {
         this.value = parseFloat(this.value.toFixed(2));
     }
-
-
-    // $('.pinCode').select2({
-    //     placeholder: "Pincode",
-    //     // multiple: false,
-    //     minimumInputLength: 3,
-    //     allowClear: true,
-    //     quietMillis: 100,
-    //     id: function(params){ return params._id; },
-    //     ajax: {
-    //         url: "/getcitybypincode",
-    //         dataType: 'json',
-    //         type: 'POST',
-    //         data: function(term, page) {
-    //             return {
-    //                 pincode: term,
-    //                 // page: page || 1
-    //             }
-    //         },
-    //         results: function(data, page) {
-    //             console.log(data);
-    //             return {
-    //                 results: [{"id":data.id, "text":data.areaName}],
-    //             };
-    //         }
-    //     },
-    //     // formatResult:function(item){
-    //     //     return data.pincode;
-    //     // },
-    //     // formatSelection: formatSelection,
-    //     // initSelection: initSelection
-    // })
-    $('.pinCode').select2({
-        placeholder: 'Enter Pincode',
-        minimumInputLength: 3,
-        required: true,
-        ajax: {
-            url: '/getcitybypincode',
-            dataType: 'json',
-            delay: 250,
-            data: function (data) {
-                return {
-                    pincode: data.term // search term
-                };
-            },
-            processResults: function (response) {
-                var data = [];
-                response.forEach(function (response, index) {
-                    data.push({"pincode": response.pincode, "text": response.areaName, "id": response.id});
-                });
-                return {
-                    results: data
-                };
-            },
-            cache: true
-        }
-    });
-
-
-    $('.pinCode').on('select2:selecting', function (e) {
-        var data = e.params.args.data;
-        var id = data.id;
-        // alert(id)
-        $.ajax({
-            method: 'GET',
-            url: '/getcitybyid',
-            data: {'id': id},
-            success: function (response) {
-                console.log(response);
-                $('.stateId').val(response.state.id).change();
-                $("input[name='stateId']").val(response.state.id);
-                $("input[name='cityId']").val(response.id);
-                $('.cityId').empty();
-                $('.cityId').append("<option value='" + response.id + "'>" + response.areaName + "</option>");
-                // $('.cityId').val(response.id).change();
-                $('.pinCode').val(response.pincode);
-                $("input[name='pinCode']").val(response.pincode);
-                if (response.state.alphaCode === "FC") {
-                    $('.countryId').find('option:contains("OTHER")').attr('selected', 'selected');
-                    $("input[name='countryId']").val($('.countryId').val());
-                } else {
-                    $('.countryId').find('option:contains("INDIA")').attr('selected', 'selected');
-                    $("input[name='countryId']").val($('.countryId').val());
-                }
-            },
-            error: function (jqXHR, textStatus, errorThrown) {
-            }
-        });
-
-    });
-
-    $(document).ready(function () {
-        $("#entityRegisterForm").validate();
-    });
 
     <g:if test="${params.id == null || params.id == ""}">
 
@@ -1657,16 +1688,29 @@
     loadAffiliated();
 
     function loadAffiliated() {
+        var url = "../getparententities";
+        var affiliateId = "";
+        <g:if test="${params.id == null || params.id == ""}">
+        url = "getparententities";
+        </g:if>
+        <g:else>
+        affiliateId = ${entity.affiliateId};
+        </g:else>
         $.ajax({
             method: "GET",
-            url: "getparententities",
+            url: url,
             success: function (data) {
                 $("#affiliatedToEntity").empty();
                 $("#affiliatedToEntity").append("<option selected disabled>--SELECT--</option>");
                 $.each(data, function (index, value) {
                     var entityTypeName = value.entityType.name;
                     var entityTypeId = value.entityType.id;
-                    $("#affiliatedToEntity").append("<option value=\"" + value.id + "_" + entityTypeId + "\">" + value.entityName + " (" + entityTypeName + ")</option>");
+                    var selected = "";
+                    if (value.id == affiliateId) {
+                        selected = "selected";
+                    }
+                    $("#affiliatedToEntity").append("<option value=\"" + value.id + "_" + entityTypeId + "\" " + selected + " >" + value.entityName + " (" + entityTypeName + ")</option>");
+
                 });
             }
         })
