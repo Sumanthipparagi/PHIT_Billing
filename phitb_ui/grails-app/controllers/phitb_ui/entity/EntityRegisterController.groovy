@@ -191,7 +191,7 @@ class EntityRegisterController {
                     || session.getAttribute("role").toString().equalsIgnoreCase(Constants.ENTITY_ADMIN))
             {
                 if(jsonObject.has("isParent")) {
-                    isParent = Boolean.parseBoolean(jsonObject.get("isParent"))
+                    boolean isParent = Boolean.parseBoolean(jsonObject.get("isParent"))
                     if (!isParent) {
                         String entityId = jsonObject.get("affiliatedToEntity").toString().split("_")[0]
                         String entityTypeId = jsonObject.get("affiliatedToEntity").toString().split("_")[1]
