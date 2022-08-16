@@ -88,13 +88,19 @@ class EntityRegisterController {
                     salesmanList.add(it)
                 }
             }
+            JSONArray parentEntities = new JSONArray()
+            def parentEntitiesResponse = new EntityService().getParentEntities(session.getAttribute("entityId").toString())
+            if(parentEntitiesResponse.status == 200)
+            {
+                parentEntities = new JSONArray(parentEntitiesResponse.readEntity(String.class))
+            }
             render(view: '/entity/entityRegister/add-entity-register', model: [entitytype    : entitytype,
                                                                                statelist     : statelist, countrylist: countrylist,
                                                                                salesmanList  : salesmanList,
                                                                                managerList   : managerList,
                                                                                zoneList      : zoneList,
                                                                                routeregister : routeregister,
-                                                                               bank          : bank,
+                                                                               bank          : bank, parentEntities:parentEntities,
                                                                                priority      : priority, hqareas: hqareas, account: account
             ])
         }
@@ -181,24 +187,30 @@ class EntityRegisterController {
     def save() {
         try {
             JSONObject jsonObject = new JSONObject(params)
-            if(session.getAttribute("role").toString().equalsIgnoreCase(Constants.SUPER_USER) || session.getAttribute("role").toString().equalsIgnoreCase(Constants.ENTITY_ADMIN))
+            if(session.getAttribute("role").toString().equalsIgnoreCase(Constants.SUPER_USER)
+                    || session.getAttribute("role").toString().equalsIgnoreCase(Constants.ENTITY_ADMIN))
             {
-                boolean isParent = Boolean.parseBoolean(jsonObject.get("isParent"))
-                if(!isParent)
-                {
-                    String entityId = jsonObject.get("affiliatedToEntity").toString().split("_")[0]
-                    String entityTypeId = jsonObject.get("affiliatedToEntity").toString().split("_")[1]
-                    jsonObject.put("affiliateId", entityId)
-                    jsonObject.put("parentEntity", entityId)
-                    jsonObject.put("parentEntityType", entityTypeId)
-                    jsonObject.put("isParent", false)
+                if(jsonObject.has("isParent")) {
+                    isParent = Boolean.parseBoolean(jsonObject.get("isParent"))
+                    if (!isParent) {
+                        String entityId = jsonObject.get("affiliatedToEntity").toString().split("_")[0]
+                        String entityTypeId = jsonObject.get("affiliatedToEntity").toString().split("_")[1]
+                        jsonObject.put("affiliateId", entityId)
+                        jsonObject.put("parentEntity", entityId)
+                        jsonObject.put("parentEntityType", entityTypeId)
+                        jsonObject.put("isParent", false)
+                    } else {
+                        jsonObject.put("affiliateId", 0)
+                        jsonObject.put("isParent", true)
+                        jsonObject.put("parentEntity", 0)
+                        jsonObject.put("parentEntityType", 0)
+                    }
                 }
                 else
                 {
-                    jsonObject.put("affiliateId", 0)
-                    jsonObject.put("isParent", true)
-                    jsonObject.put("parentEntity", 0)
-                    jsonObject.put("parentEntityType", 0)
+                    jsonObject.put("affiliateId", session.getAttribute("entityId"))
+                    jsonObject.put("parentEntity", session.getAttribute("entityId"))
+                    jsonObject.put("parentEntityType", session.getAttribute("entityTypeId"))
                 }
 
             }

@@ -214,7 +214,7 @@
                     </div>
                 </div>
 
-                <g:if test="${session.getAttribute('role') == Constants.SUPER_USER || session.getAttribute('role') == Constants.ENTITY_ADMIN}">
+                <g:if test="${(session.getAttribute('role') == Constants.SUPER_USER || session.getAttribute('role') == Constants.ENTITY_ADMIN) && parentEntities?.size()>0}">
                     <div class="row clearfix">
                         <div class="col-lg-12 col-md-12 col-sm-12">
                             <div class="card">
@@ -1455,7 +1455,7 @@
             weekStart: 1
         });
 
-        $('.affiliateId').select2()
+        $('.affiliateId').select2();
 
         $('#cityId').select2({
             ajax: {
@@ -1653,7 +1653,7 @@
     // });
 
 
-    <g:if test="${session.getAttribute('role') == Constants.SUPER_USER || session.getAttribute('role') == Constants.ENTITY_ADMIN}">
+    <g:if test="${(session.getAttribute('role') == Constants.SUPER_USER || session.getAttribute('role') == Constants.ENTITY_ADMIN) && parentEntities?.size()>0}">
     loadAffiliated();
 
     function loadAffiliated() {
