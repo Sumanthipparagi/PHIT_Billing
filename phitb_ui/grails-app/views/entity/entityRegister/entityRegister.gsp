@@ -120,7 +120,7 @@
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <label for="parentEntity">Parent Entity</label>
-                                        <select class="form-control" style="width: 100%;" id="parentEntity"
+                                        <select onchange="parentEntityChanged()" class="form-control" style="width: 100%;" id="parentEntity"
                                                 name="parentEntity">
                                             <g:each in="${parentEntities}" var="pe">
                                                 <option value="${pe.id}"
@@ -228,6 +228,9 @@
 
     });
 
+    function parentEntityChanged() {
+        entityRegisterTable();
+    }
     function entityRegisterTable() {
         var parentEntityId = $("#parentEntity").val();
         entityregister = $(".entityRegisterTable").DataTable({

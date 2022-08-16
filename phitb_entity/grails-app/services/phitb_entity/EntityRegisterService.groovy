@@ -58,7 +58,7 @@ class EntityRegisterService {
         long entityId = paramsJsonObject.get("entityId")
         long parentEntityId = 0
         if(paramsJsonObject.has("parentEntityId"))
-            parentEntityId = paramsJsonObject.get("parentEntityId")
+            parentEntityId = Long.parseLong(paramsJsonObject.get("parentEntityId"))
         boolean isSuperUser = false
         if(paramsJsonObject.has("superuser"))
             isSuperUser = paramsJsonObject.get("superuser")
