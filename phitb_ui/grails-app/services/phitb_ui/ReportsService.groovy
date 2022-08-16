@@ -271,4 +271,36 @@ class ReportsService {
             log.error('Service :ReportsService , action :  getCustomerWiseReport  , Ex:' + ex)
         }
     }
+
+    def getProductStatement(String entityId, String dateRange, String financialYear, String sortBy) {
+        JSONObject jsonObject = new JSONObject()
+        jsonObject.put("entityId",entityId)
+        jsonObject.put("dateRange", dateRange)
+        jsonObject.put("financialYear", financialYear)
+        jsonObject.put("sortBy", sortBy)
+        Client client = ClientBuilder.newClient()
+        WebTarget target = client.target(new Links().API_GATEWAY)
+        try
+        {
+            Response apiResponse = target
+                    .path(new Links().SALE_BILL_REPORTS)
+                    .request(MediaType.APPLICATION_JSON_TYPE)
+                    .post(Entity.entity(jsonObject.toString(),MediaType.APPLICATION_JSON_TYPE))
+            if(apiResponse.status == 200)
+            {
+                JSONObject jsonObject1 = new JSONObject(apiResponse.readEntity(String.class))
+                return jsonObject1
+            }
+            else
+            {
+                return null
+            }
+
+        }
+        catch (Exception ex)
+        {
+            System.err.println('Service :ReportsService , action :  getProductStatement  , Ex:' + ex)
+            log.error('Service :ReportsService , action :  getProductStatement  , Ex:' + ex)
+        }
+    }
 }

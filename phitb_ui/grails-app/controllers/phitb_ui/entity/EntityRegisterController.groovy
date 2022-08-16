@@ -30,6 +30,12 @@ class EntityRegisterController {
             ArrayList<String> countrylist = new CountryController().show() as ArrayList<String>
             ArrayList<String> zoneList = new ZoneController().show() as ArrayList<String>
             ArrayList<String> account = new AccountRegisterController().show() as ArrayList<String>
+            JSONArray parentEntities = new JSONArray()
+            def parentEntitiesResponse = new EntityService().getParentEntities(session.getAttribute("entityId").toString())
+            if(parentEntitiesResponse.status == 200)
+            {
+                parentEntities = new JSONArray(parentEntitiesResponse.readEntity(String.class))
+            }
             ArrayList<String> managerList = []
             userregister.each {
                 if (it.role.name.toString().equalsIgnoreCase('MANAGER')) {
@@ -47,7 +53,8 @@ class EntityRegisterController {
                                                                           statelist   : statelist, countrylist: countrylist,
                                                                           salesmanList: salesmanList,
                                                                           managerList : managerList, zoneList: zoneList,
-                                                                          entitytype  : entitytype, account: account
+                                                                          entitytype  : entitytype, account: account,
+                                                                          parentEntities: parentEntities
             ])
         }
         catch (Exception ex) {
@@ -150,6 +157,9 @@ class EntityRegisterController {
         try {
             JSONObject jsonObject = new JSONObject(params)
             jsonObject.put("entityId", session.getAttribute("entityId"))
+            if(params.parentEntityId) {
+                jsonObject.put("parentEntityId", params.parentEntityId)
+            }
             if (session.getAttribute("role").toString().equalsIgnoreCase(new Constants().SUPER_USER)) {
                 jsonObject.put("superuser", true)
             }
@@ -171,7 +181,7 @@ class EntityRegisterController {
     def save() {
         try {
             JSONObject jsonObject = new JSONObject(params)
-            if(session.getAttribute("role").toString().equalsIgnoreCase(Constants.SUPER_USER))
+            if(session.getAttribute("role").toString().equalsIgnoreCase(Constants.SUPER_USER) || session.getAttribute("role").toString().equalsIgnoreCase(Constants.ENTITY_ADMIN))
             {
                 boolean isParent = Boolean.parseBoolean(jsonObject.get("isParent"))
                 if(!isParent)

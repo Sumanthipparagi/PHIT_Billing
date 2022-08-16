@@ -16,7 +16,7 @@
     <asset:stylesheet rel="stylesheet" src="/themeassets/css/main.css"/>
     <asset:stylesheet rel="stylesheet" href="/themeassets/css/color_skins.css"/>
     <asset:stylesheet rel="stylesheet" href="/themeassets/plugins/sweetalert/sweetalert.css"/>
-    <asset:stylesheet src="/themeassets/plugins/bootstrap-select/css/bootstrap-select.css" rel="stylesheet"/>
+    <asset:stylesheet src="/themeassets/plugins/select2/dist/css/select2.min.css" rel="stylesheet"/>
     <asset:stylesheet src="/themeassets/js/pages/forms/basic-form-elements.js" rel="stylesheet"/>
     <asset:stylesheet
             src="/themeassets/plugins/bootstrap-material-datetimepicker/css/bootstrap-material-datetimepicker.css"
@@ -56,7 +56,7 @@
 <div class="page-loader-wrapper">
     <div class="loader">
         <div class="m-t-30"><img src="${assetPath(src: '/themeassets/images/logo.svg')}" width="48" height="48"
-                                 alt="Alpino"></div>
+                                 alt="PharmIT"></div>
 
         <p>Please wait...</p>
     </div>
@@ -70,7 +70,7 @@
                 <div class="col-lg-5 col-md-5 col-sm-12">
                     <h2>Entity Register</h2>
                     <ul class="breadcrumb padding-0">
-                        <li class="breadcrumb-item"><a href="index.html"><i class="zmdi zmdi-home"></i></a></li>
+                        <li class="breadcrumb-item"><a href="#"><i class="zmdi zmdi-home"></i></a></li>
                         <li class="breadcrumb-item active">Entity Register</li>
                     </ul>
                 </div>
@@ -105,11 +105,32 @@
                     %{--                        </ul>--}%
                     %{--                    </div>--}%
                     <div class="header">
-                        <a href="/entity-register/add-entity-register"><button type="button"
-                                                                               class="btn btn-round btn-primary m-t-15 addbtn"
-                                                                               data-toggle="modal"><font
-                                    style="vertical-align: inherit;"><font
-                                        style="vertical-align: inherit;">Add Entity Regsiter</font></font></button></a>
+                        <div class="row">
+                            <div class="col-md-3">
+                                <a href="/entity-register/add-entity-register"><button type="button"
+                                                                                       class="btn btn-round btn-primary m-t-15 addbtn"
+                                                                                       data-toggle="modal"><font
+                                            style="vertical-align: inherit;"><font
+                                                style="vertical-align: inherit;">Add Entity Regsiter</font></font>
+                                </button>
+                                </a>
+                            </div>
+
+                            <g:if test="${parentEntities?.size() > 0}">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="parentEntity">Parent Entity</label>
+                                        <select class="form-control" style="width: 100%;" id="parentEntity"
+                                                name="parentEntity">
+                                            <g:each in="${parentEntities}" var="pe">
+                                                <option value="${pe.id}"
+                                                        <g:if test="${pe.id == Long.parseLong(session.getAttribute("entityId").toString())}">selected</g:if>>${pe.entityName} - ${pe.entityType.name}</option>
+                                            </g:each>
+                                        </select>
+                                    </div>
+                                </div>
+                            </g:if>
+                        </div>
                     </div>
 
                     <div class="body">
@@ -152,10 +173,10 @@
             <div class="modal-body">
                 <table class="table table-condensed table-striped">
                     <thead>
-                        <tr>
-                            <th>Entity Name</th>
-                            <th>Entity Type</th>
-                        </tr>
+                    <tr>
+                        <th>Entity Name</th>
+                        <th>Entity Type</th>
+                    </tr>
                     </thead>
                     <tbody id="affiliateContent">
 
@@ -192,12 +213,14 @@
 <asset:javascript src="/themeassets/plugins/momentjs/moment.js"/>
 <asset:javascript src="/themeassets/plugins/bootstrap-material-datetimepicker/js/bootstrap-material-datetimepicker.js"/>
 <asset:javascript src="/themeassets/js/pages/forms/basic-form-elements.js"/>
+<asset:javascript src="/themeassets/plugins/select2/dist/js/select2.min.js"/>
 
 <script>
 
     var entityregister;
     var id = null;
     $(function () {
+        $("#parentEntity").select2();
         entityRegisterTable();
         // var $demoMaskedInput = $('.demo-masked-input');
         // $demoMaskedInput.find('.datetime').inputmask('d/m/y h:m:s', { placeholder: '__/__/____ __:__:__:__', alias:
@@ -206,6 +229,7 @@
     });
 
     function entityRegisterTable() {
+        var parentEntityId = $("#parentEntity").val();
         entityregister = $(".entityRegisterTable").DataTable({
             "order": [[0, "desc"]],
             sPaginationType: "simple_numbers",
@@ -225,6 +249,9 @@
             ajax: {
                 type: 'GET',
                 url: '/entity-register/datatable',
+                data:{
+                    parentEntityId: parentEntityId
+                },
                 dataType: 'json',
                 dataSrc: function (json) {
                     var return_data = [];
@@ -243,7 +270,7 @@
                             'gstin': json.data[i].gstn,
                             'address': "<div style='white-space:normal;'>" + json.data[i].addressLine1 + "<br>" +
                                 json.data[i].addressLine2 + "</div>",
-                            'action': editbtn + ' ' + deletebtn
+                            'action': editbtn
                         });
                     }
                     return return_data;
@@ -273,7 +300,7 @@
                 $("#affiliateContent").empty();
                 var affCnt = "";
                 $.each(data, function (index, value) {
-                    if(value.id != parentId) {
+                    if (value.id != parentId) {
                         affCnt += "<tr><td>" + value.entityName + "</td><td>" + value.entityType.name + "</td></tr>";
                     }
                 });

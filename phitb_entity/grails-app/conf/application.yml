@@ -96,7 +96,7 @@ environments:
     dataSource:
       dbCreate: update
   #    url: jdbc:mysql://localhost/phitb_entity?useSSL=false&autoReconnect=true&useUnicode=true&characterEncoding=UTF-8
-      url: jdbc:mysql://localhost/phitb_entity?useSSL=false&autoReconnect=true&useUnicode=true&characterEncoding=UTF-8
+      url: jdbc:mysql://172.16.17.143/phitb_entity?useSSL=false&autoReconnect=true&useUnicode=true&characterEncoding=UTF-8
   test:
     dataSource:
       dbCreate: update

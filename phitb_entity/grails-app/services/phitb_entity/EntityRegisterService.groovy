@@ -56,6 +56,9 @@ class EntityRegisterService {
     JSONObject dataTables(JSONObject paramsJsonObject, String start, String length)
     {
         long entityId = paramsJsonObject.get("entityId")
+        long parentEntityId = 0
+        if(paramsJsonObject.has("parentEntityId"))
+            parentEntityId = paramsJsonObject.get("parentEntityId")
         boolean isSuperUser = false
         if(paramsJsonObject.has("superuser"))
             isSuperUser = paramsJsonObject.get("superuser")
@@ -87,8 +90,12 @@ class EntityRegisterService {
                 }
             }
 
-            if(!isSuperUser)
-                eq('parentEntity', entityId)
+            if(!isSuperUser) {
+                if(parentEntityId == 0)
+                    eq('parentEntity', entityId)
+                else
+                    eq('parentEntity', parentEntityId)
+            }
             else
                 eqProperty("id", "parentEntity")
 
