@@ -749,6 +749,9 @@ class UrlMappings {
         "/reports/inventory/statement"(controller: "inventoryReport", action: "statement")
         "/reports/inventory/getstatement"(controller: "inventoryReport", action: "getStatement")
 
+        "/reports/products/statement"(controller: "productReport", action: "productStatement")
+        "/reports/products/getstatement"(controller: "productReport", action: "getProductStatement")
+
 
         /*<-------------------------------------------Shipments------------------------------------------------->*/
 

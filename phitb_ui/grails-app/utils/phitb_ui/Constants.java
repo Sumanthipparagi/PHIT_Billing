@@ -173,5 +173,11 @@ public class Constants
     public static  String REPLACEMENT = "REPLACEMENT";
 
 
+    //SALE RETURN CONSTANTS
+    public static String REASON_SALE_RETURN = "R";
+    public static String REASON_EXPIRED = "E"; //don't add to stocks
+    public static String REASON_BREAKAGE = "B"; //don't add to stocks
+    public static String REASON_OTHER = "O"; //don't add to stocks
+    public static String REASON_OTHER_ADD = "OA";
 
 }

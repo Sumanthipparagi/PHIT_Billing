@@ -503,6 +503,12 @@
                                     <li><a href="/reports/inventory/statement">Statement</a></li>
                                 </ul>
                             </li>
+                            <li><a href="javascript:void(0);" class="menu-toggle">Product Report</span><span
+                                    class="badge badge-success float-right"></span></a>
+                                <ul class="ml-menu">
+                                    <li><a href="/reports/products/statement">Statement</a></li>
+                                </ul>
+                            </li>
                         </ul>
                     </li>
                 </g:if>
