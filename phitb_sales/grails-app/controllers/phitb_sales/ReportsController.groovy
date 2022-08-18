@@ -450,13 +450,13 @@ class ReportsController {
             println(jsonObject.toString())
             SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy")
             Date date = sdf.parse(jsonObject.get("date").toString())
-            Long entityId = jsonObject.get("entityId") as Long
-            HashMap<String, JSONArray> totalSales = new SaleReportsService().getTotalSalesTillDate(date, entityId)
-            HashMap<String, JSONArray> totalSaleReturns = new SaleReportsService().getTotalSaleReturnTillDate(date, entityId)
+            long entityId = jsonObject.get("entityId")
+            HashMap<Long, JSONArray> totalSales = new SaleReportsService().getTotalSalesTillDate(date, entityId)
+            HashMap<Long, JSONArray> totalSaleReturns = new SaleReportsService().getTotalSaleReturnTillDate(date, entityId)
             JSONObject responseJson = new JSONObject()
             responseJson.put("totalSales", totalSales)
             responseJson.put("totalSaleReturns", totalSaleReturns)
-            return totalSaleReturns
+            respond responseJson
         }
         catch (Exception e)
         {
