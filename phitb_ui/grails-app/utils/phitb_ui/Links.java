@@ -448,6 +448,7 @@ public class Links
     public static String SALE_ENTRY_STATS = "api/v1.0/sales/reports/statistics";
 
     public static String SALE_INFO_REPORTS = "api/v1.0/sales/reports/salesinfo";
+    public static String PURCHASE_INFO_REPORTS = "api/v1.0/purchase/reports/purchaseinfo";
 
     public static String GET_OUTSTANDING_REPORT = "api/v1.0/accounts/reports/outstanding";
 

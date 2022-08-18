@@ -325,7 +325,9 @@ class ProductReportController {
 
             //TODO: get opening and closing stock
             String startDate = dateRange.split("-")[0]
-            def test = new ReportsService().getSaleInfoTillDate(entityId, startDate)
+            def saleInfos = new ReportsService().getSaleInfoTillDate(entityId, startDate)
+            def purchaseInfo = new ReportsService().getPurchaseInfoTillDate(entityId, startDate)
+            //TODO: Stock adjustment details to be added
             respond productDetails, formats: ['json']
         }
         catch (Exception ex)

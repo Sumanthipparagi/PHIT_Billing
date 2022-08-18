@@ -453,9 +453,13 @@ class ReportsController {
             long entityId = jsonObject.get("entityId")
             HashMap<Long, JSONArray> totalSales = new SaleReportsService().getTotalSalesTillDate(date, entityId)
             HashMap<Long, JSONArray> totalSaleReturns = new SaleReportsService().getTotalSaleReturnTillDate(date, entityId)
+            HashMap<Long, JSONArray> totalSampleSales = new SaleReportsService().getTotalSampleSalesTillDate(date, entityId)
+            HashMap<Long, JSONArray> totalGtn = new SaleReportsService().getGTNTillDate(date, entityId)
             JSONObject responseJson = new JSONObject()
             responseJson.put("totalSales", totalSales)
             responseJson.put("totalSaleReturns", totalSaleReturns)
+            responseJson.put("totalSampleSales", totalSampleSales)
+            responseJson.put("totalGtn", totalGtn)
             respond responseJson
         }
         catch (Exception e)

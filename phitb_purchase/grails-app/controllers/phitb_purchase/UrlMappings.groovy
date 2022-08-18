@@ -94,6 +94,8 @@ class UrlMappings {
             "/tempuserlog/datatable(.$format)?"(controller: 'tempUserLog') { action = [GET: 'dataTable'] }
             "/tempuserlog/$id(.$format)?"(controller: 'tempUserLog') { action = [GET: 'show', PUT: 'update', DELETE: 'delete'] }
 
+            "/reports/purchaseinfo(.$format)?"(controller: 'reports', action: 'getPurchaseInfoTillDate')
+
 //            status
             "/status"(controller: 'status', action: 'index')
 

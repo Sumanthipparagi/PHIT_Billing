@@ -85,4 +85,82 @@ class SaleReportsService {
         }
         return totalSaleReturns
     }
+
+    HashMap<Long, JSONArray> getTotalSampleSalesTillDate(Date date, long entityId)
+    {
+        HashMap<Long, JSONArray> totalSampleSales = new HashMap<>()
+        ArrayList<SampleConversion> sampleConversions = SampleConversion.findAllByDateCreatedLessThanEqualsAndEntityIdAndBillStatusNotEqual(date, entityId, "CANCELLED")
+        if(sampleConversions.size()>0) {
+            ArrayList<SampleConversionDetails> productDetails = SampleConversionDetails.findAllByBillIdInList(sampleConversions.id)
+            for (SampleConversionDetails productDetail : productDetails) {
+                if (totalSampleSales.containsKey(productDetail.productId)) {
+                    JSONArray salesInfos = totalSampleSales.get(productDetail.productId)
+                    ArrayList<String> batchNumbers = salesInfos.batchNumber
+                    if (batchNumbers.contains(productDetail.batchNumber)) {
+                        for (JSONObject salesInfo : salesInfos) {
+                            if (salesInfo.batchNumber.equalsIgnoreCase(productDetail.batchNumber)) {
+                                salesInfo.sqty += productDetail.sqty
+                                salesInfo.freeQty += productDetail.freeQty
+                            }
+                        }
+                    } else {
+                        JSONObject salesInfo = new JSONObject()
+                        salesInfo.put("batchNumber", productDetail.batchNumber)
+                        salesInfo.put("productId", productDetail.productId)
+                        salesInfo.put("sqty", productDetail.sqty)
+                        salesInfo.put("freeQty", productDetail.freeQty)
+                        salesInfos.put(salesInfo)
+                    }
+                } else {
+                    JSONObject salesInfo = new JSONObject()
+                    salesInfo.put("batchNumber", productDetail.batchNumber)
+                    salesInfo.put("productId", productDetail.productId)
+                    salesInfo.put("sqty", productDetail.sqty)
+                    salesInfo.put("freeQty", productDetail.freeQty)
+                    totalSampleSales.put(productDetail.productId, new JSONArray().put(salesInfo))
+                }
+            }
+        }
+
+        return totalSampleSales
+    }
+
+    HashMap<Long, JSONArray> getGTNTillDate(Date date, long entityId)
+    {
+        HashMap<Long, JSONArray> totalGtn = new HashMap<>()
+        ArrayList<GoodsTransferNote> goodsTransferNotes = GoodsTransferNote.findAllByDateCreatedLessThanEqualsAndEntityIdAndBillStatusNotEqual(date, entityId, "CANCELLED")
+        if(goodsTransferNotes.size()>0) {
+            ArrayList<GoodsTransferNoteProduct> productDetails = GoodsTransferNoteProduct.findAllByBillIdInList(goodsTransferNotes.id)
+            for (GoodsTransferNoteProduct productDetail : productDetails) {
+                if (totalGtn.containsKey(productDetail.productId)) {
+                    JSONArray salesInfos = totalGtn.get(productDetail.productId)
+                    ArrayList<String> batchNumbers = salesInfos.batchNumber
+                    if (batchNumbers.contains(productDetail.batchNumber)) {
+                        for (JSONObject salesInfo : salesInfos) {
+                            if (salesInfo.batchNumber.equalsIgnoreCase(productDetail.batchNumber)) {
+                                salesInfo.sqty += productDetail.sqty
+                                salesInfo.freeQty += productDetail.freeQty
+                            }
+                        }
+                    } else {
+                        JSONObject salesInfo = new JSONObject()
+                        salesInfo.put("batchNumber", productDetail.batchNumber)
+                        salesInfo.put("productId", productDetail.productId)
+                        salesInfo.put("sqty", productDetail.sqty)
+                        salesInfo.put("freeQty", productDetail.freeQty)
+                        salesInfos.put(salesInfo)
+                    }
+                } else {
+                    JSONObject salesInfo = new JSONObject()
+                    salesInfo.put("batchNumber", productDetail.batchNumber)
+                    salesInfo.put("productId", productDetail.productId)
+                    salesInfo.put("sqty", productDetail.sqty)
+                    salesInfo.put("freeQty", productDetail.freeQty)
+                    totalGtn.put(productDetail.productId, new JSONArray().put(salesInfo))
+                }
+            }
+        }
+
+        return totalGtn
+    }
 }

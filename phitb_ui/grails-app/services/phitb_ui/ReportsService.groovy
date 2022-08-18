@@ -277,8 +277,7 @@ class ReportsService {
         jsonObject.put("entityId",Long.parseLong(entityId))
         jsonObject.put("date", date)
         Client client = ClientBuilder.newClient()
-        //WebTarget target = client.target(new Links().API_GATEWAY)
-        WebTarget target = client.target("http://localhost:8083")
+        WebTarget target = client.target(new Links().API_GATEWAY)
         try
         {
             Response apiResponse = target
@@ -301,5 +300,40 @@ class ReportsService {
             System.err.println('Service :ReportsService , action :  getSaleInfoTillDate  , Ex:' + ex)
             log.error('Service :ReportsService , action :  getSaleInfoTillDate  , Ex:' + ex)
         }
+    }
+
+    def getPurchaseInfoTillDate(String entityId, String date) {
+        JSONObject jsonObject = new JSONObject()
+        jsonObject.put("entityId",Long.parseLong(entityId))
+        jsonObject.put("date", date)
+        Client client = ClientBuilder.newClient()
+        WebTarget target = client.target(new Links().API_GATEWAY)
+        try
+        {
+            Response apiResponse = target
+                    .path(new Links().PURCHASE_INFO_REPORTS)
+                    .request(MediaType.APPLICATION_JSON_TYPE)
+                    .post(Entity.entity(jsonObject.toString(),MediaType.APPLICATION_JSON_TYPE))
+            if(apiResponse.status == 200)
+            {
+                JSONObject jsonObject1 = new JSONObject(apiResponse.readEntity(String.class))
+                return jsonObject1
+            }
+            else
+            {
+                return null
+            }
+
+        }
+        catch (Exception ex)
+        {
+            System.err.println('Service :ReportsService , action :  getPurchaseInfoTillDate  , Ex:' + ex)
+            log.error('Service :ReportsService , action :  getPurchaseInfoTillDate  , Ex:' + ex)
+        }
+    }
+
+    def calculateClosingStocks()
+    {
+
     }
 }
