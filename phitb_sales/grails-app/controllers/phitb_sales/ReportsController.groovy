@@ -442,4 +442,26 @@ class ReportsController {
         stats.put("totalSales", Double.parseDouble(df.format(totalSales)))
         respond stats, formats: ['json']
     }
+
+    def getSalesInfoTillDate()
+    {
+        try {
+            JSONObject jsonObject = new JSONObject(request.reader.text)
+            println(jsonObject.toString())
+            SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy")
+            Date date = sdf.parse(jsonObject.get("date").toString())
+            Long entityId = jsonObject.get("entityId") as Long
+            HashMap<String, JSONArray> totalSales = new SaleReportsService().getTotalSalesTillDate(date, entityId)
+            HashMap<String, JSONArray> totalSaleReturns = new SaleReportsService().getTotalSaleReturnTillDate(date, entityId)
+            JSONObject responseJson = new JSONObject()
+            responseJson.put("totalSales", totalSales)
+            responseJson.put("totalSaleReturns", totalSaleReturns)
+            return totalSaleReturns
+        }
+        catch (Exception e)
+        {
+            e.printStackTrace()
+            response.status = 400
+        }
+    }
 }

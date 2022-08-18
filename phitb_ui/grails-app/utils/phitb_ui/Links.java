@@ -447,6 +447,8 @@ public class Links
     public static String SALE_RETURN_BY_DATERANGE = "api/v1.0/sales/salereturnbydaterange";
     public static String SALE_ENTRY_STATS = "api/v1.0/sales/reports/statistics";
 
+    public static String SALE_INFO_REPORTS = "api/v1.0/sales/reports/salesinfo";
+
     public static String GET_OUTSTANDING_REPORT = "api/v1.0/accounts/reports/outstanding";
 
     public static String GST_SALES_REPORTS = "api/v1.0/sales/reports/salesgst";

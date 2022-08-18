@@ -272,18 +272,17 @@ class ReportsService {
         }
     }
 
-    def getProductStatement(String entityId, String dateRange, String financialYear, String sortBy) {
+    def getSaleInfoTillDate(String entityId, String date) {
         JSONObject jsonObject = new JSONObject()
-        jsonObject.put("entityId",entityId)
-        jsonObject.put("dateRange", dateRange)
-        jsonObject.put("financialYear", financialYear)
-        jsonObject.put("sortBy", sortBy)
+        jsonObject.put("entityId",Long.parseLong(entityId))
+        jsonObject.put("date", date)
         Client client = ClientBuilder.newClient()
-        WebTarget target = client.target(new Links().API_GATEWAY)
+        //WebTarget target = client.target(new Links().API_GATEWAY)
+        WebTarget target = client.target("http://localhost:8083")
         try
         {
             Response apiResponse = target
-                    .path(new Links().SALE_BILL_REPORTS)
+                    .path(new Links().SALE_INFO_REPORTS)
                     .request(MediaType.APPLICATION_JSON_TYPE)
                     .post(Entity.entity(jsonObject.toString(),MediaType.APPLICATION_JSON_TYPE))
             if(apiResponse.status == 200)
@@ -299,8 +298,8 @@ class ReportsService {
         }
         catch (Exception ex)
         {
-            System.err.println('Service :ReportsService , action :  getProductStatement  , Ex:' + ex)
-            log.error('Service :ReportsService , action :  getProductStatement  , Ex:' + ex)
+            System.err.println('Service :ReportsService , action :  getSaleInfoTillDate  , Ex:' + ex)
+            log.error('Service :ReportsService , action :  getSaleInfoTillDate  , Ex:' + ex)
         }
     }
 }

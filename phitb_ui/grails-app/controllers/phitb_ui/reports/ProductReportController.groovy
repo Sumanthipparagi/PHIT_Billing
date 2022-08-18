@@ -324,7 +324,8 @@ class ProductReportController {
             }
 
             //TODO: get opening and closing stock
-
+            String stratDate = dateRange.split("-")[0]
+            def test = new ReportsService().getSaleInfoTillDate(entityId, stratDate)
             respond productDetails, formats: ['json']
         }
         catch (Exception ex)

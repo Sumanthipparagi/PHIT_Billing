@@ -157,7 +157,7 @@ class StockActivityService {
             throw new BadRequestException()
         }
     }
-
+    
     def getClosingStocksOfProduct(String date, String entityId, JSONObject productBatches)
     {
         try {

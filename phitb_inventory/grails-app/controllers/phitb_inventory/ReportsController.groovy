@@ -13,4 +13,6 @@ class ReportsController {
         JSONObject jsonObject = new JSONObject(request.reader.text)
         ArrayList<StockBook> stocks = StockBook.findAllByEntityId(Long.parseLong(jsonObject.get("entityId").toString()))
     }
+
+
 }
