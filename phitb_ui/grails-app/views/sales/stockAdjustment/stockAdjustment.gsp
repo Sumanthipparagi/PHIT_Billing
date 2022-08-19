@@ -395,9 +395,9 @@
                 // {type: 'text', readOnly: true} //originalFqty
             ],
             hiddenColumns: true,
-            // hiddenColumns: {
-            //     columns: [11, 12, 13]
-            // },
+            hiddenColumns: {
+                columns: [12, 13,14]
+            },
             minSpareRows: 0,
             minSpareColumns: 0,
             enterMoves: {row: 0, col: 1},
