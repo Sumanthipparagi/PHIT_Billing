@@ -421,7 +421,15 @@
                                 <li><a href="/scheme-entry">Scheme Entry (Offers)</a></li>
                             </g:if>
                             <g:if test="${UtilsService.isPermitted("VIEW_STOCK_ADJUSTEMENT", session.getAttribute("permittedFeatures").toString())}">
-                                <li><a href="#">Stock Adjustment</a></li>
+%{--                                <li><a href="#">Stock Adjustment</a></li>--}%
+
+                                <li><a href="javascript:void(0);" class="menu-toggle">Stock Adjustment</span> <span
+                                        class="badge badge-success float-right"></span></a>
+                                    <ul class="ml-menu">
+                                        <li><a href="/stock-adjustment">Stock Adjustment</a></li>
+                                        <li><a href="/stock-adjustment-list">Stock Adjustment list</a></li>
+                                    </ul>
+                                </li>
                             </g:if>
                             <g:if test="${UtilsService.isPermitted("VIEW_CREDIT_DEBIT_SETTLEMENT", session.getAttribute("permittedFeatures").toString())}">
                                 <li><a href="#">Credit Debit Settlement</a></li>

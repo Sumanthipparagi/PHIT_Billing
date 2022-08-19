@@ -386,7 +386,30 @@ class InventoryService {
 
     }
 
-
+    def getTempStocksOfProductAndBatchAndEntityId(String id, String batch, String entityId){
+        Client client = ClientBuilder.newClient();
+        WebTarget target = client.target(new Links().API_GATEWAY)
+        //WebTarget target = client.target("http://localhost:8086")
+        String url = new Links().GET_TEMP_STOCK_PRODUCT+"/product/"+id+"/batch/"+batch+"/entityid/"+entityId
+        try {
+            Response apiResponse = target
+                    .path(url)
+                    .queryParam("entityId", entityId)
+                    .request(MediaType.APPLICATION_JSON_TYPE)
+                    .get()
+            if(apiResponse.status == 200)
+            {
+                JSONArray jsonArray = new JSONArray(apiResponse.readEntity(String.class))
+                return jsonArray
+            }
+            else
+                return null
+        }
+        catch (Exception ex) {
+            System.err.println('Service:InventoryService , action :  getStocksOfProductAndBatch  , Ex:' + ex)
+            log.error('Service:InventoryService , action :  getStocksOfProductAndBatch  , Ex:' + ex)
+        }
+    }
 
     def getStocksOfProductAndBatch(String id, String batch, String entityId) {
         Client client = ClientBuilder.newClient();

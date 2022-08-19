@@ -305,11 +305,19 @@
                         var approveInvoice = "";
                         var cancelInvoice = "";
                         var editInvoice = "";
+                        var cloneInvoice="";
                         if (json.data[i].billStatus !== "CANCELLED") {
                             cancelInvoice = '<a class="dropdown-item" title="Cancel" onclick="cancelBill(' + json.data[i].id + ')" href="#" style="color: red;"><i class="fa fa-times"></i> Cancel</a>';
                         } else if (json.data[i].billStatus !== "DRAFT") {
                             approveInvoice = '';
+                        }
 
+                        if (json.data[i].billStatus!== "DRAFT" && json.data[i].invoiceNumber!==undefined) {
+                            cloneInvoice =
+                                '<a class="dropdown-item" title="Clone"  href="/sale-entry/clone-invoice?saleBillId='
+                                + json.data[i].id + '&type=CLONE" target="_blank"><i class="fa fa-clone"></i> Clone</a>';
+                        }else{
+                            cloneInvoice=""
                         }
 
                         var printbtn = '<a target="_blank" class="dropdown-item" data-id="' + json.data[i].id + '" href="/sale-entry/print-invoice?id=' + json.data[i].id + '"><i class="fa fa-print"></i> Print</a>';
@@ -321,8 +329,7 @@
                                 invoiceNumber = "DRAFT";
                         }
                         if (json.data[i].billStatus === "DRAFT") {
-                            editInvoice = '<a class="dropdown-item"  href="/edit-sale-entry?saleBillId=' +
-                                json.data[i].id + '"><i class="fa fa-edit"></i> Edit</a>';
+                            editInvoice = '<a class="dropdown-item"  href="/edit-sale-entry?saleBillId=' + json.data[i].id + '"><i class="fa fa-edit"></i> Edit</a>';
                         }
                         if(json.data[i].balance === 0)
                         {
@@ -337,6 +344,7 @@
                             approveInvoice +
                             printbtn +
                             editInvoice +
+                            cloneInvoice +
                             cancelInvoice +
                             "  </div>\n" +
                             "</div>"
@@ -415,6 +423,9 @@
 
 
     }
+
+
+
 
     function invoiceStatusChanged() {
         loadSaleInvoiceTable();

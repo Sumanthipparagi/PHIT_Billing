@@ -60,7 +60,8 @@
                     %{--<h2>Sale Entry</h2>--}%
                     <ul class="breadcrumb padding-0">
                         <li class="breadcrumb-item"><a href="#"><i class="zmdi zmdi-home"></i></a></li>
-                        <li class="breadcrumb-item active"><g:if test="${saleBillDetail}">Edit</g:if> Sale Entry</li>
+                        <li class="breadcrumb-item active"><g:if test="${saleBillDetail}">Edit</g:if> Sale
+                        Entry</li>
                     </ul>
                 </div>
             </div>
@@ -132,14 +133,25 @@
                                 </select>
                             </div>
 
-                            <div class="col-md-4 mt-2">
+                            <div class="col-md-3 mt-2">
                                 <br>
                                 <a class="btn btn-primary waves-effect" role="button" data-toggle="collapse"
                                    href="#shipmentDetails" aria-expanded="false"
                                    aria-controls="shipmentDetails"><i class="zmdi zmdi-truck"></i> Shipment Information
                                 </a>
                             </div>
-
+%{--                            data-toggle="modal"--}%
+%{--                            data-target="#myModal"--}%
+                            <g:if test="${tempStockArray!=null}">
+                                <div class="col-md-3 mt-2">
+                                    <br>
+                                    <a class="btn btn-primary waves-effect" role="button" data-toggle="collapse"
+                                       href="#tempStockDetails" aria-expanded="false" aria-controls="tempStockDetails"
+                                       style="color:white;"><i class="zmdi zmdi-long-arrow-up"></i>&nbsp;
+                                        Products(${tempStockArray.size()})
+                                    </a>
+                                </div>
+                            </g:if>
                         </div>
 
                         <div class="row">
@@ -157,7 +169,8 @@
                                         <div class="col-md-3">
                                             <div class="form-group">
                                                 <label for="lrDate">LR Date</label>
-                                                <input type="date" maxlength="150" id="lrDate" name="lrDate"  class="form-control"/>
+                                                <input type="date" maxlength="150" id="lrDate" name="lrDate"
+                                                       class="form-control"/>
                                             </div>
                                         </div>
 
@@ -165,10 +178,11 @@
                                             <div class="form-group">
                                                 <label for="transportType">Transporter</label>
                                                 <select id="transportType" name="transportType"
-                                                       class="form-control">
+                                                        class="form-control">
                                                     <option value="">--Please Select--</option>
                                                     <g:each in="${transporter}" var="t">
-                                                        <option value="${t.id}" <g:if test="${saleTransportDetail?.transporterId == t.id}">selected</g:if>>${t.name}</option>
+                                                        <option value="${t.id}"
+                                                                <g:if test="${saleTransportDetail?.transporterId == t.id}">selected</g:if>>${t.name}</option>
                                                     </g:each>
                                                 </select>
                                             </div>
@@ -176,6 +190,46 @@
                                     </div>
                                     %{--<div class="well">Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. Nihil anim keffiyeh helvetica,
                                     craft beer labore wes anderson cred nesciunt sapiente ea proident.</div>--}%
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-12 col-lg-12 col-sm-12">
+                                <div class="collapse" id="tempStockDetails">
+                                    <g:if test="${tempStockArray?.size() > 0}">
+                                        <div class="table-responsive">
+                                            <table class="table table-bordered">
+                                                <thead>
+                                                <tr>
+                                                    <th scope="col">Product</th>
+                                                    <th scope="col">Batch Number</th>
+                                                    <th scope="col">Sale Qty</th>
+                                                    <th scope="col">Free Qty</th>
+                                                    <th scope="col">Remaining Qty</th>
+                                                    <th scope="col">Remaining Free Qty</th>
+                                                </tr>
+                                                </thead>
+                                                <tbody>
+                                                <g:each var="ta" in="${tempStockArray}">
+                                                    <tr>
+                                                        <td>${ta.product.productName}</td>
+                                                        <td>${ta.batchNumber}</td>
+                                                        <td>${ta.userOrderQty}</td>
+                                                        <td>${ta.userOrderFreeQty}</td>
+                                                        <td>${ta.remainingQty}</td>
+                                                        <td>${ta.remainingFreeQty}</td>
+                                                    </tr>
+                                                </g:each>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </g:if>
+                                    <g:else>
+                                        <br>
+                                        <br>
+                                        <h5 style="text-align: center;">All Products are updated..</h5>
+                                    </g:else>
                                 </div>
                             </div>
                         </div>
@@ -291,6 +345,61 @@
     </div>
 </section>
 
+<div id="myModal" class="modal fade" tabindex="-1">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h6 class="modal-title">Following products have been not added (User Order Qty greater than Stock
+                Qty)</h6>
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+
+            <div class="modal-body">
+                <g:if test="${tempStockArray?.size() > 0}">
+                    <div class="table-responsive">
+                        <table class="table table-bordered">
+                            <thead>
+                            <tr>
+                                <th scope="col">Product</th>
+                                <th scope="col">Batch Number</th>
+                                <th scope="col">Sale Qty</th>
+                                <th scope="col">Free Qty</th>
+                                <th scope="col">Remaining Qty</th>
+                                <th scope="col">Remaining Free Qty</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <g:each var="ta" in="${tempStockArray}">
+                                <tr>
+                                    <td>${ta.product.productName}</td>
+                                    <td>${ta.batchNumber}</td>
+                                    <td>${ta.userOrderQty}</td>
+                                    <td>${ta.userOrderFreeQty}</td>
+                                    <td>${ta.remainingQty}</td>
+                                    <td>${ta.remainingFreeQty}</td>
+                                </tr>
+                            </g:each>
+                            </tbody>
+                        </table>
+                    </div>
+                </g:if>
+                <g:else>
+                    <br>
+                    <br>
+                    <h5 style="text-align: center;">All Products are updated..</h5>
+                </g:else>
+
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                %{--                <button type="button" class="btn btn-primary">Save</button>--}%
+            </div>
+        </div>
+    </div>
+</div>
+
+
 <g:include view="controls/sales/batch-detail.gsp"/>
 <g:include view="controls/delete-modal.gsp"/>
 
@@ -374,6 +483,16 @@
         $('#date').val(moment().format('YYYY-MM-DD'));
         $('#lrDate').val(moment('${saleTransportDetail?.lrDate}').format('YYYY-MM-DD'));
         $('#date').attr("readonly");
+
+        <g:if test="${tempStockArray!=null && params.type == "CLONE"}">
+        var tempStockArray = '${tempStockArray}';
+        var tempStockJSON = JSON.parse(tempStockArray.replace(/&quot;/g, '"'));
+        console.log(tempStockJSON);
+        <g:if test="${tempStockArray.size()!=0}">
+        $('#myModal').modal('show');
+        </g:if>
+        </g:if>
+
         <g:each in="${customers}" var="cs">
         customers.push({"id": ${cs.id}, "noOfCrDays": ${cs.noOfCrDays}});
         </g:each>
@@ -461,14 +580,17 @@
                     <g:if test="${customer == null}">
                     var id = hot.getDataAtCell(coords.row, 15);
                     deleteTempStockRow(id, coords.row);
+                    console.log("delete temp stock row deleted!!")
                     </g:if>
                     <g:else>
                     var id = hot.getDataAtCell(coords.row, 24);
-                    if (id == null) {
+                    if (id == null && ${params.type == "CLONE"}) {
                         id = hot.getDataAtCell(coords.row, 15);
                         deleteTempStockRow(id, coords.row);
+                        console.log("delete temp stock row deleted!!")
                     } else {
                         deleteSaleBillRow(id, coords.row);
+                        console.log("Sale product deleted!!")
                     }
                     </g:else>
 
@@ -825,11 +947,12 @@
             beforeKeyDown(e) {
                 const selection = batchHot.getSelected()[0][0];
                 var rowData = batchHot.getDataAtRow(selection);
-                console.log(rowData);
+                console.log(rowData[0]);
                 if (e.keyCode === 13) {
 
                     if (!checkForDuplicateEntry(rowData[0])) {
                         //check for schemes
+                        console.log(!checkForDuplicateEntry(rowData[0]));
                         checkSchemes(hot.getDataAtCell(mainTableRow, 1), rowData[0]); //product, batch
                         var batchId = rowData[12];
                         hot.setDataAtCell(mainTableRow, 2, rowData[0]);
@@ -930,14 +1053,29 @@
         }
     }
 
+    var tempArray = [];
+
+
     function loadTempStockBookData() {
         var userId = "${session.getAttribute("userId")}";
+        var beforeSendSwal;
         $.ajax({
             type: "GET",
-            url: "tempstockbook/user/" + userId,
+            url: "/tempstockbook/user/" + userId,
             dataType: 'json',
+            beforeSend: function () {
+                beforeSendSwal = Swal.fire({
+                    // title: "Loading",
+                    html:
+                        '<img src="${assetPath(src: "/themeassets/images/1476.gif")}" width="100" height="100"/>',
+                    showDenyButton: false,
+                    showCancelButton: false,
+                    showConfirmButton: false,
+                    allowOutsideClick: false,
+                    background: 'transparent'
+                });
+            },
             success: function (data) {
-
                 saleData = data;
                 for (var i = 0; i < saleData.length; i++) {
                     hot.selectCell(i, 1);
@@ -994,11 +1132,11 @@
                         hot.setCellMeta(i, j, 'readOnly', true);
                     }
                 }
-
                 setTimeout(function () {
                     hot.selectCell(0, 1);
                     calculateTotalAmt();
                 }, 1000);
+                beforeSendSwal.close();
             }
         })
     }
@@ -1103,7 +1241,7 @@
             if (id) {
                 $.ajax({
                     type: "POST",
-                    url: "tempstockbook/delete/" + id,
+                    url: "/tempstockbook/delete/" + id,
                     dataType: 'json',
                     success: function (data) {
                         hot.alter("remove_row", row);
@@ -1165,9 +1303,9 @@
         var series = $("#series").val();
         var seriesCode = $("#series").find(':selected').data('seriescode');
         var duedate = $("#duedate").val();
-        var lrNumber =  $("#lrNumber").val();
-        var lrDate =  $("#lrDate").val();
-        var transporter=  $("#transportType").val();
+        var lrNumber = $("#lrNumber").val();
+        var lrDate = $("#lrDate").val();
+        var transporter = $("#transportType").val();
         duedate = moment(duedate, 'YYYY-MM-DD').toDate();
         duedate = moment(duedate).format('DD/MM/YYYY');
         var priority = $("#priority").val();
@@ -1199,11 +1337,13 @@
         var saleData = JSON.stringify(hot.getSourceData());
 
         var url = "";
-        <g:if test="${customer != null}">
-        url = "edit-sale-entry?id=" + '${saleBillDetail.id}';
+        <g:if test="${customer!= null && params.type!="CLONE"}">
+        url = "/edit-sale-entry?id=" + '${saleBillDetail.id}';
+        console.log("edit sale entry")
         </g:if>
         <g:else>
-        url = "sale-entry";
+        url = "/sale-entry";
+        console.log("save sale entry")
         </g:else>
         $.ajax({
             type: "POST",
@@ -1218,9 +1358,9 @@
                 billStatus: billStatus,
                 seriesCode: seriesCode,
                 invtype: invtype,
-                lrNumber:lrNumber,
-                lrDate:lrDate,
-                transporter:transporter,
+                lrNumber: lrNumber,
+                lrDate: lrDate,
+                transporter: transporter,
                 uuid: self.crypto.randomUUID()
             },
             success: function (data) {
@@ -1380,6 +1520,7 @@
         var saleTableData = hot.getData();
         for (var i = 0; i < saleTableData.length; i++) {
             if (productId === saleTableData[i][1]) {
+                console.log(saleTableData[i][2])
                 if (saleTableData[i][2] !== null && saleTableData[i][2] === batchNumber)
                     return true;
             }
@@ -1422,7 +1563,7 @@
             closeOnClickOutside: false
         });
         <g:if test="${customer}">
-        location.href = "sale-entry";
+        location.href = "/sale-entry";
         </g:if>
         <g:else>
         location.reload();
@@ -1447,11 +1588,17 @@
                         products.push({id: data[i].id, text: data[i].productName});
                     }
                 }
-                <g:if test="${params.saleBillId}">
+                <g:if test="${params.saleBillId && params.type!="CLONE"}">
                 loadDraftProducts();
+                console.log("Drafts Products loaded")
                 </g:if>
+                <g:elseif test="${params.type == "CLONE"}">
+                loadTempStockBookData();
+                console.log("tempstock Products loaded")
+                </g:elseif>
                 <g:else>
                 loadTempStockBookData();
+                console.log("tempstock Products loaded")
                 </g:else>
             },
             error: function () {

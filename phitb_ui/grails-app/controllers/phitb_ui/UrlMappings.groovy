@@ -488,6 +488,14 @@ class UrlMappings {
         "/sale-bill/adjust-credits"(controller: "salebillDetails", action: 'adjustCredits')
 
 
+//        stock Adjustment
+
+        "/stock-adjustment"(controller: 'stockAdjustmentDetails', action: 'stockAdjustment')
+        "/stock-adjustment-save"(controller: 'stockAdjustmentDetails', action: 'saveStockAdjustmentDetails')
+        "/stock-adjustment-list"(controller: 'stockAdjustmentDetails', action: 'stockAdjustmentList')
+        "/stock-adjustment-datatable"(controller: 'stockAdjustmentDetails', action: 'dataTable')
+
+
 //        Sale Retrun
         "/sale-return"(controller: "saleReturn") {
             action = [GET: "index", POST: 'saveSaleReturn']
@@ -531,6 +539,7 @@ class UrlMappings {
         "/sale-invoice"(controller: "saleEntry",action:"saleBill")
         "/sales/check-scheme"(controller: "saleEntry", action: "checkSchemeConfiguration")
         "/sale-entry/cancel-invoice"(controller: "saleEntry", action: "cancelInvoice")
+        "/sale-entry/clone-invoice"(controller: "saleEntry", action: "cloneSaleBillDetails")
 
 //        Scheme Entry
         "/scheme-entry" (controller: "schemeEntry", action: "index")

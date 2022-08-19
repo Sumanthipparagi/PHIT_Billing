@@ -3,6 +3,8 @@ package phitb_ui.sales
 import grails.converters.JSON
 import org.grails.web.json.JSONArray
 import org.grails.web.json.JSONObject
+import org.springframework.messaging.simp.SimpMessagingTemplate
+
 //import org.springframework.messaging.simp.SimpMessagingTemplate
 import phitb_ui.EInvoiceService
 import phitb_ui.EntityService
@@ -947,13 +949,10 @@ class SaleEntryController {
             saleProductDetail.put("sgstAmount", sgst)
             saleProductDetail.put("cgstAmount", cgst)
             saleProductDetail.put("igstAmount", igst)
-
-
             saleProductDetail.put("gstPercentage", sale.get("16").toString())
             saleProductDetail.put("sgstPercentage", sale.get("17").toString())
             saleProductDetail.put("cgstPercentage", sale.get("18").toString())
             saleProductDetail.put("igstPercentage", sale.get("19").toString())
-
             saleProductDetail.put("gstId", 0) //TODO: to be changed
             saleProductDetail.put("amount", value)
             saleProductDetail.put("reason", "") //TODO: to be changed
@@ -1032,6 +1031,54 @@ class SaleEntryController {
         if (response.status == 200) {
             def saleBillDetail = new JSONObject(response.readEntity(String.class))
             if (saleBillDetail) {
+                if(params.lrNumber!='' && params.lrDate!='' && params.transporter!='')
+                {
+                    JSONObject transportObject = new JSONObject();
+                    transportObject.put("finId", finId)
+                    transportObject.put("billId", saleBillDetail.id)
+                    transportObject.put("billType", "SALE_INVOICE")
+                    transportObject.put("serBillId", saleBillDetail.serBillId)
+                    transportObject.put("series", saleBillDetail.seriesId)
+                    transportObject.put("customerId", saleBillDetail.customerId)
+                    transportObject.put("transporterId", params.transporter)
+                    transportObject.put("lrDate", params.lrDate)
+                    transportObject.put("lrNumber", params.lrNumber)
+                    transportObject.put("cartonsCount", "")
+                    transportObject.put("paid", 0)
+                    transportObject.put("toPay", 0)
+                    transportObject.put("generalInfo", 0)
+                    transportObject.put("selfNo", 0)
+                    transportObject.put("ccm", 0)
+                    transportObject.put("recievedTemprature", 0)
+                    transportObject.put("freightCharge", 0)
+                    transportObject.put("vechileId", 0)
+                    transportObject.put("deliveryStatus", 0)
+                    transportObject.put("dispatchDateTime", 0)
+                    transportObject.put("deliveryDateTime", 0)
+                    transportObject.put("trackingDetails", 0)
+                    transportObject.put("ewaybillId", 0)
+                    transportObject.put("genralInfo", 0)
+                    transportObject.put("weight", 0)
+                    transportObject.put("ewaysupplytype", 0)
+                    transportObject.put("ewaysupplysubtype", 0)
+                    transportObject.put("ewaydoctype", 0)
+                    transportObject.put("consignmentNo", 0)
+                    transportObject.put("syncStatus", 0)
+                    transportObject.put("financialYear", 0)
+                    transportObject.put("entityTypeId", session.getAttribute('entityTypeId'))
+                    transportObject.put("entityId", session.getAttribute('entityId'))
+                    Response transportation = new SalesService().saveSaleTransportation(transportObject)
+                    if (transportation?.status == 200)
+                    {
+                        println("Transportation details added")
+                    }
+                    else
+                    {
+                        println("something went wrong!!")
+                    }
+                }else {
+                    println("Transportation Details not found!")
+                }
                 //update stockbook
                 for (JSONObject sale : saleData) {
                     String productId = sale.get("1")
@@ -1112,7 +1159,164 @@ class SaleEntryController {
         } else {
             response.status == 400
         }
+    }
+
+
+    def cloneSaleBillDetails() {
+        String entityId = session.getAttribute("entityId")?.toString()
+        JSONArray divisions = new ProductService().getDivisionsByEntityId(entityId)
+        ArrayList<String> customers = new EntityRegisterController().getByAffiliateById(entityId) as ArrayList<String>
+        def priorityList = new SystemService().getPriorityByEntity(entityId)
+        def series = new SeriesController().getByEntity(entityId)
+        def saleBillId = params.saleBillId
+        JSONObject saleBillDetail = new SalesService().getSaleBillDetailsById(saleBillId)
+        JSONObject saleTransportDetail = new SalesService().getSaleTransportationByBill(saleBillId)
+        Object transporter = new ShipmentService().getAllTransporterByEntity(entityId)
+        JSONObject customer = new EntityService().getEntityById(saleBillDetail.customerId.toString())
+//        if (saleBillDetail != null && saleBillDetail.billStatus == 'DRAFT') {
+        JSONArray saleProductDetails = new SalesService().getSaleProductDetailsByBill(saleBillId)
+        saleProductDetails.each {
+            def batchResponse = new ProductService().getBatchesOfProduct(it.productId.toString())
+            JSONArray batchArray = JSON.parse(batchResponse.readEntity(String.class)) as JSONArray
+            for (JSONObject batch : batchArray) {
+                if (batch.batchNumber == it.batchNumber) {
+                    it.put("batch", batch)
+                }
+            }
+            def apiResponse = new SalesService().getRequestWithId(it.productId.toString(), new Links().PRODUCT_REGISTER_SHOW)
+            it.put("product", JSON.parse(apiResponse.readEntity(String.class)) as JSONObject)
+        }
+        JSONArray tempstockArray = new JSONArray();
+        for(JSONObject  saleProductObject : saleProductDetails)
+        {
+           def stockBook = new InventoryService().getStocksOfProductAndBatch(saleProductObject?.productId?.toString(), saleProductObject?.batchNumber?.toString(), session.getAttribute("entityId").toString())
+            def tempStockBook = new InventoryService().getTempStocksOfProductAndBatchAndEntityId(saleProductObject?.productId?.toString(), saleProductObject?.batchNumber?.toString(), session.getAttribute("entityId").toString())
+            if(stockBook!=null)
+            {
+                Boolean stocksAvailable = false
+                if ((stockBook.remainingQty + stockBook.remainingFreeQty) >= (saleProductObject?.sqty +
+                        saleProductObject?.freeQty)) {
+                    stocksAvailable = true
+                }
+
+                if(tempStockBook.size() == 0){
+                    if(stocksAvailable)
+                    {
+
+                        if(tempStockBook.size() == 0)
+                        {
+                            long saleQty = saleProductObject?.sqty
+                            long freeQty = saleProductObject?.freeQty
+
+                            long remainingQty = stockBook.remainingQty
+                            long remainingFreeQty = stockBook.remainingFreeQty
+                            if (saleQty <= remainingQty) {
+                                remainingQty = remainingQty - saleQty
+
+                            } else if (saleQty > remainingQty && saleQty <= (remainingQty + remainingFreeQty)) {
+                                remainingFreeQty = remainingFreeQty - (saleQty - remainingQty)
+                                remainingQty = 0
+                            }
+                            if (freeQty <= remainingFreeQty) {
+                                remainingFreeQty = remainingFreeQty - freeQty
+                            } else if (freeQty > remainingFreeQty && freeQty <= (remainingQty + remainingFreeQty)) {
+                                remainingQty = remainingQty - (freeQty - remainingFreeQty)
+                                remainingFreeQty = 0
+                            }
+
+                            //Remove Negative
+                            long userOrderQty = (saleQty < 0 ? -saleQty : saleQty)
+                            long userOrderFreeQty = (freeQty < 0 ? -freeQty : freeQty)
+
+                            JSONObject jsonObject = new JSONObject()
+                            jsonObject.put("productId", saleProductObject?.productId)
+                            jsonObject.put("batchNumber", saleProductObject?.batchNumber)
+                            jsonObject.put("expDate", saleProductObject?.expiryDate)
+                            jsonObject.put("remainingQty", remainingQty)
+                            jsonObject.put("remainingFreeQty",remainingFreeQty)
+                            jsonObject.put("remainingReplQty", 0)
+                            jsonObject.put("saleRate", saleProductObject?.sRate)
+                            jsonObject.put("purchaseRate", saleProductObject?.pRate)
+                            jsonObject.put("mrp", saleProductObject?.mrp)
+                            jsonObject.put("discount", saleProductObject?.discount)
+                            jsonObject.put("packingDesc", saleProductObject?.product?.unitPacking)
+                            jsonObject.put("userOrderQty", userOrderQty)
+                            jsonObject.put("userOrderFreeQty", userOrderFreeQty)
+                            jsonObject.put("userOrderReplQty", 0)
+                            jsonObject.put("taxId", stockBook?.taxId)
+                            jsonObject.put("userId", session.getAttribute("userId"))
+                            jsonObject.put("entityId", session.getAttribute("entityId"))
+                            jsonObject.put("entityTypeId", session.getAttribute("entityTypeId"))
+                            jsonObject.put("redundantBatch", "")
+                            jsonObject.put("originalId", stockBook?.id)
+                            jsonObject.put("uuid", UUID.randomUUID())
+                            jsonObject.put("originalSqty", saleProductObject?.originalSqty)
+                            jsonObject.put("originalFqty", saleProductObject?.originalFqty)
+                            def apiResponse = new InventoryService().tempStockBookSave(jsonObject)
+                            if (apiResponse?.status == 200) {
+//                emitTempStockPool()
+                                println("Temp stock book added!")
+//                JSONObject obj = new JSONObject(apiResponse.readEntity(String.class))
+//                respond obj, formats: ['json'], status: 200
+                            }
+                        }
+                    }
+                    else
+                    {
+                        JSONObject tempStockObj = new JSONObject()
+                        tempStockObj.put("productId", saleProductObject?.productId)
+                        tempStockObj.put("batchNumber", saleProductObject?.batchNumber)
+                        tempStockObj.put("expDate", saleProductObject?.expiryDate)
+                        tempStockObj.put("remainingQty", stockBook?.remainingQty)
+                        tempStockObj.put("remainingFreeQty",stockBook?.remainingFreeQty)
+                        tempStockObj.put("remainingReplQty", 0)
+                        tempStockObj.put("saleRate", saleProductObject?.sRate)
+                        tempStockObj.put("purchaseRate", saleProductObject?.pRate)
+                        tempStockObj.put("mrp", saleProductObject?.mrp)
+                        tempStockObj.put("discount", saleProductObject?.discount)
+                        tempStockObj.put("packingDesc", saleProductObject?.product?.unitPacking)
+                        tempStockObj.put("userOrderQty", saleProductObject?.sqty)
+                        tempStockObj.put("userOrderFreeQty", saleProductObject?.freeQty)
+                        tempStockObj.put("userOrderReplQty", 0)
+                        tempStockObj.put("taxId", stockBook?.taxId)
+                        tempStockObj.put("userId", session.getAttribute("userId"))
+                        tempStockObj.put("entityId", session.getAttribute("entityId"))
+                        tempStockObj.put("entityTypeId", session.getAttribute("entityTypeId"))
+                        tempStockObj.put("redundantBatch", "")
+                        tempStockObj.put("originalId", stockBook?.id)
+                        tempStockObj.put("uuid", UUID.randomUUID())
+                        tempStockObj.put("originalSqty", saleProductObject?.originalSqty)
+                        tempStockObj.put("originalFqty", saleProductObject?.originalFqty)
+                        tempstockArray.add(tempStockObj)
+                    }
+                }
+            }
+
+        }
+        tempstockArray.each {
+            def batchResponse = new ProductService().getBatchesOfProduct(it.productId.toString())
+            JSONArray batchArray = JSON.parse(batchResponse.readEntity(String.class)) as JSONArray
+            for (JSONObject batch : batchArray) {
+                if (batch.batchNumber == it.batchNumber) {
+                    it.put("batch", batch)
+                }
+            }
+            def apiResponse = new SalesService().getRequestWithId(it.productId.toString(), new Links().PRODUCT_REGISTER_SHOW)
+            it.put("product", JSON.parse(apiResponse.readEntity(String.class)) as JSONObject)
+        }
+        println(tempstockArray)
+        render(view: '/sales/saleEntry/sale-entry', model: [customers         : customers, divisions: divisions, series: series,
+                                                            priorityList      : priorityList, saleBillDetail: saleBillDetail,
+                                                            saleProductDetails: saleProductDetails,
+                                                            transporter       :transporter, tempStockArray:tempstockArray,
+                                                            customer          : customer, saleTransportDetail:saleTransportDetail])
+//        }
+//    else {
+//            redirect(uri: "/sale-entry")
+//        }
 
     }
+
+
 
 }

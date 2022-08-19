@@ -52,6 +52,8 @@ class UrlMappings {
                 action = [GET:'getByProductIdAndBatch'] }
             "/tempstockbook/product/$id(.$format)?"(controller: 'tempStockBook') {
                 action = [GET:'getByProductIdAndBatch'] }
+            "/tempstockbook/product/$id/batch/$batch/entityid/$entityid(.$format)?"(controller: 'tempStockBook') {
+                action = [GET:'getByProductIdAndBatchAndEntityId'] }
 
 
             "/status"(controller: 'status', action: 'index')

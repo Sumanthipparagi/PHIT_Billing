@@ -52,7 +52,7 @@
     function getTempStock() {
         $.ajax({
             type: "GET",
-            url: "tempstockbook/user/${session.getAttribute("userId")}",
+            url: "/tempstockbook/user/${session.getAttribute("userId")}",
             dataType: 'json',
             success: function (data) {
 

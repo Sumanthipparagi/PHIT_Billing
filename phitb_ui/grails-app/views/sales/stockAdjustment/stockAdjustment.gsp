@@ -7,7 +7,7 @@
     <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
     <meta name="description" content="Responsive Bootstrap 4 and web Application ui kit.">
 
-    <title>:: PharmIt :: Sale Order</title>
+    <title>:: PharmIt :: Stock Adjustment</title>
     <link rel="icon" type="image/x-icon" href="${assetPath(src: '/themeassets/images/favicon.ico')}"/>
     <!-- Favicon-->
     <asset:stylesheet rel="stylesheet" src="/themeassets/plugins/bootstrap/css/bootstrap.min.css"/>
@@ -24,7 +24,8 @@
     <link rel="stylesheet" media="screen" href="https://cdnjs.cloudflare.com/ajax/libs/select2/3.5.2/select2.min.css">
     %{--    <link rel="stylesheet" media="screen"
               href="https://cdnjs.cloudflare.com/ajax/libs/handsontable/0.16.0/handsontable.full.css">--}%
-
+    <asset:stylesheet src="/themeassets/plugins/daterangepicker/daterangepicker.css" rel="stylesheet"/>
+    <asset:stylesheet src="/themeassets/plugins/bootstrap-select/css/bootstrap-select.css" rel="stylesheet"/>
     <style>
     .form-control {
         border-radius: 7px !important;
@@ -59,7 +60,7 @@
                     %{--<h2>Sale Entry</h2>--}%
                     <ul class="breadcrumb padding-0">
                         <li class="breadcrumb-item"><a href="#"><i class="zmdi zmdi-home"></i></a></li>
-                        <li class="breadcrumb-item active">Sale Order</li>
+                        <li class="breadcrumb-item active">Stock Adjustment</li>
                     </ul>
                 </div>
             </div>
@@ -74,10 +75,10 @@
 
                     <div class="body" style="padding: 7px;">
                         <div class="row">
-                            <div class="col-md-2">
-                                <label for="date">Date:</label>
-                                <input type="date" class="form-control date" name="date" id="date"/>
-                            </div>
+%{--                            <div class="col-md-2">--}%
+%{--                                <label for="date">Date:</label>--}%
+%{--                                <input type="date" class="form-control date" name="date" id="date"/>--}%
+%{--                            </div>--}%
 
                             <div class="col-md-2">
                                 <label for="series">Series:</label>
@@ -89,77 +90,45 @@
                                 </select>
                             </div>
 
-                            <div class="col-md-2">
-                                <label for="priority">Priority:</label>
-                                <select class="form-control" id="priority" name="priority">
-                                    <g:each in="${priorityList}" var="pr">
-                                        <option value="${pr.id}">${pr.priority}</option>
-                                    </g:each>
-                                </select>
-                            </div>
+%{--                            <div class="col-md-2">--}%
+%{--                                <label for="priority">Priority:</label>--}%
+%{--                                <select class="form-control" id="priority" name="priority">--}%
+%{--                                    <g:each in="${priorityList}" var="pr">--}%
+%{--                                        <option value="${pr.id}">${pr.priority}</option>--}%
+%{--                                    </g:each>--}%
+%{--                                </select>--}%
+%{--                            </div>--}%
 
-                            <div class="col-md-4">
-                                <label for="customerSelect">Customer:</label>
-                                <select class="form-control show-tick" id="customerSelect"
-                                        onchange="customerSelectChanged()">
-                                    <option selected disabled>--SELECT--</option>
-                                    <g:each in="${customers}" var="cs">
-
-                                        <g:if test="${cs.id != session.getAttribute("entityId")}">
-                                            <option value="${cs.id}">${cs.entityName} (${cs.entityType.name})</option>
-                                        </g:if>
-                                    </g:each>
-                                </select>
-                            </div>
-
-                            <div class="col-md-2">
-                                <label for="duedate">Due Date:</label>
-                                <input type="date" class="form-control date" name="duedate" id="duedate"/>
-                            </div>
-
-                        </div>
-                        <div class="row mt-1">
-                            <div class="col-md-4">
-                                <label for="refno">Ref.No:</label>
-                                <input class="form-control show-tick" type="text" id="refno" name="refno"
-                                       placeholder="Ref.No">
-                            </div>
-
-                            <div class="col-md-4">
-                                <label for="refDate">Ref.Date:</label>
-                                <input class="form-control show-tick" type="date" id="refDate" name="refDate"
-                                       placeholder="Ref.Date:">
-                            </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
 
-        <div class="row clearfix">
-            <div class="col-lg-12" style="margin-bottom: 0;">
-                <div class="card" style="margin-bottom: 10px;">
-                    <div class="body" style="background-color: #313740;padding: 2px; color: #fff;">
-                        <div class="row" style="margin: 0; font-size: 14px;">
-                            <div class="col-md-2"><strong>Total GST:</strong> &#x20b9;<span id="totalGST">0</span></div>
+%{--        <div class="row clearfix">--}%
+%{--            <div class="col-lg-12" style="margin-bottom: 0;">--}%
+%{--                <div class="card" style="margin-bottom: 10px;">--}%
+%{--                    <div class="body" style="background-color: #313740;padding: 2px; color: #fff;">--}%
+%{--                        <div class="row" style="margin: 0; font-size: 14px;">--}%
+%{--                            <div class="col-md-2"><strong>Total GST:</strong> &#x20b9;<span id="totalGST">0</span></div>--}%
 
-                            <div class="col-md-2"><strong>Total SGST:</strong> &#x20b9;<span id="totalSGST">0</span>
-                            </div>
+%{--                            <div class="col-md-2"><strong>Total SGST:</strong> &#x20b9;<span id="totalSGST">0</span>--}%
+%{--                            </div>--}%
 
-                            <div class="col-md-2"><strong>Total CGST:</strong> &#x20b9;<span id="totalCGST">0</span>
-                            </div>
+%{--                            <div class="col-md-2"><strong>Total CGST:</strong> &#x20b9;<span id="totalCGST">0</span>--}%
+%{--                            </div>--}%
 
-                            <div class="col-md-2"><strong>Total IGST:</strong>&nbsp;&#x20b9;<span
-                                    id="totalIGST">0</span></div>
+%{--                            <div class="col-md-2"><strong>Total IGST:</strong>&nbsp;&#x20b9;<span--}%
+%{--                                    id="totalIGST">0</span></div>--}%
 
-                            <div class="col-md-2"><strong>Total Qty:</strong> <span id="totalQty">0</span></div>
+%{--                            <div class="col-md-2"><strong>Total Qty:</strong> <span id="totalQty">0</span></div>--}%
 
-                            <div class="col-md-2"><strong>Total Free Qty:</strong> <span id="totalFQty">0</span></div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
+%{--                            <div class="col-md-2"><strong>Total Free Qty:</strong> <span id="totalFQty">0</span></div>--}%
+%{--                        </div>--}%
+%{--                    </div>--}%
+%{--                </div>--}%
+%{--            </div>--}%
+%{--        </div>--}%
 
         <div class="row clearfix">
             <div class="col-lg-12">
@@ -170,7 +139,7 @@
                                                                 width="25" height="25"/>
                             </p>
 
-                            <div id="saleTable" style="width:100%;"></div>
+                            <div id="stockTable" style="width:100%;"></div>
                         </div>
                     </div>
                 </div>
@@ -187,10 +156,10 @@
 
             </div>
 
-            <div class="col-lg-4" style="margin-bottom: 10px;">
-                <p style="margin: 0; font-size: 10px;color: red;">Offers: <span id="offers"></span>
-                </p>
-            </div>
+            %{--            <div class="col-lg-4" style="margin-bottom: 10px;">--}%
+            %{--                <p style="margin: 0; font-size: 10px;color: red;">Offers: <span id="offers"></span>--}%
+            %{--                </p>--}%
+            %{--            </div>--}%
         </div>
 
         <div class="row clearfix">
@@ -217,20 +186,35 @@
 
                     <div class="body">
                         <div class="row">
-                            <div class="col-md-6">
-                                Total: <p>&#x20b9;&nbsp;<span id="totalAmt">0</span></p>
+                            %{--                            <div class="col-md-6">--}%
+                            %{--                                Total: <p>&#x20b9;&nbsp;<span id="totalAmt">0</span></p>--}%
+                            %{--                            </div>--}%
+
+                            %{--                            <div class="col-md-6">--}%
+                            %{--                                Inv No: <span id="invNo"></span>--}%
+                            %{--                            </div>--}%
+                            <div class="col-md-12 border border-secondary" style="padding: 5px;background-color:
+                            #b5ddf78c;">
+                                Total Stock:&nbsp;<span id="totalStock">0</span>
                             </div>
 
-                            <div class="col-md-6">
-                                Inv No: <span id="invNo"></span>
+                            <div class="col-md-12 mt-1 border border-secondary"
+                                 style="padding: 5px;background-color:#b5ddf78c;">
+                                Batch Stock:&nbsp;<span id="batchStock">0</span>
+                            </div>
+
+                            <div class="col-md-12 mt-1 border border-secondary"
+                                 style="padding: 5px;background-color:#b5ddf78c;">
+                                Current Stock:&nbsp;<span id="currentStock">0</span>
                             </div>
                         </div>
 
+
                         <div class="row">
                             <button onclick="resetPage()" class="btn btn-danger">Reset</button>
-                            <button id="saveDraftBtn" onclick="saveSaleOrder('DRAFT')"
-                                    class="btn btn-primary">Save Draft</button>
-                            <button id="saveBtn" onclick="saveSaleOrder('ACTIVE')"
+                            %{--                            <button id="saveDraftBtn" onclick="saveGTN('DRAFT')"--}%
+                            %{--                                    class="btn btn-primary">Save Draft</button>--}%
+                            <button id="saveBtn" onclick="saveStocks('ACTIVE')"
                                     class="btn btn-primary">Save</button>
                             %{--<button onclick="printInvoice()" class="btn btn-secondary">Print</button>--}%
                         </div>
@@ -265,7 +249,8 @@
 %{--<asset:javascript src="/themeassets/plugins/select2/dist/js/select2.full.js"/>--}%
 %{--<script src="https://cdnjs.cloudflare.com/ajax/libs/handsontable/0.16.0/handsontable.full.js"></script>--}%
 <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/3.5.2/select2.js"></script>
-
+<asset:javascript src="/themeassets/plugins/daterangepicker/moment.min.js"/>
+<asset:javascript src="/themeassets/plugins/daterangepicker/daterangepicker.js"/>
 <script>
 
     var headerRow = [
@@ -277,14 +262,18 @@
         '<strong>Free Qty</strong>',
         '<strong>Sale Rate</strong>',
         '<strong>MRP</strong>',
-        '<strong>Disc.(%)</strong>',
-        '<strong>Pack</strong>',
+        '<strong>PRate</strong>',
         '<strong>GST</strong>',
-        '<strong>Value</strong>',
-        'SGST',
-        'CGST',
-        'IGST',
-        'id'];
+        '<strong>Pack</strong>',
+        '<strong>ManfDate</strong>',
+        // '<strong>Value</strong>',
+        // 'SGST',
+        // 'CGST',
+        // 'IGST',
+        'tax_id',
+        'originalSqty',
+        'originalfqty'
+    ];
 
     var batchHeaderRow = [
         '<strong>Batch</strong>',
@@ -299,12 +288,15 @@
         'SGST',
         'CGST',
         'IGST',
-        'id'];
+        'id',
+        'tax_id',
+        'manfDate'
+    ];
 
     const batchContainer = document.getElementById('batchTable');
     var batchHot;
     var hot;
-    var saleData = [];
+    var stockData = [];
     var batchData = [];
     var mainTableRow = 0;
     var gst = 0;
@@ -318,6 +310,7 @@
     var totalAmt = 0;
     var series = [];
     var products = [];
+    var taxRegister = [];
     var customers = [];
     var readOnly = false;
     var scheme = null;
@@ -328,9 +321,12 @@
         <g:each in="${customers}" var="cs">
         customers.push({"id": ${cs.id}, "noOfCrDays": ${cs.noOfCrDays}});
         </g:each>
-        const container = document.getElementById('saleTable');
+        <g:each in="${taxRegister}" var="tr">
+        taxRegister.push({"id": '${tr.id+"|"+tr.taxValue}', "text": '${tr.taxName+" | "+tr.taxValue}'});
+        </g:each>
+        const container = document.getElementById('stockTable');
         hot = new Handsontable(container, {
-            data: saleData,
+            data: stockData,
             minRows: 1,
             height: '250',
             width: 'auto',
@@ -339,6 +335,7 @@
             manualColumnResize: true,
             persistentState: true,
             contextMenu: false,
+            stretchH: 'all',
             rowHeaders: true,
             colHeaders: headerRow,
             columns: [
@@ -353,31 +350,54 @@
                         width: '0'
                     }
                 },
-                {type: 'text', readOnly: true},
-                {type: 'text', readOnly: true},
+                {type: 'text'},
+                {
+                    type: 'date',
+                    dateFormat: 'YYYY-MM-DD',
+                    defaultDate: moment(new Date()).format('YYYY-MM-DD'),
+                    correctFormat: true,
+                },
                 {type: 'numeric'},
                 {type: 'numeric'},
                 {type: 'numeric'}, //sale rate
-                {type: 'text', readOnly: true},
                 {type: 'text'},
+                {type: 'text'},
+                {
+                    editor: 'select2',
+                    renderer: taxRegisterDropdownRenderer,
+                    select2Options: {
+                        data: taxRegister,
+                        dropdownAutoWidth: true,
+                        allowClear: true,
+                        width: '0'
+                    }
+                },
+                {type: 'text'},
+                {
+                    type: 'date',
+                    dateFormat: 'YYYY-MM-DD',
+                    defaultDate: moment(new Date()).format('YYYY-MM-DD'),
+                    correctFormat: true,
+                },
                 {type: 'text', readOnly: true},
                 {type: 'text', readOnly: true},
-                {type: 'text', readOnly: true},
-                {type: 'text', readOnly: true},
-                {type: 'text', readOnly: true},
-                {type: 'text', readOnly: true},
-                {type: 'text', readOnly: true},
-                {type: 'text', readOnly: true}, //GST Percentage
-                {type: 'text', readOnly: true}, //SGST Percentage
-                {type: 'text', readOnly: true}, //CGST Percentage
-                {type: 'text', readOnly: true}, //IGST Percentage
-                {type: 'text', readOnly: true},//originalSqty
-                {type: 'text', readOnly: true} //originalFqty
+                {type: 'text', readOnly: true}
+                // {type: 'text', readOnly: true},
+                // {type: 'text', readOnly: true},
+                // {type: 'text', readOnly: true},
+                // {type: 'text', readOnly: true},
+                // {type: 'text', readOnly: true},
+                // {type: 'text', readOnly: true}, //GST Percentage
+                // {type: 'text', readOnly: true}, //SGST Percentage
+                // {type: 'text', readOnly: true}, //CGST Percentage
+                // {type: 'text', readOnly: true}, //IGST Percentage
+                // {type: 'text', readOnly: true},//originalSqty
+                // {type: 'text', readOnly: true} //originalFqty
             ],
             hiddenColumns: true,
-            hiddenColumns: {
-                columns: [15, 16, 17, 18, 19, 20, 21]
-            },
+            // hiddenColumns: {
+            //     columns: [11, 12, 13]
+            // },
             minSpareRows: 0,
             minSpareColumns: 0,
             enterMoves: {row: 0, col: 1},
@@ -397,7 +417,7 @@
             afterOnCellMouseDown: function (e, coords, TD) {
                 if (coords.col === 0) {
                     var id = hot.getDataAtCell(coords.row, 15);
-                    deleteTempStockRow(id, coords.row);
+                    deleteTempStockRow(id=null, coords.row);
                     calculateTotalAmt();
                 }
             },
@@ -434,212 +454,70 @@
                 var fQty = 0;
                 const row = hot.getSelected()[0][0];
                 const selection = hot.getSelected()[0][1];
+
+                if(selection === 6){
+                    var originalSQty = hot.getDataAtCell(row,13);
+                    var originalFQty = hot.getDataAtCell(row,14);
+                    if(Math.sign(originalSQty+hot.getDataAtCell(row,4)) === -1){
+                        alert("Sale Qty is negetive");
+                        hot.setDataAtCell(row,4,0);
+                        hot.setDataAtCell(row,5,0);
+                        hot.selectCell(row,4)
+
+                    }
+                    else if(Math.sign(originalFQty+hot.getDataAtCell(row,5)) === -1 )
+                    {
+                        alert("Free Qty is negetive");
+                        hot.setDataAtCell(row,4,0);
+                        hot.setDataAtCell(row,5,0);
+                        hot.selectCell(row,4)
+                    }
+                    var totalStock = hot.getDataAtCell(row,13)+hot.getDataAtCell(row,14);
+                    if(Math.sign(totalStock+(Number(hot.getDataAtCell(row,4))+Number(hot.getDataAtCell(row,5)))) === 1)
+                    {
+                        if(typeof hot.getDataAtCell(row,4) == "number" && typeof hot.getDataAtCell(row,5) == "number")
+                        {
+                            $('#currentStock').text(totalStock+(Number(hot.getDataAtCell(row,4))+Number(hot.getDataAtCell(row,5))));
+                        }else
+                        {
+                            $('#currentStock').text(0)
+                        }
+                    }
+                    else
+                    {
+                        alert("Negetive Stocks not allowed!!");
+                        hot.setDataAtCell(row,4,0);
+                        hot.setDataAtCell(row,5,0)
+                        $('#currentStock').text(0)
+                    }
+                }
                 if (selection === 1) {
                     if (e.keyCode === 13) {
                         batchHot.selectCell(0, 0);
                         $("#batchTable").focus();
                     }
-                } else if (selection === 14 || selection === 7) {
+                } else if (selection === 14 || selection === 11) {
                     if ((e.keyCode === 13 || e.keyCode === 9) && !readOnly) {
                         //check if sqty is empty
                         var sqty = hot.getDataAtCell(row, 4);
                         var fqty = hot.getDataAtCell(row, 5);
-                        if (sqty && sqty > 0) {
+                            if (typeof sqty =="number" && typeof fqty =="number") {
                             var batchId = hot.getCellMeta(row, 2)?.batchId; //batch
                             var dt = hot.getDataAtRow(row);
                             dt.push(batchId);
                             var json = JSON.stringify(dt);
-                            // var url = '/tempstockbook';
-                            // var type = 'POST';
-                            // var beforeSendSwal;
-                            %{--$.ajax({--}%
-                            %{--    type: type,--}%
-                            %{--    url: url,--}%
-                            %{--    dataType: 'json',--}%
-                            %{--    beforeSend: function () {--}%
-                            %{--        beforeSendSwal = Swal.fire({--}%
-                            %{--            // title: "Loading",--}%
-                            %{--            html:--}%
-                            %{--                '<img src="${assetPath(src: "/themeassets/images/1476.gif")}" width="100" height="100"/>',--}%
-                            %{--            showDenyButton: false,--}%
-                            %{--            showCancelButton: false,--}%
-                            %{--            showConfirmButton: false,--}%
-                            %{--            allowOutsideClick: false,--}%
-                            %{--            background: 'transparent'--}%
-                            %{--        });--}%
-                            %{--    },--}%
-                            %{--    data: {--}%
-                            %{--        rowData: json,--}%
-                            %{--        uuid: self.crypto.randomUUID()--}%
-                            %{--    },--}%
-                            %{--    success: function (data) {--}%
-                            %{--        beforeSendSwal.close()--}%
-                            %{--        console.log("Data saved");--}%
-                            %{--        hot.setDataAtCell(row, 15, data.id);--}%
-                            %{--        mainTableRow = row + 1;--}%
-                            %{--        hot.alter('insert_row');--}%
-                            %{--        hot.selectCell(mainTableRow, 1);--}%
-                            %{--        calculateTotalAmt();--}%
-                            %{--    },--}%
-                            %{--    error: function (data) {--}%
-                            %{--        console.log("Failed");--}%
-                            %{--        alert("Unable to save the row, please delete it and add again.");--}%
-                            %{--    }--}%
-                            %{--});--}%
                             console.log("Data added");
-                            for (var i = 0; i < 15; i++) {
+                            for (var i = 0; i < 10; i++) {
                                 hot.setCellMeta(row, i, 'readOnly', true);
                             }
                             mainTableRow = row + 1;
                             hot.alter('insert_row');
                             hot.selectCell(mainTableRow, 1);
                             calculateTotalAmt();
-                        } else {
-                            alert("Invalid Quantity, please enter quantity greater than 0");
                         }
-
-                    }
-                } else if (selection === 4 || selection === 5 || selection === 8 || selection === 6) {
-                    if (e.keyCode === 13 || e.keyCode === 9) {
-                        var discount = 0;
-                        if (selection === 6) {
-                            var mrp = hot.getDataAtCell(row, 7);
-                            var oldSaleRate = hot.getDataAtCell(row, 6);
-                            var saleRate = Number(this.getActiveEditor().TEXTAREA.value);
-                            if (saleRate > mrp) {
-                                hot.setDataAtCell(row, 6, oldSaleRate);
-                                this.getActiveEditor().TEXTAREA.value = oldSaleRate;
-                                alert("Sale Rate exceeds MRP!");
-                            } else {
-                                hot.setDataAtCell(row, 6, Number(this.getActiveEditor().TEXTAREA.value));
-                                this.selectCell(row, selection + 1);
-                            }
+                        else {
+                           alert("Please enter only digits!")
                         }
-                        if (selection === 4) {
-                            this.getActiveEditor().enableFullEditMode();
-                            this.getActiveEditor().beginEditing();
-                            sQty = Number(this.getActiveEditor().TEXTAREA.value);
-                            // var sq = this.getDataAtCell(row,4);
-                            // alert(sq)
-                            this.setDataAtCell(row, 4, sQty);
-                            this.selectCell(row, selection + 1);
-                        } else {
-                            sQty = Number(this.getDataAtCell(row, 4));
-                        }
-
-                        if (selection === 5) {
-                            fQty = Number(this.getActiveEditor().TEXTAREA.value);
-                            hot.setDataAtCell(row, 5, fQty);
-                            this.selectCell(row, selection + 1);
-                        } else {
-                            fQty = Number(this.getDataAtCell(row, 5));
-                        }
-                        if (selection === 8) {
-                            discount = Number(this.getActiveEditor().TEXTAREA.value);
-                            if (discount > 100) {
-                                alert("Invalid Discount");
-                                hot.setDataAtCell(row, 8, 0);
-                                this.getActiveEditor().TEXTAREA.value = 0;
-                                hot.selectCell(row, 8);
-                                return;
-                            } else {
-                                hot.setDataAtCell(row, 8, discount);
-                                this.selectCell(row, selection + 1);
-                            }
-                        } else {
-                            discount = hot.getDataAtCell(row, 8);
-                        }
-                        var allowEntry = false;
-                        var pid = hot.getDataAtCell(row, 1);
-                        var batch = hot.getDataAtCell(row, 2);
-                        var remQty = 0;
-                        var remFQty = 0;
-                        var freeQtyEntry = false;
-                        if (pid && batch) {
-                            $.ajax({
-                                    type: "POST",
-                                    url: "/stockbook/product/" + pid + "/batch/" + batch,
-                                    dataType: 'json',
-                                    success: function (data) {
-                                        remQty = remQty + data.remainingQty;
-                                        remFQty = remFQty + data.remainingFreeQty;
-
-                                        if (remQty >= sQty) {
-                                            allowEntry = true;
-                                        } else if (sQty >= remQty && remFQty >= sQty) {
-                                            allowEntry = true;
-                                        } else if ((remQty + remFQty) >= sQty) {
-                                            allowEntry = true;
-                                        }
-
-                                        if (selection === 5) {
-                                            if (remFQty >= fQty && ((remQty + remFQty) >= (sQty + fQty))) {
-                                                freeQtyEntry = true;
-                                            } else if ((remQty + remFQty) >= sQty + fQty) {
-                                                freeQtyEntry = true;
-                                                allowEntry = true;
-                                            } else {
-                                                freeQtyEntry = false;
-                                                allowEntry = false;
-                                            }
-
-                                            if (freeQtyEntry !== true) {
-                                                // hot.setDataAtCell(row, 5, 0);
-                                                alert("Entered Free quantity exceeds available quantity");
-                                            }
-                                        }
-
-
-                                        if (!allowEntry) {
-                                            // this.getActiveEditor().TEXTAREA.value = "";
-                                            hot.setDataAtCell(row, 4, 0);
-                                            hot.setDataAtCell(row, 5, 0);
-                                            hot.setDataAtCell(row, 10, 0);
-                                            hot.setDataAtCell(row, 11, 0);
-                                            hot.setDataAtCell(row, 12, 0);
-                                            hot.setDataAtCell(row, 13, 0);
-                                            hot.setDataAtCell(row, 14, 0);
-                                            alert("Entered quantity exceeds available quantity");
-                                            return;
-                                        } else {
-                                            hot.setDataAtCell(row, 5, fQty)
-                                        }
-                                    },
-                                    error: function (data) {
-                                        alert("Something went Wrong!")
-                                    }
-                                }
-                            );
-                        }
-                        applySchemes(row, sQty);
-                        if (selection === 6) {
-                            // sRate = Number(this.getActiveEditor().TEXTAREA.value);
-                            sRate = hot.getDataAtCell(row, 6);
-                        } else
-                            sRate = hot.getDataAtCell(row, 6);
-
-                        var value = sRate * sQty;
-                        var priceBeforeGst = value - (value * discount / 100);
-                        var finalPrice = priceBeforeGst + (priceBeforeGst * (gst / 100));
-                        hot.setDataAtCell(row, 11, Number(finalPrice).toFixed(2));
-
-                        if (gst !== 0) {
-                            var gstAmount = priceBeforeGst * (gst / 100);
-                            var sgstAmount = priceBeforeGst * (sgst / 100);
-                            var cgstAmount = priceBeforeGst * (cgst / 100);
-                            hot.setDataAtCell(row, 10, Number(gstAmount).toFixed(2)); //GST
-                            hot.setDataAtCell(row, 12, Number(sgstAmount).toFixed(2)); //SGST
-                            hot.setDataAtCell(row, 13, Number(cgstAmount).toFixed(2)); //CGST
-                        } else {
-                            hot.setDataAtCell(row, 10, 0); //GST
-                            hot.setDataAtCell(row, 12, 0); //SGST
-                            hot.setDataAtCell(row, 13, 0); //CGST
-                        }
-                        if (igst !== "0") {
-                            var igstAmount = priceBeforeGst * (igst / 100);
-                            hot.setDataAtCell(row, 14, Number(igstAmount).toFixed(2)); //IGST
-                        } else
-                            hot.setDataAtCell(row, 14, 0);
                     }
                 }
             }
@@ -647,7 +525,7 @@
 
         hot.addHook('afterSelection', (row, col) => {
             if (col === 2) {
-                batchSelection(hot.getDataAtCell(row, 1), row, false);
+                batchSelection(hot.getDataAtCell(row, 1), row, false, hot.getDataAtCell(row, 2), hot.getDataAtCell(row,4), hot.getDataAtCell(row,5));
             }
         });
 
@@ -663,6 +541,39 @@
             Handsontable.renderers.TextRenderer.apply(this, arguments);
             //Handsontable.TextCell.renderer.apply(this, arguments);
         }
+
+        function taxRegisterDropdownRenderer(instance, td, row, col, prop, value, cellProperties) {
+            var selectedId;
+            var taxId;
+            for (var index = 0; index < taxRegister.length; index++) {
+                if (value === taxRegister[index].id) {
+                    selectedId = taxRegister[index].id;
+                    value = taxRegister[index].text;
+                }
+            }
+            Handsontable.renderers.TextRenderer.apply(this, arguments);
+            if (selectedId !== undefined) {
+                taxId = selectedId.split('|');
+                $.ajax({
+                    type: "POST",
+                    url: "/tax/showtax/" + taxId[0].trim(),
+                    dataType: 'json',
+                    success: function (data) {
+                        const row = hot.getSelected()[0][0];
+                        hot.setDataAtCell(row, 9, Number(taxId[1]).toFixed(2));
+                        hot.setDataAtCell(row, 12, taxId[0].trim());
+                        const selection = hot.getSelected()[0][1];
+                        hot.selectCell(row, 10);
+                        return false;
+                    },
+                    error: function (data) {
+                        alert("Something went Wrong!")
+                    }
+                });
+            }
+
+        }
+
 
         batchHot = new Handsontable(batchContainer, {
             data: batchData,
@@ -690,12 +601,14 @@
                 {type: 'text', readOnly: true},
                 {type: 'text', readOnly: true},
                 {type: 'text', readOnly: true},
+                {type: 'text', readOnly: true},
+                {type: 'text', readOnly: true},
                 {type: 'text', readOnly: true}
             ],
             hiddenColumns: true,
             hiddenColumns: {
-                // specify columns hidden by default
-                columns: [12]
+                // // specify columns hidden by default
+                // columns: [12]
             },
             minSpareRows: 0,
             minSpareCols: 0,
@@ -709,33 +622,28 @@
                 var rowData = batchHot.getDataAtRow(selection);
                 console.log(rowData);
                 if (e.keyCode === 13) {
-
                     if (!checkForDuplicateEntry(rowData[0])) {
                         //check for schemes
-                        checkSchemes(hot.getDataAtCell(mainTableRow, 1), rowData[0]); //product, batch
+                        // checkSchemes(hot.getDataAtCell(mainTableRow, 1), rowData[0]); //product, batch
                         var batchId = rowData[12];
                         hot.setDataAtCell(mainTableRow, 2, rowData[0]);
                         hot.setCellMeta(mainTableRow, 2, "batchId", batchId);
                         hot.setDataAtCell(mainTableRow, 3, rowData[1]);
+                        hot.selectCell(mainTableRow, 4);
                         hot.setDataAtCell(mainTableRow, 5, 0);
                         hot.setDataAtCell(mainTableRow, 6, rowData[5]);
                         hot.setDataAtCell(mainTableRow, 7, rowData[6]);
-                        hot.setDataAtCell(mainTableRow, 8, 0);
-                        hot.setDataAtCell(mainTableRow, 9, rowData[7]);
-                        gst = rowData[8];
-                        sgst = rowData[9];
-                        cgst = rowData[10];
-                        igst = rowData[11];
-                        hot.selectCell(mainTableRow, 4);
-                        hot.setDataAtCell(mainTableRow, 16, gst);
-                        hot.setDataAtCell(mainTableRow, 17, sgst);
-                        hot.setDataAtCell(mainTableRow, 18, cgst);
-                        hot.setDataAtCell(mainTableRow, 19, igst);
-                        hot.setDataAtCell(mainTableRow, 20, rowData[2]);
-                        hot.setDataAtCell(mainTableRow, 21, rowData[3]);
+                        hot.setDataAtCell(mainTableRow, 8, rowData[4]);
+                        hot.setDataAtCell(mainTableRow, 10, rowData[7]);
+                        hot.setDataAtCell(mainTableRow, 11, moment(rowData[14]).format('YYYY-MM-DD'));
+                        hot.setDataAtCell(mainTableRow, 12, rowData[13]);
+                        hot.setDataAtCell(mainTableRow, 9, rowData[8]);
+                        hot.setDataAtCell(mainTableRow, 13, rowData[2]);
+                        hot.setDataAtCell(mainTableRow, 14, rowData[3]);
                         remainingQty = rowData[2];
                         remainingFQty = rowData[3];
-                        $("#saleTable").focus();
+                        $('#batchStock').text(rowData[2] + rowData[3]);
+                        $("#stockTable").focus();
                     } else {
                         alert("Selected product and batch already entered, duplicate entries not allowed");
                     }
@@ -748,22 +656,25 @@
 
     });
 
-    function batchSelection(selectedId, mainRow, selectCell = true) {
+    function batchSelection(selectedId, mainRow, selectCell = true, batch="", sqty="", fqty="") {
+        console.log(batch);
         if (selectedId != null) {
-            var url = "/stockbook/product/" + selectedId;
+            var url = "/stockbook/productreturn/" + selectedId;
             $.ajax({
                 type: "GET",
                 url: url,
                 dataType: 'json',
                 success: function (data) {
+                    console.log(data)
                     if (data) {
+                        var totalRemainingQty = data.map(data => data.remainingQty).reduce((prev, cur) => prev + cur, 0);
+                        var totalRemainingFreeQty = data.map(data => data.remainingFreeQty).reduce((prev, cur) => prev + cur, 0);
                         batchData = [];
                         for (var i = 0; i < data.length; i++) {
-                            console.log(data[i].entityId);
                             if (Number('${session.getAttribute('entityId')}') === data[i].entityId) {
                                 var batchdt = [];
                                 batchdt.push(data[i].batchNumber);
-                                batchdt.push(data[i].expDate.split("T")[0]);
+                                batchdt.push(moment(data[i].expDate).format('YYYY-MM-DD'));
                                 batchdt.push(data[i].remainingQty);
                                 batchdt.push(data[i].remainingFreeQty);
                                 batchdt.push(data[i].purchaseRate);
@@ -775,13 +686,37 @@
                                 batchdt.push(data[i].cgst);
                                 batchdt.push(data[i].igst);
                                 batchdt.push(data[i].id);
+                                batchdt.push(data[i].taxId);
+                                batchdt.push(moment(data[i].manufacturingDate).format('YYYY-MM-DD'));
                                 batchData.push(batchdt);
                             }
                         }
                         batchHot.updateSettings({
                             data: []
                         });
+                        $('#totalStock').text(0);
+                        $('#currentStock').text(0);
+                        $('#batchStock').text(0);
                         if (batchdt?.length > 0) {
+                            $('#totalStock').text(totalRemainingQty+totalRemainingFreeQty);
+                            var batchStock = [];
+                            if(batch!==""){
+                                for (var j=0 ; j < data.length ; j++)
+                                {
+                                    if (data[j].batchNumber === batch) {
+                                        batchStock.push(data[j].remainingQty);
+                                        batchStock.push(data[j].remainingFreeQty);
+                                    }
+                                }
+                                if(batchStock.length!==0){
+                                    $('#batchStock').text(batchStock.reduce((prev, cur) => prev + cur, 0));
+                                }
+                                if(sqty!=="" && fqty!=="")
+                                {
+                                    var t = batchStock.reduce((prev, cur) => prev + cur, 0);
+                                    $('#currentStock').text(t+(Number(fqty)+Number(sqty)));
+                                }
+                            }
                             batchHot.loadData(batchData);
                             $("#batchTable").focus();
                             if (selectCell)
@@ -930,99 +865,59 @@
     function deleteTempStockRow(id, row) {
         if (!readOnly) {
             if (id) {
-                $.ajax({
-                    type: "POST",
-                    url: "tempstockbook/delete/" + id,
-                    dataType: 'json',
-                    success: function (data) {
-                        hot.alter("remove_row", row);
-                        swal("Success", "Row Deleted", "").fire();
-                    }
-                });
+                // $.ajax({
+                //     type: "POST",
+                //     url: "tempstockbook/delete/" + id,
+                //     dataType: 'json',
+                //     success: function (data) {
+                //         hot.alter("remove_row", row);
+                //         swal("Success", "Row Deleted", "").fire();
+                //     }
+                // });
             } else
+                $('#totalStock').text(0);
+                $('#currentStock').text(0);
+                $('#batchStock').text(0);
                 hot.alter("remove_row", row);
         } else
             alert("Can't change this now, invoice has been saved already.")
     }
 
-    var saleOrderDetail = 0;
+    var stockAdjustmentDetail = 0;
 
-    function saveSaleOrder(billStatus) {
+    function saveStocks(billStatus) {
         // $("#saveBtn").prop("disabled", true);
         // $("#saveDraftBtn").prop("disabled", true);
         var waitingSwal = Swal.fire({
-            title: "Generating Sale Order, Please wait!",
+            title: "Saving Stocks, Please wait!",
             showDenyButton: false,
             showCancelButton: false,
             showConfirmButton: false,
             allowOutsideClick: false
         });
 
-
-        var customer = $("#customerSelect").val();
         var series = $("#series").val();
-        var seriesCode = $("#series").find(':selected').data('seriescode');
-        var duedate = $("#duedate").val();
-        duedate = moment(duedate, 'YYYY-MM-DD').toDate();
-        duedate = moment(duedate).format('DD/MM/YYYY');
         var priority = $("#priority").val();
-        var refno = $("#refno").val();
-        var refDate = $("#refDate").val();
-        const refDateInput = document.getElementById('refDate');
-        if(refDateInput.value) {
-            var d = new Date(refDate);
-            refDate = moment(d.toUTCString()).format('DD/MM/YYYY hh:mm:ss');
-        }
-
-        if (!refno) {
-            alert("Please enter Ref number.");
-            waitingSwal.close();
-            return;
-        }
-
-        if(!refDateInput.value)
-        {
-            alert("Please enter Ref date.");
-            waitingSwal.close();
-            return;
-        }
-
         if (!series) {
             alert("Please select series.");
             waitingSwal.close();
             $("#saveBtn").prop("disabled", false);
-            $("#saveDraftBtn").prop("disabled", false);
             return;
         }
 
-        if (!customer) {
-            alert("Please select customer.");
-            waitingSwal.close();
-            $("#saveBtn").prop("disabled", false);
-            $("#saveDraftBtn").prop("disabled", false);
-            return;
-        }
-
-        var saleData = JSON.stringify(hot.getSourceData());
+        var stockData = JSON.stringify(hot.getSourceData());
 
         $.ajax({
             type: "POST",
-            url: "/sale-order-entry",
+            url: "/stock-adjustment-save",
             dataType: 'json',
             data: {
-                saleData: saleData,
-                customer: customer,
+                stockData: stockData,
                 series: series,
-                duedate: duedate,
-                refno: refno,
-                refDate: refDate,
                 priority: priority,
-                billStatus: billStatus,
-                seriesCode: seriesCode,
                 uuid: self.crypto.randomUUID()
             },
             success: function (data) {
-                console.log(data)
                 readOnly = true;
                 var rowData = hot.getData();
                 for (var j = 0; j < rowData.length; j++) {
@@ -1030,37 +925,37 @@
                         hot.setCellMeta(j, i, 'readOnly', true);
                     }
                 }
-                saleOrderDetail = data.saleOrderDetail.id;
-                var datepart = data.saleOrderDetail.entryDate.split("T")[0];
-                var month = datepart.split("-")[1];
-                var year = datepart.split("-")[0];
-                var seriesCode = data.series.seriesCode;
-                var invoiceNumber = data.saleOrderDetail.invoiceNumber;
-                $("#invNo").html("<p><strong>" + invoiceNumber + "</strong></p>");
+                // stockAdjustmentDetail = data.stockAdjustmentDetail.id;
+                // var datepart = data.stockAdjustmentDetail.entryDate.split("T")[0];
+                // var month = datepart.split("-")[1];
+                // var year = datepart.split("-")[0];
+                // var seriesCode = data.series.seriesCode;
+                // var invoiceNumber = data.saleOrderDetail.invoiceNumber;
+                // $("#invNo").html("<p><strong>" + invoiceNumber + "</strong></p>");
                 var message = "";
-                var draftInvNo = "";
-                if (billStatus === "DRAFT") {
-                    draftInvNo = '<p><strong>' + data.saleOrderDetail.entityId + "/DR/SO/" + month + year + "/"
-                        + seriesCode + "/__" + '<p><strong>';
-                    $("#invNo").html(draftInvNo);
-                }
-                if (billStatus !== "DRAFT") {
-                    message = 'Sale Order Generated: ' + invoiceNumber;
-                } else {
-                    message = 'Draft Sale Order Generated: ' + data.saleOrderDetail.entityId + "/DR/SO/" + month + year + "/"
-                        + seriesCode + "/__";
-                }
+                // var draftInvNo = "";
+                // if (billStatus === "DRAFT") {
+                //     draftInvNo = '<p><strong>' + data.saleOrderDetail.entityId + "/DR/SO/" + month + year + "/"
+                //         + seriesCode + "/__" + '<p><strong>';
+                //     $("#invNo").html(draftInvNo);
+                // }
+                // if (billStatus !== "DRAFT") {
+                //     message = 'Sale Order Generated: ' + invoiceNumber;
+                // } else {
+                //     message = 'Draft Sale Order Generated: ' + data.saleOrderDetail.entityId + "/DR/SO/" + month + year + "/"
+                //         + seriesCode + "/__";
+                // }
                 waitingSwal.close();
                 Swal.fire({
-                    title: message,
+                    title: "Stocks are updated!!",
                     showDenyButton: true,
                     showCancelButton: false,
-                    confirmButtonText: 'Print',
+                    confirmButtonText: 'OK',
                     denyButtonText: 'New Entry',
                     allowOutsideClick: false
                 }).then((result) => {
                     if (result.isConfirmed) {
-                        printInvoice();
+                        resetData();
                     } else if (result.isDenied) {
                         resetData();
                     }
@@ -1083,15 +978,6 @@
 
     }
 
-    function printInvoice() {
-        if (readOnly) {
-            window.open(
-                '/sale-order-entry/print-order?id=' + saleOrderDetail,
-                '_blank'
-            );
-            resetData();
-        }
-    }
 
     function resetPage() {
         Swal.fire({
@@ -1284,7 +1170,7 @@
                     if (result) {
                         const selection = hot.getSelected()[0];
                         var id = hot.getDataAtCell(selection, 15);
-                        deleteTempStockRow(id, selection);
+                        deleteTempStockRow(id=null, selection);
                         calculateTotalAmt();
                     }
                 }
