@@ -563,7 +563,7 @@
                         hot.setDataAtCell(row, 9, Number(taxId[1]).toFixed(2));
                         hot.setDataAtCell(row, 12, taxId[0].trim());
                         const selection = hot.getSelected()[0][1];
-                        hot.selectCell(row, 10);
+                        // hot.selectCell(row, 10);
                         return false;
                     },
                     error: function (data) {
