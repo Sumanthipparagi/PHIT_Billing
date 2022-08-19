@@ -607,8 +607,8 @@
             ],
             hiddenColumns: true,
             hiddenColumns: {
-                // // specify columns hidden by default
-                // columns: [12]
+                // specify columns hidden by default
+                columns: [13,14,15]
             },
             minSpareRows: 0,
             minSpareCols: 0,
