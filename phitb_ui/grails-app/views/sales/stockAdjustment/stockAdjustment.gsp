@@ -395,9 +395,9 @@
                 // {type: 'text', readOnly: true} //originalFqty
             ],
             hiddenColumns: true,
-            // hiddenColumns: {
-            //     columns: [11, 12, 13]
-            // },
+            hiddenColumns: {
+                columns: [12, 13,14]
+            },
             minSpareRows: 0,
             minSpareColumns: 0,
             enterMoves: {row: 0, col: 1},
@@ -563,7 +563,7 @@
                         hot.setDataAtCell(row, 9, Number(taxId[1]).toFixed(2));
                         hot.setDataAtCell(row, 12, taxId[0].trim());
                         const selection = hot.getSelected()[0][1];
-                        // hot.selectCell(row, 10);
+                        hot.selectCell(row, 11);
                         return false;
                     },
                     error: function (data) {
@@ -607,8 +607,8 @@
             ],
             hiddenColumns: true,
             hiddenColumns: {
-                // // specify columns hidden by default
-                // columns: [12]
+                // specify columns hidden by default
+                columns: [12,13,14]
             },
             minSpareRows: 0,
             minSpareCols: 0,
