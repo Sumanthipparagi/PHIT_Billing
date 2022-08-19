@@ -537,7 +537,12 @@ class UrlMappings {
                     'getGoodsTransferNoteProductbybatchAndBill')
 
 
-            "/status"(controller: 'status', action: 'index')
+//            Stock Adjustment
+            "/stockadjustmentdetails(.$format)?"(controller: 'stockAdjustmentDetails') {
+                action = [GET: 'index', POST: 'save']
+            }
+            "/stockadjustmentdetails/datatable(.$format)?"(controller: 'stockAdjustmentDetails') {action = [GET: 'dataTable']}
+
 
         }
     }

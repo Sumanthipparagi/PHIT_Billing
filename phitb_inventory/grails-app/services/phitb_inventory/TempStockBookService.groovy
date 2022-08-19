@@ -57,6 +57,25 @@ class TempStockBookService {
         }
     }
 
+    def getAllByProductAndBatchAndEntityId(long productId, String batch, long entityId) {
+        Date currentDate = new Date()
+        ArrayList<TempStockBook> tempStockBooks = new ArrayList<>()
+        if (batch == null) {
+            tempStockBooks = TempStockBook.findAllByProductIdAndExpDateGreaterThanEqualsAndEntityId(productId,
+                    currentDate, entityId)
+        } else {
+            tempStockBooks = TempStockBook.findAllByProductIdAndBatchNumberAndExpDateGreaterThanEqualsAndEntityId(productId,
+                    batch, currentDate, entityId)
+        }
+//        if (tempStockBooks?.size() == 0) {
+//            //send batches which are not in temp stock
+//            ArrayList<StockBook> stockBooks = StockBook.findAllByProductIdAndExpDateGreaterThanEqualsAndEntityId(productId, currentDate, entityId)
+//            return stockBooks
+//        } else {
+//            return tempStockBooks
+//        }
+        return  tempStockBooks
+    }
 
     TempStockBook get(String id) {
         return TempStockBook.findById(Long.parseLong(id))

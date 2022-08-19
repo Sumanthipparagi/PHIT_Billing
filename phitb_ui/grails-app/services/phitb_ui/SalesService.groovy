@@ -1848,4 +1848,50 @@ contains both sale bill and products
         }
 
     }
+
+
+    def saveStockAdjustmentDetails(JSONObject jsonObject)
+    {
+        Client client = ClientBuilder.newClient();
+        WebTarget target = client.target(new Links().API_GATEWAY)
+        // WebTarget target = client.target("http://localhost:8083")
+        try
+        {
+            println(jsonObject)
+            Response apiResponse = target
+                    .path(new Links().STOCK_ADJUSTMENT_SAVE)
+                    .request(MediaType.APPLICATION_JSON_TYPE)
+                    .post(Entity.entity(jsonObject.toString(), MediaType.APPLICATION_JSON_TYPE))
+            println(apiResponse)
+            return apiResponse
+        }
+        catch (Exception ex)
+        {
+            System.err.println('Service :salesService , action :  saveSaleInvoice  , Ex:' + ex)
+            log.error('Service :salesService , action :  saveSaleInvoice  , Ex:' + ex)
+        }
+
+    }
+
+
+    def showStockAdjustment(JSONObject jsonObject)
+    {
+        Client client = ClientBuilder.newClient();
+        WebTarget target = client.target(new Links().API_GATEWAY);
+        try
+        {
+            Response apiResponse = target
+                    .path(new Links().STOCK_ADJUSTMENT_DATATABLE)
+                    .queryParam("params", URLEncoder.encode(jsonObject.toString(), "UTF-8"))
+                    .request(MediaType.APPLICATION_JSON_TYPE)
+                    .get()
+            return apiResponse
+        }
+        catch (Exception ex)
+        {
+            System.err.println('Service :showSalesService , action :  show  , Ex:' + ex)
+            log.error('Service :showSalesService , action :  show  , Ex:' + ex)
+        }
+
+    }
 }

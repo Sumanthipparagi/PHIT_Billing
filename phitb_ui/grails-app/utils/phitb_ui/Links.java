@@ -488,7 +488,12 @@ public class Links
 
 //     sale transportation details
     public static String SALE_TRANSPORTATION_SAVE = "api/v1.0/sales/saletransportationdetails";
+    public static String SALE_TRANSPORTATION_UPDATE = "api/v1.0/sales/saletransportationdetails/{id}";
     public static String SALE_TRANSPORTATION_BY_BILL = "api/v1.0/sales/saletransportationdetails/billid";
+
+// stock adjustment Details
+    public static String STOCK_ADJUSTMENT_SAVE = "api/v1.0/sales/stockadjustmentdetails";
+    public static String STOCK_ADJUSTMENT_DATATABLE = "api/v1.0/sales/stockadjustmentdetails/datatable";
 
     //Sale Return
     public static String SALE_RETURN_SHOW = "api/v1.0/sales/salereturn";
