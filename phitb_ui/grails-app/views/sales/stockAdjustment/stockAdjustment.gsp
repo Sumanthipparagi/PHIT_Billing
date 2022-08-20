@@ -194,17 +194,17 @@
                             %{--                                Inv No: <span id="invNo"></span>--}%
                             %{--                            </div>--}%
                             <div class="col-md-12 border border-secondary" style="padding: 5px;background-color:
-                            #b5ddf78c;">
+                            #313740;color:white;">
                                 Total Stock:&nbsp;<span id="totalStock">0</span>
                             </div>
 
                             <div class="col-md-12 mt-1 border border-secondary"
-                                 style="padding: 5px;background-color:#b5ddf78c;">
+                                 style="padding: 5px;background-color:#313740;color:white;">
                                 Batch Stock:&nbsp;<span id="batchStock">0</span>
                             </div>
 
                             <div class="col-md-12 mt-1 border border-secondary"
-                                 style="padding: 5px;background-color:#b5ddf78c;">
+                                 style="padding: 5px;background-color:#313740;color:white;">
                                 Current Stock:&nbsp;<span id="currentStock">0</span>
                             </div>
                         </div>
