@@ -15,6 +15,7 @@ import phitb_ui.UtilsService
 import phitb_ui.entity.EntityRegisterController
 import phitb_ui.entity.SeriesController
 import phitb_ui.entity.TaxController
+import phitb_ui.entity.UserRegisterController
 
 import javax.ws.rs.core.Response
 import java.text.SimpleDateFormat
@@ -30,9 +31,11 @@ class SampleConversionController
         ArrayList<String> customers = new EntityRegisterController().getByAffiliateById(entityId) as ArrayList<String>
         def priorityList = new SystemService().getPriorityByEntity(entityId)
         def series = new SeriesController().getByEntity(entityId)
+        def users = new UserRegisterController().getByEntity()
         ArrayList<String> salesmanList = []
         render(view: '/sales/sampleConversion/sampleInvoicing', model: [customers   : customers, divisions: divisions, series: series,
-                                                                        salesmanList: salesmanList, priorityList: priorityList])
+                                                                        salesmanList: salesmanList, priorityList:
+                                                                                priorityList,users:users])
     }
 
     def sampleConversion()
@@ -393,6 +396,8 @@ class SampleConversionController
         sampleInvoice.put("cashDiscount", 0) //TODO: to be changed
         sampleInvoice.put("exempted", 0) //TODO: to be changed
         sampleInvoice.put("seriesCode", seriesCode)
+        sampleInvoice.put("createdUser", session.getAttribute('userId'))
+        sampleInvoice.put("modifiedUser", session.getAttribute('userId'))
         sampleInvoice.put("uuid", params.uuid)
         JSONObject jsonObject = new JSONObject()
         jsonObject.put("sampleInvoice", sampleInvoice)
@@ -470,7 +475,7 @@ class SampleConversionController
         if (sampleInvDetail != null) {
             JSONArray sampleProductDetails = new SalesService().getSampleProductDetailsByBill(sampleInvId)
             JSONObject series = new EntityService().getSeriesById(sampleInvDetail.get("seriesId").toString())
-            JSONObject customer = new EntityService().getEntityById(sampleInvDetail.get("customerId").toString())
+            JSONObject customer = new EntityService().getUser(sampleInvDetail.get("customerId").toString())
             println("Entity ID is: "+ session.getAttribute("entityId").toString())
             JSONObject entity = new EntityService().getEntityById(session.getAttribute("entityId").toString())
             if(entity == null)
@@ -582,7 +587,7 @@ class SampleConversionController
                 {
                     JSONArray jsonArray = responseObject.data
                      for (JSONObject json : jsonArray) {
-                        JSONObject customer = new EntityService().getEntityById(json.get("customerId").toString())
+                        JSONObject customer = new EntityService().getUser(json.get("customerId").toString())
                         def city = new SystemService().getCityById(customer?.cityId?.toString())
                         customer?.put("city", city)
                         json.put("customer", customer)

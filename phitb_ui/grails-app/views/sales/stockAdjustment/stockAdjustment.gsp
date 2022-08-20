@@ -454,7 +454,6 @@
                 var fQty = 0;
                 const row = hot.getSelected()[0][0];
                 const selection = hot.getSelected()[0][1];
-
                 if(selection === 6){
                     var originalSQty = hot.getDataAtCell(row,13);
                     var originalFQty = hot.getDataAtCell(row,14);
@@ -490,6 +489,7 @@
                         hot.setDataAtCell(row,5,0)
                         $('#currentStock').text(0)
                     }
+
                 }
                 if (selection === 1) {
                     if (e.keyCode === 13) {
@@ -501,6 +501,8 @@
                         //check if sqty is empty
                         var sqty = hot.getDataAtCell(row, 4);
                         var fqty = hot.getDataAtCell(row, 5);
+                        var sRate = hot.getDataAtCell(row, 6);
+                        var mrp = hot.getDataAtCell(row, 7);
                             if (typeof sqty =="number" && typeof fqty =="number") {
                             var batchId = hot.getCellMeta(row, 2)?.batchId; //batch
                             var dt = hot.getDataAtRow(row);
@@ -510,13 +512,21 @@
                             for (var i = 0; i < 10; i++) {
                                 hot.setCellMeta(row, i, 'readOnly', true);
                             }
-                            mainTableRow = row + 1;
-                            hot.alter('insert_row');
-                            hot.selectCell(mainTableRow, 1);
-                            calculateTotalAmt();
+
+                                mainTableRow = row + 1;
+                                hot.alter('insert_row');
+                                hot.selectCell(mainTableRow, 1);
                         }
                         else {
                            alert("Please enter only digits!")
+                        }
+                        if(sRate > mrp){
+                            mainTableRow = row - 1;
+                            hot.alter('remove_row');
+                            hot.selectCell(mainTableRow, 1);
+                            hot.setCellMeta(row, 7, 'readOnly', false);
+                            hot.selectCell(row,7)
+                            alert("Sale Rate greater than mrp!")
                         }
                     }
                 }

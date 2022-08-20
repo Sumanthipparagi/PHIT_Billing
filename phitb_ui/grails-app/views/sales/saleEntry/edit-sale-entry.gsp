@@ -1123,7 +1123,7 @@
     function printInvoice() {
         if (readOnly) {
             window.open(
-                'sale-entry/print-invoice?id=' + saleBillId,
+                '/sale-entry/print-invoice?id=' + saleBillId,
                 '_blank'
             );
             resetData();

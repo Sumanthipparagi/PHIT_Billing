@@ -205,14 +205,14 @@ class StockAdjustmentDetailsController {
             jsonObject.put("userId", userId)
             jsonObject.put("entityId",session.getAttribute('entityId'))
             jsonObject.put("entityTypeId",session.getAttribute('entityTypeId'))
-            if ((params.daterange != null) && (params.daterange != ""))
+            if ((params.dateRange != null) && (params.dateRange != ""))
             {
-                System.out.println("date=" + params.daterange.toString())
+                System.out.println("date=" + params.dateRange.toString())
                 SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy")
-                fromDate = params.daterange.split("-")[0]
+                fromDate = params.dateRange.split("-")[0]
                 System.out.println("fromdate=" + fromDate.trim())
                 jsonObject.put("fromDate",fromDate.trim())
-                toDate = params.daterange.split("-")[1]
+                toDate = params.dateRange.split("-")[1]
                 jsonObject.put("toDate",toDate.trim())
                 System.out.println("toDate=" + toDate.trim())
             }
@@ -223,9 +223,10 @@ class StockAdjustmentDetailsController {
             def apiResponse = new SalesService().showStockAdjustment(jsonObject)
             if (apiResponse.status == 200) {
                 JSONObject responseObject = new JSONObject(apiResponse.readEntity(String.class))
+
+                JSONArray jsonArray = responseObject.data
                 if(responseObject)
                 {
-                    JSONArray jsonArray = responseObject.data
                     for (JSONObject json : jsonArray) {
                         JSONObject products = new ProductService().getProductById(json.get("productId").toString())
                         if(products!=null)
@@ -236,9 +237,9 @@ class StockAdjustmentDetailsController {
                             products?.put("product", "")
                         }
                     }
-                    responseObject.put("data", jsonArray)
+//                    responseObject.put("data", jsonArray)
                 }
-                respond responseObject, formats: ['json'], status: 200
+                respond jsonArray, formats: ['json'], status: 200
             } else {
                 response.status = 400
             }
@@ -251,6 +252,6 @@ class StockAdjustmentDetailsController {
     }
 
     def stockAdjustmentList(){
-        render(view: '/sales/stockAdjustment/stockAdjustmentList')
+        render(view: '/sales/stockAdjustment/statement')
     }
 }

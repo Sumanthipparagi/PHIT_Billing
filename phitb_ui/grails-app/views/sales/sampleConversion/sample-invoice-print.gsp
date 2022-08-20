@@ -223,13 +223,13 @@
             <sub>${entity.addressLine1}<br>${entity.addressLine2}</sub>
         </td>
         <td colspan="5" style="vertical-align:top;font-size:8pt;"><b>Bill to Address :(${customer.id})</b><br>
-            <b>${customer.entityName}</b><br>
-            <sub>${customer.addressLine1}${customer.addressLine2}
+            <b>${customer.userName}</b><br>
+            <sub>${customer.address}
             </sub>
         </td>
         <td colspan="5" style="vertical-align:top;font-size:8pt;"><b>Ship to Address :(${customer.id})</b><br>
-            <b>${customer.entityName}</b><br>
-            <sub>${customer.addressLine1}${customer.addressLine2}
+            <b>${customer.userName}</b><br>
+            <sub>${customer.address}
             </sub>
         </td>
         <td colspan="4" style="vertical-align:top;font-size:8pt;">
@@ -261,11 +261,11 @@
         <td colspan="5" style="vertical-align:top;">
             <ul>
                 <li><b class="tab">DELIVERY AT</b>:&nbsp;${custcity?.districtName}</li>
-                <li><b class="tab">GST NO</b>: ${customer.gstn}</li>
-                <li><b class="tab">Phone</b>: ${customer.phoneNumber}</li>
-                <li><b class="tab">PAN</b>: ${customer.pan}</li>
-                <li><b class="tab">DL No1</b>: ${customer.drugLicence1}</li>
-                <li><b class="tab">DL No2</b>: ${customer.drugLicence2}</li>
+%{--                <li><b class="tab">GST NO</b>: ${customer.gstn}</li>--}%
+                <li><b class="tab">Phone</b>: ${customer.mobileNumber}</li>
+%{--                <li><b class="tab">PAN</b>: ${customer.pan}</li>--}%
+%{--                <li><b class="tab">DL No1</b>: ${customer.drugLicence1}</li>--}%
+%{--                <li><b class="tab">DL No2</b>: ${customer.drugLicence2}</li>--}%
                 <li><b class="tab">STATE NAME</b>: ${custcity?.stateName}</li>
                 <li><b class="tab">Area PIN</b>: ${customer.pinCode}</li>
                 <li><b class="tab">Goods Through</b>:</li>
@@ -277,15 +277,15 @@
         <td colspan="5" style="vertical-align:top;">
             <ul>
                 <li><b class="tab">DELIVERY AT</b>:&nbsp;${custcity?.districtName}</li>
-                <li><b class="tab">GST NO</b>: ${customer.gstn}</li>
-                <li><b class="tab">Phone</b>: ${customer.phoneNumber}</li>
-                <li><b class="tab">PAN</b>: ${customer.pan}</li>
-                <li><b class="tab">DL No1</b>: ${customer.drugLicence1}</li>
-                <li><b class="tab">DL No2</b>: ${customer.drugLicence2}</li>
+                %{--                <li><b class="tab">GST NO</b>: ${customer.gstn}</li>--}%
+                <li><b class="tab">Phone</b>: ${customer.mobileNumber}</li>
+                %{--                <li><b class="tab">PAN</b>: ${customer.pan}</li>--}%
+                %{--                <li><b class="tab">DL No1</b>: ${customer.drugLicence1}</li>--}%
+                %{--                <li><b class="tab">DL No2</b>: ${customer.drugLicence2}</li>--}%
                 <li><b class="tab">STATE NAME</b>: ${custcity?.stateName}</li>
                 <li><b class="tab">Area PIN</b>: ${customer.pinCode}</li>
                 <li><b class="tab">Goods Through</b>:</li>
-                <li><b class="tab">Place of Supply</b>:  &nbsp;${custcity?.districtName}</li>
+                <li><b class="tab">Place of Supply</b>: &nbsp;${custcity?.districtName}</li>
                 %{--                <li><b class="tab">State Code</b>: </li>--}%
             </ul>
         </td>
