@@ -342,8 +342,7 @@ class SystemService
     {
         String url = new Links().CITY_MASTER_SHOW
         Client client = ClientBuilder.newClient();
-        WebTarget target = client.target(new Links().API_GATEWAY);
-        //WebTarget target = client.target("http://localhost:8081/");
+        WebTarget target = client.target(new Links().API_GATEWAY)
 
         try
         {

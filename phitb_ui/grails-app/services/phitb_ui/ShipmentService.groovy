@@ -62,7 +62,6 @@ class ShipmentService {
     def showTransportType(JSONObject jsonObject) {
         Client client = ClientBuilder.newClient()
         WebTarget target = client.target(new Links().API_GATEWAY)
-        //WebTarget target = client.target("http://localhost:8082")
         try {
             Response apiResponse = target
                     .path(new Links().TRANSPORT_TYPE_DATATABLE)
@@ -306,7 +305,6 @@ class ShipmentService {
     def showTransporter(JSONObject jsonObject) {
         Client client = ClientBuilder.newClient()
         WebTarget target = client.target(new Links().API_GATEWAY)
-        //WebTarget target = client.target("http://localhost:8082")
         try {
             Response apiResponse = target
                     .path(new Links().TRANSPORTER_TYPE_DATATABLE)
@@ -325,7 +323,6 @@ class ShipmentService {
     def getAllTransporterByEntity(String entityId) {
         Client client = ClientBuilder.newClient()
         WebTarget target = client.target(new Links().API_GATEWAY)
-        //WebTarget target = client.target("http://localhost:8082")
         try {
             Response apiResponse = target
                     .path(new Links().TRANSPORTER_TYPE_SHOW_BY_ENTITY + "/"+entityId)
