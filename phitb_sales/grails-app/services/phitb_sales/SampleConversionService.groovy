@@ -147,7 +147,7 @@ class SampleConversionService {
             sampleConversion.orderDate = new Date()
 
         sampleConversion.refOrderId = jsonObject.get("refOrderId").toString()
-        sampleConversion.dueDate = sdf.parse(jsonObject.get("dueDate").toString())
+        sampleConversion.dueDate = new Date()
         sampleConversion.dispatchDate = sdf.parse(jsonObject.get("dispatchDate").toString())
         sampleConversion.deliveryManId = Long.parseLong(jsonObject.get("deliveryManId").toString())
         sampleConversion.totalSqty = Double.parseDouble(jsonObject.get("totalSqty").toString())
@@ -240,7 +240,7 @@ class SampleConversionService {
             sampleConversion.orderDate = new Date()
 
         sampleConversion.refOrderId = jsonObject.get("refOrderId").toString()
-        sampleConversion.dueDate = sdf.parse(jsonObject.get("dueDate").toString())
+        sampleConversion.dueDate = new Date()
         sampleConversion.dispatchDate = sdf.parse(jsonObject.get("dispatchDate").toString())
         sampleConversion.deliveryManId = Long.parseLong(jsonObject.get("deliveryManId").toString())
         sampleConversion.totalSqty = Double.parseDouble(jsonObject.get("totalSqty").toString())

@@ -331,7 +331,7 @@
                         if (json.data[i].billStatus === "DRAFT") {
                             editInvoice = '<a class="dropdown-item"  href="/edit-sale-entry?saleBillId=' + json.data[i].id + '"><i class="fa fa-edit"></i> Edit</a>';
                         }
-                        if(json.data[i].balance === 0)
+                        if(json.data[i].balance !== json.data[i].totalAmount)
                         {
                             cancelInvoice ="";
                         }

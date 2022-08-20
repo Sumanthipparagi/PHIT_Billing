@@ -103,19 +103,18 @@
                                 <select class="form-control show-tick" id="customerSelect"
                                         onchange="customerSelectChanged()">
                                     <option selected disabled>--SELECT--</option>
-                                    <g:each in="${customers}" var="cs">
-
-                                        <g:if test="${cs.id != session.getAttribute("entityId")}">
-                                            <option value="${cs.id}">${cs.entityName} (${cs.entityType.name})</option>
+                                    <g:each in="${users}" var="u">
+                                        <g:if test="${u.id != session.getAttribute("userId")}">
+                                            <option value="${u.id}">${u.userName}</option>
                                         </g:if>
                                     </g:each>
                                 </select>
                             </div>
 
-                            <div class="col-md-2">
-                                <label for="duedate">Due Date:</label>
-                                <input type="date" class="form-control date" name="duedate" id="duedate"/>
-                            </div>
+%{--                            <div class="col-md-2">--}%
+%{--                                <label for="duedate">Due Date:</label>--}%
+%{--                                <input type="date" class="form-control date" name="duedate" id="duedate"/>--}%
+%{--                            </div>--}%
 
                         </div>
                     </div>
@@ -304,15 +303,15 @@
     var totalAmt = 0;
     var series = [];
     var products = [];
-    var customers = [];
+    var users = [];
     var readOnly = false;
     var scheme = null;
     $(document).ready(function () {
         $("#customerSelect").select2();
         $('#date').val(moment().format('YYYY-MM-DD'));
         $('#date').attr("readonly");
-        <g:each in="${customers}" var="cs">
-        customers.push({"id": ${cs.id}, "noOfCrDays": ${cs.noOfCrDays}});
+        <g:each in="${users}" var="u">
+        users.push({"id": ${u.id}});
         </g:each>
         const container = document.getElementById('saleTable');
         hot = new Handsontable(container, {
@@ -799,14 +798,14 @@
     function customerSelectChanged() {
         var noOfCrDays = 0;
         var customerId = $("#customerSelect").val();
-        for (var i = 0; i < customers.length; i++) {
-            if (customerId == customers[i].id) {
-                noOfCrDays = customers[i].noOfCrDays;
-            }
-        }
-        $('#duedate').prop("readonly", false);
-        $("#duedate").val(moment().add(noOfCrDays, 'days').format('YYYY-MM-DD'));
-        $('#duedate').prop("readonly", true);
+        // for (var i = 0; i < users.length; i++) {
+        //     if (customerId == users[i].id) {
+        //         noOfCrDays = users[i].noOfCrDays;
+        //     }
+        // }
+        // $('#duedate').prop("readonly", false);
+        // $("#duedate").val(moment().add(noOfCrDays, 'days').format('YYYY-MM-DD'));
+        // $('#duedate').prop("readonly", true);
     }
 
     function calculateTotalAmt() {

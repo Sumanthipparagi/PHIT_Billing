@@ -54,10 +54,10 @@ class StockAdjustmentDetailsController {
         try {
             GrailsParameterMap parameterMap = getParams()
             JSONObject paramsJsonObject = new JSONObject(parameterMap.params)
-            String start = paramsJsonObject.get("start")
-            String length = paramsJsonObject.get("length")
-            def saleBillDetails = stockAdjustmentDetailsService.dataTables(paramsJsonObject, start, length)
-            respond saleBillDetails
+//            String start = paramsJsonObject.get("start")
+//            String length = paramsJsonObject.get("length")
+            def stockAdjustmentDetails = stockAdjustmentDetailsService.dataTables(paramsJsonObject)
+            respond stockAdjustmentDetails
         }
         catch (ResourceNotFoundException ex) {
             System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
