@@ -223,12 +223,12 @@
             <sub>${entity.addressLine1}<br>${entity.addressLine2}</sub>
         </td>
         <td colspan="5" style="vertical-align:top;font-size:8pt;"><b>Bill to Address :(${customer.id})</b><br>
-            <b>${customer.userName}</b><br>
+            <b>${customer?.name}</b><br>
             <sub>${customer.address}
             </sub>
         </td>
         <td colspan="5" style="vertical-align:top;font-size:8pt;"><b>Ship to Address :(${customer.id})</b><br>
-            <b>${customer.userName}</b><br>
+            <b>${customer?.name}</b><br>
             <sub>${customer.address}
             </sub>
         </td>
