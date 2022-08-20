@@ -228,15 +228,12 @@
             buttons: [
                 {
                     'extend': 'excel',
-                    exportOptions: {columns: ':visible:not(:first-child)'}
                 },
                 {
                     'extend': 'pdf',
-                    exportOptions: {columns: ':visible:not(:first-child)'}
                 },
                 {
                     'extend': 'print',
-                    exportOptions: {columns: ':visible:not(:first-child)'}
                 }
             ],
             language: {
@@ -248,6 +245,8 @@
                 dataType: 'json',
                 data: {
                     daterange: daterange,
+                    fromDate:"",
+                    toDate:""
                 },
                 dataSrc: function (json) {
                     var return_data = [];
