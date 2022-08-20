@@ -60,7 +60,7 @@
                         <p class="m-b-20"><i class="zmdi zmdi-shopping-basket zmdi-hc-3x col-amber"></i></p>
                         <span>My Sales</span>
 
-                        <h3 class="m-b-10">₹<span class="number" id="salesCurrentMonth"></span></h3>
+                        <h3 class="m-b-10">₹<span class="number" id="salesCurrentMonth">0</span></h3>
                         <small class="text-muted"><span id="salesPreviousMonth"></span></small>
                     </div>
                 </div>
@@ -72,7 +72,7 @@
                         <p class="m-b-20"><i class="zmdi zmdi-assignment zmdi-hc-3x col-blue"></i></p>
                         <span>Total Outstanding</span>
 
-                        <h3 class="m-b-10 number">-</h3>
+                        <h3 class="m-b-10 number">₹<span class="number" id="totalOutstanding">0</span></h3>
                         <small class="text-muted">-</small>
                     </div>
                 </div>
@@ -84,8 +84,8 @@
                         <p class="m-b-20"><i class="zmdi zmdi-shopping-basket zmdi-hc-3x"></i></p>
                         <span>Total Sale Return</span>
 
-                        <h3 class="m-b-10 number">-</h3>
-                        <small class="text-muted">-</small>
+                        <h3 class="m-b-10 number">₹<span class="number" id="salesReturnCurrentMonth">0</span></h3>
+                        <small class="text-muted"><span id="salesReturnPreviousMonth"></span></small>
                     </div>
                 </div>
             </div>
@@ -96,7 +96,7 @@
                         <p class="m-b-20"><i class="zmdi zmdi-book zmdi-hc-3x col-green"></i></p>
                         <span>Draft Invoices</span>
 
-                        <h3 class="m-b-10 number">-</h3>
+                        <h3 class="m-b-10 number"><span class="number" id="totalDraftInvoice">0</span></h3>
                         <small class="text-muted">-</small>
                     </div>
                 </div>
@@ -151,9 +151,17 @@
            method: "GET",
            success: function (data) {
                var salesCurrentMonth = data["salesCurrentMonth"];
+               var salesReturnCurrentMonth = data["salesReturnCurrentMonth"];
                var salesPreviousMonth = data["salesPreviousMonth"];
+               var salesReturnPreviousMonth = data["salesReturnPreviousMonth"];
+               var totalDraftInvoice = data["totalDraftInvoice"];
+               var totalOutstanding = data["totalOutstanding"];
                $("#salesCurrentMonth").text(salesCurrentMonth);
+               $("#salesReturnCurrentMonth").text(salesReturnCurrentMonth);
+               $("#totalDraftInvoice").text(totalDraftInvoice);
+               $("#totalOutstanding").text(totalOutstanding);
 
+               //First
                var percentageDiff = 0;
                if(salesPreviousMonth > 0) {
                    var diff = salesCurrentMonth - salesPreviousMonth;
@@ -173,6 +181,25 @@
                    $("#salesPreviousMonth").html(percentageDiff.toFixed(2) + "% Growth <i class='zmdi zmdi-caret-down' style='color: red;'></i>");
                }
 
+               //Third
+               percentageDiff = 0;
+               if(salesReturnPreviousMonth > 0) {
+                   diff = salesReturnCurrentMonth - salesReturnPreviousMonth;
+                   if (diff !== 0)
+                       percentageDiff = (diff / salesReturnPreviousMonth) * 100;
+               }
+               if(percentageDiff > 0)
+               {
+                   $("#salesReturnPreviousMonth").html(percentageDiff.toFixed(2) + "% Growth <i class='zmdi zmdi-caret-up' style='color: lightgreen;'></i>");
+               }
+               else if(percentageDiff === 0)
+               {
+                   $("#salesReturnPreviousMonth").html("-");
+               }
+               else
+               {
+                   $("#salesReturnPreviousMonth").html(percentageDiff.toFixed(2) + "% Growth <i class='zmdi zmdi-caret-down' style='color: red;'></i>");
+               }
            }
         });
     }

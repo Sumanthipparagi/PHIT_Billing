@@ -277,7 +277,13 @@ class DashboardController {
 
         JSONObject dashboardStats = new JSONObject()
         dashboardStats.put("salesCurrentMonth", currentMonthSales.get("totalSales"))
+        dashboardStats.put("salesReturnCurrentMonth", currentMonthSales.get("totalSalesReturn"))
         dashboardStats.put("salesPreviousMonth", previousMonthSales.get("totalSales"))
+        dashboardStats.put("salesReturnPreviousMonth", previousMonthSales.get("totalSalesReturn"))
+
+        //this data is of current month only
+        dashboardStats.put("totalDraftInvoice", previousMonthSales.get("totalDraftInvoice"))
+        dashboardStats.put("totalOutstanding", currentMonthSales.get("totalOutstanding"))
 
         respond dashboardStats, formats: ['json']
     }

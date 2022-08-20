@@ -1,3 +1,5 @@
+<asset:stylesheet rel="stylesheet" href="/themeassets/plugins/sweetalert2/dist/sweetalert2.min.css"/>
+<asset:javascript src="/themeassets/plugins/sweetalert2/dist/sweetalert2.min.js"/>
 <script>
     function selectSideMenu(menu)
     {
@@ -65,6 +67,24 @@
             $('#shipments-menu').removeClass("hidden");
 
     }
+
+    $("#logout").on("click", function (e) {
+        e.preventDefault();
+        Swal.fire({
+            icon: "warning",
+            title:"You will be logged out now, continue?",
+            text: "Press Yes to logout",
+            showDenyButton: true,
+            showCancelButton: false,
+            confirmButtonText: 'Yes'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                window.location.href = "/logout";
+            } else if (result.isDenied) {
+
+            }
+        });
+    })
 </script>
 
 <g:include view="controls/socket.gsp"/>
