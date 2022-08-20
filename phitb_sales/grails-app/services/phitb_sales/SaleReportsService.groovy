@@ -163,4 +163,42 @@ class SaleReportsService {
 
         return totalGtn
     }
+
+   /* HashMap<Long, JSONArray> getStockAdjustmentDetails(Date date, long entityId)
+    {
+        HashMap<Long, JSONArray> totalAdjStk = new HashMap<>()
+        ArrayList<StockAdjustmentDetails> stockAdjustmentDetails = StockAdjustmentDetails.findAllByDateCreatedLessThanEqualsAndEntityId(date, entityId)
+        if(stockAdjustmentDetails.size()>0) {
+            for (StockAdjustmentDetails stockAdjustmentDetail : stockAdjustmentDetails) {
+                if (totalAdjStk.containsKey(stockAdjustmentDetail.productId)) {
+                    JSONArray salesInfos = totalAdjStk.get(productDetail.productId)
+                    ArrayList<String> batchNumbers = salesInfos.batchNumber
+                    if (batchNumbers.contains(productDetail.batchNumber)) {
+                        for (JSONObject salesInfo : salesInfos) {
+                            if (salesInfo.batchNumber.equalsIgnoreCase(productDetail.batchNumber)) {
+                                salesInfo.sqty += productDetail.sqty
+                                salesInfo.freeQty += productDetail.freeQty
+                            }
+                        }
+                    } else {
+                        JSONObject salesInfo = new JSONObject()
+                        salesInfo.put("batchNumber", productDetail.batchNumber)
+                        salesInfo.put("productId", productDetail.productId)
+                        salesInfo.put("sqty", productDetail.sqty)
+                        salesInfo.put("freeQty", productDetail.freeQty)
+                        salesInfos.put(salesInfo)
+                    }
+                } else {
+                    JSONObject salesInfo = new JSONObject()
+                    salesInfo.put("batchNumber", productDetail.batchNumber)
+                    salesInfo.put("productId", productDetail.productId)
+                    salesInfo.put("sqty", productDetail.sqty)
+                    salesInfo.put("freeQty", productDetail.freeQty)
+                    totalAdjStk.put(productDetail.productId, new JSONArray().put(salesInfo))
+                }
+            }
+        }
+
+        return totalAdjStk
+    }*/
 }
