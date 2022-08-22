@@ -147,6 +147,7 @@ public class Constants
     public static String PURCHASE_RETURN = "PURCHASE_RETURN";
 
     public static String GRN = "GRN";
+    public static String DELIVERY_CHALLAN = "DELIVERY_CHALLAN";
 
 
 

@@ -537,6 +537,76 @@ class UrlMappings {
                     'getGoodsTransferNoteProductbybatchAndBill')
 
 
+            //Delivery Challan
+            "/deliverychallan(.$format)?"(controller: 'deliveryChallan') {
+                action = [GET: 'index', POST:
+                        'saveDeliveryChallan']
+            }
+            "/draftdeliverychallan(.$format)?"(controller: 'goodsTransferNote') {
+                action = [GET: 'getDraftBillById']
+            }
+            "/deliverychallan/getrecent(.$format)?"(controller: 'deliveryChallan', action: 'getRecentByFinancialYearAndEntity')
+
+            "/deliverychallan/datatable(.$format)?"(controller: 'deliveryChallan') {action = [GET: 'dataTable']}
+
+            "/deliverychallan/cancel(.$format)?"(controller: 'deliveryChallan') {action = [POST: 'cancelDeliveryChallan']}
+
+            "/deliverychallan/approve(.$format)?"(controller: 'deliveryChallan', action: 'approveDeliveryChallan')
+
+            "/deliverychallan/$id(.$format)?"(controller: 'deliveryChallan') {
+                action = [GET: 'show', PUT: 'update', DELETE:
+                        'delete']
+            }
+            "/deliverychallanbydays/$days(.$format)?"(controller: 'deliveryChallan') {
+                action = [GET: 'getAllByDays']
+            }
+            "/gtnunsettledbycustomer/$id(.$format)?"(controller: 'deliveryChallan') {
+                action = [GET: 'getAllUnsettledByCustId']
+            }
+            "/deliverychallansettledbycustomer/$id(.$format)?"(controller: 'deliveryChallan') {
+                action = [GET: 'getAllsettledByCustId']
+            }
+
+            "/deliverychallanbycustomer(.$format)?"(controller: 'deliveryChallan') {
+                action = [GET: 'getAllByCustomerId']
+            }
+
+            "/updatedeliverychallanbalancebyid/id/$id/balance/$balance/status/$status"(controller: 'goodsTransferNote')
+                    {action=[POST: 'updateBalance']}
+
+
+            //GTN Product Details
+            "/deliverychallanproduct(.$format)?"(controller: 'deliveryChallanProduct') {
+                action = [GET: 'index', POST: 'save']
+            }
+            "/deliverychallanproduct/savelist(.$format)?"(controller: 'deliveryChallanProduct', action: 'saveList')
+            "/deliverychallanproduct/deliverychallan/$id(.$format)?"(controller: 'deliveryChallanProduct') {
+                action = [GET: 'getByDeliveryChallan']
+            }
+
+            "/deliverychallanproductlist/bill/$salebillsIds(.$format)?"(controller: 'deliveryChallanProduct') {
+                action = [GET: 'getSaleProductDetailsOfSaleBillList']
+            }
+
+            "/deliverychallanproduct/datatable(.$format)?"(controller: 'deliveryChallanProduct') {action = [GET: 'dataTable']}
+            "/deliverychallanproduct/$id(.$format)?"(controller: 'deliveryChallanProduct') {
+                action = [GET: 'show', PUT: 'update', DELETE:
+                        'delete']
+            }
+            "/deliverychallanproductbydays/$days(.$format)?"(controller: 'deliveryChallanProduct') {
+                action = [GET: 'getAllByDays']
+            }
+
+            "/deliverychallanproductbyproductId(.$format)?"(controller: 'deliveryChallanProduct') {
+                action = [GET: 'getGoodsTransferNoteProductbyProductId']
+            }
+
+            "/deliverychallanproductbillandbatch(.$format)?"(controller: 'deliveryChallanProduct', action:
+                    'getGoodsTransferNoteProductbybatchAndBill')
+
+
+
+
 //            Stock Adjustment
             "/stockadjustmentdetails(.$format)?"(controller: 'stockAdjustmentDetails') {
                 action = [GET: 'index', POST: 'save']

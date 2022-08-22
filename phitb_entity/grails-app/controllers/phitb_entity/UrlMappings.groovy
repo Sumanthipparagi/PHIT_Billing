@@ -87,6 +87,8 @@ class UrlMappings
                         'delete']
             }
 
+            "/departmentmasterbyentity(.$format)?"(controller: 'departmentMaster', action: 'getByEntityId')
+
             //Entity IRN
             "/entityirn(.$format)?"(controller: 'entityIRN') {
                 action = [GET: 'index', POST:

@@ -1889,6 +1889,202 @@ contains both sale bill and products
             System.err.println('Service :showSalesService , action :  show  , Ex:' + ex)
             log.error('Service :showSalesService , action :  show  , Ex:' + ex)
         }
+    }
+
+    def getRecentDeliveryChallan(String financialYear, String entityId, String billStatus)
+    {
+        Client client = ClientBuilder.newClient();
+        WebTarget target = client.target(new Links().API_GATEWAY);
+        try
+        {
+            Response apiResponse = target
+                    .path(new Links().DELIVERY_CHALLAN_RECENT)
+                    .queryParam("financialYear", financialYear)
+                    .queryParam("entityId", entityId)
+                    .queryParam("billStatus", billStatus)
+                    .request(MediaType.APPLICATION_JSON_TYPE)
+                    .get()
+
+            if (apiResponse.status == 200)
+            {
+                JSONObject jsonObject = new JSONObject(apiResponse.readEntity(String.class))
+                return jsonObject
+            }
+            else
+            {
+                return null
+            }
+        }
+        catch (Exception ex)
+        {
+            System.err.println('Service :saveStateMaster , action :  save  , Ex:' + ex)
+            log.error('Service :saveStateMaster , action :  save  , Ex:' + ex)
+        }
+
+    }
+
+    def approveDeliveryChallan(String id, String entityId, String financialYear)
+    {
+        JSONObject jsonObject = new JSONObject()
+        jsonObject.put("id", id)
+        jsonObject.put("entityId", entityId)
+        jsonObject.put("financialYear", financialYear)
+        Client client = ClientBuilder.newClient();
+        WebTarget target = client.target(new Links().API_GATEWAY);
+        try
+        {
+            Response apiResponse = target
+                    .path(new Links().DELIVERY_CHALLAN_APPROVE)
+                    .request(MediaType.APPLICATION_JSON_TYPE)
+                    .post(Entity.json(jsonObject))
+            if (apiResponse.status == 200)
+            {
+                JSONObject jsonObject1 = new JSONObject(apiResponse.readEntity(String.class))
+                return jsonObject1
+            }
+            else
+            {
+                return null
+            }
+        }
+        catch (Exception ex)
+        {
+            System.err.println('Service :saveStateMaster , action :  save  , Ex:' + ex)
+            log.error('Service :saveStateMaster , action :  save  , Ex:' + ex)
+        }
+
+    }
+
+    def cancelDeliveryChallan(String id, String entityId, String financialYear)
+    {
+        JSONObject jsonObject = new JSONObject()
+        jsonObject.put("id", id)
+        jsonObject.put("entityId", entityId)
+        jsonObject.put("financialYear", financialYear)
+        Client client = ClientBuilder.newClient();
+        WebTarget target = client.target(new Links().API_GATEWAY);
+        try
+        {
+            Response apiResponse = target
+                    .path(new Links().DELIVERY_CHALLAN_CANCEL)
+                    .request(MediaType.APPLICATION_JSON_TYPE)
+                    .post(Entity.json(jsonObject))
+            if (apiResponse.status == 200)
+            {
+                JSONObject jsonObject1 = new JSONObject(apiResponse.readEntity(String.class))
+                return jsonObject1
+            }
+            else
+            {
+                return null
+            }
+        }
+        catch (Exception ex)
+        {
+            System.err.println('Service :saveStateMaster , action :  save  , Ex:' + ex)
+            log.error('Service :saveStateMaster , action :  save  , Ex:' + ex)
+        }
+
+    }
+
+    /*
+contains both deliveryChallan and products
+ */
+    def saveDeliveryChallan(JSONObject jsonObject)
+    {
+        Client client = ClientBuilder.newClient();
+        WebTarget target = client.target(new Links().API_GATEWAY)
+        try
+        {
+            println(jsonObject)
+            Response apiResponse = target
+                    .path(new Links().DELIVERY_CHALLAN_SAVE)
+                    .request(MediaType.APPLICATION_JSON_TYPE)
+                    .post(Entity.entity(jsonObject.toString(), MediaType.APPLICATION_JSON_TYPE))
+            println(apiResponse)
+            return apiResponse
+        }
+        catch (Exception ex)
+        {
+            System.err.println('Service :salesService , action :  saveSaleInvoice  , Ex:' + ex)
+            log.error('Service :salesService , action :  saveSaleInvoice  , Ex:' + ex)
+        }
+    }
+
+    def getDeliveryChallanById(String id)
+    {
+        Client client = ClientBuilder.newClient();
+        WebTarget target = client.target(new Links().API_GATEWAY);
+
+        try {
+
+            Response apiResponse = target
+                    .path(new Links().DELIVERY_CHALLAN_SHOW + "/" + id)
+                    .request(MediaType.APPLICATION_JSON_TYPE)
+                    .get()
+            if (apiResponse.status == 200)
+            {
+                JSONObject gtn = new JSONObject(apiResponse.readEntity(String.class))
+                return gtn
+            }
+            else
+            {
+                return null
+            }
+        }
+        catch (Exception ex)
+        {
+            System.err.println('Service :ProductService , action :  getProducts  , Ex:' + ex)
+            log.error('Service :ProductService , action :  getProducts  , Ex:' + ex)
+        }
+    }
+
+    def showDeliveryChallan(JSONObject jsonObject)
+    {
+        Client client = ClientBuilder.newClient();
+        WebTarget target = client.target(new Links().API_GATEWAY);
+        try
+        {
+            Response apiResponse = target
+                    .path(new Links().DELIVERY_CHALLAN_DATATABLE)
+                    .queryParam("params", URLEncoder.encode(jsonObject.toString(), "UTF-8"))
+                    .request(MediaType.APPLICATION_JSON_TYPE)
+                    .get()
+            return apiResponse
+        }
+        catch (Exception ex)
+        {
+            System.err.println('Service :showSalesService , action :  show  , Ex:' + ex)
+            log.error('Service :showSalesService , action :  show  , Ex:' + ex)
+        }
+
+    }
+
+    def getDCProductDetailsByDeliveryChallan(String id)
+    {
+        Client client = ClientBuilder.newClient();
+        WebTarget target = client.target(new Links().API_GATEWAY);
+        try
+        {
+            Response apiResponse = target
+                    .path(new Links().DC_PRODUCTS_BY_DC+"/"+id)
+                    .request(MediaType.APPLICATION_JSON_TYPE)
+                    .get()
+            if (apiResponse.status == 200)
+            {
+                JSONArray saleProductDetail = new JSONArray(apiResponse.readEntity(String.class))
+                return saleProductDetail
+            }
+            else
+            {
+                return null
+            }
+        }
+        catch (Exception ex)
+        {
+            System.err.println('Service :SalesService , action :  getProducts  , Ex:' + ex)
+            log.error('Service :SalesService , action :  getProducts  , Ex:' + ex)
+        }
 
     }
 }

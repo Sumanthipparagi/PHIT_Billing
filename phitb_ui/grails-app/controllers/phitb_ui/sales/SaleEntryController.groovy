@@ -577,54 +577,59 @@ class SaleEntryController {
         String id = params.id
         String entityId = session.getAttribute("entityId")
         String financialYear = session.getAttribute("financialYear")
+        JSONObject saleObject = new SalesService().getSaleBillDetailsById(id)
         JSONObject jsonObject = new SalesService().cancelInvoice(id, entityId, financialYear)
-        if (jsonObject) {
-            //adjust stocks
-            JSONArray productDetails = jsonObject.get("products")
-            if (productDetails) {
-                for (JSONObject productDetail : productDetails) {
-                    def stockBook = new InventoryService().getStocksOfProductAndBatch(productDetail.productId.toString(), productDetail.batchNumber, session.getAttribute("entityId").toString())
-                    double remainingQty = stockBook.get("remainingQty")
-                    double remainingFreeQty = stockBook.get("remainingFreeQty")
+        if(saleObject?.balance ==  saleObject?.totalAmount){
+            if (jsonObject) {
+                //adjust stocks
+                JSONArray productDetails = jsonObject.get("products")
+                if (productDetails) {
+                    for (JSONObject productDetail : productDetails) {
+                        def stockBook = new InventoryService().getStocksOfProductAndBatch(productDetail.productId.toString(), productDetail.batchNumber, session.getAttribute("entityId").toString())
+                        double remainingQty = stockBook.get("remainingQty")
+                        double remainingFreeQty = stockBook.get("remainingFreeQty")
 
-                    //checking to where the stocks to be returned
-                    double originalSqty = productDetail.get("originalSqty")
-                    double originalFqty = productDetail.get("originalFqty")
-                    double sqty = productDetail.get("sqty")
-                    double freeQty = productDetail.get("freeQty")
+                        //checking to where the stocks to be returned
+                        double originalSqty = productDetail.get("originalSqty")
+                        double originalFqty = productDetail.get("originalFqty")
+                        double sqty = productDetail.get("sqty")
+                        double freeQty = productDetail.get("freeQty")
 
-                    if ((originalSqty + originalFqty) == (sqty + freeQty) && originalSqty == sqty && originalFqty == freeQty) {
-                        remainingQty += sqty
-                        remainingFreeQty += freeQty
-                    } else {
-                        if (originalSqty >= sqty && originalFqty >= freeQty) {
+                        if ((originalSqty + originalFqty) == (sqty + freeQty) && originalSqty == sqty && originalFqty == freeQty) {
                             remainingQty += sqty
                             remainingFreeQty += freeQty
                         } else {
-                            if (sqty > originalSqty) {
-                                remainingQty = sqty - (sqty - originalSqty)
-                                remainingFreeQty = remainingFreeQty + freeQty + (sqty - originalSqty)
-                            } else if (freeQty > originalFqty) {
-                                remainingQty = remainingQty + sqty + (freeQty - originalFqty)
-                                remainingFreeQty = freeQty - (freeQty - originalFqty)
+                            if (originalSqty >= sqty && originalFqty >= freeQty) {
+                                remainingQty += sqty
+                                remainingFreeQty += freeQty
+                            } else {
+                                if (sqty > originalSqty) {
+                                    remainingQty = sqty - (sqty - originalSqty)
+                                    remainingFreeQty = remainingFreeQty + freeQty + (sqty - originalSqty)
+                                } else if (freeQty > originalFqty) {
+                                    remainingQty = remainingQty + sqty + (freeQty - originalFqty)
+                                    remainingFreeQty = freeQty - (freeQty - originalFqty)
+                                }
                             }
                         }
-                    }
 
-                    double remainingReplQty = stockBook.get("remainingReplQty") + productDetail.get("repQty")
-                    stockBook.put("remainingQty", remainingQty.toLong())
-                    stockBook.put("remainingFreeQty", remainingFreeQty.toLong())
-                    stockBook.put("remainingReplQty", remainingReplQty.toLong())
-                    new InventoryService().updateStockBook(stockBook)
+                        double remainingReplQty = stockBook.get("remainingReplQty") + productDetail.get("repQty")
+                        stockBook.put("remainingQty", remainingQty.toLong())
+                        stockBook.put("remainingFreeQty", remainingFreeQty.toLong())
+                        stockBook.put("remainingReplQty", remainingReplQty.toLong())
+                        new InventoryService().updateStockBook(stockBook)
+                    }
                 }
+                JSONObject invoice = jsonObject.get("invoice") as JSONObject
+                if (invoice.has("irnDetails")) {
+                    JSONObject irnDetails = new JSONObject(invoice.get("irnDetails").toString())
+                    new EInvoiceService().cancelIRN(session, irnDetails.get("Irn").toString(), invoice.get("id").toString())
+                }
+                respond jsonObject, formats: ['json']
+            } else {
+                response.status = 400
             }
-            JSONObject invoice = jsonObject.get("invoice") as JSONObject
-            if (invoice.has("irnDetails")) {
-                JSONObject irnDetails = new JSONObject(invoice.get("irnDetails").toString())
-                new EInvoiceService().cancelIRN(session, irnDetails.get("Irn").toString(), invoice.get("id").toString())
-            }
-            respond jsonObject, formats: ['json']
-        } else {
+        }else{
             response.status = 400
         }
     }

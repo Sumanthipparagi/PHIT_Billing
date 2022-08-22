@@ -16,6 +16,7 @@ class SeriesMaster implements LogicalDelete<SeriesMaster>
     long purchaseOrderId
     Long goodsTransferId
     Long sampleInvoiceId
+    Long deliveryChallanId
     long status
     long syncStatus
     EntityTypeMaster entityType
@@ -37,6 +38,7 @@ class SeriesMaster implements LogicalDelete<SeriesMaster>
         mode nullable:true
         goodsTransferId nullable: true
         sampleInvoiceId nullable: true
+        deliveryChallanId nullable: true
     }
 
     boolean isUpdatable

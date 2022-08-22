@@ -4,6 +4,7 @@ package phitb_entity
 import grails.rest.*
 import grails.converters.*
 import grails.web.servlet.mvc.GrailsParameterMap
+import org.grails.web.json.JSONArray
 import org.grails.web.json.JSONObject
 import phitb_entity.Exception.BadRequestException
 import phitb_entity.Exception.ResourceNotFoundException
@@ -57,6 +58,32 @@ class DepartmentMasterController {
         }
     }
 
+    /**
+     * Get requested customerGroup register
+     * @param id
+     * @return get requested customerGroup register
+     */
+    def getByEntityId() {
+        try {
+            if (params.entityId) {
+                def depMaster =  departmentMasterService.getAllByEntity(Long.parseLong(params.entityId))
+                respond depMaster
+            }
+        }
+        catch (ResourceNotFoundException ex)
+        {
+            System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
+            response.status = 404
+        }
+        catch (BadRequestException ex)
+        {
+            System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
+            response.status = 400
+        }
+        catch (Exception ex) {
+            System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
+        }
+    }
 
     /**
      * Save new Department master
