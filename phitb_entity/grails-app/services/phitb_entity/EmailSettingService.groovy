@@ -104,6 +104,7 @@ class EmailSettingService {
         emailSetting.smtpServer = jsonObject.get("smtpServer")
         emailSetting.smtpPort = jsonObject.get("smtpPort")
         emailSetting.authenticationRequired = Boolean.parseBoolean(jsonObject.get("authenticationRequired"))
+        emailSetting.active = Boolean.parseBoolean(jsonObject.get("active"))
         emailSetting.save(flush: true)
         if (!emailSetting.hasErrors())
         {
@@ -128,6 +129,7 @@ class EmailSettingService {
             emailSetting.smtpServer = jsonObject.get("smtpServer")
             emailSetting.smtpPort = jsonObject.get("smtpPort")
             emailSetting.authenticationRequired = Boolean.parseBoolean(jsonObject.get("authenticationRequired"))
+            emailSetting.active = Boolean.parseBoolean(jsonObject.get("active"))
             emailSetting.save(flush: true)
             if (!emailSetting.hasErrors())
             {

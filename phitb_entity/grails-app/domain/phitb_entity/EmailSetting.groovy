@@ -11,6 +11,7 @@ class EmailSetting implements LogicalDelete<EmailSetting>, Serializable{
     String smtpServer
     String smtpPort //Comma separated
     boolean authenticationRequired
+    boolean active //custom settings will be enabled if this is set to true
 
     Date dateCreated
     Date lastUpdated
