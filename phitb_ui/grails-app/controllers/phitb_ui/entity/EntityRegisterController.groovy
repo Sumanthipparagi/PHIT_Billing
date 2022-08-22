@@ -191,6 +191,28 @@ class EntityRegisterController {
         }
     }
 
+    def parentEntityDataTable() {
+        try {
+            JSONObject jsonObject = new JSONObject(params)
+            jsonObject.put("entityId", session.getAttribute("entityId"))
+            if (session.getAttribute("role").toString().equalsIgnoreCase(new Constants().SUPER_USER)) {
+                jsonObject.put("superuser", true)
+            }
+            def apiResponse = new EntityService().showParentEntities(jsonObject)
+            if (apiResponse.status == 200) {
+                JSONObject responseObject = new JSONObject(apiResponse.readEntity(String.class))
+                respond responseObject, formats: ['json'], status: 200
+            } else {
+                response.status = 400
+            }
+        }
+        catch (Exception ex) {
+            System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
+            log.error('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
+            response.status = 400
+        }
+    }
+
     def save() {
         try {
             JSONObject jsonObject = new JSONObject(params)

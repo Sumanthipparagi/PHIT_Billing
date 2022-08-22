@@ -106,6 +106,7 @@ class UrlMappings
                         'save']
             }
             "/entityregister/datatable(.$format)?"(controller: 'entityRegister') {action = [GET: 'dataTable']}
+            "/entityregister/parententity/datatable(.$format)?"(controller: 'entityRegister') {action = [GET: 'parentEntitiesDatatable']}
             "/entityregister/$id(.$format)?"(controller: 'entityRegister') {
                 action = [GET: 'show', PUT: 'update', DELETE: 'delete']
             }

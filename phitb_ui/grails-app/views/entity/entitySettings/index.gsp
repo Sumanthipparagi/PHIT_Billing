@@ -184,20 +184,26 @@
             },
             ajax: {
                 type: 'GET',
-                url: '/entity-register/datatable',
+                url: '/entity-register/parent/datatable',
+                data:{
+                    parentEntityId: "${session.getAttribute("entityId")}"
+                },
                 dataType: 'json',
                 dataSrc: function (json) {
-                    console.log(json)
                     var return_data = [];
                     for (var i = 0; i < json.data.length; i++) {
                         var editbtn = '<a href="/entity-settings/settings?id='+json.data[i].id+'"><button type="button" data-id="' +
                             json.data[i].id +
                             '" data-entity="' + json.data[i].id + '"' +
                             ' class="editbtn btn btn-sm btn-warning  editbtn"><i class="material-icons"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">edit</font></font></i></button></a>'
-                        var deletebtn = '<button type="button" data-id="' + json.data[i].id +
+                       /* var deletebtn = '<button type="button" data-id="' + json.data[i].id +
                             '" class="btn btn-danger deletebtn" data-toggle="modal" data-target=".deleteModal"><i class="material-icons"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">delete</font></font></i></button>'
+                        */
+                       var entityName = json.data[i].entityName;
+                        if(json.data[i].id == ${session.getAttribute("entityId")})
+                            entityName = "<strong>"+entityName+"</strong>";
                         return_data.push({
-                            'name': json.data[i].entityName,
+                            'name': entityName,
                             'action': editbtn
                         });
                     }

@@ -10,7 +10,7 @@ import phitb_entity.Exception.ResourceNotFoundException
 
 class EntityRegisterController {
 	static responseFormats = ['json', 'xml']
-    static allowedMethods = [index: "GET", show: "GET", save: "POST", update: "PUT", delete: "DELETE", dataTable: "GET"]
+    static allowedMethods = [index: "GET", show: "GET", save: "POST", update: "PUT", delete: "DELETE", dataTable: "GET", parentEntitiesDatatable: "GET"]
 
     EntityRegisterService entityRegisterService
     /**
@@ -189,6 +189,31 @@ class EntityRegisterController {
         catch (Exception ex) {
             System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
         }
+    }
+
+    def parentEntitiesDatatable()
+    {
+        try {
+            String start = params.start
+            String length = params.length
+            GrailsParameterMap parameterMap = getParams()
+            JSONObject paramsJsonObject = new JSONObject(parameterMap.params)
+            respond entityRegisterService.getParentEntitiesDataTables(paramsJsonObject, start, length)
+        }
+        catch (ResourceNotFoundException ex)
+        {
+            System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
+            response.status = 404
+        }
+        catch (BadRequestException ex)
+        {
+            System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
+            response.status = 400
+        }
+        catch (Exception ex) {
+            System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
+        }
+
     }
 
     /**

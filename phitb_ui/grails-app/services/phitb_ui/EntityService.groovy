@@ -76,6 +76,25 @@ class EntityService {
         }
 
     }
+    def showParentEntities(JSONObject jsonObject) {
+        Client client = ClientBuilder.newClient()
+      //  WebTarget target = client.target(new Links().API_GATEWAY)
+        WebTarget target = client.target("http://localhost:8088")
+        try {
+            Response apiResponse = target
+                    .path(new Links().ENTITY_REGISTER_PARENT_DATATABLE)
+                    .queryParam("params", URLEncoder.encode(jsonObject.toString(), "UTF-8"))
+                    .request(MediaType.APPLICATION_JSON_TYPE)
+                    .get()
+            return apiResponse
+        }
+        catch (Exception ex) {
+            System.err.println('Service :EntityService , action :  showParentEntities  , Ex:' + ex)
+            log.error('Service :EntityService , action :  showParentEntities  , Ex:' + ex)
+        }
+
+    }
+
 
     def getTermsContionsByEntity(String id) {
         Client client = ClientBuilder.newClient()
