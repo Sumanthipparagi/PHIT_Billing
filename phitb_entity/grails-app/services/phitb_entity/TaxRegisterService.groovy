@@ -25,16 +25,9 @@ class TaxRegisterService {
     {
         Integer o = offset ? Integer.parseInt(offset.toString()) : 0
         Integer l = limit ? Integer.parseInt(limit.toString()) : 100
-        if (!entityId)
-        {
-            return TaxRegister.findAll([sort: 'id', max: l, offset: o, order: 'desc'])
-        }
-        else
-        {
-            return TaxRegister.createCriteria().list(max: l,offset:o){
-                entity{
-                    eq('id',entityId)
-                }
+        return TaxRegister.createCriteria().list(max: l,offset:o){
+            entity{
+                eq('id', entityId)
             }
         }
     }

@@ -23,7 +23,7 @@ class StockAdjustmentDetailsController {
         ArrayList<String> customers = new EntityRegisterController().getByAffiliateById(entityId) as ArrayList<String>
         def priorityList = new SystemService().getPriorityByEntity(entityId)
         def series = new SeriesController().getByEntity(entityId)
-        def taxRegister = new TaxController().show() as ArrayList<String>
+        def taxRegister = new EntityService().getTaxesByEntity(entityId)
         ArrayList<String> salesmanList = []
         /*users.each {
             if (it.role.name.toString().equalsIgnoreCase(Constants.ROLE_SALESMAN)) {

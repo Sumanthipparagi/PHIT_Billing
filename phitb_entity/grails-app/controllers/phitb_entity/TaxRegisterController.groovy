@@ -10,7 +10,7 @@ import phitb_entity.Exception.ResourceNotFoundException
 
 class TaxRegisterController {
 	static responseFormats = ['json', 'xml']
-    static allowedMethods = [index: "GET", show: "GET", save: "POST", update: "PUT", delete: "DELETE", dataTable: "GET"]
+    static allowedMethods = [index: "GET", show: "GET", save: "POST", update: "PUT", delete: "DELETE", dataTable: "GET", getAllByEntityId: "GET"]
 
     TaxRegisterService taxRegisterService
     /**
@@ -58,9 +58,9 @@ class TaxRegisterController {
     }
 
     /**
-     * Get requested customerGroup register
+     * Get requested Tax register
      * @param id
-     * @return get requested customerGroup register
+     * @return get requested Tax register
      */
     def getAllByEntityId() {
         try {

@@ -288,6 +288,7 @@ public class Links
     public static String TAX_MASTER_DATATABLE = "api/v1.0/entity/taxregister/datatable";
     public static String TAX_MASTER_UPDATE = "api/v1.0/entity/taxregister/{id}";
     public static String TAX_MASTER_DELETE = "api/v1.0/entity/taxregister/{id}";
+    public static String TAX_MASTER_BY_ENTITY = "api/v1.0/entity/taxregisterbyentity/{id}";
 
 
     //Territory

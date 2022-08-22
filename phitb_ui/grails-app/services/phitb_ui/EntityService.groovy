@@ -1727,6 +1727,34 @@ class EntityService {
     }*/
 
 
+
+    JSONArray getTaxesByEntity(String id) {
+        Client client = ClientBuilder.newClient()
+        WebTarget target = client.target(new Links().API_GATEWAY)
+        try {
+
+            Response apiResponse = target
+                    .path(new Links().TAX_MASTER_BY_ENTITY)
+                    .resolveTemplate("id", id)
+                    .request(MediaType.APPLICATION_JSON_TYPE)
+                    .get()
+
+             if(apiResponse.status == 200)
+             {
+                 JSONArray jsonArray = new JSONArray(apiResponse.readEntity(String.class))
+                 return jsonArray
+             }
+            else
+                return null
+        }
+        catch (Exception ex) {
+            System.err.println('Service :EntityService , action :  getTaxesByEntity  , Ex:' + ex)
+            log.error('Service :EntityService , action :  getTaxesByEntity  , Ex:' + ex)
+            return null
+        }
+    }
+
+
     def getTaxRegister(String id = null) {
         Client client = ClientBuilder.newClient()
         WebTarget target = client.target(new Links().API_GATEWAY)

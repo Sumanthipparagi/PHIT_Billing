@@ -66,7 +66,7 @@ class PurchaseEntryController {
         ArrayList<String> customers = new EntityRegisterController().getByAffiliateById(entityId) as ArrayList<String>
         def priorityList = new SystemService().getPriorityByEntity(entityId)
         def series = new SeriesController().getByEntity(entityId)
-        def taxRegister = new TaxController().show() as ArrayList<String>
+        def taxRegister = new EntityService().getTaxesByEntity(entityId)
         Object transporter = new ShipmentService().getAllTransporterByEntity(entityId)
         render(view: '/purchase/purchaseEntry/purchaseEntry', model: [divisions   : divisions, customers: customers,
                                                                       priorityList: priorityList, series: series,
@@ -77,7 +77,7 @@ class PurchaseEntryController {
     def save() {
         try {
             JSONObject jsonObject = new JSONObject(params)
-            def apiResponse = new PurchaseService().savePurchaseDetails(jsonObject)
+            def apiResponse = new PurchaseService().savePurchaseBillDetails(jsonObject)
             if (apiResponse?.status == 200) {
                 JSONObject obj = new JSONObject(apiResponse.readEntity(String.class))
 //                redirect(uri: '/user-register')
