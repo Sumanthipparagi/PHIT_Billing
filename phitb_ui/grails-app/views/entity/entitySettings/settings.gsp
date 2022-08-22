@@ -1928,52 +1928,86 @@
                     </div>
 
                     <div class="body">
-                        <div class="row">
-                            <div class="col-md-6">
-                                <div class="form-group">
-                                    <p>You will be billed for emails if <strong>default</strong> e-mail service is selected.
-                                    </p>
-                                    <label for="emailService"><strong>Email Service</strong></label>
-                                    <select class="form-control show-tick" name="emailService" id="emailService">
-                                        <option>DISABLED</option>
-                                        <option>DEFAULT</option>
-                                        <option>CUSTOM</option>
+                        <form action="/entity-settings/email/save" method="post" id="emailSettings">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <p>You will be billed for emails if <strong>default</strong> e-mail service is selected.
+                                        </p>
+                                        <label for="emailService"><strong>Email Service</strong></label>
+                                        <select class="form-control show-tick" name="emailService" id="emailService">
+                                            <option
+                                                <g:if test="${emailSettings == null}">selected</g:if>>DISABLED</option>
+                                            <option
+                                                <g:if test="${emailSettings?.emailService == "DEFAULT"}">selected</g:if>>DEFAULT</option>
+                                            <option
+                                                <g:if test="${emailSettings?.emailService == "CUSTOM"}">selected</g:if>>CUSTOM</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row" id="customMailSettings" style="border-top: #0D0A0A;">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="smtpServer">SMTP Server</label>
+                                        <input value="${emailSettings?.smtpServer}" maxlength="500" class="form-control"
+                                               id="smtpServer" type="text" placeholder="Enter SMTP Server"/>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="smtpPort">SMTP Port</label>
+                                        <input maxlength="500" value="${emailSettings?.smtpPort}" class="form-control"
+                                               id="smtpPort" placeholder="ex: 587, 25"
+                                               type="text"/>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="smtpUsername">Username</label>
+                                        <input class="form-control" value="${emailSettings?.smtpUsername}"
+                                               id="smtpUsername" placeholder="Enter SMTP Username" type="text"
+                                               maxlength="500"/>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="smtpPassword">Password</label>
+                                        <input class="form-control" id="smtpPassword" type="password" autocomplete="off"
+                                               maxlength="500"/>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="senderMail">Sender Mail</label>
+                                        <input class="form-control" value="${emailSettings?.senderMail}" id="senderMail"
+                                               type="text" maxlength="100" placeholder="ex: contact@company.com"/>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-6" id="authenticationRequiredType">
+                                    <label for="encryptionType"><strong>Encryption Type</strong></label>
+                                    <select class="form-control show-tick" name="encryptionType" id="encryptionType">
+                                        <option
+                                            <g:if test="${emailSettings?.encryptionType == Constants.EMAIL_ENCRYPTION_TYPE_SSL}">selected</g:if>>${Constants.EMAIL_ENCRYPTION_TYPE_SSL}</option>
+                                        <option
+                                            <g:if test="${emailSettings?.encryptionType == Constants.EMAIL_ENCRYPTION_TYPE_STARTLS}">selected</g:if>>${Constants.EMAIL_ENCRYPTION_TYPE_STARTLS}</option>
                                     </select>
                                 </div>
-                            </div>
-                        </div>
 
-                        <div class="row" id="customMailSettings" style="border-top: #0D0A0A;">
-                            <div class="col-md-6">
-                                <div class="form-group">
-                                    <label for="smtpServer">SMTP Server</label>
-                                    <input maxlength="500" class="form-control" id="smtpServer" type="text"/>
+                                <div class="col-md-6">
+                                    <input value="${emailSettings?.id}" name="emailSettingsId" type="hidden"/>
+                                    <button type="submit"
+                                            class="btn btn-default btn-round waves-effect"
+                                            style="background-color: green;">SUBMIT</button>
                                 </div>
                             </div>
-                            <div class="col-md-6">
-                                <div class="form-group">
-                                    <label for="smtpPort">SMTP Ports</label>
-                                    <input maxlength="500" class="form-control" id="smtpPort" placeholder="enter comma separated values ex: 587, 25" type="text"/>
-                                </div>
-                            </div>
-                            <div class="col-md-6">
-                                <div class="form-group">
-                                    <label for="smtpUsername">Username</label>
-                                    <input class="form-control" id="smtpUsername" type="text" maxlength="500"/>
-                                </div>
-                            </div>
-                            <div class="col-md-6">
-                                <div class="form-group">
-                                    <label for="smtpPassword">Password</label>
-                                    <input class="form-control" id="smtpPassword" type="password" autocomplete="off" maxlength="500"/>
-                                </div>
-                            </div>
-
-                            <div class="col-md-6">
-                                <button type="submit" class="btn btn-default btn-round waves-effect"
-                                        style="background-color: green;">SUBMIT</button>
-                            </div>
-                        </div>
+                        </form>
                     </div>
                 </div>
             </div>
@@ -2254,7 +2288,49 @@
         event.preventDefault();
     });
 
-
+    $('#emailSettings').submit(function (event){
+        var formData = $(this);
+        var smtpPassword = $("#smtpPassword").val();
+        var smtpUsername = $("#smtpUsername").val();
+        var smtpPort = $("#smtpPort").val();
+        var smtpServer = $("#smtpServer").val();
+        var encryptionType = $("#encryptionType").val();
+        var emailService = $("#emailService").val();
+        var emailSettingsId = $("#emailSettingsId").val();
+        $.ajax({
+            type: 'POST',
+            url: "/entity-settings/email/save",
+            data: {
+                smtpPassword: smtpPassword,
+                smtpUsername: smtpUsername,
+                smtpPort: smtpPort,
+                smtpServer: smtpServer,
+                encryptionType: encryptionType,
+                senderMail: senderMail,
+                authenticationRequired: true,
+                emailService: emailService,
+                entityId: "${params.id}",
+                emailSettingsId: emailSettingsId
+            },
+            beforeSend: function () {
+                beforeSendSwal = Swal.fire({
+                    // title: "Loading",
+                    html: '<img src="${assetPath(src: "/themeassets/images/1476.gif")}" width="100" height="100"/>',
+                    showDenyButton: false,
+                    showCancelButton: false,
+                    showConfirmButton: false,
+                    allowOutsideClick: false,
+                    background: 'transparent'
+                });
+            },
+            success: function (data) {
+                Swal.fire("Success")
+            },
+            error: function (data) {
+                console.log("Failed");
+            }
+        })
+    });
 
 </script>
 </body>

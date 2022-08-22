@@ -44,6 +44,14 @@ public class Constants
     public static String SAMPLE = "SAMPLE";
     public static String PROMOTIONAL  = "PROMOTIONAL";
 
+    //DEFAULT MAIL CONFIG
+    public static String EMAIL_SENDER_ID = "erp@pharmit.live";
+    public static String EMAIL_SMTP_SERVER = "smtp.email.ap-mumbai-1.oci.oraclecloud.com";
+    public static String EMAIL_SMTP_PORT = "587";
+    public static String EMAIL_USERNAME = "ocid1.user.oc1..aaaaaaaa4zswntidzg2jjywqndd3hmfnbmx4ks5uz4io4mwtadjqgw3ujyjq@ocid1.tenancy.oc1..aaaaaaaa2eeffgicyik23ru764tcszp7asfxsfow3rlo7yzu6rhm67ub5stq.zs.com";
+    public static String EMAIL_PASSWORD = "5uAcq]70Ii6tJIv]W5vM";
+    public static String EMAIL_ENCRYPTION_TYPE_SSL = "SSL/TLS";
+    public static String EMAIL_ENCRYPTION_TYPE_STARTLS = "STARTTLS";
 
     public Constants()
     {

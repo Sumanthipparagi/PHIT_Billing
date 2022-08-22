@@ -11,7 +11,9 @@ class EmailSetting implements LogicalDelete<EmailSetting>, Serializable{
     String smtpServer
     String smtpPort //Comma separated
     boolean authenticationRequired
-    boolean active //custom settings will be enabled if this is set to true
+    String encryptionType //null for not required or else "SSL/TLS" or "STARTTLS"
+    boolean active //email sending will be enabled or disabled
+    String emailService //CUSTOM or DEFAULT
 
     Date dateCreated
     Date lastUpdated
@@ -25,6 +27,9 @@ class EmailSetting implements LogicalDelete<EmailSetting>, Serializable{
         smtpPassword nullable: true, maxSize: 600
         smtpServer nullable: true
         smtpPort nullable: true
+        encryptionType nullable: true
+        emailService inList: ["DEFAULT", "CUSTOM"], nullable: true
+        entity unique: true
     }
     boolean isUpdatable
     static transients = ['isUpdatable']

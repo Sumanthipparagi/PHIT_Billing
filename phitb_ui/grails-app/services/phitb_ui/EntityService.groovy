@@ -78,8 +78,7 @@ class EntityService {
     }
     def showParentEntities(JSONObject jsonObject) {
         Client client = ClientBuilder.newClient()
-      //  WebTarget target = client.target(new Links().API_GATEWAY)
-        WebTarget target = client.target("http://localhost:8088")
+        WebTarget target = client.target(new Links().API_GATEWAY)
         try {
             Response apiResponse = target
                     .path(new Links().ENTITY_REGISTER_PARENT_DATATABLE)
