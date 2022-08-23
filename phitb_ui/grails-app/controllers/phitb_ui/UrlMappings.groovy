@@ -582,6 +582,22 @@ class UrlMappings {
         "/grn/print-grn"(controller: "goodsTransferNote", action: "printGRN")
 
 
+        //Delivery Challan
+        "/delivery-challan"(controller: "deliveryChallan") {
+            action = [GET: "index", POST: 'saveDeliveryChallan']
+        }
+        "/delivery-challan/cancel"(controller: 'deliveryChallan', action: 'cancelDeliveryChallan')
+        "/delivery-challan/approve"(controller: 'deliveryChallan', action: 'approveDeliveryChallan')
+        "/delivery-challan/datatable"(controller: "deliveryChallan",action:"dataTable")
+        "/delivery-challan-list"(controller: 'deliveryChallan', action: 'devliveryChallanList')
+        "/delivery-challan/print-delivery-challan"(controller: "deliveryChallan", action: "printDeliveryChallan")
+
+
+
+
+
+
+
 //        Sample conversion
         "/sample-conversion/save"(controller: 'sampleConversion', action: 'saveSampleConversion')
         "/sample-conversion"(controller: 'sampleConversion', action: 'sampleConversion')

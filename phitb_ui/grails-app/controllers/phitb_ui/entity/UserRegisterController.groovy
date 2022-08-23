@@ -4,9 +4,11 @@ import groovy.json.JsonSlurper
 import org.grails.web.json.JSONArray
 import org.grails.web.json.JSONObject
 import org.springframework.web.multipart.MultipartFile
+import phitb_ui.AccountsService
 import phitb_ui.Constants
 import phitb_ui.EntityService
 import phitb_ui.Links
+import phitb_ui.ProductService
 import phitb_ui.SystemService
 import phitb_ui.accounts.BankRegisterController
 import phitb_ui.facility.CcmController
@@ -64,19 +66,16 @@ class UserRegisterController
             ArrayList<String> countrylist = new CountryController().show() as ArrayList<String>
             //ArrayList<String> citylist = new CityController().show() as ArrayList<String>
             ArrayList<String> citylist = null
-            ArrayList<String> zoneList = new ZoneController().show() as ArrayList<String>
-            ArrayList<String> routeRegister = new RouteController().show() as ArrayList<String>
             //ArrayList<String> userList = new UserRegisterController().show() as ArrayList<String>
             ArrayList <String> genderList = new SystemService().getAllGender()
-            ArrayList <String> bank = new BankRegisterController().show() as ArrayList<String>
+            ArrayList <String> bank = new AccountsService().getBankRegisterByEntity(session.getAttribute('entityId').toString()) as ArrayList<String>
             ArrayList <String> roles = new RoleController().show() as ArrayList<String>
-            println()
-            ArrayList <String> division  = new DivisionController().show() as ArrayList<String>
+            ArrayList <String> division  = new ProductService().getDivisionsByEntityId(session.getAttribute('entityId').toString()) as ArrayList<String>
             ArrayList <String> account = new AccountRegisterController().getAllAccounts() as ArrayList<String>
-            def  department = new EntityService().getAllDepartment() as ArrayList<String>
+            def  department = new EntityService().getDeparmentByEntityId(session.getAttribute('entityId').toString())
             Object entity = new EntityRegisterController().show() as ArrayList<String>
             ArrayList<String> ccm = new CcmController().show() as ArrayList<String>
-            ArrayList<String> userregister = new UserRegisterController().show() as ArrayList<String>
+            ArrayList<String> userregister = new UserRegisterController().getByEntity() as ArrayList<String>
             ArrayList<String> managerList = []
             userregister.each {
                 if (it.role.name.toString().equalsIgnoreCase(Constants.ROLE_MANAGER))
@@ -96,8 +95,6 @@ class UserRegisterController
                                                                            statelist    : statelist, countrylist: countrylist,
                                                                            citylist     : citylist, salesmanList: salesmanList,
                                                                            managerList  : managerList,
-                                                                           zoneList     : zoneList,
-                                                                           routeregister: routeRegister,
                                                                            userregister : userregister,
                                                                            department: department,role:roles,
                                                                            bank:bank,account:account,

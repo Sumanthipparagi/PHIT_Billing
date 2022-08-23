@@ -2397,6 +2397,37 @@ class EntityService {
      * @param jsonObject
      * @return
      */
+    def getDeparmentByEntityId(String entityId) {
+        Client client = ClientBuilder.newClient();
+        WebTarget target = client.target(new Links().API_GATEWAY);
+        try {
+            Response apiResponse = target
+                    .path(new Links().DEPARTMENT_MASTER_ENTITY)
+                    .queryParam("entityId",entityId)
+                    .request(MediaType.APPLICATION_JSON_TYPE)
+                    .get()
+            if (apiResponse.status == 200) {
+                JSONArray jsonArray = new JSONArray(apiResponse.readEntity(String.class))
+                return  jsonArray
+
+            } else {
+                return null
+            }
+
+        }
+        catch (Exception ex) {
+            System.err.println('Service :getDeparmentByEntityId , action :  show  , Ex:' + ex)
+            log.error('Service :getDeparmentByEntityId , action :  show  , Ex:' + ex)
+        }
+
+    }
+
+
+    /**
+     *
+     * @param jsonObject
+     * @return
+     */
     def getAllRoles() {
         Client client = ClientBuilder.newClient();
         WebTarget target = client.target(new Links().API_GATEWAY);

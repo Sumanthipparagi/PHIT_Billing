@@ -152,6 +152,7 @@ public class Links
 
     public static String ENTITY_TYPE_MASTER_SHOW = "api/v1.0/entity/entitytypemaster";
     public static String DEPARTMENT_MASTER_SHOW = "api/v1.0/entity/departmentmaster";
+    public static String DEPARTMENT_MASTER_ENTITY = "api/v1.0/entity/departmentmasterbyentity";
     public static String DIVISION_SHOW = "api/v1.0/product/division";
     public static String DIVISION_BY_ENTITY = "api/v1.0/product/divisionbyentity";
     public static String GENDER_SHOW = "api/v1.0/system/gender";
@@ -563,9 +564,28 @@ public class Links
     public static String UPDATE_GTN_BALANCE = "api/v1.0/sales/updategtnbalancebyid";
 
 
+    //    Goods Transfer Note
+    public static String DELIVERY_CHALLAN_SAVE = "api/v1.0/sales/deliverychallan";
+    public static String DELIVERY_CHALLAN_SHOW = "api/v1.0/sales/deliverychallan";
+    public static String DELIVERY_CHALLAN_DATATABLE = "api/v1.0/sales/deliverychallan/datatable";
+    public static String DELIVERY_CHALLAN_RECENT = "api/v1.0/sales/deliverychallan/getrecent";
+    public static String DELIVERY_CHALLAN_CANCEL = "api/v1.0/sales/deliverychallan/cancel";
+    public static String DELIVERY_CHALLAN_APPROVE = "api/v1.0/sales/deliverychallan/approve";
+    public static String DELIVERY_CHALLAN_CUSTOMER = "api/v1.0/sales/deliverychallanbycustomer";
+    public static String UPDATE_DELIVERY_CHALLAN_BALANCE = "api/v1.0/sales/updatedeliverychallanbalancebyid";
+
+
+
     //    Goods transfer note products
     public static String GTN_PRODUCTS_SAVE = "api/v1.0/sales/gtnproduct";
     public static String GTN_PRODUCTS_BY_GTN = "api/v1.0/sales/gtnproduct/gtn";
+
+
+    //   Delivery Challan
+    public static String DELIVERY_CHALLAN_PRODUCT_SAVE = "api/v1.0/sales/deliverychallanproduct";
+    public static String DC_PRODUCTS_BY_DC = "api/v1.0/sales/deliverychallanproduct/deliverychallan";
+
+
 
     /*<--------------------------------------------Inventory ------------------------------------------------->*/
 

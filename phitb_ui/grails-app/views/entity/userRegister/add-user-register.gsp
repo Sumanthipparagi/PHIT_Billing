@@ -26,6 +26,7 @@
     %{--    <asset:stylesheet src="/themeassets/plugins/select-2-editor/select2.min.css"/>--}%
     %{--    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />--}%
     <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.3/css/select2.min.css" rel="stylesheet"/>
+    <asset:stylesheet rel="stylesheet" href="/themeassets/plugins/sweetalert/sweetalert.css"/>
 
     <style>
     .error {
@@ -72,8 +73,8 @@
 
         <g:if test="${params.id == null || params.id == ""}">
             <!-- Inline Layout -->
-            <form action="/user-register" id="entityRegisterForm" method="POST" role="form"
-                  class="entityRegisterForm" enctype="multipart/form-data">
+            <form action="/user-register" id="userRegisterForm" method="POST" role="form"
+                  class="userRegisterForm" enctype="multipart/form-data">
                 <div class="row clearfix">
                     <div class="col-lg-12 col-md-12 col-sm-12">
                         <div class="card">
@@ -249,7 +250,7 @@
 
                                                 <div>
                                                     <select class="pinCode form-control" id="pinCode"></select>
-                                                    <input type="hidden" name="pinCode">
+                                                    <input type="hidden" name="pinCode" id="pc">
                                                 </div>
 
                                             </div>
@@ -590,6 +591,7 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.3/js/select2.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/jquery-validation@1.19.3/dist/jquery.validate.js"></script>
 
+<asset:javascript src="/themeassets/plugins/sweetalert/sweetalert.min.js"/>
 
 
 <script>
@@ -697,6 +699,16 @@
         // }
     }
 
+    // $('.userRegisterForm').on('submit',function( event ) {
+    //     if ( $(".pc").val() !== "" ) {
+    //         return;
+    //     }
+    //     else{
+    //         alert("no pincode")
+    //     }
+    //     event.preventDefault();
+    // });
+
 
     // $('.pinCode').select2({
     //     placeholder: "Pincode",
@@ -788,15 +800,15 @@
     });
 
     $(document).ready(function () {
-        $("#entityRegisterForm").validate();
+        $("#userRegisterForm").validate();
     });
 
     <g:if test="${params.id == null || params.id == ""}">
 
-    $("#entityRegisterForm").submit(function (event) {
+    $("#userRegisterForm").submit(function (event) {
         var pincode = $('.pinCode option').length;
         if (pincode === 0 || pincode < 0) {
-            swal("Please enter  pincode and  select area");
+            Swal.fire("Please enter  pincode and  select area");
             event.preventDefault();
         }
     });
@@ -831,7 +843,7 @@
                 success: function (data) {
                     var $select = $('#userName');
                     if (data.userName != null) {
-                        swal("Username Taken!", "Please enter a different username", "error");
+                        Swal.fire("Username Taken!", "Please enter a different username", "error");
 
                         $select.val("");
                         $select.focus();

@@ -1,6 +1,8 @@
 package phitb_entity
 
+import grails.converters.JSON
 import grails.gorm.transactions.Transactional
+import org.grails.web.json.JSONArray
 import org.grails.web.json.JSONObject
 import phitb_entity.Exception.BadRequestException
 import phitb_entity.Exception.ResourceNotFoundException
@@ -25,6 +27,23 @@ class DepartmentMasterService {
 
     DepartmentMaster get(String id) {
         return DepartmentMaster.findById(Long.parseLong(id))
+    }
+
+    def getAllByEntity(long entityId)
+    {
+        if (!entityId)
+        {
+            return DepartmentMaster.findAll()
+        }
+        else
+        {
+            return DepartmentMaster.createCriteria().list(){
+                entity{
+                    eq('id',entityId)
+                }
+                eq('deleted', false)
+            }
+        }
     }
 
     JSONObject dataTables(JSONObject paramsJsonObject, String start, String length) {
