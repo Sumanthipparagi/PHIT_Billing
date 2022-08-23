@@ -96,7 +96,16 @@ class EmailSettingService {
 
     EmailSetting save(JSONObject jsonObject)
     {
-        EmailSetting emailSetting = new EmailSetting()
+        EmailSetting emailSetting = null
+        if(jsonObject.has("id")) {
+            emailSetting = EmailSetting.findById(jsonObject.get("id"))
+            emailSetting.isUpdatable = true
+        }
+        else
+        {
+            emailSetting = new EmailSetting()
+        }
+
         emailSetting.entity = EntityRegister.findById(Long.parseLong(jsonObject.get("entity").toString()))
         emailSetting.senderMail = jsonObject.get("senderMail")
         emailSetting.smtpUsername = jsonObject.get("smtpUsername")
@@ -107,8 +116,8 @@ class EmailSettingService {
             emailSetting.emailService = jsonObject.get("emailService")
         if(jsonObject.has("encryptionType"))
             emailSetting.encryptionType = jsonObject.get("encryptionType")
-        emailSetting.authenticationRequired = Boolean.parseBoolean(jsonObject.get("authenticationRequired"))
-        emailSetting.active = Boolean.parseBoolean(jsonObject.get("active"))
+        emailSetting.authenticationRequired = jsonObject.get("authenticationRequired")
+        emailSetting.active = jsonObject.get("active")
         emailSetting.save(flush: true)
         if (!emailSetting.hasErrors())
         {
@@ -120,7 +129,7 @@ class EmailSettingService {
         }
     }
 
-    EmailSetting update(JSONObject jsonObject, String id)
+   /* EmailSetting update(JSONObject jsonObject, String id)
     {
         EmailSetting emailSetting = EmailSetting.findById(Long.parseLong(id))
         if (emailSetting)
@@ -136,8 +145,8 @@ class EmailSettingService {
                 emailSetting.emailService = jsonObject.get("emailService")
             if(jsonObject.has("encryptionType"))
                 emailSetting.encryptionType = jsonObject.get("encryptionType")
-            emailSetting.authenticationRequired = Boolean.parseBoolean(jsonObject.get("authenticationRequired"))
-            emailSetting.active = Boolean.parseBoolean(jsonObject.get("active"))
+            emailSetting.authenticationRequired = jsonObject.get("authenticationRequired")
+            emailSetting.active = jsonObject.get("active")
             emailSetting.save(flush: true)
             if (!emailSetting.hasErrors())
             {
@@ -152,7 +161,7 @@ class EmailSettingService {
         {
             throw new ResourceNotFoundException()
         }
-    }
+    }*/
 
     void delete(String id)
     {

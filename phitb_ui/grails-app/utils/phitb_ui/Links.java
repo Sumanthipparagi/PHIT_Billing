@@ -182,7 +182,7 @@ public class Links
     public static String EMAIL_SETTINGS_DELETE = "api/v1.0/entity/emailsetting/{id}";
     public static String EMAIL_SETTINGS_SAVE = "api/v1.0/entity/emailsetting";
     public static String EMAIL_SETTINGS_DATATABLE = "api/v1.0/entity/emailsetting/datatable";
-    public static String EMAIL_SETTINGS_BY_ENTITY = "api/v1.0/entity/emailsetting/getbyentityid";
+    public static String EMAIL_SETTINGS_BY_ENTITY = "api/v1.0/entity/emailsettingbyentity";
 
     //Email Log
     public static String EMAIL_LOG_SHOW = "api/v1.0/entity/emaillog";

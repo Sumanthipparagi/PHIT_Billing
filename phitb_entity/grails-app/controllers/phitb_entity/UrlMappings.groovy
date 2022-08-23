@@ -97,8 +97,7 @@ class UrlMappings
             }
             "/emailsetting/datatable(.$format)?"(controller: 'emailSetting') {action = [GET: 'dataTable']}
             "/emailsetting/$id(.$format)?"(controller: 'emailSetting') {
-                action = [GET: 'show', PUT: 'update', DELETE:
-                        'delete']
+                action = [GET: 'show', DELETE:'delete']
             }
             "/emailsettingbyentity/$id(.$format)?"(controller: 'emailSetting') {
                 action = [GET: 'getAllByEntityId']

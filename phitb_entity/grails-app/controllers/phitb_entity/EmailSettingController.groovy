@@ -11,7 +11,7 @@ import phitb_entity.Exception.ResourceNotFoundException
 class EmailSettingController {
     static responseFormats = ['json', 'xml']
 
-    static allowedMethods = [index: "GET", show: "GET", save: "POST", update: "PUT", delete: "DELETE", dataTable: "GET"]
+    static allowedMethods = [index: "GET", show: "GET", save: "POST", delete: "DELETE", dataTable: "GET"]
 
     EmailSettingService emailSettingService
     /**
@@ -85,7 +85,7 @@ class EmailSettingController {
     }
 
     /**
-     * Save new EmailSetting
+     * Save or update EmailSetting
      * @param EmailSetting
      * @return saved EmailSetting
      */
@@ -114,7 +114,7 @@ class EmailSettingController {
      * @param id
      * @param EmailSetting
      * @return updated EmailSetting
-     */
+    /* *//*
     def update() {
         try {
             String id = params.id
@@ -134,7 +134,7 @@ class EmailSettingController {
         catch (Exception ex) {
             System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
         }
-    }
+    }*/
 
     /**
      * Delete selected EmailSetting

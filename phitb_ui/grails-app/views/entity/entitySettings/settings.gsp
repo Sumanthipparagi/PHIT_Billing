@@ -31,6 +31,10 @@
         color: white;
         background: #22252b;
     }
+
+    .hidden {
+        display: none;
+    }
     </style>
 </head>
 
@@ -1935,73 +1939,104 @@
                                         <p>You will be billed for emails if <strong>default</strong> e-mail service is selected.
                                         </p>
                                         <label for="emailService"><strong>Email Service</strong></label>
-                                        <select class="form-control show-tick" name="emailService" id="emailService">
+                                        <select onchange="emailServiceChanged()" class="form-control show-tick"
+                                                name="emailService" id="emailService">
                                             <option
-                                                <g:if test="${emailSettings == null}">selected</g:if>>DISABLED</option>
+                                                <g:if test="${emailSettings == null || emailSettings?.active == false}">selected</g:if>>DISABLED</option>
                                             <option
-                                                <g:if test="${emailSettings?.emailService == "DEFAULT"}">selected</g:if>>DEFAULT</option>
+                                                <g:if test="${emailSettings?.emailService == "DEFAULT" && emailSettings?.active == true}">selected</g:if>>DEFAULT</option>
                                             <option
-                                                <g:if test="${emailSettings?.emailService == "CUSTOM"}">selected</g:if>>CUSTOM</option>
+                                                <g:if test="${emailSettings?.emailService == "CUSTOM" && emailSettings?.active == true}">selected</g:if>>CUSTOM</option>
                                         </select>
                                     </div>
                                 </div>
                             </div>
 
-                            <div class="row" id="customMailSettings" style="border-top: #0D0A0A;">
-                                <div class="col-md-6">
-                                    <div class="form-group">
-                                        <label for="smtpServer">SMTP Server</label>
-                                        <input value="${emailSettings?.smtpServer}" maxlength="500" class="form-control"
-                                               id="smtpServer" type="text" placeholder="Enter SMTP Server"/>
+                            <div class="hidden" id="customMailSettings" style="border-top: #0D0A0A;">
+                                <div class="row">
+                                    <div class="col-md-4">
+                                        <div class="form-group">
+                                            <label for="smtpServer">SMTP Server</label>
+                                            <input value="${emailSettings?.smtpServer}" maxlength="500"
+                                                   class="form-control"
+                                                   id="smtpServer" name="smtpServer" type="text"
+                                                   placeholder="Enter SMTP Server"/>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-4">
+                                        <div class="form-group">
+                                            <label for="smtpPort">SMTP Port</label>
+                                            <input maxlength="500" value="${emailSettings?.smtpPort}"
+                                                   class="form-control"
+                                                   id="smtpPort" placeholder="ex: 587, 25" name="smtpPort"
+                                                   type="text"/>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-4">
+                                        <div class="form-group">
+                                            <label for="senderMail">Sender Mail</label>
+                                            <input class="form-control" value="${emailSettings?.senderMail}"
+                                                   id="senderMail"
+                                                   name="senderMail"
+                                                   type="text" maxlength="100" placeholder="ex: contact@company.com"/>
+                                        </div>
                                     </div>
                                 </div>
 
-                                <div class="col-md-6">
-                                    <div class="form-group">
-                                        <label for="smtpPort">SMTP Port</label>
-                                        <input maxlength="500" value="${emailSettings?.smtpPort}" class="form-control"
-                                               id="smtpPort" placeholder="ex: 587, 25"
-                                               type="text"/>
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="form-group" style="padding: 10px;">
+                                            <div class="checkbox">
+                                                <input class="form-control"
+                                                       <g:if test="${emailSettings?.authenticationRequired}">checked</g:if>
+                                                       id="authenticationRequired" name="authenticationRequired"
+                                                       type="checkbox"/>
+                                                <label for="authenticationRequired">Authentication Required?</label>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
 
-                                <div class="col-md-6">
-                                    <div class="form-group">
-                                        <label for="smtpUsername">Username</label>
-                                        <input class="form-control" value="${emailSettings?.smtpUsername}"
-                                               id="smtpUsername" placeholder="Enter SMTP Username" type="text"
-                                               maxlength="500"/>
+                                <div class="row hidden" id="authenticationRequiredContainer">
+                                    <div class="col-md-4">
+                                        <div class="form-group">
+                                            <label for="smtpUsername">Username</label>
+                                            <input class="form-control" value="${emailSettings?.smtpUsername}"
+                                                   id="smtpUsername" placeholder="Enter SMTP Username"
+                                                   name="smtpUsername"
+                                                   type="text"
+                                                   maxlength="500"/>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-4">
+                                        <div class="form-group">
+                                            <label for="smtpPassword">Password</label>
+                                            <input class="form-control" id="smtpPassword" type="password"
+                                                   name="smtpPassword"
+                                                   maxlength="500" value="${emailSettings?.smtpPassword}"/>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-4" id="authenticationRequiredType">
+                                        <label for="encryptionType"><strong>Encryption Type</strong></label>
+                                        <select class="form-control show-tick" name="encryptionType"
+                                                id="encryptionType">
+                                            <option
+                                                <g:if test="${emailSettings?.encryptionType == Constants.EMAIL_ENCRYPTION_TYPE_SSL}">selected</g:if>>${Constants.EMAIL_ENCRYPTION_TYPE_SSL}</option>
+                                            <option
+                                                <g:if test="${emailSettings?.encryptionType == Constants.EMAIL_ENCRYPTION_TYPE_STARTLS}">selected</g:if>>${Constants.EMAIL_ENCRYPTION_TYPE_STARTLS}</option>
+                                        </select>
                                     </div>
                                 </div>
+                            </div>
 
-                                <div class="col-md-6">
-                                    <div class="form-group">
-                                        <label for="smtpPassword">Password</label>
-                                        <input class="form-control" id="smtpPassword" type="password" autocomplete="off"
-                                               maxlength="500"/>
-                                    </div>
-                                </div>
-
-                                <div class="col-md-6">
-                                    <div class="form-group">
-                                        <label for="senderMail">Sender Mail</label>
-                                        <input class="form-control" value="${emailSettings?.senderMail}" id="senderMail"
-                                               type="text" maxlength="100" placeholder="ex: contact@company.com"/>
-                                    </div>
-                                </div>
-
-                                <div class="col-md-6" id="authenticationRequiredType">
-                                    <label for="encryptionType"><strong>Encryption Type</strong></label>
-                                    <select class="form-control show-tick" name="encryptionType" id="encryptionType">
-                                        <option
-                                            <g:if test="${emailSettings?.encryptionType == Constants.EMAIL_ENCRYPTION_TYPE_SSL}">selected</g:if>>${Constants.EMAIL_ENCRYPTION_TYPE_SSL}</option>
-                                        <option
-                                            <g:if test="${emailSettings?.encryptionType == Constants.EMAIL_ENCRYPTION_TYPE_STARTLS}">selected</g:if>>${Constants.EMAIL_ENCRYPTION_TYPE_STARTLS}</option>
-                                    </select>
-                                </div>
-
+                            <div class="row">
                                 <div class="col-md-6">
                                     <input value="${emailSettings?.id}" name="emailSettingsId" type="hidden"/>
+                                    <input value="${params.id}" name="entityId" type="hidden"/>
                                     <button type="submit"
                                             class="btn btn-default btn-round waves-effect"
                                             style="background-color: green;">SUBMIT</button>
@@ -2040,6 +2075,10 @@
 
 <script>
 
+    $(document).ready(function () {
+        emailServiceChanged();
+
+    });
 
     $('#updateEntitySettings').submit(function (event) {
         var formData = $(this);
@@ -2288,8 +2327,10 @@
         event.preventDefault();
     });
 
-    $('#emailSettings').submit(function (event){
+    $('#emailSettings').submit(function (event) {
+        event.preventDefault();
         var formData = $(this);
+        var tst = formData.serialize();
         var smtpPassword = $("#smtpPassword").val();
         var smtpUsername = $("#smtpUsername").val();
         var smtpPort = $("#smtpPort").val();
@@ -2300,7 +2341,7 @@
         $.ajax({
             type: 'POST',
             url: "/entity-settings/email/save",
-            data: {
+            /*data: {
                 smtpPassword: smtpPassword,
                 smtpUsername: smtpUsername,
                 smtpPort: smtpPort,
@@ -2311,7 +2352,8 @@
                 emailService: emailService,
                 entityId: "${params.id}",
                 emailSettingsId: emailSettingsId
-            },
+            },*/
+            data: formData.serialize(),
             beforeSend: function () {
                 beforeSendSwal = Swal.fire({
                     // title: "Loading",
@@ -2324,14 +2366,36 @@
                 });
             },
             success: function (data) {
-                Swal.fire("Success")
+                Swal.fire("Email settings saved.")
             },
             error: function (data) {
-                console.log("Failed");
+                console.log("Email settings saving failed");
             }
-        })
+        });
     });
 
+    function emailServiceChanged() {
+        var emailService = $("#emailService").val();
+        if (emailService == "CUSTOM") {
+            $("#customMailSettings").removeClass("hidden");
+        } else
+            $("#customMailSettings").addClass("hidden");
+
+        var authenticationRequired = $("#authenticationRequired").is(":checked");
+        if (authenticationRequired) {
+            $("#authenticationRequiredContainer").removeClass("hidden");
+        } else {
+            $("#authenticationRequiredContainer").addClass("hidden");
+        }
+    }
+
+    $("#authenticationRequired").change(function () {
+        if (this.checked) {
+            $("#authenticationRequiredContainer").removeClass("hidden");
+        } else {
+            $("#authenticationRequiredContainer").addClass("hidden");
+        }
+    });
 </script>
 </body>
 </html>

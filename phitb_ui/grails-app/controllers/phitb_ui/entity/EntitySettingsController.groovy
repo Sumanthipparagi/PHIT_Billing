@@ -104,6 +104,7 @@ class EntitySettingsController {
                                                                 entityConfigs: entityConfigs])
     }
 
+    //save or update
     def emailSettingsSave() {
         println(params)
         String entityId = params.entityId
@@ -115,57 +116,36 @@ class EntitySettingsController {
         String encryptionType = params.encryptionType
         String emailService = params.emailService
         String emailSettingsId = params.emailSettingsId
-        Boolean authenticationRequired = Boolean.parseBoolean(params.authenticationRequired)
+        boolean authenticationRequired = true
+        if(params.authenticationRequired == null)
+            authenticationRequired = false
         Boolean active = true
 
         JSONObject jsonObject = new JSONObject()
-        jsonObject.put("entityId", entityId)
+        jsonObject.put("entity", entityId)
         jsonObject.put("smtpServer", smtpServer)
         jsonObject.put("smtpPort", smtpPort)
         jsonObject.put("smtpUsername", smtpUsername)
         jsonObject.put("smtpPassword", smtpPassword)
         jsonObject.put("senderMail", senderMail)
         jsonObject.put("encryptionType", encryptionType)
-        jsonObject.put("emailService", emailService)
+        if(emailService.equalsIgnoreCase("DISABLED"))
+        {
+            jsonObject.put("emailService", "DEFAULT")
+            jsonObject.put("active", false)
+        }
+        else {
+            jsonObject.put("emailService", emailService)
+            jsonObject.put("active", active)
+        }
         jsonObject.put("authenticationRequired", authenticationRequired)
-        jsonObject.put("active", active)
-
-        JSONObject resultJson = new JSONObject()
-        if(!emailSettingsId)
-            resultJson = EmailService.saveEmailSettings(jsonObject)
-        else
+        if(emailSettingsId)
         {
             jsonObject.put("id", emailSettingsId)
-            resultJson = EmailService.updateEmailSettings(jsonObject)
+
         }
+
+        JSONObject resultJson = EmailService.saveEmailSettings(jsonObject)
         respond resultJson, formats: ['json']
-    }
-
-    def emailSettingsUpdate() {
-        String entityId = params.entityId
-        String smtpServer = params.smtpServer
-        String smtpPort = params.smtpPort
-        String smtpUsername = params.smtpUsername
-        String smtpPassword = params.smtpPassword
-        String senderMail = params.senderMail
-        String encryptionType = params.encryptionType
-        String emailService = params.emailService
-        Boolean authenticationRequired = Boolean.parseBoolean(params.authenticationRequired)
-        Boolean active = true
-
-        JSONObject jsonObject = new JSONObject()
-        jsonObject.put("entityId", entityId)
-        jsonObject.put("smtpServer", smtpServer)
-        jsonObject.put("smtpPort", smtpPort)
-        jsonObject.put("smtpUsername", smtpUsername)
-        jsonObject.put("smtpPassword", smtpPassword)
-        jsonObject.put("senderMail", senderMail)
-        jsonObject.put("encryptionType", encryptionType)
-        jsonObject.put("emailService", emailService)
-        jsonObject.put("authenticationRequired", authenticationRequired)
-        jsonObject.put("active", active)
-
-        JSONObject jsonObject1 = EmailService.updateEmailSettings(jsonObject)
-        respond jsonObject1, formats: ['json']
     }
 }
