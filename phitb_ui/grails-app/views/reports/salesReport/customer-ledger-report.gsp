@@ -6,7 +6,7 @@
     <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
     <meta name="description" content="PharmIT">
 
-    <title>:: PharmIt ::  Customer-Ledger Report</title>
+    <title>:: PharmIt ::  Invoice Payment Report</title>
     <link rel="icon" type="image/x-icon" href="${assetPath(src: '/themeassets/images/favicon.ico')}"/>
     <!-- Favicon-->
     <asset:stylesheet rel="stylesheet" src="/themeassets/plugins/bootstrap/css/bootstrap.min.css"/>
@@ -51,10 +51,10 @@
         <div class="block-header">
             <div class="row clearfix">
                 <div class="col-lg-5 col-md-5 col-sm-12">
-                    <h2>Customer-Ledger Report</h2>
+                    <h2>Invoice Payment Report</h2>
                     <ul class="breadcrumb padding-0">
                         <li class="breadcrumb-item"><a href="#"><i class="zmdi zmdi-home"></i></a></li>
-                        <li class="breadcrumb-item active">Customer-Ledger Report</li>
+                        <li class="breadcrumb-item active">Invoice Payment Report</li>
                     </ul>
                 </div>
 
@@ -206,8 +206,7 @@
                });
                 var mainTableFooter = "</tbody></table>";
 
-                var total = "<tr style='font-weight: bold;'><td colspan='3'>TOTAL</td><td>"+totalInvoice.toFixed(2)+"</td><td>"+totalReceipt.toFixed(2)+"</td><td></td></tr>";
-                total += "<tr style='font-weight: bold;'><td colspan='3'>Ledger Balance as on "+toDate+"</td><td></td><td></td><td>"+totalBalance.toFixed(2)+"</td></tr>";
+                var total = "<tr style='font-weight: bold;'><td colspan='3'>TOTAL</td><td>"+totalInvoice.toFixed(2)+"</td><td>"+totalReceipt.toFixed(2)+"</td><td>"+totalBalance.toFixed(2)+"</td></tr>";
                 $("#result").html(mainTableHeader + content + total + mainTableFooter);
                 loading.close();
             },
