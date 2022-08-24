@@ -7,10 +7,13 @@ import com.google.gson.JsonParser
 import grails.converters.JSON
 import org.grails.web.json.JSONArray
 import org.grails.web.json.JSONObject
+import phitb_ui.AccountsService
 import phitb_ui.EntityService
 import phitb_ui.ProductService
 import phitb_ui.ReportsService
+import phitb_ui.SalesService
 import phitb_ui.SystemService
+import phitb_ui.entity.EntityRegisterController
 import phitb_ui.entity.SeriesController
 
 class SalesReportController {
@@ -385,5 +388,43 @@ class SalesReportController {
         }
         gstData.put("gstDetails", gstDetails)
         respond gstData, formats: ['json']
+    }
+
+    def customerLedger() {
+        def entities = new EntityRegisterController().getByAffiliateById(session.getAttribute("entityId").toString())
+        render(view: '/reports/salesReport/customer-ledger-report', model: [entities: entities])
+    }
+
+    def getCustomerLedger()
+    {
+        String entityId = session.getAttribute("entityId")
+        String financialYear = session.getAttribute("financialYear")
+        String dateRange = params.dateRange
+        JSONArray saleBills = new SalesService().getSaleBillByDateRange(dateRange, entityId)
+        JSONArray customerLedgerDetails = new JSONArray()
+        for (JSONObject saleBill : saleBills) {
+            double receiptAmount = 0.0
+            double saleReturnAmount = 0.0
+            def receiptlogsinv = new AccountsService().getReceiptLogInvById(saleBill.id.toString())
+            if(receiptlogsinv.status == 200)
+            {
+                JSONArray receipts = new JSONArray(receiptlogsinv.readEntity(String.class))
+                for (Object receipt : receipts) {
+                    receiptAmount += receipt.amountPaid
+                }
+            }
+            JSONArray saleReturnAdjustments = new SalesService().getSaleReturnAdjustmentDetails(saleBill.id.toString(), "INVS")
+            for (Object saleReturnAdjustment : saleReturnAdjustments) {
+                saleReturnAmount += saleReturnAdjustment.adjAmount
+            }
+            double invoiceTotal = saleBill.invoiceTotal
+            JSONObject jsonObject = new JSONObject()
+            jsonObject.put("invoiceTotal", invoiceTotal)
+            jsonObject.put("invoiceNumber", saleBill.invoiceNumber)
+            jsonObject.put("balance", invoiceTotal - (saleReturnAmount+receiptAmount))
+            jsonObject.put("receiptAmount",(saleReturnAmount+receiptAmount))
+            customerLedgerDetails.put(jsonObject)
+        }
+        respond customerLedgerDetails, status: 200
     }
 }
