@@ -413,6 +413,16 @@
                                     </ul>
                                 </li>
                             </g:if>
+
+
+                            <li><a href="javascript:void(0);" class="menu-toggle">Delivery Challan</span> <span
+                                    class="badge badge-success float-right"></span></a>
+                                <ul class="ml-menu">
+                                    <li><a href="/delivery-challan">Delivery Challan</a></li>
+                                    <li><a href="/delivery-challan-list">Delivery Challan List</a></li>
+
+                                </ul>
+                            </li>
                             <g:if test="${UtilsService.isPermitted("VIEW_SALE_ORDER", session.getAttribute("permittedFeatures").toString())}">
                                 <li><a href="/gtn">Goods Transfer Note</a></li>
                             </g:if>
