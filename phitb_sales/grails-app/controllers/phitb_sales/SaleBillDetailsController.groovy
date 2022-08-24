@@ -501,7 +501,7 @@ class SaleBillDetailsController {
      */
     def getAllByCustomerId() {
         try {
-            respond saleBillDetailsService.getAllByCustomerId(params.id, params.financialYear, params.entityId)
+            respond saleBillDetailsService.getAllByCustomerId(params.id, params.financialYear, params.entityId, params.dateRange)
         }
         catch (Exception ex) {
             System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)

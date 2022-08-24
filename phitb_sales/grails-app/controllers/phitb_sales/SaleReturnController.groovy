@@ -370,7 +370,8 @@ class SaleReturnController {
         try {
             String docId = params.docId
             String docType = params.docType
-            respond saleReturnService.getSaleReturnAdjustmentDetailsByDocId(docId, docType)
+            String dateRange = params.dateRange
+            respond saleReturnService.getSaleReturnAdjustmentDetailsByDocId(docId, docType, dateRange)
         }
         catch (ResourceNotFoundException ex) {
             System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)

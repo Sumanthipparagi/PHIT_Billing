@@ -176,73 +176,40 @@
             closeOnClickOutside: false
         });
         var dateRange = $('.dateRange').val();
+        var toDate = dateRange.split("-")[1];
+        var customerId = $('.customerSelect').val();
         // var sortBy = $('.sortBy').val();
 
         $.ajax({
-            url: "/reports/sales/get-customer-ledger?dateRange=" + dateRange,
+            url: "/reports/sales/get-customer-ledger?dateRange=" + dateRange+"&customerId="+customerId,
             type: "GET",
             contentType: false,
             processData: false,
-            success: function (data) {
+            success: function (invoices) {
+                var totalInvoice = 0.0;
+                var totalBalance = 0.0;
+                var totalReceipt = 0.0;
                 var content = "";
-                var grandTotal = 0.00;
-                var totalSqty = 0;
-                var totalfQty = 0;
-                var totalNtv = 0;
-                var totalDiscount = 0;
-                var totalGst = 0;
                 var mainTableHeader = "<table class='table table-bordered table-sm' style='width: 100%;'><thead>" +
-                    "<tr><td data-f-bold='true' colspan='11'><h3 style='margin-bottom:0 !important;'>${session.getAttribute('entityName')}</h3></td></tr>" +
-                    "<tr><td colspan='11'>${session.getAttribute('entityAddress1')} ${session.getAttribute('entityAddress2')} ${session.getAttribute('entityPinCode')}, ph: ${session.getAttribute('entityMobileNumber')}</td></tr>" +
-                    "<tr><th data-f-bold='true' colspan='11'>Consolidated Sales* Detail, Date: " +
+                    "<tr><td data-f-bold='true' colspan='6'><h3 style='margin-bottom:0 !important;'>${session.getAttribute('entityName')}</h3></td></tr>" +
+                    "<tr><td colspan='6'>${session.getAttribute('entityAddress1')} ${session.getAttribute('entityAddress2')} ${session.getAttribute('entityPinCode')}, ph: ${session.getAttribute('entityMobileNumber')}</td></tr>" +
+                    "<tr><th data-f-bold='true' colspan='6'>Ledger Details, Date: " +
                     dateRange + "</th></tr>" +
-                    "<tr><th colspan='6'></th><th data-f-bold='true'><strong>Grand Total:</strong> <span id='grandTotal'></span></th></tr>" +
+                    //"<tr><th colspan='5'></th><th data-f-bold='true'><strong>Grand Total:</strong> <span id='grandTotal'></span></th></tr>" +
                     //"<tr><th data-f-bold='true' colspan='3'>Customer</th><th data-f-bold='true'>Net Amount</th>"+
-                    "<tr><th data-f-bold='true'>Customer</th><th data-f-bold='true'>Sale Qty</th><th data-f-bold='true'>Fr. Qty</th><th data-f-bold='true'>N T V</th><th data-f-bold='true'>Discount</th><th data-f-bold='true'>GST</th><th data-f-bold='true'>Net Amount</th></tr></thead><tbody>";
-                $.each(data, function (key, city) {
-                    var billDetails = "";
-                    var sQty = 0;
-                    var fQty = 0;
-                    var ntv = 0;
-                    var discount = 0;
-                    var gst = 0;
-                    var custNetAmtTotal = 0;
-                    $.each(city, function (key, bill) {
-                        $.each(bill.products, function (key, product) {
-                            if (bill.billStatus !== "CANCELLED") {
-                                ntv += Number(product.amount.toFixed("2")) - Number(product.gstAmount.toFixed("2"));
-                                discount += Number(product.discount.toFixed("2"));
-                                gst += Number(product.gstAmount.toFixed("2"));
-                                custNetAmtTotal += Number(product.amount.toFixed("2"));
-                                sQty += product.sqty;
-                                fQty += product.freeQty;
-                            }
-                        });
-                    });
-                    var cityName =
-                        "<tr><td data-f-bold='true'><span class='customerData cust" + key + "'>" + city[0].customerDetail.entityName + "</span></td>" +
-                        "<td>" + sQty + "</td>" +
-                        "<td>" + fQty + "</td>" +
-                        "<td>" + ntv.toFixed("2") + "</td>" +
-                        "<td>" + discount.toFixed("2") + "</td>" +
-                        "<td>" + gst.toFixed("2") + "</td>" +
-                        "<td data-f-bold='true'><span class='customerData cust" + key + "'>" + custNetAmtTotal.toFixed("2") + "</span></td></tr>";
-
-
-                    totalSqty += sQty;
-                    totalfQty += fQty;
-                    totalNtv += ntv;
-                    totalDiscount += discount;
-                    totalGst += gst;
-                    grandTotal += custNetAmtTotal;
-                    content += cityName + billDetails;
-                });
-                var total = "<tr><th></th><th data-f-bold='true'><u>" + totalSqty + "</u></th data-f-bold='true'><th><u>" + totalfQty + "</u></th><th data-f-bold='true'><u>" + totalNtv.toFixed(2) + "</u></th><th><u>" + totalDiscount.toFixed(2) + "</u></th><th data-f-bold='true'><u>" + totalGst.toFixed(2) + "</u></th><th data-f-bold='true'><strong><u><span id='Total'>" + grandTotal.toFixed(2) + "</span></u></strong></th></tr>"
+                    "<tr><th data-f-bold='true'>Invoice Date</th><th data-f-bold='true'>Customer</th><th data-f-bold='true'>Invoice Number</th><th data-f-bold='true'>Invoice Amount</th><th data-f-bold='true'>Receipt</th><th data-f-bold='true'>Balance</th></tr></thead><tbody>";
+               $.each(invoices, function (index, inv) {
+                   content += "<tr><td>"+inv.invoiceDate+"</td><td>"+inv.entityName+"</td><td>"+inv.invoiceNumber+"</td><td>"+inv.invoiceTotal.toFixed(2)+"</td><td>"+inv.receiptAmount.toFixed(2)+"</td><td>"+inv.balance.toFixed(2)+"</td></tr>";
+                   totalInvoice += inv.invoiceTotal;
+                   totalBalance += inv.balance;
+                   totalReceipt += inv.receiptAmount;
+               });
                 var mainTableFooter = "</tbody></table>";
 
+                var total = "<tr style='font-weight: bold;'><td colspan='3'>TOTAL</td><td>"+totalInvoice.toFixed(2)+"</td><td>"+totalReceipt.toFixed(2)+"</td><td></td></tr>";
+                total += "<tr style='font-weight: bold;'><td colspan='3'>Ledger Balance as on "+toDate+"</td><td></td><td></td><td>"+totalBalance.toFixed(2)+"</td></tr>";
                 $("#result").html(mainTableHeader + content + total + mainTableFooter);
                 loading.close();
-                $("#grandTotal").text(grandTotal.toFixed(2));
             },
             error: function () {
                 loading.close();

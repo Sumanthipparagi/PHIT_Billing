@@ -35,8 +35,22 @@ class BillDetailLogService
         return jsonArray.toString()
     }
 
-    def getRecieptDetailsByBillIdAndBillType(long id, String billType) {
-        return BillDetailLog.findAllByBillIdAndBillType(id, billType)
+    def getRecieptDetailsByBillIdAndBillType(long id, String billType, String dateRange = null) {
+        if(dateRange == null)
+            return BillDetailLog.findAllByBillIdAndBillType(id, billType)
+        else
+        {
+            SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy")
+            Date fromDate = sdf.parse(dateRange.split("-")[0].trim())
+            Date toDate = sdf.parse(dateRange.split("-")[1].trim())
+            Calendar calendar = Calendar.getInstance()
+            calendar.setTime(toDate)
+            calendar.add(Calendar.HOUR_OF_DAY, 23)
+            calendar.add(Calendar.MINUTE, 59)
+            calendar.add(Calendar.SECOND, 59)
+            toDate = calendar.getTime()
+            return BillDetailLog.findAllByBillIdAndBillTypeAndDateCreatedBetween(id, billType, fromDate, toDate)
+        }
     }
 
 

@@ -718,7 +718,7 @@ contains both sale bill and products
 
     }
 
-    def getSaleReturnAdjustmentDetails(String docId, String docType)
+    def getSaleReturnAdjustmentDetails(String docId, String docType, String dateRange = null)
     {
         Client client = ClientBuilder.newClient();
         WebTarget target = client.target(new Links().API_GATEWAY)
@@ -726,6 +726,7 @@ contains both sale bill and products
         {
             Response apiResponse = target
                     .path(new Links().SALE_RETURN_ADJUSTMENT_DETAILS +"/"+docId+"/"+docType)
+                    .queryParam("dateRange", dateRange)
                     .request(MediaType.APPLICATION_JSON_TYPE)
                     .get()
             if (apiResponse.status == 200)
@@ -1263,7 +1264,7 @@ contains both sale bill and products
     }
 
 
-    def getSaleBillByCustomer(String custid, String financialYear, String entityId)
+    def getSaleBillByCustomer(String custid, String financialYear, String entityId, String dateRange = null)
     {
         Client client = ClientBuilder.newClient()
         WebTarget target = client.target(new Links().API_GATEWAY)
@@ -1274,6 +1275,7 @@ contains both sale bill and products
                     .resolveTemplate("custid", custid)
                     .queryParam("entityId", URLEncoder.encode(entityId, "UTF-8"))
                     .queryParam("financialYear", URLEncoder.encode(financialYear, "UTF-8"))
+                    .queryParam("dateRange", dateRange)
                     .request(MediaType.APPLICATION_JSON_TYPE)
                     .get()
             if (apiResponse.status == 200)

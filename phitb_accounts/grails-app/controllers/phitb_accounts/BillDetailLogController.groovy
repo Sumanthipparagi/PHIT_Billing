@@ -62,8 +62,9 @@ class BillDetailLogController
         try {
             String invoiceId = params.id
             String billType = params.billType
+            String dateRange = params.dateRange
             if (invoiceId) {
-                respond billDetailLogService.getRecieptDetailsByBillIdAndBillType(Long.parseLong(invoiceId), billType)
+                respond billDetailLogService.getRecieptDetailsByBillIdAndBillType(Long.parseLong(invoiceId), billType, dateRange)
             } else {
                 response.status = 404
             }
