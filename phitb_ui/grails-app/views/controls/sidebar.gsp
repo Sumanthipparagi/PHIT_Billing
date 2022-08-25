@@ -507,6 +507,7 @@
                                     <li><a href="/reports/sales/consolidated">Consolidated</a></li>
                                     <li><a href="/reports/sales/productwise">Product-Wise</a></li>
                                     <li><a href="/reports/sales/gstreport">GST Report</a></li>
+                                    <li><a href="/reports/sales/customer-ledger">Invoice Payment Report</a></li>
                                 </ul>
                             </li>
                             <li><a href="javascript:void(0);" class="menu-toggle">Accounts Report</span><span

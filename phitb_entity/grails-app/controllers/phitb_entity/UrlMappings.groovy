@@ -76,6 +76,33 @@ class UrlMappings
                 action = [GET: 'getAllByEntityId']
             }
 
+            //email log
+            "/emaillog(.$format)?"(controller: 'emailLog') {
+                action = [GET: 'index', POST:
+                        'save']
+            }
+            "/emaillog/datatable(.$format)?"(controller: 'emailLog') {action = [GET: 'dataTable']}
+            "/emaillog/$id(.$format)?"(controller: 'emailLog') {
+                action = [GET: 'show', PUT: 'update', DELETE:
+                        'delete']
+            }
+            "/emaillogbyentity/$id(.$format)?"(controller: 'emailLog') {
+                action = [GET: 'getAllByEntityId']
+            }
+
+            //email settings
+            "/emailsetting(.$format)?"(controller: 'emailSetting') {
+                action = [GET: 'index', POST:
+                        'save']
+            }
+            "/emailsetting/datatable(.$format)?"(controller: 'emailSetting') {action = [GET: 'dataTable']}
+            "/emailsetting/$id(.$format)?"(controller: 'emailSetting') {
+                action = [GET: 'show', DELETE:'delete']
+            }
+            "/emailsettingbyentity/$id(.$format)?"(controller: 'emailSetting') {
+                action = [GET: 'getAllByEntityId']
+            }
+
             //Department Master
             "/departmentmaster(.$format)?"(controller: 'departmentMaster') {
                 action = [GET: 'index', POST:
@@ -108,6 +135,7 @@ class UrlMappings
                         'save']
             }
             "/entityregister/datatable(.$format)?"(controller: 'entityRegister') {action = [GET: 'dataTable']}
+            "/entityregister/parententity/datatable(.$format)?"(controller: 'entityRegister') {action = [GET: 'parentEntitiesDatatable']}
             "/entityregister/$id(.$format)?"(controller: 'entityRegister') {
                 action = [GET: 'show', PUT: 'update', DELETE: 'delete']
             }

@@ -91,10 +91,12 @@ class EntityRegisterService {
             }
 
             if(!isSuperUser) {
-                if(parentEntityId == 0)
+                if(parentEntityId == 0) {
                     eq('parentEntity', entityId)
-                else
+                }
+                else {
                     eq('parentEntity', parentEntityId)
+                }
             }
             else
                 eqProperty("id", "parentEntity")
@@ -103,30 +105,66 @@ class EntityRegisterService {
             order(orderColumn, orderDir)
         }
 
-/*        def manager = []
-        entityRegisterArrayList.each {
-            println(it.manager)
-            if(it.manager != 0) {
-                def apires1 = getAllByUser(it.manager.toString())
-                manager.push(apires1)
-            }
-        }
-
-        def salesman = []
-        entityRegisterArrayList.each {
-            println(it.salesman)
-            if(it.salesman != 0) {
-                def apires2 = getAllByUser(it.salesman.toString())
-                salesman.push(apires2)
-            }
-        }*/
         def recordsTotal = entityRegisterArrayList.totalCount
         JSONObject jsonObject = new JSONObject()
         jsonObject.put("draw", paramsJsonObject.draw)
         jsonObject.put("recordsTotal", recordsTotal)
         jsonObject.put("recordsFiltered", recordsTotal)
-/*        jsonObject.put("salesman", salesman)
-        jsonObject.put("manager", manager)*/
+        jsonObject.put("data", entityRegisterArrayList)
+        return jsonObject
+    }
+
+
+    JSONObject getParentEntitiesDataTables(JSONObject paramsJsonObject, String start, String length)
+    {
+        long entityId = paramsJsonObject.get("entityId")
+        boolean isSuperUser = false
+        if(paramsJsonObject.has("superuser"))
+            isSuperUser = paramsJsonObject.get("superuser")
+        String searchTerm = paramsJsonObject.get("search[value]")
+        String orderColumnId = paramsJsonObject.get("order[0][column]")
+        String orderDir = paramsJsonObject.get("order[0][dir]")
+
+        start = paramsJsonObject.get("start")
+        length = paramsJsonObject.get("length")
+
+        String orderColumn = "id"
+        switch (orderColumnId)
+        {
+            case '0':
+                orderColumn = "id"
+                break;
+            case '1':
+                orderColumn = "entityName"
+                break;
+        }
+        Integer offset = start ? Integer.parseInt(start.toString()) : 0
+        Integer max = length ? Integer.parseInt(length.toString()) : 100
+        def entityRegisterCriteria = EntityRegister.createCriteria()
+        def entityRegisterArrayList = entityRegisterCriteria.list(max: max, offset: offset) {
+            or {
+                if (searchTerm != "")
+                {
+                    ilike('entityName', '%' + searchTerm + '%')
+                }
+            }
+
+            if(!isSuperUser) {
+                eqProperty("id", "parentEntity")
+                eq('affiliateId', entityId)
+            }
+            else
+                eqProperty("id", "parentEntity")
+
+            eq('deleted', false)
+            order(orderColumn, orderDir)
+        }
+
+        def recordsTotal = entityRegisterArrayList.totalCount
+        JSONObject jsonObject = new JSONObject()
+        jsonObject.put("draw", paramsJsonObject.draw)
+        jsonObject.put("recordsTotal", recordsTotal)
+        jsonObject.put("recordsFiltered", recordsTotal)
         jsonObject.put("data", entityRegisterArrayList)
         return jsonObject
     }

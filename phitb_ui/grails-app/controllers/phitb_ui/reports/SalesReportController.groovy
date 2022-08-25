@@ -7,15 +7,24 @@ import com.google.gson.JsonParser
 import grails.converters.JSON
 import org.grails.web.json.JSONArray
 import org.grails.web.json.JSONObject
+import phitb_ui.AccountsService
 import phitb_ui.EntityService
 import phitb_ui.ProductService
 import phitb_ui.ReportsService
+import phitb_ui.SalesService
 import phitb_ui.SystemService
+import phitb_ui.Tools
+import phitb_ui.UtilsService
+import phitb_ui.entity.EntityRegisterController
 import phitb_ui.entity.SeriesController
+
+import java.text.DecimalFormat
+import java.text.SimpleDateFormat
 
 class SalesReportController {
 
     ReportsService reportsService
+    private static final DecimalFormat decimalFormat = new DecimalFormat("#.##");
 
     def index() {
         render(view: '/reports/salesReport/index')
@@ -385,5 +394,63 @@ class SalesReportController {
         }
         gstData.put("gstDetails", gstDetails)
         respond gstData, formats: ['json']
+    }
+
+    def customerLedger() {
+        def entities = new EntityRegisterController().getByAffiliateById(session.getAttribute("entityId").toString())
+        render(view: '/reports/salesReport/customer-ledger-report', model: [entities: entities])
+    }
+
+    def getCustomerLedger()
+    {
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd")
+        SimpleDateFormat sdf2 = new SimpleDateFormat("dd-MMM-yyyy")
+        String entityId = session.getAttribute("entityId")
+        String customerId = params.customerId
+        String financialYear = session.getAttribute("financialYear")
+        String dateRange = params.dateRange
+        JSONObject customer = new EntityService().getEntityById(customerId)
+        JSONArray saleBills = new SalesService().getSaleBillByCustomer(customerId, financialYear, entityId, dateRange)
+        JSONArray customerLedgerDetails = new JSONArray()
+        for (JSONObject saleBill : saleBills) {
+            if(saleBill.billStatus == "ACTIVE") {
+                BigDecimal receiptAmount = 0.0
+                BigDecimal saleReturnAmount = 0.0
+                def receiptlogsinv = new AccountsService().getReceiptLogByBillTypeAndId(saleBill.id.toString(), "INVS", dateRange)
+                if (receiptlogsinv.status == 200) {
+                    JSONArray receipts = new JSONArray(receiptlogsinv.readEntity(String.class))
+                    for (Object receipt : receipts) {
+                        receiptAmount += receipt.amountPaid
+                    }
+                }
+                JSONArray saleReturnAdjustments = new SalesService().getSaleReturnAdjustmentDetails(saleBill.id.toString(), "INVS", dateRange)
+                for (Object saleReturnAdjustment : saleReturnAdjustments) {
+
+                    if(saleReturnAdjustment.cancelledDate == null)
+                        saleReturnAmount += saleReturnAdjustment.adjAmount
+                }
+                double invoiceTotal = saleBill.invoiceTotal
+                double balance = saleBill.balance
+                JSONObject jsonObject = new JSONObject()
+                jsonObject.put("invoiceTotal", invoiceTotal)
+                jsonObject.put("invoiceNumber", saleBill.invoiceNumber)
+                def orderDate = sdf.parse(saleBill.orderDate?.split("T")[0])
+                if (orderDate) {
+                    orderDate = sdf2.format(orderDate)
+                    jsonObject.put("invoiceDate", orderDate)
+                } else
+                    jsonObject.put("invoiceDate", "-")
+                if (Math.round(balance) <= 0)
+                    jsonObject.put("balance", 0)
+                else
+                    jsonObject.put("balance", invoiceTotal - (saleReturnAmount + receiptAmount))
+                jsonObject.put("receiptAmount", (saleReturnAmount + receiptAmount))
+
+                jsonObject.put("entityName", customer.entityName)
+                jsonObject.put("entityOpeningBalance", customer.entityName)
+                customerLedgerDetails.add(jsonObject)
+            }
+        }
+        respond customerLedgerDetails, formats: ['json']
     }
 }

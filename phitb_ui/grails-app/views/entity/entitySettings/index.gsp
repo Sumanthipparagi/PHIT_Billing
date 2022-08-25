@@ -85,27 +85,7 @@
         <div class="row clearfix">
             <div class="col-lg-12">
                 <div class="card">
-                    %{--                    <div class="header">--}%
-                    %{--                        <h2><strong>Basic</strong> Examples </h2>--}%
-                    %{--                        <ul class="header-dropdown">--}%
-                    %{--                            <li class="dropdown"> <a href="javascript:void(0);" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"> <i class="zmdi zmdi-more"></i> </a>--}%
-                    %{--                                <ul class="dropdown-menu slideUp">--}%
-                    %{--                                    <li><a href="javascript:void(0);">Action</a></li>--}%
-                    %{--                                    <li><a href="javascript:void(0);">Another action</a></li>--}%
-                    %{--                                    <li><a href="javascript:void(0);">Something else</a></li>--}%
-                    %{--                                </ul>--}%
-                    %{--                            </li>--}%
-                    %{--                            <li class="remove">--}%
-                    %{--                                <a role="button" class="boxs-close"><i class="zmdi zmdi-close"></i></a>--}%
-                    %{--                            </li>--}%
-                    %{--                        </ul>--}%
-                    %{--                    </div>--}%
 
-%{--                    <div class="header">--}%
-%{--                        <button type="button" class="btn btn-round btn-primary m-t-15 addbtn" data-toggle="modal"--}%
-%{--                                data-target="#addEntitySettingModal"><font style="vertical-align: inherit;"><font--}%
-%{--                                style="vertical-align: inherit;">Add Entity Settings</font></font></button>--}%
-%{--                    </div>--}%
                     <div class="body">
                         <div class="table-responsive">
                             <table class="table table-bordered table-striped table-hover entitySettingsTable dataTable">
@@ -184,20 +164,26 @@
             },
             ajax: {
                 type: 'GET',
-                url: '/entity-register/datatable',
+                url: '/entity-register/parent/datatable',
+                data:{
+                    parentEntityId: "${session.getAttribute("entityId")}"
+                },
                 dataType: 'json',
                 dataSrc: function (json) {
-                    console.log(json)
                     var return_data = [];
                     for (var i = 0; i < json.data.length; i++) {
                         var editbtn = '<a href="/entity-settings/settings?id='+json.data[i].id+'"><button type="button" data-id="' +
                             json.data[i].id +
                             '" data-entity="' + json.data[i].id + '"' +
                             ' class="editbtn btn btn-sm btn-warning  editbtn"><i class="material-icons"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">edit</font></font></i></button></a>'
-                        var deletebtn = '<button type="button" data-id="' + json.data[i].id +
+                       /* var deletebtn = '<button type="button" data-id="' + json.data[i].id +
                             '" class="btn btn-danger deletebtn" data-toggle="modal" data-target=".deleteModal"><i class="material-icons"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">delete</font></font></i></button>'
+                        */
+                       var entityName = json.data[i].entityName;
+                        if(json.data[i].id == ${session.getAttribute("entityId")})
+                            entityName = "<strong>"+entityName+"</strong>";
                         return_data.push({
-                            'name': json.data[i].entityName,
+                            'name': entityName,
                             'action': editbtn
                         });
                     }

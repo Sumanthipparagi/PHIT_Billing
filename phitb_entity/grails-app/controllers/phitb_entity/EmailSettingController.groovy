@@ -1,29 +1,30 @@
-package phitb_accounts
+package phitb_entity
 
 
+import grails.rest.*
 import grails.converters.*
 import grails.web.servlet.mvc.GrailsParameterMap
-import org.grails.web.json.JSONArray
 import org.grails.web.json.JSONObject
-import phitb_accounts.Exception.BadRequestException
-import phitb_accounts.Exception.ResourceNotFoundException
+import phitb_entity.Exception.BadRequestException
+import phitb_entity.Exception.ResourceNotFoundException
 
-class BillDetailLogController
-{
-	static responseFormats = ['json', 'xml']
+class EmailSettingController {
+    static responseFormats = ['json', 'xml']
 
-    BillDetailLogService billDetailLogService
+    static allowedMethods = [index: "GET", show: "GET", save: "POST", delete: "DELETE", dataTable: "GET"]
+
+    EmailSettingService emailSettingService
     /**
-     * Gets all bill payment log
+     * Gets all EmailSetting
      * @param query
      * @param offset
      * @param limit
-     * @return list of bill payment log
+     * @return list of EmailSetting
      */
     def index() {
 
         try {
-            respond billDetailLogService.getAll(params.limit, params.offset, params.query)
+            respond emailSettingService.getAll(params.limit, params.offset, params.query)
         }
         catch (Exception ex) {
             System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
@@ -31,42 +32,15 @@ class BillDetailLogController
     }
 
     /**
-     * Get requested bill payment log
+     * Get requested EmailSetting
      * @param id
-     * @return get requested bill payment log
+     * @return get requested EmailSetting
      */
     def show() {
         try {
             String id = params.id
             if (id) {
-                respond billDetailLogService.get(id)
-            }
-        }
-        catch (ResourceNotFoundException ex)
-        {
-            System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
-            response.status = 404
-        }
-        catch (BadRequestException ex)
-        {
-            System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
-            response.status = 400
-        }
-        catch (Exception ex) {
-            System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
-        }
-    }
-
-    def getReceiptLogsByBillTypeAndId()
-    {
-        try {
-            String invoiceId = params.id
-            String billType = params.billType
-            String dateRange = params.dateRange
-            if (invoiceId) {
-                respond billDetailLogService.getRecieptDetailsByBillIdAndBillType(Long.parseLong(invoiceId), billType, dateRange)
-            } else {
-                response.status = 404
+                respond emailSettingService.get(id)
             }
         }
         catch (ResourceNotFoundException ex)
@@ -85,17 +59,14 @@ class BillDetailLogController
     }
 
     /**
-     * Get requested bill payment log
+     * Get requested EmailSetting
      * @param id
-     * @return get requested bill payment log
+     * @return get requested EmailSetting
      */
-    def recieptDetailsByInvId() {
+    def getAllByEntityId() {
         try {
-            String id = params.id
-            if (id) {
-                def bill = BillDetailLog.findAllByReceiptIdAndBillType(id,"INVS")
-                JSONArray jsonArray = new JSONArray(bill)
-                respond jsonArray,formats: ['json']
+            if (params.id) {
+                respond emailSettingService.getAllByEntity(params.limit, params.offset, Long.parseLong(params.id))
             }
         }
         catch (ResourceNotFoundException ex)
@@ -114,72 +85,14 @@ class BillDetailLogController
     }
 
     /**
-     * Get requested bill payment log
-     * @param id
-     * @return get requested bill payment log
-     */
-    def recieptDetailsByCrntId() {
-        try {
-            String id = params.id
-            if (id) {
-                def bill = BillDetailLog.findAllByReceiptIdAndBillType(id,"CRNT")
-                JSONArray jsonArray = new JSONArray(bill)
-                respond jsonArray,formats: ['json']
-            }
-        }
-        catch (ResourceNotFoundException ex)
-        {
-            System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
-            response.status = 404
-        }
-        catch (BadRequestException ex)
-        {
-            System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
-            response.status = 400
-        }
-        catch (Exception ex) {
-            System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
-        }
-    }
-
-    /**
-     * Get requested bill payment log
-     * @param id
-     * @return get requested bill payment log
-     */
-    def recieptDetailsByGTNId() {
-        try {
-            String id = params.id
-            if (id) {
-                def bill = BillDetailLog.findAllByReceiptIdAndBillType(id,"GTN")
-                JSONArray jsonArray = new JSONArray(bill)
-                respond jsonArray,formats: ['json']
-            }
-        }
-        catch (ResourceNotFoundException ex)
-        {
-            System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
-            response.status = 404
-        }
-        catch (BadRequestException ex)
-        {
-            System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
-            response.status = 400
-        }
-        catch (Exception ex) {
-            System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
-        }
-    }
-
-    /**
-     * Save new bill payment log
-     * @param bill payment log
-     * @return saved bill payment log
+     * Save or update EmailSetting
+     * @param EmailSetting
+     * @return saved EmailSetting
      */
     def save() {
         try {
-            JSONObject jsonObject = new JSONObject(params)
-            respond billDetailLogService.save(jsonObject)
+            JSONObject jsonObject = JSON.parse(request.reader.text) as JSONObject
+            respond emailSettingService.save(jsonObject)
         }
         catch (ResourceNotFoundException ex)
         {
@@ -197,16 +110,16 @@ class BillDetailLogController
     }
 
     /**
-     * Update existing bill payment log
+     * Update existing EmailSetting
      * @param id
-     * @param bill payment log
-     * @return updated bill payment log
-     */
+     * @param EmailSetting
+     * @return updated EmailSetting
+    /* *//*
     def update() {
         try {
             String id = params.id
             JSONObject jsonObject = JSON.parse(request.reader.text) as JSONObject
-            respond billDetailLogService.update(jsonObject,id)
+            respond emailSettingService.update(jsonObject,id)
         }
         catch (ResourceNotFoundException ex)
         {
@@ -221,17 +134,17 @@ class BillDetailLogController
         catch (Exception ex) {
             System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
         }
-    }
+    }*/
 
     /**
-     * Delete selected bill payment log
+     * Delete selected EmailSetting
      * @param id
      * @return returns status code 200
      */
     def delete() {
         try {
             String id = params.id
-            billDetailLogService.delete(id)
+            emailSettingService.delete(id)
             response.status = 200
         }
         catch (ResourceNotFoundException ex)
@@ -250,8 +163,8 @@ class BillDetailLogController
     }
 
     /**
-     * Gets all bill payment log in datatables format
-     * @return list of bill payment log
+     * Gets all bank  in datatables format
+     * @return list of bank
      */
     def dataTable() {
         try {
@@ -259,7 +172,7 @@ class BillDetailLogController
             String length = params.length
             GrailsParameterMap parameterMap = getParams()
             JSONObject paramsJsonObject = new JSONObject(parameterMap.params)
-            respond billDetailLogService.dataTables(paramsJsonObject, start, length)
+            respond emailSettingService.dataTables(paramsJsonObject, start, length)
         }
         catch (ResourceNotFoundException ex)
         {

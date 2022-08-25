@@ -166,9 +166,10 @@ public class Links
     public static String ENTITY_REGISTER_DELETE = "api/v1.0/entity/entityregister/{id}";
     public static String ENTITY_REGISTER_AFFILIATE = "api/v1.0/entity/entityregister/affiliate";
     public static String ENTITY_REGISTER_PARENT = "api/v1.0/entity/entityregister/getparententities";
+    public static String ENTITY_REGISTER_PARENT_DATATABLE = "api/v1.0/entity/entityregister/parententity/datatable";
 
 
-    //    Entity Settings
+    //Entity Settings
     public static String ENTITY_SETTINGS_SHOW = "api/v1.0/entity/entitysetting";
     public static String ENTITY_SETTINGS_UPDATE = "api/v1.0/entity/entitysetting/{id}";
     public static String ENTITY_SETTINGS_DELETE = "api/v1.0/entity/entitysetting/{id}";
@@ -176,7 +177,23 @@ public class Links
     public static String ENTITY_SETTINGS_DATATABLE = "api/v1.0/entity/entitysetting/datatable";
     public static String ENTITY_SETTINGS_BY_ENTITY = "api/v1.0/entity/entitysetting/getbyentityid";
 
-//    Entity Config
+    //Email Settings
+    public static String EMAIL_SETTINGS_SHOW = "api/v1.0/entity/emailsetting";
+    public static String EMAIL_SETTINGS_UPDATE = "api/v1.0/entity/emailsetting/{id}";
+    public static String EMAIL_SETTINGS_DELETE = "api/v1.0/entity/emailsetting/{id}";
+    public static String EMAIL_SETTINGS_SAVE = "api/v1.0/entity/emailsetting";
+    public static String EMAIL_SETTINGS_DATATABLE = "api/v1.0/entity/emailsetting/datatable";
+    public static String EMAIL_SETTINGS_BY_ENTITY = "api/v1.0/entity/emailsettingbyentity";
+
+    //Email Log
+    public static String EMAIL_LOG_SHOW = "api/v1.0/entity/emaillog";
+    public static String EMAIL_LOG_UPDATE = "api/v1.0/entity/emaillog/{id}";
+    public static String EMAIL_LOG_DELETE = "api/v1.0/entity/emaillog/{id}";
+    public static String EMAIL_LOG_SAVE = "api/v1.0/entity/emaillog";
+    public static String EMAIL_LOG_DATATABLE = "api/v1.0/entity/emaillog/datatable";
+    public static String EMAIL_LOG_BY_ENTITY = "api/v1.0/entity/emaillog/getbyentityid";
+
+    //Entity Config
     public static String ENTITY_CONFIG_SAVE = "api/v1.0/entity/entityconfig";
     public static String ENTITY_CONFIG_BY_ENTITY = "api/v1.0/entity/entityconfig/getbyentityid";
 

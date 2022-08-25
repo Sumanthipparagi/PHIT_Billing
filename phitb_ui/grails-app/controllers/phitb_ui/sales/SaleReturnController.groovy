@@ -30,7 +30,7 @@ class SaleReturnController {
         def priorityList = new SystemService().getPriorityByEntity(entityId)
         def series = new SeriesController().getByEntity(entityId)
         def reason = new SalesService().getReason()
-        def taxRegister = new TaxController().show() as ArrayList<String>
+        def taxRegister = new EntityService().getTaxesByEntity(entityId)
         ArrayList<String> salesmanList = []
         users.each {
             if (it.role.name.toString().equalsIgnoreCase(Constants.ROLE_SALESMAN)) {

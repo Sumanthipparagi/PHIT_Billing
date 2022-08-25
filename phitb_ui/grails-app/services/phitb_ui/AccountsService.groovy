@@ -806,7 +806,7 @@ class AccountsService
     }
 
 
-    def getReceiptLogByBillTypeAndId(String id, String billType)
+    def getReceiptLogByBillTypeAndId(String id, String billType, String dateRange = null)
     {
         Client client = ClientBuilder.newClient()
         WebTarget target = client.target(new Links().API_GATEWAY)
@@ -814,6 +814,7 @@ class AccountsService
         {
             Response apiResponse = target
                     .path(new Links().RECEIPT_DETAIL_LOG + "/" + billType + "/" + id)
+                    .queryParam("dateRange", dateRange)
                     .request(MediaType.APPLICATION_JSON_TYPE)
                     .get()
             if(apiResponse.status == 200)

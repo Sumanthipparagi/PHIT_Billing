@@ -173,6 +173,7 @@ class UrlMappings {
         "/entity-register/add-entity-register"(controller: "entityRegister", action: 'addEntity')
         "/entity-register/update-entity-register/$id"(controller: "entityRegister", action: 'updateEntity')
         "/entity-register/datatable"(controller: "entityRegister", action: "dataTable")
+        "/entity-register/parent/datatable"(controller: "entityRegister", action: "parentEntityDataTable")
         "/entity-register/update/$id"(controller:"entityRegister",action:"update")
         "/entity-register/delete/$id"(controller: "entityRegister",action:"delete")
         "/entity-register/getparententities"(controller: "entityRegister",action:"getParentEntities")
@@ -216,6 +217,8 @@ class UrlMappings {
         "/entity-settings/update/$id"(controller: "entitySettings",action:"update")
         "/entity-settings/delete/$id"(controller: "entitySettings",action:"delete")
         "/entity-settings/settings"(controller: 'entitySettings', action: 'settings')
+        "/entity-settings/email/save"(controller: 'entitySettings', action: 'emailSettingsSave')
+        "/entity-settings/email/update"(controller: 'entitySettings', action: 'emailSettingsUpdate')
 
 
 //        Entity Config
@@ -767,6 +770,8 @@ class UrlMappings {
         "/reports/sales/gstreport"(controller: "salesReport", action: "saleProductWiseReport")
         "/reports/sales/gstreport"(controller: "salesReport", action: "salesGstReport")
         "/reports/sales/getgstreport"(controller: "salesReport", action: "getSalesGstReport")
+        "/reports/sales/customer-ledger"(controller: "salesReport", action: "customerLedger")
+        "/reports/sales/get-customer-ledger"(controller: "salesReport", action: "getCustomerLedger")
 
         "/reports/accounts/outstanding"(controller: "accountsReport", action: "outstandingReport")
         "/reports/accounts/getoutstanding"(controller: "accountsReport", action: "getOutstandingReport")
