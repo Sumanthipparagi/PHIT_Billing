@@ -1,6 +1,7 @@
 package phitb_ui.entity
 
 import org.grails.web.json.JSONObject
+import phitb_ui.Constants
 import phitb_ui.EmailService
 import phitb_ui.EntityService
 
@@ -55,5 +56,24 @@ class EmailSettingsController {
 
         JSONObject resultJson = EmailService.saveEmailSettings(jsonObject)
         respond resultJson, formats: ['json']
+    }
+
+    def emailLogDataTable() {
+        try {
+            JSONObject jsonObject = new JSONObject(params)
+            jsonObject.put("entityId", session.getAttribute("entityId"))
+            def apiResponse = new EmailService().emailLogDatatable(jsonObject)
+            if (apiResponse.status == 200) {
+                JSONObject responseObject = new JSONObject(apiResponse.readEntity(String.class))
+                respond responseObject, formats: ['json'], status: 200
+            } else {
+                response.status = 400
+            }
+        }
+        catch (Exception ex) {
+            System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
+            log.error('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
+            response.status = 400
+        }
     }
 }

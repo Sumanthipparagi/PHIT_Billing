@@ -265,4 +265,25 @@ class EmailService {
         }
 
     }
+
+    static JSONObject emailLogDatatable(JSONObject jsonObject) {
+        Client client = ClientBuilder.newClient()
+        WebTarget target = client.target(new Links().API_GATEWAY)
+        try {
+            Response apiResponse = target
+                    .path(new Links().EMAIL_LOG_DATATABLE)
+                    .queryParam("params", URLEncoder.encode(jsonObject.toString(), "UTF-8"))
+                    .request(MediaType.APPLICATION_JSON_TYPE)
+                    .get()
+            if(apiResponse.status == 200)
+            {
+                JSONObject jsonObject1 = new JSONObject(apiResponse.readEntity(String.class))
+                return jsonObject1
+            }
+        }
+        catch (Exception ex) {
+            System.err.println('Service :EmailService , action :  emailLogDatatable  , Ex:' + ex)
+        }
+
+    }
 }
