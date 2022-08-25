@@ -410,6 +410,27 @@ class SaleBillDetailsService
         }
     }
 
+
+    def getAllByCustomerByStartDate(String id,String financialYear,String entityId, String dateRange = null){
+        if(id)
+        {
+
+            SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy")
+            Date fromDate = sdf.parse(dateRange.split("-")[0].trim())
+            Date toDate = sdf.parse(dateRange.split("-")[1].trim())
+            Calendar calendar = Calendar.getInstance()
+            calendar.setTime(toDate)
+            calendar.add(Calendar.HOUR_OF_DAY, 23)
+            calendar.add(Calendar.MINUTE, 59)
+            calendar.add(Calendar.SECOND, 59)
+            toDate = calendar.getTime()
+            return SaleBillDetails.findAllByCustomerIdAndFinancialYearAndEntityIdAndOrderDateLessThan(Long.parseLong(id),
+                    financialYear,Long.parseLong(entityId), fromDate)
+        }
+
+    }
+
+
     def cancelSaleBill(JSONObject jsonObject)
     {
         String id = jsonObject.get("id")

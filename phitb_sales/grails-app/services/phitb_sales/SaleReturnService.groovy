@@ -136,6 +136,22 @@ class SaleReturnService {
                     financialYear)
     }
 
+    def getAllByCustomerIdStartDate(String customerId, String entityId, String financialYear, String dateRange)
+    {
+        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy")
+        Date fromDate = sdf.parse(dateRange.split("-")[0].trim().toString())
+        Date toDate = sdf.parse(dateRange.split("-")[1].trim().toString())
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(toDate)
+        cal.set(Calendar.HOUR_OF_DAY, 23)
+        cal.set(Calendar.MINUTE, 59)
+        cal.set(Calendar.SECOND, 59)
+        cal.set(Calendar.MILLISECOND, 999)
+        toDate = cal.getTime()
+        return SaleReturn.findAllByCustomerIdAndEntityIdAndFinancialYearAndDateCreatedLessThan(customerId,Long.parseLong
+                (entityId), financialYear,fromDate)
+    }
+
     JSONObject getRecentByFinancialYearAndEntity(String financialYear, String entityId)
     {
 
@@ -376,6 +392,28 @@ class SaleReturnService {
                 toDate = calendar.getTime()
                 return SaleReturnAdjustmentDetails.findAllByDocIdAndDocTypeAndDateCreatedBetween(Long.parseLong(docId), docType, fromDate, toDate)
             }
+        }
+        catch (Exception ex)
+        {
+            ex.printStackTrace()
+            throw new BadRequestException()
+        }
+    }
+
+
+    ArrayList<SaleReturnAdjustmentDetails> getSaleReturnAdjustmentDetailsByDocIdStartDate(String docId, String docType, String dateRange = null) {
+        try {
+                SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy")
+                Date fromDate = sdf.parse(dateRange.split("-")[0].trim())
+                Date toDate = sdf.parse(dateRange.split("-")[1].trim())
+                Calendar calendar = Calendar.getInstance()
+                calendar.setTime(toDate)
+                calendar.add(Calendar.HOUR_OF_DAY, 23)
+                calendar.add(Calendar.MINUTE, 59)
+                calendar.add(Calendar.SECOND, 59)
+                toDate = calendar.getTime()
+                return SaleReturnAdjustmentDetails.findAllByDocIdAndDocTypeAndDateCreatedLessThan(Long.parseLong(docId),
+                        docType, fromDate)
         }
         catch (Exception ex)
         {

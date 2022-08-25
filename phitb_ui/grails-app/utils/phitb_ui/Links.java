@@ -457,6 +457,7 @@ public class Links
     public static String SET_PAYMENT_BILL = "api/v1.0/sales/setpaymentstatus/{id}/type/{type}";
     public static String SALE_BILL_RECENT = "api/v1.0/sales/salebilldetails/getrecent";
     public static String SALE_BILL_CUSTOMER = "api/v1.0/sales/salebillbycustomer/{custid}";
+    public static String SALE_BILL_CUSTOMER_START_DATE = "api/v1.0/sales/salebillbycustomerstartdate/{custid}";
     public static String SALE_BILL_REPORTS = "api/v1.0/sales/reports/customerwise";
     public static String SALE_BILL_DATEWISE_REPORTS = "api/v1.0/sales/reports/datewise";
     public static String SALE_BILL_AREAWISE_REPORTS = "api/v1.0/sales/reports/areawise";
@@ -518,6 +519,7 @@ public class Links
     public static String SALE_RETURN_SHOW = "api/v1.0/sales/salereturn";
     public static String SALE_RETURN_ADJUSTMENT = "api/v1.0/sales/salereturn/adjustment";
     public static String SALE_RETURN_ADJUSTMENT_DETAILS = "api/v1.0/sales/salereturn/adjustment-details";
+    public static String SALE_RETURN_ADJUSTMENT_DETAILS_START_DATE = "api/v1.0/sales/salereturn/adjustment-details-startdate";
     public static String SALE_RETURN_SAVE = "api/v1.0/sales/salereturn";
     public static String SALE_RETURN_DATATABLE = "api/v1.0/sales/salereturn/datatable";
     public static String SALE_RETURN_UNSETTLED = "api/v1.0/sales/saleretrununsettledbycustomer";
@@ -525,6 +527,7 @@ public class Links
     public static String SET_SALE_RETURN_STATUS = "api/v1.0/sales/setsalereturnstatus/{id}/type/{type}/adj/{adj}";
     public static String UPDATE_SALE_RETURN_BALANCE = "api/v1.0/sales/updatereturnbalancebyid";
     public static String SALE_RETURN_CUSTOMER = "api/v1.0/sales/salereturnbycustomer";
+    public static String SALE_RETURN_CUSTOMER_START_DATE = "api/v1.0/sales/salereturnbycustomerstartdate";
     public static String SALE_RETURN_RECENT = "api/v1.0/sales/salereturn/getrecent";
     public static String SALE_RETURN_PRODUCT_BATCH_BILL = "api/v1.0/sales/getsalereturndetailsby-product-batch-salebill";
     public static String SALE_RETURN_CANCEL = "api/v1.0/sales/salereturn/cancel";
@@ -643,6 +646,7 @@ public class Links
     //    Reciept detail log
     public static String RECIPT_DETAIL_LOG = "api/v1.0/accounts/reciptdetaillog";
     public static String RECEIPT_DETAIL_LOG = "api/v1.0/accounts/receiptdetaillog";
+    public static String RECEIPT_DETAIL_LOG_START_DATE = "api/v1.0/accounts/receiptdetaillogstartdate";
     public static String RECIPT_DETAIL_LOG_INVS_ID = "api/v1.0/accounts/reciptdetailloginvbyreciptId";
     public static String RECIPT_DETAIL_LOG_CRNT_ID = "api/v1.0/accounts/reciptdetaillogcrntbyreciptId";
     public static String RECIPT_DETAIL_LOG_GTN_ID = "api/v1.0/accounts/reciptdetailloggtnbyreciptId";

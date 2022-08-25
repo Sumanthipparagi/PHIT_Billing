@@ -746,6 +746,33 @@ contains both sale bill and products
 
     }
 
+    def getSaleReturnAdjustmentDetailsStartDate(String docId, String docType, String dateRange = null)
+    {
+        Client client = ClientBuilder.newClient();
+        WebTarget target = client.target(new Links().API_GATEWAY)
+        try
+        {
+            Response apiResponse = target
+                    .path(new Links().SALE_RETURN_ADJUSTMENT_DETAILS_START_DATE +"/"+docId+"/"+docType)
+                    .queryParam("dateRange", dateRange)
+                    .request(MediaType.APPLICATION_JSON_TYPE)
+                    .get()
+            if (apiResponse.status == 200)
+            {
+                return new JSONArray(apiResponse.readEntity(String.class))
+            }
+            else
+            {
+                return null
+            }
+        }
+        catch (Exception ex)
+        {
+            System.err.println('Service :SalesService , action :  getSaleReturnAdjustment  , Ex:' + ex)
+            log.error('Service :SalesService , action :  getSaleReturnAdjustment  , Ex:' + ex)
+        }
+
+    }
 
 
     def getDraftSaleBillDetailsById(String id)
@@ -1292,6 +1319,67 @@ contains both sale bill and products
         {
             System.err.println('Service :EntityService , action :  getEntity  , Ex:' + ex)
             log.error('Service :EntityService , action :  getEntity  , Ex:' + ex)
+        }
+
+    }
+
+
+    def getSaleBillByCustomerStartDate(String custid, String financialYear, String entityId,String dateRange)
+    {
+        Client client = ClientBuilder.newClient()
+        WebTarget target = client.target(new Links().API_GATEWAY)
+        try
+        {
+            Response apiResponse = target
+                    .path(new Links().SALE_BILL_CUSTOMER_START_DATE)
+                    .resolveTemplate("custid", custid)
+                    .queryParam("entityId", URLEncoder.encode(entityId, "UTF-8"))
+                    .queryParam("financialYear", URLEncoder.encode(financialYear, "UTF-8"))
+                    .queryParam("dateRange", dateRange)
+                    .request(MediaType.APPLICATION_JSON_TYPE)
+                    .get()
+            if (apiResponse.status == 200)
+            {
+                JSONArray jsonArray = new JSONArray(apiResponse.readEntity(String.class))
+                return jsonArray
+            }
+            else
+            {
+                return []
+            }
+        }
+        catch (Exception ex)
+        {
+            System.err.println('Service :EntityService , action :  getEntity  , Ex:' + ex)
+            log.error('Service :EntityService , action :  getEntity  , Ex:' + ex)
+        }
+
+    }
+
+
+    def getAllSaleReturnByCustomerStartdate(long id, long entityId, String financialYear, String dateRange)
+    {
+        Client client = ClientBuilder.newClient()
+        WebTarget target = client.target(new Links().API_GATEWAY)
+        try
+        {
+            Response apiResponse = target
+                    .path(new Links().SALE_RETURN_CUSTOMER_START_DATE)
+                    .queryParam("id", id)
+                    .queryParam("financialYear", financialYear)
+                    .queryParam("entityId", entityId)
+                    .queryParam("dateRange", dateRange)
+                    .request(MediaType.APPLICATION_JSON_TYPE)
+                    .get()
+            if(apiResponse?.status == 200){
+                JSONArray jsonArray1 = new JSONArray(apiResponse.readEntity(String.class));
+                return jsonArray1
+            }
+        }
+        catch (Exception ex)
+        {
+            System.err.println('Service :AccountsService , action :  getAllSaleReturnByCustomer  , Ex:' + ex)
+            log.error('Service :AccountsService , action :  getAllSaleReturnByCustomer  , Ex:' + ex)
         }
 
     }

@@ -505,6 +505,8 @@ class AccountsService
 
     }
 
+
+
     def getAllGTNById(String id,String entityId,String financialYear)
     {
         Client client = ClientBuilder.newClient()
@@ -814,6 +816,31 @@ class AccountsService
         {
             Response apiResponse = target
                     .path(new Links().RECEIPT_DETAIL_LOG + "/" + billType + "/" + id)
+                    .queryParam("dateRange", dateRange)
+                    .request(MediaType.APPLICATION_JSON_TYPE)
+                    .get()
+            if(apiResponse.status == 200)
+            {
+                return apiResponse
+            }
+        }
+        catch (Exception ex)
+        {
+            System.err.println('Service :AccountsService , action :  getReceiptLogByBillTypeAndId  , Ex:' + ex)
+            log.error('Service :AccountsService , action :  getReceiptLogByBillTypeAndId  , Ex:' + ex)
+        }
+
+    }
+
+
+    def getReceiptLogByBillTypeAndIdStartDate(String id, String billType, String dateRange = null)
+    {
+        Client client = ClientBuilder.newClient()
+        WebTarget target = client.target(new Links().API_GATEWAY)
+        try
+        {
+            Response apiResponse = target
+                    .path(new Links().RECEIPT_DETAIL_LOG_START_DATE + "/" + billType + "/" + id)
                     .queryParam("dateRange", dateRange)
                     .request(MediaType.APPLICATION_JSON_TYPE)
                     .get()

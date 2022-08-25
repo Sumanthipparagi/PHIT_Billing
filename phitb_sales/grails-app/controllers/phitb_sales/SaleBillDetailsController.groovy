@@ -508,6 +508,18 @@ class SaleBillDetailsController {
         }
     }
 
+    def getAllByCustomerByStartDate(){
+        try {
+            respond saleBillDetailsService.getAllByCustomerByStartDate(params.id, params.financialYear, params.entityId, params.dateRange)
+        }
+        catch (Exception ex) {
+            System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
+        }
+    }
+
+
+
+
 
     def cancelSaleBill() {
         try {
