@@ -31,7 +31,7 @@ class EmailService {
      * @param subject
      * @param body
      */
-    static void sendEmail(String toEmail, String subject, String body) {
+    static void sendEmail(String toEmail, String subject, String body, String entityId, String docNo = null,  String docType = null) {
         try {
             JSONObject emailSettings = getEmailSettingsByEntity()
             if (emailSettings && emailSettings.get("active")) {
@@ -54,7 +54,19 @@ class EmailService {
                 System.out.println("Message is ready")
                 Transport.send(msg)
                 System.out.println("Email Sent Successfully!!")
+
                 //TODO: add mail log here
+                JSONObject emailLog = new JSONObject()
+                emailLog.put("entity", entityId)
+                emailLog.put("sentTo", toEmail)
+                emailLog.put("emailSubject", subject)
+                emailLog.put("emailContent", body)
+                emailLog.put("hasAttachments", false)
+                emailLog.put("emailService", emailSettings.get("emailService"))
+                emailLog.put("deliveryStatus", null)
+                emailLog.put("docNo", docNo)
+                emailLog.put("docType", docType)
+                saveEmailLog(emailLog)
             } else {
                 System.out.println("Email Not Enabled")
             }
@@ -73,11 +85,13 @@ class EmailService {
         String smtpPassword = Constants.EMAIL_PASSWORD
         if (emailSettings.get("emailService").toString().equalsIgnoreCase("CUSTOM")) {
             authenticationRequired = Boolean.parseBoolean(emailSettings.get("authenticationRequired"))
-            encryptionType = emailSettings.get("encryptionType")
+            if(authenticationRequired) {
+                encryptionType = emailSettings.get("encryptionType")
+                smtpUsername = emailSettings.get("smtpUsername")
+                smtpPassword = emailSettings.get("smtpPassword")
+            }
             smtpServer = emailSettings.get("smtpServer")
             smtpPort = emailSettings.get("smtpPort")
-            smtpUsername = emailSettings.get("smtpUsername")
-            smtpPassword = emailSettings.get("smtpPassword")
         }
 
 
@@ -175,6 +189,78 @@ class EmailService {
         catch (Exception ex) {
             System.err.println('Service :EmailService , action :  updateEmailSettings , Ex:' + ex)
             //log.error('Service :EmailService , action :  updateEmailSettings  , Ex:' + ex)
+            return null
+        }
+
+    }
+
+
+    static JSONArray getEmailLogByEntity(String entityId) {
+        if (entityId == null)
+            entityId = webUtils.getSession().getAttribute("entityId")
+
+        Client client = ClientBuilder.newClient();
+        WebTarget target = client.target(new Links().API_GATEWAY);
+        try {
+            Response apiResponse = target
+                    .path(new Links().EMAIL_LOG_BY_ENTITY + "/" + entityId)
+                    .request(MediaType.APPLICATION_JSON_TYPE)
+                    .get()
+            if (apiResponse.status == 200) {
+                JSONArray jsonArray = new JSONArray(apiResponse.readEntity(String.class))
+                return jsonArray
+            } else {
+                return null
+            }
+        }
+        catch (Exception ex) {
+            System.err.println('Service :EmailService , action :  getEmailLogByEntity  , Ex:' + ex)
+            return null
+        }
+
+    }
+
+    static JSONObject saveEmailLog(JSONObject jsonObject) {
+        Client client = ClientBuilder.newClient();
+        WebTarget target = client.target(new Links().API_GATEWAY);
+        try {
+            Response apiResponse = target
+                    .path(new Links().EMAIL_LOG_SAVE)
+                    .request(MediaType.APPLICATION_JSON_TYPE)
+                    .post(Entity.entity(jsonObject.toString(), MediaType.APPLICATION_JSON_TYPE))
+            if (apiResponse.status == 200) {
+                JSONObject resultObject = new JSONObject(apiResponse.readEntity(String.class))
+                return resultObject
+            } else {
+                return null
+            }
+        }
+        catch (Exception ex) {
+            System.err.println('Service :EmailService , action :  saveEmailLog  , Ex:' + ex)
+            return null
+        }
+
+    }
+
+    static JSONObject updateEmailLog(JSONObject jsonObject) {
+        String id = jsonObject.get("id")
+        Client client = ClientBuilder.newClient();
+        WebTarget target = client.target(new Links().API_GATEWAY);
+        try {
+            Response apiResponse = target
+                    .path(new Links().EMAIL_LOG_UPDATE)
+                    .resolveTemplate("id", id)
+                    .request(MediaType.APPLICATION_JSON_TYPE)
+                    .put(Entity.entity(jsonObject.toString(), MediaType.APPLICATION_JSON_TYPE))
+            if (apiResponse.status == 200) {
+                JSONObject resultObject = new JSONObject(apiResponse.readEntity(String.class))
+                return resultObject
+            } else {
+                return null
+            }
+        }
+        catch (Exception ex) {
+            System.err.println('Service :EmailService , action :  updateEmailLog , Ex:' + ex)
             return null
         }
 

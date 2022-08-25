@@ -7,6 +7,7 @@ class EmailLog implements LogicalDelete<EmailLog>, Serializable {
     EntityRegister entity
     String sentTo
     String emailContent
+    String emailSubject
     boolean hasAttachments
     String emailService
     String deliveryStatus
@@ -24,6 +25,7 @@ class EmailLog implements LogicalDelete<EmailLog>, Serializable {
         docNo nullable: true
         deliveryStatus nullable: true
         docType nullable: true
+        emailSubject maxSize: 500
         emailService inList: ["DEFAULT", "CUSTOM"]
     }
 
