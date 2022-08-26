@@ -146,11 +146,14 @@ class TempStockBookService {
             if (stocksAvailable) {
                 Long userId = Long.parseLong(jsonObject.get("userId").toString())
                 TempStockBook tempStockBook = TempStockBook.findByProductIdAndUserIdAndBatchNumber(productId, userId, batchNumber)
-
-                if (tempStockBook == null)
+                if (tempStockBook == null){
                     tempStockBook = new TempStockBook()
-                else
-                    tempStockBook.isUpdatable = true
+                }else
+                {
+                    return tempStockBook
+                }
+//             else  --> removed due to updating of same tempstockbook (pressing enter key multiple times whilesaving)
+//                    tempStockBook.isUpdatable = true
 
                 tempStockBook.batchNumber = batchNumber
                 tempStockBook.packingDesc = jsonObject.get("packingDesc")

@@ -555,7 +555,9 @@
                 columns: [15, 16, 17, 18, 19, 20, 21, 22, 23, 24]
                 </g:if>
                 <g:else>
+                // columns: [15, 16, 17, 18, 19, 20, 21]
                 columns: [15, 16, 17, 18, 19, 20, 21]
+
 
                 </g:else>
             },
@@ -667,6 +669,13 @@
                                             showConfirmButton: false,
                                             allowOutsideClick: false,
                                             background: 'transparent'
+
+                                        });
+                                        document.addEventListener('keypress', function (e) {
+                                            if (e.keyCode === 13 || e.which === 13) {
+                                                e.preventDefault();
+                                                return false;
+                                            }
                                         });
                                     },
                                     data: {
@@ -681,7 +690,7 @@
                                             data: []
                                         });
                                         hot.setDataAtCell(row, 15, data.id);
-
+                                        console.log(data.id+"tempid")
                                         for (var i = 0; i < 15; i++) {
                                             hot.setCellMeta(row, i, 'readOnly', true);
                                         }
@@ -947,12 +956,12 @@
             beforeKeyDown(e) {
                 const selection = batchHot.getSelected()[0][0];
                 var rowData = batchHot.getDataAtRow(selection);
-                console.log(rowData[0]);
+                // console.log(rowData[0]);
                 if (e.keyCode === 13) {
 
                     if (!checkForDuplicateEntry(rowData[0])) {
                         //check for schemes
-                        console.log(!checkForDuplicateEntry(rowData[0]));
+                        // console.log(!checkForDuplicateEntry(rowData[0]));
                         checkSchemes(hot.getDataAtCell(mainTableRow, 1), rowData[0]); //product, batch
                         var batchId = rowData[12];
                         hot.setDataAtCell(mainTableRow, 2, rowData[0]);
@@ -1518,9 +1527,9 @@
     function checkForDuplicateEntry(batchNumber) {
         var productId = hot.getDataAtCell(mainTableRow, 1);
         var saleTableData = hot.getData();
+
         for (var i = 0; i < saleTableData.length; i++) {
-            if (productId === saleTableData[i][1]) {
-                console.log(saleTableData[i][2])
+            if (Number(productId) === Number(saleTableData[i][1])) {
                 if (saleTableData[i][2] !== null && saleTableData[i][2] === batchNumber)
                     return true;
             }
