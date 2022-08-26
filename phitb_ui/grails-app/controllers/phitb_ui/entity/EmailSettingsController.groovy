@@ -62,10 +62,9 @@ class EmailSettingsController {
         try {
             JSONObject jsonObject = new JSONObject(params)
             jsonObject.put("entityId", session.getAttribute("entityId"))
-            def apiResponse = new EmailService().emailLogDatatable(jsonObject)
-            if (apiResponse.status == 200) {
-                JSONObject responseObject = new JSONObject(apiResponse.readEntity(String.class))
-                respond responseObject, formats: ['json'], status: 200
+            def emailLogs = new EmailService().emailLogDatatable(jsonObject)
+            if (emailLogs) {
+                respond emailLogs, formats: ['json'], status: 200
             } else {
                 response.status = 400
             }
@@ -75,5 +74,20 @@ class EmailSettingsController {
             log.error('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
             response.status = 400
         }
+    }
+
+    def sendTestMail()
+    {
+        String mailTo = params.to
+        if(mailTo)
+        {
+            boolean mailSent = new EmailService().sendEmail(mailTo, "Test Mail - PharmIT ERP", "This test mail from PharmIT ERP", session.getAttribute("entityId").toString())
+            if(mailSent)
+                response.status = 200
+            else
+                response.status = 400
+        }
+        else
+            response.status = 200
     }
 }

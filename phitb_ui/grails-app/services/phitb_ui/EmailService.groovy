@@ -31,12 +31,12 @@ class EmailService {
      * @param subject
      * @param body
      */
-    static void sendEmail(String toEmail, String subject, String body, String entityId, String docNo = null,  String docType = null) {
+    boolean sendEmail(String toEmail, String subject, String body, String entityId, String docNo = null,  String docType = null) {
         try {
             JSONObject emailSettings = getEmailSettingsByEntity()
             if (emailSettings && emailSettings.get("active")) {
                 String senderMail = new Constants().EMAIL_SENDER_ID
-                if (emailSettings.has("senderMail")) {
+                if (emailSettings.has("senderMail") && emailSettings.get("emailService")?.toString()?.equalsIgnoreCase("CUSTOM")) {
                     senderMail = emailSettings.get("senderMail")
                 }
                 Session session = getEmailAuth(emailSettings)
@@ -55,7 +55,7 @@ class EmailService {
                 Transport.send(msg)
                 System.out.println("Email Sent Successfully!!")
 
-                //TODO: add mail log here
+                //Adding mail log
                 JSONObject emailLog = new JSONObject()
                 emailLog.put("entity", entityId)
                 emailLog.put("sentTo", toEmail)
@@ -67,16 +67,20 @@ class EmailService {
                 emailLog.put("docNo", docNo)
                 emailLog.put("docType", docType)
                 saveEmailLog(emailLog)
+
+                return true
             } else {
                 System.out.println("Email Not Enabled")
+                return false
             }
         }
         catch (Exception e) {
             e.printStackTrace()
+            return false
         }
     }
 
-    static Session getEmailAuth(JSONObject emailSettings) {
+    Session getEmailAuth(JSONObject emailSettings) {
         Boolean authenticationRequired = true
         String encryptionType = Constants.EMAIL_ENCRYPTION_TYPE_STARTLS
         String smtpServer = Constants.EMAIL_SMTP_SERVER
@@ -84,7 +88,7 @@ class EmailService {
         String smtpUsername = Constants.EMAIL_USERNAME
         String smtpPassword = Constants.EMAIL_PASSWORD
         if (emailSettings.get("emailService").toString().equalsIgnoreCase("CUSTOM")) {
-            authenticationRequired = Boolean.parseBoolean(emailSettings.get("authenticationRequired"))
+            authenticationRequired = emailSettings.get("authenticationRequired")
             if(authenticationRequired) {
                 encryptionType = emailSettings.get("encryptionType")
                 smtpUsername = emailSettings.get("smtpUsername")
@@ -279,6 +283,10 @@ class EmailService {
             {
                 JSONObject jsonObject1 = new JSONObject(apiResponse.readEntity(String.class))
                 return jsonObject1
+            }
+            else
+            {
+                return null
             }
         }
         catch (Exception ex) {

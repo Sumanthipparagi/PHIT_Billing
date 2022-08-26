@@ -87,7 +87,7 @@
                         <ul class="nav nav-tabs">
                             <li class="nav-item"><a class="nav-link active" data-toggle="tab" href="#home"><i
                                     class="zmdi zmdi-settings"></i> Email Settings</a></li>
-                            <li class="nav-item"><a class="nav-link" data-toggle="tab" href="#logs"><i
+                            <li class="nav-item"><a id="logButton" class="nav-link" data-toggle="tab" href="#logs"><i
                                     class="zmdi zmdi-book"></i> Email Usage Logs</a></li>
                         </ul>
                         <!-- Tab panes -->
@@ -202,12 +202,32 @@
                                             <button type="submit"
                                                     class="btn btn-default btn-round waves-effect"
                                                     style="background-color: green;">SUBMIT</button>
-
-                                            %{-- <button class="btn btn-success btn-round waves-effect"
-                                                     style="background-color: green;">Send Test Mail</button>--}%
                                         </div>
                                     </div>
                                 </form>
+
+                                <div class="row mt-5 hidden" id="testMailContainer">
+                                    <div class="col-md-12">
+                                        <h6>Test Email</h6>
+
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                <div class="form-group">
+                                                    <label>Send test mail to:</label>
+                                                    <input type="text" name="testMailTo" id="testMailTo" class="form-control"/>
+                                                    <button onclick="sendTestMail()" class="btn btn-info btn-round"><i
+                                                            class="zmdi zmdi-mail-send"></i> Send</button>
+                                                </div>
+                                            </div>
+
+                                            <div class="col-md-6">
+                                                <div class="form-group">
+                                                    <p class="mt-4 pt-2" id="testMailResult"></p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
 
                             </div>
 
@@ -216,18 +236,19 @@
 
                                 <div class="row">
                                     <div class="col-md-12">
-                                        <table class="table table-striped table-bordered" style="width: 100%;">
-                                            <thead>
-                                            <tr>
-                                                <th>Sent To</th>
-                                                <th>Date</th>
-                                                <th>Subject</th>
-                                            </tr>
-                                            </thead>
-                                            <tbody>
-
-                                            </tbody>
-                                        </table>
+                                        <div class="table-responsive">
+                                            <table class="table table-bordered emailLogTable">
+                                                <thead style="width: 100%;">
+                                                <tr>
+                                                    <th>Sent To</th>
+                                                    <th>Date</th>
+                                                    <th>Subject</th>
+                                                </tr>
+                                                </thead>
+                                                <tbody style="width: 100%;">
+                                                </tbody>
+                                            </table>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -259,6 +280,7 @@
 <asset:javascript src="/themeassets/plugins/sweetalert/sweetalert.min.js"/>
 <asset:javascript src="/themeassets/plugins/select-2-editor/select2.js"/>
 <asset:javascript src="/themeassets/plugins/sweetalert2/dist/sweetalert2.all.js"/>
+<asset:javascript src="/themeassets/plugins/momentjs/moment.js"/>
 <g:include view="controls/footer-content.gsp"/>
 <script>
     selectSideMenu("settings-menu");
@@ -268,7 +290,6 @@
 
     $(document).ready(function () {
         emailServiceChanged();
-
     });
 
     $('#emailSettings').submit(function (event) {
@@ -305,6 +326,11 @@
         } else
             $("#customMailSettings").addClass("hidden");
 
+        if (emailService != "DISABLED") {
+            $("#testMailContainer").removeClass("hidden");
+        } else
+            $("#testMailContainer").addClass("hidden");
+
         var authenticationRequired = $("#authenticationRequired").is(":checked");
         if (authenticationRequired) {
             $("#authenticationRequiredContainer").removeClass("hidden");
@@ -320,6 +346,75 @@
             $("#authenticationRequiredContainer").addClass("hidden");
         }
     });
+
+    function emailLogTable() {
+        $(".emailLogTable").DataTable({
+            "order": [[0, "desc"]],
+            sPaginationType: "simple_numbers",
+            responsive: {
+                details: false
+            },
+            destroy: true,
+            autoWidth: false,
+            bJQueryUI: true,
+            sScrollX: "100%",
+            info: true,
+            processing: true,
+            serverSide: true,
+            language: {
+                searchPlaceholder: "Search Email Log"
+            },
+            ajax: {
+                type: 'GET',
+                url: '/email-log/datatable',
+                dataType: 'json',
+                dataSrc: function (json) {
+                    var return_data = [];
+                    for (var i = 0; i < json.data.length; i++) {
+                        return_data.push({
+                            'sentto': json.data[i].sentTo,
+                            'date': dateFormat(json.data[i].dateCreated),
+                            'subject': json.data[i].emailSubject,
+                        });
+                    }
+                    return return_data;
+                }
+            },
+            columns: [
+                {'data': 'sentto', 'width': '20%'},
+                {'data': 'date', 'width': '20%'},
+                {'data': 'subject', 'width': '60%'}
+            ]
+        });
+    }
+
+    $("#logButton").on("click", function () {
+        emailLogTable();
+    });
+
+    function sendTestMail() {
+        var testMailTo = $("#testMailTo").val();
+        if(testMailTo)
+        {
+            $("#testMailResult").html("<span style='color: green;'>Sending..</span>");
+            $.ajax({
+                url: "email-settings/testmail?to="+testMailTo,
+                method: "GET",
+                success: function(){
+                    $("#testMailResult").html("<span style='color: green;'><i class='zmdi zmdi-check'></i> Test Mail Sent</span>");
+                },
+                error: function(){
+                    $("#testMailResult").html("<span style='color: red;'><i class='zmdi zmdi-close'></i> Sending test mail failed, please check e-mail settings.</span>");
+                }
+            })
+        }
+    }
+
+    function dateFormat(date)
+    {
+        var pattern = "DD/MM/YYYY hh:mm:ss a";
+        return moment(date).format(pattern);
+    }
 </script>
 </body>
 </html>
