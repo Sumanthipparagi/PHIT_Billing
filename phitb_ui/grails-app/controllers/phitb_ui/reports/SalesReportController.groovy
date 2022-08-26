@@ -561,17 +561,16 @@ class SalesReportController
         openingBalance = receiptAmount + saleBillBalance + saleReturnBalance
         JSONArray saleBills1 = new SalesService().getSaleBillByCustomer(customerId, financialYear, entityId, dateRange)
         def saleReturn1 = new AccountsService().getAllSaleReturnByCustomer(Long.parseLong(customerId), Long.parseLong(entityId), financialYear)
-        JSONArray jsonArray
+        JSONArray returnArray
         if (saleReturn1?.status == 200)
         {
-            jsonArray = new JSONArray(saleReturn1.readEntity(String.class));
+            returnArray = new JSONArray(saleReturn1.readEntity(String.class));
         }
         for (JSONObject sb : saleBills1)
         {
-
         }
         customerLedgerDetails.put("SALE_INVOICE", saleBills1)
-        customerLedgerDetails.put("SALE_RETURN", jsonArray)
+        customerLedgerDetails.put("SALE_RETURN", returnArray)
         customerLedgerDetails.put("openingBalance", openingBalance)
         respond customerLedgerDetails, formats: ['json']
     }

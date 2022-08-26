@@ -173,7 +173,7 @@
                                                        class="form-control"/>
                                             </div>
                                         </div>
-
+                                            <input type="hidden" name="saleTransportDetailsId" id="saleTransportDetailsId" value="${saleTransportDetail?.id}">
                                         <div class="col-md-3">
                                             <div class="form-group">
                                                 <label for="transportType">Transporter</label>
@@ -671,12 +671,12 @@
                                             background: 'transparent'
 
                                         });
-                                        document.addEventListener('keypress', function (e) {
-                                            if (e.keyCode === 13 || e.which === 13) {
-                                                e.preventDefault();
-                                                return false;
-                                            }
-                                        });
+                                        // document.addEventListener('keypress', function (e) {
+                                        //     if (e.keyCode === 13 || e.which === 13) {
+                                        //         e.preventDefault();
+                                        //         return false;
+                                        //     }
+                                        // });
                                     },
                                     data: {
                                         rowData: json,
@@ -689,16 +689,18 @@
                                         batchHot.updateSettings({
                                             data: []
                                         });
+                                        var id = hot.getDataAtCell(row,15)
                                         hot.setDataAtCell(row, 15, data.id);
-                                        console.log(data.id+"tempid")
                                         for (var i = 0; i < 15; i++) {
                                             hot.setCellMeta(row, i, 'readOnly', true);
                                         }
-                                        mainTableRow = row + 1;
-                                        hot.alter('insert_row');
-                                        hot.selectCell(mainTableRow, 1);
-                                        hot.render();
-                                        calculateTotalAmt();
+                                        if(id!==data.id){
+                                            mainTableRow = row + 1;
+                                            hot.alter('insert_row');
+                                            hot.selectCell(mainTableRow, 1);
+                                            hot.render();
+                                            calculateTotalAmt();
+                                        }
                                     },
                                     error: function (jqXHR, textStatus, errorThrown) {
                                         beforeSendSwal.close();
@@ -1308,6 +1310,8 @@
         });
 
         var customer = $("#customerSelect").val();
+        var saleTransportDetailsId = $("#saleTransportDetailsId").val();
+        console.log(saleTransportDetailsId)
         var invtype = $("#invType").val();
         var series = $("#series").val();
         var seriesCode = $("#series").find(':selected').data('seriescode');
@@ -1366,6 +1370,7 @@
                 priority: priority,
                 billStatus: billStatus,
                 seriesCode: seriesCode,
+                saleTransportDetailsId: saleTransportDetailsId,
                 invtype: invtype,
                 lrNumber: lrNumber,
                 lrDate: lrDate,
