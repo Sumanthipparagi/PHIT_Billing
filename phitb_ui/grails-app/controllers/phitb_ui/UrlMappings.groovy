@@ -776,8 +776,12 @@ class UrlMappings {
         "/reports/sales/gstreport"(controller: "salesReport", action: "saleProductWiseReport")
         "/reports/sales/gstreport"(controller: "salesReport", action: "salesGstReport")
         "/reports/sales/getgstreport"(controller: "salesReport", action: "getSalesGstReport")
-        "/reports/sales/customer-ledger"(controller: "salesReport", action: "customerLedger")
+        "/reports/sales/invoice-payment"(controller: "salesReport", action: "invoicePaymentReports")
+        "/reports/sales/get-invoice-payment"(controller: "salesReport", action: "getInvoicePayment")
+
         "/reports/sales/get-customer-ledger"(controller: "salesReport", action: "getCustomerLedger")
+        "/reports/sales/customer-ledger"(controller: "salesReport", action: "customerLedger")
+
 
         "/reports/accounts/outstanding"(controller: "accountsReport", action: "outstandingReport")
         "/reports/accounts/getoutstanding"(controller: "accountsReport", action: "getOutstandingReport")

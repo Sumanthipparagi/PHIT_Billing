@@ -403,7 +403,7 @@
 </script>
 <g:include view="controls/footer-content.gsp"/>
 <script>
-    selectSideMenu("purchase-menu");
+    selectSideMenu("sales-menu");
 </script>
 </body>
 </html>

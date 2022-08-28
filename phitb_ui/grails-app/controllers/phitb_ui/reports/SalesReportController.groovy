@@ -4,33 +4,34 @@ import com.google.gson.JsonArray
 import com.google.gson.JsonElement
 import com.google.gson.JsonObject
 import com.google.gson.JsonParser
-import grails.converters.JSON
 import org.grails.web.json.JSONArray
 import org.grails.web.json.JSONObject
 import phitb_ui.AccountsService
 import phitb_ui.EntityService
 import phitb_ui.ProductService
+import phitb_ui.PurchaseService
 import phitb_ui.ReportsService
 import phitb_ui.SalesService
 import phitb_ui.SystemService
-import phitb_ui.Tools
-import phitb_ui.UtilsService
 import phitb_ui.entity.EntityRegisterController
-import phitb_ui.entity.SeriesController
 
 import java.text.DecimalFormat
 import java.text.SimpleDateFormat
+import java.util.function.ToDoubleFunction
 
-class SalesReportController {
+class SalesReportController
+{
 
     ReportsService reportsService
     private static final DecimalFormat decimalFormat = new DecimalFormat("#.##");
 
-    def index() {
+    def index()
+    {
         render(view: '/reports/salesReport/index')
     }
 
-    def salesCustomerWiseReport() {
+    def salesCustomerWiseReport()
+    {
         String entityId = session.getAttribute("entityId")
         String financialYear = session.getAttribute("financialYear")
         String dateRange = params.dateRange
@@ -38,12 +39,15 @@ class SalesReportController {
         String sortBy = "id"
         JSONObject customerWiseData = reportsService.getCustomerWiseReport(entityId, dateRange, financialYear, sortBy)
         //get product details
-        for (Object customer : customerWiseData.keySet()) {
+        for (Object customer : customerWiseData.keySet())
+        {
             def customerDetail = new EntityService().getEntityById(customer.toString())
             JSONArray bills = customerWiseData.get(customer) as JSONArray
-            for (Object bill : bills) {
+            for (Object bill : bills)
+            {
                 JSONArray saleProducts = bill.products
-                for (Object saleProduct : saleProducts) {
+                for (Object saleProduct : saleProducts)
+                {
                     JSONObject product = new ProductService().getProductById(saleProduct.productId.toString())
                     saleProduct.put("productDetail", product)
                 }
@@ -53,11 +57,13 @@ class SalesReportController {
         respond customerWiseData, formats: ['json']
     }
 
-    def datewise() {
+    def datewise()
+    {
         render(view: '/reports/salesReport/dateWise')
     }
 
-    def salesDateWiseReport() {
+    def salesDateWiseReport()
+    {
         String entityId = session.getAttribute("entityId")
         String financialYear = session.getAttribute("financialYear")
         String dateRange = params.dateRange
@@ -65,12 +71,15 @@ class SalesReportController {
         String sortBy = "invoice-date"
         JsonObject dateWiseData = reportsService.getDateWiseReport(entityId, dateRange, financialYear, sortBy)
         //get product details
-        for (Object date : dateWiseData.keySet()) {
+        for (Object date : dateWiseData.keySet())
+        {
             JsonArray bills = dateWiseData.get(date.toString()) as JsonArray
-            for (JsonElement bill : bills) {
+            for (JsonElement bill : bills)
+            {
                 JsonArray saleProducts = bill.products
 
-                for (JsonElement saleProduct : saleProducts) {
+                for (JsonElement saleProduct : saleProducts)
+                {
                     JSONObject product = new ProductService().getProductById(saleProduct.productId.toString())
                     JsonObject productGsonObject = new JsonParser().parse(product.toString()).getAsJsonObject()
                     saleProduct.getAsJsonObject().add("productDetail", productGsonObject) //TODO: to be corrected
@@ -83,26 +92,31 @@ class SalesReportController {
         render(text: dateWiseData.toString(), contentType: "application/json")
     }
 
-    def areawise() {
+    def areawise()
+    {
 
         render(view: '/reports/salesReport/areaWise')
     }
 
-    def salesAreaWiseReport() {
+    def salesAreaWiseReport()
+    {
         String entityId = session.getAttribute("entityId")
         String financialYear = session.getAttribute("financialYear")
         String dateRange = params.dateRange
         //String sortBy = params.sortBy
         boolean paidInvoice = true
         String sortBy = "id"
-        JSONObject areaWiseData = reportsService.getAreaWiseReport(entityId, dateRange, financialYear, sortBy,paidInvoice)
+        JSONObject areaWiseData = reportsService.getAreaWiseReport(entityId, dateRange, financialYear, sortBy, paidInvoice)
         //get product details
-        for (Object city : areaWiseData.keySet()) {
+        for (Object city : areaWiseData.keySet())
+        {
             def cityDetail = new SystemService().getCityById(city.toString())
             JSONArray bills = areaWiseData.get(city) as JSONArray
-            for (Object bill : bills) {
+            for (Object bill : bills)
+            {
                 JSONArray saleProducts = bill.products
-                for (Object saleProduct : saleProducts) {
+                for (Object saleProduct : saleProducts)
+                {
                     JSONObject product = new ProductService().getProductById(saleProduct.productId.toString())
                     saleProduct.put("productDetail", product)
                 }
@@ -112,24 +126,29 @@ class SalesReportController {
         respond areaWiseData, formats: ['json']
     }
 
-    def areawiseWithProducts() {
+    def areawiseWithProducts()
+    {
         render(view: '/reports/salesReport/areaWiseWithProducts')
     }
 
-    def areawiseWithProductsReport() {
+    def areawiseWithProductsReport()
+    {
         String entityId = session.getAttribute("entityId")
         String financialYear = session.getAttribute("financialYear")
         String dateRange = params.dateRange
         //String sortBy = params.sortBy
         String sortBy = "id"
         boolean paidInvoice = true
-        JSONObject areaWiseData = reportsService.getAreaWiseReport(entityId, dateRange, financialYear, sortBy,paidInvoice)
+        JSONObject areaWiseData = reportsService.getAreaWiseReport(entityId, dateRange, financialYear, sortBy, paidInvoice)
         //get product details
-        for (Object city : areaWiseData.keySet()) {
+        for (Object city : areaWiseData.keySet())
+        {
             JSONArray bills = areaWiseData.get(city) as JSONArray
-            for (Object bill : bills) {
+            for (Object bill : bills)
+            {
                 JSONArray saleProducts = bill.products
-                for (Object saleProduct : saleProducts) {
+                for (Object saleProduct : saleProducts)
+                {
                     JSONObject product = new ProductService().getProductById(saleProduct.productId.toString())
                     saleProduct.put("productDetail", product)
                 }
@@ -139,17 +158,20 @@ class SalesReportController {
         JSONObject resultJson = new JSONObject()
         for (Object key : areaWiseData.keySet())
         {
-            JSONArray areaWiseBills = (JSONArray)areaWiseData.get(key)
+            JSONArray areaWiseBills = (JSONArray) areaWiseData.get(key)
             JSONObject customerJson = new JSONObject()
             for (JSONObject bill : (areaWiseBills as List<JSONObject>))
             {
-                if(bill.billStatus != "CANCELLED")
+                if (bill.billStatus != "CANCELLED")
                 {
                     JSONObject products = new JSONObject()
-                    if (customerJson.has(bill.customer.entityName)) {
-                        for (JSONObject product : bill.products) {
+                    if (customerJson.has(bill.customer.entityName))
+                    {
+                        for (JSONObject product : bill.products)
+                        {
                             products = (JSONObject) customerJson.get(bill.customer.entityName)
-                            if (products.has(product.productDetail.productName)) {
+                            if (products.has(product.productDetail.productName))
+                            {
                                 JSONObject customerProduct = (JSONObject) products.get(product.productDetail.productName)
                                 customerProduct.put("sQty", customerProduct.get("sQty") + product.sqty)
                                 customerProduct.put("fQty", customerProduct.get("fQty") + product.freeQty)
@@ -158,7 +180,9 @@ class SalesReportController {
                                 customerProduct.put("netAmount", customerProduct.get("netAmount") + product.amount)
                                 customerProduct.put("ntv", customerProduct.get("ntv") + (product.amount - product.gstAmount))
                                 products.put(product.productDetail.productName.toString(), customerProduct)
-                            } else {
+                            }
+                            else
+                            {
                                 JSONObject prd = new JSONObject()
                                 prd.put("sQty", product.sqty)
                                 prd.put("fQty", product.freeQty)
@@ -170,10 +194,13 @@ class SalesReportController {
                             }
                         }
                         customerJson.put(bill.customer.entityName.toString(), products)
-                    } else
+                    }
+                    else
                     {
-                        for (JSONObject product : bill.products) {
-                            if (products.has(product.productDetail.productName)) {
+                        for (JSONObject product : bill.products)
+                        {
+                            if (products.has(product.productDetail.productName))
+                            {
                                 JSONObject prd = (JSONObject) products.get(product.productDetail.productName)
                                 prd.put("sQty", prd.get("sQty") + product.sqty)
                                 prd.put("fQty", prd.get("fQty") + product.freeQty)
@@ -182,7 +209,9 @@ class SalesReportController {
                                 prd.put("netAmount", prd.get("netAmount") + product.amount)
                                 prd.put("ntv", prd.get("ntv") + (product.amount - product.gstAmount))
                                 products.put(product.productDetail.productName.toString(), prd)
-                            } else {
+                            }
+                            else
+                            {
                                 JSONObject prd = new JSONObject()
                                 prd.put("sQty", product.sqty)
                                 prd.put("fQty", product.freeQty)
@@ -207,11 +236,13 @@ class SalesReportController {
         respond resultJson, formats: ['json']
     }
 
-    def areawiseConsolidatedProducts() {
+    def areawiseConsolidatedProducts()
+    {
         render(view: '/reports/salesReport/areaWiseConsolidatedProducts')
     }
 
-    def areawiseConsolidatedProductsReport() {
+    def areawiseConsolidatedProductsReport()
+    {
         String entityId = session.getAttribute("entityId")
         String financialYear = session.getAttribute("financialYear")
         String dateRange = params.dateRange
@@ -219,13 +250,16 @@ class SalesReportController {
         String sortBy = "id"
         boolean paidInvoice = true
 
-        JSONObject areaWiseData = reportsService.getAreaWiseReport(entityId, dateRange, financialYear, sortBy,paidInvoice)
+        JSONObject areaWiseData = reportsService.getAreaWiseReport(entityId, dateRange, financialYear, sortBy, paidInvoice)
         //get product details
-        for (Object city : areaWiseData.keySet()) {
+        for (Object city : areaWiseData.keySet())
+        {
             JSONArray bills = areaWiseData.get(city) as JSONArray
-            for (Object bill : bills) {
+            for (Object bill : bills)
+            {
                 JSONArray saleProducts = bill.products
-                for (Object saleProduct : saleProducts) {
+                for (Object saleProduct : saleProducts)
+                {
                     JSONObject product = new ProductService().getProductById(saleProduct.productId.toString())
                     saleProduct.put("productDetail", product)
                 }
@@ -235,14 +269,16 @@ class SalesReportController {
         JSONObject resultJson = new JSONObject()
         for (Object key : areaWiseData.keySet())
         {
-            JSONArray areaWiseBills = (JSONArray)areaWiseData.get(key)
+            JSONArray areaWiseBills = (JSONArray) areaWiseData.get(key)
             JSONObject products = new JSONObject()
             for (JSONObject bill : (areaWiseBills as List<JSONObject>))
             {
-                if(bill.billStatus != "CANCELLED")
+                if (bill.billStatus != "CANCELLED")
                 {
-                    for (JSONObject product : bill.products) {
-                        if (products.has(product.productDetail.productName)) {
+                    for (JSONObject product : bill.products)
+                    {
+                        if (products.has(product.productDetail.productName))
+                        {
                             JSONObject prd = (JSONObject) products.get(product.productDetail.productName)
                             prd.put("sQty", prd.get("sQty") + product.sqty)
                             prd.put("fQty", prd.get("fQty") + product.freeQty)
@@ -251,7 +287,9 @@ class SalesReportController {
                             prd.put("netAmount", prd.get("netAmount") + product.amount)
                             prd.put("ntv", prd.get("ntv") + (product.amount - product.gstAmount))
                             products.put(product.productDetail.productName.toString(), prd)
-                        } else {
+                        }
+                        else
+                        {
                             JSONObject prd = new JSONObject()
                             prd.put("sQty", product.sqty)
                             prd.put("fQty", product.freeQty)
@@ -274,11 +312,13 @@ class SalesReportController {
         respond resultJson, formats: ['json']
     }
 
-    def consolidated() {
+    def consolidated()
+    {
         render(view: '/reports/salesReport/consolidated')
     }
 
-    def saleConsolidatedReport() {
+    def saleConsolidatedReport()
+    {
         String entityId = session.getAttribute("entityId")
         String financialYear = session.getAttribute("financialYear")
         String dateRange = params.dateRange
@@ -286,13 +326,16 @@ class SalesReportController {
         String sortBy = "id"
         JSONObject consolidated = reportsService.getConsolidatedReport(entityId, dateRange, financialYear, sortBy)
         //get product details
-        for (Object customer : consolidated.keySet()) {
+        for (Object customer : consolidated.keySet())
+        {
             def customerDetail = new EntityService().getEntityById(customer.toString())
             JSONArray bills = consolidated.get(customer) as JSONArray
             println(bills)
-            for (Object bill : bills) {
+            for (Object bill : bills)
+            {
                 JSONArray saleProducts = bill.products
-                for (Object saleProduct : saleProducts) {
+                for (Object saleProduct : saleProducts)
+                {
                     JSONObject product = new ProductService().getProductById(saleProduct.productId.toString())
                     saleProduct.put("productDetail", product)
                 }
@@ -308,7 +351,8 @@ class SalesReportController {
         render(view: '/reports/salesReport/productwise')
     }
 
-    def saleProductWiseReport() {
+    def saleProductWiseReport()
+    {
         String entityId = session.getAttribute("entityId")
         String financialYear = session.getAttribute("financialYear")
         String dateRange = params.dateRange
@@ -316,13 +360,16 @@ class SalesReportController {
         boolean paidInvoice = true
 
         String sortBy = "id"
-        JSONObject areaWiseData = reportsService.getAreaWiseReport(entityId, dateRange, financialYear, sortBy,paidInvoice)
+        JSONObject areaWiseData = reportsService.getAreaWiseReport(entityId, dateRange, financialYear, sortBy, paidInvoice)
         //get product details
-        for (Object city : areaWiseData.keySet()) {
+        for (Object city : areaWiseData.keySet())
+        {
             JSONArray bills = areaWiseData.get(city) as JSONArray
-            for (Object bill : bills) {
+            for (Object bill : bills)
+            {
                 JSONArray saleProducts = bill.products
-                for (Object saleProduct : saleProducts) {
+                for (Object saleProduct : saleProducts)
+                {
                     JSONObject product = new ProductService().getProductById(saleProduct.productId.toString())
                     saleProduct.put("productDetail", product)
                 }
@@ -333,13 +380,15 @@ class SalesReportController {
         JSONObject products = new JSONObject()
         for (Object key : areaWiseData.keySet())
         {
-            JSONArray areaWiseBills = (JSONArray)areaWiseData.get(key)
+            JSONArray areaWiseBills = (JSONArray) areaWiseData.get(key)
             for (JSONObject bill : (areaWiseBills as List<JSONObject>))
             {
-                if(bill.billStatus != "CANCELLED")
+                if (bill.billStatus != "CANCELLED")
                 {
-                    for (JSONObject product : bill.products) {
-                        if (products.has(product.productDetail.productName)) {
+                    for (JSONObject product : bill.products)
+                    {
+                        if (products.has(product.productDetail.productName))
+                        {
                             JSONObject prd = (JSONObject) products.get(product.productDetail.productName)
                             prd.put("sQty", prd.get("sQty") + product.sqty)
                             prd.put("fQty", prd.get("fQty") + product.freeQty)
@@ -348,7 +397,9 @@ class SalesReportController {
                             prd.put("netAmount", prd.get("netAmount") + product.amount)
                             prd.put("ntv", prd.get("ntv") + (product.amount - product.gstAmount))
                             products.put(product.productDetail.productName.toString(), prd)
-                        } else {
+                        }
+                        else
+                        {
                             JSONObject prd = new JSONObject()
                             prd.put("sQty", product.sqty)
                             prd.put("fQty", product.freeQty)
@@ -375,7 +426,8 @@ class SalesReportController {
         render(view: '/reports/salesReport/gstreport')
     }
 
-    def getSalesGstReport() {
+    def getSalesGstReport()
+    {
         String entityId = session.getAttribute("entityId")
         String financialYear = session.getAttribute("financialYear")
         String dateRange = params.dateRange
@@ -383,7 +435,8 @@ class SalesReportController {
         String sortBy = "id"
         JSONObject gstData = reportsService.getSalesGstRport(entityId, dateRange, financialYear, sortBy)
         JSONArray gstDetails = gstData.gstDetails
-        for (JSONObject jsonObject : gstDetails) {
+        for (JSONObject jsonObject : gstDetails)
+        {
             JSONObject entity = new EntityService().getEntityById(jsonObject.get("customerId").toString())
             JSONObject city = new SystemService().getCityById(entity.get("cityId").toString())
             JSONObject series = new EntityService().getSeriesById(jsonObject.get("seriesId").toString())
@@ -396,12 +449,13 @@ class SalesReportController {
         respond gstData, formats: ['json']
     }
 
-    def customerLedger() {
+    def invoicePaymentReports()
+    {
         def entities = new EntityRegisterController().getByAffiliateById(session.getAttribute("entityId").toString())
-        render(view: '/reports/salesReport/customer-ledger-report', model: [entities: entities])
+        render(view: '/reports/salesReport/invoice-payment-report', model: [entities: entities])
     }
 
-    def getCustomerLedger()
+    def getInvoicePayment()
     {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd")
         SimpleDateFormat sdf2 = new SimpleDateFormat("dd-MMM-yyyy")
@@ -412,22 +466,29 @@ class SalesReportController {
         JSONObject customer = new EntityService().getEntityById(customerId)
         JSONArray saleBills = new SalesService().getSaleBillByCustomer(customerId, financialYear, entityId, dateRange)
         JSONArray customerLedgerDetails = new JSONArray()
-        for (JSONObject saleBill : saleBills) {
-            if(saleBill.billStatus == "ACTIVE") {
+        for (JSONObject saleBill : saleBills)
+        {
+            if (saleBill.billStatus == "ACTIVE")
+            {
                 BigDecimal receiptAmount = 0.0
                 BigDecimal saleReturnAmount = 0.0
                 def receiptlogsinv = new AccountsService().getReceiptLogByBillTypeAndId(saleBill.id.toString(), "INVS", dateRange)
-                if (receiptlogsinv.status == 200) {
+                if (receiptlogsinv.status == 200)
+                {
                     JSONArray receipts = new JSONArray(receiptlogsinv.readEntity(String.class))
-                    for (Object receipt : receipts) {
+                    for (Object receipt : receipts)
+                    {
                         receiptAmount += receipt.amountPaid
                     }
                 }
                 JSONArray saleReturnAdjustments = new SalesService().getSaleReturnAdjustmentDetails(saleBill.id.toString(), "INVS", dateRange)
-                for (Object saleReturnAdjustment : saleReturnAdjustments) {
+                for (Object saleReturnAdjustment : saleReturnAdjustments)
+                {
 
-                    if(saleReturnAdjustment.cancelledDate == null)
+                    if (saleReturnAdjustment.cancelledDate == null)
+                    {
                         saleReturnAmount += saleReturnAdjustment.adjAmount
+                    }
                 }
                 double invoiceTotal = saleBill.invoiceTotal
                 double balance = saleBill.balance
@@ -435,15 +496,23 @@ class SalesReportController {
                 jsonObject.put("invoiceTotal", invoiceTotal)
                 jsonObject.put("invoiceNumber", saleBill.invoiceNumber)
                 def orderDate = sdf.parse(saleBill.orderDate?.split("T")[0])
-                if (orderDate) {
+                if (orderDate)
+                {
                     orderDate = sdf2.format(orderDate)
                     jsonObject.put("invoiceDate", orderDate)
-                } else
-                    jsonObject.put("invoiceDate", "-")
-                if (Math.round(balance) <= 0)
-                    jsonObject.put("balance", 0)
+                }
                 else
+                {
+                    jsonObject.put("invoiceDate", "-")
+                }
+                if (Math.round(balance) <= 0)
+                {
+                    jsonObject.put("balance", 0)
+                }
+                else
+                {
                     jsonObject.put("balance", invoiceTotal - (saleReturnAmount + receiptAmount))
+                }
                 jsonObject.put("receiptAmount", (saleReturnAmount + receiptAmount))
 
                 jsonObject.put("entityName", customer.entityName)
@@ -453,4 +522,63 @@ class SalesReportController {
         }
         respond customerLedgerDetails, formats: ['json']
     }
+
+
+    def getCustomerLedger()
+    {
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd")
+        SimpleDateFormat sdf2 = new SimpleDateFormat("dd-MMM-yyyy")
+        String entityId = session.getAttribute("entityId")
+        String customerId = params.customerId
+        String financialYear = session.getAttribute("financialYear")
+        String dateRange = params.dateRange
+        double openingBalance = 0;
+        JSONObject customer = new EntityService().getEntityById(customerId)
+        HashMap<String, JSONArray> customerLedgerDetails = new HashMap()
+        JSONArray saleBills = new SalesService().getSaleBillByCustomerStartDate(customerId, financialYear, entityId, dateRange)
+        JSONArray saleReturn = new SalesService().getAllSaleReturnByCustomerStartdate(Long.parseLong(customerId), Long
+                .parseLong(entityId), financialYear, dateRange)
+        double saleReturnBalance = saleReturn.stream().mapToDouble({n -> Double.parseDouble(n.invoiceTotal.toString())})
+                .sum();
+        double saleBillBalance = saleBills.stream().mapToDouble({n -> Double.parseDouble(n.invoiceTotal.toString())}).sum();
+        double receiptAmount = 0.0;
+        for (JSONObject saleBill : saleBills)
+        {
+            double saleReturnAmount = 0.0;
+            if (saleBill.billStatus == "ACTIVE")
+            {
+                def receiptDetails = new AccountsService().getReceiptLogByBillTypeAndIdStartDate(saleBill.id.toString(), "INVS", dateRange)
+                if (receiptDetails?.status == 200)
+                {
+                    JSONArray receipts = new JSONArray(receiptDetails.readEntity(String.class))
+                    for (Object receipt : receipts)
+                    {
+                        receiptAmount += receipt.amountPaid
+                    }
+                }
+            }
+        }
+        openingBalance = receiptAmount + saleBillBalance + saleReturnBalance
+        JSONArray saleBills1 = new SalesService().getSaleBillByCustomer(customerId, financialYear, entityId, dateRange)
+        def saleReturn1 = new AccountsService().getAllSaleReturnByCustomer(Long.parseLong(customerId), Long.parseLong(entityId), financialYear)
+        JSONArray returnArray
+        if (saleReturn1?.status == 200)
+        {
+            returnArray = new JSONArray(saleReturn1.readEntity(String.class));
+        }
+        for (JSONObject sb : saleBills1)
+        {
+        }
+        customerLedgerDetails.put("SALE_INVOICE", saleBills1)
+        customerLedgerDetails.put("SALE_RETURN", returnArray)
+        customerLedgerDetails.put("openingBalance", openingBalance)
+        respond customerLedgerDetails, formats: ['json']
+    }
+
+    def customerLedger()
+    {
+        def entities = new EntityRegisterController().getByAffiliateById(session.getAttribute("entityId").toString())
+        render(view: '/reports/salesReport/customer-ledger', model: [entities: entities])
+    }
+
 }

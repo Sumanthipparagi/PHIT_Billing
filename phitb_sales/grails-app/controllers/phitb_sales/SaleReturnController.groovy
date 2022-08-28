@@ -146,6 +146,27 @@ class SaleReturnController {
         }
     }
 
+    def getAllByCustomerIdStartDate() {
+        try {
+            String customerId = params.id
+            String entityId = params.entityId
+            String financialYear = params.financialYear
+            String dateRange = params.dateRange
+            respond saleReturnService.getAllByCustomerIdStartDate(customerId, entityId, financialYear,dateRange)
+        }
+        catch (ResourceNotFoundException ex) {
+            System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
+            response.status = 404
+        }
+        catch (BadRequestException ex) {
+            System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
+            response.status = 400
+        }
+        catch (Exception ex) {
+            System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
+        }
+    }
+
     def updateStatus(Long id) {
         try {
             SaleReturnDetails saleReturnDetails = SaleReturnDetails.findById(id)
@@ -372,6 +393,26 @@ class SaleReturnController {
             String docType = params.docType
             String dateRange = params.dateRange
             respond saleReturnService.getSaleReturnAdjustmentDetailsByDocId(docId, docType, dateRange)
+        }
+        catch (ResourceNotFoundException ex) {
+            System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
+            response.status = 404
+        }
+        catch (BadRequestException ex) {
+            System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
+            response.status = 400
+        }
+        catch (Exception ex) {
+            System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
+        }
+    }
+
+    def getSaleReturnAdjustmentDetailsByDocIdStartDate() {
+        try {
+            String docId = params.docId
+            String docType = params.docType
+            String dateRange = params.dateRange
+            respond saleReturnService.getSaleReturnAdjustmentDetailsByDocIdStartDate(docId, docType, dateRange)
         }
         catch (ResourceNotFoundException ex) {
             System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)

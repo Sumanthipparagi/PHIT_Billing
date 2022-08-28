@@ -142,21 +142,21 @@ class SaleTransportationDetailsService
         }
     }
 
-    SaleTransportationDetails update(JSONObject jsonObject, String id)
+    SaleTransportationDetails update(JSONObject jsonObject)
     {
-        SaleTransportationDetails saleTransportationDetails = SaleTransportationDetails.findById(Long.parseLong(id))
+        SaleTransportationDetails saleTransportationDetails = SaleTransportationDetails.findById(Long.parseLong(jsonObject.id))
         if (SaleProductDetails)
         {
             saleTransportationDetails.isUpdatable = true
             saleTransportationDetails.finId = Long.parseLong(jsonObject.get("finId").toString())
             saleTransportationDetails.billId = Long.parseLong(jsonObject.get("billId").toString())
-            saleTransportationDetails.billType = Long.parseLong(jsonObject.get("billType").toString())
+            saleTransportationDetails.billType = jsonObject.get("billType").toString()
             saleTransportationDetails.serBillId = Long.parseLong(jsonObject.get("serBillId").toString())
             saleTransportationDetails.series = Long.parseLong(jsonObject.get("series").toString())
             saleTransportationDetails.customerId = Long.parseLong(jsonObject.get("customerId").toString())
             saleTransportationDetails.transporterId = Long.parseLong(jsonObject.get("transporterId").toString())
             saleTransportationDetails.lrDate = sdf.parse(jsonObject.get("lrDate").toString())
-            saleTransportationDetails.lrNumber = jsonObject.get("sqty").toString()
+            saleTransportationDetails.lrNumber = jsonObject.get("lrNumber").toString()
             saleTransportationDetails.cartonsCount = jsonObject.get("cartonsCount").toString()
             saleTransportationDetails.paid = jsonObject.get("paid").toString()
             saleTransportationDetails.toPay = jsonObject.get("toPay").toString()

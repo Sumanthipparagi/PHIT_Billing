@@ -173,7 +173,7 @@
                                                        class="form-control"/>
                                             </div>
                                         </div>
-
+                                            <input type="hidden" name="saleTransportDetailsId" id="saleTransportDetailsId" value="${saleTransportDetail?.id}">
                                         <div class="col-md-3">
                                             <div class="form-group">
                                                 <label for="transportType">Transporter</label>
@@ -555,7 +555,9 @@
                 columns: [15, 16, 17, 18, 19, 20, 21, 22, 23, 24]
                 </g:if>
                 <g:else>
+                // columns: [15, 16, 17, 18, 19, 20, 21]
                 columns: [15, 16, 17, 18, 19, 20, 21]
+
 
                 </g:else>
             },
@@ -667,7 +669,14 @@
                                             showConfirmButton: false,
                                             allowOutsideClick: false,
                                             background: 'transparent'
+
                                         });
+                                        // document.addEventListener('keypress', function (e) {
+                                        //     if (e.keyCode === 13 || e.which === 13) {
+                                        //         e.preventDefault();
+                                        //         return false;
+                                        //     }
+                                        // });
                                     },
                                     data: {
                                         rowData: json,
@@ -680,16 +689,18 @@
                                         batchHot.updateSettings({
                                             data: []
                                         });
+                                        var id = hot.getDataAtCell(row,15)
                                         hot.setDataAtCell(row, 15, data.id);
-
                                         for (var i = 0; i < 15; i++) {
                                             hot.setCellMeta(row, i, 'readOnly', true);
                                         }
-                                        mainTableRow = row + 1;
-                                        hot.alter('insert_row');
-                                        hot.selectCell(mainTableRow, 1);
-                                        hot.render();
-                                        calculateTotalAmt();
+                                        if(id!==data.id){
+                                            mainTableRow = row + 1;
+                                            hot.alter('insert_row');
+                                            hot.selectCell(mainTableRow, 1);
+                                            hot.render();
+                                            calculateTotalAmt();
+                                        }
                                     },
                                     error: function (jqXHR, textStatus, errorThrown) {
                                         beforeSendSwal.close();
@@ -947,12 +958,12 @@
             beforeKeyDown(e) {
                 const selection = batchHot.getSelected()[0][0];
                 var rowData = batchHot.getDataAtRow(selection);
-                console.log(rowData[0]);
+                // console.log(rowData[0]);
                 if (e.keyCode === 13) {
 
                     if (!checkForDuplicateEntry(rowData[0])) {
                         //check for schemes
-                        console.log(!checkForDuplicateEntry(rowData[0]));
+                        // console.log(!checkForDuplicateEntry(rowData[0]));
                         checkSchemes(hot.getDataAtCell(mainTableRow, 1), rowData[0]); //product, batch
                         var batchId = rowData[12];
                         hot.setDataAtCell(mainTableRow, 2, rowData[0]);
@@ -1299,6 +1310,8 @@
         });
 
         var customer = $("#customerSelect").val();
+        var saleTransportDetailsId = $("#saleTransportDetailsId").val();
+        console.log(saleTransportDetailsId)
         var invtype = $("#invType").val();
         var series = $("#series").val();
         var seriesCode = $("#series").find(':selected').data('seriescode');
@@ -1357,6 +1370,7 @@
                 priority: priority,
                 billStatus: billStatus,
                 seriesCode: seriesCode,
+                saleTransportDetailsId: saleTransportDetailsId,
                 invtype: invtype,
                 lrNumber: lrNumber,
                 lrDate: lrDate,
@@ -1518,9 +1532,9 @@
     function checkForDuplicateEntry(batchNumber) {
         var productId = hot.getDataAtCell(mainTableRow, 1);
         var saleTableData = hot.getData();
+
         for (var i = 0; i < saleTableData.length; i++) {
-            if (productId === saleTableData[i][1]) {
-                console.log(saleTableData[i][2])
+            if (Number(productId) === Number(saleTableData[i][1])) {
                 if (saleTableData[i][2] !== null && saleTableData[i][2] === batchNumber)
                     return true;
             }

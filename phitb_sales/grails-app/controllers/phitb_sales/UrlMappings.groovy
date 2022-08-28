@@ -119,6 +119,10 @@ class UrlMappings {
                 action = [GET: 'getAllByCustomerId']
             }
 
+            "/salebillbycustomerstartdate/$id(.$format)?"(controller: 'saleBillDetails') {
+                action = [GET: 'getAllByCustomerByStartDate']
+            }
+
             "/salebillbydaterange(.$format)?"(controller: 'saleBillDetails', action: 'getByDateRangeAndEntity')
 
 
@@ -389,6 +393,8 @@ class UrlMappings {
             }
             "/salereturn/adjustment(.$format)?"(controller: 'saleReturn'){action = [POST: 'adjustSaleReturn']}
             "/salereturn/adjustment-details/$docId/$docType(.$format)?"(controller: 'saleReturn'){action = [GET: 'getSaleReturnAdjustmentDetailsByDocId']}
+            "/salereturn/adjustment-details-startdate/$docId/$docType(.$format)?"(controller: 'saleReturn'){action =
+                    [GET: 'getSaleReturnAdjustmentDetailsByDocIdStartDate']}
 
 
 
@@ -400,6 +406,10 @@ class UrlMappings {
 
             "/salereturnbycustomer(.$format)?"(controller: 'saleReturn') {
                 action = [GET: 'getAllByCustomerId']
+            }
+
+            "/salereturnbycustomerstartdate(.$format)?"(controller: 'saleReturn') {
+                action = [GET: 'getAllByCustomerIdStartDate']
             }
 
             "/salereturn/getrecent(.$format)?"(controller: 'saleReturn') {

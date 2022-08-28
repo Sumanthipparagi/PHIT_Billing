@@ -252,7 +252,7 @@
             },
             ajax: {
                 type: 'GET',
-                url: '/recipt-list/datatable',
+                url: '/receipt-list/datatable',
                 dataType: 'json',
                 data: {
                     customer: customer,

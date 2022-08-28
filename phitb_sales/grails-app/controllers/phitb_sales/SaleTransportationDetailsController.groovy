@@ -147,7 +147,7 @@ class SaleTransportationDetailsController
         try {
             String id = params.id
             JSONObject jsonObject = JSON.parse(request.reader.text) as JSONObject
-            respond saleTransportationDetailsService.update(jsonObject,id)
+            respond saleTransportationDetailsService.update(jsonObject)
         }
         catch (ResourceNotFoundException ex)
         {

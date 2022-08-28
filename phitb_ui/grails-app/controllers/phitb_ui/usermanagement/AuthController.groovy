@@ -97,6 +97,7 @@ class AuthController {
                         String startYear = jsonObject.get("startDate").toString().split("/")[2]
                         String endYear = jsonObject.get("endDate").toString().split("/")[2]
                         session.setAttribute("financialYear", startYear+"-"+endYear)
+                        session.setAttribute("startDate",jsonObject.get("startDate").toString())
                         redirect(uri: "/dashboard")
                     }
                 } else {

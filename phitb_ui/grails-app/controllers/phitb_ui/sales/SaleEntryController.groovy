@@ -291,54 +291,7 @@ class SaleEntryController {
                 catch (Exception ex) {
                     ex.printStackTrace()
                 }
-                if(params.lrNumber!='' && params.lrDate!='' && params.transporter!='')
-                {
-                    JSONObject transportObject = new JSONObject();
-                    transportObject.put("finId", finId)
-                    transportObject.put("billId", saleBillDetail.id)
-                    transportObject.put("billType", "SALE_INVOICE")
-                    transportObject.put("serBillId", saleBillDetail.serBillId)
-                    transportObject.put("series", saleBillDetail.seriesId)
-                    transportObject.put("customerId", saleBillDetail.customerId)
-                    transportObject.put("transporterId", params.transporter)
-                    transportObject.put("lrDate", params.lrDate)
-                    transportObject.put("lrNumber", params.lrNumber)
-                    transportObject.put("cartonsCount", "")
-                    transportObject.put("paid", 0)
-                    transportObject.put("toPay", 0)
-                    transportObject.put("generalInfo", 0)
-                    transportObject.put("selfNo", 0)
-                    transportObject.put("ccm", 0)
-                    transportObject.put("recievedTemprature", 0)
-                    transportObject.put("freightCharge", 0)
-                    transportObject.put("vechileId", 0)
-                    transportObject.put("deliveryStatus", 0)
-                    transportObject.put("dispatchDateTime", 0)
-                    transportObject.put("deliveryDateTime", 0)
-                    transportObject.put("trackingDetails", 0)
-                    transportObject.put("ewaybillId", 0)
-                    transportObject.put("genralInfo", 0)
-                    transportObject.put("weight", 0)
-                    transportObject.put("ewaysupplytype", 0)
-                    transportObject.put("ewaysupplysubtype", 0)
-                    transportObject.put("ewaydoctype", 0)
-                    transportObject.put("consignmentNo", 0)
-                    transportObject.put("syncStatus", 0)
-                    transportObject.put("financialYear", 0)
-                    transportObject.put("entityTypeId", session.getAttribute('entityTypeId'))
-                    transportObject.put("entityId", session.getAttribute('entityId'))
-                    Response transportation = new SalesService().saveSaleTransportation(transportObject)
-                    if (transportation?.status == 200)
-                    {
-                        println("Transportation details added")
-                    }
-                    else
-                    {
-                        println("something went wrong!!")
-                    }
-                }else {
-                    println("Transportation Details not found!")
-                }
+
                 /* def stockBook = new InventoryService().getStockBookById(Long.parseLong(tmpStockBook.originalId))
                  stockBook.put("remainingQty", tmpStockBook.get("remainingQty"))
                  stockBook.put("remainingFreeQty", tmpStockBook.get("remainingFreeQty"))
@@ -368,6 +321,54 @@ class SaleEntryController {
                          ex.printStackTrace()
                      }
                  }*/
+            }
+            if(params.lrNumber!='' && params.lrDate!='' && params.transporter!='')
+            {
+                JSONObject transportObject = new JSONObject();
+                transportObject.put("finId", finId)
+                transportObject.put("billId", saleBillDetail.id)
+                transportObject.put("billType", "SALE_INVOICE")
+                transportObject.put("serBillId", saleBillDetail.serBillId)
+                transportObject.put("series", saleBillDetail.seriesId)
+                transportObject.put("customerId", saleBillDetail.customerId)
+                transportObject.put("transporterId", params.transporter)
+                transportObject.put("lrDate", params.lrDate)
+                transportObject.put("lrNumber", params.lrNumber)
+                transportObject.put("cartonsCount", "")
+                transportObject.put("paid", 0)
+                transportObject.put("toPay", 0)
+                transportObject.put("generalInfo", 0)
+                transportObject.put("selfNo", 0)
+                transportObject.put("ccm", 0)
+                transportObject.put("recievedTemprature", 0)
+                transportObject.put("freightCharge", 0)
+                transportObject.put("vechileId", 0)
+                transportObject.put("deliveryStatus", 0)
+                transportObject.put("dispatchDateTime", 0)
+                transportObject.put("deliveryDateTime", 0)
+                transportObject.put("trackingDetails", 0)
+                transportObject.put("ewaybillId", 0)
+                transportObject.put("genralInfo", 0)
+                transportObject.put("weight", 0)
+                transportObject.put("ewaysupplytype", 0)
+                transportObject.put("ewaysupplysubtype", 0)
+                transportObject.put("ewaydoctype", 0)
+                transportObject.put("consignmentNo", 0)
+                transportObject.put("syncStatus", 0)
+                transportObject.put("financialYear", 0)
+                transportObject.put("entityTypeId", session.getAttribute('entityTypeId'))
+                transportObject.put("entityId", session.getAttribute('entityId'))
+                Response transportation = new SalesService().saveSaleTransportation(transportObject)
+                if (transportation?.status == 200)
+                {
+                    println("Transportation details added")
+                }
+                else
+                {
+                    println("something went wrong!!")
+                }
+            }else {
+                println("Transportation Details not found!")
             }
             JSONObject responseJson = new JSONObject()
             responseJson.put("series", series)
@@ -860,6 +861,7 @@ class SaleEntryController {
     }
 
     def updateSaleBillDetails() {
+        println(params)
         SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy")
         JSONObject saleBillDetails = new JSONObject()
         JSONArray saleProductDetails = new JSONArray()
@@ -1036,54 +1038,7 @@ class SaleEntryController {
         if (response.status == 200) {
             def saleBillDetail = new JSONObject(response.readEntity(String.class))
             if (saleBillDetail) {
-                if(params.lrNumber!='' && params.lrDate!='' && params.transporter!='')
-                {
-                    JSONObject transportObject = new JSONObject();
-                    transportObject.put("finId", finId)
-                    transportObject.put("billId", saleBillDetail.id)
-                    transportObject.put("billType", "SALE_INVOICE")
-                    transportObject.put("serBillId", saleBillDetail.serBillId)
-                    transportObject.put("series", saleBillDetail.seriesId)
-                    transportObject.put("customerId", saleBillDetail.customerId)
-                    transportObject.put("transporterId", params.transporter)
-                    transportObject.put("lrDate", params.lrDate)
-                    transportObject.put("lrNumber", params.lrNumber)
-                    transportObject.put("cartonsCount", "")
-                    transportObject.put("paid", 0)
-                    transportObject.put("toPay", 0)
-                    transportObject.put("generalInfo", 0)
-                    transportObject.put("selfNo", 0)
-                    transportObject.put("ccm", 0)
-                    transportObject.put("recievedTemprature", 0)
-                    transportObject.put("freightCharge", 0)
-                    transportObject.put("vechileId", 0)
-                    transportObject.put("deliveryStatus", 0)
-                    transportObject.put("dispatchDateTime", 0)
-                    transportObject.put("deliveryDateTime", 0)
-                    transportObject.put("trackingDetails", 0)
-                    transportObject.put("ewaybillId", 0)
-                    transportObject.put("genralInfo", 0)
-                    transportObject.put("weight", 0)
-                    transportObject.put("ewaysupplytype", 0)
-                    transportObject.put("ewaysupplysubtype", 0)
-                    transportObject.put("ewaydoctype", 0)
-                    transportObject.put("consignmentNo", 0)
-                    transportObject.put("syncStatus", 0)
-                    transportObject.put("financialYear", 0)
-                    transportObject.put("entityTypeId", session.getAttribute('entityTypeId'))
-                    transportObject.put("entityId", session.getAttribute('entityId'))
-                    Response transportation = new SalesService().saveSaleTransportation(transportObject)
-                    if (transportation?.status == 200)
-                    {
-                        println("Transportation details added")
-                    }
-                    else
-                    {
-                        println("something went wrong!!")
-                    }
-                }else {
-                    println("Transportation Details not found!")
-                }
+
                 //update stockbook
                 for (JSONObject sale : saleData) {
                     String productId = sale.get("1")
@@ -1150,7 +1105,108 @@ class SaleEntryController {
                             ex.printStackTrace()
                         }
                     }
+                }
+                if(params.saleTransportDetailsId!=null || params.saleTransportDetailsId!=''){
+                    if(params.lrNumber!='' && params.lrDate!='' && params.transporter!='')
+                    {
+                        JSONObject transportObject = new JSONObject();
+                        transportObject.put("finId", finId)
+                        transportObject.put("billId", saleBillDetail.id)
+                        transportObject.put("billType", "SALE_INVOICE")
+                        transportObject.put("serBillId", saleBillDetail.serBillId)
+                        transportObject.put("series", saleBillDetail.seriesId)
+                        transportObject.put("customerId", saleBillDetail.customerId)
+                        transportObject.put("transporterId", params.transporter)
+                        transportObject.put("lrDate", params.lrDate)
+                        transportObject.put("lrNumber", params.lrNumber)
+                        transportObject.put("cartonsCount", "")
+                        transportObject.put("paid", 0)
+                        transportObject.put("toPay", 0)
+                        transportObject.put("generalInfo", 0)
+                        transportObject.put("selfNo", 0)
+                        transportObject.put("ccm", 0)
+                        transportObject.put("recievedTemprature", 0)
+                        transportObject.put("freightCharge", 0)
+                        transportObject.put("vechileId", 0)
+                        transportObject.put("deliveryStatus", 0)
+                        transportObject.put("dispatchDateTime", 0)
+                        transportObject.put("deliveryDateTime", 0)
+                        transportObject.put("trackingDetails", 0)
+                        transportObject.put("ewaybillId", 0)
+                        transportObject.put("genralInfo", 0)
+                        transportObject.put("weight", 0)
+                        transportObject.put("ewaysupplytype", 0)
+                        transportObject.put("ewaysupplysubtype", 0)
+                        transportObject.put("ewaydoctype", 0)
+                        transportObject.put("consignmentNo", 0)
+                        transportObject.put("syncStatus", 0)
+                        transportObject.put("financialYear", 0)
+                        transportObject.put("entityTypeId", session.getAttribute('entityTypeId'))
+                        transportObject.put("entityId", session.getAttribute('entityId'))
+                        transportObject.put("id", params.saleTransportDetailsId)
+                        Response transportation = new SalesService().updateSaleTransportation(transportObject)
+                        if (transportation?.status == 200)
+                        {
+                            println("Transportation details Updated")
+                        }
+                        else
+                        {
+                            println("something went wrong!!")
+                        }
+                    }else {
+                        println("Transportation Details not found!")
+                    }
+                }else{
 
+                    if(params.lrNumber!='' && params.lrDate!='' && params.transporter!='')
+                    {
+                        JSONObject transportObject = new JSONObject();
+                        transportObject.put("finId", finId)
+                        transportObject.put("id", params.shipmentDetailId)
+                        transportObject.put("billId", saleBillDetail.id)
+                        transportObject.put("billType", "SALE_INVOICE")
+                        transportObject.put("serBillId", saleBillDetail.serBillId)
+                        transportObject.put("series", saleBillDetail.seriesId)
+                        transportObject.put("customerId", saleBillDetail.customerId)
+                        transportObject.put("transporterId", params.transporter)
+                        transportObject.put("lrDate", params.lrDate)
+                        transportObject.put("lrNumber", params.lrNumber)
+                        transportObject.put("cartonsCount", "")
+                        transportObject.put("paid", 0)
+                        transportObject.put("toPay", 0)
+                        transportObject.put("generalInfo", 0)
+                        transportObject.put("selfNo", 0)
+                        transportObject.put("ccm", 0)
+                        transportObject.put("recievedTemprature", 0)
+                        transportObject.put("freightCharge", 0)
+                        transportObject.put("vechileId", 0)
+                        transportObject.put("deliveryStatus", 0)
+                        transportObject.put("dispatchDateTime", 0)
+                        transportObject.put("deliveryDateTime", 0)
+                        transportObject.put("trackingDetails", 0)
+                        transportObject.put("ewaybillId", 0)
+                        transportObject.put("genralInfo", 0)
+                        transportObject.put("weight", 0)
+                        transportObject.put("ewaysupplytype", 0)
+                        transportObject.put("ewaysupplysubtype", 0)
+                        transportObject.put("ewaydoctype", 0)
+                        transportObject.put("consignmentNo", 0)
+                        transportObject.put("syncStatus", 0)
+                        transportObject.put("financialYear", 0)
+                        transportObject.put("entityTypeId", session.getAttribute('entityTypeId'))
+                        transportObject.put("entityId", session.getAttribute('entityId'))
+                        Response transportation = new SalesService().saveSaleTransportation(transportObject)
+                        if (transportation?.status == 200)
+                        {
+                            println("Transportation details added")
+                        }
+                        else
+                        {
+                            println("something went wrong!!")
+                        }
+                    }else {
+                        println("Transportation Details not found!")
+                    }
                 }
 
                 JSONObject responseJson = new JSONObject()
