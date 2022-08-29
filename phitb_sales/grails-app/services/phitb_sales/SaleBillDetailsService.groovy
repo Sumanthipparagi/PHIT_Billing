@@ -461,6 +461,7 @@ class SaleBillDetailsService
                         sr.balance = sr.totalAmount
                         sr.save(flush:true)
                         saleBillDetails.balance += sr.totalAmount
+                        saleBillDetails.adjAmount = 0
                     }
                 }
                 saleBillDetails.save(flush: true)
