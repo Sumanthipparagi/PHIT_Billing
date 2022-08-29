@@ -217,8 +217,14 @@ class UrlMappings {
         "/entity-settings/update/$id"(controller: "entitySettings",action:"update")
         "/entity-settings/delete/$id"(controller: "entitySettings",action:"delete")
         "/entity-settings/settings"(controller: 'entitySettings', action: 'settings')
-        "/entity-settings/email/save"(controller: 'entitySettings', action: 'emailSettingsSave')
-        "/entity-settings/email/update"(controller: 'entitySettings', action: 'emailSettingsUpdate')
+
+
+
+        "/email-settings"(controller: 'emailSettings', action: 'index')
+        "/email-settings/save"(controller: 'emailSettings', action: 'emailSettingsSave')
+        "/email-settings/update"(controller: 'emailSettings', action: 'emailSettingsUpdate')
+        "/email-settings/testmail"(controller: 'emailSettings', action: 'sendTestMail')
+        "/email-log/datatable"(controller: 'emailSettings', action: 'emailLogDataTable')
 
 
 //        Entity Config
