@@ -1003,6 +1003,7 @@
                 });
                 $("#creditsApplied").text("0.00");
                 listItemClicked(saleBill.id);
+                loadSaleInvoiceTable();
             },
             error: function () {
                 processingSwal.close();

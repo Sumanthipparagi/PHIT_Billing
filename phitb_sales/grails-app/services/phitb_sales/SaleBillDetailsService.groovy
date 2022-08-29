@@ -452,8 +452,18 @@ class SaleBillDetailsService
                 saleBillDetails.billStatus = "CANCELLED"
                 saleBillDetails.cancelledDate = new Date()
                 saleBillDetails.isUpdatable = true
-                saleBillDetails.save(flush: true)
 
+                // cancel credit adjustments
+                ArrayList<SaleReturn> saleReturns = SaleReturn.findAllByCustomerIdAndEntityIdAndFinancialYearAndReturnStatus(saleBillDetails.customerId.toString(),Long.parseLong(entityId),financialYear,"ACTIVE")
+                for(SaleReturn sr: saleReturns){
+                    if(sr.balance == 0){
+                        sr.isUpdatable = true
+                        sr.balance = sr.totalAmount
+                        sr.save(flush:true)
+                        saleBillDetails.balance += sr.totalAmount
+                    }
+                }
+                saleBillDetails.save(flush: true)
                 saleInvoice.put("products", saleProductDetails)
                 saleInvoice.put("invoice", saleBillDetails)
                 return saleInvoice

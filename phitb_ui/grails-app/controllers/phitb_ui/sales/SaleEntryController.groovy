@@ -4,6 +4,7 @@ import grails.converters.JSON
 import org.grails.web.json.JSONArray
 import org.grails.web.json.JSONObject
 import org.springframework.messaging.simp.SimpMessagingTemplate
+import phitb_ui.AccountsService
 
 //import org.springframework.messaging.simp.SimpMessagingTemplate
 import phitb_ui.EInvoiceService
@@ -580,7 +581,7 @@ class SaleEntryController {
         String financialYear = session.getAttribute("financialYear")
         JSONObject saleObject = new SalesService().getSaleBillDetailsById(id)
         JSONObject jsonObject = new SalesService().cancelInvoice(id, entityId, financialYear)
-        if(saleObject?.balance ==  saleObject?.totalAmount){
+//        if(jsonObject.invoice.balance == jsonObject.invoice.totalAmount){
             if (jsonObject) {
                 //adjust stocks
                 JSONArray productDetails = jsonObject.get("products")
@@ -630,9 +631,9 @@ class SaleEntryController {
             } else {
                 response.status = 400
             }
-        }else{
-            response.status = 400
-        }
+//        }else{
+//            response.status = 400
+//        }
     }
 
 
