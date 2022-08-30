@@ -90,4 +90,14 @@ class EmailSettingsController {
         else
             response.status = 200
     }
+
+
+    def emailConfig(){
+        try{
+            render(view: '/entity/emailSettings/emailConfig')
+        }catch(Exception e){
+            println(e)
+        }
+
+    }
 }

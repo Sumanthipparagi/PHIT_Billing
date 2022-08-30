@@ -579,8 +579,9 @@ class SaleEntryController {
         String id = params.id
         String entityId = session.getAttribute("entityId")
         String financialYear = session.getAttribute("financialYear")
+        String userId = session.getAttribute("userId")
         JSONObject saleObject = new SalesService().getSaleBillDetailsById(id)
-        JSONObject jsonObject = new SalesService().cancelInvoice(id, entityId, financialYear)
+        JSONObject jsonObject = new SalesService().cancelInvoice(id, entityId, financialYear,userId)
 //        if(jsonObject.invoice.balance == jsonObject.invoice.totalAmount){
             if (jsonObject) {
                 //adjust stocks

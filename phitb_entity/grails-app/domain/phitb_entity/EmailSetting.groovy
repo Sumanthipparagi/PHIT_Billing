@@ -14,6 +14,10 @@ class EmailSetting implements LogicalDelete<EmailSetting>, Serializable{
     String encryptionType //null for not required or else "SSL/TLS" or "STARTTLS"
     boolean active //email sending will be enabled or disabled
     String emailService //CUSTOM or DEFAULT
+    String salesEmailConfig
+    String receiptEmailConfig
+    String creditEmailConfig
+    String crDbSettlementEmailConfig
 
     Date dateCreated
     Date lastUpdated
@@ -28,6 +32,7 @@ class EmailSetting implements LogicalDelete<EmailSetting>, Serializable{
         smtpServer nullable: true
         smtpPort nullable: true
         encryptionType nullable: true
+        emailConfig nullable: true
         emailService inList: ["DEFAULT", "CUSTOM"], nullable: true
         entity unique: true
     }

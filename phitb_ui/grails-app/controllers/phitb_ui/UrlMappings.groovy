@@ -226,6 +226,8 @@ class UrlMappings {
         "/email-settings/testmail"(controller: 'emailSettings', action: 'sendTestMail')
         "/email-log/datatable"(controller: 'emailSettings', action: 'emailLogDataTable')
 
+        "/email-config"(controller: 'emailSettings', action: 'emailConfig')
+
 
 //        Entity Config
         "/entity-config"(controller: 'entityConfig', action: 'saveEntityConfig')

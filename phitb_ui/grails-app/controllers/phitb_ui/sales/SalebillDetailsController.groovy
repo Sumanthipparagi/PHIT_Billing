@@ -155,7 +155,7 @@ class SalebillDetailsController {
 //                        JSONArray saleReturnAdjustmentDetails = new SalesService().getSaleReturnAdjustmentDetails(json.get("id").toString(), "INVS")
                         def receiptResponse = new AccountsService().getReceiptLogByBillTypeAndId(json.get("id").toString(), "INVS")
                         def receiptLog = []
-                        if (apiResponse.status == 200) {
+                        if (receiptResponse?.status == 200) {
                          JSONArray receipt = new JSONArray(receiptResponse.readEntity(String.class))
                             for(JSONObject r:receipt){
                                 if(r?.receiptStatus!= "CANCELLED"){

@@ -436,6 +436,7 @@ class SaleBillDetailsService
         String id = jsonObject.get("id")
         String entityId = jsonObject.get("entityId")
         String financialYear = jsonObject.get("financialYear")
+        String userId = jsonObject.get("userId")
         JSONObject saleInvoice = new JSONObject()
         SaleBillDetails saleBillDetails = SaleBillDetails.findById(Long.parseLong(id))
         if (saleBillDetails)
@@ -451,6 +452,7 @@ class SaleBillDetailsService
                 }
                 saleBillDetails.billStatus = "CANCELLED"
                 saleBillDetails.cancelledDate = new Date()
+                saleBillDetails.modifiedUser = Long.parseLong(userId)
                 saleBillDetails.isUpdatable = true
 
                 // cancel credit adjustments
