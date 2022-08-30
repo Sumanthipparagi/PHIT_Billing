@@ -32,7 +32,10 @@ class EmailSetting implements LogicalDelete<EmailSetting>, Serializable{
         smtpServer nullable: true
         smtpPort nullable: true
         encryptionType nullable: true
-        emailConfig nullable: true
+        salesEmailConfig nullable: true
+        receiptEmailConfig nullable: true
+        creditEmailConfig nullable: true
+        crDbSettlementEmailConfig nullable: true
         emailService inList: ["DEFAULT", "CUSTOM"], nullable: true
         entity unique: true
     }
