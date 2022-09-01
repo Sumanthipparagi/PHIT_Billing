@@ -131,13 +131,15 @@ class EntityRegisterController {
             def cityId = new SystemService().getCityById(city.toString())
             ArrayList<String> managerList = []
             userregister.each {
-                if (it.role.name.toString().equalsIgnoreCase(Constants.ROLE_MANAGER)) {
+                if (it.role.name.toString().equalsIgnoreCase(Constants.ROLE_MANAGER) && it.entityId.toString() ==
+                        session.getAttribute('entityId').toString()) {
                     managerList.add(it)
                 }
             }
             ArrayList<String> salesmanList = []
             userregister.each {
-                if (it.role.name.toString().equalsIgnoreCase(Constants.ROLE_SALESMAN)) {
+                if (it.role.name.toString().equalsIgnoreCase(Constants.ROLE_SALESMAN) && it.entityId.toString() ==
+                        session.getAttribute('entityId').toString()) {
                     salesmanList.add(it)
                 }
             }
