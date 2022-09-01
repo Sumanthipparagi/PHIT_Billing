@@ -665,8 +665,9 @@
                                         </b>
                                         <select class="form-control show-tick"
                                                 name="${Constants.RECEIPT_AUTO_EMAIL_AFTER_SAVE}">
-                                            <option value="true">Yes</option>
-                                            <option value="false">No</option>
+                                            <option value="true" <g:if test="${receiptConfig?.RECEIPT_AUTO_EMAIL_AFTER_SAVE ==
+                                                    "true"}">selected</g:if>>Yes</option>
+                                            <option value="false" <g:if test="${receiptConfig?.RECEIPT_AUTO_EMAIL_AFTER_SAVE == "false"}">selected</g:if>>No</option>
                                         </select>
                                     </div>
 
@@ -674,8 +675,8 @@
                                         <b>If Document Cancelled, Send Email?</b>
                                         <select class="form-control show-tick"
                                                 name="${Constants.RECEIPT_DOC_CANCELLED_SEND_MAIL}">
-                                            <option value="true">Yes</option>
-                                            <option value="false">No</option>
+                                            <option value="true" <g:if test="${receiptConfig?.RECEIPT_DOC_CANCELLED_SEND_MAIL == "true"}">selected</g:if>>Yes</option>
+                                            <option value="false" <g:if test="${receiptConfig?.RECEIPT_DOC_CANCELLED_SEND_MAIL == "false"}">selected</g:if>>No</option>
                                         </select>
                                     </div>
 
@@ -684,8 +685,8 @@
                                         </b>
                                         <select class="form-control show-tick"
                                                 name="${Constants.RECEIPT_MANUAL_EMAIL_BTN}">
-                                            <option value="true">Yes</option>
-                                            <option value="false">No</option>
+                                            <option value="true" <g:if test="${receiptConfig?.RECEIPT_DOC_CANCELLED_SEND_MAIL == "true"}">selected</g:if>>Yes</option>
+                                            <option value="false" <g:if test="${receiptConfig?.RECEIPT_DOC_CANCELLED_SEND_MAIL == "false"}">selected</g:if>>No</option>
                                         </select>
                                     </div>
 
@@ -693,8 +694,8 @@
                                         <b>Auto SMS After Saving?</b>
                                         <select class="form-control show-tick"
                                                 name="${Constants.RECEIPT_AUTO_SMS_AFTER_SAVE}">
-                                            <option value="true">Yes</option>
-                                            <option value="false">No</option>
+                                            <option value="true" <g:if test="${receiptConfig?.RECEIPT_AUTO_SMS_AFTER_SAVE == "true"}">selected</g:if>>Yes</option>
+                                            <option value="false" <g:if test="${receiptConfig?.RECEIPT_AUTO_SMS_AFTER_SAVE == "false"}">selected</g:if>>No</option>
                                         </select>
                                     </div>
 
@@ -702,8 +703,8 @@
                                         <b>If Document Cancelled, Send SMS?</b>
                                         <select class="form-control show-tick"
                                                 name="${Constants.RECEIPT_DOC_CANCELLED_SEND_SMS}">
-                                            <option value="true">Yes</option>
-                                            <option value="false">No</option>
+                                            <option value="true" <g:if test="${receiptConfig?.RECEIPT_DOC_CANCELLED_SEND_SMS == "true"}">selected</g:if>>Yes</option>
+                                            <option value="false"  <g:if test="${receiptConfig?.RECEIPT_DOC_CANCELLED_SEND_SMS == "false"}">selected</g:if>>No</option>
                                         </select>
                                     </div>
 
@@ -711,8 +712,8 @@
                                         <b>Manual SMS Button in Receipt Page?</b>
                                         <select class="form-control show-tick"
                                                 name="${Constants.RECEIPT_MANUAL_SMS_BTN}">
-                                            <option value="true">Yes</option>
-                                            <option value="false">No</option>
+                                            <option value="true" <g:if test="${receiptConfig?.RECEIPT_MANUAL_SMS_BTN == "true"}">selected</g:if>>Yes</option>
+                                            <option value="false"  <g:if test="${receiptConfig?.RECEIPT_MANUAL_SMS_BTN == "false"}">selected</g:if>>No</option>
                                         </select>
                                     </div>
                                 </div>
@@ -745,8 +746,9 @@
                                         <b>Auto Email After Saving?</b>
                                         <select class="form-control show-tick"
                                                 name="${Constants.CRJV_AUTO_EMAIL_AFTER_SAVE}">
-                                            <option value="true">Yes</option>
-                                            <option value="false">No</option>
+                                            <option value="true" <g:if test="${creditConfig?.CRJV_AUTO_EMAIL_AFTER_SAVE == "true"}">selected</g:if>>
+                                                Yes</option>
+                                            <option value="false" <g:if test="${creditConfig?.CRJV_AUTO_EMAIL_AFTER_SAVE == "false"}">selected</g:if>>No</option>
                                         </select>
                                     </div>
 
@@ -755,8 +757,8 @@
                                         </b>
                                         <select class="form-control show-tick"
                                                 name="${Constants.CRJV_DOC_CANCELLED_SEND_MAIL}">
-                                            <option value="true">Yes</option>
-                                            <option value="false">No</option>
+                                            <option value="true" <g:if test="${creditConfig?.CRJV_DOC_CANCELLED_SEND_MAIL == "true"}">selected</g:if>>Yes</option>
+                                            <option value="false" <g:if test="${creditConfig?.CRJV_DOC_CANCELLED_SEND_MAIL == "false"}">selected</g:if>>No</option>
                                         </select>
                                     </div>
 
@@ -764,8 +766,10 @@
                                         <b>Manual Email Button in CrJV/CreditNote/SalesReturn?</b>
                                         <select class="form-control show-tick"
                                                 name="${Constants.CRJV_MANUAL_EMAIL_BTN}">
-                                            <option value="true">Yes</option>
-                                            <option value="false">No</option>
+                                            <option value="true" <g:if test="${creditConfig?.CRJV_MANUAL_EMAIL_BTN ==
+                                                    "true"}">selected</g:if>>Yes</option>
+                                            <option value="false" <g:if test="${creditConfig?.CRJV_MANUAL_EMAIL_BTN ==
+                                                    "false"}">selected</g:if>>No</option>
                                         </select>
                                     </div>
 
@@ -773,8 +777,10 @@
                                         <b>Auto SMS After Saving?</b>
                                         <select class="form-control show-tick"
                                                 name="${Constants.CRJV_AUTO_SMS_AFTER_SAVE}">
-                                            <option value="true">Yes</option>
-                                            <option value="false">No</option>
+                                            <option value="true" <g:if test="${creditConfig?.CRJV_AUTO_SMS_AFTER_SAVE ==
+                                                    "true"}">selected</g:if>>Yes</option>
+                                            <option value="false" <g:if test="${creditConfig?.CRJV_AUTO_SMS_AFTER_SAVE ==
+                                                    "false"}">selected</g:if>>No</option>
                                         </select>
                                     </div>
 
@@ -782,8 +788,10 @@
                                         <b>If Document Cancelled, Send SMS?</b>
                                         <select class="form-control show-tick"
                                                 name="${Constants.CRJV_DOC_CANCELLED_SEND_SMS}">
-                                            <option value="true">Yes</option>
-                                            <option value="false">No</option>
+                                            <option value="true" <g:if test="${creditConfig?.CRJV_DOC_CANCELLED_SEND_SMS ==
+                                                    "true"}">selected</g:if>>Yes</option>
+                                            <option value="false" <g:if test="${creditConfig?.CRJV_DOC_CANCELLED_SEND_SMS ==
+                                                    "false"}">selected</g:if>>No</option>
                                         </select>
                                     </div>
 
@@ -791,8 +799,10 @@
                                         <b>Manual SMS Button in CrJV/CreditNote/SalesReturn?
                                         </b>
                                         <select class="form-control show-tick" name="${Constants.CRJV_MANUAL_SMS_BTN}">
-                                            <option value="true">Yes</option>
-                                            <option value="false">No</option>
+                                            <option value="true" <g:if test="${creditConfig?.CRJV_MANUAL_SMS_BTN ==
+                                                    "true"}">selected</g:if>>Yes</option>
+                                            <option value="false"  <g:if test="${creditConfig?.CRJV_MANUAL_SMS_BTN ==
+                                                    "false"}">selected</g:if>>No</option>
                                         </select>
                                     </div>
                                 </div>
@@ -823,8 +833,10 @@
                                         <b>Manual Email Button in Purchase?</b>
                                         <select class="form-control show-tick"
                                                 name="${Constants.PURCHASE_MANUAL_EMAIL_BTN}">
-                                            <option value="true">Yes</option>
-                                            <option value="false">No</option>
+                                            <option value="true"  <g:if test="${creditConfig?.PURCHASE_MANUAL_EMAIL_BTN ==
+                                                    "true"}">selected</g:if>>Yes</option>
+                                            <option value="false"  <g:if test="${creditConfig?.PURCHASE_MANUAL_EMAIL_BTN ==
+                                                    "false"}">selected</g:if>>No</option>
                                         </select>
                                     </div>
 
@@ -833,8 +845,10 @@
                                         </b>
                                         <select class="form-control show-tick"
                                                 name="${Constants.PURCHASE_MANUAL_SMS_BTN}">
-                                            <option value="true">Yes</option>
-                                            <option value="false">No</option>
+                                            <option value="true" <g:if test="${purchaseConfig?.PURCHASE_MANUAL_SMS_BTN ==
+                                                    "true"}">selected</g:if>>Yes</option>
+                                            <option value="false" <g:if test="${purchaseConfig?.PURCHASE_MANUAL_SMS_BTN ==
+                                                    "false"}">selected</g:if>>No</option>
                                         </select>
                                     </div>
                                 </div>
@@ -866,8 +880,10 @@
                                         <b>Auto Email After Saving?</b>
                                         <select class="form-control show-tick"
                                                 name="${Constants.CRDB_AUTO_EMAIL_AFTER_SAVE}">
-                                            <option value="true">Yes</option>
-                                            <option value="false">No</option>
+                                            <option value="true" <g:if test="${crdbConfig?.CRDB_AUTO_EMAIL_AFTER_SAVE ==
+                                                    "true"}">selected</g:if>>Yes</option>
+                                            <option value="false" <g:if test="${crdbConfig?.CRDB_AUTO_EMAIL_AFTER_SAVE ==
+                                                    "false"}">selected</g:if>>No</option>
                                         </select>
                                     </div>
 
@@ -875,8 +891,10 @@
                                         <b>Manual Email Button in Settlements?</b>
                                         <select class="form-control show-tick"
                                                 name="${Constants.CRDB_MANUAL_EMAIL_BTN}">
-                                            <option value="true">Yes</option>
-                                            <option value="false">No</option>
+                                            <option value="true" <g:if test="${crdbConfig?.CRDB_MANUAL_EMAIL_BTN ==
+                                                    "true"}">selected</g:if>>Yes</option>
+                                            <option value="false" <g:if test="${crdbConfig?.CRDB_MANUAL_EMAIL_BTN ==
+                                                    "false"}">selected</g:if>>No</option>
                                         </select>
                                     </div>
 
@@ -884,8 +902,10 @@
                                         <b>Auto SMS After Saving?</b>
                                         <select class="form-control show-tick"
                                                 name="${Constants.CRDB_AUTO_SMS_AFTER_SAVE}">
-                                            <option value="true">Yes</option>
-                                            <option value="false">No</option>
+                                            <option value="true" <g:if test="${crdbConfig?.CRDB_AUTO_SMS_AFTER_SAVE ==
+                                                    "true"}">selected</g:if>>Yes</option>
+                                            <option value="false" <g:if test="${crdbConfig?.CRDB_AUTO_SMS_AFTER_SAVE ==
+                                                    "false"}">selected</g:if>>No</option>
                                         </select>
                                     </div>
 
@@ -893,8 +913,10 @@
                                         <b>Manual SMS Button in Settlements?
                                         </b>
                                         <select class="form-control show-tick" name="${Constants.CRDB_MANUAL_SMS_BTN}">
-                                            <option value="true">Yes</option>
-                                            <option value="false">No</option>
+                                            <option value="true" <g:if test="${crdbConfig?.CRDB_MANUAL_SMS_BTN ==
+                                                    "true"}">selected</g:if>>Yes</option>
+                                            <option value="false" <g:if test="${crdbConfig?.CRDB_MANUAL_SMS_BTN ==
+                                                    "false"}">selected</g:if>>No</option>
                                         </select>
                                     </div>
                                 </div>
@@ -926,8 +948,10 @@
                                         <b>Reports Mail Button in All Reports?
                                         </b>
                                         <select class="form-control show-tick" name="${Constants.MAIL_BTN_REPORTS}">
-                                            <option value="true">Yes</option>
-                                            <option value="false">No</option>
+                                            <option value="true" <g:if test="${emailSettings?.reportMailBtn ==
+                                                    true}">selected</g:if>>Yes</option>
+                                            <option value="false" <g:if test="${emailSettings?.reportMailBtn ==
+                                                    false}">selected</g:if>>No</option>
                                         </select>
                                     </div>
                                 </div>
