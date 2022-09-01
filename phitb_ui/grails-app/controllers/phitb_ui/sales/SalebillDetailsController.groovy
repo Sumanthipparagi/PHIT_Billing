@@ -152,8 +152,21 @@ class SalebillDetailsController {
                     for (JSONObject json : jsonArray) {
                         JSONObject customer = new EntityService().getEntityById(json.get("customerId").toString())
                         def city = new SystemService().getCityById(customer?.cityId?.toString())
+//                        JSONArray saleReturnAdjustmentDetails = new SalesService().getSaleReturnAdjustmentDetails(json.get("id").toString(), "INVS")
+                        def receiptResponse = new AccountsService().getReceiptLogByBillTypeAndId(json.get("id").toString(), "INVS")
+                        def receiptLog = []
+                        if (receiptResponse?.status == 200) {
+                         JSONArray receipt = new JSONArray(receiptResponse.readEntity(String.class))
+                            for(JSONObject r:receipt){
+                                if(r?.receiptStatus!= "CANCELLED"){
+                                    receiptLog.push(r);
+                                }
+                            }
+                        }
                         customer?.put("city", city)
                         json.put("customer", customer)
+//                        json.put("saleReturnAdjustmentDetails",saleReturnAdjustmentDetails)
+                        json.put("receiptLog",receiptLog)
                     }
                     responseObject.put("data", jsonArray)
                 }

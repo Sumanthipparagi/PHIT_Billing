@@ -4,6 +4,7 @@ import grails.converters.JSON
 import org.grails.web.json.JSONArray
 import org.grails.web.json.JSONObject
 import org.springframework.messaging.simp.SimpMessagingTemplate
+import phitb_ui.AccountsService
 
 //import org.springframework.messaging.simp.SimpMessagingTemplate
 import phitb_ui.EInvoiceService
@@ -41,7 +42,14 @@ class SaleEntryController {
                 salesmanList.add(it)
             }
         }*/
-        render(view: '/sales/saleEntry/sale-entry', model: [customers   : customers, divisions: divisions, series: series,
+        JSONArray customerArray = new JSONArray(customers)
+        for(JSONObject c: customerArray){
+            if(c?.cityId!=0){
+                def city = new SystemService().getCityById(c?.cityId?.toString())
+                c.put("city",city)
+            }
+        }
+        render(view: '/sales/saleEntry/sale-entry', model: [customers   : customerArray, divisions: divisions, series: series,
                                                             salesmanList: salesmanList, priorityList: priorityList,
                                                             transporter:transporter])
     }
@@ -578,9 +586,10 @@ class SaleEntryController {
         String id = params.id
         String entityId = session.getAttribute("entityId")
         String financialYear = session.getAttribute("financialYear")
+        String userId = session.getAttribute("userId")
         JSONObject saleObject = new SalesService().getSaleBillDetailsById(id)
-        JSONObject jsonObject = new SalesService().cancelInvoice(id, entityId, financialYear)
-        if(saleObject?.balance ==  saleObject?.totalAmount){
+        JSONObject jsonObject = new SalesService().cancelInvoice(id, entityId, financialYear,userId)
+//        if(jsonObject.invoice.balance == jsonObject.invoice.totalAmount){
             if (jsonObject) {
                 //adjust stocks
                 JSONArray productDetails = jsonObject.get("products")
@@ -630,9 +639,9 @@ class SaleEntryController {
             } else {
                 response.status = 400
             }
-        }else{
-            response.status = 400
-        }
+//        }else{
+//            response.status = 400
+//        }
     }
 
 

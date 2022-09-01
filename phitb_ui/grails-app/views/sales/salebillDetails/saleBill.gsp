@@ -319,7 +319,9 @@
                         }else{
                             cloneInvoice=""
                         }
-
+                        if(json.data[i].receiptLog.length > 0){
+                            cancelInvoice=""
+                        }
                         var printbtn = '<a target="_blank" class="dropdown-item" data-id="' + json.data[i].id + '" href="/sale-entry/print-invoice?id=' + json.data[i].id + '"><i class="fa fa-print"></i> Print</a>';
                         var invoiceNumber = json.data[i].invoiceNumber;
                         if (invoiceNumber === undefined) {
@@ -331,10 +333,11 @@
                         if (json.data[i].billStatus === "DRAFT") {
                             editInvoice = '<a class="dropdown-item"  href="/edit-sale-entry?saleBillId=' + json.data[i].id + '"><i class="fa fa-edit"></i> Edit</a>';
                         }
-                        if(json.data[i].balance !== json.data[i].totalAmount)
-                        {
-                            cancelInvoice ="";
-                        }
+                        // if(json.data[i].balance !== json.data[i].totalAmount)
+                        // {
+                        //     cancelInvoice="";
+                        // }
+
 
                         var actionBtn = "<div class=\"dropdown\">\n" +
                             "  <button class=\"btn btn-primary btn-simple btn-sm dropdown-toggle\" type=\"button\" id=\"dropdownMenuButton\" data-toggle=\"dropdown\" aria-haspopup=\"true\" aria-expanded=\"false\">\n" +
@@ -1003,6 +1006,7 @@
                 });
                 $("#creditsApplied").text("0.00");
                 listItemClicked(saleBill.id);
+                loadSaleInvoiceTable();
             },
             error: function () {
                 processingSwal.close();

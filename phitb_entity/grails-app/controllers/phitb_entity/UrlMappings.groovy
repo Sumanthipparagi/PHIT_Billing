@@ -103,6 +103,10 @@ class UrlMappings
                 action = [GET: 'getAllByEntityId']
             }
 
+            "/saveemailconfig(.$format)?"(controller: 'emailSetting') {
+                action = [POST: 'saveEmailConfig']
+            }
+
             //Department Master
             "/departmentmaster(.$format)?"(controller: 'departmentMaster') {
                 action = [GET: 'index', POST:

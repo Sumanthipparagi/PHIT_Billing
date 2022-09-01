@@ -189,4 +189,73 @@ public class Constants
     public static String REASON_OTHER = "O"; //don't add to stocks
     public static String REASON_OTHER_ADD = "OA";
 
+
+
+    //EMAIL CONFIGS
+    //sales email config
+
+    public static String SALE_SENDMAIL_AFTER_SALE_ORDER_SAVED = "SALE_SENDMAIL_AFTER_SALE_ORDER_SAVED";
+    public static String SALE_SENDMAIL_SALE_ORDER_CLICKED = "SALE_SENDMAIL_SALE_ORDER_CLICKED";
+    public static String SALE_AUTO_EMAIL_AFTER_SAVE_SALE_ENTRY = "SALE_AUTO_EMAIL_AFTER_SAVE_SALE_ENTRY";
+    public static String SALE_DOC_CANCELLED_SEND_MAIL = "SALE_DOC_CANCELLED_SEND_MAIL";
+    public static String SALES_MANUAL_EMAIL_BTN = "SALES_MANUAL_EMAIL_BTN";
+    public static String SALES_AUTO_EMAIL_AFTER_SAVE_GTN = "SALES_AUTO_EMAIL_AFTER_SAVE_GTN";
+    public static String SALES_MANUAL_EMAIL_BTN_GTN = "SALES_MANUAL_EMAIL_BTN_GTN";
+
+    //sms
+    public static String SALE_SMS_AFTER_SALE_ORDER_SAVED = "SALE_SMS_AFTER_SALE_ORDER_SAVED";
+    public static String SALE_SMS_SALE_ORDER_CLICKED = "SALE_SMS_SALE_ORDER_CLICKED";
+    public static String SALE_AUTO_SMS_AFTER_SAVE_SALE_ENTRY = "SALE_AUTO_SMS_AFTER_SAVE_SALE_ENTRY";
+    public static String SALE_DOC_CANCELLED_SEND_SMS = "SALE_DOC_CANCELLED_SEND_SMS";
+    public static String SALES_MANUAL_SMS_BTN = "SALES_MANUAL_SMS_BTN";
+
+
+    //receipt
+
+//    email
+    public static String RECEIPT_AUTO_EMAIL_AFTER_SAVE = "RECEIPT_AUTO_EMAIL_AFTER_SAVE";
+    public static String RECEIPT_DOC_CANCELLED_SEND_MAIL = "RECEIPT_DOC_CANCELLED_SEND_MAIL";
+    public static String RECEIPT_MANUAL_EMAIL_BTN = "RECEIPT_MANUAL_EMAIL_BTN";
+
+//    sms
+    public static String RECEIPT_AUTO_SMS_AFTER_SAVE = "RECEIPT_AUTO_SMS_AFTER_SAVE";
+    public static String RECEIPT_MANUAL_SMS_BTN = "RECEIPT_MANUAL_SMS_BTN";
+    public static String RECEIPT_DOC_CANCELLED_SEND_SMS = " RECEIPT_DOC_CANCELLED_SEND_SMS";
+
+
+
+    //Credit Note/Cr JV/DebitNote/DbJV
+
+    //    email
+    public static String CRJV_AUTO_EMAIL_AFTER_SAVE = "CRJV_AUTO_EMAIL_AFTER_SAVE";
+    public static String CRJV_DOC_CANCELLED_SEND_MAIL = "CRJV_DOC_CANCELLED_SEND_MAIL";
+    public static String CRJV_MANUAL_EMAIL_BTN = "CRJV_DOC_CANCELLED_SEND_MAIL";
+
+    //    sms
+    public static String CRJV_AUTO_SMS_AFTER_SAVE = "CRJV_AUTO_SMS_AFTER_SAVE";
+    public static String CRJV_MANUAL_SMS_BTN = "CRJV_MANUAL_SMS_BTN";
+    public static String CRJV_DOC_CANCELLED_SEND_SMS = " CRJV_DOC_CANCELLED_SEND_SMS";
+
+
+    //Purchase
+    public static String PURCHASE_MANUAL_EMAIL_BTN = "PURCHASE_DOC_CANCELLED_SEND_MAIL";
+    public static String PURCHASE_MANUAL_SMS_BTN = "PURCHASE_MANUAL_SMS_BTN";
+
+
+    //Cr/Db Settlement
+    public static String CRDB_AUTO_EMAIL_AFTER_SAVE = "CRDB_AUTO_EMAIL_AFTER_SAVE";
+    public static String CRDB_MANUAL_EMAIL_BTN = "CRDB_DOC_CANCELLED_SEND_MAIL";
+    public static String CRDB_AUTO_SMS_AFTER_SAVE = "CRDB_AUTO_SMS_AFTER_SAVE";
+    public static String CRDB_MANUAL_SMS_BTN = "CRDB_MANUAL_SMS_BTN";
+
+    //Reports
+    public static String MAIL_BTN_REPORTS = "MAIL_BTN_REPORTS";
+
+
+
+
+
+
+
+
 }

@@ -110,6 +110,31 @@ class EmailSettingController {
     }
 
     /**
+     * Save or update EmailSetting
+     * @param EmailSetting
+     * @return saved EmailSetting
+     */
+    def saveEmailConfig() {
+        try {
+            JSONObject jsonObject = JSON.parse(request.reader.text) as JSONObject
+            respond emailSettingService.saveEmailConfig(jsonObject)
+        }
+        catch (ResourceNotFoundException ex)
+        {
+            System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
+            response.status = 404
+        }
+        catch (BadRequestException ex)
+        {
+            System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
+            response.status = 400
+        }
+        catch (Exception ex) {
+            System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
+        }
+    }
+
+    /**
      * Update existing EmailSetting
      * @param id
      * @param EmailSetting

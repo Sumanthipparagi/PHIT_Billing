@@ -82,10 +82,10 @@
                                         onchange="customerSelectChanged()">
                                     <option selected disabled>--SELECT--</option>
                                     <g:each in="${customers}" var="cs">
-
                                         <g:if test="${cs.id != session.getAttribute("entityId")}">
                                             <option data-state="${cs.stateId}" value="${cs.id}"
-                                                    <g:if test="${saleBillDetail?.customerId == cs.id}">selected</g:if>>${cs.entityName} (${cs.entityType.name})</option>
+                                                    <g:if
+                                                            test="${saleBillDetail?.customerId == cs.id}">selected</g:if>>${cs.entityName} (${cs.entityType.name}) - ${cs?.city?.districtName} - ${cs?.city?.pincode}</option>
                                         </g:if>
                                     </g:each>
                                 </select>

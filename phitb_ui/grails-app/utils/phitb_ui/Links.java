@@ -193,6 +193,9 @@ public class Links
     public static String EMAIL_LOG_DATATABLE = "api/v1.0/entity/emaillog/datatable";
     public static String EMAIL_LOG_BY_ENTITY = "api/v1.0/entity/emaillog/getbyentityid";
 
+    //Email Config
+    public static String SAVE_EMAIL_CONFIG = "api/v1.0/entity/saveemailconfig";
+
     //Entity Config
     public static String ENTITY_CONFIG_SAVE = "api/v1.0/entity/entityconfig";
     public static String ENTITY_CONFIG_BY_ENTITY = "api/v1.0/entity/entityconfig/getbyentityid";

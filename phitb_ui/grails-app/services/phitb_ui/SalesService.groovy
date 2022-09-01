@@ -1407,12 +1407,13 @@ contains both sale bill and products
         }
     }
 
-    def cancelInvoice(String id, String entityId, String financialYear)
+    def cancelInvoice(String id, String entityId, String financialYear, String userId)
     {
         JSONObject jsonObject = new JSONObject()
         jsonObject.put("id", id)
         jsonObject.put("entityId", entityId)
         jsonObject.put("financialYear", financialYear)
+        jsonObject.put("userId", userId)
         Client client = ClientBuilder.newClient();
         WebTarget target = client.target(new Links().API_GATEWAY)
         try {
