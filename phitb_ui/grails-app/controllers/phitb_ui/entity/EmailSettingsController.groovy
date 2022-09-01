@@ -94,8 +94,8 @@ class EmailSettingsController {
 
     def emailConfig(){
         try{
-            def emailSettings = EmailService.getEmailSettingsByEntity(session.getAttribute("entityId").toString())
-            render(view: '/entity/emailSettings/emailConfig',model: [emailSettings:emailSettings])
+//            def emailSettings = EmailService.getEmailSettingsByEntity(session.getAttribute("entityId").toString())
+            render(view: '/entity/emailSettings/emailConfig')
         }catch(Exception e){
             println(e)
         }
