@@ -147,7 +147,8 @@ class EmailSettingsController
             render(view: '/entity/emailSettings/emailConfig', model: [salesConfig   : salesConfig,
                                                                       purchaseConfig: purchaseConfig,
                                                                       receiptConfig : receiptConfig,
-                                                                      creditConfig  : creditConfig, crdbConfig: crdbConfig])
+                                                                      creditConfig  : creditConfig, crdbConfig:
+                                                                              crdbConfig,emailSettings: emailSettings])
         }
         catch (Exception e)
         {
