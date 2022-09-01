@@ -79,18 +79,14 @@
 
                 <div class="card">
                     <div class="header">
-                        <h2>Email Config</h2>
+                        <h6>Sales</h6>
                     </div>
-
                     <div class="body">
-                        <form action="#" method="post" id="updateEntitySettings">
+                        <form action="/email-config" method="post" id="salesConfig">
                                 <div class="row clearfix">
-                                    <div class="col-lg-12 col-md-6 col-sm-12 m-b-20">
-                                        <h6>Sales</h6>
-                                    </div>
                                     <div class="col-lg-6 col-md-6 col-sm-12 m-b-20">
                                         <b>Send Mail After Sale Order is 'Saved'?</b>
-                                        <select class="form-control show-tick" name="igm">
+                                        <select class="form-control show-tick" name="${Constants.SALE_SENDMAIL_AFTER_SALE_ORDER_SAVED}">
                                             <option value="true">Yes</option>
                                             <option value="false">No</option>
                                         </select>
@@ -98,7 +94,7 @@
 
                                     <div class="col-lg-6 col-md-6 col-sm-12 m-b-20">
                                         <b>Send Mail After Sale order is clicked 'Convert'?</b>
-                                        <select class="form-control show-tick" name="dsi">
+                                        <select class="form-control show-tick" name="${Constants.SALE_SENDMAIL_SALE_ORDER_CLICKED}">
                                             <option value="true">Yes</option>
                                             <option value="false">No</option>
                                         </select>
@@ -106,7 +102,15 @@
 
                                     <div class="col-lg-6 col-md-6 col-sm-12 m-b-20">
                                         <b>Auto Email After Saving in Sales Entry?</b>
-                                        <select class="form-control show-tick" name="ipg">
+                                        <select class="form-control show-tick" name="${Constants.SALE_AUTO_EMAIL_AFTER_SAVE_SALE_ENTRY}">
+                                            <option value="true">Yes</option>
+                                            <option value="false">No</option>
+                                        </select>
+                                    </div>
+
+                                    <div class="col-lg-6 col-md-6 col-sm-12 m-b-20">
+                                        <b>If Document Cancelled, Send Email?</b>
+                                        <select class="form-control show-tick" name="${Constants.SALE_DOC_CANCELLED_SEND_MAIL}">
                                             <option value="true">Yes</option>
                                             <option value="false">No</option>
                                         </select>
@@ -114,23 +118,16 @@
 
                                     <div class="col-lg-6 col-md-6 col-sm-12 m-b-20">
                                         <b>Manual Email Button in Sales?</b>
-                                        <select class="form-control show-tick" name="ips">
+                                        <select class="form-control show-tick" name="${Constants.SALES_MANUAL_EMAIL_BTN}">
                                             <option value="true">Yes</option>
                                             <option value="false">No</option>
                                         </select>
                                     </div>
 
-                                    <div class="col-lg-6 col-md-6 col-sm-12 m-b-20">
-                                        <b>Manual Email Button in Sales?</b>
-                                        <select class="form-control show-tick" name="acm">
-                                            <option value="true">Yes</option>
-                                            <option value="false">No</option>
-                                        </select>
-                                    </div>
 
                                     <div class="col-lg-6 col-md-6 col-sm-12 m-b-20">
                                         <b>Auto Email After Saving in GTN?</b>
-                                        <select class="form-control show-tick" name="ulub">
+                                        <select class="form-control show-tick" name="${Constants.SALES_AUTO_EMAIL_AFTER_SAVE_GTN}">
                                             <option value="true">Yes</option>
                                             <option value="false">No</option>
                                         </select>
@@ -138,7 +135,7 @@
 
                                     <div class="col-lg-6 col-md-6 col-sm-12 m-b-20">
                                         <b>Manual Email Button in GTN?</b>
-                                        <select class="form-control show-tick" name="accmu">
+                                        <select class="form-control show-tick" name="${Constants.SALES_MANUAL_EMAIL_BTN_GTN}">
                                             <option value="true">Yes</option>
                                             <option value="false">No</option>
                                         </select>
@@ -147,7 +144,7 @@
                                     <div class="col-lg-6 col-md-6 col-sm-12 m-b-20">
                                         <b>Send SMS After Sale Order is 'Saved'?
                                         </b>
-                                        <select class="form-control show-tick" name="clm">
+                                        <select class="form-control show-tick" name="${Constants.SALE_SMS_AFTER_SALE_ORDER_SAVED}">
                                             <option value="true">Yes</option>
                                             <option value="false">No</option>
                                         </select>
@@ -156,7 +153,7 @@
                                     <div class="col-lg-6 col-md-6 col-sm-12 m-b-20">
                                         <b>Send SMS After Sale order is clicked 'Convert'?
                                         </b>
-                                        <select class="form-control show-tick" name="asb">
+                                        <select class="form-control show-tick" name="${Constants.SALE_SMS_SALE_ORDER_CLICKED}">
                                             <option value="true">Yes</option>
                                             <option value="false">No</option>
                                         </select>
@@ -165,7 +162,7 @@
                                     <div class="col-lg-6 col-md-6 col-sm-12 m-b-20">
                                         <b>Auto SMS After Saving in Sales Entry?
                                         </b>
-                                        <select class="form-control show-tick" name="ro">
+                                        <select class="form-control show-tick" name="${Constants.SALE_AUTO_SMS_AFTER_SAVE_SALE_ENTRY}">
                                             <option value="true">Yes</option>
                                             <option value="false">No</option>
                                         </select>
@@ -173,7 +170,7 @@
 
                                     <div class="col-lg-6 col-md-6 col-sm-12 m-b-20">
                                         <b>If Document Cancelled, Send SMS?</b>
-                                        <select class="form-control show-tick" name="essr">
+                                        <select class="form-control show-tick" name="${Constants.SALE_DOC_CANCELLED_SEND_SMS}">
                                             <option value="true">Yes</option>
                                             <option value="false">No</option>
                                         </select>
@@ -182,120 +179,14 @@
                                     <div class="col-lg-6 col-md-6 col-sm-12 m-b-20">
                                         <b>Manual SMS Button in Sales Right Window?
                                         </b>
-                                        <select class="form-control show-tick" name="as">
-                                            <option value="true">Yes</option>
-                                            <option value="false">No</option>
-                                        </select>
-                                    </div>
-                                    <div class="col-lg-12 col-md-6 col-sm-12 mt-3 mb-3">
-                                        <h6>Receipt</h6>
-                                    </div>
-                                    <div class="col-lg-6 col-md-6 col-sm-12 m-b-20">
-                                        <b>Auto Email After Saving?
-
-                                        </b>
-                                        <select class="form-control show-tick" name="as">
-                                            <option value="true">Yes</option>
-                                            <option value="false">No</option>
-                                        </select>
-                                    </div>
-                                    <div class="col-lg-6 col-md-6 col-sm-12 m-b-20">
-                                        <b>If Document Cancelled, Send Email?
-
-
-                                        </b>
-                                        <select class="form-control show-tick" name="as">
-                                            <option value="true">Yes</option>
-                                            <option value="false">No</option>
-                                        </select>
-                                    </div>
-                                    <div class="col-lg-6 col-md-6 col-sm-12 m-b-20">
-                                        <b>Manual Email Button in Receipt Page?
-                                        </b>
-                                        <select class="form-control show-tick" name="as">
-                                            <option value="true">Yes</option>
-                                            <option value="false">No</option>
-                                        </select>
-                                    </div>
-                                    <div class="col-lg-6 col-md-6 col-sm-12 m-b-20">
-                                        <b>Auto Email After Saving?</b>
-                                        <select class="form-control show-tick" name="as">
-                                            <option value="true">Yes</option>
-                                            <option value="false">No</option>
-                                        </select>
-                                    </div>
-                                    <div class="col-lg-6 col-md-6 col-sm-12 m-b-20">
-                                        <b>If Document Cancelled, Send Email?</b>
-                                        <select class="form-control show-tick" name="as">
-                                            <option value="true">Yes</option>
-                                            <option value="false">No</option>
-                                        </select>
-                                    </div>
-                                    <div class="col-lg-6 col-md-6 col-sm-12 m-b-20">
-                                        <b>Manual Email Button in CrJV/CreditNote/SalesReturn?</b>
-                                        <select class="form-control show-tick" name="as">
-                                            <option value="true">Yes</option>
-                                            <option value="false">No</option>
-                                        </select>
-                                    </div>
-                                    <div class="col-lg-6 col-md-6 col-sm-12 m-b-20">
-                                        <b>Auto SMS After Saving?</b>
-                                        <select class="form-control show-tick" name="as">
-                                            <option value="true">Yes</option>
-                                            <option value="false">No</option>
-                                        </select>
-                                    </div>
-                                    <div class="col-lg-6 col-md-6 col-sm-12 m-b-20">
-                                        <b>If Document Cancelled, Send SMS?</b>
-                                        <select class="form-control show-tick" name="as">
-                                            <option value="true">Yes</option>
-                                            <option value="false">No</option>
-                                        </select>
-                                    </div>
-                                    <div class="col-lg-6 col-md-6 col-sm-12 m-b-20">
-                                        <b>Manual SMS Button in CrJV/CreditNote/SalesReturn?</b>
-                                        <select class="form-control show-tick" name="as">
-                                            <option value="true">Yes</option>
-                                            <option value="false">No</option>
-                                        </select>
-                                    </div>
-                                    <div class="col-lg-12 col-md-6 col-sm-12 m-b-20">
-                                        <h6>Purchase</h6>
-                                    </div>
-                                    <div class="col-lg-6 col-md-6 col-sm-12 m-b-20">
-                                        <b>Manual Email Button in Purchase?</b>
-                                        <select class="form-control show-tick" name="as">
-                                            <option value="true">Yes</option>
-                                            <option value="false">No</option>
-                                        </select>
-                                    </div>
-
-                                    <div class="col-lg-6 col-md-6 col-sm-12 m-b-20">
-                                        <b>Auto Email After Saving?</b>
-                                        <select class="form-control show-tick" name="as">
-                                            <option value="true">Yes</option>
-                                            <option value="false">No</option>
-                                        </select>
-                                    </div>
-
-
-                                    <div class="col-lg-6 col-md-6 col-sm-12 m-b-20">
-                                        <b>Manual Email Button in Settlements?</b>
-                                        <select class="form-control show-tick" name="as">
-                                            <option value="true">Yes</option>
-                                            <option value="false">No</option>
-                                        </select>
-                                    </div>
-
-                                    <div class="col-lg-6 col-md-6 col-sm-12 m-b-20">
-                                        <b>Reports Mail Button in All Reports?
-                                        </b>
-                                        <select class="form-control show-tick" name="as">
+                                        <select class="form-control show-tick" name="${Constants.SALES_MANUAL_SMS_BTN}">
                                             <option value="true">Yes</option>
                                             <option value="false">No</option>
                                         </select>
                                     </div>
                                 </div>
+                                    <input type="hidden" name="type" value="SALES" >
+                                    <input type="hidden" name="entityId" value="${params.id}">
                             <button type="submit" class="btn btn-default btn-round waves-effect"
                                     style="background-color: green;"><font
                                     style="vertical-align: inherit;"><font
@@ -305,6 +196,268 @@
                 </div>
             </div>
         </div>
+
+        <div class="row clearfix">
+            <div class="col-lg-12 col-md-12 col-sm-12">
+                %{--                <h2>${entity.entityName}<br><span style="font-size: 15px;">${entity.entityType.name}</span></h2>--}%
+
+                <div class="card">
+                    <div class="header">
+                        <h6>Receipt</h6>
+                    </div>
+                    <div class="body">
+                        <form action="/email-config" method="post" id="receiptConfig">
+                            <div class="row clearfix">
+                                <div class="col-lg-6 col-md-6 col-sm-12 m-b-20">
+                                    <b>Auto Email After Saving?
+
+                                    </b>
+                                    <select class="form-control show-tick" name="${Constants.RECEIPT_AUTO_EMAIL_AFTER_SAVE}">
+                                        <option value="true">Yes</option>
+                                        <option value="false">No</option>
+                                    </select>
+                                </div>
+                                <div class="col-lg-6 col-md-6 col-sm-12 m-b-20">
+                                    <b>If Document Cancelled, Send Email?</b>
+                                    <select class="form-control show-tick" name="${Constants.RECEIPT_DOC_CANCELLED_SEND_MAIL}">
+                                        <option value="true">Yes</option>
+                                        <option value="false">No</option>
+                                    </select>
+                                </div>
+                                <div class="col-lg-6 col-md-6 col-sm-12 m-b-20">
+                                    <b>Manual Email Button in Receipt Page?
+                                    </b>
+                                    <select class="form-control show-tick" name="${Constants.RECEIPT_MANUAL_EMAIL_BTN}">
+                                        <option value="true">Yes</option>
+                                        <option value="false">No</option>
+                                    </select>
+                                </div>
+                                <div class="col-lg-6 col-md-6 col-sm-12 m-b-20">
+                                    <b>Auto SMS After Saving?</b>
+                                    <select class="form-control show-tick" name="${Constants.RECEIPT_AUTO_SMS_AFTER_SAVE}">
+                                        <option value="true">Yes</option>
+                                        <option value="false">No</option>
+                                    </select>
+                                </div>
+                                <div class="col-lg-6 col-md-6 col-sm-12 m-b-20">
+                                    <b>If Document Cancelled, Send SMS?</b>
+                                    <select class="form-control show-tick" name="${Constants.RECEIPT_DOC_CANCELLED_SEND_SMS}">
+                                        <option value="true">Yes</option>
+                                        <option value="false">No</option>
+                                    </select>
+                                </div>
+                                <div class="col-lg-6 col-md-6 col-sm-12 m-b-20">
+                                    <b>Manual SMS Button in Receipt Page?</b>
+                                    <select class="form-control show-tick" name="${Constants.RECEIPT_MANUAL_SMS_BTN}">
+                                        <option value="true">Yes</option>
+                                        <option value="false">No</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <input type="hidden" name="type" value="RECEIPT" >
+                            <input type="hidden" name="entityId" value="${params.id}">
+                            <button type="submit" class="btn btn-default btn-round waves-effect"
+                                    style="background-color: green;"><font
+                                    style="vertical-align: inherit;"><font
+                                        style="vertical-align: inherit;">SUBMIT</font></font></button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row clearfix">
+            <div class="col-lg-12 col-md-12 col-sm-12">
+                %{--                <h2>${entity.entityName}<br><span style="font-size: 15px;">${entity.entityType.name}</span></h2>--}%
+
+                <div class="card">
+                    <div class="header">
+                        <h6>Credit Note/Cr JV/DebitNote/DbJV
+                        </h6>
+                    </div>
+                    <div class="body">
+                        <form action="/email-config" method="post" id="crjvConfig">
+                            <div class="row clearfix">
+                                <div class="col-lg-6 col-md-6 col-sm-12 m-b-20">
+                                    <b>Auto Email After Saving?</b>
+                                    <select class="form-control show-tick" name="${Constants.CRJV_AUTO_EMAIL_AFTER_SAVE}">
+                                        <option value="true">Yes</option>
+                                        <option value="false">No</option>
+                                    </select>
+                                </div>
+                                <div class="col-lg-6 col-md-6 col-sm-12 m-b-20">
+                                    <b>If Document Cancelled, Send Email?
+                                    </b>
+                                    <select class="form-control show-tick" name="${Constants.CRJV_DOC_CANCELLED_SEND_MAIL}">
+                                        <option value="true">Yes</option>
+                                        <option value="false">No</option>
+                                    </select>
+                                </div>
+                                <div class="col-lg-6 col-md-6 col-sm-12 m-b-20">
+                                    <b>Manual Email Button in CrJV/CreditNote/SalesReturn?</b>
+                                    <select class="form-control show-tick" name="${Constants.CRJV_MANUAL_EMAIL_BTN}">
+                                        <option value="true">Yes</option>
+                                        <option value="false">No</option>
+                                    </select>
+                                </div>
+                                <div class="col-lg-6 col-md-6 col-sm-12 m-b-20">
+                                    <b>Auto SMS After Saving?</b>
+                                    <select class="form-control show-tick" name="${Constants.CRJV_AUTO_SMS_AFTER_SAVE}">
+                                        <option value="true">Yes</option>
+                                        <option value="false">No</option>
+                                    </select>
+                                </div>
+                                <div class="col-lg-6 col-md-6 col-sm-12 m-b-20">
+                                    <b>If Document Cancelled, Send SMS?</b>
+                                    <select class="form-control show-tick" name="${Constants.CRJV_DOC_CANCELLED_SEND_SMS}">
+                                        <option value="true">Yes</option>
+                                        <option value="false">No</option>
+                                    </select>
+                                </div>
+                                <div class="col-lg-6 col-md-6 col-sm-12 m-b-20">
+                                    <b>Manual SMS Button in CrJV/CreditNote/SalesReturn?
+                                    </b>
+                                    <select class="form-control show-tick" name="${Constants.CRJV_MANUAL_SMS_BTN}">
+                                        <option value="true">Yes</option>
+                                        <option value="false">No</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <input type="hidden" name="type" value="CRJV" >
+                            <input type="hidden" name="entityId" value="${params.id}">
+                            <button type="submit" class="btn btn-default btn-round waves-effect"
+                                    style="background-color: green;"><font
+                                    style="vertical-align: inherit;"><font
+                                        style="vertical-align: inherit;">SUBMIT</font></font></button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row clearfix">
+            <div class="col-lg-12 col-md-12 col-sm-12">
+                %{--                <h2>${entity.entityName}<br><span style="font-size: 15px;">${entity.entityType.name}</span></h2>--}%
+                <div class="card">
+                    <div class="header">
+                        <h6>Purchase</h6>
+                    </div>
+                    <div class="body">
+                        <form action="/email-config" method="post" id="purchaseConfig">
+                            <div class="row clearfix">
+                                <div class="col-lg-6 col-md-6 col-sm-12 m-b-20">
+                                    <b>Manual Email Button in Purchase?</b>
+                                    <select class="form-control show-tick" name="${Constants.PURCHASE_MANUAL_EMAIL_BTN}">
+                                        <option value="true">Yes</option>
+                                        <option value="false">No</option>
+                                    </select>
+                                </div>
+                                <div class="col-lg-6 col-md-6 col-sm-12 m-b-20">
+                                    <b>Manual SMS Button in Purchase?
+                                    </b>
+                                    <select class="form-control show-tick" name="${Constants.PURCHASE_MANUAL_SMS_BTN}">
+                                        <option value="true">Yes</option>
+                                        <option value="false">No</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <input type="hidden" name="type" value="PURCHASE" >
+                            <input type="hidden" name="entityId" value="${params.id}">
+                            <button type="submit" class="btn btn-default btn-round waves-effect"
+                                    style="background-color: green;"><font
+                                    style="vertical-align: inherit;"><font
+                                        style="vertical-align: inherit;">SUBMIT</font></font></button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row clearfix">
+            <div class="col-lg-12 col-md-12 col-sm-12">
+                %{--                <h2>${entity.entityName}<br><span style="font-size: 15px;">${entity.entityType.name}</span></h2>--}%
+
+                <div class="card">
+                    <div class="header">
+                        <h6>Cr/Db Settlement</h6>
+                    </div>
+                    <div class="body">
+                        <form action="/email-config" method="post" id="crdbConfig">
+                            <div class="row clearfix">
+                                <div class="col-lg-6 col-md-6 col-sm-12 m-b-20">
+                                    <b>Auto Email After Saving?</b>
+                                    <select class="form-control show-tick" name="${Constants.CRDB_AUTO_EMAIL_AFTER_SAVE}">
+                                        <option value="true">Yes</option>
+                                        <option value="false">No</option>
+                                    </select>
+                                </div>
+                                <div class="col-lg-6 col-md-6 col-sm-12 m-b-20">
+                                    <b>Manual Email Button in Settlements?</b>
+                                    <select class="form-control show-tick" name="${Constants.CRDB_MANUAL_EMAIL_BTN}">
+                                        <option value="true">Yes</option>
+                                        <option value="false">No</option>
+                                    </select>
+                                </div>
+                                <div class="col-lg-6 col-md-6 col-sm-12 m-b-20">
+                                    <b>Auto SMS After Saving?</b>
+                                    <select class="form-control show-tick" name="${Constants.CRDB_AUTO_SMS_AFTER_SAVE}">
+                                        <option value="true">Yes</option>
+                                        <option value="false">No</option>
+                                    </select>
+                                </div>
+                                <div class="col-lg-6 col-md-6 col-sm-12 m-b-20">
+                                    <b>Manual SMS Button in Settlements?
+                                    </b>
+                                    <select class="form-control show-tick" name="${Constants.CRDB_MANUAL_SMS_BTN}">
+                                        <option value="true">Yes</option>
+                                        <option value="false">No</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <input type="hidden" name="type" value="CRDB" >
+                            <input type="hidden" name="entityId" value="${params.id}">
+                            <button type="submit" class="btn btn-default btn-round waves-effect"
+                                    style="background-color: green;"><font
+                                    style="vertical-align: inherit;"><font
+                                        style="vertical-align: inherit;">SUBMIT</font></font></button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row clearfix">
+            <div class="col-lg-12 col-md-12 col-sm-12">
+                %{--                <h2>${entity.entityName}<br><span style="font-size: 15px;">${entity.entityType.name}</span></h2>--}%
+
+                <div class="card">
+                    <div class="header">
+                        <h6>Reports</h6>
+                    </div>
+                    <div class="body">
+                        <form action="/email-config" method="post" id="reportsConfig">
+                            <div class="row clearfix">
+                                <div class="col-lg-6 col-md-6 col-sm-12 m-b-20">
+                                    <b>Reports Mail Button in All Reports?
+                                    </b>
+                                    <select class="form-control show-tick" name="${Constants.MAIL_BTN_REPORTS}">
+                                        <option value="true">Yes</option>
+                                        <option value="false">No</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <input type="hidden" name="type" value="REPORTS" >
+                            <input type="hidden" name="entityId" value="${params.id}">
+                            <button type="submit" class="btn btn-default btn-round waves-effect"
+                                    style="background-color: green;"><font
+                                    style="vertical-align: inherit;"><font
+                                        style="vertical-align: inherit;">SUBMIT</font></font></button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
     </div>
 </section>
 
@@ -332,5 +485,168 @@
 </script>
 </body>
 </html>
+<script>
+    $('#salesConfig').submit(function(event) {
+        var formData = $(this);
+        $.ajax({
+            type        : 'POST', // define the type of HTTP verb we want to use (POST for our form)
+            url         : formData.attr('action'), // the url where we want to POST
+            data        : formData.serialize(), // our data object
+            success:function(data){
+                // $("#validation-status").text(data);
+                // swal("Success!", "Updated Successfully! ", "success");
+                // alert("Password Updated!!")
+                Swal.fire(
+                    'success',
+                    'Updated Successfully',
+                    'success'
+                );
 
+            },
+            error:function(data){
+                console.log("Failed");
+                // $("#validation-status").text(data.responseText);
+                swal('error','User update Failed',data.responseText);
+                // swal("Error", "Request failed!"+data.responseText, "error");
+                alert("error")
+            }
+        });
+        event.preventDefault();
+    });
+    $('#receiptConfig').submit(function(event) {
+        var formData = $(this);
+        $.ajax({
+            type        : 'POST', // define the type of HTTP verb we want to use (POST for our form)
+            url         : formData.attr('action'), // the url where we want to POST
+            data        : formData.serialize(), // our data object
+            success:function(data){
+                // $("#validation-status").text(data);
+                // swal("Success!", "Updated Successfully! ", "success");
+                // alert("Password Updated!!")
+                Swal.fire(
+                    'success',
+                    'Updated Successfully',
+                    'success'
+                );
+
+            },
+            error:function(data){
+                console.log("Failed");
+                // $("#validation-status").text(data.responseText);
+                swal('error','User update Failed',data.responseText);
+                // swal("Error", "Request failed!"+data.responseText, "error");
+                alert("error")
+            }
+        });
+        event.preventDefault();
+    });
+    $('#crjvConfig').submit(function(event) {
+        var formData = $(this);
+        $.ajax({
+            type        : 'POST', // define the type of HTTP verb we want to use (POST for our form)
+            url         : formData.attr('action'), // the url where we want to POST
+            data        : formData.serialize(), // our data object
+            success:function(data){
+                // $("#validation-status").text(data);
+                // swal("Success!", "Updated Successfully! ", "success");
+                // alert("Password Updated!!")
+                Swal.fire(
+                    'success',
+                    'Updated Successfully',
+                    'success'
+                );
+
+            },
+            error:function(data){
+                console.log("Failed");
+                // $("#validation-status").text(data.responseText);
+                swal('error','User update Failed',data.responseText);
+                // swal("Error", "Request failed!"+data.responseText, "error");
+                alert("error")
+            }
+        });
+        event.preventDefault();
+    });
+    $('#purchaseConfig').submit(function(event) {
+        var formData = $(this);
+        $.ajax({
+            type        : 'POST', // define the type of HTTP verb we want to use (POST for our form)
+            url         : formData.attr('action'), // the url where we want to POST
+            data        : formData.serialize(), // our data object
+            success:function(data){
+                // $("#validation-status").text(data);
+                // swal("Success!", "Updated Successfully! ", "success");
+                // alert("Password Updated!!")
+                Swal.fire(
+                    'success',
+                    'Updated Successfully',
+                    'success'
+                );
+
+            },
+            error:function(data){
+                console.log("Failed");
+                // $("#validation-status").text(data.responseText);
+                swal('error','User update Failed',data.responseText);
+                // swal("Error", "Request failed!"+data.responseText, "error");
+                alert("error")
+            }
+        });
+        event.preventDefault();
+    });
+    $('#crdbConfig').submit(function(event) {
+        var formData = $(this);
+        $.ajax({
+            type        : 'POST', // define the type of HTTP verb we want to use (POST for our form)
+            url         : formData.attr('action'), // the url where we want to POST
+            data        : formData.serialize(), // our data object
+            success:function(data){
+                // $("#validation-status").text(data);
+                // swal("Success!", "Updated Successfully! ", "success");
+                // alert("Password Updated!!")
+                Swal.fire(
+                    'success',
+                    'Updated Successfully',
+                    'success'
+                );
+
+            },
+            error:function(data){
+                console.log("Failed");
+                // $("#validation-status").text(data.responseText);
+                swal('error','User update Failed',data.responseText);
+                // swal("Error", "Request failed!"+data.responseText, "error");
+                alert("error")
+            }
+        });
+        event.preventDefault();
+    });
+    $('#reportsConfig').submit(function(event) {
+        var formData = $(this);
+        $.ajax({
+            type        : 'POST', // define the type of HTTP verb we want to use (POST for our form)
+            url         : formData.attr('action'), // the url where we want to POST
+            data        : formData.serialize(), // our data object
+            success:function(data){
+                // $("#validation-status").text(data);
+                // swal("Success!", "Updated Successfully! ", "success");
+                // alert("Password Updated!!")
+                Swal.fire(
+                    'success',
+                    'Updated Successfully',
+                    'success'
+                );
+
+            },
+            error:function(data){
+                console.log("Failed");
+                // $("#validation-status").text(data.responseText);
+                swal('error','User update Failed',data.responseText);
+                // swal("Error", "Request failed!"+data.responseText, "error");
+                alert("error")
+            }
+        });
+        event.preventDefault();
+    });
+</script>
 

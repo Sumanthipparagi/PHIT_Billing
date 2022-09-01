@@ -1,5 +1,6 @@
 package phitb_ui.entity
 
+import grails.artefact.Controller
 import org.grails.web.json.JSONObject
 import phitb_ui.Constants
 import phitb_ui.EmailService
@@ -91,13 +92,30 @@ class EmailSettingsController {
             response.status = 200
     }
 
-
     def emailConfig(){
         try{
-            render(view: '/entity/emailSettings/emailConfig')
+            def emailSettings = EmailService.getEmailSettingsByEntity(session.getAttribute("entityId").toString())
+            render(view: '/entity/emailSettings/emailConfig',model: [emailSettings:emailSettings])
         }catch(Exception e){
             println(e)
         }
+    }
 
+    def saveEmailConfig(){
+        try
+        {
+            JSONObject jsonObject = new JSONObject(params)
+            def emailService = new EmailService().saveEmailConfig(jsonObject)
+            if(emailService?.status == 200){
+               JSONObject emailResponse = new JSONObject(emailService.readEntity(String.class))
+                respond emailResponse, formats: ['json'], status: 200
+            }else{
+                response.status = 400
+            }
+        }
+        catch (Exception e){
+            println(e)
+            log.error(e)
+        }
     }
 }

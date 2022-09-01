@@ -227,6 +227,9 @@ class UrlMappings {
         "/email-log/datatable"(controller: 'emailSettings', action: 'emailLogDataTable')
 
         "/email-config"(controller: 'emailSettings', action: 'emailConfig')
+        "/email-config"(controller: "emailSettings") {
+            action = [GET: "emailConfig", POST: "saveEmailConfig"]
+        }
 
 
 //        Entity Config

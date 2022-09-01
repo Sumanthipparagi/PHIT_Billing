@@ -42,7 +42,14 @@ class SaleEntryController {
                 salesmanList.add(it)
             }
         }*/
-        render(view: '/sales/saleEntry/sale-entry', model: [customers   : customers, divisions: divisions, series: series,
+        JSONArray customerArray = new JSONArray(customers)
+        for(JSONObject c: customerArray){
+            if(c?.cityId!=0){
+                def city = new SystemService().getCityById(c?.cityId?.toString())
+                c.put("city",city)
+            }
+        }
+        render(view: '/sales/saleEntry/sale-entry', model: [customers   : customerArray, divisions: divisions, series: series,
                                                             salesmanList: salesmanList, priorityList: priorityList,
                                                             transporter:transporter])
     }

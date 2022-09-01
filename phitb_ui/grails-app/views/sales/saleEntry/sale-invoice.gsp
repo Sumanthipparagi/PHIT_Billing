@@ -1,4 +1,4 @@
-<%@ page import="phitb_ui.Constants; phitb_ui.SalesService; java.text.SimpleDateFormat" contentType="text/html;charset=UTF-8" %>
+<%@ page import="phitb_ui.WordsToNumbersUtil; phitb_ui.Constants; phitb_ui.SalesService; java.text.SimpleDateFormat" contentType="text/html;charset=UTF-8" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -369,17 +369,7 @@
     </g:each>
 
     <tr>
-        <td class="hide"></td>
-        <td class="hide"></td>
-        <td class="hide"></td>
-        <td class="hide"></td>
-        <td class="hide"></td>
-        <td class="hide"></td>
-        <td class="hide"></td>
-        <td class="hide"></td>
-        <td class="hide"></td>
-        <td class="hide"></td>
-        <td class="hide"></td>
+        <td colspan="11">Amount in words: <b>${WordsToNumbersUtil.convertToIndianCurrency(total.toString())}</td>
         <td><b>Total</b></td>
         <td>${String.format("%.2f", totalBeforeTaxes)}</td>
         <td>${String.format("%.2f", totaldiscount)}</td>
@@ -501,7 +491,9 @@
 <br>
 <br>
 
-<p class="signatory" style="float: right;margin-right: 24px;">Authorized Signatory</p>
+<p class="signatory" style="float: right;margin-right: 24px;">For <b>${session.getAttribute('entityName')}</b>,
+Authorized
+Signatory</p>
 
 <p style="float: left;margin-right: 24px;"><b>Printed By:</b> ${session.getAttribute("userName").toString()}</p>
 

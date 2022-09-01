@@ -8,7 +8,8 @@ import phitb_entity.Exception.ResourceNotFoundException
 import java.text.SimpleDateFormat
 
 @Transactional
-class EmailSettingService {
+class EmailSettingService
+{
 
     SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss")
 
@@ -39,9 +40,9 @@ class EmailSettingService {
         }
         else
         {
-            return EmailSetting.createCriteria().list(max: l,offset:o){
-                entity{
-                    eq('id',entityId)
+            return EmailSetting.createCriteria().list(max: l, offset: o) {
+                entity {
+                    eq('id', entityId)
                 }
             }
         }
@@ -79,7 +80,7 @@ class EmailSettingService {
                 }
             }
             entity {
-                eq('id',entityId)
+                eq('id', entityId)
             }
 
             eq('deleted', false)
@@ -97,7 +98,8 @@ class EmailSettingService {
     EmailSetting save(JSONObject jsonObject)
     {
         EmailSetting emailSetting = null
-        if(jsonObject.has("id")) {
+        if (jsonObject.has("id"))
+        {
             emailSetting = EmailSetting.findById(jsonObject.get("id"))
             emailSetting.isUpdatable = true
         }
@@ -112,10 +114,14 @@ class EmailSettingService {
         emailSetting.smtpPassword = jsonObject.get("smtpPassword")
         emailSetting.smtpServer = jsonObject.get("smtpServer")
         emailSetting.smtpPort = jsonObject.get("smtpPort")
-        if(jsonObject.has("emailService"))
+        if (jsonObject.has("emailService"))
+        {
             emailSetting.emailService = jsonObject.get("emailService")
-        if(jsonObject.has("encryptionType"))
+        }
+        if (jsonObject.has("encryptionType"))
+        {
             emailSetting.encryptionType = jsonObject.get("encryptionType")
+        }
         emailSetting.authenticationRequired = jsonObject.get("authenticationRequired")
         emailSetting.active = jsonObject.get("active")
         emailSetting.save(flush: true)
@@ -129,39 +135,39 @@ class EmailSettingService {
         }
     }
 
-   /* EmailSetting update(JSONObject jsonObject, String id)
-    {
-        EmailSetting emailSetting = EmailSetting.findById(Long.parseLong(id))
-        if (emailSetting)
-        {
-            emailSetting.isUpdatable = true
-            emailSetting.entity = EntityRegister.findById(Long.parseLong(jsonObject.get("entity").toString()))
-            emailSetting.senderMail = jsonObject.get("senderMail")
-            emailSetting.smtpUsername = jsonObject.get("smtpUsername")
-            emailSetting.smtpPassword = jsonObject.get("smtpPassword")
-            emailSetting.smtpServer = jsonObject.get("smtpServer")
-            emailSetting.smtpPort = jsonObject.get("smtpPort")
-            if(jsonObject.has("emailService"))
-                emailSetting.emailService = jsonObject.get("emailService")
-            if(jsonObject.has("encryptionType"))
-                emailSetting.encryptionType = jsonObject.get("encryptionType")
-            emailSetting.authenticationRequired = jsonObject.get("authenticationRequired")
-            emailSetting.active = jsonObject.get("active")
-            emailSetting.save(flush: true)
-            if (!emailSetting.hasErrors())
-            {
-                return emailSetting
-            }
-            else
-            {
-                throw new BadRequestException()
-            }
-        }
-        else
-        {
-            throw new ResourceNotFoundException()
-        }
-    }*/
+    /* EmailSetting update(JSONObject jsonObject, String id)
+     {
+         EmailSetting emailSetting = EmailSetting.findById(Long.parseLong(id))
+         if (emailSetting)
+         {
+             emailSetting.isUpdatable = true
+             emailSetting.entity = EntityRegister.findById(Long.parseLong(jsonObject.get("entity").toString()))
+             emailSetting.senderMail = jsonObject.get("senderMail")
+             emailSetting.smtpUsername = jsonObject.get("smtpUsername")
+             emailSetting.smtpPassword = jsonObject.get("smtpPassword")
+             emailSetting.smtpServer = jsonObject.get("smtpServer")
+             emailSetting.smtpPort = jsonObject.get("smtpPort")
+             if(jsonObject.has("emailService"))
+                 emailSetting.emailService = jsonObject.get("emailService")
+             if(jsonObject.has("encryptionType"))
+                 emailSetting.encryptionType = jsonObject.get("encryptionType")
+             emailSetting.authenticationRequired = jsonObject.get("authenticationRequired")
+             emailSetting.active = jsonObject.get("active")
+             emailSetting.save(flush: true)
+             if (!emailSetting.hasErrors())
+             {
+                 return emailSetting
+             }
+             else
+             {
+                 throw new BadRequestException()
+             }
+         }
+         else
+         {
+             throw new ResourceNotFoundException()
+         }
+     }*/
 
     void delete(String id)
     {
@@ -182,5 +188,84 @@ class EmailSettingService {
         {
             throw new BadRequestException()
         }
+    }
+
+    Object saveEmailConfig(JSONObject jsonObject)
+    {
+        jsonObject.remove("controller")
+        jsonObject.remove("action")
+        EntityRegister entityRegister = EntityRegister.findById(Long.parseLong(jsonObject.entityId.toString()))
+        EmailSetting emailSetting = EmailSetting.findByEntity(entityRegister)
+        if (emailSetting)
+        {
+            emailSetting.isUpdatable = true
+            if (jsonObject.type == "SALES")
+            {
+                emailSetting.salesEmailConfig = jsonObject.toString()
+                emailSetting.entity = entityRegister
+            }
+            else if (jsonObject.type == "RECEIPT")
+            {
+                emailSetting.receiptEmailConfig = jsonObject.toString()
+                emailSetting.entity = entityRegister
+            }
+            else if (jsonObject.type == "CRJV")
+            {
+                emailSetting.creditEmailConfig = jsonObject.toString()
+                emailSetting.entity = entityRegister
+            }
+            else if (jsonObject.type == "PURCHASE")
+            {
+                emailSetting.purchaseConfig = jsonObject.toString()
+                emailSetting.entity = entityRegister
+            }
+            else if (jsonObject.type == "CRDB")
+            {
+                emailSetting.crDbSettlementEmailConfig = jsonObject.toString()
+                emailSetting.entity = entityRegister
+            }
+            else
+            {
+                emailSetting.reportMailBtn = true
+            }
+            emailSetting.save(flush: true)
+            return emailSetting
+        }
+        else
+        {
+            emailSetting = new EmailSetting()
+            if (jsonObject.type == "SALES")
+            {
+                emailSetting.salesEmailConfig = jsonObject.toString()
+                emailSetting.entity = entityRegister
+            }
+            else if (jsonObject.type == "RECEIPT")
+            {
+                emailSetting.receiptEmailConfig = jsonObject.toString()
+                emailSetting.entity = entityRegister
+            }
+            else if (jsonObject.type == "CRJV")
+            {
+                emailSetting.creditEmailConfig = jsonObject.toString()
+                emailSetting.entity = entityRegister
+            }
+            else if (jsonObject.type == "PURCHASE")
+            {
+                emailSetting.purchaseConfig = jsonObject.toString()
+                emailSetting.entity = entityRegister
+            }
+            else if (jsonObject.type == "CRDB")
+            {
+                emailSetting.crDbSettlementEmailConfig = jsonObject.toString()
+                emailSetting.entity = entityRegister
+            }
+            else
+            {
+                emailSetting.reportMailBtn = true
+            }
+            emailSetting.save(flush: true)
+            return emailSetting
+        }
+
     }
 }
