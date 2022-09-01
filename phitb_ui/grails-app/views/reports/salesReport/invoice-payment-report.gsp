@@ -181,7 +181,7 @@
         // var sortBy = $('.sortBy').val();
 
         $.ajax({
-            url: "/reports/sales/get-customer-ledger?dateRange=" + dateRange+"&customerId="+customerId,
+            url: "/reports/sales/get-invoice-payment-report?dateRange=" + dateRange+"&customerId="+customerId,
             type: "GET",
             contentType: false,
             processData: false,
@@ -220,7 +220,7 @@
     $("#btnExport").click(function () {
         let table = document.getElementById("result");
         TableToExcel.convert(table, {
-            name: 'consolidated-sales-report.xlsx',
+            name: 'invoice-payment-report.xlsx',
             sheet: {
                 name: 'Sheet 1' // sheetName
             }

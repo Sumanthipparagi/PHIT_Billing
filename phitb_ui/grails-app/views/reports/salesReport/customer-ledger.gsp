@@ -73,15 +73,6 @@
                 <div class="card">
                     <div class="header">
                         <div class="row">
-                            %{--                            <div class="col-md-2">--}%
-                            %{--                                <div class="form-group">--}%
-                            %{--                                    <label for="sortBy">Sort By:</label>--}%
-                            %{--                                    <select style="margin-top: 5px; border-radius: 6px;" id="sortBy" class="sortBy form-control" name="sortBy">--}%
-                            %{--                                        <option value="default">DEFAULT</option>--}%
-                            %{--                                        <option value="invoice-date">INVOICE DATE</option>--}%
-                            %{--                                    </select>--}%
-                            %{--                                </div>--}%
-                            %{--                            </div>--}%
                             <div class="col-lg-6">
                                 <div class="form-group">
                                     <label>Date Range:</label>
@@ -89,26 +80,12 @@
                                     <div class="input-group">
                                         <input class="dateRange" type="text" name="dateRange"
                                                style="border-radius: 6px;margin: 4px;"/>
-                                        <button class="input-group-btn btn btn-info"
+                                        <button class="input-group-btn btn btn-info btn-sm"
                                                 onclick="getReport()">Get Report</button>
                                     </div>
                                 </div>
-
-                            <div class="form-group">
-                                <label>Customer:</label>
-
-                                <div class="input-group">
-                                    <select class="customerSelect" name="customer"
-                                            style="margin-top: 10px; width: 100%;">
-                                        <g:each in="${entities}" var="entity">
-                                            <option value="${entity.id}">${entity.entityName} (${entity.entityType.name})</option>
-                                        </g:each>
-                                    </select>
-                                    <button class="input-group-btn btn btn-info btn-sm"
-                                            onclick="getReport()">Get Report</button>
-                                </div>
                             </div>
-                            </div>
+
                             <div class="col-lg-6  d-flex justify-content-center">
                                 <div class="form-group">
                                     <label>Export</label>
@@ -155,13 +132,6 @@
 <asset:javascript src="/themeassets/plugins/jQuery.print/jQuery.print.min.js"/>
 <asset:javascript src="/themeassets/plugins/sweetalert2/dist/sweetalert2.all.js"/>
 <asset:javascript src="/themeassets/plugins/momentjs/moment.js"/>
-%{--<asset:javascript src="/themeassets/plugins/jspdf/jspdf.umd.min.js"/>--}%
-%{--<asset:javascript src="/themeassets/plugins/jspdf/jspdf.plugin.autotable.js"/>--}%
-%{--<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.3.5/jspdf.debug.js"></script>--}%
-%{--
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.js" integrity="sha512-Bw9Zj8x4giJb3OmlMiMaGbNrFr0ERD2f9jL3en5FmcTXLhkI+fKyXVeyGyxKMIl1RfgcCBDprJJt4JvlglEb3A==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.23/jspdf.plugin.autotable.js" integrity="sha512-P3z5YHtqjIxRAu1AjkWiIPWmMwO9jApnCMsa5s0UTgiDDEjTBjgEqRK0Wn0Uo8Ku3IDa1oer1CIBpTWAvqbmCA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
---}%
 <script>
     $('.dateRange').daterangepicker({
         locale: {
@@ -180,11 +150,9 @@
             closeOnClickOutside: false
         });
         var dateRange = $('.dateRange').val();
-        // var sortBy = $('.sortBy').val();
-
         $.ajax({
-            url: "/reports/sales/get-customer-ledger??dateRange=" + dateRange,
             type: "GET",
+            url: "/reports/sales/get-customer-ledger?dateRange=" + dateRange,
             contentType: false,
             processData: false,
             success: function (data) {
@@ -214,7 +182,7 @@
     $("#btnExport").click(function () {
         let table = document.getElementById("result");
         TableToExcel.convert(table, {
-            name: 'customerwise-sales-report.xlsx',
+            name: 'ledger-report.xlsx',
             sheet: {
                 name: 'Sheet 1' // sheetName
             }
@@ -247,8 +215,7 @@
           });
       });*/
 
-    function dateFormat(dt)
-    {
+    function dateFormat(dt) {
         var date = new Date(dt);
         return moment(date).format('DD/MM/YYYY hh:mm:ss a');
 

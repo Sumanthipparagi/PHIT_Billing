@@ -455,7 +455,7 @@ class SalesReportController
         render(view: '/reports/salesReport/invoice-payment-report', model: [entities: entities])
     }
 
-    def getInvoicePayment()
+    def getInvoicePaymentReport()
     {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd")
         SimpleDateFormat sdf2 = new SimpleDateFormat("dd-MMM-yyyy")
@@ -465,7 +465,7 @@ class SalesReportController
         String dateRange = params.dateRange
         JSONObject customer = new EntityService().getEntityById(customerId)
         JSONArray saleBills = new SalesService().getSaleBillByCustomer(customerId, financialYear, entityId, dateRange)
-        JSONArray customerLedgerDetails = new JSONArray()
+        JSONArray invoicePaymentDetails = new JSONArray()
         for (JSONObject saleBill : saleBills)
         {
             if (saleBill.billStatus == "ACTIVE")
@@ -517,10 +517,10 @@ class SalesReportController
 
                 jsonObject.put("entityName", customer.entityName)
                 jsonObject.put("entityOpeningBalance", customer.entityName)
-                customerLedgerDetails.add(jsonObject)
+                invoicePaymentDetails.add(jsonObject)
             }
         }
-        respond customerLedgerDetails, formats: ['json']
+        respond invoicePaymentDetails, formats: ['json']
     }
 
 
@@ -529,15 +529,14 @@ class SalesReportController
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd")
         SimpleDateFormat sdf2 = new SimpleDateFormat("dd-MMM-yyyy")
         String entityId = session.getAttribute("entityId")
-        String customerId = params.customerId
         String financialYear = session.getAttribute("financialYear")
         String dateRange = params.dateRange
-        double openingBalance = 0;
-        JSONObject customer = new EntityService().getEntityById(customerId)
+        double openingBalance = 0
         HashMap<String, JSONArray> customerLedgerDetails = new HashMap()
-        JSONArray saleBills = new SalesService().getSaleBillByCustomerStartDate(customerId, financialYear, entityId, dateRange)
-        JSONArray saleReturn = new SalesService().getAllSaleReturnByCustomerStartdate(Long.parseLong(customerId), Long
-                .parseLong(entityId), financialYear, dateRange)
+        JSONArray saleBills = new SalesService().getSaleBillByDateRange(entityId, dateRange)
+        JSONArray saleReturn = new SalesService().getSaleReturnByDateRange(dateRange, entityId)
+        JSONArray gtn = new SalesService().getGTNByDateRange(dateRange, entityId)
+
         double saleReturnBalance = saleReturn.stream().mapToDouble({n -> Double.parseDouble(n.invoiceTotal.toString())})
                 .sum();
         double saleBillBalance = saleBills.stream().mapToDouble({n -> Double.parseDouble(n.invoiceTotal.toString())}).sum();
@@ -558,18 +557,8 @@ class SalesReportController
                 }
             }
         }
-        openingBalance = receiptAmount + saleBillBalance + saleReturnBalance
-        JSONArray saleBills1 = new SalesService().getSaleBillByCustomer(customerId, financialYear, entityId, dateRange)
-        def saleReturn1 = new AccountsService().getAllSaleReturnByCustomer(Long.parseLong(customerId), Long.parseLong(entityId), financialYear)
-        JSONArray returnArray
-        if (saleReturn1?.status == 200)
-        {
-            returnArray = new JSONArray(saleReturn1.readEntity(String.class));
-        }
-        for (JSONObject sb : saleBills1)
-        {
-        }
-        customerLedgerDetails.put("SALE_INVOICE", saleBills1)
+
+        customerLedgerDetails.put("SALE_INVOICE", saleBills)
         customerLedgerDetails.put("SALE_RETURN", returnArray)
         customerLedgerDetails.put("openingBalance", openingBalance)
         respond customerLedgerDetails, formats: ['json']
