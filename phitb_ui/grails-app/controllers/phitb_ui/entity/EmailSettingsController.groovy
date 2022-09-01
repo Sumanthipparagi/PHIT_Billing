@@ -6,16 +6,19 @@ import phitb_ui.Constants
 import phitb_ui.EmailService
 import phitb_ui.EntityService
 
-class EmailSettingsController {
+class EmailSettingsController
+{
 
-    def index() {
+    def index()
+    {
         def entity = new EntityService().getEntityById(params.id)
         def emailSettings = EmailService.getEmailSettingsByEntity(session.getAttribute("entityId").toString())
-        render(view: '/entity/emailSettings/settings', model: [entity: entity,emailSettings: emailSettings])
+        render(view: '/entity/emailSettings/settings', model: [entity: entity, emailSettings: emailSettings])
     }
 
     //save or update
-    def emailSettingsSave() {
+    def emailSettingsSave()
+    {
         println(params)
         String entityId = params.entityId
         String smtpServer = params.smtpServer
@@ -27,8 +30,10 @@ class EmailSettingsController {
         String emailService = params.emailService
         String emailSettingsId = params.emailSettingsId
         boolean authenticationRequired = true
-        if(params.authenticationRequired == null)
+        if (params.authenticationRequired == null)
+        {
             authenticationRequired = false
+        }
         Boolean active = true
 
         JSONObject jsonObject = new JSONObject()
@@ -39,17 +44,18 @@ class EmailSettingsController {
         jsonObject.put("smtpPassword", smtpPassword)
         jsonObject.put("senderMail", senderMail)
         jsonObject.put("encryptionType", encryptionType)
-        if(emailService.equalsIgnoreCase("DISABLED"))
+        if (emailService.equalsIgnoreCase("DISABLED"))
         {
             jsonObject.put("emailService", "DEFAULT")
             jsonObject.put("active", false)
         }
-        else {
+        else
+        {
             jsonObject.put("emailService", emailService)
             jsonObject.put("active", active)
         }
         jsonObject.put("authenticationRequired", authenticationRequired)
-        if(emailSettingsId)
+        if (emailSettingsId)
         {
             jsonObject.put("id", emailSettingsId)
 
@@ -59,18 +65,24 @@ class EmailSettingsController {
         respond resultJson, formats: ['json']
     }
 
-    def emailLogDataTable() {
-        try {
+    def emailLogDataTable()
+    {
+        try
+        {
             JSONObject jsonObject = new JSONObject(params)
             jsonObject.put("entityId", session.getAttribute("entityId"))
             def emailLogs = new EmailService().emailLogDatatable(jsonObject)
-            if (emailLogs) {
+            if (emailLogs)
+            {
                 respond emailLogs, formats: ['json'], status: 200
-            } else {
+            }
+            else
+            {
                 response.status = 400
             }
         }
-        catch (Exception ex) {
+        catch (Exception ex)
+        {
             System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
             log.error('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
             response.status = 400
@@ -80,40 +92,88 @@ class EmailSettingsController {
     def sendTestMail()
     {
         String mailTo = params.to
-        if(mailTo)
+        if (mailTo)
         {
             boolean mailSent = new EmailService().sendEmail(mailTo, "Test Mail - PharmIT ERP", "This test mail from PharmIT ERP", session.getAttribute("entityId").toString())
-            if(mailSent)
+            if (mailSent)
+            {
                 response.status = 200
+            }
             else
+            {
                 response.status = 400
+            }
         }
         else
+        {
             response.status = 200
+        }
     }
 
-    def emailConfig(){
-        try{
+    def emailConfig()
+    {
+        try
+        {
             def emailSettings = EmailService.getEmailSettingsByEntity(session.getAttribute("entityId").toString())
-            render(view: '/entity/emailSettings/emailConfig',model: [emailSettings:emailSettings])
-        }catch(Exception e){
+            JSONObject salesConfig
+            JSONObject purchaseConfig
+            JSONObject receiptConfig
+            JSONObject creditConfig
+            JSONObject crdbConfig
+            if (emailSettings.size() != 0)
+            {
+                if (emailSettings?.salesEmailConfig != null)
+                {
+                    salesConfig = new JSONObject(emailSettings?.salesEmailConfig)
+                }
+                if (emailSettings?.purchaseConfig)
+                {
+                    purchaseConfig = new JSONObject(emailSettings?.purchaseConfig)
+                }
+                if (emailSettings?.receiptEmailConfig)
+                {
+                    receiptConfig = new JSONObject(emailSettings?.receiptEmailConfig)
+                }
+                if (emailSettings?.creditEmailConfig)
+                {
+                    creditConfig = new JSONObject(emailSettings?.creditEmailConfig)
+                }
+                if (emailSettings?.crDbSettlementEmailConfig)
+                {
+                    crdbConfig = new JSONObject(emailSettings?.crDbSettlementEmailConfig)
+                }
+
+            }
+            render(view: '/entity/emailSettings/emailConfig', model: [salesConfig   : salesConfig,
+                                                                      purchaseConfig: purchaseConfig,
+                                                                      receiptConfig : receiptConfig,
+                                                                      creditConfig  : creditConfig, crdbConfig:
+                                                                              crdbConfig,emailSettings: emailSettings])
+        }
+        catch (Exception e)
+        {
             println(e)
         }
     }
 
-    def saveEmailConfig(){
+    def saveEmailConfig()
+    {
         try
         {
             JSONObject jsonObject = new JSONObject(params)
             def emailService = new EmailService().saveEmailConfig(jsonObject)
-            if(emailService?.status == 200){
-               JSONObject emailResponse = new JSONObject(emailService.readEntity(String.class))
+            if (emailService?.status == 200)
+            {
+                JSONObject emailResponse = new JSONObject(emailService.readEntity(String.class))
                 respond emailResponse, formats: ['json'], status: 200
-            }else{
+            }
+            else
+            {
                 response.status = 400
             }
         }
-        catch (Exception e){
+        catch (Exception e)
+        {
             println(e)
             log.error(e)
         }

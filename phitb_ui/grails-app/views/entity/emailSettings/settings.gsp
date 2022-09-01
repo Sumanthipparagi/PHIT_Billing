@@ -89,6 +89,8 @@
                                     class="zmdi zmdi-settings"></i> Email Settings</a></li>
                             <li class="nav-item"><a id="logButton" class="nav-link" data-toggle="tab" href="#logs"><i
                                     class="zmdi zmdi-book"></i> Email Usage Logs</a></li>
+                        <li class="nav-item"><a  class="nav-link"  href="/email-config?id=${params.id}"><i
+                                class="zmdi zmdi-settings"></i>Email Configs</a></li>
                         </ul>
                         <!-- Tab panes -->
                         <div class="tab-content">

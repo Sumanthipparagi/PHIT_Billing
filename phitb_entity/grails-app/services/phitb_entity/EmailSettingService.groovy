@@ -226,7 +226,7 @@ class EmailSettingService
             }
             else
             {
-                emailSetting.reportMailBtn = true
+                emailSetting.reportMailBtn = Boolean.parseBoolean(jsonObject?.MAIL_BTN_REPORTS?.toString())
             }
             emailSetting.save(flush: true)
             return emailSetting
@@ -261,7 +261,7 @@ class EmailSettingService
             }
             else
             {
-                emailSetting.reportMailBtn = true
+                emailSetting.reportMailBtn = Boolean.parseBoolean(jsonObject?.MAIL_BTN_REPORTS?.toString())
             }
             emailSetting.save(flush: true)
             return emailSetting
