@@ -1010,6 +1010,7 @@
                     'Updated Successfully',
                     'success'
                 );
+                location.reload(true);
 
             },
             error: function (data) {
@@ -1038,6 +1039,7 @@
                     'success'
                 );
 
+                location.reload(true);
             },
             error: function (data) {
                 console.log("Failed");
@@ -1064,7 +1066,7 @@
                     'Updated Successfully',
                     'success'
                 );
-
+                location.reload(true);
             },
             error: function (data) {
                 console.log("Failed");
@@ -1091,7 +1093,7 @@
                     'Updated Successfully',
                     'success'
                 );
-
+                location.reload(true);
             },
             error: function (data) {
                 console.log("Failed");
@@ -1118,6 +1120,7 @@
                     'Updated Successfully',
                     'success'
                 );
+                location.reload(true);
 
             },
             error: function (data) {
@@ -1146,6 +1149,7 @@
                     'success'
                 );
 
+                location.reload(true);
             },
             error: function (data) {
                 console.log("Failed");

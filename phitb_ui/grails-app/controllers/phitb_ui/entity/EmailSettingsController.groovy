@@ -122,27 +122,43 @@ class EmailSettingsController
             JSONObject crdbConfig
             if (emailSettings!=null)
             {
+                //sales
                 if (emailSettings?.salesEmailConfig!= null)
                 {
                     salesConfig = new JSONObject(emailSettings?.salesEmailConfig)
+                }else{
+                    salesConfig = new JSONObject()
                 }
+
+                //purchase
                 if (emailSettings?.purchaseConfig!= null)
                 {
                     purchaseConfig = new JSONObject(emailSettings?.purchaseConfig)
+                }else{
+                    purchaseConfig = new JSONObject()
                 }
+
+                //receipt
                 if (emailSettings?.receiptEmailConfig!= null)
                 {
                     receiptConfig = new JSONObject(emailSettings?.receiptEmailConfig)
-                }
-                if (emailSettings?.creditEmailConfig!= null)
-                {
-                    creditConfig = new JSONObject(emailSettings?.creditEmailConfig)
-                }
-                if (emailSettings?.crDbSettlementEmailConfig!= null)
-                {
-                    crdbConfig = new JSONObject(emailSettings?.crDbSettlementEmailConfig)
+                }else{
+                    receiptConfig = new JSONObject()
                 }
 
+                //creditEmail
+                if (emailSettings?.creditEmailConfig!=null)
+                {
+                    creditConfig = new JSONObject(emailSettings?.creditEmailConfig)
+                }else{
+                    creditConfig = new JSONObject()
+                }
+                if (emailSettings?.crDbSettlementEmailConfig!=null)
+                {
+                    crdbConfig = new JSONObject(emailSettings?.crDbSettlementEmailConfig)
+                }else {
+                    crdbConfig = new JSONObject()
+                }
             }else{
                 salesConfig = new JSONObject()
                 purchaseConfig = new JSONObject()
