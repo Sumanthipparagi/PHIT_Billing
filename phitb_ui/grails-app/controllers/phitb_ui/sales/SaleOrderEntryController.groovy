@@ -4,7 +4,9 @@ import grails.converters.JSON
 import org.grails.web.json.JSONArray
 import org.grails.web.json.JSONObject
 import org.springframework.boot.context.config.ResourceNotFoundException
+import phitb_ui.Constants
 import phitb_ui.EInvoiceService
+import phitb_ui.EmailService
 import phitb_ui.EntityService
 import phitb_ui.InventoryService
 import phitb_ui.Links
@@ -270,6 +272,36 @@ class SaleOrderEntryController {
                     println("stocks modified!!")
                 }
             }
+
+            def emailSettings = EmailService.getEmailSettingsByEntity(session.getAttribute("entityId").toString())
+            JSONObject salesEmailConfig
+            if(emailSettings!=null){
+                if(emailSettings?.salesEmailConfig!=null){
+                    salesEmailConfig = new JSONObject(emailSettings?.salesEmailConfig)
+                }
+                if(salesEmailConfig?.SALE_SENDMAIL_AFTER_SALE_ORDER_SAVED == "true"){
+                    def entity = new EntityService().getEntityById(params.customer)
+                    if(entity?.email!=null && entity?.email!="" && entity?.email!="NA")
+                    {
+                        def email = new EmailService().sendEmail(entity.email.trim(), "Sale Order saved",
+                                saleOrderDetail?.invoiceNumber, saleOrderDetail?.invoiceNumber, Constants.SALE_ORDER)
+                        if (email)
+                        {
+                            println("Mail Sent..")
+                        }
+                        else
+                        {
+                            println("Mail not Sent..")
+                        }
+                    }
+                    else{
+                        println("Email not found..")
+                    }
+                }
+            }
+            else{
+                println("Entity Settings not found!!")
+            }
             JSONObject responseJson = new JSONObject()
             responseJson.put("series", series)
             responseJson.put("saleOrderDetail", saleOrderDetail)
@@ -489,6 +521,36 @@ class SaleOrderEntryController {
                     new InventoryService().updateStockBook(stockBook)
                 }
             }
+            JSONObject invoice = jsonObject.get("invoice") as JSONObject
+            def emailSettings = EmailService.getEmailSettingsByEntity(session.getAttribute("entityId").toString())
+            JSONObject salesEmailConfig
+            if(emailSettings!=null){
+                if(emailSettings?.salesEmailConfig!=null){
+                    salesEmailConfig = new JSONObject(emailSettings?.salesEmailConfig)
+                }
+                if(salesEmailConfig?.SALE_DOC_CANCELLED_SEND_MAIL == "true"){
+                    def entity = new EntityService().getEntityById(invoice?.customerId?.toString())
+                    if(entity?.email!=null && entity?.email!="" && entity?.email!="NA")
+                    {
+                        def email = new EmailService().sendEmail(entity.email.trim(), "Sale Order cancelled",
+                                invoice?.invoiceNumber, invoice?.invoiceNumber, Constants.SALE_ORDER)
+                        if (email)
+                        {
+                            println("Mail Sent..")
+                        }
+                        else
+                        {
+                            println("Mail not Sent..")
+                        }
+                    }
+                    else{
+                        println("Email not found..")
+                    }
+                }
+            }
+            else{
+                println("Entity Settings not found!!")
+            }
             respond jsonObject, formats: ['json']
         } else {
             response.status = 400
@@ -535,6 +597,34 @@ class SaleOrderEntryController {
             if(apiResponse?.status == 200)
             {
                 JSONObject jsonObject1 = new JSONObject(apiResponse.readEntity(String.class))
+                def emailSettings = EmailService.getEmailSettingsByEntity(session.getAttribute("entityId").toString())
+                JSONObject salesEmailConfig
+                if(emailSettings!=null){
+                    if(emailSettings?.salesEmailConfig!=null){
+                        salesEmailConfig = new JSONObject(emailSettings?.salesEmailConfig)
+                    }
+                    if(salesEmailConfig?.SALE_SENDMAIL_SALE_ORDER_CLICKED == "true"){
+                        def entity = new EntityService().getEntityById(jsonObject1?.customerId?.toString())
+                        if(entity?.email!=null && entity?.email!="" && entity?.email!="NA")
+                        {
+                            def email = new EmailService().sendEmail(entity.email.trim(), "Sale Order Converted", jsonObject1?.invoiceNumber, jsonObject1?.invoiceNumber, Constants.SALE_ORDER)
+                            if (email)
+                            {
+                                println("Mail Sent..")
+                            }
+                            else
+                            {
+                                println("Mail not Sent..")
+                            }
+                        }
+                        else{
+                            println("Email not found..")
+                        }
+                    }
+                }
+                else{
+                    println("Entity Settings not found!!")
+                }
                 respond jsonObject1, formats: ['json'], status: 200
             }
             else {

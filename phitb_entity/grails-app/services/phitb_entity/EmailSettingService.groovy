@@ -114,6 +114,7 @@ class EmailSettingService
         emailSetting.smtpPassword = jsonObject.get("smtpPassword")
         emailSetting.smtpServer = jsonObject.get("smtpServer")
         emailSetting.smtpPort = jsonObject.get("smtpPort")
+        emailSetting.reportMailBtn = false
         if (jsonObject.has("emailService"))
         {
             emailSetting.emailService = jsonObject.get("emailService")

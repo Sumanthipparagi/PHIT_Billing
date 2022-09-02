@@ -4,7 +4,9 @@ package phitb_ui.sales
 import grails.converters.JSON
 import org.grails.web.json.JSONArray
 import org.grails.web.json.JSONObject
+import phitb_ui.Constants
 import phitb_ui.EInvoiceService
+import phitb_ui.EmailService
 import phitb_ui.EntityService
 import phitb_ui.InventoryService
 import phitb_ui.Links
@@ -325,6 +327,35 @@ class GoodsTransferNoteController
 //                    println(deleteTemp)
                     println("stocks modified!!")
                 }
+            }
+
+            def emailSettings = EmailService.getEmailSettingsByEntity(session.getAttribute("entityId").toString())
+            JSONObject salesEmailConfig
+            if(emailSettings!=null){
+                if(emailSettings?.salesEmailConfig!=null){
+                    salesEmailConfig = new JSONObject(emailSettings?.salesEmailConfig)
+                }
+                if(salesEmailConfig?.SALES_AUTO_EMAIL_AFTER_SAVE_GTN == "true"){
+                    def entity = new EntityService().getEntityById(gtnDetail?.customerId?.toString())
+                    if(entity?.email!=null && entity?.email!="" && entity?.email!="NA")
+                    {
+                        def email = new EmailService().sendEmail(entity.email.trim(), "GTN saved", gtnDetail?.invoiceNumber, gtnDetail?.invoiceNumber, "GTN")
+                        if (email)
+                        {
+                            println("Mail Sent..")
+                        }
+                        else
+                        {
+                            println("Mail not Sent..")
+                        }
+                    }
+                    else{
+                        println("Email not found..")
+                    }
+                }
+            }
+            else{
+                println("Entity Settings not found!!")
             }
             JSONObject responseJson = new JSONObject()
             responseJson.put("series", series)

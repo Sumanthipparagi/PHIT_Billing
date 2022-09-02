@@ -4,6 +4,7 @@ package phitb_ui.accounts
 import org.grails.web.json.JSONArray
 import org.grails.web.json.JSONObject
 import phitb_ui.AccountsService
+import phitb_ui.EmailService
 import phitb_ui.EntityService
 import phitb_ui.ProductService
 import phitb_ui.SystemService
@@ -378,6 +379,37 @@ class ReciptDetailController {
                         }
                     }
                 }
+
+                //email
+                def emailSettings = EmailService.getEmailSettingsByEntity(session.getAttribute("entityId").toString())
+                JSONObject receiptEmailConfig
+                if(emailSettings!=null){
+                    if(emailSettings?.receiptEmailConfig!=null){
+                        receiptEmailConfig = new JSONObject(emailSettings?.receiptEmailConfig)
+                    }
+                    if(receiptEmailConfig?.RECEIPT_AUTO_EMAIL_AFTER_SAVE == "true"){
+                        def entity = new EntityService().getEntityById(jsonObject1?.receivedFrom?.toString())
+                        if(entity?.email!=null && entity?.email!="" && entity?.email!="NA")
+                        {
+                            def email = new EmailService().sendEmail(entity.email.trim(), "Receipt Saved",
+                                    jsonObject1?.receiptId, jsonObject1?.receiptId, "RECEIPT")
+                            if (email)
+                            {
+                                println("Mail Sent..")
+                            }
+                            else
+                            {
+                                println("Mail not Sent..")
+                            }
+                        }
+                        else{
+                            println("Email not found..")
+                        }
+                    }
+                }
+                else{
+                    println("Entity Settings not found!!")
+                }
                 respond jsonObject1, formats: ['json'], status: 200
             } else {
                 response.status = apiResponse?.status ?: 400
@@ -585,6 +617,11 @@ class ReciptDetailController {
         String entityId = session.getAttribute("entityId")
         String financialYear = session.getAttribute("financialYear")
         JSONObject jsonObject = new AccountsService().cancelReceipt(id, entityId, financialYear)
+        def receiptResponse = new AccountsService().getReciptById(id)
+        JSONObject receiptObj
+        if(receiptResponse?.status == 200){
+            receiptObj = new JSONObject(receiptResponse.readEntity(String.class))
+        }
         def saleBillResponse
         def saleReturnResponse
         def gtnResponse
@@ -623,6 +660,36 @@ class ReciptDetailController {
                         }
                     }
                 }
+            }
+            //email
+            def emailSettings = EmailService.getEmailSettingsByEntity(session.getAttribute("entityId").toString())
+            JSONObject receiptEmailConfig
+            if(emailSettings!=null){
+                if(emailSettings?.receiptEmailConfig!=null){
+                    receiptEmailConfig = new JSONObject(emailSettings?.receiptEmailConfig)
+                }
+                if(receiptEmailConfig?.RECEIPT_DOC_CANCELLED_SEND_MAIL == "true"){
+                    def entity = new EntityService().getEntityById(receiptObj?.receivedFrom?.toString())
+                    if(entity?.email!=null && entity?.email!="" && entity?.email!="NA")
+                    {
+                        def email = new EmailService().sendEmail(entity.email.trim(), "Receipt Cancelled",
+                                receiptObj?.receiptId, receiptObj?.receiptId, "RECEIPT")
+                        if (email)
+                        {
+                            println("Mail Sent..")
+                        }
+                        else
+                        {
+                            println("Mail not Sent..")
+                        }
+                    }
+                    else{
+                        println("Email not found..")
+                    }
+                }
+            }
+            else{
+                println("Entity Settings not found!!")
             }
             respond jsonObject, formats: ['json']
         }
