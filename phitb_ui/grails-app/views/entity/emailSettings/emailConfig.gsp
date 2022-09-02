@@ -73,7 +73,7 @@
             </div>
         </div>
     <!-- Basic Examples -->
-        <g:if test="${emailSettings.size() == 0}">
+        <g:if test="${emailSettings == null}">
             <div class="row clearfix">
                 <div class="col-lg-12 col-md-12 col-sm-12">
                     %{--                <h2>${entity.entityName}<br><span style="font-size: 15px;">${entity.entityType.name}</span></h2>--}%

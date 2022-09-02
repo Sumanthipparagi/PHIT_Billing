@@ -199,6 +199,7 @@ class EmailSettingService
         if (emailSetting)
         {
             emailSetting.isUpdatable = true
+            emailSetting.reportMailBtn = false
             if (jsonObject.type == "SALES")
             {
                 emailSetting.salesEmailConfig = jsonObject.toString()
@@ -234,6 +235,7 @@ class EmailSettingService
         else
         {
             emailSetting = new EmailSetting()
+            emailSetting.reportMailBtn = false
             if (jsonObject.type == "SALES")
             {
                 emailSetting.salesEmailConfig = jsonObject.toString()

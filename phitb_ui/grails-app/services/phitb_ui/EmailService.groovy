@@ -133,10 +133,10 @@ class EmailService {
                     .path(new Links().EMAIL_SETTINGS_BY_ENTITY + "/" + entityId)
                     .request(MediaType.APPLICATION_JSON_TYPE)
                     .get()
-            if (apiResponse.status == 200) {
+            if (apiResponse?.status == 200) {
                 JSONArray jsonArray = new JSONArray(apiResponse.readEntity(String.class))
                 //there will be only one entry
-                return jsonArray.get(0) as JSONObject
+                return jsonArray?.get(0) as JSONObject
             } else {
                 return null
             }

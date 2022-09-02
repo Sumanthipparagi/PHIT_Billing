@@ -229,7 +229,7 @@ public class Constants
     //    email
     public static String CRJV_AUTO_EMAIL_AFTER_SAVE = "CRJV_AUTO_EMAIL_AFTER_SAVE";
     public static String CRJV_DOC_CANCELLED_SEND_MAIL = "CRJV_DOC_CANCELLED_SEND_MAIL";
-    public static String CRJV_MANUAL_EMAIL_BTN = "CRJV_DOC_CANCELLED_SEND_MAIL";
+    public static String CRJV_MANUAL_EMAIL_BTN = "CRJV_MANUAL_EMAIL_BTN";
 
     //    sms
     public static String CRJV_AUTO_SMS_AFTER_SAVE = "CRJV_AUTO_SMS_AFTER_SAVE";
@@ -244,7 +244,7 @@ public class Constants
 
     //Cr/Db Settlement
     public static String CRDB_AUTO_EMAIL_AFTER_SAVE = "CRDB_AUTO_EMAIL_AFTER_SAVE";
-    public static String CRDB_MANUAL_EMAIL_BTN = "CRDB_DOC_CANCELLED_SEND_MAIL";
+    public static String CRDB_MANUAL_EMAIL_BTN = "CRDB_MANUAL_EMAIL_BTN";
     public static String CRDB_AUTO_SMS_AFTER_SAVE = "CRDB_AUTO_SMS_AFTER_SAVE";
     public static String CRDB_MANUAL_SMS_BTN = "CRDB_MANUAL_SMS_BTN";
 

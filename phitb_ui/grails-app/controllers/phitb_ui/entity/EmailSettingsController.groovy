@@ -120,29 +120,35 @@ class EmailSettingsController
             JSONObject receiptConfig
             JSONObject creditConfig
             JSONObject crdbConfig
-            if (emailSettings.size() != 0)
+            if (emailSettings!=null)
             {
-                if (emailSettings?.salesEmailConfig != null)
+                if (emailSettings?.salesEmailConfig!= null)
                 {
                     salesConfig = new JSONObject(emailSettings?.salesEmailConfig)
                 }
-                if (emailSettings?.purchaseConfig)
+                if (emailSettings?.purchaseConfig!= null)
                 {
                     purchaseConfig = new JSONObject(emailSettings?.purchaseConfig)
                 }
-                if (emailSettings?.receiptEmailConfig)
+                if (emailSettings?.receiptEmailConfig!= null)
                 {
                     receiptConfig = new JSONObject(emailSettings?.receiptEmailConfig)
                 }
-                if (emailSettings?.creditEmailConfig)
+                if (emailSettings?.creditEmailConfig!= null)
                 {
                     creditConfig = new JSONObject(emailSettings?.creditEmailConfig)
                 }
-                if (emailSettings?.crDbSettlementEmailConfig)
+                if (emailSettings?.crDbSettlementEmailConfig!= null)
                 {
                     crdbConfig = new JSONObject(emailSettings?.crDbSettlementEmailConfig)
                 }
 
+            }else{
+                salesConfig = new JSONObject()
+                purchaseConfig = new JSONObject()
+                receiptConfig = new JSONObject()
+                creditConfig = new JSONObject()
+                crdbConfig = new JSONObject()
             }
             render(view: '/entity/emailSettings/emailConfig', model: [salesConfig   : salesConfig,
                                                                       purchaseConfig: purchaseConfig,
