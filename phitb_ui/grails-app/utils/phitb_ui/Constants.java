@@ -220,7 +220,7 @@ public class Constants
 //    sms
     public static String RECEIPT_AUTO_SMS_AFTER_SAVE = "RECEIPT_AUTO_SMS_AFTER_SAVE";
     public static String RECEIPT_MANUAL_SMS_BTN = "RECEIPT_MANUAL_SMS_BTN";
-    public static String RECEIPT_DOC_CANCELLED_SEND_SMS = " RECEIPT_DOC_CANCELLED_SEND_SMS";
+    public static String RECEIPT_DOC_CANCELLED_SEND_SMS = "RECEIPT_DOC_CANCELLED_SEND_SMS";
 
 
 
@@ -234,7 +234,7 @@ public class Constants
     //    sms
     public static String CRJV_AUTO_SMS_AFTER_SAVE = "CRJV_AUTO_SMS_AFTER_SAVE";
     public static String CRJV_MANUAL_SMS_BTN = "CRJV_MANUAL_SMS_BTN";
-    public static String CRJV_DOC_CANCELLED_SEND_SMS = " CRJV_DOC_CANCELLED_SEND_SMS";
+    public static String CRJV_DOC_CANCELLED_SEND_SMS = "CRJV_DOC_CANCELLED_SEND_SMS";
 
 
     //Purchase
