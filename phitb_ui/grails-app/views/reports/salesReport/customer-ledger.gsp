@@ -162,9 +162,27 @@
                     "<tr><td data-f-bold='true' colspan='11'><h3 style='margin-bottom:0 !important;'>${session.getAttribute('entityName')}</h3></td></tr>" +
                     "<tr><td colspan='10'>${session.getAttribute('entityAddress1')} ${session.getAttribute('entityAddress2')} ${session.getAttribute('entityPinCode')}, ph: ${session.getAttribute('entityMobileNumber')}</td></tr>" +
                     "<tr><th data-f-bold='true' colspan='10'>Customer Ledger, Date: " + dateRange + "</th></tr>" +
-                    "<tr><th data-f-bold='true'>Date.</th><th data-f-bold='true'>Transaction No.</th><th data-f-bold='true'>Transfer.</th><th data-f-bold='true'>Debit</th>" +
+                    "<tr><th data-f-bold='true'>Date.</th><th data-f-bold='true'>Transaction No.</th><th data-f-bold='true'>Transfer Desc.</th><th data-f-bold='true'>Debit</th>" +
                     "<th data-f-bold='true'>Credit</th><th data-f-bold='true'>Balance</th></tr></thead><tbody>";
-                var index = 1;
+                var balance = data.openingBalance;
+                content = "<tr><td colspan='5' style='text-align: center;'><strong>Opening Balance as on "+dateRange.split("-")[0]+"</strong></td><td><strong>"+balance.toFixed(2)+"</strong></td><tr>";
+                if(data.customerLedger)
+                {
+                    $.each(data.customerLedger, function (i, cl) {
+                        var debitAmount = 0.0;
+                        var creditAmount = 0.0;
+                        if(cl.type === "DEBIT") {
+                            debitAmount = cl.amount;
+                            balance = balance -cl.amount;
+                        }
+                        else {
+                            creditAmount = cl.amount;
+                            balance += cl.amount;
+                        }
+                        content += "<tr><td>"+dateFormat(cl.transactionDate)+"</td><td>"+cl.transactionNumber+"</td><td>"+cl.transactionDescription+"</td><td>"+debitAmount.toFixed(2)+"</td><td>"+creditAmount.toFixed(2)+"</td><td>"+balance.toFixed(2)+"</td></tr>";
+                    })
+                }
+                content += "<tr><td colspan='5' style='text-align: center;'><strong>Closing Balance as on "+dateRange.split("-")[1]+"</strong></td><td><strong>"+balance.toFixed(2)+"</strong></td><tr>";
 
                 var mainTableFooter = "</tbody></table>";
 
@@ -217,7 +235,7 @@
 
     function dateFormat(dt) {
         var date = new Date(dt);
-        return moment(date).format('DD/MM/YYYY hh:mm:ss a');
+        return moment(date).format('DD/MM/YYYY');
 
     }
 

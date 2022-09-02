@@ -257,50 +257,38 @@ class GoodsTransferNoteController {
     def updateBalance() {
         try {
             GoodsTransferNote goodsTransferNote = GoodsTransferNote.findById(Long.parseLong(params.id))
-            if(params.status=="NA" || params.status==null)
-            {
-                if (goodsTransferNote)
-                {
+            if (params.status == "NA" || params.status == null) {
+                if (goodsTransferNote) {
                     goodsTransferNote.isUpdatable = true
                     Double balance = Double.parseDouble(params.balance)
-                    if (balance > 0 && balance != "" && balance != null)
-                    {
+                    if (balance > 0 && balance != "" && balance != null) {
                         double diffBalance = Double.parseDouble(goodsTransferNote.getBalance().toString()) - balance
                         goodsTransferNote.balance = diffBalance
                         goodsTransferNote.adjAmount = goodsTransferNote.getAdjAmount() + balance
-                    }
-                    else
-                    {
+                    } else {
                         goodsTransferNote.balance = goodsTransferNote.getBalance()
                         goodsTransferNote.adjAmount = goodsTransferNote.getAdjAmount()
                     }
                     GoodsTransferNote goodsTransferNote1 = goodsTransferNote.save(flush: true)
-                    if (goodsTransferNote1)
-                    {
+                    if (goodsTransferNote1) {
                         respond goodsTransferNote1
                         return
                     }
                 }
-            }
-            else {
-                if (goodsTransferNote)
-                {
+            } else {
+                if (goodsTransferNote) {
                     goodsTransferNote.isUpdatable = true
                     Double balance = Double.parseDouble(params.balance)
-                    if (balance > 0 && balance != "" && balance != null)
-                    {
+                    if (balance > 0 && balance != "" && balance != null) {
                         double updateBalance = Double.parseDouble(goodsTransferNote.getBalance().toString()) + balance
                         goodsTransferNote.balance = updateBalance
                         goodsTransferNote.adjAmount = goodsTransferNote.getAdjAmount() - balance
-                    }
-                    else
-                    {
+                    } else {
                         goodsTransferNote.balance = goodsTransferNote.getBalance()
                         goodsTransferNote.adjAmount = goodsTransferNote.getAdjAmount()
                     }
                     GoodsTransferNote goodsTransferNote1 = goodsTransferNote.save(flush: true)
-                    if (goodsTransferNote1)
-                    {
+                    if (goodsTransferNote1) {
                         respond goodsTransferNote1
                         return
                     }
@@ -421,7 +409,7 @@ class GoodsTransferNoteController {
         try {
             JSONObject jsonObject = JSON.parse(request.reader.text) as JSONObject
             GoodsTransferNote goodsTransferNote = goodsTransferNoteService.save(jsonObject.get("gtn"))
-            if(goodsTransferNote) {
+            if (goodsTransferNote) {
                 UUID uuid
                 JSONArray saleProducts = jsonObject.get("gtnProducts")
                 for (JSONObject product : saleProducts) {
@@ -460,7 +448,7 @@ class GoodsTransferNoteController {
             String id = params.id
             JSONObject jsonObject = JSON.parse(request.reader.text) as JSONObject
             GoodsTransferNote goodsTransferNote = goodsTransferNoteService.update(jsonObject.get("saleInvoice"), id)
-            if(goodsTransferNote) {
+            if (goodsTransferNote) {
                 UUID uuid
                 JSONArray saleProducts = jsonObject.get("saleProducts")
                 for (JSONObject product : saleProducts) {
@@ -474,6 +462,35 @@ class GoodsTransferNoteController {
                 }
             }
             respond goodsTransferNote
+        }
+        catch (ResourceNotFoundException ex) {
+            System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
+            response.status = 404
+        }
+        catch (BadRequestException ex) {
+            System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
+            response.status = 400
+        }
+        catch (Exception ex) {
+            System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
+        }
+    }
+
+    /**
+     * get Goods Transfer Note between daterange
+     * @param daterange
+     * @param entityId
+     * @return saved Goods Transfer Note
+     */
+    def getGTNByDateRange() {
+        try {
+            String dateRange = params.dateRange
+            long entityId = params.entityId
+            if (dateRange && entityId) {
+                respond goodsTransferNoteService.getGTNByDateRange(dateRange, entityId)
+            } else {
+                response.status = 400
+            }
         }
         catch (ResourceNotFoundException ex) {
             System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)

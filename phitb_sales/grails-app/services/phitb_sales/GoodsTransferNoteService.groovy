@@ -18,30 +18,22 @@ class GoodsTransferNoteService {
 
     SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy")
 
-    def getAll(String query)
-    {
+    def getAll(String query) {
 //        Integer o = offset ? Integer.parseInt(offset.toString()) : 0
 //        Integer l = limit ? Integer.parseInt(limit.toString()) : 100
-        if (!query)
-        {
+        if (!query) {
             return GoodsTransferNote.findAll()
-        }
-        else
-        {
+        } else {
             return GoodsTransferNote.findAllByFinancialYearIlike("%" + query + "%")
         }
     }
 
-    def getAllByNoOfDays(String limit, String offset, String days)
-    {
+    def getAllByNoOfDays(String limit, String offset, String days) {
         Integer o = offset ? Integer.parseInt(offset.toString()) : 0
         Integer l = limit ? Integer.parseInt(limit.toString()) : 100
-        if (!days)
-        {
+        if (!days) {
             return GoodsTransferNote.findAll([sort: 'id', max: l, offset: o, order: 'desc'])
-        }
-        else
-        {
+        } else {
             Date today = new Date()
             Calendar cal = new GregorianCalendar()
             cal.setTime(today)
@@ -54,30 +46,25 @@ class GoodsTransferNoteService {
     }
 
 
-    def getAllUnsettledByCustId(String customerId, String entityId, String financialYear)
-    {
+    def getAllUnsettledByCustId(String customerId, String entityId, String financialYear) {
         return GoodsTransferNote.findAllByCustomerIdAndEntityIdAndFinancialYearAndPaymentStatus(Long.parseLong(customerId), Long.parseLong(entityId), financialYear, 0)
     }
 
-    def getAllsettledByCustId(String customerId, String entityId, String financialYear)
-    {
+    def getAllsettledByCustId(String customerId, String entityId, String financialYear) {
 
         return GoodsTransferNote.findAllByCustomerIdAndEntityIdAndFinancialYearAndPaymentStatus(Long.parseLong(customerId), Long.parseLong(entityId), financialYear, 1)
 
     }
 
-    GoodsTransferNote get(String id)
-    {
+    GoodsTransferNote get(String id) {
         return GoodsTransferNote.findById(Long.parseLong(id))
     }
 
-    GoodsTransferNote getDraftBillById(String id)
-    {
+    GoodsTransferNote getDraftBillById(String id) {
         return GoodsTransferNote.findByBillStatusAndId('DRAFT', Long.parseLong(id))
     }
 
-    JSONObject dataTables(JSONObject paramsJsonObject, String start, String length)
-    {
+    JSONObject dataTables(JSONObject paramsJsonObject, String start, String length) {
         String searchTerm = paramsJsonObject.get("search[value]")
         String orderColumnId = paramsJsonObject.get("order[0][column]")
         String orderDir = paramsJsonObject.get("order[0][dir]")
@@ -85,8 +72,7 @@ class GoodsTransferNoteService {
         long entityId = paramsJsonObject.get("entityId")
 
         String orderColumn = "id"
-        switch (orderColumnId)
-        {
+        switch (orderColumnId) {
             case '0':
                 orderColumn = "id"
                 break;
@@ -99,13 +85,11 @@ class GoodsTransferNoteService {
         def goodsTransferNoteCriteria = GoodsTransferNote.createCriteria()
         def goodsTransferNoteArrayList = goodsTransferNoteCriteria.list(max: max, offset: offset) {
             or {
-                if (searchTerm != "")
-                {
+                if (searchTerm != "") {
                     ilike('financialYear', '%' + searchTerm + '%')
                 }
             }
-            if (!invoiceStatus.equalsIgnoreCase("ALL"))
-            {
+            if (!invoiceStatus.equalsIgnoreCase("ALL")) {
                 eq('billStatus', invoiceStatus)
             }
             eq('customerId', entityId)
@@ -122,8 +106,7 @@ class GoodsTransferNoteService {
         return jsonObject
     }
 
-    GoodsTransferNote save(JSONObject jsonObject)
-    {
+    GoodsTransferNote save(JSONObject jsonObject) {
         GoodsTransferNote goodsTransferNote = new GoodsTransferNote()
         goodsTransferNote.finId = Long.parseLong(jsonObject.get("finId").toString())
         goodsTransferNote.serBillId = Long.parseLong(jsonObject.get("serBillId").toString())
@@ -139,7 +122,7 @@ class GoodsTransferNoteService {
         goodsTransferNote.salesmanComm = Long.parseLong(jsonObject.get("salesmanComm").toString())
         //goodsTransferNote.orderDate = sdf.parse(jsonObject.get("orderDate").toString())
 
-        if(jsonObject.get("billStatus").toString().equalsIgnoreCase("ACTIVE"))
+        if (jsonObject.get("billStatus").toString().equalsIgnoreCase("ACTIVE"))
             goodsTransferNote.orderDate = new Date()
 
         goodsTransferNote.refOrderId = jsonObject.get("refOrderId").toString()
@@ -178,11 +161,10 @@ class GoodsTransferNoteService {
         goodsTransferNote.entityTypeId = Long.parseLong(jsonObject.get("entityTypeId").toString())
         goodsTransferNote.uuid = jsonObject.get("uuid").toString()
         goodsTransferNote.save(flush: true)
-        if (!goodsTransferNote.hasErrors())
-        {
+        if (!goodsTransferNote.hasErrors()) {
             Calendar cal = new GregorianCalendar()
             cal.setTime(goodsTransferNote.entryDate)
-            String month = cal.get(Calendar.MONTH)+1;
+            String month = cal.get(Calendar.MONTH) + 1;
             String year = cal.get(Calendar.YEAR)
             year = year.substring(Math.max(year.length() - 2, 0)) //reduce to 2 digit year
             DecimalFormat mFormat = new DecimalFormat("00");
@@ -190,33 +172,26 @@ class GoodsTransferNoteService {
             String invoiceNumber = null;
             String seriesCode = jsonObject.get("seriesCode")
             GoodsTransferNote goodsTransferNote1
-            if (goodsTransferNote.billStatus == "DRAFT")
-            {
+            if (goodsTransferNote.billStatus == "DRAFT") {
                 println(goodsTransferNote.billStatus)
 //                invoiceNumber = goodsTransferNote.entityId+"/DR/GTN/" + month + year + "/" + seriesCode + "/__";'
                 goodsTransferNote.invoiceNumber = null
-            }
-            else
-            {
-                invoiceNumber = goodsTransferNote.entityId + "GTN" + month + year + seriesCode +  goodsTransferNote.serBillId
+            } else {
+                invoiceNumber = goodsTransferNote.entityId + "GTN" + month + year + seriesCode + goodsTransferNote.serBillId
                 println("Invoice Number generated: " + invoiceNumber)
             }
-            if (invoiceNumber)
-            {
+            if (invoiceNumber) {
                 goodsTransferNote.invoiceNumber = invoiceNumber
                 goodsTransferNote.isUpdatable = true
                 goodsTransferNote.save(flush: true)
             }
             return goodsTransferNote
-        }
-        else
-        {
+        } else {
             throw new BadRequestException()
         }
     }
 
-    GoodsTransferNote update(JSONObject jsonObject, String id)
-    {
+    GoodsTransferNote update(JSONObject jsonObject, String id) {
         GoodsTransferNote goodsTransferNote = GoodsTransferNote.findById(Long.parseLong(id))
         goodsTransferNote.isUpdatable = true
         goodsTransferNote.finId = Long.parseLong(jsonObject.get("finId").toString())
@@ -232,7 +207,7 @@ class GoodsTransferNoteService {
         goodsTransferNote.salesmanComm = Long.parseLong(jsonObject.get("salesmanComm").toString())
         //goodsTransferNote.orderDate = sdf.parse(jsonObject.get("orderDate").toString())
 
-        if(jsonObject.get("billStatus").toString().equalsIgnoreCase("ACTIVE"))
+        if (jsonObject.get("billStatus").toString().equalsIgnoreCase("ACTIVE"))
             goodsTransferNote.orderDate = new Date()
 
         goodsTransferNote.refOrderId = jsonObject.get("refOrderId").toString()
@@ -271,11 +246,10 @@ class GoodsTransferNoteService {
         goodsTransferNote.entityTypeId = Long.parseLong(jsonObject.get("entityTypeId").toString())
         goodsTransferNote.uuid = jsonObject.get("uuid").toString()
         goodsTransferNote.save(flush: true)
-        if (!goodsTransferNote.hasErrors())
-        {
+        if (!goodsTransferNote.hasErrors()) {
             Calendar cal = new GregorianCalendar()
             cal.setTime(goodsTransferNote.entryDate)
-            String month = cal.get(Calendar.MONTH)+1
+            String month = cal.get(Calendar.MONTH) + 1
             String year = cal.get(Calendar.YEAR)
             year = year.substring(Math.max(year.length() - 2, 0)) //reduce to 2 digit year
             DecimalFormat mFormat = new DecimalFormat("00");
@@ -283,53 +257,39 @@ class GoodsTransferNoteService {
             String invoiceNumber = null;
             String seriesCode = jsonObject.get("seriesCode")
             GoodsTransferNote goodsTransferNote1
-            if (goodsTransferNote.billStatus == "DRAFT")
-            {
+            if (goodsTransferNote.billStatus == "DRAFT") {
                 println(goodsTransferNote.billStatus)
                 goodsTransferNote.invoiceNumber = null
-            }
-            else
-            {
+            } else {
                 invoiceNumber = goodsTransferNote.entityId + "GTN" + month + year + seriesCode + goodsTransferNote.serBillId
                 println("Invoice Number generated: " + invoiceNumber)
             }
-            if (invoiceNumber)
-            {
+            if (invoiceNumber) {
                 goodsTransferNote.invoiceNumber = invoiceNumber
                 goodsTransferNote.isUpdatable = true
                 goodsTransferNote.save(flush: true)
             }
             return goodsTransferNote
-        }
-        else
-        {
+        } else {
             throw new BadRequestException()
         }
     }
 
-    void delete(String id)
-    {
-        if (id)
-        {
+    void delete(String id) {
+        if (id) {
             GoodsTransferNote goodsTransferNote = GoodsTransferNote.findById(Long.parseLong(id))
-            if (goodsTransferNote)
-            {
+            if (goodsTransferNote) {
                 goodsTransferNote.isUpdatable = true
                 goodsTransferNote.delete()
-            }
-            else
-            {
+            } else {
                 throw new ResourceNotFoundException()
             }
-        }
-        else
-        {
+        } else {
             throw new BadRequestException()
         }
     }
 
-    JSONObject getRecentByFinancialYearAndEntity(String financialYear, String entityId, billStatus)
-    {
+    JSONObject getRecentByFinancialYearAndEntity(String financialYear, String entityId, billStatus) {
 
         JSONObject jsonObject = new JSONObject()
         ArrayList<GoodsTransferNote> goodsTransferNote =
@@ -341,58 +301,46 @@ class GoodsTransferNoteService {
 
     }
 
-    def getEntityById(String id)
-    {
+    def getEntityById(String id) {
         Client client = ClientBuilder.newClient()
         WebTarget target = client.target(new Constants().API_GATEWAY)
-        try
-        {
+        try {
             Response apiResponse = target
                     .path(new Constants().ENTITY_REGISTER_SHOW + "/" + id)
                     .request(MediaType.APPLICATION_JSON_TYPE)
                     .get()
-            if (apiResponse.status == 200)
-            {
+            if (apiResponse.status == 200) {
                 JSONObject jsonObject = new JSONObject(apiResponse.readEntity(String.class))
                 return jsonObject
-            }
-            else
-            {
+            } else {
                 return null
             }
         }
-        catch (Exception ex)
-        {
+        catch (Exception ex) {
             System.err.println('Service :GoodsTransferNote , action :  getEntityById  , Ex:' + ex)
             log.error('Service :GoodsTransferNote , action :  getEntityById  , Ex:' + ex)
         }
     }
 
 
-    def getAllByCustomerId(String id,String financialYear,String entityId)
-    {
-        if (id)
-        {
-            Object a = GoodsTransferNote.findAllByCustomerIdAndFinancialYearAndEntityId(Long.parseLong(id),financialYear,Long.parseLong(entityId))
+    def getAllByCustomerId(String id, String financialYear, String entityId) {
+        if (id) {
+            Object a = GoodsTransferNote.findAllByCustomerIdAndFinancialYearAndEntityId(Long.parseLong(id), financialYear, Long.parseLong(entityId))
             println(a)
-            return GoodsTransferNote.findAllByCustomerIdAndFinancialYearAndEntityId(Long.parseLong(id),financialYear,Long.parseLong(entityId))
+            return GoodsTransferNote.findAllByCustomerIdAndFinancialYearAndEntityId(Long.parseLong(id), financialYear, Long.parseLong(entityId))
         }
     }
 
-    def cancelGTN(JSONObject jsonObject)
-    {
+    def cancelGTN(JSONObject jsonObject) {
         String id = jsonObject.get("id")
         String entityId = jsonObject.get("entityId")
         String financialYear = jsonObject.get("financialYear")
         JSONObject saleInvoice = new JSONObject()
         GoodsTransferNote goodsTransferNote = GoodsTransferNote.findById(Long.parseLong(id))
-        if (goodsTransferNote)
-        {
-            if (goodsTransferNote.financialYear.equalsIgnoreCase(financialYear) && goodsTransferNote.customerId == Long.parseLong(entityId))
-            {
+        if (goodsTransferNote) {
+            if (goodsTransferNote.financialYear.equalsIgnoreCase(financialYear) && goodsTransferNote.customerId == Long.parseLong(entityId)) {
                 ArrayList<GoodsTransferNoteProduct> goodsTransferNoteProducts = GoodsTransferNoteProduct.findAllByBillId(goodsTransferNote.id)
-                for (GoodsTransferNoteProduct goodsTransferNoteProduct : goodsTransferNoteProducts)
-                {
+                for (GoodsTransferNoteProduct goodsTransferNoteProduct : goodsTransferNoteProducts) {
                     goodsTransferNoteProduct.status = 0
                     goodsTransferNoteProduct.isUpdatable = true
                     goodsTransferNoteProduct.save(flush: true)
@@ -405,32 +353,24 @@ class GoodsTransferNoteService {
                 saleInvoice.put("products", goodsTransferNoteProducts)
                 saleInvoice.put("gtn", goodsTransferNote)
                 return saleInvoice
-            }
-            else
-            {
+            } else {
                 throw new ResourceNotFoundException()
             }
-        }
-        else
-        {
+        } else {
             throw new ResourceNotFoundException()
         }
     }
 
-    def approveGTN(JSONObject jsonObject)
-    {
+    def approveGTN(JSONObject jsonObject) {
         String id = jsonObject.get("id")
         String entityId = jsonObject.get("entityId")
         String financialYear = jsonObject.get("financialYear")
         JSONObject gtn = new JSONObject()
         GoodsTransferNote goodsTransferNote = GoodsTransferNote.findById(Long.parseLong(id))
-        if (goodsTransferNote)
-        {
-            if (goodsTransferNote.financialYear.equalsIgnoreCase(financialYear) && goodsTransferNote.entityId == Long.parseLong(entityId))
-            {
+        if (goodsTransferNote) {
+            if (goodsTransferNote.financialYear.equalsIgnoreCase(financialYear) && goodsTransferNote.entityId == Long.parseLong(entityId)) {
                 ArrayList<GoodsTransferNoteProduct> goodsTransferNoteProducts = GoodsTransferNoteProduct.findAllByBillId(goodsTransferNote.id)
-                for (GoodsTransferNoteProduct GoodsTransferNoteProduct : goodsTransferNoteProducts)
-                {
+                for (GoodsTransferNoteProduct GoodsTransferNoteProduct : goodsTransferNoteProducts) {
                     GoodsTransferNoteProduct.status = 0
                     GoodsTransferNoteProduct.isUpdatable = true
                     GoodsTransferNoteProduct.save(flush: true)
@@ -442,43 +382,42 @@ class GoodsTransferNoteService {
                 gtn.put("products", goodsTransferNoteProducts)
                 gtn.put("gtn", goodsTransferNote)
                 return gtn
-            }
-            else
-            {
+            } else {
                 throw new ResourceNotFoundException()
             }
-        }
-        else
-        {
+        } else {
             throw new ResourceNotFoundException()
         }
     }
 
 
-    def updateIRNDetails(JSONObject jsonObject)
-    {
+    def updateIRNDetails(JSONObject jsonObject) {
         String id = jsonObject.get("id")
         Date cancelledDate = null
-        if(jsonObject.has("cancelledDate")) {
+        if (jsonObject.has("cancelledDate")) {
             SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss")
             cancelledDate = sdf.parse(jsonObject.get("cancelledDate").toString())
         }
 
         GoodsTransferNote goodsTransferNote = GoodsTransferNote.findById(Long.parseLong(id))
-        if (goodsTransferNote)
-        {
+        if (goodsTransferNote) {
             goodsTransferNote.isUpdatable = true
-            if(jsonObject.has("irnDetails"))
+            if (jsonObject.has("irnDetails"))
                 goodsTransferNote.irnDetails = jsonObject.get("irnDetails").toString()
-            if(cancelledDate)
+            if (cancelledDate)
                 goodsTransferNote.cancelledDate = cancelledDate
 
-            goodsTransferNote.save(flush:true)
+            goodsTransferNote.save(flush: true)
             return goodsTransferNote
-        }
-        else
-        {
+        } else {
             throw new ResourceNotFoundException()
         }
+    }
+
+    def getGTNByDateRange(String dateRange, long entityId) {
+        Date fromDate = sdf.parse(dateRange.split("-")[0])
+        Date toDate = sdf.parse(dateRange.split("-")[1])
+        ArrayList<GoodsTransferNote> goodsTransferNotes = GoodsTransferNote.findAllByOrderDateBetweenAndEntityId(fromDate, toDate, entityId)
+        return goodsTransferNotes
     }
 }

@@ -24,7 +24,7 @@ class UrlMappings {
                 action = [GET: 'index', POST:
                         'save']
             }
-            "/creditdebitdetails/datatable(.$format)?"(controller: 'creditDebitDetails') {action = [GET: 'dataTable']}
+            "/creditdebitdetails/datatable(.$format)?"(controller: 'creditDebitDetails') { action = [GET: 'dataTable'] }
             "/creditdebitdetails/$id(.$format)?"(controller: 'creditDebitDetails') {
                 action = [GET: 'show', PUT: 'update', DELETE:
                         'delete']
@@ -38,7 +38,7 @@ class UrlMappings {
                 action = [GET: 'index', POST:
                         'save']
             }
-            "/creditdebitsettlement/datatable(.$format)?"(controller: 'creditDebitSettlement') {action = [GET: 'dataTable']}
+            "/creditdebitsettlement/datatable(.$format)?"(controller: 'creditDebitSettlement') { action = [GET: 'dataTable'] }
             "/creditdebitsettlement/$id(.$format)?"(controller: 'creditDebitSettlement') {
                 action = [GET: 'show', PUT: 'update', DELETE:
                         'delete']
@@ -52,7 +52,7 @@ class UrlMappings {
                 action = [GET: 'index', POST:
                         'save']
             }
-            "/oldsoftwarereturndetails/datatable(.$format)?"(controller: 'oldSoftwareReturnDetails') {action = [GET: 'dataTable']}
+            "/oldsoftwarereturndetails/datatable(.$format)?"(controller: 'oldSoftwareReturnDetails') { action = [GET: 'dataTable'] }
             "/oldsoftwarereturndetails/$id(.$format)?"(controller: 'oldSoftwareReturnDetails') {
                 action = [GET: 'show', PUT: 'update', DELETE:
                         'delete']
@@ -66,8 +66,10 @@ class UrlMappings {
                 action = [GET: 'index', POST:
                         'save']
             }
-            "/oldsoftwaresaledetails/datatable(.$format)?"(controller: 'oldSoftwareSaleDetails') {action = [GET:
-                                                                                                                         'dataTable']}
+            "/oldsoftwaresaledetails/datatable(.$format)?"(controller: 'oldSoftwareSaleDetails') {
+                action = [GET:
+                                  'dataTable']
+            }
             "/oldsoftwaresaledetails/$id(.$format)?"(controller: 'oldSoftwareSaleDetails') {
                 action = [GET: 'show', PUT: 'update', DELETE:
                         'delete']
@@ -81,7 +83,7 @@ class UrlMappings {
                 action = [GET: 'index', POST:
                         'save']
             }
-            "/reasonmaster/datatable(.$format)?"(controller: 'reasonMaster') {action = [GET: 'dataTable']}
+            "/reasonmaster/datatable(.$format)?"(controller: 'reasonMaster') { action = [GET: 'dataTable'] }
             "/reasonmaster/$id(.$format)?"(controller: 'reasonMaster') {
                 action = [GET: 'show', PUT: 'update', DELETE:
                         'delete']
@@ -99,8 +101,8 @@ class UrlMappings {
                 action = [GET: 'getDraftBillById']
             }
 
-            "/salebilldetails/datatable(.$format)?"(controller: 'saleBillDetails') {action = [GET: 'dataTable']}
-            "/salebilldetails/cancel(.$format)?"(controller: 'saleBillDetails') {action = [POST: 'cancelSaleBill']}
+            "/salebilldetails/datatable(.$format)?"(controller: 'saleBillDetails') { action = [GET: 'dataTable'] }
+            "/salebilldetails/cancel(.$format)?"(controller: 'saleBillDetails') { action = [POST: 'cancelSaleBill'] }
             "/salebilldetails/$id(.$format)?"(controller: 'saleBillDetails') {
                 action = [GET: 'show', PUT: 'update', DELETE:
                         'delete']
@@ -126,8 +128,6 @@ class UrlMappings {
             "/salebillbydaterange(.$format)?"(controller: 'saleBillDetails', action: 'getByDateRangeAndEntity')
 
 
-
-
             "/salebilldetails/getrecent(.$format)?"(controller: 'saleBillDetails', action: 'getRecentByFinancialYearAndEntity')
 
             "/setpaymentstatus/$id/type/$paid(.$format)?"(controller: 'saleBillDetails') {
@@ -135,9 +135,8 @@ class UrlMappings {
             }
 
             "/updatebalancebyid/id/$id/balance/$balance/status/$status"(controller: 'saleBillDetails')
-                    {action=[POST: 'updateBalance']}
-            "/updatebalanceandadjustcredits(.$format)?"(controller: 'saleBillDetails'){ action = [POST: 'adjustCredits']}
-
+                    { action = [POST: 'updateBalance'] }
+            "/updatebalanceandadjustcredits(.$format)?"(controller: 'saleBillDetails') { action = [POST: 'adjustCredits'] }
 
 
             //      Sample Conversion
@@ -147,8 +146,8 @@ class UrlMappings {
 
             "/sampleconversion/getrecent"(controller: 'sampleConversion', action: 'getRecentByFinancialYearAndEntity')
 
-            "/sampleconversion/datatable(.$format)?"(controller: 'sampleConversion') {action = [GET: 'dataTable']}
-            "/sampleconversion/cancel(.$format)?"(controller: 'sampleConversion') {action = [POST: 'cancelSampleBill']}
+            "/sampleconversion/datatable(.$format)?"(controller: 'sampleConversion') { action = [GET: 'dataTable'] }
+            "/sampleconversion/cancel(.$format)?"(controller: 'sampleConversion') { action = [POST: 'cancelSampleBill'] }
             "/sampleconversion/$id(.$format)?"(controller: 'sampleConversion') {
                 action = [GET: 'show', PUT: 'update', DELETE:
                         'delete']
@@ -165,8 +164,6 @@ class UrlMappings {
             "/sampleconversionbydaterange(.$format)?"(controller: 'sampleConversion', action: 'getByDateRangeAndEntity')
 
 
-
-
             //      Sample Conversion  details
             "/sampleconversiondetails(.$format)?"(controller: 'sampleConversionDetails') {
                 action = [GET: 'index', POST:
@@ -181,7 +178,7 @@ class UrlMappings {
                 action = [GET: 'getSaleProductDetailsOfSaleBillList']
             }
 
-            "/sampleconversiondetails/datatable(.$format)?"(controller: 'sampleConversionDetails') {action = [GET: 'dataTable']}
+            "/sampleconversiondetails/datatable(.$format)?"(controller: 'sampleConversionDetails') { action = [GET: 'dataTable'] }
             "/sampleconversiondetails/$id(.$format)?"(controller: 'sampleConversionDetails') {
                 action = [GET: 'show', PUT: 'update', DELETE:
                         'delete']
@@ -200,13 +197,9 @@ class UrlMappings {
 
 //            Sample Conversion Logs
             "/sampleconversionlogs(.$format)?"(controller: 'sampleConversionLogs') {
-                action = [GET: 'index', POST: 'save']}
-            "/sampleconversionlogs/datatable(.$format)?"(controller: 'sampleConversion') {action = [GET: 'dataTable']}
-
-
-
-
-
+                action = [GET: 'index', POST: 'save']
+            }
+            "/sampleconversionlogs/datatable(.$format)?"(controller: 'sampleConversion') { action = [GET: 'dataTable'] }
 
 
             //Sale Product Details
@@ -223,7 +216,7 @@ class UrlMappings {
                 action = [GET: 'getSaleProductDetailsOfSaleBillList']
             }
 
-            "/saleproductdetails/datatable(.$format)?"(controller: 'saleProductDetails') {action = [GET: 'dataTable']}
+            "/saleproductdetails/datatable(.$format)?"(controller: 'saleProductDetails') { action = [GET: 'dataTable'] }
             "/saleproductdetails/$id(.$format)?"(controller: 'saleProductDetails') {
                 action = [GET: 'show', PUT: 'update', DELETE:
                         'delete']
@@ -253,7 +246,7 @@ class UrlMappings {
                 action = [GET: 'getSaleProductDetailsOfSaleBillList']
             }
 
-            "/saleorderproductdetails/datatable(.$format)?"(controller: 'saleOrderProductDetails') {action = [GET: 'dataTable']}
+            "/saleorderproductdetails/datatable(.$format)?"(controller: 'saleOrderProductDetails') { action = [GET: 'dataTable'] }
             "/saleorderproductdetails/$id(.$format)?"(controller: 'saleOrderProductDetails') {
                 action = [GET: 'show', PUT: 'update', DELETE:
                         'delete']
@@ -270,11 +263,9 @@ class UrlMappings {
                     'getSaleProductDetailsbybatchAndBill')
 
 
-
-
 //            Convert to Sale Entry
             "/convert-to-sale-entry(.$format)?"(controller: 'saleOrderEntry', action: 'convertToSaleEntry')
-            
+
 
 ////            Goods transfer  note
 //            "/gtn(.$format)?"(controller: 'goodsTransferNote') {
@@ -305,7 +296,7 @@ class UrlMappings {
             "/saletransactionlog(.$format)?"(controller: 'saleTransactionLog') {
                 action = [GET: 'index', POST: 'save']
             }
-            "/saletransactionlog/datatable(.$format)?"(controller: 'saleTransactionLog') {action = [GET: 'dataTable']}
+            "/saletransactionlog/datatable(.$format)?"(controller: 'saleTransactionLog') { action = [GET: 'dataTable'] }
             "/saletransactionlog/$id(.$format)?"(controller: 'saleTransactionLog') {
                 action = [GET: 'show', PUT: 'update', DELETE:
                         'delete']
@@ -318,24 +309,23 @@ class UrlMappings {
             "/saletransportationdetails(.$format)?"(controller: 'saleTransportationDetails') {
                 action = [GET: 'index', POST: 'save']
             }
-            "/saletransportationdetails/datatable(.$format)?"(controller: 'saleTransportationDetails') {action = [GET: 'dataTable']}
+            "/saletransportationdetails/datatable(.$format)?"(controller: 'saleTransportationDetails') { action = [GET: 'dataTable'] }
             "/saletransportationdetails/$id(.$format)?"(controller: 'saleTransportationDetails') {
                 action = [GET: 'show', PUT: 'update', DELETE:
                         'delete']
             }
-            "/saletransportationdetails/billid"(controller: 'saleTransportationDetails',action: 'getByBillId')
+            "/saletransportationdetails/billid"(controller: 'saleTransportationDetails', action: 'getByBillId')
             "/saletransportationdetailsbydays/$days(.$format)?"(controller: 'saleTransportationDetails') {
                 action = [GET: 'getAllByDays']
             }
 
 
-
             //Sample Conversion Details
-            "/sampleconversiondetails(.$format)?"(controller:'sampleConversionDetails') {
+            "/sampleconversiondetails(.$format)?"(controller: 'sampleConversionDetails') {
                 action = [GET: 'index', POST: 'save']
             }
-            "/sampleconversiondetails/datatable(.$format)?"(controller:'sampleConversionDetails') {action = [GET: 'dataTable']}
-            "/sampleconversiondetails/$id(.$format)?"(controller:'sampleConversionDetails') {
+            "/sampleconversiondetails/datatable(.$format)?"(controller: 'sampleConversionDetails') { action = [GET: 'dataTable'] }
+            "/sampleconversiondetails/$id(.$format)?"(controller: 'sampleConversionDetails') {
                 action = [GET: 'show', PUT: 'update', DELETE:
                         'delete']
             }
@@ -347,25 +337,25 @@ class UrlMappings {
             }
 
             //Scheme Configuration
-            "/schemeconfiguration(.$format)?"(controller:'schemeConfiguration') {
+            "/schemeconfiguration(.$format)?"(controller: 'schemeConfiguration') {
                 action = [GET: 'index', POST: 'save']
             }
-            "/schemeconfiguration/datatable(.$format)?"(controller:'schemeConfiguration') {action = [GET: 'dataTable']}
-            "/schemeconfiguration/$id(.$format)?"(controller:'schemeConfiguration') {
+            "/schemeconfiguration/datatable(.$format)?"(controller: 'schemeConfiguration') { action = [GET: 'dataTable'] }
+            "/schemeconfiguration/$id(.$format)?"(controller: 'schemeConfiguration') {
                 action = [GET: 'show', PUT: 'update', DELETE:
                         'delete']
             }
             "/schemeconfigurationbydays/$days(.$format)?"(controller: 'schemeConfiguration') {
                 action = [GET: 'getAllByDays']
             }
-            "/schemeconfiguration/product/$productId/batch/$batchNumber(.$format)?"(controller:'schemeConfiguration', action: 'getByProductBatchNumber')
+            "/schemeconfiguration/product/$productId/batch/$batchNumber(.$format)?"(controller: 'schemeConfiguration', action: 'getByProductBatchNumber')
 
 //            Sale order Details
             "/saleorderdetails(.$format)?"(controller: 'saleOrderEntry') {
                 action = [GET: 'index', POST:
                         'saveSaleOrder']
             }
-            "/saleorderdetails/$id(.$format)?"(controller:'saleOrderEntry') {
+            "/saleorderdetails/$id(.$format)?"(controller: 'saleOrderEntry') {
                 action = [GET: 'show', PUT: 'update', DELETE:
                         'delete']
             }
@@ -373,36 +363,37 @@ class UrlMappings {
             "/saleorderdetails/getrecent(.$format)?"(controller: 'saleOrderEntry') {
                 action = [GET: 'getRecentByFinancialYearAndEntity']
             }
-            "/saleorderdetails/datatable(.$format)?"(controller: 'saleOrderEntry') {action = [GET: 'dataTable']}
-            "/saleorderdetails/cancel(.$format)?"(controller: 'saleOrderEntry') {action = [POST: 'cancelSaleOrder']}
+            "/saleorderdetails/datatable(.$format)?"(controller: 'saleOrderEntry') { action = [GET: 'dataTable'] }
+            "/saleorderdetails/cancel(.$format)?"(controller: 'saleOrderEntry') { action = [POST: 'cancelSaleOrder'] }
 
             //Sale return
-            "/salereturn(.$format)?"(controller:'saleReturn') {
+            "/salereturn(.$format)?"(controller: 'saleReturn') {
                 action = [GET: 'index', POST: 'saveSaleReturn']
             }
-            "/salereturn/$id(.$format)?"(controller:'saleReturn') {
+            "/salereturn/$id(.$format)?"(controller: 'saleReturn') {
                 action = [GET: 'show', PUT: 'update', DELETE:
                         'delete']
             }
-            "/salereturn/datatable(.$format)?"(controller: 'saleReturn') {action = [GET: 'dataTable']}
+            "/salereturn/datatable(.$format)?"(controller: 'saleReturn') { action = [GET: 'dataTable'] }
             "/saleretrununsettledbycustomer/$id(.$format)?"(controller: 'saleReturn') {
                 action = [GET: 'getAllUnsettledByCustId']
             }
             "/saleretrunsettledbycustomer/$id(.$format)?"(controller: 'saleReturn') {
                 action = [GET: 'getAllsettledByCustId']
             }
-            "/salereturn/adjustment(.$format)?"(controller: 'saleReturn'){action = [POST: 'adjustSaleReturn']}
-            "/salereturn/adjustment-details/$docId/$docType(.$format)?"(controller: 'saleReturn'){action = [GET: 'getSaleReturnAdjustmentDetailsByDocId']}
-            "/salereturn/adjustment-details-startdate/$docId/$docType(.$format)?"(controller: 'saleReturn'){action =
-                    [GET: 'getSaleReturnAdjustmentDetailsByDocIdStartDate']}
-
+            "/salereturn/adjustment(.$format)?"(controller: 'saleReturn') { action = [POST: 'adjustSaleReturn'] }
+            "/salereturn/adjustment-details/$docId/$docType(.$format)?"(controller: 'saleReturn') { action = [GET: 'getSaleReturnAdjustmentDetailsByDocId'] }
+            "/salereturn/adjustment-details-startdate/$docId/$docType(.$format)?"(controller: 'saleReturn') {
+                action =
+                        [GET: 'getSaleReturnAdjustmentDetailsByDocIdStartDate']
+            }
 
 
             "/setsalereturnstatus/$id/type/$type/adj/$adj(.$format)?"(controller: 'saleReturn') {
                 action = [POST: 'updateStatus']
             }
             "/updatereturnbalancebyid/id/$id/balance/$balance/status/$status"(controller: 'saleReturn')
-                    {action=[POST: 'updateBalance']}
+                    { action = [POST: 'updateBalance'] }
 
             "/salereturnbycustomer(.$format)?"(controller: 'saleReturn') {
                 action = [GET: 'getAllByCustomerId']
@@ -416,12 +407,11 @@ class UrlMappings {
                 action = [GET: 'getRecentByFinancialYearAndEntity']
             }
 
-            "/salereturn/datatable(.$format)?"(controller: 'saleReturn') {action = [GET: 'dataTable']}
+            "/salereturn/datatable(.$format)?"(controller: 'saleReturn') { action = [GET: 'dataTable'] }
 
-            "/salereturn/cancel(.$format)?"(controller: 'saleReturn') {action = [POST: 'cancelSaleReturn']}
+            "/salereturn/cancel(.$format)?"(controller: 'saleReturn') { action = [POST: 'cancelSaleReturn'] }
 
             "/salereturnbydaterange(.$format)?"(controller: 'saleReturn', action: 'getByDateRangeAndEntity')
-
 
 
             //Sale Return Details
@@ -437,7 +427,7 @@ class UrlMappings {
                 action = [GET: 'getSaleProductDetailsOfSaleBillList']
             }
 
-            "/salereturndetails/datatable(.$format)?"(controller: 'saleReturnDetails') {action = [GET: 'dataTable']}
+            "/salereturndetails/datatable(.$format)?"(controller: 'saleReturnDetails') { action = [GET: 'dataTable'] }
             "/salereturndetails/$id(.$format)?"(controller: 'saleReturnDetails') {
                 action = [GET: 'show', PUT: 'update', DELETE:
                         'delete']
@@ -452,11 +442,11 @@ class UrlMappings {
             "/getsalereturndetailsby-product-batch-salebill(.$format)?"(controller: 'saleReturnDetails', action: 'getSaleReturnDetailsByProductBatchSaleBill')
 
             //Temp User Log
-            "/tempuserlog(.$format)?"(controller:'tempUserLog') {
+            "/tempuserlog(.$format)?"(controller: 'tempUserLog') {
                 action = [GET: 'index', POST: 'save']
             }
-            "/tempuserlog/datatable(.$format)?"(controller:'tempUserLog') {action = [GET: 'dataTable']}
-            "/tempuserlog/$id(.$format)?"(controller:'tempUserLog') {
+            "/tempuserlog/datatable(.$format)?"(controller: 'tempUserLog') { action = [GET: 'dataTable'] }
+            "/tempuserlog/$id(.$format)?"(controller: 'tempUserLog') {
                 action = [GET: 'show', PUT: 'update', DELETE:
                         'delete']
             }
@@ -483,14 +473,15 @@ class UrlMappings {
                 action = [GET: 'index', POST:
                         'saveGTN']
             }
+            "/gtnbydaterange(.$format)?"(controller: "goodsTransferNote", action: "getGTNByDateRange")
             "/draftgtn(.$format)?"(controller: 'goodsTransferNote') {
                 action = [GET: 'getDraftBillById']
             }
             "/gtn/getrecent(.$format)?"(controller: 'goodsTransferNote', action: 'getRecentByFinancialYearAndEntity')
 
-            "/gtn/datatable(.$format)?"(controller: 'goodsTransferNote') {action = [GET: 'dataTable']}
+            "/gtn/datatable(.$format)?"(controller: 'goodsTransferNote') { action = [GET: 'dataTable'] }
 
-            "/gtn/cancel(.$format)?"(controller: 'goodsTransferNote') {action = [POST: 'cancelGTN']}
+            "/gtn/cancel(.$format)?"(controller: 'goodsTransferNote') { action = [POST: 'cancelGTN'] }
 
             "/gtn/approve(.$format)?"(controller: 'goodsTransferNote', action: 'approveGTN')
 
@@ -513,7 +504,7 @@ class UrlMappings {
             }
 
             "/updategtnbalancebyid/id/$id/balance/$balance/status/$status"(controller: 'goodsTransferNote')
-                    {action=[POST: 'updateBalance']}
+                    { action = [POST: 'updateBalance'] }
 
 
             //GTN Product Details
@@ -530,7 +521,7 @@ class UrlMappings {
                 action = [GET: 'getSaleProductDetailsOfSaleBillList']
             }
 
-            "/gtnproduct/datatable(.$format)?"(controller: 'goodsTransferNoteProduct') {action = [GET: 'dataTable']}
+            "/gtnproduct/datatable(.$format)?"(controller: 'goodsTransferNoteProduct') { action = [GET: 'dataTable'] }
             "/gtnproduct/$id(.$format)?"(controller: 'goodsTransferNoteProduct') {
                 action = [GET: 'show', PUT: 'update', DELETE:
                         'delete']
@@ -557,9 +548,9 @@ class UrlMappings {
             }
             "/deliverychallan/getrecent(.$format)?"(controller: 'deliveryChallan', action: 'getRecentByFinancialYearAndEntity')
 
-            "/deliverychallan/datatable(.$format)?"(controller: 'deliveryChallan') {action = [GET: 'dataTable']}
+            "/deliverychallan/datatable(.$format)?"(controller: 'deliveryChallan') { action = [GET: 'dataTable'] }
 
-            "/deliverychallan/cancel(.$format)?"(controller: 'deliveryChallan') {action = [POST: 'cancelDeliveryChallan']}
+            "/deliverychallan/cancel(.$format)?"(controller: 'deliveryChallan') { action = [POST: 'cancelDeliveryChallan'] }
 
             "/deliverychallan/approve(.$format)?"(controller: 'deliveryChallan', action: 'approveDeliveryChallan')
 
@@ -582,7 +573,7 @@ class UrlMappings {
             }
 
             "/updatedeliverychallanbalancebyid/id/$id/balance/$balance/status/$status"(controller: 'goodsTransferNote')
-                    {action=[POST: 'updateBalance']}
+                    { action = [POST: 'updateBalance'] }
 
 
             //GTN Product Details
@@ -598,7 +589,7 @@ class UrlMappings {
                 action = [GET: 'getSaleProductDetailsOfSaleBillList']
             }
 
-            "/deliverychallanproduct/datatable(.$format)?"(controller: 'deliveryChallanProduct') {action = [GET: 'dataTable']}
+            "/deliverychallanproduct/datatable(.$format)?"(controller: 'deliveryChallanProduct') { action = [GET: 'dataTable'] }
             "/deliverychallanproduct/$id(.$format)?"(controller: 'deliveryChallanProduct') {
                 action = [GET: 'show', PUT: 'update', DELETE:
                         'delete']
@@ -615,13 +606,11 @@ class UrlMappings {
                     'getGoodsTransferNoteProductbybatchAndBill')
 
 
-
-
 //            Stock Adjustment
             "/stockadjustmentdetails(.$format)?"(controller: 'stockAdjustmentDetails') {
                 action = [GET: 'index', POST: 'save']
             }
-            "/stockadjustmentdetails/datatable(.$format)?"(controller: 'stockAdjustmentDetails') {action = [GET: 'dataTable']}
+            "/stockadjustmentdetails/datatable(.$format)?"(controller: 'stockAdjustmentDetails') { action = [GET: 'dataTable'] }
 
 
         }

@@ -562,6 +562,7 @@ public class Links
 //    Goods Transfer Note
     public static String GTN_SAVE = "api/v1.0/sales/gtn";
     public static String GTN_SHOW = "api/v1.0/sales/gtn";
+    public static String GTN_SHOW_DATERANGE = "api/v1.0/sales/gtnbydaterange";
     public static String GTN_DATATABLE = "api/v1.0/sales/gtn/datatable";
     public static String GTN_RECENT = "api/v1.0/sales/gtn/getrecent";
     public static String GTN_CANCEL = "api/v1.0/sales/gtn/cancel";
