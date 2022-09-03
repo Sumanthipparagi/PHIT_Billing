@@ -140,6 +140,14 @@
                                    aria-controls="shipmentDetails"><i class="zmdi zmdi-truck"></i> Shipment Information
                                 </a>
                             </div>
+                            <div class="col-lg-5 mt-2">
+                                <br>
+                                <button class="btn btn-primary waves-effect float-right"
+                                   id="addNewRow" style="background-color: green;"><i class="zmdi zmdi-plus"></i> Add
+                                New
+                                Row
+                                </button>
+                            </div>
 %{--                            data-toggle="modal"--}%
 %{--                            data-target="#myModal"--}%
                             <g:if test="${tempStockArray!=null}">
@@ -478,6 +486,7 @@
     var readOnly = false;
     var scheme = null;
     var stateId = null;
+    var tempArray = [];
     $(document).ready(function () {
         $("#customerSelect").select2();
         $('#date').val(moment().format('YYYY-MM-DD'));
@@ -902,6 +911,28 @@
             stateId = $('#customerSelect option:selected').attr('data-state');
         });
 
+        document.querySelector('#addNewRow').addEventListener('click', function() {
+            // var col = hot.countRows();
+            // hot.alter('insert_row', col, 1);
+            console.log("new row add!!");
+            loadTempStockBookData();
+            setTimeout(() => {
+                console.log(tempArray);
+                if(tempArray.length!==0){
+                    if(hot.isEmptyRow(tempArray.length)){
+                        if(tempArray.length!==hot.countRows()){
+                            alert("Row already present!");
+                        }else{
+                            hot.alter('insert_row');
+                        }
+                    }else{
+                        hot.alter('insert_row');
+                    }
+                }
+            }, "1000")
+        });
+
+
         function productsDropdownRenderer(instance, td, row, col, prop, value, cellProperties) {
             var selectedId;
             for (var index = 0; index < products.length; index++) {
@@ -912,6 +943,9 @@
             }
             Handsontable.renderers.TextRenderer.apply(this, arguments);
         }
+
+
+
 
         //batch table
         batchHot = new Handsontable(batchContainer, {
@@ -1064,7 +1098,7 @@
         }
     }
 
-    var tempArray = [];
+
 
 
     function loadTempStockBookData() {
@@ -1088,11 +1122,13 @@
             },
             success: function (data) {
                 saleData = data;
+                tempArray = [];
                 for (var i = 0; i < saleData.length; i++) {
                     hot.selectCell(i, 1);
                     var sRate = saleData[i]["saleRate"];
                     var sQty = saleData[i]["userOrderQty"];
                     var fQty = saleData[i]["userOrderFreeQty"];
+                    tempArray.push(saleData[i]["productId"])
                     batchSelection(saleData[i]["productId"], null, false);
                     var batchId = saleData[i][12];
                     hot.setDataAtCell(i, 1, saleData[i]["productId"]);
@@ -1494,6 +1530,8 @@
         $("#totalQty").text(Number(totalQty).toFixed(2));
         $("#totalFQty").text(Number(totalFQty).toFixed(2));
     }
+
+
 
     function calculateTaxes() {
         var data = hot.getData();
