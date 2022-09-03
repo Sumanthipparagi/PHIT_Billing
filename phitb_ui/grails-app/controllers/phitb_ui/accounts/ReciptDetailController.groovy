@@ -384,7 +384,7 @@ class ReciptDetailController {
                 def emailSettings = EmailService.getEmailSettingsByEntity(session.getAttribute("entityId").toString())
                 JSONObject receiptEmailConfig
                 if(emailSettings!=null){
-                    if(emailSettings?.receiptEmailConfig!=null){
+                    if(emailSettings?.receiptEmailConfig!=null && emailSettings?.receiptEmailConfig!=""){
                         receiptEmailConfig = new JSONObject(emailSettings?.receiptEmailConfig)
                     }
                     if(receiptEmailConfig?.RECEIPT_AUTO_EMAIL_AFTER_SAVE == "true"){
@@ -665,7 +665,7 @@ class ReciptDetailController {
             def emailSettings = EmailService.getEmailSettingsByEntity(session.getAttribute("entityId").toString())
             JSONObject receiptEmailConfig
             if(emailSettings!=null){
-                if(emailSettings?.receiptEmailConfig!=null){
+                if(emailSettings?.receiptEmailConfig!=null && emailSettings?.receiptEmailConfig!=""){
                     receiptEmailConfig = new JSONObject(emailSettings?.receiptEmailConfig)
                 }
                 if(receiptEmailConfig?.RECEIPT_DOC_CANCELLED_SEND_MAIL == "true"){

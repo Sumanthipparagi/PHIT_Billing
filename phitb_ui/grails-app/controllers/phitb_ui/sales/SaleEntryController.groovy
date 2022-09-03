@@ -383,7 +383,7 @@ class SaleEntryController {
             def emailSettings = EmailService.getEmailSettingsByEntity(session.getAttribute("entityId").toString())
             JSONObject salesEmailConfig
             if(emailSettings!=null){
-                if(emailSettings?.salesEmailConfig!=null){
+                if(emailSettings?.salesEmailConfig!=null && emailSettings?.salesEmailConfig!=""){
                     salesEmailConfig = new JSONObject(emailSettings?.salesEmailConfig)
                 }
                 if(salesEmailConfig?.SALE_AUTO_EMAIL_AFTER_SAVE_SALE_ENTRY == "true"){
@@ -670,7 +670,7 @@ class SaleEntryController {
                 def emailSettings = EmailService.getEmailSettingsByEntity(session.getAttribute("entityId").toString())
                 JSONObject salesEmailConfig
                 if(emailSettings!=null){
-                    if(emailSettings?.salesEmailConfig!=null){
+                    if(emailSettings?.salesEmailConfig!=null && emailSettings?.salesEmailConfig!=""){
                         salesEmailConfig = new JSONObject(emailSettings?.salesEmailConfig)
                     }
                     if(salesEmailConfig?.SALE_DOC_CANCELLED_SEND_MAIL == "true"){
@@ -1282,7 +1282,7 @@ class SaleEntryController {
                 def emailSettings = EmailService.getEmailSettingsByEntity(session.getAttribute("entityId").toString())
                 JSONObject salesEmailConfig
                 if(emailSettings!=null){
-                    if(emailSettings?.salesEmailConfig!=null){
+                    if(emailSettings?.salesEmailConfig!=null && emailSettings?.salesEmailConfig!=""){
                         salesEmailConfig = new JSONObject(emailSettings?.salesEmailConfig)
                     }
                     if(salesEmailConfig?.SALE_AUTO_EMAIL_AFTER_SAVE_SALE_ENTRY == "true"){

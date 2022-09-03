@@ -124,7 +124,7 @@ class EmailSettingsController
             if (emailSettings != null)
             {
                 //sales
-                if (emailSettings?.salesEmailConfig != null)
+                if (emailSettings?.salesEmailConfig != null && emailSettings?.salesEmailConfig!= "")
                 {
                     salesConfig = new JSONObject(emailSettings?.salesEmailConfig)
                 }
@@ -134,7 +134,7 @@ class EmailSettingsController
                 }
 
                 //purchase
-                if (emailSettings?.purchaseConfig != null)
+                if (emailSettings?.purchaseConfig != null && emailSettings?.purchaseConfig!= "")
                 {
                     purchaseConfig = new JSONObject(emailSettings?.purchaseConfig)
                 }
@@ -144,7 +144,7 @@ class EmailSettingsController
                 }
 
                 //receipt
-                if (emailSettings?.receiptEmailConfig != null)
+                if (emailSettings?.receiptEmailConfig != null && emailSettings?.receiptEmailConfig!= "")
                 {
                     receiptConfig = new JSONObject(emailSettings?.receiptEmailConfig)
                 }
@@ -154,7 +154,7 @@ class EmailSettingsController
                 }
 
                 //creditEmail
-                if (emailSettings?.creditEmailConfig != null)
+                if (emailSettings?.creditEmailConfig != null && emailSettings?.creditEmailConfig!= "")
                 {
                     creditConfig = new JSONObject(emailSettings?.creditEmailConfig)
                 }
@@ -162,7 +162,7 @@ class EmailSettingsController
                 {
                     creditConfig = new JSONObject()
                 }
-                if (emailSettings?.crDbSettlementEmailConfig != null)
+                if (emailSettings?.crDbSettlementEmailConfig != null && emailSettings?.crDbSettlementEmailConfig!= "")
                 {
                     crdbConfig = new JSONObject(emailSettings?.crDbSettlementEmailConfig)
                 }
