@@ -486,7 +486,7 @@
     var readOnly = false;
     var scheme = null;
     var stateId = null;
-    var tempArray = [];
+
     $(document).ready(function () {
         $("#customerSelect").select2();
         $('#date').val(moment().format('YYYY-MM-DD'));
@@ -560,15 +560,15 @@
             ],
             hiddenColumns: true,
             hiddenColumns: {
-                <g:if test="${customer != null}">
-                columns: [15, 16, 17, 18, 19, 20, 21, 22, 23, 24]
-                </g:if>
-                <g:else>
-                // columns: [15, 16, 17, 18, 19, 20, 21]
-                columns: [15, 16, 17, 18, 19, 20, 21]
+%{--                <g:if test="${customer != null}">--}%
+%{--                columns: [15, 16, 17, 18, 19, 20, 21, 22, 23, 24]--}%
+%{--                </g:if>--}%
+%{--                <g:else>--}%
+%{--                // columns: [15, 16, 17, 18, 19, 20, 21]--}%
+%{--                columns: [15, 16, 17, 18, 19, 20, 21]--}%
 
 
-                </g:else>
+%{--                </g:else>--}%
             },
             minSpareRows: 0,
             minSpareColumns: 0,
@@ -911,25 +911,51 @@
             stateId = $('#customerSelect option:selected').attr('data-state');
         });
 
+        function checkUnsavedTemp(){
+            var data = hot.getData();
+            for(let i = 0; i < data.length; i++) {
+                console.log(data[i][15])
+                if(data[i][15] === null){
+                       return true
+                }
+            }
+            return false
+        }
         document.querySelector('#addNewRow').addEventListener('click', function() {
             // var col = hot.countRows();
             // hot.alter('insert_row', col, 1);
+            var tempArray = [];
+            var data = hot.getSourceData();
+            for(let i = 0; i < data.length; i++) {
+                if(data[i].hasOwnProperty('15')){
+                    tempArray.push(data[i]['15'])
+                }
+            }
             console.log("new row add!!");
-            loadTempStockBookData();
-            setTimeout(() => {
-                console.log(tempArray);
-                if(tempArray.length!==0){
-                    if(hot.isEmptyRow(tempArray.length)){
-                        if(tempArray.length!==hot.countRows()){
-                            alert("Row already present!");
-                        }else{
-                            hot.alter('insert_row');
-                        }
+            console.log(tempArray);
+            console.log(hot.countRows() + 1);
+            console.log(hot.getSourceData());
+            if(tempArray.length!==0){
+                console.log(checkUnsavedTemp())
+                if(checkUnsavedTemp()){
+                    alert("Table consist of unsaved data")
+                    return;
+                }
+                if(hot.isEmptyRow(tempArray.length)){
+                    if(tempArray.length===hot.countRows()-1){
+                        alert("Row already present!");
+                        return;
                     }else{
                         hot.alter('insert_row');
                     }
+                }else{
+                    hot.alter('insert_row');
                 }
-            }, "1000")
+            }else{
+                alert("Row not saved properly!")
+                return;
+            }
+
         });
 
 
@@ -1122,13 +1148,13 @@
             },
             success: function (data) {
                 saleData = data;
-                tempArray = [];
+                // tempArray = [];
                 for (var i = 0; i < saleData.length; i++) {
                     hot.selectCell(i, 1);
                     var sRate = saleData[i]["saleRate"];
                     var sQty = saleData[i]["userOrderQty"];
                     var fQty = saleData[i]["userOrderFreeQty"];
-                    tempArray.push(saleData[i]["productId"])
+                    // tempArray.push(saleData[i].id);
                     batchSelection(saleData[i]["productId"], null, false);
                     var batchId = saleData[i][12];
                     hot.setDataAtCell(i, 1, saleData[i]["productId"]);
