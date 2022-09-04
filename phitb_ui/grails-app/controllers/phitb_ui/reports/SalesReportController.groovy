@@ -439,8 +439,22 @@ class SalesReportController {
 
 
     def getCustomerLedger() {
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd")
-        SimpleDateFormat sdf2 = new SimpleDateFormat("dd-MMM-yyyy")
+        //TODO: 1. Get Sale Invoice - debit [DONE}
+        //TODO: 2. Get Sale Order - debit
+        //TODO: 3. Get Purchase Return - debit
+        //TODO: 4. Get Delivery Challan - debit
+        //TODO: 5. Get CREDIT JV - debit
+        //TODO: 6. Get Payments - debit
+        //TODO: 7. Get GTN - debit [DONE}
+        //TODO: 8. Get Sale Return - credit [DONE}
+        //TODO: 9. Get Purchase Invoice - credit
+        //TODO: 10. Get DEBIT JV - credit
+        //TODO: 11. Get Receipts - credit [DONE}
+
+
+        //sort based on date
+        SimpleDateFormat sdf1 = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss")
+        SimpleDateFormat sdf2 = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss")
         String entityId = session.getAttribute("entityId")
         String financialYear = session.getAttribute("financialYear")
         String dateRange = params.dateRange
@@ -451,26 +465,11 @@ class SalesReportController {
         JSONArray saleBills = new SalesService().getSaleBillByDateRange(dateRange, entityId)
         JSONArray saleReturn = new SalesService().getSaleReturnByDateRange(dateRange, entityId)
         JSONArray goodsTransferNotes = new SalesService().getGTNByDateRange(dateRange, entityId)
+        JSONArray receiptDetails = new AccountsService().getReceiptDetailsByDateRange(dateRange, entityId)
+        JSONArray purchaseReturns = new PurchaseService().getPurchaseRetrunByDateRange(dateRange, entityId)
+        JSONArray purchaseBills = new PurchaseService().getPurchaseBillByDateRange(dateRange, entityId)
 
-        double receiptAmount = 0.0;
-        double saleReturnBalance = 0.0
-        for (Object sr : saleReturn) {
-            if(sr?.returnStatus == "ACTIVE" && sr?.balance > 0) {
-                saleReturnBalance += sr?.totalAmount
-                JSONObject customerLedgerEntry = new JSONObject()
-                customerLedgerEntry.put("transactionDate", sr?.dateCreated)
-                customerLedgerEntry.put("transactionNumber", sr?.invoiceNumber)
-                customerLedgerEntry.put("transactionDescription", "Sale Return")
-                customerLedgerEntry.put("amount", sr?.totalAmount)
-                customerLedgerEntry.put("type", "CREDIT")
-                customerLedgerDetails.add(customerLedgerEntry)
-            }
-            else
-            {
-                println("Not Included: "+ sr.totalAmount)
-            }
-        }
-
+        //======DEBITS=======
         double saleBillBalance = 0.0
         for (Object sb : saleBills) {
             if(sb?.billStatus == "ACTIVE" && sb?.deleted == false) {
@@ -482,14 +481,6 @@ class SalesReportController {
                 customerLedgerEntry.put("amount", sb?.invoiceTotal)
                 customerLedgerEntry.put("type", "DEBIT")
                 customerLedgerDetails.add(customerLedgerEntry)
-
-               /* def receiptDetails = new AccountsService().getReceiptLogByBillTypeAndIdStartDate(sb.id.toString(), "INVS", dateRange)
-                if (receiptDetails?.status == 200) {
-                    JSONArray receipts = new JSONArray(receiptDetails.readEntity(String.class))
-                    for (Object receipt : receipts) {
-                        receiptAmount += receipt.amountPaid
-                    }
-                }*/
             }
             else
             {
@@ -514,18 +505,74 @@ class SalesReportController {
             }
         }
 
+        //======CREDITS=======
+        double saleReturnBalance = 0.0
+        for (Object sr : saleReturn) {
+            if(sr?.returnStatus == "ACTIVE" && sr?.balance > 0) {
+                saleReturnBalance += sr?.totalAmount
+                JSONObject customerLedgerEntry = new JSONObject()
+                customerLedgerEntry.put("transactionDate", sr?.dateCreated)
+                customerLedgerEntry.put("transactionNumber", sr?.invoiceNumber)
+                customerLedgerEntry.put("transactionDescription", "Sale Return")
+                customerLedgerEntry.put("amount", sr?.totalAmount)
+                customerLedgerEntry.put("type", "CREDIT")
+                customerLedgerDetails.add(customerLedgerEntry)
+            }
+            else
+            {
+                println("Not Included: "+ sr.totalAmount)
+            }
+        }
 
-        //sort based on date
-        SimpleDateFormat sdf1 = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss")
+        double receiptAmount = 0.0
+        for (Object rd : receiptDetails) {
+            if(rd?.approvedStatus == "ACTIVE" && rd?.cancelledDate == null) {
+                receiptAmount += rd?.amountPaid
+                JSONObject customerLedgerEntry = new JSONObject()
+                customerLedgerEntry.put("transactionDate", sdf1.format(sdf2.parse(rd?.dateCreated)))
+                customerLedgerEntry.put("transactionNumber", rd?.receiptId)
+                customerLedgerEntry.put("transactionDescription", "Receipt")
+                customerLedgerEntry.put("amount", rd?.amountPaid)
+                customerLedgerEntry.put("type", "CREDIT")
+                customerLedgerDetails.add(customerLedgerEntry)
+            }
+            else
+            {
+                println("Not Included: "+ rd.totalAmount)
+            }
+        }
+
+        double purchaseAmount = 0.0
+        for (Object pb : purchaseBills) {
+            if(pb?.billStatus == "ACTIVE" && pb?.cancelledDate == null) {
+                receiptAmount += pb?.totalAmount
+                JSONObject customerLedgerEntry = new JSONObject()
+                customerLedgerEntry.put("transactionDate", sdf1.format(sdf2.parse(pb?.dateCreated)))
+                customerLedgerEntry.put("transactionNumber", pb?.invoiceNumber)
+                customerLedgerEntry.put("transactionDescription", "Purchase Invoice")
+                customerLedgerEntry.put("amount", pb?.totalAmount)
+                customerLedgerEntry.put("type", "CREDIT")
+                customerLedgerDetails.add(customerLedgerEntry)
+            }
+            else
+            {
+                println("Not Included: "+ pb.totalAmount)
+            }
+        }
+
+
+        //sort by date
         customerLedgerDetails.sort(new Comparator<JSONObject>() {
             @Override
             int compare(JSONObject o1, JSONObject o2) {
                 String dateO1String = o1.get("transactionDate").toString().replace("Z", "")
                 dateO1String = dateO1String.replace("T", " ")
+                dateO1String = dateO1String.replace("/", "-")
                 Date dateO1 = sdf1.parse(dateO1String)
 
                 String dateO2String = o2.get("transactionDate").toString().replace("Z", "")
                 dateO2String = dateO2String.replace("T", " ")
+                dateO2String = dateO2String.replace("/", "-")
                 Date dateO2 = sdf1.parse(dateO2String)
 
                 return dateO1.compareTo(dateO2)

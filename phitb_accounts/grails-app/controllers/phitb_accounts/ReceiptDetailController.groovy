@@ -222,7 +222,7 @@ class ReceiptDetailController {
             JSONObject approveReceipt = receiptDetailService.approveReceipt(jsonObject)
             respond approveReceipt
         }
-        catch (org.springframework.boot.context.config.ResourceNotFoundException ex) {
+        catch (ResourceNotFoundException ex) {
             System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
             response.status = 404
         }
@@ -277,6 +277,30 @@ class ReceiptDetailController {
         else
         {
             throw new ResourceNotFoundException()
+        }
+    }
+
+    def getByDateRangeAndEntity() {
+        try {
+            String dateRange = params.dateRange
+            String entityId = params.entityId
+            if (dateRange && entityId) {
+                JSONArray receiptDetails = receiptDetailService.getByDateRangeAndEntity(dateRange, entityId)
+                respond receiptDetails, formats: ['json']
+            } else {
+                response.status = 400
+            }
+        }
+        catch (org.springframework.boot.context.config.ResourceNotFoundException ex) {
+            System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
+            response.status = 404
+        }
+        catch (BadRequestException ex) {
+            System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
+            response.status = 400
+        }
+        catch (Exception ex) {
+            System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
         }
     }
 }
