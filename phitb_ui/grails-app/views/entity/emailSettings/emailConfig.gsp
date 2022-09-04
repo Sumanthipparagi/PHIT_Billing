@@ -72,8 +72,11 @@
                 </div>
             </div>
         </div>
+
+        <h2>${entity.entityName}<br><span style="font-size: 15px;">${entity.entityType.name}</span></h2>
+
     <!-- Basic Examples -->
-        <g:if test="${emailSettings.size() == 0}">
+        <g:if test="${emailSettings == null}">
             <div class="row clearfix">
                 <div class="col-lg-12 col-md-12 col-sm-12">
                     %{--                <h2>${entity.entityName}<br><span style="font-size: 15px;">${entity.entityType.name}</span></h2>--}%
@@ -665,8 +668,7 @@
                                         </b>
                                         <select class="form-control show-tick"
                                                 name="${Constants.RECEIPT_AUTO_EMAIL_AFTER_SAVE}">
-                                            <option value="true" <g:if test="${receiptConfig?.RECEIPT_AUTO_EMAIL_AFTER_SAVE ==
-                                                    "true"}">selected</g:if>>Yes</option>
+                                            <option value="true" <g:if test="${receiptConfig?.RECEIPT_AUTO_EMAIL_AFTER_SAVE == "true"}">selected</g:if>>Yes</option>
                                             <option value="false" <g:if test="${receiptConfig?.RECEIPT_AUTO_EMAIL_AFTER_SAVE == "false"}">selected</g:if>>No</option>
                                         </select>
                                     </div>
@@ -700,11 +702,11 @@
                                     </div>
 
                                     <div class="col-lg-6 col-md-6 col-sm-12 m-b-20">
-                                        <b>If Document Cancelled, Send SMS?</b>
+                                        <b>If Document Cancelled, Send SMS?${receiptConfig.RECEIPT_AUTO_SMS_AFTER_SAVE}</b>
                                         <select class="form-control show-tick"
                                                 name="${Constants.RECEIPT_DOC_CANCELLED_SEND_SMS}">
                                             <option value="true" <g:if test="${receiptConfig?.RECEIPT_DOC_CANCELLED_SEND_SMS == "true"}">selected</g:if>>Yes</option>
-                                            <option value="false"  <g:if test="${receiptConfig?.RECEIPT_DOC_CANCELLED_SEND_SMS == "false"}">selected</g:if>>No</option>
+                                            <option value="false" <g:if test="${receiptConfig?.RECEIPT_DOC_CANCELLED_SEND_SMS == "false"}">selected</g:if>>No</option>
                                         </select>
                                     </div>
 
@@ -1011,6 +1013,7 @@
                     'Updated Successfully',
                     'success'
                 );
+                location.reload(true);
 
             },
             error: function (data) {
@@ -1039,6 +1042,7 @@
                     'success'
                 );
 
+                location.reload(true);
             },
             error: function (data) {
                 console.log("Failed");
@@ -1065,7 +1069,7 @@
                     'Updated Successfully',
                     'success'
                 );
-
+                location.reload(true);
             },
             error: function (data) {
                 console.log("Failed");
@@ -1092,7 +1096,7 @@
                     'Updated Successfully',
                     'success'
                 );
-
+                location.reload(true);
             },
             error: function (data) {
                 console.log("Failed");
@@ -1119,6 +1123,7 @@
                     'Updated Successfully',
                     'success'
                 );
+                location.reload(true);
 
             },
             error: function (data) {
@@ -1147,6 +1152,7 @@
                     'success'
                 );
 
+                location.reload(true);
             },
             error: function (data) {
                 console.log("Failed");

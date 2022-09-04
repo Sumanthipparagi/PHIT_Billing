@@ -114,41 +114,77 @@ class EmailSettingsController
     {
         try
         {
+            def entity = new EntityService().getEntityById(params.id)
             def emailSettings = EmailService.getEmailSettingsByEntity(session.getAttribute("entityId").toString())
             JSONObject salesConfig
             JSONObject purchaseConfig
             JSONObject receiptConfig
             JSONObject creditConfig
             JSONObject crdbConfig
-            if (emailSettings.size() != 0)
+            if (emailSettings != null)
             {
-                if (emailSettings?.salesEmailConfig != null)
+                //sales
+                if (emailSettings?.salesEmailConfig != null && emailSettings?.salesEmailConfig!= "")
                 {
                     salesConfig = new JSONObject(emailSettings?.salesEmailConfig)
                 }
-                if (emailSettings?.purchaseConfig)
+                else
+                {
+                    salesConfig = new JSONObject()
+                }
+
+                //purchase
+                if (emailSettings?.purchaseConfig != null && emailSettings?.purchaseConfig!= "")
                 {
                     purchaseConfig = new JSONObject(emailSettings?.purchaseConfig)
                 }
-                if (emailSettings?.receiptEmailConfig)
+                else
+                {
+                    purchaseConfig = new JSONObject()
+                }
+
+                //receipt
+                if (emailSettings?.receiptEmailConfig != null && emailSettings?.receiptEmailConfig!= "")
                 {
                     receiptConfig = new JSONObject(emailSettings?.receiptEmailConfig)
                 }
-                if (emailSettings?.creditEmailConfig)
+                else
+                {
+                    receiptConfig = new JSONObject()
+                }
+
+                //creditEmail
+                if (emailSettings?.creditEmailConfig != null && emailSettings?.creditEmailConfig!= "")
                 {
                     creditConfig = new JSONObject(emailSettings?.creditEmailConfig)
                 }
-                if (emailSettings?.crDbSettlementEmailConfig)
+                else
+                {
+                    creditConfig = new JSONObject()
+                }
+                if (emailSettings?.crDbSettlementEmailConfig != null && emailSettings?.crDbSettlementEmailConfig!= "")
                 {
                     crdbConfig = new JSONObject(emailSettings?.crDbSettlementEmailConfig)
                 }
-
+                else
+                {
+                    crdbConfig = new JSONObject()
+                }
             }
-            render(view: '/entity/emailSettings/emailConfig', model: [salesConfig   : salesConfig,
-                                                                      purchaseConfig: purchaseConfig,
-                                                                      receiptConfig : receiptConfig,
-                                                                      creditConfig  : creditConfig, crdbConfig:
-                                                                              crdbConfig,emailSettings: emailSettings])
+            else
+            {
+                salesConfig = new JSONObject()
+                purchaseConfig = new JSONObject()
+                receiptConfig = new JSONObject()
+                creditConfig = new JSONObject()
+                crdbConfig = new JSONObject()
+            }
+            render(view: '/entity/emailSettings/emailConfig', model: [salesConfig                      : salesConfig,
+                                                                      purchaseConfig                   : purchaseConfig,
+                                                                      receiptConfig                    : receiptConfig,
+                                                                      creditConfig                     : creditConfig, crdbConfig:
+                                                                              crdbConfig, emailSettings:
+                                                                              emailSettings, entity    : entity])
         }
         catch (Exception e)
         {

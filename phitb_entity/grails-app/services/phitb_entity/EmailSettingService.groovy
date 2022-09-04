@@ -114,6 +114,7 @@ class EmailSettingService
         emailSetting.smtpPassword = jsonObject.get("smtpPassword")
         emailSetting.smtpServer = jsonObject.get("smtpServer")
         emailSetting.smtpPort = jsonObject.get("smtpPort")
+        emailSetting.reportMailBtn = false
         if (jsonObject.has("emailService"))
         {
             emailSetting.emailService = jsonObject.get("emailService")
@@ -199,6 +200,7 @@ class EmailSettingService
         if (emailSetting)
         {
             emailSetting.isUpdatable = true
+            emailSetting.reportMailBtn = false
             if (jsonObject.type == "SALES")
             {
                 emailSetting.salesEmailConfig = jsonObject.toString()
@@ -234,6 +236,7 @@ class EmailSettingService
         else
         {
             emailSetting = new EmailSetting()
+            emailSetting.reportMailBtn = false
             if (jsonObject.type == "SALES")
             {
                 emailSetting.salesEmailConfig = jsonObject.toString()

@@ -5,9 +5,11 @@ import org.grails.web.json.JSONArray
 import org.grails.web.json.JSONObject
 import org.springframework.messaging.simp.SimpMessagingTemplate
 import phitb_ui.AccountsService
+import phitb_ui.Constants
 
 //import org.springframework.messaging.simp.SimpMessagingTemplate
 import phitb_ui.EInvoiceService
+import phitb_ui.EmailService
 import phitb_ui.EntityService
 import phitb_ui.InventoryService
 import phitb_ui.Links
@@ -378,6 +380,34 @@ class SaleEntryController {
             }else {
                 println("Transportation Details not found!")
             }
+            def emailSettings = EmailService.getEmailSettingsByEntity(session.getAttribute("entityId").toString())
+            JSONObject salesEmailConfig
+            if(emailSettings!=null){
+                if(emailSettings?.salesEmailConfig!=null && emailSettings?.salesEmailConfig!=""){
+                    salesEmailConfig = new JSONObject(emailSettings?.salesEmailConfig)
+                }
+                if(salesEmailConfig?.SALE_AUTO_EMAIL_AFTER_SAVE_SALE_ENTRY == "true"){
+                    def entity = new EntityService().getEntityById(params.customer)
+                    if(entity?.email!=null && entity?.email!="" && entity?.email!="NA")
+                    {
+                        def email = new EmailService().sendEmail(entity.email.trim(), "Sale Invoice saved", saleBillDetail?.invoiceNumber, saleBillDetail?.invoiceNumber, Constants.SALE_INVOICE)
+                        if (email)
+                        {
+                            println("Mail Sent..")
+                        }
+                        else
+                        {
+                            println("Mail not Sent..")
+                        }
+                    }
+                    else{
+                        println("Email not found..")
+                    }
+                }
+            }
+            else{
+                println("Entity Settings not found!!")
+            }
             JSONObject responseJson = new JSONObject()
             responseJson.put("series", series)
             responseJson.put("saleBillDetail", saleBillDetail)
@@ -634,6 +664,36 @@ class SaleEntryController {
                 if (invoice.has("irnDetails")) {
                     JSONObject irnDetails = new JSONObject(invoice.get("irnDetails").toString())
                     new EInvoiceService().cancelIRN(session, irnDetails.get("Irn").toString(), invoice.get("id").toString())
+                }
+
+                //email
+                def emailSettings = EmailService.getEmailSettingsByEntity(session.getAttribute("entityId").toString())
+                JSONObject salesEmailConfig
+                if(emailSettings!=null){
+                    if(emailSettings?.salesEmailConfig!=null && emailSettings?.salesEmailConfig!=""){
+                        salesEmailConfig = new JSONObject(emailSettings?.salesEmailConfig)
+                    }
+                    if(salesEmailConfig?.SALE_DOC_CANCELLED_SEND_MAIL == "true"){
+                        def entity = new EntityService().getEntityById(invoice?.customerId?.toString())
+                        if(entity?.email!=null && entity?.email!="" && entity?.email!="NA")
+                        {
+                            def email = new EmailService().sendEmail(entity.email.trim(), "Sale Invoice cancelled", invoice?.invoiceNumber, invoice?.invoiceNumber, Constants.SALE_INVOICE)
+                            if (email)
+                            {
+                                println("Mail Sent..")
+                            }
+                            else
+                            {
+                                println("Mail not Sent..")
+                            }
+                        }
+                        else{
+                            println("Email not found..")
+                        }
+                    }
+                }
+                else{
+                    println("Entity Settings not found!!")
                 }
                 respond jsonObject, formats: ['json']
             } else {
@@ -1218,6 +1278,35 @@ class SaleEntryController {
                     }
                 }
 
+                //email
+                def emailSettings = EmailService.getEmailSettingsByEntity(session.getAttribute("entityId").toString())
+                JSONObject salesEmailConfig
+                if(emailSettings!=null){
+                    if(emailSettings?.salesEmailConfig!=null && emailSettings?.salesEmailConfig!=""){
+                        salesEmailConfig = new JSONObject(emailSettings?.salesEmailConfig)
+                    }
+                    if(salesEmailConfig?.SALE_AUTO_EMAIL_AFTER_SAVE_SALE_ENTRY == "true"){
+                        def entity = new EntityService().getEntityById(params.customer)
+                        if(entity?.email!=null && entity?.email!="" && entity?.email!="NA")
+                        {
+                            def email = new EmailService().sendEmail(entity.email.trim(), "Sale Invoice saved", saleBillDetail?.invoiceNumber, saleBillDetail?.invoiceNumber, Constants.SALE_INVOICE)
+                            if (email)
+                            {
+                                println("Mail Sent..")
+                            }
+                            else
+                            {
+                                println("Mail not Sent..")
+                            }
+                        }
+                        else{
+                            println("Email not found..")
+                        }
+                    }
+                }
+                else{
+                    println("Entity Settings not found!!")
+                }
                 JSONObject responseJson = new JSONObject()
                 responseJson.put("series", series)
                 responseJson.put("saleBillDetail", saleBillDetail)

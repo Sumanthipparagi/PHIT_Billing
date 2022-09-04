@@ -334,6 +334,7 @@
             minRows: 1,
             height: '250',
             width: 'auto',
+            stretchH: 'all',
             rowHeights: 25,
             manualRowResize: true,
             manualColumnResize: true,

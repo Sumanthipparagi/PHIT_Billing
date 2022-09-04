@@ -140,6 +140,14 @@
                                    aria-controls="shipmentDetails"><i class="zmdi zmdi-truck"></i> Shipment Information
                                 </a>
                             </div>
+                            <div class="col-lg-5 mt-2">
+                                <br>
+                                <button class="btn btn-primary waves-effect float-right"
+                                   id="addNewRow" style="background-color: green;"><i class="zmdi zmdi-plus"></i> Add
+                                New
+                                Row
+                                </button>
+                            </div>
 %{--                            data-toggle="modal"--}%
 %{--                            data-target="#myModal"--}%
                             <g:if test="${tempStockArray!=null}">
@@ -478,6 +486,7 @@
     var readOnly = false;
     var scheme = null;
     var stateId = null;
+
     $(document).ready(function () {
         $("#customerSelect").select2();
         $('#date').val(moment().format('YYYY-MM-DD'));
@@ -551,15 +560,15 @@
             ],
             hiddenColumns: true,
             hiddenColumns: {
-                <g:if test="${customer != null}">
-                columns: [15, 16, 17, 18, 19, 20, 21, 22, 23, 24]
-                </g:if>
-                <g:else>
-                // columns: [15, 16, 17, 18, 19, 20, 21]
-                columns: [15, 16, 17, 18, 19, 20, 21]
+%{--                <g:if test="${customer != null}">--}%
+%{--                columns: [15, 16, 17, 18, 19, 20, 21, 22, 23, 24]--}%
+%{--                </g:if>--}%
+%{--                <g:else>--}%
+%{--                // columns: [15, 16, 17, 18, 19, 20, 21]--}%
+%{--                columns: [15, 16, 17, 18, 19, 20, 21]--}%
 
 
-                </g:else>
+%{--                </g:else>--}%
             },
             minSpareRows: 0,
             minSpareColumns: 0,
@@ -902,6 +911,54 @@
             stateId = $('#customerSelect option:selected').attr('data-state');
         });
 
+        function checkUnsavedTemp(){
+            var data = hot.getData();
+            for(let i = 0; i < data.length; i++) {
+                console.log(data[i][15])
+                if(data[i][15] === null){
+                       return true
+                }
+            }
+            return false
+        }
+        document.querySelector('#addNewRow').addEventListener('click', function() {
+            // var col = hot.countRows();
+            // hot.alter('insert_row', col, 1);
+            var tempArray = [];
+            var data = hot.getSourceData();
+            for(let i = 0; i < data.length; i++) {
+                if(data[i].hasOwnProperty('15')){
+                    tempArray.push(data[i]['15'])
+                }
+            }
+            console.log("new row add!!");
+            console.log(tempArray);
+            console.log(hot.countRows() + 1);
+            console.log(hot.getSourceData());
+            if(tempArray.length!==0){
+                console.log(checkUnsavedTemp())
+                if(checkUnsavedTemp()){
+                    alert("Table consist of unsaved data")
+                    return;
+                }
+                if(hot.isEmptyRow(tempArray.length)){
+                    if(tempArray.length===hot.countRows()-1){
+                        alert("Row already present!");
+                        return;
+                    }else{
+                        hot.alter('insert_row');
+                    }
+                }else{
+                    hot.alter('insert_row');
+                }
+            }else{
+                alert("Row not saved properly!")
+                return;
+            }
+
+        });
+
+
         function productsDropdownRenderer(instance, td, row, col, prop, value, cellProperties) {
             var selectedId;
             for (var index = 0; index < products.length; index++) {
@@ -912,6 +969,9 @@
             }
             Handsontable.renderers.TextRenderer.apply(this, arguments);
         }
+
+
+
 
         //batch table
         batchHot = new Handsontable(batchContainer, {
@@ -1064,7 +1124,7 @@
         }
     }
 
-    var tempArray = [];
+
 
 
     function loadTempStockBookData() {
@@ -1088,11 +1148,13 @@
             },
             success: function (data) {
                 saleData = data;
+                // tempArray = [];
                 for (var i = 0; i < saleData.length; i++) {
                     hot.selectCell(i, 1);
                     var sRate = saleData[i]["saleRate"];
                     var sQty = saleData[i]["userOrderQty"];
                     var fQty = saleData[i]["userOrderFreeQty"];
+                    // tempArray.push(saleData[i].id);
                     batchSelection(saleData[i]["productId"], null, false);
                     var batchId = saleData[i][12];
                     hot.setDataAtCell(i, 1, saleData[i]["productId"]);
@@ -1494,6 +1556,8 @@
         $("#totalQty").text(Number(totalQty).toFixed(2));
         $("#totalFQty").text(Number(totalFQty).toFixed(2));
     }
+
+
 
     function calculateTaxes() {
         var data = hot.getData();
