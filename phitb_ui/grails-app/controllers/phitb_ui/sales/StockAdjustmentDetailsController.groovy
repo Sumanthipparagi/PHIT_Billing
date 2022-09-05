@@ -124,6 +124,7 @@ class StockAdjustmentDetailsController {
                     stockBook.put("purcTradeDiscount", "0")
                     stockBook.put("supplierId", 0)
                     stockBook.put("packingDesc", pack)
+                    stockBook.put("mergedWith", "0")
                     stockBook.put("remainingQty", remainingQty.toLong())
                     stockBook.put("remainingFreeQty", remainingFreeQty.toLong())
                     stockBook.put("remainingReplQty", 0)

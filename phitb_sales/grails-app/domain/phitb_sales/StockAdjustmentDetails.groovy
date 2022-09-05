@@ -1,6 +1,9 @@
 package phitb_sales
 
-class StockAdjustmentDetails {
+import gorm.logical.delete.LogicalDelete
+
+class StockAdjustmentDetails implements Serializable, LogicalDelete<StockAdjustmentDetails>
+{
     long productId
     String batchNumber
     Date expDate
@@ -30,10 +33,11 @@ class StockAdjustmentDetails {
         sRate nullable: true
         gst nullable: true
         uuid unique: true
-        priority nullable:true
+        priority nullable: true
     }
     boolean isUpdatable
     static transients = ['isUpdatable']
+
     def beforeUpdate()
     {
         if (!this.isUpdatable)
