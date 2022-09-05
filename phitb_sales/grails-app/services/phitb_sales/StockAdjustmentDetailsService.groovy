@@ -32,7 +32,7 @@ class StockAdjustmentDetailsService
         stockAdjustment.batchNumber = jsonObject.get("batchNumber").toString()
         stockAdjustment.expDate = sdf.parse(jsonObject.get("expDate").toString())
         stockAdjustment.manfDate = sdf.parse(jsonObject.get("manfDate").toString())
-        stockAdjustment.sqty = Long.parseLong(jsonObject.get("freeQty").toString())
+        stockAdjustment.sqty = Long.parseLong(jsonObject.get("saleQty").toString())
         stockAdjustment.fqty = Long.parseLong(jsonObject.get("freeQty").toString())
         stockAdjustment.pRate = Double.parseDouble(jsonObject.get("purRate").toString())
         stockAdjustment.sRate = Double.parseDouble(jsonObject.get("saleRate").toString())

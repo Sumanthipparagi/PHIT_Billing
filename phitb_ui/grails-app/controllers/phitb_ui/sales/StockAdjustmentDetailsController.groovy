@@ -66,7 +66,7 @@ class StockAdjustmentDetailsController {
                 if(stock.has('13')){
                     originalSQty = Long.parseLong(stock.get('13').toString())
                 }
-                if(stock.has('13')){
+                if(stock.has('14')){
                     originalFQty = Long.parseLong(stock.get('14').toString())
                 }
                 JSONObject jsonObject = new JSONObject()
