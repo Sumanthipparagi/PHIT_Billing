@@ -121,8 +121,7 @@ class UrlMappings {
             "/receiptdetailsbydays/$days(.$format)?"(controller: 'receiptDetail') { action = [GET: 'getAllByDays'] }
             "/receipt-approve(.$format)?"(controller: 'receiptDetail') { action = [POST: 'approveReceipt'] }
             "/receipt/cancel(.$format)?"(controller: 'receiptDetail') { action = [POST: 'cancelReceipt'] }
-
-
+            "/receiptdetailsbydaterange(.$format)?"(controller: 'receiptDetail', action: 'getByDateRangeAndEntity')
 
             //wallet master
             "/wallet(.$format)?"(controller: 'walletMaster') { action = [GET: 'index', POST: 'save'] }

@@ -16,36 +16,30 @@ import javax.ws.rs.core.MediaType
 import javax.ws.rs.core.Response
 
 @Transactional
-class SalesService
-{
+class SalesService {
 
-    def salesServiceStatus()
-    {
+    def salesServiceStatus() {
         Client client = ClientBuilder.newClient();
         WebTarget target = client.target(new Links().API_GATEWAY);
-        try
-        {
+        try {
             Response apiResponse = target
                     .path(new Links().SALES_SERVICE_STATUS)
                     .request(MediaType.APPLICATION_JSON_TYPE)
                     .get()
             return apiResponse
         }
-        catch (Exception ex)
-        {
+        catch (Exception ex) {
             System.err.println('Service :sales , action :  salesServiceStatus  , Ex:' + ex)
             log.error('Service :sales , action :  salesServiceStatus  , Ex:' + ex)
         }
 
     }
 
-    def getSaleBillDetails()
-    {
+    def getSaleBillDetails() {
         Client client = ClientBuilder.newClient();
         WebTarget target = client.target(new Links().API_GATEWAY);
 
-        try
-        {
+        try {
             Response apiResponse = target
                     .path(new Links().SALE_BILL_SHOW)
                     .request(MediaType.APPLICATION_JSON_TYPE)
@@ -53,8 +47,7 @@ class SalesService
 
             return apiResponse
         }
-        catch (Exception ex)
-        {
+        catch (Exception ex) {
             System.err.println('Service :SalesService , action :  getProducts  , Ex:' + ex)
             log.error('Service :SalesService , action :  getProducts  , Ex:' + ex)
         }
@@ -62,8 +55,7 @@ class SalesService
     }
 
 
-    def getAllSettledBillsByCustomer(String id,String entityId, String financialYear)
-    {
+    def getAllSettledBillsByCustomer(String id, String entityId, String financialYear) {
         Client client = ClientBuilder.newClient();
         WebTarget target = client.target(new Links().API_GATEWAY);
 
@@ -77,16 +69,14 @@ class SalesService
 
             return apiResponse
         }
-        catch (Exception ex)
-        {
+        catch (Exception ex) {
             System.err.println('Service :ProductService , action :  getProducts  , Ex:' + ex)
             log.error('Service :ProductService , action :  getProducts  , Ex:' + ex)
         }
 
     }
 
-    def getAllUNSettledBillsByCustomer(String id,String entityId, String financialYear)
-    {
+    def getAllUNSettledBillsByCustomer(String id, String entityId, String financialYear) {
         Client client = ClientBuilder.newClient();
         WebTarget target = client.target(new Links().API_GATEWAY);
 
@@ -100,8 +90,7 @@ class SalesService
 
             return apiResponse
         }
-        catch (Exception ex)
-        {
+        catch (Exception ex) {
             System.err.println('Service :ProductService , action :  getProducts  , Ex:' + ex)
             log.error('Service :ProductService , action :  getProducts  , Ex:' + ex)
         }
@@ -111,12 +100,11 @@ class SalesService
     /*
     contains both sale bill and products
      */
-    def saveSaleInvoice(JSONObject jsonObject)
-    {
+
+    def saveSaleInvoice(JSONObject jsonObject) {
         Client client = ClientBuilder.newClient();
         WebTarget target = client.target(new Links().API_GATEWAY)
-        try
-        {
+        try {
             println(jsonObject)
             Response apiResponse = target
                     .path(new Links().SALE_INVOICE_SAVE)
@@ -125,8 +113,7 @@ class SalesService
             println(apiResponse)
             return apiResponse
         }
-        catch (Exception ex)
-        {
+        catch (Exception ex) {
             System.err.println('Service :salesService , action :  saveSaleInvoice  , Ex:' + ex)
             log.error('Service :salesService , action :  saveSaleInvoice  , Ex:' + ex)
         }
@@ -134,12 +121,10 @@ class SalesService
     }
 
 
-    def getSaleBillByDateRange(String dateRange, String entityId)
-    {
+    def getSaleBillByDateRange(String dateRange, String entityId) {
         Client client = ClientBuilder.newClient();
         WebTarget target = client.target(new Links().API_GATEWAY)
-        try
-        {
+        try {
             JSONObject jsonObject = new JSONObject()
             jsonObject.put("dateRange", dateRange)
             jsonObject.put("entityId", entityId)
@@ -148,26 +133,22 @@ class SalesService
                     .request(MediaType.APPLICATION_JSON_TYPE)
                     .post(Entity.entity(jsonObject.toString(), MediaType.APPLICATION_JSON_TYPE))
             println(apiResponse)
-            if(apiResponse.status == 200)
-            {
+            if (apiResponse.status == 200) {
                 JSONArray jsonArray = new JSONArray(apiResponse.readEntity(String.class))
                 return jsonArray
             }
         }
-        catch (Exception ex)
-        {
+        catch (Exception ex) {
             System.err.println('Service :salesService , action :  getSaleBillByDateRange  , Ex:' + ex)
             log.error('Service :salesService , action :  getSaleBillByDateRange  , Ex:' + ex)
         }
 
     }
 
-    def getSaleReturnByDateRange(String dateRange, String entityId)
-    {
+    def getSaleReturnByDateRange(String dateRange, String entityId) {
         Client client = ClientBuilder.newClient();
         WebTarget target = client.target(new Links().API_GATEWAY)
-        try
-        {
+        try {
             JSONObject jsonObject = new JSONObject()
             jsonObject.put("dateRange", dateRange)
             jsonObject.put("entityId", entityId)
@@ -176,14 +157,12 @@ class SalesService
                     .request(MediaType.APPLICATION_JSON_TYPE)
                     .post(Entity.entity(jsonObject.toString(), MediaType.APPLICATION_JSON_TYPE))
             println(apiResponse)
-            if(apiResponse.status == 200)
-            {
+            if (apiResponse.status == 200) {
                 JSONArray jsonArray = new JSONArray(apiResponse.readEntity(String.class))
                 return jsonArray
             }
         }
-        catch (Exception ex)
-        {
+        catch (Exception ex) {
             System.err.println('Service :salesService , action :  getSaleBillByDateRange  , Ex:' + ex)
             log.error('Service :salesService , action :  getSaleBillByDateRange  , Ex:' + ex)
         }
@@ -191,26 +170,23 @@ class SalesService
     }
 
 
-
     /*
 contains both sale bill and products
  */
-    def updateSaleInvoice(JSONObject jsonObject, String id)
-    {
+
+    def updateSaleInvoice(JSONObject jsonObject, String id) {
         Client client = ClientBuilder.newClient();
         WebTarget target = client.target(new Links().API_GATEWAY)
-        try
-        {
+        try {
             println(jsonObject)
             Response apiResponse = target
-                    .path(new Links().SALE_INVOICE_UPDATE + "/" +id)
+                    .path(new Links().SALE_INVOICE_UPDATE + "/" + id)
                     .request(MediaType.APPLICATION_JSON_TYPE)
                     .put(Entity.entity(jsonObject.toString(), MediaType.APPLICATION_JSON_TYPE))
             println(apiResponse)
             return apiResponse
         }
-        catch (Exception ex)
-        {
+        catch (Exception ex) {
             System.err.println('Service :salesService , action :  updateSaleInvoice  , Ex:' + ex)
             log.error('Service :salesService , action :  updateSaleInvoice  , Ex:' + ex)
         }
@@ -221,12 +197,11 @@ contains both sale bill and products
     /*
    contains both sale bill and products
     */
-    def saveSaleOrder(JSONObject jsonObject)
-    {
+
+    def saveSaleOrder(JSONObject jsonObject) {
         Client client = ClientBuilder.newClient();
         WebTarget target = client.target(new Links().API_GATEWAY)
-        try
-        {
+        try {
             println(jsonObject)
             Response apiResponse = target
                     .path(new Links().SALE_ORDER_SAVE)
@@ -235,20 +210,17 @@ contains both sale bill and products
             println(apiResponse)
             return apiResponse
         }
-        catch (Exception ex)
-        {
+        catch (Exception ex) {
             System.err.println('Service :salesService , action :  saveSaleInvoice  , Ex:' + ex)
             log.error('Service :salesService , action :  saveSaleInvoice  , Ex:' + ex)
         }
 
     }
 
-    def saveSaleBill(JSONObject jsonObject)
-    {
+    def saveSaleBill(JSONObject jsonObject) {
         Client client = ClientBuilder.newClient();
         WebTarget target = client.target(new Links().API_GATEWAY);
-        try
-        {
+        try {
             println(jsonObject)
             Response apiResponse = target
                     .path(new Links().SALE_BILL_SAVE)
@@ -257,43 +229,37 @@ contains both sale bill and products
             println(apiResponse)
             return apiResponse
         }
-        catch (Exception ex)
-        {
+        catch (Exception ex) {
             System.err.println('Service :saveStateMaster , action :  save  , Ex:' + ex)
             log.error('Service :saveStateMaster , action :  save  , Ex:' + ex)
         }
 
     }
 
-    def updateSaleBill(JSONObject jsonObject)
-    {
+    def updateSaleBill(JSONObject jsonObject) {
         Client client = ClientBuilder.newClient();
         WebTarget target = client.target(new Links().API_GATEWAY);
-        try
-        {
+        try {
             println(jsonObject)
             Response apiResponse = target
                     .path(new Links().SALE_BILL_UPDATE)
-                    .resolveTemplate("id",jsonObject.id)
+                    .resolveTemplate("id", jsonObject.id)
                     .request(MediaType.APPLICATION_JSON_TYPE)
                     .put(Entity.entity(jsonObject.toString(), MediaType.APPLICATION_JSON_TYPE))
             println(apiResponse)
             return apiResponse
         }
-        catch (Exception ex)
-        {
+        catch (Exception ex) {
             System.err.println('Service :saveStateMaster , action :  save  , Ex:' + ex)
             log.error('Service :saveStateMaster , action :  save  , Ex:' + ex)
         }
 
     }
 
-    def updateSaleBillIRNDetails(JSONObject jsonObject)
-    {
+    def updateSaleBillIRNDetails(JSONObject jsonObject) {
         Client client = ClientBuilder.newClient();
         WebTarget target = client.target(new Links().API_GATEWAY);
-        try
-        {
+        try {
             println(jsonObject)
             Response apiResponse = target
                     .path(new Links().SALE_BILL_UPDATE_IRN)
@@ -302,8 +268,7 @@ contains both sale bill and products
             println(apiResponse)
             return apiResponse
         }
-        catch (Exception ex)
-        {
+        catch (Exception ex) {
             System.err.println('Service :saveStateMaster , action :  save  , Ex:' + ex)
             log.error('Service :saveStateMaster , action :  save  , Ex:' + ex)
         }
@@ -311,12 +276,10 @@ contains both sale bill and products
     }
 
 
-    def saveSaleRetrun(JSONObject jsonObject)
-    {
+    def saveSaleRetrun(JSONObject jsonObject) {
         Client client = ClientBuilder.newClient();
         WebTarget target = client.target(new Links().API_GATEWAY);
-        try
-        {
+        try {
             println(jsonObject)
             Response apiResponse = target
                     .path(new Links().SALE_RETURN_SAVE)
@@ -325,20 +288,17 @@ contains both sale bill and products
             println(apiResponse)
             return apiResponse
         }
-        catch (Exception ex)
-        {
+        catch (Exception ex) {
             System.err.println('Service :saveStateMaster , action :  save  , Ex:' + ex)
             log.error('Service :saveStateMaster , action :  save  , Ex:' + ex)
         }
 
     }
 
-    def saveSaleRetrunDetails(JSONObject jsonObject)
-    {
+    def saveSaleRetrunDetails(JSONObject jsonObject) {
         Client client = ClientBuilder.newClient();
         WebTarget target = client.target(new Links().API_GATEWAY);
-        try
-        {
+        try {
             println(jsonObject)
             Response apiResponse = target
                     .path(new Links().SALE_RETURN_DETAIL_SAVE)
@@ -347,21 +307,18 @@ contains both sale bill and products
             println(apiResponse)
             return apiResponse
         }
-        catch (Exception ex)
-        {
+        catch (Exception ex) {
             System.err.println('Service :saveStateMaster , action :  save  , Ex:' + ex)
             log.error('Service :saveStateMaster , action :  save  , Ex:' + ex)
         }
 
     }
 
-    def putSaleBill(JSONObject jsonObject)
-    {
+    def putSaleBill(JSONObject jsonObject) {
         Client client = ClientBuilder.newClient().register(JacksonFeature.class)
         WebTarget target = client.target(new Links().API_GATEWAY);
 
-        try
-        {
+        try {
             Response apiResponse = target
                     .path(new Links().SALE_BILL_UPDATE)
                     .resolveTemplate("id", jsonObject.id)
@@ -370,8 +327,7 @@ contains both sale bill and products
             println(jsonObject)
             return apiResponse
         }
-        catch (Exception ex)
-        {
+        catch (Exception ex) {
             System.err.println('Service : Godown , action :  put  , Ex:' + ex)
             log.error('Service :putAccountMode , action :  put  , Ex:' + ex)
         }
@@ -379,12 +335,10 @@ contains both sale bill and products
     }
 
 
-    def saveSaleProductDetail(JSONObject jsonObject)
-    {
+    def saveSaleProductDetail(JSONObject jsonObject) {
         Client client = ClientBuilder.newClient();
         WebTarget target = client.target(new Links().API_GATEWAY);
-        try
-        {
+        try {
             println(jsonObject)
             Response apiResponse = target
                     .path(new Links().SALE_PRODUCT_SAVE)
@@ -392,19 +346,16 @@ contains both sale bill and products
                     .post(Entity.entity(jsonObject.toString(), MediaType.APPLICATION_JSON_TYPE))
             return apiResponse
         }
-        catch (Exception ex)
-        {
+        catch (Exception ex) {
             System.err.println('Service :saveStateMaster , action :  save  , Ex:' + ex)
             log.error('Service :saveStateMaster , action :  save  , Ex:' + ex)
         }
     }
 
-    def saveSaleProductDetailList(JSONArray jsonArray)
-    {
+    def saveSaleProductDetailList(JSONArray jsonArray) {
         Client client = ClientBuilder.newClient();
         WebTarget target = client.target(new Links().API_GATEWAY);
-        try
-        {
+        try {
             println(jsonArray)
             Response apiResponse = target
                     .path(new Links().SALE_PRODUCT_SAVE_LIST)
@@ -412,42 +363,35 @@ contains both sale bill and products
                     .post(Entity.entity(jsonArray.toString(), MediaType.APPLICATION_JSON_TYPE))
             return apiResponse
         }
-        catch (Exception ex)
-        {
+        catch (Exception ex) {
             System.err.println('Service :salesService , action :  saveSaleProductDetailList  , Ex:' + ex)
             log.error('Service :salesService , action :  saveSaleProductDetailList  , Ex:' + ex)
         }
     }
 
-    def updateSaleProductDetail(JSONObject jsonObject)
-    {
+    def updateSaleProductDetail(JSONObject jsonObject) {
         Client client = ClientBuilder.newClient();
         WebTarget target = client.target(new Links().API_GATEWAY);
-        try
-        {
+        try {
             println(jsonObject)
             Response apiResponse = target
                     .path(new Links().SALE_PRODUCT_UPDATE)
-                    .resolveTemplate("id",jsonObject.id)
+                    .resolveTemplate("id", jsonObject.id)
                     .request(MediaType.APPLICATION_JSON_TYPE)
                     .put(Entity.entity(jsonObject.toString(), MediaType.APPLICATION_JSON_TYPE))
             return apiResponse
         }
-        catch (Exception ex)
-        {
+        catch (Exception ex) {
             System.err.println('Service :saveStateMaster , action :  save  , Ex:' + ex)
             log.error('Service :saveStateMaster , action :  save  , Ex:' + ex)
         }
     }
 
 
-
-    def getRecentSaleBill(String financialYear, String entityId, String billStatus)
-    {
+    def getRecentSaleBill(String financialYear, String entityId, String billStatus) {
         Client client = ClientBuilder.newClient();
         WebTarget target = client.target(new Links().API_GATEWAY);
-        try
-        {
+        try {
             Response apiResponse = target
                     .path(new Links().SALE_BILL_RECENT)
                     .queryParam("financialYear", financialYear)
@@ -456,18 +400,14 @@ contains both sale bill and products
                     .request(MediaType.APPLICATION_JSON_TYPE)
                     .get()
 
-            if (apiResponse.status == 200)
-            {
+            if (apiResponse.status == 200) {
                 JSONObject jsonObject = new JSONObject(apiResponse.readEntity(String.class))
                 return jsonObject
-            }
-            else
-            {
+            } else {
                 return null
             }
         }
-        catch (Exception ex)
-        {
+        catch (Exception ex) {
             System.err.println('Service :saveStateMaster , action :  save  , Ex:' + ex)
             log.error('Service :saveStateMaster , action :  save  , Ex:' + ex)
         }
@@ -475,12 +415,10 @@ contains both sale bill and products
     }
 
 
-    def getRecentGTN(String financialYear, String entityId, String billStatus)
-    {
+    def getRecentGTN(String financialYear, String entityId, String billStatus) {
         Client client = ClientBuilder.newClient();
         WebTarget target = client.target(new Links().API_GATEWAY);
-        try
-        {
+        try {
             Response apiResponse = target
                     .path(new Links().GTN_RECENT)
                     .queryParam("financialYear", financialYear)
@@ -489,94 +427,76 @@ contains both sale bill and products
                     .request(MediaType.APPLICATION_JSON_TYPE)
                     .get()
 
-            if (apiResponse.status == 200)
-            {
+            if (apiResponse.status == 200) {
                 JSONObject jsonObject = new JSONObject(apiResponse.readEntity(String.class))
                 return jsonObject
-            }
-            else
-            {
+            } else {
                 return null
             }
         }
-        catch (Exception ex)
-        {
+        catch (Exception ex) {
             System.err.println('Service :saveStateMaster , action :  save  , Ex:' + ex)
             log.error('Service :saveStateMaster , action :  save  , Ex:' + ex)
         }
 
     }
 
-    def approveGTN(String id, String entityId, String financialYear)
-    {
+    def approveGTN(String id, String entityId, String financialYear) {
         JSONObject jsonObject = new JSONObject()
         jsonObject.put("id", id)
         jsonObject.put("entityId", entityId)
         jsonObject.put("financialYear", financialYear)
         Client client = ClientBuilder.newClient();
         WebTarget target = client.target(new Links().API_GATEWAY);
-        try
-        {
+        try {
             Response apiResponse = target
                     .path(new Links().GTN_APPROVE)
                     .request(MediaType.APPLICATION_JSON_TYPE)
                     .post(Entity.json(jsonObject))
-            if (apiResponse.status == 200)
-            {
+            if (apiResponse.status == 200) {
                 JSONObject jsonObject1 = new JSONObject(apiResponse.readEntity(String.class))
                 return jsonObject1
-            }
-            else
-            {
+            } else {
                 return null
             }
         }
-        catch (Exception ex)
-        {
+        catch (Exception ex) {
             System.err.println('Service :saveStateMaster , action :  save  , Ex:' + ex)
             log.error('Service :saveStateMaster , action :  save  , Ex:' + ex)
         }
 
     }
 
-    def cancelGTN(String id, String entityId, String financialYear)
-    {
+    def cancelGTN(String id, String entityId, String financialYear) {
         JSONObject jsonObject = new JSONObject()
         jsonObject.put("id", id)
         jsonObject.put("entityId", entityId)
         jsonObject.put("financialYear", financialYear)
         Client client = ClientBuilder.newClient();
         WebTarget target = client.target(new Links().API_GATEWAY);
-        try
-        {
+        try {
             Response apiResponse = target
                     .path(new Links().GTN_CANCEL)
                     .request(MediaType.APPLICATION_JSON_TYPE)
                     .post(Entity.json(jsonObject))
-            if (apiResponse.status == 200)
-            {
+            if (apiResponse.status == 200) {
                 JSONObject jsonObject1 = new JSONObject(apiResponse.readEntity(String.class))
                 return jsonObject1
-            }
-            else
-            {
+            } else {
                 return null
             }
         }
-        catch (Exception ex)
-        {
+        catch (Exception ex) {
             System.err.println('Service :saveStateMaster , action :  save  , Ex:' + ex)
             log.error('Service :saveStateMaster , action :  save  , Ex:' + ex)
         }
 
     }
 
-    def getRecentSaleReturn(String financialYear, String entityId)
-    {
+    def getRecentSaleReturn(String financialYear, String entityId) {
         Client client = ClientBuilder.newClient();
         WebTarget target = client.target(new Links().API_GATEWAY);
-        try
-        {
+        try {
             Response apiResponse = target
                     .path(new Links().SALE_RETURN_RECENT)
                     .queryParam("financialYear", financialYear)
@@ -584,30 +504,24 @@ contains both sale bill and products
                     .request(MediaType.APPLICATION_JSON_TYPE)
                     .get()
 
-            if (apiResponse.status == 200)
-            {
+            if (apiResponse.status == 200) {
                 JSONObject jsonObject = new JSONObject(apiResponse.readEntity(String.class))
                 return jsonObject
-            }
-            else
-            {
+            } else {
                 return null
             }
         }
-        catch (Exception ex)
-        {
+        catch (Exception ex) {
             System.err.println('Service :saveStateMaster , action :  save  , Ex:' + ex)
             log.error('Service :saveStateMaster , action :  save  , Ex:' + ex)
         }
 
     }
 
-    def getRecentSaleOrder(String financialYear, String entityId, String billStatus)
-    {
+    def getRecentSaleOrder(String financialYear, String entityId, String billStatus) {
         Client client = ClientBuilder.newClient();
         WebTarget target = client.target(new Links().API_GATEWAY);
-        try
-        {
+        try {
             Response apiResponse = target
                     .path(new Links().SALE_ORDER_RECENT)
                     .queryParam("financialYear", financialYear)
@@ -616,158 +530,124 @@ contains both sale bill and products
                     .request(MediaType.APPLICATION_JSON_TYPE)
                     .get()
 
-            if (apiResponse.status == 200)
-            {
+            if (apiResponse.status == 200) {
                 JSONObject jsonObject = new JSONObject(apiResponse.readEntity(String.class))
                 return jsonObject
-            }
-            else
-            {
+            } else {
                 return null
             }
         }
-        catch (Exception ex)
-        {
+        catch (Exception ex) {
             System.err.println('Service :saveStateMaster , action :  save  , Ex:' + ex)
             log.error('Service :saveStateMaster , action :  save  , Ex:' + ex)
         }
 
     }
 
-    def getSaleBillDetailsById(String id)
-    {
+    def getSaleBillDetailsById(String id) {
         Client client = ClientBuilder.newClient();
         WebTarget target = client.target(new Links().API_GATEWAY);
-        try
-        {
+        try {
             Response apiResponse = target
                     .path(new Links().SALE_BILL_SHOW + "/" + id)
                     .request(MediaType.APPLICATION_JSON_TYPE)
                     .get()
-            if (apiResponse.status == 200)
-            {
+            if (apiResponse.status == 200) {
                 JSONObject saleBillDetail = new JSONObject(apiResponse.readEntity(String.class))
                 return saleBillDetail
-            }
-            else
-            {
+            } else {
                 return null
             }
         }
-        catch (Exception ex)
-        {
+        catch (Exception ex) {
             System.err.println('Service :SalesService , action :  getProducts  , Ex:' + ex)
             log.error('Service :SalesService , action :  getProducts  , Ex:' + ex)
         }
 
     }
 
-    def getSaleOrderDetailsById(String id)
-    {
+    def getSaleOrderDetailsById(String id) {
         Client client = ClientBuilder.newClient();
         WebTarget target = client.target(new Links().API_GATEWAY);
-        try
-        {
+        try {
             Response apiResponse = target
                     .path(new Links().SALE_ORDER_SHOW + "/" + id)
                     .request(MediaType.APPLICATION_JSON_TYPE)
                     .get()
-            if (apiResponse.status == 200)
-            {
+            if (apiResponse.status == 200) {
                 JSONObject saleBillDetail = new JSONObject(apiResponse.readEntity(String.class))
                 return saleBillDetail
-            }
-            else
-            {
+            } else {
                 return null
             }
         }
-        catch (Exception ex)
-        {
+        catch (Exception ex) {
             System.err.println('Service :SalesService , action :  getProducts  , Ex:' + ex)
             log.error('Service :SalesService , action :  getProducts  , Ex:' + ex)
         }
 
     }
 
-    def getSaleReturnDetailsById(String id)
-    {
+    def getSaleReturnDetailsById(String id) {
         Client client = ClientBuilder.newClient();
         WebTarget target = client.target(new Links().API_GATEWAY);
-        try
-        {
+        try {
             Response apiResponse = target
                     .path(new Links().SALE_RETURN_SHOW + "/" + id)
                     .request(MediaType.APPLICATION_JSON_TYPE)
                     .get()
-            if (apiResponse.status == 200)
-            {
+            if (apiResponse.status == 200) {
                 JSONObject saleBillDetail = new JSONObject(apiResponse.readEntity(String.class))
                 return saleBillDetail
-            }
-            else
-            {
+            } else {
                 return null
             }
         }
-        catch (Exception ex)
-        {
+        catch (Exception ex) {
             System.err.println('Service :SalesService , action :  getProducts  , Ex:' + ex)
             log.error('Service :SalesService , action :  getProducts  , Ex:' + ex)
         }
 
     }
 
-    def getSaleReturnAdjustmentDetails(String docId, String docType, String dateRange = null)
-    {
+    def getSaleReturnAdjustmentDetails(String docId, String docType, String dateRange = null) {
         Client client = ClientBuilder.newClient();
         WebTarget target = client.target(new Links().API_GATEWAY)
-        try
-        {
+        try {
             Response apiResponse = target
-                    .path(new Links().SALE_RETURN_ADJUSTMENT_DETAILS +"/"+docId+"/"+docType)
+                    .path(new Links().SALE_RETURN_ADJUSTMENT_DETAILS + "/" + docId + "/" + docType)
                     .queryParam("dateRange", dateRange)
                     .request(MediaType.APPLICATION_JSON_TYPE)
                     .get()
-            if (apiResponse.status == 200)
-            {
+            if (apiResponse.status == 200) {
                 return new JSONArray(apiResponse.readEntity(String.class))
-            }
-            else
-            {
+            } else {
                 return null
             }
         }
-        catch (Exception ex)
-        {
+        catch (Exception ex) {
             System.err.println('Service :SalesService , action :  getSaleReturnAdjustment  , Ex:' + ex)
             log.error('Service :SalesService , action :  getSaleReturnAdjustment  , Ex:' + ex)
         }
 
     }
 
-    def getSaleReturnAdjustmentDetailsStartDate(String docId, String docType, String dateRange = null)
-    {
+    def getSaleReturnAdjustmentDetailsStartDate(String docId, String docType, String dateRange = null) {
         Client client = ClientBuilder.newClient();
         WebTarget target = client.target(new Links().API_GATEWAY)
-        try
-        {
+        try {
             Response apiResponse = target
-                    .path(new Links().SALE_RETURN_ADJUSTMENT_DETAILS_START_DATE +"/"+docId+"/"+docType)
+                    .path(new Links().SALE_RETURN_ADJUSTMENT_DETAILS_START_DATE + "/" + docId + "/" + docType)
                     .queryParam("dateRange", dateRange)
                     .request(MediaType.APPLICATION_JSON_TYPE)
                     .get()
-            if (apiResponse.status == 200)
-            {
+            if (apiResponse.status == 200) {
                 return new JSONArray(apiResponse.readEntity(String.class))
-            }
-            else
-            {
+            } else {
                 return null
             }
         }
-        catch (Exception ex)
-        {
+        catch (Exception ex) {
             System.err.println('Service :SalesService , action :  getSaleReturnAdjustment  , Ex:' + ex)
             log.error('Service :SalesService , action :  getSaleReturnAdjustment  , Ex:' + ex)
         }
@@ -775,57 +655,45 @@ contains both sale bill and products
     }
 
 
-    def getDraftSaleBillDetailsById(String id)
-    {
+    def getDraftSaleBillDetailsById(String id) {
         Client client = ClientBuilder.newClient();
         WebTarget target = client.target(new Links().API_GATEWAY);
-        try
-        {
+        try {
             Response apiResponse = target
                     .path(new Links().DRAFT_SALE_BILL_SHOW)
                     .queryParam("id", URLEncoder.encode(id, "UTF-8"))
                     .request(MediaType.APPLICATION_JSON_TYPE)
                     .get()
-            if (apiResponse.status == 200)
-            {
+            if (apiResponse.status == 200) {
                 JSONObject saleBillDetail = new JSONObject(apiResponse.readEntity(String.class))
                 return saleBillDetail
-            }
-            else
-            {
+            } else {
                 return null
             }
         }
-        catch (Exception ex)
-        {
+        catch (Exception ex) {
             System.err.println('Service :SalesService , action :  getDraftSaleBillDetailsById  , Ex:' + ex)
             log.error('Service :SalesService , action :  getDraftSaleBillDetailsById  , Ex:' + ex)
         }
 
     }
 
-    def getSaleProductDetailsByBill(String id)
-    {
+    def getSaleProductDetailsByBill(String id) {
         Client client = ClientBuilder.newClient();
         WebTarget target = client.target(new Links().API_GATEWAY);
-        try
-        {
+        try {
             Response apiResponse = target
-                    .path(new Links().SALE_PRODUCT_OF_BILL+"/"+id)
+                    .path(new Links().SALE_PRODUCT_OF_BILL + "/" + id)
                     .request(MediaType.APPLICATION_JSON_TYPE)
                     .get()
-            if (apiResponse.status == 200)
-            {
+            if (apiResponse.status == 200) {
                 JSONArray saleProductDetail = new JSONArray(apiResponse.readEntity(String.class))
                 return saleProductDetail
-            }
-            else
-            {
+            } else {
                 return null
             }
         }
-        catch (Exception ex)
-        {
+        catch (Exception ex) {
             System.err.println('Service :SalesService , action :  getProducts  , Ex:' + ex)
             log.error('Service :SalesService , action :  getProducts  , Ex:' + ex)
         }
@@ -833,40 +701,32 @@ contains both sale bill and products
     }
 
 
-    def getSaleProductDetailsByOrder(String id)
-    {
+    def getSaleProductDetailsByOrder(String id) {
         Client client = ClientBuilder.newClient();
         WebTarget target = client.target(new Links().API_GATEWAY);
-        try
-        {
+        try {
             Response apiResponse = target
-                    .path(new Links().SALE_PRODUCT_ORDER+"/"+id)
+                    .path(new Links().SALE_PRODUCT_ORDER + "/" + id)
                     .request(MediaType.APPLICATION_JSON_TYPE)
                     .get()
-            if (apiResponse.status == 200)
-            {
+            if (apiResponse.status == 200) {
                 JSONArray saleProductDetail = new JSONArray(apiResponse.readEntity(String.class))
                 return saleProductDetail
-            }
-            else
-            {
+            } else {
                 return null
             }
         }
-        catch (Exception ex)
-        {
+        catch (Exception ex) {
             System.err.println('Service :SalesService , action :  getProducts  , Ex:' + ex)
             log.error('Service :SalesService , action :  getProducts  , Ex:' + ex)
         }
 
     }
 
-    def showSaleOrder(JSONObject jsonObject)
-    {
+    def showSaleOrder(JSONObject jsonObject) {
         Client client = ClientBuilder.newClient();
         WebTarget target = client.target(new Links().API_GATEWAY);
-        try
-        {
+        try {
             Response apiResponse = target
                     .path(new Links().SALE_ORDER_DATATABLE)
                     .queryParam("params", URLEncoder.encode(jsonObject.toString(), "UTF-8"))
@@ -874,64 +734,51 @@ contains both sale bill and products
                     .get()
             return apiResponse
         }
-        catch (Exception ex)
-        {
+        catch (Exception ex) {
             System.err.println('Service :showSalesService , action :  show  , Ex:' + ex)
             log.error('Service :showSalesService , action :  show  , Ex:' + ex)
         }
 
     }
 
-    def getSaleRetrunDetailsByBill(String id)
-    {
+    def getSaleRetrunDetailsByBill(String id) {
         Client client = ClientBuilder.newClient();
         WebTarget target = client.target(new Links().API_GATEWAY);
-        try
-        {
+        try {
             Response apiResponse = target
-                    .path(new Links().SALE_RETURN_DETAIL_BILL+"/"+id)
+                    .path(new Links().SALE_RETURN_DETAIL_BILL + "/" + id)
                     .request(MediaType.APPLICATION_JSON_TYPE)
                     .get()
-            if (apiResponse.status == 200)
-            {
+            if (apiResponse.status == 200) {
                 JSONArray saleProductDetail = new JSONArray(apiResponse.readEntity(String.class))
                 return saleProductDetail
-            }
-            else
-            {
+            } else {
                 return null
             }
         }
-        catch (Exception ex)
-        {
+        catch (Exception ex) {
             System.err.println('Service :SalesService , action :  getProducts  , Ex:' + ex)
             log.error('Service :SalesService , action :  getProducts  , Ex:' + ex)
         }
 
     }
 
-    def getSaleProductDetailsById(String id)
-    {
+    def getSaleProductDetailsById(String id) {
         Client client = ClientBuilder.newClient();
         WebTarget target = client.target(new Links().API_GATEWAY)
-        try
-        {
+        try {
             Response apiResponse = target
-                    .path(new Links().SALE_PRODUCT_SHOW+"/"+id)
+                    .path(new Links().SALE_PRODUCT_SHOW + "/" + id)
                     .request(MediaType.APPLICATION_JSON_TYPE)
                     .get()
-            if (apiResponse.status == 200)
-            {
+            if (apiResponse.status == 200) {
                 JSONObject saleProductDetail = new JSONObject(JSON.parse(apiResponse.readEntity(String.class)) as JSONObject)
                 return saleProductDetail
-            }
-            else
-            {
+            } else {
                 return null
             }
         }
-        catch (Exception ex)
-        {
+        catch (Exception ex) {
             System.err.println('Service :SalesService , action :  getProducts  , Ex:' + ex)
             log.error('Service :SalesService , action :  getProducts  , Ex:' + ex)
         }
@@ -939,29 +786,23 @@ contains both sale bill and products
     }
 
 
-    def getSaleProductDetailsByProductId(String productId)
-    {
+    def getSaleProductDetailsByProductId(String productId) {
         Client client = ClientBuilder.newClient();
         WebTarget target = client.target(new Links().API_GATEWAY);
-        try
-        {
+        try {
             Response apiResponse = target
                     .path(new Links().SALE_PRODUCT_BY_PRODUCT)
                     .queryParam("productId", URLEncoder.encode(productId.toString(), "UTF-8"))
                     .request(MediaType.APPLICATION_JSON_TYPE)
                     .get()
-            if (apiResponse.status == 200)
-            {
+            if (apiResponse.status == 200) {
                 JSONArray saleProductDetail = new JSONArray(apiResponse.readEntity(String.class))
                 return saleProductDetail
-            }
-            else
-            {
+            } else {
                 return null
             }
         }
-        catch (Exception ex)
-        {
+        catch (Exception ex) {
             System.err.println('Service :SalesService , action :  getSaleProductDetailsByProductId  , Ex:' + ex)
             log.error('Service :SalesService , action :  getSaleProductDetailsByProductId  , Ex:' + ex)
         }
@@ -969,7 +810,7 @@ contains both sale bill and products
     }
 
 
-    def getByBillBatchesProduct(String billId,String batch,String productId) {
+    def getByBillBatchesProduct(String billId, String batch, String productId) {
         Client client = ClientBuilder.newClient();
         WebTarget target = client.target(new Links().API_GATEWAY);
 
@@ -991,8 +832,7 @@ contains both sale bill and products
 
     }
 
-    def getSaleInvoiceById(String id)
-    {
+    def getSaleInvoiceById(String id) {
         Client client = ClientBuilder.newClient();
         WebTarget target = client.target(new Links().API_GATEWAY);
 
@@ -1004,16 +844,14 @@ contains both sale bill and products
                     .get()
             return apiResponse
         }
-        catch (Exception ex)
-        {
+        catch (Exception ex) {
             System.err.println('Service :ProductService , action :  getProducts  , Ex:' + ex)
             log.error('Service :ProductService , action :  getProducts  , Ex:' + ex)
         }
 
     }
 
-    def getSaleInvoice()
-    {
+    def getSaleInvoice() {
         Client client = ClientBuilder.newClient();
         WebTarget target = client.target(new Links().API_GATEWAY);
 
@@ -1025,40 +863,33 @@ contains both sale bill and products
                     .get()
             return apiResponse
         }
-        catch (Exception ex)
-        {
+        catch (Exception ex) {
             System.err.println('Service :ProductService , action :  getProducts  , Ex:' + ex)
             log.error('Service :ProductService , action :  getProducts  , Ex:' + ex)
         }
 
     }
 
-    def getSchemeConfiguration(String productId, String batchNumber)
-    {
+    def getSchemeConfiguration(String productId, String batchNumber) {
         String url = new Links().SALE_SCHEME_CONFIG_GET_PRODUCT_BATCH
         url = url.replace("\$productId", productId)
         url = url.replace("\$batchNumber", batchNumber)
         Client client = ClientBuilder.newClient();
         WebTarget target = client.target(new Links().API_GATEWAY);
-        try
-        {
+        try {
             Response apiResponse = target
                     .path(url)
                     .request(MediaType.APPLICATION_JSON_TYPE)
                     .get()
 
-            if (apiResponse.status == 200)
-            {
+            if (apiResponse.status == 200) {
                 JSONObject jsonObject = new JSONObject(apiResponse.readEntity(String.class))
                 return jsonObject
-            }
-            else
-            {
+            } else {
                 return null
             }
         }
-        catch (Exception ex)
-        {
+        catch (Exception ex) {
             System.err.println('Service :SalesService , action :  getProducts  , Ex:' + ex)
             log.error('Service :SalesService , action :  getProducts  , Ex:' + ex)
         }
@@ -1071,20 +902,17 @@ contains both sale bill and products
      * @param link
      * @return response
      */
-    def getRequestWithId(String id, String link)
-    {
+    def getRequestWithId(String id, String link) {
         Client client = ClientBuilder.newClient();
-        try
-        {
+        try {
             WebTarget target = client.target(new Links().API_GATEWAY);
-            Response apiResponse = target.path(link+"/"+id)
+            Response apiResponse = target.path(link + "/" + id)
                     .request(MediaType.APPLICATION_JSON_TYPE)
                     .get()
             println("API Response from server :" + apiResponse?.getStatus())
             return apiResponse
         }
-        catch (Exception ex)
-        {
+        catch (Exception ex) {
             System.err.println(ex)
         }
 //        finally{
@@ -1093,11 +921,9 @@ contains both sale bill and products
     }
 
 
-    def getRequestWithIdList(ArrayList<Long> idList, String link)
-    {
+    def getRequestWithIdList(ArrayList<Long> idList, String link) {
         Client client = ClientBuilder.newClient()
-        try
-        {
+        try {
             WebTarget target = client.target(new Links().API_GATEWAY);
             Response apiResponse = target.path(link)
                     .resolveTemplate("salebillsIds", idList.toString())
@@ -1106,19 +932,16 @@ contains both sale bill and products
             println("API Response from server :" + apiResponse?.getStatus())
             return apiResponse
         }
-        catch (Exception ex)
-        {
+        catch (Exception ex) {
             System.err.println(ex)
         }
 
     }
 
-    def showSalesService(JSONObject jsonObject)
-    {
+    def showSalesService(JSONObject jsonObject) {
         Client client = ClientBuilder.newClient();
         WebTarget target = client.target(new Links().API_GATEWAY);
-        try
-        {
+        try {
             Response apiResponse = target
                     .path(new Links().SALE_BILL_DATATABLE)
                     .queryParam("params", URLEncoder.encode(jsonObject.toString(), "UTF-8"))
@@ -1126,28 +949,24 @@ contains both sale bill and products
                     .get()
             return apiResponse
         }
-        catch (Exception ex)
-        {
+        catch (Exception ex) {
             System.err.println('Service :showSalesService , action :  show  , Ex:' + ex)
             log.error('Service :showSalesService , action :  show  , Ex:' + ex)
         }
 
     }
 
-    def saveScheme(JSONObject jsonObject)
-    {
+    def saveScheme(JSONObject jsonObject) {
         Client client = ClientBuilder.newClient()
         WebTarget target = client.target(new Links().API_GATEWAY)
-        try
-        {
+        try {
             Response apiResponse = target
                     .path(new Links().SALE_SCHEME_SAVE)
                     .request(MediaType.APPLICATION_JSON_TYPE)
                     .post(Entity.entity(jsonObject.toString(), MediaType.APPLICATION_JSON_TYPE))
             return apiResponse
         }
-        catch (Exception ex)
-        {
+        catch (Exception ex) {
             System.err.println('Service :SaleService , action :  saveEntity  , Ex:' + ex)
             log.error('Service :SaleService , action :  saveEntity  , Ex:' + ex)
         }
@@ -1160,13 +979,11 @@ contains both sale bill and products
      * @param jsonObject
      * @return
      */
-    def showScheme(JSONObject jsonObject)
-    {
+    def showScheme(JSONObject jsonObject) {
         Client client = ClientBuilder.newClient();
         WebTarget target = client.target(new Links().API_GATEWAY);
 
-        try
-        {
+        try {
             Response apiResponse = target
                     .path(new Links().SALE_SCHEME_DATATABLE)
                     .queryParam("params", URLEncoder.encode(jsonObject.toString(), "UTF-8"))
@@ -1174,8 +991,7 @@ contains both sale bill and products
                     .get()
             return apiResponse
         }
-        catch (Exception ex)
-        {
+        catch (Exception ex) {
             System.err.println('Service :getAccountModes , action :  show  , Ex:' + ex)
             log.error('Service :getAccountModes , action :  show  , Ex:' + ex)
         }
@@ -1183,13 +999,11 @@ contains both sale bill and products
     }
 
 
-    def putScheme(JSONObject jsonObject)
-    {
+    def putScheme(JSONObject jsonObject) {
         Client client = ClientBuilder.newClient()
         WebTarget target = client.target(new Links().API_GATEWAY)
 
-        try
-        {
+        try {
             Response apiResponse = target
                     .path(new Links().SALE_SCHEME_UPDATE)
                     .resolveTemplate("id", jsonObject.id)
@@ -1198,8 +1012,7 @@ contains both sale bill and products
             println(jsonObject)
             return apiResponse
         }
-        catch (Exception ex)
-        {
+        catch (Exception ex) {
             System.err.println('Service : , action :  putEntity  , Ex:' + ex)
             log.error('Service :EntityService , action :  putEntity  , Ex:' + ex)
         }
@@ -1211,13 +1024,11 @@ contains both sale bill and products
      * @param jsonObject
      * @return
      */
-    def deleteScheme(JSONObject jsonObject)
-    {
+    def deleteScheme(JSONObject jsonObject) {
         Client client = ClientBuilder.newClient()
         WebTarget target = client.target(new Links().API_GATEWAY)
 
-        try
-        {
+        try {
             Response apiResponse = target
                     .path(new Links().SALE_SCHEME_DELETE)
                     .resolveTemplate("id", jsonObject.id)
@@ -1225,36 +1036,29 @@ contains both sale bill and products
                     .delete()
             return apiResponse
         }
-        catch (Exception ex)
-        {
+        catch (Exception ex) {
             System.err.println('Service :EntityService , action :  deleteEntity  , Ex:' + ex)
             log.error('Service :EntityService , action :  deleteEntity  , Ex:' + ex)
         }
 
     }
 
-    def getSchemeById(String id)
-    {
+    def getSchemeById(String id) {
         Client client = ClientBuilder.newClient()
         WebTarget target = client.target(new Links().API_GATEWAY)
-        try
-        {
+        try {
             Response apiResponse = target
                     .path(new Links().SALE_SCHEME_SHOW + "/" + id)
                     .request(MediaType.APPLICATION_JSON_TYPE)
                     .get()
-            if (apiResponse.status == 200)
-            {
+            if (apiResponse.status == 200) {
                 JSONObject jsonObject = new JSONObject(apiResponse.readEntity(String.class))
                 return jsonObject
-            }
-            else
-            {
+            } else {
                 return null
             }
         }
-        catch (Exception ex)
-        {
+        catch (Exception ex) {
             System.err.println('Service :EntityService , action :  getEntity  , Ex:' + ex)
             log.error('Service :EntityService , action :  getEntity  , Ex:' + ex)
         }
@@ -1262,28 +1066,22 @@ contains both sale bill and products
     }
 
 
-    def getReason()
-    {
+    def getReason() {
         Client client = ClientBuilder.newClient()
         WebTarget target = client.target(new Links().API_GATEWAY)
-        try
-        {
+        try {
             Response apiResponse = target
                     .path(new Links().REASON_SHOW)
                     .request(MediaType.APPLICATION_JSON_TYPE)
                     .get()
-            if (apiResponse.status == 200)
-            {
+            if (apiResponse.status == 200) {
                 JSONArray JSONArray = new JSONArray(apiResponse.readEntity(String.class))
                 return JSONArray
-            }
-            else
-            {
+            } else {
                 return null
             }
         }
-        catch (Exception ex)
-        {
+        catch (Exception ex) {
             System.err.println('Service :EntityService , action :  getEntity  , Ex:' + ex)
             log.error('Service :EntityService , action :  getEntity  , Ex:' + ex)
         }
@@ -1291,12 +1089,10 @@ contains both sale bill and products
     }
 
 
-    def getSaleBillByCustomer(String custid, String financialYear, String entityId, String dateRange = null)
-    {
+    def getSaleBillByCustomer(String custid, String financialYear, String entityId, String dateRange = null) {
         Client client = ClientBuilder.newClient()
         WebTarget target = client.target(new Links().API_GATEWAY)
-        try
-        {
+        try {
             Response apiResponse = target
                     .path(new Links().SALE_BILL_CUSTOMER)
                     .resolveTemplate("custid", custid)
@@ -1305,18 +1101,14 @@ contains both sale bill and products
                     .queryParam("dateRange", dateRange)
                     .request(MediaType.APPLICATION_JSON_TYPE)
                     .get()
-            if (apiResponse.status == 200)
-            {
+            if (apiResponse.status == 200) {
                 JSONArray jsonArray = new JSONArray(apiResponse.readEntity(String.class))
                 return jsonArray
-            }
-            else
-            {
+            } else {
                 return []
             }
         }
-        catch (Exception ex)
-        {
+        catch (Exception ex) {
             System.err.println('Service :EntityService , action :  getEntity  , Ex:' + ex)
             log.error('Service :EntityService , action :  getEntity  , Ex:' + ex)
         }
@@ -1324,12 +1116,10 @@ contains both sale bill and products
     }
 
 
-    def getSaleBillByCustomerStartDate(String custid, String financialYear, String entityId,String dateRange)
-    {
+    def getSaleBillByCustomerStartDate(String custid, String financialYear, String entityId, String dateRange) {
         Client client = ClientBuilder.newClient()
         WebTarget target = client.target(new Links().API_GATEWAY)
-        try
-        {
+        try {
             Response apiResponse = target
                     .path(new Links().SALE_BILL_CUSTOMER_START_DATE)
                     .resolveTemplate("custid", custid)
@@ -1338,18 +1128,14 @@ contains both sale bill and products
                     .queryParam("dateRange", dateRange)
                     .request(MediaType.APPLICATION_JSON_TYPE)
                     .get()
-            if (apiResponse.status == 200)
-            {
+            if (apiResponse.status == 200) {
                 JSONArray jsonArray = new JSONArray(apiResponse.readEntity(String.class))
                 return jsonArray
-            }
-            else
-            {
+            } else {
                 return []
             }
         }
-        catch (Exception ex)
-        {
+        catch (Exception ex) {
             System.err.println('Service :EntityService , action :  getEntity  , Ex:' + ex)
             log.error('Service :EntityService , action :  getEntity  , Ex:' + ex)
         }
@@ -1357,12 +1143,10 @@ contains both sale bill and products
     }
 
 
-    def getAllSaleReturnByCustomerStartdate(long id, long entityId, String financialYear, String dateRange)
-    {
+    def getAllSaleReturnByCustomerStartdate(long id, long entityId, String financialYear, String dateRange) {
         Client client = ClientBuilder.newClient()
         WebTarget target = client.target(new Links().API_GATEWAY)
-        try
-        {
+        try {
             Response apiResponse = target
                     .path(new Links().SALE_RETURN_CUSTOMER_START_DATE)
                     .queryParam("id", id)
@@ -1371,13 +1155,12 @@ contains both sale bill and products
                     .queryParam("dateRange", dateRange)
                     .request(MediaType.APPLICATION_JSON_TYPE)
                     .get()
-            if(apiResponse?.status == 200){
+            if (apiResponse?.status == 200) {
                 JSONArray jsonArray1 = new JSONArray(apiResponse.readEntity(String.class));
                 return jsonArray1
             }
         }
-        catch (Exception ex)
-        {
+        catch (Exception ex) {
             System.err.println('Service :AccountsService , action :  getAllSaleReturnByCustomer  , Ex:' + ex)
             log.error('Service :AccountsService , action :  getAllSaleReturnByCustomer  , Ex:' + ex)
         }
@@ -1393,12 +1176,10 @@ contains both sale bill and products
                     .path(new Links().GET_REASON)
                     .request(MediaType.APPLICATION_JSON_TYPE)
                     .get()
-            if(apiResponse.status == 200)
-            {
+            if (apiResponse.status == 200) {
                 JSONArray jsonArray = new JSONArray(apiResponse.readEntity(String.class))
                 return jsonArray
-            }
-            else
+            } else
                 return null
         }
         catch (Exception ex) {
@@ -1407,8 +1188,7 @@ contains both sale bill and products
         }
     }
 
-    def cancelInvoice(String id, String entityId, String financialYear, String userId)
-    {
+    def cancelInvoice(String id, String entityId, String financialYear, String userId) {
         JSONObject jsonObject = new JSONObject()
         jsonObject.put("id", id)
         jsonObject.put("entityId", entityId)
@@ -1421,12 +1201,10 @@ contains both sale bill and products
                     .path(new Links().SALE_BILL_CANCEL)
                     .request(MediaType.APPLICATION_JSON_TYPE)
                     .post(Entity.json(jsonObject))
-            if(apiResponse.status == 200)
-            {
+            if (apiResponse.status == 200) {
                 JSONObject jsonObject1 = new JSONObject(apiResponse.readEntity(String.class))
                 return jsonObject1
-            }
-            else
+            } else
                 return null
         }
         catch (Exception ex) {
@@ -1435,8 +1213,7 @@ contains both sale bill and products
         }
     }
 
-    def cancelOrder(String id, String entityId, String financialYear)
-    {
+    def cancelOrder(String id, String entityId, String financialYear) {
         JSONObject jsonObject = new JSONObject()
         jsonObject.put("id", id)
         jsonObject.put("entityId", entityId)
@@ -1448,12 +1225,10 @@ contains both sale bill and products
                     .path(new Links().SALE_ORDER_CANCEL)
                     .request(MediaType.APPLICATION_JSON_TYPE)
                     .post(Entity.json(jsonObject))
-            if(apiResponse.status == 200)
-            {
+            if (apiResponse.status == 200) {
                 JSONObject jsonObject1 = new JSONObject(apiResponse.readEntity(String.class))
                 return jsonObject1
-            }
-            else
+            } else
                 return null
         }
         catch (Exception ex) {
@@ -1462,8 +1237,7 @@ contains both sale bill and products
         }
     }
 
-    def cancelReturns(String id, String entityId, String financialYear)
-    {
+    def cancelReturns(String id, String entityId, String financialYear) {
         JSONObject jsonObject = new JSONObject()
         jsonObject.put("id", id)
         jsonObject.put("entityId", entityId)
@@ -1475,12 +1249,10 @@ contains both sale bill and products
                     .path(new Links().SALE_RETURN_CANCEL)
                     .request(MediaType.APPLICATION_JSON_TYPE)
                     .post(Entity.json(jsonObject))
-            if(apiResponse.status == 200)
-            {
+            if (apiResponse.status == 200) {
                 JSONObject jsonObject1 = new JSONObject(apiResponse.readEntity(String.class))
                 return jsonObject1
-            }
-            else
+            } else
                 return null
         }
         catch (Exception ex) {
@@ -1496,7 +1268,7 @@ contains both sale bill and products
         try {
             Response apiResponse = target
                     .path(new Links().SALE_PRODUCT_DELETE)
-                    .resolveTemplate("id",id)
+                    .resolveTemplate("id", id)
                     .request(MediaType.APPLICATION_JSON_TYPE)
                     .delete()
             return apiResponse
@@ -1509,8 +1281,7 @@ contains both sale bill and products
     }
 
 
-    def getReturnDetailsByBatchSalebillProductId(String productId, String batch, String saleBill)
-    {
+    def getReturnDetailsByBatchSalebillProductId(String productId, String batch, String saleBill) {
         Client client = ClientBuilder.newClient();
         WebTarget target = client.target(new Links().API_GATEWAY);
         try {
@@ -1530,12 +1301,10 @@ contains both sale bill and products
         }
     }
 
-    def salesReturnDatatable(JSONObject jsonObject)
-    {
+    def salesReturnDatatable(JSONObject jsonObject) {
         Client client = ClientBuilder.newClient();
         WebTarget target = client.target(new Links().API_GATEWAY);
-        try
-        {
+        try {
             Response apiResponse = target
                     .path(new Links().SALE_RETURN_DATATABLE)
                     .queryParam("params", URLEncoder.encode(jsonObject.toString(), "UTF-8"))
@@ -1543,8 +1312,7 @@ contains both sale bill and products
                     .get()
             return apiResponse
         }
-        catch (Exception ex)
-        {
+        catch (Exception ex) {
             System.err.println('Service :showSalesService , action :  show  , Ex:' + ex)
             log.error('Service :showSalesService , action :  show  , Ex:' + ex)
         }
@@ -1555,12 +1323,11 @@ contains both sale bill and products
     /*
  contains both sale bill and products
   */
-    def saveGTN(JSONObject jsonObject)
-    {
+
+    def saveGTN(JSONObject jsonObject) {
         Client client = ClientBuilder.newClient();
         WebTarget target = client.target(new Links().API_GATEWAY)
-        try
-        {
+        try {
             println(jsonObject)
             Response apiResponse = target
                     .path(new Links().GTN_SAVE)
@@ -1569,20 +1336,17 @@ contains both sale bill and products
             println(apiResponse)
             return apiResponse
         }
-        catch (Exception ex)
-        {
+        catch (Exception ex) {
             System.err.println('Service :salesService , action :  saveSaleInvoice  , Ex:' + ex)
             log.error('Service :salesService , action :  saveSaleInvoice  , Ex:' + ex)
         }
     }
 
 
-    def showGTN(JSONObject jsonObject)
-    {
+    def showGTN(JSONObject jsonObject) {
         Client client = ClientBuilder.newClient();
         WebTarget target = client.target(new Links().API_GATEWAY);
-        try
-        {
+        try {
             Response apiResponse = target
                     .path(new Links().GTN_DATATABLE)
                     .queryParam("params", URLEncoder.encode(jsonObject.toString(), "UTF-8"))
@@ -1590,93 +1354,96 @@ contains both sale bill and products
                     .get()
             return apiResponse
         }
-        catch (Exception ex)
-        {
+        catch (Exception ex) {
             System.err.println('Service :showSalesService , action :  show  , Ex:' + ex)
             log.error('Service :showSalesService , action :  show  , Ex:' + ex)
         }
 
     }
 
-    def getGTNDetailsById(String id)
-    {
+    def getGTNDetailsById(String id) {
         Client client = ClientBuilder.newClient();
         WebTarget target = client.target(new Links().API_GATEWAY);
-        try
-        {
+        try {
             Response apiResponse = target
                     .path(new Links().GTN_SHOW + "/" + id)
                     .request(MediaType.APPLICATION_JSON_TYPE)
                     .get()
-            if (apiResponse.status == 200)
-            {
+            if (apiResponse.status == 200) {
                 JSONObject saleBillDetail = new JSONObject(apiResponse.readEntity(String.class))
                 return saleBillDetail
-            }
-            else
-            {
+            } else {
                 return null
             }
         }
-        catch (Exception ex)
-        {
+        catch (Exception ex) {
             System.err.println('Service :SalesService , action :  getProducts  , Ex:' + ex)
             log.error('Service :SalesService , action :  getProducts  , Ex:' + ex)
         }
 
     }
 
-    def getgtnProductDetailsByGtn(String id)
-    {
+    def getGTNByDateRange(String dateRange, String entityId) {
         Client client = ClientBuilder.newClient();
-        WebTarget target = client.target(new Links().API_GATEWAY);
-        try
-        {
+        WebTarget target = client.target(new Links().API_GATEWAY)
+        try {
             Response apiResponse = target
-                    .path(new Links().GTN_PRODUCTS_BY_GTN+"/"+id)
+                    .path(new Links().GTN_SHOW_DATERANGE)
+                    .queryParam("dateRange", dateRange)
+                    .queryParam("entityId", entityId)
                     .request(MediaType.APPLICATION_JSON_TYPE)
                     .get()
-            if (apiResponse.status == 200)
-            {
+            println(apiResponse)
+            if (apiResponse.status == 200) {
+                JSONArray jsonArray = new JSONArray(apiResponse.readEntity(String.class))
+                return jsonArray
+            }
+        }
+        catch (Exception ex) {
+            System.err.println('Service :salesService , action :  getGTNByDateRange  , Ex:' + ex)
+            log.error('Service :salesService , action :  getGTNByDateRange  , Ex:' + ex)
+        }
+
+    }
+
+    def getgtnProductDetailsByGtn(String id) {
+        Client client = ClientBuilder.newClient();
+        WebTarget target = client.target(new Links().API_GATEWAY);
+        try {
+            Response apiResponse = target
+                    .path(new Links().GTN_PRODUCTS_BY_GTN + "/" + id)
+                    .request(MediaType.APPLICATION_JSON_TYPE)
+                    .get()
+            if (apiResponse.status == 200) {
                 JSONArray saleProductDetail = new JSONArray(apiResponse.readEntity(String.class))
                 return saleProductDetail
-            }
-            else
-            {
+            } else {
                 return null
             }
         }
-        catch (Exception ex)
-        {
+        catch (Exception ex) {
             System.err.println('Service :SalesService , action :  getProducts  , Ex:' + ex)
             log.error('Service :SalesService , action :  getProducts  , Ex:' + ex)
         }
 
     }
 
-    def getGTNById(String id)
-    {
+    def getGTNById(String id) {
         Client client = ClientBuilder.newClient();
         WebTarget target = client.target(new Links().API_GATEWAY);
-
         try {
-
             Response apiResponse = target
                     .path(new Links().GTN_SHOW + "/" + id)
                     .request(MediaType.APPLICATION_JSON_TYPE)
                     .get()
-            if (apiResponse.status == 200)
-            {
+            if (apiResponse.status == 200) {
                 JSONObject gtn = new JSONObject(apiResponse.readEntity(String.class))
                 return gtn
-            }
-            else
-            {
+            } else {
                 return null
             }
         }
-        catch (Exception ex)
-        {
+        catch (Exception ex) {
             System.err.println('Service :ProductService , action :  getProducts  , Ex:' + ex)
             log.error('Service :ProductService , action :  getProducts  , Ex:' + ex)
         }
@@ -1684,23 +1451,20 @@ contains both sale bill and products
 
 
     //    Save Sample Conversion logs
-    def saveSampleConversionLogs(JSONObject jsonObject)
-    {
+    def saveSampleConversionLogs(JSONObject jsonObject) {
         Client client = ClientBuilder.newClient()
         WebTarget target = client.target(new Links().API_GATEWAY)
 
-        try
-        {
+        try {
             println(jsonObject)
             Response apiResponse = target
                     .path(new Links().SAMPLE_CONVERSION_LOGS)
                     .request(MediaType.APPLICATION_JSON_TYPE)
-                    .post(Entity.entity(jsonObject.toString(),MediaType.APPLICATION_JSON_TYPE))
+                    .post(Entity.entity(jsonObject.toString(), MediaType.APPLICATION_JSON_TYPE))
             println(apiResponse)
             return apiResponse
         }
-        catch (Exception ex)
-        {
+        catch (Exception ex) {
             System.err.println('Service :saveStateMaster , action :  save  , Ex:' + ex)
             log.error('Service :saveStateMaster , action :  save  , Ex:' + ex)
         }
@@ -1711,12 +1475,11 @@ contains both sale bill and products
     /*
 contains both sale bill and products
 */
-    def saveSampleInvocing(JSONObject jsonObject)
-    {
+
+    def saveSampleInvocing(JSONObject jsonObject) {
         Client client = ClientBuilder.newClient();
         WebTarget target = client.target(new Links().API_GATEWAY)
-        try
-        {
+        try {
             println(jsonObject)
             Response apiResponse = target
                     .path(new Links().SAMPLE_INVOICE_SAVE)
@@ -1725,20 +1488,17 @@ contains both sale bill and products
             println(apiResponse)
             return apiResponse
         }
-        catch (Exception ex)
-        {
+        catch (Exception ex) {
             System.err.println('Service :salesService , action :  saveSaleInvoice  , Ex:' + ex)
             log.error('Service :salesService , action :  saveSaleInvoice  , Ex:' + ex)
         }
     }
 
 
-    def getRecentSampleInvoice(String financialYear, String entityId, String billStatus)
-    {
+    def getRecentSampleInvoice(String financialYear, String entityId, String billStatus) {
         Client client = ClientBuilder.newClient();
         WebTarget target = client.target(new Links().API_GATEWAY);
-        try
-        {
+        try {
             Response apiResponse = target
                     .path(new Links().SAMPLE_INVOICE_RECENT)
                     .queryParam("financialYear", financialYear)
@@ -1747,18 +1507,14 @@ contains both sale bill and products
                     .request(MediaType.APPLICATION_JSON_TYPE)
                     .get()
 
-            if (apiResponse.status == 200)
-            {
+            if (apiResponse.status == 200) {
                 JSONObject jsonObject = new JSONObject(apiResponse.readEntity(String.class))
                 return jsonObject
-            }
-            else
-            {
+            } else {
                 return null
             }
         }
-        catch (Exception ex)
-        {
+        catch (Exception ex) {
             System.err.println('Service :saveStateMaster , action :  save  , Ex:' + ex)
             log.error('Service :saveStateMaster , action :  save  , Ex:' + ex)
         }
@@ -1766,68 +1522,54 @@ contains both sale bill and products
     }
 
 
-    def getSampleBillDetailsById(String id)
-    {
+    def getSampleBillDetailsById(String id) {
         Client client = ClientBuilder.newClient();
         WebTarget target = client.target(new Links().API_GATEWAY);
-        try
-        {
+        try {
             Response apiResponse = target
                     .path(new Links().SAMPLE_INVOICE_SHOW + "/" + id)
                     .request(MediaType.APPLICATION_JSON_TYPE)
                     .get()
-            if (apiResponse.status == 200)
-            {
+            if (apiResponse.status == 200) {
                 JSONObject sampleInvoiceDetail = new JSONObject(apiResponse.readEntity(String.class))
                 return sampleInvoiceDetail
-            }
-            else
-            {
+            } else {
                 return null
             }
         }
-        catch (Exception ex)
-        {
+        catch (Exception ex) {
             System.err.println('Service :SalesService , action :  getProducts  , Ex:' + ex)
             log.error('Service :SalesService , action :  getProducts  , Ex:' + ex)
         }
     }
 
 
-    def getSampleProductDetailsByBill(String id)
-    {
+    def getSampleProductDetailsByBill(String id) {
         Client client = ClientBuilder.newClient();
         WebTarget target = client.target(new Links().API_GATEWAY);
-        try
-        {
+        try {
             Response apiResponse = target
-                    .path(new Links().SAMPLE_INVOICE_OF_BILL+"/"+id)
+                    .path(new Links().SAMPLE_INVOICE_OF_BILL + "/" + id)
                     .request(MediaType.APPLICATION_JSON_TYPE)
                     .get()
-            if (apiResponse.status == 200)
-            {
+            if (apiResponse.status == 200) {
                 JSONArray sampleProductDetail = new JSONArray(apiResponse.readEntity(String.class))
                 return sampleProductDetail
-            }
-            else
-            {
+            } else {
                 return null
             }
         }
-        catch (Exception ex)
-        {
+        catch (Exception ex) {
             System.err.println('Service :SalesService , action :  getProducts  , Ex:' + ex)
             log.error('Service :SalesService , action :  getProducts  , Ex:' + ex)
         }
 
     }
 
-    def showSampleInvoice(JSONObject jsonObject)
-    {
+    def showSampleInvoice(JSONObject jsonObject) {
         Client client = ClientBuilder.newClient();
         WebTarget target = client.target(new Links().API_GATEWAY);
-        try
-        {
+        try {
             Response apiResponse = target
                     .path(new Links().SAMPLE_INVOICE_DATATABLE)
                     .queryParam("params", URLEncoder.encode(jsonObject.toString(), "UTF-8"))
@@ -1835,15 +1577,13 @@ contains both sale bill and products
                     .get()
             return apiResponse
         }
-        catch (Exception ex)
-        {
+        catch (Exception ex) {
             System.err.println('Service :showSalesService , action :  show  , Ex:' + ex)
             log.error('Service :showSalesService , action :  show  , Ex:' + ex)
         }
     }
 
-    def cancelSampleInvoice(String id, String entityId, String financialYear)
-    {
+    def cancelSampleInvoice(String id, String entityId, String financialYear) {
         JSONObject jsonObject = new JSONObject()
         jsonObject.put("id", id)
         jsonObject.put("entityId", entityId)
@@ -1855,12 +1595,10 @@ contains both sale bill and products
                     .path(new Links().SAMPLE_INVOICE_CANCEL)
                     .request(MediaType.APPLICATION_JSON_TYPE)
                     .post(Entity.json(jsonObject))
-            if(apiResponse.status == 200)
-            {
+            if (apiResponse.status == 200) {
                 JSONObject jsonObject1 = new JSONObject(apiResponse.readEntity(String.class))
                 return jsonObject1
-            }
-            else
+            } else
                 return null
         }
         catch (Exception ex) {
@@ -1870,12 +1608,10 @@ contains both sale bill and products
     }
 
 
-    def convertToSaleEntry(JSONObject jsonObject)
-    {
+    def convertToSaleEntry(JSONObject jsonObject) {
         Client client = ClientBuilder.newClient();
         WebTarget target = client.target(new Links().API_GATEWAY)
-        try
-        {
+        try {
             Response apiResponse = target
                     .path(new Links().SALE_ORDER_TO_SALE_ENTRY)
                     .request(MediaType.APPLICATION_JSON_TYPE)
@@ -1883,20 +1619,17 @@ contains both sale bill and products
             println(apiResponse)
             return apiResponse
         }
-        catch (Exception ex)
-        {
+        catch (Exception ex) {
             System.err.println('Service :salesService , action :  saveSaleInvoice  , Ex:' + ex)
             log.error('Service :salesService , action :  saveSaleInvoice  , Ex:' + ex)
         }
     }
 
 
-    def saveSaleTransportation(JSONObject jsonObject)
-    {
+    def saveSaleTransportation(JSONObject jsonObject) {
         Client client = ClientBuilder.newClient();
         WebTarget target = client.target(new Links().API_GATEWAY)
-        try
-        {
+        try {
             println(jsonObject)
             Response apiResponse = target
                     .path(new Links().SALE_TRANSPORTATION_SAVE)
@@ -1905,56 +1638,48 @@ contains both sale bill and products
             println(apiResponse)
             return apiResponse
         }
-        catch (Exception ex)
-        {
+        catch (Exception ex) {
             System.err.println('Service :salesService , action :  saveSaleInvoice  , Ex:' + ex)
             log.error('Service :salesService , action :  saveSaleInvoice  , Ex:' + ex)
         }
 
     }
 
-    def updateSaleTransportation(JSONObject jsonObject)
-    {
+    def updateSaleTransportation(JSONObject jsonObject) {
         Client client = ClientBuilder.newClient();
         WebTarget target = client.target(new Links().API_GATEWAY)
-        try
-        {
+        try {
             println(jsonObject)
             Response apiResponse = target
                     .path(new Links().SALE_TRANSPORTATION_UPDATE)
-                    .resolveTemplate("id",jsonObject.id)
+                    .resolveTemplate("id", jsonObject.id)
                     .request(MediaType.APPLICATION_JSON_TYPE)
                     .put(Entity.entity(jsonObject.toString(), MediaType.APPLICATION_JSON_TYPE))
             println(apiResponse)
             return apiResponse
         }
-        catch (Exception ex)
-        {
+        catch (Exception ex) {
             System.err.println('Service :salesService , action :  updateSaleInvoice  , Ex:' + ex)
             log.error('Service :salesService , action :  updateSaleInvoice  , Ex:' + ex)
         }
 
     }
 
-    def getSaleTransportationByBill(String billId)
-    {
+    def getSaleTransportationByBill(String billId) {
         Client client = ClientBuilder.newClient();
         WebTarget target = client.target(new Links().API_GATEWAY);
-        try
-        {
+        try {
             Response apiResponse = target
                     .path(new Links().SALE_TRANSPORTATION_BY_BILL)
-                    .queryParam("billid",billId)
+                    .queryParam("billid", billId)
                     .request(MediaType.APPLICATION_JSON_TYPE)
                     .get()
-            if(apiResponse?.status == 200)
-            {
+            if (apiResponse?.status == 200) {
                 JSONObject jsonObject = new JSONObject(apiResponse.readEntity(String.class))
                 return jsonObject
             }
         }
-        catch (Exception ex)
-        {
+        catch (Exception ex) {
             System.err.println('Service :getSaleTransportationByBill , action :  show  , Ex:' + ex)
             log.error('Service :getSaleTransportationByBill , action :  show  , Ex:' + ex)
         }
@@ -1962,12 +1687,10 @@ contains both sale bill and products
     }
 
 
-    def saveStockAdjustmentDetails(JSONObject jsonObject)
-    {
+    def saveStockAdjustmentDetails(JSONObject jsonObject) {
         Client client = ClientBuilder.newClient();
         WebTarget target = client.target(new Links().API_GATEWAY)
-        try
-        {
+        try {
             println(jsonObject)
             Response apiResponse = target
                     .path(new Links().STOCK_ADJUSTMENT_SAVE)
@@ -1976,8 +1699,7 @@ contains both sale bill and products
             println(apiResponse)
             return apiResponse
         }
-        catch (Exception ex)
-        {
+        catch (Exception ex) {
             System.err.println('Service :salesService , action :  saveSaleInvoice  , Ex:' + ex)
             log.error('Service :salesService , action :  saveSaleInvoice  , Ex:' + ex)
         }
@@ -1985,12 +1707,10 @@ contains both sale bill and products
     }
 
 
-    def showStockAdjustment(JSONObject jsonObject)
-    {
+    def showStockAdjustment(JSONObject jsonObject) {
         Client client = ClientBuilder.newClient();
         WebTarget target = client.target(new Links().API_GATEWAY);
-        try
-        {
+        try {
             Response apiResponse = target
                     .path(new Links().STOCK_ADJUSTMENT_DATATABLE)
                     .queryParam("params", URLEncoder.encode(jsonObject.toString(), "UTF-8"))
@@ -1998,19 +1718,16 @@ contains both sale bill and products
                     .get()
             return apiResponse
         }
-        catch (Exception ex)
-        {
+        catch (Exception ex) {
             System.err.println('Service :showSalesService , action :  show  , Ex:' + ex)
             log.error('Service :showSalesService , action :  show  , Ex:' + ex)
         }
     }
 
-    def getRecentDeliveryChallan(String financialYear, String entityId, String billStatus)
-    {
+    def getRecentDeliveryChallan(String financialYear, String entityId, String billStatus) {
         Client client = ClientBuilder.newClient();
         WebTarget target = client.target(new Links().API_GATEWAY);
-        try
-        {
+        try {
             Response apiResponse = target
                     .path(new Links().DELIVERY_CHALLAN_RECENT)
                     .queryParam("financialYear", financialYear)
@@ -2019,82 +1736,66 @@ contains both sale bill and products
                     .request(MediaType.APPLICATION_JSON_TYPE)
                     .get()
 
-            if (apiResponse.status == 200)
-            {
+            if (apiResponse.status == 200) {
                 JSONObject jsonObject = new JSONObject(apiResponse.readEntity(String.class))
                 return jsonObject
-            }
-            else
-            {
+            } else {
                 return null
             }
         }
-        catch (Exception ex)
-        {
+        catch (Exception ex) {
             System.err.println('Service :saveStateMaster , action :  save  , Ex:' + ex)
             log.error('Service :saveStateMaster , action :  save  , Ex:' + ex)
         }
 
     }
 
-    def approveDeliveryChallan(String id, String entityId, String financialYear)
-    {
+    def approveDeliveryChallan(String id, String entityId, String financialYear) {
         JSONObject jsonObject = new JSONObject()
         jsonObject.put("id", id)
         jsonObject.put("entityId", entityId)
         jsonObject.put("financialYear", financialYear)
         Client client = ClientBuilder.newClient();
         WebTarget target = client.target(new Links().API_GATEWAY);
-        try
-        {
+        try {
             Response apiResponse = target
                     .path(new Links().DELIVERY_CHALLAN_APPROVE)
                     .request(MediaType.APPLICATION_JSON_TYPE)
                     .post(Entity.json(jsonObject))
-            if (apiResponse.status == 200)
-            {
+            if (apiResponse.status == 200) {
                 JSONObject jsonObject1 = new JSONObject(apiResponse.readEntity(String.class))
                 return jsonObject1
-            }
-            else
-            {
+            } else {
                 return null
             }
         }
-        catch (Exception ex)
-        {
+        catch (Exception ex) {
             System.err.println('Service :saveStateMaster , action :  save  , Ex:' + ex)
             log.error('Service :saveStateMaster , action :  save  , Ex:' + ex)
         }
 
     }
 
-    def cancelDeliveryChallan(String id, String entityId, String financialYear)
-    {
+    def cancelDeliveryChallan(String id, String entityId, String financialYear) {
         JSONObject jsonObject = new JSONObject()
         jsonObject.put("id", id)
         jsonObject.put("entityId", entityId)
         jsonObject.put("financialYear", financialYear)
         Client client = ClientBuilder.newClient();
         WebTarget target = client.target(new Links().API_GATEWAY);
-        try
-        {
+        try {
             Response apiResponse = target
                     .path(new Links().DELIVERY_CHALLAN_CANCEL)
                     .request(MediaType.APPLICATION_JSON_TYPE)
                     .post(Entity.json(jsonObject))
-            if (apiResponse.status == 200)
-            {
+            if (apiResponse.status == 200) {
                 JSONObject jsonObject1 = new JSONObject(apiResponse.readEntity(String.class))
                 return jsonObject1
-            }
-            else
-            {
+            } else {
                 return null
             }
         }
-        catch (Exception ex)
-        {
+        catch (Exception ex) {
             System.err.println('Service :saveStateMaster , action :  save  , Ex:' + ex)
             log.error('Service :saveStateMaster , action :  save  , Ex:' + ex)
         }
@@ -2104,12 +1805,11 @@ contains both sale bill and products
     /*
 contains both deliveryChallan and products
  */
-    def saveDeliveryChallan(JSONObject jsonObject)
-    {
+
+    def saveDeliveryChallan(JSONObject jsonObject) {
         Client client = ClientBuilder.newClient();
         WebTarget target = client.target(new Links().API_GATEWAY)
-        try
-        {
+        try {
             println(jsonObject)
             Response apiResponse = target
                     .path(new Links().DELIVERY_CHALLAN_SAVE)
@@ -2118,15 +1818,13 @@ contains both deliveryChallan and products
             println(apiResponse)
             return apiResponse
         }
-        catch (Exception ex)
-        {
+        catch (Exception ex) {
             System.err.println('Service :salesService , action :  saveSaleInvoice  , Ex:' + ex)
             log.error('Service :salesService , action :  saveSaleInvoice  , Ex:' + ex)
         }
     }
 
-    def getDeliveryChallanById(String id)
-    {
+    def getDeliveryChallanById(String id) {
         Client client = ClientBuilder.newClient();
         WebTarget target = client.target(new Links().API_GATEWAY);
 
@@ -2136,29 +1834,23 @@ contains both deliveryChallan and products
                     .path(new Links().DELIVERY_CHALLAN_SHOW + "/" + id)
                     .request(MediaType.APPLICATION_JSON_TYPE)
                     .get()
-            if (apiResponse.status == 200)
-            {
+            if (apiResponse.status == 200) {
                 JSONObject gtn = new JSONObject(apiResponse.readEntity(String.class))
                 return gtn
-            }
-            else
-            {
+            } else {
                 return null
             }
         }
-        catch (Exception ex)
-        {
+        catch (Exception ex) {
             System.err.println('Service :ProductService , action :  getProducts  , Ex:' + ex)
             log.error('Service :ProductService , action :  getProducts  , Ex:' + ex)
         }
     }
 
-    def showDeliveryChallan(JSONObject jsonObject)
-    {
+    def showDeliveryChallan(JSONObject jsonObject) {
         Client client = ClientBuilder.newClient();
         WebTarget target = client.target(new Links().API_GATEWAY);
-        try
-        {
+        try {
             Response apiResponse = target
                     .path(new Links().DELIVERY_CHALLAN_DATATABLE)
                     .queryParam("params", URLEncoder.encode(jsonObject.toString(), "UTF-8"))
@@ -2166,36 +1858,29 @@ contains both deliveryChallan and products
                     .get()
             return apiResponse
         }
-        catch (Exception ex)
-        {
+        catch (Exception ex) {
             System.err.println('Service :showSalesService , action :  show  , Ex:' + ex)
             log.error('Service :showSalesService , action :  show  , Ex:' + ex)
         }
 
     }
 
-    def getDCProductDetailsByDeliveryChallan(String id)
-    {
+    def getDCProductDetailsByDeliveryChallan(String id) {
         Client client = ClientBuilder.newClient();
         WebTarget target = client.target(new Links().API_GATEWAY);
-        try
-        {
+        try {
             Response apiResponse = target
-                    .path(new Links().DC_PRODUCTS_BY_DC+"/"+id)
+                    .path(new Links().DC_PRODUCTS_BY_DC + "/" + id)
                     .request(MediaType.APPLICATION_JSON_TYPE)
                     .get()
-            if (apiResponse.status == 200)
-            {
+            if (apiResponse.status == 200) {
                 JSONArray saleProductDetail = new JSONArray(apiResponse.readEntity(String.class))
                 return saleProductDetail
-            }
-            else
-            {
+            } else {
                 return null
             }
         }
-        catch (Exception ex)
-        {
+        catch (Exception ex) {
             System.err.println('Service :SalesService , action :  getProducts  , Ex:' + ex)
             log.error('Service :SalesService , action :  getProducts  , Ex:' + ex)
         }
