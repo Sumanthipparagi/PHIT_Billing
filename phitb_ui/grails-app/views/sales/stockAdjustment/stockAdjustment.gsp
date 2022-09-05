@@ -472,7 +472,11 @@
                         hot.selectCell(row,4)
                     }
                     var totalStock = hot.getDataAtCell(row,13)+hot.getDataAtCell(row,14);
-                    if(Math.sign(totalStock+(Number(hot.getDataAtCell(row,4))+Number(hot.getDataAtCell(row,5)))) === 1)
+                    // console.log(totalStock+(Number(hot.getDataAtCell(row,4))+Number(hot.getDataAtCell(row,5)))+": total")
+
+                    console.log(hot.getDataAtCell(row,4)+hot.getDataAtCell(row,5))
+                    if(Math.sign(totalStock+(Number(hot.getDataAtCell(row,4))+Number(hot.getDataAtCell(row,5)))) ===
+                        1 || Math.sign(totalStock+(Number(hot.getDataAtCell(row,4))+Number(hot.getDataAtCell(row,5)))) === 0)
                     {
                         if(typeof hot.getDataAtCell(row,4) == "number" && typeof hot.getDataAtCell(row,5) == "number")
                         {
