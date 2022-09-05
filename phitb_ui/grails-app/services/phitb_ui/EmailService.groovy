@@ -136,7 +136,11 @@ class EmailService {
             if (apiResponse?.status == 200) {
                 JSONArray jsonArray = new JSONArray(apiResponse.readEntity(String.class))
                 //there will be only one entry
-                return jsonArray?.get(0) as JSONObject
+                if(jsonArray?.get(0)!=null){
+                    return jsonArray?.get(0) as JSONObject
+                }else{
+                    return null
+                }
             } else {
                 return null
             }
