@@ -218,7 +218,12 @@ class StockBookService {
                 long prvRemainingFreeQty = stockBook.remainingFreeQty
                 stockBook.isUpdatable = true
                 stockBook.batchNumber = jsonObject.get("batchNumber")
-                stockBook.mergedWith = jsonObject.get("mergedWith") //TODO:to be checked
+                if (jsonObject.has("mergedWith"))
+                {
+                    stockBook.mergedWith = jsonObject.get("mergedWith") //TODO:to be checked
+                }else{
+                    stockBook.mergedWith = "0"
+                }
                 stockBook.packingDesc = jsonObject.get("packingDesc")
                 stockBook.productId = Long.parseLong(jsonObject.get("productId").toString())
                 stockBook.expDate = sdf.parse(jsonObject.get("expDate").toString())
