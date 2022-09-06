@@ -4,6 +4,7 @@ package phitb_ui.sales
 import grails.converters.JSON
 import org.grails.web.json.JSONArray
 import org.grails.web.json.JSONObject
+import org.springframework.beans.factory.annotation.Autowired
 import phitb_ui.Constants
 import phitb_ui.EInvoiceService
 import phitb_ui.EmailService
@@ -23,6 +24,7 @@ import java.text.SimpleDateFormat
 
 class GoodsTransferNoteController
 {
+
 
     def index()
     {
@@ -1066,12 +1068,10 @@ class GoodsTransferNoteController
         if (gtn != null)
         {
             def gtnProduct = new SalesService().getgtnProductDetailsByGtn(gtn.id.toString())
-            println(session.getAttribute('entityId').toString())
             UUID uuid
             for (JSONObject gtnObject : gtnProduct)
             {
-                def stockBook = new InventoryService().getStocksOfProductAndBatch(gtnObject.productId.toString(),
-                        gtnObject.batchNumber, session.getAttribute('entityId').toString())
+                def stockBook = new InventoryService().getStocksOfProductAndBatch(gtnObject.productId.toString(), gtnObject.batchNumber, session.getAttribute('entityId').toString())
                 if (stockBook != null)
                 {
                     double remainingQty = stockBook.get("remainingQty") + Double.parseDouble(gtnObject.sqty.toString())
@@ -1088,6 +1088,17 @@ class GoodsTransferNoteController
                 {
                     JSONArray stockArray = new JSONArray()
                     JSONObject stock = new JSONObject()
+                    /*
+                    def product = new ProductService().getProductById(gtnObject.productId.toString())
+                    product.put("entityId",session.getAttribute('entityId'))
+                    def saveProduct = new ProductService().saveProductRegister(product)
+                    if(saveProduct?.status == 200){
+                        def batch = new ProductService().getByBatchAndProductId(gtnObject.batchNumber.toString(),gtnObject.productId.toString())
+                        product.put("entityId",session.getAttribute('entityId'))
+
+                    }
+
+                     */
                     def stockBook1 = new InventoryService().getStocksOfProductAndBatch(gtnObject.productId.toString(),
                             gtnObject.batchNumber.toString(), gtnObject.entityId.toString())
                     stockBook1.put("remainingQty", Double.valueOf(Double.parseDouble(gtnObject.sqty.toString())).longValue())
