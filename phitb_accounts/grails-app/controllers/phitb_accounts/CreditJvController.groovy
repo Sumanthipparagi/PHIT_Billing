@@ -163,7 +163,7 @@ class CreditJvController {
     def save() {
         try {
             JSONObject jsonObject = JSON.parse(request.reader.text) as JSONObject
-            respond creditJvService.save(jsonObject)
+            render creditJvService.save(jsonObject)
         }
         catch (ResourceNotFoundException ex) {
             System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
@@ -334,6 +334,32 @@ class CreditJvController {
                 response.status = 200
             else
                 response.status = 400
+        }
+    }
+
+
+    def getByDateRangeAndEntity() {
+        try {
+            JSONObject jsonObject = JSON.parse(request.reader.text) as JSONObject
+            String dateRange = jsonObject.get("dateRange")
+            String entityId = jsonObject.get("entityId")
+            if (dateRange && entityId) {
+                JSONArray creditJv = creditJvService.getByDateRangeAndEntity(dateRange, entityId)
+                render creditJv, formats: ['json']
+            } else {
+                response.status = 400
+            }
+        }
+        catch (org.springframework.boot.context.config.ResourceNotFoundException ex) {
+            System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
+            response.status = 404
+        }
+        catch (BadRequestException ex) {
+            System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
+            response.status = 400
+        }
+        catch (Exception ex) {
+            System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
         }
     }
 }
