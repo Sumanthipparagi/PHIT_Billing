@@ -1088,17 +1088,14 @@ class GoodsTransferNoteController
                 {
                     JSONArray stockArray = new JSONArray()
                     JSONObject stock = new JSONObject()
-                    /*
                     def product = new ProductService().getProductById(gtnObject.productId.toString())
                     product.put("entityId",session.getAttribute('entityId'))
                     def saveProduct = new ProductService().saveProductRegister(product)
                     if(saveProduct?.status == 200){
                         def batch = new ProductService().getByBatchAndProductId(gtnObject.batchNumber.toString(),gtnObject.productId.toString())
-                        product.put("entityId",session.getAttribute('entityId'))
+                       batch.put("entityId", session.getAttribute('entityId'))
 
                     }
-
-                     */
                     def stockBook1 = new InventoryService().getStocksOfProductAndBatch(gtnObject.productId.toString(),
                             gtnObject.batchNumber.toString(), gtnObject.entityId.toString())
                     stockBook1.put("remainingQty", Double.valueOf(Double.parseDouble(gtnObject.sqty.toString())).longValue())
