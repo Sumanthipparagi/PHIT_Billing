@@ -280,7 +280,7 @@ class PurchaseOrderController {
             String dateRange = jsonObject.get("dateRange")
             String entityId = jsonObject.get("entityId")
             if (dateRange && entityId) {
-                JSONArray purchaseBillDetails = purchaseBillDetailService.getByDateRangeAndEntity(dateRange, entityId)
+                JSONArray purchaseBillDetails = purchaseOrderService.getByDateRangeAndEntity(dateRange, entityId)
                 render purchaseBillDetails, formats: ['json']
             }
             else
