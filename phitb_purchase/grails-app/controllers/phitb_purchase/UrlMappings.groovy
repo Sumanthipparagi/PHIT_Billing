@@ -41,6 +41,7 @@ class UrlMappings {
             "/purchaseorderbydays/$days(.$format)?"(controller: 'purchaseOrder') { action = [GET: 'getAllByDays'] }
             "/purchaseorder/cancel(.$format)?"(controller: 'purchaseOrder') {action = [POST: 'cancelPurchaseOrder']}
             "/purchaseorder/getrecent(.$format)?"(controller: 'purchaseOrder') { action = [GET: 'getRecentByFinancialYearAndEntity'] }
+            "/purchaseorderbydaterange"(controller: 'purchaseOrder', action: 'getByDateRangeAndEntity')
 
 
 //            Purchase Order Product Details

@@ -676,6 +676,7 @@ public class Links
     public static String PAYMENT_DATATABLE = APP_CONTEXT_PATH + "accounts/paymentdetails/datatable";
     public static String PAYMENT_UPDATE = APP_CONTEXT_PATH + "accounts/paymentdetails/{id}";
     public static String PAYMENT_DELETE = APP_CONTEXT_PATH + "accounts/paymentdetails/{id}";
+    public static String PAYMENT_DATERANGE = APP_CONTEXT_PATH + "accounts/receiptdetailsbydaterange";
 
 
     //   payment detail log
@@ -814,6 +815,7 @@ public class Links
     public static String PURCHASE_ORDER_DATATABLE = APP_CONTEXT_PATH + "purchase/purchaseorder/datatable";
     public static String PURCHASE_ORDER_RECENT = APP_CONTEXT_PATH + "purchase/purchaseorder/getrecent";
     public static String PURCHASE_ORDER_CANCEL = APP_CONTEXT_PATH + "purchase/purchaseorder/cancel";
+    public static String PURCHASE_ORDER_DATERANGE = APP_CONTEXT_PATH + "purchase/purchaseorderbydaterange";
 
 
 //    Purchase Order Product Details

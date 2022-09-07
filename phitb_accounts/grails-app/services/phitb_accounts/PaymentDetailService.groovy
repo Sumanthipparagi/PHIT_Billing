@@ -1,6 +1,8 @@
 package phitb_accounts
 
+import grails.converters.JSON
 import grails.gorm.transactions.Transactional
+import org.grails.web.json.JSONArray
 import org.grails.web.json.JSONObject
 import phitb_accounts.Exception.BadRequestException
 import phitb_accounts.Exception.ResourceNotFoundException
@@ -223,6 +225,40 @@ class PaymentDetailService {
                 throw new ResourceNotFoundException()
             }
         } else {
+            throw new BadRequestException()
+        }
+    }
+
+    def getByDateRangeAndEntity(dateRange, entityId)
+    {
+        try {
+            SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy")
+            Date fromDate = sdf.parse(dateRange.split("-")[0].trim().toString())
+            Date toDate = sdf.parse(dateRange.split("-")[1].trim().toString())
+            Calendar cal = Calendar.getInstance();
+            cal.setTime(toDate)
+            cal.set(Calendar.HOUR_OF_DAY, 23)
+            cal.set(Calendar.MINUTE, 59)
+            cal.set(Calendar.SECOND, 59)
+            cal.set(Calendar.MILLISECOND, 999)
+            toDate = cal.getTime()
+            long eid = Long.parseLong(entityId)
+            JSONArray finalPayments = new JSONArray()
+            ArrayList<PaymentDetail> paymentDetails = PaymentDetail.findAllByEntityIdAndDateCreatedBetween(eid, fromDate, toDate)
+            for (PaymentDetail paymentDetail : paymentDetails) {
+                JSONObject rd = new JSONObject((paymentDetail as JSON).toString())
+                def billPaymentLog = BillPaymentLog.findAllByBillId(paymentDetail.id)
+                if (billPaymentLog) {
+                    JSONArray prdt =  new  JSONArray((billPaymentLog as JSON).toString())
+                    rd.put("products", prdt)
+                }
+                finalPayments.add(rd)
+            }
+            return finalPayments
+        }
+        catch (Exception ex)
+        {
+            ex.printStackTrace()
             throw new BadRequestException()
         }
     }

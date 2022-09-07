@@ -113,6 +113,7 @@ class UrlMappings {
             "/paymentdetailsbydays/$days(.$format)?"(controller: 'paymentDetail') { action = [GET:
                                                                                                             'getAllByDays'] }
 
+            "/receiptdetailsbydaterange(.$format)?"(controller: 'paymentDetail', action: 'getByDateRangeAndEntity')
 
 
             //receipt details

@@ -227,16 +227,15 @@ class PurchaseReturnDetailService {
             toDate = cal.getTime()
             long eid = Long.parseLong(entityId)
             JSONArray finalBills = new JSONArray()
-            ArrayList<PurchaseReturnDetail> purchaseReturnDetails = PurchaseReturnDetail.findAllByEntityIdAndDateCreatedBetween(eid,
-                    fromDate, toDate)
-            for (PurchaseReturnDetail purchaseBillDetail : purchaseReturnDetails) {
-                JSONObject saleBillDetail1 = new JSONObject((purchaseBillDetail as JSON).toString())
-                def productDetails = PurchaseProductDetail.findAllByBillId(purchaseBillDetail.id)
+            ArrayList<PurchaseReturn> purchaseReturns = PurchaseReturn.findAllByEntityIdAndDateCreatedBetween(eid, fromDate, toDate)
+            for (PurchaseReturn pr : purchaseReturns) {
+                JSONObject purchaseReturnDetail = new JSONObject((pr as JSON).toString())
+                def productDetails = PurchaseProductDetail.findAllByBillId(pr.id)
                 if (productDetails) {
                     JSONArray prdt = productDetails as JSONArray
-                    saleBillDetail1.put("products", prdt)
+                    purchaseReturnDetail.put("products", prdt)
                 }
-                finalBills.add(saleBillDetail1)
+                finalBills.add(purchaseReturnDetail)
             }
             return finalBills
         }
