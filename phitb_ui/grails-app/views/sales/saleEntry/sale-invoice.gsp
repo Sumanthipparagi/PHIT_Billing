@@ -255,6 +255,7 @@
                 <li><b class="tab">FAX No</b>: ${entity.faxNumber}</li>
                 <li><b class="tab">DL No1</b>: ${entity.drugLicence1}</li>
                 <li><b class="tab">DL No2</b>: ${entity.drugLicence2}</li>
+                <li><b class="tab">Website</b>: <a href="${entity?.website}" target="_blank">${customer?.website}</a></li>
                 <li><b class="tab">Food Lic. No.</b>:  ${entity.foodLicence1}</li>
             </ul>
         </td>
@@ -268,6 +269,7 @@
                 <li><b class="tab">DL No2</b>: ${customer.drugLicence2}</li>
                 <li><b class="tab">STATE NAME</b>: ${custcity?.stateName}</li>
                 <li><b class="tab">Area PIN</b>: ${customer.pinCode}</li>
+                <li><b class="tab">Website</b>: <a href="${customer?.website}" target="_blank">${customer?.website}</a></li>
                 <li><b class="tab">Goods Through</b>:</li>
                 <li><b class="tab">Place of Supply</b>: &nbsp;${custcity?.districtName}</li>
                 %{--                <li><b class="tab">State Code</b>: </li>--}%
@@ -284,6 +286,7 @@
                 <li><b class="tab">DL No2</b>: ${customer.drugLicence2}</li>
                 <li><b class="tab">STATE NAME</b>: ${custcity?.stateName}</li>
                 <li><b class="tab">Area PIN</b>: ${customer.pinCode}</li>
+                <li><b class="tab">Website</b>: <a href="${customer?.website}" target="_blank">${customer?.website}</a></li>
                 <li><b class="tab">Goods Through</b>:</li>
                 <li><b class="tab">Place of Supply</b>:  &nbsp;${custcity?.districtName}</li>
                 %{--                <li><b class="tab">State Code</b>: </li>--}%
@@ -319,7 +322,7 @@
         <th>PTR</th>
         <th>PTS</th>
         <th>QTY</th>
-        <th>Scheme</th>
+        <th>Discount Qty</th>
         <th>Amount</th>
         <th>Disc.Amt/Disc.%</th>
         <th>Amt/CGST%</th>

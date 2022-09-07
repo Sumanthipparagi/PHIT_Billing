@@ -62,6 +62,7 @@ class EntityRegister implements LogicalDelete<EntityRegister>
     long fieldForceId
     long parentEntity
     long parentEntityType
+    String website
     long createdUser
     long modifiedUser
 
@@ -83,6 +84,7 @@ class EntityRegister implements LogicalDelete<EntityRegister>
         manager nullable:true
         salesman nullable:true
         hqAreaId nullable:true
+        website nullable:true
     }
 
     boolean isUpdatable
