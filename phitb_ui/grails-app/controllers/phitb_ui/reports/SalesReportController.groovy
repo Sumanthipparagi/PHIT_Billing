@@ -19,6 +19,7 @@ import phitb_ui.entity.EntityRegisterController
 import java.text.DecimalFormat
 import java.text.SimpleDateFormat
 import java.util.function.ToDoubleFunction
+import java.util.stream.Collectors
 
 class SalesReportController {
 
@@ -514,13 +515,11 @@ class SalesReportController {
             }
         }
 
-
-
         double creditJvBalance = 0.0
         for (Object crjv : creditJv) {
             creditJvBalance += crjv?.amount
             JSONObject customerLedgerEntry = new JSONObject()
-            customerLedgerEntry.put("transactionDate", crjv?.transactionDate)
+            customerLedgerEntry.put("transactionDate", sdf1.format(sdf2.parse(crjv?.transactionDate)))
             customerLedgerEntry.put("transactionNumber", crjv?.transactionId)
             customerLedgerEntry.put("transactionDescription", "Credit JV")
             customerLedgerEntry.put("amount", crjv?.amount)
@@ -551,7 +550,7 @@ class SalesReportController {
             if(pr?.billStatus == "ACTIVE" && pr?.deleted == false) {
                 purchaseRetrunBalance += pr?.totalAmount
                 JSONObject customerLedgerEntry = new JSONObject()
-                customerLedgerEntry.put("transactionDate", pr?.dateCreated)
+                customerLedgerEntry.put("transactionDate", sdf1.format(sdf2.parse(pr?.dateCreated)))
                 customerLedgerEntry.put("transactionNumber", pr?.totalAmount)
                 customerLedgerEntry.put("transactionDescription", "Purchase Return")
                 customerLedgerEntry.put("amount", pr?.totalAmount)
@@ -676,7 +675,7 @@ class SalesReportController {
         for (Object dbjv : debitJv) {
             debitJvBalance += dbjv?.amount
             JSONObject customerLedgerEntry = new JSONObject()
-            customerLedgerEntry.put("transactionDate", dbjv?.transactionDate)
+            customerLedgerEntry.put("transactionDate", sdf1.format(sdf2.parse(dbjv?.transactionDate)))
             customerLedgerEntry.put("transactionNumber", dbjv?.transactionId)
             customerLedgerEntry.put("transactionDescription", "Debit JV")
             customerLedgerEntry.put("amount", dbjv?.amount)
@@ -703,7 +702,65 @@ class SalesReportController {
             }
         })
 
-        openingBalance = 1000000 //TODO: to be removed
+        def entity = new EntityService().getEntityById(session.getAttribute('entityId').toString())
+        def entityOpeningBalance = entity?.openingBalance
+        println("entityOpeningBalance"+entityOpeningBalance)
+
+        String newDateRange = session.getAttribute('startDate').toString() +" - "+ dateRange.split("-")[0].trim()
+        println(session.getAttribute('startDate').toString())
+        //Debit
+        def saleBillsTotal = new SalesService().getSaleBillByDateRange(newDateRange, entityId).stream().filter({i ->
+            i?.billStatus == "ACTIVE" && i?.deleted == false}).mapToDouble({i -> i.invoiceTotal}).sum()
+
+        def saleOrderTotal = new SalesService().getSaleOrderByDateRange(newDateRange, entityId).stream().filter({i ->
+            i?.billStatus == "ACTIVE" && i?.deleted == false}).mapToDouble({i -> i.totalAmount}).sum()
+
+        def gtnTotal = new SalesService().getGTNByDateRange(newDateRange, entityId).stream().filter({i -> i?.billStatus == "ACTIVE" && i?.deleted == false}).mapToDouble({i -> i.totalAmount}).sum()
+
+        def purchaseReturnTotal = new PurchaseService().getPurchaseRetrunByDateRange(newDateRange, entityId).stream()
+                .filter({i -> i?.billStatus == "ACTIVE" && i?.deleted == false}).mapToDouble({i -> i.totalAmount}).sum()
+
+        def saleReturnTotal = new SalesService().getSaleReturnByDateRange(newDateRange, entityId).stream().filter({i ->
+            i?.returnStatus == "ACTIVE" && i?.balance > 0}).mapToDouble({i -> i.totalAmount}).sum()
+
+
+        def deliveryChallanTotal = new SalesService().getDeliveryChallanByDateRange(newDateRange, entityId).stream().filter({i -> i?.billStatus == "ACTIVE" && i?.deleted == false}).mapToDouble({i -> i.totalAmount}).sum()
+
+        def creditJvTotal = new AccountsService().getCreditJvByDateRange(newDateRange, entityId).stream().mapToDouble({i -> i.amount}).sum()
+
+        def paymentTotal = new AccountsService().getPaymentDetailsByDateRange(newDateRange, entityId).stream().filter({i -> i?.approvedStatus == "ACTIVE" && i?.cancelledDate == null}).mapToDouble({i -> i.amountPaid}).sum()
+
+
+//        credit
+        def receiptTotal= new AccountsService().getReceiptDetailsByDateRange(newDateRange, entityId).stream().filter({i -> i?.approvedStatus == "ACTIVE" && i?.cancelledDate == null}).mapToDouble({i -> i.amountPaid}).sum()
+
+        def purchaseBillsTotal = new PurchaseService().getPurchaseBillByDateRange(newDateRange, entityId).stream()
+                .filter({i -> i?.billStatus == "ACTIVE" && i?.deleted == false}).mapToDouble({i -> i.totalAmount}).sum()
+
+
+        def debitJvTotal = new AccountsService().getDebitJvByDateRange(newDateRange, entityId).stream().mapToDouble({i -> i.amount}).sum()
+
+        def purchaseOrderTotal = new PurchaseService().getPurchaseOrderByDateRange(newDateRange, entityId).stream()
+                .filter({i -> i?.billStatus == "ACTIVE" && i?.deleted == false}).mapToDouble({i -> i.totalAmount}).sum()
+
+
+        println("SaleBillTotal "+ saleBillsTotal)
+        println("SaleRetrunTotal "+ saleReturnTotal)
+        println("SaleOrderTotal "+ saleOrderTotal)
+        println("deliveryChallanTotal "+ deliveryChallanTotal)
+        println("gtnTotal "+ gtnTotal)
+        println("receiptTotal "+ receiptTotal)
+        println("purchaseReturnTotal "+ purchaseReturnTotal)
+        println("purchaseBillsTotal "+ purchaseBillsTotal)
+        println("creditJvTotal "+ creditJvTotal)
+        println("debitJvTotal "+ debitJvTotal)
+        println("purchaseOrderTotal "+ purchaseOrderTotal)
+        println("paymentTotal "+ paymentTotal)
+
+//        openingBalance = 1000000 //TODO: to be removed
+            openingBalance = entityOpeningBalance+(saleBillsTotal.toDouble() + saleOrderTotal.toDouble() + gtnTotal
+                    .toDouble() + deliveryChallanTotal.toDouble() + debitJvTotal.toDouble() + receiptTotal.toDouble() + purchaseReturnTotal.toDouble()) - (purchaseBillsTotal.toDouble() - purchaseOrderTotal.toDouble() - saleReturnTotal.toDouble() - creditJvTotal.toDouble() - paymentTotal.toDouble())
+        println(openingBalance)
         JSONObject jsonObject = new JSONObject()
         jsonObject.put("customerLedger", customerLedgerDetails)
         jsonObject.put("openingBalance", openingBalance)

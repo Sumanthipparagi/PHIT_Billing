@@ -676,7 +676,7 @@ public class Links
     public static String PAYMENT_DATATABLE = APP_CONTEXT_PATH + "accounts/paymentdetails/datatable";
     public static String PAYMENT_UPDATE = APP_CONTEXT_PATH + "accounts/paymentdetails/{id}";
     public static String PAYMENT_DELETE = APP_CONTEXT_PATH + "accounts/paymentdetails/{id}";
-    public static String PAYMENT_DATERANGE = APP_CONTEXT_PATH + "accounts/receiptdetailsbydaterange";
+    public static String PAYMENT_DATERANGE = APP_CONTEXT_PATH + "accounts/paymentdetailsbydaterange";
 
 
     //   payment detail log

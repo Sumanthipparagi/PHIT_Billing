@@ -142,6 +142,7 @@ class PaymentDetailService {
         }
         paymentDetail.wallet = WalletMaster.findById(Long.parseLong("0"))
         paymentDetail.financialYear = jsonObject.get("financialYear").toString()
+        paymentDetail.approvedStatus = "ACTIVE"
         paymentDetail.status = Long.parseLong("1")
         paymentDetail.syncStatus = Long.parseLong("1")
         paymentDetail.entityTypeId = Long.parseLong("1")
@@ -186,6 +187,7 @@ class PaymentDetailService {
             paymentDetail.accountModeId = Long.parseLong(jsonObject.get("accountModeId").toString())
             paymentDetail.paymentModeId = Long.parseLong(jsonObject.get("paymentModeId").toString())
             paymentDetail.transferFrom = jsonObject.get("transferFrom").toString()
+            paymentDetail.approvedStatus = "ACTIVE"
             paymentDetail.paymentTo = jsonObject.get("paymentTo").toString()
             paymentDetail.amountPaid = Long.parseLong(jsonObject.get("amountPaid").toString())
             paymentDetail.narration = jsonObject.get("narration").toString()
