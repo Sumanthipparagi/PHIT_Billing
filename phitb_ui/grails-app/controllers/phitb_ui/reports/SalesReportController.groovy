@@ -715,7 +715,7 @@ class SalesReportController {
         def saleOrderTotal = new SalesService().getSaleOrderByDateRange(newDateRange, entityId).stream().filter({i ->
             i?.billStatus == "ACTIVE" && i?.deleted == false}).mapToDouble({i -> i.totalAmount}).sum()
 
-        def gtnTotal = new SalesService().getGTNByDateRange(newDateRange, entityId).stream().filter({i -> i?.billStatus == "ACTIVE" && i?.deleted == false}).mapToDouble({i -> i.totalAmount}).sum()
+        def gtnTotal = new SalesService().getGTNByDateRange(newDateRange, entityId).stream().filter({i -> i?.billStatus == "ACTIVE" && i?.deleted == false}).mapToDouble({i -> i?.totalAmount}).sum()
 
         def purchaseReturnTotal = new PurchaseService().getPurchaseRetrunByDateRange(newDateRange, entityId).stream()
                 .filter({i -> i?.billStatus == "ACTIVE" && i?.deleted == false}).mapToDouble({i -> i.totalAmount}).sum()
