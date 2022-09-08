@@ -8,10 +8,10 @@ import org.bouncycastle.cms.CMSTypedData;
 import org.bouncycastle.cms.jcajce.JcaSimpleSignerInfoGeneratorBuilder;
 import org.bouncycastle.jce.provider.BouncyCastleProvider;
 import org.bouncycastle.util.Store;
-import sun.misc.BASE64Decoder;
 import sun.misc.BASE64Encoder;
 import javax.crypto.KeyGenerator;
 import javax.crypto.SecretKey;
+import java.io.File;
 import java.io.FileInputStream;
 import java.security.*;
 import java.security.cert.X509Certificate;
@@ -34,8 +34,9 @@ public class EinvoiceHelper {
     static ClassLoader classLoader = EinvoiceHelper.class.getClassLoader();
 
     static {
-        JKSPassword = "123456".toCharArray();
-        PFXPassword = "tcs".toCharArray();
+        //JKSPassword = "123456".toCharArray();
+        JKSPassword = "pMif10!TSb".toCharArray();
+        //PFXPassword = "tcs".toCharArray();
         if(classLoader != null) {
             jksFilePath = Objects.requireNonNull(classLoader.getResource("KeyStore/KeyStore.jks")).getPath();
             publicKeyPath = Objects.requireNonNull(classLoader.getResource("KeyStore/publicKey")).getPath();
