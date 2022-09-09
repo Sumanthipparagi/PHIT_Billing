@@ -1061,7 +1061,8 @@ class GoodsTransferNoteController
 
     def grn()
     {
-        render(view: '/sales/goodsTransferNote/grn')
+        def divisions = new ProductService().getDivisionsByEntityId(session.getAttribute('entityId').toString())
+        render(view: '/sales/goodsTransferNote/grn', model: [divisions:divisions])
     }
 
 
@@ -1074,77 +1075,131 @@ class GoodsTransferNoteController
             UUID uuid
             for (JSONObject gtnObject : gtnProduct)
             {
-                def stockBook = new InventoryService().getStocksOfProductAndBatch(gtnObject.productId.toString(), gtnObject.batchNumber, session.getAttribute('entityId').toString())
-                if (stockBook != null)
-                {
-                    double remainingQty = stockBook.get("remainingQty") + Double.parseDouble(gtnObject.sqty.toString())
-                    double remainingFreeQty = stockBook.get("remainingFreeQty") + Double.parseDouble(gtnObject.freeQty.toString())
-                    double remainingReplQty = stockBook.get("remainingReplQty") + Double.parseDouble(gtnObject.repQty.toString())
-                    stockBook.put("remainingQty", remainingQty.toLong())
-                    stockBook.put("purchaseRate", gtnObject?.sRate)
-                    stockBook.put("remainingFreeQty", remainingFreeQty.toLong())
-                    stockBook.put("remainingReplQty", remainingReplQty.toLong())
-                    new InventoryService().updateStockBook(stockBook)
-                    new SalesService().approveGTN(gtn.id.toString(), gtn.entityId.toString(), gtn.financialYear.toString())
-                }
-                else
-                {
+//                def stockBook = new InventoryService().getStocksOfProductAndBatch(gtnObject.productId.toString(), gtnObject.batchNumber, session.getAttribute('entityId').toString())
+//                println(session.getAttribute('entityId').toString())
+//                if (stockBook != null)
+//                {
+//                    double remainingQty = stockBook.get("remainingQty") + Double.parseDouble(gtnObject.sqty.toString())
+//                    double remainingFreeQty = stockBook.get("remainingFreeQty") + Double.parseDouble(gtnObject.freeQty.toString())
+//                    double remainingReplQty = stockBook.get("remainingReplQty") + Double.parseDouble(gtnObject.repQty.toString())
+//                    stockBook.put("remainingQty", remainingQty.toLong())
+//                    stockBook.put("purchaseRate", gtnObject?.sRate)
+//                    stockBook.put("remainingFreeQty", remainingFreeQty.toLong())
+//                    stockBook.put("remainingReplQty", remainingReplQty.toLong())
+//                    new InventoryService().updateStockBook(stockBook)
+//                    new SalesService().approveGTN(gtn.id.toString(), gtn.entityId.toString(), gtn.financialYear.toString())
+//                }
+//                else
+//                {
                     JSONArray stockArray = new JSONArray()
                     JSONObject stock = new JSONObject()
 
-//                    JSONObject product = new ProductService().getProductById(gtnObject.productId.toString())
-//                    def getDivisionByEntity = new ProductService().getDivisionsByEntityId(session.getAttribute('entityId').toString())
-//                    if(getDivisionByEntity!=null || getDivisionByEntity.size()!=0){
-//                        product.put("division",getDivisionByEntity[0].id)
-//                    }
-//
-//                    product.put("entityId",session.getAttribute('entityId'))
-//                    product.put("entityTypeId",session.getAttribute('entityTypeId'))
-//                    product.put("composition",0)
-//                    product.put("costRange",0)
-//                    product.put("productType",0)
-//                    product.put("unit",0)
-//                    product.put("group",0)
-//                    product.put("schedule",0)
-//                    product.put("category",0)
-//                    def saveProductResponse = new ProductService().saveProductRegister(product)
-//                    if(saveProductResponse?.status == 200){
-//                        JSONObject productResponse = new JSONObject(saveProductResponse.readEntity(String.class))
-//                        JSONObject batch = new ProductService().getByBatchAndProductId(gtnObject.batchNumber.toString(),
-//                                gtnObject.productId.toString()) as JSONObject
-//                       batch.put("entityId", session.getAttribute('entityId'))
-//                       batch.put("entityTypeId",session.getAttribute('entityTypeId'))
-//                       batch.put("product",productResponse?.id)
-//                       batch.put("manfDate", Tools.dateStringToDate(batch.manfDate.toString()))
-//                       batch.put("expiryDate", Tools.dateStringToDate(batch.expiryDate.toString()))
-//                       ArrayList<String> productCat = new ProductCategoryController().getByEntity() as ArrayList<String>
-//                        if(productCat!=null || productCat.size()!=0){
-//                            batch.put("productCat", productCat[0].id)
-//                        }
-//                        def saveBatch = new ProductService().saveBatchRegister(batch)
-//                        if(saveBatch?.status == 200){
-//                            println("batch Saved")
-//                        }
-//                    }
+                    //product service update
+                    def productDetails = new ProductService().getProductById(gtnObject.productId.toString())
+                    def checkProduct = new ProductService().getProductByIdAndHSN(productDetails?.id?.toString(),
+                            productDetails?.hsnCode?.toString(), session.getAttribute('entityId').toString())
+                    Long productId = null
+                    String batchNumber
+                   if(checkProduct.size() == 0 || checkProduct == null){
+                       productDetails.put("entityId",session.getAttribute('entityId'))
+                       productDetails.put("entityTypeId",session.getAttribute('entityTypeId'))
+                       productDetails.put("composition",0)
+                       productDetails.put("costRange",0)
+                       productDetails.put("productType",0)
+                       productDetails.put("unit",0)
+                       productDetails.put("group",0)
+                       productDetails.put("schedule",0)
+                       productDetails.put("category",0)
+                       def getDivisionByEntity = new ProductService().getDivisionsByEntityId(session.getAttribute('entityId').toString())
+                       if(getDivisionByEntity!=null || getDivisionByEntity.size()!=0){
+                           productDetails.put("division",getDivisionByEntity[0].id)
+                       }
+                       def saveProductResponse = new ProductService().saveProductRegister(productDetails)
+                       if(saveProductResponse?.status == 200){
+                           JSONObject productResponse = new JSONObject(saveProductResponse.readEntity(String.class))
+                           productId = productResponse?.id
+                           JSONObject batch = new ProductService().getByBatchAndProductId(gtnObject.batchNumber.toString(), gtnObject.productId.toString()) as JSONObject
+                           batch.put("entityId", session.getAttribute('entityId'))
+                           batch.put("entityTypeId",session.getAttribute('entityTypeId'))
+                           batch.put("product",productResponse?.id)
+                           batch.put("manfDate", Tools.dateStringToDate(batch.manfDate.toString()))
+                           batch.put("expiryDate", Tools.dateStringToDate(batch.expiryDate.toString()))
+                           ArrayList<String> productCat = new ProductCategoryController().getByEntity() as ArrayList<String>
+                           if(productCat.size()!=0 || productCat == null){
+                               batch.put("productCat", productCat[0].id)
+                           }else{
+                               batch.put("productCat", 0)
+                           }
+                           def saveBatch = new ProductService().saveBatchRegister(batch)
+                           if(saveBatch?.status == 200){
+                               println("batch Saved")
+                           }
+                       }
+                   }else{
+                       productId = checkProduct?.id
+                       JSONObject batch = new ProductService().getByBatchAndProductId(gtnObject.batchNumber.toString(), checkProduct.id.toString()) as JSONObject
+                       if(batch.size()==0){
+                           JSONObject prevBatch = new ProductService().getByBatchAndProductId(gtnObject.batchNumber.toString(), gtnObject.productId.toString()) as JSONObject
+                           prevBatch.put("entityId", session.getAttribute('entityId'))
+                           prevBatch.put("entityTypeId",session.getAttribute('entityTypeId'))
+                           prevBatch.put("product",checkProduct?.id)
+                           prevBatch.put("manfDate", Tools.dateStringToDate(prevBatch.manfDate.toString()))
+                           prevBatch.put("expiryDate", Tools.dateStringToDate(prevBatch.expiryDate.toString()))
+                           ArrayList<String> productCat = new ProductCategoryController().getByEntity() as ArrayList<String>
+                           if(productCat.size()!=0 || productCat == null){
+                               prevBatch.put("productCat", productCat[0].id)
+                           }else{
+                               prevBatch.put("productCat", 0)
+                           }
+                           def saveBatch = new ProductService().saveBatchRegister(prevBatch)
+                           if(saveBatch?.status == 200){
+                               println("batch Saved")
+                           }
+                       }else{
+                           println("Batch already present!!")
+                       }
+                   }
+                    //stocks update
                     def stockBook1 = new InventoryService().getStocksOfProductAndBatch(gtnObject.productId.toString(),
                             gtnObject.batchNumber.toString(), gtnObject.entityId.toString())
                     stockBook1.put("remainingQty", Double.valueOf(Double.parseDouble(gtnObject.sqty.toString())).longValue())
                     stockBook1.put("remainingFreeQty", Double.valueOf(Double.parseDouble(gtnObject.freeQty.toString())).longValue())
                     stockBook1.put("remainingReplQty", Double.valueOf(Double.parseDouble(gtnObject.repQty.toString())).longValue())
                     stockBook1.put("purchaseRate", gtnObject?.sRate)
-//                    stockBook1.put("entityId", session.getAttribute('entityId').toString())
+                    stockBook1.put("mergedWith", "0")
+                    stockBook1.put("productId", productId)
+                    stockBook1.put("entityId", session.getAttribute('entityId').toString())
+                    stockBook1.put("entityTypeId", session.getAttribute('entityTypeId').toString())
                     stockBook1.put("uuid", UUID.randomUUID())
-//                    stockBook1.put("entityTypeId", session.getAttribute('entityTypeId').toString())
-                    def apires = new InventoryService().stockBookSave(stockBook1)
+                    def checkStockBook = new InventoryService().getStocksOfProductAndBatch(productId.toString(), gtnObject
+                            .batchNumber.toString(), session.getAttribute('entityId').toString())
+                    if(checkStockBook){
+                        double remainingQty = Double.parseDouble(checkStockBook.remainingQty.toString()) + Double.parseDouble(gtnObject.sqty.toString())
+                        double  remainingFreeQty = Double.parseDouble(checkStockBook.remainingFreeQty.toString()) +
+                                Double.parseDouble(gtnObject.freeQty.toString())
+                        checkStockBook.put("remainingQty", Double.valueOf(Double.parseDouble(remainingQty.toString()))
+                                .longValue())
+                        checkStockBook.put("remainingFreeQty", Double.valueOf(Double.parseDouble(remainingFreeQty.toString())).longValue())
+                        checkStockBook.put("remainingReplQty", Double.valueOf(Double.parseDouble(checkStockBook.remainingReplQty.toString())).longValue())
+                        checkStockBook.put("purchaseRate", gtnObject?.sRate)
+                        checkStockBook.put("mergedWith", "0")
+                        checkStockBook.put("productId", productId)
+                        checkStockBook.put("entityId", session.getAttribute('entityId').toString())
+                        checkStockBook.put("entityTypeId", session.getAttribute('entityTypeId').toString())
+                        checkStockBook.put("uuid", UUID.randomUUID())
+                        new InventoryService().updateStockBook(checkStockBook)
+                    }else{
+                        def apires = new InventoryService().stockBookSave(stockBook1)
+                    }
                     new SalesService().approveGTN(gtn.id.toString(), gtn.entityId.toString(), gtn.financialYear.toString())
                 }
             }
             respond gtn, formats: ['json'], status: 200
-        }
-        else
-        {
-            response.status = 400
-        }
+//        }
+//        else
+//        {
+//            response.status = 400
+//        }
     }
 
     def printGRN()

@@ -311,4 +311,15 @@ class ProductRegisterService {
             throw new BadRequestException()
         }
     }
+
+    def getByHsnCodeAndEntityId(String hsnCode, long entityId){
+        if(hsnCode){
+            ProductRegister productRegister = ProductRegister.findByHsnCodeAndEntityId(hsnCode.trim(),entityId)
+            if(productRegister){
+                return  productRegister
+            }
+        } else{
+            throw new BadRequestException()
+        }
+    }
 }

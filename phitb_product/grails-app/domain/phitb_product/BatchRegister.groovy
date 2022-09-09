@@ -28,6 +28,7 @@ class BatchRegister implements Serializable, LogicalDelete<BatchRegister> {
     Date lastUpdated
 
     static constraints = {
+        productCat nullable: true
     }
 
     static mapping = {

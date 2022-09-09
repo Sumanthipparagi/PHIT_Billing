@@ -1934,5 +1934,32 @@ class ProductService {
 
     }
 
+    def getProductByIdAndHSN(String productId, String hsnCode, String entityId) {
+        Client client = ClientBuilder.newClient();
+        WebTarget target = client.target(new Links().API_GATEWAY);
+        try {
+            Response apiResponse = target
+                    .path(new Links().PRODUCT_REGISTER_BY_ID_HSN)
+                    .queryParam("productId", URLEncoder.encode(productId.toString(), "UTF-8"))
+                    .queryParam("hsnCode", URLEncoder.encode(hsnCode.toString(), "UTF-8"))
+                    .queryParam("entityId", URLEncoder.encode(entityId.toString(), "UTF-8"))
+                    .request(MediaType.APPLICATION_JSON_TYPE)
+                    .get()
+            if (apiResponse?.status == 200)
+            {
+                JSONObject jsonObject = new JSONObject(apiResponse.readEntity(String.class))
+                return jsonObject
+            }
+            else
+            {
+                return []
+            }
+        }
+        catch (Exception ex) {
+            System.err.println('Service :ProductService , action :  getByProductIdAndHSN  , Ex:' + ex)
+            log.error('Service :ProductService , action :  getByProductIdAndHSN  , Ex:' + ex)
+        }
+    }
+
 
 }

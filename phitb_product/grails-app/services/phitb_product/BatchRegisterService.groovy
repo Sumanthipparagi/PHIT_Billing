@@ -114,7 +114,15 @@ class BatchRegisterService {
             batchRegister.box = Long.parseLong(jsonObject.get("box").toString())
             batchRegister.caseWt = jsonObject.get("caseWt").toString()
             batchRegister.batchNumber = jsonObject.get("batchNumber").toString()
-            batchRegister.productCat = ProductCategoryMaster.findById(Long.parseLong(jsonObject.get("productCat").toString()))
+            if(jsonObject.has("productCat") && jsonObject.get("productCat").toString()!=0)
+            {
+                batchRegister.productCat =  ProductCategoryMaster.findById(Long.parseLong(jsonObject.get("productCat").toString()))
+            }
+            else
+            {
+                batchRegister.productCat = null
+            }
+//            batchRegister.productCat = ProductCategoryMaster.findById(Long.parseLong(jsonObject.get("productCat").toString()))
             batchRegister.status = Long.parseLong(jsonObject.get("status").toString())
             batchRegister.syncStatus = Long.parseLong(jsonObject.get("syncStatus").toString())
             batchRegister.entityTypeId = Long.parseLong(jsonObject.get("entityTypeId").toString())
@@ -146,7 +154,15 @@ class BatchRegisterService {
             batchRegister.box = Long.parseLong(jsonObject.get("box").toString())
             batchRegister.caseWt = jsonObject.get("caseWt").toString()
             batchRegister.batchNumber = jsonObject.get("batchNumber").toString()
-            batchRegister.productCat = ProductCategoryMaster.findById(Long.parseLong(jsonObject.get("productCat").toString()))
+            if(jsonObject.has("productCat") && jsonObject.get("productCat").toString()!=0)
+            {
+                batchRegister.productCat =  ProductCategoryMaster.findById(Long.parseLong(jsonObject.get("productCat").toString()))
+            }
+            else
+            {
+                batchRegister.productCat = null
+            }
+//            batchRegister.productCat = ProductCategoryMaster.findById(Long.parseLong(jsonObject.get("productCat").toString()))
             batchRegister.status =  Long.parseLong(jsonObject.get("status").toString())
             batchRegister.syncStatus =  Long.parseLong(jsonObject.get("syncStatus").toString())
             batchRegister.entityTypeId =  Long.parseLong(jsonObject.get("entityTypeId").toString())

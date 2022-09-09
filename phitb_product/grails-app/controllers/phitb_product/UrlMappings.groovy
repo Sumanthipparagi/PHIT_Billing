@@ -156,6 +156,7 @@ class UrlMappings {
             "/productregisterbydivision/$id(.$format)?"(controller: 'productRegister') {
                 action = [GET: 'getAllByDivision']
             }
+            "/productregisterbyhsnandentity"(controller: 'productRegister', action: 'getByHsnCodeAndEntityId')
 
             //Product Schedule Master
             "/productschdulemaster(.$format)?"(controller: 'productScheduleMaster') {

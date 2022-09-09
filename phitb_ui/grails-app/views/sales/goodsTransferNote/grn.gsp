@@ -54,6 +54,7 @@
     </div>
 </div>
 <g:include view="controls/sidebar.gsp"/>
+<g:include view="controls/sales/add-division-grn.gsp"/>
 
 <section class="content">
     <div class="container-fluid">
@@ -178,14 +179,14 @@
     var entityregister;
     var id = null;
     $(function () {
-        saleInvoiceTable();
+        grnTable();
         // var $demoMaskedInput = $('.demo-masked-input');
         // $demoMaskedInput.find('.datetime').inputmask('d/m/y h:m:s', { placeholder: '__/__/____ __:__:__:__', alias:
         //         "datetime", hourFormat: '12' });
 
     });
 
-    function saleInvoiceTable() {
+    function grnTable() {
         var invoiceStatus = $("#invoiceStatus").val();
         entityregister = $(".saleInvoiceTable").DataTable({
             "order": [[0, "desc"]],
@@ -322,7 +323,7 @@
                             'Return Cancelled',
                             'success'
                         );
-                        saleInvoiceTable();
+                        grnTable();
                     },
                     error: function () {
                         Swal.fire(
@@ -350,41 +351,7 @@
             denyButtonText: 'No',
         }).then((result) => {
             if (result.isConfirmed) {
-                var url = '/grn/approveGRN?gtn=' + gtn;
-                var beforeSendSwal;
-                $.ajax({
-                    type: "GET",
-                    url: url,
-                    dataType: 'json',
-                    beforeSend: function() {
-                        beforeSendSwal = Swal.fire({
-                            // title: "Loading",
-                            html:
-                                '<img src="${assetPath(src: "/themeassets/images/1476.gif")}" width="100" height="100"/>',
-                            showDenyButton: false,
-                            showCancelButton: false,
-                            showConfirmButton: false,
-                            allowOutsideClick: false,
-                            background:'transparent'
-                        });
-                    },
-                    success: function (data) {
-                        beforeSendSwal.close();
-                        Swal.fire(
-                            'Success!',
-                            'GRN Approved',
-                            'success'
-                        );
-                        saleInvoiceTable();
-                    },
-                    error: function () {
-                        Swal.fire(
-                            'Error!',
-                            'Unable to approve GRN at the moment, try later.',
-                            'danger'
-                        );
-                    }
-                });
+                $('#addDivisionGrn').modal('show');
             } else if (result.isDenied) {
 
             }
@@ -393,9 +360,45 @@
 
     }
 
+    %{--var url = '/grn/approveGRN?gtn=' + gtn;--}%
+    %{--var beforeSendSwal;--}%
+    %{--$.ajax({--}%
+    %{--    type: "GET",--}%
+    %{--    url: url,--}%
+    %{--    dataType: 'json',--}%
+    %{--    beforeSend: function() {--}%
+    %{--        beforeSendSwal = Swal.fire({--}%
+    %{--            // title: "Loading",--}%
+    %{--            html:--}%
+    %{--                '<img src="${assetPath(src: "/themeassets/images/1476.gif")}" width="100" height="100"/>',--}%
+    %{--            showDenyButton: false,--}%
+    %{--            showCancelButton: false,--}%
+    %{--            showConfirmButton: false,--}%
+    %{--            allowOutsideClick: false,--}%
+    %{--            background:'transparent'--}%
+    %{--        });--}%
+    %{--    },--}%
+    %{--    success: function (data) {--}%
+    %{--        beforeSendSwal.close();--}%
+    %{--        Swal.fire(--}%
+    %{--            'Success!',--}%
+    %{--            'GRN Approved',--}%
+    %{--            'success'--}%
+    %{--        );--}%
+    %{--        saleInvoiceTable();--}%
+    %{--    },--}%
+    %{--    error: function () {--}%
+    %{--        Swal.fire(--}%
+    %{--            'Error!',--}%
+    %{--            'Unable to approve GRN at the moment, try later.',--}%
+    %{--            'danger'--}%
+    %{--        );--}%
+    %{--    }--}%
+    %{--});--}%
+
 
     function invoiceStatusChanged() {
-        saleInvoiceTable();
+        grnTable();
     }
 
 </script>
