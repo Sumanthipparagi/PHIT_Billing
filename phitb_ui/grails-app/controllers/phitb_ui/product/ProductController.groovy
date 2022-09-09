@@ -30,7 +30,7 @@ class ProductController {
                                                                              productSchedules : productSchedules,
                                                                              racks            : racks,
                                                                              compositions     : compositions,
-                                                                             divisions        : divisions,entity:entity])
+                                                                             divisions        : divisions, entity: entity])
 
         }
         catch (Exception ex) {
@@ -63,7 +63,8 @@ class ProductController {
                 }
 
                 if (it.entityType.name.toString().equalsIgnoreCase(Constants.ENTITY_MANUFACTURER_AND_MARKETING)
-                || it.entityType.name.toString().equalsIgnoreCase(Constants.ENTITY_C_F)) {
+                        || it.entityType.name.toString().equalsIgnoreCase(Constants.ENTITY_C_F)
+                        || it.entityType.name.toString().equalsIgnoreCase(Constants.ENTITY_MANUFACTURER)) {
                     companyList.add(it)
                 }
             }
@@ -74,7 +75,7 @@ class ProductController {
                                                                          racks            : racks,
                                                                          compositions     : compositions,
                                                                          divisions        : divisions,
-                                                                         entity: entity,
+                                                                         entity           : entity,
                                                                          productcost      : productcost,
                                                                          unittype         : unittype,
                                                                          tax              : tax,
@@ -125,9 +126,9 @@ class ProductController {
                                                                             racks            : racks,
                                                                             compositions     : compositions,
                                                                             divisions        : divisions, entity: entity,
-                                                                           // entitytype       : entitytype,
+                                                                            // entitytype       : entitytype,
                                                                             producttype      : producttype,
-                                                                            product  : product,
+                                                                            product          : product,
                                                                             productcost      : productcost,
                                                                             unittype         : unittype,
                                                                             tax              : tax,
