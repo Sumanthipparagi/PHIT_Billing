@@ -642,8 +642,8 @@ class EntityService {
     //Entity IRN
     def saveEntityIRN(JSONObject jsonObject) {
         Client client = ClientBuilder.newClient().register(JacksonFeature.class)
-        //WebTarget target = client.target(new Links().API_GATEWAY)
-        WebTarget target = client.target("http://localhost:8088")
+        WebTarget target = client.target(new Links().API_GATEWAY)
+        //WebTarget target = client.target("http://localhost:8088")
         try {
             println(jsonObject)
             Response apiResponse = target
@@ -685,8 +685,8 @@ class EntityService {
 
     def putEntityIRN(JSONObject jsonObject) {
         Client client = ClientBuilder.newClient()
-       // WebTarget target = client.target(new Links().API_GATEWAY)
-        WebTarget target = client.target("http://localhost:8088")
+        WebTarget target = client.target(new Links().API_GATEWAY)
+       // WebTarget target = client.target("http://localhost:8088")
         try {
             Response apiResponse = target
                     .path(new Links().ENTITY_IRN_UPDATE)

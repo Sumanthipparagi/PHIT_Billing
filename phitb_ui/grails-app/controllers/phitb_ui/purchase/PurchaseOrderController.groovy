@@ -251,6 +251,8 @@ class PurchaseOrderController
         purchaseOrderDetails.put("exempted", 0) //TODO: to be changed
         purchaseOrderDetails.put("seriesCode", seriesCode)
         purchaseOrderDetails.put("uuid", params.uuid)
+        purchaseOrderDetails.put("publicNote", params.publicNote)
+        purchaseOrderDetails.put("privateNote", params.privateNote)
         JSONObject jsonObject = new JSONObject()
         jsonObject.put("purchaseOrder", purchaseOrderDetails)
         jsonObject.put("purchaseProducts", purchaseProductDetails)

@@ -58,16 +58,22 @@ class PurchaseOrder implements LogicalDelete<PurchaseOrder> {
     Date lastUpdated
     String uuid
     String remarks
+    String publicNote
+    String privateNote
     static constraints = {
         invoiceNumber unique: true, nullable: true
         cancelledDate nullable: true
         totalAmount nullable: true
         supplierBillDate nullable: true
+        publicNote nullable: true
+        privateNote nullable: true
         uuid unique: true
     }
 
     static mapping = {
         remarks sqlType: 'longText'
+        publicNote sqlType: 'longText'
+        privateNote sqlType: 'longText'
     }
     boolean isUpdatable
     static transients = ['isUpdatable']

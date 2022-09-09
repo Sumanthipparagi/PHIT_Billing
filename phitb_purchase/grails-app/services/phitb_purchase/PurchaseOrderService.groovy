@@ -142,6 +142,10 @@ class PurchaseOrderService {
         purchaseOrder.createdUser = Long.parseLong(jsonObject.get("createdUser").toString())
         purchaseOrder.modifiedUser = Long.parseLong(jsonObject.get("modifiedUser").toString())
         purchaseOrder.uuid = jsonObject.get("uuid").toString()
+        if(jsonObject.has("publicNote"))
+            purchaseOrder.publicNote = jsonObject.get("publicNote").toString()
+        if(jsonObject.has("privateNote"))
+            purchaseOrder.privateNote = jsonObject.get("privateNote").toString()
         purchaseOrder.save(flush: true)
         if (!purchaseOrder.hasErrors())
         {
@@ -234,6 +238,10 @@ class PurchaseOrderService {
             purchaseOrder.createdUser = Long.parseLong(jsonObject.get("createdUser").toString())
             purchaseOrder.modifiedUser = Long.parseLong(jsonObject.get("modifiedUser").toString())
             purchaseOrder.uuid = jsonObject.get("uuid").toString()
+            if(jsonObject.has("publicNote"))
+                purchaseOrder.publicNote = jsonObject.get("publicNote").toString()
+            if(jsonObject.has("privateNote"))
+                purchaseOrder.privateNote = jsonObject.get("privateNote").toString()
             purchaseOrder.save(flush: true)
             if (!purchaseOrder.hasErrors())
             {
