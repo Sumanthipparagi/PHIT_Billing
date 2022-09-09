@@ -1097,7 +1097,7 @@
         if(supplierBillId?.length === 0 || supplierBillDate?.length === 0)
         {
             Swal.fire({
-                title: "Please enter supplier invoice number and date",
+                title: "Please enter reference number and date",
                 showDenyButton: false,
                 showCancelButton: false,
                 showConfirmButton: true,
