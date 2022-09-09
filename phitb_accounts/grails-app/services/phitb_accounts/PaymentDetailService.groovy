@@ -1,6 +1,8 @@
 package phitb_accounts
 
+import grails.converters.JSON
 import grails.gorm.transactions.Transactional
+import org.grails.web.json.JSONArray
 import org.grails.web.json.JSONObject
 import phitb_accounts.Exception.BadRequestException
 import phitb_accounts.Exception.ResourceNotFoundException
@@ -60,6 +62,7 @@ class PaymentDetailService {
     }
 
     JSONObject dataTables(JSONObject paramsJsonObject, String start, String length) {
+        long entityId = paramsJsonObject.get("entityId")
         String searchTerm = paramsJsonObject.get("search[value]")
         String orderColumnId = paramsJsonObject.get("order[0][column]")
         String orderDir = paramsJsonObject.get("order[0][dir]")
@@ -85,6 +88,7 @@ class PaymentDetailService {
                     ilike('paymentModeId', '%' + searchTerm + '%')
                 }
             }
+            eq('entityId', entityId)
             eq('deleted', false)
             order(orderColumn, orderDir)
         }
@@ -138,6 +142,7 @@ class PaymentDetailService {
         }
         paymentDetail.wallet = WalletMaster.findById(Long.parseLong("0"))
         paymentDetail.financialYear = jsonObject.get("financialYear").toString()
+        paymentDetail.approvedStatus = "ACTIVE"
         paymentDetail.status = Long.parseLong("1")
         paymentDetail.syncStatus = Long.parseLong("1")
         paymentDetail.entityTypeId = Long.parseLong("1")
@@ -182,6 +187,7 @@ class PaymentDetailService {
             paymentDetail.accountModeId = Long.parseLong(jsonObject.get("accountModeId").toString())
             paymentDetail.paymentModeId = Long.parseLong(jsonObject.get("paymentModeId").toString())
             paymentDetail.transferFrom = jsonObject.get("transferFrom").toString()
+            paymentDetail.approvedStatus = "ACTIVE"
             paymentDetail.paymentTo = jsonObject.get("paymentTo").toString()
             paymentDetail.amountPaid = Long.parseLong(jsonObject.get("amountPaid").toString())
             paymentDetail.narration = jsonObject.get("narration").toString()
@@ -221,6 +227,40 @@ class PaymentDetailService {
                 throw new ResourceNotFoundException()
             }
         } else {
+            throw new BadRequestException()
+        }
+    }
+
+    def getByDateRangeAndEntity(dateRange, entityId)
+    {
+        try {
+            SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy")
+            Date fromDate = sdf.parse(dateRange.split("-")[0].trim().toString())
+            Date toDate = sdf.parse(dateRange.split("-")[1].trim().toString())
+            Calendar cal = Calendar.getInstance();
+            cal.setTime(toDate)
+            cal.set(Calendar.HOUR_OF_DAY, 23)
+            cal.set(Calendar.MINUTE, 59)
+            cal.set(Calendar.SECOND, 59)
+            cal.set(Calendar.MILLISECOND, 999)
+            toDate = cal.getTime()
+            long eid = Long.parseLong(entityId)
+            JSONArray finalPayments = new JSONArray()
+            ArrayList<PaymentDetail> paymentDetails = PaymentDetail.findAllByEntityIdAndDateCreatedBetween(eid, fromDate, toDate)
+            for (PaymentDetail paymentDetail : paymentDetails) {
+                JSONObject rd = new JSONObject((paymentDetail as JSON).toString())
+                def billPaymentLog = BillPaymentLog.findAllByBillId(paymentDetail.id)
+                if (billPaymentLog) {
+                    JSONArray prdt =  new  JSONArray((billPaymentLog as JSON).toString())
+                    rd.put("products", prdt)
+                }
+                finalPayments.add(rd)
+            }
+            return finalPayments
+        }
+        catch (Exception ex)
+        {
+            ex.printStackTrace()
             throw new BadRequestException()
         }
     }

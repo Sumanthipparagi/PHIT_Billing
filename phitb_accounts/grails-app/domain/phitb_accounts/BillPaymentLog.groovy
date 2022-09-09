@@ -17,6 +17,7 @@ class BillPaymentLog implements LogicalDelete<BillPaymentLog> {
     long syncStatus
     long entityTypeId
     long entityId
+    String paymentStatus
     long modifiedUser
     long createdUser
 
@@ -26,6 +27,7 @@ class BillPaymentLog implements LogicalDelete<BillPaymentLog> {
     static constraints = {
         paymentId nullable:true
         transId nullable: true
+        paymentStatus nullable: true
     }
 
     boolean isUpdatable

@@ -73,6 +73,7 @@ class UrlMappings {
             "/setcreditstatus/$id/type/$type(.$format)?"(controller: 'creditJv') {
                 action = [POST: 'updateStatus']
             }
+            "/creditjvbydaterange"(controller: 'creditJv', action: 'getByDateRangeAndEntity')
 
             //credit jv transaction detail
             "/creditjvtransactiondetail(.$format)?"(controller: 'creditJvTransactionDetail') { action = [GET: 'index', POST: 'save'] }
@@ -89,6 +90,7 @@ class UrlMappings {
             "/debitjv/$id(.$format)?"(controller: 'debitJv') { action = [GET: 'show', PUT: 'update', DELETE: 'delete'] }
             "/debitjvbyentity/$id(.$format)?"(controller: 'debitJv') { action = [GET: 'getByEntityId'] }
             "/debitjvbydays/$days(.$format)?"(controller: 'debitJv') { action = [GET: 'getAllByDays'] }
+            "/debitjvbydaterange"(controller: 'debitJv', action: 'getByDateRangeAndEntity')
 
             //debit jv transaction detail
             "/debitjvtransactiondetail(.$format)?"(controller: 'debitJvTransactionDetail') { action = [GET: 'index', POST: 'save'] }
@@ -111,6 +113,7 @@ class UrlMappings {
             "/paymentdetailsbydays/$days(.$format)?"(controller: 'paymentDetail') { action = [GET:
                                                                                                             'getAllByDays'] }
 
+            "/paymentdetailsbydaterange(.$format)?"(controller: 'paymentDetail', action: 'getByDateRangeAndEntity')
 
 
             //receipt details

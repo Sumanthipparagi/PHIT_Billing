@@ -19,6 +19,7 @@ import phitb_ui.entity.EntityRegisterController
 import java.text.DecimalFormat
 import java.text.SimpleDateFormat
 import java.util.function.ToDoubleFunction
+import java.util.stream.Collectors
 
 class SalesReportController {
 
@@ -440,9 +441,9 @@ class SalesReportController {
 
     def getCustomerLedger() {
         //TODO: 1. Get Sale Invoice - debit [DONE}
-        //TODO: 2. Get Sale Order - debit
-        //TODO: 3. Get Purchase Return - debit
-        //TODO: 4. Get Delivery Challan - debit
+        //TODO: 2. Get Sale Order - debit [done]
+        //TODO: 3. Get Purchase Return - debit [done}
+        //TODO: 4. Get Delivery Challan - debit [done]
         //TODO: 5. Get CREDIT JV - debit
         //TODO: 6. Get Payments - debit
         //TODO: 7. Get GTN - debit [DONE}
@@ -464,10 +465,18 @@ class SalesReportController {
         //get data within daterange
         JSONArray saleBills = new SalesService().getSaleBillByDateRange(dateRange, entityId)
         JSONArray saleReturn = new SalesService().getSaleReturnByDateRange(dateRange, entityId)
+        JSONArray saleOrder = new SalesService().getSaleOrderByDateRange(dateRange,entityId)
+        JSONArray deliveryChallan = new SalesService().getDeliveryChallanByDateRange(dateRange,entityId)
         JSONArray goodsTransferNotes = new SalesService().getGTNByDateRange(dateRange, entityId)
         JSONArray receiptDetails = new AccountsService().getReceiptDetailsByDateRange(dateRange, entityId)
         JSONArray purchaseReturns = new PurchaseService().getPurchaseRetrunByDateRange(dateRange, entityId)
         JSONArray purchaseBills = new PurchaseService().getPurchaseBillByDateRange(dateRange, entityId)
+        JSONArray creditJv = new AccountsService().getCreditJvByDateRange(dateRange, entityId)
+        JSONArray debitJv = new AccountsService().getDebitJvByDateRange(dateRange,entityId)
+        JSONArray paymentDetails = new AccountsService().getPaymentDetailsByDateRange(dateRange,entityId)
+        JSONArray purchaseOrder = new PurchaseService().getPurchaseOrderByDateRange(dateRange,entityId)
+
+
 
         //======DEBITS=======
         double saleBillBalance = 0.0
@@ -488,6 +497,71 @@ class SalesReportController {
             }
         }
 
+        double saleOrderBalance = 0.0
+        for (Object so : saleOrder) {
+            if(so?.billStatus == "ACTIVE" && so?.deleted == false) {
+                saleOrderBalance += so?.totalAmount
+                JSONObject customerLedgerEntry = new JSONObject()
+                customerLedgerEntry.put("transactionDate", so?.entryDate)
+                customerLedgerEntry.put("transactionNumber", so?.invoiceNumber)
+                customerLedgerEntry.put("transactionDescription", "Sale Order")
+                customerLedgerEntry.put("amount", so?.totalAmount)
+                customerLedgerEntry.put("type", "DEBIT")
+                customerLedgerDetails.add(customerLedgerEntry)
+            }
+            else
+            {
+                println("Not Included: "+ so.totalAmount)
+            }
+        }
+
+        double creditJvBalance = 0.0
+        for (Object crjv : creditJv) {
+            creditJvBalance += crjv?.amount
+            JSONObject customerLedgerEntry = new JSONObject()
+            customerLedgerEntry.put("transactionDate", sdf1.format(sdf2.parse(crjv?.transactionDate)))
+            customerLedgerEntry.put("transactionNumber", crjv?.transactionId)
+            customerLedgerEntry.put("transactionDescription", "Credit JV")
+            customerLedgerEntry.put("amount", crjv?.amount)
+            customerLedgerEntry.put("type", "DEBIT")
+            customerLedgerDetails.add(customerLedgerEntry)
+        }
+
+        double deliveryChallanBalance = 0.0
+        for (Object dc : deliveryChallan) {
+            if(dc?.billStatus == "ACTIVE" && dc?.deleted == false) {
+                deliveryChallanBalance += dc?.invoiceTotal
+                JSONObject customerLedgerEntry = new JSONObject()
+                customerLedgerEntry.put("transactionDate", dc?.entryDate)
+                customerLedgerEntry.put("transactionNumber", dc?.invoiceNumber)
+                customerLedgerEntry.put("transactionDescription", "Delivery Challan")
+                customerLedgerEntry.put("amount", dc?.invoiceTotal)
+                customerLedgerEntry.put("type", "DEBIT")
+                customerLedgerDetails.add(customerLedgerEntry)
+            }
+            else
+            {
+                println("Not Included: "+ dc.invoiceTotal)
+            }
+        }
+
+        double purchaseRetrunBalance = 0.0
+        for (Object pr : purchaseReturns) {
+            if(pr?.billStatus == "ACTIVE" && pr?.deleted == false) {
+                purchaseRetrunBalance += pr?.totalAmount
+                JSONObject customerLedgerEntry = new JSONObject()
+                customerLedgerEntry.put("transactionDate", sdf1.format(sdf2.parse(pr?.dateCreated)))
+                customerLedgerEntry.put("transactionNumber", pr?.totalAmount)
+                customerLedgerEntry.put("transactionDescription", "Purchase Return")
+                customerLedgerEntry.put("amount", pr?.totalAmount)
+                customerLedgerEntry.put("type", "DEBIT")
+                customerLedgerDetails.add(customerLedgerEntry)
+            }
+            else
+            {
+                println("Not Included: "+ pr.totalAmount)
+            }
+        }
 
         for (Object gtn : goodsTransferNotes) {
             if(gtn?.billStatus == "ACTIVE" && gtn?.deleted == false) {
@@ -504,6 +578,25 @@ class SalesReportController {
                 println("Not Included: "+ gtn.invoiceTotal)
             }
         }
+
+        double paymentAmount = 0.0
+        for (Object pd : paymentDetails) {
+            if(pd?.approvedStatus == "ACTIVE" && pd?.cancelledDate == null) {
+                paymentAmount += pd?.amountPaid
+                JSONObject customerLedgerEntry = new JSONObject()
+                customerLedgerEntry.put("transactionDate", sdf1.format(sdf2.parse(pd?.dateCreated)))
+                customerLedgerEntry.put("transactionNumber", pd?.paymentId)
+                customerLedgerEntry.put("transactionDescription", "Payments")
+                customerLedgerEntry.put("amount", pd?.amountPaid)
+                customerLedgerEntry.put("type", "DEBIT")
+                customerLedgerDetails.add(customerLedgerEntry)
+            }
+            else
+            {
+                println("Not Included: "+ pd.totalAmount)
+            }
+        }
+
 
         //======CREDITS=======
         double saleReturnBalance = 0.0
@@ -545,7 +638,7 @@ class SalesReportController {
         double purchaseAmount = 0.0
         for (Object pb : purchaseBills) {
             if(pb?.billStatus == "ACTIVE" && pb?.cancelledDate == null) {
-                receiptAmount += pb?.totalAmount
+                purchaseAmount += pb?.totalAmount
                 JSONObject customerLedgerEntry = new JSONObject()
                 customerLedgerEntry.put("transactionDate", sdf1.format(sdf2.parse(pb?.dateCreated)))
                 customerLedgerEntry.put("transactionNumber", pb?.invoiceNumber)
@@ -558,6 +651,36 @@ class SalesReportController {
             {
                 println("Not Included: "+ pb.totalAmount)
             }
+        }
+
+        double purchaseOrderAmount = 0.0
+        for (Object po : purchaseOrder) {
+            if(po?.billStatus == "ACTIVE" && po?.cancelledDate == null) {
+                purchaseOrderAmount += po?.totalAmount
+                JSONObject customerLedgerEntry = new JSONObject()
+                customerLedgerEntry.put("transactionDate", sdf1.format(sdf2.parse(po?.dateCreated)))
+                customerLedgerEntry.put("transactionNumber", po?.invoiceNumber)
+                customerLedgerEntry.put("transactionDescription", "Purchase Order")
+                customerLedgerEntry.put("amount", po?.totalAmount)
+                customerLedgerEntry.put("type", "CREDIT")
+                customerLedgerDetails.add(customerLedgerEntry)
+            }
+            else
+            {
+                println("Not Included: "+ po?.totalAmount)
+            }
+        }
+
+        double debitJvBalance = 0.0
+        for (Object dbjv : debitJv) {
+            debitJvBalance += dbjv?.amount
+            JSONObject customerLedgerEntry = new JSONObject()
+            customerLedgerEntry.put("transactionDate", sdf1.format(sdf2.parse(dbjv?.transactionDate)))
+            customerLedgerEntry.put("transactionNumber", dbjv?.transactionId)
+            customerLedgerEntry.put("transactionDescription", "Debit JV")
+            customerLedgerEntry.put("amount", dbjv?.amount)
+            customerLedgerEntry.put("type", "CREDIT")
+            customerLedgerDetails.add(customerLedgerEntry)
         }
 
 
@@ -579,7 +702,65 @@ class SalesReportController {
             }
         })
 
-        openingBalance = 1000000 //TODO: to be removed
+        def entity = new EntityService().getEntityById(session.getAttribute('entityId').toString())
+        def entityOpeningBalance = entity?.openingBalance
+        println("entityOpeningBalance"+entityOpeningBalance)
+
+        String newDateRange = session.getAttribute('startDate').toString() +" - "+ dateRange.split("-")[0].trim()
+        println(session.getAttribute('startDate').toString())
+        //Debit
+        def saleBillsTotal = new SalesService().getSaleBillByDateRange(newDateRange, entityId).stream().filter({i ->
+            i?.billStatus == "ACTIVE" && i?.deleted == false}).mapToDouble({i -> i.invoiceTotal}).sum()
+
+        def saleOrderTotal = new SalesService().getSaleOrderByDateRange(newDateRange, entityId).stream().filter({i ->
+            i?.billStatus == "ACTIVE" && i?.deleted == false}).mapToDouble({i -> i.totalAmount}).sum()
+
+        def gtnTotal = new SalesService().getGTNByDateRange(newDateRange, entityId).stream().filter({i -> i?.billStatus == "ACTIVE" && i?.deleted == false}).mapToDouble({i -> i?.totalAmount}).sum()
+
+        def purchaseReturnTotal = new PurchaseService().getPurchaseRetrunByDateRange(newDateRange, entityId).stream()
+                .filter({i -> i?.billStatus == "ACTIVE" && i?.deleted == false}).mapToDouble({i -> i.totalAmount}).sum()
+
+        def saleReturnTotal = new SalesService().getSaleReturnByDateRange(newDateRange, entityId).stream().filter({i ->
+            i?.returnStatus == "ACTIVE" && i?.balance > 0}).mapToDouble({i -> i.totalAmount}).sum()
+
+
+        def deliveryChallanTotal = new SalesService().getDeliveryChallanByDateRange(newDateRange, entityId).stream().filter({i -> i?.billStatus == "ACTIVE" && i?.deleted == false}).mapToDouble({i -> i.totalAmount}).sum()
+
+        def creditJvTotal = new AccountsService().getCreditJvByDateRange(newDateRange, entityId).stream().mapToDouble({i -> i.amount}).sum()
+
+        def paymentTotal = new AccountsService().getPaymentDetailsByDateRange(newDateRange, entityId).stream().filter({i -> i?.approvedStatus == "ACTIVE" && i?.cancelledDate == null}).mapToDouble({i -> i.amountPaid}).sum()
+
+
+//        credit
+        def receiptTotal= new AccountsService().getReceiptDetailsByDateRange(newDateRange, entityId).stream().filter({i -> i?.approvedStatus == "ACTIVE" && i?.cancelledDate == null}).mapToDouble({i -> i.amountPaid}).sum()
+
+        def purchaseBillsTotal = new PurchaseService().getPurchaseBillByDateRange(newDateRange, entityId).stream()
+                .filter({i -> i?.billStatus == "ACTIVE" && i?.deleted == false}).mapToDouble({i -> i.totalAmount}).sum()
+
+
+        def debitJvTotal = new AccountsService().getDebitJvByDateRange(newDateRange, entityId).stream().mapToDouble({i -> i.amount}).sum()
+
+        def purchaseOrderTotal = new PurchaseService().getPurchaseOrderByDateRange(newDateRange, entityId).stream()
+                .filter({i -> i?.billStatus == "ACTIVE" && i?.deleted == false}).mapToDouble({i -> i.totalAmount}).sum()
+
+
+        println("SaleBillTotal "+ saleBillsTotal)
+        println("SaleRetrunTotal "+ saleReturnTotal)
+        println("SaleOrderTotal "+ saleOrderTotal)
+        println("deliveryChallanTotal "+ deliveryChallanTotal)
+        println("gtnTotal "+ gtnTotal)
+        println("receiptTotal "+ receiptTotal)
+        println("purchaseReturnTotal "+ purchaseReturnTotal)
+        println("purchaseBillsTotal "+ purchaseBillsTotal)
+        println("creditJvTotal "+ creditJvTotal)
+        println("debitJvTotal "+ debitJvTotal)
+        println("purchaseOrderTotal "+ purchaseOrderTotal)
+        println("paymentTotal "+ paymentTotal)
+
+//        openingBalance = 1000000 //TODO: to be removed
+            openingBalance = entityOpeningBalance+(saleBillsTotal.toDouble() + saleOrderTotal.toDouble() + gtnTotal
+                    .toDouble() + deliveryChallanTotal.toDouble() + debitJvTotal.toDouble() + receiptTotal.toDouble() + purchaseReturnTotal.toDouble()) - (purchaseBillsTotal.toDouble() - purchaseOrderTotal.toDouble() - saleReturnTotal.toDouble() - creditJvTotal.toDouble() - paymentTotal.toDouble())
+        println(openingBalance)
         JSONObject jsonObject = new JSONObject()
         jsonObject.put("customerLedger", customerLedgerDetails)
         jsonObject.put("openingBalance", openingBalance)

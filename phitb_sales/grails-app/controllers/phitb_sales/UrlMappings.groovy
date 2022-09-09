@@ -262,6 +262,8 @@ class UrlMappings {
             "/saleorderproductdetailsbillandbatch(.$format)?"(controller: 'saleOrderProductDetails', action:
                     'getSaleProductDetailsbybatchAndBill')
 
+            "/saleorderbydaterange(.$format)?"(controller: 'saleOrderEntry', action: 'getByDateRangeAndEntity')
+
 
 //            Convert to Sale Entry
             "/convert-to-sale-entry(.$format)?"(controller: 'saleOrderEntry', action: 'convertToSaleEntry')
@@ -574,6 +576,8 @@ class UrlMappings {
 
             "/updatedeliverychallanbalancebyid/id/$id/balance/$balance/status/$status"(controller: 'goodsTransferNote')
                     { action = [POST: 'updateBalance'] }
+
+            "/deliverychallanbydaterange(.$format)?"(controller: 'deliveryChallan', action: 'getByDateRangeAndEntity')
 
 
             //GTN Product Details

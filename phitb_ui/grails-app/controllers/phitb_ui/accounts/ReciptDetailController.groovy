@@ -99,6 +99,7 @@ class ReciptDetailController {
         try {
             String fromDate, toDate
             JSONObject jsonObject = new JSONObject(params)
+            jsonObject.put("entityId", session.getAttribute('entityId'))
             if ((params.daterange != null) && (params.daterange != ""))
             {
                 System.out.println("date=" + params.daterange.toString())

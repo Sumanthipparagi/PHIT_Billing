@@ -2,6 +2,7 @@ package phitb_accounts
 
 import grails.converters.JSON
 import grails.web.servlet.mvc.GrailsParameterMap
+import org.grails.web.json.JSONArray
 import org.grails.web.json.JSONObject
 import phitb_accounts.Exception.BadRequestException
 import phitb_accounts.Exception.ResourceNotFoundException
@@ -271,6 +272,31 @@ class DebitJvController {
                 response.status = 200
             else
                 response.status = 400
+        }
+    }
+
+    def getByDateRangeAndEntity() {
+        try {
+            JSONObject jsonObject = JSON.parse(request.reader.text) as JSONObject
+            String dateRange = jsonObject.get("dateRange")
+            String entityId = jsonObject.get("entityId")
+            if (dateRange && entityId) {
+                JSONArray creditJv = debitJvService.getByDateRangeAndEntity(dateRange, entityId)
+                render creditJv, formats: ['json']
+            } else {
+                response.status = 400
+            }
+        }
+        catch (org.springframework.boot.context.config.ResourceNotFoundException ex) {
+            System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
+            response.status = 404
+        }
+        catch (BadRequestException ex) {
+            System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
+            response.status = 400
+        }
+        catch (Exception ex) {
+            System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
         }
     }
 }

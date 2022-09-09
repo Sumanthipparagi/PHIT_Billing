@@ -63,6 +63,7 @@ class ReceiptDetailService {
 
         try
         {
+            long entityId = paramsJsonObject.get("entityId")
             String searchTerm = paramsJsonObject.get("search[value]")
             String orderColumnId = paramsJsonObject.get("order[0][column]")
             String orderDir = paramsJsonObject.get("order[0][dir]")
@@ -100,6 +101,7 @@ class ReceiptDetailService {
                 {
                     between('dateCreated', sdf.parse(fromDate), sdf.parse(toDate))
                 }
+                eq('entityId', entityId)
                 eq('deleted', false)
                 order(orderColumn, orderDir)
             }

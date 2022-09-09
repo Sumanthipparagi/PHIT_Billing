@@ -712,6 +712,14 @@
                                                        class="form-control repPhoneNumber"
                                                        name="repPhoneNumber" placeholder="Rep Phone Number"/>
                                             </div>
+                                            <div class="col-lg-6 form-group  form-float">
+                                                <label for="website">
+                                                    Website
+                                                </label>
+                                                <input type="url" id="website"
+                                                       class="form-control website"
+                                                       name="website" placeholder="Website"/>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
@@ -1415,6 +1423,15 @@
                                                        class="form-control repPhoneNumber"
                                                        name="repPhoneNumber" placeholder="Rep Phone Number"
                                                        value="${entity.repPhoneNumber}"/>
+                                            </div>
+
+                                            <div class="col-lg-6 form-group  form-float">
+                                                <label for="website">
+                                                    Website
+                                                </label>
+                                                <input type="url" id="website"
+                                                       class="form-control website"
+                                                       name="website" placeholder="Website" value="${entity?.repPhoneNumber}"/>
                                             </div>
                                         </div>
                                     </div>

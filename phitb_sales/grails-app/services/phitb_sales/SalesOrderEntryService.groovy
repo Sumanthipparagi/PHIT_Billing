@@ -1,6 +1,8 @@
 package phitb_sales
 
+import grails.converters.JSON
 import grails.gorm.transactions.Transactional
+import org.grails.web.json.JSONArray
 import org.grails.web.json.JSONObject
 import phitb_sales.Exception.BadRequestException
 import phitb_sales.Exception.ResourceNotFoundException
@@ -53,6 +55,41 @@ class SalesOrderEntryService
     SalesOrderEntry get(String id)
     {
         return SalesOrderEntry.findById(Long.parseLong(id))
+    }
+
+    def getByDateRangeAndEntity(String dateRange, String entityId)
+    {
+        try {
+            SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy")
+            Date fromDate = sdf.parse(dateRange.split("-")[0].trim().toString())
+            Date toDate = sdf.parse(dateRange.split("-")[1].trim().toString())
+            Calendar cal = Calendar.getInstance();
+            cal.setTime(toDate)
+            cal.set(Calendar.HOUR_OF_DAY, 23)
+            cal.set(Calendar.MINUTE, 59)
+            cal.set(Calendar.SECOND, 59)
+            cal.set(Calendar.MILLISECOND, 999)
+            toDate = cal.getTime()
+            long eid = Long.parseLong(entityId)
+            JSONArray finalBills = new JSONArray()
+            ArrayList<SalesOrderEntry> salesOrderEntries = SalesOrderEntry.findAllByEntityIdAndEntryDateBetween(eid, fromDate, toDate)
+            for (SalesOrderEntry saleOrder : salesOrderEntries) {
+                JSONObject saleOrder1 = new JSONObject((saleOrder as JSON).toString())
+                ArrayList<SaleOrderProductDetails> productDetails = SaleOrderProductDetails.findAllByBillId(saleOrder.id)
+                if (productDetails) {
+                    JSONArray prdt =  new  JSONArray((productDetails as JSON).toString())
+                    saleOrder1.put("products", prdt)
+                }
+
+                finalBills.add(saleOrder1)
+            }
+            return finalBills
+        }
+        catch (Exception ex)
+        {
+            ex.printStackTrace()
+            throw new BadRequestException()
+        }
     }
 
     JSONObject dataTables(JSONObject paramsJsonObject, String start, String length)

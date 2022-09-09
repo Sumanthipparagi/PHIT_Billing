@@ -1350,4 +1350,80 @@ class AccountsService
 
     }
 
+
+    def getPaymentDetailsByDateRange(String dateRange, String entityId) {
+        Client client = ClientBuilder.newClient();
+        WebTarget target = client.target(new Links().API_GATEWAY)
+        // WebTarget target = client.target("http://localhost:8089")
+        try {
+            Response apiResponse = target
+                    .path(new Links().PAYMENT_DATERANGE)
+                    .queryParam("dateRange", dateRange)
+                    .queryParam("entityId", entityId)
+                    .request(MediaType.APPLICATION_JSON_TYPE)
+                    .get()
+            println(apiResponse)
+            if (apiResponse.status == 200) {
+                JSONArray jsonArray = new JSONArray(apiResponse.readEntity(String.class))
+                return jsonArray
+            }
+        }
+        catch (Exception ex) {
+            System.err.println('Service :accountsService , action :  getReceiptDetailsByDateRange  , Ex:' + ex)
+            log.error('Service :accountsService , action :  getReceiptDetailsByDateRange  , Ex:' + ex)
+        }
+
+    }
+
+
+
+
+    def getCreditJvByDateRange(String dateRange, String entityId) {
+        Client client = ClientBuilder.newClient();
+        WebTarget target = client.target(new Links().API_GATEWAY)
+        try {
+            JSONObject jsonObject = new JSONObject()
+            jsonObject.put("dateRange", dateRange)
+            jsonObject.put("entityId", entityId)
+            Response apiResponse = target
+                    .path(new Links().CREDIT_DATERANGE)
+                    .request(MediaType.APPLICATION_JSON_TYPE)
+                    .post(Entity.entity(jsonObject.toString(), MediaType.APPLICATION_JSON_TYPE))
+            println(apiResponse)
+            if (apiResponse.status == 200) {
+                JSONArray jsonArray = new JSONArray(apiResponse.readEntity(String.class))
+                return jsonArray
+            }
+        }
+        catch (Exception ex) {
+            System.err.println('Service :salesService , action :  getSaleBillByDateRange  , Ex:' + ex)
+            log.error('Service :salesService , action :  getSaleBillByDateRange  , Ex:' + ex)
+        }
+
+    }
+
+
+    def getDebitJvByDateRange(String dateRange, String entityId) {
+        Client client = ClientBuilder.newClient();
+        WebTarget target = client.target(new Links().API_GATEWAY)
+        try {
+            JSONObject jsonObject = new JSONObject()
+            jsonObject.put("dateRange", dateRange)
+            jsonObject.put("entityId", entityId)
+            Response apiResponse = target
+                    .path(new Links().DEBIT_DATERANGE)
+                    .request(MediaType.APPLICATION_JSON_TYPE)
+                    .post(Entity.entity(jsonObject.toString(), MediaType.APPLICATION_JSON_TYPE))
+            println(apiResponse)
+            if (apiResponse.status == 200) {
+                JSONArray jsonArray = new JSONArray(apiResponse.readEntity(String.class))
+                return jsonArray
+            }
+        }
+        catch (Exception ex) {
+            System.err.println('Service :salesService , action :  getSaleBillByDateRange  , Ex:' + ex)
+            log.error('Service :salesService , action :  getSaleBillByDateRange  , Ex:' + ex)
+        }
+
+    }
 }

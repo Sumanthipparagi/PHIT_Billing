@@ -1,6 +1,8 @@
 package phitb_accounts
 
+import grails.converters.JSON
 import grails.gorm.transactions.Transactional
+import org.grails.web.json.JSONArray
 import org.grails.web.json.JSONObject
 import phitb_accounts.Exception.BadRequestException
 import phitb_accounts.Exception.ResourceNotFoundException
@@ -193,5 +195,30 @@ class DebitJvService {
             }
         }
         return null
+    }
+
+    def getByDateRangeAndEntity(String dateRange, String entityId)
+    {
+        try {
+            SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy")
+            Date fromDate = sdf.parse(dateRange.split("-")[0].trim().toString())
+            Date toDate = sdf.parse(dateRange.split("-")[1].trim().toString())
+            Calendar cal = Calendar.getInstance();
+            cal.setTime(toDate)
+            cal.set(Calendar.HOUR_OF_DAY, 23)
+            cal.set(Calendar.MINUTE, 59)
+            cal.set(Calendar.SECOND, 59)
+            cal.set(Calendar.MILLISECOND, 999)
+            toDate = cal.getTime()
+            long eid = Long.parseLong(entityId)
+            ArrayList<DebitJv> debitJvArrayList = DebitJv.findAllByTransactionDateBetweenAndEntityId(fromDate,toDate,eid)
+            JSONArray jsonArray = new JSONArray((debitJvArrayList as JSON).toString())
+            return jsonArray
+        }
+        catch (Exception ex)
+        {
+            ex.printStackTrace()
+            throw new BadRequestException()
+        }
     }
 }

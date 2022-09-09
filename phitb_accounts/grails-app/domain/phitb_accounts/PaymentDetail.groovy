@@ -25,6 +25,10 @@ class PaymentDetail implements LogicalDelete<PaymentDetail> {
     BankRegister bank
     WalletMaster wallet
     String financialYear
+    Long approvedBy
+    Date approvedDate
+    String approvedStatus
+    Date cancelledDate
     long status
     long syncStatus
     long entityTypeId
@@ -39,6 +43,10 @@ class PaymentDetail implements LogicalDelete<PaymentDetail> {
         cardNumber nullable: true
         wallet nullable: true
         bank nullable: true
+        approvedBy nullable: true
+        approvedStatus nullable: true
+        cancelledDate nullable: true
+        approvedDate nullable: true
     }
 
     static mapping = {

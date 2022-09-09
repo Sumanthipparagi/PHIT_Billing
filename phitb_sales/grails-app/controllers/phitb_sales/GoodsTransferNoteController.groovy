@@ -485,7 +485,7 @@ class GoodsTransferNoteController {
     def getGTNByDateRange() {
         try {
             String dateRange = params.dateRange
-            long entityId = params.entityId
+            long entityId = Long.parseLong(params.entityId)
             if (dateRange && entityId) {
                 respond goodsTransferNoteService.getGTNByDateRange(dateRange, entityId)
             } else {

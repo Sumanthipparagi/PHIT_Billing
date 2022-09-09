@@ -79,6 +79,7 @@ class PaymentDetailController {
     def dataTable() {
         try {
             JSONObject jsonObject = new JSONObject(params)
+            jsonObject.put("entityId", session.getAttribute('entityId'))
             def apiResponse = new AccountsService().showPayments(jsonObject)
             if (apiResponse.status == 200) {
                 JSONObject responseObject = new JSONObject(apiResponse.readEntity(String.class))

@@ -1,6 +1,8 @@
 package phitb_purchase
 
+import grails.converters.JSON
 import grails.gorm.transactions.Transactional
+import org.grails.web.json.JSONArray
 import org.grails.web.json.JSONObject
 import phitb_purchase.Exception.BadRequestException
 import phitb_purchase.Exception.ResourceNotFoundException
@@ -336,4 +338,38 @@ class PurchaseOrderService {
         return jsonObject
     }
 
+    def getByDateRangeAndEntity(String dateRange, String entityId)
+    {
+        try {
+            SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy")
+            Date fromDate = sdf.parse(dateRange.split("-")[0].trim().toString())
+            Date toDate = sdf.parse(dateRange.split("-")[1].trim().toString())
+            Calendar cal = Calendar.getInstance();
+            cal.setTime(toDate)
+            cal.set(Calendar.HOUR_OF_DAY, 23)
+            cal.set(Calendar.MINUTE, 59)
+            cal.set(Calendar.SECOND, 59)
+            cal.set(Calendar.MILLISECOND, 999)
+            toDate = cal.getTime()
+            long eid = Long.parseLong(entityId)
+            JSONArray finalBills = new JSONArray()
+            ArrayList<PurchaseOrder> purchaseOrderDetails = PurchaseOrder.findAllByEntityIdAndDateCreatedBetween(eid, fromDate, toDate)
+            for (PurchaseOrder purchaseOrderDetail : purchaseOrderDetails) {
+                JSONObject purchaseOrderDetail1 = new JSONObject((purchaseOrderDetail as JSON).toString())
+                def productDetails = PurchaseOrderProductDetail.findAllByBillId(purchaseOrderDetail.id)
+                if (productDetails) {
+                    JSONArray prdt =  new  JSONArray((productDetails as JSON).toString())
+                    purchaseOrderDetail1.put("products", prdt)
+                }
+                finalBills.add(purchaseOrderDetail1)
+            }
+            println(finalBills)
+            return finalBills
+        }
+        catch (Exception ex)
+        {
+            ex.printStackTrace()
+            throw new BadRequestException()
+        }
+    }
 }

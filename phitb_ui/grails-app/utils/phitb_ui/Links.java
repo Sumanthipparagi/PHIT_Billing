@@ -549,8 +549,10 @@ public class Links
     public static String SALE_ORDER_DATATABLE = APP_CONTEXT_PATH + "sales/saleorderdetails/datatable";
     public static String SALE_ORDER_RECENT = APP_CONTEXT_PATH + "sales/saleorderdetails/getrecent";
     public static String SALE_ORDER_CANCEL = APP_CONTEXT_PATH + "sales/saleorderdetails/cancel";
+    public static String SALE_ORDER_BY_DATERANGE = APP_CONTEXT_PATH + "sales/saleorderbydaterange";
 
-//    convert to Sale Entry
+
+    //    convert to Sale Entry
     public static String SALE_ORDER_TO_SALE_ENTRY = APP_CONTEXT_PATH + "sales/convert-to-sale-entry";
 
 
@@ -581,6 +583,7 @@ public class Links
     public static String DELIVERY_CHALLAN_APPROVE = APP_CONTEXT_PATH + "sales/deliverychallan/approve";
     public static String DELIVERY_CHALLAN_CUSTOMER = APP_CONTEXT_PATH + "sales/deliverychallanbycustomer";
     public static String UPDATE_DELIVERY_CHALLAN_BALANCE = APP_CONTEXT_PATH + "sales/updatedeliverychallanbalancebyid";
+    public static String DELIVERY_CHALLAN_DATERANGE = APP_CONTEXT_PATH + "sales/deliverychallanbydaterange";
 
 
 
@@ -673,6 +676,7 @@ public class Links
     public static String PAYMENT_DATATABLE = APP_CONTEXT_PATH + "accounts/paymentdetails/datatable";
     public static String PAYMENT_UPDATE = APP_CONTEXT_PATH + "accounts/paymentdetails/{id}";
     public static String PAYMENT_DELETE = APP_CONTEXT_PATH + "accounts/paymentdetails/{id}";
+    public static String PAYMENT_DATERANGE = APP_CONTEXT_PATH + "accounts/paymentdetailsbydaterange";
 
 
     //   payment detail log
@@ -692,13 +696,17 @@ public class Links
     public static String CREDIT_DATATABLE = APP_CONTEXT_PATH + "accounts/creditjv/datatable";
     public static String CREDIT_UPDATE = APP_CONTEXT_PATH + "accounts/creditjv/{id}";
     public static String CREDIT_DELETE = APP_CONTEXT_PATH + "accounts/creditjv/{id}";
+    public static String CREDIT_DATERANGE = APP_CONTEXT_PATH + "accounts/creditjvbydaterange";
     public static String SET_CREDIT_STATUS = APP_CONTEXT_PATH + "accounts/setcreditstatus/{id}/type/{type}";
+
 
     //Debit
     public static String DEBIT_SHOW = APP_CONTEXT_PATH + "accounts/debitjv";
     public static String DEBIT_SAVE = APP_CONTEXT_PATH + "accounts/debitjv";
     public static String DEBIT_DATATABLE = APP_CONTEXT_PATH + "accounts/debitjv/datatable";
     public static String DEBIT_APPROVE = APP_CONTEXT_PATH + "accounts/debitjv/approve";
+    public static String DEBIT_DATERANGE = APP_CONTEXT_PATH + "accounts/debitjvbydaterange";
+
 
     /*<--------------------------------------------Purchase ------------------------------------------------->*/
     //purchase product details
@@ -807,6 +815,7 @@ public class Links
     public static String PURCHASE_ORDER_DATATABLE = APP_CONTEXT_PATH + "purchase/purchaseorder/datatable";
     public static String PURCHASE_ORDER_RECENT = APP_CONTEXT_PATH + "purchase/purchaseorder/getrecent";
     public static String PURCHASE_ORDER_CANCEL = APP_CONTEXT_PATH + "purchase/purchaseorder/cancel";
+    public static String PURCHASE_ORDER_DATERANGE = APP_CONTEXT_PATH + "purchase/purchaseorderbydaterange";
 
 
 //    Purchase Order Product Details
