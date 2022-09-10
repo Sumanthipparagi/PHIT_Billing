@@ -68,14 +68,14 @@
                     </ul>
                 </div>
 
-                 <div class="col-lg-7 col-md-7 col-sm-12">
-                     <div class="input-group m-b-0">
-                         <input type="text" class="form-control" placeholder="Search...">
-                         <span class="input-group-addon">
-                             <i class="zmdi zmdi-search"></i>
-                         </span>
-                     </div>
-                 </div>
+                <div class="col-lg-7 col-md-7 col-sm-12">
+                    <div class="input-group m-b-0">
+                        <input type="text" class="form-control" placeholder="Search...">
+                        <span class="input-group-addon">
+                            <i class="zmdi zmdi-search"></i>
+                        </span>
+                    </div>
+                </div>
             </div>
         </div>
         <!-- Basic Examples -->
@@ -90,17 +90,17 @@
                             <div class="col-md-4">
                             </div>
 
-                             <div class="col-md-4">
-                                 <div class="form-group">
-                                     <label for="invoiceStatus">GRN status</label>
-                                     <select onchange="invoiceStatusChanged()" id="invoiceStatus" class="form-control">
-                                         <option>All</option>
-                                         <option>DRAFT</option>
-                                         <option>ACTIVE</option>
-                                         <option>CANCELLED</option>
-                                     </select>
-                                 </div>
-                             </div>
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label for="invoiceStatus">GRN status</label>
+                                    <select onchange="invoiceStatusChanged()" id="invoiceStatus" class="form-control">
+                                        <option>All</option>
+                                        <option>DRAFT</option>
+                                        <option>ACTIVE</option>
+                                        <option>CANCELLED</option>
+                                    </select>
+                                </div>
+                            </div>
                         </div>
                     </div>
 
@@ -170,7 +170,8 @@
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.32/vfs_fonts.js"></script>
 <script type="text/javascript" src="https://cdn.datatables.net/buttons/1.4.1/js/buttons.html5.min.js"></script>
 <script type="text/javascript" src="https://cdn.datatables.net/buttons/1.4.1/js/buttons.print.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.2/js/all.js" integrity="sha256-2JRzNxMJiS0aHOJjG+liqsEOuBb6++9cY4dSOyiijX4=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.2/js/all.js"
+        integrity="sha256-2JRzNxMJiS0aHOJjG+liqsEOuBb6++9cY4dSOyiijX4=" crossorigin="anonymous"></script>
 <asset:javascript src="/themeassets/plugins/icons/all.js"/>
 
 
@@ -210,15 +211,15 @@
             buttons: [
                 {
                     'extend': 'excel',
-                    exportOptions: { columns: ':visible:not(:first-child)' }
+                    exportOptions: {columns: ':visible:not(:first-child)'}
                 },
                 {
                     'extend': 'pdf',
-                    exportOptions: { columns: ':visible:not(:first-child)' }
+                    exportOptions: {columns: ':visible:not(:first-child)'}
                 },
                 {
                     'extend': 'print',
-                    exportOptions: { columns: ':visible:not(:first-child)' }
+                    exportOptions: {columns: ':visible:not(:first-child)'}
                 }
             ],
             language: {
@@ -239,13 +240,12 @@
                         var cancelInvoice = "";
                         var editInvoice = "";
                         if (json.data[i].billStatus !== "CANCELLED" && json.data[i].billStatus !== "APPROVED") {
-                            cancelInvoice = '<a class="btn btn-sm btn-info" title="Cancel" onclick="cancelBill(' + json.data[i].id +')" href="#"><i class="fa fa-times"></i></a>';
+                            cancelInvoice = '<a class="btn btn-sm btn-info" title="Cancel" onclick="cancelBill(' + json.data[i].id + ')" href="#"><i class="fa fa-times"></i></a>';
                         }
-                         if(("${(session.getAttribute('entityTypeName'))}" === "${Constants.ENTITY_C_F}" || "${session.getAttribute('entityTypeName')}" === "${Constants.ENTITY_SUPER_STOCKIST}") && json.data[i].billStatus !== "APPROVED" && json.data[i].billStatus !== "CANCELLED" )
-                        {
+                        if (("${(session.getAttribute('entityTypeName'))}" === "${Constants.ENTITY_C_F}" || "${session.getAttribute('entityTypeName')}" === "${Constants.ENTITY_SUPER_STOCKIST}") && json.data[i].billStatus !== "APPROVED" && json.data[i].billStatus !== "CANCELLED") {
 
                             approveInvoice = '<a class="btn btn-sm btn-success" title="Approved" onclick="approveGrn(' + json.data[i].id
-                                +')" href="#"><i class="fa fa-check"></i></a>';
+                                + ')" href="#"><i class="fa fa-check"></i></a>';
 
                         }
                         var printbtn = '<a target="_blank" class="btn btn-sm btn-danger" data-id="' + json.data[i].id
@@ -254,14 +254,13 @@
                         var invoiceNumber = json.data[i].invoiceNumber;
                         if (invoiceNumber === undefined)
                             invoiceNumber = "";
-                        if(json.data[i].returnStatus=== "DRAFT")
-                        {
+                        if (json.data[i].returnStatus === "DRAFT") {
                             // editInvoice = '<a class="btn btn-sm btn-warning"  href="/edit-sale-entry?saleBillId=' +
                             //     json.data[i].id + '"><i class="fa fa-edit"></i></a>';
                         }
                         var grossAmt = (json.data[i].totalAmount - json.data[i].totalGst).toFixed(2);
                         return_data.push({
-                            'action': approveInvoice + " " + cancelInvoice + " " + printbtn+" "+editInvoice,
+                            'action': approveInvoice + " " + cancelInvoice + " " + printbtn + " " + editInvoice,
                             /*'action': '',*/
                             'customer': json.data[i].customer.entityName,
                             'invNo': invoiceNumber,
@@ -299,13 +298,13 @@
             denyButtonText: 'No',
         }).then((result) => {
             if (result.isConfirmed) {
-                var url = '/gtn/cancel?id=' + id +'&customerId='+customerId;
+                var url = '/gtn/cancel?id=' + id + '&customerId=' + customerId;
                 var beforeSendSwal;
                 $.ajax({
                     type: "GET",
                     url: url,
                     dataType: 'json',
-                    beforeSend: function() {
+                    beforeSend: function () {
                         beforeSendSwal = Swal.fire({
                             // title: "Loading",
                             html: '<img src="${assetPath(src: "/themeassets/images/1476.gif")}" width="100" height="100"/>',
@@ -313,7 +312,7 @@
                             showCancelButton: false,
                             showConfirmButton: false,
                             allowOutsideClick: false,
-                            background:'transparent'
+                            background: 'transparent'
                         });
                     },
                     success: function (data) {
@@ -351,7 +350,50 @@
             denyButtonText: 'No',
         }).then((result) => {
             if (result.isConfirmed) {
-                $('#addDivisionGrn').modal('show');
+                var beforeSendSwal;
+                $.ajax({
+                    type: "GET",
+                    url: "/grn/bill?billId=" + gtn,
+                    dataType: 'json',
+                    beforeSend: function () {
+                        beforeSendSwal = Swal.fire({
+                            // title: "Loading",
+                            html:
+                                '<img src="${assetPath(src: "/themeassets/images/1476.gif")}" width="100" height="100"/>',
+                            showDenyButton: false,
+                            showCancelButton: false,
+                            showConfirmButton: false,
+                            allowOutsideClick: false,
+                            background: 'transparent'
+                        });
+                    },
+                    success: function (data) {
+                        beforeSendSwal.close();
+                        var trHTML = '';
+                        $.each(data, function (key, value) {
+                            trHTML += '<tr>' +
+                                '<td>' + value.product.productName + '</td>' +
+                                '<td>' + value.product.hsnCode + '</td>' +
+                                '<td>' + value.batchNumber + '</td>' +
+                                '<td>' + value.sqty + '</td>' +
+                                '<td>' + value.freeQty + '</td>' +
+                                '<td>' + value.sRate + '</td>'+
+                                '<td style="display: none;">' + value.id + '</td>' +
+                                '<tr>';
+                        });
+                        $('#id').val(gtn);
+                        $('#grnProductList').html(trHTML);
+                        $('#addDivisionGrn').modal('show');
+                    },
+                    error: function () {
+                        Swal.fire(
+                            'Error!',
+                            'Unable to load Data.',
+                            'danger'
+                        );
+                    }
+                });
+
             } else if (result.isDenied) {
 
             }
@@ -359,6 +401,89 @@
 
 
     }
+
+
+    $("#addDivisionGrnForm").submit(function (event) {
+        //disable the default form submission
+        event.preventDefault();
+        //grab all form data
+        var beforeSendSwal;
+        // var division = document.forms['addDivisionGrnForm'].elements['division'].value;
+        var gtn = document.forms['addDivisionGrnForm'].elements['id'].value;
+        // var tbl = $('#grnProducts tbody tr').map(function (idxRow, ele) {
+        //     //
+        //     // start building the retVal object
+        //     //
+        //     var retVal = {id: ++idxRow};
+        //     //
+        //     // for each cell
+        //     //
+        //     var $td = $(ele).find('td').map(function (idxCell, ele) {
+        //         var select = $(ele).find(':selected');
+        //         //
+        //         // if cell contains an input or select....
+        //         //
+        //         if (select.length === 1) {
+        //             var attr = $('#grnProducts thead tr th').eq(idxCell).text();
+        //             retVal[attr] = select.val();
+        //         } else {
+        //             var attr = $('#grnProducts thead tr th').eq(idxCell).text();
+        //             retVal[attr] = $(ele).text();
+        //         }
+        //     });
+        //     return retVal;
+        // }).get();
+
+
+        // var productData = JSON.stringify(tbl).replace(/\s(?=\w+":)/g, "");
+
+        var myRows = [];
+        var $headers = $("th");
+        var $rows = $("#grnProducts tbody tr").each(function(index) {
+            $cells = $(this).find("td");
+            myRows[index] = {};
+            $cells.each(function(cellIndex) {
+                myRows[index][$($headers[cellIndex]).html()] = $(this).html();
+            });
+        });
+        console.log(myRows);
+        var productData = myRows
+        $.ajax({
+            url: '/grn/approveGRN?gtn=' + gtn,
+            type: 'POST',
+            data:{
+                productData: productData
+            },
+            beforeSend: function () {
+                beforeSendSwal = Swal.fire({
+                    // title: "Loading",
+                    html: '<img src="${assetPath(src: "/themeassets/images/1476.gif")}" width="100" height="100"/>',
+                    showDenyButton: false,
+                    showCancelButton: false,
+                    showConfirmButton: false,
+                    allowOutsideClick: false,
+                    background: 'transparent'
+                });
+            },
+            success: function () {
+                beforeSendSwal.close();
+                Swal.fire(
+                    'Success!',
+                    'GRN Approved',
+                    'success'
+                );
+                grnTable();
+                $('#addDivisionGrn').modal('hide');
+            },
+            error: function () {
+                Swal.fire(
+                    'Error!',
+                    'Unable to approve GRN at the moment, try later.',
+                    'danger'
+                );
+            }
+        });
+    });
 
     %{--var url = '/grn/approveGRN?gtn=' + gtn;--}%
     %{--var beforeSendSwal;--}%
@@ -396,6 +521,9 @@
     %{--    }--}%
     %{--});--}%
 
+    function submitApprove() {
+
+    }
 
     function invoiceStatusChanged() {
         grnTable();

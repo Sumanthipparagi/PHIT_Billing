@@ -76,7 +76,7 @@ class SampleConversionController
                 saleableStock.put("remainingQty", saleableQty)
                 saleableStock.put("remainingFreeQty", saleableStock.get("remainingFreeQty"))
                 saleableStock.put("remainingReplQty", saleableStock.get("remainingReplQty"))
-                saleableStock.put("uuid", UUID.randomUUID())
+//                saleableStock.put("uuid", UUID.randomUUID())
                 def saleableStockUpdate = new InventoryService().updateStockBook(saleableStock)
                 if(saleableStockUpdate?.status!= 200)
                 {
@@ -108,6 +108,7 @@ class SampleConversionController
             else {
                 UUID uuid
                 def batchResponse = new ProductService().getBatchesOfProduct(params.sampleProduct)
+                def product = new ProductService().getProductById(params.sampleProduct)
                 JSONArray batchArray = JSON.parse(batchResponse.readEntity(String.class)) as JSONArray
                 JSONObject stockObject = new JSONObject()
                 for (JSONObject batch : batchArray) {
@@ -130,7 +131,7 @@ class SampleConversionController
                         stockObject.put("purcDate", sdf1.format(new Date()));
                         stockObject.put("purcProductValue", 0);
                         stockObject.put("purcTradeDiscount", 0);
-                        stockObject.put("taxId", batch?.product?.unitPacking);
+                        stockObject.put("taxId", product?.taxId);
                         stockObject.put("supplierId", session.getAttribute("entityId"));
                         stockObject.put("entityId", session.getAttribute("entityId"));
                         stockObject.put("status", "1");

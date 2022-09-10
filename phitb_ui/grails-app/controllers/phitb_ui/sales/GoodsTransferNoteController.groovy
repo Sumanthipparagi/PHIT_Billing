@@ -1,6 +1,6 @@
 package phitb_ui.sales
 
-
+import grails.artefact.Controller
 import grails.converters.JSON
 import org.grails.web.json.JSONArray
 import org.grails.web.json.JSONObject
@@ -1071,11 +1071,12 @@ class GoodsTransferNoteController
         def gtn = new SalesService().getGTNById(params.gtn)
         if (gtn != null)
         {
+            JSONArray productArray = new JSONArray(params.productData)
+            println(productArray)
             def gtnProduct = new SalesService().getgtnProductDetailsByGtn(gtn.id.toString())
             UUID uuid
             for (JSONObject gtnObject : gtnProduct)
             {
-//                def stockBook = new InventoryService().getStocksOfProductAndBatch(gtnObject.productId.toString(), gtnObject.batchNumber, session.getAttribute('entityId').toString())
 //                println(session.getAttribute('entityId').toString())
 //                if (stockBook != null)
 //                {
@@ -1316,6 +1317,38 @@ class GoodsTransferNoteController
         {
 
             render("No Bill Found")
+        }
+    }
+
+    def getGrnProductList(){
+        try{
+            if(params.billId){
+                def gtnProducts = new SalesService().getgtnProductDetailsByGtn(params.billId)
+                if(gtnProducts!=null){
+                    gtnProducts.each {
+                        def batchResponse = new ProductService().getBatchesOfProduct(it.productId.toString())
+                        JSONArray batchArray = JSON.parse(batchResponse.readEntity(String.class)) as JSONArray
+                        for (JSONObject batch : batchArray)
+                        {
+                            if (batch.batchNumber == it.batchNumber)
+                            {
+                                it.put("batch", batch)
+                            }
+                        }
+                        def apiResponse = new SalesService().getRequestWithId(it.productId.toString(), new Links().PRODUCT_REGISTER_SHOW)
+                        it.put("product", JSON.parse(apiResponse.readEntity(String.class)) as JSONObject)
+                    }
+                    respond gtnProducts, formats: ['json'], status: 200
+                }else{
+                    response.status = 400
+                }
+            }else{
+                response.status = 400
+            }
+        }
+        catch (Exception e){
+            log.error(controllerName+ " "+e)
+            println(controllerName+ " "+e)
         }
     }
 }

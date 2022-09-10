@@ -591,6 +591,7 @@ class UrlMappings {
         "/grn/datatable"(controller: "goodsTransferNote",action:"dataTable")
         "/grn/approveGRN"(controller: 'goodsTransferNote', action: 'approveGRN')
         "/grn/print-grn"(controller: "goodsTransferNote", action: "printGRN")
+        "/grn/bill"(controller: "goodsTransferNote", action: "getGrnProductList")
 
 
         //Delivery Challan
