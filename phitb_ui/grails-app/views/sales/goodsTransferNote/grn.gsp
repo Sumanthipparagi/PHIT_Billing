@@ -23,6 +23,9 @@
             src="/themeassets/plugins/bootstrap-material-datetimepicker/css/bootstrap-material-datetimepicker.css"
             rel="stylesheet"/>
     <asset:stylesheet src="/themeassets/fonts/font-awesome/css/font-awesome.css" rel="stylesheet"/>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/table-to-json@1.0.0/lib/jquery.tabletojson.min.js"
+            integrity="sha256-H8xrCe0tZFi/C2CgxkmiGksqVaxhW0PFcUKZJZo1yNU=" crossorigin="anonymous"></script>
     <style>
 
     table.dataTable tbody td {
@@ -377,9 +380,15 @@
                                 '<td>' + value.batchNumber + '</td>' +
                                 '<td>' + value.sqty + '</td>' +
                                 '<td>' + value.freeQty + '</td>' +
-                                '<td>' + value.sRate + '</td>'+
-                                '<td style="display: none;">' + value.id + '</td>' +
-                                '<tr>';
+                                '<td>' + value.sRate + '</td>' +
+                                '<td>                        <select class="form-control show-tick division" name="division" id="division">\n' +
+                                '                            <g:each var="d" in="${divisions}">\n' +
+                                '                                <option value="${d.id}">${d.divisionName}</option>\n' +
+                                '                            </g:each>\n' +
+                                '                        </select>\n</td>' +
+                                '<td style="display: none;">' + value.billId + '</td>' +
+                                '<td style="display: none;">' + value.product.id + '</td>' +
+                                '</tr>';
                         });
                         $('#id').val(gtn);
                         $('#grnProductList').html(trHTML);
@@ -410,48 +419,35 @@
         var beforeSendSwal;
         // var division = document.forms['addDivisionGrnForm'].elements['division'].value;
         var gtn = document.forms['addDivisionGrnForm'].elements['id'].value;
-        // var tbl = $('#grnProducts tbody tr').map(function (idxRow, ele) {
-        //     //
-        //     // start building the retVal object
-        //     //
-        //     var retVal = {id: ++idxRow};
-        //     //
-        //     // for each cell
-        //     //
-        //     var $td = $(ele).find('td').map(function (idxCell, ele) {
-        //         var select = $(ele).find(':selected');
-        //         //
-        //         // if cell contains an input or select....
-        //         //
-        //         if (select.length === 1) {
-        //             var attr = $('#grnProducts thead tr th').eq(idxCell).text();
-        //             retVal[attr] = select.val();
-        //         } else {
-        //             var attr = $('#grnProducts thead tr th').eq(idxCell).text();
-        //             retVal[attr] = $(ele).text();
-        //         }
-        //     });
-        //     return retVal;
-        // }).get();
 
-
-        // var productData = JSON.stringify(tbl).replace(/\s(?=\w+":)/g, "");
-
-        var myRows = [];
-        var $headers = $("th");
-        var $rows = $("#grnProducts tbody tr").each(function(index) {
-            $cells = $(this).find("td");
-            myRows[index] = {};
-            $cells.each(function(cellIndex) {
-                myRows[index][$($headers[cellIndex]).html()] = $(this).html();
+        var tbl = $('#grnProducts tbody tr').map(function (idxRow, ele) {
+            //
+            // start building the retVal object
+            //
+            var retVal = {id: ++idxRow};
+            //
+            // for each cell
+            //
+            var $td = $(ele).find('td').map(function (idxCell, ele) {
+                var input = $(ele).find(':selected');
+                //
+                // if cell contains an input or select....
+                //
+                if (input.length === 1) {
+                    var attr = $('#grnProducts thead tr th').eq(idxCell).text();
+                    retVal[attr] = input.val();
+                } else {
+                    var attr = $('#grnProducts thead tr th').eq(idxCell).text();
+                    retVal[attr] = $(ele).text();
+                }
             });
-        });
-        console.log(myRows);
-        var productData = myRows
+            return retVal;
+        }).get();
+        var productData = JSON.stringify(tbl).replace(/\s(?=\w+":)/g, "");
         $.ajax({
             url: '/grn/approveGRN?gtn=' + gtn,
             type: 'POST',
-            data:{
+            data: {
                 productData: productData
             },
             beforeSend: function () {

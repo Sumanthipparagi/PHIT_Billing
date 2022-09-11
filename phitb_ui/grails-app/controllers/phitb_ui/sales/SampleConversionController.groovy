@@ -147,7 +147,6 @@ class SampleConversionController
                 {
                     println("Saved")
                 }
-
             }
             JSONObject sampleConverisonLogs = new JSONObject()
             sampleConverisonLogs.put("saleableProductId",params.saleableProduct)

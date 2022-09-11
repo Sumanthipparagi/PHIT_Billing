@@ -24,22 +24,23 @@
 %{--                    </div>--}%
 
                     <div class="col-lg-offset-12 col-md-offset-12 col-lg-12 col-md-12">
-                        <table class="table table-responsive" id="grnProducts">
-                            <thead>
-                            <tr>
-                                <th>Product</th>
-                                <th>HSN Code</th>
-                                <th>Batch</th>
-                                <th>sQty</th>
-                                <th>fQty</th>
-                                <th>Srate</th>
-                                <th>Division</th>
-                                <th style="display: none;">id</th>
-                            </tr>
-                            </thead>
-                            <tbody id="grnProductList">
-                            </tbody>
-                        </table>
+                    <table class="table table-bordered" id="grnProducts">
+                        <thead>
+                        <tr>
+                            <th>Product</th>
+                            <th>HSN Code</th>
+                            <th>Batch</th>
+                            <th>sQty</th>
+                            <th>fQty</th>
+                            <th>sRate</th>
+                            <th>Division</th>
+                            <th style="display: none;">gtnId</th>
+                            <th style="display: none;">productId</th>
+                        </tr>
+                        </thead>
+                        <tbody id="grnProductList">
+                        </tbody>
+                    </table>
                     </div>
                 </div>
 

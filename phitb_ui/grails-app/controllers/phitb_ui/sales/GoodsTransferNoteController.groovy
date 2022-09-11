@@ -1075,7 +1075,7 @@ class GoodsTransferNoteController
             println(productArray)
             def gtnProduct = new SalesService().getgtnProductDetailsByGtn(gtn.id.toString())
             UUID uuid
-            for (JSONObject gtnObject : gtnProduct)
+            for (JSONObject gtnObject : productArray)
             {
 //                println(session.getAttribute('entityId').toString())
 //                if (stockBook != null)
@@ -1096,7 +1096,7 @@ class GoodsTransferNoteController
                     JSONObject stock = new JSONObject()
 
                     //product service update
-                    def productDetails = new ProductService().getProductById(gtnObject.productId.toString())
+                    def productDetails = new ProductService().getProductById(gtnObject?.productId?.toString())
                     def checkProduct = new ProductService().getProductByIdAndHSN(productDetails?.id?.toString(),
                             productDetails?.hsnCode?.toString(), session.getAttribute('entityId').toString())
                     Long productId = null
@@ -1111,10 +1111,11 @@ class GoodsTransferNoteController
                        productDetails.put("group",0)
                        productDetails.put("schedule",0)
                        productDetails.put("category",0)
-                       def getDivisionByEntity = new ProductService().getDivisionsByEntityId(session.getAttribute('entityId').toString())
-                       if(getDivisionByEntity!=null || getDivisionByEntity.size()!=0){
-                           productDetails.put("division",getDivisionByEntity[0].id)
-                       }
+                       productDetails.put("division",gtnObject?.Division)
+//                       def getDivisionByEntity = new ProductService().getDivisionsByEntityId(session.getAttribute('entityId').toString())
+//                       if(getDivisionByEntity!=null || getDivisionByEntity.size()!=0){
+//                           productDetails.put("division",getDivisionByEntity[0].id)
+//                       }
                        def saveProductResponse = new ProductService().saveProductRegister(productDetails)
                        if(saveProductResponse?.status == 200){
                            JSONObject productResponse = new JSONObject(saveProductResponse.readEntity(String.class))
@@ -1138,9 +1139,10 @@ class GoodsTransferNoteController
                        }
                    }else{
                        productId = checkProduct?.id
-                       JSONObject batch = new ProductService().getByBatchAndProductId(gtnObject.batchNumber.toString(), checkProduct.id.toString()) as JSONObject
+                       JSONObject batch = new ProductService().getByBatchAndProductId(gtnObject.Batch.toString(),
+                               checkProduct.id.toString()) as JSONObject
                        if(batch.size()==0){
-                           JSONObject prevBatch = new ProductService().getByBatchAndProductId(gtnObject.batchNumber.toString(), gtnObject.productId.toString()) as JSONObject
+                           JSONObject prevBatch = new ProductService().getByBatchAndProductId(gtnObject.Batch.toString(), gtnObject.productId.toString()) as JSONObject
                            prevBatch.put("entityId", session.getAttribute('entityId'))
                            prevBatch.put("entityTypeId",session.getAttribute('entityTypeId'))
                            prevBatch.put("product",checkProduct?.id)
@@ -1162,10 +1164,9 @@ class GoodsTransferNoteController
                    }
                     //stocks update
                     def stockBook1 = new InventoryService().getStocksOfProductAndBatch(gtnObject.productId.toString(),
-                            gtnObject.batchNumber.toString(), gtnObject.entityId.toString())
-                    stockBook1.put("remainingQty", Double.valueOf(Double.parseDouble(gtnObject.sqty.toString())).longValue())
-                    stockBook1.put("remainingFreeQty", Double.valueOf(Double.parseDouble(gtnObject.freeQty.toString())).longValue())
-                    stockBook1.put("remainingReplQty", Double.valueOf(Double.parseDouble(gtnObject.repQty.toString())).longValue())
+                            gtnObject.Batch.toString(), gtnObject.entityId.toString())
+                    stockBook1.put("remainingQty", Double.valueOf(Double.parseDouble(gtnObject.sQty.toString())).longValue())
+                    stockBook1.put("remainingFreeQty", Double.valueOf(Double.parseDouble(gtnObject.fQty.toString())).longValue())
                     stockBook1.put("purchaseRate", gtnObject?.sRate)
                     stockBook1.put("mergedWith", "0")
                     stockBook1.put("productId", productId)
@@ -1175,13 +1176,12 @@ class GoodsTransferNoteController
                     def checkStockBook = new InventoryService().getStocksOfProductAndBatch(productId.toString(), gtnObject
                             .batchNumber.toString(), session.getAttribute('entityId').toString())
                     if(checkStockBook){
-                        double remainingQty = Double.parseDouble(checkStockBook.remainingQty.toString()) + Double.parseDouble(gtnObject.sqty.toString())
+                        double remainingQty = Double.parseDouble(checkStockBook.remainingQty.toString()) + Double.parseDouble(gtnObject.sQty.toString())
                         double  remainingFreeQty = Double.parseDouble(checkStockBook.remainingFreeQty.toString()) +
-                                Double.parseDouble(gtnObject.freeQty.toString())
+                                Double.parseDouble(gtnObject.fQty.toString())
                         checkStockBook.put("remainingQty", Double.valueOf(Double.parseDouble(remainingQty.toString()))
                                 .longValue())
                         checkStockBook.put("remainingFreeQty", Double.valueOf(Double.parseDouble(remainingFreeQty.toString())).longValue())
-                        checkStockBook.put("remainingReplQty", Double.valueOf(Double.parseDouble(checkStockBook.remainingReplQty.toString())).longValue())
                         checkStockBook.put("purchaseRate", gtnObject?.sRate)
                         checkStockBook.put("mergedWith", "0")
                         checkStockBook.put("productId", productId)
