@@ -67,6 +67,8 @@ public class Constants
             String configString = new String(Files.readAllBytes(Paths.get(path + File.separator + "config.json")));
             JSONObject config = new JSONObject(configString);
             API_GATEWAY = config.get("API_GATEWAY").toString();
+           // E_INVOICE_ASP_ID = config.get("E_INVOICE_ASP_ID").toString();
+           // E_INVOICE_ASP_SECRET = config.get("E_INVOICE_ASP_SECRET").toString();
         }
         catch (Exception e)
         {

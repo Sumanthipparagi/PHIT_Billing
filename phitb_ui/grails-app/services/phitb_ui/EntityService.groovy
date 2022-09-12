@@ -643,6 +643,7 @@ class EntityService {
     def saveEntityIRN(JSONObject jsonObject) {
         Client client = ClientBuilder.newClient().register(JacksonFeature.class)
         WebTarget target = client.target(new Links().API_GATEWAY)
+        //WebTarget target = client.target("http://localhost:8088")
         try {
             println(jsonObject)
             Response apiResponse = target
@@ -652,8 +653,8 @@ class EntityService {
             return apiResponse
         }
         catch (Exception ex) {
-            System.err.println('Service :EntityService , action :  saveDayEnd  , Ex:' + ex)
-            log.error('Service :EntityService , action :  saveDayEnd  , Ex:' + ex)
+            System.err.println('Service :EntityService , action :  saveEntityIRN  , Ex:' + ex)
+            log.error('Service :EntityService , action :  saveEntityIRN  , Ex:' + ex)
         }
 
     }
@@ -676,8 +677,8 @@ class EntityService {
             return apiResponse
         }
         catch (Exception ex) {
-            System.err.println('Service :EntityService , action :  showDayEnd  , Ex:' + ex)
-            log.error('Service :EntityService , action :  showDayEnd  , Ex:' + ex)
+            System.err.println('Service :EntityService , action :  showEntityIRN  , Ex:' + ex)
+            log.error('Service :EntityService , action :  showEntityIRN  , Ex:' + ex)
         }
 
     }
@@ -685,7 +686,7 @@ class EntityService {
     def putEntityIRN(JSONObject jsonObject) {
         Client client = ClientBuilder.newClient()
         WebTarget target = client.target(new Links().API_GATEWAY)
-
+       // WebTarget target = client.target("http://localhost:8088")
         try {
             Response apiResponse = target
                     .path(new Links().ENTITY_IRN_UPDATE)
@@ -696,8 +697,8 @@ class EntityService {
             return apiResponse
         }
         catch (Exception ex) {
-            System.err.println('Service : , action :  putDayEnd  , Ex:' + ex)
-            log.error('Service :EntityService , action :  putDayEnd  , Ex:' + ex)
+            System.err.println('Service : , action :  putEntityIRN  , Ex:' + ex)
+            log.error('Service :EntityService , action :  putEntityIRN  , Ex:' + ex)
         }
 
     }
@@ -720,8 +721,8 @@ class EntityService {
             return apiResponse
         }
         catch (Exception ex) {
-            System.err.println('Service :EntityService , action :  deleteDayEnd  , Ex:' + ex)
-            log.error('Service :EntityService , action :  deleteDayEnd  , Ex:' + ex)
+            System.err.println('Service :EntityService , action :  deleteEntityIRN  , Ex:' + ex)
+            log.error('Service :EntityService , action :  deleteEntityIRN  , Ex:' + ex)
         }
 
     }

@@ -434,6 +434,7 @@ class PurchaseService {
     {
         Client client = ClientBuilder.newClient();
         WebTarget target = client.target(new Links().API_GATEWAY)
+        //WebTarget target = client.target("http://localhost:8084/")
         try
         {
             Response apiResponse = target

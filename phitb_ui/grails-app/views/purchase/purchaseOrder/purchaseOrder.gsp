@@ -64,12 +64,12 @@
                     </div>
                     <div class="body">
                         <div class="row">
-                            <div class="col-md-4">
+                            <div class="col-md-3">
                                 <label for="date">Date:</label>
                                 <input type="date" class="form-control date" name="date" id="date"/>
                             </div>
 
-                            <div class="col-md-4">
+                            <div class="col-md-3">
                                 <label for="series">Series:</label>
                                 <select onchange="seriesChanged()" class="form-control" id="series" name="series">
                                     <g:each in="${series}" var="sr">
@@ -78,7 +78,7 @@
                                 </select>
                             </div>
 
-                            <div class="col-md-4">
+                            <div class="col-md-3">
                                 <label for="supplier">Supplier:</label>
                                 <select class="form-control show-tick" id="supplier"
                                         onchange="supplierChanged()">
@@ -89,8 +89,6 @@
                                     </g:each>
                                 </select>
                             </div>
-                        </div>
-                        <div class="row">
                             <div class="col-md-3">
                                 <label for="priority">Priority:</label>
                                 <select class="form-control" id="priority" name="priority">
@@ -99,17 +97,50 @@
                                     </g:each>
                                 </select>
                             </div>
+                        </div>
+                        <div class="row">
                             <div class="col-md-3">
-                                <label for="supplierBillId">Supplier Invoice Number:</label>
+                                <label for="supplierBillId">Ref. Number:</label>
                                 <input type="text" maxlength="100" class="form-control" name="supplierBillId" id="supplierBillId"/>
                             </div>
                             <div class="col-md-3">
-                                <label for="supplierBillDate">Supplier Invoice Date:</label>
+                                <label for="supplierBillDate">Ref. Date:</label>
                                 <input type="date" class="form-control date" name="supplierBillDate" id="supplierBillDate"/>
                             </div>
                             <div class="col-md-3">
                                 <label for="duedate">Due Date:</label>
                                 <input type="date" class="form-control date" name="duedate" id="duedate"/>
+                            </div>
+                            <div class="col-md-3">
+                                <br>
+                                <a class="btn btn-primary waves-effect" role="button" data-toggle="collapse"
+                                   href="#noteDetails" aria-expanded="false"
+                                   aria-controls="noteDetails"><i class="zmdi zmdi-edit"></i> Note
+                                </a>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-12 col-lg-12 col-sm-12">
+                                <div class="collapse" id="noteDetails">
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label for="publicNote">Public Note</label>
+                                                <textarea id="publicNote" rows="1" maxlength="500" name="publicNote" class="form-control"></textarea>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <div class="form-group">
+                                                    <label for="privateNote">Private Note</label>
+                                                    <textarea id="privateNote" rows="1" maxlength="500" name="privateNote" class="form-control"></textarea>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -1059,12 +1090,14 @@
             allowOutsideClick: false
         });
 
+        var publicNote = $("#publicNote").val();
+        var privateNote = $("#privateNote").val();
         var supplierBillId = $("#supplierBillId").val();
         var supplierBillDate = $("#supplierBillDate").val();
         if(supplierBillId?.length === 0 || supplierBillDate?.length === 0)
         {
             Swal.fire({
-                title: "Please enter supplier invoice number and date",
+                title: "Please enter reference number and date",
                 showDenyButton: false,
                 showCancelButton: false,
                 showConfirmButton: true,
@@ -1112,7 +1145,9 @@
                 seriesCode:seriesCode,
                 supplierBillDate:supplierBillDate,
                 supplierBillId: supplierBillId,
-                uuid: self.crypto.randomUUID()
+                uuid: self.crypto.randomUUID(),
+                privateNote: privateNote,
+                publicNote: publicNote
             },
             success: function (data) {
                 console.log(data);
@@ -1171,7 +1206,7 @@
     {
         if(readOnly) {
             window.open(
-                '/purchase-order/print-invoice?id=' + purchasebillid,
+                '/purchase-order/print-order?id=' + purchasebillid,
                 '_blank'
             );
             resetData();

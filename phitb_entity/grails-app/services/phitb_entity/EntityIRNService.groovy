@@ -64,7 +64,18 @@ class EntityIRNService {
     }
 
     EntityIRN save(JSONObject jsonObject) {
-        EntityIRN entityIRN = new EntityIRN()
+        EntityRegister entityRegister = EntityRegister.findById(Long.parseLong(jsonObject.get("entity").toString()))
+        EntityIRN entityIRN = null
+        EntityIRN.withDeleted {
+            entityIRN = EntityIRN.findByEntity(entityRegister)
+            if(entityIRN == null)
+                entityIRN = new EntityIRN()
+            else {
+                entityIRN.isUpdatable = true
+                entityIRN.unDelete()
+            }
+        }
+
         entityIRN.irnUsername = jsonObject.get("irnUsername").toString()
         entityIRN.irnPassword = jsonObject.get("irnPassword").toString()
         entityIRN.irnGSTIN = jsonObject.get("irnGSTIN").toString()
@@ -94,10 +105,11 @@ class EntityIRNService {
             entityIRN.aspSecretKey = jsonObject.get("aspSecretKey").toString()
             entityIRN.sek = jsonObject.get("sek").toString()
             entityIRN.forceRefreshAccessToken = Boolean.parseBoolean(jsonObject.get("forceRefreshAccessToken").toString())
-            entityIRN.entity = EntityRegister.findById(Long.parseLong(jsonObject.get("entity")["id"].toString()))
-            entityIRN.entityType = EntityTypeMaster.findById(Long.parseLong(jsonObject.get("entityType")["id"].toString()))
+            entityIRN.entity = EntityRegister.findById(Long.parseLong(jsonObject.get("entity").toString()))
+            entityIRN.entityType = EntityTypeMaster.findById(Long.parseLong(jsonObject.get("entityType").toString()))
             entityIRN.createdUser = Long.parseLong(jsonObject.get("createdUser").toString())
             entityIRN.modifiedUser = Long.parseLong(jsonObject.get("modifiedUser").toString())
+            entityIRN.active = Boolean.parseBoolean(jsonObject.get("isActive").toString())
             entityIRN.save(flush: true)
             if (!entityIRN.hasErrors())
                 return entityIRN

@@ -15,7 +15,7 @@
     <!-- Custom Css -->
     <asset:stylesheet  rel="stylesheet" src="/themeassets/css/main.css"/>
     <asset:stylesheet rel="stylesheet" href="/themeassets/css/color_skins.css"/>
-    <asset:stylesheet rel="stylesheet" href="/themeassets/plugins/sweetalert/sweetalert.css"/>
+    <asset:stylesheet rel="stylesheet" href="/themeassets/plugins/sweetalert2/dist/sweetalert2.min.css"/>
     <asset:stylesheet  src="/themeassets/plugins/bootstrap-select/css/bootstrap-select.css" rel="stylesheet" />
     <asset:stylesheet  src="/themeassets/js/pages/forms/basic-form-elements.js" rel="stylesheet" />
     <asset:stylesheet  src="/themeassets/plugins/bootstrap-material-datetimepicker/css/bootstrap-material-datetimepicker.css" rel="stylesheet" />
@@ -152,7 +152,7 @@
 <asset:javascript src="/themeassets/bundles/mainscripts-2.bundle.js"/>
 <asset:javascript src="/themeassets/js/pages/tables/jquery-datatable.js"/>
 <asset:javascript src="/themeassets/js/pages/ui/dialogs.js"/>
-<asset:javascript src="/themeassets/plugins/sweetalert/sweetalert.min.js"/>
+<asset:javascript src="/themeassets/plugins/sweetalert2/dist/sweetalert2.min.js"/>
 <asset:javascript src="/themeassets/plugins/jquery-inputmask/jquery.inputmask.bundle.js"/>
 <asset:javascript src="/themeassets/plugins/momentjs/moment.js"/>
 <asset:javascript src="/themeassets/plugins/bootstrap-material-datetimepicker/js/bootstrap-material-datetimepicker.js"/>
@@ -195,10 +195,9 @@
                         console.log(json)
                         var editbtn = '<button type="button" data-id="' + json.data[i].id +
                             '" data-irnusername="' + json.data[i].irnUsername + '"' +
-                            '" data-irnpassword="' + json.data[i].irnPassword + '"' +
-                            '" data-active="' + json.data[i].active + '"' +
-                            '"' +
-                            ' class="editbtn btn btn-sm btn-warning  editbtn" data-toggle="modal" data-target="#addEntityIRNModal"><i class="material-icons"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">edit</font></font></i></button>'
+                            ' data-irnpassword="' + json.data[i].irnPassword + '"' +
+                            ' data-active="' + json.data[i].active + '"' +
+                            ' class="editbtn btn btn-sm btn-warning" data-toggle="modal" data-target="#addEntityIRNModal"><i class="material-icons"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">edit</font></font></i></button>'
                         var deletebtn = '<button type="button" data-id="' + json.data[i].id +
                             '" class="btn btn-sm btn-danger deletebtn" data-toggle="modal" data-target=".deleteModal"><i class="material-icons"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">delete</font></font></i></button>'
                         return_data.push({
@@ -242,12 +241,12 @@
             contentType: false,
             processData: false,
             success: function () {
-                swal("Success!", "Entity IRN  Submitted Successfully", "success");
+                Swal.fire("Success!", "Entity IRN  Submitted Successfully", "success");
                 entityIRN();
                 $('#addEntityIRNModal').modal('hide');
             },
             error: function () {
-                swal("Error!", "Something went wrong", "error");
+                Swal.fire("Error!", "Something went wrong", "error");
 
             }
         });
@@ -262,8 +261,8 @@
 
     $(document).on("click", ".editbtn", function () {
         id = $(this).data('id');
-        $(".irnUsername").val($(this).attr('data-date'));
-        $(".irnPassword").val($(this).attr('data-cityIds'));
+        $(".irnUsername").val($(this).attr('data-irnusername'));
+        $(".irnPassword").val($(this).attr('data-irnpassword'));
         $(".entityIrnTitle").text("Update Entity IRN ?");
     });
 

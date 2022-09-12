@@ -114,14 +114,15 @@
                                                 <select class="form-control show-tick entityType" name="entityType"
                                                         id="entityType" required>
                                                     <g:each var="et" in="${entitytype}">
-                                                        <g:if test="${session.getAttribute('role') == Constants.ENTITY_ADMIN}">
+                                                        <option value="${et.id}">${et.name}</option>
+                                                        %{--<g:if test="${session.getAttribute('role') == Constants.ENTITY_ADMIN}">
                                                             <g:if test="${et.name != "MANUFACTURER"}">
                                                                 <option value="${et.id}">${et.name}</option>
                                                             </g:if>
                                                         </g:if>
                                                         <g:else>
                                                             <option value="${et.id}">${et.name}</option>
-                                                        </g:else>
+                                                        </g:else>--}%
 
                                                     </g:each>
                                                 </select>
@@ -789,8 +790,9 @@
                                                 <select class="form-control show-tick entityType" name="entityType"
                                                         id="entityType" required>
                                                     <g:each var="et" in="${entitytype}">
-
-                                                        <g:if test="${session.getAttribute('role') == Constants.ENTITY_ADMIN}">
+                                                        <option value="${et.id}"
+                                                                <g:if test="${et.id == entity.entityType.id}">selected</g:if>>${et.name}</option>
+                                                       %{-- <g:if test="${session.getAttribute('role') == Constants.ENTITY_ADMIN}">
                                                             <g:if test="${et.name != "MANUFACTURER"}">
                                                                 <option value="${et.id}"
                                                                         <g:if test="${et.id == entity.entityType.id}">selected</g:if>>${et.name}</option>
@@ -799,7 +801,7 @@
                                                         <g:else>
                                                             <option value="${et.id}"
                                                                     <g:if test="${et.id == entity.entityType.id}">selected</g:if>>${et.name}</option>
-                                                        </g:else>
+                                                        </g:else>--}%
 
                                                     </g:each>
                                                 </select>

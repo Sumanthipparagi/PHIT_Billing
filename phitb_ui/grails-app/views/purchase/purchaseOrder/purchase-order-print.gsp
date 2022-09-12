@@ -2,7 +2,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Sale Invoice</title>
+    <title>Purchase Order | Print</title>
 
     <script type="text/javascript">
         %{--function generateBarCode() {--}%
@@ -397,6 +397,7 @@
             <g:elseif test="${purchaseOrderDetail.billStatus == 'DRAFT'}">
                 <div id="watermark" class="print-watermark">DRAFT</div>
             </g:elseif>
+            <p><u>Note:</u> <span>${purchaseOrderDetail.publicNote}</span></p>
             <p>No of cases <br>
                 Weight in Kgs :<br>
                 Party Ref No. : <br>

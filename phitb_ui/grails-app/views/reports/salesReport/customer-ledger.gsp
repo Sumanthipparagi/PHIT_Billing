@@ -50,7 +50,7 @@
         <div class="block-header">
             <div class="row clearfix">
                 <div class="col-lg-5 col-md-5 col-sm-12">
-                    <h2>Customer Ledger - (Demo)</h2>
+                    <h2>Customer Ledger</h2>
                     <ul class="breadcrumb padding-0">
                         <li class="breadcrumb-item"><a href="#"><i class="zmdi zmdi-home"></i></a></li>
                         <li class="breadcrumb-item active">Customer Ledger</li>
