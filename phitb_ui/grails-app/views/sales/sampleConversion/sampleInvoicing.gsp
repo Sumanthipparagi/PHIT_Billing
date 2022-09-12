@@ -105,7 +105,7 @@
                                     <option selected disabled>--SELECT--</option>
                                     <g:each in="${users}" var="u">
                                         <g:if test="${u.id != session.getAttribute("userId")}">
-                                            <option value="${u.id}">${u.userName}</option>
+                                            <option value="${u.id}">${u.userName} (${u?.name})</option>
                                         </g:if>
                                     </g:each>
                                 </select>
