@@ -1062,7 +1062,8 @@ class GoodsTransferNoteController
     def grn()
     {
         def divisions = new ProductService().getDivisionsByEntityId(session.getAttribute('entityId').toString())
-        render(view: '/sales/goodsTransferNote/grn', model: [divisions:divisions])
+        def products = new ProductService().getProductByEntity(session.getAttribute('entityId').toString())
+        render(view: '/sales/goodsTransferNote/grn', model: [divisions:divisions,products:products])
     }
 
 
@@ -1101,7 +1102,7 @@ class GoodsTransferNoteController
                             productDetails?.hsnCode?.toString(), session.getAttribute('entityId').toString())
                     Long productId = null
                     String batchNumber
-                   if(checkProduct.size() == 0 || checkProduct == null){
+                   if(gtnObject?.gtnObject == true){
                        productDetails.put("entityId",session.getAttribute('entityId'))
                        productDetails.put("entityTypeId",session.getAttribute('entityTypeId'))
                        productDetails.put("composition",0)
@@ -1120,7 +1121,8 @@ class GoodsTransferNoteController
                        if(saveProductResponse?.status == 200){
                            JSONObject productResponse = new JSONObject(saveProductResponse.readEntity(String.class))
                            productId = productResponse?.id
-                           JSONObject batch = new ProductService().getByBatchAndProductId(gtnObject.batchNumber.toString(), gtnObject.productId.toString()) as JSONObject
+                           JSONObject batch = new ProductService().getByBatchAndProductId(gtnObject.Batch.toString(),
+                                   gtnObject.productId.toString()) as JSONObject
                            batch.put("entityId", session.getAttribute('entityId'))
                            batch.put("entityTypeId",session.getAttribute('entityTypeId'))
                            batch.put("product",productResponse?.id)
@@ -1138,9 +1140,9 @@ class GoodsTransferNoteController
                            }
                        }
                    }else{
-                       productId = checkProduct?.id
-                       JSONObject batch = new ProductService().getByBatchAndProductId(gtnObject.Batch.toString(),
-                               checkProduct.id.toString()) as JSONObject
+                       productId = gtnObject?.ExistingProducts
+                       JSONObject batch = new ProductService().getByBatchAndProductId(gtnObject.Existingbatches.toString(),
+                               productId.toString()) as JSONObject
                        if(batch.size()==0){
                            JSONObject prevBatch = new ProductService().getByBatchAndProductId(gtnObject.Batch.toString(), gtnObject.productId.toString()) as JSONObject
                            prevBatch.put("entityId", session.getAttribute('entityId'))
@@ -1174,10 +1176,10 @@ class GoodsTransferNoteController
                     stockBook1.put("entityTypeId", session.getAttribute('entityTypeId').toString())
                     stockBook1.put("uuid", UUID.randomUUID())
                     def checkStockBook = new InventoryService().getStocksOfProductAndBatch(productId.toString(), gtnObject
-                            .batchNumber.toString(), session.getAttribute('entityId').toString())
+                            .Batch.toString(), session.getAttribute('entityId').toString())
                     if(checkStockBook){
                         double remainingQty = Double.parseDouble(checkStockBook.remainingQty.toString()) + Double.parseDouble(gtnObject.sQty.toString())
-                        double  remainingFreeQty = Double.parseDouble(checkStockBook.remainingFreeQty.toString()) +
+                        double remainingFreeQty = Double.parseDouble(checkStockBook.remainingFreeQty.toString()) +
                                 Double.parseDouble(gtnObject.fQty.toString())
                         checkStockBook.put("remainingQty", Double.valueOf(Double.parseDouble(remainingQty.toString()))
                                 .longValue())

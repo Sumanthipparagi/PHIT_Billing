@@ -273,4 +273,68 @@ class ProductRegisterController
             System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
         }
     }
+
+    /**
+     * Get requested product by div
+     * @param id
+     * @return get product by div
+     */
+    def getProductByEntity()
+    {
+        try
+        {
+            long entityId = Long.parseLong(params.id)
+            if (entityId)
+            {
+                respond productRegisterService.getByEntityId(entityId)
+            }
+        }
+        catch (ResourceNotFoundException ex)
+        {
+            System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
+            response.status = 404
+        }
+        catch (BadRequestException ex)
+        {
+            System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
+            response.status = 400
+        }
+        catch (Exception ex)
+        {
+            System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
+        }
+    }
+
+
+    /**
+     * Get requested product by div
+     * @param id
+     * @return get product by div
+     */
+    def getProductByName()
+    {
+        try
+        {
+            String name = params.productName
+            if (name)
+            {
+                respond productRegisterService.getByEntityId(entityId)
+            }
+        }
+        catch (ResourceNotFoundException ex)
+        {
+            System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
+            response.status = 404
+        }
+        catch (BadRequestException ex)
+        {
+            System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
+            response.status = 400
+        }
+        catch (Exception ex)
+        {
+            System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
+        }
+    }
+
 }

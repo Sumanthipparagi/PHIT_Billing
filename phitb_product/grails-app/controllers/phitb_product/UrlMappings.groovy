@@ -150,9 +150,7 @@ class UrlMappings {
                 action = [GET: 'show', PUT: 'update', DELETE:
                         'delete']
             }
-            "/productregisterbyentity/$id(.$format)?"(controller: 'productRegister') {
-                action = [GET: 'getAllByEntityId']
-            }
+            "/productregisterbyentity/$id(.$format)?"(controller: 'productRegister', action: 'getProductByEntity')
             "/productregisterbydivision/$id(.$format)?"(controller: 'productRegister') {
                 action = [GET: 'getAllByDivision']
             }
@@ -163,8 +161,7 @@ class UrlMappings {
                 action = [GET: 'index', POST:
                         'save']
             }
-            "/productschdulemaster/datatable(.$format)?"(controller: 'productScheduleMaster') {action = [GET:
-                                                                                                             'dataTable']}
+            "/productschdulemaster/datatable(.$format)?"(controller: 'productScheduleMaster') {action = [GET: 'dataTable']}
             "/productschdulemaster/$id(.$format)?"(controller: 'productScheduleMaster') {
                 action = [GET: 'show', PUT: 'update', DELETE:
                         'delete']

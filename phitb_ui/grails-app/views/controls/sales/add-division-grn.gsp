@@ -5,7 +5,7 @@
 
             <!-- Modal Header -->
             <div class="modal-header">
-                <h5 class="modal-title">Add Division</h5>
+                <h5 class="modal-title">Map products</h5>
                 <button type="button" class="close" data-dismiss="modal">&times;</button>
             </div>
             <!-- Modal body -->
@@ -28,14 +28,17 @@
                         <thead>
                         <tr>
                             <th>Product</th>
-                            <th>HSN Code</th>
                             <th>Batch</th>
-                            <th>sQty</th>
-                            <th>fQty</th>
-                            <th>sRate</th>
+                            <th>New Product</th>
+                            <th>Existing Products</th>
+                            <th>Existing batches</th>
                             <th>Division</th>
                             <th style="display: none;">gtnId</th>
                             <th style="display: none;">productId</th>
+                            <th style="display: none;">entityId</th>
+                            <th style="display: none;">sQty</th>
+                            <th style="display: none;">fQty</th>
+                            <th style="display: none;">sRate</th>
                         </tr>
                         </thead>
                         <tbody id="grnProductList">

@@ -26,6 +26,8 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/table-to-json@1.0.0/lib/jquery.tabletojson.min.js"
             integrity="sha256-H8xrCe0tZFi/C2CgxkmiGksqVaxhW0PFcUKZJZo1yNU=" crossorigin="anonymous"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.3/css/select2.min.css" rel="stylesheet"/>
+
     <style>
 
     table.dataTable tbody td {
@@ -41,6 +43,10 @@
 
         }
     */
+
+    .select2-container .select2-selection--single .select2-selection__rendered {
+        width: 112px;
+    }
 
     </style>
 
@@ -176,6 +182,7 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.2/js/all.js"
         integrity="sha256-2JRzNxMJiS0aHOJjG+liqsEOuBb6++9cY4dSOyiijX4=" crossorigin="anonymous"></script>
 <asset:javascript src="/themeassets/plugins/icons/all.js"/>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.3/js/select2.min.js"></script>
 
 
 <script>
@@ -376,22 +383,38 @@
                         $.each(data, function (key, value) {
                             trHTML += '<tr>' +
                                 '<td>' + value.product.productName + '</td>' +
-                                '<td>' + value.product.hsnCode + '</td>' +
                                 '<td>' + value.batchNumber + '</td>' +
-                                '<td>' + value.sqty + '</td>' +
-                                '<td>' + value.freeQty + '</td>' +
-                                '<td>' + value.sRate + '</td>' +
-                                '<td>                        <select class="form-control show-tick division" name="division" id="division">\n' +
+                                '<td><input type="checkbox"  id="'+"newProduct"+value.id+
+                                '" name="newProduct" data-id="' + value.id +
+                                '"  value="YES" class="newProduct">\n</td>' +
+                                '<td>                        <select class="form-control show-tick exProduct" name="exProduct" onchange="getBatches(this.value)" id="'+ "exProduct" + value.id + '">\n' +
+                                '                            <g:each var="p" in="${products}">\n' +
+                                '                                <option value="${p.id}">${p.productName}</option>\n' +
+                                '                            </g:each>\n' +
+                                '                        </select>\n</td>' +
+                                '<td>                        <select class="form-control show-tick existBatch" name="existBatch" id="' + "existBatch" + value.id + '">\n' +
+
+                                '                        </select>\n</td>' +
+                                '<td>                        <select class="form-control show-tick division" name="division" id="' + "division" + value.id + '">\n' +
                                 '                            <g:each var="d" in="${divisions}">\n' +
                                 '                                <option value="${d.id}">${d.divisionName}</option>\n' +
                                 '                            </g:each>\n' +
                                 '                        </select>\n</td>' +
                                 '<td style="display: none;">' + value.billId + '</td>' +
                                 '<td style="display: none;">' + value.product.id + '</td>' +
+                                '<td style="display: none;">' + value.entityId + '</td>' +
+                                '<td style="display: none;">' + value.sqty + '</td>' +
+                                '<td style="display: none;">' + value.freeQty + '</td>' +
+                                '<td style="display: none;">' + value.sRate + '</td>' +
                                 '</tr>';
+                            getBatches(value.product.id)
+
+
                         });
                         $('#id').val(gtn);
                         $('#grnProductList').html(trHTML);
+                        $('.exProduct').select2();
+                        $('.existBatch').select2();
                         $('#addDivisionGrn').modal('show');
                     },
                     error: function () {
@@ -411,6 +434,28 @@
 
     }
 
+    // function newproduct(id) {
+    //     alert($('#newProduct'+id).checked)
+    //     var myCheckbox = $('#newProduct'+id);
+    //     if(myCheckbox.is(":checked") == true){
+    //         $('#exProduct'+id).hide()
+    //     }else{
+    //         $('#exProduct'+id).show()
+    //     }
+    // }
+
+    $(document).on('click', '.newProduct', function (e) {
+        var id = $(this).attr('data-id');
+        var checkbox =  $(this).is(":checked");
+        if(checkbox){
+            $('#exProduct'+id).prop('disabled', true);
+            $('#existBatch'+id).prop('disabled', true);
+        }else{
+            $('#exProduct'+id).prop('disabled', false);
+            $('#existBatch'+id).prop('disabled', false);
+        }
+    });
+
 
     $("#addDivisionGrnForm").submit(function (event) {
         //disable the default form submission
@@ -429,20 +474,28 @@
             // for each cell
             //
             var $td = $(ele).find('td').map(function (idxCell, ele) {
-                var input = $(ele).find(':selected');
+                var select = $(ele).find(':selected');
+                var input = $(ele).find(':input');
                 //
                 // if cell contains an input or select....
                 //
                 if (input.length === 1) {
-                    var attr = $('#grnProducts thead tr th').eq(idxCell).text();
-                    retVal[attr] = input.val();
+                    var attr = $('#grnProducts thead tr th').eq(idxCell).text().trim();
+                    retVal[attr] = input.is(":checked")
+                }
+                if (select.length === 1) {
+                    var attr = $('#grnProducts thead tr th').eq(idxCell).text().trim();
+                    retVal[attr] = select.val();
                 } else {
-                    var attr = $('#grnProducts thead tr th').eq(idxCell).text();
-                    retVal[attr] = $(ele).text();
+                    var attr = $('#grnProducts thead tr th').eq(idxCell).text().trim();
+                    if(input.length === 0){
+                        retVal[attr] = $(ele).text();
+                    }
                 }
             });
             return retVal;
         }).get();
+
         var productData = JSON.stringify(tbl).replace(/\s(?=\w+":)/g, "");
         $.ajax({
             url: '/grn/approveGRN?gtn=' + gtn,
@@ -517,8 +570,30 @@
     %{--    }--}%
     %{--});--}%
 
-    function submitApprove() {
+    function getBatches(id) {
+        var option = '';
+        $.ajax({
+            url: '/batch-register/product/' + id,
+            dataType: 'json',
+            type: 'GET',
+            success: function (data) {
+                for (var i = 0; i < data.length; i++) {
+                    option += '<option value="' + data[i].batchNumber + '">' + data[i].batchNumber + '</option>';
+                }
+                $('.existBatch').empty()
+                $('.existBatch').html(option);
+                if (data.length === 0) {
+                    // $('#batch').prop('disabled', true);
+                } else {
+                    // $('#batch').prop('disabled', false);
 
+                }
+            },
+            error: function (x, e) {
+                console.log("Something went wrong!")
+            }
+
+        });
     }
 
     function invoiceStatusChanged() {

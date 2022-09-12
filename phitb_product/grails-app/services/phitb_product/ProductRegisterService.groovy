@@ -1,5 +1,6 @@
 package phitb_product
 
+import grails.converters.JSON
 import grails.gorm.transactions.Transactional
 import org.grails.web.json.JSONObject
 import phitb_product.Exception.BadRequestException
@@ -320,6 +321,26 @@ class ProductRegisterService {
             }
         } else{
             throw new BadRequestException()
+        }
+    }
+
+    def getByEntityId(long entityId){
+        if(entityId){
+            return ProductRegister.createCriteria().list(){
+                eq('entityId',entityId)
+                eq('deleted', false)
+                order("productName", "asc")
+            }
+        }
+    }
+
+    def getProductByName(String productName){
+        if(productName){
+            return ProductRegister.createCriteria().list(){
+                eq('productName',productName)
+                eq('deleted', false)
+                order("productName", "asc")
+            }
         }
     }
 }
