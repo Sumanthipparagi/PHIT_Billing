@@ -307,7 +307,7 @@ class PurchaseOrderController {
         try {
             JSONObject jsonObject = JSON.parse(request.reader.text) as JSONObject
             String dateRange = jsonObject.get("dateRange")
-            String supplier = jsonObject.get("supplier")
+            String supplier = jsonObject.get("supplierId")
             if (dateRange && supplier) {
                 JSONArray purchaseBillDetails = purchaseOrderService.getByDateRangeAndSupplier(dateRange, supplier)
                 render purchaseBillDetails, formats: ['json']

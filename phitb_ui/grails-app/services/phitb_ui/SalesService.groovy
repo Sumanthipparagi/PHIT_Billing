@@ -297,7 +297,7 @@ class SalesService {
         try {
             JSONObject jsonObject = new JSONObject()
             jsonObject.put("dateRange", dateRange)
-            jsonObject.put("entityId", customerId)
+            jsonObject.put("customerId", customerId)
             Response apiResponse = target
                     .path(new Links().DELIVERY_CHALLAN_DATERANGE_CUSTOMER)
                     .request(MediaType.APPLICATION_JSON_TYPE)
@@ -1534,7 +1534,7 @@ contains both sale bill and products
         WebTarget target = client.target(new Links().API_GATEWAY)
         try {
             Response apiResponse = target
-                    .path(new Links().GTN_SHOW_DATERANGE_CUSTOMER)
+                    .path(new Links().GTN_SHOW_DATERANGE)
                     .queryParam("dateRange", dateRange)
                     .queryParam("entityId", entityId)
                     .request(MediaType.APPLICATION_JSON_TYPE)

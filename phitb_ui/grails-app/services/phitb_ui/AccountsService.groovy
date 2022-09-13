@@ -1405,7 +1405,7 @@ class AccountsService
         // WebTarget target = client.target("http://localhost:8089")
         try {
             Response apiResponse = target
-                    .path(new Links().PAYMENT_DATERANGE)
+                    .path(new Links().PAYMENT_DATERANGE_CUSTOMER)
                     .queryParam("dateRange", dateRange)
                     .queryParam("customerId", customerId)
                     .request(MediaType.APPLICATION_JSON_TYPE)

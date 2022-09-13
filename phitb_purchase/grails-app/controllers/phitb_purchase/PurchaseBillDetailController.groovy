@@ -295,7 +295,7 @@ class PurchaseBillDetailController {
         try {
             JSONObject jsonObject = JSON.parse(request.reader.text) as JSONObject
             String dateRange = jsonObject.get("dateRange")
-            String supplier = jsonObject.get("supplier")
+            String supplier = jsonObject.get("supplierId")
             if (dateRange && supplier) {
                 JSONArray purchaseBillDetails = purchaseBillDetailService.getByDateRangeAndSupplier(dateRange, supplier)
                 render purchaseBillDetails, formats: ['json']

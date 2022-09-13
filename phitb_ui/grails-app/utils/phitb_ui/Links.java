@@ -754,7 +754,7 @@ public class Links
     public static String PURCHASE_RETURN_DELETE = APP_CONTEXT_PATH + "purchase/returndetail/{id}";
     public static String PURCHASE_RETURN_CUSTOMER = APP_CONTEXT_PATH + "purchase/returndetailbysupplier";
     public static String PURCHASE_RETURN_BY_DATERANGE = APP_CONTEXT_PATH + "purchase/returndetailbydaterange";
-    public static String PURCHASE_RETURN_BY_DATERANGE_SUPPLIER = APP_CONTEXT_PATH + "purchase/returndetailbydaterange";
+    public static String PURCHASE_RETURN_BY_DATERANGE_SUPPLIER = APP_CONTEXT_PATH + "purchase/returndetailbydaterangesupplier";
 
 
     //e-Invoice
@@ -826,7 +826,7 @@ public class Links
     public static String PURCHASE_ORDER_RECENT = APP_CONTEXT_PATH + "purchase/purchaseorder/getrecent";
     public static String PURCHASE_ORDER_CANCEL = APP_CONTEXT_PATH + "purchase/purchaseorder/cancel";
     public static String PURCHASE_ORDER_DATERANGE = APP_CONTEXT_PATH + "purchase/purchaseorderbydaterange";
-    public static String PURCHASE_ORDER_SUPPLIER = APP_CONTEXT_PATH + "purchase/purchaseorderbydaterangesupplier";
+    public static String PURCHASE_ORDER_DATERANGE_SUPPLIER = APP_CONTEXT_PATH + "purchase" + "/purchaseorderbydaterangesupplier";
 
 
 //    Purchase Order Product Details
