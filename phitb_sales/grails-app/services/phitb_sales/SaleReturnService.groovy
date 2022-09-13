@@ -327,6 +327,40 @@ class SaleReturnService {
         }
     }
 
+    def getByDateRangeAndCustomerId(String dateRange, String customerId)
+    {
+        try {
+            SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy")
+            Date fromDate = sdf.parse(dateRange.split("-")[0].trim().toString())
+            Date toDate = sdf.parse(dateRange.split("-")[1].trim().toString())
+            Calendar cal = Calendar.getInstance();
+            cal.setTime(toDate)
+            cal.set(Calendar.HOUR_OF_DAY, 23)
+            cal.set(Calendar.MINUTE, 59)
+            cal.set(Calendar.SECOND, 59)
+            cal.set(Calendar.MILLISECOND, 999)
+            toDate = cal.getTime()
+            long cid = Long.parseLong(customerId)
+            JSONArray finalBills = new JSONArray()
+            ArrayList<SaleReturn> salesReturns = SaleReturn.findAllByCustomerIdAndEntryDateBetween(cid.toString(), fromDate, toDate)
+            for (SaleReturn saleReturn : salesReturns) {
+                JSONObject salesReturn1 = new JSONObject((saleReturn as JSON).toString())
+                ArrayList<SaleReturnDetails> productDetails = SaleReturnDetails.findAllByBillId(saleReturn.id)
+                if (productDetails) {
+                    JSONArray prdt =  new  JSONArray((productDetails as JSON).toString())
+                    salesReturn1.put("products", prdt)
+                }
+                finalBills.add(salesReturn1)
+            }
+            return finalBills
+        }
+        catch (Exception ex)
+        {
+            ex.printStackTrace()
+            throw new BadRequestException()
+        }
+    }
+
     def saleReturnAdjustment(JSONObject jsonObject)
     {
         try {

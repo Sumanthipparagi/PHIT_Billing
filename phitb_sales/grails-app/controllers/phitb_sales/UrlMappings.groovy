@@ -127,6 +127,9 @@ class UrlMappings {
 
             "/salebillbydaterange(.$format)?"(controller: 'saleBillDetails', action: 'getByDateRangeAndEntity')
 
+            "/salebillbydaterangecustomer(.$format)?"(controller: 'saleBillDetails', action: 'getByDateRangeAndCustomerId')
+
+
 
             "/salebilldetails/getrecent(.$format)?"(controller: 'saleBillDetails', action: 'getRecentByFinancialYearAndEntity')
 
@@ -263,6 +266,7 @@ class UrlMappings {
                     'getSaleProductDetailsbybatchAndBill')
 
             "/saleorderbydaterange(.$format)?"(controller: 'saleOrderEntry', action: 'getByDateRangeAndEntity')
+            "/saleorderbydaterangecustomer(.$format)?"(controller: 'saleOrderEntry', action: 'getByDateRangeAndCustomerId')
 
 
 //            Convert to Sale Entry
@@ -415,6 +419,8 @@ class UrlMappings {
 
             "/salereturnbydaterange(.$format)?"(controller: 'saleReturn', action: 'getByDateRangeAndEntity')
 
+            "/salereturnbydaterangecustomer(.$format)?"(controller: 'saleReturn', action: 'getByDateRangeAndCustomerId')
+
 
             //Sale Return Details
             "/salereturndetails(.$format)?"(controller: 'saleReturnDetails') {
@@ -476,6 +482,8 @@ class UrlMappings {
                         'saveGTN']
             }
             "/gtnbydaterange(.$format)?"(controller: "goodsTransferNote", action: "getGTNByDateRange")
+            "/gtnbydaterangecustomer(.$format)?"(controller: "goodsTransferNote", action: "getGTNByDateRangeCustomer")
+
             "/draftgtn(.$format)?"(controller: 'goodsTransferNote') {
                 action = [GET: 'getDraftBillById']
             }
@@ -578,6 +586,7 @@ class UrlMappings {
                     { action = [POST: 'updateBalance'] }
 
             "/deliverychallanbydaterange(.$format)?"(controller: 'deliveryChallan', action: 'getByDateRangeAndEntity')
+            "/deliverychallanbydaterangecustomer(.$format)?"(controller: 'deliveryChallan', action: 'getByDateRangeAndCustomerId')
 
 
             //GTN Product Details

@@ -447,6 +447,7 @@ public class Links
     //Sale Bill Details
     public static String SALE_BILL_SHOW = APP_CONTEXT_PATH + "sales/salebilldetails";
     public static String SALE_BILL_BY_DATERANGE = APP_CONTEXT_PATH + "sales/salebillbydaterange";
+    public static String SALE_BILL_BY_DATERANGE_CUSTOMER = APP_CONTEXT_PATH + "sales/salebillbydaterangecustomer";
     public static String DRAFT_SALE_BILL_SHOW = APP_CONTEXT_PATH + "sales/draftsalebilldetails";
     public static String SALE_BILL_BALANCE_UPDATE = APP_CONTEXT_PATH + "sales/updatebalancebyid";
 /*    public static String SALE_BILL_BALANCE_CREDITS_UPDATE = APP_CONTEXT_PATH + "sales/updatebalanceandsettlecredits";*/
@@ -470,6 +471,7 @@ public class Links
     public static String SALE_RETURN_AREAWISE = APP_CONTEXT_PATH + "sales/reports/salesreturn-areawise";
     public static String SALE_BILL_UPDATE_IRN = APP_CONTEXT_PATH + "sales/salebilldetails/updateirn";
     public static String SALE_RETURN_BY_DATERANGE = APP_CONTEXT_PATH + "sales/salereturnbydaterange";
+    public static String SALE_RETURN_BY_DATERANGE_CUSTOMER = APP_CONTEXT_PATH + "sales/salereturnbydaterangecustomer";
     public static String SALE_ENTRY_STATS = APP_CONTEXT_PATH + "sales/reports/statistics";
 
     public static String SALE_INFO_REPORTS = APP_CONTEXT_PATH + "sales/reports/salesinfo";
@@ -551,6 +553,7 @@ public class Links
     public static String SALE_ORDER_RECENT = APP_CONTEXT_PATH + "sales/saleorderdetails/getrecent";
     public static String SALE_ORDER_CANCEL = APP_CONTEXT_PATH + "sales/saleorderdetails/cancel";
     public static String SALE_ORDER_BY_DATERANGE = APP_CONTEXT_PATH + "sales/saleorderbydaterange";
+    public static String SALE_ORDER_BY_DATERANGE_CUSTOMER = APP_CONTEXT_PATH + "sales/salebillbydaterangecustomer";
 
 
     //    convert to Sale Entry
@@ -567,6 +570,7 @@ public class Links
     public static String GTN_SAVE = APP_CONTEXT_PATH + "sales/gtn";
     public static String GTN_SHOW = APP_CONTEXT_PATH + "sales/gtn";
     public static String GTN_SHOW_DATERANGE = APP_CONTEXT_PATH + "sales/gtnbydaterange";
+    public static String GTN_SHOW_DATERANGE_CUSTOMER = APP_CONTEXT_PATH + "sales/gtnbydaterangecustomer";
     public static String GTN_DATATABLE = APP_CONTEXT_PATH + "sales/gtn/datatable";
     public static String GTN_RECENT = APP_CONTEXT_PATH + "sales/gtn/getrecent";
     public static String GTN_CANCEL = APP_CONTEXT_PATH + "sales/gtn/cancel";
@@ -585,6 +589,7 @@ public class Links
     public static String DELIVERY_CHALLAN_CUSTOMER = APP_CONTEXT_PATH + "sales/deliverychallanbycustomer";
     public static String UPDATE_DELIVERY_CHALLAN_BALANCE = APP_CONTEXT_PATH + "sales/updatedeliverychallanbalancebyid";
     public static String DELIVERY_CHALLAN_DATERANGE = APP_CONTEXT_PATH + "sales/deliverychallanbydaterange";
+    public static String DELIVERY_CHALLAN_DATERANGE_CUSTOMER = APP_CONTEXT_PATH + "sales/deliverychallanbydaterangecustomer";
 
 
 
@@ -652,6 +657,7 @@ public class Links
     public static String RECIPT_DETAIL_DELETE = APP_CONTEXT_PATH + "accounts/receiptdetails/{id}";
     public static String RECIPT_APPROVE = APP_CONTEXT_PATH + "accounts/receipt-approve";
     public static String RECIPT_DETAIL_BY_DATERANGE = APP_CONTEXT_PATH + "accounts/receiptdetailsbydaterange";
+    public static String RECEIPT_BY_DATERANGE_CUSTOMER = APP_CONTEXT_PATH + "accounts/receiptbydaterangecustomer";
 
     //    Reciept detail log
     public static String RECIPT_DETAIL_LOG = APP_CONTEXT_PATH + "accounts/reciptdetaillog";
@@ -678,6 +684,7 @@ public class Links
     public static String PAYMENT_UPDATE = APP_CONTEXT_PATH + "accounts/paymentdetails/{id}";
     public static String PAYMENT_DELETE = APP_CONTEXT_PATH + "accounts/paymentdetails/{id}";
     public static String PAYMENT_DATERANGE = APP_CONTEXT_PATH + "accounts/paymentdetailsbydaterange";
+    public static String PAYMENT_DATERANGE_CUSTOMER = APP_CONTEXT_PATH + "accounts/paymentbydaterangecustomer";
 
 
     //   payment detail log
@@ -713,6 +720,7 @@ public class Links
     //purchase product details
     public static String PURCHASE_PRODUCT_SHOW = APP_CONTEXT_PATH + "purchase/productdetail";
     public static String PURCHASE_BILL_BY_DATERANGE = APP_CONTEXT_PATH + "purchase/purchasebillbydaterange";
+    public static String PURCHASE_BILL_BY_DATERANGE_SUPPLIER = APP_CONTEXT_PATH + "purchase/purchasebillbydaterangesupplier";
     public static String PURCHASE_PRODUCT_SAVE = APP_CONTEXT_PATH + "purchase/productdetail";
     public static String PURCHASE_PRODUCT_DATATABLE = APP_CONTEXT_PATH + "purchase/productdetail/datatable";
     public static String PURCHASE_PRODUCT_UPDATE = APP_CONTEXT_PATH + "purchase/productdetail/{id}";
@@ -746,6 +754,7 @@ public class Links
     public static String PURCHASE_RETURN_DELETE = APP_CONTEXT_PATH + "purchase/returndetail/{id}";
     public static String PURCHASE_RETURN_CUSTOMER = APP_CONTEXT_PATH + "purchase/returndetailbysupplier";
     public static String PURCHASE_RETURN_BY_DATERANGE = APP_CONTEXT_PATH + "purchase/returndetailbydaterange";
+    public static String PURCHASE_RETURN_BY_DATERANGE_SUPPLIER = APP_CONTEXT_PATH + "purchase/returndetailbydaterange";
 
 
     //e-Invoice
@@ -817,6 +826,7 @@ public class Links
     public static String PURCHASE_ORDER_RECENT = APP_CONTEXT_PATH + "purchase/purchaseorder/getrecent";
     public static String PURCHASE_ORDER_CANCEL = APP_CONTEXT_PATH + "purchase/purchaseorder/cancel";
     public static String PURCHASE_ORDER_DATERANGE = APP_CONTEXT_PATH + "purchase/purchaseorderbydaterange";
+    public static String PURCHASE_ORDER_SUPPLIER = APP_CONTEXT_PATH + "purchase/purchaseorderbydaterangesupplier";
 
 
 //    Purchase Order Product Details

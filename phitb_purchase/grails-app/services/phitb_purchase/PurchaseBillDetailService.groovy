@@ -320,6 +320,42 @@ class PurchaseBillDetailService {
         }
     }
 
+    def getByDateRangeAndSupplier(String dateRange, String supplier)
+    {
+        try {
+            SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy")
+            Date fromDate = sdf.parse(dateRange.split("-")[0].trim().toString())
+            Date toDate = sdf.parse(dateRange.split("-")[1].trim().toString())
+            Calendar cal = Calendar.getInstance();
+            cal.setTime(toDate)
+            cal.set(Calendar.HOUR_OF_DAY, 23)
+            cal.set(Calendar.MINUTE, 59)
+            cal.set(Calendar.SECOND, 59)
+            cal.set(Calendar.MILLISECOND, 999)
+            toDate = cal.getTime()
+            long sid = Long.parseLong(supplier)
+            JSONArray finalBills = new JSONArray()
+            ArrayList<PurchaseBillDetail> purchaseBillDetails = PurchaseBillDetail.findAllBySupplierIdAndDateCreatedBetween(sid,
+                    fromDate, toDate)
+            for (PurchaseBillDetail purchaseBillDetail : purchaseBillDetails) {
+                JSONObject saleBillDetail1 = new JSONObject((purchaseBillDetail as JSON).toString())
+                def productDetails = PurchaseProductDetail.findAllByBillId(purchaseBillDetail.id)
+                if (productDetails) {
+                    JSONArray prdt =  new  JSONArray((productDetails as JSON).toString())
+                    saleBillDetail1.put("products", prdt)
+                }
+                finalBills.add(saleBillDetail1)
+            }
+            println(finalBills)
+            return finalBills
+        }
+        catch (Exception ex)
+        {
+            ex.printStackTrace()
+            throw new BadRequestException()
+        }
+    }
+
     def cancelPurchaseBill(JSONObject jsonObject)
     {
         String id = jsonObject.get("id")

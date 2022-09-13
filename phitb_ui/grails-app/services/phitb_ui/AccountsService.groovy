@@ -1350,6 +1350,30 @@ class AccountsService
 
     }
 
+    def getReceiptDetailsByDateRangeCustomer(String dateRange, String customerId) {
+        Client client = ClientBuilder.newClient();
+        WebTarget target = client.target(new Links().API_GATEWAY)
+        // WebTarget target = client.target("http://localhost:8089")
+        try {
+            Response apiResponse = target
+                    .path(new Links().RECEIPT_BY_DATERANGE_CUSTOMER)
+                    .queryParam("dateRange", dateRange)
+                    .queryParam("customerId", customerId)
+                    .request(MediaType.APPLICATION_JSON_TYPE)
+                    .get()
+            println(apiResponse)
+            if (apiResponse.status == 200) {
+                JSONArray jsonArray = new JSONArray(apiResponse.readEntity(String.class))
+                return jsonArray
+            }
+        }
+        catch (Exception ex) {
+            System.err.println('Service :accountsService , action :  getReceiptDetailsByDateRange  , Ex:' + ex)
+            log.error('Service :accountsService , action :  getReceiptDetailsByDateRange  , Ex:' + ex)
+        }
+
+    }
+
 
     def getPaymentDetailsByDateRange(String dateRange, String entityId) {
         Client client = ClientBuilder.newClient();
@@ -1360,6 +1384,30 @@ class AccountsService
                     .path(new Links().PAYMENT_DATERANGE)
                     .queryParam("dateRange", dateRange)
                     .queryParam("entityId", entityId)
+                    .request(MediaType.APPLICATION_JSON_TYPE)
+                    .get()
+            println(apiResponse)
+            if (apiResponse.status == 200) {
+                JSONArray jsonArray = new JSONArray(apiResponse.readEntity(String.class))
+                return jsonArray
+            }
+        }
+        catch (Exception ex) {
+            System.err.println('Service :accountsService , action :  getReceiptDetailsByDateRange  , Ex:' + ex)
+            log.error('Service :accountsService , action :  getReceiptDetailsByDateRange  , Ex:' + ex)
+        }
+
+    }
+
+    def getPaymentDetailsByDateRangeCustomer(String dateRange, String customerId) {
+        Client client = ClientBuilder.newClient();
+        WebTarget target = client.target(new Links().API_GATEWAY)
+        // WebTarget target = client.target("http://localhost:8089")
+        try {
+            Response apiResponse = target
+                    .path(new Links().PAYMENT_DATERANGE)
+                    .queryParam("dateRange", dateRange)
+                    .queryParam("customerId", customerId)
                     .request(MediaType.APPLICATION_JSON_TYPE)
                     .get()
             println(apiResponse)

@@ -145,6 +145,30 @@ class SalesService {
 
     }
 
+    def getSaleBillByDateRangeCustomer(String dateRange, String customerId) {
+        Client client = ClientBuilder.newClient();
+        WebTarget target = client.target(new Links().API_GATEWAY)
+        try {
+            JSONObject jsonObject = new JSONObject()
+            jsonObject.put("dateRange", dateRange)
+            jsonObject.put("customerId", customerId)
+            Response apiResponse = target
+                    .path(new Links().SALE_BILL_BY_DATERANGE_CUSTOMER)
+                    .request(MediaType.APPLICATION_JSON_TYPE)
+                    .post(Entity.entity(jsonObject.toString(), MediaType.APPLICATION_JSON_TYPE))
+            println(apiResponse)
+            if (apiResponse.status == 200) {
+                JSONArray jsonArray = new JSONArray(apiResponse.readEntity(String.class))
+                return jsonArray
+            }
+        }
+        catch (Exception ex) {
+            System.err.println('Service :salesService , action :  getSaleBillByDateRange  , Ex:' + ex)
+            log.error('Service :salesService , action :  getSaleBillByDateRange  , Ex:' + ex)
+        }
+
+    }
+
     def getSaleReturnByDateRange(String dateRange, String entityId) {
         Client client = ClientBuilder.newClient();
         WebTarget target = client.target(new Links().API_GATEWAY)
@@ -154,6 +178,30 @@ class SalesService {
             jsonObject.put("entityId", entityId)
             Response apiResponse = target
                     .path(new Links().SALE_RETURN_BY_DATERANGE)
+                    .request(MediaType.APPLICATION_JSON_TYPE)
+                    .post(Entity.entity(jsonObject.toString(), MediaType.APPLICATION_JSON_TYPE))
+            println(apiResponse)
+            if (apiResponse.status == 200) {
+                JSONArray jsonArray = new JSONArray(apiResponse.readEntity(String.class))
+                return jsonArray
+            }
+        }
+        catch (Exception ex) {
+            System.err.println('Service :salesService , action :  getSaleBillByDateRange  , Ex:' + ex)
+            log.error('Service :salesService , action :  getSaleBillByDateRange  , Ex:' + ex)
+        }
+
+    }
+
+    def getSaleReturnByDateRangeCustomer(String dateRange, String customerId) {
+        Client client = ClientBuilder.newClient();
+        WebTarget target = client.target(new Links().API_GATEWAY)
+        try {
+            JSONObject jsonObject = new JSONObject()
+            jsonObject.put("dateRange", dateRange)
+            jsonObject.put("customerId", customerId)
+            Response apiResponse = target
+                    .path(new Links().SALE_RETURN_BY_DATERANGE_CUSTOMER)
                     .request(MediaType.APPLICATION_JSON_TYPE)
                     .post(Entity.entity(jsonObject.toString(), MediaType.APPLICATION_JSON_TYPE))
             println(apiResponse)
@@ -194,6 +242,30 @@ class SalesService {
 
     }
 
+    def getSaleOrderByDateRangeCustomer(String dateRange, String customerId) {
+        Client client = ClientBuilder.newClient();
+        WebTarget target = client.target(new Links().API_GATEWAY)
+        try {
+            JSONObject jsonObject = new JSONObject()
+            jsonObject.put("dateRange", dateRange)
+            jsonObject.put("customerId", customerId)
+            Response apiResponse = target
+                    .path(new Links().SALE_ORDER_BY_DATERANGE_CUSTOMER)
+                    .request(MediaType.APPLICATION_JSON_TYPE)
+                    .post(Entity.entity(jsonObject.toString(), MediaType.APPLICATION_JSON_TYPE))
+            println(apiResponse)
+            if (apiResponse.status == 200) {
+                JSONArray jsonArray = new JSONArray(apiResponse.readEntity(String.class))
+                return jsonArray
+            }
+        }
+        catch (Exception ex) {
+            System.err.println('Service :salesService , action :  getSaleBillByDateRange  , Ex:' + ex)
+            log.error('Service :salesService , action :  getSaleBillByDateRange  , Ex:' + ex)
+        }
+
+    }
+
 
     def getDeliveryChallanByDateRange(String dateRange, String entityId) {
         Client client = ClientBuilder.newClient();
@@ -204,6 +276,30 @@ class SalesService {
             jsonObject.put("entityId", entityId)
             Response apiResponse = target
                     .path(new Links().DELIVERY_CHALLAN_DATERANGE)
+                    .request(MediaType.APPLICATION_JSON_TYPE)
+                    .post(Entity.entity(jsonObject.toString(), MediaType.APPLICATION_JSON_TYPE))
+            println(apiResponse)
+            if (apiResponse.status == 200) {
+                JSONArray jsonArray = new JSONArray(apiResponse.readEntity(String.class))
+                return jsonArray
+            }
+        }
+        catch (Exception ex) {
+            System.err.println('Service :salesService , action :  getSaleBillByDateRange  , Ex:' + ex)
+            log.error('Service :salesService , action :  getSaleBillByDateRange  , Ex:' + ex)
+        }
+
+    }
+
+    def getDeliveryChallanByDateRangeCustomer(String dateRange, String customerId) {
+        Client client = ClientBuilder.newClient();
+        WebTarget target = client.target(new Links().API_GATEWAY)
+        try {
+            JSONObject jsonObject = new JSONObject()
+            jsonObject.put("dateRange", dateRange)
+            jsonObject.put("entityId", customerId)
+            Response apiResponse = target
+                    .path(new Links().DELIVERY_CHALLAN_DATERANGE_CUSTOMER)
                     .request(MediaType.APPLICATION_JSON_TYPE)
                     .post(Entity.entity(jsonObject.toString(), MediaType.APPLICATION_JSON_TYPE))
             println(apiResponse)
@@ -1438,9 +1534,32 @@ contains both sale bill and products
         WebTarget target = client.target(new Links().API_GATEWAY)
         try {
             Response apiResponse = target
-                    .path(new Links().GTN_SHOW_DATERANGE)
+                    .path(new Links().GTN_SHOW_DATERANGE_CUSTOMER)
                     .queryParam("dateRange", dateRange)
                     .queryParam("entityId", entityId)
+                    .request(MediaType.APPLICATION_JSON_TYPE)
+                    .get()
+            println(apiResponse)
+            if (apiResponse.status == 200) {
+                JSONArray jsonArray = new JSONArray(apiResponse.readEntity(String.class))
+                return jsonArray
+            }
+        }
+        catch (Exception ex) {
+            System.err.println('Service :salesService , action :  getGTNByDateRange  , Ex:' + ex)
+            log.error('Service :salesService , action :  getGTNByDateRange  , Ex:' + ex)
+        }
+
+    }
+
+    def getGTNByDateRangeCustomer(String dateRange, String customerId) {
+        Client client = ClientBuilder.newClient();
+        WebTarget target = client.target(new Links().API_GATEWAY)
+        try {
+            Response apiResponse = target
+                    .path(new Links().GTN_SHOW_DATERANGE_CUSTOMER)
+                    .queryParam("dateRange", dateRange)
+                    .queryParam("customerId", customerId)
                     .request(MediaType.APPLICATION_JSON_TYPE)
                     .get()
             println(apiResponse)

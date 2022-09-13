@@ -265,4 +265,33 @@ class PurchaseReturnDetailController {
             System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
         }
     }
+
+
+    def getByDateRangeAndSupplier()
+    {
+        try {
+            JSONObject jsonObject = JSON.parse(request.reader.text) as JSONObject
+            String dateRange = jsonObject.get("dateRange")
+            String supplier = jsonObject.get("supplierId")
+            if (dateRange && supplier) {
+                JSONArray saleBillDetails = purchaseReturnDetailService.getByDateRangeAndSupplier(dateRange, supplier)
+                render saleBillDetails, formats: ['json']
+            }
+            else
+            {
+                response.status = 400
+            }
+        }
+        catch (org.springframework.boot.context.config.ResourceNotFoundException ex) {
+            System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
+            response.status = 404
+        }
+        catch (BadRequestException ex) {
+            System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
+            response.status = 400
+        }
+        catch (Exception ex) {
+            System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
+        }
+    }
 }

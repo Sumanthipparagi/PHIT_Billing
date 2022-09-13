@@ -238,4 +238,29 @@ class PaymentDetailController {
             System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
         }
     }
+
+    def getByDateRangeAndCustomer() {
+        try {
+            String dateRange = params.dateRange
+            String customerId = params.customerId
+            if (dateRange && customerId) {
+                JSONArray receiptDetails = paymentDetailService.getByDateRangeAndCustomer(dateRange, customerId)
+                respond receiptDetails, formats: ['json']
+            } else {
+                response.status = 400
+            }
+        }
+        catch (org.springframework.boot.context.config.ResourceNotFoundException ex) {
+            System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
+            response.status = 404
+        }
+        catch (BadRequestException ex) {
+            System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
+            response.status = 400
+        }
+        catch (Exception ex) {
+            System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
+        }
+    }
+
 }

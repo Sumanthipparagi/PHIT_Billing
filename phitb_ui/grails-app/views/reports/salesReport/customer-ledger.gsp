@@ -20,6 +20,8 @@
     <asset:stylesheet src="/themeassets/plugins/daterangepicker/daterangepicker.css" rel="stylesheet"/>
 
     <asset:stylesheet rel="stylesheet" href="/themeassets/plugins/sweetalert2/dist/sweetalert2.css"/>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.3/css/select2.min.css" rel="stylesheet"/>
+
 
     <style>
 
@@ -73,7 +75,7 @@
                 <div class="card">
                     <div class="header">
                         <div class="row">
-                            <div class="col-lg-6">
+                            <div class="col-lg-4">
                                 <div class="form-group">
                                     <label>Date Range:</label>
 
@@ -86,7 +88,24 @@
                                 </div>
                             </div>
 
-                            <div class="col-lg-6  d-flex justify-content-center">
+                            <div class="col-lg-4">
+                                <div class="form-group">
+                                        <label for="customerSelect">Customer:</label>
+                                        <select class="form-control show-tick" id="customerSelect"
+                                               >
+                                            <option value="">--SELECT--</option>
+                                            <g:each in="${customerArray}" var="cs">
+                                                <g:if test="${cs.id != session.getAttribute("entityId")}">
+                                                    <option data-state="${cs.stateId}" value="${cs.id}"
+                                                    >${cs.entityName} (${cs.entityType.name}) - ${cs?.city?.districtName} - ${cs?.city?.pincode}</option>
+                                                </g:if>
+                                            </g:each>
+                                        </select>
+
+                                </div>
+                            </div>
+
+                            <div class="col-lg-4  d-flex justify-content-center">
                                 <div class="form-group">
                                     <label>Export</label>
 
@@ -132,12 +151,16 @@
 <asset:javascript src="/themeassets/plugins/jQuery.print/jQuery.print.min.js"/>
 <asset:javascript src="/themeassets/plugins/sweetalert2/dist/sweetalert2.all.js"/>
 <asset:javascript src="/themeassets/plugins/momentjs/moment.js"/>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.3/js/select2.min.js"></script>
+
 <script>
     $('.dateRange').daterangepicker({
         locale: {
             format: "DD/MM/YYYY"
         }
     });
+
+    $('#customerSelect').select2();
 
     function getReport() {
         var loading = Swal.fire({
@@ -150,9 +173,10 @@
             closeOnClickOutside: false
         });
         var dateRange = $('.dateRange').val();
+        var customer = $('#customerSelect').val();
         $.ajax({
             type: "GET",
-            url: "/reports/sales/get-customer-ledger?dateRange=" + dateRange,
+            url: "/reports/sales/get-customer-ledger?dateRange=" + dateRange +"&customerId="+customer,
             contentType: false,
             processData: false,
             success: function (data) {

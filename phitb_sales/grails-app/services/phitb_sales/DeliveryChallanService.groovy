@@ -517,4 +517,38 @@ class DeliveryChallanService {
             throw new BadRequestException()
         }
     }
+
+    def getByDateRangeAndCustomerId(String dateRange, String customerId)
+    {
+        try {
+            SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy")
+            Date fromDate = sdf.parse(dateRange.split("-")[0].trim().toString())
+            Date toDate = sdf.parse(dateRange.split("-")[1].trim().toString())
+            Calendar cal = Calendar.getInstance();
+            cal.setTime(toDate)
+            cal.set(Calendar.HOUR_OF_DAY, 23)
+            cal.set(Calendar.MINUTE, 59)
+            cal.set(Calendar.SECOND, 59)
+            cal.set(Calendar.MILLISECOND, 999)
+            toDate = cal.getTime()
+            long cid = Long.parseLong(customerId)
+            JSONArray finalBills = new JSONArray()
+            ArrayList<DeliveryChallan> deliveryChallan = DeliveryChallan.findAllByCustomerIdAndEntryDateBetween(cid, fromDate, toDate)
+            for (DeliveryChallan dc : deliveryChallan) {
+                JSONObject dc1 = new JSONObject((dc as JSON).toString())
+                ArrayList<DeliveryChallanProduct> productDetails = DeliveryChallanProduct.findAllByBillId(dc.id)
+                if (productDetails) {
+                    JSONArray prdt =  new  JSONArray((productDetails as JSON).toString())
+                    dc1.put("products", prdt)
+                }
+                finalBills.add(dc1)
+            }
+            return finalBills
+        }
+        catch (Exception ex)
+        {
+            ex.printStackTrace()
+            throw new BadRequestException()
+        }
+    }
 }

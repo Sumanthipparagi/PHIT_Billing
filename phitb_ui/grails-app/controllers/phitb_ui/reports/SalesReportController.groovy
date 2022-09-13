@@ -459,8 +459,10 @@ class SalesReportController {
         String entityId = session.getAttribute("entityId")
         String financialYear = session.getAttribute("financialYear")
         String dateRange = params.dateRange
+        String customerId = params.customerId
         double openingBalance = 0
         ArrayList<JSONObject> customerLedgerDetails = new ArrayList<>()
+
 
         //get data within daterange
         JSONArray saleBills = new SalesService().getSaleBillByDateRange(dateRange, entityId)
@@ -769,8 +771,15 @@ class SalesReportController {
 
     def customerLedger()
     {
-        def entities = new EntityRegisterController().getByAffiliateById(session.getAttribute("entityId").toString())
-        render(view: '/reports/salesReport/customer-ledger', model: [entities: entities])
+        ArrayList<String> customers = new EntityRegisterController().getByAffiliateById(session.getAttribute('entityId').toString()) as ArrayList<String>
+        JSONArray customerArray = new JSONArray(customers)
+        for(JSONObject c: customerArray){
+            if(c?.cityId!=0){
+                def city = new SystemService().getCityById(c?.cityId?.toString())
+                c.put("city",city)
+            }
+        }
+        render(view: '/reports/salesReport/customer-ledger', model: [customerArray: customerArray])
     }
 
 }

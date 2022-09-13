@@ -504,4 +504,33 @@ class GoodsTransferNoteController {
             System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
         }
     }
+
+    /**
+     * get Goods Transfer Note between daterange
+     * @param daterange
+     * @param entityId
+     * @return saved Goods Transfer Note
+     */
+    def getGTNByDateRangeCustomer() {
+        try {
+            String dateRange = params.dateRange
+            long customerId = Long.parseLong(params.customerId)
+            if (dateRange && customerId) {
+                respond goodsTransferNoteService.getGTNByDateRangeCustomer(dateRange, customerId)
+            } else {
+                response.status = 400
+            }
+        }
+        catch (ResourceNotFoundException ex) {
+            System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
+            response.status = 404
+        }
+        catch (BadRequestException ex) {
+            System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
+            response.status = 400
+        }
+        catch (Exception ex) {
+            System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
+        }
+    }
 }

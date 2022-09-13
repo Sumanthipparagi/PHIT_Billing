@@ -512,4 +512,31 @@ class DeliveryChallanController {
             System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
         }
     }
+
+
+    def getByDateRangeAndCustomerId() {
+        try {
+            JSONObject jsonObject = JSON.parse(request.reader.text) as JSONObject
+            String dateRange = jsonObject.get("dateRange")
+            String customerId = jsonObject.get("customerId")
+            if (dateRange && customerId) {
+                JSONArray saleOrder = deliveryChallanService.getByDateRangeAndCustomerId(dateRange, customerId)
+                render saleOrder, formats: ['json']
+            } else {
+                response.status = 400
+            }
+        }
+        catch (ResourceNotFoundException ex) {
+            System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
+            response.status = 404
+        }
+        catch (BadRequestException ex) {
+            System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
+            response.status = 400
+        }
+        catch (Exception ex) {
+            System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
+        }
+    }
+
 }

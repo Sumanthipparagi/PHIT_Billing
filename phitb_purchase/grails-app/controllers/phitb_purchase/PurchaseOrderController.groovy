@@ -301,4 +301,33 @@ class PurchaseOrderController {
         }
     }
 
+
+    def getByDateRangeAndSupplier()
+    {
+        try {
+            JSONObject jsonObject = JSON.parse(request.reader.text) as JSONObject
+            String dateRange = jsonObject.get("dateRange")
+            String supplier = jsonObject.get("supplier")
+            if (dateRange && supplier) {
+                JSONArray purchaseBillDetails = purchaseOrderService.getByDateRangeAndSupplier(dateRange, supplier)
+                render purchaseBillDetails, formats: ['json']
+            }
+            else
+            {
+                response.status = 400
+            }
+        }
+        catch (org.springframework.boot.context.config.ResourceNotFoundException ex) {
+            System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
+            response.status = 404
+        }
+        catch (BadRequestException ex) {
+            System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
+            response.status = 400
+        }
+        catch (Exception ex) {
+            System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
+        }
+    }
+
 }

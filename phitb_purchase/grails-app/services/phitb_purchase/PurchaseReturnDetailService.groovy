@@ -245,4 +245,38 @@ class PurchaseReturnDetailService {
             throw new BadRequestException()
         }
     }
+
+    def getByDateRangeAndSupplier(String dateRange, String supplier)
+    {
+        try {
+            SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy")
+            Date fromDate = sdf.parse(dateRange.split("-")[0].trim().toString())
+            Date toDate = sdf.parse(dateRange.split("-")[1].trim().toString())
+            Calendar cal = Calendar.getInstance();
+            cal.setTime(toDate)
+            cal.set(Calendar.HOUR_OF_DAY, 23)
+            cal.set(Calendar.MINUTE, 59)
+            cal.set(Calendar.SECOND, 59)
+            cal.set(Calendar.MILLISECOND, 999)
+            toDate = cal.getTime()
+            long sid = Long.parseLong(supplier)
+            JSONArray finalBills = new JSONArray()
+            ArrayList<PurchaseReturn> purchaseReturns = PurchaseReturn.findAllBySupplierIdAndDateCreatedBetween(sid, fromDate, toDate)
+            for (PurchaseReturn pr : purchaseReturns) {
+                JSONObject purchaseReturnDetail = new JSONObject((pr as JSON).toString())
+                def productDetails = PurchaseProductDetail.findAllByBillId(pr.id)
+                if (productDetails) {
+                    JSONArray prdt = productDetails as JSONArray
+                    purchaseReturnDetail.put("products", prdt)
+                }
+                finalBills.add(purchaseReturnDetail)
+            }
+            return finalBills
+        }
+        catch (Exception ex)
+        {
+            ex.printStackTrace()
+            throw new BadRequestException()
+        }
+    }
 }

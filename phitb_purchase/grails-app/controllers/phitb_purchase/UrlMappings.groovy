@@ -42,6 +42,7 @@ class UrlMappings {
             "/purchaseorder/cancel(.$format)?"(controller: 'purchaseOrder') {action = [POST: 'cancelPurchaseOrder']}
             "/purchaseorder/getrecent(.$format)?"(controller: 'purchaseOrder') { action = [GET: 'getRecentByFinancialYearAndEntity'] }
             "/purchaseorderbydaterange"(controller: 'purchaseOrder', action: 'getByDateRangeAndEntity')
+            "/purchaseorderbydaterangesupplier"(controller: 'purchaseOrder', action: 'getByDateRangeAndSupplier')
 
 
 //            Purchase Order Product Details
@@ -58,6 +59,7 @@ class UrlMappings {
             "/productdetail/$id(.$format)?"(controller: 'purchaseProductDetail') { action = [GET: 'show', PUT: 'update', DELETE: 'delete'] }
             "/productdetail/bill/$id(.$format)?"(controller: 'purchaseProductDetail') { action = [GET: 'getPurchaseProductDetailsOfSaleBill'] }
             "/purchasebillbydaterange"(controller: 'purchaseBillDetail', action: 'getByDateRangeAndEntity')
+            "/purchasebillbydaterangesupplier"(controller: 'purchaseBillDetail', action: 'getByDateRangeAndSupplier')
 
             "/purchaseproductdetailslist/bill/$purbillsIds(.$format)?"(controller: 'purchaseProductDetail') { action = [GET: 'getPurchaseProductDetailsOfPurBillList'] }
 
@@ -78,6 +80,8 @@ class UrlMappings {
                     {action=[POST: 'updateBalance']}
 
             "/returndetailbydaterange"(controller: 'purchaseReturnDetail', action: 'getByDateRangeAndEntity')
+            "/returndetailbydaterangesupplier"(controller: 'purchaseReturnDetail', action: 'getByDateRangeAndSupplier')
+
             //Purchase Transaction log
             "/transactionlog(.$format)?"(controller: 'purchaseTransactionLog') { action = [GET: 'index', POST: 'save'] }
             "/transactionlog/datatable(.$format)?"(controller: 'purchaseTransactionLog') { action = [GET: 'dataTable'] }

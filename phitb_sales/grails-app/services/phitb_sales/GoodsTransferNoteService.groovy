@@ -420,4 +420,12 @@ class GoodsTransferNoteService {
         ArrayList<GoodsTransferNote> goodsTransferNotes = GoodsTransferNote.findAllByOrderDateBetweenAndEntityId(fromDate, toDate, entityId)
         return goodsTransferNotes
     }
+
+    def getGTNByDateRangeCustomer(String dateRange, long customerId) {
+        Date fromDate = sdf.parse(dateRange.split("-")[0])
+        Date toDate = sdf.parse(dateRange.split("-")[1])
+        ArrayList<GoodsTransferNote> goodsTransferNotes = GoodsTransferNote.findAllByOrderDateBetweenAndCustomerId(fromDate, toDate, customerId)
+        return goodsTransferNotes
+    }
+
 }
