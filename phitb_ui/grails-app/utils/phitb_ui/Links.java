@@ -553,7 +553,7 @@ public class Links
     public static String SALE_ORDER_RECENT = APP_CONTEXT_PATH + "sales/saleorderdetails/getrecent";
     public static String SALE_ORDER_CANCEL = APP_CONTEXT_PATH + "sales/saleorderdetails/cancel";
     public static String SALE_ORDER_BY_DATERANGE = APP_CONTEXT_PATH + "sales/saleorderbydaterange";
-    public static String SALE_ORDER_BY_DATERANGE_CUSTOMER = APP_CONTEXT_PATH + "sales/salebillbydaterangecustomer";
+    public static String SALE_ORDER_BY_DATERANGE_CUSTOMER = APP_CONTEXT_PATH + "sales/saleorderbydaterangecustomer";
 
 
     //    convert to Sale Entry
