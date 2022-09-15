@@ -3,6 +3,7 @@
 <html>
 
 <head>
+    <title>Sale Invoice</title>
     <style>
 
 
