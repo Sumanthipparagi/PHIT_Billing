@@ -54,6 +54,10 @@ class SaleBillDetails implements Serializable, LogicalDelete<SaleBillDetails>
     long createdUser
     long modifiedUser
     Double adjAmount
+    String publicNote
+    String privateNote
+    String refNo
+    Date refDate
 
     Date cancelledDate
 
@@ -73,10 +77,16 @@ class SaleBillDetails implements Serializable, LogicalDelete<SaleBillDetails>
         totalSqty min: 0D
         totalFqty min: 0D
         totalQty min: 0D
+        publicNote nullable: true
+        privateNote nullable: true
+        refDate nullable: true
+        refNo nullable: true
     }
 
     static mapping = {
         irnDetails sqlType: 'longText'
+        publicNote sqlType: 'longText'
+        privateNote sqlType: 'longText'
     }
 
     boolean isUpdatable

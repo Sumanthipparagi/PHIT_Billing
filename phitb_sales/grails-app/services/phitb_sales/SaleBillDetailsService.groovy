@@ -190,6 +190,15 @@ class SaleBillDetailsService
         saleBillDetails.message = jsonObject.get("message").toString()
         saleBillDetails.invtype = jsonObject.get("invtype").toString()
         saleBillDetails.financialYear = jsonObject.get("financialYear").toString()
+        saleBillDetails.refNo = jsonObject.get("refNo").toString()
+        if(jsonObject.get("refDate")!=''){
+            saleBillDetails.refDate = sdf.parse(jsonObject.get("refDate").toString())
+        }
+       else{
+            saleBillDetails.refDate = null
+        }
+        saleBillDetails.privateNote = jsonObject.get("privateNote").toString()
+        saleBillDetails.publicNote = jsonObject.get("publicNote").toString()
         saleBillDetails.createdUser = Long.parseLong(jsonObject.get("createdUser").toString())
         saleBillDetails.modifiedUser = Long.parseLong(jsonObject.get("modifiedUser").toString())
         saleBillDetails.entityId = Long.parseLong(jsonObject.get("entityId").toString())

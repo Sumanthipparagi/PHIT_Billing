@@ -123,7 +123,7 @@
                             </div>
 
 
-                            <div class="col-md-4 mt-2">
+                            <div class="col-md-2 mt-2">
                                 <label for="priority">Invoice Type:</label>
                                 <select class="form-control" id="invType" name="invType">
                                     <option value="${Constants.REGULAR}"
@@ -132,23 +132,39 @@
                                             <g:if test="${saleBillDetail?.priorityId == Constants.REPLACEMENT}">selected</g:if>>REPLACEMENT</option>
                                 </select>
                             </div>
-
-                            <div class="col-md-3 mt-2">
+                            <div class="col-md-2 mt-2">
+                                <label for="refNum">Ref. Number:</label>
+                                <input type="text" maxlength="100" class="form-control" name="refNum" id="refNum"/>
+                            </div>
+                            <div class="col-md-2 mt-2">
+                                <label for="refDate">Ref. Date:</label>
+                                <input type="date" class="form-control date" name="refDate" id="refDate"/>
+                            </div>
+                            <div class="col-md-3 mt-2" style="max-width: 23%;">
                                 <br>
                                 <a class="btn btn-primary waves-effect" role="button" data-toggle="collapse"
                                    href="#shipmentDetails" aria-expanded="false"
                                    aria-controls="shipmentDetails"><i class="zmdi zmdi-truck"></i> Shipment Information
                                 </a>
                             </div>
-                            <div class="col-lg-5 mt-2">
+                            <div class="col-md-2 mt-2" style="max-width: 11.666667%;">
                                 <br>
-                                <button class="btn btn-primary waves-effect float-right"
-                                   id="addNewRow" style="background-color: green;"><i class="zmdi zmdi-plus"></i> Add
-                                New
+                                <button class="btn btn-primary waves-effect"
+                                   id="addNewRow" style="background-color: green;"><i class="zmdi zmdi-plus"></i>
                                 Row
                                 </button>
                             </div>
-%{--                            data-toggle="modal"--}%
+                            <div class="col-md-2 mt-2"  style="max-width: 14.666667%;">
+                                <br>
+                                <a class="btn btn-primary waves-effect collapsed" role="button"
+                                   data-toggle="collapse" href="#noteDetails" aria-expanded="false"
+                                   aria-controls="noteDetails"><i class="zmdi zmdi-edit"></i>&nbsp;Note
+                                </a>
+                            </div>
+
+
+
+                        %{--                            data-toggle="modal"--}%
 %{--                            data-target="#myModal"--}%
                             <g:if test="${tempStockArray!=null}">
                                 <div class="col-md-3 mt-2">
@@ -162,7 +178,30 @@
                             </g:if>
                         </div>
 
-                        <div class="row">
+                        <div class="row mt-2">
+                            <div class="col-md-12 col-lg-12 col-sm-12">
+                                <div class="collapse" id="noteDetails">
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label for="publicNote">Public Note</label>
+                                                <textarea id="publicNote" rows="1" maxlength="500" name="publicNote" class="form-control"></textarea>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <div class="form-group">
+                                                    <label for="privateNote">Private Note</label>
+                                                    <textarea id="privateNote" rows="1" maxlength="500" name="privateNote" class="form-control"></textarea>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row mt-2">
                             <div class="col-md-12 col-lg-12 col-sm-12">
                                 <div class="collapse" id="shipmentDetails">
                                     <div class="row">
@@ -1372,8 +1411,16 @@
         });
 
         var customer = $("#customerSelect").val();
+        var publicNote = $("#publicNote").val();
+        var privateNote = $("#privateNote").val();
+        var refNum = $("#refNum").val();
+        var refDate = $("#refDate").val();
+        if(refDate!==''){
+            refDate = moment(refDate).format("DD/MM/YYYY");
+        }else{
+            refDate=''
+        }
         var saleTransportDetailsId = $("#saleTransportDetailsId").val();
-        console.log(saleTransportDetailsId)
         var invtype = $("#invType").val();
         var series = $("#series").val();
         var seriesCode = $("#series").find(':selected').data('seriescode');
@@ -1414,11 +1461,11 @@
         var url = "";
         <g:if test="${customer!= null && params.type!="CLONE"}">
         url = "/edit-sale-entry?id=" + '${saleBillDetail.id}';
-        console.log("edit sale entry")
+        console.log("edit sale entry");
         </g:if>
         <g:else>
         url = "/sale-entry";
-        console.log("save sale entry")
+        console.log("save sale entry");
         </g:else>
         $.ajax({
             type: "POST",
@@ -1436,7 +1483,11 @@
                 invtype: invtype,
                 lrNumber: lrNumber,
                 lrDate: lrDate,
+                refNum: refNum,
+                refDate: refDate,
                 transporter: transporter,
+                publicNote: publicNote,
+                privateNote: privateNote,
                 uuid: self.crypto.randomUUID()
             },
             success: function (data) {

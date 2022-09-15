@@ -406,4 +406,27 @@ class ShipmentService {
 
 
     }
+
+    def getTransporterbyId(String id) {
+        Client client = ClientBuilder.newClient()
+        WebTarget target = client.target(new Links().API_GATEWAY)
+
+        try {
+            Response apiResponse = target
+                    .path(new Links().TRANSPORTER_TYPE_SHOW+"/"+id)
+                    .request(MediaType.APPLICATION_JSON_TYPE)
+                    .get()
+           if(apiResponse?.status == 200){
+               JSONObject jsonObject1 = new JSONObject(apiResponse.readEntity(String.class))
+               return  jsonObject1
+           }
+        }
+        catch (Exception ex) {
+            System.err.println('Service :shipmentService , action :  getTransporterList  , Ex:' + ex)
+            log.error('Service :shipmentService , action :  getTransporterList  , Ex:' + ex)
+        }
+
+
+    }
+
 }

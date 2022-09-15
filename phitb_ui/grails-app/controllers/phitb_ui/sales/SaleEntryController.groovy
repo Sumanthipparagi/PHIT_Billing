@@ -107,6 +107,10 @@ class SaleEntryController {
         String billStatus = params.billStatus
         String seriesCode = params.seriesCode
         String message = params.message
+        String refDate = params.refDate
+        String refNo = params.refNum
+        String privateNote = params.privateNote
+        String publicNote = params.publicNote
         if (!message) {
             message = "NA"
         }
@@ -231,6 +235,16 @@ class SaleEntryController {
         String entryDate = sdf.format(new Date())
         String orderDate = sdf.format(new Date())
         //save to sale bill details
+
+        if(refDate!=''){
+            saleBillDetails.put("refDate", refDate)
+        }else{
+            saleBillDetails.put("refDate", '')
+        }
+
+        saleBillDetails.put("refNo", refNo)
+        saleBillDetails.put("publicNote", publicNote)
+        saleBillDetails.put("privateNote", privateNote)
         saleBillDetails.put("serBillId", serBillId)
         saleBillDetails.put("customerId", customerId)
         saleBillDetails.put("customerNumber", 0) //TODO: to be changed
@@ -422,6 +436,13 @@ class SaleEntryController {
         JSONObject saleBillDetail = new SalesService().getSaleBillDetailsById(saleBillId)
         if (saleBillDetail != null) {
             JSONArray saleProductDetails = new SalesService().getSaleProductDetailsByBill(saleBillId)
+            JSONObject transportDetails = new SalesService().getSaleTransportationByBill(saleBillId)
+            if(transportDetails!=null){
+                JSONObject transporter =  new ShipmentService().getTransporterbyId(transportDetails?.transporterId?.toString());
+                if(transporter!=null){
+                    transportDetails.put("transporter", transporter)
+                }
+            }
             JSONObject series = new EntityService().getSeriesById(saleBillDetail.get("seriesId").toString())
             JSONObject customer = new EntityService().getEntityById(saleBillDetail.get("customerId").toString())
             println("Entity ID is: "+ session.getAttribute("entityId").toString())
@@ -513,7 +534,8 @@ class SaleEntryController {
                                                                   cgstGroup         : cgstGroup,
                                                                   igstGroup         : igstGroup,
                                                                   totalBeforeTaxes  : totalBeforeTaxes,
-                                                                  irnDetails        : irnDetails
+                                                                  irnDetails        : irnDetails,
+                                                                  transportDetails  : transportDetails
             ])
         } else {
 
