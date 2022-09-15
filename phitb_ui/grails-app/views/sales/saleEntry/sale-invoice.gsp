@@ -218,13 +218,13 @@
             <b>${customer.entityName}</b><br>
             <sub>${customer.addressLine1}${customer.addressLine2}
             </sub>
-            <g:if test="${entity?.phoneNumber && entity?.phoneNumber != ''}">
-                <li><b class="tab">Ph no.</b>: <a href="tel:${entity?.phoneNumber}"
-                                                  target="_blank">${entity?.phoneNumber}</a>
+            <g:if test="${customer?.phoneNumber && customer?.phoneNumber != ''}">
+                <li><b class="tab">Ph no.</b>: <a href="tel:${customer?.phoneNumber}"
+                                                  target="_blank">${customer?.phoneNumber}</a>
                 </li>
             </g:if>
-            <g:if test="${entity?.pinCode && entity?.pinCode != ''}">
-                <li><b class="tab">Pincode</b>:&nbsp;${entity?.pinCode}
+            <g:if test="${customer?.pinCode && customer?.pinCode != ''}">
+                <li><b class="tab">Pincode</b>:&nbsp;${customer?.pinCode}
                 </li>
             </g:if>
         </td>
@@ -232,13 +232,13 @@
             <b>${customer.entityName}</b><br>
             <sub>${customer.addressLine1}${customer.addressLine2}
             </sub>
-            <g:if test="${entity?.phoneNumber && entity?.phoneNumber != ''}">
-                <li><b class="tab">Ph no.</b>: <a href="tel:${entity?.phoneNumber}"
-                                                  target="_blank">${entity?.phoneNumber}</a>
+            <g:if test="${customer?.phoneNumber && customer?.phoneNumber != ''}">
+                <li><b class="tab">Ph no.</b>: <a href="tel:${customer?.phoneNumber}"
+                                                  target="_blank">${customer?.phoneNumber}</a>
                 </li>
             </g:if>
-            <g:if test="${entity?.pinCode && entity?.pinCode != ''}">
-                <li><b class="tab">Pincode</b>:&nbsp;${entity?.pinCode}
+            <g:if test="${customer?.pinCode && customer?.pinCode != ''}">
+                <li><b class="tab">Pincode</b>:&nbsp;${customer?.pinCode}
                 </li>
             </g:if>
         </td>
