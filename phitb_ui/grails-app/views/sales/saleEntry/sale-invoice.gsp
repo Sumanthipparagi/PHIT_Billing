@@ -566,9 +566,14 @@
         $("#netPayAmt").text(netInvAmt.toFixed(2));
 
 
-        $("#poDate1").text(moment('${saleBillDetail?.refDate}').format('DD/MM/YYYY'));
-        $("#poDate2").text(moment('${saleBillDetail?.refDate}').format('DD/MM/YYYY'));
-
+        <g:if test="${saleBillDetail?.refDate!=null}">
+        $("#poDate1").text( " "+moment('${saleBillDetail?.refDate}').format('DD/MM/YYYY'));
+        $("#poDate2").text( " "+moment('${saleBillDetail?.refDate}').format('DD/MM/YYYY'));
+        </g:if>
+        <g:else>
+        $("#poDate1").text();
+        $("#poDate2").text();
+        </g:else>
 
         //
         // var rowCount = $('.extended tr').length;
