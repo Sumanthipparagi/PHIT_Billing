@@ -270,8 +270,7 @@
                 %{--                    <li><b class="tab">Website</b>: <a href="${customer?.website}" target="_blank">${customer?.website}</a></li>--}%
                 %{--                </g:if>--}%
                 <li><b class="tab">Food Lic. No.</b>:  ${entity.foodLicence1}</li>
-                <li><b class="tab">Po No.</b>:  ${saleBillDetail?.refNo}</li>
-                <li><b class="tab">Po Date.</b>:  ${saleBillDetail?.refDate}</li>
+
             </ul>
         </td>
         <td colspan="5" style="vertical-align:top;">
@@ -290,7 +289,7 @@
                 <li><b class="tab">Transporter</b>:&nbsp;&nbsp;${transportDetails?.transporter?.name}</li>
                 <li><b class="tab">Place of Supply</b>: &nbsp;${custcity?.districtName}</li>
                 <li><b class="tab">Po No.</b>:  ${saleBillDetail?.refNo}</li>
-                <li><b class="tab">Po Date.</b>:  ${saleBillDetail?.refDate}</li>
+                <li><b class="tab" >Po Date.</b>:<span id="poDate2"></span> </li>
                 %{--                <li><b class="tab">State Code</b>: </li>--}%
             </ul>
 
@@ -310,6 +309,8 @@
                 %{--                </g:if>--}%
                 <li><b class="tab">Transporter</b>:&nbsp;&nbsp; ${transportDetails?.transporter?.name}</li>
                 <li><b class="tab">Place of Supply</b>:  &nbsp;${custcity?.districtName}</li>
+                <li><b class="tab">Po No.</b>:  ${saleBillDetail?.refNo}</li>
+                <li><b class="tab" >Po Date.</b>:<span id="poDate1"></span></li>
                 %{--                <li><b class="tab">State Code</b>: </li>--}%
             </ul>
         </td>
@@ -562,6 +563,10 @@
         var netInvAmt = parseFloat(totalGst) + netAmount;
         $("#netInvAmt").text(netInvAmt.toFixed(2));
         $("#netPayAmt").text(netInvAmt.toFixed(2));
+
+
+        $("#poDate1").text(moment('${saleBillDetail?.refDate}').format('DD/MM/YYYY'));
+        $("#poDate2").text(moment('${saleBillDetail?.refDate}').format('DD/MM/YYYY'));
 
 
         //
