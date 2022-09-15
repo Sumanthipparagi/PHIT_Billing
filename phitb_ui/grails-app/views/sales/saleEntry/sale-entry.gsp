@@ -134,7 +134,8 @@
                             </div>
                             <div class="col-md-2 mt-2">
                                 <label for="refNum">Ref. Number:</label>
-                                <input type="text" maxlength="100" class="form-control" name="refNum" id="refNum"/>
+                                <input type="text" maxlength="100" class="form-control" name="refNum" id="refNum"
+                                       value="${saleBillDetail?.refNo}"/>
                             </div>
                             <div class="col-md-2 mt-2">
                                 <label for="refDate">Ref. Date:</label>
@@ -185,7 +186,8 @@
                                         <div class="col-md-6">
                                             <div class="form-group">
                                                 <label for="publicNote">Public Note</label>
-                                                <textarea id="publicNote" rows="1" maxlength="500" name="publicNote" class="form-control"></textarea>
+                                                <textarea id="publicNote" rows="1" maxlength="500" name="publicNote"
+                                                          class="form-control">${saleBillDetail?.publicNote}</textarea>
                                             </div>
                                         </div>
 
@@ -193,7 +195,7 @@
                                             <div class="form-group">
                                                 <div class="form-group">
                                                     <label for="privateNote">Private Note</label>
-                                                    <textarea id="privateNote" rows="1" maxlength="500" name="privateNote" class="form-control"></textarea>
+                                                    <textarea id="privateNote" rows="1" maxlength="500" name="privateNote" class="form-control">${saleBillDetail?.privateNote}</textarea>
                                                 </div>
                                             </div>
                                         </div>
@@ -530,6 +532,7 @@
         $("#customerSelect").select2();
         $('#date').val(moment().format('YYYY-MM-DD'));
         $('#lrDate').val(moment('${saleTransportDetail?.lrDate}').format('YYYY-MM-DD'));
+        $('#refDate').val(moment('${saleBillDetail?.refDate}').format('YYYY-MM-DD'));
         $('#date').attr("readonly");
 
         <g:if test="${tempStockArray!=null && params.type == "CLONE"}">
