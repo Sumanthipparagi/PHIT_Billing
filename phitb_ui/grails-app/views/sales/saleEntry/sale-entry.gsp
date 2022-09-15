@@ -679,7 +679,7 @@
                 const row = hot.getSelected()[0][0];
                 const selection = hot.getSelected()[0][1];
                 if (selection === 1) {
-                    if (e.keyCode === 13) {
+                    if (e.keyCode === 13 ) {
                         batchHot.selectCell(0, 0);
                         $("#batchTable").focus();
                     }
