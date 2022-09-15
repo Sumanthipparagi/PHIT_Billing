@@ -964,6 +964,10 @@ class SaleEntryController {
         String billStatus = params.billStatus
         String seriesCode = params.seriesCode
         String message = "NA"
+        String refDate = params.refDate
+        String refNo = params.refNum
+        String privateNote = params.privateNote
+        String publicNote = params.publicNote
         long finId = 0
         long serBillId = 0
         String financialYear = session.getAttribute("financialYear")
@@ -1072,6 +1076,14 @@ class SaleEntryController {
         String entryDate = sdf.format(new Date())
         String orderDate = sdf.format(new Date())
         //update to sale bill details
+        if(refDate!=''){
+            saleBillDetails.put("refDate", refDate)
+        }else{
+            saleBillDetails.put("refDate", '')
+        }
+        saleBillDetails.put("refNo", refNo)
+        saleBillDetails.put("publicNote", publicNote)
+        saleBillDetails.put("privateNote", privateNote)
         saleBillDetails.put("id", params.id)
         saleBillDetails.put("serBillId", serBillId)
         saleBillDetails.put("customerId", customerId)
