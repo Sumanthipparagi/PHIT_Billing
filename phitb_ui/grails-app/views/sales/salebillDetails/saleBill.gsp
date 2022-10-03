@@ -404,11 +404,19 @@
                     url: url,
                     dataType: 'json',
                     success: function (data) {
-                        Swal.fire(
-                            'Success!',
-                            'Invoice Cancelled',
-                            'success'
-                        );
+                        if(data?.dayend){
+                            Swal.fire(
+                                'Failed!',
+                                'Day Ended',
+                                'error'
+                            );
+                        }else{
+                            Swal.fire(
+                                'Success!',
+                                'Invoice Cancelled',
+                                'success'
+                            );
+                        }
                         loadSaleInvoiceTable();
                     },
                     error: function () {

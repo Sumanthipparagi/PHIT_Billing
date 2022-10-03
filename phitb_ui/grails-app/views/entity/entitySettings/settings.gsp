@@ -101,15 +101,15 @@
                                         </select>
                                     </div>
 
-                                    <div class="col-lg-6 col-md-6 col-sm-12 m-b-20">
-                                        <b>Default Sales Invoice Series</b>
-                                        <select class="form-control show-tick" name="dsi">
-                                            <option value="${Constants.YES}" <g:if
-                                                    test="${entitySettings.DSI == Constants.YES}">selected</g:if>>Yes</option>
-                                            <option value="${Constants.NO}"
-                                                    <g:if test="${entitySettings.DSI == Constants.NO}">selected</g:if>>No</option>
-                                        </select>
-                                    </div>
+%{--                                    <div class="col-lg-6 col-md-6 col-sm-12 m-b-20">--}%
+%{--                                        <b>Default Sales Invoice Series</b>--}%
+%{--                                        <select class="form-control show-tick" name="dsi">--}%
+%{--                                            <option value="${Constants.YES}" <g:if--}%
+%{--                                                    test="${entitySettings.DSI == Constants.YES}">selected</g:if>>Yes</option>--}%
+%{--                                            <option value="${Constants.NO}"--}%
+%{--                                                    <g:if test="${entitySettings.DSI == Constants.NO}">selected</g:if>>No</option>--}%
+%{--                                        </select>--}%
+%{--                                    </div>--}%
 
                                     <div class="col-lg-6 col-md-6 col-sm-12 m-b-20">
                                         <b>Invoice Print Grouping</b>
@@ -173,11 +173,11 @@
 
                                     <div class="col-lg-6 col-md-6 col-sm-12 m-b-20">
                                         <b>Max Utilization of a Single Cheque (For Invoices)</b>
-                                        <select class="form-control show-tick" name="accmu">
+                                        <select class="form-control show-tick" name="MUSC">
                                             <option value="0" <g:if
-                                                    test="${entitySettings.ACCMU == "0"}">selected</g:if>>0</option>
+                                                    test="${entitySettings.MUSC == "0"}">selected</g:if>>0</option>
                                             <option value="NULL" <g:if
-                                                    test="${entitySettings.ACCMU == "NULL"}">selected</g:if>>Null</option>
+                                                    test="${entitySettings.MUSC == "NULL"}">selected</g:if>>Null</option>
                                         </select>
                                     </div>
 
@@ -194,36 +194,36 @@
 
                                     <div class="col-lg-6 col-md-6 col-sm-12 m-b-20">
                                         <b>Allow Same Batch to be repeated in a Single Sales Invoice?</b>
-                                        <select class="form-control show-tick" name="asb">
+                                        <select class="form-control show-tick" name="ALLOW_SAME_BATCH">
                                             <option value="${Constants.YES}" <g:if
-                                                    test="${entitySettings.ASB == Constants.YES}">selected</g:if>>Yes</option>
+                                                    test="${entitySettings.ALLOW_SAME_BATCH == Constants.YES}">selected</g:if>>Yes</option>
                                             <option value="${Constants.NO}" <g:if
-                                                    test="${entitySettings.ASB == Constants.NO}">selected</g:if>>No</option>
+                                                    test="${entitySettings.ALLOW_SAME_BATCH == Constants.NO}">selected</g:if>>No</option>
                                         </select>
                                     </div>
 
-                                    <div class="col-lg-6 col-md-6 col-sm-12 m-b-20">
-                                        <b>Round Off the Scheme Quantity?</b>
-                                        <select class="form-control show-tick" name="ro">
-                                            <option value="${Constants.HIGHER_SCHEME}" <g:if
-                                                    test="${entitySettings.RO == Constants.HIGHER_SCHEME}">selected</g:if>>Higher Scheme
-                                            (Loss)</option>
-                                            <option value="${Constants.LOWER_SCHEME}" <g:if
-                                                    test="${entitySettings.RO == Constants.LOWER_SCHEME}">selected</g:if>>Lower Scheme Auto Adjust (Profitable)
-                                            </option>
-                                        </select>
-                                    </div>
+%{--                                    <div class="col-lg-6 col-md-6 col-sm-12 m-b-20">--}%
+%{--                                        <b>Round Off the Scheme Quantity?</b>--}%
+%{--                                        <select class="form-control show-tick" name="ro">--}%
+%{--                                            <option value="${Constants.HIGHER_SCHEME}" <g:if--}%
+%{--                                                    test="${entitySettings.RO == Constants.HIGHER_SCHEME}">selected</g:if>>Higher Scheme--}%
+%{--                                            (Loss)</option>--}%
+%{--                                            <option value="${Constants.LOWER_SCHEME}" <g:if--}%
+%{--                                                    test="${entitySettings.RO == Constants.LOWER_SCHEME}">selected</g:if>>Lower Scheme Auto Adjust (Profitable)--}%
+%{--                                            </option>--}%
+%{--                                        </select>--}%
+%{--                                    </div>--}%
 
-                                    <div class="col-lg-6 col-md-6 col-sm-12 m-b-20">
-                                        <b>Excess/Shortage stocks rounded off to be autoadjusted in Next Invoice?</b>
-                                        <select class="form-control show-tick" name="essr">
-                                            <option value="${Constants.YES}" <g:if
-                                                    test="${entitySettings.ESSR == Constants.YES}">selected</g:if>>Yes
-                                            </option>
-                                            <option value="${Constants.NO}" <g:if
-                                                    test="${entitySettings.ESSR == Constants.NO}">selected</g:if>>No</option>
-                                        </select>
-                                    </div>
+%{--                                    <div class="col-lg-6 col-md-6 col-sm-12 m-b-20">--}%
+%{--                                        <b>Excess/Shortage stocks rounded off to be autoadjusted in Next Invoice?</b>--}%
+%{--                                        <select class="form-control show-tick" name="essr">--}%
+%{--                                            <option value="${Constants.YES}" <g:if--}%
+%{--                                                    test="${entitySettings.ESSR == Constants.YES}">selected</g:if>>Yes--}%
+%{--                                            </option>--}%
+%{--                                            <option value="${Constants.NO}" <g:if--}%
+%{--                                                    test="${entitySettings.ESSR == Constants.NO}">selected</g:if>>No</option>--}%
+%{--                                        </select>--}%
+%{--                                    </div>--}%
 
                                     <div class="col-lg-6 col-md-6 col-sm-12 m-b-20">
                                         <b>How to Apply Scheme?</b>
@@ -250,12 +250,12 @@
 
                                     <div class="col-lg-6 col-md-6 col-sm-12 m-b-20">
                                         <b>Can the Invoice Value be Zero?</b>
-                                        <select class="form-control show-tick" name="ValZero">
+                                        <select class="form-control show-tick" name="ZERO_INVOICE_VALUE">
                                             <option value="${Constants.YES}" <g:if
-                                                    test="${entitySettings.ValZERO == Constants.YES}">selected</g:if>>Yes
+                                                    test="${entitySettings.ZERO_INVOICE_VALUE == Constants.YES}">selected</g:if>>Yes
                                             </option>
                                             <option value="${Constants.NO}" <g:if
-                                                    test="${entitySettings.ValZERO == Constants.NO}">selected</g:if>>No</option>
+                                                    test="${entitySettings.ZERO_INVOICE_VALUE == Constants.NO}">selected</g:if>>No</option>
                                         </select>
                                     </div>
 
@@ -284,13 +284,13 @@
                                         </select>
                                     </div>
 
-                                    <div class="col-lg-6 col-md-6 col-sm-12 m-b-20">
-                                        <b>Default Sales Invoice Series</b>
-                                        <select class="form-control show-tick" name="dsi">
-                                            <option value="${Constants.YES}">Yes</option>
-                                            <option value="${Constants.NO}">No</option>
-                                        </select>
-                                    </div>
+%{--                                    <div class="col-lg-6 col-md-6 col-sm-12 m-b-20">--}%
+%{--                                        <b>Default Sales Invoice Series</b>--}%
+%{--                                        <select class="form-control show-tick" name="dsi">--}%
+%{--                                            <option value="${Constants.YES}">Yes</option>--}%
+%{--                                            <option value="${Constants.NO}">No</option>--}%
+%{--                                        </select>--}%
+%{--                                    </div>--}%
 
                                     <div class="col-lg-6 col-md-6 col-sm-12 m-b-20">
                                         <b>Invoice Print Grouping</b>
@@ -332,7 +332,7 @@
 
                                     <div class="col-lg-6 col-md-6 col-sm-12 m-b-20">
                                         <b>Max Utilization of a Single Cheque (For Invoices)</b>
-                                        <select class="form-control show-tick" name="accmu">
+                                        <select class="form-control show-tick" name="MUSC">
                                             <option value="0">0</option>
                                             <option value="NULL">Null</option>
                                         </select>
@@ -348,27 +348,27 @@
 
                                     <div class="col-lg-6 col-md-6 col-sm-12 m-b-20">
                                         <b>Allow Same Batch to be repeated in a Single Sales Invoice?</b>
-                                        <select class="form-control show-tick" name="asb">
+                                        <select class="form-control show-tick" name="ALLOW_SAME_BATCH">
                                             <option value="${Constants.YES}">Yes</option>
                                             <option value="${Constants.NO}">No</option>
                                         </select>
                                     </div>
 
-                                    <div class="col-lg-6 col-md-6 col-sm-12 m-b-20">
-                                        <b>Round Off the Scheme Quantity?</b>
-                                        <select class="form-control show-tick" name="ro">
-                                            <option value="${Constants.HIGHER_SCHEME}">Higher Scheme (Loss)</option>
-                                            <option value="${Constants.LOWER_SCHEME}">Lower Scheme Auto Adjust (Profitable)</option>
-                                        </select>
-                                    </div>
+%{--                                    <div class="col-lg-6 col-md-6 col-sm-12 m-b-20">--}%
+%{--                                        <b>Round Off the Scheme Quantity?</b>--}%
+%{--                                        <select class="form-control show-tick" name="ro">--}%
+%{--                                            <option value="${Constants.HIGHER_SCHEME}">Higher Scheme (Loss)</option>--}%
+%{--                                            <option value="${Constants.LOWER_SCHEME}">Lower Scheme Auto Adjust (Profitable)</option>--}%
+%{--                                        </select>--}%
+%{--                                    </div>--}%
 
-                                    <div class="col-lg-6 col-md-6 col-sm-12 m-b-20">
-                                        <b>Excess/Shortage stocks rounded off to be autoadjusted in Next Invoice?</b>
-                                        <select class="form-control show-tick" name="essr">
-                                            <option value="${Constants.YES}">Yes</option>
-                                            <option value="${Constants.NO}">No</option>
-                                        </select>
-                                    </div>
+%{--                                    <div class="col-lg-6 col-md-6 col-sm-12 m-b-20">--}%
+%{--                                        <b>Excess/Shortage stocks rounded off to be autoadjusted in Next Invoice?</b>--}%
+%{--                                        <select class="form-control show-tick" name="essr">--}%
+%{--                                            <option value="${Constants.YES}">Yes</option>--}%
+%{--                                            <option value="${Constants.NO}">No</option>--}%
+%{--                                        </select>--}%
+%{--                                    </div>--}%
 
                                     <div class="col-lg-6 col-md-6 col-sm-12 m-b-20">
                                         <b>How to Apply Scheme?</b>
@@ -389,7 +389,7 @@
 
                                     <div class="col-lg-6 col-md-6 col-sm-12 m-b-20">
                                         <b>Can the Invoice Value be Zero?</b>
-                                        <select class="form-control show-tick" name="ValZero">
+                                        <select class="form-control show-tick" name="ZERO_INVOICE_VALUE">
                                             <option value="${Constants.YES}">Yes</option>
                                             <option value="${Constants.NO}">No</option>
                                         </select>
@@ -444,71 +444,71 @@
 
                                     <td><strong class="dateEditable">Date Editable</strong></td>
                                     <td><strong><input type="checkbox" name="dateEditablePO" class="dateEditable" <g:if
-                                            test="${entityConfigs.DE.purchaseOrder == true}">checked</g:if>></strong>
+                                            test="${entityConfigs.DATE_EDITABLE.purchaseOrder == true}">checked</g:if>></strong>
                                     </td>
                                     <td><strong><input type="checkbox" name="dateEditablePE" class="dateEditable" <g:if
-                                            test="${entityConfigs.DE.purchaseEntry == true}">checked</g:if>></strong>
+                                            test="${entityConfigs.DATE_EDITABLE.purchaseEntry == true}">checked</g:if>></strong>
                                     </td>
                                     <td><strong><input type="checkbox" name="dateEditablePR" class="dateEditable" <g:if
-                                            test="${entityConfigs.DE.purchaseReturn == true}">checked</g:if>></strong>
+                                            test="${entityConfigs.DATE_EDITABLE.purchaseReturn == true}">checked</g:if>></strong>
                                     </td>
                                     <td><strong><input type="checkbox" name="dateEditablePAT" class="dateEditable" <g:if
-                                            test="${entityConfigs.DE.payments == true}">checked</g:if>></strong>
+                                            test="${entityConfigs.DATE_EDITABLE.payments == true}">checked</g:if>></strong>
                                     </td>
                                     <td><strong><input type="checkbox" name="dateEditableSO" class="dateEditable" <g:if
-                                            test="${entityConfigs.DE.saleOrder == true}">checked</g:if>></strong>
+                                            test="${entityConfigs.DATE_EDITABLE.saleOrder == true}">checked</g:if>></strong>
                                     </td>
                                     <td><strong><input type="checkbox" name="dateEditableSEI" class="dateEditable" <g:if
-                                            test="${entityConfigs.DE.saleEntry == true}">checked</g:if>></strong>
+                                            test="${entityConfigs.DATE_EDITABLE.saleEntry == true}">checked</g:if>></strong>
                                     </td>
                                     <td><strong><input type="checkbox" name="dateEditableSR" class="dateEditable" <g:if
-                                            test="${entityConfigs.DE.salesReturn == true}">checked</g:if>></strong>
+                                            test="${entityConfigs.DATE_EDITABLE.salesReturn == true}">checked</g:if>></strong>
                                     </td>
                                     <td><strong><input type="checkbox" name="dateEditableR" class="dateEditable" <g:if
-                                            test="${entityConfigs.DE.recipts == true}">checked</g:if>></strong>
+                                            test="${entityConfigs.DATE_EDITABLE.recipts == true}">checked</g:if>></strong>
                                     </td>
                                     <td><strong><input type="checkbox" name="dateEditableCJV" class="dateEditable" <g:if
-                                            test="${entityConfigs.DE.creditJv == true}">checked</g:if>></strong>
+                                            test="${entityConfigs.DATE_EDITABLE.creditJv == true}">checked</g:if>></strong>
                                     </td>
                                     <td><strong><input type="checkbox" name="dateEditableDJV" class="dateEditable" <g:if
-                                            test="${entityConfigs.DE.debitJv == true}">checked</g:if>></strong>
+                                            test="${entityConfigs.DATE_EDITABLE.debitJv == true}">checked</g:if>></strong>
                                     </td>
                                     </tr>
                                     <tr>
                                         <td><strong class="mad">Modify After Dayend</strong></td>
                                         <td><strong><input type="checkbox" name="madPO" class="mad" <g:if
-                                                test="${entityConfigs.MAD.purchaseOrder == true}">checked</g:if>>
+                                                test="${entityConfigs.MODIFY_AFTER_DAYEND.purchaseOrder == true}">checked</g:if>>
                                         </strong>
                                         </td>
                                         <td><strong><input type="checkbox" name="madPE" class="mad" <g:if
-                                                test="${entityConfigs.MAD.purchaseEntry == true}">checked</g:if>>
+                                                test="${entityConfigs.MODIFY_AFTER_DAYEND.purchaseEntry == true}">checked</g:if>>
                                         </strong>
                                         </td>
                                         <td><strong><input type="checkbox" name="madPR" class="mad" <g:if
-                                                test="${entityConfigs.MAD.purchaseReturn == true}">checked</g:if>>
+                                                test="${entityConfigs.MODIFY_AFTER_DAYEND.purchaseReturn == true}">checked</g:if>>
                                         </strong>
                                         </td>
                                         <td><strong><input type="checkbox" name="madPAT" class="mad" <g:if
-                                                test="${entityConfigs.MAD.payments == true}">checked</g:if>></strong>
+                                                test="${entityConfigs.MODIFY_AFTER_DAYEND.payments == true}">checked</g:if>></strong>
                                         </td>
                                         <td><strong><input type="checkbox" name="madSO" class="mad" <g:if
-                                                test="${entityConfigs.MAD.saleOrder == true}">checked</g:if>></strong>
+                                                test="${entityConfigs.MODIFY_AFTER_DAYEND.saleOrder == true}">checked</g:if>></strong>
                                         </td>
                                         <td><strong><input type="checkbox" name="madSEI" class="mad" <g:if
-                                                test="${entityConfigs.MAD.saleEntry == true}">checked</g:if>></strong>
+                                                test="${entityConfigs.MODIFY_AFTER_DAYEND.saleEntry == true}">checked</g:if>></strong>
                                         </td>
                                         <td><strong><input type="checkbox" name="madSR" class="mad" <g:if
-                                                test="${entityConfigs.MAD.salesReturn == true}">checked</g:if>></strong>
+                                                test="${entityConfigs.MODIFY_AFTER_DAYEND.salesReturn == true}">checked</g:if>></strong>
                                         </td>
                                         <td><strong><input type="checkbox" name="madR" class="mad" <g:if
-                                                test="${entityConfigs.MAD.purchaseOrder == true}">checked</g:if>>
+                                                test="${entityConfigs.MODIFY_AFTER_DAYEND.purchaseOrder == true}">checked</g:if>>
                                         </strong>
                                         </td>
                                         <td><strong><input type="checkbox" name="madCJV" class="mad" <g:if
-                                                test="${entityConfigs.MAD.recipts == true}">checked</g:if>></strong>
+                                                test="${entityConfigs.MODIFY_AFTER_DAYEND.recipts == true}">checked</g:if>></strong>
                                         </td>
                                         <td><strong><input type="checkbox" name="madDJV" class="mad" <g:if
-                                                test="${entityConfigs.MAD.debitJv == true}">checked</g:if>></strong>
+                                                test="${entityConfigs.MODIFY_AFTER_DAYEND.debitJv == true}">checked</g:if>></strong>
                                         </td>
                                     </tr>
 
@@ -516,37 +516,37 @@
                                     <tr>
                                         <td><strong class="dad">Delete After Dayend</strong></td>
                                         <td><strong><input type="checkbox" name="dadPO" class="dad" <g:if
-                                                test="${entityConfigs.DAD.purchaseOrder == true}">checked</g:if>>
+                                                test="${entityConfigs.DELETE_AFTER_DAYEND.purchaseOrder == true}">checked</g:if>>
                                         </strong>
                                         </td>
                                         <td><strong><input type="checkbox" name="dadPE" class="dad" <g:if
-                                                test="${entityConfigs.DAD.purchaseEntry == true}">checked</g:if>>
+                                                test="${entityConfigs.DELETE_AFTER_DAYEND.purchaseEntry == true}">checked</g:if>>
                                         </strong>
                                         </td>
                                         <td><strong><input type="checkbox" name="dadPR" class="dad" <g:if
-                                                test="${entityConfigs.DAD.purchaseReturn == true}">checked</g:if>>
+                                                test="${entityConfigs.DELETE_AFTER_DAYEND.purchaseReturn == true}">checked</g:if>>
                                         </strong>
                                         </td>
                                         <td><strong><input type="checkbox" name="dadPAT" class="dad" <g:if
-                                                test="${entityConfigs.DAD.payments == true}">checked</g:if>></strong>
+                                                test="${entityConfigs.DELETE_AFTER_DAYEND.payments == true}">checked</g:if>></strong>
                                         </td>
                                         <td><strong><input type="checkbox" name="dadSO" class="dad" <g:if
-                                                test="${entityConfigs.DAD.saleOrder == true}">checked</g:if>></strong>
+                                                test="${entityConfigs.DELETE_AFTER_DAYEND.saleOrder == true}">checked</g:if>></strong>
                                         </td>
                                         <td><strong><input type="checkbox" name="dadSEI" class="dad" <g:if
-                                                test="${entityConfigs.DAD.saleEntry == true}">checked</g:if>></strong>
+                                                test="${entityConfigs.DELETE_AFTER_DAYEND.saleEntry == true}">checked</g:if>></strong>
                                         </td>
                                         <td><strong><input type="checkbox" name="dadSR" class="dad" <g:if
-                                                test="${entityConfigs.DAD.salesReturn == true}">checked</g:if>></strong>
+                                                test="${entityConfigs.DELETE_AFTER_DAYEND.salesReturn == true}">checked</g:if>></strong>
                                         </td>
                                         <td><strong><input type="checkbox" name="dadR" class="dad" <g:if
-                                                test="${entityConfigs.DAD.recipts == true}">checked</g:if>></strong>
+                                                test="${entityConfigs.DELETE_AFTER_DAYEND.recipts == true}">checked</g:if>></strong>
                                         </td>
                                         <td><strong><input type="checkbox" name="dadCJV" class="dad" <g:if
-                                                test="${entityConfigs.DAD.creditJv == true}">checked</g:if>></strong>
+                                                test="${entityConfigs.DELETE_AFTER_DAYEND.creditJv == true}">checked</g:if>></strong>
                                         </td>
                                         <td><strong><input type="checkbox" name="dadCJV" class="dad" <g:if
-                                                test="${entityConfigs.DAD.debitJv == true}">checked</g:if>></strong>
+                                                test="${entityConfigs.DELETE_AFTER_DAYEND.debitJv == true}">checked</g:if>></strong>
                                         </td>
                                     </tr>
 
@@ -556,38 +556,38 @@
                                             Entered</strong>
                                         </td>
                                         <td><strong><input type="checkbox" name="blockPO" class="block" <g:if
-                                                test="${entityConfigs.BLOCK.purchaseOrder == true}">checked</g:if>>
+                                                test="${entityConfigs.BLOCK_PRINTING.purchaseOrder == true}">checked</g:if>>
                                         </strong>
                                         </td>
                                         <td><strong><input type="checkbox" name="blockPE" class="block" <g:if
-                                                test="${entityConfigs.BLOCK.purchaseEntry == true}">checked</g:if>>
+                                                test="${entityConfigs.BLOCK_PRINTING.purchaseEntry == true}">checked</g:if>>
                                         </strong>
                                         </td>
                                         <td><strong><input type="checkbox" name="blockPR" class="block" <g:if
-                                                test="${entityConfigs.BLOCK.purchaseReturn == true}">checked</g:if>>
+                                                test="${entityConfigs.BLOCK_PRINTING.purchaseReturn == true}">checked</g:if>>
                                         </strong>
                                         </td>
                                         <td><strong><input type="checkbox" name="blockPAT" class="block" <g:if
-                                                test="${entityConfigs.BLOCK.payments == true}">checked</g:if>></strong>
+                                                test="${entityConfigs.BLOCK_PRINTING.payments == true}">checked</g:if>></strong>
                                         </td>
                                         <td><strong><input type="checkbox" name="blockSO" class="block" <g:if
-                                                test="${entityConfigs.BLOCK.saleOrder == true}">checked</g:if>></strong>
+                                                test="${entityConfigs.BLOCK_PRINTING.saleOrder == true}">checked</g:if>></strong>
                                         </td>
                                         <td><strong><input type="checkbox" name="blockSEI" class="block" <g:if
-                                                test="${entityConfigs.BLOCK.saleEntry == true}">checked</g:if>></strong>
+                                                test="${entityConfigs.BLOCK_PRINTING.saleEntry == true}">checked</g:if>></strong>
                                         </td>
                                         <td><strong><input type="checkbox" name="blockSR" class="block" <g:if
-                                                test="${entityConfigs.BLOCK.salesReturn == true}">checked</g:if>>
+                                                test="${entityConfigs.BLOCK_PRINTING.salesReturn == true}">checked</g:if>>
                                         </strong>
                                         </td>
                                         <td><strong><input type="checkbox" name="blockR" class="block" <g:if
-                                                test="${entityConfigs.BLOCK.recipts == true}">checked</g:if>></strong>
+                                                test="${entityConfigs.BLOCK_PRINTING.recipts == true}">checked</g:if>></strong>
                                         </td>
                                         <td><strong><input type="checkbox" name="blockCJV" class="block" <g:if
-                                                test="${entityConfigs.BLOCK.creditJv == true}">checked</g:if>></strong>
+                                                test="${entityConfigs.BLOCK_PRINTING.creditJv == true}">checked</g:if>></strong>
                                         </td>
                                         <td><strong><input type="checkbox" name="blockDJV" class="block" <g:if
-                                                test="${entityConfigs.BLOCK.debitJv == true}">checked</g:if>></strong>
+                                                test="${entityConfigs.BLOCK_PRINTING.debitJv == true}">checked</g:if>></strong>
                                         </td>
                                     </tr>
 
@@ -595,38 +595,38 @@
                                     <tr>
                                         <td><strong class="auto">AUTO CRNT/DBNT/CR JV/DB JV ADV ADJUST</strong></td>
                                         <td><strong><input type="checkbox" name="autoPO" class="auto" <g:if
-                                                test="${entityConfigs.AUTO.purchaseOrder == true}">checked</g:if>>
+                                                test="${entityConfigs.AUTO_ADJUST.purchaseOrder == true}">checked</g:if>>
                                         </strong>
                                         </td>
                                         <td><strong><input type="checkbox" name="autoPE" class="auto" <g:if
-                                                test="${entityConfigs.AUTO.purchaseEntry == true}">checked</g:if>>
+                                                test="${entityConfigs.AUTO_ADJUST.purchaseEntry == true}">checked</g:if>>
                                         </strong>
                                         </td>
                                         <td><strong><input type="checkbox" name="autoPR" class="auto" <g:if
-                                                test="${entityConfigs.AUTO.purchaseReturn == true}">checked</g:if>>
+                                                test="${entityConfigs.AUTO_ADJUST.purchaseReturn == true}">checked</g:if>>
                                         </strong>
                                         </td>
                                         <td><strong><input type="checkbox" name="autoPAT" class="auto" <g:if
-                                                test="${entityConfigs.AUTO.payments == true}">checked</g:if>></strong>
+                                                test="${entityConfigs.AUTO_ADJUST.payments == true}">checked</g:if>></strong>
                                         </td>
                                         <td><strong><input type="checkbox" name="autoSO" class="auto" <g:if
-                                                test="${entityConfigs.AUTO.saleOrder == true}">checked</g:if>></strong>
+                                                test="${entityConfigs.AUTO_ADJUST.saleOrder == true}">checked</g:if>></strong>
                                         </td>
                                         <td><strong><input type="checkbox" name="autoSEI" class="auto" <g:if
-                                                test="${entityConfigs.AUTO.saleEntry == true}">checked</g:if>></strong>
+                                                test="${entityConfigs.AUTO_ADJUST.saleEntry == true}">checked</g:if>></strong>
                                         </td>
                                         <td><strong><input type="checkbox" name="autoSR" class="auto" <g:if
-                                                test="${entityConfigs.AUTO.salesReturn == true}">checked</g:if>>
+                                                test="${entityConfigs.AUTO_ADJUST.salesReturn == true}">checked</g:if>>
                                         </strong>
                                         </td>
                                         <td><strong><input type="checkbox" name="autoR" class="auto" <g:if
-                                                test="${entityConfigs.AUTO.recipts == true}">checked</g:if>></strong>
+                                                test="${entityConfigs.AUTO_ADJUST.recipts == true}">checked</g:if>></strong>
                                         </td>
                                         <td><strong><input type="checkbox" name="autoCJV" class="auto" <g:if
-                                                test="${entityConfigs.AUTO.creditJv == true}">checked</g:if>></strong>
+                                                test="${entityConfigs.AUTO_ADJUST.creditJv == true}">checked</g:if>></strong>
                                         </td>
                                         <td><strong><input type="checkbox" name="autoDJV" class="auto" <g:if
-                                                test="${entityConfigs.AUTO.debitJv == true}">checked</g:if>></strong>
+                                                test="${entityConfigs.AUTO_ADJUST.debitJv == true}">checked</g:if>></strong>
                                         </td>
                                     </tr>
 
@@ -687,43 +687,43 @@
 
                                         <td><strong class="blockInv">Block the Invoice if DL No.is expire</strong></td>
                                         <td><strong><input type="checkbox" name="blockInvPO" class="blockInv" <g:if
-                                                test="${entityConfigs.BLOCK_INV.purchaseOrder == true}">checked</g:if>>
+                                                test="${entityConfigs.BLOCK_INV_DL_EXP.purchaseOrder == true}">checked</g:if>>
                                         </strong>
                                         </td>
                                         <td><strong><input type="checkbox" name="blockInvPE" class="blockInv" <g:if
-                                                test="${entityConfigs.BLOCK_INV.purchaseEntry == true}">checked</g:if>>
+                                                test="${entityConfigs.BLOCK_INV_DL_EXP.purchaseEntry == true}">checked</g:if>>
                                         </strong>
                                         </td>
                                         <td><strong><input type="checkbox" name="blockInvPR" class="blockInv" <g:if
-                                                test="${entityConfigs.BLOCK_INV.purchaseReturn == true}">checked</g:if>>
+                                                test="${entityConfigs.BLOCK_INV_DL_EXP.purchaseReturn == true}">checked</g:if>>
                                         </strong>
                                         </td>
                                         <td><strong><input type="checkbox" name="blockInvPAT" class="blockInv" <g:if
-                                                test="${entityConfigs.BLOCK_INV.payments == true}">checked</g:if>>
+                                                test="${entityConfigs.BLOCK_INV_DL_EXP.payments == true}">checked</g:if>>
                                         </strong>
                                         </td>
                                         <td><strong><input type="checkbox" name="blockInvSO" class="blockInv" <g:if
-                                                test="${entityConfigs.BLOCK_INV.saleOrder == true}">checked</g:if>>
+                                                test="${entityConfigs.BLOCK_INV_DL_EXP.saleOrder == true}">checked</g:if>>
                                         </strong>
                                         </td>
                                         <td><strong><input type="checkbox" name="blockInvSEI" class="blockInv" <g:if
-                                                test="${entityConfigs.BLOCK_INV.saleEntry == true}">checked</g:if>>
+                                                test="${entityConfigs.BLOCK_INV_DL_EXP.saleEntry == true}">checked</g:if>>
                                         </strong>
                                         </td>
                                         <td><strong><input type="checkbox" name="blockInvSR" class="blockInv" <g:if
-                                                test="${entityConfigs.BLOCK_INV.salesReturn == true}">checked</g:if>>
+                                                test="${entityConfigs.BLOCK_INV_DL_EXP.salesReturn == true}">checked</g:if>>
                                         </strong>
                                         </td>
                                         <td><strong><input type="checkbox" name="blockInvR" class="blockInv" <g:if
-                                                test="${entityConfigs.BLOCK_INV.debitJv == true}">checked</g:if>>
+                                                test="${entityConfigs.BLOCK_INV_DL_EXP.debitJv == true}">checked</g:if>>
                                         </strong>
                                         </td>
                                         <td><strong><input type="checkbox" name="blockInvCJV" class="blockInv" <g:if
-                                                test="${entityConfigs.BLOCK_INV.creditJv == true}">checked</g:if>>
+                                                test="${entityConfigs.BLOCK_INV_DL_EXP.creditJv == true}">checked</g:if>>
                                         </strong>
                                         </td>
                                         <td><strong><input type="checkbox" name="blockInvDJV" class="blockInv" <g:if
-                                                test="${entityConfigs.BLOCK_INV.debitJv == true}">checked</g:if>>
+                                                test="${entityConfigs.BLOCK_INV_DL_EXP.debitJv == true}">checked</g:if>>
                                         </strong>
                                         </td>
                                     </tr>
@@ -732,43 +732,43 @@
                                     <tr>
                                         <td><strong class="sendMail">Enable Auto send Mail After Save</strong></td>
                                         <td><strong><input type="checkbox" name="sendMailPO" class="sendMail" <g:if
-                                                test="${entityConfigs.SEND_MAIL.purchaseOrder == true}">checked</g:if>>
+                                                test="${entityConfigs.SEND_MAIL_AFTER_SAVE.purchaseOrder == true}">checked</g:if>>
                                         </strong>
                                         </td>
                                         <td><strong><input type="checkbox" name="sendMailPE" class="sendMail" <g:if
-                                                test="${entityConfigs.SEND_MAIL.purchaseEntry == true}">checked</g:if>>
+                                                test="${entityConfigs.SEND_MAIL_AFTER_SAVE.purchaseEntry == true}">checked</g:if>>
                                         </strong>
                                         </td>
                                         <td><strong><input type="checkbox" name="sendMailPR" class="sendMail" <g:if
-                                                test="${entityConfigs.SEND_MAIL.purchaseReturn == true}">checked</g:if>>
+                                                test="${entityConfigs.SEND_MAIL_AFTER_SAVE.purchaseReturn == true}">checked</g:if>>
                                         </strong>
                                         </td>
                                         <td><strong><input type="checkbox" name="sendMailPAT" class="sendMail" <g:if
-                                                test="${entityConfigs.SEND_MAIL.payments == true}">checked</g:if>>
+                                                test="${entityConfigs.SEND_MAIL_AFTER_SAVE.payments == true}">checked</g:if>>
                                         </strong>
                                         </td>
                                         <td><strong><input type="checkbox" name="sendMailSO" class="sendMail" <g:if
-                                                test="${entityConfigs.SEND_MAIL.saleOrder == true}">checked</g:if>>
+                                                test="${entityConfigs.SEND_MAIL_AFTER_SAVE.saleOrder == true}">checked</g:if>>
                                         </strong>
                                         </td>
                                         <td><strong><input type="checkbox" name="sendMailSEI" class="sendMail" <g:if
-                                                test="${entityConfigs.SEND_MAIL.saleEntry == true}">checked</g:if>>
+                                                test="${entityConfigs.SEND_MAIL_AFTER_SAVE.saleEntry == true}">checked</g:if>>
                                         </strong>
                                         </td>
                                         <td><strong><input type="checkbox" name="sendMailSR" class="sendMail" <g:if
-                                                test="${entityConfigs.SEND_MAIL.salesReturn == true}">checked</g:if>>
+                                                test="${entityConfigs.SEND_MAIL_AFTER_SAVE.salesReturn == true}">checked</g:if>>
                                         </strong>
                                         </td>
                                         <td><strong><input type="checkbox" name="sendMailR" class="sendMail" <g:if
-                                                test="${entityConfigs.SEND_MAIL.recipts == true}">checked</g:if>>
+                                                test="${entityConfigs.SEND_MAIL_AFTER_SAVE.recipts == true}">checked</g:if>>
                                         </strong>
                                         </td>
                                         <td><strong><input type="checkbox" name="sendMailCJV" class="sendMail" <g:if
-                                                test="${entityConfigs.SEND_MAIL.creditJv == true}">checked</g:if>>
+                                                test="${entityConfigs.SEND_MAIL_AFTER_SAVE.creditJv == true}">checked</g:if>>
                                         </strong>
                                         </td>
                                         <td><strong><input type="checkbox" name="sendMailDJV" class="sendMail" <g:if
-                                                test="${entityConfigs.SEND_MAIL.debitJv == true}">checked</g:if>>
+                                                test="${entityConfigs.SEND_MAIL_AFTER_SAVE.debitJv == true}">checked</g:if>>
                                         </strong>
                                         </td>
                                     </tr>
@@ -777,37 +777,37 @@
                                     <tr>
                                         <td><strong class="cde">Credit Days Editable</strong></td>
                                         <td><strong><input type="checkbox" name="cdePO" class="cde" <g:if
-                                                test="${entityConfigs.CDE.purchaseOrder == true}">checked</g:if>>
+                                                test="${entityConfigs.CREDIT_DAYS_EDITABLE.purchaseOrder == true}">checked</g:if>>
                                         </strong>
                                         </td>
                                         <td><strong><input type="checkbox" name="cdePE" class="cde" <g:if
-                                                test="${entityConfigs.CDE.purchaseEntry == true}">checked</g:if>>
+                                                test="${entityConfigs.CREDIT_DAYS_EDITABLE.purchaseEntry == true}">checked</g:if>>
                                         </strong>
                                         </td>
                                         <td><strong><input type="checkbox" name="cdePR" class="cde" <g:if
-                                                test="${entityConfigs.CDE.purchaseReturn == true}">checked</g:if>>
+                                                test="${entityConfigs.CREDIT_DAYS_EDITABLE.purchaseReturn == true}">checked</g:if>>
                                         </strong>
                                         </td>
                                         <td><strong><input type="checkbox" name="cdePAT" class="cde" <g:if
-                                                test="${entityConfigs.CDE.payments == true}">checked</g:if>></strong>
+                                                test="${entityConfigs.CREDIT_DAYS_EDITABLE.payments == true}">checked</g:if>></strong>
                                         </td>
                                         <td><strong><input type="checkbox" name="cdeSO" class="cde" <g:if
-                                                test="${entityConfigs.CDE.saleOrder == true}">checked</g:if>></strong>
+                                                test="${entityConfigs.CREDIT_DAYS_EDITABLE.saleOrder == true}">checked</g:if>></strong>
                                         </td>
                                         <td><strong><input type="checkbox" name="cdeSEI" class="cde" <g:if
-                                                test="${entityConfigs.CDE.saleEntry == true}">checked</g:if>></strong>
+                                                test="${entityConfigs.CREDIT_DAYS_EDITABLE.saleEntry == true}">checked</g:if>></strong>
                                         </td>
                                         <td><strong><input type="checkbox" name="cdeSR" class="cde" <g:if
-                                                test="${entityConfigs.CDE.salesReturn == true}">checked</g:if>></strong>
+                                                test="${entityConfigs.CREDIT_DAYS_EDITABLE.salesReturn == true}">checked</g:if>></strong>
                                         </td>
                                         <td><strong><input type="checkbox" name="cdeR" class="cde" <g:if
-                                                test="${entityConfigs.CDE.recipts == true}">checked</g:if>></strong>
+                                                test="${entityConfigs.CREDIT_DAYS_EDITABLE.recipts == true}">checked</g:if>></strong>
                                         </td>
                                         <td><strong><input type="checkbox" name="cdeCJV" class="cde" <g:if
-                                                test="${entityConfigs.CDE.creditJv == true}">checked</g:if>></strong>
+                                                test="${entityConfigs.CREDIT_DAYS_EDITABLE.creditJv == true}">checked</g:if>></strong>
                                         </td>
                                         <td><strong><input type="checkbox" name="cdeDJV" class="cde" <g:if
-                                                test="${entityConfigs.CDE.debitJv == true}">checked</g:if>></strong>
+                                                test="${entityConfigs.CREDIT_DAYS_EDITABLE.debitJv == true}">checked</g:if>></strong>
                                         </td>
                                     </tr>
 
@@ -869,40 +869,40 @@
                                     <tr>
                                         <td><strong class="reCal">Enabled re-Calculation of Rate Button</strong></td>
                                         <td><strong><input type="checkbox" name="reCalPO" class="reCal" <g:if
-                                                test="${entityConfigs.RE_CAL.purchaseOrder == true}">checked</g:if>>
+                                                test="${entityConfigs.RE_CALCULATION_BTN.purchaseOrder == true}">checked</g:if>>
                                         </strong>
                                         </td>
                                         <td><strong><input type="checkbox" name="reCalPE" class="reCal" <g:if
-                                                test="${entityConfigs.RE_CAL.purchaseEntry == true}">checked</g:if>>
+                                                test="${entityConfigs.RE_CALCULATION_BTN.purchaseEntry == true}">checked</g:if>>
                                         </strong>
                                         </td>
                                         <td><strong><input type="checkbox" name="reCalPR" class="reCal" <g:if
-                                                test="${entityConfigs.RE_CAL.purchaseReturn == true}">checked</g:if>>
+                                                test="${entityConfigs.RE_CALCULATION_BTN.purchaseReturn == true}">checked</g:if>>
                                         </strong>
                                         </td>
                                         <td><strong><input type="checkbox" name="reCalPAT" class="reCal" <g:if
-                                                test="${entityConfigs.RE_CAL.payments == true}">checked</g:if>></strong>
+                                                test="${entityConfigs.RE_CALCULATION_BTN.payments == true}">checked</g:if>></strong>
                                         </td>
                                         <td><strong><input type="checkbox" name="reCalSO" class="reCal" <g:if
-                                                test="${entityConfigs.RE_CAL.saleOrder == true}">checked</g:if>>
+                                                test="${entityConfigs.RE_CALCULATION_BTN.saleOrder == true}">checked</g:if>>
                                         </strong>
                                         </td>
                                         <td><strong><input type="checkbox" name="reCalSEI" class="reCal" <g:if
-                                                test="${entityConfigs.RE_CAL.saleEntry == true}">checked</g:if>>
+                                                test="${entityConfigs.RE_CALCULATION_BTN.saleEntry == true}">checked</g:if>>
                                         </strong>
                                         </td>
                                         <td><strong><input type="checkbox" name="reCalSR" class="reCal" <g:if
-                                                test="${entityConfigs.RE_CAL.salesReturn == true}">checked</g:if>>
+                                                test="${entityConfigs.RE_CALCULATION_BTN.salesReturn == true}">checked</g:if>>
                                         </strong>
                                         </td>
                                         <td><strong><input type="checkbox" name="reCalR" class="reCal" <g:if
-                                                test="${entityConfigs.RE_CAL.recipts == true}">checked</g:if>></strong>
+                                                test="${entityConfigs.RE_CALCULATION_BTN.recipts == true}">checked</g:if>></strong>
                                         </td>
                                         <td><strong><input type="checkbox" name="reCalCJV" class="reCal" <g:if
-                                                test="${entityConfigs.RE_CAL.creditJv == true}">checked</g:if>></strong>
+                                                test="${entityConfigs.RE_CALCULATION_BTN.creditJv == true}">checked</g:if>></strong>
                                         </td>
                                         <td><strong><input type="checkbox" name="reCalDJV" class="reCal" <g:if
-                                                test="${entityConfigs.RE_CAL.debitJv == true}">checked</g:if>></strong>
+                                                test="${entityConfigs.RE_CALCULATION_BTN.debitJv == true}">checked</g:if>></strong>
                                         </td>
                                     </tr>
 
@@ -910,43 +910,43 @@
                                     <tr>
                                         <td><strong class="disableLR">Disable LR No ad Date Once entered</strong></td>
                                         <td><strong><input type="checkbox" name="disableLRPO" class="disableLR" <g:if
-                                                test="${entityConfigs.DISABLE_LR.purchaseOrder == true}">checked</g:if>>
+                                                test="${entityConfigs.DISABLE_LR_NO.purchaseOrder == true}">checked</g:if>>
                                         </strong>
                                         </td>
                                         <td><strong><input type="checkbox" name="disableLRPE" class="disableLR" <g:if
-                                                test="${entityConfigs.DISABLE_LR.purchaseEntry == true}">checked</g:if>>
+                                                test="${entityConfigs.DISABLE_LR_NO.purchaseEntry == true}">checked</g:if>>
                                         </strong>
                                         </td>
                                         <td><strong><input type="checkbox" name="disableLRPR" class="disableLR" <g:if
-                                                test="${entityConfigs.DISABLE_LR.purchaseReturn == true}">checked</g:if>>
+                                                test="${entityConfigs.DISABLE_LR_NO.purchaseReturn == true}">checked</g:if>>
                                         </strong>
                                         </td>
                                         <td><strong><input type="checkbox" name="disableLRPAT" class="disableLR" <g:if
-                                                test="${entityConfigs.DISABLE_LR.payments == true}">checked</g:if>>
+                                                test="${entityConfigs.DISABLE_LR_NO.payments == true}">checked</g:if>>
                                         </strong>
                                         </td>
                                         <td><strong><input type="checkbox" name="disableLRSO" class="disableLR" <g:if
-                                                test="${entityConfigs.DISABLE_LR.saleOrder == true}">checked</g:if>>
+                                                test="${entityConfigs.DISABLE_LR_NO.saleOrder == true}">checked</g:if>>
                                         </strong>
                                         </td>
                                         <td><strong><input type="checkbox" name="disableLRSEI" class="disableLR" <g:if
-                                                test="${entityConfigs.DISABLE_LR.saleEntry == true}">checked</g:if>>
+                                                test="${entityConfigs.DISABLE_LR_NO.saleEntry == true}">checked</g:if>>
                                         </strong>
                                         </td>
                                         <td><strong><input type="checkbox" name="disableLRSR" class="disableLR" <g:if
-                                                test="${entityConfigs.DISABLE_LR.salesReturn == true}">checked</g:if>>
+                                                test="${entityConfigs.DISABLE_LR_NO.salesReturn == true}">checked</g:if>>
                                         </strong>
                                         </td>
                                         <td><strong><input type="checkbox" name="disableLRR" class="disableLR" <g:if
-                                                test="${entityConfigs.DISABLE_LR.recipts == true}">checked</g:if>>
+                                                test="${entityConfigs.DISABLE_LR_NO.recipts == true}">checked</g:if>>
                                         </strong>
                                         </td>
                                         <td><strong><input type="checkbox" name="disableLRCJV" class="disableLR" <g:if
-                                                test="${entityConfigs.DISABLE_LR.creditJv == true}">checked</g:if>>
+                                                test="${entityConfigs.DISABLE_LR_NO.creditJv == true}">checked</g:if>>
                                         </strong>
                                         </td>
                                         <td><strong><input type="checkbox" name="disableLRDJV" class="disableLR" <g:if
-                                                test="${entityConfigs.DISABLE_LR.debitJv == true}">checked</g:if>>
+                                                test="${entityConfigs.DISABLE_LR_NO.debitJv == true}">checked</g:if>>
                                         </strong>
                                         </td>
                                     </tr>
@@ -956,52 +956,52 @@
                                         <td><strong class="enableCashDisc">Enabled Cash Discount</strong></td>
                                         <td><strong><input type="checkbox" name="enableCashDiscPO"
                                                            class="enableCashDisc" <g:if
-                                                                   test="${entityConfigs.ENABLE_CASH_DISC.purchaseOrder == true}">checked</g:if>>
+                                                                   test="${entityConfigs.ENABLE_CASH_DISCOUNT.purchaseOrder == true}">checked</g:if>>
                                         </strong>
                                         </td>
                                         <td><strong><input type="checkbox" name="enableCashDiscPE"
                                                            class="enableCashDisc" <g:if
-                                                                   test="${entityConfigs.ENABLE_CASH_DISC.purchaseEntry == true}">checked</g:if>>
+                                                                   test="${entityConfigs.ENABLE_CASH_DISCOUNT.purchaseEntry == true}">checked</g:if>>
                                         </strong>
                                         </td>
                                         <td><strong><input type="checkbox" name="enableCashDiscPR"
                                                            class="enableCashDisc" <g:if
-                                                                   test="${entityConfigs.ENABLE_CASH_DISC.purchaseReturn == true}">checked</g:if>>
+                                                                   test="${entityConfigs.ENABLE_CASH_DISCOUNT.purchaseReturn == true}">checked</g:if>>
                                         </strong>
                                         </td>
                                         <td><strong><input type="checkbox" name="enableCashDiscPAT"
                                                            class="enableCashDisc" <g:if
-                                                                   test="${entityConfigs.ENABLE_CASH_DISC.payments == true}">checked</g:if>>
+                                                                   test="${entityConfigs.ENABLE_CASH_DISCOUNT.payments == true}">checked</g:if>>
                                         </strong>
                                         </td>
                                         <td><strong><input type="checkbox" name="enableCashDiscSO"
                                                            class="enableCashDisc" <g:if
-                                                                   test="${entityConfigs.ENABLE_CASH_DISC.saleOrder == true}">checked</g:if>>
+                                                                   test="${entityConfigs.ENABLE_CASH_DISCOUNT.saleOrder == true}">checked</g:if>>
                                         </strong>
                                         </td>
                                         <td><strong><input type="checkbox" name="enableCashDiscSEI"
                                                            class="enableCashDisc" <g:if
-                                                                   test="${entityConfigs.ENABLE_CASH_DISC.saleEntry == true}">checked</g:if>>
+                                                                   test="${entityConfigs.ENABLE_CASH_DISCOUNT.saleEntry == true}">checked</g:if>>
                                         </strong>
                                         </td>
                                         <td><strong><input type="checkbox" name="enableCashDiscSR"
                                                            class="enableCashDisc" <g:if
-                                                                   test="${entityConfigs.ENABLE_CASH_DISC.salesReturn == true}">checked</g:if>>
+                                                                   test="${entityConfigs.ENABLE_CASH_DISCOUNT.salesReturn == true}">checked</g:if>>
                                         </strong>
                                         </td>
                                         <td><strong><input type="checkbox" name="enableCashDiscR" class="enableCashDisc"
                                                            <g:if
-                                                                   test="${entityConfigs.ENABLE_CASH_DISC.recipts == true}">checked</g:if>>
+                                                                   test="${entityConfigs.ENABLE_CASH_DISCOUNT.recipts == true}">checked</g:if>>
                                         </strong>
                                         </td>
                                         <td><strong><input type="checkbox" name="enableCashDiscCJV"
                                                            class="enableCashDisc" <g:if
-                                                                   test="${entityConfigs.ENABLE_CASH_DISC.creditJv == true}">checked</g:if>>
+                                                                   test="${entityConfigs.ENABLE_CASH_DISCOUNT.creditJv == true}">checked</g:if>>
                                         </strong>
                                         </td>
                                         <td><strong><input type="checkbox" name="enableCashDiscDJV"
                                                            class="enableCashDisc" <g:if
-                                                                   test="${entityConfigs.ENABLE_CASH_DISC.debitJv == true}">checked</g:if>>
+                                                                   test="${entityConfigs.ENABLE_CASH_DISCOUNT.debitJv == true}">checked</g:if>>
                                         </strong>
                                         </td>
                                     </tr>
@@ -1011,43 +1011,43 @@
                                                 class="withoutQr">Allow Printng Without QR Code (B2B) If E- Invoice Enabled</strong>
                                         </td>
                                         <td><strong><input type="checkbox" name="withoutQrPO" class="withoutQr" <g:if
-                                                test="${entityConfigs.WITHOUT_QR.purchaseOrder == true}">checked</g:if>>
+                                                test="${entityConfigs.PRINT_WITHOUT_QR.purchaseOrder == true}">checked</g:if>>
                                         </strong>
                                         </td>
                                         <td><strong><input type="checkbox" name="withoutQrPE" class="withoutQr" <g:if
-                                                test="${entityConfigs.WITHOUT_QR.purchaseEntry == true}">checked</g:if>>
+                                                test="${entityConfigs.PRINT_WITHOUT_QR.purchaseEntry == true}">checked</g:if>>
                                         </strong>
                                         </td>
                                         <td><strong><input type="checkbox" name="withoutQrPR" class="withoutQr" <g:if
-                                                test="${entityConfigs.WITHOUT_QR.purchaseReturn == true}">checked</g:if>>
+                                                test="${entityConfigs.PRINT_WITHOUT_QR.purchaseReturn == true}">checked</g:if>>
                                         </strong>
                                         </td>
                                         <td><strong><input type="checkbox" name="withoutQrPAT" class="withoutQr" <g:if
-                                                test="${entityConfigs.WITHOUT_QR.payments == true}">checked</g:if>>
+                                                test="${entityConfigs.PRINT_WITHOUT_QR.payments == true}">checked</g:if>>
                                         </strong>
                                         </td>
                                         <td><strong><input type="checkbox" name="withoutQrSO" class="withoutQr" <g:if
-                                                test="${entityConfigs.WITHOUT_QR.saleOrder == true}">checked</g:if>>
+                                                test="${entityConfigs.PRINT_WITHOUT_QR.saleOrder == true}">checked</g:if>>
                                         </strong>
                                         </td>
                                         <td><strong><input type="checkbox" name="withoutQrSEI" class="withoutQr" <g:if
-                                                test="${entityConfigs.WITHOUT_QR.saleEntry == true}">checked</g:if>>
+                                                test="${entityConfigs.PRINT_WITHOUT_QR.saleEntry == true}">checked</g:if>>
                                         </strong>
                                         </td>
                                         <td><strong><input type="checkbox" name="withoutQrSR" class="withoutQr" <g:if
-                                                test="${entityConfigs.WITHOUT_QR.salesReturn == true}">checked</g:if>>
+                                                test="${entityConfigs.PRINT_WITHOUT_QR.salesReturn == true}">checked</g:if>>
                                         </strong>
                                         </td>
                                         <td><strong><input type="checkbox" name="withoutQrR" class="withoutQr" <g:if
-                                                test="${entityConfigs.WITHOUT_QR.recipts == true}">checked</g:if>>
+                                                test="${entityConfigs.PRINT_WITHOUT_QR.recipts == true}">checked</g:if>>
                                         </strong>
                                         </td>
                                         <td><strong><input type="checkbox" name="withoutQrCJV" class="withoutQr" <g:if
-                                                test="${entityConfigs.WITHOUT_QR.creditJv == true}">checked</g:if>>
+                                                test="${entityConfigs.PRINT_WITHOUT_QR.creditJv == true}">checked</g:if>>
                                         </strong>
                                         </td>
                                         <td><strong><input type="checkbox" name="withoutQrDJV" class="withoutQr" <g:if
-                                                test="${entityConfigs.WITHOUT_QR.debitJv == true}">checked</g:if>>
+                                                test="${entityConfigs.PRINT_WITHOUT_QR.debitJv == true}">checked</g:if>>
                                         </strong>
                                         </td>
                                     </tr>
@@ -1168,52 +1168,52 @@
                                         </td>
                                         <td><strong><input type="checkbox" name="disableSchemeQtyPO"
                                                            class="disableSchemeQty" <g:if
-                                                                   test="${entityConfigs.DISABLE_SCHEME_QTY.purchaseOrder == true}">checked</g:if>>
+                                                                   test="${entityConfigs.DISABLE_SCHEME_QTY_CREDIT_NOTE.purchaseOrder == true}">checked</g:if>>
                                         </strong>
                                         </td>
                                         <td><strong><input type="checkbox" name="disableSchemeQtyPE"
                                                            class="disableSchemeQty" <g:if
-                                                                   test="${entityConfigs.DISABLE_SCHEME_QTY.purchaseEntry == true}">checked</g:if>>
+                                                                   test="${entityConfigs.DISABLE_SCHEME_QTY_CREDIT_NOTE.purchaseEntry == true}">checked</g:if>>
                                         </strong>
                                         </td>
                                         <td><strong><input type="checkbox" name="disableSchemeQtyPR"
                                                            class="disableSchemeQty" <g:if
-                                                                   test="${entityConfigs.DISABLE_SCHEME_QTY.purchaseReturn == true}">checked</g:if>>
+                                                                   test="${entityConfigs.DISABLE_SCHEME_QTY_CREDIT_NOTE.purchaseReturn == true}">checked</g:if>>
                                         </strong>
                                         </td>
                                         <td><strong><input type="checkbox" name="disableSchemeQtyPAT"
                                                            class="disableSchemeQty" <g:if
-                                                                   test="${entityConfigs.DISABLE_SCHEME_QTY.payments == true}">checked</g:if>>
+                                                                   test="${entityConfigs.DISABLE_SCHEME_QTY_CREDIT_NOTE.payments == true}">checked</g:if>>
                                         </strong>
                                         </td>
                                         <td><strong><input type="checkbox" name="disableSchemeQtySO"
                                                            class="disableSchemeQty" <g:if
-                                                                   test="${entityConfigs.DISABLE_SCHEME_QTY.saleOrder == true}">checked</g:if>>
+                                                                   test="${entityConfigs.DISABLE_SCHEME_QTY_CREDIT_NOTE.saleOrder == true}">checked</g:if>>
                                         </strong>
                                         </td>
                                         <td><strong><input type="checkbox" name="disableSchemeQtySEI"
                                                            class="disableSchemeQty" <g:if
-                                                                   test="${entityConfigs.DISABLE_SCHEME_QTY.saleEntry == true}">checked</g:if>>
+                                                                   test="${entityConfigs.DISABLE_SCHEME_QTY_CREDIT_NOTE.saleEntry == true}">checked</g:if>>
                                         </strong>
                                         </td>
                                         <td><strong><input type="checkbox" name="disableSchemeQtySR"
                                                            class="disableSchemeQty" <g:if
-                                                                   test="${entityConfigs.DISABLE_SCHEME_QTY.salesReturn == true}">checked</g:if>>
+                                                                   test="${entityConfigs.DISABLE_SCHEME_QTY_CREDIT_NOTE.salesReturn == true}">checked</g:if>>
                                         </strong>
                                         </td>
                                         <td><strong><input type="checkbox" name="disableSchemeQtyR"
                                                            class="disableSchemeQty" <g:if
-                                                                   test="${entityConfigs.DISABLE_SCHEME_QTY.recipts == true}">checked</g:if>>
+                                                                   test="${entityConfigs.DISABLE_SCHEME_QTY_CREDIT_NOTE.recipts == true}">checked</g:if>>
                                         </strong>
                                         </td>
                                         <td><strong><input type="checkbox" name="disableSchemeQtyCJV"
                                                            class="disableSchemeQty" <g:if
-                                                                   test="${entityConfigs.DISABLE_SCHEME_QTY.creditJv == true}">checked</g:if>>
+                                                                   test="${entityConfigs.DISABLE_SCHEME_QTY_CREDIT_NOTE.creditJv == true}">checked</g:if>>
                                         </strong>
                                         </td>
                                         <td><strong><input type="checkbox" name="disableSchemeQtyDJV"
                                                            class="disableSchemeQty" <g:if
-                                                                   test="${entityConfigs.DISABLE_SCHEME_QTY.debitJv == true}">checked</g:if>>
+                                                                   test="${entityConfigs.DISABLE_SCHEME_QTY_CREDIT_NOTE.debitJv == true}">checked</g:if>>
                                         </strong>
                                         </td>
                                     </tr>
@@ -1221,54 +1221,53 @@
 
                                     <tr>
                                         <td><strong class="allowManual">Allow Manual Selection of Tax%</strong></td>
-                                        <td><strong><input type="checkbox" name="allowManualTaxPO" class="allowManual"
-                                                           <g:if
-                                                                   test="${entityConfigs.ALLOW_MANUAL.purchaseOrder == true}">checked</g:if>>
+                                        <td><strong><input type="checkbox" name="allowManualTaxPO" class="allowManual" <g:if
+                                                test="${entityConfigs.ALLOW_MANUAL_SELECT_TAX.purchaseOrder == true}">checked</g:if>>
                                         </strong>
                                         </td>
                                         <td><strong><input type="checkbox" name="allowManualTaxPE" class="allowManual"
                                                            <g:if
-                                                                   test="${entityConfigs.ALLOW_MANUAL.purchaseEntry == true}">checked</g:if>>
+                                                                   test="${entityConfigs.ALLOW_MANUAL_SELECT_TAX.purchaseEntry == true}">checked</g:if>>
                                         </strong>
                                         </td>
                                         <td><strong><input type="checkbox" name="allowManualTaxPR" class="allowManual"
                                                            <g:if
-                                                                   test="${entityConfigs.ALLOW_MANUAL.purchaseReturn == true}">checked</g:if>>
+                                                                   test="${entityConfigs.ALLOW_MANUAL_SELECT_TAX.purchaseReturn == true}">checked</g:if>>
                                         </strong>
                                         </td>
                                         <td><strong><input type="checkbox" name="allowManualTaxPAT" class="allowManual"
                                                            <g:if
-                                                                   test="${entityConfigs.ALLOW_MANUAL.payments == true}">checked</g:if>>
+                                                                   test="${entityConfigs.ALLOW_MANUAL_SELECT_TAX.payments == true}">checked</g:if>>
                                         </strong>
                                         </td>
                                         <td><strong><input type="checkbox" name="allowManualTaxSO" class="allowManual"
                                                            <g:if
-                                                                   test="${entityConfigs.ALLOW_MANUAL.saleOrder == true}">checked</g:if>>
+                                                                   test="${entityConfigs.ALLOW_MANUAL_SELECT_TAX.saleOrder == true}">checked</g:if>>
                                         </strong>
                                         </td>
                                         <td><strong><input type="checkbox" name="allowManualTaxSEI" class="allowManual"
                                                            <g:if
-                                                                   test="${entityConfigs.ALLOW_MANUAL.saleEntry == true}">checked</g:if>>
+                                                                   test="${entityConfigs.ALLOW_MANUAL_SELECT_TAX.saleEntry == true}">checked</g:if>>
                                         </strong>
                                         </td>
                                         <td><strong><input type="checkbox" name="allowManualTaxSR" class="allowManual"
                                                            <g:if
-                                                                   test="${entityConfigs.ALLOW_MANUAL.salesReturn == true}">checked</g:if>>
+                                                                   test="${entityConfigs.ALLOW_MANUAL_SELECT_TAX.salesReturn == true}">checked</g:if>>
                                         </strong>
                                         </td>
                                         <td><strong><input type="checkbox" name="allowManualTaxR" class="allowManual"
                                                            <g:if
-                                                                   test="${entityConfigs.ALLOW_MANUAL.recipts == true}">checked</g:if>>
+                                                                   test="${entityConfigs.ALLOW_MANUAL_SELECT_TAX.recipts == true}">checked</g:if>>
                                         </strong>
                                         </td>
                                         <td><strong><input type="checkbox" name="allowManualTaxCJV" class="allowManual"
                                                            <g:if
-                                                                   test="${entityConfigs.ALLOW_MANUAL.creditJv == true}">checked</g:if>>
+                                                                   test="${entityConfigs.ALLOW_MANUAL_SELECT_TAX.creditJv == true}">checked</g:if>>
                                         </strong>
                                         </td>
                                         <td><strong><input type="checkbox" name="allowManualTaxDJV" class="allowManual"
                                                            <g:if
-                                                                   test="${entityConfigs.ALLOW_MANUAL.debitJv == true}">checked</g:if>>
+                                                                   test="${entityConfigs.ALLOW_MANUAL_SELECT_TAX.debitJv == true}">checked</g:if>>
                                         </strong>
                                         </td>
                                     </tr>
@@ -1279,52 +1278,52 @@
                                         </td>
                                         <td><strong><input type="checkbox" name="prescriptionUploadPO"
                                                            class="prescriptionUpload" <g:if
-                                                                   test="${entityConfigs.PRESCRIPTION_UPLOAD.purchaseOrder == true}">checked</g:if>>
+                                                                   test="${entityConfigs.PRESCRIPTION_UPLOAD_MANDATORY.purchaseOrder == true}">checked</g:if>>
                                         </strong>
                                         </td>
                                         <td><strong><input type="checkbox" name="prescriptionUploadPE"
                                                            class="prescriptionUpload" <g:if
-                                                                   test="${entityConfigs.PRESCRIPTION_UPLOAD.purchaseEntry == true}">checked</g:if>>
+                                                                   test="${entityConfigs.PRESCRIPTION_UPLOAD_MANDATORY.purchaseEntry == true}">checked</g:if>>
                                         </strong>
                                         </td>
                                         <td><strong><input type="checkbox" name="prescriptionUploadPR"
                                                            class="prescriptionUpload" <g:if
-                                                                   test="${entityConfigs.PRESCRIPTION_UPLOAD.purchaseReturn == true}">checked</g:if>>
+                                                                   test="${entityConfigs.PRESCRIPTION_UPLOAD_MANDATORY.purchaseReturn == true}">checked</g:if>>
                                         </strong>
                                         </td>
                                         <td><strong><input type="checkbox" name="prescriptionUploadPAT"
                                                            class="prescriptionUpload" <g:if
-                                                                   test="${entityConfigs.PRESCRIPTION_UPLOAD.payments == true}">checked</g:if>>
+                                                                   test="${entityConfigs.PRESCRIPTION_UPLOAD_MANDATORY.payments == true}">checked</g:if>>
                                         </strong>
                                         </td>
                                         <td><strong><input type="checkbox" name="prescriptionUploadSO"
                                                            class="prescriptionUpload" <g:if
-                                                                   test="${entityConfigs.PRESCRIPTION_UPLOAD.saleOrder == true}">checked</g:if>>
+                                                                   test="${entityConfigs.PRESCRIPTION_UPLOAD_MANDATORY.saleOrder == true}">checked</g:if>>
                                         </strong>
                                         </td>
                                         <td><strong><input type="checkbox" name="prescriptionUploadSEI"
                                                            class="prescriptionUpload" <g:if
-                                                                   test="${entityConfigs.PRESCRIPTION_UPLOAD.saleEntry == true}">checked</g:if>>
+                                                                   test="${entityConfigs.PRESCRIPTION_UPLOAD_MANDATORY.saleEntry == true}">checked</g:if>>
                                         </strong>
                                         </td>
                                         <td><strong><input type="checkbox" name="prescriptionUploadSR"
                                                            class="prescriptionUpload" <g:if
-                                                                   test="${entityConfigs.PRESCRIPTION_UPLOAD.salesReturn == true}">checked</g:if>>
+                                                                   test="${entityConfigs.PRESCRIPTION_UPLOAD_MANDATORY.salesReturn == true}">checked</g:if>>
                                         </strong>
                                         </td>
                                         <td><strong><input type="checkbox" name="prescriptionUploadR"
                                                            class="prescriptionUpload" <g:if
-                                                                   test="${entityConfigs.PRESCRIPTION_UPLOAD.recipts == true}">checked</g:if>>
+                                                                   test="${entityConfigs.PRESCRIPTION_UPLOAD_MANDATORY.recipts == true}">checked</g:if>>
                                         </strong>
                                         </td>
                                         <td><strong><input type="checkbox" name="prescriptionUploadCJV"
                                                            class="prescriptionUpload" <g:if
-                                                                   test="${entityConfigs.PRESCRIPTION_UPLOAD.creditJv == true}">checked</g:if>>
+                                                                   test="${entityConfigs.PRESCRIPTION_UPLOAD_MANDATORY.creditJv == true}">checked</g:if>>
                                         </strong>
                                         </td>
                                         <td><strong><input type="checkbox" name="prescriptionUploadDJV"
                                                            class="prescriptionUpload" <g:if
-                                                                   test="${entityConfigs.PRESCRIPTION_UPLOAD.debitJv == true}">checked</g:if>>
+                                                                   test="${entityConfigs.PRESCRIPTION_UPLOAD_MANDATORY.debitJv == true}">checked</g:if>>
                                         </strong>
                                         </td>
                                     </tr>
@@ -1998,7 +1997,7 @@
             return this.checked
         }).get();
         dateEditable.unshift($('.dateEditable').text());
-        dateEditable.push('DE');
+        dateEditable.push('DATE_EDITABLE');
         dateEditable.push('${entity.id}')
         dateEditable.push('${entity.entityType.id}')
         configData.push(Object.assign({}, dateEditable));
@@ -2007,7 +2006,7 @@
             return this.checked
         }).get();
         mad.unshift($('.mad').text());
-        mad.push('MAD');
+        mad.push('MODIFY_AFTER_DAYEND');
         mad.push('${entity.id}');
         mad.push('${entity.entityType.id}');
         configData.push(Object.assign({}, mad));
@@ -2016,7 +2015,7 @@
             return this.checked
         }).get();
         dad.unshift($('.dad').text());
-        dad.push('DAD');
+        dad.push('DELETE_AFTER_DAYEND');
         dad.push('${entity.id}')
         dad.push('${entity.entityType.id}')
         configData.push(Object.assign({}, dad));
@@ -2025,7 +2024,7 @@
             return this.checked
         }).get();
         block.unshift($('.block').text().replace(/\n/g, ''));
-        block.push('BLOCK');
+        block.push('BLOCK_PRINTING');
         block.push('${entity.id}')
         block.push('${entity.entityType.id}')
         configData.push(Object.assign({}, block));
@@ -2034,7 +2033,7 @@
             return this.checked
         }).get();
         auto.unshift($('.auto').text());
-        auto.push('AUTO');
+        auto.push('AUTO_ADJUST');
         auto.push('${entity.id}')
         auto.push('${entity.entityType.id}')
         configData.push(Object.assign({}, auto));
@@ -2053,7 +2052,7 @@
             return this.checked
         }).get();
         blockInv.unshift($('.blockInv').text());
-        blockInv.push('BLOCK_INV');
+        blockInv.push('BLOCK_INV_DL_EXP');
         blockInv.push('${entity.id}')
         blockInv.push('${entity.entityType.id}')
         configData.push(Object.assign({}, blockInv));
@@ -2062,7 +2061,7 @@
             return this.checked
         }).get();
         sendMail.unshift($('.sendMail').text());
-        sendMail.push('SEND_MAIL');
+        sendMail.push('SEND_MAIL_AFTER_SAVE');
         sendMail.push('${entity.id}')
         sendMail.push('${entity.entityType.id}')
         configData.push(Object.assign({}, sendMail));
@@ -2071,9 +2070,9 @@
             return this.checked
         }).get();
         cde.unshift($('.cde').text());
-        cde.push('CDE');
-        cde.push('${entity.id}')
-        cde.push('${entity.entityType.id}')
+        cde.push('CREDIT_DAYS_EDITABLE');
+        cde.push('${entity.id}');
+        cde.push('${entity.entityType.id}');
         configData.push(Object.assign({}, cde));
 
         var discountButton = $('.discountButton').map(function () {
@@ -2089,7 +2088,7 @@
             return this.checked
         }).get();
         reCal.unshift($('.reCal').text());
-        reCal.push('RE_CAL');
+        reCal.push('RE_CALCULATION_BTN');
         reCal.push('${entity.id}')
         reCal.push('${entity.entityType.id}')
         configData.push(Object.assign({}, reCal));
@@ -2099,7 +2098,7 @@
             return this.checked
         }).get();
         enableCashDisc.unshift($('.enableCashDisc').text());
-        enableCashDisc.push('ENABLE_CASH_DISC');
+        enableCashDisc.push('ENABLE_CASH_DISCOUNT');
         enableCashDisc.push('${entity.id}')
         enableCashDisc.push('${entity.entityType.id}')
         configData.push(Object.assign({}, enableCashDisc));
@@ -2108,7 +2107,7 @@
             return this.checked
         }).get();
         withoutQr.unshift($('.withoutQr').text());
-        withoutQr.push('WITHOUT_QR');
+        withoutQr.push('PRINT_WITHOUT_QR');
         withoutQr.push('${entity.id}')
         withoutQr.push('${entity.entityType.id}')
         configData.push(Object.assign({}, withoutQr));
@@ -2117,8 +2116,8 @@
             return this.checked
         }).get();
         disableLR.unshift($('.disableLR').text());
-        disableLR.push('DISABLE_LR');
-        disableLR.push('${entity.id}')
+        disableLR.push('DISABLE_LR_NO');
+        disableLR.push('${entity.id}');
         disableLR.push('${entity.entityType.id}')
         configData.push(Object.assign({}, disableLR));
 
@@ -2147,7 +2146,7 @@
             return this.checked
         }).get();
         disableSchemeQty.unshift($('.disableSchemeQty').text());
-        disableSchemeQty.push('DISABLE_SCHEME_QTY');
+        disableSchemeQty.push('DISABLE_SCHEME_QTY_CREDIT_NOTE');
         disableSchemeQty.push('${entity.id}')
         disableSchemeQty.push('${entity.entityType.id}')
         configData.push(Object.assign({}, disableSchemeQty));
@@ -2156,7 +2155,7 @@
             return this.checked
         }).get();
         allowManual.unshift($('.allowManual').text());
-        allowManual.push('ALLOW_MANUAL');
+        allowManual.push('ALLOW_MANUAL_SELECT_TAX');
         allowManual.push('${entity.id}')
         allowManual.push('${entity.entityType.id}')
         configData.push(Object.assign({}, allowManual));
@@ -2165,7 +2164,7 @@
             return this.checked
         }).get();
         prescriptionUpload.unshift($('.prescriptionUpload').text());
-        prescriptionUpload.push('PRESCRIPTION_UPLOAD');
+        prescriptionUpload.push('PRESCRIPTION_UPLOAD_MANDATORY');
         prescriptionUpload.push('${entity.id}')
         prescriptionUpload.push('${entity.entityType.id}')
         configData.push(Object.assign({}, prescriptionUpload));

@@ -1,6 +1,7 @@
 package phitb_ui.product
 
 import phitb_ui.EntityService
+import phitb_ui.SystemService
 import phitb_ui.entity.CustomerGroupController
 import phitb_ui.entity.EntityRegisterController
 import phitb_ui.entity.SeriesController
@@ -228,6 +229,8 @@ class DivisionController {
     }
 
 
-
+    def getDivisionById(String id){
+        return new ProductService().getDivisionById(id)
+    }
 
 }

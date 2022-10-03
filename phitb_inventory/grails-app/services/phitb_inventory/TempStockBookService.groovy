@@ -150,7 +150,11 @@ class TempStockBookService {
                     tempStockBook = new TempStockBook()
                 }else
                 {
-                    return tempStockBook
+                    if(jsonObject?.ALLOW_SAME_BATCH!= true){
+                        return tempStockBook
+                    }else{
+                        tempStockBook = new TempStockBook()
+                    }
                 }
 //             else  --> removed due to updating of same tempstockbook (pressing enter key multiple times whilesaving)
 //                    tempStockBook.isUpdatable = true

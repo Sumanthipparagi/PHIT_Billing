@@ -465,6 +465,32 @@ class EntityService {
 
     }
 
+
+    def getDayEndByEntity(String entityId) {
+        Client client = ClientBuilder.newClient()
+        WebTarget target = client.target(new Links().API_GATEWAY)
+        try {
+            Response apiResponse = target
+                    .path(new Links().DAY_END_MASTER_ENTITY)
+                    .resolveTemplate("id", entityId)
+                    .request(MediaType.APPLICATION_JSON_TYPE)
+                    .get()
+            if(apiResponse?.status == 200){
+                JSONArray jsonArray = new JSONArray(apiResponse.readEntity(String.class));
+                return jsonArray
+            }
+            else{
+                return []
+            }
+
+        }
+        catch (Exception ex) {
+            System.err.println('Service :EntityService , action :  getUserRegisterByEntity  , Ex:' + ex)
+            log.error('Service :EntityService , action :  getUserRegisterByEntity  , Ex:' + ex)
+        }
+
+    }
+
     /**
      *
      * @param jsonObject

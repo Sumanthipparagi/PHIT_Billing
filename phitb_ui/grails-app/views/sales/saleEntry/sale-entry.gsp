@@ -93,7 +93,8 @@
 
                             <div class="col-md-2">
                                 <label for="date">Date:</label>
-                                <input type="date" class="form-control date" name="date" id="date" readonly/>
+                                <input type="date" class="form-control date" name="date" id="date" <g:if
+                                        test="${entityConfigs?.DATE_EDITABLE?.saleEntry!=true}">readonly</g:if>/>
                             </div>
 
                             <div class="col-md-2">
@@ -132,15 +133,30 @@
                                             <g:if test="${saleBillDetail?.priorityId == Constants.REPLACEMENT}">selected</g:if>>REPLACEMENT</option>
                                 </select>
                             </div>
+
+                            <div class="col-md-2 mt-2">
+                                <label for="customerSelect">Rep:</label>
+                                <select class="form-control show-tick" id="repSelect">
+                                    <option selected disabled>--SELECT--</option>
+                                    <g:each in="${users}" var="u">
+                                        <option value="${u.id}"
+                                                <g:if test="${saleBillDetail?.rep == u.id.toString()}">selected</g:if>>${u.userName} ${"- "+u?.name}</option>
+                                    </g:each>
+                                </select>
+                            </div>
                             <div class="col-md-2 mt-2">
                                 <label for="refNum">Ref. Number:</label>
                                 <input type="text" maxlength="100" class="form-control" name="refNum" id="refNum"
                                        value="${saleBillDetail?.refNo}"/>
                             </div>
+
                             <div class="col-md-2 mt-2">
                                 <label for="refDate">Ref. Date:</label>
                                 <input type="date" class="form-control date" name="refDate" id="refDate"/>
                             </div>
+
+
+
                             <div class="col-md-3 mt-2" style="max-width: 23%;">
                                 <br>
                                 <a class="btn btn-primary waves-effect" role="button" data-toggle="collapse"
@@ -148,14 +164,8 @@
                                    aria-controls="shipmentDetails"><i class="zmdi zmdi-truck"></i> Shipment Information
                                 </a>
                             </div>
-                            <div class="col-md-2 mt-2" style="max-width: 11.666667%;">
-                                <br>
-                                <button class="btn btn-primary waves-effect"
-                                   id="addNewRow" style="background-color: green;"><i class="zmdi zmdi-plus"></i>
-                                Row
-                                </button>
-                            </div>
-                            <div class="col-md-2 mt-2"  style="max-width: 14.666667%;">
+
+                            <div class="col-md-2 mt-2" style="max-width: 14.666667%;">
                                 <br>
                                 <a class="btn btn-primary waves-effect collapsed" role="button"
                                    data-toggle="collapse" href="#noteDetails" aria-expanded="false"
@@ -163,17 +173,24 @@
                                 </a>
                             </div>
 
+                            <div class="col-md-2 mt-2" style="max-width: 12%;">
+                                <br>
+                                <button class="btn btn-primary waves-effect"
+                                        id="addNewRow" style="background-color: green;"><i
+                                        class="zmdi zmdi-plus"></i> Row
+                                </button>
+                            </div>
 
 
                         %{--                            data-toggle="modal"--}%
-%{--                            data-target="#myModal"--}%
-                            <g:if test="${tempStockArray!=null}">
+                        %{--                            data-target="#myModal"--}%
+                            <g:if test="${tempStockArray != null}">
                                 <div class="col-md-3 mt-2">
                                     <br>
                                     <a class="btn btn-primary waves-effect" role="button" data-toggle="collapse"
                                        href="#tempStockDetails" aria-expanded="false" aria-controls="tempStockDetails"
                                        style="color:white;"><i class="zmdi zmdi-long-arrow-up"></i>&nbsp;
-                                        Products(${tempStockArray.size()})
+                                    Products(${tempStockArray.size()})
                                     </a>
                                 </div>
                             </g:if>
@@ -195,7 +212,9 @@
                                             <div class="form-group">
                                                 <div class="form-group">
                                                     <label for="privateNote">Private Note</label>
-                                                    <textarea id="privateNote" rows="1" maxlength="500" name="privateNote" class="form-control">${saleBillDetail?.privateNote}</textarea>
+                                                    <textarea id="privateNote" rows="1" maxlength="500"
+                                                              name="privateNote"
+                                                              class="form-control">${saleBillDetail?.privateNote}</textarea>
                                                 </div>
                                             </div>
                                         </div>
@@ -203,6 +222,7 @@
                                 </div>
                             </div>
                         </div>
+
                         <div class="row mt-2">
                             <div class="col-md-12 col-lg-12 col-sm-12">
                                 <div class="collapse" id="shipmentDetails">
@@ -222,7 +242,9 @@
                                                        class="form-control"/>
                                             </div>
                                         </div>
-                                            <input type="hidden" name="saleTransportDetailsId" id="saleTransportDetailsId" value="${saleTransportDetail?.id}">
+                                        <input type="hidden" name="saleTransportDetailsId" id="saleTransportDetailsId"
+                                               value="${saleTransportDetail?.id}">
+
                                         <div class="col-md-3">
                                             <div class="form-group">
                                                 <label for="transportType">Transporter</label>
@@ -679,7 +701,7 @@
                 const row = hot.getSelected()[0][0];
                 const selection = hot.getSelected()[0][1];
                 if (selection === 1) {
-                    if (e.keyCode === 13 ) {
+                    if (e.keyCode === 13) {
                         batchHot.selectCell(0, 0);
                         $("#batchTable").focus();
                     }
@@ -740,12 +762,12 @@
                                         batchHot.updateSettings({
                                             data: []
                                         });
-                                        var id = hot.getDataAtCell(row,15)
+                                        var id = hot.getDataAtCell(row, 15)
                                         hot.setDataAtCell(row, 15, data.id);
                                         for (var i = 0; i < 15; i++) {
                                             hot.setCellMeta(row, i, 'readOnly', true);
                                         }
-                                        if(id!==data.id){
+                                        if (id !== data.id) {
                                             mainTableRow = row + 1;
                                             hot.alter('insert_row');
                                             hot.selectCell(mainTableRow, 1);
@@ -829,6 +851,13 @@
                         var remQty = 0;
                         var remFQty = 0;
                         var freeQtyEntry = false;
+                        <g:if test="${settings?.ZERO_INVOICE_VALUE== Constants.YES && settings!=null}">
+                        if(hot.getDataAtCell(row, 6) === 0){
+                            alert("Zero invoice not allowed");
+                            hot.alter("remove_row", row);
+                            return;
+                        }
+                        </g:if>
                         if (pid && batch) {
                             $.ajax({
                                     type: "POST",
@@ -953,23 +982,24 @@
             stateId = $('#customerSelect option:selected').attr('data-state');
         });
 
-        function checkUnsavedTemp(){
+        function checkUnsavedTemp() {
             var data = hot.getData();
-            for(let i = 0; i < data.length; i++) {
+            for (let i = 0; i < data.length; i++) {
                 console.log(data[i][15])
-                if(data[i][15] === null){
-                       return true
+                if (data[i][15] === null) {
+                    return true
                 }
             }
             return false
         }
-        document.querySelector('#addNewRow').addEventListener('click', function() {
+
+        document.querySelector('#addNewRow').addEventListener('click', function () {
             // var col = hot.countRows();
             // hot.alter('insert_row', col, 1);
             var tempArray = [];
             var data = hot.getSourceData();
-            for(let i = 0; i < data.length; i++) {
-                if(data[i].hasOwnProperty('15')){
+            for (let i = 0; i < data.length; i++) {
+                if (data[i].hasOwnProperty('15')) {
                     tempArray.push(data[i]['15'])
                 }
             }
@@ -977,23 +1007,23 @@
             console.log(tempArray);
             console.log(hot.countRows() + 1);
             console.log(hot.getSourceData());
-            if(tempArray.length!==0){
+            if (tempArray.length !== 0) {
                 console.log(checkUnsavedTemp())
-                if(checkUnsavedTemp()){
+                if (checkUnsavedTemp()) {
                     alert("Table consist of unsaved data")
                     return;
                 }
-                if(hot.isEmptyRow(tempArray.length)){
-                    if(tempArray.length===hot.countRows()-1){
+                if (hot.isEmptyRow(tempArray.length)) {
+                    if (tempArray.length === hot.countRows() - 1) {
                         alert("Row already present!");
                         return;
-                    }else{
+                    } else {
                         hot.alter('insert_row');
                     }
-                }else{
+                } else {
                     hot.alter('insert_row');
                 }
-            }else{
+            } else {
                 alert("Row not saved properly!")
                 return;
             }
@@ -1011,8 +1041,6 @@
             }
             Handsontable.renderers.TextRenderer.apply(this, arguments);
         }
-
-
 
 
         //batch table
@@ -1165,8 +1193,6 @@
             });
         }
     }
-
-
 
 
     function loadTempStockBookData() {
@@ -1418,10 +1444,11 @@
         var privateNote = $("#privateNote").val();
         var refNum = $("#refNum").val();
         var refDate = $("#refDate").val();
-        if(refDate!==''){
+        var rep = $("#repSelect").val();
+        if (refDate !== '') {
             refDate = moment(refDate).format("DD/MM/YYYY");
-        }else{
-            refDate=''
+        } else {
+            refDate = ''
         }
         var saleTransportDetailsId = $("#saleTransportDetailsId").val();
         var invtype = $("#invType").val();
@@ -1491,6 +1518,7 @@
                 transporter: transporter,
                 publicNote: publicNote,
                 privateNote: privateNote,
+                rep: rep,
                 uuid: self.crypto.randomUUID()
             },
             success: function (data) {
@@ -1612,7 +1640,6 @@
     }
 
 
-
     function calculateTaxes() {
         var data = hot.getData();
         for (var row = 0; row < data.length; row++) {
@@ -1654,7 +1681,11 @@
         for (var i = 0; i < saleTableData.length; i++) {
             if (Number(productId) === Number(saleTableData[i][1])) {
                 if (saleTableData[i][2] !== null && saleTableData[i][2] === batchNumber)
+                    <g:if test="${settings?.ALLOW_SAME_BATCH!="YES" && settings!=null}">
                     return true;
+                </g:if><g:else>
+                return false;
+                </g:else>
             }
         }
         return false;

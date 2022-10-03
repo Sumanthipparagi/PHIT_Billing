@@ -245,6 +245,7 @@ public class Links
     public static String DAY_END_MASTER_DATATABLE = APP_CONTEXT_PATH + "entity/dayendmaster/datatable";
     public static String DAY_END_MASTER_UPDATE = APP_CONTEXT_PATH + "entity/dayendmaster/{id}";
     public static String DAY_END_MASTER_DELETE = APP_CONTEXT_PATH + "entity/dayendmaster/{id}";
+    public static String DAY_END_MASTER_ENTITY = APP_CONTEXT_PATH + "entity/dayendmasterbyentity/{id}";
 
     //Day End Master
     public static String HQ_AREA_SHOW = APP_CONTEXT_PATH + "entity/hqareas";

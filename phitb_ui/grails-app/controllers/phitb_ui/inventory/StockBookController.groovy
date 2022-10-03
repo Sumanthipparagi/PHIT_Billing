@@ -1,21 +1,27 @@
 package phitb_ui.inventory
 
+import com.fasterxml.jackson.databind.ObjectMapper
 import org.grails.web.json.JSONArray
+import org.grails.web.json.JSONException
 import org.grails.web.json.JSONObject
 import org.hibernate.engine.jdbc.batch.spi.Batch
 import org.springframework.messaging.simp.SimpMessagingTemplate
+import phitb_ui.Constants
 import phitb_ui.EntityService
 import phitb_ui.InventoryService
 import phitb_ui.ProductService
 import phitb_ui.SalesService
+import phitb_ui.Tools
 import phitb_ui.entity.EntityRegisterController
 import phitb_ui.entity.TaxController
 
-class StockBookController {
+class StockBookController
+{
 
     SimpMessagingTemplate brokerMessagingTemplate
 
-    def index() {
+    def index()
+    {
         def entityId = session.getAttribute("entityId").toString()
         JSONArray productList = new ProductService().getProductsByEntityId(entityId)
         def entityList = new EntityRegisterController().show()
@@ -23,8 +29,10 @@ class StockBookController {
         render(view: "/inventory/stock-entry", model: [productList: productList, entityList: entityList, taxList: taxList])
     }
 
-    def save() {
-        try {
+    def save()
+    {
+        try
+        {
             JSONObject jsonObject = new JSONObject(params)
             jsonObject.put("entityId", session.getAttribute("entityId"))
             jsonObject.put("entityTypeId", session.getAttribute("entityTypeId"))
@@ -32,55 +40,71 @@ class StockBookController {
             jsonObject.put("createdUser", session.getAttribute("userId"))
             // jsonObject.put("mergedWith", session.getAttribute(""))
             def apiResponse = new InventoryService().stockBookSave(jsonObject)
-            if (apiResponse?.status == 200) {
+            if (apiResponse?.status == 200)
+            {
                 JSONObject obj = new JSONObject(apiResponse.readEntity(String.class))
                 respond obj, formats: ['json'], status: 200
-            } else {
+            }
+            else
+            {
                 response.status = apiResponse?.status ?: 400
             }
         }
-        catch (Exception ex) {
+        catch (Exception ex)
+        {
             System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
             log.error('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
             response.status = 400
         }
     }
 
-    def update() {
-        try {
+    def update()
+    {
+        try
+        {
             JSONObject jsonObject = new JSONObject(params)
             jsonObject.put("entityId", session.getAttribute("entityId"))
             jsonObject.put("entityTypeId", session.getAttribute("entityTypeId"))
             jsonObject.put("createdUser", session.getAttribute("userId"))
             jsonObject.put("modifiedUser", session.getAttribute("userId"))
             def apiResponse = new InventoryService().updateStockBook(jsonObject)
-            if (apiResponse?.status == 200) {
+            if (apiResponse?.status == 200)
+            {
                 JSONObject obj = new JSONObject(apiResponse.readEntity(String.class))
                 respond obj, formats: ['json'], status: 200
-            } else {
+            }
+            else
+            {
                 response.status = apiResponse?.status ?: 400
             }
         }
-        catch (Exception ex) {
+        catch (Exception ex)
+        {
             System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
             log.error('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
             response.status = 400
         }
     }
 
-    def dataTable() {
-        try {
+    def dataTable()
+    {
+        try
+        {
             JSONObject jsonObject = new JSONObject(params)
             jsonObject.put("entityId", session.getAttribute('entityId'))
             def apiResponse = new InventoryService().showStockBooks(jsonObject)
-            if (apiResponse.status == 200) {
+            if (apiResponse.status == 200)
+            {
                 JSONObject responseObject = new JSONObject(apiResponse.readEntity(String.class))
-                if (responseObject) {
+                if (responseObject)
+                {
                     JSONArray productData = new JSONObject()
                     JSONArray data = responseObject.get("data")
-                    for (JSONObject dt : data) {
+                    for (JSONObject dt : data)
+                    {
                         def product = new ProductService().getProductById(dt.productId.toString())
-                        if (product) {
+                        if (product)
+                        {
                             dt.put("product", product)
                         }
                         productData.put(dt)
@@ -88,59 +112,83 @@ class StockBookController {
                     responseObject.put("data", productData)
 
                     respond responseObject, formats: ['json'], status: 200
-                } else
+                }
+                else
+                {
                     response.status = 404
-            } else {
+                }
+            }
+            else
+            {
                 response.status = 400
             }
         }
-        catch (Exception ex) {
+        catch (Exception ex)
+        {
             System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
             log.error('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
             response.status = 400
         }
     }
 
-    def getStocksOfProduct() {
+    def getStocksOfProduct()
+    {
         //get temp stockbook data
         def apiResp = new InventoryService().getTempStocksOfProductAndBatch(params.id, null)
-        if (apiResp.status == 200) {
+        if (apiResp.status == 200)
+        {
             JSONArray tempStockBookData = new JSONArray(apiResp.readEntity(String.class))
-            if (tempStockBookData.size() > 0) {
+            if (tempStockBookData.size() > 0)
+            {
                 def apiResponse = new InventoryService().getStocksOfProduct(params.id)
-                if (apiResponse?.status == 200) {
+                if (apiResponse?.status == 200)
+                {
                     JSONArray mainStockBookData = new JSONArray(apiResponse.readEntity(String.class))
                     JSONArray responseArray = new JSONArray()
 
                     //get main stockbook data
-                    for (JSONObject mainStock : mainStockBookData) {
+                    for (JSONObject mainStock : mainStockBookData)
+                    {
                         long remainingQty = mainStock.remainingQty
                         long remainingFreeQty = mainStock.remainingFreeQty
                         long remainingReplQty = mainStock.remainingReplQty
                         boolean toBeAddedToTmpStock = true
-                        for (JSONObject tmpStock : tempStockBookData) {
+                        for (JSONObject tmpStock : tempStockBookData)
+                        {
                             long userId = 0
                             if (tmpStock.has("userId"))
+                            {
                                 userId = Long.parseLong(tmpStock.get("userId")?.toString())
+                            }
                             if (mainStock.get("batchNumber") == tmpStock.get("batchNumber")
-                                    && userId == session.getAttribute("userId")) {
+                                    && userId == session.getAttribute("userId"))
+                            {
                                 //if main stock batch = tmp stock batch skip outer loop
                                 toBeAddedToTmpStock = false
                                 break
                             }
                         }
-                        for (JSONObject tmpStock : tempStockBookData) {
-                            if(mainStock.productId == tmpStock.productId && mainStock.batchNumber == tmpStock.batchNumber) {
+                        for (JSONObject tmpStock : tempStockBookData)
+                        {
+                            if (mainStock.productId == tmpStock.productId && mainStock.batchNumber == tmpStock.batchNumber)
+                            {
                                 if (tmpStock.remainingQty < remainingQty)
+                                {
                                     remainingQty = tmpStock.remainingQty
+                                }
                                 if (tmpStock.remainingFreeQty < remainingFreeQty)
+                                {
                                     remainingFreeQty = tmpStock.remainingFreeQty
+                                }
                                 if (tmpStock.remainingReplQty < remainingReplQty)
+                                {
                                     remainingReplQty = tmpStock.remainingReplQty
+                                }
                             }
                         }
 
-                        if (toBeAddedToTmpStock) {
+                        if (toBeAddedToTmpStock)
+                        {
                             String id = mainStock["taxId"]
                             def tax = new TaxController().show(id)
                             println(tax.taxValue)
@@ -155,11 +203,15 @@ class StockBookController {
                         }
                     }
 
-                    for (JSONObject tmpStock : tempStockBookData) {
+                    for (JSONObject tmpStock : tempStockBookData)
+                    {
                         long userId = 0
                         if (tmpStock.has("userId"))
+                        {
                             userId = Long.parseLong(tmpStock.get("userId")?.toString())
-                        if (userId == session.getAttribute("userId")) {
+                        }
+                        if (userId == session.getAttribute("userId"))
+                        {
                             String id = tmpStock["taxId"]
                             def tax = new TaxController().show(id)
                             println(tax.taxValue)
@@ -170,17 +222,37 @@ class StockBookController {
                             responseArray.put(tmpStock)
                         }
                     }
+
+//                    Remove duplicates batch while loading batches
+                    Set<String> set =new HashSet<String>();
+                    JSONArray tempArray=new JSONArray();
+                    for(int i=0;i<responseArray.size();i++){
+                        String  batch = responseArray.getJSONObject(i).getString("batchNumber")
+                        if(set.contains(batch)){
+                            continue;
+                        }else{
+                            set.add(batch);
+                            tempArray.add(responseArray.getJSONObject(i));
+                        }
+                    }
+                    responseArray = tempArray; //assign temp to original
                     respond responseArray, formats: ['json'], status: 200
-                } else {
+                }
+                else
+                {
                     response.status = apiResponse?.status
                 }
-            } else {
+            }
+            else
+            {
                 //if not available in temp, respond main stock
                 def apiResponse = new InventoryService().getStocksOfProduct(params.id)
-                if (apiResponse?.status == 200) {
+                if (apiResponse?.status == 200)
+                {
                     JSONArray stockBookData = new JSONArray(apiResponse.readEntity(String.class))
                     JSONArray responseArray = new JSONArray()
-                    for (JSONObject json : stockBookData) {
+                    for (JSONObject json : stockBookData)
+                    {
                         String id = json["taxId"]
                         def tax = new TaxController().show(id)
                         println(tax.taxValue)
@@ -190,29 +262,40 @@ class StockBookController {
                         json.put("igst", tax.salesIgst)
                         responseArray.put(json)
                     }
+
                     respond responseArray, formats: ['json'], status: 200
-                } else {
+                }
+                else
+                {
                     response.status = apiResponse?.status
                 }
             }
-        } else {
+        }
+        else
+        {
             response.status = apiResp?.status
         }
     }
 
-    def getStocksOfProductSaleReturn() {
-        try {
+    def getStocksOfProductSaleReturn()
+    {
+        try
+        {
             def apiResponse = new InventoryService().getStocksOfProductSaleRetrun(params.id)
-            if (apiResponse?.status == 200) {
+            if (apiResponse?.status == 200)
+            {
                 JSONArray stockBookData = new JSONArray(apiResponse.readEntity(String.class))
                 ArrayList<String> existingBatches = new ArrayList<>()
-                for (Object st : stockBookData) {
+                for (Object st : stockBookData)
+                {
                     existingBatches.add(st.batchNumber)
                 }
                 def productResponse = new ProductService().getBatchesOfProduct(params.id)
                 JSONArray batchData = new JSONArray(productResponse.readEntity(String.class))
-                for (Object bd : batchData) {
-                    if (!existingBatches.contains(bd.batchNumber)) {
+                for (Object bd : batchData)
+                {
+                    if (!existingBatches.contains(bd.batchNumber))
+                    {
                         bd.put("expDate", bd.get("expiryDate"));
                         bd.put("manufacturingDate", bd.get("manfDate"));
                         bd.put("remainingQty", 0);
@@ -225,15 +308,19 @@ class StockBookController {
                     }
                 }
                 JSONArray stockArray = new JSONArray()
-                for (JSONObject stock : stockBookData) {
+                for (JSONObject stock : stockBookData)
+                {
                     String id = stock["taxId"]
-                    if (id) {
+                    if (id)
+                    {
                         def tax = new TaxController().show(id)
                         stock.put("gst", tax.taxValue)
                         stock.put("sgst", tax.salesSgst)
                         stock.put("cgst", tax.salesCgst)
                         stock.put("igst", tax.salesIgst)
-                    } else {
+                    }
+                    else
+                    {
                         stock.put("gst", 0);
                         stock.put("sgst", 0);
                         stock.put("cgst", 0);
@@ -242,25 +329,31 @@ class StockBookController {
                     stockArray.put(stock)
                 }
                 respond stockArray, formats: ['json'], status: 200
-            } else {
+            }
+            else
+            {
                 response.status = apiResponse?.status
             }
         }
-        catch (Exception e) {
+        catch (Exception e)
+        {
             log.error(controllerName + ":" + e)
             System.out.println(controllerName + ":" + e)
         }
     }
 
 
-    def getStocksOfProductForPurchase() {
+    def getStocksOfProductForPurchase()
+    {
         String productId = params.id
         //Get main stock
         def apiResponse = new InventoryService().getStocksOfProduct(productId)
-        if (apiResponse?.status == 200) {
+        if (apiResponse?.status == 200)
+        {
             JSONArray stockBookData = new JSONArray(apiResponse.readEntity(String.class))
             JSONArray responseArray = new JSONArray()
-            for (JSONObject json : stockBookData) {
+            for (JSONObject json : stockBookData)
+            {
                 String id = json["taxId"]
                 def tax = new TaxController().show(id)
                 json.put("gst", tax.taxValue)
@@ -271,11 +364,14 @@ class StockBookController {
             }
             //Add New Batches
             def apiResp2 = new ProductService().getBatchesOfProduct(productId)
-            if (apiResp2?.status == 200) {
+            if (apiResp2?.status == 200)
+            {
                 def addedBatches = responseArray.batchNumber
                 JSONArray batches = new JSONArray(apiResp2.readEntity(String.class))
-                for (Object batch : batches) {
-                    if (!addedBatches.contains(batch.batchNumber)) {
+                for (Object batch : batches)
+                {
+                    if (!addedBatches.contains(batch.batchNumber))
+                    {
                         JSONObject stockEntry = new JSONObject()
                         stockEntry.put("productId", batch.product.id)
                         stockEntry.put("batchNumber", batch.batchNumber)
@@ -312,17 +408,22 @@ class StockBookController {
                 }
             }
             respond responseArray, formats: ['json'], status: 200
-        } else {
+        }
+        else
+        {
             response.status = apiResponse?.status
         }
     }
 
-    def getTempStocksOfProductAndBatch() {
+    def getTempStocksOfProductAndBatch()
+    {
         def apiResponse = new InventoryService().getTempStocksOfProductAndBatch(params.id, params.batch)
-        if (apiResponse?.status == 200) {
+        if (apiResponse?.status == 200)
+        {
             JSONArray jsonArray = new JSONArray(apiResponse.readEntity(String.class))
             JSONArray responseArray = new JSONArray()
-            for (JSONObject json : jsonArray) {
+            for (JSONObject json : jsonArray)
+            {
                 String id = json["taxId"]
                 def tax = new TaxController().show(id)
                 println(tax.taxValue)
@@ -333,18 +434,23 @@ class StockBookController {
                 responseArray.put(json)
             }
             respond responseArray, formats: ['json'], status: 200
-        } else {
+        }
+        else
+        {
             response.status = apiResponse?.status
         }
 
     }
 
-    def getTempStocksOfEntity() {
+    def getTempStocksOfEntity()
+    {
         def apiResponse = new InventoryService().getTempStocksOfEntity(params.id)
-        if (apiResponse?.status == 200) {
+        if (apiResponse?.status == 200)
+        {
             JSONArray jsonArray = new JSONArray(apiResponse.readEntity(String.class))
             JSONArray responseArray = new JSONArray()
-            for (JSONObject json : jsonArray) {
+            for (JSONObject json : jsonArray)
+            {
                 String id = json["taxId"]
                 def tax = new TaxController().show(id)
                 println(tax.taxValue)
@@ -355,17 +461,22 @@ class StockBookController {
                 responseArray.put(json)
             }
             respond responseArray, formats: ['json'], status: 200
-        } else {
+        }
+        else
+        {
             response.status = apiResponse?.status
         }
     }
 
-    def getTempStocksOfUser() {
+    def getTempStocksOfUser()
+    {
         def apiResponse = new InventoryService().getTempStocksByUser(params.id)
-        if (apiResponse?.status == 200) {
+        if (apiResponse?.status == 200)
+        {
             JSONArray jsonArray = new JSONArray(apiResponse.readEntity(String.class))
             JSONArray responseArray = new JSONArray()
-            for (JSONObject json : jsonArray) {
+            for (JSONObject json : jsonArray)
+            {
                 String id = json["taxId"]
                 def tax = new TaxController().show(id)
                 json.put("gst", tax.taxValue)
@@ -376,17 +487,22 @@ class StockBookController {
             }
             emitTempStockPool()
             respond responseArray, formats: ['json'], status: 200
-        } else {
+        }
+        else
+        {
             response.status = apiResponse?.status
         }
     }
 
-    def getStocksOfUser() {
+    def getStocksOfUser()
+    {
         def apiResponse = new InventoryService().getStocksByUser(params.id)
-        if (apiResponse?.status == 200) {
+        if (apiResponse?.status == 200)
+        {
             JSONArray jsonArray = new JSONArray(apiResponse.readEntity(String.class))
             JSONArray responseArray = new JSONArray()
-            for (JSONObject json : jsonArray) {
+            for (JSONObject json : jsonArray)
+            {
                 String id = json["taxId"]
                 def tax = new TaxController().show(id)
                 json.put("gst", tax.taxValue)
@@ -396,14 +512,18 @@ class StockBookController {
                 responseArray.put(json)
             }
             respond responseArray, formats: ['json'], status: 200
-        } else {
+        }
+        else
+        {
             response.status = apiResponse?.status
         }
     }
 
 
-    def tempStockBookSave() {
-        try {
+    def tempStockBookSave()
+    {
+        try
+        {
             JSONArray jsonArray = new JSONArray(params.rowData)
             String productId = jsonArray[1].toString()
             String batchNumber = jsonArray[2].toString()
@@ -414,16 +534,21 @@ class StockBookController {
             int i = 0
             long stockBookId = 0
             long draftProductId = 0
-            for (Object obj : jsonArray) {
+            for (Object obj : jsonArray)
+            {
                 //15 if edit, 16 if being added
-                if (i == 15 && obj != null) {
+                if (i == 15 && obj != null)
+                {
                     isEdit = true
                 }
 
-                if (i == 24 && obj != null) {
+                if (i == 24 && obj != null)
+                {
                     stockBookId = obj
                     draftProductId = obj
-                } else if (i == 25 && obj != null) {
+                }
+                else if (i == 25 && obj != null)
+                {
                     isEdit = false
                     stockBookId = obj
                     draftProductId = obj
@@ -431,31 +556,41 @@ class StockBookController {
                 i++
             }
             def stockBook = null
-            if (!isEdit) {
+            if (!isEdit)
+            {
                 //adding for first time
-                if (!draftEdit) {
+                if (!draftEdit)
+                {
                     stockBook = new InventoryService().getStocksOfProductAndBatch(productId, batchNumber, session.getAttribute("entityId").toString())
 
                     //This is for multi user
                     def tmpStockBookResponse = new InventoryService().getTempStocksOfProductAndBatch(productId, batchNumber)
-                    if(tmpStockBookResponse.status == 200)
+                    if (tmpStockBookResponse.status == 200)
                     {
                         long remainingQty = 0
                         long remainingFreeQty = 0
                         long remainingReplQty = 0
                         JSONArray tmpStocks = new JSONArray(tmpStockBookResponse.readEntity(String.class))
-                        if(tmpStocks.size() > 0)
+                        if (tmpStocks.size() > 0)
                         {
-                            for (Object tmpStock : tmpStocks) {
-                                if(stockBook.productId == tmpStock.productId && stockBook.batchNumber == tmpStock.batchNumber) {
+                            for (Object tmpStock : tmpStocks)
+                            {
+                                if (stockBook.productId == tmpStock.productId && stockBook.batchNumber == tmpStock.batchNumber)
+                                {
                                     if (remainingQty < tmpStock.remainingQty)
+                                    {
                                         remainingQty = tmpStock.remainingQty
+                                    }
 
                                     if (remainingFreeQty < tmpStock.remainingFreeQty)
+                                    {
                                         remainingFreeQty = tmpStock.remainingFreeQty
+                                    }
 
                                     if (remainingReplQty < tmpStock.remainingReplQty)
+                                    {
                                         remainingReplQty = tmpStock.remainingReplQty
+                                    }
                                 }
                             }
                             stockBook.remainingQty = remainingQty
@@ -464,18 +599,27 @@ class StockBookController {
                         }
 
                     }
-                    
-                } else
+
+                }
+                else
+                {
                     stockBook = new InventoryService().getStockBookById(stockBookId)
-            } else {
-                if (jsonArray[15] != 0 && !draftEdit) {
+                }
+            }
+            else
+            {
+                if (jsonArray[15] != 0 && !draftEdit)
+                {
                     //editing while adding for first time
                     def tmpStockBook = new InventoryService().getTempStocksById(jsonArray[15])
                     stockBook = new InventoryService().getStockBookById(Long.parseLong(tmpStockBook.originalId))
-                } else {
+                }
+                else
+                {
                     //editing draft
                     JSONObject draftProduct = new SalesService().getSaleProductDetailsById(draftProductId.toString())
-                    if (draftProduct) {
+                    if (draftProduct)
+                    {
                         stockBook = new InventoryService().getStocksOfProductAndBatch(draftProduct.productId.toString(), draftProduct.batchNumber, draftProduct.entityId.toString())
 
                         //if sale qty or free qty is edited only difference qty to be pulled in to tmp stockbook
@@ -485,33 +629,50 @@ class StockBookController {
                         //if draftSqty and draftFqty = to sqty and freeQty then no need to add into temp stock
                         long draftSqty = draftProduct.sqty
                         long draftFqty = draftProduct.freeQty
-                        if (draftSqty == saleQty && draftFqty == saleFreeQty) {
+                        if (draftSqty == saleQty && draftFqty == saleFreeQty)
+                        {
                             //no need to add to tempstocks
                             //remove existing tempstocks
                             respond jsonArray, formats: ['json']
                             return
-                        } else {
-                            if (draftSqty == saleQty && draftFqty != saleFreeQty) {
+                        }
+                        else
+                        {
+                            if (draftSqty == saleQty && draftFqty != saleFreeQty)
+                            {
                                 saleQty = 0
-                            } else {
-                                if (saleQty > draftSqty) {
+                            }
+                            else
+                            {
+                                if (saleQty > draftSqty)
+                                {
                                     saleQty = saleQty - draftSqty
-                                } else if (saleQty < draftSqty) {
+                                }
+                                else if (saleQty < draftSqty)
+                                {
                                     saleQty = -(draftSqty - saleQty)
                                 }
                             }
 
-                            if (draftSqty != saleQty && draftFqty == saleFreeQty) {
+                            if (draftSqty != saleQty && draftFqty == saleFreeQty)
+                            {
                                 saleFreeQty = 0
-                            } else {
-                                if (saleFreeQty > draftFqty) {
+                            }
+                            else
+                            {
+                                if (saleFreeQty > draftFqty)
+                                {
                                     saleFreeQty = saleFreeQty - draftFqty
-                                } else if (saleFreeQty < draftFqty) {
+                                }
+                                else if (saleFreeQty < draftFqty)
+                                {
                                     saleFreeQty = -(draftFqty - saleFreeQty)
                                 }
                             }
                         }
-                    } else {
+                    }
+                    else
+                    {
                         //throw error
                         println("Selected product not in draft")
                         response.status = 400
@@ -522,16 +683,22 @@ class StockBookController {
 
             long remainingQty = stockBook.remainingQty
             long remainingFreeQty = stockBook.remainingFreeQty
-            if (saleQty <= remainingQty) {
+            if (saleQty <= remainingQty)
+            {
                 remainingQty = remainingQty - saleQty
 
-            } else if (saleQty > remainingQty && saleQty <= (remainingQty + remainingFreeQty)) {
+            }
+            else if (saleQty > remainingQty && saleQty <= (remainingQty + remainingFreeQty))
+            {
                 remainingFreeQty = remainingFreeQty - (saleQty - remainingQty)
                 remainingQty = 0
             }
-            if (saleFreeQty <= remainingFreeQty) {
+            if (saleFreeQty <= remainingFreeQty)
+            {
                 remainingFreeQty = remainingFreeQty - saleFreeQty
-            } else if (saleFreeQty > remainingFreeQty && saleFreeQty <= (remainingQty + remainingFreeQty)) {
+            }
+            else if (saleFreeQty > remainingFreeQty && saleFreeQty <= (remainingQty + remainingFreeQty))
+            {
                 remainingQty = remainingQty - (saleFreeQty - remainingFreeQty)
                 remainingFreeQty = 0
             }
@@ -565,6 +732,19 @@ class StockBookController {
             jsonObject.put("originalSqty", jsonArray[20])
             jsonObject.put("originalFqty", jsonArray[21])
 
+            JSONObject settings = new EntityService().getEntitySettingsByEntity(session.getAttribute('entityId').toString())
+            if (settings == null)
+            {
+                settings.put("settings", "")
+            }
+            if (settings?.ALLOW_SAME_BATCH == "YES")
+            {
+                jsonObject.put("ALLOW_SAME_BATCH", true)
+            }
+            else
+            {
+                jsonObject.put("ALLOW_SAME_BATCH", false)
+            }
             //editing draft
 /*            def tmp = jsonArray.indexOf(22)
             if(jsonArray.indexOf(22) > 0)
@@ -573,40 +753,54 @@ class StockBookController {
                 jsonObject.put("draftFqty", jsonArray[23])*/
 
             def apiResponse = new InventoryService().tempStockBookSave(jsonObject)
-            if (apiResponse?.status == 200) {
+            if (apiResponse?.status == 200)
+            {
                 emitTempStockPool()
                 JSONObject obj = new JSONObject(apiResponse.readEntity(String.class))
                 respond obj, formats: ['json'], status: 200
-            } else {
+            }
+            else
+            {
                 response.status = apiResponse.status
             }
         }
-        catch (Exception ex) {
+        catch (Exception ex)
+        {
             System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
             log.error('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
             response.status = 400
         }
     }
 
-    def stockBookSave() {
-        try {
+    def stockBookSave()
+    {
+        try
+        {
             def supplier = params.supplier
             def series = params.series
             JSONArray jsonArray = new JSONArray(params.rowData)
             Boolean isEdit = false
             int i = 0
-            for (Object obj : jsonArray) {
+            for (Object obj : jsonArray)
+            {
                 //15 if edit, 16 if being added
                 if (i == 15 && obj != null)
+                {
                     isEdit = true
+                }
                 else if (i == 16 && obj != null)
+                {
                     isEdit = false
+                }
                 i++
             }
             def stockBook = null
             if (!isEdit)
+            {
                 stockBook = new InventoryService().getStockBookById(jsonArray[16])
-            else {
+            }
+            else
+            {
 //                def tmpStockBook = new InventoryService().getTempStocksById(jsonArray[15])
                 stockBook = new InventoryService().getStockBookById(Long.parseLong(jsonArray[15]))
             }
@@ -652,14 +846,18 @@ class StockBookController {
             jsonObject.put("originalId", stockBook.id)
             jsonObject.put("uuid", params.uuid)
             def apiResponse = new InventoryService().stockBookSave(jsonObject)
-            if (apiResponse?.status == 200) {
+            if (apiResponse?.status == 200)
+            {
                 JSONObject obj = new JSONObject(apiResponse.readEntity(String.class))
                 respond obj, formats: ['json'], status: 200
-            } else {
+            }
+            else
+            {
                 response.status = apiResponse?.status ?: 400
             }
         }
-        catch (Exception ex) {
+        catch (Exception ex)
+        {
             System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
             log.error('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
             response.status = 400
@@ -667,59 +865,78 @@ class StockBookController {
     }
 
 
-    def tempStockShow() {
-        try {
+    def tempStockShow()
+    {
+        try
+        {
             def apiResponse = new InventoryService().getTempStocks()
-            if (apiResponse?.status == 200) {
+            if (apiResponse?.status == 200)
+            {
                 JSONArray jsonArray = new JSONArray(apiResponse.readEntity(String.class));
                 ArrayList<String> arrayList = new ArrayList<>(jsonArray)
                 return arrayList
-            } else {
+            }
+            else
+            {
                 return []
             }
         }
-        catch (Exception ex) {
+        catch (Exception ex)
+        {
             System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
             log.error('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
             response.status = 400
         }
     }
 
-    def deleteTempStock() {
+    def deleteTempStock()
+    {
         def id = params.id
         def apiResponse = new InventoryService().deleteTempStock(id)
         if (apiResponse.status == 200)
+        {
             emitTempStockPool()
+        }
         respond(text: id, status: apiResponse.status)
     }
 
 
-    def StockBookPurchase() {
-        try {
+    def StockBookPurchase()
+    {
+        try
+        {
             JSONObject jsonObject = new JSONObject(params)
             def apiResponse = new InventoryService().StockBookPurchase(jsonObject)
-            if (apiResponse?.status == 200) {
+            if (apiResponse?.status == 200)
+            {
                 JSONObject obj = new JSONObject(apiResponse.readEntity(String.class))
                 respond obj, formats: ['json'], status: 200
-            } else {
+            }
+            else
+            {
                 response.status = apiResponse?.status ?: 400
             }
         }
-        catch (Exception ex) {
+        catch (Exception ex)
+        {
             System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
             log.error('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
             response.status = 400
         }
     }
 
-    def stockPurchase() {
+    def stockPurchase()
+    {
         def batch = params.batch
         def purqty = params.sqty
         def apiResponse = new InventoryService().stocksPurchase(batch, purqty)
-        if (apiResponse?.status == 200) {
+        if (apiResponse?.status == 200)
+        {
             JSONObject jsonObject = new JSONObject(apiResponse.readEntity(String.class))
             respond jsonObject, formats: ['json'], status: 200
-        } else {
+        }
+        else
+        {
             return null
         }
 
@@ -745,43 +962,56 @@ class StockBookController {
 //    }
 
 
-    def stockByProductAndBatch() {
+    def stockByProductAndBatch()
+    {
         def batch = params.batch
         def productId = params.productId
         String entityId = session.getAttribute('entityId').toString()
         def apiResponse = new InventoryService().stocksByProductAndBatch(batch, productId, entityId)
-        if (apiResponse?.status == 200) {
+        if (apiResponse?.status == 200)
+        {
             JSONObject jsonObject = new JSONObject(apiResponse.readEntity(String.class))
             respond jsonObject, formats: ['json'], status: 200
-        } else {
+        }
+        else
+        {
             return null
         }
     }
 
-    def delete() {
-        try {
+    def delete()
+    {
+        try
+        {
             JSONObject jsonObject = new JSONObject(params)
             def apiResponse = new InventoryService().deleteStockBook(jsonObject.id)
-            if (apiResponse.status == 200) {
+            if (apiResponse.status == 200)
+            {
                 JSONObject data = new JSONObject()
                 data.put("success", "success")
                 respond data, formats: ['json'], status: 200
-            } else {
+            }
+            else
+            {
                 response.status = 400
             }
         }
-        catch (Exception ex) {
+        catch (Exception ex)
+        {
             System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
             log.error('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
             response.status = 400
         }
     }
 
-    def emitTempStockPool() {
+    def emitTempStockPool()
+    {
         def tempStockResp = new InventoryService().getTempStocksByUser(session.getAttribute("userId").toString())
-        if (tempStockResp.status == 200) {
+        if (tempStockResp.status == 200)
+        {
             JSONArray tempStocks = new JSONArray(tempStockResp.readEntity(String.class))
-            for (Object tmpStk : tempStocks) {
+            for (Object tmpStk : tempStocks)
+            {
                 JSONObject product = new ProductService().getProductById(tmpStk["productId"].toString())
                 tmpStk.put("productName", product.productName)
             }

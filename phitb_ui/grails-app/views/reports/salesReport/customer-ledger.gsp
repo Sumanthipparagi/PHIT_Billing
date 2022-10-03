@@ -93,7 +93,7 @@
                                         <label for="customerSelect">Customer:</label>
                                         <select class="form-control show-tick" id="customerSelect"
                                                >
-                                            <option value="">--SELECT--</option>
+                                            <option value="">ALL</option>
                                             <g:each in="${customerArray}" var="cs">
                                                 <g:if test="${cs.id != session.getAttribute("entityId")}">
                                                     <option data-state="${cs.stateId}" value="${cs.id}"
@@ -153,6 +153,7 @@
 <asset:javascript src="/themeassets/plugins/momentjs/moment.js"/>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.3/js/select2.min.js"></script>
 
+%{--
 <script>
     $('.dateRange').daterangepicker({
         locale: {
@@ -174,6 +175,13 @@
         });
         var dateRange = $('.dateRange').val();
         var customer = $('#customerSelect').val();
+        var partyName = '';
+        if(customer!==''){
+            partyName = "<tr><th data-f-bold='true' colspan='10'>Party Name:  " +
+                $('#customerSelect').find('option:selected').text(); + "</th></tr>"
+        }else{
+            partyName=''
+        }
         $.ajax({
             type: "GET",
             url: "/reports/sales/get-customer-ledger?dateRange=" + dateRange +"&customerId="+customer,
@@ -184,7 +192,8 @@
                 var grandTotal = 0.00;
                 var mainTableHeader = "<table class='table-bordered table-sm' style='width: 100%;color: #212529;'><thead>" +
                     "<tr><td data-f-bold='true' colspan='11'><h3 style='margin-bottom:0 !important;'>${session.getAttribute('entityName')}</h3></td></tr>" +
-                    "<tr><td colspan='10'>${session.getAttribute('entityAddress1')} ${session.getAttribute('entityAddress2')} ${session.getAttribute('entityPinCode')}, ph: ${session.getAttribute('entityMobileNumber')}</td></tr>" +
+                    "<tr><td colspan='10'>${session.getAttribute('entityAddress1')} ${session.getAttribute('entityAddress2')} ${session.getAttribute('entityPinCode')}, ph: ${session.getAttribute('entityMobileNumber')}</td></tr>" + partyName
+                     +
                     "<tr><th data-f-bold='true' colspan='10'>Customer Ledger, Date: " + dateRange + "</th></tr>" +
                     "<tr><th data-f-bold='true'>Date.</th><th data-f-bold='true'>Transaction No.</th><th data-f-bold='true'>Transfer Desc.</th><th data-f-bold='true'>Debit</th>" +
                     "<th data-f-bold='true'>Credit</th><th data-f-bold='true'>Balance</th></tr></thead><tbody>";
@@ -265,6 +274,143 @@
 
 
 </script>
+--}%
+
+
+<script>
+    $('.dateRange').daterangepicker({
+        locale: {
+            format: "DD/MM/YYYY"
+        }
+    });
+
+    $('#customerSelect').select2();
+
+    function getReport() {
+        var loading = Swal.fire({
+            title: "Getting reports, Please wait!",
+            html: '<img src="${assetPath(src: "/themeassets/images/3.gif")}" width="25" height="25"/>',
+            showDenyButton: false,
+            showCancelButton: false,
+            showConfirmButton: false,
+            allowOutsideClick: false,
+            closeOnClickOutside: false
+        });
+        var dateRange = $('.dateRange').val();
+        var customer = $('#customerSelect').val();
+        var partyName = '';
+        if(customer!==''){
+            partyName = "<tr><th data-f-bold='true' colspan='10'>Party Name:  " +
+                $('#customerSelect').find('option:selected').text(); + "</th></tr>"
+        }else{
+            partyName=''
+        }
+        $.ajax({
+            type: "GET",
+            url: "/reports/sales/get-customer-ledger?dateRange=" + dateRange +"&customerId="+customer,
+            contentType: false,
+            processData: false,
+            success: function (data) {
+                var content = "";
+                var grandTotal = 0.00;
+                var mainTableHeader = "<table class='table-bordered table-sm' style='width: 100%;color: #212529;'><thead>" +
+                    "<tr><td data-f-bold='true' colspan='11'><h3 style='margin-bottom:0 !important;'>${session.getAttribute('entityName')}</h3></td></tr>" +
+                    "<tr><td colspan='10'>${session.getAttribute('entityAddress1')} ${session.getAttribute('entityAddress2')} ${session.getAttribute('entityPinCode')}, ph: ${session.getAttribute('entityMobileNumber')}</td></tr>" +
+
+                    "<tr><th data-f-bold='true' colspan='10'>Customer Ledger, Date: " + dateRange + "</th></tr>" +
+                    "<tr><th data-f-bold='true'>Date.</th><th data-f-bold='true'>Transaction No.</th><th data-f-bold='true'>Transfer Desc.</th><th data-f-bold='true'>Debit</th>" +
+                    "<th data-f-bold='true'>Credit</th><th data-f-bold='true'>Balance</th></tr></thead><tbody>";
+                var balance = data.openingBalance;
+                content =
+                    "<tr><td colspan='5' style='text-align: center;'><strong>Opening Balance as on "+dateRange.split("-")[0]+"</strong></td><td><strong>"+formatNumber(balance.toFixed(2))+"</strong></td><tr>";
+                if(data)
+                {
+                    $.each(data.customerLedger, function (key, value) {
+                        // console.log(value[0]?.customer?.entityName+" "+key)
+                        content +="<tr><th data-f-bold='true' colspan='10'>Party Name: "
+                            +value[0]?.customer?.entityName+ "</th></tr>"
+                        $.each(value, function (i, cl) {
+                            var debitAmount = 0.0;
+                            var creditAmount = 0.0;
+                            if(cl.type === "DEBIT") {
+                                debitAmount = cl.amount;
+                                balance = balance -cl.amount;
+                            }
+                            else {
+                                creditAmount = cl.amount;
+                                balance += cl.amount;
+                            }
+
+                            content +=
+                                "<tr><td>"+dateFormat(cl.transactionDate)+"</td><td>"+cl.transactionNumber+"</td><td>"+cl.transactionDescription+"</td><td>"+formatNumber(debitAmount.toFixed(2))+"</td><td>"+formatNumber(creditAmount.toFixed(2))+"</td><td>"+formatNumber(balance.toFixed(2))+"</td></tr>";
+                        });
+                    });
+                }
+                content +=
+                    "<tr><td colspan='5' style='text-align: center;'><strong>Closing Balance as on "+dateRange.split("-")[1]+"</strong></td><td><strong>"+formatNumber(balance.toFixed(2))+"</strong></td><tr>";
+
+                var mainTableFooter = "</tbody></table>";
+
+                $("#result").html(mainTableHeader + content + mainTableFooter);
+                loading.close();
+                $("#grandTotal").text(grandTotal.toFixed(2));
+            },
+            error: function () {
+                loading.close();
+                swal("Error!", "Unable to generate report at the moment", "error");
+            }
+        })
+    }
+
+    $("#btnExport").click(function () {
+        let table = document.getElementById("result");
+        TableToExcel.convert(table, {
+            name: 'ledger-report.xlsx',
+            sheet: {
+                name: 'Sheet 1' // sheetName
+            }
+        });
+    });
+
+    $("#btnPrint").click(function () {
+        $("#result").print({
+            globalStyles: true,
+            mediaPrint: false,
+            stylesheet: null,
+            noPrintSelector: ".no-print",
+            iframe: true,
+            append: null,
+            prepend: null,
+            manuallyCopyFormValues: true,
+            deferred: $.Deferred(),
+            timeout: 750,
+            title: null,
+            doctype: '<!doctype html>'
+        });
+    });
+
+    /*  $(document).ready(function() {
+          window.jsPDF = window.jspdf.jsPDF;
+          $("#btnPdf").click(function () {
+              var doc = new jsPDF();
+              doc.autoTable({ html: '#result' });
+              doc.save('table.pdf');
+          });
+      });*/
+
+    function dateFormat(dt) {
+        var date = new Date(dt);
+        return moment(date).format('DD/MM/YYYY');
+
+    }
+
+    function formatNumber(number) {
+        return Number(number).toLocaleString()
+        // return number
+    }
+
+</script>
+
 <g:include view="controls/footer-content.gsp"/>
 <script>
     selectSideMenu("reports-menu");

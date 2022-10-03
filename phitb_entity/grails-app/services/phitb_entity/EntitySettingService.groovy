@@ -107,16 +107,17 @@ class EntitySettingService
                     entitySetting1.entityType = EntityTypeMaster.findById(Long.parseLong(entityRegister.entityType.id as String))
                     entitySetting1.save(flush: true)
                 }
-                if (jsonObject.get("dsi").toString())
-                {
-                    EntitySetting entitySetting1 = new EntitySetting()
-                    entitySetting1.code = "DSI";
-                    entitySetting1.name = "Default Sales Invoice Series";
-                    entitySetting1.value = jsonObject.get("dsi").toString();
-                    entitySetting1.entity = EntityRegister.findById(Long.parseLong(jsonObject.get("entityId").toString()))
-                    entitySetting1.entityType = EntityTypeMaster.findById(Long.parseLong(entityRegister.entityType.id as String))
-                    entitySetting1.save(flush: true)
-                }
+//                if (jsonObject.get("dsi").toString())
+//                {
+//                    EntitySetting entitySetting1 = new EntitySetting()
+//                    entitySetting1.code = "DSI";
+//                    entitySetting1.name = "Default Sales Invoice Series";
+//                    entitySetting1.value = jsonObject.get("dsi").toString();
+//                    entitySetting1.entity = EntityRegister.findById(Long.parseLong(jsonObject.get("entityId").toString()))
+//                    entitySetting1.entityType = EntityTypeMaster.findById(Long.parseLong(entityRegister.entityType.id as String))
+//                    entitySetting1.save(flush: true)
+//                }
+
                 if (jsonObject.get("ipg").toString())
                 {
                     EntitySetting entitySetting1 = new EntitySetting()
@@ -157,12 +158,12 @@ class EntitySettingService
                     entitySetting1.entityType = EntityTypeMaster.findById(Long.parseLong(entityRegister.entityType.id as String))
                     entitySetting1.save(flush: true)
                 }
-                if (jsonObject.get("accmu").toString())
+                if (jsonObject.get("MUSC").toString())
                 {
                     EntitySetting entitySetting1 = new EntitySetting()
-                    entitySetting1.code = "ACCMU";
+                    entitySetting1.code = "MUSC";
                     entitySetting1.name = "Max Utilization of a Single Cheque (For Invoices)";
-                    entitySetting1.value = jsonObject.get("accmu").toString();
+                    entitySetting1.value = jsonObject.get("MUSC").toString();
                     entitySetting1.entity = EntityRegister.findById(Long.parseLong(jsonObject.get("entityId").toString()))
                     entitySetting1.entityType = EntityTypeMaster.findById(Long.parseLong(entityRegister.entityType.id as String))
                     entitySetting1.save(flush: true)
@@ -177,37 +178,37 @@ class EntitySettingService
                     entitySetting1.entityType = EntityTypeMaster.findById(Long.parseLong(entityRegister.entityType.id as String))
                     entitySetting1.save(flush: true)
                 }
-                if (jsonObject.get("asb").toString())
+                if (jsonObject.get("ALLOW_SAME_BATCH").toString())
                 {
                     EntitySetting entitySetting1 = new EntitySetting()
-                    entitySetting1.code = "ASB";
+                    entitySetting1.code = "ALLOW_SAME_BATCH";
                     entitySetting1.name = "Allow Same Batch to be repeated in a Single Sales Invoice?";
-                    entitySetting1.value = jsonObject.get("asb").toString();
+                    entitySetting1.value = jsonObject.get("ALLOW_SAME_BATCH").toString();
                     entitySetting1.entity = EntityRegister.findById(Long.parseLong(jsonObject.get("entityId").toString()))
                     entitySetting1.entityType = EntityTypeMaster.findById(Long.parseLong(entityRegister.entityType.id as String))
                     entitySetting1.save(flush: true)
                 }
-                if (jsonObject.get("ro").toString())
-                {
-                    EntitySetting entitySetting1 = new EntitySetting()
-                    entitySetting1.code = "RO";
-                    entitySetting1.name = "Round Off the Scheme Quantity?";
-                    entitySetting1.value = jsonObject.get("ro").toString();
-                    entitySetting1.entity = EntityRegister.findById(Long.parseLong(jsonObject.get("entityId").toString()))
-                    entitySetting1.entityType = EntityTypeMaster.findById(Long.parseLong(entityRegister.entityType.id as String))
-                    entitySetting1.save(flush: true)
-                }
-                if (jsonObject.get("essr").toString())
-                {
-                    EntitySetting entitySetting1 = new EntitySetting()
-                    entitySetting1.code = "ESSR";
-                    entitySetting1.name = "Excess/Shortage stocks rounded off to be autoadjusted in Next Invoice?";
-                    entitySetting1.value = jsonObject.get("essr").toString();
-                    entitySetting1.entity = EntityRegister.findById(Long.parseLong(jsonObject.get("entityId").toString()))
-                    entitySetting1.entityType = EntityTypeMaster.findById(Long.parseLong(entityRegister.entityType.id as String))
-                    entitySetting1.save(flush: true)
-
-                }
+//                if (jsonObject.get("ro").toString())
+//                {
+//                    EntitySetting entitySetting1 = new EntitySetting()
+//                    entitySetting1.code = "RO";
+//                    entitySetting1.name = "Round Off the Scheme Quantity?";
+//                    entitySetting1.value = jsonObject.get("ro").toString();
+//                    entitySetting1.entity = EntityRegister.findById(Long.parseLong(jsonObject.get("entityId").toString()))
+//                    entitySetting1.entityType = EntityTypeMaster.findById(Long.parseLong(entityRegister.entityType.id as String))
+//                    entitySetting1.save(flush: true)
+//                }
+//                if (jsonObject.get("essr").toString())
+//                {
+//                    EntitySetting entitySetting1 = new EntitySetting()
+//                    entitySetting1.code = "ESSR";
+//                    entitySetting1.name = "Excess/Shortage stocks rounded off to be autoadjusted in Next Invoice?";
+//                    entitySetting1.value = jsonObject.get("essr").toString();
+//                    entitySetting1.entity = EntityRegister.findById(Long.parseLong(jsonObject.get("entityId").toString()))
+//                    entitySetting1.entityType = EntityTypeMaster.findById(Long.parseLong(entityRegister.entityType.id as String))
+//                    entitySetting1.save(flush: true)
+//
+//                }
                 if (jsonObject.get("as").toString())
                 {
                     EntitySetting entitySetting1 = new EntitySetting()
@@ -229,12 +230,12 @@ class EntitySettingService
                     entitySetting1.entityType = EntityTypeMaster.findById(Long.parseLong(entityRegister.entityType.id as String))
                     entitySetting1.save(flush: true)
                 }
-                if (jsonObject.get("ValZero").toString())
+                if (jsonObject.get("ZERO_INVOICE_VALUE").toString())
                 {
                     EntitySetting entitySetting1 = new EntitySetting()
-                    entitySetting1.code = "ValZERO";
+                    entitySetting1.code = "ZERO_INVOICE_VALUE";
                     entitySetting1.name = "Can the Invoice Value be Zero?";
-                    entitySetting1.value = jsonObject.get("ValZero").toString();
+                    entitySetting1.value = jsonObject.get("ZERO_INVOICE_VALUE").toString();
                     entitySetting1.entity = EntityRegister.findById(Long.parseLong(jsonObject.get("entityId").toString()))
                     entitySetting1.entityType = EntityTypeMaster.findById(Long.parseLong(entityRegister.entityType.id as String))
                     entitySetting1.save(flush: true)
@@ -268,16 +269,16 @@ class EntitySettingService
                     entitySetting1.entityType = EntityTypeMaster.findById(Long.parseLong(entityRegister.entityType.id as String))
                     entitySetting1.save(flush: true)
                 }
-                if (jsonObject.get("dsi").toString())
-                {
-                    EntitySetting entitySetting1 = new EntitySetting()
-                    entitySetting1.code = "DSI";
-                    entitySetting1.name = "Default Sales Invoice Series";
-                    entitySetting1.value = jsonObject.get("dsi").toString();
-                    entitySetting1.entity = EntityRegister.findById(Long.parseLong(jsonObject.get("entityId").toString()))
-                    entitySetting1.entityType = EntityTypeMaster.findById(Long.parseLong(entityRegister.entityType.id as String))
-                    entitySetting1.save(flush: true)
-                }
+//                if (jsonObject.get("dsi").toString())
+//                {
+//                    EntitySetting entitySetting1 = new EntitySetting()
+//                    entitySetting1.code = "DSI";
+//                    entitySetting1.name = "Default Sales Invoice Series";
+//                    entitySetting1.value = jsonObject.get("dsi").toString();
+//                    entitySetting1.entity = EntityRegister.findById(Long.parseLong(jsonObject.get("entityId").toString()))
+//                    entitySetting1.entityType = EntityTypeMaster.findById(Long.parseLong(entityRegister.entityType.id as String))
+//                    entitySetting1.save(flush: true)
+//                }
                 if (jsonObject.get("ipg").toString())
                 {
                     EntitySetting entitySetting1 = new EntitySetting()
@@ -318,12 +319,12 @@ class EntitySettingService
                     entitySetting1.entityType = EntityTypeMaster.findById(Long.parseLong(entityRegister.entityType.id as String))
                     entitySetting1.save(flush: true)
                 }
-                if (jsonObject.get("accmu").toString())
+                if (jsonObject.get("MUSC").toString())
                 {
                     EntitySetting entitySetting1 = new EntitySetting()
-                    entitySetting1.code = "ACCMU";
+                    entitySetting1.code = "MUSC";
                     entitySetting1.name = "Max Utilization of a Single Cheque (For Invoices)";
-                    entitySetting1.value = jsonObject.get("accmu").toString();
+                    entitySetting1.value = jsonObject.get("MUSC").toString();
                     entitySetting1.entity = EntityRegister.findById(Long.parseLong(jsonObject.get("entityId").toString()))
                     entitySetting1.entityType = EntityTypeMaster.findById(Long.parseLong(entityRegister.entityType.id as String))
                     entitySetting1.save(flush: true)
@@ -338,37 +339,38 @@ class EntitySettingService
                     entitySetting1.entityType = EntityTypeMaster.findById(Long.parseLong(entityRegister.entityType.id as String))
                     entitySetting1.save(flush: true)
                 }
-                if (jsonObject.get("asb").toString())
+                if (jsonObject.get("ALLOW_SAME_BATCH").toString())
                 {
                     EntitySetting entitySetting1 = new EntitySetting()
-                    entitySetting1.code = "ASB";
+                    entitySetting1.code = "ALLOW_SAME_BATCH";
                     entitySetting1.name = "Allow Same Batch to be repeated in a Single Sales Invoice?";
-                    entitySetting1.value = jsonObject.get("asb").toString();
+                    entitySetting1.value = jsonObject.get("ALLOW_SAME_BATCH").toString();
                     entitySetting1.entity = EntityRegister.findById(Long.parseLong(jsonObject.get("entityId").toString()))
                     entitySetting1.entityType = EntityTypeMaster.findById(Long.parseLong(entityRegister.entityType.id as String))
                     entitySetting1.save(flush: true)
                 }
-                if (jsonObject.get("ro").toString())
-                {
-                    EntitySetting entitySetting1 = new EntitySetting()
-                    entitySetting1.code = "RO";
-                    entitySetting1.name = "Round Off the Scheme Quantity?";
-                    entitySetting1.value = jsonObject.get("ro").toString();
-                    entitySetting1.entity = EntityRegister.findById(Long.parseLong(jsonObject.get("entityId").toString()))
-                    entitySetting1.entityType = EntityTypeMaster.findById(Long.parseLong(entityRegister.entityType.id as String))
-                    entitySetting1.save(flush: true)
-                }
-                if (jsonObject.get("essr").toString())
-                {
-                    EntitySetting entitySetting1 = new EntitySetting()
-                    entitySetting1.code = "ESSR";
-                    entitySetting1.name = "Excess/Shortage stocks rounded off to be autoadjusted in Next Invoice?";
-                    entitySetting1.value = jsonObject.get("essr").toString();
-                    entitySetting1.entity = EntityRegister.findById(Long.parseLong(jsonObject.get("entityId").toString()))
-                    entitySetting1.entityType = EntityTypeMaster.findById(Long.parseLong(entityRegister.entityType.id as String))
-                    entitySetting1.save(flush: true)
+//                if (jsonObject.get("ro").toString())
+//                {
+//                    EntitySetting entitySetting1 = new EntitySetting()
+//                    entitySetting1.code = "RO";
+//                    entitySetting1.name = "Round Off the Scheme Quantity?";
+//                    entitySetting1.value = jsonObject.get("ro").toString();
+//                    entitySetting1.entity = EntityRegister.findById(Long.parseLong(jsonObject.get("entityId").toString()))
+//                    entitySetting1.entityType = EntityTypeMaster.findById(Long.parseLong(entityRegister.entityType.id as String))
+//                    entitySetting1.save(flush: true)
+//                }
+//                if (jsonObject.get("essr").toString())
+//                {
+//                    EntitySetting entitySetting1 = new EntitySetting()
+//                    entitySetting1.code = "ESSR";
+//                    entitySetting1.name = "Excess/Shortage stocks rounded off to be autoadjusted in Next Invoice?";
+//                    entitySetting1.value = jsonObject.get("essr").toString();
+//                    entitySetting1.entity = EntityRegister.findById(Long.parseLong(jsonObject.get("entityId").toString()))
+//                    entitySetting1.entityType = EntityTypeMaster.findById(Long.parseLong(entityRegister.entityType.id as String))
+//                    entitySetting1.save(flush: true)
+//
+//                }
 
-                }
                 if (jsonObject.get("as").toString())
                 {
                     EntitySetting entitySetting1 = new EntitySetting()
@@ -390,12 +392,12 @@ class EntitySettingService
                     entitySetting1.entityType = EntityTypeMaster.findById(Long.parseLong(entityRegister.entityType.id as String))
                     entitySetting1.save(flush: true)
                 }
-                if (jsonObject.get("ValZero").toString())
+                if (jsonObject.get("ZERO_INVOICE_VALUE").toString())
                 {
                     EntitySetting entitySetting1 = new EntitySetting()
-                    entitySetting1.code = "ValZERO";
+                    entitySetting1.code = "ZERO_INVOICE_VALUE";
                     entitySetting1.name = "Can the Invoice Value be Zero?";
-                    entitySetting1.value = jsonObject.get("ValZero").toString();
+                    entitySetting1.value = jsonObject.get("ZERO_INVOICE_VALUE").toString();
                     entitySetting1.entity = EntityRegister.findById(Long.parseLong(jsonObject.get("entityId").toString()))
                     entitySetting1.entityType = EntityTypeMaster.findById(Long.parseLong(entityRegister.entityType.id as String))
                     entitySetting1.save(flush: true)
@@ -476,8 +478,9 @@ class EntitySettingService
         JSONObject jsonObject1 = new JSONObject()
         for(EntitySetting entitySetting1: entitySetting)
         {
-            jsonObject1.put(entitySetting1.code, entitySetting1.value)
+            jsonObject1.put(entitySetting1.code, entitySetting1.value.toString())
         }
        return  jsonObject1
     }
+
 }

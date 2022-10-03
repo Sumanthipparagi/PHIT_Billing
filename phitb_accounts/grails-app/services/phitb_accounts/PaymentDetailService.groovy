@@ -249,7 +249,7 @@ class PaymentDetailService {
             ArrayList<PaymentDetail> paymentDetails = PaymentDetail.findAllByEntityIdAndDateCreatedBetween(eid, fromDate, toDate)
             for (PaymentDetail paymentDetail : paymentDetails) {
                 JSONObject rd = new JSONObject((paymentDetail as JSON).toString())
-                def billPaymentLog = BillPaymentLog.findAllByBillId(paymentDetail.id)
+                def billPaymentLog = BillPaymentLog.findAllByPaymentId(paymentDetail.id)
                 if (billPaymentLog) {
                     JSONArray prdt =  new  JSONArray((billPaymentLog as JSON).toString())
                     rd.put("products", prdt)
@@ -284,7 +284,7 @@ class PaymentDetailService {
                     fromDate, toDate)
             for (PaymentDetail paymentDetail : paymentDetails) {
                 JSONObject rd = new JSONObject((paymentDetail as JSON).toString())
-                def billPaymentLog = BillPaymentLog.findAllByBillId(paymentDetail.id)
+                def billPaymentLog = BillPaymentLog.findAllByPaymentId(paymentDetail.id)
                 if (billPaymentLog) {
                     JSONArray prdt =  new  JSONArray((billPaymentLog as JSON).toString())
                     rd.put("products", prdt)

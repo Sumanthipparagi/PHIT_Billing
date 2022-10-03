@@ -1,7 +1,9 @@
 package phitb_entity
 
 import grails.gorm.transactions.Transactional
+import org.grails.web.json.JSONArray
 import org.grails.web.json.JSONObject
+import org.hibernate.SessionFactory
 import phitb_entity.Exception.BadRequestException
 import phitb_entity.Exception.ResourceNotFoundException
 
@@ -40,10 +42,11 @@ class DayEndMasterService
         }
         else
         {
-            return DayEndMaster.createCriteria().list(max: l,offset:o){
+            return DayEndMaster.createCriteria().list(){
                 entity{
                     eq('id',entityId)
                 }
+                eq("deleted",false)
             }
         }
     }
@@ -118,6 +121,8 @@ class DayEndMasterService
             throw new BadRequestException()
         }
     }
+
+
 
     DayEndMaster update(JSONObject jsonObject, String id)
     {

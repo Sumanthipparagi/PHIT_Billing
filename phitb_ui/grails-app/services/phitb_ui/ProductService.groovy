@@ -158,6 +158,27 @@ class ProductService {
 
     }
 
+    def getProductGroupById(String id) {
+        Client client = ClientBuilder.newClient();
+        WebTarget target = client.target(new Links().API_GATEWAY);
+        try {
+
+            Response apiResponse = target
+                    .path(new Links().PRODUCT_GROUP_SHOW+"/"+id)
+                    .request(MediaType.APPLICATION_JSON_TYPE)
+                    .get()
+            if(apiResponse?.status == 200){
+                JSONObject jsonObject = new JSONObject(apiResponse.readEntity(String.class));
+                return jsonObject
+            }
+        }
+        catch (Exception ex) {
+            System.err.println('Service :ProductService , action :  getProducts  , Ex:' + ex)
+            log.error('Service :ProductService , action :  getProducts  , Ex:' + ex)
+        }
+
+    }
+
     def getProductGroupsByEntity(String entityId) {
         Client client = ClientBuilder.newClient();
         WebTarget target = client.target(new Links().API_GATEWAY);
@@ -189,6 +210,28 @@ class ProductService {
                     .get()
 
             return apiResponse
+        }
+        catch (Exception ex) {
+            System.err.println('Service :ProductService , action :  getProducts  , Ex:' + ex)
+            log.error('Service :ProductService , action :  getProducts  , Ex:' + ex)
+        }
+
+    }
+
+    def getDivisionById(String id) {
+        Client client = ClientBuilder.newClient();
+        WebTarget target = client.target(new Links().API_GATEWAY);
+
+        try {
+
+            Response apiResponse = target
+                    .path(new Links().DIVISION_SHOW+"/"+id)
+                    .request(MediaType.APPLICATION_JSON_TYPE)
+                    .get()
+            if(apiResponse?.status == 200){
+                JSONObject jsonObject = new JSONObject(apiResponse.readEntity(String.class));
+                return  jsonObject
+            }
         }
         catch (Exception ex) {
             System.err.println('Service :ProductService , action :  getProducts  , Ex:' + ex)
@@ -273,6 +316,29 @@ class ProductService {
         }
     }
 
+
+    def getProductCategoryById(String id) {
+        Client client = ClientBuilder.newClient();
+        WebTarget target = client.target(new Links().API_GATEWAY);
+
+        try {
+            Response apiResponse = target
+                    .path(new Links().PRODUCT_CATEGORY_SHOW+"/"+id)
+                    .request(MediaType.APPLICATION_JSON_TYPE)
+                    .get()
+            if(apiResponse?.status == 200){
+                JSONObject jsonObject = new JSONObject(apiResponse.readEntity(String.class));
+                return jsonObject
+            }else{
+                return null
+            }
+        }
+        catch (Exception ex) {
+            System.err.println('Service :ProductService , action :  getProducts  , Ex:' + ex)
+            log.error('Service :ProductService , action :  getProducts  , Ex:' + ex)
+        }
+    }
+
     def getProductCategoriesByEntity(String entityId) {
         Client client = ClientBuilder.newClient();
         WebTarget target = client.target(new Links().API_GATEWAY);
@@ -328,6 +394,35 @@ class ProductService {
                     .get()
 
             return apiResponse
+        }
+        catch (Exception ex) {
+            System.err.println('Service :ProductService , action :  getProductSchedules  , Ex:' + ex)
+            log.error('Service :ProductService , action :  getProductSchedules  , Ex:' + ex)
+        }
+
+    }
+
+    /**
+     *
+     * @param jsonObject
+     * @return
+     */
+    def getProductSchedulebyId(String id) {
+        Client client = ClientBuilder.newClient();
+        WebTarget target = client.target(new Links().API_GATEWAY);
+
+        try {
+
+            Response apiResponse = target
+                    .path(new Links().PRODUCT_SCHEDULE_SHOW+"/"+id)
+                    .request(MediaType.APPLICATION_JSON_TYPE)
+                    .get()
+            if(apiResponse?.status == 200){
+                JSONObject jsonObject = new JSONObject(apiResponse.readEntity(String.class));
+                return jsonObject
+            }else{
+                return null
+            }
         }
         catch (Exception ex) {
             System.err.println('Service :ProductService , action :  getProductSchedules  , Ex:' + ex)
@@ -548,10 +643,26 @@ class ProductService {
 
     }
 
+    def dayEndByEntityId(String entityId){
+        Client client = ClientBuilder.newClient();
+        WebTarget target = client.target(new Links().API_GATEWAY);
+        try {
+            Response apiResponse = target
+                    .path(new Links().DAY_END_MASTER_ENTITY + "/" + entityId)
+                    .request(MediaType.APPLICATION_JSON_TYPE)
+                    .get()
+
+            return apiResponse
+        }
+        catch (Exception ex) {
+            System.err.println('Service :ProductService , action :  getProducts  , Ex:' + ex)
+            log.error('Service :ProductService , action :  getProducts  , Ex:' + ex)
+        }
+    }
+
     def getCustomerGroupByEntity(String entityId) {
         Client client = ClientBuilder.newClient();
         WebTarget target = client.target(new Links().API_GATEWAY);
-
         try {
             Response apiResponse = target
                     .path(new Links().CUSTOMER_GROUP_REGISTER_SHOW_BY_ENTITY + "/" + entityId)

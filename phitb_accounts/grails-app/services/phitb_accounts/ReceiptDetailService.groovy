@@ -305,7 +305,7 @@ class ReceiptDetailService {
             ArrayList<ReceiptDetail> receiptDetails = ReceiptDetail.findAllByEntityIdAndDateCreatedBetween(eid, fromDate, toDate)
             for (ReceiptDetail receiptDetail : receiptDetails) {
                 JSONObject rd = new JSONObject((receiptDetail as JSON).toString())
-                def billDetailLogs = BillDetailLog.findAllByBillId(receiptDetail.id)
+                def billDetailLogs = BillDetailLog.findAllByReceiptId(receiptDetail.id.toString())
                 if (billDetailLogs) {
                     JSONArray prdt =  new  JSONArray((billDetailLogs as JSON).toString())
                     rd.put("products", prdt)
@@ -340,7 +340,7 @@ class ReceiptDetailService {
                     fromDate, toDate)
             for (ReceiptDetail receiptDetail : receiptDetails) {
                 JSONObject rd = new JSONObject((receiptDetail as JSON).toString())
-                def billDetailLogs = BillDetailLog.findAllByBillId(receiptDetail.id)
+                def billDetailLogs = BillDetailLog.findAllByReceiptId(receiptDetail.id.toString())
                 if (billDetailLogs) {
                     JSONArray prdt =  new  JSONArray((billDetailLogs as JSON).toString())
                     rd.put("products", prdt)

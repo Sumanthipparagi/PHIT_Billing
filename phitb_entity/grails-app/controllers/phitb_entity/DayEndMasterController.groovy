@@ -31,32 +31,7 @@ class DayEndMasterController {
         }
     }
 
-    /**
-     * Get requested customerGroup register
-     * @param id
-     * @return get requested customerGroup register
-     */
-    def show() {
-        try {
-            String id = params.id
-            if (id) {
-                respond dayEndMasterService.get(id)
-            }
-        }
-        catch (ResourceNotFoundException ex)
-        {
-            System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
-            response.status = 404
-        }
-        catch (BadRequestException ex)
-        {
-            System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
-            response.status = 400
-        }
-        catch (Exception ex) {
-            System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
-        }
-    }
+
 
     /**
      * Get requested customerGroup register

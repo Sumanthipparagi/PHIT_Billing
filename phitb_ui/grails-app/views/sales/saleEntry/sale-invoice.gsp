@@ -10,7 +10,7 @@
     /* Styles go here */
 
     .page-header, .page-header-space {
-        height: 100%;
+        height: 500px;
     }
 
     .page-footer, .page-footer-space {
@@ -33,7 +33,6 @@
     .page {
         page-break-after: always;
     }
-
 
 
     @media print {
@@ -124,7 +123,7 @@
     /*    padding: 20px;*/
     /*}*/
 
-    @media print{
+    @media print {
 
         /*table tbody tr td:before,*/
         /*table tbody tr td:after {*/
@@ -133,10 +132,19 @@
         /*    display: block;*/
         /*}*/
         #wrapper {
+            position: absolute;
+            left: 0;
+            right: 0;
+            top: 0;
+            bottom: 0;
+            border: 2px solid black;
+            padding: 10px;
+            page-break-after: always;
 
-            /*border:1px solid #000;*/
-            /*padding: 5px;*/
-            /*position: relative;*/
+        }
+
+        #wrapper::-webkit-scrollbar {
+            width: 0 !important
         }
 
     }
@@ -159,9 +167,9 @@
     }
 
 
-
     #wrapper {
         position: absolute;
+        /*overflow: revert;*/
         left: 0;
         right: 0;
         top: 0;
@@ -169,11 +177,33 @@
         border: 2px solid black;
         padding: 10px;
         page-break-after: always;
-        page-break-inside: avoid;
-        page-break-before: avoid;
     }
 
-    #wrapper::-webkit-scrollbar { width: 0 !important }
+    #wrapper::-webkit-scrollbar {
+        width: 0 !important
+    }
+
+
+    table {
+        page-break-inside: auto
+    }
+
+    tr {
+        page-break-inside: avoid;
+        page-break-after: auto
+    }
+
+    thead {
+        display: table-header-group
+    }
+
+    tfoot {
+        display: table-footer-group
+    }
+
+    table {
+        -fs-table-paginate: paginate;
+    }
     </style>
 </head>
 
@@ -184,327 +214,527 @@
 
 %{--</div>--}%
 <div id="wrapper">
-<div class="page-footer">
-    <p class="signatory" style="float: right;margin-right: 24px;">For <b>${session.getAttribute('entityName')}</b>,
-        <br>
-        <span style="line-height: 75px;">Authorized Signatory</span></p>
+    <div class="page-footer">
+        <p class="signatory" style="float: right;margin-right: 24px;">For <b>${session.getAttribute('entityName')}</b>,
+            <br>
+            <span style="line-height: 75px;">Authorized Signatory</span></p>
 
-    <p style="float: left;margin-right: 24px;"><b>Printed By:</b> ${session.getAttribute("userName").toString()}</p>
+        <p style="float: left;margin-right: 24px;"><b>Printed By:</b> ${session.getAttribute("userName").toString()}</p>
 
-    <p style="float: left;margin-right: 24px;"><b>Printed On:</b><span id="date"></span></p>
-</div>
-
-
-<table id="prodDetails" class="extended" style="width: 100%; padding: 5%;">
-    <div class="page-header">
-    <thead>
-    <tr>
-        <td colspan="4" style="vertical-align:top;font-size:8pt;">
-            %{--            <img width="109" height="43"--}%
-            %{--                                                        src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAG0AAAArCAMAAABFJ/YVAAAAD1BMVEUAIgAFKwAIKQAJLgD///9auxmhAAAAAWJLR0QAiAUdSAAAAAlwSFlzAAAOxAAADsQBlSsOGwAAAZFJREFUWIXtlttywyAMRN1Z/f83t1N0WYHwJTFuH8IkwlZknwjEwiatAfJA2wz2CO5D+9D+Iw3e/oo2QYNshNavLtwT2izRW2nYibxMK1pPw+00/rWjHVXKrTSJ7DQQom69aZdunIbO314E/zbT0yw40WyModWjf2yo4Wys836kYaRxD3KF0fv6lp4fVoAOpd6MNDlBkwu0Nj7v0dgc0WgYC1p8wDQtDbHeQ2ieB1WmRYCSFjnHKHS14TQwzWvyEi1XT8xS1H3QUlyjddN1QOtG2In0jBTPN09Pk5dobiiipqGjCVcJLtBkTkNJg88MaQZXBdNIB1BrSaxa15JMo4uAR5Gn0dqhuU4mmqR5G9Tv7rYhFqatwsU0m8RQ5fU03d4Wwn5psYU9QUvbzUrYD83WgmdYNj4WIHk46BTtYkH6RiC24vJCqyVUabG/yTQ1MXkg0cs410N3fdW5yRmYZpUtaYILLEx2ipdtSUrmNEQP8kxyi9kdabS17af2dtvoVLIc1lT5KVg6cy2HtTPXQyyRb24URU7+XmydAAAAAElFTkSuQmCC"/>--}%
-            %{--            <br><br>--}%
-            <b>${entity.entityName}</b><br>
-            <sub>${entity.addressLine1}<br>${entity.addressLine2}</sub>
-            <g:if test="${entity?.website && entity?.website != ''}">
-                <li><b class="tab">Website</b>: <a href="${entity?.website}" target="_blank">${entity?.website}</a>
-                </li>
-            </g:if>
-            <g:if test="${entity?.email && entity?.email != ''}">
-                <li><b class="tab">Email</b>: <a href="mailto:${entity?.email}" target="_blank">${entity?.email}</a>
-                </li>
-            </g:if>
-        </td>
-        <td colspan="5" style="vertical-align:top;font-size:8pt;"><b>Bill to Address :(${customer.id})</b><br>
-            <b>${customer.entityName}</b><br>
-            <sub>${customer.addressLine1}${customer.addressLine2}
-            </sub>
-            <g:if test="${customer?.phoneNumber && customer?.phoneNumber != ''}">
-                <li><b class="tab">Ph no.</b>: <a href="tel:${customer?.phoneNumber}"
-                                                  target="_blank">${customer?.phoneNumber}</a>
-                </li>
-            </g:if>
-            <g:if test="${customer?.pinCode && customer?.pinCode != ''}">
-                <li><b class="tab">Pincode</b>:&nbsp;${customer?.pinCode}
-                </li>
-            </g:if>
-        </td>
-        <td colspan="5" style="vertical-align:top;font-size:8pt;"><b>Ship to Address :(${customer.id})</b><br>
-            <b>${customer.entityName}</b><br>
-            <sub>${customer.addressLine1}${customer.addressLine2}
-            </sub>
-            <g:if test="${customer?.phoneNumber && customer?.phoneNumber != ''}">
-                <li><b class="tab">Ph no.</b>: <a href="tel:${customer?.phoneNumber}"
-                                                  target="_blank">${customer?.phoneNumber}</a>
-                </li>
-            </g:if>
-            <g:if test="${customer?.pinCode && customer?.pinCode != ''}">
-                <li><b class="tab">Pincode</b>:&nbsp;${customer?.pinCode}
-                </li>
-            </g:if>
-        </td>
-        <td colspan="4" style="vertical-align:top;font-size:8pt;">
-            <strong>TAX INVOICE</strong>
-            <ul style="margin: 0;">
-
-                <li><b class="tab">Invoice No</b>:  <strong style="font-size: 13px;"><g:if
-                        test="${saleBillDetail.billStatus == 'CANCELLED'}"><del>${saleBillDetail.invoiceNumber}</del></g:if><g:else>${saleBillDetail.invoiceNumber}</g:else>
-                </strong></li>
-                <li><b class="tab">Inv Date</b>:&nbsp;<span id="invDate" style="font-size: 13px;"></span></li>
-                <li><b class="tab">Due Date</b>:&nbsp;<span id="dueDate" style="font-size: 13px;"></span></li>
-                %{--                <li><b class="tab">No of cases</b>:</li>--}%
-                %{--                <li><b class="tab">Weight in Kgs</b>:</li>--}%
-                %{--                <li><b class="tab">Party Ref No.</b>: 429803</li>--}%
-                %{--                <li><b class="tab">Rev-Charge</b>: No Dist.Chnl.01</li>--}%
-            </ul>
-        </td>
-    </tr>
-    <tr>
-        <td colspan="4" style="vertical-align:top;">
-            <ul>
-                <li><b class="tab">Location</b>: ${city?.districtName}</li>
-                <li><b class="tab">Phone</b>: ${entity.phoneNumber}</li>
-                <li><b class="tab">GST No</b>: ${entity.gstn}</li>
-                <li><b class="tab">FAX No</b>: ${entity.faxNumber}</li>
-                <li><b class="tab">DL No1</b>: ${entity.drugLicence1}</li>
-                <li><b class="tab">DL No2</b>: ${entity.drugLicence2}</li>
-                %{--                <g:if test="${customer?.website && customer?.website!=''}">--}%
-                %{--                    <li><b class="tab">Website</b>: <a href="${customer?.website}" target="_blank">${customer?.website}</a></li>--}%
-                %{--                </g:if>--}%
-                <li><b class="tab">Food Lic. No.</b>:  ${entity.foodLicence1}</li>
-
-            </ul>
-        </td>
-        <td colspan="5" style="vertical-align:top;">
-            <ul>
-                <li><b class="tab">DELIVERY AT</b>:&nbsp;${custcity?.districtName}</li>
-                <li><b class="tab">GST NO</b>: ${customer.gstn}</li>
-                <li><b class="tab">Phone</b>: ${customer.phoneNumber}</li>
-                <li><b class="tab">PAN</b>: ${customer.pan}</li>
-                <li><b class="tab">DL No1</b>: ${customer.drugLicence1}</li>
-                <li><b class="tab">DL No2</b>: ${customer.drugLicence2}</li>
-                <li><b class="tab">STATE NAME</b>: ${custcity?.stateName}</li>
-                <li><b class="tab">Area PIN</b>: ${customer.pinCode}</li>
-                %{--                <g:if test="${customer?.website && customer?.website!=''}">--}%
-                %{--                <li><b class="tab">Website</b>: <a href="${customer?.website}" target="_blank">${customer?.website}</a></li>--}%
-                %{--                </g:if>--}%
-                <li><b class="tab">Transporter</b>:&nbsp;&nbsp;${transportDetails?.transporter?.name}</li>
-                <li><b class="tab">Place of Supply</b>: &nbsp;${custcity?.districtName}</li>
-                <li><b class="tab">Po No.</b>:  ${saleBillDetail?.refNo}</li>
-                <li><b class="tab" >Po Date.</b>:<span id="poDate2"></span> </li>
-                %{--                <li><b class="tab">State Code</b>: </li>--}%
-            </ul>
-
-        </td>
-        <td colspan="5" style="vertical-align:top;">
-            <ul>
-                <li><b class="tab">DELIVERY AT</b>:&nbsp;${custcity?.districtName}</li>
-                <li><b class="tab">GST NO</b>: ${customer.gstn}</li>
-                <li><b class="tab">Phone</b>: ${customer.phoneNumber}</li>
-                <li><b class="tab">PAN</b>: ${customer.pan}</li>
-                <li><b class="tab">DL No1</b>: ${customer.drugLicence1}</li>
-                <li><b class="tab">DL No2</b>: ${customer.drugLicence2}</li>
-                <li><b class="tab">STATE NAME</b>: ${custcity?.stateName}</li>
-                <li><b class="tab">Area PIN</b>: ${customer.pinCode}</li>
-                %{--                <g:if test="${customer?.website && customer?.website!=''}">--}%
-                %{--                    <li><b class="tab">Website</b>: <a href="${customer?.website}" target="_blank">${customer?.website}</a></li>--}%
-                %{--                </g:if>--}%
-                <li><b class="tab">Transporter</b>:&nbsp;&nbsp; ${transportDetails?.transporter?.name}</li>
-                <li><b class="tab">Place of Supply</b>:  &nbsp;${custcity?.districtName}</li>
-                <li><b class="tab">Po No.</b>:  ${saleBillDetail?.refNo}</li>
-                <li><b class="tab" >Po Date.</b>:<span id="poDate1"></span></li>
-                %{--                <li><b class="tab">State Code</b>: </li>--}%
-            </ul>
-        </td>
-        <td colspan="4" style="vertical-align:center;padding: 10px;">
-            <div class="qrCode"></div>
-        </td>
-    </tr>
-    <g:if test="${irnDetails != null}">
-        <tr>
-            <td colspan="4">
-                <strong>Ack No</strong>:&nbsp;${irnDetails.AckNo}
-            </td>
-            <td colspan="5">
-                <strong>Ack Dt</strong>:&nbsp;${irnDetails.AckDt}
-            </td>
-            <td colspan="9">
-                <strong>IRN</strong>:&nbsp;${irnDetails.Irn}
-            </td>
-        </tr>
-    </g:if>
-    <tr>
-        <th>Sl.No</th>
-        <th>Material HSN Code</th>
-        <th>Material Description</th>
-        <th>Pack(size)</th>
-        <th>C</th>
-        <th>Batch no.</th>
-        <th>Exp Date</th>
-        %{--        <th>Mfg Date/ Use Before</th>--}%
-        <th>MRP</th>
-        <th>PTR</th>
-        <th>PTS</th>
-        <th>QTY</th>
-        <g:if test="${saleBillDetail?.invtype == Constants.REGULAR}">
-            <th>Discount Qty</th>
-        </g:if>
-        <g:if test="${saleBillDetail?.invtype == Constants.REPLACEMENT}">
-            <th>Discount Repl Qty</th>
-        </g:if>
-        <th>Amount</th>
-        <th>Disc.Amt/Disc.%</th>
-        <th>Amt/CGST%</th>
-        <th>Amt/SGST%</th>
-        <th>Amt/IGST%</th>
-        <th>Net Amt</th>
-    </tr>
-    </thead>
+        <p style="float: left;margin-right: 24px;"><b>Printed On:</b><span id="date"></span></p>
     </div>
-    <%
-        ArrayList<Double> cgst = new ArrayList<>()
-        ArrayList<Double> sgst = new ArrayList<>()
-        ArrayList<Double> igst = new ArrayList<>()
-    %>
-    <tbody>
-    <g:each var="sp" in="${saleProductDetails}" status="i">
+
+
+    <table id="prodDetails" class="extended" style="width: 100%; padding: 5%;border: 1px solid #000;">
+        <div class="page-header">
+            <thead>
+            <tr>
+                <td colspan="4" style="vertical-align:top;font-size:8pt;">
+                    %{--            <img width="109" height="43"--}%
+                    %{--                                                        src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAG0AAAArCAMAAABFJ/YVAAAAD1BMVEUAIgAFKwAIKQAJLgD///9auxmhAAAAAWJLR0QAiAUdSAAAAAlwSFlzAAAOxAAADsQBlSsOGwAAAZFJREFUWIXtlttywyAMRN1Z/f83t1N0WYHwJTFuH8IkwlZknwjEwiatAfJA2wz2CO5D+9D+Iw3e/oo2QYNshNavLtwT2izRW2nYibxMK1pPw+00/rWjHVXKrTSJ7DQQom69aZdunIbO314E/zbT0yw40WyModWjf2yo4Wys836kYaRxD3KF0fv6lp4fVoAOpd6MNDlBkwu0Nj7v0dgc0WgYC1p8wDQtDbHeQ2ieB1WmRYCSFjnHKHS14TQwzWvyEi1XT8xS1H3QUlyjddN1QOtG2In0jBTPN09Pk5dobiiipqGjCVcJLtBkTkNJg88MaQZXBdNIB1BrSaxa15JMo4uAR5Gn0dqhuU4mmqR5G9Tv7rYhFqatwsU0m8RQ5fU03d4Wwn5psYU9QUvbzUrYD83WgmdYNj4WIHk46BTtYkH6RiC24vJCqyVUabG/yTQ1MXkg0cs410N3fdW5yRmYZpUtaYILLEx2ipdtSUrmNEQP8kxyi9kdabS17af2dtvoVLIc1lT5KVg6cy2HtTPXQyyRb24URU7+XmydAAAAAElFTkSuQmCC"/>--}%
+                    %{--            <br><br>--}%
+                    <b>${entity.entityName}</b><br>
+                    <sub>${entity.addressLine1}<br>${entity.addressLine2}</sub>
+                    <g:if test="${entity?.website && entity?.website != ''}">
+                        <li><b class="tab">Website</b>: <a href="${entity?.website}"
+                                                           target="_blank">${entity?.website}</a>
+                        </li>
+                    </g:if>
+                    <g:if test="${entity?.email && entity?.email != ''}">
+                        <li><b class="tab">Email</b>: <a href="mailto:${entity?.email}"
+                                                         target="_blank">${entity?.email}</a>
+                        </li>
+                    </g:if>
+                </td>
+                <td colspan="6" style="vertical-align:top;font-size:8pt;"><b>Bill to Address :(${customer.id})</b><br>
+                    <b>${customer.entityName}</b><br>
+                    <sub>${customer.addressLine1}${customer.addressLine2}
+                    </sub>
+                    <g:if test="${customer?.phoneNumber && customer?.phoneNumber != ''}">
+                        <li><b class="tab">Ph no.</b>: <a href="tel:${customer?.phoneNumber}"
+                                                          target="_blank">${customer?.phoneNumber}</a>
+                        </li>
+                    </g:if>
+                    <g:if test="${customer?.pinCode && customer?.pinCode != ''}">
+                        <li><b class="tab">Pincode</b>:&nbsp;${customer?.pinCode}
+                        </li>
+                    </g:if>
+                </td>
+                <td colspan="6" style="vertical-align:top;font-size:8pt;"><b>Ship to Address :(${customer.id})</b><br>
+                    <b>${customer.entityName}</b><br>
+                    <sub>${customer.addressLine1}${customer.addressLine2}
+                    </sub>
+                    <g:if test="${customer?.phoneNumber && customer?.phoneNumber != ''}">
+                        <li><b class="tab">Ph no.</b>: <a href="tel:${customer?.phoneNumber}"
+                                                          target="_blank">${customer?.phoneNumber}</a>
+                        </li>
+                    </g:if>
+                    <g:if test="${customer?.pinCode && customer?.pinCode != ''}">
+                        <li><b class="tab">Pincode</b>:&nbsp;${customer?.pinCode}
+                        </li>
+                    </g:if>
+                </td>
+                <td colspan="4" style="vertical-align:top;font-size:8pt;">
+                    <strong>TAX INVOICE</strong>
+                    <ul style="margin: 0;">
+
+                        <li><b class="tab">Invoice No</b>:  <strong style="font-size: 13px;"><g:if
+                                test="${saleBillDetail.billStatus == 'CANCELLED'}"><del>${saleBillDetail.invoiceNumber}</del></g:if><g:else>${saleBillDetail.invoiceNumber}</g:else>
+                        </strong></li>
+                        <li><b class="tab">Inv Date</b>:&nbsp;<span id="invDate" style="font-size: 13px;"></span></li>
+                        <li><b class="tab">Due Date</b>:&nbsp;<span id="dueDate"
+                                                                    style="font-size: 13px;font-weight: bold;"></span>
+                        </li>
+                        %{--                <li><b class="tab">No of cases</b>:</li>--}%
+                        %{--                <li><b class="tab">Weight in Kgs</b>:</li>--}%
+                        %{--                <li><b class="tab">Party Ref No.</b>: 429803</li>--}%
+                        %{--                <li><b class="tab">Rev-Charge</b>: No Dist.Chnl.01</li>--}%
+                    </ul>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="4" style="vertical-align:top;">
+                    <ul>
+                        <li><b class="tab">Location</b>: ${city?.districtName}</li>
+                        <li><b class="tab">Phone</b>: ${entity.phoneNumber}</li>
+                        <li><b class="tab">GST No</b>: ${entity.gstn}</li>
+                        <li><b class="tab">FAX No</b>: ${entity.faxNumber}</li>
+                        <li><b class="tab">DL No1</b>: ${entity.drugLicence1}</li>
+                        <li><b class="tab">DL No2</b>: ${entity.drugLicence2}</li>
+                        %{--                <g:if test="${customer?.website && customer?.website!=''}">--}%
+                        %{--                    <li><b class="tab">Website</b>: <a href="${customer?.website}" target="_blank">${customer?.website}</a></li>--}%
+                        %{--                </g:if>--}%
+                        <li><b class="tab">Food Lic. No.</b>:  ${entity.foodLicence1}</li>
+
+                    </ul>
+                </td>
+                <td colspan="6" style="vertical-align:top;">
+                    <ul>
+                        <li><b class="tab">DELIVERY AT</b>:&nbsp;${custcity?.districtName}</li>
+                        <li><b class="tab">GST NO</b>: ${customer.gstn}</li>
+                        <li><b class="tab">Phone</b>: ${customer.phoneNumber}</li>
+                        <li><b class="tab">PAN</b>: ${customer.pan}</li>
+                        <li><b class="tab">DL No1</b>: ${customer.drugLicence1}</li>
+                        <li><b class="tab">DL No2</b>: ${customer.drugLicence2}</li>
+                        <li><b class="tab">STATE NAME</b>: ${custcity?.stateName}</li>
+                        <li><b class="tab">Area PIN</b>: ${customer.pinCode}</li>
+                        %{--                <g:if test="${customer?.website && customer?.website!=''}">--}%
+                        %{--                <li><b class="tab">Website</b>: <a href="${customer?.website}" target="_blank">${customer?.website}</a></li>--}%
+                        %{--                </g:if>--}%
+                        <li><b class="tab">Transporter</b>:&nbsp;&nbsp;${transportDetails?.transporter?.name}</li>
+                        <li><b class="tab">Place of Supply</b>: &nbsp;${custcity?.districtName}</li>
+                        <li><b class="tab">Po No.</b>:  ${saleBillDetail?.refNo}</li>
+                        <li><b class="tab">Po Date.</b>:<span id="poDate2"></span></li>
+                        %{--                <li><b class="tab">State Code</b>: </li>--}%
+                    </ul>
+
+                </td>
+                <td colspan="6" style="vertical-align:top;">
+                    <ul>
+                        <li><b class="tab">DELIVERY AT</b>:&nbsp;${custcity?.districtName}</li>
+                        <li><b class="tab">GST NO</b>: ${customer.gstn}</li>
+                        <li><b class="tab">Phone</b>: ${customer.phoneNumber}</li>
+                        <li><b class="tab">PAN</b>: ${customer.pan}</li>
+                        <li><b class="tab">DL No1</b>: ${customer.drugLicence1}</li>
+                        <li><b class="tab">DL No2</b>: ${customer.drugLicence2}</li>
+                        <li><b class="tab">STATE NAME</b>: ${custcity?.stateName}</li>
+                        <li><b class="tab">Area PIN</b>: ${customer.pinCode}</li>
+                        %{--                <g:if test="${customer?.website && customer?.website!=''}">--}%
+                        %{--                    <li><b class="tab">Website</b>: <a href="${customer?.website}" target="_blank">${customer?.website}</a></li>--}%
+                        %{--                </g:if>--}%
+                        <li><b class="tab">Transporter</b>:&nbsp;&nbsp; ${transportDetails?.transporter?.name}</li>
+                        <li><b class="tab">Place of Supply</b>:  &nbsp;${custcity?.districtName}</li>
+                        <li><b class="tab">Po No.</b>:  ${saleBillDetail?.refNo}</li>
+                        <li><b class="tab">Po Date.</b>:<span id="poDate1"></span></li>
+                        %{--                <li><b class="tab">State Code</b>: </li>--}%
+                    </ul>
+                </td>
+                <td colspan="4" style="vertical-align:center;padding: 10px;">
+                    <div class="qrCode"></div>
+                </td>
+            </tr>
+            <g:if test="${irnDetails != null}">
+                <tr>
+                    <td colspan="4">
+                        <strong>Ack No</strong>:&nbsp;${irnDetails.AckNo}
+                    </td>
+                    <td colspan="5">
+                        <strong>Ack Dt</strong>:&nbsp;${irnDetails.AckDt}
+                    </td>
+                    <td colspan="9">
+                        <strong>IRN</strong>:&nbsp;${irnDetails.Irn}
+                    </td>
+                </tr>
+            </g:if>
+
+            <tr>
+                <th>Sl.No</th>
+                <th>Material HSN Code</th>
+                <th>Material Description</th>
+                <th>Pack(size)</th>
+                <th>C</th>
+                <th>Batch no.</th>
+                <th>Exp Date</th>
+                %{--        <th>Mfg Date/ Use Before</th>--}%
+                <th>MRP</th>
+                <th>PTR</th>
+                <th>PTS</th>
+                <th>Quantity</th>
+                <g:if test="${saleBillDetail?.invtype == Constants.REGULAR}">
+                    <th style="background-color: #e0e0e0; -webkit-print-color-adjust: exact; ">Discount Quantity</th>
+                </g:if>
+                <g:elseif test="${saleBillDetail?.invtype == Constants.REPLACEMENT}">
+                    <th  style="background-color: #e0e0e0; -webkit-print-color-adjust: exact; ">Discount Repl Quantity</th>
+                </g:elseif>
+                <g:else>
+                    <th style="background-color: #e0e0e0; -webkit-print-color-adjust: exact; ">Discount Quantity</th>
+                </g:else>
+                <th style="background-color: #e0e0e0; -webkit-print-color-adjust: exact;">Total Quantity</th>
+                <th style="background-color: #e0e0e0; -webkit-print-color-adjust: exact; ">Final Bill Quantity</th>
+                <th>Amount</th>
+                <th>Disc.Amt/Disc.%</th>
+                <th>Amt/CGST%</th>
+                <th>Amt/SGST%</th>
+                <th>Amt/IGST%</th>
+                <th>Net Amt</th>
+            </tr>
+            </thead>
+        </div>
+
+        <%
+            ArrayList<Double> cgst = new ArrayList<>()
+            ArrayList<Double> sgst = new ArrayList<>()
+            ArrayList<Double> igst = new ArrayList<>()
+
+            HashMap<String, Double> divGstGroup
+            HashMap<String, Double> divSgstGroup
+            HashMap<String, Double> divCgstGroup
+            HashMap<String, Double> divIgstGroup
+
+        %>
+        <tbody>
+
+        <g:if test="${settings.size()!= 0}">
+            <g:each var="key, groupData" in="${groupDetails}" status="i">
+
+                <%
+                    def divTotalcgst = 0
+                    def divTotalsgst = 0
+                    def divTotaligst = 0
+                    def divTotaldiscount = 0
+                    def divtotalBeforeTaxes = 0
+                    def divtotal = 0
+
+
+                %>
+                <tr><td colspan="20">${groupData[0].sortDetail.sortItem}</td></tr>
+                <g:each var="pd" in="${groupData}" status="j">
+                    <%
+                        divGstGroup = new HashMap<>()
+                        divSgstGroup = new HashMap<>()
+                        divCgstGroup = new HashMap<>()
+                        divIgstGroup = new HashMap<>()
+
+                        divTotalcgst += pd.cgstAmount
+                        divTotalsgst += pd.sgstAmount
+                        divTotaligst += pd.igstAmount
+                        divTotaldiscount += pd.discount
+                        double amountBeforeTaxes = pd.amount - pd.cgstAmount - pd.sgstAmount - pd.igstAmount
+                        divtotalBeforeTaxes += amountBeforeTaxes
+
+                        if (pd.igstPercentage > 0)
+                        {
+                            def igstPercentage = igstGroup.get(pd.igstPercentage.toString())
+                            if (igstPercentage == null)
+                            {
+                                divIgstGroup.put(pd.igstPercentage.toString(), amountBeforeTaxes)
+                            }
+                            else
+                            {
+                                divIgstGroup.put(pd.igstPercentage.toString(), igstPercentage.doubleValue() + amountBeforeTaxes)
+                            }
+                        }
+                        else
+                        {
+                            def gstPercentage = divGstGroup.get(pd.gstPercentage.toString())
+                            if (gstPercentage == null)
+                            {
+                                divGstGroup.put(pd.gstPercentage.toString(), amountBeforeTaxes)
+                            }
+                            else
+                            {
+                                divGstGroup.put(pd.gstPercentage.toString(), gstPercentage.doubleValue() + amountBeforeTaxes)
+                            }
+
+                            def sgstPercentage = sgstGroup.get(pd.sgstPercentage.toString())
+                            if (sgstPercentage == null)
+                            {
+                                divSgstGroup.put(pd.sgstPercentage.toString(), amountBeforeTaxes)
+                            }
+                            else
+                            {
+                                divSgstGroup.put(pd.sgstPercentage.toString(), sgstPercentage.doubleValue() + amountBeforeTaxes)
+                            }
+                            def cgstPercentage = cgstGroup.get(pd.cgstPercentage.toString())
+                            if (cgstPercentage == null)
+                            {
+                                divCgstGroup.put(pd.cgstPercentage.toString(), amountBeforeTaxes)
+                            }
+                            else
+                            {
+                                divCgstGroup.put(pd.cgstPercentage.toString(), cgstPercentage.doubleValue() + amountBeforeTaxes)
+                            }
+                        }
+                    %>
+                    <tr>
+                        <td>${j + 1}</td>
+                        <td>${pd.productId.hsnCode}</td>
+                        <td><b>${pd.productId.productName}</b></td>
+                        <td><b>${pd.productId.unitPacking}</b></td>
+                        <td><b>${pd?.productId?.schedule?.scheduleCode}</b></td>
+                        <td>${pd.batchNumber}</td>
+                        <td id="expDate${pd.id}">${pd.expiryDate}</td>
+                        %{--            <td></td>--}%
+                        <td>${pd.mrp}</td>
+                        <td>${String.format("%.2f", pd?.batch?.ptr)}</td>
+                        <td>${String.format("%.2f", pd.sRate)}</td>
+                        <td>${(long) pd.sqty}</td>
+                        <g:if test="${saleBillDetail?.invtype == Constants.REGULAR}">
+                            <td style="background-color: #e0e0e0; -webkit-print-color-adjust: exact;">${(long) pd.freeQty}</td>
+                        </g:if>
+                        <g:elseif test="${saleBillDetail?.invtype == Constants.REPLACEMENT}">
+                            <td style="background-color: #e0e0e0; -webkit-print-color-adjust: exact;">${(long) pd.freeQty}</td>
+                        </g:elseif>
+                        <g:else>
+                            <td style="background-color: #e0e0e0; -webkit-print-color-adjust: exact;">${(long) pd.freeQty}</td>
+                        </g:else>
+                        <td style="background-color: #e0e0e0; -webkit-print-color-adjust: exact;">${(long) pd.sqty + (long) pd.freeQty}</td>
+                        <td style="background-color: #e0e0e0; -webkit-print-color-adjust: exact;">${(long) pd.sqty}</td>
+                        <%
+                            float amount = pd.amount - pd.cgstAmount - pd.sgstAmount - pd.igstAmount
+                        %>
+                        <td>${String.format("%.2f", amount)}</td>
+                        <td>${pd.discount}</td>
+                        <%
+                            cgst.push(pd.cgstAmount / amount * 100)
+                            sgst.push(pd.sgstAmount / amount * 100)
+                            igst.push(pd.igstAmount / amount * 100)
+                        %>
+                        <td>${String.format("%.2f", pd.cgstAmount)}<br>${String.format("%.2f", pd.cgstAmount / amount * 100)}
+                        </td>
+                        <td>${String.format("%.2f", pd.sgstAmount)}<br>${String.format("%.2f", pd.sgstAmount / amount * 100)}
+                        </td>
+                        <td>${String.format("%.2f", pd.igstAmount)}<br>${String.format("%.2f", pd.igstAmount / amount * 100)}
+                        </td>
+                        <td>${String.format("%.2f", pd.amount)}</td>
+                    </tr>
+                </g:each>
+                <tr>
+                    <td colspan="13">
+                    </td>
+                    <% divtotal = divtotalBeforeTaxes + divTotalcgst + divTotalsgst + divTotaligst %>
+                    <td><b>Total</b></td>
+                    <td>${String.format("%.2f", divtotalBeforeTaxes)}</td>
+                    <td>${String.format("%.2f", divTotaldiscount)}</td>
+                    <td>${String.format("%.2f", divTotalcgst)}</td>
+                    <td>${String.format("%.2f", divTotalsgst)}</td>
+                    <td>${String.format("%.2f", divTotaligst)}</td>
+                    <td>${String.format("%.2f", divtotal)}</td>
+                </tr>
+            </g:each>
+        </g:if>
+        <g:else>
+            <g:each var="sp" in="${saleProductDetails}" status="i">
+                <tr>
+                    <td>${i + 1}</td>
+                    <td>${sp.productId.hsnCode}</td>
+                    <td><b>${sp.productId.productName}</b></td>
+                    <td><b>${sp.productId.unitPacking}</b></td>
+                    <td><b>${sp?.productId?.schedule?.scheduleCode}</b></td>
+                    <td>${sp.batchNumber}</td>
+                    <td id="expDate${sp.id}">${sp.expiryDate}</td>
+%{--                    <td></td>--}%
+                    <td>${sp.mrp}</td>
+                    <td>${String.format("%.2f", sp?.batch?.ptr)}</td>
+                    <td>${String.format("%.2f", sp.sRate)}</td>
+                    <td>${(long) sp.sqty}</td>
+                    <g:if test="${saleBillDetail?.invtype == Constants.REGULAR}">
+                        <td style="background-color: #e0e0e0; -webkit-print-color-adjust: exact;">${(long) sp.freeQty}</td>
+                    </g:if>
+                    <g:elseif test="${saleBillDetail?.invtype == Constants.REPLACEMENT}">
+                        <td style="background-color: #e0e0e0; -webkit-print-color-adjust: exact;">${(long) sp.freeQty}</td>
+                    </g:elseif>
+                    <g:else>
+                        <td style="background-color: #e0e0e0; -webkit-print-color-adjust: exact;">${(long) sp.freeQty}</td>
+                    </g:else>
+                    <td style="background-color: #e0e0e0; -webkit-print-color-adjust: exact;">${(long) sp.sqty + (long) sp.freeQty}</td>
+                    <td style="background-color: #e0e0e0; -webkit-print-color-adjust: exact;">${(long) sp.sqty}</td>
+                    <%
+                        float amount = sp.amount - sp.cgstAmount - sp.sgstAmount - sp.igstAmount
+                    %>
+                    <td>${String.format("%.2f", amount)}</td>
+                    <td>${sp.discount}</td>
+                    <%
+                        cgst.push(sp.cgstAmount / amount * 100)
+                        sgst.push(sp.sgstAmount / amount * 100)
+                        igst.push(sp.igstAmount / amount * 100)
+                    %>
+                    <td>${String.format("%.2f", sp.cgstAmount)}<br>${String.format("%.2f", sp.cgstAmount / amount * 100)}
+                    </td>
+                    <td>${String.format("%.2f", sp.sgstAmount)}<br>${String.format("%.2f", sp.sgstAmount / amount * 100)}
+                    </td>
+                    <td>${String.format("%.2f", sp.igstAmount)}<br>${String.format("%.2f", sp.igstAmount / amount * 100)}
+                    </td>
+                    <td>${String.format("%.2f", sp.amount)}</td>
+                </tr>
+            </g:each>
+        </g:else>
         <tr>
-            <td>${i + 1}</td>
-            <td>${sp.productId.hsnCode}</td>
-            <td><b>${sp.productId.productName}</b></td>
-            <td><b>${sp.productId.unitPacking}</b></td>
-            <td><b>${sp?.productId?.schedule?.scheduleCode}</b></td>
-            <td>${sp.batchNumber}</td>
-            <td id="expDate${sp.id}">${sp.expiryDate}</td>
-            %{--            <td></td>--}%
-            <td>${sp.mrp}</td>
-            <td>${String.format("%.2f", sp?.batch?.ptr)}</td>
-            <td>${String.format("%.2f", sp.sRate)}</td>
-            <td>${(long) sp.sqty}</td>
-            <g:if test="${saleBillDetail?.invtype == Constants.REGULAR}">
-                <td>${(long) sp.freeQty}</td>
-            </g:if>
-            <g:if test="${saleBillDetail?.invtype == Constants.REPLACEMENT}">
-                <td>${(long) sp.freeQty}</td>
-            </g:if>
-            <%
-                float amount = sp.amount - sp.cgstAmount - sp.sgstAmount - sp.igstAmount
-            %>
-            <td>${String.format("%.2f", amount)}</td>
-            <td>${sp.discount}</td>
-            <%
-                cgst.push(sp.cgstAmount / amount * 100)
-                sgst.push(sp.sgstAmount / amount * 100)
-                igst.push(sp.igstAmount / amount * 100)
-            %>
-            <td>${String.format("%.2f", sp.cgstAmount)}<br>${String.format("%.2f", sp.cgstAmount / amount * 100)}
+            <td colspan="13">Amount in words: <b>${WordsToNumbersUtil.convertToIndianCurrency(total.toString())}</b>
             </td>
-            <td>${String.format("%.2f", sp.sgstAmount)}<br>${String.format("%.2f", sp.sgstAmount / amount * 100)}
-            </td>
-            <td>${String.format("%.2f", sp.igstAmount)}<br>${String.format("%.2f", sp.igstAmount / amount * 100)}
-            </td>
-            <td>${String.format("%.2f", sp.amount)}</td>
-        </tr>
-    </g:each>
-    <tr>
-        <td colspan="11">Amount in words: <b>${WordsToNumbersUtil.convertToIndianCurrency(total.toString())}</b>
-        </td>
-        <td><b>Total</b></td>
-        <td>${String.format("%.2f", totalBeforeTaxes)}</td>
-        <td>${String.format("%.2f", totaldiscount)}</td>
-        <td>${String.format("%.2f", totalcgst)}</td>
-        <td>${String.format("%.2f", totalsgst)}</td>
-        <td>${String.format("%.2f", totaligst)}</td>
-        <td>${String.format("%.2f", total)}</td>
-    </tr>
-<tr style="border: 1px solid #ffffff">
-    <td colspan="14" style="border: 0"><g:if test="${saleBillDetail.billStatus == 'CANCELLED'}">
-        <div id="watermark" class="print-watermark">CANCELLED</div>
-    </g:if>
-        <g:elseif test="${saleBillDetail.billStatus == 'DRAFT'}">
-            <div id="watermark" class="print-watermark">DRAFT</div>
-        </g:elseif>
-        <p><u>Note:</u> <span>${saleBillDetail?.publicNote}</span></p>
-        <p>No of cases <br>
-            Weight in Kgs :<br>
-            Party Ref No. : <br>
-            Rev-Charge :</p>
-        <g:each var="t" in="${termsConditions}" status="i">
-            <g:if test="${t?.form?.formType == Constants.SALE_INVOICE && t?.deleted == false}">
-                <p>${raw(t?.termCondition)}</p>
-            </g:if>
-        </g:each></td>
-    <td colspan="7" style="border: 0"><table class="print" style="margin-top: 2%;width: 100%">
-        <tr>
-            <th>Total</th>
-            <td>0.00</td>
+            <td><b>Total</b></td>
             <td>${String.format("%.2f", totalBeforeTaxes)}</td>
+            <td>${String.format("%.2f", totaldiscount)}</td>
+            <td>${String.format("%.2f", totalcgst)}</td>
+            <td>${String.format("%.2f", totalsgst)}</td>
+            <td>${String.format("%.2f", totaligst)}</td>
+            <g:if test="${settings.RON == Constants.NEXT_INTEGER_VALUE}">
+                <td>${String.format("%.2f", Math.ceil(total))}</td>
+            </g:if>
+            <g:elseif test="${settings.RON == Constants.PREVIOUS_INTEGER_VALUE}">
+                <td>${String.format("%.2f", Math.floor(total))}</td>
+            </g:elseif>
+            <g:else>
+                <td>${String.format("%.2f", total)}</td>
+            </g:else>
+        </tr>
+        <tr style="border: 1px solid #ffffff">
+            <td colspan="14" style="border: 0"><g:if test="${saleBillDetail.billStatus == 'CANCELLED'}">
+                <div id="watermark" class="print-watermark">CANCELLED</div>
+            </g:if>
+                <g:elseif test="${saleBillDetail.billStatus == 'DRAFT'}">
+                    <div id="watermark" class="print-watermark">DRAFT</div>
+                </g:elseif>
+                <p><u>Note:</u> <span>${saleBillDetail?.publicNote}</span></p>
+
+                <p>No of cases <br>
+                    Weight in Kgs :<br>
+                    Party Ref No. : <br>
+                    Rev-Charge :</p>
+                <g:each var="t" in="${termsConditions}" status="i">
+                    <g:if test="${t?.form?.formType == Constants.SALE_INVOICE && t?.deleted == false}">
+                        <p>${raw(t?.termCondition)}</p>
+                    </g:if>
+                </g:each></td>
+            <td colspan="7" style="border: 0"><table class="print" style="margin-top: 2%;width: 100%">
+                <tr>
+                    <th>Total</th>
+                    <td>0.00</td>
+                    <td>${String.format("%.2f", totalBeforeTaxes)}</td>
+                </tr>
+
+                <g:each in="${sgstGroup}" var="sg">
+                    <tr>
+                        <th>Add SGST ${sg.key}% on</th>
+                        <td>${String.format("%.2f", sg.value)}</td>
+                        <td class="totalgst">${String.format("%.2f", sg.value * (Double.parseDouble(sg.key.toString()) / 100))}</td>
+                    </tr>
+
+                </g:each>
+
+                <g:each in="${cgstGroup}" var="cg">
+                    <tr>
+                        <th>Add CGST ${cg.key}% on</th>
+                        <td>${String.format("%.2f", cg.value)}</td>
+                        <td class="totalgst">${String.format("%.2f", cg.value * (Double.parseDouble(cg.key.toString()) / 100))}</td>
+                    </tr>
+
+                </g:each>
+
+                <g:each in="${igstGroup}" var="ig">
+                    <tr>
+                        <th>Add IGST ${ig.key}% on</th>
+                        <td>${String.format("%.2f", ig.value)}</td>
+                        <td class="totalgst">${String.format("%.2f", ig.value * (Double.parseDouble(ig.key.toString()) / 100))}</td>
+                    </tr>
+
+                </g:each>
+                <tr>
+                    <th>Net Invoice Amt.</th>
+                    <td>0.00</td>
+                    <td id="netInvAmt"></td>
+                </tr>
+                <tr>
+                    <th>Less Cr. Nt*</th>
+                    <td>0.00</td>
+                    <td>0.00</td>
+                </tr>
+                <tr>
+                    <th>Add Debit Nt*</th>
+                    <td>0.00</td>
+                    <td>0.00</td>
+                </tr>
+                <tr>
+                    <th>Add Rounding off*</th>
+                    <td>0.00</td>
+                    <td>0.00</td>
+                </tr>
+                <tr>
+                    <th>Net Payable Amt.</th>
+                    <td>0.00</td>
+                    <td id="netPayAmt"></td>
+                </tr>
+            </table></td>
         </tr>
 
-        <g:each in="${sgstGroup}" var="sg">
-            <tr>
-                <th>Add SGST ${sg.key}% on</th>
-                <td>${String.format("%.2f", sg.value)}</td>
-                <td class="totalgst">${String.format("%.2f", sg.value * (Double.parseDouble(sg.key.toString()) / 100))}</td>
+        <g:if test="${settings.size() != 0}">
+            <tr style="border: 1px solid #ffffff;">
+                <td colspan="7" style="border: 0">
+                    <table class="print" style="margin-top: 2%;width: 100%">
+                        <thead>
+                        <th>
+                            -
+                        </th>
+                        <th>
+                            Gross Amt.
+                        </th>
+                        <th>
+                            Net Amt.
+                        </th>
+                        %{--                    <g:each var="k, groupData" in="${groupDetails}" status="i">--}%
+                        %{--                        <g:each in="${groupData[0].sortDetail.divCgstGroup}" var="cg">--}%
+                        %{--                            <th>Add CGST ${cg.key}% on</th>--}%
+                        %{--                        </g:each>--}%
+                        %{--                    </g:each>--}%
+
+                        </thead>
+
+                        <g:each var="key, groupData" in="${groupDetails}" status="i">
+                            <tr>
+                                <td>${groupData[0].sortDetail.sortItem}</td>
+                                <td>${String.format("%.2f", groupData[0].sortDetail.amountBeforeTaxes)}</td>
+                                <td>${String.format("%.2f", groupData[0].sortDetail.amountAfterTaxes)}</td>
+                            </tr>
+                        %{--                        <g:each var="cg" in="${groupData[0].sortDetail.divCgstGroup}" status="j">--}%
+                        %{--                            <td>${String.format("%.2f", cg.value)}</td>--}%
+                        %{--                        </g:each>--}%
+                        </g:each>
+
+                    </table>
+                </td>
             </tr>
-
-        </g:each>
-
-        <g:each in="${cgstGroup}" var="cg">
-            <tr>
-                <th>Add CGST ${cg.key}% on</th>
-                <td>${String.format("%.2f", cg.value)}</td>
-                <td class="totalgst">${String.format("%.2f", cg.value * (Double.parseDouble(cg.key.toString()) / 100))}</td>
-            </tr>
-
-        </g:each>
-
-        <g:each in="${igstGroup}" var="ig">
-            <tr>
-                <th>Add IGST ${ig.key}% on</th>
-                <td>${String.format("%.2f", ig.value)}</td>
-                <td class="totalgst">${String.format("%.2f", ig.value * (Double.parseDouble(ig.key.toString()) / 100))}</td>
-            </tr>
-
-        </g:each>
-        <tr>
-            <th>Net Invoice Amt.</th>
-            <td>0.00</td>
-            <td id="netInvAmt"></td>
+        </g:if>
+        </tbody>
+        <tfoot style="border: 1px solid #ffffff">
+        <tr style="border: 1px solid #ffffff">
+            <td style="border: 0;">
+                <!--place holder for the fixed-position footer-->
+                <div class="page-footer-space"></div>
+            </td>
         </tr>
-        <tr>
-            <th>Less Cr. Nt*</th>
-            <td>0.00</td>
-            <td>0.00</td>
-        </tr>
-        <tr>
-            <th>Add Debit Nt*</th>
-            <td>0.00</td>
-            <td>0.00</td>
-        </tr>
-        <tr>
-            <th>Add Rounding off*</th>
-            <td>0.00</td>
-            <td>0.00</td>
-        </tr>
-        <tr>
-            <th>Net Payable Amt.</th>
-            <td>0.00</td>
-            <td id="netPayAmt"></td>
-        </tr>
-    </table></td>
+        </tfoot>
 
-</tr>
-    </tbody>
-    <tfoot  style="border: 1px solid #ffffff">
-    <tr style="border: 1px solid #ffffff">
-        <td style="border: 0;">
-            <!--place holder for the fixed-position footer-->
-            <div class="page-footer-space"></div>
-        </td>
-    </tr>
-    </tfoot>
-
-</table>
+    </table>
 </div>
 </body>
 
@@ -561,14 +791,22 @@
         });
         var netAmount =
         ${totalBeforeTaxes}
-        var netInvAmt = parseFloat(totalGst) + netAmount;
+        <g:if test="${settings.RON == Constants.NEXT_INTEGER_VALUE}">
+        var netInvAmt = Math.ceil(Number(parseFloat(totalGst) + netAmount));
+        </g:if>
+        <g:elseif test="${settings.RON == Constants.PREVIOUS_INTEGER_VALUE}">
+        var netInvAmt = Math.floor(Number(parseFloat(totalGst) + netAmount));
+        </g:elseif>
+        <g:else>
+        var netInvAmt = parseFloat(totalGst) + netAmount
+        </g:else>
         $("#netInvAmt").text(netInvAmt.toFixed(2));
         $("#netPayAmt").text(netInvAmt.toFixed(2));
 
 
         <g:if test="${saleBillDetail?.refDate!=null}">
-        $("#poDate1").text( " "+moment('${saleBillDetail?.refDate}').format('DD/MM/YYYY'));
-        $("#poDate2").text( " "+moment('${saleBillDetail?.refDate}').format('DD/MM/YYYY'));
+        $("#poDate1").text(" " + moment('${saleBillDetail?.refDate}').format('DD/MM/YYYY'));
+        $("#poDate2").text(" " + moment('${saleBillDetail?.refDate}').format('DD/MM/YYYY'));
         </g:if>
         <g:else>
         $("#poDate1").text();
@@ -659,6 +897,5 @@
 
 
 </script>
-
 
 </html>

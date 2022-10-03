@@ -6,6 +6,9 @@ import org.springframework.web.context.request.RequestContextHolder
 import javax.servlet.http.HttpSession
 import java.text.ParseException
 import java.text.SimpleDateFormat
+import java.util.concurrent.ConcurrentHashMap
+import java.util.function.Function
+import java.util.function.Predicate
 
 public class Tools {
 
@@ -47,5 +50,10 @@ public class Tools {
         }
         String formatted = output.format(d);
         return formatted
+    }
+
+    public static <T> Predicate<T> distinctByKey(Function<? super T, ?> keyExtractor) {
+        Set<Object> seen = ConcurrentHashMap.newKeySet();
+        return {t -> seen.add(keyExtractor.apply(t))};
     }
 }

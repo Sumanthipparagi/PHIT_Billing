@@ -58,6 +58,7 @@ class SaleBillDetails implements Serializable, LogicalDelete<SaleBillDetails>
     String privateNote
     String refNo
     Date refDate
+    String rep
 
     Date cancelledDate
 
@@ -81,6 +82,7 @@ class SaleBillDetails implements Serializable, LogicalDelete<SaleBillDetails>
         privateNote nullable: true
         refDate nullable: true
         refNo nullable: true
+        rep nullable: true
     }
 
     static mapping = {
