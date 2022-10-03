@@ -11,7 +11,6 @@ import org.bouncycastle.util.Store;
 import sun.misc.BASE64Encoder;
 import javax.crypto.KeyGenerator;
 import javax.crypto.SecretKey;
-import java.io.File;
 import java.io.FileInputStream;
 import java.security.*;
 import java.security.cert.X509Certificate;
