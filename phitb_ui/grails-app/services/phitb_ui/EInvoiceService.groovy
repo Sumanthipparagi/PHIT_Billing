@@ -95,6 +95,7 @@ class EInvoiceService {
                     return null
                 }
             } else {
+                println("Auth Token Valid")
                 return entityIrnDetails
             }
         }
@@ -161,6 +162,7 @@ class EInvoiceService {
 
         JSONObject authData = generateSignatureAndAuthToken(session)
         if (authData == null) {
+            println("AUTH DATA is NULL")
             return
         }
         String invoiceId = saleBillDetail.get("id")
