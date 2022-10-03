@@ -58,6 +58,7 @@ dependencies {
     testRuntime "org.seleniumhq.selenium:selenium-chrome-driver:2.47.1"
     testRuntime "org.seleniumhq.selenium:selenium-htmlunit-driver:2.47.1"
     testRuntime "net.sourceforge.htmlunit:htmlunit:2.18"
+    compile group: 'org.bouncycastle', name: 'bcpkix-jdk15on', version: '1.70'
     compile group: 'org.apache.poi', name: 'poi-ooxml', version: '3.15'
     compile group: 'org.glassfish.jersey.core', name: 'jersey-client', version: '2.24.1'
     compile group: 'org.glassfish.jersey.media', name: 'jersey-media-json-jackson', version: '2.24.1'
@@ -67,7 +68,7 @@ dependencies {
     compile 'org.grails.plugins:rendering:2.0.3'
     compile "org.grails.plugins:grails-spring-websocket:2.3.0"
 
-    compile group: 'org.bouncycastle', name: 'bcpkix-jdk15on', version: '1.70'
+
 
     // https://mvnrepository.com/artifact/javax.mail/javax.mail-api
     compile group: 'com.sun.mail', name: 'javax.mail', version: '1.6.2'

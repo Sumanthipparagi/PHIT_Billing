@@ -68,6 +68,10 @@ public class EinvoiceHelper {
 
             // Method Call to generate Signature
             signature = MakeSignature(data);
+            if(signature == null)
+            {
+                System.out.println("Signature: NULL");
+            }
             return signature;
         } catch (Exception e) {
             e.printStackTrace();

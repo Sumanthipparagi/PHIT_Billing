@@ -34,10 +34,12 @@ class EInvoiceService {
             entityIrnDetails = new EntityService().getEntityIrnByEntity(entityId)
             //don't proceed if null
             if (entityIrnDetails == null) {
+                println("Entity IRN Details NULL")
                 return null
             }
             //don't proceed if inactive
             if (!entityIrnDetails.get("active")) {
+                println("Entity IRN Details Inactive")
                 return null
             }
             boolean isAuthTokenValid = false
@@ -79,6 +81,10 @@ class EInvoiceService {
                     if (apiResponse.status == 200) {
                         JSONObject sessionData = new JSONObject(apiResponse.readEntity(String.class))
                         JSONObject authToken = generateAuthToken(sessionData)
+                        if(authToken == null)
+                        {
+                            println("Auth Token Null")
+                        }
                         return authToken
                     } else
                         return null
