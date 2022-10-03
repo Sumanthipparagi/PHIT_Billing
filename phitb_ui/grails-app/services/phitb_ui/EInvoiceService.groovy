@@ -246,8 +246,8 @@ class EInvoiceService {
 
             //Seller Details
             JSONObject SellerDtls = new JSONObject()
-            //SellerDtls.put("Gstin", sellerDetails.get("gstn"))
-            SellerDtls.put("Gstin", entityIrnDetails.get("irnGSTIN")) //TODO: to be removed in production
+            SellerDtls.put("Gstin", sellerDetails.get("gstn"))
+            //SellerDtls.put("Gstin", entityIrnDetails.get("irnGSTIN")) //TODO: to be removed in production
             SellerDtls.put("LglNm", sellerDetails.get("entityName"))
             SellerDtls.put("TrdNm", sellerDetails.get("entityName"))
             SellerDtls.put("Addr1", new UtilsService().truncateString(sellerDetails.get("addressLine1").toString(),100))
@@ -257,18 +257,18 @@ class EInvoiceService {
                 SellerDtls.put("Addr2", sellerAddressLine2)
             }
             SellerDtls.put("Loc", sellerCity.get("name"))
-            //SellerDtls.put("Pin", Long.parseLong(sellerDetails.get("pinCode").toString()))
-            SellerDtls.put("Pin", 431132) //TODO: to be removed in production
+            SellerDtls.put("Pin", Long.parseLong(sellerDetails.get("pinCode").toString()))
+            //SellerDtls.put("Pin", 431132) //TODO: to be removed in production
             SellerDtls.put("Ph", sellerDetails.get("mobileNumber"))
             SellerDtls.put("Em", sellerDetails.get("email"))
-            //SellerDtls.put("Stcd", sellerState.get("irnStateCode"))
-            SellerDtls.put("Stcd", "27") //TODO: to be removed in production
+            SellerDtls.put("Stcd", sellerState.get("irnStateCode"))
+           // SellerDtls.put("Stcd", "27") //TODO: to be removed in production
             irnObject.put("SellerDtls", SellerDtls)
 
             //Buyer Details
             JSONObject BuyerDtls = new JSONObject()
-            //BuyerDtls.put("Gstin", buyerDetails.get("gstn"))
-            BuyerDtls.put("Gstin", "27AAACA4410D2ZD") //TODO: to be removed in production
+            BuyerDtls.put("Gstin", buyerDetails.get("gstn"))
+            //BuyerDtls.put("Gstin", "27AAACA4410D2ZD") //TODO: to be removed in production
             BuyerDtls.put("LglNm", buyerDetails.get("entityName"))
             BuyerDtls.put("TrdNm", buyerDetails.get("entityName"))
             BuyerDtls.put("Addr1", new UtilsService().truncateString(buyerDetails.get("addressLine1").toString(), 100))
@@ -278,14 +278,14 @@ class EInvoiceService {
                 BuyerDtls.put("Addr2", buyerAddressLine2)
             }
             BuyerDtls.put("Loc", buyerCity.get("name"))
-          //  BuyerDtls.put("Pin", Long.parseLong(buyerDetails.get("pinCode").toString()))
-            BuyerDtls.put("Pin", 431132)  //TODO: to be removed in production
+            BuyerDtls.put("Pin", Long.parseLong(buyerDetails.get("pinCode").toString()))
+          //  BuyerDtls.put("Pin", 431132)  //TODO: to be removed in production
             BuyerDtls.put("Ph", buyerDetails.get("mobileNumber"))
             BuyerDtls.put("Em", buyerDetails.get("email"))
-           // BuyerDtls.put("Stcd", buyerState.get("irnStateCode"))
-            BuyerDtls.put("Stcd", "27") //TODO: to be removed in production
-           // BuyerDtls.put("Pos",  buyerState.get("irnStateCode")) //TODO: to be added
-            BuyerDtls.put("Pos",  "27")  //TODO: to be removed in production
+            BuyerDtls.put("Stcd", buyerState.get("irnStateCode"))
+            //BuyerDtls.put("Stcd", "27") //TODO: to be removed in production
+            BuyerDtls.put("Pos",  buyerState.get("irnStateCode")) //TODO: to be added
+           // BuyerDtls.put("Pos",  "27")  //TODO: to be removed in production
             irnObject.put("BuyerDtls", BuyerDtls)
 
             //Dispatch Details
@@ -298,10 +298,10 @@ class EInvoiceService {
                 dispDtlsAddressLine2 = new UtilsService().truncateString(sellerDetails.get("addressLine2").toString(), 100)
                 DispDtls.put("Addr2", dispDtlsAddressLine2)
             }
-           // DispDtls.put("Pin", Long.parseLong(sellerDetails.get("pinCode").toString()))
-            DispDtls.put("Pin", 431132) //TODO: to be removed in production
-           // DispDtls.put("Stcd", sellerState.get("irnStateCode"))
-            DispDtls.put("Stcd", "27") //TODO: to be removed in production
+            DispDtls.put("Pin", Long.parseLong(sellerDetails.get("pinCode").toString()))
+           // DispDtls.put("Pin", 431132) //TODO: to be removed in production
+            DispDtls.put("Stcd", sellerState.get("irnStateCode"))
+            //DispDtls.put("Stcd", "27") //TODO: to be removed in production
             irnObject.put("DispDtls", DispDtls)
 
             //Ship Details
