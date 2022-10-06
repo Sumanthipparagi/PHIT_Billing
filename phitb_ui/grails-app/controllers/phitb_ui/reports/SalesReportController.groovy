@@ -528,7 +528,7 @@ class SalesReportController {
                 customerLedgerEntry.put("transactionNumber", sb?.invoiceNumber)
                 customerLedgerEntry.put("transactionDescription", "Sale Invoice")
                 customerLedgerEntry.put("amount", sb?.invoiceTotal)
-                customerLedgerEntry.put("type", "DEBIT")
+                customerLedgerEntry.put("type", "CREDIT")
 //                customerLedgerDetails.add(customerLedgerEntry)
                 if (customerLedgerMap.containsKey(sb.customerId.toString())) {
                     customerLedgerDetails = customerLedgerMap.get(sb.customerId.toString())
@@ -1089,8 +1089,9 @@ class SalesReportController {
         println("paymentTotal " + paymentTotal)
 
 //        openingBalance = 1000000 //TODO: to be removed
-        openingBalance = entityOpeningBalance + (saleBillsTotal.toDouble() + saleOrderTotal.toDouble() + gtnTotal
-                .toDouble() + deliveryChallanTotal.toDouble() + debitJvTotal.toDouble() + receiptTotal.toDouble() + purchaseReturnTotal.toDouble()) - (purchaseBillsTotal.toDouble() - purchaseOrderTotal.toDouble() - saleReturnTotal.toDouble() - creditJvTotal.toDouble() - paymentTotal.toDouble())
+        openingBalance = entityOpeningBalance + (saleOrderTotal.toDouble() + gtnTotal
+                .toDouble() + deliveryChallanTotal.toDouble() + debitJvTotal.toDouble() + receiptTotal.toDouble() +
+                purchaseReturnTotal.toDouble()) - (saleBillsTotal.toDouble()-purchaseBillsTotal.toDouble() - purchaseOrderTotal.toDouble() - saleReturnTotal.toDouble() - creditJvTotal.toDouble() - paymentTotal.toDouble() )
 
         JSONObject jsonObject = new JSONObject()
         jsonObject.put("customerLedger", customerLedgerMap)
