@@ -11,7 +11,6 @@ import org.bouncycastle.util.Store;
 import sun.misc.BASE64Encoder;
 import javax.crypto.KeyGenerator;
 import javax.crypto.SecretKey;
-import java.io.File;
 import java.io.FileInputStream;
 import java.security.*;
 import java.security.cert.X509Certificate;
@@ -69,6 +68,10 @@ public class EinvoiceHelper {
 
             // Method Call to generate Signature
             signature = MakeSignature(data);
+            if(signature == null)
+            {
+                System.out.println("Signature: NULL");
+            }
             return signature;
         } catch (Exception e) {
             e.printStackTrace();
