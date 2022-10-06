@@ -126,6 +126,7 @@ class SaleProductDetailsService
         saleProductDetails.status = Long.parseLong(jsonObject.get("status").toString())
         saleProductDetails.syncStatus = Long.parseLong(jsonObject.get("syncStatus").toString())
         saleProductDetails.financialYear = jsonObject.get("financialYear").toString()
+        saleProductDetails.replacement = jsonObject.get('replacement')
         saleProductDetails.entityTypeId = Long.parseLong(jsonObject.get("entityTypeId").toString())
         saleProductDetails.entityId = Long.parseLong(jsonObject.get("entityId").toString())
 
@@ -183,6 +184,7 @@ class SaleProductDetailsService
             saleProductDetails.status = Long.parseLong(jsonObject.get("status").toString())
             saleProductDetails.syncStatus = Long.parseLong(jsonObject.get("syncStatus").toString())
             saleProductDetails.financialYear = jsonObject.get("financialYear").toString()
+            saleProductDetails.replacement = jsonObject.get('replacement')
             saleProductDetails.entityTypeId = Long.parseLong(jsonObject.get("entityTypeId").toString())
             saleProductDetails.entityId = Long.parseLong(jsonObject.get("entityId").toString())
 

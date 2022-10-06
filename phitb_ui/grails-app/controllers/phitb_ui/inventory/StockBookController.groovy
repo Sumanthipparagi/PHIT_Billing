@@ -536,18 +536,18 @@ class StockBookController
             long draftProductId = 0
             for (Object obj : jsonArray)
             {
-                //15 if edit, 16 if being added
-                if (i == 15 && obj != null)
+                //16 if edit, 17 if being added
+                if (i == 16 && obj != null)
                 {
                     isEdit = true
                 }
 
-                if (i == 24 && obj != null)
+                if (i == 25 && obj != null)
                 {
                     stockBookId = obj
                     draftProductId = obj
                 }
-                else if (i == 25 && obj != null)
+                else if (i == 26 && obj != null)
                 {
                     isEdit = false
                     stockBookId = obj
@@ -608,10 +608,10 @@ class StockBookController
             }
             else
             {
-                if (jsonArray[15] != 0 && !draftEdit)
+                if (jsonArray[16] != 0 && !draftEdit)
                 {
                     //editing while adding for first time
-                    def tmpStockBook = new InventoryService().getTempStocksById(jsonArray[15])
+                    def tmpStockBook = new InventoryService().getTempStocksById(jsonArray[16])
                     stockBook = new InventoryService().getStockBookById(Long.parseLong(tmpStockBook.originalId))
                 }
                 else
@@ -729,8 +729,17 @@ class StockBookController
             jsonObject.put("redundantBatch", "")
             jsonObject.put("originalId", stockBook.id)
             jsonObject.put("uuid", params.uuid)
-            jsonObject.put("originalSqty", jsonArray[20])
-            jsonObject.put("originalFqty", jsonArray[21])
+            jsonObject.put("originalSqty", jsonArray[21])
+            jsonObject.put("originalFqty", jsonArray[22])
+            try{
+                if(jsonArray[15]){
+                    jsonObject.put("replacement", jsonArray[15])
+                }
+            }catch(Exception ignored){
+                println(ignored)
+                jsonObject.put("replacement",false)
+            }
+
 
             JSONObject settings = new EntityService().getEntitySettingsByEntity(session.getAttribute('entityId').toString())
             if (settings == null)
@@ -802,7 +811,7 @@ class StockBookController
             else
             {
 //                def tmpStockBook = new InventoryService().getTempStocksById(jsonArray[15])
-                stockBook = new InventoryService().getStockBookById(Long.parseLong(jsonArray[15]))
+                stockBook = new InventoryService().getStockBookById(Long.parseLong(jsonArray[16]))
             }
 
             long remainingQty = stockBook.remainingQty

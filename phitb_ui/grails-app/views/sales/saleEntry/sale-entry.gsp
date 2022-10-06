@@ -157,27 +157,27 @@
 
 
 
-                            <div class="col-md-3 mt-2" style="max-width: 23%;">
+                            <div class="col-md-2 mt-2">
                                 <br>
                                 <a class="btn btn-primary waves-effect" role="button" data-toggle="collapse"
                                    href="#shipmentDetails" aria-expanded="false"
-                                   aria-controls="shipmentDetails"><i class="zmdi zmdi-truck"></i> Shipment Information
+                                   aria-controls="shipmentDetails"><i class="zmdi zmdi-truck"></i> Shipment
                                 </a>
                             </div>
 
-                            <div class="col-md-2 mt-2" style="max-width: 14.666667%;">
+                            <div class="col-md-1 mt-2">
                                 <br>
                                 <a class="btn btn-primary waves-effect collapsed" role="button"
                                    data-toggle="collapse" href="#noteDetails" aria-expanded="false"
-                                   aria-controls="noteDetails"><i class="zmdi zmdi-edit"></i>&nbsp;Note
+                                   aria-controls="noteDetails"><i class="zmdi zmdi-edit"></i>
                                 </a>
                             </div>
 
-                            <div class="col-md-2 mt-2" style="max-width: 12%;">
+                            <div class="col-md-1 mt-2">
                                 <br>
                                 <button class="btn btn-primary waves-effect"
                                         id="addNewRow" style="background-color: green;"><i
-                                        class="zmdi zmdi-plus"></i> Row
+                                        class="zmdi zmdi-plus"></i>
                                 </button>
                             </div>
 
@@ -511,6 +511,7 @@
         'SGST',
         'CGST',
         'IGST',
+        'Rep',
         'id'];
 
     var batchHeaderRow = [
@@ -609,6 +610,7 @@
                 {type: 'text', readOnly: true},
                 {type: 'text', readOnly: true},
                 {type: 'text', readOnly: true},
+                {type: 'checkbox', checkedTemplate: true, uncheckedTemplate: false},
                 {type: 'text', readOnly: true},
                 {type: 'text', readOnly: true}, //GST Percentage
                 {type: 'text', readOnly: true}, //SGST Percentage
@@ -622,18 +624,18 @@
                 {type: 'text', readOnly: true} //saved draft product id
                 </g:if>
             ],
-            hiddenColumns: true,
-            hiddenColumns: {
-                <g:if test="${customer != null}">
-                columns: [15, 16, 17, 18, 19, 20, 21, 22, 23, 24]
-                </g:if>
-                <g:else>
-                // columns: [15, 16, 17, 18, 19, 20, 21]
-                columns: [15, 16, 17, 18, 19, 20, 21]
+            %{--hiddenColumns: true,--}%
+            %{--hiddenColumns: {--}%
+            %{--    <g:if test="${customer != null}">--}%
+            %{--    columns: [15, 16, 17, 18, 19, 20, 21, 22, 23, 24]--}%
+            %{--    </g:if>--}%
+            %{--    <g:else>--}%
+            %{--    // columns: [15, 16, 17, 18, 19, 20, 21]--}%
+            %{--    columns: [15, 16, 17, 18, 19, 20, 21]--}%
 
 
-                </g:else>
-            },
+            %{--    </g:else>--}%
+            %{--},--}%
             minSpareRows: 0,
             minSpareColumns: 0,
             enterMoves: {row: 0, col: 1},
@@ -653,14 +655,14 @@
             afterOnCellMouseDown: function (e, coords, TD) {
                 if (coords.col === 0) {
                     <g:if test="${customer == null}">
-                    var id = hot.getDataAtCell(coords.row, 15);
+                    var id = hot.getDataAtCell(coords.row, 16);
                     deleteTempStockRow(id, coords.row);
                     console.log("delete temp stock row deleted!!")
                     </g:if>
                     <g:else>
-                    var id = hot.getDataAtCell(coords.row, 24);
+                    var id = hot.getDataAtCell(coords.row, 25);
                     if (id == null && ${params.type == "CLONE"}) {
-                        id = hot.getDataAtCell(coords.row, 15);
+                        id = hot.getDataAtCell(coords.row, 16);
                         deleteTempStockRow(id, coords.row);
                         console.log("delete temp stock row deleted!!")
                     } else {
@@ -706,16 +708,20 @@
                         $("#batchTable").focus();
                     }
                 } else if (selection === 0) {
-                    var id = hot.getDataAtCell(row, 15);
+                    var id = hot.getDataAtCell(row, 16);
                     if (e.keyCode === 13)
                         deleteTempStockRow(id, row);
-                } else if (selection === 14 || selection === 7) {
+                } else if (selection === 14 || selection === 15 || selection === 16) {
                     if ((e.keyCode === 13 || e.keyCode === 9) && !readOnly) {
                         //check if sqty is empty
+                        //   var typ = hot.getCellMeta(row,15).type;
+                        /*if (e.keyCode === 13 && typ === 'checkbox') {
+                            e.stopImmediatePropagation();
+                        }*/
                         var sqty = hot.getDataAtCell(row, 4);
                         var fqty = hot.getDataAtCell(row, 5);
                         if (sqty && sqty > 0) {
-                            var tmpStockId = hot.getDataAtCell(row, 15);
+                            var tmpStockId = hot.getDataAtCell(row, 16);
                             if (tmpStockId == null) {
                                 var batchId = hot.getCellMeta(row, 2)?.batchId; //batch
                                 var dt = hot.getDataAtRow(row);
@@ -750,6 +756,7 @@
                                         //         return false;
                                         //     }
                                         // });
+                                        // hot.deselectCell()
                                     },
                                     data: {
                                         rowData: json,
@@ -762,9 +769,9 @@
                                         batchHot.updateSettings({
                                             data: []
                                         });
-                                        var id = hot.getDataAtCell(row, 15)
-                                        hot.setDataAtCell(row, 15, data.id);
-                                        for (var i = 0; i < 15; i++) {
+                                        var id = hot.getDataAtCell(row, 16);
+                                        hot.setDataAtCell(row, 16, data.id);
+                                        for (var i = 0; i < 16; i++) {
                                             hot.setCellMeta(row, i, 'readOnly', true);
                                         }
                                         if (id !== data.id) {
@@ -968,6 +975,8 @@
                         }
                     }
                 }
+
+
             }
         });
 
@@ -985,8 +994,8 @@
         function checkUnsavedTemp() {
             var data = hot.getData();
             for (let i = 0; i < data.length; i++) {
-                console.log(data[i][15])
-                if (data[i][15] === null) {
+                console.log(data[i][16])
+                if (data[i][16] === null) {
                     return true
                 }
             }
@@ -999,8 +1008,8 @@
             var tempArray = [];
             var data = hot.getSourceData();
             for (let i = 0; i < data.length; i++) {
-                if (data[i].hasOwnProperty('15')) {
-                    tempArray.push(data[i]['15'])
+                if (data[i].hasOwnProperty('16')) {
+                    tempArray.push(data[i]['16'])
                 }
             }
             console.log("new row add!!");
@@ -1115,12 +1124,12 @@
                             cgst = 0;
                         }
                         hot.selectCell(mainTableRow, 4);
-                        hot.setDataAtCell(mainTableRow, 16, gst);
-                        hot.setDataAtCell(mainTableRow, 17, sgst);
-                        hot.setDataAtCell(mainTableRow, 18, cgst);
-                        hot.setDataAtCell(mainTableRow, 19, igst);
-                        hot.setDataAtCell(mainTableRow, 20, rowData[2]);
-                        hot.setDataAtCell(mainTableRow, 21, rowData[3]);
+                        hot.setDataAtCell(mainTableRow, 17, gst);
+                        hot.setDataAtCell(mainTableRow, 18, sgst);
+                        hot.setDataAtCell(mainTableRow, 19, cgst);
+                        hot.setDataAtCell(mainTableRow, 20, igst);
+                        hot.setDataAtCell(mainTableRow, 21, rowData[2]);
+                        hot.setDataAtCell(mainTableRow, 22, rowData[3]);
                         remainingQty = rowData[2];
                         remainingFQty = rowData[3];
                         $("#saleTable").focus();
@@ -1260,16 +1269,17 @@
                     else
                         hot.setDataAtCell(i, 14, 0);
 
-                    hot.setDataAtCell(i, 15, saleData[i].id);
-                    hot.setDataAtCell(i, 16, gst);
-                    hot.setDataAtCell(i, 17, sgst);
-                    hot.setDataAtCell(i, 18, cgst);
-                    hot.setDataAtCell(i, 19, igst);
+                    hot.setDataAtCell(i,15,saleData[i].replacement);
+                    hot.setDataAtCell(i, 16, saleData[i].id);
+                    hot.setDataAtCell(i, 17, gst);
+                    hot.setDataAtCell(i, 18, sgst);
+                    hot.setDataAtCell(i, 19, cgst);
+                    hot.setDataAtCell(i, 20, igst);
 
-                    hot.setDataAtCell(i, 20, saleData[i]["originalSqty"]);
-                    hot.setDataAtCell(i, 21, saleData[i]["originalFqty"]);
+                    hot.setDataAtCell(i, 21, saleData[i]["originalSqty"]);
+                    hot.setDataAtCell(i, 22, saleData[i]["originalFqty"]);
 
-                    for (var j = 0; j < 15; j++) {
+                    for (var j = 0; j < 16; j++) {
                         hot.setCellMeta(i, j, 'readOnly', true);
                     }
                 }
@@ -1336,24 +1346,25 @@
                     else
                         hot.setDataAtCell(i, 14, 0);
                     <g:if test="${customer != null}">
-                    hot.setDataAtCell(i, 15, 0);
+                    hot.setDataAtCell(i, 16, 0);
                     </g:if>
                     <g:else>
-                    hot.setDataAtCell(i, 15, saleData[i].id);
+                    hot.setDataAtCell(i, 16, saleData[i].id);
                     </g:else>
-                    hot.setDataAtCell(i, 16, gst);
-                    hot.setDataAtCell(i, 17, sgst);
-                    hot.setDataAtCell(i, 18, cgst);
-                    hot.setDataAtCell(i, 19, igst);
-                    hot.setDataAtCell(i, 20, saleData[i]["originalSqty"]);
-                    hot.setDataAtCell(i, 21, saleData[i]["originalFqty"]);
+                    hot.setDataAtCell(i, 15, saleData[i].replacement);
+                    hot.setDataAtCell(i, 17, gst);
+                    hot.setDataAtCell(i, 18, sgst);
+                    hot.setDataAtCell(i, 19, cgst);
+                    hot.setDataAtCell(i, 20, igst);
+                    hot.setDataAtCell(i, 21, saleData[i]["originalSqty"]);
+                    hot.setDataAtCell(i, 22, saleData[i]["originalFqty"]);
                     <g:if test="${customer != null}">
-                    hot.setDataAtCell(i, 22, sQty); //draft sqty
-                    hot.setDataAtCell(i, 23, fQty); //draft fqty
-                    hot.setDataAtCell(i, 24, saleData[i]["id"]); //saved draft product id
+                    hot.setDataAtCell(i, 23, sQty); //draft sqty
+                    hot.setDataAtCell(i, 24, fQty); //draft fqty
+                    hot.setDataAtCell(i, 25, saleData[i]["id"]); //saved draft product id
                     </g:if>
 
-                    for (var j = 0; j < 15; j++) {
+                    for (var j = 0; j < 16; j++) {
                         hot.setCellMeta(i, j, 'readOnly', true);
                     }
                 }

@@ -156,7 +156,7 @@ class TempStockBookService {
                         tempStockBook = new TempStockBook()
                     }
                 }
-//             else  --> removed due to updating of same tempstockbook (pressing enter key multiple times whilesaving)
+//             else  --> removed due to updating of same tempstockbook (pressing enter key multiple times while saving)
 //                    tempStockBook.isUpdatable = true
 
                 tempStockBook.batchNumber = batchNumber
@@ -181,6 +181,7 @@ class TempStockBookService {
                 tempStockBook.originalId = Long.parseLong(jsonObject.get("originalId").toString())
                 tempStockBook.originalSqty = Long.parseLong(jsonObject.get("originalSqty").toString())
                 tempStockBook.originalFqty = Long.parseLong(jsonObject.get("originalFqty").toString())
+                tempStockBook.replacement = jsonObject.get('replacement')
                 tempStockBook.uuid = jsonObject.get("uuid")
                 tempStockBook.save(flush: true)
                 if (!tempStockBook.hasErrors()) {
