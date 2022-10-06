@@ -495,11 +495,19 @@
                         <g:if test="${pd?.replacement == false}">
                             <td>${(long) pd.freeQty}</td>
                         </g:if>
+                        <g:elseif test="${pd?.replacement == null}">
+                            <td>${(long) pd.freeQty}</td>
+                        </g:elseif>
                         <g:else>
                             <td>0</td>
                         </g:else>
+                        <g:if test="${pd?.replacement!= null}">
                         <g:if test="${pd?.replacement == true}">
                             <td>${(long) pd.freeQty}</td>
+                        </g:if>
+                        <g:else>
+                            <td>0</td>
+                        </g:else>
                         </g:if>
                         <g:else>
                             <td>0</td>
@@ -557,11 +565,19 @@
                     <g:if test="${sp?.replacement == false}">
                         <td>${(long) sp.freeQty}</td>
                     </g:if>
+                    <g:elseif test="${sp?.replacement == null}">
+                        <td>${(long) sp.freeQty}</td>
+                    </g:elseif>
                     <g:else>
                         <td>0</td>
                     </g:else>
-                    <g:if test="${sp?.replacement == true}">
-                        <td>${(long) sp.freeQty}</td>
+                    <g:if test="${sp?.replacement!= null}">
+                        <g:if test="${sp?.replacement == true}">
+                            <td>${(long) sp.freeQty}</td>
+                        </g:if>
+                        <g:else>
+                            <td>0</td>
+                        </g:else>
                     </g:if>
                     <g:else>
                         <td>0</td>
