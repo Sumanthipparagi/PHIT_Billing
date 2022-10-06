@@ -21,6 +21,7 @@ class TempStockBook implements LogicalDelete<TempStockBook> {
     long taxId
     String originalId
     long redundantBatch
+    Boolean replacement
     long entityTypeId
     long entityId
     String uuid
@@ -44,6 +45,7 @@ class TempStockBook implements LogicalDelete<TempStockBook> {
         userOrderReplQty min: 0L
         originalSqty min: 0L
         originalFqty min: 0L
+        replacement nullable:true
     }
 
     boolean isUpdatable

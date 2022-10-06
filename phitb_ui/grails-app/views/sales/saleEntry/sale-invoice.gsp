@@ -274,7 +274,7 @@
                         </li>
                     </g:if>
                 </td>
-                <td colspan="4" style="vertical-align:top;font-size:8pt;">
+                <td colspan="5" style="vertical-align:top;font-size:8pt;">
                     <strong>TAX INVOICE</strong>
                     <ul style="margin: 0;">
 
@@ -349,7 +349,7 @@
                         %{--                <li><b class="tab">State Code</b>: </li>--}%
                     </ul>
                 </td>
-                <td colspan="4" style="vertical-align:center;padding: 10px;">
+                <td colspan="5" style="vertical-align:center;padding: 10px;">
                     <div class="qrCode"></div>
                 </td>
             </tr>
@@ -380,17 +380,10 @@
                 <th>PTR</th>
                 <th>PTS</th>
                 <th>Quantity</th>
-                <g:if test="${saleBillDetail?.invtype == Constants.REGULAR}">
-                    <th style="background-color: #e0e0e0; -webkit-print-color-adjust: exact; ">Discount Quantity</th>
-                </g:if>
-                <g:elseif test="${saleBillDetail?.invtype == Constants.REPLACEMENT}">
-                    <th  style="background-color: #e0e0e0; -webkit-print-color-adjust: exact; ">Discount Repl Quantity</th>
-                </g:elseif>
-                <g:else>
-                    <th style="background-color: #e0e0e0; -webkit-print-color-adjust: exact; ">Discount Quantity</th>
-                </g:else>
+                <th >Discount Quantity</th>
+                <th >Discount Repl Quantity</th>
                 <th style="background-color: #e0e0e0; -webkit-print-color-adjust: exact;">Total Quantity</th>
-                <th style="background-color: #e0e0e0; -webkit-print-color-adjust: exact; ">Final Bill Quantity</th>
+                <th >Final Bill Quantity</th>
                 <th>Amount</th>
                 <th>Disc.Amt/Disc.%</th>
                 <th>Amt/CGST%</th>
@@ -499,14 +492,17 @@
                         <td>${String.format("%.2f", pd?.batch?.ptr)}</td>
                         <td>${String.format("%.2f", pd.sRate)}</td>
                         <td>${(long) pd.sqty}</td>
-                        <g:if test="${saleBillDetail?.invtype == Constants.REGULAR}">
-                            <td style="background-color: #e0e0e0; -webkit-print-color-adjust: exact;">${(long) pd.freeQty}</td>
+                        <g:if test="${pd?.replacement == false}">
+                            <td>${(long) pd.freeQty}</td>
                         </g:if>
-                        <g:elseif test="${saleBillDetail?.invtype == Constants.REPLACEMENT}">
-                            <td style="background-color: #e0e0e0; -webkit-print-color-adjust: exact;">${(long) pd.freeQty}</td>
-                        </g:elseif>
                         <g:else>
-                            <td style="background-color: #e0e0e0; -webkit-print-color-adjust: exact;">${(long) pd.freeQty}</td>
+                            <td>0</td>
+                        </g:else>
+                        <g:if test="${pd?.replacement == true}">
+                            <td>${(long) pd.freeQty}</td>
+                        </g:if>
+                        <g:else>
+                            <td>0</td>
                         </g:else>
                         <td style="background-color: #e0e0e0; -webkit-print-color-adjust: exact;">${(long) pd.sqty + (long) pd.freeQty}</td>
                         <td style="background-color: #e0e0e0; -webkit-print-color-adjust: exact;">${(long) pd.sqty}</td>
@@ -558,17 +554,20 @@
                     <td>${String.format("%.2f", sp?.batch?.ptr)}</td>
                     <td>${String.format("%.2f", sp.sRate)}</td>
                     <td>${(long) sp.sqty}</td>
-                    <g:if test="${saleBillDetail?.invtype == Constants.REGULAR}">
-                        <td style="background-color: #e0e0e0; -webkit-print-color-adjust: exact;">${(long) sp.freeQty}</td>
+                    <g:if test="${sp?.replacement == false}">
+                        <td>${(long) sp.freeQty}</td>
                     </g:if>
-                    <g:elseif test="${saleBillDetail?.invtype == Constants.REPLACEMENT}">
-                        <td style="background-color: #e0e0e0; -webkit-print-color-adjust: exact;">${(long) sp.freeQty}</td>
-                    </g:elseif>
                     <g:else>
-                        <td style="background-color: #e0e0e0; -webkit-print-color-adjust: exact;">${(long) sp.freeQty}</td>
+                        <td>0</td>
+                    </g:else>
+                    <g:if test="${sp?.replacement == true}">
+                        <td>${(long) sp.freeQty}</td>
+                    </g:if>
+                    <g:else>
+                        <td>0</td>
                     </g:else>
                     <td style="background-color: #e0e0e0; -webkit-print-color-adjust: exact;">${(long) sp.sqty + (long) sp.freeQty}</td>
-                    <td style="background-color: #e0e0e0; -webkit-print-color-adjust: exact;">${(long) sp.sqty}</td>
+                    <td>${(long) sp.sqty}</td>
                     <%
                         float amount = sp.amount - sp.cgstAmount - sp.sgstAmount - sp.igstAmount
                     %>
@@ -590,7 +589,7 @@
             </g:each>
         </g:else>
         <tr>
-            <td colspan="13">Amount in words: <b>${WordsToNumbersUtil.convertToIndianCurrency(total.toString())}</b>
+            <td colspan="14">Amount in words: <b>${WordsToNumbersUtil.convertToIndianCurrency(total.toString())}</b>
             </td>
             <td><b>Total</b></td>
             <td>${String.format("%.2f", totalBeforeTaxes)}</td>

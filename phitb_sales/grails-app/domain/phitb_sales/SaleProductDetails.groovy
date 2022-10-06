@@ -30,6 +30,7 @@ class SaleProductDetails implements Serializable, LogicalDelete<SaleProductDetai
     long kitName
     String saleFinId
     long redundantBatch
+    Boolean replacement
     long status
     long syncStatus
     String financialYear
@@ -57,6 +58,7 @@ class SaleProductDetails implements Serializable, LogicalDelete<SaleProductDetai
         repQty min: 0D
         originalSqty min: 0D
         originalFqty min: 0D
+        replacement nullable:true
     }
 
     boolean isUpdatable

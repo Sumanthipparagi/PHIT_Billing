@@ -550,8 +550,8 @@ class SaleEntryController
         JSONArray saleData = new JSONArray(params.saleData)
         boolean tempStocksSavedCheck = true
         for (JSONObject sale : saleData) {
-            if (sale.has("15")) {
-                String tempStockRowId = sale.get("15")
+            if (sale.has("16")) {
+                String tempStockRowId = sale.get("16")
                 if (tempStockRowId && Long.parseLong(tempStockRowId) > 0) {
                     tempStocksSavedCheck = true
                 } else {
@@ -636,6 +636,11 @@ class SaleEntryController
             saleProductDetail.put("financialYear", financialYear)
             saleProductDetail.put("entityId", entityId)
             saleProductDetail.put("entityTypeId", session.getAttribute("entityTypeId").toString())
+            if(sale.has('15')){
+                saleProductDetail.put("replacement",sale.get('15'))
+            }else{
+                saleProductDetail.put("replacement",false)
+            }
             saleProductDetails.add(saleProductDetail)
 
             //save to sale transaction log
@@ -716,7 +721,7 @@ class SaleEntryController
             UUID uuid
             //update stockbook
             for (JSONObject sale : saleData) {
-                String tempStockRowId = sale.get("15")
+                String tempStockRowId = sale.get("16")
                 //clear tempstockbook but do not update stockbook
                 new InventoryService().deleteTempStock(tempStockRowId, false)
                 try {
@@ -1999,7 +2004,7 @@ class SaleEntryController
             for (Object obj : jsonArray)
             {
                 //15 if edit, 16 if being added
-                if (i == 15 && obj != null)
+                if (i == 16 && obj != null)
                 {
                     isEdit = true
                 }
@@ -2008,7 +2013,7 @@ class SaleEntryController
                 i++
             }
             String saleProductId
-            if (jsonArray.isNull(24))
+            if (jsonArray.isNull(25))
             {
                 saleProductId = 0;
             }
@@ -2057,10 +2062,10 @@ class SaleEntryController
             saleProductDetail.put("sgstAmount", sgst)
             saleProductDetail.put("cgstAmount", cgst)
             saleProductDetail.put("igstAmount", igst)
-            saleProductDetail.put("gstPercentage", jsonArray[16].toString())
-            saleProductDetail.put("sgstPercentage", jsonArray[17].toString())
-            saleProductDetail.put("cgstPercentage", jsonArray[18].toString())
-            saleProductDetail.put("igstPercentage", jsonArray[19].toString())
+            saleProductDetail.put("gstPercentage", jsonArray[17].toString())
+            saleProductDetail.put("sgstPercentage", jsonArray[18].toString())
+            saleProductDetail.put("cgstPercentage", jsonArray[19].toString())
+            saleProductDetail.put("igstPercentage", jsonArray[20].toString())
             saleProductDetail.put("gstId", 0) //TODO: to be changed
             saleProductDetail.put("amount", value)
             saleProductDetail.put("reason", "") //TODO: to be changed
@@ -2265,9 +2270,9 @@ class SaleEntryController
             String saleRate = sale.get("6")
             String mrp = sale.get("7")
             String saleProductId = ""
-            if (sale.has("24")) //get saved draft product id
+            if (sale.has("25")) //get saved draft product id
             {
-                saleProductId = sale.get("24")
+                saleProductId = sale.get("25")
             }
             else
             {
@@ -2317,10 +2322,10 @@ class SaleEntryController
             saleProductDetail.put("sgstAmount", sgst)
             saleProductDetail.put("cgstAmount", cgst)
             saleProductDetail.put("igstAmount", igst)
-            saleProductDetail.put("gstPercentage", sale.get("16").toString())
-            saleProductDetail.put("sgstPercentage", sale.get("17").toString())
-            saleProductDetail.put("cgstPercentage", sale.get("18").toString())
-            saleProductDetail.put("igstPercentage", sale.get("19").toString())
+            saleProductDetail.put("gstPercentage", sale.get("17").toString())
+            saleProductDetail.put("sgstPercentage", sale.get("18").toString())
+            saleProductDetail.put("cgstPercentage", sale.get("19").toString())
+            saleProductDetail.put("igstPercentage", sale.get("20").toString())
             saleProductDetail.put("gstId", 0) //TODO: to be changed
             saleProductDetail.put("amount", value)
             saleProductDetail.put("reason", "") //TODO: to be changed
@@ -2334,8 +2339,14 @@ class SaleEntryController
             saleProductDetail.put("entityId", entityId)
             saleProductDetail.put("entityTypeId", session.getAttribute("entityTypeId").toString())
             saleProductDetail.put("uuid", params.uuid)
-            saleProductDetail.put("originalSqty", sale.get("20").toString())
-            saleProductDetail.put("originalFqty", sale.get("21").toString())
+            saleProductDetail.put("originalSqty", sale.get("21").toString())
+            saleProductDetail.put("originalFqty", sale.get("22").toString())
+            if(sale.has('15')){
+                saleProductDetail.put("replacement",sale.get('15'))
+            }else{
+                saleProductDetail.put("replacement",false)
+            }
+
             saleProductDetails.add(saleProductDetail)
         }
 
@@ -2421,9 +2432,9 @@ class SaleEntryController
                     String batchNumber = sale.get("2")
                     String tempStockRowId = null
                     JSONObject tmpStockBook = null
-                    if (sale.has("15"))
+                    if (sale.has("16"))
                     {
-                        tmpStockBook = new InventoryService().getTempStocksById(Long.parseLong(sale.get("15").toString()))
+                        tmpStockBook = new InventoryService().getTempStocksById(Long.parseLong(sale.get("16").toString()))
                         tempStockRowId = tmpStockBook?.get("id")
                     }
                     else
@@ -2450,14 +2461,14 @@ class SaleEntryController
                         remainingQty = stockBook.get("remainingQty")
                         remainingFreeQty = stockBook.get("remainingFreeQty")
 
-                        if (userOrderedSaleQty != sale.get("22"))
+                        if (userOrderedSaleQty != sale.get("23"))
                         {
-                            long finalSqty = remainingQty - (userOrderedSaleQty - sale.get("22"))
+                            long finalSqty = remainingQty - (userOrderedSaleQty - sale.get("23"))
                             stockBook.put("remainingQty", finalSqty)
                         }
-                        if (userOrderedFreeQty != sale.get("23"))
+                        if (userOrderedFreeQty != sale.get("24"))
                         {
-                            long finalFqty = remainingFreeQty - (userOrderedFreeQty - sale.get("23"))
+                            long finalFqty = remainingFreeQty - (userOrderedFreeQty - sale.get("24"))
                             stockBook.put("remainingFreeQty", finalFqty)
                         }
                     }
@@ -2759,6 +2770,11 @@ class SaleEntryController
                             jsonObject.put("uuid", UUID.randomUUID())
                             jsonObject.put("originalSqty", saleProductObject?.originalSqty)
                             jsonObject.put("originalFqty", saleProductObject?.originalFqty)
+                            if(saleProductObject?.replacement!=null){
+                                jsonObject.put("replacement", saleProductObject?.replacement)
+                            }else{
+                                jsonObject.put("replacement", false)
+                            }
                             def apiResponse = new InventoryService().tempStockBookSave(jsonObject)
                             if (apiResponse?.status == 200)
                             {
@@ -2795,6 +2811,11 @@ class SaleEntryController
                         tempStockObj.put("uuid", UUID.randomUUID())
                         tempStockObj.put("originalSqty", saleProductObject?.originalSqty)
                         tempStockObj.put("originalFqty", saleProductObject?.originalFqty)
+                        if(saleProductObject?.replacement!=null){
+                            tempStockObj.put("replacement", saleProductObject?.replacement)
+                        }else{
+                            tempStockObj.put("replacement", false)
+                        }
                         tempstockArray.add(tempStockObj)
                     }
                 }
