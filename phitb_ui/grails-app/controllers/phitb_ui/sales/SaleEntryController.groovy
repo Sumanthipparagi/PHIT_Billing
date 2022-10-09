@@ -35,6 +35,10 @@ import phitb_ui.system.DivisionMasterController
 
 import javax.ws.rs.core.Response
 import java.text.SimpleDateFormat
+import java.time.LocalDate
+import java.time.LocalDateTime
+import java.time.chrono.ChronoLocalDate
+import java.time.format.DateTimeFormatter
 
 class SaleEntryController
 {
@@ -616,12 +620,12 @@ class SaleEntryController
             saleProductDetail.put("cgstAmount", cgst)
             saleProductDetail.put("igstAmount", igst)
 
-            saleProductDetail.put("gstPercentage", sale.get("16").toString())
-            saleProductDetail.put("sgstPercentage", sale.get("17").toString())
-            saleProductDetail.put("cgstPercentage", sale.get("18").toString())
-            saleProductDetail.put("igstPercentage", sale.get("19").toString())
-            saleProductDetail.put("originalSqty", sale.get("20").toString())
-            saleProductDetail.put("originalFqty", sale.get("21").toString())
+            saleProductDetail.put("gstPercentage", sale.get("17").toString())
+            saleProductDetail.put("sgstPercentage", sale.get("18").toString())
+            saleProductDetail.put("cgstPercentage", sale.get("19").toString())
+            saleProductDetail.put("igstPercentage", sale.get("20").toString())
+            saleProductDetail.put("originalSqty", sale.get("21").toString())
+            saleProductDetail.put("originalFqty", sale.get("22").toString())
 
 
             saleProductDetail.put("gstId", 0) //TODO: to be changed
@@ -1825,20 +1829,23 @@ class SaleEntryController
 
     def cancelInvoice()
     {
-//        def entityConfigs = new EntityService().getEntityConfigByEntity(session.getAttribute('entityId').toString())
-//        if(entityConfigs.MODIFY_AFTER_DAYEND.saleEntry == true){
-//            def dayEndMaster = new EntityService().getDayEndByEntity(session.getAttribute('entityId').toString())
-//            JSONObject jsonObject = new JSONObject()
-//            if(dayEndMaster.size()!=0){
-//                Date endDate = sdf.parse(dayEndMaster[0].endTime.toString());
-//                Date presentDate = new Date()
-//                if(endDate.equals(presentDate)){
-//                    jsonObject.put("dayend",true)
-//                    respond jsonObject,formats: ['json'], status: 200;
-//                    return
-//                }
-//            }
-//        }
+       /* def entityConfigs = new EntityService().getEntityConfigByEntity(session.getAttribute('entityId').toString())
+        if(entityConfigs.MODIFY_AFTER_DAYEND.saleEntry == true){
+            def dayEndMaster = new EntityService().getDayEndByEntity(session.getAttribute('entityId').toString())
+            JSONObject jsonObject = new JSONObject()
+            if(dayEndMaster.size()!=0){
+//                LocalDate endDate = LocalDate.parse(dayEndMaster[0].endTime.toString())
+                LocalDateTime presentDate = LocalDateTime.now()
+                DateTimeFormatter dateTimeFormatter =  DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm a");
+                LocalDateTime endDateTime = LocalDateTime.parse(dayEndMaster[0].endTime.toString(),dateTimeFormatter)
+                println(endDateTime.isAfter(presentDate))
+                if(endDateTime.isAfter(presentDate)){
+                    jsonObject.put("dayend",true)
+                    respond jsonObject,formats: ['json'], status: 200;
+                    return
+                }
+            }
+        }*/
         String id = params.id
         String entityId = session.getAttribute("entityId")
         String financialYear = session.getAttribute("financialYear")
@@ -2322,10 +2329,12 @@ class SaleEntryController
             saleProductDetail.put("sgstAmount", sgst)
             saleProductDetail.put("cgstAmount", cgst)
             saleProductDetail.put("igstAmount", igst)
+
             saleProductDetail.put("gstPercentage", sale.get("17").toString())
             saleProductDetail.put("sgstPercentage", sale.get("18").toString())
             saleProductDetail.put("cgstPercentage", sale.get("19").toString())
             saleProductDetail.put("igstPercentage", sale.get("20").toString())
+
             saleProductDetail.put("gstId", 0) //TODO: to be changed
             saleProductDetail.put("amount", value)
             saleProductDetail.put("reason", "") //TODO: to be changed

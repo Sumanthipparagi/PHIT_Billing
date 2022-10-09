@@ -632,8 +632,6 @@
                 <g:else>
                 // columns: [15, 16, 17, 18, 19, 20, 21]
                 columns: [16, 17, 18, 19, 20, 21, 22]
-
-
                 </g:else>
             },
             minSpareRows: 0,

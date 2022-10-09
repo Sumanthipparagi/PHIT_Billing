@@ -141,7 +141,8 @@ class EmailService {
                 }else{
                     return null
                 }
-            } else {
+            }
+            else {
                 return null
             }
         }
