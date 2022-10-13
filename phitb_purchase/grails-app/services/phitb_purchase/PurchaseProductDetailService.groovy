@@ -2,6 +2,7 @@ package phitb_purchase
 
 import grails.gorm.transactions.Transactional
 import org.grails.web.json.JSONObject
+import org.springframework.web.bind.annotation.GetMapping
 import phitb_purchase.Exception.BadRequestException
 import phitb_purchase.Exception.ResourceNotFoundException
 
@@ -176,7 +177,7 @@ class PurchaseProductDetailService {
         }
     }
 
-    def getBySaleBill(String id)
+    def getByPurchaseBill(String id)
     {
         if (id)
         {
@@ -196,6 +197,7 @@ class PurchaseProductDetailService {
         }
     }
 
+
     def getByPurchaseBillByList(ArrayList<Long> arrayListIds)
     {
         ArrayList<PurchaseProductDetail> purchaseProductDetails = PurchaseProductDetail.findAllByBillIdInList(arrayListIds)
@@ -206,6 +208,20 @@ class PurchaseProductDetailService {
         else
         {
             throw new ResourceNotFoundException()
+        }
+    }
+
+
+     Object getPurchaseProductDetailsByProductId(String productId)
+    {
+        try
+        {
+            return PurchaseProductDetail.findAllByProductId(Long.parseLong(productId))
+        }
+        catch (Exception ex)
+        {
+            log.error("PurchaseProductDetailService" + ex)
+            println("PurchaseProductDetailService" + ex)
         }
     }
 }

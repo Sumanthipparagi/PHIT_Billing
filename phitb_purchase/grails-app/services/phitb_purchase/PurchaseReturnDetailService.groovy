@@ -12,17 +12,22 @@ import java.text.SimpleDateFormat
 @Transactional
 class PurchaseReturnDetailService {
 
+
     SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss")
 
-    def getAll(String limit, String offset, String query) {
-
+    def getAll(String limit, String offset, String query)
+    {
         Integer o = offset ? Integer.parseInt(offset.toString()) : 0
         Integer l = limit ? Integer.parseInt(limit.toString()) : 100
-
         if (!query)
+        {
             return PurchaseReturnDetail.findAll([sort: 'id', max: l, offset: o, order: 'desc'])
+        }
         else
-            return PurchaseReturnDetail.findAllByMessageIlike("%" + query + "%", [sort: 'id', max: l, offset: o, order: 'desc'])
+        {
+            return PurchaseReturnDetail.findAllByBatchNumberIlike("%" + query + "%", [sort: 'id', max: l, offset: o, order:
+                    'desc'])
+        }
     }
 
     def getAllByNoOfDays(String limit, String offset, String days)
@@ -31,252 +36,243 @@ class PurchaseReturnDetailService {
         Integer l = limit ? Integer.parseInt(limit.toString()) : 100
         if (!days)
         {
-            return PurchaseReturnDetail.findAll([sort: 'id', max: l, offset: o, order: 'desc'])
+            return SaleBillDetails.findAll([sort: 'id', max: l, offset: o, order: 'desc'])
         }
         else
         {
             Date today = new Date()
             Calendar cal = new GregorianCalendar()
             cal.setTime(today)
-            cal.add(Calendar.DAY_OF_MONTH, - Integer.parseInt(days))
-            Date entryDate = cal.getTime()
-            return PurchaseReturnDetail.createCriteria().list {
-                gt("entryDate",entryDate)
+            cal.add(Calendar.DAY_OF_MONTH, -Integer.parseInt(days))
+            Date dateCreated = cal.getTime()
+            return SaleBillDetails.createCriteria().list {
+                gt("dateCreated", dateCreated)
             }
         }
     }
 
-    PurchaseReturnDetail get(String id) {
+    PurchaseReturnDetail get(String id)
+    {
         return PurchaseReturnDetail.findById(Long.parseLong(id))
     }
 
-    JSONObject dataTables(JSONObject paramsJsonObject, String start, String length) {
+    JSONObject dataTables(JSONObject paramsJsonObject, String start, String length)
+    {
         String searchTerm = paramsJsonObject.get("search[value]")
         String orderColumnId = paramsJsonObject.get("order[0][column]")
         String orderDir = paramsJsonObject.get("order[0][dir]")
 
         String orderColumn = "id"
-        switch (orderColumnId) {
+        switch (orderColumnId)
+        {
             case '0':
                 orderColumn = "id"
                 break;
             case '1':
-                orderColumn = "finId"
+                orderColumn = "entityName"
                 break;
         }
-
         Integer offset = start ? Integer.parseInt(start.toString()) : 0
         Integer max = length ? Integer.parseInt(length.toString()) : 100
-
-        def purchaseReturnDetailCriteria = PurchaseReturnDetail.createCriteria()
-        def purchaseReturnDetailArrayList = purchaseReturnDetailCriteria.list(max: max, offset: offset) {
+        def salesProductDetailsCriteria = SaleReturnDetails.createCriteria()
+        def salesProductDetailsArrayList = salesProductDetailsCriteria.list(max: max, offset: offset) {
             or {
-                if (searchTerm != "") {
-                    ilike('serBillId', '%' + searchTerm + '%')
+                if (searchTerm != "")
+                {
+                    ilike('batchNumber', '%' + searchTerm + '%')
                 }
             }
             eq('deleted', false)
             order(orderColumn, orderDir)
         }
-
-        def recordsTotal = purchaseReturnDetailArrayList.totalCount
+        def recordsTotal = salesProductDetailsArrayList.totalCount
         JSONObject jsonObject = new JSONObject()
         jsonObject.put("draw", paramsJsonObject.draw)
         jsonObject.put("recordsTotal", recordsTotal)
         jsonObject.put("recordsFiltered", recordsTotal)
-        jsonObject.put("data", purchaseReturnDetailArrayList)
+        jsonObject.put("data", salesProductDetailsArrayList)
         return jsonObject
     }
 
-    PurchaseReturnDetail save(JSONObject jsonObject) {
-        PurchaseReturnDetail purchaseReturnDetail = new PurchaseReturnDetail()
-        purchaseReturnDetail.finId = Long.parseLong(jsonObject.get("finId").toString())
-        purchaseReturnDetail.serBillId = Long.parseLong(jsonObject.get("serBillId").toString())
-        purchaseReturnDetail.series = Long.parseLong(jsonObject.get("series").toString())
-        purchaseReturnDetail.type = jsonObject.get("type").toString()
-        purchaseReturnDetail.supplierId = Long.parseLong(jsonObject.get("supplierId").toString())
-        purchaseReturnDetail.dispatchDate = sdf.parse(jsonObject.get("dispatchDate").toString())
-        purchaseReturnDetail.entryDate = sdf.parse(jsonObject.get("entryDate").toString())
-        purchaseReturnDetail.refId = jsonObject.get("refId").toString()
-        purchaseReturnDetail.maxDnAmount = Double.parseDouble(jsonObject.get("maxDnAmount").toString())
-        purchaseReturnDetail.supplierContact = jsonObject.get("supplierContact").toString()
-        purchaseReturnDetail.supplierEmail = jsonObject.get("supplierEmail").toString()
-        purchaseReturnDetail.gross = Double.parseDouble(jsonObject.get("gross").toString())
-        purchaseReturnDetail.taxable = Double.parseDouble(jsonObject.get("taxable").toString())
-        purchaseReturnDetail.nonTaxable = Double.parseDouble(jsonObject.get("nonTaxable").toString())
-        purchaseReturnDetail.totalGst = Double.parseDouble(jsonObject.get("totalGst").toString())
-        purchaseReturnDetail.totalCgst = Double.parseDouble(jsonObject.get("totalCgst").toString())
-        purchaseReturnDetail.totalSgst = Double.parseDouble(jsonObject.get("totalSgst").toString())
-        purchaseReturnDetail.totalIgst = Double.parseDouble(jsonObject.get("totalIgst").toString())
-        purchaseReturnDetail.exempted = Double.parseDouble(jsonObject.get("exempted").toString())
-        purchaseReturnDetail.cashDiscount = Double.parseDouble(jsonObject.get("cashDiscount").toString())
-        purchaseReturnDetail.items = Long.parseLong(jsonObject.get("items").toString())
-        purchaseReturnDetail.quantity = Long.parseLong(jsonObject.get("quantity").toString())
-        purchaseReturnDetail.totalAmount = Double.parseDouble(jsonObject.get("totalAmount").toString())
-        purchaseReturnDetail.balance = Double.parseDouble(jsonObject.get("balance").toString())
-        purchaseReturnDetail.crdAdjAmount = Double.parseDouble(jsonObject.get("crdAdjAmount").toString())
-        purchaseReturnDetail.totalDiscount = Double.parseDouble(jsonObject.get("totalDiscount").toString())
-        purchaseReturnDetail.creditIds = jsonObject.get("creditIds").toString()
-        purchaseReturnDetail.billStatus = jsonObject.get("billStatus").toString()
-        purchaseReturnDetail.syncStatus = Long.parseLong(jsonObject.get("syncStatus").toString())
-        purchaseReturnDetail.lockStatus = Long.parseLong(jsonObject.get("lockStatus").toString())
-        purchaseReturnDetail.adjustmentStatus = jsonObject.get("adjustmentStatus").toString()
-        purchaseReturnDetail.message = jsonObject.get("message").toString()
-        purchaseReturnDetail.ignorePurchase = Long.parseLong(jsonObject.get("ignorePurchase").toString())
-        purchaseReturnDetail.financialYear = jsonObject.get("financialYear").toString()
-        purchaseReturnDetail.entityTypeId = Long.parseLong(jsonObject.get("entityTypeId").toString())
-        purchaseReturnDetail.entityId = Long.parseLong(jsonObject.get("entityId").toString())
-        purchaseReturnDetail.created_user = Long.parseLong(jsonObject.get("created_user").toString())
-        purchaseReturnDetail.modified_user = Long.parseLong(jsonObject.get("modified_user").toString())
-        purchaseReturnDetail.save(flush: true)
-        if (!purchaseReturnDetail.hasErrors())
-            return purchaseReturnDetail
+    PurchaseReturnDetail save(JSONObject jsonObject)
+    {
+        PurchaseReturnDetail purchaseReturnDetails = new PurchaseReturnDetail()
+        purchaseReturnDetails.finId = Long.parseLong(jsonObject.get("finId").toString())
+        purchaseReturnDetails.billId = Long.parseLong(jsonObject.get("billId").toString())
+        purchaseReturnDetails.reason = jsonObject.get("reason").toString()
+        purchaseReturnDetails.invoiceNumber = jsonObject.get("invoiceNumber").toString()
+        if(jsonObject.get("purBillId").toString()!=null && jsonObject.get("purBillId").toString()!="")
+        {
+            purchaseReturnDetails.purBillId = Long.parseLong(jsonObject.get("purBillId").toString())
+        }
         else
+        {
+            purchaseReturnDetails.purBillId = null
+        }
+        purchaseReturnDetails.billType = Long.parseLong(jsonObject.get("billType").toString())
+        purchaseReturnDetails.serBillId = Long.parseLong(jsonObject.get("serBillId").toString())
+        purchaseReturnDetails.seriesId = Long.parseLong(jsonObject.get("seriesId").toString())
+        purchaseReturnDetails.productId = Long.parseLong(jsonObject.get("productId").toString())
+        purchaseReturnDetails.batchNumber = jsonObject.get("batchNumber").toString()
+        purchaseReturnDetails.expiryDate = jsonObject.get("expiryDate").toString()
+        purchaseReturnDetails.sqty = Long.parseLong(jsonObject.get("sqty").toString())
+        purchaseReturnDetails.freeQty = Long.parseLong(jsonObject.get("freeQty").toString())
+        purchaseReturnDetails.repQty = Long.parseLong(jsonObject.get("repQty").toString())
+        purchaseReturnDetails.pRate = Double.parseDouble("0")
+        purchaseReturnDetails.sRate = Double.parseDouble(jsonObject.get("sRate").toString())
+        purchaseReturnDetails.mrp = Double.parseDouble(jsonObject.get("mrp").toString())
+        purchaseReturnDetails.discount = Double.parseDouble(jsonObject.get("discount").toString())
+        purchaseReturnDetails.gstAmount = Double.parseDouble(jsonObject.get("gstAmount").toString())
+        purchaseReturnDetails.sgstAmount = Double.parseDouble(jsonObject.get("sgstAmount").toString())
+        purchaseReturnDetails.cgstAmount = Double.parseDouble(jsonObject.get("cgstAmount").toString())
+        purchaseReturnDetails.igstAmount = Double.parseDouble(jsonObject.get("igstAmount").toString())
+        purchaseReturnDetails.amount = Double.parseDouble(jsonObject.get("amount").toString())
+        purchaseReturnDetails.reason = jsonObject.get("reason").toString()
+        purchaseReturnDetails.fridgeId = Long.parseLong(jsonObject.get("fridgeId").toString())
+        purchaseReturnDetails.kitName = Long.parseLong(jsonObject.get("kitName").toString())
+        purchaseReturnDetails.saleFinId = jsonObject.get("saleFinId").toString()
+        purchaseReturnDetails.uuid = jsonObject.get("uuid").toString()
+
+        purchaseReturnDetails.redundantBatch = Long.parseLong(jsonObject.get("redundantBatch").toString())
+        purchaseReturnDetails.status = Long.parseLong(jsonObject.get("status").toString())
+        purchaseReturnDetails.syncStatus = Long.parseLong(jsonObject.get("syncStatus").toString())
+        purchaseReturnDetails.financialYear = jsonObject.get("financialYear").toString()
+        purchaseReturnDetails.entityTypeId = Long.parseLong(jsonObject.get("entityTypeId").toString())
+        purchaseReturnDetails.entityId = Long.parseLong(jsonObject.get("entityId").toString())
+        purchaseReturnDetails.gstPercentage = Double.parseDouble(jsonObject.get("gstPercentage").toString())
+        purchaseReturnDetails.sgstPercentage = Double.parseDouble(jsonObject.get("sgstPercentage").toString())
+        purchaseReturnDetails.cgstPercentage = Double.parseDouble(jsonObject.get("cgstPercentage").toString())
+        purchaseReturnDetails.igstPercentage = Double.parseDouble(jsonObject.get("igstPercentage").toString())
+        purchaseReturnDetails.save(flush: true)
+        if (!purchaseReturnDetails.hasErrors())
+        {
+            return purchaseReturnDetails
+        }
+        else
+        {
             throw new BadRequestException()
-
+        }
     }
 
-    PurchaseReturnDetail update(JSONObject jsonObject, String id) {
-
-        PurchaseReturnDetail purchaseReturnDetail = PurchaseReturnDetail.findById(Long.parseLong(id))
-        if (purchaseReturnDetail) {
-            purchaseReturnDetail.isUpdatable = true
-            purchaseReturnDetail.finId = Long.parseLong(jsonObject.get("finId").toString())
-            purchaseReturnDetail.serBillId = Long.parseLong(jsonObject.get("serBillId").toString())
-            purchaseReturnDetail.series = Long.parseLong(jsonObject.get("series").toString())
-            purchaseReturnDetail.type = jsonObject.get("type").toString()
-            purchaseReturnDetail.supplierId = Long.parseLong(jsonObject.get("supplierId").toString())
-            purchaseReturnDetail.dispatchDate = sdf.parse(jsonObject.get("dispatchDate").toString())
-            purchaseReturnDetail.entryDate = sdf.parse(jsonObject.get("entryDate").toString())
-            purchaseReturnDetail.refId = jsonObject.get("refId").toString()
-            purchaseReturnDetail.maxDnAmount = Double.parseDouble(jsonObject.get("maxDnAmount").toString())
-            purchaseReturnDetail.supplierContact = jsonObject.get("supplierContact").toString()
-            purchaseReturnDetail.supplierEmail = jsonObject.get("supplierEmail").toString()
-            purchaseReturnDetail.gross = Double.parseDouble(jsonObject.get("gross").toString())
-            purchaseReturnDetail.taxable = Double.parseDouble(jsonObject.get("taxable").toString())
-            purchaseReturnDetail.nonTaxable = Double.parseDouble(jsonObject.get("nonTaxable").toString())
-            purchaseReturnDetail.totalGst = Double.parseDouble(jsonObject.get("totalGst").toString())
-            purchaseReturnDetail.totalCgst = Double.parseDouble(jsonObject.get("totalCgst").toString())
-            purchaseReturnDetail.totalSgst = Double.parseDouble(jsonObject.get("totalSgst").toString())
-            purchaseReturnDetail.totalIgst = Double.parseDouble(jsonObject.get("totalIgst").toString())
-            purchaseReturnDetail.exempted = Double.parseDouble(jsonObject.get("exempted").toString())
-            purchaseReturnDetail.cashDiscount = Double.parseDouble(jsonObject.get("cashDiscount").toString())
-            purchaseReturnDetail.items = Long.parseLong(jsonObject.get("items").toString())
-            purchaseReturnDetail.quantity = Long.parseLong(jsonObject.get("quantity").toString())
-            purchaseReturnDetail.totalAmount = Double.parseDouble(jsonObject.get("totalAmount").toString())
-            purchaseReturnDetail.balance = Double.parseDouble(jsonObject.get("balance").toString())
-            purchaseReturnDetail.crdAdjAmount = Double.parseDouble(jsonObject.get("crdAdjAmount").toString())
-            purchaseReturnDetail.totalDiscount = Double.parseDouble(jsonObject.get("totalDiscount").toString())
-            purchaseReturnDetail.creditIds = jsonObject.get("creditIds").toString()
-            purchaseReturnDetail.billStatus = jsonObject.get("billStatus").toString()
-            purchaseReturnDetail.syncStatus = Long.parseLong(jsonObject.get("syncStatus").toString())
-            purchaseReturnDetail.lockStatus = Long.parseLong(jsonObject.get("lockStatus").toString())
-            purchaseReturnDetail.adjustmentStatus = jsonObject.get("adjustmentStatus").toString()
-            purchaseReturnDetail.message = jsonObject.get("message").toString()
-            purchaseReturnDetail.ignorePurchase = Long.parseLong(jsonObject.get("ignorePurchase").toString())
-            purchaseReturnDetail.financialYear = jsonObject.get("financialYear").toString()
-            purchaseReturnDetail.entityTypeId = Long.parseLong(jsonObject.get("entityTypeId").toString())
-            purchaseReturnDetail.entityId = Long.parseLong(jsonObject.get("entityId").toString())
-            purchaseReturnDetail.created_user = Long.parseLong(jsonObject.get("created_user").toString())
-            purchaseReturnDetail.modified_user = Long.parseLong(jsonObject.get("modified_user").toString())
-            purchaseReturnDetail.save(flush: true)
-            if (!purchaseReturnDetail.hasErrors())
-                return purchaseReturnDetail
+    PurchaseReturnDetail update(JSONObject jsonObject, String id)
+    {
+        PurchaseReturnDetail purchaseReturnDetails = PurchaseReturnDetail.findById(Long.parseLong(id))
+        if (purchaseReturnDetails)
+        {
+            purchaseReturnDetails.isUpdatable = true
+            purchaseReturnDetails.finId = Long.parseLong(jsonObject.get("finId").toString())
+            purchaseReturnDetails.billId = Long.parseLong(jsonObject.get("billId").toString())
+            purchaseReturnDetails.reason = jsonObject.get("reason").toString()
+            purchaseReturnDetails.invoiceNumber = jsonObject.get("invoiceNumber").toString()
+            if(jsonObject.get("purBillId").toString()!=null && jsonObject.get("purBillId").toString()!="")
+            {
+                purchaseReturnDetails.purBillId = Long.parseLong(jsonObject.get("purBillId").toString())
+            }
             else
+            {
+                purchaseReturnDetails.purBillId = null
+            }
+            purchaseReturnDetails.billType = Long.parseLong(jsonObject.get("billType").toString())
+            purchaseReturnDetails.serBillId = Long.parseLong(jsonObject.get("serBillId").toString())
+            purchaseReturnDetails.seriesId = Long.parseLong(jsonObject.get("seriesId").toString())
+            purchaseReturnDetails.productId = Long.parseLong(jsonObject.get("productId").toString())
+            purchaseReturnDetails.batchNumber = jsonObject.get("batchNumber").toString()
+            purchaseReturnDetails.expiryDate = jsonObject.get("expiryDate").toString()
+            purchaseReturnDetails.sqty = Long.parseLong(jsonObject.get("sqty").toString())
+            purchaseReturnDetails.freeQty = Long.parseLong(jsonObject.get("freeQty").toString())
+            purchaseReturnDetails.repQty = Long.parseLong(jsonObject.get("repQty").toString())
+            purchaseReturnDetails.pRate = Double.parseDouble("0")
+            purchaseReturnDetails.sRate = Double.parseDouble(jsonObject.get("sRate").toString())
+            purchaseReturnDetails.mrp = Double.parseDouble(jsonObject.get("mrp").toString())
+            purchaseReturnDetails.discount = Double.parseDouble(jsonObject.get("discount").toString())
+            purchaseReturnDetails.gstAmount = Double.parseDouble(jsonObject.get("gstAmount").toString())
+            purchaseReturnDetails.sgstAmount = Double.parseDouble(jsonObject.get("sgstAmount").toString())
+            purchaseReturnDetails.cgstAmount = Double.parseDouble(jsonObject.get("cgstAmount").toString())
+            purchaseReturnDetails.igstAmount = Double.parseDouble(jsonObject.get("igstAmount").toString())
+            purchaseReturnDetails.amount = Double.parseDouble(jsonObject.get("amount").toString())
+            purchaseReturnDetails.reason = jsonObject.get("reason").toString()
+            purchaseReturnDetails.fridgeId = Long.parseLong(jsonObject.get("fridgeId").toString())
+            purchaseReturnDetails.kitName = Long.parseLong(jsonObject.get("kitName").toString())
+            purchaseReturnDetails.saleFinId = jsonObject.get("saleFinId").toString()
+            purchaseReturnDetails.uuid = jsonObject.get("uuid").toString()
+
+            purchaseReturnDetails.redundantBatch = Long.parseLong(jsonObject.get("redundantBatch").toString())
+            purchaseReturnDetails.status = Long.parseLong(jsonObject.get("status").toString())
+            purchaseReturnDetails.syncStatus = Long.parseLong(jsonObject.get("syncStatus").toString())
+            purchaseReturnDetails.financialYear = jsonObject.get("financialYear").toString()
+            purchaseReturnDetails.entityTypeId = Long.parseLong(jsonObject.get("entityTypeId").toString())
+            purchaseReturnDetails.entityId = Long.parseLong(jsonObject.get("entityId").toString())
+            purchaseReturnDetails.gstPercentage = Double.parseDouble(jsonObject.get("gstPercentage").toString())
+            purchaseReturnDetails.sgstPercentage = Double.parseDouble(jsonObject.get("sgstPercentage").toString())
+            purchaseReturnDetails.cgstPercentage = Double.parseDouble(jsonObject.get("cgstPercentage").toString())
+            purchaseReturnDetails.igstPercentage = Double.parseDouble(jsonObject.get("igstPercentage").toString())
+            purchaseReturnDetails.save(flush: true)
+            if (!purchaseReturnDetails.hasErrors())
+            {
+                return purchaseReturnDetails
+            }
+            else
+            {
                 throw new BadRequestException()
-        } else
+            }
+        }
+        else
+        {
             throw new ResourceNotFoundException()
+        }
     }
 
-    void delete(String id) {
-        if (id) {
-            PurchaseReturnDetail purchaseReturnDetail = PurchaseReturnDetail.findById(Long.parseLong(id))
-            if (purchaseReturnDetail) {
-                purchaseReturnDetail.isUpdatable = true
-                purchaseReturnDetail.delete()
-            } else {
+    void delete(String id)
+    {
+        if (id)
+        {
+            PurchaseReturnDetail returnDetails = PurchaseReturnDetail.findById(Long.parseLong(id))
+            if (returnDetails)
+            {
+                returnDetails.isUpdatable = true
+                returnDetails.delete()
+            }
+            else
+            {
                 throw new ResourceNotFoundException()
             }
-        } else {
+        }
+        else
+        {
             throw new BadRequestException()
         }
     }
 
-    def getAllBySupplierId(String id,String financialYear,String entityId)
+    def getByPurchaseBill(String id)
     {
-        if(id)
+        if (id)
         {
-
-            return PurchaseReturn.findAllBySupplierIdAndFinancialYearAndEntityId(Long.parseLong(id), financialYear,Long.parseLong(entityId))
-
-        }
-    }
-
-    def getByDateRangeAndEntity(String dateRange, String entityId)
-    {
-        try {
-            SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy")
-            Date fromDate = sdf.parse(dateRange.split("-")[0].trim().toString())
-            Date toDate = sdf.parse(dateRange.split("-")[1].trim().toString())
-            Calendar cal = Calendar.getInstance();
-            cal.setTime(toDate)
-            cal.set(Calendar.HOUR_OF_DAY, 23)
-            cal.set(Calendar.MINUTE, 59)
-            cal.set(Calendar.SECOND, 59)
-            cal.set(Calendar.MILLISECOND, 999)
-            toDate = cal.getTime()
-            long eid = Long.parseLong(entityId)
-            JSONArray finalBills = new JSONArray()
-            ArrayList<PurchaseReturn> purchaseReturns = PurchaseReturn.findAllByEntityIdAndDateCreatedBetween(eid, fromDate, toDate)
-            for (PurchaseReturn pr : purchaseReturns) {
-                JSONObject purchaseReturnDetail = new JSONObject((pr as JSON).toString())
-                def productDetails = PurchaseProductDetail.findAllByBillId(pr.id)
-                if (productDetails) {
-                    JSONArray prdt = productDetails as JSONArray
-                    purchaseReturnDetail.put("products", prdt)
-                }
-                finalBills.add(purchaseReturnDetail)
+            ArrayList<PurchaseReturnDetail> purchaseReturnDetails = PurchaseReturnDetail.findAllByBillId(Long.parseLong(id))
+            if (purchaseReturnDetails)
+            {
+                return purchaseReturnDetails
             }
-            return finalBills
+            else
+            {
+                throw new ResourceNotFoundException()
+            }
         }
-        catch (Exception ex)
+        else
         {
-            ex.printStackTrace()
             throw new BadRequestException()
         }
     }
 
-    def getByDateRangeAndSupplier(String dateRange, String supplier)
+
+
+    def getPurchaseReturnDetailsByBill(String id)
     {
-        try {
-            SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy")
-            Date fromDate = sdf.parse(dateRange.split("-")[0].trim().toString())
-            Date toDate = sdf.parse(dateRange.split("-")[1].trim().toString())
-            Calendar cal = Calendar.getInstance();
-            cal.setTime(toDate)
-            cal.set(Calendar.HOUR_OF_DAY, 23)
-            cal.set(Calendar.MINUTE, 59)
-            cal.set(Calendar.SECOND, 59)
-            cal.set(Calendar.MILLISECOND, 999)
-            toDate = cal.getTime()
-            long sid = Long.parseLong(supplier)
-            JSONArray finalBills = new JSONArray()
-            ArrayList<PurchaseReturn> purchaseReturns = PurchaseReturn.findAllBySupplierIdAndDateCreatedBetween(sid, fromDate, toDate)
-            for (PurchaseReturn pr : purchaseReturns) {
-                JSONObject purchaseReturnDetail = new JSONObject((pr as JSON).toString())
-                def productDetails = PurchaseProductDetail.findAllByBillId(pr.id)
-                if (productDetails) {
-                    JSONArray prdt = productDetails as JSONArray
-                    purchaseReturnDetail.put("products", prdt)
-                }
-                finalBills.add(purchaseReturnDetail)
-            }
-            return finalBills
-        }
-        catch (Exception ex)
-        {
-            ex.printStackTrace()
-            throw new BadRequestException()
-        }
+        return PurchaseReturnDetail.findByBillId(Long.parseLong(id))
     }
+
+    def getPurchaseDetailsByProductBatchPurBill(String productId, String batch, String saleBillId)
+    {
+        return PurchaseReturnDetail.findAllByProductIdAndBatchNumberAndPurBillId(productId as long,batch, saleBillId as Long)
+    }
+
 }

@@ -1515,6 +1515,7 @@ class SaleEntryController
             def totalsgst = UtilsService.round(saleProductDetails.sgstAmount.sum(), 2)
             def totaligst = UtilsService.round(saleProductDetails.igstAmount.sum(), 2)
             def totaldiscount = UtilsService.round(saleProductDetails.discount.sum(), 2)
+            def totalDiscAmt = 0
             def totalBeforeTaxes = 0
             HashMap<String, Double> gstGroup = new HashMap<>()
             HashMap<String, Double> sgstGroup = new HashMap<>()
@@ -1523,6 +1524,7 @@ class SaleEntryController
             for (Object it : saleProductDetails)
             {
                 double amountBeforeTaxes = it.amount - it.cgstAmount - it.sgstAmount - it.igstAmount
+                totalDiscAmt += amountBeforeTaxes/100*it.discount
                 totalBeforeTaxes += amountBeforeTaxes
                 if (it.igstPercentage > 0)
                 {
@@ -1567,6 +1569,8 @@ class SaleEntryController
                         cgstGroup.put(it.cgstPercentage.toString(), cgstPercentage.doubleValue() + amountBeforeTaxes)
                     }
                 }
+
+
             }
 
             def total = totalBeforeTaxes + totalcgst + totalsgst + totaligst
@@ -1582,6 +1586,7 @@ class SaleEntryController
                                                                   saleProductDetails: saleProductDetails,
                                                                   series            : series, entity: entity, customer: customer, city: city,
                                                                   total             : total, custcity: custcity,
+                                                                  totalDiscAmt:totalDiscAmt,
                                                                   termsConditions   : termsConditions,
                                                                   totalcgst         : totalcgst, totalsgst: totalsgst, totaligst: totaligst,
                                                                   totaldiscount     : totaldiscount,
@@ -1829,17 +1834,15 @@ class SaleEntryController
 
     def cancelInvoice()
     {
-       /* def entityConfigs = new EntityService().getEntityConfigByEntity(session.getAttribute('entityId').toString())
-        if(entityConfigs.MODIFY_AFTER_DAYEND.saleEntry == true){
+        def entityConfigs = new EntityService().getEntityConfigByEntity(session.getAttribute('entityId').toString())
+       /* if(entityConfigs.MODIFY_AFTER_DAYEND.saleEntry == true){
             def dayEndMaster = new EntityService().getDayEndByEntity(session.getAttribute('entityId').toString())
             JSONObject jsonObject = new JSONObject()
             if(dayEndMaster.size()!=0){
-//                LocalDate endDate = LocalDate.parse(dayEndMaster[0].endTime.toString())
-                LocalDateTime presentDate = LocalDateTime.now()
-                DateTimeFormatter dateTimeFormatter =  DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm a");
-                LocalDateTime endDateTime = LocalDateTime.parse(dayEndMaster[0].endTime.toString(),dateTimeFormatter)
-                println(endDateTime.isAfter(presentDate))
-                if(endDateTime.isAfter(presentDate)){
+                Date presentDate = new Date();
+                Date endDateTime = sdf.parse(dayEndMaster[0].endTime.toString())
+                println(endDateTime.compareTo(presentDate) > 0)
+                if(endDateTime.compareTo(presentDate) > 0){
                     jsonObject.put("dayend",true)
                     respond jsonObject,formats: ['json'], status: 200;
                     return

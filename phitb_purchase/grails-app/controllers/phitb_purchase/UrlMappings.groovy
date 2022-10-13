@@ -57,11 +57,12 @@ class UrlMappings {
             "/productdetail(.$format)?"(controller: 'purchaseProductDetail') { action = [GET: 'index', POST: 'save'] }
             "/productdetail/datatable(.$format)?"(controller: 'purchaseProductDetail') { action = [GET: 'dataTable'] }
             "/productdetail/$id(.$format)?"(controller: 'purchaseProductDetail') { action = [GET: 'show', PUT: 'update', DELETE: 'delete'] }
-            "/productdetail/bill/$id(.$format)?"(controller: 'purchaseProductDetail') { action = [GET: 'getPurchaseProductDetailsOfSaleBill'] }
+            "/productdetail/bill/$id(.$format)?"(controller: 'purchaseProductDetail') { action = [GET: 'getPurchaseProductDetailsOfPurBill'] }
             "/purchasebillbydaterange"(controller: 'purchaseBillDetail', action: 'getByDateRangeAndEntity')
             "/purchasebillbydaterangesupplier"(controller: 'purchaseBillDetail', action: 'getByDateRangeAndSupplier')
 
             "/purchaseproductdetailslist/bill/$purbillsIds(.$format)?"(controller: 'purchaseProductDetail') { action = [GET: 'getPurchaseProductDetailsOfPurBillList'] }
+            "/purchaseproductdetailsbyproductId"(controller: 'purchaseProductDetail', action: 'getPurchaseProductDetailsbyProductId')
 
 
 
@@ -81,6 +82,9 @@ class UrlMappings {
 
             "/returndetailbydaterange"(controller: 'purchaseReturnDetail', action: 'getByDateRangeAndEntity')
             "/returndetailbydaterangesupplier"(controller: 'purchaseReturnDetail', action: 'getByDateRangeAndSupplier')
+
+            "/getpurchasereturndetailsby-product-batch-salebill(.$format)?"(controller: 'purchaseReturnDetail', action:
+                    'getPurReturnDetailsByProductBatchPurchaseBill')
 
             //Purchase Transaction log
             "/transactionlog(.$format)?"(controller: 'purchaseTransactionLog') { action = [GET: 'index', POST: 'save'] }

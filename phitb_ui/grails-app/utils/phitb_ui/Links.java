@@ -731,7 +731,7 @@ public class Links
     public static String PURCHASE_BILL_BALANCE_UPDATE = APP_CONTEXT_PATH + "purchase/updatebillbalancebyid";
     public static String PURCHASE_RETURN_BALANCE_UPDATE = APP_CONTEXT_PATH + "purchase/updatereturnbalancebyid";
     public static String PURCHASE_BILL_CANCEL = APP_CONTEXT_PATH + "purchase/billdetail/cancel";
-
+    public static String PURCHASE_PRODUCT_BY_PRODUCT = APP_CONTEXT_PATH + "purchase/purchaseproductdetailsbyproductId";
 
 
 
@@ -756,6 +756,7 @@ public class Links
     public static String PURCHASE_RETURN_CUSTOMER = APP_CONTEXT_PATH + "purchase/returndetailbysupplier";
     public static String PURCHASE_RETURN_BY_DATERANGE = APP_CONTEXT_PATH + "purchase/returndetailbydaterange";
     public static String PURCHASE_RETURN_BY_DATERANGE_SUPPLIER = APP_CONTEXT_PATH + "purchase/returndetailbydaterangesupplier";
+    public static String PURCHASE_RETURN_PRODUCT_BATCH_BILL = APP_CONTEXT_PATH + "purchase/getpurchasereturndetailsby-product-batch-purchasebill";
 
 
     //e-Invoice

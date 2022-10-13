@@ -499,7 +499,7 @@ class SalesReportController {
             deliveryChallan = new SalesService().getDeliveryChallanByDateRange(dateRange, entityId)
             goodsTransferNotes = new SalesService().getGTNByDateRange(dateRange, entityId)
             receiptDetails = new AccountsService().getReceiptDetailsByDateRange(dateRange, entityId)
-            purchaseReturns = new PurchaseService().getPurchaseRetrunByDateRange(dateRange, entityId)
+//            purchaseReturns = new PurchaseService().getPurchaseRetrunByDateRange(dateRange, entityId)
             purchaseBills = new PurchaseService().getPurchaseBillByDateRange(dateRange, entityId)
             creditJv = new AccountsService().getCreditJvByDateRange(dateRange, entityId)
             debitJv = new AccountsService().getDebitJvByDateRange(dateRange, entityId)
@@ -512,7 +512,7 @@ class SalesReportController {
             deliveryChallan = new SalesService().getDeliveryChallanByDateRangeCustomer(dateRange, customerId)
             goodsTransferNotes = new SalesService().getGTNByDateRangeCustomer(dateRange, customerId)
             receiptDetails = new AccountsService().getReceiptDetailsByDateRangeCustomer(dateRange, customerId)
-            purchaseReturns = new PurchaseService().getPurchaseRetrunByDateRangeSupplier(dateRange, customerId)
+//            purchaseReturns = new PurchaseService().getPurchaseRetrunByDateRangeSupplier(dateRange, customerId)
             purchaseBills = new PurchaseService().getPurchaseBillByDateRangeSupplier(dateRange, customerId)
             paymentDetails = new AccountsService().getPaymentDetailsByDateRangeCustomer(dateRange, customerId)
             purchaseOrder = new PurchaseService().getPurchaseOrderByDateRangeSupplier(dateRange, customerId)
@@ -674,7 +674,7 @@ class SalesReportController {
               }
           }
 
-          double purchaseRetrunBalance = 0.0
+        /*  double purchaseRetrunBalance = 0.0
           for (Object pr : purchaseReturns) {
               if (pr?.billStatus == "ACTIVE" && pr?.deleted == false) {
                   purchaseRetrunBalance += pr?.totalAmount
@@ -718,7 +718,7 @@ class SalesReportController {
               } else {
                   println("Not Included: " + pr.totalAmount)
               }
-          }
+          }*/
 
           for (Object gtn : goodsTransferNotes) {
               if (gtn?.billStatus == "ACTIVE" && gtn?.deleted == false) {
@@ -1008,8 +1008,8 @@ class SalesReportController {
 
             gtnTotal = new SalesService().getGTNByDateRange(newDateRange, entityId).stream().filter({ i -> i?.billStatus == "ACTIVE" && i?.deleted == false }).mapToDouble({ i -> i?.totalAmount }).sum()
 
-            purchaseReturnTotal = new PurchaseService().getPurchaseRetrunByDateRange(newDateRange, entityId).stream()
-                    .filter({ i -> i?.billStatus == "ACTIVE" && i?.deleted == false }).mapToDouble({ i -> i.totalAmount }).sum()
+           /* purchaseReturnTotal = new PurchaseService().getPurchaseRetrunByDateRange(newDateRange, entityId).stream()
+                    .filter({ i -> i?.billStatus == "ACTIVE" && i?.deleted == false }).mapToDouble({ i -> i.totalAmount }).sum()*/
 
             saleReturnTotal = new SalesService().getSaleReturnByDateRange(newDateRange, entityId).stream().filter({ i ->
                 i?.returnStatus == "ACTIVE" && i?.balance > 0
@@ -1045,8 +1045,8 @@ class SalesReportController {
 
             gtnTotal = new SalesService().getGTNByDateRangeCustomer(newDateRange, customerId).stream().filter({ i -> i?.billStatus == "ACTIVE" && i?.deleted == false }).mapToDouble({ i -> i?.totalAmount }).sum()
 
-            purchaseReturnTotal = new PurchaseService().getPurchaseRetrunByDateRangeSupplier(newDateRange, customerId).stream()
-                    .filter({ i -> i?.billStatus == "ACTIVE" && i?.deleted == false }).mapToDouble({ i -> i.totalAmount }).sum()
+//            purchaseReturnTotal = new PurchaseService().getPurchaseRetrunByDateRangeSupplier(newDateRange, customerId).stream()
+//                    .filter({ i -> i?.billStatus == "ACTIVE" && i?.deleted == false }).mapToDouble({ i -> i.totalAmount }).sum()
 
             saleReturnTotal = new SalesService().getSaleReturnByDateRangeCustomer(newDateRange, customerId).stream().filter({ i ->
                 i?.returnStatus == "ACTIVE" && i?.balance > 0
@@ -1081,7 +1081,7 @@ class SalesReportController {
         println("deliveryChallanTotal " + deliveryChallanTotal)
         println("gtnTotal " + gtnTotal)
         println("receiptTotal " + receiptTotal)
-        println("purchaseReturnTotal " + purchaseReturnTotal)
+//        println("purchaseReturnTotal " + purchaseReturnTotal)
         println("purchaseBillsTotal " + purchaseBillsTotal)
         println("creditJvTotal " + creditJvTotal)
         println("debitJvTotal " + debitJvTotal)
@@ -1090,8 +1090,8 @@ class SalesReportController {
 
 //        openingBalance = 1000000 //TODO: to be removed
         openingBalance = entityOpeningBalance + (saleOrderTotal.toDouble() + gtnTotal
-                .toDouble() + deliveryChallanTotal.toDouble() + debitJvTotal.toDouble() + receiptTotal.toDouble() +
-                purchaseReturnTotal.toDouble()) - (saleBillsTotal.toDouble()-purchaseBillsTotal.toDouble() - purchaseOrderTotal.toDouble() - saleReturnTotal.toDouble() - creditJvTotal.toDouble() - paymentTotal.toDouble() )
+                .toDouble() + deliveryChallanTotal.toDouble() + debitJvTotal.toDouble() + receiptTotal.toDouble()
+                ) - (saleBillsTotal.toDouble()-purchaseBillsTotal.toDouble() - purchaseOrderTotal.toDouble() - saleReturnTotal.toDouble() - creditJvTotal.toDouble() - paymentTotal.toDouble() )
 
         JSONObject jsonObject = new JSONObject()
         jsonObject.put("customerLedger", customerLedgerMap)

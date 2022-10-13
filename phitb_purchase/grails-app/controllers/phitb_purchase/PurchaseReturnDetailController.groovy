@@ -266,7 +266,6 @@ class PurchaseReturnDetailController {
         }
     }
 
-
     def getByDateRangeAndSupplier()
     {
         try {
@@ -291,6 +290,37 @@ class PurchaseReturnDetailController {
             response.status = 400
         }
         catch (Exception ex) {
+            System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
+        }
+    }
+
+    def getPurReturnDetailsByProductBatchPurchaseBill()
+    {
+        try
+        {
+            String productId = params.productId
+            String batch = params.batch
+            String purchaseBill = params.salebill
+            if(purchaseBill!=null && purchaseBill!="")
+            {
+                respond purchaseReturnDetailService.getPurchaseDetailsByProductBatchPurBill(productId,batch,purchaseBill)
+            }
+            else {
+                return []
+            }
+        }
+        catch (ResourceNotFoundException ex)
+        {
+            System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
+            response.status = 404
+        }
+        catch (BadRequestException ex)
+        {
+            System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
+            response.status = 400
+        }
+        catch (Exception ex)
+        {
             System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
         }
     }

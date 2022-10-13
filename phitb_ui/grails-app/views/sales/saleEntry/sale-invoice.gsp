@@ -384,7 +384,7 @@
                 <th >Discount Repl Quantity</th>
                 <th style="background-color: #e0e0e0; -webkit-print-color-adjust: exact;">Total Quantity</th>
                 <th >Final Bill Quantity</th>
-                <th>Amount</th>
+                <th>Amt After Disc.</th>
                 <th>Disc.Amt/Disc.%</th>
                 <th>Amt/CGST%</th>
                 <th>Amt/SGST%</th>
@@ -431,10 +431,10 @@
                         divTotalcgst += pd.cgstAmount
                         divTotalsgst += pd.sgstAmount
                         divTotaligst += pd.igstAmount
-                        divTotaldiscount += pd.discount
+
                         double amountBeforeTaxes = pd.amount - pd.cgstAmount - pd.sgstAmount - pd.igstAmount
                         divtotalBeforeTaxes += amountBeforeTaxes
-
+                        divTotaldiscount += amountBeforeTaxes/100*pd.discount
                         if (pd.igstPercentage > 0)
                         {
                             def igstPercentage = igstGroup.get(pd.igstPercentage.toString())
@@ -518,7 +518,7 @@
                             float amount = pd.amount - pd.cgstAmount - pd.sgstAmount - pd.igstAmount
                         %>
                         <td>${String.format("%.2f", amount)}</td>
-                        <td>${pd.discount}</td>
+                        <td>${String.format("%.2f", amount/100*pd.discount)}<br>${pd.discount}</td>
                         <%
                             cgst.push(pd.cgstAmount / amount * 100)
                             sgst.push(pd.sgstAmount / amount * 100)
@@ -534,7 +534,7 @@
                     </tr>
                 </g:each>
                 <tr>
-                    <td colspan="13">
+                    <td colspan="14">
                     </td>
                     <% divtotal = divtotalBeforeTaxes + divTotalcgst + divTotalsgst + divTotaligst %>
                     <td><b>Total</b></td>
@@ -588,7 +588,7 @@
                         float amount = sp.amount - sp.cgstAmount - sp.sgstAmount - sp.igstAmount
                     %>
                     <td>${String.format("%.2f", amount)}</td>
-                    <td>${sp.discount}</td>
+                    <td>${String.format("%.2f", amount/100*sp.discount)}<br>${sp.discount}</td>
                     <%
                         cgst.push(sp.cgstAmount / amount * 100)
                         sgst.push(sp.sgstAmount / amount * 100)
@@ -609,7 +609,7 @@
             </td>
             <td><b>Total</b></td>
             <td>${String.format("%.2f", totalBeforeTaxes)}</td>
-            <td>${String.format("%.2f", totaldiscount)}</td>
+            <td>${String.format("%.2f", totalDiscAmt)}</td>
             <td>${String.format("%.2f", totalcgst)}</td>
             <td>${String.format("%.2f", totalsgst)}</td>
             <td>${String.format("%.2f", totaligst)}</td>

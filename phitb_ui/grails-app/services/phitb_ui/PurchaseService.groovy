@@ -143,6 +143,7 @@ class PurchaseService {
     }
 
 
+
     def cancelPurchaseInvoice(String id, String entityId, String financialYear)
     {
         JSONObject jsonObject = new JSONObject()
@@ -768,6 +769,72 @@ class PurchaseService {
         catch (Exception ex) {
             System.err.println('Service :salesService , action :  getSaleBillByDateRange  , Ex:' + ex)
             log.error('Service :salesService , action :  getSaleBillByDateRange  , Ex:' + ex)
+        }
+    }
+
+    /**
+     * This methos is used for get data
+     * @param accessToken
+     * @param link
+     * @return response
+     */
+    def getRequestWithId(String id, String link) {
+        Client client = ClientBuilder.newClient();
+        try {
+            WebTarget target = client.target(new Links().API_GATEWAY);
+            Response apiResponse = target.path(link + "/" + id)
+                    .request(MediaType.APPLICATION_JSON_TYPE)
+                    .get()
+            println("API Response from server :" + apiResponse?.getStatus())
+            return apiResponse
+        }
+        catch (Exception ex) {
+            System.err.println(ex)
+        }
+//        finally{
+//            client.close()
+//        }
+    }
+
+    def getReturnDetailsByBatchPurbillProductId(String productId, String batch, String saleBill) {
+        Client client = ClientBuilder.newClient();
+        WebTarget target = client.target(new Links().API_GATEWAY);
+        try {
+            Response apiResponse = target
+                    .path(new Links().PURCHASE_RETURN_PRODUCT_BATCH_BILL)
+                    .queryParam("productId", URLEncoder.encode(productId.toString(), "UTF-8"))
+                    .queryParam("batch", URLEncoder.encode(batch.toString(), "UTF-8"))
+                    .queryParam("salebill", URLEncoder.encode(saleBill.toString(), "UTF-8"))
+                    .request(MediaType.APPLICATION_JSON_TYPE)
+                    .get()
+
+            return apiResponse
+        }
+        catch (Exception ex) {
+            System.err.println('Service :SalesService , action :  getReturnDetailsByBatchSalebillProductId  , Ex:' + ex)
+            log.error('Service :SalesService , action :  getReturnDetailsByBatchSalebillProductId  , Ex:' + ex)
+        }
+    }
+
+    def getPurchaseProductDetailsByProductId(String productId) {
+        Client client = ClientBuilder.newClient();
+        WebTarget target = client.target(new Links().API_GATEWAY);
+        try {
+            Response apiResponse = target
+                    .path(new Links().PURCHASE_PRODUCT_BY_PRODUCT)
+                    .queryParam("productId", URLEncoder.encode(productId.toString(), "UTF-8"))
+                    .request(MediaType.APPLICATION_JSON_TYPE)
+                    .get()
+            if (apiResponse.status == 200) {
+                JSONArray saleProductDetail = new JSONArray(apiResponse.readEntity(String.class))
+                return saleProductDetail
+            } else {
+                return null
+            }
+        }
+        catch (Exception ex) {
+            System.err.println('Service :SalesService , action :  getSaleProductDetailsByProductId  , Ex:' + ex)
+            log.error('Service :SalesService , action :  getSaleProductDetailsByProductId  , Ex:' + ex)
         }
 
     }

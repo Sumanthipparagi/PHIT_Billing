@@ -11,7 +11,7 @@ class PurchaseReturnDetail implements LogicalDelete<PurchaseReturnDetail> {
     long seriesId
     long productId
     String batchNumber
-    Date expiryDate
+    String expiryDate
     long sqty
     long freeQty
     long repQty
@@ -29,6 +29,8 @@ class PurchaseReturnDetail implements LogicalDelete<PurchaseReturnDetail> {
     long fridgeId
     long kitName
     String saleFinId
+    String invoiceNumber
+    Long purBillId
     long redundantBatch
     long status
     long syncStatus
@@ -50,6 +52,7 @@ class PurchaseReturnDetail implements LogicalDelete<PurchaseReturnDetail> {
         sgstPercentage nullable:true
         cgstPercentage nullable:true
         igstPercentage nullable:true
+        purBillId nullable: true
         uuid unique: true
     }
 

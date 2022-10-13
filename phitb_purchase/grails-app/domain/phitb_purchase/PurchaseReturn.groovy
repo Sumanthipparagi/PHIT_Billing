@@ -4,7 +4,6 @@ import gorm.logical.delete.LogicalDelete
 
 class PurchaseReturn implements LogicalDelete<PurchaseReturn>
 {
-
     long finId
     long serBillId
     long series
@@ -34,17 +33,21 @@ class PurchaseReturn implements LogicalDelete<PurchaseReturn>
     double crdAdjAmount
     double totalDiscount
     String creditIds
-    String billStatus
+    String returnStatus
     long syncStatus
     long lockStatus
     String adjustmentStatus
     String message
     long ignorePurchase
     String financialYear
+    String refNo
+    Date refDate
+    Date cancelledDate
     long entityTypeId
     long entityId
-    long created_user
-    long modified_user
+    String uuid
+    long createdUser
+    long modifiedUser
 
     Date dateCreated
     Date lastUpdated
@@ -52,6 +55,8 @@ class PurchaseReturn implements LogicalDelete<PurchaseReturn>
     static constraints = {
         adjAmount nullable:true
         invoiceNumber nullable: true
+        cancelledDate nullable: true
+        uuid nullable: true, unique: true
     }
 
     static mapping = {
@@ -66,12 +71,12 @@ class PurchaseReturn implements LogicalDelete<PurchaseReturn>
 
         if (!this.isUpdatable)
         {
-            System.out.println("PurchaseReturnDetail Domain update Prevented " + new Date().toString() + " ,id: " + this.id)
+            System.out.println("PurchaseReturn Domain update Prevented " + new Date().toString() + " ,id: " + this.id)
             return false
         }
         else
         {
-            System.out.println("PurchaseReturnDetail domain Updated " + new Date().toString() + " ,id: " + this.id)
+            System.out.println("PurchaseReturn domain Updated " + new Date().toString() + " ,id: " + this.id)
         }
     }
 }

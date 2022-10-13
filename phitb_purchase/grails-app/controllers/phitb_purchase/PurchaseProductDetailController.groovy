@@ -1,7 +1,6 @@
 package phitb_purchase
 
 
-import grails.rest.*
 import grails.converters.*
 import grails.web.servlet.mvc.GrailsParameterMap
 import org.grails.web.json.JSONArray
@@ -163,10 +162,10 @@ class PurchaseProductDetailController {
         }
     }
 
-    def getPurchaseProductDetailsOfSaleBill() {
+    def getPurchaseProductDetailsOfPurBill() {
         try {
             String id = params.id
-            respond purchaseProductDetailService.getBySaleBill(id)
+            respond purchaseProductDetailService.getByPurchaseBill(id)
         }
         catch (ResourceNotFoundException ex)
         {
@@ -208,6 +207,21 @@ class PurchaseProductDetailController {
         catch (Exception ex)
         {
             System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
+        }
+    }
+
+
+    def getPurchaseProductDetailsbyProductId()
+    {
+        try
+        {
+            String productId = params.productId
+            respond purchaseProductDetailService.getPurchaseProductDetailsByProductId(productId)
+        }
+        catch(Exception ex)
+        {
+            log.error(controllerName+":"+ex)
+            println(controllerName+":"+ex)
         }
     }
 }

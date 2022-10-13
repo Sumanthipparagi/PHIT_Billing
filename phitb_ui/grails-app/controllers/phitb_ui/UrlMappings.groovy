@@ -529,6 +529,8 @@ class UrlMappings {
             action = [GET: "index", POST: 'savePurchaseReturn']
         }
         "/purchase-bill/supplier/$supplierId"(controller: 'purchaseReturn', action: 'getPurchaseBillBySupplier')
+        "/purchaseproductdetailsbillandbatch"(controller: 'purchaseReturn', action: 'getPurchaseDetailsByProductAndBatch')
+        "/getpurinvoicedetails"(controller:'purchaseReturn', action: 'getPurchaseInvByProducts')
 
 
         //Sale Entry
@@ -639,6 +641,7 @@ class UrlMappings {
         "/purchase-product-details/purchase-bill"(controller: 'purchaseEntry', action: 'getPurchaseProductDetailsByBill')
 
         "/purchase-product-details/delete"(controller: 'purchaseEntry', action: 'deletePurchaseProduct')
+
 
 
 
