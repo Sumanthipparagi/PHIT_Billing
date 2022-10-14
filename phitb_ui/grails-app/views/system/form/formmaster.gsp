@@ -260,12 +260,12 @@
             processData: false,
             success: function () {
 
-                swal("Success!", "Form Submitted Successfully", "success");
+                Swal.fire("Success!", "Form Submitted Successfully", "success");
                 formTable();
                 $('#addFormModal').modal('hide');
             },
             error: function () {
-                swal("Error!", "Something went wrong", "error");
+                Swal.fire("Error!", "Something went wrong", "error");
 
             }
         });
@@ -312,9 +312,9 @@
             success: function () {
                 $('.deleteModal').modal('hide');
                 formTable();
-                swal("Success!", "Form Deleted Successfully", "success");
+                Swal.fire("Success!", "Form Deleted Successfully", "success");
             }, error: function () {
-                swal("Error!", "Something went wrong", "error");
+                Swal.fire("Error!", "Something went wrong", "error");
             }
         });
     }

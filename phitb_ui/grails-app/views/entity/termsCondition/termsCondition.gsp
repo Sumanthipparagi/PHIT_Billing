@@ -258,12 +258,12 @@
             contentType: false,
             processData: false,
             success: function () {
-                swal("Success!", "Terms & Conditions Submitted Successfully", "success");
+                Swal.fire("Success!", "Terms & Conditions Submitted Successfully", "success");
                 termsTable();
                 $('#addtermModal').modal('hide');
             },
             error: function () {
-                swal("Error!", "Something went wrong", "error");
+                Swal.fire("Error!", "Something went wrong", "error");
 
             }
         });
@@ -307,9 +307,9 @@
             success: function () {
                 $('.deleteModal').modal('hide');
                 termsTable();
-                swal("Success!", "Terms & Conditions  Deleted Successfully", "success");
+                Swal.fire("Success!", "Terms & Conditions  Deleted Successfully", "success");
             }, error: function () {
-                swal("Error!", "Something went wrong", "error");
+                Swal.fire("Error!", "Something went wrong", "error");
             }
         });
     }

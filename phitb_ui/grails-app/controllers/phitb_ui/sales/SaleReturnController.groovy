@@ -32,6 +32,8 @@ class SaleReturnController {
         def series = new SeriesController().getByEntity(entityId)
         def reason = new SalesService().getReason()
         def taxRegister = new EntityService().getTaxesByEntity(entityId)
+        def settings = new EntityService().getEntitySettingsByEntity(session.getAttribute('entityId').toString())
+        def entityConfigs = new EntityService().getEntityConfigByEntity(entityId)
         ArrayList<String> salesmanList = []
         users.each {
             if (it.role.name.toString().equalsIgnoreCase(Constants.ROLE_SALESMAN)) {
@@ -39,7 +41,9 @@ class SaleReturnController {
             }
         }
         render(view: '/sales/saleRetrun/sale-returns', model: [customers   : customers, divisions: divisions, series: series,
-                                                               salesmanList: salesmanList, priorityList: priorityList, reason: reason, taxRegister: taxRegister])
+                                                               salesmanList: salesmanList, priorityList:
+                                                                       priorityList, reason: reason, taxRegister:
+                                                                       taxRegister,settings:settings,entityConfigs:entityConfigs])
     }
 
 

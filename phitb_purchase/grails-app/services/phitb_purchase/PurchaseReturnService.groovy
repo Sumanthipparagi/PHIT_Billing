@@ -42,7 +42,6 @@ class PurchaseReturnService {
         purchaseReturn.series = Long.parseLong(jsonObject.get("seriesId").toString())
         purchaseReturn.type = jsonObject.get("type").toString()
         purchaseReturn.supplierId = Long.parseLong(jsonObject.get("supplierId").toString())
-        purchaseReturn.nonTaxable = 0
         purchaseReturn.returnStatus = jsonObject.get("returnStatus").toString()
         purchaseReturn.dispatchDate = sdf.parse(jsonObject.get("dispatchDate").toString())
         purchaseReturn.entryDate = sdf.parse(jsonObject.get("entryDate").toString())
@@ -64,10 +63,10 @@ class PurchaseReturnService {
         purchaseReturn.quantity = Integer.parseInt(jsonObject.get("quantity").toString())
         purchaseReturn.totalAmount = Double.parseDouble(jsonObject.get("totalAmount").toString())
         purchaseReturn.balance = Double.parseDouble(jsonObject.get("balance").toString())
-        purchaseReturn.crdAdjAmount = Double.parseDouble(jsonObject.get("crdAdjAmount").toString())
         purchaseReturn.totalDiscount = Double.parseDouble(jsonObject.get("totalDiscount").toString())
         purchaseReturn.adjAmount = 0
-        purchaseReturn.ignorePurchase = 0
+        purchaseReturn.salesmanId = 0
+        purchaseReturn.debitIds = 0
         purchaseReturn.syncStatus = Long.parseLong(jsonObject.get("syncStatus").toString())
         purchaseReturn.lockStatus = Long.parseLong(jsonObject.get("lockStatus").toString())
         purchaseReturn.adjustmentStatus = jsonObject.get("adjustmentStatus").toString()
@@ -93,15 +92,15 @@ class PurchaseReturnService {
             String invoiceNumber = null;
             String seriesCode = jsonObject.get("seriesCode")
             PurchaseReturn purchaseReturn1
-            invoiceNumber = purchaseReturn1.entityId + "PR" + month + year + seriesCode + purchaseReturn1.serBillId
+            invoiceNumber = purchaseReturn.entityId + "PR" + month + year + seriesCode + purchaseReturn.serBillId
             println("Invoice Number generated: " + invoiceNumber)
             if (invoiceNumber)
             {
-                purchaseReturn1.invoiceNumber = invoiceNumber
-                purchaseReturn1.isUpdatable = true
-                purchaseReturn1.save(flush: true)
+                purchaseReturn.invoiceNumber = invoiceNumber
+                purchaseReturn.isUpdatable = true
+                purchaseReturn.save(flush: true)
             }
-            return purchaseReturn1
+            return purchaseReturn
         }
         else
         {
@@ -124,10 +123,10 @@ class PurchaseReturnService {
     def getAllByCustomerId(String supplierId, String entityId, String financialYear, String returnStatus = null)
     {
         if(returnStatus)
-            return PurchaseReturn.findAllBySupplierIdAndEntityIdAndFinancialYearAndReturnStatus(Long.parseLong(supplierId),
+            return PurchaseReturn.findAllBySupplierIdAndEntityIdAndFinancialYearAndReturnStatus(Long.parseLong(supplierId) as String,
                     Long.parseLong(entityId), financialYear, returnStatus)
         else
-            return PurchaseReturn.findAllBySupplierIdAndEntityIdAndFinancialYear(Long.parseLong(supplierId),Long.parseLong(entityId),
+            return PurchaseReturn.findAllBySupplierIdAndEntityIdAndFinancialYear(Long.parseLong(supplierId) as String,Long.parseLong(entityId),
                     financialYear)
     }
 

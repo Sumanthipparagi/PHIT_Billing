@@ -151,6 +151,7 @@ public class Constants
     public static String SALE_ORDER = "SALE_ORDER";
     public static String SALE_INVOICE = "SALE_INVOICE";
     public static String SALE_RETURN = "SALE_RETURN";
+    public static String SAMPLE_INVOCIE = "SAMPLE_INVOICE";
 
     public static String PURCHASE_ORDER = "PURCHASE_ORDER";
     public static String PURCHASE_INVOICE = "PURCHASE_INVOICE";

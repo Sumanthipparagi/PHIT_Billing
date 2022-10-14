@@ -1560,11 +1560,11 @@
             alert("Can't change this now, invoice has been saved already.")
     }
 
-    var salereturnbillid = 0;
+    var purchasereturnbillid = 0;
 
     function purchaseReturnInvoice(billStatus) {
         var waitingSwal = Swal.fire({
-            title: "Generating Sale Return, Please wait!",
+            title: "Generating Purchase Return, Please wait!",
             showDenyButton: false,
             showCancelButton: false,
             showConfirmButton: false,
@@ -1614,7 +1614,7 @@
         var saleReturnData = JSON.stringify(hot.getSourceData());
         $.ajax({
             type: "POST",
-            url: "/sale-return",
+            url: "/purchase-return",
             dataType: 'json',
             data: {
                 saleReturnData: saleReturnData,
@@ -1642,24 +1642,24 @@
                 batchHot.updateSettings({
                     data: []
                 });
-                salereturnbillid = data.saleReturnDetail.id;
-                var datepart = data.saleReturnDetail.entryDate.split("T")[0];
+                purchasereturnbillid = data.purchaseReturnDetail.id;
+                var datepart = data.purchaseReturnDetail.entryDate.split("T")[0];
                 var month = datepart.split("-")[1];
                 var year = datepart.split("-")[0];
                 var seriesCode = data.series.seriesCode;
-                var invoiceNumber = data.saleReturnDetail.invoiceNumber;
+                var invoiceNumber = data.purchaseReturnDetail.invoiceNumber;
                 $("#invNo").html("<p><strong>" + invoiceNumber + "</strong></p>");
                 var message = "";
                 var draftInvNo = "";
                 if (billStatus === "DRAFT") {
-                    draftInvNo = '<p><strong>' + data.saleReturnDetail.entityId + "/DR/S/" + month + year + "/"
+                    draftInvNo = '<p><strong>' + data.purchaseReturnDetail.entityId + "/DR/S/" + month + year + "/"
                         + seriesCode + "/__" + '<p><strong>';
                     $("#invNo").html(draftInvNo);
                 }
                 if (billStatus !== "DRAFT") {
-                    message = 'Sale Return Generated: ' + invoiceNumber;
+                    message = 'Purchase Return Generated: ' + invoiceNumber;
                 } else {
-                    message = 'Draft Invoice Generated: ' + data.saleReturnDetail.entityId + "/DR/S/" + month + year + "/"
+                    message = 'Draft Invoice Generated: ' + data.purchaseReturnDetail.entityId + "/DR/S/" + month + year + "/"
                         + seriesCode + "/__";
                 }
                 waitingSwal.close();
@@ -1704,7 +1704,7 @@
     function printInvoice() {
         if (readOnly) {
             window.open(
-                'sale-return/print-invoice?id=' + salereturnbillid,
+                'purchase-return/print-invoice?id=' + purchasereturnbillid,
                 '_blank'
             );
             window.location.href = "/sale-return"

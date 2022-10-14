@@ -300,13 +300,13 @@ class PurchaseReturnDetailController {
         {
             String productId = params.productId
             String batch = params.batch
-            String purchaseBill = params.salebill
+            String purchaseBill = params.purBillId
             if(purchaseBill!=null && purchaseBill!="")
             {
                 respond purchaseReturnDetailService.getPurchaseDetailsByProductBatchPurBill(productId,batch,purchaseBill)
             }
             else {
-                return []
+                return null
             }
         }
         catch (ResourceNotFoundException ex)

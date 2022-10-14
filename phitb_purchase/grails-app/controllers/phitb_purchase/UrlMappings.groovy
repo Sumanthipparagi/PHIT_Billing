@@ -64,10 +64,12 @@ class UrlMappings {
             "/purchaseproductdetailslist/bill/$purbillsIds(.$format)?"(controller: 'purchaseProductDetail') { action = [GET: 'getPurchaseProductDetailsOfPurBillList'] }
             "/purchaseproductdetailsbyproductId"(controller: 'purchaseProductDetail', action: 'getPurchaseProductDetailsbyProductId')
 
+            "/purchaseproductdetailsbillandbatch(.$format)?"(controller: 'purchaseProductDetail', action:
+                    'getPurchaseProductDetailsbybatchAndBill')
 
-
-
-
+//            Purchase Return
+            "/purchase-returns(.$format)?"(controller: 'purchaseReturn') { action = [GET: 'index', POST: 'save'] }
+            "/purchase-return-save"(controller: 'purchaseReturn', action: 'savePurchaseReturn')
             //Purchase Return Detail
             "/returndetail(.$format)?"(controller: 'purchaseReturnDetail') { action = [GET: 'index', POST: 'save'] }
             "/returndetail/datatable(.$format)?"(controller: 'purchaseReturnDetail') { action = [GET: 'dataTable'] }
@@ -83,7 +85,7 @@ class UrlMappings {
             "/returndetailbydaterange"(controller: 'purchaseReturnDetail', action: 'getByDateRangeAndEntity')
             "/returndetailbydaterangesupplier"(controller: 'purchaseReturnDetail', action: 'getByDateRangeAndSupplier')
 
-            "/getpurchasereturndetailsby-product-batch-salebill(.$format)?"(controller: 'purchaseReturnDetail', action:
+            "/getpurchasereturndetailsby-product-batch-purbill(.$format)?"(controller: 'purchaseReturnDetail', action:
                     'getPurReturnDetailsByProductBatchPurchaseBill')
 
             //Purchase Transaction log

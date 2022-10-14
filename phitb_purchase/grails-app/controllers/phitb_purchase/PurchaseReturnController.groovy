@@ -13,7 +13,7 @@ class PurchaseReturnController {
 
 
     PurchaseReturnService purchaseReturnService
-    PurchaseReturnDetailService purchaseReturnDetailsService
+    PurchaseReturnDetailService purchaseReturnDetailService
     /**
      * Gets all Sale Product Details
      * @param query
@@ -285,20 +285,21 @@ class PurchaseReturnController {
      * @param Sale Bill Details
      * @return saved Sale Bill Details
      */
-    def saveSaleReturn() {
+    def savePurchaseReturn() {
         try {
             JSONObject jsonObject = JSON.parse(request.reader.text) as JSONObject
-            PurchaseReturn purchaseReturn = purchaseReturnService.save(jsonObject.get("purchaseReturn"))
+            PurchaseReturn purchaseReturn = purchaseReturnService.save(jsonObject.get("purchaseReturn") as JSONObject)
             if (purchaseReturn) {
                 UUID uuid
-                JSONArray saleProducts = jsonObject.get("purchaseReturnDetail")
-                for (JSONObject product : saleProducts) {
+                JSONArray purchaseProducts = jsonObject.get("purchaseReturnDetail") as JSONArray
+                for (JSONObject product : purchaseProducts) {
                     uuid = UUID.randomUUID()
                     product.put("uuid", uuid)
                     product.put("billId", purchaseReturn.id)
-                    product.put("billType", 0) //0 Sale, 1 Purchase
+                    product.put("billType", 0)
                     product.put("serBillId", purchaseReturn.serBillId)
-                    purchaseReturnDetailsService.save(product)
+                    println(product)
+                    purchaseReturnDetailService.save(product)
                     println("product saved")
                 }
             }

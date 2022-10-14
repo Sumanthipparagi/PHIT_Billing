@@ -8,9 +8,9 @@ class PurchaseReturn implements LogicalDelete<PurchaseReturn>
     long serBillId
     long series
     String type
-    long supplierId
+    String supplierId
+    String salesmanId
     Date dispatchDate
-    double adjAmount
     Date entryDate
     String refId
     double maxDnAmount
@@ -18,50 +18,53 @@ class PurchaseReturn implements LogicalDelete<PurchaseReturn>
     String supplierEmail
     double gross
     double taxable
-    double nonTaxable
     double totalGst
     double totalCgst
     double totalSgst
     double totalIgst
     double exempted
     double cashDiscount
-    long items
-    long quantity
+    int items
+    int quantity
     double totalAmount
-    double balance
-    String invoiceNumber
-    double crdAdjAmount
     double totalDiscount
-    String creditIds
-    String returnStatus
+    String debitIds
     long syncStatus
     long lockStatus
-    String adjustmentStatus
     String message
-    long ignorePurchase
+    int ignoreSold
     String financialYear
-    String refNo
-    Date refDate
-    Date cancelledDate
-    long entityTypeId
+    String invoiceNumber
+    String returnStatus
     long entityId
-    String uuid
+    long entityTypeId
     long createdUser
     long modifiedUser
+    Date cancelledDate
+    String refNo
+    Date refDate
+
+    double balance
+    String adjustmentStatus //UNSETTLED, SETTLED, PARTIALLY_SETTLED
+    double dbAdjAmount
+    double adjAmount //total adjusted amount till now, if this is equal to totalAmount then this sale return is settled.
 
     Date dateCreated
     Date lastUpdated
 
+    String uuid
     static constraints = {
-        adjAmount nullable:true
         invoiceNumber nullable: true
+        returnStatus nullable: true
         cancelledDate nullable: true
+        refNo nullable: true
+        refDate nullable: true
         uuid nullable: true, unique: true
     }
-
     static mapping = {
-        message sqlType: 'longText'
-        creditIds sqlType: 'longText'
+        debitIds  sqlType: 'longText'
+        message  sqlType: 'longText'
+
     }
 
     boolean isUpdatable
@@ -71,12 +74,12 @@ class PurchaseReturn implements LogicalDelete<PurchaseReturn>
 
         if (!this.isUpdatable)
         {
-            System.out.println("PurchaseReturn Domain update Prevented " + new Date().toString() + " ,id: " + this.id)
+            System.out.println("Purchase Return Domain update Prevented " + new Date().toString() + " ,id: " + this.id)
             return false
         }
         else
         {
-            System.out.println("PurchaseReturn domain Updated " + new Date().toString() + " ,id: " + this.id)
+            System.out.println("Purchase Return domain Updated " + new Date().toString() + " ,id: " + this.id)
         }
     }
 }

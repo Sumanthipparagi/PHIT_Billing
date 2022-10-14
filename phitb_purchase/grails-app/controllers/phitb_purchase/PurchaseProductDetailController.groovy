@@ -224,4 +224,20 @@ class PurchaseProductDetailController {
             println(controllerName+":"+ex)
         }
     }
+
+    def getPurchaseProductDetailsbybatchAndBill()
+    {
+        try
+        {
+            String billId = params.billId
+            String batch = params.batch
+            String productId = params.productId
+            respond purchaseProductDetailService.getPurchaseDetailsByBillIdAndBatch(billId,batch,productId)
+        }
+        catch(Exception ex)
+        {
+            log.error(controllerName+":"+ex)
+            println(controllerName+":"+ex)
+        }
+    }
 }

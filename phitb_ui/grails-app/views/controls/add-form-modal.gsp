@@ -54,6 +54,7 @@
                                     <option value="${Constants.PURCHASE_INVOICE}">PURCHASE INVOICE</option>
                                     <option value="${Constants.PURCHASE_RETURN}">PURCHASE RETURN</option>
                                     <option value="${Constants.GRN}">GRN</option>
+                                    <option value="${Constants.SAMPLE_INVOCIE}">SAMPLE INVOCIE</option>
                                 </select>
                             </div>
 

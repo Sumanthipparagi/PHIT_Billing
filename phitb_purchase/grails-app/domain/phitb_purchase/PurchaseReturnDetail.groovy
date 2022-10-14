@@ -6,20 +6,20 @@ class PurchaseReturnDetail implements LogicalDelete<PurchaseReturnDetail> {
 
     long finId
     long billId
-    String billType
+    long billType
     long serBillId
     long seriesId
     long productId
     String batchNumber
     String expiryDate
-    long sqty
-    long freeQty
-    long repQty
+    double sqty
+    double freeQty
+    double repQty
     double pRate
     double sRate
     double mrp
     double discount
-    long taxId
+    double gstId
     double gstAmount
     double sgstAmount
     double cgstAmount
@@ -28,32 +28,32 @@ class PurchaseReturnDetail implements LogicalDelete<PurchaseReturnDetail> {
     String reason
     long fridgeId
     long kitName
+    String returnStatus
     String saleFinId
-    String invoiceNumber
-    Long purBillId
     long redundantBatch
     long status
     long syncStatus
     String financialYear
     long entityTypeId
     long entityId
+    String invoiceNumber
+    Long purBillId
     Date dateCreated
     Date lastUpdated
+
+    String uuid
 
     double gstPercentage
     double sgstPercentage
     double cgstPercentage
     double igstPercentage
 
-    String uuid
-
     static constraints = {
-        gstPercentage nullable:true
-        sgstPercentage nullable:true
-        cgstPercentage nullable:true
-        igstPercentage nullable:true
         purBillId nullable: true
-        uuid unique: true
+        invoiceNumber nullable: true
+        returnStatus nullable: true
+        uuid nullable: true, unique: true
+
     }
 
     boolean isUpdatable
@@ -63,12 +63,12 @@ class PurchaseReturnDetail implements LogicalDelete<PurchaseReturnDetail> {
 
         if (!this.isUpdatable)
         {
-            System.out.println("PurchaseProductDetail Domain update Prevented " + new Date().toString() + " ,id: " + this.id)
+            System.out.println("PurchaseReturnDetail Domain update Prevented " + new Date().toString() + " ,id: " + this.id)
             return false
         }
         else
         {
-            System.out.println("PurchaseProductDetail domain Updated " + new Date().toString() + " ,id: " + this.id)
+            System.out.println("PurchaseReturnDetail domain Updated " + new Date().toString() + " ,id: " + this.id)
         }
     }
 }

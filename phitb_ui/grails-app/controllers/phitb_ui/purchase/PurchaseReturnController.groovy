@@ -72,7 +72,7 @@ class PurchaseReturnController
                     double fqty = 0;
                     for (JSONObject purchaseReturn : purchaseReturnArray) {
 
-                        if (purchaseReturn.saleBillId == it.billId && (purchaseReturn.returnStatus!="CANCELLED")) {
+                        if (purchaseReturn.purBillId == it.billId && (purchaseReturn.returnStatus!="CANCELLED")) {
                             if (purchaseReturn.sqty!= 0) {
                                 sqty += Double.parseDouble(purchaseReturn.sqty.toString())
                                 it.put("prevsqty", sqty)
@@ -95,7 +95,7 @@ class PurchaseReturnController
 
 
     def getPurchaseDetailsByProductAndBatch() {
-        def billAndBatch = new SalesService().getByBillBatchesProduct(params.billId, params.batch, params.productId)
+        def billAndBatch = new PurchaseService().getByBillBatchesProduct(params.billId, params.batch, params.productId)
         JSONObject jsonObject = new JSONObject(billAndBatch.readEntity(String.class))
         def purchaseReturns = new PurchaseService().getReturnDetailsByBatchPurbillProductId(jsonObject.productId.toString()
                 , jsonObject.batchNumber.toString(), jsonObject.billId.toString())
@@ -105,7 +105,7 @@ class PurchaseReturnController
             for (JSONObject purchaseReturn : purchaseReturnArray) {
                 double sqty = 0;
                 double fqty = 0;
-                if (purchaseReturn.saleBillId == jsonObject.billId && (purchaseReturn.returnStatus != "CANCELLED")) {
+                if (purchaseReturn.purBillId == jsonObject.billId && (purchaseReturn.returnStatus != "CANCELLED")) {
                     if (purchaseReturn.sqty != 0) {
                         sqty += purchaseReturn.sqty
                         jsonObject.put("sqty", jsonObject.sqty - sqty)
@@ -128,7 +128,7 @@ class PurchaseReturnController
         JSONArray purchaseReturnDetails = new JSONArray()
         JSONArray stockArray = new JSONArray()
         String entityId = session.getAttribute("entityId").toString()
-        String customer = params.supplier
+        String supplierId = params.supplier
         String priorityId = params.priority
         String seriesId = params.series
         String duedate = params.duedate
@@ -171,7 +171,7 @@ class PurchaseReturnController
             String expDate = sr.get("4")
             String saleQty = sr.get("5")
             String freeQty = sr.get("6")
-            String saleRate = sr.get("7")
+            String pRate = sr.get("7")
             String mrp = sr.get("8")
             String taxId = sr.get("19")
             if (sr.has("18")) {
@@ -216,7 +216,7 @@ class PurchaseReturnController
             purchaseReturnDetail.put("repQty", 0)
             purchaseReturnDetail.put("invoiceNumber", invoiceNumber)
             purchaseReturnDetail.put("reason", reason)
-            purchaseReturnDetail.put("sRate", saleRate)
+            purchaseReturnDetail.put("pRate", pRate)
             purchaseReturnDetail.put("mrp", mrp)
             purchaseReturnDetail.put("discount", discount)
             purchaseReturnDetail.put("gstAmount", gst)
@@ -236,7 +236,7 @@ class PurchaseReturnController
             purchaseReturnDetail.put("uuid", params.uuid)
             purchaseReturnDetail.put("entityTypeId", session.getAttribute("entityTypeId").toString())
             //GST percentage Calculation
-            double priceBeforeTaxes = UtilsService.round((Double.parseDouble(saleQty) * Double.parseDouble(saleRate)), 2)
+            double priceBeforeTaxes = UtilsService.round((Double.parseDouble(saleQty) * Double.parseDouble(pRate)), 2)
             if (discount > 0) {
                 priceBeforeTaxes = priceBeforeTaxes - (priceBeforeTaxes * (discount / 100))
             }
@@ -272,7 +272,7 @@ class PurchaseReturnController
             stock.put("productId", productId)
             stock.put("taxId", taxId)
             stock.put("packDesc", packDesc)
-            stock.put("saleRate", saleRate)
+            stock.put("saleRate", pRate)
             stock.put("reason", reason)
             stock.put("entityId", session.getAttribute('entityId'))
             stock.put("entityTypeId", session.getAttribute('entityTypeId'))
@@ -295,9 +295,9 @@ class PurchaseReturnController
         String orderDate = sdf.format(new Date())
         //save to sale bill details
         purchaseReturn.put("serBillId", serBillId)
-        purchaseReturn.put("customer", customer)
-        purchaseReturn.put("lrNo", lrNo)
-        purchaseReturn.put("lrDate", lrDate)
+        purchaseReturn.put("supplierId", supplierId)
+        purchaseReturn.put("refNo", lrNo)
+        purchaseReturn.put("refDate", lrDate)
         purchaseReturn.put("customerNumber", 0) //TODO: to be changed
         purchaseReturn.put("finId", finId)
         purchaseReturn.put("seriesId", seriesId)
@@ -355,6 +355,7 @@ class PurchaseReturnController
         purchaseReturn.put("expectedDeliveryDate", entryDate) //TODO: to be changed
         purchaseReturn.put("billStatus", billStatus)
         purchaseReturn.put("quantity", 0)
+        purchaseReturn.put("returnStatus", "ACTIVE")
         purchaseReturn.put("dbAdjAmount", 0)
         purchaseReturn.put("adjustmentStatus", 0)
         purchaseReturn.put("balance", totalAmount)
@@ -377,7 +378,7 @@ class PurchaseReturnController
         purchaseReturn.put("seriesCode", seriesCode)
         JSONObject jsonObject = new JSONObject()
         jsonObject.put("purchaseReturn", purchaseReturn)
-        jsonObject.put("purchaseReturnDetails", purchaseReturnDetails)
+        jsonObject.put("purchaseReturnDetail", purchaseReturnDetails)
         Response response = new PurchaseService().savePurchaseRetrun(jsonObject)
         if (response.status == 200) {
             for (JSONObject stock : stockArray) {
@@ -392,7 +393,6 @@ class PurchaseReturnController
             def purchaseReturns = new JSONObject(response.readEntity(String.class))
             println("Details Saved")
 
-
             def emailSettings = EmailService.getEmailSettingsByEntity(session.getAttribute("entityId").toString())
             JSONObject creditEmailConfig
             if(emailSettings!=null){
@@ -403,7 +403,8 @@ class PurchaseReturnController
                     def entity = new EntityService().getEntityById(purchaseReturns?.customerId?.toString())
                     if(entity?.email!=null && entity?.email!="" && entity?.email!="NA")
                     {
-                        def email = new EmailService().sendEmail(entity.email.trim(), "Sale return Saved", purchaseReturns?.invoiceNumber, purchaseReturns?.invoiceNumber, "SALES_RETURN")
+                        def email = new EmailService().sendEmail(entity.email.trim(), "Purchase return Saved",
+                                purchaseReturns?.invoiceNumber, purchaseReturns?.invoiceNumber, "PURCHASE_RETURN")
                         if (email)
                         {
                             println("Mail Sent..")

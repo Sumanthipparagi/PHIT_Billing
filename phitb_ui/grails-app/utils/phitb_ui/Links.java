@@ -732,6 +732,7 @@ public class Links
     public static String PURCHASE_RETURN_BALANCE_UPDATE = APP_CONTEXT_PATH + "purchase/updatereturnbalancebyid";
     public static String PURCHASE_BILL_CANCEL = APP_CONTEXT_PATH + "purchase/billdetail/cancel";
     public static String PURCHASE_PRODUCT_BY_PRODUCT = APP_CONTEXT_PATH + "purchase/purchaseproductdetailsbyproductId";
+    public static String PURCHASE_PRODUCT_BILL_BATCH = APP_CONTEXT_PATH + "purchase/purchaseproductdetailsbillandbatch";
 
 
 
@@ -748,15 +749,15 @@ public class Links
             "/{purbillsIds}";
 
     //purchase return
-    public static String PURCHASE_RETURN_SHOW = APP_CONTEXT_PATH + "purchase/returndetail";
-    public static String PURCHASE_RETURN_SAVE = APP_CONTEXT_PATH + "purchase/returndetail";
+    public static String PURCHASE_RETURN_SHOW = APP_CONTEXT_PATH + "purchase/purchase-returns";
+    public static String PURCHASE_RETURN_SAVE = APP_CONTEXT_PATH + "purchase/purchase-return-save";
     public static String PURCHASE_RETURN_DATATABLE = APP_CONTEXT_PATH + "purchase/returndetail/datatable";
     public static String PURCHASE_RETURN_UPDATE = APP_CONTEXT_PATH + "purchase/returndetail/{id}";
     public static String PURCHASE_RETURN_DELETE = APP_CONTEXT_PATH + "purchase/returndetail/{id}";
     public static String PURCHASE_RETURN_CUSTOMER = APP_CONTEXT_PATH + "purchase/returndetailbysupplier";
     public static String PURCHASE_RETURN_BY_DATERANGE = APP_CONTEXT_PATH + "purchase/returndetailbydaterange";
     public static String PURCHASE_RETURN_BY_DATERANGE_SUPPLIER = APP_CONTEXT_PATH + "purchase/returndetailbydaterangesupplier";
-    public static String PURCHASE_RETURN_PRODUCT_BATCH_BILL = APP_CONTEXT_PATH + "purchase/getpurchasereturndetailsby-product-batch-purchasebill";
+    public static String PURCHASE_RETURN_PRODUCT_BATCH_BILL = APP_CONTEXT_PATH + "purchase/getpurchasereturndetailsby-product-batch-purbill";
 
 
     //e-Invoice

@@ -340,6 +340,8 @@ class SampleConversionController
             sampleInvoicingProducts.put("financialYear", financialYear)
             sampleInvoicingProducts.put("entityId", entityId)
             sampleInvoicingProducts.put("entityTypeId", session.getAttribute("entityTypeId").toString())
+            sampleInvoicingProducts.put("createdUser",session.getAttribute("userId"))
+            sampleInvoicingProducts.put("modifiedUser",session.getAttribute("userId"))
             gtnProducts.add(sampleInvoicingProducts)
 
             //save to sale transaction log

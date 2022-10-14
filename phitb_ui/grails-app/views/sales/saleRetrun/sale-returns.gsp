@@ -709,6 +709,12 @@
                 var fQty = 0;
                 const row = hot.getSelected()[0][0];
                 const selection = hot.getSelected()[0][1];
+                <g:if test="${entityConfigs?.DISABLE_SCHEME_QTY_CREDIT_NOTE?.salesReturn!=true}">
+                hot.setCellMeta(row, 6, 'readOnly', true);
+                </g:if>
+                <g:if test="${entityConfigs?.ALLOW_MANUAL_SELECT_TAX?.salesReturn!=true}">
+                hot.setCellMeta(row, 11, 'readOnly', true);
+                </g:if>
                 if (selection === 1) {
                     if (e.keyCode === 13) {
                         batchHot.selectCell(0, 0);
@@ -729,25 +735,23 @@
                         // calculateTotalAmt();
                         // hot.alter('insert_row');
                         // hot.selectCell(mainTableRow, 1);
-                        if (selection === 13 || selection === 17 ) {
-                            if ((sqty > 0 || fqty > 0) && (taxslab!==null && taxslab!=="")) {
+                        if (selection === 13 || selection === 17) {
+                            if ((sqty > 0 || fqty > 0) && (taxslab !== null && taxslab !== "")) {
                                 console.log("Data added");
                                 for (var j = 0; j < 16; j++) {
                                     hot.setCellMeta(row, j, 'readOnly', true);
                                 }
-                                    mainTableRow = row + 1;
-                                    hot.alter('insert_row');
-                                    hot.selectCell(mainTableRow, 1);
-                                    calculateTotalAmt();
+                                mainTableRow = row + 1;
+                                hot.alter('insert_row');
+                                hot.selectCell(mainTableRow, 1);
+                                calculateTotalAmt();
                             }
                         } else {
-                            if(sqty===0 || fqty===0)
-                            {
+                            if (sqty === 0 || fqty === 0) {
                                 alert("Invalid Quantity, please enter quantity greater than 0");
                             }
 
-                            if(taxslab===null || taxslab==="")
-                            {
+                            if (taxslab === null || taxslab === "") {
                                 alert("Please select any tax slab");
                             }
                         }
@@ -1470,6 +1474,7 @@
 
     function loadTempStockBookData() {
         /*  var userId = "
+
 
 
 

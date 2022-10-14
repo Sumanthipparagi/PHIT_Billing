@@ -307,7 +307,6 @@ class PurchaseService {
                     .path(new Links().PURCHASE_RETURN_SAVE)
                     .request(MediaType.APPLICATION_JSON_TYPE)
                     .post(Entity.entity(jsonObject.toString(), MediaType.APPLICATION_JSON_TYPE))
-            println(apiResponse)
             return apiResponse
         }
         catch (Exception ex)
@@ -796,7 +795,7 @@ class PurchaseService {
 //        }
     }
 
-    def getReturnDetailsByBatchPurbillProductId(String productId, String batch, String saleBill) {
+    def getReturnDetailsByBatchPurbillProductId(String productId, String batch, String purBill) {
         Client client = ClientBuilder.newClient();
         WebTarget target = client.target(new Links().API_GATEWAY);
         try {
@@ -804,10 +803,9 @@ class PurchaseService {
                     .path(new Links().PURCHASE_RETURN_PRODUCT_BATCH_BILL)
                     .queryParam("productId", URLEncoder.encode(productId.toString(), "UTF-8"))
                     .queryParam("batch", URLEncoder.encode(batch.toString(), "UTF-8"))
-                    .queryParam("salebill", URLEncoder.encode(saleBill.toString(), "UTF-8"))
+                    .queryParam("purBillId", URLEncoder.encode(purBill.toString(), "UTF-8"))
                     .request(MediaType.APPLICATION_JSON_TYPE)
                     .get()
-
             return apiResponse
         }
         catch (Exception ex) {
@@ -835,6 +833,27 @@ class PurchaseService {
         catch (Exception ex) {
             System.err.println('Service :SalesService , action :  getSaleProductDetailsByProductId  , Ex:' + ex)
             log.error('Service :SalesService , action :  getSaleProductDetailsByProductId  , Ex:' + ex)
+        }
+    }
+
+    def getByBillBatchesProduct(String billId, String batch, String productId) {
+        Client client = ClientBuilder.newClient();
+        WebTarget target = client.target(new Links().API_GATEWAY);
+
+        try {
+            Response apiResponse = target
+                    .path(new Links().PURCHASE_PRODUCT_BILL_BATCH)
+                    .queryParam("billId", URLEncoder.encode(billId.toString(), "UTF-8"))
+                    .queryParam("batch", URLEncoder.encode(batch.toString(), "UTF-8"))
+                    .queryParam("productId", URLEncoder.encode(productId.toString(), "UTF-8"))
+                    .request(MediaType.APPLICATION_JSON_TYPE)
+                    .get()
+
+            return apiResponse
+        }
+        catch (Exception ex) {
+            System.err.println('Service :ProductService , action :  getBatchesOfProduct  , Ex:' + ex)
+            log.error('Service :ProductService , action :  getBatchesOfProduct  , Ex:' + ex)
         }
 
     }

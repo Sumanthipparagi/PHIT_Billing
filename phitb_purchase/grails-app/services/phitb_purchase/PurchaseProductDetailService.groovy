@@ -224,4 +224,19 @@ class PurchaseProductDetailService {
             println("PurchaseProductDetailService" + ex)
         }
     }
+
+
+    Object getPurchaseDetailsByBillIdAndBatch(String billId, String batchNumber,String productId)
+    {
+        try
+        {
+            return PurchaseProductDetail.findByBillIdAndBatchNumberAndProductId(Long.parseLong(billId),batchNumber,Long.parseLong
+                    (productId))
+        }
+        catch (Exception ex)
+        {
+            log.error("PurchaseProductDeatilsService" + ex)
+            println("PurchaseProductDeatilsService" + ex)
+        }
+    }
 }
