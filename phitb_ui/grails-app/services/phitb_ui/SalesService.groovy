@@ -1834,13 +1834,14 @@ contains both sale bill and products
 
     }
 
-    def getSaleTransportationByBill(String billId) {
+    def getSaleTransportationByBill(String billId,String billType) {
         Client client = ClientBuilder.newClient();
         WebTarget target = client.target(new Links().API_GATEWAY);
         try {
             Response apiResponse = target
                     .path(new Links().SALE_TRANSPORTATION_BY_BILL)
                     .queryParam("billid", billId)
+                    .queryParam("billType", URLEncoder.encode(billType.toString(), "UTF-8"))
                     .request(MediaType.APPLICATION_JSON_TYPE)
                     .get()
             if (apiResponse?.status == 200) {

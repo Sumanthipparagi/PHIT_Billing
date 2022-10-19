@@ -144,6 +144,8 @@
                                     </g:each>
                                 </select>
                             </div>
+
+
                             <div class="col-md-2 mt-2">
                                 <label for="refNum">Ref. Number:</label>
                                 <input type="text" maxlength="100" class="form-control" name="refNum" id="refNum"

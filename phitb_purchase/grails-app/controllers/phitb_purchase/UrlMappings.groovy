@@ -69,7 +69,12 @@ class UrlMappings {
 
 //            Purchase Return
             "/purchase-returns(.$format)?"(controller: 'purchaseReturn') { action = [GET: 'index', POST: 'save'] }
+            "/purchase-returns/$id(.$format)?"(controller: 'purchaseReturn',action: 'show')
             "/purchase-return-save"(controller: 'purchaseReturn', action: 'savePurchaseReturn')
+            "/purchase-return/datatable(.$format)?"(controller: 'purchaseReturn') { action = [GET: 'dataTable'] }
+            "/purchase-return/recent(.$format)?"(controller: 'purchaseReturn') { action = [GET: 'getRecentByFinancialYearAndEntity'] }
+
+
             //Purchase Return Detail
             "/returndetail(.$format)?"(controller: 'purchaseReturnDetail') { action = [GET: 'index', POST: 'save'] }
             "/returndetail/datatable(.$format)?"(controller: 'purchaseReturnDetail') { action = [GET: 'dataTable'] }
@@ -87,6 +92,10 @@ class UrlMappings {
 
             "/getpurchasereturndetailsby-product-batch-purbill(.$format)?"(controller: 'purchaseReturnDetail', action:
                     'getPurReturnDetailsByProductBatchPurchaseBill')
+
+            "/returndetail/bill/$id(.$format)?"(controller: 'purchaseReturnDetail') {
+                action = [GET: 'getPurchaseReturnDetailsByBillId']
+            }
 
             //Purchase Transaction log
             "/transactionlog(.$format)?"(controller: 'purchaseTransactionLog') { action = [GET: 'index', POST: 'save'] }

@@ -324,4 +324,27 @@ class PurchaseReturnDetailController {
             System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
         }
     }
+
+    def getPurchaseReturnDetailsByBillId()
+    {
+        try
+        {
+            String id = params.id
+            respond purchaseReturnDetailService.getPurchaseReturnDetailsByBill(id)
+        }
+        catch (org.springframework.boot.context.config.ResourceNotFoundException ex)
+        {
+            System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
+            response.status = 404
+        }
+        catch (BadRequestException ex)
+        {
+            System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
+            response.status = 400
+        }
+        catch (Exception ex)
+        {
+            System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
+        }
+    }
 }

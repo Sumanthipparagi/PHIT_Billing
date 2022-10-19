@@ -448,7 +448,7 @@
                 Party Ref No. : <br>
                 Rev-Charge :</p>
             <g:each var="t" in="${termsConditions}" status="i">
-                <g:if test="${t?.form?.formType == Constants.SALE_INVOICE && t?.deleted == false}">
+                <g:if test="${t?.form?.formType == Constants.GRN && t?.deleted == false}">
                     <p>${raw(t?.termCondition)}</p>
                 </g:if>
             </g:each></td>

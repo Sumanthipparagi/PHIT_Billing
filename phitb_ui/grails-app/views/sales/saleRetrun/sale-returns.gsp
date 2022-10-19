@@ -709,11 +709,13 @@
                 var fQty = 0;
                 const row = hot.getSelected()[0][0];
                 const selection = hot.getSelected()[0][1];
+                <g:if test="${entityConfigs.size()!=0}">
                 <g:if test="${entityConfigs?.DISABLE_SCHEME_QTY_CREDIT_NOTE?.salesReturn!=true}">
                 hot.setCellMeta(row, 6, 'readOnly', true);
                 </g:if>
                 <g:if test="${entityConfigs?.ALLOW_MANUAL_SELECT_TAX?.salesReturn!=true}">
                 hot.setCellMeta(row, 11, 'readOnly', true);
+                </g:if>
                 </g:if>
                 if (selection === 1) {
                     if (e.keyCode === 13) {

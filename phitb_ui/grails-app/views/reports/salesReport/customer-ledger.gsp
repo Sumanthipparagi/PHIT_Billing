@@ -75,37 +75,36 @@
                 <div class="card">
                     <div class="header">
                         <div class="row">
-                            <div class="col-lg-4">
+                            <div class="col-lg-3">
                                 <div class="form-group">
                                     <label>Date Range:</label>
 
                                     <div class="input-group">
                                         <input class="dateRange" type="text" name="dateRange"
                                                style="border-radius: 6px;margin: 4px;"/>
-                                        <button class="input-group-btn btn btn-info btn-sm"
-                                                onclick="getReport()">Get Report</button>
                                     </div>
                                 </div>
                             </div>
 
-                            <div class="col-lg-4">
-                                <div class="form-group">
-                                        <label for="customerSelect">Customer:</label>
-                                        <select class="form-control show-tick" id="customerSelect"
-                                               >
-                                            <option value="">ALL</option>
-                                            <g:each in="${customerArray}" var="cs">
-                                                <g:if test="${cs.id != session.getAttribute("entityId")}">
-                                                    <option data-state="${cs.stateId}" value="${cs.id}"
-                                                    >${cs.entityName} (${cs.entityType.name}) - ${cs?.city?.districtName} - ${cs?.city?.pincode}</option>
-                                                </g:if>
-                                            </g:each>
-                                        </select>
-
-                                </div>
+                            <div class="col-lg-3">
+                                <label for="customerSelect">Customer:</label>
+                                <select class="form-control show-tick" id="customerSelect">
+                                    <option value="">ALL</option>
+                                    <g:each in="${customerArray}" var="cs">
+                                        <g:if test="${cs.id != session.getAttribute("entityId")}">
+                                            <option data-state="${cs.stateId}"
+                                                    value="${cs.id}">${cs.entityName} (${cs.entityType.name}) - ${cs?.city?.districtName} - ${cs?.city?.pincode}</option>
+                                        </g:if>
+                                    </g:each>
+                                </select>
                             </div>
 
-                            <div class="col-lg-4  d-flex justify-content-center">
+                            <div class="col-lg-3 mt-4">
+                                <button class="input-group-btn btn btn-info btn-sm"
+                                        onclick="getReport()">Get Report</button>
+                            </div>
+
+                            <div class="col-lg-3  d-flex justify-content-center">
                                 <div class="form-group">
                                     <label>Export</label>
 
@@ -299,15 +298,16 @@
         var dateRange = $('.dateRange').val();
         var customer = $('#customerSelect').val();
         var partyName = '';
-        if(customer!==''){
+        if (customer !== '') {
             partyName = "<tr><th data-f-bold='true' colspan='10'>Party Name:  " +
-                $('#customerSelect').find('option:selected').text(); + "</th></tr>"
-        }else{
-            partyName=''
+                $('#customerSelect').find('option:selected').text();
+            +"</th></tr>"
+        } else {
+            partyName = ''
         }
         $.ajax({
             type: "GET",
-            url: "/reports/sales/get-customer-ledger?dateRange=" + dateRange +"&customerId="+customer,
+            url: "/reports/sales/get-customer-ledger?dateRange=" + dateRange + "&customerId=" + customer,
             contentType: false,
             processData: false,
             success: function (data) {
@@ -322,32 +322,30 @@
                     "<th data-f-bold='true'>Credit</th><th data-f-bold='true'>Balance</th></tr></thead><tbody>";
                 var balance = data.openingBalance;
                 content =
-                    "<tr><td colspan='5' style='text-align: center;'><strong>Opening Balance as on "+dateRange.split("-")[0]+"</strong></td><td><strong>"+formatNumber(balance.toFixed(2))+"</strong></td><tr>";
-                if(data)
-                {
+                    "<tr><td colspan='5' style='text-align: center;'><strong>Opening Balance as on " + dateRange.split("-")[0] + "</strong></td><td><strong>" + formatNumber(balance.toFixed(2)) + "</strong></td><tr>";
+                if (data) {
                     $.each(data.customerLedger, function (key, value) {
                         // console.log(value[0]?.customer?.entityName+" "+key)
-                        content +="<tr><th data-f-bold='true' colspan='10'>Party Name: "
-                            +value[0]?.customer?.entityName+ "</th></tr>"
+                        content += "<tr><th data-f-bold='true' colspan='10'>Party Name: "
+                            + value[0]?.customer?.entityName + "</th></tr>"
                         $.each(value, function (i, cl) {
                             var debitAmount = 0.0;
                             var creditAmount = 0.0;
-                            if(cl.type === "DEBIT") {
+                            if (cl.type === "DEBIT") {
                                 debitAmount = cl.amount;
-                                balance = balance -cl.amount;
-                            }
-                            else {
+                                balance = balance - cl.amount;
+                            } else {
                                 creditAmount = cl.amount;
                                 balance += cl.amount;
                             }
 
                             content +=
-                                "<tr><td>"+dateFormat(cl.transactionDate)+"</td><td>"+cl.transactionNumber+"</td><td>"+cl.transactionDescription+"</td><td>"+formatNumber(debitAmount.toFixed(2))+"</td><td>"+formatNumber(creditAmount.toFixed(2))+"</td><td>"+formatNumber(balance.toFixed(2))+"</td></tr>";
+                                "<tr><td>" + dateFormat(cl.transactionDate) + "</td><td>" + cl.transactionNumber + "</td><td>" + cl.transactionDescription + "</td><td>" + formatNumber(debitAmount.toFixed(2)) + "</td><td>" + formatNumber(creditAmount.toFixed(2)) + "</td><td>" + formatNumber(balance.toFixed(2)) + "</td></tr>";
                         });
                     });
                 }
                 content +=
-                    "<tr><td colspan='5' style='text-align: center;'><strong>Closing Balance as on "+dateRange.split("-")[1]+"</strong></td><td><strong>"+formatNumber(balance.toFixed(2))+"</strong></td><tr>";
+                    "<tr><td colspan='5' style='text-align: center;'><strong>Closing Balance as on " + dateRange.split("-")[1] + "</strong></td><td><strong>" + formatNumber(balance.toFixed(2)) + "</strong></td><tr>";
 
                 var mainTableFooter = "</tbody></table>";
 

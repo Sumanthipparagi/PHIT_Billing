@@ -20,6 +20,9 @@
     <asset:stylesheet  src="/themeassets/js/pages/forms/basic-form-elements.js" rel="stylesheet" />
     <asset:stylesheet  src="/themeassets/plugins/bootstrap-material-datetimepicker/css/bootstrap-material-datetimepicker.css" rel="stylesheet" />
 
+    <asset:stylesheet  src="/themeassets/plugins/summernote/dist/summernote.css" rel="stylesheet" />
+
+
     <style>
 
     /*div.dataTables_scrollBody table tbody  td {*/
@@ -62,7 +65,7 @@
                 <div class="col-lg-5 col-md-5 col-sm-12">
                     <h2>Terms And Conditions</h2>
                     <ul class="breadcrumb padding-0">
-                        <li class="breadcrumb-item"><a href="index.html"><i class="zmdi zmdi-home"></i></a></li>
+                        <li class="breadcrumb-item"><a href="#"><i class="zmdi zmdi-home"></i></a></li>
                         <li class="breadcrumb-item active">Terms And Conditions</li>
                     </ul>
                 </div>
@@ -159,6 +162,8 @@
 %{--<asset:javascript src="/themeassets/js/pages/forms/editors.js"/>--}%
 <asset:javascript src="/themeassets/plugins/bootstrap-material-datetimepicker/js/bootstrap-material-datetimepicker.js"/>
 <asset:javascript src="/themeassets/js/pages/forms/basic-form-elements.js"/>
+<asset:javascript src="/themeassets/plugins/summernote/dist/summernote.js"/>
+
 
 <script>
 
@@ -198,18 +203,19 @@
                     var return_data = [];
                     for (var i = 0; i < json.data.length; i++) {
                         console.log(json);
-                        var editbtn = '<button type="button" data-id="' + json.data[i].id +
+                        var editbtn = '<button type="button" class="editbtn btn btn-sm btn-warning  editbtn" data-toggle="modal" data-target="#addtermModal" data-id="' + json.data[i].id +
                             '" data-formId="' + json.data[i].formId + '"' +
-                            '" data-termCondition="' + json.data[i].termCondition + '"' +
-                            '" data-entitytype="' + json.data[i].entityType.id + '"' +
-                            '" data-entityRegister="' + json.data[i].entity.id + '"' +
-                            '"' +
-                            ' class="editbtn btn btn-sm btn-warning  editbtn" data-toggle="modal" data-target="#addtermModal"><i class="material-icons"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">edit</font></font></i></button>'
+/*
+                            ' data-termCondition="' + json.data[i].termCondition + '"' +
+*/
+                            ' data-entitytype="' + json.data[i].entityType.id + '"' +
+                            ' data-entityRegister="' + json.data[i].entity.id + '"' +
+                            '><i class="material-icons"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">edit</font></font></i></button>'
                         var deletebtn = '<button type="button" data-id="' + json.data[i].id +
                             '" class="btn btn-sm btn-danger deletebtn" data-toggle="modal" data-target=".deleteModal"><i class="material-icons"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">delete</font></font></i></button>'
                         return_data.push({
                             'id': json.data[i].id,
-                            'termCondition': "<div style='white-space:normal;'>"+json.data[i].termCondition + "</div>",
+                            'termCondition': "<div style='white-space: normal;'>"+json.data[i].termCondition + "</div>",
                             'formId': json.data[i]?.form?.formName,
                             // 'entity': json.data[i].entity.entityName,
                             // 'entitytype': json.data[i].entityType.name,
@@ -271,15 +277,28 @@
 
     $(document).on("click", ".addbtn", function () {
         $(".termsTitle").text("Add Terms & Conditions");
-        // CKEDITOR.instances['termCondition'].setData("");
+        $('#termCondition').summernote('code',"");
         $(".termsForm")[0].reset();
         id = null
     });
 
     $(document).on("click", ".editbtn", function () {
         id = $(this).data('id');
-        $(".termCondition").val($(this).attr('data-termCondition'));
-        // CKEDITOR.instances['termCondition'].setData($(this).attr('data-termCondition'));
+        // $(".termCondition").val($(this).attr('data-termCondition'));
+        var beforeSendSwal;
+        $('#termCondition').summernote();
+        $.ajax({
+            url: '/get-terms-conditionby-id/'+$(this).data('id'),
+            type: "GET",
+            dataType:'json',
+            success: function (data) {
+                $('#termCondition').summernote('code', data?.termCondition);
+            },
+            error: function () {
+                Swal.fire("Error!", "Something went wrong", "error");
+            }
+        });
+
         $(".formId").val($(this).attr('data-formId')).change();
         $(".entity").val($(this).attr('data-entityRegister')).change();
         $("#entityTypeId").val($(this).attr('data-entitytype')).change();
@@ -314,7 +333,17 @@
         });
     }
 
-
+    $(document).ready(function() {
+        $('#termCondition').summernote({
+            height: 150,
+            toolbar: [
+                // [groupName, [list of button]]
+                ['style', ['bold', 'italic', 'underline', 'clear']],
+                ['fontsize', ['fontsize']],
+                ['color', ['color']],
+            ]
+        });
+    });
 
 </script>
 

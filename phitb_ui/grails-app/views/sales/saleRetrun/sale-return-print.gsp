@@ -412,7 +412,7 @@
 
     %{--        <p>${termsConditions[0].termCondition}</p>--}%
         <g:each var="t" in="${termsConditions}" status="i">
-            <g:if test="${t?.form?.formType == Constants.SALE_INVOICE && t?.deleted == false}">
+            <g:if test="${t?.form?.formType == Constants.SALE_RETURN && t?.deleted == false}">
                 <p>${raw(t?.termCondition)}</p>
             </g:if>
         </g:each>

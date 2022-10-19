@@ -19,6 +19,10 @@ class SampleConversion implements Serializable, LogicalDelete<SampleConversion>
     long salesmanComm
     Date orderDate
     String refOrderId
+    String refNo
+    String publicNote
+    String privateNote
+    Date refDate
     Date dueDate
     Date dispatchDate
     long deliveryManId
@@ -66,6 +70,10 @@ class SampleConversion implements Serializable, LogicalDelete<SampleConversion>
         totalSqty min: 0D
         totalFqty min: 0D
         totalQty min: 0D
+        publicNote nullable: true
+        privateNote nullable: true
+        refNo nullable:true
+        refDate  nullable:true
     }
 
     boolean isUpdatable

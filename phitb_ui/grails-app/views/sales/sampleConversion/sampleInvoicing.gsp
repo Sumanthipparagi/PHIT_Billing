@@ -104,11 +104,40 @@
                                         onchange="customerSelectChanged()">
                                     <option selected disabled>--SELECT--</option>
                                     <g:each in="${users}" var="u">
-                                        <g:if test="${u.id != session.getAttribute("userId")}">
+                                        <g:if test="${u.id != session.getAttribute("userId") && u.deleted == false}">
                                             <option value="${u.id}">${u.userName} (${u?.name})</option>
                                         </g:if>
                                     </g:each>
                                 </select>
+                            </div>
+
+                            <div class="col-md-2 mt-2">
+                                <label for="refNum">Ref. Number:</label>
+                                <input type="text" maxlength="100" class="form-control" name="refNum" id="refNum"
+                                       />
+                            </div>
+
+                            <div class="col-md-2 mt-2">
+                                <label for="refDate">Ref. Date:</label>
+                                <input type="date" class="form-control date" name="refDate" id="refDate"/>
+                            </div>
+
+
+
+                            <div class="col-md-2 mt-2">
+                                <br>
+                                <a class="btn btn-primary waves-effect" role="button" data-toggle="collapse"
+                                   href="#shipmentDetails" aria-expanded="false"
+                                   aria-controls="shipmentDetails"><i class="zmdi zmdi-truck"></i> Shipment
+                                </a>
+                            </div>
+
+                            <div class="col-md-1 mt-2">
+                                <br>
+                                <a class="btn btn-primary waves-effect collapsed" role="button"
+                                   data-toggle="collapse" href="#noteDetails" aria-expanded="false"
+                                   aria-controls="noteDetails"><i class="zmdi zmdi-edit"></i>
+                                </a>
                             </div>
 
 %{--                            <div class="col-md-2">--}%
@@ -116,6 +145,73 @@
 %{--                                <input type="date" class="form-control date" name="duedate" id="duedate"/>--}%
 %{--                            </div>--}%
 
+                        </div>
+                        <div class="row mt-2">
+                            <div class="col-md-12 col-lg-12 col-sm-12">
+                                <div class="collapse" id="noteDetails">
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label for="publicNote">Public Note</label>
+                                                <textarea id="publicNote" rows="1" maxlength="500" name="publicNote"
+                                                          class="form-control"></textarea>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <div class="form-group">
+                                                    <label for="privateNote">Private Note</label>
+                                                    <textarea id="privateNote" rows="1" maxlength="500"
+                                                              name="privateNote"
+                                                              class="form-control"></textarea>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row mt-2">
+                            <div class="col-md-12 col-lg-12 col-sm-12">
+                                <div class="collapse" id="shipmentDetails">
+                                    <div class="row">
+                                        <div class="col-md-3">
+                                            <div class="form-group">
+                                                <label for="lrNumber">LR No.</label>
+                                                <input type="text" maxlength="150" id="lrNumber" name="lrNumber"
+                                                       class="form-control"/>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-md-3">
+                                            <div class="form-group">
+                                                <label for="lrDate">LR Date</label>
+                                                <input type="date" maxlength="150" id="lrDate" name="lrDate"
+                                                       class="form-control"/>
+                                            </div>
+                                        </div>
+                                        <input type="hidden" name="saleTransportDetailsId" id="saleTransportDetailsId"
+                                              >
+
+                                        <div class="col-md-3">
+                                            <div class="form-group">
+                                                <label for="transportType">Transporter</label>
+                                                <select id="transportType" name="transportType"
+                                                        class="form-control">
+                                                    <option value="">--Please Select--</option>
+                                                    <g:each in="${transporter}" var="t">
+                                                        <option value="${t.id}">${t.name}</option>
+                                                    </g:each>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    %{--<div class="well">Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. Nihil anim keffiyeh helvetica,
+                                    craft beer labore wes anderson cred nesciunt sapiente ea proident.</div>--}%
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -319,6 +415,7 @@
             minRows: 1,
             height: '250',
             width: 'auto',
+            stretchH: 'all',
             rowHeights: 25,
             manualRowResize: true,
             manualColumnResize: true,
@@ -964,7 +1061,18 @@
         duedate = moment(duedate, 'YYYY-MM-DD').toDate();
         duedate = moment(duedate).format('DD/MM/YYYY');
         var priority = $("#priority").val();
-
+        var publicNote = $("#publicNote").val();
+        var privateNote = $("#privateNote").val();
+        var lrNumber = $("#lrNumber").val();
+        var lrDate = $("#lrDate").val();
+        var transporter = $("#transportType").val();
+        var refNum = $("#refNum").val();
+        var refDate = $("#refDate").val();
+        if (refDate !== '') {
+            refDate = moment(refDate).format("DD/MM/YYYY");
+        } else {
+            refDate = ''
+        }
         if (!series) {
             alert("Please select series.");
             waitingSwal.close();
@@ -995,6 +1103,13 @@
                 priority: priority,
                 billStatus: billStatus,
                 seriesCode: seriesCode,
+                lrNumber: lrNumber,
+                lrDate: lrDate,
+                refNum: refNum,
+                refDate: refDate,
+                transporter: transporter,
+                publicNote: publicNote,
+                privateNote: privateNote,
                 uuid: self.crypto.randomUUID()
             },
             success: function (data) {

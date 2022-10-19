@@ -342,6 +342,7 @@ class UrlMappings {
         "/terms-conditions"(controller: "termsCondition") {
             action = [GET: "index", POST: "save"]
         }
+        "/get-terms-conditionby-id/$id"(controller: 'termsCondition', action: 'gettermsConditionsById')
         "/terms-conditions/datatable"(controller: "termsCondition", action: "dataTable")
         "/terms-conditions/update/$id"(controller:"termsCondition",action:"update")
         "/terms-conditions/delete/$id"(controller: "termsCondition",action:"delete")
@@ -531,6 +532,9 @@ class UrlMappings {
         "/purchase-bill/supplier/$supplierId"(controller: 'purchaseReturn', action: 'getPurchaseBillBySupplier')
         "/purchaseproductdetailsbillandbatch"(controller: 'purchaseReturn', action: 'getPurchaseDetailsByProductAndBatch')
         "/getpurinvoicedetails"(controller:'purchaseReturn', action: 'getPurchaseInvByProducts')
+        "/purchase-return/print-invoice"('controller':'purchaseReturn', action: 'printPurchaseReturn')
+        "/purchase-return/datatable"(controller: 'purchaseReturn', action: 'purchaseReturnDatatables')
+        "/purchase-return/purchase-return-list"(controller: 'purchaseReturn', action: 'purchaseReturnList')
 
 
         //Sale Entry

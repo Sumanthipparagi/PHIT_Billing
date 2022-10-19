@@ -144,6 +144,7 @@ class PurchaseService {
 
 
 
+
     def cancelPurchaseInvoice(String id, String entityId, String financialYear)
     {
         JSONObject jsonObject = new JSONObject()
@@ -724,7 +725,7 @@ class PurchaseService {
 
     }
 
-    def getPurchaseTransportationByBill(String billId)
+    def getPurchaseTransportationByBill(String billId, String billType)
     {
         Client client = ClientBuilder.newClient();
         WebTarget target = client.target(new Links().API_GATEWAY);
@@ -733,6 +734,7 @@ class PurchaseService {
             Response apiResponse = target
                     .path(new Links().PURCHASE_TRANSPORTATION_BY_BILL)
                     .queryParam("billid",billId)
+                    .queryParam("billType",billType)
                     .request(MediaType.APPLICATION_JSON_TYPE)
                     .get()
             if(apiResponse?.status == 200)
@@ -857,4 +859,89 @@ class PurchaseService {
         }
 
     }
+
+    def getPurchaseReturnById(String id) {
+        Client client = ClientBuilder.newClient();
+        WebTarget target = client.target(new Links().API_GATEWAY);
+        try {
+            Response apiResponse = target
+                    .path(new Links().PURCHASE_RETURN_SHOW + "/" + id)
+                    .request(MediaType.APPLICATION_JSON_TYPE)
+                    .get()
+            if (apiResponse.status == 200) {
+                JSONObject sampleInvoiceDetail = new JSONObject(apiResponse.readEntity(String.class))
+                return sampleInvoiceDetail
+            } else {
+                return null
+            }
+        }
+        catch (Exception ex) {
+            System.err.println('Service :SalesService , action :  getProducts  , Ex:' + ex)
+            log.error('Service :SalesService , action :  getProducts  , Ex:' + ex)
+        }
+    }
+
+    def getPurchaseReturnProductDetailsByBill(String id) {
+        Client client = ClientBuilder.newClient();
+        WebTarget target = client.target(new Links().API_GATEWAY);
+        try {
+            Response apiResponse = target
+                    .path(new Links().PURCHASE_RETURN_DETAIL_BILL + "/" + id)
+                    .request(MediaType.APPLICATION_JSON_TYPE)
+                    .get()
+            if (apiResponse.status == 200) {
+                JSONArray sampleProductDetail = new JSONArray(apiResponse.readEntity(String.class))
+                return sampleProductDetail
+            } else {
+                return null
+            }
+        }
+        catch (Exception ex) {
+            System.err.println('Service :SalesService , action :  getProducts  , Ex:' + ex)
+            log.error('Service :SalesService , action :  getProducts  , Ex:' + ex)
+        }
+    }
+
+    def purchaseReturnDatatable(JSONObject jsonObject) {
+        Client client = ClientBuilder.newClient();
+        WebTarget target = client.target(new Links().API_GATEWAY);
+        try {
+            Response apiResponse = target
+                    .path(new Links().PURCHASE_RETURN_DATATABLE)
+                    .queryParam("params", URLEncoder.encode(jsonObject.toString(), "UTF-8"))
+                    .request(MediaType.APPLICATION_JSON_TYPE)
+                    .get()
+            return apiResponse
+        }
+        catch (Exception ex) {
+            System.err.println('Service :showSalesService , action :  show  , Ex:' + ex)
+            log.error('Service :showSalesService , action :  show  , Ex:' + ex)
+        }
+    }
+
+    def getRecentPurchaseReturn(String financialYear, String entityId) {
+        Client client = ClientBuilder.newClient();
+        WebTarget target = client.target(new Links().API_GATEWAY);
+        try {
+            Response apiResponse = target
+                    .path(new Links().PURCHASE_RETURN_RECENT)
+                    .queryParam("financialYear", financialYear)
+                    .queryParam("entityId", entityId)
+                    .request(MediaType.APPLICATION_JSON_TYPE)
+                    .get()
+
+            if (apiResponse.status == 200) {
+                JSONObject jsonObject = new JSONObject(apiResponse.readEntity(String.class))
+                return jsonObject
+            } else {
+                return null
+            }
+        }
+        catch (Exception ex) {
+            System.err.println('Service :saveStateMaster , action :  save  , Ex:' + ex)
+            log.error('Service :saveStateMaster , action :  save  , Ex:' + ex)
+        }
+
+    }
+
 }

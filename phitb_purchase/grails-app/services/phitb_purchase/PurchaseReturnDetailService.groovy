@@ -122,7 +122,7 @@ class PurchaseReturnDetailService {
         purchaseReturnDetail.sRate = Double.parseDouble(jsonObject.get("pRate").toString())
         purchaseReturnDetail.mrp = Double.parseDouble(jsonObject.get("mrp").toString())
         purchaseReturnDetail.discount = Double.parseDouble(jsonObject.get("discount").toString())
-        purchaseReturnDetail.returnStatus = jsonObject.get('billStatus').toString()
+        purchaseReturnDetail.returnStatus = jsonObject.get('returnStatus').toString()
         purchaseReturnDetail.gstId = Double.parseDouble(jsonObject.get("gstId").toString())
         purchaseReturnDetail.gstAmount = Double.parseDouble(jsonObject.get("gstAmount").toString())
         purchaseReturnDetail.sgstAmount = Double.parseDouble(jsonObject.get("sgstAmount").toString())
@@ -266,7 +266,7 @@ class PurchaseReturnDetailService {
 
     def getPurchaseReturnDetailsByBill(String id)
     {
-        return PurchaseReturnDetail.findByBillId(Long.parseLong(id))
+        return PurchaseReturnDetail.findAllByBillId(Long.parseLong(id))
     }
 
     def getPurchaseDetailsByProductBatchPurBill(String productId, String batch, String saleBillId)

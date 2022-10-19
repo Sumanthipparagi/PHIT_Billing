@@ -110,13 +110,13 @@ class PurchaseReturnService {
 
     def getAllsettledByCustId(String customerId, String entityId, String financialYear)
     {
-        return SaleReturn.findAllByCustomerIdAndEntityIdAndFinancialYearAndAdjustmentStatus(Long.parseLong(customerId) as
+        return PurchaseReturn.findAllByCustomerIdAndEntityIdAndFinancialYearAndAdjustmentStatus(Long.parseLong(customerId) as
                 String, Long.parseLong(entityId),financialYear,"1")
     }
 
     def getAllUnsettledByCustId(String customerId, String entityId, String financialYear)
     {
-        return SaleReturn.findAllByCustomerIdAndEntityIdAndFinancialYearAndAdjustmentStatus(Long.parseLong(customerId) as
+        return PurchaseReturn.findAllByCustomerIdAndEntityIdAndFinancialYearAndAdjustmentStatus(Long.parseLong(customerId) as
                 String, Long.parseLong(entityId),financialYear,"0")
     }
 
@@ -133,13 +133,12 @@ class PurchaseReturnService {
 
     JSONObject getRecentByFinancialYearAndEntity(String financialYear, String entityId)
     {
-
         JSONObject jsonObject = new JSONObject()
-        ArrayList<PurchaseReturn> saleReturn =
+        ArrayList<PurchaseReturn> purchaseReturn =
                 PurchaseReturn.findAllByFinancialYearAndEntityId(financialYear, Long.parseLong(entityId), [sort: 'id', order:
                         'desc'])
-        jsonObject.put("serBillId", saleReturn.serBillId.max())
-        jsonObject.put("finId", saleReturn.finId.max())
+        jsonObject.put("serBillId", purchaseReturn.serBillId.max())
+        jsonObject.put("finId", purchaseReturn.finId.max())
         return jsonObject
     }
 
@@ -161,8 +160,8 @@ class PurchaseReturnService {
         }
         Integer offset = start ? Integer.parseInt(start.toString()) : 0
         Integer max = length ? Integer.parseInt(length.toString()) : 100
-        def saleReturnCriteria = PurchaseReturn.createCriteria()
-        def purchaseReturnArrayList = saleReturnCriteria.list(max: max, offset: offset) {
+        def purchaseReturnCriteria = PurchaseReturn.createCriteria()
+        def purchaseReturnArrayList = purchaseReturnCriteria.list(max: max, offset: offset) {
             or {
                 if (searchTerm != "")
                 {

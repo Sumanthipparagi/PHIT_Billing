@@ -1,5 +1,6 @@
 package phitb_ui.entity
 
+import grails.artefact.Controller
 import groovy.json.JsonSlurper
 import org.grails.web.json.JSONArray
 import org.grails.web.json.JSONObject
@@ -176,6 +177,23 @@ class TermsConditionController {
             System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
             log.error('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
             response.status = 400
+        }
+    }
+
+
+    def gettermsConditionsById(){
+        try{
+            String termConditionId = params.id;
+            if(termConditionId){
+                def tcDeatails = new EntityService().getTermsAndConditionsById(termConditionId);
+                respond tcDeatails, formats: ['json'], status: 200
+            }else{
+                response.status = 400;
+            }
+        }
+        catch (Exception ex){
+            println(Controller+" "+ex)
+            log.error(Controller+" "+ex)
         }
     }
 }

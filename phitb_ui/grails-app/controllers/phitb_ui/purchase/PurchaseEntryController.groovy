@@ -681,7 +681,8 @@ class PurchaseEntryController {
         def series = new SeriesController().getByEntity(entityId)
         def purchaseBillId = params.purchaseBillId
         JSONObject purchaseBillDetail = new PurchaseService().getPurchaseBillDetailsById(purchaseBillId)
-        JSONObject purchaseTransportDetail = new PurchaseService().getPurchaseTransportationByBill(purchaseBillId)
+        JSONObject purchaseTransportDetail = new PurchaseService().getPurchaseTransportationByBill(purchaseBillId,
+                Constants.PURCHASE_INVOICE)
         Object transporter = new ShipmentService().getAllTransporterByEntity(entityId)
         JSONObject supplier = new EntityService().getEntityById(purchaseBillDetail.supplierId.toString())
         if (purchaseBillDetail != null && purchaseBillDetail.billStatus == 'DRAFT') {

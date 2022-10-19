@@ -1562,7 +1562,7 @@
 
     var purchasereturnbillid = 0;
 
-    function purchaseReturnInvoice(billStatus) {
+    function purchaseReturnInvoice(returnStatus) {
         var waitingSwal = Swal.fire({
             title: "Generating Purchase Return, Please wait!",
             showDenyButton: false,
@@ -1611,20 +1611,20 @@
                 return;
             }
         }
-        var saleReturnData = JSON.stringify(hot.getSourceData());
+        var purchaseReturnData = JSON.stringify(hot.getSourceData());
         $.ajax({
             type: "POST",
             url: "/purchase-return",
             dataType: 'json',
             data: {
-                saleReturnData: saleReturnData,
+                purchaseReturnData: purchaseReturnData,
                 supplier: supplier,
                 series: series,
                 lrno: lrno,
                 lrDate: lrDate,
                 // duedate:duedate,
                 // priority:priority,
-                billStatus: billStatus,
+                returnStatus: returnStatus,
                 seriesCode: seriesCode,
                 uuid: self.crypto.randomUUID()
             },
@@ -1651,12 +1651,12 @@
                 $("#invNo").html("<p><strong>" + invoiceNumber + "</strong></p>");
                 var message = "";
                 var draftInvNo = "";
-                if (billStatus === "DRAFT") {
+                if (returnStatus === "DRAFT") {
                     draftInvNo = '<p><strong>' + data.purchaseReturnDetail.entityId + "/DR/S/" + month + year + "/"
                         + seriesCode + "/__" + '<p><strong>';
                     $("#invNo").html(draftInvNo);
                 }
-                if (billStatus !== "DRAFT") {
+                if (returnStatus !== "DRAFT") {
                     message = 'Purchase Return Generated: ' + invoiceNumber;
                 } else {
                     message = 'Draft Invoice Generated: ' + data.purchaseReturnDetail.entityId + "/DR/S/" + month + year + "/"
@@ -1704,10 +1704,10 @@
     function printInvoice() {
         if (readOnly) {
             window.open(
-                'purchase-return/print-invoice?id=' + purchasereturnbillid,
+                '/purchase-return/print-invoice?id=' + purchasereturnbillid,
                 '_blank'
             );
-            window.location.href = "/sale-return"
+            window.location.href = "/purchase-return"
             resetData();
         }
     }

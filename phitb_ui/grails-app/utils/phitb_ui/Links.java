@@ -750,14 +750,16 @@ public class Links
 
     //purchase return
     public static String PURCHASE_RETURN_SHOW = APP_CONTEXT_PATH + "purchase/purchase-returns";
+    public static String PURCHASE_RETURN_DETAIL_BILL = APP_CONTEXT_PATH + "purchase/returndetail/bill";
     public static String PURCHASE_RETURN_SAVE = APP_CONTEXT_PATH + "purchase/purchase-return-save";
-    public static String PURCHASE_RETURN_DATATABLE = APP_CONTEXT_PATH + "purchase/returndetail/datatable";
+    public static String PURCHASE_RETURN_DATATABLE = APP_CONTEXT_PATH + "purchase/purchase-return/datatable";
     public static String PURCHASE_RETURN_UPDATE = APP_CONTEXT_PATH + "purchase/returndetail/{id}";
     public static String PURCHASE_RETURN_DELETE = APP_CONTEXT_PATH + "purchase/returndetail/{id}";
     public static String PURCHASE_RETURN_CUSTOMER = APP_CONTEXT_PATH + "purchase/returndetailbysupplier";
     public static String PURCHASE_RETURN_BY_DATERANGE = APP_CONTEXT_PATH + "purchase/returndetailbydaterange";
     public static String PURCHASE_RETURN_BY_DATERANGE_SUPPLIER = APP_CONTEXT_PATH + "purchase/returndetailbydaterangesupplier";
     public static String PURCHASE_RETURN_PRODUCT_BATCH_BILL = APP_CONTEXT_PATH + "purchase/getpurchasereturndetailsby-product-batch-purbill";
+    public static String PURCHASE_RETURN_RECENT = APP_CONTEXT_PATH + "purchase/purchase-return/recent";
 
 
     //e-Invoice

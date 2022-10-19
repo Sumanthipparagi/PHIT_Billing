@@ -770,7 +770,7 @@
         %{--    colorLight : '#fff',--}%
         %{--    correctLevel : QRCode.CorrectLevel.H--}%
         %{--});--}%
-        var css = '@page { size: landscape; }',
+      /*  var css = '@page { size: landscape; }',
             head = document.head || document.getElementsByTagName('head')[0],
             style = document.createElement('style');
 
@@ -783,7 +783,7 @@
             style.appendChild(document.createTextNode(css));
         }
 
-        head.appendChild(style);
+        head.appendChild(style);*/
 
         window.print();
         var d = moment(new Date()).format('DD/MM/YYYY') + " " + new Date().toLocaleTimeString();

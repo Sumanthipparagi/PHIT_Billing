@@ -1472,6 +1472,28 @@ class EntityService {
 
     }
 
+    def getTermsAndConditionsById(String id){
+        Client client = ClientBuilder.newClient()
+        WebTarget target = client.target(new Links().API_GATEWAY)
+
+        try {
+            Response apiResponse = target
+                    .path(new Links().TC_MASTER_SHOW+"/"+id)
+                    .request(MediaType.APPLICATION_JSON_TYPE)
+                    .get()
+            if(apiResponse.status == 200){
+                JSONObject jsonObject1 = new JSONObject(apiResponse.readEntity(String.class));
+                return jsonObject1
+            }else{
+                return null;
+            }
+        }
+        catch (Exception ex) {
+            System.err.println('Service :EntityService , action :  showTermsCondition  , Ex:' + ex)
+            log.error('Service :EntityService , action :  showTermsCondition  , Ex:' + ex)
+        }
+    }
+
     def putTermsCondition(JSONObject jsonObject) {
         Client client = ClientBuilder.newClient()
         WebTarget target = client.target(new Links().API_GATEWAY)

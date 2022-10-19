@@ -93,8 +93,9 @@ class SaleTransportationDetailsController
     def getByBillId() {
         try {
             String id = params.billid
+            String billType = params.billType
             if (id) {
-                respond saleTransportationDetailsService.getbyBillId(id)
+                respond saleTransportationDetailsService.getbyBillId(id,billType)
             }
         }
         catch (ResourceNotFoundException ex)

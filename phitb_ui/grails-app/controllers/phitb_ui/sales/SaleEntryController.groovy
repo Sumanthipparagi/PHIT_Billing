@@ -104,7 +104,7 @@ class SaleEntryController
         def series = new SeriesController().getByEntity(entityId)
         def saleBillId = params.saleBillId
         JSONObject saleBillDetail = new SalesService().getSaleBillDetailsById(saleBillId)
-        JSONObject saleTransportDetail = new SalesService().getSaleTransportationByBill(saleBillId)
+        JSONObject saleTransportDetail = new SalesService().getSaleTransportationByBill(saleBillId,Constants.SALE_INVOICE)
         Object transporter = new ShipmentService().getAllTransporterByEntity(entityId)
         def settings = new EntityService().getEntitySettingsByEntity(session.getAttribute('entityId').toString())
         def entityConfigs = new EntityService().getEntityConfigByEntity(entityId)
@@ -861,7 +861,7 @@ class SaleEntryController
         if (saleBillDetail != null)
         {
             JSONArray saleProductDetails = new SalesService().getSaleProductDetailsByBill(saleBillId)
-            JSONObject transportDetails = new SalesService().getSaleTransportationByBill(saleBillId)
+            JSONObject transportDetails = new SalesService().getSaleTransportationByBill(saleBillId,Constants.SALE_INVOICE)
             if (transportDetails != null)
             {
                 JSONObject transporter = new ShipmentService().getTransporterbyId(transportDetails?.transporterId?.toString());
@@ -2690,7 +2690,7 @@ class SaleEntryController
         def series = new SeriesController().getByEntity(entityId)
         def saleBillId = params.saleBillId
         JSONObject saleBillDetail = new SalesService().getSaleBillDetailsById(saleBillId)
-        JSONObject saleTransportDetail = new SalesService().getSaleTransportationByBill(saleBillId)
+        JSONObject saleTransportDetail = new SalesService().getSaleTransportationByBill(saleBillId,Constants.SALE_INVOICE)
         Object transporter = new ShipmentService().getAllTransporterByEntity(entityId)
         JSONObject customer = new EntityService().getEntityById(saleBillDetail.customerId.toString())
 //        if (saleBillDetail != null && saleBillDetail.billStatus == 'DRAFT') {

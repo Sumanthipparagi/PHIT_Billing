@@ -53,9 +53,9 @@ class SaleTransportationDetailsService
     }
 
 
-    SaleTransportationDetails getbyBillId(String billId)
+    SaleTransportationDetails getbyBillId(String billId,String billType)
     {
-        return SaleTransportationDetails.findByBillId(Long.parseLong(billId))
+        return SaleTransportationDetails.findByBillIdAndBillType(Long.parseLong(billId),billType)
     }
 
     JSONObject dataTables(JSONObject paramsJsonObject, String start, String length)

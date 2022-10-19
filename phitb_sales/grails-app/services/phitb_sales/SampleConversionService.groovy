@@ -149,6 +149,15 @@ class SampleConversionService {
         sampleConversion.refOrderId = jsonObject.get("refOrderId").toString()
         sampleConversion.dueDate = new Date()
         sampleConversion.dispatchDate = sdf.parse(jsonObject.get("dispatchDate").toString())
+        sampleConversion.refNo = jsonObject.get('refNo').toString()
+        if(jsonObject.get("refDate")!=''){
+            sampleConversion.refDate = sdf.parse(jsonObject.get("refDate").toString())
+        }
+        else{
+            sampleConversion.refDate = null
+        }
+        sampleConversion.publicNote = jsonObject.get("publicNote").toString()
+        sampleConversion.privateNote = jsonObject.get("privateNote").toString()
         sampleConversion.deliveryManId = Long.parseLong(jsonObject.get("deliveryManId").toString())
         sampleConversion.totalSqty = Double.parseDouble(jsonObject.get("totalSqty").toString())
         sampleConversion.totalFqty = Double.parseDouble(jsonObject.get("totalFqty").toString())
@@ -235,6 +244,8 @@ class SampleConversionService {
         sampleConversion.salesmanId = Long.parseLong(jsonObject.get("salesmanId").toString())
         sampleConversion.salesmanComm = Long.parseLong(jsonObject.get("salesmanComm").toString())
         //sampleConversion.orderDate = sdf.parse(jsonObject.get("orderDate").toString())
+        sampleConversion.refNo = jsonObject.get('refNo').toString()
+        sampleConversion.refDate = sdf.parse(jsonObject.get("refDate").toString())
 
         if(jsonObject.get("billStatus").toString().equalsIgnoreCase("ACTIVE"))
             sampleConversion.orderDate = new Date()
