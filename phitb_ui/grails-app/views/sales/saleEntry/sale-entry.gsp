@@ -1705,10 +1705,19 @@
 
     function printInvoice() {
         if (readOnly) {
+%{--            <g:if test="${session.getAttribute('domainType') == Constants.FURNITURE}">--}%
+%{--            window.open(--}%
+%{--                '/sale-entry/print-invoice-furniture?id=' + saleBillId,--}%
+%{--                '_blank'--}%
+%{--            );--}%
+%{--            </g:if>--}%
+%{--            <g:else>--}%
             window.open(
                 'sale-entry/print-invoice?id=' + saleBillId,
                 '_blank'
             );
+%{--            </g:else>--}%
+
             resetData();
         }
     }

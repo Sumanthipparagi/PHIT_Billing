@@ -490,7 +490,7 @@
                 $('#caddress').html(trHTML);
             },
             error: function () {
-                swal("Error!", "Something went wrong", "error");
+                Swal.fire("Error!", "Something went wrong", "error");
             }
         });
 
@@ -547,7 +547,7 @@
                 $('.unsettledVocher').html(trHTML+trHTML1);
             },
             error: function () {
-                swal("Error!", "Something went wrong", "error");
+                Swal.fire("Error!", "Something went wrong", "error");
             }
         });
     }
@@ -606,7 +606,7 @@
                 $('.settledVocher').html(trHTML+trHTML1);
             },
             error: function () {
-                swal("Error!", "Something went wrong", "error");
+                Swal.fire("Error!", "Something went wrong", "error");
             }
         });
     }
@@ -645,7 +645,7 @@
                 getsettledSaleBillByCustomer(custId)
             },
             error: function () {
-                swal("Error!", "Something went wrong", "error");
+                Swal.fire("Error!", "Something went wrong", "error");
             }
         });
     });
@@ -669,7 +669,7 @@
                 getsettledSaleBillByCustomer(custId)
             },
             error: function () {
-                swal("Error!", "Something went wrong", "error");
+                Swal.fire("Error!", "Something went wrong", "error");
             }
         });
     });
@@ -693,7 +693,7 @@
                 getsettledSaleBillByCustomer(custId);
             },
             error: function () {
-                swal("Error!", "Something went wrong", "error");
+                Swal.fire("Error!", "Something went wrong", "error");
             }
         });
     });
@@ -717,7 +717,7 @@
                 getsettledSaleBillByCustomer(custId)
             },
             error: function () {
-                swal("Error!", "Something went wrong", "error");
+                Swal.fire("Error!", "Something went wrong", "error");
             }
         });
     });
@@ -768,7 +768,7 @@
                             });
                         },
                         error: function () {
-                            swal("Error!", "Something went wrong", "error");
+                            Swal.fire("Error!", "Something went wrong", "error");
                         }
                     });
                 }
@@ -776,12 +776,12 @@
                 {
                     if(balance === 0)
                     {
-                        swal("Balance should not be zero!!");
+                        Swal.fire("Balance should not be zero!!");
                         $('#balsettled').val(invbal)
                     }
                     else
                     {
-                        swal("Balance should not exceed!!");
+                        Swal.fire("Balance should not exceed!!");
                         $('#balsettled').val(invbal)
                     }
                     $('#balsettled').val(invbal)
@@ -827,7 +827,7 @@
                             });
                         },
                         error: function () {
-                            swal("Error!", "Something went wrong", "error");
+                            Swal.fire("Error!", "Something went wrong", "error");
                         }
                     });
                 }
@@ -835,12 +835,12 @@
                 {
                     if(balance === 0)
                     {
-                        swal("Balance should not be zero!!");
+                        Swal.fire("Balance should not be zero!!");
                         $('#balsettled').val(invbal)
                     }
                     else
                     {
-                        swal("Balance should not exceed!!");
+                        Swal.fire("Balance should not exceed!!");
                         $('#balsettled').val(invbal)
                     }
                     $('#balsettled').val(invbal)

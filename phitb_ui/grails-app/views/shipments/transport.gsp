@@ -202,12 +202,12 @@
             contentType: false,
             processData: false,
             success: function () {
-                swal("Success!", "Transport Type Submitted Successfully", "success");
+                Swal.fire("Success!", "Transport Type Submitted Successfully", "success");
                 transportTable();
                 $('#addTransportModal').modal('hide');
             },
             error: function () {
-                swal("Error!", "Something went wrong", "error");
+                Swal.fire("Error!", "Something went wrong", "error");
 
             }
         });
@@ -241,9 +241,9 @@
             success: function () {
                 $('.deleteModal').modal('hide');
                 transportTable();
-                swal("Success!", "Transport Type Deleted Successfully", "success");
+                Swal.fire("Success!", "Transport Type Deleted Successfully", "success");
             }, error: function () {
-                swal("Error!", "Something went wrong", "error");
+                Swal.fire("Error!", "Something went wrong", "error");
             }
         });
     }

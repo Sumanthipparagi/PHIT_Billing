@@ -249,12 +249,12 @@
             contentType: false,
             processData: false,
             success: function () {
-                swal("Success!", "Unit Type Submitted Successfully", "success");
+                Swal.fire("Success!", "Unit Type Submitted Successfully", "success");
                 fridgeTable();
                 $('#addunitTypeModal').modal('hide');
             },
             error: function () {
-                swal("Error!", "Something went wrong", "error");
+                Swal.fire("Error!", "Something went wrong", "error");
 
             }
         });
@@ -295,9 +295,9 @@
             success: function () {
                 $('.deleteModal').modal('hide');
                 fridgeTable();
-                swal("Success!", "Unit Type Deleted Successfully", "success");
+                Swal.fire("Success!", "Unit Type Deleted Successfully", "success");
             }, error: function () {
-                swal("Error!", "Something went wrong", "error");
+                Swal.fire("Error!", "Something went wrong", "error");
             }
         });
     }

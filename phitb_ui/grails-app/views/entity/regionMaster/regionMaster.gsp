@@ -259,12 +259,12 @@
             contentType: false,
             processData: false,
             success: function () {
-                swal("Success!", "Region Submitted Successfully", "success");
+                Swal.fire("Success!", "Region Submitted Successfully", "success");
                 regionTable();
                 $('#addregionModal').modal('hide');
             },
             error: function () {
-                swal("Error!", "Something went wrong", "error");
+                Swal.fire("Error!", "Something went wrong", "error");
 
             }
         });
@@ -311,9 +311,9 @@
             success: function () {
                 $('.deleteModal').modal('hide');
                 regionTable();
-                swal("Success!", "Region  Deleted Successfully", "success");
+                Swal.fire("Success!", "Region  Deleted Successfully", "success");
             }, error: function () {
-                swal("Error!", "Something went wrong", "error");
+                Swal.fire("Error!", "Something went wrong", "error");
             }
         });
     }

@@ -1,3 +1,4 @@
+<%@ page import="phitb_ui.Constants" %>
 <!doctype html>
 <html class="no-js " lang="en">
 <head>
@@ -322,7 +323,13 @@
                         if(json.data[i].receiptLog.length > 0){
                             cancelInvoice=""
                         }
+
+%{--                <g:if test="${session.getAttribute('domainType') == Constants.FURNITURE}">--}%
+%{--                        var printbtn = '<a target="_blank" class="dropdown-item" data-id="' + json.data[i].id + '" href="/sale-entry/print-invoice?id=' + json.data[i].id + '"><i class="fa fa-print"></i> Print</a>';--}%
+%{--                        </g:if>--}%
+%{--                        <g:else>--}%
                         var printbtn = '<a target="_blank" class="dropdown-item" data-id="' + json.data[i].id + '" href="/sale-entry/print-invoice?id=' + json.data[i].id + '"><i class="fa fa-print"></i> Print</a>';
+%{--                        </g:else>--}%
                         var invoiceNumber = json.data[i].invoiceNumber;
                         if (invoiceNumber === undefined) {
                             if (json.data[i].billStatus === "CANCELLED")

@@ -161,9 +161,12 @@ public class Constants
     public static String DELIVERY_CHALLAN = "DELIVERY_CHALLAN";
 
 
+//    DOMAIN TYPE
+      public static String PHARMIT = "PHARMIT";
+      public static String FURNITURE = "FURNITURE";
+
 
 //    Days of week
-
     public static String MONDAY = "MONDAY";
     public static String TUESDAY = "TUESDAY";
     public static String WEDNESDAY = "WEDNESDAY";
@@ -196,7 +199,6 @@ public class Constants
 
     //EMAIL CONFIGS
     //sales email config
-
     public static String SALE_SENDMAIL_AFTER_SALE_ORDER_SAVED = "SALE_SENDMAIL_AFTER_SALE_ORDER_SAVED";
     public static String SALE_SENDMAIL_SALE_ORDER_CLICKED = "SALE_SENDMAIL_SALE_ORDER_CLICKED";
     public static String SALE_AUTO_EMAIL_AFTER_SAVE_SALE_ENTRY = "SALE_AUTO_EMAIL_AFTER_SAVE_SALE_ENTRY";
@@ -214,7 +216,6 @@ public class Constants
 
 
     //receipt
-
 //    email
     public static String RECEIPT_AUTO_EMAIL_AFTER_SAVE = "RECEIPT_AUTO_EMAIL_AFTER_SAVE";
     public static String RECEIPT_DOC_CANCELLED_SEND_MAIL = "RECEIPT_DOC_CANCELLED_SEND_MAIL";

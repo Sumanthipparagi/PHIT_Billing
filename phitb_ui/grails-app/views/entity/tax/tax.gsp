@@ -279,12 +279,12 @@
             contentType: false,
             processData: false,
             success: function () {
-                swal("Success!", "Rule Submitted Successfully", "success");
+                Swal.fire("Success!", "Rule Submitted Successfully", "success");
                 taxTable();
                 $('#addtaxModal').modal('hide');
             },
             error: function () {
-                swal("Error!", "Something went wrong", "error");
+                Swal.fire("Error!", "Something went wrong", "error");
 
             }
         });
@@ -342,9 +342,9 @@
             success: function () {
                 $('.deleteModal').modal('hide');
                 taxTable();
-                swal("Success!", "Tax  Deleted Successfully", "success");
+                Swal.fire("Success!", "Tax  Deleted Successfully", "success");
             }, error: function () {
-                swal("Error!", "Something went wrong", "error");
+                Swal.fire("Error!", "Something went wrong", "error");
             }
         });
     }

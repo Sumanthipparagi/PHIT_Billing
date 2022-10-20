@@ -262,12 +262,12 @@
             contentType: false,
             processData: false,
             success: function () {
-                swal("Success!", "Godown Submitted Successfully", "success");
+                Swal.fire("Success!", "Godown Submitted Successfully", "success");
                 godownTable();
                 $('#addGodownModal').modal('hide');
             },
             error: function () {
-                swal("Error!", "Something went wrong", "error");
+                Swal.fire("Error!", "Something went wrong", "error");
 
             }
         });
@@ -319,9 +319,9 @@
             success: function () {
                 $('.deleteModal').modal('hide');
                 godownTable();
-                swal("Success!", "Godown Deleted Successfully", "success");
+                Swal.fire("Success!", "Godown Deleted Successfully", "success");
             }, error: function () {
-                swal("Error!", "Something went wrong", "error");
+                Swal.fire("Error!", "Something went wrong", "error");
             }
         });
     }

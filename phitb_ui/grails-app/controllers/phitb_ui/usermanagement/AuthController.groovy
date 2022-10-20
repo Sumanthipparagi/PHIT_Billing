@@ -85,6 +85,8 @@ class AuthController {
                     session.setAttribute("permittedFeatures", permittedFeatures)
                     session.setAttribute("features", new EntityService().getFeatureList(permittedFeatures))
                     JSONArray jsonArray = new EntityService().getFinancialYearByEntity(entity?.id?.toString())
+                   /* JSONArray domainType = new EntityService().getEntityDomainType()
+                    session.setAttribute("domainType",domainType[0].domainType)*/
                     if(jsonArray == null || jsonArray.size()<1)
                     {
                         println("Financial year not available")

@@ -840,4 +840,6 @@ public class Links
     public static String PURCHASE_ORDER_PRODUCT_DELETE = APP_CONTEXT_PATH + "purchase/orderproductdetail/{id}";
     public static String PURCHASE_ORDER_PRODUCT_OF_BILL = APP_CONTEXT_PATH + "purchase/orderproductdetail/bill";
 
+
+    public static String ENTITY_DOMAIN_TYPE = APP_CONTEXT_PATH + "entity/entity-domain-type";
 }

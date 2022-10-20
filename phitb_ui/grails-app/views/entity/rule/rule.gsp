@@ -269,12 +269,12 @@
             contentType: false,
             processData: false,
             success: function () {
-                swal("Success!", "Rule Submitted Successfully", "success");
+                Swal.fire("Success!", "Rule Submitted Successfully", "success");
                 ruleTable();
                 $('#addruleModal').modal('hide');
             },
             error: function () {
-                swal("Error!", "Something went wrong", "error");
+                Swal.fire("Error!", "Something went wrong", "error");
 
             }
         });
@@ -317,9 +317,9 @@
             success: function () {
                 $('.deleteModal').modal('hide');
                 ruleTable();
-                swal("Success!", "Rule  Deleted Successfully", "success");
+                Swal.fire("Success!", "Rule  Deleted Successfully", "success");
             }, error: function () {
-                swal("Error!", "Something went wrong", "error");
+                Swal.fire("Error!", "Something went wrong", "error");
             }
         });
     }

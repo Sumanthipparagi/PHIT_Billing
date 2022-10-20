@@ -248,12 +248,12 @@
             contentType: false,
             processData: false,
             success: function () {
-                swal("Success!", "Product Group Submitted Successfully", "success");
+                Swal.fire("Success!", "Product Group Submitted Successfully", "success");
                 fridgeTable();
                 $('#addproductGroupModal').modal('hide');
             },
             error: function () {
-                swal("Error!", "Something went wrong", "error");
+                Swal.fire("Error!", "Something went wrong", "error");
 
             }
         });
@@ -295,9 +295,9 @@
             success: function () {
                 $('.deleteModal').modal('hide');
                 fridgeTable();
-                swal("Success!", "Product Group Deleted Successfully", "success");
+                Swal.fire("Success!", "Product Group Deleted Successfully", "success");
             }, error: function () {
-                swal("Error!", "Something went wrong", "error");
+                Swal.fire("Error!", "Something went wrong", "error");
             }
         });
     }

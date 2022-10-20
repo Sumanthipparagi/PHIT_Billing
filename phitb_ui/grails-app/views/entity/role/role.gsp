@@ -248,12 +248,12 @@
             contentType: false,
             processData: false,
             success: function () {
-                swal("Success!", "Role Submitted Successfully", "success");
+                Swal.fire("Success!", "Role Submitted Successfully", "success");
                 roleTable();
                 $('#addRoleModal').modal('hide');
             },
             error: function () {
-                swal("Error!", "Something went wrong", "error");
+                Swal.fire("Error!", "Something went wrong", "error");
 
             }
         });
@@ -293,9 +293,9 @@
             success: function () {
                 $('.deleteModal').modal('hide');
                 roleTable();
-                swal("Success!", "Role  Deleted Successfully", "success");
+                Swal.fire("Success!", "Role  Deleted Successfully", "success");
             }, error: function () {
-                swal("Error!", "Something went wrong", "error");
+                Swal.fire("Error!", "Something went wrong", "error");
             }
         });
     }

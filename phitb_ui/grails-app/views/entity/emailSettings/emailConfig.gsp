@@ -1006,7 +1006,7 @@
             data: formData.serialize(), // our data object
             success: function (data) {
                 // $("#validation-status").text(data);
-                // swal("Success!", "Updated Successfully! ", "success");
+                // Swal.fire("Success!", "Updated Successfully! ", "success");
                 // alert("Password Updated!!")
                 Swal.fire(
                     'success',
@@ -1019,8 +1019,8 @@
             error: function (data) {
                 console.log("Failed");
                 // $("#validation-status").text(data.responseText);
-                swal('error', 'Config update Failed', data.responseText);
-                // swal("Error", "Request failed!"+data.responseText, "error");
+                Swal.fire('error', 'Config update Failed', data.responseText);
+                // Swal.fire("Error", "Request failed!"+data.responseText, "error");
                 alert("error")
             }
         });
@@ -1034,7 +1034,7 @@
             data: formData.serialize(), // our data object
             success: function (data) {
                 // $("#validation-status").text(data);
-                // swal("Success!", "Updated Successfully! ", "success");
+                // Swal.fire("Success!", "Updated Successfully! ", "success");
                 // alert("Password Updated!!")
                 Swal.fire(
                     'success',
@@ -1047,8 +1047,8 @@
             error: function (data) {
                 console.log("Failed");
                 // $("#validation-status").text(data.responseText);
-                swal('error', 'Config update Failed', data.responseText);
-                // swal("Error", "Request failed!"+data.responseText, "error");
+                Swal.fire('error', 'Config update Failed', data.responseText);
+                // Swal.fire("Error", "Request failed!"+data.responseText, "error");
                 alert("error")
             }
         });
@@ -1062,7 +1062,7 @@
             data: formData.serialize(), // our data object
             success: function (data) {
                 // $("#validation-status").text(data);
-                // swal("Success!", "Updated Successfully! ", "success");
+                // Swal.fire("Success!", "Updated Successfully! ", "success");
                 // alert("Password Updated!!")
                 Swal.fire(
                     'success',
@@ -1074,8 +1074,8 @@
             error: function (data) {
                 console.log("Failed");
                 // $("#validation-status").text(data.responseText);
-                swal('error', 'Config update Failed', data.responseText);
-                // swal("Error", "Request failed!"+data.responseText, "error");
+                Swal.fire('error', 'Config update Failed', data.responseText);
+                // Swal.fire("Error", "Request failed!"+data.responseText, "error");
                 alert("error")
             }
         });
@@ -1089,7 +1089,7 @@
             data: formData.serialize(), // our data object
             success: function (data) {
                 // $("#validation-status").text(data);
-                // swal("Success!", "Updated Successfully! ", "success");
+                // Swal.fire("Success!", "Updated Successfully! ", "success");
                 // alert("Password Updated!!")
                 Swal.fire(
                     'success',
@@ -1101,8 +1101,8 @@
             error: function (data) {
                 console.log("Failed");
                 // $("#validation-status").text(data.responseText);
-                swal('error', 'Config update Failed', data.responseText);
-                // swal("Error", "Request failed!"+data.responseText, "error");
+                Swal.fire('error', 'Config update Failed', data.responseText);
+                // Swal.fire("Error", "Request failed!"+data.responseText, "error");
                 alert("error")
             }
         });
@@ -1116,7 +1116,7 @@
             data: formData.serialize(), // our data object
             success: function (data) {
                 // $("#validation-status").text(data);
-                // swal("Success!", "Updated Successfully! ", "success");
+                // Swal.fire("Success!", "Updated Successfully! ", "success");
                 // alert("Password Updated!!")
                 Swal.fire(
                     'success',
@@ -1129,8 +1129,8 @@
             error: function (data) {
                 console.log("Failed");
                 // $("#validation-status").text(data.responseText);
-                swal('error', 'Config update Failed', data.responseText);
-                // swal("Error", "Request failed!"+data.responseText, "error");
+                Swal.fire('error', 'Config update Failed', data.responseText);
+                // Swal.fire("Error", "Request failed!"+data.responseText, "error");
                 alert("error")
             }
         });
@@ -1144,7 +1144,7 @@
             data: formData.serialize(), // our data object
             success: function (data) {
                 // $("#validation-status").text(data);
-                // swal("Success!", "Updated Successfully! ", "success");
+                // Swal.fire("Success!", "Updated Successfully! ", "success");
                 // alert("Password Updated!!")
                 Swal.fire(
                     'success',
@@ -1157,8 +1157,8 @@
             error: function (data) {
                 console.log("Failed");
                 // $("#validation-status").text(data.responseText);
-                swal('error', 'Config update Failed', data.responseText);
-                // swal("Error", "Request failed!"+data.responseText, "error");
+                Swal.fire('error', 'Config update Failed', data.responseText);
+                // Swal.fire("Error", "Request failed!"+data.responseText, "error");
                 alert("error")
             }
         });

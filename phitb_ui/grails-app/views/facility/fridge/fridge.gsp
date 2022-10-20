@@ -264,12 +264,12 @@
             contentType: false,
             processData: false,
             success: function () {
-                swal("Success!", "Fridge Submitted Successfully", "success");
+                Swal.fire("Success!", "Fridge Submitted Successfully", "success");
                 fridgeTable();
                 $('#addFridgeModal').modal('hide');
             },
             error: function () {
-                swal("Error!", "Something went wrong", "error");
+                Swal.fire("Error!", "Something went wrong", "error");
 
             }
         });
@@ -321,9 +321,9 @@
             success: function () {
                 $('.deleteModal').modal('hide');
                 fridgeTable();
-                swal("Success!", "Fridge Deleted Successfully", "success");
+                Swal.fire("Success!", "Fridge Deleted Successfully", "success");
             }, error: function () {
-                swal("Error!", "Something went wrong", "error");
+                Swal.fire("Error!", "Something went wrong", "error");
             }
         });
     }

@@ -14,6 +14,7 @@ class EntitySettingController {
     static allowedMethods = [index: "GET", show: "GET", save: "POST", update: "PUT", delete: "DELETE", dataTable: "GET"]
 
     EntitySettingService entitySettingService
+    EntityDomainTypeService entityDomainTypeService
     /**
      * Gets all entity setting 
      * @param query
@@ -173,6 +174,53 @@ class EntitySettingController {
             if (id) {
                 respond entitySettingService.getAllByEntityId(id)
             }
+        }
+        catch (ResourceNotFoundException ex)
+        {
+            System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
+            response.status = 404
+        }
+        catch (BadRequestException ex)
+        {
+            System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
+            response.status = 400
+        }
+        catch (Exception ex) {
+            System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
+        }
+    }
+
+    def  saveEntityDomainType(){
+        try {
+
+            JSONObject jsonObject = JSON.parse(request.reader.text) as JSONObject
+            println(entityDomainTypeService.save(jsonObject))
+            respond entityDomainTypeService.save(jsonObject);
+        }
+        catch (ResourceNotFoundException ex)
+        {
+            System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
+            response.status = 404
+        }
+        catch (BadRequestException ex)
+        {
+            System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
+            response.status = 400
+        }
+        catch (Exception ex) {
+            System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
+        }
+    }
+
+
+    /**
+     * Get requested entity setting
+     * @param id
+     * @return get requested entity setting
+     */
+    def getEntityDomainTypes() {
+        try {
+                respond entityDomainTypeService.getAll()
         }
         catch (ResourceNotFoundException ex)
         {

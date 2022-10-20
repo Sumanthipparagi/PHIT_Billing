@@ -399,6 +399,10 @@ class UrlMappings
             "/update-password/id/$id/password/$password(.$format)?"(controller: 'userRegister', action: 'updatePassword')
 
             "/status"(controller: 'status', action: 'index')
+
+
+            //Entity Domain type
+            "/entity-domain-type(.$format)"(controller: 'entitySetting'){action = [POST: 'saveEntityDomainType', GET: 'getEntityDomainTypes']}
         }
     }
 }

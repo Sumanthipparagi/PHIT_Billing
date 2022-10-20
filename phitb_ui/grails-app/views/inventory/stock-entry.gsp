@@ -351,12 +351,12 @@
             contentType: false,
             processData: false,
             success: function () {
-                swal("Success!", "Stocks added Successfully", "success");
+                Swal.fire("Success!", "Stocks added Successfully", "success");
                 stockTable();
                 $('#addstockModal').modal('hide');
             },
             error: function () {
-                swal("Error!", "Something went wrong", "error");
+                Swal.fire("Error!", "Something went wrong", "error");
 
             }
         });
@@ -409,9 +409,9 @@
             success: function () {
                 $('.deleteModal').modal('hide');
                 stockTable();
-                swal("Success!", "Stock Deleted Successfully", "success");
+                Swal.fire("Success!", "Stock Deleted Successfully", "success");
             }, error: function () {
-                swal("Error!", "Something went wrong", "error");
+                Swal.fire("Error!", "Something went wrong", "error");
             }
         });
     }

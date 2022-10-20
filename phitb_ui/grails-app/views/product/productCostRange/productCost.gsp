@@ -257,12 +257,12 @@
             contentType: false,
             processData: false,
             success: function () {
-                swal("Success!", "Product Cost Range Submitted Successfully", "success");
+                Swal.fire("Success!", "Product Cost Range Submitted Successfully", "success");
                 fridgeTable();
                 $('#addproductCostModal').modal('hide');
             },
             error: function () {
-                swal("Error!", "Something went wrong", "error");
+                Swal.fire("Error!", "Something went wrong", "error");
 
             }
         });
@@ -306,9 +306,9 @@
             success: function () {
                 $('.deleteModal').modal('hide');
                 fridgeTable();
-                swal("Success!", "Product Cost Range Deleted Successfully", "success");
+                Swal.fire("Success!", "Product Cost Range Deleted Successfully", "success");
             }, error: function () {
-                swal("Error!", "Something went wrong", "error");
+                Swal.fire("Error!", "Something went wrong", "error");
             }
         });
     }

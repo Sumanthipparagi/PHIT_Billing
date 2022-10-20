@@ -277,12 +277,12 @@
             contentType: false,
             processData: false,
             success: function () {
-                swal("Success!", "Route Submitted Successfully", "success");
+                Swal.fire("Success!", "Route Submitted Successfully", "success");
                 routeTable();
                 $('#addrouteModal').modal('hide');
             },
             error: function () {
-                swal("Error!", "Something went wrong", "error");
+                Swal.fire("Error!", "Something went wrong", "error");
 
             }
         });
@@ -337,9 +337,9 @@
             success: function () {
                 $('.deleteModal').modal('hide');
                 routeTable();
-                swal("Success!", "Route  Deleted Successfully", "success");
+                Swal.fire("Success!", "Route  Deleted Successfully", "success");
             }, error: function () {
-                swal("Error!", "Something went wrong", "error");
+                Swal.fire("Error!", "Something went wrong", "error");
             }
         });
     }

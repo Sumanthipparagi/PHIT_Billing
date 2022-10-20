@@ -240,12 +240,12 @@
             processData: false,
             success: function () {
 
-                swal("Success!", "Account Mode Submitted Successfully", "success");
+                Swal.fire("Success!", "Account Mode Submitted Successfully", "success");
                 accountmodeTable();
                 $('#addAccountModeModal').modal('hide');
             },
             error: function () {
-                swal("Error!", "Something went wrong", "error");
+                Swal.fire("Error!", "Something went wrong", "error");
 
             }
         });
@@ -281,9 +281,9 @@
             success: function (data) {
                 $('.deleteModal').modal('hide');
                 accountmodeTable();
-                swal("Success!", "Account Mode Deleted Successfully", "success");
+                Swal.fire("Success!", "Account Mode Deleted Successfully", "success");
             }, error: function (data) {
-                swal("Error!", "Something went wrong", "error");
+                Swal.fire("Error!", "Something went wrong", "error");
             }
 
         });

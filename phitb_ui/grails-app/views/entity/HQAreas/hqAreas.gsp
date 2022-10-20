@@ -236,12 +236,12 @@
             contentType: false,
             processData: false,
             success: function () {
-                swal("Success!", "HQ Area  Submitted Successfully", "success");
+                Swal.fire("Success!", "HQ Area  Submitted Successfully", "success");
                 hqareaTable();
                 $('#addHqareaModal').modal('hide');
             },
             error: function () {
-                swal("Error!", "Something went wrong", "error");
+                Swal.fire("Error!", "Something went wrong", "error");
 
             }
         });
@@ -285,9 +285,9 @@
             success: function () {
                 $('.deleteModal').modal('hide');
                 hqareaTable();
-                swal("Success!", "HQ area Deleted Successfully", "success");
+                Swal.fire("Success!", "HQ area Deleted Successfully", "success");
             }, error: function () {
-                swal("Error!", "Something went wrong", "error");
+                Swal.fire("Error!", "Something went wrong", "error");
             }
         });
     }

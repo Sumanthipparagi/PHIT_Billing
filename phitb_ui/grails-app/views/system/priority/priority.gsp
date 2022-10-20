@@ -227,12 +227,12 @@
             contentType: false,
             processData: false,
             success: function () {
-                swal("Success!", "Priority Submitted Successfully", "success");
+                Swal.fire("Success!", "Priority Submitted Successfully", "success");
                 priorityTable();
                 $('#addPriorityModal').modal('hide');
             },
             error: function () {
-                swal("Error!", "Something went wrong", "error");
+                Swal.fire("Error!", "Something went wrong", "error");
 
             }
         });
@@ -268,9 +268,9 @@
             success: function () {
                 $('.deleteModal').modal('hide');
                 priorityTable();
-                swal("Success!", "Priority Deleted Successfully", "success");
+                Swal.fire("Success!", "Priority Deleted Successfully", "success");
             }, error: function () {
-                swal("Error!", "Something went wrong", "error");
+                Swal.fire("Error!", "Something went wrong", "error");
             }
         });
     }

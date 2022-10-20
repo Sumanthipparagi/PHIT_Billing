@@ -555,6 +555,7 @@ class UrlMappings {
         "/sale-product-details/delete"(controller: 'saleEntry', action: 'deleteSaleProduct')
 
         "/sale-entry/print-invoice"(controller: "saleEntry", action: "printSaleInvoice")
+        "/sale-entry/print-invoice-furniture"(controller: "saleEntry", action: "printSaleInvoiceFurniture")
         "/sale-entry/update/$id"(controller:"batchRegister",action:"update")
         "/sale-invoice"(controller: "saleEntry",action:"saleBill")
         "/sales/check-scheme"(controller: "saleEntry", action: "checkSchemeConfiguration")

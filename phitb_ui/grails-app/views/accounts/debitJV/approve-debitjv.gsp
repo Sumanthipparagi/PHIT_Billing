@@ -217,7 +217,7 @@
                         approvalTable();
                     },
                     error: function () {
-                        swal("Error!", "Something went wrong", "error");
+                        Swal.fire("Error!", "Something went wrong", "error");
                     }
                 });
 
@@ -251,7 +251,7 @@
                         approvalTable();
                     },
                     error: function () {
-                        swal("Error!", "Something went wrong", "error");
+                        Swal.fire("Error!", "Something went wrong", "error");
                     }
                 });
 

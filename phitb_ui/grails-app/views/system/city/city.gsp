@@ -245,12 +245,12 @@
             contentType: false,
             processData: false,
             success: function () {
-                swal("Success!", "City Submitted Successfully", "success");
+                Swal.fire("Success!", "City Submitted Successfully", "success");
                 cityTable();
                 $('#addCityModal').modal('hide');
             },
             error: function () {
-                swal("Error!", "Something went wrong", "error");
+                Swal.fire("Error!", "Something went wrong", "error");
 
             }
         });
@@ -303,9 +303,9 @@
             success: function () {
                 $('.deleteModal').modal('hide');
                 cityTable();
-                swal("Success!", "City Deleted Successfully", "success");
+                Swal.fire("Success!", "City Deleted Successfully", "success");
             }, error: function () {
-                swal("Error!", "Something went wrong", "error");
+                Swal.fire("Error!", "Something went wrong", "error");
             }
         });
     }

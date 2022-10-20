@@ -222,12 +222,12 @@
             contentType: false,
             processData: false,
             success: function () {
-                swal("Success!", "Entity Settings Submitted Successfully", "success");
+                Swal.fire("Success!", "Entity Settings Submitted Successfully", "success");
                 entitySettingsTable();
                 $('#addEntitySettingModal').modal('hide');
             },
             error: function () {
-                swal("Error!", "Something went wrong", "error");
+                Swal.fire("Error!", "Something went wrong", "error");
 
             }
         });
@@ -265,9 +265,9 @@
             success: function () {
                 $('.deleteModal').modal('hide');
                 entitySettingsTable();
-                swal("Success!", "Entity Settings Deleted Successfully", "success");
+                Swal.fire("Success!", "Entity Settings Deleted Successfully", "success");
             }, error: function () {
-                swal("Error!", "Something went wrong", "error");
+                Swal.fire("Error!", "Something went wrong", "error");
             }
         });
     }

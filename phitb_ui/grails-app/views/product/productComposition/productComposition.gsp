@@ -249,12 +249,12 @@
             contentType: false,
             processData: false,
             success: function () {
-                swal("Success!", "Product Composition Submitted Successfully", "success");
+                Swal.fire("Success!", "Product Composition Submitted Successfully", "success");
                 fridgeTable();
                 $('#addproductCompostionModal').modal('hide');
             },
             error: function () {
-                swal("Error!", "Something went wrong", "error");
+                Swal.fire("Error!", "Something went wrong", "error");
 
             }
         });
@@ -295,9 +295,9 @@
             success: function () {
                 $('.deleteModal').modal('hide');
                 fridgeTable();
-                swal("Success!", "Product Composition Deleted Successfully", "success");
+                Swal.fire("Success!", "Product Composition Deleted Successfully", "success");
             }, error: function () {
-                swal("Error!", "Something went wrong", "error");
+                Swal.fire("Error!", "Something went wrong", "error");
             }
         });
     }

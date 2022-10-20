@@ -288,9 +288,9 @@
             success: function () {
                 $('.deleteModal').modal('hide');
                 entityIRN();
-                swal("Success!", "Entity IRN Deleted Successfully", "success");
+                Swal.fire("Success!", "Entity IRN Deleted Successfully", "success");
             }, error: function () {
-                swal("Error!", "Something went wrong", "error");
+                Swal.fire("Error!", "Something went wrong", "error");
             }
         });
     }

@@ -236,12 +236,12 @@
             contentType: false,
             processData: false,
             success: function () {
-                swal("Success!", "Country Submitted Successfully", "success");
+                Swal.fire("Success!", "Country Submitted Successfully", "success");
                 countryTable();
                 $('#addCountryModal').modal('hide');
             },
             error: function () {
-                swal("Error!", "Something went wrong", "error");
+                Swal.fire("Error!", "Something went wrong", "error");
 
             }
         });
@@ -278,9 +278,9 @@
             success: function () {
                 $('.deleteModal').modal('hide');
                 countryTable();
-                swal("Success!", "Country Deleted Successfully", "success");
+                Swal.fire("Success!", "Country Deleted Successfully", "success");
             }, error: function () {
-                swal("Error!", "Something went wrong", "error");
+                Swal.fire("Error!", "Something went wrong", "error");
             }
         });
     }

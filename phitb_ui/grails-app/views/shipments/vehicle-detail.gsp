@@ -218,12 +218,12 @@
             contentType: false,
             processData: false,
             success: function () {
-                swal("Success!", "Transport Type Submitted Successfully", "success");
+                Swal.fire("Success!", "Transport Type Submitted Successfully", "success");
                 vehicleDetailTable();
                 $('#addVehicleDetailModal').modal('hide');
             },
             error: function () {
-                swal("Error!", "Something went wrong", "error");
+                Swal.fire("Error!", "Something went wrong", "error");
 
             }
         });
@@ -261,9 +261,9 @@
             success: function () {
                 $('.deleteModal').modal('hide');
                 vehicleDetailTable();
-                swal("Success!", "Transport Type Deleted Successfully", "success");
+                Swal.fire("Success!", "Transport Type Deleted Successfully", "success");
             }, error: function () {
-                swal("Error!", "Something went wrong", "error");
+                Swal.fire("Error!", "Something went wrong", "error");
             }
         });
     }

@@ -394,7 +394,7 @@
         // rolename = rolename.toLowerCase();
         if (rolename == undefined && rolename == "" && rolename == "admin") {
 
-            swal("Error!", "Role Name can't be empty or admin", "error");
+            Swal.fire("Error!", "Role Name can't be empty or admin", "error");
             return;
         }
         if ((addoredit == "add") || (id != undefined && id != "")) {
@@ -416,13 +416,13 @@
                     $("#savebtn").prop("disabled", true);
 
                     roleTable();
-                    swal("", "", "success");
+                    Swal.fire("", "", "success");
                 }
             });
 
 
         } else {
-            swal("", "", "error");
+            Swal.fire("", "", "error");
         }
     });
     </g:if>
@@ -534,21 +534,21 @@
 
         //failed transations
         if (id == "2") {
-            swal("Failed", "Not Exists", "error");
+            Swal.fire("Failed", "Not Exists", "error");
         }
 
         //for successful transactions
         if (id == "3") {
-            swal("Role Added", " ", "success");
+            Swal.fire("Role Added", " ", "success");
         }
         if (id == "4") {
-            swal("Role Updated", " ", "success");
+            Swal.fire("Role Updated", " ", "success");
         }
         if (id == "5") {
-            swal("Roles Deleted", " ", "success");
+            Swal.fire("Roles Deleted", " ", "success");
         }
         if (id == "7") {
-            swal("", " ", "success");
+            Swal.fire("", " ", "success");
         }
     }
 </script>

@@ -245,12 +245,12 @@
             processData: false,
             success: function () {
 
-                swal("Success!", "State Submitted Successfully", "success");
+                Swal.fire("Success!", "State Submitted Successfully", "success");
                 stateTable();
                 $('#addStateModal').modal('hide');
             },
             error: function () {
-                swal("Error!", "Something went wrong", "error");
+                Swal.fire("Error!", "Something went wrong", "error");
 
             }
         });
@@ -293,9 +293,9 @@
             success: function () {
                 $('.deleteModal').modal('hide');
                 stateTable();
-                swal("Success!", "State Deleted Successfully", "success");
+                Swal.fire("Success!", "State Deleted Successfully", "success");
             }, error: function () {
-                swal("Error!", "Something went wrong", "error");
+                Swal.fire("Error!", "Something went wrong", "error");
             }
         });
     }

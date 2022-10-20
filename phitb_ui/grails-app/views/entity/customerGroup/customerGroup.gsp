@@ -252,12 +252,12 @@
             contentType: false,
             processData: false,
             success: function () {
-                swal("Success!", "CCm Submitted Successfully", "success");
+                Swal.fire("Success!", "CCm Submitted Successfully", "success");
                 customerGroupTable();
                 $('#addcustomerGroupModal').modal('hide');
             },
             error: function () {
-                swal("Error!", "Something went wrong", "error");
+                Swal.fire("Error!", "Something went wrong", "error");
 
             }
         });
@@ -299,9 +299,9 @@
             success: function () {
                 $('.deleteModal').modal('hide');
                 customerGroupTable();
-                swal("Success!", "Customer Group Deleted Successfully", "success");
+                Swal.fire("Success!", "Customer Group Deleted Successfully", "success");
             }, error: function () {
-                swal("Error!", "Something went wrong", "error");
+                Swal.fire("Error!", "Something went wrong", "error");
             }
         });
     }

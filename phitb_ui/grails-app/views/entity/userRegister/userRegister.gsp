@@ -251,12 +251,12 @@
             contentType: false,
             processData: false,
             success: function () {
-                swal("Success!", "User Register Submitted Successfully", "success");
+                Swal.fire("Success!", "User Register Submitted Successfully", "success");
                 rackTable();
                 $('#addEntityRegisterModal').modal('hide');
             },
             error: function () {
-                swal("Error!", "Something went wrong", "error");
+                Swal.fire("Error!", "Something went wrong", "error");
 
             }
         });
@@ -297,9 +297,9 @@
             success: function () {
                 $('.deleteModal').modal('hide');
                 userRegisterTable();
-                swal("Success!", "User Register Deleted Successfully", "success");
+                Swal.fire("Success!", "User Register Deleted Successfully", "success");
             }, error: function () {
-                swal("Error!", "Something went wrong", "error");
+                Swal.fire("Error!", "Something went wrong", "error");
             }
         });
     }

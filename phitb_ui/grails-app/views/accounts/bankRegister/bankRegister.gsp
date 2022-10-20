@@ -280,12 +280,12 @@
             contentType: false,
             processData: false,
             success: function () {
-                swal("Success!", "Bank Register Submitted Successfully", "success");
+                Swal.fire("Success!", "Bank Register Submitted Successfully", "success");
                 fridgeTable();
                 $('#addbankRegisterModal').modal('hide');
             },
             error: function () {
-                swal("Error!", "Something went wrong", "error");
+                Swal.fire("Error!", "Something went wrong", "error");
 
             }
         });
@@ -328,9 +328,9 @@
             success: function () {
                 $('.deleteModal').modal('hide');
                 fridgeTable();
-                swal("Success!", "Bank Register Deleted Successfully", "success");
+                Swal.fire("Success!", "Bank Register Deleted Successfully", "success");
             }, error: function () {
-                swal("Error!", "Something went wrong", "error");
+                Swal.fire("Error!", "Something went wrong", "error");
             }
         });
     }
