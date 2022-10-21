@@ -788,6 +788,8 @@ class PurchaseReturnController
                     }
                 }
             }
+
+
             if (settings.size() != 0 && settings?.IPG == Constants.DIVISION_WISE)
             {
                 for (Object divison : groupDetails.keySet())
@@ -807,14 +809,14 @@ class PurchaseReturnController
                         amountAfterTaxes += prodDetail.amount
                         if (prodDetail.igstPercentage > 0)
                         {
-                            def igstPercentage = divIgstGroup.get(it.igstPercentage.toString())
+                            def igstPercentage = divIgstGroup.get(prodDetail.igstPercentage.toString())
                             if (igstPercentage == null)
                             {
-                                divIgstGroup.put(it.igstPercentage.toString(), amountBeforeTaxes)
+                                divIgstGroup.put(prodDetail.igstPercentage.toString(), amountBeforeTaxes)
                             }
                             else
                             {
-                                divIgstGroup.put(it.igstPercentage.toString(), igstPercentage.doubleValue() + amountBeforeTaxes)
+                                divIgstGroup.put(prodDetail.igstPercentage.toString(), igstPercentage.doubleValue() + amountBeforeTaxes)
                             }
                         }
                         else
@@ -847,14 +849,12 @@ class PurchaseReturnController
                             {
                                 divCgstGroup.put(prodDetail.cgstPercentage.toString(), cgstPercentage.doubleValue() + prodDetail.amount - prodDetail.cgstAmount - prodDetail.sgstAmount - prodDetail.igstAmount)
                             }
-
-                            divisionDetail.put("sortItem", divisionDetail.get("divisionName"))
-//                            divisionDetail.remove("divisionName");
-                            divisionDetail.put("divCgstGroup", new JSONObject(divCgstGroup))
-                            divisionDetail.put("amountBeforeTaxes", amountBeforeTaxes)
-                            divisionDetail.put("amountAfterTaxes", amountAfterTaxes)
-                            prodDetail.put("sortDetail", divisionDetail)
                         }
+                        divisionDetail.put("sortItem", divisionDetail.get("divisionName"))
+                        divisionDetail.put("divCgstGroup", new JSONObject(divCgstGroup))
+                        divisionDetail.put("amountBeforeTaxes", amountBeforeTaxes)
+                        divisionDetail.put("amountAfterTaxes", amountAfterTaxes)
+                        prodDetail.put("sortDetail", divisionDetail)
                     }
                 }
             }
@@ -877,14 +877,14 @@ class PurchaseReturnController
                         amountAfterTaxes += prodDetail.amount
                         if (prodDetail.igstPercentage > 0)
                         {
-                            def igstPercentage = divIgstGroup.get(it.igstPercentage.toString())
+                            def igstPercentage = divIgstGroup.get(prodDetail.igstPercentage.toString())
                             if (igstPercentage == null)
                             {
-                                divIgstGroup.put(it.igstPercentage.toString(), amountBeforeTaxes)
+                                divIgstGroup.put(prodDetail.igstPercentage.toString(), amountBeforeTaxes)
                             }
                             else
                             {
-                                divIgstGroup.put(it.igstPercentage.toString(), igstPercentage.doubleValue() + amountBeforeTaxes)
+                                divIgstGroup.put(prodDetail.igstPercentage.toString(), igstPercentage.doubleValue() + amountBeforeTaxes)
                             }
                         }
                         else
@@ -918,13 +918,15 @@ class PurchaseReturnController
                                 divCgstGroup.put(prodDetail.cgstPercentage.toString(), cgstPercentage.doubleValue() + prodDetail.amount - prodDetail.cgstAmount - prodDetail.sgstAmount - prodDetail.igstAmount)
                             }
 
-                            taxDetail.put("sortItem", taxDetail.get("taxName") + " (" + taxDetail.get("taxValue") + "%)")
-//                            taxDetail.remove("divisionName");
-                            taxDetail.put("divCgstGroup", new JSONObject(divCgstGroup))
-                            taxDetail.put("amountBeforeTaxes", amountBeforeTaxes)
-                            taxDetail.put("amountAfterTaxes", amountAfterTaxes)
-                            prodDetail.put("sortDetail", taxDetail)
+
                         }
+
+                        taxDetail.put("sortItem", taxDetail.get("taxName") + " (" + taxDetail.get("taxValue") + "%)")
+//                            taxDetail.remove("divisionName");
+                        taxDetail.put("divCgstGroup", new JSONObject(divCgstGroup))
+                        taxDetail.put("amountBeforeTaxes", amountBeforeTaxes)
+                        taxDetail.put("amountAfterTaxes", amountAfterTaxes)
+                        prodDetail.put("sortDetail", taxDetail)
                     }
                 }
             }
@@ -947,14 +949,14 @@ class PurchaseReturnController
                         amountAfterTaxes += prodDetail.amount
                         if (prodDetail.igstPercentage > 0)
                         {
-                            def igstPercentage = divIgstGroup.get(it.igstPercentage.toString())
+                            def igstPercentage = divIgstGroup.get(prodDetail.igstPercentage.toString())
                             if (igstPercentage == null)
                             {
-                                divIgstGroup.put(it.igstPercentage.toString(), amountBeforeTaxes)
+                                divIgstGroup.put(prodDetail.igstPercentage.toString(), amountBeforeTaxes)
                             }
                             else
                             {
-                                divIgstGroup.put(it.igstPercentage.toString(), igstPercentage.doubleValue() + amountBeforeTaxes)
+                                divIgstGroup.put(prodDetail.igstPercentage.toString(), igstPercentage.doubleValue() + amountBeforeTaxes)
                             }
                         }
                         else
@@ -988,13 +990,14 @@ class PurchaseReturnController
                                 divCgstGroup.put(prodDetail.cgstPercentage.toString(), cgstPercentage.doubleValue() + prodDetail.amount - prodDetail.cgstAmount - prodDetail.sgstAmount - prodDetail.igstAmount)
                             }
 
-                            productGrpDetail.put("sortItem", productGrpDetail.get("groupName"))
-//                            taxDetail.remove("divisionName");
-                            productGrpDetail.put("divCgstGroup", new JSONObject(divCgstGroup))
-                            productGrpDetail.put("amountBeforeTaxes", amountBeforeTaxes)
-                            productGrpDetail.put("amountAfterTaxes", amountAfterTaxes)
-                            prodDetail.put("sortDetail", productGrpDetail)
                         }
+
+                        productGrpDetail.put("sortItem", productGrpDetail.get("groupName"))
+//                            taxDetail.remove("divisionName");
+                        productGrpDetail.put("divCgstGroup", new JSONObject(divCgstGroup))
+                        productGrpDetail.put("amountBeforeTaxes", amountBeforeTaxes)
+                        productGrpDetail.put("amountAfterTaxes", amountAfterTaxes)
+                        prodDetail.put("sortDetail", productGrpDetail)
                     }
                 }
             }
@@ -1018,14 +1021,14 @@ class PurchaseReturnController
                         amountAfterTaxes += prodDetail.amount
                         if (prodDetail.igstPercentage > 0)
                         {
-                            def igstPercentage = divIgstGroup.get(it.igstPercentage.toString())
+                            def igstPercentage = divIgstGroup.get(prodDetail.igstPercentage.toString())
                             if (igstPercentage == null)
                             {
-                                divIgstGroup.put(it.igstPercentage.toString(), amountBeforeTaxes)
+                                divIgstGroup.put(prodDetail.igstPercentage.toString(), amountBeforeTaxes)
                             }
                             else
                             {
-                                divIgstGroup.put(it.igstPercentage.toString(), igstPercentage.doubleValue() + amountBeforeTaxes)
+                                divIgstGroup.put(prodDetail.igstPercentage.toString(), igstPercentage.doubleValue() + amountBeforeTaxes)
                             }
                         }
                         else
@@ -1061,11 +1064,13 @@ class PurchaseReturnController
 
 
                         }
+
                         scheduleDetail.put("sortItem", scheduleDetail.get("scheduleCode"))
                         scheduleDetail.put("divCgstGroup", new JSONObject(divCgstGroup))
                         scheduleDetail.put("amountBeforeTaxes", amountBeforeTaxes)
                         scheduleDetail.put("amountAfterTaxes", amountAfterTaxes)
                         prodDetail.put("sortDetail", scheduleDetail)
+
                     }
                 }
             }
@@ -1088,14 +1093,14 @@ class PurchaseReturnController
                         amountAfterTaxes += prodDetail.amount
                         if (prodDetail.igstPercentage > 0)
                         {
-                            def igstPercentage = divIgstGroup.get(it.igstPercentage.toString())
+                            def igstPercentage = divIgstGroup.get(prodDetail.igstPercentage.toString())
                             if (igstPercentage == null)
                             {
-                                divIgstGroup.put(it.igstPercentage.toString(), amountBeforeTaxes)
+                                divIgstGroup.put(prodDetail.igstPercentage.toString(), amountBeforeTaxes)
                             }
                             else
                             {
-                                divIgstGroup.put(it.igstPercentage.toString(), igstPercentage.doubleValue() + amountBeforeTaxes)
+                                divIgstGroup.put(prodDetail.igstPercentage.toString(), igstPercentage.doubleValue() + amountBeforeTaxes)
                             }
                         }
                         else
@@ -1139,6 +1144,7 @@ class PurchaseReturnController
                     }
                 }
             }
+
 
 
 

@@ -420,7 +420,7 @@
 
 
                 %>
-                <tr><td colspan="20">${groupData[0].sortDetail.sortItem}</td></tr>
+                <tr><td colspan="20">${groupData[0]?.sortDetail?.sortItem}</td></tr>
                 <g:each var="pd" in="${groupData}" status="j">
                     <%
                         divGstGroup = new HashMap<>()
@@ -513,7 +513,7 @@
                             <td>0</td>
                         </g:else>
                         <td style="background-color: #e0e0e0; -webkit-print-color-adjust: exact;">${(long) pd.sqty + (long) pd.freeQty}</td>
-                        <td style="background-color: #e0e0e0; -webkit-print-color-adjust: exact;">${(long) pd.sqty}</td>
+                        <td>${(long) pd.sqty}</td>
                         <%
                             float amount = pd.amount - pd.cgstAmount - pd.sgstAmount - pd.igstAmount
                         %>
@@ -726,9 +726,9 @@
 
                         <g:each var="key, groupData" in="${groupDetails}" status="i">
                             <tr>
-                                <td>${groupData[0].sortDetail.sortItem}</td>
-                                <td>${String.format("%.2f", groupData[0].sortDetail.amountBeforeTaxes)}</td>
-                                <td>${String.format("%.2f", groupData[0].sortDetail.amountAfterTaxes)}</td>
+                                <td>${groupData[0]?.sortDetail?.sortItem}</td>
+                                <td>${String.format("%.2f", groupData[0]?.sortDetail?.amountBeforeTaxes)}</td>
+                                <td>${String.format("%.2f", groupData[0]?.sortDetail?.amountAfterTaxes)}</td>
                             </tr>
                         %{--                        <g:each var="cg" in="${groupData[0].sortDetail.divCgstGroup}" status="j">--}%
                         %{--                            <td>${String.format("%.2f", cg.value)}</td>--}%

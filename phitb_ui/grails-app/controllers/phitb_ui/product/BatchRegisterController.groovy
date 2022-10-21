@@ -38,12 +38,16 @@ class BatchRegisterController {
                     managerList.add(it)
                 }
             }
+            def settings = new EntityService().getEntitySettingsByEntity(session.getAttribute('entityId').toString())
+
             render(view: '/product/batchRegister/batchRegister', model: [entity:entity, statelist:statelist,
                                                                                  countrylist:countrylist, citylist:citylist,
                                                                                  zoneList   :zoneList,
                                                                                  customer:customer, series:series,
                                                                                  managerList:managerList,
-                                                                                 productlist:productlist, productcatList:productcatList])
+                                                                                 productlist:productlist,
+                                                                         settings:settings,
+                                                                         productcatList:productcatList])
         }
         catch (Exception ex)
         {
