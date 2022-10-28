@@ -420,7 +420,7 @@
 
 
                 %>
-                <tr><td colspan="20">${groupData[0]?.sortDetail?.sortItem}</td></tr>
+                <tr><td colspan="21">${groupData[0]?.sortDetail?.sortItem}</td></tr>
                 <g:each var="pd" in="${groupData}" status="j">
                     <%
                         divGstGroup = new HashMap<>()

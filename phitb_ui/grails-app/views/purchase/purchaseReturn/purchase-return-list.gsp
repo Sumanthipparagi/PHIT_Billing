@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=Edge">
     <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
-    <meta name="description" content="Responsive Bootstrap 4 and web Application ui kit.">
+    <meta name="description" content="phitb">
 
     <title>:: PharmIt :: Purchase Return List</title>
     <link rel="icon" type="image/x-icon" href="${assetPath(src: '/themeassets/images/favicon.ico')}"/>
@@ -289,8 +289,8 @@
             denyButtonText: 'No',
         }).then((result) => {
             if (result.isConfirmed) {
-                var url = '/sale-return/cancel-invoice?id=' + id;
-                var beforeSendSwal
+                var url = '/purchase-return/cancel-invoice?id=' + id;
+                var beforeSendSwal;
                 $.ajax({
                     type: "GET",
                     url: url,
@@ -339,7 +339,7 @@
 </script>
 <g:include view="controls/footer-content.gsp"/>
 <script>
-    selectSideMenu("sales-menu");
+    selectSideMenu("purchase-menu");
 </script>
 </body>
 </html>

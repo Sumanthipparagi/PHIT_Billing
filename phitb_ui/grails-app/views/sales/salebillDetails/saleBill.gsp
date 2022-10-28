@@ -85,7 +85,7 @@
 <div class="page-loader-wrapper">
     <div class="loader">
         <div class="m-t-30"><img src="${assetPath(src: '/themeassets/images/logo.svg')}" width="48" height="48"
-                                 alt="Alpino"></div>
+                                 alt=""></div>
 
         <p>Please wait...</p>
     </div>
@@ -340,6 +340,12 @@
                         if (json.data[i].billStatus === "DRAFT") {
                             editInvoice = '<a class="dropdown-item"  href="/edit-sale-entry?saleBillId=' + json.data[i].id + '"><i class="fa fa-edit"></i> Edit</a>';
                         }
+
+                        <g:if test="${entityConfigs?.REGEN_NEW_DOC?.saleEntry}">
+                        if (json.data[i].billStatus === "CANCELLED") {
+                            editInvoice = '<a class="dropdown-item"  href="/edit-sale-entry?saleBillId=' + json.data[i].id + '"><i class="fa fa-edit"></i> Edit</a>';
+                        }
+                        </g:if>
                         // if(json.data[i].balance !== json.data[i].totalAmount)
                         // {
                         //     cancelInvoice="";

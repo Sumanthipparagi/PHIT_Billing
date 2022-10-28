@@ -110,7 +110,7 @@ class SaleEntryController
         def settings = new EntityService().getEntitySettingsByEntity(session.getAttribute('entityId').toString())
         def entityConfigs = new EntityService().getEntityConfigByEntity(entityId)
         JSONObject customer = new EntityService().getEntityById(saleBillDetail.customerId.toString())
-        if (saleBillDetail != null && saleBillDetail.billStatus == 'DRAFT')
+        if(entityConfigs?.REGEN_NEW_DOC?.saleEntry == true)
         {
             JSONArray saleProductDetails = new SalesService().getSaleProductDetailsByBill(saleBillId)
             render(view: '/sales/saleEntry/sale-entry', model: [customers         : customers, divisions: divisions, series: series,
@@ -120,12 +120,23 @@ class SaleEntryController
                                                                 customer          : customer, saleTransportDetail:
                                                                         saleTransportDetail,users:users,settings:
                                                                         settings,entityConfigs: entityConfigs])
+        }else{
+            if (saleBillDetail != null && saleBillDetail.billStatus == 'DRAFT')
+            {
+                JSONArray saleProductDetails = new SalesService().getSaleProductDetailsByBill(saleBillId)
+                render(view: '/sales/saleEntry/sale-entry', model: [customers         : customers, divisions: divisions, series: series,
+                                                                    priorityList      : priorityList, saleBillDetail: saleBillDetail,
+                                                                    saleProductDetails: saleProductDetails,
+                                                                    transporter       : transporter,
+                                                                    customer          : customer, saleTransportDetail:
+                                                                            saleTransportDetail,users:users,settings:
+                                                                            settings,entityConfigs: entityConfigs])
+            }
+            else
+            {
+                redirect(uri: "/sale-entry")
+            }
         }
-        else
-        {
-            redirect(uri: "/sale-entry")
-        }
-
     }
 
   /*  def saveSaleEntry()
@@ -2240,6 +2251,7 @@ class SaleEntryController
     def updateSaleBillDetails()
     {
         println(params)
+        def entityConfigs = new EntityService().getEntityConfigByEntity(session.getAttribute('entityId').toString())
         SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy")
         JSONObject saleBillDetails = new JSONObject()
         JSONArray saleProductDetails = new JSONArray()
@@ -2260,21 +2272,21 @@ class SaleEntryController
         long serBillId = 0
         String financialYear = session.getAttribute("financialYear")
         def series = new EntityService().getSeriesById(seriesId)
-        if (!billStatus.equalsIgnoreCase("DRAFT"))
-        {
-            def recentSaleBill = new SalesService().getRecentSaleBill(financialYear, entityId, billStatus)
-            println(recentSaleBill)
-            if (recentSaleBill != null && recentSaleBill.size() != 0)
+            if (!billStatus.equalsIgnoreCase("DRAFT"))
             {
-                finId = Long.parseLong(recentSaleBill.get("finId").toString()) + 1
-                serBillId = Long.parseLong(recentSaleBill.get("serBillId").toString()) + 1
+                def recentSaleBill = new SalesService().getRecentSaleBill(financialYear, entityId, billStatus)
+                println(recentSaleBill)
+                if (recentSaleBill != null && recentSaleBill.size() != 0)
+                {
+                    finId = Long.parseLong(recentSaleBill.get("finId").toString()) + 1
+                    serBillId = Long.parseLong(recentSaleBill.get("serBillId").toString()) + 1
+                }
+                else
+                {
+                    finId = 1
+                    serBillId = Long.parseLong(series.get("saleId").toString())
+                }
             }
-            else
-            {
-                finId = 1
-                serBillId = Long.parseLong(series.get("saleId").toString())
-            }
-        }
         long totalSqty = 0
         long totalFqty = 0
         double totalAmount = 0.00

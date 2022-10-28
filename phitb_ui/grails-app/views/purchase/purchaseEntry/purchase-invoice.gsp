@@ -1,19 +1,55 @@
-<%@ page import="phitb_ui.Constants; phitb_ui.SalesService; java.text.SimpleDateFormat" contentType="text/html;charset=UTF-8" %>
+<%@ page import="phitb_ui.WordsToNumbersUtil; phitb_ui.Constants" %>
 <!DOCTYPE html>
 <html>
+
 <head>
     <title>Purchase Invoice</title>
-
-    <script type="text/javascript">
-        %{--function generateBarCode() {--}%
-        %{--    var nric = '${saleBillDetail.invoiceNumber}';--}%
-        %{--    var url = 'https://api.qrserver.com/v1/create-qr-code/?data=' + nric + '&amp;size=50x50';--}%
-        %{--    $('#barcode').attr('src', url);--}%
-        %{--}--}%
-
-
-    </script>
     <style>
+
+
+    /* Styles go here */
+
+    .page-header, .page-header-space {
+        height: 500px;
+    }
+
+    .page-footer, .page-footer-space {
+        height: 70px;
+
+    }
+
+    .page-footer {
+        position: fixed;
+        bottom: 0;
+        width: 100%;
+    }
+
+    .page-header {
+        position: fixed;
+        top: 0mm;
+        width: 100%;
+    }
+
+    .page {
+        page-break-after: always;
+    }
+
+
+    @media print {
+        thead {
+            display: table-header-group;
+        }
+
+        tfoot {
+            display: table-footer-group;
+        }
+
+
+        body {
+            margin: 0;
+        }
+    }
+
     table {
         border-collapse: collapse;
         border: 1px solid black;
@@ -51,47 +87,6 @@
         border: none;
     }
 
-    @media print {
-        .print-watermark
-        {
-            position: fixed;
-            z-index:-1!important;
-            color: lightgrey!important;
-            opacity: 0.2!important;
-            font-size:120px!important;
-            top: 120px;
-
-        }
-
-        .print {
-            margin-left: 110px !important;
-            /*white-space:nowrap;*/
-        }
-
-        .signatory {
-            margin-right: 10px !important;
-        }
-
-        ul {
-            list-style: none;
-            display: table;
-        }
-
-        li {
-            display: table-row;
-        }
-
-        .tab {
-            display: table-cell;
-            padding-right: 1em;
-        }
-
-        thead {
-            font-size: 6pt;
-            padding: 0px;
-        }
-    }
-
     ul {
         list-style: none;
         display: table;
@@ -106,351 +101,554 @@
         display: table-row;
     }
 
-    .print {
-        margin-left: 200px;
-    }
-
-    /*thead{*/
-    /*    display:table-header-group;!*repeat table headers on each page*!*/
-    /*}*/
     .page-number {
         content: counter(page)
     }
 
-    #watermark
-    {
+    #watermark {
         position: fixed;
-        z-index:-1;
+        z-index: -1;
         color: lightgrey;
         opacity: 1;
-        font-size:120px;
+        font-size: 120px;
+    }
+
+    /*#wrapper {*/
+    /*    !*position: fixed;*!*/
+    /*    left: 0;*/
+    /*    right: 0;*/
+    /*    top: 0;*/
+    /*    bottom: 0;*/
+    /*    border: 2px solid black;*/
+    /*    padding: 20px;*/
+    /*}*/
+
+    @media print {
+
+        /*table tbody tr td:before,*/
+        /*table tbody tr td:after {*/
+        /*    content: "";*/
+        /*    height: 4px;*/
+        /*    display: block;*/
+        /*}*/
+        #wrapper {
+            position: absolute;
+            left: 0;
+            right: 0;
+            top: 0;
+            bottom: 0;
+            border: 2px solid black;
+            padding: 10px;
+            page-break-after: always;
+
+        }
+
+        #wrapper::-webkit-scrollbar {
+            width: 0 !important
+        }
+
+    }
+
+
+    * {
+        margin: 0;
+        padding: 0;
+    }
+
+    html, body {
+        height: 100%;
+        overflow: hidden;
+    }
+
+    tbody {
+        page-break-after: always;
+        page-break-inside: avoid;
+        page-break-before: avoid;
+    }
+
+
+    #wrapper {
+        position: absolute;
+        /*overflow: revert;*/
+        left: 0;
+        right: 0;
+        top: 0;
+        bottom: 0;
+        border: 2px solid black;
+        padding: 10px;
+        page-break-after: always;
+    }
+
+    #wrapper::-webkit-scrollbar {
+        width: 0 !important
+    }
+
+
+    table {
+        page-break-inside: auto
+    }
+
+    tr {
+        page-break-inside: avoid;
+        page-break-after: auto
+    }
+
+    thead {
+        display: table-header-group;
+    }
+
+    tfoot {
+        display: table-footer-group;
+    }
+
+    table {
+        -fs-table-paginate: paginate;
     }
     </style>
 </head>
 
+
 <body>
 
-%{--<table style="table-layout: auto;"  id="userDetails">--}%
-%{--    <thead>--}%
-%{--    <tr>--}%
-%{--        <td style="width: 25%;vertical-align:top;">--}%
-%{--            <ul>--}%
-%{--                <li><b class="tab">Location</b>: ${city.name}</li>--}%
-%{--                <li><b class="tab">Phone</b>: ${entity.phoneNumber}</li>--}%
-%{--                <li><b class="tab">GST No</b>: ${entity.gstn}</li>--}%
-%{--                <li><b class="tab">FAX No</b>: ${entity.faxNumber}</li>--}%
-%{--                <li><b class="tab">DL No1</b>: ${entity.drugLicence1}</li>--}%
-%{--                <li><b class="tab">DL No2</b>: ${entity.drugLicence2}</li>--}%
-%{--                <li><b class="tab">Food Lic. No.</b>:  ${entity.foodLicence1}</li>--}%
-%{--            </ul>--}%
-%{--        </td>--}%
-%{--        <td style="width: 25%;vertical-align:top;">--}%
-%{--            <ul>--}%
-%{--                <li><b class="tab">DELIVERY AT</b>:&nbsp;${custcity.name}</li>--}%
-%{--                <li><b class="tab">GST NO</b>: ${customer.gstn}</li>--}%
-%{--                <li><b class="tab">PAN</b>: ${customer.pan}</li>--}%
-%{--                <li><b class="tab">DL No1</b>: ${customer.drugLicence1}</li>--}%
-%{--                <li><b class="tab">DL No2</b>: ${customer.drugLicence2}</li>--}%
-%{--                <li><b class="tab">STATE NAME</b>: ${custcity.state.name}</li>--}%
-%{--                <li><b class="tab">Goods Through</b>:</li>--}%
-%{--                <li><b class="tab">Place of Supply</b>: &nbsp;${custcity.name}</li>--}%
-%{--                <li><b class="tab">State Code</b>: </li>--}%
-%{--            </ul>--}%
-%{--        </td>--}%
-%{--        <td style="width: 25%;vertical-align:top;">--}%
-%{--            <ul>--}%
-%{--                <li><b class="tab">DELIVERY AT</b>:&nbsp;${custcity.name}</li>--}%
-%{--                <li><b class="tab">GST NO</b>: ${customer.gstn}</li>--}%
-%{--                <li><b class="tab">PAN</b>: ${customer.pan}</li>--}%
-%{--                <li><b class="tab">DL No1</b>: ${customer.drugLicence1}</li>--}%
-%{--                <li><b class="tab">DL No2</b>: ${customer.drugLicence2}</li>--}%
-%{--                <li><b class="tab">STATE NAME</b>: ${custcity.state.name}</li>--}%
-%{--                <li><b class="tab">Goods Through</b>:</li>--}%
-%{--                <li><b class="tab">Place of Supply</b>:  &nbsp;${custcity.name}</li>--}%
-%{--                <li><b class="tab">State Code</b>: </li>--}%
-%{--            </ul>--}%
-%{--        </td>--}%
-%{--        <td style="width: 25%;vertical-align:top;">--}%
-%{--            <div class="qrCode" ></div>--}%
-%{--        </td>--}%
-%{--    </tr>--}%
-%{--    </thead>--}%
-%{--</table>--}%
-<table id="prodDetails" class="extended" style="width: 100%; padding: 5%;">
-    <thead>
-    <tr>
-        <td colspan="5" style="vertical-align:top;font-size:8pt;"><b>Bill from Address :(${supplier.id})</b><br>
-            <b>${supplier.entityName}</b><br>
-            <sub>${supplier.addressLine1}${supplier.addressLine2}
-            </sub>
-        </td>
-        <td colspan="5" style="vertical-align:top;font-size:8pt;"><b>Ship from Address :(${supplier.id})</b><br>
-            <b>${supplier.entityName}</b><br>
-            <sub>${supplier.addressLine1}${supplier.addressLine2}
-            </sub>
-        </td>
-        <td colspan="4" style="vertical-align:top;font-size:8pt;"><b>Received at :(${supplier.id})</b><br>
-            <b>${entity.entityName}</b><br>
-            <sub>${entity.addressLine1}<br>${entity.addressLine2}</sub>
-        </td>
-        <td colspan="4" style="vertical-align:top;font-size:8pt;">
-            <strong>PURCHASE TAX INVOICE</strong>
-            <ul style="margin: 0;">
+%{--<div class="page-header">--}%
 
-                <li><b class="tab">Invoice No</b>:  <g:if test="${purchaseBillDetail.billStatus == 'CANCELLED'}"><del>${purchaseBillDetail.invoiceNumber}</del></g:if><g:else>${purchaseBillDetail.invoiceNumber}</g:else></li>
-                <li><b class="tab">Invoice No</b>: <strong>${purchaseBillDetail.invoiceNumber}</strong></li>
-                <li><b class="tab">Inv Date</b>:&nbsp;<span id="invDate"></span></li>
-                <li><b class="tab">Due Date</b>:&nbsp;<span id="dueDate"></span></li>
-                <li><b class="tab">Sup. Inv No.</b>:&nbsp;${purchaseBillDetail.supplierBillId}</li>
-                <li><b class="tab">Sup. Inv Dt.</b>:&nbsp;<span id="supInvDt"></span></li>
+%{--</div>--}%
+<div id="wrapper">
+    <div class="page-footer">
+        <p class="signatory" style="float: right;margin-right: 24px;">For <b>${session.getAttribute('entityName')}</b>,
+            <br>
+            <span style="line-height: 75px;">Authorized Signatory</span></p>
 
-            </ul>
-        </td>
-    </tr>
-    <tr>
-        <td colspan="5" style="vertical-align:top;">
-            <ul>
-                <li><b class="tab">DELIVERY AT</b>:&nbsp;${supcity?.districtName}</li>
-                <li><b class="tab">GST NO</b>: ${supplier.gstn}</li>
-                <li><b class="tab">Phone</b>: ${supplier.phoneNumber}</li>
-                <li><b class="tab">PAN</b>: ${supplier.pan}</li>
-                <li><b class="tab">DL No1</b>: ${supplier.drugLicence1}</li>
-                <li><b class="tab">DL No2</b>: ${supplier.drugLicence2}</li>
-                <li><b class="tab">STATE NAME</b>: ${supcity?.stateName}</li>
-                <li><b class="tab">Area PIN</b>: ${supplier.pinCode}</li>
-                <li><b class="tab">Goods Through</b>:</li>
-                <li><b class="tab">Place of Supply</b>: &nbsp;${supcity?.districtName}</li>
-                %{--                <li><b class="tab">State Code</b>: </li>--}%
-            </ul>
+        <p style="float: left;margin-right: 24px;"><b>Printed By:</b> ${session.getAttribute("userName").toString()}</p>
 
-        </td>
-        <td colspan="5" style="vertical-align:top;">
-            <ul>
-                <li><b class="tab">DELIVERY AT</b>:&nbsp;${supcity?.districtName}</li>
-                <li><b class="tab">GST NO</b>: ${supplier.gstn}</li>
-                <li><b class="tab">Phone</b>: ${supplier.phoneNumber}</li>
-                <li><b class="tab">PAN</b>: ${supplier.pan}</li>
-                <li><b class="tab">DL No1</b>: ${supplier.drugLicence1}</li>
-                <li><b class="tab">DL No2</b>: ${supplier.drugLicence2}</li>
-                <li><b class="tab">STATE NAME</b>: ${supcity?.stateName}</li>
-                <li><b class="tab">Area PIN</b>: ${supplier.pinCode}</li>
-                <li><b class="tab">Goods Through</b>:</li>
-                <li><b class="tab">Place of Supply</b>:  &nbsp;${supcity?.districtName}</li>
-                %{--                <li><b class="tab">State Code</b>: </li>--}%
-            </ul>
-        </td>
-        <td colspan="4" style="vertical-align:top;">
-            <ul>
-                <li><b class="tab">Location</b>: ${city?.districtName}</li>
-                <li><b class="tab">Phone</b>: ${entity.phoneNumber}</li>
-                <li><b class="tab">GST No</b>: ${entity.gstn}</li>
-                <li><b class="tab">FAX No</b>: ${entity.faxNumber}</li>
-                <li><b class="tab">DL No1</b>: ${entity.drugLicence1}</li>
-                <li><b class="tab">DL No2</b>: ${entity.drugLicence2}</li>
-                <li><b class="tab">Food Lic. No.</b>:  ${entity.foodLicence1}</li>
-            </ul>
-        </td>
-        <td colspan="4" style="vertical-align:center;padding: 10px;">
-            <div class="qrCode"></div>
-        </td>
-    </tr>
-%{--    <g:if test="${irnDetails != null}">--}%
-%{--        <tr>--}%
-%{--            <td colspan="4">--}%
-%{--                <strong>Ack No</strong>:&nbsp;${irnDetails.AckNo}--}%
-%{--            </td>--}%
-%{--            <td colspan="5">--}%
-%{--                <strong>Ack Dt</strong>:&nbsp;${irnDetails.AckDt}--}%
-%{--            </td>--}%
-%{--            <td colspan="9">--}%
-%{--                <strong>IRN</strong>:&nbsp;${irnDetails.Irn}--}%
-%{--            </td>--}%
-%{--        </tr>--}%
-%{--    </g:if>--}%
-    <tr>
-        <th>Sl.No</th>
-        <th>Material HSN Code</th>
-        <th>Material Description</th>
-        <th>Pack</th>
-        <th>C</th>
-        <th>Batch</th>
-        <th>Exp Date</th>
-        %{--        <th>Mfg Date/ Use Before</th>--}%
-        <th>MRP</th>
-        <th>PTR</th>
-        <th>PTS</th>
-        <th>QTY</th>
-        <th>Scheme</th>
-        <th>Amount</th>
-        <th>Disc.Amt/Disc.%</th>
-        <th>Amt/CGST%</th>
-        <th>Amt/SGST%</th>
-        <th>Amt/IGST%</th>
-        <th>Net Amt</th>
-    </tr>
+        <p style="float: left;margin-right: 24px;"><b>Printed On:</b><span id="date"></span></p>
+    </div>
 
-    </thead>
-    <%
-        ArrayList<Double> cgst = new ArrayList<>()
-        ArrayList<Double> sgst = new ArrayList<>()
-        ArrayList<Double> igst = new ArrayList<>()
-    %>
-    <tbody style="padding: 5px!important;">
-    <g:each var="sp" in="${purchaseProductDetails}" status="i">
+
+    <table id="prodDetails" class="extended" style="width: 100%; padding: 5%;border: 1px solid #000;">
+        <div class="page-header">
+            <thead>
+            <tr>
+                <td colspan="5" style="vertical-align:top;font-size:8pt;"><b>Bill from Address :(${supplier.id})</b><br>
+                    <b>${supplier.entityName}</b><br>
+                    <sub>${supplier.addressLine1}${supplier.addressLine2}
+                    </sub>
+                </td>
+                <td colspan="5" style="vertical-align:top;font-size:8pt;"><b>Ship from Address :(${supplier.id})</b><br>
+                    <b>${supplier.entityName}</b><br>
+                    <sub>${supplier.addressLine1}${supplier.addressLine2}
+                    </sub>
+                </td>
+                <td colspan="5" style="vertical-align:top;font-size:8pt;"><b>Received at :(${supplier.id})</b><br>
+                    <b>${entity.entityName}</b><br>
+                    <sub>${entity.addressLine1}<br>${entity.addressLine2}</sub>
+                </td>
+                <td colspan="4" style="vertical-align:top;font-size:8pt;">
+                    <strong>PURCHASE TAX INVOICE</strong>
+                    <ul style="margin: 0;">
+
+                        <li><b class="tab">Invoice No</b>:  <g:if test="${purchaseBillDetail.billStatus == 'CANCELLED'}"><del>${purchaseBillDetail.invoiceNumber}</del></g:if><g:else><strong>${purchaseBillDetail.invoiceNumber}</strong></g:else></li>
+                        <li><b class="tab">Inv Date</b>:&nbsp;<span id="invDate"></span></li>
+                        <li><b class="tab">Due Date</b>:&nbsp;<span id="dueDate"></span></li>
+                        <li><b class="tab">Sup. Inv No.</b>:&nbsp;${purchaseBillDetail.supplierBillId}</li>
+                        <li><b class="tab">Sup. Inv Dt.</b>:&nbsp;<span id="supInvDt"></span></li>
+
+                    </ul>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="5" style="vertical-align:top;">
+                    <ul>
+                        <li><b class="tab">DELIVERY TO</b>:&nbsp;${supcity?.districtName}</li>
+                        <li><b class="tab">GST NO</b>: ${supplier.gstn}</li>
+                        <li><b class="tab">Phone</b>: ${supplier.phoneNumber}</li>
+                        <li><b class="tab">PAN</b>: ${supplier.pan}</li>
+                        <li><b class="tab">DL No1</b>: ${supplier.drugLicence1}</li>
+                        <li><b class="tab">DL No2</b>: ${supplier.drugLicence2}</li>
+                        <li><b class="tab">STATE NAME</b>: ${supcity?.stateName}</li>
+                        <li><b class="tab">Area PIN</b>: ${supplier.pinCode}</li>
+                        <li><b class="tab">Goods Through</b>:</li>
+%{--                        <li><b class="tab">Place of Supply</b>: &nbsp;${supcity?.districtName}</li>--}%
+                        %{--                <li><b class="tab">State Code</b>: </li>--}%
+                    </ul>
+
+                </td>
+                <td colspan="5" style="vertical-align:top;">
+                    <ul>
+                        <li><b class="tab">DELIVERY TO</b>:&nbsp;${supcity?.districtName}</li>
+                        <li><b class="tab">GST NO</b>: ${supplier.gstn}</li>
+                        <li><b class="tab">Phone</b>: ${supplier.phoneNumber}</li>
+                        <li><b class="tab">PAN</b>: ${supplier.pan}</li>
+                        <li><b class="tab">DL No1</b>: ${supplier.drugLicence1}</li>
+                        <li><b class="tab">DL No2</b>: ${supplier.drugLicence2}</li>
+                        <li><b class="tab">STATE NAME</b>: ${supcity?.stateName}</li>
+                        <li><b class="tab">Area PIN</b>: ${supplier.pinCode}</li>
+                        <li><b class="tab">Goods Through</b>:</li>
+%{--                        <li><b class="tab">Place of Supply</b>:  &nbsp;${supcity?.districtName}</li>--}%
+                        %{--                <li><b class="tab">State Code</b>: </li>--}%
+                    </ul>
+                </td>
+                <td colspan="5" style="vertical-align:top;">
+                    <ul>
+                        <li><b class="tab">Location</b>: ${city?.districtName}</li>
+                        <li><b class="tab">Phone</b>: ${entity.phoneNumber}</li>
+                        <li><b class="tab">GST No</b>: ${entity.gstn}</li>
+                        <li><b class="tab">FAX No</b>: ${entity.faxNumber}</li>
+                        <li><b class="tab">DL No1</b>: ${entity.drugLicence1}</li>
+                        <li><b class="tab">DL No2</b>: ${entity.drugLicence2}</li>
+                        <li><b class="tab">Food Lic. No.</b>:  ${entity.foodLicence1}</li>
+                    </ul>
+                </td>
+                <td colspan="4" style="vertical-align:center;padding: 10px;">
+                    <div class="qrCode"></div>
+                </td>
+            </tr>
+
+            <tr>
+                <th>Sl.No</th>
+                <th>Material HSN Code</th>
+                <th>Material Description</th>
+                <th>Pack</th>
+                <th>C</th>
+                <th>Batch</th>
+                <th>Exp Date</th>
+                %{--        <th>Mfg Date/ Use Before</th>--}%
+                <th>MRP</th>
+                <th>PTR</th>
+                <th>PTS</th>
+                <th>Pur. rate</th>
+                <th>QTY</th>
+                <th>Scheme</th>
+                <th>Amount</th>
+                <th>Disc.Amt/Disc.%</th>
+                <th>Amt/CGST%</th>
+                <th>Amt/SGST%</th>
+                <th>Amt/IGST%</th>
+                <th>Net Amt</th>
+            </tr>
+
+            </thead>
+        </div>
+
+        <%
+            ArrayList<Double> cgst = new ArrayList<>()
+            ArrayList<Double> sgst = new ArrayList<>()
+            ArrayList<Double> igst = new ArrayList<>()
+
+            HashMap<String, Double> divGstGroup
+            HashMap<String, Double> divSgstGroup
+            HashMap<String, Double> divCgstGroup
+            HashMap<String, Double> divIgstGroup
+
+        %>
+        <tbody>
+
+        <g:if test="${settings.size()!= 0}">
+            <g:each var="key, groupData" in="${groupDetails}" status="i">
+
+                <%
+                    def divTotalcgst = 0
+                    def divTotalsgst = 0
+                    def divTotaligst = 0
+                    def divTotaldiscount = 0
+                    def divtotalBeforeTaxes = 0
+                    def divtotal = 0
+
+
+                %>
+                <tr><td colspan="20">${groupData[0].sortDetail.sortItem}</td></tr>
+                <g:each var="pd" in="${groupData}" status="j">
+                    <%
+                        divGstGroup = new HashMap<>()
+                        divSgstGroup = new HashMap<>()
+                        divCgstGroup = new HashMap<>()
+                        divIgstGroup = new HashMap<>()
+
+                        divTotalcgst += pd.cgstAmount
+                        divTotalsgst += pd.sgstAmount
+                        divTotaligst += pd.igstAmount
+
+                        double amountBeforeTaxes = pd.amount - pd.cgstAmount - pd.sgstAmount - pd.igstAmount
+                        divtotalBeforeTaxes += amountBeforeTaxes
+                        divTotaldiscount += amountBeforeTaxes/100*pd.discount
+                        if (pd.igstPercentage > 0)
+                        {
+                            def igstPercentage = igstGroup.get(pd.igstPercentage.toString())
+                            if (igstPercentage == null)
+                            {
+                                divIgstGroup.put(pd.igstPercentage.toString(), amountBeforeTaxes)
+                            }
+                            else
+                            {
+                                divIgstGroup.put(pd.igstPercentage.toString(), igstPercentage.doubleValue() + amountBeforeTaxes)
+                            }
+                        }
+                        else
+                        {
+                            def gstPercentage = divGstGroup.get(pd.gstPercentage.toString())
+                            if (gstPercentage == null)
+                            {
+                                divGstGroup.put(pd.gstPercentage.toString(), amountBeforeTaxes)
+                            }
+                            else
+                            {
+                                divGstGroup.put(pd.gstPercentage.toString(), gstPercentage.doubleValue() + amountBeforeTaxes)
+                            }
+
+                            def sgstPercentage = sgstGroup.get(pd.sgstPercentage.toString())
+                            if (sgstPercentage == null)
+                            {
+                                divSgstGroup.put(pd.sgstPercentage.toString(), amountBeforeTaxes)
+                            }
+                            else
+                            {
+                                divSgstGroup.put(pd.sgstPercentage.toString(), sgstPercentage.doubleValue() + amountBeforeTaxes)
+                            }
+                            def cgstPercentage = cgstGroup.get(pd.cgstPercentage.toString())
+                            if (cgstPercentage == null)
+                            {
+                                divCgstGroup.put(pd.cgstPercentage.toString(), amountBeforeTaxes)
+                            }
+                            else
+                            {
+                                divCgstGroup.put(pd.cgstPercentage.toString(), cgstPercentage.doubleValue() + amountBeforeTaxes)
+                            }
+                        }
+                    %>
+                    <tr>
+                        <td>${i + 1}</td>
+                        <td>${pd.productId.hsnCode}</td>
+                        <td><b>${pd.productId.productName}</b></td>
+                        <td><b>${pd.productId.unitPacking}</b></td>
+                        <td><b>${pd?.productId?.schedule?.scheduleCode}</b></td>
+                        <td>${pd.batchNumber}</td>
+                        <td id="expDate${pd.id}">${pd.expiryDate}</td>
+                        %{--            <td></td>--}%
+                        <td>${pd.mrp}</td>
+                        <td>${pd?.batch?.ptr}</td>
+                        <td>${pd.sRate}</td>
+                        <td>${pd.pRate}</td>
+                        <td>${pd.sqty}</td>
+                        <td>${pd.freeQty}</td>
+                        <%
+                            float amount = pd.amount - pd.cgstAmount - pd.sgstAmount - pd.igstAmount
+                        %>
+                        <td>${amount}</td>
+                        <td>${String.format("%.2f", amount/100*pd.discount)}<br>${pd.discount}</td>
+                        <%
+                            cgst.push(pd.cgstAmount / amount * 100)
+                            sgst.push(pd.sgstAmount / amount * 100)
+                            igst.push(pd.igstAmount / amount * 100)
+                        %>
+                        <td>${String.format("%.2f", pd.cgstAmount)}<br><g:if test="${pd.cgstAmount!=0}">${String.format("%.2f",
+                                pd.cgstAmount / amount * 100)}</g:if><g:else>0.00</g:else></td>
+                        <td>${String.format("%.2f", pd.sgstAmount)}<br><g:if test="${pd.sgstAmount!=0}">${String.format("%.2f",
+                                pd.sgstAmount / amount * 100)}</g:if><g:else>0.00</g:else></td>
+                        <td>${String.format("%.2f", pd.igstAmount)}<br><g:if test="${pd.igstAmount!=0}">${String.format("%.2f",
+                                pd.igstAmount / amount * 100)}</g:if><g:else>0.00</g:else></td>
+                        <td>${String.format("%.2f", pd.amount)}</td>
+                    </tr>
+                </g:each>
+                <tr>
+                    <td colspan="12">
+                    </td>
+                    <% divtotal = divtotalBeforeTaxes + divTotalcgst + divTotalsgst + divTotaligst %>
+                    <td><b>Total</b></td>
+                    <td>${String.format("%.2f", divtotalBeforeTaxes)}</td>
+                    <td>${String.format("%.2f", divTotaldiscount)}</td>
+                    <td>${String.format("%.2f", divTotalcgst)}</td>
+                    <td>${String.format("%.2f", divTotalsgst)}</td>
+                    <td>${String.format("%.2f", divTotaligst)}</td>
+                    <td>${String.format("%.2f", divtotal)}</td>
+                </tr>
+            </g:each>
+        </g:if>
+        <g:else>
+            <g:each var="pp" in="${purchaseProductDetails}" status="i">
+                <tr>
+                    <td>${i + 1}</td>
+                    <td>${pp.productId.hsnCode}</td>
+                    <td><b>${pp.productId.productName}</b></td>
+                    <td><b>${pp.productId.unitPacking}</b></td>
+                    <td><b>${pp?.productId?.schedule?.scheduleCode}</b></td>
+                    <td>${pp.batchNumber}</td>
+                    <td id="expDate${pp.id}">${pp.expiryDate}</td>
+                    %{--            <td></td>--}%
+                    <td>${pp.mrp}</td>
+                    <td>${pp?.batch?.ptr}</td>
+                    <td>${pp.sRate}</td>
+                    <td>${pp.pRate}</td>
+                    <td>${pp.sqty}</td>
+                    <td>${pp.freeQty}</td>
+                    <%
+                        float amount = pp.amount - pp.cgstAmount - pp.sgstAmount - pp.igstAmount
+                    %>
+                    <td>${amount}</td>
+                    <td>${String.format("%.2f", amount/100*pp.discount)}<br>${pp.discount}</td>
+                    <%
+                        cgst.push(pp.cgstAmount / amount * 100)
+                        sgst.push(pp.sgstAmount / amount * 100)
+                        igst.push(pp.igstAmount / amount * 100)
+                    %>
+                    <td>${String.format("%.2f", pp.cgstAmount)}<br><g:if test="${pp.cgstAmount!=0}">${String.format("%.2f",
+                            pp.cgstAmount / amount * 100)}</g:if><g:else>0.00</g:else></td>
+                    <td>${String.format("%.2f", pp.sgstAmount)}<br><g:if test="${pp.sgstAmount!=0}">${String.format("%.2f",
+                            pp.sgstAmount / amount * 100)}</g:if><g:else>0.00</g:else></td>
+                    <td>${String.format("%.2f", pp.igstAmount)}<br><g:if test="${pp.igstAmount!=0}">${String.format("%.2f",
+                            pp.igstAmount / amount * 100)}</g:if><g:else>0.00</g:else></td>
+                    <td>${String.format("%.2f", pp.amount)}</td>
+                </tr>
+            </g:each>
+        </g:else>
         <tr>
-            <td>${i + 1}</td>
-            <td>${sp.productId.hsnCode}</td>
-            <td><b>${sp.productId.productName}</b></td>
-            <td><b>${sp?.packingDesc}</b></td>
-            <td><b>D</b></td>
-            <td>${sp.batchNumber}</td>
-            <td id="expDate${sp.id}">${sp.expiryDate}</td>
-            %{--            <td></td>--}%
-            <td>${sp.mrp}</td>
-            <td>${sp?.batch?.ptr}</td>
-            <td>${sp.sRate}</td>
-            <td>${sp.sqty}</td>
-            <td>${sp.freeQty}</td>
-            <%
-                float amount = sp.amount - sp.cgstAmount - sp.sgstAmount - sp.igstAmount
-            %>
-            <td>${amount}</td>
-            <td>${sp.discount}</td>
-            <%
-                cgst.push(sp.cgstAmount / amount * 100)
-                sgst.push(sp.sgstAmount / amount * 100)
-                igst.push(sp.igstAmount / amount * 100)
-            %>
-            <td>${String.format("%.2f", sp.cgstAmount)}<br>${String.format("%.2f", sp.cgstAmount / amount * 100)}</td>
-            <td>${String.format("%.2f", sp.sgstAmount)}<br>${String.format("%.2f", sp.sgstAmount / amount * 100)}</td>
-            <td>${String.format("%.2f", sp.igstAmount)}<br>${String.format("%.2f", sp.igstAmount / amount * 100)}</td>
-            <td>${String.format("%.2f", sp.amount)}</td>
+            <td colspan="12">Amount in words: <b>${WordsToNumbersUtil.convertToIndianCurrency(total.toString())}</b>
+            </td>
+            <td><b>Total</b></td>
+            <td>${String.format("%.2f", totalBeforeTaxes)}</td>
+            <td>${String.format("%.2f", totalDiscAmt)}</td>
+            <td>${String.format("%.2f", totalcgst)}</td>
+            <td>${String.format("%.2f", totalsgst)}</td>
+            <td>${String.format("%.2f", totaligst)}</td>
+            <g:if test="${settings.RON == Constants.NEXT_INTEGER_VALUE}">
+                <td>${String.format("%.2f", Math.ceil(total))}</td>
+            </g:if>
+            <g:elseif test="${settings.RON == Constants.PREVIOUS_INTEGER_VALUE}">
+                <td>${String.format("%.2f", Math.floor(total))}</td>
+            </g:elseif>
+            <g:else>
+                <td>${String.format("%.2f", total)}</td>
+            </g:else>
+        </tr>
+        <tr style="border: 1px solid #ffffff">
+            <td colspan="13" style="border: 0"><g:if test="${purchaseBillDetail.billStatus == 'CANCELLED'}">
+                <div id="watermark" class="print-watermark">CANCELLED</div>
+            </g:if>
+                <g:elseif test="${purchaseBillDetail.billStatus == 'DRAFT'}">
+                    <div id="watermark" class="print-watermark">DRAFT</div>
+                </g:elseif>
+                <p><u>Note:</u> <span>${purchaseBillDetail?.publicNote}</span></p>
+
+                <p>No of cases <br>
+                    Weight in Kgs :<br>
+                    Party Ref No. : <br>
+                    Rev-Charge :</p>
+                <g:each var="t" in="${termsConditions}" status="i">
+                    <g:if test="${t?.form?.formType == Constants.PURCHASE_RETURN && t?.deleted == false}">
+                        <p>${raw(t?.termCondition)}</p>
+                    </g:if>
+                </g:each></td>
+            <td colspan="7" style="border: 0"><table class="print" style="margin-top: 2%;width: 100%">
+                <tr>
+                    <th>Total</th>
+                    <td>0.00</td>
+                    <td>${String.format("%.2f", totalBeforeTaxes)}</td>
+                </tr>
+
+                <g:each in="${sgstGroup}" var="sg">
+                    <tr>
+                        <th>Add SGST ${sg.key}% on</th>
+                        <td>${String.format("%.2f", sg.value)}</td>
+                        <td class="totalgst">${String.format("%.2f", sg.value * (Double.parseDouble(sg.key.toString()) / 100))}</td>
+                    </tr>
+
+                </g:each>
+
+                <g:each in="${cgstGroup}" var="cg">
+                    <tr>
+                        <th>Add CGST ${cg.key}% on</th>
+                        <td>${String.format("%.2f", cg.value)}</td>
+                        <td class="totalgst">${String.format("%.2f", cg.value * (Double.parseDouble(cg.key.toString()) / 100))}</td>
+                    </tr>
+
+                </g:each>
+
+                <g:each in="${igstGroup}" var="ig">
+                    <tr>
+                        <th>Add IGST ${ig.key}% on</th>
+                        <td>${String.format("%.2f", ig.value)}</td>
+                        <td class="totalgst">${String.format("%.2f", ig.value * (Double.parseDouble(ig.key.toString()) / 100))}</td>
+                    </tr>
+
+                </g:each>
+                <tr>
+                    <th>Net Invoice Amt.</th>
+                    <td>0.00</td>
+                    <td id="netInvAmt"></td>
+                </tr>
+                <tr>
+                    <th>Less Cr. Nt*</th>
+                    <td>0.00</td>
+                    <td>0.00</td>
+                </tr>
+                <tr>
+                    <th>Add Debit Nt*</th>
+                    <td>0.00</td>
+                    <td>0.00</td>
+                </tr>
+                <tr>
+                    <th>Add Rounding off*</th>
+                    <td>0.00</td>
+                    <td>0.00</td>
+                </tr>
+                <tr>
+                    <th>Net Payable Amt.</th>
+                    <td>0.00</td>
+                    <td id="netPayAmt"></td>
+                </tr>
+            </table></td>
         </tr>
 
-    </g:each>
+        <g:if test="${settings.size() != 0}">
+            <tr style="border: 1px solid #ffffff;">
+                <td colspan="7" style="border: 0">
+                    <table class="print" style="margin-top: 2%;width: 100%">
+                        <thead>
+                        <th>
+                            -
+                        </th>
+                        <th>
+                            Gross Amt.
+                        </th>
+                        <th>
+                            Net Amt.
+                        </th>
+                        %{--                    <g:each var="k, groupData" in="${groupDetails}" status="i">--}%
+                        %{--                        <g:each in="${groupData[0].sortDetail.divCgstGroup}" var="cg">--}%
+                        %{--                            <th>Add CGST ${cg.key}% on</th>--}%
+                        %{--                        </g:each>--}%
+                        %{--                    </g:each>--}%
 
-    <tr>
-        <td class="hide"></td>
-        <td class="hide"></td>
-        <td class="hide"></td>
-        <td class="hide"></td>
-        <td class="hide"></td>
-        <td class="hide"></td>
-        <td class="hide"></td>
-        <td class="hide"></td>
-        <td class="hide"></td>
-        <td class="hide"></td>
-        <td class="hide"></td>
-        <td><b>Total</b></td>
-        <td>${String.format("%.2f", totalBeforeTaxes)}</td>
-        <td>${String.format("%.2f", totaldiscount)}</td>
-        <td>${String.format("%.2f", totalcgst)}</td>
-        <td>${String.format("%.2f", totalsgst)}</td>
-        <td>${String.format("%.2f", totaligst)}</td>
-        <td>${String.format("%.2f", total)}</td>
-    </tr>
-    </tbody>
-</table>
+                        </thead>
 
-<div id="breakPage" style="page-break-after: avoid;"></div>
+                        <g:each var="key, groupData" in="${groupDetails}" status="i">
+                            <tr>
+                                <td>${groupData[0].sortDetail.sortItem}</td>
+                                <td>${String.format("%.2f", groupData[0].sortDetail.amountBeforeTaxes)}</td>
+                                <td>${String.format("%.2f", groupData[0].sortDetail.amountAfterTaxes)}</td>
+                            </tr>
+                        %{--                        <g:each var="cg" in="${groupData[0].sortDetail.divCgstGroup}" status="j">--}%
+                        %{--                            <td>${String.format("%.2f", cg.value)}</td>--}%
+                        %{--                        </g:each>--}%
+                        </g:each>
 
-
-<div class="container" style="display: flex; ">
-%{--        height:200px--}%
-    <div style="width: 50%;">
-        <g:if test="${purchaseBillDetail.billStatus == 'CANCELLED'}">
-            <div id="watermark" class="print-watermark">CANCELLED</div>
+                    </table>
+                </td>
+            </tr>
         </g:if>
-        <p>No of cases <br>
-            Weight in Kgs :<br>
-            Party Ref No. : <br>
-            Rev-Charge :</p>
+        </tbody>
+        <tfoot style="border: 1px solid #ffffff">
+        <tr style="border: 1px solid #ffffff">
+            <td style="border: 0;">
+                <!--place holder for the fixed-position footer-->
+                <div class="page-footer-space"></div>
+            </td>
+        </tr>
+        </tfoot>
 
-    <g:each var="t" in="${termsConditions}" status="i">
-        <g:if test="${t?.form?.formType == Constants.PURCHASE_INVOICE && t?.deleted == false}">
-            <p>${t?.termCondition}</p>
-        </g:if>
-    </g:each>
-    </div>
-
-    <div style="float: right;">
-        <table class="print" style="margin-top: 10px;margin-left:78px;margin-right:10px;width: 78%;">
-            <tr>
-                <th>Total</th>
-                <td>0.00</td>
-                <td>${String.format("%.2f", totalBeforeTaxes)}</td>
-            </tr>
-
-            <g:each in="${sgstGroup}" var="sg">
-                <tr>
-                    <th>Add SGST ${sg.key}% on</th>
-                    <td>${String.format("%.2f", sg.value)}</td>
-                    <td class="totalgst">${String.format("%.2f", sg.value * (Double.parseDouble(sg.key.toString()) / 100))}</td>
-                </tr>
-
-            </g:each>
-
-            <g:each in="${cgstGroup}" var="cg">
-                <tr>
-                    <th>Add CGST ${cg.key}% on</th>
-                    <td>${String.format("%.2f", cg.value)}</td>
-                    <td class="totalgst">${String.format("%.2f", cg.value * (Double.parseDouble(cg.key.toString()) / 100))}</td>
-                </tr>
-
-            </g:each>
-
-            <g:each in="${igstGroup}" var="ig">
-                <tr>
-                    <th>Add IGST ${ig.key}% on</th>
-                    <td>${String.format("%.2f", ig.value)}</td>
-                    <td class="totalgst">${String.format("%.2f", ig.value * (Double.parseDouble(ig.key.toString()) / 100))}</td>
-                </tr>
-
-            </g:each>
-            <tr>
-                <th>Net Invoice Amt.</th>
-                <td>0.00</td>
-                <td id="netInvAmt"></td>
-            </tr>
-            <tr>
-                <th>Less Cr. Nt*</th>
-                <td>0.00</td>
-                <td>0.00</td>
-            </tr>
-            <tr>
-                <th>Add Debit Nt*</th>
-                <td>0.00</td>
-                <td>0.00</td>
-            </tr>
-            <tr>
-                <th>Add Rounding off*</th>
-                <td>0.00</td>
-                <td>0.00</td>
-            </tr>
-            <tr>
-                <th>Net Payable Amt.</th>
-                <td>0.00</td>
-                <td id="netPayAmt"></td>
-            </tr>
-        </table>
-    </div>
+    </table>
 </div>
-<br>
-<br>
-
-<p class="signatory" style="float: right;margin-right: 24px;">Authorized Signatory</p>
-
-<p style="float: left;margin-right: 24px;"><b>Printed By:</b> ${session.getAttribute("userName").toString()}</p>
-
-<p style="float: left;margin-right: 24px;"><b>Printed On:</b><span id="date"></span></p>
-
-<div class="page-number"></div>
-
-<br>
-<br>
-
-<div id="breakPageContent"></div>
 </body>
+
 <asset:javascript src="/themeassets/bundles/libscripts.bundle.js"/>
 <asset:javascript src="/themeassets/plugins/momentjs/moment.js"/>
 <asset:javascript src="/themeassets/plugins/qr-code/jquery-qrcode-0.18.0.min.js"/>
@@ -468,21 +666,35 @@
         %{--    colorLight : '#fff',--}%
         %{--    correctLevel : QRCode.CorrectLevel.H--}%
         %{--});--}%
+        var css = '@page { size: landscape; }',
+            head = document.head || document.getElementsByTagName('head')[0],
+            style = document.createElement('style');
+
+        style.type = 'text/css';
+        style.media = 'print';
+
+        if (style.styleSheet) {
+            style.styleSheet.cssText = css;
+        } else {
+            style.appendChild(document.createTextNode(css));
+        }
+
+        head.appendChild(style);
 
         window.print();
         var d = moment(new Date()).format('DD/MM/YYYY') + " " + new Date().toLocaleTimeString();
         document.getElementById("date").innerHTML = d;
-        var invDate = new Date('${purchaseBillDetail.entryDate}');
+        var invDate = new Date('${purchaseBillDetail.dateCreated}');
         var dueDate = new Date('${purchaseBillDetail.dueDate}');
-        var supInvDt = new Date('${purchaseBillDetail?.supplierBillDate}');
         $("#invDate").text(moment(invDate).format('DD-MM-YYYY'));
         $("#dueDate").text(moment(dueDate).format('DD-MM-YYYY'));
-        if(supInvDt?.length > 0)
+        var supInvDt = new Date('${purchaseBillDetail?.supplierBillDate}');
+        if(supInvDt?.toString()?.length > 0)
             $("#supInvDt").text(moment(supInvDt).format('DD-MM-YYYY'));
 
-        <g:each var="spd" in="${purchaseProductDetails}">
-        var expDate = new Date('${spd.expiryDate}');
-        $("#expDate${spd.id}").text(moment(expDate).format('MMM-YY').toUpperCase());
+        <g:each var="ppd" in="${purchaseProductDetails}">
+        var expDate = new Date('${ppd?.batch?.expiryDate}');
+        $("#expDate${ppd.id}").text(moment(expDate).format('MM-YYYY').toUpperCase());
         </g:each>
         var totalGst = 0.0;
         var totalgstField = $(".totalgst");
@@ -491,11 +703,29 @@
             if (totGst !== "")
                 totalGst += parseFloat(totGst);
         });
-        var netAmount = ${totalBeforeTaxes}
-        var netInvAmt = parseFloat(totalGst) + netAmount;
+        var netAmount =
+        ${totalBeforeTaxes}
+        <g:if test="${settings.RON == Constants.NEXT_INTEGER_VALUE}">
+        var netInvAmt = Math.ceil(Number(parseFloat(totalGst) + netAmount));
+        </g:if>
+        <g:elseif test="${settings.RON == Constants.PREVIOUS_INTEGER_VALUE}">
+        var netInvAmt = Math.floor(Number(parseFloat(totalGst) + netAmount));
+        </g:elseif>
+        <g:else>
+        var netInvAmt = parseFloat(totalGst) + netAmount
+        </g:else>
         $("#netInvAmt").text(netInvAmt.toFixed(2));
         $("#netPayAmt").text(netInvAmt.toFixed(2));
 
+
+        <g:if test="${purchaseBillDetail?.refDate!=null}">
+        $("#poDate1").text(" " + moment('${transportDetails?.lrDate}').format('DD/MM/YYYY'));
+        $("#poDate2").text(" " + moment('${transportDetails?.lrDate}').format('DD/MM/YYYY'));
+        </g:if>
+        <g:else>
+        $("#poDate1").text();
+        $("#poDate2").text();
+        </g:else>
 
         //
         // var rowCount = $('.extended tr').length;
@@ -542,9 +772,9 @@
     };
 
     var qrText = '${purchaseBillDetail.invoiceNumber}';
-%{--    <g:if test="${irnDetails != null}">--}%
-%{--    qrText = '${irnDetails.SignedQRCode}';--}%
-%{--    </g:if>--}%
+    <g:if test="${irnDetails != null}">
+    qrText = '${irnDetails.SignedQRCode}';
+    </g:if>
     jQuery('.qrCode').qrcode({
         // width: 100,
         // height: 100,
@@ -581,4 +811,5 @@
 
 
 </script>
+
 </html>

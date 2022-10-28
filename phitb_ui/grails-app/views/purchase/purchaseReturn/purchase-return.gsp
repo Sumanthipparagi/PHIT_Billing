@@ -1220,7 +1220,7 @@
                         sgst = rowData[21];
                         cgst = rowData[22];
                         igst = rowData[23];
-                        hot.selectCell(mainTableRow, 4);
+                        hot.selectCell(mainTableRow, 5);
                         remainingQty = rowData[11];
                         remainingFQty = rowData[12];
                         $("#saleReturnTable").focus();

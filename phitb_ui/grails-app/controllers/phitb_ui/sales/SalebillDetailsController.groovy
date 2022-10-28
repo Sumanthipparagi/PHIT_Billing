@@ -194,12 +194,18 @@ class SalebillDetailsController {
             paymentModes = paymentModes.reverse()
         }
 
+        def settings = new EntityService().getEntitySettingsByEntity(session.getAttribute('entityId').toString())
+        def entityConfigs = new EntityService().getEntityConfigByEntity(session.getAttribute('entityId').toString())
+
         ArrayList<JSONObject> accountMode = new SystemService().getAccountModesByEntity(entityId) as ArrayList
         ArrayList<JSONObject> accountRegister = new EntityService().getAllAccountByEntity(entityId) as ArrayList
         render(view: '/sales/salebillDetails/saleBill', model: [bank           : bank,
                                                                 accountMode    : accountMode,
                                                                 paymentModes: paymentModes,
-                                                                accountRegister: accountRegister])
+                                                                accountRegister: accountRegister,
+                                                                settings:settings,
+                                                                entityConfigs:entityConfigs,
+        ])
     }
 
 

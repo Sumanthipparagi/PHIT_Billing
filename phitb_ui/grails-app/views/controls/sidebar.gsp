@@ -377,7 +377,7 @@
                             <li><a href="/purchase-bill-list">Purchase Invoices</a></li>
                             <g:if test="${UtilsService.isPermitted("VIEW_PURCHASE_RETURN", session.getAttribute("permittedFeatures").toString())}">
                                 <li><a href="/purchase-return">Purchase Return</a></li>
-                                <li><a href="/purchase-return-list">My Returns</a></li>
+                                <li><a href="/purchase-return/purchase-return-list">My Returns</a></li>
                             </g:if>
                             <g:if test="${UtilsService.isPermitted("VIEW_MARK_RECIEVED_GOODS", session.getAttribute("permittedFeatures").toString())}">
                                 <li><a href="#">Mark Received Goods</a></li>
