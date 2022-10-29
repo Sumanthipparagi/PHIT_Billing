@@ -502,7 +502,7 @@ class PurchaseReturnController
                 }
             }*/
             JSONObject series = new EntityService().getSeriesById(purhcaseReturn.get("series").toString())
-            JSONObject customer = new EntityService().getEntityById(purhcaseReturn.get("supplierId").toString())
+            JSONObject supplier = new EntityService().getEntityById(purhcaseReturn.get("supplierId").toString())
             println("Entity ID is: " + session.getAttribute("entityId").toString())
             JSONObject entity = new EntityService().getEntityById(session.getAttribute("entityId").toString())
             if (entity == null)
@@ -510,7 +510,7 @@ class PurchaseReturnController
                 println("Entity is null")
             }
             JSONObject city = new SystemService().getCityById(entity.get('cityId').toString())
-            JSONObject custcity = new SystemService().getCityById(customer.get('cityId').toString())
+            JSONObject custcity = new SystemService().getCityById(supplier.get('cityId').toString())
             JSONArray termsConditions = new EntityService().getTermsContionsByEntity(session.getAttribute("entityId").toString())
             termsConditions.each {
                 JSONObject formMaster = new SystemService().getFormById(it.formId.toString())
@@ -1215,19 +1215,19 @@ class PurchaseReturnController
 
 
 
-            render(view: "/purchase/purchaseReturn/purchase-return-invoice", model: [saleInvDetail      : purhcaseReturn,
-                                                                                     sampleProductDetail: purchaseReturnProductDetails,
-                                                                                     series             : series, entity: entity, customer: customer, city: city,
-                                                                                     total              : total, custcity: custcity,
-                                                                                     totalDiscAmt       :totalDiscAmt,
-                                                                                     termsConditions    : termsConditions,
-                                                                                     totalcgst          : totalcgst, totalsgst: totalsgst, totaligst: totaligst,
-                                                                                     totaldiscount      : totaldiscount,
-                                                                                     gstGroup           : gstGroup,
-                                                                                     sgstGroup          : sgstGroup,
-                                                                                     cgstGroup          : cgstGroup,
-                                                                                     igstGroup          : igstGroup,
-                                                                                     totalBeforeTaxes  : totalBeforeTaxes,
+            render(view: "/purchase/purchaseReturn/purchase-return-invoice", model: [purchaseInvDetail           : purhcaseReturn,
+                                                                                     purchaseReturnProductDetails: purchaseReturnProductDetails,
+                                                                                     series                      : series, entity: entity, supplier: supplier, city: city,
+                                                                                     total                       : total, custcity: custcity,
+                                                                                     totalDiscAmt                :totalDiscAmt,
+                                                                                     termsConditions             : termsConditions,
+                                                                                     totalcgst                   : totalcgst, totalsgst: totalsgst, totaligst: totaligst,
+                                                                                     totaldiscount               : totaldiscount,
+                                                                                     gstGroup                    : gstGroup,
+                                                                                     sgstGroup                   : sgstGroup,
+                                                                                     cgstGroup                   : cgstGroup,
+                                                                                     igstGroup                   : igstGroup,
+                                                                                     totalBeforeTaxes   : totalBeforeTaxes,
                                                                                      /* irnDetails        : irnDetails,*/
                                                                                      /* transportDetails  : transportDetails,*/
                                                                                      groupDetails      : groupDetails,

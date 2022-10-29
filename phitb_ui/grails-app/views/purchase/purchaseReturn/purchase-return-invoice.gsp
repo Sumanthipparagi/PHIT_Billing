@@ -246,31 +246,31 @@
                         </li>
                     </g:if>
                 </td>
-                <td colspan="6" style="vertical-align:top;font-size:8pt;"><b>Bill to Address :(${customer.id})</b><br>
-                    <b>${customer?.name}</b><br>
-                    <sub>${customer.address}
+                <td colspan="6" style="vertical-align:top;font-size:8pt;"><b>Bill to Address :(${supplier.id})</b><br>
+                    <b>${supplier?.entityName}</b><br>
+                    <sub>${supplier.address}
                     </sub>
-                    <g:if test="${customer?.phoneNumber && customer?.phoneNumber != ''}">
-                        <li><b class="tab">Ph no.</b>: <a href="tel:${customer?.phoneNumber}"
-                                                          target="_blank">${customer?.phoneNumber}</a>
+                    <g:if test="${supplier?.phoneNumber && supplier?.phoneNumber != ''}">
+                        <li><b class="tab">Ph no.</b>: <a href="tel:${supplier?.phoneNumber}"
+                                                          target="_blank">${supplier?.phoneNumber}</a>
                         </li>
                     </g:if>
-                    <g:if test="${customer?.pinCode && customer?.pinCode != ''}">
-                        <li><b class="tab">Pincode</b>:&nbsp;${customer?.pinCode}
+                    <g:if test="${supplier?.pinCode && supplier?.pinCode != ''}">
+                        <li><b class="tab">Pincode</b>:&nbsp;${supplier?.pinCode}
                         </li>
                     </g:if>
                 </td>
-                <td colspan="6" style="vertical-align:top;font-size:8pt;"><b>Ship to Address :(${customer.id})</b><br>
-                    <b>${customer?.name}</b><br>
-                    <sub>${customer.address}
+                <td colspan="6" style="vertical-align:top;font-size:8pt;"><b>Ship to Address :(${supplier.id})</b><br>
+                    <b>${supplier?.entityName}</b><br>
+                    <sub>${supplier.address}
                     </sub>
-                    <g:if test="${customer?.phoneNumber && customer?.phoneNumber != ''}">
-                        <li><b class="tab">Ph no.</b>: <a href="tel:${customer?.phoneNumber}"
-                                                          target="_blank">${customer?.phoneNumber}</a>
+                    <g:if test="${supplier?.phoneNumber && supplier?.phoneNumber != ''}">
+                        <li><b class="tab">Ph no.</b>: <a href="tel:${supplier?.phoneNumber}"
+                                                          target="_blank">${supplier?.phoneNumber}</a>
                         </li>
                     </g:if>
-                    <g:if test="${customer?.pinCode && customer?.pinCode != ''}">
-                        <li><b class="tab">Pincode</b>:&nbsp;${customer?.pinCode}
+                    <g:if test="${supplier?.pinCode && supplier?.pinCode != ''}">
+                        <li><b class="tab">Pincode</b>:&nbsp;${supplier?.pinCode}
                         </li>
                     </g:if>
                 </td>
@@ -279,7 +279,7 @@
                     <ul style="margin: 0;">
 
                         <li><b class="tab">Invoice No</b>:  <strong style="font-size: 13px;"><g:if
-                                test="${saleInvDetail.returnStatus == 'CANCELLED'}"><del>${saleInvDetail.invoiceNumber}</del></g:if><g:else>${saleInvDetail.invoiceNumber}</g:else>
+                                test="${purchaseInvDetail.returnStatus == 'CANCELLED'}"><del>${purchaseInvDetail.invoiceNumber}</del></g:if><g:else>${purchaseInvDetail.invoiceNumber}</g:else>
                         </strong></li>
                         <li><b class="tab">Inv Date</b>:&nbsp;<span id="invDate" style="font-size: 13px;"></span></li>
                         %{-- <li><b class="tab">Due Date</b>:&nbsp;<span id="dueDate"
@@ -313,12 +313,12 @@
                     <ul>
                         <li><b class="tab">DELIVERY AT</b>:&nbsp;${custcity?.districtName}</li>
                         %{--                <li><b class="tab">GST NO</b>: ${customer.gstn}</li>--}%
-                        <li><b class="tab">Phone</b>: ${customer.mobileNumber}</li>
+                        <li><b class="tab">Phone</b>: ${supplier.mobileNumber}</li>
                         %{--                <li><b class="tab">PAN</b>: ${customer.pan}</li>--}%
                         %{--                <li><b class="tab">DL No1</b>: ${customer.drugLicence1}</li>--}%
                         %{--                <li><b class="tab">DL No2</b>: ${customer.drugLicence2}</li>--}%
                         <li><b class="tab">STATE NAME</b>: ${custcity?.stateName}</li>
-                        <li><b class="tab">Area PIN</b>: ${customer.pinCode}</li>
+                        <li><b class="tab">Area PIN</b>: ${supplier.pinCode}</li>
                         <li><b class="tab">Goods Through</b>:</li>
                         <li><b class="tab">Place of Supply</b>: &nbsp;${custcity?.districtName}</li>
 %{--                        <li><b class="tab">Transporter</b>:&nbsp;&nbsp;${transportDetails?.transporter?.name}</li>--}%
@@ -332,12 +332,12 @@
                     <ul>
                         <li><b class="tab">DELIVERY AT</b>:&nbsp;${custcity?.districtName}</li>
                         %{--                <li><b class="tab">GST NO</b>: ${customer.gstn}</li>--}%
-                        <li><b class="tab">Phone</b>: ${customer.mobileNumber}</li>
+                        <li><b class="tab">Phone</b>: ${supplier.mobileNumber}</li>
                         %{--                <li><b class="tab">PAN</b>: ${customer.pan}</li>--}%
                         %{--                <li><b class="tab">DL No1</b>: ${customer.drugLicence1}</li>--}%
                         %{--                <li><b class="tab">DL No2</b>: ${customer.drugLicence2}</li>--}%
                         <li><b class="tab">STATE NAME</b>: ${custcity?.stateName}</li>
-                        <li><b class="tab">Area PIN</b>: ${customer.pinCode}</li>
+                        <li><b class="tab">Area PIN</b>: ${supplier.pinCode}</li>
                         <li><b class="tab">Goods Through</b>:</li>
                         <li><b class="tab">Place of Supply</b>: &nbsp;${custcity?.districtName}</li>
                         %{--                <li><b class="tab">State Code</b>: </li>--}%
@@ -521,7 +521,7 @@
             </g:each>
         </g:if>
         <g:else>
-            <g:each var="sp" in="${sampleProductDetail}" status="i">
+            <g:each var="sp" in="${purchaseReturnProductDetails}" status="i">
                 <tr>
                     <td>${i + 1}</td>
                     <td>${sp.productId.hsnCode}</td>
@@ -576,13 +576,13 @@
             </g:else>
         </tr>
         <tr style="border: 1px solid #ffffff">
-            <td colspan="13" style="border: 0"><g:if test="${saleInvDetail.billStatus == 'CANCELLED'}">
+            <td colspan="13" style="border: 0"><g:if test="${purchaseInvDetail.billStatus == 'CANCELLED'}">
                 <div id="watermark" class="print-watermark">CANCELLED</div>
             </g:if>
-                <g:elseif test="${saleInvDetail.billStatus == 'DRAFT'}">
+                <g:elseif test="${purchaseInvDetail.billStatus == 'DRAFT'}">
                     <div id="watermark" class="print-watermark">DRAFT</div>
                 </g:elseif>
-                <p><u>Note:</u> <span>${saleInvDetail?.publicNote}</span></p>
+                <p><u>Note:</u> <span>${purchaseInvDetail?.publicNote}</span></p>
 
                 <p>No of cases <br>
                     Weight in Kgs :<br>
@@ -740,12 +740,12 @@
         window.print();
         var d = moment(new Date()).format('DD/MM/YYYY') + " " + new Date().toLocaleTimeString();
         document.getElementById("date").innerHTML = d;
-        var invDate = new Date('${saleInvDetail.dateCreated}');
-        var dueDate = new Date('${saleInvDetail.dueDate}');
+        var invDate = new Date('${purchaseInvDetail.dateCreated}');
+        var dueDate = new Date('${purchaseInvDetail.dueDate}');
         $("#invDate").text(moment(invDate).format('DD-MM-YYYY'));
         $("#dueDate").text(moment(dueDate).format('DD-MM-YYYY'));
 
-        <g:each var="spd" in="${sampleProductDetail}">
+        <g:each var="spd" in="${purchaseReturnProductDetails}">
         var expDate = new Date('${spd.expiryDate}');
         $("#expDate${spd.id}").text(moment(expDate).format('MMM-YY').toUpperCase());
         </g:each>
@@ -771,7 +771,7 @@
         $("#netPayAmt").text(netInvAmt.toFixed(2));
 
 
-        <g:if test="${saleInvDetail?.refDate!=null}">
+        <g:if test="${purchaseInvDetail?.refDate!=null}">
         $("#poDate1").text(" " + moment('${transportDetails?.lrDate}').format('DD/MM/YYYY'));
         $("#poDate2").text(" " + moment('${transportDetails?.lrDate}').format('DD/MM/YYYY'));
         </g:if>
@@ -824,7 +824,7 @@
 
     };
 
-    var qrText = '${saleInvDetail.invoiceNumber}';
+    var qrText = '${purchaseInvDetail.invoiceNumber}';
     <g:if test="${irnDetails != null}">
     qrText = '${irnDetails.SignedQRCode}';
     </g:if>
