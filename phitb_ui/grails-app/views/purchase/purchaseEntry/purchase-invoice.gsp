@@ -239,7 +239,7 @@
                     <sub>${supplier.addressLine1}${supplier.addressLine2}
                     </sub>
                 </td>
-                <td colspan="5" style="vertical-align:top;font-size:8pt;"><b>Received at :(${supplier.id})</b><br>
+                <td colspan="5" style="vertical-align:top;font-size:8pt;"><b>Received at :(${entity.id})</b><br>
                     <b>${entity.entityName}</b><br>
                     <sub>${entity.addressLine1}<br>${entity.addressLine2}</sub>
                 </td>
