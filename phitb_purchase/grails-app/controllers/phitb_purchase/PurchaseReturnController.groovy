@@ -259,7 +259,7 @@ class PurchaseReturnController {
     }
 
 
-    def cancelSaleReturn() {
+    def cancelPurchaseReturn() {
         try {
             JSONObject jsonObject = new JSONObject(request.reader.text)
             JSONObject saleReturn = purchaseReturnService.cancelPurchaseRetruns(jsonObject)
@@ -317,5 +317,6 @@ class PurchaseReturnController {
             System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
         }
     }
+
 
 }

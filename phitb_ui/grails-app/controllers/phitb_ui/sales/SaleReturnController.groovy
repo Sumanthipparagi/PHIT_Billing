@@ -613,7 +613,6 @@ class SaleReturnController {
         String financialYear = session.getAttribute("financialYear")
         JSONObject jsonObject = new SalesService().cancelReturns(id, entityId, financialYear)
         JSONObject saleReturns = jsonObject.get("invoice") as JSONObject
-
         if (jsonObject) {
             //adjust stocks
             JSONArray returnDetails = jsonObject.get("products") as JSONArray

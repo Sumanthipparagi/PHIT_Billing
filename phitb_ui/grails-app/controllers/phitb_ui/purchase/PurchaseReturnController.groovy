@@ -482,8 +482,6 @@ class PurchaseReturnController
         }
     }
 
-
-
     def printPurchaseReturn()
     {
         String purchaseReturnId = params.id
@@ -1239,6 +1237,83 @@ class PurchaseReturnController
         {
 
             render("No Bill Found")
+        }
+    }
+
+
+    def cancelReturns() {
+        String id = params.id
+        String entityId = session.getAttribute("entityId")
+        String financialYear = session.getAttribute("financialYear")
+        JSONObject jsonObject = new PurchaseService().cancelReturns(id, entityId, financialYear)
+        JSONObject purchaseReturns = jsonObject.get("invoice") as JSONObject
+
+        if (jsonObject) {
+            //adjust stocks
+            JSONArray returnDetails = jsonObject.get("products") as JSONArray
+            if (returnDetails) {
+                for (JSONObject returnDetail : returnDetails) {
+                    def stockBook = new InventoryService().getStocksOfProductAndBatch(returnDetail.productId.toString(), returnDetail.batchNumber, session.getAttribute("entityId").toString())
+                    double remainingQty;
+                    double remainingFreeQty;
+                    if (returnDetail.reason.toString() == "R") {
+                        remainingQty = stockBook.get("remainingQty") - returnDetail.get("sqty")
+                        remainingFreeQty = stockBook.get("remainingFreeQty") - returnDetail.get("freeQty")
+                        System.out.println("Remaining Qty After Update" + remainingQty)
+                        System.out.println("Remaining Qty After Update" + remainingFreeQty)
+                    } else if (returnDetail.reason.toString() == "E") {
+                        println("Expiry - NO EFFECT ON CURRENT STOCK BOOK")
+                    } else if (returnDetail.reason.toString() == "B") {
+                        println("Breakage - NO EFFECT ON CURRENT STOCK BOOK")
+                    } else if (returnDetail.reason.toString() == "OA") {
+                        remainingQty = stockBook.get("remainingQty") - returnDetail.get("sqty")
+                        remainingFreeQty = stockBook.get("remainingFreeQty") - returnDetail.get("freeQty")
+                        System.out.println("Remaining Qty After Others(ADD)" + remainingQty)
+                        System.out.println("Remaining Qty After Others(ADD)" + remainingFreeQty)
+                    } else if (returnDetail.reason.toString() == "ONE") {
+                        println("Others(No efft) - NO EFFECT ON CURRENT STOCK BOOK")
+                    }
+
+                    double remainingReplQty = stockBook.get("remainingReplQty") + returnDetail.get("repQty")
+                    stockBook.put("remainingQty", remainingQty.toLong())
+                    stockBook.put("remainingFreeQty", remainingFreeQty.toLong())
+                    stockBook.put("remainingReplQty", remainingReplQty.toLong())
+                    new InventoryService().updateStockBook(stockBook)
+                }
+            }
+            def emailSettings = EmailService.getEmailSettingsByEntity(session.getAttribute("entityId").toString())
+            JSONObject creditEmailConfig
+            if(emailSettings!=null){
+                if(emailSettings?.creditEmailConfig!=null && emailSettings?.creditEmailConfig!=""){
+                    creditEmailConfig = new JSONObject(emailSettings?.creditEmailConfig)
+                }
+                if(creditEmailConfig?.CRJV_DOC_CANCELLED_SEND_MAIL == "true"){
+                    def entity = new EntityService().getEntityById(purchaseReturns?.customerId?.toString())
+                    if(entity?.email!=null && entity?.email!="" && entity?.email!="NA")
+                    {
+                        def email = new EmailService().sendEmail(entity.email.trim(), "Sale return Cancelled",
+                                purchaseReturns?.invoiceNumber, jsonObject?.invoiceNumber, "SALES_RETURN")
+                        if (email)
+                        {
+                            println("Mail Sent..")
+                        }
+                        else
+                        {
+                            println("Mail not Sent..")
+                        }
+                    }
+                    else{
+                        println("Email not found..")
+                    }
+                }
+            }
+            else{
+                println("Entity Settings not found!!")
+            }
+
+            respond jsonObject, formats: ['json']
+        } else {
+            response.status = 400
         }
     }
 }

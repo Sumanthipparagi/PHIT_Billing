@@ -474,6 +474,7 @@ public class Links
     public static String SALE_RETURN_BY_DATERANGE = APP_CONTEXT_PATH + "sales/salereturnbydaterange";
     public static String SALE_RETURN_BY_DATERANGE_CUSTOMER = APP_CONTEXT_PATH + "sales/salereturnbydaterangecustomer";
     public static String SALE_ENTRY_STATS = APP_CONTEXT_PATH + "sales/reports/statistics";
+    public static String DELETE_DRAFTS_SALE_BILLS = APP_CONTEXT_PATH + "sales//salebilldetails/delete-drafts-sale-bill";
 
     public static String SALE_INFO_REPORTS = APP_CONTEXT_PATH + "sales/reports/salesinfo";
     public static String PURCHASE_INFO_REPORTS = APP_CONTEXT_PATH + "purchase/reports/purchaseinfo";
@@ -760,6 +761,8 @@ public class Links
     public static String PURCHASE_RETURN_BY_DATERANGE_SUPPLIER = APP_CONTEXT_PATH + "purchase/returndetailbydaterangesupplier";
     public static String PURCHASE_RETURN_PRODUCT_BATCH_BILL = APP_CONTEXT_PATH + "purchase/getpurchasereturndetailsby-product-batch-purbill";
     public static String PURCHASE_RETURN_RECENT = APP_CONTEXT_PATH + "purchase/purchase-return/recent";
+    public static String PURCHASE_RETURN_CANCEL = APP_CONTEXT_PATH + "purchase/purchase-return/cancel";
+
 
 
     //e-Invoice

@@ -2054,6 +2054,29 @@ contains both deliveryChallan and products
             System.err.println('Service :SalesService , action :  getProducts  , Ex:' + ex)
             log.error('Service :SalesService , action :  getProducts  , Ex:' + ex)
         }
-
     }
+
+
+    def deleteAllDrafts(String entityId) {
+        Client client = ClientBuilder.newClient()
+        WebTarget target = client.target(new Links().API_GATEWAY)
+        try {
+            Response apiResponse = target
+                    .path(new Links().SALE_BILL_CUSTOMER)
+                    .queryParam("entityId", URLEncoder.encode(entityId, "UTF-8"))
+                    .request(MediaType.APPLICATION_JSON_TYPE)
+                    .get()
+            if (apiResponse.status == 200) {
+                JSONArray jsonArray = new JSONArray(apiResponse.readEntity(String.class))
+                return jsonArray
+            } else {
+                return []
+            }
+        }
+        catch (Exception ex) {
+            System.err.println('Service :EntityService , action :  getEntity  , Ex:' + ex)
+            log.error('Service :EntityService , action :  getEntity  , Ex:' + ex)
+        }
+    }
+
 }

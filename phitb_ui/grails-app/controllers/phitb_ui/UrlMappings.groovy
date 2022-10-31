@@ -535,6 +535,7 @@ class UrlMappings {
         "/purchase-return/print-invoice"('controller':'purchaseReturn', action: 'printPurchaseReturn')
         "/purchase-return/datatable"(controller: 'purchaseReturn', action: 'purchaseReturnDatatables')
         "/purchase-return/purchase-return-list"(controller: 'purchaseReturn', action: 'purchaseReturnList')
+        "/purchase-return/cancel"(controller: 'purchaseReturn', action: 'cancelReturns')
 
 
         //Sale Entry

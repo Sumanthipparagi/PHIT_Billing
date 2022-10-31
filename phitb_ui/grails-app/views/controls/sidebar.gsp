@@ -355,7 +355,10 @@
                                 <p class="m-b-0">${session.getAttribute("entityName")}</p>
                             </g:if>
                             <small>Financial Year: ${session.getAttribute("financialYear")}</small>
-                        </div>
+                            <br>
+                            <br>
+                             <button class="btn btn-primary" id="dayEnd">Day End</button>
+                    </div>
                     </div>
                 </li>
                 %{--<li class="header">MAIN</li>--}%
@@ -734,3 +737,4 @@
         </div>
     </div>
 </aside>
+

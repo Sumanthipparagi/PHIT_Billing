@@ -183,33 +183,35 @@ class PurchaseReturnService {
     }
 
 
+
+
     def cancelPurchaseRetruns(JSONObject jsonObject)
     {
         String id = jsonObject.get("id")
         String entityId = jsonObject.get("entityId")
         String financialYear = jsonObject.get("financialYear")
-        JSONObject saleInvoice = new JSONObject()
+        JSONObject purchaseReturnInv = new JSONObject()
         PurchaseReturn purchaseReturn = PurchaseReturn.findById(Long.parseLong(id))
         if (purchaseReturn)
         {
             if (purchaseReturn.financialYear.equalsIgnoreCase(financialYear) && purchaseReturn.entityId == Long.parseLong(entityId))
             {
-                ArrayList<PurchaseReturnDetail> saleReturnDetails = PurchaseReturnDetail.findAllByBillId(purchaseReturn.id)
-                for (PurchaseReturnDetail purchaseReturnDetail : saleReturnDetails)
+                ArrayList<PurchaseReturnDetail> purchaseReturnDetails = PurchaseReturnDetail.findAllByBillId(purchaseReturn.id)
+                for (PurchaseReturnDetail purchaseReturnDetail : purchaseReturnDetails)
                 {
-                    purchaseReturn.syncStatus = 0
-                    purchaseReturn.returnStatus = "CANCELLED"
-                    purchaseReturn.isUpdatable = true
-                    purchaseReturn.save(flush: true)
+                    purchaseReturnDetail.status = 0
+                    purchaseReturnDetail.returnStatus = "CANCELLED"
+                    purchaseReturnDetail.isUpdatable = true
+                    purchaseReturnDetail.save(flush: true)
                 }
                 purchaseReturn.returnStatus = "CANCELLED"
                 purchaseReturn.cancelledDate = new Date()
                 purchaseReturn.isUpdatable = true
                 purchaseReturn.save(flush: true)
 
-                saleInvoice.put("products", saleReturnDetails)
-                saleInvoice.put("invoice", purchaseReturn)
-                return saleInvoice
+                purchaseReturnInv.put("products", purchaseReturnDetails)
+                purchaseReturnInv.put("invoice", purchaseReturn)
+                return purchaseReturnInv
             }
             else
             {

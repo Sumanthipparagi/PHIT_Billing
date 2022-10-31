@@ -73,6 +73,7 @@ class UrlMappings {
             "/purchase-return-save"(controller: 'purchaseReturn', action: 'savePurchaseReturn')
             "/purchase-return/datatable(.$format)?"(controller: 'purchaseReturn') { action = [GET: 'dataTable'] }
             "/purchase-return/recent(.$format)?"(controller: 'purchaseReturn') { action = [GET: 'getRecentByFinancialYearAndEntity'] }
+            "/purchase-return/cancel(.$format)?"(controller: 'purchaseReturn',action: 'cancelPurchaseReturn')
 
 
             //Purchase Return Detail

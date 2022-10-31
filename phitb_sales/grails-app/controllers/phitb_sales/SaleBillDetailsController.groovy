@@ -690,4 +690,30 @@ class SaleBillDetailsController {
             System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
         }
     }
+
+
+    /**
+     * Delete Draft bill Details
+     * @param id
+     * @return returns status code 200
+     */
+    def deleteAllDraftsSaleBill() {
+        try {
+            String entityId = params.entityId
+            saleBillDetailsService.deleteAllDraftsSaleBill(Long.parseLong(entityId))
+            response.status = 200
+        }
+        catch (ResourceNotFoundException ex) {
+            System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
+            response.status = 404
+        }
+        catch (BadRequestException ex) {
+            System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
+            response.status = 400
+        }
+        catch (Exception ex) {
+            System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
+        }
+    }
+
 }

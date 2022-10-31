@@ -598,4 +598,24 @@ class SaleBillDetailsService
         }
     }
 
+
+    void deleteAllDraftsSaleBill(long entityId){
+        try{
+          ArrayList<SaleBillDetails> saleBillDetails = SaleBillDetails.findAllByBillStatusAndEntityId('DRAFT',entityId)
+            if(saleBillDetails.size()!=0){
+                for(SaleBillDetails saleBillDetail:saleBillDetails){
+                    ArrayList<SaleProductDetails> saleProductDetails = SaleProductDetails.findAllByBillId(saleBillDetail.id)
+                    for (SaleProductDetails saleProductDetail: saleProductDetails){
+                        saleProductDetail.delete()
+                    }
+                    saleBillDetail.delete()
+                }
+            }else{
+                throw new ResourceNotFoundException()
+            }
+        }catch(Exception ex){
+            ex.printStackTrace()
+            throw new BadRequestException()
+        }
+    }
 }

@@ -289,7 +289,7 @@
             denyButtonText: 'No',
         }).then((result) => {
             if (result.isConfirmed) {
-                var url = '/purchase-return/cancel-invoice?id=' + id;
+                var url = '/purchase-return/cancel?id=' + id;
                 var beforeSendSwal;
                 $.ajax({
                     type: "GET",

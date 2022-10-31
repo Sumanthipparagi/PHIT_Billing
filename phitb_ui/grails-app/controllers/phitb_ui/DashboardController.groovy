@@ -287,4 +287,10 @@ class DashboardController {
 
         respond dashboardStats, formats: ['json']
     }
+
+
+    def dayEnd(){
+        def saleBills = new SalesService().deleteAllDrafts(session.getAttribute('entityId').toString())
+        return saleBills;
+    }
 }

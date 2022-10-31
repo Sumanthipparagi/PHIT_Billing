@@ -1125,7 +1125,7 @@
                         sgst = rowData[10];
                         cgst = rowData[11];
                         igst = rowData[12];
-                        hot.selectCell(mainTableRow, 4);
+                        hot.selectCell(mainTableRow, 5);
                         hot.setDataAtCell(mainTableRow, 18, "");
                         hot.setDataAtCell(mainTableRow, 19, 0);
                         hot.setDataAtCell(mainTableRow, 20, 0);
@@ -1227,7 +1227,7 @@
                         sgst = rowData[21];
                         cgst = rowData[22];
                         igst = rowData[23];
-                        hot.selectCell(mainTableRow, 4);
+                        hot.selectCell(mainTableRow, 5);
                         remainingQty = rowData[11];
                         remainingFQty = rowData[12];
                         $("#saleReturnTable").focus();
