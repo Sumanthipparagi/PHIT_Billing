@@ -1677,7 +1677,7 @@
     $("#entityRegisterForm").submit(function (event) {
         var pincode = $('.pinCode option').length;
         if (pincode === 0 || pincode < 0) {
-            swal("Please enter  pincode and  select area");
+            Swal.fire("Please enter  pincode and  select area");
             event.preventDefault();
         }
     });
@@ -1691,12 +1691,12 @@
     //         data        : formData.serialize(), // our data object
     //         success:function(data){
     //             $("#validation-status").text(data);
-    //             swal('success','Password Changed Successfully',data);
+    //             Swal.fire('success','Password Changed Successfully',data);
     //         },
     //         error:function(data){
     //             console.log("Failed");
     //             $("#validation-status").text(data.responseText);
-    //             swal('error','Password Change Failed',data.responseText);
+    //             Swal.fire('error','Password Change Failed',data.responseText);
     //         }
     //     });
     //     event.preventDefault();

@@ -23,6 +23,8 @@ class UrlMappings {
         "/api/media/$path**"(controller: "fileLocation", action: "index")
         "/user/update-details/$id"(controller: 'auth' , action: 'updateUser')
         "/user/update-password"(controller: 'userRegister' , action: 'updatePassword')
+        "/day-end-details"(controller: 'dashboard', action: 'dayEndDetails')
+
 
   /*<-------------------------------------------Microservice Status ------------------------------------------------->*/
         "/system-service-status"(controller: 'dashboard', action: 'systemServiceStatus')

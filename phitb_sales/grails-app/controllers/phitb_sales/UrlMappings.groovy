@@ -474,7 +474,8 @@ class UrlMappings {
             "/salebilldetails/updateirn(.$format)?"(controller: 'saleBillDetails', action: 'updateIRNDetails')
             "/salebilldetails/save-invoice(.$format)?"(controller: 'saleBillDetails', action: 'saveInvoice')
             "/salebilldetails/update-invoice/$id(.$format)?"(controller: 'saleBillDetails', action: 'updateInvoice')
-            "/salebilldetails/delete-drafts-sale-bill(.$format)"(controller: 'saleBillDetails', action: 'deleteAllDraftsSaleBill')
+            "/delete-drafts-sale-bill(.$format)"(controller: 'saleBillDetails', action: 'deleteAllDraftsSaleBill')
+            "/drafts-sale-bill(.$format)"(controller: 'saleBillDetails', action: 'getAllDraftSaleBillsByEntityAndUser')
 
 
             //Goods Transfer Note

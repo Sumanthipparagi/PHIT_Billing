@@ -716,4 +716,29 @@ class SaleBillDetailsController {
         }
     }
 
+
+    def getAllDraftSaleBillsByEntityAndUser() {
+        try {
+            String entityId = params.entityId
+            String userId = params.userId
+            if (entityId) {
+                JSONArray saleBillDetails = saleBillDetailsService.getAllDraftBillByEntityAndUser(Long.parseLong(entityId),Long.parseLong(userId))
+                respond saleBillDetails, formats: ['json'], status: 200
+            } else {
+                response.status = 400
+            }
+        }
+        catch (ResourceNotFoundException ex) {
+            System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
+            response.status = 404
+        }
+        catch (BadRequestException ex) {
+            System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
+            response.status = 400
+        }
+        catch (Exception ex) {
+            System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
+        }
+    }
+
 }

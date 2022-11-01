@@ -20,11 +20,10 @@
             <div class="row">
                 <div class="col-lg-6 col-md-12">
                     <div class="company_detail">
-                        <h4 class="logo"><img src="${assetPath(src: '/themeassets/images/logo.svg')}" alt="">PharmIT
-                        Billing</h4>
-%{--                        <h3>The ultimate <strong>Bootstrap 4</strong> Admin Dashboard</h3>--}%
-%{--                        <p>Alpino is fully based on HTML5 + CSS3 Standards. Is fully responsive and clean on every device and every browser</p>--}%
-                        <div class="footer">
+                       %{-- <h4 class="logo"><img src="${assetPath(src: '/themeassets/images/logo.jpeg')}" alt="">PharmIT
+                        Billing</h4>--}%
+                       <img src="${assetPath(src: '/themeassets/images/logo.jpeg')}" alt="">
+                       <div class="footer">
                             <ul  class="social_link list-unstyled">
                                 <li><a href="#" title="ThemeMakker"><i class="zmdi zmdi-globe"></i></a></li>
                                 <li><a href="#" title="Themeforest"><i class="zmdi zmdi-shield-check"></i></a></li>

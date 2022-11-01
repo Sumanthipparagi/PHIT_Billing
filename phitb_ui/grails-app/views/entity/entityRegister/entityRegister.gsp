@@ -344,12 +344,12 @@
             contentType: false,
             processData: false,
             success: function () {
-                swal("Success!", "Rack Submitted Successfully", "success");
+                Swal.fire("Success!", "Rack Submitted Successfully", "success");
                 rackTable();
                 $('#addEntityRegisterModal').modal('hide');
             },
             error: function () {
-                swal("Error!", "Something went wrong", "error");
+                Swal.fire("Error!", "Something went wrong", "error");
 
             }
         });
@@ -390,9 +390,9 @@
             success: function () {
                 $('.deleteModal').modal('hide');
                 entityRegisterTable();
-                swal("Success!", "Entity Register Deleted Successfully", "success");
+                Swal.fire("Success!", "Entity Register Deleted Successfully", "success");
             }, error: function () {
-                swal("Error!", "Something went wrong", "error");
+                Swal.fire("Error!", "Something went wrong", "error");
             }
         });
     }

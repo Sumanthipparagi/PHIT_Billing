@@ -2062,13 +2062,11 @@ contains both deliveryChallan and products
         WebTarget target = client.target(new Links().API_GATEWAY)
         try {
             Response apiResponse = target
-                    .path(new Links().SALE_BILL_CUSTOMER)
-                    .queryParam("entityId", URLEncoder.encode(entityId, "UTF-8"))
+                    .path(new Links().DELETE_DRAFTS_SALE_BILLS+"/"+entityId)
                     .request(MediaType.APPLICATION_JSON_TYPE)
-                    .get()
+                    .delete()
             if (apiResponse.status == 200) {
-                JSONArray jsonArray = new JSONArray(apiResponse.readEntity(String.class))
-                return jsonArray
+              return apiResponse
             } else {
                 return []
             }
@@ -2076,6 +2074,30 @@ contains both deliveryChallan and products
         catch (Exception ex) {
             System.err.println('Service :EntityService , action :  getEntity  , Ex:' + ex)
             log.error('Service :EntityService , action :  getEntity  , Ex:' + ex)
+        }
+    }
+
+
+    def getSaleBillDraftDetails(String entityId, String userId) {
+        Client client = ClientBuilder.newClient();
+        WebTarget target = client.target(new Links().API_GATEWAY);
+        try {
+            Response apiResponse = target
+                    .path(new Links().GET_DRAFTS_SALE_BILLS)
+                    .queryParam("entityId", entityId)
+                    .queryParam("userId", userId)
+                    .request(MediaType.APPLICATION_JSON_TYPE)
+                    .get()
+            if (apiResponse.status == 200) {
+                JSONArray saleBillDraftDetails = new JSONArray(apiResponse.readEntity(String.class))
+                return saleBillDraftDetails
+            } else {
+                return null
+            }
+        }
+        catch (Exception ex) {
+            System.err.println('Service :SalesService , action :  getSaleDraftDetails  , Ex:' + ex)
+            log.error('Service :SalesService , action :  getSaleDraftDetails  , Ex:' + ex)
         }
     }
 

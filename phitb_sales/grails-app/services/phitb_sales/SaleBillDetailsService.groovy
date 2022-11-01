@@ -599,6 +599,27 @@ class SaleBillDetailsService
     }
 
 
+    def getAllDraftBillByEntityAndUser(long entityId, long userId){
+        try{
+            JSONArray draftBills = new JSONArray()
+            ArrayList<SaleBillDetails> saleBillDetails = SaleBillDetails
+                    .findAllByBillStatusAndEntityIdAndUserIdAndBillStatusNotEqual('DRAFT', entityId,userId,"CANCELLED")
+            for(SaleBillDetails saleBillDetails1: saleBillDetails){
+                JSONObject jsonObject1 = new JSONObject((saleBillDetails1 as JSON).toString())
+                def productDetails = SaleProductDetails.findAllByBillId(saleBillDetails1.id)
+                if (productDetails) {
+                    JSONArray prdt =  new  JSONArray((productDetails as JSON).toString())
+                    jsonObject1.put("products", prdt)
+                }
+                draftBills.add(jsonObject1)
+            }
+            return draftBills
+        }catch(Exception e){
+           e.printStackTrace()
+            throw  new BadRequestException()
+        }
+    }
+
     void deleteAllDraftsSaleBill(long entityId){
         try{
           ArrayList<SaleBillDetails> saleBillDetails = SaleBillDetails.findAllByBillStatusAndEntityId('DRAFT',entityId)

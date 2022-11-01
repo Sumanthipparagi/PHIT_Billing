@@ -87,42 +87,7 @@
     })
 
 
-           /* day end */
 
-    $("#dayEnd").on("click", function (e) {
-        const swalWithBootstrapButtons = Swal.mixin({
-            customClass: {
-                confirmButton: 'btn btn-success',
-                cancelButton: 'btn btn-danger'
-            },
-            buttonsStyling: false
-        });
-
-        swalWithBootstrapButtons.fire({
-            title: 'Are you sure?',
-            text: "All draft details and temp stock data will be removed!!",
-            icon: 'warning',
-            showCancelButton: true,
-            cancelButtonText: 'No, cancel!',
-            confirmButtonText: 'Yes, delete it!',
-            reverseButtons: false
-        }).then((result) => {
-            if (result.isConfirmed) {
-                swalWithBootstrapButtons.fire(
-                    'Day end completed',
-                    'Day end Sucessfull',
-                    'success'
-                )
-            }
-            else {
-                swalWithBootstrapButtons.fire(
-                    'Cancelled',
-                    'Day end terminated by user',
-                    'error'
-                )
-            }
-        })
-    });
 </script>
 
 <g:include view="controls/socket.gsp"/>

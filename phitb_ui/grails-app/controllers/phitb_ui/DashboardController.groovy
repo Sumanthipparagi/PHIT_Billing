@@ -5,9 +5,11 @@ import org.grails.web.json.JSONObject
 import java.text.SimpleDateFormat
 import java.time.LocalDate
 
-class DashboardController {
+class DashboardController
+{
 
-    def index() {
+    def index()
+    {
         render(view: 'index')
     }
 
@@ -18,7 +20,7 @@ class DashboardController {
 
     def table()
     {
-        render(view:'datatable')
+        render(view: 'datatable')
     }
 
     def timeline()
@@ -35,21 +37,21 @@ class DashboardController {
     {
         try
         {
-        def response = new SystemService().systemServiceStatus()
-        JSONObject jsonObject = new JSONObject()
-        if (response?.status == 200)
-        {
-            respond jsonObject,formats: ['json'], status: 200
+            def response = new SystemService().systemServiceStatus()
+            JSONObject jsonObject = new JSONObject()
+            if (response?.status == 200)
+            {
+                respond jsonObject, formats: ['json'], status: 200
+            }
+            else
+            {
+                respond status: 400
+            }
         }
-        else
+        catch (Exception ex)
         {
-            respond status: 400
-        }
-        }
-        catch(Exception ex)
-        {
-            System.out.println(controllerName+" "+ex)
-            log.error(controllerName+" "+ex)
+            System.out.println(controllerName + " " + ex)
+            log.error(controllerName + " " + ex)
         }
     }
 
@@ -61,17 +63,17 @@ class DashboardController {
             JSONObject jsonObject = new JSONObject()
             if (response?.status == 200)
             {
-                respond jsonObject,formats: ['json'], status: 200
+                respond jsonObject, formats: ['json'], status: 200
             }
             else
             {
                 respond status: 400
             }
         }
-        catch(Exception ex)
+        catch (Exception ex)
         {
-            System.out.println(controllerName+" "+ex)
-            log.error(controllerName+" "+ex)
+            System.out.println(controllerName + " " + ex)
+            log.error(controllerName + " " + ex)
         }
     }
 
@@ -83,17 +85,17 @@ class DashboardController {
             JSONObject jsonObject = new JSONObject()
             if (response?.status == 200)
             {
-                respond jsonObject,formats: ['json'], status: 200
+                respond jsonObject, formats: ['json'], status: 200
             }
             else
             {
                 respond status: 400
             }
         }
-        catch(Exception ex)
+        catch (Exception ex)
         {
-            System.out.println(controllerName+" "+ex)
-            log.error(controllerName+" "+ex)
+            System.out.println(controllerName + " " + ex)
+            log.error(controllerName + " " + ex)
         }
     }
 
@@ -105,17 +107,17 @@ class DashboardController {
             JSONObject jsonObject = new JSONObject()
             if (response?.status == 200)
             {
-                respond jsonObject,formats: ['json'], status: 200
+                respond jsonObject, formats: ['json'], status: 200
             }
             else
             {
                 respond status: 400
             }
         }
-        catch(Exception ex)
+        catch (Exception ex)
         {
-            System.out.println(controllerName+" "+ex)
-            log.error(controllerName+" "+ex)
+            System.out.println(controllerName + " " + ex)
+            log.error(controllerName + " " + ex)
         }
     }
 
@@ -127,17 +129,17 @@ class DashboardController {
             JSONObject jsonObject = new JSONObject()
             if (response?.status == 200)
             {
-                respond jsonObject,formats: ['json'], status: 200
+                respond jsonObject, formats: ['json'], status: 200
             }
             else
             {
                 respond status: 400
             }
         }
-        catch(Exception ex)
+        catch (Exception ex)
         {
-            System.out.println(controllerName+" "+ex)
-            log.error(controllerName+" "+ex)
+            System.out.println(controllerName + " " + ex)
+            log.error(controllerName + " " + ex)
         }
     }
 
@@ -149,17 +151,17 @@ class DashboardController {
             JSONObject jsonObject = new JSONObject()
             if (response?.status == 200)
             {
-                respond jsonObject,formats: ['json'], status: 200
+                respond jsonObject, formats: ['json'], status: 200
             }
             else
             {
                 respond status: 400
             }
         }
-        catch(Exception ex)
+        catch (Exception ex)
         {
-            System.out.println(controllerName+" "+ex)
-            log.error(controllerName+" "+ex)
+            System.out.println(controllerName + " " + ex)
+            log.error(controllerName + " " + ex)
         }
     }
 
@@ -171,17 +173,17 @@ class DashboardController {
             JSONObject jsonObject = new JSONObject()
             if (response?.status == 200)
             {
-                respond jsonObject,formats: ['json'], status: 200
+                respond jsonObject, formats: ['json'], status: 200
             }
             else
             {
                 respond status: 400
             }
         }
-        catch(Exception ex)
+        catch (Exception ex)
         {
-            System.out.println(controllerName+" "+ex)
-            log.error(controllerName+" "+ex)
+            System.out.println(controllerName + " " + ex)
+            log.error(controllerName + " " + ex)
         }
     }
 
@@ -193,17 +195,17 @@ class DashboardController {
             JSONObject jsonObject = new JSONObject()
             if (response?.status == 200)
             {
-                respond jsonObject,formats: ['json'], status: 200
+                respond jsonObject, formats: ['json'], status: 200
             }
             else
             {
                 respond status: 400
             }
         }
-        catch(Exception ex)
+        catch (Exception ex)
         {
-            System.out.println(controllerName+" "+ex)
-            log.error(controllerName+" "+ex)
+            System.out.println(controllerName + " " + ex)
+            log.error(controllerName + " " + ex)
         }
     }
 
@@ -215,17 +217,17 @@ class DashboardController {
             JSONObject jsonObject = new JSONObject()
             if (response?.status == 200)
             {
-                respond jsonObject,formats: ['json'], status: 200
+                respond jsonObject, formats: ['json'], status: 200
             }
             else
             {
                 respond status: 400
             }
         }
-        catch(Exception ex)
+        catch (Exception ex)
         {
-            System.out.println(controllerName+" "+ex)
-            log.error(controllerName+" "+ex)
+            System.out.println(controllerName + " " + ex)
+            log.error(controllerName + " " + ex)
         }
     }
 
@@ -288,9 +290,30 @@ class DashboardController {
         respond dashboardStats, formats: ['json']
     }
 
-
-    def dayEnd(){
-        def saleBills = new SalesService().deleteAllDrafts(session.getAttribute('entityId').toString())
-        return saleBills;
+    def draftDetails()
+    {
+        try
+        {
+            def draftBillDetails = new SalesService().getSaleBillDraftDetails(session.getAttribute('entityId').toString())
+            respond draftBillDetails, formats: ['json'], status: 200;
+        }
+        catch (Exception e)
+        {
+            log.error(controllerName+" "+e)
+            println controllerName+" "+e
+        }
     }
+
+
+    def dayEndDetails(){
+        def draftBillDetails = new SalesService().getSaleBillDraftDetails(session.getAttribute('entityId').toString(), session.getAttribute('userId').toString())
+        for(JSONObject draftBill:draftBillDetails){
+            for(JSONObject draftProduct:draftBill.products){
+                def product = new ProductService().getProductById(draftProduct.productId.toString())
+                draftProduct.put("product",product)
+            }
+        }
+        render(view: '/dashboard/day-end-detail',model: [draftBillDetails:draftBillDetails])
+    }
+
 }

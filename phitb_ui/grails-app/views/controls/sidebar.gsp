@@ -96,7 +96,7 @@
     <ul class="menu_list">
         <li>
             <a href="javascript:void(0);" class="bars"></a>
-            <a class="navbar-brand" href="#"><img src="${assetPath(src: '/themeassets/images/logo.svg')}"
+            <a class="navbar-brand" href="#"><img src="${assetPath(src: '/themeassets/images/sidebar.jpeg')}"
                                                   alt="PharmIT"></a>
         </li>
         %{--        <li><a href="javascript:void(0);" class="btn_overlay hidden-sm-down"><i class="zmdi zmdi-search"></i></a></li>--}%
@@ -355,9 +355,7 @@
                                 <p class="m-b-0">${session.getAttribute("entityName")}</p>
                             </g:if>
                             <small>Financial Year: ${session.getAttribute("financialYear")}</small>
-                            <br>
-                            <br>
-                             <button class="btn btn-primary" id="dayEnd">Day End</button>
+
                     </div>
                     </div>
                 </li>
