@@ -18,6 +18,13 @@ import javax.ws.rs.core.Response
 class AccountModeMasterService
 {
 
+    /**
+     * Gets all account modes
+     * @param query
+     * @param offset
+     * @param limit
+     * @return list of account modes
+     */
     def getAll(String limit, String offset, String query)
     {
 
@@ -34,7 +41,13 @@ class AccountModeMasterService
         }
     }
 
-
+    /**
+     * Gets all account modes by entityId
+     * @param query
+     * @param offset
+     * @param limit
+     * @return list of account modes based on entity
+     */
     def getAllByEntityId(String limit, String offset, long entityId)
     {
 //        Integer o = offset ? Integer.parseInt(offset.toString()) : 0
@@ -56,12 +69,22 @@ class AccountModeMasterService
         }
     }
 
+
+    /**
+     * Gets  account modes by Id
+     * @param id
+     * @return account modes by Id
+     */
     AccountModeMaster get(String id)
     {
         return AccountModeMaster.findById(Long.parseLong(id))
     }
 
 
+    /**
+     * Gets all account modes in datatables format
+     * @return list of account modes
+     */
     JSONObject dataTables(JSONObject paramsJsonObject, String start, String length)
     {
 
