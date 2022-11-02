@@ -96,15 +96,16 @@
     <ul class="menu_list">
         <li>
             <a href="javascript:void(0);" class="bars"></a>
-            <a class="navbar-brand" href="#"><img src="${assetPath(src: '/themeassets/images/sidebar.jpeg')}"
+            <a class="navbar-brand" href="/dashboard"><img src="${assetPath(src: '/themeassets/images/sidebar.jpeg')}"
                                                   alt="PharmIT"></a>
         </li>
         %{--        <li><a href="javascript:void(0);" class="btn_overlay hidden-sm-down"><i class="zmdi zmdi-search"></i></a></li>--}%
-        <li><a href="javascript:void(0);" class="menu-sm"><i class="zmdi zmdi-swap"></i></a></li>
+%{--        <li><a href="javascript:void(0);" class="menu-sm"><i class="zmdi zmdi-swap"></i></a></li>--}%
 
         <li><a href="javascript:void(0);" class="fullscreen" data-provide="fullscreen"><i
                 class="zmdi zmdi-fullscreen"></i></a></li>
         <li class="power">
+            <a href="/day-end-details"><i class="zmdi zmdi-settings zmdi-view-day"></i></a>
             <a href="javascript:void(0);" class="js-right-sidebar"><i class="zmdi zmdi-settings zmdi-info"></i></a>
             <a href="/logout" id="logout" class="mega-menu"><i class="zmdi zmdi-power"></i></a>
         </li>

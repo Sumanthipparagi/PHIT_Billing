@@ -736,6 +736,9 @@ public class Links
     public static String PURCHASE_PRODUCT_BY_PRODUCT = APP_CONTEXT_PATH + "purchase/purchaseproductdetailsbyproductId";
     public static String PURCHASE_PRODUCT_BILL_BATCH = APP_CONTEXT_PATH + "purchase/purchaseproductdetailsbillandbatch";
 
+    public static String DELETE_DRAFTS_PURCHASE_BILLS = APP_CONTEXT_PATH + "purchase/delete-drafts-purchase-bill";
+    public static String GET_DRAFTS_PURCHASE_BILLS = APP_CONTEXT_PATH + "purchase/drafts-purchase-bill";
+
 
 
     //purchase product bill details

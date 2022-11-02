@@ -381,4 +381,55 @@ class PurchaseBillDetailController {
     }
 
 
+    /**
+     * Delete Draft bill Details
+     * @param id
+     * @return returns status code 200
+     */
+    def deleteAllDraftsPurchaseBill() {
+        try {
+            String entityId = params.entityId
+            String userId = params.userId
+            purchaseBillDetailService.deleteAllDraftsSaleBill(Long.parseLong(entityId),Long.parseLong(userId))
+            response.status = 200
+        }
+        catch (org.springframework.boot.context.config.ResourceNotFoundException ex) {
+            System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
+            response.status = 404
+        }
+        catch (BadRequestException ex) {
+            System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
+            response.status = 400
+        }
+        catch (Exception ex) {
+            System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
+        }
+    }
+
+
+    def getAllDraftPurchaseBillsByEntityAndUser() {
+        try {
+            String entityId = params.entityId
+            String userId = params.userId
+            if (entityId) {
+                JSONArray saleBillDetails = purchaseBillDetailService.getAllDraftBillByEntityAndUser(Long.parseLong(entityId),Long.parseLong(userId))
+                respond saleBillDetails, formats: ['json'], status: 200
+            } else {
+                response.status = 400
+            }
+        }
+        catch (org.springframework.boot.context.config.ResourceNotFoundException ex) {
+            System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
+            response.status = 404
+        }
+        catch (BadRequestException ex) {
+            System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
+            response.status = 400
+        }
+        catch (Exception ex) {
+            System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
+        }
+    }
+
+
 }

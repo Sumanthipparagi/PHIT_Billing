@@ -620,15 +620,19 @@ class SaleBillDetailsService
         }
     }
 
-    void deleteAllDraftsSaleBill(long entityId){
+    void deleteAllDraftsSaleBill(long entityId,long userId){
         try{
-          ArrayList<SaleBillDetails> saleBillDetails = SaleBillDetails.findAllByBillStatusAndEntityId('DRAFT',entityId)
+          ArrayList<SaleBillDetails> saleBillDetails = SaleBillDetails.findAllByInvoiceNumberAndEntityIdAndUserId(null, entityId, userId)
             if(saleBillDetails.size()!=0){
                 for(SaleBillDetails saleBillDetail:saleBillDetails){
                     ArrayList<SaleProductDetails> saleProductDetails = SaleProductDetails.findAllByBillId(saleBillDetail.id)
-                    for (SaleProductDetails saleProductDetail: saleProductDetails){
-                        saleProductDetail.delete()
+                    if(saleBillDetails){
+                        for (SaleProductDetails saleProductDetail: saleProductDetails){
+                            saleProductDetail.isUpdatable=true
+                            saleProductDetail.delete()
+                        }
                     }
+                    saleBillDetail.isUpdatable=true
                     saleBillDetail.delete()
                 }
             }else{

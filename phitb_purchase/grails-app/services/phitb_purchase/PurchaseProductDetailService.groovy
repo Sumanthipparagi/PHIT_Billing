@@ -125,7 +125,7 @@ class PurchaseProductDetailService {
             purchaseProductDetail.seriesId = Long.parseLong(jsonObject.get("seriesId").toString())
             purchaseProductDetail.productId = Long.parseLong(jsonObject.get("productId").toString())
             purchaseProductDetail.batchNumber = jsonObject.get("batchNumber").toString()
-            purchaseProductDetail.expiryDate = sdf1.parse(jsonObject.get("expiryDate").toString())
+            purchaseProductDetail.expiryDate =  jsonObject.get("expiryDate") as Date
             purchaseProductDetail.sqty = Long.parseLong(jsonObject.get("sqty").toString())
             purchaseProductDetail.freeQty = Long.parseLong(jsonObject.get("freeQty").toString())
             purchaseProductDetail.repQty = Long.parseLong(jsonObject.get("repQty").toString())

@@ -143,14 +143,13 @@ class PurchaseService {
     }
 
 
-
-
-    def cancelPurchaseInvoice(String id, String entityId, String financialYear)
+    def cancelPurchaseInvoice(String id, String entityId, String financialYear, String userId)
     {
         JSONObject jsonObject = new JSONObject()
         jsonObject.put("id", id)
         jsonObject.put("entityId", entityId)
         jsonObject.put("financialYear", financialYear)
+        jsonObject.put("userId", userId)
         Client client = ClientBuilder.newClient();
         WebTarget target = client.target(new Links().API_GATEWAY)
         try {
@@ -237,8 +236,8 @@ class PurchaseService {
                     .get()
             if(apiResponse.status == 200)
             {
-                JSONArray saleProductDetail = new JSONArray(apiResponse.readEntity(String.class))
-                return saleProductDetail
+                JSONArray purchaseProductDetail = new JSONArray(apiResponse.readEntity(String.class))
+                return purchaseProductDetail
             }
             else
                 return null
@@ -968,4 +967,51 @@ class PurchaseService {
             log.error('Service :SalesService , action :  cancelInvoice  , Ex:' + ex)
         }
     }
+
+    def deleteAllDrafts(String entityId, String userId) {
+        Client client = ClientBuilder.newClient()
+        WebTarget target = client.target(new Links().API_GATEWAY)
+        try {
+            Response apiResponse = target
+                    .path(new Links().DELETE_DRAFTS_PURCHASE_BILLS)
+                    .queryParam("entityId", entityId)
+                    .queryParam("userId", userId)
+                    .request(MediaType.APPLICATION_JSON_TYPE)
+                    .delete()
+            if (apiResponse.status == 200) {
+                return apiResponse
+            } else {
+                return []
+            }
+        }
+        catch (Exception ex) {
+            System.err.println('Service :EntityService , action :  getEntity  , Ex:' + ex)
+            log.error('Service :EntityService , action :  getEntity  , Ex:' + ex)
+        }
+    }
+
+
+    def getPurchaseBillDraftDetails(String entityId, String userId) {
+        Client client = ClientBuilder.newClient();
+        WebTarget target = client.target(new Links().API_GATEWAY);
+        try {
+            Response apiResponse = target
+                    .path(new Links().GET_DRAFTS_PURCHASE_BILLS)
+                    .queryParam("entityId", entityId)
+                    .queryParam("userId", userId)
+                    .request(MediaType.APPLICATION_JSON_TYPE)
+                    .get()
+            if (apiResponse.status == 200) {
+                JSONArray saleBillDraftDetails = new JSONArray(apiResponse.readEntity(String.class))
+                return saleBillDraftDetails
+            } else {
+                return null
+            }
+        }
+        catch (Exception ex) {
+            System.err.println('Service :SalesService , action :  getSaleDraftDetails  , Ex:' + ex)
+            log.error('Service :SalesService , action :  getSaleDraftDetails  , Ex:' + ex)
+        }
+    }
+
 }

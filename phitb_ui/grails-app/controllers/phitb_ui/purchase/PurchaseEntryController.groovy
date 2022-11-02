@@ -517,7 +517,24 @@ class PurchaseEntryController {
         String id = params.id
         String entityId = session.getAttribute("entityId")
         String financialYear = session.getAttribute("financialYear")
-        JSONObject jsonObject = new PurchaseService().cancelPurchaseInvoice(id, entityId, financialYear)
+        String userId = session.getAttribute("userId")
+       /* def purchaseProductDetailsByBill = new PurchaseService().getPurchaseProductDetailsByBill(id)
+        */
+       /* JSONObject jsonObject1 = new JSONObject()
+        for(JSONObject purchaseProduct:purchaseProductDetailsByBill){
+            def product = new ProductService().getProductById(purchaseProduct.productId.toString())
+            purchaseProduct.put("product",product)
+            def stocks = new InventoryService().getStocksOfProductAndBatch(purchaseProduct.productId.toString(), purchaseProduct.batchNumber,purchaseProduct.entityId.toString())
+            if(stocks.remainingQty == purchaseProduct.sqty || stocks.remainingFreeQty == purchaseProduct.freeQty){
+                jsonObject1.put("purchaseProduct",purchaseProduct)
+            }
+        }
+        if(jsonObject1.size()!=0){
+            respond jsonObject1, formats:['json'], status: 201;
+            return
+        }*/
+
+        JSONObject jsonObject = new PurchaseService().cancelPurchaseInvoice(id, entityId, financialYear, userId)
         if (jsonObject)
         {
             //adjust stocks
@@ -1315,7 +1332,8 @@ class PurchaseEntryController {
     def dataTable() {
         try {
             JSONObject jsonObject = new JSONObject(params)
-            jsonObject.put("userId", session.getAttribute("userId"))
+            if(session.getAttribute("role").toString().equalsIgnoreCase(Constants.ENTITY_ADMIN))
+                jsonObject.put("userId", session.getAttribute("userId"))
             jsonObject.put("entityId", session.getAttribute("entityId"))
             def apiResponse = new PurchaseService().showPurchaseBillDetails(jsonObject)
             if (apiResponse.status == 200) {
@@ -1484,6 +1502,7 @@ class PurchaseEntryController {
 
     def updatePurchaseBillDetails() {
         SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy")
+        SimpleDateFormat sdf2 = new SimpleDateFormat("yyyy-MM-dd")
         JSONObject purchaseBillDetails = new JSONObject()
         JSONArray purchaseProductDetails = new JSONArray()
         String entityId = session.getAttribute("entityId").toString()
@@ -1561,7 +1580,7 @@ class PurchaseEntryController {
             purchaseProductDetail.put("seriesId", seriesId)
             purchaseProductDetail.put("productId", productId)
             purchaseProductDetail.put("batchNumber", batchNumber)
-            purchaseProductDetail.put("expiryDate", expDate)
+            purchaseProductDetail.put("expiryDate", sdf2.parse(expDate))
             purchaseProductDetail.put("sqty", saleQty)
             purchaseProductDetail.put("freeQty", freeQty)
             purchaseProductDetail.put("repQty", 0)

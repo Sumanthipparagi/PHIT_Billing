@@ -2057,12 +2057,14 @@ contains both deliveryChallan and products
     }
 
 
-    def deleteAllDrafts(String entityId) {
+    def deleteAllDrafts(String entityId, String userId) {
         Client client = ClientBuilder.newClient()
         WebTarget target = client.target(new Links().API_GATEWAY)
         try {
             Response apiResponse = target
-                    .path(new Links().DELETE_DRAFTS_SALE_BILLS+"/"+entityId)
+                    .path(new Links().DELETE_DRAFTS_SALE_BILLS)
+                    .queryParam("entityId", entityId)
+                    .queryParam("userId", userId)
                     .request(MediaType.APPLICATION_JSON_TYPE)
                     .delete()
             if (apiResponse.status == 200) {

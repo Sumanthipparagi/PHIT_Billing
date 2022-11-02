@@ -35,6 +35,10 @@ class PurchaseBillDetailService {
         String orderColumnId = paramsJsonObject.get("order[0][column]")
         String orderDir = paramsJsonObject.get("order[0][dir]")
         long entityId = paramsJsonObject.get("entityId")
+        long userId = 0
+        if(paramsJsonObject.has("userId"))
+            userId = paramsJsonObject.get("userId")
+
         String orderColumn = "id"
         switch (orderColumnId) {
             case '0':
@@ -55,6 +59,8 @@ class PurchaseBillDetailService {
                     ilike('invoiceNumber', '%' + searchTerm + '%')
                 }
             }
+            if(userId > 0)
+                eq("createdUser", userId)
             eq('entityId', entityId)
             eq('deleted', false)
             order(orderColumn, orderDir)
@@ -361,6 +367,7 @@ class PurchaseBillDetailService {
         String id = jsonObject.get("id")
         String entityId = jsonObject.get("entityId")
         String financialYear = jsonObject.get("financialYear")
+        String userId = jsonObject.get("userId")
         JSONObject saleInvoice = new JSONObject()
         PurchaseBillDetail purchaseBillDetails = PurchaseBillDetail.findById(Long.parseLong(id))
         if (purchaseBillDetails)
@@ -390,6 +397,51 @@ class PurchaseBillDetailService {
         else
         {
             throw new ResourceNotFoundException()
+        }
+    }
+
+
+    def getAllDraftBillByEntityAndUser(long entityId, long userId){
+        try{
+            JSONArray draftBills = new JSONArray()
+            ArrayList<PurchaseBillDetail> purchaseBillDetails = PurchaseBillDetail.findAllByInvoiceNumberAndEntityIdAndCreatedUser('DRAFT', entityId, userId)
+            for(PurchaseBillDetail purchaseBillDetail: purchaseBillDetails){
+                JSONObject jsonObject1 = new JSONObject((purchaseBillDetail as JSON).toString())
+                def productDetails = PurchaseProductDetail.findAllByBillId(purchaseBillDetail.id)
+                if (productDetails) {
+                    JSONArray prdt =  new  JSONArray((productDetails as JSON).toString())
+                    jsonObject1.put("products", prdt)
+                }
+                draftBills.add(jsonObject1)
+            }
+            return draftBills
+        }catch(Exception e){
+            e.printStackTrace()
+            throw  new BadRequestException()
+        }
+    }
+
+    void deleteAllDraftsSaleBill(long entityId,long userId){
+        try{
+            ArrayList<PurchaseBillDetail> purchaseBillDetails = PurchaseBillDetail.findAllByInvoiceNumberAndEntityIdAndCreatedUser('DRAFT', entityId, userId)
+            if(purchaseBillDetails.size()!=0){
+                for(PurchaseBillDetail purchasebillDetail:purchaseBillDetails){
+                    ArrayList<PurchaseProductDetail> purchaseProductDetails = PurchaseProductDetail.findAllByBillId(purchasebillDetail.id)
+                    if(purchaseBillDetails){
+                        for (PurchaseProductDetail purchaseProduct: purchaseProductDetails){
+                            purchaseProduct.isUpdatable=true
+                            purchaseProduct.delete()
+                        }
+                    }
+                    purchasebillDetail.isUpdatable=true
+                    purchasebillDetail.delete()
+                }
+            }else{
+                throw new ResourceNotFoundException()
+            }
+        }catch(Exception ex){
+            ex.printStackTrace()
+            throw new BadRequestException()
         }
     }
 

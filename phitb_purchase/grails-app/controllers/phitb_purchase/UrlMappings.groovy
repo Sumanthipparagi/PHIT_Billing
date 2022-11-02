@@ -67,6 +67,9 @@ class UrlMappings {
             "/purchaseproductdetailsbillandbatch(.$format)?"(controller: 'purchaseProductDetail', action:
                     'getPurchaseProductDetailsbybatchAndBill')
 
+            "/delete-drafts-purchase-bill"(controller: "purchaseBillDetail", action: 'deleteAllDraftsPurchaseBill')
+            "/drafts-purchase-bill"(controller: "purchaseBillDetail", action: 'getAllDraftPurchaseBillsByEntityAndUser')
+
 //            Purchase Return
             "/purchase-returns(.$format)?"(controller: 'purchaseReturn') { action = [GET: 'index', POST: 'save'] }
             "/purchase-returns/$id(.$format)?"(controller: 'purchaseReturn',action: 'show')

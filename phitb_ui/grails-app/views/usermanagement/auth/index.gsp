@@ -13,7 +13,8 @@
     <asset:stylesheet rel="stylesheet" src="/themeassets/css/main.css"/>
     <asset:stylesheet rel="stylesheet" src="/themeassets/css/color_skins.css"/>
 </head>
-<body class="theme-black">
+%{--theme-black--}%
+<body class="" style="background-color: #051937!important;">
 <div class="authentication">
     <div class="container">
         <div class="col-md-12 content-center">

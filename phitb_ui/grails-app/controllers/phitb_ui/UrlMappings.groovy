@@ -24,6 +24,7 @@ class UrlMappings {
         "/user/update-details/$id"(controller: 'auth' , action: 'updateUser')
         "/user/update-password"(controller: 'userRegister' , action: 'updatePassword')
         "/day-end-details"(controller: 'dashboard', action: 'dayEndDetails')
+        "/day-end"(controller: 'dashboard', action: 'dayEnd')
 
 
   /*<-------------------------------------------Microservice Status ------------------------------------------------->*/

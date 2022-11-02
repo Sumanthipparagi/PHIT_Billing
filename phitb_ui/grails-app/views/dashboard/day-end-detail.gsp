@@ -21,7 +21,7 @@
 <div class="page-loader-wrapper">
     <div class="loader">
         <div class="m-t-30"><img src="${assetPath(src: '/themeassets/images/logo.svg')}" width="48" height="48"
-                                 alt="Alpino"></div>
+                                 alt="phitb"></div>
 
         <p>Please wait...</p>
     </div>
@@ -58,61 +58,71 @@
         <div class="row">
             <div class="col-lg-6">
                 <h5>Draft Sale Products</h5>
-                <table class="table table-striped table-bordered" style="width: 100%;table-layout: fixed;">
-                    <thead>
-                    <tr>
-                        <th scope="col">#</th>
-                        <th scope="col">Product Name</th>
-                        <th scope="col">Sale Qty</th>
-                        <th scope="col">Free Qty</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    <tbody>
-                    <g:each in="${draftBillDetails}" var="d" status="i">
-                        <g:each in="${d.products}" var="product">
-                            <tr>
-                                <th scope="row">${i + 1}</th>
-                                <td style="white-space: break-spaces;">${product.product.productName}</td>
-                                <td>${product.sqty}</td>
-                                <td>${product.freeQty}</td>
-                            </tr>
+                <g:if test="${draftSaleBillDetails.size() != 0}">
+                    <table class="table table-striped table-bordered" style="width: 100%;table-layout: fixed;">
+                        <thead>
+                        <tr>
+                            <th scope="col">#</th>
+                            <th scope="col">Product Name</th>
+                            <th scope="col">Sale Qty</th>
+                            <th scope="col">Free Qty</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tbody>
+                        <g:each in="${draftSaleBillDetails}" var="d" status="i">
+                            <g:each in="${d.products}" var="product">
+                                <tr>
+                                    <th scope="row">${i + 1}</th>
+                                    <td style="white-space: break-spaces;">${product.product.productName}</td>
+                                    <td>${product.sqty}</td>
+                                    <td>${product.freeQty}</td>
+                                </tr>
+                            </g:each>
                         </g:each>
-                    </g:each>
-                    </tbody>
-                </table>
+                        </tbody>
+                    </table>
+                </g:if>
+                <g:else>
+                    <p>No details found</p>
+                </g:else>
+            </div>
+
+            <div class="col-lg-6">
+                <h5>Draft Purchase Products</h5>
+                <g:if test="${draftPurchaseBillDetails.size() != 0}">
+                    <table class="table table-striped table-bordered" style="width: 100%;table-layout: fixed;">
+                        <thead>
+                        <tr>
+                            <th scope="col">#</th>
+                            <th scope="col">Product Name</th>
+                            <th scope="col">Sale Qty</th>
+                            <th scope="col">Free Qty</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tbody>
+                        <g:each in="${draftPurchaseBillDetails}" var="p" status="i">
+                            <g:each in="${p.products}" var="product">
+                                <tr>
+                                    <th scope="row">${i + 1}</th>
+                                    <td style="white-space: break-spaces;">${product.product.productName}</td>
+                                    <td>${product.sqty}</td>
+                                    <td>${product.freeQty}</td>
+                                </tr>
+                            </g:each>
+                        </g:each>
+                        </tbody>
+                    </table>
+                </g:if>
+                <g:else>
+                    <p>No details found</p>
+                </g:else>
 
             </div>
-            <div class="col-lg-6">
-            <h5>Draft Purchase Products</h5>
-            <table class="table table-striped table-bordered" style="width: 100%;table-layout: fixed;">
-                <thead>
-                <tr>
-                    <th scope="col">#</th>
-                    <th scope="col">Product Name</th>
-                    <th scope="col">Sale Qty</th>
-                    <th scope="col">Free Qty</th>
-                </tr>
-                </thead>
-                <tbody>
-                <tbody>
-                <g:each in="${draftBillDetails}" var="d" status="i">
-                    <g:each in="${d.products}" var="product">
-                        <tr>
-                            <th scope="row">${i + 1}</th>
-                            <td style="white-space: break-spaces;">${product.product.productName}</td>
-                            <td>${product.sqty}</td>
-                            <td>${product.freeQty}</td>
-                        </tr>
-                    </g:each>
-                </g:each>
-                </tbody>
-            </table>
-
-        </div>
         </div>
 
-            <button type="button" class="btn btn-danger float-right" id="dayEnd">Day End</button>
+        <button type="button" class="btn btn-danger float-right" id="dayEnd">Day End</button>
 
         %{--        </div>--}%
 
@@ -152,14 +162,63 @@
             reverseButtons: false
         }).then((result) => {
             if (result.isConfirmed) {
-                 swalWithBootstrapButtons.fire(
-                     'Day end completed',
-                     'Day end Sucessfull',
-                     'success'
-                 )
+                /*   swalWithBootstrapButtons.fire(
+                       'Day end completed',
+                       'Day end Sucessful',
+                       'success'
+                   )*/
+                $.ajax({
+                    type: "POST",
+                    url: "/day-end",
+                    dataType: 'json',
+                    success: function (data) {
+                        if (Object.keys(data).length !== 0) {
+                            if (data?.saleStocks === 'SUCCESS') {
+                                alert("Sale stocks updated")
+                            } else {
+                                alert("Sale stocks not found")
+                            }
 
-            }
-            else {
+                            if (data?.tempstocks === 'SUCCESS') {
+                                alert("Temp stock book cleared!")
+                            } else {
+                                alert("Temp stock  not found")
+                            }
+
+                            if (data?.draftSaleBillDelete === 'SUCCESS') {
+                                alert("Draft Delete success")
+                            } else {
+                                alert("Draft bills not found")
+                            }
+
+                            if (data?.purchaseStocks === 'SUCCESS') {
+                                alert("Purchase Stocks updated")
+                            } else {
+                                alert("Purchase Stocks  not found")
+                            }
+
+                            if (data?.deleteDraftPurchaseBill === 'SUCCESS') {
+                                alert("Purchase Draft Bill Delete success")
+                            } else {
+                                alert("Purchase Draft Bills not found")
+                            }
+                        } else {
+                            alert("No details found!")
+                        }
+
+                        swalWithBootstrapButtons.fire(
+                            'Day end completed',
+                            'Day end Sucessful',
+                            'success'
+                        )
+
+                    },
+                    error: function (data) {
+                        console.log("Failed");
+                    }
+                });
+
+            } else {
                 swalWithBootstrapButtons.fire(
                     'Cancelled',
                     'Day end terminated by user',

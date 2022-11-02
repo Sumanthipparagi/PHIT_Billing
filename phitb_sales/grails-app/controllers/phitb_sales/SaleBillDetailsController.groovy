@@ -700,7 +700,8 @@ class SaleBillDetailsController {
     def deleteAllDraftsSaleBill() {
         try {
             String entityId = params.entityId
-            saleBillDetailsService.deleteAllDraftsSaleBill(Long.parseLong(entityId))
+            String userId = params.userId
+            saleBillDetailsService.deleteAllDraftsSaleBill(Long.parseLong(entityId),Long.parseLong(userId))
             response.status = 200
         }
         catch (ResourceNotFoundException ex) {
