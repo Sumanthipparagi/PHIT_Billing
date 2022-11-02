@@ -15,7 +15,7 @@ public class Links
     public static String ACCOUNT_MODES_DELETE = APP_CONTEXT_PATH + "system/accountmodes/{id}";
     public static String ACCOUNT_MODES_BY_ENTITY = APP_CONTEXT_PATH + "system/accountmodesbyenity";
 
-//    Status
+    //    Status
     public static String SYSTEM_SERVICE_STATUS = APP_CONTEXT_PATH + "system/status";
     public static String SHIPMENT_SERVICE_STATUS = APP_CONTEXT_PATH + "shipments/status";
     public static String SALES_SERVICE_STATUS = APP_CONTEXT_PATH + "sales/status";
@@ -230,7 +230,6 @@ public class Links
     public static String USER_EXISTS = APP_CONTEXT_PATH + "entity/userregister/usernameexists";
 
 
-
     //Customer Group Register
     public static String CUSTOMER_GROUP_REGISTER_SHOW = APP_CONTEXT_PATH + "entity/customergroupregister";
     public static String CUSTOMER_GROUP_REGISTER_SHOW_BY_ENTITY = APP_CONTEXT_PATH + "entity/customergroupregisterbyentity";
@@ -254,7 +253,6 @@ public class Links
     public static String HQ_AREA_UPDATE = APP_CONTEXT_PATH + "entity/hqareas/{id}";
     public static String HQ_AREA_DELETE = APP_CONTEXT_PATH + "entity/hqareas/{id}";
     public static String HQ_AREA_SHOW_BY_ENTITY = APP_CONTEXT_PATH + "entity/hqbyentity";
-
 
 
     //Financial Year master
@@ -343,7 +341,6 @@ public class Links
     public static String SERVICE_TYPE_DATATABLE = APP_CONTEXT_PATH + "entity/servicetype/datatable";
     public static String SERVICE_TYPE_UPDATE = APP_CONTEXT_PATH + "entity/servicetype/{id}";
     public static String SERVICE_TYPE_DELETE = APP_CONTEXT_PATH + "entity/servicetype/{id}";
-
 
 
     /*<-------------------------------------------Product ------------------------------------------------->*/
@@ -451,7 +448,7 @@ public class Links
     public static String SALE_BILL_BY_DATERANGE_CUSTOMER = APP_CONTEXT_PATH + "sales/salebillbydaterangecustomer";
     public static String DRAFT_SALE_BILL_SHOW = APP_CONTEXT_PATH + "sales/draftsalebilldetails";
     public static String SALE_BILL_BALANCE_UPDATE = APP_CONTEXT_PATH + "sales/updatebalancebyid";
-/*    public static String SALE_BILL_BALANCE_CREDITS_UPDATE = APP_CONTEXT_PATH + "sales/updatebalanceandsettlecredits";*/
+    /*    public static String SALE_BILL_BALANCE_CREDITS_UPDATE = APP_CONTEXT_PATH + "sales/updatebalanceandsettlecredits";*/
     public static String SALE_BILL_BALANCE_CREDITS_UPDATE = APP_CONTEXT_PATH + "sales/updatebalanceandadjustcredits";
     public static String SALE_BILL_SAVE = APP_CONTEXT_PATH + "sales/salebilldetails";
     public static String SALE_BILL_CANCEL = APP_CONTEXT_PATH + "sales/salebilldetails/cancel";
@@ -516,12 +513,12 @@ public class Links
     public static String SALE_PRODUCT_BY_PRODUCT = APP_CONTEXT_PATH + "sales/saleproductdetailsbyproductId";
     public static String SALE_PRODUCT_BILL_BATCH = APP_CONTEXT_PATH + "sales/saleproductdetailsbillandbatch";
 
-//     sale transportation details
+    //     sale transportation details
     public static String SALE_TRANSPORTATION_SAVE = APP_CONTEXT_PATH + "sales/saletransportationdetails";
     public static String SALE_TRANSPORTATION_UPDATE = APP_CONTEXT_PATH + "sales/saletransportationdetails/{id}";
     public static String SALE_TRANSPORTATION_BY_BILL = APP_CONTEXT_PATH + "sales/saletransportationdetails/billid";
 
-// stock adjustment Details
+    // stock adjustment Details
     public static String STOCK_ADJUSTMENT_SAVE = APP_CONTEXT_PATH + "sales/stockadjustmentdetails";
     public static String STOCK_ADJUSTMENT_DATATABLE = APP_CONTEXT_PATH + "sales/stockadjustmentdetails/datatable";
 
@@ -569,7 +566,7 @@ public class Links
 //    public static String SALE_ORDER = APP_CONTEXT_PATH + "sales/saleproductdetails";
 
 
-//    Goods Transfer Note
+    //    Goods Transfer Note
     public static String GTN_SAVE = APP_CONTEXT_PATH + "sales/gtn";
     public static String GTN_SHOW = APP_CONTEXT_PATH + "sales/gtn";
     public static String GTN_SHOW_DATERANGE = APP_CONTEXT_PATH + "sales/gtnbydaterange";
@@ -593,7 +590,6 @@ public class Links
     public static String UPDATE_DELIVERY_CHALLAN_BALANCE = APP_CONTEXT_PATH + "sales/updatedeliverychallanbalancebyid";
     public static String DELIVERY_CHALLAN_DATERANGE = APP_CONTEXT_PATH + "sales/deliverychallanbydaterange";
     public static String DELIVERY_CHALLAN_DATERANGE_CUSTOMER = APP_CONTEXT_PATH + "sales/deliverychallanbydaterangecustomer";
-
 
 
     //    Goods transfer note products
@@ -641,9 +637,6 @@ public class Links
     public static String BANK_REGISTER_UPDATE = APP_CONTEXT_PATH + "accounts/bankregister/{id}";
     public static String BANK_REGISTER_DELETE = APP_CONTEXT_PATH + "accounts/bankregister/{id}";
     public static String BANK_REGISTER_BY_ENTITY = APP_CONTEXT_PATH + "accounts/bankregisterbyentity";
-
-
-
 
 
     //GL
@@ -697,7 +690,6 @@ public class Links
     public static String PAYMENT_DETAIL_LOG_GRN_ID = APP_CONTEXT_PATH + "accounts/billpaymentloggrnbypaymentId";
 
 
-
     //Credit
     public static String CREDIT_SHOW = APP_CONTEXT_PATH + "accounts/creditjv";
     public static String CREDIT_SAVE = APP_CONTEXT_PATH + "accounts/creditjv";
@@ -740,7 +732,6 @@ public class Links
     public static String GET_DRAFTS_PURCHASE_BILLS = APP_CONTEXT_PATH + "purchase/drafts-purchase-bill";
 
 
-
     //purchase product bill details
     public static String PURCHASE_BILL_SHOW = APP_CONTEXT_PATH + "purchase/billdetail";
     public static String PURCHASE_BILL_SAVE = APP_CONTEXT_PATH + "purchase/billdetail";
@@ -766,7 +757,6 @@ public class Links
     public static String PURCHASE_RETURN_PRODUCT_BATCH_BILL = APP_CONTEXT_PATH + "purchase/getpurchasereturndetailsby-product-batch-purbill";
     public static String PURCHASE_RETURN_RECENT = APP_CONTEXT_PATH + "purchase/purchase-return/recent";
     public static String PURCHASE_RETURN_CANCEL = APP_CONTEXT_PATH + "purchase/purchase-return/cancel";
-
 
 
     //e-Invoice
@@ -812,12 +802,12 @@ public class Links
     public static String TRANSPORTER_TYPE_DELETE = APP_CONTEXT_PATH + "shipments/transporter/{id}";
 
 
-//    Sample Conversion logs
-    public  static  String SAMPLE_CONVERSION_LOGS = APP_CONTEXT_PATH + "sales/sampleconversionlogs";
-    public  static  String SAMPLE_CONVERSION_LOGS_DATATABLE = APP_CONTEXT_PATH + "sales/sampleconversionlogs/datatable";
+    //    Sample Conversion logs
+    public static String SAMPLE_CONVERSION_LOGS = APP_CONTEXT_PATH + "sales/sampleconversionlogs";
+    public static String SAMPLE_CONVERSION_LOGS_DATATABLE = APP_CONTEXT_PATH + "sales/sampleconversionlogs/datatable";
 
 
-//    Sample invoicing
+    //    Sample invoicing
     public static String SAMPLE_INVOICE_SAVE = APP_CONTEXT_PATH + "sales//sampleconversion/save-invoice";
     public static String SAMPLE_INVOICE_RECENT = APP_CONTEXT_PATH + "sales/sampleconversion/getrecent";
     public static String SAMPLE_INVOICE_SHOW = APP_CONTEXT_PATH + "sales/sampleconversion";
@@ -841,7 +831,7 @@ public class Links
     public static String PURCHASE_ORDER_DATERANGE_SUPPLIER = APP_CONTEXT_PATH + "purchase" + "/purchaseorderbydaterangesupplier";
 
 
-//    Purchase Order Product Details
+    //    Purchase Order Product Details
     public static String PURCHASE_ORDER_PRODUCT_SHOW = APP_CONTEXT_PATH + "purchase/orderproductdetail";
     public static String PURCHASE_ORDER_PRODUCT_SAVE = APP_CONTEXT_PATH + "purchase/orderproductdetail";
     public static String PURCHASE_ORDER_PRODUCT_DELETE = APP_CONTEXT_PATH + "purchase/orderproductdetail/{id}";
@@ -849,4 +839,8 @@ public class Links
 
 
     public static String ENTITY_DOMAIN_TYPE = APP_CONTEXT_PATH + "entity/entity-domain-type";
+
+    //    save day end logs
+    public static String SAVE_DAY_END_LOGS = APP_CONTEXT_PATH + "entity/day-end-logs";
+
 }

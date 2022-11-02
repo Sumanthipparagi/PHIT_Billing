@@ -157,8 +157,8 @@
             text: "All draft details and temp stock data will be removed!!",
             icon: 'warning',
             showCancelButton: true,
-            cancelButtonText: 'No, cancel!',
-            confirmButtonText: 'Yes, delete it!',
+            cancelButtonText: 'No',
+            confirmButtonText: 'Yes',
             reverseButtons: false
         }).then((result) => {
             if (result.isConfirmed) {

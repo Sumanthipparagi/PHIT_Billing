@@ -2679,6 +2679,25 @@ class EntityService {
             System.err.println('Service :EntityService , action :  getEntityDomainType  , Ex:' + ex)
             log.error('Service :EntityService , action :  getEntityDomainType  , Ex:' + ex)
         }
+    }
+
+    //Day End Logs
+    def saveDayEndLogs(JSONObject jsonObject) {
+        Client client = ClientBuilder.newClient()
+        WebTarget target = client.target(new Links().API_GATEWAY)
+        try {
+            println(jsonObject)
+            Response apiResponse = target
+                    .path(new Links().SAVE_DAY_END_LOGS)
+                    .request(MediaType.APPLICATION_JSON_TYPE)
+                    .post(Entity.entity(jsonObject.toString(), MediaType.APPLICATION_JSON_TYPE))
+            return apiResponse
+        }
+        catch (Exception ex) {
+            System.err.println('Service :EntityService , action :  saveDayEnd  , Ex:' + ex)
+            log.error('Service :EntityService , action :  saveDayEnd  , Ex:' + ex)
+        }
 
     }
+
 }

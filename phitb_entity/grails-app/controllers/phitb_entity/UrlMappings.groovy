@@ -400,6 +400,8 @@ class UrlMappings
 
             "/status"(controller: 'status', action: 'index')
 
+//            Day End Logs
+            "/day-end-logs"(controller: 'dayEndLog', action: 'save')
 
             //Entity Domain type
             "/entity-domain-type(.$format)"(controller: 'entitySetting'){action = [POST: 'saveEntityDomainType', GET: 'getEntityDomainTypes']}

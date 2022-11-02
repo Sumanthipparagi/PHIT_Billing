@@ -332,6 +332,14 @@ class DashboardController
             if(deleteDraftPurchaseBillDetails.status == 200){
                 jsonObject.put("deleteDraftPurchaseBill","SUCCESS")
             }
+            JSONObject jsonObject1 = new JSONObject();
+            jsonObject1.put("entityId",session.getAttribute('entityId'))
+            jsonObject1.put("entityTypeId",session.getAttribute('entityTypeId'))
+            jsonObject1.put("userId",session.getAttribute('userId'))
+            def saveDayEndLogs = new EntityService().saveDayEndLogs(jsonObject1)
+            if(saveDayEndLogs.status == 200){
+                println("Day end Logs Saved!")
+            }
             respond jsonObject,formats: ['json'], status: 200;
         }
         catch (Exception e)
