@@ -8,6 +8,13 @@ import phbit_system.Exception.ResourceNotFoundException
 @Transactional
 class PriorityMasterService {
 
+    /**
+     * Gets all priority
+     * @param query
+     * @param offset
+     * @param limit
+     * @return list of priority
+     */
     def getAll(String limit, String offset, String query) {
 
         Integer o = offset ? Integer.parseInt(offset.toString()) : 0
@@ -19,10 +26,20 @@ class PriorityMasterService {
             return PriorityMaster.findAllByPriorityIlike("%" + query + "%", [sort: 'id', max: l, offset: o, order: 'desc'])
     }
 
+    /**
+     * Get all priority by id
+     * @param id
+     * @return list of priority
+     */
     PriorityMaster get(String id) {
         return PriorityMaster.findById(Long.parseLong(id))
     }
 
+    /**
+     * Get all priority by entityId
+     * @param entityId
+     * @return list of priority by entity
+     */
     def getAllByEntityId(String limit, String offset, long entityId) {
 
         Integer o = offset ? Integer.parseInt(offset.toString()) : 0
@@ -34,6 +51,10 @@ class PriorityMasterService {
             return PriorityMaster.findAllByEntityId(entityId,[sort: 'id', max: l, offset: o, order: 'desc'])
     }
 
+    /**
+     * Gets all priority in datatables format
+     * @return list of priority
+     */
     JSONObject dataTables(JSONObject paramsJsonObject, String start, String length)
     {
         String searchTerm = paramsJsonObject.get("search[value]")
@@ -75,6 +96,11 @@ class PriorityMasterService {
         return jsonObject
     }
 
+    /**
+     * Save new priority
+     * @param priority
+     * @return saved priority
+     */
     PriorityMaster save(JSONObject jsonObject) {
         String priority = jsonObject.get("priority")
         if (priority) {
@@ -91,6 +117,11 @@ class PriorityMasterService {
         }
     }
 
+    /**
+     * Update new priority
+     * @param priority
+     * @return saved priority
+     */
     PriorityMaster update(JSONObject jsonObject, String id) {
         String priority = jsonObject.get("priority")
         if (priority && id) {

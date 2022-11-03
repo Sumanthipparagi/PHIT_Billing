@@ -393,6 +393,7 @@ class UrlMappings {
         "/product/datatable"(controller: "product", action: "dataTable")
         "/product/update/$id"(controller:"product",action:"update")
         "/product/delete/$id"(controller: "product",action:"delete")
+        "/product/product-export"(controller: 'product', action: 'productReportExport')
 
 
         //      Division

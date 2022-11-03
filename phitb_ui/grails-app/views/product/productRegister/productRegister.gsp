@@ -101,8 +101,15 @@
                         <a href="/product/add-product">  <button type="button"
                                                                              class="btn btn-round btn-primary m-t-15 addbtn" data-toggle="modal"><font style="vertical-align: inherit;"><font
                                     style="vertical-align: inherit;">Add Product Register</font></font></button></a>
+
+
                     </div>
+
+
                     <div class="body">
+
+                        <button type="button" class="btn btn-round btn-primary  addbtn"  id="exportWorksheet" >Export</button>
+                        <br><br>
                         <div class="table-responsive">
                             <table
                                     class="table table-bordered table-striped table-hover productRegisterTable dataTable">
@@ -157,6 +164,7 @@
 <asset:javascript src="/themeassets/plugins/momentjs/moment.js"/>
 <asset:javascript src="/themeassets/plugins/bootstrap-material-datetimepicker/js/bootstrap-material-datetimepicker.js"/>
 <asset:javascript src="/themeassets/js/pages/forms/basic-form-elements.js"/>
+<asset:javascript src="/themeassets/plugins/jsonToExcel/xlsx.full.min.js"/>
 
 <script>
 
@@ -300,6 +308,40 @@
     }
 
 
+    $( document ).ready(function() {
+        $("#exportWorksheet").click(function() {
+
+            $.ajax({
+                url: "/product/product-export",
+                type: "GET",
+                contentType: false,
+                processData: false,
+                success: function(data) {
+                    var jsonDataObject = eval(data);
+                    exportWorksheet(jsonDataObject);
+                },
+                error: function () {
+                    Swal.fire("Error!", "Something went wrong", "error");
+
+                }
+            });
+        });
+
+      /*  $("#exportWorksheetPlus").click(function() {
+            var josnData = $("#josnData").val();
+            var jsonDataObject = eval(josnData);
+            exportWSPlus(jsonDataObject);
+        });*/
+
+    });
+
+    function exportWorksheet(jsonObject) {
+        var myFile = "product-report.xlsx";
+        var myWorkSheet = XLSX.utils.json_to_sheet(jsonObject);
+        var myWorkBook = XLSX.utils.book_new();
+        XLSX.utils.book_append_sheet(myWorkBook, myWorkSheet, "myWorkSheet");
+        XLSX.writeFile(myWorkBook, myFile);
+    }
 </script>
 
 <g:include view="controls/footer-content.gsp"/>

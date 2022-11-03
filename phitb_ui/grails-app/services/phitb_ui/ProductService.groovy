@@ -2,6 +2,13 @@ package phitb_ui
 
 import grails.gorm.transactions.Transactional
 import grails.web.servlet.mvc.GrailsHttpSession
+import org.apache.poi.ss.usermodel.CellStyle
+import org.apache.poi.ss.usermodel.Font
+import org.apache.poi.ss.usermodel.HorizontalAlignment
+import org.apache.poi.ss.util.CellRangeAddress
+import org.apache.poi.xssf.usermodel.XSSFRow
+import org.apache.poi.xssf.usermodel.XSSFSheet
+import org.apache.poi.xssf.usermodel.XSSFWorkbook
 import org.glassfish.jersey.jackson.JacksonFeature
 import org.grails.web.json.JSONArray
 import org.grails.web.json.JSONObject
@@ -2070,6 +2077,86 @@ class ProductService {
             System.err.println('Service :ProductService , action :  getByProductIdAndHSN  , Ex:' + ex)
             log.error('Service :ProductService , action :  getByProductIdAndHSN  , Ex:' + ex)
         }
+    }
+
+
+    XSSFWorkbook getExportEventXls(JSONArray productArray, String detailRow)
+    {
+
+        //Create blank workbook
+        XSSFWorkbook workbook = new XSSFWorkbook()
+        //Create a blank sheet
+        XSSFSheet spreadsheet = workbook.createSheet("Service Request")
+        //Create row object
+        XSSFRow row
+
+        CellStyle style = workbook.createCellStyle()//Create style
+        Font font = workbook.createFont()//Create fonts
+        font.setBold(true)//Make font bold
+        style.setFont(font)//set it to bold
+        style.setAlignment(HorizontalAlignment.CENTER)
+
+        row = spreadsheet.createRow(0)
+        row.createCell(0).setCellValue("Product reports")
+        spreadsheet.addMergedRegion(new CellRangeAddress(0, 0, 0, 55))
+        row.getCell(0).setCellStyle(style)
+
+        row = spreadsheet.createRow(1)
+        row.createCell(0).setCellValue("")
+        spreadsheet.addMergedRegion(new CellRangeAddress(1, 1, 0, 55))
+        row.getCell(0).setCellStyle(style)
+
+        row = spreadsheet.createRow(2)
+        row.createCell(0).setCellValue(detailRow)
+        spreadsheet.addMergedRegion(new CellRangeAddress(2, 2, 0, 55))
+        row.getCell(0).setCellStyle(style)
+
+        row = spreadsheet.createRow(3)
+        row.createCell(0).setCellValue("")
+        spreadsheet.addMergedRegion(new CellRangeAddress(3, 3, 0, 55))
+
+
+        row = spreadsheet.createRow(4)
+        row.createCell(0).setCellValue("Service request List")
+        spreadsheet.addMergedRegion(new CellRangeAddress(4, 4, 0, 5))
+        row.getCell(0).setCellStyle(style)
+
+
+        int rowid = 5
+        int cellid = 0
+
+        row = spreadsheet.createRow(5)
+        row.createCell(cellid++).setCellValue("Type")
+        row.createCell(cellid++).setCellValue("Customer")
+        row.createCell(cellid++).setCellValue("Address")
+        row.createCell(cellid++).setCellValue("Created Date")
+        row.createCell(cellid++).setCellValue("Status")
+        cellid = 0
+
+        if (productArray != null)
+        {
+            rowid = 6
+
+            for (def product : productArray)
+            {
+                println(product)
+                row = spreadsheet.createRow(rowid++)
+                row.createCell(cellid++).setCellValue(product.productName.toString())
+
+                row.createCell(cellid++).setCellValue(product.purchaseMarginPercent.toString())
+//
+                row.createCell(cellid++).setCellValue(product.sendMail?.toString())
+//
+                row.createCell(cellid++).setCellValue(product.ccmProduct?.toString())
+//
+                row.createCell(cellid++).setCellValue(product.ccmProduct?.toString())
+                cellid = 0
+
+            }
+        }
+
+        return workbook
+
     }
 
 

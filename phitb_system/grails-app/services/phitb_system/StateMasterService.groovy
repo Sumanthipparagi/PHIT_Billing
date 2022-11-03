@@ -12,6 +12,13 @@ import grails.rest.*
 class StateMasterService
 {
 
+    /**
+     * Gets all states
+     * @param query
+     * @param offset
+     * @param limit
+     * @return list of states
+     */
     def getAll(String limit, String offset, String query)
     {
 
@@ -29,11 +36,22 @@ class StateMasterService
         }
     }
 
+    /**
+     * Gets  state by selected Id
+     * @param  id
+     * @return state by Id
+     */
     StateMaster get(String id)
     {
         return StateMaster.findById(Long.parseLong(id))
     }
 
+
+    /**
+     * Get entity by selected Id
+     * @param  id
+     * @return state by Id
+     */
     def getAllByEntityId(String limit, String offset, long id) {
 
         Integer o = offset ? Integer.parseInt(offset.toString()) : 0
@@ -46,6 +64,10 @@ class StateMasterService
     }
 
 
+    /**
+     * Gets all states in datatables format
+     * @return list of states
+     */
     JSONObject dataTables(JSONObject paramsJsonObject, String start, String length)
     {
         String searchTerm = paramsJsonObject.get("search[value]")
@@ -97,6 +119,11 @@ class StateMasterService
         return jsonObject
     }
 
+    /**
+     * Save new state
+     * @param state
+     * @return saved state
+     */
     StateMaster save(JSONObject jsonObject)
     {
         StateMaster stateMaster = new StateMaster()
@@ -114,6 +141,11 @@ class StateMasterService
         }
     }
 
+    /**
+     * Update  new state
+     * @param state
+     * @return updated state
+     */
     StateMaster update(JSONObject jsonObject, String id)
     {
         if (id)
@@ -146,6 +178,11 @@ class StateMasterService
         }
     }
 
+    /**
+     * Delete selected state
+     * @param id
+     * @return returns status code 200
+     */
     void delete(String id)
     {
         if (id)

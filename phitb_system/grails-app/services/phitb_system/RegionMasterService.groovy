@@ -8,6 +8,13 @@ import phbit_system.Exception.ResourceNotFoundException
 @Transactional
 class RegionMasterService {
 
+    /**
+     * Gets all region master
+     * @param query
+     * @param offset
+     * @param limit
+     * @return list of region master
+     */
     def getAll(String limit, String offset, String query) {
 
         Integer o = offset ? Integer.parseInt(offset.toString()) : 0
@@ -19,10 +26,20 @@ class RegionMasterService {
             return RegionMaster.findAllByRegionName("%" + query + "%", [sort: 'id', max: l, offset: o, order: 'desc'])
     }
 
+    /**
+     * Get requested region master
+     * @param id
+     * @return get requested region master
+     */
     RegionMaster get(String id) {
         return RegionMaster.findById(Long.parseLong(id))
     }
 
+    /**
+     * Get requested region master by entityId
+     * @param entityId
+     * @return get requested region master
+     */
     def getAllByEntityId(String limit, String offset, long id) {
 
         Integer o = offset ? Integer.parseInt(offset.toString()) : 0
@@ -33,6 +50,10 @@ class RegionMasterService {
             return RegionMaster.findAllById(id,[sort: 'id', max: l, offset: o, order: 'desc'])
     }
 
+    /**
+     * Gets all region master in datatables format
+     * @return list of region master
+     */
     JSONObject dataTables(JSONObject paramsJsonObject, String start, String length)
     {
         String searchTerm = paramsJsonObject.get("search[value]")
@@ -79,6 +100,12 @@ class RegionMasterService {
         return jsonObject
     }
 
+
+    /**
+     * Save new region master
+     * @param region master
+     * @return saved region master
+     */
     RegionMaster save(JSONObject jsonObject) {
         RegionMaster region = new RegionMaster()
         region.regionName = jsonObject.get("regionName").toString()
@@ -90,6 +117,11 @@ class RegionMasterService {
             throw new BadRequestException()
     }
 
+    /**
+     * Update new region master
+     * @param region master
+     * @return saved region master
+     */
     RegionMaster update(JSONObject jsonObject, String id) {
         if (id) {
             RegionMaster region = RegionMaster.findById(Long.parseLong(id))
@@ -109,6 +141,11 @@ class RegionMasterService {
         }
     }
 
+    /**
+     * Delete selected region master
+     * @param id
+     * @return returns status code 200
+     */
     void delete(String id) {
         if (id) {
             RegionMaster region = RegionMaster.findById(Long.parseLong(id))

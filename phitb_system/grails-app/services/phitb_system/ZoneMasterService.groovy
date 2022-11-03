@@ -8,6 +8,13 @@ import phbit_system.Exception.ResourceNotFoundException
 @Transactional
 class ZoneMasterService {
 
+    /**
+     * Gets all zones
+     * @param query
+     * @param offset
+     * @param limit
+     * @return list of zones
+     */
     def getAll(String limit, String offset, String query) {
 
         Integer o = offset ? Integer.parseInt(offset.toString()) : 0
@@ -19,10 +26,20 @@ class ZoneMasterService {
             return ZoneMaster.findAllByNameIlike("%" + query + "%", [sort: 'id', max: l, offset: o, order: 'desc'])
     }
 
+    /**
+     * Get requested zone
+     * @param id
+     * @return get requested zone
+     */
     ZoneMaster get(String id) {
         return ZoneMaster.findById(Long.parseLong(id))
     }
 
+    /**
+     * Get requested zone
+     * @param id
+     * @return get requested zone
+     */
     def getAllByEntityId(String limit, String offset, long entityId) {
         Integer o = offset ? Integer.parseInt(offset.toString()) : 0
         Integer l = limit ? Integer.parseInt(limit.toString()) : 100
@@ -32,6 +49,14 @@ class ZoneMasterService {
             return ZoneMaster.findAllByEntityId(entityId,[sort: 'id', max: l, offset: o, order: 'desc'])
     }
 
+
+    /**
+     * Gets all zones in datatables format
+     * @params jsonObject
+     * @params start
+     * @params length
+     * @return list of zones
+     */
     JSONObject dataTables(JSONObject paramsJsonObject, String start, String length)
     {
         String searchTerm = paramsJsonObject.get("search[value]")
@@ -71,6 +96,11 @@ class ZoneMasterService {
         return jsonObject
     }
 
+    /**
+     * Save new zone
+     * @param zone
+     * @return saved zone
+     */
     ZoneMaster save(JSONObject jsonObject) {
         String name = jsonObject.get("name")
         if (name) {
@@ -86,7 +116,14 @@ class ZoneMasterService {
         }
     }
 
-    ZoneMaster update(JSONObject jsonObject, String id) {
+
+
+    /**
+     * Save new zone
+     * @param zone
+     * @return saved zone
+     */
+     ZoneMaster update(JSONObject jsonObject, String id) {
         String name = jsonObject.get("name")
         if (name && id) {
             ZoneMaster zoneMaster = ZoneMaster.findById(Long.parseLong(id))
@@ -105,6 +142,11 @@ class ZoneMasterService {
         }
     }
 
+    /**
+     * Delete selected zone
+     * @param id
+     * @return returns status code 200
+     */
     void delete(String id) {
         if (id) {
             ZoneMaster zoneMaster = ZoneMaster.findById(Long.parseLong(id))

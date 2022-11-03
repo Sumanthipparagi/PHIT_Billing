@@ -8,6 +8,13 @@ import phbit_system.Exception.ResourceNotFoundException
 @Transactional
 class SubAccountTypeMasterService {
 
+    /**
+     * Gets all Sub Account Types
+     * @param query
+     * @param offset
+     * @param limit
+     * @return list of Sub Account Types
+     */
     def getAll(String limit, String offset, String query) {
 
         Integer o = offset ? Integer.parseInt(offset.toString()) : 0
@@ -19,10 +26,22 @@ class SubAccountTypeMasterService {
             return SubAccountTypeMaster.findAllByNameIlike("%" + query + "%", [sort: 'id', max: l, offset: o, order: 'desc'])
     }
 
+    /**
+     * Get requested Sub Account Type
+     * @param id
+     * @return get requested Sub Account Type
+     */
     SubAccountTypeMaster get(String id) {
         return SubAccountTypeMaster.findById(Long.parseLong(id))
     }
 
+    /**
+     * Gets all Sub Account Type by EntityId
+     * @param entityId
+     * @param limit
+     * @param offset
+     * @return list of Sub Account Types
+     */
     def getAllByEntityId(String limit, String offset, long entityId) {
 
         Integer o = offset ? Integer.parseInt(offset.toString()) : 0
@@ -34,6 +53,14 @@ class SubAccountTypeMasterService {
             return SubAccountTypeMaster.findAllByEntityId(entityId,[sort: 'id', max: l, offset: o, order: 'desc'])
     }
 
+
+    /**
+     * Gets all Sub Account Types in datatables format
+     * @param jsonObject
+     * @param start
+     * @param length
+     * @return list of Sub Account Types
+     */
     JSONObject dataTables(JSONObject paramsJsonObject, String start, String length)
     {
         String searchTerm = paramsJsonObject.get("search[value]")
@@ -76,6 +103,11 @@ class SubAccountTypeMasterService {
         return jsonObject
     }
 
+    /**
+     * Save new Sub Account Type
+     * @param Sub Account Type
+     * @return saved Sub Account Type
+     */
     SubAccountTypeMaster save(JSONObject jsonObject) {
         SubAccountTypeMaster subAccountType = new SubAccountTypeMaster()
         subAccountType.name = jsonObject.get("name")
@@ -87,6 +119,11 @@ class SubAccountTypeMasterService {
             throw new BadRequestException()
     }
 
+    /**
+     * update  Sub Account Type
+     * @param Sub Account Type
+     * @return updated Sub Account Type
+     */
     SubAccountTypeMaster update(JSONObject jsonObject, String id) {
         if (id) {
             SubAccountTypeMaster subAccountType = SubAccountTypeMaster.findById(Long.parseLong(id))
@@ -106,6 +143,11 @@ class SubAccountTypeMasterService {
         }
     }
 
+    /**
+     * Delete selected Sub Account Type
+     * @param id
+     * @return returns status code 200
+     */
     void delete(String id) {
         if (id) {
             SubAccountTypeMaster subAccountType = SubAccountTypeMaster.findById(Long.parseLong(id))

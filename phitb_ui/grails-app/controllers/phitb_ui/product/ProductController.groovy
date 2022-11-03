@@ -1,5 +1,14 @@
 package phitb_ui.product
 
+import javafx.scene.control.Cell
+import org.apache.poi.ss.usermodel.CellStyle
+import org.apache.poi.ss.usermodel.Font
+import org.apache.poi.ss.usermodel.HorizontalAlignment
+import org.apache.poi.ss.usermodel.Row
+import org.apache.poi.ss.util.CellRangeAddress
+import org.apache.poi.xssf.usermodel.XSSFRow
+import org.apache.poi.xssf.usermodel.XSSFSheet
+import org.apache.poi.xssf.usermodel.XSSFWorkbook
 import phitb_ui.Constants
 import phitb_ui.EntityService
 import phitb_ui.entity.EntityRegisterController
@@ -11,6 +20,8 @@ import org.grails.web.json.JSONArray
 import org.grails.web.json.JSONObject
 import phitb_ui.Links
 import phitb_ui.ProductService
+
+import java.nio.file.Files
 
 class ProductController {
 
@@ -304,4 +315,29 @@ class ProductController {
          }
      }*/
 
+
+
+
+
+    def productReportExport(){
+        try{
+            JSONArray productArray = new ProductService().getProductByEntity(session.getAttribute('entityId').toString())
+            if(productArray.size()!=0){
+                for(JSONObject product:productArray){
+                    product.put("division",product?.division?.divisionName)
+                    product.put("group",product?.group?.groupName)
+                    product.put("unit",product?.unit?.unitName)
+                    product.put("composition",product?.composition?.compositionName)
+                    product.put("costRange",product?.costRange?.maximumRate)
+                    product.put("productType",product?.productType?.productType)
+                    product.put("schedule",product?.schedule?.scheduleCode)
+                    product.put("category",product?.category?.categoryName)
+                }
+                respond productArray, formats: ['json'], status: 200;
+            }
+        }catch(Exception ex){
+            System.out.println(controllerName+' '+ex)
+            log.error(controllerName+' '+ex)
+        }
+    }
 }

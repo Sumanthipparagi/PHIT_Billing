@@ -13,11 +13,11 @@ class RegionMasterController {
 
     RegionMasterService regionMasterService
     /**
-     * Gets all priority
+     * Gets all region master
      * @param query
      * @param offset
      * @param limit
-     * @return list of priority
+     * @return list of region master
      */
     def index() {
         try {
@@ -29,9 +29,9 @@ class RegionMasterController {
     }
 
     /**
-     * Get requested priority
+     * Get requested region master
      * @param id
-     * @return get requested priority
+     * @return get requested region master
      */
     def show() {
         try {
@@ -83,9 +83,9 @@ class RegionMasterController {
     }
 
     /**
-     * Save new priority
-     * @param priority
-     * @return saved priority
+     * Save new region master
+     * @param region master
+     * @return saved region master
      */
     def save() {
         try {
@@ -108,10 +108,10 @@ class RegionMasterController {
     }
 
     /**
-     * Update existing priority
+     * Update existing region master
      * @param id
-     * @param priority
-     * @return updated priority
+     * @param region master
+     * @return updated region master
      */
     def update() {
         try {
@@ -135,7 +135,7 @@ class RegionMasterController {
     }
 
     /**
-     * Delete selected priority
+     * Delete selected region master
      * @param id
      * @return returns status code 200
      */
@@ -161,8 +161,8 @@ class RegionMasterController {
     }
 
     /**
-     * Gets all priority in datatables format
-     * @return list of priority
+     * Gets all region master in datatables format
+     * @return list of region master
      */
     def dataTable() {
         try {
