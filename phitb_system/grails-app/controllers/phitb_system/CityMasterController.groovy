@@ -190,10 +190,9 @@ class CityMasterController {
 
 
     /**
-     * Update existing city
+     * get city details by pincode
      * @param id
-     * @param city
-     * @return updated cities
+     * @return cities based on pincodes
      */
     def getCityDetailsByPinCode() {
         try {

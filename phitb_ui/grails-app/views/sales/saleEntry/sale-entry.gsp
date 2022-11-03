@@ -271,7 +271,7 @@
                             <div class="col-md-12 col-lg-12 col-sm-12">
                                 <div class="collapse" id="tempStockDetails">
                                     <g:if test="${tempStockArray?.size() > 0}">
-                                        <div class="table-responsive">
+                                        <div class="">
                                             <table class="table table-bordered">
                                                 <thead>
                                                 <tr>

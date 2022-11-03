@@ -57,7 +57,7 @@ class AccountTypeMasterController {
 
 
     /**
-     * Get requested account mode
+     * Get requested account mode by entityId
      * @param id
      * @return get requested account mode
      */

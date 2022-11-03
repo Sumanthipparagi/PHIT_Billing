@@ -8,6 +8,13 @@ import phbit_system.Exception.ResourceNotFoundException
 @Transactional
 class AccountTypeMasterService {
 
+    /**
+     * Gets all account types
+     * @param query
+     * @param offset
+     * @param limit
+     * @return list of account types
+     */
     def getAll(String limit, String offset, String query) {
 
         Integer o = offset ? Integer.parseInt(offset.toString()) : 0
@@ -19,6 +26,13 @@ class AccountTypeMasterService {
             return AccountTypeMaster.findAllByAccountTypeIlike("%" + query + "%", [sort: 'id', max: l, offset: o, order: 'desc'])
     }
 
+    /**
+     * Gets all account types using entityId
+     * @param query
+     * @param offset
+     * @param limit
+     * @return list of account types
+     */
     def getAllByEntityId(String limit, String offset, long entityId) {
 
         Integer o = offset ? Integer.parseInt(offset.toString()) : 0
@@ -30,10 +44,20 @@ class AccountTypeMasterService {
             return AccountTypeMaster.findAllByEntityId(entityId,[sort: 'id', max: l, offset: o, order: 'desc'])
     }
 
+    /**
+     * Gets all account type using id
+     * @param query
+     * @return selected account type
+     */
     AccountTypeMaster get(String id) {
         return AccountTypeMaster.findById(Long.parseLong(id))
     }
 
+    /**
+     * Gets all account type in datatable format
+     * @param query
+     * @return selected account type
+     */
     JSONObject dataTables(JSONObject paramsJsonObject, String start, String length)
     {
         String searchTerm = paramsJsonObject.get("search[value]")
@@ -73,6 +97,11 @@ class AccountTypeMasterService {
         return jsonObject
     }
 
+    /**
+     * save account type master
+     * @param jsonObject
+     * @return saves account type master
+     */
     AccountTypeMaster save(JSONObject jsonObject) {
         String accountType = jsonObject.get("accountType")
         if (accountType) {
@@ -88,6 +117,11 @@ class AccountTypeMasterService {
         }
     }
 
+    /**
+     * update account type master
+     * @param jsonObject, id
+     * @return updates account type master
+     */
     AccountTypeMaster update(JSONObject jsonObject, String id) {
         String accountType = jsonObject.get("accountType")
         if (accountType && id) {
@@ -107,6 +141,11 @@ class AccountTypeMasterService {
         }
     }
 
+    /**
+     * delete account type master
+     * @param id
+     * @return delete account type master
+     */
     void delete(String id) {
         if (id) {
             AccountTypeMaster accountTypeMaster = AccountTypeMaster.findById(Long.parseLong(id))

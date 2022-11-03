@@ -9,6 +9,13 @@ import phbit_system.Exception.ResourceNotFoundException
 @Transactional
 class CountryMasterService {
 
+    /**
+     * Gets all countries
+     * @param query
+     * @param offset
+     * @param limit
+     * @return list of countries
+     */
     def getAll(String limit, String offset, String query) {
 
         Integer o = offset ? Integer.parseInt(offset.toString()) : 0
@@ -20,10 +27,21 @@ class CountryMasterService {
             return CountryMaster.findAllByNameIlike("%" + query + "%", [sort: 'id', max: l, offset: o, order: 'desc'])
     }
 
+
+    /**
+     * Get requested country
+     * @param id
+     * @return get requested country
+     */
     CountryMaster get(String id) {
         return CountryMaster.findById(Long.parseLong(id))
     }
 
+    /**
+     * Get requested country
+     * @param id
+     * @return get requested country
+     */
     def getAllByEntityId(String limit, String offset, long entityId) {
         Integer o = offset ? Integer.parseInt(offset.toString()) : 0
         Integer l = limit ? Integer.parseInt(limit.toString()) : 100
@@ -33,6 +51,10 @@ class CountryMasterService {
             return CountryMaster.findAllByEntityId(entityId,[sort: 'id', max: l, offset: o, order: 'desc'])
     }
 
+    /**
+     * Gets all countries in datatables format
+     * @return list of countries
+     */
     JSONObject dataTables(JSONObject paramsJsonObject, String start, String length)
     {
         String searchTerm = paramsJsonObject.get("search[value]")
@@ -77,6 +99,11 @@ class CountryMasterService {
         return jsonObject
     }
 
+    /**
+     * save all countries
+     * @param  jsonObject
+     * @return saved countries
+     */
     CountryMaster save(JSONObject jsonObject) {
         String name = jsonObject.get("name")
         if (name) {
@@ -93,6 +120,11 @@ class CountryMasterService {
         }
     }
 
+    /**
+     * update city master
+     * @param  jsonObject
+     * @return updated city
+     */
     CountryMaster update(JSONObject jsonObject, String id) {
         String name = jsonObject.get("name")
         if (name && id) {
@@ -113,6 +145,11 @@ class CountryMasterService {
         }
     }
 
+    /**
+     * delete city master
+     * @param  id
+     * @return status 200 if deleted
+     * */
     void delete(String id) {
         if (id) {
             CountryMaster countryMaster = CountryMaster.findById(Long.parseLong(id))

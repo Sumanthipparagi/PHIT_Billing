@@ -8,6 +8,13 @@ import phbit_system.Exception.ResourceNotFoundException
 @Transactional
 class DayMasterService {
 
+    /**
+     * Gets all days
+     * @param query
+     * @param offset
+     * @param limit
+     * @return list of days
+     */
     def getAll(String limit, String offset, String query) {
 
         Integer o = offset ? Integer.parseInt(offset.toString()) : 0
@@ -19,10 +26,20 @@ class DayMasterService {
             return DayMaster.findAllByNameIlike("%" + query + "%", [sort: 'id', max: l, offset: o, order: 'desc'])
     }
 
+    /**
+     * Gets all days
+     * @param query
+     * @return list of days
+     */
     DayMaster get(String id) {
         return DayMaster.findById(Long.parseLong(id))
     }
 
+    /**
+     * Gets all days by entity
+     * @param query
+     * @return list of days by entity
+     */
     def getAllByEntityId(String limit, String offset, long entityId) {
 
         Integer o = offset ? Integer.parseInt(offset.toString()) : 0
@@ -34,6 +51,13 @@ class DayMasterService {
             return DayMaster.findAllByEntityId(entityId,[sort: 'id', max: l, offset: o, order: 'desc'])
     }
 
+    /**
+     * Gets all day in datatables format
+     * @param paramsJsonObject
+     * @param start
+     * @param length
+     * @return list of days by entity
+     */
     JSONObject dataTables(JSONObject paramsJsonObject, String start, String length)
     {
         String searchTerm = paramsJsonObject.get("search[value]")
@@ -88,6 +112,12 @@ class DayMasterService {
         }
     }
 
+    /**
+     *update days by id
+     * @param jsonObject
+     * @param id
+     * @return upadated days
+     */
     DayMaster update(JSONObject jsonObject, String id) {
         String name = jsonObject.get("name")
         if (name && id) {
@@ -107,6 +137,12 @@ class DayMasterService {
         }
     }
 
+    /**
+     * delete dayMaster
+     * @param jsonObject
+     * @param id
+     * @return upadated days
+     */
     void delete(String id) {
         if (id) {
             DayMaster dayMaster = DayMaster.findById(Long.parseLong(id))

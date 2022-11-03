@@ -133,6 +133,12 @@ class AccountModeMasterService
         return jsonObject
     }
 
+
+    /**
+     * Save new account mode
+     * @param mode
+     * @return saved account mode
+     */
     AccountModeMaster save(JSONObject jsonObject)
     {
         String mode = jsonObject.get("mode")
@@ -159,6 +165,11 @@ class AccountModeMasterService
         }
     }
 
+    /**
+     * Update new account mode
+     * @param jsonObject, id
+     * @return saved account mode
+     */
     AccountModeMaster update(JSONObject jsonObject, String id)
     {
         String mode = jsonObject.get("mode")
@@ -192,6 +203,12 @@ class AccountModeMasterService
         }
     }
 
+
+    /**
+     * Delete selected account mode
+     * @param id
+     * @return returns status code 200
+     */
     void delete(String id)
     {
         if (id)

@@ -10,6 +10,13 @@ import phbit_system.Exception.ResourceNotFoundException
 @Transactional
 class CityMasterService {
 
+    /**
+     * Gets all city Master
+     * @param query
+     * @param offset
+     * @param limit
+     * @return list of account types
+     */
     def getAll(String limit, String offset, String query) {
 
         Integer o = offset ? Integer.parseInt(offset.toString()) : 0
@@ -21,10 +28,24 @@ class CityMasterService {
             return CityMaster.findAllByAreaNameIlike("%" + query + "%", [sort: 'id', max: l, offset: o, order: 'desc'])
     }
 
+
+
+    /**
+     * Gets city master by id
+     * @param id
+     * @return city master by id
+     */
     CityMaster get(String id) {
         return CityMaster.findById(Long.parseLong(id))
     }
 
+    /**
+     * Gets city master by entityId
+     * @param limit
+     * @param offset
+     * @param id
+     * @return list of city master by entityId
+     */
     def getAllByEntityId(String limit, String offset, long id) {
 
         Integer o = offset ? Integer.parseInt(offset.toString()) : 0
@@ -35,6 +56,13 @@ class CityMasterService {
             return CityMaster.findAllById(id,[sort: 'id', max: l, offset: o, order: 'desc'])
     }
 
+    /**
+     * Gets city master in datatables format
+     * @param jsonObject
+     * @param start
+     * @param length
+     * @return jsonObject of city master
+     */
     JSONObject dataTables(JSONObject paramsJsonObject, String start, String length)
     {
         String searchTerm = paramsJsonObject.get("search[value]")
@@ -84,6 +112,11 @@ class CityMasterService {
         return jsonObject
     }
 
+    /**
+     * save city master
+     * @param jsonObject
+     * @return saved city master
+     */
     CityMaster save(JSONObject jsonObject) {
         CityMaster cityMaster = new CityMaster()
         cityMaster.circleName = jsonObject.get("circleName").toString()
@@ -127,6 +160,12 @@ class CityMasterService {
             throw new BadRequestException()
     }
 
+    /**
+     * update city master
+     * @param jsonObject
+     * @param id
+     * @return updated city master
+     */
     CityMaster update(JSONObject jsonObject, String id) {
         if (id) {
             CityMaster cityMaster = CityMaster.findById(Long.parseLong(id))
@@ -178,6 +217,12 @@ class CityMasterService {
         }
     }
 
+
+    /**
+     * delete city master
+     * @param id
+     * @return deleted city master
+     */
     void delete(String id) {
         if (id) {
             CityMaster cityMaster = CityMaster.findById(Long.parseLong(id))
@@ -192,6 +237,11 @@ class CityMasterService {
         }
     }
 
+    /**
+     * get city details by pincode
+     * @param id
+     * @return cities based on pincodes
+     */
     def getCityDetailsByPinCode(String pincode)
     {
         try {
