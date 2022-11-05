@@ -38,7 +38,7 @@ public class EinvoiceHelper {
         //PFXPassword = "tcs".toCharArray();
         if(classLoader != null) {
             jksFilePath = Objects.requireNonNull(classLoader.getResource("KeyStore/KeyStore.jks")).getPath();
-            publicKeyPath = Objects.requireNonNull(classLoader.getResource("KeyStore/publicKey")).getPath();
+            publicKeyPath = Objects.requireNonNull(classLoader.getResource("KeyStore/publicKey.pem")).getPath();
         }
     }
 

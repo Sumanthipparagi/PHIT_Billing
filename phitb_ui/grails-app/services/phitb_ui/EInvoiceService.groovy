@@ -118,7 +118,9 @@ class EInvoiceService {
         authPayload.put("ForceRefreshAccessToken", true)
 
         String base64EncodedPayload = Base64.getEncoder().encodeToString(authPayload.toString().getBytes());
-        byte[] b = new NicV4TokenPayloadGen().readFile(this.class.classLoader.getResource('KeyStore/publicKey').file)
+        String publicKeyPath = this.class.classLoader.getResource('KeyStore/publicKey.pem').file
+//        publicKeyPath = publicKeyPath.substring(1,publicKeyPath.length());
+        byte[] b = new NicV4TokenPayloadGen().readFile(publicKeyPath)
         NicV4TokenPayloadGen gen = new NicV4TokenPayloadGen(b);
         String encData = gen.encryptPayload(base64EncodedPayload);
         JSONObject finalPayLoad = new JSONObject()
