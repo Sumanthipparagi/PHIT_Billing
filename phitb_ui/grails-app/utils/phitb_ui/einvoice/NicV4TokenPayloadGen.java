@@ -31,7 +31,7 @@ public class NicV4TokenPayloadGen {
     public static void main(String[] args) throws InvalidKeyException, InvalidKeySpecException, NoSuchAlgorithmException, NoSuchPaddingException, IllegalBlockSizeException, BadPaddingException, NoSuchProviderException, IOException
     {
         //To encrypt auth-token payload payload
-        String randomAppKey = "8rZqQ01ZEqeoRLqoLgu2vLsT0BMtS7ex";
+      /*  String randomAppKey = "8rZqQ01ZEqeoRLqoLgu2vLsT0BMtS7ex";
 
         String base64EncodedAppKey = Base64.getEncoder().encodeToString(randomAppKey.getBytes());
         System.out.println("base64EncodedAppKey : " + base64EncodedAppKey);
@@ -47,7 +47,7 @@ public class NicV4TokenPayloadGen {
         byte[] b = readFile("C:\\Users\\arjun\\Desktop\\publicKey.pem.pem");
         NicV4TokenPayloadGen gen = new NicV4TokenPayloadGen(b);
 
-        gen.encryptPayload(base64EncodedPayload);
+        gen.encryptPayload(base64EncodedPayload);*/
 
 
         //Decode Base64
@@ -73,11 +73,7 @@ public class NicV4TokenPayloadGen {
             cipherData = cipher.doFinal(data.getBytes(StandardCharsets.UTF_8));
             cipherResult = java.util.Base64.getEncoder().encodeToString(cipherData);
         }
-        catch (IllegalBlockSizeException e)
-        {
-            e.printStackTrace();
-        }
-        catch (BadPaddingException e)
+        catch (IllegalBlockSizeException | BadPaddingException e)
         {
             e.printStackTrace();
         }
