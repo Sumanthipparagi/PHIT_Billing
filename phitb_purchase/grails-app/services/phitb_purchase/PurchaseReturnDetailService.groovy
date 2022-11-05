@@ -262,7 +262,40 @@ class PurchaseReturnDetailService {
         }
     }
 
-
+    def getByDateRangeAndEntity(String dateRange, String entityId)
+    {
+        try {
+            SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy")
+            Date fromDate = sdf.parse(dateRange.split("-")[0].trim().toString())
+            Date toDate = sdf.parse(dateRange.split("-")[1].trim().toString())
+            Calendar cal = Calendar.getInstance();
+            cal.setTime(toDate)
+            cal.set(Calendar.HOUR_OF_DAY, 23)
+            cal.set(Calendar.MINUTE, 59)
+            cal.set(Calendar.SECOND, 59)
+            cal.set(Calendar.MILLISECOND, 999)
+            toDate = cal.getTime()
+            long eid = Long.parseLong(entityId)
+            JSONArray finalBills = new JSONArray()
+            ArrayList<PurchaseReturn> purchaseReturnDetails = PurchaseReturn.findAllByEntityIdAndDateCreatedBetween(eid, fromDate, toDate)
+            for (PurchaseReturn purchaseReturn : purchaseReturnDetails) {
+                JSONObject purchaseRetrun = new JSONObject((purchaseReturn as JSON).toString())
+                def productDetails = PurchaseProductDetail.findAllByBillId(purchaseReturn.id)
+                if (productDetails) {
+                    JSONArray prdt =  new  JSONArray((productDetails as JSON).toString())
+                    purchaseRetrun.put("products", prdt)
+                }
+                finalBills.add(purchaseRetrun)
+            }
+            println(finalBills)
+            return finalBills
+        }
+        catch (Exception ex)
+        {
+            ex.printStackTrace()
+            throw new BadRequestException()
+        }
+    }
 
     def getPurchaseReturnDetailsByBill(String id)
     {

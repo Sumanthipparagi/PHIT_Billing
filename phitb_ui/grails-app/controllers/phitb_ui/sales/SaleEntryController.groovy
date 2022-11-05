@@ -894,6 +894,8 @@ class SaleEntryController
                 JSONObject city = new SystemService().getCityById(entity.get('cityId').toString())
                 JSONObject custcity = new SystemService().getCityById(customer.get('cityId').toString())
                 JSONArray termsConditions = new EntityService().getTermsContionsByEntity(session.getAttribute("entityId").toString())
+
+
                 termsConditions.each {
                     JSONObject formMaster = new SystemService().getFormById(it.formId.toString())
                     if (formMaster != null)
@@ -1617,7 +1619,7 @@ class SaleEntryController
                                                                       irnDetails        : irnDetails,
                                                                       transportDetails  : transportDetails,
                                                                       groupDetails      : groupDetails,
-                                                                      settings          : settings
+                                                                      settings          : settings,
                 ])
 
             }
@@ -1628,7 +1630,7 @@ class SaleEntryController
             }
         }catch(Exception ex){
             println(ex)
-            log.error(ex)
+//            log.error(ex)
         }
     }
 

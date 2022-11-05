@@ -3,7 +3,7 @@
 <html>
 
 <head>
-    <title>Sale Invoice</title>
+    <title>Tax Invoice</title>
     <style>
 
 
@@ -278,11 +278,11 @@
                     <strong>TAX INVOICE</strong>
                     <ul style="margin: 0;">
 
-                        <li><b class="tab">Invoice No</b>:  <strong style="font-size: 13px;"><g:if
+                        <li><b class="tab">Invoice No</b>:  <strong style="font-size: 16px;"><g:if
                                 test="${saleBillDetail.billStatus == 'CANCELLED'}"><del>${saleBillDetail.invoiceNumber}</del></g:if><g:else>${saleBillDetail.invoiceNumber}</g:else>
                         </strong></li>
                         <li><b class="tab">Inv Date</b>:&nbsp;<span id="invDate" style="font-size: 13px;"></span></li>
-                        <li><b class="tab">Due Date</b>:&nbsp;<span id="dueDate"
+                        <li><b class="tab">DUE DATE</b>:&nbsp;<span id="dueDate"
                                                                     style="font-size: 13px;font-weight: bold;"></span>
                         </li>
                         %{--                <li><b class="tab">No of cases</b>:</li>--}%
@@ -298,6 +298,7 @@
                         <li><b class="tab">Location</b>: ${city?.districtName}</li>
                         <li><b class="tab">Phone</b>: ${entity.phoneNumber}</li>
                         <li><b class="tab">GST No</b>: ${entity.gstn}</li>
+                        <li><b class="tab">PAN No</b>: ${entity.pan}</li>
                         <li><b class="tab">FAX No</b>: ${entity.faxNumber}</li>
                         <li><b class="tab">DL No1</b>: ${entity.drugLicence1}</li>
                         <li><b class="tab">DL No2</b>: ${entity.drugLicence2}</li>
@@ -310,7 +311,7 @@
                 </td>
                 <td colspan="6" style="vertical-align:top;">
                     <ul>
-                        <li><b class="tab">DELIVERY AT</b>:&nbsp;${custcity?.districtName}</li>
+%{--                        <li><b class="tab">DELIVERY AT</b>:&nbsp;${custcity?.districtName}</li>--}%
                         <li><b class="tab">GST NO</b>: ${customer.gstn}</li>
                         <li><b class="tab">Phone</b>: ${customer.phoneNumber}</li>
                         <li><b class="tab">PAN</b>: ${customer.pan}</li>
@@ -331,7 +332,7 @@
                 </td>
                 <td colspan="6" style="vertical-align:top;">
                     <ul>
-                        <li><b class="tab">DELIVERY AT</b>:&nbsp;${custcity?.districtName}</li>
+%{--                        <li><b class="tab">DELIVERY AT</b>:&nbsp;${custcity?.districtName}</li>--}%
                         <li><b class="tab">GST NO</b>: ${customer.gstn}</li>
                         <li><b class="tab">Phone</b>: ${customer.phoneNumber}</li>
                         <li><b class="tab">PAN</b>: ${customer.pan}</li>
@@ -372,7 +373,7 @@
                 <th>Material HSN Code</th>
                 <th>Material Description</th>
                 <th>Pack(size)</th>
-                <th>C</th>
+%{--                <th>C</th>--}%
                 <th>Batch no.</th>
                 <th>Exp Date</th>
                 %{--        <th>Mfg Date/ Use Before</th>--}%
@@ -407,7 +408,7 @@
         %>
         <tbody>
 
-        <g:if test="${settings.size()!= 0}">
+        <g:if test="${settings.size()!= 0 && settings?.IPG!= Constants.NONE}">
             <g:each var="key, groupData" in="${groupDetails}" status="i">
 
                 <%
@@ -420,7 +421,7 @@
 
 
                 %>
-                <tr><td colspan="21">${groupData[0]?.sortDetail?.sortItem}</td></tr>
+                <tr><td colspan="20">${groupData[0]?.sortDetail?.sortItem}</td></tr>
                 <g:each var="pd" in="${groupData}" status="j">
                     <%
                         divGstGroup = new HashMap<>()
@@ -484,7 +485,7 @@
                         <td>${pd.productId.hsnCode}</td>
                         <td><b>${pd.productId.productName}</b></td>
                         <td><b>${pd.productId.unitPacking}</b></td>
-                        <td><b>${pd?.productId?.schedule?.scheduleCode}</b></td>
+%{--                        <td><b>${pd?.productId?.schedule?.scheduleCode}</b></td>--}%
                         <td>${pd.batchNumber}</td>
                         <td id="expDate${pd.id}">${pd.expiryDate}</td>
                         %{--            <td></td>--}%
@@ -524,17 +525,17 @@
                             sgst.push(pd.sgstAmount / amount * 100)
                             igst.push(pd.igstAmount / amount * 100)
                         %>
-                        <td>${String.format("%.2f", pd.cgstAmount)}<br>${String.format("%.2f", pd.cgstAmount / amount * 100)}
+                        <td>${String.format("%.2f", pd.cgstAmount)}<br>${String.format("%.2f", pd.cgstPercentage).toString()+"%"}
                         </td>
-                        <td>${String.format("%.2f", pd.sgstAmount)}<br>${String.format("%.2f", pd.sgstAmount / amount * 100)}
+                        <td>${String.format("%.2f", pd.sgstAmount)}<br>${String.format("%.2f", pd.sgstPercentage).toString()+"%"}
                         </td>
-                        <td>${String.format("%.2f", pd.igstAmount)}<br>${String.format("%.2f", pd.igstAmount / amount * 100)}
+                        <td>${String.format("%.2f", pd.igstAmount)}<br>${String.format("%.2f", pd.igstPercentage).toString()+"%"}
                         </td>
                         <td>${String.format("%.2f", pd.amount)}</td>
                     </tr>
                 </g:each>
                 <tr>
-                    <td colspan="14">
+                    <td colspan="13">
                     </td>
                     <% divtotal = divtotalBeforeTaxes + divTotalcgst + divTotalsgst + divTotaligst %>
                     <td><b>Total</b></td>
@@ -554,7 +555,7 @@
                     <td>${sp.productId.hsnCode}</td>
                     <td><b>${sp.productId.productName}</b></td>
                     <td><b>${sp.productId.unitPacking}</b></td>
-                    <td><b>${sp?.productId?.schedule?.scheduleCode}</b></td>
+%{--                    <td><b>${sp?.productId?.schedule?.scheduleCode}</b></td>--}%
                     <td>${sp.batchNumber}</td>
                     <td id="expDate${sp.id}">${sp.expiryDate}</td>
 %{--                    <td></td>--}%
@@ -594,18 +595,26 @@
                         sgst.push(sp.sgstAmount / amount * 100)
                         igst.push(sp.igstAmount / amount * 100)
                     %>
-                    <td>${String.format("%.2f", sp.cgstAmount)}<br>${String.format("%.2f", sp.cgstAmount / amount * 100)}
+                    <td>${String.format("%.2f", sp.cgstAmount)}<br>${String.format("%.2f", sp.cgstPercentage).toString()+"%"}
                     </td>
-                    <td>${String.format("%.2f", sp.sgstAmount)}<br>${String.format("%.2f", sp.sgstAmount / amount * 100)}
+                    <td>${String.format("%.2f", sp.sgstAmount)}<br>${String.format("%.2f", sp.sgstPercentage).toString()+"%"}
                     </td>
-                    <td>${String.format("%.2f", sp.igstAmount)}<br>${String.format("%.2f", sp.igstAmount / amount * 100)}
+                    <td>${String.format("%.2f", sp.igstAmount)}<br>${String.format("%.2f", sp.igstPercentage).toString()+"%"}
                     </td>
                     <td>${String.format("%.2f", sp.amount)}</td>
                 </tr>
             </g:each>
         </g:else>
         <tr>
-            <td colspan="14">Amount in words: <b>${WordsToNumbersUtil.convertToIndianCurrency(total.toString())}</b>
+            <td colspan="13">Amount in words: <b> <g:if test="${settings.RON == Constants.NEXT_INTEGER_VALUE}">
+                ${WordsToNumbersUtil.convertToIndianCurrency(String.format("%.2f", Math.ceil(total)).toString())}
+        </g:if>
+            <g:elseif test="${settings.RON == Constants.PREVIOUS_INTEGER_VALUE}">
+                ${WordsToNumbersUtil.convertToIndianCurrency(String.format("%.2f", Math.floor(total)).toString())}
+            </g:elseif>
+            <g:else>
+                ${WordsToNumbersUtil.convertToIndianCurrency(String.format("%.2f", total))}
+            </g:else></b>
             </td>
             <td><b>Total</b></td>
             <td>${String.format("%.2f", totalBeforeTaxes)}</td>
@@ -690,9 +699,24 @@
                     <td>0.00</td>
                 </tr>
                 <tr>
-                    <th>Add Rounding off*</th>
-                    <td>0.00</td>
-                    <td>0.00</td>
+                    <th>Rounding off*</th>
+                    <g:if test="${settings.RON == Constants.NEXT_INTEGER_VALUE}">
+                        <td>${String.format("%.2f", Math.ceil(total))}</td>
+                    </g:if>
+                    <g:elseif test="${settings.RON == Constants.PREVIOUS_INTEGER_VALUE}">
+                        <td>${String.format("%.2f", Math.floor(total))}</td>
+                    </g:elseif>
+                    <g:else>
+                        <td>0.00</td>
+                    </g:else>                    <g:if test="${settings.RON == Constants.NEXT_INTEGER_VALUE}">
+                        <td>${String.format("%.2f",Double.parseDouble(String.format("%.2f", Math.ceil(total)).toString()) - total)}</td>
+                    </g:if>
+                    <g:elseif test="${settings.RON == Constants.PREVIOUS_INTEGER_VALUE}">
+                        <td>${String.format("%.2f",total - Math.floor(total))}</td>
+                    </g:elseif>
+                    <g:else>
+                        <td>0.00</td>
+                    </g:else>
                 </tr>
                 <tr>
                     <th>Net Payable Amt.</th>
@@ -702,7 +726,7 @@
             </table></td>
         </tr>
 
-        <g:if test="${settings.size() != 0}">
+        <g:if test="${settings.size() != 0  && settings?.IPG!= Constants.NONE}">
             <tr style="border: 1px solid #ffffff;">
                 <td colspan="7" style="border: 0">
                     <table class="print" style="margin-top: 2%;width: 100%">
@@ -806,17 +830,27 @@
         });
         var netAmount =
         ${totalBeforeTaxes}
-        <g:if test="${settings.RON == Constants.NEXT_INTEGER_VALUE}">
-        var netInvAmt = Math.ceil(Number(parseFloat(totalGst) + netAmount));
-        </g:if>
-        <g:elseif test="${settings.RON == Constants.PREVIOUS_INTEGER_VALUE}">
-        var netInvAmt = Math.floor(Number(parseFloat(totalGst) + netAmount));
-        </g:elseif>
-        <g:else>
+%{--        <g:if test="${settings.RON == Constants.NEXT_INTEGER_VALUE}">--}%
+%{--        var netInvAmt = Math.ceil(Number(parseFloat(totalGst) + netAmount));--}%
+%{--        </g:if>--}%
+%{--        <g:elseif test="${settings.RON == Constants.PREVIOUS_INTEGER_VALUE}">--}%
+%{--        var netInvAmt = Math.floor(Number(parseFloat(totalGst) + netAmount));--}%
+%{--        </g:elseif>--}%
+%{--        <g:else>--}%
         var netInvAmt = parseFloat(totalGst) + netAmount
-        </g:else>
+%{--        </g:else>--}%
+
+                <g:if test="${settings.RON == Constants.NEXT_INTEGER_VALUE}">
+                var netPayAmt = Math.ceil(Number(parseFloat(totalGst) + netAmount));
+                </g:if>
+                <g:elseif test="${settings.RON == Constants.PREVIOUS_INTEGER_VALUE}">
+                var netPayAmt = Math.floor(Number(parseFloat(totalGst) + netAmount));
+                </g:elseif>
+                <g:else>
+                var netPayAmt = parseFloat(totalGst) + netAmount
+                </g:else>
         $("#netInvAmt").text(netInvAmt.toFixed(2));
-        $("#netPayAmt").text(netInvAmt.toFixed(2));
+        $("#netPayAmt").text(netPayAmt.toFixed(2));
 
 
         <g:if test="${saleBillDetail?.refDate!=null}">

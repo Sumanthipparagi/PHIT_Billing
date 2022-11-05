@@ -92,6 +92,7 @@ public class Constants
     public static String CATEGORY = "CATEGORY";
     public static String SCHEDULE = "SCHEDULE";
     public static String FLOOR_WISE = "FLOOR_WISE";
+    public static String NONE ="NONE";
 
 //Invoice Print Sorting
     public static String ALPHABETIC = "ALPHABETIC";

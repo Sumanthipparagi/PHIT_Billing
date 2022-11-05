@@ -647,6 +647,7 @@
                         if (prop === 1) //first col product dropdown
                         {
                             mainTableRow = row;
+
                             batchSelection(newValue, row);
                         }
                     });
@@ -720,7 +721,7 @@
                         }*/
                         var sqty = hot.getDataAtCell(row, 4);
                         var fqty = hot.getDataAtCell(row, 5);
-                        if (sqty && sqty > 0) {
+                        if (sqty && sqty > 0 || hot.getDataAtCell(row,15) === true) {
                             var tmpStockId = hot.getDataAtCell(row, 16);
                             if (tmpStockId == null) {
                                 var batchId = hot.getCellMeta(row, 2)?.batchId; //batch
@@ -800,7 +801,8 @@
                                 hot.render();
                             }
                         } else {
-                            alert("Invalid Quantity, please enter quantity greater than 0");
+                                alert("Invalid Quantity, please enter quantity greater than 0");
+
                         }
 
                     }
@@ -1317,7 +1319,6 @@
                     hot.setDataAtCell(i, 7, saleData[i].mrp);
                     hot.setDataAtCell(i, 8, 0);
                     hot.setDataAtCell(i, 9, saleData[i].productId.unitPacking);
-
                     gst = saleData[i].gst;
                     if (stateId === undefined || stateId === '${session.getAttribute('stateId')}') {
                         sgst = saleData[i].sgst;
@@ -1658,8 +1659,9 @@
             var cgstAmount = Number(hot.getDataAtCell(row, 13));
             var igstAmount = Number(hot.getDataAtCell(row, 14));
 
-            var sgstPercentage = hot.getDataAtCell(row, 17);
-            var cgstPercentage = hot.getDataAtCell(row, 18);
+            var gstPercentage = hot.getDataAtCell(row, 17);
+            var sgstPercentage = hot.getDataAtCell(row, 18);
+            var cgstPercentage = hot.getDataAtCell(row, 19);
 
             if (stateId === '${session.getAttribute('stateId')}') {
                 if (igstAmount !== 0) {
@@ -1667,9 +1669,9 @@
                     hot.setDataAtCell(row, 13, Number(igstAmount / 2).toFixed(2)); //CGST
                     hot.setDataAtCell(row, 14, 0); //IGST
 
-                    hot.setDataAtCell(row, 17, sgstPercentage);
-                    hot.setDataAtCell(row, 18, cgstPercentage);
-                    hot.setDataAtCell(row, 19, 0);
+                    hot.setDataAtCell(row, 18, sgstPercentage);
+                    hot.setDataAtCell(row, 19, cgstPercentage);
+                    hot.setDataAtCell(row, 20, 0);
                 }
             } else {
                 if (sgstAmount !== 0 && cgstAmount !== 0) {
@@ -1677,9 +1679,9 @@
                     hot.setDataAtCell(row, 13, 0); //CGST
                     hot.setDataAtCell(row, 14, (sgstAmount + cgstAmount).toFixed(2)); //IGST
 
-                    hot.setDataAtCell(row, 17, 0);
                     hot.setDataAtCell(row, 18, 0);
-                    hot.setDataAtCell(row, 19, sgstPercentage + cgstPercentage);
+                    hot.setDataAtCell(row, 19, 0);
+                    hot.setDataAtCell(row, 20, sgstPercentage + cgstPercentage);
                 }
             }
         }

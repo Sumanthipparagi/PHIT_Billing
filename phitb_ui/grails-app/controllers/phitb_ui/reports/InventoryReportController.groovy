@@ -59,6 +59,8 @@ class InventoryReportController {
 
             HashMap<Long, InventoryStatement> productList = new HashMap<>()
             ArrayList<InventoryStatement> inventoryStatements = new ArrayList<>()
+
+
             //saleinvoice
             for (Object saleInvoice : saleInvoices) {
                 long openingQty = 0

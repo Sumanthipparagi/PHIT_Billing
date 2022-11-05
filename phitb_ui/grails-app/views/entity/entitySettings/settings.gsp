@@ -128,7 +128,7 @@
                                             <option value="${Constants.SCHEDULE}" <g:if
                                                     test="${entitySettings.IPG == Constants.SCHEDULE}">selected</g:if>>Schedule</option>
                                             <option value="${Constants.FLOOR_WISE}" <g:if
-                                                    test="${entitySettings.IPG == Constants.FLOOR_WISE}">selected</g:if>>Floorwise</option>
+                                                    test="${entitySettings.IPG == Constants.FLOOR_WISE}">selected</g:if>>Floorwise</option><option value="${Constants.NONE}" <g:if test="${entitySettings.IPG == Constants.NONE}">selected</g:if>>NONE</option>
                                         </select>
                                     </div>
 
