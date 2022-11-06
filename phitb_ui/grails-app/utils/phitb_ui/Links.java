@@ -761,6 +761,7 @@ public class Links
 
     //e-Invoice
     public static String E_INVOICE_BASE_URL = "https://nsdlgsp.co.in";
+    //public static String E_INVOICE_BASE_URL = "https://test.nsdlgsp.co.in";
     public static String E_INVOICE_GET_KEY = E_INVOICE_BASE_URL + "/GSPUtility/getKey";
     public static String E_INVOICE_AUTH_TOKEN = E_INVOICE_BASE_URL + "/ewb_v1.03/einv/authtoken";
     public static String E_INVOICE_GEN_IRN = E_INVOICE_BASE_URL + "/ewb_v1.03/einv/gen-irn";

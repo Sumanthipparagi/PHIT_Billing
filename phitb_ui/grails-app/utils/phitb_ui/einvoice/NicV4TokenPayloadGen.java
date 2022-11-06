@@ -28,6 +28,34 @@ public class NicV4TokenPayloadGen {
     PublicKey publicKey;
     byte[] b;
 
+    public NicV4TokenPayloadGen(byte[] b)
+    {
+        if(b != null && b.length>0) {
+            this.b = b;
+            init(b);
+        }
+    }
+    void init(byte[] key)
+    {
+        //System.out.println("@@ inside init...");
+        try
+        {
+            byte[] keyBytes = java.util.Base64.getMimeDecoder().decode(key);
+            Security.addProvider(new org.bouncycastle.jce.provider.BouncyCastleProvider());
+            KeyFactory keyFactory = KeyFactory.getInstance("RSA", "BC");
+            AsymmetricKeyParameter asymmetricKeyParameter = PublicKeyFactory.createKey(keyBytes);
+            RSAKeyParameters rsaKeyParameters = (RSAKeyParameters) asymmetricKeyParameter;
+            RSAPublicKeySpec rsaPublicKeySpec = new RSAPublicKeySpec(rsaKeyParameters.getModulus(), rsaKeyParameters.getExponent());
+            publicKey = keyFactory.generatePublic(rsaPublicKeySpec);
+            cipher = Cipher.getInstance("RSA/None/PKCS1Padding", "BC");
+            cipher.init(Cipher.ENCRYPT_MODE, publicKey);
+        }
+        catch (Exception e)
+        {
+            e.printStackTrace();
+        }
+    }
+
     public static void main(String[] args) throws InvalidKeyException, InvalidKeySpecException, NoSuchAlgorithmException, NoSuchPaddingException, IllegalBlockSizeException, BadPaddingException, NoSuchProviderException, IOException
     {
         //To encrypt auth-token payload payload
@@ -44,7 +72,7 @@ public class NicV4TokenPayloadGen {
         System.out.println("base64EncodedPayload : " + base64EncodedPayload);
 
         //Public Key Path
-        byte[] b = readFile("C:\\Users\\arjun\\Desktop\\publicKey.pem.pem");
+        byte[] b = readFile("C:\\Users\\arjun\\Desktop\\publicKey.pem");
         NicV4TokenPayloadGen gen = new NicV4TokenPayloadGen(b);
 
         gen.encryptPayload(base64EncodedPayload);*/
@@ -80,31 +108,6 @@ public class NicV4TokenPayloadGen {
         return cipherResult;
     }
 
-    public NicV4TokenPayloadGen(byte[] b)
-    {
-        this.b = b;
-        init(b);
-    }
-    void init(byte[] key)
-    {
-        //System.out.println("@@ inside init...");
-        try
-        {
-            byte[] keyBytes = java.util.Base64.getMimeDecoder().decode(key);
-            Security.addProvider(new org.bouncycastle.jce.provider.BouncyCastleProvider());
-            KeyFactory keyFactory = KeyFactory.getInstance("RSA", "BC");
-            AsymmetricKeyParameter asymmetricKeyParameter = PublicKeyFactory.createKey(keyBytes);
-            RSAKeyParameters rsaKeyParameters = (RSAKeyParameters) asymmetricKeyParameter;
-            RSAPublicKeySpec rsaPublicKeySpec = new RSAPublicKeySpec(rsaKeyParameters.getModulus(), rsaKeyParameters.getExponent());
-            publicKey = keyFactory.generatePublic(rsaPublicKeySpec);
-            cipher = Cipher.getInstance("RSA/None/PKCS1Padding", "BC");
-            cipher.init(Cipher.ENCRYPT_MODE, publicKey);
-        }
-        catch (Exception e)
-        {
-            e.printStackTrace();
-        }
-    }
     public static byte[] readFile(String fileName)
     {
         FileInputStream fin = null;
