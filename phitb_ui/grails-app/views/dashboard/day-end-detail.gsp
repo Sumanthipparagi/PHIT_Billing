@@ -58,7 +58,7 @@
         <div class="row">
             <div class="col-lg-6">
                 <h5>Draft Sale Products</h5>
-                <g:if test="${draftSaleBillDetails.size() != 0}">
+                <g:if test="${draftSaleBillDetails?.size() != 0 && draftSaleBillDetails!=null}">
                     <table class="table table-striped table-bordered" style="width: 100%;table-layout: fixed;">
                         <thead>
                         <tr>
@@ -90,7 +90,7 @@
 
             <div class="col-lg-6">
                 <h5>Draft Purchase Products</h5>
-                <g:if test="${draftPurchaseBillDetails.size() != 0}">
+                <g:if test="${draftPurchaseBillDetails?.size() != 0 && draftPurchaseBillDetails!=null}">
                     <table class="table table-striped table-bordered" style="width: 100%;table-layout: fixed;">
                         <thead>
                         <tr>
