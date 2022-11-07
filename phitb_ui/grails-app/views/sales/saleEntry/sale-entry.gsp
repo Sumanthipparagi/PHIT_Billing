@@ -784,6 +784,7 @@
                                             calculateTotalAmt();
                                         }
 %{--                                        </g:if>--}%
+
                                     },
                                     error: function (jqXHR, textStatus, errorThrown) {
                                         beforeSendSwal.close();
@@ -1538,6 +1539,26 @@
                         privateNote: privateNote,
                         rep: rep,
                         uuid: self.crypto.randomUUID()
+                    },
+                    beforeSend: function () {
+                          Swal.fire({
+                            // title: "Loading",
+                            html:
+                                '<img src="${assetPath(src: "/themeassets/images/1476.gif")}" width="100" height="100"/>',
+                            showDenyButton: false,
+                            showCancelButton: false,
+                            showConfirmButton: false,
+                            allowOutsideClick: false,
+                            background: 'transparent'
+
+                        });
+                        // document.addEventListener('keypress', function (e) {
+                        //     if (e.keyCode === 13 || e.which === 13) {
+                        //         e.preventDefault();
+                        //         return false;
+                        //     }
+                        // });
+                        // hot.deselectCell()
                     },
                     success: function (data) {
                         readOnly = true;
