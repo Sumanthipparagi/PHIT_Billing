@@ -606,9 +606,8 @@
             </g:each>
         </g:else>
         <tr>
-            <td colspan="13">Amount in words: <b>${WordsToNumbersUtil.convertToIndianCurrency(String.format("%.2f", total))}</b>
-
-               %{-- <b> <g:if test="${settings.RON == Constants.NEXT_INTEGER_VALUE}">
+            <td colspan="13">Amount in words:
+                <b> <g:if test="${settings.RON == Constants.NEXT_INTEGER_VALUE}">
                 ${WordsToNumbersUtil.convertToIndianCurrency(String.format("%.2f", Math.ceil(total)).toString())}
         </g:if>
             <g:elseif test="${settings.RON == Constants.PREVIOUS_INTEGER_VALUE}">
@@ -616,7 +615,7 @@
             </g:elseif>
             <g:else>
                 ${WordsToNumbersUtil.convertToIndianCurrency(String.format("%.2f", total))}
-            </g:else></b>--}%
+            </g:else></b>
             </td>
             <td><b>Total</b></td>
             <td>${String.format("%.2f", totalBeforeTaxes)}</td>
