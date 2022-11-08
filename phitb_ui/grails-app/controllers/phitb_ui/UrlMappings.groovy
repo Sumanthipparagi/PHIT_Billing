@@ -794,6 +794,7 @@ class UrlMappings {
         "/reports/sales/gstreport"(controller: "salesReport", action: "saleProductWiseReport")
         "/reports/sales/gstreport"(controller: "salesReport", action: "salesGstReport")
         "/reports/sales/getgstreport"(controller: "salesReport", action: "getSalesGstReport")
+        "/reports/sales/get-credit-note-gst-report"(controller: "salesReport", action: "getCreditNoteGstReport")
         "/reports/sales/invoice-payment-report"(controller: "salesReport", action: "invoicePaymentReports")
         "/reports/sales/get-invoice-payment-report"(controller: "salesReport", action: "getInvoicePaymentReport")
 

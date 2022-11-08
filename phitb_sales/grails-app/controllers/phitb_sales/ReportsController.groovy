@@ -340,6 +340,77 @@ class ReportsController {
         respond gstReport
     }
 
+    def getCreditNoteGSTReport() {
+        JSONObject jsonObject = new JSONObject(request.reader.text)
+        String entityId = jsonObject.get("entityId")
+        String financialYear = jsonObject.get("financialYear")
+        String daterange = jsonObject.get("dateRange")
+        String sortby = jsonObject.get("sortBy")
+        String sort = "id"
+        if (sortby.equalsIgnoreCase("invoice-date"))
+            sort = "entryDate"
+
+        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy")
+        Date fromDate = sdf.parse(daterange.split("-")[0].trim())
+        Date toDate = sdf.parse(daterange.split("-")[1].trim())
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(toDate)
+        cal.set(Calendar.HOUR_OF_DAY, 23)
+        cal.set(Calendar.MINUTE, 59)
+        cal.set(Calendar.SECOND, 59)
+        cal.set(Calendar.MILLISECOND, 999)
+        toDate = cal.getTime()
+        JSONObject gstReport = new JSONObject()
+        ArrayList taxes = new ArrayList()
+        LinkedList retrunGstDetails = new LinkedList()
+        ArrayList<SaleReturn> saleReturns = SaleReturn.findAllByEntryDateBetweenAndReturnStatusAndEntityIdAndFinancialYear(fromDate, toDate, "ACTIVE", Long.parseLong(entityId), financialYear)
+        for (SaleReturn saleReturn : saleReturns) {
+            ArrayList<SaleReturnDetails> saleReturnDetails = SaleReturnDetails.findAllByBillId(saleReturn.id)
+            if (saleReturnDetails?.size() > 0) {
+                LinkedHashMap gstDetail = new LinkedHashMap()
+                gstDetail.put("seriesId", saleReturn.series)
+                gstDetail.put("customerId", saleReturn.customerId)
+                gstDetail.put("orderDate", saleReturn.entryDate)
+                gstDetail.put("invoiceNumber", saleReturn.invoiceNumber)
+                for (SaleReturnDetails saleReturnDetail : saleReturnDetails) {
+                    if (!taxes.contains(saleReturnDetail.gstPercentage))
+                        taxes.add(saleReturnDetail.gstPercentage)
+                    double amount = saleReturnDetail.amount - saleReturnDetail.gstAmount
+                    if (gstDetail.containsKey(saleReturnDetail.gstPercentage + "_gst_amount")) {
+                        gstDetail.put(saleReturnDetail.gstPercentage + "_gst_amount", amount + (gstDetail.get(saleReturnDetail.gstPercentage + "_gst_amount") as Number))
+                    } else {
+                        gstDetail.put(saleReturnDetail.gstPercentage + "_gst_amount", amount)
+                    }
+
+                    if (gstDetail.containsKey(saleReturnDetail.gstPercentage + "_gst"))
+                        gstDetail.put(saleReturnDetail.gstPercentage + "_gst", saleReturnDetail.gstAmount + (gstDetail.get(saleReturnDetail.gstPercentage + "_gst") as Number))
+                    else
+                        gstDetail.put(saleReturnDetail.gstPercentage + "_gst", saleReturnDetail.gstAmount)
+
+                    if (gstDetail.containsKey(saleReturnDetail.gstPercentage + "_cgst_" + saleReturnDetail.cgstPercentage))
+                        gstDetail.put(saleReturnDetail.gstPercentage + "_cgst_" + saleReturnDetail.cgstPercentage, saleReturnDetail.cgstAmount + (gstDetail.get(saleReturnDetail.gstPercentage + "_cgst_" + saleReturnDetail.cgstPercentage) as Number))
+                    else
+                        gstDetail.put(saleReturnDetail.gstPercentage + "_cgst_" + saleReturnDetail.cgstPercentage, saleReturnDetail.cgstAmount)
+
+                    if (gstDetail.containsKey(saleReturnDetail.gstPercentage + "_sgst_" + saleReturnDetail.sgstPercentage))
+                        gstDetail.put(saleReturnDetail.gstPercentage + "_sgst_" + saleReturnDetail.sgstPercentage, saleReturnDetail.sgstAmount + (gstDetail.get(saleReturnDetail.gstPercentage + "_sgst_" + saleReturnDetail.sgstPercentage) as Number))
+                    else
+                        gstDetail.put(saleReturnDetail.gstPercentage + "_sgst_" + saleReturnDetail.sgstPercentage, saleReturnDetail.sgstAmount)
+
+                    if (gstDetail.containsKey(saleReturnDetail.gstPercentage + "_igst_" + saleReturnDetail.igstPercentage))
+                        gstDetail.put(saleReturnDetail.gstPercentage + "_igst_" + saleReturnDetail.igstPercentage, saleReturnDetail.igstAmount + (gstDetail.get(saleReturnDetail.gstPercentage + "_igst_" + saleReturnDetail.igstPercentage) as Number))
+                    else
+                        gstDetail.put(saleReturnDetail.gstPercentage + "_igst_" + saleReturnDetail.igstPercentage, saleReturnDetail.igstAmount)
+                }
+                gstDetail.put("invoiceTotal", saleReturn.totalAmount)
+                retrunGstDetails.add(gstDetail)
+            }
+        }
+        gstReport.put("gstDetails", retrunGstDetails)
+        gstReport.put("taxes", taxes)
+        respond gstReport
+    }
+
     def getSaleReturnAreaWiseBillDetails() {
         try {
             JSONObject jsonObject = new JSONObject(request.reader.text)

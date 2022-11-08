@@ -467,6 +467,7 @@ class UrlMappings {
             "/reports/areawise(.$format)?"(controller: 'reports', action: 'getAreaWiseBillDetails')
             "/reports/consolidated(.$format)?"(controller: 'reports', action: 'getConsolidatedBillDetails')
             "/reports/salesgst(.$format)?"(controller: 'reports', action: 'getSalesGSTReport')
+            "/reports/creditnotegst(.$format)?"(controller: 'reports', action: 'getCreditNoteGSTReport')
             "/reports/salesreturn-areawise(.$format)?"(controller: 'reports', action: 'getSaleReturnAreaWiseBillDetails')
             "/reports/statistics(.$format)?"(controller: 'reports', action: 'getSalesStats')
             "/reports/salesinfo(.$format)?"(controller: 'reports', action: 'getSalesInfoTillDate')

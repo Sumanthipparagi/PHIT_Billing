@@ -77,7 +77,7 @@
                     <table class="table table-striped table-bordered" style="width: 100%;table-layout: fixed;">
                         <thead>
                         <tr>
-                            <th scope="col">#</th>
+%{--                            <th scope="col">#</th>--}%
                             <th scope="col">Product Name</th>
                             <th scope="col">Sale Qty</th>
                             <th scope="col">Free Qty</th>
@@ -88,7 +88,7 @@
                         <g:each in="${draftSaleBillDetails}" var="d" status="i">
                             <g:each in="${d?.products}" var="product" status="j">
                                 <tr>
-                                    <th scope="row" class="slno"></th>
+%{--                                    <th scope="row" class="slno"></th>--}%
                                     <td style="white-space: break-spaces;">${product?.product?.productName}</td>
                                     <td>${product?.sqty}</td>
                                     <td>${product?.freeQty}</td>
@@ -109,7 +109,7 @@
                     <table class="table table-striped table-bordered" style="width: 100%;table-layout: fixed;">
                         <thead>
                         <tr>
-                            <th scope="col">#</th>
+%{--                            <th scope="col">#</th>--}%
                             <th scope="col">Product Name</th>
                             <th scope="col">Sale Qty</th>
                             <th scope="col">Free Qty</th>
@@ -120,7 +120,7 @@
                         <g:each in="${draftPurchaseBillDetails}" var="p" status="i">
                             <g:each in="${p?.products}" var="product">
                                 <tr>
-                                    <th scope="row">${i + 1}</th>
+%{--                                    <th scope="row">${i + 1}</th>--}%
                                     <td style="white-space: break-spaces;">${product?.product?.productName}</td>
                                     <td>${product?.sqty}</td>
                                     <td>${product?.freeQty}</td>

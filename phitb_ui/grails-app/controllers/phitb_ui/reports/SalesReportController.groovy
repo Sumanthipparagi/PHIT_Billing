@@ -380,6 +380,27 @@ class SalesReportController {
         respond gstData, formats: ['json']
     }
 
+    def getCreditNoteGstReport() {
+        String entityId = session.getAttribute("entityId")
+        String financialYear = session.getAttribute("financialYear")
+        String dateRange = params.dateRange
+        //String sortBy = params.sortBy
+        String sortBy = "id"
+        JSONObject gstData = reportsService.getCreditNoteGstRport(entityId, dateRange, financialYear, sortBy)
+        JSONArray gstDetails = gstData.gstDetails
+        for (JSONObject jsonObject : gstDetails) {
+            JSONObject entity = new EntityService().getEntityById(jsonObject.get("customerId").toString())
+            JSONObject city = new SystemService().getCityById(entity.get("cityId").toString())
+            JSONObject series = new EntityService().getSeriesById(jsonObject.get("seriesId").toString())
+            jsonObject.put("customerId", entity.entityName)
+            jsonObject.put("town", city?.districtName)
+            jsonObject.put("gstin", entity.gstn)
+            jsonObject.put("seriesId", series.seriesCode)
+        }
+        gstData.put("gstDetails", gstDetails)
+        respond gstData, formats: ['json']
+    }
+
     def invoicePaymentReports() {
         def entities = new EntityRegisterController().getByAffiliateById(session.getAttribute("entityId").toString())
         render(view: '/reports/salesReport/invoice-payment-report', model: [entities: entities])
