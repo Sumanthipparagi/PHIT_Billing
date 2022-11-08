@@ -181,10 +181,11 @@
         // var sortBy = $('.sortBy').val();
         var reportType =  $('#gstReportType').val();
         var url = '';
+
         if(reportType === "SALES"){
             url = "/reports/sales/getgstreport?dateRange="+dateRange
-        }else{
-            url = "/reports/sales/getgstreport?dateRange="+dateRange
+        }else if(reportType === "CREDIT_NOTE"){
+            url = "/reports/sales/get-credit-note-gst-report?dateRange="+dateRange
         }
         $.ajax({
             url:url,
