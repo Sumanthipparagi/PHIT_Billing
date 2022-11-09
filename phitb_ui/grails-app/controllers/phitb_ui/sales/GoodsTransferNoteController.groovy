@@ -1140,7 +1140,6 @@ class GoodsTransferNoteController
                        productId = Long.parseLong(gtnObject?.ExistingProducts?.toString())
                        JSONObject batch = new ProductService().getByBatchAndProductId(gtnObject.Existingbatches.toString(),
                                productId.toString()) as JSONObject
-                       print(batch)
 //                       if(batch.size()==0){
 //                           JSONObject prevBatch = new ProductService().getByBatchAndProductId(gtnObject.Batch.toString(), gtnObject.productId.toString()) as JSONObject
 //                           prevBatch.put("entityId", session.getAttribute('entityId'))
@@ -1162,6 +1161,7 @@ class GoodsTransferNoteController
 //                           println("Batch already present!!")
 //                       }
                    }
+
                     //stocks update
                 def checkStockBook =  new InventoryService().getStocksOfProductAndBatch(productId.toString(),
                         gtnObject.Batch.toString(), session.getAttribute('entityId').toString())
@@ -1169,13 +1169,13 @@ class GoodsTransferNoteController
                             def stockBook1 = new InventoryService().getStocksOfProductAndBatch(gtnObject.productId.toString(),
                                     gtnObject.Batch.toString(), gtnObject.entityId.toString())
                             stockBook1.put("remainingQty", Double.valueOf(Double.parseDouble(gtnObject.sQty.toString())).longValue())
-                            stockBook1.put("remainingFreeQty", Double.valueOf(Double.parseDouble(gtnObject.fQty.toString())).longValue())
+                            stockBook1.put("remainingFreeQty",Double.valueOf(Double.parseDouble(gtnObject.fQty.toString())).longValue())
                             stockBook1.put("purchaseRate", gtnObject?.sRate)
                             stockBook1.put("mergedWith", "0")
                             stockBook1.put("productId", productId)
                             stockBook1.put("entityId", session.getAttribute('entityId').toString())
                             stockBook1.put("entityTypeId", session.getAttribute('entityTypeId').toString())
-                            stockBook1.put("uuid", UUID.randomUUID())
+                            stockBook1.put("uuid",UUID.randomUUID())
 
                             if(checkStockBook){
                                 double remainingQty = Double.parseDouble(checkStockBook.remainingQty.toString()) + Double.parseDouble(gtnObject.sQty.toString())

@@ -85,8 +85,8 @@ class InventoryReportController {
                         saleAmt = UtilsService.round((product.amount - product.gstAmount), 2)
                         inventoryStatement = new InventoryStatement()
                         inventoryStatement.productId = productId
-                        inventoryStatement.productName = productDetail.productName
-                        inventoryStatement.packing = productDetail.unitPacking
+                        inventoryStatement.productName = productDetail?.productName
+                        inventoryStatement.packing = productDetail?.unitPacking
                         inventoryStatement.openingQty = openingQty
                         inventoryStatement.openingAmt = openingAmt
                         inventoryStatement.purchaseQty = purchaseQty
@@ -124,8 +124,8 @@ class InventoryReportController {
                         saleAmt = UtilsService.round((product.amount - product.gstAmount), 2)
                         inventoryStatement = new InventoryStatement()
                         inventoryStatement.productId = productId
-                        inventoryStatement.productName = productDetail.productName
-                        inventoryStatement.packing = productDetail.unitPacking
+                        inventoryStatement.productName = productDetail?.productName
+                        inventoryStatement.packing = productDetail?.unitPacking
                         inventoryStatement.openingQty = openingQty
                         inventoryStatement.openingAmt = openingAmt
                         inventoryStatement.purchaseQty = purchaseQty
@@ -162,8 +162,8 @@ class InventoryReportController {
                         purchaseAmt = UtilsService.round((product.amount - product.gstAmount), 2)
                         inventoryStatement = new InventoryStatement()
                         inventoryStatement.productId = productId
-                        inventoryStatement.productName = productDetail.productName
-                        inventoryStatement.packing = productDetail.unitPacking
+                        inventoryStatement.productName = productDetail?.productName
+                        inventoryStatement.packing = productDetail?.unitPacking
                         inventoryStatement.openingQty = openingQty
                         inventoryStatement.openingAmt = openingAmt
                         inventoryStatement.purchaseQty = purchaseQty
@@ -199,8 +199,8 @@ class InventoryReportController {
                         purchaseAmt = UtilsService.round((product.amount - product.gstAmount), 2)
                         inventoryStatement = new InventoryStatement()
                         inventoryStatement.productId = productId
-                        inventoryStatement.productName = productDetail.productName
-                        inventoryStatement.packing = productDetail.unitPacking
+                        inventoryStatement.productName = productDetail?.productName
+                        inventoryStatement.packing = productDetail?.unitPacking
                         inventoryStatement.openingQty = openingQty
                         inventoryStatement.openingAmt = openingAmt
                         inventoryStatement.purchaseQty = -purchaseQty //remove from stocks
@@ -250,8 +250,8 @@ class InventoryReportController {
                     openingAmt = UtilsService.round((stocksActivity.saleRate * stocksActivity.remainingQty), 2)
                     inventoryStatement = new InventoryStatement()
                     inventoryStatement.productId = productId
-                    inventoryStatement.productName = productDetail.productName
-                    inventoryStatement.packing = productDetail.unitPacking
+                    inventoryStatement.productName = productDetail?.productName
+                    inventoryStatement.packing = productDetail?.unitPacking
                     inventoryStatement.openingQty = openingQty
                     inventoryStatement.openingAmt = openingAmt
                     inventoryStatement.purchaseQty = purchaseQty
