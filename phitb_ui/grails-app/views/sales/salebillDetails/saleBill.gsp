@@ -1067,33 +1067,57 @@
 
     function exportIRN()
     {
-        $.ajax({
-            url: "sale-bill/download-irn",
-            method: "POST",
-            data:{
-               /* saleBillId: saleBillId,
-                saleReturnIds: saleReturnIds,
-                creditsApplied: creditsApplied*/
-            },
-            success: function(saleBill)
-            {
-                processingSwal.close();
-                Swal.fire({
-                    title: "Success!",
-                    html: "Credits Adjusted for this invoice",
-                    icon: 'success'
+        Swal.fire({
+            icon: "info",
+            title:"Generate e-Invoice JSON?",
+            text: "JSON file will be generated for pending invoices.",
+            showDenyButton: true,
+            showCancelButton: false,
+            confirmButtonText: 'Yes'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                var waitingSwal = Swal.fire({
+                    title: "Generating e-Invoice JSON, Please wait!",
+                    showDenyButton: false,
+                    showCancelButton: false,
+                    showConfirmButton: false,
+                    allowOutsideClick: false
                 });
+                $.ajax({
+                    url: "sale-bill/download-irn",
+                    method: "POST",
+                    dataType: "text",
+                    success: function(json)
+                    {
+                        waitingSwal.close();
+                        Swal.fire({
+                            title: "Success!",
+                            html: "e-Invoice JSON exported, please upload it in GST Portal",
+                            icon: 'success'
+                        });
+                        var blob = new Blob([json], {
+                            type: 'application/json'
+                        });
+                        var link = document.createElement('a');
+                        link.href = window.URL.createObjectURL(blob);
+                        link.download = Date.now()+"_e-invoice.json";
+                        link.click();
+                    },
+                    error: function () {
+                        waitingSwal.close();
+                        Swal.fire({
+                            title: "Error!",
+                            html: "Please try later!",
+                            icon: 'error'
+                        });
+                    }
+                })
+            } else if (result.isDenied) {
 
-            },
-            error: function () {
-                processingSwal.close();
-                Swal.fire({
-                    title: "Error!",
-                    html: "Please try later!",
-                    icon: 'error'
-                });
             }
-        })
+        });
+
+
     }
 </script>
 <g:include view="controls/footer-content.gsp"/>

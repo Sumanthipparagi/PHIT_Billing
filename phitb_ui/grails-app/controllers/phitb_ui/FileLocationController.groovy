@@ -26,8 +26,7 @@ class FileLocationController {
         }
 
 
-        if (path.toLowerCase().contains(".jpg") || path.toLowerCase().contains(".png") || path.toLowerCase().contains
-                (".jpeg")|| path.toLowerCase().contains(".svg"))
+        if (path.toLowerCase().contains(".jpg") || path.toLowerCase().contains(".png") || path.toLowerCase().contains (".jpeg")|| path.toLowerCase().contains(".svg"))
         {
             if (!file.exists())
             {

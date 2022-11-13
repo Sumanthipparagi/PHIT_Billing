@@ -460,6 +460,7 @@ public class Links
     public static String SALE_BILL_PAYMENT = APP_CONTEXT_PATH + "sales/salebillbypaymentstatus";
     public static String SET_PAYMENT_BILL = APP_CONTEXT_PATH + "sales/setpaymentstatus/{id}/type/{type}";
     public static String SALE_BILL_RECENT = APP_CONTEXT_PATH + "sales/salebilldetails/getrecent";
+    public static String SALE_BILL_PENDING_IRN = APP_CONTEXT_PATH + "sales/salebilldetails/pendingirn";
     public static String SALE_BILL_CUSTOMER = APP_CONTEXT_PATH + "sales/salebillbycustomer/{custid}";
     public static String SALE_BILL_CUSTOMER_START_DATE = APP_CONTEXT_PATH + "sales/salebillbycustomerstartdate/{custid}";
     public static String SALE_BILL_REPORTS = APP_CONTEXT_PATH + "sales/reports/customerwise";
