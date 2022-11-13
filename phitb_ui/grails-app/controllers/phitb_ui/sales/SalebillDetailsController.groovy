@@ -380,4 +380,21 @@ class SalebillDetailsController {
 
         respond result, formats: ['json']
     }
+
+    def exportGSTEInvoiceJSON()
+    {
+        try {
+            JSONObject jsonObject = new JSONObject(params)
+            if(session.getAttribute("role").toString().equalsIgnoreCase(Constants.ENTITY_ADMIN))
+                jsonObject.put("userId", session.getAttribute("userId"))
+            jsonObject.put("entityId", session.getAttribute("entityId"))
+            //TODO: export JSON
+            response.status = 200
+        }
+        catch (Exception ex) {
+            System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
+            log.error('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
+            response.status = 400
+        }
+    }
 }

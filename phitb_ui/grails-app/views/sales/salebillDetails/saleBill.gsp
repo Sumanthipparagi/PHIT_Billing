@@ -133,6 +133,9 @@
                             </div>
 
                             <div class="col-md-4">
+                                <div>
+                                    <a onclick="exportIRN()" class="btn btn-info" style="color: white;"><i class="fa fa-download"></i> e-Invoice JSON</a>
+                                </div>
                             </div>
 
                             <div class="col-md-4 clearfix">
@@ -1061,6 +1064,37 @@
             e.value = e.value + ".00";
         }
     }*/
+
+    function exportIRN()
+    {
+        $.ajax({
+            url: "sale-bill/download-irn",
+            method: "POST",
+            data:{
+               /* saleBillId: saleBillId,
+                saleReturnIds: saleReturnIds,
+                creditsApplied: creditsApplied*/
+            },
+            success: function(saleBill)
+            {
+                processingSwal.close();
+                Swal.fire({
+                    title: "Success!",
+                    html: "Credits Adjusted for this invoice",
+                    icon: 'success'
+                });
+
+            },
+            error: function () {
+                processingSwal.close();
+                Swal.fire({
+                    title: "Error!",
+                    html: "Please try later!",
+                    icon: 'error'
+                });
+            }
+        })
+    }
 </script>
 <g:include view="controls/footer-content.gsp"/>
 <script>
