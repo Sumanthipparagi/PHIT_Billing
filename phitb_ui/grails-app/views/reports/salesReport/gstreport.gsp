@@ -57,14 +57,14 @@
                     </ul>
                 </div>
 
-                <div class="col-lg-7 col-md-7 col-sm-12">
-                    <div class="input-group m-b-0">
-                        <input type="text" class="form-control" placeholder="Search...">
-                        <span class="input-group-addon">
-                            <i class="zmdi zmdi-search"></i>
-                        </span>
-                    </div>
-                </div>
+                %{--                <div class="col-lg-7 col-md-7 col-sm-12">--}%
+                %{--                    <div class="input-group m-b-0">--}%
+                %{--                        <input type="text" class="form-control" placeholder="Search...">--}%
+                %{--                        <span class="input-group-addon">--}%
+                %{--                            <i class="zmdi zmdi-search"></i>--}%
+                %{--                        </span>--}%
+                %{--                    </div>--}%
+                %{--                </div>--}%
             </div>
         </div>
 
@@ -82,7 +82,7 @@
                             %{--                                    </select>--}%
                             %{--                                </div>--}%
                             %{--                            </div>--}%
-                            <div class="col-lg-6">
+                            <div class="col-lg-5">
                                 <div class="form-group">
                                     <label>Date Range:</label>
 
@@ -95,13 +95,23 @@
                                 </div>
                             </div>
 
-                            <div class="col-lg-6 d-flex justify-content-center">
+                            <div class="col-lg-3 mt-3">
+                                <div class="form-group">
+                                    <label for="gstReportType">Report Type:</label><br>
+                                    <select name="gstReportType" id="gstReportType" onchange="getReport()">
+                                        <option value="SALES">SALES</option>
+                                        <option value="CREDIT_NOTE">CREDIT NOTE</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="col-lg-4 ">
                                 <div class="form-group">
                                     <label>Export</label>
-
                                     <div class="input-group">
                                         <button class="input-group-btn btn btn-info" id="btnExport">Excel</button>
-                                        <button class="input-group-btn btn btn-danger" id="btnPrint" disabled>Print</button>
+                                        <button class="input-group-btn btn btn-danger" id="btnPrint"
+                                                disabled>Print</button>
                                     </div>
                                 </div>
                             </div>
@@ -154,6 +164,9 @@
         }
     });
 
+
+
+
     function getReport() {
         var loading = Swal.fire({
             title: "Getting reports, Please wait!",
@@ -166,9 +179,16 @@
         });
         var dateRange = $('.dateRange').val();
         // var sortBy = $('.sortBy').val();
+        var reportType =  $('#gstReportType').val();
+        var url = '';
 
+        if(reportType === "SALES"){
+            url = "/reports/sales/getgstreport?dateRange="+dateRange
+        }else if(reportType === "CREDIT_NOTE"){
+            url = "/reports/sales/get-credit-note-gst-report?dateRange="+dateRange
+        }
         $.ajax({
-            url: "/reports/sales/getgstreport?dateRange=" + dateRange,
+            url:url,
             type: "GET",
             contentType: false,
             processData: false,
@@ -213,8 +233,7 @@
                         if (gstDetail[gstAmountKey]) {
                             row += "<td>" + gstDetail[gstAmountKey].toFixed(2) + "</td>";
                             gstArray.push(gstDetail[gstAmountKey]);
-                        }
-                        else {
+                        } else {
                             row += "<td>0.00</td>";
                             gstArray.push(0);
                         }
@@ -222,8 +241,7 @@
                         if (gstDetail[gstKey]) {
                             row += "<td>" + gstDetail[gstKey].toFixed(2) + "</td>";
                             gstArray.push(gstDetail[gstKey]);
-                        }
-                        else {
+                        } else {
                             row += "<td>0.00</td>";
                             gstArray.push(0);
                         }
@@ -231,8 +249,7 @@
                         if (gstDetail[igstKey]) {
                             row += "<td>" + gstDetail[igstKey].toFixed(2) + "</td>";
                             gstArray.push(gstDetail[igstKey]);
-                        }
-                        else {
+                        } else {
                             row += "<td>0.00</td>";
                             gstArray.push(0);
                         }
@@ -240,8 +257,7 @@
                         if (gstDetail[cgstKey]) {
                             row += "<td>" + gstDetail[cgstKey].toFixed(2) + "</td>";
                             gstArray.push(gstDetail[cgstKey]);
-                        }
-                        else {
+                        } else {
                             row += "<td>0.00</td>";
                             gstArray.push(0);
                         }
@@ -249,8 +265,7 @@
                         if (gstDetail[sgstKey]) {
                             row += "<td>" + gstDetail[sgstKey].toFixed(2) + "</td>";
                             gstArray.push(gstDetail[sgstKey]);
-                        }
-                        else {
+                        } else {
                             row += "<td>0.00</td>";
                             gstArray.push(0);
                         }
@@ -262,23 +277,22 @@
                 });
 
                 var gstTotals = [];
-                if(gstData?.length>0)
-                     gstTotals = gstData.reduce((r, a) => r.map((b, i) => a[i] + b));
+                if (gstData?.length > 0)
+                    gstTotals = gstData.reduce((r, a) => r.map((b, i) => a[i] + b));
                 var total = "<tr><td colspan='6' data-f-bold='true' style='align-content: center;text-align: center;'><strong>TOTAL</strong></td>";
                 var taxCols = "";
-                for(var i = 0; i<gstTotals.length;i++)
-                {
-                    taxCols += "<td data-f-bold='true'><strong>"+gstTotals[i].toFixed(2)+"</strong></td>";
+                for (var i = 0; i < gstTotals.length; i++) {
+                    taxCols += "<td data-f-bold='true'><strong>" + gstTotals[i].toFixed(2) + "</strong></td>";
                 }
 
-                total += taxCols + "<td data-f-bold='true'><strong>"+totalInvoiceAmount.toFixed(2)+"</strong></td></tr>";
+                total += taxCols + "<td data-f-bold='true'><strong>" + totalInvoiceAmount.toFixed(2) + "</strong></td></tr>";
                 var mainTableFooter = "</tbody></table>";
                 $("#result").html(mainTableHeader + content + total + mainTableFooter);
                 loading.close();
             },
             error: function () {
                 loading.close();
-                swal("Error!", "Unable to generate report at the moment", "error");
+                Swal.fire("Error!", "Unable to generate report at the moment", "error");
             }
         })
     }
@@ -309,6 +323,7 @@
             doctype: '<!doctype html>'
         });
     });
+
     function dateFormat(date) {
         var dt = moment(date, 'YYYY-MM-DD');
         return dt.format('DD-MM-YYYY');

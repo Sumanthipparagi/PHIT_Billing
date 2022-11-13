@@ -298,82 +298,100 @@ class DashboardController
         {
             JSONObject jsonObject = new JSONObject()
             def draftSaleBillDetails = new SalesService().getSaleBillDraftDetails(session.getAttribute('entityId').toString(), session.getAttribute('userId').toString())
-            for(JSONObject dr: draftSaleBillDetails){
-                def cancelBills = new SalesService().cancelInvoice(dr.id.toString(),session.getAttribute('entityId').toString(),session.getAttribute("financialYear").toString(),session.getAttribute('userId').toString())
-               if(cancelBills!=null){
-                   jsonObject.put("saleStocks","SUCCESS")
-               }
+            for (JSONObject dr : draftSaleBillDetails)
+            {
+                def cancelBills = new SalesService().cancelInvoice(dr.id.toString(), session.getAttribute('entityId').toString(), session.getAttribute("financialYear").toString(), session.getAttribute('userId').toString())
+                if (cancelBills != null)
+                {
+                    jsonObject.put("saleStocks", "SUCCESS")
+                }
             }
             def tempStocks = new InventoryService().getTempStocksByUser(session.getAttribute('userId').toString())
-            if(tempStocks.status == 200){
+            if (tempStocks.status == 200)
+            {
                 JSONArray tempStockArray = new JSONArray(tempStocks.readEntity(String.class))
-                for(JSONObject tempstock:tempStockArray){
+                for (JSONObject tempstock : tempStockArray)
+                {
                     def deleteTempStock = new InventoryService().deleteTempStock(tempstock.id.toString())
-                    if(deleteTempStock?.status == 200){
-                        jsonObject.put("tempstocks","SUCCESS")
+                    if (deleteTempStock?.status == 200)
+                    {
+                        jsonObject.put("tempstocks", "SUCCESS")
                     }
                 }
             }
             def deleteDraftSaleBillDetails = new SalesService().deleteAllDrafts(session.getAttribute('entityId').toString(), session.getAttribute('userId').toString())
-            if(deleteDraftSaleBillDetails.status == 200){
-                jsonObject.put("draftSaleBillDelete","SUCCESS")
+            if (deleteDraftSaleBillDetails.status == 200)
+            {
+                jsonObject.put("draftSaleBillDelete", "SUCCESS")
             }
 
             def draftPurchaseBillDetails = new PurchaseService().getPurchaseBillDraftDetails(session.getAttribute('entityId').toString(), session.getAttribute('userId').toString())
-            for(JSONObject dr: draftPurchaseBillDetails){
-                def cancelPurBills = new PurchaseService().cancelPurchaseInvoice(dr.id.toString(),session.getAttribute('entityId')
-                        .toString(),session.getAttribute("financialYear").toString(),session.getAttribute('userId').toString())
-                if(cancelPurBills!=null){
-                    jsonObject.put("purchaseStocks","SUCCESS")
+            for (JSONObject dr : draftPurchaseBillDetails)
+            {
+                def cancelPurBills = new PurchaseService().cancelPurchaseInvoice(dr.id.toString(), session.getAttribute('entityId')
+                        .toString(), session.getAttribute("financialYear").toString(), session.getAttribute('userId').toString())
+                if (cancelPurBills != null)
+                {
+                    jsonObject.put("purchaseStocks", "SUCCESS")
                 }
             }
             def deleteDraftPurchaseBillDetails = new PurchaseService().deleteAllDrafts(session.getAttribute('entityId')
                     .toString(), session.getAttribute('userId').toString())
-            if(deleteDraftPurchaseBillDetails.status == 200){
-                jsonObject.put("deleteDraftPurchaseBill","SUCCESS")
+            if (deleteDraftPurchaseBillDetails.status == 200)
+            {
+                jsonObject.put("deleteDraftPurchaseBill", "SUCCESS")
             }
             JSONObject jsonObject1 = new JSONObject();
-            jsonObject1.put("entityId",session.getAttribute('entityId'))
-            jsonObject1.put("entityTypeId",session.getAttribute('entityTypeId'))
-            jsonObject1.put("userId",session.getAttribute('userId'))
+            jsonObject1.put("entityId", session.getAttribute('entityId'))
+            jsonObject1.put("entityTypeId", session.getAttribute('entityTypeId'))
+            jsonObject1.put("userId", session.getAttribute('userId'))
             def saveDayEndLogs = new EntityService().saveDayEndLogs(jsonObject1)
-            if(saveDayEndLogs.status == 200){
+            if (saveDayEndLogs.status == 200)
+            {
                 println("Day end Logs Saved!")
             }
-            respond jsonObject,formats: ['json'], status: 200;
+            respond jsonObject, formats: ['json'], status: 200;
         }
         catch (Exception e)
         {
-            log.error(controllerName+" "+e)
-            println controllerName+" "+e
+            log.error(controllerName + " " + e)
+            println controllerName + " " + e
         }
     }
 
 
-    def dayEndDetails(){
+    def dayEndDetails()
+    {
 //        Sales
         def draftSaleBillDetails = new SalesService().getSaleBillDraftDetails(session.getAttribute('entityId').toString(), session.getAttribute('userId').toString())
-        if(draftSaleBillDetails!=null){
-            for(JSONObject draftBill:draftSaleBillDetails){
-                for(JSONObject draftProduct:draftBill.products){
+        ArrayList<String> batches = new ArrayList<String>()
+        if (draftSaleBillDetails != null)
+        {
+            for (JSONObject draftBill : draftSaleBillDetails)
+            {
+                for (JSONObject draftProduct : draftBill.products)
+                {
                     def product = new ProductService().getProductById(draftProduct.productId.toString())
-                    draftProduct.put("product",product)
+                    draftProduct.put("product", product)
                 }
             }
         }
 
 //        Purchase
         def draftPurchaseBillDetails = new PurchaseService().getPurchaseBillDraftDetails(session.getAttribute('entityId').toString(), session.getAttribute('userId').toString())
-        if(draftPurchaseBillDetails!=null){
-            for(JSONObject draftPurchaseBill:draftPurchaseBillDetails){
-                for(JSONObject draftPurchaseProduct:draftPurchaseBill.products){
+        if (draftPurchaseBillDetails != null)
+        {
+            for (JSONObject draftPurchaseBill : draftPurchaseBillDetails)
+            {
+                for (JSONObject draftPurchaseProduct : draftPurchaseBill.products)
+                {
                     def product = new ProductService().getProductById(draftPurchaseProduct.productId.toString())
-                    draftPurchaseProduct.put("product",product)
+                    draftPurchaseProduct.put("product", product)
                 }
             }
         }
-        render(view: '/dashboard/day-end-detail',model: [draftSaleBillDetails:draftSaleBillDetails,
-                                                         draftPurchaseBillDetails:draftPurchaseBillDetails])
+        render(view: '/dashboard/day-end-detail', model: [draftSaleBillDetails    : draftSaleBillDetails,
+                                                          draftPurchaseBillDetails: draftPurchaseBillDetails])
     }
 
 }

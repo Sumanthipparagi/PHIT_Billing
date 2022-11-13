@@ -775,6 +775,7 @@
                                         for (var i = 0; i < 16; i++) {
                                             hot.setCellMeta(row, i, 'readOnly', true);
                                         }
+%{--                                    <g:if test="${settings?.ALLOW_SAME_BATCH!="YES" && settings!=null}">--}%
                                         if (id !== data.id) {
                                             mainTableRow = row + 1;
                                             hot.alter('insert_row');
@@ -782,6 +783,8 @@
                                             hot.render();
                                             calculateTotalAmt();
                                         }
+%{--                                        </g:if>--}%
+
                                     },
                                     error: function (jqXHR, textStatus, errorThrown) {
                                         beforeSendSwal.close();
@@ -1473,7 +1476,6 @@
         duedate = moment(duedate, 'YYYY-MM-DD').toDate();
         duedate = moment(duedate).format('DD/MM/YYYY');
         var priority = $("#priority").val();
-
         if (!series) {
             alert("Please select series.");
             waitingSwal.close();
@@ -1481,7 +1483,6 @@
             $("#saveDraftBtn").prop("disabled", false);
             return;
         }
-
         if (!customer) {
             alert("Please select customer.");
             waitingSwal.close();
@@ -1489,7 +1490,6 @@
             $("#saveDraftBtn").prop("disabled", false);
             return;
         }
-
         if (!invtype) {
             alert("Please select Invoice Type.");
             waitingSwal.close();
@@ -1497,9 +1497,7 @@
             $("#saveDraftBtn").prop("disabled", false);
             return;
         }
-
         var saleData = JSON.stringify(hot.getSourceData());
-
         var url = "";
         <g:if test="${customer!= null && params.type!="CLONE"}">
         url = "/edit-sale-entry?id=" + '${saleBillDetail.id}';
@@ -1509,88 +1507,124 @@
         url = "/sale-entry";
         console.log("save sale entry");
         </g:else>
-        $.ajax({
-            type: "POST",
-            url: url,
-            dataType: 'json',
-            data: {
-                saleData: saleData,
-                customer: customer,
-                series: series,
-                duedate: duedate,
-                priority: priority,
-                billStatus: billStatus,
-                seriesCode: seriesCode,
-                saleTransportDetailsId: saleTransportDetailsId,
-                invtype: invtype,
-                lrNumber: lrNumber,
-                lrDate: lrDate,
-                refNum: refNum,
-                refDate: refDate,
-                transporter: transporter,
-                publicNote: publicNote,
-                privateNote: privateNote,
-                rep: rep,
-                uuid: self.crypto.randomUUID()
-            },
-            success: function (data) {
-                readOnly = true;
-                var rowData = hot.getData();
-                for (var j = 0; j < rowData.length; j++) {
-                    for (var i = 0; i < 16; i++) {
-                        hot.setCellMeta(j, i, 'readOnly', true);
-                    }
-                }
-                saleBillId = data.saleBillDetail.id;
-                var datepart = data.saleBillDetail.entryDate.split("T")[0];
-                var month = datepart.split("-")[1];
-                var year = datepart.split("-")[0];
-                var seriesCode = data.series.seriesCode;
-                var invoiceNumber = data.saleBillDetail.invoiceNumber;
-                $("#invNo").html("<p><strong>" + invoiceNumber + "</strong></p>");
-                var message = "";
-                var draftInvNo = "";
-                if (billStatus === "DRAFT") {
-                    draftInvNo = '<p><strong>' + data.saleBillDetail.entityId + "/DR/S/" + month + year + "/"
-                        + seriesCode + "/__" + '<p><strong>';
-                    $("#invNo").html(draftInvNo);
-                }
-                if (billStatus !== "DRAFT") {
-                    message = 'Sale Invoice Generated: ' + invoiceNumber;
-                } else {
-                    message = 'Draft Invoice Generated: ' + data.saleBillDetail.entityId + "/DR/S/" + month + year + "/"
-                        + seriesCode + "/__";
-                }
-                waitingSwal.close();
-                Swal.fire({
-                    title: message,
-                    showDenyButton: true,
-                    showCancelButton: false,
-                    confirmButtonText: 'Print',
-                    denyButtonText: 'New Entry',
-                    allowOutsideClick: false
-                }).then((result) => {
-                    if (result.isConfirmed) {
-                        printInvoice();
-                    } else if (result.isDenied) {
-                        resetData();
-                    }
-                });
+        Swal.fire({
+            title: 'Do you want to save the changes?',
+            showDenyButton: true,
+            // showCancelButton: true,
+            confirmButtonText: 'Yes',
+            denyButtonText: `No`,
+        }).then((result) => {
+            /* Read more about isConfirmed, isDenied below */
+            if (result.isConfirmed) {
+                $.ajax({
+                    type: "POST",
+                    url: url,
+                    dataType: 'json',
+                    data: {
+                        saleData: saleData,
+                        customer: customer,
+                        series: series,
+                        duedate: duedate,
+                        priority: priority,
+                        billStatus: billStatus,
+                        seriesCode: seriesCode,
+                        saleTransportDetailsId: saleTransportDetailsId,
+                        invtype: invtype,
+                        lrNumber: lrNumber,
+                        lrDate: lrDate,
+                        refNum: refNum,
+                        refDate: refDate,
+                        transporter: transporter,
+                        publicNote: publicNote,
+                        privateNote: privateNote,
+                        rep: rep,
+                        uuid: self.crypto.randomUUID()
+                    },
+                    beforeSend: function () {
+                          Swal.fire({
+                            // title: "Loading",
+                            html:
+                                '<img src="${assetPath(src: "/themeassets/images/1476.gif")}" width="100" height="100"/>',
+                            showDenyButton: false,
+                            showCancelButton: false,
+                            showConfirmButton: false,
+                            allowOutsideClick: false,
+                            background: 'transparent'
 
-            },
-            error: function () {
-                $("#saveBtn").prop("disabled", false);
-                $("#saveDraftBtn").prop("disabled", false);
-                waitingSwal.close();
-                Swal.fire({
-                    title: "Unable to generate Invoice at the moment.",
-                    confirmButtonText: 'OK',
-                    allowOutsideClick: false
-                }).then((result) => {
-                    resetData();
+                        });
+                        // document.addEventListener('keypress', function (e) {
+                        //     if (e.keyCode === 13 || e.which === 13) {
+                        //         e.preventDefault();
+                        //         return false;
+                        //     }
+                        // });
+                        // hot.deselectCell()
+                    },
+                    success: function (data) {
+                        readOnly = true;
+                        var rowData = hot.getData();
+                        for (var j = 0; j < rowData.length; j++) {
+                            for (var i = 0; i < 16; i++) {
+                                hot.setCellMeta(j, i, 'readOnly', true);
+                            }
+                        }
+                        saleBillId = data.saleBillDetail.id;
+                        var datepart = data.saleBillDetail.entryDate.split("T")[0];
+                        var month = datepart.split("-")[1];
+                        var year = datepart.split("-")[0];
+                        var seriesCode = data.series.seriesCode;
+                        var invoiceNumber = data.saleBillDetail.invoiceNumber;
+                        $("#invNo").html("<p><strong>" + invoiceNumber + "</strong></p>");
+                        var message = "";
+                        var draftInvNo = "";
+                        if (billStatus === "DRAFT") {
+                            draftInvNo = '<p><strong>' + data.saleBillDetail.entityId + "/DR/S/" + month + year + "/"
+                                + seriesCode + "/__" + '<p><strong>';
+                            $("#invNo").html(draftInvNo);
+                        }
+                        if (billStatus !== "DRAFT") {
+                            message = 'Sale Invoice Generated: ' + invoiceNumber;
+                        } else {
+                            message = 'Draft Invoice Generated: ' + data.saleBillDetail.entityId + "/DR/S/" + month + year + "/"
+                                + seriesCode + "/__";
+                        }
+                        waitingSwal.close();
+                        Swal.fire({
+                            title: message,
+                            showDenyButton: true,
+                            showCancelButton: false,
+                            confirmButtonText: 'Print',
+                            denyButtonText: 'New Entry',
+                            allowOutsideClick: false
+                        }).then((result) => {
+                            if (result.isConfirmed) {
+                                printInvoice();
+                            } else if (result.isDenied) {
+                                resetData();
+                            }
+                        });
+
+                    },
+                    error: function () {
+                        $("#saveBtn").prop("disabled", false);
+                        $("#saveDraftBtn").prop("disabled", false);
+                        waitingSwal.close();
+                        Swal.fire({
+                            title: "Unable to generate Invoice at the moment.",
+                            confirmButtonText: 'OK',
+                            allowOutsideClick: false
+                        }).then((result) => {
+                            resetData();
+                        });
+                    }
                 });
             }
-        });
+            else if (result.isDenied) {
+                $("#saveBtn").prop("disabled", false);
+                $("#saveDraftBtn").prop("disabled", false);
+                Swal.fire('Changes are not saved', '', 'info')
+            }
+        })
 
     }
 
@@ -1599,7 +1633,7 @@
         var noOfCrDays = 0;
         if (customers.length > 0) {
             for (var i = 0; i < customers.length; i++) {
-                if (customerId == customers[i].id) {
+                if (customerId === customers[i].id) {
                     noOfCrDays = customers[i].noOfCrDays;
                 }
             }
@@ -1807,15 +1841,15 @@
                 scheme = data;
                 var offers = "";
 
-                if (data.slab1Status == 1) {
+                if (data.slab1Status === 1) {
                     offers = "S1: " + data.slab1MinQty + "+" + data.slab1SchemeQty;
                 }
 
-                if (data.slab2Status == 1) {
+                if (data.slab2Status === 1) {
                     offers += " | S2: " + data.slab2MinQty + "+" + data.slab2SchemeQty;
                 }
 
-                if (data.slab3Status == 1) {
+                if (data.slab3Status === 1) {
                     offers += " | S3: " + data.slab3MinQty + "+" + data.slab3SchemeQty;
                 }
 

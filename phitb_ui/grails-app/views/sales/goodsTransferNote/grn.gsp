@@ -77,14 +77,14 @@
                     </ul>
                 </div>
 
-                <div class="col-lg-7 col-md-7 col-sm-12">
-                    <div class="input-group m-b-0">
-                        <input type="text" class="form-control" placeholder="Search...">
-                        <span class="input-group-addon">
-                            <i class="zmdi zmdi-search"></i>
-                        </span>
-                    </div>
-                </div>
+%{--                <div class="col-lg-7 col-md-7 col-sm-12">--}%
+%{--                    <div class="input-group m-b-0">--}%
+%{--                        <input type="text" class="form-control" placeholder="Search...">--}%
+%{--                        <span class="input-group-addon">--}%
+%{--                            <i class="zmdi zmdi-search"></i>--}%
+%{--                        </span>--}%
+%{--                    </div>--}%
+%{--                </div>--}%
             </div>
         </div>
         <!-- Basic Examples -->
@@ -329,7 +329,7 @@
                         beforeSendSwal.close();
                         Swal.fire(
                             'Success!',
-                            'Return Cancelled',
+                            'GRN Cancelled',
                             'success'
                         );
                         grnTable();
@@ -387,7 +387,7 @@
                                 '<td><input type="checkbox"  id="'+"newProduct"+value.id+
                                 '" name="newProduct" data-id="' + value.id +
                                 '"  value="YES" class="newProduct">\n</td>' +
-                                '<td>                        <select class="form-control show-tick exProduct" name="exProduct" onchange="getBatches(this.value)" id="'+ "exProduct" + value.id + '">\n' +
+                                '<td>                        <select class="form-control show-tick exProduct" name="exProduct" onchange="getBatches('+this.value+')" id="'+ "exProduct" + value.id + '"">\n' +
                                 '                            <g:each var="p" in="${products}">\n' +
                                 '                                <option value="${p.id}">${p.productName}</option>\n' +
                                 '                            </g:each>\n' +

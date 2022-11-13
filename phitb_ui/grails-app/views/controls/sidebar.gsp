@@ -1,3 +1,29 @@
+<style>
+
+
+@media (min-width: 1281px) {
+
+    .menu_sm .sidebar .list {
+       display: none!important;
+    }
+
+}
+
+/*
+  ##Device = Laptops, Desktops
+  ##Screen = B/w 1025px to 1280px
+*/
+
+@media (min-width: 1025px) and (max-width: 1280px) {
+
+    /* CSS */
+    .menu_sm .sidebar .list {
+        display: none!important;
+    }
+
+}
+</style>
+
 <%@ page import="phitb_ui.Constants; phitb_ui.UtilsService" %>
 <div class="overlay_menu">
     <button class="btn btn-primary btn-icon btn-icon-mini btn-round"><i class="zmdi zmdi-close"></i></button>
@@ -99,8 +125,8 @@
             <a class="navbar-brand" href="/dashboard"><img src="${assetPath(src: '/themeassets/images/sidebar.jpeg')}"
                                                   alt="PharmIT"></a>
         </li>
-        %{--        <li><a href="javascript:void(0);" class="btn_overlay hidden-sm-down"><i class="zmdi zmdi-search"></i></a></li>--}%
-%{--        <li><a href="javascript:void(0);" class="menu-sm"><i class="zmdi zmdi-swap"></i></a></li>--}%
+                <li><a href="javascript:void(0);" class="btn_overlay hidden-sm-down"><i class="zmdi zmdi-search"></i></a></li>
+        <li><a href="javascript:void(0);" class="menu-sm"><i class="zmdi zmdi-swap"></i></a></li>
 
         <li><a href="javascript:void(0);" class="fullscreen" data-provide="fullscreen"><i
                 class="zmdi zmdi-fullscreen"></i></a></li>

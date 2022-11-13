@@ -38,14 +38,14 @@
                         <li class="breadcrumb-item active">Timeline</li>
                     </ul>
                 </div>
-                <div class="col-lg-7 col-md-7 col-sm-12">
-                    <div class="input-group m-b-0">
-                        <input type="text" class="form-control" placeholder="Search...">
-                        <span class="input-group-addon">
-                            <i class="zmdi zmdi-search"></i>
-                        </span>
-                    </div>
-                </div>
+%{--                <div class="col-lg-7 col-md-7 col-sm-12">--}%
+%{--                    <div class="input-group m-b-0">--}%
+%{--                        <input type="text" class="form-control" placeholder="Search...">--}%
+%{--                        <span class="input-group-addon">--}%
+%{--                            <i class="zmdi zmdi-search"></i>--}%
+%{--                        </span>--}%
+%{--                    </div>--}%
+%{--                </div>--}%
             </div>
         </div>
         <div class="row clearfix">

@@ -46,7 +46,7 @@
                         <li class="breadcrumb-item active">Recipt</li>
                     </ul>
                 </div>
-
+%{--
                 <div class="col-lg-7 col-md-7 col-sm-12">
                     <div class="input-group m-b-0">
                         <input type="text" class="form-control" placeholder="Search...">
@@ -54,7 +54,7 @@
                             <i class="zmdi zmdi-search"></i>
                         </span>
                     </div>
-                </div>
+                </div>--}%
             </div>
         </div>
 

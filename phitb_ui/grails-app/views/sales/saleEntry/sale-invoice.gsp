@@ -606,7 +606,8 @@
             </g:each>
         </g:else>
         <tr>
-            <td colspan="13">Amount in words: <b> <g:if test="${settings.RON == Constants.NEXT_INTEGER_VALUE}">
+            <td colspan="13">Amount in words:
+                <b> <g:if test="${settings.RON == Constants.NEXT_INTEGER_VALUE}">
                 ${WordsToNumbersUtil.convertToIndianCurrency(String.format("%.2f", Math.ceil(total)).toString())}
         </g:if>
             <g:elseif test="${settings.RON == Constants.PREVIOUS_INTEGER_VALUE}">
@@ -622,7 +623,8 @@
             <td>${String.format("%.2f", totalcgst)}</td>
             <td>${String.format("%.2f", totalsgst)}</td>
             <td>${String.format("%.2f", totaligst)}</td>
-            <g:if test="${settings.RON == Constants.NEXT_INTEGER_VALUE}">
+            <td>${String.format("%.2f", total)}</td>
+           %{-- <g:if test="${settings.RON == Constants.NEXT_INTEGER_VALUE}">
                 <td>${String.format("%.2f", Math.ceil(total))}</td>
             </g:if>
             <g:elseif test="${settings.RON == Constants.PREVIOUS_INTEGER_VALUE}">
@@ -630,7 +632,7 @@
             </g:elseif>
             <g:else>
                 <td>${String.format("%.2f", total)}</td>
-            </g:else>
+            </g:else>--}%
         </tr>
         <tr style="border: 1px solid #ffffff">
             <td colspan="14" style="border: 0"><g:if test="${saleBillDetail.billStatus == 'CANCELLED'}">

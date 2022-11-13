@@ -481,6 +481,7 @@ public class Links
     public static String GET_OUTSTANDING_REPORT = APP_CONTEXT_PATH + "accounts/reports/outstanding";
 
     public static String GST_SALES_REPORTS = APP_CONTEXT_PATH + "sales/reports/salesgst";
+    public static String CREDIT_NOTE_GST_SALES_REPORTS = APP_CONTEXT_PATH + "sales/reports/creditnotegst";
 
     public static String SALE_SCHEME_UPDATE = APP_CONTEXT_PATH + "sales/schemeconfiguration/{id}";
     public static String SALE_SCHEME_DELETE = APP_CONTEXT_PATH + "sales/schemeconfiguration/{id}";

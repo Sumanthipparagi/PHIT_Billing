@@ -14,6 +14,21 @@
     <asset:stylesheet rel="stylesheet" src="/themeassets/css/main.css"/>
     <asset:stylesheet rel="stylesheet" src="/themeassets/css/color_skins.css"/>
 
+    <style>
+    body {
+        counter-reset: Serial; /* Set the Serial counter to 0 */
+    }
+
+    table {
+        border-collapse: separate;
+    }
+
+    tr td:first-child:before {
+        counter-increment: Serial; /* Increment the Serial counter */
+        content: "Serial is: " counter(Serial); /* Display the counter */
+    }
+
+    </style>
 </head>
 
 <body class="theme-black">
@@ -43,14 +58,14 @@
                     </ul>
                 </div>
 
-                <div class="col-lg-7 col-md-7 col-sm-12">
-                    <div class="input-group m-b-0">
-                        <input type="text" class="form-control" placeholder="Search...">
-                        <span class="input-group-addon">
-                            <i class="zmdi zmdi-search"></i>
-                        </span>
-                    </div>
-                </div>
+                %{--                <div class="col-lg-7 col-md-7 col-sm-12">--}%
+                %{--                    <div class="input-group m-b-0">--}%
+                %{--                        <input type="text" class="form-control" placeholder="Search...">--}%
+                %{--                        <span class="input-group-addon">--}%
+                %{--                            <i class="zmdi zmdi-search"></i>--}%
+                %{--                        </span>--}%
+                %{--                    </div>--}%
+                %{--                </div>--}%
             </div>
         </div>
 
@@ -58,11 +73,11 @@
         <div class="row">
             <div class="col-lg-6">
                 <h5>Draft Sale Products</h5>
-                <g:if test="${draftSaleBillDetails.size() != 0}">
+                <g:if test="${draftSaleBillDetails?.size() != 0 && draftSaleBillDetails != null}">
                     <table class="table table-striped table-bordered" style="width: 100%;table-layout: fixed;">
                         <thead>
                         <tr>
-                            <th scope="col">#</th>
+%{--                            <th scope="col">#</th>--}%
                             <th scope="col">Product Name</th>
                             <th scope="col">Sale Qty</th>
                             <th scope="col">Free Qty</th>
@@ -71,12 +86,12 @@
                         <tbody>
                         <tbody>
                         <g:each in="${draftSaleBillDetails}" var="d" status="i">
-                            <g:each in="${d.products}" var="product">
+                            <g:each in="${d?.products}" var="product" status="j">
                                 <tr>
-                                    <th scope="row">${i + 1}</th>
-                                    <td style="white-space: break-spaces;">${product.product.productName}</td>
-                                    <td>${product.sqty}</td>
-                                    <td>${product.freeQty}</td>
+%{--                                    <th scope="row" class="slno"></th>--}%
+                                    <td style="white-space: break-spaces;">${product?.product?.productName}</td>
+                                    <td>${product?.sqty}</td>
+                                    <td>${product?.freeQty}</td>
                                 </tr>
                             </g:each>
                         </g:each>
@@ -90,11 +105,11 @@
 
             <div class="col-lg-6">
                 <h5>Draft Purchase Products</h5>
-                <g:if test="${draftPurchaseBillDetails.size() != 0}">
+                <g:if test="${draftPurchaseBillDetails?.size() != 0 && draftPurchaseBillDetails != null}">
                     <table class="table table-striped table-bordered" style="width: 100%;table-layout: fixed;">
                         <thead>
                         <tr>
-                            <th scope="col">#</th>
+%{--                            <th scope="col">#</th>--}%
                             <th scope="col">Product Name</th>
                             <th scope="col">Sale Qty</th>
                             <th scope="col">Free Qty</th>
@@ -103,12 +118,12 @@
                         <tbody>
                         <tbody>
                         <g:each in="${draftPurchaseBillDetails}" var="p" status="i">
-                            <g:each in="${p.products}" var="product">
+                            <g:each in="${p?.products}" var="product">
                                 <tr>
-                                    <th scope="row">${i + 1}</th>
-                                    <td style="white-space: break-spaces;">${product.product.productName}</td>
-                                    <td>${product.sqty}</td>
-                                    <td>${product.freeQty}</td>
+%{--                                    <th scope="row">${i + 1}</th>--}%
+                                    <td style="white-space: break-spaces;">${product?.product?.productName}</td>
+                                    <td>${product?.sqty}</td>
+                                    <td>${product?.freeQty}</td>
                                 </tr>
                             </g:each>
                         </g:each>
