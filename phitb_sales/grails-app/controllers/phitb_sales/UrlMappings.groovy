@@ -101,6 +101,9 @@ class UrlMappings {
                 action = [GET: 'getDraftBillById']
             }
 
+            "/salebilldetails/pendingirn(.$format)?"(controller: 'saleBillDetails') {
+                action = [POST: 'getByPendingIrnAndEntity']
+            }
             "/salebilldetails/datatable(.$format)?"(controller: 'saleBillDetails') { action = [GET: 'dataTable'] }
             "/salebilldetails/cancel(.$format)?"(controller: 'saleBillDetails') { action = [POST: 'cancelSaleBill'] }
             "/salebilldetails/$id(.$format)?"(controller: 'saleBillDetails') {

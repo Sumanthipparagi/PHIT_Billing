@@ -133,6 +133,9 @@
                             </div>
 
                             <div class="col-md-4">
+                                <div>
+                                    <a onclick="exportIRN()" class="btn btn-info" style="color: white;"><i class="fa fa-download"></i> e-Invoice JSON</a>
+                                </div>
                             </div>
 
                             <div class="col-md-4 clearfix">
@@ -483,6 +486,7 @@
                 var badgeContainer = "";
                 var saleReturnIds = "";
                 var saleBillId = $(".saleBillId").val(invoice.id);
+                var einvoice = "<a class='btn btn-sm btn-info' style='color: white;' onclick='exportIRNSingle("+invoice.id+")'><i class='fa fa-download'></i> e-invoice JSON</a>"
                 if(invoice.billStatus !== "DRAFT")
                 {
                     if(invoice.invoiceNumber !== undefined) {
@@ -509,6 +513,10 @@
                     else
                     {
                         badgeContainer += "<div class=\"badge badge-warning ml-2\">PARTIALLY SETTLED</div>"
+                    }
+
+                    if(invoice.billStatus === "ACTIVE") {
+                        badgeContainer += "<div class='row'><div class='col-md-12'> " + einvoice + "</div></div>";
                     }
                 }
                 else
@@ -1061,6 +1069,112 @@
             e.value = e.value + ".00";
         }
     }*/
+
+    function exportIRNSingle(id)
+    {
+        Swal.fire({
+            icon: "info",
+            title:"Generate e-Invoice JSON?",
+            text: "JSON file will be generated for pending invoices.",
+            showDenyButton: true,
+            showCancelButton: false,
+            confirmButtonText: 'Yes'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                var waitingSwal = Swal.fire({
+                    title: "Generating e-Invoice JSON, Please wait!",
+                    showDenyButton: false,
+                    showCancelButton: false,
+                    showConfirmButton: false,
+                    allowOutsideClick: false
+                });
+                $.ajax({
+                    url: "sale-bill/download-irn/"+id,
+                    method: "POST",
+                    dataType: "text",
+                    success: function(json)
+                    {
+                        waitingSwal.close();
+                        Swal.fire({
+                            title: "Success!",
+                            html: "e-Invoice JSON exported, please upload it in GST Portal",
+                            icon: 'success'
+                        });
+                        var blob = new Blob([json], {
+                            type: 'application/json'
+                        });
+                        var link = document.createElement('a');
+                        link.href = window.URL.createObjectURL(blob);
+                        link.download = Date.now()+"_e-invoice.json";
+                        link.click();
+                    },
+                    error: function () {
+                        waitingSwal.close();
+                        Swal.fire({
+                            title: "Error!",
+                            html: "Please try later!",
+                            icon: 'error'
+                        });
+                    }
+                })
+            } else if (result.isDenied) {
+
+            }
+        });
+
+    }
+    function exportIRN()
+    {
+        Swal.fire({
+            icon: "info",
+            title:"Generate e-Invoice JSON?",
+            text: "JSON file will be generated for pending invoices.",
+            showDenyButton: true,
+            showCancelButton: false,
+            confirmButtonText: 'Yes'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                var waitingSwal = Swal.fire({
+                    title: "Generating e-Invoice JSON, Please wait!",
+                    showDenyButton: false,
+                    showCancelButton: false,
+                    showConfirmButton: false,
+                    allowOutsideClick: false
+                });
+                $.ajax({
+                    url: "sale-bill/download-irn",
+                    method: "POST",
+                    dataType: "text",
+                    success: function(json)
+                    {
+                        waitingSwal.close();
+                        Swal.fire({
+                            title: "Success!",
+                            html: "e-Invoice JSON exported, please upload it in GST Portal",
+                            icon: 'success'
+                        });
+                        var blob = new Blob([json], {
+                            type: 'application/json'
+                        });
+                        var link = document.createElement('a');
+                        link.href = window.URL.createObjectURL(blob);
+                        link.download = Date.now()+"_e-invoice.json";
+                        link.click();
+                    },
+                    error: function () {
+                        waitingSwal.close();
+                        Swal.fire({
+                            title: "Error!",
+                            html: "Please try later!",
+                            icon: 'error'
+                        });
+                    }
+                })
+            } else if (result.isDenied) {
+
+            }
+        });
+    }
 </script>
 <g:include view="controls/footer-content.gsp"/>
 <script>

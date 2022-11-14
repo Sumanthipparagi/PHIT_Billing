@@ -1,6 +1,7 @@
 package phitb_ui.sales
 
 import phitb_ui.AccountsService
+import phitb_ui.EInvoiceService
 import phitb_ui.EntityService
 import phitb_ui.ProductService
 import phitb_ui.SystemService
@@ -15,6 +16,8 @@ import phitb_ui.Constants
 import phitb_ui.SalesService
 import phitb_ui.system.AccountModeController
 
+import java.nio.file.Files
+import java.nio.file.Path
 import java.text.SimpleDateFormat
 
 class SalebillDetailsController {
@@ -141,7 +144,7 @@ class SalebillDetailsController {
     def dataTable() {
         try {
             JSONObject jsonObject = new JSONObject(params)
-            if(session.getAttribute("role").toString().equalsIgnoreCase(Constants.ENTITY_ADMIN))
+            if (session.getAttribute("role").toString().equalsIgnoreCase(Constants.ENTITY_ADMIN))
                 jsonObject.put("userId", session.getAttribute("userId"))
             jsonObject.put("entityId", session.getAttribute("entityId"))
             def apiResponse = new SalesService().showSalesService(jsonObject)
@@ -156,9 +159,9 @@ class SalebillDetailsController {
                         def receiptResponse = new AccountsService().getReceiptLogByBillTypeAndId(json.get("id").toString(), "INVS")
                         def receiptLog = []
                         if (receiptResponse?.status == 200) {
-                         JSONArray receipt = new JSONArray(receiptResponse.readEntity(String.class))
-                            for(JSONObject r:receipt){
-                                if(r?.receiptStatus!= "CANCELLED"){
+                            JSONArray receipt = new JSONArray(receiptResponse.readEntity(String.class))
+                            for (JSONObject r : receipt) {
+                                if (r?.receiptStatus != "CANCELLED") {
                                     receiptLog.push(r);
                                 }
                             }
@@ -166,7 +169,7 @@ class SalebillDetailsController {
                         customer?.put("city", city)
                         json.put("customer", customer)
 //                        json.put("saleReturnAdjustmentDetails",saleReturnAdjustmentDetails)
-                        json.put("receiptLog",receiptLog)
+                        json.put("receiptLog", receiptLog)
                     }
                     responseObject.put("data", jsonArray)
                 }
@@ -188,8 +191,7 @@ class SalebillDetailsController {
         ArrayList<JSONObject> bank = new AccountsService().getBankRegisterByEntity(entityId) as ArrayList
         ArrayList<JSONObject> paymentModes = new ArrayList<>()
         def apiResponse = new SystemService().getPaymentModes()
-        if(apiResponse.status == 200)
-        {
+        if (apiResponse.status == 200) {
             paymentModes = new JSONArray(apiResponse.readEntity(String.class))
             paymentModes = paymentModes.reverse()
         }
@@ -201,23 +203,21 @@ class SalebillDetailsController {
         ArrayList<JSONObject> accountRegister = new EntityService().getAllAccountByEntity(entityId) as ArrayList
         render(view: '/sales/salebillDetails/saleBill', model: [bank           : bank,
                                                                 accountMode    : accountMode,
-                                                                paymentModes: paymentModes,
+                                                                paymentModes   : paymentModes,
                                                                 accountRegister: accountRegister,
-                                                                settings:settings,
-                                                                entityConfigs:entityConfigs,
+                                                                settings       : settings,
+                                                                entityConfigs  : entityConfigs,
         ])
     }
 
 
-    def recordPayment()
-    {
+    def recordPayment() {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd")
         SimpleDateFormat sdf2 = new SimpleDateFormat("dd/MM/yyyy")
         String financialYear = session.getAttribute("financialYear")
         String saleBillId = params.saleBillId
         JSONObject saleBill = new SalesService().getSaleBillDetailsById(saleBillId)
-        if(saleBill.billStatus != "ACTIVE")
-        {
+        if (saleBill.billStatus != "ACTIVE") {
             render(text: "This invoice is cancelled already", status: 403)
             return
         }
@@ -242,7 +242,7 @@ class SalebillDetailsController {
         receipt.put("paymentDate", sdf.parse(paymentDate).format("dd/MM/yyyy"))
         receipt.put("chequeNumber", "")
         receipt.put("bank", payeeBanker)
-        receipt.put("wallet",0)
+        receipt.put("wallet", 0)
         receipt.put("financialYear", financialYear)
         receipt.put("status", 1)
         receipt.put("syncStatus", 1)
@@ -252,17 +252,16 @@ class SalebillDetailsController {
         receipt.put("createdUser", session.getAttribute("userId"))
         receipt.put("cardNumber", cardNumber)
         def receiptResponse = new AccountsService().saveReceipt(receipt, financialYear)
-        if(receiptResponse.status == 200)
-        {
+        if (receiptResponse.status == 200) {
             JSONObject savedReceipt = new JSONObject(receiptResponse.readEntity(String.class))
             String receiptId = savedReceipt.id.toString()
-            if (amount !=0) {
+            if (amount != 0) {
                 JSONObject invObject = new JSONObject()
                 invObject.put("id", saleBill.id)
                 invObject.put("paidNow", amount)
-                invObject.put("status","NA")
+                invObject.put("status", "NA")
                 invObject.put("docId", receiptId) //link receipt with Sale Return Adjustment log
-                invObject.put("docType","CRNT")
+                invObject.put("docType", "CRNT")
                 def invs = new AccountsService().updateSaleBalance(invObject)
                 if (invs?.status == 200) {
                     println("Invoice Updated")
@@ -290,8 +289,7 @@ class SalebillDetailsController {
         double creditsApplied = Double.parseDouble(params.creditsApplied)
         JSONObject saleBill = new SalesService().getSaleBillDetailsById(saleBillId)
 
-        if(saleBill.billStatus != "ACTIVE")
-        {
+        if (saleBill.billStatus != "ACTIVE") {
             render(text: "This invoice is cancelled already", status: 403)
             return
         }
@@ -299,33 +297,30 @@ class SalebillDetailsController {
         String saleReturnIds = params.saleReturnIds
 
         if (saleReturnIds && saleReturnIds.endsWith(",")) {
-            saleReturnIds = saleReturnIds.substring(0, saleReturnIds.length()-1);
+            saleReturnIds = saleReturnIds.substring(0, saleReturnIds.length() - 1);
         }
 
         double totalBalance = saleBill.balance
-        if(creditsApplied > totalBalance)
-        {
-            print("Applied credits is greater than balance: "+creditsApplied+" > "+totalBalance)
+        if (creditsApplied > totalBalance) {
+            print("Applied credits is greater than balance: " + creditsApplied + " > " + totalBalance)
             //reject this
             response.status = 400
             return
         }
 
-        if (creditsApplied !=0) {
+        if (creditsApplied != 0) {
             JSONObject invObject = new JSONObject()
             invObject.put("id", saleBill.id)
             invObject.put("userId", session.getAttribute("userId"))
-            invObject.put("status","NA")
-            invObject.put("creditsApplied",creditsApplied)
-            invObject.put("saleReturnIds",saleReturnIds)
+            invObject.put("status", "NA")
+            invObject.put("creditsApplied", creditsApplied)
+            invObject.put("saleReturnIds", saleReturnIds)
             invObject.put("docId", saleBill.id) //link invoice with Sale Return Adjustment log
-            invObject.put("docType","INVS")
+            invObject.put("docType", "INVS")
             def invs = new AccountsService().updateSaleBalanceAndCredit(invObject)
             if (invs?.status == 200) {
                 println("Invoice Updated")
-            }
-            else
-            {
+            } else {
                 println("Error Updating Invoice")
             }
         }
@@ -356,7 +351,7 @@ class SalebillDetailsController {
             String receiptId = rLog.receiptId.toString()
             apiResponse = new AccountsService().getReciptById(receiptId)
             if (apiResponse.status == 200) {
-                rLog.put("receipt",new JSONObject(apiResponse.readEntity(String.class)))
+                rLog.put("receipt", new JSONObject(apiResponse.readEntity(String.class)))
             }
         }
         JSONArray saleReturnAdjustmentDetails = new SalesService().getSaleReturnAdjustmentDetails(saleBill.id.toString(), "INVS")
@@ -379,5 +374,71 @@ class SalebillDetailsController {
         result.put("saleReturnAdjustmentDetails", saleReturnAdjustmentDetails)
 
         respond result, formats: ['json']
+    }
+
+    def exportGSTEInvoiceJSON() {
+        try {
+            String entityId = session.getAttribute("entityId").toString()
+            String financialYear = session.getAttribute("financialYear").toString()
+            JSONArray finalJson = new JSONArray()
+            JSONArray saleBillDetails = new SalesService().getSaleBillDetailsByPendingIRN(financialYear, entityId)
+            if(saleBillDetails) {
+                println("Total Bills: " + saleBillDetails?.size())
+                int i = 0;
+                for (Object saleBillDetail : saleBillDetails) {
+                    try {
+                        println("Bill: " + (++i))
+                        String json = EInvoiceService.buildIrnPayload(saleBillDetail, saleBillDetail.products)
+                        if (json) {
+                            JSONObject jsonObject = new JSONObject(json)
+                            if (jsonObject)
+                                finalJson.add(jsonObject)
+                        }
+                    }
+                    catch (Exception ex) {
+                        println("exportGSTEInvoiceJSON: Error in JSONObject, Skipping and moving to next one\n " + ex.printStackTrace())
+                    }
+                }
+                render(text: finalJson.toString(), status: 200)
+            }
+            else
+                response.status = 400
+        }
+        catch (Exception ex) {
+            System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
+            log.error('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
+            response.status = 400
+        }
+    }
+
+    def exportSingleGSTEInvoiceJSON() {
+        try {
+            String id = params.id
+            String entityId = session.getAttribute("entityId").toString()
+            JSONObject saleBillDetail = new SalesService().getSaleBillDetailsById(id)
+            if(saleBillDetail && saleBillDetail.entityId.toString() == entityId) {
+                JSONArray finalJson = new JSONArray()
+                def products =new SalesService().getSaleProductDetailsByBill(saleBillDetail.id.toString())
+                String json = EInvoiceService.buildIrnPayload(saleBillDetail, products)
+                if (json) {
+                    JSONObject jsonObject = new JSONObject(json)
+                    if (jsonObject) {
+                        finalJson.add(jsonObject)
+                        render(text: finalJson, status: 200)
+                    }
+                    else
+                        response.status = 400
+                }
+                else
+                    response.status = 400
+            }
+            else
+                response.status = 400
+        }
+        catch (Exception ex) {
+            System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
+            log.error('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
+            response.status = 400
+        }
     }
 }

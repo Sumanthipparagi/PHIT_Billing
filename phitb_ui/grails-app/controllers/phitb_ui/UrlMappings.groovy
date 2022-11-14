@@ -510,6 +510,8 @@ class UrlMappings {
         "/sale-bill/datatable"(controller: "salebillDetails", action: 'dataTable')
         "/sale-bill/record-payment"(controller: "salebillDetails", action: 'recordPayment')
         "/sale-bill/adjust-credits"(controller: "salebillDetails", action: 'adjustCredits')
+        "/sale-bill/download-irn"(controller: "salebillDetails", action: 'exportGSTEInvoiceJSON')
+        "/sale-bill/download-irn/$id"(controller: "salebillDetails", action: 'exportSingleGSTEInvoiceJSON')
 
 
 //        stock Adjustment

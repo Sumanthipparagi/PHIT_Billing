@@ -643,4 +643,29 @@ class SaleBillDetailsService
             throw new BadRequestException()
         }
     }
+
+
+    def getByPendingIRNAndEntity(String entityId, String financialYear)
+    {
+        try {
+            long eid = Long.parseLong(entityId)
+            JSONArray finalBills = new JSONArray()
+            ArrayList<SaleBillDetails> saleBillDetails = SaleBillDetails.findAllByEntityIdAndFinancialYearAndIrnDetailsIsNullAndBillStatus(eid, financialYear, "ACTIVE")
+            for (SaleBillDetails saleBillDetail : saleBillDetails) {
+                JSONObject saleBillDetail1 = new JSONObject((saleBillDetail as JSON).toString())
+                def productDetails = SaleProductDetails.findAllByBillId(saleBillDetail.id)
+                if (productDetails) {
+                    JSONArray prdt =  new  JSONArray((productDetails as JSON).toString())
+                    saleBillDetail1.put("products", prdt)
+                }
+                finalBills.add(saleBillDetail1)
+            }
+            return finalBills
+        }
+        catch (Exception ex)
+        {
+            ex.printStackTrace()
+            throw new BadRequestException()
+        }
+    }
 }

@@ -219,7 +219,7 @@ class EInvoiceService {
     }
 
 
-    private static String buildIrnPayload(JSONObject saleBillDetail, JSONArray saleProductDetails) {
+    public static String buildIrnPayload(JSONObject saleBillDetail, JSONArray saleProductDetails) {
         String irnJson = null
         if (saleBillDetail && saleProductDetails) {
             JSONObject sellerDetails = new EntityService().getEntityById(saleBillDetail.get("entityId").toString())
@@ -265,7 +265,12 @@ class EInvoiceService {
                 sellerAddressLine2 = new UtilsService().truncateString(sellerDetails.get("addressLine2").toString(), 100)
                 SellerDtls.put("Addr2", sellerAddressLine2)
             }
-            SellerDtls.put("Loc", sellerCity.get("name"))
+
+            if(sellerCity.has("name"))
+                SellerDtls.put("Loc", sellerCity.get("name"))
+            else
+                SellerDtls.put("Loc", sellerCity.get("areaName"))
+
             SellerDtls.put("Pin", Long.parseLong(sellerDetails.get("pinCode").toString()))
             //SellerDtls.put("Pin", 431132) //TODO: to be removed in production
             SellerDtls.put("Ph", sellerDetails.get("mobileNumber"))
@@ -286,7 +291,11 @@ class EInvoiceService {
                 buyerAddressLine2 = new UtilsService().truncateString(buyerDetails.get("addressLine2").toString(), 100)
                 BuyerDtls.put("Addr2", buyerAddressLine2)
             }
-            BuyerDtls.put("Loc", buyerCity.get("name"))
+            if(buyerCity.has("name"))
+                BuyerDtls.put("Loc", buyerCity.get("name"))
+            else
+                BuyerDtls.put("Loc", buyerCity.get("areaName"))
+
             BuyerDtls.put("Pin", Long.parseLong(buyerDetails.get("pinCode").toString()))
           //  BuyerDtls.put("Pin", 431132)  //TODO: to be removed in production
             BuyerDtls.put("Ph", buyerDetails.get("mobileNumber"))
@@ -300,7 +309,11 @@ class EInvoiceService {
             //Dispatch Details
             JSONObject DispDtls = new JSONObject()
             DispDtls.put("Nm", sellerDetails.get("entityName"))
-            DispDtls.put("Loc", sellerCity.get("name"))
+            if(sellerCity.has("name"))
+                DispDtls.put("Loc", sellerCity.get("name"))
+            else
+                DispDtls.put("Loc", sellerCity.get("areaName"))
+
             DispDtls.put("Addr1", new UtilsService().truncateString(sellerDetails.get("addressLine1").toString(), 100))
             String dispDtlsAddressLine2 = ""
             if (sellerDetails.get("addressLine2")?.toString()?.length() > 2) {
@@ -330,7 +343,15 @@ class EInvoiceService {
                 JSONObject product = new ProductService().getProductById(saleProduct.get("productId").toString())
                 JSONObject item = new JSONObject()
                 double sRate = Double.parseDouble(saleProduct.get("sRate").toString())
-                Integer sqty = Integer.parseInt(saleProduct.get("sqty").toString())
+                String saleQty = saleProduct.get("sqty").toString()
+                saleQty = saleQty.replaceAll("\\.0","")
+
+                String freeQty = saleProduct.get("freeQty").toString()
+                freeQty = freeQty.replaceAll("\\.0","")
+
+                Integer sqty = Integer.parseInt(saleQty)
+                Integer fqty = Integer.parseInt(freeQty)
+
                 double totalAmount = UtilsService.round((sRate * sqty), 2)
                 double assAmt = UtilsService.round(totalAmount - Double.parseDouble(saleProduct.get("discount").toString()), 2)
                 double igst = UtilsService.round(Double.parseDouble(saleProduct.get("igstAmount").toString()), 2)
@@ -348,8 +369,8 @@ class EInvoiceService {
                 item.put("PrdDesc", product.get("productName"))
                 item.put("IsServc", "N")
                 item.put("HsnCd", product.get("hsnCode"))
-                item.put("Qty", Integer.parseInt(saleProduct.get("sqty").toString()))
-                item.put("FreeQty", Integer.parseInt(saleProduct.get("freeQty").toString()))
+                item.put("Qty", sqty)
+                item.put("FreeQty", fqty)
                 item.put("UnitPrice", UtilsService.round(sRate, 2))
                 item.put("Unit", "OTH")
                 item.put("TotAmt", totalAmount)
@@ -360,7 +381,7 @@ class EInvoiceService {
                 item.put("CgstAmt", cgst)
                 item.put("SgstAmt", sgst)
                 item.put("TotItemVal", amount)
-                item.put("OrgCntry", sellerState.get("country")["irnCountryCode"])
+                //item.put("OrgCntry", sellerState.get("country")["irnCountryCode"])
                 //item.put("Barcde", "")
                 // item.put("Unit", "OTH")
                 //item.put("PreTaxVal", "")
