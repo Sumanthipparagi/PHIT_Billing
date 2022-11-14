@@ -39,7 +39,7 @@ class UrlMappings {
             "/batch-and-product(.$format)?"(controller: 'batchRegister') {
                 action = [GET: 'getByBatchAndProduct']
             }
-            "/save-bulk-batch-register(.$format)?"(controller: 'batchRegister', action: 'saveBulkProducts')
+            "/save-bulk-batch-register(.$format)?"(controller: 'batchRegister', action: 'saveBulkBatches')
 
 
             //Composition Master Register

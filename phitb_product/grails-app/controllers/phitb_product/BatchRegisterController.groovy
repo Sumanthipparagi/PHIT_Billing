@@ -242,7 +242,7 @@ class BatchRegisterController {
         }
     }
 
-    def saveBulkProducts()
+    def saveBulkBatches()
     {
         try
         {

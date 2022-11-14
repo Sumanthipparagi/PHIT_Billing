@@ -850,5 +850,6 @@ public class Links
 
     public static String BULK_SAVE_PRODUCT_DETAIL = APP_CONTEXT_PATH + "product/save-bulk-product-register";
     public static String BULK_SAVE_BATCH_DETAIL = APP_CONTEXT_PATH + "product/save-bulk-batch-register";
+    public static String BULK_SAVE_STOCK_DETAIL = APP_CONTEXT_PATH + "product/save-bulk-stocks";
 
 }

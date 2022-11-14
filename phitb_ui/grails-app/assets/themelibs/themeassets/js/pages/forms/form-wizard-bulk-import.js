@@ -51,12 +51,20 @@ $(function () {
                   form.find('.body:eq(' + newIndex + ') label.error').remove();
                   form.find('.body:eq(' + newIndex + ') .error').removeClass('error');
               }
-                loadProductsData()
+                if(currentIndex === 2){
+                    loadStockProductsData()
+                }else{
+                    loadProductsData();
+                }
                  form.validate().settings.ignore = ':disabled,:hidden';
                  return form.valid();
             },
             onStepChanged: function (event, currentIndex, priorIndex) {
-                loadProductsData()
+                if(currentIndex === 2){
+                    loadStockProductsData()
+                }else{
+                    loadProductsData();
+                }
                 setButtonWavesEffect(event);
             }
         ,

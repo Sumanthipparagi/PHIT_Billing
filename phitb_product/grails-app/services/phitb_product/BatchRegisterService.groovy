@@ -214,15 +214,15 @@ class BatchRegisterService {
             if(batchRegister == null) {
                 batchRegister = new BatchRegister()
                 batchRegister.product = product
-                batchRegister.manfDate = sdf.parse(jsonObject.get("manfDate").toString())
-                batchRegister.expiryDate = sdf.parse(jsonObject.get("expiryDate").toString())
+                batchRegister.manfDate = jsonObject.get("manfDate") as Date
+                batchRegister.expiryDate = jsonObject.get("expiryDate") as Date
                 batchRegister.purchaseRate = Double.parseDouble(jsonObject.get("purchaseRate").toString())
                 batchRegister.saleRate = Double.parseDouble(jsonObject.get("saleRate").toString())
                 batchRegister.ptr = Double.parseDouble(jsonObject.get("ptr").toString())
                 batchRegister.mrp = Double.parseDouble(jsonObject.get("mrp").toString())
                 batchRegister.qty = Long.parseLong(jsonObject.get("qty").toString())
                 batchRegister.box = Long.parseLong(jsonObject.get("box").toString())
-                batchRegister.caseWt = jsonObject.get("caseWt").toString()
+                batchRegister.caseWt = 0
                 batchRegister.batchNumber = jsonObject.get("batchNumber").toString()
                 if(jsonObject.has("productCat") && jsonObject.get("productCat").toString()!=0)
                 {

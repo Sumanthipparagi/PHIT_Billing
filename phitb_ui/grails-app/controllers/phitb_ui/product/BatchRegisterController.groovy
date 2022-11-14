@@ -247,7 +247,7 @@ class BatchRegisterController
             JSONObject responseObject = new JSONObject()
             for (JSONObject jsonObject : params)
             {
-                jsonObject.put("productId", jsonObject.get('0'))
+                jsonObject.put("product", jsonObject.get('0'))
                 jsonObject.put("batchNumber", jsonObject.get('1'))
                 jsonObject.put("box", jsonObject.get('2'))
                 jsonObject.put("qty", jsonObject.get('3'))
@@ -259,8 +259,8 @@ class BatchRegisterController
                 jsonObject.put("manfDate", sdf.parse(jsonObject.get('9').toString()))
                 jsonObject.put("entityTypeId", session.getAttribute('entityTypeId'))
                 jsonObject.put("entityId", session.getAttribute('entityId'))
-                jsonObject.put("createdUser", session.getAttribute('createdUser'))
-                jsonObject.put("modifiedUser", session.getAttribute('createdUser'))
+                jsonObject.put("createdUser", session.getAttribute('userId'))
+                jsonObject.put("modifiedUser", session.getAttribute('userId'))
                 productArray.add(jsonObject)
             }
             JSONObject jsonObject = new ProductService().saveBulkBatchRegister(productArray)

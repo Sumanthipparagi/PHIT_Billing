@@ -40,6 +40,7 @@ class UrlMappings {
                 action = [GET:'stockIncrease'] }
             "/stockbook/product/$id/batch/$batch(.$format)?"(controller: 'stockBook') {
                 action = [GET:'getByProductIdAndBatch'] }
+            "/save-bulk-stocks"(controller: 'stockBook', action: 'saveBulkBatches')
 
 
             //Temp Stock Book

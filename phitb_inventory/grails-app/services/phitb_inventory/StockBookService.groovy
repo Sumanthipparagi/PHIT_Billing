@@ -1,6 +1,7 @@
 package phitb_inventory
 
 import grails.gorm.transactions.Transactional
+import org.grails.web.json.JSONArray
 import org.grails.web.json.JSONObject
 import phitb_inventory.Exception.BadRequestException
 import phitb_inventory.Exception.ResourceNotFoundException
@@ -311,5 +312,95 @@ class StockBookService {
     {
         StockBook stockBook = StockBook.findByProductIdAndEntityId(productId, entityId)
         return stockBook
+    }
+
+
+    def saveBulkStocks(JSONArray jsonArray){
+        JSONArray stockArray = new JSONArray()
+        JSONArray unusedArray = new JSONArray()
+        JSONObject responseObject = new JSONObject()
+        for(JSONObject jsonObject:jsonArray){
+            long entityId = Long.parseLong(jsonObject.get("entityId").toString())
+            long productId = Long.parseLong(jsonObject.get("productId").toString())
+            String batchNumber = jsonObject.get("batchNumber")
+
+            //check if exists
+            StockBook stockBook = StockBook.findByEntityIdAndProductIdAndBatchNumber(entityId, productId, batchNumber)
+            if (stockBook == null)
+            {
+                stockBook = new StockBook()
+                jsonObject.put("manufacturingDate", jsonObject.get("manufacturingDate"))
+                jsonObject.put("expDate", jsonObject.get("expDate"))
+                jsonObject.put("purcDate", new Date())
+                double saleRate = Double.parseDouble(jsonObject.get("saleRate").toString())
+                long remainingQty = Long.parseLong(jsonObject.get("remainingQty").toString())
+                long remainingFreeQty = Long.parseLong(jsonObject.get("remainingFreeQty").toString())
+                stockBook.batchNumber = batchNumber
+                stockBook.mergedWith = 0
+                stockBook.packingDesc = jsonObject.get("packingDesc")
+                stockBook.productId = productId
+                stockBook.expDate = sdf.parse(jsonObject.get("expDate").toString())
+                stockBook.purcDate = sdf.parse(jsonObject.get("purcDate").toString())
+                stockBook.manufacturingDate = jsonObject.get("manufacturingDate") as Date
+                stockBook.remainingQty = remainingQty
+                stockBook.purcProductValue = 0
+                stockBook.purcTradeDiscount = 0
+                stockBook.purchaseRate = Double.parseDouble(jsonObject.get("purchaseRate").toString())
+                stockBook.mrp = Double.parseDouble(jsonObject.get("mrp").toString())
+                stockBook.purcSeriesId = 0
+                stockBook.remainingFreeQty = remainingFreeQty
+                stockBook.remainingReplQty = 0
+                stockBook.saleRate = saleRate
+                stockBook.supplierId = Long.parseLong(jsonObject.get("supplierId").toString())
+                stockBook.taxId = Long.parseLong(jsonObject.get("taxId").toString())
+                stockBook.status = 0
+                stockBook.syncStatus = 0
+                stockBook.entityTypeId = Long.parseLong(jsonObject.get("entityTypeId").toString())
+                stockBook.entityId = entityId
+                stockBook.createdUser = Long.parseLong(jsonObject.get("createdUser").toString())
+                stockBook.modifiedUser = Long.parseLong(jsonObject.get("modifiedUser").toString())
+                stockBook.openingStockQty = Long.parseLong(jsonObject.get("openingStockQty").toString())
+                stockBook.uuid = ''
+                stockBook.save(flush: true)
+                stockArray.add(stockBook)
+            }else{
+                unusedArray.add(stockBook)
+            }
+                //Date sanitize
+//            Date manufacturingDate = jsonObject.get("manufacturingDate")
+//            Date expDate = jsonObject.get("expDate")
+//            Date purcDate = jsonObject.get("purcDate")
+//            SimpleDateFormat sdf1 = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'")
+//            if (manufacturingDate.contains("T")) {
+//                manufacturingDate = sdf.format(sdf1.parse(manufacturingDate))
+//            }
+//            if (expDate.contains("T")) {
+//                expDate = sdf.format(sdf1.parse(expDate))
+//            }
+//            if (purcDate.contains("T")) {
+//                purcDate = sdf.format(sdf1.parse(purcDate))
+//            }
+            if (!stockBook.hasErrors()) {
+                StockActivity stockActivity = new StockActivity()
+                stockActivity.productId = productId
+                stockActivity.batch = batchNumber
+                stockActivity.remainingQty = Long.parseLong(jsonObject.get("remainingQty").toString())
+                stockActivity.remainingSchemeQty = Long.parseLong(jsonObject.get("remainingFreeQty").toString())
+                stockActivity.prevRemQty = 0
+                stockActivity.prevSchemeQty = 0
+                stockActivity.saleRate =  Double.parseDouble(jsonObject.get("saleRate").toString())
+                stockActivity.prevSaleRate = 0
+                stockActivity.status = 0
+                stockActivity.syncStatus = 0
+                stockActivity.entityTypeId = Long.parseLong(jsonObject.get("entityTypeId").toString())
+                stockActivity.entityId = Long.parseLong(jsonObject.get("entityId").toString())
+                stockActivity.createdUser = Long.parseLong(jsonObject.get("createdUser").toString())
+                stockActivity.modifiedUser = Long.parseLong(jsonObject.get("modifiedUser").toString())
+                stockActivity.save(flush: true)
+            }
+        }
+        responseObject.put("savedStocks",stockArray)
+        responseObject.put("unsavedStocks",unusedArray)
+        return  responseObject
     }
 }

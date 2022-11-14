@@ -23,6 +23,8 @@
     </style>
 </head>
 
+<g:include view="controls/entity/same-batch-modal-wizard.gsp"/>
+
 <body class="theme-black">
 <!-- Page Loader -->
 <div class="page-loader-wrapper">
@@ -58,7 +60,7 @@
                             <h3>Batch Register</h3>
                             <fieldset>
                                 <button type="button" class="btn btn-primary" id="saveBatch"
-                                        onclick="saveProducts()">Save
+                                        onclick="saveBatches()">Save
                                 </button>
                                 %{--                                <button type="button" class="btn btn-primary" id="loadProducts"--}%
                                 %{--                                        onclick="loadProductsData()">load--}%
@@ -70,6 +72,11 @@
                             <h3>Inventory</h3>
                             <fieldset>
 
+                                <button type="button" class="btn btn-primary" id="saveStock"
+                                        onclick="saveBatches()">Save
+                                </button>
+
+                                <div id="stockTable" style="width:100%;"></div>
                             </fieldset>
                         </form>
                     </div>
@@ -108,6 +115,7 @@
     var productData = [];
     var products = [];
     var batchData = [];
+    var stockData = [];
     var prodcutHeaderRow = [
         'product_name',
         'product_code',
@@ -153,13 +161,27 @@
         'purchase_rate',
         'manf_date',
     ];
+
+    var stockHeaderRow = [
+        'product',
+        'batch_number',
+        'manufacturing_date',
+        'exp_date',
+        'packing_desc',
+        'remaining_qty',
+        'remaining_free_qty',
+        'tax_id',
+        'purchase_rate',
+        'mrp',
+        'sale_rate',
+    ];
     <g:each in="${products}" var="p">
     products.push({"id": ${p.id}, "text": '${p.productName}'});
     </g:each>
-    console.log(products);
     $(document).ready(function () {
         const productContainer = document.getElementById('productTable');
         const batchContainer = document.getElementById('batchTable');
+        const stockContainer = document.getElementById('stockTable');
         prodcutHot = new Handsontable(productContainer, {
             data: productData,
             minRows: 1,
@@ -286,10 +308,68 @@
                   data.splice(0, 0, headers);
               }*/
         });
+
+        stockHot = new Handsontable(stockContainer, {
+            data: stockData,
+            minRows: 1,
+            height: '300',
+            width: 'auto',
+            rowHeights: 25,
+            stretchH: 'all',
+            manualRowResize: true,
+            manualColumnResize: true,
+            persistentState: true,
+            rowHeaders: true,
+            colHeaders: stockHeaderRow,
+            columns: [
+                {
+                    editor: 'select2',
+                    renderer: productsDropdownRenderer,
+                    select2Options: {
+                        data: products,
+                        dropdownAutoWidth: true,
+                        allowClear: true,
+                        width: '0'
+                    },
+                    required:true
+                },
+                {type: 'text', required:true},
+                {type: 'date',  dateFormat: 'YYYY-MM-DD', required:true},
+                {type: 'date',  dateFormat: 'YYYY-MM-DD', required:true},
+                {type: 'text', required:true},
+                {type: 'numeric', required:true},
+                {type: 'numeric', required:true},
+                {type: 'numeric', required:true},
+                {type: 'numeric', required:true},
+                {type: 'numeric', required:true},
+                {type: 'numeric', required:true},
+            ],
+            /*hiddenColumns: true,
+            hiddenColumns: {
+                columns: [13]
+            },*/
+            minSpareRows: 0,
+            minSpareColumns: 0,
+            enterMoves: {row: 0, col: 1},
+            fixedColumnsLeft: 0,
+            licenseKey: 'non-commercial-and-evaluation',
+            contextMenu: ['remove_row', 'row_below', 'cut', 'copy'],
+            /*  beforeCopy: function(data) {
+                  var headers = [];
+                  var selection = this.getSelectedRange();
+                  var startCol = Math.min(selection[0].from.col, selection[0].to.col);
+                  var endCol = Math.max(selection[0].from.col, selection[0].to.col);
+
+                  for (var i = startCol; i <= endCol; i++) {
+                      headers.push(this.getColHeader(i));
+                  }
+
+                  data.splice(0, 0, headers);
+              }*/
+        });
     });
 
     function loadProductsData() {
-        var entityId = "${session.getAttribute("entityId")}";
         var beforeSendSwal;
         $.ajax({
             type: "GET",
@@ -317,6 +397,36 @@
         })
     }
 
+    function loadStockProductsData() {
+        var beforeSendSwal;
+        $.ajax({
+            type: "GET",
+            url: '/product/get-products-by-entity',
+            dataType: 'json',
+            beforeSend: function () {
+                beforeSendSwal = Swal.fire({
+                    // title: "Loading",
+                    html:
+                        '<img src="${assetPath(src: "/themeassets/images/1476.gif")}" width="100" height="100"/>',
+                    showDenyButton: false,
+                    showCancelButton: false,
+                    showConfirmButton: false,
+                    allowOutsideClick: false,
+                    background: 'transparent'
+                });
+            },
+            success: function (data) {
+                for (var i = 0; i < data.length; i++) {
+                    stockHot.selectCell(i, 0);
+                    stockHot.setDataAtCell(i, 0, data[i]["id"]);
+                }
+                beforeSendSwal.close();
+            }
+        })
+    }
+
+
+
     function productsDropdownRenderer(instance, td, row, col, prop, value, cellProperties) {
         var selectedId;
         for (var index = 0; index < products.length; index++) {
@@ -324,7 +434,6 @@
                 selectedId = products[index].id;
                 value = products[index].text;
             }
-            console.log(selectedId)
         }
         Handsontable.renderers.TextRenderer.apply(this, arguments);
     }
@@ -617,8 +726,9 @@
                         prodcutHot.updateSettings({
                             data: []
                         });
-                        prodcutHot.render()
-                        $('#wizard_with_validation').steps('next');
+                        prodcutHot.render();
+                        location.reload();
+                        // $('#wizard_with_validation').steps('next');
                     },
                     error: function (data) {
                         Swal.fire({
@@ -644,13 +754,13 @@
     }
 
     function saveBatches() {
-        prodcutHot.validateCells(function (hotIsValid) {
+        batchHot.validateCells(function (hotIsValid) {
             if (hotIsValid === true) {
                 var beforeSendSwal;
-                var batchData = JSON.stringify(prodcutHot.getSourceData());
+                var batchData = JSON.stringify(batchHot.getSourceData());
                 $.ajax({
                     method: "POST",
-                    url: "/product/save-bulk-batches",
+                    url: "/batch-register/save-bulk-batches",
                     data: {
                         batchData: batchData
                     },
@@ -708,17 +818,33 @@
                         });
                     },
                     success: function (data) {
-                        Swal.fire({
+                        /*Swal.fire({
                             icon: 'success',
                             title: 'Success!',
                             text: 'Batch Import Successful',
-                        });
-
-                        prodcutHot.updateSettings({
-                            data: []
-                        });
-                        prodcutHot.render();
-                        $('#wizard_with_validation').steps('next');
+                        });*/
+                        if(data.sameBatches.length!==0){
+                            var html='';
+                            $.each(data.sameBatches, function (key, value) {
+                                html+='<tr>' +
+                                    '<td>'+Number(key+1)+'</td>' +
+                                    '<td>'+value.product+'</td>' +
+                                    '<td>'+value.batchNumber+'</td></tr>'
+                            });
+                            $('#batchTableBody').html(html);
+                            $('#batchModal').modal('show');
+                            beforeSendSwal.close();
+                            batchHot.updateSettings({
+                                data: []
+                            });
+                            batchHot.render();
+                        }else{
+                            Swal.fire({
+                                icon: 'success',
+                                title: 'Success!',
+                                text: 'Batch Import Successful',
+                            });
+                        }
                     },
                     error: function (data) {
                         Swal.fire({
@@ -742,6 +868,123 @@
         });
 
     }
+
+    function saveStocks() {
+        batchHot.validateCells(function (hotIsValid) {
+            if (hotIsValid === true) {
+                var beforeSendSwal;
+                var batchData = JSON.stringify(batchHot.getSourceData());
+                $.ajax({
+                    method: "POST",
+                    url: "/stockbook/save-bulk-stocks",
+                    data: {
+                        batchData: batchData
+                    },
+                    beforeSend: function () {
+                        beforeSendSwal = Swal.fire({
+                            // title: "Loading",
+                            html: '<!-- By Sam Herbert (@sherb), for everyone. More @ http://goo.gl/7AJzbL -->\n' +
+                                '<svg width="45" height="45" viewBox="0 0 45 45" xmlns="http://www.w3.org/2000/svg" stroke="#fff">\n' +
+                                '    <g fill="none" fill-rule="evenodd" transform="translate(1 1)" stroke-width="2">\n' +
+                                '        <circle cx="22" cy="22" r="6" stroke-opacity="0">\n' +
+                                '            <animate attributeName="r"\n' +
+                                '                 begin="1.5s" dur="3s"\n' +
+                                '                 values="6;22"\n' +
+                                '                 calcMode="linear"\n' +
+                                '                 repeatCount="indefinite" />\n' +
+                                '            <animate attributeName="stroke-opacity"\n' +
+                                '                 begin="1.5s" dur="3s"\n' +
+                                '                 values="1;0" calcMode="linear"\n' +
+                                '                 repeatCount="indefinite" />\n' +
+                                '            <animate attributeName="stroke-width"\n' +
+                                '                 begin="1.5s" dur="3s"\n' +
+                                '                 values="2;0" calcMode="linear"\n' +
+                                '                 repeatCount="indefinite" />\n' +
+                                '        </circle>\n' +
+                                '        <circle cx="22" cy="22" r="6" stroke-opacity="0">\n' +
+                                '            <animate attributeName="r"\n' +
+                                '                 begin="3s" dur="3s"\n' +
+                                '                 values="6;22"\n' +
+                                '                 calcMode="linear"\n' +
+                                '                 repeatCount="indefinite" />\n' +
+                                '            <animate attributeName="stroke-opacity"\n' +
+                                '                 begin="3s" dur="3s"\n' +
+                                '                 values="1;0" calcMode="linear"\n' +
+                                '                 repeatCount="indefinite" />\n' +
+                                '            <animate attributeName="stroke-width"\n' +
+                                '                 begin="3s" dur="3s"\n' +
+                                '                 values="2;0" calcMode="linear"\n' +
+                                '                 repeatCount="indefinite" />\n' +
+                                '        </circle>\n' +
+                                '        <circle cx="22" cy="22" r="8">\n' +
+                                '            <animate attributeName="r"\n' +
+                                '                 begin="0s" dur="1.5s"\n' +
+                                '                 values="6;1;2;3;4;5;6"\n' +
+                                '                 calcMode="linear"\n' +
+                                '                 repeatCount="indefinite" />\n' +
+                                '        </circle>\n' +
+                                '    </g>\n' +
+                                '</svg>',
+                            showDenyButton: false,
+                            showCancelButton: false,
+                            showConfirmButton: false,
+                            allowOutsideClick: false,
+                            background: 'transparent'
+
+                        });
+                    },
+                    success: function (data) {
+                        /*Swal.fire({
+                            icon: 'success',
+                            title: 'Success!',
+                            text: 'Batch Import Successful',
+                        });*/
+                        if(data.sameBatches.length!==0){
+                            var html='';
+                            $.each(data.sameBatches, function (key, value) {
+                                html+='<tr>' +
+                                    '<td>'+Number(key+1)+'</td>' +
+                                    '<td>'+value.product+'</td>' +
+                                    '<td>'+value.batchNumber+'</td></tr>'
+                            });
+                            $('#batchTableBody').html(html);
+                            $('#batchModal').modal('show');
+                            beforeSendSwal.close();
+                            batchHot.updateSettings({
+                                data: []
+                            });
+                            batchHot.render();
+                        }else{
+                            Swal.fire({
+                                icon: 'success',
+                                title: 'Success!',
+                                text: 'Batch Import Successful',
+                            });
+                        }
+                    },
+                    error: function (data) {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Something went wrong!',
+                            text: 'Please delete empty rows',
+                            // footer: '<a href="">Why do I have this issue?</a>'
+                        });
+                    }
+
+                });
+            } else {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Validation failed!',
+                    text: 'Please add valid data!',
+                    // footer: '<a href="">Why do I have this issue?</a>'
+                });
+                return false;
+            }
+        });
+
+    }
+
 
 
 </script>
