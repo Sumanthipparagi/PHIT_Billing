@@ -2424,7 +2424,8 @@ class EntityService {
         WebTarget target = client.target(new Links().API_GATEWAY)
         try {
             Response apiResponse = target
-                    .path(new Links().ENTITY_IRN_UPDATE + jsonObject.get("id"))
+                    .path(new Links().ENTITY_IRN_UPDATE)
+                    .resolveTemplate("id", jsonObject.id)
                     .request(MediaType.APPLICATION_JSON_TYPE)
                     .put(Entity.entity(jsonObject.toString(), MediaType.APPLICATION_JSON_TYPE))
             println(apiResponse)

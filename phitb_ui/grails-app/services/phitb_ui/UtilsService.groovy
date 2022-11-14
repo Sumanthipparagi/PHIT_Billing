@@ -8,6 +8,8 @@ import org.grails.web.util.WebUtils
 import org.springframework.web.multipart.MultipartFile
 
 import javax.imageio.ImageIO
+import javax.mail.internet.AddressException
+import javax.mail.internet.InternetAddress
 import javax.servlet.http.HttpServletRequest
 import javax.servlet.http.HttpSession
 import javax.ws.rs.core.Form
@@ -233,4 +235,15 @@ class UtilsService {
 //        }
 //        return multiPartEntity
 //    }
+
+     boolean isValidEmailAddress(String email) {
+        boolean result = true;
+        try {
+            InternetAddress emailAddr = new InternetAddress(email);
+            emailAddr.validate();
+        } catch (AddressException ex) {
+            result = false;
+        }
+        return result;
+    }
 }

@@ -132,11 +132,11 @@
                                 </div>
                             </div>
 
-                            <div class="col-md-4">
+                           %{-- <div class="col-md-4">
                                 <div>
                                     <a onclick="exportIRN()" class="btn btn-info" style="color: white;"><i class="fa fa-download"></i> e-Invoice JSON</a>
                                 </div>
-                            </div>
+                            </div>--}%
 
                             <div class="col-md-4 clearfix">
                                 <div class="pull-left"></div>
