@@ -4,6 +4,7 @@ package phitb_product
 import grails.rest.*
 import grails.converters.*
 import grails.web.servlet.mvc.GrailsParameterMap
+import org.grails.web.json.JSONArray
 import org.grails.web.json.JSONObject
 import org.springframework.boot.context.config.ResourceNotFoundException
 import phitb_product.Exception.BadRequestException
@@ -237,6 +238,29 @@ class BatchRegisterController {
             response.status = 400
         }
         catch (Exception ex) {
+            System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
+        }
+    }
+
+    def saveBulkProducts()
+    {
+        try
+        {
+            JSONArray jsonArray = JSON.parse(request.reader.text) as JSONArray
+            respond batchRegisterService.saveBulkBatchRegister(jsonArray)
+        }
+        catch (ResourceNotFoundException ex)
+        {
+            System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
+            response.status = 404
+        }
+        catch (BadRequestException ex)
+        {
+            System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
+            response.status = 400
+        }
+        catch (Exception ex)
+        {
             System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
         }
     }

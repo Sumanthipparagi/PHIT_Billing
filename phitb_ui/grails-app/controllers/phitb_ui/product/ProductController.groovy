@@ -291,6 +291,15 @@ class ProductController {
         }
     }
 
+
+    def productByEntityId(){
+        JSONArray productArray = new ProductService().getProductByEntity(session.getAttribute('entityId').toString())
+        if(productArray!=null){
+            respond productArray, formats: ['json'], status: 200;
+        }
+
+    }
+
     /* def getProductbyId()
      {
          try
@@ -319,6 +328,7 @@ class ProductController {
 
 
 
+
     def productReportExport(){
         try{
             JSONArray productArray = new ProductService().getProductByEntity(session.getAttribute('entityId').toString())
@@ -340,4 +350,76 @@ class ProductController {
             log.error(controllerName+' '+ex)
         }
     }
+
+    def saveBulkProducts(){
+      try{
+          JSONArray params = new JSONArray(params.productData)
+          JSONArray productArray = new JSONArray()
+          JSONArray unusedProductArray = new JSONArray()
+          JSONObject responseObject = new JSONObject()
+          def division = new ProductService().getDivisionsByEntityId(session.getAttribute('entityId').toString())
+          if(division == null){
+              return
+          }
+          for(JSONObject jsonObject:params){
+
+              String taxValue = jsonObject.get('12')
+              def taxId = new EntityService().getTaxRegisterByValueAndEntity(taxValue,session.getAttribute('entityId').toString())
+              if(taxId!=null)
+              {
+                  jsonObject.put("taxId",taxId.id)
+                  jsonObject.put("division",division[0].id)
+                  jsonObject.put("productName", jsonObject.get('0'))
+                  jsonObject.put("productCode", jsonObject.get('1'))
+                  jsonObject.put("purchaseMarginPercent", jsonObject.get('2'))
+                  jsonObject.put("vipSRate", jsonObject.get('3'))
+                  jsonObject.put("saleRate", jsonObject.get('4'))
+                  jsonObject.put("orderQuantity", jsonObject.get('5'))
+                  jsonObject.put("mrp", jsonObject.get('6'))
+                  jsonObject.put("purchaseTradeDiscount", jsonObject.get('7'))
+                  jsonObject.put("saleTradeDiscount", jsonObject.get('8'))
+                  jsonObject.put("restrictedRate", jsonObject.get('9'))
+                  jsonObject.put("ccmProduct", jsonObject.get('10'))
+                  jsonObject.put("grossProfitPercentage", jsonObject.get('11'))
+                  jsonObject.put("ptr", jsonObject.get('13'))
+                  jsonObject.put("narration", jsonObject.get('14'))
+                  jsonObject.put("hsnCode", jsonObject.get('15'))
+                  jsonObject.put("salesmenPercent", jsonObject.get('16'))
+                  jsonObject.put("purchaseRate", jsonObject.get('17'))
+                  jsonObject.put("discountAllowed", jsonObject.get('18'))
+                  jsonObject.put("saleMarginPercent", jsonObject.get('19'))
+                  jsonObject.put("vipPRate", jsonObject.get('20'))
+                  jsonObject.put("restrictedAssignment", jsonObject.get('21'))
+                  jsonObject.put("perLotQuantity", jsonObject.get('22'))
+                  jsonObject.put("unitPacking", jsonObject.get('23'))
+                  jsonObject.put("nriRate", jsonObject.get('24'))
+                  jsonObject.put("salesmanCommission", jsonObject.get('25'))
+                  jsonObject.put("saleType", jsonObject.get('26'))
+                  jsonObject.put("mktCompanyId", session.getAttribute('userId').toString())
+                  jsonObject.put("manufacturerId",session.getAttribute('userId').toString())
+                  jsonObject.put("entityId", session.getAttribute('entityId'))
+                  jsonObject.put("entityTypeId", session.getAttribute('entityTypeId'))
+                  jsonObject.put("userId", session.getAttribute('userId'))
+                  jsonObject.put("createdUser", session.getAttribute('userId'))
+                  jsonObject.put("modifiedUser", session.getAttribute('userId'))
+                  productArray.add(jsonObject)
+              }else{
+                  unusedProductArray.add(jsonObject)
+              }
+          }
+          JSONArray jsonArray = new ProductService().saveBulkProductRegister(productArray)
+          if(jsonArray!=null){
+              responseObject.put("createdProducts", jsonArray)
+              responseObject.put("unusedProducts", unusedProductArray)
+              respond responseObject, formats: ['json'], status: 200
+          }else{
+              response.status=400;
+          }
+      }catch(Exception ex){
+          println(ex)
+      }
+
+    }
+
+
 }

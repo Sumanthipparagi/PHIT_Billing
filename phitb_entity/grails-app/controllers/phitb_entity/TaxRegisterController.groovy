@@ -57,6 +57,16 @@ class TaxRegisterController {
         }
     }
 
+    def getByEntityIdAndTaxValue(){
+        try{
+            String entityId = params.entityId
+            String taxValue = params.taxValue
+            respond taxRegisterService.getByEntityIdAndTaxValue(entityId,taxValue)
+        }catch(Exception ex){
+            System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
+        }
+    }
+
     /**
      * Get requested Tax register
      * @param id

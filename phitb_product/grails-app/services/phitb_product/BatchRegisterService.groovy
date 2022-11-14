@@ -1,6 +1,7 @@
 package phitb_product
 
 import grails.gorm.transactions.Transactional
+import org.grails.web.json.JSONArray
 import org.grails.web.json.JSONObject
 import phitb_product.Exception.BadRequestException
 import phitb_product.Exception.ResourceNotFoundException
@@ -201,5 +202,53 @@ class BatchRegisterService {
             def result = BatchRegister.findByProductAndBatchNumber(product,batch)
             return result
         }
+    }
+
+
+    def saveBulkBatchRegister(JSONArray jsonArray){
+        JSONArray batchArray = new JSONArray()
+        JSONArray sameBatches = new JSONArray()
+        for(JSONObject jsonObject: jsonArray){
+            ProductRegister product = ProductRegister.findById(Long.parseLong(jsonObject.get("product").toString()))
+            BatchRegister batchRegister = BatchRegister.findByBatchNumberAndProduct(jsonObject.get("batchNumber").toString(), product)
+            if(batchRegister == null) {
+                batchRegister = new BatchRegister()
+                batchRegister.product = product
+                batchRegister.manfDate = sdf.parse(jsonObject.get("manfDate").toString())
+                batchRegister.expiryDate = sdf.parse(jsonObject.get("expiryDate").toString())
+                batchRegister.purchaseRate = Double.parseDouble(jsonObject.get("purchaseRate").toString())
+                batchRegister.saleRate = Double.parseDouble(jsonObject.get("saleRate").toString())
+                batchRegister.ptr = Double.parseDouble(jsonObject.get("ptr").toString())
+                batchRegister.mrp = Double.parseDouble(jsonObject.get("mrp").toString())
+                batchRegister.qty = Long.parseLong(jsonObject.get("qty").toString())
+                batchRegister.box = Long.parseLong(jsonObject.get("box").toString())
+                batchRegister.caseWt = jsonObject.get("caseWt").toString()
+                batchRegister.batchNumber = jsonObject.get("batchNumber").toString()
+                if(jsonObject.has("productCat") && jsonObject.get("productCat").toString()!=0)
+                {
+                    batchRegister.productCat =  ProductCategoryMaster.findById(Long.parseLong(jsonObject.get("productCat").toString()))
+                }
+                else
+                {
+                    batchRegister.productCat = null
+                }
+//            batchRegister.productCat = ProductCategoryMaster.findById(Long.parseLong(jsonObject.get("productCat").toString()))
+                batchRegister.status = Long.parseLong(jsonObject.get("status").toString())
+                batchRegister.syncStatus = Long.parseLong(jsonObject.get("syncStatus").toString())
+                batchRegister.entityTypeId = Long.parseLong(jsonObject.get("entityTypeId").toString())
+                batchRegister.entityId = Long.parseLong(jsonObject.get("entityId").toString())
+                batchRegister.createdUser = Long.parseLong(jsonObject.get("createdUser").toString())
+                batchRegister.modifiedUser = Long.parseLong(jsonObject.get("modifiedUser").toString())
+                batchRegister.save(flush: true)
+                batchArray.add(jsonObject)
+
+            }else{
+                sameBatches.add(jsonObject)
+            }
+        }
+        JSONObject responseObject = new JSONObject()
+        responseObject.put("sameBatches",sameBatches)
+        responseObject.put("batches",batchArray)
+        return  responseObject
     }
 }

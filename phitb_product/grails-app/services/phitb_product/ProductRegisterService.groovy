@@ -2,6 +2,7 @@ package phitb_product
 
 import grails.converters.JSON
 import grails.gorm.transactions.Transactional
+import org.grails.web.json.JSONArray
 import org.grails.web.json.JSONObject
 import phitb_product.Exception.BadRequestException
 import phitb_product.Exception.ResourceNotFoundException
@@ -342,5 +343,111 @@ class ProductRegisterService {
                 order("productName", "asc")
             }
         }
+    }
+
+    def saveBulkProductRegister(JSONArray jsonArray){
+        JSONArray productArray = new JSONArray()
+        for(JSONObject jsonObject: jsonArray){
+            ProductRegister productRegister  = new ProductRegister()
+            productRegister.productCode = jsonObject.get("productCode").toString()
+            productRegister.productName = jsonObject.get("productName").toString()
+            productRegister.manufacturerId = Long.parseLong(jsonObject.get("manufacturerId").toString())
+            productRegister.mktCompanyId = Long.parseLong(jsonObject.get("mktCompanyId").toString())
+            productRegister.hsnCode = jsonObject.get("hsnCode").toString()
+            productRegister.rackId = 0
+            productRegister.division = Division.findById(Long.parseLong(jsonObject.get("division").toString()))
+            if(jsonObject.has("composition") && jsonObject.get("composition").toString()!=0)
+            {
+                productRegister.composition = CompositionMaster.findById(Long.parseLong(jsonObject.get("composition").toString()))
+            }
+            else
+            {
+                productRegister.composition = null
+            }
+
+            if(jsonObject.has("costRange") && jsonObject.get("costRange").toString()!=0)
+            {
+                productRegister.costRange = ProductCostRange.findById(Long.parseLong(jsonObject.get("costRange").toString()))
+
+            }else{
+                productRegister.costRange = null
+            }
+            if(jsonObject.has("productType") && jsonObject.get("productType").toString()!=0)
+            {
+                productRegister.productType = ProductTypeMaster.findById(Long.parseLong(jsonObject.get("productType").toString()))
+
+            }else{
+                productRegister.productType = null
+            }
+            if(jsonObject.has("unit") && jsonObject.get("unit").toString()!=0)
+            {
+                productRegister.unit = UnitTypeMaster.findById(Long.parseLong(jsonObject.get("unit").toString()))
+
+            }else{
+                productRegister.unit = null
+            }
+            productRegister.unitPacking = jsonObject.get("unitPacking").toString()
+            productRegister.productMoo = Long.parseLong("1")
+            productRegister.perLotQuantity = jsonObject.get("perLotQuantity").toString()
+            productRegister.purchaseRate = Double.parseDouble(jsonObject.get("purchaseRate").toString())
+            productRegister.purchaseTradeDiscount = Double.parseDouble(jsonObject.get("purchaseTradeDiscount").toString())
+            productRegister.purchaseMarginPercent = Double.parseDouble(jsonObject.get("purchaseMarginPercent").toString())
+            productRegister.saleRate = Double.parseDouble(jsonObject.get("saleRate").toString())
+            productRegister.saleTradeDiscount = Double.parseDouble(jsonObject.get("saleTradeDiscount").toString())
+            productRegister.saleMarginPercent = Double.parseDouble(jsonObject.get("saleMarginPercent").toString())
+            productRegister.salesmenPercent = Double.parseDouble(jsonObject.get("salesmenPercent").toString())
+            productRegister.vipPRate = Double.parseDouble(jsonObject.get("vipPRate").toString())
+            productRegister.vipSRate = Double.parseDouble(jsonObject.get("vipSRate").toString())
+            productRegister.mrp = Double.parseDouble(jsonObject.get("mrp").toString())
+            productRegister.ptr = Double.parseDouble(jsonObject.get("ptr").toString())
+            productRegister.restrictedRate = Double.parseDouble(jsonObject.get("restrictedRate").toString())
+            productRegister.nriRate = Double.parseDouble(jsonObject.get("nriRate").toString())
+            productRegister.salesmanCommission = Double.parseDouble(jsonObject.get("salesmanCommission").toString())
+            productRegister.grossProfitPercentage = Double.parseDouble(jsonObject.get("grossProfitPercentage").toString())
+            productRegister.taxId = Long.parseLong(jsonObject.get("taxId").toString())
+            productRegister.thresholdLevel = "0"
+            productRegister.orderQuantity = Long.parseLong(jsonObject.get("orderQuantity").toString())
+            if(jsonObject.has("group") && jsonObject.get("group").toString()!=0)
+            {
+                productRegister.group =  ProductGroupMaster.findById(Long.parseLong(jsonObject.get("group").toString()))
+            }
+            else
+            {
+                productRegister.group = null
+            }
+            if(jsonObject.has("schedule") && jsonObject.get("schedule").toString()!=0)
+            {
+                productRegister.schedule =  ProductScheduleMaster.findById(Long.parseLong(jsonObject.get("schedule").toString()))
+            }
+            else
+            {
+                productRegister.schedule = null
+            }
+            if(jsonObject.has("category") && jsonObject.get("category").toString()!=0)
+            {
+                productRegister.category =  ProductCategoryMaster.findById(Long.parseLong(jsonObject.get("category").toString()))
+            }
+            else
+            {
+                productRegister.category = null
+            }
+
+            productRegister.sendMail = "0"
+            productRegister.discountAllowed = jsonObject.get("discountAllowed").toString()
+            productRegister.ccmProduct = jsonObject.get("ccmProduct").toString()
+            productRegister.narration = jsonObject.get("narration").toString()
+            productRegister.restrictedAssignment = "0"
+            productRegister.soundexCode = 0
+            productRegister.status =  0
+            productRegister.syncStatus =  0
+            productRegister.entityTypeId =  Long.parseLong(jsonObject.get("entityTypeId").toString())
+            productRegister.entityId =  Long.parseLong(jsonObject.get("entityId").toString())
+            productRegister.createdUser =  Long.parseLong(jsonObject.get("createdUser").toString())
+            productRegister.modifiedUser =  Long.parseLong(jsonObject.get("modifiedUser").toString())
+            productRegister.saleType =  jsonObject.get("saleType").toString()
+            productRegister.save(flush: true)
+            productArray.add(productRegister)
+        }
+        return  productArray
     }
 }

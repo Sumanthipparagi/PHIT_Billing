@@ -181,14 +181,16 @@ class UrlMappings {
         "/entity-register/delete/$id"(controller: "entityRegister",action:"delete")
         "/entity-register/getparententities"(controller: "entityRegister",action:"getParentEntities")
         "/entity-register/getbyaffiliates/$id"(controller: "entityRegister",action:"getByAffiliates")
-
         "/getentitytypebyId"(controller: 'entityRegister', action: 'getEntityTypeById')
 
 
+        //Entity on board information
+        "/entity-onborad"(controller: 'entityRegister', action: 'entityOnBoardInfo')
+        "/save-entity-onboard-info"(controller: 'entityRegister', action: 'saveEntityOnBoardInfo')
 
 //        Bulk import customer
 
-            "/bulk-import-customer"(controller: 'entityRegister', action: 'bulkImportCustomer')
+            "/bulk-import"(controller: 'entityRegister', action: 'bulkImport')
             "/customer-import/import"(controller: 'entityRegister',action: 'customerImport')
 
 
@@ -333,6 +335,7 @@ class UrlMappings {
         "/tax/showtax/$id"(controller: 'tax', action: 'showTaxForReturn')
 
 
+
         //   Territory
         "/territory"(controller: "territory") {
             action = [GET: "index", POST: "save"]
@@ -394,6 +397,8 @@ class UrlMappings {
         "/product/update/$id"(controller:"product",action:"update")
         "/product/delete/$id"(controller: "product",action:"delete")
         "/product/product-export"(controller: 'product', action: 'productReportExport')
+        "/product/save-bulk-products"(controller: 'product', action: 'saveBulkProducts')
+        "/product/get-products-by-entity"(controller: 'product', action: 'productByEntityId')
 
 
         //      Division
@@ -800,7 +805,6 @@ class UrlMappings {
 
         "/reports/sales/get-customer-ledger"(controller: "salesReport", action: "getCustomerLedger")
         "/reports/sales/customer-ledger"(controller: "salesReport", action: "customerLedger")
-
 
         "/reports/accounts/outstanding"(controller: "accountsReport", action: "outstandingReport")
         "/reports/accounts/getoutstanding"(controller: "accountsReport", action: "getOutstandingReport")

@@ -1,19 +1,16 @@
 package phitb_ui.entity
 
-import grails.converters.JSON
-import groovy.json.JsonSlurper
+
 import org.grails.web.json.JSONArray
 import org.grails.web.json.JSONObject
-import org.springframework.web.multipart.MultipartFile
-import phitb_ui.AccountsService
 import phitb_ui.Constants
 import phitb_ui.EntityService
-import phitb_ui.Links
+import phitb_ui.ProductService
 import phitb_ui.SystemService
 import phitb_ui.accounts.BankRegisterController
 import phitb_ui.system.CityController
 import phitb_ui.system.CountryController
-import phitb_ui.system.PriorityController
+import phitb_ui.system.DistrictController
 import phitb_ui.system.StateController
 import phitb_ui.system.ZoneController
 
@@ -423,9 +420,14 @@ class EntityRegisterController {
     }
 
 
-    def bulkImportCustomer() {
+    def bulkImport() {
         try {
-            render(view: '/entity/entityRegister/bulk-import-customer')
+
+            def taxRegister = new EntityService().getTaxesByEntity(session.getAttribute('entityId').toString())
+            def division = new ProductService().getDivisionsByEntityId(session.getAttribute('entityId').toString())
+            def products = new ProductService().getProductByEntity(session.getAttribute('entityId').toString())
+            render(view: '/entity/entityRegister/bulk-import-wizard',model:[taxRegister:taxRegister,
+                                                                            division:division,products:products])
         }
         catch (Exception ex) {
             System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
@@ -435,20 +437,6 @@ class EntityRegisterController {
     }
 
 
-    def customerImport() {
-        try {
-//            println(params)
-//            MultipartFile file = params.file
-////            FileInputStream fis=new FileInputStream(file.getInputStream());
-//            println(fis)
-
-        }
-        catch (Exception ex) {
-            System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
-            log.error('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
-            response.status = 400
-        }
-    }
 
     def getParentEntities() {
         try {
@@ -467,6 +455,88 @@ class EntityRegisterController {
             System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
             log.error('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
             response.status = 400
+        }
+    }
+
+    def entityOnBoardInfo(){
+        ArrayList<String> statelist = new StateController().show() as ArrayList<String>
+        ArrayList<String> countrylist = new CountryController().show() as ArrayList<String>
+        ArrayList<String> citylist = new CityController().show() as ArrayList<String>
+        ArrayList<String> zoneList = new ZoneController().show() as ArrayList<String>
+        ArrayList<String> districts = new DistrictController().show()
+        render(view:'/entity/entityRegister/onBoardWizard',model: [statelist: statelist, countrylist: countrylist,
+                                                                   citylist:citylist,zoneList: zoneList,
+                                                                   districts:districts])
+    }
+
+    def saveEntityOnBoardInfo(){
+        JSONObject paramsJsonObject = new JSONObject(params)
+        if(paramsJsonObject!=null)
+        {
+            JSONObject response = new JSONObject()
+//        Series
+            JSONObject series = new JSONObject()
+            series.put("seriesName", paramsJsonObject.seriesName)
+            series.put("seriesCode", paramsJsonObject.seriesCode)
+            series.put("mode", "1")
+            series.put("saleId", paramsJsonObject.saleId)
+            series.put("saleReturnId", paramsJsonObject.saleReturnId)
+            series.put("saleOrderId", paramsJsonObject.saleOrderId)
+            series.put("purId", paramsJsonObject.purId)
+            series.put("purchaseOrderId", paramsJsonObject.purchaseOrderId)
+            series.put("goodsTransferId", paramsJsonObject.goodsTransferId)
+            series.put("sampleInvoiceId", paramsJsonObject.sampleInvoiceId)
+            series.put("status", "0")
+            series.put("syncStatus", "0")
+            series.put("entityType", session.getAttribute('entityTypeId').toString())
+            series.put("entity", session.getAttribute('entityId').toString())
+            series.put("modifiedUser", session.getAttribute('userId').toString())
+            series.put("createdUser", session.getAttribute('userId').toString())
+            def seriesResponse = new EntityService().saveSeries(series)
+            JSONObject seriesObj
+            if (seriesResponse?.status == 200)
+            {
+                seriesObj = new JSONObject(seriesResponse.readEntity(String.class))
+                println(seriesResponse)
+            }
+
+            //Division
+            JSONObject division = new JSONObject()
+            division.put("divisionName", paramsJsonObject.divisionName)
+            division.put("divisionShortName", paramsJsonObject.divisionShortName)
+            division.put("cityIds", paramsJsonObject.cityIds)
+            division.put("zoneIds", paramsJsonObject.zoneIds)
+            division.put("stateIds", paramsJsonObject.stateIds)
+            division.put("seriesId", seriesObj.id)
+            division.put("managerId", session.getAttribute('userId').toString())
+            division.put("customerIds", '')
+            division.put("status", 0)
+            division.put("syncStatus", 0)
+            division.put("syncStatus", 0)
+            division.put("entityTypeId", session.getAttribute('entityTypeId').toString())
+            division.put("entityId", session.getAttribute('entityId').toString())
+            division.put("modifiedUser", session.getAttribute('userId').toString())
+            division.put("createdUser", session.getAttribute('userId').toString())
+            def divisionResponse = new ProductService().saveDivision(division)
+            if (divisionResponse?.status == 200)
+            {
+                println(divisionResponse)
+            }
+            //priority
+            JSONObject priority = new JSONObject()
+            priority.put("priority", paramsJsonObject.priority)
+            priority.put("entity", session.getAttribute('entityId').toString())
+            def priorityResponse = new SystemService().savePriority(priority)
+            if (priorityResponse?.status == 200)
+            {
+                print(priorityResponse)
+            }
+            response.put("priority", priorityResponse.status)
+            response.put("division", divisionResponse.status)
+            response.put("series", seriesResponse.status)
+            respond response, formats: ['json'], status: 200;
+        }else{
+            response.status =400
         }
     }
 }

@@ -39,6 +39,8 @@ class UrlMappings {
             "/batch-and-product(.$format)?"(controller: 'batchRegister') {
                 action = [GET: 'getByBatchAndProduct']
             }
+            "/save-bulk-batch-register(.$format)?"(controller: 'batchRegister', action: 'saveBulkProducts')
+
 
             //Composition Master Register
             "/compositionmasterregister(.$format)?"(controller: 'compositionMaster') {
@@ -155,6 +157,7 @@ class UrlMappings {
                 action = [GET: 'getAllByDivision']
             }
             "/productregisterbyhsnandentity"(controller: 'productRegister', action: 'getByHsnCodeAndEntityId')
+            "/save-bulk-product-register(.$format)?"(controller: 'productRegister', action: 'saveBulkProducts')
 
             //Product Schedule Master
             "/productschdulemaster(.$format)?"(controller: 'productScheduleMaster') {
@@ -169,6 +172,8 @@ class UrlMappings {
             "/productschdulemasterbyentity/$id(.$format)?"(controller: 'productScheduleMaster') {
                 action = [GET: 'getAllByEntityId']
             }
+
+
 
 
 

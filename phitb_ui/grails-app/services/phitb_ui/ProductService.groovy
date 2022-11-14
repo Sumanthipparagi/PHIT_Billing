@@ -2080,82 +2080,46 @@ class ProductService {
     }
 
 
-    XSSFWorkbook getExportEventXls(JSONArray productArray, String detailRow)
-    {
-
-        //Create blank workbook
-        XSSFWorkbook workbook = new XSSFWorkbook()
-        //Create a blank sheet
-        XSSFSheet spreadsheet = workbook.createSheet("Service Request")
-        //Create row object
-        XSSFRow row
-
-        CellStyle style = workbook.createCellStyle()//Create style
-        Font font = workbook.createFont()//Create fonts
-        font.setBold(true)//Make font bold
-        style.setFont(font)//set it to bold
-        style.setAlignment(HorizontalAlignment.CENTER)
-
-        row = spreadsheet.createRow(0)
-        row.createCell(0).setCellValue("Product reports")
-        spreadsheet.addMergedRegion(new CellRangeAddress(0, 0, 0, 55))
-        row.getCell(0).setCellStyle(style)
-
-        row = spreadsheet.createRow(1)
-        row.createCell(0).setCellValue("")
-        spreadsheet.addMergedRegion(new CellRangeAddress(1, 1, 0, 55))
-        row.getCell(0).setCellStyle(style)
-
-        row = spreadsheet.createRow(2)
-        row.createCell(0).setCellValue(detailRow)
-        spreadsheet.addMergedRegion(new CellRangeAddress(2, 2, 0, 55))
-        row.getCell(0).setCellStyle(style)
-
-        row = spreadsheet.createRow(3)
-        row.createCell(0).setCellValue("")
-        spreadsheet.addMergedRegion(new CellRangeAddress(3, 3, 0, 55))
-
-
-        row = spreadsheet.createRow(4)
-        row.createCell(0).setCellValue("Service request List")
-        spreadsheet.addMergedRegion(new CellRangeAddress(4, 4, 0, 5))
-        row.getCell(0).setCellStyle(style)
-
-
-        int rowid = 5
-        int cellid = 0
-
-        row = spreadsheet.createRow(5)
-        row.createCell(cellid++).setCellValue("Type")
-        row.createCell(cellid++).setCellValue("Customer")
-        row.createCell(cellid++).setCellValue("Address")
-        row.createCell(cellid++).setCellValue("Created Date")
-        row.createCell(cellid++).setCellValue("Status")
-        cellid = 0
-
-        if (productArray != null)
-        {
-            rowid = 6
-
-            for (def product : productArray)
-            {
-                println(product)
-                row = spreadsheet.createRow(rowid++)
-                row.createCell(cellid++).setCellValue(product.productName.toString())
-
-                row.createCell(cellid++).setCellValue(product.purchaseMarginPercent.toString())
-//
-                row.createCell(cellid++).setCellValue(product.sendMail?.toString())
-//
-                row.createCell(cellid++).setCellValue(product.ccmProduct?.toString())
-//
-                row.createCell(cellid++).setCellValue(product.ccmProduct?.toString())
-                cellid = 0
-
-            }
+    def saveBulkProductRegister(JSONArray jsonArray){
+        Client client = ClientBuilder.newClient()
+        WebTarget target = client.target(new Links().API_GATEWAY)
+        try {
+            Response apiResponse = target
+                    .path(new Links().BULK_SAVE_PRODUCT_DETAIL)
+                    .request(MediaType.APPLICATION_JSON_TYPE)
+                    .post(Entity.entity(jsonArray.toString(), MediaType.APPLICATION_JSON_TYPE))
+            if (apiResponse?.status == 200) {
+              JSONArray jsonArray1 = new JSONArray(apiResponse.readEntity(String.class))
+                return  jsonArray1
+            } else
+                return null
+        }
+        catch (Exception ex) {
+            System.err.println('Service :EntityService , action :  saveBulkProductRegister  , Ex:' + ex)
+            log.error('Service :EntityService , action :  saveBulkProductRegister  , Ex:' + ex)
         }
 
-        return workbook
+    }
+
+
+    def saveBulkBatchRegister(JSONArray jsonArray){
+        Client client = ClientBuilder.newClient()
+        WebTarget target = client.target(new Links().API_GATEWAY)
+        try {
+            Response apiResponse = target
+                    .path(new Links().BULK_SAVE_BATCH_DETAIL)
+                    .request(MediaType.APPLICATION_JSON_TYPE)
+                    .post(Entity.entity(jsonArray.toString(), MediaType.APPLICATION_JSON_TYPE))
+            if (apiResponse?.status == 200) {
+                JSONObject jsonObject1 = new JSONObject(apiResponse.readEntity(String.class))
+                return  jsonObject1
+            } else
+                return null
+        }
+        catch (Exception ex) {
+            System.err.println('Service :EntityService , action :  saveBulkProductRegister  , Ex:' + ex)
+            log.error('Service :EntityService , action :  saveBulkProductRegister  , Ex:' + ex)
+        }
 
     }
 

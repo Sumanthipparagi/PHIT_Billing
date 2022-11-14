@@ -37,6 +37,11 @@ class TaxRegisterService {
         return TaxRegister.findById(Long.parseLong(id))
     }
 
+    TaxRegister getByEntityIdAndTaxValue(String entityId, String taxValue){
+        EntityRegister entityRegister = EntityRegister.findById(Long.parseLong(entityId));
+        return  TaxRegister.findByEntityAndTaxValue(entityRegister, Long.parseLong(taxValue))
+    }
+
     JSONObject dataTables(JSONObject paramsJsonObject, String start, String length) {
         String searchTerm = paramsJsonObject.get("search[value]")
         String orderColumnId = paramsJsonObject.get("order[0][column]")

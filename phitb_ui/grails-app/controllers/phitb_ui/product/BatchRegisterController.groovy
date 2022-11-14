@@ -15,7 +15,8 @@ import phitb_ui.system.CountryController
 import phitb_ui.system.StateController
 import phitb_ui.system.ZoneController
 
-class BatchRegisterController {
+class BatchRegisterController
+{
 
     def index()
     {
@@ -40,14 +41,14 @@ class BatchRegisterController {
             }
             def settings = new EntityService().getEntitySettingsByEntity(session.getAttribute('entityId').toString())
 
-            render(view: '/product/batchRegister/batchRegister', model: [entity:entity, statelist:statelist,
-                                                                                 countrylist:countrylist, citylist:citylist,
-                                                                                 zoneList   :zoneList,
-                                                                                 customer:customer, series:series,
-                                                                                 managerList:managerList,
-                                                                                 productlist:productlist,
-                                                                         settings:settings,
-                                                                         productcatList:productcatList])
+            render(view: '/product/batchRegister/batchRegister', model: [entity        : entity, statelist: statelist,
+                                                                         countrylist   : countrylist, citylist: citylist,
+                                                                         zoneList      : zoneList,
+                                                                         customer      : customer, series: series,
+                                                                         managerList   : managerList,
+                                                                         productlist   : productlist,
+                                                                         settings      : settings,
+                                                                         productcatList: productcatList])
         }
         catch (Exception ex)
         {
@@ -63,7 +64,7 @@ class BatchRegisterController {
         try
         {
             JSONObject jsonObject = new JSONObject(params)
-            jsonObject.put("entityId",session.getAttribute('entityId'))
+            jsonObject.put("entityId", session.getAttribute('entityId'))
             def apiResponse = new ProductService().showBatchRegister(jsonObject)
             if (apiResponse.status == 200)
             {
@@ -91,7 +92,7 @@ class BatchRegisterController {
             def apiResponse = new ProductService().saveBatchRegister(jsonObject)
             if (apiResponse?.status == 200)
             {
-               // JSONObject obj = new JSONObject(apiResponse.readEntity(String.class))
+                // JSONObject obj = new JSONObject(apiResponse.readEntity(String.class))
                 redirect(uri: "/batch-register")
             }
             else
@@ -142,7 +143,7 @@ class BatchRegisterController {
             if (apiResponse.status == 200)
             {
                 JSONObject data = new JSONObject()
-                data.put("success","success")
+                data.put("success", "success")
                 respond data, formats: ['json'], status: 200
             }
             else
@@ -211,10 +212,12 @@ class BatchRegisterController {
     {
         String productId = params.id
         def apiResponse = new ProductService().getBatchesOfProduct(productId)
-        if (apiResponse?.status == 200) {
+        if (apiResponse?.status == 200)
+        {
             JSONArray stockBookData = new JSONArray(apiResponse.readEntity(String.class))
             JSONArray responseArray = new JSONArray()
-            for (JSONObject json : stockBookData) {
+            for (JSONObject json : stockBookData)
+            {
                 String id = json["product"]["taxId"]
                 def tax = new TaxController().show(id)
                 println(tax.taxValue)
@@ -225,8 +228,48 @@ class BatchRegisterController {
                 responseArray.put(json)
             }
             respond responseArray, formats: ['json'], status: 200
-        } else {
+        }
+        else
+        {
             response.status = apiResponse?.status
         }
+    }
+
+    def saveBatchRegister()
+    {
+        try
+        {
+            JSONArray params = new JSONArray(params.batchData)
+            JSONArray productArray = new JSONArray()
+            JSONObject responseObject = new JSONObject()
+            for (JSONObject jsonObject : params)
+            {
+                jsonObject.put("productId", jsonObject.get('0'))
+                jsonObject.put("batchNumber", jsonObject.get('1'))
+                jsonObject.put("box", jsonObject.get('2'))
+                jsonObject.put("qty", jsonObject.get('3'))
+                jsonObject.put("expiryDate", jsonObject.get('4'))
+                jsonObject.put("saleRate", jsonObject.get('5'))
+                jsonObject.put("mrp", jsonObject.get('6'))
+                jsonObject.put("ptr", jsonObject.get('7'))
+                jsonObject.put("purchaseRate", jsonObject.get('8'))
+                jsonObject.put("manfDate", jsonObject.get('9'))
+                productArray.add(jsonObject)
+            }
+            JSONObject jsonObject = new ProductService().saveBulkBatchRegister(productArray)
+            if (jsonObject != null)
+            {
+                respond jsonObject, formats: ['json'], status: 200
+            }
+            else
+            {
+                response.status = 400;
+            }
+        }
+        catch (Exception ex)
+        {
+            println(ex)
+        }
+
     }
 }

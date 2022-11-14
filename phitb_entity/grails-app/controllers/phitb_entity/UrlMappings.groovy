@@ -303,6 +303,7 @@ class UrlMappings
                 action = [GET: 'getAllByEntityId']
             }
 
+            "/taxregsiterby-entity-value"(controller: 'taxRegister', action: 'getByEntityIdAndTaxValue')
 
 
             //Terms Condition Details

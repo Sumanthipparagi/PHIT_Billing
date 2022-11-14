@@ -310,6 +310,7 @@ public class Links
     public static String TAX_MASTER_UPDATE = APP_CONTEXT_PATH + "entity/taxregister/{id}";
     public static String TAX_MASTER_DELETE = APP_CONTEXT_PATH + "entity/taxregister/{id}";
     public static String TAX_MASTER_BY_ENTITY = APP_CONTEXT_PATH + "entity/taxregisterbyentity/{id}";
+    public static String TAX_REGISTER_BY_VALUE_ENTITY = APP_CONTEXT_PATH + "entity/taxregsiterby-entity-value";
 
 
     //Territory
@@ -844,5 +845,9 @@ public class Links
 
     //    save day end logs
     public static String SAVE_DAY_END_LOGS = APP_CONTEXT_PATH + "entity/day-end-logs";
+
+
+    public static String BULK_SAVE_PRODUCT_DETAIL = APP_CONTEXT_PATH + "product/save-bulk-product-register";
+    public static String BULK_SAVE_BATCH_DETAIL = APP_CONTEXT_PATH + "product/save-bulk-batch-register";
 
 }

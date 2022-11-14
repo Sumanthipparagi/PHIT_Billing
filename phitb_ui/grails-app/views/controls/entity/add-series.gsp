@@ -73,6 +73,9 @@
                             <input type="hidden" name="saleOrderId" value="1">
                             <input type="hidden" name="purchaseReturnId" value="1">
                             <input type="hidden" name="purchaseOrderId" value="1">
+                            <input type="hidden" name="sampleInvoiceId" value="1">
+                            <input type="hidden" name="deliveryChallanId" value="1">
+                            <input type="hidden" name="goodsTransferId" value="1">
                             <input type="hidden" name="modifiedUser" value="${session.getAttribute('userId')}">
                             <input type="hidden" name="regionStateIds" value="1">
                             <input type="hidden" name="status" value="1">
