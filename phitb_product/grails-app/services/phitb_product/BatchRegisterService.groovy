@@ -233,8 +233,8 @@ class BatchRegisterService {
                     batchRegister.productCat = null
                 }
 //            batchRegister.productCat = ProductCategoryMaster.findById(Long.parseLong(jsonObject.get("productCat").toString()))
-                batchRegister.status = Long.parseLong(jsonObject.get("status").toString())
-                batchRegister.syncStatus = Long.parseLong(jsonObject.get("syncStatus").toString())
+                batchRegister.status = 0
+                batchRegister.syncStatus = 0
                 batchRegister.entityTypeId = Long.parseLong(jsonObject.get("entityTypeId").toString())
                 batchRegister.entityId = Long.parseLong(jsonObject.get("entityId").toString())
                 batchRegister.createdUser = Long.parseLong(jsonObject.get("createdUser").toString())

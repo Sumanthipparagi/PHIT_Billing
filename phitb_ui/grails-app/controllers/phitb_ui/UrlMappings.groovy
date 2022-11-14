@@ -500,7 +500,7 @@ class UrlMappings {
         "/batch-register/delete/$id"(controller: "batchRegister",action:"delete")
         "/batch-register/product/$id"(controller: "batchRegister",action:"getByProduct")
         "/batch-register/batchesforpurchase/$id"(controller: "batchRegister",action:"getBatchesForPurchase")
-
+        "/batch-register/save-bulk-batches"(controller: 'batchRegister', action: 'savebulkBatchRegister')
 
         /*<-------------------------------------------Sales------------------------------------------------->*/
 

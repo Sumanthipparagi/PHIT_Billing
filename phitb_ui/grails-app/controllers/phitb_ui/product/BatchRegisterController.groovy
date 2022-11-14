@@ -15,6 +15,8 @@ import phitb_ui.system.CountryController
 import phitb_ui.system.StateController
 import phitb_ui.system.ZoneController
 
+import java.text.SimpleDateFormat
+
 class BatchRegisterController
 {
 
@@ -235,10 +237,11 @@ class BatchRegisterController
         }
     }
 
-    def saveBatchRegister()
+    def savebulkBatchRegister()
     {
         try
         {
+            SimpleDateFormat sdf = new SimpleDateFormat('yyyy-MM-dd')
             JSONArray params = new JSONArray(params.batchData)
             JSONArray productArray = new JSONArray()
             JSONObject responseObject = new JSONObject()
@@ -248,12 +251,16 @@ class BatchRegisterController
                 jsonObject.put("batchNumber", jsonObject.get('1'))
                 jsonObject.put("box", jsonObject.get('2'))
                 jsonObject.put("qty", jsonObject.get('3'))
-                jsonObject.put("expiryDate", jsonObject.get('4'))
+                jsonObject.put("expiryDate", sdf.parse(jsonObject.get('4').toString()))
                 jsonObject.put("saleRate", jsonObject.get('5'))
                 jsonObject.put("mrp", jsonObject.get('6'))
                 jsonObject.put("ptr", jsonObject.get('7'))
                 jsonObject.put("purchaseRate", jsonObject.get('8'))
-                jsonObject.put("manfDate", jsonObject.get('9'))
+                jsonObject.put("manfDate", sdf.parse(jsonObject.get('9').toString()))
+                jsonObject.put("entityTypeId", session.getAttribute('entityTypeId'))
+                jsonObject.put("entityId", session.getAttribute('entityId'))
+                jsonObject.put("createdUser", session.getAttribute('createdUser'))
+                jsonObject.put("modifiedUser", session.getAttribute('createdUser'))
                 productArray.add(jsonObject)
             }
             JSONObject jsonObject = new ProductService().saveBulkBatchRegister(productArray)
