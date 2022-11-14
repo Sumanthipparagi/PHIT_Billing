@@ -125,7 +125,7 @@
             <a class="navbar-brand" href="/dashboard"><img src="${assetPath(src: '/themeassets/images/sidebar.jpeg')}"
                                                   alt="PharmIT"></a>
         </li>
-                <li><a href="javascript:void(0);" class="btn_overlay hidden-sm-down"><i class="zmdi zmdi-search"></i></a></li>
+%{--                <li><a href="javascript:void(0);" class="btn_overlay hidden-sm-down"><i class="zmdi zmdi-search"></i></a></li>--}%
         <li><a href="javascript:void(0);" class="menu-sm"><i class="zmdi zmdi-swap"></i></a></li>
 
         <li><a href="javascript:void(0);" class="fullscreen" data-provide="fullscreen"><i
