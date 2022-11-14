@@ -382,23 +382,58 @@ class SalebillDetailsController {
             String financialYear = session.getAttribute("financialYear").toString()
             JSONArray finalJson = new JSONArray()
             JSONArray saleBillDetails = new SalesService().getSaleBillDetailsByPendingIRN(financialYear, entityId)
-            println("Total Bills: "+saleBillDetails?.size())
-            int i = 0;
-            for (Object saleBillDetail : saleBillDetails) {
-                try {
-                    println("Bill: "+ (++i))
-                    String json = EInvoiceService.buildIrnPayload(saleBillDetail, saleBillDetail.products)
-                    if (json) {
-                        JSONObject jsonObject = new JSONObject(json)
-                        if (jsonObject)
-                            finalJson.add(jsonObject)
+            if(saleBillDetails) {
+                println("Total Bills: " + saleBillDetails?.size())
+                int i = 0;
+                for (Object saleBillDetail : saleBillDetails) {
+                    try {
+                        println("Bill: " + (++i))
+                        String json = EInvoiceService.buildIrnPayload(saleBillDetail, saleBillDetail.products)
+                        if (json) {
+                            JSONObject jsonObject = new JSONObject(json)
+                            if (jsonObject)
+                                finalJson.add(jsonObject)
+                        }
+                    }
+                    catch (Exception ex) {
+                        println("exportGSTEInvoiceJSON: Error in JSONObject, Skipping and moving to next one\n " + ex.printStackTrace())
                     }
                 }
-                catch (Exception ex) {
-                    println("exportGSTEInvoiceJSON: Error in JSONObject, Skipping and moving to next one\n " + ex.printStackTrace())
-                }
+                render(text: finalJson.toString(), status: 200)
             }
-            render(text: finalJson.toString(), status: 200)
+            else
+                response.status = 400
+        }
+        catch (Exception ex) {
+            System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
+            log.error('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
+            response.status = 400
+        }
+    }
+
+    def exportSingleGSTEInvoiceJSON() {
+        try {
+            String id = params.id
+            String entityId = session.getAttribute("entityId").toString()
+            JSONObject saleBillDetail = new SalesService().getSaleBillDetailsById(id)
+            if(saleBillDetail && saleBillDetail.entityId.toString() == entityId) {
+                JSONArray finalJson = new JSONArray()
+                def products =new SalesService().getSaleProductDetailsByBill(saleBillDetail.id.toString())
+                String json = EInvoiceService.buildIrnPayload(saleBillDetail, products)
+                if (json) {
+                    JSONObject jsonObject = new JSONObject(json)
+                    if (jsonObject) {
+                        finalJson.add(jsonObject)
+                        render(text: finalJson, status: 200)
+                    }
+                    else
+                        response.status = 400
+                }
+                else
+                    response.status = 400
+            }
+            else
+                response.status = 400
         }
         catch (Exception ex) {
             System.err.println('Controller :' + controllerName + ', action :' + actionName + ', Ex:' + ex)
