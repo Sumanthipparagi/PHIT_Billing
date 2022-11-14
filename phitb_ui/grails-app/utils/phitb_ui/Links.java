@@ -765,10 +765,10 @@ public class Links
     public static String E_INVOICE_BASE_URL = "https://nsdlgsp.co.in";
     //public static String E_INVOICE_BASE_URL = "https://test.nsdlgsp.co.in";
     public static String E_INVOICE_GET_KEY = E_INVOICE_BASE_URL + "/GSPUtility/getKey";
-    public static String E_INVOICE_AUTH_TOKEN = E_INVOICE_BASE_URL + "/ewb_v1.03/einv/authtoken";
-    public static String E_INVOICE_GEN_IRN = E_INVOICE_BASE_URL + "/ewb_v1.03/einv/gen-irn";
-    public static String E_INVOICE_CANCEL_IRN = E_INVOICE_BASE_URL + "/ewb_v1.03/einv/can-irn";
-    public static String E_INVOICE_GET_IRN = E_INVOICE_BASE_URL + "/ewb_v1.03/einv/get-irn";
+    public static String E_INVOICE_AUTH_TOKEN = E_INVOICE_BASE_URL + "/ewb_v1.04/einv/authtoken";
+    public static String E_INVOICE_GEN_IRN = E_INVOICE_BASE_URL + "/ewb_v1.04/einv/gen-irn";
+    public static String E_INVOICE_CANCEL_IRN = E_INVOICE_BASE_URL + "/ewb_v1.04/einv/can-irn";
+    public static String E_INVOICE_GET_IRN = E_INVOICE_BASE_URL + "/ewb_v1.04/einv/get-irn";
 
     //    Bill detail log
     public static String BILL_DETAIL_LOG = APP_CONTEXT_PATH + "accounts/reciptdetaillog";

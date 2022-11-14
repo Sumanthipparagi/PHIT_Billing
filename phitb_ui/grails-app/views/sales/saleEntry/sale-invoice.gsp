@@ -350,7 +350,7 @@
                         %{--                <li><b class="tab">State Code</b>: </li>--}%
                     </ul>
                 </td>
-                <td colspan="5" style="vertical-align:center;padding: 10px;">
+                <td colspan="5" class="center-align text-center" style="vertical-align:center;padding: 10px;">
                     <div class="qrCode"></div>
                 </td>
             </tr>
@@ -918,7 +918,7 @@
         minVersion: 1,
         maxVersion: 40,
         render: "canvas",
-        size: 100,
+        size: 160,
         // code color or image element
         fill: '#000',
         // background color or image element, null for transparent background

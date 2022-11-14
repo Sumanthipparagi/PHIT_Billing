@@ -117,8 +117,10 @@ class EInvoiceService {
         authPayload.put("AppKey", base64EncodedAppKey)
         authPayload.put("ForceRefreshAccessToken", true)
 
+        println(authPayload.toString())
+
         String base64EncodedPayload = Base64.getEncoder().encodeToString(authPayload.toString().getBytes());
-        byte[] b = new NicV4TokenPayloadGen().readFile(this.class.classLoader.getResource('KeyStore/publicKey').file)
+        byte[] b = new NicV4TokenPayloadGen().readFile(this.class.classLoader.getResource('KeyStore/publicKey-prod').file)
         NicV4TokenPayloadGen gen = new NicV4TokenPayloadGen(b);
         String encData = gen.encryptPayload(base64EncodedPayload);
         JSONObject finalPayLoad = new JSONObject()
@@ -150,6 +152,7 @@ class EInvoiceService {
                 return entityIrnDetails
             } else {
                 println(apiResponse.readEntity(String.class))
+                log.error(apiResponse.readEntity(String.class))
                 return null
             }
         }
@@ -205,6 +208,7 @@ class EInvoiceService {
                         }
                     } else {
                         println(generatedIRN.get("ErrorDetails").toString())
+                        log.error(generatedIRN.get("ErrorDetails").toString())
                     }
                 }
                 return generatedIRN
@@ -241,9 +245,12 @@ class EInvoiceService {
             JSONObject TranDtls = new JSONObject()
             TranDtls.put("TaxSch", "GST")
             TranDtls.put("SupTyp", "B2B")
-            TranDtls.put("RegRev", "Y")
+           /* TranDtls.put("RegRev", "Y")
             TranDtls.put("EcmGstin", null)
-            TranDtls.put("IgstOnIntra", "N")
+            if(sellerState.get("id") == buyerState.get("id"))
+                TranDtls.put("IgstOnIntra", "N")
+            else
+                TranDtls.put("IgstOnIntra", "Y")*/
             irnObject.put("TranDtls", TranDtls)
 
             //Document Details
@@ -256,7 +263,6 @@ class EInvoiceService {
             //Seller Details
             JSONObject SellerDtls = new JSONObject()
             SellerDtls.put("Gstin", sellerDetails.get("gstn"))
-            //SellerDtls.put("Gstin", entityIrnDetails.get("irnGSTIN")) //TODO: to be removed in production
             SellerDtls.put("LglNm", sellerDetails.get("entityName"))
             SellerDtls.put("TrdNm", sellerDetails.get("entityName"))
             SellerDtls.put("Addr1", new UtilsService().truncateString(sellerDetails.get("addressLine1").toString(),100))
@@ -272,17 +278,15 @@ class EInvoiceService {
                 SellerDtls.put("Loc", sellerCity.get("areaName"))
 
             SellerDtls.put("Pin", Long.parseLong(sellerDetails.get("pinCode").toString()))
-            //SellerDtls.put("Pin", 431132) //TODO: to be removed in production
             SellerDtls.put("Ph", sellerDetails.get("mobileNumber"))
-            SellerDtls.put("Em", sellerDetails.get("email"))
+            if(new UtilsService().isValidEmailAddress(sellerDetails?.get("email")?.toString()))
+                SellerDtls.put("Em", sellerDetails.get("email"))
             SellerDtls.put("Stcd", sellerState.get("irnStateCode"))
-           // SellerDtls.put("Stcd", "27") //TODO: to be removed in production
             irnObject.put("SellerDtls", SellerDtls)
 
             //Buyer Details
             JSONObject BuyerDtls = new JSONObject()
             BuyerDtls.put("Gstin", buyerDetails.get("gstn"))
-            //BuyerDtls.put("Gstin", "27AAACA4410D2ZD") //TODO: to be removed in production
             BuyerDtls.put("LglNm", buyerDetails.get("entityName"))
             BuyerDtls.put("TrdNm", buyerDetails.get("entityName"))
             BuyerDtls.put("Addr1", new UtilsService().truncateString(buyerDetails.get("addressLine1").toString(), 100))
@@ -297,13 +301,11 @@ class EInvoiceService {
                 BuyerDtls.put("Loc", buyerCity.get("areaName"))
 
             BuyerDtls.put("Pin", Long.parseLong(buyerDetails.get("pinCode").toString()))
-          //  BuyerDtls.put("Pin", 431132)  //TODO: to be removed in production
             BuyerDtls.put("Ph", buyerDetails.get("mobileNumber"))
-            BuyerDtls.put("Em", buyerDetails.get("email"))
+            if(new UtilsService().isValidEmailAddress(buyerDetails?.get("email")?.toString()))
+                BuyerDtls.put("Em", buyerDetails.get("email"))
             BuyerDtls.put("Stcd", buyerState.get("irnStateCode"))
-            //BuyerDtls.put("Stcd", "27") //TODO: to be removed in production
-            BuyerDtls.put("Pos",  buyerState.get("irnStateCode")) //TODO: to be added
-           // BuyerDtls.put("Pos",  "27")  //TODO: to be removed in production
+            BuyerDtls.put("Pos",  buyerState.get("irnStateCode"))
             irnObject.put("BuyerDtls", BuyerDtls)
 
             //Dispatch Details
@@ -321,9 +323,7 @@ class EInvoiceService {
                 DispDtls.put("Addr2", dispDtlsAddressLine2)
             }
             DispDtls.put("Pin", Long.parseLong(sellerDetails.get("pinCode").toString()))
-           // DispDtls.put("Pin", 431132) //TODO: to be removed in production
             DispDtls.put("Stcd", sellerState.get("irnStateCode"))
-            //DispDtls.put("Stcd", "27") //TODO: to be removed in production
             irnObject.put("DispDtls", DispDtls)
 
             //Ship Details
@@ -479,6 +479,7 @@ class EInvoiceService {
                         }
                     } else {
                         println(cancelledIRN.get("ErrorDetails").toString())
+                        log.error(cancelledIRN.get("ErrorDetails").toString())
                     }
                 }
                 return cancelledIRN
