@@ -15,6 +15,8 @@ import phitb_ui.Tools
 import phitb_ui.entity.EntityRegisterController
 import phitb_ui.entity.TaxController
 
+import java.text.SimpleDateFormat
+
 class StockBookController
 {
 
@@ -1027,6 +1029,55 @@ class StockBookController
             String emitLink = "/topicTempStockPool/get/" + session.getAttribute("userId")
             String message = tempStocks.toString()
             brokerMessagingTemplate.convertAndSend emitLink, message
+        }
+    }
+
+
+    def bulkStockBookSave(){
+        SimpleDateFormat sdf = new SimpleDateFormat('yyyy-MM-dd')
+        JSONArray jsonArray = new JSONArray(params.stockData)
+        JSONArray unusedArray = new JSONArray()
+        for(JSONObject jsonObject:jsonArray){
+
+            def taxId = new EntityService().getTaxRegisterByValueAndEntity(jsonObject.get('8').toString(),session.getAttribute('entityId').toString())
+            if(taxId)
+            {
+                jsonObject.put("taxId",taxId.id)
+                jsonObject.put("productId", jsonObject.get('0'))
+                jsonObject.put("batchNumber", jsonObject.get('1'))
+                jsonObject.put("manufacturingDate", sdf.parse(jsonObject.get('2').toString()))
+                jsonObject.put("expDate", sdf.parse(jsonObject.get('3').toString()))
+                jsonObject.put("packingDesc", jsonObject.get('4'))
+                jsonObject.put("remainingQty", jsonObject.get('5'))
+                jsonObject.put("remainingFreeQty", jsonObject.get('6'))
+                jsonObject.put("openingStockQty", jsonObject.get('7'))
+                jsonObject.put("purchaseRate", jsonObject.get('9'))
+                jsonObject.put("mrp", jsonObject.get('10'))
+                jsonObject.put("saleRate", jsonObject.get('11'))
+                jsonObject.put("remainingReplQty", 0)
+                jsonObject.put("purcTradeDiscount", 0)
+                jsonObject.put("purcProductValue", 1)
+                jsonObject.put("mergedWith", 0)
+                jsonObject.put("status", 0)
+                jsonObject.put("syncStatus", 0)
+                jsonObject.put("createdUser", 1)
+                jsonObject.put("modifiedUser", 1)
+                jsonObject.put("supplierId", session.getAttribute('userId').toString())
+                jsonObject.put("purcSeriesId", 1)
+                jsonObject.put("userId", session.getAttribute("userId").toString())
+                jsonObject.put("entityId", session.getAttribute("entityId").toString())
+                jsonObject.put("entityTypeId", session.getAttribute("entityTypeId"))
+                jsonObject.put("redundantBatch", "")
+                jsonObject.put("uuid", '')
+            }else{
+                unusedArray.add(jsonObject)
+            }
+            JSONObject jsonObject1 = new InventoryService().bulkStockSave(jsonArray)
+            if(jsonObject1!=null){
+                respond jsonObject1, formats: ['json'], status: 200;
+            }else {
+                response.status = 400
+            }
         }
     }
 }

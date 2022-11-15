@@ -73,7 +73,7 @@
                             <fieldset>
 
                                 <button type="button" class="btn btn-primary" id="saveStock"
-                                        onclick="saveBatches()">Save
+                                        onclick="saveStocks()">Save
                                 </button>
 
                                 <div id="stockTable" style="width:100%;"></div>
@@ -170,6 +170,7 @@
         'packing_desc',
         'remaining_qty',
         'remaining_free_qty',
+        'Open Stock Qty',
         'tax_id',
         'purchase_rate',
         'mrp',
@@ -337,6 +338,7 @@
                 {type: 'date',  dateFormat: 'YYYY-MM-DD', required:true},
                 {type: 'date',  dateFormat: 'YYYY-MM-DD', required:true},
                 {type: 'text', required:true},
+                {type: 'numeric', required:true},
                 {type: 'numeric', required:true},
                 {type: 'numeric', required:true},
                 {type: 'numeric', required:true},
@@ -873,12 +875,12 @@
         batchHot.validateCells(function (hotIsValid) {
             if (hotIsValid === true) {
                 var beforeSendSwal;
-                var batchData = JSON.stringify(batchHot.getSourceData());
+                var stockData = JSON.stringify(stockHot.getSourceData());
                 $.ajax({
                     method: "POST",
-                    url: "/stockbook/save-bulk-stocks",
+                    url: "/stockbook/bulk-stock-save",
                     data: {
-                        batchData: batchData
+                        stockData: stockData
                     },
                     beforeSend: function () {
                         beforeSendSwal = Swal.fire({
@@ -939,12 +941,12 @@
                             title: 'Success!',
                             text: 'Batch Import Successful',
                         });*/
-                        if(data.sameBatches.length!==0){
+                        if(data.unsavedStocks.length!==0){
                             var html='';
-                            $.each(data.sameBatches, function (key, value) {
+                            $.each(data.unsavedStocks, function (key, value) {
                                 html+='<tr>' +
                                     '<td>'+Number(key+1)+'</td>' +
-                                    '<td>'+value.product+'</td>' +
+                                    '<td>'+value.productId+'</td>' +
                                     '<td>'+value.batchNumber+'</td></tr>'
                             });
                             $('#batchTableBody').html(html);

@@ -275,6 +275,29 @@ class InventoryService {
 
     }
 
+    def bulkStockSave(JSONArray jsonArray)
+    {
+        Client client = ClientBuilder.newClient()
+        WebTarget target = client.target(new Links().API_GATEWAY)
+        try
+        {
+            Response apiResponse = target
+                    .path(new Links().BULK_SAVE_STOCK_DETAIL)
+                    .request(MediaType.APPLICATION_JSON_TYPE)
+                    .post(Entity.entity(jsonArray.toString(),MediaType.APPLICATION_JSON_TYPE))
+            if(apiResponse?.status== 200){
+                JSONObject jsonObject1 = new JSONObject(apiResponse.readEntity(String.class))
+                return  jsonObject1
+            }
+        }
+        catch (Exception ex)
+        {
+            System.err.println('Service :InventoryService , action :  save  , Ex:' + ex)
+            log.error('Service :InventoryService , action :  save  , Ex:' + ex)
+        }
+
+    }
+
     def updateStockBook(JSONObject jsonObject)
     {
         Client client = ClientBuilder.newClient().register(JacksonFeature.class)

@@ -339,8 +339,8 @@ class StockBookService {
                 stockBook.mergedWith = 0
                 stockBook.packingDesc = jsonObject.get("packingDesc")
                 stockBook.productId = productId
-                stockBook.expDate = sdf.parse(jsonObject.get("expDate").toString())
-                stockBook.purcDate = sdf.parse(jsonObject.get("purcDate").toString())
+                stockBook.expDate = jsonObject.get("expDate") as Date
+                stockBook.purcDate = jsonObject.get("purcDate") as Date
                 stockBook.manufacturingDate = jsonObject.get("manufacturingDate") as Date
                 stockBook.remainingQty = remainingQty
                 stockBook.purcProductValue = 0
@@ -363,6 +363,24 @@ class StockBookService {
                 stockBook.uuid = ''
                 stockBook.save(flush: true)
                 stockArray.add(stockBook)
+                if (!stockBook.hasErrors()) {
+                    StockActivity stockActivity = new StockActivity()
+                    stockActivity.productId = productId
+                    stockActivity.batch = batchNumber
+                    stockActivity.remainingQty = Long.parseLong(jsonObject.get("remainingQty").toString())
+                    stockActivity.remainingSchemeQty = Long.parseLong(jsonObject.get("remainingFreeQty").toString())
+                    stockActivity.prevRemQty = 0
+                    stockActivity.prevSchemeQty = 0
+                    stockActivity.saleRate =  Double.parseDouble(jsonObject.get("saleRate").toString())
+                    stockActivity.prevSaleRate = 0
+                    stockActivity.status = 0
+                    stockActivity.syncStatus = 0
+                    stockActivity.entityTypeId = Long.parseLong(jsonObject.get("entityTypeId").toString())
+                    stockActivity.entityId = Long.parseLong(jsonObject.get("entityId").toString())
+                    stockActivity.createdUser = Long.parseLong(jsonObject.get("createdUser").toString())
+                    stockActivity.modifiedUser = Long.parseLong(jsonObject.get("modifiedUser").toString())
+                    stockActivity.save(flush: true)
+                }
             }else{
                 unusedArray.add(stockBook)
             }
@@ -380,24 +398,6 @@ class StockBookService {
 //            if (purcDate.contains("T")) {
 //                purcDate = sdf.format(sdf1.parse(purcDate))
 //            }
-            if (!stockBook.hasErrors()) {
-                StockActivity stockActivity = new StockActivity()
-                stockActivity.productId = productId
-                stockActivity.batch = batchNumber
-                stockActivity.remainingQty = Long.parseLong(jsonObject.get("remainingQty").toString())
-                stockActivity.remainingSchemeQty = Long.parseLong(jsonObject.get("remainingFreeQty").toString())
-                stockActivity.prevRemQty = 0
-                stockActivity.prevSchemeQty = 0
-                stockActivity.saleRate =  Double.parseDouble(jsonObject.get("saleRate").toString())
-                stockActivity.prevSaleRate = 0
-                stockActivity.status = 0
-                stockActivity.syncStatus = 0
-                stockActivity.entityTypeId = Long.parseLong(jsonObject.get("entityTypeId").toString())
-                stockActivity.entityId = Long.parseLong(jsonObject.get("entityId").toString())
-                stockActivity.createdUser = Long.parseLong(jsonObject.get("createdUser").toString())
-                stockActivity.modifiedUser = Long.parseLong(jsonObject.get("modifiedUser").toString())
-                stockActivity.save(flush: true)
-            }
         }
         responseObject.put("savedStocks",stockArray)
         responseObject.put("unsavedStocks",unusedArray)

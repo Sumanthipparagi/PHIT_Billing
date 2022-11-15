@@ -658,7 +658,7 @@
         minVersion: 1,
         maxVersion: 40,
         render: "canvas",
-        size: 100,
+        size: 160,
         // code color or image element
         fill: '#000',
         // background color or image element, null for transparent background

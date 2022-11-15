@@ -696,6 +696,7 @@ class UrlMappings {
         "/stockbook/purchase"(controller: "stockBook",action:"StockBookPurchase")
         "/stockbook/purchase/batch"(controller: 'stockBook', action: 'stockPurchase')
         "/stockbook/productreturn/$id"(controller: "stockBook",action:"getStocksOfProductSaleReturn")
+        "/stockbook/bulk-stock-save"(controller: 'stockBook',action: 'bulkStockBookSave')
 
 
 
