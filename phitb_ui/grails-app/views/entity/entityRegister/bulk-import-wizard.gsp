@@ -78,6 +78,15 @@
 
                                 <div id="stockTable" style="width:100%;"></div>
                             </fieldset>
+
+                            <h3>Entity Register</h3>
+                            <fieldset>
+                                <button type="button" class="btn btn-primary" id="saveEntity"
+                                        onclick="saveEntity()">Save
+                                </button>
+
+                                <div id="entityTable" style="width:100%;"></div>
+                            </fieldset>
                         </form>
                     </div>
                 </div>
@@ -112,69 +121,89 @@
     var prodcutHot;
     var batchHot;
     var stockHot;
-    var productData = [];
-    var products = [];
-    var batchData = [];
-    var stockData = [];
+    var entityHot;
+    var productData=[];
+    var products=[];
+    var batchData=[];
+    var stockData=[];
+    var entityData=[];
     var prodcutHeaderRow = [
-        'product_name',
-        'product_code',
-        'purchase_margin_percent',
-        'vip_sale_rate',
-        'sale_rate',
-        'order_quantity',
-        'mrp',
-        'purchase_trade_discount',
-        'sale_trade_discount',
-        'restricted_rate',
-        'ccm_product',
-        'gross_profit_percentage',
-        'tax',
+        'Product Name',
+        'Product Code',
+        'Purchase margin percent',
+        'Vip Sale Rate',
+        'Sale Rate',
+        'Order Quantity',
+        'MRP',
+        'Purchase Trade Disc',
+        'Sale trade Disc',
+        'Restricted Rate',
+        'CCM Product',
+        'Gross profit percentage',
+        'Tax value',
         // 'threshold_level',
-        'ptr',
-        'narration',
-        'hsn_code',
-        'salesmen_percent',
-        'purchase_rate',
-        'discount_allowed',
-        'sale_margin_percent',
-        'vipprate',
-        'restricted_assignment',
-        'per_lot_quantity',
-        'unit_packing',
-        'nri_rate',
-        'salesman_commission',
-        'sale_type',
+        'PTR',
+        'Narration',
+        'HSN Code',
+        'Salesman percentage',
+        'purchase Rate',
+        'Discount allowed',
+        'Sale Margin Percent',
+        'VIP Purchase Rate',
+        'Restricted Assignment',
+        'Per Lot Quantity',
+        'Unit Packing',
+        'NRI rate',
+        'Salesman Commision',
+        'Sale type',
         /* 'entity_id',
          'entity_type_id',
          'division_id',*/
     ];
     var batchHeaderRow = [
-        'product',
-        'batch_number',
+        'Product',
+        'Batch number',
         'box',
         'qty',
-        'expiry_date',
-        'sale_rate',
+        'Expiry date',
+        'sale rate',
         'mrp',
         'ptr',
-        'purchase_rate',
-        'manf_date',
+        'purchase rate',
+        'manf date',
     ];
-
     var stockHeaderRow = [
-        'product',
+        'Product',
         'batch_number',
-        'manufacturing_date',
-        'exp_date',
-        'packing_desc',
-        'remaining_qty',
-        'remaining_free_qty',
+        'manufacturing date',
+        'Exp date',
+        'Packing desc',
+        'remaining qty',
+        'remaining free qty',
         'Open Stock Qty',
-        'tax_id',
-        'purchase_rate',
+        'Tax',
+        'Purchase rate',
         'mrp',
-        'sale_rate',
+        'sale rate',
+    ];
+    var entityHeaderRow = [
+        'Entity Name',
+        'Affliate entity',
+        'Opening balance',
+        'Pin Code',
+        'Drug licence1',
+        'Drug licence2',
+        'Address line 1',
+        'Address line 2',
+        'State',
+        'City',
+        'Country',
+        'Phone number',
+        'Mobile number',
+        'Drug licence validity',
+        'Food licence validity',
+        'Discount',
+        'Website',
     ];
     <g:each in="${products}" var="p">
     products.push({"id": ${p.id}, "text": '${p.productName}'});
@@ -183,6 +212,7 @@
         const productContainer = document.getElementById('productTable');
         const batchContainer = document.getElementById('batchTable');
         const stockContainer = document.getElementById('stockTable');
+        const entityContainer = document.getElementById('entityTable');
         prodcutHot = new Handsontable(productContainer, {
             data: productData,
             minRows: 1,
@@ -251,7 +281,6 @@
                   data.splice(0, 0, headers);
               }*/
         });
-
         batchHot = new Handsontable(batchContainer, {
             data: batchData,
             minRows: 1,
@@ -309,7 +338,6 @@
                   data.splice(0, 0, headers);
               }*/
         });
-
         stockHot = new Handsontable(stockContainer, {
             data: stockData,
             minRows: 1,
@@ -337,6 +365,55 @@
                 {type: 'text', required:true},
                 {type: 'date',  dateFormat: 'YYYY-MM-DD', required:true},
                 {type: 'date',  dateFormat: 'YYYY-MM-DD', required:true},
+                {type: 'text', required:true},
+                {type: 'numeric', required:true},
+                {type: 'numeric', required:true},
+                {type: 'numeric', required:true},
+                {type: 'numeric', required:true},
+                {type: 'numeric', required:true},
+                {type: 'numeric', required:true},
+                {type: 'numeric', required:true},
+            ],
+            /*hiddenColumns: true,
+            hiddenColumns: {
+                columns: [13]
+            },*/
+            minSpareRows: 0,
+            minSpareColumns: 0,
+            enterMoves: {row: 0, col: 1},
+            fixedColumnsLeft: 0,
+            licenseKey: 'non-commercial-and-evaluation',
+            contextMenu: ['remove_row', 'row_below', 'cut', 'copy'],
+            /*  beforeCopy: function(data) {
+                  var headers = [];
+                  var selection = this.getSelectedRange();
+                  var startCol = Math.min(selection[0].from.col, selection[0].to.col);
+                  var endCol = Math.max(selection[0].from.col, selection[0].to.col);
+
+                  for (var i = startCol; i <= endCol; i++) {
+                      headers.push(this.getColHeader(i));
+                  }
+
+                  data.splice(0, 0, headers);
+              }*/
+        });
+        entityHot = new Handsontable(entityContainer, {
+            data: entityData,
+            minRows: 1,
+            height: '300',
+            width: 'auto',
+            rowHeights: 25,
+            stretchH: 'all',
+            manualRowResize: true,
+            manualColumnResize: true,
+            persistentState: true,
+            rowHeaders: true,
+            colHeaders: entityHeaderRow,
+            columns: [
+                {type:'text'},
+                {type: 'text', required:true},
+                {type: 'text', required:true},
+                {type: 'text', required:true},
                 {type: 'text', required:true},
                 {type: 'numeric', required:true},
                 {type: 'numeric', required:true},
@@ -426,8 +503,6 @@
             }
         })
     }
-
-
 
     function productsDropdownRenderer(instance, td, row, col, prop, value, cellProperties) {
         var selectedId;
