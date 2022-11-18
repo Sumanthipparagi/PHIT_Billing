@@ -1,6 +1,7 @@
 package phitb_ui
 
 import grails.gorm.transactions.Transactional
+import org.grails.web.gsp.GroovyPagesTemplateRenderer
 import org.grails.web.json.JSONArray
 import org.grails.web.json.JSONObject
 import org.grails.web.util.WebUtils
@@ -24,6 +25,17 @@ class EmailService {
 
 
     static webUtils = WebUtils.retrieveGrailsWebRequest()
+    boolean sendEmail(String toEmail, String subject, String body, String entityId, String docNo = null,  String
+            docType = null, boolean isHtml=false, Object mailTemplate=null){
+        if(!isHtml){
+            sendTextEmail( toEmail,  subject,  body,  entityId,  docNo, docType)
+        }else
+        {
+            sendHtmlEmail( toEmail,  subject,  body,  entityId,  docNo = null, docType = null, mailTemplate)
+        }
+
+    }
+
     /**
      * method to send simple HTML email
      * @param session
@@ -31,7 +43,8 @@ class EmailService {
      * @param subject
      * @param body
      */
-    boolean sendEmail(String toEmail, String subject, String body, String entityId, String docNo = null,  String docType = null) {
+    boolean sendTextEmail(String toEmail, String subject, String body, String entityId, String docNo = null,  String
+            docType = null) {
         try {
             JSONObject emailSettings = getEmailSettingsByEntity()
             if (emailSettings && emailSettings.get("active")) {
@@ -79,6 +92,62 @@ class EmailService {
             return false
         }
     }
+
+
+    boolean sendHtmlEmail(String toEmail, String subject, String body, String entityId, String docNo = null,  String
+            docType = null,Object mailTemplate) {
+        try {
+            JSONObject emailSettings = getEmailSettingsByEntity()
+            if (emailSettings && emailSettings.get("active")) {
+                String senderMail = new Constants().EMAIL_SENDER_ID
+
+                if (emailSettings.has("senderMail") && emailSettings.get("emailService")?.toString()?.equalsIgnoreCase("CUSTOM")) {
+                    senderMail = emailSettings.get("senderMail")
+                }
+
+                Session session = getEmailAuth(emailSettings)
+                MimeMessage msg = new MimeMessage(session);
+                //set message headers
+                msg.addHeader("Content-type", "text/HTML; charset=UTF-8")
+                msg.addHeader("format", "flowed");
+                msg.addHeader("Content-Transfer-Encoding", "8bit")
+                msg.setFrom(new InternetAddress(senderMail, "PharmIT-ERP"))
+                msg.setReplyTo(InternetAddress.parse(senderMail, false))
+                msg.setSubject(subject, "UTF-8")
+                msg.setText(body, "UTF-8")
+                msg.setContent(mailTemplate.toString(),"text/html")
+                msg.setSentDate(new Date())
+                msg.setRecipients(Message.RecipientType.TO, InternetAddress.parse(toEmail, false))
+                System.out.println("Message is ready")
+                Transport.send(msg)
+                System.out.println("Email Sent Successfully!!")
+
+                //Adding mail log
+                JSONObject emailLog = new JSONObject()
+                emailLog.put("entity", entityId)
+                emailLog.put("sentTo", toEmail)
+                emailLog.put("emailSubject", subject)
+                emailLog.put("emailContent", body)
+                emailLog.put("hasAttachments", false)
+                emailLog.put("emailService", emailSettings.get("emailService"))
+                emailLog.put("deliveryStatus", null)
+                emailLog.put("docNo", docNo)
+                emailLog.put("docType", docType)
+                saveEmailLog(emailLog)
+
+                return true
+            } else {
+                System.out.println("Email Not Enabled")
+                return false
+            }
+        }
+        catch (Exception e) {
+            e.printStackTrace()
+            return false
+        }
+    }
+
+
 
     Session getEmailAuth(JSONObject emailSettings) {
         Boolean authenticationRequired = true

@@ -186,11 +186,11 @@ class UrlMappings {
 
         //Entity on board information
         "/entity-onborad"(controller: 'entityRegister', action: 'entityOnBoardInfo')
+        "/get-onoboard-info"(controller: 'entityRegister', action: 'getOnBoardDetails')
         "/save-entity-onboard-info"(controller: 'entityRegister', action: 'saveEntityOnBoardInfo')
 
 //        Bulk import customer
-
-            "/bulk-import"(controller: 'entityRegister', action: 'bulkImport')
+            "/bulk-import"(controller: 'entityRegister',     action: 'bulkImport')
             "/customer-import/import"(controller: 'entityRegister',action: 'customerImport')
 
 
@@ -512,6 +512,7 @@ class UrlMappings {
         "/sale-bill/adjust-credits"(controller: "salebillDetails", action: 'adjustCredits')
         "/sale-bill/download-irn"(controller: "salebillDetails", action: 'exportGSTEInvoiceJSON')
         "/sale-bill/download-irn/$id"(controller: "salebillDetails", action: 'exportSingleGSTEInvoiceJSON')
+        "/mail-template"(controller: 'saleEntry', action: 'mailInvoice')
 
 
 //        stock Adjustment

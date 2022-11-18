@@ -210,5 +210,46 @@
 <script>
     selectSideMenu("dashboard-menu");
 </script>
+<script>
+    $( document ).ready(function() {
+        $.ajax({
+            type: "POST",
+            url: "/get-onoboard-info",
+            dataType: 'json',
+            success: function (data) {
+                // if(data.series.length === 0 && data.division.length === 0 && data.priority.length === 0){
+                //     let timerInterval
+                //     Swal.fire({
+                //         title: 'Auto close alert!',
+                //         html: '<b>Redirecting...</b>',
+                //         timer: 2000,
+                //         timerProgressBar: true,
+                //         didOpen: () => {
+                //             Swal.showLoading();
+                //             const b = Swal.getHtmlContainer().querySelector('b')
+                //             timerInterval = setInterval(() => {
+                //                 b.textContent = Swal.getTimerLeft()
+                //             }, 100)
+                //         },
+                //         willClose: () => {
+                //             clearInterval(timerInterval)
+                //         }
+                //     }).then((result) => {
+                //         /* Read more about handling dismissals below */
+                //         if (result.dismiss === Swal.DismissReason.timer) {
+                //           Swal.fire('I was closed by the timer')
+                //         }
+                //     })
+                // }
+                console.log(data)
+                alert(data)
+            },
+            error: function (data) {
+                alert("Something went Wrong!")
+            }
+        });
+        alert("logged In");
+    });
+</script>
 </body>
 </html>

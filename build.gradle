@@ -63,8 +63,6 @@ dependencies {
     compile group: 'pl.allegro.finance', name: 'tradukisto', version: '1.9.0'
 
 
-
-
 }
 
 bootRun {

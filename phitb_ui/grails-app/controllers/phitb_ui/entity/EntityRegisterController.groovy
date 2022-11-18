@@ -539,4 +539,23 @@ class EntityRegisterController {
             response.status =400
         }
     }
+
+    def getOnBoardDetails(){
+        try{
+            JSONObject jsonObject = new JSONObject()
+            def series = new EntityService().getSeriesByEntity(session.getAttribute('entityId').toString())
+            if(series?.status == 200){
+                series = new JSONArray(series.readEntity(String.class))
+            }
+            def division = new ProductService().getDivisionsByEntityId(session.getAttribute('entityId').toString())
+            def priority = new SystemService().getPriorityByEntity(session.getAttribute('entityId').toString())
+            jsonObject.put("series", series[0])
+            jsonObject.put("division", division)
+            jsonObject.put("priority", priority)
+            respond jsonObject, formats: ['json'], status: 200
+        }
+        catch(Exception ex){
+            println(ex)
+        }
+    }
 }

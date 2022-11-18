@@ -1,16 +1,10 @@
 package phitb_ui.sales
 
-import com.google.gson.Gson
-import com.google.gson.JsonArray
-import com.google.gson.JsonElement
-import com.google.gson.JsonObject
-import grails.artefact.Controller
+
 import grails.converters.JSON
 import org.grails.web.json.JSONArray
 import org.grails.web.json.JSONException
 import org.grails.web.json.JSONObject
-import org.springframework.messaging.simp.SimpMessagingTemplate
-import phitb_ui.AccountsService
 import phitb_ui.Constants
 
 //import org.springframework.messaging.simp.SimpMessagingTemplate
@@ -28,18 +22,10 @@ import phitb_ui.entity.SeriesController
 import phitb_ui.ProductService
 import phitb_ui.entity.TaxController
 import phitb_ui.entity.UserRegisterController
-import phitb_ui.inventory.StockBookController
 import phitb_ui.product.DivisionController
-import phitb_ui.product.ProductGroupController
-import phitb_ui.product.ProductScheduleController
-import phitb_ui.system.DivisionMasterController
 
 import javax.ws.rs.core.Response
 import java.text.SimpleDateFormat
-import java.time.LocalDate
-import java.time.LocalDateTime
-import java.time.chrono.ChronoLocalDate
-import java.time.format.DateTimeFormatter
 
 class SaleEntryController
 {
@@ -838,7 +824,15 @@ class SaleEntryController
                     def entity = new EntityService().getEntityById(params.customer)
                     if(entity?.email!=null && entity?.email!="" && entity?.email!="NA")
                     {
-                        def email = new EmailService().sendEmail(entity.email.trim(), "Sale Invoice saved", saleBillDetail?.invoiceNumber, saleBillDetail?.invoiceNumber, Constants.SALE_INVOICE)
+                        for(JSONObject jsonObject1: saleProductDetails){
+                            def product = new ProductService().getProductById(jsonObject1.productId.toString())
+                            jsonObject1.put("product",product)
+                        }
+                        JSONObject customer = new EntityService().getEntityById(saleBillDetail.get("customerId").toString())
+                        Object mailTemplate = g.render(template:'/templates/bill-template',model:
+                                [saleProductDetails: saleProductDetails,saleBillDetail: saleBillDetail,customer:customer]) as
+                                Object
+                        def email = new EmailService().sendEmail(entity.email.trim(), "Sale Invoice saved", saleBillDetail?.invoiceNumber, saleBillDetail?.invoiceNumber, Constants.SALE_INVOICE, null, true,mailTemplate)
                         if (email)
                         {
                             println("Mail Sent..")
@@ -2668,6 +2662,7 @@ class SaleEntryController
                     }
                     if (salesEmailConfig?.SALE_AUTO_EMAIL_AFTER_SAVE_SALE_ENTRY == "true")
                     {
+                        Object emailContent = g.render(template: '/sales/saleEntry')
                         def entity = new EntityService().getEntityById(params.customer)
                         if (entity?.email != null && entity?.email != "" && entity?.email != "NA")
                         {
@@ -2891,4 +2886,8 @@ class SaleEntryController
     }
 
 
+
+    def mailInvoice(){
+        render(view: '/templates/_bill-template')
+    }
 }
