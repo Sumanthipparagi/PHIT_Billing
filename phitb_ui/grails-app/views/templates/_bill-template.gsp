@@ -471,9 +471,9 @@
 
                                             </td>
                                         </tr>
-                                        <tr>
-                                            <td height="25" style="font-size:25px;line-height:25px;">&nbsp;</td>
-                                        </tr>
+%{--                                        <tr>--}%
+%{--                                            <td height="25" style="font-size:25px;line-height:25px;">&nbsp;</td>--}%
+%{--                                        </tr>--}%
                                         <tr>
                                             <td class="center-text" align="left"
                                                 style="font-family:'Roboto Slab',Arial,Helvetica,sans-serif;font-size:20px;line-height:26px;font-weight:400;font-style:normal;color:#000000;text-decoration:none;letter-spacing:0px;">
@@ -597,17 +597,17 @@
                                             </td>
                                             <!-- <td align="center" width="9%" style="width:9%;max-width:9%;"></td> -->
                                         </tr>
-                                        <tr>
-                                            <td colspan="4" height="15"
-                                                style="font-size:15px;line-height:15px;">&nbsp;</td>
-                                        </tr>
+%{--                                        <tr>--}%
+%{--                                            <td colspan="4" height="15"--}%
+%{--                                                style="font-size:15px;line-height:15px;">&nbsp;</td>--}%
+%{--                                        </tr>--}%
                                     </table>
                                     <!-- Invoice Titles -->
                                 </td>
                             </tr>
-                            <tr>
-                                <td height="30" style="font-size:30px;line-height:30px;">&nbsp;</td>
-                            </tr>
+%{--                            <tr>--}%
+%{--                                <td height="30" style="font-size:30px;line-height:30px;">&nbsp;</td>--}%
+%{--                            </tr>--}%
                         </table>
                         <!-- Content -->
 
@@ -625,9 +625,9 @@
                         <table border="0" align="center" cellpadding="0" cellspacing="0" role="presentation" class="row"
                                width="580" style="width:580px;max-width:580px;">
                             %{--                            --}%
-                            <tr>
-                                <td height="25" style="font-size:25px;line-height:25px;">&nbsp;</td>
-                            </tr>
+%{--                            <tr>--}%
+%{--                                <td height="25" style="font-size:25px;line-height:25px;">&nbsp;</td>--}%
+%{--                            </tr>--}%
                             <tr>
                                 <td align="center" height="1" bgcolor="#ebebeb"
                                     style="font-size:1px;line-height:1px;">&nbsp;</td>
@@ -668,7 +668,8 @@
                                                             style="font-family:'Roboto Slab',Arial,Helvetica,sans-serif;font-size:20px;line-height:26px;font-weight:700;font-style:normal;color:#343e9e;text-decoration:none;letter-spacing:0px;">
 
                                                             <div>
-                                                               ${sp.product.productName}
+                                                               ${sp.product.productName}<br>
+                                                                <p style="font-weight:300;font-size: 30px"><i>(${sp.batchNumber})</i></p>
                                                             </div>
 
                                                         </td>
@@ -680,7 +681,6 @@
                                                     <tr>
                                                         <td align="left"
                                                             style="font-family:'Poppins',Arial,Helvetica,sans-serif;font-size:16px;line-height:26px;font-weight:400;font-style:normal;color:#6e6e6e;text-decoration:none;letter-spacing:0px;">
-
                                                             <div>
 %{--                                                                Lorem ipsum dolor sit amet, consectetur adipisicing--}%
                                                             </div>
@@ -701,7 +701,8 @@
                                                 style="width:25%;max-width:25%;font-family:'Roboto Slab',Arial,Helvetica,sans-serif;font-size:20px;line-height:26px;font-weight:500;font-style:normal;color:#343e9e;text-decoration:none;letter-spacing:0px;">
 
                                                 <div>
-                                                    &#x20b9; ${sp.amount}
+                                                    &#x20b9; ${sp.amount}<br>
+                                                             ${sp.gstPercentage} %
                                                 </div>
 
                                             </td>

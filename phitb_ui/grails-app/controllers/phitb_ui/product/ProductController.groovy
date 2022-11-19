@@ -56,7 +56,7 @@ class ProductController {
     def addProduct() {
         try {
             ArrayList<String> entity = new EntityService().getByEntity(session.getAttribute("entityId").toString()) as ArrayList<String>
-            ArrayList<String> tax = new TaxController().show() as ArrayList<String>
+            ArrayList<String> tax = new EntityService().getTaxesByEntity(session.getAttribute("entityId").toString())
             ArrayList<String> productTypes = new ProductTypeController().getByEntity() as ArrayList<String>
             ArrayList<String> productGroups = new ProductGroupController().getByEntity() as ArrayList<String>
             ArrayList<String> divisions = new ProductService().getDivisionsByEntityId(session.getAttribute("entityId").toString()) as ArrayList<String>
