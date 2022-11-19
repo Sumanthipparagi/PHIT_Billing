@@ -242,13 +242,13 @@
                 //     })
                 // }
                 console.log(data)
-                alert(data)
+                //alert(data)
             },
             error: function (data) {
-                alert("Something went Wrong!")
+               // alert("Something went Wrong!")
             }
         });
-        alert("logged In");
+        //alert("logged In");
     });
 </script>
 </body>
