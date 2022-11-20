@@ -337,7 +337,7 @@ class TempStockBookService {
                         }
                     }
                 }
-                tempStockBook.delete()
+                tempStockBook.delete(flush: true)
             } else {
                 throw new ResourceNotFoundException()
             }
