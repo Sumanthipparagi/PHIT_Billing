@@ -759,7 +759,7 @@
             hiddenColumns: true,
             hiddenColumns: {
                 // specify columns hidden by default
-                //columns: [19,20,21,22,23,24]
+                columns: [19,20,21,22,23,24]
             },
             minSpareRows: 0,
             minSpareColumns: 0,
