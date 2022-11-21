@@ -363,9 +363,7 @@ class InventoryService {
     def getStocksOfProductSaleRetrun(String id) {
         Client client = ClientBuilder.newClient();
         WebTarget target = client.target(new Links().API_GATEWAY);
-
         try {
-
             Response apiResponse = target
                     .path(new Links().GET_STOCKS_OF_PRODUCT_SALE_RETURN)
                     .queryParam("id", URLEncoder.encode(id.toString(), "UTF-8"))
