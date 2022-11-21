@@ -73,6 +73,7 @@ class ProductRegister implements Serializable, LogicalDelete<ProductRegister> {
         category nullable: true
         division nullable: true
         saleType nullable: true
+        narration nullable: true
     }
     boolean isUpdatable
     static transients = ['isUpdatable']
