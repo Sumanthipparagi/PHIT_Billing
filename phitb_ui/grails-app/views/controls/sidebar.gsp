@@ -754,7 +754,7 @@
                     <ul class="ml-menu">
                         <li><a href="/entity-settings">Entity Settings</a></li>
                         <li><a href="/entity-irn">Entity IRN</a></li>
-%{--                        <li><a href="/bulk-import">Bulk import</a></li>--}%
+                        <li><a href="/bulk-import">Bulk import</a></li>
                         <li><a href="/email-settings?id=${session.getAttribute("entityId")}">Email Settings</a></li>
                     </ul>
                 </li>
