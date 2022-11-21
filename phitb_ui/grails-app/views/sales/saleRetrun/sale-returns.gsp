@@ -557,11 +557,11 @@
                 {type: 'text', readOnly: true}
             ],
             hiddenColumns: true,
-            hiddenColumns: {
-                copyPasteEnabled: true,
-                indicators: true,
-                columns: [18, 19]
-            },
+            // hiddenColumns: {
+            //     copyPasteEnabled: true,
+            //     indicators: true,
+            //     columns: [18, 19]
+            // },
             minSpareRows: 0,
             minSpareColumns: 0,
             enterMoves: {row: 0, col: 1},
@@ -1032,8 +1032,13 @@
                                 var igstAmount = priceBeforeGst * (igst / 100);
                                 hot.setDataAtCell(row, 16, Number(igstAmount).toFixed(2)); //IGST
                                 calculateTotalAmt();
-                            } else
+                            } else{
+                                hot.setDataAtCell(row, 14, 0); //SGST
+                                hot.setDataAtCell(row, 15, 0); //CGST
                                 hot.setDataAtCell(row, 16, 0);
+                            }
+
+
                         }
                     },
                     error: function (data) {
