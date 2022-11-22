@@ -672,9 +672,9 @@ class PurchaseEntryController {
                 }
                 else if (settings.size() != 0 && settings?.IPG == Constants.TAX_WISE)
                 {
-                    if (groupDetails.containsKey(it?.stocks?.taxId))
+                    if (groupDetails.containsKey(it?.gstPercentage))
                     {
-                        productDetail = groupDetails.get(it?.stocks?.taxId) as JSONArray
+                        productDetail = groupDetails.get(it?.gstPercentage) as JSONArray
                         productDetail.add(it)
                         Collections.sort(productDetail, new Comparator<JSONObject>() {
                             @Override
@@ -710,14 +710,14 @@ class PurchaseEntryController {
                             sortedJsonArray.put(productDetail.get(i));
                         }
                         println(sortedJsonArray)
-                        groupDetails.put(it?.stocks?.taxId, sortedJsonArray)
+                        groupDetails.put(it?.gstPercentage, sortedJsonArray)
                     }
                     else
                     {
                         productDetail = new JSONArray()
                         productDetail.add(it)
                         println(productDetail)
-                        groupDetails.put(it?.stocks?.taxId, productDetail)
+                        groupDetails.put(it?.gstPercentage, productDetail)
                     }
                 }
                 else if (settings.size() != 0 && settings?.IPG == Constants.PRODUCT_GROUPING)
@@ -943,7 +943,8 @@ class PurchaseEntryController {
             {
                 for (Object tax : groupDetails.keySet())
                 {
-                    def taxDetail = new TaxController().show(tax as String)
+                    Long taxValue = (Long) Double.parseDouble(tax.toString())
+                    def taxDetail = new EntityService().getTaxRegisterByValueAndEntity(taxValue.toString(),session.getAttribute('entityId').toString())
                     JSONArray prodDetails = groupDetails.get(tax) as JSONArray
                     HashMap<String, Double> divGstGroup = new HashMap<>()
                     HashMap<String, Double> divSgstGroup = new HashMap<>()
