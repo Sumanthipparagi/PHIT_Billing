@@ -635,16 +635,16 @@
                 {type: 'text', readOnly: true} //saved draft product id
                 </g:if>
             ],
-            %{--hiddenColumns: true,--}%
-            %{--hiddenColumns: {--}%
-            %{--    <g:if test="${customer != null}">--}%
-            %{--    columns: [16, 17, 18, 19, 20, 21, 22, 23, 24, 25]--}%
-            %{--    </g:if>--}%
-            %{--    <g:else>--}%
-            %{--    // columns: [15, 16, 17, 18, 19, 20, 21]--}%
-            %{--    columns: [16, 17, 18, 19, 20, 21, 22]--}%
-            %{--    </g:else>--}%
-            %{--},--}%
+            hiddenColumns: true,
+            hiddenColumns: {
+                <g:if test="${customer != null}">
+                columns: [16, 17, 18, 19, 20, 21, 22, 23, 24, 25]
+                </g:if>
+                <g:else>
+                // columns: [15, 16, 17, 18, 19, 20, 21]
+                columns: [16, 17, 18, 19, 20, 21, 22]
+                </g:else>
+            },
             minSpareRows: 0,
             minSpareColumns: 0,
             enterMoves: {row: 0, col: 1},
@@ -1102,11 +1102,11 @@
                 {type: 'text', readOnly: true},
                 {type: 'text', readOnly: true}
             ],
-            // hiddenColumns: true,
-            // hiddenColumns: {
-            //     // specify columns hidden by default
-            //     columns: [4, 9, 10, 11, 12]
-            // },
+            hiddenColumns: true,
+            hiddenColumns: {
+                // specify columns hidden by default
+                columns: [4, 9, 10, 11, 12]
+            },
             minSpareRows: 0,
             minSpareCols: 0,
             fixedColumnsLeft: 0,
@@ -1673,7 +1673,7 @@
             }
            if(customerId!=null && customerId!=''){
                $('#address').html('Customer Address: ' +
-                   '<span style="font-size: 12px">'+address+'</span><br>GSTIN: '+gstin+'')
+                   '  <span style="font-size: 12px">'+address+'</span><br>GSTIN: '+gstin+'')
            }else{
                $('#address').html('')
            }
