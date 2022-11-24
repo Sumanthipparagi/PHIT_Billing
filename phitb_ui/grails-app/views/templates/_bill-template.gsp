@@ -712,7 +712,7 @@
                                     </table>
                                     <!-- Invoice Content -->
                                     <hr>
-%{--                                    </g:each>--}%
+                                    </g:each>
                                 </td>
                             </tr>
                             <tr>
