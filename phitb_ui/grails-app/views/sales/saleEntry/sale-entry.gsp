@@ -83,7 +83,7 @@
                                     <option selected disabled>--SELECT--</option>
                                     <g:each in="${customers}" var="cs">
                                         <g:if test="${cs.id != session.getAttribute("entityId")}">
-                                            <option data-state="${cs.stateId}" value="${cs.id}" data-address="${cs.addressLine1 + " ,"+cs.addressLine2+" "+ cs?.city?.stateName+", "+cs?.city?.districtName+" "+cs?.city?.pincode}"
+                                            <option data-state="${cs.stateId}" value="${cs.id}" data-address="${cs.addressLine1.replaceAll("/'/g", "").replaceAll('/"/g', "") + " , "+cs.addressLine2.replaceAll("/'/g", "").replaceAll('/"/g', "")+" ,"+ cs?.city?.stateName+", "+cs?.city?.districtName+"-"+cs?.city?.pincode}" data-gstin="${cs.gstn}"
                                                     <g:if
                                                             test="${saleBillDetail?.customerId == cs.id}">selected</g:if>>${cs.entityName} (${cs.entityType.name}) - ${cs?.city?.districtName} - ${cs?.city?.pincode}</option>
                                         </g:if>
@@ -1656,6 +1656,7 @@
     function customerSelectChanged() {
         var customerId = $("#customerSelect").val();
          var address = $('#customerSelect option:selected').attr('data-address');
+         var gstin = $('#customerSelect option:selected').attr('data-gstin');
         var noOfCrDays = 0;
         if (customers.length > 0) {
             for (var i = 0; i < customers.length; i++) {
@@ -1671,8 +1672,8 @@
                customerLock(false)
             }
            if(customerId!=null && customerId!=''){
-               $('#address').html('<h6>ADDRESS:</h6>' +
-                   '<p>'+address+'</p>')
+               $('#address').html('Customer Address: ' +
+                   '<span style="font-size: 12px">'+address+'</span><br>GSTIN: '+gstin+'')
            }else{
                $('#address').html('')
            }
