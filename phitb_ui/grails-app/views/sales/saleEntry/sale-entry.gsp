@@ -83,7 +83,7 @@
                                     <option selected disabled>--SELECT--</option>
                                     <g:each in="${customers}" var="cs">
                                         <g:if test="${cs.id != session.getAttribute("entityId")}">
-                                            <option data-state="${cs.stateId}" value="${cs.id}"
+                                            <option data-state="${cs.stateId}" value="${cs.id}" data-address="${cs.addressLine1 + " ,"+cs.addressLine2+" "+ cs?.city?.stateName+", "+cs?.city?.districtName+" "+cs?.city?.pincode}"
                                                     <g:if
                                                             test="${saleBillDetail?.customerId == cs.id}">selected</g:if>>${cs.entityName} (${cs.entityType.name}) - ${cs?.city?.districtName} - ${cs?.city?.pincode}</option>
                                         </g:if>
@@ -305,6 +305,14 @@
                                         <h5 style="text-align: center;">All Products are updated..</h5>
                                     </g:else>
                                 </div>
+                            </div>
+                        </div>
+
+                        <div class="row mt-2">
+                            <div class="col-md-12 col-lg-12 col-sm-12">
+                              <div id="address">
+
+                              </div>
                             </div>
                         </div>
                     </div>
@@ -1647,6 +1655,7 @@
 
     function customerSelectChanged() {
         var customerId = $("#customerSelect").val();
+         var address = $('#customerSelect option:selected').attr('data-address');
         var noOfCrDays = 0;
         if (customers.length > 0) {
             for (var i = 0; i < customers.length; i++) {
@@ -1657,13 +1666,16 @@
            if(!hot.isEmptyRow(0)){
                 // $('#customerSelect').prop('disabled', true);
                customerLock(true)
-
             }else{
                // $('#customerSelect').prop('disabled',false);
                customerLock(false)
-
             }
-
+           if(customerId!=null && customerId!=''){
+               $('#address').html('<h6>ADDRESS:</h6>' +
+                   '<p>'+address+'</p>')
+           }else{
+               $('#address').html('')
+           }
         } else {
             <g:if test="${customer != null}">
             noOfCrDays = ${customer.noOfCrDays};
@@ -1968,6 +1980,7 @@
 
         }
     }
+
 
     document.addEventListener("keydown", function (event) {
         var ctrl = event.ctrlKey;
