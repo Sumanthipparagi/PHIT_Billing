@@ -668,8 +668,9 @@
                                                             style="font-family:'Roboto Slab',Arial,Helvetica,sans-serif;font-size:20px;line-height:26px;font-weight:700;font-style:normal;color:#343e9e;text-decoration:none;letter-spacing:0px;">
 
                                                             <div>
-                                                               ${sp.product.productName}<br>
-                                                                <p style="font-weight:300;font-size: 30px"><i>(${sp.batchNumber})</i></p>
+                                                            ${sp.product.productName}<br>
+                                                                <p style="font-weight:300;font-size: 15px"><b>Batch:</b><i>B001
+                                                                </i></p>
                                                             </div>
 
                                                         </td>
@@ -693,7 +694,7 @@
                                                 style="width:25%;max-width:25%;font-family:'Roboto Slab',Arial,Helvetica,sans-serif;font-size:20px;line-height:26px;font-weight:700;font-style:normal;color:#343e9e;text-decoration:none;letter-spacing:0px;">
 
                                                 <div>
-                                                    ${sp.sqty.toString()+"  ("+sp.freeQty.toString()+")"}
+                                                    ${sp?.sqty?.toString()+"  ("+sp?.freeQty?.toString()+")"}
                                                 </div>
 
                                             </td>
@@ -701,8 +702,9 @@
                                                 style="width:25%;max-width:25%;font-family:'Roboto Slab',Arial,Helvetica,sans-serif;font-size:20px;line-height:26px;font-weight:500;font-style:normal;color:#343e9e;text-decoration:none;letter-spacing:0px;">
 
                                                 <div>
-                                                    &#x20b9; ${sp.amount}<br>
-                                                             ${sp.gstPercentage} %
+                                                    &#x20b9; ${sp?.amount}<br>
+                                                    <p style="font-weight:300;font-size: 15px"><b>Ex.GST:</b><i> ${sp?.gstPercentage} %
+                                                    </i></p>
                                                 </div>
 
                                             </td>
@@ -710,7 +712,7 @@
                                     </table>
                                     <!-- Invoice Content -->
                                     <hr>
-                                    </g:each>
+%{--                                    </g:each>--}%
                                 </td>
                             </tr>
                             <tr>
@@ -883,7 +885,6 @@
                                                                         <div>
                                                                             &#x20b9; ${saleBillDetail?.totalAmount}
                                                                         </div>
-
                                                                     </td>
                                                                 </tr>
                                                             </table>

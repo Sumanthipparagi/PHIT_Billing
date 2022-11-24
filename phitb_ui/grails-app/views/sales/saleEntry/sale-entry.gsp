@@ -89,6 +89,7 @@
                                         </g:if>
                                     </g:each>
                                 </select>
+                                <span id="freezeContent"></span>
                             </div>
 
                             <div class="col-md-2">
@@ -626,16 +627,16 @@
                 {type: 'text', readOnly: true} //saved draft product id
                 </g:if>
             ],
-            hiddenColumns: true,
-            hiddenColumns: {
-                <g:if test="${customer != null}">
-                columns: [16, 17, 18, 19, 20, 21, 22, 23, 24, 25]
-                </g:if>
-                <g:else>
-                // columns: [15, 16, 17, 18, 19, 20, 21]
-                columns: [16, 17, 18, 19, 20, 21, 22]
-                </g:else>
-            },
+            %{--hiddenColumns: true,--}%
+            %{--hiddenColumns: {--}%
+            %{--    <g:if test="${customer != null}">--}%
+            %{--    columns: [16, 17, 18, 19, 20, 21, 22, 23, 24, 25]--}%
+            %{--    </g:if>--}%
+            %{--    <g:else>--}%
+            %{--    // columns: [15, 16, 17, 18, 19, 20, 21]--}%
+            %{--    columns: [16, 17, 18, 19, 20, 21, 22]--}%
+            %{--    </g:else>--}%
+            %{--},--}%
             minSpareRows: 0,
             minSpareColumns: 0,
             enterMoves: {row: 0, col: 1},
@@ -649,6 +650,12 @@
                             mainTableRow = row;
 
                             batchSelection(newValue, row);
+                        }
+                        if(!hot.isEmptyRow(0)){
+                            customerLock(true)
+
+                        }else{
+                            customerLock(false)
                         }
                     });
                 }
@@ -1087,11 +1094,11 @@
                 {type: 'text', readOnly: true},
                 {type: 'text', readOnly: true}
             ],
-            hiddenColumns: true,
-            hiddenColumns: {
-                // specify columns hidden by default
-                columns: [4, 9, 10, 11, 12]
-            },
+            // hiddenColumns: true,
+            // hiddenColumns: {
+            //     // specify columns hidden by default
+            //     columns: [4, 9, 10, 11, 12]
+            // },
             minSpareRows: 0,
             minSpareCols: 0,
             fixedColumnsLeft: 0,
@@ -1122,9 +1129,9 @@
                         if (stateId === undefined || stateId === '${session.getAttribute('stateId')}') {
                             sgst = rowData[9];
                             cgst = rowData[10];
-                            igst = rowData[11];
+                            igst = 0
                         } else {
-                            igst = gst;
+                            igst = rowData[11];
                             sgst = 0;
                             cgst = 0;
                         }
@@ -1401,6 +1408,11 @@
                     dataType: 'json',
                     success: function (data) {
                         hot.alter("remove_row", row);
+                        if(!hot.isEmptyRow(0)){
+                            customerLock(true)
+                        }else{
+                            customerLock(false)
+                        }
                         Swal.fire({
                             title: "Success",
                             text: "Product removed."
@@ -1413,6 +1425,11 @@
                 });
             } else
                 hot.alter("remove_row", row);
+            if(!hot.isEmptyRow(0)){
+                customerLock(true)
+            }else{
+                customerLock(false)
+            }
         } else
             alert("Can't change this now, invoice has been saved already.")
     }
@@ -1637,6 +1654,16 @@
                     noOfCrDays = customers[i].noOfCrDays;
                 }
             }
+           if(!hot.isEmptyRow(0)){
+                // $('#customerSelect').prop('disabled', true);
+               customerLock(true)
+
+            }else{
+               // $('#customerSelect').prop('disabled',false);
+               customerLock(false)
+
+            }
+
         } else {
             <g:if test="${customer != null}">
             noOfCrDays = ${customer.noOfCrDays};
@@ -1692,11 +1719,9 @@
             var sgstAmount = Number(hot.getDataAtCell(row, 12));
             var cgstAmount = Number(hot.getDataAtCell(row, 13));
             var igstAmount = Number(hot.getDataAtCell(row, 14));
-
             var gstPercentage = hot.getDataAtCell(row, 17);
             var sgstPercentage = hot.getDataAtCell(row, 18);
             var cgstPercentage = hot.getDataAtCell(row, 19);
-
             if (stateId === '${session.getAttribute('stateId')}') {
                 if (igstAmount !== 0) {
                     hot.setDataAtCell(row, 12, Number(igstAmount / 2).toFixed(2)); //SGST
@@ -1720,6 +1745,8 @@
             }
         }
     }
+
+
 
     function checkForDuplicateEntry(batchNumber) {
         var productId = hot.getDataAtCell(mainTableRow, 1);
@@ -1922,6 +1949,23 @@
                 } else
                     hot.setDataAtCell(row, 5, 0);
             }
+        }
+    }
+
+
+    function customerLock(lock){
+        var selectedId = $('#customerSelect').val();
+        if(selectedId!=null && selectedId!==''){
+           $('#customerSelect').prop('disabled',lock);
+           if(lock){
+               $('#freezeContent').html('<small style="color: red;">Customer locked, clear products to unlock.</small>')
+           }else{
+               $('#freezeContent').html('')
+           }
+        }else{
+            $('#customerSelect').prop('disabled',false);
+            $('#freezeContent').html('')
+
         }
     }
 

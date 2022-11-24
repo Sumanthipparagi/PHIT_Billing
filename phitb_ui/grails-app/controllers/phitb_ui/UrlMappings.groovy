@@ -333,6 +333,7 @@ class UrlMappings {
         "/tax/update/$id"(controller:"tax",action:"update")
         "/tax/delete/$id"(controller: "tax",action:"delete")
         "/tax/showtax/$id"(controller: 'tax', action: 'showTaxForReturn')
+        "/tax/tax-value-and-entity"(controller: 'tax', action: 'getTaxByTaxValueAndEntity')
 
 
 

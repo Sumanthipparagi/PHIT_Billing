@@ -234,4 +234,12 @@ class TaxController {
             response.status = 400
         }
     }
+
+    def getTaxByTaxValueAndEntity(){
+        def tax = new EntityService().getTaxRegisterByValueAndEntity(params.taxValue.toString(),session.getAttribute
+        ('entityId').toString())
+        if(tax!=null){
+            respond tax, formats: ['json'], status: 200
+        }
+    }
 }
