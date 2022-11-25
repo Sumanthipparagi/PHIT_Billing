@@ -1301,9 +1301,18 @@
                         hot.setDataAtCell(mainTableRow, 11, rowData[9]?.toFixed(2));
                         hot.setDataAtCell(mainTableRow, 17, rowData[2]);
                         gst = rowData[9];
-                        sgst = rowData[10];
+                        /*sgst = rowData[10];
                         cgst = rowData[11];
-                        igst = rowData[12];
+                        igst = rowData[12];*/
+                        if (stateId === undefined || stateId === '${session.getAttribute('stateId')}') {
+                            sgst = rowData[10];
+                            cgst = rowData[11];
+                            igst = 0
+                        } else {
+                            igst = rowData[12];
+                            sgst = 0;
+                            cgst = 0;
+                        }
                         hot.selectCell(mainTableRow, 4);
                         hot.setDataAtCell(mainTableRow, 18, 0);
                         hot.setDataAtCell(mainTableRow, 19, 0);
