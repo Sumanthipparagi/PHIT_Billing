@@ -848,5 +848,11 @@ class UrlMappings {
         "/vehicle-detail/delete/$id"(controller: "vehicleDetail",action:"delete")
 
 
+//       Credit-debit Settlement
+
+        "/credit-debit-settlement"(controller: 'creditDebitSettlement', action: 'index')
+        
+
+
     }
 }

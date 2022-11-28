@@ -417,7 +417,6 @@ class PurchaseEntryController {
                         stockBook.put("remainingQty", saleQty)
                         stockBook.put("remainingFreeQty", freeQty)
                         stockBook.put("remainingReplQty", 0)
-
                         if (taxId == "" || taxId == 0 || taxId == "0")
                         {
                             def tax = new EntityService().getTaxRegisterByValueAndEntity(purchase.get("20").toString(), entityId)

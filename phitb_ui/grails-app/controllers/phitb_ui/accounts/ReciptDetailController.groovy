@@ -699,4 +699,7 @@ class ReciptDetailController {
             response.status = 400
         }
     }
+
+
+
 }
